@@ -1,0 +1,46 @@
+namespace = zqagov_merit
+
+zqagov_merit.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "ZQAGOV: QUAL BEGIN merit_native1066_holder"
+        if = {
+            limit = {
+                current_date = 1066.9.15
+                exists = title:e_goryeo.holder
+                title:e_goryeo.holder = { is_alive = yes is_ai = yes has_title = title:e_goryeo is_independent_ruler = yes has_government = meritocratic_government }
+            }
+            title:e_goryeo.holder = { save_scope_as = zqagov_target }
+            set_player_character = scope:zqagov_target
+            scope:zqagov_target = { trigger_event = { id = zqagov_merit.2 } }
+        }
+        else = { debug_log = "ZQAGOV: QUAL FAIL native_target_predicate" }
+    }
+}
+
+zqagov_merit.2 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = { current_date = 1066.9.15 is_alive = yes is_ai = no has_title = title:e_goryeo is_independent_ruler = yes has_government = meritocratic_government }
+            debug_log = "ZQAGOV: QUAL PASS merit_native1066_holder"
+            save_scope_as = zqagov_actual_player
+            debug_log_scopes = yes
+            primary_title = { save_scope_as = zqagov_actual_primary_title debug_log_scopes = yes }
+        if = {
+            limit = { any_vassal = { is_landed = yes has_realm_law = meritocratic_appointment_succession_law } }
+            debug_log = "ZQAGOV: OBSERVED meritocratic_civic_native_governor_law_present"
+        }
+        else = { debug_log = "ZQAGOV: OBSERVED meritocratic_civic_native_governor_law_absent_GAP" }
+        if = {
+            limit = { any_vassal = { is_landed = yes has_realm_law = meritocratic_military_appointment_succession_law } }
+            debug_log = "ZQAGOV: OBSERVED meritocratic_military_native_governor_law_present"
+        }
+        else = { debug_log = "ZQAGOV: OBSERVED meritocratic_military_native_governor_law_absent_GAP" }
+            debug_log = "ZQAGOV: QUAL DONE merit_native1066_holder"
+        }
+        else = { debug_log = "ZQAGOV: QUAL FAIL post_switch_current_player" }
+    }
+}

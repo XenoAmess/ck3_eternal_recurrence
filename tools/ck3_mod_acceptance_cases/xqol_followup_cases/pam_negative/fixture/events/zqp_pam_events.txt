@@ -1,0 +1,3 @@
+﻿namespace = zqp120
+zqp120.1 = { type = character_event hidden = yes immediate = { zqp_initialize_effect = yes } }
+zqp120.2 = { type = character_event hidden = yes immediate = { zqp_observe_actual_reply_effect = yes } }

@@ -1,0 +1,65 @@
+﻿zqa120_payment_full_diagnostic_effect = {
+	save_scope_value_as = { name = zqa120_payment_actual_gold value = gold }
+	save_scope_value_as = { name = zqa120_payment_actual_count value = var:xqol_last_bulk_payment_count }
+	var:zqa_payment_full_target = { save_scope_as = zqa120_payment_full_target save_scope_value_as = { name = zqa120_payment_full_wallet value = gold } }
+	var:zqa_payment_any_target = { save_scope_as = zqa120_payment_any_target save_scope_value_as = { name = zqa120_payment_any_wallet value = gold } }
+	var:zqa_payment_one_gold_target = { save_scope_as = zqa120_payment_one_gold_target save_scope_value_as = { name = zqa120_payment_one_gold_wallet value = gold } }
+	if = { limit = { var:xqol_last_bulk_payment_count = var:zqa_payment_expected_count } debug_log = "ZQA120: OBSERVED payment_count_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_count_FAIL" }
+	if = { limit = { gold >= var:zqa_payment_expected_gold NOT = { gold > var:zqa_payment_expected_gold } } debug_log = "ZQA120: OBSERVED payment_actor_gold_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_actor_gold_FAIL" }
+	if = { limit = { NOT = { has_usable_hook = var:zqa_payment_full_target } } debug_log = "ZQA120: OBSERVED payment_full_hook_consumed_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_full_hook_consumed_FAIL" }
+	if = { limit = { has_usable_hook = var:zqa_payment_any_target } debug_log = "ZQA120: OBSERVED payment_any_hook_preserved_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_any_hook_preserved_FAIL" }
+	if = { limit = { has_usable_hook = var:zqa_payment_one_gold_target } debug_log = "ZQA120: OBSERVED payment_one_hook_preserved_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_one_hook_preserved_FAIL" }
+	if = { limit = { var:zqa_payment_full_target = { gold < 1 } } debug_log = "ZQA120: OBSERVED payment_full_wallet_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_full_wallet_FAIL" }
+	if = { limit = { var:zqa_payment_any_target = { gold >= 2 NOT = { gold > 2 } } } debug_log = "ZQA120: OBSERVED payment_any_wallet_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_any_wallet_FAIL" }
+	if = { limit = { var:zqa_payment_one_gold_target = { gold >= 1 NOT = { gold > 1 } } } debug_log = "ZQA120: OBSERVED payment_one_wallet_PASS" } else = { debug_log = "ZQA120: OBSERVED payment_one_wallet_FAIL" }
+	debug_log = "ZQA120: OBSERVED payment_full_transaction_scopes"
+	debug_log_scopes = yes
+}
+
+zqa120_strong_payment_boundary_effect = {
+ save_scope_as = actor
+ save_scope_as = puppet_or_actor
+ add_perk = golden_obligations_perk
+ # Isolated fixture controls historical hook wallets before creating the boundary subject.
+ every_hooked_character = { remove_long_term_gold = gold }
+ create_character = { name = "ZQA120 Strong Payment Boundary" gender = male age = 30 random_traits = no location = root.capital_province culture = root.culture faith = root.faith save_scope_as = zqa120_strong_target }
+ add_courtier = scope:zqa120_strong_target
+ add_hook = { type = strong_favor_hook target = scope:zqa120_strong_target }
+ set_variable = { name = zqa120_strong_target value = scope:zqa120_strong_target }
+ scope:zqa120_strong_target = {
+  save_scope_as = recipient
+  remove_long_term_gold = gold
+  add_gold = 74
+  save_scope_value_as = { name = zqa120_strong_negative_quote value = xqol_full_golden_obligation_value }
+  save_scope_value_as = { name = zqa120_strong_negative_native_quote value = golden_obligation_value }
+  save_scope_value_as = { name = zqa120_strong_negative_wallet value = gold }
+ }
+ save_scope_value_as = { name = zqa120_strong_negative_actor_before value = gold }
+ xqol_bulk_demand_payment_full_effect = yes
+ scope:zqa120_strong_target = { save_scope_as = recipient }
+ if = {
+  limit = { has_strong_hook = var:zqa120_strong_target has_usable_hook = scope:zqa120_strong_target var:xqol_last_bulk_payment_count = 0 gold = scope:zqa120_strong_negative_actor_before scope:zqa120_strong_target = { gold = 74 xqol_full_golden_obligation_value = 75 golden_obligation_value = 74 } }
+  debug_log = "ZQA120: TEST PASS strong_quote_minus_one_rejected"
+ }
+ else = { debug_log = "ZQA120: TEST FAIL strong_quote_minus_one_rejected" }
+ debug_log = "ZQA120: OBSERVED strong_negative_actual_context"
+ debug_log_scopes = yes
+ scope:zqa120_strong_target = {
+  remove_long_term_gold = gold
+  add_gold = 76
+  save_scope_as = recipient
+  save_scope_value_as = { name = zqa120_strong_positive_quote value = xqol_full_golden_obligation_value }
+  save_scope_value_as = { name = zqa120_strong_positive_native_quote value = golden_obligation_value }
+  save_scope_value_as = { name = zqa120_strong_positive_wallet value = gold }
+ }
+ save_scope_value_as = { name = zqa120_strong_positive_actor_expected value = { value = gold add = 75 } }
+ xqol_bulk_demand_payment_full_effect = yes
+ scope:zqa120_strong_target = { save_scope_as = recipient }
+ if = {
+  limit = { has_strong_hook = var:zqa120_strong_target NOT = { has_usable_hook = scope:zqa120_strong_target } var:xqol_last_bulk_payment_count = 1 gold = scope:zqa120_strong_positive_actor_expected scope:zqa120_strong_target = { gold = 1 } }
+  debug_log = "ZQA120: TEST PASS strong_quote_plus_one_paid_native_amount"
+ }
+ else = { debug_log = "ZQA120: TEST FAIL strong_quote_plus_one_paid_native_amount" }
+ debug_log = "ZQA120: OBSERVED strong_positive_actual_context"
+ debug_log_scopes = yes
+}

@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "religion_hardgate",
+  "acceptance_scope": "original_religion-gate_only",
+  "formal_file_count": 27,
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQREL: SCOPE BEGIN actual_song_actor",
+    "ZQREL: SCOPE PASS actual_song_actor",
+    "ZQREL: SCOPE END actual_song_actor"
+  ],
+  "forbidden_startup": [
+    "ZQREL: TEST FAIL",
+    "ZQA: TEST FAIL",
+    "ZQR120: TEST FAIL"
+  ],
+  "required": [
+    "ZQR120: TEST BEGIN engine_startup",
+    "ZQA: TEST BEGIN xqol",
+    "ZQA: TEST PASS exact_build_song_emperor",
+    "ZQA: TEST PASS switched_to_supported_player",
+    "ZQR120: TEST PASS actual_song_actor_D0",
+    "ZQR120: TEST PASS two_roman_prisoners_flag_only_difference",
+    "ZQR120: TEST PASS control_conversion_valid",
+    "ZQR120: TEST PASS control_all_four_C_interactions_valid",
+    "ZQR120: TEST PASS flag_conversion_invalid_base_valid",
+    "ZQR120: TEST PASS flag_all_four_C_interactions_invalid",
+    "ZQR120: TEST PASS flag_nonconversion_HR_still_valid",
+    "ZQR120: TEST PASS flag_removal_restores_conversion_valid",
+    "ZQR120: TEST PASS flag_removal_restores_all_four_C_interactions_valid",
+    "ZQR120: TEST PASS flag_reapplied_samples_preserved",
+    "ZQR120: TEST DONE religion_gate_only"
+  ],
+  "forbidden": [
+    "ZQREL: TEST FAIL",
+    "ZQA: TEST FAIL",
+    "ZQR120: TEST FAIL"
+  ],
+  "expected_start_date_raw": 53144328,
+  "maximum_natural_days": 0,
+  "gaps": [
+    "Original -120 head_of_rite acceptance tooltip is not observed by this case.",
+    "Current shared Source09 exposes religion/Rite private queries only under explicit opt-in; the common host/manifest does not enable/admit them.",
+    "No arbitrary target Rite/Faith native reader or religion tooltip surface is claimed.",
+    "No GUI decision click, ordinary AI acceptance/reply or complete product release credit."
+  ],
+  "original_fixture": "religion-gate",
+  "source_credit": "Original actual script predicates/interaction validity and scope only; no faith conversion/action/acceptance credit",
+  "business_pass": false,
+  "product_release_pass": false,
+  "original_plan": [
+    {
+      "id": "religion-gate-actual-D0-frame",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null
+      }
+    },
+    {
+      "id": "religion-gate-actual-D0-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "continue_on_error": true
+    },
+    {
+      "id": "religion-gate-required-15-literals",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120: TEST BEGIN engine_startup",
+          "ZQA: TEST BEGIN xqol",
+          "ZQA: TEST PASS exact_build_song_emperor",
+          "ZQA: TEST PASS switched_to_supported_player",
+          "ZQR120: TEST PASS actual_song_actor_D0",
+          "ZQR120: TEST PASS two_roman_prisoners_flag_only_difference",
+          "ZQR120: TEST PASS control_conversion_valid",
+          "ZQR120: TEST PASS control_all_four_C_interactions_valid",
+          "ZQR120: TEST PASS flag_conversion_invalid_base_valid",
+          "ZQR120: TEST PASS flag_all_four_C_interactions_invalid",
+          "ZQR120: TEST PASS flag_nonconversion_HR_still_valid",
+          "ZQR120: TEST PASS flag_removal_restores_conversion_valid",
+          "ZQR120: TEST PASS flag_removal_restores_all_four_C_interactions_valid",
+          "ZQR120: TEST PASS flag_reapplied_samples_preserved",
+          "ZQR120: TEST DONE religion_gate_only"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "schema": "xar.ck3.engine-log-literals/v1",
+        "exists": true,
+        "log_name": "debug.log",
+        "read_only": true,
+        "matches.0.literal": "ZQR120: TEST BEGIN engine_startup",
+        "matches.0.line_count": 1,
+        "matches.1.literal": "ZQA: TEST BEGIN xqol",
+        "matches.1.line_count": 1,
+        "matches.2.literal": "ZQA: TEST PASS exact_build_song_emperor",
+        "matches.2.line_count": 1,
+        "matches.3.literal": "ZQA: TEST PASS switched_to_supported_player",
+        "matches.3.line_count": 1,
+        "matches.4.literal": "ZQR120: TEST PASS actual_song_actor_D0",
+        "matches.4.line_count": 1,
+        "matches.5.literal": "ZQR120: TEST PASS two_roman_prisoners_flag_only_difference",
+        "matches.5.line_count": 1,
+        "matches.6.literal": "ZQR120: TEST PASS control_conversion_valid",
+        "matches.6.line_count": 1,
+        "matches.7.literal": "ZQR120: TEST PASS control_all_four_C_interactions_valid",
+        "matches.7.line_count": 1,
+        "matches.8.literal": "ZQR120: TEST PASS flag_conversion_invalid_base_valid",
+        "matches.8.line_count": 1,
+        "matches.9.literal": "ZQR120: TEST PASS flag_all_four_C_interactions_invalid",
+        "matches.9.line_count": 1,
+        "matches.10.literal": "ZQR120: TEST PASS flag_nonconversion_HR_still_valid",
+        "matches.10.line_count": 1,
+        "matches.11.literal": "ZQR120: TEST PASS flag_removal_restores_conversion_valid",
+        "matches.11.line_count": 1,
+        "matches.12.literal": "ZQR120: TEST PASS flag_removal_restores_all_four_C_interactions_valid",
+        "matches.12.line_count": 1,
+        "matches.13.literal": "ZQR120: TEST PASS flag_reapplied_samples_preserved",
+        "matches.13.line_count": 1,
+        "matches.14.literal": "ZQR120: TEST DONE religion_gate_only",
+        "matches.14.line_count": 1
+      }
+    },
+    {
+      "id": "religion-gate-forbidden-2-literals",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQA: TEST FAIL",
+          "ZQR120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "schema": "xar.ck3.engine-log-literals/v1",
+        "exists": true,
+        "log_name": "debug.log",
+        "read_only": true,
+        "matches.0.literal": "ZQA: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQR120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    }
+  ]
+}

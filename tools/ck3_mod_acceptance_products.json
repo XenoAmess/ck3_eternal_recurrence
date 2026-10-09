@@ -726,6 +726,627 @@
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail.json"
           },
           "description": "Original Song readonly9/UI25 only, with explicit prior actual core evidence and independent guards supplement; no core replay."
+        },
+        {
+          "id": "religion_hardgate",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "coverage": "original_religion-gate_only",
+            "maximum_natural_days": 0,
+            "runtime_or_business_pass": false,
+            "typed_religion_and_tooltip_gap": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "all_required": true,
+            "scope": "No new GUI business assertions; shared normal GUI Quit required"
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_religion_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_religion_cases/religion_hardgate.json"
+          }
+        },
+        {
+          "id": "religion_head_identity",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "coverage": "original_roman-head-diagnostic_only",
+            "maximum_natural_days": 0,
+            "runtime_or_business_pass": false,
+            "typed_religion_and_tooltip_gap": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "all_required": true,
+            "scope": "No new GUI business assertions; shared normal GUI Quit required"
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_religion_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_religion_cases/religion_head_identity.json"
+          }
+        },
+        {
+          "id": "religion_rite_outcomes",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_execute_step"
+          ],
+          "phases": {
+            "coverage": "original_release7_and_two_rite_outcomes_only",
+            "maximum_natural_days": 60,
+            "runtime_or_business_pass": false,
+            "typed_religion_and_tooltip_gap": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "all_required": true,
+            "scope": "No new GUI business assertions; shared normal GUI Quit required"
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_religion_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_religion_cases/religion_rite_outcomes.json"
+          }
+        },
+        {
+          "id": "administrative_appointments",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_title_holder_v1"
+          ],
+          "phases": {
+            "coverage": "original_administrative_appointments_only",
+            "original_steps": 2,
+            "maximum_natural_days": 0,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "hold_seconds": 1800,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [
+              "appointment_succession_law"
+            ],
+            "root_complete_candidate_and_tooltip_review_required": true,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_government_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_administrative_appointments.json"
+          }
+        },
+        {
+          "id": "meritocratic_appointments",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_title_holder_v1"
+          ],
+          "phases": {
+            "coverage": "original_meritocratic_appointments_only",
+            "original_steps": 2,
+            "maximum_natural_days": 0,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "hold_seconds": 1800,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [
+              "meritocratic_appointment_succession_law",
+              "meritocratic_military_appointment_succession_law"
+            ],
+            "root_complete_candidate_and_tooltip_review_required": true,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_government_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_meritocratic_appointments.json"
+          }
+        },
+        {
+          "id": "prison_payment",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "coverage": "original_prison_payment_only",
+            "original_steps": 5,
+            "maximum_natural_days": 1,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2400,
+            "hold_seconds": 900,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [],
+            "root_complete_candidate_and_tooltip_review_required": false,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_payment_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_prison_payment.json"
+          }
+        },
+        {
+          "id": "selfpaid_ransom",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "coverage": "original_selfpaid_ransom_only",
+            "original_steps": 30,
+            "maximum_natural_days": 12,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 4500,
+            "hold_seconds": 600,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [],
+            "root_complete_candidate_and_tooltip_review_required": false,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ransom_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_selfpaid_ransom.json"
+          }
+        },
+        {
+          "id": "pam_positive",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1"
+          ],
+          "phases": {
+            "coverage": "original_pam_positive_only",
+            "original_steps": 35,
+            "maximum_natural_days": 12,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 4500,
+            "hold_seconds": 600,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [],
+            "root_complete_candidate_and_tooltip_review_required": false,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_pam_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_pam_positive.json"
+          },
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1"
+          ]
+        },
+        {
+          "id": "pam_negative",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1"
+          ],
+          "phases": {
+            "coverage": "original_pam_negative_only",
+            "original_steps": 35,
+            "maximum_natural_days": 12,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 4500,
+            "hold_seconds": 600,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [],
+            "root_complete_candidate_and_tooltip_review_required": false,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_pam_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_pam_negative.json"
+          },
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1"
+          ]
+        },
+        {
+          "id": "ordinary_async",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ordinary_async.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "steps": [
+              "original actual Song startup scope",
+              "original30 initial natural12 final assertions",
+              "normal GUI Quit/native0"
+            ],
+            "coverage": "original_ordinary_courtier_natural_async_accept_refuse_only",
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 4500,
+            "hold_seconds": 600,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "all_required": true,
+            "scope": "No new GUI business assertions; shared normal GUI Quit required"
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ordinary_async_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ordinary_async.json"
+          },
+          "budget_provenance": {
+            "kind": "original_cell_argv",
+            "source": {
+              "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\root-launch-argv-template-NOT_RUN.json",
+              "bytes": 2271,
+              "sha256": "6907b4cd0bf91af09357f717612a433cc1958126a80738cf45c4f035c053d26e"
+            },
+            "natural_days": 12,
+            "per_day_timeout": 300,
+            "poll_interval": "Existing host default 0.05; explicit common value"
+          }
         }
       ],
       "legacy_inventory": {

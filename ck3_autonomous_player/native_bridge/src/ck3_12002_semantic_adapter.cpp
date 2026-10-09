@@ -31,7 +31,7 @@ enum class SemanticOperation {
   select_event, reply, acknowledge, raise, move, halt, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
   preview, declarations, declarations_for_target, marriage_choices, family_candidates, strengths, combat_v2, combat_v3,
   player_claims, title_own_laws, title_holder, occupation_targets, termination_options, termination_terms, exit_terms, marriage_diagnostic,
-  fixture_run_inbox
+  fixture_run_inbox, actual_truce_expiry
 };
 
 std::string SerializeInboxFixture(ConsoleFixtureResult result) {
@@ -72,6 +72,7 @@ struct WorkerAdapter::SemanticRequest {
   game::PlayerClaimsV1 player_claims{};
   std::uint32_t title_own_laws_title_id = UINT32_MAX;
   game::TitleOwnLawsV1 title_own_laws{};
+  game::RaiktorActualTruceExpirySnapshotV1 actual_truce_expiry{};
   game::TitleHolderV1 title_holder{};
   game::WarOccupationTargetsV1 occupation_targets{};
   game::WarTerminationOptionsSnapshot termination_options{};
@@ -331,6 +332,8 @@ bool ExecuteSemanticAdapter12002(void *opaque,
         native.read_player_claims_v1(request.player_claim_title_ids, request.player_claims)); break;
     case SemanticOperation::title_own_laws: request.result = static_cast<std::int32_t>(
         native.read_title_own_laws_v1(request.title_own_laws_title_id, request.title_own_laws)); break;
+    case SemanticOperation::actual_truce_expiry: request.result = static_cast<std::int32_t>(
+        native.read_raiktor_actual_truce_expiry(request.id, request.actual_truce_expiry)); break;
     case SemanticOperation::title_holder: request.result = static_cast<std::int32_t>(native.read_title_holder_v1(request.id, request.title_holder)); break;
     case SemanticOperation::occupation_targets: request.result = static_cast<std::int32_t>(native.read_war_occupation_targets_v1(request.id, request.occupation_targets)); break;
     case SemanticOperation::termination_options: request.result = static_cast<std::int32_t>(native.read_war_termination_options(request.id, request.termination_options)); break;
@@ -558,6 +561,19 @@ game::ReadTitleOwnLawsV1Result WorkerAdapter::read_title_own_laws_v1(
     output = std::move(request.title_own_laws);
     return static_cast<game::ReadTitleOwnLawsV1Result>(request.result);
   } catch (...) { return game::ReadTitleOwnLawsV1Result::unavailable; }
+}
+game::ReadRaiktorActualTruceExpiryResultV1 WorkerAdapter::read_raiktor_actual_truce_expiry(
+    std::int32_t toward_character_id,
+    game::RaiktorActualTruceExpirySnapshotV1 &output) const noexcept {
+  output = {};
+  try {
+    SemanticRequest request{};
+    request.operation = SemanticOperation::actual_truce_expiry;
+    request.id = toward_character_id;
+    if (!Run(request)) return game::ReadRaiktorActualTruceExpiryResultV1::unavailable;
+    output = std::move(request.actual_truce_expiry);
+    return static_cast<game::ReadRaiktorActualTruceExpiryResultV1>(request.result);
+  } catch (...) { return game::ReadRaiktorActualTruceExpiryResultV1::unavailable; }
 }
 game::ReadTitleHolderV1Result WorkerAdapter::read_title_holder_v1(
     std::int32_t title_id, game::TitleHolderV1 &output) const noexcept {

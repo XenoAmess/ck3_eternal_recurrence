@@ -1,5 +1,13 @@
 * text=auto eol=lf
 
+# Original QOL acceptance inputs retain their reviewed BOM, CRLF and SHA pins.
+tools/ck3_mod_acceptance_cases/xqol_followup_cases/** -text whitespace=cr-at-eol
+tools/ck3_mod_acceptance_cases/xqol_followup_cases/prison_payment/fixture/common/scripted_effects/zqa_effects.txt -text whitespace=-blank-at-eol,cr-at-eol
+tools/ck3_mod_acceptance_cases/xqol_religion_cases/** -text whitespace=cr-at-eol
+tools/ck3_mod_acceptance_cases/xqol_ordinary_async.plan.json -text whitespace=cr-at-eol
+tools/ck3_mod_acceptance_cases/xqol_ordinary_async.rules.json -text whitespace=cr-at-eol
+tools/fixtures/xqol_ordinary_async/** -text whitespace=cr-at-eol
+
 # Preserve the file-only generator's exact reviewed CRLF code-prefix projection.
 ck3_autonomous_player/native_bridge/src/ordinary_interaction_code_pins_v1.inc -text whitespace=cr-at-eol
 

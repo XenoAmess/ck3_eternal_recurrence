@@ -1,0 +1,122 @@
+{
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 2400,
+    "hold_seconds": 900,
+    "poll_interval": 0.05
+  },
+  "schema": "ck3-xqol-original-followup-case-v1",
+  "case": "prison_payment",
+  "data_directory": "xqol_followup_cases/prison_payment",
+  "acceptance_scope": "original_prison_payment_only",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQA120: TEST BEGIN engine_startup",
+    "ZQA: TEST BEGIN xqol",
+    "ZQA: TEST PASS exact_build_song_emperor",
+    "ZQA: TEST PASS switched_to_supported_player",
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0"
+  ],
+  "forbidden_startup": [
+    "ZQA: TEST FAIL",
+    "ZQA120: TEST FAIL",
+    "ZQA120PAY: TEST FAIL",
+    "ZQR120QUAL: TEST FAIL actual_song_actor_D0"
+  ],
+  "required_markers": [
+    "ZQA120: TEST BEGIN engine_startup",
+    "ZQA: TEST BEGIN xqol",
+    "ZQA: TEST PASS exact_build_song_emperor",
+    "ZQA: TEST PASS switched_to_supported_player",
+    "ZQA120: TEST PASS strong_quote_minus_one_rejected",
+    "ZQA120: TEST PASS strong_quote_plus_one_paid_native_amount",
+    "ZQA: TEST PASS payment_full_only",
+    "ZQA: TEST PASS payment_any_above_one_only",
+    "ZQA: TEST PASS payment_matrix_done",
+    "ZQA120PAY: TEST DONE payment_only"
+  ],
+  "forbidden_markers": [
+    "ZQA: TEST FAIL",
+    "ZQA120: TEST FAIL",
+    "ZQA120PAY: TEST FAIL"
+  ],
+  "original_step_count": 5,
+  "maximum_natural_days": 1,
+  "song_scope_required": true,
+  "fixture_files": [
+    "common/on_action/zqa120_on_actions.txt",
+    "common/scripted_effects/zqa120_production_effects.txt",
+    "common/scripted_effects/zqa_effects.txt",
+    "descriptor.mod",
+    "events/zqa120_events.txt",
+    "localization/english/zqa_l_english.yml",
+    "localization/simp_chinese/zqa_l_simp_chinese.yml"
+  ],
+  "appointment_laws": [],
+  "full_product_pass_from_cell": false,
+  "support_files": {
+    "xqol_followup_common.py": {
+      "bytes": 17940,
+      "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
+    },
+    "xqol_payment_adapter.py": {
+      "bytes": 334,
+      "sha256": "f93f6eda9dba3f228be7868fd41bd00108fbd26b561925c3287cd8281d98f56c"
+    },
+    "xqol_scope.py": {
+      "bytes": 10804,
+      "sha256": "2edca624e611e6f6be7c6147774b1fae8892cdc24de0ef5a96e36214d388b968"
+    },
+    "../ck3_mod_acceptance_prepare.py": {
+      "bytes": 10984,
+      "sha256": "4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981"
+    },
+    "__init__.py": {
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    "xqol_followup_cases/prison_payment/fixture/common/on_action/zqa120_on_actions.txt": {
+      "bytes": 223,
+      "sha256": "c299cc7055b6aff2082bf61e44cf44eb53f8037a48670145af53e5d720c2d2b1"
+    },
+    "xqol_followup_cases/prison_payment/fixture/common/scripted_effects/zqa120_production_effects.txt": {
+      "bytes": 5435,
+      "sha256": "4d30545feadf289197a83ad67e2f6f68dfd78403ae0cef41d0b788a1156d4d79"
+    },
+    "xqol_followup_cases/prison_payment/fixture/common/scripted_effects/zqa_effects.txt": {
+      "bytes": 8487,
+      "sha256": "e38f724e93b527cc78ed49e7b316b20dc0d271c70758044ebb6374ebed1a9e35"
+    },
+    "xqol_followup_cases/prison_payment/fixture/descriptor.mod": {
+      "bytes": 96,
+      "sha256": "3e3d1ab7e3d2b62bb8e40faeb4dd7d52dce086c7c3c5f409d8b6ad6d33b22d53"
+    },
+    "xqol_followup_cases/prison_payment/fixture/events/zqa120_events.txt": {
+      "bytes": 1987,
+      "sha256": "277e6a60892656336b85fdfd8ba8ddae85d0e60db3141ee67e6ef6de93d366e2"
+    },
+    "xqol_followup_cases/prison_payment/fixture/localization/english/zqa_l_english.yml": {
+      "bytes": 791,
+      "sha256": "d42db0b7b8fdac57639bcfc3635d8c516f4fb30269a552de132b14f0ebcb89b5"
+    },
+    "xqol_followup_cases/prison_payment/fixture/localization/simp_chinese/zqa_l_simp_chinese.yml": {
+      "bytes": 731,
+      "sha256": "2be65f992dcaeb49c8e09c1a3fc9784a1681cefe346eaee82110d712c6cbc9c7"
+    },
+    "xqol_followup_cases/prison_payment/frontend-rules-plan.json": {
+      "bytes": 179,
+      "sha256": "ca3dd45804e32b0c8f57c5a543ef969fefd02fdd01634f2ccc367b95f5859223"
+    },
+    "xqol_followup_cases/prison_payment/original-plan.json": {
+      "bytes": 2622,
+      "sha256": "db548508ecdb097ac7a257ddacb88b595220310552830a0460a57be6fb70028e"
+    }
+  }
+}

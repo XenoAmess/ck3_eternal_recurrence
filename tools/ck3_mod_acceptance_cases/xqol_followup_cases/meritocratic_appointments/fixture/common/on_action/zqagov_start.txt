@@ -1,0 +1,4 @@
+on_game_start_after_lobby = { on_actions = { zqagov_merit_start } }
+zqagov_merit_start = {
+    effect = { random_player = { trigger_event = { id = zqagov_merit.1 } } }
+}

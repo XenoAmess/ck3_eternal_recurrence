@@ -1,0 +1,42 @@
+on_game_start_after_lobby = { on_actions = { zqrel_start } }
+zqrel_start = {
+ effect = {
+  debug_log = "ZQR120: TEST BEGIN engine_startup"
+  # Existing public QOL player-scope startup; no historical native ID setter.
+  random_player = {
+   if = {
+    limit = {
+     exists = character:han_8052
+     character:han_8052 = {
+      is_alive = yes is_ai = yes is_ruler = yes has_title = title:h_china
+      has_government = celestial_government is_independent_ruler = yes
+      NOT = { faith = faith:catholic }
+     }
+    }
+    debug_log = "ZQA: TEST BEGIN xqol"
+    character:han_8052 = { save_scope_as = xqol_startup_actor }
+    debug_log = "ZQA: TEST PASS exact_build_song_emperor"
+    set_player_character = scope:xqol_startup_actor
+    scope:xqol_startup_actor = {
+     set_player_character = scope:xqol_startup_actor
+     debug_log = "ZQA: TEST PASS switched_to_supported_player"
+     debug_log = "ZQREL: SCOPE BEGIN actual_song_actor"
+     debug_log_scopes = yes
+     if = {
+      limit = {
+       is_ai = no is_alive = yes is_ruler = yes has_title = title:h_china
+       has_government = celestial_government is_independent_ruler = yes
+       NOT = { faith = faith:catholic }
+      }
+      debug_log = "ZQREL: SCOPE PASS actual_song_actor"
+      debug_log = "ZQR120: TEST PASS actual_song_actor_D0"
+     }
+     else = { debug_log = "ZQREL: TEST FAIL actual_song_actor" }
+     debug_log = "ZQREL: SCOPE END actual_song_actor"
+     zqr_setup_and_probe_effect = yes
+    }
+   }
+   else = { debug_log = "ZQREL: TEST FAIL original_song_preconditions" }
+  }
+ }
+}

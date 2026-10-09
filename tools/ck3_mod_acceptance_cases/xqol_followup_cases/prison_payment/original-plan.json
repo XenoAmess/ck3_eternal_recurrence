@@ -1,0 +1,81 @@
+{
+  "scope": "Bound actual native_campaign actor before one bounded day; strict original strong/weak payment observer; no uninitialized conversion dispatcher/GUI purchase/appointment/defense credit.",
+  "steps": [
+    {
+      "id": "qol-actual-initial-business-frame",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null
+      }
+    },
+    {
+      "id": "qol-actual-initial-business-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "expect": {
+        "status": "available",
+        "campaign_root_context_ready": true
+      }
+    },
+    {
+      "id": "qol-one-day-to-payment-only-observer",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 180,
+      "expect": {
+        "after.paused": true
+      }
+    },
+    {
+      "id": "qol-actual-final-payment-frame",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null,
+        "played_character.character_id": {
+          "$ref": "results.qol-actual-initial-business-frame.played_character.character_id"
+        },
+        "diagnostics.bridge_pid": {
+          "$ref": "results.qol-actual-initial-business-frame.diagnostics.bridge_pid"
+        },
+        "diagnostics.connection_generation": {
+          "$ref": "results.qol-actual-initial-business-frame.diagnostics.connection_generation"
+        }
+      }
+    },
+    {
+      "id": "qol-payment-actual-required-markers",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQA120: TEST BEGIN engine_startup",
+          "ZQA: TEST BEGIN xqol",
+          "ZQA: TEST PASS exact_build_song_emperor",
+          "ZQA: TEST PASS switched_to_supported_player",
+          "ZQA120: TEST PASS strong_quote_minus_one_rejected",
+          "ZQA120: TEST PASS strong_quote_plus_one_paid_native_amount",
+          "ZQA: TEST PASS payment_full_only",
+          "ZQA: TEST PASS payment_any_above_one_only",
+          "ZQA: TEST PASS payment_matrix_done",
+          "ZQA120PAY: TEST DONE payment_only",
+          "ZQA: TEST FAIL",
+          "ZQA120: TEST FAIL",
+          "ZQA120PAY: TEST FAIL"
+        ],
+        "sample_limit": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+namespace = zqagov_admin
+
+zqagov_admin.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "ZQAGOV: QUAL BEGIN admin_native1066_holder"
+        if = {
+            limit = {
+                current_date = 1066.9.15
+                exists = title:e_byzantium.holder
+                title:e_byzantium.holder = { is_alive = yes is_ai = yes has_title = title:e_byzantium is_independent_ruler = yes has_government = administrative_government }
+            }
+            title:e_byzantium.holder = { save_scope_as = zqagov_target }
+            set_player_character = scope:zqagov_target
+            scope:zqagov_target = { trigger_event = { id = zqagov_admin.2 } }
+        }
+        else = { debug_log = "ZQAGOV: QUAL FAIL native_target_predicate" }
+    }
+}
+
+zqagov_admin.2 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = { current_date = 1066.9.15 is_alive = yes is_ai = no has_title = title:e_byzantium is_independent_ruler = yes has_government = administrative_government }
+            debug_log = "ZQAGOV: QUAL PASS admin_native1066_holder"
+            save_scope_as = zqagov_actual_player
+            debug_log_scopes = yes
+            primary_title = { save_scope_as = zqagov_actual_primary_title debug_log_scopes = yes }
+        if = {
+            limit = { any_vassal = { is_landed = yes has_realm_law = appointment_succession_law } }
+            debug_log = "ZQAGOV: OBSERVED administrative_native_governor_law_present"
+        }
+        else = { debug_log = "ZQAGOV: OBSERVED administrative_native_governor_law_absent_GAP" }
+            debug_log = "ZQAGOV: QUAL DONE admin_native1066_holder"
+        }
+        else = { debug_log = "ZQAGOV: QUAL FAIL post_switch_current_player" }
+    }
+}

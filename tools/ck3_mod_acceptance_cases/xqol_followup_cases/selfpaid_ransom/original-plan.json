@@ -1,0 +1,510 @@
+{
+  "scope": "One fresh plan, at most twelve actual natural days; inherited immutable Song/PID/generation/pause guards, immediate FAIL rejection after each day. Active events stop the plan and require real UI; no automatic reply or callback.",
+  "steps": [
+    {
+      "id": "qol-ordinary-async-initial-map",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "played_character.character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "diagnostics.bridge_pid": {
+          "$ref": "results.qol-startup-scope-actor-binding.bridge_pid"
+        },
+        "diagnostics.connection_generation": {
+          "$ref": "results.qol-startup-scope-actor-binding.connection_generation"
+        },
+        "date_raw": {
+          "$ref": "results.qol-startup-scope-actor-binding.date_raw"
+        }
+      }
+    },
+    {
+      "id": "qol-ordinary-async-initial-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "continue_on_error": true
+    },
+    {
+      "id": "qol-ordinary-async-startup-proof",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+          "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+          "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+          "ZQRS120: TEST BEGIN engine_startup",
+          "ZQRS120: TEST READY normal_full_self_quote",
+          "ZQRS120: TEST READY one_gold_self_quote"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+        "matches.0.line_count": 1,
+        "matches.1.literal": "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+        "matches.1.line_count": 1,
+        "matches.2.literal": "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+        "matches.2.line_count": 1,
+        "matches.3.literal": "ZQN120: TEST READY ordinary_courtiers_valid",
+        "matches.3.line_count": 1,
+        "matches.4.literal": "ZQN120: TEST BEGIN seeded_two_actual_async_replies",
+        "matches.4.line_count": 1,
+        "matches.5.literal": "ZQN120: TEST BEGIN engine_startup",
+        "matches.5.line_count": 1
+      }
+    },
+    {
+      "id": "qol-ordinary-async-initial-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day001",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day001-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day002",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day002-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day003",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day003-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day004",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day004-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day005",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day005-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day006",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day006-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day007",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day007-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day008",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day008-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day009",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day009-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day010",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day010-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day011",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day011-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day012",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day012-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-final-results",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQRS120: TEST PASS normal_full_real_quote_transfer_release",
+          "ZQRS120: TEST PASS full_self_piety_unchanged",
+          "ZQRS120: TEST PASS one_gold_real_transfer_release",
+          "ZQRS120: TEST PASS any_self_piety_unchanged",
+          "ZQRS120: TEST PASS real_landed_self_payer_redirect_exclusion",
+          "ZQRS120: TEST DONE self_ransom_full_and_one_gold"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQRS120: TEST PASS normal_full_real_quote_transfer_release",
+        "matches.1.literal": "ZQRS120: TEST PASS full_self_piety_unchanged",
+        "matches.2.literal": "ZQRS120: TEST PASS one_gold_real_transfer_release",
+        "matches.3.literal": "ZQRS120: TEST PASS any_self_piety_unchanged",
+        "matches.4.literal": "ZQRS120: TEST PASS real_landed_self_payer_redirect_exclusion",
+        "matches.5.literal": "ZQRS120: TEST DONE self_ransom_full_and_one_gold",
+        "matches.0.line_count": 1,
+        "matches.1.line_count": 1,
+        "matches.2.line_count": 1,
+        "matches.3.line_count": 1,
+        "matches.4.line_count": 1,
+        "matches.5.line_count": 1
+      }
+    },
+    {
+      "id": "qol-ordinary-async-final-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQRS120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    }
+  ]
+}

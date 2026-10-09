@@ -1,0 +1,105 @@
+{
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 4500,
+    "hold_seconds": 600,
+    "poll_interval": 0.05
+  },
+  "schema": "ck3-xqol-original-followup-case-v1",
+  "case": "selfpaid_ransom",
+  "data_directory": "xqol_followup_cases/selfpaid_ransom",
+  "acceptance_scope": "original_selfpaid_ransom_only",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQRS120: TEST BEGIN engine_startup",
+    "ZQRS120: TEST READY normal_full_self_quote",
+    "ZQRS120: TEST READY one_gold_self_quote"
+  ],
+  "forbidden_startup": [
+    "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+    "ZQRS120: TEST FAIL"
+  ],
+  "required_markers": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQRS120: TEST BEGIN engine_startup",
+    "ZQRS120: TEST READY normal_full_self_quote",
+    "ZQRS120: TEST READY one_gold_self_quote",
+    "ZQRS120: TEST PASS normal_full_real_quote_transfer_release",
+    "ZQRS120: TEST PASS full_self_piety_unchanged",
+    "ZQRS120: TEST PASS one_gold_real_transfer_release",
+    "ZQRS120: TEST PASS any_self_piety_unchanged",
+    "ZQRS120: TEST PASS real_landed_self_payer_redirect_exclusion",
+    "ZQRS120: TEST DONE self_ransom_full_and_one_gold"
+  ],
+  "forbidden_markers": [
+    "ZQR120QUAL: TEST FAIL",
+    "ZQRS120: TEST FAIL"
+  ],
+  "original_step_count": 30,
+  "maximum_natural_days": 12,
+  "song_scope_required": true,
+  "fixture_files": [
+    "common/on_action/zqn_startup_on_actions.txt",
+    "common/scripted_effects/zqn_async_effects.txt",
+    "descriptor.mod",
+    "events/zqn_async_events.txt"
+  ],
+  "appointment_laws": [],
+  "full_product_pass_from_cell": false,
+  "support_files": {
+    "xqol_followup_common.py": {
+      "bytes": 17940,
+      "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
+    },
+    "xqol_ransom_adapter.py": {
+      "bytes": 467,
+      "sha256": "ddc7e1d56bbbe0f69bdb50a4765a414d41287ec2eb8bd18cf05366eca6e49288"
+    },
+    "xqol_scope.py": {
+      "bytes": 10804,
+      "sha256": "2edca624e611e6f6be7c6147774b1fae8892cdc24de0ef5a96e36214d388b968"
+    },
+    "../ck3_mod_acceptance_prepare.py": {
+      "bytes": 10984,
+      "sha256": "4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981"
+    },
+    "__init__.py": {
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    "xqol_followup_cases/selfpaid_ransom/fixture/common/on_action/zqn_startup_on_actions.txt": {
+      "bytes": 206,
+      "sha256": "a1ea0a8999829c440b0db443503960314bbcef605f63c15def5a084ebb8de5c0"
+    },
+    "xqol_followup_cases/selfpaid_ransom/fixture/common/scripted_effects/zqn_async_effects.txt": {
+      "bytes": 10868,
+      "sha256": "a926997ce70e60794980c163cf9f4b917614b31762e25954c5b4da4d79c9feab"
+    },
+    "xqol_followup_cases/selfpaid_ransom/fixture/descriptor.mod": {
+      "bytes": 106,
+      "sha256": "5ff188d2a7a81746ab2f0bf31d2ff6b838b1c1590da7604550e2cc382efc5524"
+    },
+    "xqol_followup_cases/selfpaid_ransom/fixture/events/zqn_async_events.txt": {
+      "bytes": 309,
+      "sha256": "d99e8c587ee64aecdd2bb25e1adc180d944a51013786772b953b483e542195bd"
+    },
+    "xqol_followup_cases/selfpaid_ransom/frontend-rules-plan.json": {
+      "bytes": 179,
+      "sha256": "ca3dd45804e32b0c8f57c5a543ef969fefd02fdd01634f2ccc367b95f5859223"
+    },
+    "xqol_followup_cases/selfpaid_ransom/original-plan.json": {
+      "bytes": 14810,
+      "sha256": "6cb233395f76013a30c29fd6b5eb7c7a7b5218aa63767046a56182a4586ed0b6"
+    }
+  }
+}

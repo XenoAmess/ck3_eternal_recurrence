@@ -286,6 +286,7 @@
 #include "xar_bridge/route_contact_horizon_v1_dispatch.hpp"
 #include "xar_bridge/physical_army_inventory_diagnostics_v1_json.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#include "xar_bridge/ck3_12004_actual_truce_expiry.hpp"
 #if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
 #include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
 #endif
@@ -7843,9 +7844,11 @@ std::string ZhongguoCareerHcWorkforceResultFrame(
 std::string RaiktorActualTruceExpiryResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
-    const xar::game::RaiktorActualTruceExpirySnapshotV1 &snapshot) {
-  const auto payload =
-      xar::ck3_11906::SerializeRaiktorActualTruceExpiryV1(snapshot);
+    const xar::game::RaiktorActualTruceExpirySnapshotV1 &snapshot,
+    bool actual12004 = false) {
+  const auto payload = actual12004
+      ? xar::ck3_12004::SerializeActualTruceExpiry12004(snapshot)
+      : xar::ck3_11906::SerializeRaiktorActualTruceExpiryV1(snapshot);
   if (payload.empty()) return {};
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
@@ -7857,6 +7860,10 @@ std::string RaiktorActualTruceExpiryResultFrame(
   result += Number(query_sequence);
   result += ",\"snapshot_revision\":";
   result += Number(snapshot.snapshot_revision);
+  if (actual12004) {
+    result += ",\"read_only\":true,\"date_raw\":";
+    result += Number(snapshot.current_date_raw);
+  }
   result += ",\"raiktor_actual_truce_expiry\":";
   result += payload;
   result += ",\"backend_id\":\"native-headless\"}}";
@@ -13688,6 +13695,56 @@ std::string RunPlayerClaimsQueryV1(
   return response;
 }
 
+std::string RunActualTruceExpiryQuery12004(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  const auto toward_character_id = RaiktorActualTruceExpiryQueryStep(step);
+  std::uint64_t expected_revision = 0;
+  if (!xar::game::IsCk3_12004Descriptor(game.descriptor()) ||
+      !toward_character_id.has_value() ||
+      !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+          payload, expected_revision)) {
+    return CommandResultFrame(request_id, step, false,
+        "actual truce-expiry query identity or revision is malformed");
+  }
+  xar::game::Snapshot admission{};
+  if (expected_revision != state.state_revision || state.state_revision == 0 ||
+      !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, admission) ||
+      admission != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  if (!admission.paused || !admission.map_ready ||
+      !admission.has_played_character || !admission.played_character_alive) {
+    return CommandResultFrame(request_id, step, false,
+        "actual truce-expiry query requires a ready paused living player");
+  }
+  xar::game::RaiktorActualTruceExpirySnapshotV1 observation{};
+  const auto read_result = xar::game::ReadRaiktorActualTruceExpiry(
+      game, *toward_character_id, observation);
+  xar::game::Snapshot completion{};
+  if (!xar::game::ReadSnapshot(game, completion) || completion != admission) {
+    return CommandResultFrame(request_id, step, false,
+        "actual truce-expiry completion snapshot changed");
+  }
+  if (read_result != xar::game::ReadRaiktorActualTruceExpiryResultV1::available &&
+      read_result != xar::game::ReadRaiktorActualTruceExpiryResultV1::no_truce) {
+    return CommandResultFrame(request_id, step, false,
+        "actual truce-expiry query is unavailable");
+  }
+  if (observation.current_date_raw != admission.date_raw ||
+      observation.owner_character_id != admission.played_character_id ||
+      observation.toward_character_id != *toward_character_id) {
+    return CommandResultFrame(request_id, step, false,
+        "actual truce-expiry source frame changed");
+  }
+  observation.snapshot_revision = expected_revision;
+  return RaiktorActualTruceExpiryResultFrame(
+      request_id, step, ++state.raiktor_actual_truce_expiry_query_sequence,
+      observation, true);
+}
+
 std::string RunTitleOwnLawsQueryV1(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -14584,6 +14641,11 @@ void RunConnectedSession(
         } else if (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
                    step.starts_with(xar::game::kTitleOwnLawsV1StepPrefix)) {
           connected = write_frame(pipe, RunTitleOwnLawsQueryV1(
+              game, state, request_id, step, incoming.payload));
+        } else if (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                   step.starts_with(xar::ck3_11906::
+                       kRaiktorActualTruceExpiryV1StepPrefix)) {
+          connected = write_frame(pipe, RunActualTruceExpiryQuery12004(
               game, state, request_id, step, incoming.payload));
         } else if ((xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
                     (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&

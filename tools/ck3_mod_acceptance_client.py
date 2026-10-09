@@ -107,7 +107,9 @@ class CaseClient:
         return report
 
     def wait_hold(self):
-        limit = time.monotonic() + self.selection.case['budgets']['readiness_timeout']
+        preparation = (self.selection.prepared or {}).get('preparation', {})
+        budget = 'timeout' if preparation.get('initial_plan_original_business') is True else 'readiness_timeout'
+        limit = time.monotonic() + self.selection.case['budgets'][budget]
         while time.monotonic() < limit:
             try:
                 report = self.read_report()
@@ -303,8 +305,6 @@ class CaseClient:
         response=self.output/'normal-quit-root-result.json'
         while self.remaining()>0 and not response.is_file():
             report=self.read_report(allow_error=True)
-            if report.get('finished_at') and self._kernel.WaitForSingleObject(self._handle,0)!=258:
-                break
             time.sleep(.1)
         review=read_json(response) if response.is_file() else None
         if review is not None:

@@ -17,6 +17,32 @@ class ReligionPacketSdkDriver(MailboxPacketDriver):
 
 
 class PlayerReligion12002SdkTest(unittest.IsolatedAsyncioTestCase):
+    async def test_case_declared_reads_register_only_the_two_selected_tools(self) -> None:
+        from mcp import Client
+        from test_ck3_12002_player_religion_personal_parameters_sdk import PersonalParametersPacketSdkDriver
+        from test_ck3_12002_player_religion_personal_parameters_wire import CASES, load_fixture as load_personal
+        cases = [
+            ("ck3_query_player_religion_context_v1", ReligionPacketSdkDriver(load_fixture("mailbox/current-zero.json"))),
+            ("ck3_query_player_religion_personal_parameters_v1", PersonalParametersPacketSdkDriver(load_personal(CASES[0]))),
+        ]
+        for tool_name, driver in cases:
+            with self.subTest(tool=tool_name):
+                driver.allow_private_player_religion_context_query = False
+                driver.allow_private_player_religion_personal_parameters_query = False
+                async with Client(create_server(driver)) as client:
+                    default = {tool.name for tool in (await client.list_tools()).tools}
+                self.assertNotIn(tool_name, default)
+                driver.case_declared_read_only_mcp_tools = frozenset({tool_name})
+                driver.allow_private_player_religion_context_query = tool_name == "ck3_query_player_religion_context_v1"
+                driver.allow_private_player_religion_personal_parameters_query = tool_name == "ck3_query_player_religion_personal_parameters_v1"
+                async with Client(create_server(driver)) as client:
+                    tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+                    self.assertEqual(set(tools) - default, {tool_name})
+                    self.assertTrue(tools[tool_name].annotations.read_only_hint)
+                    result = await client.call_tool(tool_name, {"expected_revision": driver.snapshot["revision"]})
+                    self.assertFalse(result.is_error)
+                self.assertEqual(len(driver.sent), 1)
+
     async def test_actual_native_context_reaches_the_sdk_with_private_discovery_and_readonly_metadata(self) -> None:
         from mcp import Client
 

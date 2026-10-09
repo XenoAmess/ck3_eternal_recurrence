@@ -1,0 +1,27 @@
+# External acceptance fixture only; not production runtime.
+zqr_current_roman_head_diagnostic_effect = {
+ save_scope_as = actor
+ save_scope_as = puppet_or_actor
+ rite:roman_rite.head_of_rite ?= { save_scope_as = zqr_current_roman_head }
+ if = {
+  limit = { exists = scope:zqr_current_roman_head }
+  set_variable = { name = zqr_current_roman_head value = scope:zqr_current_roman_head }
+  scope:zqr_current_roman_head = { save_scope_as = recipient }
+if = {
+ limit = { scope:zqr_current_roman_head = { is_alive = yes is_ai = yes rite = rite:roman_rite rite.head_of_rite ?= this } }
+ debug_log = "ZQR120HEAD: TEST PASS current_roman_head_identity"
+}
+else = { debug_log = "ZQR120HEAD: TEST FAIL current_roman_head_identity" }
+if = {
+ limit = { scope:zqr_current_roman_head = { NOT = { is_allied_to = scope:actor } } }
+ debug_log = "ZQR120HEAD: TEST PASS current_roman_head_nonallied"
+}
+else = { debug_log = "ZQR120HEAD: TEST FAIL current_roman_head_nonallied" }
+
+  debug_log = "ZQR120HEAD: OBSERVED current_roman_head_native_diagnostic_scopes"
+  debug_log_scopes = yes
+ }
+ else = { debug_log = "ZQR120HEAD: TEST FAIL current_roman_head_missing" }
+ add_character_flag = zqr_probe_finished
+ debug_log = "ZQR120HEAD: TEST DONE identity_diagnostic_only"
+}

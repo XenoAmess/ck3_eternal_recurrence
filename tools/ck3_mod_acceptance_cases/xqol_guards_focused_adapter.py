@@ -133,19 +133,38 @@ def subject_proof(raw, stage):
     require(raw.count(begin) == raw.count(end) == 1, 'Actual subject observation missing/duplicate')
     start = raw.index(begin); finish = raw.index(end, start) + len(end)
     block = raw[start:finish]
-    found = {}
+    # Historical characters use "Internal ID: N - Historical ID ...";
+    # generated characters use "Internal ID N". Both must identify the
+    # first current character and agree with its separate native type/fullID link.
+    current_pattern = re.compile(
+        rb'^\[\d{2}:\d{2}:\d{2}\]\[D\]\[effectimpl\.cpp:\d+\]: [^\r\n]*?'
+        rb'\(Internal ID(?:: (?P<registered>[1-9][0-9]*)(?: - Historical ID [^)]*)?'
+        rb'| (?P<generated>[1-9][0-9]*))\)')
+    root_pattern = re.compile(rb'^Root: [^\r\n]*?\(Internal ID: ([1-9][0-9]*)(?: - Historical ID [^)]*)?\)')
+    type_link = re.compile(rb'(?<![A-Za-z0-9_])Character-([1-9][0-9]*)(?![0-9])')
+    found = {}; roots = []
     for role in ('preexisting', 'owned'):
         role_begin = ('ZQAGUARD: SUBJECT ' + role + ' BEGIN').encode()
         role_end = ('ZQAGUARD: SUBJECT ' + role + ' END').encode()
         require(block.count(role_begin) == block.count(role_end) == 1, 'Original subject must be uniquely observed: ' + role)
         part = block[block.index(role_begin):block.index(role_end)]
-        ids = re.findall(rb'(?m)^\[\d{2}:\d{2}:\d{2}\]\[D\]\[effectimpl\.cpp:\d+\]: [^\r\n]*?\(Internal ID: ([1-9][0-9]*)(?: - Historical ID [^)]*)?\)', part)
-        require(len(ids) == 1 and 1 <= int(ids[0]) <= 2**31 - 1, 'Actual subject current fullID format unavailable')
-        found[role] = int(ids[0])
+        lines = part.splitlines()
+        require(len(lines) >= 5 and lines[0] == role_begin and lines[4] == b'Saved event targets:',
+                'Actual subject current/Root/saved dump envelope differs')
+        currents = [(index, match) for index, line in enumerate(lines) if (match := current_pattern.match(line))]
+        require(len(currents) == 1 and currents[0][0] == 1, 'Actual subject current fullID format unavailable/duplicate')
+        match = currents[0][1]; actor = int(match['registered'] or match['generated'])
+        links = type_link.findall(lines[1])
+        require(1 <= actor <= 2**31 - 1 and len(links) == 1 and int(links[0]) == actor,
+                'Actual subject character type/fullID link differs')
+        parent = root_pattern.match(lines[2]); parent_links = type_link.findall(lines[2])
+        require(parent is not None and len(parent_links) == 1 and int(parent[1]) == int(parent_links[0]) and
+                1 <= int(parent[1]) <= 2**31 - 1, 'Actual subject Root character fullID differs')
+        roots.append(int(parent[1])); found[role] = actor
+    require(len(set(roots)) == 1, 'Original subject observations crossed their actual Song Root')
     require(found['preexisting'] != found['owned'], 'Original owned/external subjects must be distinct')
-    return {'subject_ids': found, 'bytes': len(block), 'sha256': hashlib.sha256(block).hexdigest(),
-            'raw_block_hex': block.hex()}
-
+    return {'subject_ids': found, 'root_runtime_character_id': roots[0],
+            'bytes': len(block), 'sha256': hashlib.sha256(block).hexdigest(), 'raw_block_hex': block.hex()}
 
 def run_case(context, client):
     initial = client.snapshot()
@@ -164,6 +183,8 @@ def run_case(context, client):
             0 <= final['date_raw'] - initial['date_raw'] < 72, 'Original focused actor/calendar boundary changed')
     enabled = subject_proof(raw, 'enabled'); disabled = subject_proof(raw, 'disabled')
     require(enabled['subject_ids'] == disabled['subject_ids'], 'Guard verification changed subjects between on/off')
+    require(enabled['root_runtime_character_id'] == disabled['root_runtime_character_id'] == proof['runtime_character_id'],
+            'Actual subject observations differ from the native/startup Song actor')
     frozen = Path(context['output']) / 'guards-debug-original.raw'
     with frozen.open('xb') as stream:
         stream.write(raw)
@@ -191,6 +212,8 @@ def verify_case(context):
     require(observe(raw)['qualified'] and scope(raw) == result['actual_actor_scope'], 'Original actual guard assertions/scope not proved')
     require(subject_proof(raw, 'enabled') == result['enabled_subjects'] and
             subject_proof(raw, 'disabled') == result['disabled_subjects'] and
-            result['enabled_subjects']['subject_ids'] == result['disabled_subjects']['subject_ids'], 'Actual original guard subject proof changed')
+            result['enabled_subjects']['subject_ids'] == result['disabled_subjects']['subject_ids'] and
+            result['enabled_subjects']['root_runtime_character_id'] == result['disabled_subjects']['root_runtime_character_id'] ==
+            result['actual_actor_scope']['runtime_character_id'], 'Actual original guard subject proof changed')
     return {**result, 'business_pass': False, 'product_release_pass': False,
             'aggregation_scope': 'Focused guard supplement only; Root must retain original R33 GAP/partial facts and shared normal0 evidence'}

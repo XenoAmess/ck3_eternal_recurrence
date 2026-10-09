@@ -123,6 +123,32 @@ class SharedEntryTests(unittest.TestCase):
                                               ('--agent-source-root', '--bridge-dll', '--bridge-injector')) + (argv[4],))
         self.assertEqual(len(runtime_choices), 1)
 
+    def test_case_readonly_optin_is_explicit_finite_and_cannot_select_an_unknown_case(self):
+        self.assertNotIn('--case-read-only-mcp-tool', self.select().argv)
+        tools = sorted(entry.CASE_READ_ONLY_MCP_TOOLS)
+        case = self.products['products']['xqol']['cases'][0]
+        case['required_mcp_tools'] += tools
+        case['opt_in_read_only_mcp_tools'] = tools
+        self.write(self.products_path, self.products)
+        selected = self.select()
+        self.assertEqual([selected.argv[i+1] for i, value in enumerate(selected.argv)
+                          if value == '--case-read-only-mcp-tool'], tools)
+        self.assertEqual(selected.describe()['opt_in_read_only_mcp_tools'], tools)
+        self.assertTrue(any('lacks declared CLI' in value for value in selected.preflight()['blockers']))
+        for invalid in ('tool-name', ['unknown'], [tools[0], tools[0]], [False]):
+            with self.subTest(invalid=invalid):
+                case['opt_in_read_only_mcp_tools'] = invalid
+                self.write(self.products_path, self.products)
+                with self.assertRaisesRegex(ValueError, 'Case read-only opt-in'):
+                    self.select()
+        case['opt_in_read_only_mcp_tools'] = tools
+        case['required_mcp_tools'] = []
+        self.write(self.products_path, self.products)
+        with self.assertRaisesRegex(ValueError, 'Case read-only opt-in'):
+            self.select()
+        with self.assertRaisesRegex(ValueError, 'Exactly one product case'):
+            entry.Selection(self.runtime_path, self.products_path, 'xqol', 'unknown-case')
+
     def test_changed_shared_pin_blocks(self):
         self.host.write_text(self.host.read_text()+'#changed\n')
         self.assertTrue(any('Pinned input changed' in x for x in self.select().preflight()['blockers']))

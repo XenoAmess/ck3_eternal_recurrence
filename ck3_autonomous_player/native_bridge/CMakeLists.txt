@@ -1188,6 +1188,8 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_title_holder.cpp
   src/ck3_12004_player_claims_v1.cpp
   src/ck3_12004_title_own_laws_v1.cpp
+  src/ck3_12004_actual_truce_expiry.cpp
+  src/raiktor_actual_truce_expiry_v1.cpp
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12002_prewar_muster.cpp
   src/ck3_12003_default_raise_mailbox.cpp
@@ -1595,7 +1597,6 @@ add_library(xar_ck3_bridge SHARED
   src/set_played_character_v1_mailbox.cpp
   src/raiktor_war_bound_regiment_v1.cpp
   src/raiktor_surrender_truce_v1.cpp
-  src/raiktor_actual_truce_expiry_v1.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
   src/startup_rbx_null_call_guard_v1.cpp

@@ -1,0 +1,614 @@
+{
+  "scope": "PAM negative: actual dynamic Song binding, real different-faith landed vassal eligibility and actual doctrine absence, one original production dispatcher; player-only opt-in context reads remain actual required availability. Twelve bounded natural days once, after each day FAIL0. Native campaign immutable identity and original standard advance preserved; event boundaries stop.",
+  "steps": [
+    {
+      "id": "qol-pam-negative-initial-map",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "played_character.character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "diagnostics.bridge_pid": {
+          "$ref": "results.qol-startup-scope-actor-binding.bridge_pid"
+        },
+        "diagnostics.connection_generation": {
+          "$ref": "results.qol-startup-scope-actor-binding.connection_generation"
+        },
+        "date_raw": {
+          "$ref": "results.qol-startup-scope-actor-binding.date_raw"
+        }
+      }
+    },
+    {
+      "id": "qol-pam-negative-initial-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "expect": {
+        "player_legitimacy_v1.status": "available",
+        "player_legitimacy_v1.unavailable_reason": null,
+        "player_legitimacy_v1.value.scale": 100000,
+        "player_character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "player_character_alive": true
+      }
+    },
+    {
+      "id": "qol-pam-negative-startup",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+          "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+          "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+          "ZQM120: TEST BEGIN engine_startup",
+          "ZQM120: TEST READY actual_negative_doctrines_landed_recipient",
+          "ZQM120: TEST READY one_actual_queue_seed_D0_dispatch_deferred_D1"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+        "matches.0.line_count": 1,
+        "matches.1.literal": "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+        "matches.1.line_count": 1,
+        "matches.2.literal": "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+        "matches.2.line_count": 1,
+        "matches.3.literal": "ZQM120: TEST BEGIN engine_startup",
+        "matches.3.line_count": 1,
+        "matches.4.literal": "ZQM120: TEST READY actual_negative_doctrines_landed_recipient",
+        "matches.4.line_count": 1,
+        "matches.5.literal": "ZQM120: TEST READY one_actual_queue_seed_D0_dispatch_deferred_D1",
+        "matches.5.line_count": 1
+      }
+    },
+    {
+      "id": "qol-pam-negative-initial-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-before-context",
+      "tool": "ck3_query_player_religion_context_v1",
+      "args": {},
+      "expect": {
+        "available": true,
+        "read_only": true,
+        "played_character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "faith_key": "catholic"
+      }
+    },
+    {
+      "id": "qol-pam-negative-before-personal",
+      "tool": "ck3_query_player_religion_personal_parameters_v1",
+      "args": {},
+      "expect": {
+        "available": true,
+        "read_only": true,
+        "supported_keys_complete": true,
+        "personal_parameters_complete": true,
+        "played_character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        }
+      }
+    },
+    {
+      "id": "qol-pam-negative-day001",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day001-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day002",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day002-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day003",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day003-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day004",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day004-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day005",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day005-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day006",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day006-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day007",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day007-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day008",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day008-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day009",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day009-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day010",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day010-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day011",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day011-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-day012",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "one_life_identity_claimed": false
+      }
+    },
+    {
+      "id": "qol-pam-negative-day012-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-pam-negative-final-map",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "played_character.character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "diagnostics.bridge_pid": {
+          "$ref": "results.qol-startup-scope-actor-binding.bridge_pid"
+        },
+        "diagnostics.connection_generation": {
+          "$ref": "results.qol-startup-scope-actor-binding.connection_generation"
+        }
+      }
+    },
+    {
+      "id": "qol-pam-negative-after-context",
+      "tool": "ck3_query_player_religion_context_v1",
+      "args": {},
+      "expect": {
+        "available": true,
+        "read_only": true,
+        "played_character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "faith_key": "catholic",
+        "rite_id": {
+          "$ref": "results.qol-pam-negative-before-context.rite_id"
+        }
+      }
+    },
+    {
+      "id": "qol-pam-negative-final-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "expect": {
+        "player_legitimacy_v1.status": "available",
+        "player_legitimacy_v1.unavailable_reason": null,
+        "player_legitimacy_v1.value.scale": 100000,
+        "player_character_id": {
+          "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+        },
+        "player_character_alive": true
+      }
+    },
+    {
+      "id": "qol-pam-negative-final-results",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQM120: TEST PASS accepted1_refused0_pending_removed",
+          "ZQM120: TEST PASS recipient_actual_catholic_roman_faith_and_rite",
+          "ZQM120: TEST PASS acts_wrapper_once_exact_piety",
+          "ZQM120: TEST PASS mendicant_wrapper_once_no_piety",
+          "ZQM120: TEST DONE negative_natural_pam_observation",
+          "ZQM120: TEST PASS actual_doctrine_absence_at_reply",
+          "ZQM120: TEST PASS acts_sp_before_exact",
+          "ZQM120: TEST PASS acts_sp_after_exact",
+          "ZQM120: TEST PASS mendicant_sp_before_exact",
+          "ZQM120: TEST PASS mendicant_sp_after_exact",
+          "ZQM120: TEST BEGIN D1_single_original_dispatch"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQM120: TEST PASS accepted1_refused0_pending_removed",
+        "matches.0.line_count": 1,
+        "matches.1.literal": "ZQM120: TEST PASS recipient_actual_catholic_roman_faith_and_rite",
+        "matches.1.line_count": 1,
+        "matches.2.literal": "ZQM120: TEST PASS acts_wrapper_once_exact_piety",
+        "matches.2.line_count": 1,
+        "matches.3.literal": "ZQM120: TEST PASS mendicant_wrapper_once_no_piety",
+        "matches.3.line_count": 1,
+        "matches.4.literal": "ZQM120: TEST DONE negative_natural_pam_observation",
+        "matches.4.line_count": 1,
+        "matches.5.literal": "ZQM120: TEST PASS actual_doctrine_absence_at_reply",
+        "matches.5.line_count": 1,
+        "matches.6.literal": "ZQM120: TEST PASS acts_sp_before_exact",
+        "matches.6.line_count": 1,
+        "matches.7.literal": "ZQM120: TEST PASS acts_sp_after_exact",
+        "matches.7.line_count": 1,
+        "matches.8.literal": "ZQM120: TEST PASS mendicant_sp_before_exact",
+        "matches.8.line_count": 1,
+        "matches.9.literal": "ZQM120: TEST PASS mendicant_sp_after_exact",
+        "matches.9.line_count": 1,
+        "matches.10.literal": "ZQM120: TEST BEGIN D1_single_original_dispatch",
+        "matches.10.line_count": 1
+      }
+    },
+    {
+      "id": "qol-pam-negative-final-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+          "ZQM120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQM120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    }
+  ]
+}

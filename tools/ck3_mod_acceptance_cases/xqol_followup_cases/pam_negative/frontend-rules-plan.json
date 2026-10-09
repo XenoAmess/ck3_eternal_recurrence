@@ -1,0 +1,10 @@
+{
+  "schema": "ck3-frontend-rules-plan-v1",
+  "schema_version": 1,
+  "rules": [
+    {
+      "rule_key": "difficulty",
+      "desired_setting_key": "normal_difficulty"
+    }
+  ]
+}

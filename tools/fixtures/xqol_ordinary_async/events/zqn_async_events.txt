@@ -1,0 +1,11 @@
+﻿namespace = zqn120
+zqn120.1 = {
+ type = character_event
+ hidden = yes
+ immediate = { zqn_initialize_effect = yes }
+}
+zqn120.2 = {
+ type = character_event
+ hidden = yes
+ immediate = { zqn_observe_actual_replies_effect = yes }
+}

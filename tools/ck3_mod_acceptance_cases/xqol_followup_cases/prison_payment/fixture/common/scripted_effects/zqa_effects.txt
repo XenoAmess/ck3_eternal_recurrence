@@ -1,0 +1,240 @@
+﻿# Affected payment/interaction cell; governor evidence remains immutable R0003.
+zqa_initialize_effect = {
+ if = {
+  limit = { has_character_flag = zqa_initialize_pending }
+  remove_character_flag = zqa_initialize_pending
+  add_character_flag = zqa_fixture_initialized
+  debug_log = "ZQA: TEST BEGIN xqol"
+  character:han_8052 = { save_scope_as = zqa_song_emperor }
+  if = {
+   limit = { exists = scope:zqa_song_emperor scope:zqa_song_emperor = { is_alive = yes is_ai = yes has_title = title:h_china has_government = celestial_government } }
+   debug_log = "ZQA: TEST PASS exact_build_song_emperor"
+   set_player_character = scope:zqa_song_emperor
+   debug_log = "ZQA: TEST PASS switched_to_supported_player"
+  }
+  else = { debug_log = "ZQA: TEST FAIL exact_build_song_emperor" }
+ }
+}
+
+zqa_setup_payment_matrix_effect = {
+	save_scope_as = actor
+	save_scope_as = puppet_or_actor
+	save_scope_as = puppet_or_actor
+	if = {
+		limit = { NOT = { has_perk = golden_obligations_perk } }
+		add_perk = golden_obligations_perk
+		add_character_flag = zqa_added_golden_obligations_perk
+	}
+	create_character = {
+		template = servant_character
+		location = root.capital_province
+		culture = root.culture
+		faith = root.faith
+		save_scope_as = zqa_payment_full_target
+	}
+	create_character = {
+		template = servant_character
+		location = root.capital_province
+		culture = root.culture
+		faith = root.faith
+		save_scope_as = zqa_payment_any_target
+	}
+	create_character = {
+		template = servant_character
+		location = root.capital_province
+		culture = root.culture
+		faith = root.faith
+		save_scope_as = zqa_payment_one_gold_target
+	}
+	add_courtier = scope:zqa_payment_full_target
+	add_courtier = scope:zqa_payment_any_target
+	add_courtier = scope:zqa_payment_one_gold_target
+	scope:zqa_payment_full_target = {
+		remove_long_term_gold = gold
+		add_gold = xqol_full_golden_obligation_value
+	}
+	scope:zqa_payment_any_target = {
+		remove_long_term_gold = gold
+		add_gold = 2
+	}
+	scope:zqa_payment_one_gold_target = {
+		remove_long_term_gold = gold
+		add_gold = 1
+	}
+	add_hook = { type = favor_hook target = scope:zqa_payment_full_target }
+	add_hook = { type = favor_hook target = scope:zqa_payment_any_target }
+	add_hook = { type = favor_hook target = scope:zqa_payment_one_gold_target }
+	set_variable = { name = zqa_payment_full_target value = scope:zqa_payment_full_target }
+	set_variable = { name = zqa_payment_any_target value = scope:zqa_payment_any_target }
+	set_variable = { name = zqa_payment_one_gold_target value = scope:zqa_payment_one_gold_target }
+	set_variable = { name = zqa_payment_expected_gold value = gold }
+	set_variable = { name = zqa_payment_expected_count value = 0 }
+	every_hooked_character = {
+		save_scope_as = recipient
+		if = {
+			limit = {
+				gold >= xqol_full_golden_obligation_value
+				root = {
+					is_character_interaction_potentially_accepted = {
+						recipient = prev
+						interaction = demand_payment_interaction
+					}
+				}
+			}
+			save_temporary_scope_as = zqa_payment_expected_candidate
+			root = {
+				change_variable = { name = zqa_payment_expected_count add = 1 }
+				change_variable = {
+					name = zqa_payment_expected_gold
+					add = {
+                    if = {
+                        limit = { scope:zqa_payment_expected_candidate = { gold > golden_obligation_value } }
+                        value = scope:zqa_payment_expected_candidate.golden_obligation_value
+                    }
+                    else = { value = scope:zqa_payment_expected_candidate.gold floor = yes }
+                }
+				}
+			}
+		
+		}
+	}
+	set_variable = { name = xqol_last_bulk_payment_count value = -1 }
+	if = {
+		limit = { has_perk = golden_obligations_perk }
+		debug_log = "ZQA: OBSERVED payment_fixture_perk_present"
+	}
+	if = {
+		limit = {
+			has_usable_hook = scope:zqa_payment_full_target
+			has_usable_hook = scope:zqa_payment_any_target
+			has_usable_hook = scope:zqa_payment_one_gold_target
+		}
+		debug_log = "ZQA: OBSERVED payment_fixture_hooks_present"
+	}
+	if = {
+		limit = {
+			scope:zqa_payment_full_target = { gold >= xqol_full_golden_obligation_value gold > 2 }
+			scope:zqa_payment_any_target = { gold >= 2 NOT = { gold > 2 } gold < xqol_full_golden_obligation_value }
+			scope:zqa_payment_one_gold_target = { gold >= 1 NOT = { gold > 1 } }
+		}
+		debug_log = "ZQA: OBSERVED payment_fixture_gold_boundaries_present"
+	}
+	if = {
+		limit = {
+			is_character_interaction_potentially_accepted = {
+				recipient = scope:zqa_payment_full_target
+				interaction = demand_payment_interaction
+			}
+		}
+		debug_log = "ZQA: OBSERVED payment_fixture_interaction_accepted"
+	}
+	if = {
+		limit = {
+			has_perk = golden_obligations_perk
+			var:zqa_payment_expected_count >= 1
+			has_usable_hook = scope:zqa_payment_full_target
+			has_usable_hook = scope:zqa_payment_any_target
+			has_usable_hook = scope:zqa_payment_one_gold_target
+			is_character_interaction_potentially_accepted = {
+				recipient = scope:zqa_payment_full_target
+				interaction = demand_payment_interaction
+			}
+			scope:zqa_payment_full_target = {
+				gold >= xqol_full_golden_obligation_value
+				gold > 2
+			}
+			scope:zqa_payment_any_target = {
+				gold >= 2
+				NOT = { gold > 2 }
+				gold < xqol_full_golden_obligation_value
+			}
+			scope:zqa_payment_one_gold_target = {
+				gold >= 1
+				NOT = { gold > 1 }
+			}
+		}
+		add_character_flag = zqa_await_payment_full
+		debug_log = "ZQA: TEST READY payment_full"
+	}
+	else = { debug_log = "ZQA: TEST FAIL payment_fixture_setup" }
+}
+
+zqa_verify_payment_full_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_payment_full }
+		remove_character_flag = zqa_await_payment_full
+		if = {
+			limit = {
+				var:xqol_last_bulk_payment_count = var:zqa_payment_expected_count
+				gold >= var:zqa_payment_expected_gold
+				NOT = { gold > var:zqa_payment_expected_gold }
+				NOT = { has_usable_hook = var:zqa_payment_full_target }
+				has_usable_hook = var:zqa_payment_any_target
+				has_usable_hook = var:zqa_payment_one_gold_target
+				var:zqa_payment_full_target = { gold < 1 }
+				var:zqa_payment_any_target = { gold >= 2 NOT = { gold > 2 } }
+				var:zqa_payment_one_gold_target = { gold >= 1 NOT = { gold > 1 } }
+			}
+			debug_log = "ZQA: TEST PASS payment_full_only"
+		}
+		else = { debug_log = "ZQA: TEST FAIL payment_full_only" }
+		set_variable = { name = zqa_payment_expected_gold value = gold }
+		set_variable = { name = zqa_payment_expected_count value = 0 }
+		every_hooked_character = {
+			limit = {
+				gold > 1
+				root = {
+					is_character_interaction_potentially_accepted = {
+						recipient = prev
+						interaction = demand_payment_interaction
+					}
+				}
+			}
+			save_temporary_scope_as = zqa_payment_expected_candidate
+			root = {
+				change_variable = { name = zqa_payment_expected_count add = 1 }
+				change_variable = {
+					name = zqa_payment_expected_gold
+					add = {
+						value = scope:zqa_payment_expected_candidate.gold
+						floor = yes
+					}
+				}
+			}
+		}
+		set_variable = { name = xqol_last_bulk_payment_count value = -1 }
+		add_character_flag = zqa_await_payment_any
+		debug_log = "ZQA: TEST READY payment_any"
+	}
+}
+
+zqa_verify_payment_any_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_payment_any }
+		remove_character_flag = zqa_await_payment_any
+		if = {
+			limit = {
+				var:xqol_last_bulk_payment_count = var:zqa_payment_expected_count
+				gold >= var:zqa_payment_expected_gold
+				NOT = { gold > var:zqa_payment_expected_gold }
+				NOT = { has_usable_hook = var:zqa_payment_any_target }
+				has_usable_hook = var:zqa_payment_one_gold_target
+				var:zqa_payment_any_target = { gold < 1 }
+				var:zqa_payment_one_gold_target = { gold >= 1 NOT = { gold > 1 } }
+			}
+			debug_log = "ZQA: TEST PASS payment_any_above_one_only"
+		}
+		else = { debug_log = "ZQA: TEST FAIL payment_any_above_one_only" }
+		if = {
+			limit = { has_character_flag = zqa_added_golden_obligations_perk }
+			remove_character_flag = zqa_added_golden_obligations_perk
+			remove_perk = golden_obligations_perk
+		}
+		remove_variable = zqa_payment_full_target
+		remove_variable = zqa_payment_any_target
+		remove_variable = zqa_payment_one_gold_target
+		remove_variable = zqa_payment_expected_gold
+		remove_variable = zqa_payment_expected_count
+		debug_log = "ZQA: TEST PASS payment_matrix_done"
+	}
+}

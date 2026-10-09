@@ -1,0 +1,34 @@
+zqa120_accepted_rite_probe_effect = {
+    save_scope_as = actor
+    save_scope_as = puppet_or_actor
+    create_character = {
+        name = "ZQA120 Accepted Rite Probe"
+        gender = male
+        age = 30
+        random_traits = no
+        location = root.capital_province
+        culture = root.culture
+        faith = faith:catholic
+        save_scope_as = zqa120_rite_subject
+    }
+    add_courtier = scope:zqa120_rite_subject
+    scope:zqa120_rite_subject = { save_scope_as = recipient }
+    set_variable = { name = xqol_mass_conversion_pending value = 1 }
+    set_variable = { name = xqol_mass_conversion_accepted value = 0 }
+    set_variable = { name = xqol_mass_conversion_refused value = 0 }
+    set_variable = { name = zqa120_rite_subject value = scope:zqa120_rite_subject }
+    scope:recipient = { xqol_mass_conversion_courtier_accepted_effect = yes }
+    debug_log = "ZQA120: TEST READY accepted_conversion_rite"
+}
+zqa120_verify_accepted_rite_probe_effect = {
+    if = {
+        limit = {
+            var:zqa120_rite_subject = { faith = root.faith rite = root.rite }
+            var:xqol_mass_conversion_accepted = 1
+            NOT = { has_variable = xqol_mass_conversion_pending }
+        }
+        debug_log = "ZQA120: TEST PASS accepted_conversion_faith_and_rite"
+    }
+    else = { debug_log = "ZQA120: TEST FAIL accepted_conversion_faith_and_rite" }
+    remove_variable = zqa120_rite_subject
+}

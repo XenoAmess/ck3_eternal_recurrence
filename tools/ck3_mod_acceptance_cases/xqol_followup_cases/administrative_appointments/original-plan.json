@@ -1,0 +1,33 @@
+{
+  "scope": "Actual generic native government/player/PID/gen binding, two pump epochs, no Song scope or appointment business credit.",
+  "steps": [
+    {
+      "id": "qol-admin-initial-map",
+      "kind": "wait_snapshot",
+      "timeout": 400,
+      "expected": {
+        "map_ready": true,
+        "paused": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe"
+      }
+    },
+    {
+      "id": "qol-admin-initial-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "expect": {
+        "campaign_root_context_ready": true,
+        "government.key": "administrative_government",
+        "independent": true,
+        "player_character_alive": true,
+        "primary_title.tier_key": "empire",
+        "provenance.game_version": "1.20.0.3"
+      }
+    }
+  ]
+}

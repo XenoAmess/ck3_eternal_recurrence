@@ -1,0 +1,7 @@
+﻿on_game_start_after_lobby = { on_actions = { zqn120_start } }
+zqn120_start = {
+ effect = {
+  debug_log = "ZQRS120: TEST BEGIN engine_startup"
+  random_player = { trigger_event = { id = zqn120.1 } }
+ }
+}

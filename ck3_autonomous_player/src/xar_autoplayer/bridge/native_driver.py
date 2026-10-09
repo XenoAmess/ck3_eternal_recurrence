@@ -573,6 +573,13 @@ from .war_occupation_targets_contract import (
 from .assault_holding_observation_v1 import (
     fresh_holding_siege_states, holding_assault_steps,
 )
+from .player_truce_expiry_contract import (
+    QUERY_PLAYER_TRUCE_EXPIRY_V1_CAPABILITY,
+    normalize_player_truce_expiry_v1,
+    player_truce_expiry_query_actor,
+    player_truce_expiry_revision,
+    query_player_truce_expiry_v1_step,
+)
 from .title_own_laws_contract import (
     QUERY_TITLE_OWN_LAWS_V1_CAPABILITY,
     QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX,
@@ -13903,6 +13910,53 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": starting.get("native_revision"),
         }
 
+    def query_player_truce_expiry_v1(
+        self, toward_character_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the current player's persisted directional relation without a CWar."""
+        step = query_player_truce_expiry_v1_step(toward_character_id)
+        player_truce_expiry_revision(expected_revision)
+        try:
+            starting = self.take_snapshot()
+            try:
+                actor_id = player_truce_expiry_query_actor(starting)
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            revision = starting.get("revision")
+            if type(revision) is not int or revision < 0:
+                raise BridgeUnavailableError("player truce-expiry query lacks a public revision")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError(
+                    f"player truce-expiry revision mismatch: expected {expected_revision}, current {revision}"
+                )
+            result = self._execute_primitive_step(
+                step, expected_revision=expected_revision,
+                required_capability=QUERY_PLAYER_TRUCE_EXPIRY_V1_CAPABILITY,
+            )
+            try:
+                value = normalize_player_truce_expiry_v1(
+                    result, expected_toward_character_id=toward_character_id,
+                    expected_owner_character_id=actor_id,
+                    expected_snapshot_revision=starting.get("native_revision"),
+                    expected_date_raw=starting.get("date_raw"),
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(f"native player truce-expiry query is malformed: {error}") from error
+            current = self.take_snapshot()
+            if not _same_paused_native_frame(starting, current) or current.get("date_raw") != starting.get("date_raw"):
+                raise BridgeUnavailableError("native player truce-expiry query crossed a paused frame")
+            try:
+                if player_truce_expiry_query_actor(current) != actor_id:
+                    raise ValueError("played character identity changed")
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            result = {**result, "raiktor_actual_truce_expiry": value}
+        except Exception as error:
+            self._record_command(step, ok=False, error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(step, ok=True, result=result)
+        return result
+
     def query_title_own_laws_v1(
         self, title_id: int, *, expected_revision: int,
     ) -> dict[str, object]:
@@ -23457,6 +23511,11 @@ class MinimizedRejectingVisualDriver:
 
 class ConfiguredHybridFallbackDriver:
     """Explicit native -> data Mod -> guarded visual fallback mode."""
+
+    def query_player_truce_expiry_v1(
+        self, toward_character_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        raise UnsupportedStepError("player truce-expiry query requires the native-headless backend")
 
     def __init__(
         self,

@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "religion_head_identity",
+  "acceptance_scope": "original_roman-head-diagnostic_only",
+  "formal_file_count": 27,
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQREL: SCOPE BEGIN actual_song_actor",
+    "ZQREL: SCOPE PASS actual_song_actor",
+    "ZQREL: SCOPE END actual_song_actor"
+  ],
+  "forbidden_startup": [
+    "ZQREL: TEST FAIL",
+    "ZQA: TEST FAIL",
+    "ZQR120HEAD: TEST FAIL"
+  ],
+  "required": [
+    "ZQR120HEAD: TEST BEGIN engine_startup",
+    "ZQA: TEST BEGIN xqol",
+    "ZQA: TEST PASS exact_build_song_emperor",
+    "ZQA: TEST PASS switched_to_supported_player",
+    "ZQR120HEAD: TEST PASS actual_song_actor_D0",
+    "ZQR120HEAD: TEST PASS current_roman_head_identity",
+    "ZQR120HEAD: TEST PASS current_roman_head_nonallied",
+    "ZQR120HEAD: TEST DONE identity_diagnostic_only"
+  ],
+  "forbidden": [
+    "ZQREL: TEST FAIL",
+    "ZQA: TEST FAIL",
+    "ZQR120HEAD: TEST FAIL"
+  ],
+  "expected_start_date_raw": 53144328,
+  "maximum_natural_days": 0,
+  "gaps": [
+    "Original -120 head_of_rite acceptance tooltip is not observed by this case.",
+    "Current shared Source09 exposes religion/Rite private queries only under explicit opt-in; the common host/manifest does not enable/admit them.",
+    "No arbitrary target Rite/Faith native reader or religion tooltip surface is claimed.",
+    "No GUI decision click, ordinary AI acceptance/reply or complete product release credit."
+  ],
+  "original_fixture": "roman-head-diagnostic",
+  "source_credit": "Original actual script predicates/interaction validity and scope only; no faith conversion/action/acceptance credit",
+  "business_pass": false,
+  "product_release_pass": false
+}

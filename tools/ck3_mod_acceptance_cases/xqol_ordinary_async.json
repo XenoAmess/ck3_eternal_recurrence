@@ -1,0 +1,136 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "ordinary_async",
+  "acceptance_scope": "original_ordinary_courtier_natural_async_accept_refuse_only",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQN120: TEST READY ordinary_courtiers_valid",
+    "ZQN120: TEST BEGIN seeded_two_actual_async_replies",
+    "ZQN120: TEST BEGIN engine_startup"
+  ],
+  "forbidden_startup": [
+    "ZQR120QUAL: TEST FAIL",
+    "ZQN120: TEST FAIL"
+  ],
+  "scope_markers": {
+    "begin": "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "pass": "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "end": "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "fail": "ZQR120QUAL: TEST FAIL actual_song_actor_D0"
+  },
+  "required_markers": [
+    "ZQN120: TEST PASS actual_accepted1_refused1_pending_removed",
+    "ZQN120: TEST PASS high_final_faith_and_rite",
+    "ZQN120: TEST PASS low_actual_refusal_original_faith_and_rite",
+    "ZQN120: TEST DONE ordinary_courtier_async_observation"
+  ],
+  "forbidden_markers": [
+    "ZQR120QUAL: TEST FAIL",
+    "ZQN120: TEST FAIL"
+  ],
+  "required_exact_count": 1,
+  "forbidden_exact_count": 0,
+  "maximum_natural_days": 12,
+  "original_plan_step_count": 30,
+  "formal_file_count": 27,
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 4500,
+    "hold_seconds": 600,
+    "poll_interval": 0.05
+  },
+  "fixture_files": {
+    "common/on_action/zqn_startup_on_actions.txt": {
+      "bytes": 205,
+      "sha256": "356c3713e7b1bf4085001313702d554be24076251a4614c62b5ce164d5b1520b"
+    },
+    "common/scripted_effects/zqn_async_effects.txt": {
+      "bytes": 5719,
+      "sha256": "495147a4e0bc79c5abf708d2e764b694c50a9ba583a081ec54f35aff1cfd11e8"
+    },
+    "descriptor.mod": {
+      "bytes": 106,
+      "sha256": "5ff188d2a7a81746ab2f0bf31d2ff6b838b1c1590da7604550e2cc382efc5524"
+    },
+    "events/zqn_async_events.txt": {
+      "bytes": 230,
+      "sha256": "1b63a00792827d98d71da354705159178eabcd8f7903d90675e79723823daa64"
+    }
+  },
+  "original_sources": {
+    "fixture": [
+      {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\fixture\\common\\on_action\\zqn_startup_on_actions.txt",
+        "bytes": 205,
+        "sha256": "356c3713e7b1bf4085001313702d554be24076251a4614c62b5ce164d5b1520b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\fixture\\common\\scripted_effects\\zqn_async_effects.txt",
+        "bytes": 5719,
+        "sha256": "495147a4e0bc79c5abf708d2e764b694c50a9ba583a081ec54f35aff1cfd11e8"
+      },
+      {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\fixture\\descriptor.mod",
+        "bytes": 106,
+        "sha256": "5ff188d2a7a81746ab2f0bf31d2ff6b838b1c1590da7604550e2cc382efc5524"
+      },
+      {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\fixture\\events\\zqn_async_events.txt",
+        "bytes": 230,
+        "sha256": "1b63a00792827d98d71da354705159178eabcd8f7903d90675e79723823daa64"
+      }
+    ],
+    "plan": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\initial-natural-final-once-plan.json",
+      "bytes": 14469,
+      "sha256": "b9df50bc089486de2df2807939707aec6284634b22d3d6a2929f99135a5807a4"
+    },
+    "launch_argv": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-post-defense-async-next-cold-agent-01\\ordinary-courtier-async-01\\root-launch-argv-template-NOT_RUN.json",
+      "bytes": 2271,
+      "sha256": "6907b4cd0bf91af09357f717612a433cc1958126a80738cf45c4f035c053d26e"
+    }
+  },
+  "migration_only": {
+    "legacy_startup_binding_expectations": {
+      "played_character.character_id": {
+        "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
+      },
+      "diagnostics.bridge_pid": {
+        "$ref": "results.qol-startup-scope-actor-binding.bridge_pid"
+      },
+      "diagnostics.connection_generation": {
+        "$ref": "results.qol-startup-scope-actor-binding.connection_generation"
+      },
+      "date_raw": {
+        "$ref": "results.qol-startup-scope-actor-binding.date_raw"
+      }
+    },
+    "replacement": "Shared qualified actual fixture binder plus original raw Song scope; adapter validates initial owner/date and every actual frame. Each day has same initial actor/PID/generation expectations.",
+    "no_one_life_replacement": "before/after episode_projection native_campaign and report episode_identity null, because common advance has no legacy one_life_identity_claimed key."
+  },
+  "normal_close_required": true,
+  "business_contract_applicable": true,
+  "does_not_credit": [
+    "bulk_selector",
+    "threshold50",
+    "slider14",
+    "vassal",
+    "household",
+    "secrets",
+    "PAM_rewards",
+    "ransom",
+    "whole_product_release"
+  ],
+  "business_pass": false,
+  "product_release_pass": false
+}

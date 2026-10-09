@@ -10,6 +10,7 @@
 #include "xar_bridge/ck3_12002_claim_terms.hpp"
 #include "xar_bridge/ck3_12004_player_claims_v1.hpp"
 #include "xar_bridge/ck3_12004_title_own_laws_v1.hpp"
+#include "xar_bridge/ck3_12004_actual_truce_expiry.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
 #include "xar_bridge/ck3_12002_context.hpp"
 #include "xar_bridge/ck3_12002_declarations.hpp"
@@ -81,6 +82,7 @@ struct Ck3_12002AdapterBindings {
       phase_commander_trigger12004;
   ck3_12004::PhaseCommanderChanceBindings12004 phase_commander_chance12004;
   ck3_12004::TitleOwnLawsBindingsV1 title_own_laws12004;
+  ck3_12004::ActualTruceExpiryBindings12004 actual_truce_expiry12004;
 };
 
 // Same row publisher called by the current Army query and focused fixtures.

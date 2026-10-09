@@ -442,6 +442,13 @@ from .war_occupation_targets_contract import (
     query_war_occupation_targets_v1_step,
     war_occupation_query_scope,
 )
+from .player_truce_expiry_contract import (
+    QUERY_PLAYER_TRUCE_EXPIRY_V1_CAPABILITY,
+    normalize_player_truce_expiry_v1,
+    player_truce_expiry_query_actor,
+    player_truce_expiry_revision,
+    player_truce_expiry_toward_id,
+)
 from .title_own_laws_contract import (
     QUERY_TITLE_OWN_LAWS_V1_CAPABILITY,
     QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX,
@@ -4581,6 +4588,44 @@ class GameplayBridgeService:
                 step, expected_revision=expected_revision
             ),
             "war_id": war_id,
+        }
+
+    def query_player_truce_expiry_v1(
+        self, toward_character_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read a persisted one-way truce or observed absence on the current paused frame."""
+        toward_character_id = player_truce_expiry_toward_id(toward_character_id)
+        player_truce_expiry_revision(expected_revision)
+        snapshot = self.snapshot()
+        try:
+            actor_id = player_truce_expiry_query_actor(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("player truce-expiry query lacks a public revision")
+        if expected_revision != revision:
+            raise PreSubmissionRevisionMismatchError(
+                f"player truce-expiry revision mismatch: expected {expected_revision}, current {revision}"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        query = getattr(self.driver, "query_player_truce_expiry_v1", None)
+        if not isinstance(capabilities, list) or QUERY_PLAYER_TRUCE_EXPIRY_V1_CAPABILITY not in capabilities or not callable(query):
+            raise UnsupportedStepError("selected backend cannot query native player truce expiry")
+        result = query(toward_character_id, expected_revision=revision)
+        try:
+            value = normalize_player_truce_expiry_v1(
+                result, expected_toward_character_id=toward_character_id,
+                expected_owner_character_id=actor_id,
+                expected_snapshot_revision=snapshot.get("native_revision"),
+                expected_date_raw=snapshot.get("date_raw"),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native player truce-expiry query is malformed: {error}") from error
+        return {
+            **result, "player_truce_expiry_v1": value,
+            "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision, "queried_native_revision": snapshot.get("native_revision"),
         }
 
     def query_title_own_laws_v1(

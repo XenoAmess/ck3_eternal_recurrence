@@ -1,0 +1,124 @@
+# External acceptance fixture only; not production runtime.
+zqr_setup_and_probe_effect = {
+save_scope_as = actor
+save_scope_as = puppet_or_actor
+create_character = {
+ name = "XQOL Religion Control" gender = male age = 30 random_traits = no
+ location = root.capital_province culture = root.culture faith = faith:catholic
+ save_scope_as = zqr_control
+}
+scope:zqr_control = { set_character_rite = rite:roman_rite }
+imprison = { target = scope:zqr_control type = dungeon }
+set_variable = { name = zqr_control value = scope:zqr_control }
+
+create_character = {
+ name = "XQOL Religion Never Convert" gender = male age = 30 random_traits = no
+ location = root.capital_province culture = root.culture faith = faith:catholic
+ save_scope_as = zqr_never
+}
+scope:zqr_never = { set_character_rite = rite:roman_rite }
+imprison = { target = scope:zqr_never type = dungeon }
+set_variable = { name = zqr_never value = scope:zqr_never }
+
+scope:zqr_never = { add_character_flag = ai_will_not_convert }
+if = {
+ limit = { scope:zqr_control = {
+ is_alive = yes is_ai = yes is_adult = yes is_ruler = no
+ NOT = { is_playable_character = yes }
+ is_imprisoned_by = scope:actor faith = faith:catholic rite = rite:roman_rite
+ NOT = { has_character_flag = ai_will_not_convert }
+}
+scope:zqr_never = {
+ is_alive = yes is_ai = yes is_adult = yes is_ruler = no
+ NOT = { is_playable_character = yes }
+ is_imprisoned_by = scope:actor faith = scope:zqr_control.faith rite = scope:zqr_control.rite
+ has_character_flag = ai_will_not_convert
+}
+scope:zqr_control != scope:zqr_never
+scope:zqr_control.faith != scope:actor.faith }
+ debug_log = "ZQR120: TEST PASS two_roman_prisoners_flag_only_difference"
+}
+else = { debug_log = "ZQR120: TEST FAIL two_roman_prisoners_flag_only_difference" }
+
+scope:zqr_control = { save_scope_as = recipient
+if = {
+ limit = { xqol_release_base_valid_trigger = yes xqol_release_conversion_valid_trigger = yes }
+ debug_log = "ZQR120: TEST PASS control_conversion_valid"
+}
+else = { debug_log = "ZQR120: TEST FAIL control_conversion_valid" }
+
+}
+if = {
+ limit = { is_character_interaction_valid = { recipient = scope:zqr_control interaction = xqol_release_hook_recruit_conversion_interaction }
+is_character_interaction_valid = { recipient = scope:zqr_control interaction = xqol_release_hook_conversion_interaction }
+is_character_interaction_valid = { recipient = scope:zqr_control interaction = xqol_release_recruit_conversion_interaction }
+is_character_interaction_valid = { recipient = scope:zqr_control interaction = xqol_release_conversion_interaction } }
+ debug_log = "ZQR120: TEST PASS control_all_four_C_interactions_valid"
+}
+else = { debug_log = "ZQR120: TEST FAIL control_all_four_C_interactions_valid" }
+
+scope:zqr_never = { save_scope_as = recipient
+if = {
+ limit = { xqol_release_base_valid_trigger = yes NOT = { xqol_release_conversion_valid_trigger = yes } }
+ debug_log = "ZQR120: TEST PASS flag_conversion_invalid_base_valid"
+}
+else = { debug_log = "ZQR120: TEST FAIL flag_conversion_invalid_base_valid" }
+
+}
+if = {
+ limit = { NOT = { is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_hook_recruit_conversion_interaction } }
+NOT = { is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_hook_conversion_interaction } }
+NOT = { is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_recruit_conversion_interaction } }
+NOT = { is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_conversion_interaction } } }
+ debug_log = "ZQR120: TEST PASS flag_all_four_C_interactions_invalid"
+}
+else = { debug_log = "ZQR120: TEST FAIL flag_all_four_C_interactions_invalid" }
+
+if = {
+ limit = { is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_hook_recruit_interaction } }
+ debug_log = "ZQR120: TEST PASS flag_nonconversion_HR_still_valid"
+}
+else = { debug_log = "ZQR120: TEST FAIL flag_nonconversion_HR_still_valid" }
+
+scope:zqr_never = { remove_character_flag = ai_will_not_convert save_scope_as = recipient
+if = {
+ limit = { NOT = { has_character_flag = ai_will_not_convert } xqol_release_base_valid_trigger = yes xqol_release_conversion_valid_trigger = yes }
+ debug_log = "ZQR120: TEST PASS flag_removal_restores_conversion_valid"
+}
+else = { debug_log = "ZQR120: TEST FAIL flag_removal_restores_conversion_valid" }
+
+}
+if = {
+ limit = { is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_hook_recruit_conversion_interaction }
+is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_hook_conversion_interaction }
+is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_recruit_conversion_interaction }
+is_character_interaction_valid = { recipient = scope:zqr_never interaction = xqol_release_conversion_interaction } }
+ debug_log = "ZQR120: TEST PASS flag_removal_restores_all_four_C_interactions_valid"
+}
+else = { debug_log = "ZQR120: TEST FAIL flag_removal_restores_all_four_C_interactions_valid" }
+
+scope:zqr_never = { add_character_flag = ai_will_not_convert }
+if = {
+ limit = { scope:zqr_control = {
+ is_alive = yes is_ai = yes is_adult = yes is_ruler = no
+ NOT = { is_playable_character = yes }
+ is_imprisoned_by = scope:actor faith = faith:catholic rite = rite:roman_rite
+ NOT = { has_character_flag = ai_will_not_convert }
+}
+scope:zqr_never = {
+ is_alive = yes is_ai = yes is_adult = yes is_ruler = no
+ NOT = { is_playable_character = yes }
+ is_imprisoned_by = scope:actor faith = scope:zqr_control.faith rite = scope:zqr_control.rite
+ has_character_flag = ai_will_not_convert
+}
+scope:zqr_control != scope:zqr_never
+scope:zqr_control.faith != scope:actor.faith }
+ debug_log = "ZQR120: TEST PASS flag_reapplied_samples_preserved"
+}
+else = { debug_log = "ZQR120: TEST FAIL flag_reapplied_samples_preserved" }
+
+add_character_flag = zqr_probe_finished
+debug_log = "ZQR120: OBSERVED actual_sample_scopes"
+debug_log_scopes = yes
+debug_log = "ZQR120: TEST DONE religion_gate_only"
+}

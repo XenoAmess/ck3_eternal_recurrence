@@ -64,6 +64,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-title-holder-v1-N",
       kPlayerClaimsV1Capability,
       kTitleOwnLawsV1Capability,
+      ck3_11906::kRaiktorActualTruceExpiryV1Capability,
       "game.command.query-pending-character-interaction-context-v1",
       "game.command.query-current-event-window-context-v1",
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
@@ -239,6 +240,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
       image_base, executable_sha256, bindings.core, bindings.provinces);
   bindings.title_own_laws12004 = ck3_12004::BindTitleOwnLawsImageV1(
       image_base, executable_sha256, bindings.core);
+  bindings.actual_truce_expiry12004 = ck3_12004::BindActualTruceExpiryImage12004(
+      reinterpret_cast<void *>(image_base), executable_sha256);
   bindings.terms = ck3_12004::BindClaimTermsImage(
       image_base, executable_sha256, bindings.core, bindings.world,
       bindings.provinces);

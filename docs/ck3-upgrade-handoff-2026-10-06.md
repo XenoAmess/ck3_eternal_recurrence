@@ -2,7 +2,7 @@
 
 ## 2026-10-09 当前续办增量
 
-本机继续使用 CK3 1.20.0.4 / build25734779。统一验收底座已推进至 Source09 / FINAL10 / bound11；下方 Source08、private host 和旧 pending 仅保留历史，当前操作从[统一入口专题](ck3-mod-upgrade-fast-validation.md)选择同一 runtime。
+本机继续使用 CK3 1.20.0.4 / build25734779。统一验收底座已推进至 Source10 / FINAL11 / bound12；下方 Source09、Source08、private host 和旧 pending 仅保留历史，当前操作从[统一入口专题](ck3-mod-upgrade-fast-validation.md)选择同一 runtime。
 
 TED R22/a131 已完成金额与目标标签显示修复、实际单次下令、AI 接受、50 金币转移、150 威望消耗及实际辽攻夏争天德，正常 GUI 退出后 retained OS0/native0/common run0/verify0/keeper0 闭合，CAS7498 done/resources=[]。完整源验收复用原 R7/R10/R11/R13 的各自有效单元，保留旧 RED，见[当前版本源验收汇总](tributary-expansion-directives-1.20.0.4-source-acceptance-2026-10-09.md)。下一步是 TED 1.0.1 正式构建、发布、完整公开 Notes 回读和真实下载缓存加载。
 
@@ -255,3 +255,58 @@ TED源码实机及R22显示/生产交互后，[实际SDK发布](C:/workspace/ck3
 [Root收尾82](C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/ROOT-ACTUAL-CACHE-NORMAL0-OFFLINE-CLOSURE-82.json)保留缓存exact/共同主菜单加载、正常GUI退出、retained OS0/native0、公共run0/keeper0、canonical outer与新鲜Steam离线原像素；**a132 CAS7530** 已释放、资源空。R23只取得缓存加载/正常退出边界，原`business_pass=false`/`product_release_pass=false`保持，不重产品业务、不伪称独立VFS读回。历史FAILED/PENDING段仍是当时状态，不改写旧attempt。
 
 源码、实际发布、公开Notes、缓存和离线门均完成；**仅本批永久记录实际commit/push后，正式进度由6/10更新为7/10（70%）**。候选阶段不写未发生的发布记录入库事实或未来commit。后续顺序：**QOL → RMTM → 361（玩家产品最后）→ 廷臣礼仪 → G2**，共用Source09/FINAL10/bound11；其他项仍按真实前置推进，不授提前PASS。
+
+
+### 2026-10-09 QOL R34/R35失败、磁盘处置与R36运行截点
+
+本补记截止 **14:33:58 UTC**。TED永久记录已由Root实际提交并普通推送
+`a767bd`，正式为 **7/10（70%）**；QOL仍未完成源码聚合或发布，不能由下面
+的修复、资源释放或新场启动补通过信用。旧失败、日志、配置和冻结输入保留。
+
+R34/a134启动时`set_player_character`先作用于NONE，后又作用于非玩家角色；
+[原error.log7–17](C:/workspace/ck3-upgrade-20261009/qol-original-guards-focused-first-prepare19-01/state/profile/logs/error.log)记录这两条真实错误。最终[薄盘点](C:/workspace/ck3-upgrade-20261006/resume-root-01/a134-final-inventory-01.json)
+为RED、`actual_os_exit=null`、原资格forbidden marker失败；线程/cleanup成立、
+[CAS7657 done/resources=[]](C:/workspace/ck3-upgrade-20261006/resume-root-01/a134-screen-release-01.json)
+只证明资源收尾，不授正常OS0或业务PASS。
+
+R35/a135已实际切到宋actor34422/PID22988/gen1，但原startup qualification
+把308033B scope块转成hex嵌入，得到 **616757B** proof，被原 **65536B**
+上限拒绝；`selection_attempted=false`、`CASE_STARTUP_FAILED_NO_RETRY`保留。
+随后ENOSPC、keeper失败及超时退出，最终[原CAS7697回执](C:/workspace/ck3-upgrade-20261006/resume-root-01/a135-screen-release-after-keeper-enospc-01.json)
+为 **waiting/resources=[]/unresolved_red**，不是done或正常0；原游戏和keeper
+进程已消失。两场[原case错误](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0035/case-output/case-error-preserved.json)
+与已提交步骤保持原样，不重放或覆写。
+
+compact proof25已提交并普通推送`36fcbcb0132325ac32c0efbb0a6461f4496fa7e2`。
+它只改两个产品startup handler的proof表示，保留身份/行号/offset/log与block
+SHA，移除内嵌raw hex；原64KiB共享门禁不变。[原离线验证](C:/workspace/ck3-upgrade-20261009/qol-startup-compact-proof-candidate25-01/R35-ACTUAL-COMPACT-STARTUP-QUALIFICATION-VALIDATION-25.json)
+在同一真实R35输入上得到1281B并获原pure loader接受；UI1285B仅synthetic。
+这是源码/离线资格，不追认R35，不等于本次修复已实机PASS。
+
+[磁盘原summary](C:/workspace/disk-cleanup-20261009/r35-emergency-disk-response-summary-01.json)
+记录旧native输出无损压缩及闲置可重新下载VS临时payload清理，动作窗口净回收
+**1,563,648,000B**，13:16:03 UTC最终可用 **6,687,023,104B**。
+整体初末差为1,562,324,992B，其余−1,323,008B不归因；动作前分页文件已自行
+缩小，该部分不计agent成果。原证据、源码/配置/冻结输入、当前runtime、DLL/EXE
+及系统分页设置均未改。
+
+R36前两次nonce过期属于未启动历史。Root亲审challenge03
+`e4cb7c1a2d49`与context03 SHA
+`13a2cf19b645f55b1b4fd19cddd7faf78926a090218a5cd643d1e9b34208d739`
+后，**14:30:15.625440 UTC已实际启动**
+`4-8e1c2f1861--xenoamess-quality-of-life--R0036`，PID19552/
+create_time1791556225.854431、原入口session49690；14:33:58仍loading/
+`WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS`，尚无guards业务或正常闭场结论。
+
+
+## 2026-10-10 续办：R36原业务补证与共享用例接入
+
+R36在原预算内通过正常GUI退出：[原normal-close结果](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0036/case-output/normal-close-result.json)为retained OS0、native process_exit0、manageddone/thread/cleanup及normal_close_qualified=true；原keeper实际0/failureNULL/last7787后[CAS7788 done/resources=[]](C:/workspace/ck3-upgrade-20261006/resume-root-01/a136-screen-release-01.json)。主树原parser只接受历史角色的冒号格式，遗漏生成角色的`Internal ID 46792`，故原入口exit2/解析RED仍保留。strict31要求第一条唯一current角色、独立Character全ID标签、真实Root34422及on/off一致，不从saved alias取ID。
+
+[同场追加补证32](C:/workspace/ck3-upgrade-20261009/qol-r0036-guards-supplement-aggregate32-01/actual-same-run-supplement32-01/R36-ORIGINAL-TWO-GUARDS-SAME-RUN-SUPPLEMENT32.json)已实际生成（12321B/SHA d8aed527a47671f95f5874f29e1581214ca0da211dab2f1e7a722dcfd1536a85）：原两次24h推进、真实宋34422、两个subjects46792/28978及原两PASS/FAIL0成立，仅授原guards补充2/2。未重启或重跑业务，不追认原entry run0、不授QOL整体PASS；GUI25及其余独立cells仍待实机。
+
+公共入口现采用[Source10/FINAL11/bound12冻结](C:/workspace/ck3-upgrade-20261009/common-pam-readonly-optin-01/SOURCE10-MANIFEST11-BOUND12-ACTUAL-FREEZE-02.json)。仅两个共享Python文件独立写入、6902原文件无变化hardlink；原d1d4 DLL/injector及预算保持。case可显式声明且required两项既有religion只读MCP查询，默认关闭，不开启整个private工具组。原Source09和既有场次证据不改写。新共有client保留原deadline等待Root退出审阅，并按原case timeout等待原initial business plan，不把400s readiness错用为35步业务上限。
+
+六个原followup、宗教三项（含compact27启动证据修正）和ordinary_async已采用到唯一registry；[11个新prepare实际回执](C:/workspace/ck3-upgrade-20261010/qol-common-source10-prepare-01/actual-prepare-group-result.json)全为exit0，含ui_tail。均用同一Source10；只产生输入/profile，未分配或启动这些场次，不授业务信用。原formal27、断言、自然日和各case预算保持。集成33项针对性测试在纠正构造器mock缺少默认opt-in属性后通过（2.224s）；旧失败输出保留。各owner已有精确SDK/原块/来源检查复用，无whole build/full matrix重跑。
+
+G2持久停战查询16文件源码已合入当前施工树，原Python5/MCP13与Native08增量BUILD_ONLY证据复用；未给其DLL产品runtime资格、未交换d1d4产品DLL、未授G2实机信用。正式发布仍7/10，顺序为QOL→RMTM→361最后→廷臣礼仪/G2。以下与此前记录中的时间截点保持历史含义。

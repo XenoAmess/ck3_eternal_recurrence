@@ -1,0 +1,127 @@
+{
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 4500,
+    "hold_seconds": 600,
+    "poll_interval": 0.05
+  },
+  "schema": "ck3-xqol-original-followup-case-v1",
+  "case": "pam_positive",
+  "data_directory": "xqol_followup_cases/pam_positive",
+  "acceptance_scope": "original_pam_positive_only",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQP120: TEST BEGIN engine_startup",
+    "ZQP120: TEST READY actual_positive_doctrines_landed_recipient",
+    "ZQP120: TEST READY one_actual_queue_seed_D0_dispatch_deferred_D1"
+  ],
+  "forbidden_startup": [
+    "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+    "ZQP120: TEST FAIL"
+  ],
+  "required_markers": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQP120: TEST BEGIN engine_startup",
+    "ZQP120: TEST READY actual_positive_doctrines_landed_recipient",
+    "ZQP120: TEST READY one_actual_queue_seed_D0_dispatch_deferred_D1",
+    "ZQP120: TEST PASS accepted1_refused0_pending_removed",
+    "ZQP120: TEST PASS recipient_actual_nestorian_faith_and_rite",
+    "ZQP120: TEST PASS acts_wrapper_once_exact_piety",
+    "ZQP120: TEST PASS mendicant_wrapper_once_no_piety",
+    "ZQP120: TEST DONE positive_natural_pam_observation",
+    "ZQP120: TEST PASS acts_sp_before_exact",
+    "ZQP120: TEST PASS acts_sp_after_exact",
+    "ZQP120: TEST PASS mendicant_sp_before_exact",
+    "ZQP120: TEST PASS mendicant_sp_after_exact",
+    "ZQP120: TEST BEGIN D1_single_original_dispatch"
+  ],
+  "forbidden_markers": [
+    "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+    "ZQP120: TEST FAIL"
+  ],
+  "original_step_count": 35,
+  "maximum_natural_days": 12,
+  "song_scope_required": true,
+  "fixture_files": [
+    "common/on_action/zqp_startup_on_actions.txt",
+    "common/scripted_effects/zqp_pam_sample_effects.txt",
+    "common/scripted_effects/zqp_reward_observer_wrappers.txt",
+    "descriptor.mod",
+    "events/zqp_pam_events.txt"
+  ],
+  "appointment_laws": [],
+  "full_product_pass_from_cell": false,
+  "vanilla_reward_source": {
+    "relative": "common/scripted_effects/pam_effects.txt",
+    "bytes": 369911,
+    "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f"
+  },
+  "support_files": {
+    "xqol_followup_common.py": {
+      "bytes": 17940,
+      "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
+    },
+    "xqol_pam_adapter.py": {
+      "bytes": 1177,
+      "sha256": "f3d2ebfefbe15399a2259101239a2262daff707e7353cfaf9d6f012415b5b4cf"
+    },
+    "xqol_scope.py": {
+      "bytes": 10804,
+      "sha256": "2edca624e611e6f6be7c6147774b1fae8892cdc24de0ef5a96e36214d388b968"
+    },
+    "../ck3_mod_acceptance_prepare.py": {
+      "bytes": 10984,
+      "sha256": "4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981"
+    },
+    "__init__.py": {
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    "../xqol_vanilla_contract.py": {
+      "bytes": 4438,
+      "sha256": "be4ebc2f4bc72148329bbb8c419c6dbf52b1dc519a3bf1e08430336a9a26cca9"
+    },
+    "../xqol_vanilla_1_20_0_4.json": {
+      "bytes": 5363,
+      "sha256": "b249ea7ca187d852bdc82ec201fb775b8a087caa66d9f855613ae5ce833fa2de"
+    },
+    "xqol_followup_cases/pam_positive/fixture/common/on_action/zqp_startup_on_actions.txt": {
+      "bytes": 205,
+      "sha256": "d4995251d275b8c956f9da48731a9a5a92066a29a0a9e1054c6daa657f800b7f"
+    },
+    "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt": {
+      "bytes": 6903,
+      "sha256": "2a5f30b37bffa2b7f35eeece21587d298d2913b2087b5a4c64bd64986bcaf1c3"
+    },
+    "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_reward_observer_wrappers.txt": {
+      "bytes": 6321,
+      "sha256": "182b7cdbdc0cf7c1c7059a7832b9ad6efc0c5ba19935e8818fb6b6f8fda08700"
+    },
+    "xqol_followup_cases/pam_positive/fixture/descriptor.mod": {
+      "bytes": 110,
+      "sha256": "3f8d05dad090418eba686d2e1c8821763ffc7a69936164ea9eb61dcef195a0c7"
+    },
+    "xqol_followup_cases/pam_positive/fixture/events/zqp_pam_events.txt": {
+      "bytes": 222,
+      "sha256": "dd40084261bf225244ff7db4d8fe749065a054e63a813495c0b5c01c328e26e7"
+    },
+    "xqol_followup_cases/pam_positive/frontend-rules-plan.json": {
+      "bytes": 179,
+      "sha256": "ca3dd45804e32b0c8f57c5a543ef969fefd02fdd01634f2ccc367b95f5859223"
+    },
+    "xqol_followup_cases/pam_positive/original-plan.json": {
+      "bytes": 19049,
+      "sha256": "05a373512645d56e414ca8f086a0f71c509b0d294cdd5731ad3cf8b1fc44c3d1"
+    }
+  }
+}

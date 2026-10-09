@@ -1756,7 +1756,8 @@ def create_server(
                 expected_revision=expected_revision, war_id=war_id, outcome=outcome,
             )
 
-    if getattr(driver, "allow_private_player_religion_context_query", False) is True:
+    if (getattr(driver, "allow_private_player_religion_context_query", False) is True
+            or "ck3_query_player_religion_context_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_religion_context_v1(
             expected_revision: int,
@@ -1766,6 +1767,8 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+    if (getattr(driver, "allow_private_player_religion_context_query", False) is True
+            and not hasattr(driver, "case_declared_read_only_mcp_tools")):
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_holy_order_loan_context_v1(
             expected_revision: int,
@@ -2083,7 +2086,8 @@ def create_server(
                 scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
             )
 
-    if getattr(driver, "allow_private_player_religion_personal_parameters_query", False) is True:
+    if (getattr(driver, "allow_private_player_religion_personal_parameters_query", False) is True
+            or "ck3_query_player_religion_personal_parameters_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_religion_personal_parameters_v1(
             expected_revision: int,
@@ -3976,6 +3980,16 @@ def create_server(
             service,
             target_character_ids,
             expected_revision=expected_revision,
+        )
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_player_truce_expiry_v1(
+        toward_character_id: Annotated[int, Field(strict=True, gt=0, le=2**31 - 1)],
+        expected_revision: Annotated[int, Field(strict=True, ge=0)],
+    ) -> dict[str, object]:
+        """Read the played character's persisted directional truce toward one current full CharacterID."""
+        return service.query_player_truce_expiry_v1(
+            toward_character_id, expected_revision=expected_revision,
         )
 
     @server.tool(annotations=read_only_tool)

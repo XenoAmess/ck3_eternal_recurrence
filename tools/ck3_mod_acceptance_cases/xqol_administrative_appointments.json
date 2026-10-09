@@ -1,0 +1,84 @@
+{
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 3000,
+    "hold_seconds": 1800,
+    "poll_interval": 0.05
+  },
+  "schema": "ck3-xqol-original-followup-case-v1",
+  "case": "administrative_appointments",
+  "data_directory": "xqol_followup_cases/administrative_appointments",
+  "acceptance_scope": "original_administrative_appointments_only",
+  "post_start": {
+    "government_key": "administrative_government",
+    "primary_title_tier_key": "empire",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQAGOV: QUAL BEGIN admin_native1066_holder",
+    "ZQAGOV: QUAL PASS admin_native1066_holder",
+    "ZQAGOV: QUAL DONE admin_native1066_holder"
+  ],
+  "forbidden_startup": [
+    "ZQAGOV: QUAL FAIL"
+  ],
+  "required_markers": [
+    "ZQAGOV: QUAL BEGIN admin_native1066_holder",
+    "ZQAGOV: QUAL PASS admin_native1066_holder",
+    "ZQAGOV: QUAL DONE admin_native1066_holder"
+  ],
+  "forbidden_markers": [
+    "ZQAGOV: QUAL FAIL"
+  ],
+  "original_step_count": 2,
+  "maximum_natural_days": 0,
+  "song_scope_required": false,
+  "fixture_files": [
+    "common/on_action/zqagov_start.txt",
+    "descriptor.mod",
+    "events/zqagov_events.txt"
+  ],
+  "appointment_laws": [
+    "appointment_succession_law"
+  ],
+  "full_product_pass_from_cell": false,
+  "support_files": {
+    "xqol_followup_common.py": {
+      "bytes": 17940,
+      "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
+    },
+    "xqol_government_adapter.py": {
+      "bytes": 7693,
+      "sha256": "f5859d457a77ed44d29ba73f37a716a96312509e3b19851a696ca979ac33bd27"
+    },
+    "xqol_scope.py": {
+      "bytes": 10804,
+      "sha256": "2edca624e611e6f6be7c6147774b1fae8892cdc24de0ef5a96e36214d388b968"
+    },
+    "../ck3_mod_acceptance_prepare.py": {
+      "bytes": 10984,
+      "sha256": "4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981"
+    },
+    "__init__.py": {
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    "xqol_followup_cases/administrative_appointments/fixture/common/on_action/zqagov_start.txt": {
+      "bytes": 170,
+      "sha256": "06301206b8e168679fe36252b9572165af0592972979465ab15d5cacff50aee6"
+    },
+    "xqol_followup_cases/administrative_appointments/fixture/descriptor.mod": {
+      "bytes": 91,
+      "sha256": "e7d849fe9f6cf57d5993f28db24e1a5bca673256ded4cc4be8ecd5336e0a34a6"
+    },
+    "xqol_followup_cases/administrative_appointments/fixture/events/zqagov_events.txt": {
+      "bytes": 1781,
+      "sha256": "a22160dbfba94b75c034e9c46b89fb4eede2f87f4d7236e298a128faf61088d7"
+    },
+    "xqol_followup_cases/administrative_appointments/original-plan.json": {
+      "bytes": 991,
+      "sha256": "08662486bddd784dbd7b80f620b8e9c3db2a6be18e0fea20767a2217005211c2"
+    }
+  }
+}

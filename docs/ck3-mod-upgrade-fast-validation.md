@@ -1,6 +1,6 @@
 # CK3 mod升级提速与公共验收入口（2026-10-08）
 
-后续普通版本迁移的工程目标是正常数小时完成，尚无实测耗时或完成ETA承诺；新引擎结构、ABI变化及核心逆向另计。提速来自集中适配、减少重复启动和自动连续消费，不改变各产品发布前源码业务合同。当前批次正式6/10（60%）。
+后续普通版本迁移的工程目标是正常数小时完成，尚无实测耗时或完成ETA承诺；新引擎结构、ABI变化及核心逆向另计。提速来自集中适配、减少重复启动和自动连续消费，不改变各产品发布前源码业务合同。当前批次正式7/10（70%），TED永久发布记录已提交推送。
 
 MCP、native bridge、服务、状态/事件读取及启动/退出管理已经是共享底座。各mod独立的是fixture、business case data、adapter及正式构建；冻结版本是当次可复现证据。成本来自尚未集中覆盖的实际capability缺口、consumer不同历史snapshot及人工GUI/多轮冷启动。**永久规则：所有未来mod acceptance从[tools/ck3_mod_acceptance.py](../tools/ck3_mod_acceptance.py)公共入口选一份common runtime manifest；产品不选择或复制host/source/native版本，公共问题在共享层修一次。**旧冻结永久保留，新run消费共同绑定的当前版本。
 
@@ -18,7 +18,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。后续本机新场使用[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound11.json)和唯一[FINAL10 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-10.json)，绑定shared Source09/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。已消费场次继续绑定各自旧冻结输入，旧runner和冻结保留原证据及底层实现。
+当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。后续本机新场使用[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound12.json)和唯一[FINAL11 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-11.json)，绑定shared Source10/index、canonical host与原d1d4 native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。已消费场次继续绑定各自旧冻结输入，旧runner和冻结保留原证据及底层实现。
 
 上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
 
@@ -26,7 +26,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 从仓库根的`cmd.exe`执行，以下只读例子选择当前真实TED case：
 
 ```text
-tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound11.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
+tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound12.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
 ```
 
 后续模式使用相同四项选择参数，按下表替换`plan`并追加参数；尖括号是当次真实路径/新编号占位，不是已有attempt的重跑命令。
@@ -141,3 +141,39 @@ TED R20/a129的D1/context成功，Root普通GUI已确认辽帝、外国君主及
 2026-10-09 TED R21/a130沿同一入口完成真实生产交互：Root亲审单次Send后的“拓疆令已受命”，宋金币2407→2357、威望6050→5900，辽金币281→331；实际辽帝耶律弘基向夏宁令嵬名两岔发动争夺天德的朝贡拓疆战争。[原GUI结果](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--tributary-expansion-directives--R0021/case-output/ted-real-production-UI-root-result.json)保留资金数字空白及次要目标裸key两项显示缺口，不能把真实转账50外推为金额显示通过。正常GUI Quit后，原retained HANDLE signaled=true/exit0、native exit0/job0/treegone/control全absent；公共run实际exit0、case/GUI/normal-close均qualified，host于06:36:06 UTC完成thread/cleanup。keeper实际exit0后，[a130 CAS7450释放](C:/workspace/ck3-upgrade-20261006/resume-root-01/a130-screen-release-01.json)为waiting/resources=[]；该过期claim退休状态不改写实际run/正常退出0，也不授完整release。
 
 同日采用[显示修复43](C:/workspace/ck3-upgrade-20261009/ted-ui-display-candidate-43/ROOT-TED-DISPLAY-FIX-CONSUME-43.md)：交互通过原生`localization_values`绑定动态战争金，九语标签改用`$TED_WAR_SUBSIDY|0$`并补齐次要目标标签；金额公式、AI、CB及实际效果保持。既有static、4项针对显示失败的回归测试和一次16文件builder均实际exit0；[新staging manifest](C:/workspace/ck3-upgrade-20261009/ted-display43-staging-once-01/mod_tributary_expansion_directives.manifest.json)仍是未发布候选。新场只沿公共production_ui复核受影响的显示及同一生产交互/正常退出，不重跑旧13项或SaveLoad矩阵。新Notes已冻结为2943B/2127字符/19行/SHA `c3ee3e5d158310d578d55c20c935a7fa5507f30617287a876680f439efd92aff`，仍未发布。
+
+
+## 2026-10-09 QOL startup两次失败与compact proof25边界
+
+R34原`set_player_character`的NONE/非玩家scope错误触发资格forbidden marker；
+[最终盘点](C:/workspace/ck3-upgrade-20261006/resume-root-01/a134-final-inventory-01.json)
+为RED/OSexit null，CAS7657资源释放不代正常0。R35已实际宋actor34422，
+原proof却因raw scope块hex膨胀至616757B而被原65536B门禁拒绝，未选择startup
+事件、未取得guards业务信用；后续ENOSPC/keeperfailure/timeout的
+[CAS7697](C:/workspace/ck3-upgrade-20261006/resume-root-01/a135-screen-release-after-keeper-enospc-01.json)
+为waiting/resources=[]/unresolved_red，旧失败不改写。
+
+已推送的`36fcbcb0132325ac32c0efbb0a6461f4496fa7e2`只将两个原startup
+handler的内嵌hex改为保身份/marker/offset/SHA的原始块引用，未放宽共享64KiB
+gate、未改scope parser或产品业务。现有[离线actual R35验证](C:/workspace/ck3-upgrade-20261009/qol-startup-compact-proof-candidate25-01/R35-ACTUAL-COMPACT-STARTUP-QUALIFICATION-VALIDATION-25.json)
+为1281B/原loader接受；UI1285B仍仅synthetic，不称修复实机通过。
+
+截止14:33:58 UTC，Root已于14:30:15.625440启动R36/PID19552/原session49690，
+使用亲审challenge03/context03；前两次过期nonce保持历史。R36尚在loading并
+等待原qualification logs，没有guards业务或normal0结论，未重播已用R35。
+磁盘处置与精确归因见[交接补记](ck3-upgrade-handoff-2026-10-06.md)；不改变
+公共Source09/FINAL10/bound11合同或增加新平台/验收门禁。TED实际推送后正式7/10，
+QOL完整源码验收与发布仍pending。
+
+
+## 2026-10-10 续办：R36原业务补证与共享用例接入
+
+R36在原预算内通过正常GUI退出：[原normal-close结果](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0036/case-output/normal-close-result.json)为retained OS0、native process_exit0、manageddone/thread/cleanup及normal_close_qualified=true；原keeper实际0/failureNULL/last7787后[CAS7788 done/resources=[]](C:/workspace/ck3-upgrade-20261006/resume-root-01/a136-screen-release-01.json)。主树原parser只接受历史角色的冒号格式，遗漏生成角色的`Internal ID 46792`，故原入口exit2/解析RED仍保留。strict31要求第一条唯一current角色、独立Character全ID标签、真实Root34422及on/off一致，不从saved alias取ID。
+
+[同场追加补证32](C:/workspace/ck3-upgrade-20261009/qol-r0036-guards-supplement-aggregate32-01/actual-same-run-supplement32-01/R36-ORIGINAL-TWO-GUARDS-SAME-RUN-SUPPLEMENT32.json)已实际生成（12321B/SHA d8aed527a47671f95f5874f29e1581214ca0da211dab2f1e7a722dcfd1536a85）：原两次24h推进、真实宋34422、两个subjects46792/28978及原两PASS/FAIL0成立，仅授原guards补充2/2。未重启或重跑业务，不追认原entry run0、不授QOL整体PASS；GUI25及其余独立cells仍待实机。
+
+公共入口现采用[Source10/FINAL11/bound12冻结](C:/workspace/ck3-upgrade-20261009/common-pam-readonly-optin-01/SOURCE10-MANIFEST11-BOUND12-ACTUAL-FREEZE-02.json)。仅两个共享Python文件独立写入、6902原文件无变化hardlink；原d1d4 DLL/injector及预算保持。case可显式声明且required两项既有religion只读MCP查询，默认关闭，不开启整个private工具组。原Source09和既有场次证据不改写。新共有client保留原deadline等待Root退出审阅，并按原case timeout等待原initial business plan，不把400s readiness错用为35步业务上限。
+
+六个原followup、宗教三项（含compact27启动证据修正）和ordinary_async已采用到唯一registry；[11个新prepare实际回执](C:/workspace/ck3-upgrade-20261010/qol-common-source10-prepare-01/actual-prepare-group-result.json)全为exit0，含ui_tail。均用同一Source10；只产生输入/profile，未分配或启动这些场次，不授业务信用。原formal27、断言、自然日和各case预算保持。集成33项针对性测试在纠正构造器mock缺少默认opt-in属性后通过（2.224s）；旧失败输出保留。各owner已有精确SDK/原块/来源检查复用，无whole build/full matrix重跑。
+
+G2持久停战查询16文件源码已合入当前施工树，原Python5/MCP13与Native08增量BUILD_ONLY证据复用；未给其DLL产品runtime资格、未交换d1d4产品DLL、未授G2实机信用。正式发布仍7/10，顺序为QOL→RMTM→361最后→廷臣礼仪/G2。以下与此前记录中的时间截点保持历史含义。

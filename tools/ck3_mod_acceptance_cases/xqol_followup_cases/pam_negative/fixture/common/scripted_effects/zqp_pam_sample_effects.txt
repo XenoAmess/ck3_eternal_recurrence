@@ -1,0 +1,134 @@
+﻿# Fresh isolated negative sample. Natural AI reply only; no callback/reward invocation.
+zqp_initialize_effect = {
+ if = {
+  limit = { NOT = { has_character_flag = zqp_initialized } }
+  add_character_flag = zqp_initialized
+  character:han_8052 = { save_scope_as = zqp_song }
+  if = {
+   limit = { scope:zqp_song = { is_ai = yes is_alive = yes has_title = title:h_china has_government = celestial_government is_independent_ruler = yes } }
+   set_player_character = scope:zqp_song
+   random_player = {
+    if = {
+     limit = { is_ai = no is_alive = yes this = character:han_8052 has_title = title:h_china has_government = celestial_government is_independent_ruler = yes }
+     save_scope_as = actor
+     save_scope_as = puppet_or_actor
+     save_scope_as = xqol_startup_actor
+     debug_log = "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0"
+     debug_log_scopes = yes
+     debug_log = "ZQR120QUAL: TEST PASS actual_song_actor_D0"
+     debug_log = "ZQR120QUAL: SCOPE END actual_song_actor_D0"
+     zqp_setup_negative_effect = yes
+    }
+    else = { debug_log = "ZQR120QUAL: TEST FAIL actual_song_actor_D0" }
+   }
+  }
+  else = { debug_log = "ZQM120: TEST FAIL named_song_initializer" }
+ }
+}
+
+zqp_setup_negative_effect = {
+ # Engine setters use real faith, rite and tenet scopes. Recheck actual predicates.
+ set_character_faith = faith:catholic
+ set_character_rite = rite:roman_rite
+ every_personal_tenet = { scope:actor = { remove_personal_tenet = prev } }
+ set_variable = { name = zqp_stock_sp_major value = major_spiritual_fulfillment_value }
+ set_variable = { name = zqp_stock_sp_minor value = minor_spiritual_fulfillment_value }
+ set_variable = { name = zqp_sp_acts_expected value = 0 }
+ set_variable = { name = zqp_sp_total_expected value = 0 }
+ random_vassal_or_below = {
+  limit = {
+   is_ai = yes is_alive = yes is_landed = yes
+   highest_held_title_tier <= tier_county
+   NOT = { house = scope:actor.house }
+   NOT = { any_held_title = { is_head_of_faith = yes } }
+   NOT = { has_character_flag = ai_will_not_convert }
+  }
+  save_scope_as = zqp_target
+ }
+ if = {
+  limit = { exists = scope:zqp_target }
+  scope:zqp_target = {
+   set_character_faith = faith:nestorian
+   set_character_rite = rite:nestorian
+   remove_trait = zealous
+   remove_trait = stubborn
+   add_trait = cynical
+   add_trait = fickle
+   add_opinion = { target = scope:actor modifier = love_opinion opinion = 200 }
+  }
+  set_variable = { name = zqp_target value = scope:zqp_target }
+  if = {
+   limit = {
+    faith = faith:catholic rite = rite:roman_rite
+    var:zqp_stock_sp_major = 10
+    var:zqp_stock_sp_minor = 3
+    spiritual_fulfillment >= 0
+    spiritual_fulfillment <= 0
+    is_valid_for_legitimacy_change = yes
+    NOT = { rite = { rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts } }
+    NOT = { rite = { rite_has_parameter = tenet_acts_of_apostles_piety_from_converts } }
+    NOT = { has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts }
+    NOT = { has_personal_tenet_flag = tenet_mendicant_preachers_conversion_fulfillment }
+    NOT = { has_variable = xqol_mass_conversion_pending }
+    NOT = { any_courtier = { has_character_flag = xqol_conversion_courtier_candidate } }
+    NOT = { any_vassal_or_below = { has_character_flag = xqol_conversion_ruler_candidate } }
+    NOT = { any_tributary = { has_character_flag = xqol_conversion_ruler_candidate } }
+    is_character_interaction_valid = { recipient = var:zqp_target interaction = xqol_mass_conversion_ruler_interaction }
+    var:zqp_target = { is_ai = yes is_alive = yes is_landed = yes faith = faith:nestorian rite = rite:nestorian }
+   }
+   add_character_flag = zqp_test_actor
+   set_variable = { name = zqp_acts_calls value = 0 }
+   set_variable = { name = zqp_mendicant_calls value = 0 }
+   set_variable = { name = zqp_observation_days value = 0 }
+   debug_log = "ZQM120: TEST READY actual_negative_doctrines_landed_recipient"
+   debug_log_scopes = yes
+   zqp_seed_one_async_reply_effect = yes
+  }
+  else = { debug_log = "ZQM120: TEST FAIL actual_negative_doctrines_landed_recipient" }
+ }
+ else = { debug_log = "ZQM120: TEST FAIL no_eligible_landed_vassal_sample" }
+}
+
+zqp_seed_one_async_reply_effect = {
+ # This explicitly bypasses the bulk selection and formal draft50 UI.
+ set_variable = { name = xqol_mass_conversion_accepted value = 0 }
+ set_variable = { name = xqol_mass_conversion_refused value = 0 }
+ set_variable = { name = xqol_mass_conversion_pending value = 1 }
+ var:zqp_target = { add_character_flag = { flag = xqol_conversion_ruler_candidate days = 365 } }
+ add_character_flag = zqp_async_observing
+ add_character_flag = zqp_dispatch_pending_D1
+ debug_log = "ZQM120: TEST READY one_actual_queue_seed_D0_dispatch_deferred_D1"
+ trigger_event = { id = zqp120.2 days = 1 }
+}
+
+zqp_observe_actual_reply_effect = {
+ if = {
+  limit = { has_character_flag = zqp_async_observing }
+  change_variable = { name = zqp_observation_days add = 1 }
+  if = {
+   limit = { has_character_flag = zqp_dispatch_pending_D1 }
+   remove_character_flag = zqp_dispatch_pending_D1
+   debug_log = "ZQM120: TEST BEGIN D1_single_original_dispatch"
+   xqol_mass_conversion_dispatch_next_effect = yes
+  }
+  if = {
+   limit = { NOT = { has_variable = xqol_mass_conversion_pending } }
+   remove_character_flag = zqp_async_observing
+   if = { limit = { var:xqol_mass_conversion_accepted = 1 var:xqol_mass_conversion_refused = 0 } debug_log = "ZQM120: TEST PASS accepted1_refused0_pending_removed" }
+   else = { debug_log = "ZQM120: TEST FAIL accepted1_refused0_pending_removed" }
+   if = { limit = { var:zqp_target = { faith = faith:catholic rite = rite:roman_rite } } debug_log = "ZQM120: TEST PASS recipient_actual_catholic_roman_faith_and_rite" }
+   else = { debug_log = "ZQM120: TEST FAIL recipient_actual_catholic_roman_faith_and_rite" }
+   if = { limit = { var:zqp_acts_calls = 1 var:zqp_acts_delta = var:zqp_acts_expected } debug_log = "ZQM120: TEST PASS acts_wrapper_once_exact_piety" }
+   else = { debug_log = "ZQM120: TEST FAIL acts_wrapper_once_exact_piety" }
+   if = { limit = { var:zqp_mendicant_calls = 1 var:zqp_mendicant_delta = 0 } debug_log = "ZQM120: TEST PASS mendicant_wrapper_once_no_piety" }
+   else = { debug_log = "ZQM120: TEST FAIL mendicant_wrapper_once_no_piety" }
+   if = { limit = { NOT = { has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts } NOT = { has_personal_tenet_flag = tenet_mendicant_preachers_conversion_fulfillment } NOT = { rite = { rite_has_parameter = tenet_acts_of_apostles_piety_from_converts } } NOT = { rite = { rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts } } } debug_log = "ZQM120: TEST PASS actual_doctrine_absence_at_reply" }
+   else = { debug_log = "ZQM120: TEST FAIL actual_doctrine_absence_at_reply" }
+   debug_log = "ZQM120: READBACK GAP effect_synchronous_actor_legitimacy_raw"
+   debug_log_scopes = yes
+   debug_log = "ZQM120: TEST DONE negative_natural_pam_observation"
+  }
+  else_if = { limit = { var:zqp_observation_days >= 12 } remove_character_flag = zqp_async_observing debug_log = "ZQM120: TEST FAIL bounded12_natural_reply_timeout" }
+  else = { trigger_event = { id = zqp120.2 days = 1 } }
+ }
+}

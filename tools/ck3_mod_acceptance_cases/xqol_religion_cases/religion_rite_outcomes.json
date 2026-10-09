@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "religion_rite_outcomes",
+  "acceptance_scope": "original_release7_and_two_rite_outcomes_only",
+  "formal_file_count": 27,
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQREL: SCOPE BEGIN actual_song_actor",
+    "ZQREL: SCOPE PASS actual_song_actor",
+    "ZQREL: SCOPE END actual_song_actor"
+  ],
+  "forbidden_startup": [
+    "ZQREL: TEST FAIL",
+    "ZQA: TEST FAIL",
+    "ZQA120: TEST FAIL",
+    "ZQRELITE: TEST FAIL"
+  ],
+  "required": [
+    "ZQRELITE: TEST BEGIN engine_startup",
+    "ZQA: TEST BEGIN xqol",
+    "ZQA: TEST PASS exact_build_song_emperor",
+    "ZQA: TEST PASS switched_to_supported_player",
+    "ZQRELITE: TEST PASS actual_song_actor_D0",
+    "ZQA: TEST READY release_priority_matrix",
+    "ZQA: TEST PASS release_priority_matrix",
+    "ZQA120: TEST PASS release_conversion_rite_matched",
+    "ZQA120: TEST READY accepted_conversion_rite",
+    "ZQA120: TEST PASS accepted_conversion_faith_and_rite",
+    "ZQRELITE: TEST DONE original_rite_outcomes_only"
+  ],
+  "forbidden": [
+    "ZQREL: TEST FAIL",
+    "ZQA: TEST FAIL",
+    "ZQA120: TEST FAIL",
+    "ZQRELITE: TEST FAIL"
+  ],
+  "expected_start_date_raw": 53144328,
+  "maximum_natural_days": 60,
+  "gaps": [
+    "Original -120 head_of_rite acceptance tooltip is not observed by this case.",
+    "Current shared Source09 exposes religion/Rite private queries only under explicit opt-in; the common host/manifest does not enable/admit them.",
+    "No arbitrary target Rite/Faith native reader or religion tooltip surface is claimed.",
+    "No GUI decision click, ordinary AI acceptance/reply or complete product release credit."
+  ],
+  "source_credit": "Exact original seven release outcomes plus deterministic production accepted-outcome faith+Rite callback, not ordinary AI reply or GUI",
+  "business_pass": false,
+  "product_release_pass": false
+}

@@ -36,6 +36,7 @@ class Focused(unittest.TestCase):
             plan=root/'readonly.json'
             prep.write_json(plan,{'steps':[{'tool':'ck3_take_snapshot'}]})
             selected=object.__new__(entry.Selection)
+            selected.opt_in_read_only_mcp_tools=[]
             selected.manifest={'host':{},'source_root':{},'source_index':{},'native_source_index':{},'native':{'dll':{},'injector':{}}}
             selected.shared_file=lambda row,label=None:host if label=='host' else root/'shared-input'
             selected.manifest_path_key=lambda *a:root/'shared-source'

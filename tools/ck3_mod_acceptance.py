@@ -31,6 +31,10 @@ SAVED_FLAGS = {
     "sha256": "--saved-campaign-save-sha256", "player_id": "--saved-campaign-player-id",
     "date_raw": "--saved-campaign-date-raw", "product_inventory": "--saved-campaign-product-inventory",
 }
+CASE_READ_ONLY_MCP_TOOLS = frozenset({
+    "ck3_query_player_religion_context_v1",
+    "ck3_query_player_religion_personal_parameters_v1",
+})
 SHA = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
@@ -107,6 +111,12 @@ class Selection:
         if len(cases) != 1:
             raise ValueError("Exactly one product case required")
         self.case = json.loads(json.dumps(cases[0]))
+        tools = self.case.get("opt_in_read_only_mcp_tools", [])
+        if (not isinstance(tools, list) or any(not isinstance(tool, str) for tool in tools)
+                or len(tools) != len(set(tools)) or not set(tools) <= CASE_READ_ONLY_MCP_TOOLS
+                or not set(tools) <= set(self.case.get("required_mcp_tools", []))):
+            raise ValueError("Case read-only opt-in must declare unique registered required MCP tools")
+        self.opt_in_read_only_mcp_tools = tools
         self.prepared_path = prepared_path.resolve() if prepared_path else None
         self.prepared = read_json(self.prepared_path) if self.prepared_path else None
         if self.prepared:
@@ -269,6 +279,8 @@ class Selection:
             self.saved = saved
         else:
             raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
+        for tool in self.opt_in_read_only_mcp_tools:
+            argv += ["--case-read-only-mcp-tool", tool]
         return argv
 
     def describe(self) -> dict:
@@ -276,6 +288,7 @@ class Selection:
                 "case": self.case["id"], "case_status": self.case.get("status"),
                 "shared_manifest": str(self.manifest_path), "run_id": self.values["run_id"],
                 "host_argv": self.argv, "required_mcp_tools": self.case.get("required_mcp_tools", []),
+                "opt_in_read_only_mcp_tools": self.opt_in_read_only_mcp_tools,
                 "runtime_environment": self.runtime_environment,
                 "phases": self.case.get("phases", []), "budgets": self.case["budgets"],
                 "fixture_prepare": self.case.get("fixture_prepare"),

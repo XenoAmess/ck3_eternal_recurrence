@@ -1,0 +1,840 @@
+{
+  "scope": "One fresh plan, at most twelve actual natural days; inherited immutable Song/PID/generation/pause guards, immediate FAIL rejection after each day. Active events stop the plan and require real UI; no automatic reply or callback.",
+  "steps": [
+    {
+      "id": "qol-ordinary-async-initial-map",
+      "tool": "ck3_take_snapshot",
+      "args": {},
+      "expect": {
+        "paused": true,
+        "map_ready": true,
+        "played_character.alive": true,
+        "played_character.source": "native",
+        "episode_projection": "native_campaign",
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-initial-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "args": {},
+      "continue_on_error": true
+    },
+    {
+      "id": "qol-ordinary-async-startup-proof",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+          "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+          "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+          "ZQN120: TEST READY ordinary_courtiers_valid",
+          "ZQN120: TEST BEGIN seeded_two_actual_async_replies",
+          "ZQN120: TEST BEGIN engine_startup"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+        "matches.0.line_count": 1,
+        "matches.1.literal": "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+        "matches.1.line_count": 1,
+        "matches.2.literal": "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+        "matches.2.line_count": 1,
+        "matches.3.literal": "ZQN120: TEST READY ordinary_courtiers_valid",
+        "matches.3.line_count": 1,
+        "matches.4.literal": "ZQN120: TEST BEGIN seeded_two_actual_async_replies",
+        "matches.4.line_count": 1,
+        "matches.5.literal": "ZQN120: TEST BEGIN engine_startup",
+        "matches.5.line_count": 1
+      }
+    },
+    {
+      "id": "qol-ordinary-async-initial-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day001",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day001-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day002",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day002-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day003",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day003-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day004",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day004-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day005",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day005-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day006",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day006-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day007",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day007-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day008",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day008-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day009",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day009-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day010",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day010-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day011",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day011-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day012",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300,
+      "expect": {
+        "requested_days": 1,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "before.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "before.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "before.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "before.episode_projection": "native_campaign",
+        "before.paused": true,
+        "before.map_ready": true,
+        "before.active_event": null,
+        "before.played_character.alive": true,
+        "before.played_character.source": "native",
+        "after.played_character.character_id": {
+          "$ref": "results.qol-ordinary-async-initial-map.played_character.character_id"
+        },
+        "after.diagnostics.bridge_pid": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.bridge_pid"
+        },
+        "after.diagnostics.connection_generation": {
+          "$ref": "results.qol-ordinary-async-initial-map.diagnostics.connection_generation"
+        },
+        "after.episode_projection": "native_campaign",
+        "after.paused": true,
+        "after.map_ready": true,
+        "after.active_event": null,
+        "after.played_character.alive": true,
+        "after.played_character.source": "native"
+      }
+    },
+    {
+      "id": "qol-ordinary-async-day012-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    },
+    {
+      "id": "qol-ordinary-async-final-results",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQN120: TEST PASS actual_accepted1_refused1_pending_removed",
+          "ZQN120: TEST PASS high_final_faith_and_rite",
+          "ZQN120: TEST PASS low_actual_refusal_original_faith_and_rite",
+          "ZQN120: TEST DONE ordinary_courtier_async_observation"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQN120: TEST PASS actual_accepted1_refused1_pending_removed",
+        "matches.0.line_count": 1,
+        "matches.1.literal": "ZQN120: TEST PASS high_final_faith_and_rite",
+        "matches.1.line_count": 1,
+        "matches.2.literal": "ZQN120: TEST PASS low_actual_refusal_original_faith_and_rite",
+        "matches.2.line_count": 1,
+        "matches.3.literal": "ZQN120: TEST DONE ordinary_courtier_async_observation",
+        "matches.3.line_count": 1
+      }
+    },
+    {
+      "id": "qol-ordinary-async-final-no-fail",
+      "tool": "ck3_query_engine_log_literals_v1",
+      "args": {
+        "log_name": "debug.log",
+        "literals": [
+          "ZQR120QUAL: TEST FAIL",
+          "ZQN120: TEST FAIL"
+        ],
+        "sample_limit": 2
+      },
+      "expect": {
+        "exists": true,
+        "matches.0.literal": "ZQR120QUAL: TEST FAIL",
+        "matches.0.line_count": 0,
+        "matches.1.literal": "ZQN120: TEST FAIL",
+        "matches.1.line_count": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "schema": "xar.ck3_12004.persisted_truce_expiry_abi.v1",
+  "status": "EXACT4_STATIC_SOURCE_CLOSED_RUNTIME_PENDING",
+  "build": {
+    "version": "1.20.0.4",
+    "steam_build": "25734779",
+    "executable_sha256_reused": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "chain": {
+    "source_name": "has_truce",
+    "name_rva": "0x47f9600",
+    "registration": "0x5aa350..0x5aa3e8",
+    "creator_slot1_rva": "0x2b75170",
+    "rtti": ".?AVCHasTruceTrigger@@",
+    "runtime_vtable_rva": "0x47fa708",
+    "actual_evaluator_slot": 25,
+    "evaluator": "0x2b71ad0..0x2b71c47",
+    "typed_character_scope": "Scope tag4, full-generation CCharacterID +8; manager+20/+2C and Character+18 equality. Scoped expression target verified Char tag.",
+    "lookup": {
+      "begin": "0x28bc250",
+      "end_exclusive": "0x28bc300",
+      "fragments": [
+        {
+          "begin_rva": "0x28bc250",
+          "end_rva_exclusive": "0x28bc279",
+          "size": 41,
+          "sha256": "8e075d9833436045e5bda0013c6f41a170e6fb7e5a34ed586953c7b54b4edd29",
+          "unwind_rva": "0x5131a5c"
+        },
+        {
+          "begin_rva": "0x28bc279",
+          "end_rva_exclusive": "0x28bc2e4",
+          "size": 107,
+          "sha256": "c4e681330acb9f985f08727f6fd6ead9648caa06320f685071b387cf9405eb3f",
+          "unwind_rva": "0x527f3cc"
+        },
+        {
+          "begin_rva": "0x28bc2e4",
+          "end_rva_exclusive": "0x28bc2f4",
+          "size": 16,
+          "sha256": "a21d62e1fa8221dbbb9489840beb4c216e444ed18af5a9c331f3f11da18df003",
+          "unwind_rva": "0x527f3e0"
+        },
+        {
+          "begin_rva": "0x28bc2f4",
+          "end_rva_exclusive": "0x28bc300",
+          "size": 12,
+          "sha256": "63edf77b47ec663c4eb405efdbd476dae7442e20687db74dc720a8f077a2d17a",
+          "unwind_rva": "0x527f3f4"
+        }
+      ],
+      "source_semantics": "RCX owner -> Character+1B0 pair map, vector+20/count+2C stride16, target full ID from RDX+18. Lower-bound lookup returns existing relation or static invalid default. Complete body has no calls, allocations, game-state writes or get-or-create."
+    }
+  },
+  "native_bindings": {
+    "has_truce": {
+      "begin_rva": "0x29131c0",
+      "end_rva_exclusive": "0x2913215",
+      "size": 85,
+      "sha256": "3c6546751ba40f6e675714f9ef75a3d06c4c75498536dd5f8beb1a47be95d33b"
+    },
+    "get_truce_end_date": {
+      "begin_rva": "0x2913220",
+      "end_rva_exclusive": "0x29132a6",
+      "size": 134,
+      "sha256": "6b990306cd505b5ff1a2f6e9113487af46039c0775889db28d9755ef59c154f0"
+    },
+    "abi": "x64 MSVC RCX valid current owner CCharacter*, RDX valid toward CCharacter*. HasTruce returns bool AL; getter returns const date32* RAX. No owning allocation or destructor.",
+    "source_use": [
+      "The named evaluator and standalone predicate use exactly the same actual lookup target, ActR relation tag at +210, owner full ID at Character+18 against relation+8/+C, directional date slots +28/+58, and invalid-date singleton RVA5C82A68.",
+      "The complete date-return method repeats the same relation validity/predicate test, selects the same owner direction, and returns the date slot address. Provider copies int32 only when both HasTruce reads are true.",
+      "GetTruceEndDate literal44DCF20 was found, but exact-name LEA/static-pointer locators produced no reference. We do not claim a named-date registration closure; date getter semantics are established by actual typed lookup/predicate/returned-slot instructions."
+    ]
+  },
+  "cost": {
+    "explicit_exe_bytes_including_failed_candidates": 4594,
+    "explicit_read_calls": 220,
+    "unique_executable_search_coverage_bytes": 96836786,
+    "query_coverage_sum_bytes": 205371854,
+    "searches": "has_truce literal .rdata1; named-reg xref3MiB16prefixpasses; date-name regex .rdata1; date-name xref .text16prefixpasses including prior3MiB; static date-name pointer .rdata/.data1; known readonly lookup direct-call .text1. Coverage is not claimed as only the few accepted bytes.",
+    "new_headers": 0,
+    "whole_exe_hashes": 0,
+    "whole_exe_reads": 0
+  },
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\EXACT-NAMED-REGISTRATION-FIRST-CANDIDATE-01.json",
+      "bytes": 1638,
+      "sha256": "0831231ace9e50b9aecf18f10ea821a1199f19c3834a91f0f81b01480c10a9b1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-NAMED-LOCATOR-02.json",
+      "bytes": 11785,
+      "sha256": "95d1688cae0b597a22e98695b3d04deacd67622a757413403aee0caed78baffb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-FACTORY-03.json",
+      "bytes": 11538,
+      "sha256": "186a47f75ae7f26b208fb559a173a3aed55affeb780274574aff2e6750dd6abd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\capture-evaluator-04.reads.jsonl",
+      "bytes": 5665,
+      "sha256": "f2c7a6d93d7250e6b583c46e20b77b269eb906eb03328f577008b077741f00a4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-VTABLE-05.json",
+      "bytes": 3210,
+      "sha256": "0159fa63bda65b9a07ced8ae943cfa2f0564a117e8bf689408d600e44a90225f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-TYPED-EVALUATOR-06.json",
+      "bytes": 24174,
+      "sha256": "ab53369064062259dd5822e9cbe8ebb68ff0620606bc262fce4a0c1c8804bc50"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-PAIR-LOOKUP-07.json",
+      "bytes": 9173,
+      "sha256": "a60de89adb27bacf97485c3a5e5f37c5804a31495a666fae72574bd35b61e9ee"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-PAIR-LOOKUP-TAIL-08.json",
+      "bytes": 13004,
+      "sha256": "bc9149f0ca385a2836a9a6a2c2522611859df8d55429ccbeaaff16090a4e3b7b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-PAIR-LOOKUP-FALLBACK-09.json",
+      "bytes": 8353,
+      "sha256": "7b80ef76474e91e80c36042e0e8955857417ac90b1b681afaa5762b2ec3556b5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-HAS-TRUCE-PAIR-LOOKUP-NULL-10.json",
+      "bytes": 7101,
+      "sha256": "710c0f04260802902d85b764d4cb7c2e11649304ec2351ac05dc8e50a9fa4d8e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-TRUCE-GETTER-NAME-CANDIDATES-11.json",
+      "bytes": 737,
+      "sha256": "d46797a5ba44a66ae6707adf1d8aff49eb2414640f4908ea0e530a6313aa3a66"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-GET-TRUCE-END-DATE-NAMED-REGISTRATION-12.json",
+      "bytes": 999,
+      "sha256": "65a0d315857a4f54ebf61258c1b41436e2c2e6c22790cc03ec52929a8cd1fff0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-GET-TRUCE-END-DATE-REMAINING-XREFS-13.json",
+      "bytes": 1061,
+      "sha256": "bb7ae2efea5d7bba94a7d79dab56577fc61c75967c861a94842cecdb1feb7ace"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-GET-TRUCE-END-DATE-STATIC-REFERENCE-14.json",
+      "bytes": 1054,
+      "sha256": "de32e30f8ca72b9a2f0034792a3b2537b2688ffcaad0b6997aed4beca048b213"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-READONLY-PAIR-LOOKUP-DIRECT-CALL-LOCATORS-15.json",
+      "bytes": 2884,
+      "sha256": "e448994db602ff30c347e3a1ad2c9cc5d35aee6b07230d370595523e454c077f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-TRUCE-SHORT-GETTER-CANDIDATES-16.json",
+      "bytes": 70377,
+      "sha256": "0b237727aff66c5e45efbcad25953fc888582d40d668792c03628b952be574a9"
+    }
+  ],
+  "boundaries": [
+    "Static source qualification only, no CK3 process, pipe, SDK, desktop or lease touched.",
+    "Historical1.19 addresses and duration predictions are not current build bindings.",
+    "No CWar dependency or native relation mutation.",
+    "After-termination persistence, actual present/absent query and game-loaded provider still require Root scheduled paused live acceptance.",
+    "Failed exact old registration and wrong generic slot27 hypothesis are preserved, not overwritten."
+  ],
+  "native_functions": [
+    {
+      "begin_rva": "0x29131c0",
+      "end_rva_exclusive": "0x2913215",
+      "size": 85,
+      "sha256": "3c6546751ba40f6e675714f9ef75a3d06c4c75498536dd5f8beb1a47be95d33b",
+      "hex": "40534883ec20488bd9e88290faff488bd081b8100200005274634175308b4b183b4808750b8b0d7df83603394828eb0e3b480c75188b056df836033942580f95c084c07408b0014883c4205bc332c04883c4205bc3"
+    },
+    {
+      "begin_rva": "0x2913220",
+      "end_rva_exclusive": "0x29132a6",
+      "size": 134,
+      "sha256": "6b990306cd505b5ff1a2f6e9113487af46039c0775889db28d9755ef59c154f0",
+      "hex": "40534883ec20488bd9e82290faff4c8bc081b81002000052746341755c8b4b18448b4808413bc975128b1519f836034883c0283910498d5058eb153b480c7539488d50588b05fef736033902498d4028410f95c24584d27420413bc97409413b480c7508488bc24885c07514488d05d5f736034883c4205bc3488d0518a137034883c4205bc3"
+    }
+  ],
+  "lookup_fragments": [
+    {
+      "begin_rva": "0x28bc250",
+      "end_rva_exclusive": "0x28bc279",
+      "size": 41,
+      "sha256": "8e075d9833436045e5bda0013c6f41a170e6fb7e5a34ed586953c7b54b4edd29",
+      "hex": "4883ec084c8b91b00100004d85d20f84900000004d634a2c4d8b52204d8bd949c1e3044d8bc24d03da"
+    },
+    {
+      "begin_rva": "0x28bc279",
+      "end_rva_exclusive": "0x28bc2e4",
+      "size": 107,
+      "sha256": "c4e681330acb9f985f08727f6fd6ead9648caa06320f685071b387cf9405eb3f",
+      "hex": "48891c248b5a18498bc24d85c97e340f1f840000000000498bd148d1ea4c2bca488bc24803c0498bc948c1e1044c8bca4903c841391cc04c0f42c1498bc04885d275d4493bc374233b18721f492bc248c1f80485c07814488b1c244863c84803c9498b44ca084883c408c3"
+    },
+    {
+      "begin_rva": "0x28bc2e4",
+      "end_rva_exclusive": "0x28bc2f4",
+      "size": 16,
+      "sha256": "a21d62e1fa8221dbbb9489840beb4c216e444ed18af5a9c331f3f11da18df003",
+      "hex": "488b0585b84603488b1c244883c408c3"
+    },
+    {
+      "begin_rva": "0x28bc2f4",
+      "end_rva_exclusive": "0x28bc300",
+      "size": 12,
+      "sha256": "63edf77b47ec663c4eb405efdbd476dae7442e20687db74dc720a8f077a2d17a",
+      "hex": "488b0575b846034883c408c3"
+    }
+  ],
+  "wording_clarification": {
+    "parent": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\g2-persisted-truce-current4-native-01\\ACTUAL4-PERSISTED-TRUCE-NATIVE-SOURCE-CLOSURE-17.json",
+      "bytes": 8709,
+      "sha256": "2977bcc02dd360735767bae7ce12a94b451569abbc88ca074902f9e230a0840e"
+    },
+    "meaning": "Readonly excludes game-state/relationship writes. Native stack saves/restores exist, e.g. 28BC279 mov [rsp],rbx. No new EXE reads or qualification performed."
+  }
+}

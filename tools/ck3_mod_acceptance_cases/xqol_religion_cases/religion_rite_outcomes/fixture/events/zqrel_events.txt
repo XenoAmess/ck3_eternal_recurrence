@@ -1,0 +1,27 @@
+namespace = zqrel
+zqrel.1 = {
+ type = character_event
+ hidden = yes
+ immediate = {
+  change_variable = { name = zqrel_ticks add = 1 }
+  if = {
+   limit = { var:zqrel_stage = 1 has_character_flag = zqa_await_release_matrix }
+   zqa_verify_release_matrix_effect = yes
+   set_variable = { name = zqrel_stage value = 2 }
+  }
+  else_if = {
+   limit = { var:zqrel_stage = 2 has_variable = zqa120_rite_subject }
+   zqa120_verify_accepted_rite_probe_effect = yes
+   set_variable = { name = zqrel_stage value = 99 }
+   debug_log = "ZQRELITE: TEST DONE original_rite_outcomes_only"
+  }
+  if = {
+   limit = { var:zqrel_stage < 99 }
+   if = {
+    limit = { var:zqrel_ticks < 60 }
+    trigger_event = { id = zqrel.1 days = 1 }
+   }
+   else = { debug_log = "ZQRELITE: TEST FAIL original_driver_timeout" }
+  }
+ }
+}

@@ -1,0 +1,49 @@
+﻿namespace = zqa120
+
+zqa120.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+        limit = { NOT = { has_character_flag = zqa_fixture_initialized } }
+        add_character_flag = zqa_initialize_pending
+        zqa_initialize_effect = yes
+        random_player = {
+            # Read-only common startup identity frame; original payment body follows unchanged.
+            if = {
+                limit = { is_ai = no is_alive = yes this = character:han_8052 has_title = title:h_china has_government = celestial_government is_independent_ruler = yes }
+                save_scope_as = xqol_startup_actor
+                debug_log = "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0"
+                debug_log_scopes = yes
+                debug_log = "ZQR120QUAL: TEST PASS actual_song_actor_D0"
+                debug_log = "ZQR120QUAL: SCOPE END actual_song_actor_D0"
+            }
+            else = { debug_log = "ZQR120QUAL: TEST FAIL actual_song_actor_D0" }
+            set_variable = { name = zqa120_stage value = 70 }
+            set_variable = { name = zqa120_ticks value = 0 }
+            trigger_event = { id = zqa120.2 days = 1 }
+        }
+        }
+    }
+}
+
+zqa120.2 = {
+ type = character_event
+ hidden = yes
+ immediate = {
+  if = {
+   limit = { var:zqa120_stage = 70 }
+   zqa120_strong_payment_boundary_effect = yes
+   zqa_setup_payment_matrix_effect = yes
+   save_scope_value_as = { name = zqa120_payment_expected_gold value = var:zqa_payment_expected_gold }
+   save_scope_value_as = { name = zqa120_payment_expected_count value = var:zqa_payment_expected_count }
+   xqol_bulk_demand_payment_full_effect = yes
+   zqa120_payment_full_diagnostic_effect = yes
+   zqa_verify_payment_full_effect = yes
+   xqol_bulk_demand_payment_any_effect = yes
+   zqa_verify_payment_any_effect = yes
+   set_variable = { name = zqa120_stage value = 99 }
+   debug_log = "ZQA120PAY: TEST DONE payment_only"
+  }
+ }
+}

@@ -1,0 +1,197 @@
+﻿# External isolated async callback fixture. Selector/UI and PAM rewards remain separate scope.
+zqn_initialize_effect = {
+ if = {
+  limit = { NOT = { has_character_flag = zqn_initialized } }
+  add_character_flag = zqn_initialized
+  character:han_8052 = { save_scope_as = zqn_song }
+  if = {
+   limit = { exists = scope:zqn_song scope:zqn_song = { is_ai = yes is_alive = yes has_title = title:h_china has_government = celestial_government is_independent_ruler = yes } }
+   set_player_character = scope:zqn_song
+   random_player = {
+    if = {
+     limit = { is_ai = no is_alive = yes this = character:han_8052 has_title = title:h_china has_government = celestial_government is_independent_ruler = yes NOT = { faith = faith:catholic } }
+     save_scope_as = actor
+     save_scope_as = puppet_or_actor
+     save_scope_as = xqol_startup_actor
+     debug_log = "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0"
+     debug_log_scopes = yes
+     debug_log = "ZQR120QUAL: TEST PASS actual_song_actor_D0"
+     debug_log = "ZQR120QUAL: SCOPE END actual_song_actor_D0"
+     zqnr_setup_self_ransom_effect = yes
+    }
+    else = { debug_log = "ZQR120QUAL: TEST FAIL actual_song_actor_D0" }
+   }
+  }
+  else = { debug_log = "ZQRS120: TEST FAIL named_song_initializer" }
+ }
+}
+
+
+# Extracted from zqa ransom setup/full/any; no conversion/release-terms matrix.
+# Test-only wallet construction writes only the two real self-payers' own gold.
+# No callback, transfer, release, hidden payer or doctrinal reward is fabricated.
+zqnr_setup_self_ransom_effect = {
+ save_scope_as = actor
+ save_scope_as = puppet_or_actor
+ random_vassal = {
+  limit = { is_ai = yes is_alive = yes is_adult = yes is_landed = yes is_imprisoned = no NOT = { is_at_war_with = root } }
+  save_scope_as = zqnr_full
+ }
+ random_vassal = {
+  limit = { is_ai = yes is_alive = yes is_adult = yes is_landed = yes is_imprisoned = no NOT = { this = scope:zqnr_full } NOT = { is_at_war_with = root } }
+  save_scope_as = zqnr_any
+ }
+ if = {
+  limit = { exists = scope:zqnr_full exists = scope:zqnr_any NOT = { dynasty ?= { has_dynasty_perk = fp1_pillage_legacy_3 } } }
+  every_prisoner = { release_from_prison = yes }
+  imprison = { target = scope:zqnr_full type = dungeon }
+  imprison = { target = scope:zqnr_any type = dungeon }
+  set_variable = { name = zqnr_full_target value = scope:zqnr_full }
+  set_variable = { name = zqnr_any_target value = scope:zqnr_any }
+  scope:zqnr_full = { remove_long_term_gold = gold add_gold = normal_ransom_cost_value }
+  scope:zqnr_any = { remove_long_term_gold = gold add_gold = 1 }
+  if = {
+   limit = {
+    is_character_interaction_valid = { recipient = scope:zqnr_full interaction = ransom_interaction }
+    is_character_interaction_potentially_accepted = { recipient = scope:zqnr_full interaction = ransom_interaction }
+    is_character_interaction_valid = { recipient = scope:zqnr_any interaction = ransom_interaction }
+    is_character_interaction_potentially_accepted = { recipient = scope:zqnr_any interaction = ransom_interaction }
+    scope:zqnr_full = { is_ruler = yes is_imprisoned_by = root xqol_ransom_payer_can_pay_full_trigger = yes normal_ransom_cost_value > 1 gold >= normal_ransom_cost_value NOT = { gold > normal_ransom_cost_value } }
+    scope:zqnr_any = { is_ruler = yes is_imprisoned_by = root xqol_ransom_payer_has_gold_trigger = yes NOT = { xqol_ransom_payer_can_pay_full_trigger = yes } normal_ransom_cost_value > 1 gold >= 1 NOT = { gold > 1 } }
+    NOT = { any_prisoner = { NOR = { this = root.var:zqnr_full_target this = root.var:zqnr_any_target } } }
+   }
+   debug_log = "ZQRS120: TEST READY normal_full_self_quote"
+   debug_log = "ZQRS120: TEST READY one_gold_self_quote"
+   debug_log = "ZQRS120: SCOPE BEGIN actual_self_payers_D0"
+   debug_log_scopes = yes
+   debug_log = "ZQRS120: SCOPE END actual_self_payers_D0"
+   add_character_flag = zqnr_dispatch_full_once
+   trigger_event = { id = zqn120.2 days = 1 }
+  }
+  else = { debug_log = "ZQRS120: TEST FAIL actual_self_ransom_validity_quote_wallet" }
+ }
+ else = { debug_log = "ZQRS120: TEST FAIL self_payers_missing_or_pillage_branch" }
+}
+
+zqnr_dispatch_full_effect = {
+ if = {
+  limit = { has_character_flag = zqnr_dispatch_full_once }
+  remove_character_flag = zqnr_dispatch_full_once
+  save_scope_as = actor
+  save_scope_as = puppet_or_actor
+  var:zqnr_full_target = { save_scope_as = recipient }
+  if = {
+   limit = {
+    var:zqnr_full_target = { is_alive = yes is_ruler = yes is_imprisoned_by = root xqol_ransom_payer_can_pay_full_trigger = yes gold >= normal_ransom_cost_value NOT = { gold > normal_ransom_cost_value } }
+    var:zqnr_any_target = { is_alive = yes is_ruler = yes is_imprisoned_by = root gold >= 1 NOT = { gold > 1 } NOT = { xqol_ransom_payer_can_pay_full_trigger = yes } }
+    is_character_interaction_potentially_accepted = { recipient = var:zqnr_full_target interaction = ransom_interaction }
+   }
+   set_variable = { name = zqnr_full_quote value = var:zqnr_full_target.normal_ransom_cost_value }
+   set_variable = { name = zqnr_full_wallet_before value = var:zqnr_full_target.gold }
+   set_variable = { name = zqnr_full_piety_before value = var:zqnr_full_target.piety }
+   set_variable = { name = zqnr_captor_full_before value = gold }
+   set_variable = { name = zqnr_expected_captor value = gold }
+   change_variable = { name = zqnr_expected_captor add = var:zqnr_full_target.normal_ransom_cost_value }
+   var:zqnr_full_target = {
+    if = { limit = { has_personal_tenet_flag = tenet_philanthropia_ransom_captives } debug_log = "ZQRS120: OBSERVED full_personal_philanthropia_yes" }
+    else = { debug_log = "ZQRS120: OBSERVED full_personal_philanthropia_no" }
+   }
+   set_variable = { name = zqnr_wait_days value = 0 }
+   add_character_flag = zqnr_wait_full
+   debug_log = "ZQRS120: SCOPE BEGIN full_quote_and_real_self_wallet_before"
+   debug_log_scopes = yes
+   debug_log = "ZQRS120: SCOPE END full_quote_and_real_self_wallet_before"
+   xqol_bulk_ransom_full_effect = yes
+   trigger_event = { id = zqn120.3 days = 1 }
+  }
+  else = { debug_log = "ZQRS120: TEST FAIL full_dispatch_fresh_quote_wallet_guard" }
+ }
+}
+
+zqnr_observe_effect = {
+ if = {
+  limit = { has_character_flag = zqnr_wait_full }
+  change_variable = { name = zqnr_wait_days add = 1 }
+  if = {
+   limit = { var:zqnr_full_target = { is_imprisoned = no } }
+   remove_character_flag = zqnr_wait_full
+   set_variable = { name = zqnr_full_wallet_after value = var:zqnr_full_target.gold }
+   set_variable = { name = zqnr_full_piety_after value = var:zqnr_full_target.piety }
+   set_variable = { name = zqnr_captor_full_after value = gold }
+   if = {
+    limit = {
+     var:xqol_last_bulk_ransom_count = 1 gold >= var:zqnr_expected_captor NOT = { gold > var:zqnr_expected_captor }
+     var:zqnr_full_target = { is_alive = yes is_ruler = yes is_imprisoned = no gold < 1 piety >= root.var:zqnr_full_piety_before NOT = { piety > root.var:zqnr_full_piety_before } }
+     var:zqnr_any_target = { is_alive = yes is_ruler = yes is_imprisoned_by = root gold >= 1 NOT = { gold > 1 } }
+    }
+    debug_log = "ZQRS120: TEST PASS normal_full_real_quote_transfer_release"
+    debug_log = "ZQRS120: TEST PASS full_self_piety_unchanged"
+    debug_log = "ZQRS120: SCOPE BEGIN full_real_wallet_after"
+    debug_log_scopes = yes
+    debug_log = "ZQRS120: SCOPE END full_real_wallet_after"
+    zqnr_dispatch_any_effect = yes
+   }
+   else = { debug_log = "ZQRS120: TEST FAIL normal_full_real_quote_transfer_release" }
+  }
+  else_if = { limit = { var:zqnr_wait_days >= 5 } remove_character_flag = zqnr_wait_full debug_log = "ZQRS120: TEST FAIL full_natural_release_timeout" }
+  else = { trigger_event = { id = zqn120.3 days = 1 } }
+ }
+ else_if = {
+  limit = { has_character_flag = zqnr_wait_any }
+  change_variable = { name = zqnr_wait_days add = 1 }
+  if = {
+   limit = { var:zqnr_any_target = { is_imprisoned = no } }
+   remove_character_flag = zqnr_wait_any
+   set_variable = { name = zqnr_any_wallet_after value = var:zqnr_any_target.gold }
+   set_variable = { name = zqnr_any_piety_after value = var:zqnr_any_target.piety }
+   set_variable = { name = zqnr_captor_any_after value = gold }
+   if = {
+    limit = {
+     var:xqol_last_bulk_ransom_count = 1 gold >= var:zqnr_expected_captor NOT = { gold > var:zqnr_expected_captor }
+     var:zqnr_any_target = { is_alive = yes is_ruler = yes is_imprisoned = no gold < 1 piety >= root.var:zqnr_any_piety_before NOT = { piety > root.var:zqnr_any_piety_before } }
+     var:zqnr_full_target = { is_alive = yes is_imprisoned = no }
+    }
+    debug_log = "ZQRS120: TEST PASS one_gold_real_transfer_release"
+    debug_log = "ZQRS120: TEST PASS any_self_piety_unchanged"
+    debug_log = "ZQRS120: TEST PASS real_landed_self_payer_redirect_exclusion"
+    debug_log = "ZQRS120: SCOPE BEGIN any_real_wallet_after"
+    debug_log_scopes = yes
+    debug_log = "ZQRS120: SCOPE END any_real_wallet_after"
+    debug_log = "ZQRS120: TEST DONE self_ransom_full_and_one_gold"
+   }
+   else = { debug_log = "ZQRS120: TEST FAIL one_gold_real_transfer_release" }
+  }
+  else_if = { limit = { var:zqnr_wait_days >= 6 } remove_character_flag = zqnr_wait_any debug_log = "ZQRS120: TEST FAIL any_natural_release_timeout" }
+  else = { trigger_event = { id = zqn120.3 days = 1 } }
+ }
+}
+
+zqnr_dispatch_any_effect = {
+ save_scope_as = actor
+ save_scope_as = puppet_or_actor
+ var:zqnr_any_target = { save_scope_as = recipient }
+ if = {
+  limit = {
+   var:zqnr_any_target = { is_ruler = yes is_imprisoned_by = root xqol_ransom_payer_has_gold_trigger = yes NOT = { xqol_ransom_payer_can_pay_full_trigger = yes } gold >= 1 NOT = { gold > 1 } normal_ransom_cost_value > 1 }
+   is_character_interaction_potentially_accepted = { recipient = var:zqnr_any_target interaction = ransom_interaction }
+  }
+  set_variable = { name = zqnr_any_quote value = var:zqnr_any_target.normal_ransom_cost_value }
+  set_variable = { name = zqnr_any_wallet_before value = var:zqnr_any_target.gold }
+  set_variable = { name = zqnr_any_piety_before value = var:zqnr_any_target.piety }
+  set_variable = { name = zqnr_captor_any_before value = gold }
+  set_variable = { name = zqnr_expected_captor value = gold }
+  change_variable = { name = zqnr_expected_captor add = 1 }
+  var:zqnr_any_target = {
+   if = { limit = { has_personal_tenet_flag = tenet_philanthropia_ransom_captives } debug_log = "ZQRS120: OBSERVED any_personal_philanthropia_yes" }
+   else = { debug_log = "ZQRS120: OBSERVED any_personal_philanthropia_no" }
+  }
+  set_variable = { name = zqnr_wait_days value = 0 }
+  add_character_flag = zqnr_wait_any
+  debug_log = "ZQRS120: SCOPE BEGIN any_quote_and_real_self_wallet_before"
+  debug_log_scopes = yes
+  debug_log = "ZQRS120: SCOPE END any_quote_and_real_self_wallet_before"
+  xqol_bulk_ransom_any_effect = yes
+  trigger_event = { id = zqn120.3 days = 1 }
+ }
+ else = { debug_log = "ZQRS120: TEST FAIL any_dispatch_fresh_quote_wallet_guard" }
+}

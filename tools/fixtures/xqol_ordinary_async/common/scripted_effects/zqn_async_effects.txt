@@ -1,0 +1,126 @@
+﻿# External isolated async callback fixture. Selector/UI and PAM rewards remain separate scope.
+zqn_initialize_effect = {
+ if = {
+  limit = { NOT = { has_character_flag = zqn_initialized } }
+  add_character_flag = zqn_initialized
+  character:han_8052 = { save_scope_as = zqn_song }
+  if = {
+   limit = { exists = scope:zqn_song scope:zqn_song = { is_ai = yes is_alive = yes has_title = title:h_china has_government = celestial_government is_independent_ruler = yes } }
+   set_player_character = scope:zqn_song
+   random_player = {
+    if = {
+     limit = { is_ai = no is_alive = yes this = character:han_8052 has_title = title:h_china has_government = celestial_government is_independent_ruler = yes NOT = { faith = faith:catholic } }
+     save_scope_as = actor
+     save_scope_as = puppet_or_actor
+     save_scope_as = xqol_startup_actor
+     debug_log = "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0"
+     debug_log_scopes = yes
+     debug_log = "ZQR120QUAL: TEST PASS actual_song_actor_D0"
+     debug_log = "ZQR120QUAL: SCOPE END actual_song_actor_D0"
+     zqn_setup_courtiers_effect = yes
+    }
+    else = { debug_log = "ZQR120QUAL: TEST FAIL actual_song_actor_D0" }
+   }
+  }
+  else = { debug_log = "ZQN120: TEST FAIL named_song_initializer" }
+ }
+}
+
+zqn_setup_courtiers_effect = {
+ create_character = {
+  name = "ZQN Natural Accept Courtier"
+  gender = male age = 30 random_traits = no
+  location = scope:actor.capital_province culture = scope:actor.culture
+  faith = faith:catholic trait = cynical trait = fickle
+  save_scope_as = zqn_high
+ }
+ create_character = {
+  name = "ZQN Natural Refuse Courtier"
+  gender = male age = 30 random_traits = no
+  location = scope:actor.capital_province culture = scope:actor.culture
+  faith = faith:catholic trait = zealous trait = stubborn
+  save_scope_as = zqn_low
+ }
+ add_courtier = scope:zqn_high
+ add_courtier = scope:zqn_low
+ scope:zqn_high = {
+  set_character_rite = rite:roman_rite
+  add_opinion = { target = scope:actor modifier = love_opinion opinion = 200 }
+ }
+ scope:zqn_low = {
+  set_character_rite = rite:roman_rite
+  add_opinion = { target = scope:actor modifier = hate_opinion opinion = -200 }
+ }
+ set_variable = { name = zqn_high value = scope:zqn_high }
+ set_variable = { name = zqn_low value = scope:zqn_low }
+ # Current formal decision reads draft, not only the final threshold variable.
+ set_variable = { name = xqol_mass_conversion_threshold_draft value = 50 }
+ if = {
+  limit = {
+   NOT = { has_variable = xqol_mass_conversion_pending }
+   NOT = { any_courtier = { has_character_flag = xqol_conversion_courtier_candidate } }
+   NOT = { any_vassal_or_below = { has_character_flag = xqol_conversion_ruler_candidate } }
+   NOT = { any_tributary = { has_character_flag = xqol_conversion_ruler_candidate } }
+   is_character_interaction_valid = { recipient = var:zqn_high interaction = xqol_mass_conversion_courtier_interaction }
+   is_character_interaction_valid = { recipient = var:zqn_low interaction = xqol_mass_conversion_courtier_interaction }
+   var:zqn_high = { is_ai = yes is_alive = yes is_landed = no faith = faith:catholic rite = rite:roman_rite }
+   var:zqn_low = { is_ai = yes is_alive = yes is_landed = no faith = faith:catholic rite = rite:roman_rite }
+  }
+  debug_log = "ZQN120: TEST READY ordinary_courtiers_valid"
+  zqn_seed_async_queue_effect = yes
+ }
+ else = { debug_log = "ZQN120: TEST FAIL ordinary_courtiers_valid" }
+}
+
+zqn_seed_async_queue_effect = {
+ # Seed only these two real recipients. This bypasses bulk selection, not AI responses.
+ # Do not award formal threshold/filter/UI coverage from this fixture.
+ set_variable = { name = xqol_mass_conversion_accepted value = 0 }
+ set_variable = { name = xqol_mass_conversion_refused value = 0 }
+ set_variable = { name = xqol_mass_conversion_pending value = 2 }
+ var:zqn_high = { add_character_flag = { flag = xqol_conversion_courtier_candidate days = 365 } }
+ var:zqn_low = { add_character_flag = { flag = xqol_conversion_courtier_candidate days = 365 } }
+ set_variable = { name = zqn_observation_days value = 0 }
+ add_character_flag = zqn_async_observing
+ debug_log = "ZQN120: TEST BEGIN seeded_two_actual_async_replies"
+ xqol_mass_conversion_dispatch_next_effect = yes
+ trigger_event = { id = zqn120.2 days = 1 }
+}
+
+zqn_observe_actual_replies_effect = {
+ if = {
+  limit = { has_character_flag = zqn_async_observing }
+  change_variable = { name = zqn_observation_days add = 1 }
+  if = {
+   limit = { NOT = { has_variable = xqol_mass_conversion_pending } }
+   remove_character_flag = zqn_async_observing
+   if = {
+    limit = { var:xqol_mass_conversion_accepted = 1 var:xqol_mass_conversion_refused = 1 }
+    debug_log = "ZQN120: TEST PASS actual_accepted1_refused1_pending_removed"
+   }
+   else = { debug_log = "ZQN120: TEST FAIL actual_accepted1_refused1_pending_removed" }
+   if = {
+    limit = { var:zqn_high = { faith = root.faith rite = root.rite } }
+    debug_log = "ZQN120: TEST PASS high_final_faith_and_rite"
+   }
+   else = { debug_log = "ZQN120: TEST FAIL high_final_faith_and_rite" }
+   if = {
+    limit = {
+     var:zqn_low = {
+      faith = faith:catholic rite = rite:roman_rite
+      has_opinion_modifier = { target = root modifier = demanded_my_conversion_opinion }
+     }
+    }
+    debug_log = "ZQN120: TEST PASS low_actual_refusal_original_faith_and_rite"
+   }
+   else = { debug_log = "ZQN120: TEST FAIL low_actual_refusal_original_faith_and_rite" }
+   debug_log = "ZQN120: TEST DONE ordinary_courtier_async_observation"
+  }
+  else_if = {
+   limit = { var:zqn_observation_days >= 12 }
+   remove_character_flag = zqn_async_observing
+   debug_log = "ZQN120: TEST FAIL async_reply_bounded_12_day_timeout"
+  }
+  else = { trigger_event = { id = zqn120.2 days = 1 } }
+ }
+}

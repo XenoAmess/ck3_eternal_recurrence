@@ -484,6 +484,15 @@ public:
     if (!IsCk3_12004Descriptor(*descriptor_)) return ReadPlayerClaimsV1Result::unavailable;
     return ck3_12004::ReadPlayerClaimsV1(bindings_.player_claims12004, ids, output);
   }
+  ReadRaiktorActualTruceExpiryResultV1 read_raiktor_actual_truce_expiry(
+      std::int32_t toward_character_id,
+      RaiktorActualTruceExpirySnapshotV1 &output) const noexcept override {
+    output = {};
+    if (!IsCk3_12004Descriptor(*descriptor_))
+      return ReadRaiktorActualTruceExpiryResultV1::unavailable;
+    return ck3_12004::ReadActualTruceExpiry12004(
+        bindings_.actual_truce_expiry12004, toward_character_id, output);
+  }
   ReadTitleHolderV1Result read_title_holder_v1(
       std::int32_t title_id, TitleHolderV1 &output) const noexcept override {
     output = {};

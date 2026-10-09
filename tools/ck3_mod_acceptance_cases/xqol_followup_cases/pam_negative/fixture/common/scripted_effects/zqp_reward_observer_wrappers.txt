@@ -1,0 +1,159 @@
+﻿# Only the two original stock effect bodies with before/after observation.
+conversion_tenet_acts_of_the_apostles_effect = {
+ scope:puppet_or_actor = {
+  if = {
+   limit = { has_character_flag = zqp_test_actor scope:recipient = var:zqp_target }
+   change_variable = { name = zqp_acts_calls add = 1 }
+   set_variable = { name = zqp_acts_before value = piety }
+   set_variable = { name = zqp_acts_legitimacy_level_before value = legitimacy_level }
+   set_variable = { name = zqp_acts_expected value = 0 }
+   if = { limit = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 } debug_log = "ZQM120: TEST PASS acts_sp_before_exact" }
+   else = { debug_log = "ZQM120: TEST FAIL acts_sp_before_exact" }
+   debug_log = "ZQM120: OBSERVE BEGIN acts_original_stock_reward"
+   debug_log_scopes = yes
+  }
+ }
+
+	scope:puppet_or_actor = {
+		if = {
+			limit = { # Legitimacy if core to the faith
+				rite = {
+					rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts
+				}
+				is_valid_for_legitimacy_change = yes
+			}
+			send_interface_toast = {
+				title = conversion_tenet_acts_of_the_apostles_effect_legitimacy_tt
+				left_icon = scope:puppet_or_actor
+				add_legitimacy = minor_legitimacy_gain
+			}
+		}
+		if = {
+			limit = { # SP if personal tenet - converting the mighty pays more
+				has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts
+				scope:recipient ?= { is_landed = yes }
+			}
+			send_interface_toast = {
+				title = conversion_tenet_acts_of_the_apostles_effect_sp_tt
+				left_icon = scope:puppet_or_actor
+				change_spiritual_fulfillment = major_spiritual_fulfillment_value
+			}
+		}
+		else_if = {
+			limit = {
+				has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts
+			}
+			send_interface_toast = {
+				title = conversion_tenet_acts_of_the_apostles_effect_sp_tt
+				left_icon = scope:puppet_or_actor
+				change_spiritual_fulfillment = minor_spiritual_fulfillment_value
+			}
+		}
+		if = {
+			limit = { # Piety if core to the faith, scaled steeply by the convert's rank
+				rite = { rite_has_parameter = tenet_acts_of_apostles_piety_from_converts }
+				scope:recipient ?= { highest_held_title_tier >= tier_barony }
+			}
+			send_interface_toast = {
+				title = conversion_tenet_acts_of_the_apostles_effect_piety_tt
+				left_icon = scope:puppet_or_actor
+				add_piety = pam_acts_conversion_piety_value
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:is_puppet_action ?= yes
+			scope:puppet_or_actor = {
+				rite = { rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts }
+				is_valid_for_legitimacy_change = yes
+			}
+		}
+		scope:actor = {
+			send_interface_toast = {
+				title = conversion_tenet_acts_of_the_apostles_effect_legitimacy_tt_puppeteer
+				left_icon = scope:puppet_or_actor
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:is_puppet_action ?= yes
+			scope:puppet_or_actor = { has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts }
+		}
+		scope:actor = {
+			send_interface_toast = {
+				title = conversion_tenet_acts_of_the_apostles_effect_sp_tt_puppeteer
+				left_icon = scope:puppet_or_actor
+			}
+		}
+	}
+
+ scope:puppet_or_actor = {
+  if = {
+   limit = { has_character_flag = zqp_test_actor scope:recipient = var:zqp_target }
+   set_variable = { name = zqp_acts_after value = piety }
+   set_variable = { name = zqp_acts_delta value = { value = piety subtract = var:zqp_acts_before } }
+   set_variable = { name = zqp_acts_legitimacy_level_after value = legitimacy_level }
+   if = { limit = { var:zqp_acts_calls > 1 } debug_log = "ZQM120: TEST FAIL duplicate_acts_reward_call" }
+   if = { limit = { spiritual_fulfillment >= var:zqp_sp_acts_expected spiritual_fulfillment <= var:zqp_sp_acts_expected } debug_log = "ZQM120: TEST PASS acts_sp_after_exact" }
+   else = { debug_log = "ZQM120: TEST FAIL acts_sp_after_exact" }
+   debug_log_scopes = yes
+   debug_log = "ZQM120: OBSERVE END acts_original_stock_reward"
+  }
+ }
+}
+
+conversion_tenet_mendicant_preachers_effect = {
+ scope:puppet_or_actor = {
+  if = {
+   limit = { has_character_flag = zqp_test_actor scope:recipient = var:zqp_target }
+   change_variable = { name = zqp_mendicant_calls add = 1 }
+   set_variable = { name = zqp_mendicant_before value = piety }
+   set_variable = { name = zqp_mendicant_legitimacy_level_before value = legitimacy_level }
+   if = { limit = { spiritual_fulfillment >= var:zqp_sp_acts_expected spiritual_fulfillment <= var:zqp_sp_acts_expected } debug_log = "ZQM120: TEST PASS mendicant_sp_before_exact" }
+   else = { debug_log = "ZQM120: TEST FAIL mendicant_sp_before_exact" }
+   debug_log = "ZQM120: OBSERVE BEGIN mendicant_original_stock_reward"
+   debug_log_scopes = yes
+  }
+ }
+
+	scope:puppet_or_actor = {
+		if = {
+			limit = {
+				has_personal_tenet_flag = tenet_mendicant_preachers_conversion_fulfillment
+			}
+			send_interface_toast = {
+				title = conversion_tenet_mendicant_preachers_effect_sp_tt
+				left_icon = scope:puppet_or_actor
+				change_spiritual_fulfillment = minor_spiritual_fulfillment_value
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:is_puppet_action ?= yes
+			scope:puppet_or_actor = { has_personal_tenet_flag = tenet_mendicant_preachers_conversion_fulfillment }
+		}
+		scope:actor = {
+			send_interface_toast = {
+				title = conversion_tenet_mendicant_preachers_effect_sp_tt_puppeteer
+				left_icon = scope:puppet_or_actor
+			}
+		}
+	}
+
+ scope:puppet_or_actor = {
+  if = {
+   limit = { has_character_flag = zqp_test_actor scope:recipient = var:zqp_target }
+   set_variable = { name = zqp_mendicant_after value = piety }
+   set_variable = { name = zqp_mendicant_delta value = { value = piety subtract = var:zqp_mendicant_before } }
+   set_variable = { name = zqp_mendicant_legitimacy_level_after value = legitimacy_level }
+   if = { limit = { var:zqp_mendicant_calls > 1 } debug_log = "ZQM120: TEST FAIL duplicate_mendicant_reward_call" }
+   if = { limit = { spiritual_fulfillment >= var:zqp_sp_total_expected spiritual_fulfillment <= var:zqp_sp_total_expected } debug_log = "ZQM120: TEST PASS mendicant_sp_after_exact" }
+   else = { debug_log = "ZQM120: TEST FAIL mendicant_sp_after_exact" }
+   debug_log_scopes = yes
+   debug_log = "ZQM120: OBSERVE END mendicant_original_stock_reward"
+  }
+ }
+}
