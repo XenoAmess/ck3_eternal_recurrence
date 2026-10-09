@@ -306,6 +306,7 @@ class Focused(unittest.TestCase):
                 path.write_text('synthetic-source')
             config=root/'runtime.json';products=root/'products.json';prepared=root/'prepared.json'
             bus=root/'bus/bin/bus.py';bus.parent.mkdir(parents=True);bus.write_text('synthetic-bus')
+            (bus.parents[1]/'events.jsonl').write_text('')
             keeper=root/'keeper.py';keeper.write_text('synthetic-keeper');launcher=root/'launcher.py';launcher.write_text('synthetic-launcher')
             queue=root/'queue.py';queue.write_text('synthetic-queue')
             for path in (config,products,prepared):path.write_text('{}')
@@ -316,10 +317,12 @@ class Focused(unittest.TestCase):
                 'shutdown':{'ok':True,'cleanup_proven':True,'tree_gone':True,'job_active_processes_final':0,'contract_errors':[],
                 'final_ck3_inventory':{'tasklist_returncode':0,'tasklist_pids':[],'wmi_pids':[],'native_pids':[],'processes':[]},
                 'control_files_absent':{'ck3.json':True}}}}}
-            prep.write_json(prior/'frozen-argv.json',{'screen_task':'old'});prep.write_json(prior/'native-report.json',report)
+            prep.write_json(prior/'frozen-argv.json',{'screen_task':'old','run_id':'synthetic-previous',
+                'identity_allocation':{'machine_id':'synthetic-machine','state_root':str(root/'ids')}})
+            prep.write_json(prior/'native-report.json',report)
             previous_keeper=root/'prior-keeper';previous_keeper.mkdir();prep.write_json(previous_keeper/'report.json',{'task_id':'old','thread_exited':True,'last_sequence':2})
             release=root/'release.json';prep.write_json(release,{'ok':True,'schema':'codex.task_bus.v1','task':{'task_id':'old','state':'done','resources':[],'last_sequence':3}})
-            selected=SimpleNamespace(prepared_path=prepared,context={},runtime_path=config,products_path=products,
+            selected=SimpleNamespace(prepared_path=prepared,context={},runtime_path=config,manifest_path=config,products_path=products,
                 product_key='synthetic',product={'runtime_mod_key':'synthetic'},case={'id':'basic'},state_dir=state,adapter_path=None,
                 locations={'python':Path(sys.executable),'repo_root':repo,'artifacts_root':root/'live'},
                 runtime={'allocation':{'task_bus':entry.pin(bus),'screen_keeper':entry.pin(keeper),'lease_repo':str(lease),'task_prefix':'test-'},
@@ -331,7 +334,10 @@ class Focused(unittest.TestCase):
             args=SimpleNamespace(attempt='a999',keeper_output=root/'keeper-output',previous_live=prior,previous_keeper=previous_keeper,
                                   previous_release=release,latest_screen_release=None)
             identity=SimpleNamespace(run_id='synthetic-R0001',mod_key='synthetic',execution_id='synthetic-exec')
-            ids=SimpleNamespace(current_machine_id=lambda:'synthetic-machine',default_state_root=lambda:root/'ids',allocate_live_run_id=lambda *a,**k:identity)
+            ids=SimpleNamespace(current_machine_id=lambda:'synthetic-machine',default_state_root=lambda:root/'ids',
+                allocate_live_run_id=lambda *a,**k:identity,MACHINE_ENV='XAR_CK3_MACHINE_ID',
+                STATE_ROOT_ENV='XAR_CK3_LIVE_RUN_STATE_ROOT',_automatic_machine_token=lambda:'machine-id:synthetic',
+                derive_machine_id=lambda *a:'synthetic-machine',_exclusive_file_lock=lambda *a:contextlib.nullcontext())
             sequence=[]
             def run(argv,**kwargs):
                 if argv[0]=='git':return SimpleNamespace(stdout=b'',returncode=0)
@@ -350,6 +356,8 @@ class Focused(unittest.TestCase):
             process_provider=SimpleNamespace(process_iter=lambda fields:[],
                 Process=lambda pid:SimpleNamespace(create_time=lambda:1.0))
             with (patch.dict(sys.modules,{'ck3_live_run_id':ids,'psutil':process_provider}),
+                 patch.dict(allocation.os.environ,{ids.MACHINE_ENV:'',ids.STATE_ROOT_ENV:''}),
+                 patch.object(allocation,'current_screen_absent',return_value={'tasks':[]}),
                  patch.object(allocation,'Selection',return_value=actual),
                  patch.object(allocation.subprocess,'run',side_effect=run),
                  patch.object(allocation.subprocess,'Popen',side_effect=popen)):

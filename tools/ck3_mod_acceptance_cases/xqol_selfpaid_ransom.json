@@ -82,16 +82,16 @@
       "sha256": "a1ea0a8999829c440b0db443503960314bbcef605f63c15def5a084ebb8de5c0"
     },
     "xqol_followup_cases/selfpaid_ransom/fixture/common/scripted_effects/zqn_async_effects.txt": {
-      "bytes": 10868,
-      "sha256": "a926997ce70e60794980c163cf9f4b917614b31762e25954c5b4da4d79c9feab"
+      "bytes": 11173,
+      "sha256": "5e7c5559ecac5292b3bddeb666bb481dbc122ba8d7d537dfc8ef026353cc2587"
     },
     "xqol_followup_cases/selfpaid_ransom/fixture/descriptor.mod": {
       "bytes": 106,
       "sha256": "5ff188d2a7a81746ab2f0bf31d2ff6b838b1c1590da7604550e2cc382efc5524"
     },
     "xqol_followup_cases/selfpaid_ransom/fixture/events/zqn_async_events.txt": {
-      "bytes": 309,
-      "sha256": "d99e8c587ee64aecdd2bb25e1adc180d944a51013786772b953b483e542195bd"
+      "bytes": 369,
+      "sha256": "a89f5b929446ac9383333a54da207285ee124c1f10abad37b6e3d72e80aa0838"
     },
     "xqol_followup_cases/selfpaid_ransom/frontend-rules-plan.json": {
       "bytes": 179,

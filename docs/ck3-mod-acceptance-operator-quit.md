@@ -1,5 +1,11 @@
 # 公共验收的正常退出与单一 GUI 操作者
 
+## R39/R40后继修复
+
+R39的原图到action0016请求相隔290.916秒，原60秒mapper在点击前拒绝。共用`tools/ck3_mod_acceptance_template_click.py`因此提供一次fresh-template动作：操作者真正审阅的原图只用于目标和有意义pane/context模板，当次fresh图必须唯一匹配并保持像素及相对布局，随后调用原canonical mapper点一次，保存前后原图和真实回执。`xqol_ui`与公共mailbox接入`template-click`；实际业务仍由原native读回和adapter判定，结果明确automation、无human review或business PASS，不自动重试。8项离线检查PASS不等于实机资格。
+
+R40启动资格错误发生在原wait_hold保留HANDLE之前，导致finally漏接退出。公共接管修复在实际hold/control/PID存在时先retain真实句柄再保留原错误；错误先于hold发布时只在本次原readiness期限内等待真实hold，无control/已结束/未启动不制造身份。首次helper派发前复用已有bring_forward聚焦唯一实际CK3 HWND，重新读回PID/ctime/控件焦点与keeper所有权，已消费的请求不重试。16项定向检查PASS。原strict native0、业务error门、normal_close资格和预算不变：R40虽正常GUI退出且OS0，顶层error仍使strict proof为NULL，不能提交finish_hold或改称PASS。Song intro modal不在现有quill模板路线范围内，仍按真实原图/canonical回执走正常菜单收尾。
+
 本功能由 QOL R37 的实际工具调用间隔耗尽 hold1800 触发。它复用同一公共 Selection、CaseClient、host 和 native，不为产品建立另一套运行时。源码与定向测试完成不等于 GUI 实机通过。
 
 ## 普通 GUI 自动退出

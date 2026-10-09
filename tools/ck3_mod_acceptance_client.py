@@ -146,11 +146,16 @@ class CaseClient:
         preparation = (self.selection.prepared or {}).get('preparation', {})
         budget = 'timeout' if preparation.get('initial_plan_original_business') is True else 'readiness_timeout'
         limit = time.monotonic() + self.selection.case['budgets'][budget]
+        self._readiness_limit = limit
         while time.monotonic() < limit:
             try:
-                report = self.read_report()
+                report = self.read_report(allow_error=True)
             except FileNotFoundError:
                 time.sleep(.1); continue
+            # A failed original startup can already own a real held process.
+            # Retain it before the unchanged business-error gate rejects entry.
+            self.retain_held_process(report)
+            report = self.read_report()
             require(not report.get('finished_at'), 'Shared host ended before case entry')
             if report.get('phase') == 'hold' and all(row.get('finished_at') for row in report.get('steps', [])):
                 self.guard()
@@ -158,6 +163,29 @@ class CaseClient:
                 return report
             time.sleep(.1)
         raise TimeoutError('Original case readiness budget elapsed')
+
+    def retain_held_process(self, report=None, *, wait=False):
+        """Retain only an actual allocated hold; never manufacture a launch."""
+        while True:
+            if report is None:
+                try:
+                    report = self.read_report(allow_error=True)
+                except FileNotFoundError:
+                    return False
+            if (report.get('finished_at') or report.get('hold_finished_by_control_plan') or
+                    not (self.state / 'control/ck3.json').is_file()):
+                return False
+            if report.get('phase') == 'hold':
+                if self._handle is None:
+                    self.retain_process()
+                return self._handle is not None
+            # Reuse only the readiness interval already started by wait_hold.
+            # A new cleanup attempt must not create or extend that interval.
+            if (not wait or time.monotonic() >= getattr(self, '_readiness_limit', time.monotonic()) or
+                    self.remaining() <= 0):
+                return False
+            time.sleep(.1)
+            report = None
 
     def await_steps(self, steps, timeout=None, reserve=90):
         limit = time.monotonic() + (timeout or self.selection.case['budgets']['command_timeout'])
@@ -298,7 +326,9 @@ class CaseClient:
             return self._process
         import ctypes, psutil
         control = self.state / 'control/ck3.json'
-        pid = read_json(control)['ck3_pid']
+        record = read_json(control)
+        pid = record['ck3_pid']
+        require(type(pid) is int and pid > 0, 'Actual managed CK3 PID is invalid')
         process = psutil.Process(pid)
         require(process.name().lower() == 'ck3.exe', 'Managed PID is not CK3')
         creation = process.create_time()
@@ -311,7 +341,8 @@ class CaseClient:
         kernel.GetExitCodeProcess.restype = ctypes.c_int
         kernel.CloseHandle.argtypes = [ctypes.c_void_p]
         handle = kernel.OpenProcess(0x100000|0x1000,False,pid)
-        require(handle and psutil.Process(pid).create_time() == creation, 'Actual process changed during handle acquisition')
+        require(handle and psutil.Process(pid).create_time() == creation and read_json(control) == record,
+                'Actual process/control changed during handle acquisition')
         self._handle, self._kernel = handle, kernel
         self._process = {'pid':pid,'create_time':creation,'retained_synchronize_query_handle_acquired':True}
         self.checkpoint('retained-current-process-identity',self._process)
@@ -334,7 +365,11 @@ class CaseClient:
         require(self.remaining() > 0, 'Original normal Quit deadline expired')
         for row in config.values():check_pin(Path(row['path']), row)
         result_path = self.output/'normal-quit-automation-result.json'
-        require(not result_path.exists(), 'Normal Quit automation already consumed; never replay')
+        require(not result_path.exists() and not (self.output/'normal-quit-automation-dispatch.json').exists() and
+                not (self.live/'case-output/normal-quit-template-automation-once.intent.json').exists() and
+                not (self.output/'normal-quit-template-route-01').exists(),
+                'Normal Quit automation already consumed; never replay')
+        self.focus_retained_process_for_quit()
         argv = [str(self.selection.locations['python']), '-B', '-X', 'utf8', config['helper']['path'],
             '--repo-root', str(self.selection.locations['repo_root']),
             '--matcher', config['matcher']['path'], '--matcher-bytes', str(config['matcher']['bytes']),
@@ -351,6 +386,58 @@ class CaseClient:
         with (self.output/'normal-quit-automation.stdout.log').open('xb') as stdout, (self.output/'normal-quit-automation.stderr.log').open('xb') as stderr:
             return subprocess.Popen(argv, cwd=self.selection.locations['repo_root'], env=environment,
                                     stdout=stdout, stderr=stderr)
+
+    def focus_retained_process_for_quit(self):
+        """Focus the sole visible window of the retained process, without input."""
+        import psutil, win32gui, win32process
+        import desktop_coordinate_map as coords
+        from record_native_capability_segment import bring_forward
+        require(self._handle is not None and self._process is not None, 'Actual retained process required for Quit focus')
+        require(not (self.output/'normal-quit-foreground.json').exists(), 'Quit focus already consumed; never replay')
+        pid, creation = self._process['pid'], self._process['create_time']
+
+        def guard_owner():
+            require(self.remaining() > 0, 'Original Quit deadline reached; no focus or extension')
+            actual = psutil.Process(pid)
+            require(actual.name().lower() == 'ck3.exe' and actual.create_time() == creation and
+                    read_json(self.state/'control/ck3.json').get('ck3_pid') == pid,
+                    'Actual retained PID/create-time/control changed before Quit focus')
+            lease = json.loads((self.keeper/'journal.jsonl').read_text(encoding='utf-8').splitlines()[-1])
+            require(lease.get('result') == 'OWNED_CAS' and lease['lease']['task_id'] == self.frozen['screen_task'] and
+                    not (self.keeper/'report.json').exists(), 'Original keeper no longer owns Quit focus')
+
+        guard_owner()
+        windows = []
+        def collect(hwnd, _):
+            if win32gui.IsWindowVisible(hwnd) and win32process.GetWindowThreadProcessId(hwnd)[1] == pid:
+                windows.append(hwnd)
+        win32gui.EnumWindows(collect, None)
+        require(len(windows) == 1, 'Retained CK3 must own exactly one visible HWND; no focus guess')
+        hwnd = windows[0]
+        before = coords.foreground_state()
+        activation_error = None
+        guard_owner()
+        require(win32gui.IsWindowVisible(hwnd) and win32process.GetWindowThreadProcessId(hwnd)[1] == pid,
+                'Actual Quit HWND ownership changed before focus')
+        if before['foreground_hwnd'] != hwnd or before['foreground_pid'] != pid or not before['focus_hwnd']:
+            try:
+                bring_forward(hwnd)  # Existing native focus primitive: no mouse or keyboard.
+            except Exception as error:
+                activation_error = type(error).__name__ + ': ' + str(error)
+        limit = min(time.time() + 2, self._hold)
+        while True:
+            guard_owner()
+            after = coords.foreground_state()
+            success = (after['foreground_hwnd'] == hwnd and after['foreground_pid'] == pid and after['focus_hwnd'] > 0)
+            if success or time.time() >= limit:
+                break
+            time.sleep(.05)
+        receipt = {'pid':pid, 'create_time':creation, 'hwnd':hwnd, 'before':before, 'after':after,
+            'success':success, 'activation_error':activation_error, 'original_hold_deadline':self._hold,
+            'mouse_or_keyboard_input':False, 'human_review_claimed':False, 'business_pass':False}
+        self.checkpoint('normal-quit-foreground', receipt)
+        require(success, 'Actual retained CK3 foreground/focus was not observed; no helper dispatch')
+        return receipt
 
     def validate_normal_quit_automation(self, value, request, config):
         from ck3_mod_acceptance import check_pin

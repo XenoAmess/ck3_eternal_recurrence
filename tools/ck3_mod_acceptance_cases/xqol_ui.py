@@ -140,7 +140,7 @@ class Controller:
             write(self.out/('await-'+str(self.seq).zfill(4)+'.json'),{'sequence':self.seq,'run_id':self.live.name,'operator_reviewer':self.operator_reviewer,
               'stage':STAGES[self.stage] if self.stage<len(STAGES) else 'all-records-present',
               'original_png':scene,'deadline':self.deadline,'remaining_seconds':self.remaining(),'request_path':str(self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')),
-              'actions':['click','move','drag','scroll','typed','record','gap','finish'],'no_business_result_from_input_ACK':True})
+              'actions':['click','template-click','move','drag','scroll','typed','record','gap','finish'],'no_business_result_from_input_ACK':True})
             print('QOL_SAME_LIVE_SCENE '+str(self.out/('await-'+str(self.seq).zfill(4)+'.json')),flush=True)
     def source_guard(self,req):
             require(req.get('reviewer')==self.operator_reviewer and req.get('run_id')==self.live.name and req.get('sequence')==self.seq,'Request is not current operator custody')
@@ -148,6 +148,14 @@ class Controller:
             require(pin(self.latest['path'])==req['source'],'Root reviewed PNG changed')
             self.guard()
     def mouse(self,req,prefix):
+            if req['action']=='template-click':
+                import ck3_mod_acceptance_gui_template as matcher
+                from ck3_mod_acceptance_template_click import execute
+                execute(source=req['source'],payload={key:req[key] for key in ('target','layout')},
+                    output=self.out/(prefix+'-template-click'),desktop=self.gui,guard=self.guard,
+                    coords=self.coords,matcher=matcher,expected_hwnd=self.hwnd,pid=self.pid,create_time=self.ctime,
+                    reviewer=self.operator_reviewer,run_id=self.frozen['run_id'],original_deadline=self.deadline)
+                self.typed('snapshot',{},prefix+'-independent-native-after');return
             preview=req.get('preview');point=req.get('point')
             require(isinstance(preview,list) and len(preview)==4 and isinstance(point,list) and len(point)==2,'Explicit actual preview rectangle and point required')
             if req['action'] in ('drag','scroll'):
@@ -254,7 +262,7 @@ class Controller:
                     request=self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')
                     if not request.is_file():self.guard();time.sleep(.25);continue
                     req=read(request);self.source_guard(req);action=req.get('action');prefix='action-'+str(self.seq).zfill(4)
-                    if action in ('click','move','drag','scroll'):self.mouse(req,prefix)
+                    if action in ('click','template-click','move','drag','scroll'):self.mouse(req,prefix)
                     elif action=='typed':
                         self.typed(req['typed_action'],req.get('arguments',{}),prefix)
                         if req['typed_action']!='snapshot':self.typed('snapshot',{},prefix+'-independent-native-after')

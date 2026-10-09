@@ -1,5 +1,19 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 03:55：R39/R40失败保全，公共修复与后续用例
+
+正式发布仍 **7/10（70%）**。R0039/a139的action0016在截图后290.916秒提交，原60秒检查在点击前拒绝，records0/GAP8、slider无信用；公共自动Quit成功，实际verify2且normal_close_qualified=true，keeper实际0、[CAS7897](C:/workspace/ck3-upgrade-20261006/resume-root-01/a139-screen-release-01.json)已释放。原失败不覆盖。
+
+Root随后明确授权`/root/qol_original_cells_runner`独占现场连续运行七个既有非GUI用例，逐场以真实身份亲审离线移动帧和两个nonce。第一场R0040/a140 selfpaid_ransom于03:38:51实际发出`TEST FAIL actual_self_ransom_validity_quote_wallet`，生产赎金和初始业务计划均未执行。日志证明current=Song34422、事件ROOT=Robert31254，夹具却以旧ROOT读囚犯及变量。已采用的最小修复明确保存实际actor scope并让原事件从该scope执行，保留原报价、钱包、囚犯、接受度、交易后态、31步和日数；旧fixture和单次ledger不改，修复范围另建prepare补验。PAM正负没有同类ROOT引用，未因该失败重写其原输入。
+
+R40暴露公共失败接管缺口：启动错误早于retain HANDLE，使原finally漏正常Quit；原模板又因Steam焦点及intro modal分别在输入前拒绝。现场线程使用新原图及canonical mapped receipts正常菜单退出、取消自动存档，真实retained HANDLE于03:46:35退出0。原host error使严格native0 predicate保持NULL，故没有finish_hold或normal-close资格；原600秒hold于03:48:53结束，managed/thread/cleanup及空树成立、keeper实际0、[CAS7915与完整闭场回执](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/R40-SELFPAID-RANSOM-CLOSED-FAILURE-01.json)已回交。现采用公共pre-retain/真实hold/首次唯一HWND聚焦修复，16项定向PASS；严格success proof与错误仍保留，intro退出模板范围仍有限。
+
+R39等待问题另采用共用fresh-template click：旧已审原图仅提供目标和pane模板，实际在同一次调用中取新图、复用matcher与canonical mapper点一次，原60秒/期限/业务断言不变；8项离线PASS，不授GUI或业务信用。采用后五个相关公共模块整合检查实际41项PASS（5.395秒），新template检查也已接入官方CI。详情见[公共退出及操作接点](ck3-mod-acceptance-operator-quit.md)。
+
+361已实际普通build0、strict1034文件核对0、公共prepare0，合计约15秒；[实际三步及pins](C:/workspace/ck3-upgrade-20261010/361-release031-execution-01/ROOT-361-031-ACTUAL-BUILD-VERIFY-PREPARE-01.md)保持原398标记、三GUI、14日和预算，尚未实机/tag/发布，仍最后验收。单一未来Source11+现成Native08保留truce/title/PAM，两个真实注册组合检查PASS，无DLL重编或G2 live信用，见[共同候选](C:/workspace/ck3-upgrade-20261010/g2-next-common-runtime-01/ROOT-ONE-FUTURE-SHARED-RUNTIME-15.md)。新版任命窗口title-group归一化及候选/评分MCP继续同底座施工，现役Source10/FINAL11/B13未替换。
+
+共同文案及361草稿已fetch/rebase/普通push `ddef5cd4e954d62cf385eb4fccb0d8d25bdd9b28`；[CI37980881831](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37980881831)在共享检查通过后实际失败于旧allocation mock缺少新增machine接口。最小测试修复单项PASS并已采用，生产准入不变，待本次后继CI。QOL玩家版Notes与匹配匿名verifier已外置冻结3079字符/31行/4243B，SHA256 `07bf10c09b9baf806f468cab15b8c2bad874bdb8b6de201fe79acefd3eb951f2`，[离线检查0](C:/workspace/ck3-upgrade-20261010/qol-final-player-text-ready-01/ROOT-READY-RECEIPT-01.json)，尚未canonical采用或提交公开。
+
 ## 2026-10-10 R38公共自动退出实机合格，R39明确委派
 
 QOL 原 `prison_payment` 的 R0038/a138 已实际完成：原五步与完整24小时自然日、10个required各一次、3个forbidden为0；公共run实际exit0、[verify实际exit0](C:/workspace/ck3-upgrade-20261010/qol-prison-payment-bound13-live-01/actual-common-verify-01.json)，`case_acceptance_pass=true`，不授整个QOL release PASS。公共模板自动退出首次实机资格为真：`root_normal_gui_review=NULL`、actor=`template-automation`，未声称人工审阅；保留HANDLE实测OS0、共同native0、thread/cleanup与无host error齐备，host于Oct10 **02:36:28.785040 CST**结束。keeper实际0，最后7866后[CAS7867](C:/workspace/ck3-upgrade-20261006/resume-root-01/a138-screen-release-01.json)于02:53:58实际done/resources=[]。原R37/UI0/25与失败不变。

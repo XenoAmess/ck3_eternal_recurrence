@@ -560,7 +560,7 @@ class Selection:
                 result['case_error']=failure
             finally:
                 try:
-                    if client._handle is not None:
+                    if client._handle is not None or client.retain_held_process(wait=True):
                         result['normal_close']=client.normal_close('business_failure_preserved' if failure else 'actual_case_evidence_recorded')
                 except BaseException as error:
                     result['normal_close_error']=type(error).__name__+': '+str(error)

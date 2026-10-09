@@ -12,6 +12,7 @@ import time
 
 FIELDS = {
     'typed': ({'typed_action'}, {'typed_action', 'arguments'}),
+    'template-click': ({'target', 'layout'}, {'target', 'layout'}),
     'click': ({'preview', 'point'}, {'preview', 'point', 'button'}),
     'move': ({'preview', 'point', 'reviewed_region'}, {'preview', 'point', 'reviewed_region'}),
     'drag': ({'preview', 'point', 'reviewed_region', 'end_point'},

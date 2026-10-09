@@ -47,6 +47,7 @@ class OperatorQuitTests(unittest.TestCase):
         client.selection.locations = {'python': Path(sys.executable), 'repo_root': root}
         client.selection.runtime_environment = {'PYTHONUTF8': '1', 'PYTHONDONTWRITEBYTECODE': '1'}
         client.selection.normal_quit_automation = None
+        client.focus_retained_process_for_quit = Mock(return_value={'synthetic_focus': True})
         return client, clock, fake_time, report
 
     def automation(self, client, clock, fake_time, *, mutate=None, exit_code=0, complete_at=.3, emit=True):
@@ -241,6 +242,176 @@ class OperatorQuitTests(unittest.TestCase):
                 changed=copy.deepcopy(templates);changed[names[0]][key]=value
                 path.write_text(json.dumps({'templates':changed}),encoding='utf-8')
                 with self.subTest(key=key),self.assertRaises(RuntimeError):helper.template_profile(path)
+
+    def test_failed_startup_retains_actual_control_handle_before_business_rejection(self):
+        import ctypes
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            client, clock, fake_time, report=self.make_client(root,review_at=None)
+            fake_time.monotonic=lambda:clock.now
+            client._handle=None;client._process=None;client._hold=None
+            client.state=root/'state';client.state.mkdir()
+            self.module.write_once(client.state/'control/ck3.json',{'ck3_pid':2468,'creation_date':'SYNTHETIC'})
+            client.manifest={'host':{'kind':'host'},'source_root':{'kind':'source'}}
+            client.selection.manifest_path_key=lambda row:HOST if row['kind']=='host' else root/'shared-source'
+            client.selection.case['budgets']={'timeout':1,'readiness_timeout':1,'hold_seconds':600}
+            client.selection.prepared={}
+            client.report_path=root/'native-report.json';client._report=None;client._report_stat=None
+            report.update(state_dir=str(client.state),agent_source_root=str(root/'shared-source'),
+                error='SYNTHETIC ORIGINAL STARTUP FAILURE',status='RED',finished_at=None,hold_until_utc_estimated=1000)
+            self.module.write_once(client.report_path,report)
+            client.read_report=self.module.CaseClient.read_report.__get__(client)
+            process=SimpleNamespace(name=lambda:'ck3.exe',create_time=lambda:123.5)
+            kernel=SimpleNamespace(**{name:Mock(return_value=8642 if name=='OpenProcess' else 1)
+                for name in ('OpenProcess','WaitForSingleObject','GetExitCodeProcess','CloseHandle')})
+            with patch.object(self.module,'time',fake_time),patch.dict(sys.modules,{'psutil':SimpleNamespace(Process=lambda pid:process)}), \
+                 patch.object(ctypes,'WinDLL',return_value=kernel,create=True), \
+                 self.assertRaisesRegex(ValueError,'Actual shared host failed'):
+                client.wait_hold()
+            self.assertEqual(client._handle,8642)
+            self.assertEqual(client._process['pid'],2468)
+            self.assertEqual(client._process['create_time'],123.5)
+            self.assertEqual(client.read_report(allow_error=True)['error'],'SYNTHETIC ORIGINAL STARTUP FAILURE')
+            self.assertIsNone(client.native_zero_proof(report))
+            kernel.OpenProcess.assert_called_once_with(0x100000|0x1000,False,2468)
+            client.close_handle()
+            kernel.CloseHandle.assert_called_once_with(8642)
+
+    def test_failed_entry_finally_uses_actual_hold_fallback_and_keeps_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            launcher=root/'synthetic-launcher.py';launcher.write_text('SYNTHETIC ONLY')
+            selected=self.entry.Selection.__new__(self.entry.Selection)
+            selected.preflight=lambda:{'blockers':[]}
+            selected.context={'run_id':'SYNTHETIC_FAILED_ENTRY','keeper_root':str(root/'keeper'),
+                'proof':str(root/'proof'),'challenge':str(root/'challenge'),'observed_nonce':'SYNTHETIC','reviewer':'/root'}
+            selected.runtime={'reviewed_launcher':self.entry.pin(launcher)}
+            selected.runtime_path=root/'runtime.json';selected.context_path=root/'context.json'
+            selected.run_dir=root/'SYNTHETIC_FAILED_ENTRY';selected.locations={'python':Path(sys.executable),'repo_root':root}
+            selected.runtime_environment={};selected.adapter_path=root/'synthetic-adapter.py'
+            adapter=SimpleNamespace(run_case=Mock(side_effect=AssertionError('Never replay failed startup business')))
+            selected.load_adapter=lambda:adapter;selected.adapter_context=lambda output:{'synthetic':True}
+            client=SimpleNamespace(_handle=None,output=root/'case-output',
+                wait_hold=Mock(side_effect=ValueError('SYNTHETIC ORIGINAL STARTUP FAILURE')),
+                normal_close=Mock(return_value={'normal_close_qualified':False,'host_error':'SYNTHETIC ORIGINAL STARTUP FAILURE'}),
+                close_handle=Mock())
+            def retain_held(**kwargs):
+                client._handle='SYNTHETIC RETAINED HANDLE';return True
+            client.retain_held_process=Mock(side_effect=retain_held)
+            with patch.dict(sys.modules,{'ck3_mod_acceptance_client':self.module}), \
+                 patch.object(self.module,'CaseClient',return_value=client), \
+                 patch.object(self.entry.subprocess,'run',return_value=SimpleNamespace(returncode=0)):
+                answer=selected.run()
+            client.retain_held_process.assert_called_once_with(wait=True)
+            client.normal_close.assert_called_once_with('business_failure_preserved')
+            client.close_handle.assert_called_once()
+            adapter.run_case.assert_not_called()
+            self.assertIn('SYNTHETIC ORIGINAL STARTUP FAILURE',answer['case_error'])
+            self.assertFalse(answer['normal_close']['normal_close_qualified'])
+            self.assertEqual(answer['business_acceptance'],'RED_OR_INCOMPLETE')
+
+    def test_retention_fallback_never_manufactures_a_launch_or_pre_hold_quit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client, _, _, report=self.make_client(Path(directory),review_at=None)
+            client.state=Path(directory)/'unused-state';client._handle=None
+            client.retain_process=Mock(side_effect=AssertionError('No actual control means no retained handle'))
+            report.update(finished_at=None,phase='starting')
+            self.assertFalse(client.retain_held_process(report))
+            report['phase']='hold'
+            self.assertFalse(client.retain_held_process(report))
+            client.read_report=Mock(side_effect=FileNotFoundError('No actual launch report'))
+            self.assertFalse(client.retain_held_process())
+            client.retain_process.assert_not_called()
+
+    def test_failure_finally_waits_for_actual_hold_only_inside_original_readiness(self):
+        for reaches_hold in (True,False):
+            with self.subTest(reaches_hold=reaches_hold),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                client,clock,fake_time,report=self.make_client(root,review_at=None,deadline=1)
+                fake_time.monotonic=lambda:clock.now
+                client.state=root/'state';client._handle=None;client._readiness_limit=.4
+                self.module.write_once(client.state/'control/ck3.json',{'ck3_pid':2468})
+                report.update(finished_at=None,error='SYNTHETIC ORIGINAL STARTUP FAILURE')
+                def read_report(allow_error=False):
+                    self.assertTrue(allow_error)
+                    return {**report,'phase':'hold' if reaches_hold and clock.now>=.2 else 'starting'}
+                client.read_report=read_report
+                def retain():client._handle='SYNTHETIC RETAINED HANDLE'
+                client.retain_process=Mock(side_effect=retain)
+                with patch.object(self.module,'time',fake_time):
+                    retained=client.retain_held_process(wait=True)
+                self.assertIs(retained,reaches_hold)
+                self.assertLess(clock.now,.51)
+                self.assertEqual(report['error'],'SYNTHETIC ORIGINAL STARTUP FAILURE')
+                if reaches_hold:client.retain_process.assert_called_once()
+                else:client.retain_process.assert_not_called()
+
+    def test_failed_host_keeps_strict_native0_false_and_waits_only_original_hold(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client, clock, fake_time, report=self.make_client(Path(directory),review_at=None,deadline=.4)
+            report.update(error='SYNTHETIC ORIGINAL STARTUP FAILURE',status='RED',finished_at=None)
+            popen=self.automation(client,clock,fake_time,complete_at=.2)
+            self.assertIsNone(client.native_zero_proof(report))
+            with patch.object(self.module,'time',fake_time),patch.object(self.module.subprocess,'Popen',popen):
+                result=client.normal_close('business_failure_preserved')
+            self.assertFalse(result['normal_close_qualified'])
+            self.assertIsNone(result['native_zero_proof'])
+            self.assertIsNone(result['finish_hold_rows'])
+            self.assertEqual(result['host_error'],'SYNTHETIC ORIGINAL STARTUP FAILURE')
+            self.assertTrue(result['retained_handle']['actual_retained_os0'])
+            self.assertLess(clock.now,.51)
+            client.execute_plan.assert_not_called()
+
+    def focus_fixture(self,root,*,boundary=None):
+        client,clock,fake_time,_=self.make_client(root,review_at=None,deadline=10)
+        client.state=root/'state'
+        self.module.write_once(client.state/'control/ck3.json',{'ck3_pid':2468})
+        client.keeper.mkdir()
+        (client.keeper/'journal.jsonl').write_text(json.dumps({'result':'OWNED_CAS',
+            'lease':{'task_id':'OTHER_SCREEN' if boundary=='lease' else client.frozen['screen_task']}})+'\n',encoding='utf-8')
+        process=SimpleNamespace(name=lambda:'ck3.exe',create_time=lambda:999 if boundary=='ctime' else 123.5)
+        windows=[101,202,303] if boundary=='multiple' else [101,202]
+        gui=SimpleNamespace(EnumWindows=lambda visit,arg:[visit(hwnd,arg) for hwnd in windows],IsWindowVisible=lambda hwnd:True)
+        window_process=SimpleNamespace(GetWindowThreadProcessId=lambda hwnd:(1,16360 if hwnd==101 else 2468))
+        steam={'foreground_pid':16360,'foreground_hwnd':101,'focus_hwnd':101}
+        ck3={'foreground_pid':2468,'foreground_hwnd':202,'focus_hwnd':202}
+        activated=SimpleNamespace(value=False)
+        activation=Mock(side_effect=lambda hwnd:setattr(activated,'value',True))
+        coords=SimpleNamespace(foreground_state=lambda:steam if boundary=='blocked' or not activated.value else ck3)
+        modules={'psutil':SimpleNamespace(Process=lambda pid:process),'win32gui':gui,'win32process':window_process,
+            'desktop_coordinate_map':coords,'record_native_capability_segment':SimpleNamespace(bring_forward=activation)}
+        client.focus_retained_process_for_quit=self.module.CaseClient.focus_retained_process_for_quit.__get__(client)
+        return client,clock,fake_time,modules,activation
+
+    def test_quit_focus_binds_unique_retained_pid_window_and_reads_actual_focus(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client,_,fake_time,modules,activation=self.focus_fixture(Path(directory))
+            with patch.object(self.module,'time',fake_time),patch.dict(sys.modules,modules):
+                receipt=client.focus_retained_process_for_quit()
+            activation.assert_called_once_with(202)
+            self.assertTrue(receipt['success'])
+            self.assertEqual(receipt['pid'],2468)
+            self.assertEqual(receipt['after']['foreground_hwnd'],202)
+            self.assertIs(receipt['mouse_or_keyboard_input'],False)
+            self.assertIs(receipt['human_review_claimed'],False)
+
+    def test_bad_identity_lease_ambiguous_or_unfocused_window_never_dispatches_helper(self):
+        for boundary in ('ctime','lease','multiple','blocked','consumed'):
+            with self.subTest(boundary=boundary),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                client,clock,fake_time,modules,activation=self.focus_fixture(root,boundary=boundary)
+                config={}
+                for name in ('helper','matcher','templates'):
+                    source=root/(name+'.synthetic-source');source.write_text('SYNTHETIC ONLY')
+                    config[name]=self.entry.pin(source)
+                if boundary=='consumed':
+                    self.module.write_once(client.output/'normal-quit-automation-dispatch.json',{'SYNTHETIC':'ALREADY CONSUMED'})
+                with patch.object(self.module,'time',fake_time),patch.dict(sys.modules,modules), \
+                     patch.object(self.module.subprocess,'Popen') as popen,self.assertRaises(ValueError):
+                    client.start_normal_quit_automation(root/'synthetic-request.json',config)
+                popen.assert_not_called()
+                if boundary!='blocked':activation.assert_not_called()
+                self.assertLessEqual(clock.now,2.1)
 
 
 if __name__ == '__main__':
