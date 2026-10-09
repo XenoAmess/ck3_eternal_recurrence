@@ -85,7 +85,8 @@ flowchart TD
     X --> T[Closed207B body2479F50 to RET247A01E]
     T --> S[2479FBD calls2468DA0 / owner620 / output storage]
     S --> V[2479FCD stores returned first qword in owner718]
-    S -. producer body not yet captured .-> D[Individual building contribution and context]
+    S --> B[Actual4118B source / context inputs / raw flags / nonnegative output]
+    B -. individual contribution provenance unclosed .-> D[Building-specific effective yield]
     V -. holder transfer unclosed .-> N[Attributed player NET]
     A[Existing province aggregate and cash-v2 NET] --> O[Observed aggregate change only]
 ```
@@ -147,10 +148,67 @@ function coverage beyond the one interval is not preasserted. The other
 `+0x850` helpers, separate `+0x720` producer and virtual call are excluded.
 
 `PROVINCE718-PRODUCER-MANIFEST.json` and
-`ROOT-PROVINCE718-READ-ARGV.json` in the same external folder are prepared
-but **not executed by this lane**. Inspecting that sole body can establish
-which completed slots, contextual modifiers or other sources actually form
-the aggregate and whether an independent building contribution is available.
-There is no guarantee that it returns such a contribution; ordinary
-completion and cash decisions do not wait on this research. No extra M4
-completion, benefit gate or milestone credit is introduced.
+`ROOT-PROVINCE718-READ-ARGV.json` in the same external folder were prepared
+without execution by this lane. Root subsequently executed that sole source
+capture; its actual result and boundaries follow below.
+
+## Root actual4118B result: contextual aggregate, no individual yield
+
+Root's unique capture (`tool16c6c0`, exit0) read 8236 paired bytes in two
+range reads. `province718-producer-root-first01/FAMILY-MAP.json` reports
+**`instruction_span_partial_or_concrete_operand_delta`**. Both spans decode
+completely and their ordered-edge shape/local topology match, but normalized
+code is **not equal**. No old-version semantic equivalence is claimed. This
+section analyzes the actual4 instructions themselves.
+
+The actual interval contains 976 instructions. Its normal epilogue returns
+at **`2469D76`**. Code after that return is not automatically a neighboring
+function: `24693F4` explicitly branches to `2469D77`, whose global-state
+guard calls `4223A84`/`4223A24` and rejoins `24693FA` at `2469DB0`. The last
+byte at `2469DB5` is `int3` padding. The reached post-return block remains
+part of this source control-flow account; its helper semantics are unexpanded.
+
+The publisher's actual call supplies slots=`owner+0x620`, output pointer,
+third raw flag0, fourth raw flag0 and fifth pointer0. The concrete inputs and
+operations in that actual path are:
+
+| Actual instructions | Concrete input or operation | Meaning still unclosed |
+| --- | --- | --- |
+| `2468DD8..2468E0D` | Read slots `+0xF0` context, its `+0x848` object, context `+0x30` collection; obtain `2467660(slots)`; preserve optional fifth pointer | Object identities beyond this calling contract |
+| `2468E1D..2468F60` | Numeric `0xA2/0xA5`, and comparisons selecting `0xA3/0xA4` and `0xA6/0xA7`, through `2C4D530` / `2C82340` | Numeric keys' names and units; no authored-key substitution |
+| `2468F77..2468FCE` | Retain the `28BE0B0` result; obtain numeric `0x1E9` and context `+0x20 -> +0xB8 -> word+0x78E` inputs through `2C23340` | Conditional contribution provenance |
+| `2468FD3..2469017` | Search the context `+0x848` object's `+0x310/count+0x31C` stride16 list for slots' first pointer; add matched entry `+8` | Entry semantics; no per-building definition is exposed |
+| `246905F..2469124` | Call `2C39B80` using context `+0x848`; adjust an accumulated factor by returned qword minus100000 | Factor's game meaning |
+| `2469146..246921B` | Binary-search numeric `0x3F` in collection `+0x68/count+0x74`, then read corresponding qword from `+0xD0` array; missing key yields zero | Source-specific modifier provenance and key name |
+| `246921B..2469272` | Add numeric `0x46` and `0x1EA` values from `2C4D530` | Names/units remain unknown |
+| `2469343..24699C7` | Native predicate `2C25010`; resolved-ID fields `+0x130/+0x12C`, slots `+0x108`, fourth flag and `28B9300` value select contextual branches | Branch meanings are not renamed as tax/occupation/ownership policy |
+| `24699EA..2469C18` | Further factor from `2C399C0(context+0x848, global input)`; `2B9CBA0` receives the earlier `2467660` result and optional fifth pointer | Holder transfer or individual contribution is not proved |
+| `2469C18..2469D60` | Combine signed intermediate values with 100000-based arithmetic; clamp a negative final result to zero; store one qword through the original output pointer and return that pointer in RAX | This is the aggregate producer output, not a per-definition result |
+
+The third raw flag1 has an earlier result path at `2469275..2469334`; the
+publisher supplies0 and uses the longer contextual path. Multiple detail
+branches require a nonnull fifth pointer and write records reached through
+`242C020`; the publisher supplies null. These raw distinctions are recorded
+without inventing a query mode, input enum name or new ABI.
+
+The limited existing ledger/source lookup did not provide a typed mapping
+for `0x3F`, `0x46`, `0x1EA`, `0xA2..0xA7` or `0x1E9`. Their names and units
+remain unknown. In particular, the 19 authored `monthly_income` keys cannot
+be assigned to these numeric IDs by resemblance. The 100000 arithmetic
+does not independently establish the scale or holder-tax meaning of the
+published province aggregate.
+
+The useful closure is now concrete: completed-slot mode3 processing reaches
+the contextual aggregate producer, which returns the first qword stored at
+`owner+0x718`. It does **not** expose a building definition argument or an
+independently attributed building-income result. Reading the same total
+again, or applying the authored delta to an unnamed aggregate factor, would
+not fill that missing input.
+
+No additional capture, production field or policy is proposed from this
+result. Individual contribution provenance and the relation to holder NET
+remain a **quality gap**, while the existing ordinary natural-completion
+receipt and cash-v2/NET followup continue unchanged. They can observe actual
+completed material and financial outcomes without granting causal attribution.
+The gap is not an additional M4 prerequisite or readiness gate, and this
+source closure grants no benefit, M4 or G2 credit.
