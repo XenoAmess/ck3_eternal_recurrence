@@ -16,6 +16,7 @@ from .version_identity import CK3_12004, require_exact_native_build
 
 FIELD_NAME = "following_six_attribute_captured_stages"
 SCHEMA = "xar.ck3.person-native-six-stage-capture-12004-v1"
+SOURCE_STAGE = "ordered_six_attribute_native_calls"
 QUERY_FIELD_NAME = "person_six_stage_captures"
 QUERY_SCHEMA = "xar.ck3.person-native-six-stage-query-12004-v1"
 SOURCE_RETURN_RVA = 0x291CEA9
@@ -103,7 +104,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         "capture_observed", "capture_complete", "ready", "raw_counts_ready",
         "reason", "capture_sequence", "capture_date_raw", "character_id",
         "capture_thread_id", "query_thread_id",
-        *_POINTERS, "stages", "historical_capture",
+        *_POINTERS, "stages", "source_stage", "historical_capture",
         "actual_model_write_performed", "full_helper_ready",
     })
     if (raw["schema"] != SCHEMA or require_exact_native_build(
@@ -113,6 +114,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         "schema": SCHEMA,
         "build_version": CK3_12004.game_version,
         "executable_sha256": CK3_12004.executable_sha256,
+        "source_stage": _string(raw["source_stage"], FIELD_NAME + ".source_stage"),
         "reason": _string(raw["reason"], FIELD_NAME + ".reason", optional=True),
         "capture_sequence": _integer(raw["capture_sequence"], FIELD_NAME + ".capture_sequence", 64, unsigned=True),
         "capture_date_raw": _number(raw["capture_date_raw"], FIELD_NAME + ".capture_date_raw", 32),
@@ -126,7 +128,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         result[key] = _boolean(raw[key], FIELD_NAME + "." + key)
     for key in _POINTERS:
         result[key] = _string(raw[key], FIELD_NAME + "." + key, optional=True)
-    if (result["historical_capture"] is not True
+    if (result["source_stage"] != SOURCE_STAGE
+            or result["historical_capture"] is not True
             or result["actual_model_write_performed"] is not False
             or result["full_helper_ready"] is not False):
         raise ValueError(FIELD_NAME + " changed its historical observation scope")

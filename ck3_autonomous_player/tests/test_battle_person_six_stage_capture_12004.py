@@ -8,7 +8,7 @@ from copy import deepcopy
 import pytest
 
 from xar_autoplayer.bridge.battle_person_six_stage_capture_12004 import (
-    FIELD_NAME, QUERY_SCHEMA, SCHEMA, SOURCE_RETURN_RVA,
+    FIELD_NAME, QUERY_SCHEMA, SCHEMA, SOURCE_RETURN_RVA, SOURCE_STAGE,
     emit_captured_person_six_stage_occurrence_requests_12004 as emit_stage,
     emit_captured_person_six_stage_requests_12004 as emit,
     normalize_person_six_stage_capture_12004 as normalize,
@@ -66,6 +66,7 @@ def _leaf():
         })
     return {
         "schema": SCHEMA,
+        "source_stage": SOURCE_STAGE,
         "build_version": CK3_12004.game_version,
         "executable_sha256": CK3_12004.executable_sha256,
         "configured": True,
@@ -119,6 +120,7 @@ def test_natural_order_signed_values_and_historical_provenance():
     raw = _leaf()
     original = deepcopy(raw)
     normalized = normalize(raw)
+    assert normalized["source_stage"] == SOURCE_STAGE
     requests = emit(_section(raw))
     assert normalized["stages"][0]["first_pc"]["properties"]["values_q64"] == [
         WIDE_VALUE, 0, -WIDE_VALUE,
