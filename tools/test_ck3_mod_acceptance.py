@@ -203,5 +203,33 @@ class SharedEntryTests(unittest.TestCase):
                 self.write(self.manifest_path, self.manifest)
                 with self.assertRaises(ValueError): self.select()
 
+    def saved_startup_hook(self):
+        with self.host.open('a') as stream:stream.write("p.add_argument('--saved-campaign-startup-case-contract')\n")
+        self.manifest['host'].update({key:value for key,value in entry.pin(self.host).items() if key!='path'})
+        self.write(self.manifest_path,self.manifest)
+        self.runtime['manifest']=entry.pin(self.manifest_path);self.write(self.runtime_path,self.runtime)
+        hook=self.root/'saved-startup.json'
+        value={'schema':'ck3-saved-campaign-startup-case-contract-v1',
+               'state_dir':str(self.locations['artifacts']/'<allocated-run-id>'/'state'),
+               'handler':{**entry.pin(self.files['initial']),'function':'admit_saved_startup_event'},
+               'dependencies':[entry.pin(self.files['inventory'])],
+               'expected':{'event_definition_key':'fixture.test','event_instance_id':7,'root_character_id':1,
+                           'actor_character_id':1,'date_raw':10,'native_option_indices':[0]}}
+        self.write(hook,value)
+        self.products['products']['xqol']['cases'][0]['startup']['saved_campaign_startup_case_contract']=str(hook)
+        self.write(self.products_path,self.products)
+        return hook,value
+
+    def test_saved_startup_handler_is_pinned_and_bound_to_saved_actor_date(self):
+        hook,value=self.saved_startup_hook()
+        self.assertEqual(self.select().preflight()['blockers'],[])
+        value['expected']['date_raw']=11;self.write(hook,value)
+        self.assertTrue(any('crossed pinned actor/date' in error for error in self.select().preflight()['blockers']))
+
+    def test_changed_saved_startup_dependency_is_rejected(self):
+        self.saved_startup_hook()
+        self.files['inventory'].write_bytes(b'changed')
+        self.assertTrue(any('Pinned input changed' in error for error in self.select().preflight()['blockers']))
+
 
 if __name__ == '__main__': unittest.main(verbosity=2)
