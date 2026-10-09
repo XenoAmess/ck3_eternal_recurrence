@@ -113,6 +113,12 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
             "native_body_rewrites": 0, "live_queries": 0,
             "synthetic_boundary": "hello/paused all-player scope/request_id; auto_turn planner selection only",
             "internal_full_semantics_retained": False,
+            "prior_consumer_dir": str(_OPTIONS.prior_consumer_dir.resolve()) if _OPTIONS.prior_consumer_dir else None,
+            "registered_calls_executed": 0, "registered_calls_reused": 0,
+            "registered_calls_completed_this_attempt": 0,
+            "registered_calls_first_successful_this_attempt": 0,
+            "registered_calls_replayed_without_retained_result": 0,
+            "registered_call_receipts": [],
         }
 
         def persist() -> None:
@@ -165,11 +171,11 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
                 )
                 route_receipts = []
                 for route in _ROUTES:
-                    baseline, baseline_receipt = await self._run_route(
-                        legacy, route, expected_rows, output_dir / name / route / "legacy",
+                    baseline, baseline_receipt = await self._run_and_record_route(
+                        legacy, route, expected_rows, output_dir, name, "legacy", report, persist,
                     )
-                    observed, observed_receipt = await self._run_route(
-                        shared, route, expected_rows, output_dir / name / route / "shared",
+                    observed, observed_receipt = await self._run_and_record_route(
+                        shared, route, expected_rows, output_dir, name, "shared", report, persist,
                     )
                     self.assertEqual(observed, baseline)
                     self.assertEqual(_readiness(observed), _readiness(baseline))
@@ -200,6 +206,43 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
             raise
         finally:
             persist()
+
+    async def _run_and_record_route(
+        self, whole, route, expected_rows, output_dir, name, variant, report, persist,
+    ):
+        relative = Path(name) / route / variant
+        replay = bool(_OPTIONS.prior_consumer_dir) and relative.as_posix() == (
+            "available-equal/ck3_query_army_strengths/legacy"
+        )
+        report["registered_calls_executed"] += 1
+        if replay:
+            report["registered_calls_replayed_without_retained_result"] += 1
+        full, route_receipt = await self._run_route(
+            whole, route, expected_rows, output_dir / relative,
+        )
+        receipt_path = output_dir / relative / "REGISTERED-CALL-RECEIPT.json"
+        saved = {
+            "status": "GREEN", "native_dir": str(_OPTIONS.native_dir.resolve()),
+            "case": name, "registered_tool": route, "wire_variant": variant,
+            "query_sequence": whole["result"]["query_sequence"],
+            "expanded_result": full, "route_receipt": route_receipt,
+        }
+        receipt_path.parent.mkdir(parents=True, exist_ok=True)
+        receipt_path.write_text(
+            json.dumps(saved, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+        )
+        report["registered_calls_completed_this_attempt"] += 1
+        if not replay:
+            report["registered_calls_first_successful_this_attempt"] += 1
+        report["registered_call_receipts"].append({
+            "case": name, "registered_tool": route, "wire_variant": variant,
+            "receipt": str(receipt_path), "execution": (
+                "replay_of_completed_call_without_retained_full_return"
+                if replay else "new_registered_call"
+            ),
+        })
+        persist()
+        return full, route_receipt
 
     async def _run_route(self, whole, route, expected_rows, state_dir):
         from xar_autoplayer.bridge.army_strengths_manager_shared_wire import (
@@ -244,8 +287,6 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
                     receipt["driver_result"] = deepcopy(value)
 
         try:
-            sys.setprofile(observe)
-            threading.setprofile(observe)
             driver = NativeHeadlessGameplayDriver(
                 endpoint.pipe_name, endpoint=endpoint, command_timeout_seconds=1.0,
                 state_dir=state_dir, episode_projection="native_campaign",
@@ -285,6 +326,10 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
                 if route == "ck3_query_army_strengths"
                 else {"step": _STEP, "expected_revision": before["revision"]}
             )
+            # AnyIO reuses worker threads. setprofile() alone leaves a reused
+            # worker running the previous route's observer/Driver closure.
+            threading.setprofile_all_threads(observe)
+            sys.setprofile(observe)
             if route == "ck3_auto_turn":
                 planned = {
                     "snapshot_id": before["snapshot_id"], "revision": before["revision"],
@@ -353,8 +398,8 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
             }
             return full, route_receipt
         finally:
+            threading.setprofile_all_threads(previous_thread_profile)
             sys.setprofile(previous_profile)
-            threading.setprofile(previous_thread_profile)
             if driver is not None:
                 driver.close()
 
@@ -418,6 +463,8 @@ if __name__ == "__main__":
     parser.add_argument("--source-root", required=True, type=Path)
     parser.add_argument("--native-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--prior-consumer-dir", type=Path,
+                        help="Retained attempt02 RED: one completed legacy call lost its full return")
     _OPTIONS = parser.parse_args()
     _project = _OPTIONS.source_root.resolve() / "ck3_autonomous_player"
     if not _project.is_dir():
