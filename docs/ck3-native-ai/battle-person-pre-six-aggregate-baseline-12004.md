@@ -1,6 +1,6 @@
 # Person pre-six aggregate baseline on actual 1.20.0.4
 
-This increment observes the real aggregate PC before the first natural six-attribute callback. It supplies the missing initial value for the already qualified ordered merger; an empty contribution alone is not the historical postimage. Native64 source is authored; its FIRST is pending. FullPerson and Entry remain false.
+This increment observes the real aggregate PC before the first natural six-attribute callback. It supplies the missing initial value for the already qualified ordered merger; an empty contribution alone is not the historical postimage. Native64 is static-ready after Root's unique build and connected FIRST. It has not been deployed in the current Native60 game. FullPerson and Entry remain false.
 
 Exact source profile: CK3 **1.20.0.4**, Steam build **25734779**, EXE SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518` (reused `ck3_12004.hpp`; no hash performed).
 
@@ -35,6 +35,8 @@ The local `compose_captured_six_stage_postimage_12004` uses the qualified actual
 
 ## Qualification boundary
 
-The source package is complete: the new six-whole producer and sole registered MCP/real NativeDriver consumer are AUTHORED_NOTRUN. Root alone executes them. The separate ordered merger kernel already passed Root FIRST02 (1passed0.19s); its empty-baseline contribution remains a distinct operation. No native replay, current game observation, FullPerson/Entry or G2 credit is granted here.
+Root executed the unique Native64 attempt01 and sealed its canonical at **2026-10-09 21:09:56 UTC (Oct10 05:09:56 Asia/Shanghai)**. Five production and two fixture compilations, the fresh Runtime441 archive, the independent construction two-scene producer, this Person six-whole producer and its sole six-call registered MCP/real NativeDriver consumer all passed. The Person consumer took **5.605s**. The actual receipt is `D:/codex-ck3-background-spill/g2-native64-build01/attempt01/ROOT-NATIVE64-RESULT.json`; canonical is `MIG/entry-live-fix64`.
+
+The compiled/qualified coherent source is **f28f7266e64d048f99b43a7a5f099a7f589bb037**; this package's author source is **a409c31b708f70dad03d1b12aeead03c85753b90**. The qualified Python merger dependency remains its separately recorded54a FIRST; it and the previous Native62 producer were not replayed. Source workers ran no compiler, FIRST, test, import, hash, Game or SDK action. No current live capture or FullPerson/Entry/G2 credit follows from this static qualification. The separate ordered merger kernel already passed Root FIRST02 (1passed0.19s); its empty-baseline contribution remains a distinct operation. No native replay, current game observation, FullPerson/Entry or G2 credit is granted here.
 
 The new compound includes six unchanged native whole packets and six registered calls. Nonempty and genuinely empty baselines each receive ten naturally observed empty PCs: the local postimage must retain the exact nonempty baseline rows or remain empty respectively. Independently supplied completion state exposes a real comparison mismatch in the former and equality in the latter. Partial values and a bypassed stage0 keep existing six-stage inputs ready independently, without fabricating a baseline. A new same-owner sequence gets its own baseline; post-completion source changes cannot overwrite the owned copy. The previous seven native cases are not replayed.
