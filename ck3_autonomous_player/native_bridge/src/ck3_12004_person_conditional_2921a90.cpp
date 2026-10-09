@@ -461,4 +461,24 @@ std::string SerializePersonConditional2921a90RowInputs12004(
   q.out << ']';
   return q.End();
 }
+PersonConditional2921a90Row ReadPersonConditional2921a90RowWithWeightInputs12004(
+    const PersonCarrierDirect12004Bindings &b, std::uintptr_t physical_array,
+    std::uint32_t native_index, std::int64_t observed_weight) {
+  PersonConditional2921a90Row row;
+  row.native_index = native_index;
+  row.object_identity = Copy<std::uintptr_t>(b, physical_array + native_index * 8ULL);
+  if (!row.object_identity || *row.object_identity == 0) {
+    row.reason = "conditional_modifier_object_unread";
+    return row;
+  }
+  // Retain guarded physical expression operands independently of the newly
+  // observed native numerical value. An evaluator gap no longer decides this
+  // row's weight readiness, but it remains visible in the original DTO.
+  Weight(b, row);
+  row.weight_q64 = observed_weight;
+  row.reason.clear();
+  if (observed_weight == 0) row.ready = true;
+  else Property(b, row);
+  return row;
+}
 } // namespace xar::ck3_12004

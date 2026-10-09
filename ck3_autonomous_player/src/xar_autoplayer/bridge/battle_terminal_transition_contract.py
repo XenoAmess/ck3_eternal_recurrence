@@ -904,6 +904,8 @@ def _normalize_current_person_state(
         fields.add("following_2921a90_conditional")
     if isinstance(value, dict) and "following_2921a90_opinion" in value:
         fields.add("following_2921a90_opinion")
+    if isinstance(value, dict) and "following_2921a90_scope_weights" in value:
+        fields.add("following_2921a90_scope_weights")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -1026,6 +1028,10 @@ def _normalize_current_person_state(
         from .battle_person_conditional_opinion_12004 import normalize_person_conditional_opinion_12004
         normalized["following_2921a90_opinion"] = normalize_person_conditional_opinion_12004(
             state["following_2921a90_opinion"])
+    if "following_2921a90_scope_weights" in state:
+        from .battle_person_conditional_scope_weights_12004 import normalize_person_conditional_scope_weights_12004
+        normalized["following_2921a90_scope_weights"] = normalize_person_conditional_scope_weights_12004(
+            state["following_2921a90_scope_weights"])
     return normalized
 
 
@@ -1098,6 +1104,10 @@ def _normalize_character_custody_rows(
             if (opinion is not None and opinion["character_id"] is not None
                     and opinion["character_id"] != character_id):
                 raise ValueError(f"{field}[{index}] conditional opinion CharacterID disagrees")
+            scope_weights = normalized["current_person_state"].get("following_2921a90_scope_weights")
+            if (scope_weights is not None and scope_weights["character_id"] is not None
+                    and scope_weights["character_id"] != character_id):
+                raise ValueError(f"{field}[{index}] conditional scope weight CharacterID disagrees")
         result.append(normalized)
     return result
 

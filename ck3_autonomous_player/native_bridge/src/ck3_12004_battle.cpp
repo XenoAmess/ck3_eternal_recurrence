@@ -26,6 +26,8 @@ BattleBindings BindBattleImage(
       base, kGameVersion, sha, &CopyCarrierSource);
   bindings.current_person_conditional_opinion =
       BindPersonConditionalOpinionImage12004(base, sha);
+  bindings.current_person_conditional_scope_weights =
+      BindPersonConditionalScopeWeightsImage12004(base, sha);
   bindings.game_state_slot =
       reinterpret_cast<void **>(base + kGameStateSlotRva);
   bindings.jomini_state_slot =

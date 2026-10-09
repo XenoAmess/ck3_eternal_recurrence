@@ -129,3 +129,49 @@ Implementation and its new production whole/registered FIRST are initially
 AUTHORED_NOTRUN. Root owns execution and any actual paused observation.
 This supplies current evaluated conditional inputs; it does not reconstruct
 a fresh Model, prove future weights, or complete Person/Entry or a campaign.
+
+## Authored production and first acceptance
+
+The new exact4 factory and collector are in
+`ck3_12004_person_conditional_scope_weights.hpp/.cpp`. `BindBattleImage`
+installs their binding, and `CurrentPersonSample` joins the already observed
+direct and opinion leaves in the same terminal sample. The optional DTO is
+serialized through the existing whole private battle command. The main Python
+normalizer and registered MCP consume that same sibling; no additional query,
+SDK dispatch, action or Service route is introduced.
+
+The original conditional implementation gains only an appended
+`ReadPersonConditional2921a90RowWithWeightInputs12004` function. It preserves
+guarded expression operands, applies the observed native weight, and reads
+properties only when nonzero. Original Native43/44/45 leaf contracts and
+readers remain as their qualified sources. The new independently observed
+row joins physical index and object identity; it does not demand invented
+equality between every separately read expression field. Source-only rows
+still retain exact original row equality.
+
+The sole new full-Bridge target is
+`xar_ck3_12004_person_conditional_scope_weights_mcp_test`; its CTest is
+`xar_ck3_12004_person_conditional_scope_weights_mcp_first`. It writes five
+original whole command packets into a fresh directory:
+
+- `scope-dynamic-ready.json`
+- `scope-dynamic-zero.json`
+- `scope-literal-only.json`
+- `scope-family-empty.json`
+- `scope-prior-row-unavailable.json`
+
+The new registered compound is
+`test_person_conditional_scope_weights_12004_registered_mcp.py::test_person_conditional_scope_weights_12004_registered_mcp_whole_packets`,
+using `CK3_PERSON_CONDITIONAL_SCOPE_WEIGHTS_12004_MCP_WIRE_DIR` and the frozen
+source `ck3_autonomous_player/src` on `PYTHONPATH`. It passes the unmodified
+whole native bodies through NativeDriver, the main normalizer, Service and
+registered MCP before the emitters. An emitter wrapper explicitly joins the
+preserved outer row Character ID. Root executes the unique new native run and
+consumer once; the author status is AUTHORED_NOTRUN. No old qualified cases
+are rerun.
+
+R81 actual011 for Robert29829 and opponent31050 published a known bypass:
+`admitted=false`, `selected_family=not_demanded`, zero selected/opinion rows,
+and no classifier or scope evaluation. Its source joins are valid evidence
+for that bypass only. It is not a live numerical pair or a demanded dynamic
+weight failure, and this package does not change that recorded boundary.

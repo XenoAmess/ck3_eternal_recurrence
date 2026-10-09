@@ -1626,6 +1626,13 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
               b.current_person_conditional_opinion,
               b.current_person_carrier_direct, *observed.following_2921a90,
               *observed.following_2921a90_conditional);
+      if (b.current_person_conditional_scope_weights.enabled) {
+        observed.following_2921a90_scope_weights =
+            ck3_12004::ReadPersonConditionalScopeWeights12004(
+                b.current_person_conditional_scope_weights,
+                b.current_person_carrier_direct, *observed.following_2921a90,
+                *observed.following_2921a90_opinion);
+      }
     }
     // The actual4 leaf is independent. No old .3 observer is enabled or called.
     if (!b.current_person_state_enabled) {
