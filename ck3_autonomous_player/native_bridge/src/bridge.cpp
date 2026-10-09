@@ -19212,7 +19212,9 @@ void RunConnectedSession(
                   std::string sidecar_error;
                   (void)xar::bridge::CompleteGuardianFactoryDiscoveryJobV1(
                       *guardian_factory_discovery, after,
-                      std::filesystem::u8path(guardian_factory_sidecar_path),
+                      std::filesystem::path(std::u8string(
+                          guardian_factory_sidecar_path.begin(),
+                          guardian_factory_sidecar_path.end())),
                       sidecar_error);
                 }
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
