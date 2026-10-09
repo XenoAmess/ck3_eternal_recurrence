@@ -15097,7 +15097,7 @@ class NativeHeadlessGameplayDriver:
             )
         prior_combat_id, subject_public_cunit_id, after_sequence = request
         character_ids = parse_query_battle_terminal_transition_v1_character_ids(step)
-        starting = self.take_snapshot()
+        starting = self.take_snapshot(include_native_command_history=False)
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native battle-terminal transition query requires a paused "
@@ -15128,6 +15128,7 @@ class NativeHeadlessGameplayDriver:
             required_capability=(
                 QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
             ),
+            include_native_command_history=False,
         )
         if (
             set(result)
@@ -15177,7 +15178,7 @@ class NativeHeadlessGameplayDriver:
                 "native battle-terminal transition envelope status "
                 "disagrees with frame"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot(include_native_command_history=False)
         if not (
             _same_paused_native_frame(starting, current)
             and starting.get("revision") == current.get("revision")

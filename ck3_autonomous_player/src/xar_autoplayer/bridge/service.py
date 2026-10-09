@@ -13916,7 +13916,7 @@ class GameplayBridgeService:
             after_terminal_sequence,
             character_ids,
         )
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(
                 "battle-terminal transition queries require a paused CK3 "
@@ -14071,7 +14071,7 @@ class GameplayBridgeService:
                 "battle-terminal transition result is bound to another "
                 "snapshot"
             )
-        current = self.snapshot()
+        current = self.snapshot(include_native_command_history=False)
         if not (
             current.get("paused") is True
             and current.get("revision") == revision
