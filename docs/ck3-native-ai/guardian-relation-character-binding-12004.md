@@ -166,6 +166,44 @@ Only the resulting literal-connected arguments can select a later finite
 registration/callback body. No callback address, owner ID, parameter order,
 return layout or guardian field is inferred from the string alone.
 
+## Actual stock membership-trigger entry
+
+The installed `common/scripted_relations/00_scripted_relations.txt:127-140`
+marks the guardian definition as referenced in code and declares
+`guardian.corresponding = ward` and `ward.corresponding = guardian`.
+Those authored keys and the correspondence are proved; the comment does
+not supply a C++ class, native enum, fixed member or callable address.
+
+The education consumers provide a more specific source entry than the
+previous GUI method-name branch:
+
+| Installed source | Actual operation and direction |
+| --- | --- |
+| `events/education_and_childhood/childhood_education_events.txt:470` | `has_relation_guardian = scope:guardian`; the event root is saved as ward at477, so this tests child/ward owner toward guardian target. The same expression occurs at609 and725. |
+| `common/scripted_effects/00_education_effects.txt:3340` | `scope:guardian = { has_relation_ward = scope:ward }`; the reverse-direction membership test. At3343 the same guardian owner sets `relation_ward` toward that ward. |
+| `common/scripted_effects/00_education_effects.txt:253-260` | `any_relation` and `random_relation` use `type = guardian`; the selected random relation is then saved as educator. Membership is not the selected educator. |
+
+The next native target names are therefore **`has_relation_guardian` and
+`has_relation_ward`**, retaining each actual roster child's full ID as the
+first direction's receiver. No `is_guardian_of` name was found in the
+bounded education sources examined. Existing exact4 trigger/RTTI metadata
+checked in this pass supplies no compiled type, registration pointer or
+evaluate-function RVA for the two proved names. This is a bounded cache
+result, not a global absence claim. Without a real native pointer there
+is no supported tiny executable span to request yet; no guessed address,
+full-section name scan or generic predicate transplant was prepared.
+
+```mermaid
+flowchart TD
+  D[Stock guardian corresponds to ward] --> H[Actual has_relation_guardian child to guardian]
+  D --> W[Actual has_relation_ward guardian to child]
+  H -. compiled trigger registration and typed evaluator unclosed .-> N[Named native membership predicate]
+  W -. reverse relation definition and direction unclosed .-> N
+  C[Actual roster child full ID] --> R[Existing actual4 Core resolver]
+  R -. genuine predicate receiver ABI unclosed .-> N
+  N -. complete target enumeration unclosed .-> G[Guardian full-ID observation]
+```
+
 ## Required production input after native closure
 
 For every existing admitted actual-child occurrence group, keep the
