@@ -27,30 +27,29 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         cls.module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(cls.module)
 
-    def make_client(self, root, *, review_at=.3, deadline=1, os_exit=0, native_exit=0, reviewer='/root'):
+    def make_client(self, root, *, review_at=.3, deadline=1, os_exit=0, native_exit=0, reviewer='/root',
+                    screen_task='synthetic-screen', runtime_environment=None):
+        from ck3_mod_acceptance import pin
         module = self.module
         client = module.CaseClient.__new__(module.CaseClient)
         client.output = root
-        client.live = root
+        client.live = root / 'SYNTHETIC_ROOT_REVIEW_RACE'
+        client.live.mkdir()
         client.keeper = root / 'synthetic-keeper'
         client._handle = object()
         client._process = {'pid': 2468, 'create_time': 123.5}
-        client.frozen = {'run_id': 'SYNTHETIC_ROOT_REVIEW_RACE', 'screen_task': 'synthetic-screen',
-                         'reviewer': '/root', 'argv': ['SYNTHETIC ONLY'],
-                         'runtime_environment': {'PYTHONUTF8': '1', 'PYTHONDONTWRITEBYTECODE': '1'}}
+        client.frozen = {'run_id': client.live.name, 'screen_task': screen_task, 'reviewer': '/root',
+                         'argv': ['SYNTHETIC ONLY'], 'runtime_environment': dict(runtime_environment or {})}
+        frozen_path = client.live / 'frozen-argv.json'
+        module.write_once(frozen_path, client.frozen)
         client._hold = deadline
         client._started = 0
         client.manifest = {'host': {}}
-        frozen_path = root / 'frozen-argv.json'
-        frozen_path.write_text(json.dumps(client.frozen), encoding='utf-8')
-        frozen_raw = frozen_path.read_bytes()
-        client.context = {'run_id': client.frozen['run_id'], 'reviewer': '/root',
-                          'frozen_argv': {'path': str(frozen_path), 'bytes': len(frozen_raw),
-                                          'sha256': hashlib.sha256(frozen_raw).hexdigest()}}
+        client.context = {'run_id': client.live.name, 'reviewer': '/root', 'frozen_argv': pin(frozen_path)}
         client.selection = SimpleNamespace(case={'budgets': {}}, manifest_path_key=lambda _: HOST_SOURCE,
-            context=client.context, context_path=root / 'actual-run-context.json',
-            run_dir=root / client.frozen['run_id'], argv=client.frozen['argv'],
+            context=client.context, run_dir=client.live, argv=client.frozen['argv'],
             runtime_environment=client.frozen['runtime_environment'])
+        client.selection.context_path = root / 'actual-run-context.json'
         client.selection.context_path.write_text(json.dumps(client.context), encoding='utf-8')
         client.execute_plan = Mock(side_effect=AssertionError('No finish/control submission after terminal host'))
         clock = SimpleNamespace(now=0.0, review_written=False)
@@ -93,6 +92,8 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
     def test_terminal_host_and_os0_wait_for_explicit_root_review(self):
         with tempfile.TemporaryDirectory() as directory:
             client, clock, fake_time, report = self.make_client(Path(directory))
+            self.assertIs(client.selection.context, client.context)
+            self.assertEqual(client.resolve_operator_reviewer(), '/root')
             self.assertIsNotNone(client.native_zero_proof(report))  # The actual shared full predicate.
             with patch.object(self.module, 'time', fake_time):
                 result = client.normal_close('synthetic-delayed-root-review')

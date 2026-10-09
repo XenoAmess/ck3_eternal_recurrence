@@ -1,0 +1,70 @@
+{
+  "schema": "ck3.rebased-reviewer-fixture-fix.v1",
+  "source_head_before_commit": "70908433bc4c3d284cfe5dcd0cc96007b96b3cd1",
+  "root_rebased_original_commit": "c5bb3800b9db9cd955e9916bbee4e22ad2f72cf1",
+  "remote_supervisor_thread_fixture_retained": true,
+  "existing_rebased_poll_tests": 6,
+  "existing_rebased_poll_exit_code": 0,
+  "poll_test_not_rerun_by_this_work_package": true,
+  "root_existing_receipts_have_no_embedded_source_pins": true,
+  "original_error": "AttributeError: 'types.SimpleNamespace' object has no attribute 'context'",
+  "original_test_results": {
+    "normal-close-before": {
+      "tests": 4,
+      "errors": 5
+    },
+    "operator-quit-before": {
+      "tests": 16,
+      "errors": 20
+    }
+  },
+  "normal_close_after": {
+    "tests": 4,
+    "exit_code": 0
+  },
+  "operator_quit_after": {
+    "tests": 16,
+    "exit_code": 0
+  },
+  "total_new_passed_tests": 20,
+  "source_pins": [
+    {
+      "path": "tools/test_ck3_mod_acceptance_normal_close.py",
+      "bytes": 8652,
+      "sha256": "693e968648175d6dd2b44643057c469077d8b9c0bc4862f37f9c14fa6ef12de6"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_operator_quit.py",
+      "bytes": 31674,
+      "sha256": "da6e4db2e5bda5ed4f6b957d696ad10cad230cf5850d4d849655715af7cde0eb"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_poll_reporting.py",
+      "bytes": 15222,
+      "sha256": "e10722c1052904181bb6bf15045196a9e11db9ae9718aeeba1e5feeef1569e53"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_client.py",
+      "bytes": 50584,
+      "sha256": "1e819442f8a1d95a29d5d749a10d3447485f2df450f4cf3b95e89615451a52e0"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 38752,
+      "sha256": "ac88c4ef11e72c465b5dead27bfa46d048dca78fec98318979e3eadde5a7038b"
+    }
+  ],
+  "selection_context_is_client_context_asserted": true,
+  "actual_reviewer_resolver_and_check_pin_executed": true,
+  "existing_wrong_reviewer_run_screen_delegation_scope_assertions_preserved": true,
+  "production_client_and_entry_unchanged": true,
+  "no_reviewer_resolver_mock_or_fallback_added": true,
+  "real_game_or_screen_process_started": false,
+  "new_official_ci_success_claimed": false,
+  "original_ci_archive_repackaged": false,
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 93631,
+    "sha256": "9ddab4c30e4eccfccc06f240d1d40d8e659c35b5a875781b6e029f794825207e"
+  }
+}

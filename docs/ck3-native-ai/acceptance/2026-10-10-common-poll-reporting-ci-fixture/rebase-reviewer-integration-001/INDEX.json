@@ -1,0 +1,228 @@
+{
+  "schema": "ck3.rebased-reviewer-fixture-archive.v1",
+  "archived_at_utc": "2026-10-09T23:47:23.143245+00:00",
+  "source_head_before_commit": "70908433bc4c3d284cfe5dcd0cc96007b96b3cd1",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 93631,
+    "sha256": "9ddab4c30e4eccfccc06f240d1d40d8e659c35b5a875781b6e029f794825207e"
+  },
+  "entries": [
+    {
+      "path": "fixture-integration/BEFORE.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\BEFORE.actual.json",
+      "bytes": 959,
+      "sha256": "6897e451cd991097e9c313390731a591fd1cedd26f2e3ccea966b3f299c28bf7"
+    },
+    {
+      "path": "fixture-integration/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\RESULT.actual.json",
+      "bytes": 3778,
+      "sha256": "2127e43440ac532ac34c05b8ab97bce064902a17574f707c64ec93ba41ca1a47"
+    },
+    {
+      "path": "fixture-integration/after-sources/tools/ck3_mod_acceptance.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\after-sources\\tools\\ck3_mod_acceptance.py",
+      "bytes": 38752,
+      "sha256": "ac88c4ef11e72c465b5dead27bfa46d048dca78fec98318979e3eadde5a7038b"
+    },
+    {
+      "path": "fixture-integration/after-sources/tools/ck3_mod_acceptance_client.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\after-sources\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 50584,
+      "sha256": "1e819442f8a1d95a29d5d749a10d3447485f2df450f4cf3b95e89615451a52e0"
+    },
+    {
+      "path": "fixture-integration/after-sources/tools/test_ck3_mod_acceptance_normal_close.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\after-sources\\tools\\test_ck3_mod_acceptance_normal_close.py",
+      "bytes": 8652,
+      "sha256": "693e968648175d6dd2b44643057c469077d8b9c0bc4862f37f9c14fa6ef12de6"
+    },
+    {
+      "path": "fixture-integration/after-sources/tools/test_ck3_mod_acceptance_operator_quit.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\after-sources\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+      "bytes": 31674,
+      "sha256": "da6e4db2e5bda5ed4f6b957d696ad10cad230cf5850d4d849655715af7cde0eb"
+    },
+    {
+      "path": "fixture-integration/after-sources/tools/test_ck3_mod_acceptance_poll_reporting.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\after-sources\\tools\\test_ck3_mod_acceptance_poll_reporting.py",
+      "bytes": 15222,
+      "sha256": "e10722c1052904181bb6bf15045196a9e11db9ae9718aeeba1e5feeef1569e53"
+    },
+    {
+      "path": "fixture-integration/before-sources/tools/ck3_mod_acceptance.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\before-sources\\tools\\ck3_mod_acceptance.py",
+      "bytes": 38752,
+      "sha256": "ac88c4ef11e72c465b5dead27bfa46d048dca78fec98318979e3eadde5a7038b"
+    },
+    {
+      "path": "fixture-integration/before-sources/tools/ck3_mod_acceptance_client.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\before-sources\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 50584,
+      "sha256": "1e819442f8a1d95a29d5d749a10d3447485f2df450f4cf3b95e89615451a52e0"
+    },
+    {
+      "path": "fixture-integration/before-sources/tools/test_ck3_mod_acceptance_normal_close.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\before-sources\\tools\\test_ck3_mod_acceptance_normal_close.py",
+      "bytes": 7894,
+      "sha256": "9a2ed344abe1006aa6bbbc8c3c2dce0efc376bc337b0cdba4ff7731d03fec130"
+    },
+    {
+      "path": "fixture-integration/before-sources/tools/test_ck3_mod_acceptance_operator_quit.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\before-sources\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+      "bytes": 31542,
+      "sha256": "7d45b0710480154411d11d0f79807cc7dd440379db0cded6ccc7794dd73c8bd0"
+    },
+    {
+      "path": "fixture-integration/before-sources/tools/test_ck3_mod_acceptance_poll_reporting.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\before-sources\\tools\\test_ck3_mod_acceptance_poll_reporting.py",
+      "bytes": 15222,
+      "sha256": "e10722c1052904181bb6bf15045196a9e11db9ae9718aeeba1e5feeef1569e53"
+    },
+    {
+      "path": "fixture-integration/normal-close-after/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\normal-close-after\\RESULT.actual.json",
+      "bytes": 1083,
+      "sha256": "8df2a2134df249c960f93a860b5311c499e810927268cff37aaae836d3f3cc81"
+    },
+    {
+      "path": "fixture-integration/normal-close-after/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\normal-close-after\\stderr.log",
+      "bytes": 107,
+      "sha256": "453ddd0d9005d6cf09934783ff918fcc959f6ca0e85d8b6a7a8d316b742fa8f2"
+    },
+    {
+      "path": "fixture-integration/normal-close-after/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\normal-close-after\\stdout.log",
+      "bytes": 1045,
+      "sha256": "4eec552471a969f5be1499110b239f0eda8fe86a3c6a796a1620b33fcb4def3e"
+    },
+    {
+      "path": "fixture-integration/operator-quit-after/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\operator-quit-after\\RESULT.actual.json",
+      "bytes": 1087,
+      "sha256": "3cf641c1e1ff9733af98e17019dec3539d49956db493dbba7cf1805f8c646417"
+    },
+    {
+      "path": "fixture-integration/operator-quit-after/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\operator-quit-after\\stderr.log",
+      "bytes": 120,
+      "sha256": "d09bd652311c99fb93cf2d8b76e96157cab654775abc8f9ca8aca04036843a24"
+    },
+    {
+      "path": "fixture-integration/operator-quit-after/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-reviewer-fixture-integration-20261010-001\\operator-quit-after\\stdout.log",
+      "bytes": 2768,
+      "sha256": "d3f99fe4f3cda6bf225fea642782d3b7f3dc594f55aeba6a3596ec32eac6d047"
+    },
+    {
+      "path": "normal-close-before/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-remote-closure-check-20261010-003\\RESULT.actual.json",
+      "bytes": 944,
+      "sha256": "cbfd0fe6ab5ee3ebde95078a5444c2c893d074dee88ea09e68f416908bed093d"
+    },
+    {
+      "path": "normal-close-before/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-remote-closure-check-20261010-003\\stderr.log",
+      "bytes": 8235,
+      "sha256": "db3c406bb9a469c0978aaa5d6040adc86029541c9a84eadded4c773675a778e3"
+    },
+    {
+      "path": "normal-close-before/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-remote-closure-check-20261010-003\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "operator-quit-before/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-remote-closure-check-20261010-004\\RESULT.actual.json",
+      "bytes": 948,
+      "sha256": "26a3e0b29f6d08867aae34e336642c031ff4fa2079e53a2db6851a87fae08de2"
+    },
+    {
+      "path": "operator-quit-before/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-remote-closure-check-20261010-004\\stderr.log",
+      "bytes": 33241,
+      "sha256": "608c6be5dd62bd3eb329dafd7dd836db30f64d8395d47a13d6755932a87d0bbe"
+    },
+    {
+      "path": "operator-quit-before/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-remote-closure-check-20261010-004\\stdout.log",
+      "bytes": 532,
+      "sha256": "2c5455ba34fa401be445ab4cdb787b145f2e907ca09eabc90bbf8606001bc6e3"
+    },
+    {
+      "path": "producers/r41-agent-archive-reviewer-fixture-integration-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-agent-archive-reviewer-fixture-integration-20261010-001.py",
+      "bytes": 8950,
+      "sha256": "cf9b4b1840b014036e9586256147bc5c33c09612acabb67ec9536b63bfb24c22"
+    },
+    {
+      "path": "producers/r41-agent-snapshot-reviewer-fixtures-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-agent-snapshot-reviewer-fixtures-20261010-001.py",
+      "bytes": 1422,
+      "sha256": "6a5cfeddffff3907b4a88aa6013e4cd7223f885c0f7c2c90b1e365684411c8d4"
+    },
+    {
+      "path": "producers/r41-agent-validate-reviewer-fixtures-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-agent-validate-reviewer-fixtures-20261010-001.py",
+      "bytes": 3223,
+      "sha256": "a0fa06d736271ac42c2c2486429758a781c56b91cc430ff6a27729b55be63cbf"
+    },
+    {
+      "path": "root-poll-reporting-pass/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-poll-reporting-rebased-20261010-001\\RESULT.actual.json",
+      "bytes": 949,
+      "sha256": "ea10f08f30eb36ace5be6cdfa6446ea9665c086bf3298f1d6214c2a29c4a5bc8"
+    },
+    {
+      "path": "root-poll-reporting-pass/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-poll-reporting-rebased-20261010-001\\stderr.log",
+      "bytes": 109,
+      "sha256": "c5b48959ae130b90c264fce86b0df2e7d3e14722a33a0c510a06c28a600dabfa"
+    },
+    {
+      "path": "root-poll-reporting-pass/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-poll-reporting-rebased-20261010-001\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "root-rebase-continue/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-publication-rebase-continue-20261010-001\\RESULT.actual.json",
+      "bytes": 792,
+      "sha256": "0da6539e96a467b95f3b255e8f2dee63a2a4a14822777e71e0f533dec370241a"
+    },
+    {
+      "path": "root-rebase-continue/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-publication-rebase-continue-20261010-001\\stderr.log",
+      "bytes": 52,
+      "sha256": "541f1cd14c7b5a66710cf5eaf3df4743f8aaa8bd30c9636bcf50b42a92e68da2"
+    },
+    {
+      "path": "root-rebase-continue/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-publication-rebase-continue-20261010-001\\stdout.log",
+      "bytes": 657,
+      "sha256": "f924d75cbe23b8666501fef1c202487524b7aec7b2830c15df7e45cfa0200d98"
+    },
+    {
+      "path": "root-rebase/RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-publication-rebase-20261010-001\\RESULT.actual.json",
+      "bytes": 744,
+      "sha256": "ddd77f406f5507dcca411df4e6744f4082a8554b669f8abc6074e1cdf923e673"
+    },
+    {
+      "path": "root-rebase/stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-publication-rebase-20261010-001\\stderr.log",
+      "bytes": 574,
+      "sha256": "2a147989eb77dce5fc43d44e7ae4e7829407866f24e32165a943055e8e418f01"
+    },
+    {
+      "path": "root-rebase/stdout.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-publication-rebase-20261010-001\\stdout.log",
+      "bytes": 147,
+      "sha256": "a7add1b55c67497214467042ca790e3ff6c8c58d61d873a5a18c91d2a0be3c7e"
+    }
+  ]
+}

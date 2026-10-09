@@ -1,0 +1,14 @@
+{
+  "schema": "ck3.raw-evidence-archive-validation.v1",
+  "status": "PASS",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 93631,
+    "sha256": "9ddab4c30e4eccfccc06f240d1d40d8e659c35b5a875781b6e029f794825207e"
+  },
+  "checked_entries": 36,
+  "crc": "PASS",
+  "all_source_and_archived_bytes_match": true,
+  "all_source_and_archived_sha256_match": true,
+  "original_ci_archive_repackaged": false
+}

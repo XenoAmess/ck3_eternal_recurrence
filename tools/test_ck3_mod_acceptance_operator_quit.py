@@ -40,13 +40,12 @@ class OperatorQuitTests(unittest.TestCase):
         cls.close_fixture.HOST_SOURCE = HOST
 
     def make_client(self, root, **kwargs):
-        client, clock, fake_time, report = self.close_fixture.NormalCloseReviewRaceTests.make_client(self, root, **kwargs)
+        client, clock, fake_time, report = self.close_fixture.NormalCloseReviewRaceTests.make_client(self, root,
+            screen_task='SYNTHETIC_SCREEN_OWNER', runtime_environment={'PYTHONUTF8': '1', 'PYTHONDONTWRITEBYTECODE': '1'}, **kwargs)
         client.live = root / client.frozen['run_id']
         client.keeper = root / 'keeper'
-        client.frozen['screen_task'] = 'SYNTHETIC_SCREEN_OWNER'
         client.operator_reviewer = '/root'
         client.selection.locations = {'python': Path(sys.executable), 'repo_root': root}
-        client.selection.runtime_environment = {'PYTHONUTF8': '1', 'PYTHONDONTWRITEBYTECODE': '1'}
         client.selection.normal_quit_automation = None
         client.focus_retained_process_for_quit = Mock(return_value={'synthetic_focus': True})
         return client, clock, fake_time, report
@@ -211,6 +210,8 @@ class OperatorQuitTests(unittest.TestCase):
             with self.subTest(enabled=enabled), tempfile.TemporaryDirectory() as directory:
                 client = self.delegated_client(Path(directory), enabled=enabled)
                 expected = '/root/synthetic_operator' if enabled else '/root'
+                self.assertIs(client.selection.context, client.context)
+                self.assertEqual(self.module.resolve_operator_reviewer(client.selection), expected)
                 self.assertEqual(client.operator_reviewer, expected)
                 client._hold=1;client.remaining=lambda:100;client.guard=lambda reserve:None
                 self.module.write_once(client.output/'synthetic-root-result.json',{'run_id':client.frozen['run_id'],'reviewer':expected})

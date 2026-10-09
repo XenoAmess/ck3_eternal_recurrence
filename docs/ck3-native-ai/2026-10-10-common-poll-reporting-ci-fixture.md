@@ -39,3 +39,30 @@
 # Rebase integration note (2026-10-10)
 
 After this candidate was tested, concurrent `origin/master` supplied `supervisor=threading.Thread()` in the same isolated namespace. Integration retains that remote thread object rather than replacing it with the archived `None` candidate. Both provide the missing closure variable; the archived before/candidate/repository receipts remain historical bytes. The final rebased fixture is checked again after resolving this actual overlap. This note does not change the failed exact `6a3affdb8` CI result.
+
+## Rebase 后 reviewer 测试夹具补充（2026-10-10）
+
+Root 将原 `c5bb3800b` 线性 rebase 至远端更新后，实际集成 HEAD 为 `70908433bc4c3d284cfe5dcd0cc96007b96b3cd1`。
+同一 namespace 的冲突保留远端 `supervisor=threading.Thread()`；Root 已有的 6 项
+poll-reporting 测试实际通过回执随本补充封存，本工作包没有重跑该组。
+原精确 `6a3` CI 失败和之前 `supervisor=None` 候选回执保持历史原样。
+
+远端 reviewer resolver 开始校验持久化 allocated context、exact frozen argv pin、
+run/argv/environment 及委托来源。集成检查发现 normal-close 与 operator-quit 旧夹具
+仅有 `client.context`，缺少 `selection.context`，均触发同一 `AttributeError`。
+原回执为 normal-close 4 项测试 / 5 个 ERROR
+（含 subtest）、operator-quit 16 项测试 / 20 个 ERROR。
+
+本次只补齐两份测试夹具：共享 normal-close fixture 提供同一 context 对象、持久化 context、
+真实可核 frozen pin、run_dir、argv 及 environment；operator fixture 在冻结前传入其
+screen/environment。测试实际执行生产 resolver 和 pin 检查，没有 mock resolver 或添加 fallback。
+保留错误 reviewer 与跨 run/screen/authority/scope 拒绝断言，并检查 context 对象身份与真实解析的 reviewer。
+生产 client、entry 与最终 poll fixture 的 SHA-256 均与集成基线一致。
+
+修复后仅运行这两组原测试，各一次：`normal_close` **4/4**、`operator_quit` **16/16**，均 exit 0。
+原 RED、新 PASS、Root rebase/continue 和已有 poll PASS 回执及源码 pins 见
+[补充结果](acceptance/2026-10-10-common-poll-reporting-ci-fixture/rebase-reviewer-integration-001/RESULT.actual.json) 与
+[补充索引](acceptance/2026-10-10-common-poll-reporting-ci-fixture/rebase-reviewer-integration-001/INDEX.json)。
+新增 ZIP 为 93631 bytes，SHA-256 `9ddab4c30e4eccfccc06f240d1d40d8e659c35b5a875781b6e029f794825207e`，
+全部 36 项 byte-exact / CRC PASS；未重复打包旧 CI 或 Source04。
+这些静态测试结果不追认原 CI 成功，也不授公共 runtime 或产品实机 GREEN。
