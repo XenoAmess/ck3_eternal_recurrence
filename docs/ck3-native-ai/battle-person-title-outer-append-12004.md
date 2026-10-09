@@ -85,8 +85,9 @@ already retained in the direct carrier's `pc-decoder-source03` evidence;
 they are reused without replay. Any genuinely missing copy operand is an
 exact dependency of this one wrapper rather than a wider helper expansion.
 No placeholder field, new tool or theoretical admission gate is introduced.
-Native59 qualification is Root-owned and pending independently; its new
-worlds are not replayed by this research. FullHelper, FullPerson, Entry, live
+Native59 is Root-qualified GREEN at compiled source
+c0359add01473d67021328392bd1542158312e56. Its six native worlds are not
+replayed by this increment. FullHelper, FullPerson, Entry, live
 and gameplay outcome credit remain false.
 
 ## Python request projection and one retained-packet compound
@@ -103,8 +104,7 @@ Each request carries the selected Model, the derived inline Model+10 address,
 Title occurrence, folded U16-key/full signed64-value block and literal100000
 weight. A zero-count folded composer skips this wrapper just as the caller
 does. The sampled `destination_pc_identity` QWORD remains a different value.
-This increment publishes wrapper entry inputs. Post-copy argument equivalence
-and the complete arithmetic of the tail delegate are separate native proof
+This increment publishes wrapper entry inputs. The complete arithmetic of the tail delegate remains a separate native proof
 boundaries; a projected request is not an observed Model mutation or final
 historical Model aggregate.
 
@@ -119,8 +119,9 @@ phaseA input. Complete-family requests still report their actual missing input.
 The known nonemitted occurrence yields no request. There is no invented native
 empty-composer scene or replay of the old six-packet compound.
 
-Author status is AUTHORED_NOTRUN. Root alone runs this new three-packet consumer;
-no compiler, DLL link, native fixture invocation or Game query is needed.
+The author performed no execution. Root subsequently qualified the new
+three-packet consumer once; no compiler, DLL link, native fixture invocation
+or Game query was performed for this qualification.
 The two retained14-byte copy-helper prefixes are only prologues through a
 self-assignment JE. Their exact same-helper continuations exclude those28
 bytes: keys `[11E116E,11E11CE)`96 bytes and values `[B73F5E,B73FCD)`111 bytes.
@@ -135,3 +136,27 @@ copy no elements; self-assignment skips the copy. The key helper delegates its
 byte transfer; this increment does not claim a new decode of memcpy or allocator
 internals. Neither storage helper introduces a decision input or an extra gate.
 The complete wrapper-entry projection remains independent of actual Model writes.
+
+## Root qualification on 2026-10-10
+
+The source-ready increment was committed as
+`ffb677a5713304d7fec40dbbc1e9ac3190d1bf22` and adopted by Root as
+`17b8f411ca6f2c1564d5761b59de4968c73f49f9`. Root ran the unique new compound
+at **2026-10-10 00:00:11.290042–00:00:15.035360 Asia/Shanghai**. It returned
+exit0 / GREEN in **3.7465189000358805 seconds**, with pytest1passed in3.08s.
+This FIRST belongs to October10, not the October9 source-delivery day.
+
+The original result, structured argv/environment and stdout are retained at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/person-title-outer-append/source-package/root-first01/RESULT.json`,
+`ARGV.json` and `stdout.log`. The path's background-day label does not change
+the execution timestamp. All three registered calls consumed unchanged
+Native59 whole bodies1/5/6 with original query sequences. No producer scene,
+old compound or native build was replayed.
+
+The request projection is **static-ready**. It supplies the observed numerical
+composer blocks, exact outer unit100000 and inline Model+10 destination while
+preserving occurrence order, duplicate Titles and independently available
+partial-frame siblings. The native wrapper/copy closure used522new bytes in
+five Root-only reads; retained prefixes were not read again. Neither this
+qualification nor that source closure performs a Model write. FullHelper,
+FullPerson, Entry, production-live and new G2 outcome credit remain false.
