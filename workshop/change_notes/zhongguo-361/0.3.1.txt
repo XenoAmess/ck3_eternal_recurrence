@@ -1,0 +1,22 @@
+0.3.1 — CK3 1.20.0.4 兼容维护 / Compatibility maintenance
+
+发布前草稿：正式 tag、当前版本实机验收和 Workshop 发布尚未完成。以下为待审核更新说明，不是已发布或验收通过的声明。
+Unpublished draft: the release tag, current-build live acceptance and Workshop publication are still pending.
+
+相对上一公开版本 0.3.0 / Changes since public version 0.3.0:
+- 将兼容目标从 CK3 1.19.0.6 更新为 1.20.0.4。保留天朝制直属官员的绩效考核、分档、考核榜与京察入口。
+- 合入公开版之后已有主线的考核周期维护：活动中的考核/公示链尚未结束时，合并并延后年度请求，避免新一轮覆盖旧链；对失效管理者和无存活受评者的既有考核增加恢复与清理边界。
+- 同步现有考核、榜单和组织流程的简体中文事件/按钮文案及人物变量显示维护。九种本地化继续保留；非中文语言只作格式与解析检查，不声称逐语实机或母语审校。
+- 新人保护、直属管理关系、同年幂等、既有奖惩与京察义务边界继续按产品合同执行。原版任命、总督及活动可用性仍调用原版定义，不以兼容标签替代真实引擎验收。
+
+兼容与已知限制 / Compatibility and known limits:
+- 跨 CK3 大版本存档兼容没有保证；建议先备份旧存档，并优先使用新开的单人战役。候选没有新增必须执行的存档转换程序。
+- 当前候选包含公开 0.3.0 之后已提交的二期源码；源码接线和历史有界夹具证据不等于本次 1.20.0.4 完整功能验收。361 个政策编号不表示 361 套独立领域状态机均已完成，也不承诺尚未验收的领域玩法。
+- 多年度自然周期、长期 PIP/处置链、低分辨率/高缩放及旧存档的覆盖范围以实际发布证据为准；本草稿不宣称完成这些矩阵。其他 mod 若修改相同考核、榜单或京察定义，仍可能因加载顺序产生冲突。
+
+- Targets CK3 1.20.0.4 instead of 1.19.0.6 while retaining the existing direct-vassal assessment, grading, scoreboard and Jingcha entry points.
+- Includes existing mainline cycle maintenance: annual requests are coalesced and deferred while an assessment/publication chain is active; recovery and cleanup guard invalid managers and cycles with no surviving subjects.
+- Carries the existing Simplified Chinese event/button copy and character-variable display maintenance. Nine localization languages remain; other languages receive format/parser checks, without a new per-language live or native-speaker claim.
+- Retains the existing newcomer, direct-management, same-year, reward/penalty and Jingcha-duty contracts. Vanilla appointment, governor and activity availability definitions remain authoritative.
+- Back up old saves; new single-player campaigns are recommended. Cross-major-version save compatibility is not guaranteed, and no mandatory save-conversion procedure is added.
+- The candidate also contains previously committed Phase 2 sources. Source wiring and historical bounded fixture evidence do not establish full CK3 1.20.0.4 acceptance, or 361 complete independent domain state machines. Long natural cycles, PIP/outcome chains, display geometries and old-save coverage remain limited to the actual release evidence. Load-order conflicts remain possible with other mods modifying the same assessment, scoreboard or Jingcha definitions.

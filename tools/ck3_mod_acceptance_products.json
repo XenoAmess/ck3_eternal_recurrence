@@ -325,7 +325,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -460,7 +460,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -538,7 +538,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -611,7 +611,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -676,7 +676,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -761,7 +761,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -820,7 +820,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -880,7 +880,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -939,7 +939,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -999,7 +999,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1061,7 +1061,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1120,7 +1120,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1181,7 +1181,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1246,7 +1246,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1312,7 +1312,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1428,7 +1428,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1522,7 +1522,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1638,7 +1638,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1724,7 +1724,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -1840,7 +1840,7 @@
             "requirements": [
               "current allocated run/PID/create_time/generation and unchanged owner binding",
               "all pending controls finished, no cleared or overwritten business error",
-              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
               "retained actual OS handle signaled with exit code 0",
               "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
               "original keeper actual exit 0, final CAS done/resources[]"
@@ -2164,7 +2164,7 @@
           "budget_provenance": "new_shared_case_profile_20261008",
           "required_mcp_tools": [
             "ck3_take_snapshot",
-            "ck3_advance_days"
+            "ck3_execute_step"
           ],
           "normal_close": {
             "owner": "shared entry/CaseClient",
