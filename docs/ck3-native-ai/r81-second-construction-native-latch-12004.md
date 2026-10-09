@@ -1,7 +1,9 @@
-# R81 second construction: retained native latch blocks later legal work
+# R81 second construction: latch fault and Native48 live repair
 
-Status: Native48 repair is static-ready after Root's actual offline qualification
-on 2026-10-09; production-live behavior awaits a separate live result. The
+Status: Native48 latch lifecycle is a **production-live primitive** after two
+new ordinary submits and their independent material receipts on the same
+R82 Game process on 2026-10-09. Building completion, income increase, full M4
+and complete OODA remain unproven; G2 remains **5/8**. The
 original R81 fault was observed on game 1.20.0.4, compiled Native46
 `088fed39` and SDK `45a3e6a4`.
 The repair derives from complete Native47 source
@@ -47,7 +49,7 @@ and current independent absence of the second material bind this source cause.
 flowchart TD
     A[First legitimate construction submit] --> B[Native may-have-submitted latch]
     B --> C[Fresh readonly exact first-tuple active or completed material]
-    C --> D[Current source leaves old latch set]
+    C --> D[Original Native46 source leaves old latch set]
     D --> E[Second legal request rejected before executor]
     E --> F[SDK loses negative envelope and preserves uncertain intent]
     B -. no independent material .-> U[Keep original unknown state]
@@ -126,3 +128,85 @@ Canonical metadata is under
 This qualification advances the repair to **static-ready** only. It records
 no deployment, Game call, production-live primitive/loop, fullPerson, action,
 action-day or G2 credit; Root must separately retain the next actual live result.
+
+## R82 same-process repeated construction: actual live result
+
+Root subsequently restored and operated the ordinary Robert 29829 campaign
+with Native48 on minimized, paused **Game143468**, creation time
+`20261009101637.326052+000`. The compiled native source remains `dd302e80`
+and canonical qualification `725e7a56`, recorded above. The hot SDK consumer
+uses the separately qualified normal pending recovery described in
+[the R82 recovery topic](r82-construction-unapplied-cold-recovery-12004.md).
+That recovery preserves the old f085 intent as not applied; the following
+two rows are **new requests**, not replays or fabricated material for f085.
+
+| New pair | Exact barony/province/type/slot | Date raw | Submit native/public → material native/public | Submit proof → material proof | Gold before → material gold |
+| --- | --- | --- | --- | --- | --- |
+| hot014 → hot015, `ab2ae252` | `2106/2644/604/2` | 53288616 | `5/4 → 6/5` | `359543 → 377219` | `69417022 → 55167022` |
+| hot027 → hot028, `3397aa30` | `2143/2619/604/4` | 53288640 | `9/8 → 10/9` | `511237 → 524661` | `55167022 → 40917022` |
+
+The complete request IDs are
+`construction-submit-ab2ae25236204694a55e5d2a207b47a5` and
+`construction-submit-3397aa302b51493ca9fa7d19bfb5f0cc`.
+Both are ordinary `private-submit-player-construction-v1` choices for
+cereal_fields_01 in an observed empty slot, quoted native cost **14250000**.
+Each actual native ACK reports production_native_path=true,
+candidate/native_failure=none and validator/materialize/receiver calls=1.
+The ACK remains pending_receipt/applied=false. Each **separate ordinary
+material query** then returns applied/postcondition_verified=true,
+completion_status=in_progress, matching its original request and exact tuple,
+and independently observes the exact quoted gold debit. Both submit and
+material receipts retain the same Game PID and creation instant.
+
+The first submit takes **106.015510 seconds** and its material query
+**141.011334 seconds**. The second submit runs at
+11:28:38.793546–11:30:35.382628 UTC (**116.589082 seconds**), followed by its
+independent receipt at 11:30:35.890700–11:32:48.299833 UTC
+(**132.409133 seconds**). The normal batch stops specifically at
+`second_new_construction_material_observed`. No process restart is used
+between the first new submit/material pair and the different legal second
+submit/material pair on the next builder day.
+
+The private global latch is not published as a wire field. This is observed
+**lifecycle behavior**: after the first submitted tuple receives independent
+material, the same Native48 process accepts a different ordinary native
+construction and independently verifies it. The old permanent one-shot
+failure therefore no longer blocks this actual sequence. There is no claim
+that an ACK directly exposes or proves the private bool's value.
+
+```mermaid
+flowchart TD
+    A[Ordinary new submit ab2ae252] --> B[Independent exact material hot015]
+    B --> C[Normal next builder day in the same Game143468]
+    C --> D[Different ordinary new submit 3397aa30]
+    D --> E[Independent exact material hot028]
+    E --> F[Native48 repeated latch lifecycle: production-live primitive]
+    F -. completion and actual income still pending .-> U[Full M4 and complete OODA unproven]
+```
+
+Each new construction's independent start receipt records in_progress,
+remaining work **109500000** and actual progress divisor **0** on its own
+material frame. Those raw values are retained;
+the old 60000 divisor is not substituted. The first target's province income
+is **49164 before and after**, the second **140896 before and after**, and
+observed player gross income is **609217 before and after**. Completion dates
+and observed income deltas remain null. Authored prospective income50 is
+not an observed income increase. This establishes the Native48 repeated
+construction latch **production-live primitive**, not building completion,
+an income outcome, whole M4, a new G2 milestone or complete OODA. G2 stays
+**5/8**.
+
+The saved ordinary responses are hot014, hot015, hot027 and hot028 under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r82-sdk-pending-recovery-hot01/operator/gameplay-responses/`.
+The batch receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r82-sdk-pending-recovery-hot01/ROOT-NORMAL-BATCH03-RESULT.json`.
+The thin pair projections and aggregate are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r82-native48-pending-recovery-source/`:
+`HOT014-NEW-SUBMIT-THIN-EVIDENCE.json`,
+`HOT015-FIRST-NEW-MATERIAL-THIN-EVIDENCE.json`,
+`HOT027-028-SECOND-NEW-PAIR-THIN-EVIDENCE.json` and
+`NATIVE48-TWO-NEW-PAIRS-SAME-PROCESS-EVIDENCE.json`.
+Research decodes only bounded structured-result fragments; it does not parse
+large native histories or Driver state, rerun qualified tests, hash binaries,
+query the live SDK/Game, or rewrite ledgers. Root owns the subsequent paused
+snapshot and SAVE.
