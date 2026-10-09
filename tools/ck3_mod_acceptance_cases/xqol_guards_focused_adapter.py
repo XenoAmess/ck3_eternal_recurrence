@@ -77,7 +77,9 @@ def prepare_case(context):
 
 def admit_startup_event(context, snapshot, event_context):
     """Original scope-bound sole first intro; shared host owns the once-selection."""
-    proof = scope((Path(context['state_dir']) / 'profile/logs/debug.log').read_bytes())
+    log_path = (Path(context['state_dir']) / 'profile/logs/debug.log').resolve()
+    raw = log_path.read_bytes()
+    proof = scope(raw)
     played = snapshot.get('played_character', {})
     require(played.get('character_id') == proof['runtime_character_id'] and
             played.get('alive') is True and played.get('source') == 'native',
@@ -104,6 +106,13 @@ def admit_startup_event(context, snapshot, event_context):
         typed_options[0].get(key) == value for key, value in {
             'rendered_index': 0, 'native_option_index': 0, 'shown': True, 'enabled': True,
             'fallback': False, 'cancel': False}.items()), 'Actual typed intro sole option is not enabled native index0')
+    # The original parser/run_case retain full raw hex; startup carries its exact byte reference.
+    proof = {key: value for key, value in proof.items() if key != 'raw_scope_block_hex'}
+    proof['markers'] = {key: {'literal': marker, 'count': raw.count(marker.encode('ascii'))}
+                        for key, marker in MARKERS.items()}
+    proof['raw_scope_block_reference'] = {
+        'path': str(log_path), 'byte_start': proof['byte_start'], 'byte_end': proof['byte_end'],
+        'bytes': proof['byte_end'] - proof['byte_start'], 'sha256': proof['raw_scope_block_sha256']}
     return {'event_instance_id': event['instance_id'], 'option_number': 1,
             'proof': proof, 'business_pass': False}
 
