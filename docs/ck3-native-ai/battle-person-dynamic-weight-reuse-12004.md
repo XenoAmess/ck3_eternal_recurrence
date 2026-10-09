@@ -108,3 +108,9 @@ and independent later rows through the existing same-query MCP. That recipe is
 NOTRUN and does not reuse Native45's FIRST as dynamic-weight qualification.
 Current dynamic branches remain partial. No fresh-model, complete Person/Entry,
 calendar, live or campaign capability is promoted.
+
+The complete caller scope is subsequently documented in
+[conditional scope and current row weights](battle-person-conditional-scope-12004.md).
+Its source receipt retains the prior constructor gap, then records Root's
+authorized 130B capture and the native construction/lifetime contract before
+the independent same-query implementation.
