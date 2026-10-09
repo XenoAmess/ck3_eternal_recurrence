@@ -246,3 +246,12 @@ R12/a114 D3 actual4/actor34422/primary18371/date53144400/native16 actual availab
 TED R11/a117 [camera绑定RED/闭场40](C:/workspace/ck3-upgrade-20261007/ted-r0011-camera-binding-red-readonly-resource-01/ROOT-TED-R0011-A117-MINIMAL-CLOSED-CARD-40.md)因缺少合法`binding.episode_run_id`在native dispatch前拒绝，原RED保留，managed shutdown1非normal0，keeper0/CAS6244 done。R12/a118 [实际normal0闭场41](C:/workspace/ck3-upgrade-20261007/ted-r0012-normal0-pending-gui-readonly-resource-01/ROOT-TED-R0012-A118-MINIMAL-CLOSED-CARD-41.md)的正常GUI/独立retained OS0/native0/cleanup及keeper33645 actualexit0→CAS6315 done/resources[]成立，host GREEN不授业务PASS；复用R11 S/宋帝赵曙及贡臣契约GUI信用，T holder/休战GUI仍未验。合法普通saved-scene MCP binding正在补齐，未写成已实现或实机PASS；仍6/10（60%），不重复已有信用、不冲销历史失败，缓存永久两项规则不变。
 
 2026-10-08续办：[mod升级提速与公共验收入口](ck3-mod-upgrade-fast-validation.md)记录全部未来mod的common manifest统一消费、当前adapter pending及分阶段施工；正常数小时仅工程目标，原源码合同/预算、旧冻结失败与缓存永久两项政策保持。
+
+
+### 2026-10-09续办：TED 1.0.1发布与真实缓存闭合（实际补记 2026-10-09T16:58:12+08:00）
+
+TED源码实机及R22显示/生产交互后，[实际SDK发布](C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/native-publish-receipt.json)、[exact匿名Notes](C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/anonymous-readback-01/verification.json)、真实Steam下载缓存R23简化menu验收均已闭合。正式tag `tributary-expansion-directives-v1.0.1` 指向源码 **`e645875e051cb1f6bee8d1edf2b97b53bcaaa80e`**；Notes entry **1791534500** 的2943B/2127字符/19行/SHA `c3ee3e5d158310d578d55c20c935a7fa5507f30617287a876680f439efd92aff`已全文精确匿名回读，未用SDK ACK代替公开Notes。
+
+[Root收尾82](C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/ROOT-ACTUAL-CACHE-NORMAL0-OFFLINE-CLOSURE-82.json)保留缓存exact/共同主菜单加载、正常GUI退出、retained OS0/native0、公共run0/keeper0、canonical outer与新鲜Steam离线原像素；**a132 CAS7530** 已释放、资源空。R23只取得缓存加载/正常退出边界，原`business_pass=false`/`product_release_pass=false`保持，不重产品业务、不伪称独立VFS读回。历史FAILED/PENDING段仍是当时状态，不改写旧attempt。
+
+源码、实际发布、公开Notes、缓存和离线门均完成；**仅本批永久记录实际commit/push后，正式进度由6/10更新为7/10（70%）**。候选阶段不写未发生的发布记录入库事实或未来commit。后续顺序：**QOL → RMTM → 361（玩家产品最后）→ 廷臣礼仪 → G2**，共用Source09/FINAL10/bound11；其他项仍按真实前置推进，不授提前PASS。

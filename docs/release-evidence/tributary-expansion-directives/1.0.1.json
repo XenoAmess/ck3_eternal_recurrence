@@ -1,0 +1,599 @@
+{
+  "schema": "ck3.workshop-release-evidence.v1",
+  "status": "PUBLISHED_CACHE_ACCEPTANCE_COMPLETE",
+  "product": "mod_tributary_expansion_directives",
+  "version": "1.0.1",
+  "workshop_item_id": "3801490405",
+  "owner": "76561198273714027",
+  "consumer_app_id": 1158310,
+  "forbidden_upstream_target_ids": [],
+  "release_tag": "tributary-expansion-directives-v1.0.1",
+  "release_commit": "e645875e051cb1f6bee8d1edf2b97b53bcaaa80e",
+  "previous_public_version": "1.0.0",
+  "previous_release_tag": "tributary-expansion-directives-v1.0.0",
+  "previous_release_commit": "da0c488a5b27b62971161437c996015bc1c48cef",
+  "published_at_utc": "2026-10-09T08:28:20+00:00",
+  "published_time_source": "Actual public metadata time_updated=1791534500; SDK timestamps recorded separately",
+  "sdk_submitted_at_utc": "2026-10-09T08:28:20.771310+00:00",
+  "player_visible_changes": [
+    "Declared CK3 compatibility updated to 1.20.0.4.",
+    "Optional war subsidy amount now uses native localization_values for the existing dynamic formula.",
+    "Secondary target ruler label supplied in all nine supported languages instead of an internal localization key."
+  ],
+  "compatibility_and_saves": "Existing storage structure, 150 Prestige, AI acceptance, subsidy for 12 months of income rounded to 5 and clamped to 50-500, transfers and war targets unchanged. Back up saves before changing game version or mod set.",
+  "known_limits": [
+    "Source credit is limited to the accepted .4 source cells and GUI evidence. Historical R13 overall RED/rescue and R21 display RED are retained; their original conclusions are not rewritten.",
+    "The source acceptance does not establish every unexecuted business branch or another CK3 build. Back up saves before changing game version or mod combinations.",
+    "R23 proves only the accepted combined managed cache profile and actual main-menu load plus normal closure. Independent engine VFS path readback remains UNKNOWN; business_pass and product_release_pass remain false as designed for this cache case."
+  ],
+  "source_acceptance": {
+    "permanent_summary": "../../tributary-expansion-directives-1.20.0.4-source-acceptance-2026-10-09.md",
+    "accepted_external_aggregate": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-source-release-aggregate-46/TED-SOURCE-RELEASE-AGGREGATE-FINAL-46-02.json",
+      "bytes": 18984,
+      "sha256": "b862d181570a8ecb3b41c0c648e3bba496ead1891fa81e4d945a4e3b29c2d3d8"
+    },
+    "R22_source_and_normal0": true,
+    "Root_CAS_sequence": 7498,
+    "source_CI_edee_only": {
+      "commit": "edee97941a870f8a2af1c38875ac11dac51d6bd0",
+      "receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261007/remaining12004-formal-publish-cards-01/exactedee-ci-changed-socks-route-once-73-01/EXACT-EDEE-CI-CHANGED-SOCKS-ROUTE-73.json",
+        "bytes": 3397,
+        "sha256": "613c1445008ad5d24a312a99d509398c81b41c7d1046ed54ac2b6a0b75eec42c"
+      }
+    },
+    "actual_release_commit_e645_CI_queried_by_this_preparer": false
+  },
+  "formal_build": {
+    "actual_Root_observed_receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/ROOT-OBSERVED-FORMAL16-AND-CANDIDATE-EXACT-76.json",
+      "bytes": 10809,
+      "sha256": "bc1e8357ee64fe64737d4ed70737df532817d5e28e91458f5bf386732bf44e85"
+    },
+    "manifest": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/formal/mod_tributary_expansion_directives-v1.0.1.manifest.json",
+      "bytes": 3275,
+      "sha256": "e67c21f29c88f0af1f16eda09893255a34c47b12b0dfc8e036abfb7ac77b65c2"
+    },
+    "zip": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/formal/mod_tributary_expansion_directives-v1.0.1.zip",
+      "bytes": 754533,
+      "sha256": "3697acfd047da1dc794405c4ec4dd25c6450237402bac7b6c87c1de5cddb3d17"
+    },
+    "descriptor": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/formal/mod_tributary_expansion_directives/descriptor.mod",
+      "bytes": 166,
+      "sha256": "053acab68d8803119724d825c988ed77c0fe565aa27712b4b2f14c4af5695996"
+    },
+    "file_count": 16,
+    "actual_candidate16_exact": true,
+    "Root_build_exit_code": 0,
+    "Root_verify_exit_code": 0,
+    "original_stdout_location": "Root tool chunks 34800a and 915ea6, not fabricated wrapper75 stdio"
+  },
+  "native_publish": {
+    "receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/native-publish-receipt.json",
+      "bytes": 625,
+      "sha256": "58a6e458fccd5a40ae09345540badf34b289be1492815f656e865496bf2f6371"
+    },
+    "original_call_tool_result": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/native-publish-result-01.json",
+      "bytes": 737,
+      "sha256": "c21b6bd3193f3ec0e06b02caa80b02f6b196e2b45c42ea76fea648ec317b38f7"
+    },
+    "identity_probe_result": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/native-probe-result-01.json",
+      "bytes": 1136,
+      "sha256": "ad932dfa2b422fb5875195f91905a8910be0abdd3d5bab46e6cccd2f91db3028"
+    },
+    "operation_id": "ted-12004-v101-20261009-01",
+    "steam_result": 1,
+    "legal_agreement_required": false,
+    "complete_submitted_tags": [
+      "Gameplay",
+      "1.20 'Crozier'"
+    ],
+    "plan": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/native-publish-plan.json",
+      "bytes": 3796,
+      "sha256": "8c25edfd7533cc304a809fc2f68ad2556b0a4dc64f03b9318bf6ccf1c1807a5e"
+    }
+  },
+  "public_change_notes": {
+    "entry_id": "1791534500",
+    "characters": 2127,
+    "lines": 19,
+    "utf8_bytes": 2943,
+    "sha256": "c3ee3e5d158310d578d55c20c935a7fa5507f30617287a876680f439efd92aff",
+    "html_decoded_lf_full_body_exact": true,
+    "presentation_terminal_lf_removed": false,
+    "full_actual_body": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\anonymous-readback-01\\entry-01-1791534500.html-decoded-lf-full.txt",
+      "bytes": 2943,
+      "sha256": "c3ee3e5d158310d578d55c20c935a7fa5507f30617287a876680f439efd92aff"
+    },
+    "frozen_before_submit": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/frozen-inputs/notes.txt",
+      "bytes": 2943,
+      "sha256": "c3ee3e5d158310d578d55c20c935a7fa5507f30617287a876680f439efd92aff"
+    },
+    "previous_entry_id": "1789376413",
+    "previous_entry_body_unchanged": true,
+    "anonymous_verification": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/anonymous-readback-01/verification.json",
+      "bytes": 28920,
+      "sha256": "00dbdf5cd903d1c6a68e29e5a0f34074aac667a515510743e33f5cbcd9a8588a"
+    },
+    "anonymous_observed_at_utc": "2026-10-09T08:29:25.003388+00:00",
+    "all_http_200_complete": true,
+    "owner_app_title_description_complete_tags_sidebar_requiredtags_exact": true,
+    "exactness_basis": "Existing verifier exact decision includes fulltag Counter equality and sidebar_exact; no new HTTP read.",
+    "actual_request_receipts": {
+      "details": {
+        "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3801490405&l=english",
+        "requested_at_utc": "2026-10-09T08:29:23.695133+00:00",
+        "method": "GET",
+        "request_headers": {
+          "User-Agent": "CK3-CCC-anonymous-release-verifier/1.0",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Cache-Control": "no-cache",
+          "Accept": "text/html"
+        },
+        "request_payload": null,
+        "request_count": 1,
+        "automatic_retries": false,
+        "read_only_endpoint": true,
+        "cookies_or_auth_supplied": false,
+        "browser_or_Steam_state_accessed": false,
+        "status": 200,
+        "final_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3801490405&l=english",
+        "response_headers": [
+          [
+            "Server",
+            "nginx"
+          ],
+          [
+            "Content-Type",
+            "text/html; charset=UTF-8"
+          ],
+          [
+            "X-Frame-Options",
+            "SAMEORIGIN"
+          ],
+          [
+            "Content-Security-Policy",
+            "default-src blob: data: https: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://community.akamai.steamstatic.com/ https://cdn.akamai.steamstatic.com/steamcommunity/public/assets/ https://api.steampowered.com/ https://recaptcha.net https://www.google.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.youtube.com/ https://s.ytimg.com https://player.vimeo.com; object-src 'none'; connect-src 'self' https://community.akamai.steamstatic.com/ https://store.steampowered.com/ https://checkout.steampowered.com/ wss://community.steam-api.com/websocket/ https://api.steampowered.com/ https://login.steampowered.com/ https://help.steampowered.com/ https://steam.tv/ https://steamcommunity.com/ https://*.valvesoftware.com https://*.steambeta.net https://*.discovery.beta.steamserver.net https://*.steamcontent.com https://steambroadcast.akamaized.net https://steambroadcast-test.akamaized.net https://broadcast.st.dl.eccdnx.com https://lv.queniujq.cn https://steambroadcastchat.akamaized.net http://127.0.0.1:27060 ws://127.0.0.1:27060 https://video.steamstatic.com https://steamvideo-a.akamaihd.net/video/ https://sketchfab.com; frame-ancestors 'self' https://steamloopback.host ;"
+          ],
+          [
+            "Expires",
+            "Mon, 26 Jul 1997 05:00:00 GMT"
+          ],
+          [
+            "Cache-Control",
+            "no-cache"
+          ],
+          [
+            "Vary",
+            "Accept-Encoding"
+          ],
+          [
+            "Date",
+            "Fri, 09 Oct 2026 08:29:24 GMT"
+          ],
+          [
+            "Transfer-Encoding",
+            "chunked"
+          ],
+          [
+            "Connection",
+            "close"
+          ],
+          [
+            "Connection",
+            "Transfer-Encoding"
+          ],
+          [
+            "Set-Cookie",
+            "sessionid=683bf1975259fbdb5bc5c188; Path=/; Secure; SameSite=None"
+          ],
+          [
+            "Set-Cookie",
+            "steamCountry=US%7C6e75b23c7fdeba66b8b6e7e47b9edd6e; path=/; secure; HttpOnly; SameSite=None"
+          ]
+        ],
+        "body_complete": true,
+        "received_at_utc": "2026-10-09T08:29:24.988880+00:00",
+        "body": {
+          "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\anonymous-readback-01\\details.http-body.raw",
+          "bytes": 60748,
+          "sha256": "fe57eca7739b6691c6757aaf53788254e6b500feb29dfcb164e1ab5eaeeaacb2"
+        }
+      },
+      "changelog": {
+        "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3801490405",
+        "requested_at_utc": "2026-10-09T08:29:23.694712+00:00",
+        "method": "GET",
+        "request_headers": {
+          "User-Agent": "CK3-CCC-anonymous-release-verifier/1.0",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Cache-Control": "no-cache",
+          "Accept": "text/html"
+        },
+        "request_payload": null,
+        "request_count": 1,
+        "automatic_retries": false,
+        "read_only_endpoint": true,
+        "cookies_or_auth_supplied": false,
+        "browser_or_Steam_state_accessed": false,
+        "status": 200,
+        "final_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3801490405",
+        "response_headers": [
+          [
+            "Server",
+            "nginx"
+          ],
+          [
+            "Content-Type",
+            "text/html; charset=UTF-8"
+          ],
+          [
+            "X-Frame-Options",
+            "SAMEORIGIN"
+          ],
+          [
+            "Content-Security-Policy",
+            "default-src blob: data: https: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://community.akamai.steamstatic.com/ https://cdn.akamai.steamstatic.com/steamcommunity/public/assets/ https://api.steampowered.com/ https://recaptcha.net https://www.google.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.youtube.com/ https://s.ytimg.com https://player.vimeo.com; object-src 'none'; connect-src 'self' https://community.akamai.steamstatic.com/ https://store.steampowered.com/ https://checkout.steampowered.com/ wss://community.steam-api.com/websocket/ https://api.steampowered.com/ https://login.steampowered.com/ https://help.steampowered.com/ https://steam.tv/ https://steamcommunity.com/ https://*.valvesoftware.com https://*.steambeta.net https://*.discovery.beta.steamserver.net https://*.steamcontent.com https://steambroadcast.akamaized.net https://steambroadcast-test.akamaized.net https://broadcast.st.dl.eccdnx.com https://lv.queniujq.cn https://steambroadcastchat.akamaized.net http://127.0.0.1:27060 ws://127.0.0.1:27060 https://video.steamstatic.com https://steamvideo-a.akamaihd.net/video/ https://sketchfab.com; frame-ancestors 'self' https://steamloopback.host ;"
+          ],
+          [
+            "Expires",
+            "Mon, 26 Jul 1997 05:00:00 GMT"
+          ],
+          [
+            "Cache-Control",
+            "no-cache"
+          ],
+          [
+            "Vary",
+            "Accept-Encoding"
+          ],
+          [
+            "Date",
+            "Fri, 09 Oct 2026 08:29:24 GMT"
+          ],
+          [
+            "Transfer-Encoding",
+            "chunked"
+          ],
+          [
+            "Connection",
+            "close"
+          ],
+          [
+            "Connection",
+            "Transfer-Encoding"
+          ],
+          [
+            "Set-Cookie",
+            "sessionid=83d32e2555405c9b23693043; Path=/; Secure; SameSite=None"
+          ],
+          [
+            "Set-Cookie",
+            "steamCountry=US%7C6e75b23c7fdeba66b8b6e7e47b9edd6e; path=/; secure; HttpOnly; SameSite=None"
+          ]
+        ],
+        "body_complete": true,
+        "received_at_utc": "2026-10-09T08:29:24.965919+00:00",
+        "body": {
+          "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\anonymous-readback-01\\changelog.http-body.raw",
+          "bytes": 54835,
+          "sha256": "17a5052ba61adfa7a637aa22eb09ad723009fed5ceaa08eb6da4f01fcdd10beb"
+        }
+      },
+      "metadata": {
+        "requested_url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+        "requested_at_utc": "2026-10-09T08:29:23.689323+00:00",
+        "method": "POST",
+        "request_headers": {
+          "User-Agent": "CK3-CCC-anonymous-release-verifier/1.0",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Cache-Control": "no-cache",
+          "Accept": "application/json"
+        },
+        "request_payload": "itemcount=1&publishedfileids%5B0%5D=3801490405",
+        "request_count": 1,
+        "automatic_retries": false,
+        "read_only_endpoint": true,
+        "cookies_or_auth_supplied": false,
+        "browser_or_Steam_state_accessed": false,
+        "status": 200,
+        "final_url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+        "response_headers": [
+          [
+            "Server",
+            "nginx"
+          ],
+          [
+            "Content-Type",
+            "application/json; charset=UTF-8"
+          ],
+          [
+            "Content-Length",
+            "2429"
+          ],
+          [
+            "Expires",
+            "Fri, 09 Oct 2026 08:59:24 GMT"
+          ],
+          [
+            "Date",
+            "Fri, 09 Oct 2026 08:29:24 GMT"
+          ],
+          [
+            "Connection",
+            "close"
+          ]
+        ],
+        "body_complete": true,
+        "received_at_utc": "2026-10-09T08:29:24.564773+00:00",
+        "body": {
+          "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\anonymous-readback-01\\metadata.http-body.raw",
+          "bytes": 2429,
+          "sha256": "d9f6ef659a83530c72f3f395582904240223f3cc26a5b6548cb53367e5d32038"
+        }
+      }
+    }
+  },
+  "postupload_pristine": {
+    "receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/postupload-pristine-result-01.json",
+      "bytes": 2668,
+      "sha256": "7325975b255525390968c75f60b699faa2c16b4c8abc6c4d1ac371baae5e4db9"
+    },
+    "child_exit_code": 0,
+    "same_actual_tag_commit": {
+      "git_tag": "tributary-expansion-directives-v1.0.1",
+      "git_sha": "e645875e051cb1f6bee8d1edf2b97b53bcaaa80e",
+      "mod_version": "1.0.1",
+      "workshop_item_id": "3801490405"
+    },
+    "outputs": [
+      {
+        "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/postupload-pristine-01/mod_tributary_expansion_directives-v1.0.1.manifest.json",
+        "bytes": 3275,
+        "sha256": "e67c21f29c88f0af1f16eda09893255a34c47b12b0dfc8e036abfb7ac77b65c2"
+      },
+      {
+        "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/postupload-pristine-01/mod_tributary_expansion_directives-v1.0.1.zip",
+        "bytes": 754533,
+        "sha256": "3697acfd047da1dc794405c4ec4dd25c6450237402bac7b6c87c1de5cddb3d17"
+      },
+      {
+        "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/postupload-pristine-01/mod_tributary_expansion_directives/descriptor.mod",
+        "bytes": 166,
+        "sha256": "053acab68d8803119724d825c988ed77c0fe565aa27712b4b2f14c4af5695996"
+      }
+    ]
+  },
+  "actual_native_download": {
+    "whole_original_call_tool_result": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/native-download-result-01.json",
+      "bytes": 2767,
+      "sha256": "719489fae1cc2ce49a179fb633c29b54bfeb1af7f3070f435aeed8080ef69b22"
+    },
+    "scope": "Existing completed SDK download; no retry or cache copy here."
+  },
+  "actual_cache_strict16": {
+    "receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/cache-prepare-01/workshop-cache-exact-formal.json",
+      "bytes": 5443,
+      "sha256": "a6bdf3d1b5e0d8e67a6cfce4bd5654bee5fe3dc89c0f8c5985832c0fce1c0d31"
+    },
+    "result": "EXACT_FORMAL_CACHE",
+    "file_count": 16,
+    "cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3801490405",
+    "formal_manifest": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\formal\\mod_tributary_expansion_directives-v1.0.1.manifest.json",
+      "bytes": 3275,
+      "sha256": "e67c21f29c88f0af1f16eda09893255a34c47b12b0dfc8e036abfb7ac77b65c2"
+    },
+    "native_download_receipt": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\native-download-result-01.json",
+      "bytes": 2767,
+      "sha256": "719489fae1cc2ce49a179fb633c29b54bfeb1af7f3070f435aeed8080ef69b22"
+    },
+    "common_prepared_case": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/cache-prepare-01/prepared-case.json",
+      "bytes": 6154,
+      "sha256": "3727c1e919d76cdc8d222a7546a92363d1ef4f5ef64acdbcea021c68ee331eaf"
+    },
+    "runtime_status": "ACTUAL_COMMON_MENU_LOAD_AND_NORMAL_CLOSE_QUALIFIED_R23",
+    "scope": "Existing common prepare performed the sole strict16; no independent cache revalidation here."
+  },
+  "actual_common_cache_menu_load_normal0": {
+    "root_accepted_closure": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/ROOT-ACTUAL-CACHE-NORMAL0-OFFLINE-CLOSURE-82.json",
+      "bytes": 2850,
+      "sha256": "4382c8524e6d043849598ee6152fd67bc652b8fceaf25777362d15b5c8f1e994"
+    },
+    "common_case": "workshop_cache",
+    "runtime_binding": "Source09 / SHARED-RUNTIME-MANIFEST-FINAL-10 / runtime.local-entry-bound11",
+    "run_id": "4-8e1c2f1861--tributary-expansion-directives--R0023",
+    "original_common_run_parent_session": 69861,
+    "original_common_run_parent_exit_code": 0,
+    "common_verify_exit_code": 0,
+    "common_verify_original_output": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\cache-verify-01.stdout.json",
+      "bytes": 100260,
+      "sha256": "ed884ebe964b83ffc7fd8b1391ff457dfe19f18c17fb19561504a5a2730ed196"
+    },
+    "original_case_facts": {
+      "path": "C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--tributary-expansion-directives--R0023/case-output/workshop-cache-case-result.json",
+      "bytes": 91264,
+      "sha256": "788b9ed6054261b1f428b03b0f5f3a3dc478b4127f5a13c6450d0751302c3143"
+    },
+    "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+    "combined_managed_cache_profile_and_actual_menu_load": true,
+    "actual_process": {
+      "pid": 28112,
+      "create_time": 1791535498.2161243,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "actual_launch": {
+      "status": "ACTUAL_SINGLE_MENU_LAUNCH_RECORDED",
+      "pid": 28112,
+      "ck3_creation_date": "20261009084458.216124+000",
+      "profile_dir": "C:\\workspace\\ck3-upgrade-20261009\\ted-workshop-cache-state-01\\profile",
+      "actual_command": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "-gdpr-compliant",
+        "-userdir=C:\\workspace\\ck3-upgrade-20261009\\ted-workshop-cache-state-01\\profile"
+      ],
+      "continue_last_save": false,
+      "load_save_name": null
+    },
+    "actual_native_identity": {
+      "bridge_pid": 28112,
+      "connection_generation": 1,
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--tributary-expansion-directives--R0023",
+      "native_build": {
+        "version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "adapter_id": "ck3-1.20.0.4-msvc-x64"
+      }
+    },
+    "actual_native_main_menu_route": {
+      "schema": "ck3-frontend-gui-route-v1",
+      "schema_version": 1,
+      "step": "query-frontend-gui-route-v1",
+      "accepted": true,
+      "route": "main_menu",
+      "backend_id": "native-headless"
+    },
+    "independent_engine_vfs_path_readback": "UNKNOWN",
+    "independent_engine_vfs_proven": false,
+    "case_acceptance_fields": {
+      "case_contract_qualified": true,
+      "gui_contract_qualified": true,
+      "business_pass": false,
+      "product_release_pass": false,
+      "case_acceptance_pass": true,
+      "qualified_boundary_pass": true
+    },
+    "normal_close_original": {
+      "path": "C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--tributary-expansion-directives--R0023/case-output/normal-close-result.json",
+      "bytes": 5515,
+      "sha256": "8f08fc9a9027152cff5011162ee824e443ac293f45c5c7c8029a8146ebf315b6"
+    },
+    "normal_gui_quit_review": {
+      "run_id": "4-8e1c2f1861--tributary-expansion-directives--R0023",
+      "reviewer": "/root",
+      "normal_gui_quit": true,
+      "reviewed_at_utc": "2026-10-09T08:49:23.639023+00:00",
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\cache-menu-loaded-01.png",
+          "bytes": 2449435,
+          "sha256": "611da2cc0099b923024c97d60466b63753bc8c08d16ed324f1e8a04854e97423"
+        },
+        {
+          "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\cache-normal-quit-click-01.png",
+          "bytes": 2452673,
+          "sha256": "cfc97e8fd077de4f180627d2622f4ae3676ddea84fcd80d3bca6bb7556c7d519"
+        }
+      ],
+      "scope": "Root directly reviewed current original Quit to desktop and submitted one canonical mapped click. Actual normal exit is independently required by the common client."
+    },
+    "actual_retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 28112,
+      "create_time": 1791535498.2161243,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "native_process_exit_code": 0,
+    "native_finished_at_utc": "2026-10-09T08:49:26.856749+00:00",
+    "job_active_processes_before_final": [
+      0,
+      0
+    ],
+    "native_tree_gone": true,
+    "native_cleanup_proven": true,
+    "host_finished_at_utc": "2026-10-09T08:49:28.225323+00:00",
+    "managed_thread_finished": true,
+    "cleanup_ok": true,
+    "original_native_report_pin_without_reread": {
+      "path": "C:\\workspace\\ck3-upgrade-20261004\\live\\4-8e1c2f1861--tributary-expansion-directives--R0023\\native-report.json",
+      "bytes": 1140117,
+      "sha256": "0a4bb52d2fff0098952d0a61cced1b12da2eb2c1458bf6290e0cce61850f0eaf"
+    },
+    "original_screen_keeper_session": 45510,
+    "original_screen_keeper_parent_exit_code": 0,
+    "actual_CAS_release": {
+      "receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/resume-root-01/a132-screen-release-01.json",
+        "bytes": 1269,
+        "sha256": "6d77a2f6b897ea7db3a5dd6c9c5254d12131cce1f7b5086b71b633a338e9a1fb"
+      },
+      "last_sequence": 7530,
+      "state": "done",
+      "resources": [],
+      "updated_at_utc": "2026-10-09T08:51:45.314941+00:00"
+    },
+    "cache_gameplay_repeated": false,
+    "scope": "One actual downloaded-cache main-menu load; no fixture, New Game, Start, map or business matrix."
+  },
+  "fresh_Steam_offline_after_necessary_online": {
+    "root_review": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/ROOT-ACTUAL-CACHE-NORMAL0-OFFLINE-CLOSURE-82.json",
+      "bytes": 2850,
+      "sha256": "4382c8524e6d043849598ee6152fd67bc652b8fceaf25777362d15b5c8f1e994"
+    },
+    "observed": true,
+    "observation": "Root directly reviewed 离线模式 in the original Steam moved screenshot after normal game exit; desktop clock 16:51 and changed live window pixels.",
+    "proof": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\cache-final-steam-offline-01\\recovery.json",
+      "bytes": 1482,
+      "sha256": "cc4acff773891eb2b73e4eb630471080d02070943c6b134f6013a3b256a13587"
+    },
+    "original_image": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\cache-final-steam-offline-01\\probe-1\\steam-moved.png",
+      "bytes": 1325302,
+      "sha256": "a5dcb930f1cf3a45cd4a0108b74ed65ea22dd892836d254c4ffe8577354628fe"
+    },
+    "root_reviewed_at_utc": "2026-10-09T08:53:06.401108+00:00"
+  },
+  "canonical_user_outer_mod_ID_readback": {
+    "receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261009/ted-formal-publication-01/actual-canonical-outer-readback-01.json",
+      "bytes": 1254,
+      "sha256": "a5772ae9cffa4b5d2b6c7381d51ce61be872698ff7eb84842bca9fe95017816a"
+    },
+    "actual_outer": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\mod_tributary_expansion_directives.mod",
+      "bytes": 319,
+      "sha256": "029cdaa117b8fe4b1af52ccc79b3d4ac326dbdf573641713dab810dc5c2f7a88"
+    },
+    "actual_path_field": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\postupload-pristine-01\\mod_tributary_expansion_directives",
+    "remote_file_id": "3801490405",
+    "inner_descriptor": {
+      "path": "C:\\workspace\\ck3-upgrade-20261009\\ted-formal-publication-01\\postupload-pristine-01\\mod_tributary_expansion_directives\\descriptor.mod",
+      "bytes": 166,
+      "sha256": "053acab68d8803119724d825c988ed77c0fe565aa27712b4b2f14c4af5695996"
+    },
+    "inner_remote_file_id_absent": true,
+    "actual_outer_exact": true,
+    "operation": "create-only user Documents external registration; no active profile changed"
+  },
+  "cache_business_repeat_required": false,
+  "permanent_record_delivery": {
+    "condition": "Formal release delivery is complete only when this record and the changelog are actually committed and ordinarily pushed to master. An external candidate does not satisfy that condition.",
+    "containing_commit": "Resolve from the Git history of this tracked record; no future or self-referential SHA is invented.",
+    "external_preparation_state": "All publication/cache/cleanup evidence qualified; Root permanent commit/push still required at composition time.",
+    "migration_count_before_actual_permanent_commit_push": "6/10",
+    "migration_count_after_actual_permanent_commit_push": "7/10"
+  },
+  "evidence_scope": "Reuses original accepted receipts. No new HTTP, SDK, game launch, cache file comparison, gameplay verification, builder or tests were performed to compose this permanent record."
+}

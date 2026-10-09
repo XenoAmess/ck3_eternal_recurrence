@@ -112,3 +112,24 @@ download/strict formal projection plus CK3 mounted/loaded cachepath and
 normal GUI OS0. The cache check does not replay business, events, traits,
 war or threshold cases. Final release changelog commit/push is required
 after actual publication. No release completion is asserted here.
+
+
+## 2026-10-09 — Publication and cache closure
+
+The release-pending paragraph above records the earlier source-acceptance
+cutoff. TED 1.0.1 was subsequently uploaded from the actual formal tag
+`tributary-expansion-directives-v1.0.1` /
+`e645875e051cb1f6bee8d1edf2b97b53bcaaa80e`. Full public Change Notes entry
+1791534500 matched the frozen 2943-byte text; the SDK download and sole strict16
+comparison completed. R23 loaded the real downloaded cache through the public
+`workshop_cache` main-menu case and closed normally with retained OS0/native0,
+thread cleanup, keeper0 and CAS 7530 done. Fresh Steam offline and the canonical
+outer registration were directly read back. No cache gameplay was repeated;
+independent engine VFS readback remains UNKNOWN under the accepted combined
+profile/process/menu evidence contract.
+
+Actual publication and cache facts are in the [1.0.1 changelog](release-changelogs/tributary-expansion-directives/1.0.1.md)
+and [permanent release evidence](release-evidence/tributary-expansion-directives/1.0.1.json).
+Formal delivery becomes complete only with their actual master commit/push.
+The source acceptance scope, R13 overall failure and all historical records
+above are unchanged.

@@ -34,3 +34,22 @@
 旧失败、raw、冻结输入和当时的验收结论保留。对于按旧规则已加载缓存、随后因可选业务复验失败而 pending 的发布，直接按本规则评估已有文件核对和加载事实，追加说明旧业务复验已不再是缓存门槛；不得将旧失败改为业务 PASS。
 
 相关入口：[发布流程](workshop-publishing.md)、[MCP 发布](workshop-publishing-mcp.md)、[原生下载](workshop-native-download.md)、[测试流程](testing-workflow.md)、[产品清单](../workshop/products.json)。
+
+
+## 2026-10-09 首次公共菜单模式实机资格
+
+TED 1.0.1 的 R0023 已实际消费同一 Source09/FINAL10/bound11 公共
+`workshop_cache` 入口。原 SDK 下载完成，公共 prepare 对正式 tag manifest
+核对 strict16 一致；单产品普通 profile 直接指向该下载缓存。实际 CK3
+1.20.0.4/PID 28112/generation 1 取得同一受管启动、profile 与稳定主菜单
+native 读回的组合加载证据，随后真实 GUI Quit、独立 retained OS0/native0、
+job0→0、线程清理、原 keeper0 与 CAS 7530 done/resources[] 完成。Root
+亲审闭场后的新鲜 Steam 离线原图。原 common run/verify 均0，
+case_acceptance_pass 与 qualified_boundary_pass 为 true；business_pass 和
+product_release_pass 保持 false。
+
+这是上方“首次 qualification 待 run”截止之后取得的实际资格，不重写旧记录。
+独立引擎 VFS 路径读回仍 UNKNOWN，未新增此门槛；没有 New Game、Start、
+地图或缓存业务复验。原始下载、strict16、加载、正常退出和离线 pins 见
+[TED 1.0.1 发布证据](release-evidence/tributary-expansion-directives/1.0.1.json)。
+其他产品后续发布仍各自取得其真实下载文件与实际加载证据，不由本次外推。
