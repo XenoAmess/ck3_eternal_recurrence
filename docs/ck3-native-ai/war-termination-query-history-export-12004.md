@@ -37,3 +37,5 @@ Root executed the sole new registered compound against frozen runtime source `f9
 Preserved result: `D:/codex-ck3-background-spill/war-termination-history-12004/actual-first01/ROOT-RESULT.json`, with `stdout.log` recording `1 passed in 5.16s` and `stderr.log` preserved alongside. This is **static-ready qualified** for the Python production-route change, with fixture transport and native reply. The source lane did not execute or replay the test.
 
 At this qualification checkpoint the running SDK237 had not yet adopted this optimization. The next hot03 was planned after an actual SAVE; no later live war-query result or measured speedup is claimed here. The original139.765s ordinary query remains separate evidence. This documentation-only child preserves the frozen runtime source tree unchanged.
+
+The qualified change applies to the explicit registered query facade. A generic normal `auto_turn` call uses `execute_step` and may bypass that facade, so this qualification does not establish that the observed139.765s normal call will become faster. No live speedup has been measured.
