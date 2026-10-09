@@ -8471,38 +8471,45 @@ class NativeHeadlessGameplayDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        life_advance_timing = (
+            start_army_timing("driver.life_advance_total")
+            if step in {"life-advance", "life-advance-one-day"} else None
+        )
         try:
-            result = self._execute_step_unrecorded(
-                step, expected_revision=expected_revision
-            )
-        except Exception as error:
+            try:
+                result = self._execute_step_unrecorded(
+                    step, expected_revision=expected_revision
+                )
+            except Exception as error:
+                army_record_timing = (
+                    start_army_timing("driver.record_command")
+                    if step == QUERY_ARMY_STRENGTHS_STEP else None
+                )
+                try:
+                    self._record_command(
+                        step,
+                        ok=False,
+                        result=(
+                            error.step_result
+                            if isinstance(error, StepPostconditionError)
+                            else None
+                        ),
+                        error=f"{type(error).__name__}: {error}",
+                    )
+                finally:
+                    finish_army_timing(army_record_timing)
+                raise
             army_record_timing = (
                 start_army_timing("driver.record_command")
                 if step == QUERY_ARMY_STRENGTHS_STEP else None
             )
             try:
-                self._record_command(
-                    step,
-                    ok=False,
-                    result=(
-                        error.step_result
-                        if isinstance(error, StepPostconditionError)
-                        else None
-                    ),
-                    error=f"{type(error).__name__}: {error}",
-                )
+                self._record_command(step, ok=True, result=result)
             finally:
                 finish_army_timing(army_record_timing)
-            raise
-        army_record_timing = (
-            start_army_timing("driver.record_command")
-            if step == QUERY_ARMY_STRENGTHS_STEP else None
-        )
-        try:
-            self._record_command(step, ok=True, result=result)
+            return result
         finally:
-            finish_army_timing(army_record_timing)
-        return result
+            finish_army_timing(life_advance_timing, step=step)
 
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
@@ -10863,33 +10870,37 @@ class NativeHeadlessGameplayDriver:
     def _persist_driver_state(self) -> None:
         if self.state_dir is None:
             return
-        with self._driver_state_write_lock:
-            try:
-                # Encode one immutable snapshot under the state lock, then
-                # keep the write lock through its atomic replacement.  A
-                # query appended while those bytes are being written sets
-                # dirty again for the next barrier/close.
-                with self._driver_state_lock:
-                    if self._session_bridge_pid is None:
-                        return
-                    encoded = self._encode_driver_state_locked()
-                    self._driver_state_dirty = False
-                write_bytes_atomic(
-                    self._native_driver_state_path(), encoded
-                )
-            except (OSError, TypeError, ValueError) as error:
-                # A gameplay command has already happened by this point.  Keep
-                # the live agent usable and surface persistence failure in
-                # capabilities instead of falsely reporting that the game
-                # command failed.
-                with self._driver_state_lock:
-                    self._driver_state_dirty = True
-                    self._driver_state_error = (
-                        f"{type(error).__name__}: {error}"
+        persistence_timing = start_army_timing("driver.full_state_persistence")
+        try:
+            with self._driver_state_write_lock:
+                try:
+                    # Encode one immutable snapshot under the state lock, then
+                    # keep the write lock through its atomic replacement.  A
+                    # query appended while those bytes are being written sets
+                    # dirty again for the next barrier/close.
+                    with self._driver_state_lock:
+                        if self._session_bridge_pid is None:
+                            return
+                        encoded = self._encode_driver_state_locked()
+                        self._driver_state_dirty = False
+                    write_bytes_atomic(
+                        self._native_driver_state_path(), encoded
                     )
-            else:
-                with self._driver_state_lock:
-                    self._driver_state_error = None
+                except (OSError, TypeError, ValueError) as error:
+                    # A gameplay command has already happened by this point.  Keep
+                    # the live agent usable and surface persistence failure in
+                    # capabilities instead of falsely reporting that the game
+                    # command failed.
+                    with self._driver_state_lock:
+                        self._driver_state_dirty = True
+                        self._driver_state_error = (
+                            f"{type(error).__name__}: {error}"
+                        )
+                else:
+                    with self._driver_state_lock:
+                        self._driver_state_error = None
+        finally:
+            finish_army_timing(persistence_timing, step="persist-driver-state")
 
     def _preserve_ingame_ui_native_frame(
         self, request: dict[str, object], frame: dict[str, object],
@@ -22980,13 +22991,18 @@ class NativeHeadlessGameplayDriver:
                 mode="terminal_or_sentinel", watch_army_ids=(),
                 sentinel_scope="exact_one_day",
             )
-            current = self._resume_life_advance(
-                current, actions, native_stop_target_date_raw=target_date_raw
-            )
-            current = self._wait_for_life_advance_snapshot(
-                current, lambda snapshot: snapshot.get("paused") is True,
-                timeout_seconds=self.life_advance_timeout_seconds,
-            )
+            clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")
+            try:
+                current = self._resume_life_advance(
+                    current, actions, native_stop_target_date_raw=target_date_raw
+                )
+                current = self._wait_for_life_advance_snapshot(
+                    current, lambda snapshot: snapshot.get("paused") is True,
+                    timeout_seconds=self.life_advance_timeout_seconds,
+                )
+            finally:
+                finish_army_timing(clock_wait_timing, step="life-advance",
+                    date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
             if current.get("paused") is not True:
                 raise BridgeUnavailableError("exact-day native clock did not stop the map")
             status_result = self._execute_primitive_step(

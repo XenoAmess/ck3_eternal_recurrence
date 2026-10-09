@@ -1,4 +1,4 @@
-"""Optional small Army stage receipts; never serialize gameplay or history data."""
+"""Optional scalar stage receipts; never serialize gameplay or history data."""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -20,7 +20,10 @@ def start_army_timing(stage: str, *, native_request_id: str | None = None) -> Ar
     return path, stage, time.perf_counter_ns(), native_request_id
 
 
-def finish_army_timing(timing: ArmyTiming | None) -> None:
+def finish_army_timing(
+    timing: ArmyTiming | None, *, step: str = "query-army-strengths-v1",
+    date_raw: int | None = None,
+) -> None:
     if timing is None:
         return
     path, stage, started_ns, native_request_id = timing
@@ -29,11 +32,13 @@ def finish_army_timing(timing: ArmyTiming | None) -> None:
         row = {
             "schema": "xar.ck3.army-query-timing.v1",
             "stage": stage,
-            "step": "query-army-strengths-v1",
+            "step": step,
             "elapsed_ns": ended_ns - started_ns,
             "finished_at_utc": datetime.now(timezone.utc).isoformat(),
             "native_request_id": native_request_id,
         }
+        if date_raw is not None:
+            row["date_raw"] = date_raw
         encoded = json.dumps(row, separators=(",", ":")) + "\n"
         with _WRITE_LOCK, Path(path).open("a", encoding="utf-8") as stream:
             stream.write(encoded)

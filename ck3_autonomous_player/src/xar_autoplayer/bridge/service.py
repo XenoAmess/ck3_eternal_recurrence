@@ -1144,7 +1144,11 @@ class GameplayBridgeService:
 
     def plan_turn(self) -> dict[str, object]:
         """Return a detached public plan after its private readers finish."""
-        return copy.deepcopy(self._plan_turn_internal())
+        plan_timing = start_army_timing("service.normal_plan_turn")
+        try:
+            return copy.deepcopy(self._plan_turn_internal())
+        finally:
+            finish_army_timing(plan_timing, step="plan-turn")
 
     def _plan_turn_internal(self) -> dict[str, object]:
         internal_snapshot = getattr(
