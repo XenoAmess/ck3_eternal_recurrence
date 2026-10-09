@@ -136,3 +136,42 @@ retaining `ACTUAL-FIRST-THIN.json` and
 `OCT10-W41-FIRST-GREEN-FIELDS.json` in the delivery folder; no new test,
 project import, SDK, game or live query was performed in this documentation
 step.
+
+## First actual hot04 speed-five day: exact stop, still slow
+
+Root's actual hot04 source5c48 normal003 response is
+`D:/codex-ck3-background-spill/g2-live-20261010-r85-retry02/r0084-speed5-native60-hot04/operator/gameplay-responses/110-r0084-sdk5c48-bounded-normal-save01-chunk01-000003-normal.json`.
+After Root notified completion, this observer read its 4096-byte header and
+then the 325,932-byte response once to extract necessary result fields. The
+thin projection is
+`D:/codex-ck3-background-spill/player-siege-speed5-delivery/ACTUAL-HOT04-FIRST-LIFE-THIN.json`.
+No additional SDK call, live query, Driver-file read, test or game operation
+was performed. The prior absence check of an inferred directory was incorrect
+and is explicitly invalidated in the external record; this actual result uses
+Root's exact full path.
+
+The registered normal turn executed `life-advance` in
+`native_war_siege_progress` from **2026-10-09 22:56:14.073806 UTC** to
+**23:01:11.185050 UTC**, **297.111244s** end to end. It selected
+`player_siege`, public speed **5**, requested one day and observed raw
+**53289504 → 53289528**, paused at `map_hud`. Exactly four commands were
+reported: set-speed5, arm the start+24 date-only deadline at speed5, one resume
+and status query. Armed/stopped generation was **11**; native stop showed one
+daily tick, zero intermediate pauses, `date_deadline`, zero overshoot, pause
+wrapper called and pause observed, with no terminal or abnormal stop.
+
+This is actual evidence that the existing speed-five exact-day primitive
+preserves its +24 paused contract in this normal siege turn. It is not proof
+of a faster normal loop, capture or G2 completion. At Root's notification the
+new day was **not yet saved**; this observer did not create a SAVE and claims
+zero newly saved game days.
+
+Existing per-phase timing fields remain absent. The old speed-one observation
+and this speed-five observation used different SDKs and compilation load;
+they are not a controlled benchmark. No speedup or engine-wait dominance is
+claimed. The remaining roughly five-minute day justifies proposing bounded
+reuse of `XAR_CK3_ARMY_TIMING_JSONL` for normal planning, native resume-to-paused
+readback and complete persistence timings. That proposal is **not
+implemented** here; it adds no profiling platform, polling or game call, and
+Root chooses the minimal source work separately after preserving the current
+paused session.
