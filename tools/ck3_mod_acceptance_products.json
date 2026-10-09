@@ -2520,6 +2520,69 @@
           },
           "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
           "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        },
+        {
+          "id": "transaction-only-control",
+          "status": "ready",
+          "implementation_credit": "Diagnostic case only; actual run and causal observation NOT_RUN; whole-product credit false",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_transaction_control_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_transaction_control.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Unextended existing li-yu-dao shared case budgets; fresh diagnostic run only; no advance_day",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_actor_cached_succession_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "unheld-title-create-resolve-transaction-control",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "fixed_D2a_paused_event_readonly_admission",
+            "ordered_45_cache_before",
+            "single_original_D2b_option",
+            "guarded_terminal_event",
+            "ordered_45_cache_after",
+            "independent_saved_numeric_marker_and_title_AST",
+            "actual_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "No existing held session or original diagnostic step is extended or replayed; one new explicit shared case.",
+          "product_release_pass": false
         }
       ],
       "legacy_inventory": {
