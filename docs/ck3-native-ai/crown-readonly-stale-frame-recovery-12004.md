@@ -70,9 +70,45 @@ It also retains failures when no newer native frame appears, a different native
 error occurs, or the second read is rejected. No existing native producer,
 calendar policy, speed5 qualification or live query is replayed.
 
-Author status: `SOURCE_READY / ROOT_FIRST_NOTRUN`. No author tests, project
-imports, build, EXE/bin reads, hashes, SDK/Game calls or actions. No M7,
-birth, natural succession or G2 completion credit. Root owns the sole focused
-FIRST, integration and next same-game SDK deployment. Root's fresh post-error
-snapshot separately reported public14/native59/raw53289504/pausedtrue; that
-observation is not evidence of which native rejection predicate fired.
+Root's sole focused FIRST completed with exit0/GREEN on
+`5c48c48dff1475993339dce17ddfe35e6e772b95`, from
+2026-10-09T22:43:50.131726Z to 22:43:58.338534Z. The test runner reported
+`1 passed in 7.57s`: one registered compound with four scenes. This combined
+SDK contains Crown source `b75d907b8ed043ec37e101ee509f61bd59913fc3`
+on base `f9820ecead8be1b9597f710bae34c7ab421136c6`, followed by the
+separately qualified speed5 cherry-pick. No speed5 test or native producer was
+replayed. The original Crown commit can be adopted independently where speed5
+is already integrated.
+
+| Focused scene | Native request revisions | Executor seam entered |
+| --- | --- | --- |
+| Exact stale rejection, then published newer frame | 10, 11 | Yes, once |
+| Different native error | 10 | No |
+| Replacement read also rejected | 10, 11 | No |
+| No newer native frame before the shared deadline | 10 | No |
+
+The positive scene retains the rejected packet, returns the actually rebound
+public3/native11 quote, and uses less than the original timeout for its second
+request. The three negative scenes preserve their errors and do not enter the
+executor. All native requests are readonly QUERY messages. The test's messages,
+quotes and paused frames are explicitly synthetic; its final executor is the
+documented external spy. This qualifies the production registered planning and
+transport recovery for the deterministically reproduced failure sequence. It
+does not establish that the live normal026 call has been repaired or identify
+the particular native predicate that rejected that actual frame.
+
+Receipts:
+
+- `D:/codex-ck3-background-spill/r0084-hot03-normal026-source/root-first01/ROOT-FIRST-RESULT.json`
+- `D:/codex-ck3-background-spill/r0084-hot03-normal026-source/root-first01/OBSERVED.json`
+- `D:/codex-ck3-background-spill/r0084-hot03-normal026-source/ROOT-FIRST-QUALIFICATION-THIN.json`
+
+Status: `static-ready`, with the new focused registered fixture qualification
+GREEN; live recovery remains unverified. The actual normal026 RED is retained
+and was not replayed. No author tests, project imports, build, EXE/bin reads,
+hashes, SDK/Game calls or actions. Root FIRST records zero pipe operations,
+game operations, native actions and old tests replayed. No M7, birth, natural
+succession or G2 completion credit. Root's fresh post-error snapshot separately
+reported public14/native59/raw53289504/pausedtrue; that observation is not
+evidence of which native rejection predicate fired. Hot04's combined source
+remains frozen; this qualification update is a separate documentation commit.
