@@ -12,6 +12,7 @@ import textwrap
 NAMESPACE = 'lyd_factory_diag'
 STAGE_ORDER = (1, 20, 2, 3, 4, 5, 6)
 NAME = 'LYD Factory Operation Diagnostic - DEVELOPMENT ONLY'
+TRANSACTION_MARKER = 'lyd_factory_diag_empty_transaction_completed'
 PINS = {
     'common/scripted_effects/lyd_c3_head_factory.txt': 'bf1b40de272467afd9b1e0eb2e3c59c4f62285d0daef314cb066446467efccc7',
     'common/scripted_effects/lyd_i3b_commit_effects.txt': 'deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec',
@@ -43,7 +44,9 @@ def transition(stage):
     return f'save_scope_value_as = {{ name = lyd_factory_diag_stage value = {stage} }}\ntrigger_event = {NAMESPACE}.{stage}\n'
 
 
-def generate(factory, commit, product_name):
+def generate(factory, commit, product_name, control='full'):
+    if control not in ('full', 'transaction-only'):
+        raise ValueError('Unknown diagnostic control')
     preamble = lines(commit, 18, 29)
     initial_guard = lines(commit, 12, 16)
     factory_guard = lines(factory, 7, 14)
@@ -69,6 +72,18 @@ def generate(factory, commit, product_name):
         5: lines(factory, 51, 51),
         6: lines(factory, 52, 54) + finish,
     }
+    if control == 'transaction-only':
+        # Match the R34 control's title configuration, then resolve an empty
+        # transaction. The saved marker proves execution reached past resolve.
+        chunks[20], count = re.subn(r'^\s*set_always_follows_primary_heir = yes\n', '', chunks[20], flags=re.M)
+        if count != 1:
+            raise ValueError('Expected one primary-heir property')
+        chunks[2], count = re.subn(
+            r'^scope:new_title = \{\n\s*change_title_holder = \{ holder = root change = scope:lyd_c3_head_change \}\n\}\n',
+            '', chunks[2], flags=re.M)
+        if count != 1:
+            raise ValueError('Expected one atomic holder change')
+        chunks[2] += f'set_variable = {{ name = {TRANSACTION_MARKER} value = 1 }}\n'
     for stage, chunk in chunks.items():
         text += effect(f'lyd_factory_diag_d{stage}_effect', chunk + transition(stage)) + '\n'
     trigger = '''# DEVELOPMENT ONLY: continuation identity, not a new mandate.
@@ -118,7 +133,7 @@ lyd_factory_diag_result_trigger = {
             if stage == 1:
                 # Reuse the actual original factory limit before title creation.
                 guard += factory_guard
-            elif stage == 20:
+            elif stage == 20 or (control == 'transaction-only' and stage == 2):
                 guard += 'lyd_factory_diag_unheld_title_trigger = yes\n'
             else:
                 guard += 'lyd_factory_diag_title_trigger = yes\n'
@@ -126,17 +141,27 @@ lyd_factory_diag_result_trigger = {
                 guard += 'faith.religious_head_title = scope:new_title\n'
             next_stage = 20 if stage == 1 else (2 if stage == 20 else stage + 1)
             operation = f'lyd_factory_diag_d{next_stage}_effect = yes\n'
+        terminal = control == 'transaction-only' and stage == 2
+        if terminal:
+            guard += f'var:{TRANSACTION_MARKER} = 1\n'
         events += f'{NAMESPACE}.{stage} = {{\n'
         events += '    type = character_event\n    theme = faith\n'
         events += f'    title = lyd_factory_diag_d{stage}_title\n    desc = lyd_factory_diag_d{stage}_desc\n'
         events += '    trigger = {\n' + indent(guard, 8) + '    }\n'
         events += '    option = {\n        name = lyd_factory_diag_next\n'
         events += '        trigger = {\n' + indent(guard, 12) + '        }\n'
-        events += '        hidden_effect = {\n            if = {\n                limit = {\n' + indent(guard, 20) + '                }\n'
-        events += indent(operation, 16) + '            }\n        }\n    }\n}\n\n'
+        if not terminal:
+            events += '        hidden_effect = {\n            if = {\n                limit = {\n' + indent(guard, 20) + '                }\n'
+            events += indent(operation, 16) + '            }\n        }\n'
+        events += '    }\n}\n\n'
     descriptor = f'version="0.0.1"\nname={json.dumps(NAME)}\nsupported_version="1.20.*"\ndependencies={{ {json.dumps(product_name, ensure_ascii=False)} }}\n'
     cn = ['D1：doctrine 与合法授权后', 'D2a：create / owner / 四属性后；未开 transaction', 'D2b：holder / resolve 后', 'D3：SetHoF 后', 'D4：原条件 cleanup 后', 'D5：COA / Title95 后', 'D6：原 postconditions 与 close 后']
     en = ['D1: doctrine and lawful authorization', 'D2a: create / owner / properties; no open transaction', 'D2b: holder / resolve', 'D3: SetHoF', 'D4: original conditional cleanup', 'D5: COA / Title95', 'D6: original postconditions and close']
+    if control == 'transaction-only':
+        cn[1] = 'D2a：create / owner / 三属性后；未开 transaction'
+        en[1] = 'D2a: create / owner / three properties; no open transaction'
+        cn[2] = 'D2b：空事务已完成；头衔仍未授封（终点）'
+        en[2] = 'D2b: empty transaction completed; title unheld (terminal)'
     locales = {}
     for language, titles in (('english', en), ('simp_chinese', cn)):
         rows = [f'l_{language}:']
@@ -163,6 +188,7 @@ def main():
     parser.add_argument('--export-report', required=True)
     parser.add_argument('--export-report-sha256', required=True)
     parser.add_argument('--output', required=True)
+    parser.add_argument('--control', choices=('full', 'transaction-only'), default='full')
     args = parser.parse_args()
     source = Path(args.source_root).resolve()
     output = Path(args.output).resolve()
@@ -191,7 +217,7 @@ def main():
     commit = texts['common/scripted_effects/lyd_i3b_commit_effects.txt']
     descriptor = (mod / 'descriptor.mod').read_text(encoding='utf-8-sig')
     product_name = re.search(r'^name="([^"]+)"', descriptor, re.M).group(1)
-    files = generate(factory, commit, product_name)
+    files = generate(factory, commit, product_name, args.control)
     output.mkdir(parents=True)
     rows = []
     for relative, text in files.items():
@@ -223,7 +249,11 @@ def main():
         'stage_keys': [f'{NAMESPACE}.{stage}' for stage in STAGE_ORDER],
         'stage_labels': {'1': 'D1', '20': 'D2a', '2': 'D2b', '3': 'D3', '4': 'D4', '5': 'D5', '6': 'D6'},
         'D2a_unheld_title_cross_event_and_SAVE_acceptance': None,
-        'D2b_transaction': 'create/change-holder/resolve atomic; no yield before resolve',
+        'control': args.control,
+        'D2b_transaction': ('create/resolve empty transaction; persistent completion marker after resolve; read-only terminal event'
+                            if args.control == 'transaction-only' else 'create/change-holder/resolve atomic; no yield before resolve'),
+        'terminal_stage': 2 if args.control == 'transaction-only' else 6,
+        'persistent_completion_marker': TRANSACTION_MARKER if args.control == 'transaction-only' else None,
         'stage_scope': 'lyd_factory_diag_stage',
         'D6': 'Original bookkeeping/postconditions/close completed; only after observing D6 does its option call the original show_result_effect.',
     }

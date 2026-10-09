@@ -17,7 +17,9 @@ def main():
     parser.add_argument('--source-root', required=True)
     parser.add_argument('--overlay', required=True)
     parser.add_argument('--output', required=True)
+    parser.add_argument('--control', choices=('full', 'transaction-only'), default='full')
     args = parser.parse_args()
+    transaction_only = args.control == 'transaction-only'
     source = Path(args.source_root).resolve()
     overlay = Path(args.overlay).resolve()
     output = Path(args.output).resolve()
@@ -71,6 +73,23 @@ def main():
     final_if = single(single(single(final_event, 'option'), 'hidden_effect'), 'if')
     actual_parts.extend([entry for entry in final_if.entries if entry.key != 'limit'])
     expected_parts = [entry for entry in factory.entries if entry.key != 'limit'] + original_entries[call_index + 1:]
+    if transaction_only:
+        # Independently remove the declared control differences from the
+        # production AST. Do not normalize any other production operation.
+        expected_control = []
+        for entry in expected_parts:
+            if entry.key == 'scope:new_title':
+                if [child.key for child in entry.value.entries] == ['change_title_holder']:
+                    continue
+                entry = type(entry)(entry.key, entry.operator, Block(tuple(
+                    child for child in entry.value.entries if child.key != 'set_always_follows_primary_heir')))
+            expected_control.append(entry)
+        expected_parts = expected_control
+        markers = [entry for entry in actual_parts if entry.key == 'set_variable'
+                   and single(entry.value, 'name') == 'lyd_factory_diag_empty_transaction_completed']
+        check('empty_transaction_exactly_one_numeric_completion_marker', len(markers) == 1
+              and single(markers[0].value, 'value') == '1')
+        actual_parts = [entry for entry in actual_parts if entry not in markers]
     reordered_expected = list(expected_parts)
     container_index = next(i for i, entry in enumerate(reordered_expected) if entry.key == 'create_title_and_vassal_change')
     container = reordered_expected.pop(container_index)
@@ -91,8 +110,15 @@ def main():
     d2a = single(changed_defs, 'lyd_factory_diag_d20_effect')
     d2a_keys = [entry.key for entry in d2a.entries]
     check('D2a_create_and_configuration_without_pending_transaction', d2a_keys == ['create_dynamic_title', 'scope:new_title', 'save_scope_value_as', 'trigger_event'])
-    check('D2a_original_two_owner_markers_and_all_four_properties', [entry.key for entry in single(d2a, 'scope:new_title').entries] == ['set_variable', 'set_variable', 'set_destroy_if_invalid_heir', 'set_no_automatic_claims', 'set_definitive_form', 'set_always_follows_primary_heir'])
-    check('D2b_exact_atomic_container_holder_resolve', d2_keys == ['create_title_and_vassal_change', 'scope:new_title', 'resolve_title_and_vassal_change', 'save_scope_value_as', 'trigger_event'] and [entry.key for entry in single(d2, 'scope:new_title').entries] == ['change_title_holder'])
+    property_keys = ['set_variable', 'set_variable', 'set_destroy_if_invalid_heir', 'set_no_automatic_claims', 'set_definitive_form']
+    if not transaction_only:
+        property_keys.append('set_always_follows_primary_heir')
+    check('D2a_declared_owner_markers_and_properties', [entry.key for entry in single(d2a, 'scope:new_title').entries] == property_keys)
+    if transaction_only:
+        check('D2b_empty_transaction_marker_after_resolve_before_event', d2_keys == [
+            'create_title_and_vassal_change', 'resolve_title_and_vassal_change', 'set_variable', 'save_scope_value_as', 'trigger_event'])
+    else:
+        check('D2b_exact_atomic_container_holder_resolve', d2_keys == ['create_title_and_vassal_change', 'scope:new_title', 'resolve_title_and_vassal_change', 'save_scope_value_as', 'trigger_event'] and [entry.key for entry in single(d2, 'scope:new_title').entries] == ['change_title_holder'])
     original_triggers = body(mod / 'common/scripted_triggers/lyd_i3b_institution_triggers.txt')
     triggers = body(overlay / 'common/scripted_triggers/lyd_factory_operation_diagnostic.txt')
     continuation = single(triggers, 'lyd_factory_diag_continue_trigger')
@@ -101,8 +127,18 @@ def main():
     for number in (1, 20, 2, 3, 4, 5, 6):
         event = single(events, f'lyd_factory_diag.{number}')
         option = single(event, 'option')
-        guarded_effect = single(single(option, 'hidden_effect'), 'if')
-        check(f'D{number}_display_option_execution_guard_same', node(single(event, 'trigger')) == node(single(option, 'trigger')) == node(single(guarded_effect, 'limit')))
+        if transaction_only and number == 2:
+            check('D2_terminal_option_has_only_name_and_trigger', [entry.key for entry in option.entries] == ['name', 'trigger'])
+            check('D2_terminal_display_option_guards_equal', node(single(event, 'trigger')) == node(single(option, 'trigger')))
+            guard = single(event, 'trigger')
+            check('D2_terminal_requires_unheld_title_and_completion_marker',
+                  [entry.key for entry in guard.entries] == ['lyd_factory_diag_continue_trigger', 'lyd_factory_diag_unheld_title_trigger', 'var:lyd_factory_diag_empty_transaction_completed']
+                  and single(single(guard, 'lyd_factory_diag_continue_trigger'), 'STAGE') == '2'
+                  and single(guard, 'lyd_factory_diag_unheld_title_trigger') == 'yes'
+                  and single(guard, 'var:lyd_factory_diag_empty_transaction_completed') == '1')
+        else:
+            guarded_effect = single(single(option, 'hidden_effect'), 'if')
+            check(f'D{number}_display_option_execution_guard_same', node(single(event, 'trigger')) == node(single(option, 'trigger')) == node(single(guarded_effect, 'limit')))
         check(f'D{number}_no_immediate_or_timed_advance', not any(entry.key in ('immediate', 'after', 'hidden') for entry in event.entries))
     d1_if = single(single(single(single(events, 'lyd_factory_diag.1'), 'option'), 'hidden_effect'), 'if')
     d2a_event = single(events, 'lyd_factory_diag.20')
@@ -139,6 +175,7 @@ def main():
         'runtime_scope_serialization_or_command_execution_proven': False,
         'game_or_SDK_or_binary_or_save_body_calls': 0,
         'whole_mod': 'NOT_GREEN',
+        'control': args.control,
     }
     with output.open('x', encoding='utf-8', newline='\n') as stream:
         json.dump(result, stream, ensure_ascii=False, indent=2)

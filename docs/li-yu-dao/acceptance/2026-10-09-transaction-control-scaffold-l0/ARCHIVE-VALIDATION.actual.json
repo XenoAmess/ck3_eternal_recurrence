@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.transaction-control-scaffold-archive-validation.v1",
+  "result": "PASS",
+  "entry_count": 42,
+  "zip": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-transaction-control-scaffold-l0/raw-evidence.zip",
+    "bytes": 281090,
+    "sha256": "2b042bb82191096d0cd93d9de518767f5c9b45b2c70812a530539ffe55478785"
+  },
+  "index": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-transaction-control-scaffold-l0/INDEX.json",
+    "bytes": 15038,
+    "sha256": "b3d27514e7ec52650080239394991df030acb8f7438a7ddb4ef357f9982f0918"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-transaction-control-scaffold-l0/REPORT.md",
+    "bytes": 2395,
+    "sha256": "d27485e882897962ebe65a8f6491b2f22b7bb29c72c5639a706e1ea4da76ff08"
+  }
+}

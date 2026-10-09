@@ -41,6 +41,7 @@ jobs:
           python mod_li_yu_dao/tools/test_content_leadership.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
           python mod_li_yu_dao/tools/test_institution_detached.py
+          python mod_li_yu_dao/tools/test_factory_diagnostic.py
           python mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py --report /tmp/lyd-c3-i3b-preview-scope.json
           python mod_li_yu_dao/tools/build_release.py --check
       - name: Preserve static report
