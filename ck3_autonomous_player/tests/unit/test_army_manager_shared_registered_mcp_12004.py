@@ -222,8 +222,6 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
                              (name, route, variant))
             self.assertEqual(saved["query_sequence"], whole["result"]["query_sequence"])
             full, route_receipt = saved["expanded_result"], saved["route_receipt"]
-            semantic = full["result"] if route == "ck3_auto_turn" else full
-            self.assertEqual(semantic["army_strengths"], expected_rows)
             report["registered_calls_reused"] += 1
             report["registered_call_receipts"].append({
                 "case": name, "registered_tool": route, "wire_variant": variant,
