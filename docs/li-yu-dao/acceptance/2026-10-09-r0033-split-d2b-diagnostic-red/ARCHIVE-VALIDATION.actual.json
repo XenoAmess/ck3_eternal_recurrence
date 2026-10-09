@@ -1,0 +1,22 @@
+{
+  "schema": "lyd.r33.archive-extracted-byte-validation.v1",
+  "result": "PASS",
+  "entry_count": 250,
+  "zip": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0033-split-d2b-diagnostic-red/raw-evidence.zip",
+    "bytes": 19930341,
+    "sha256": "68cbbfe0a36e22be6b361200500974b896cb53702cf6f138b54e23216d8565c7"
+  },
+  "index": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0033-split-d2b-diagnostic-red/INDEX.json",
+    "bytes": 83279,
+    "sha256": "800bebc85c568df4e8c9f5cb9857c4ca620961aad3b414343bbca1a1b100b38d"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0033-split-d2b-diagnostic-red/REPORT.md",
+    "bytes": 3307,
+    "sha256": "b584bf999cc44761df643728a7f8195c7cdae9b3082309ca743f3b317c09f590"
+  },
+  "save_bodies_retained_external": 5,
+  "interpretation_correction": "Report now says event-20 option selection is observed; transaction effect execution is not independently proved."
+}
