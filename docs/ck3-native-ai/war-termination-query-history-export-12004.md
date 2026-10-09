@@ -29,3 +29,11 @@ One new authored compound uses the registered MCP tool, real Service and NativeH
 Sole node: `ck3_autonomous_player/tests/unit/test_war_termination_options_history_export.py::test_registered_termination_options_omits_revision_history_and_preserves_receipts`.
 
 No Game/SDK/process/window/EXE reads, hashes, builds or tests were performed by this source lane. This is a Python-only optimization; it requires no DLL rebuild. Shared daily/weekly reports and publication belong to Root.
+
+## Root's first offline qualification
+
+Root executed the sole new registered compound against frozen runtime source `f9820ecead8be1b9597f710bae34c7ab421136c6`. It passed **1/1 in5.16s**. The actual process interval was `2026-10-09T21:31:49.564448Z` to `2026-10-09T21:31:55.319057Z` (5.754609s wall), which is **2026-10-10 05:31:49.564448 to05:31:55.319057 Asia/Shanghai**, and belongs to Oct10 / W41.
+
+Preserved result: `D:/codex-ck3-background-spill/war-termination-history-12004/actual-first01/ROOT-RESULT.json`, with `stdout.log` recording `1 passed in 5.16s` and `stderr.log` preserved alongside. This is **static-ready qualified** for the Python production-route change, with fixture transport and native reply. The source lane did not execute or replay the test.
+
+At this qualification checkpoint the running SDK237 had not yet adopted this optimization. The next hot03 was planned after an actual SAVE; no later live war-query result or measured speedup is claimed here. The original139.765s ordinary query remains separate evidence. This documentation-only child preserves the frozen runtime source tree unchanged.
