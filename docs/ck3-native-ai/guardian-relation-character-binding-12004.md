@@ -440,3 +440,79 @@ registered Service path once that provider is closed; do not add a
 constant-null guardian field. This continuation changes documentation and
 Root-only source recipes only. Worker EXE reads, hashes, imports, tests,
 builds, Game/SDK/process operations and new live/G2 credit are all zero.
+
+## Bounded private discovery job source, October10
+
+The qualified fixed-key reader is now reused by a source-only production
+seam. This is the concrete dependency for selecting the actual guardian
+factory's next native source; it does not implement membership. The only
+inputs remain the two stock names `has_relation_guardian` and
+`has_relation_ward`. There is no registry enumeration or caller-supplied
+address/name. The exact-build SHA and proved default comparison branch
+remain inherited from the reader.
+
+`ck3_12004_guardian_factory_metadata.hpp` adds private metadata and
+`ingame_ui_navigation_v1.cpp` adapts the already existing internal
+`ReadProcessMemory(GetCurrentProcess(),...)` reader. This is a C++ adapter,
+not a generic raw-memory MCP. For each found record it preserves the full
+matched stored name, NameID, map ID, record ID, factory pointer, vtable and
+opaque `+8` value. Four raw vtable entries are read independently and
+receive an RVA only when the address is inside this exact image. Their
+Create/Evaluate roles remain unknown.
+
+The vtable's preceding COL pointer and six raw COL fields are retained.
+The already qualified MSVC x64 signature/self-RVA form admits the type
+descriptor and its `+16` decorated name, bounded to192 bytes with explicit
+unreadable/truncated states. An unavailable COL, slot or type name does
+not erase the successful name/factory lookup. Shared vtables, raw record
+ID differences and non-primary COL offsets remain visible observations;
+none is reinterpreted as a guardian relation kind.
+
+`guardian_factory_discovery_job_v1.hpp` and `bridge.cpp` share one job and
+completion writer between the actual family query and its new fixture.
+The application-thread job compares actual snapshots before and after
+the two fixed lookups against its paused stamp and expected frame. The
+existing family query retains its own frame checks. Only after worker
+completion and the final outer snapshot check does the completion writer
+produce the explicitly requested Root private sidecar. A changed frame
+cannot produce a captured discovery result. App-thread work only reads
+and copies metadata; file output occurs on completion.
+
+The existing typed private family transport accepts the optional
+`guardian_factory_sidecar_path`. This is the minimal callable extension
+needed to request that finite capture; it is not a new public MCP tool or
+public family field. The ordinary family result, child inputs, relationship
+serializer and public readiness stay unchanged. No interner, registration
+writer, factory construction, evaluator, UI action or window opening is
+called. The optional sidecar is useful source input even if both records
+are missing or independently unreadable; these states remain distinct.
+
+The new full-Bridge target
+`xar_ck3_12004_guardian_factory_discovery_job_test` uses sparse synthetic
+name/factory tables and synthetic VT/COL/TD metadata. It invokes the same
+production job and completion writer for found, missing, unreadable and
+frame-changed scenes. It produces private sidecars rather than public
+command-result packets, and does not replay the already qualified
+standalone reader fixture. At this source stage the new target has not
+been built or run, and no Game capture has occurred.
+
+```mermaid
+flowchart TD
+  Q[Existing typed private family query] --> J[Same paused-frame discovery job]
+  J --> K[Only guardian and ward stock keys]
+  K --> M[Qualified pure existing-name and factory lookup]
+  M --> V[Raw factory VT slots and COL/TD name]
+  V --> C[Stable worker completion to private sidecar]
+  C -. actual registered factory metadata not captured yet .-> A[Next exact native factory source]
+  A -. Create payload and Evaluate ABI unknown .-> P[Actual roster-child guardian pair decision]
+```
+
+Only `Bridge/src/bridge.cpp` and
+`Bridge/src/ingame_ui_navigation_v1.cpp` acquire these private dependencies.
+There is no Runtime/archive, protocol, public Snapshot/layout or
+relationship serializer change. The exact two-owner build and unique new
+fixture are Root-owned future execution. New production/live guardian
+capability, pair readiness, full child readiness and G2 outcome credit
+remain false/zero. A later authorized capture must provide real registered
+factory metadata before choosing the next bounded factory/evaluator
+body; current-window identity is not substituted for an actual roster child.

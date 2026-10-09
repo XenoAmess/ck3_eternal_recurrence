@@ -8,6 +8,7 @@ or use a proposal pending record.
 from __future__ import annotations
 
 import uuid
+from pathlib import Path
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .current_first_heir_reproductive_inputs_v1 import (
@@ -199,7 +200,21 @@ def query_current_first_heir_relationship_private_v1(
     driver: object, *, expected_native_revision: int,
     timeout_seconds: float = 360.0,
     campaign_root_result: dict[str, object] | None = None,
+    guardian_factory_sidecar_path: str | Path | None = None,
 ) -> dict[str, object]:
+    """Read the normal family result; optionally write Root's discovery sidecar.
+
+    The explicit private path adds no family response fields or public MCP tool.
+    Its parent directory must already exist; the caller owns that output file.
+    """
+    sidecar_fields: dict[str, object] = {}
+    if guardian_factory_sidecar_path is not None:
+        if not isinstance(guardian_factory_sidecar_path, (str, Path)):
+            raise ValueError("guardian_factory_sidecar_path must be a path")
+        sidecar = Path(guardian_factory_sidecar_path)
+        if not str(guardian_factory_sidecar_path) or not sidecar.is_absolute():
+            raise ValueError("guardian_factory_sidecar_path must be absolute")
+        sidecar_fields["guardian_factory_sidecar_path"] = str(sidecar)
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
         raise UnsupportedStepError("private current first-heir relationship query is disabled")
     read = (getattr(driver, "take_internal_semantic_snapshot", None)
@@ -247,6 +262,7 @@ def query_current_first_heir_relationship_private_v1(
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": STEP,
         "expected_revision": expected_native_revision,
+        **sidecar_fields,
     })
     frame = driver.state.wait_for_command_result(
         request_id, float(timeout_seconds)

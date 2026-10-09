@@ -9645,3 +9645,31 @@ include(cmake/person_local_titles_supplemental_12004.cmake)
 include(cmake/person_first_title_vector_12004.cmake)
 include(cmake/person_native_title_tail_capture_12004.cmake)
 include(cmake/actual_loss_writer_observations_12004.cmake)
+
+# Private fixed-name factory discovery: the same production job and completion
+# sidecar writer are linked through the complete Bridge object closure.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_guardian_factory_discovery_job_test
+    tests/ck3_12004_guardian_factory_discovery_job_test.cpp
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
+  target_include_directories(xar_ck3_12004_guardian_factory_discovery_job_test PRIVATE
+    include src research
+    $<TARGET_PROPERTY:xar_ck3_bridge,INCLUDE_DIRECTORIES>)
+  target_link_libraries(xar_ck3_12004_guardian_factory_discovery_job_test PRIVATE
+    xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
+  target_compile_features(xar_ck3_12004_guardian_factory_discovery_job_test PRIVATE
+    cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_guardian_factory_discovery_job_test PRIVATE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  target_compile_options(xar_ck3_12004_guardian_factory_discovery_job_test PRIVATE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_OPTIONS>)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_guardian_factory_discovery_job_test PRIVATE
+      /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+  endif()
+  add_test(NAME xar_ck3_12004_guardian_factory_discovery_job_first
+    COMMAND xar_ck3_12004_guardian_factory_discovery_job_test
+      "${CMAKE_BINARY_DIR}/wire/ck3_12004_guardian_factory_discovery_job_first")
+endif()

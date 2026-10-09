@@ -6,6 +6,7 @@
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
 #include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
+#include "xar_bridge/ck3_12004_guardian_factory_metadata.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include <windows.h>
 #include <bcrypt.h>
@@ -1156,3 +1157,125 @@ ReadCurrentFirstHeirCharacterWindowIdentity12004V1(
 }
 
 } // namespace xar::bridge
+
+namespace xar::ck3_12004 {
+namespace {
+
+bool ReadGuardianFactoryMemory12004V1(void *, std::uintptr_t address,
+                                     void *output, std::size_t size) noexcept {
+  return ck3_11906::Read(reinterpret_cast<const void *>(address), output, size);
+}
+
+bool GuardianFactoryAddressInImage12004V1(std::uintptr_t address,
+                                        std::size_t size,
+                                        std::uintptr_t module_base,
+                                        std::uintptr_t image_size) noexcept {
+  if (address < module_base) return false;
+  const auto offset = address - module_base;
+  return offset < image_size && size <= image_size - offset;
+}
+
+void ReadGuardianFactoryRtti12004V1(
+    const GuardianFactoryReadEnvironment12004V1 &environment,
+    std::uintptr_t image_size,
+    GuardianFactoryTypedMetadata12004V1 &output) noexcept {
+  using guardian_factory_lookup_detail::Read;
+  auto &rtti = output.rtti;
+  const auto table = output.lookup.vtable_address;
+  if (table < sizeof(std::uintptr_t) ||
+      !Read(environment, table - sizeof(std::uintptr_t), rtti.col_address)) {
+    rtti.unavailable_reason = "factory_col_pointer_unreadable";
+    return;
+  }
+  rtti.col_pointer_available = true;
+  if (!GuardianFactoryAddressInImage12004V1(
+          rtti.col_address, sizeof(rtti.col_fields), environment.module_base,
+          image_size)) {
+    rtti.unavailable_reason = "factory_col_outside_exact_image";
+    return;
+  }
+  if (!Read(environment, rtti.col_address, rtti.col_fields)) {
+    rtti.unavailable_reason = "factory_col_fields_unreadable";
+    return;
+  }
+  rtti.col_fields_available = true;
+  // This is the already qualified x64 COL encoding used by typed-window
+  // observations. Offset/cdOffset remain raw; no primary-owner role is guessed.
+  if (rtti.col_fields[0] != 1) {
+    rtti.unavailable_reason = "factory_col_signature_unavailable";
+    return;
+  }
+  if (static_cast<std::uintptr_t>(rtti.col_fields[5]) !=
+      rtti.col_address - environment.module_base) {
+    rtti.unavailable_reason = "factory_col_self_mismatch";
+    return;
+  }
+  const auto type_rva = static_cast<std::uintptr_t>(rtti.col_fields[3]);
+  if (type_rva == 0 || type_rva >= image_size ||
+      image_size - type_rva <= 0x10) {
+    rtti.unavailable_reason = "factory_type_descriptor_outside_exact_image";
+    return;
+  }
+  const auto descriptor = environment.module_base + type_rva;
+  rtti.type_descriptor_address = descriptor;
+  constexpr std::size_t kNameLimit = 192;
+  for (std::size_t index = 0; index < kNameLimit; ++index) {
+    const auto offset = 0x10 + index;
+    char value{};
+    if (offset >= image_size - type_rva ||
+        !Read(environment, descriptor + offset, value)) {
+      rtti.unavailable_reason = "factory_type_name_unreadable";
+      return;
+    }
+    if (value == '\0') {
+      rtti.type_name_available = true;
+      rtti.unavailable_reason = {};
+      return;
+    }
+    rtti.type_name.push_back(value);
+  }
+  rtti.type_name_truncated = true;
+  rtti.unavailable_reason = "factory_type_name_truncated";
+}
+
+} // namespace
+
+GuardianFactoryReadEnvironment12004V1
+BindGuardianFactoryDiscoveryEnvironment12004V1(
+    const ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 &environment)
+    noexcept {
+  if (!environment.exact_build_admitted ||
+      environment.offline_fixture_function_overrides)
+    return {};
+  return BindGuardianFactoryReadEnvironment12004V1(
+      environment.module_base, environment.executable_sha256, nullptr,
+      ReadGuardianFactoryMemory12004V1);
+}
+
+GuardianFactoryDiscoveryMetadata12004V1
+ReadGuardianFactoryDiscoveryMetadata12004V1(
+    const GuardianFactoryReadEnvironment12004V1 &environment,
+    std::uintptr_t image_size) noexcept {
+  GuardianFactoryDiscoveryMetadata12004V1 output{};
+  output.module_base = environment.module_base;
+  output.image_size = image_size;
+  const auto records = ReadExistingGuardianTriggerFactories12004V1(environment);
+  for (std::size_t index = 0; index < records.size(); ++index) {
+    auto &row = output.factories[index];
+    row.lookup = records[index];
+    if (row.lookup.status != ExistingGuardianFactoryStatusV1::found) continue;
+    for (std::size_t slot = 0; slot < row.virtual_slots.size(); ++slot) {
+      auto &value = row.virtual_slots[slot];
+      value.available = guardian_factory_lookup_detail::Read(
+          environment, row.lookup.vtable_address + slot * sizeof(std::uintptr_t),
+          value.address);
+      if (value.available && GuardianFactoryAddressInImage12004V1(
+              value.address, 1, environment.module_base, image_size))
+        value.rva = value.address - environment.module_base;
+    }
+    ReadGuardianFactoryRtti12004V1(environment, image_size, row);
+  }
+  return output;
+}
+
+} // namespace xar::ck3_12004

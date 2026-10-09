@@ -125,6 +125,8 @@
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
+#include "xar_bridge/ck3_12004_generic_gui.hpp"
+#include "xar_bridge/guardian_factory_discovery_job_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "active_scheme_sway_private_transport_v1.hpp"
@@ -9529,7 +9531,15 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::ck3_12002::EventWindowBindings child_window_names12004{};
   xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 child_window_gui12004{};
   std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs12004{};
+  std::optional<xar::bridge::GuardianFactoryDiscoveryJobV1>
+      guardian_factory_discovery12004{};
 };
+
+bool ReadGuardianFactoryDiscoveryAdapterSnapshotV1(
+    void *context, xar::game::Snapshot &snapshot) noexcept {
+  return context != nullptr && xar::game::ReadSnapshot(
+      *static_cast<xar::game::GameAdapter *>(context), snapshot);
+}
 
 bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
     void *opaque,
@@ -9592,6 +9602,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
                 query.family12002, query.read);
       }
     }
+    if (query.guardian_factory_discovery12004)
+      (void)xar::bridge::ExecuteGuardianFactoryDiscoveryJobV1(
+          &*query.guardian_factory_discovery12004, stamp);
     xar::game::Snapshot after{};
     query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) &&
         after == before && (query.outbound_only12002 || query.alliance_pair_only12002 || query.bilateral_only12002 || query.child_only12002 ||
@@ -19014,6 +19027,10 @@ void RunConnectedSession(
           }
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
         } else if (step == kCurrentFirstHeirRelationshipStepV1) {
+          std::string guardian_factory_sidecar_path;
+          (void)xar::bridge::JsonStringField(
+              incoming.payload, "guardian_factory_sidecar_path",
+              guardian_factory_sidecar_path, 32768);
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
           state.current_first_heir_betrothal_observed.reset();
           state.current_first_heir_betrothal_revision = 0;
@@ -19046,6 +19063,8 @@ void RunConnectedSession(
               std::string_view unavailable_reason;
               xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
               std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs{};
+              std::optional<xar::bridge::GuardianFactoryDiscoveryJobV1>
+                  guardian_factory_discovery{};
               if (!observed_current) {
                 unavailable_reason =
                     "same_revision_public_campaign_root_query_required";
@@ -19085,6 +19104,21 @@ void RunConnectedSession(
                 }
                 query.expected_snapshot = before;
                 query.heir_character_id = heir_id;
+                if (!guardian_factory_sidecar_path.empty() && query.adapter12002 &&
+                    xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                  auto &job = query.guardian_factory_discovery12004.emplace();
+                  job.expected_snapshot = before;
+                  job.environment = xar::ck3_12004::
+                      BindGuardianFactoryDiscoveryEnvironment12004V1(
+                          query.child_window_gui12004);
+                  job.image_size = xar::ck3_12004::kGuiImageSize12004V1;
+                  job.executable_sha256 = game.descriptor().executable_sha256;
+                  job.native_revision = state_revision;
+                  job.heir_character_id = heir_id;
+                  job.request_id = request_id;
+                  job.snapshot_context = query.adapter12002.get();
+                  job.read_snapshot = &ReadGuardianFactoryDiscoveryAdapterSnapshotV1;
+                }
                 const auto module_base = reinterpret_cast<std::uintptr_t>(
                     GetModuleHandleW(nullptr));
                 query.option_environment = xar::bridge::
@@ -19155,6 +19189,12 @@ void RunConnectedSession(
                     read.betrothal_actionability.unavailable_reason =
                         "current_betrothal_application_main_read_unavailable";
                   }
+                  if (stable && reclaimed == xar::ck3_11906::
+                          MainThreadQueryReclaimResultV1::reclaimed &&
+                      query.guardian_factory_discovery12004) {
+                    guardian_factory_discovery =
+                        std::move(query.guardian_factory_discovery12004);
+                  }
                 }
               }
               xar::game::Snapshot after{};
@@ -19163,8 +19203,18 @@ void RunConnectedSession(
                       CurrentFirstHeirRelationshipFailureV1::frame_changed) {
                 connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
-                        "current first-heir relationship frame changed during read"));
+                    "current first-heir relationship frame changed during read"));
               } else {
+                // Sidecar completion stays on the worker and follows both the
+                // mailbox reclaim and this family's final snapshot comparison.
+                // The existing family result wire remains unchanged.
+                if (guardian_factory_discovery) {
+                  std::string sidecar_error;
+                  (void)xar::bridge::CompleteGuardianFactoryDiscoveryJobV1(
+                      *guardian_factory_discovery, after,
+                      std::filesystem::u8path(guardian_factory_sidecar_path),
+                      sidecar_error);
+                }
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
                 if (unavailable_reason.empty() && read.failure == xar::ck3_11906::
                         CurrentFirstHeirRelationshipFailureV1::none) {

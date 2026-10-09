@@ -3779,6 +3779,7 @@ class NativeHeadlessGameplayDriver:
         self, *, expected_native_revision: int,
         timeout_seconds: float = 360.0,
         campaign_root_result: dict[str, object] | None = None,
+        guardian_factory_sidecar_path: str | Path | None = None,
     ) -> dict[str, object]:
         """Opt-in paused current-heir bilateral read, outside formal actions."""
         from .current_first_heir_relationship_private_transport import (
@@ -3790,6 +3791,8 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=timeout_seconds,
             **({"campaign_root_result": campaign_root_result}
                if campaign_root_result is not None else {}),
+            **({"guardian_factory_sidecar_path": guardian_factory_sidecar_path}
+               if guardian_factory_sidecar_path is not None else {}),
         )
 
     def query_player_child_marriage_subject_private_v1(
