@@ -1,0 +1,68 @@
+{
+  "schema": "ck3-r39-shared-runtime-startup-red-actual-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0039",
+  "checkout_head": "00b88fc4df0b8b4cea8b15ff85de8f244825a329",
+  "agent_source_root": "C:\\csr3",
+  "started_at": "2026-10-09T19:21:20.703833+00:00",
+  "finished_at": "2026-10-09T19:28:12.164752+00:00",
+  "public_run_exit_code": 2,
+  "native_status": "RED",
+  "native_error": "TimeoutError: saved campaign did not reach its exact paused native identity/root and explicit event policy before original readiness deadline",
+  "steps": [],
+  "host_original_parent_exit_code": 1,
+  "managed_ck3_exit_code": 1,
+  "normal_exit_zero_proven": false,
+  "tree_gone": true,
+  "final_ck3_inventory_empty": true,
+  "control_files_absent": {
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\state\\control\\ck3.json": true,
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\state\\control\\watchdog-653c23b510054342ac7e76bd9f6641cd.ready.json": true,
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\state\\control\\ck3.watchdog_error": true,
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\state\\control\\unsafe-cleanup.json": true
+  },
+  "keeper_original_parent_exit_code": 0,
+  "first_release_exit_code": 3,
+  "first_release_rejection": {
+    "schema": "codex.task_bus.v1",
+    "ok": false,
+    "code": "CAS_CONFLICT",
+    "reason": "screen operation requires exact bus CLI SHA-256 pin",
+    "observed": null
+  },
+  "actual_release_sequence": 4222,
+  "actual_release_resources": [],
+  "final_steam_offline_review": {
+    "at_utc": "2026-10-09T20:00:39.108281+00:00",
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0039\\steam-final-recovery-001\\probe-1\\steam-moved.png",
+    "bytes": 986441,
+    "sha256": "bcdb598a2595b9f2f41f98ead495ec1d3543668fff957ec4bcdbd7bbeb59fa4b",
+    "review_method": "root directly viewed original 1920x1080 screenshot after actual 20 px Steam window movement",
+    "visible_offline_text": "离线模式",
+    "steam_offline_confirmed": true,
+    "visible_desktop_clock": "4:00 2026/10/10"
+  },
+  "restored_display": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "public_verify_exit_code": 2,
+  "public_verify_result": {
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "status": "NOT_RUN_OR_PRESERVED_FAILURE",
+    "normal_close": null,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false
+  },
+  "first_machine_bootstrap_admitted_run": "bf-202609141645-5434332d4d--li-yu-dao--R0039",
+  "readiness_diagnostic": {
+    "observations": 146,
+    "report_sha256": "2ebc308b0aece4ac7dfb29f2509eefcd5340db271e350a5f2cd1be1e62bb7991"
+  },
+  "game_actions_by_this_producer": 0
+}

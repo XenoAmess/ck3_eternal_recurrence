@@ -1,0 +1,22 @@
+{
+  "schema": "ck3-r39-evidence-validation-v1",
+  "checked_utc": "2026-10-09T20:20:45.716477+00:00",
+  "archive_members_exact": true,
+  "archive_crc_valid": true,
+  "all_archived_bytes_sha256_rechecked": true,
+  "all_source_bytes_sha256_rechecked": true,
+  "source_root_file_counts_rechecked": true,
+  "diagnostic_original_index_pins_rechecked": true,
+  "diagnostic_original_index_pin_count": 49,
+  "saved_campaign_bodies_archived": false,
+  "entries": 420,
+  "archive_bytes": 9303974,
+  "archive_sha256": "4b0bc61802a4d2946476d424c986a97d361413d23a51a694d00a3536e42ac707",
+  "facts_sha256": "d10905c6d0f9b5d98126cb2b41e65746809b215dccfa20abb1975bfc9790a2c3",
+  "index_sha256": "2b27c4ae985ba6fdbd4db7c02e7e7b739e7fec0d873e8aee3f6ab77eecbeccb3",
+  "producer_sha256": "13ac9e8f1fb8f6a0c4336593f55779eceb3cce2cda0638b9d80c97ac4584b8b5",
+  "evidence_valid": true,
+  "business_pass": false,
+  "case_acceptance_pass": false,
+  "normal_exit_zero_proven": false
+}
