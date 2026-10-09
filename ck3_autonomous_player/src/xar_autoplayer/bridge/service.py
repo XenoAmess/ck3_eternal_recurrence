@@ -2810,7 +2810,7 @@ class GameplayBridgeService:
                 )
                 if callable(focus_reader):
                     query = focus_reader(expected_revision=int(planned["revision"]))
-            ending = self.snapshot()
+            ending = self.snapshot(include_native_command_history=False)
             if not (
                 ending.get("paused") is True
                 and ending.get("snapshot_id") == planned.get("snapshot_id")

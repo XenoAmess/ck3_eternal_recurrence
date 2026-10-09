@@ -1,4 +1,4 @@
-"""Sole FIRST: speed-five siege preserves the existing native one-day clock.
+"""Sole FIRST: admitted LIFE guard omits history before the daily siege loop.
 
 Reuse the qualified Native33 whole foreign-leader input, then connect real
 registered ordinary planning, NativeDriver advance, independent paused siege
@@ -14,12 +14,24 @@ import os
 from pathlib import Path
 
 from test_exact_day_native_clock_paused_next_frame import ClockProvider
+from test_lifestyle_formal_private_consumer import _life_snapshot
 from test_native_bridge_driver import _army, _hello, _snapshot, _war
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.version_identity import CK3_12004
+from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import QUERY_STEP
 from xar_autoplayer.bridge.war_contract import normalize_objective_province_states
 from xar_autoplayer.bridge.war_occupation_targets_contract import normalize_war_occupation_targets_v1
+
+
+class _CountedHistoryPayload(list):
+    copies = 0
+
+    def __deepcopy__(self, memo):
+        type(self).copies += 1
+        detached = list(self)
+        memo[id(self)] = detached
+        return detached
 
 
 def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(tmp_path):
@@ -65,6 +77,22 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
                 player_armies=[player]))
 
         def send(self, request):
+            if request.get("type") == "execute_step" and request["step"] == QUERY_STEP:
+                self.frames.append(request)
+                life = _life_snapshot()
+                life.update(snapshot_id=request["expected_snapshot_id"],
+                    public_revision=request["expected_revision"],
+                    native_revision=request["expected_revision"], proof_epoch=request["expected_revision"],
+                    date_raw=request["expected_date_raw"],
+                    player_character_id=request["expected_player_character_id"])
+                life["current_lifestyle_progress"]["unspent_perk_points"] = 0
+                life["legal_perk_candidates"]["items"] = []
+                self.publish({"type": "command_result", "protocol_version": 1,
+                    "request_id": request["request_id"], "ok": True,
+                    "result": {"step": QUERY_STEP, "private_build": True, "advertised": False,
+                        "status": "available", "episode_run_id": request["episode_run_id"],
+                        "formal_precondition_status": "ready", "snapshot": life}})
+                return
             if request.get("type") == "execute_step" and request["step"] == "save-checkpoint":
                 self.frames.append(request)
                 self.publish({"type": "command_result", "protocol_version": 1,
@@ -84,6 +112,7 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
         command_timeout_seconds=0.1, checkpoint_timeout_seconds=1.0,
         checkpoint_poll_interval_seconds=0.005)
     driver.require_initial_lifestyle_focus_before_date_advance = False
+    driver.allow_private_lifestyle_formal_trial = True
     hello = _hello(
         "game.state.snapshot", "game.state.active-wars", "game.state.player-armies",
         "game.state.army-routes", "game.state.war-objective-garrison",
@@ -99,14 +128,37 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
 
     endpoint.publish_state()
     assert driver.state.diagnostics()["last_rejected_state_snapshot"] is None
+    starting = driver.take_internal_semantic_snapshot()
+    retained = [{"index": index, "command": f"retained-plan-{index}", "ok": True,
+        "result": {"values": _CountedHistoryPayload(range(32))}} for index in range(1, 33)]
+    retained.append({"index": 33, "command": "query-campaign-root-context-v1", "ok": True,
+        "result": {"campaign_root_context": {"status": "available",
+            "snapshot_revision": starting["native_revision"], "date_raw": start_date,
+            "player_character_id": 29829,
+            "government": {"key": "feudal_government", "flags": ["government_is_feudal"]}}}})
+    with driver._history_lock:
+        driver._command_history = retained
+        driver._driver_state_dirty = True
 
     async def run():
         async with Client(create_server(driver)) as client:
+            _CountedHistoryPayload.copies = 0
             planned = await client.call_tool("ck3_plan_turn", {})
             assert not planned.is_error, planned.content
             plan = planned.structured_content["plan"]
             assert plan["phase"] == "native_war_siege_progress", plan
             assert plan["selected_step"] == "life-advance"
+            assert plan["lifestyle_decision"]["status"] == "no_legal_minimum"
+            assert [row["step"] for row in endpoint.frames if row.get("type") == "execute_step"] == [QUERY_STEP]
+            assert _CountedHistoryPayload.copies == 0
+            # Public full export remains detached and complete. Reset this
+            # intentional export before exercising the normal automatic turn.
+            public = driver.take_snapshot()
+            assert public["native_command_history"] == retained
+            assert _CountedHistoryPayload.copies == 32
+            public["native_command_history"][0]["result"]["values"].append(-1)
+            assert -1 not in retained[0]["result"]["values"]
+            _CountedHistoryPayload.copies = 0
             assert plan["siege_state"]["subject_contribution"]["status"] == "eligible"
             assert plan["siege_state"]["subject_contribution"]["matches_current_selection"] is False
             advanced = await client.call_tool("ck3_auto_turn", {})
@@ -115,6 +167,7 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
             assert result["requested_horizon_days"] == result["elapsed_days"] == 1
             assert result["timeline_speed"] == 5 and result["paused"] is True
             assert result["timeline_policy"] == "player_siege"
+            assert _CountedHistoryPayload.copies == 0
             commands = [row["step"] for row in result["actions"]]
             assert commands == ["set-speed-5",
                 f"research-arm-tactical-daily-sentinel-v1-{start_date}-to-{start_date + 24}-speed-5-mode-terminal-a-0",
@@ -143,6 +196,7 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
             assert after_siege["current_work"]["raw"] == progressed_work
             assert after_state["is_occupied"] is False
             durable = json.loads(driver._native_driver_state_path().read_bytes())
+            assert durable["command_history"][:len(retained)] == retained
             recorded = [row for row in durable["command_history"] if row["command"] == "life-advance"]
             assert len(recorded) == 1 and recorded[0]["result"] == result
             saved = await client.call_tool("ck3_save_checkpoint", {"expected_revision": after["revision"]})
@@ -167,6 +221,6 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps({"schema": "xar.siege-speed5-native-clock-service-first12004.v1",
             "input_packet": str(packet_path), "result": report,
-            "boundary": "reused qualified whole input and ClockProvider; synthetic native clock/work/file outputs; real registered normal Service, Driver, full persistence and checkpoint materialization",
+            "boundary": "reused qualified whole input and ClockProvider; synthetic LIFE/clock/work/file outputs; real registered admitted LIFE/siege normal Service, Driver, full public history export, persistence and checkpoint materialization",
             "production_live": False, "game_days_credit": 0, "capture_credit": False,
             "old_qualification_replay": False}, indent=2) + "\n", encoding="utf-8")
