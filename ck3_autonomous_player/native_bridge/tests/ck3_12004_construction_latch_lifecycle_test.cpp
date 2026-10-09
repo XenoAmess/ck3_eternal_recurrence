@@ -112,7 +112,8 @@ bool Submit(Calls &calls, PlayerWorldBuildingPrivateActionLatchV1 &latch,
   stamp.date_raw = source.date_raw;
   ConstructionActionStateV1 state{};
   BeginPlayerWorldBuildingPrivateActionV1(latch);
-  const bool accepted = SubmitPlayerWorldBuildingDirectActionV1(state, request, stamp);
+  const bool accepted = xar::ck3_12004::SubmitPlayerWorldBuildingDirectActionV1(
+      state, request, stamp);
   RememberPlayerWorldBuildingPrivateActionV1(latch, calls.candidate,
                                             state.materialize_calls, state.receiver_calls);
   return accepted;
