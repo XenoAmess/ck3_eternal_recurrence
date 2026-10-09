@@ -36,7 +36,7 @@ def read_release_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.exists():
         return {"pending": None, "resolved": None}
-    value = json.loads(path.read_text(encoding="utf-8"))
+    value = json.loads(path.read_text(encoding="utf-8-sig"))
     if (not isinstance(value, dict) or set(value) not in ({"pending"}, {"pending", "resolved"})
             or any(value.get(key) is not None and not isinstance(value[key], dict)
                    for key in ("pending", "resolved"))):
