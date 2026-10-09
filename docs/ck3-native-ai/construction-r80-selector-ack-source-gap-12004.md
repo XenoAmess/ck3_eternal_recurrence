@@ -314,3 +314,52 @@ only by the changed selector. A new narrow fixture checks gross/net divergence,
 empty-slot ties and known zero versus unknown occupant through the production
 selector. Root owns its first compilation/execution. This source change does
 not qualify another live construction or retrofit the original request.
+
+## Root qualification and saved R81 construction (2026-10-09)
+
+Native46 was qualified on frozen integrated source
+`088fed39e0ceda7b28c2b0ee2113db4ce61fa58a`. The actual incremental build
+compiled one changed Bridge selector and one fixture, retained the other
+732 production owners, and reused the Runtime45 archive. The first narrow
+fixture passed its three scenes/four selector calls in 0.2362854 seconds;
+no previous whole-command or MCP consumer qualification was rerun.
+The canonical receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix46/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+The resulting DLL is 13,395,968 bytes, SHA-256
+`c614155a8c0861400092a3654e0355cbcf82567a2c58228d2946a4329abbdf97`.
+
+R80 ended after its managed six-hour limit, with a proven process-tree cleanup.
+Its mismatched construction was never saved. R81 therefore restored the actual
+H9715/saved6010 baseline, without importing the unsaved 596/slot1 material.
+The new Game PID 175696 passed all thirteen paused-frame checks, including
+minimized-window ownership, at 2026-10-09T04:40:27.317992Z.
+
+The normal registered planner then selected `cereal_fields_01`, tuple
+`barony2103/province2635/type604/slot3`, for Robert 29829. Native46's actual
+ACK named that same tuple. The independent next normal turn returned
+`status=applied` and `postcondition_verified=true`, native revision 2 to 3,
+with gold 83,667,022 to 69,417,022 (scale 100,000), exactly the 142.5-gold
+quote. The two actual calls took 81.359977 and 84.393063 seconds. The current
+construction is in progress, with remaining-work raw 109,500,000 and divisor 0;
+actual completed income delta remains null. This qualifies the corrected
+selection/submit/independent-start-observation primitive, not completed M4
+income or an entire construction lifecycle.
+
+The normal SAVE completed at 2026-10-09T04:51:43.078245Z: H9725,
+date raw 53,288,568, still 6,010 saved normal days, 104,646,820 bytes,
+SHA-256 `df39abc8b770e99786eb87fb9fb3e559742541f4bbe5c9ebb685c2930f4ba4d1`.
+The original ten streams, opaque prisoner-release supplement, and this
+SAVE's opaque construction ledger were frozen together. Save and complete
+Driver hashes were not recomputed; only the changed small marriage ledger
+received a new pin. The original ten-stream format remains unchanged.
+
+Evidence root:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/managed-full-h9715-saved6010-r81-native46restore01/operator/`:
+`ROOT-COLD-H9715-PAUSED-SNAPSHOT-QUALIFIED.json`,
+`gameplay-responses/006-r81-normal-turn05.json`,
+`gameplay-responses/007-r81-normal-construction-receipt01.json`, and
+`gameplay-responses/009-r81-construction-saved6010.json`.
+The recoverable saved packet is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/normal-r81-h9725-saved6010-construction-freeze01/RECOVERY-INPUT-PACKET.json`.
+G2 remains 5/8, NW2 2/4, natural successions zero; no new game day or completed
+building is credited by these same-date actions.
