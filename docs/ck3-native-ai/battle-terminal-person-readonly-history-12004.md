@@ -99,9 +99,11 @@ That selector precedes the history-export selector in `_execute_primitive_step`
 (`11001–11008`). Its default history flag therefore causes no full transcript
 export in these ordinary advance primitives.
 
-Generic direct move is a separate route: the fallback (`9807–9811`) retains the
+Generic direct-action fallback is a separate route (`9807–9811`): it retains the
 primitive's default `include_native_command_history=True` (`10948`), causing one
 full transcript export. Its revision/submission consumers use semantic fields.
+This generic fallback was not an exact binding for the previously submitted
+move: advertised native war steps use dispatch `9705–9707` instead.
 Successful top-level move and life-advance calls both record their new result
 (`8435`, `9960`) and invoke full Driver-state persistence (`9966`); neither is a
 deferred `query-*`/preview command (`23407–23416`). This serializes and atomically
@@ -113,7 +115,7 @@ and its action-recording barrier.
 flowchart TD
     A["Ordinary auto_turn dispatch"] --> B{"Selected step"}
     B -->|life-advance| C["Semantic composite and internal primitives"]
-    B -->|direct move| D["Primitive: one full transcript export"]
+    B -->|generic direct-action fallback| D["Primitive: one full transcript export"]
     C --> E["Record completed top-level result"]
     D --> E
     E --> F["Full Driver-state persistence barrier"]
@@ -126,3 +128,32 @@ than five minutes to advance, transcript export or persistence. The advance
 conclusion is **NO_NEW_SOURCE**: no production change, new FIRST or replay of
 earlier GREEN compounds is required by this finding. Timeout/budget evidence
 remains a separate investigation.
+
+## Actual request #8 correction and ArmyStrengths route
+
+The later thin actual receipt
+`D:/codex-ck3-background-spill/r85-source-freeze01/SLOW-NORMAL08-OUTER-ACTUAL.json`
+identifies normal request #8 as `query-army-strengths-v1`, status `executed`,
+with no client error. Its UTC interval was
+`2026-10-09T19:16:12.779991+00:00` -> `2026-10-09T19:17:59.354502+00:00`,
+106.574511 seconds, and the retained raw response was 87,146,185 bytes.
+The earlier pending-advance assumption is superseded by this actual identity.
+The raw response body was not read for this source investigation.
+
+On e997 and its same-Driver descendant 5705, normal Service dispatch already
+uses `snapshot(include_native_command_history=False)` (`service.py:3933`).
+Native war dispatch (`native_driver.py:9705–9707`) marks ArmyStrengths as an
+internal readonly query (`12560–12577`) and takes a semantic pre-frame. Its
+primitive explicitly omits history (`13675–13683`), and its post-frame is
+semantic (`13726`). Scope validation, paused-frame checks and cache bindings
+(`13702–13757`, `32174–32189`) consume Army rows and semantic identity/revision
+fields, without a command-history export. The normal ArmyStrengths route and
+ordinary life-advance are therefore both **NO_NEW_SOURCE** for unused transcript
+export: no new production fix, worktree, compound or old GREEN replay follows
+from this source conclusion. It does not explain the measured 106.574511 seconds.
+
+The separate typed `Service.query_army_strengths` facade has one default full
+history snapshot at `service.py:5232`. Normal request #8 does not call that
+facade. It remains a distinct follow-up candidate, with no attribution to this
+request's latency. Timeout, budget and thin output metadata remain separately
+owned investigations.
