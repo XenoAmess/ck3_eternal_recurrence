@@ -9646,7 +9646,9 @@ include(cmake/person_local_titles_supplemental_12004.cmake)
 include(cmake/person_first_title_vector_12004.cmake)
 include(cmake/person_native_title_tail_capture_12004.cmake)
 include(cmake/person_native_six_stage_capture_12004.cmake)
+include(cmake/person_pre_six_baseline_12004.cmake)
 include(cmake/actual_loss_writer_observations_12004.cmake)
+include(cmake/construction_positive_coverage_budget_12004.cmake)
 
 # Private fixed-name factory discovery: the same production job and completion
 # sidecar writer are linked through the complete Bridge object closure.
