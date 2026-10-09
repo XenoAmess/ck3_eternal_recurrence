@@ -175,3 +175,49 @@ R81 actual011 for Robert29829 and opponent31050 published a known bypass:
 and no classifier or scope evaluation. Its source joins are valid evidence
 for that bypass only. It is not a live numerical pair or a demanded dynamic
 weight failure, and this package does not change that recorded boundary.
+
+## Native47 first qualification, 2026-10-09
+
+Root's actual attempt03 is GREEN, with compiled and Python qualification source
+`e5fd088cde640b0a1ea29ff40888af95d9300c95`. This is distinct from author
+implementation `937419ecbb92a326d7372a2174a5ef79a8ebc7ea`, typed-literal fix
+`f77a0d52bd002af8f9b10acbc410f4d85ad7f867`, and this later documentation commit.
+The retained 501 successful production compiles and fixture object keep their
+physical source/header pin `a2771c6016247e73d689c4bb8a825d334928bb44`.
+Only the new scope TU was recompiled at `e5fd`; the source change is the
+`std::uint16_t{4}` assignment to the optional scope kind. No header, fixture,
+ABI, schema or `/WX` change was made for that retry.
+
+The completed production closure is 734 owners: Bridge299, Runtime434,
+Protocol1. Root reused the 501 successful compiles and one fixture compile,
+compiled only the corrected TU in 1.314474 seconds, created a fresh Runtime
+archive in 0.4558859 seconds, linked the DLL in 0.9962398 seconds and linked
+the fixture in 0.8686764 seconds. The unique native FIRST wrote five original
+whole packets in 0.2495983 seconds; their sole registered MCP compound was
+GREEN in 5.7521767 seconds. Completion was
+2026-10-09T05:55:42.972524Z / 13:55:42.972524 Asia/Shanghai. No old FIRST was
+replayed and no Game/SDK call occurred in qualification.
+
+The actual result is
+`Z:/g2-native47-build01/attempt03/ROOT-NATIVE47-RESULT.json`; the canonical is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix47/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+It pins `Z:/g2-native47-build01/attempt03/binaries/xar_ck3_bridge.dll`,
+13,416,960 bytes, SHA256
+`c8b3f4a20554bbb888ec39cc49bf33e801fa36384085a51db4d1741d5c683494`.
+Its manifest is 2,547 bytes, SHA256
+`d4b9170f6bb4e8ec5a4d40d214c8ac289a50964a1f22082dd15dcb0499089981`.
+These are the existing Root pins; the documentation author did not hash them.
+
+Attempt01's process-start harness RED remains in
+`runtime47-person-later-suffix-preparation/ROOT-ATTEMPT01-PROCESS-START-FAILURE.json`.
+Attempt02's actual C4244/C2220 compile RED remains in
+`runtime47-person-later-suffix-preparation/ROOT-ATTEMPT02-COMPILER-FAILURE.json`
+and `Z:/g2-native47-build01/attempt02/logs/compile-502.log`. Their original
+receipts and the author's AUTHORED_NOTRUN records are preserved. The new
+qualified receipts are separate.
+
+This bounded same-query current numerical capability is now static-ready.
+The five scenes use explicit offline constructor/getter/allocator callbacks;
+they do not prove a dynamic expression was executed in CK3. The running game
+still uses Native46, Native47 is not deployed or live, and full Person/Entry,
+action, campaign and G2 completion credit remain false.
