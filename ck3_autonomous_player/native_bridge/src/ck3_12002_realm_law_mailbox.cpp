@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_realm_law.hpp"
+#include "xar_bridge/crown_authority_cooldown_turn_tick_12004.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/realm_law_12004_native.hpp"
@@ -17,12 +18,13 @@ bool ReadMemory(void *, std::uintptr_t address, void *output, std::size_t size) 
 }
 }
 
-bool ExecuteRealmLawPausedPrivateQuery12002(
-    void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
-  auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
-  if (envelope == nullptr || envelope->typed_context == nullptr ||
-      !EnterQueryMailbox(*envelope, stamp, &ExecuteRealmLawPausedPrivateQuery12002)) return true;
-  auto &query = *static_cast<RealmLawReadbackQuery12002 *>(envelope->typed_context);
+namespace {
+bool ExecuteRealmLawQuery(QueryMailboxEnvelope &envelope,
+    RealmLawReadbackQuery12002 &query,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp,
+    ck3_11906::MainThreadQueryExecutorV1 execute,
+    ck3_12004::crown_cooldown::turn_tick::Observation *turn_tick) noexcept {
+  if (!EnterQueryMailbox(envelope, stamp, execute)) return true;
   private_law::RealmLawActiveCollectionAccess access{};
   const bool actual_12004 =
       query.actual_executable_sha256 == ck3_12004::kExecutableSha256;
@@ -35,24 +37,50 @@ bool ExecuteRealmLawPausedPrivateQuery12002(
     access.played_character_address = reinterpret_cast<std::uintptr_t>(
         actual_12004
             ? ck3_12004::ResolveCoreCharacter(
-                  query.bindings, envelope->expected_snapshot.played_character_id)
+                  query.bindings, envelope.expected_snapshot.played_character_id)
             : ResolveCoreCharacter(
-                  query.bindings, envelope->expected_snapshot.played_character_id));
+                  query.bindings, envelope.expected_snapshot.played_character_id));
     access.read_memory = &ReadMemory;
   }
-  const RealmLawReadbackFrame12002 frame{envelope->expected_snapshot_revision,
-      envelope->expected_snapshot.date_raw, envelope->expected_snapshot.played_character_id};
-  (void)CaptureRealmLawReadback12002(access, query.module_base, frame,
-      query.final_operations_override != nullptr
+  const RealmLawReadbackFrame12002 frame{envelope.expected_snapshot_revision,
+      envelope.expected_snapshot.date_raw, envelope.expected_snapshot.played_character_id};
+  const auto operations = query.final_operations_override != nullptr
           ? *query.final_operations_override
           : actual_12004
           ? ck3_12004::private_law::BindRealmLawFinalTermsImage12004(
                 query.module_base, query.actual_executable_sha256)
           : private_law::BindRealmLawFinalTermsImage12002(query.module_base,
-                private_law::kRealmLawFinalTermsExecutableSha256), query.readback,
-      query.actual_executable_sha256, query.cooldown_bindings_override);
-  (void)FinishQueryMailbox(*envelope);
+                private_law::kRealmLawFinalTermsExecutableSha256);
+  if (actual_12004 && turn_tick != nullptr) {
+    (void)CaptureRealmLawReadbackWithTurnTick12004(access, query.module_base,
+        frame, operations, query.readback, *turn_tick,
+        query.actual_executable_sha256, query.cooldown_bindings_override);
+  } else {
+    (void)CaptureRealmLawReadback12002(access, query.module_base, frame,
+        operations, query.readback, query.actual_executable_sha256,
+        query.cooldown_bindings_override);
+  }
+  (void)FinishQueryMailbox(envelope);
   return true;
+}
+} // namespace
+
+bool ExecuteRealmLawPausedPrivateQuery12002(
+    void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
+  if (envelope == nullptr || envelope->typed_context == nullptr) return true;
+  auto &query = *static_cast<RealmLawReadbackQuery12002 *>(envelope->typed_context);
+  return ExecuteRealmLawQuery(*envelope, query, stamp,
+      &ExecuteRealmLawPausedPrivateQuery12002, nullptr);
+}
+
+bool ExecuteRealmLawPausedPrivateQueryWithTurnTick12004(
+    void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
+  if (envelope == nullptr || envelope->typed_context == nullptr) return true;
+  auto &owner = *static_cast<RealmLawTurnTickQuery12004 *>(envelope->typed_context);
+  return ExecuteRealmLawQuery(*envelope, owner.query, stamp,
+      &ExecuteRealmLawPausedPrivateQueryWithTurnTick12004, &owner.turn_tick);
 }
 
 bool ReadRealmLawOnApplicationMain12002(
@@ -71,20 +99,25 @@ bool ReadRealmLawOnApplicationMain12002(
     failure = "native_law_paused_actor_unavailable"; return false;
   }
   try {
-    RealmLawReadbackQuery12002 query{};
+    RealmLawTurnTickQuery12004 owner{};
+    auto &query = owner.query;
     query.actual_executable_sha256 = adapter.descriptor().executable_sha256;
     query.envelope.game = &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.envelope.typed_context = &query;
+    query.envelope.typed_context = actual_12004
+        ? static_cast<void *>(&owner) : static_cast<void *>(&query);
     query.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     query.bindings = actual_12004
         ? ck3_12004::BindCoreImage(query.module_base, query.actual_executable_sha256)
         : BindCoreImage(query.module_base,
               game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto execute = actual_12004
+        ? &ExecuteRealmLawPausedPrivateQueryWithTurnTick12004
+        : &ExecuteRealmLawPausedPrivateQuery12002;
     if (!query.bindings.enabled || ck3_11906::TrySubmitMainThreadQueryV1(mailbox,
-        &ExecuteRealmLawPausedPrivateQuery12002, &query.envelope,
+        execute, &query.envelope,
         query.envelope.ticket) != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
       failure = "native_law_mailbox_submit_unavailable"; return false;
     }
@@ -98,7 +131,9 @@ bool ReadRealmLawOnApplicationMain12002(
       failure = query.readback.failure.empty() ? "native_law_paused_capture_unavailable" : query.readback.failure;
       return false;
     }
-    serialized = SerializeRealmLawReadback12002(query.readback);
+    serialized = actual_12004
+        ? SerializeRealmLawReadbackWithTurnTick12004(query.readback, owner.turn_tick)
+        : SerializeRealmLawReadback12002(query.readback);
     return !serialized.empty();
   } catch (...) {
     failure = "native_law_mailbox_exception"; return false;

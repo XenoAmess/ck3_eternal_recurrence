@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12002_realm_law.hpp"
+#include "xar_bridge/crown_authority_cooldown_turn_tick_12004.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/realm_law_12004_native.hpp"
 
 namespace xar::ck3_12002 {
@@ -73,15 +75,18 @@ std::string_view Status(private_law::RealmLawFinalTerms12002Status value) noexce
 }
 }
 
-bool CaptureRealmLawReadback12002(
+namespace {
+bool CaptureRealmLawReadbackImpl(
     const private_law::RealmLawActiveCollectionAccess &access,
     std::uintptr_t module_base, const RealmLawReadbackFrame12002 &frame,
     const private_law::RealmLawFinalTerms12002Operations &operations,
     RealmLawReadback12002 &output,
     std::string_view actual_executable_sha256,
-    const ck3_12004::crown_cooldown::Bindings *cooldown_bindings_override) noexcept {
+    const ck3_12004::crown_cooldown::Bindings *cooldown_bindings_override,
+    ck3_12004::crown_cooldown::turn_tick::Observation *turn_tick) noexcept {
   try {
     output = {};
+    if (turn_tick != nullptr) *turn_tick = {};
     output.frame = frame;
     output.succession_profiles_12003_observed =
         actual_executable_sha256 == ck3_12003::kExecutableSha256 ||
@@ -110,9 +115,18 @@ bool CaptureRealmLawReadback12002(
           ? *cooldown_bindings_override
           : ck3_12004::crown_cooldown::BindImage(module_base,
                 actual_executable_sha256);
-      (void)ck3_12004::crown_cooldown::Read(bindings,
-          frame.actor_character_id, frame.date_raw,
-          output.crown_authority_cooldown);
+      if (turn_tick != nullptr) {
+        const ck3_12004::crown_cooldown::turn_tick::Access tick_access{
+            module_base + ck3_12004::kGameStateSlotRva,
+            access.context, access.read_memory};
+        (void)ck3_12004::crown_cooldown::turn_tick::ReadWithTurnTick(bindings,
+            frame.actor_character_id, frame.date_raw,
+            output.crown_authority_cooldown, tick_access, *turn_tick);
+      } else {
+        (void)ck3_12004::crown_cooldown::Read(bindings,
+            frame.actor_character_id, frame.date_raw,
+            output.crown_authority_cooldown);
+      }
     }
     output.available = true;
     return true;
@@ -123,7 +137,8 @@ bool CaptureRealmLawReadback12002(
   }
 }
 
-std::string SerializeRealmLawReadback12002(const RealmLawReadback12002 &readback) {
+std::string SerializeRealmLawReadbackImpl(const RealmLawReadback12002 &readback,
+    const ck3_12004::crown_cooldown::turn_tick::Observation *turn_tick) {
   if (!readback.available || !readback.failure.empty()) return {};
   std::string out = "{\"schema\":\"realm-law-final-terms-private-read-v1\",\"snapshot_revision\":" +
       std::to_string(readback.frame.snapshot_revision) + ",\"date_raw\":" +
@@ -174,6 +189,59 @@ std::string SerializeRealmLawReadback12002(const RealmLawReadback12002 &readback
     out += ",\"remaining_unit\":"; AppendString(out, value.remaining_unit);
     out += "}";
   }
+  if (readback.crown_authority_cooldown_observed && turn_tick != nullptr) {
+    const auto &value = *turn_tick;
+    out += ",\"crown_authority_cooldown_turn_tick\":{\"source\":";
+    AppendString(out, ck3_12004::crown_cooldown::turn_tick::kSource);
+    out += ",\"read_available\":";
+    out += value.read_available ? "true" : "false";
+    out += ",\"manager_match_count\":";
+    AppendOptionalNumber(out, value.manager_match_count);
+    out += ",\"manager_contains_context\":";
+    AppendOptionalBool(out, value.manager_contains_context);
+    out += ",\"scalar_tail_allows_tick\":";
+    AppendOptionalBool(out, value.scalar_tail_allows_tick);
+    out += ",\"context_tick_eligible\":";
+    AppendOptionalBool(out, value.context_tick_eligible);
+    out += ",\"unavailable_reason\":";
+    if (value.read_available) out += "null";
+    else AppendString(out, value.unavailable_reason);
+    out += "}";
+  }
   return out + "}";
+}
+} // namespace
+
+bool CaptureRealmLawReadback12002(
+    const private_law::RealmLawActiveCollectionAccess &access,
+    std::uintptr_t module_base, const RealmLawReadbackFrame12002 &frame,
+    const private_law::RealmLawFinalTerms12002Operations &operations,
+    RealmLawReadback12002 &output,
+    std::string_view actual_executable_sha256,
+    const ck3_12004::crown_cooldown::Bindings *cooldown_bindings_override) noexcept {
+  return CaptureRealmLawReadbackImpl(access, module_base, frame, operations,
+      output, actual_executable_sha256, cooldown_bindings_override, nullptr);
+}
+
+bool CaptureRealmLawReadbackWithTurnTick12004(
+    const private_law::RealmLawActiveCollectionAccess &access,
+    std::uintptr_t module_base, const RealmLawReadbackFrame12002 &frame,
+    const private_law::RealmLawFinalTerms12002Operations &operations,
+    RealmLawReadback12002 &output,
+    ck3_12004::crown_cooldown::turn_tick::Observation &turn_tick,
+    std::string_view actual_executable_sha256,
+    const ck3_12004::crown_cooldown::Bindings *cooldown_bindings_override) noexcept {
+  return CaptureRealmLawReadbackImpl(access, module_base, frame, operations,
+      output, actual_executable_sha256, cooldown_bindings_override, &turn_tick);
+}
+
+std::string SerializeRealmLawReadback12002(const RealmLawReadback12002 &readback) {
+  return SerializeRealmLawReadbackImpl(readback, nullptr);
+}
+
+std::string SerializeRealmLawReadbackWithTurnTick12004(
+    const RealmLawReadback12002 &readback,
+    const ck3_12004::crown_cooldown::turn_tick::Observation &turn_tick) {
+  return SerializeRealmLawReadbackImpl(readback, &turn_tick);
 }
 } // namespace xar::ck3_12002

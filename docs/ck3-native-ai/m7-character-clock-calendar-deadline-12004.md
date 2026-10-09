@@ -53,13 +53,13 @@ flowchart TD
   U --> INC[Inline clock28 increment at2AA4090]
   CW --> B[Actual bucket pointer arrays]
   B --> M
-  M -. current actor read not implemented .-> EL[Current context membership and scalar-tail eligibility]
+  M -. authored reader FIRST pending .-> EL[Current context membership and scalar-tail eligibility]
   D[Actual4 selected calendar writer raw32 plus24] --> I[Native day index D]
   I --> K[Existing actual4 day/month table converter]
   K --> F[Full CDate storage packing]
   D --> O[Actual118B month/year notification joins]
   O --> TM
-  N -. calendar relation to D missing .-> X[Calendar retry conversion]
+  N -. surviving expiry and clock rebase at887360 .-> X[Calendar retry conversion]
   EL -. minimum current read input .-> X
   INC -. normalization and absolute conversion remain distinct .-> X
   X -. source closure required .-> Q[Existing retry_date_raw on same realm-law query]
@@ -341,8 +341,8 @@ consumer run or live membership observation is claimed here.
 Worker execution reads source, cached JSON instructions and existing metadata
 only. Worker Game, SDK, pipe, UI, process, runtime prepare/rebind, EXE/bin
 reads, hashes, builds, project imports and tests are all0. Root's source
-captures are distinct:71144491 physical frozen-image bytes/ten reads in
-4.9941309s, comprising one71141888-byte locator read and2603 retained small
+captures are distinct:71144571 physical frozen-image bytes/eleven reads in
+5.6531017s, comprising one71141888-byte locator read and2683 retained small
 source bytes. These are physical read costs, not unique image coverage;
 small code captures overlap the earlier unpersisted locator buffer. Root
 source costs are counted once, not again for cached JSON decoding.
@@ -355,3 +355,114 @@ Calendar deadline and scheduled-retry readiness remain **research**;
 entrance are recorded here rather than adding a permanent-null schema.
 No live, new-day, natural succession, completed family or G2 credit is added.
 Root owns daily/W41 integration, source adoption, capture, FIRST and push.
+
+## Authored same-query private companion
+
+The contract above is now implemented in the isolated full source tree
+`Z:/cg49-m7-turntick-context`, based on Root's integrated
+`1e6d5fa4f6e1696218a730db1dbea8700c81944f`. This source increment is
+**SOURCE_READY / FIRST_NOTRUN**, not a compiled or live observation.
+
+The private header
+[crown_authority_cooldown_turn_tick_12004.hpp](../../ck3_autonomous_player/native_bridge/include/xar_bridge/crown_authority_cooldown_turn_tick_12004.hpp)
+introduces the query-local companion and capture/serializer entry points.
+The original `Observation`, `RealmLawReadback12002`,
+`RealmLawReadbackQuery12002`, public Snapshot and their shared headers are
+unchanged. Exactly three production Runtime owners include the new private
+header: the existing cooldown reader, law capture/emitter and law mailbox.
+There is no Bridge or protocol source change.
+
+The cooldown implementation resolves kind4 once and passes that exact pointer
+to both old raw9 and the new memory-backed reader. Its actual GameState+A0
+and GameData+98 accesses use the existing law memory callback. It traverses
+every bucket entry and counts every matching pointer; it does not stop at
+the first match. The new wire therefore has seven fields: the six from the
+initial contract plus `manager_match_count`, a copied unsigned64 count.
+Available membership equals count>0. The eligibility conjunction remains a
+current source-branch input and not an ACK or a guarantee about later state.
+Valid empty manager/count0, no match, zero scalars and an untimed tail are
+available known values. Failures keep a concrete reason and null input
+values while leaving raw9 independent.
+
+Actual4 uses `RealmLawTurnTickQuery12004` to compose the old query with this
+sidecar. `ExecuteRealmLawPausedPrivateQueryWithTurnTick12004` enters the same
+paused mailbox, captures law terms/raw9/companion, then calls the existing
+Finish logic. `ReadRealmLawOnApplicationMain12002` selects that private
+executor and serializer for the actual4 build. Older entry signatures and
+serialization remain callable. The existing registered law tool and strict
+transport retain the optional sibling without introducing an action or
+replacing native final permission.
+
+The new source mode in the existing law-wire fixture is exactly
+`--turn-tick-context-wire-dir <fresh-directory>`. Six new scenarios use real
+fixture-owned native-layout arrays and this actual mailbox/reader/emitter.
+The late match appears twice, so expected match count2 proves complete
+traversal. Its middle bucket is a valid empty bucket: the native outer
+callable does not guard a null bucket, while the inner row worker explicitly
+skips null context entries. Read failure denies the late bucket's actual
+second pointer read; raw9 still succeeds. The same first successful readback
+also emits one legacy leaf-absent wire without another capture or old case
+execution. Each new scenario asserts one kind4 resolution, stable Enter and
+Finish snapshots and zero action calls.
+
+The sole new registered consumer is
+[test_crown_authority_cooldown_turn_tick_registered_query.py](../../ck3_autonomous_player/tests/test_crown_authority_cooldown_turn_tick_registered_query.py),
+method `test_turn_tick_context_reaches_registered_realm_law_query`. Its
+standalone launcher takes `--source-root`, `--source-sha`,
+`--native-wire-dir` and `--output-dir` and selects only that method. The six
+new complete native command_results and one same-readback legacy wire pass
+unchanged through actual MCP registration, Service lifecycle, Driver,
+strict transport and protocol ingest/wait. The source asserts retained
+raw9, matchcount2, native terms, read failure distinction and calendar
+readinessfalse. Neither compiled output nor a consumer result exists yet.
+
+## Specific remaining absolute-date source
+
+The selected date+24 path, its UpdateTurnTick invocation and eligible full
+context's clock+1 operation are now actual source facts. They are no longer
+generic unknown cadence. Current pointer membership/count and eligibility
+are implementable inputs and can be read_available=true after Root qualifies
+this new source.
+
+The specific remaining source was the **clock/expiry rebase operation in
+the exact callee `887360` selected by actual `2AA40AA`**. That caller passes
+this same full context+8 after its updated clock reaches another scalar's
+tail expiry. It required checking how the normalizer subtracts that clock
+from surviving timed scalar expiries and resets the clock, preserving their
+signed32 remaining difference. A task label or the
+queried scalar's initial expiry cannot establish that relation. No authored
+20-year multiplier is relevant to this question.
+
+The held runtime table has no containing pdata row at887360. The next held
+row starts8873B0, so the [sole next Root recipe](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/ROOT-CLOCK-EXPIRY-NORMALIZATION80-ARGV.json)
+selected only `887360..8873B0`,80 bytes, cache first. Root completed it once,
+one actual80-byte read,0.6589708s. Its [actual packet](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/root-normalization-first01/CLOCK-EXPIRY-NORMALIZATION80.json)
+and [sole cached decode](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/CLOCK-EXPIRY-NORMALIZATION80-DECODE.json)
+now close every branch through the real RET at8873A7, with no other callee:
+
+| Actual source | Operation on inner full-context+8 receiver |
+| --- | --- |
+| `887360..887364` | Clock+20 equal0 goes directly to return. |
+| `887366..887374` | Start at scalar count+14 minus1, row stride0x20. |
+| `887380..88738C` | Read rows+8 and the current tail expiry+0C; expiry<=-1 ends the loop. |
+| `88738E..887395` | Native signed32 expiry-minus-clock; negative result is clamped to0, then stored. |
+| `88739A..8873A1` | Move to the previous scalar until the timed suffix is exhausted. |
+| `8873A3..8873A7` | Reset clock+20 to0 and return. |
+
+For a processed surviving timed row with positive native remaining, the
+post-rebase expiry is its previous expiry-minus-clock and the post-rebase
+clock is0. Its positive remaining is therefore unchanged by rebasing. Due
+rows clamp to0 and the already closed caller removes due tail rows. The
+untimed prefix remains distinct; the source does not claim to process past
+the first negative sentinel.
+
+This closes the specific normalizer source dependency. The next work is
+source implementation of the projection using the current actor's observed
+membership/count and eligibility and the queried row's membership in that
+processed timed suffix, obtainable from the same existing scalar array.
+It requires no new scheduler, writer, name scan or guessed duration. The
+raw date step on the selected native path is24; the scalar clock step is1
+per eligible matching context entry. This observer package publishes the
+current inputs first. It does not yet replace the original raw9 unit or fill
+a positive calendar retry date, and it does not relabel that remaining
+source-code work as an unlocated native cadence.

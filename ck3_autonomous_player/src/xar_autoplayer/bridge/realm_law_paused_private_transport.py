@@ -75,6 +75,12 @@ COOLDOWN_KEYS = {
 }
 COOLDOWN_EXPIRY_TYPE = "signed32_scalar_clock_counter"
 COOLDOWN_REMAINING_UNIT = "scalar_clock_step_calendar_unqualified"
+COOLDOWN_TURN_TICK_FIELD = "crown_authority_cooldown_turn_tick"
+COOLDOWN_TURN_TICK_SOURCE = "native_variable_manager_turn_tick_context"
+COOLDOWN_TURN_TICK_KEYS = {
+    "source", "read_available", "manager_match_count", "manager_contains_context",
+    "scalar_tail_allows_tick", "context_tick_eligible", "unavailable_reason",
+}
 
 
 def _signed_integer(value: object, bits: int) -> bool:
@@ -125,6 +131,38 @@ def normalize_crown_authority_cooldown_raw_v1(
     return dict(value)
 
 
+def normalize_crown_authority_cooldown_turn_tick_v1(
+    value: object,
+) -> dict[str, object]:
+    """Retain current native branch inputs without predicting a future tick."""
+    if not isinstance(value, dict) or set(value) != COOLDOWN_TURN_TICK_KEYS:
+        raise ValueError("crown cooldown turn-tick object keys differ")
+    if (value["source"] != COOLDOWN_TURN_TICK_SOURCE
+            or type(value["read_available"]) is not bool):
+        raise ValueError("crown cooldown turn-tick source or availability differs")
+    result_keys = (
+        "manager_contains_context", "scalar_tail_allows_tick", "context_tick_eligible",
+    )
+    if value["read_available"] is False:
+        reason = value["unavailable_reason"]
+        if (value["manager_match_count"] is not None
+                or any(value[key] is not None for key in result_keys)
+                or not isinstance(reason, str) or not reason):
+            raise ValueError("unavailable crown turn-tick requires null inputs and a reason")
+        return dict(value)
+    count = value["manager_match_count"]
+    if (type(count) is not int or not 0 <= count < (1 << 64)
+            or any(type(value[key]) is not bool for key in result_keys)
+            or value["unavailable_reason"] is not None):
+        raise ValueError("available crown turn-tick requires uint64 count and bool inputs")
+    if (value["manager_contains_context"] != (count > 0)
+            or value["context_tick_eligible"] != (
+                value["manager_contains_context"] and value["scalar_tail_allows_tick"]
+            )):
+        raise ValueError("crown turn-tick native input relationship differs")
+    return dict(value)
+
+
 def _valid_payload(value: object, *, revision: int, date_raw: int,
                    actor_id: int, exact_ck3_build: str) -> bool:
     if not isinstance(value, dict):
@@ -134,7 +172,11 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
         "cost_scale", "cost_slots", "groups",
     }
     has_cooldown = COOLDOWN_FIELD in value
-    if set(value) != (payload_keys | {COOLDOWN_FIELD} if has_cooldown else payload_keys):
+    has_turn_tick = COOLDOWN_TURN_TICK_FIELD in value
+    optional_keys = ({COOLDOWN_FIELD} if has_cooldown else set()) | (
+        {COOLDOWN_TURN_TICK_FIELD} if has_turn_tick else set()
+    )
+    if set(value) != payload_keys | optional_keys:
         return False
     if has_cooldown:
         if exact_ck3_build != "1.20.0.4":
@@ -142,6 +184,15 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
         try:
             normalize_crown_authority_cooldown_raw_v1(
                 value[COOLDOWN_FIELD], date_raw=date_raw,
+            )
+        except ValueError:
+            return False
+    if has_turn_tick:
+        if exact_ck3_build != "1.20.0.4":
+            return False
+        try:
+            normalize_crown_authority_cooldown_turn_tick_v1(
+                value[COOLDOWN_TURN_TICK_FIELD],
             )
         except ValueError:
             return False
