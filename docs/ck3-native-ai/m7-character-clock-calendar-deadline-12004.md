@@ -104,16 +104,17 @@ The already reviewed named scopes contain no such caller site. No caller
 RVA, extent or daily order is invented from the updater's address.
 
 To resolve that specific missing site, a proposed Root-only source locator
-uses only direct-call/tail encodings whose target is the already proved
+uses only direct E8-call encodings whose target is the already proved
 `37275E0`, records finite neighboring instruction bytes and attaches each
 candidate to the held runtime-function table. It does not enumerate all
 callees or scan script names. An existing owner-confirmed raw text cache
 would avoid any new image read; without one, this proposal costs one existing
-mapped `.text` read of71141888 bytes. This cost requires Root's selection and
-the recipe is **SOURCE_NOTRUN**, not a capture receipt or capability.
+mapped `.text` read of71141888 bytes. Root accepted this necessary single-target
+E8 source cost; the recipe remains **SOURCE_NOTRUN**, not a capture receipt
+or capability.
 The parent must not execute an expected-failing game query to justify it.
 
-Literal matches and E8/E9 byte candidates alone do not prove an instruction
+Literal matches and E8 byte candidates alone do not prove an instruction
 boundary, receiver or cadence. A positive result must first be decoded from
 its emitted small cache, then select only the necessary caller range if
 more source is needed. A zero result would reject this direct-reference
