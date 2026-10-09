@@ -2538,7 +2538,7 @@ def _inject_native_bridge(
     config: NativeBridgeLaunchConfig,
     evidence_dir: Path,
 ) -> dict[str, object]:
-    """Run the existing CLI inside a one-process Job before CK3 resume."""
+    """Run the existing CLI inside a one-process Job for the retained CK3 process."""
     command = [str(config.injector_path), str(process.pid), str(config.dll_path)]
     attestation: dict[str, object] = {
         "schema": "xar.ck3.native-injector-attempt.v1",
@@ -2655,7 +2655,7 @@ def _inject_native_bridge(
         stdout_text = _injector_text(result.stdout or b"").strip()
         stderr_text = _injector_text(result.stderr or b"").strip()
         raise NativeInjectorError(
-            "native bridge injector failed before CK3 resume: "
+            "native bridge injector failed: "
             f"rc={returncode}, stdout={stdout_text!r}, stderr={stderr_text!r}",
             attestation,
         )
@@ -2703,6 +2703,63 @@ def _resume_with_native_bridge(
                 process.injector_attestation, deadline, "post-CK3-resume",
                 budget="ck3_resume",
             )
+
+
+def _resume_then_inject_after_saved_load(
+    process: _SuspendedWindowsProcess,
+    config: NativeBridgeLaunchConfig,
+    *,
+    profile_dir: Path,
+    log_epoch_ns: int,
+    deadline: float,
+    stop_requested: Callable[[], bool] | None,
+    before_process_create: Callable[[], AbstractContextManager[None]] | None,
+    evidence_dir: Path,
+) -> dict[str, object]:
+    """One managed resume/injection; the log grants no native or business credit."""
+    if process.resumed or getattr(process, "injector_attestation", None) is not None:
+        raise AgentError("saved startup injection requires the original unresumed, uninjected process")
+
+    def require_live() -> None:
+        if stop_requested is not None and stop_requested():
+            raise AgentError("saved startup stopped before delayed injection")
+        if time.monotonic() >= deadline:
+            raise AgentError("saved startup Setup completion marker missed the original readiness deadline")
+        exit_code = process.poll()
+        if exit_code is not None:
+            raise AgentError(f"saved startup process exited before delayed injection: {exit_code}")
+
+    require_live()
+    _resume_with_native_bridge(process, None, before_process_create=before_process_create)
+    log_path = (profile_dir / "logs" / "debug.log").resolve()
+    marker = re.compile(rb"^\[\d{2}:\d{2}:\d{2}\]\[D\]\[gameapplication\.cpp:\d+\]: "
+                        rb"Setup completion \(history loaded\):")
+    while True:
+        require_live()
+        try:
+            with log_path.open("rb") as stream:
+                stat = os.fstat(stream.fileno())
+                payload = stream.read() if stat.st_mtime_ns >= log_epoch_ns else b""
+        except FileNotFoundError:
+            payload = b""
+        matched = next(((n, line) for n, line in enumerate(payload.splitlines(), 1)
+                        if marker.match(line)), None)
+        if matched is not None:
+            observation = {
+                "log_path": str(log_path), "log_epoch_ns": log_epoch_ns,
+                "log_mtime_ns": stat.st_mtime_ns, "bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "line": matched[0], "text": matched[1].decode("utf-8"),
+                "observed_at": datetime.now(timezone.utc).isoformat(),
+                "target_ck3_pid": process.pid, "native_identity_verified": False,
+                "business_pass": False,
+            }
+            # A potentially blocking lease/CAS gate cannot extend this deadline.
+            with before_process_create() if before_process_create is not None else nullcontext():
+                require_live()
+                process.injector_attestation = _inject_native_bridge(process, config, evidence_dir)
+            return observation
+        time.sleep(min(0.25, max(0.0, deadline - time.monotonic())))
 
 
 def _require_injector_cleanup_before_marker_clear(
@@ -2811,12 +2868,24 @@ def launch(
     prepared_xar_enabled: str = "xar_on",
     before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
     start_minimized: bool = False,
+    native_bridge_after_saved_load: bool = False,
+    native_bridge_injection_deadline: float | None = None,
+    native_bridge_stop_requested: Callable[[], bool] | None = None,
 ) -> SessionHandle:
     native_bridge = (
         native_bridge_launch_config_from_environment()
         if native_bridge is None
         else validate_native_bridge_launch_config(native_bridge)
     )
+    if type(native_bridge_after_saved_load) is not bool:
+        raise AgentError("saved startup delayed injection policy requires an explicit boolean")
+    if native_bridge_after_saved_load and (
+        native_bridge is None or load_save_name is None or continue_last_save
+        or type(native_bridge_injection_deadline) not in (int, float)
+        or not math.isfinite(native_bridge_injection_deadline)
+        or native_bridge_injection_deadline <= time.monotonic()
+    ):
+        raise AgentError("saved startup delayed injection requires an exact save, bridge and original readiness deadline")
     if verify_prepared_profile:
         verify_profile(spec, xar_enabled=prepared_xar_enabled)
     if job_name is not None and not re.fullmatch(
@@ -3021,13 +3090,22 @@ def launch(
                 "pre-resume global CK3 inventory is not the exact suspended process: "
                 f"{visible!r}"
             )
-        _resume_with_native_bridge(
-            process, native_bridge, before_process_create=before_process_create,
-            injector_evidence_dir=(
-                spec.state_dir / "injector-attempts" / nonce
-                if native_bridge is not None else None
-            ),
-        )
+        if native_bridge_after_saved_load:
+            process.saved_campaign_load_observation = _resume_then_inject_after_saved_load(
+                process, native_bridge, profile_dir=spec.profile_dir, log_epoch_ns=log_epoch_ns,
+                deadline=native_bridge_injection_deadline,
+                stop_requested=native_bridge_stop_requested,
+                before_process_create=before_process_create,
+                evidence_dir=spec.state_dir / "injector-attempts" / nonce,
+            )
+        else:
+            _resume_with_native_bridge(
+                process, native_bridge, before_process_create=before_process_create,
+                injector_evidence_dir=(
+                    spec.state_dir / "injector-attempts" / nonce
+                    if native_bridge is not None else None
+                ),
+            )
     except Exception as error:
         # A process that has not resumed cannot have spawned descendants. Once
         # resumed, assignment to the kill-on-close Job has already succeeded.

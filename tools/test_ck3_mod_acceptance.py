@@ -24,7 +24,7 @@ class SharedEntryTests(unittest.TestCase):
         self.host = self.root / 'one_shared_host.py'
         flags = ['--agent-source-root','--game-dir','--bridge-dll','--bridge-injector','--bridge-pipe',
                  '--output','--state-dir','--plan','--control-plan-dir', *entry.BUDGET_FLAGS.values(),
-                  *entry.SAVED_FLAGS.values(), '--fixture-profile']
+                  *entry.SAVED_FLAGS.values(), '--fixture-profile', '--saved-campaign-inject-after-load']
         self.host.write_text("import argparse\np=argparse.ArgumentParser()\n" +
                              ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags) +
                              "raise RuntimeError('The host must never execute in these tests')\n")
@@ -101,6 +101,19 @@ class SharedEntryTests(unittest.TestCase):
                     self.write(self.products_path, self.products)
                     with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
                         self.select()
+
+    def test_delayed_saved_injection_is_selected_only_by_shared_manifest(self):
+        self.assertNotIn('--saved-campaign-inject-after-load', self.select().argv)
+        self.manifest['host_features'] = {'saved_campaign_inject_after_load': True}
+        self.write(self.manifest_path, self.manifest)
+        self.runtime['manifest'] = entry.pin(self.manifest_path)
+        self.write(self.runtime_path, self.runtime)
+        self.assertIn('--saved-campaign-inject-after-load', self.select().argv)
+        self.assertEqual(self.select().preflight()['blockers'], [])
+        self.products['products']['xqol']['cases'][0]['host_features'] = {'saved_campaign_inject_after_load': True}
+        self.write(self.products_path, self.products)
+        with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
+            self.select()
 
     def test_all_canonical_products_and_cases_select_the_same_runtime(self):
         repo = Path(__file__).resolve().parents[1]
