@@ -49,10 +49,42 @@ The completed prefix request, actual source and authored Root-only reader are in
 
 The smallest scoped actual-consumption design uses a `2C06D10` wrapper scope to retain its real linked Character/output-cache identity while calling the original exactly once. An observation around the actual `28C3AC0` getter retains its actual Character input and original returned C, only at the held `2C06AE0` return sites while that wrapper scope is active. C1..C9 return sites are `2C06B03`, `2C06B51`, `2C06B8D`, `2C06BC4`, `2C06BFB`, `2C06C32`, `2C06C69`, `2C06CA0`, `2C06CD7`. Preserve each actual returned context separately; do not manufacture a single common C if the returns differ. The prefix already proves that this getter's Character is the selection propagated from `28BFC50`; calling either getter again would only produce a current proxy and is unnecessary.
 
-A literal `28BFC50` getter-return observation at return site `2C06D2B` can retain the selected-stage event directly, but by itself does not identify consumed C. The two-stage design above is a source plan, not implemented hook code or a fixture result. The final physical Entry/output-cache relationship must be taken from an actual Entry producer/row seam; an arbitrary wrapper output buffer must not be labelled Entry. The functional package must join actual consumed C to the historical preparation's source Model, C, owner and sequence, keeping unmatched/ambiguous rows explicit. The existing `current_model_association_v1` remains a separate current diagnostic. No extra Person decomposition or duplicate current leaf is proposed.
+A literal `28BFC50` getter-return observation at return site `2C06D2B` can retain the selected-stage event directly, but by itself does not identify consumed C. The two-stage design was frozen before implementation; its source-authored implementation is described below and has no new execution credit. The final physical Entry/output-cache relationship must be taken from an actual Entry producer/row seam; an arbitrary wrapper output buffer must not be labelled Entry. The functional package joins actual consumed C to the historical preparation's source Model, C, owner and sequence, keeping unmatched rows explicit. The existing `current_model_association_v1` remains a separate current diagnostic.
 
 The Entry owner confirmed that no physical Entry/output-cache association is held in its bounded packet. The existing query's `ReadEncounterEffectiveStats` allocates a caller-local `alignas(8) std::array<std::byte,0x38>` at `ck3_12002_combat.cpp:456` and passes that scratch buffer to `26344A0`. This query invokes the same native wrapper through `2634504`, so a future observation must retain its bridge-query origin separately from a natural native consumption. The complete producer only forwards its incoming output pointer; its already closed body cannot determine the caller's physical Entry layout. The next Entry association source seam is the actual caller/row producer, not another read of `26344A0` or a guess that its incoming output is always an Entry subobject.
 
 The owned Native65 aggregate is already sufficient material for the existing `compute_knight_stat_cache_at_stage_12003` C1..C9 mode0 consumer under its explicit operands. A current identity match, equal numeric values or held-current operands must not be promoted to evidence that a historical Entry consumed a particular preparation. The pending wrapper transfer is a concrete source seam, not a new readiness gate.
 
 This packet reused 1,279 B of already decoded actual body coverage. Root's separately authorized wrapper capture read **128 B once**; worker EXE reads/metadata/hash/Game/SDK/process/build/test/production imports: **0**. Readiness remains **research** for the historical Entry join. Root's Native65 qualification remains unchanged.
+
+## Source-authored consumed-stat capability, 2026-10-10
+
+The new `ck3_12004_knight_stat_consumption.cpp` authors the two proven observations. The wrapper retains its linked Character, original output buffer, linked prowess and loaded damage/toughness coefficients, calls the original once, and copies the six output fields after return. The context hook calls the original once and copies each of the nine actual returned contexts independently at the exact return sites above. Zero operands retain their getter observations. The copied aggregate PC is `C+68`, using the Native65 copier without changing historical capture semantics; its `weight_q100000=0` identifies the existing aggregate-copy convention, not a multiplier applied to the consumed values. The existing mode0 lookup supplies the numerical meaning.
+
+The owned 32-event ring is sampled by the existing `ReadCombatSimulationInputs` query, filtered to its current Regiment IDs or linked knight IDs. Its optional `knight_stat_consumption_v1` leaf carries each Ci's copied PC, operand, receiver, context, historical sequence/Model/owner match facts, and the independently observed output. No getter is replayed to obtain this data. A narrow TLS scope marks the existing `ReadEncounterEffectiveStats` scratch pointer as `bridge_query_scratch`; other wrapper buffers remain `native_wrapper_output_unclassified`.
+
+```mermaid
+flowchart TD
+  Q[Existing Regiment effective-stat query] --> T[TLS marks exact query scratch]
+  T --> W[2C06D10 wrapper: original once]
+  W --> N[2C06AE0: actual selected Character]
+  N --> C[Nine 28C3AC0 calls: original once each]
+  C --> P[Copy each actual C+68 PC and operand]
+  H[Native65 retained preparation] --> J[Record sequence / Model / C / owner comparisons]
+  P --> J
+  W --> O[Copy six actual output fields after return]
+  J --> R[Owned event ring]
+  O --> R
+  R --> M[Same registered combat MCP optional leaf]
+  M --> A[Existing mode0 lookup and knight stat arithmetic]
+  A --> V[Compare all six projected and observed fields]
+  E[Physical Entry writer association] -. separate bounded package .-> R
+```
+
+The strict normalizer preserves optional absence, raw zero/negative values, failed PC copies and independent historical matches. `query_combat_simulation_inputs` returns the connected `knight_stat_consumption_projection_v1` alongside its existing combat input result. The new adapter feeds the existing `compute_knight_stat_cache_at_stage_12003` with each Ci's own consumed value and compares the six resulting fields with the copied native output. It does not claim a shared PC, historical stage equivalence, a Person rewrite, or physical Entry completion.
+
+The sole new target/CTest is `xar_knight_stat_consumption_12004_whole`. Its connected whole fixture authors two wrapper events, 18 original context calls and six preparation calls, then uses the literal production V2 serializer. The first event gives C5 its own modifier `15000`, producing effectiveness `50000`, damage `15000000` and toughness `1500000`; this distinguishes per-Ci copying from reuse of the first PC. The second event refuses the actual C4 values copy while retaining its independently observed output `28500000` / `2850000`. The fixture also mutates source storage after capture to exercise owned copies. It records `observer_installed=false`: this fixture initializes the real dispatches but does not exercise detour installation.
+
+The single registered MCP consumer is `test_knight_stat_consumption_registered_mcp_12004_whole_packets`, with `CK3_KNIGHT_STAT_CONSUMPTION_12004_MCP_WIRE_DIR` pointing to the new whole output directory. It traverses registered MCP → Service → Driver → strict combat normalizer and asserts the projection returned by Service. Formal CMake includes both Runtime TUs, the generated literal serializer, the native target and this consumer. The output is `knight-stat-consumption-12004-whole.json`; projection metadata and the fixture receipt are not extra wires.
+
+All new code and the sole compound are **AUTHORED_NOTRUN**. No new native qualification, natural event, live observation or full Entry readiness is claimed. Root alone will execute the new build/FIRST from an immutable composition. Shared `game_contract.hpp` changes require the actual dependency owner union to be rebuilt, rather than treating this as a two-TU-only ABI change. The next physical Entry package can use the separately closed `2657AA0` writer's actual Entry/Province scope; this source freeze deliberately keeps its current output origins explicit.

@@ -96,6 +96,7 @@
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
+#include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
@@ -622,6 +623,8 @@ static xar::ck3_12004::PersonTitleTailCaptureDetourState12004
     g_person_title_tail_capture_12004{};
 static xar::ck3_12004::PersonSixStageCaptureDetourState12004
     g_person_six_stage_capture_12004{};
+static xar::ck3_12004::KnightStatConsumptionDetourState12004
+    g_knight_stat_consumption_12004{};
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -4090,6 +4093,11 @@ void AppendCombatSimulationInputs(
     result += ",\"phase_event_commander_chance_weights_v1\":";
     xar::game::AppendPhaseEventCommanderChanceWeightsV1(
         result, *snapshot.phase_event_commander_chance_weights_v1);
+  }
+  if (snapshot.knight_stat_consumption_v1) {
+    result += ",\"knight_stat_consumption_v1\":";
+    result += xar::ck3_12004::SerializeKnightStatConsumptionQuery12004(
+        *snapshot.knight_stat_consumption_v1);
   }
   result += '}';
 }
@@ -28314,6 +28322,14 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     six_stage_environment.primary_thread_suspended_proven = true;
     if (!xar::ck3_12004::InstallPersonSixStageCapture12004(
             g_person_six_stage_capture_12004, six_stage_environment, sha))
+      return FALSE;
+    xar::ck3_12004::KnightStatConsumptionInstallEnvironment12004
+        knight_stat_environment{};
+    knight_stat_environment.bindings =
+        xar::ck3_12004::BindKnightStatConsumptionImage12004(base, sha);
+    knight_stat_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallKnightStatConsumption12004(
+            g_knight_stat_consumption_12004, knight_stat_environment, sha))
       return FALSE;
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;

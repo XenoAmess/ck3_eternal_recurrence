@@ -9648,6 +9648,7 @@ include(cmake/person_native_title_tail_capture_12004.cmake)
 include(cmake/person_native_six_stage_capture_12004.cmake)
 include(cmake/person_pre_six_baseline_12004.cmake)
 include(cmake/person_preparation_model_12004.cmake)
+include(cmake/knight_stat_consumption_12004.cmake)
 include(cmake/actual_loss_writer_observations_12004.cmake)
 include(cmake/construction_positive_coverage_budget_12004.cmake)
 

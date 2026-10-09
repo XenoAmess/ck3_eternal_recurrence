@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_combat.hpp"
+#include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
 #include <algorithm>
 #include <array>
 #include <cstring>
@@ -454,6 +455,8 @@ bool ReadEncounterEffectiveStats(
   }
 
   alignas(8) std::array<std::byte, 0x38> native_stats{};
+  xar::ck3_12004::KnightStatBridgeQueryScope12004 consumed_stat_scope(
+      native_stats.data(), regiment_id, target_province_id);
   if (bindings.evaluate_regiment_stats_at_province(
           regiment, native_stats.data(), target_province) !=
           native_stats.data() ||
@@ -2124,6 +2127,17 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
       return ReadCombatSimulationInputsResult::unavailable;
     }
   }
+  std::vector<std::int32_t> consumed_regiment_ids;
+  std::vector<std::int32_t> consumed_linked_character_ids;
+  for (const auto &army : output.armies) {
+    for (const auto &regiment : army.regiments)
+      consumed_regiment_ids.push_back(regiment.regiment_id);
+    for (const auto &knight : army.knights.members)
+      consumed_linked_character_ids.push_back(knight.character_id);
+  }
+  output.knight_stat_consumption_v1 =
+      xar::ck3_12004::ReadKnightStatConsumptionQuery12004(
+          consumed_regiment_ids, consumed_linked_character_ids);
   const auto geography_result = constructor_zero
       ? ReadConstructorZeroContactGeography(
             bindings, game_state, target_province, request.target_province_id,

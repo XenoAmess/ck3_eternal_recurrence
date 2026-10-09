@@ -14607,6 +14607,12 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 f"combat simulation encounter scope became malformed: {error}"
             ) from error
+        from ..simulation.knight_stat_consumption_12004 import (
+            project_knight_stat_consumption_12004,
+        )
+        consumed_knight_stats = project_knight_stat_consumption_12004(
+            normalized.get("knight_stat_consumption_v1")
+        )
         completeness = normalized["completeness"]
         diagnostics = snapshot.get("diagnostics")
         hello = (
@@ -14652,6 +14658,7 @@ class GameplayBridgeService:
                 completeness["missing_required_domains"]
             ),
             "combat_simulation_inputs": normalized,
+            "knight_stat_consumption_projection_v1": consumed_knight_stats,
         }
 
     def query_combat_phase_event_trace_v1(

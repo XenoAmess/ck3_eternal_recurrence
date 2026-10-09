@@ -153,6 +153,10 @@ void CompletePersonSixStageCapture12004(
     std::uintptr_t actual_context = 0) noexcept;
 PersonSixStageCapture12004DTO ReadPersonSixStageCaptureForCharacter12004(
     std::uintptr_t actual_character, std::uint32_t full_character_id) noexcept;
+// Same owned PC copier used by the historical capture, for an actual consumed
+// context. This does not finish, mutate or relabel any historical capture.
+PersonFollowing2922680Pc CopyPersonSixStageAggregatePc12004(
+    std::uintptr_t actual_pc) noexcept;
 std::string SerializePersonSixStageCapture12004(
     const PersonSixStageCapture12004DTO &dto);
 // Called inside the validated paused AppThread query boundary. Each full ID is

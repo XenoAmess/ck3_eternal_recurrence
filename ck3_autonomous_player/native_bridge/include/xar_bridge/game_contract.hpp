@@ -6,6 +6,7 @@
 #include "xar_bridge/battle_current_warscore_caps_v1.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
 #include "xar_bridge/knight_current_model_association_v1.hpp"
+#include "xar_bridge/knight_stat_consumption_12004.hpp"
 #include "xar_bridge/ck3_12004_person_carrier_direct.hpp"
 #include "xar_bridge/ck3_12004_person_following_2921a90.hpp"
 #include "xar_bridge/ck3_12004_person_conditional_2921a90.hpp"
@@ -1700,6 +1701,8 @@ struct CombatSimulationInputsSnapshot {
       phase_event_commander_trigger_conditions_v1;
   std::optional<PhaseEventCommanderChanceWeightsV1>
       phase_event_commander_chance_weights_v1;
+  std::optional<ck3_12004::KnightStatConsumptionQuery12004>
+      knight_stat_consumption_v1;
 
   friend bool operator==(const CombatSimulationInputsSnapshot &,
                          const CombatSimulationInputsSnapshot &) = default;

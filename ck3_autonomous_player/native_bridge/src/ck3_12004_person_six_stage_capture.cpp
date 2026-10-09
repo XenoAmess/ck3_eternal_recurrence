@@ -374,6 +374,16 @@ void Pc(std::ostream &out, const PersonFollowing2922680Pc &pc, bool observed) {
 
 } // namespace
 
+PersonFollowing2922680Pc CopyPersonSixStageAggregatePc12004(
+    std::uintptr_t actual_pc) noexcept {
+  if (g_available.load(std::memory_order_acquire)) return CopyPc(actual_pc, 0);
+  PersonFollowing2922680Pc result;
+  result.identity = actual_pc;
+  result.weight_q100000 = 0;
+  result.reason = "preparation_pc_copier_not_configured";
+  return result;
+}
+
 PersonSixStageCaptureBindings12004 BindPersonSixStageCaptureImage12004(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept {
   PersonSixStageCaptureBindings12004 bindings;

@@ -45,6 +45,10 @@ from .phase_event_commander_chance_weights_contract import (
     PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF,
     normalize_phase_event_commander_chance_weights_v1,
 )
+from .knight_stat_consumption_contract_12004 import (
+    KNIGHT_STAT_CONSUMPTION_LEAF,
+    normalize_knight_stat_consumption_12004,
+)
 
 
 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY = (
@@ -492,7 +496,8 @@ def normalize_combat_simulation_inputs(
                       PHASE_EVENT_ROLE_COMPATIBILITY_LEAF,
                       PHASE_EVENT_COMMANDER_SIDE_IDENTITY_LEAF,
                       PHASE_EVENT_COMMANDER_TRIGGER_LEAF,
-                      PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF} & set(value)
+                      PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF,
+                      KNIGHT_STAT_CONSUMPTION_LEAF} & set(value)
                      if isinstance(value, dict) else set())
     root = _exact_object(
         value,
@@ -655,6 +660,10 @@ def normalize_combat_simulation_inputs(
             role_compatibility=normalized.get(PHASE_EVENT_ROLE_COMPATIBILITY_LEAF),
             commander_trigger_conditions=normalized.get(PHASE_EVENT_COMMANDER_TRIGGER_LEAF),
         )
+    normalized[KNIGHT_STAT_CONSUMPTION_LEAF] = normalize_knight_stat_consumption_12004(
+        root.get(KNIGHT_STAT_CONSUMPTION_LEAF),
+        path="combat_simulation_inputs." + KNIGHT_STAT_CONSUMPTION_LEAF,
+    )
     # Return detached canonical values so a transport fixture cannot mutate a
     # query cache after validation.
     return copy.deepcopy(normalized)

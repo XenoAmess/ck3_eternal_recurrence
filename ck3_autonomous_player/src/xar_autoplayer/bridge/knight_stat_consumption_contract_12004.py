@@ -1,0 +1,229 @@
+"""Exact4 observed knight stat consumption; no Entry or readiness inference."""
+from __future__ import annotations
+
+from .battle_context_source_inputs_contract import (
+    _boolean, _dict, _integer, _number, _string,
+)
+from .version_identity import CK3_12004, require_exact_native_build
+
+KNIGHT_STAT_CONSUMPTION_LEAF = "knight_stat_consumption_v1"
+SCHEMA = "xar.ck3.knight-stat-consumption-12004-v1"
+_CAPACITY = 32
+_PC_FIELDS = {
+    "ready", "reason", "admitted", "identity", "count_i32", "properties",
+    "weight_q100000",
+}
+_CONTEXT_FIELDS = {
+    "property_key", "caller_return_rva", "selected_character_id",
+    "selected_character_identity", "context_identity", "operand_raw", "consumed_pc",
+    "preparation_capture_sequence", "preparation_model_identity",
+    "preparation_context_identity", "preparation_owner_character_id",
+    "context_matches_preparation", "owner_matches_preparation",
+    "pc_matches_preparation_post", "reason",
+}
+_OUTPUT_RAW_FIELDS = (
+    "siege_value_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw",
+)
+_EVENT_FIELDS = {
+    "sequence", "thread_id", "observed_date_raw", "wrapper_caller_return_rva",
+    "origin", "regiment_id", "target_province_id", "linked_character_id",
+    "linked_character_identity", "linked_prowess_points", "loaded_damage_multiplier",
+    "loaded_toughness_multiplier", "output_cache_identity", "native_return_identity",
+    "contexts", "observed_output", "entry_association_proven", "capture_reason",
+}
+_QUERY_FIELDS = {
+    "schema", "build_version", "executable_sha256", "configured", "observer_installed",
+    "oldest_available_sequence", "latest_sequence", "overwritten_events", "events", "reason",
+}
+
+
+def _raw64(value: object, path: str, *, unsigned: bool = False,
+           optional: bool = False) -> int | None:
+    if value is None and optional:
+        return None
+    if type(value) is str:
+        digits = value if unsigned else value[1:] if value.startswith("-") else value
+        if not digits or not digits.isascii() or not digits.isdecimal():
+            raise ValueError(path + " must retain a native decimal64 string or integer")
+        value = int(value, 10)
+    return _integer(value, path, 64, unsigned=unsigned)
+
+
+def _identity(value: object, path: str, *, optional: bool = True) -> int | None:
+    if value is None and optional:
+        return None
+    if type(value) is str and value.startswith(("0x", "0X")):
+        digits = value[2:]
+        if not digits or any(char not in "0123456789abcdefABCDEF" for char in digits):
+            raise ValueError(path + " must be a native identity integer or hexadecimal string")
+        value = int(digits, 16)
+    return _raw64(value, path, unsigned=True, optional=optional)
+
+
+def _array(value: object, path: str) -> list:
+    if not isinstance(value, list):
+        raise ValueError(path + " must preserve native occurrence order")
+    return value
+
+
+def _pc(value: object, path: str) -> dict[str, object]:
+    raw = _dict(value, path, _PC_FIELDS)
+    result = {
+        "ready": _boolean(raw["ready"], path + ".ready"),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+        "admitted": _boolean(raw["admitted"], path + ".admitted", optional=True),
+        "identity": _identity(raw["identity"], path + ".identity"),
+        "count_i32": _number(raw["count_i32"], path + ".count_i32", 32),
+        "weight_q100000": _raw64(raw["weight_q100000"], path + ".weight_q100000"),
+    }
+    if result["weight_q100000"] != 0:
+        raise ValueError(path + " weight differs from the existing aggregate PC copy")
+    block = raw["properties"]
+    if block is not None:
+        block = _dict(block, path + ".properties", {"keys_u16", "values_q64"})
+        keys = block["keys_u16"]
+        values = block["values_q64"]
+        block = {
+            "keys_u16": None if keys is None else [
+                _integer(key, f"{path}.properties.keys_u16[{index}]", 16, unsigned=True)
+                for index, key in enumerate(_array(keys, path + ".properties.keys_u16"))
+            ],
+            "values_q64": None if values is None else [
+                _raw64(item, f"{path}.properties.values_q64[{index}]")
+                for index, item in enumerate(_array(values, path + ".properties.values_q64"))
+            ],
+        }
+        count = result["count_i32"]
+        if count is not None and count >= 0 and any(
+            block[key] is not None and len(block[key]) > count
+            for key in ("keys_u16", "values_q64")
+        ):
+            raise ValueError(path + " physical arrays exceed the observed PC count")
+    result["properties"] = block
+    if result["ready"] and result["admitted"] is True:
+        count = result["count_i32"]
+        if (result["identity"] is None or count is None or count < 0 or block is None
+                or block["keys_u16"] is None or block["values_q64"] is None
+                or len(block["keys_u16"]) != count or len(block["values_q64"]) != count):
+            raise ValueError(path + " ready admitted PC lacks its actual counted properties")
+    return result
+
+
+def _context(value: object, path: str) -> dict[str, object]:
+    raw = _dict(value, path, _CONTEXT_FIELDS)
+    key = _integer(raw["property_key"], path + ".property_key", 16, unsigned=True)
+    if not 0xC1 <= key <= 0xC9:
+        raise ValueError(path + " property key is outside the nine actual knight Ci calls")
+    result = {
+        "property_key": key,
+        "caller_return_rva": _raw64(raw["caller_return_rva"], path + ".caller_return_rva", unsigned=True),
+        "selected_character_id": _number(raw["selected_character_id"], path + ".selected_character_id", 32, unsigned=True),
+        "selected_character_identity": _identity(raw["selected_character_identity"], path + ".selected_character_identity"),
+        "context_identity": _identity(raw["context_identity"], path + ".context_identity"),
+        "operand_raw": _raw64(raw["operand_raw"], path + ".operand_raw", optional=True),
+        "consumed_pc": _pc(raw["consumed_pc"], path + ".consumed_pc"),
+        "preparation_capture_sequence": _raw64(raw["preparation_capture_sequence"], path + ".preparation_capture_sequence", unsigned=True, optional=True),
+        "preparation_model_identity": _identity(raw["preparation_model_identity"], path + ".preparation_model_identity"),
+        "preparation_context_identity": _identity(raw["preparation_context_identity"], path + ".preparation_context_identity"),
+        "preparation_owner_character_id": _number(raw["preparation_owner_character_id"], path + ".preparation_owner_character_id", 32, unsigned=True),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+    }
+    for field in ("context_matches_preparation", "owner_matches_preparation",
+                  "pc_matches_preparation_post"):
+        result[field] = _boolean(raw[field], path + "." + field, optional=True)
+    for flag, left, right in (
+        ("context_matches_preparation", "context_identity", "preparation_context_identity"),
+        ("owner_matches_preparation", "selected_character_id", "preparation_owner_character_id"),
+    ):
+        if (result[flag] is not None and result[left] is not None and result[right] is not None
+                and result[flag] != (result[left] == result[right])):
+            raise ValueError(path + "." + flag + " disagrees with its observed identities")
+    return result
+
+
+def _output(value: object, path: str) -> dict[str, object]:
+    raw = _dict(value, path, {"ready", "max_size", "reason", *_OUTPUT_RAW_FIELDS})
+    result = {
+        "ready": _boolean(raw["ready"], path + ".ready"),
+        "max_size": _number(raw["max_size"], path + ".max_size", 32),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+    }
+    for field in _OUTPUT_RAW_FIELDS:
+        result[field] = _raw64(raw[field], path + "." + field, optional=True)
+    if result["ready"] and any(result[field] is None for field in ("max_size", *_OUTPUT_RAW_FIELDS)):
+        raise ValueError(path + " ready output lacks one of its six observed native fields")
+    return result
+
+
+def _event(value: object, path: str) -> dict[str, object]:
+    raw = _dict(value, path, _EVENT_FIELDS)
+    result = {
+        "sequence": _raw64(raw["sequence"], path + ".sequence", unsigned=True),
+        "thread_id": _integer(raw["thread_id"], path + ".thread_id", 32, unsigned=True),
+        "observed_date_raw": _number(raw["observed_date_raw"], path + ".observed_date_raw", 32),
+        "wrapper_caller_return_rva": _raw64(raw["wrapper_caller_return_rva"], path + ".wrapper_caller_return_rva", unsigned=True, optional=True),
+        "origin": _string(raw["origin"], path + ".origin"),
+        "linked_character_id": _number(raw["linked_character_id"], path + ".linked_character_id", 32, unsigned=True),
+        "linked_character_identity": _identity(raw["linked_character_identity"], path + ".linked_character_identity"),
+        "output_cache_identity": _identity(raw["output_cache_identity"], path + ".output_cache_identity", optional=False),
+        "native_return_identity": _identity(raw["native_return_identity"], path + ".native_return_identity"),
+        "entry_association_proven": _boolean(raw["entry_association_proven"], path + ".entry_association_proven"),
+        "capture_reason": _string(raw["capture_reason"], path + ".capture_reason", optional=True),
+    }
+    if result["origin"] not in {"bridge_query_scratch", "native_wrapper_output_unclassified"}:
+        raise ValueError(path + " contains an unknown native output origin")
+    if result["entry_association_proven"]:
+        raise ValueError(path + " cannot promote this wrapper output to an Entry association")
+    for field in ("regiment_id", "target_province_id", "linked_prowess_points",
+                  "loaded_damage_multiplier", "loaded_toughness_multiplier"):
+        result[field] = _number(raw[field], path + "." + field, 32)
+    contexts = _array(raw["contexts"], path + ".contexts")
+    if len(contexts) > 9:
+        raise ValueError(path + " exceeds the nine actual knight Ci calls")
+    result["contexts"] = [
+        _context(context, f"{path}.contexts[{index}]")
+        for index, context in enumerate(contexts)
+    ]
+    keys = [context["property_key"] for context in result["contexts"]]
+    if any(left >= right for left, right in zip(keys, keys[1:])):
+        raise ValueError(path + " changed native Ci call order or repeated a consumed property")
+    result["observed_output"] = _output(raw["observed_output"], path + ".observed_output")
+    return result
+
+
+def normalize_knight_stat_consumption_12004(
+    value: object, path: str = KNIGHT_STAT_CONSUMPTION_LEAF,
+) -> dict[str, object] | None:
+    """Keep captured truth and optional absence; do not infer gameplay readiness."""
+    if value is None:
+        return None
+    raw = _dict(value, path, _QUERY_FIELDS)
+    if raw["schema"] != SCHEMA:
+        raise ValueError(path + " schema is not the actual4 knight consumption contract")
+    if require_exact_native_build(raw["build_version"], raw["executable_sha256"]) != CK3_12004:
+        raise ValueError(path + " requires the exact actual4 build identity")
+    result = {
+        "schema": SCHEMA,
+        "build_version": _string(raw["build_version"], path + ".build_version"),
+        "executable_sha256": _string(raw["executable_sha256"], path + ".executable_sha256"),
+        "configured": _boolean(raw["configured"], path + ".configured"),
+        "observer_installed": _boolean(raw["observer_installed"], path + ".observer_installed"),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+    }
+    for field in ("oldest_available_sequence", "latest_sequence", "overwritten_events"):
+        result[field] = _raw64(raw[field], path + "." + field, unsigned=True)
+    events = _array(raw["events"], path + ".events")
+    if len(events) > _CAPACITY:
+        raise ValueError(path + " events exceed the native owned ring capacity")
+    result["events"] = [_event(event, f"{path}.events[{index}]")
+                        for index, event in enumerate(events)]
+    oldest, latest = result["oldest_available_sequence"], result["latest_sequence"]
+    if oldest > latest:
+        raise ValueError(path + " retained sequence bounds disagree")
+    previous = 0
+    for event in result["events"]:
+        sequence = event["sequence"]
+        if sequence <= previous or sequence < oldest or sequence > latest:
+            raise ValueError(path + " event sequence disagrees with retained native order/bounds")
+        previous = sequence
+    return result
