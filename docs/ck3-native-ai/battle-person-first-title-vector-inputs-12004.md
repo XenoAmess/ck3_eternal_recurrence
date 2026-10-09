@@ -137,14 +137,16 @@ This closes a genuine missing numerical input family. FullHelper, FullPerson,
 Entry execution and live gameplay remain false. In particular, the helper's
 historical post-callback Model stage and final outer contribution are not
 replaced with a current final aggregate. The user's21:07 Asia/Shanghai
-2026-10-09 local-game prohibition remains in effect. All new source and
-fixture work is author-only AUTHORED_NOTRUN until Root qualifies it.
+2026-10-09 local-game prohibition remains in effect. The author did not
+execute the new source or fixtures. Root subsequently
+qualified Native59 offline as recorded below; this does not change the live
+or complete-helper boundary.
 
 The cumulative necessary source ledger was5475 bytes in15 Root reads before
 this family;528 producer bytes plus165 append-continuation bytes make6168
 bytes in17 reads. Getter118 and append prefix62 are retained cache reuses.
 
-## Unique authored qualification
+## Unique qualification
 
 The new CMake leaf explicitly registers
 `src/ck3_12004_person_first_title_vector.cpp` in the real Runtime target and
@@ -175,6 +177,62 @@ that retains the zero-valued property key. FullHelper remains false.
 
 Only synthetic World/transport scaffolding is reused from earlier fixtures;
 none of their main routines, old worlds or old registered compounds executes.
-Author status is AUTHORED_NOTRUN. Root's actual58 canonical is the intended
-qualified build parent; Native59 numbering describes the planned increment,
-not a compiler, FIRST or live result.
+The source author remained AUTHORED_NOTRUN. Root then executed the new
+Native59 increment once against the actual Native58 canonical parent.
+
+## Root actual Native59 qualification: 2026-10-09
+
+Root's attempt01 and canonical seal are GREEN. The six new native whole
+packets completed in **0.2822646 s**; the sole registered compound consumed
+all six unchanged packets in **6.2826132 s**. These are static qualification
+results, with no Game, SDK, deployment or live invocation. No old producer
+world or registered compound was replayed.
+
+The feature author pin is `06c054dbd20feaa3446551ccd8834f1cfd75bcd0`.
+The complete frozen tree `Z:/gbs-runtime59-person-first-vector-root-source`
+was compiled and qualified at
+`c0359add01473d67021328392bd1542158312e56`. Later public rebases and docs
+commits do not replace this compiled or qualification pin; the canonical
+public-adoption field was null at sealing.
+
+One actual dependency union selected 450 existing production replacements
+(Bridge152/Runtime298), plus the new Runtime TU. Root compiled those
+**451 production owners and one fixture**, with 64 workers at BelowNormal.
+The final physical closure is **739 owners: Bridge299/Runtime439/Protocol1**,
+with 507 actual command rows and 288 retained production owners. The retained
+source/header pins remain unchanged: this is not a claim that every object
+was compiled at the new head. The fresh Runtime439 archive took 0.459295 s;
+DLL and fixture links took 1.1044073 s and 1.0331605 s.
+
+The actual receipts and original wires are:
+
+- `Z:/g2-native59-build01/attempt01/ROOT-NATIVE59-RESULT.json`
+- `Z:/g2-native59-build01/attempt01/logs/native-FIRST.json`
+- `Z:/g2-native59-build01/attempt01/logs/consumer-FIRST.json`
+- `Z:/g2-native59-build01/attempt01/first/native-wires/`
+
+The canonical root is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix59/`.
+Its `ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json` records
+`CANONICAL59_OFFLINE_GREEN`; `ROOT-PERSON-FIRST-TITLE-VECTOR-QUALIFICATION.json`
+records the six native and six registered packets.
+`ACTUAL-OBJECT-LINEAGE.json` and `ACTUAL-COMPILE-COMMANDS.json` preserve the
+mixed physical build lineage and the parent failure history. Native59's
+attempt01 has no failed attempt; earlier parent failures remain historical
+receipts rather than being erased or replayed.
+
+Root hashed the new DLL and the new small manifest once each. The following
+values are copied from the sealed receipt, without another hash:
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `attempt01/binaries/xar_ck3_bridge.dll` | 13638144 | `c782ed393363783b05652c3f9980149e9e00b92ca0661a3d1bc05ff3a60cb003` |
+| canonical `manifest.json` | 2800 | `5da3c0cf878d3b07ed63bdebf8684764cea09e5effbf5585e50b0e78e0b03d3d` |
+
+Readiness is **static-ready**. FullHelper, FullPerson and FullEntry remain
+false; live, action, action-day and G2 credit remain zero. The useful increment
+is the first-pointer-vector numerical input family in the existing Person
+query. Historical Model processing, the final outer contribution and other
+unclosed Person/Entry branches remain separate work. A future compatible SDK
+must include the typed FirstVector normalizer and all prior query additions;
+this qualification does not deploy one.
