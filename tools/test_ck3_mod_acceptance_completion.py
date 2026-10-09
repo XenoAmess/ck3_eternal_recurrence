@@ -25,12 +25,14 @@ class SharedCompletionTests(unittest.TestCase):
                               if isinstance(node, ast.FunctionDef) and node.name == "write")
         client_path = REPO / "tools/ck3_mod_acceptance_client.py"
         client_tree = ast.parse(client_path.read_text(encoding="utf-8-sig"))
-        cls.proof_node = next(node for parent in client_tree.body if isinstance(parent, ast.ClassDef)
-                              for node in parent.body
-                              if isinstance(node, ast.FunctionDef) and node.name == "native_zero_proof")
+        cls.proof_nodes = [node for parent in client_tree.body if isinstance(parent, ast.ClassDef)
+                           for node in parent.body
+                           if isinstance(node, ast.FunctionDef) and
+                           node.name in {"_native_exit_proof", "native_zero_proof"}]
 
     def setUp(self):
         self.done = threading.Event()
+        self.supervisor = threading.Thread(target=lambda: None)
         self.published = []
         pid = 2468
         pipe = r"\\.\pipe\synthetic-completion-only"
@@ -55,18 +57,19 @@ class SharedCompletionTests(unittest.TestCase):
             }},
         }
         namespace = {
-            "done": self.done, "report": self.report,
+            "done": self.done, "report": self.report, "supervisor": self.supervisor,
             "args": argparse.Namespace(output=Path("synthetic-only-unused-report.json")),
             "write_atomic_report": lambda _path, value: self.published.append(copy.deepcopy(value)),
             "datetime": datetime,
         }
         module = ast.fix_missing_locations(ast.Module(
-            body=[self.write_node, self.proof_node], type_ignores=[]))
+            body=[self.write_node, *self.proof_nodes], type_ignores=[]))
         exec(compile(module, str(self.host), "exec"), namespace)
         self.write = namespace["write"]
         self.client = SimpleNamespace(
             selection=SimpleNamespace(manifest_path_key=lambda _row: self.host),
             manifest={"host": {}}, _process={"pid": pid})
+        self.client._native_exit_proof = namespace["_native_exit_proof"].__get__(self.client)
         self.proof = lambda report: namespace["native_zero_proof"](self.client, report)
 
     def test_real_completion_event_is_observable_before_host_finally(self):
@@ -78,7 +81,7 @@ class SharedCompletionTests(unittest.TestCase):
         self.write()
         published = self.published[-1]
         self.assertIs(published["managed_session_done"], True)
-        self.assertNotIn("managed_session_thread_finished", published)
+        self.assertIs(published["managed_session_thread_finished"], False)
         proof = self.proof(published)
         self.assertIsNotNone(proof)
         self.assertIs(proof["alive_or_business_credit"], False)
@@ -121,6 +124,13 @@ class SharedCompletionTests(unittest.TestCase):
         self.report["managed_session_done"] = True
         self.report["managed_session_thread_finished"] = True
         self.write()
+        self.assertIs(self.published[-1]["managed_session_done"], False)
+        self.assertIs(self.published[-1]["managed_session_thread_finished"], False)
+        self.assertIsNone(self.proof(self.published[-1]))
+        self.supervisor.start()
+        self.supervisor.join()
+        self.write()
+        self.assertIs(self.published[-1]["managed_session_thread_finished"], True)
         self.assertIs(self.published[-1]["managed_session_done"], False)
         self.assertIsNone(self.proof(self.published[-1]))
 

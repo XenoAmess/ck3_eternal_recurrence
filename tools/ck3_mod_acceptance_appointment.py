@@ -55,6 +55,46 @@ def navigation_anchor(row, frame, requested_title_id, requested_title_key):
     require(frame_binding(row.get('after_snapshot'))==fb, 'navigation snapshot crossed current scene')
     return {'step_id':row['id'],'requested_title_id':requested_title_id,'requested_title_key':requested_title_key}
 
+def collection_arguments(arguments):
+    """Admit exactly one explicit independent native reference source."""
+    required = {'requested_title_id','requested_title_key','expected_law'}
+    references = {'navigation_step_id','title_reference_step_id'}
+    require(isinstance(arguments,dict) and required <= set(arguments)
+            and set(arguments) <= required | references | {'breakdown_character_id'}
+            and len(set(arguments) & references)==1,
+            'one actual navigation or native title-reference step is required')
+    key = next(iter(set(arguments) & references))
+    require(isinstance(arguments[key],str) and arguments[key], 'actual reference step ID missing')
+    return arguments
+
+def title_reference(row, frame, requested_title_id, requested_title_key):
+    """A successful exact native holder read; does not claim GUI navigation."""
+    require(isinstance(row,dict) and row.get('ok') is True and not row.get('error') and row.get('finished_at'),
+            'completed actual native title-holder row required')
+    plan=row.get('plan',{}); result=row.get('result',{}); holder=result.get('title_holder',{})
+    require(plan.get('tool')=='ck3_query_title_holder_v1' and plan.get('kind','tool')=='tool'
+            and plan.get('args',{}).get('title_id')==requested_title_id,
+            'independent row is not the requested native title-holder tool')
+    fb=frame_binding(frame)
+    require(result.get('accepted') is True and result.get('status')=='available'
+            and result.get('step')=='query-title-holder-v1-'+str(requested_title_id)
+            and result.get('read_only') is True and result.get('title_id')==requested_title_id
+            and result.get('queried_native_revision')==fb[4], 'native title-reference wrapper differs')
+    require(holder.get('schema')=='xar.ck3.title-holder.v1' and holder.get('schema_version')==1
+            and holder.get('available') is True and holder.get('status')=='available'
+            and holder.get('title_id')==requested_title_id and holder.get('title_key_available') is True
+            and holder.get('title_key_status')=='available' and holder.get('title_key')==requested_title_key
+            and positive(holder.get('holder_character_id')),
+            'actual native title full ID/key/holder unavailable or different')
+    require(holder.get('actor_character_id')==fb[2] and holder.get('date_raw')==fb[5]
+            and holder.get('snapshot_revision')==fb[4] and holder.get('game_version')=='1.20.0.4'
+            and str(holder.get('executable_sha256','')).lower()==EXE_SHA,
+            'native title-reference crossed exact build/actor/revision/date')
+    require(frame_binding(row.get('after_snapshot'))==fb, 'native title-reference snapshot crossed current paused scene')
+    return {'kind':'native-title-holder-reference','step_id':row['id'],
+            'requested_title_id':requested_title_id,'requested_title_key':requested_title_key,
+            'holder_character_id':holder['holder_character_id'],'navigation_claimed':False}
+
 def join_pages(rows, anchor, *, requested_title_id, requested_title_key, expected_law, breakdown_character_id=None):
     binding=frame_binding(anchor)
     require(positive(requested_title_id) and isinstance(requested_title_key,str) and requested_title_key

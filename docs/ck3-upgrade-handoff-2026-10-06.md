@@ -1,5 +1,15 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 05:25：R42硬门槛合格与退出身份修复
+
+R0042/a142原religion_hardgate已实际公共run0、[公共verify0](C:/workspace/ck3-upgrade-20261010/root-r42-close-01/actual-public-verify-01.json)，原15 required/2 forbidden通过；`case_acceptance_pass=true`，`business_pass=false/product_release_pass=false`的原覆盖边界保留。开始时Robert rev2只是过渡帧，随后实际绑定Song34422、原scope资格与稳定native owner齐备，无fixture修复。正常退出实际reviewer为`/root/qol_original_cells_runner`，retained OS0/native0/thread/cleanup、normal-close-qualified=true；host21:00:52 UTC结束，原allocator实际Popen回执0、stdout keeper_actual_exit_code=0已读回，[CAS7968](C:/workspace/ck3-upgrade-20261006/resume-root-01/a142-screen-release-01.json)于21:19:34 UTC done/resources=[]。Root接回只读verify及闭场，没有代签GUI review。
+
+自动helper在任何输入前因旧`reviewer=='/root'`接口拒绝，故该场使用共同manual fallback成功退出，不能授新intro自动路线实机资格。现已窄修为client独立传入validated expected reviewer、helper精确核对，实际runner/伪Root等两个新检查PASS（Root集成0.058秒），原PID/ctime/deadline/模板路线不变。新[immutable mapping03](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-reviewer-03.json)为8076B/SHA256 `8251b000a720092fc8025494946a2d0f627df6f910d4876a6d6d02f6df8d2031`；只换helper pin，共同manifest仍5d00ca2f，已有Source12 prepared不用重做。外置v05编排将下一场公共run、verify、原keeper结束及CAS串在同一本地过程，避免已结束游戏后继续等待模型轮次；仅AST/help通过，尚待下一实际场。
+
+共同任命collector新增原生title-holder成功row作为独立头衔引用，供无地产大司马使用；成功full ID/key/holder、exact build及同paused frame必须齐备，明确`navigation_claimed=false`，旧导航路径保持。拒绝failed center/手写身份/跨帧，原候选/评分/真实继任与UI25断言不变。两个新检查Root集成PASS（0.085秒），不需host/native重编；UI controller hook改变，需新UI prepare，旧UI19不改，两个government20仍可用。
+
+`856bd0c19`的[官方CI37989344403](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37989344403)实际失败于step32：新增appointment10/failurehost4/manual4均通过，两处旧测试尚未接失败收尾/线程闭包。已采用仅测试及三个逐命令errorlevel门修复，原error/RED、失败收尾单次拒绝和业务false均保留，四项定向PASS；后继官方CI待。并行[磁盘回执](C:/workspace/disk-cleanup-20261010/ROOT-NARROW-CLEANUP-RESULT-02.json)实际释放47.9MB，当前约4.08GB，证据删除0，无可安全清除的GB级垃圾。正式发布仍7/10，下一继续head_identity等原用例。
+
 ## 2026-10-10 04:35：Source12统一绑定，R41失败闭场
 
 正式发布仍 **7/10（70%）**，后续顺序仍为QOL、重整河山、361。R0041/a141的PAM正例在`actual_positive_doctrines_landed_recipient`原复合条件失败，生产操作未执行；尚无逐项证据证明具体原因。保留原失败，仅在同一FAIL分支加入25项只读原子诊断；原断言、36步、12日及4500/600秒预算不改。该场实际菜单退出、retained HANDLE OS0；原host error和不合格normal-close保留，keeper实际0、[CAS7937闭场](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/pam_positive--a141/ACTUAL-CLOSED-RESULT-03.json)。PAM负例暂不消费，待正例前提原因闭合。

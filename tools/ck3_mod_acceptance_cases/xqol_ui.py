@@ -105,9 +105,8 @@ class Controller:
     def typed(self,action,args,prefix):
             require(action in TOOLS,'Typed action is not an existing QOL capability')
             if action=='appointment-full-pool':
-                required={'requested_title_id','requested_title_key','expected_law','navigation_step_id'}
-                require(isinstance(args,dict) and required<=set(args)<=required|{'breakdown_character_id'},
-                        'Explicit current requested navigation/law and optional breakdown target required')
+                from ck3_mod_acceptance_appointment import collection_arguments
+                collection_arguments(args)
                 result=self.client.query_appointment_pool(**args)
                 write(self.out/(prefix+'.actual-result.json'),result)
                 return result

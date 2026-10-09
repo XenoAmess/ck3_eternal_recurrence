@@ -1,5 +1,9 @@
 # 公共验收的正常退出与单一 GUI 操作者
 
+## R42实机与helper实际身份接口
+
+R42原religion_hardgate公共run0/verify0、normal-close-qualified=true；实际操作者manual fallback的原图/映射/unchecked证据、retained OS0/native0、thread/cleanup与keeper实际0/CAS7968齐备。自动helper在输入前仍因旧固定Root身份拒绝，未验证intro路线。修复只令client传`--expected-reviewer`，helper在独立参数和实际request间严格匹配；默认Root旧API兼容，空白、尾空格、None或伪Root拒绝，实际两项新检查PASS。helper后继SHA256 `b69536f84b6f7f1b71f74056fdd900a4ae8bee23847d610cc78c39d1f30d3b71`，mapping03使用外置不可变副本，不改同一manifest或业务prepared；自动后继路线与错误快速收尾仍待实机资格。
+
 ## R41后继：保留失败的收尾与真实 reviewer
 
 R40/R41已实际证明启动业务失败后，CK3可以正常菜单退出且retained HANDLE OS0，而旧strict成功证明因顶层error保持NULL，原hold仍需等满。Source12为此增加独立`finished_native_failure_shutdown_proof`：保留原error、failed steps和normal-close不合格，只在相同native/session/process身份、实际退出0、managed thread结束、cleanup及空进程树完整时接受单次`finish_hold(failure_shutdown=true)`。它不授业务PASS；原成功proof仍要求无error，不把失败收尾追认为正常验收成功。当前为源码/离线资格，尚待实机证明新的快速收尾。

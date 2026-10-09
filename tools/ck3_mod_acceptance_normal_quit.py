@@ -38,12 +38,14 @@ def write_once(path, value):
         stream.write('\n')
 
 
-def validate_request(request, *, live, keeper_root, pid, create_time, deadline):
+def validate_request(request, *, live, keeper_root, pid, create_time, deadline, expected_reviewer='/root'):
     """Pure original request binding, shared by production and portable checking."""
+    require(isinstance(expected_reviewer, str) and expected_reviewer
+            and expected_reviewer.strip() == expected_reviewer, 'Explicit actual expected reviewer required')
     require(type(pid) is int and pid > 0 and type(create_time) in (int, float)
             and type(deadline) in (int, float) and math.isfinite(create_time) and math.isfinite(deadline),
             'Exact actual PID/create-time/original deadline required')
-    require(request['run_id'] == Path(live).name and request['reviewer'] == '/root'
+    require(request['run_id'] == Path(live).name and request['reviewer'] == expected_reviewer
             and request['pid'] == pid and request['create_time'] == create_time
             and request['original_hold_deadline'] == deadline, 'Original common request identity/deadline differs')
     require(Path(request['live']).resolve() == Path(live).resolve()
@@ -110,6 +112,8 @@ def parse_args():
     parser.add_argument('--live', type=Path, required=True)
     parser.add_argument('--keeper-root', type=Path, required=True)
     parser.add_argument('--quit-request', type=Path, required=True)
+    parser.add_argument('--expected-reviewer', default='/root',
+                        help='Exact reviewer independently validated by the common client; never inferred from the request')
     parser.add_argument('--pid', type=int, required=True)
     parser.add_argument('--create-time', type=float, required=True)
     parser.add_argument('--original-deadline', type=float, required=True)
@@ -130,7 +134,8 @@ def main():
     request_pin = pin(request_path)
     request = read(request_path)
     screen_task = validate_request(request, live=live, keeper_root=keeper, pid=args.pid,
-                                  create_time=args.create_time, deadline=args.original_deadline)
+                                  create_time=args.create_time, deadline=args.original_deadline,
+                                  expected_reviewer=args.expected_reviewer)
     matcher_pin, templates_pin = pin(args.matcher), pin(args.templates)
     require(matcher_pin['bytes'] == args.matcher_bytes and matcher_pin['sha256'] == args.matcher_sha256
             and templates_pin['bytes'] == args.templates_bytes and templates_pin['sha256'] == args.templates_sha256,

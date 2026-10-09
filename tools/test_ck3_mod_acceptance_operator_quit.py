@@ -4,6 +4,7 @@ Synthetic files, subprocesses and clocks only; no screenshots or desktop input.
 """
 from __future__ import annotations
 import argparse
+import asyncio
 import copy
 import importlib.util
 import json
@@ -347,21 +348,57 @@ class OperatorQuitTests(unittest.TestCase):
                 if reaches_hold:client.retain_process.assert_called_once()
                 else:client.retain_process.assert_not_called()
 
-    def test_failed_host_keeps_strict_native0_false_and_waits_only_original_hold(self):
+    def test_failed_host_finishes_failure_lifecycle_once_without_success_credit(self):
         with tempfile.TemporaryDirectory() as directory:
             client, clock, fake_time, report=self.make_client(Path(directory),review_at=None,deadline=.4)
-            report.update(error='SYNTHETIC ORIGINAL STARTUP FAILURE',status='RED',finished_at=None)
+            error='SYNTHETIC ORIGINAL STARTUP FAILURE'
+            original_failure={'id':'original-startup-failure','ok':False,'error':error,
+                'finished_at':'2026-10-09T10:00:01+00:00'}
+            report.update(error=error,status='RED',finished_at=None,steps=[original_failure.copy()])
+            host_fixture=load('_actual_failure_shutdown_fixture',TOOLS/'test_ck3_mod_acceptance_failure_shutdown.py')
+            host_fixture.HOST=HOST
+            host_fixture.FailureShutdownTests.setUpClass()
+            host=host_fixture.FailureShutdownTests().client(report)
+            def finish_failure(steps,tag,*,reserve):
+                self.assertEqual(reserve,0)
+                self.assertEqual(tag,'acceptance-failure-exit-finish-hold')
+                self.assertEqual(steps,[{'id':tag,'kind':'finish_hold','failure_shutdown':True,
+                    'expect':{'hold_finished':True,'failure_preserved':True,
+                        'business_pass':False,'normal_close_qualified':False}}])
+                self.assertIsNone(client.native_zero_proof(report))
+                self.assertIsNotNone(client.native_failure_shutdown_proof(report))
+                # Run the actual selected host's pure lifecycle logic, including
+                # cleanup proof and its dead-native-query rejection fixture.
+                asyncio.run(host.execute(steps))
+                asyncio.run(host.observe_final())
+                report['finished_at']='2026-10-09T10:00:11+00:00'
+                return report['steps'][-1:]
+            client.execute_plan=Mock(side_effect=finish_failure)
             popen=self.automation(client,clock,fake_time,complete_at=.2)
             self.assertIsNone(client.native_zero_proof(report))
             with patch.object(self.module,'time',fake_time),patch.object(self.module.subprocess,'Popen',popen):
                 result=client.normal_close('business_failure_preserved')
             self.assertFalse(result['normal_close_qualified'])
+            self.assertFalse(result['business_pass'])
             self.assertIsNone(result['native_zero_proof'])
-            self.assertIsNone(result['finish_hold_rows'])
-            self.assertEqual(result['host_error'],'SYNTHETIC ORIGINAL STARTUP FAILURE')
+            self.assertTrue(result['failure_lifecycle_completed'])
+            self.assertTrue(result['failure_preserved'])
+            self.assertEqual(result['host_error'],error)
+            self.assertEqual(report['error'],error)
+            self.assertEqual(report['status'],'RED')
+            self.assertEqual(report['steps'][0],original_failure)
             self.assertTrue(result['retained_handle']['actual_retained_os0'])
-            self.assertLess(clock.now,.51)
-            client.execute_plan.assert_not_called()
+            self.assertEqual(result['failure_shutdown_proof'],report['post_failure_exit_finish_hold']['proof'])
+            self.assertEqual(len(result['finish_hold_rows']),1)
+            self.assertTrue(result['finish_hold_rows'][0]['ok'])
+            self.assertNotIn('post_exit_finish_hold',report)
+            self.assertLess(clock.now,.4)
+            popen.assert_called_once()
+            client.execute_plan.assert_called_once()
+            with self.assertRaisesRegex(RuntimeError,'once-only'):
+                asyncio.run(host.execute([{'id':'second-must-reject','kind':'finish_hold','failure_shutdown':True}]))
+            self.assertEqual(report['error'],error)
+            self.assertEqual(report['status'],'RED')
 
     def focus_fixture(self,root,*,boundary=None):
         client,clock,fake_time,_=self.make_client(root,review_at=None,deadline=10)

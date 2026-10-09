@@ -323,9 +323,9 @@ class CaseClient:
         return self.output / (name + '.json')
 
     def query_appointment_pool(self, *, requested_title_id, requested_title_key, expected_law,
-                               navigation_step_id, breakdown_character_id=None):
+                               navigation_step_id=None, title_reference_step_id=None, breakdown_character_id=None):
         """Read current window only; join every page inside the retained paused scene."""
-        from ck3_mod_acceptance_appointment import TOOL, CASES, navigation_anchor, frame_binding, join_pages
+        from ck3_mod_acceptance_appointment import TOOL, CASES, navigation_anchor, title_reference, frame_binding, join_pages
         from ck3_mod_acceptance import pin
         case=self.selection.case
         require(case['id'] in CASES and TOOL in case.get('required_mcp_tools',[]) and
@@ -335,9 +335,17 @@ class CaseClient:
         require(self._process and self._process['pid']==binding[0] and
                 self._process.get('retained_synchronize_query_handle_acquired') is True,
                 'Appointment collection lacks original retained same-process handle')
-        matches=[r for r in self.read_report().get('steps',[]) if r.get('id')==navigation_step_id]
-        require(len(matches)==1, 'Independent current typed navigation step missing/duplicated')
-        navigation=navigation_anchor(matches[0],frame,requested_title_id,requested_title_key)
+        require((navigation_step_id is None)!=(title_reference_step_id is None),
+                'Exactly one independent navigation or native title reference required')
+        reference_id=navigation_step_id if navigation_step_id is not None else title_reference_step_id
+        matches=[r for r in self.read_report().get('steps',[]) if r.get('id')==reference_id]
+        require(len(matches)==1, 'Independent current typed reference step missing/duplicated')
+        if navigation_step_id is not None:
+            reference=navigation_anchor(matches[0],frame,requested_title_id,requested_title_key)
+            reference_kind='navigation'
+        else:
+            reference=title_reference(matches[0],frame,requested_title_id,requested_title_key)
+            reference_kind='title_reference'
         self._seq+=1; name='case-appointment-'+str(self._seq).zfill(4)
         holderrow=self.execute_plan([{'id':name+'-input-holder','tool':'ck3_query_title_holder_v1',
             'args':{'title_id':requested_title_id},'fresh_revision':True}],name+'-input-holder')[0]
@@ -362,10 +370,11 @@ class CaseClient:
             offset=end
         proof=join_pages(rows,frame,requested_title_id=requested_title_id,requested_title_key=requested_title_key,
                          expected_law=expected_law,breakdown_character_id=breakdown_character_id)
-        require(holder.get('holder_character_id')==proof['requested_holder_character_id'],
+        require(holder.get('holder_character_id')==proof['requested_holder_character_id'] and
+                (reference_kind=='navigation' or reference['holder_character_id']==proof['requested_holder_character_id']),
                 'Independent input title holder differs from native normalization holder')
-        proof.update(run_id=self.frozen['run_id'],navigation=navigation,retained_process=dict(self._process),
-                     input_title_holder=holder,page_rows=rows)
+        proof.update(run_id=self.frozen['run_id'],retained_process=dict(self._process),
+                     input_title_holder=holder,page_rows=rows,**{reference_kind:reference})
         require(frame_binding(self.snapshot())==binding, 'Complete pool crossed final paused frame')
         path=self.checkpoint(name+'-complete-pool',proof); reference=pin(path)
         if not hasattr(self,'_appointment_receipts'): self._appointment_receipts={}
@@ -398,7 +407,8 @@ class CaseClient:
                 'request_path':str(self.output/(name+'-readonly-request-{sequence:04d}.json')),
                 'response_path':str(self.output/(name+'-readonly-response-{sequence:04d}.json')),
                 'initial_sequence':0,'run_id':self.frozen['run_id'],'reviewer':self.operator_reviewer,
-                'required_arguments':['requested_title_id','requested_title_key','expected_law','navigation_step_id'],
+                'required_arguments':['requested_title_id','requested_title_key','expected_law'],
+                'exactly_one_reference':['navigation_step_id','title_reference_step_id'],
                 'optional_arguments':['breakdown_character_id'],'does_not_navigate_or_sign_off':True}}
         path = self.checkpoint(name + '-awaiting', {'run_id':self.frozen['run_id'],
             'original_hold_deadline':self._hold,'reserve_seconds':reserve, **request,
@@ -416,9 +426,8 @@ class CaseClient:
                             action['action']=='appointment-full-pool' and action['run_id']==self.frozen['run_id'] and
                             action['reviewer']==self.operator_reviewer and action['sequence']==action_sequence,
                             'Read-only checkpoint action crossed current operator/run/sequence')
-                    args=action['arguments']; required={'requested_title_id','requested_title_key','expected_law','navigation_step_id'}
-                    require(isinstance(args,dict) and required<=set(args)<=required|{'breakdown_character_id'},
-                            'Only the current appointment read-only arguments are admitted')
+                    from ck3_mod_acceptance_appointment import collection_arguments
+                    args=collection_arguments(action['arguments'])
                     self.checkpoint(action_name+'-once-intent',action)
                     result=self.query_appointment_pool(**args)
                     self.checkpoint(name+'-readonly-response-'+str(action_sequence).zfill(4),result)
@@ -496,7 +505,8 @@ class CaseClient:
             '--templates', config['templates']['path'], '--templates-bytes', str(config['templates']['bytes']),
             '--templates-sha256', config['templates']['sha256'],
             '--live', str(self.live.resolve()), '--keeper-root', str(self.keeper.resolve()),
-            '--quit-request', str(request.resolve()), '--pid', str(self._process['pid']),
+            '--quit-request', str(request.resolve()), '--expected-reviewer', self.normal_quit_reviewer(),
+            '--pid', str(self._process['pid']),
             '--create-time', str(self._process['create_time']), '--original-deadline', str(self._hold),
             '--output', str(self.output.resolve()), '--execute']
         self.checkpoint('normal-quit-automation-dispatch', {'argv':argv, 'pins':config,
