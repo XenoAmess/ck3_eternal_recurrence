@@ -454,10 +454,13 @@ async def observe_frontend_mod_load(client: PlanClient, *, report: dict[str, obj
 
 
 def validate_saved_campaign_options(args: argparse.Namespace) -> None:
+    startup_case = getattr(args, "saved_campaign_startup_case_contract", None)
     inputs = (args.saved_campaign_save_bytes, args.saved_campaign_save_sha256,
         args.saved_campaign_player_id, args.saved_campaign_date_raw, args.saved_campaign_product_inventory)
     if args.saved_campaign_server and not args.server:
         raise SystemExit("--saved-campaign-server is an internal child-server option")
+    if startup_case is not None and (args.saved_campaign_save is None or args.server):
+        raise SystemExit("--saved-campaign-startup-case-contract requires an explicit saved campaign, without server mode")
     if args.saved_campaign_save is not None:
         if (any(item is None for item in inputs) or not args.fixture_profile or args.plan is None
                 or args.server or args.sdk_smoke_test or args.sdk_error_smoke_test or args.fixture_server
@@ -628,10 +631,14 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
 
 
 def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object],
-        frontend_binding: dict[str, object]) -> dict[str, object] | None:
+        frontend_binding: dict[str, object], *, allow_active_event: bool = False) -> dict[str, object] | None:
     if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
         return None
-    if snapshot.get("active_event") is not None or snapshot.get("episode_projection") != "native_campaign":
+    event = snapshot.get("active_event")
+    if (event is not None and not allow_active_event) or snapshot.get("episode_projection") != "native_campaign":
+        return None
+    if allow_active_event and (not isinstance(event, dict)
+            or type(event.get("instance_id")) is not int or event["instance_id"] < 1):
         return None
     played = snapshot.get("played_character")
     diagnostics = snapshot.get("diagnostics")
@@ -641,6 +648,8 @@ def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object]
         return None
     if not isinstance(diagnostics, dict) or any(diagnostics.get(k) != v for k, v in frontend_binding.items()):
         raise ValueError("saved campaign crossed its observed frontend process or connection")
+    if allow_active_event and diagnostics.get("connected") is not True:
+        return None
     hello = diagnostics.get("hello")
     if not isinstance(hello, dict) or any(hello.get(k) != v for k, v in {
             "pid": frontend_binding["bridge_pid"], "connection_generation": frontend_binding["connection_generation"],
@@ -666,10 +675,13 @@ def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object]
             or observer.get("read_in_progress") is not False or type(started) is not int
             or type(completed) is not int or completed < started):
         return None
-    return {"actor_character_id": expected["actor_character_id"], "date_raw": expected["date_raw"],
+    frame = {"actor_character_id": expected["actor_character_id"], "date_raw": expected["date_raw"],
         "local_player_id": snapshot["local_player_id"], "snapshot_id": snapshot["snapshot_id"],
         "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
         **frontend_binding, "owner_tid": mailbox["owner_tid"], "pump_epoch": epoch}
+    if allow_active_event:
+        frame["startup_event"] = copy.deepcopy(event)
+    return frame
 
 
 def saved_campaign_root_binding(snapshot: dict[str, object], root: object,
@@ -731,6 +743,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
         "new_game_requested": False, "start_requested": False, "fixture_setup_requested": False,
         "product_acceptance_proven": False}
     report["saved_campaign_restore"] = state
+    startup_case = report.get("saved_campaign_startup_case_contract_input", {}).get("contract")
     write()
     deadline = time.monotonic() + timeout
     binding = None
@@ -786,18 +799,27 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             write()
             await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
             continue
-        frame = saved_campaign_admission_frame(snapshot, expected, binding)
+        frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=startup_case is not None)
         root, admitted = None, None
         if frame is not None:
             stable = {k: v for k, v in frame.items() if k != "pump_epoch"}
             if baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]:
+                if startup_case is not None:
+                    state["first_startup_query_admission"] = {
+                        "previous_frame":{**baseline[0], "pump_epoch":baseline[1]}, "current_frame":copy.deepcopy(frame)}
                 root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
                 after = await client.fresh()
-                after_frame = saved_campaign_admission_frame(after, expected, binding)
+                after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None)
                 if (after_frame is not None and isinstance(root, dict)
                         and root.get("queried_snapshot_id") == after.get("snapshot_id")
                         and root.get("queried_revision") == after.get("revision")):
                     admitted = saved_campaign_root_binding(after, root, after_frame)
+                    if admitted is not None and startup_case is not None:
+                        if {k:v for k,v in after_frame.items() if k != "pump_epoch"} != stable:
+                            raise RuntimeError("saved startup root query crossed its original paused owner/event frame")
+                        after, event_proof = await admit_saved_startup_event(client, after, expected, binding,
+                            startup_case, state=state, write=write, deadline=deadline, managed_done=managed_done)
+                        admitted["startup_event_admission"] = event_proof
                 snapshot = after
             baseline = (stable, frame["pump_epoch"])
         else:
@@ -814,7 +836,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             return state
         write()
         if time.monotonic() >= deadline:
-            raise TimeoutError("saved campaign did not reach exact paused event-free native identity/root before original readiness deadline")
+            raise TimeoutError("saved campaign did not reach its exact paused native identity/root and explicit event policy before original readiness deadline")
         await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
 
 
@@ -2358,7 +2380,32 @@ def verify_fixture_startup_case_contract(value: object, state_dir: Path) -> dict
     return value
 
 
-def load_fixture_startup_case_contract(path: Path, state_dir: Path) -> tuple[dict[str, object], bytes]:
+def verify_saved_campaign_startup_case_contract(value: object, state_dir: Path) -> dict[str, object]:
+    if (not isinstance(value, dict)
+            or set(value) != {"schema", "state_dir", "handler", "dependencies", "expected"}
+            or value.get("schema") != "ck3-saved-campaign-startup-case-contract-v1"):
+        raise ValueError("saved startup case must declare its explicit schema and expected identities")
+    common = {key:value[key] for key in ("state_dir", "handler", "dependencies")}
+    verify_fixture_startup_case_contract({"schema":"ck3-frontend-fixture-startup-case-contract-v1", **common}, state_dir)
+    expected = value["expected"]
+    if (not isinstance(expected, dict) or set(expected) != {"event_definition_key", "event_instance_id",
+            "root_character_id", "actor_character_id", "date_raw", "native_option_indices"}
+            or not isinstance(expected.get("event_definition_key"), str) or not expected["event_definition_key"]
+            or len(expected["event_definition_key"]) > 256
+            or any(type(expected.get(key)) is not int or not 1 <= expected[key] <= 2**31-1
+                for key in ("event_instance_id", "root_character_id", "actor_character_id"))
+            or expected["root_character_id"] != expected["actor_character_id"]
+            or type(expected.get("date_raw")) is not int or not -(2**31) <= expected["date_raw"] <= 2**31-1
+            or not isinstance(expected.get("native_option_indices"), list)
+            or not 1 <= len(expected["native_option_indices"]) <= 32
+            or any(type(index) is not int or not 0 <= index <= 2**31-1 for index in expected["native_option_indices"])
+            or len(set(expected["native_option_indices"])) != len(expected["native_option_indices"])):
+        raise ValueError("saved startup case expected event/root/actor/date/options are malformed")
+    return value
+
+
+def load_fixture_startup_case_contract(path: Path, state_dir: Path, *,
+        saved_campaign: bool = False) -> tuple[dict[str, object], bytes]:
     if path.is_symlink() or not path.is_file():
         raise ValueError("startup case contract must be an ordinary file")
     raw = path.read_bytes()
@@ -2371,16 +2418,18 @@ def load_fixture_startup_case_contract(path: Path, state_dir: Path) -> tuple[dic
                 raise ValueError("startup case contract has duplicate keys")
             result[key] = value
         return result
-    return verify_fixture_startup_case_contract(
+    verifier = verify_saved_campaign_startup_case_contract if saved_campaign else verify_fixture_startup_case_contract
+    return verifier(
         json.loads(raw.decode("utf-8-sig"), object_pairs_hook=unique), state_dir), raw
 
 
 def fixture_startup_case_proof(contract: dict[str, object], snapshot: dict[str, object],
-        event_context: dict[str, object], state_dir: Path) -> dict[str, object]:
+        event_context: dict[str, object], state_dir: Path, *, saved_campaign: bool = False) -> dict[str, object]:
     """Load pinned product proof only; this helper has no client or command surface."""
     import importlib.util
     from types import ModuleType
-    verify_fixture_startup_case_contract(contract, state_dir)
+    verifier = verify_saved_campaign_startup_case_contract if saved_campaign else verify_fixture_startup_case_contract
+    verifier(contract, state_dir)
     handler = contract["handler"]
     path = Path(handler["path"]).resolve()
     package_name = "_ck3_fixture_startup_case_" + handler["sha256"][:24]
@@ -2412,9 +2461,21 @@ def fixture_startup_case_proof(contract: dict[str, object], snapshot: dict[str, 
         proof_snapshot = copy.deepcopy({key:snapshot.get(key) for key in (
             "snapshot_id", "revision", "native_revision", "date_raw", "played_character",
             "active_event", "paused", "map_ready", "episode_projection", "local_player_id")})
-        proof = callback({"state_dir": str(state_dir.resolve())}, proof_snapshot, copy.deepcopy(event_context))
-        verify_fixture_startup_case_contract(contract, state_dir)
-        if (not isinstance(proof, dict) or set(proof) != {"event_instance_id", "option_number", "proof", "business_pass"}
+        context = {"state_dir": str(state_dir.resolve())}
+        if saved_campaign:
+            context["expected"] = copy.deepcopy(contract["expected"])
+        proof = callback(context, proof_snapshot, copy.deepcopy(event_context))
+        verifier(contract, state_dir)
+        if saved_campaign:
+            if (not isinstance(proof, dict) or set(proof) != {*contract["expected"], "proof", "business_pass"}
+                    or any(proof.get(key) != value or type(proof.get(key)) is not type(value)
+                        for key,value in contract["expected"].items())
+                    or not isinstance(proof.get("proof"), dict) or not proof["proof"]
+                    or any(type(index) is not int for index in proof.get("native_option_indices", []))
+                    or proof.get("business_pass") is not False
+                    or len(json.dumps(proof, ensure_ascii=False).encode("utf-8")) > 65536):
+                raise ValueError("saved startup pure proof did not bind the exact declared event identities")
+        elif (not isinstance(proof, dict) or set(proof) != {"event_instance_id", "option_number", "proof", "business_pass"}
                 or type(proof.get("event_instance_id")) is not int or proof["event_instance_id"] < 1
                 or type(proof.get("option_number")) is not int or proof["option_number"] != 1
                 or not isinstance(proof.get("proof"), dict) or not proof["proof"]
@@ -2430,6 +2491,105 @@ def fixture_startup_case_proof(contract: dict[str, object], snapshot: dict[str, 
                     sys.modules[name] = old_modules[name]
                 else:
                     sys.modules.pop(name, None)
+
+
+async def admit_saved_startup_event(client: PlanClient, snapshot: dict[str, object],
+        expected: dict[str, object], binding: dict[str, object], contract: dict[str, object], *,
+        state: dict[str, object], write: object, deadline: float,
+        managed_done: threading.Event | None) -> tuple[dict[str, object], dict[str, object]]:
+    """Observe a pinned saved startup event; never request an option or action."""
+    if "startup_case" in state:
+        raise RuntimeError("saved startup event admission cannot be replayed")
+    def within_session():
+        if time.monotonic() >= deadline or (managed_done is not None and managed_done.is_set()):
+            raise RuntimeError("saved startup event exceeded its original deadline or managed session")
+    within_session()
+    verify_saved_campaign_startup_case_contract(contract, client.args.state_dir)
+    wanted = contract["expected"]
+    frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=True)
+    event = snapshot.get("active_event")
+    if (frame is None or wanted["actor_character_id"] != expected["actor_character_id"]
+            or wanted["date_raw"] != expected["date_raw"] or event.get("instance_id") != wanted["event_instance_id"]
+            or event.get("source") != "native"):
+        raise RuntimeError("saved startup event differs from its explicit saved actor/date/instance")
+    two_frames = state.get("first_startup_query_admission") or {}
+    previous, current = two_frames.get("previous_frame") or {}, two_frames.get("current_frame") or {}
+    if (type(previous.get("pump_epoch")) is not int or type(current.get("pump_epoch")) is not int
+            or previous["pump_epoch"] >= current["pump_epoch"] or current["pump_epoch"] > frame["pump_epoch"]
+            or {k:v for k,v in previous.items() if k != "pump_epoch"} != {k:v for k,v in current.items() if k != "pump_epoch"}
+            or {k:v for k,v in current.items() if k != "pump_epoch"} != {k:v for k,v in frame.items() if k != "pump_epoch"}):
+        raise RuntimeError("saved startup event lacks its actual two stable owner frames")
+    record = {"status":"OBSERVING_TYPED_SAVED_STARTUP_EVENT", "selection_attempted":False,
+        "retry_allowed":False, "product_acceptance_proven":False, "snapshot":snapshot,
+        "contract":contract, "original_deadline":deadline}
+    state["startup_case"] = record
+    write()
+    try:
+        packet = await asyncio.wait_for(client.call("ck3_query_current_event_window_context_v1", {
+            "event_instance_id":wanted["event_instance_id"], "expected_revision":snapshot["revision"]}),
+            timeout=max(0, deadline-time.monotonic()))
+        record["event_context"] = packet
+        context = packet.get("current_event_window_context") if isinstance(packet, dict) else None
+        if not isinstance(context, dict):
+            raise RuntimeError("saved startup event lacks a typed current native window")
+        root_scope = context.get("root_scope")
+        identity = root_scope.get("typed_identity") if isinstance(root_scope, dict) else None
+        provenance = context.get("provenance")
+        readiness = context.get("readiness")
+        options, public = context.get("options"), event.get("options")
+        if (packet.get("status") != "available" or packet.get("current_event_window_context_ready") is not True
+                or context.get("schema") != "current-event-window-context-v1" or type(context.get("schema_version")) is not int
+                or context["schema_version"] != 1 or context.get("status") != "available"
+                or type(context.get("window_match_count")) is not int or context["window_match_count"] != 1
+                or type(context.get("current_event_instance_id")) is not int
+                or context["current_event_instance_id"] != wanted["event_instance_id"]
+                or context.get("event_definition_key") != wanted["event_definition_key"]
+                or context.get("snapshot_revision") != snapshot["native_revision"] or context.get("date_raw") != wanted["date_raw"]
+                or not isinstance(readiness, dict) or any(readiness.get(key) is not True
+                    for key in ("event_definition_identity_ready", "root_scope_ready", "option_presentation_ready"))
+                or not isinstance(provenance, dict) or provenance.get("backend_id") != "ck3-1.20.0.4-native-event-window-v1"
+                or any(packet.get(key) != snapshot.get(source) for key,source in {
+                    "queried_snapshot_id":"snapshot_id", "queried_revision":"revision", "queried_native_revision":"native_revision"}.items())
+                or not isinstance(root_scope, dict) or root_scope.get("status") != "available" or root_scope.get("type_key") != "character"
+                or not isinstance(identity, dict) or identity.get("status") != "available" or identity.get("kind") != "character"
+                or type(identity.get("character_id")) is not int or identity["character_id"] != wanted["root_character_id"]
+                or not isinstance(options, list) or len(options) != len(wanted["native_option_indices"])
+                or not isinstance(public, list) or len(public) != len(options)):
+            raise RuntimeError("saved startup event crossed its exact typed window/root/frame contract")
+        option_identities = []
+        for rendered, (option, visible, native_index) in enumerate(zip(options, public, wanted["native_option_indices"])):
+            if (not isinstance(option, dict) or not isinstance(visible, dict)
+                    or type(option.get("rendered_index")) is not int or option["rendered_index"] != rendered
+                    or type(option.get("native_option_index")) is not int or option["native_option_index"] != native_index
+                    or any(option.get(key) is not value for key,value in {
+                        "shown":True, "enabled":True, "fallback":False, "cancel":False}.items())
+                    or type(visible.get("option_number")) is not int or visible["option_number"] != rendered+1
+                    or visible.get("enabled") is not True):
+                raise RuntimeError("saved startup event native option identity differs from its explicit contract")
+            option_identities.append({"option_number":rendered+1, "rendered_index":rendered, "native_option_index":native_index})
+        within_session()
+        proof = fixture_startup_case_proof(contract, snapshot, packet, client.args.state_dir, saved_campaign=True)
+        record["case_qualification"] = proof
+        after = await asyncio.wait_for(client.fresh(), timeout=max(0, deadline-time.monotonic()))
+        record["after_snapshot"] = after
+        within_session()
+        after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=True)
+        if (after_frame is None or after_frame["pump_epoch"] < frame["pump_epoch"]
+                or {k:v for k,v in after_frame.items() if k != "pump_epoch"} != {k:v for k,v in frame.items() if k != "pump_epoch"}):
+            raise RuntimeError("saved startup event query/proof crossed its unchanged paused native owner/event frame")
+        admitted = {**proof, "option_identities":option_identities, "selection_attempted":False,
+            "owner_tid":after_frame["owner_tid"], "pump_epoch":after_frame["pump_epoch"],
+            "event_context_queried_snapshot_id":packet["queried_snapshot_id"],
+            "event_context_queried_revision":packet["queried_revision"],
+            "event_context_queried_native_revision":packet["queried_native_revision"],
+            "product_acceptance_proven":False}
+        record.update(status="ACTUAL_SAVED_STARTUP_EVENT_OBSERVED_UNCHANGED", admission=admitted, finished_at=now())
+        write()
+        return after, admitted
+    except BaseException as error:
+        record.update(status="SAVED_STARTUP_ADMISSION_FAILED_NO_RETRY", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
 
 
 async def acknowledge_fixture_startup_case(client: PlanClient, snapshot: dict[str, object],
@@ -3107,6 +3267,23 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
             "product_acceptance_proven": False, "vanilla_empty_notice_qualification_claimed": False}
         write()
 
+    saved_startup_case_path = getattr(args, "saved_campaign_startup_case_contract", None)
+    if saved_startup_case_path is not None:
+        saved_startup_contract, saved_startup_bytes = load_fixture_startup_case_contract(
+            saved_startup_case_path, args.state_dir, saved_campaign=True)
+        saved_expected = saved_campaign_expected(args)
+        if any(saved_startup_contract["expected"][key] != saved_expected[key]
+                for key in ("actor_character_id", "date_raw")):
+            raise ValueError("saved startup contract actor/date differs from its pinned saved campaign input")
+        saved_startup_snapshot = args.output.with_suffix(".saved-campaign-startup-case-contract.json")
+        with saved_startup_snapshot.open("xb") as stream:
+            stream.write(saved_startup_bytes)
+        report["saved_campaign_startup_case_contract_input"] = {
+            "source_path":str(saved_startup_case_path.resolve()), "snapshot_path":str(saved_startup_snapshot),
+            "sha256":hashlib.sha256(saved_startup_bytes).hexdigest(), "contract":saved_startup_contract,
+            "selection_permitted":False, "product_acceptance_proven":False}
+        write()
+
     supervisor: threading.Thread | None = None
     if not args.sdk_smoke_test:
         clean_imports(args.agent_source_root)
@@ -3426,6 +3603,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--saved-campaign-player-id", type=int)
     result.add_argument("--saved-campaign-date-raw", type=int)
     result.add_argument("--saved-campaign-product-inventory", type=Path)
+    result.add_argument("--saved-campaign-startup-case-contract", type=Path,
+                        help="Explicit pinned pure proof to admit the unchanged current saved startup event; never selects an option")
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
     result.add_argument("--private-succession-title-readonly", action="store_true",
                         help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")
