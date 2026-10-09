@@ -241,6 +241,75 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
             ] = None
         self.assertEqual(rebound_without_bindings, original_without_bindings)
 
+    def test_compact_rebind_roundtrip_preserves_complete_ordered_state(self) -> None:
+        """Exercise the production rebind and consumer using synthetic history."""
+        source = copy.deepcopy(self.source_payload)
+        source["seed"] = {"label": "旅人", "value": 2**63 - 1}
+        source["pending"] = {
+            "intent": "construction-f085",
+            "status": "action_state_unknown",
+            "receipt": None,
+            "original_flags": [True, False, None, 0, -7],
+        }
+        for index in range(2, 10):
+            source["command_history"].append({
+                "index": index,
+                "command": "query-synthetic-ordered-state",
+                "ok": True,
+                "result": {
+                    "date_raw": 53_288_592,
+                    "ordered_rows": [
+                        {"z": index, "a": "space : comma , newline\n雪"},
+                        {"second": None, "first": [False, index]},
+                    ],
+                },
+            })
+        expected = copy.deepcopy(source)
+        target_binding = _binding(self.target_environment)
+        expected["succession_lifecycle"] = target_binding
+        expected["last_checkpoint"]["succession_lifecycle"] = target_binding
+        expected["command_history"][0]["result"]["checkpoint"][
+            "succession_lifecycle"
+        ] = target_binding
+
+        for source_format in ("compact", "pretty-bom"):
+            with self.subTest(source_format=source_format):
+                if source_format == "compact":
+                    input_text = json.dumps(source, ensure_ascii=False, separators=(",", ":"))
+                    input_encoding = "utf-8"
+                else:
+                    input_text = json.dumps(source, ensure_ascii=False, indent=2)
+                    input_encoding = "utf-8-sig"
+                self.driver_path.write_text(input_text + "\n", encoding=input_encoding)
+
+                receipt = self._run()
+
+                raw = self.driver_path.read_bytes()
+                rebound = json.loads(raw)
+                self.assertTrue(receipt["ok"])
+                self.assertEqual(rebound, expected)
+                # Object-pair lists also verify nested insertion order, which
+                # ordinary dict equality deliberately ignores.
+                self.assertEqual(
+                    json.loads(raw, object_pairs_hook=list),
+                    json.loads(json.dumps(expected), object_pairs_hook=list),
+                )
+                self.assertEqual(len(rebound["command_history"]), 9)
+                self.assertEqual(rebound["pending"], source["pending"])
+                self.assertEqual(rebound["seed"], source["seed"])
+                self.assertEqual(raw.count(b"\n"), 1)
+                self.assertTrue(raw.endswith(b"\n"))
+                self.assertLess(
+                    len(raw),
+                    len((json.dumps(expected, ensure_ascii=False, indent=2) + "\n").encode("utf-8")),
+                )
+                self.assertEqual(self.save_path.read_bytes(), self.save_bytes)
+                self.assertEqual(receipt["save"]["source"], receipt["save"]["target"])
+                self.assertEqual(
+                    receipt["post_rebind_validation"]["cold_checkpoint_validator"],
+                    "passed",
+                )
+
     def test_mixed_or_missing_binding_fails_without_writing(self) -> None:
         for fault in ("mixed", "missing"):
             with self.subTest(fault=fault):

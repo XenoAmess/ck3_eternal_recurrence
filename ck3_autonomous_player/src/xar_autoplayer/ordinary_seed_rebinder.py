@@ -282,7 +282,14 @@ def rebind_ordinary_seed_v1(
 
         rebound = _replace_lifecycle_anchors(source, target_binding)
         try:
-            write_json_atomic(driver_path, rebound)
+            # Driver history is an opaque, potentially large full transcript.
+            # Match NativeBridgeDriver's compact JSON encoding without changing
+            # any fields or their insertion order; pretty-print receipts only.
+            write_bytes_atomic(
+                driver_path,
+                (json.dumps(rebound, ensure_ascii=False, separators=(",", ":")) + "\n")
+                .encode("utf-8"),
+            )
             consumer_after = load_native_driver_state_for_resume(
                 driver_path, pipe_name
             )
