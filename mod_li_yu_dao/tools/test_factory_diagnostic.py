@@ -56,10 +56,17 @@ class FactoryDiagnosticControlTests(unittest.TestCase):
 
     def test_r38_held_title_guard_is_rejected(self):
         self.materialize('transaction-only')
-        self.replace_once('events/lyd_factory_operation_diagnostic.txt',
-                          'STAGE = 2 }\n        lyd_factory_diag_unheld_title_trigger = yes',
-                          'STAGE = 2 }\n        lyd_factory_diag_title_trigger = yes')
-        with self.assertRaisesRegex(ValueError, 'D2_terminal_display_option_guards_equal'):
+        path = self.overlay / 'events/lyd_factory_operation_diagnostic.txt'
+        text = path.read_text(encoding='utf-8-sig')
+        start = text.index('lyd_factory_diag.2 = {')
+        end = text.index('lyd_factory_diag.3 = {', start)
+        event = text[start:end]
+        self.assertEqual(event.count('lyd_factory_diag_unheld_title_trigger'), 2)
+        # R38 used the same wrong held-title condition on both display and
+        # option. Equality of those guards alone cannot detect this failure.
+        event = event.replace('lyd_factory_diag_unheld_title_trigger', 'lyd_factory_diag_title_trigger')
+        path.write_text(text[:start] + event + text[end:], encoding='utf-8-sig', newline='\n')
+        with self.assertRaisesRegex(ValueError, 'D2_terminal_requires_unheld_title_and_completion_marker'):
             self.validate('transaction-only')
 
     def test_completion_marker_before_resolve_is_rejected(self):
