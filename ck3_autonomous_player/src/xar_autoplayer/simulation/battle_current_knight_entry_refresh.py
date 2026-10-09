@@ -141,7 +141,7 @@ def associate_current_physical_entry_writebacks_12004(
                 if (entry.physical_entry_identity is None or physical is None
                         or event.get("entry_association_proven") is not True
                         or physical.get("entry_identity") != entry.physical_entry_identity
-                        or physical.get("regiment_id") != entry.state.regiment_id
+                        or physical.get("regiment_id") != (entry.state.regiment_id & 0xFFFFFFFF)
                         or event.get("linked_character_id") != entry.knight_character_id_raw):
                     continue
                 record = copy.deepcopy(event)

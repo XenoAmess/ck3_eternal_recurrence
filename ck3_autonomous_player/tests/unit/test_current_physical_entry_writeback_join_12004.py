@@ -44,20 +44,17 @@ STORED_FIELDS = (
 STORED_STATS = dict(zip(STORED_FIELDS, (100, 0, 1234567, 7654321, 0, 0)))
 
 
-def _synthetic_current_context(physical_entry_identity):
-    """Create two current rows that collide logically, never physically."""
+def _synthetic_current_context(physical_entry_identity, regiment_id=REGIMENT):
+    """Create one valid current MAA row per independent synthetic frame."""
     raw = _raw_frame(1)
     own = _army(0x02000001, ATTACKER, 707)
     enemy = _army(0x02000002, DEFENDER, 808)
-    rows = []
-    for index, identity in enumerate((physical_entry_identity, physical_entry_identity + 0x60)):
-        row = _entry(REGIMENT, own, bucket="men_at_arms", index=index,
-                     current=300000, damage=STORED_STATS["effective_damage_raw"],
-                     toughness=STORED_STATS["effective_toughness_raw"])
-        row["knight_character_id_raw"] = LINKED
-        row["physical_entry_identity"] = hex(identity)
-        rows.append(row)
-    raw["attacker"] = _side(0, [own], [], rows, [(707, 0)])
+    row = _entry(regiment_id, own, bucket="men_at_arms", index=0,
+                 current=300000, damage=STORED_STATS["effective_damage_raw"],
+                 toughness=STORED_STATS["effective_toughness_raw"])
+    row["knight_character_id_raw"] = LINKED
+    row["physical_entry_identity"] = hex(physical_entry_identity)
+    raw["attacker"] = _side(0, [own], [], [row], [(707, 0)])
     raw["defender"] = _side(1, [enemy], [
         _entry(0x06000005, enemy, bucket="levy", index=0,
                current=1000000, damage=Q, toughness=2 * Q),
@@ -76,6 +73,10 @@ def _synthetic_current_context(physical_entry_identity):
     for index, owner in enumerate((707, 808)):
         raw["current_loss_inputs_v1"]["sides"][index]["primary_participant_character_id"] = owner
     _counter(raw, Q)
+    if regiment_id < 0:
+        # This separate signed-ID representation case does not supply the
+        # unrelated optional active-counter family or claim its qualification.
+        raw.pop("active_counter_inputs_v1")
     untouched = deepcopy(raw)
     frame = normalize_battle_control_snapshot_v1(
         raw, expected_subject_public_cunit_id=ATTACKER,
@@ -155,7 +156,7 @@ def test_current_physical_entry_writeback_join_12004():
         actual, projection, raw, frame, refreshed = asyncio.run(exercise())
         writer, scratch = projection["events"]
         physical_identity = writer["physical_entry_writeback"]["entry_identity"]
-        expected_identities = [physical_identity, physical_identity + 0x60]
+        expected_identities = [physical_identity]
         assert [row["physical_entry_identity"] for row in raw["attacker"]["men_at_arms_entries"]] == [
             hex(value) for value in expected_identities]
         assert [row["physical_entry_identity"] for row in frame["attacker"]["men_at_arms_entries"]] == expected_identities
@@ -167,17 +168,19 @@ def test_current_physical_entry_writeback_join_12004():
         assert {row.native_carmy_id for row in entries} == {0x02000001}
         assert {row.public_cunit_id for row in entries} == {ATTACKER}
         condition_before, projection_before = deepcopy(refreshed.condition), deepcopy(projection)
+        join_kwargs = {
+            "current_combat_armies": actual["combat_simulation_inputs"]["armies"],
+            "combat_query_source": {"native_revision": NATIVE_REVISION, "date_raw": DATE_RAW},
+            "control_query_source": {"native_revision": NATIVE_REVISION, "date_raw": DATE_RAW},
+        }
         joined = associate_current_knight_entries(
-            refreshed,
-            current_combat_armies=actual["combat_simulation_inputs"]["armies"],
-            combat_query_source={"native_revision": NATIVE_REVISION, "date_raw": DATE_RAW},
-            control_query_source={"native_revision": NATIVE_REVISION, "date_raw": DATE_RAW},
+            refreshed, **join_kwargs,
             current_knight_stat_consumption_projection=projection,
         )
         assert joined.refreshed is refreshed and joined.condition is refreshed.condition
         assert joined.condition == condition_before and projection == projection_before
         current_rows = joined.ledger["sides"][0]["entries_in_native_order"]
-        assert len(current_rows) == 2
+        assert len(current_rows) == 1
         for index, row in enumerate(current_rows):
             assert row["identity"]["bucket_index"] == index
             assert row["identity"]["regiment_id"] == REGIMENT
@@ -189,7 +192,6 @@ def test_current_physical_entry_writeback_join_12004():
             assert association["historical_record_is_current_cache"] is False
             assert association["stored_stats_replaced"] is False
         matched = current_rows[0]["physical_entry_writeback_association"]
-        unrelated = current_rows[1]["physical_entry_writeback_association"]
         assert matched["status"] == "physical_entry_writeback_observed"
         records = matched["matching_events_in_capture_order"]
         assert len(records) == 1 and records[0]["sequence"] == writer["sequence"] == 1
@@ -206,10 +208,6 @@ def test_current_physical_entry_writeback_join_12004():
         assert matched["current_cache_matches_writeback"] is False
         assert len(matched["current_cache_field_matches"]) == 6
         assert set(matched["current_cache_field_matches"].values()) == {False}
-        assert unrelated["status"] == "no_matching_physical_entry_writeback"
-        assert unrelated["matching_events_in_capture_order"] == []
-        assert unrelated["current_cache_matches_writeback"] is None
-        assert unrelated["current_cache_field_matches"] is None
         assert scratch["sequence"] not in [row["sequence"] for row in records]
         assert joined.ledger["current_physical_entry_writeback_association_v1"] is not None
         assert actual["current_physical_entry_writeback_association_v1"] == joined.ledger[
@@ -219,7 +217,64 @@ def test_current_physical_entry_writeback_join_12004():
         assert joined.ledger["fresh_condition_modified"] is False
         assert joined.ledger["person_state_used_to_replace_stored_stats"] is False
         assert [dict((key, row.source_entry[key]) for key in STORED_FIELDS)
-                for row in joined.condition.sides[0].entries] == [STORED_STATS, STORED_STATS]
+                for row in joined.condition.sides[0].entries] == [STORED_STATS]
+
+        # A second valid current frame has the same logical Regiment/Knight
+        # but a different physical Entry. It is not a second MCP/native input.
+        alternate_raw, alternate_frame, alternate = _synthetic_current_context(physical_identity + 0x60)
+        alternate_before = deepcopy(alternate.condition)
+        alternate_joined = associate_current_knight_entries(
+            alternate, **join_kwargs, current_knight_stat_consumption_projection=projection,
+        )
+        assert len(alternate_raw["attacker"]["men_at_arms_entries"]) == 1
+        assert len(alternate_frame["attacker"]["men_at_arms_entries"]) == 1
+        assert alternate_joined.condition is alternate.condition
+        assert alternate_joined.condition == alternate_before
+        alternate_row = alternate_joined.ledger["sides"][0]["entries_in_native_order"][0]
+        assert alternate_row["identity"]["regiment_id"] == current_rows[0]["identity"]["regiment_id"] == REGIMENT
+        assert alternate_row["knight_identity"] == current_rows[0]["knight_identity"]
+        assert alternate_row["current_knight_evaluation"]["status"] == "available"
+        assert alternate_row["stored_combat_entry_attributes"] == STORED_STATS
+        unrelated = alternate_row["physical_entry_writeback_association"]
+        assert unrelated["physical_entry_identity"] == physical_identity + 0x60
+        assert unrelated["status"] == "no_matching_physical_entry_writeback"
+        assert unrelated["matching_events_in_capture_order"] == []
+        assert unrelated["current_cache_matches_writeback"] is None
+        assert unrelated["current_cache_field_matches"] is None
+        assert unrelated["historical_record_is_current_cache"] is False
+        assert unrelated["stored_stats_replaced"] is False
+
+        # Synthetic representation input only: the retained native whole and
+        # its actual Service projection keep their original full Regiment ID.
+        high_bit_full_id = 0x86000004
+        signed_regiment = high_bit_full_id - (1 << 32)
+        synthetic_projection = deepcopy(projection)
+        for event in synthetic_projection["events"]:
+            event["regiment_id"] = high_bit_full_id
+            if event["physical_entry_writeback"] is not None:
+                event["physical_entry_writeback"]["regiment_id"] = high_bit_full_id
+        high_raw, high_frame, high_context = _synthetic_current_context(physical_identity, signed_regiment)
+        assert high_raw["attacker"]["men_at_arms_entries"][0]["regiment_id"] == signed_regiment < 0
+        assert high_frame["attacker"]["men_at_arms_entries"][0]["regiment_id"] == signed_regiment
+        assert high_context.condition.sides[0].entries[0].state.regiment_id == signed_regiment
+        high_before, synthetic_before = deepcopy(high_context.condition), deepcopy(synthetic_projection)
+        high_joined = associate_current_knight_entries(
+            high_context, **join_kwargs, current_knight_stat_consumption_projection=synthetic_projection,
+        )
+        high_row = high_joined.ledger["sides"][0]["entries_in_native_order"][0]
+        assert high_row["identity"]["regiment_id"] == signed_regiment
+        assert high_row["stored_combat_entry_attributes"] == STORED_STATS
+        high_association = high_row["physical_entry_writeback_association"]
+        assert high_association["status"] == "physical_entry_writeback_observed"
+        high_records = high_association["matching_events_in_capture_order"]
+        assert [event["sequence"] for event in high_records] == [1]
+        assert high_records[0]["regiment_id"] == high_bit_full_id
+        assert high_records[0]["physical_entry_writeback"]["regiment_id"] == high_bit_full_id
+        assert (high_row["identity"]["regiment_id"] & 0xFFFFFFFF) == high_bit_full_id
+        assert high_association["historical_record_is_current_cache"] is False
+        assert high_association["stored_stats_replaced"] is False
+        assert high_joined.condition is high_context.condition and high_joined.condition == high_before
+        assert synthetic_projection == synthetic_before and projection == projection_before
         assert len(endpoint.requests) == len(endpoint.delivered) == 1
         assert packet == original and endpoint.packet == original
         assert driver.state._command_results == {}
@@ -227,10 +282,11 @@ def test_current_physical_entry_writeback_join_12004():
         print(json.dumps({
             "status": "GREEN", "retained_whole_packets": 1, "registered_mcp_calls": 1,
             "service_projection_consumed": True, "service_current_join_consumed": True,
-            "synthetic_current_rows": 2,
+            "synthetic_current_frames": 3, "synthetic_current_rows_per_frame": 1,
             "current_row_native_qualification_claimed": False,
             "same_logical_regiment_and_knight": True, "distinct_physical_entries": 2,
             "matched_current_rows": 1, "unmatched_current_rows": 1,
+            "synthetic_high_bit_full_id_joined": True, "signed_current_regiment_preserved": True,
             "matched_writer_sequences": [1], "query_scratch_association_granted": False,
             "current_cache_field_comparisons": 6, "stored_current_stats_unchanged": True,
             "historical_record_is_current_cache": False,

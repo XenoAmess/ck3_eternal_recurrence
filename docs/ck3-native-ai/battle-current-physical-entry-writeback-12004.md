@@ -5,6 +5,10 @@ physical Entry writer record. It leaves the current six cached statistics intact
 and compares them with the six values copied when the writer returned. The
 comparison exposes retained or changed cache values for the exact row; a shared
 Regiment ID alone cannot select another row with the same logical identity.
+Current native Regiment IDs retain their signed int32 wire representation. The
+join compares their unsigned 32-bit bit pattern with the writer sidecar's uint32
+full ID. It uses the existing full-component ID validator for retained rows;
+the missing `-1` sentinel remains excluded.
 
 The exact build remains Steam 25734779, CK3 1.20.0.4, EXE SHA-256
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
@@ -48,9 +52,11 @@ replaces current statistics, and no refresh callback or combat action is run.
 
 The one new authored consumer uses the retained Native67 whole through the
 registered MCP, Service and real NativeDriver, then the real current-control
-normalizer, adapter and refresh join. Its two current rows are explicitly
+normalizer, adapter and refresh join. Its two separate current frames are explicitly
 synthetic and share logical Regiment/Character identity while their physical
-addresses differ. It does not qualify native current-row publication, replay
+addresses differ. A synthetic high-bit full ID also exercises signed-current /
+unsigned-sidecar equivalence without rewriting the retained whole. The existing
+per-side duplicate Regiment rule remains intact. It does not qualify native current-row publication, replay
 Native67's producer, or grant live, full Person, full Entry or G2 credit.
 
 Status: source authored; new compound FIRST not run by the author. Root owns

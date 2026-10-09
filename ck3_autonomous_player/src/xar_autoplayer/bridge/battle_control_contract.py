@@ -2016,7 +2016,7 @@ def _normalize_entries(
         normalized = {
                 "bucket": bucket,
                 "bucket_index": index,
-                "regiment_id": _positive_int32(
+                "regiment_id": _full_component_id(
                     row.get("regiment_id"), f"{row_name}.regiment_id"
                 ),
                 "native_carmy_id": native_carmy_id,
