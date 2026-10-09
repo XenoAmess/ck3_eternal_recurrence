@@ -1,0 +1,21 @@
+{
+  "schema": "lyd.r34.archive-extracted-byte-validation.v1",
+  "result": "PASS",
+  "entry_count": 262,
+  "zip": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0034-no-follow-primary-heir-diagnostic-red/raw-evidence.zip",
+    "bytes": 10680608,
+    "sha256": "f006334f810799fc2e09e21d0a7de2a6da483bedc12b2b9548727f72ec8db33d"
+  },
+  "index": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0034-no-follow-primary-heir-diagnostic-red/INDEX.json",
+    "bytes": 89055,
+    "sha256": "bab1d02af26e7efb7214b5425c5a9183b73ea2a3d9aaae18f3e1fd0c500d3ba0"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0034-no-follow-primary-heir-diagnostic-red/REPORT.md",
+    "bytes": 2600,
+    "sha256": "80d5fe28d46c99a403611d83d91aa1fe8985ddd3a8fa38d4cbf9d02e9e67266e"
+  },
+  "save_bodies_retained_external": 5
+}
