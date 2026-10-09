@@ -197,7 +197,7 @@ bool Test() {
   Put(r1, 0x14, std::uint32_t{0x41725267}); Put(r1, 0x38, std::int32_t{-1});
   ReadArmyStrengthsForScope(bindings, scope, strength);
   if (!Check(strength[0].unavailable_reason == "soldier_value_invalid", "negative soldiers")) return false;
-  Put(r1, 0x38, std::numeric_limits<std::int32_t>::max());
+  Put(r1, 0x38, (std::numeric_limits<std::int32_t>::max)());
   ReadArmyStrengthsForScope(bindings, scope, strength);
   if (!Check(strength[0].unavailable_reason == "aggregate_overflow", "soldier sum overflow")) return false;
   Put(r1, 0x38, std::int32_t{600}); mismatch = true;

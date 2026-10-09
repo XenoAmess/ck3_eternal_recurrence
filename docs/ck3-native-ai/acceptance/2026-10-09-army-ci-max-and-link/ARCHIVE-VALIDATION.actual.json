@@ -1,0 +1,8 @@
+{
+  "schema": "xar.native.army-ci-archive-validation.v1",
+  "status": "passed",
+  "entries": 13,
+  "index_sha256": "f2090c8561eb9969ddba2a7cccbbcb8fa9da3e919356aa0fb1a219bc515ed7f8",
+  "archive_bytes": 13660,
+  "archive_sha256": "b2d36a640d7875a65e82367867bda10dc08de13591993ec168c9d5b3c39d9bf7"
+}

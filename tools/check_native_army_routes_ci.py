@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Compile and run the isolated army reader fixtures with x64 MSVC C++20.
 
-Only the army producer, its readonly supply dependencies and fixture test are linked.
+Only the army producer, its supply and serializer dependencies, and fixture test
+are linked. The writer journal stays unconfigured and performs no game contact.
 No game executable, native bridge DLL, Steam installation or private feature
 definition is used.
 The caller supplies a fresh build directory; logs and failures are retained.
@@ -37,6 +38,7 @@ TRANSLATION_UNITS = (
     "src/ck3_12003_current_daily_assault_loss.cpp",
     "src/ck3_12003_current_assault_removal_reference.cpp",
     "src/ck3_12003_ordered_besieging_fixed_chunk0_preparation.cpp",
+    "src/ck3_12004_actual_loss_writer_journal.cpp",
     "src/ck3_12002_army_test.cpp",
 )
 INPUTS = (
@@ -55,9 +57,13 @@ INPUTS = (
     "include/xar_bridge/ck3_12003_current_daily_assault_loss.hpp",
     "include/xar_bridge/ck3_12003_current_assault_removal_reference.hpp",
     "include/xar_bridge/ck3_12003_ordered_besieging_fixed_chunk0_preparation.hpp",
+    "include/xar_bridge/army_strength_v1_serializer.hpp",
+    "include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
+    "include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp",
     "include/xar_bridge/army_daily_assault_active_table_collector_v1.inc.hpp",
     "include/xar_bridge/ck3_12002.hpp",
     "include/xar_bridge/ck3_12003.hpp",
+    "include/xar_bridge/ck3_12004.hpp",
     "include/xar_bridge/game_contract.hpp",
 )
 

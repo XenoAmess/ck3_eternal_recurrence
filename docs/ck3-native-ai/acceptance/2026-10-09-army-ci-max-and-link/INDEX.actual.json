@@ -1,0 +1,112 @@
+{
+  "schema": "xar.native.army-ci-repair-evidence.v1",
+  "status": "compile_link_and_fixture_passed_defender_registration_failed",
+  "game_contacted": false,
+  "files": {
+    "fixed-build-defender-red/army-reader-ci-result.json": {
+      "source": "C:\\lci39maxlink1\\army-reader-ci-result.json",
+      "bytes": 8984,
+      "sha256": "fd38a35fe0e37a151c2e2d1a51031afb64c59175a44bb28d3bb0ac9632a84e15"
+    },
+    "fixed-build-defender-red/compile.stderr.bin": {
+      "source": "C:\\lci39maxlink1\\compile.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fixed-build-defender-red/compile.stdout.bin": {
+      "source": "C:\\lci39maxlink1\\compile.stdout.bin",
+      "bytes": 642,
+      "sha256": "9460bc29b16718165dcd3a5b40d7b27a6e474e819d69b5f16d6ba5f2ad9d8923"
+    },
+    "fixed-build-defender-red/defender/manifest.json": {
+      "source": "C:\\lci39maxlink1\\defender-exe-exclusions\\20261009T154718Z-bfaff75d\\manifest.json",
+      "bytes": 7273,
+      "sha256": "a19289c26dfaaa90290abacd13eb121362c5fade2eaca99929d9cbcb6f6e4ae4"
+    },
+    "fixed-build-defender-red/defender/receipt.json": {
+      "source": "C:\\lci39maxlink1\\defender-exe-exclusions\\20261009T154718Z-bfaff75d\\receipt.json",
+      "bytes": 1495,
+      "sha256": "4dd55b75d41ae279f4b226d82ac6cb01e9c8bee8e6f865588d702e3be3994ddb"
+    },
+    "fixed-fixture-pass/RESULT.actual.json": {
+      "source": "C:\\lci39maxlink1\\fixture-followup\\RESULT.actual.json",
+      "bytes": 689,
+      "sha256": "55466a14d1f3a2e5a54f83781781a002856ab356f07a28493c44d79449add202"
+    },
+    "fixed-fixture-pass/army-fixtures.stderr.bin": {
+      "source": "C:\\lci39maxlink1\\fixture-followup\\army-fixtures.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fixed-fixture-pass/army-fixtures.stdout.bin": {
+      "source": "C:\\lci39maxlink1\\fixture-followup\\army-fixtures.stdout.bin",
+      "bytes": 19904,
+      "sha256": "33a814b0c96a878624d47ad2f7204ffbd92af0709cefd43cc1b26b327b8c4b6f"
+    },
+    "fixed-fixture-pass/continuation.py": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-army-ci-existing-fixture-20261009-001.py",
+      "bytes": 2085,
+      "sha256": "d2a7f1967a42d21d05823641551d43e6286dc8b9b70b9c0360cedc218a413111"
+    },
+    "link-red/army-reader-ci-result.json": {
+      "source": "C:\\lci39max1\\army-reader-ci-result.json",
+      "bytes": 9463,
+      "sha256": "a5729a3a837f25411f64ba4264b31a257fc6f7bcfa45fdca14ddbe67acfeb631"
+    },
+    "link-red/compile.stderr.bin": {
+      "source": "C:\\lci39max1\\compile.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "link-red/compile.stdout.bin": {
+      "source": "C:\\lci39max1\\compile.stdout.bin",
+      "bytes": 2587,
+      "sha256": "136ebbee2217fe91900083f7cc5630f410bf27ce776d63f391c442be5f7e5ccf"
+    },
+    "official-red/00-FINAL.actual.json": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-exact-6af-ci-20261009-001\\FINAL.actual.json",
+      "bytes": 1055,
+      "sha256": "262b451f44618cec063e90048d3e4e00f54991ef45b4f232471dc7086faa73bf"
+    }
+  },
+  "tested_source_inputs": {
+    "src/ck3_12002_army.cpp": "d249453cec59c6044b047c24ecebabcbf40ef5b1192841006a0998ad20d68779",
+    "src/ck3_12003_army_supply_timing.cpp": "c6840ebb627ef897fb927dbfe100a4034e505aa589698526540339f518ce21bd",
+    "src/ck3_12003_army_replenishment_records.cpp": "978d7bfaad3773145a0030190d7e0f1710723b6d247406afebd6342a292cf619",
+    "src/ck3_12003_current_province_supply_contributors.cpp": "c220f33a03ba11a2d041a8339ef207b7f67440c83a1578d768d8ffcf04b527a1",
+    "src/ck3_12003_current_land_resupply.cpp": "9034c72b93c17782e1c2e0b00c17ded16c4b10e8f507b114a8a286b8ef3a2a23",
+    "src/ck3_12003_current_land_supply_rate.cpp": "e0b66e82cca08c4f65a584d5555ca4aedc4ace75374fc15c73116385f6e9c17c",
+    "src/ck3_12003_scoped_ordered_refill_core.cpp": "0b95fbaf058c160e146103dbc1cd84db25cd10ad7deb84b8b5cae5e70e3a6a57",
+    "src/ck3_12003_current_province_besieging_contributors.cpp": "cbb14aa606c2a7b693430aae31b74076fb02c43ca97b1aafe9966161191d4819",
+    "src/ck3_12003_fixed_chunk0_preparation.cpp": "6a5fe1a4882bf023913c59eecc6a24912ab3b3701be7b942c9c79fd30258cbe7",
+    "src/ck3_12003_ordered_besieging_refill_inputs.cpp": "3473b4f6e9448ae5c37eb963fccb4f585d452cb13b220f4fc3eb697b968830e5",
+    "src/ck3_12003_current_daily_assault_loss.cpp": "75476210d056279b995444eee1375e853ea43ae30b49374b73680fa1fe95b29f",
+    "src/ck3_12003_current_assault_removal_reference.cpp": "328c122a55cd75b0f4bd09936c8fe2a229aa2d2a56674a7a9b2167969feb4fd8",
+    "src/ck3_12003_ordered_besieging_fixed_chunk0_preparation.cpp": "1d7eaad69f7c97744988eba80fe3610db65e3ddf0153d64b836c12a379b7583d",
+    "src/ck3_12004_actual_loss_writer_journal.cpp": "537df21b7b5d4181764d713f51ad40008b34d4bc69de85fb35bb4620249ce8eb",
+    "src/ck3_12002_army_test.cpp": "45daa3bde8e01a8e5524985f2c1384c6fa102227f74f6e2aeae8dc09afdfc1b1",
+    "include/xar_bridge/ck3_12002_army.hpp": "a34abaa5493158cc0facacad1989f424b80e5af605a71127f99f4ac9ff373861",
+    "include/xar_bridge/ck3_12003_army_supply_timing.hpp": "617144e2f89053e30719d70333ea09b47a0f7f9337f7a00a890314004d5a300b",
+    "include/xar_bridge/ck3_12003_army_replenishment_records.hpp": "16705285d5eac9b4ccd76659c404064834e29a4212eaed5c4b96be78c6a37a12",
+    "include/xar_bridge/ck3_12003_current_province_supply_contributors.hpp": "5dc135cf4c7fc3ef03cbadf463aabe5020f22f93cb5530815ff15a09349df1d5",
+    "include/xar_bridge/ck3_12003_current_land_resupply.hpp": "d85d8bb0cf2734847ae8dd18acf17fbfee58b2a09323174476eb35730e437b34",
+    "include/xar_bridge/ck3_12003_current_land_supply_rate.hpp": "e7179f72e1a0843b4eb5f47c3d5d7431126585c359705a24507994c836bfcfc7",
+    "include/xar_bridge/ck3_12003_scoped_ordered_refill_core.hpp": "fc63ffb54a9051b949eac402982c3eda66d90800dd99e263708f656c17ed9309",
+    "include/xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp": "82c7354123285940c11c409a6dcd3e7e9d0696f5884328c6476c1207be7db33d",
+    "include/xar_bridge/ck3_12003_current_province_besieging_contributors.hpp": "186603d8ef1e9b816a543b7892833992e0827f5754f0a7f402ec9cebd2abc5ff",
+    "include/xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp": "207d0cd53067aa91eecd09553fad9828943fed3b52535083865a41ce9e204acb",
+    "include/xar_bridge/ck3_12003_ordered_besieging_refill_inputs.hpp": "c261ee1e69626d4f98b7102370780208b5b40a29a6588dae430b8e0d597d6e65",
+    "include/xar_bridge/ck3_12003_current_daily_assault_loss.hpp": "b077e758983f3959d6b3c737c756ab5f9ac7a343ad3dcfb463874c3c544500f5",
+    "include/xar_bridge/ck3_12003_current_assault_removal_reference.hpp": "c0092a8ecd0bad71baa4bb101fbd6ab0ad118630a459aeefe60e9b6d2961c75c",
+    "include/xar_bridge/ck3_12003_ordered_besieging_fixed_chunk0_preparation.hpp": "4fb22bb38e14177ec231e0e1323b765ffe732b639405b50cc34e8c9d0700cdd3",
+    "include/xar_bridge/army_strength_v1_serializer.hpp": "5ec314eac73648f05db30188ba328f4c5e46c37e3c00641a2c60ff268ee02bc7",
+    "include/xar_bridge/army_actual_loss_writer_observations_v1.hpp": "f0428797717983cfa2f7bb63cf6a9920e09a1c3b460be00e63a0ba0482041c45",
+    "include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp": "f5eb590d53c71727c998be671595a9c49d58618f8a60b84a9fb6ca59637a200d",
+    "include/xar_bridge/army_daily_assault_active_table_collector_v1.inc.hpp": "527b19c18e81fa295342d8986e015f9a323b57e376469d60c6b1901f17c54e03",
+    "include/xar_bridge/ck3_12002.hpp": "3a6a701735402a75dd4c99deb6aa1027aff7283d1a636784ebb8efb68d41308c",
+    "include/xar_bridge/ck3_12003.hpp": "ef7a8a1854e6c8c129fd66bf5397bdf453a1f0d46ff855b57ec3c5d70b1f1c6a",
+    "include/xar_bridge/ck3_12004.hpp": "03f3487d485c75996a9f1bd022f2454cae04ea1f2293aa6d62441ed294e203e6",
+    "include/xar_bridge/game_contract.hpp": "f4b418989f892e20f0d71118cd25f86839aa743b7196e0fe5e138b43a3894127"
+  },
+  "executable_sha256": "d85132366874044524eaee6b07431bc6bcfdcf41877fabd711eebd5fe7725243"
+}
