@@ -1,9 +1,24 @@
 # Lossless ArmyManager query bundle
 
-Status: **authored source / FIRST NOT RUN**. This is the Native63 candidate,
-based on Native62 C++ source `73e2ea7c` and its required Python source-stage
-fix `b35015a680e747e0ad356fb7e1c643d12164a547`, with441 Runtime /741 production owners.
-No build, test, live query, throughput benchmark or new G2 credit is claimed.
+Status: **static-ready; Native63 offline whole-producer and registered-MCP
+qualification GREEN**. Root sealed the canonical receipt at
+2026-10-10 04:53:10 +08:00. Native63 has not been deployed into CK3; actual
+Army query latency and live response size remain unmeasured, with no new G2
+credit or production-live claim.
+
+The base is Native62 C++ `73e2ea7c` plus its required Python source-stage fix
+`b35015a680e747e0ad356fb7e1c643d12164a547`, with441 Runtime /741 production owners.
+Qualification retains distinct source pins:
+
+| Boundary | Actual source |
+| --- | --- |
+| Production Bridge compile and DLL link, attempt01 | `e7d1f9e770409635580f04d49287136c6822f825` |
+| Corrected whole native fixture, attempt02 | `aa0f085576890f1c9f20e9700c98fa0f114f02b2` |
+| Final registered consumer, attempt05 | `17f1baffc80f6ed4be24dc47fd64dd1f1f1769dd` |
+
+The [sealed canonical receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix63/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+records that lineage. The production DLL remains the original attempt01 DLL;
+qualification repairs changed the synthetic fixture and consumer harness only.
 
 The ordinary Army query returned87,146,185 bytes in106.574511 seconds. A
 separate retained response18 contained43,960,122 compact selected-result
@@ -99,11 +114,11 @@ only by the compact query writer, preserving Bridge-only row extensions.
 
 The incremental production compile owner is Bridge. Runtime441, its retained
 qualified archive, and the other740 production owners are unchanged by this
-candidate. The sole new native whole fixture is separate from production
+increment. The sole new native whole fixture is separate from production
 owners. The Native62 Person feature is inherited from the base and is not
 reimplemented or requalified by this package.
 
-## Expected effect and qualification boundary
+## Expected effect and actual qualification
 
 For the retained two-row response, one six-family copy is18,726,925 bytes.
 Hoisting two copies to one is expected to save approximately18.73 MB of value
@@ -114,11 +129,52 @@ This is a source / retained-data estimate, not an executed benchmark. The
 outer87 MB response and its extra serialization were not newly attributed;
 the measured response18 text block was only1108 characters.
 
-The one new whole producer and registered-consumer compound are authored for
-Root's first execution. They compare expanded shared / legacy output from
-the same real production collector path, preserve raw full IDs, repeated
-occurrences and incomplete inputs, and cover direct, execute-step and actual
-auto-turn MCP routes. Their local world, native callbacks and deterministic
-planner input are synthetic. No actual CK3 frame or performance result is
-implied until Root records the build, first qualification and later live
-observation separately.
+The corrected native whole producer emitted14 original packets in attempt02:
+legacy/shared pairs for available, partial, unavailable, single-row,
+absent-only, unequal-value and unequal-presence scenes. It calls the real
+production collector against a synthetic memory world and native getter
+callbacks. Typed public CUnit, CArmy and current regiment handles keep their
+own nonnegative int32 contracts; raw high-bit Character/Combat references and
+the unrelated pending-table key remain in the fixture. Full roster order,
+repeats and the physical pending image are retained. No game frame is sampled.
+
+The [actual05 result](D:/codex-ck3-background-spill/g2-native63-build01/attempt05/ROOT-NATIVE63-RESULT.json)
+is GREEN. Its sole consumer stage took21.586915 seconds, reusing36 complete
+successful registered-call receipts from attempt03 and executing only the6
+missing calls for the final presence-divergence scene. The coverage is
+7 scenes ×2 original native representations ×3 real registered MCP routes
+=42 passed calls. This includes `ck3_query_army_strengths`,
+`ck3_execute_step` and actual ordinary `ck3_auto_turn`. One of the6 calls
+necessarily retried a prior MCP return whose harness assertions had failed;
+it was not credited as an earlier passed receipt. No native producer, compile,
+DLL link or archive operation was repeated for attempts03–05.
+
+Expanded shared/legacy final results and readiness entries compare equal.
+Driver normalization/cache retain full rows; Service and planner projections
+remain independent. Native and final MCP compaction byte checks pass for the
+eligible scenes. The synthetic available native result is222,739→112,501
+compact bytes; it does not establish the size of the real campaign query.
+The21.586915-second consumer duration is an offline test-stage duration,
+not a CK3 Army-query latency measurement.
+
+All failed attempts remain unchanged and linked by the actual result:
+
+| Attempt | Retained outcome |
+| --- | --- |
+| 01 | Native compile/link/producer GREEN; consumer RED at a synthetic CArmy ID with bit31 set. The fixture also corrected current regiment IDs to satisfy the unchanged aggregate contract; production contracts were retained. |
+| 02 | Corrected native14 packets GREEN; consumer RED because AnyIO reused a worker with the previous profiler/Driver closure. One completed legacy call had no retained full MCP return. |
+| 03 |36 complete successful call receipts and6 scene pairs retained; final presence-divergence scene RED because an alias assertion indexed a legitimately absent row1 field. |
+| 04 | Harness reuse assertion compared projected Service/MCP rows to raw Driver rows; RED before any new call or receipt reuse. |
+| 05 |36 retained original03 full returns plus6 new calls qualify all42; canonical seal GREEN. |
+
+The profiler repair installs/restores its observer on existing worker threads.
+Each completed registered call now immediately saves its full return and
+receipt. The final presence check applies alias assertions only where both
+rows contain the dict field; complete semantic comparisons still verify
+absence. Saved Service/MCP results retain their projections and are compared
+at the same layer. These are harness repairs, not capability or readiness
+changes.
+
+At sealing time Root's SDK237 hot02 check still used the same live Native60
+game instance. Native63 deployment, the ordinary Army `auto_turn` observation
+and its real byte/latency measurements remain the next verification boundary.
