@@ -70,10 +70,18 @@ def _identity(driver: object) -> tuple[int, str]:
     return pid, creation
 
 
+def _query_context_snapshot(driver: object) -> dict[str, object]:
+    """Read a detached query frame without exporting the complete transcript."""
+    finite_reader = getattr(driver, "take_snapshot_without_native_command_history", None)
+    return finite_reader() if callable(finite_reader) else driver.take_snapshot()
+
+
 def _binding(driver: object, *, expected_revision: int,
              material_receipt: bool = False,
-             wartime_observation: bool = False) -> dict[str, object]:
-    snapshot = driver.take_snapshot()
+             wartime_observation: bool = False,
+             include_native_command_history: bool = True) -> dict[str, object]:
+    snapshot = (driver.take_snapshot() if include_native_command_history
+                else _query_context_snapshot(driver))
     played = snapshot.get("played_character")
     actor = played.get("character_id") if isinstance(played, Mapping) else None
     if not (snapshot.get("paused") is True
@@ -184,7 +192,8 @@ def query_construction_private(driver: object, *, expected_revision: int,
         raise ValueError("construction source modes cannot be combined")
     starting = _binding(driver, expected_revision=expected_revision,
                         material_receipt=material_receipt,
-                        wartime_observation=wartime_observation)
+                        wartime_observation=wartime_observation,
+                        include_native_command_history=False)
     # native_campaign intentionally has no one-life episode projection. Its
     # wartime read is bound to the real actor/native frame, without an action ledger.
     episode_run_id = starting.get("episode_run_id")
@@ -196,7 +205,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
     result = _send(driver, QUERY_NATIVE, revision, request_id)
     probe = result.get("private_probe")
     world = probe.get("player_world_building_sources") if isinstance(probe, Mapping) else None
-    ending = driver.take_snapshot()
+    ending = _query_context_snapshot(driver)
     if not (result.get("step") == QUERY_NATIVE and result.get("accepted") is True
             and isinstance(probe, Mapping) and probe.get("advertised") is False
             and probe.get("snapshot_revision") == revision
