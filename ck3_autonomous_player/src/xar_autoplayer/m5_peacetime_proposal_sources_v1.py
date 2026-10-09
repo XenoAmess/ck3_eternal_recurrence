@@ -22,6 +22,7 @@ from .bridge.faction_gift_formal_route_v1 import (
 from .construction_formal_consumer import (
     priority_construction_receipt,
     read_construction_ledger,
+    same_construction_process_identity,
 )
 from .faction_gift_formal_candidate_v1 import (
     latest_same_frame_faction_root_v1,
@@ -466,8 +467,8 @@ def _prior_construction_blocks_candidate(
         applied.get("status") == "applied"
         and applied.get("postcondition_verified") is True
         and applied.get("actor_character_id") == frame["played_character_id"]
-        and process == (applied.get("post_bridge_pid"),
-                        applied.get("post_bridge_creation_date"))
+        and same_construction_process_identity(process, (
+            applied.get("post_bridge_pid"), applied.get("post_bridge_creation_date")))
         and type(applied.get("post_native_revision")) is int
         and type(applied.get("post_date_raw")) is int
         and frame["native_revision"] > applied["post_native_revision"]

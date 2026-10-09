@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Mapping
 
-from .environment import write_json_atomic
+from .environment import same_process_creation_time, write_json_atomic
 from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.nonwar_private_build import private_native_build_identity
 from .bridge.war_contract import parse_advance_route_contact_horizon_step
@@ -25,6 +25,14 @@ SUBMIT_STEP = "private-submit-player-construction-v1"
 RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 _LEDGER = "construction-formal-pending-v1.json"
 COMPLETION_WATCH_INTERVAL_RAW = 30 * 24  # 30 game days; date_raw is hourly.
+
+
+def same_construction_process_identity(
+    first: tuple[object, object], second: tuple[object, object],
+) -> bool:
+    """Compare the actual PID and creation instant while retaining raw evidence."""
+    return first[0] == second[0] and (
+        first[1] == second[1] or same_process_creation_time(first[1], second[1]))
 
 
 def observe_construction_cash_before_quote(
@@ -167,8 +175,8 @@ def priority_construction_receipt(
     revision = snapshot.get("native_revision")
     date = snapshot.get("date_raw")
     for row in receipts:
-        if (process != (row.get("post_bridge_pid"),
-                        row.get("post_bridge_creation_date"))
+        if (not same_construction_process_identity(process, (
+                row.get("post_bridge_pid"), row.get("post_bridge_creation_date")))
                 or (type(revision) is int and type(row.get("post_native_revision")) is int
                     and revision < row["post_native_revision"])
                 or (type(date) is int and type(row.get("post_date_raw")) is int
@@ -261,10 +269,10 @@ def plan_construction_private(
         from .bridge.domain_construction_private_transport_v1 import _identity
 
         pid, creation = _identity(driver)
-        cold_process = (pid, creation) != (
+        cold_process = not same_construction_process_identity((pid, creation), (
             pending.get("source_bridge_pid"),
             pending.get("source_bridge_creation_date"),
-        )
+        ))
         if (cold_process or (type(snapshot.get("native_revision")) is int
                              and snapshot["native_revision"] > pending.get("pre_native_revision", 0))):
             return {**planned, "plan": {**plan,
@@ -302,8 +310,8 @@ def plan_construction_private(
                 and type(applied.get("post_date_raw")) is int
                 and snapshot["date_raw"] < applied["post_date_raw"])
         )
-        if (process_identity != (applied.get("post_bridge_pid"),
-                                 applied.get("post_bridge_creation_date"))
+        if (not same_construction_process_identity(process_identity, (
+                applied.get("post_bridge_pid"), applied.get("post_bridge_creation_date")))
                 or older_frame):
             return {**planned, "plan": {**plan,
                 "phase": "construction_cold_applied_requery",

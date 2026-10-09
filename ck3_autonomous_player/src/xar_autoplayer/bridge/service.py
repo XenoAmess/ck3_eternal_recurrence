@@ -519,6 +519,7 @@ from ..construction_formal_consumer import (
     ROOT_QUERY_STEP as PRIVATE_CONSTRUCTION_INCOME_QUERY_STEP,
     plan_construction_private,
     read_construction_ledger,
+    same_construction_process_identity,
 )
 from ..crown_authority_formal_consumer_v1 import (
     SUBMIT_STEP as PRIVATE_CROWN_SUBMIT_STEP,
@@ -1287,10 +1288,10 @@ class GameplayBridgeService:
                 if (
                     isinstance(applied_construction, dict)
                     and applied_construction.get("episode_run_id") == planning_snapshot.get("episode_run_id")
-                    and construction_process_identity(self.driver) == (
+                    and same_construction_process_identity(construction_process_identity(self.driver), (
                         applied_construction.get("post_bridge_pid"),
                         applied_construction.get("post_bridge_creation_date"),
-                    )
+                    ))
                 ):
                     plan = {**plan, "construction_receipt_consumed": applied_construction}
             if cross_run_plan is not None:

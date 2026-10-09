@@ -12,7 +12,7 @@ import uuid
 
 from ..construction_formal_consumer import (
     COMPLETION_WATCH_INTERVAL_RAW, read_construction_ledger, write_construction_ledger,
-    same_frame_construction_income,
+    same_frame_construction_income, same_construction_process_identity,
 )
 from ..environment import sha256_file, write_json_atomic
 from ..runtime import _process_identity
@@ -473,8 +473,8 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
         if not (applied.get("status") == "applied"
                 and applied.get("postcondition_verified") is True
                 and applied.get("actor_character_id") == source["actor_character_id"]
-                and (pid, creation) == (applied.get("post_bridge_pid"),
-                                        applied.get("post_bridge_creation_date"))
+                and same_construction_process_identity((pid, creation), (
+                    applied.get("post_bridge_pid"), applied.get("post_bridge_creation_date")))
                 and type(applied.get("post_native_revision")) is int
                 and type(applied.get("post_date_raw")) is int
                 and source["native_revision"] > applied["post_native_revision"]
@@ -557,10 +557,10 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     starting = _binding(driver, expected_revision=expected_revision,
                         material_receipt=True)
     pid, creation = _identity(driver)
-    same_process = ((pid, creation) == (pending.get("source_bridge_pid"),
-                                       pending.get("source_bridge_creation_date")))
-    completion_watch = (cold_recheck and (pid, creation) == (
-        pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date"))
+    same_process = same_construction_process_identity((pid, creation), (
+        pending.get("source_bridge_pid"), pending.get("source_bridge_creation_date")))
+    completion_watch = (cold_recheck and same_construction_process_identity((pid, creation), (
+        pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date")))
         and starting.get("date_raw", -1) > pending.get("post_date_raw", -1))
     if completion_watch and pending.get("completion_status") != "completed" and not (
             type(starting.get("date_raw")) is int
