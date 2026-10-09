@@ -1,0 +1,12 @@
+{
+  "schema": "ck3.raw-evidence-archive-validation.v1",
+  "checked_at_utc": "2026-10-09T20:07:26.571671+00:00",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 228173,
+    "sha256": "dcd9179c6825ff0f02e2b47b8400af24ffe7455b92acb0c5fce4fd44af9d7d5e"
+  },
+  "entries_verified": 327,
+  "all_entries_byte_exact": true,
+  "zip_crc_ok": true
+}

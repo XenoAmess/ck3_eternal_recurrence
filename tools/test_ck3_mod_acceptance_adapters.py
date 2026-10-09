@@ -1,6 +1,6 @@
 """Focused source-only checks for new common adapter/allocation seams."""
 from __future__ import annotations
-import argparse,ast,contextlib,copy,hashlib,importlib.util,io,json,re,sys,tempfile,unittest
+import argparse,ast,contextlib,copy,hashlib,importlib.util,io,json,os,re,sys,tempfile,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -9,6 +9,7 @@ HERE=Path(__file__).parent
 sys.path.insert(0,str(HERE))
 import ck3_mod_acceptance as entry
 import ck3_mod_acceptance_allocate as allocation
+import ck3_live_run_id as live_ids
 from ck3_mod_acceptance_client import CaseClient
 from ck3_mod_acceptance_cases import xqol_adapter as qol
 from ck3_mod_acceptance_cases import xqol_ui
@@ -296,11 +297,12 @@ class Focused(unittest.TestCase):
                     'synthetic','synthetic-case',None,None)
 
     def test_mocked_allocation_register_immediately_starts_original_keeper(self):
-        # Run the actual new branch once with all external process and bus
-        # providers mocked. Synthetic files contain no original game/profile.
+        # Machine binding, predecessor closure and the admission chain run for
+        # real against temporary synthetic files. Only external OS/bus/process
+        # providers and ID allocation are mocked; no workstation state is used.
         import ck3_mod_acceptance_prepare as prep
         with tempfile.TemporaryDirectory() as directory:
-            root=Path(directory);repo=root/'repo';(repo/'tools').mkdir(parents=True)
+            root=Path(directory).resolve();repo=root/'repo';(repo/'tools').mkdir(parents=True)
             lease=root/'lease';(lease/'tools').mkdir(parents=True);(lease/'promo/ck3_native_war_ai/integration').mkdir(parents=True)
             for path in (repo/'tools/ck3_live_run_id.py',lease/'tools/codex_task_bus.py',lease/'promo/ck3_native_war_ai/integration/screen_bus_lease.py'):
                 path.write_text('synthetic-source')
@@ -313,15 +315,27 @@ class Focused(unittest.TestCase):
             state=root/'input/state';profile=state/'profile';profile.mkdir(parents=True)
             file=profile/'synthetic.txt';file.write_text('synthetic-only')
             prior=root/'previous';prior.mkdir()
+            machine_token='machine-id:synthetic-ci-fixture-only'
+            machine=live_ids.derive_machine_id('synthetic-ci-host',machine_token)
+            binding={'machine_id':machine,'state_root':str(root/'ids'),
+                'admission_root':str(root/'ids'/machine/'.shared-runtime-admissions-v1')}
+            admission=Path(binding['admission_root']);prior_admission=admission/'000001'
+            prior_admission.mkdir(parents=True)
+            prep.write_json(admission/'machine.json',binding)
+            prep.write_json(prior_admission/'allocation.json',{'run_id':'synthetic-R0000','live':str(prior)})
             report={'finished_at':'actual','managed_session_thread_finished':True,'cleanup_ok':True,'session':{'report':{'finished_at':'actual',
                 'shutdown':{'ok':True,'cleanup_proven':True,'tree_gone':True,'job_active_processes_final':0,'contract_errors':[],
                 'final_ck3_inventory':{'tasklist_returncode':0,'tasklist_pids':[],'wmi_pids':[],'native_pids':[],'processes':[]},
                 'control_files_absent':{'ck3.json':True}}}}}
-            prep.write_json(prior/'frozen-argv.json',{'screen_task':'old','run_id':'synthetic-previous',
-                'identity_allocation':{'machine_id':'synthetic-machine','state_root':str(root/'ids')}})
+            prep.write_json(prior/'frozen-argv.json',{'screen_task':'old','run_id':'synthetic-R0000',
+                'identity_allocation':{'machine_id':machine,'state_root':binding['state_root']}})
             prep.write_json(prior/'native-report.json',report)
             previous_keeper=root/'prior-keeper';previous_keeper.mkdir();prep.write_json(previous_keeper/'report.json',{'task_id':'old','thread_exited':True,'last_sequence':2})
             release=root/'release.json';prep.write_json(release,{'ok':True,'schema':'codex.task_bus.v1','task':{'task_id':'old','state':'done','resources':[],'last_sequence':3}})
+            events=[{'schema':'codex.task_bus.v1','sequence':1,'kind':'registered',
+                     'summary':'synthetic basic shared runtime acceptance','task_id':'old','resources':['ck3-screen:acquired']},
+                    {'schema':'codex.task_bus.v1','sequence':3,'kind':'completed','task_id':'old','resources':[]}]
+            (bus.parents[1]/'events.jsonl').write_text('\n'.join(json.dumps(row) for row in events)+'\n',encoding='utf-8')
             selected=SimpleNamespace(prepared_path=prepared,context={},runtime_path=config,manifest_path=config,products_path=products,
                 product_key='synthetic',product={'runtime_mod_key':'synthetic'},case={'id':'basic'},state_dir=state,adapter_path=None,
                 locations={'python':Path(sys.executable),'repo_root':repo,'artifacts_root':root/'live'},
@@ -332,13 +346,16 @@ class Focused(unittest.TestCase):
             actual=SimpleNamespace(argv=['one-shared-host'],state_dir=state,manifest={'source_root':{}},manifest_path=config,
                 manifest_path_key=lambda row:root/'shared-source',runtime_environment={'PYTHONUTF8':'1'})
             args=SimpleNamespace(attempt='a999',keeper_output=root/'keeper-output',previous_live=prior,previous_keeper=previous_keeper,
-                                  previous_release=release,latest_screen_release=None)
+                                  previous_release=release,latest_screen_release=None,first_machine_bootstrap=None)
             identity=SimpleNamespace(run_id='synthetic-R0001',mod_key='synthetic',execution_id='synthetic-exec')
-            ids=SimpleNamespace(current_machine_id=lambda:'synthetic-machine',default_state_root=lambda:root/'ids',
-                allocate_live_run_id=lambda *a,**k:identity,MACHINE_ENV='XAR_CK3_MACHINE_ID',
-                STATE_ROOT_ENV='XAR_CK3_LIVE_RUN_STATE_ROOT',_automatic_machine_token=lambda:'machine-id:synthetic',
-                derive_machine_id=lambda *a:'synthetic-machine',_exclusive_file_lock=lambda *a:contextlib.nullcontext())
             sequence=[]
+            def call_bus(script,bus_dir,sha,*argv,**kwargs):
+                self.assertEqual(script,lease/'tools/codex_task_bus.py')
+                self.assertEqual(bus_dir,bus.parents[1])
+                self.assertEqual(sha,entry.pin(bus)['sha256'].upper())
+                self.assertEqual(argv,('list','--stale-after','600'))
+                sequence.append('FRESH_BUS_LIST')
+                return {'ok':True,'schema':'codex.task_bus.v1','tasks':[entry.read_json(release)['task']]}
             def run(argv,**kwargs):
                 if argv[0]=='git':return SimpleNamespace(stdout=b'',returncode=0)
                 sequence.append('REGISTER')
@@ -355,15 +372,26 @@ class Focused(unittest.TestCase):
                 return Child()
             process_provider=SimpleNamespace(process_iter=lambda fields:[],
                 Process=lambda pid:SimpleNamespace(create_time=lambda:1.0))
-            with (patch.dict(sys.modules,{'ck3_live_run_id':ids,'psutil':process_provider}),
-                 patch.dict(allocation.os.environ,{ids.MACHINE_ENV:'',ids.STATE_ROOT_ENV:''}),
-                 patch.object(allocation,'current_screen_absent',return_value={'tasks':[]}),
+            with (patch.dict(sys.modules,{'psutil':process_provider}),
+                 patch.dict(os.environ,{live_ids.MACHINE_ENV:'',live_ids.STATE_ROOT_ENV:''}),
+                 patch.object(live_ids.platform,'node',return_value='synthetic-ci-host'),
+                 patch.object(live_ids,'_automatic_machine_token',return_value=machine_token),
+                 patch.object(live_ids,'default_state_root',return_value=root/'ids'),
+                 patch.object(live_ids,'allocate_live_run_id',return_value=identity) as allocate_id,
+                 patch('ck3_mod_acceptance_keeper.load_lease_module',return_value=SimpleNamespace(call_bus=call_bus)),
                  patch.object(allocation,'Selection',return_value=actual),
                  patch.object(allocation.subprocess,'run',side_effect=run),
                  patch.object(allocation.subprocess,'Popen',side_effect=popen)):
                 answer=allocation.allocate_and_keep(selected,args)
-            self.assertEqual(sequence,['REGISTER','KEEPER_POPEN','WAIT_REAL_CHILD'])
+            allocate_id.assert_called_once_with('synthetic',state_root=root/'ids',machine_id=machine,external_mod=False)
+            self.assertEqual(sequence,['FRESH_BUS_LIST','REGISTER','KEEPER_POPEN','WAIT_REAL_CHILD'])
             self.assertEqual(answer['keeper_actual_exit_code'],0)
             self.assertFalse(answer['game_started'])
+            record=admission/'000002'
+            self.assertEqual(entry.read_json(record/'allocation.json')['run_id'],identity.run_id)
+            closure=entry.read_json(record/'intent.json')['closure']
+            self.assertEqual(closure['mode'],'previous-shared-managed-session')
+            self.assertEqual(closure['run_id'],'synthetic-R0000')
+            self.assertEqual(closure['machine'],binding)
 
 if __name__=='__main__':unittest.main()

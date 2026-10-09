@@ -1,0 +1,53 @@
+{
+  "schema": "ck3.common-allocator-ci-fixture-fix.v1",
+  "original_ci_head": "00b88fc4df0b8b4cea8b15ff85de8f244825a329",
+  "original_official_run_id": 37979055544,
+  "original_official_conclusion": "failure",
+  "original_linear_history": "success",
+  "original_li_yu_dao_static_checks": "NOT_TRIGGERED",
+  "original_exception": "AttributeError: 'types.SimpleNamespace' object has no attribute 'MACHINE_ENV'",
+  "baseline_targeted_test_exit_code": 1,
+  "local_regressions": {
+    "adapters": {
+      "tests": 9,
+      "exit_code": 0
+    },
+    "bootstrap": {
+      "tests": 10,
+      "exit_code": 0
+    },
+    "entry": {
+      "tests": 15,
+      "exit_code": 0
+    }
+  },
+  "total_local_passed_tests": 34,
+  "fixed_test_source": {
+    "bytes": 30643,
+    "sha256": "fd8edf01f3604393a575d040882f62ea3c726cafa8b339e7213e4f2888039c75"
+  },
+  "unchanged_production_sources": {
+    "tools/ck3_mod_acceptance_allocate.py": {
+      "bytes": 30051,
+      "sha256": "bfa1622b8bfa8c634391433806df710e7de73aa7c999534a815fe0b6365c8be6"
+    },
+    "tools/ck3_live_run_id.py": {
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    }
+  },
+  "actual_machine_binding_predecessor_closure_and_admission_code_executed": true,
+  "all_admission_and_id_data_synthetic_and_temporary": true,
+  "real_game_or_screen_process_started": false,
+  "new_official_ci_success_claimed": false,
+  "workflow_dispatch_performed": false,
+  "open_kaishek_prevalidation": {
+    "status": "not-applicable",
+    "reason": "Python test provider/model repair; no CK3 script, parser, finite gameplay runtime or replay semantics changed."
+  },
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 228173,
+    "sha256": "dcd9179c6825ff0f02e2b47b8400af24ffe7455b92acb0c5fce4fd44af9d7d5e"
+  }
+}
