@@ -1,5 +1,17 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 R38公共自动退出实机合格，R39明确委派
+
+QOL 原 `prison_payment` 的 R0038/a138 已实际完成：原五步与完整24小时自然日、10个required各一次、3个forbidden为0；公共run实际exit0、[verify实际exit0](C:/workspace/ck3-upgrade-20261010/qol-prison-payment-bound13-live-01/actual-common-verify-01.json)，`case_acceptance_pass=true`，不授整个QOL release PASS。公共模板自动退出首次实机资格为真：`root_normal_gui_review=NULL`、actor=`template-automation`，未声称人工审阅；保留HANDLE实测OS0、共同native0、thread/cleanup与无host error齐备，host于Oct10 **02:36:28.785040 CST**结束。keeper实际0，最后7866后[CAS7867](C:/workspace/ck3-upgrade-20261006/resume-root-01/a138-screen-release-01.json)于02:53:58实际done/resources=[]。原R37/UI0/25与失败不变。
+
+本机02:15:16重启后曾恢复1024×768/Steam隐藏；Root在a138外置恢复记录中保留原阻断，实际枚举支持模式后恢复到模板原图的1920×1080，重新打开Steam并亲审离线移动帧及两个新nonce后才启动。没有切在线、重启ToDesk或扩大模板比例。
+
+共同接点已fetch/rebase/普通push `53e6ffc660b51adbb61953d015a94011ff45a46b`。其[官方CI37973418218](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37973418218)实际失败于隔离MSVC缺少NOMINMAX，而新psutil安装成功；Root仅给原隔离编译补与CMake一致的`/DNOMINMAX`，再fetch/rebase/普通push `03c65a80954da5d68cad87e8a8ff74d7fcb326df`。[新CI37976493582](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37976493582)已实际completed/success，64步骤全部成功，updatedAt Oct10 03:03:55 CST，包含共享验收接点。无merge/forcepush，不用后继成功覆盖原CI失败。
+
+R0039/a139使用[新UI25 prepared](C:/workspace/ck3-upgrade-20261010/qol-ui25-delegate-prepare-01/prepare/prepared-case.json)，仍是Source10/FINAL11/bound13/d1d4。Root亲审当次离线证据并实际启动后，已通过[七字段实际委派](C:/workspace/ck3-upgrade-20261010/qol-ui25-delegated-live-01/actual-ui-delegation-01.json)明确把本场唯一UI/checkpoint操作权交给`/root/qol_ui_operator`；context reviewer=/root，delegate以自己身份记录，不代签Root。Root不再并发输入；公共自动Quit在controller结束后接管原退出步骤，原25断言、原期限与退出预留不改。该场仍在执行，不能预授UI PASS。正式发布仍7/10，下一仍QOL→RMTM→361，G2后台并行。
+
+G2有限后继来源核对已完成：[共同runtime后继卡](C:/workspace/ck3-upgrade-20261010/g2-next-common-runtime-01/ROOT-G2-NEXT-COMMON-RUNTIME-07.md)证明现成Native08是当前Native09的增量后继，七个title-key native pins、Python title_holder contract及实际flags相同，**无需再编译native**。Source10仅需四文件truce Python补丁，已只读apply-check0/AST4并证明PAM保留；未物化新共同source/manifest，未变更当前产品场。自然present/absence目标独立证据与真实qualification仍待，不授G2 live信用。
+
 ## 2026-10-10 公共操作接点已采用，下一场验证
 
 当前新场选择 **Source10 / FINAL11 / bound13**，仍为同一 d1d4 native。bound13 仅增加公共正常退出 helper、matcher 与本机模板包三 pins，见[公共正常退出与实际操作者合同](ck3-mod-acceptance-operator-quit.md)。公共退出、明确委派与 mailbox 共17项定向检查实际 PASS；尚未授自动退出/新委派实机或产品 PASS。QOL 两条已有 typed 导航接线、RMTM threshold 所用工具声明与 CI 缺失 psutil 修复已采用。下方 bound12 与“client在准备”等为先前截止，既有 prepare 仍绑定同一 FINAL11，可按原输入资格选择新机器映射。

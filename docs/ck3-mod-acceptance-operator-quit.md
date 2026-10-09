@@ -43,3 +43,11 @@ CaseClient 仍要求 helper 实际 exit0、同场精确来源与最终 mapped cl
 2026-10-10：Source10 / FINAL11 / d1d4 native 保持原冻结。新机器映射 `runtime.local-entry-bound13.json` 只增加公共自动退出三 pins，SHA256 `a7f20631fd99395a8e509246850ac7ef47da841352abd0e6db00d48ca6070e2d`。
 
 旧 normal-close 测试补齐实际新增的 synthetic live/keeper/screen 字段及独立导入路径后，正常退出、操作者接点和 mailbox 合计 17 项定向测试实际通过（2.098s）。官方 CI 已接入这些检查，静态环境补 `psutil==7.2.2`。此截止尚无自动退出或明确委派后的新实机资格；R37 原 entry2、UI0/25 和 normal-close 未资格保持。
+
+## 首次实际资格及明确委派后继
+
+2026-10-10 本机 QOL R0038/a138 原 prison_payment 已实际run0/verify0，公共自动路线在原期限内完成菜单、未勾选自动存档的退出对话框和退出桌面。独立 retained HANDLE exit0、完整 native0、managed thread、cleanup与无host error齐备，`normal_close_qualified=true`；Root人工退出回执保持NULL，未冒写human review。原始路线、每次mapped click及独立进程证据保存在[本场case-output](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0038/case-output/normal-close-result.json)，[小型verify回执](C:/workspace/ck3-upgrade-20261010/qol-prison-payment-bound13-live-01/actual-common-verify-01.json)保留产品release=false。keeper随后实际exit0，CAS7867 done/resources=[]。此资格限于实际模板尺寸、同公共文件pins与已观察窗口，不将任意未知对话框视为可自动导航。
+
+下一场R0039/a139已真实绑定[七字段委派原件](C:/workspace/ck3-upgrade-20261010/qol-ui25-delegated-live-01/actual-ui-delegation-01.json)，Root在亲审Steam离线证据并启动后明确移交唯一UI/checkpoint操作权给`/root/qol_ui_operator`。该操作者以自己身份记录原UI25，Root不并发输入。委派已实际成立；UI业务仍需该场真实结果，不能由委派成立或R38正常退出推出。
+
+共享接点及隔离MSVC NOMINMAX修复提交`03c65a80954da5d68cad87e8a8ff74d7fcb326df`对应[官方CI37976493582](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37976493582)已实际completed/success，64步骤全部成功，包含17项接点及原local-launch等共享测试。原37973418218失败保留，不由后继成功改写。
