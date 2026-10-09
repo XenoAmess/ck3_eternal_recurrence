@@ -3,7 +3,7 @@
 Recorded on 2026-10-10 (Asia/Shanghai). Status: research. Root completed the
 597-byte arithmetic batch, 367-byte index-helper batch and 401-byte insertion
 batch once. The narrow Python numerical composition and its single reference
-case are authored, not executed. This does not
+case are qualified offline by Root. This does not
 qualify full Person, Entry, a battle terminal result or a gameplay milestone.
 
 ## The useful input already present
@@ -166,5 +166,11 @@ The sole [numeric reference](../../ck3_autonomous_player/tests/unit/test_person_
 is synthetic and instruction-derived. It covers the INT64_MIN/-1 maximum
 split, nonunit copy, duplicate-first update, zero insertion, sentinel handling,
 wrap64 additions, ordinal gaps and unchanged input operands. It is
-AUTHORED_NOTRUN; Root owns the single pytest invocation. No native producer,
-C++ build, prior Green fixture, SDK or game is replayed.
+Root-qualified GREEN: the sole pytest case passed in 0.19 seconds on
+2026-10-09 at `20:32:56.852..20:32:57.499Z` (Oct10 Asia/Shanghai).
+Receipt: `D:/codex-ck3-background-spill/person-ordered-merger-first02/RESULT.json`.
+First01 failed in sparse source materialization before the test body; that
+harness RED remains preserved. First02 executed only this synthetic
+instruction reference. No native producer, C++ build, prior Green fixture,
+SDK or game was replayed. The local contribution is static-ready, while
+stage-correct historical baseline and full Person/Entry remain unfinished.
