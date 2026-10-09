@@ -248,6 +248,9 @@ class Selection:
             argv += ["--fixture-profile", "--frontend-mod-load-observation"]
         elif startup["mode"] == "saved_campaign":
             argv += ['--fixture-profile']
+            if startup.get('saved_campaign_startup_case_contract'):
+                argv += ['--saved-campaign-startup-case-contract',
+                         str(self.case_path(startup['saved_campaign_startup_case_contract']))]
             saved = dict(startup["saved_campaign"])
             for key, value in self.context.get("saved_campaign", {}).items():
                 if key not in SAVED_FLAGS or saved.get(key) is not None:
@@ -312,7 +315,8 @@ class Selection:
         except OSError as error:
             errors.append(str(error))
         for flag in ("--plan", "--frontend-fixture-start-policy", "--frontend-rules-plan",
-                     "--saved-campaign-save", "--saved-campaign-product-inventory",'--frontend-fixture-startup-case-contract'):
+                     "--saved-campaign-save", "--saved-campaign-product-inventory",'--frontend-fixture-startup-case-contract',
+                     '--saved-campaign-startup-case-contract'):
             if flag in self.argv:
                 path = Path(self.argv[self.argv.index(flag) + 1])
                 if not path.is_file():
@@ -363,6 +367,29 @@ class Selection:
                     raise ValueError('Startup-case handler crossed actual prepared state/function')
                 for row in [hook['handler'],*hook['dependencies']]:checks.append(check_pin(Path(row['path']),row))
             except (OSError,KeyError,ValueError) as error:errors.append('Startup-case contract: '+str(error))
+        if '--saved-campaign-startup-case-contract' in self.argv:
+            try:
+                hook_path=Path(self.argv[self.argv.index('--saved-campaign-startup-case-contract')+1]);hook=read_json(hook_path)
+                if set(hook)!={'schema','state_dir','handler','dependencies','expected'} or hook['schema']!='ck3-saved-campaign-startup-case-contract-v1':
+                    raise ValueError('Unsupported saved startup-case contract')
+                if Path(hook['state_dir']).resolve()!=self.state_dir.resolve() or hook['handler']['function']!='admit_saved_startup_event':
+                    raise ValueError('Saved startup-case handler crossed actual prepared state/function')
+                expected=hook['expected']
+                if set(expected)!={'event_definition_key','event_instance_id','root_character_id','actor_character_id','date_raw','native_option_indices'}:
+                    raise ValueError('Saved startup-case requires exact event identity fields')
+                if not isinstance(expected['event_definition_key'],str) or not expected['event_definition_key']:
+                    raise ValueError('Saved startup-case event definition is missing')
+                for key in ('event_instance_id','root_character_id','actor_character_id','date_raw'):
+                    if type(expected[key]) is not int or expected[key]<=0:
+                        raise ValueError('Saved startup-case positive integer required: '+key)
+                indices=expected['native_option_indices']
+                if not isinstance(indices,list) or not indices or any(type(i) is not int or i<0 for i in indices) or len(set(indices))!=len(indices):
+                    raise ValueError('Saved startup-case native options must be unique nonnegative integers')
+                if expected['root_character_id']!=self.saved['player_id'] or expected['actor_character_id']!=self.saved['player_id'] or expected['date_raw']!=self.saved['date_raw']:
+                    raise ValueError('Saved startup-case crossed pinned actor/date')
+                checks.append(pin(hook_path))
+                for row in [hook['handler'],*hook['dependencies']]:checks.append(check_pin(Path(row['path']),row))
+            except (OSError,KeyError,TypeError,ValueError) as error:errors.append('Saved startup-case contract: '+str(error))
         if self.context:
             try:
                 frozen_ref = self.context["frozen_argv"]
@@ -536,6 +563,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--previous-keeper',type=Path)
     parser.add_argument('--previous-release',type=Path)
     parser.add_argument('--latest-screen-release',type=Path)
+    parser.add_argument('--first-machine-bootstrap',type=Path)
     args = parser.parse_args(argv)
     try:
         selection = Selection(args.runtime, args.products, args.product, args.case, args.run_context,args.prepared_case)
