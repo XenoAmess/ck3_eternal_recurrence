@@ -506,7 +506,9 @@ class Selection:
 
     def verify(self):
         if not self.context:raise ValueError('Verify requires one actual allocated run context')
+        from ck3_mod_acceptance_client import resolve_operator_reviewer
         context=self.adapter_context()
+        context['operator_reviewer']=resolve_operator_reviewer(self)
         result=self.load_adapter().verify_case(context)
         closed_path=Path(context['output'])/'normal-close-result.json'
         close=read_json(closed_path) if closed_path.is_file() else None

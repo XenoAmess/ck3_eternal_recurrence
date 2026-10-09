@@ -26,11 +26,16 @@ class ManualFallbackTests(unittest.TestCase):
     def make_client(self, root, *, review=True, mutate=None):
         c=self.module.CaseClient.__new__(self.module.CaseClient)
         c.output=root;c.live=root;c.keeper=root/'SYNTHETIC-keeper';c._handle=object()
-        c._process={'pid':2468,'create_time':123.5};c.frozen={'run_id':'SYNTHETIC_MANUAL_FAILURE','screen_task':'SYNTHETIC_SCREEN'}
-        c.context={'reviewer':'/root/actual-runner'};context_path=root/'actual-run-context.json'
+        c._process={'pid':2468,'create_time':123.5}
+        c.frozen={'run_id':root.name,'screen_task':'SYNTHETIC_SCREEN','reviewer':'/root/actual-runner',
+            'argv':['SYNTHETIC_ONLY'],'runtime_environment':{}}
+        frozen_path=root/'frozen-argv.json';frozen_path.write_text(json.dumps(c.frozen),encoding='utf-8')
+        c.context={'run_id':root.name,'reviewer':'/root/actual-runner','frozen_argv':pin(frozen_path)}
+        context_path=root/'actual-run-context.json'
         context_path.write_text(json.dumps(c.context),encoding='utf-8')
         c._hold=1.0;c._started=0;c.manifest={'host':{}}
-        c.selection=SimpleNamespace(case={'budgets':{}},manifest_path_key=lambda _:HOST,context_path=context_path,normal_quit_automation={'synthetic':True})
+        c.selection=SimpleNamespace(case={'budgets':{}},manifest_path_key=lambda _:HOST,context_path=context_path,
+            context=c.context,run_dir=c.live,argv=c.frozen['argv'],runtime_environment={},normal_quit_automation={'synthetic':True})
         c.operator_reviewer='/root/actual-runner'
         clock=SimpleNamespace(now=0.0,review_written=False)
         source=root/'SYNTHETIC-unchecked.png';after=root/'SYNTHETIC-after-click.png'
@@ -109,6 +114,9 @@ class ManualFallbackTests(unittest.TestCase):
                 c.context['reviewer']=value
                 with self.subTest(value=value),self.assertRaises(ValueError):c.resolve_operator_reviewer()
             c.context['reviewer']='/root/actual-runner';c.frozen['reviewer']='/root/another'
+            frozen_path=c.live/'frozen-argv.json';frozen_path.write_text(json.dumps(c.frozen),encoding='utf-8')
+            c.context['frozen_argv']=pin(frozen_path)
+            c.selection.context_path.write_text(json.dumps(c.context),encoding='utf-8')
             with self.assertRaises(ValueError):c.resolve_operator_reviewer()
 
 if __name__=='__main__':

@@ -192,7 +192,7 @@ class OperatorQuitTests(unittest.TestCase):
         live.mkdir()
         frozen = live / 'frozen-argv.json'
         self.module.write_once(frozen, {'run_id':live.name, 'screen_task':'SYNTHETIC_SCREEN', 'argv':['SYNTHETIC ONLY']})
-        context = {'reviewer':'/root','frozen_argv':self.entry.pin(frozen), 'keeper_root':str(root/'keeper')}
+        context = {'run_id':live.name,'reviewer':'/root','frozen_argv':self.entry.pin(frozen), 'keeper_root':str(root/'keeper')}
         if enabled:
             value = {'schema':'ck3-mod-acceptance-operator-delegation-v1','run_id':live.name,
                 'screen_task':'SYNTHETIC_SCREEN','frozen_argv':self.entry.pin(frozen),'delegated_by':'/root',
@@ -202,7 +202,7 @@ class OperatorQuitTests(unittest.TestCase):
             self.module.write_once(artifact,value)
             context['operator_delegation'] = self.entry.pin(artifact)
         selection=SimpleNamespace(context=context,context_path=root/'context.json',run_dir=live,state_dir=root/'state',
-            manifest={},product_key='SYNTHETIC',case={'id':'SYNTHETIC'},argv=['SYNTHETIC ONLY'],manifest_path=root/'manifest.json')
+            manifest={},product_key='SYNTHETIC',case={'id':'SYNTHETIC'},argv=['SYNTHETIC ONLY'],runtime_environment={},manifest_path=root/'manifest.json')
         self.module.write_once(selection.context_path, context)
         return self.module.CaseClient(selection)
 

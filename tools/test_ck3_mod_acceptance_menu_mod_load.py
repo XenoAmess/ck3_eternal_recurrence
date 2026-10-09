@@ -30,7 +30,8 @@ class SharedMenuModLoadTests(unittest.TestCase):
         names = {'require_menu_observation_step', 'validate_menu_observation_options',
                  'menu_observation_native_identity', 'observe_frontend_mod_load',
                  'fixture_session', 'load_plan', 'parser', 'lookup', 'resolve',
-                 'finished_native_exit_zero_proof', 'PlanClient',
+                 'finished_native_process_exit_zero_proof', 'finished_native_exit_zero_proof',
+                 'PlanClient',
                  'require_consistent_frontend_observation', 'wait_for_consistent_frontend'}
         nodes = [node for node in tree.body if getattr(node, 'name', None) in names]
         if {node.name for node in nodes} != names:

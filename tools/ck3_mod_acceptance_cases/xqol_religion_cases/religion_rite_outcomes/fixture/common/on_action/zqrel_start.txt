@@ -33,14 +33,8 @@ zqrel_start = {
      }
      else = { debug_log = "ZQREL: TEST FAIL actual_song_actor" }
      debug_log = "ZQREL: SCOPE END actual_song_actor"
-     zqa_setup_release_matrix_effect = yes
-     if = {
-      limit = { has_character_flag = zqa_await_release_matrix }
-      xqol_bulk_release_terms_effect = yes
-      set_variable = { name = zqrel_stage value = 1 }
-      set_variable = { name = zqrel_ticks value = 0 }
-      trigger_event = { id = zqrel.1 days = 1 }
-     }
+     # A character event establishes ROOT as this actual switched Song actor.
+     trigger_event = { id = zqrel.2 }
     }
    }
    else = { debug_log = "ZQREL: TEST FAIL original_song_preconditions" }

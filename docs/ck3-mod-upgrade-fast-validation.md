@@ -18,7 +18,9 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-2026-10-10 05:45当前新场使用唯一[Source12/mapping03](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-reviewer-03.json)，8076B / SHA256 `8251b000a720092fc8025494946a2d0f627df6f910d4876a6d6d02f6df8d2031`；共同manifest `5d00ca2fc93518151f5b9394a713dab8aae60d7e968abc80a23eabf3838e692a`，native `fd1f33ed63c452ba2fef3313a490db53fd8bfcfc567909c94b4966e1f4f7c5aa`。共同任命/title/PAM/truce和失败生命周期沿用同一份源码及DLL；native仅编20个变化TU、复用552个对象并单次链接。mapping03只换实际reviewer退出helper，既有同manifest prepared复用，不重prepare。
+2026-10-10 06:18当前新场唯一[mapping04](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-queue-04.json)，8636B / SHA256 `af28777aee895c2134398ca7497dbdc022ae848879259ace15c0d5623e7a682d`。同Source12 manifest/host/fd1f native及reviewer03 helper，仅control_queue换为已在R44首次实际投递失败收尾的不可变共同producer。旧03/frozen/reject保留；R44原case/run/verify仍失败，22:10:20 UTC原RED/error结束并CAS8000释放资源。四项-O producer检查及host实际失败生命周期共同证明可复用，不按产品重做；原完整业务验收仍各自执行。unused prepared不重做，未来allocation冻结新公共support SHA。
+
+2026-10-10 05:45历史后继使用唯一[Source12/mapping03](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-reviewer-03.json)，8076B / SHA256 `8251b000a720092fc8025494946a2d0f627df6f910d4876a6d6d02f6df8d2031`；共同manifest `5d00ca2fc93518151f5b9394a713dab8aae60d7e968abc80a23eabf3838e692a`，native `fd1f33ed63c452ba2fef3313a490db53fd8bfcfc567909c94b4966e1f4f7c5aa`。共同任命/title/PAM/truce和失败生命周期沿用同一份源码及DLL；native仅编20个变化TU、复用552个对象并单次链接。mapping03只换实际reviewer退出helper，既有同manifest prepared复用，不重prepare。
 
 R42原hardgate与R43原head_identity均case qualified，whole business/release=false保持。R43首次实际验证mapping03自动正常Quit及外置v05连续公共run→verify→原keeper→CAS，host结束后约5秒释放资源，真实OS0/native0/thread/cleanup、allocator/keeper0俱全；[原始回执](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/religion_head_identity--a143/POST-RUN-CLOSE-05.json)。v05只编排已有公共入口与close_attempt，不重实现host/业务/keeper/CAS。保留失败fastfinish和任命provider仍待各自真实qualification，不按产品重复共同成功证明。
 

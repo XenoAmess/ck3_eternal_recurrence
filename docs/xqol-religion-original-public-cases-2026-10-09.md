@@ -13,3 +13,7 @@ Source09 的 religion context、Rite governance、Rite members 工具仍在显�
 每个 case 都是局部补测，`business_contract_applicable=false`、`business_pass=false`、`product_release_pass=false`；真实 marker/后果及 normal close 仍需 Root 在新场实际验收。旧 fixture、旧失败 attempt、Source09 与产品 live 输入均不改写。
 
 新 adapter 仅执行了一次小范围 source 验证：三 case 的控制流/原标记缺失、重复与 FAIL 处理、两个 D0 零日、Rite 两次顺序自然日；原 hardgate 四步 plan/expect 精确相等；原两探针精确相等；release setup/verify 可逆还原；两 Rite 常量精确相等。该验证使用明确 synthetic client，没有 native 编译、profile prepare、游戏或管道，不能充当实机证据。
+
+2026-10-10，R44 原失败与最小入口修正：实际加载的原 rites fixture 与 prepared pins 完全一致；引擎 scope dump 显示当前宋帝 fullID 34422，但 ROOT 为空。原 `zqrel_start` 从 `on_game_start_after_lobby` 的角色 scope 直接调用需要 ROOT 的 release setup，使八个样本的 root culture/location 和原 root.var 比较报错，随后原 `release_fixture_acceptance_matrix` FAIL。旧 R44 与旧 prepared 永久保留，未改判为 PASS。
+
+原引擎 driver 的 character_event 来源为 `prepare_xqol_1_20_fixture.py:event()/events()`；`gen_xqol_phase2.py` 只生成产品 runtime，并非此次启动投影来源。公共 adapter 复制的 authored rites fixture 现仅修 bootstrap：在明确切换后的实际宋帝 scope 触发 D0 hidden `zqrel.2` character_event，以引擎事件 ROOT 执行原 setup/条件 dispatch/stage/ticks/次日 schedule。该块逐字节移动，原 release setup/verify、两项 Rite 探针、现有 zqrel.1 scheduler 和最多 60 自然日均保留；新增 ROOT scope dump 只作原始证据，不替代任何原断言。离线结构检查不能赋予修正后实机信用，需新 unused prepare 和实际场；ordinary_async 使用独立事件及显式 actor 创建，不共享该失败 setup。

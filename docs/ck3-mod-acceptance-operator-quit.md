@@ -71,3 +71,10 @@ CaseClient 仍要求 helper 实际 exit0、同场精确来源与最终 mapped cl
 下一场R0039/a139已真实绑定[七字段委派原件](C:/workspace/ck3-upgrade-20261010/qol-ui25-delegated-live-01/actual-ui-delegation-01.json)，Root在亲审Steam离线证据并启动后明确移交唯一UI/checkpoint操作权给`/root/qol_ui_operator`。该操作者以自己身份记录原UI25，Root不并发输入。委派已实际成立；UI业务仍需该场真实结果，不能由委派成立或R38正常退出推出。
 
 共享接点及隔离MSVC NOMINMAX修复提交`03c65a80954da5d68cad87e8a8ff74d7fcb326df`对应[官方CI37976493582](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37976493582)已实际completed/success，64步骤全部成功，包含17项接点及原local-launch等共享测试。原37973418218失败保留，不由后继成功改写。
+
+
+## 2026-10-10 06:18 公共失败queue与实际reviewer后继
+
+R44正常Quit/实际OS0后旧producer在创建请求前因hosterror拒绝failure finish。现canonical `tools/ck3_mod_acceptance_queue_control.py`只为精确单步失败finish允许保留error，正常业务准入与once原子创建保持；生产资格仍由共同host的原OS/native/thread/cleanup proof决定。当前R44保留03原绑定/reject/run2/verify2/v05BLOCKED，仅以新immutable producer首次实际提交原未创建请求并实际闭场CAS8000；不把它写成03自动链成功或业务PASS。下一唯一mapping04仅换producer pin，旧输入保留。
+
+公共final_root_evidence现从run/verify共用的validated context/frozen resolver取实际operator reviewer，不从evidence自授身份；原同run/status/文件SHA与业务要求保持。新增17项及受影响manual4/delegation2一次通过，CI接入后待实际官方结果；该修补允许后续完整RMTM由唯一获授权操作者连续完成并如实署名，无须逐checkpoint等待Root或冒名。

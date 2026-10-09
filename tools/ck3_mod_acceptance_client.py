@@ -25,6 +25,59 @@ def read_json(path):
     return json.loads(Path(path).read_text(encoding='utf-8-sig'))
 
 
+def resolve_operator_reviewer(selection):
+    """Read the same allocated reviewer/delegation identity for run and verify."""
+    from ck3_mod_acceptance import path_at, check_pin
+    context = selection.context
+    base = selection.context_path.parent
+    frozen_ref = context['frozen_argv']
+    frozen_path = path_at(frozen_ref['path'], base)
+    check_pin(frozen_path, frozen_ref)
+    frozen = read_json(frozen_path)
+    require(frozen.get('run_id') == context.get('run_id') == selection.run_dir.name and
+            frozen.get('argv') == selection.argv and
+            frozen.get('runtime_environment', {}) == selection.runtime_environment,
+            'Actual reviewer crossed allocated frozen run/runtime/case')
+    persisted = read_json(selection.context_path)
+    require(persisted.get('run_id') == context.get('run_id') and
+            persisted.get('reviewer') == context.get('reviewer') and
+            persisted.get('operator_delegation') == context.get('operator_delegation'),
+            'Actual reviewer differs from persisted allocated context')
+    reference = context.get('operator_delegation')
+    if reference is None:
+        require('operator_delegation' not in context, 'Explicit operator delegation cannot be null')
+        reviewer = context.get('reviewer')
+        require(isinstance(reviewer, str) and reviewer and reviewer.strip() == reviewer,
+                'Actual allocated run reviewer required; never claim Root review')
+        require(frozen.get('reviewer', reviewer) == reviewer,
+                'Actual run reviewer differs from the frozen allocated context')
+        return reviewer
+    require(isinstance(reference, dict), 'Exact operator delegation pin required')
+    path = path_at(reference.get('path'), base)
+    check_pin(path, reference)
+    value = read_json(path)
+    require(isinstance(value, dict) and set(value) == {'schema', 'run_id', 'screen_task', 'frozen_argv',
+        'delegated_by', 'delegate_reviewer', 'scopes'} and
+        value.get('schema') == 'ck3-mod-acceptance-operator-delegation-v1', 'Operator delegation contract differs')
+    require(context.get('reviewer') == '/root' and value['delegated_by'] == '/root' and
+        value['run_id'] == frozen['run_id'] == selection.run_dir.name and
+        value['screen_task'] == frozen.get('screen_task') and
+        isinstance(value['screen_task'], str) and value['screen_task'], 'Operator delegation crossed Root run or screen')
+    require(isinstance(value['scopes'], list) and len(value['scopes']) == 2 and
+        set(value['scopes']) == {'ui', 'checkpoint'}, 'Operator delegation is limited to UI/checkpoints')
+    reviewer = value['delegate_reviewer']
+    require(isinstance(reviewer, str) and reviewer.strip() == reviewer and reviewer and reviewer != '/root',
+            'Actual delegate reviewer required; never claim Root review')
+    actual = check_pin(frozen_path, frozen_ref)
+    declared = value['frozen_argv']
+    require(isinstance(declared, dict) and path_at(declared.get('path'), base) == frozen_path,
+            'Operator delegation selected another frozen argv')
+    check_pin(frozen_path, declared)
+    require(declared['bytes'] == actual['bytes'] and declared['sha256'] == actual['sha256'],
+            'Operator delegation frozen argv pin differs')
+    return reviewer
+
+
 class CaseClient:
     def __init__(self, selection, output=None):
         require(selection.context, 'Actual allocated run context required')
@@ -57,45 +110,7 @@ class CaseClient:
             'runtime_manifest': str(selection.manifest_path), 'business_acceptance': 'NOT_ASSESSED'})
 
     def resolve_operator_reviewer(self):
-        """Only the Root-selected exact artifact delegates this run's UI/checkpoints."""
-        reference = self.context.get('operator_delegation')
-        if reference is None:
-            require('operator_delegation' not in self.context, 'Explicit operator delegation cannot be null')
-            reviewer=self.context.get('reviewer')
-            require(isinstance(reviewer,str) and reviewer and reviewer.strip()==reviewer,
-                    'Actual allocated run reviewer required; never claim Root review')
-            persisted=read_json(self.selection.context_path)
-            require(persisted.get('reviewer')==reviewer and self.frozen.get('reviewer',reviewer)==reviewer,
-                    'Actual run reviewer differs from the frozen allocated context')
-            return reviewer
-        from ck3_mod_acceptance import path_at, check_pin
-        require(isinstance(reference,dict), 'Exact operator delegation pin required')
-        base = self.selection.context_path.parent
-        path = path_at(reference.get('path'), base)
-        check_pin(path, reference)
-        value = read_json(path)
-        require(isinstance(value,dict) and set(value) == {'schema','run_id','screen_task','frozen_argv',
-            'delegated_by','delegate_reviewer','scopes'} and
-            value.get('schema') == 'ck3-mod-acceptance-operator-delegation-v1', 'Operator delegation contract differs')
-        require(self.context.get('reviewer') == '/root' and value['delegated_by'] == '/root' and
-            value['run_id'] == self.frozen['run_id'] == self.live.name and
-            value['screen_task'] == self.frozen.get('screen_task') and
-            isinstance(value['screen_task'],str) and value['screen_task'], 'Operator delegation crossed Root run or screen')
-        require(isinstance(value['scopes'],list) and len(value['scopes']) == 2 and
-            set(value['scopes']) == {'ui','checkpoint'}, 'Operator delegation is limited to UI/checkpoints')
-        reviewer = value['delegate_reviewer']
-        require(isinstance(reviewer,str) and reviewer.strip() == reviewer and reviewer and reviewer != '/root',
-                'Actual delegate reviewer required; never claim Root review')
-        frozen = self.context['frozen_argv']
-        frozen_path = path_at(frozen['path'],base)
-        actual = check_pin(frozen_path,frozen)
-        declared = value['frozen_argv']
-        require(isinstance(declared,dict) and path_at(declared.get('path'),base) == frozen_path,
-                'Operator delegation selected another frozen argv')
-        check_pin(frozen_path,declared)
-        require(declared['bytes'] == actual['bytes'] and declared['sha256'] == actual['sha256'],
-                'Operator delegation frozen argv pin differs')
-        return reviewer
+        return resolve_operator_reviewer(self.selection)
 
     def read_report(self, allow_error=False):
         # Decode an unchanged multi-MiB report once, not once per polling tick.

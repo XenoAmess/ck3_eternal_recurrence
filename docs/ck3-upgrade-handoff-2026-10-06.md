@@ -1,5 +1,13 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 06:18：R44保留失败闭场，公共queue与reviewer统一
+
+R0044/a144原rites在startup报release_fixture_acceptance_matrix FAIL、业务0steps；实际引擎宋帝34422但ROOT为空，八个样本root culture/location及原root.var比较报错。原公共fixture从on_action直接调依赖ROOT的setup，现仅将原启动块移入实际宋帝D0 hidden character_event；原setup/verify/Rite探针、zqrel.1 scheduler、七组合与60日不变。六项必要离线检查PASS，需新unused prepare/实机，不更改旧R44。
+
+该场helper正常Quit实际0、retained OS0/native managed/thread完成后，旧queue在任何请求创建前以error非空拒绝failure finish；原run2/verify2/v05BLOCKED保留。Root选定新不可变公共producer，四项-O检查PASS，仅允许精确保留失败的finish_hold请求，资格仍由同一Source12 host判断。当前场首次实际创建原请求0、唯一step ok，host于22:10:20 UTC以RED结束且原error不变；[补充资源闭场原件](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/religion_rite_outcomes--a144/supplemental-failure-finish-06/SUPPLEMENTAL-RESOURCE-CLOSED-06.json)保留旧绑定与新调用。原allocator/keeper实际0，CAS8000 done/resources=[]，未授normal/business/case通过。
+
+下一全部产品唯一[mapping04](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-queue-04.json)：8636B / SHA256 `af28777aee895c2134398ca7497dbdc022ae848879259ace15c0d5623e7a682d`，只换queue pin；manifest/host/native/既有unused prepared不变，旧03与reject保留。公共final_root_evidence已统一消费既有validated实际operator reviewer，run/verify共用resolver，不再硬拒非Root本人；17项新定向、旧manual4与受影响delegation2均实际PASS，产品断言与fixtures不变。官方d2b91/run37995986937前次poll6/preaction6已通过，后续menu旧AST缺纯proof依赖；802B仅测试修补单项PASS并接后继CI，尚待官方。正式仍7/10；下一ordinary、fixedselfpaid、PAM诊断，修正rites另新场，随后UI23/admin20/merit20。
+
 ## 2026-10-10 05:45：R43通过，公共连续收尾首次实测
 
 R0043/a143原religion_head_identity使用同一Source12/mapping03，公共run0、verify0，case/contract/gui qualified=true，原whole business/release=false边界保持。[实际连续闭场回执](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/religion_head_identity--a143/POST-RUN-CLOSE-05.json)保留template-automation身份、actual_manual_reviewer=null；自动Quit、retained HANDLE OS0、严格native0、managed thread/cleanup、原allocator/keeper实际0均闭合。host于21:38:23 UTC结束，CAS7978于21:38:27 UTC done/resources=[]，v05公共run→verify→原keeper→CAS首次实际完成，结束后约5秒释放资源。未因此授保留失败fastfinish或任命provider实机资格。

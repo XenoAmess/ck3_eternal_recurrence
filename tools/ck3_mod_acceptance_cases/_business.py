@@ -132,12 +132,15 @@ def root_response_inputs(context):
 
 def final_root_evidence(context, required_names):
     output = Path(context["output"])
+    reviewer = context.get("operator_reviewer")
+    require(isinstance(reviewer, str) and reviewer and reviewer.strip() == reviewer,
+            "Validated actual operator reviewer required")
     proofs = []
     for name in required_names:
         path = output / (name + "-accepted.json")
         value = json.loads(path.read_text(encoding="utf-8-sig"))
-        require(value.get("reviewer") == "/root" and value.get("run_id") == context["run_id"] and value.get("status") == "complete",
-                "Actual Root review crossed scene")
+        require(value.get("reviewer") == reviewer and value.get("run_id") == context["run_id"] and value.get("status") == "complete",
+                "Actual operator review crossed scene")
         for evidence in value["evidence"]:
             check_evidence(evidence)
         proofs.append(pin(path))

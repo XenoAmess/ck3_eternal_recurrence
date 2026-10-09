@@ -25,3 +25,22 @@ zqrel.1 = {
   }
  }
 }
+
+# D0 projection bootstrap only; original release setup and outcomes stay unchanged.
+zqrel.2 = {
+ type = character_event
+ hidden = yes
+ immediate = {
+  debug_log = "ZQREL: ROOT BEGIN original_release_setup"
+  debug_log_scopes = yes
+  debug_log = "ZQREL: ROOT END original_release_setup"
+     zqa_setup_release_matrix_effect = yes
+     if = {
+      limit = { has_character_flag = zqa_await_release_matrix }
+      xqol_bulk_release_terms_effect = yes
+      set_variable = { name = zqrel_stage value = 1 }
+      set_variable = { name = zqrel_ticks value = 0 }
+      trigger_event = { id = zqrel.1 days = 1 }
+     }
+ }
+}
