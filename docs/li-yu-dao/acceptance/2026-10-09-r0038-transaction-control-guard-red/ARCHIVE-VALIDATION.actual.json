@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.r38.archive-validation.v1",
+  "result": "PASS",
+  "entry_count": 1985,
+  "zip": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0038-transaction-control-guard-red/raw-evidence.zip",
+    "bytes": 14585812,
+    "sha256": "583fdf00b101f5540ced2554e234b0c8cf50b0d86c1d50e08dfbe54a22dc7399"
+  },
+  "index": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0038-transaction-control-guard-red/INDEX.json",
+    "bytes": 839668,
+    "sha256": "22daf38149bbc84295db2b9677be394fe5efe1ac08cf0dc9d1f962f2525a344d"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0038-transaction-control-guard-red/REPORT.md",
+    "bytes": 3145,
+    "sha256": "12035cc3604014fa433740baebeee2ae03ed5d95efd16917b6b11eb42e6542cd"
+  }
+}
