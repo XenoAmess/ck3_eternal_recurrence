@@ -105,7 +105,7 @@ Title occurrence, folded U16-key/full signed64-value block and literal100000
 weight. A zero-count folded composer skips this wrapper just as the caller
 does. The sampled `destination_pc_identity` QWORD remains a different value.
 This increment publishes wrapper entry inputs. The complete arithmetic of the tail delegate remains a separate native proof
-boundaries; a projected request is not an observed Model mutation or final
+boundary; a projected request is not an observed Model mutation or final
 historical Model aggregate.
 
 The unique new connected compound is
