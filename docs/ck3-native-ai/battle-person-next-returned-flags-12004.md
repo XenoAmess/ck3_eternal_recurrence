@@ -62,8 +62,20 @@ The shared header dependency projection belongs to the Root builder. It found 44
 
 ## Readiness and next boundary
 
-The 20-byte caller gate and reused Government getter are source closed. No new observer compiler, FIRST, or production-live result is claimed. Full Person and Entry remain false. Fresh baseline/stage association and later Entry transfer are separate gaps.
+The 20-byte caller gate and reused Government getter are source closed. Root subsequently qualified the observer as static-ready in the run below. No production-live result is claimed. Full Person and Entry remain false. Fresh baseline/stage association and later Entry transfer are separate gaps.
 
 The later positive interval `[291CE15,291CE75)` has not been requested or read. A future package may select it when that demanded contribution is the next useful dependency; it is not needed to publish this gate.
 
 Author operations: zero Game, SDK, process, EXE, PE, PDATA, hash, compiler, build, test, or import. Root performed one new 20-byte read. Cumulative Person capture: 1,932 bytes / 11 reads. Existing GREEN qualification is reused without replay.
+
+## Actual Native53 qualification: static-ready
+
+Root's actual attempt02 result is GREEN: `Z:/g2-native53-build01/attempt02/ROOT-NATIVE53-RESULT.json`. It records seven original native whole packets and seven registered MCP consumptions, one invocation of each. The native FIRST passed in 0.2511784 seconds; the sole consumer passed in 6.4773879 seconds. Inputs are explicitly synthetic, while the reader, current-person collector, formatter, registered callback, Service, Driver, and normalizer are production code.
+
+The production source is `269858189bcac173a255a79748d4862be2087d54`, authored feature `921ae7e0ae52728925f05f7cc49a591a13c1a0b0`. All 450 production compiles passed in attempt01 with 64 workers and were reused unchanged in attempt02. The actual composition is 736 owners: Bridge299, Runtime436, Protocol1; 449 existing replacements, one new Runtime TU, and 286 retained parent owners.
+
+Attempt01 remains RED at fixture compile451: `/W4 /WX` exposed `std::optional<uint32_t> == int` at fixture line163. No native or registered FIRST ran in that attempt. The one-line authored fix `fbb325f242cafc60594a028bb59b7113d737897d` changes only `2` to `2U`; it retains the assertion, warning policy, production, and consumer. Its actual fixture/consumer/qualification source is `4819bb4b8eed1b6ca70ee06c5e2ea200dc590e1d`.
+
+Attempt02 compiled only the fixed fixture (5.7320 seconds), then performed the first Runtime436 archive (0.4284068), DLL link (0.9513349), fixture link (1.0330), native FIRST, and registered FIRST. It did not recompile any production owner or replay an old GREEN case. Across both attempts there are 450 production compiler invocations and two fixture compiler invocations, including the retained failed fixture compile.
+
+At this record, canonical sealing is pending: a sealer basename typo caused a separate harness RED before hashing. That packaging result does not change the GREEN build/native/consumer result, and no canonical or live success is inferred. R84's future same-MCP read will establish the actual current bit19 value. Only an observed demanded branch should select the next positive-path source work; this qualification requests no blind read of `[291CE15,291CE75)`.
