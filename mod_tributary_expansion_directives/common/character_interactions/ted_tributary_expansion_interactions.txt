@@ -103,6 +103,10 @@
 		}
 	}
 
+	localization_values = {
+		TED_WAR_SUBSIDY = ted_war_subsidy_value
+	}
+
 	send_options_exclusive = no
 	send_option = {
 		flag = offer_war_subsidy

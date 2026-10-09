@@ -26,7 +26,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 从仓库根的`cmd.exe`执行，以下只读例子选择当前真实TED case：
 
 ```text
-tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound10.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
+tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound11.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
 ```
 
 后续模式使用相同四项选择参数，按下表替换`plan`并追加参数；尖括号是当次真实路径/新编号占位，不是已有attempt的重跑命令。
@@ -133,3 +133,11 @@ R19在17:02:39 UTC结束，host报告GREEN、managed thread完成、cleanup TRUE
 共用`workshop_cache`已经接入六模式CLI，一份顶层case/adapter供全部产品复用，公开ID取canonical清单，无ID开发版拒绝。唯一共同host新增显式菜单观察支路：不New Game/Start/载入/日推进，实际单次受管launch与两连续完整主菜单观察绑定cache-only六文件profile，原正常GUI/OS0/native0/cleanup沿用。缓存文件直接引用Steam下载目录，原strict helper逐文件核正式manifest；无业务fixture或复制cache。已采用[菜单6项](../tools/test_ck3_mod_acceptance_menu_mod_load.py)实际PASS（2.108秒）及[cache9项](../tools/test_ck3_mod_acceptance_workshop_cache.py)实际PASS（1.068秒），原客户端、allocator和SDK入口保持。详细永久政策见[缓存验收](workshop-cache-acceptance.md)。代码采用不代替首次菜单模式实机资格，后续统一封存供新run消费。
 
 精确日志修复提交`4fa3e50cba036d538ad2c5a7266f60610ea94496`的[官方CI 37799513376](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37799513376)实际success（15:24:15 UTC），[线性历史CI 37799513501](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37799513501)实际success（15:18:09 UTC）。新菜单/绑定采用仍需其精确新提交的CI，不外推旧CI；正式仍6/10。
+
+2026-10-09追加：上述菜单/绑定/cache采用的精确提交`654f38068089e8bf1b683e53cc31a23614372079`已普通推送，[官方CI 37864137963](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37864137963)实际success（00:27:57 UTC），[线性历史CI 37864137896](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37864137896)实际success（00:19:36 UTC）。[终态薄回执](C:/workspace/ck3-upgrade-20261007/remaining12004-formal-publish-cards-01/exact654f-ci-terminal-once-66-01/EXACT-654F-CI-TERMINAL-66.json)只查询当次精确提交，不重跑旧矩阵；CI不授尚未运行的菜单加载实机信用。
+
+TED R20/a129的D1/context成功，Root普通GUI已确认辽帝、外国君主及可选郡列表，但原三小时hold于03:22:24 UTC结束前未Send，公共run实际exit2；没有AI响应或业务通过。原retained handle仍为signaled=false/exit_code=null、normal-close-qualified=false，不能据后来host GREEN/thread/cleanup TRUE补认正常OS0。[四份原始小结果及pins](C:/workspace/ck3-upgrade-20261009/ted-production-ui-unused-root-07/previous-R20-pins.json)保全，[a129 CAS7343](C:/workspace/ck3-upgrade-20261006/resume-root-01/a129-screen-release-01.json)已done/resources=[]。下一场沿用已验证的扫描码输入和跨游戏帧的单次点击；原合同允许选择当场真实合法的外国接壤郡，无需固定搜索天德。实际选项、资助数值、Send一次、AI回应与钱包/战争后果仍须亲审，不用导航ACK补业务信用。
+
+2026-10-09 TED R21/a130沿同一入口完成真实生产交互：Root亲审单次Send后的“拓疆令已受命”，宋金币2407→2357、威望6050→5900，辽金币281→331；实际辽帝耶律弘基向夏宁令嵬名两岔发动争夺天德的朝贡拓疆战争。[原GUI结果](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--tributary-expansion-directives--R0021/case-output/ted-real-production-UI-root-result.json)保留资金数字空白及次要目标裸key两项显示缺口，不能把真实转账50外推为金额显示通过。正常GUI Quit后，原retained HANDLE signaled=true/exit0、native exit0/job0/treegone/control全absent；公共run实际exit0、case/GUI/normal-close均qualified，host于06:36:06 UTC完成thread/cleanup。keeper实际exit0后，[a130 CAS7450释放](C:/workspace/ck3-upgrade-20261006/resume-root-01/a130-screen-release-01.json)为waiting/resources=[]；该过期claim退休状态不改写实际run/正常退出0，也不授完整release。
+
+同日采用[显示修复43](C:/workspace/ck3-upgrade-20261009/ted-ui-display-candidate-43/ROOT-TED-DISPLAY-FIX-CONSUME-43.md)：交互通过原生`localization_values`绑定动态战争金，九语标签改用`$TED_WAR_SUBSIDY|0$`并补齐次要目标标签；金额公式、AI、CB及实际效果保持。既有static、4项针对显示失败的回归测试和一次16文件builder均实际exit0；[新staging manifest](C:/workspace/ck3-upgrade-20261009/ted-display43-staging-once-01/mod_tributary_expansion_directives.manifest.json)仍是未发布候选。新场只沿公共production_ui复核受影响的显示及同一生产交互/正常退出，不重跑旧13项或SaveLoad矩阵。新Notes已冻结为2943B/2127字符/19行/SHA `c3ee3e5d158310d578d55c20c935a7fa5507f30617287a876680f439efd92aff`，仍未发布。

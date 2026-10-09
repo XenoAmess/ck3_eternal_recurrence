@@ -4,7 +4,7 @@
  ted_expansion_directive_notification:0 "Tu soberano, [actor.GetShortUIName], te ordena atacar a [secondary_recipient.GetShortUIName] para conquistar [target.GetName]."
  ted_expansion_directive_accept:0 "La frontera será nuestra."
  ted_expansion_directive_decline:0 "No derramaré sangre por esta exigencia."
- ted_offer_war_subsidy_option:0 "Ofrecer un subsidio de guerra ([gold_i][SCOPE.ScriptValue('ted_war_subsidy_value')|0])"
+ ted_offer_war_subsidy_option:0 "Ofrecer un subsidio de guerra ([gold_i]$TED_WAR_SUBSIDY|0$)"
  ted_target_must_border_tributary_tt:0 "El condado objetivo debe compartir una frontera terrestre con el tributario"
  ted_tributary_must_be_ready_tt:0 "El tributario debe ser adulto, libre, estar en paz y no tener ejércitos reclutados"
  ted_tributary_needs_neighbor_target_tt:0 "El tributario debe lindar con un condado extranjero válido"
@@ -24,3 +24,4 @@
  ted_directed_county_expansion_victory_desc:0 "[attacker.GetShortUIName|U] toma el [county|E] en disputa."
  ted_directed_county_expansion_white_peace_desc:0 "[defender.GetShortUIName|U] conserva el [county|E] en disputa."
  ted_directed_county_expansion_defeat_desc:0 "[defender.GetShortUIName|U] conserva el [county|E] en disputa."
+ recipient_secondary_ted_issue_expansion_directive_interaction:0 "Objetivo"

@@ -4,7 +4,7 @@
  ted_expansion_directive_notification:0 "Euer Suzerän [actor.GetShortUIName] befiehlt Euch, [secondary_recipient.GetShortUIName] anzugreifen und [target.GetName] zu erobern."
  ted_expansion_directive_accept:0 "Das Grenzland wird uns gehören."
  ted_expansion_directive_decline:0 "Für diese Forderung vergieße ich kein Blut."
- ted_offer_war_subsidy_option:0 "Kriegssubvention anbieten ([gold_i][SCOPE.ScriptValue('ted_war_subsidy_value')|0])"
+ ted_offer_war_subsidy_option:0 "Kriegssubvention anbieten ([gold_i]$TED_WAR_SUBSIDY|0$)"
  ted_target_must_border_tributary_tt:0 "Die Zielgrafschaft muss eine Landgrenze mit dem Tributär teilen"
  ted_tributary_must_be_ready_tt:0 "Der Tributär muss volljährig, frei und im Frieden sein und darf keine aufgestellten Heere haben"
  ted_tributary_needs_neighbor_target_tt:0 "Der Tributär muss an eine geeignete ausländische Grafschaft grenzen"
@@ -24,3 +24,4 @@
  ted_directed_county_expansion_victory_desc:0 "[attacker.GetShortUIName|U] erringt die umstrittene [county|E]."
  ted_directed_county_expansion_white_peace_desc:0 "[defender.GetShortUIName|U] behält die umstrittene [county|E]."
  ted_directed_county_expansion_defeat_desc:0 "[defender.GetShortUIName|U] behält die umstrittene [county|E]."
+ recipient_secondary_ted_issue_expansion_directive_interaction:0 "Ziel"

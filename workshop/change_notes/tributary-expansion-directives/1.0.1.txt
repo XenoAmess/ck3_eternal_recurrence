@@ -1,4 +1,4 @@
-1.0.1 — CK3 1.20.0.4 compatibility maintenance / 兼容性维护
+1.0.1 — CK3 1.20.0.4 compatibility maintenance and UI display fixes / 兼容性维护
 
 中文
 本次更新相对公开版本 1.0.0：将模组声明的兼容版本更新至 CK3 1.20.0.4。
@@ -7,9 +7,11 @@
 接受后由朝贡国作为主攻方发动专用单伯爵领征服战争，胜利领土归朝贡国。有效拒绝保留威望消耗和五年冷却，但不转移金币、不发动战争；同帧失效仍退还威望并解除冷却。
 原版停战、同盟、朝贡网络、游牧与战争资格限制继续生效。九种语言文本保持一致。
 本次维护保持既有存储结构；更换游戏版本或模组组合前建议备份存档。修改相同角色交互或宣战理由行为的模组可能影响兼容性。
+修复发布拓疆令时可选战争金金额显示为空的问题，继续使用同一动态战争金公式。 补齐目标统治者的九语界面标签，避免显示 recipient_secondary_ted_issue_expansion_directive_interaction 内部键名。 拓疆令费用、AI 接受度、金币转移、战争对象与原有存档结构保持原样。
 
 English
 Changes since public version 1.0.0: the mod's declared compatibility version is updated to CK3 1.20.0.4.
+Fixed the optional war subsidy amount appearing blank in the Expansion Directive interaction, using the same dynamic subsidy calculation. Added the secondary target ruler label in all nine supported languages instead of displaying an internal localization key. Directive costs, AI acceptance, gold transfers, war targets and existing save data remain unchanged.
 Expansion Directive gameplay and values remain unchanged: a suzerain chooses one eligible neighboring foreign county for a direct AI tributary to attack. Each valid order costs 150 Prestige, and the suzerain's Prestige level affects acceptance.
 The optional subsidy remains 12 months of the tributary's income, rounded up to 5 Gold and clamped to 50–500 Gold. Gold transfers only after valid acceptance.
 Acceptance starts the dedicated county conquest with the tributary as primary attacker; victory grants the county to the tributary. A valid refusal retains the Prestige cost and five-year cooldown but transfers no Gold and starts no war. Same-frame invalidation refunds Prestige and removes the cooldown.

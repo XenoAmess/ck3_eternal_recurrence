@@ -4,7 +4,7 @@
  ted_expansion_directive_notification:0 "Your suzerain, [actor.GetShortUIName], commands you to attack [secondary_recipient.GetShortUIName] for [target.GetName]."
  ted_expansion_directive_accept:0 "The frontier will be ours."
  ted_expansion_directive_decline:0 "I will not bleed for this demand."
- ted_offer_war_subsidy_option:0 "Offer a War Subsidy ([gold_i][SCOPE.ScriptValue('ted_war_subsidy_value')|0])"
+ ted_offer_war_subsidy_option:0 "Offer a War Subsidy ([gold_i]$TED_WAR_SUBSIDY|0$)"
  ted_target_must_border_tributary_tt:0 "The target County must share a land border with the tributary"
  ted_tributary_must_be_ready_tt:0 "The tributary must be an adult, free, at peace, and have no raised armies"
  ted_tributary_needs_neighbor_target_tt:0 "The tributary must border an eligible foreign County"
@@ -24,3 +24,4 @@
  ted_directed_county_expansion_victory_desc:0 "[attacker.GetShortUIName|U] takes the contested [county|E]."
  ted_directed_county_expansion_white_peace_desc:0 "[defender.GetShortUIName|U] keeps the contested [county|E]."
  ted_directed_county_expansion_defeat_desc:0 "[defender.GetShortUIName|U] keeps the contested [county|E]."
+ recipient_secondary_ted_issue_expansion_directive_interaction:0 "Target"

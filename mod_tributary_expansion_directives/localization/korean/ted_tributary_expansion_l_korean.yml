@@ -4,7 +4,7 @@
  ted_expansion_directive_notification:0 "종주국 [actor.GetShortUIName]이(가) [secondary_recipient.GetShortUIName]을(를) 공격하여 [target.GetName]을(를) 빼앗으라고 명령했습니다."
  ted_expansion_directive_accept:0 "변경은 우리의 것이 될 것이다."
  ted_expansion_directive_decline:0 "이 요구를 위해 피를 흘리지는 않겠다."
- ted_offer_war_subsidy_option:0 "전쟁 보조금 제공 ([gold_i][SCOPE.ScriptValue('ted_war_subsidy_value')|0])"
+ ted_offer_war_subsidy_option:0 "전쟁 보조금 제공 ([gold_i]$TED_WAR_SUBSIDY|0$)"
  ted_target_must_border_tributary_tt:0 "목표 백작령은 조공국과 육로로 인접해야 함"
  ted_tributary_must_be_ready_tt:0 "조공국 통치자는 성인이며 투옥되지 않았고 평화 상태여야 하며 소집된 군대가 없어야 함"
  ted_tributary_needs_neighbor_target_tt:0 "조공국은 조건을 충족하는 외국 백작령과 인접해야 함"
@@ -24,3 +24,4 @@
  ted_directed_county_expansion_victory_desc:0 "[attacker.GetShortUIName|U]이(가) 분쟁 중인 [county|E]을(를) 획득합니다."
  ted_directed_county_expansion_white_peace_desc:0 "[defender.GetShortUIName|U]이(가) 분쟁 중인 [county|E]을(를) 유지합니다."
  ted_directed_county_expansion_defeat_desc:0 "[defender.GetShortUIName|U]이(가) 분쟁 중인 [county|E]을(를) 유지합니다."
+ recipient_secondary_ted_issue_expansion_directive_interaction:0 "대상"

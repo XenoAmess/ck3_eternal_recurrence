@@ -4,7 +4,7 @@
  ted_expansion_directive_notification:0 "Twój suweren [actor.GetShortUIName] nakazuje ci zaatakować [secondary_recipient.GetShortUIName] i zdobyć [target.GetName]."
  ted_expansion_directive_accept:0 "Pogranicze będzie nasze."
  ted_expansion_directive_decline:0 "Nie będę przelewać krwi za to żądanie."
- ted_offer_war_subsidy_option:0 "Zaoferuj subsydium wojenne ([gold_i][SCOPE.ScriptValue('ted_war_subsidy_value')|0])"
+ ted_offer_war_subsidy_option:0 "Zaoferuj subsydium wojenne ([gold_i]$TED_WAR_SUBSIDY|0$)"
  ted_target_must_border_tributary_tt:0 "Docelowe hrabstwo musi graniczyć lądem z trybutariuszem"
  ted_tributary_must_be_ready_tt:0 "Trybutariusz musi być dorosły, wolny, pozostawać w pokoju i nie mieć wystawionych armii"
  ted_tributary_needs_neighbor_target_tt:0 "Trybutariusz musi graniczyć z odpowiednim obcym hrabstwem"
@@ -24,3 +24,4 @@
  ted_directed_county_expansion_victory_desc:0 "[attacker.GetShortUIName|U] przejmuje sporne [county|E]."
  ted_directed_county_expansion_white_peace_desc:0 "[defender.GetShortUIName|U] zachowuje sporne [county|E]."
  ted_directed_county_expansion_defeat_desc:0 "[defender.GetShortUIName|U] zachowuje sporne [county|E]."
+ recipient_secondary_ted_issue_expansion_directive_interaction:0 "Cel"

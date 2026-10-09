@@ -77,6 +77,26 @@ def loc_entries(value: str) -> dict[str, str]:
     return entries
 
 
+def interaction_localization_errors(interaction: str, localized: dict[str, dict[str, str]]) -> list[str]:
+    """Check interaction-specific display data without claiming a live render."""
+    errors: list[str] = []
+    if re.search(
+        r"\blocalization_values\s*=\s*\{[^{}]*\bTED_WAR_SUBSIDY\s*=\s*ted_war_subsidy_value\b",
+        interaction,
+    ) is None:
+        errors.append("interaction subsidy localization value is not bound to ted_war_subsidy_value")
+    secondary_key = "recipient_secondary_ted_issue_expansion_directive_interaction"
+    for language in LANGUAGES:
+        entries = localized.get(language, {})
+        subsidy = entries.get("ted_offer_war_subsidy_option", "")
+        if subsidy.count("[gold_i]$TED_WAR_SUBSIDY|0$") != 1 or "SCOPE.ScriptValue" in subsidy:
+            errors.append(f"interaction subsidy display token missing or invalid: {language}")
+        secondary = entries.get(secondary_key, "").strip()
+        if not secondary or secondary == secondary_key:
+            errors.append(f"interaction secondary-recipient label missing or untranslated: {language}")
+    return errors
+
+
 def subsidy_reference(monthly_income: float) -> int:
     value = min(500, max(50, monthly_income * 12))
     return int((value + 4.999999) // 5 * 5)
@@ -208,6 +228,7 @@ def validate() -> list[str]:
         for key, source in english.items():
             if sorted(protected_tokens(entries[key])) != sorted(protected_tokens(source)):
                 errors.append(f"protected token mismatch: {language}:{key}")
+    errors.extend(interaction_localization_errors(interaction, localized))
     # Text language/script and translation quality are not non-Chinese release gates.
 
     thumbnail = MOD / "thumbnail.png"

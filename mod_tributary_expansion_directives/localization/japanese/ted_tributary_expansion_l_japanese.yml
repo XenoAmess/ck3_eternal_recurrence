@@ -4,7 +4,7 @@
  ted_expansion_directive_notification:0 "宗主[actor.GetShortUIName]より、[secondary_recipient.GetShortUIName]を攻めて[target.GetName]を奪うよう命じられました。"
  ted_expansion_directive_accept:0 "辺境は我らのものとなる。"
  ted_expansion_directive_decline:0 "この要求のために血は流さぬ。"
- ted_offer_war_subsidy_option:0 "軍資金を提供（[gold_i][SCOPE.ScriptValue('ted_war_subsidy_value')|0]）"
+ ted_offer_war_subsidy_option:0 "軍資金を提供（[gold_i]$TED_WAR_SUBSIDY|0$）"
  ted_target_must_border_tributary_tt:0 "目標の伯爵領は朝貢国と陸続きで隣接していなければならない"
  ted_tributary_must_be_ready_tt:0 "朝貢国の統治者は成人で拘禁されておらず、平時で、軍を召集していない必要がある"
  ted_tributary_needs_neighbor_target_tt:0 "朝貢国は対象となる外国の伯爵領と隣接していなければならない"
@@ -24,3 +24,4 @@
  ted_directed_county_expansion_victory_desc:0 "[attacker.GetShortUIName|U]が争奪中の[county|E]を獲得する。"
  ted_directed_county_expansion_white_peace_desc:0 "[defender.GetShortUIName|U]が争奪中の[county|E]を維持する。"
  ted_directed_county_expansion_defeat_desc:0 "[defender.GetShortUIName|U]が争奪中の[county|E]を維持する。"
+ recipient_secondary_ted_issue_expansion_directive_interaction:0 "標的"
