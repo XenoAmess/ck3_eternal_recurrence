@@ -14,6 +14,7 @@ from .driver import BridgeUnavailableError
 LEAF = "current_first_heir_descendants_v1"
 SUMMARY = "current_first_heir_descendants_summary_v1"
 CHILD_INPUTS = "child_inputs"
+TYPED_WINDOWS = "typed_windows"
 CHILDHOOD_TRAIT_KEYS = ("curious", "rowdy", "bossy", "pensive", "charming")
 EDUCATION_POINT_TRAIT_KEYS = (
     "intellect_good_1", "intellect_good_2", "intellect_good_3",
@@ -103,6 +104,70 @@ def _native_focus(value: object) -> None:
         raise BridgeUnavailableError("available current heir child focus values are malformed")
 
 
+def _typed_windows(value: object, *, native_revision: int) -> None:
+    """Keep fixed-window diagnostics independent of the child observations."""
+    required = {"source", "native_revision", "window_handler_status",
+                "window_handler_unavailable_reason", "rows"}
+    if (not isinstance(value, dict) or not required.issubset(value)
+            or value["source"] != "native_fixed_window_type_diagnostic"
+            or type(value["native_revision"]) is not int
+            or value["native_revision"] != native_revision
+            or value["window_handler_status"] not in ("available", "unavailable")
+            or not isinstance(value["rows"], list) or len(value["rows"]) != 7):
+        raise BridgeUnavailableError("current heir typed-window diagnostic is malformed")
+    handler_available = value["window_handler_status"] == "available"
+    reason = value["window_handler_unavailable_reason"]
+    if (reason is not None if handler_available
+            else not isinstance(reason, str) or not reason):
+        raise BridgeUnavailableError("current heir typed-window handler is malformed")
+    fixed_rows = ((0, 152, 13092), (1, 160, 11010), (2, 168, 11399),
+                  (3, 176, 14350), (4, 184, 14351), (5, 192, 15450),
+                  (6, 200, 10602))
+    rva_keys = ("object_vtable_rva", "object_col_rva", "object_type_descriptor_rva")
+    row_keys = {"slot_index", "handler_member_offset", "type_identifier",
+                "registered_name_status", "registered_name",
+                "registered_name_unavailable_reason", "window_presence",
+                "object_type_status", *rva_keys, "object_type_decorated_name",
+                "object_type_unavailable_reason"}
+    for row, fixed in zip(value["rows"], fixed_rows):
+        if (not isinstance(row, dict) or not row_keys.issubset(row)
+                or any(type(row[key]) is not int or row[key] != expected
+                       for key, expected in zip(
+                           ("slot_index", "handler_member_offset", "type_identifier"), fixed))
+                or row["registered_name_status"] not in ("available", "unavailable")
+                or row["window_presence"] not in ("present", "absent", "unavailable")
+                or row["object_type_status"] not in
+                    ("available", "unavailable", "not_applicable")
+                or any(row[key] is not None and not _integer(row[key], 0, 2**64)
+                       for key in rva_keys)
+                or (row["object_type_decorated_name"] is not None
+                    and not isinstance(row["object_type_decorated_name"], str))):
+            raise BridgeUnavailableError("current heir typed-window row is malformed")
+        name_available = row["registered_name_status"] == "available"
+        name, name_reason = row["registered_name"], row["registered_name_unavailable_reason"]
+        if ((name_reason is not None if name_available
+             else not isinstance(name_reason, str) or not name_reason)
+                or (not isinstance(name, str) if name_available else name is not None)):
+            raise BridgeUnavailableError("current heir typed-window registered name is malformed")
+        presence, status = row["window_presence"], row["object_type_status"]
+        object_reason = row["object_type_unavailable_reason"]
+        if (not handler_available and presence != "unavailable"
+                or (presence == "absent" and status != "not_applicable")
+                or (presence == "unavailable" and status != "unavailable")
+                or (presence == "present" and status == "not_applicable")
+                or (not isinstance(object_reason, str) or not object_reason
+                    if status == "unavailable" else object_reason is not None)):
+            raise BridgeUnavailableError("current heir typed-window object status is malformed")
+        if status == "available":
+            if (any(row[key] is None for key in rva_keys)
+                    or not isinstance(row["object_type_decorated_name"], str)):
+                raise BridgeUnavailableError("available current heir typed-window RTTI is malformed")
+        elif presence != "present" and (
+                any(row[key] is not None for key in rva_keys)
+                or row["object_type_decorated_name"] is not None):
+            raise BridgeUnavailableError("unobserved current heir typed-window RTTI is malformed")
+
+
 def _child_inputs(value: object, descendants: dict[str, object]) -> None:
     """Bind distinct living-child inputs to their full native occurrence groups."""
     if (not isinstance(value, dict)
@@ -119,6 +184,8 @@ def _child_inputs(value: object, descendants: dict[str, object]) -> None:
                                "heir_character_id", "date_raw"))
             or not isinstance(value.get("rows"), list)):
         raise BridgeUnavailableError("current heir child input frame is malformed")
+    if TYPED_WINDOWS in value:
+        _typed_windows(value[TYPED_WINDOWS], native_revision=value["native_revision"])
     rows = value["rows"]
     if status == "unavailable":
         if rows:

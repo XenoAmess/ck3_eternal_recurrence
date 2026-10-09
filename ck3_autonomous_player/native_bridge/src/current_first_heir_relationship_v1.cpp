@@ -123,6 +123,54 @@ void AppendDescendantLineage(
   json += '}';
 }
 
+void AppendTypedWindows(std::string &json,
+                        const CurrentFirstHeirTypedWindowsReadV1 &read,
+                        std::uint64_t native_revision) {
+  json += "{\"source\":\"native_fixed_window_type_diagnostic\",\"native_revision\":";
+  json += std::to_string(native_revision);
+  json += ",\"window_handler_status\":";
+  AppendJsonString(json, read.window_handler_available ? "available" : "unavailable");
+  json += ",\"window_handler_unavailable_reason\":";
+  if (read.window_handler_available) json += "null";
+  else AppendJsonString(json, read.window_handler_unavailable_reason);
+  json += ",\"rows\":[";
+  for (std::size_t index = 0; index < read.rows.size(); ++index) {
+    if (index != 0) json += ',';
+    const auto &row = read.rows[index];
+    json += "{\"slot_index\":" + std::to_string(row.slot_index);
+    json += ",\"handler_member_offset\":" + std::to_string(row.handler_member_offset);
+    json += ",\"type_identifier\":" + std::to_string(row.type_identifier);
+    json += ",\"registered_name_status\":";
+    AppendJsonString(json, row.registered_name_available ? "available" : "unavailable");
+    json += ",\"registered_name\":";
+    if (row.registered_name) AppendJsonString(json, *row.registered_name);
+    else json += "null";
+    json += ",\"registered_name_unavailable_reason\":";
+    if (row.registered_name_available) json += "null";
+    else AppendJsonString(json, row.registered_name_unavailable_reason);
+    json += ",\"window_presence\":";
+    AppendJsonString(json, row.window_presence);
+    json += ",\"object_type_status\":";
+    AppendJsonString(json, row.object_type_status);
+    json += ",\"object_vtable_rva\":";
+    AppendOptionalNumber(json, row.object_vtable_rva);
+    json += ",\"object_col_rva\":";
+    AppendOptionalNumber(json, row.object_col_rva);
+    json += ",\"object_type_descriptor_rva\":";
+    AppendOptionalNumber(json, row.object_type_descriptor_rva);
+    json += ",\"object_type_decorated_name\":";
+    if (row.object_type_decorated_name)
+      AppendJsonString(json, *row.object_type_decorated_name);
+    else json += "null";
+    json += ",\"object_type_unavailable_reason\":";
+    if (row.object_type_status == "available" || row.object_type_status == "not_applicable")
+      json += "null";
+    else AppendJsonString(json, row.object_type_unavailable_reason);
+    json += '}';
+  }
+  json += "]}";
+}
+
 void AppendChildInputs(std::string &json,
                        const CurrentFirstHeirChildInputsReadV1 &read,
                        std::uint64_t native_revision) {
@@ -220,7 +268,12 @@ void AppendChildInputs(std::string &json,
     }
     json += '}';
   }
-  json += "]}";
+  json += ']';
+  if (read.typed_windows) {
+    json += ",\"typed_windows\":";
+    AppendTypedWindows(json, *read.typed_windows, native_revision);
+  }
+  json += '}';
 }
 
 std::string CurrentFirstHeirDescendantsJsonV1(

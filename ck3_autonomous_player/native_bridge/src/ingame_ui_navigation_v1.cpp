@@ -4,6 +4,8 @@
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
 #include "xar_bridge/ck3_12004_ingame_ui.hpp"
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
+#include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
+#include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include <windows.h>
 #include <bcrypt.h>
 #pragma comment(lib,"bcrypt.lib")
@@ -131,6 +133,84 @@ bool TypedObject(std::uintptr_t base,void *object,std::uintptr_t descriptor,
   auto c=reinterpret_cast<std::uintptr_t>(col);
   return c>=base && c+24<=base+image_size && Value(col,0,signature) && signature==1 &&
       Value(col,12,type) && type==descriptor && Value(col,20,self) && base+self==c;
+}
+bool CurrentFirstHeirImageRangeV1(std::uintptr_t base,
+                                std::uintptr_t image_size,
+                                std::uintptr_t address, std::size_t size,
+                                std::uintptr_t &rva) noexcept {
+  if (!base || address < base) return false;
+  rva = address - base;
+  return rva < image_size && size <= image_size - rva;
+}
+void ReadCurrentFirstHeirObjectTypeV1(
+    std::uintptr_t base, std::uintptr_t image_size, const void *window,
+    CurrentFirstHeirTypedWindowRowV1 &row) {
+  std::uintptr_t vtable = 0, vtable_rva = 0;
+  if (!Value(window, 0, vtable)) {
+    row.object_type_unavailable_reason = "object_vtable_unreadable";
+    return;
+  }
+  if (!CurrentFirstHeirImageRangeV1(base, image_size, vtable,
+                                  sizeof(void *), vtable_rva)) {
+    row.object_type_unavailable_reason = "object_vtable_outside_image";
+    return;
+  }
+  row.object_vtable_rva = static_cast<std::uint64_t>(vtable_rva);
+  if (vtable_rva < sizeof(void *)) {
+    row.object_type_unavailable_reason = "object_col_slot_outside_image";
+    return;
+  }
+  std::uintptr_t col = 0, col_rva = 0;
+  if (!Slot(vtable - sizeof(void *), col)) {
+    row.object_type_unavailable_reason = "object_col_unreadable";
+    return;
+  }
+  if (!CurrentFirstHeirImageRangeV1(base, image_size, col, 24, col_rva)) {
+    row.object_type_unavailable_reason = "object_col_outside_image";
+    return;
+  }
+  row.object_col_rva = static_cast<std::uint64_t>(col_rva);
+  std::uint32_t signature = 0, type_rva = 0, self_rva = 0;
+  if (!Value(reinterpret_cast<const void *>(col), 0, signature) ||
+      !Value(reinterpret_cast<const void *>(col), 12, type_rva) ||
+      !Value(reinterpret_cast<const void *>(col), 20, self_rva)) {
+    row.object_type_unavailable_reason = "object_col_fields_unreadable";
+    return;
+  }
+  if (signature != 1) {
+    row.object_type_unavailable_reason = "object_col_signature_unavailable";
+    return;
+  }
+  if (static_cast<std::uintptr_t>(self_rva) != col_rva) {
+    row.object_type_unavailable_reason = "object_col_self_mismatch";
+    return;
+  }
+  if (!type_rva || static_cast<std::uintptr_t>(type_rva) >= image_size ||
+      image_size - static_cast<std::uintptr_t>(type_rva) <= 0x10) {
+    row.object_type_unavailable_reason = "object_type_descriptor_outside_image";
+    return;
+  }
+  row.object_type_descriptor_rva = static_cast<std::uint64_t>(type_rva);
+  constexpr std::size_t kDecoratedNameLimit = 512;
+  std::array<char, kDecoratedNameLimit> decorated{};
+  const auto descriptor = base + static_cast<std::uintptr_t>(type_rva);
+  const auto remaining = image_size - static_cast<std::uintptr_t>(type_rva);
+  for (std::size_t index = 0; index < decorated.size(); ++index) {
+    const auto offset = 0x10 + index;
+    if (offset >= remaining ||
+        !Value(reinterpret_cast<const void *>(descriptor), offset,
+               decorated[index])) {
+      row.object_type_unavailable_reason = "object_type_name_unreadable";
+      return;
+    }
+    if (decorated[index] == '\0') {
+      row.object_type_decorated_name.emplace(decorated.data(), index);
+      row.object_type_status = "available";
+      row.object_type_unavailable_reason = {};
+      return;
+    }
+  }
+  row.object_type_unavailable_reason = "object_type_name_unterminated";
 }
 bool InvokeCast(NativeRuntimeDynamicCastV1 fn,void *object,const void *source,const void *target,void *&out) noexcept {
 #if defined(_MSC_VER)
@@ -540,6 +620,90 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
 }
 #include "army_tooltip_v1.inc"
 } // namespace
+
+CurrentFirstHeirTypedWindowsReadV1 ReadCurrentFirstHeirTypedWindowRows12004V1(
+    std::uintptr_t base, std::uintptr_t image_size,
+    const ck3_12002::EventWindowBindings &bindings,
+    const void *handler) noexcept {
+  CurrentFirstHeirTypedWindowsReadV1 out;
+  out.window_handler_available = handler != nullptr;
+  if (!handler) out.window_handler_unavailable_reason = "window_handler_unavailable";
+  try {
+    out.rows.reserve(kCurrentFirstHeirTypedWindowSpecsV1.size());
+    for (const auto &spec : kCurrentFirstHeirTypedWindowSpecsV1) {
+      auto &row = out.rows.emplace_back();
+      row.slot_index = spec.slot_index;
+      row.handler_member_offset = spec.handler_member_offset;
+      row.type_identifier = spec.type_identifier;
+      if (!bindings.resolve_generic_value_type_name) {
+        row.registered_name_unavailable_reason = "type_name_resolver_unbound";
+      } else {
+        try {
+          const auto *name =
+              bindings.resolve_generic_value_type_name(spec.type_identifier);
+          if (!name) {
+            row.registered_name_unavailable_reason = "type_name_resolver_returned_null";
+          } else if (name == bindings.generic_value_type_name_fallback) {
+            row.registered_name_unavailable_reason = "type_name_registry_fallback";
+          } else {
+            row.registered_name.emplace(*name);
+            row.registered_name_available = true;
+          }
+        } catch (...) {
+          row.registered_name_unavailable_reason = "type_name_resolution_failed";
+        }
+      }
+      if (!handler) {
+        row.object_type_unavailable_reason = "window_handler_unavailable";
+        continue;
+      }
+      const void *window = nullptr;
+      if (!Value(handler, static_cast<std::size_t>(spec.handler_member_offset),
+                 window)) {
+        row.object_type_unavailable_reason = "window_slot_unreadable";
+        continue;
+      }
+      if (!window) {
+        row.window_presence = "absent";
+        row.object_type_status = "not_applicable";
+        continue;
+      }
+      row.window_presence = "present";
+      try {
+        ReadCurrentFirstHeirObjectTypeV1(base, image_size, window, row);
+      } catch (...) {
+        row.object_type_unavailable_reason = "object_type_read_failed";
+      }
+    }
+  } catch (...) {
+    out.window_handler_unavailable_reason = "typed_window_rows_read_failed";
+  }
+  return out;
+}
+
+CurrentFirstHeirTypedWindowsReadV1 ReadCurrentFirstHeirTypedWindows12004V1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ck3_12002::EventWindowBindings &bindings) noexcept {
+  if (!environment.exact_build_admitted ||
+      environment.offline_fixture_function_overrides ||
+      !environment.module_base ||
+      environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
+      !Actual4UiBoundV1(environment)) {
+    const ck3_12002::EventWindowBindings unavailable_bindings{};
+    auto out = ReadCurrentFirstHeirTypedWindowRows12004V1(
+        environment.module_base, 0, unavailable_bindings, nullptr);
+    out.window_handler_unavailable_reason = "actual4_ui_binding_unavailable";
+    return out;
+  }
+  void *handler = nullptr;
+  const bool resolved = ResolveHandler(environment, handler);
+  auto out = ReadCurrentFirstHeirTypedWindowRows12004V1(
+      environment.module_base,
+      UiExactImageSizeV1(environment.gui_abi_revision), bindings,
+      resolved ? handler : nullptr);
+  if (!resolved) out.window_handler_unavailable_reason = "ingame_handler_unverified";
+  return out;
+}
 
 bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &content,UiFloat2V1 &delta) noexcept {
   delta={};

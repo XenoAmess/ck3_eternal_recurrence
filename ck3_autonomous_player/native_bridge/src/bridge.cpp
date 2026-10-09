@@ -9513,6 +9513,8 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::ck3_12002::family_obligations_lineage::Bindings lineage12002{};
   bool observe_descendants12004 = false;
   xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 child_traits12004{};
+  xar::ck3_12002::EventWindowBindings child_window_names12004{};
+  xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 child_window_gui12004{};
   std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs12004{};
 };
 
@@ -9566,6 +9568,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
             xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
                 query.family12002, query.child_traits12004,
                 *query.read.descendants);
+        query.child_inputs12004->typed_windows =
+            xar::ck3_11906::ReadCurrentFirstHeirTypedWindows12004V1(
+                query.child_window_gui12004, query.child_window_names12004);
         query.read.reproductive_inputs =
             xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
                 query.family12002, query.read);
@@ -9603,6 +9608,11 @@ void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
     query.family12002 = xar::ck3_12004::BindFamilyImage(base, sha);
     query.child_traits12004 = xar::ck3_12004::lifestyle::
         BindPlayerLifestyleSnapshotEnvironment12004V1(base, true, sha);
+    query.child_window_names12004 =
+        xar::ck3_12004::BindEventWindowImage12004(base, sha);
+    query.child_window_gui12004 =
+        xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+            base, true, xar::ck3_11906::GuiAbiRevisionV1::crozier12004, sha);
     query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(base, sha);
     query.subject_bindings12002 = xar::ck3_12004::BindFamilySubjectImage(base, sha);
     query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, sha);
@@ -18979,6 +18989,14 @@ void RunConnectedSession(
                   query.child_traits12004 = xar::ck3_12004::lifestyle::
                       BindPlayerLifestyleSnapshotEnvironment12004V1(
                           base, true, game.descriptor().executable_sha256);
+                  query.child_window_names12004 =
+                      xar::ck3_12004::BindEventWindowImage12004(
+                          base, game.descriptor().executable_sha256);
+                  query.child_window_gui12004 =
+                      xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                          base, true,
+                          xar::ck3_11906::GuiAbiRevisionV1::crozier12004,
+                          game.descriptor().executable_sha256);
                   query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(
                       base, game.descriptor().executable_sha256);
                   query.observe_descendants12004 = true;

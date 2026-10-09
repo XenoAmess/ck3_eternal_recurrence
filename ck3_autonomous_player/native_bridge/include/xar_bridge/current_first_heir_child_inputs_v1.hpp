@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
+
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -57,6 +59,8 @@ struct CurrentFirstHeirChildInputsReadV1 {
   std::int32_t heir_character_id = -1;
   std::optional<std::int64_t> date_raw{};
   std::vector<CurrentFirstHeirChildInputRowV1> rows{};
+  // Query-level provider input, independent of child roster cardinality.
+  std::optional<CurrentFirstHeirTypedWindowsReadV1> typed_windows{};
 };
 
 } // namespace xar::ck3_11906

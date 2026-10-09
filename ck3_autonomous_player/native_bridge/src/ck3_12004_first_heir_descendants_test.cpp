@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004_family.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
+#include "xar_bridge/ck3_12004_event_window_context.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
@@ -1045,9 +1046,158 @@ void EmitChildEducationPointTraits40(const std::filesystem::path &directory,
   active_child_focus39 = nullptr;
   active_child_education_traits40 = nullptr;
 }
+struct TypedWindowFixture51 {
+  std::array<std::string, 7> names{};
+  std::string fallback = "fixture_type_name_fallback";
+  std::array<std::byte, 0x800> image{};
+  std::array<std::byte, 0xD0> handler{};
+  std::array<std::array<std::byte, sizeof(void *)>, 2> objects{};
+  std::vector<std::int32_t> name_calls{};
+  bool independent_unavailable = false;
+
+  TypedWindowFixture51() {
+    for (std::size_t index = 0; index < names.size(); ++index)
+      names[index] = index == 6 ? "FixtureArmyWindowType6"
+                               : "FixtureWindowType" + std::to_string(index);
+    constexpr std::array<std::size_t, 2> vtables{0x108, 0x408};
+    constexpr std::array<std::uint32_t, 2> locators{0x200, 0x500};
+    constexpr std::array<std::uint32_t, 2> descriptors{0x300, 0x600};
+    constexpr std::array<std::string_view, 2> type_names{
+        ".?AVFixtureWindow0@@", ".?AVFixtureArmyWindow@@"};
+    for (std::size_t index = 0; index < objects.size(); ++index) {
+      Put(objects[index].data(), 0, image.data() + vtables[index]);
+      Put(image.data(), vtables[index] - sizeof(void *),
+          image.data() + locators[index]);
+      Put(image.data(), locators[index], std::uint32_t{1});
+      Put(image.data(), locators[index] + 0xC, descriptors[index]);
+      Put(image.data(), locators[index] + 0x14, locators[index]);
+      std::memcpy(image.data() + descriptors[index] + 0x10,
+                  type_names[index].data(), type_names[index].size());
+    }
+    Put(handler.data(), 0x98, objects[0].data());
+    Put(handler.data(), 0xC8, objects[1].data());
+  }
+};
+
+TypedWindowFixture51 *active_typed_windows51 = nullptr;
+
+const std::string *FixtureWindowTypeName51(std::int32_t identifier) {
+  Check(active_typed_windows51 != nullptr,
+        "fixed registered-name callback has an owning fixture");
+  auto &window_source = *active_typed_windows51;
+  window_source.name_calls.push_back(identifier);
+  const auto &specs = xar::ck3_11906::kCurrentFirstHeirTypedWindowSpecsV1;
+  for (std::size_t index = 0; index < specs.size(); ++index) {
+    if (identifier != specs[index].type_identifier) continue;
+    if (window_source.independent_unavailable && index == 1)
+      return &window_source.fallback;
+    if (window_source.independent_unavailable && index == 2) return nullptr;
+    return &window_source.names[index];
+  }
+  throw std::runtime_error("observer resolved an ID outside the fixed seven");
+}
+
+void EmitChildTypedWindows51(const std::filesystem::path &directory,
+                            std::string_view name) {
+  const bool independent_unavailable = name == "typed-window-independent-unavailable";
+  const bool handler_unavailable = name == "typed-window-handler-unavailable";
+  Fixture fixture({"current-child-typed-windows", handler_unavailable ? 1 : 0,
+                   !handler_unavailable, true, true, false});
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  Put(fixture.families[1].data(), 0x14, kPartner);
+  Put(fixture.families[2].data(), 0x14, kHeir);
+  Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+  Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+  for (const auto index : {1U, 2U}) {
+    Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+    Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+  }
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "window diagnostic retains the existing reciprocal married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  auto inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+      fixture.family, {}, *relation.descendants);
+  TypedWindowFixture51 windows{};
+  windows.independent_unavailable = independent_unavailable;
+  if (independent_unavailable)
+    Put(windows.image.data(), 0x500, std::uint32_t{0});
+  active_typed_windows51 = &windows;
+  xar::ck3_12002::EventWindowBindings name_bindings{};
+  name_bindings.resolve_generic_value_type_name = &FixtureWindowTypeName51;
+  name_bindings.generic_value_type_name_fallback = &windows.fallback;
+  inputs.typed_windows = xar::ck3_11906::ReadCurrentFirstHeirTypedWindowRows12004V1(
+      reinterpret_cast<std::uintptr_t>(windows.image.data()), windows.image.size(),
+      name_bindings, handler_unavailable ? nullptr : windows.handler.data());
+  const auto &observed = *inputs.typed_windows;
+  const auto &specs = xar::ck3_11906::kCurrentFirstHeirTypedWindowSpecsV1;
+  Check(observed.rows.size() == specs.size() && windows.name_calls.size() == specs.size() &&
+            observed.window_handler_available == !handler_unavailable &&
+            inputs.rows.empty() &&
+            inputs.status == (handler_unavailable ? "unavailable" : "available"),
+        "seven typed inputs remain independent of empty or unavailable child roster");
+  for (std::size_t index = 0; index < specs.size(); ++index) {
+    const auto &row = observed.rows[index];
+    Check(row.slot_index == specs[index].slot_index &&
+              row.handler_member_offset == specs[index].handler_member_offset &&
+              row.type_identifier == specs[index].type_identifier &&
+              windows.name_calls[index] == specs[index].type_identifier,
+          "each native name lookup and handler offset uses its exact fixed ID");
+    const bool name_missing = independent_unavailable && (index == 1 || index == 2);
+    Check(row.registered_name_available == !name_missing &&
+              (name_missing ? !row.registered_name
+                            : row.registered_name == windows.names[index]),
+          "null and fallback names never become plausible registered type names");
+    if (handler_unavailable) {
+      Check(row.window_presence == "unavailable" &&
+                row.object_type_status == "unavailable" && row.registered_name_available,
+            "unavailable handler preserves all seven independent registered names");
+    } else if (index != 0 && index != 6) {
+      Check(row.window_presence == "absent" &&
+                row.object_type_status == "not_applicable" &&
+                !row.object_type_descriptor_rva && !row.object_type_decorated_name,
+            "null slot is lawful absent rather than failed object typing");
+    } else if (independent_unavailable && index == 6) {
+      Check(row.window_presence == "present" && row.object_type_status == "unavailable" &&
+                !row.object_type_unavailable_reason.empty() && row.registered_name_available,
+            "invalid object RTTI preserves the independently observed type-table name");
+    } else {
+      Check(row.window_presence == "present" && row.object_type_status == "available" &&
+                row.object_vtable_rva == (index == 0 ? 0x108U : 0x408U) &&
+                row.object_col_rva == (index == 0 ? 0x200U : 0x500U) &&
+                row.object_type_descriptor_rva == (index == 0 ? 0x300U : 0x600U) &&
+                row.object_type_decorated_name ==
+                    (index == 0 ? ".?AVFixtureWindow0@@" : ".?AVFixtureArmyWindow@@"),
+            "present windows retain their exact native COL/TD and decorated type");
+    }
+  }
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation, {}, &inputs);
+  wire = xar::game::Render12004BuildIdentity(
+      std::move(wire), xar::game::Ck3_12004AdapterDescriptor());
+  Write(directory / (std::string(name) + ".json"), wire);
+  Check(wire.find("\"typed_windows\":{\"source\":\"native_fixed_window_type_diagnostic\"")
+                != std::string::npos &&
+            relation.relationship.primary_spouse_character_id == kPartner &&
+            constructs == 0 && destroys == 0,
+        "typed-window evidence uses the production whole serializer without dispatch");
+  active_typed_windows51 = nullptr;
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--child-typed-window-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"typed-window-seven-mixed",
+               "typed-window-independent-unavailable", "typed-window-handler-unavailable"})
+        EmitChildTypedWindows51(directory, name);
+      std::cout << "PASS actual4 current-child typed windows: three new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--child-education-point-trait-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);
