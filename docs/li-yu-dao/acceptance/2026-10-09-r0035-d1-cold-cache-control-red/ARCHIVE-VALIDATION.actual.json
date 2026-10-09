@@ -1,0 +1,21 @@
+{
+  "schema": "lyd.r35.archive-extracted-byte-validation.v1",
+  "result": "PASS",
+  "entry_count": 154,
+  "zip": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0035-d1-cold-cache-control-red/raw-evidence.zip",
+    "bytes": 20520931,
+    "sha256": "57014abaa22e057358cb618436481f87c616d1ba76a0eaa729b90f237986d729"
+  },
+  "index": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0035-d1-cold-cache-control-red/INDEX.json",
+    "bytes": 53835,
+    "sha256": "e6a6555450db6530e436395374722e805bf58cfb17abf57af78ab34e8f640a15"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0035-d1-cold-cache-control-red/REPORT.md",
+    "bytes": 2101,
+    "sha256": "c96470ae2bec46c0ca61f2be12286701e74aebb7bf4374875272a61addb63bee"
+  },
+  "external_save_bodies": 2
+}
