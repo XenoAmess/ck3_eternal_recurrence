@@ -121,10 +121,10 @@ VA64/RVA32 references in the same buffer and records at most80 adjacent
 bytes on each side of a hit. The helper does not persist the whole buffer,
 parse new PE metadata or hash the image. Potential neighboring text
 addresses are locator evidence until an actual registration record and
-receiver are proved. At this source commit the Root helper is
-`SOURCE_NOTRUN`; any subsequent Root actual receipt supersedes only that
-execution state. A no-hit result requires a genuinely different authored
-relation entry, rather than expanding generic validator or encoding scans.
+receiver are proved. The first source commit212cb retained
+`SOURCE_NOTRUN`; the actual Root result below supersedes that execution
+state. A no-hit result requires a genuinely different authored relation
+entry, rather than expanding generic validator or encoding scans.
 
 The working source is based on integrated5d185. Root's later published
 `be9bfd550f3cfbab041a16b39d0faf1239f47054` is a distinct mainline;
@@ -188,3 +188,89 @@ inputs are closed; typed guardian reader and executing educator owner are
 still necessary construction dependencies. Tests and new native/consumer
 FIRST are `NOTRUN`. There is zero guardian assignment, educator selection,
 child education, birth, natural succession, live or G2 completion credit.
+
+## Root locator result and the typed provider alternative
+
+Root alone executed the exact three-name `.data` locator on2026-10-09
+05:19:54.049028–05:19:54.084301 UTC. It is
+`ACTUAL_NAMED_LOCATOR_GREEN`: one8571392-byte frozen-image source read,
+0.003616600064560771 seconds for that read, zero hash/new PE reads,
+and no persisted whole-section buffer. `HasGuardian`,
+`GetRelationsOfType` and `GetRelation` each have zero VA64 and zero
+RVA32 references in that pass. The result is
+`native-getter/root-data-named-first01/GUARDIAN-NAMED-DATA-REFERENCES.json`.
+It supplies no callback or relation truth. The earlier `.rdata` and
+`.text` results are reused, and this three-name scan route stops here.
+
+The next source owner comes from a real typed GUI provider/consumer
+chain. It is not another encoding scan or generic pair-object expansion:
+
+| Source | Actual typed flow |
+|---|---|
+| `gui/shared/portraits.gui:3087,3101` | Individual lover/friend icons set `datacontext="[GetRelation('lover')]"` or `GetRelation('friend')`. |
+| Same file `:3450–3512` | Character-window icon instances override the icon template; the original kind-object datacontext remains its provider. There is no inferred `GetScriptedRelations` producer. |
+| Same file `:3035,3052` | `ScriptedRelation.HasRelationBetween(GetPlayer,Character.Self)` consumes that typed kind object and two real Characters. |
+| `gui/window_character.gui:5788` | The window template consumes `ScriptedRelation.HasRelationBetween(CharacterWindow.GetCharacter,Character.Self)`. |
+| `gui/shared/portraits.gui:3073` | `ScriptedRelation.GetName` supplies displayed text, not a proved canonical key round trip. |
+| `gui/window_character.gui:2956,2972,3007` | Actual `GetRelation('guardian')` arguments supply the authored guardian key. Ward uses the distinct `GetRelation('ward')` key at2731,2748,2783. |
+
+This establishes a **loaded `GetRelation(key)` typed object provider →
+`ScriptedRelation` receiver → `HasRelationBetween(owner,peer)`** source
+entry. It does not establish the native registration callback address,
+definition storage, this/argument ABI, direction, collection coverage or
+absence behavior. The old standalone literal had no direct references;
+the genuine typed provider/caller must now supply those facts. There is
+no invented GetScriptedRelations collector or numerical relation kind.
+
+`common/scripted_relations/_scripted_relations.info:4–15` documents
+top-level key definitions. At19–26 it distinguishes owner/root from
+`scope:target`, and generated `on_set_relation_x` from corresponding
+addition; at34–35 it retains the initiating Character direction. The
+guardian/ward corresponding keys are therefore separate directions.
+The info's `relation_aliases` example at8 changes scripted relation
+matching; it is not a bridge type alias or numerical-kind equivalence.
+The held guardian/ward blocks author no aliases internally, without
+claiming absence of aliases elsewhere in the database. Ordered ward
+flags and documented flag APIs are not needed to identify guardian
+presence, and are not expanded into a new flag census.
+
+```mermaid
+flowchart TD
+  F[Authored guardian and ward top-level definitions] --> P[GUI GetRelation key typed provider]
+  P --> R[ScriptedRelation datacontext]
+  R --> N[GetName displayed text]
+  R --> H[HasRelationBetween two Characters]
+  C[Actual distinct child full ID] -. native receiver and directional proof .-> H
+  G[Current generic peer full IDs] -. guardian coverage and membership proof .-> H
+  H -. exact4 callback and known empty semantics unclosed .-> O[Private child sidecar guardian IDs]
+```
+
+Current source has no bound `ScriptedRelation` type, registry or
+`HasRelationBetween` callable. Marriage-interaction definition lookup,
+HouseType, ScriptIdentifier, combat-side `PhaseRelationKind` and
+land/army-owner relation rows are different domains. Software reuse is
+limited to the already admitted actual-child/full-ID resolver and paused
+private same-query collection/transport. The generic peer inventory can
+be a candidate source only after coverage for guardians is proved; a
+pair predicate by itself does not promise a complete collection.
+
+The sole new source-FIRST contract is
+`FIRST_SOURCE_NOTRUN_SCRIPTED_RELATION_GUARDIAN_PROVIDER`. Root needs one
+real typed definition returned for canonical key `guardian`, its native
+identity/key proof, and the registered HasRelationBetween target and
+actual receiver direction. A missing callback RVA is explicitly absent
+from the source manifest; no byte range is fabricated. Only a genuinely
+located target permits a finite code capture. After that closure the
+existing private child row can carry available relation presence/full
+guardian IDs and legal empty independently from unrelated child inputs.
+Future production-reader fixtures retain generation-aware full IDs,
+guardian/ward asymmetric direction, multiple children, removal afterstate,
+legal empty and independent unavailable input. They are not executed or
+called passed, and no permanent-null guardian field is published.
+
+The independent source packets are `alternative-authored-kind45/`
+and `alternative-provider45/` under the same artifact root. Temporary
+educator owner/AE8 work is not expanded in this alternative. Worker
+build/test/EXE/Game/SDK operations remain zero. Readiness is `research`;
+the Root locator is actual source evidence, not guardian, education,
+birth, natural succession, live or G2 capability credit.
