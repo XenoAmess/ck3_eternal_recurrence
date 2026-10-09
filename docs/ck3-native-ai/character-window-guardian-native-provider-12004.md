@@ -578,3 +578,56 @@ There is no new guardian/educator observation, action, full
 AST, child/education/birth/succession or G2 credit. This documentation lane
 performs no Game/SDK or process action, fixture/FIRST replay, build or hash.
 Existing failures and the separate parent live evidence remain unchanged.
+
+
+## 2026-10-10: common actual4 character query source candidate
+
+The bounded G2 successor reuses the existing
+`ck3_query_ingame_ui_window_v1` / `query-ingame-ui-window-v1` mailbox and
+`character` window kind. The candidate adds exact1.20.0.4 **query only** to
+`ingame_ui_navigation_v1.cpp` and `ingame_ui_contract.py`; it adds no MCP tool,
+mailbox slot, product host or product-specific runtime. The two source files
+retain the bytes of the prior query-only feasibility candidate.
+
+The reader conditionally admits the actual handler+D8 object using the
+existing Native54 exact RTTI/full-generation Character-ID helper, joins its
+window+60 GUI root and window+A0 handler to the admitted GUI owner, and repeats
+the window/identity/root observations before publishing copied fields. A
+hidden Character window remains hidden. The query neither dispatches an open
+action nor substitutes an Army ID or the played Character for its subject.
+The Python contract retains the exact build, actor/frame and GUI-owner guards;
+actual3 Character queries, actual4 Character open and unrelated window-kind
+expansions stay rejected.
+
+**Deployment boundary:** the selected Source12/runtime04 still uses native
+`fd1f33ed63c452ba2fef3313a490db53fd8bfcfc567909c94b4966e1f4f7c5aa`.
+Its actual native source and the Source12 snapshot do **not** contain the
+Native54 helper. This patch targets the common repository source where that
+dependency already exists. It cannot be applied directly to Source12/fd1f or
+represented as an installed actual4 Character-query capability. Native54's
+older offline build/fixtures above remain separate historical evidence and
+do not qualify this new query composition.
+
+Two portable standard-library unit checks are retained in
+`ck3_autonomous_player/tests/unit/test_current4_character_query_v1_contract.py`:
+exact-build/query scope and separation of Character subject, owner and action
+proofs. These are the same two method bodies that passed once during the
+external feasibility work (0.001s); packaging does not rerun them or any old
+tests. The file fits the existing `test_*.py` unittest discovery convention,
+imports the checked-in pure contract and has no external workspace or runtime
+dependency. No new CI platform is introduced. This packaging performs only
+static Python syntax/method-identity checks and read-only patch applicability;
+there is no C++ compilation, native fixture, DLL build, deployment or live read.
+
+The practical saving is conditional: after an operator independently opens a
+circle-external target in the official GUI, a future qualified query could
+copy that view's runtime fullID. It cannot independently prove a natural
+Robert truce or absence. Character open ABI, a complete Diplomacy data model,
+truce direction and expiry remain unknown. The bounded2048-widget census is
+not the relation list and compact four entries cannot prove absence. Until a
+future common build is separately selected and qualified, the independent
+Robert paused field follows the existing root/title-holder identity reads and
+official full Diplomacy expansion/overlapping original screenshots; Song QOL
+evidence grants no Robert/G2 credit. See the
+[independent-reference operator card](C:/workspace/ck3-upgrade-20261010/g2-robert-readonly-operator-route-09/ROOT-ROBERT-OPERATOR-SHORT-CARD-09.md)
+and the [source feasibility record](C:/workspace/ck3-upgrade-20261010/g2-character-query-feasibility-10/ROOT-CURRENT4-CHARACTER-QUERY-FEASIBILITY-10.md).

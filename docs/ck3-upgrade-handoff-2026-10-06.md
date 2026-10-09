@@ -1,5 +1,15 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 07:50：R45原失败闭场与共同host修复
+
+R0045/a145 ordinary_async的原startup资格及seeded replies通过，初始6步后完整首日24小时；day001-no-fail实际得到两条FAIL，公共run2、verify2、v05 BLOCKED原样保留。日志仅证明accepted/refused复合计数条件以及low最终faith/Rite/opinion复合条件失败，尚无各原子实际值，不能提前归因为2accept/0refuse或具体ROOT错误。该场原host在initial-plan异常后直接进入supervisor stop，实际shutdown.ck3_exit_code=1、job_active_before=1、process_exit_code=null，不能记为正常退出。原allocator/keeper实际0，CAS8043 done/resources=[]；[原失败与补充资源收口](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/ordinary_async--a145/SUPPLEMENTAL-RESOURCE-CLOSED-07.json)完整保留。
+
+公共host现仅为executing-plan首次Exception且原supervisor仍运行时，先进入原declared hold_seconds；原error、failedstep、RED与业务停止不变，不延预算、不重跑业务，不改native0/失败生命周期证明。Source12后继与canonical两份实际生产异常分支/execute/hold/observe_final定向pure子例一次PASS（0.326秒）；同一测试接现有CI。canonical function patch保留远端saved_campaign等其他功能。新Source13只准单host增量、继承现役fd1f与共同queue04/helper03，不新增产品host/DLL；生成/选择与实机资格必须另记，旧Source12和R45不追认。
+
+官方[37998586988](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37998586988)实际失败于旧normal_close测试替身缺validated Selection.context/frozen binding；仅补共同make_client，全部原测试方法和断言不变，受影响10项一次PASS（3.292秒）。本轮采用，不降低生产校验、不重复已通过模块；后继官方待。
+
+G2 query-only后继已作为共同仓库静态源码及两个原pure检查交付，不重编/部署当前fd1f；实际Character open、完整Diplomacy、方向/expiry及自然停战仍未取得信用，详见[专题](ck3-native-ai/character-window-guardian-native-provider-12004.md)。工具调用间实际时钟曾从22:21:02到23:02:24 UTC、23:22:34到23:43:46 UTC分别间隔41分22秒、21分12秒；原因未确定，不能算作游戏执行耗时。后续继续使用本地公共run→verify→keeper→CAS连续编排减少已结束游戏后的模型等待。正式发布仍7/10，下一fixedselfpaid→PAM诊断→rite27→UI23/admin20/merit20，再QOL正式发布、RMTM与361。
+
 ## 2026-10-10 06:18：R44保留失败闭场，公共queue与reviewer统一
 
 R0044/a144原rites在startup报release_fixture_acceptance_matrix FAIL、业务0steps；实际引擎宋帝34422但ROOT为空，八个样本root culture/location及原root.var比较报错。原公共fixture从on_action直接调依赖ROOT的setup，现仅将原启动块移入实际宋帝D0 hidden character_event；原setup/verify/Rite探针、zqrel.1 scheduler、七组合与60日不变。六项必要离线检查PASS，需新unused prepare/实机，不更改旧R44。

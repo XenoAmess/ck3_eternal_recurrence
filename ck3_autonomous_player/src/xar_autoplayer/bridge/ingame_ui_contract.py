@@ -82,6 +82,8 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
         if build not in _CURRENT_ARMY_BUILDS or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}:
             raise ValueError("army tooltips require the exact current native Army route")
         return
+    if build == CK3_12004 and kind == "character" and operation == "query":
+        return  # Read only; no current4 Character click callback has been admitted.
     if build in _CURRENT_ARMY_BUILDS and (kind != "army" or operation not in {"query", "select_army"}):
         raise ValueError("current native UI supports army query and select only")
 
@@ -177,8 +179,15 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     census_limit = 2048 if expected_build in _CURRENT_ARMY_BUILDS else 512
     if isinstance(count, bool) or not isinstance(count, int) or not 0 <= count <= census_limit or not isinstance(widgets, list) or len(widgets) != count:
         raise ValueError("native census count/bound mismatch")
-    if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != "army_window":
-        raise ValueError("current native UI window name is not the army window")
+    current4_character_query = expected_build == CK3_12004 and kind == "character" and operation == "query"
+    expected_window = "character_window" if current4_character_query else "army_window"
+    if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != expected_window:
+        raise ValueError("current native UI window name differs from the admitted kind")
+    if current4_character_query:
+        if value["subject_id_available"] and not 0 < value["current_subject_id"] < 2**32 - 1:
+            raise ValueError("current Character window requires a valid full CharacterID")
+        if value["native_army_id"] != 0 or value["owner_character_id_available"]:
+            raise ValueError("current Character query cannot claim Army or selected Unit owner")
     if unopened_current_select_ack:
         if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") != "army_window":
             raise ValueError("unopened army ACK must keep an empty target-window census")

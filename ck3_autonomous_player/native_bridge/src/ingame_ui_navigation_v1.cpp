@@ -553,8 +553,62 @@ bool ResolvePlayerArmyUiSubject(const ZhongguoScoreboardNativeEnvironmentV1 &env
       Value(unit,0x178,native_id) && Object(env.module_base,army_storage,native_id,0x10,army) &&
       Value(army,0x124,reverse) && reverse==public_id;
 }
+// Current4 query only. Reuse Native54's exact object/full-ID reader;
+// handler+D8 is a finite candidate, not a statically proved factory class join.
+// Exact RTTI plus the original root/owner and repeated identity are mandatory.
+bool ReadCharacterWindow12004QueryV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,IngameUiResultV1 &out) noexcept {
+  void *window=nullptr;
+  if(!Value(handler,0xD8,window) || !window) {
+    out.unavailable_reason="current_character_window_candidate_absent";return false;
+  }
+  const auto core=ck3_12004::BindCoreImage(env.module_base,env.executable_sha256);
+  const auto first=bridge::ReadCurrentFirstHeirCharacterWindowObject12004V1(
+      env.module_base,UiExactImageSizeV1(env.gui_abi_revision),core,window);
+  if(!first.receiver_available) {
+    out.unavailable_reason=first.receiver_unavailable_reason;return false;
+  }
+  ZhongguoScoreboardAccessV1 access{};void *root=nullptr,*widget=nullptr;
+  constexpr std::string_view name="character_window";
+  if(!ResolveNamedGuiWidgetV1(env,access,name,name,root,widget) || !root || widget!=root) {
+    out.unavailable_reason="current_character_window_fixed_root_unavailable";return false;
+  }
+  void *native_root=nullptr,*linked_handler=nullptr;
+  if(!Value(window,0x60,native_root) || native_root!=root ||
+      !Value(window,0xA0,linked_handler) || linked_handler!=handler) {
+    out.unavailable_reason="current_character_window_root_owner_unverified";return false;
+  }
+  std::string runtime_name;void *vtable=nullptr;bool visible=false,enabled=false;
+  NamedGuiTreeInspectionV1 tree{};
+  if(!ReadGuiWidgetRuntimeV1(access,root,runtime_name,vtable,visible,enabled) || runtime_name!=name ||
+      !InspectNamedGuiSubtreeV1(access,env.module_base,root,name,tree)) {
+    out.unavailable_reason="current_character_window_widget_read_unavailable";return false;
+  }
+  void *later_window=nullptr,*later_root=nullptr,*later_handler=nullptr,*later_vtable=nullptr;
+  std::string later_name;bool later_visible=false,later_enabled=false;
+  const auto last=bridge::ReadCurrentFirstHeirCharacterWindowObject12004V1(
+      env.module_base,UiExactImageSizeV1(env.gui_abi_revision),core,window);
+  if(!Value(handler,0xD8,later_window) || later_window!=window ||
+      !Value(window,0x60,later_root) || later_root!=root ||
+      !Value(window,0xA0,later_handler) || later_handler!=handler ||
+      !last.receiver_available || last.raw_character_id!=first.raw_character_id ||
+      last.character_available!=first.character_available || last.character_id!=first.character_id ||
+      !ReadGuiWidgetRuntimeV1(access,root,later_name,later_vtable,later_visible,later_enabled) ||
+      later_name!=name || later_vtable!=vtable || later_visible!=visible || later_enabled!=enabled) {
+    out.unavailable_reason="current_character_window_binding_changed_during_read";return false;
+  }
+  // Publish only after all copied observations agree. A hidden window is not
+  // visible evidence; an unresolved subject remains unavailable, never guessed.
+  out.window_exists=true;out.effective_visible=visible;out.enabled=enabled;
+  out.subject_id_available=first.character_available;
+  if(first.character_available)out.current_subject_id=std::bit_cast<std::uint32_t>(*first.character_id);
+  out.tree=std::move(tree);
+  return true;
+}
 bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
                 IngameUiWindowKindV1 kind,IngameUiResultV1 &out) noexcept {
+  if(env.gui_abi_revision==GuiAbiRevisionV1::crozier12004 && kind==IngameUiWindowKindV1::character)
+    return ReadCharacterWindow12004QueryV1(env,handler,out);
   const auto n=static_cast<std::size_t>(kind);void *window=nullptr;
   out.tree.scope_root_name=std::string(IngameUiWindowNameV1(kind));
   const bool actual4=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004;
@@ -738,6 +792,8 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
   if(!ValidateIngameUiRequestV1(r))return false;
   if(r.window_kind==IngameUiWindowKindV1::title_appointment)return revision==GuiAbiRevisionV1::crozier12004 && r.operation==IngameUiOperationV1::query;
+  if(revision==GuiAbiRevisionV1::crozier12004 && r.window_kind==IngameUiWindowKindV1::character)
+    return r.operation==IngameUiOperationV1::query;
   if(revision==GuiAbiRevisionV1::legacy11906)return r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() &&
       r.operation!=IngameUiOperationV1::hover_army_tooltip && r.operation!=IngameUiOperationV1::leave_army_tooltip;
   return IsModernArmyUiV1(revision) && r.window_kind==IngameUiWindowKindV1::army &&

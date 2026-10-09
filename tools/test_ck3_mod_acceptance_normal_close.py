@@ -35,13 +35,22 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         client.keeper = root / 'synthetic-keeper'
         client._handle = object()
         client._process = {'pid': 2468, 'create_time': 123.5}
-        client.frozen = {'run_id': 'SYNTHETIC_ROOT_REVIEW_RACE', 'screen_task': 'synthetic-screen'}
+        client.frozen = {'run_id': 'SYNTHETIC_ROOT_REVIEW_RACE', 'screen_task': 'synthetic-screen',
+                         'reviewer': '/root', 'argv': ['SYNTHETIC ONLY'],
+                         'runtime_environment': {'PYTHONUTF8': '1', 'PYTHONDONTWRITEBYTECODE': '1'}}
         client._hold = deadline
         client._started = 0
         client.manifest = {'host': {}}
-        client.selection = SimpleNamespace(case={'budgets': {}}, manifest_path_key=lambda _: HOST_SOURCE)
-        client.context = {'reviewer': '/root'}
-        client.selection.context_path = root / 'actual-run-context.json'
+        frozen_path = root / 'frozen-argv.json'
+        frozen_path.write_text(json.dumps(client.frozen), encoding='utf-8')
+        frozen_raw = frozen_path.read_bytes()
+        client.context = {'run_id': client.frozen['run_id'], 'reviewer': '/root',
+                          'frozen_argv': {'path': str(frozen_path), 'bytes': len(frozen_raw),
+                                          'sha256': hashlib.sha256(frozen_raw).hexdigest()}}
+        client.selection = SimpleNamespace(case={'budgets': {}}, manifest_path_key=lambda _: HOST_SOURCE,
+            context=client.context, context_path=root / 'actual-run-context.json',
+            run_dir=root / client.frozen['run_id'], argv=client.frozen['argv'],
+            runtime_environment=client.frozen['runtime_environment'])
         client.selection.context_path.write_text(json.dumps(client.context), encoding='utf-8')
         client.execute_plan = Mock(side_effect=AssertionError('No finish/control submission after terminal host'))
         clock = SimpleNamespace(now=0.0, review_written=False)

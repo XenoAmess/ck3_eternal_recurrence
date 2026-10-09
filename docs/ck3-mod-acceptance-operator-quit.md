@@ -78,3 +78,8 @@ CaseClient 仍要求 helper 实际 exit0、同场精确来源与最终 mapped cl
 R44正常Quit/实际OS0后旧producer在创建请求前因hosterror拒绝failure finish。现canonical `tools/ck3_mod_acceptance_queue_control.py`只为精确单步失败finish允许保留error，正常业务准入与once原子创建保持；生产资格仍由共同host的原OS/native/thread/cleanup proof决定。当前R44保留03原绑定/reject/run2/verify2/v05BLOCKED，仅以新immutable producer首次实际提交原未创建请求并实际闭场CAS8000；不把它写成03自动链成功或业务PASS。下一唯一mapping04仅换producer pin，旧输入保留。
 
 公共final_root_evidence现从run/verify共用的validated context/frozen resolver取实际operator reviewer，不从evidence自授身份；原同run/status/文件SHA与业务要求保持。新增17项及受影响manual4/delegation2一次通过，CI接入后待实际官方结果；该修补允许后续完整RMTM由唯一获授权操作者连续完成并如实署名，无须逐checkpoint等待Root或冒名。
+
+
+## 2026-10-10 07:50 初始计划异常保留原hold预算
+
+R45暴露此前只有bootstrap异常能保留hold；initial-plan异常直接finally stop后，managed job清理实际退出1。共同host只在executing-plan首次Exception、原supervisor未done且尚未开始hold时进入同一declared hold_seconds，保留原error/failedstep/RED，余下业务不执行。由原退出helper及严格原生证明完成的failure finish才可提前收尾；不延期、不补写OS0、不从资源释放推导业务成功。两个真实生产异常分支pure子例一次通过，同字节测试纳入原CI；当前原Source12/R45不改，只有明确选择的后继host才应用。

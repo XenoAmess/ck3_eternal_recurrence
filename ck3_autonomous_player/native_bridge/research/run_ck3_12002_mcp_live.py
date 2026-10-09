@@ -3618,6 +3618,18 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         report["exception_traceback"] = traceback.format_exc()
                         if getattr(error, "ck3_write_error_context", None) is not None:
                             report["write_error_context"] = error.ck3_write_error_context
+                        if (isinstance(error, Exception) and args.hold_seconds
+                                and report.get("phase") == "executing-plan"
+                                and supervisor is not None and not done.is_set()
+                                and "hold_until_utc_estimated" not in report):
+                            report["initial_plan_failure_hold"] = {"reason": report["error"],
+                                "seconds": args.hold_seconds, "original_hold_budget": True,
+                                "business_pass": False, "normal_close_qualified": False}
+                            write()
+                            try:
+                                await client.hold(args.hold_seconds)
+                            except BaseException as hold_error:
+                                report["initial_plan_failure_hold_error"] = f"{type(hold_error).__name__}: {hold_error}"
                         if (args.frontend_robert_bootstrap and args.hold_seconds
                                 and report.get("phase") == "native-frontend-robert-bootstrap"
                                 and not done.is_set() and "frontend_diagnostic_hold" not in report):
