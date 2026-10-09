@@ -81,3 +81,48 @@ retained command evidence, explicit detached history export, and preserved frame
 rejection checks. It does not measure live query speedup; the owned Game162360
 hot query remains a separate execution. Live, FullPerson, Entry and whole-helper
 readiness credit remain unchanged.
+
+## Ordinary advance source conclusion
+
+The finite e997 source trace is `Service.auto_turn` (`service.py:2993`) ->
+`_execute_planned_turn` (`3039`, ordinary dispatch `3408`) ->
+`Service.execute_step` (`3942`) -> `NativeDriver.execute_step` (`native_driver.py:8416`).
+Service planning already uses an internal semantic snapshot (`service.py:1150`);
+there is no additional Service advance loop exporting history around each day.
+
+For `life-advance`, NativeDriver binds a semantic entry snapshot (`8478–8480`),
+passes it into the composite (`9798–9800`), and uses semantic starting/polling
+frames (`22465–22470`, `23163–23191`). Speed/event primitives (`23146`, `23157`),
+resume (`22962`, `22999`), pause (`23061`, `23102`) and exact-day sentinel
+commands (`22868`, `22894`, `22925`) select `internal_semantic_snapshot=True`.
+That selector precedes the history-export selector in `_execute_primitive_step`
+(`11001–11008`). Its default history flag therefore causes no full transcript
+export in these ordinary advance primitives.
+
+Generic direct move is a separate route: the fallback (`9807–9811`) retains the
+primitive's default `include_native_command_history=True` (`10948`), causing one
+full transcript export. Its revision/submission consumers use semantic fields.
+Successful top-level move and life-advance calls both record their new result
+(`8435`, `9960`) and invoke full Driver-state persistence (`9966`); neither is a
+deferred `query-*`/preview command (`23407–23416`). This serializes and atomically
+writes the retained state once per completed top-level command. Composite-owned
+speed/resume/pause primitives do not independently pass through `execute_step`
+and its action-recording barrier.
+
+```mermaid
+flowchart TD
+    A["Ordinary auto_turn dispatch"] --> B{"Selected step"}
+    B -->|life-advance| C["Semantic composite and internal primitives"]
+    B -->|direct move| D["Primitive: one full transcript export"]
+    C --> E["Record completed top-level result"]
+    D --> E
+    E --> F["Full Driver-state persistence barrier"]
+```
+
+At investigation time, pending request #8 was a `ck3_auto_turn({})` wrapper;
+its selected step was **not held**. The preceding actual request #7 submitted
+move target 8756. Source inspection cannot attribute the pending delay of more
+than five minutes to advance, transcript export or persistence. The advance
+conclusion is **NO_NEW_SOURCE**: no production change, new FIRST or replay of
+earlier GREEN compounds is required by this finding. Timeout/budget evidence
+remains a separate investigation.
