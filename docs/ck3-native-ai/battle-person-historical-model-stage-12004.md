@@ -3,9 +3,10 @@
 This work adds a historical, stage-correct input to the existing Person query.
 It copies the PC already prepared by actual291E3A0 at its final natural outer
 append. It does not reconstruct a baseline from a current Model. The new family
-is source-ready only; Root owns the unique Native60 build and FIRST. No local
-Game, SDK, process, executable read, hash, compiler, import or test is executed
-by this author. The local CK3 prohibition remains in effect on2026-10-10.
+is static-ready: Root completed the unique Native60 build, FIRST and seal on
+2026-10-10. No local Game, SDK, process, executable read, hash, compiler, import
+or test is executed by this documentation author. Local CK3 authorization has
+since been restored; this qualification adds no live capture or gameplay claim.
 
 Exact build: CK3 1.20.0.4 / Steam25734779, retained executable SHA
 98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518.
@@ -101,7 +102,51 @@ registered consumer uses six new synthetic graphs through the genuine query,
 serializer, MCP and Service. Cases cover unobserved input, ordered full Q64
 capture, ignored per-Title caller/original-once behavior, owner generation,
 partial PC copying and immutable history after native-source mutation. Both
-FIRST stages are AUTHORED_NOTRUN until Root reports their actual results.
+FIRST stages were AUTHORED_NOTRUN at source delivery. Root subsequently ran the
+six native wholes and the sole registered six-packet consumer once; both are
+GREEN. This synthetic qualification does not establish a natural live capture.
+
+## Native60 actual qualification, 2026-10-10
+
+Root's actual build, FIRST and seal are GREEN. Source, compiled-native source
+and qualification source all pin
+`30605664d00c845b4fa7a736d157903169a1e70b`, frozen at
+`Z:/gbs-runtime60-person-title-tail-root-source`. This documentation-only commit
+does not change the qualified production source or its binary.
+
+| Actual qualification field | Result |
+| --- | --- |
+| Production compiler invocations | 450 |
+| Fixture compiler invocations | 1 |
+| Actual compiler jobs / priority | 64 / BelowNormal |
+| Production owners | 740: Bridge299, Runtime440, Protocol1 |
+| Commands | 508 |
+| Native whole packets | 6/6 GREEN, one FIRST invocation |
+| Registered consumer | Sole compound, 6/6 packets GREEN, one invocation |
+| Native FIRST elapsed | 0.258524 seconds |
+| Registered consumer elapsed | 8.161157 seconds |
+| Registered consumer completed | 2026-10-10 01:56:10 CST |
+| Old FIRST replays / binary copies / hashes | 0 / 0 / 0 |
+| Live capture / production-live / FullPerson / Entry | false / false / false / false |
+| G2 credit | 0 |
+
+The canonical seal is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix60/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+The actual attempt is
+`Z:/g2-native60-build01/attempt01/ROOT-NATIVE60-RESULT.json`; its native wires
+are under `Z:/g2-native60-build01/attempt01/first/native-wires` and its registered
+consumer receipt is `Z:/g2-native60-build01/attempt01/logs/consumer-FIRST.json`.
+Only the actual attempt result was consumed for this documentation update;
+the canonical archive, binaries, hashes and previous FIRSTs were not replayed.
+
+These results qualify the production build and the six declared synthetic
+graphs through the existing query/serializer/MCP/Service path. They retain
+prepared-PC readiness across a partial diagnostic aggregate and immutable
+history after source mutation. The hook's natural final-call observation has
+not yet been demonstrated in a paused live artifact. An unobserved result
+remains `native_title_tail_unobserved`; it is not a successful empty capture.
+FullHelper, FullPerson and Entry remain incomplete outside this independently
+usable family.
 
 ## Evidence and deferred computation
 
