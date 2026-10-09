@@ -1,0 +1,146 @@
+{
+  "schema": "ck3-evidence-byte-index-v1",
+  "external_attempt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-common-injector-defender-20261010-001",
+  "archive": {
+    "path": "EVIDENCE.zip",
+    "bytes": 215367,
+    "sha256": "47be133dea8c6c60451d3c1358cd5ffbebdb24987142a959d8533855cbb79157"
+  },
+  "entries": [
+    {
+      "path": "READONLY-DETAIL.actual.json",
+      "bytes": 1030,
+      "sha256": "4e82fa35eb153765b229cd2f3e61f897147a696f093722a63c26e272f3ae9b93"
+    },
+    {
+      "path": "REGISTRATION-RESULT.actual.json",
+      "bytes": 1777,
+      "sha256": "122dd0870e6edc6b0c6cb6c52ca49fbf3d015ff01215fbf5cb50684d9d9ceaed"
+    },
+    {
+      "path": "RESULT.actual.json",
+      "bytes": 7443,
+      "sha256": "1f885a80ae4dcd458a7810a67b16e0e3892849b8c73a9f1fd802db679505807e"
+    },
+    {
+      "path": "cmake-provenance/codemodel-v2-df8c7774312f5f7d9f54.json",
+      "bytes": 174459,
+      "sha256": "48ec9d19c664c6c4e261a64d2d2ed91e6c4e6f3f150317b7d366ac12b3fdfa3b"
+    },
+    {
+      "path": "cmake-provenance/index-2026-10-09T18-03-08-0597.json",
+      "bytes": 1265,
+      "sha256": "80cdaf839e73ba8f6ee904fcaca1368147639163699883b7f058035543a050dd"
+    },
+    {
+      "path": "cmake-provenance/target-xar_ck3_bridge_injector-Release-906e51d85255928e8804.json",
+      "bytes": 3181,
+      "sha256": "b33a849875c0270887e840fd3c69ec99606ac4a544817280d05dba2720b90d23"
+    },
+    {
+      "path": "codemodel-configure.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "codemodel-configure.stdout.bin",
+      "bytes": 98,
+      "sha256": "4a64608a67ff97dec4fb800696b75cded10c0a2917236031e700965f7381faaa"
+    },
+    {
+      "path": "injector-dry-run-explain.stderr.bin",
+      "bytes": 131,
+      "sha256": "91667a3dcc63e787571616ec8533ec07c4ffd36745bbc511da924edb254b01ea"
+    },
+    {
+      "path": "injector-dry-run-explain.stdout.bin",
+      "bytes": 106,
+      "sha256": "cbf0b96e8dcda07f7dc9667b4d21321ea5b21f258b2df6c5a7c048333406a2df"
+    },
+    {
+      "path": "injector-dry-run.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "injector-dry-run.stdout.bin",
+      "bytes": 106,
+      "sha256": "ff3be6af8b264436f32b865629b0314d4cf171609031bd7e1975c89f0b8057a0"
+    },
+    {
+      "path": "original/BUILD-INPUTS.actual.json",
+      "bytes": 3608,
+      "sha256": "70ae3c7f22627918cf43c9a9abc279033c0f3ad0a4bb99b71ae7a2b9ca0bab36"
+    },
+    {
+      "path": "original/BUILD-RESULT.actual.json",
+      "bytes": 498,
+      "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+    },
+    {
+      "path": "original/CMakeCache.txt",
+      "bytes": 38509,
+      "sha256": "80d13d4d65b76bd9b4014e5956401aad6ae16ea10eeb157cd91fc2bbc1393239"
+    },
+    {
+      "path": "original/build.ninja",
+      "bytes": 4744072,
+      "sha256": "49e5590c3002c6470fb529460db37e9b7142208da7f7ee694ee97e9a81f6b921"
+    },
+    {
+      "path": "original/msvc-build.log",
+      "bytes": 59994,
+      "sha256": "4129f9399c955ec5cebc866fa0f15444278eb58e5261328d00c061b2c775aaf8"
+    },
+    {
+      "path": "original/msvc-configure.log",
+      "bytes": 703,
+      "sha256": "a5c0206a192cb686286641ca6bbee762ddbf9a053eebdd6cc5375c565e78f0e4"
+    },
+    {
+      "path": "original/native-msvc-result.json",
+      "bytes": 1206,
+      "sha256": "e4bff84425f25237025f510cb5d46fb82c8dec091b16c8bb7ae76b20a2750e70"
+    },
+    {
+      "path": "original/runtime-manifest.json",
+      "bytes": 5056,
+      "sha256": "275bd7bdb8b44e72340e4fb77cc238f43a50dabd532d64f93916d3d0380be51c"
+    },
+    {
+      "path": "original/source02-build.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "original/source02-build.stdout.log",
+      "bytes": 63842,
+      "sha256": "bcc5cd807caa95384b0b0b56081d42645eacea0a1b872da81bb0cc1d2fe3fa02"
+    },
+    {
+      "path": "registration-manifest.readonly.json",
+      "bytes": 1457,
+      "sha256": "7c1fa277d2551762ffa02e79e8f49cb778075217f2ea070c512a9a9f9723b33e"
+    },
+    {
+      "path": "registration-receipt.actual.json",
+      "bytes": 1580,
+      "sha256": "2476509b3f8af97286d7b88426a662ddcb0d9b87bf9644e9fcc6faf2425ea32f"
+    },
+    {
+      "path": "scripts/r39-common-injector-defender-20261010-001.py",
+      "bytes": 6116,
+      "sha256": "17a7fd1c414787b27382e667ecc1d24f6907c8f68ec932c731b2b2b9ead3468a"
+    },
+    {
+      "path": "scripts/r39-common-injector-direct-registration-20261010-001.py",
+      "bytes": 2894,
+      "sha256": "5b512de6a4b4bc3c5a6fee01634046a47f4317c6ba29240f08f421f444c4282e"
+    },
+    {
+      "path": "scripts/r39-common-injector-readonly-detail-20261010-001.py",
+      "bytes": 2363,
+      "sha256": "bcd4873092749e64a2147c19d1b9c21cc13b472fd3476bc37a5e8192a0f1c233"
+    }
+  ]
+}

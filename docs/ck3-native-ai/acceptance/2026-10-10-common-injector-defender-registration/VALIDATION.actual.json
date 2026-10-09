@@ -1,0 +1,23 @@
+{
+  "schema": "ck3-common-injector-defender-evidence-validation-v1",
+  "checked_utc": "2026-10-09T18:16:10.045146+00:00",
+  "evidence_entries": 27,
+  "archive_members_and_hashes_valid": true,
+  "original_disabled_preserved": true,
+  "existing_successful_build_provenance_preserved": true,
+  "one_exact_project_exe_requested": true,
+  "actual_registration_status": "settings_failed",
+  "actual_admin_token": true,
+  "one_add_attempt_only": true,
+  "actual_error_stage": "Add-invocation",
+  "actual_verified_requested_paths": [],
+  "actual_missing_requested_paths": [
+    "C:\\cbr2\\xar_ck3_bridge_injector.exe"
+  ],
+  "fixed_binary_bytes_unchanged": true,
+  "no_followup_build_or_configure": true,
+  "no_ck3_steam_or_exe_execution": true,
+  "defender_registration_complete": false,
+  "receipt_sha256": "2476509b3f8af97286d7b88426a662ddcb0d9b87bf9644e9fcc6faf2425ea32f",
+  "archive_sha256": "47be133dea8c6c60451d3c1358cd5ffbebdb24987142a959d8533855cbb79157"
+}
