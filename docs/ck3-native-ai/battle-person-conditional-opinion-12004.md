@@ -167,3 +167,46 @@ The next bounded source input is documented in
 the actual row-helper and evaluator bodies are already held, while a complete
 caller-equivalent scope still needs construction/lifetime closure. This follow-up
 does not change or repeat the Native45 qualified implementation.
+
+## R81 actual known-bypass publication, 2026-10-09
+
+Root loaded Runtime46 containing this Native45 leaf into owned R81 Game175696
+and called the existing `ck3_query_battle_terminal_transition_v1` once with
+`prior_combat_id=null`, `subject_public_cunit_id=null`,
+`after_terminal_sequence=null`, public revision5 and full Character IDs
+`[29829,31050]`. The actual request ran from **04:55:06.210177 to
+04:56:04.922651 UTC**, **58.712474 seconds**. Its original complete response is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/managed-full-h9715-saved6010-r81-native46restore01/operator/gameplay-responses/011-r81-native45-person-opinion01.json`
+(70,183 bytes). This review read that response once, performed no Game/SDK
+request, and retained every original row in the whole response.
+
+The canonical frame is `/result/structured_content/battle_terminal_transition`,
+not the flat mirrored collection. The envelope is `available`, accepted and
+`is_error=false`; its public/native revisions are **5/4**, snapshot `native:4`
+and observed date **53288568**. `battle_terminal_transition_ready=false` is the
+expected character-only boundary and supplies no terminal-battle credit.
+
+Both canonical Character observations contain the exact4 opinion schema and
+EXE identity. For each actor, the request-order full ID equals the outer,
+direct, conditional and opinion/source-input IDs; the complete `source_inputs`
+object equals the unchanged `following_2921a90_conditional` sibling. Both leaves
+are **ready=true, reason=null**, with **source_inputs.admitted=false**,
+`selected_family=not_demanded`, occurrence_count0, opinion_rows0 and selected
+rows0. Classifier readiness is false and its result is null because it was not
+demanded. There is no unready opinion or selected row to replace with a value.
+
+This qualifies **production-live primitive publication of the known-bypass
+branch**. It does **not** qualify a numerical pair-opinion read, nonself
+owner-to-original direction in actual execution, threshold voting or dynamic
+row evaluation: no opinion occurrence was demanded for either actor. The source
+direction remains established by the frozen tree above, with its numerical
+live branch still unexercised. The active complete-scope/dynamic-weight work
+remains separate; it was not a current demanded failure in this response.
+
+The scalar thin artifact and computed per-actor joins are
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r81-person-opinion-prep/actual-011/ACTUAL-OPINION-THIN.json`;
+the bounded owner review and Oct9/W41 fields live beside it. No actor or row was
+selected for success-only reporting. Full Person, Entry, fresh model/stage
+rebuild, battle terminal and OODA loop remain **false**; this read adds no
+action, day, save or milestone credit. Native45's prior five-whole/registered
+FIRST remains reused, and no test, rebuild or hash was repeated.
