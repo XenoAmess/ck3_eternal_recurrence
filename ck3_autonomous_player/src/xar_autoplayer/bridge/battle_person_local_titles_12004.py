@@ -47,15 +47,77 @@ def _family(value, field):
     return result
 
 
-def _row(value, field):
+def _supplemental_source(value, field):
     raw = _dict(value, field, {
+        "native_index", "ready", "reason", "requested_full_id_u32", "resolution",
+        "definition_identity", "definition_gate_224_i32", "object_gate_18_u8",
+        "rite_id_demanded", "character_rite_full_id_u32", "rite_resolution",
+        "membership_array_identity", "membership_count_i32", "rite_membership_key_u32",
+        "membership_full_ids_u32", "first_match_index", "match_identity", "admitted", "source_pc",
+    })
+    result = {
+        "native_index": _integer(raw["native_index"], field + ".native_index", 32, unsigned=True),
+        "ready": _boolean(raw["ready"], field + ".ready"),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+        "resolution": _resolution(raw["resolution"], field + ".resolution"),
+        "rite_resolution": _resolution(raw["rite_resolution"], field + ".rite_resolution"),
+        "source_pc": _pc(raw["source_pc"], field + ".source_pc"),
+    }
+    for key in ("definition_identity", "membership_array_identity", "match_identity"):
+        result[key] = _string(raw[key], field + "." + key, optional=True)
+    for key in ("requested_full_id_u32", "character_rite_full_id_u32",
+                "rite_membership_key_u32", "first_match_index"):
+        result[key] = _number(raw[key], field + "." + key, 32, unsigned=True)
+    for key in ("definition_gate_224_i32", "membership_count_i32"):
+        result[key] = _number(raw[key], field + "." + key, 32)
+    result["object_gate_18_u8"] = _number(raw["object_gate_18_u8"], field + ".object_gate_18_u8", 8, unsigned=True)
+    for key in ("rite_id_demanded", "admitted"):
+        result[key] = _boolean(raw[key], field + "." + key, optional=True)
+    values = raw["membership_full_ids_u32"]
+    if not isinstance(values, list):
+        raise ValueError(field + ".membership_full_ids_u32 must retain the observed native prefix")
+    result["membership_full_ids_u32"] = [
+        _number(value, f"{field}.membership_full_ids_u32[{index}]", 32, unsigned=True)
+        for index, value in enumerate(values)
+    ]
+    if result["requested_full_id_u32"] != result["resolution"]["requested_full_id_u32"]:
+        raise ValueError(field + " changed the supplemental full-ID lookup input")
+    if result["ready"] and (result["reason"] is not None or not result["source_pc"]["ready"]):
+        raise ValueError(field + " ready supplemental source lacks its demanded operand")
+    return result
+
+
+def _supplemental(value, field):
+    raw = _dict(value, field, {
+        "ready", "reason", "array_identity", "count_i32", "known_empty", "rows",
+    })
+    result = {
+        "ready": _boolean(raw["ready"], field + ".ready"),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+        "array_identity": _string(raw["array_identity"], field + ".array_identity", optional=True),
+        "count_i32": _number(raw["count_i32"], field + ".count_i32", 32),
+        "known_empty": _boolean(raw["known_empty"], field + ".known_empty", optional=True),
+        "rows": _rows(raw["rows"], field + ".rows", _supplemental_source),
+    }
+    if result["ready"] and (result["reason"] is not None
+                            or any(not row["ready"] for row in result["rows"])):
+        raise ValueError(field + " ready supplemental family lacks a demanded source")
+    return result
+
+
+def _row(value, field):
+    fields = {
         "native_index", "input_ready", "ready", "reason", "requested_title_full_id_u32",
         "resolution", "selected_title_full_id_u32", "exclusion_byte_130_u8",
         "exclusion_dword_12c_i32", "native_contribution_eligible", "exclusion",
         "template_identity", "template_tier_i32", "composer", "primary",
         "supplemental_array_identity", "supplemental_count_i32",
         "supplemental_ready", "supplemental_reason",
-    })
+    }
+    # Frozen Native55 rows predate this optional domain observation.
+    if isinstance(value, Mapping) and "supplemental" in value:
+        fields.add("supplemental")
+    raw = _dict(value, field, fields)
     result = {
         "native_index": _integer(raw["native_index"], field + ".native_index", 32, unsigned=True),
         "ready": _boolean(raw["ready"], field + ".ready"),
@@ -79,6 +141,8 @@ def _row(value, field):
         raw["exclusion_byte_130_u8"], field + ".exclusion_byte_130_u8", 8, unsigned=True)
     for key in ("exclusion_dword_12c_i32", "template_tier_i32", "supplemental_count_i32"):
         result[key] = _number(raw[key], field + "." + key, 32)
+    if "supplemental" in raw:
+        result["supplemental"] = _supplemental(raw["supplemental"], field + ".supplemental")
     if (result["requested_title_full_id_u32"] !=
             result["resolution"]["requested_full_id_u32"]):
         raise ValueError(field + " changed the full-ID lookup input")
@@ -162,4 +226,46 @@ def compose_local_title_composer_blocks_from_current_source_inputs_12004(
                        "selected_title_full_id_u32": row["selected_title_full_id_u32"],
                        "property_block": block,
                        "outer_append_demanded": block["keys_count"] != 0})
+    return tuple(result)
+
+
+def compose_local_title_supplemental_blocks_from_current_source_inputs_12004(
+        section, native_index=None):
+    """Fold the observed supplemental PCs once per Title, in source order.
+
+    No outer Model append or weight is inferred. A selected complete Title
+    remains usable when another Title has an unread supplemental constituent.
+    """
+    if not isinstance(section, Mapping):
+        raise ValueError("Required native input unavailable: " + FIELD_NAME)
+    leaf = normalize_person_local_titles_12004(section.get(FIELD_NAME))
+    character = _integer(section.get("character_id"), "current_person_state.character_id", 32, unsigned=True)
+    if leaf is None or leaf["character_id"] != character:
+        raise ValueError(FIELD_NAME + " full CharacterID join unavailable or mismatched")
+    rows = leaf["rows"]
+    if native_index is not None:
+        index = _integer(native_index, FIELD_NAME + ".native_index", 32, unsigned=True)
+        if index >= len(rows):
+            raise ValueError("Required native input unavailable: " + FIELD_NAME + " occurrence")
+        rows = [rows[index]]
+    elif not leaf["family_input_ready"] or not leaf["supplemental_ready"]:
+        raise ValueError("Required native input unavailable: " + (leaf["reason"] or FIELD_NAME))
+    from ..simulation.battle_person_after_gated_tail_12003 import fold_after_gated_blocks_12003
+    result = []
+    for row in rows:
+        if not row["input_ready"]:
+            raise ValueError("Required native input unavailable: " + (row["reason"] or FIELD_NAME))
+        if row["native_contribution_eligible"] is False:
+            continue
+        family = row.get("supplemental")
+        if family is None or not family["ready"]:
+            raise ValueError("Required native input unavailable: " + (
+                family["reason"] if family is not None and family["reason"] else "supplemental"))
+        pcs = [source["source_pc"] for source in family["rows"] if source["admitted"] is True]
+        blocks = [{"keys_count": pc["count_i32"],
+                   "keys_u16": pc["properties"]["keys_u16"],
+                   "values_q64": pc["properties"]["values_q64"]} for pc in pcs]
+        result.append({"native_index": row["native_index"],
+                       "selected_title_full_id_u32": row["selected_title_full_id_u32"],
+                       "property_block": fold_after_gated_blocks_12003(blocks)})
     return tuple(result)

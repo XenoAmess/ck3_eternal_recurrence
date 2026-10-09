@@ -49,14 +49,50 @@ There is no existing semantically suitable typed extension container for a new m
 
 The sole new native target is `xar_ck3_12004_person_following_291e3a0_local_titles_mcp_test <wire-directory>`. Ten original whole-command worlds cover a zero context header, zero static header, positive duplicate Title/PC occurrences, both raw exclusion branches, generation fallback, null registry with still-demanded IDs, partial unread PC values with an independent ready sibling, a negative signed header count, a positive tier1 primary source, and a tier2 primary source with source-proven empty supplemental demand. The single registered MCP compound consumes those unchanged bodies through the ordinary Service/Driver normalizer and checks the same full Character-ID join and per-Title numerical projection.
 
-Source and fixture readiness are authored and not run. Root owns all compilation, linking, native FIRST and registered FIRST. Native53's historical seven native/registered cases are not replayed. New exact-image work for this continuation is 11+2310+966=3287 bytes in three Root reads; the cumulative Person continuation ledger is 5219 bytes in14 reads. Reusing the already captured Title Province getter118B adds zero new executable reads.
+The original ten worlds and compound were authored without execution by this source author. Root subsequently qualified that Native55 package once with10/10 native worlds and10/10 registered packets GREEN, as recorded below. Root owns compilation, linking and both FIRST runs. Native53's historical seven native/registered cases are not replayed. Exact-image work for the original local Title package was 11+2310+966=3287 bytes in three Root reads; its cumulative Person continuation ledger was5219 bytes in14 reads. Reusing the already captured Title Province getter118B added zero new executable reads.
 
 The first pointer-vector family, positive Government segment, later six-attribute stage and final Entry transfer remain separate source gaps. No complete Person readiness follows from a ready local Title family. The R83 empty `following_2922680` list is historical evidence for that other helper, not an empty Title family observation.
 
-At 21:07 Asia/Shanghai on 2026-10-09, the user prohibited local CK3 use. This package is source-only and its unique native/registered compound remains authored and not run until Root executes it. Historical Native53 seven-case static qualification is retained without replay.
+At21:07 Asia/Shanghai on2026-10-09, the user prohibited local CK3 use. No CK3 was launched for this source package. Root's later Native55 static qualification is recorded below; it is not live qualification. Historical Native53 seven-case static qualification is retained without replay.
 
 ## Next positive supplemental input
 
 Positive tier2 supplemental rows are the next concrete local-family gap. The retained helper body stages membership-array begin in R8, end in R9 (`begin + signextended count *4`), and the complete selected Rite DWORD+4B8 key at caller stack+20 before `291E9A2 CALL3F90870` (the first-vector counterpart is `291E667`). RAX is a returned candidate pointer, not an observed Boolean: the caller converts equal-end to null and admits Definition+218 PC only for a non-null, non-end result. It never dereferences that result. RCX/RDX are not restaged as semantic arguments, so a conventional two-argument prototype is not invented.
 
-The alternate inline path proves full-DWORD first equality, SSE/BSF selection and a scalar stride4 tail, with miss returning end. The exact called path's return contract remains unclosed. The finite held-cache lookup found no complete `3F90870` body or exact contract and no runtime-function row for that target. Cached neighbors only bound `[3F90870,3F90970)` to256 bytes; this is a candidate cap, not a proved function extent. `person-entry-after-government53/local-title-next-supplemental/ROOT-CAPTURE-ARGV.json` prepares one Root-only file read of that span, with the actual call contract and no automatic callee expansion. It does not delay or reclassify the delivered ten-case source package, and has not been executed by this author.
+At Native55 authoring, the alternate inline path already proved full-DWORD first equality, SSE/BSF selection and a scalar stride4 tail, with miss returning end; the called path's return contract was still unclosed. The finite held-cache lookup found no complete `3F90870` body or exact contract and no runtime-function row for that target. Cached neighbors bounded `[3F90870,3F90970)` to256 bytes, a capture cap rather than a function extent. `person-entry-after-government53/local-title-next-supplemental/ROOT-CAPTURE-ARGV.json` prepared one Root-only read, subsequently completed as described below. This did not delay or reclassify the delivered ten-case source package.
+
+## Actual supplemental closure and source construction
+
+Root subsequently captured that256-byte cap once. Parent consumed `local-title-next-supplemental/actual-contains01/SOURCE-CAPTURE.json` once: the actual DWORD routine is only `[3F90870,3F908E3)`,115 bytes, returns at3F908D4/3F908E2, all branch targets internal and no calls. It loads the complete DWORD key from callee stack28, searches eight-DWORD AVX blocks with BSF selecting the first equal lane, then a scalar stride4 tail, and returns the first equal pointer or end. The adjacent QWORD routine3F908F0 is excluded. The observer uses the equivalent ordered DWORD equality without invoking either native search path or its CPU initialization.
+
+For an eligible tier2 local Title, `291E872/291E879` demand QWORD1E0 before signed DWORD1EC. Each supplemental ID is a full DWORD, loaded before the registry-null test at291E8A2. Registry5D1DE80/fallback5D1DE20 uses capacity2C/table20/stride16/pointer8 and full-ID equality at selected object10. QWORD selectedObject20 supplies the Definition. Definition DWORD224 must be nonzero before selectedObject BYTE18 is demanded; a zero value in either guard is a ready skipped contribution.
+
+Only rows passing both guards demand Rite registry5D1E2F8. A null registry selects fallback5C67670 without reading CharacterB4. A non-null registry demands that complete ID and validates a mapped Rite using fullID8, with the same low24 index, capacity2C/table20/stride16/pointer8 resolution. Membership then demands signed selectedObjectA4, QWORD selectedObject98 and selectedRite DWORD4B8 in that order, including count0. The first full-DWORD match admits Definition+218 PC at explicit inner weight100000 (`291EA6C CALL2303100`). A zero count or miss is known empty. Negative counts are partial, and no unread skipped field becomes an artificial requirement.
+
+```mermaid
+flowchart TD
+  T[Eligible local Title tier2] --> H[Array1E0 then signed count1EC]
+  H -->|zero| Z[Known empty supplemental family]
+  H -->|positive ordered full IDs| R[Exact generation resolution]
+  R --> D[Definition20 DWORD224]
+  D -->|zero| S[Ready skipped row]
+  D -->|nonzero| B[Object BYTE18]
+  B -->|zero| S
+  B -->|nonzero| G[Rite registry and conditional CharacterB4]
+  G --> M[CountA4 then array98 then Rite4B8]
+  M --> C[First full DWORD equality]
+  C -->|miss| S
+  C -->|match| P[Definition218 paired PC input inner100000]
+  S --> F[Ordered independently ready supplemental rows]
+  P --> F
+  F --> L[Complete local family when demanded siblings ready]
+  L -.-> U[First vector and FullPerson Entry remain incomplete]
+```
+
+The same optional `following_291e3a0_local_titles` leaf gains a typed `supplemental` family per Title. It retains both resolutions, raw guard values, demanded Rite-ID distinction, membership inputs and observed search prefix, first match and admitted paired PC. Existing supplemental pointer/count/readiness fields mirror the family for compatibility. Composer, primary and each supplemental occurrence remain independently usable. `family_known_zero` includes admitted supplemental PC counts: a positive PC makes it false even if another row is partial; only complete known-empty supplemental inputs can contribute to a true result. Definition224 is physically the same field as sourcePC218+C, so a zero source count already takes the early skip. Complete readiness here describes demanded local Title source inputs; it does not close historical post-callback Model97/111 preparation, the final291B3B0 append, the first vector, FullHelper, FullPerson or Entry.
+
+`compose_local_title_supplemental_blocks_from_current_source_inputs_12004` folds admitted supplemental PC constituents once per eligible Title occurrence at the proved inner weight100000. It preserves source duplicates, signed64 values and zero-valued keys. An explicit outer Title index allows an independently complete sibling to remain useful across partial values elsewhere. It returns input property blocks without inventing an outer Model weight or a historical stage. Frozen Native55 packets that lack the new typed family retain their original normalization; the new composition requires an observed family and never fabricates an empty result for an absent field.
+
+The separate target `xar_ck3_12004_person_local_titles_supplemental_mcp_test <wire-directory>` authors six new whole-command worlds: first full-DWORD matches within an eight-element group and its tail with duplicate source occurrences; miss and zero membership count; both native short circuits with later fields unread; supplemental generation fallback; null Rite registry with the Character Rite ID undemanded; and partial PC values with an independently ready Title sibling. The sole registered six-packet MCP compound uses the original production bodies and the ordinary Driver/normalizer, then checks the numerical input projection. Its fixture and compound are AUTHORED_NOTRUN; the earlier Native55 ten cases are not replayed.
+
+Root reported Native55 GREEN once in `upstream-build-migration/entry-live-fix55/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`, with attempt `Z:/g2-native55-build01/attempt01/ROOT-NATIVE55-RESULT.json`: its ten native worlds and sole registered ten-packet compound passed. This author did not rerun or reread that qualification. It is static qualification, with no CK3 live, FullPerson or Entry claim. The new six-case supplemental compound is separate and AUTHORED_NOTRUN until Root qualifies it. The new Root source read adds256 captured bytes (115 bytes of the selected DWORD function), making the retained continuation ledger5475 bytes in15 reads. This source construction uses only the new isolated author tree based atd18a15b11e6077761b59788ac5ef2145cdfc9032; previous frozen55 files remain untouched.

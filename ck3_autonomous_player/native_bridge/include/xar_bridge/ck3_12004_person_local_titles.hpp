@@ -20,6 +20,43 @@ struct PersonLocalTitlesPcFamily12004 {
                          const PersonLocalTitlesPcFamily12004 &) = default;
 };
 
+// Ordered supplemental ID occurrences; skipped fields remain null. The search
+// prefix ends at the first full-DWORD match, unread element, or array end.
+struct PersonLocalTitlesSupplementalRow12004 {
+  std::uint32_t native_index = 0;
+  bool ready = false;
+  std::string reason;
+  std::optional<std::uint32_t> requested_full_id_u32;
+  PersonFollowing2922680Resolution resolution;
+  std::optional<std::uintptr_t> definition_identity;
+  std::optional<std::int32_t> definition_gate_224_i32;
+  std::optional<std::uint8_t> object_gate_18_u8;
+  std::optional<bool> rite_id_demanded;
+  std::optional<std::uint32_t> character_rite_full_id_u32;
+  PersonFollowing2922680Resolution rite_resolution;
+  std::optional<std::uintptr_t> membership_array_identity;
+  std::optional<std::int32_t> membership_count_i32;
+  std::optional<std::uint32_t> rite_membership_key_u32;
+  std::vector<std::optional<std::uint32_t>> membership_full_ids_u32;
+  std::optional<std::uint32_t> first_match_index;
+  std::optional<std::uintptr_t> match_identity;
+  std::optional<bool> admitted;
+  PersonFollowing2922680Pc source_pc;
+  friend bool operator==(const PersonLocalTitlesSupplementalRow12004 &,
+                         const PersonLocalTitlesSupplementalRow12004 &) = default;
+};
+
+struct PersonLocalTitlesSupplementalFamily12004 {
+  bool ready = false;
+  std::string reason;
+  std::optional<std::uintptr_t> array_identity;
+  std::optional<std::int32_t> count_i32;
+  std::optional<bool> known_empty;
+  std::vector<PersonLocalTitlesSupplementalRow12004> rows;
+  friend bool operator==(const PersonLocalTitlesSupplementalFamily12004 &,
+                         const PersonLocalTitlesSupplementalFamily12004 &) = default;
+};
+
 struct PersonLocalTitlesRow12004 {
   std::uint32_t native_index = 0;
   bool input_ready = false;
@@ -38,6 +75,8 @@ struct PersonLocalTitlesRow12004 {
   PersonLocalTitlesPcFamily12004 composer;
   // Parent291E3A0's distinct tier1/tier2 constituents remain separate.
   PersonLocalTitlesPcFamily12004 primary;
+  PersonLocalTitlesSupplementalFamily12004 supplemental;
+  // Compatibility mirrors of the typed supplemental family.
   std::optional<std::uintptr_t> supplemental_array_identity;
   std::optional<std::int32_t> supplemental_count_i32;
   bool supplemental_ready = false;

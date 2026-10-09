@@ -7,12 +7,18 @@
 namespace xar::ck3_12004 {
 namespace {
 // Source first: external after-government53/native-tree/ACTUAL-HELPER-SOURCE-TREE.
-// Actual291E3A0 2310B,291ECB0 966B and held230F8E0 118B. No native calls,
+// Actual291E3A0 2310B,291ECB0 966B, held230F8E0 118B and3F90870 115B.
+// Supplemental source tree precedes construction in local-title-next-supplemental.
+// No native calls,
 // initialization, physical temporary allocation, Model writes or stage copies.
 constexpr std::uintptr_t kTitleRegistry = 0x5D1DAF8;
 constexpr std::uintptr_t kTitleFallback = 0x5D1DAE0;
 constexpr std::uintptr_t kDefaultHeader = 0x5459C88;
 constexpr std::uintptr_t kCountyDataFallback = 0x5D21900;
+constexpr std::uintptr_t kSupplementalRegistry = 0x5D1DE80;
+constexpr std::uintptr_t kSupplementalFallback = 0x5D1DE20;
+constexpr std::uintptr_t kRiteRegistry = 0x5D1E2F8;
+constexpr std::uintptr_t kRiteFallback = 0x5C67670;
 
 template <class T>
 std::optional<T> Copy(const PersonCarrierDirect12004Bindings &b, std::uintptr_t p) {
@@ -58,6 +64,50 @@ PersonFollowing2922680Resolution ResolveTitle(
       : Copy<std::uintptr_t>(b, b.module_base + kTitleFallback)) : r.candidate_identity;
   if (!r.selected_identity || !*r.selected_identity) {
     r.reason = "selected_title_unread"; return r;
+  }
+  r.ready = true;
+  return r;
+}
+
+PersonFollowing2922680Resolution ResolveSupplementalReference(
+    const PersonCarrierDirect12004Bindings &b, std::uintptr_t registry_rva,
+    std::uintptr_t fallback_rva, std::uintptr_t id_offset,
+    std::optional<std::uint32_t> full, const char *selected_reason,
+    std::optional<std::uintptr_t> held_registry = std::nullopt) {
+  PersonFollowing2922680Resolution r;
+  r.requested_full_id_u32 = full;
+  r.registry_identity = held_registry ? held_registry
+      : Copy<std::uintptr_t>(b, b.module_base + registry_rva);
+  if (!r.registry_identity) { r.reason = "registry_slot_unread"; return r; }
+  bool fallback = *r.registry_identity == 0;
+  if (!fallback) {
+    // A null Rite registry bypasses the requested Character ID entirely.
+    if (!full) { r.reason = "requested_full_id_unread"; return r; }
+    r.registry_count_u32 = Copy<std::uint32_t>(b, *r.registry_identity + 0x2C);
+    if (!r.registry_count_u32) { r.reason = "registry_count_unread"; return r; }
+    const auto index = *full & 0xFFFFFFU;
+    fallback = index >= *r.registry_count_u32;
+    if (!fallback) {
+      r.registry_slots_identity = Copy<std::uintptr_t>(b, *r.registry_identity + 0x20);
+      if (!r.registry_slots_identity || !*r.registry_slots_identity) {
+        r.reason = "registry_slots_unread"; return r;
+      }
+      r.candidate_identity = Copy<std::uintptr_t>(b,
+          *r.registry_slots_identity + static_cast<std::uintptr_t>(index) * 16 + 8);
+      if (!r.candidate_identity) { r.reason = "registry_candidate_unread"; return r; }
+      fallback = *r.candidate_identity == 0;
+      if (!fallback) {
+        r.candidate_full_id_u32 = Copy<std::uint32_t>(b, *r.candidate_identity + id_offset);
+        if (!r.candidate_full_id_u32) { r.reason = "candidate_full_id_unread"; return r; }
+        fallback = *r.candidate_full_id_u32 != *full;
+      }
+    }
+  }
+  r.selection = fallback ? "fallback" : "mapped";
+  r.selected_identity = fallback
+      ? Copy<std::uintptr_t>(b, b.module_base + fallback_rva) : r.candidate_identity;
+  if (!r.selected_identity || !*r.selected_identity) {
+    r.reason = selected_reason; return r;
   }
   r.ready = true;
   return r;
@@ -189,8 +239,126 @@ void ReadPrimary(const PersonCarrierDirect12004Bindings &b, std::uintptr_t title
   ReadPcList(b, *owner, 0x28, 0x34, 0x438, f);
 }
 
+void SkipSupplementalRow(PersonLocalTitlesSupplementalRow12004 &r) {
+  r.admitted = false;
+  r.source_pc.admitted = false;
+  r.source_pc.ready = true;
+  r.ready = true;
+}
+
+void EmptySupplemental(PersonLocalTitlesSupplementalFamily12004 &f) {
+  f.ready = true;
+  f.known_empty = true;
+}
+
+void ReadSupplementalRow(const PersonCarrierDirect12004Bindings &b,
+    std::uintptr_t character, std::uintptr_t address,
+    PersonLocalTitlesSupplementalRow12004 &r) {
+  // Actual291E8A0 demands this full ID even when the registry is null.
+  r.requested_full_id_u32 = Copy<std::uint32_t>(b, address);
+  if (!r.requested_full_id_u32) { r.reason = "supplemental_id_unread"; return; }
+  r.resolution = ResolveSupplementalReference(b, kSupplementalRegistry,
+      kSupplementalFallback, 0x10, r.requested_full_id_u32,
+      "selected_supplemental_unread");
+  if (!r.resolution.ready) { r.reason = r.resolution.reason; return; }
+  const auto object = *r.resolution.selected_identity;
+  r.definition_identity = Copy<std::uintptr_t>(b, object + 0x20);
+  if (!r.definition_identity || !*r.definition_identity) {
+    r.reason = "definition_pointer_unread"; return;
+  }
+  r.definition_gate_224_i32 = Copy<std::int32_t>(b, *r.definition_identity + 0x224);
+  if (!r.definition_gate_224_i32) { r.reason = "definition_gate_224_unread"; return; }
+  if (*r.definition_gate_224_i32 == 0) { SkipSupplementalRow(r); return; }
+  r.object_gate_18_u8 = Copy<std::uint8_t>(b, object + 0x18);
+  if (!r.object_gate_18_u8) { r.reason = "object_gate_18_unread"; return; }
+  if (*r.object_gate_18_u8 == 0) { SkipSupplementalRow(r); return; }
+
+  // Actual291E8FD tests the slot before291E907 loads CharacterB4.
+  const auto rite_registry = Copy<std::uintptr_t>(b, b.module_base + kRiteRegistry);
+  r.rite_resolution.registry_identity = rite_registry;
+  if (!rite_registry) { r.reason = "rite_registry_slot_unread"; return; }
+  r.rite_id_demanded = *rite_registry != 0;
+  if (*r.rite_id_demanded) {
+    r.character_rite_full_id_u32 = Copy<std::uint32_t>(b, character + 0xB4);
+    r.rite_resolution.requested_full_id_u32 = r.character_rite_full_id_u32;
+    if (!r.character_rite_full_id_u32) {
+      r.reason = "character_rite_full_id_unread"; return;
+    }
+  }
+  r.rite_resolution = ResolveSupplementalReference(b, kRiteRegistry,
+      kRiteFallback, 8, r.character_rite_full_id_u32,
+      "selected_rite_unread", rite_registry);
+  if (!r.rite_resolution.ready) { r.reason = r.rite_resolution.reason; return; }
+
+  // Actual291E941/948/953 demand count, array, then key even for count0.
+  r.membership_count_i32 = Copy<std::int32_t>(b, object + 0xA4);
+  r.membership_array_identity = Copy<std::uintptr_t>(b, object + 0x98);
+  r.rite_membership_key_u32 = Copy<std::uint32_t>(b,
+      *r.rite_resolution.selected_identity + 0x4B8);
+  if (!r.membership_count_i32) { r.reason = "membership_count_unread"; return; }
+  if (!r.membership_array_identity) { r.reason = "membership_array_unread"; return; }
+  if (!r.rite_membership_key_u32) { r.reason = "membership_key_unread"; return; }
+  if (*r.membership_count_i32 < 0) { r.reason = "membership_count_negative"; return; }
+  if (*r.membership_count_i32 == 0) { SkipSupplementalRow(r); return; }
+  if (!*r.membership_array_identity) { r.reason = "membership_array_unread"; return; }
+  for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(*r.membership_count_i32); ++i) {
+    const auto p = *r.membership_array_identity + static_cast<std::uintptr_t>(i) * 4;
+    const auto key = Copy<std::uint32_t>(b, p);
+    r.membership_full_ids_u32.push_back(key);
+    if (!key) { r.reason = "membership_id_unread"; return; }
+    if (*key != *r.rite_membership_key_u32) continue;
+    // Actual3F90870 and inline SSE both return the first full-DWORD match.
+    r.first_match_index = i;
+    r.match_identity = p;
+    r.admitted = true;
+    ReadPc(b, *r.definition_identity + 0x218, r.source_pc);
+    r.ready = r.source_pc.ready;
+    if (!r.ready) r.reason = "supplemental_pc_partial";
+    return;
+  }
+  SkipSupplementalRow(r);
+}
+
+void ReadSupplemental(const PersonCarrierDirect12004Bindings &b,
+    std::uintptr_t character, std::uintptr_t title,
+    PersonLocalTitlesSupplementalFamily12004 &f) {
+  f.array_identity = Copy<std::uintptr_t>(b, title + 0x1E0);
+  f.count_i32 = Copy<std::int32_t>(b, title + 0x1EC);
+  if (!f.array_identity) { f.reason = "tier2_supplemental_array_unread"; return; }
+  if (!f.count_i32) { f.reason = "tier2_supplemental_count_unread"; return; }
+  if (*f.count_i32 < 0) { f.reason = "tier2_supplemental_count_negative"; return; }
+  if (*f.count_i32 == 0) { EmptySupplemental(f); return; }
+  if (!*f.array_identity) { f.reason = "tier2_supplemental_array_unread"; return; }
+  bool complete = true, all_empty = true, known_nonempty = false;
+  for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(*f.count_i32); ++i) {
+    PersonLocalTitlesSupplementalRow12004 row;
+    row.native_index = i;
+    ReadSupplementalRow(b, character,
+        *f.array_identity + static_cast<std::uintptr_t>(i) * 4, row);
+    complete = complete && row.ready;
+    const bool pc_positive = row.admitted == true && row.source_pc.count_i32 &&
+        *row.source_pc.count_i32 > 0;
+    const bool row_empty = row.ready && (row.admitted == false ||
+        (row.admitted == true && row.source_pc.count_i32 == 0));
+    known_nonempty = known_nonempty || pc_positive;
+    all_empty = all_empty && row_empty;
+    f.rows.push_back(std::move(row));
+  }
+  f.ready = complete;
+  if (known_nonempty) f.known_empty = false;
+  else if (all_empty) f.known_empty = true;
+  if (!complete) f.reason = "supplemental_rows_partial";
+}
+
+void MirrorSupplemental(PersonLocalTitlesRow12004 &r) {
+  r.supplemental_array_identity = r.supplemental.array_identity;
+  r.supplemental_count_i32 = r.supplemental.count_i32;
+  r.supplemental_ready = r.supplemental.ready;
+  r.supplemental_reason = r.supplemental.reason;
+}
+
 void ReadRow(const PersonCarrierDirect12004Bindings &b, std::uintptr_t address,
-             PersonLocalTitlesRow12004 &r) {
+             std::uintptr_t character, PersonLocalTitlesRow12004 &r) {
   r.requested_title_full_id_u32 = Copy<std::uint32_t>(b, address);
   if (!r.requested_title_full_id_u32) { r.reason = "requested_title_full_id_unread"; return; }
   r.resolution = ResolveTitle(b, *r.requested_title_full_id_u32);
@@ -208,7 +376,8 @@ void ReadRow(const PersonCarrierDirect12004Bindings &b, std::uintptr_t address,
     r.exclusion = *r.native_contribution_eligible ? "eligible" : "dword_12c_not_minus_one";
   }
   if (!*r.native_contribution_eligible) {
-    r.input_ready = r.ready = r.supplemental_ready = true;
+    r.input_ready = r.ready = true;
+    EmptySupplemental(r.supplemental); MirrorSupplemental(r);
     Empty(r.composer); Empty(r.primary); return;
   }
   // These source families remain independently copied across missing siblings.
@@ -220,21 +389,14 @@ void ReadRow(const PersonCarrierDirect12004Bindings &b, std::uintptr_t address,
   if (!r.template_tier_i32) {
     r.reason = "template_tier_unread";
     r.primary.reason = "template_tier_unread";
-    r.supplemental_reason = "template_tier_unread";
+    r.supplemental.reason = "template_tier_unread"; MirrorSupplemental(r);
     return;
   }
   const auto tier = *r.template_tier_i32;
   ReadPrimary(b, title, tier, r.primary);
-  if (tier != 2) r.supplemental_ready = true;
-  else {
-    r.supplemental_array_identity = Copy<std::uintptr_t>(b, title + 0x1E0);
-    r.supplemental_count_i32 = Copy<std::int32_t>(b, title + 0x1EC);
-    if (!r.supplemental_array_identity) r.supplemental_reason = "tier2_supplemental_array_unread";
-    else if (!r.supplemental_count_i32) r.supplemental_reason = "tier2_supplemental_count_unread";
-    else if (*r.supplemental_count_i32 == 0) r.supplemental_ready = true;
-    else r.supplemental_reason = *r.supplemental_count_i32 < 0
-        ? "tier2_supplemental_count_negative" : "tier2_supplemental_inputs_unobserved";
-  }
+  if (tier != 2) EmptySupplemental(r.supplemental);
+  else ReadSupplemental(b, character, title, r.supplemental);
+  MirrorSupplemental(r);
   r.ready = r.input_ready && r.composer.ready && r.primary.ready && r.supplemental_ready;
   if (!r.ready) r.reason = !r.composer.ready ? "composer_inputs_partial"
       : !r.primary.ready ? "primary_inputs_partial" : r.supplemental_reason;
@@ -310,6 +472,40 @@ std::string FamilyJson(const PersonLocalTitlesPcFamily12004 &f) {
   for (const auto &pc : f.source_pcs) { if (!first) rows += ','; first = false; rows += PcJson(pc); }
   rows += ']'; j.Add("source_pcs", rows); return j.Finish();
 }
+std::string SupplementalRowJson(const PersonLocalTitlesSupplementalRow12004 &r) {
+  Json j; j.Add("native_index", std::to_string(r.native_index));
+  j.Add("ready", Boolean(r.ready)); j.Add("reason", Reason(r.reason));
+  j.Add("requested_full_id_u32", Number(r.requested_full_id_u32));
+  j.Add("resolution", ResolutionJson(r.resolution));
+  j.Add("definition_identity", Pointer(r.definition_identity));
+  j.Add("definition_gate_224_i32", Number(r.definition_gate_224_i32));
+  j.Add("object_gate_18_u8", Number(r.object_gate_18_u8));
+  j.Add("rite_id_demanded", Boolean(r.rite_id_demanded));
+  j.Add("character_rite_full_id_u32", Number(r.character_rite_full_id_u32));
+  j.Add("rite_resolution", ResolutionJson(r.rite_resolution));
+  j.Add("membership_array_identity", Pointer(r.membership_array_identity));
+  j.Add("membership_count_i32", Number(r.membership_count_i32));
+  j.Add("rite_membership_key_u32", Number(r.rite_membership_key_u32));
+  std::string keys = "["; bool first = true;
+  for (const auto &key : r.membership_full_ids_u32) {
+    if (!first) keys += ','; first = false; keys += Number(key);
+  }
+  keys += ']'; j.Add("membership_full_ids_u32", keys);
+  j.Add("first_match_index", Number(r.first_match_index));
+  j.Add("match_identity", Pointer(r.match_identity));
+  j.Add("admitted", Boolean(r.admitted)); j.Add("source_pc", PcJson(r.source_pc));
+  return j.Finish();
+}
+std::string SupplementalFamilyJson(const PersonLocalTitlesSupplementalFamily12004 &f) {
+  Json j; j.Add("ready", Boolean(f.ready)); j.Add("reason", Reason(f.reason));
+  j.Add("array_identity", Pointer(f.array_identity)); j.Add("count_i32", Number(f.count_i32));
+  j.Add("known_empty", Boolean(f.known_empty));
+  std::string rows = "["; bool first = true;
+  for (const auto &row : f.rows) {
+    if (!first) rows += ','; first = false; rows += SupplementalRowJson(row);
+  }
+  rows += ']'; j.Add("rows", rows); return j.Finish();
+}
 std::string RowJson(const PersonLocalTitlesRow12004 &r) {
   Json j; j.Add("native_index", std::to_string(r.native_index));
   j.Add("input_ready", Boolean(r.input_ready)); j.Add("ready", Boolean(r.ready)); j.Add("reason", Reason(r.reason));
@@ -321,6 +517,7 @@ std::string RowJson(const PersonLocalTitlesRow12004 &r) {
   j.Add("native_contribution_eligible", Boolean(r.native_contribution_eligible)); j.Add("exclusion", Quote(r.exclusion));
   j.Add("template_identity", Pointer(r.template_identity)); j.Add("template_tier_i32", Number(r.template_tier_i32));
   j.Add("composer", FamilyJson(r.composer)); j.Add("primary", FamilyJson(r.primary));
+  j.Add("supplemental", SupplementalFamilyJson(r.supplemental));
   j.Add("supplemental_array_identity", Pointer(r.supplemental_array_identity));
   j.Add("supplemental_count_i32", Number(r.supplemental_count_i32));
   j.Add("supplemental_ready", Boolean(r.supplemental_ready)); j.Add("supplemental_reason", Reason(r.supplemental_reason));
@@ -364,15 +561,17 @@ PersonLocalTitles12004DTO ReadPersonLocalTitlesForCharacter12004(
   bool all_known_zero = true, known_nonzero = false;
   for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(*d.count_i32); ++i) {
     PersonLocalTitlesRow12004 row; row.native_index = i;
-    ReadRow(b, *d.array_identity + static_cast<std::uintptr_t>(i) * 4, row);
+    ReadRow(b, *d.array_identity + static_cast<std::uintptr_t>(i) * 4, character, row);
     d.family_input_ready = d.family_input_ready && row.input_ready;
     d.composer_ready = d.composer_ready && row.native_contribution_eligible.has_value() && row.composer.ready;
     d.primary_ready = d.primary_ready && row.primary.ready;
     d.supplemental_ready = d.supplemental_ready && row.supplemental_ready;
     const bool row_zero = row.native_contribution_eligible == false ||
-        (row.composer.known_empty == true && row.primary.known_empty == true && row.supplemental_ready);
+        (row.composer.known_empty == true && row.primary.known_empty == true &&
+         row.supplemental.known_empty == true);
     all_known_zero = all_known_zero && row_zero;
-    known_nonzero = known_nonzero || row.composer.known_empty == false || row.primary.known_empty == false;
+    known_nonzero = known_nonzero || row.composer.known_empty == false ||
+        row.primary.known_empty == false || row.supplemental.known_empty == false;
     d.rows.push_back(std::move(row));
   }
   if (all_known_zero) d.family_known_zero = true;
