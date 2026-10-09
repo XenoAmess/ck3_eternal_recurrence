@@ -288,19 +288,52 @@ Both COLs name TD0x5723010 and class-hierarchy descriptor0x4AEE870.
 The primary table's next entries include0x106C4F0,0x102EED0 and0x106CC20.
 These are actual virtual pointers; their callback meanings are not guessed.
 
-The next source input is the constructor/vptr-store reference to these
-two exact named tables. The Root-only recipe is
-`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/character-vptr55/ROOT-VPTR-ARGV.json`.
-It searches only RIP-relative64-bit LEA references to0x451BA18/0x451BAE8,
-then retains the local forward instructions and existing runtime-function
-extent for each hit. It uses one frozen `.text` buffer, not a whole-code
-decode or other-type inventory. The actual result remains pending under
-`character-vptr55/root-vptr01/`; no first virtual entry is relabelled
-as GetCharacter.
+Root's actual named-vptr locator found exactly two RIP-LEA references,
+both in the same held runtime extent:
+`[0x106BC80,0x106C03B)`. At0x106BD23 the primary vtable is stored at
+`[R15]`; at0x106BD2D the secondary is stored at `[R15+0x10]`.
+The retained result is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/character-vptr55/root-vptr01/CHARACTER-VPTR-STORES-RESULT.json`,
+actual2026-10-09T12:49:20.923563Z,one frozen `.text` buffer read in
+0.0301696 seconds. Only the two named targets were decoded locally.
 
-A real COL/vtable chain can identify the subsequent Character constructor
-vptr store or typed registration. GetCharacter still needs its actual
-receiver, callable ABI and returned full-ID proof. Robert29829 and heir38822
+### Actual CharacterWindow constructor and next member entry
+
+Root then captured the exact955-byte body at
+2026-10-09T12:53:30.322892Z to12:53:30.343038Z. Its167 instructions
+decode all955 bytes; the single read took0.0001280 seconds.
+`character-constructor56/root-body01/CHARACTER-VPTR-BODY-RESULT.json`
+and its sibling `CHARACTER-VPTR-BODY-DETAIL.json` retain the evidence
+under the same provider packet root.
+
+The complete body establishes constructor semantics:
+
+| Actual instruction or member | Established construction input |
+| --- | --- |
+| 0x106BCA1 / 0x106C01F | Saves incoming RCX as R15 and returns that same receiver after initialization. |
+| 0x106BCEB -> 0x3AC1810 | Base construction receives the existing owner chain and literal descriptors at0x451BBB8/length16 and0x451BB98/length24. Their names are not guessed and the generic callee is not expanded. |
+| 0x106BCF0 / 0x106BCF7 | Stores incoming RDX at receiver+0x98 and incoming R8 at+0xA0. Their typed owner roles need separate proof. |
+| 0x106BD23 / 0x106BD2D | Writes the named primary/secondary vptrs at receiver+0/+0x10. |
+| 0x106BD31 | Initializes receiver+0xC8 as a32-bit `0xFFFFFFFF` value. This alone does not name it a Character ID. |
+
+The body initializes its remaining members/subobjects and returns the
+receiver. It supplies no named GetCharacter call or actual handler-slot
+store. CharacterWindow native construction is now closed; its readable
+subject/full-ID getter remains unclosed.
+
+The smallest next class-member entry is primary vtable slot3's actual
+pointer0x106CC20. The held runtime extent is
+`[0x106CC20,0x106CC66)`,70 bytes. Its source question is whether that
+specific CharacterWindow method reads or writes+0xC8 and connects it to a
+typed Character provider. No getter meaning is assigned before its body
+is read. Primary slot1's1831-byte entry and the generic base/context
+branches are not expanded. A future same-query private read needs actual
+handler/receiver admission and generation-aware full-ID resolution;
+this constructor is not permission to publish an unproved+C8 value as ID.
+
+The named type and constructor now supply the exact Character-specific
+source entry. GetCharacter still needs its actual admitted receiver,
+callable ABI and returned full-ID proof. Robert29829 and heir38822
 remain the observed family anchors; neither substitutes for an unobserved
 child or selected educator.
 
@@ -311,8 +344,9 @@ flowchart TD
   G[Stock CharacterWindow.GetCharacter consumer] --> N[Root actual CCharacterWindow name5723020]
   N --> T[Named TD candidate5723010]
   T --> V[Actual primary451BA18 and secondary451BAE8]
-  V -. exact constructor vptr stores and typed registration unclosed .-> R[Character-specific receiver provider]
-  R -. callback receiver and full ID unclosed .-> C[CharacterWindow.GetCharacter full ID]
+  V --> K[Actual constructor106BC80 and vptr stores]
+  K -. slot3 member method106CC20 and handler receiver unclosed .-> R[Character-specific receiver provider]
+  R -. readable full-ID getter unclosed .-> C[CharacterWindow.GetCharacter full ID]
   C -. guardian kind and directional collection unclosed .-> H[Existing child query guardian input]
 ```
 
@@ -341,7 +375,8 @@ flowchart TD
   D --> L[R83 actual paused7 names and RTTI available]
   L --> M[Seven-slot finite miss: no CharacterWindow]
   M --> T2[Actual CCharacterWindow TD5723010 and two COL/vtables]
-  T2 -. constructor and handler slot registration unclosed .-> C[Candidate CharacterWindow typed slot]
+  T2 --> K2[Actual CharacterWindow constructor106BC80]
+  K2 -. handler slot registration unclosed .-> C[Candidate CharacterWindow typed slot]
   C -. native typed registration and receiver unclosed .-> G[CharacterWindow.GetCharacter full ID]
   G -. loaded relation object factory unclosed .-> R[GetRelation guardian / ScriptedRelation]
   R -. callback ABI and guardian direction unclosed .-> H[HasRelationBetween]
