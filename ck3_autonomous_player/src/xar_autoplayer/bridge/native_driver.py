@@ -42,6 +42,7 @@ from typing import Protocol
 import uuid
 
 from ..environment import write_bytes_atomic, write_json_atomic
+from .army_query_timing import finish_army_timing, start_army_timing
 from ..siege_subject_contribution_v1 import observe_siege_subject_contribution
 from .driver import (
     BridgeUnavailableError,
@@ -8471,18 +8472,32 @@ class NativeHeadlessGameplayDriver:
                 step, expected_revision=expected_revision
             )
         except Exception as error:
-            self._record_command(
-                step,
-                ok=False,
-                result=(
-                    error.step_result
-                    if isinstance(error, StepPostconditionError)
-                    else None
-                ),
-                error=f"{type(error).__name__}: {error}",
+            army_record_timing = (
+                start_army_timing("driver.record_command")
+                if step == QUERY_ARMY_STRENGTHS_STEP else None
             )
+            try:
+                self._record_command(
+                    step,
+                    ok=False,
+                    result=(
+                        error.step_result
+                        if isinstance(error, StepPostconditionError)
+                        else None
+                    ),
+                    error=f"{type(error).__name__}: {error}",
+                )
+            finally:
+                finish_army_timing(army_record_timing)
             raise
-        self._record_command(step, ok=True, result=result)
+        army_record_timing = (
+            start_army_timing("driver.record_command")
+            if step == QUERY_ARMY_STRENGTHS_STEP else None
+        )
+        try:
+            self._record_command(step, ok=True, result=result)
+        finally:
+            finish_army_timing(army_record_timing)
         return result
 
     def _execute_step_unrecorded(
@@ -11122,19 +11137,26 @@ class NativeHeadlessGameplayDriver:
         if private_trace_step:
             (self._native_driver_state_path().parent / "combat-trace-native-results").mkdir(
                 parents=True, exist_ok=True)
-        if protocol_packet_evidence_path is None:
-            self.endpoint.send(request)
-        else:
-            self.endpoint.send(request, packet_evidence_path=protocol_packet_evidence_path)
-        command_timeout_seconds = (
-            self.command_timeout_seconds
-            if timeout_seconds is None
-            else _positive_seconds(timeout_seconds, "timeout_seconds")
+        army_pipe_timing = (
+            start_army_timing("driver.native_pipe_send_wait", native_request_id=request_id)
+            if step == QUERY_ARMY_STRENGTHS_STEP else None
         )
-        command_deadline = time.monotonic() + command_timeout_seconds
-        frame = self.state.wait_for_command_result(
-            request_id, command_timeout_seconds
-        )
+        try:
+            if protocol_packet_evidence_path is None:
+                self.endpoint.send(request)
+            else:
+                self.endpoint.send(request, packet_evidence_path=protocol_packet_evidence_path)
+            command_timeout_seconds = (
+                self.command_timeout_seconds
+                if timeout_seconds is None
+                else _positive_seconds(timeout_seconds, "timeout_seconds")
+            )
+            command_deadline = time.monotonic() + command_timeout_seconds
+            frame = self.state.wait_for_command_result(
+                request_id, command_timeout_seconds
+            )
+        finally:
+            finish_army_timing(army_pipe_timing)
         if frame is not None and required_capability == QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY:
             frame_observer = getattr(self, "route_contact_command_result_observer", None)
             if frame_observer is not None:
@@ -13749,6 +13771,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native army-strength query returned a malformed status"
             )
+        army_normalize_timing = start_army_timing("driver.army_normalize")
         try:
             rows = normalize_army_strengths(
                 result.get("army_strengths"),
@@ -13758,6 +13781,8 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native army-strength query returned malformed rows: {error}"
             ) from error
+        finally:
+            finish_army_timing(army_normalize_timing)
         status = army_strength_query_status(rows)
         if result.get("status") != status:
             raise BridgeUnavailableError(

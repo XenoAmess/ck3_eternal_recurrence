@@ -77,6 +77,7 @@ from .succession_transition_contract import (
 )
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
+from .army_query_timing import finish_army_timing, start_army_timing
 from .army_strengths_mcp_result import (
     build_army_auto_turn_mcp_result,
     build_army_strengths_mcp_result,
@@ -2434,6 +2435,7 @@ def create_server(
     @server.tool()
     def ck3_auto_turn() -> dict[str, object]:
         """Plan and execute exactly one supported one-life gameplay turn."""
+        army_service_timing = start_army_timing("mcp.auto_turn_service")
         payload = service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
         plan = payload.get("plan")
         result = payload.get("result")
@@ -2444,7 +2446,12 @@ def create_server(
             and result.get("step") == "query-army-strengths-v1"
             and isinstance(result.get("army_strengths"), list)
         ):
-            return build_army_auto_turn_mcp_result(payload)
+            finish_army_timing(army_service_timing)
+            army_result_timing = start_army_timing("mcp.army_result_shape")
+            try:
+                return build_army_auto_turn_mcp_result(payload)
+            finally:
+                finish_army_timing(army_result_timing)
         return payload
 
     @server.tool()

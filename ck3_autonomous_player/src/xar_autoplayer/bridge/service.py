@@ -8,6 +8,7 @@ from collections.abc import Callable
 from pathlib import Path
 import uuid
 
+from .army_query_timing import finish_army_timing, start_army_timing
 from ..replenishment_numeric import project_observed_replenishment_v1
 from ..simulation.battle_current_special_knight_value_12003 import (
     estimate_current_special_knight_initial_stats_12003,
@@ -3934,17 +3935,28 @@ class GameplayBridgeService:
             self.snapshot(include_native_command_history=False)
             if step == QUERY_ARMY_STRENGTHS_STEP else None
         )
-        result = self.driver.execute_step(step, expected_revision=expected_revision)
+        army_driver_timing = (
+            start_army_timing("service.army_driver")
+            if step == QUERY_ARMY_STRENGTHS_STEP else None
+        )
+        try:
+            result = self.driver.execute_step(step, expected_revision=expected_revision)
+        finally:
+            finish_army_timing(army_driver_timing)
         if step == QUERY_ARMY_STRENGTHS_STEP and isinstance(result.get("army_strengths"), list):
-            return {
-                **result,
-                **self._current_callback_supply_projection_rows(result["army_strengths"]),
-                "current_unit_new_date_entry_normalization_v1":
-                    self._unit_new_date_entry_normalization_rows(result, result["army_strengths"]),
-                **self._unit_next_movement_projection_rows(
-                    result, result["army_strengths"], snapshot=army_snapshot,
-                ),
-            }
+            army_projection_timing = start_army_timing("service.army_projections")
+            try:
+                return {
+                    **result,
+                    **self._current_callback_supply_projection_rows(result["army_strengths"]),
+                    "current_unit_new_date_entry_normalization_v1":
+                        self._unit_new_date_entry_normalization_rows(result, result["army_strengths"]),
+                    **self._unit_next_movement_projection_rows(
+                        result, result["army_strengths"], snapshot=army_snapshot,
+                    ),
+                }
+            finally:
+                finish_army_timing(army_projection_timing)
         return result
 
     def save_checkpoint(
