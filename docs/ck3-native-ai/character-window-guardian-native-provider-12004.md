@@ -1,11 +1,14 @@
 # CharacterWindow guardian provider: actual4 controller entry
 
-2026-10-09 / W41. Research for CK3 1.20.0.4 / Steam build25734779.
+2026-10-09 / W41. The fixed typed-window observer is now **static-ready**
+for CK3 1.20.0.4 / Steam build25734779. CharacterWindow/GetCharacter and
+guardian relation observation remain research.
 The frozen image identity is inherited from Root:
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
-This source lane performs no image read/hash, Game/SDK operation, build or test.
-Root separately performed the exact28-byte source capture below. Neither
-that capture nor an Army window observation supplies guardian capability.
+This documentation update performs no image read/hash, Game/SDK operation,
+build or test. Root separately performed the exact28-byte source capture
+and the unique Native51 offline qualification below. Neither those results
+nor an Army window observation supplies guardian capability.
 
 ## Proven controller and typed slot lookup
 
@@ -78,32 +81,104 @@ for these seven newly observed IDs. This is a scoped metadata result, not
 a claim that every registration in the image has been searched. The old
 8.57MB three-name scan remains sealed and is not repeated.
 
-The next operation is therefore a **seven-ID runtime name capture** using
-Root's existing paused native observation path and admitted resolver:
+## Native51 fixed observer: actual offline qualification
 
-1. Retain each original slot/ID pair. Resolve only the seven IDs above via
-   the existing actual4 binding and copy each returned native string in
-   the same admitted observation. Record null/fallback separately.
-2. If Root instead uses its existing read-only memory surface, read only
-   the pointer at loaded-image-base+0x5CBEDE8, registry+0x48 and+0x54, and
-   the seven vector entries. Decode their32-byte native string headers
-   using length+0x10/capacity+0x18 and inline storage below capacity16;
-   otherwise read exactly the declared string bytes from the stored pointer.
-   Reuse the current reader's string limits. Do not dump the registry/vector.
-3. Match an actual registered CharacterWindow spelling/alias to a slot,
+Root adopted functional source `d23bb88a5fcedd1bfc54956d9f18f767b514e978`
+as `0d12fbeaf14641747fd984a068bbd181516346c4` in the complete frozen tree
+`Z:/gbs-runtime51-child-typed-windows-root-source`. The existing paused
+current-first-heir relationship query now fills optional query-level
+`current_first_heir_descendants_v1.child_inputs.typed_windows`, outside
+the child rows. It is observable with zero children and with an unavailable
+child roster. No arbitrary memory MCP, registry dump or new query protocol
+was added; Root has no arbitrary raw-memory MCP surface.
+
+The reader reuses the actual4 name binding and the existing
+`ResolveHandler` in `ingame_ui_navigation_v1.cpp`. That TU is a Bridge
+owner. It resolves exactly seven registered-name IDs and immediately copies
+their strings. For present slots it publishes module-relative vtable/COL/TD
+addresses and copied decorated RTTI names. Null slots, null/fallback names
+and unreadable object typing remain distinct. Name/handler/RTTI availability
+does not change child roster or trait status. The existing mailbox's paused
+before/after frame and stable copy govern publication.
+
+Root's sole actual run is
+`Z:/g2-native51-build01/attempt01/ROOT-NATIVE51-RESULT.json`:
+
+| Actual stage | Result | Seconds |
+| --- | --- | --- |
+| Bridge `bridge.cpp` compile | GREEN | 17.9052400 |
+| Bridge relationship serializer compile | GREEN | 3.9327387 |
+| Bridge `ingame_ui_navigation_v1.cpp` compile | GREEN | 4.8546505 |
+| Existing descendant fixture compile | GREEN | 6.5085308 |
+| DLL / full-Bridge fixture links | GREEN / GREEN | 0.9293699 / 0.9289001 |
+| Unique new native FIRST, three original whole packets | GREEN | 0.2319252 |
+| Sole registered query + Service compound, four scenes | GREEN | 8.4758183 |
+
+The native FIRST ran 2026-10-09T11:48:03.077809Z to 11:48:03.309728Z;
+its consumer ran 11:48:03.310538Z to 11:48:11.786348Z. The originals under
+`attempt01/first/native-wires/` are `typed-window-seven-mixed.json`,
+`typed-window-independent-unavailable.json` and
+`typed-window-handler-unavailable.json`. The fourth scene removes only
+`typed_windows` from a copy of the first new packet; no old producer is
+replayed. The actual registered-Service evidence is
+`attempt01/first/consumer/RESULT.json`.
+
+These fixtures use native slot/RTTI buffers and real `std::string` storage
+through the production reader and emitter. Their `FixtureWindowType...`
+and RTTI spellings are synthetic fixture inputs, not captured game names.
+The first two scenes have a complete empty child roster; the third retains
+all seven names while both handler and child-roster reads are unavailable.
+All four consumer scenes record zero submit, action ACK, action and day
+advance. They prove this observer's transport/MCP/Service path, not a
+CharacterWindow identity, GetCharacter callback or guardian relation.
+
+The canonical receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix51/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+It seals 735 production owners: 299 Bridge, 435 Runtime and 1 Protocol.
+Only three Bridge owners are replaced; 732 are retained. This increment
+performs zero Runtime compilation or archive operations. Its DLL is
+`Z:/g2-native51-build01/attempt01/binaries/xar_ck3_bridge.dll`,
+13,493,760 bytes, with Root's already recorded SHA-256
+`e109ef954e3cc4e2345037e3f5588f43bbd905a57218074401af650b935bbbba`.
+No artifact is rehashed by this documentation lane.
+
+### Compiled, qualification and future SDK source split
+
+| Evidence scope | Exact source or artifact basis |
+| --- | --- |
+| Native51 three fresh Bridge owners, fixture and unique typed-window consumer | Root frozen `0d12fbeaf14641747fd984a068bbd181516346c4` |
+| Inherited Runtime435 archive | `Z:/g2-native50-build01/attempt01/binaries/xar_ck3_12002_runtime.lib`, production source `8024d9692d7564a300e96f6e3d76a161a407da79`, reused unchanged |
+| Other retained objects | Mixed actual parent lineage; not all 735 compiled at 0d |
+| Subsequent Python opinion admission fix / next full SDK freeze | `bf5cc1761d3389907150156c07c41637ce5997bb`, included in documentation base `0a727571c5d7ee51bee80c13af37b210c3a06a35`; Root separately prepares R83 |
+
+Native51's 0d qualification is specific to this new typed-window observer.
+Its older opinion Python source is not the future complete SDK source.
+The bf5 source freeze and Root's R83 work are separate from these static
+receipts; they do not turn this observer into a paused live observation.
+
+## Next actual CharacterWindow provider input
+
+The next operation is a **seven-ID runtime name capture through the
+implemented existing paused child query**, after Root's chosen deployment
+checkpoint. Match real registered names and present object RTTI from the
+same query frame; do not reuse fixture spellings as actual names.
+
+1. Retain each original slot/ID pair and the independent name, handler and
+   object-type status published by `typed_windows`.
+2. Match an actual registered CharacterWindow spelling/alias to a slot,
    preserving the independent Army6/10602 anchor. A matching name yields a
    candidate window slot only. If these seven names contain no Character
    window, record that finite miss and obtain the next slot from a literal
    typed registration or actual caller, rather than scanning all windows.
-4. Follow that window's actual typed registration to the native
+3. Follow that window's actual typed registration to the native
    `CharacterWindow.GetCharacter` callback and prove its window receiver
    and returned full Character identity. Only an actual callback/callsite
    justifies the next finite image span. No next EXE span is guessed here.
 
-This plan adds no public query/schema and does not invoke an unclosed
-Character or relation callback. The external
-`ROOT-NEXT-TYPED-NAME-SOURCE-PLAN.json` records the exact finite input set
-and existing resolver/source locators; its runtime operation is NOTRUN.
+The implementation and unique FIRST packet are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/runtime51-child-typed-windows-preparation/`.
+The earlier optional raw-surface research plan is superseded by this private
+same-query observer. No unclosed Character or relation callback is invoked.
 
 ## Guardian dependency after the window provider
 
@@ -120,7 +195,9 @@ flowchart TD
   S --> T[Literal44BC4A0 signed32 slot-name table]
   T --> P[Root actual28B: seven slot and ID pairs]
   P --> N[Admitted3F4F8E0 registered-name resolver]
-  N -. seven runtime names not captured .-> C[Candidate CharacterWindow typed slot]
+  N --> D[Native51 fixed private typed_windows observer]
+  D --> F[Actual offline native3 and registered Service4 GREEN]
+  D -. paused real-game names and RTTI not captured .-> C[Candidate CharacterWindow typed slot]
   C -. native typed registration and receiver unclosed .-> G[CharacterWindow.GetCharacter full ID]
   G -. loaded relation object factory unclosed .-> R[GetRelation guardian / ScriptedRelation]
   R -. callback ABI and guardian direction unclosed .-> H[HasRelationBetween]
@@ -134,8 +211,9 @@ factory, canonical guardian key, two-Character argument direction and
 complete guardian collection remain required after GetCharacter closes;
 see [the relation provider topic](scripted-relation-provider-12004.md).
 
-Readiness remains `research`. There is no new guardian/educator observation,
-production-live capability, action, child/education/birth/succession or G2
-credit. No Game/SDK operation, process action, fixture/FIRST, build or hash
-was performed by this lane. Root's source-only28-byte read is the only new
-image I/O. Existing failures and parent live evidence remain unchanged.
+The fixed typed-window observer is `static-ready`; its actual game name
+capture and CharacterWindow/guardian provider remain `research`. There is
+no new guardian/educator observation, production-live capability, action,
+full AST, child/education/birth/succession or G2 credit. This documentation
+update performs no Game/SDK or process action, fixture/FIRST replay, build
+or hash. Existing failures and parent live evidence remain unchanged.
