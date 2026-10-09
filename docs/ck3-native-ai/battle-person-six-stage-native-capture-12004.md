@@ -119,3 +119,14 @@ for one Root compound run. The consumer entry is
 `--producer-exe` executes the new native producer once before consuming its
 seven fresh whole-command packets. Eight Python source cases remain authored
 for later use; this work does not require a redundant execution of them.
+
+The same consumer additionally routes the fresh ordered packet through the
+registered `ck3_query_battle_terminal_transition_v1` tool, real
+`GameplayBridgeService`, and real `NativeHeadlessGameplayDriver`. It reuses the
+qualified Person-history `WholePacketEndpoint` pattern and fixtures only hello,
+paused snapshot and bridge transport. The original producer payload is retained;
+only request correlation changes. The check verifies public/native revision,
+date, requested fullID and the normalized sibling's ten ordered PC requests.
+It does not invoke a second producer or an old test. This route requires the
+existing qualified MCP2/pydantic Python environment and is authored, not run by
+source workers.
