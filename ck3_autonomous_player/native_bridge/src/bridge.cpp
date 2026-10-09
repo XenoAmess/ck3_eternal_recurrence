@@ -9571,6 +9571,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
         query.child_inputs12004->typed_windows =
             xar::ck3_11906::ReadCurrentFirstHeirTypedWindows12004V1(
                 query.child_window_gui12004, query.child_window_names12004);
+        query.child_inputs12004->character_window_identity =
+            xar::bridge::ReadCurrentFirstHeirCharacterWindowIdentity12004V1(
+                query.child_window_gui12004, query.family12002.context.core);
         query.read.reproductive_inputs =
             xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
                 query.family12002, query.read);

@@ -7,6 +7,16 @@
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
+#include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
+#include "xar_bridge/ingame_ui_navigation_v1.hpp"
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
 
 #include <array>
 #include <cstddef>
@@ -1186,9 +1196,132 @@ void EmitChildTypedWindows51(const std::filesystem::path &directory,
         "typed-window evidence uses the production whole serializer without dispatch");
   active_typed_windows51 = nullptr;
 }
+struct CharacterWindowIdentityFixture {
+  static constexpr std::uintptr_t kVtable = 0x451BA18;
+  static constexpr std::uintptr_t kCol = 0x4AEF4B8;
+  static constexpr std::uintptr_t kTypeDescriptor = 0x5723010;
+  static constexpr std::uintptr_t kImageSize = 0x5724000;
+  static constexpr std::uintptr_t kPageSize = 0x1000;
+  std::byte *image = nullptr;
+  std::array<std::byte, 0xD0> window{};
+  std::array<std::byte, 0xE0> handler{};
+
+  CharacterWindowIdentityFixture(bool wrong_type, std::int32_t requested_id) {
+    image = static_cast<std::byte *>(VirtualAlloc(
+        nullptr, kImageSize, MEM_RESERVE, PAGE_NOACCESS));
+    Check(image != nullptr, "reserve the exact named CharacterWindow fixture image");
+    for (const auto rva : {kVtable, kCol, kTypeDescriptor}) CommitPage(rva);
+    if (wrong_type) CommitPage(0);
+    const auto vtable = wrong_type ? std::uintptr_t{0x108} : kVtable;
+    const auto col = wrong_type ? std::uintptr_t{0x200} : kCol;
+    const auto descriptor = wrong_type ? std::uintptr_t{0x300} : kTypeDescriptor;
+    const std::string_view decorated = wrong_type ? ".?AVCArmyWindow@@"
+                                                  : ".?AVCCharacterWindow@@";
+    Put(window.data(), 0, image + vtable);
+    Put(window.data(), 0xC8, requested_id);
+    Put(handler.data(), 0xD8, window.data());
+    Put(image, vtable - sizeof(void *), image + col);
+    Put(image, col, std::uint32_t{1});
+    Put(image, col + 4, std::uint32_t{0});
+    Put(image, col + 0xC, static_cast<std::uint32_t>(descriptor));
+    Put(image, col + 0x14, static_cast<std::uint32_t>(col));
+    std::memcpy(image + descriptor + 0x10, decorated.data(), decorated.size());
+  }
+
+  ~CharacterWindowIdentityFixture() {
+    if (image != nullptr) VirtualFree(image, 0, MEM_RELEASE);
+  }
+  CharacterWindowIdentityFixture(const CharacterWindowIdentityFixture &) = delete;
+  CharacterWindowIdentityFixture &operator=(const CharacterWindowIdentityFixture &) = delete;
+
+  void CommitPage(std::uintptr_t rva) {
+    const auto page = rva & ~(kPageSize - 1);
+    if (VirtualAlloc(image + page, kPageSize, MEM_COMMIT, PAGE_READWRITE) == nullptr) {
+      VirtualFree(image, 0, MEM_RELEASE);
+      image = nullptr;
+      throw std::runtime_error("commit the named RTTI fixture page");
+    }
+  }
+};
+
+void EmitChildCharacterWindowIdentity(const std::filesystem::path &directory,
+                                     std::string_view name) {
+  const bool receiver_missing = name == "character-window-receiver-unavailable";
+  const bool wrong_type = name == "character-window-type-mismatch";
+  const bool invalid_id = name == "character-window-id-invalid";
+  const bool generation_mismatch = name == "character-window-generation-mismatch";
+  const bool resolved = name == "character-window-id-resolved";
+  Fixture fixture({"current-child-character-window-identity", 0, true, true, true, false});
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  Put(fixture.families[1].data(), 0x14, kPartner);
+  Put(fixture.families[2].data(), 0x14, kHeir);
+  Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+  Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+  for (const auto index : {1U, 2U}) {
+    Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+    Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+  }
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "CharacterWindow evidence retains the actual reciprocal married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  auto inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+      fixture.family, {}, *relation.descendants);
+  const auto requested_id = invalid_id ? std::int32_t{-1}
+      : generation_mismatch ? std::int32_t{0x07000004} : kRecipient;
+  CharacterWindowIdentityFixture window(wrong_type, requested_id);
+  if (receiver_missing) Put(window.handler.data(), 0xD8, static_cast<void *>(nullptr));
+  inputs.character_window_identity =
+      xar::bridge::ReadCurrentFirstHeirCharacterWindowCandidate12004V1(
+          reinterpret_cast<std::uintptr_t>(window.image), window.kImageSize,
+          fixture.family.context.core, window.handler.data());
+  const auto &identity = *inputs.character_window_identity;
+  const bool receiver_available = !receiver_missing && !wrong_type;
+  const char *receiver_reason = receiver_missing ? "character_window_receiver_absent"
+      : wrong_type ? "character_window_vtable_mismatch" : "";
+  const char *character_reason = !receiver_available ? "character_window_receiver_unavailable"
+      : invalid_id ? "character_window_character_id_invalid"
+      : generation_mismatch ? "character_window_character_unresolved" : "";
+  Check(identity.receiver_available == receiver_available &&
+            identity.character_available == resolved &&
+            identity.receiver_unavailable_reason == receiver_reason &&
+            identity.character_unavailable_reason == character_reason,
+        "receiver admission and generation-valid identity remain distinct native results");
+  Check((receiver_available ? identity.raw_character_id == requested_id
+                            : !identity.raw_character_id) &&
+            (resolved ? identity.character_id == kRecipient : !identity.character_id),
+        "the raw C8 full ID retains sentinel and generation while only a resolved ID is published");
+  Check(inputs.status == "available" && inputs.rows.empty() &&
+            relation.descendants->rows.empty() &&
+            kRecipient != kActor && kRecipient != kHeir &&
+            relation.relationship.primary_spouse_character_id == kPartner &&
+            relation.relationship.spouse_character_ids == std::vector<std::int32_t>{kPartner},
+        "the fixture window subject never replaces the real empty child roster or actor/heir");
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation, {}, &inputs);
+  wire = xar::game::Render12004BuildIdentity(
+      std::move(wire), xar::game::Ck3_12004AdapterDescriptor());
+  Write(directory / (std::string(name) + ".json"), wire);
+  Check(wire.find("\"character_window_identity\":{") != std::string::npos &&
+            constructs == 0 && destroys == 0,
+        "CharacterWindow identity uses the production complete packet serializer without actions");
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--child-character-window-identity-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"character-window-receiver-unavailable",
+               "character-window-type-mismatch", "character-window-id-invalid",
+               "character-window-generation-mismatch", "character-window-id-resolved"})
+        EmitChildCharacterWindowIdentity(directory, name);
+      std::cout << "PASS actual4 current-child CharacterWindow identity: five new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--child-typed-window-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);

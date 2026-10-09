@@ -361,13 +361,67 @@ and full-ID checks. No new generic resolver or old12002 getter is needed.
 This does not name the later relationship-like operands in the body,
 qualify a guardian collection or prove a callable GetCharacter wrapper.
 
-The remaining immediate input is the actual window receiver, not its ID
-offset. The next bounded source entry is the already captured primary
-vtable slot1 pointer0x106C4F0, held extent
-`[0x106C4F0,0x106CC17)`,1831 bytes. Its method name is not guessed. The
-source-only Root recipe `character-receiver-entry59/ROOT-RECEIVER-ARGV.json`
-seeks its actual owner/root/provider connection; it does not invoke the
-member, scan all handler slots or expand generic context.
+Root next captured primary slot1's actual
+`[0x106C4F0,0x106CC17)` body once2026-10-09T13:21:40.842159Z:
+1831 bytes,418 instructions,complete decode,0.0001577 seconds to read.
+The retained `character-receiver-entry59/root-receiver01/` result and
+DETAIL show GUI-root creation at0x106C546, storage at this+0x60 and the
+direct0x106C6BE connection to0x1074970 with RCX=GUIroot/RDX=this. This
+closes only the forward CharacterWindow/root association. That connected
+generic context template is not expanded; it does not provide the reverse
+handler slot.
+
+### Exact constructor caller and the Native54 finite candidate
+
+Root's separately approved single-target E8 locator found one aligned
+constructor caller at0xB04719. Its entire containing runtime fragment is
+`[0xB046F0,0xB0477C)`,140 bytes. Root read the frozen `.text` once at
+2026-10-09T13:41:58.153125Z in0.0150785 seconds and retained only this
+finite caller window/owner prefix, rather than the whole section.
+`character-constructor-callers60/root-callers01/CHARACTER-CONSTRUCTOR-CALLERS-RESULT.json`
+records the real source:
+
+| Actual instruction | Established receiver dataflow |
+| --- | --- |
+| 0xB046FA | Saves the incoming owner RCX as RDI. |
+| 0xB04710-0xB04719 | Passes allocated object in RCX, owner+0x40 in RDX and the owner in R8 to the named CharacterWindow constructor. |
+| 0xB04728 | Stores that constructor's returned primary CharacterWindow pointer at owner+0xD8. |
+| 0xB04760-0xB0476C | Registers the saved window pointer in owner+0x600's collection. |
+
+This literal store selects a finite candidate. The existing admitted
+handler getter independently proves window index8 is legal and addresses
+handler+0x98+8*8=+0xD8. The factory owner's static class has not been joined
+to the admitted handler. Native54 therefore does not assume that class or
+call the factory: it reads only that one legal handler slot and admits its
+object only when the actual primary vtable0x451BA18, COL0x4AEF4B8 and
+TD0x5723010 match. A different object produces a visible type mismatch.
+No additional handler-vtable prefix read or all-window traversal is needed
+for this exact candidate observer.
+
+The authored same-query field is optional
+`current_first_heir_descendants_v1.child_inputs.character_window_identity`.
+It publishes independent receiver and Character availability/reasons,
+the copied signed32 raw+0xC8 ID and a nullable generation-resolved full
+Character ID. The existing paused callback/stable before-after frame
+governs publication. Zero children do not prevent collection. The window
+subject does not replace the actor, heir or any actual child.
+
+The new private DTO/header affects only Bridge `ingame_ui_navigation_v1.cpp`,
+`bridge.cpp` and `current_first_heir_relationship_v1.cpp`, plus the existing
+descendant fixture. Public Snapshot, Runtime and protocol layouts stay
+unchanged. The read-only production wrapper reuses ResolveHandler and the
+same+0xD8 candidate picker used by the fixture. It invokes no constructor,
+InitRoot, state-mutating0x1070130, GUI callback or UI action.
+
+The authored unique native mode is `--child-character-window-identity-wire-dir`.
+It emits five new whole packets: receiver absent, wrong object type,
+FFFFFFFF ID, equal low24 index with wrong generation, and successful
+full-ID resolution. They all retain the existing reciprocal spouse pair
+and a complete empty child roster. One registered query/Service method
+consumes those five originals and one copy of the new success packet with
+only the optional identity leaf removed. No old producer or GREEN test is
+replayed. These sources and the precise FIRST recipe are **not run** in
+this lane; there is no new static qualification, live, guardian or G2 credit.
 
 The future implementation seam is already localized: the existing
 `ingame_ui_navigation_v1.cpp` ResolveHandler/RTTI helper supplies admitted
@@ -375,11 +429,11 @@ handler infrastructure, while `bridge.cpp` collects the private child
 sidecar inside the same paused callback and publishes it only after the
 before/after frame matches. Its relationship serializer is the third
 Bridge owner if a new optional field is published. These are integration
-inputs, not a manufactured unavailable-only capability. A finite identity
-reader can now use the proved+0xC8 semantics and existing generation-aware
-resolver. Production publication still needs an actual Character-window
-receiver. The window's subject remains independent of Robert, the heir
-and each actual roster child; it cannot substitute for any of them.
+inputs, not a manufactured unavailable-only capability. The authored finite
+identity reader now uses the proved+0xC8 semantics and existing generation
+resolver. Its candidate source and exact runtime type admission are explicit;
+the factory owner's static class and a future paused candidate readback remain
+unclosed. The subject cannot substitute for any real family child.
 
 The named type, constructor and initial subject resolution now supply
 the exact Character-specific field semantics. GetCharacter still needs
@@ -399,8 +453,11 @@ flowchart TD
   V --> K[Actual constructor106BC80 and vptr stores]
   K --> M[Actual70B slot3: same-this call1070130, no identity read]
   M --> F[Actual1070130: C8 full Character ID plus generation and Char checks]
-  F -. named slot1 owner and handler receiver unclosed .-> R[Character-specific receiver provider]
-  R -. GetCharacter wrapper ABI unclosed .-> C[CharacterWindow.GetCharacter full ID]
+  F --> Q[Actual ctor caller stores CharacterWindow at owner+D8]
+  Q -. factory owner static class unjoined .-> R[Legal handler slot8 candidate]
+  R --> D[Authored exact CharacterWindow RTTI and C8 full-ID reader]
+  D -. unique offline FIRST and future paused readback unrun .-> O[Same-query current-window subject]
+  O -. GetCharacter wrapper ABI unclosed .-> C[CharacterWindow.GetCharacter full ID]
   C -. guardian kind and directional collection unclosed .-> H[Existing child query guardian input]
 ```
 

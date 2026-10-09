@@ -273,6 +273,22 @@ void AppendChildInputs(std::string &json,
     json += ",\"typed_windows\":";
     AppendTypedWindows(json, *read.typed_windows, native_revision);
   }
+  if (read.character_window_identity) {
+    const auto &identity = *read.character_window_identity;
+    json += ",\"character_window_identity\":{\"receiver_available\":";
+    json += identity.receiver_available ? "true" : "false";
+    json += ",\"receiver_unavailable_reason\":";
+    AppendJsonString(json, identity.receiver_unavailable_reason);
+    json += ",\"raw_character_id\":";
+    AppendOptionalNumber(json, identity.raw_character_id);
+    json += ",\"character_available\":";
+    json += identity.character_available ? "true" : "false";
+    json += ",\"character_unavailable_reason\":";
+    AppendJsonString(json, identity.character_unavailable_reason);
+    json += ",\"character_id\":";
+    AppendOptionalNumber(json, identity.character_id);
+    json += '}';
+  }
   json += '}';
 }
 

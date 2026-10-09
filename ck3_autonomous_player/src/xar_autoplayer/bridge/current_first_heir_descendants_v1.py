@@ -15,6 +15,7 @@ LEAF = "current_first_heir_descendants_v1"
 SUMMARY = "current_first_heir_descendants_summary_v1"
 CHILD_INPUTS = "child_inputs"
 TYPED_WINDOWS = "typed_windows"
+CHARACTER_WINDOW_IDENTITY = "character_window_identity"
 CHILDHOOD_TRAIT_KEYS = ("curious", "rowdy", "bossy", "pensive", "charming")
 EDUCATION_POINT_TRAIT_KEYS = (
     "intellect_good_1", "intellect_good_2", "intellect_good_3",
@@ -168,6 +169,30 @@ def _typed_windows(value: object, *, native_revision: int) -> None:
             raise BridgeUnavailableError("unobserved current heir typed-window RTTI is malformed")
 
 
+def _character_window_identity(value: object) -> None:
+    """Admit the proved native window subject without rebinding a family child."""
+    required = {"receiver_available", "receiver_unavailable_reason",
+                "raw_character_id", "character_available",
+                "character_unavailable_reason", "character_id"}
+    if (not isinstance(value, dict) or not required.issubset(value)
+            or type(value["receiver_available"]) is not bool
+            or type(value["character_available"]) is not bool
+            or any(not isinstance(value[key], str)
+                   for key in ("receiver_unavailable_reason", "character_unavailable_reason"))
+            or any(value[key] is not None and not _integer(value[key], -2**31, 2**31)
+                   for key in ("raw_character_id", "character_id"))):
+        raise BridgeUnavailableError("current heir CharacterWindow identity is malformed")
+    receiver, character = value["receiver_available"], value["character_available"]
+    if (bool(value["receiver_unavailable_reason"]) == receiver
+            or bool(value["character_unavailable_reason"]) == character
+            or (not receiver and (value["raw_character_id"] is not None or character))
+            or (character and (value["character_id"] is None
+                               or value["character_id"] == -1
+                               or value["raw_character_id"] != value["character_id"]))
+            or (not character and value["character_id"] is not None)):
+        raise BridgeUnavailableError("current heir CharacterWindow identity states are malformed")
+
+
 def _child_inputs(value: object, descendants: dict[str, object]) -> None:
     """Bind distinct living-child inputs to their full native occurrence groups."""
     if (not isinstance(value, dict)
@@ -186,6 +211,8 @@ def _child_inputs(value: object, descendants: dict[str, object]) -> None:
         raise BridgeUnavailableError("current heir child input frame is malformed")
     if TYPED_WINDOWS in value:
         _typed_windows(value[TYPED_WINDOWS], native_revision=value["native_revision"])
+    if CHARACTER_WINDOW_IDENTITY in value:
+        _character_window_identity(value[CHARACTER_WINDOW_IDENTITY])
     rows = value["rows"]
     if status == "unavailable":
         if rows:

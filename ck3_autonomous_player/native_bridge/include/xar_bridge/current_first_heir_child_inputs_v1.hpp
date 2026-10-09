@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
+#include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
 
 #include <array>
 #include <cstdint>
@@ -61,6 +62,9 @@ struct CurrentFirstHeirChildInputsReadV1 {
   std::vector<CurrentFirstHeirChildInputRowV1> rows{};
   // Query-level provider input, independent of child roster cardinality.
   std::optional<CurrentFirstHeirTypedWindowsReadV1> typed_windows{};
+  // The current window subject is independent of every roster child.
+  std::optional<xar::bridge::CurrentFirstHeirCharacterWindowIdentityV1>
+      character_window_identity{};
 };
 
 } // namespace xar::ck3_11906

@@ -5,11 +5,13 @@
 #include "xar_bridge/ck3_12004_ingame_ui.hpp"
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
+#include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include <windows.h>
 #include <bcrypt.h>
 #pragma comment(lib,"bcrypt.lib")
 #include <array>
+#include <bit>
 #include <algorithm>
 #include <charconv>
 #include <cmath>
@@ -989,3 +991,168 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
    }o<<"]}";SerializeArmyTooltip(o,v.army_tooltip,v.unavailable_reason);o<<'}';return o.str();
 }
 } // namespace xar::ck3_11906
+
+namespace xar::bridge {
+
+CurrentFirstHeirCharacterWindowIdentityV1
+ReadCurrentFirstHeirCharacterWindowObject12004V1(
+    std::uintptr_t module_base, std::uintptr_t image_size,
+    const xar::ck3_12004::CoreBindings &core, const void *receiver) noexcept {
+  constexpr std::uintptr_t kPrimaryVtableRva = 0x451BA18;
+  constexpr std::uintptr_t kCompleteObjectLocatorRva = 0x4AEF4B8;
+  constexpr std::uint32_t kTypeDescriptorRva = 0x5723010;
+  constexpr std::size_t kWindowCharacterIdOffset = 0xC8;
+  constexpr std::size_t kCharacterMagicOffset = 0x1C;
+  constexpr std::uint32_t kCharacterMagic = 0x43686172;
+  CurrentFirstHeirCharacterWindowIdentityV1 out;
+  const auto receiver_failure = [&out](const char *reason) {
+    out.receiver_unavailable_reason = reason;
+    out.character_unavailable_reason = "character_window_receiver_unavailable";
+  };
+  if (!receiver) {
+    receiver_failure("character_window_receiver_absent");
+    return out;
+  }
+  if (!module_base || image_size <= kTypeDescriptorRva ||
+      image_size - kTypeDescriptorRva < 0x10) {
+    receiver_failure("character_window_image_unavailable");
+    return out;
+  }
+  std::uintptr_t vtable = 0, vtable_rva = 0;
+  if (!ck3_11906::Value(receiver, 0, vtable)) {
+    receiver_failure("character_window_vtable_unreadable");
+    return out;
+  }
+  if (!ck3_11906::CurrentFirstHeirImageRangeV1(
+          module_base, image_size, vtable, sizeof(void *), vtable_rva) ||
+      vtable_rva != kPrimaryVtableRva) {
+    receiver_failure("character_window_vtable_mismatch");
+    return out;
+  }
+  std::uintptr_t col = 0, col_rva = 0;
+  if (!ck3_11906::Slot(vtable - sizeof(void *), col)) {
+    receiver_failure("character_window_col_unreadable");
+    return out;
+  }
+  if (!ck3_11906::CurrentFirstHeirImageRangeV1(
+          module_base, image_size, col, 24, col_rva) ||
+      col_rva != kCompleteObjectLocatorRva) {
+    receiver_failure("character_window_col_mismatch");
+    return out;
+  }
+  std::uint32_t signature = 0, complete_object_offset = 0;
+  std::uint32_t type_rva = 0, self_rva = 0;
+  const auto *locator = reinterpret_cast<const void *>(col);
+  if (!ck3_11906::Value(locator, 0, signature) ||
+      !ck3_11906::Value(locator, 4, complete_object_offset) ||
+      !ck3_11906::Value(locator, 12, type_rva) ||
+      !ck3_11906::Value(locator, 20, self_rva)) {
+    receiver_failure("character_window_col_fields_unreadable");
+    return out;
+  }
+  if (signature != 1) {
+    receiver_failure("character_window_col_signature_mismatch");
+    return out;
+  }
+  if (complete_object_offset != 0) {
+    receiver_failure("character_window_col_offset_mismatch");
+    return out;
+  }
+  if (self_rva != kCompleteObjectLocatorRva) {
+    receiver_failure("character_window_col_self_mismatch");
+    return out;
+  }
+  if (type_rva != kTypeDescriptorRva) {
+    receiver_failure("character_window_type_descriptor_mismatch");
+    return out;
+  }
+  out.receiver_available = true;
+  std::uint32_t raw_character_id = 0;
+  if (!ck3_11906::Value(receiver, kWindowCharacterIdOffset, raw_character_id)) {
+    out.character_unavailable_reason = "character_window_character_id_unreadable";
+    return out;
+  }
+  out.raw_character_id = std::bit_cast<std::int32_t>(raw_character_id);
+  if (raw_character_id == (std::numeric_limits<std::uint32_t>::max)()) {
+    out.character_unavailable_reason = "character_window_character_id_invalid";
+    return out;
+  }
+  // 1070130 resolves this+C8 through the same actual .4 Character storage and
+  // validates its complete ID; generation bits are part of the identity.
+  const auto *character = ck3_12004::ResolveCoreCharacter(core, *out.raw_character_id);
+  if (!character) {
+    out.character_unavailable_reason = "character_window_character_unresolved";
+    return out;
+  }
+  std::uint32_t resolved_character_id = 0, character_magic = 0;
+  if (!ck3_11906::Value(character, ck3_12004::kCharacterFullIdOffset,
+                       resolved_character_id)) {
+    out.character_unavailable_reason = "character_window_character_id_unreadable_after_resolve";
+    return out;
+  }
+  if (resolved_character_id != raw_character_id) {
+    out.character_unavailable_reason = "character_window_character_id_mismatch";
+    return out;
+  }
+  if (!ck3_11906::Value(character, kCharacterMagicOffset, character_magic)) {
+    out.character_unavailable_reason = "character_window_character_magic_unreadable";
+    return out;
+  }
+  if (character_magic != kCharacterMagic) {
+    out.character_unavailable_reason = "character_window_character_magic_mismatch";
+    return out;
+  }
+  out.character_id = *out.raw_character_id;
+  out.character_available = true;
+  return out;
+}
+
+CurrentFirstHeirCharacterWindowIdentityV1
+ReadCurrentFirstHeirCharacterWindowCandidate12004V1(
+    std::uintptr_t module_base, std::uintptr_t image_size,
+    const xar::ck3_12004::CoreBindings &core,
+    const void *admitted_handler) noexcept {
+  CurrentFirstHeirCharacterWindowIdentityV1 out;
+  out.character_unavailable_reason = "character_window_receiver_unavailable";
+  if (!admitted_handler) {
+    out.receiver_unavailable_reason = "character_window_handler_absent";
+    return out;
+  }
+  // B04728 stores the newly constructed CCharacterWindow at factory owner+D8;
+  // B0F1E0 independently establishes handler index 8 as a legal window slot.
+  // These select a candidate: the factory owner class is not statically joined
+  // to the admitted handler, so exact object RTTI remains the identity check.
+  const void *receiver = nullptr;
+  if (!ck3_11906::Value(admitted_handler, 0xD8, receiver)) {
+    out.receiver_unavailable_reason = "character_window_handler_slot_unreadable";
+    return out;
+  }
+  return ReadCurrentFirstHeirCharacterWindowObject12004V1(
+      module_base, image_size, core, receiver);
+}
+
+CurrentFirstHeirCharacterWindowIdentityV1
+ReadCurrentFirstHeirCharacterWindowIdentity12004V1(
+    const xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const xar::ck3_12004::CoreBindings &core) noexcept {
+  if (!environment.exact_build_admitted ||
+      environment.offline_fixture_function_overrides ||
+      !environment.module_base ||
+      environment.gui_abi_revision != ck3_11906::GuiAbiRevisionV1::crozier12004 ||
+      !ck3_11906::Actual4UiBoundV1(environment)) {
+    CurrentFirstHeirCharacterWindowIdentityV1 out;
+    out.receiver_unavailable_reason = "actual4_ui_binding_unavailable";
+    out.character_unavailable_reason = "character_window_receiver_unavailable";
+    return out;
+  }
+  void *handler = nullptr;
+  const bool resolved = ck3_11906::ResolveHandler(environment, handler);
+  auto out = ReadCurrentFirstHeirCharacterWindowCandidate12004V1(
+      environment.module_base,
+      ck3_11906::UiExactImageSizeV1(environment.gui_abi_revision), core,
+      resolved ? handler : nullptr);
+  if (!resolved) out.receiver_unavailable_reason = "ingame_handler_unverified";
+  return out;
+}
+
+} // namespace xar::bridge
