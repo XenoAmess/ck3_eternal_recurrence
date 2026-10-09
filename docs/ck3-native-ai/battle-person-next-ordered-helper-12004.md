@@ -304,3 +304,40 @@ match/nonmatch, and independent usable siblings beside an unread primary PC.
 The mapped-PC case must retain its partial reason while primary inputs remain
 usable. Synthetic input scenes use the real production query, formatter,
 registered callback, Service and normalizer; they provide no live game credit.
+
+## Native50 offline qualification, 2026-10-09
+
+Root sealed the actual Native50 canonical receipt at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix50/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+The unique corrected producer emitted fourteen whole packets and the sole
+registered MCP compound consumed all fourteen. The final consumer-only attempt
+was GREEN in5.9673316 seconds, with no compilation, link or native producer
+repeated during that attempt. This is **static-ready**, without a Native50 live
+game observation or full Person/Entry credit.
+
+The source pins remain separate: production objects, archive and DLL were
+compiled from8024d9692d7564a300e96f6e3d76a161a407da79; the corrected fixture was
+compiled from3f41e667a027ede012e04599ebd69ebbefd54cee; the Python qualification
+source was4a7301e12302b6c47686348e535e6ba2183387e5, adopted by Root as
+bf5cc1761d3389907150156c07c41637ce5997bb. The canonical has735 production owners
+(Bridge299 / Runtime435 / Protocol1) and503 command rows. It retains285 parent
+owners and replaces449 existing owners plus one new Runtime owner.
+
+Both earlier failures remain at `Z:/g2-native50-build01/attempt01` and
+`attempt02`. Attempt01 compiled all450 production objects and the fixture,
+archive and links successfully, then stopped after two packets because its
+third synthetic case set the real DeathData pointer at Character+1D0 while
+incorrectly requiring alive=true. The correction preserves the genuine
+dead-owner observation and independently published CurrentPersonSample; the
+other thirteen scenes still require alive=true. Attempt02 produced all fourteen
+packets, then exposed an existing Python normalizer error: native opinion
+admission failure returns before its classifier, so an undemanded classifier
+legitimately has ready=false and reason=null. The consumer correction validates
+that exact upstream partial bundle while retaining demanded-classifier checks.
+The fourteen original attempt02 bodies were reused unchanged in attempt03.
+
+There were450 production compiler invocations and two fixture compiler
+invocations across the attempts; archive and DLL were built once. No previous
+GREEN suite, game query, action, day or save was credited by this qualification.
+The later actual42127E0 mapper source closure is a separate additive work item;
+it does not change what the Native50 packets proved.
