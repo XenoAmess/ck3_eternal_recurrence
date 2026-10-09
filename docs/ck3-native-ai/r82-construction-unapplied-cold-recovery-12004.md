@@ -84,3 +84,55 @@ qualified connected fixture**; same-Game hot SDK recovery and normal live
 outcome remain pending Root verification. This FIRST does not grant M4 or
 production-live-loop credit. Historical ordinary002 failure and the original
 f085 intent/proof remain preserved.
+
+## Same-Game normal recovery and the next construction opportunity
+
+Root subsequently hot-restored the qualified SDK on the same minimized,
+paused Game143468. Ordinary hot002 actually classified f085 as
+`not_applied_after_restore` (about 105.12 seconds); hot003 independently
+rechecked the first construction as applied/in_progress (about 42.38 seconds).
+The original unknown intent is preserved in the non-success resolution;
+neither outcome submits the second construction or earns M4 credit. These are
+live consumer recovery results, not proof of two new Native48 submissions.
+
+The following ordinary turns resolve heir/war-options/army-strengths/contact
+horizon/release work. Actual hot011 selects
+`advance-route-contact-horizon-v1-218104048-to-2615-h-1-134218098`, with phase
+`native_war_route_contact_horizon_progress`, and advances one game day from
+53288592 to 53288616 before pausing at native5/public4. The first construction's
+latest receipt remains post_native_revision3/post_date_raw53288592, so both
+existing requirements for a later new spend are now satisfied: a later native
+frame **and** a later date. There is no requirement to finish that construction
+or wait for its monthly completion watch before considering another holding.
+The 720-hour completion watch concerns the old construction's next completion
+read, not admission of a distinct legal new construction.
+
+Actual hot012 selects `query-army-strengths-v1`. Its saved plan also contains a
+same-frame wartime construction observation: status=observed,
+native_source_status=selected, candidate 2106/2644/type604/slot2,
+cereal_fields_01, cost14250000/gold69417022, authored net income 50 and an
+observed empty slot. The source is native5/public4/date53288616/proof322645,
+query `construction-read-77311c06fac249cc99fe058852e4cd63`; wars=1/armies=1.
+Positive-income coverage is incomplete. `formal_action_ready=false` is the
+readonly wartime observation function's explicit contract; it is not a newly
+discovered cooldown or permission block. This observation is not reused as
+a submit credential or converted into action readiness.
+
+`plan_construction_private` explicitly admits a normal quiet route advance as
+a new-building opportunity alongside life-advance and existing prewar
+arbitration. Military query/action work retains its priority. Once normal
+strength/horizon refresh reaches the next contact-free route advance, the
+existing construction route can request its fresh feudal/root observation,
+current cash budget and new native quote before deciding a typed submit.
+The next executable operator step remains ordinary `ck3_auto_turn {}`;
+there is no forced construction step, direct ledger edit or planner bypass.
+Cash/budget deferral or source failure is assessed only from that actual
+future normal quote, not inferred from the current readonly projection.
+
+The relevant saved responses are hot009 through hot012 under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r82-sdk-pending-recovery-hot01/operator/gameplay-responses/`.
+The 87.9MB hot012 was not deserialized: source research read a 262KB prefix to
+locate the small observation and a 6KB bounded slice for its object. No large
+native history or Driver state was consumed. No source policy change or new
+test is justified by these outcomes. Native48 repeated-submit/independent
+material-loop credit remains pending the actual next ordinary constructions.
