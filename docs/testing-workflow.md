@@ -1,5 +1,29 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-09 21:07：实际 Operator endpoint、R84 rebind 阻断与本机禁用
+
+Operator 控制地址应取当前 run 的
+`operator/ROOT-OPERATOR-BOOTSTRAP.json.endpoint`；`BOOTSTRAP-DRAFT.json` 中的
+地址可能是历史模板，不能当作当前 endpoint。R83 首次 stop 实际误用模板
+`http://127.0.0.1:14409/mcp`，旧 server 返回 `job_not_configured`，没有执行关闭。
+Root 随后读取实际 bootstrap 的 `http://127.0.0.1:3524/mcp`，只关闭 owned
+R83 job；首次 WHOLE 和 `owned-close02/` 成功证据均保留在
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r84-native53-recovery-preparation/`。
+[实际关闭收据](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r84-native53-recovery-preparation/ROOT-R83-ACTUAL-OWNED-SIDE-CLOSED.json)
+确认 owned Game4368／runner35308 关闭、cleanup_proven/tree_gone，保留 Operator
+server104536。SDK 的 **38650 是 exec session ID，不是 Windows PID**；其实际
+exit0 与 owned Game 的 deliberate stop exit1 分列，不推断未知 OS SDK PID。
+
+Native53 离线 canonical GREEN 后，R84 prepare 的
+`03-OFFICIAL-REBIND` 于21:06实际 exit1：
+`ordinary seed rebind requires zero running ck3.exe processes; observed 1`。
+[prepare 失败收据](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r84-native53-recovery-preparation/ROOT-PREPARE-ACTUAL-INVOKE.json)
+保留；R84 没有 allocation，也未调用 launch。21:07 最新用户指令禁止本机
+CK3 使用，此后状态为 `BLOCKED_BY_CURRENT_LOCAL_GAME_AUTHORIZATION`，只继续
+后台源码与文档。保持既有 zero-running-process rebind 检查，不关闭或查询用户
+游戏，不重试 prepare/rebind 或调用 SDK。未执行阶段仍为 NOTRUN；Native53
+离线资格不等于 R84 部署或 paused live，已有 H9800／saved6019 冻结保持。
+
 ## 2026-10-09：R79 observer ABI 修复与 R80 原战役恢复
 
 最新授权允许本机 CK3 实机工作，游戏保持最小化，由 Root 统一操作。
