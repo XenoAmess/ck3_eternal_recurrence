@@ -566,8 +566,21 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                pending.get("action_request_id") for row in prior))
     if not (unresolved or cold_recheck):
         raise BridgeUnavailableError("construction receipt lacks matching pending action")
+    history_view = getattr(driver, "_with_internal_planning_view", None)
     starting = _binding(driver, expected_revision=expected_revision,
-                        material_receipt=True)
+                        material_receipt=True,
+                        include_native_command_history=not callable(history_view))
+    # The receipt only needs the original frame's scalar income from history.
+    # Sample it before the native material query, preserving the old starting
+    # snapshot semantics without copying every unrelated observation payload.
+    if callable(history_view):
+        starting_income = history_view(starting, lambda frame, history: {
+            "income": same_frame_construction_income(frame, history)[1],
+        })["income"]
+    else:
+        history = starting.get("native_command_history")
+        _, starting_income = same_frame_construction_income(
+            starting, history if isinstance(history, list) else [])
     pid, creation = _identity(driver)
     same_process = same_construction_process_identity((pid, creation), (
         pending.get("source_bridge_pid"), pending.get("source_bridge_creation_date")))
@@ -764,9 +777,7 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                         if isinstance(pre_province_income, Mapping)
                         and pre_province_income.get("status") == "observed" else None)
     post_province_raw = province_income["native_province_monthly_income_raw"]
-    history = starting.get("native_command_history")
-    _, observed_income = same_frame_construction_income(
-        starting, history if isinstance(history, list) else [])
+    observed_income = starting_income
     pre_income = pending.get("pre_player_monthly_gold_income_raw")
     income_observed_date = starting["date_raw"] if type(observed_income) is int else None
     if (cold_recheck and completed and observed_income is None
