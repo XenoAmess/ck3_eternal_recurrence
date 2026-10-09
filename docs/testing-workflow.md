@@ -223,6 +223,12 @@ Managed handoff ACCEPTED不替代native_session_ready／恢复snapshot；09:14:2
 
 Root实测PID139512的 `WaitForSingleObject(process_handle, 0)` 已返回 `WAIT_OBJECT_0`，但 `GetExitCodeProcess` 返回259。**句柄signaled证明进程已exit，不能仅凭259继续判活。** 这是当前恢复流程误报的实证，不要求额外image读取或全进程sweep。
 
+### 2026-10-10 02:15:32 CST：Wait-signaled过滤必须先于image query成功要求
+
+**实际故障与解法：**已退出PID139512的同步句柄零等待为`WAIT_OBJECT_0`，image query可能失败且exit259单独含糊。先以同步句柄Wait0排除signaled对象，再要求成功image query识别活进程；不能先因image query失败把已终止对象计为活。Unknown/access-denied/timeout保留现有阻断，不修改zero-activegate。Source51bd→Root085dd3da的唯一[compound retry02 GREEN2.9158155s/1passed2.37](D:/codex-ck3-background-spill/process-inventory-fix-first02/ROOT-FIRST-RESULT.json)验证修复。[First01 sparse缺package__init__/__version__](D:/codex-ck3-background-spill/process-inventory-fix-first01/ROOT-FIRST-RESULT.json)在pytestcollection失败、testbody0，原HARNESS RED保留；用完整gb0依赖重试同source，不改生产逻辑消除导入错误。
+
+**独立实际count：**Root在02:12:38 CST唯一[active-count读回](D:/codex-ck3-background-spill/process-inventory-fix-first02/ROOT-ACTUAL-ACTIVE-COUNT.json)排除signaled139512，但正确保留active69984；existingzero-activegate仍阻止R85，用户当前activity待澄清。Offlinecompound GREEN不是freshSteam/restore/live通过；无Gamekill/launch/Steamchange，本知识只复用Root字段，未新增进程探测或测试。
+
 | 实际消费者 | 现象／修复范围 | 当前验证与证据 |
 | --- | --- | --- |
 | Python环境inventory | 原image查询WinError31／deadentry妨碍恢复；按已退出句柄过滤 | Env145→Root98116995，g12046fd2d8d唯一[regression GREEN0.2091606s](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime29d-python-first01/TEST-RESULT.json)、[fresh inventory GREEN空](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime29d-python-first01/ACTUAL-INVENTORY.json) |
