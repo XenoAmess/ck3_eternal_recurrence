@@ -324,6 +324,8 @@ PHASE2_SEED_CONTRACT_PATH = ROOT / "tools" / "zg361_phase2_seed_contract.json"
 PHASE2_PLAYER_MANAGER_SEED_KIND = "zg361_phase2_player_manager_paused_seed"
 PHASE2_PLAYER_MANAGER_SEED_PURPOSE = "player-manager"
 EXPECTED_GAME_VERSION = "1.19.0.6"
+# Current source metadata is independent from this disabled legacy runtime contract.
+EXPECTED_PRODUCT_SUPPORTED_VERSION = "1.20.0.4"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
@@ -4979,8 +4981,8 @@ def product_source_errors() -> list[str]:
         errors.append("product descriptor.mod is missing")
     else:
         text = descriptor.read_text(encoding="utf-8-sig")
-        if f'supported_version="{EXPECTED_GAME_VERSION}"' not in text:
-            errors.append(f"product descriptor must support {EXPECTED_GAME_VERSION}")
+        if f'supported_version="{EXPECTED_PRODUCT_SUPPORTED_VERSION}"' not in text:
+            errors.append(f"product descriptor must support {EXPECTED_PRODUCT_SUPPORTED_VERSION}")
 
     triggers = SOURCE / "common" / "scripted_triggers" / "zg361_triggers.txt"
     if not triggers.is_file():
