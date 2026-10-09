@@ -321,15 +321,36 @@ receiver. It supplies no named GetCharacter call or actual handler-slot
 store. CharacterWindow native construction is now closed; its readable
 subject/full-ID getter remains unclosed.
 
-The smallest next class-member entry is primary vtable slot3's actual
-pointer0x106CC20. The held runtime extent is
-`[0x106CC20,0x106CC66)`,70 bytes. Its source question is whether that
-specific CharacterWindow method reads or writes+0xC8 and connects it to a
-typed Character provider. No getter meaning is assigned before its body
-is read. Primary slot1's1831-byte entry and the generic base/context
-branches are not expanded. A future same-query private read needs actual
-handler/receiver admission and generation-aware full-ID resolution;
-this constructor is not permission to publish an unproved+C8 value as ID.
+Root captured primary slot3's actual `[0x106CC20,0x106CC66)` body once at
+2026-10-09T13:10:02.298282Z:70 bytes,21 instructions, complete decode,
+0.0001387 seconds for the read. Its retained source is
+`character-member57/root-member01/CHARACTER-MEMBER-RESULT.json` under the
+same packet root. The function saves incoming RCX as RBX, invokes primary
+virtual entries+0x38/+0x68/+0x60, conditionally writes5 to receiver+0xB20,
+calls0x1070130 with the same receiver and EDX=0, then tail-jumps0x110B070.
+It performs no+0xC8 read and no typed Character resolution. This method
+does not establish GetCharacter; the virtual and generic tail targets
+are not expanded.
+
+The next literal class-member entry is the same-receiver direct call
+at0x106CC54. Its held runtime row bounds
+`[0x1070130,0x1070778)`,1608 bytes. Only that body is selected to identify
+actual subject-field or full-ID semantics; EDX=0 is not given a guessed
+meaning. Primary slot1's1831-byte entry and the generic base/context
+branches remain outside this read. The source-only Root recipe is
+`character-field-entry58/ROOT-FIELD-ENTRY-ARGV.json`; it does not invoke
+the member in Game.
+
+The future implementation seam is already localized: the existing
+`ingame_ui_navigation_v1.cpp` ResolveHandler/RTTI helper supplies admitted
+handler infrastructure, while `bridge.cpp` collects the private child
+sidecar inside the same paused callback and publishes it only after the
+before/after frame matches. Its relationship serializer is the third
+Bridge owner if a new optional field is published. These are integration
+inputs, not a manufactured unavailable-only capability. An implementation
+still needs the actual Character-window receiver and generation-aware
+full-ID reader before exposing any subject. The constructor and this
+slot3 body do not permit publishing an unproved+0xC8 value as Character ID.
 
 The named type and constructor now supply the exact Character-specific
 source entry. GetCharacter still needs its actual admitted receiver,
@@ -345,7 +366,8 @@ flowchart TD
   N --> T[Named TD candidate5723010]
   T --> V[Actual primary451BA18 and secondary451BAE8]
   V --> K[Actual constructor106BC80 and vptr stores]
-  K -. slot3 member method106CC20 and handler receiver unclosed .-> R[Character-specific receiver provider]
+  K --> M[Actual70B slot3: same-this call1070130, no identity read]
+  M -. direct member field semantics and handler receiver unclosed .-> R[Character-specific receiver provider]
   R -. readable full-ID getter unclosed .-> C[CharacterWindow.GetCharacter full ID]
   C -. guardian kind and directional collection unclosed .-> H[Existing child query guardian input]
 ```
