@@ -5,8 +5,10 @@ build25734779 freeze and executable SHA
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
 Native54's private CharacterWindow candidate reader is a separate source
 package, author `282f9da31b6760b260abe23bdc9cfe3805288112`, adopted by Root
-as `ff5f919f`. Its offline qualification is owned by Root. A window subject
-cannot substitute for an actual roster child or establish a guardian.
+as `ff5f919f`. Root qualified its five new whole packets and sole six-scene
+consumer offline; see [the independent Native54 qualification](character-window-guardian-native-provider-12004.md).
+A window subject cannot substitute for an actual roster child or establish
+a guardian.
 
 ## Actual installed stock consumer and direction
 
@@ -22,7 +24,14 @@ reference copy has different line numbers and is not used as actual4 proof.
 | `gui/window_character.gui:5794` | `GetScriptedRelationTooltip(ScriptedRelation,CharacterWindow.GetCharacter,Character)` passes window subject as Owner and relation-row Character as Target. |
 | `data_binding/scripted_relation_macros.txt:3-4` | The macro forwards `Relation.GetDescription(Owner.Self,Target.Self)` and `Relation.GetReasonFor(Owner.Self,Target.Self)`. |
 
-No `GetGuardian` name occurs in these three installed files. The stock
+The same installed window source uses the wrapper for ward(:2731),
+guardian(:2956), friend(:3101) and rival(:3214). Its return is consumed as
+a data model, including `GetDataModelSize`/`DataModelFirst`(:3276).
+These are GUI consumer semantics, not a native return typedef. The observed
+owner/member pair is `CharacterWindow.GetRelationsOfType`; the stated
+window source has no direct `Character.GetRelationsOfType` consumer.
+
+No `GetGuardian` name occurs in the three installed files above. The stock
 consumer is the named presence predicate and relation-kind collection,
 not a demonstrated singular native getter. The tooltip arguments close
 the presentation-side Owner/Target direction. They do not prove native
@@ -62,17 +71,44 @@ relation-definition databases. The cached CharacterWindow body at
 objects or full IDs, but none has a guardian semantic name. They are not
 expanded to search for a convenient field.
 
-The next finite named source is the exact stock collection name
-`GetRelationsOfType`. The selected generic-GUI named-role metadata and
-existing child-education source packet provide its authored spelling but
-no native callback association. A Root-only single-name locator may read
-only the retained-metadata `.rdata` section, keep exact name positions and
-same-buffer VA64 references with finite neighboring records, then stop.
-It does not enumerate every UI registration or decode an unrelated helper.
-Actual literal/reference evidence must select any later callback body.
-The prepared source-only recipe is under
-`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/guardian-collection-named61/`.
-No callback address or guardian layout is inferred before that result.
+Root executed the sole `GetRelationsOfType` name locator at
+2026-10-09T14:27:58.990843Z. One `.rdata` read obtained17124352 bytes in
+0.0116496 seconds, with no hash, PE parse, `.text`/`.data`, process or Game
+operation. The retained
+`guardian-collection-named61/root-named01/GUARDIAN-COLLECTION-NAMED-RESULT.json`
+records one standalone ASCII literal at RVA`0x451C558` and zero same-section
+VA64 references. No whole-section buffer was persisted. This actual source
+operation is complete and is not repeated.
+
+The actual hit names the shared collection member, rather than a
+guardian-specific callback. The seven selected generic-GUI `initial-map`
+JSONs and four named-role packets contain no exact `GetRelationsOfType`,
+`451C558` or decimal72467800 reference. This is a scoped cache miss, not a
+claim about every cache. Existing generic type-ID/name resolvers do not
+identify the owner/member registration.
+
+The next Root-only source recipe is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/guardian-collection-textrefs62/ROOT-TEXTREFS-ARGV.json`.
+It targets only actual literal`0x451C558` in one frozen `.text` buffer,
+finding common LEA/MOV RIP operands and checking their instruction boundary
+from the held pdata owner. It retains the owner prefix and at most295 bytes
+around each actual reference, including callback-like operands and direct
+calls, then discards the full buffer. It performs no repeated `.rdata`
+capture, whole-text decode, arbitrary registry traversal or unnamed
+Character-helper expansion. This next recipe is **SOURCE_NOTRUN**.
+
+```mermaid
+flowchart TD
+  S[Actual stock CharacterWindow.GetRelationsOfType] --> L[Root actual standalone ASCII451C558]
+  L --> Z[Same rdata VA64 references0]
+  L -. single-target text RIP locator not run .-> R[Named registration reference and pdata owner]
+  R -. owner and argument typing unclosed .-> C[Actual collection callback]
+  C -. underlying Character receiver and guardian direction unclosed .-> I[Actual-child guardian full-ID collection]
+```
+
+Only the resulting literal-connected arguments can select a later finite
+registration/callback body. No callback address, owner ID, parameter order,
+return layout or guardian field is inferred from the string alone.
 
 ## Required production input after native closure
 
