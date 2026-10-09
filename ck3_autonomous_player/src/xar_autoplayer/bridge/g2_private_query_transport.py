@@ -9,10 +9,22 @@ from .driver import BridgeUnavailableError, UnsupportedStepError
 from .timeline_blocker_private_transport import _binding
 
 
+def private_g2_query_snapshot_v1(
+    driver: object, *, include_native_command_history: bool = True,
+) -> dict[str, object]:
+    """Read the semantic frame, optionally omitting an unused history export."""
+    if include_native_command_history is False:
+        finite_reader = getattr(driver, "take_snapshot_without_native_command_history", None)
+        if callable(finite_reader):
+            return finite_reader()
+    return driver.take_snapshot()
+
+
 def read_private_g2_native_query_v1(
     driver: object, *, permission: str, step: str, expected_revision: int,
     request_fields: Mapping[str, object] | None = None,
     timeout_seconds: float = 30.0,
+    include_native_command_history: bool = True,
 ) -> tuple[dict[str, object], dict[str, object]]:
     """Use the existing endpoint and frame binding; no gameplay action is sent."""
     if getattr(driver, permission, False) is not True:
@@ -21,7 +33,8 @@ def read_private_g2_native_query_v1(
         raise ValueError("expected_revision must be positive")
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
-    before = driver.take_snapshot()
+    before = private_g2_query_snapshot_v1(
+        driver, include_native_command_history=include_native_command_history)
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
     if (before.get("revision") != expected_revision or before.get("paused") is not True
@@ -62,7 +75,9 @@ def read_private_g2_native_query_v1(
             or result.get("accepted") is not True or result.get("private_build") is not True
             or result.get("read_only") is not True or result.get("advertised") is not False):
         raise BridgeUnavailableError(f"private native observation envelope is malformed: {step}")
-    if _binding(driver.take_snapshot()) != _binding(before):
+    after = private_g2_query_snapshot_v1(
+        driver, include_native_command_history=include_native_command_history)
+    if _binding(after) != _binding(before):
         raise BridgeUnavailableError(f"private native observation crossed its paused frame: {step}")
     return before, result
 

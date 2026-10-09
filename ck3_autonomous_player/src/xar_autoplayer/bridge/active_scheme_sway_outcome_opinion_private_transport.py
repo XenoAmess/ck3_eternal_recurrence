@@ -8,7 +8,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
-from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
+from .g2_private_query_transport import (
+    private_g2_query_metadata_v1, private_g2_query_snapshot_v1,
+    read_private_g2_native_query_v1,
+)
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .version_identity import CK3_12002, CK3_12003, CK3_12004
 
@@ -66,7 +69,8 @@ def query_active_scheme_sway_outcome_opinion_private_v1(
 ) -> dict[str, object]:
     if type(target_character_id) is not int or not 0 < target_character_id < (1 << 31):
         raise ValueError("private sway material-opinion target must be a positive full character ID")
-    actor = driver.take_snapshot().get("played_character")
+    actor = private_g2_query_snapshot_v1(
+        driver, include_native_command_history=False).get("played_character")
     if not isinstance(actor, Mapping) or type(actor.get("character_id")) is not int:
         raise BridgeUnavailableError("private sway material-opinion lacks the current player")
     if actor["character_id"] == target_character_id:
@@ -75,6 +79,7 @@ def query_active_scheme_sway_outcome_opinion_private_v1(
         driver, permission=PERMISSION, step=STEP, expected_revision=expected_revision,
         request_fields={"actor_character_id": actor["character_id"], "target_character_id": target_character_id},
         timeout_seconds=timeout_seconds,
+        include_native_command_history=False,
     )
     try:
         value = normalize_active_scheme_sway_outcome_opinion_v1(
