@@ -31,6 +31,7 @@ ActualLossWriterJournalBindingsV1 g_bindings{};
 std::atomic<bool> g_available{false};
 std::atomic<ActualLossWriterOriginalV1> g_original{nullptr};
 std::atomic<ActualLossWriterJournalDetourStateV1 *> g_active_state{nullptr};
+std::atomic<ActualLossWriterCompletionObserverV1> g_completion_observer{nullptr};
 
 template <typename Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -349,6 +350,11 @@ bool InitializeActualLossWriterJournalFixture12004(
   return InitializeRuntime(bindings, original);
 }
 
+void SetActualLossWriterCompletionObserver12004(
+    ActualLossWriterCompletionObserverV1 observer) noexcept {
+  g_completion_observer.store(observer, std::memory_order_release);
+}
+
 game::ArmyActualLossWriterCallerV1 ClassifyActualLossWriterCallerV1(
     std::uint64_t caller_return_rva) noexcept {
   switch (caller_return_rva) {
@@ -528,6 +534,8 @@ extern "C" void __fastcall XarActualLossWriterHook12004V1(
     event.capture_failure_flags |= game::army_actual_loss_capture_after;
   if (before_read) CapturePhysicalAfter(regiment, event, physical);
   Publish(event);
+  if (const auto observer = g_completion_observer.load(std::memory_order_acquire))
+    observer(regiment, event);
 }
 
 } // namespace xar::ck3_12004

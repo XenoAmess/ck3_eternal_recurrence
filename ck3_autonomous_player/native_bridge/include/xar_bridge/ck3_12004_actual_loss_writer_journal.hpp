@@ -93,6 +93,13 @@ bool InitializeActualLossWriterJournalFixture12004(
     const ActualLossWriterJournalBindingsV1 &bindings,
     ActualLossWriterOriginalV1 original) noexcept;
 
+using ActualLossWriterCompletionObserverV1 = void (*)(
+    void *, const game::ArmyActualLossWriterObservationV1 &) noexcept;
+// Optional source-owned observer; invoked after publication and outside the
+// journal lock. Existing standalone writer consumers need no extra Runtime TU.
+void SetActualLossWriterCompletionObserver12004(
+    ActualLossWriterCompletionObserverV1 observer) noexcept;
+
 game::ArmyActualLossWriterCallerV1 ClassifyActualLossWriterCallerV1(
     std::uint64_t caller_return_rva) noexcept;
 

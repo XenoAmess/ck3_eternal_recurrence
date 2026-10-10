@@ -94,6 +94,7 @@
 #include "xar_bridge/ck3_12004_battle.hpp"
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
+#include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
 #include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
@@ -620,6 +621,8 @@ static xar::ck3_12002::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_12002_v1{};
 static xar::ck3_12004::ActualLossWriterJournalDetourStateV1
     g_actual_loss_writer_journal_12004_v1{};
+static xar::ck3_12004::BattleCasualtyObserverDetourState12004
+    g_battle_casualty_observer_12004{};
 static xar::ck3_12004::PersonTitleTailCaptureDetourState12004
     g_person_title_tail_capture_12004{};
 static xar::ck3_12004::PersonSixStageCaptureDetourState12004
@@ -28307,6 +28310,14 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     loss_environment.primary_thread_suspended_proven = true;
     if (!xar::ck3_12004::InstallActualLossWriterJournal12004(
             g_actual_loss_writer_journal_12004_v1, loss_environment, sha))
+      return FALSE;
+    xar::ck3_12004::BattleCasualtyObserverInstallEnvironment12004 casualty_environment{};
+    casualty_environment.bindings =
+        xar::ck3_12004::BindBattleCasualtyObserverImage12004(base, sha);
+    casualty_environment.bindings.game_state_slot = bindings.game_state_slot;
+    casualty_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallBattleCasualtyObserver12004(
+            g_battle_casualty_observer_12004, casualty_environment, sha))
       return FALSE;
     xar::ck3_12004::PersonTitleTailCaptureInstallEnvironment12004
         title_tail_environment{};

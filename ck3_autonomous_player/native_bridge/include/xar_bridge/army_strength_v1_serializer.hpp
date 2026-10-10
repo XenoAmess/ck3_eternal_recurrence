@@ -1,6 +1,8 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
+#include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
+#include "xar_bridge/army_battle_casualty_observations_v1_serializer.hpp"
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/army_current_first_route_target_supply_contributors_v1_serializer.hpp"
@@ -604,6 +606,11 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
             ck3_12004::ReadActualLossWriterObservations12004(current_regiment_ids)) {
       result += ",\"actual_loss_writer_observations_v1\":";
       AppendArmyActualLossWriterObservationsV1(result, *observations);
+    }
+    if (const auto observations =
+            ck3_12004::ReadBattleCasualtyObservations12004(current_regiment_ids)) {
+      result += ",\"battle_casualty_observations_v1\":";
+      AppendArmyBattleCasualtyObservationsV1(result, *observations);
     }
   }
   result += ",\"native_carmy_id\":";
