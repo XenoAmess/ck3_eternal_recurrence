@@ -533,3 +533,200 @@ requested by this increment.
   increment. Game/SDK calls, new EXE/bin reads, hashes, old body decodes and
   repeat GREEN are zero. No new pregnancy, birth, education, natural succession,
   M7 completion or G2 credit is granted.
+
+## 2026-10-10: actual4 natural-conception define binding
+
+This increment continues the unique `NChildbirth.FERTILITY_CHANCE_MULTIPLIER`
+source dependency above. It uses held CK3 1.20.0.4 / Steam25734779 identity and
+the existing SHA, without rehashing or changing the active SDK, integrated
+source or Game. The private source base is
+`91bf64589d78df866fdf6908841fc9b64e875ec7`.
+
+Root's new R0086 observation, independently extracted once from its existing
+response, supplies native revision3 and date_raw53289552: heir38822 and
+primary spouse38718 are bilaterally verified, both age22, with native fertility
+raw40000/25000. Both `native_pregnancy.status` values are `available`, both
+`is_pregnant` values are `false`, and both unavailable reasons are null. The
+native child roster is complete and empty. Current family/result envelopes do
+not supply public revision or episode; historical plan receipts are not used to
+fill those fields. This refreshes an existing readonly primitive, not a new
+pregnancy, child, marriage action or completed M7 loop. The actual thin is
+[ACTUAL-FAMILY-THIN.json](D:/codex-ck3-background-spill/g2-source-20261010/r0086-family-native60-preparation/ACTUAL-FAMILY-THIN.json).
+
+### Actual namespace and key
+
+Root executed the finite named source locator once at
+2026-10-10T02:56:32.169010Z through02:56:32.346146Z, elapsed0.177136s.
+It read frozen `.rdata`17,124,352B once, with zero hash/newPE/Game/process reads.
+The exact null-terminated key is atRVA`0x4714FC8`; the exact namespace
+`NChildbirth` is at`0x4714E80`. A second namespace substring in an inbreeding
+description is not a namespace binding. Both exact names have zero64-bit
+same-buffer literal-pointer references. The retained result is
+[NAMED-LITERAL-OFFSETS.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/root-named-first01/NAMED-LITERAL-OFFSETS.json).
+
+The subsequent Root-only single-key code locator read frozen `.text`
+71,141,888B once in a successful1.432s execution. It retained only finite
+windows for three actual key-reference candidates, not a reusable whole code
+buffer. The result is
+[DEFINE-KEY-TEXT-XREFS.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/root-key-text-first01/DEFINE-KEY-TEXT-XREFS.json).
+
+### Actual loaded-slot leaf and excluded metadata references
+
+The actual cached instructions close this leaf directly:
+
+| Actual4 instruction RVA | Decoded operation | Proven operand |
+|---|---|---|
+| `0x235BA70` | `mov rcx,rdx` | RCX passes through incoming RDX; concrete owner/type is not established. |
+| `0x235BA73` | RIP-relative `lea r9` | Loaded scalar address `0x5C69EC8`. |
+| `0x235BA7A` | RIP-relative `lea rdx` | Exact namespace `0x4714E80`. |
+| `0x235BA81` | RIP-relative `lea r8` | Exact key `0x4714FC8`. |
+| `0x235BA88` | Direct tail jump | Actual target `0xB70700`. |
+
+The decoded instructions end at`0x235BA8D`, followed by three`CC` bytes.
+The held runtime-function table has no owner for this leaf; it lies between
+`[0x235BA40,0x235BA6F)` and`[0x235BA90,0x235BB15)`. This is a closed actual
+instruction sequence, not an invented PDATA extent or a typed Character ABI.
+The historical.3 namespace/key/slot pattern was only a localization aid; none
+of its addresses or getter ABI was transferred.
+
+The other two actual key references are not evidence of monthly gameplay:
+
+- `0x235BA97` lies within the complete133B owner
+  `[0x235BA90,0x235BB15)`. Its cached code builds stack-local descriptor context,
+  uses namespace/key pointers, calls`0x87C8C0`, then passes`&0x5C69EC8` and signed
+  64-bit limit values to`0x3F99A80`. It does not consume an incoming Character
+  receiver or demonstrate a direct gameplay read of the target scalar.
+- `0x46C57C` belongs to `[0x46C540,0x46C6F4)`. The retained prefix constructs
+  name/metadata context using exact lengths11/27 and calls`0x3F7E220` twice,
+  then`0x87C8C0`. The available complete-instruction prefix ends at`0x46C622`;
+  the remaining210B is not captured because it does not currently establish a
+  necessary conception dependency.
+
+The next source step uses **only actual scalar`0x5C69EC8` code operands** to
+reach its gameplay consumer. It does not descend into generic`0xB70700`,
+capture the unrelated metadata tail, scan namespace references, repeat names,
+or assign unknown pregnancy-object vtable methods to monthly lifecycle.
+The actual load determines value width before a provider is implemented.
+
+```mermaid
+flowchart TD
+    Stock["Frozen NChildbirth monthly-check comment"] --> Key["ACTUAL key4714FC8 / namespace4714E80"]
+    Key --> Leaf["ACTUAL235BA70..235BA8D namespace/key/slot/tail leaf"]
+    Leaf --> Slot["ACTUAL loaded scalar address5C69EC8"]
+    Slot -.-> Gameplay["NEXT exact scalar code-use / gameplay owner"]
+    Gameplay -.-> Pair["UNKNOWN native receiver, full pair eligibility and monthly phase"]
+    Pair -.-> Outcome["Natural conception outcome, no promised date"]
+    Outcome -.-> Observer["Existing native is_pregnant membership / current child roster"]
+    Key --> Metadata["Two actual metadata/name-reference contexts"]
+    Metadata -. "Not a demonstrated monthly consumer" .-> Gameplay
+```
+
+This is functional source localization progress. It does not add a permanently
+null schedule field, treat raw fertility as probability, borrow Crown clocks,
+or qualify a new runtime provider. Root remains the only live executor.
+Tests/build/FIRST are NOTRUN for this source research; no old GREEN or status
+reader body is replayed. The three independent bounded inventory packets are
+under
+[m7-natural-pregnancy-consumer-20261010](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/SOURCE-TREE.md).
+
+### Actual scalar consumer, pair branch and candidate-state writes
+
+Root's next scalar-only locator completed successfully in2.377s. It retained
+six actual references to`0x5C69EC8`: five address-only define infrastructure
+references and one gameplay **8-byte integer load**, at`0x2929C3E`.
+The load is not a floating-point instruction. The frozen scalar's live loaded
+value was not read; the stock default is not substituted for a live value.
+
+The cached middle covers`[0x2929B9E,0x2929D25)`,391B. Its actual fallthrough
+and branches traverse three held runtime fragments:
+`[0x2929B40,0x2929C4B)`, `[0x2929C4B,0x2929D7A)` and
+`[0x2929D7A,0x2929DD8)`. The first267B row was not treated as a whole function.
+Root acquired only the missing94B prefix and179B continuation, a total273B,
+reusing the middle. The actual returns at`0x2929DC8` and`0x2929DD7` now close
+the complete664B body. The following function at`0x2929DE0` is excluded.
+
+The actual entry arguments are:
+
+| Entry register | Preserved role | Closed fact |
+|---|---|---|
+| RCX | RDI | First Character; nonzero sex byte`+0x1A1`. |
+| RDX | RSI | Second Character; zero sex byte`+0x1A1`. |
+| R8 | RBP | Original third argument, later used as`0xE46530` receiver. Its native type is not established. |
+| R9 | RBX | Original numeric modifier used in fixed-point multiplication. |
+
+Both Character magic and non-sentinel IDs are checked. The caller then requires
+both already-qualified fertility gates`0x28BB4C0` to allow, both Characters'
+extended-data`+0x288` values to be zero, and neither call to`0x28A6280` to
+return true. The latter calls use the actual first and second Character as
+RCX; `TEST AL,AL; JNE0x2929DC9` excludes the pair. The meaning of that
+independent predicate and of extended`+0x288` is not guessed from raw fertility.
+
+The next provider call`0x2B95670` receives RCX=`&stack+0x50`, RDX=first
+Character, R8=second Character and R9D=3. Only its first stack result is consumed
+here; a zero value excludes the pair. This caller does not itself reject a
+negative provider value at that step, and its provider's full semantics remain
+unclosed. The actual caller multiplies that result by loaded scalar
+`0x5C69EC8` at signed scale100000, then multiplies by the original R9 modifier
+at the same scale. The fast/slow arithmetic paths are not extra eligibility
+gates. Real8-byte operands`0x5C69F00` and`0x5C69F10` form the lower/upper
+clamp; their exact define-key bindings remain unproved. Only after clamping is
+a nonpositive result rejected. No couple probability is calculated from the
+observed40000/25000 values.
+
+For a positive threshold, the actual call to`0xE46530` uses the original third
+argument as RCX, RDX=0 and R8D=`0x989680`. RAX at least the threshold rejects
+the pair. The bounded-sample/random interpretation is an inference from these
+arguments and comparison; this packet does not claim the helper's native RNG
+type or ABI. When the comparison passes, the body performs these exact writes:
+
+- At`0x2929DA5`, byte1 to first Character's extended data
+  `[Character+0x1B0]+0x3E8`.
+- At`0x2929DB3`, the second Character pointer to the same extended data
+  `+0x3F0`.
+- It returns AL=1 at`0x2929DC8`. All rejected branches return AL=0 at
+  `0x2929DD7` without these writes.
+
+These are actual pair candidate-state writes. Their subsequent consumer,
+clearing/lifetime and transition to active pregnancy records are not yet closed.
+The function contains no date or monthly scheduler access and does not insert
+into the pregnancy manager at`GameData+0x2EE40`. Consequently an active
+`native_is_pregnant=false` observation does not sample these different slots,
+and the candidate writes cannot be reported as an active pregnancy or a birth.
+No new pending-status schema is shipped solely on this partial transition.
+
+```mermaid
+flowchart TD
+    Slot["ACTUAL Q64 load5C69EC8 at2929C3E"] --> Pair["ACTUAL664B pair writer2929B40..2929DD8"]
+    Pair --> IDs["Both Character magic / IDs; first sexbyte!=0, second==0"]
+    IDs --> Gate["Both native fertility gates allow; both extended288 zero"]
+    Gate --> Exclude["Both actual28A6280 predicates must return false"]
+    Exclude -.-> Meaning["NEXT bounded321B exclusion predicate meaning"]
+    Exclude --> Provider["Actual2B95670 pair-provider result must be nonzero"]
+    Provider --> Math["Signed scale100000: provider * loaded scalar * originalR9"]
+    Math --> Clamp["Actual lower/upper slots5C69F00/5C69F10; threshold>0"]
+    Clamp --> Compare["ActualE46530 result below threshold"]
+    Compare --> Pending["Write first extended3E8=1;3F0=second pointer;AL1"]
+    Pending -.-> Materialize["UNKNOWN consumer / clearing / active-record transition"]
+    Incoming["UNKNOWN actual incoming monthly/caller edge"] -.-> Pair
+    Materialize -.-> Preg["Existing active native pregnancy observer"]
+```
+
+The limited incoming-cache inventory found no held direct caller for actual
+entry`0x2929B40`; matches in the current packet are only this function's
+own range/detail records. A proposed additional section/E8 locator was canceled
+under Root's instruction to stop section scans, before authoring or execution.
+This is a bounded inventory result, not a claim that the function has no caller.
+
+The smallest current qualification dependency is the actually reached
+`[0x28A6280,0x28A63C1)`321B predicate. It can resolve one independent pair
+exclusion without following the generic define getter, unknown sample helper
+or large modifier provider. Its Root-only cached-first recipe is
+[ROOT-PAIR-EXCLUSION321-ARGV.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/ROOT-PAIR-EXCLUSION321-ARGV.json).
+The actual whole-body proof and branch ledger are
+[CONCEPTION-CONSUMER-CLOSED-RECEIPT.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/manager-owner/CONCEPTION-CONSUMER-CLOSED-RECEIPT.json).
+
+Readiness boundaries remain separate: the current family observation provider
+can already support ordinary paired-family continuation; an exact monthly
+check deadline and a complete candidate-to-active-pregnancy transition are not
+yet provided. This source increment does not alter that continuation policy,
+spawn a new test/build, perform a live call or grant M7/G2 completion.
