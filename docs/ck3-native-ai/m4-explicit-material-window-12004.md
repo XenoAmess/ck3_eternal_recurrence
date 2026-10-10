@@ -149,3 +149,33 @@ ROOT-ACTUAL-COLD-CORE-WAIT-FAILURE.json`, `ROOT-EXISTING-OWNED-LOAD-LOGS-THIN.js
 and `continuation-63g/NATIVE-PRODUCER-FINDINGS.json`. No native fix is claimed.
 
 The Oct7 local-game prohibition above is dated historical context. The current continuation permits local Robert29829 work; selection still requires the real current snapshot.
+
+
+## Oct11 06:59 CST: actual M4 interval selected and collected
+
+Root recorded the actual selection at2026-10-10T22:59:06.230606Z, from the
+qualified R94 native:2 frame/raw53290152/Robert29829/episode2bc/Game45424.
+The selected interval is53286144..53303664 (730days); its start is historical
+material coverage, not a backdated operator selection.563game days remain from
+the selected frame. One real offline collector invocation completed exit0:
+construction and useful Council material are observed, new vassal/faction
+intervention is still absent, so2/3 materials/wholeM4false. This count is the
+original M4 material subitems, not overall G2 readiness or a new live action.
+
+The collector uses the original44fa compact and the closed R93 construction
+sidecars whose bytes match the saved6076 frozen inputs. Original44fa formal
+next/task/cold flags remainfalse; the oldd660 and out-of-window Sway materials
+retain their dates and gain no transferred credit. No Driver/SAVE body read,
+Game query/command, build, test or prior collector replay occurred. Actual
+output9700B/SHAa61022ec5d50cb94896fcaef2edefa686f4f028f2ae56929c9b0ead060b4215f.
+Result and progress: `continuation-13i-m4-evidence/root-selection01/
+ROOT-ACTUAL-COLLECTOR-RESULT.json` and `M4-ACTUAL-MATERIAL-PROGRESS.json`, under
+`D:/codex-ck3-background-spill/native71-continuation-20261010`.
+
+Next: finish the six ordinary daily SAVEs, adopt the published MCP/M4/M6 Python
+changes in a complete SDK79 using unchanged Native78 actual binaries, then let
+the normal plan select at most one useful native-legal budgeted intervention.
+Current R94 SDK78/source664 and its natural priority remain unchanged. The
+existing first same-date Sway observations succeed, continue134217986/gen8,
+opinion60/named45/terminalfalse; no M6 terminal or historical-failure-fix credit.
+G2 stays5/8, NW2 stays2/4, M7incomplete/natural0.
