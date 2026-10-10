@@ -1,0 +1,113 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "production_source_head": "06159b964d859d30f2f07f4b183284df7d6dac47",
+  "production_file_count": 71,
+  "baseline_cached_succession": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "case_id": "i3b-formal-b4",
+  "business_contract_applicable": true,
+  "maximum_natural_days": 0,
+  "expected": {
+    "event_definition_key": "lyd.430",
+    "event_instance_id": 119,
+    "root_character_id": 31254,
+    "actor_character_id": 31254,
+    "date_raw": 53144712,
+    "native_option_indices": [
+      0,
+      2,
+      3
+    ]
+  },
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": 2
+  },
+  "faith_id": 107,
+  "main_rite_id": 169,
+  "faith_member_count": 51,
+  "political_title_ids": [
+    2230,
+    2231,
+    2232,
+    2235,
+    2262,
+    2263,
+    2264
+  ],
+  "saved_campaign": {
+    "bytes": 91709349,
+    "sha256": "c8601e7ba08406a551dcddd2a19e454423db2be6b559fad9985c6d1121b537c9",
+    "player_id": 31254,
+    "date_raw": 53144712
+  },
+  "title_properties": [
+    "destroy_if_invalid_heir",
+    "no_automatic_claims",
+    "definitive_form",
+    "always_follows_primary_heir"
+  ],
+  "input_pins": {
+    "formal_b3_qualification": {
+      "bytes": 30387,
+      "sha256": "93ba24f0901f42fae472ad2d6d35ca4cc8c5d32ceaf53ea6306ae9e06dcd3083"
+    },
+    "protection_baseline": {
+      "bytes": 426067,
+      "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+    },
+    "reader_request": {
+      "bytes": 164563,
+      "sha256": "899b3ee282bb179442502bf15ad090d079061e82f64da0f5ef78b9c26f15fcdb"
+    }
+  },
+  "acceptance_scope": "B4 only. B5 separate cold-load required. Historical signed origin is not current-state qualification.",
+  "planned_live_status": "NOT_RUN; unchanged factory must not be rerun without new discriminator/fix"
+}

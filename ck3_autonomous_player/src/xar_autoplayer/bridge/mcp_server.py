@@ -1337,6 +1337,13 @@ def register_succession_title_readonly_tools(server, service, driver) -> None:
         _forbid_unknown_tool_arguments_v1(server, "ck3_query_actor_cached_succession_v1")
     if getattr(driver, "allow_private_confucian_readonly_queries", False) is True:
         @server.tool(annotations=readonly)
+        def ck3_query_confucian_assembly_predicates_v1(
+            expected_revision: NormalExitRevisionV1,
+        ) -> dict[str, object]:
+            """Read complete current Faith members and native assembly predicates."""
+            return service.query_confucian_assembly_predicates_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_confucian_assembly_predicates_v1")
+        @server.tool(annotations=readonly)
         def ck3_query_confucian_religious_title_v1(
             expected_revision: NormalExitRevisionV1,
         ) -> dict[str, object]:

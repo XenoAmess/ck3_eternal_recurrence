@@ -1,0 +1,77 @@
+{
+  "schema": "lyd-public-formal-b4-source-only-validation-v1",
+  "status": "SOURCE_ONLY_TESTED",
+  "formal_tests": 14,
+  "real_MCP_registration_tests": 4,
+  "actual_commands": [
+    {
+      "schema": "ck3-recorded-actual-command-v1",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_lyd_i3b_formal_adapter.py"
+      ],
+      "cwd": "C:/workspace/ck3_eternal_recurrence",
+      "started_at_utc": "2026-10-10T07:49:56.441710+00:00",
+      "finished_at_utc": "2026-10-10T07:49:57.315274+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-formal-adapter-tests-20261010-001\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-formal-adapter-tests-20261010-001\\stderr.log",
+        "bytes": 2238,
+        "sha256": "ebe854bc2566f3926c596a584b9e6ed6c42be6076ca8ef84b113de376aee7beb"
+      }
+    },
+    {
+      "schema": "ck3-recorded-actual-command-v1",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_readonly_observers.py"
+      ],
+      "cwd": "C:/workspace/ck3_eternal_recurrence",
+      "started_at_utc": "2026-10-10T07:49:57.506428+00:00",
+      "finished_at_utc": "2026-10-10T07:49:59.167470+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-readonly-observer-tests-20261010-001\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-readonly-observer-tests-20261010-001\\stderr.log",
+        "bytes": 683,
+        "sha256": "20380c0a45210d6009a962fc26682a998949a76d3732df7d50a52f3777bc2761"
+      }
+    }
+  ],
+  "candidate_provenance": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-formal-i3b-public-case-sourceonly-20261010-001\\owned-six-files.patch",
+      "bytes": 66080,
+      "sha256": "b78862365c91caa54dcd24095ce9be77c0e386c0fdabc6fd47c0dcb2a68c8ece"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-formal-i3b-public-case-sourceonly-20261010-002\\delta-from-001.patch",
+      "bytes": 3994,
+      "sha256": "db8c7546998182c77da3f6a25525bf65d56e87d5b504cd8b9868b3ecd59e641f"
+    }
+  ],
+  "actual_live_run": null,
+  "B4_pass": null,
+  "B5_pass": null,
+  "formal_institution_pass": null,
+  "C3_pass": null,
+  "I4_pass": null,
+  "product_release_pass": false,
+  "historical_results_preserved": true,
+  "native_build_performed": false
+}
