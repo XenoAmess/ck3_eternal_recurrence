@@ -218,7 +218,7 @@ ConceptionThresholdObservation12004 EvaluateConceptionThreshold12004(
   output.branch = *output.conditional_accepts ? "sample_below_threshold" :
                                                "sample_at_or_above_threshold";
   if (*output.conditional_accepts) {
-    output.expected_candidate_flag = 1;
+    output.expected_candidate_flag = std::uint8_t{1};
     output.expected_candidate_target = inputs.parent.second_character;
   }
   Causal(inputs, output);
