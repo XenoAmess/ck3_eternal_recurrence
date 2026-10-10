@@ -1,0 +1,60 @@
+{
+  "schema": "lyd-cache-anchor-and-existing-title-getter-selected-records-v1",
+  "at_utc": "2026-10-10T12:33:53.814800+00:00",
+  "status": "EXACT_SELECTED_BYTES_AND_EACH_ZIP_MEMBER_VERIFIED",
+  "zip": {
+    "path": "010-AND-GETTER-SELECTED.zip",
+    "bytes": 17171,
+    "sha256": "95af769c4d1222abede953c7d84c19257e8b5982173caeed2fd904ebf60f1e0f"
+  },
+  "records": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-current4-typed-cache-anchor-plan-20261010-010\\INDEX.json",
+      "member": "r49-current4-typed-cache-anchor-plan-20261010-010/INDEX.json",
+      "bytes": 2072,
+      "sha256": "7eb6e7ebc23275047be182edb9989849d7e3aae51e6f7d5f84360814ed278fae"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-current4-typed-cache-anchor-plan-20261010-010\\FACTS.actual.json",
+      "member": "r49-current4-typed-cache-anchor-plan-20261010-010/FACTS.actual.json",
+      "bytes": 22899,
+      "sha256": "337343bec39069a2527fca668fee24a07a1b29a80eb11629e62449ee0b0ca710"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-current4-typed-cache-anchor-plan-20261010-010\\REPORT.md",
+      "member": "r49-current4-typed-cache-anchor-plan-20261010-010/REPORT.md",
+      "bytes": 1850,
+      "sha256": "a32b3351fa6cbdf61d507fb66b393e94adb6aad810c58a8ee74d6baf4c17c449"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-title-heir-existing-abi-review-20261010-002\\INDEX.json",
+      "member": "r49-title-heir-existing-abi-review-20261010-002/INDEX.json",
+      "bytes": 1882,
+      "sha256": "a38cd6bdce0d8911befef8be9afc492c9652136b09acd74a8106f68d7c1f5131"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-title-heir-existing-abi-review-20261010-002\\REPORT.md",
+      "member": "r49-title-heir-existing-abi-review-20261010-002/REPORT.md",
+      "bytes": 3805,
+      "sha256": "b08c24f640c1f237ccfd421f8299cc166b06ab0c752c0ae4b2631c29e1c046b8"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-title-heir-existing-abi-review-20261010-002\\BASIS.source-only.json",
+      "member": "r49-title-heir-existing-abi-review-20261010-002/BASIS.source-only.json",
+      "bytes": 19691,
+      "sha256": "8c666881d5a722bad4388f44771f5eec476e9e59ac7a54ce846e701c31537edf"
+    }
+  ],
+  "selected_uncompressed_bytes": 52199,
+  "new_analyzed_function_code_bytes": 0,
+  "prior_analyzed_function_code_cumulative_bytes": 20574,
+  "010_new_PE_read_bytes": 1052917,
+  "010_metadata_bytes": 1052704,
+  "010_identity_pin_code_read_bytes": 213,
+  "full_EXE_SHA_is_inherited_not_rehashed": true,
+  "writer_or_every_title_heir_lazy_refresh_qualified": false,
+  "production_change_or_new_live_qualification": false,
+  "original_deadlines_unchanged": true,
+  "record_review_at_utc": "2027-04-08T12:33:53.814800+00:00",
+  "unselected_originals_remain_external_not_claimed_archived": true
+}

@@ -1,5 +1,9 @@
 # 《礼与道》当前 1.20.0.4 resolve 与继承缓存研究
 
+20:33增量：010改从实际缓存读取anchor核查。已合格observer的`ReadHeader/CopyIds`只做guarded memory copy；现存当前consumer在actor`+1C0→+3A0→count+C`之间也没有call，不能把observer本身称为lazy refresh触发者。另核现有perTitle ABI：`289DA10`只是primary Title resolver，campaign完整primary数组复制和heldTitle的count/first DTO都没有闭合脚本`every_title_heir`入口。该引擎getter及实际writer仍UNKNOWN，没有据此产生新的生产变量或实机。
+
+010实际读取当前PE小头、版本、213B身份pin及限定`.data` 1MiB；两个精确猜测RTTI名称未命中后立即停止，不证明全image不存在类型，也不搜索别名或扩到`.text`。新增EXE I/O 1,052,917B，其中metadata 1,052,704B、身份pin213B；新增分析函数体0B，原分析代码累计20,574B。完整EXE SHA继承原资格，未重哈希或复制。[六项来源的精确压缩包](acceptance/2026-10-10-lyd-resolve-cache-source-only/010-AND-GETTER-INDEX.actual.json)原52,199B→17,171B，逐成员字节核验成功；原期限不续。
+
 2026-10-10，本机已从当前 CK3 1.20.0.4 的 typed effect 入口连接到角色与 LandState 处理链。**尚未证明继承缓存的实际 writer，也没有可据此采用的生产修复。** 这是 R49 后的有界静态研究，不是新的实机场次；正式 B4/B5/C3/I4 仍未通过，一期工作量估计仍为75%。
 
 [R49 实机](../li-yu-dao/acceptance/2026-10-10-r0049-holder-diagnostic/REPORT.md)记录单次 holder 诊断后继承缓存45→40，保存名单与后置原生名单一致。四段日志中，各 Title 观察名单在 BEFORE_CREATE、AFTER_CREATE、AFTER_HOLDER 相同，首次差异在 AFTER_RESOLVE；五政治头衔各有尾部4项替换。日志观察面不能区分 resolve 内部写入与紧随其后的 getter lazy refresh，39527也未出现在这些20人列表中。静态研究针对这个尚未解决的因果边界，没有重复无变化的 B4、去flag或无getter对照。
