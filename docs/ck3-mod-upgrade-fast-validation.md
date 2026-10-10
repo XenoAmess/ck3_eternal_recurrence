@@ -1,5 +1,15 @@
 # CK3 mod升级提速与公共验收入口（2026-10-08）
 
+## 2026-10-10 公共任命采集器实际 hello 合同修正
+
+R51 在发送候选池查询之前拒绝，原因是 collector 和旧测试使用不存在的 `hello.game_version/executable_sha256/bridge_pid`。实际 native HelloFrame 使用 `expected_ck3_version/expected_ck3_sha256/pid`。最终修复只修改公共 `frame_binding` 及真实 schema 测试构造，不改产品业务、host、DLL 或各场预算；所有产品仍走同一个公共 client。
+
+`expected_*` 仅是描述信息，不能单独授实际构建资格。最终 gate 同时要求精确 .4 版本及 EXE SHA、`ck3_build_match is True`、`game_adapter_status=ready`、`game_adapter_id=ck3-1.20.0.4-msvc-x64`，并核 `hello.pid/connection_generation` 与 diagnostics 的正整数实际绑定一致。actor、paused/map-ready、pipe、native revision、date、完整分页、实际候选资格、分数和继任门槛保持。
+
+采用的 [final04 patch](C:/workspace/ck3-upgrade-20261010/common-appointment-hello-schema-fix-02/COMMON-APPOINTMENT-REAL-HELLO-ONLY-FINAL04.patch) 为5878 B / SHA-256 `19a82fcd1516b74ba148e4c08f5d6d6f0f3e02c930ccb401d1a2040f0bf6478e`；公共 helper 为16061 B / `37caab92514512aa8be222984ac206ed30e5d407aaa7a8bd375cdd298a01a05b`。hello/frame/page 相关12项已在前一候选执行，最终04保留这些函数与测试字节；最终04另加载原 title-reference 测试验证2项，实际exit0/0.076855秒，[精确回执](C:/workspace/ck3-upgrade-20261010/common-appointment-hello-schema-fix-02/COMMON-APPOINTMENT-FINAL04-TITLE2-RECEIPT.json)为1485 B / `c8aba03e98dbfa862d94270aca27a9b68ddb8b2e2827b330aa25b5de9e39f5f7`。没有重复无关 template-click 回归，旧R51不追授PASS。
+
+03候选曾误判 native serializer 无顶层 `title_id` 即为公开 MCP schema 缺失；完整追至 `BridgeService.query_title_holder_v1` 后确认 service 实际补齐该字段。因此03未采用，final04完整保留原 title-reference 的顶层及嵌套 ID 一致性校验与原测试。此记录保留纠正，不能从底层 serializer 单独推断公开工具合同。新的实际完整候选池及业务资格仍须在新 public prepare/run 中取得。
+
 后续普通版本迁移的工程目标是正常数小时完成，尚无实测耗时或完成ETA承诺；新引擎结构、ABI变化及核心逆向另计。提速来自集中适配、减少重复启动和自动连续消费，不改变各产品发布前源码业务合同。当前批次正式7/10（70%），TED永久发布记录已提交推送。
 
 MCP、native bridge、服务、状态/事件读取及启动/退出管理已经是共享底座。各mod独立的是fixture、business case data、adapter及正式构建；冻结版本是当次可复现证据。成本来自尚未集中覆盖的实际capability缺口、consumer不同历史snapshot及人工GUI/多轮冷启动。**永久规则：所有未来mod acceptance从[tools/ck3_mod_acceptance.py](../tools/ck3_mod_acceptance.py)公共入口选一份common runtime manifest；产品不选择或复制host/source/native版本，公共问题在共享层修一次。**旧冻结永久保留，新run消费共同绑定的当前版本。

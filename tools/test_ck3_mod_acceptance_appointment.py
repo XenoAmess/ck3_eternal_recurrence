@@ -7,6 +7,7 @@ parser.add_argument('--support-repo',type=Path,default=Path(__file__).resolve().
 options,remaining=parser.parse_known_args()
 MAIN=options.support_repo
 sys.path.insert(0,str(MAIN/'tools'))
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 import ck3_mod_acceptance_appointment as a
 import ck3_mod_acceptance_client as clientmod
 from ck3_mod_acceptance_cases import xqol_government_adapter as gov
@@ -16,8 +17,10 @@ def frame():
  return {'source':'injected-dll-named-pipe','backend_id':'native-headless','map_ready':True,'paused':True,
   'episode_projection':'native_campaign','native_revision':9,'date_raw':8000,'episode_run_id':'offline-test',
   'played_character':{'character_id':101,'alive':True,'source':'native'},'diagnostics':{'bridge_pid':1001,
-  'connection_generation':4,'pipe_name':'test-only','hello':{'bridge_pid':1001,'connection_generation':4,
-  'game_version':'1.20.0.4','executable_sha256':a.EXE_SHA}}}
+  'connection_generation':4,'pipe_name':'test-only','hello':{'type':'hello','protocol_version':1,
+  'pid':1001,'connection_generation':4,'expected_ck3_version':'1.20.0.4',
+  'expected_ck3_sha256':a.EXE_SHA.upper(),'game_adapter_id':'ck3-1.20.0.4-msvc-x64',
+  'game_adapter_status':'ready','ck3_build_match':True}}}
 def row(offset=0,end=2,count=2,score=120000,breakdown=101):
  f=frame();cs=[{'character_id':101+i,'list_index':i,'native_rank':i+1,'score_present':True,
   'score_raw':score if i==0 else 500000,'alive':True,'is_human_player':i==0,'is_ai':i!=0,'candidate_pool_member':True}
@@ -50,6 +53,27 @@ def nav():
    'played_character_id':101,'date_raw':8000,'native_revision':9}}}
 
 class Wiring(unittest.TestCase):
+ def test_actual_r51_native_hello_schema_keeps_exact_frame_binding(self):
+  # R0051 case-snapshot-0002 actual native schema, not invented aliases.
+  f=frame();f.update(native_revision=3,date_raw=53144328,episode_run_id=None)
+  f['played_character']['character_id']=29912
+  d=f['diagnostics'];d.update(bridge_pid=12388,connection_generation=1,
+    pipe_name=r'\\.\pipe\ck3_mod_acceptance_4-8e1c2f1861--xenoamess-quality-of-life--R0051')
+  d['hello'].update(pid=12388,connection_generation=1)
+  self.assertNotIn('game_version',d['hello']);self.assertNotIn('executable_sha256',d['hello'])
+  self.assertNotIn('bridge_pid',d['hello'])
+  self.assertEqual(a.frame_binding(f),(12388,1,29912,d['pipe_name'],3,53144328,None))
+ def test_expected_build_alone_or_wrong_actual_match_pid_generation_is_rejected(self):
+  for key,value in [('expected_ck3_version','1.20.0.3'),('expected_ck3_sha256','0'*64),
+    ('game_adapter_id','ck3-1.20.0.3-msvc-x64'),('ck3_build_match',False),
+    ('ck3_build_match',1),('ck3_build_match',None),('game_adapter_status','unsupported_build'),
+    ('game_adapter_status',None),('pid',1002),('pid',None),('pid',True),
+    ('connection_generation',5),('connection_generation',None),('connection_generation',True)]:
+   with self.subTest(key=key,value=value):
+    f=frame()
+    if value is None:f['diagnostics']['hello'].pop(key)
+    else:f['diagnostics']['hello'][key]=value
+    with self.assertRaises(ValueError):a.frame_binding(f)
  def test_real_requested_d_resolves_to_actual_k(self):
   p=join([row()]);o={'requested_title_id':14770,'requested_title_key':'d_zhexi','title_id':990,
    'title_key':'k_liangzhe','law':LAW}
@@ -68,6 +92,7 @@ class Wiring(unittest.TestCase):
   for path,value in [(('after_snapshot','diagnostics','bridge_pid'),1002),
    (('after_snapshot','diagnostics','connection_generation'),5),
    (('after_snapshot','date_raw'),8001),(('after_snapshot','paused'),False),
+    (('after_snapshot','played_character','character_id'),102),(('after_snapshot','native_revision'),10),
    (('result','title_appointment','pool_consistency_token'),'fnv1a64:fedcba9876543210'),
    (('result','title_appointment','effective_succession_law_key'),'other_law'),
    (('result','title_appointment','current_window_title_id'),991),

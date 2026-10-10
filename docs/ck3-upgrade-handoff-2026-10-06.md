@@ -1,5 +1,17 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 11:05：闭场后统一修复、只补未完成单元
+
+正式发布仍为 **7/10（70%）**；顺序保持 QOL、重整河山、361 最后。CK3 仍为本机 1.20.0.4/build25734779，全部后续产品使用原 Source13/runtime05/native fd1f，不新建产品 host 或 DLL。R46 自付赎囚与 R48 礼仪的适用局部证据已[永久保存](xqol-r46-r48-scoped-evidence-2026-10-10.md)，不重跑有效业务。
+
+R49 ordinary 实际 accepted2/refused0，原 run2/verify2 保留；该失败首次实测 Source13 初始计划异常进入原 hold、自动退出、保留失败收口及原 keeper/allocator0、CAS8083。它授失败收尾链资格，不授业务或 normal-close PASS。R50 UI 在 seq3 因三个 RGB 通道各差1被公共像素 gate 拒绝，正常退出后 CAS8094；R51 行政场因公共 collector 读取不存在的 hello 字段而拒绝、尚未发送候选池查询，正常退出后 CAS8110。贤能场未分配，避免重复相同前置失败；[三场原失败和闭场事实](xqol-r49-r51-scoped-failures-2026-10-10.md)与旧 prepared 均保留。
+
+本闭场窗口统一采用最小候选：公共 template-click 保留唯一定位、布局和坐标合同，增加固定每通道1级量化容差并如实记录 pixels_exact；PAM 正负样本只增加有界实际资源初始化，原 exact0/reward 断言不改；ordinary 只以官方 AI 低分 flag 加 D0 引擎资格；新 `liege_shared_ransom` 仅补原 L2.4 的领主代付、劫掠报价、共享钱包递减及1金实时重验。以上均需新未消费 public prepare/实际验收，不能把离线检查追认为旧场 PASS。
+
+361 的七语最终候选和[当前格式报告](../mod_zhongguo_style/docs/release-localization-repair-2026-10-10.md)已采用，只证明格式和保护标记通过；必须一次新 production 投影及公共 prepare，不能用旧 foreign bytes 授最终版本实机信用。RMTM 两份未用 prepared 的相关 case/runtime pins 已核一致，无整份 registry 绑定，不因无关产品预算行变化而重做。此前 b37013edc 的[官方 CI](ck3-upgrade-1.20.0.4-official-ci-2026-10-10.md)为64项实际成功、20项条件跳过；新提交需自身 CI，不外推旧 GREEN。
+
+磁盘清理只处理证据齐全的已闭场生成缓存并无损压缩文本，原输入、存档及证据保留。继[首批清理](ck3-native-ai/2026-10-10-closed-profile-shadercache-recovery.md)，本轮八个旧闭场目录实际 allocation 回收1,268,730,240 B，R35 因缺 CAS 未动；[后续回执](ck3-native-ai/2026-10-10-closed-profile-shadercache-recovery-followup.md)单列 allocation 与实际可用空间变化。
+
 ## 2026-10-10 07:54：Source13唯一共同版本已选
 
 Root选定全部后续未消费产品场唯一[mapping05](C:/workspace/ck3-upgrade-20261010/root-source13-adoption-01/runtime.adopted-source13-native-fd1f-queue04-05.json)：10820B / SHA256 `a5aecdf94d6e3dcf35f2462011ba6a743668605729627f6d272542cf8c460e91`；manifest `26b229556f0b97cfac3b7d0172dd55f97f39f410c476de97f01a0eb1c5361c18`、host `59344d4c74e01a5279dece356140b5d59001ff259194940bbfb5a90388e44e2d`，共同queue04/reviewer03 helper与native fd1f均不变。Source13实际增量生产一次exit0/stderr0、8.97秒：6906文件独立copy2及sizecheck，只有host delta重新SHA，其他6905行继承原SHA，不重hash全树或编DLL。旧Source12/所有已用prepared/R45失败不改；原未用prepared只新建manifest-pin sibling，原case inputs/support/断言/预算不变。该选择尚不授新failure-hold自动链、任命/停战或Character-query实机资格。

@@ -36,6 +36,7 @@ zqp_setup_positive_effect = {
   set_personal_tenet = tenet:tenet_acts_of_apostles
   set_personal_tenet = tenet:tenet_mendicant_preachers
  }
+ zqp_initialize_spiritual_fulfillment_zero_effect = yes
  set_variable = { name = zqp_stock_sp_major value = major_spiritual_fulfillment_value }
  set_variable = { name = zqp_stock_sp_minor value = minor_spiritual_fulfillment_value }
  set_variable = { name = zqp_sp_acts_expected value = major_spiritual_fulfillment_value }
@@ -201,4 +202,37 @@ zqp_diagnose_positive_setup_guard_effect = {
   debug_log = "ZQP120: DIAG SCOPE END actual_landed_target_after_setup"
  }
  debug_log = "ZQP120: DIAG END original_positive_setup_guard"
+}
+
+# Initialize only this isolated fixture's real engine resource, before the
+# original baseline/reward assertions. An unchanged exact-zero readback decides
+# success. Neither signed clamp endpoint is itself zero.
+zqp_initialize_spiritual_fulfillment_zero_effect = {
+ if = {
+  limit = { NOT = { AND = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 } } }
+  # A nonzero loss multiplier may reach the official -100 endpoint. Only an
+  # actual exact -100 readback permits the known +100 change toward zero.
+  change_spiritual_fulfillment = -10000
+  if = {
+   limit = { spiritual_fulfillment >= -100 spiritual_fulfillment <= -100 }
+   change_spiritual_fulfillment = 100
+  }
+  else = { debug_log = "ZQPBASE120: DIAG negative_anchor_not_reached" }
+  if = {
+   limit = { NOT = { AND = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 } } }
+   # The opposite endpoint covers the complementary unit-loss case. This is
+   # one finite fallback, not an unbounded modifier or resource search.
+   change_spiritual_fulfillment = 10000
+   if = {
+    limit = { spiritual_fulfillment >= 100 spiritual_fulfillment <= 100 }
+    change_spiritual_fulfillment = -100
+   }
+   else = { debug_log = "ZQPBASE120: DIAG positive_anchor_not_reached" }
+  }
+ }
+ if = {
+  limit = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 }
+  debug_log = "ZQPBASE120: DIAG actual_baseline_exact0"
+ }
+ else = { debug_log = "ZQPBASE120: DIAG actual_baseline_not_zero" }
 }

@@ -1,0 +1,163 @@
+{
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 4500,
+    "hold_seconds": 600,
+    "poll_interval": 0.05
+  },
+  "schema": "ck3-xqol-original-followup-case-v1",
+  "case": "liege_shared_ransom",
+  "data_directory": "xqol_followup_cases/liege_shared_ransom",
+  "acceptance_scope": "original_L2_4_missing_liege_shared_wallet_normal_and_pillage_only",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQLR120: TEST BEGIN engine_startup",
+    "ZQLR120: TEST READY normal_shared_pair",
+    "ZQLR120: TEST READY normal_equal_quote_and_wallet"
+  ],
+  "forbidden_startup": [
+    "ZQR120QUAL: TEST FAIL actual_song_actor_D0",
+    "ZQLR120: TEST FAIL"
+  ],
+  "required_markers": [
+    "ZQR120QUAL: SCOPE BEGIN actual_song_actor_D0",
+    "ZQR120QUAL: TEST PASS actual_song_actor_D0",
+    "ZQR120QUAL: SCOPE END actual_song_actor_D0",
+    "ZQLR120: TEST BEGIN engine_startup",
+    "ZQLR120: TEST READY normal_shared_pair",
+    "ZQLR120: TEST READY normal_equal_quote_and_wallet",
+    "ZQLR120: TEST PASS normal_full_real_liege_shared_wallet_revalidated",
+    "ZQLR120: TEST PASS normal_one_gold_real_liege_transfer_release",
+    "ZQLR120: TEST PASS pillage_full_real_liege_shared_wallet_revalidated",
+    "ZQLR120: TEST PASS pillage_one_gold_real_liege_transfer_release",
+    "ZQLR120: TEST PASS four_actual_stock_transactions_and_fresh_checks",
+    "ZQLR120: TEST DONE missing_original_liege_shared_wallet_branches",
+    "ZQLR120: STOCK PASS normal_full",
+    "ZQLR120: STOCK PASS normal_any",
+    "ZQLR120: STOCK PASS pillage_full",
+    "ZQLR120: STOCK PASS pillage_any",
+    "ZQLR120: TEST PASS normal_full_revalidated",
+    "ZQLR120: TEST PASS normal_any_revalidated",
+    "ZQLR120: TEST PASS pillage_full_revalidated",
+    "ZQLR120: TEST PASS pillage_any_revalidated",
+    "ZQLR120: TEST READY pillage_shared_pair",
+    "ZQLR120: TEST READY pillage_equal_quote_and_wallet"
+  ],
+  "forbidden_markers": [
+    "ZQR120QUAL: TEST FAIL",
+    "ZQLR120: TEST FAIL"
+  ],
+  "original_step_count": 30,
+  "maximum_natural_days": 12,
+  "song_scope_required": true,
+  "fixture_files": [
+    "common/on_action/zqlr_startup_on_actions.txt",
+    "common/scripted_effects/zqlr_liege_ransom_effects.txt",
+    "common/scripted_effects/zqlr_stock_ransom_observer.txt",
+    "descriptor.mod",
+    "events/zqlr_ransom_events.txt"
+  ],
+  "appointment_laws": [],
+  "full_product_pass_from_cell": false,
+  "support_files": {
+    "xqol_followup_common.py": {
+      "bytes": 17940,
+      "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
+    },
+    "xqol_scope.py": {
+      "bytes": 10804,
+      "sha256": "2edca624e611e6f6be7c6147774b1fae8892cdc24de0ef5a96e36214d388b968"
+    },
+    "../ck3_mod_acceptance_prepare.py": {
+      "bytes": 10984,
+      "sha256": "4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981"
+    },
+    "__init__.py": {
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    "xqol_liege_ransom_adapter.py": {
+      "bytes": 3672,
+      "sha256": "b74e49bd6df559afaa9e7c0dacbd2d10418a81f4f2385d087bf56724d3c46fa6"
+    },
+    "xqol_followup_cases/liege_shared_ransom/fixture/common/on_action/zqlr_startup_on_actions.txt": {
+      "bytes": 206,
+      "sha256": "d96f3dcafaec372edc5efff020c16ded1737a0cdf36812b7af34e910cf9b51ac"
+    },
+    "xqol_followup_cases/liege_shared_ransom/fixture/common/scripted_effects/zqlr_liege_ransom_effects.txt": {
+      "bytes": 24863,
+      "sha256": "56d4678f618632e58dd2a99e74124bc0a818c5350e6f2948ab833a0d2ded0b12"
+    },
+    "xqol_followup_cases/liege_shared_ransom/fixture/common/scripted_effects/zqlr_stock_ransom_observer.txt": {
+      "bytes": 6083,
+      "sha256": "0b10136c742ff9302a32975742fcd30a84680f653a1bd17c50d0bb6937b9aae8"
+    },
+    "xqol_followup_cases/liege_shared_ransom/fixture/descriptor.mod": {
+      "bytes": 103,
+      "sha256": "58c8c062ac8fcdf43ef50c53c2079e2f8a19c9a7baada1bf0df66a8cd8fe17b7"
+    },
+    "xqol_followup_cases/liege_shared_ransom/fixture/events/zqlr_ransom_events.txt": {
+      "bytes": 352,
+      "sha256": "2e6690b1cae9f216a2905199a7467245890188a30ffdebaa27236a03a4d3c6f4"
+    },
+    "xqol_followup_cases/liege_shared_ransom/frontend-rules-plan.json": {
+      "bytes": 179,
+      "sha256": "ca3dd45804e32b0c8f57c5a543ef969fefd02fdd01634f2ccc367b95f5859223"
+    },
+    "xqol_followup_cases/liege_shared_ransom/original-plan.json": {
+      "bytes": 15078,
+      "sha256": "e2203700d6b209da152bafcfb16f608f03b107f3b8aabef8f08df97005f27514"
+    },
+    "../xqol_vanilla_contract.py": {
+      "bytes": 4438,
+      "sha256": "be4ebc2f4bc72148329bbb8c419c6dbf52b1dc519a3bf1e08430336a9a26cca9"
+    },
+    "../xqol_vanilla_1_20_0_4.json": {
+      "bytes": 5363,
+      "sha256": "b249ea7ca187d852bdc82ec201fb775b8a087caa66d9f855613ae5ce833fa2de"
+    }
+  },
+  "current_stock_sources": {
+    "common/character_interactions/00_prison_interactions.txt": {
+      "bytes": 222958,
+      "sha256": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5"
+    },
+    "common/script_values/00_interaction_values.txt": {
+      "bytes": 23158,
+      "sha256": "52a7cf8ef212c835bfc5bc5ce049af2e33d7586eb9d477343e8eedacf58ebd66"
+    },
+    "common/scripted_effects/00_prison_effects.txt": {
+      "bytes": 73376,
+      "sha256": "ea8bb72426246692bf1f310ae7eb83715ae1b7314d046e3660df66443d486030"
+    }
+  },
+  "stock_ransom_projection": {
+    "relative": "common/scripted_effects/00_prison_effects.txt",
+    "authored_wrapper": "common/scripted_effects/zqlr_stock_ransom_observer.txt",
+    "effect": "ransom_interaction_effect",
+    "original_effect_block_sha256": "524f0fd063b4a00fc8a397b9fe707249ce81f10f444e50edfe91f7fe0ca80aa0",
+    "original_effect_body_sha256": "6d71ef799355af4ea66b0d8e2f6c763fa5b502ccccce87f1708848aa6f773be6"
+  },
+  "source_scope_authority": {
+    "acceptance_plan": "mod_xenoamess_quality_of_life/docs/acceptance-plan.md:L2.4",
+    "already_valid_selfpaid_scene": "R46 is retained, not repeated",
+    "new_case_not_an_old_historical_PASS": true,
+    "production_call_chain": [
+      "xqol_bulk_ransom_full_effect",
+      "xqol_bulk_ransom_any_effect",
+      "ransom_interaction.redirect",
+      "ransom_interaction.on_accept",
+      "ransom_interaction_effect",
+      "pay_short_term_gold",
+      "release_from_prison"
+    ]
+  }
+}

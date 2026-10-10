@@ -1,0 +1,4 @@
+namespace = zqlr120
+zqlr120.1 = { type = character_event hidden = yes immediate = { zqlr_initialize_effect = yes } }
+zqlr120.2 = { type = character_event hidden = yes immediate = { scope:zqlr_actor = { zqlr_dispatch_effect = yes } } }
+zqlr120.3 = { type = character_event hidden = yes immediate = { scope:zqlr_actor = { zqlr_observe_effect = yes } } }

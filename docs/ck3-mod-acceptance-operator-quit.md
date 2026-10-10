@@ -83,3 +83,6 @@ R44正常Quit/实际OS0后旧producer在创建请求前因hosterror拒绝failure
 ## 2026-10-10 07:50 初始计划异常保留原hold预算
 
 R45暴露此前只有bootstrap异常能保留hold；initial-plan异常直接finally stop后，managed job清理实际退出1。共同host只在executing-plan首次Exception、原supervisor未done且尚未开始hold时进入同一declared hold_seconds，保留原error/failedstep/RED，余下业务不执行。由原退出helper及严格原生证明完成的failure finish才可提前收尾；不延期、不补写OS0、不从资源释放推导业务成功。两个真实生产异常分支pure子例一次通过，同字节测试纳入原CI；当前原Source12/R45不改，只有明确选择的后继host才应用。
+
+
+2026-10-10 R50 的共用 `template-click` 在原 correlation=1、runner-up gap=0.179263 且几何位置一致时，因 1984 像素中的 3 个 RGB 通道差 1 而由 exact-pixel gate 拒绝；原失败和当场未完成业务记录保留。后续共用 helper 固定 `pixel_quantization_tolerance=1`，只允许原匹配位置对应 RGB 每通道绝对误差不超过 1，保存实际最大差值、各差值通道数和 changed-channel/pixel 数。`pixels_exact` 仍按真正逐字节相等如实记录，不把容差通过写为 exact=true。原 .92 correlation、.05 gap、独立 layout anchors、相对位置、原始尺寸、HWND/focus、canonical mapper、60 秒及 normal-Quit 90 秒 reserve 不变；任一通道差>1、相对位置变化或歧义继续拒绝。共用 normal-Quit helper 与已冻结 Source13/native 不由此更改；纯回归通过或旧 R50 候选比较都不追授业务信用。

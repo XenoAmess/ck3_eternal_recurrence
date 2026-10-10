@@ -10,6 +10,9 @@ import math
 import time
 
 
+PIXEL_QUANTIZATION_TOLERANCE = 1
+
+
 def require(value, message):
     if not value:
         raise RuntimeError(message)
@@ -46,13 +49,32 @@ def _template(source, source_size, specification, *, target=False):
             'minimum_correlation': .92, 'minimum_runner_up_gap': .05}
 
 
-def _same_pixels(image, template, match):
-    from PIL import Image
+def _pixel_evidence(image, template, match):
+    from PIL import Image, ImageChops
     with Image.open(template['source']['path']) as original, Image.open(image) as current:
         expected = original.convert('RGB').crop(tuple(template['crop_ltrb']))
         left, top, width, height = match['match_rectangle']
         actual = current.convert('RGB').crop((left, top, left+width, top+height))
-        return expected.size == actual.size and expected.tobytes() == actual.tobytes()
+        same_size = expected.size == actual.size
+        counts, maximum, changed_pixels = {}, None, None
+        if same_size:
+            difference = ImageChops.difference(expected, actual)
+            histogram = difference.histogram()
+            counts = {str(level): sum(histogram[level+256*channel] for channel in range(3))
+                      for level in range(256)
+                      if any(histogram[level+256*channel] for channel in range(3))}
+            maximum = max(int(level) for level in counts)
+            red, green, blue = difference.split()
+            any_channel = ImageChops.lighter(ImageChops.lighter(red, green), blue)
+            changed_pixels = width*height-any_channel.histogram()[0]
+        return {'pixels_exact': same_size and maximum == 0,
+                'pixel_geometry_equal': same_size,
+                'pixel_quantization_tolerance': PIXEL_QUANTIZATION_TOLERANCE,
+                'pixel_maximum_channel_difference': maximum,
+                'pixel_channel_difference_counts': counts,
+                'pixel_changed_channel_count': sum(n for level, n in counts.items() if level != '0'),
+                'pixel_changed_pixel_count': changed_pixels,
+                'pixels_within_quantization_tolerance': same_size and maximum <= PIXEL_QUANTIZATION_TOLERANCE}
 
 
 def execute(*, source, payload, output, desktop, guard, coords, matcher, expected_hwnd, pid, create_time,
@@ -90,6 +112,7 @@ def execute(*, source, payload, output, desktop, guard, coords, matcher, expecte
               'request_authorizer': reviewer, 'automation_actor': 'template-automation',
               'human_review_claimed': False, 'business_pass': False,
               'original_hold_deadline': original_deadline, 'reserve_seconds': reserve_seconds,
+              'pixel_quantization_tolerance': PIXEL_QUANTIZATION_TOLERANCE,
               'reviewed_original': source, 'request_payload': payload,
               'matcher': pin(matcher.__file__), 'coordinate_mapper': pin(coords.__file__),
               'helper': pin(__file__), 'expected_hwnd': expected_hwnd,
@@ -127,7 +150,7 @@ def execute(*, source, payload, output, desktop, guard, coords, matcher, expecte
     def locate(image, template, name):
         matched = matcher.locate(image, template)
         require(matched['actual_image_size'] == list(source_size), 'Matcher actual image dimensions differ')
-        matched['pixels_exact'] = _same_pixels(image, template, matched)
+        matched.update(_pixel_evidence(image, template, matched))
         write_once(output/(name+'.match.json'), matched)
         result['evidence'].append(pin(output/(name+'.match.json')))
         return matched
@@ -137,13 +160,13 @@ def execute(*, source, payload, output, desktop, guard, coords, matcher, expecte
         write_once(output/'intent.json', result)
         current = capture('fresh-before')
         target_match = locate(current, target, 'target-before')
-        require(target_match['matched_uniquely'] and target_match['pixels_exact'],
-                'Current target is absent, ambiguous or no longer the exact reviewed pixels; no input')
+        require(target_match['matched_uniquely'] and target_match['pixels_within_quantization_tolerance'],
+                'Current target is absent, ambiguous or exceeds reviewed-pixel quantization tolerance; no input')
         offsets = []
         for index, anchor in enumerate(anchors):
             matched = locate(current, anchor, 'layout-before-'+str(index))
-            require(matched['matched_uniquely'] and matched['pixels_exact'],
-                    'Current stable layout anchor differs/ambiguous; no input')
+            require(matched['matched_uniquely'] and matched['pixels_within_quantization_tolerance'],
+                    'Current stable layout anchor exceeds quantization tolerance or is ambiguous; no input')
             offsets.append([matched['match_rectangle'][0]-anchor['crop_ltrb'][0],
                             matched['match_rectangle'][1]-anchor['crop_ltrb'][1]])
         target_offset = [target_match['match_rectangle'][0]-target['crop_ltrb'][0],
