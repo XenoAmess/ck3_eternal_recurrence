@@ -1,0 +1,274 @@
+{
+  "schema": "ck3-common-source05-source-only-actual-v1",
+  "source_commit": "27644fdc18e693990e43794af62ebf13db523aef",
+  "fixed_single_parent": "919bae0f42def04e6398eb2de4b4afe20dcfc106",
+  "author_commit": "3704561725e583d9c9fc10f4c47c1523bb1d9643",
+  "author_single_parent": "0c0e36e21164d55cd9f47d2d8ab9ae7a5cbf3f63",
+  "archive_tag": "archive/common-runtime-source05-20261010",
+  "independent_static_review": {
+    "schema": "ck3-source05-freezer-binder-readonly-pre-freeze-review-v1",
+    "at_utc": "2026-10-10T00:05:35.003664+00:00",
+    "status": "STATIC_REVIEW_PASS_ACTUAL_SOURCE05_NOT_ASSESSED",
+    "checkout_head_observed": "3704561725e583d9c9fc10f4c47c1523bb1d9643",
+    "scripts": {
+      "freezer002": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-root-freeze-source05-20261010-002.py",
+        "bytes": 5709,
+        "sha256": "87c28d1059084a866df935c997fa5449486ead22b16864f0da5b0a94eee0cc57"
+      },
+      "binder001": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-root-bind-runtime-20261010-001.py",
+        "bytes": 2709,
+        "sha256": "8a47f9282fa21f8251c162e30dba80d7719c02203cdce68c1cd0587f3897e249"
+      }
+    },
+    "derivation_files": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-root-source05-tools-derivation-20261010-001.json",
+        "bytes": 3384,
+        "sha256": "482f3cb858f01c606a4886297721d6c19c604d85d4163267d63f7a678d67db35"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-root-freezer002-derivation-20261010-001.json",
+        "bytes": 793,
+        "sha256": "8080b765b7a0e41a5de101b6bb6c96b9a69618ca14a1a5b007180779b571dc82"
+      }
+    ],
+    "exact_script_derivations_rechecked": 3,
+    "source04_commit_and_parent": [
+      "919bae0f42def04e6398eb2de4b4afe20dcfc106",
+      "13d063c81ff706d8bc3f9a8bf81f60c283338042"
+    ],
+    "source04_indexed_files_actually_sha256_rechecked": 7904,
+    "source04_native_directory_index_files": 4260,
+    "source04_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-003\\source04-index.json",
+      "bytes": 1619602,
+      "sha256": "b321107a8020ae76795d394c2ecd1498d24ad18bebb515369e36b5c0a825c326"
+    },
+    "source04_native_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-003\\native-source04-index.json",
+      "bytes": 891863,
+      "sha256": "ffd74f747f08a56026720c932011a7b7a425ecdf25828893f014ae05819aebfb"
+    },
+    "source04_reuse_receipt": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-003\\SOURCE04-NATIVE-REUSE.actual.json",
+      "bytes": 2505,
+      "sha256": "1d0085cc4309a4de709b2f6bb2b31d140a5dd0deb0e19dbd52de3f4ace597560"
+    },
+    "inherited_actual_build_result": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-RESULT.actual.json",
+      "bytes": 498,
+      "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+    },
+    "inherited_actual_build_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-INPUTS.actual.json",
+      "bytes": 3608,
+      "sha256": "70ae3c7f22627918cf43c9a9abc279033c0f3ad0a4bb99b71ae7a2b9ca0bab36"
+    },
+    "cbr2_actual_native": {
+      "dll": {
+        "path": "C:\\cbr2\\xar_ck3_bridge.dll",
+        "bytes": 9459712,
+        "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+      },
+      "injector": {
+        "path": "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+      }
+    },
+    "intended_changed_paths_exact": [
+      "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py",
+      "tools/ck3_mod_acceptance.py",
+      "tools/test_ck3_mod_acceptance.py"
+    ],
+    "intended_single_frozen_parent": "919bae0f42def04e6398eb2de4b4afe20dcfc106",
+    "native_directory_intended_change_only": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "intended_runtime_metadata_root": "C:\\workspace\\ck3-common-runtime\\20261010-004",
+    "intended_source_root": "C:\\csr5",
+    "both_global_manifest_flags_assigned_true": true,
+    "build_result_not_fabricated_from_missing_source04_build": true,
+    "native_rebuild_claimed": false,
+    "source05_exists_at_receipt": true,
+    "runtime05_exists_at_receipt": true,
+    "actual_source05_frozen_bytes_reviewed": false,
+    "actual_author_commit_reviewed": false,
+    "actual_runtime05_manifest_reviewed": false,
+    "findings_requiring_change": [],
+    "boundary": "Pre-freeze script and predecessor byte audit only. Await root notice, then independently check actual author/frozen single parents, exact five indexed deltas, native bytes and bound manifests once.",
+    "production_or_repo_writes": 0,
+    "freezer_binder_executions": 0,
+    "tests_executed": 0,
+    "live_actions": 0,
+    "live_qualification": false,
+    "business_pass": false
+  },
+  "independent_actual_review": {
+    "schema": "ck3-source05-actual-independent-review-v1",
+    "at_utc": "2026-10-10T00:08:47.597937+00:00",
+    "status": "FROZEN_SOURCE_AND_BINDING_PASS_NOT_LIVE",
+    "source_commit": "27644fdc18e693990e43794af62ebf13db523aef",
+    "frozen_commit_and_single_parent": [
+      "27644fdc18e693990e43794af62ebf13db523aef",
+      "919bae0f42def04e6398eb2de4b4afe20dcfc106"
+    ],
+    "author_commit_and_single_parent": [
+      "3704561725e583d9c9fc10f4c47c1523bb1d9643",
+      "0c0e36e21164d55cd9f47d2d8ab9ae7a5cbf3f63"
+    ],
+    "archive_tag": "archive/common-runtime-source05-20261010",
+    "author_patch_matches_exact_parent_to_author_owned5": true,
+    "changed_paths_exact": [
+      "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py",
+      "tools/ck3_mod_acceptance.py",
+      "tools/test_ck3_mod_acceptance.py"
+    ],
+    "source05_indexed_files_actual_sha256_rechecked": 7904,
+    "source05_native_index_files": 4260,
+    "native_directory_changes_exact": [
+      "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+    ],
+    "every_other_source04_indexed_entry_equal": true,
+    "source05_root_file_set_exact": true,
+    "source05_root": "C:\\csr5",
+    "runtime_metadata_root": "C:\\workspace\\ck3-common-runtime\\20261010-004",
+    "actual_build_result_inherited": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-RESULT.actual.json",
+      "bytes": 498,
+      "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+    },
+    "actual_build_inputs_unchanged": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-INPUTS.actual.json",
+      "bytes": 3608,
+      "sha256": "70ae3c7f22627918cf43c9a9abc279033c0f3ad0a4bb99b71ae7a2b9ca0bab36"
+    },
+    "actual_native": {
+      "dll": {
+        "path": "C:\\cbr2\\xar_ck3_bridge.dll",
+        "bytes": 9459712,
+        "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+      },
+      "injector": {
+        "path": "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+      }
+    },
+    "source05_archive_pinned_only": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-004\\shared-source05.zip",
+      "bytes": 53556929,
+      "sha256": "87af317bf149c7acea82ebc07b9a476709bfca3174687e281812a09d603fb3fd"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-004\\manifest.json",
+      "bytes": 5161,
+      "sha256": "373dd4e84b1909aaacd6d7f57e113d7b2333ed76a358343551e07e7555af1901"
+    },
+    "runtime": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-004\\runtime.local.json",
+      "bytes": 2011,
+      "sha256": "b9db4089b4c0fea5122deb33118f1e0572b47103d8425facea3797dab6fded88"
+    },
+    "source05_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-004\\source05-index.json",
+      "bytes": 1619602,
+      "sha256": "e73f91df5cb9227cef111626ea9383c2c41d11a2475a2bb8a78195aa8f494c14"
+    },
+    "source05_native_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-004\\native-source05-index.json",
+      "bytes": 891863,
+      "sha256": "b62ac813398aa51594facbead8fefc463d40e43b82ca9fadf94d677efdc6b672"
+    },
+    "both_global_manifest_flags_actual_true": true,
+    "runtime_support_paths_all_csr5": true,
+    "frozen_existing_check_receipts": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-004\\frozen-python-checks-001\\RESULT.actual.json",
+      "bytes": 3543,
+      "sha256": "12565b701bb336065a9bc4f49d47864f11539c7f9750622a2de1778e2cbd4b76"
+    },
+    "frozen_existing_check_exit_codes": {
+      "saved-lifecycle": 0,
+      "global-routing": 0,
+      "host-help": 0
+    },
+    "tests_executed_by_this_review": 0,
+    "builds_executed_by_this_review": 0,
+    "git_mutations_by_this_review": 0,
+    "live_actions": 0,
+    "actual_live_qualified": false,
+    "business_pass": false,
+    "findings_requiring_change": [],
+    "boundary": "The new debug opt-in and deferred-injection policy are globally bound. No R42 startup/native/business/normal-exit conclusion is drawn from this source-only receipt."
+  },
+  "manifest_host_features": {
+    "succession_title_readonly": true,
+    "saved_campaign_inject_after_load": true,
+    "saved_campaign_debug_mode": true
+  },
+  "source05_root": "C:\\csr5",
+  "runtime_metadata_root": "C:\\workspace\\ck3-common-runtime\\20261010-004",
+  "root_recorded_exit_codes": {
+    "freeze": 0,
+    "bind": 0,
+    "frozen-checks": 0
+  },
+  "frozen_existing_check_exit_codes": {
+    "saved-lifecycle": 0,
+    "global-routing": 0,
+    "host-help": 0
+  },
+  "frozen_lifecycle_test_count": 14,
+  "frozen_global_routing_test_count": 4,
+  "original_main_affected_tests": {
+    "tests": 93,
+    "all_returncodes_zero": false,
+    "checks": [
+      {
+        "name": "native-bridge-lifecycle",
+        "tests": 48,
+        "returncode": 0
+      },
+      {
+        "name": "saved-delayed-injection",
+        "tests": 14,
+        "returncode": 1
+      },
+      {
+        "name": "saved-startup-admission",
+        "tests": 11,
+        "returncode": 0
+      },
+      {
+        "name": "shared-entry",
+        "tests": 20,
+        "returncode": 0
+      }
+    ]
+  },
+  "corrected_delayed_fixture": {
+    "tests": 14,
+    "returncode": 0,
+    "production_change_since_first_tests": false
+  },
+  "final_applicable_main_test_coverage": 93,
+  "original_failures_preserved": [
+    "source-only001 authoring failure",
+    "main delayed14 old lease-mtime fixture failure"
+  ],
+  "new_native_build_performed": false,
+  "no_tests_repeated_for_this_archive": true,
+  "actual_live_qualified": false,
+  "business_pass": false,
+  "future_r42_result_included": false,
+  "separate_permanent_reports": [
+    "docs/ck3-native-ai/2026-10-10-shared-delayed-injection-source04.md",
+    "docs/ck3-native-ai/2026-10-10-common-cache-reviewer-ci-fixture.md",
+    "docs/ck3-native-ai/2026-10-10-r41-shared-runtime-startup-red.md"
+  ],
+  "game_actions_by_this_producer": 0
+}
