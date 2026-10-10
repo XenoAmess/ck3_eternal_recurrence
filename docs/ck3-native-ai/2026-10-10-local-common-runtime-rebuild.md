@@ -75,3 +75,14 @@ host 原 Popen wait 返回1，CK3 受管退出码为1；native job active0、进
 R41实际run/verify2，714次startup观察均未连接/native帧0/steps0；600秒内无Setup completion，因此原策略没有注入，未进入事务对照或任何业务，也没有业务SAVE/day。日志最后强力封臣初始化，error.log0B；此结果未验证延后注入后的效果，不判定早期注入就是根因。原host Popen1；runtime原安全失败异常源链执行清理，但launch没有返回SessionHandle，host session.report=null且cleanup_ok=false，原游戏exit/Jobcount结构化回执缺失，均保留而不称normal0。新的独立进程清点CK3/录制/host/watchdog空、控制文件空；最终新鲜Steam原图7:01离线亲审、桌面恢复1024×768、keeper原allocate Popen0/thread joined，CAS4276→4277实际释放。[R41报告](2026-10-10-r41-shared-runtime-startup-red.md)保存真实边界。
 
 精确6a3 Official37995375811 FAILURE、Linear37995375808 success、LiYu NOT_TRIGGERED。实际失败为旧AST隔离测试漏传生产host已声明的supervisor，6项同NameError；外置一行namespace fixture修正使原6项PASS，等待闭场后独立入库与新精确CI，不能追认6a3成功。当前并行：CI窄修、R41证据归档、root共享报告线性发布、engine加载路径只读诊断；不再仅增加预算或重复bootstrap。缺失ck3-upgrade-20261008不再是依赖。正式I3b/C3/I4及一期仍NOT_GREEN，75%仅工作量估计，不承诺未经实机依据的一期完成日期。
+
+
+## 2026-10-10 08:07 CST：本机Source05与R42单变量对照准备
+
+R41失败证据与failed-launch前驱分配修正已通过rebase普通推送至0c0e36e21164d55cd9f47d2d8ab9ae7a5cbf3f63。它保留原cleanup_ok=false、session.report=null及原CK3/Job退出未知；新分支只允许已安全结束、当前进程和控制文件为空且原keeper/CAS已释放的失败启动作为后继，不授normal0或业务信用。原八项边界测试PASS；远端整合后26项关闭/审核/poll测试及一项initial-plan-failure测试PASS。最初组合调用漏传--host-source退出2，分开按正式CLI执行后通过，原失败保留。
+
+Source05固定为27644fdc18e693990e43794af62ebf13db523aef，单父Source04 919bae0f4，只应用作者3704561725e583d9c9fc10f4c47c1523bb1d9643相对其父0c0e36e的五路径Python增量。共享-debug_mode默认关闭，由单一manifest显式启用；同PID/Job、一次loadsave、600秒绝对deadline、加载完成后注入及严格native守卫不变。主仓相关93项首跑有一旧测试mtime失败，固定测试marker时间后14项PASS，另79项原PASS；不把首跑写成全绿。冻结Source05另14项生命周期、4项global路由及host help通过。全native目录仅host Python变化，C++/CMake输入逐文件相同后复用原Source02的cbr2产物，没有声称编译当前master全部native功能。
+
+本机新全局runtime为C:/workspace/ck3-common-runtime/20261010-004/runtime.local.json；R42冷输入prepare/preflight已实际0，71正式文件+6 overlay、原91MB seed与预算保持。缺失C:/workspace/ck3-upgrade-20261008不再是任何依赖。精确0c0e Official38006953109 FAILURE、Linear38006953137 SUCCESS、LiYu NOT_TRIGGERED；实际错误是一个Workshop cache测试缺失审核上下文context_path，测试夹具窄修与证据独立交付，不改生产resolver或追认旧head成功。
+
+当前R42尚未分配/启动，后续先完成上述夹具修复的普通发布，再获取当次新鲜Steam离线图与独占现场执行唯一debug变量对照。归档可在外置目录与实机等待并行，冻结现场期间不改跟踪文件。正式I3b/C3/I4及一期仍NOT_GREEN，75%仅工作量估计，未新增实机业务PASS；启动窗口仍最多600秒，产品完成日期待能力恢复后的实际业务结果。
