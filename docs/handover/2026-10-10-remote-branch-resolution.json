@@ -1,0 +1,145 @@
+{
+  "schema": "xar.remote.branch.integration.resolution.v1",
+  "recorded_at_utc": "2026-10-10T11:44:49.291660+00:00",
+  "review_master": "cbc2a704780595d87f4ae1643c0240dc5d96bb68",
+  "prior_value_integration_commit": "f7d37c7cb9544d61ef58b49efbc0cb57d14979be",
+  "decision": "All 17 reviewed remote branches resolved; adopt missing value into master, discard superseded branch changes, delete obsolete remote refs after normal master push.",
+  "refs": [
+    {
+      "name": "codex/dynastic-movements-20261005",
+      "reviewed_tip": "14c13457952ee89da3e6889c29075477584948f3",
+      "value_resolution": "missing source integrated by bounded reviewed patch; obsolete content superseded",
+      "remote_action": "delete"
+    },
+    {
+      "name": "codex/heresiarch-mechanics-20261004",
+      "reviewed_tip": "30318ac960d39731bddc44ce88ae50fc2280fd28",
+      "value_resolution": "missing source integrated by bounded reviewed patch; obsolete content superseded",
+      "remote_action": "delete"
+    },
+    {
+      "name": "codex/jd11-capture-entry-20260930",
+      "reviewed_tip": "475bdbffd2c0fc96b4188c394eeea80a780b672a",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "codex/living-saints-halo-20261004",
+      "reviewed_tip": "6137959cfcb684f3e13c4260bd5af108ec1e1488",
+      "value_resolution": "missing source integrated by bounded reviewed patch; obsolete content superseded",
+      "remote_action": "delete"
+    },
+    {
+      "name": "codex/mig-epidemic-death-12004",
+      "reviewed_tip": "83eabdf7f4c7cecb3108ce80be947e48d7544641",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "codex/project-causality-film-20260919",
+      "reviewed_tip": "d9b86836f26687b2457a14a19193d4d9cbd2bfe8",
+      "value_resolution": "missing source integrated by bounded reviewed patch; obsolete content superseded",
+      "remote_action": "delete"
+    },
+    {
+      "name": "research/current-war-end-normal-consumer-12004",
+      "reviewed_tip": "270a30913f51208ab66c75748cbda183c3e5aa30",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/onedrive-channel-20260928",
+      "reviewed_tip": "1784254a13a8c003840a1d83623a3fc69bdf4717",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0271-delivery-20260928",
+      "reviewed_tip": "240032bc6ce495878a340b5994b2007bced71aad",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0271-final-matching-live-20260928",
+      "reviewed_tip": "c7272d5a991d4f449d1a61d31dc444619ce4ecb3",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0271-r0312-audit-20260928",
+      "reviewed_tip": "95ef58c3f261e6e4b05161223b7fd9e096995e5d",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0271-siege-partition-20260928",
+      "reviewed_tip": "5d39c476079679b25f548c1fb5984dc7f174cae9",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0284-contact-20260928",
+      "reviewed_tip": "487cecea7e901bcf406f3d215eeefa86bd66775b",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0284-r0291-preview-evidence",
+      "reviewed_tip": "ee16d3ca3fca39d9171916ee1c57012e28e41a59",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0284-r0293-inputs-bound",
+      "reviewed_tip": "df9ee54762307b80af4d0a5269f88d5128146ca8",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0284-semantic-stop-20260928",
+      "reviewed_tip": "12249d704487c115f8483e4f6a9b1d8b7c75ac52",
+      "value_resolution": "patch-equivalent already adopted",
+      "remote_action": "delete"
+    },
+    {
+      "name": "war/r0321-forecast",
+      "reviewed_tip": "658456459d9a0fc2a26b3679f1a23cb6002ea8ac",
+      "value_resolution": "missing source integrated by bounded reviewed patch; obsolete content superseded",
+      "remote_action": "delete"
+    }
+  ],
+  "shared_product_review": {
+    "old_changed_paths": 506,
+    "old_paths_adopted": 18,
+    "old_paths_superseded_and_not_restored": 488,
+    "new_index_paths": 1,
+    "deferred_paths": 0,
+    "review_receipt": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-04b-remote-residual\\RESULT.json",
+    "validation_receipt": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-04b-remote-residual\\VALIDATION.json",
+    "patch_sha256": "601ddfb5ee5759f1820f212e43f8eb7045973aead00c5fcc5f5fbcd17e2adca5"
+  },
+  "already_deleted_refs": [
+    "codex/jd11-capture-entry-20260930",
+    "codex/mig-epidemic-death-12004",
+    "research/current-war-end-normal-consumer-12004",
+    "war/onedrive-channel-20260928",
+    "war/r0271-delivery-20260928",
+    "war/r0271-final-matching-live-20260928",
+    "war/r0271-r0312-audit-20260928",
+    "war/r0271-siege-partition-20260928",
+    "war/r0284-contact-20260928",
+    "war/r0284-r0291-preview-evidence",
+    "war/r0284-r0293-inputs-bound",
+    "war/r0284-semantic-stop-20260928",
+    "codex/project-causality-film-20260919",
+    "war/r0321-forecast"
+  ],
+  "final_delete_refs_after_this_master_push": [
+    "codex/dynastic-movements-20261005",
+    "codex/heresiarch-mechanics-20261004",
+    "codex/living-saints-halo-20261004"
+  ],
+  "new_archive_branches_created": 0,
+  "active_coworker_worktrees_or_native_source_pins_deleted": 0,
+  "execution_receipt": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\ROOT-FINAL-REMOTE-ARCHIVE-EXECUTION.json"
+}
