@@ -255,6 +255,10 @@ std::string CurrentConceptionPairInputsJsonV1(
       json += '}';
     }
     json += "]}";
+    if (pair.natural_conception_observations_json) {
+      json += ",\"natural_conception_observations_v1\":";
+      json += *pair.natural_conception_observations_json;
+    }
     const auto &short_circuit = pair.short_circuit;
     json += ",\"conditional_short_circuit\":";
     AppendObservationHeader(json, short_circuit.source, short_circuit.status, short_circuit.reason);

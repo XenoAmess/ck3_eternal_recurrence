@@ -5,6 +5,7 @@
 # Three delivered standalone leaves use their adjacent header's basename; their
 # canonical headers live alongside the other bridge headers after adoption.
 target_include_directories(xar_ck3_12002_runtime PRIVATE include/xar_bridge)
+include(cmake/conception_natural_pair_observer_12004.cmake)
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/person_installed_transfer_stage_12004.cpp
   src/entry_final_occurrence_12004.cpp

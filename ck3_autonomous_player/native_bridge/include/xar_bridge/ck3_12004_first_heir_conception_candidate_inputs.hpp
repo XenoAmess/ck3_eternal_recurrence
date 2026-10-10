@@ -3,6 +3,9 @@
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/current_first_heir_conception_candidate_inputs_v1.hpp"
 #include "xar_bridge/ck3_12004_family_abi.hpp"
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+#include "xar_bridge/conception_pair_passive_12004.hpp"
+#endif
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include <algorithm>
@@ -258,6 +261,13 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
     const auto first = find_receiver(heir), second = find_receiver(spouse);
     const auto first_id = std::bit_cast<std::uint32_t>(heir);
     const auto second_id = std::bit_cast<std::uint32_t>(spouse);
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+    // Copy retained native events for this exact full-ID household pair.
+    // Their native orientation and historical event clock remain unchanged.
+    if (const auto journal = ReadConceptionPairPassiveForPair12004(first_id, second_id))
+      pair.natural_conception_observations_json =
+          SerializeConceptionPairPassiveJournal12004(*journal);
+#endif
     const auto second_title = ReadConceptionSecondTitleStatePresenceForCharacter12004(
         second_title_binding, second, second_id);
     pair.second_title_state_status = second_title.status;

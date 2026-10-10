@@ -37,6 +37,9 @@ struct CurrentCharacterConceptionCandidateRowV1 {
 struct CurrentHouseholdConceptionPairInputsV1 {
   std::int32_t first_character_id = -1;
   std::int32_t second_character_id = -1;
+  // Query-local owned JSON from the passive native journal serializer. Keep
+  // the layout identical in Bridge and Runtime when the private flag is off.
+  std::optional<std::string> natural_conception_observations_json{};
   ck3_12004::conception_pair_value_inputs::LoadedReadResult loaded_numeric{};
   ck3_12004::conception_pair_value_inputs::BaseResult base_stage{};
   ck3_12004::ConceptionPairListBonus12004Read list_bonus{};

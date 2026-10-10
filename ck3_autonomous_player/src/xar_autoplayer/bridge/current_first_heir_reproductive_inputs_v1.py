@@ -5,6 +5,8 @@ from __future__ import annotations
 from copy import deepcopy
 
 from .driver import BridgeUnavailableError
+from .conception_natural_observation_contract_12004 import normalize_conception_natural_observations_12004
+from ..simulation.conception_natural_observation_12004 import project_conception_natural_observations_12004
 from .player_child_marriage_value_private_transport import _native_fertility_input_valid
 
 LEAF = "current_first_heir_reproductive_inputs_v1"
@@ -387,6 +389,26 @@ def _validate_conception_pair_fields(value: object, heir: int, relation: dict[st
             raise BridgeUnavailableError("native last-child condition became an unread date")
 
 
+def _retain_natural_conception_observations(value: dict[str, object]) -> dict[str, object]:
+    pair_inputs = value.get("conception_pair_inputs")
+    if not isinstance(pair_inputs, dict):
+        return value
+    for pair in pair_inputs.get("pairs", []):
+        if not isinstance(pair, dict) or "natural_conception_observations_v1" not in pair:
+            continue
+        try:
+            journal = normalize_conception_natural_observations_12004(
+                pair["natural_conception_observations_v1"],
+                expected_first_character_id=pair["first_character_id"],
+                expected_second_character_id=pair["second_character_id"],
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError("natural conception observations are malformed") from error
+        pair["natural_conception_observations_v1"] = journal
+        pair["natural_conception_observation"] = project_conception_natural_observations_12004(journal)
+    return value
+
+
 def validate_current_first_heir_reproductive_inputs_v1(
     value: object, *, actor: int, heir: int | None, native_revision: int,
     date_raw: int, relation: dict[str, object],
@@ -415,7 +437,7 @@ def validate_current_first_heir_reproductive_inputs_v1(
             if pair_inputs["status"] != "unavailable":
                 raise BridgeUnavailableError("unavailable household retains a conception frame")
             _validate_conception_pair_fields(pair_inputs, heir, relation)
-        return deepcopy(value)
+        return _retain_natural_conception_observations(deepcopy(value))
     if (value.get("played_character_id") != actor or value.get("date_raw") != date_raw
             or relation.get("status") != "available" or heir is None):
         raise BridgeUnavailableError("available household lacks its current relation")
@@ -493,4 +515,4 @@ def validate_current_first_heir_reproductive_inputs_v1(
         raise BridgeUnavailableError("household availability disagrees with observed values")
     if "conception_pair_inputs" in value:
         _validate_conception_pair_fields(value["conception_pair_inputs"], heir, relation)
-    return deepcopy(value)
+    return _retain_natural_conception_observations(deepcopy(value))

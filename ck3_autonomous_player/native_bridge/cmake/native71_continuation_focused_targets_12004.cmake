@@ -72,3 +72,23 @@ if(BUILD_TESTING AND WIN32)
   endif()
   # Root retains stdout and invokes the new guarded-source Python strict cell.
 endif()
+
+# Owned natural-conception journal transport: one new main and current serializer.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_current_household_conception_natural_wire_focus EXCLUDE_FROM_ALL
+    tests/current_household_conception_natural_wire_focus.cpp
+    src/current_first_heir_relationship_v1.cpp)
+  target_include_directories(xar_current_household_conception_natural_wire_focus PRIVATE include)
+  target_compile_features(xar_current_household_conception_natural_wire_focus PRIVATE cxx_std_20)
+  target_compile_definitions(xar_current_household_conception_natural_wire_focus PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1=1
+    XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004=1)
+  if(MSVC)
+    set_property(TARGET xar_current_household_conception_natural_wire_focus
+      PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
+    target_compile_options(xar_current_household_conception_natural_wire_focus PRIVATE
+      /EHsc /W4 /WX /utf-8 /UNDEBUG)
+  endif()
+  # Main reads tests/fixtures/conception_pair_passive_12004_joined_journal.json.
+endif()

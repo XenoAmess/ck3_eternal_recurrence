@@ -18,6 +18,15 @@
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+#include "xar_bridge/conception_pair_passive_12004.hpp"
+#endif
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+#include "xar_bridge/conception_pair_provider_passive_12004.hpp"
+#endif
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+#include "xar_bridge/conception_sample_passive_12004.hpp"
+#endif
 #include "xar_bridge/ck3_12004_tactical_daily_sentinel.hpp"
 #include "xar_bridge/ck3_12004_default_routes_mailbox.hpp"
 #include "xar_bridge/state_snapshot_frame_v1.hpp"
@@ -657,6 +666,15 @@ static xar::ck3_12004::KnightStatConsumptionDetourState12004
     g_knight_stat_consumption_12004{};
 static xar::ck3_12004::PhysicalEntryWritebackDetourState12004
     g_physical_entry_writeback_12004{};
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+static xar::ck3_12004::ConceptionPairPassiveDetourStateV1 g_conception_pair_passive_12004{};
+#endif
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+static xar::ck3_12004::ConceptionPairProviderDetourState12004 g_conception_pair_provider_passive_12004{};
+#endif
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+static xar::ck3_12004::ConceptionSampleDetourState12004 g_conception_sample_passive_12004{};
+#endif
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -28381,6 +28399,45 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     // Journal capture needs the owned roots, so no stack province callback is
     // retained after this startup call returns.
     const auto bindings = BindBattleForQuery12004(base, sha);
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+    xar::ck3_12004::ConceptionPairPassiveInstallEnvironmentV1 natural_19_environment{};
+    natural_19_environment.primary_thread_suspended_proven = true;
+    natural_19_environment.bindings = xar::ck3_12004::BindConceptionPairPassiveImage12004(
+        base, sha, +[](void *context, const void *address, void *output,
+                       std::size_t size) noexcept {
+          return ReadMarriageCurrentProcessMemory(context,
+              reinterpret_cast<std::uintptr_t>(address), output, size);
+        });
+    if (!xar::ck3_12004::InstallConceptionPairPassiveObserver12004(
+            g_conception_pair_passive_12004, natural_19_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+    xar::ck3_12004::ConceptionPairProviderInstallEnvironment12004 natural_45_environment{};
+    natural_45_environment.primary_thread_suspended_proven = true;
+    natural_45_environment.bindings =
+        xar::ck3_12004::BindConceptionPairProviderImage12004(base, sha);
+    natural_45_environment.bindings.read_parent =
+        xar::ck3_12004::ReadConceptionPairParentScope12004;
+    natural_45_environment.bindings.child_return =
+        xar::ck3_12004::AttachConceptionPairProviderFacts12004;
+    if (!xar::ck3_12004::InstallConceptionPairProviderPassive12004(
+            g_conception_pair_provider_passive_12004, natural_45_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
+    xar::ck3_12004::ConceptionSampleInstallEnvironment12004 natural_18_environment{};
+    natural_18_environment.primary_thread_suspended_proven = true;
+    natural_18_environment.bindings =
+        xar::ck3_12004::BindConceptionSampleImage12004(base, sha);
+    natural_18_environment.bindings.read_parent =
+        xar::ck3_12004::ReadConceptionPairParentScope12004;
+    natural_18_environment.bindings.child_return =
+        xar::ck3_12004::AttachConceptionPairSampleFacts12004;
+    if (!xar::ck3_12004::InstallConceptionSamplePassive12004(
+            g_conception_sample_passive_12004, natural_18_environment, sha))
+      return FALSE;
+#endif
     xar::ck3_12004::ActualLossWriterJournalInstallEnvironmentV1 loss_environment{};
     loss_environment.bindings =
         xar::ck3_12004::BindActualLossWriterJournalImage12004(base, sha);
