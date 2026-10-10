@@ -70,3 +70,11 @@ ROOT在任务总线登记本卷协调者，并在实际独占byte lock临界区�
 已有占用超过默认102,389,285,273 B配额，因此登记**仅本机128 GiB**有限例外，owner为XenoAmess/ROOT，到2026-10-12T05:19:51.814083+00:00复核失效；后续继续缩减历史执行树，不自动续期。此例外只支持一轮Source06导出、三份缓存副本及R46 profile/存档/log峰值；不允许其他任务各自消费同一free或生成大型ETW全文。统一自动GC/预留器仍未实现，本次是实际串行人工协调。
 
 实际准入：[ADMISSION.actual.json](C:/workspace/ck3_lyd_runtime_20261004/r46-root-storage-admission-20261010-001/ADMISSION.actual.json)，3,782 B，SHA-256 `4f56699cd0234f3fadfbdb319eb5c199c44cba08a059791c8cc922d580791d62`。原容量报告87,243 B，SHA-256 `30b4949c64c69c8c4afddd9352b0f215d794eec862e84402c5ac9c7a95157652`；链接边界附记1,676 B，SHA-256 `a0702dd2a8e162a68b1c83da79cb8c67046fdb75a22844f4cf86fd5053409c91`。本节不改变跨机器默认参数。
+
+## 06:13 UTC：R46预留实际闭账
+
+R46现场CAS4378释放后，限定25组元数据计量无错误，已知留存逻辑量924,798,428 B。Source06/07复用既有index总量，不扫描native或重读缓存正文；后续小归档/记账增量另列，不冒充全盘同步清点或实际历史峰值。
+
+ROOT于06:13:56 UTC持原卷锁追加[CLOSED-RESERVATION](C:/workspace/ck3_lyd_runtime_20261004/r46-root-storage-admission-20261010-001/CLOSED-RESERVATION.actual.json)，3,042 B / `2166ecf90af0736dacfde648de96000106ecb368d01918fbff0e0adc3dfcf322`。原4 GiB峰值预留已关闭，remaining_reserved_peak_bytes=0；该值是结束后续写入额度，不能解释为4 GiB减留存量。闭账当次free626,476,986,368 B，实际物理分配/历史峰值保持UNKNOWN。
+
+缓存仍沿R44闭场起算到2026-10-17T03:03:44.013573Z，不因复制或prepare/allocate使用而续期；R46原始证据30天、未解问题有限保护7天，构建输入14天，到期按当前用途复核。没有新增删除或自动回收器。约0.94 MB的R46紧凑归档与导入副本单独计费；新的Source08或实机写入须重新登记预算，不能沿用已关闭预留。

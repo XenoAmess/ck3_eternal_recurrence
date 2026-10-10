@@ -1,0 +1,214 @@
+{
+  "schema": "lyd.r46.compact-actual-facts.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0046",
+  "status": "RED",
+  "phase": "saved-campaign-single-command-line-restore",
+  "error": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1: native gameplay step failed: application-main typed query failed or its snapshot changed; typed_query_failure_v1={\"executor_enter\":null,\"executor_exception\":{\"code\":0,\"image\":\"none\",\"rva\":null},\"executor_finish\":null,\"executor_typed_result\":null,\"final_equal\":null,\"final_read\":null,\"frame_stable\":null,\"query_type\":\"campaign\",\"stage\":\"wait\",\"typed_result\":null,\"wait_completed\":false,\"wait_result\":\"timeout_cancelled_before_execution\"}",
+  "cleanup_ok": true,
+  "managed_session_done": true,
+  "managed_session_thread_finished": true,
+  "independent_observer_exit": {
+    "at_utc": "2026-10-10T05:58:07.706177+00:00",
+    "elapsed_seconds": 299.2961681000015,
+    "pid": 11984,
+    "process_create_time": 1791611588.1719928,
+    "wait_result": 0,
+    "actual_exit_code": 1,
+    "independent_observer_handle": true,
+    "original_createprocess_handle": false,
+    "signals_sent": false,
+    "business_pass": false
+  },
+  "current_closeout": {
+    "at_utc": "2026-10-10T06:00:20.019057+00:00",
+    "ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "case_processes": [],
+    "expected_allocation_supervision": [
+      {
+        "create_time": 1791611349.8150773,
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-006/runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-008/prepared/prepared-case.json",
+          "--attempt",
+          "a08",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a08",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a07",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045\\release-command-001\\stdout.log"
+        ],
+        "name": "python.exe",
+        "pid": 17304
+      },
+      {
+        "create_time": 1791611349.700791,
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\root-record-command-20261010-001.py",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-root-case-allocate-20261010-001",
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-006/runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-008/prepared/prepared-case.json",
+          "--attempt",
+          "a08",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a08",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a07",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045\\release-command-001\\stdout.log"
+        ],
+        "name": "python.exe",
+        "pid": 17364
+      }
+    ],
+    "process_read_errors": [],
+    "control_files": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-008\\state\\control\\ck3.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-008\\state\\control\\unsafe-cleanup.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-008\\state\\control\\ck3.watchdog_error",
+        "exists": false
+      }
+    ],
+    "host_original_exit": {
+      "at_utc": "2026-10-10T05:58:09.031088+00:00",
+      "pid": 10012,
+      "returncode": 1,
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0046",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "independent_observer_handle_exit": {
+      "at_utc": "2026-10-10T05:58:07.706177+00:00",
+      "elapsed_seconds": 299.2961681000015,
+      "pid": 11984,
+      "process_create_time": 1791611588.1719928,
+      "wait_result": 0,
+      "actual_exit_code": 1,
+      "independent_observer_handle": true,
+      "original_createprocess_handle": false,
+      "signals_sent": false,
+      "business_pass": false
+    },
+    "historical_host_cleanup_ok": true,
+    "note": "Current resource closure only. Original public run/verify and retained OS/native normal-close results remain authoritative; no exit code or business result inferred."
+  },
+  "report_state_flags_by_original_path": {
+    "report.managed_session_done": true,
+    "report.managed_session_thread_finished": true,
+    "report.cleanup_ok": true
+  },
+  "release_command_stdout": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9720b57113507c02b91bb273103c45620f8b55cb"
+      },
+      "last_sequence": 4378,
+      "next_step": "",
+      "pid": 15036,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R46-actual-host-CK3-exit1-offline-reviewed-display-restored-keeper0",
+      "task_id": "common-acceptance-12004-20261010-a08",
+      "updated_at_utc": "2026-10-10T06:02:13.437048+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 4378,
+      "event_id": "e43a479687da4f5fa89edae837b91391",
+      "timestamp_utc": "2026-10-10T06:02:13.438991+00:00",
+      "kind": "completed",
+      "task_id": "common-acceptance-12004-20261010-a08",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R46-actual-host-CK3-exit1-offline-reviewed-display-restored-keeper0",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9720b57113507c02b91bb273103c45620f8b55cb"
+      }
+    }
+  },
+  "command_exit_codes_by_logical_path": {
+    "root-command/allocator/RESULT.actual.json": null,
+    "run/observer-command-001/RESULT.actual.json": null,
+    "run/release-command-003/RESULT.actual.json": null,
+    "run/run-command-001/RESULT.actual.json": null,
+    "run/verify-command-001/RESULT.actual.json": null
+  },
+  "actual_source_root": "C:\\csr7",
+  "runtime_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-006\\manifest.json",
+    "bytes": 5221,
+    "sha256": "ee5f7821fd66f6729193017bef32c56d9e810d5d996159ec11693aeae8e39bdb"
+  },
+  "runtime_source_commit": "e8562cc04fae188f73c59ed33215126bb8bca7ac",
+  "native_build_commit": "af20455212ed75000ba6136b3be308a9288cb06e",
+  "formal_or_product_PASS": false,
+  "business_credit": null,
+  "setup_history_loaded_is_not_final_setup_or_injection": true,
+  "diagnostic_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-startup-and-query-readonly-diagnostic-20261010-001",
+  "underlying_executor_nonentry_cause": "UNKNOWN unless supported by included diagnostic",
+  "historical_R45_or_cleanup_results_not_rewritten": true
+}

@@ -1,0 +1,8 @@
+{
+  "CRC": "PASS",
+  "unique_objects": 104,
+  "logical_entries": 135,
+  "all_object_bytes_SHA_exact": true,
+  "source_file_body_read_passes_for_archiving": 1,
+  "huge_inputs_body_reads": false
+}

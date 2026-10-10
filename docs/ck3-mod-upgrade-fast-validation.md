@@ -2,6 +2,8 @@
 
 ## 2026-10-10 可选着色器缓存复用
 
+LYD本机首次实际消费见[R46](ck3-native-ai/2026-10-10-r46-startup-query-red.md)：注入和暂停语义帧已取得，首campaign query执行前取消，业务未通过。后继启动顺序候选要求history-loaded与InGame两个完整日志行，不制造“最终Setup”标记；缓存核心只另外豁免runtime.py及专属延后注入测试两项启动控制源码，游戏/host/native/业务/配置保持绑定，旧seed须重新派生。该候选尚未实机验证。
+
 公共 prepare 支持机器共同 manifest 的 `profile_features.shader_cache_reuse=true`；默认关闭，产品或 case 不自行选择缓存版本。启用时，`--case-inputs` JSON 可提供 `shader_cache_seed={path,bytes,sha256}`，指向通过 `tools/ck3_mod_acceptance_graphics_cache.py` 的 `freeze_shader_cache_seed` library 函数生成的外置快照 manifest；该函数尚无独立 CLI。
 
 来源必须绑定实际闭场 run 的 frozen argv、prepared、runtime、host/native 报告、原进程退出和 keeper/CAS 释放。匹配键包含实际游戏 EXE、host/native、共同源码、全部业务文件及配置；仅规范化已核验的两个外层 descriptor 的 profile 路径。原始缓存不改写，新 profile 和 allocator 输入分别复制并校验声明缓存，独立于业务清单；容量预算计入全部副本，按[通用存储策略](storage-retention-policy.md)登记期限。

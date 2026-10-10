@@ -19,6 +19,9 @@ SPEC = importlib.util.spec_from_file_location('delayed_saved_host',
 HOST = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(HOST)
 MARKER = b'[21:29:31][D][gameapplication.cpp:635]: Setup completion (history loaded): 236.273023 seconds\n'
+IN_GAME = b"[21:28:05][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options\n"
+R46_HISTORY = b'[13:56:24][D][gameapplication.cpp:635]: Setup completion (history loaded): 65.360176 seconds\n'
+R46_IN_GAME = b"[13:56:31][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options\n"
 
 
 class RetainedProcess:
@@ -88,18 +91,42 @@ class DelayedInjectionTests(unittest.TestCase):
 
     def test_same_process_resumes_once_then_marker_allows_one_injection(self):
         def publish():
-            self.log.write_bytes(MARKER if self.clock >= .5 else b'End loading of history\n')
+            self.log.write_bytes(IN_GAME + MARKER if self.clock >= .5 else b'End loading of history\n')
         self.on_sleep = publish
         proof = self.run_delayed()
         self.assertEqual(self.events, ['resume', 'inject'])
         self.inject.assert_called_once()
         self.assertEqual(proof['target_ck3_pid'], 71)
         self.assertEqual(proof['text'], MARKER.decode().strip())
+        self.assertEqual(proof['in_game_text'], IN_GAME.decode().strip())
         self.assertFalse(proof['native_identity_verified'])
         self.assertFalse(proof['business_pass'])
         with self.assertRaisesRegex(AgentError, 'unresumed, uninjected'):
             self.run_delayed()
         self.assertEqual(self.events, ['resume', 'inject'])
+
+    def test_actual_r46_history_then_in_game_also_allows_one_injection(self):
+        self.log.write_bytes(R46_HISTORY + R46_IN_GAME)
+        os.utime(self.log, ns=(self.epoch + 1_000_000_000, self.epoch + 1_000_000_000))
+        proof = self.run_delayed()
+        self.assertEqual(self.events, ['resume', 'inject'])
+        self.inject.assert_called_once()
+        self.assertEqual(proof['text'], R46_HISTORY.decode().strip())
+        self.assertEqual(proof['in_game_text'], R46_IN_GAME.decode().strip())
+
+    def test_history_only_or_incomplete_in_game_preserves_deadline_without_injection(self):
+        for payload in (R46_HISTORY, R46_HISTORY + R46_IN_GAME.rstrip(b'\n')):
+            with self.subTest(payload=payload):
+                self.events = []
+                self.process = RetainedProcess(self.events)
+                self.clock = 0
+                self.log.write_bytes(payload)
+                os.utime(self.log, ns=(self.epoch + 1_000_000_000, self.epoch + 1_000_000_000))
+                with self.assertRaisesRegex(AgentError, 'original readiness deadline'):
+                    self.run_delayed(deadline=.5)
+                self.assertEqual(self.clock, .5)
+                self.inject.assert_not_called()
+                self.assertEqual(self.events, ['resume'])
 
     def test_missing_or_prior_epoch_marker_times_out_without_injection(self):
         for stale in (False, True):
@@ -107,7 +134,7 @@ class DelayedInjectionTests(unittest.TestCase):
                 self.process = RetainedProcess(self.events)
                 self.clock = 0
                 if stale:
-                    self.log.write_bytes(MARKER)
+                    self.log.write_bytes(IN_GAME + MARKER)
                     os.utime(self.log, ns=(self.epoch - 1_000_000_000, self.epoch - 1_000_000_000))
                 with self.assertRaisesRegex(AgentError, 'original readiness deadline'):
                     self.run_delayed(deadline=.5)
@@ -130,7 +157,7 @@ class DelayedInjectionTests(unittest.TestCase):
                 self.inject.assert_not_called()
 
     def test_lease_gate_cannot_extend_deadline_or_trigger_injection(self):
-        self.log.write_bytes(MARKER)
+        self.log.write_bytes(IN_GAME + MARKER)
         # Establish a fresh fixture independently of filesystem clock resolution.
         os.utime(self.log, ns=(self.epoch + 1_000_000_000, self.epoch + 1_000_000_000))
         gates = []

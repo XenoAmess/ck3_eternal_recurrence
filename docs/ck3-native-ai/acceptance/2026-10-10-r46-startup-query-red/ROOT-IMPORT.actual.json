@@ -1,0 +1,64 @@
+{
+  "at_utc": "2026-10-10T06:15:38.390142+00:00",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\docs\\ck3-native-ai\\2026-10-10-r46-startup-query-red.md",
+        "bytes": 3845,
+        "sha256": "0ef73d2d00b1d9c3c15dbf7d584970dd5cf875cad452c8d44a2c9a94f8aadb80"
+      },
+      "target": "docs\\ck3-native-ai\\2026-10-10-r46-startup-query-red.md"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\README.md",
+        "bytes": 1236,
+        "sha256": "e644b2d6b00f6adfda028512e29b45be565cf63cd22641489d263627a3d202f4"
+      },
+      "target": "docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\README.md"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\package-001\\INDEX.json",
+        "bytes": 134364,
+        "sha256": "178fb3f8357eb5a6f1950d4af6457c8004335cdcbd6fa12ec4f919e4c3ca3e8b"
+      },
+      "target": "docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\INDEX.json"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\package-001\\FACTS.actual.json",
+        "bytes": 8823,
+        "sha256": "1c253f2666208a21fc0a571046d2db4a50a40b72a45770a2f992712691fd4772"
+      },
+      "target": "docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\FACTS.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\package-001\\FACTS-COMMAND-EXIT.actual.json",
+        "bytes": 2118,
+        "sha256": "37bdeaa47643458a90ec4d8ca14e49cfafa515104c221ee6c9c7eef98d24b15e"
+      },
+      "target": "docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\FACTS-COMMAND-EXIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\package-001\\VALIDATION.actual.json",
+        "bytes": 195,
+        "sha256": "4c34888c22902cfe94d741e028c1d59e9583bcbf35a20387a1f4fcd9fcbfafc8"
+      },
+      "target": "docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\VALIDATION.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\package-001\\RAW-EVIDENCE.zip",
+        "bytes": 935110,
+        "sha256": "de0342c9a145036162ae0cb4deb44ebd6f738bedf8a3e08f8473e6000faebded"
+      },
+      "target": "docs\\ck3-native-ai\\acceptance\\2026-10-10-r46-startup-query-red\\RAW-EVIDENCE.zip"
+    }
+  ],
+  "archive_content_validation": "reused producer single actual CRC/member/bytes/SHA validation",
+  "original_large_body_rehashed": false,
+  "business_pass": false
+}

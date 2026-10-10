@@ -1,0 +1,47 @@
+{
+  "schema": "lyd.r46.command-exit-projection-correction.v1",
+  "at_utc": "2026-10-10T06:11:45.326343+00:00",
+  "original_facts_preserved": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-compact-archive-sourceonly-20261010-001\\package-001\\FACTS.actual.json",
+    "bytes": 8823,
+    "sha256": "1c253f2666208a21fc0a571046d2db4a50a40b72a45770a2f992712691fd4772"
+  },
+  "corrects_only": "command_exit_codes_by_logical_path: actual ck3-recorded-actual-command-v1 field is exit_code; original null returncode projection was incomplete",
+  "command_exit_codes_by_logical_path": {
+    "root-command/allocator/RESULT.actual.json": 0,
+    "run/observer-command-001/RESULT.actual.json": 0,
+    "run/release-command-003/RESULT.actual.json": 0,
+    "run/run-command-001/RESULT.actual.json": 2,
+    "run/verify-command-001/RESULT.actual.json": 2
+  },
+  "source_fields": [
+    {
+      "logical_path": "root-command/allocator/RESULT.actual.json",
+      "original_sha256": "707f0c1e1e89f02c1cbcc21fa0e33074905cefe713a0a63906ec7d95cfee078d",
+      "field": "exit_code"
+    },
+    {
+      "logical_path": "run/observer-command-001/RESULT.actual.json",
+      "original_sha256": "b1dfa28c175db655f05d2fabc0168a0405bae0c9a0568c8ab6b59ccc29eec502",
+      "field": "exit_code"
+    },
+    {
+      "logical_path": "run/release-command-003/RESULT.actual.json",
+      "original_sha256": "5b3609d8911839d5b77283cb6c39180ca375f05e842773dc8dca1359e25d0815",
+      "field": "exit_code"
+    },
+    {
+      "logical_path": "run/run-command-001/RESULT.actual.json",
+      "original_sha256": "b01fa54503226d3ccec2e4f0721905c75940b3d90042ec85431e1330864adf16",
+      "field": "exit_code"
+    },
+    {
+      "logical_path": "run/verify-command-001/RESULT.actual.json",
+      "original_sha256": "a3c41affc0ea7ba2c11ff72ff20f494704472f21cbf097bc5eb8d98159fd68b9",
+      "field": "exit_code"
+    }
+  ],
+  "underlying_original_receipts_or_old_status_changed": false,
+  "repack_or_full_validation_repeated": false,
+  "read_scope": "Five already verified compressed small command-result objects only; no original raw source read or large hash"
+}
