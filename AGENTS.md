@@ -1,5 +1,14 @@
 ﻿# 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 全部执行机器的存储时效与容量（2026-10-10 用户指令）
+
+- 用户指出所有资料都有时效性，过时的存档、原始证据，尤其大文件，也应纳入清理。不得仅因它属于历史、失败 attempt 或过程资产，就无限期保留全部文件。本条覆盖下文及旧交接中对已过期资料的默认永久保留要求；当前必要基线、活跃输入和待解决问题的关键证据仍须明确保护。
+- 回收按当前用途、后续引用、替代证据、期限和容量共同判断；不能仅凭目录叫 runtime/cache、文件较旧或场次失败就认定过期。保护项也应记录复核期限和继续保留理由，不能无期限续存。
+- 大文件优先评估：完整导出已有精确摘要且可以从保留原件重建时，优先回收派生副本；相同的不可变输入避免重复存储。删除后保留小型清单与原因，并如实标明旧原件已不可读取，不制造同名替代证据。
+- **所有执行机器、所有当前及未来工作包必须使用同一份 [通用存储策略](docs/storage-retention-policy.md) 与 [版本化参数](docs/storage-retention-policy.json)**；任务开始、重型写入前和闭场时执行其检查。机器只配置本机身份、获准根目录、卷映射、容量与系统增长预留，不另起一套永久保留或任意删除规则。不能把本机 `C:`、固定盘符或某次剩余容量写成跨机器前提。
+- 默认期限、到期判定、限期保护、预算不足时的停工边界和精确回收流程按通用策略执行。统一自动回收器、空间预留器尚未实现时，由执行者落实相同步骤和回执；不得声称已自动部署到其他机器，不得无工具就省略检查。新规则允许回收符合条件的项目过期资产，不授权删除个人文件、其他任务资产、在用游戏/依赖或不加区分地删除整棵目录。
+- [本机清点](docs/maintenance/storage-retention-2026-10-10.md)只作问题样本，不是其他机器的占用或可释放量证明。
+
 ## ie 研究隔离已获合回授权（2026-10-02 用户指令）
 
 - 用户明确要求升级本机 Steam 管理的 CK3，并把研究成果、视频分支及其他有价值的关联成果全部整合回 `master`。2026-09-30 的禁止接收后续 master / 禁止向 master 推送约束已在本任务中解除。
@@ -235,9 +244,9 @@ py mod_superman_qiang/tools/build_release.py --output <new-output> --git-tag sup
   的 composer 是项目提供的可 import callable，不属于 registry，也不得被工具链猜测或自动发现。
 - `ProjectConfig` 是可审阅的 checked-in 意图；每次 capture/render/audit attempt 必须创建独立 run/workdir，保存当时配置的
   精确字节快照。不得让后续配置修改重新解释旧证据，也不得把失败 attempt 改写成 GREEN。
-- **所有过程素材永久保留，默认不清理**：raw 录像/截图/音频、脚本、TTS 请求与返回、字幕、生成卡、章节段、concat 输入、
+- **过程素材按统一存储策略限期保留**：raw 录像/截图/音频、脚本、TTS 请求与返回、字幕、生成卡、章节段、concat 输入、
   中间编码、partial、失败 attempt、命令 argv、`stdout`/`stderr`、probe、timeline、evidence/audit/review 报告、sidecar、
-  manifest 历史和最终成片都属于过程资产。重跑使用新 run/workdir；不得为“收口”删除或覆盖旧素材。
+  manifest 历史和最终成片按用途分级，不因“过程资产”无限期占盘。重跑使用新 run/workdir；回收不得改写历史结果，原件删除后追加可用性及精确回执。未完成交付的必要素材须限期保护；完成后的原片和中间物按到期规则回收。
 - 自动 validation/audit/review package 只证明它声明并 hash 绑定的机器条件，**不等于人工按 1× 完整观看，也不等于 signoff**。
   人工签核必须发生在实际 1× 完整审阅之后，记录审阅人、结果、时间/说明，并绑定被审成片的精确 bytes + SHA-256；
   工具不得自行制造 approval。重新编码或替换任何字节后，旧人工签核自动不适用于新文件，必须重新审阅。
@@ -512,5 +521,5 @@ tools/.venv/Scripts/python.exe -B -X utf8 tools/ck3_mod_acceptance.py plan --run
 ## 全部未来mod验收的公共入口（2026-10-08永久规则）
 
 - 所有未来mod acceptance只从`tools/ck3_mod_acceptance.py`的`plan / prepare / allocate / preflight / run / verify`公共入口选用一份全局common runtime manifest及其本机路径映射。产品仅提供fixture、business case data与adapter，不自行选用或复制host/source/native版本；共享问题在共享层修一次。既有产品builder及发布前源码业务合同保持，旧runner/frozen仅保留底层实现和历史证据，不能作为未来新run分叉版本的入口。
-- 旧冻结输入、失败attempt与原证据永久保留。新run使用公共manifest绑定的版本；共同host/native对必要既有capability的实际qualification只做一次并复用，不按产品重复whole build/full matrix，也不因公共GREEN减少原产品业务要求。plan或adapter数据可消费不证明实际adapter可运行，pending能力如实保留。
+- 旧冻结输入、失败attempt与原证据按通用存储策略到期复核和回收；当前必要基线、活跃输入及关键未解决问题原件须有用途明确且有期限的保护，不再默认永久保留。回收不改写历史GREEN/RED/UNKNOWN，引用须准确标明现有原件可用性。新run使用公共manifest绑定的版本；共同host/native对必要既有capability的实际qualification只做一次并复用，不按产品重复whole build/full matrix，也不因公共GREEN减少原产品业务要求。plan或adapter数据可消费不证明实际adapter可运行，pending能力如实保留。
 - 公共入口记录各phase实际elapsed，区分共享资格、产品业务、GUI-only真实业务及退出/cleanup；导航ACK、正常退出、host GREEN、静态/plan不得授业务PASS。原预算与case合同按真实绑定记录，未来参数不追认旧失败。缓存继续只验实际Steam已发布cache文件exact formal match及CK3实际mounted/loaded，不重复缓存业务。实施边界见[mod升级提速与公共验收](docs/ck3-mod-upgrade-fast-validation.md)。
