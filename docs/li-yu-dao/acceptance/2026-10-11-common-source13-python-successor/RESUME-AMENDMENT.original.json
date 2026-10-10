@@ -1,0 +1,35 @@
+{
+  "schema": "source13-git-only-resume-amendment-v1",
+  "capacity_status": "ALLOC_BUDGET_APPROVED",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-007\\ADMISSION.actual.json",
+    "bytes": 6005,
+    "sha256": "02f3b67c1a2126a243728e9400919f78015969fd05377ea89a540ec0e2b25bf5"
+  },
+  "reviewed_producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-003\\produce_python_successor.py",
+    "bytes": 27009,
+    "sha256": "97a2334e4a8a0bd416b5e88a0d22091d2ebf37d203809585480027f4d3639f89"
+  },
+  "verified_git_partial": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-003\\GIT-PARTIAL-VERIFIED.actual.json",
+    "bytes": 3702,
+    "sha256": "76c5255d3afad8f6fda1404f64812bdf03e5aa35b8be45569e57aa4884cb821d"
+  },
+  "source_root": "C:/csr13",
+  "metadata_root": "C:/workspace/ck3-common-runtime/20261011-013",
+  "selected_pins": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-002\\SELECTED-PINS.actual.json",
+    "bytes": 2177,
+    "sha256": "3f228141ce46a8e6c3aba83f0a91a910e47094a4ca9eeaf241cf88724775415e"
+  },
+  "reservation_expires_at_utc": "2026-10-11T00:43:17.257291+00:00",
+  "total_reserved_peak_bytes": 201326592,
+  "existing_partial_logical_bytes": 8776738,
+  "unspent_reserved_peak_bytes": 192549854,
+  "current_project_usage_conservative_bytes": 134482252380,
+  "source_only_template_not_admission": false,
+  "ROOT_reviewed_at_utc": "2026-10-10T20:48:32.660362+00:00",
+  "original_reservation_or_quota_expiry_renewed": false,
+  "reason": "Actual external Git index was 8775200B, exceeding original8MiB sub-bound. Reuse completed Git phase;16MiB sub-bound, unchanged192MiB total, partial charged once."
+}

@@ -1,0 +1,86 @@
+{
+  "schema": "ck3-common007-bounded-metadata-measure-v1",
+  "at_utc": "2026-10-10T20:53:24.726103+00:00",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-007\\ADMISSION.actual.json",
+    "bytes": 6005,
+    "sha256": "02f3b67c1a2126a243728e9400919f78015969fd05377ea89a540ec0e2b25bf5"
+  },
+  "actual_successor": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 10486,
+    "sha256": "3052b8f523581fcb2341d3099bde35cb0dd0b129571fcb26b5d46ac4f140ffea"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\source-index.json",
+    "bytes": 1793164,
+    "sha256": "87e8b019f9be8af623637407c0d811f395d3b68cda2bbeed639dabfb9b2701e0"
+  },
+  "groups": [
+    {
+      "path": "C:\\csr13",
+      "files": 8741,
+      "logical_bytes": 147728174,
+      "basis": "Actual successor index bytepins inherited; current indexed regular-file metadata only."
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-013",
+      "files": 20,
+      "logical_bytes": 11926902,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-007",
+      "files": 3,
+      "logical_bytes": 9196,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-007",
+      "files": 3,
+      "logical_bytes": 1488,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-materialize-command-20261011-002",
+      "files": 3,
+      "logical_bytes": 2491,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-materialize-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 2882,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-bind-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 1813,
+      "basis": "Bounded metadata only; no body hash."
+    }
+  ],
+  "metadata_entries": 9172,
+  "metadata_elapsed_seconds": 1.8587827000010293,
+  "known_retained_logical_bytes": 159672946,
+  "allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "whole_project_logical_or_allocated_bytes_or_null": null,
+  "unenumerated_small_actual_bytes_or_null": null,
+  "unenumerated_small_upper_bound_bytes": 33554432,
+  "closing_outputs_actual_bytes_or_null": null,
+  "closing_outputs_upper_bound_bytes": 1048576,
+  "existing_git_partial_charged_once_inside_metadata_root": true,
+  "existing_git_partial_bytes_not_added_again": 8776738,
+  "full_source_payload_or_PE_or_save_body_hashing": false,
+  "focused_process_helper_source_pin_read": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "full_project_or_old_tree_scan": false,
+  "available_bytes_before": 620388990976,
+  "available_bytes_after": 620388995072,
+  "free_change_attributable_to_this_close_or_null": null,
+  "physical_deleted_bytes": 0
+}

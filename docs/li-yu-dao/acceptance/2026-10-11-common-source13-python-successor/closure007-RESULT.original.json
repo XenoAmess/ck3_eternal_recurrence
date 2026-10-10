@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-successor-sourceonly-20261011-007-008\\close_source007.py",
+    "--confirm-no-further-writes",
+    "--other-unspent-reservations-bytes",
+    "0",
+    "--successor-command-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source13-materialize-command-20261011-002/RESULT.actual.json",
+    "--additional-terminal-command-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source13-bind-command-20261011-001/RESULT.actual.json"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:53:22.414536+00:00",
+  "finished_at_utc": "2026-10-10T20:53:24.761491+00:00",
+  "exit_code": 0,
+  "actual_original_Popen_pid": 12392,
+  "actual_original_Popen_wait_returncode": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-command-20261011-007\\stdout.log",
+    "bytes": 781,
+    "sha256": "ba8d85cd7b4fb670174332b2fa2c1b5d83efc9e51adc4dc7acc8928f27cabef1"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-command-20261011-007\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

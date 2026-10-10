@@ -1,0 +1,123 @@
+{
+  "schema": "ck3-common-source12-python-successor-binding-lineage-v1",
+  "created_at_utc": "2026-10-10T20:52:59.088700+00:00",
+  "mixed_source_commit": "22cef1d93a81598935c6685ccef76d0a0c8d7bd7",
+  "single_parent_source12_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "selected_published_commit": "70e7c64d814c2ea9a58550f87ac735aa6cade26e",
+  "native_build_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "same_full_source_commit_as_native_build": false,
+  "actual_materialization_equality": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 10486,
+    "sha256": "3052b8f523581fcb2341d3099bde35cb0dd0b129571fcb26b5d46ac4f140ffea"
+  },
+  "producer_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-003\\produce_python_successor.py",
+    "bytes": 27009,
+    "sha256": "97a2334e4a8a0bd416b5e88a0d22091d2ebf37d203809585480027f4d3639f89"
+  },
+  "producer_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-003\\INDEX.actual.json",
+    "bytes": 5371,
+    "sha256": "de6d5ebcd4fd1d15fbc92b229b7a67d7357ec79049db396d26e63742d4788086"
+  },
+  "selected_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-002\\PLAN.actual.json",
+    "bytes": 12671,
+    "sha256": "6d2b367e414e666138fb87abf8c9da3d772081b958cb7520163fd85740eed09a"
+  },
+  "selected_pins": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-002\\SELECTED-PINS.actual.json",
+    "bytes": 2177,
+    "sha256": "3f228141ce46a8e6c3aba83f0a91a910e47094a4ca9eeaf241cf88724775415e"
+  },
+  "original_producer002": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-002\\produce_python_successor.py",
+    "bytes": 23730,
+    "sha256": "9c501d56dec7771d6af92e545aedf9ce7f3609af0a969a716d7b3c7f2008c417"
+  },
+  "original_producer002_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-002\\INDEX.actual.json",
+    "bytes": 5018,
+    "sha256": "c07a737b533eed7c2d82f1140243bdbbd6190b866041a9cc7865c61aaf0d29b3"
+  },
+  "original_failed_materialization": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-materialize-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1764,
+    "sha256": "a3a4a484ff616fc55143295d4cb7676670e71d3e4f09df44b3a1e559d9412ec8"
+  },
+  "actual_resume_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-materialize-command-20261011-002\\RESULT.actual.json",
+    "bytes": 2087,
+    "sha256": "cda30a1d1d0ce85de2c2db905930f91eb52be8d3aae0ed71fcad285fe24babad"
+  },
+  "original_capacity_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-007\\ADMISSION.actual.json",
+    "bytes": 6005,
+    "sha256": "02f3b67c1a2126a243728e9400919f78015969fd05377ea89a540ec0e2b25bf5"
+  },
+  "resume_amendment": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-007\\RESUME-AMENDMENT.actual.json",
+    "bytes": 1867,
+    "sha256": "92a281259df8b7b3c15a7a0b220753d1ac977cfd916c7b802860cd8c675d5943"
+  },
+  "verified_git_partial": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-003\\GIT-PARTIAL-VERIFIED.actual.json",
+    "bytes": 3702,
+    "sha256": "76c5255d3afad8f6fda1404f64812bdf03e5aa35b8be45569e57aa4884cb821d"
+  },
+  "resumed_git_only_partial": true,
+  "existing_git_partial_bytes": 8776738,
+  "existing_partial_charged_once": true,
+  "git_phase_reexecuted": false,
+  "object_store_bound_bytes": 16777216,
+  "unchanged_total_peak_bound_bytes": 201326592,
+  "original_reservation_expires_at_utc": "2026-10-11T00:43:17.257291+00:00",
+  "parent_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\manifest.json",
+    "bytes": 16491,
+    "sha256": "5f9fbfa3e08dc1c8494573673de87b6678241baf857d62b63126e00614542d90"
+  },
+  "parent_runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\runtime.local.json",
+    "bytes": 2015,
+    "sha256": "e2918cb160bb6c6bfbc8aac371f0a961ab3e7af859d5cef6fd5a2fbf2d7ac340"
+  },
+  "parent_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\SOURCE12-BIND.actual.json",
+    "bytes": 6767,
+    "sha256": "3a19ff7837d861610b7fe97b75621fb23ea3e5d0dea3f1046df46949c80218e0"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\source-index.json",
+    "bytes": 1793164,
+    "sha256": "87e8b019f9be8af623637407c0d811f395d3b68cda2bbeed639dabfb9b2701e0"
+  },
+  "native_source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\native-source-index.json",
+    "bytes": 1019737,
+    "sha256": "37d122346f1a1d76eb87bdc8e6db6af2dc4d8de77970a7c6b6d95d2981387397"
+  },
+  "native_entries_compared_as_metadata": 4868,
+  "native_entries_rehashed": 0,
+  "host_mcp_qualification_basis": "Exact original Source12 bytes, new origin paths and complete indexed equality; original qualification receipts preserved.",
+  "selected_eleven_paths_are_source_only": true,
+  "new_build_or_test_pass_claimed": false,
+  "TTL_copy_or_binding_renewal": false,
+  "new_live_or_business_credit": false,
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\manifest.json",
+    "bytes": 25159,
+    "sha256": "69312f885d1a234ee059934f283e6a774b291cdbbd85b0d9d8a5da1359f9574f"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\runtime.local.json",
+    "bytes": 2015,
+    "sha256": "26dfbb02b7627345a04645aa488a719d03618d9b68b58e97368a554ace0c82b9"
+  },
+  "all_capabilities_live_qualified": false,
+  "business_pass": false,
+  "native_artifact_or_native_source_bodies_hashed": false,
+  "original_expiry_or_cache_quota_renewed": false,
+  "next_required": "ROOT shared selection and fresh public preflight/run; B5 requires genuine closed B4. No new allocation or game action by binder."
+}

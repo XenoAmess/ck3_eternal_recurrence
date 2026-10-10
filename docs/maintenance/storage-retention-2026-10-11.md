@@ -46,3 +46,11 @@
 下一公共Python后继只需192MiB独立新预约，不能沿用已关闭006；后续实机另计容量。全机自动预约/自动GC仍未实现，规则已入库，当前执行为人工协调。
 
 本轮精简[闭账原件](../li-yu-dao/acceptance/2026-10-11-common-source12-native-runtime/storage-CLOSED-RESERVATION.original.json)与[测量原件](../li-yu-dao/acceptance/2026-10-11-common-source12-native-runtime/storage-MEASURE.original.json)已随[Source12实绩](../li-yu-dao/2026-10-11-common-source12-native-runtime.md)入库；完整大索引和构建输出继续外置限期保留。
+
+## 04:54 CST：Python后继007闭账、独立实机008准入
+
+007原192MiB预算内实际完成Source13冻结与公共绑定，限定新增保留 **159672946 B**，未来预约 **0 B**；原8MiB Git分项失败及3文件partial保留并复用，只计一次，总峰值与原期限不增。无重复native编译/复制或新cache seed。007闭账原件5549B / SHA-256 `4abebb315e92354795b2afb251478568bc525f44151d27097b1b31fa6e2f5bdc`；测量3344B / `b061f1607e6609abf2ffe4e0cf9a1416fb6c8362d64668d455c8e19ff718fe27`，位于 `C:/workspace/ck3_lyd_runtime_20261004/common-storage-admission-20261011-007/`。物理删除0B；未知小增量32MiB和闭账输出1MiB继续保守计入。
+
+下一I4公共CASE5已单独获得008 **2GiB**峰值准入，保守已有量加峰值 **136815235244 B**，低于原配额137438953472B，余623718228B；实际卷空闲620397649920B。008只覆盖本场inputs/prepared/state、新分配的run/keeper/profile和必要输出，不授source/native重建或第二份immutable seed。原始存档与metadata只引用，不新建源seed副本。公共prepare/plan/preflight实际exit0，尚未allocate/launch。
+
+008原件 `C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-008/ADMISSION.actual.json` 为6834B / `f3f1a8a67dfea35f5dbcac1333e9bea05708f7ef63af484891adbadf24236940`。原配额Oct12、Source12/13与native/cache复核期限均不续。实机结束后再按实际进程/keeper/CAS及有限新资产闭账；没有将预留额度当作物理回收。

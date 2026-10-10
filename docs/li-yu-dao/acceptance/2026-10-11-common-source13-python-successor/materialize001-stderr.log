@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source12-python-successor-sourceonly-20261011-002\produce_python_successor.py", line 354, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source12-python-successor-sourceonly-20261011-002\produce_python_successor.py", line 351, in main
+    plan(args) if args.plan_only else materialize(args)
+                                      ~~~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source12-python-successor-sourceonly-20261011-002\produce_python_successor.py", line 276, in materialize
+    require(external_git_bytes <= OBJECT_STORE_BOUND, 'External Git index/objects exceed declared8MiB bound')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source12-python-successor-sourceonly-20261011-002\produce_python_successor.py", line 63, in require
+    raise RuntimeError(message)
+RuntimeError: External Git index/objects exceed declared8MiB bound

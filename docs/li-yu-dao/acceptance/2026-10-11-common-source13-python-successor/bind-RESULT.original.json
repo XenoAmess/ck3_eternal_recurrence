@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source13-python-binding-sourceonly-20261011-002/bind_python_successor.py",
+    "--successor-result",
+    "C:/workspace/ck3-common-runtime/20261011-013/PYTHON-SUCCESSOR.actual.json",
+    "--successor-result-sha256",
+    "3052b8f523581fcb2341d3099bde35cb0dd0b129571fcb26b5d46ac4f140ffea",
+    "--expected-source-commit",
+    "22cef1d93a81598935c6685ccef76d0a0c8d7bd7"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:52:58.704351+00:00",
+  "finished_at_utc": "2026-10-10T20:52:59.120222+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-bind-command-20261011-001\\stdout.log",
+    "bytes": 585,
+    "sha256": "a4e03809fe20730e8b8bb445fde8dd55700692680e08c2935cb330f42b96f9f4"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source13-bind-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

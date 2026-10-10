@@ -1,0 +1,96 @@
+{
+  "schema": "source13-existing-git-only-verified-v1",
+  "at_utc": "2026-10-10T20:45:40.526026+00:00",
+  "metadata_root": "C:\\workspace\\ck3-common-runtime\\20261011-013",
+  "source_root": "C:/csr13",
+  "source_root_exists": false,
+  "derived_source_commit": "22cef1d93a81598935c6685ccef76d0a0c8d7bd7",
+  "tree": "4d836efdfeb7f9279ea573f46aceb706585debcc",
+  "single_parent": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "exact_changed_paths": [
+    "promo/ck3_native_war_ai/integration/screen_bus_lease.py",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json",
+    "tools/ck3_mod_acceptance_client.py",
+    "tools/ck3_mod_acceptance_keeper.py",
+    "tools/ck3_mod_acceptance_products.json",
+    "tools/ck3_mod_acceptance_queue.py",
+    "tools/test_ck3_mod_acceptance_queue_inprocess.py",
+    "tools/test_lyd_i3b_formal_b5_adapter.py"
+  ],
+  "selected_pins": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-successor-sourceonly-20261011-002\\SELECTED-PINS.actual.json",
+    "bytes": 2177,
+    "sha256": "3f228141ce46a8e6c3aba83f0a91a910e47094a4ca9eeaf241cf88724775415e"
+  },
+  "files": [
+    {
+      "relative_path": "freeze.index",
+      "bytes": 8775200,
+      "mtime_ns": 1791665014627395700
+    },
+    {
+      "relative_path": "git-objects/22/cef1d93a81598935c6685ccef76d0a0c8d7bd7",
+      "bytes": 266,
+      "mtime_ns": 1791665014716827500,
+      "sha256": "4e3bf665c98bcc30b94451fa8bdda309c3a8c188b1fc45bea0c784e62ff21a55"
+    },
+    {
+      "relative_path": "git-objects/4d/836efdfeb7f9279ea573f46aceb706585debcc",
+      "bytes": 1272,
+      "mtime_ns": 1791665014583436600,
+      "sha256": "7fcf27f748de55fa47c3c144c74213e63403f8eef3c17ff1c27f021950d59f43"
+    }
+  ],
+  "existing_git_partial_bytes": 8776738,
+  "object_store_bound_bytes": 16777216,
+  "read_only_git_commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "show",
+        "-s",
+        "--format=%T%n%P",
+        "22cef1d93a81598935c6685ccef76d0a0c8d7bd7"
+      ],
+      "exit_code": 0,
+      "stdout": "4d836efdfeb7f9279ea573f46aceb706585debcc\n05717072b70d4925f10b3d523b6663d2db89d791\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "diff",
+        "--name-only",
+        "05717072b70d4925f10b3d523b6663d2db89d791",
+        "4d836efdfeb7f9279ea573f46aceb706585debcc"
+      ],
+      "exit_code": 0,
+      "stdout": "promo/ck3_native_war_ai/integration/screen_bus_lease.py\ntools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json\ntools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py\ntools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json\ntools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json\ntools/ck3_mod_acceptance_client.py\ntools/ck3_mod_acceptance_keeper.py\ntools/ck3_mod_acceptance_products.json\ntools/ck3_mod_acceptance_queue.py\ntools/test_ck3_mod_acceptance_queue_inprocess.py\ntools/test_lyd_i3b_formal_b5_adapter.py\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "diff",
+        "--cached",
+        "--name-only",
+        "4d836efdfeb7f9279ea573f46aceb706585debcc"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "index_large_file_hash_performed": false,
+  "git_creation_repeated": false,
+  "source_copy_performed": false
+}
