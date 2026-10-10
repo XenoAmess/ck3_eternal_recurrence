@@ -730,3 +730,94 @@ can already support ordinary paired-family continuation; an exact monthly
 check deadline and a complete candidate-to-active-pregnancy transition are not
 yet provided. This source increment does not alter that continuation policy,
 spawn a new test/build, perform a live call or grant M7/G2 completion.
+
+## Actual pair trait exclusion closed (2026-10-10)
+
+The next bounded source acquisition has completed. The earlier proposed
+`[0x28A6280,0x28A63C1)`321B predicate is no longer an unknown Boolean:
+Root captured exactly these321B once, and the existing decoded result was
+interpreted once without rereading the664B caller. The actual source is
+[PAIR-EXCLUSION-PREDICATE321.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/root-pair-exclusion321-first01/PAIR-EXCLUSION-PREDICATE321.json);
+the branch/input ledger is
+[PAIR-EXCLUSION321-FIELDS.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/manager-owner/PAIR-EXCLUSION321-FIELDS.json).
+
+The receiver is the actual Character pointer in RCX, preserved as RBX at
+`0x28A6286`. It first calls the database provider at`0x28A6289`, then reads
+the signed32 count at Character`+0x104` and the8-byte ID-array pointer at
+`+0xF8`, and walks signed32 definition IDs with stride4.
+The independently qualified Character trait collectors already use these
+same fields, and the actual4 religion and phase-character bindings identify
+`0x89E5B0` as TraitDB. Thus this source branch is a trait-definition test,
+rather than a pregnancy-record or calendar query.
+
+At`0x28A6289` the code obtains that database through`0x89E5B0`. A nonnegative
+ID below the database's signed32 count at`+0x5C` resolves through its pointer
+array at`+0x50`, stride8. Invalid IDs use the actual fallback pointer loaded
+from`0x5D1E318` at`0x28A636C`; the native fallback is not silently treated as
+an absent trait. At`0x28A6396` the code reads the definition DWORD at`+0x4A4`,
+then tests bit3 (`SHR ECX,3; TEST CL,1`).
+
+Any resolved definition with bit3 set produces AL=1 at`0x28A63B9`, followed
+by RET at`0x28A63C0`. A signed count of zero or less, or a completed list
+without a matching bit, produces AL=0 at`0x28A63B1`, RET`0x28A63B8`.
+The already closed caller's two sites (`0x2929BDA`/`0x2929C04`) reject the
+pair if either Character returns true, before the provider, multiplier,
+comparison and candidate-state writes. The exact stock/authored flag name
+for bit3 is not established. The concrete behavior is nonetheless closed:
+it is the trait exclusion used by this actual native pair-conception branch.
+It is distinct from the existing fertility gate's separately held bit5.
+
+```mermaid
+flowchart TD
+    Pair["Actual pair2929B40: first and second Character"] --> Each["Call actual28A6280 for each Character"]
+    Each --> Rows["Character F8 / signed104: trait IDs"]
+    Rows --> Empty{"count <= 0?"}
+    Empty -->|yes| False["AL0: no trait exclusion"]
+    Empty -->|no| DB["TraitDB89E5B0; entries50 / count5C"]
+    DB --> Resolve["Valid signed ID -> pointer; invalid -> native fallback5D1E318"]
+    Resolve --> Flag{"Definition DWORD4A4 bit3 set?"}
+    Flag -->|yes| True["AL1: exclude pair"]
+    Flag -->|no more IDs| False
+    Flag -->|next ID| Resolve
+    False --> Continue["Both false required to continue pair branch"]
+    True -.-> Name["UNKNOWN exact authored trait flag label"]
+    Continue -.-> Other["Separate extended288 gate; provider; comparison; pending-state transition"]
+```
+
+The original predicate also contains existing database synchronization around
+the lookup (database`+0xEE0` state and`+0xEA0` lock operations). The actual
+bit read follows release of that synchronization. The321B body has no
+null-to-false branch for the array, database, selected definition or fallback
+pointer; an observer must not invent such a native result. The provider's
+own body has not been expanded, so its initialization behavior is not claimed.
+This is not
+an active pregnancy-manager mutation, and it is not a basis for invoking the
+original predicate as a read-only bridge getter. A future observer can reuse
+the existing qualified trait-ID/database field reader and preserve its read
+failure semantics. An independently useful result would be a per-role
+`native_conception_trait_exclusion` Boolean for the real heir and current
+spouse, without claiming complete conception eligibility, current pregnancy,
+or a scheduled check time. A lawful empty trait list is known false; an
+unreadable database/definition is a separate unavailable result, not false.
+
+The finite follow-up inventory of12 previously held source/header/pin files
+found no semantic owner or consumer for extended`+0x288`, `+0x3E8` or
+`+0x3F0`. Its only`+0x288` match was the already known raw zero gate; the two
+pending-state slots had no additional matches. No further section scan,
+generic-callee recursion or new field hook followed that miss. The exact
+remaining lifecycle dependency is an actual consuming/clearing callsite for
+the pending slots, or a retained incoming caller of`0x2929B40` which supplies
+the monthly dispatch context. No such bounded entry is claimed by this
+inventory.
+
+Root's unique321B acquisition ran from03:23:52.172087Z to03:23:52.174965Z;
+the elapsed0.002878s is derived from those timestamps. Its wrapper ran
+03:23:51.383090Z to03:23:52.276610Z (derived0.893520s). This adds one frozen
+EXE read and321B to the previously recorded159,408,401B, giving159,408,722B
+for this round's necessary native source acquisitions. There were no new
+hashes, PE parses, Game/SDK/process reads or worker EXE reads.
+
+This increment is research/source closure. Tests, build and runtime FIRST
+are NOTRUN; the current active-pregnancy false observations and empty child
+roster remain unchanged. No new pregnancy, birth, natural succession, M7 or
+G2 completion is credited.
