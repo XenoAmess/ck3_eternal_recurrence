@@ -112,7 +112,13 @@ class GraphicsCacheTests(unittest.TestCase):
         exe = root / 'game/binaries/ck3.exe'
         exe.parent.mkdir(parents=True)
         exe.write_bytes(b'synthetic-identical-game-exe')
-        core = {'ck3_autonomous_player/src/runtime.py': cache._signature(cache._pin(Path(paths['host'])))}
+        core = {
+            'ck3_autonomous_player/src/runtime.py': cache._signature(cache._pin(Path(paths['host']))),
+            'ck3_autonomous_player/src/xar_autoplayer/runtime.py':
+                cache._signature(cache._pin(Path(paths['host']))),
+            'ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py':
+                cache._signature(cache._pin(Path(paths['host']))),
+        }
         native = {'ck3_autonomous_player/native_bridge/src/bridge.cpp': cache._signature(cache._pin(Path(paths['dll'])))}
         if target:
             core['tools/ck3_mod_acceptance_graphics_cache.py'] = cache._signature(cache._pin(cache.__file__))
@@ -286,7 +292,30 @@ class GraphicsCacheTests(unittest.TestCase):
                 self.assertFalse((output / 'graphics-cache-preparation.json').exists())
                 self.assertFalse((selection.state_dir / 'profile/shadercache').exists())
 
-    def test_source06_only_four_prepare_paths_may_differ(self):
+    def test_runtime_launch_control_only_source_change_keeps_exact_graphics_key(self):
+        relatives = frozenset({
+            'ck3_autonomous_player/src/xar_autoplayer/runtime.py',
+            'ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py',
+        })
+        self.assertEqual(cache.LAUNCH_CONTROL_ONLY_PATHS, relatives)
+        seed = self.seed()
+        selection, output = self.target()
+        before = cache._runtime_key(selection.manifest, selection.runtime, target=True)
+        old_index_pin = dict(selection.manifest['source_index'])
+        index_path = Path(selection.runtime['paths']['source_index'])
+        index = cache._read(index_path)
+        for relative in relatives:
+            index['files'][relative] = {'bytes': index['files'][relative]['bytes'] + 1, 'sha256': 'b' * 64}
+        row = write(index_path, index)
+        selection.manifest['source_index'] = {'path_key': 'source_index', **cache._signature(row)}
+        self.assertNotEqual(selection.manifest['source_index'], old_index_pin)
+        self.assertEqual(cache._runtime_key(selection.manifest, selection.runtime, target=True), before)
+        graphics = self.prepare(selection, output, seed)
+        self.assertEqual(graphics['cache_key_sha256'], cache._read(seed['path'])['cache_key_sha256'])
+        self.assertIs(graphics['business_pass'], False)
+        cache.validate_prepared_graphics(selection)
+
+    def test_source_change_outside_exact_launch_control_path_is_rejected(self):
         seed = self.seed()
         selection, output = self.target()
         index_path = Path(selection.runtime['paths']['source_index'])

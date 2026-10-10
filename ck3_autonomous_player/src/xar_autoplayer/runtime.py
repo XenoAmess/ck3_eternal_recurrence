@@ -2737,8 +2737,10 @@ def _resume_then_inject_after_saved_load(
     require_live()
     _resume_with_native_bridge(process, None, before_process_create=before_process_create)
     log_path = (profile_dir / "logs" / "debug.log").resolve()
-    marker = re.compile(rb"^\[\d{2}:\d{2}:\d{2}\]\[D\]\[gameapplication\.cpp:\d+\]: "
-                        rb"Setup completion \(history loaded\):")
+    marker = re.compile(rb"\[\d{2}:\d{2}:\d{2}\]\[D\]\[gameapplication\.cpp:\d+\]: "
+                        rb"Setup completion \(history loaded\): \d+\.\d+ seconds")
+    in_game_marker = re.compile(rb"\[\d{2}:\d{2}:\d{2}\]\[D\]\[gameapplication\.cpp:\d+\]: "
+                                rb"Setting idler 'In Game' with init options")
     while True:
         require_live()
         try:
@@ -2747,14 +2749,21 @@ def _resume_then_inject_after_saved_load(
                 payload = stream.read() if stat.st_mtime_ns >= log_epoch_ns else b""
         except FileNotFoundError:
             payload = b""
-        matched = next(((n, line) for n, line in enumerate(payload.splitlines(), 1)
-                        if marker.match(line)), None)
-        if matched is not None:
+        # The real R46 prefix ended before In Game; R38 logged the two
+        # stages in the opposite order. Require both complete current-epoch
+        # lines, without treating either log line as native/business proof.
+        lines = [(n, line.rstrip(b"\r\n"))
+                 for n, line in enumerate(payload.splitlines(keepends=True), 1)
+                 if line.endswith(b"\n")]
+        matched = next(((n, line) for n, line in lines if marker.fullmatch(line)), None)
+        in_game = next(((n, line) for n, line in lines if in_game_marker.fullmatch(line)), None)
+        if matched is not None and in_game is not None:
             observation = {
                 "log_path": str(log_path), "log_epoch_ns": log_epoch_ns,
                 "log_mtime_ns": stat.st_mtime_ns, "bytes": len(payload),
                 "sha256": hashlib.sha256(payload).hexdigest(),
                 "line": matched[0], "text": matched[1].decode("utf-8"),
+                "in_game_line": in_game[0], "in_game_text": in_game[1].decode("utf-8"),
                 "observed_at": datetime.now(timezone.utc).isoformat(),
                 "target_ck3_pid": process.pid, "native_identity_verified": False,
                 "business_pass": False,

@@ -17,6 +17,11 @@ PREPARE_ONLY_PATHS = frozenset({
     'tools/ck3_mod_acceptance.py', 'tools/ck3_mod_acceptance_allocate.py',
     'tools/ck3_mod_acceptance_graphics_cache.py', 'tools/test_ck3_mod_acceptance_graphics_cache.py',
 })
+# Launch control and its focused regression test do not change graphics or business inputs.
+LAUNCH_CONTROL_ONLY_PATHS = frozenset({
+    'ck3_autonomous_player/src/xar_autoplayer/runtime.py',
+    'ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py',
+})
 CACHE_NAME = re.compile(r'dx11/(?:ps_5_0|vs_5_0)/[0-9A-Fa-f]{16}\.(?:bin|scache)')
 SHA = re.compile(r'[0-9a-f]{64}')
 
@@ -172,7 +177,7 @@ def _runtime_key(manifest, runtime, *, target=False):
             'native': {key: _signature(manifest['native'][key]) for key in ('dll', 'injector')},
             'host_features': manifest.get('host_features', {}),
             'source_core_sha256': _digest({key: _signature(row) for key, row in source['files'].items()
-                                         if key not in PREPARE_ONLY_PATHS}),
+                                         if key not in PREPARE_ONLY_PATHS and key not in LAUNCH_CONTROL_ONLY_PATHS}),
             'native_files_sha256': _digest(native['files']), 'prepare_only_paths': sorted(PREPARE_ONLY_PATHS)}
 
 
