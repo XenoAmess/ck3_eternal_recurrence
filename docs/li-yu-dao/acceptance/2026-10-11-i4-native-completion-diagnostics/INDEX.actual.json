@@ -1,0 +1,81 @@
+{
+  "schema": "lyd.native-completion-diagnostics-original-import-v1",
+  "at_utc": "2026-10-10T19:22:51.922987+00:00",
+  "files": [
+    {
+      "file": "source-binding.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-root-source-binding-20261011-002.actual.json",
+      "bytes": 2277,
+      "sha256": "cf6b18e006402b2ff0b8fffd93cec4016a4767c90de72d2da4eaa34d1141ba93"
+    },
+    {
+      "file": "storage-admission005.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-focused-build-storage-admission-20261011-005\\ADMISSION.actual.json",
+      "bytes": 8134,
+      "sha256": "3076c055ba3856873b7b8c8cf4886d234985e04e05fe50948c38cbb950986fca"
+    },
+    {
+      "file": "storage-closed005.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-focused-build-storage-admission-20261011-005\\CLOSED-RESERVATION.actual.json",
+      "bytes": 4243,
+      "sha256": "dfaac23b2870d71b09d8efde955ebc35b679f1d826b13ec2c7be64a4be5e7e5b"
+    },
+    {
+      "file": "build-command.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1625,
+      "sha256": "59cf123413badd1b740eeefabced63ab957411157d4c4f0ea81383d6c157b0e6"
+    },
+    {
+      "file": "native-msvc-result.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\native-msvc-result.json",
+      "bytes": 2004,
+      "sha256": "b6173cafaf64d8f914c1f9d4a368c3c3d9865b614b313e3861ef57261d608959"
+    },
+    {
+      "file": "defender-settings-failed.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\defender-exe-exclusions\\20261010T191915Z-4a01d956\\receipt.json",
+      "bytes": 1946,
+      "sha256": "8e7da219657b5831c1d2f99eb4773785961282f1cf255a218884ddf567dd750c"
+    },
+    {
+      "file": "focused-test-command.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-test-command-20261011-001\\RESULT.actual.json",
+      "bytes": 869,
+      "sha256": "4977db38d556c6f5b788d65de2212276c9f8371b2c682cda1b4095b7ea4c28a0"
+    },
+    {
+      "file": "focused-test.stdout.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-test-command-20261011-001\\stdout.log",
+      "bytes": 92,
+      "sha256": "4572a7a3e6db0228a575d0dbc6ac87e6c7f375d11b1e531fd2c5ebafec8d297e"
+    },
+    {
+      "file": "serializer-binding-command.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-diagnostics-serializer-binding-check-20261011-001\\RESULT.actual.json",
+      "bytes": 904,
+      "sha256": "38a732a38ebf835a228ab4bfdb250f2a46bb7ae0414caf5b39d5777c10ee131b"
+    },
+    {
+      "file": "serializer-binding.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-diagnostics-serializer-binding-check-20261011-001\\stdout.log",
+      "bytes": 189,
+      "sha256": "f76d0e503b67faf8991646f6e0a2a99e91c0fef1cdaada242b45932e053d7308"
+    },
+    {
+      "file": "common-native-readonly-INDEX.original.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-common-native-qualification-readonly-20261011-001\\INDEX.json",
+      "bytes": 991,
+      "sha256": "d0517fe1e1266fd3cc9452f1a6ad074bab1f15703629fcde3115fdb4d7b05dc4"
+    },
+    {
+      "file": "common-native-readonly-REPORT.original.md",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-common-native-qualification-readonly-20261011-001\\REPORT.zh.md",
+      "bytes": 7815,
+      "sha256": "f0afcb1ffb601192b0bc625238fb4e215a9dd9ea898402937fbb2d9761788260"
+    }
+  ],
+  "raw_bytes": 31089,
+  "PE_or_SAVE_copied": false,
+  "historical_R53_RED_unchanged": true
+}

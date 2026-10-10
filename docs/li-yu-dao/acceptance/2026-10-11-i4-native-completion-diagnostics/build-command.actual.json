@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/run_native_msvc.py",
+    "--build-dir",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-keyed-completion-focused-build-20261011-001",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "3",
+    "--target",
+    "xar_ck3_ingame_decision_outcome_contract_v1_test",
+    "--cmake-define",
+    "BUILD_TESTING=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON",
+    "--configure",
+    "--build"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T19:18:43.377999+00:00",
+  "finished_at_utc": "2026-10-10T19:19:15.532567+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-command-20261011-001\\stdout.log",
+    "bytes": 7935,
+    "sha256": "7f433ca0b426d79c930c6b1256b459e19b7013b84349521da20e05c631a2542a"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

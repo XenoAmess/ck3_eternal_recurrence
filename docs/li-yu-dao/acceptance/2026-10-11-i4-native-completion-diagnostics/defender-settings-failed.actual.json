@@ -1,0 +1,43 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "status": "settings_failed",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "before": [],
+  "after": [],
+  "calls": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+      "call_error_type": "com_error"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe",
+      "size": 104960,
+      "sha256": "fc5d283351a6a08f1bf7eac1ad438aa2046658145c65b5af60861f7f88d934f9",
+      "target": "xar_ck3_ingame_decision_outcome_contract_v1_test",
+      "target_id": "xar_ck3_ingame_decision_outcome_contract_v1_test::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "settings_success_is_runtime_trust": false,
+  "exclusion_types_written": [
+    "ExclusionPath exact files"
+  ],
+  "manifest_sha256": "6b77dfc46c0bb7825cd0d16ba5f8d41631bf62d66a1f04d9c94326c9fe7adb6e",
+  "admin_token": true,
+  "readback_visibility": "same administrative token and WMI client for before/after",
+  "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "error_type": "com_error",
+  "error_stage": "Add-invocation",
+  "verified_requested_paths": [],
+  "missing_requested_paths": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe"
+  ],
+  "observed_prior_settings_preserved": true,
+  "partial_mutation": false
+}

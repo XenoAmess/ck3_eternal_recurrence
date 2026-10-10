@@ -8969,7 +8969,8 @@ endif()
 # Outcome invariants are synthetic DTO tests and never start or attach CK3.
 if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test
-    tests/ingame_decision_outcome_contract_v1_test.cpp src/protocol.cpp)
+    tests/ingame_decision_outcome_contract_v1_test.cpp
+    tests/keyed_query_completion_diagnostics_v1_test.cpp src/protocol.cpp)
   target_include_directories(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE include)
   target_compile_features(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE cxx_std_20)
   if(MSVC)

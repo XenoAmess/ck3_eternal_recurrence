@@ -430,6 +430,24 @@ std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &v) {
     text("model_read_pass",v.model_read_pass);text("model_failed_stage",v.model_failed_stage);
     number("model_observed_pointer",v.model_observed_pointer);number("model_expected_pointer",v.model_expected_pointer);
   }
+  if(v.completion_diagnostics.present){
+    const auto &d=v.completion_diagnostics;
+    s+=",\"completion_diagnostics\":{\"schema\":\"ck3-keyed-query-completion-diagnostics-v1\"";
+    boolean("snapshot_read_succeeded",d.snapshot_read_succeeded);
+    const auto optional_boolean=[&](const char *key,const std::optional<bool> &value){
+      s+=",\"";s+=key;s+="\":";s+=value.has_value()?(*value?"true":"false"):"null";
+    };
+    optional_boolean("snapshot_equal",d.snapshot_equal);optional_boolean("state_revision_equal",d.state_revision_equal);
+    number("expected_state_revision",d.expected_state_revision);
+    s+=",\"compared_state_revision\":";s+=d.compared_state_revision.has_value()?std::to_string(*d.compared_state_revision):"null";
+    number("post_guard_state_revision",d.post_guard_state_revision);
+    text("first_failed_predicate",d.first_failed_predicate);
+    s+=",\"changed_snapshot_fields\":[";
+    for(std::size_t i=0;i<d.changed_snapshot_fields.size();++i){
+      if(i)s+=',';s+='"';s+=d.changed_snapshot_fields[i];s+='"';
+    }
+    s+="]}";
+  }
   text("decision_key",v.decision_key);text("detail_decision_key",v.detail_decision_key);text("unavailable_reason",v.unavailable_reason);return s+'}';
 }
 bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,

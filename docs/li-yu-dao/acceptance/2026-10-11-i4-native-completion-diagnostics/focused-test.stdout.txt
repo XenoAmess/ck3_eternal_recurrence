@@ -1,0 +1,1 @@
+PASS: typed branch validation and controlled post-dispatch DTO invariants; no CK3 attached

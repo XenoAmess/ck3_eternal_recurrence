@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-focused-native-build-source-binding-v1",
+  "at_utc": "2026-10-10T19:14:28.605060+00:00",
+  "base_head": "4112d13e1134a032398278c509377ab36e8af4b1",
+  "source_root": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge",
+  "files": {
+    "CMakeLists.txt": {
+      "bytes": 438677,
+      "sha256": "ef797290959a3d525f7994d9b9fbcf56537dd06c57d9758c3db9a65cce8e9407"
+    },
+    "tests/ingame_decision_outcome_contract_v1_test.cpp": {
+      "bytes": 5121,
+      "sha256": "c4ac47fe58893a296246b6e4685bf79c304bc793dcdc27a357f8d13c1f496c0c"
+    },
+    "tests/keyed_query_completion_diagnostics_v1_test.cpp": {
+      "bytes": 16342,
+      "sha256": "f0e91fd5ec74c62ad83007f490fe909110e2438efac5a92d19897637025c7bf0"
+    },
+    "src/protocol.cpp": {
+      "bytes": 7853,
+      "sha256": "64854f1ed50609d5212db58eae01ad9858e3c232b44953e0474c940781dbef2d"
+    },
+    "include/xar_bridge/keyed_query_completion_diagnostics_v1.hpp": {
+      "bytes": 4495,
+      "sha256": "82d1116170207f1629ee379c74a56f3e4ea1600b821583b75dd3f2a2ac14614e"
+    },
+    "include/xar_bridge/ingame_decision_item_v1.hpp": {
+      "bytes": 4567,
+      "sha256": "c990b8900219578910677175aae4ce3d450fe3b16df7708cf4a28ac1fb05792c"
+    },
+    "include/xar_bridge/game_contract.hpp": {
+      "bytes": 174096,
+      "sha256": "b7eebe5de4a1a2b2e6cd9ccc256292817142fd946f39d35a91e7e02e3c79baae"
+    },
+    "src/ingame_decision_item_v1.cpp": {
+      "bytes": 55175,
+      "sha256": "da0fcbe025ef1b409941378700e1b0434b504ffd9710c1bf288ebc9141116511"
+    },
+    "src/bridge.cpp": {
+      "bytes": 1505881,
+      "sha256": "a1bf777d69c74a9649343c71d6ca258a3a91b5dfd32f69ad3bcafb5f999f8974"
+    }
+  },
+  "source_status": "reviewed_diagnostics_candidate_dirty_before_commit",
+  "tests_executed": false,
+  "live_qualification": false,
+  "previous_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-root-source-binding-20261011-001.actual.json",
+    "bytes": 1829,
+    "sha256": "9cb45edf4ebe5b3308bd94cb38338c4349c3fa8a0be7c5cd37577544a42ea1b7"
+  },
+  "root_review_test_changes": [
+    "Parenthesize numeric_limits::max for transitive Windows max macro",
+    "Check observed refusal outside the injected catch to prevent swallowed assertion"
+  ]
+}

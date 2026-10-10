@@ -1,0 +1,28 @@
+{
+  "schema": "lyd.common-native-next-qualification.readonly.v1",
+  "status": "SOURCE_ONLY_NO_BUILD_OR_RUNTIME_QUALIFICATION",
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-common-native-qualification-readonly-20261011-001\\REPORT.zh.md",
+    "bytes": 7815,
+    "sha256": "f0afcb1ffb601192b0bc625238fb4e215a9dd9ea898402937fbb2d9761788260"
+  },
+  "source_baseline_from_ROOT": "4112d13",
+  "O11_runtime": {
+    "path": "C:/workspace/ck3-common-runtime/20261010-011/runtime.local.json",
+    "bytes": 2018,
+    "sha256": "fdd544259d250ecc3e9c961903f191b5f1ef1da7fb5217dbd62f65d13bd8c557"
+  },
+  "G2_provider_in_MAIN": true,
+  "G4_provider_in_MAIN": true,
+  "G2_registered_in_Csr11": false,
+  "G4_registered_in_Csr11": false,
+  "new_source": null,
+  "new_build": null,
+  "new_build_peak_bytes": null,
+  "new_native": null,
+  "new_runtime": null,
+  "new_live_qualification": null,
+  "tests_executed": false,
+  "B5_tests_repeated": false,
+  "MAIN_or_Git_actions": false
+}

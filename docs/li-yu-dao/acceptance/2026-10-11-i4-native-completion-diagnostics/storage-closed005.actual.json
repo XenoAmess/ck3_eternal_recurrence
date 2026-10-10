@@ -1,0 +1,92 @@
+{
+  "schema": "ck3-focused-native-reservation-closure-v1",
+  "at_utc": "2026-10-10T19:22:02.983857+00:00",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "reservation_id": "lyd-focused-keyed-completion-128MiB-20261011-005",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-focused-build-storage-admission-20261011-005\\ADMISSION.actual.json",
+    "bytes": 8134,
+    "sha256": "3076c055ba3856873b7b8c8cf4886d234985e04e05fe50948c38cbb950986fca"
+  },
+  "actual_original_commands": {
+    "build": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1625,
+      "sha256": "59cf123413badd1b740eeefabced63ab957411157d4c4f0ea81383d6c157b0e6"
+    },
+    "test": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-test-command-20261011-001\\RESULT.actual.json",
+      "bytes": 869,
+      "sha256": "4977db38d556c6f5b788d65de2212276c9f8371b2c682cda1b4095b7ea4c28a0"
+    },
+    "serializer": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-diagnostics-serializer-binding-check-20261011-001\\RESULT.actual.json",
+      "bytes": 904,
+      "sha256": "38a732a38ebf835a228ab4bfdb250f2a46bb7ae0414caf5b39d5777c10ee131b"
+    }
+  },
+  "compile_succeeded": true,
+  "focused_test_exit_code": 0,
+  "serializer_binding_exit_code": 0,
+  "build_wrapper_exit_code": 1,
+  "defender_registration_status": "settings_failed_pending",
+  "native_build_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\native-msvc-result.json",
+    "bytes": 2004,
+    "sha256": "b6173cafaf64d8f914c1f9d4a368c3c3d9865b614b313e3861ef57261d608959"
+  },
+  "defender_failed_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001\\defender-exe-exclusions\\20261010T191915Z-4a01d956\\receipt.json",
+    "bytes": 1946,
+    "sha256": "8e7da219657b5831c1d2f99eb4773785961282f1cf255a218884ddf567dd750c"
+  },
+  "live_qualification": false,
+  "business_qualification": false,
+  "remaining_reserved_peak_bytes": 0,
+  "measured_groups": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-20261011-001",
+      "files": 618,
+      "logical_bytes": 17410258
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-build-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 9560
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-test-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 961
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-diagnostics-serializer-binding-check-20261011-001",
+      "files": 3,
+      "logical_bytes": 1093
+    }
+  ],
+  "measured_retained_logical_bytes": 17421872,
+  "metadata_entries": 1792,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "unenumerated_small_actual_bytes_or_null": null,
+  "unenumerated_small_upper_bound_bytes": 33554432,
+  "measurement_scope": "Named focused build and three original command receipts only; no project census or body hashes.",
+  "available_bytes_after": 621144788992,
+  "effective_project_quota_bytes": 137438953472,
+  "quota_override_unchanged": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "build_review_at_utc": "2026-10-24T19:18:28.014438+00:00",
+  "raw_evidence_review_at_utc": "2026-11-09T19:18:28.014438+00:00",
+  "compact_record_review_at_utc": "2027-04-08T19:18:28.014438+00:00",
+  "automatic_renewal": false,
+  "physical_cleanup_bytes": 0,
+  "automatic_deletion": false
+}

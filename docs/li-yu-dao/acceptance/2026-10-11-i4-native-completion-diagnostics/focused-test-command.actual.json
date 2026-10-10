@@ -1,0 +1,20 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-keyed-completion-focused-build-20261011-001/xar_ck3_ingame_decision_outcome_contract_v1_test.exe"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T19:20:43.388739+00:00",
+  "finished_at_utc": "2026-10-10T19:20:43.470979+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-test-command-20261011-001\\stdout.log",
+    "bytes": 92,
+    "sha256": "4572a7a3e6db0228a575d0dbc6ac87e6c7f375d11b1e531fd2c5ebafec8d297e"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-keyed-completion-focused-test-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

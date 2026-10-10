@@ -32,3 +32,5 @@
 [实际闭场与清理记录](../li-yu-dao/2026-10-11-i4-r53-native-binding-refusal.md)及[最终可用性回执](../li-yu-dao/acceptance/2026-10-11-i4-natural-r53/cache-retirement-final.actual.json)：只删除已闭场R52原shadercache的3740个同字节重复文件，逻辑量146942031B，API分配量之和155353904B。每批≤1000，原件与保留seed均以实际持有句柄核SHA后删除，最终原manifest路径全部缺失且目标剩余文件0；未递归删除目录。旧mutable payload现在不可读，保留immutable seed及R53输入，不改写R52业务RED。两个preclaim新鲜租约拒绝原样保留，四个实际批次均成功。当前seed仍按原Oct17期限复核，大ledger最晚Nov9复核、精简回执180天复核，没有自动续期。
 
 预约004已在原卷协调锁内按实际host/keeper等待和CAS释放闭账，未来写入预约剩余0。限定CASE4/R53/a15、新seed与指定小回执范围保留逻辑量1056211427B；额外未枚举小增量actual=null，保守上界32MiB，不冒充整个项目总占用。物理分配量与历史峰值未知，闭账时卷空闲621170180096B；并发空闲变化不全部归因于清理。Source11/O11/native/原campaign seed未重计；缓存Oct17及配额Oct12原期限未续。通用策略仍1.0.0，其他机器未运行的清理没有被标为已执行。
+
+03:22 CST，[focused预约005](../li-yu-dao/acceptance/2026-10-11-i4-native-completion-diagnostics/storage-closed005.actual.json)实际闭账。峰值预约128MiB仅供3TU定向编译、EXE和回执，无source export或完整DLL复制；限定build和3个命令目录保留逻辑量17421872B、1792项metadata，未来预约0、物理清理0。基数沿用004保守占用+实际保留+32MiB未知小增量上界，没有抵扣缓存删除；原缓存和配额期限不续。新build按策略Oct24复核。编译及测试通过，Defender设置失败独立保留；自动预约/GC仍未实现。

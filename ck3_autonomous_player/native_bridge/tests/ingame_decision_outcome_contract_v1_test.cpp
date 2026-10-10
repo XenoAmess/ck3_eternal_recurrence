@@ -3,7 +3,9 @@
 #include <cassert>
 #include <iostream>
 using namespace xar::ck3_11906;
+void RunKeyedQueryCompletionDiagnosticsFocusedV1();
 int main(){
+  RunKeyedQueryCompletionDiagnosticsFocusedV1();
   assert(IngameDecisionOutcomeRequestValidV1("event_window","lyd.010"));
   assert(IngameDecisionOutcomeRequestValidV1("decision_closed",""));
   for(auto invalid:{"","lyd",".010","lyd.","lyd.010.extra","lyd.0\"10","lyd.0/10"})

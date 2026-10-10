@@ -18013,9 +18013,23 @@ void RunConnectedSession(
                   waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
                 if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
                   xar::game::Snapshot completion{};
-                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision) {
+                  bool completion_read_ok=false,completion_snapshot_equal=false,completion_revision_equal=false;
+                  std::uint64_t completion_compared_revision=0;
+                  // Preserve original order, short-circuiting and single native read.
+                  if(!(completion_read_ok=xar::game::ReadSnapshot(game,completion))||
+                      !(completion_snapshot_equal=(completion==current))||
+                      !(completion_revision_equal=((completion_compared_revision=state_revision)==expected_revision))) {
                     query.ingame_decision_item.result.available=false;query.ingame_decision_item.result.frame_verified=false;
                     query.ingame_decision_item.result.unavailable_reason="pipe_completion_keyed_query_binding_changed";
+                    try {
+                      query.ingame_decision_item.result.completion_diagnostics=
+                          xar::ck3_11906::CaptureKeyedQueryCompletionFailureV1(
+                              completion_read_ok,completion_snapshot_equal,completion_revision_equal,
+                              current,completion,expected_revision,completion_compared_revision,state_revision);
+                    } catch(...) {
+                      // A failed diagnostic must never bypass the original rejection.
+                      query.ingame_decision_item.result.completion_diagnostics.present=false;
+                    }
                   }
                   response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
                   response+=request_id;response+="\",\"ok\":true,\"result\":";

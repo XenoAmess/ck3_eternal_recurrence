@@ -83,6 +83,14 @@ jobs:
         run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
       - name: Test isolated native army route producer without CK3
         run: python -X utf8 tools/check_native_army_routes_ci.py --build-dir "%RUNNER_TEMP%\native-army-route-ci"
+      - name: Test keyed query completion diagnostics without CK3
+        run: |
+          python -B -X utf8 tools/check_keyed_query_completion_test_source.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-decision-completion-ci" --configuration Release --jobs 3 --target xar_ck3_ingame_decision_outcome_contract_v1_test --cmake-define BUILD_TESTING=ON --cmake-define XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=ON --cmake-define XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=ON --cmake-define XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=ON --cmake-define XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON --cmake-define XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON --configure --build
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          "%RUNNER_TEMP%\native-decision-completion-ci\xar_ck3_ingame_decision_outcome_contract_v1_test.exe"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test strict army route read-status contract
         run: |
           python -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
