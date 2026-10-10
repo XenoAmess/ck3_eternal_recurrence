@@ -1,0 +1,112 @@
+{
+  "schema": "ck3.two-existing-runs-ci-tracking-state.v1",
+  "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+  "started_at_utc": "2026-10-10T22:07:43.674480+00:00",
+  "observations": [
+    {
+      "workflow": "Official Runner CI",
+      "run_id": 38090128909,
+      "observed_at_utc": "2026-10-10T22:07:44.433662+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-001-38090128909.QUERY.actual.json",
+      "actual_run": {
+        "conclusion": null,
+        "created_at": "2026-10-10T22:05:54Z",
+        "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909",
+        "id": 38090128909,
+        "name": "Official Runner CI",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T22:05:54Z",
+        "status": "in_progress",
+        "updated_at": "2026-10-10T22:05:56Z",
+        "workflow_id": 336785267
+      }
+    },
+    {
+      "workflow": "Linear history",
+      "run_id": 38090128899,
+      "observed_at_utc": "2026-10-10T22:07:45.187901+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.QUERY.actual.json",
+      "actual_run": {
+        "conclusion": "success",
+        "created_at": "2026-10-10T22:05:54Z",
+        "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128899",
+        "id": 38090128899,
+        "name": "Linear history",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T22:05:54Z",
+        "status": "completed",
+        "updated_at": "2026-10-10T22:06:47Z",
+        "workflow_id": 377165366
+      }
+    },
+    {
+      "workflow": "Official Runner CI",
+      "run_id": 38090128909,
+      "observed_at_utc": "2026-10-10T22:09:02.012490+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-003-38090128909.QUERY.actual.json",
+      "actual_run": {
+        "conclusion": null,
+        "created_at": "2026-10-10T22:05:54Z",
+        "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909",
+        "id": 38090128909,
+        "name": "Official Runner CI",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T22:05:54Z",
+        "status": "in_progress",
+        "updated_at": "2026-10-10T22:05:56Z",
+        "workflow_id": 336785267
+      }
+    },
+    {
+      "workflow": "Official Runner CI",
+      "run_id": 38090128909,
+      "observed_at_utc": "2026-10-10T22:10:09.177729+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-004-38090128909.QUERY.actual.json",
+      "actual_run": {
+        "conclusion": "failure",
+        "created_at": "2026-10-10T22:05:54Z",
+        "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909",
+        "id": 38090128909,
+        "name": "Official Runner CI",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T22:05:54Z",
+        "status": "completed",
+        "updated_at": "2026-10-10T22:09:43Z",
+        "workflow_id": 336785267
+      }
+    }
+  ],
+  "actual_runs": {
+    "Official Runner CI": {
+      "conclusion": "failure",
+      "created_at": "2026-10-10T22:05:54Z",
+      "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909",
+      "id": 38090128909,
+      "name": "Official Runner CI",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:05:54Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:09:43Z",
+      "workflow_id": 336785267
+    },
+    "Linear history": {
+      "conclusion": "success",
+      "created_at": "2026-10-10T22:05:54Z",
+      "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128899",
+      "id": 38090128899,
+      "name": "Linear history",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:05:54Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:06:47Z",
+      "workflow_id": 377165366
+    }
+  },
+  "query_count": 4
+}

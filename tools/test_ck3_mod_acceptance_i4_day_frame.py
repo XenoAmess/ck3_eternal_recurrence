@@ -55,6 +55,7 @@ class Client:
         self.manifest = {'game': {'version': 'test-build', 'exe_sha256': 'a' * 64}}
         self._binding = None
         self.snapshot_count, self.plans, self.proofs = 0, [], []
+        self.model_revisions = []
 
     def snapshot(self):
         self.snapshot_count += 1
@@ -65,8 +66,13 @@ class Client:
         rows = []
         for step in steps:
             if step['tool'] == 'ck3_query_ingame_decision_item_v1':
-                if step['args']['expected_revision'] != self.current['revision']:
-                    raise ValueError('Wrong explicit public revision')
+                if step.get('bind_previous_revision') is True:
+                    expected_revision = rows[-1]['after_snapshot']['revision']
+                else:
+                    expected_revision = step['args']['expected_revision']
+                if expected_revision != self.current['revision']:
+                    raise ValueError('Wrong public revision')
+                self.model_revisions.append(expected_revision)
                 result = model(self.current)
             else:
                 if step['tool'] != 'ck3_inspect_gui_window_tree_v1':
@@ -89,9 +95,11 @@ class DayFrameReuse(unittest.TestCase):
         self.assertIs(front, row['after_snapshot'])
         proof = adapter.observe_decision(client, {'decision_key': KEY}, 1, front_frame=front)
         self.assertEqual(client.snapshot_count, 0)
-        self.assertEqual([len(plan) for plan in client.plans], [2, 1])
+        self.assertEqual([len(plan) for plan in client.plans], [3])
         self.assertEqual(client.plans[0][0]['args']['expected_revision'], 9)
-        self.assertEqual(client.plans[1][0]['args']['expected_revision'], 11)
+        self.assertIs(client.plans[0][2]['bind_previous_revision'], True)
+        self.assertNotIn('expected_revision', client.plans[0][2]['args'])
+        self.assertEqual(client.model_revisions, [9, 11])
         self.assertTrue(all(step['fresh_revision'] is False for plan in client.plans for step in plan))
         self.assertFalse(proof['decision_executed'])
         self.assertFalse(proof['confirm_enabled'])

@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128899",
+    "--jq",
+    "{id,workflow_id,name,head_sha,status,conclusion,html_url,updated_at,created_at,run_started_at,run_attempt}"
+  ],
+  "started_at_utc": "2026-10-10T22:07:44.436638+00:00",
+  "finished_at_utc": "2026-10-10T22:07:45.187901+00:00",
+  "exit_code": 0,
+  "error": null,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.stdout.json",
+    "bytes": 383,
+    "sha256": "22af57eba136390aed2f27ee64ce935d0dadb113924b0cfe04ccb7560e86951f"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "schema": "ck3.exact-head-existing-ci-terminal-tracking.v1",
+  "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+  "tracking_started_at_utc": "2026-10-10T22:07:43.674480+00:00",
+  "final_observed_at_utc": "2026-10-10T22:12:09.168261+00:00",
+  "all_terminal": true,
+  "actual_runs": {
+    "Official Runner CI": {
+      "conclusion": "failure",
+      "created_at": "2026-10-10T22:05:54Z",
+      "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909",
+      "id": 38090128909,
+      "name": "Official Runner CI",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:05:54Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:09:43Z",
+      "workflow_id": 336785267
+    },
+    "Linear history": {
+      "conclusion": "success",
+      "created_at": "2026-10-10T22:05:54Z",
+      "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128899",
+      "id": 38090128899,
+      "name": "Linear history",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:05:54Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:06:47Z",
+      "workflow_id": 377165366
+    }
+  },
+  "metadata_query_count": 4,
+  "last_observations": {
+    "Official Runner CI": {
+      "workflow": "Official Runner CI",
+      "run_id": 38090128909,
+      "observed_at_utc": "2026-10-10T22:10:09.177729+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-004-38090128909.QUERY.actual.json",
+      "actual_run": {
+        "conclusion": "failure",
+        "created_at": "2026-10-10T22:05:54Z",
+        "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909",
+        "id": 38090128909,
+        "name": "Official Runner CI",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T22:05:54Z",
+        "status": "completed",
+        "updated_at": "2026-10-10T22:09:43Z",
+        "workflow_id": 336785267
+      }
+    },
+    "Linear history": {
+      "workflow": "Linear history",
+      "run_id": 38090128899,
+      "observed_at_utc": "2026-10-10T22:07:45.187901+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.QUERY.actual.json",
+      "actual_run": {
+        "conclusion": "success",
+        "created_at": "2026-10-10T22:05:54Z",
+        "head_sha": "2f77206cecd94a684ff274dc20939e5a74eab994",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128899",
+        "id": 38090128899,
+        "name": "Linear history",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T22:05:54Z",
+        "status": "completed",
+        "updated_at": "2026-10-10T22:06:47Z",
+        "workflow_id": 377165366
+      }
+    }
+  },
+  "no_ci_rerun_new_head_tests_build_game_mcp_or_main_git_mutation": true,
+  "runtime_or_business_qualification": false,
+  "pending_at_bound_is_not_failure_or_success": true,
+  "actual_first_failure": {
+    "job_id": 114324685442,
+    "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090128909/job/114324685442",
+    "failed_step": {
+      "completed_at": "2026-10-10T22:09:39Z",
+      "conclusion": "failure",
+      "name": "Test shared CK3 acceptance without installed CK3",
+      "number": 34,
+      "started_at": "2026-10-10T22:09:36Z",
+      "status": "completed"
+    },
+    "first_error": {
+      "original_line": 190,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5059168Z ERROR: test_daily_front_uses_actual_row_snapshot_not_old_result_revision (__main__.DayFrameReuse.test_daily_front_uses_actual_row_snapshot_not_old_result_revision)"
+    },
+    "first_exception": {
+      "original_line": 200,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067930Z KeyError: 'expected_revision'"
+    },
+    "trace_source_lines": [
+      {
+        "original_line": 191,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5059657Z ----------------------------------------------------------------------"
+      },
+      {
+        "original_line": 192,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5059874Z Traceback (most recent call last):"
+      },
+      {
+        "original_line": 193,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5065338Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py\", line 90, in test_daily_front_uses_actual_row_snapshot_not_old_result_revision"
+      },
+      {
+        "original_line": 194,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5065915Z     proof = adapter.observe_decision(client, {'decision_key': KEY}, 1, front_frame=front)"
+      },
+      {
+        "original_line": 195,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5066387Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py\", line 208, in observe_decision"
+      },
+      {
+        "original_line": 196,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5066834Z     rows = client.execute_plan(steps, prefix + '-readonly-observation')"
+      },
+      {
+        "original_line": 197,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067221Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py\", line 68, in execute_plan"
+      },
+      {
+        "original_line": 198,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067586Z     if step['args']['expected_revision'] != self.current['revision']:"
+      },
+      {
+        "original_line": 199,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067780Z        ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^"
+      }
+    ],
+    "actual_test_summary": [
+      {
+        "original_line": 217,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073831Z Ran 6 tests in 0.002s"
+      },
+      {
+        "original_line": 219,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073963Z FAILED (errors=2)"
+      }
+    ],
+    "evidence_windows": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\FAILURE-WINDOWS.actual.json",
+      "bytes": 8709,
+      "sha256": "d5e7cf74176526da409c811351e417eb0fe6e995e52ef1479697b7f0fcd114f9"
+    },
+    "raw_failed_step_command_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-step.QUERY.actual.json",
+      "bytes": 989,
+      "sha256": "2c214ca1e13dfcf87615e4ddba16b82b018a5d2b236da3494fe4cbfd508d0ebf"
+    },
+    "raw_failed_step_archive": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-step-raw.zip",
+      "bytes": 4761,
+      "sha256": "8b2e8b4bf786e27c3b490747d4d901197269db42fd9e1a9936db0a5a1dce345c"
+    },
+    "boundary": "Actual first error occurs in the test FakeClient expected_revision lookup. No test, production fix or live causality claim is made by this read-only investigation."
+  },
+  "failed_jobs_metadata_queries": 1,
+  "failed_step_log_commands": 1,
+  "total_GitHub_read_commands": 6
+}

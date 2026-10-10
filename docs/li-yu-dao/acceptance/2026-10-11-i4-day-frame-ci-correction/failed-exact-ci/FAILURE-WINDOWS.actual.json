@@ -1,0 +1,177 @@
+{
+  "schema": "ck3.original-failed-step-line-windows.v1",
+  "total_original_lines": 220,
+  "first_failure_marker_original_line": 190,
+  "lines": [
+    {
+      "original_line": 187,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.4379455Z OK"
+    },
+    {
+      "original_line": 188,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5058194Z E.E..."
+    },
+    {
+      "original_line": 189,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5058575Z ======================================================================"
+    },
+    {
+      "original_line": 190,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5059168Z ERROR: test_daily_front_uses_actual_row_snapshot_not_old_result_revision (__main__.DayFrameReuse.test_daily_front_uses_actual_row_snapshot_not_old_result_revision)"
+    },
+    {
+      "original_line": 191,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5059657Z ----------------------------------------------------------------------"
+    },
+    {
+      "original_line": 192,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5059874Z Traceback (most recent call last):"
+    },
+    {
+      "original_line": 193,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5065338Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py\", line 90, in test_daily_front_uses_actual_row_snapshot_not_old_result_revision"
+    },
+    {
+      "original_line": 194,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5065915Z     proof = adapter.observe_decision(client, {'decision_key': KEY}, 1, front_frame=front)"
+    },
+    {
+      "original_line": 195,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5066387Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py\", line 208, in observe_decision"
+    },
+    {
+      "original_line": 196,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5066834Z     rows = client.execute_plan(steps, prefix + '-readonly-observation')"
+    },
+    {
+      "original_line": 197,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067221Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py\", line 68, in execute_plan"
+    },
+    {
+      "original_line": 198,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067586Z     if step['args']['expected_revision'] != self.current['revision']:"
+    },
+    {
+      "original_line": 199,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067780Z        ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^"
+    },
+    {
+      "original_line": 200,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5067930Z KeyError: 'expected_revision'"
+    },
+    {
+      "original_line": 201,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5068017Z "
+    },
+    {
+      "original_line": 202,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5068085Z ======================================================================"
+    },
+    {
+      "original_line": 203,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5068463Z ERROR: test_first_observation_keeps_original_snapshot (__main__.DayFrameReuse.test_first_observation_keeps_original_snapshot)"
+    },
+    {
+      "original_line": 204,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5069074Z ----------------------------------------------------------------------"
+    },
+    {
+      "original_line": 205,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5069407Z Traceback (most recent call last):"
+    },
+    {
+      "original_line": 206,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5070108Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py\", line 101, in test_first_observation_keeps_original_snapshot"
+    },
+    {
+      "original_line": 207,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5070708Z     adapter.observe_decision(client, {'decision_key': KEY}, 0)"
+    },
+    {
+      "original_line": 208,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5070946Z     ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
+    {
+      "original_line": 209,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5071361Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py\", line 208, in observe_decision"
+    },
+    {
+      "original_line": 210,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5072274Z     rows = client.execute_plan(steps, prefix + '-readonly-observation')"
+    },
+    {
+      "original_line": 211,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5072690Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py\", line 68, in execute_plan"
+    },
+    {
+      "original_line": 212,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073087Z     if step['args']['expected_revision'] != self.current['revision']:"
+    },
+    {
+      "original_line": 213,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073301Z        ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^"
+    },
+    {
+      "original_line": 214,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073460Z KeyError: 'expected_revision'"
+    },
+    {
+      "original_line": 215,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073552Z "
+    },
+    {
+      "original_line": 216,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073641Z ----------------------------------------------------------------------"
+    },
+    {
+      "original_line": 217,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073831Z Ran 6 tests in 0.002s"
+    },
+    {
+      "original_line": 218,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073916Z "
+    },
+    {
+      "original_line": 219,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5073963Z FAILED (errors=2)"
+    },
+    {
+      "original_line": 220,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:09:39.5170689Z ##[error]Process completed with exit code 1."
+    }
+  ],
+  "raw_output_identity_and_archive": {
+    "argv": [
+      "gh",
+      "run",
+      "view",
+      "38090128909",
+      "--repo",
+      "XenoAmess/ck3_eternal_recurrence",
+      "--job",
+      "114324685442",
+      "--log-failed"
+    ],
+    "started_at_utc": "2026-10-10T22:11:22.093082+00:00",
+    "finished_at_utc": "2026-10-10T22:11:25.498445+00:00",
+    "exit_code": 0,
+    "raw_command_output": [
+      {
+        "zip_member": "failed-step.stdout.log",
+        "bytes": 36454,
+        "sha256": "bf83c4a797a1af40376a5c4b585f282eef0e17b78393e870073f960563c6b656"
+      },
+      {
+        "zip_member": "failed-step.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "archive": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-step-raw.zip",
+      "bytes": 4761,
+      "sha256": "8b2e8b4bf786e27c3b490747d4d901197269db42fd9e1a9936db0a5a1dce345c"
+    },
+    "CRC_and_member_bytes_readback": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "38090128909",
+    "--repo",
+    "XenoAmess/ck3_eternal_recurrence",
+    "--job",
+    "114324685442",
+    "--log-failed"
+  ],
+  "started_at_utc": "2026-10-10T22:11:22.093082+00:00",
+  "finished_at_utc": "2026-10-10T22:11:25.498445+00:00",
+  "exit_code": 0,
+  "raw_command_output": [
+    {
+      "zip_member": "failed-step.stdout.log",
+      "bytes": 36454,
+      "sha256": "bf83c4a797a1af40376a5c4b585f282eef0e17b78393e870073f960563c6b656"
+    },
+    {
+      "zip_member": "failed-step.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "archive": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-step-raw.zip",
+    "bytes": 4761,
+    "sha256": "8b2e8b4bf786e27c3b490747d4d901197269db42fd9e1a9936db0a5a1dce345c"
+  },
+  "CRC_and_member_bytes_readback": true
+}

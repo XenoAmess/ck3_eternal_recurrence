@@ -1,0 +1,7 @@
+test_daily_front_uses_actual_row_snapshot_not_old_result_revision (__main__.DayFrameReuse.test_daily_front_uses_actual_row_snapshot_not_old_result_revision) ... ok
+test_first_observation_keeps_original_snapshot (__main__.DayFrameReuse.test_first_observation_keeps_original_snapshot) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+OK

@@ -1,0 +1,123 @@
+{
+  "schema": "ck3.exact-ci-terminal-readonly-index.v1",
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_2f77206ce_ci_terminal_readonly_20261011_001.py",
+    "bytes": 7588,
+    "sha256": "9330082e80d8ba6ea59cd9c579b439010c9fb13b63412c27ffe66e14e2312d9c"
+  },
+  "failure_diagnostic_producers": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_2f77206ce_failed_jobs_readonly_20261011_001.py",
+      "bytes": 2087,
+      "sha256": "cb65c46a73660990ad66133ce523c906ee68ace9d9749b638518551aaa2d50da"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_2f77206ce_failed_step_readonly_20261011_001.py",
+      "bytes": 3050,
+      "sha256": "a10c251919edacf5669f0f2c5faf9b9744540b7837f247e360dae811828233f5"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-jobs.QUERY.actual.json",
+      "bytes": 986,
+      "sha256": "f849df8c0d3750019f7c53df21f6542ad5da032a9d22f606c4a7d7172bb0f0e1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-jobs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-jobs.stdout.json",
+      "bytes": 542,
+      "sha256": "52f87cfc7b6f38f0c7cad797686b98dc865546247df9cb6012dd1596f881ba0a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-step-raw.zip",
+      "bytes": 4761,
+      "sha256": "8b2e8b4bf786e27c3b490747d4d901197269db42fd9e1a9936db0a5a1dce345c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\failed-step.QUERY.actual.json",
+      "bytes": 989,
+      "sha256": "2c214ca1e13dfcf87615e4ddba16b82b018a5d2b236da3494fe4cbfd508d0ebf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\FAILURE-WINDOWS.actual.json",
+      "bytes": 8709,
+      "sha256": "d5e7cf74176526da409c811351e417eb0fe6e995e52ef1479697b7f0fcd114f9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-001-38090128909.QUERY.actual.json",
+      "bytes": 931,
+      "sha256": "c5905137f769a0325178fcd558a794b6a7dc7fb67b1d7fa6208ecd80ece3c2d2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-001-38090128909.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-001-38090128909.stdout.json",
+      "bytes": 384,
+      "sha256": "ae4097988cb1556366cb84a03e170c2b7e5dfd9ffa729a4335b26bd1ad5317fe"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.QUERY.actual.json",
+      "bytes": 931,
+      "sha256": "540c26b06a606fe6bc826493db9f022dc713cbb7a567a3248145865d8afb7a30"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-002-38090128899.stdout.json",
+      "bytes": 383,
+      "sha256": "22af57eba136390aed2f27ee64ce935d0dadb113924b0cfe04ccb7560e86951f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-003-38090128909.QUERY.actual.json",
+      "bytes": 931,
+      "sha256": "c8aff41c52b8347faeba95991f1ea3e9e56581a78646cce1a264595045f93c94"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-003-38090128909.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-003-38090128909.stdout.json",
+      "bytes": 384,
+      "sha256": "ae4097988cb1556366cb84a03e170c2b7e5dfd9ffa729a4335b26bd1ad5317fe"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-004-38090128909.QUERY.actual.json",
+      "bytes": 931,
+      "sha256": "f8131949a4a45d8a903546010b6bdd47eb8930df481985d30cd9c9e26f28ee8c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-004-38090128909.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\query-004-38090128909.stdout.json",
+      "bytes": 387,
+      "sha256": "ec44b5ee9197be757e9bfcc715a70a8bd732f02d67e3564cbd9ceef5d1ccf222"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\REPORT.actual.json",
+      "bytes": 8135,
+      "sha256": "8f7a17137e1ef2ff548b4acb7d264a778b058adf4e20660c8d531ca1a1ad1259"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-2f77206ce-ci-terminal-readonly-20261011-001\\STATE.actual.json",
+      "bytes": 4662,
+      "sha256": "a1d19ce7523db24f2e79b0a6e623d38285a5c8e23537fe00247967a39099ec7a"
+    }
+  ],
+  "package_limit_bytes": 65536
+}
