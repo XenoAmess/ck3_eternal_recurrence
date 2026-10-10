@@ -1,5 +1,9 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 18:50：公共修正已发布，Source16选定
+
+`cbdd0102913b8273922b1228af065ab785b6c82e`经fetch/rebase/普通push，官方CI38045262825终态66 success/20 skipped/0 failed。共同bootstrap44及mapper43本地40项、Python-only9项与全仓门禁通过。Source16在独立16MiB预约下单次7.924秒冻结：6,905个硬链接继承、独立host234,601 B/ed91、新增独立文件3,362,269 B，无native重编译/profile创建；Root实际选定runtime15232/a3cd2dc5，旧14/15不改。[精确pins与当前范围](ck3-native-ai/shared-acceptance-source15-and-startup-revision.md#source16实际冻结及root选定)。四未消费PAM正负/UI/领主赎金仅新manifest绑定，已消费政府场另fresh state/publicprepare；均尚未增加业务信用。正式仍7/10，容量与新clean HEAD满足后才开始下一场。
+
 ## 2026-10-10 18:15：Source15已选、R61局部成立、R62启动同步拒绝
 
 正式仍7/10。R61自然d_optimatoi完整池已含独立人类和AI，OFF/ON精确百万差及开关恢复成立；第三评分和GetHeir未得，整行政GAP。R62已用Source15实际启动，但公共root查询expected3/current4拒绝，业务/等级诊断0，完整失败闭场保留。[当前来源、原薄件与限制](ck3-native-ai/shared-acceptance-source15-and-startup-revision.md)覆盖下方较早的Source15待选择状态，不改旧失败。

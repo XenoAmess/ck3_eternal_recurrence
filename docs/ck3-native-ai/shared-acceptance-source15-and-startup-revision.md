@@ -39,3 +39,22 @@ Source14/15对应root driver/service/server片段相同，native root源码与�
 正式迁移仍7/10（70%）。QOL仍缺完整行政、择优、PAM正负、UI和领主共用赎金；政府/领主赎金来自QA27-07，ordinary/PAM/UI来自QA27-08，最终正式staging仍须明确source projection coverage。后续QOL→重整河山→361→两产品廷臣礼仪picker→G2。缓存验收继续只核Steam真实下载字节与正式构建一致及CK3实际加载缓存，不重复业务测试。
 
 `ba313809…` 的[官方CI38039506597](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38039506597)实际66 success/20 skipped/0 failed；后继提交必须记录自身CI，不能借用旧head结果。
+
+## Source16实际冻结及Root选定
+
+2026-10-10 18:50 CST追加。公共修正实际以`cbdd0102913b8273922b1228af065ab785b6c82e`普通推送，rebase日报冲突保留C与LYD双方事实，无merge/force。其[官方CI38045262825](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38045262825)终态success，static job114193392611，86步=66 success/20 skipped/0 failed/0 pending，Python-only、QOL tooling及repro各实际成功。[原API薄回执](C:/workspace/ck3-upgrade-20261010/resume-release-ready-02/official-ci-cbdd0102-readonly-22/ROOT-CBDD0102-OFFICIAL-CI-ACTUAL-FINAL-22.json)23,148 B，未下载日志/artifacts或重跑CI。
+
+Source16唯一producer在disk100独立16MiB/300秒准入后一次exit0，10:45:18.721614Z开始，实际7.924秒/工具wall8.045秒。6905文件以硬链接继承冻结Source15，只有host独立创建为a208+44→234601/ed91；不夹带当前MAIN上游其他host功能。新独立8文件共3,362,269 B，继承逻辑130,408,504 B不当新分配；AllocationSize未知，保守完整16MiB计usage。旧Source15正文/mtime不改，链接数按授权增加，所有共享inode继续不可写。原native27db、queue04/helper03、injector、24项capability与产品合同不变；无native build/新profile/game/unchanged body hash。
+
+| 选定输入 | 字节 | SHA-256 |
+| --- | ---: | --- |
+| runtime.future-source16-native-27db-queue04-helper03-01.json | 15,232 | `a3cd2dc5b00f2e3aee03ed3aec13eb15034533b3ed6447a9957fc5ddcf1084e3` |
+| SHARED-RUNTIME-MANIFEST-SOURCE16-NATIVE-27DB-01.json | 54,667 | `47866bf34fa0a8919be138e95f4c83b84096dce76e8919dc2f1e7c329a9f7015` |
+| SHARED-CURRENT4-ACCEPTANCE-RUNTIME-SOURCE-INDEX-16.json | 3,044,993 | `d97dc649cfe8d42dc5707cc53359d9c5b8a9571bef506ab813c2f94e47e1bde3` |
+| SHARED-SOURCE16-BOOTSTRAP-PACKAGE-FINAL-01.json | 5,386 | `9cbc3ed1b3f5be8363c2a18d13a618f447b1d0ee9129cf8e149e45bc1f7bfac6` |
+
+四件根目录均为`C:/workspace/ck3-upgrade-20261010/shared-source16-bootstrap-ready-01/`。[Root选定回执](C:/workspace/ck3-upgrade-20261010/root-resume-05/ROOT-SOURCE16-SELECTION-01.json)2635 B / `edd78e36a903946ebe34054286fef22d47252634800694247ab1bfa88836efeb`。freeze100 matching close1871 B / `5d9d9b7ce1dd1eb7c2daa6126a0561d1f25b3591dd854fefefb16d735c190ff1`，children[]/剩余0；未把完整预算当实测physical或退款。
+
+旧14/15 prepared不能直接搭新manifest。PAM正负/UI及领主赎金原未消费输入只生成顶层runtime_manifest替换的新sibling，support/fixture/profile/case_inputs/contract/initial_plan逐项保持；已消费merit/admin分别新state、各一次公共prepare，QA27-07/原断言/0日及原预算不变。本截点四sibling及两prepare仍在执行，只有实际回执才能授READY；完整现场业务仍未通过。公共Selection129比较完整pin，Windows prepared使用公共`str(Path.resolve())`；四继承Python SHA从被选manifest绑定的source_index精确行核对，不能在仅列host delta的新manifest中盲找。原计划26保留，27纠正稿未改变业务。
+
+磁盘线同时按已审索引退休旧Source10/11/12同字节派生行；差异、旧index/manifest与关键原件保留。18:38截点前五批已实清3334单链接文件/200,450,048 B；多链接项保留，该数字不外推为全部候选已回收或当前准入。冻结闭账后不再把16MiB当未来峰值重复计；活动prepare仍另预留，下一场fresh2GiB公式不变。所有后继只从公共入口使用同一Source16，原R61/R62失败及等级诊断NOT_RUN不追认。
