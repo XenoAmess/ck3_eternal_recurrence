@@ -69,11 +69,18 @@ int main(int argc, char **argv) {
     f.bindings.lookup_script_identifier_id = &IdentifierId;
     f.bindings.lookup = &InheritedLookup;
     Put(f.core_state.data(), actual4::kGameStateDataOffset, f.game.data());
-    Put(f.core_state.data(), actual4::kGameStateSpeedOffset, std::int32_t{5});
+    // Native GameState stores0..4; the qualified reader projects public1..5.
+    Put(f.core_state.data(), actual4::kGameStateSpeedOffset, std::int32_t{4});
     Put(f.game.data(), actual4::kPlayerCharacterManagerOffset +
         actual4::kPlayerManagerEntriesOffset, f.player_entries.data());
     Put(f.game.data(), actual4::kPlayerCharacterManagerOffset +
         actual4::kPlayerManagerCountOffset, std::int32_t{1});
+    CoreSnapshotPrefix prefix{};
+    Check(actual4::ReadCoreSnapshot(f.bindings.core, prefix) &&
+          prefix.clock.speed == 5 && prefix.has_played_character &&
+          prefix.played_character_alive &&
+          static_cast<std::uint32_t>(prefix.played_character_id) == actor,
+          "fixture raw4 projects public speed5 and the original living actor");
     Put(f.effect.data(), 0, base + actual4::kSwayExecutionVtableRvas12004[0]);
     Put(f.effect.data(), 0x60, base + actual4::kSwayExecutionTitleWrapperRva12004);
     Put(f.scalar.data(), 0, base + actual4::kSwayExecutionScalarRva12004);

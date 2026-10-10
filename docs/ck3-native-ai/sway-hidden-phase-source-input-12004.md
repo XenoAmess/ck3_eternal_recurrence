@@ -187,3 +187,17 @@ transport, original Service ledger and normal/cold turns. Completion/opinion
 are explicit synthetic normalized sources whose prior native qualification
 is reused. The native owner mailbox and actual Game installation are not
 exercised by this FIRST. Only Root may execute it; no old suite is replayed.
+
+Root's first connected attempt at2026-10-10T04:10:25.034832Z completed
+compilation of all six C++ units with exit0, then the native fixture exited1;
+the registered Python consumer was never executed. Original receipts and
+logs remain under
+`D:/codex-ck3-background-spill/sway-hidden-phase-source-delivery/ROOT-FIRST01/`.
+This is **harness RED**: the fixture wrote public speed5 into native
+GameState+70. The already-qualified current Core decoder accepts native0..4
+and adds1 for public speed, so raw5 made Core unavailable before inherited
+lookup. Production behavior supplied no contrary evidence and is unchanged.
+The child corrects only the native fixture to raw4 and checks its actual Core
+projection before source capture. Root's necessary retry compiles that one
+fixture unit and links the five retained production objects, then retries
+the same native case and runs the never-executed registered compound once.
