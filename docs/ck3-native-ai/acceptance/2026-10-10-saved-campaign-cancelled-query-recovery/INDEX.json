@@ -1,0 +1,140 @@
+{
+  "schema": "ck3.saved-campaign.cancelled-query-recovery.actual-evidence.v1",
+  "created_at": "2026-10-10T14:14:30.017798+00:00",
+  "status": "SOURCE_ADOPTED_FOCUSED_8_PASS_RUNTIME_NOT_RUN",
+  "head_before": {
+    "value": "7a735081f737428664e7152531ae0eed459ac181",
+    "actual_exec_chunk": "5d55ac",
+    "exit_code": 0
+  },
+  "head_after": {
+    "value": "7a735081f737428664e7152531ae0eed459ac181",
+    "actual_exec_chunk": "cb6200",
+    "exit_code": 0
+  },
+  "apply_actual_exec_chunk": "454b35",
+  "focused_actual_exec_chunk": "14a0fd",
+  "owned_source_before_after_pins": {
+    "host_before": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 252129,
+      "sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb"
+    },
+    "host_after": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 256993,
+      "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+    },
+    "test_after": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\test_saved_campaign_owner_query_retry.py",
+      "bytes": 10880,
+      "sha256": "5adfdfde538b9b65b743f525efaf3aaeb684093cf5a59aef3120709fea6232e7"
+    }
+  },
+  "focused": {
+    "exit_code": 0,
+    "tests": 8,
+    "actual_duration_seconds": 0.564,
+    "argv": [
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "ck3_autonomous_player/native_bridge/research",
+      "-p",
+      "test_saved_campaign_owner_query_retry.py",
+      "-v"
+    ],
+    "cwd": "C:/workspace/ck3_eternal_recurrence",
+    "stderr_full_preserved": true
+  },
+  "prior_bom_failure": {
+    "actual_exec_chunk": "8fc0bc",
+    "exit_code": 1,
+    "execution_timestamp": null,
+    "external_original_producer": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r50_cancelled_campaign_wait_sourceonly_20261010.py"
+  },
+  "original_R50_status": "RED",
+  "engine_cause": "UNKNOWN",
+  "runtime_acceptance": null,
+  "new_head_export_build_game": null,
+  "native_changed": false,
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserve_r50_host_retry_main_receipts_20261010.py",
+    "bytes": 9822,
+    "sha256": "658f2fc5b09885eb7c7f8dff5928c53b0e1ed52b1db8761791b825e7b36536b8"
+  },
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-cancelled-campaign-wait-sourceonly-20261010-003\\SOURCE-CHECK.actual.json",
+      "bytes": 4303,
+      "sha256": "885a772a457a8cd658b9cbd87b733af19a331258081317d619d83cf72689df5a",
+      "archive_relative_path": "source/SOURCE-CHECK.actual.json"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-20261010-001\\RESULT.actual.json",
+      "bytes": 1811,
+      "sha256": "949b7de6e1fe70834ac550569b0350c61960fbc014328b0e21efae0dcdd2ab69",
+      "archive_relative_path": "apply/RESULT.actual.json"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-command-20261010-001\\RESULT.actual.json",
+      "bytes": 1143,
+      "sha256": "138dddcc73dc135bf56492f9233d97d7bbb6bc41df32e0b379515933b0333425",
+      "archive_relative_path": "apply-command/RESULT.actual.json"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-command-20261010-001\\stdout.log",
+      "bytes": 1694,
+      "sha256": "ea18a9d7e64c3eadccdf64b0e234466d84eb63f59f20e1a66b58e2d909999a66",
+      "archive_relative_path": "apply-command/stdout.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-command-20261010-001\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_relative_path": "apply-command/stderr.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-focused-original-exec-20261010-001\\RESULT.actual.json",
+      "bytes": 1010,
+      "sha256": "b76345ab0ede2eee53aa344ab35ae730eb76882cadcf948066470b0e98f48a62",
+      "archive_relative_path": "focused/RESULT.actual.json"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-focused-original-exec-20261010-001\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_relative_path": "focused/stdout.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-focused-original-exec-20261010-001\\stderr.log",
+      "bytes": 1763,
+      "sha256": "a4ffc62d8cc6ccb4db7b55959a4442bf51e417528b529ab6e8180b8a00e9b3dd",
+      "archive_relative_path": "focused/stderr.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-cancelled-campaign-wait-preparation-failure-001.actual.json",
+      "bytes": 1020,
+      "sha256": "bdcb5390d9b65509b1af0f629ac5115f2dee51021363a51c52fd5f395ae0903d",
+      "archive_relative_path": "prior/BOM-PREPARATION-FAILURE.actual.json"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-host-retry-main-integration-20261010-001\\REPORT.md",
+      "bytes": 2753,
+      "sha256": "06326e1da0140f0a65a1c994f7d8ae7db195875851e8fd95935f09bf9835e41d",
+      "archive_relative_path": "REPORT.md"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-host-retry-main-integration-20261010-001\\.gitattributes",
+      "bytes": 86,
+      "sha256": "d93bdff29fb22cb194939a55f2b08d6ee2d7dc8c90cd9d3f679e954a102b7abb",
+      "archive_relative_path": ".gitattributes"
+    }
+  ],
+  "archive_relative_root": "docs/ck3-native-ai/acceptance/2026-10-10-saved-campaign-cancelled-query-recovery"
+}

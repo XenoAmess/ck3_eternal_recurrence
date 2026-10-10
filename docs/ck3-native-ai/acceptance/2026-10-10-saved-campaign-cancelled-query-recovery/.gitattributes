@@ -1,0 +1,5 @@
+source/** -text
+apply/** -text
+apply-command/** -text
+focused/** -text
+prior/** -text

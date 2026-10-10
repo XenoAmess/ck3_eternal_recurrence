@@ -1,0 +1,13 @@
+test_cancelled_unentered_query_needs_fresh_stable_owner_pump_and_full_root (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_cancelled_unentered_query_needs_fresh_stable_owner_pump_and_full_root) ... ok
+test_changed_process_generation_actor_date_or_owner_cannot_retry (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_changed_process_generation_actor_date_or_owner_cannot_retry) ... ok
+test_first_query_success_keeps_existing_full_binding (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_first_query_success_keeps_existing_full_binding) ... ok
+test_inflight_query_is_bounded_by_original_deadline_without_retry (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_inflight_query_is_bounded_by_original_deadline_without_retry) ... ok
+test_recovery_does_not_relax_complete_native_root_identity (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_recovery_does_not_relax_complete_native_root_identity) ... ok
+test_running_unknown_malformed_entered_or_incomplete_fail_closed (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_running_unknown_malformed_entered_or_incomplete_fail_closed) ... ok
+test_second_cancelled_wait_is_terminal_and_both_errors_remain (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_second_cancelled_wait_is_terminal_and_both_errors_remain) ... ok
+test_stale_pump_cannot_retry_or_extend_original_deadline (test_saved_campaign_owner_query_retry.SavedCampaignOwnerQueryRetryTests.test_stale_pump_cannot_retry_or_extend_original_deadline) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.564s
+
+OK

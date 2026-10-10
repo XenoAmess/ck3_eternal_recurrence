@@ -1,0 +1,107 @@
+{
+  "schema": "ck3.saved-campaign.cancelled-wait.source-only.v1",
+  "created_at": "2026-10-10T14:03:14.507498+00:00",
+  "scope": "SOURCE_ONLY_AST_PARSE_NOT_TESTED",
+  "main_changed": false,
+  "frozen_source_changed": false,
+  "native_changed": false,
+  "actual_runtime_or_business_credit": null,
+  "new_head_export_build_runtime": null,
+  "source_inputs": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 252129,
+      "sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb"
+    },
+    {
+      "path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 244512,
+      "sha256": "a9895e966590d669bbef3f625c808b95dea1e4fca4561fe5bc0be1b647178b33"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-startup-owner-guard-diagnostic-20261010-002\\PROJECTION.actual.json",
+      "bytes": 14859,
+      "sha256": "12aec03e1cf06ff55a32588ae8c0dcb3e6ce06d95b3594c2557cb3e4fd2d22ef"
+    }
+  ],
+  "main_frozen_function_ast_equal": {
+    "saved_campaign_admission_frame": true,
+    "saved_campaign_root_binding": true,
+    "saved_campaign_initial_snapshot_state": true,
+    "wait_for_saved_campaign": true
+  },
+  "changed_existing_top_level_ast": [
+    "wait_for_saved_campaign"
+  ],
+  "new_host_function": "saved_campaign_cancelled_wait_receipt",
+  "targets": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "before_sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb",
+      "candidate_after_bytes": 256993,
+      "candidate_after_sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e",
+      "newline_policy": "preserve current host newline"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py",
+      "before": "ABSENT_EXPECTED",
+      "candidate_lf_bytes": 10880,
+      "candidate_lf_sha256": "5adfdfde538b9b65b743f525efaf3aaeb684093cf5a59aef3120709fea6232e7",
+      "tests_defined": 8
+    }
+  ],
+  "ast_parse": {
+    "host": true,
+    "new_test": true,
+    "tests_executed": false
+  },
+  "future_focused_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "ck3_autonomous_player/native_bridge/research",
+    "-p",
+    "test_saved_campaign_owner_query_retry.py",
+    "-v"
+  ],
+  "future_focused_cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "future_focused_exit": null,
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Generic public-host asynchronous query cancellation/deadline and owner-frame I/O semantics; no CK3 script/parser/effect semantics are executed or simulated."
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-cancelled-campaign-wait-sourceonly-20261010-003\\CANDIDATE.incremental.patch",
+    "bytes": 19505,
+    "sha256": "a0abeb2a8d4be1a8c60f6a00eab9041f0e6f6386244f8917db3c846224dd3203"
+  },
+  "source_only_change_from_002": "Only new test positive default duration .08 -> 2.0 seconds; explicit negative .02 deadlines and host bytes unchanged.",
+  "predecessor_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-cancelled-campaign-wait-sourceonly-20261010-002\\INDEX.json",
+    "bytes": 1662,
+    "sha256": "5f4b5fd3bf61436b26baea7ff35abbb370dd0ff7f37263a4f1819bcc3932a530"
+  },
+  "apply_producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-cancelled-campaign-wait-sourceonly-20261010-003\\apply_reviewed_two_paths.py",
+    "bytes": 6728,
+    "sha256": "2d723b1f97a1c8ef65995d6c4951f279fa81fa675fda7660af531bc5fd0fad9a"
+  },
+  "future_apply_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-cancelled-campaign-wait-sourceonly-20261010-003\\apply_reviewed_two_paths.py",
+    "--repo",
+    "C:/workspace/ck3_eternal_recurrence",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-20261010-001",
+    "--apply"
+  ],
+  "future_apply_exit": null
+}

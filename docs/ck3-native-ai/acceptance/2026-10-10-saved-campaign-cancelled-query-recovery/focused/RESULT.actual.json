@@ -1,0 +1,31 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "ck3_autonomous_player/native_bridge/research",
+    "-p",
+    "test_saved_campaign_owner_query_retry.py",
+    "-v"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T14:11:34.678719+00:00",
+  "finished_at_utc": "2026-10-10T14:11:35.609433+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-focused-original-exec-20261010-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-focused-original-exec-20261010-001\\stderr.log",
+    "bytes": 1763,
+    "sha256": "a4ffc62d8cc6ccb4db7b55959a4442bf51e417528b529ab6e8180b8a00e9b3dd"
+  }
+}

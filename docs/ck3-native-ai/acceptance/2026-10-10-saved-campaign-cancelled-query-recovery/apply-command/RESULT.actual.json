@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r50-cancelled-campaign-wait-sourceonly-20261010-003/apply_reviewed_two_paths.py",
+    "--repo",
+    "C:/workspace/ck3_eternal_recurrence",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r50-root-host-retry-main-adoption-20261010-001",
+    "--apply"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T14:11:25.249587+00:00",
+  "finished_at_utc": "2026-10-10T14:11:25.493998+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-command-20261010-001\\stdout.log",
+    "bytes": 1694,
+    "sha256": "ea18a9d7e64c3eadccdf64b0e234466d84eb63f59f20e1a66b58e2d909999a66"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r50-root-host-retry-main-adoption-command-20261010-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

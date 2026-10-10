@@ -1,0 +1,23 @@
+{
+  "schema": "ck3.external-source-preparation-failure.v1",
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r50_cancelled_campaign_wait_sourceonly_20261010.py",
+    "bytes": 27125,
+    "sha256": "67359671f078e69243b596e30bd504e15fc714ccabd40faeaaf35b86cb3af751"
+  },
+  "actual_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r50_cancelled_campaign_wait_sourceonly_20261010.py"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "actual_exec_chunk": "8fc0bc",
+  "exit_code": 1,
+  "error": "ast.parse rejected source UTF-8 BOM U+FEFF; before output directory creation",
+  "main_or_frozen_writes": false,
+  "tests_executed": false,
+  "successor": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r50_cancelled_campaign_wait_sourceonly_20261010_002.py",
+  "correction": "Decode with utf-8-sig; preserve the actual target BOM and newline in candidate digest."
+}

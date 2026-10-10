@@ -779,6 +779,34 @@ def saved_campaign_initial_snapshot_state(value: object, pipe: str) -> str:
         else "WAITING_FOR_INITIAL_NATIVE_SEMANTIC_FRAME")
 
 
+def saved_campaign_cancelled_wait_receipt(error: BaseException) -> dict[str, object] | None:
+    """Only this exact native cancellation proves that a query never entered its executor."""
+    prefix = "MCP tool ck3_query_campaign_root_context_v1 returned an error: "
+    marker = "typed_query_failure_v1="
+    text = str(error)
+    if not isinstance(error, RuntimeError) or not text.startswith(prefix) or text.count(marker) != 1:
+        return None
+    try:
+        receipt = json.loads(text.split(marker, 1)[1])
+    except (ValueError, TypeError):
+        return None
+    empty = ("executor_enter", "executor_finish", "executor_typed_result", "final_equal",
+        "final_read", "frame_stable", "typed_result")
+    if (not isinstance(receipt, dict) or set(receipt) != set(empty) | {
+            "executor_exception", "query_type", "stage", "wait_completed", "wait_result"}
+            or receipt["query_type"] != "campaign" or receipt["stage"] != "wait"
+            or receipt["wait_completed"] is not False
+            or receipt["wait_result"] != "timeout_cancelled_before_execution"
+            or any(receipt[key] is not None for key in empty)):
+        return None
+    exception = receipt["executor_exception"]
+    if (not isinstance(exception, dict) or set(exception) != {"code", "image", "rva"}
+            or type(exception["code"]) is not int or exception["code"] != 0
+            or exception["image"] != "none" or exception["rva"] is not None):
+        return None
+    return copy.deepcopy(receipt)
+
+
 async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object], *,
         report: dict[str, object], write: object, timeout: float,
         managed_done: threading.Event | None, poll_interval: float,
@@ -796,6 +824,16 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     baseline = None
     initial_snapshot_available = False
     state["startup_observations"] = []
+    state["campaign_root_query_attempts"] = []
+    cancelled_wait_frame = None
+    cancelled_wait_retry_used = False
+
+    async def fresh_before_deadline() -> dict[str, object]:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("saved campaign observation exceeded original readiness deadline")
+        return await asyncio.wait_for(client.fresh(), timeout=remaining)
+
     while True:
         if managed_done is not None and managed_done.is_set():
             raise RuntimeError("managed session ended before saved campaign admission")
@@ -820,7 +858,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             if not initial_snapshot_available:
                 await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
                 continue
-        snapshot = await client.fresh()
+        snapshot = await fresh_before_deadline()
         launch_record = report.get("saved_campaign_launch")
         if isinstance(launch_record, dict) and launch_record.get("status") == "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED":
             if launch_record.get("argv_admitted") is not True:
@@ -849,12 +887,45 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
         root, admitted = None, None
         if frame is not None:
             stable = {k: v for k, v in frame.items() if k != "pump_epoch"}
-            if baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]:
-                if startup_case is not None:
+            if (baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]
+                    and (cancelled_wait_frame is None or frame["pump_epoch"] > cancelled_wait_frame["pump_epoch"])):
+                if startup_case is not None and "first_startup_query_admission" not in state:
                     state["first_startup_query_admission"] = {
                         "previous_frame":{**baseline[0], "pump_epoch":baseline[1]}, "current_frame":copy.deepcopy(frame)}
-                root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
-                after = await client.fresh()
+                is_retry = cancelled_wait_frame is not None
+                if is_retry:
+                    if cancelled_wait_retry_used or any(frame[key] != cancelled_wait_frame[key] for key in (
+                            "bridge_pid", "connection_generation", "actor_character_id", "date_raw",
+                            "local_player_id", "owner_tid")):
+                        raise RuntimeError("saved campaign cancelled-wait recovery crossed its paused owner identity or retry limit")
+                    cancelled_wait_retry_used = True
+                attempt = {"submitted_frame": copy.deepcopy(frame), "expected_revision": snapshot["revision"],
+                    "started_at": now(), "status": "CALL_PENDING", "retry_after_cancelled_wait": is_retry}
+                state["campaign_root_query_attempts"].append(attempt)
+                write()
+                try:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError("saved campaign root query exceeded original readiness deadline before submission")
+                    root = await asyncio.wait_for(client.call("ck3_query_campaign_root_context_v1",
+                        {"expected_revision": snapshot["revision"]}), timeout=remaining)
+                except Exception as error:
+                    receipt = saved_campaign_cancelled_wait_receipt(error)
+                    attempt.update(status="FAILED", finished_at=now(), error_type=type(error).__name__,
+                        error=str(error), typed_query_failure=receipt)
+                    state["observations"].append({"snapshot": snapshot, "frame": frame,
+                        "campaign_root": None, "binding": None, "campaign_root_query_failed": True})
+                    write()
+                    if receipt is None or is_retry or time.monotonic() >= deadline:
+                        raise
+                    cancelled_wait_frame = copy.deepcopy(attempt["submitted_frame"])
+                    state["cancelled_campaign_wait_recovery"] = {
+                        "status": "WAITING_FOR_FRESH_PAUSED_OWNER_PUMP", "retry_limit": 1,
+                        "failed_submission_frame": copy.deepcopy(cancelled_wait_frame), "product_acceptance_proven": False}
+                    baseline = None
+                    continue
+                attempt.update(status="RETURNED", finished_at=now())
+                after = await fresh_before_deadline()
                 after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None)
                 if (after_frame is not None and isinstance(root, dict)
                         and root.get("queried_snapshot_id") == after.get("snapshot_id")
@@ -866,12 +937,18 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                         after, event_proof = await admit_saved_startup_event(client, after, expected, binding,
                             startup_case, state=state, write=write, deadline=deadline, managed_done=managed_done)
                         admitted["startup_event_admission"] = event_proof
+                attempt.update(status="BOUND" if admitted is not None else "NOT_BOUND")
+                if is_retry and admitted is None:
+                    write()
+                    raise RuntimeError("saved campaign cancelled-wait recovery did not bind its exact current native root")
                 snapshot = after
             baseline = (stable, frame["pump_epoch"])
         else:
             baseline = None
         state["observations"].append({"snapshot": snapshot, "frame": frame, "campaign_root": root, "binding": admitted})
         if admitted is not None:
+            if time.monotonic() >= deadline:
+                raise TimeoutError("saved campaign root binding completed after original readiness deadline")
             state.update(status="ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND", binding=admitted,
                 finished_at=now(), actual_current_actor_bound=True)
             report["readiness"] = snapshot
