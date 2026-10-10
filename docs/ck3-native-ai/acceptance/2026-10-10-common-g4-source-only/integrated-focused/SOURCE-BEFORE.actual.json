@@ -1,0 +1,36 @@
+{
+  "head": "9746844fa236803e4caa91e41333a71aea8cf764",
+  "status_porcelain": "",
+  "source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 208175,
+      "sha256": "fe4bb75e83b8130e53be403c67a40fd67e43ceb2992fa828ff3efd493d0c4aa5"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 252129,
+      "sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 40205,
+      "sha256": "39fa04f92ba0cd67456d4196c6bf9bb068c504bd45b535e2066b774bbd2deb2e"
+    },
+    "tools/test_ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 21471,
+      "sha256": "150c6f41fafd2ddb9a3d755bc309f4c4187b260c42494191067e4599a29b3634"
+    },
+    "tools/test_ck3_mod_acceptance_readonly_observers.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_readonly_observers.py",
+      "bytes": 11376,
+      "sha256": "35001c4273f117c65aa6b84a1ff9ff11d6cbb27cdede50f051f1a83001b7b15e"
+    },
+    "docs/ck3-native-ai/2026-10-10-common-challenger-graph-readonly.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\2026-10-10-common-challenger-graph-readonly.md",
+      "bytes": 3515,
+      "sha256": "db7ae632fd382abf58f3e05baa431528b3024fcf5a60d3f00e259194f5857edf"
+    }
+  }
+}

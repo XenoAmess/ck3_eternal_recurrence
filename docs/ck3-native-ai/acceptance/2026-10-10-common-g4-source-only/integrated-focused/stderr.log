@@ -8,6 +8,6 @@ test_challenger_observer_feature_is_explicit_shared_and_independent (tools.test_
 test_challenger_capability_declaration_preserves_pending_live_status (tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_capability_declaration_preserves_pending_live_status) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 2.610s
+Ran 8 tests in 2.272s
 
 OK

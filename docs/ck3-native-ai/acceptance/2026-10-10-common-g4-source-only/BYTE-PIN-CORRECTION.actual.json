@@ -1,0 +1,96 @@
+{
+  "schema": "ck3.evidence-newline-pin-correction.v1",
+  "created_at_utc": "2026-10-10T11:24:07.077024+00:00",
+  "first_exact_git_blob_check_failed": true,
+  "reason": "Initial staging normalized original CRLF records before the new local attributes were restaged. Restore exact original bytes and explicitly renormalize with -text.",
+  "changes": [
+    {
+      "relative_path": "INDEX.final002.json",
+      "prior_tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/INDEX.final002.json",
+        "bytes": 3378,
+        "sha256": "d106583bfc748632d5082bb057f70e43af70e41e498edec3e64588260eed2f72"
+      },
+      "original_restored": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/INDEX.final002.json",
+        "bytes": 3445,
+        "sha256": "4e917ba16b0dcd30f2e0095ae95432b04a4c33a65291653e1cc4b9a8c05d2061"
+      },
+      "prior_tracked_pin_matched_original": false
+    },
+    {
+      "relative_path": "RESULT.actual.json",
+      "prior_tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/RESULT.actual.json",
+        "bytes": 5782,
+        "sha256": "3f747304e9b9efc0aab3fd535e34d5f2dfefcaf20d59853becb96a330bf73914"
+      },
+      "original_restored": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/RESULT.actual.json",
+        "bytes": 5908,
+        "sha256": "857e76414f646c4992971f4ef3fc126b33c76813af176187eaadaee0f22fa3f1"
+      },
+      "prior_tracked_pin_matched_original": false
+    },
+    {
+      "relative_path": "REPORT.original.md",
+      "prior_tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/REPORT.original.md",
+        "bytes": 3005,
+        "sha256": "f206edb42ed89b96c9fb0b13d9dca55be4260a8c1503fcdf71bdda5fd1dbd9e4"
+      },
+      "original_restored": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/REPORT.original.md",
+        "bytes": 3005,
+        "sha256": "f206edb42ed89b96c9fb0b13d9dca55be4260a8c1503fcdf71bdda5fd1dbd9e4"
+      },
+      "prior_tracked_pin_matched_original": true
+    },
+    {
+      "relative_path": "focused/RESULT.actual.json",
+      "prior_tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/focused/RESULT.actual.json",
+        "bytes": 1221,
+        "sha256": "4ff3f580ee42dea0ab705383ca7a939dee9b49ae79e251a4fbfe56e578f884e1"
+      },
+      "original_restored": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/focused/RESULT.actual.json",
+        "bytes": 1250,
+        "sha256": "33a9d1eae9035b50256736ea10fc3bbad73707ad53c741072956cbcfd4b54951"
+      },
+      "prior_tracked_pin_matched_original": false
+    },
+    {
+      "relative_path": "focused/stderr.log",
+      "prior_tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/focused/stderr.log",
+        "bytes": 1790,
+        "sha256": "fe61d924f23fa252d18da71589da02d1a95850e351d73c70d7a1ea91fd0b4c46"
+      },
+      "original_restored": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/focused/stderr.log",
+        "bytes": 1803,
+        "sha256": "bbe6b481d2662370e2c3645f7a78bf4f91289349bf283b33140722a1f79f0994"
+      },
+      "prior_tracked_pin_matched_original": false
+    },
+    {
+      "relative_path": "DEPENDENCIES.actual.json",
+      "prior_tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/DEPENDENCIES.actual.json",
+        "bytes": 77,
+        "sha256": "4e0336361060d64c7654039b4f1f00547dbaf9793fe3b29caa5a3417c210a107"
+      },
+      "original_restored": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-common-g4-source-only/DEPENDENCIES.actual.json",
+        "bytes": 81,
+        "sha256": "1595ce4f67d288a89e46416a454008102e1514a7ff676c2a658dd71ae439c59d"
+      },
+      "prior_tracked_pin_matched_original": false
+    }
+  ],
+  "source_or_test_outcome_changed": false,
+  "publication_before_correction": false,
+  "post_stage_exact_check": "Required separately; this receipt does not claim its result.",
+  "review_by_utc": "2027-04-08T11:24:07.077024+00:00"
+}

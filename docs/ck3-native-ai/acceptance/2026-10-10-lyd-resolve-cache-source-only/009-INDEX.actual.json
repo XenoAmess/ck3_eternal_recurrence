@@ -1,0 +1,38 @@
+{
+  "schema": "lyd.resolve-source-followup009.v1",
+  "created_at_utc": "2026-10-10T11:24:07.077024+00:00",
+  "original_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-batch-gate-bounded-20261010-009/INDEX.json",
+    "bytes": 3687,
+    "sha256": "6579aee336964417384239c05695e75a9dedb5b2824fa4f679f214da789b69d1"
+  },
+  "selected": [
+    {
+      "member": "FACTS.actual.json",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-batch-gate-bounded-20261010-009/FACTS.actual.json",
+      "bytes": 9925,
+      "sha256": "4a38b0a3534b7c231e92f17d3ddbd9a7626642e40c8531255b08a6a1ac543c19"
+    },
+    {
+      "member": "REPORT.md",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-batch-gate-bounded-20261010-009/REPORT.md",
+      "bytes": 1926,
+      "sha256": "bb89473fd86e485f380939d3a5bd080b48c088e4230db788d7ed0f0ae0ce3b0e"
+    }
+  ],
+  "archive": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-lyd-resolve-cache-source-only/009-SELECTED-SOURCE-RECORDS.zip",
+    "bytes": 6453,
+    "sha256": "b9cb712f54841e24f19808396fddf203c340d3a8be25ae1f2d321a8a5cf35f26",
+    "member_count": 3,
+    "uncompressed_bytes": 15538,
+    "pins_and_decompression_verified": true
+  },
+  "shared_code_bytes": 20574,
+  "shared_code_limit": 65536,
+  "cached_successor_writer": null,
+  "business_PASS": null,
+  "game_or_sdk_build_save": false,
+  "original_deadlines_renewed": false,
+  "record_review_by_utc": "2027-04-08T11:24:07.077024+00:00"
+}

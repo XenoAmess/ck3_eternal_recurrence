@@ -1,0 +1,77 @@
+{
+  "schema": "ck3-common-g4-integrated-focused-result-v1",
+  "expected_head": "9746844fa236803e4caa91e41333a71aea8cf764",
+  "g4_commit": "d893d922650d6c9f55750f31aa332fa7b6da8306",
+  "started_at_utc": "2026-10-10T11:20:39.433136+00:00",
+  "finished_at_utc": "2026-10-10T11:20:45.151178+00:00",
+  "elapsed_seconds": 5.279094999990775,
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests",
+    "tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_observer_feature_is_explicit_shared_and_independent",
+    "tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_capability_declaration_preserves_pending_live_status"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-integrated-focused-20261010-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-integrated-focused-20261010-001\\stderr.log",
+    "bytes": 1803,
+    "sha256": "ff92921c5ad4c00bcdb19ee87dd658ba161c44eab7446255d2d9cbb891b0abbb"
+  },
+  "head_before": "9746844fa236803e4caa91e41333a71aea8cf764",
+  "head_after": "9746844fa236803e4caa91e41333a71aea8cf764",
+  "head_matches_expected_before_and_after": true,
+  "source_before_after_exact": true,
+  "working_tree_clean_before_and_after": true,
+  "source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 208175,
+      "sha256": "fe4bb75e83b8130e53be403c67a40fd67e43ceb2992fa828ff3efd493d0c4aa5"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 252129,
+      "sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 40205,
+      "sha256": "39fa04f92ba0cd67456d4196c6bf9bb068c504bd45b535e2066b774bbd2deb2e"
+    },
+    "tools/test_ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 21471,
+      "sha256": "150c6f41fafd2ddb9a3d755bc309f4c4187b260c42494191067e4599a29b3634"
+    },
+    "tools/test_ck3_mod_acceptance_readonly_observers.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_readonly_observers.py",
+      "bytes": 11376,
+      "sha256": "35001c4273f117c65aa6b84a1ff9ff11d6cbb27cdede50f051f1a83001b7b15e"
+    },
+    "docs/ck3-native-ai/2026-10-10-common-challenger-graph-readonly.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\2026-10-10-common-challenger-graph-readonly.md",
+      "bytes": 3515,
+      "sha256": "db7ae632fd382abf58f3e05baa431528b3024fcf5a60d3f00e259194f5857edf"
+    }
+  },
+  "expected_focused_tests": 8,
+  "scope": "Only the original eight G4 public-route focused tests after shared-source rebase",
+  "runtime_status": "NOT_RUN",
+  "native_build": false,
+  "game_or_sdk_callbacks": false,
+  "prior_result_preserved": true,
+  "raw_review_at_utc": "2026-11-09T11:20:39.433136+00:00",
+  "summary_review_at_utc": "2027-04-08T11:20:39.433136+00:00"
+}
