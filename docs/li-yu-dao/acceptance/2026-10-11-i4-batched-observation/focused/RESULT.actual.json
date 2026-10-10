@@ -1,0 +1,24 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/test_ck3_mod_acceptance_i4_batch_002.py"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T17:37:22.702836+00:00",
+  "finished_at_utc": "2026-10-10T17:37:22.923343+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-query-batch-focused-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-query-batch-focused-20261011-001\\stderr.log",
+    "bytes": 109,
+    "sha256": "6610458e0b487eba5587732ac4d3e741ec5d453cc09bdfad1f18fc3a64124121"
+  }
+}

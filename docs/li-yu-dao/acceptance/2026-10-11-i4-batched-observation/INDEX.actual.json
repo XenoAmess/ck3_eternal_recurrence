@@ -1,0 +1,43 @@
+{
+  "schema": "lyd-two-query-batch-small-static-evidence-v1",
+  "at_utc": "2026-10-10T17:39:02.028276+00:00",
+  "records": [
+    {
+      "file": "adoption.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-query-batch-adoption-20261011-001.actual.json",
+      "bytes": 984,
+      "sha256": "ccb05ffb1bdc75e707ae2bf27e61b0cf4b6074019aa1c0f56ccbf419a677c16d"
+    },
+    {
+      "file": "focused/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-query-batch-focused-20261011-001\\RESULT.actual.json",
+      "bytes": 852,
+      "sha256": "eeade99c0390916c8d07552df3e12bf6a576f9a07dbdf36ac3501910ef6aee90"
+    },
+    {
+      "file": "focused/stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-query-batch-focused-20261011-001\\stderr.log",
+      "bytes": 109,
+      "sha256": "6610458e0b487eba5587732ac4d3e741ec5d453cc09bdfad1f18fc3a64124121"
+    },
+    {
+      "file": "natural-contract/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-contract-compat-20261011-001\\RESULT.actual.json",
+      "bytes": 866,
+      "sha256": "b684e0bf4243df17a307c66fa862700cfd846819b53dcf649189d853bc53b5d5"
+    },
+    {
+      "file": "natural-contract/stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-contract-compat-20261011-001\\stderr.log",
+      "bytes": 3025,
+      "sha256": "aafe4eef0b0bf46cff6af14c502227443731d7e36728bf6ca801e3d1b5174884"
+    }
+  ],
+  "focused_tests_passed": 6,
+  "existing_natural_contract_tests_passed": 20,
+  "adopted_candidate": "002_ONLY",
+  "candidate001": "UNPROVEN_NOT_EXECUTED",
+  "qualification": "STATIC_ONLY",
+  "business_pass": false,
+  "speedup_measured": false
+}

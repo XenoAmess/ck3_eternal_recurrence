@@ -180,11 +180,26 @@ def _call(client, name, tool, args, frame):
 def observe_decision(client, data, ordinal):
     frame = client.snapshot()
     prefix = 'i4-school-observation-' + str(ordinal).zfill(4)
-    model, frame_after = _call(client, prefix + '-model-before', 'ck3_query_ingame_decision_item_v1',
-        {'decision_key': data['decision_key'], 'expected_revision': frame['revision']}, frame)
+    steps = [
+        {'id': prefix + '-model-before', 'tool': 'ck3_query_ingame_decision_item_v1',
+         'args': {'decision_key': data['decision_key'], 'expected_revision': frame['revision']},
+         'fresh_revision': False},
+        {'id': prefix + '-detail-tree', 'tool': 'ck3_inspect_gui_window_tree_v1',
+         'args': {'window_kind': 'decision_detail'}, 'fresh_revision': False},
+    ]
+    rows = client.execute_plan(steps, prefix + '-model-and-tree')
+    require(len(rows) == len(steps), 'Incomplete original read-only observation; never replay')
+    previous, frames = frame, []
+    for step, row in zip(steps, rows):
+        require(row.get('id') == step['id'] and row.get('ok') is True and not row.get('error'),
+                'Original read-only observation failed or reordered; never replay')
+        after = row['after_snapshot']
+        same_paused_identity(client, previous, after)
+        frames.append(after)
+        previous = after
+    model, tree = [row['result'] for row in rows]
     observe_model(frame, model, data['decision_key'])
-    tree, after_tree = _call(client, prefix + '-detail-tree', 'ck3_inspect_gui_window_tree_v1',
-        {'window_kind': 'decision_detail'}, frame_after)
+    after_tree = frames[1]
     final_model, after_model = _call(client, prefix + '-model-after', 'ck3_query_ingame_decision_item_v1',
         {'decision_key': data['decision_key'], 'expected_revision': after_tree['revision']}, after_tree)
     observe_model(after_tree, final_model, data['decision_key'])

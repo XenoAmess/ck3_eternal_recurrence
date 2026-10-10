@@ -1,0 +1,23 @@
+{
+  "schema": "lyd-i4-two-query-batch-adoption-actual-v1",
+  "at_utc": "2026-10-10T17:37:22.519461+00:00",
+  "adopted_candidate": "002_ONLY",
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-i4-batched-observation-sourceonly-20261011-001\\batch-observation-002.patch",
+    "bytes": 2046,
+    "sha256": "54ce6475d48824a224c5a09189ad1c0bd6de8314122b025e6b53f1ca37621906"
+  },
+  "adapter": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+    "bytes": 25611,
+    "sha256": "ea3eb97186e34c5510592fb24adce06b5652be7b6ff5027250a74ddb7fc1c74d"
+  },
+  "test": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_batch_002.py",
+    "bytes": 6696,
+    "sha256": "2e737ef55f3d44ee5a2b0f0fccc4e587d2de3fbe83589fbf007cee22025f28bb"
+  },
+  "fresh_revision_or_original_budgets_changed": false,
+  "tests_executed": false,
+  "business_pass_or_speedup_inferred": false
+}

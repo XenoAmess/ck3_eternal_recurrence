@@ -1,0 +1,25 @@
+test_absent_initial_flag_rejected (__main__.NaturalExpiryGuards.test_absent_initial_flag_rejected) ... ok
+test_actual_elapsed_cap_not_only_submitted_day_count (__main__.NaturalExpiryGuards.test_actual_elapsed_cap_not_only_submitted_day_count) ... ok
+test_ambiguous_or_hidden_confirm_cannot_mean_disabled (__main__.NaturalExpiryGuards.test_ambiguous_or_hidden_confirm_cannot_mean_disabled) ... ok
+test_available_decision_alone_never_qualifies_eligibility (__main__.NaturalExpiryGuards.test_available_decision_alone_never_qualifies_eligibility) ... ok
+test_calendar_jump_or_incomplete_interval_rejected (__main__.NaturalExpiryGuards.test_calendar_jump_or_incomplete_interval_rejected) ... ok
+test_changed_footer_and_duplicate_anchor_rejected (__main__.NaturalExpiryGuards.test_changed_footer_and_duplicate_anchor_rejected) ... ok
+test_enabled_and_disabled_are_actual_widget_booleans (__main__.NaturalExpiryGuards.test_enabled_and_disabled_are_actual_widget_booleans) ... ok
+test_event_and_connection_change_rejected (__main__.NaturalExpiryGuards.test_event_and_connection_change_rejected) ... ok
+test_final_body_no_flag_and_same_headless_membership (__main__.NaturalExpiryGuards.test_final_body_no_flag_and_same_headless_membership) ... ok
+test_fresh_initial_absence_and_final_presence_rejected (__main__.NaturalExpiryGuards.test_fresh_initial_absence_and_final_presence_rejected) ... ok
+test_fresh_initial_body_requires_present_flag_and_preserves_bytes (__main__.NaturalExpiryGuards.test_fresh_initial_body_requires_present_flag_and_preserves_bytes) ... ok
+test_one_actual_natural_interval_and_duration (__main__.NaturalExpiryGuards.test_one_actual_natural_interval_and_duration) ... ok
+test_raw_tick_never_becomes_remaining_days_or_date (__main__.NaturalExpiryGuards.test_raw_tick_never_becomes_remaining_days_or_date) ... ok
+test_truncated_tree_cannot_mean_disabled (__main__.NaturalExpiryGuards.test_truncated_tree_cannot_mean_disabled) ... ok
+test_typed_numeric_zero_is_not_a_flag (__main__.NaturalExpiryGuards.test_typed_numeric_zero_is_not_a_flag) ... ok
+test_verify_rejects_intermediate_gap_even_when_sum_and_final_match (__main__.NaturalExpiryGuards.test_verify_rejects_intermediate_gap_even_when_sum_and_final_match) ... ok
+test_wrong_faith_head_or_rite_parent_cannot_qualify (__main__.NaturalExpiryGuards.test_wrong_faith_head_or_rite_parent_cannot_qualify) ... ok
+test_pending_native_ack_later_verified_actual_detail_accepted_unchanged (__main__.SelectedDetailCompletionGuards.test_pending_native_ack_later_verified_actual_detail_accepted_unchanged) ... ok
+test_unverified_or_missing_later_observation_rejected (__main__.SelectedDetailCompletionGuards.test_unverified_or_missing_later_observation_rejected) ... ok
+test_wrong_later_key_actor_frame_or_independent_target_rejected (__main__.SelectedDetailCompletionGuards.test_wrong_later_key_actor_frame_or_independent_target_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.039s
+
+OK
