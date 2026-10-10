@@ -1,0 +1,13 @@
+# Actual root scope initializer889F60
+
+The complete actual1.20.0.4 body is `[889F60,88A01A)`,186B with RET88A019 and pdata row `[8953696,8953882,84974928]`. It was reused from the held exact cache with zero new executable bytes. Source identity is Steam25734779, executable SHA98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518. `SOURCE-FREEZE.json` was written before this candidate.
+
+Actual31BDE90 supplies RCX=rsp+70 at31BDEDD. Actual31BD1A0 supplies RCX=rbp-60 at31BD30C. The initializer uses RCX and returns that same pointer; the callers do not set new RDX/R8/R9 constructor arguments, so residual volatile values are not represented as zeros. Their later WORD+0=4 and QWORD+8=zeroextended original Owner fullDWORD are separate caller writes. The newly named31BDDA0 caller can reuse this same initializer source contract; its exact call/frame remains20-owned.
+
+The root's own stores define DWORD+0=0, QWORD+8=0, DWORD+10=FFFFFFFF and the exact fields+100..+166 recorded in the freeze. Literal module addresses are448D1F8,448D268,54DE270 and54DE278. CALL889F80 supplies RCX=root+18 to actual8895D0. Only that proper callee's source-closed final effects are reused from48c: defined ranges[0,20) and[E0,E8), capacityDWORD8/countDWORD0, actual named virtual slots and source-proven null release. No other parent scope, Character or Rite outer layout is reused.
+
+The composed root ranges are[0,4),[8,14),[18,38),[F8,144),[148,167), all hexadecimal:155 defined bytes. Root+18 contains owned-root+38; root+28 contains owned-root+30. Child+18's actual vtable is448D2A0 and child+E0's backing allocator is54DE2E0. Unwritten gaps and inline payload contents remain unknown. The model extent0x167 ends immediately after literal byte166; it is not a native sizeof or a complete initialized-image claim.
+
+`ProjectOwnedRootScopeInitializer889F6012004` receives explicit matching module/SHA/source closure and caller-owned byte storage plus a0/1 defined-byte mask. It writes only the source-defined final bytes, leaves raw holes untouched and clears their mask entries. The self pointers refer to that owned storage and must be projected again after storage relocation. This independent projection does not call an initializer, allocator, predicate or game function, and does not provide a native stack identity, frame timestamp or epoch.
+
+The new no-main fragment exports `RunRootScopeInitializer889F6012004NewCases`. It covers unknown holes, module-relative operands, owned self-pointer rebasing, source-binding failure and insufficient storage. 26's sole fresh clergy compound after10 admission owns execution. No previous15 or48 fixture is rerun.
