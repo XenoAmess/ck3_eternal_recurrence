@@ -196,7 +196,14 @@ def native_conversion_ongoing_conditions(kind: str) -> str:
     conditions = []
     for field in ("is_shown", "is_available", "is_valid_showing_failures_only"):
         source = block(definition, field, indentation="\t")
-        conditions.append("\n".join(source.splitlines()[1:-1]))
+        body = "\n".join(source.splitlines()[1:-1])
+        # Stock is_available has an implicit actor root; private is_valid does
+        # not. Preserve the complete body under that explicit named scope.
+        if field == "is_available":
+            body = "\t\tscope:actor = {\n" + "\n".join(
+                "\t" + line for line in body.splitlines()
+            ) + "\n\t\t}"
+        conditions.append(body)
     return "\n".join(conditions)
 
 

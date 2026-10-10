@@ -1,5 +1,9 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 23:48 CST：R70 原业务完成，定位正式改宗作用域错误
+
+PAM 阴性 R70 原 35 步、12 日及必要业务标记完成，但正式交互的裸 `is_ai` 处于 none scope，run/verify=2；正常退出和全部资源闭合合格。已由原版 info 明确核实 `is_available` root=actor，最小生成器修复已应用，六项独立回归、生成器 current check 和完整 QOL static validator 实际通过，不改错误门禁或追认原场。Source18 实际 21 对象增量构建、DLL 链接、14 项 focused 及 EXE Defender readback 已通过，未 live；完整共享运行时仍待冻结。双 nonce 原图辅助已收编到仓库入口，只有 help/静态验证，未 UI 采集。[原场、作用域及精确证据](xqol-r70-conversion-actor-scope-2026-10-10.md)。历史清理 `39975c58` 的官方 CI 已 66 success/20 skipped/0 failure；正式仍 7/10，不涉及天朝二期。
+
 ## 2026-10-10 23:14 CST：按新规则完成一轮代码与历史采集清理
 
 8 个旧入口合计移除 837 行不可达 main 尾部，保留 helpers/真实 preflight/统一入口；两批已有 12+9 项 focused checks 实际通过。历史数据已实际删除 69 个完整报告/采集文件，释放 821587968 allocated bytes（约 784 MiB），失败 0，保留必要薄证据及活跃输入；旧全文不可 replay 已明记。详见 [实际清理记录](maintenance/history-code-and-capture-cleanup-2026-10-10.md)。下一场空间满足原公式，待本次 clean HEAD 新鲜准入后继续 PAM−36。Main 已有 `db947a0f8` 的 exact4 Character/query 只读路线，但 Source17 未包含；须新实际 native/host 冻结再使用，不追认 R69。正式仍 7/10，不涉天朝二期。

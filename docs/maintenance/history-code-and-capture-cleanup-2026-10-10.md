@@ -30,3 +30,5 @@ actual 回执根 `C:/workspace/disk-cleanup-20261010/resume-05/`：
 15:12Z 最新容量已满足原单场 2 GiB + 既有其他池 + 系统增长 + 安全余量公式；没有降低门槛或把未来 native 构建预算挪入该场。下一场在本次代码交付 clean HEAD 后重新取得新鲜准入，继续 Source17 PAM 阴性原合同。该容量事实不等于游戏验收通过。
 
 本记录 2027-04-08 复核归纳；外置明细按通用策略 30 日、摘要 180 日复核，活跃输入仍由 owner 按用途及限期保护，不无限续存。
+
+15:26Z 追加：第二批已随 `39975c5850d46b6f6c58c78f06fed741d53701bc` 普通推送。该精确 HEAD 的 [官方 CI 38062851239](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38062851239) 已完成 66 success、20 skipped、0 failure；包括共享验收、QOL、Python、静态校验及可复现构建。未重跑或下载 CI artifacts；本结论不外推后继修改或游戏业务。

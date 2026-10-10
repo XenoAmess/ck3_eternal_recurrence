@@ -127,7 +127,11 @@ jobs:
       - name: Test Mandala Purge release tooling
         run: python tools/test_build_remove_mandala_release.py
       - name: Test XenoAmess Quality of Life release tooling
-        run: python tools/test_build_xenoamess_quality_of_life_release.py
+        run: |
+          python tools/test_build_xenoamess_quality_of_life_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_gen_xqol_conversion_actor_scope.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Tributary Expansion Directives interaction display contract
         run: python -B -X utf8 tools/test_tributary_expansion_directives_display.py
       - name: Test Tributary Expansion Directives release tooling

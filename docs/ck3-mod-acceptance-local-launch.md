@@ -14,6 +14,14 @@ keeper 的实际文件为 `inputs.json`、`ready.json`、append-only `journal.js
 
 ## 新鲜截图与直接审核
 
+双 nonce 原图采集现在使用仓库入口，避免依赖历史外置生产器；在已持有的当前独占屏幕 epoch 内运行：
+
+```text
+<verified-python> -B -X utf8 tools/steam_offline_nonce_capture.py <new-nonce-capture-dir>
+```
+
+工具显示两次独立的 12 字符 nonce，并保存 `challenge-1.png`、`challenge-2.png` 和 `report.json`。操作者必须亲审两张未裁切、未合成的原始桌面 PNG，读回各自不同的 nonce，并直接确认同图 Steam「离线模式」；`steam_offline_status_observed` 始终为 `null`，工具不点击、不输入、不自动判断离线。已有 Steam 窗口位移、新鲜画面和离线亲审合同继续生效。此双 nonce report 是采集辅助，不能替代下文公共 launcher 的 32 字符 challenge/proof；公共 schema 和既有 context 不变。此收编仅完成 CLI help/compile 静态验证，未运行新工具采集。
+
 先依已有离线恢复/截图合同取得新鲜原图 `steam-moved.png` 和 `steam-frame-freshness.json`；图片必须来自当前独占屏幕 epoch。公共 challenge 不移动桌面、不启动游戏、不推断离线，只消费已有实际图像。所有路径均由当前公共 run 和公共 runtime 决定，以下 `<...>` 是必须替换的操作占位值。
 
 ```text

@@ -14,6 +14,7 @@ import build_xenoamess_quality_of_life_release as release
 import gen_xqol_phase2
 import gen_xqol_appointments
 import xqol_vanilla_contract
+import xqol_conversion_scope_contract
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -344,6 +345,7 @@ def check_scripts(errors: list[str]) -> None:
             release_interactions, f"xqol_mass_conversion_{kind}_interaction"
         )
         ongoing = xqol_vanilla_contract.block(private, "is_valid", indentation="\t")
+        errors.extend(xqol_conversion_scope_contract.pending_conversion_scope_errors(private, kind))
         expected = (
             "\tis_valid = {\n"
             "\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n"

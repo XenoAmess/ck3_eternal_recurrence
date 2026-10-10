@@ -21,9 +21,11 @@ xqol_mass_conversion_courtier_interaction = {
 		scope:recipient = { is_courtier_of = scope:actor }
 		scope:recipient = { is_ruler = no }
 		scope:recipient = { is_imprisoned = no }
-		trigger_if = {
-			limit = { is_ai = yes }
-			is_adult = yes
+		scope:actor = {
+			trigger_if = {
+				limit = { is_ai = yes }
+				is_adult = yes
+			}
 		}
 		valid_demand_conversion_conditions_trigger = yes
 	}
@@ -80,9 +82,11 @@ xqol_mass_conversion_ruler_interaction = {
 			is_ai = yes
 			is_ruler = yes
 		}
-		trigger_if = {
-			limit = { is_ai = yes }
-			is_adult = yes
+		scope:actor = {
+			trigger_if = {
+				limit = { is_ai = yes }
+				is_adult = yes
+			}
 		}
 		valid_demand_conversion_conditions_trigger = yes
 		trigger_if = {
