@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4"
+    },
+    "last_sequence": 4525,
+    "next_step": "",
+    "pid": 17400,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R51_RED_preserved_actual_CK3_OS0_native0_host0_admincleanup_keeperwait0_offline_display_restored",
+    "task_id": "common-acceptance-12004-20261010-a13",
+    "updated_at_utc": "2026-10-10T15:44:47.752874+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4525,
+    "event_id": "6586eba4131e427aaf8523888f8c2869",
+    "timestamp_utc": "2026-10-10T15:44:47.753984+00:00",
+    "kind": "completed",
+    "task_id": "common-acceptance-12004-20261010-a13",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R51_RED_preserved_actual_CK3_OS0_native0_host0_admincleanup_keeperwait0_offline_display_restored",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4"
+    }
+  }
+}

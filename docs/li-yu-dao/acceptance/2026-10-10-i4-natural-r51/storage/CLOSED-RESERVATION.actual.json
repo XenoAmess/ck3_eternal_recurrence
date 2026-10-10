@@ -1,0 +1,119 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-10T15:48:17.307752+00:00",
+  "reservation_id": "lyd-i4-natural-expiry-4GiB-20261010-002",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\ADMISSION.actual.json",
+    "bytes": 8227,
+    "sha256": "fea56a9a0857dc3a22b3a45b8029a7e22e69152ae55fa645b261cb626c6414e7"
+  },
+  "original_admission_unmodified": true,
+  "new_reservation_created": false,
+  "appended_input_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\INPUT-BINDING-003.actual.json",
+    "bytes": 4251,
+    "sha256": "a9e48e7a9c403cad4390b5da977b336134396c4043688d2f2974e3559a58b19b"
+  },
+  "actual_task_closed_at_utc": "2026-10-10T15:44:47.752874+00:00",
+  "actual_closed_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\release-command-001\\stdout.log",
+    "bytes": 1313,
+    "sha256": "84ca4082358ed2983c5157e623ad94803e3b5ea4b37b45274790f841bdd5a96b"
+  },
+  "actual_runtime_outcome": {
+    "status": "GREEN",
+    "error": null,
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\native-report.json",
+      "bytes": 2243271,
+      "sha256": "95f9e19876bb4be115c4dcf48b139ea7ccb5439cfe8fa3abcb9a7a9d8fa2c818"
+    },
+    "original_host_started": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\host-started.json",
+      "bytes": 3915,
+      "sha256": "6397f85ab2b53cef1400b724dd56e54670143258b2cdaacfc37528e7d7ea09b7"
+    },
+    "original_host_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "d2349989969387faea6a0394a78b54360003f2485cc1f9bede2bbca060fbf8a9"
+    },
+    "host_original_returncode": 0,
+    "actual_original_popen_wait": true,
+    "native_session_process_exit_code": 0,
+    "native_shutdown_ck3_exit_code": 0,
+    "session_closure": {
+      "mode": "current-shared-managed-session"
+    },
+    "keeper_original_parent_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "010d1336199cffa56aaf4280bfe47fbf2b3fcd170ab7f44e3a45c85fedaf3791"
+    },
+    "keeper_actual_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a13\\inputs.json",
+      "bytes": 822,
+      "sha256": "7bceb05b660155523b3bfe13dd990f6b2f1a4c75c8b6c0fdf12441c6ec2e8fbc"
+    },
+    "keeper_actual_ready": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a13\\ready.json",
+      "bytes": 950,
+      "sha256": "8fefeec176c3dacafbabacdca3a912e1aa0bc85c66326897565a8b35c5b99e3f"
+    },
+    "keeper_original_returncode": 0,
+    "allocator_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-allocation-20261010-002\\RESULT.actual.json",
+      "bytes": 1667,
+      "sha256": "ae9817aee1331cde799de6a681d2d05dfe683ff5d9c6c5bf38c703a7f36e0921"
+    },
+    "allocator_command_exit_code": 0,
+    "public_run_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261010-002\\RESULT.actual.json",
+      "bytes": 1327,
+      "sha256": "ba4908fa51c8d589753848c085b796ff74e20dfa18164c789eaa4d4febe9d0f1"
+    },
+    "public_run_command_exit_code": 2,
+    "normal_GUI_exit_or_business_qualification_granted_by_storage_closure": false
+  },
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\CLOSURE-MEASURE.actual.json",
+    "bytes": 16535,
+    "sha256": "1746afffda0a15718f5e46061c75c9253e55b591a43b3668d93a69549bcb0937"
+  },
+  "asset_groups": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\ASSET-GROUPS-CLOSED.actual.json",
+    "bytes": 48308,
+    "sha256": "b30969002f198c15bc26c8624589eb9b9e359fa3eab8d89fe565adc4c2570c20"
+  },
+  "admitted_peak_bytes": 4294967296,
+  "released_reservation_peak_bytes": 4294967296,
+  "remaining_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_peak_minus_retained": true,
+  "observed_retained_task_logical_bytes_known": 838105040,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "unused_actual_peak_budget_bytes_or_null": null,
+  "fresh_free_bytes_at_closure": 622754476032,
+  "fresh_total_volume_bytes": 1023892852736,
+  "retention": {
+    "original_cold_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "checkpoint_expires_at_utc": "2026-10-24T15:44:47.752874+00:00",
+    "raw_evidence_expires_at_utc": "2026-11-09T15:44:47.752874+00:00",
+    "record_review_at_utc": "2027-04-08T15:44:47.752874+00:00",
+    "representative_protected_until_utc": "2026-10-17T13:06:29.278808+00:00",
+    "derived_exports_if_any_ttl_hours_from_actual_creation": 48,
+    "quota_override_review_unchanged_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "copy_close_and_review_do_not_renew_cache_or_existing_source_protection": true,
+    "automatic_TTL_renewal": false,
+    "automatic_deletion": false,
+    "source10_O10_build_expiry_no_input_review_extension": "2026-10-17T08:45:50.800231+00:00"
+  },
+  "root_coordinator_actual_exclusive_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "no_auto_renewal_or_deletion": true,
+  "runtime_or_business_qualification": false,
+  "automatic_reservation_manager_implemented": false
+}

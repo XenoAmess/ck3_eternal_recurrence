@@ -1,0 +1,6 @@
+test_deadline_crossed_between_loop_check_and_sleep_rejected_without_negative_sleep (__main__.LeaseRead.test_deadline_crossed_between_loop_check_and_sleep_rejected_without_negative_sleep) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.022s
+
+OK

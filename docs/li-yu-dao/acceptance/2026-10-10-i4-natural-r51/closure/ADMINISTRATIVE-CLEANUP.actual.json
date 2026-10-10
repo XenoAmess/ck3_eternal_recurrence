@@ -1,0 +1,180 @@
+{
+  "schema": "ck3-shared-administrative-cleanup-v1",
+  "at_utc": "2026-10-10T15:44:26.151436+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "reason": "administrativecleanup",
+  "actual_native_exit_code": 0,
+  "actual_retained_os_exit_code": 0,
+  "actual_original_host_returncode": 0,
+  "closed_session": true,
+  "native_cleanup_closed": true,
+  "native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\native-report.json",
+    "bytes": 2243271,
+    "sha256": "95f9e19876bb4be115c4dcf48b139ea7ccb5439cfe8fa3abcb9a7a9d8fa2c818"
+  },
+  "actual_retained_handle_os_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\actual-retained-handle-os-exit.json",
+    "bytes": 178,
+    "sha256": "dc46979ccb8d6debbc7c4bdb8723e05f373c1a99c8ed77336805c4d6b70ab89e"
+  },
+  "original_host_wait": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "d2349989969387faea6a0394a78b54360003f2485cc1f9bede2bbca060fbf8a9"
+  },
+  "original_host_started": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\host-started.json",
+    "bytes": 3915,
+    "sha256": "6397f85ab2b53cef1400b724dd56e54670143258b2cdaacfc37528e7d7ea09b7"
+  },
+  "original_public_run": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261010-002\\RESULT.actual.json",
+    "bytes": 1327,
+    "sha256": "ba4908fa51c8d589753848c085b796ff74e20dfa18164c789eaa4d4febe9d0f1"
+  },
+  "original_public_run_exit_code": 2,
+  "administrative_finish_hold_execution": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-admin-finish-hold-execution-20261010-001\\RESULT.actual.json",
+    "bytes": 960,
+    "sha256": "70f14b1b699bfe4c347874f5f7ea8173984f97b12c30b732041c73d77693fb5e"
+  },
+  "administrative_finish_hold_output": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-admin-finish-hold-execution-20261010-001\\stdout.log",
+    "bytes": 2121,
+    "sha256": "6b0d1f6437f5a173b598aa054e82d53c9c68912c843d5d547a47409126355159"
+  },
+  "original_normal_close_failure": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\normal-close-error-preserved.json",
+    "bytes": 111,
+    "sha256": "78ba110fce496a38df575becafeff323ad4cdecc66bfac973d97fa5322855fe2"
+  },
+  "original_normal_close_failure_preserved": true,
+  "normal_close_result_created": false,
+  "normal_close_qualified": false,
+  "normal_exit_claimed": false,
+  "business_pass": false,
+  "whole_product_pass": false,
+  "final_offline_review": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\FINAL-OFFLINE-REVIEW.actual.json",
+    "bytes": 2518,
+    "sha256": "a12fc09bad69bb62b7a9e6da08c63fc72d7095a337120d75f7f604c20d609efa"
+  },
+  "fresh_runtime_process_inventory": {
+    "at_utc": "2026-10-10T15:44:25.588700+00:00",
+    "scanned_process_count": 191,
+    "python_controllers_inspected": [
+      {
+        "pid": 8636,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      },
+      {
+        "pid": 11072,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      },
+      {
+        "pid": 17028,
+        "name": "python.exe",
+        "runtime_controller_match": true
+      },
+      {
+        "pid": 17072,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [
+      {
+        "pid": 17028,
+        "name": "python.exe",
+        "command": "c:\\users\\administrator\\appdata\\local\\programs\\python\\python313\\python.exe -b -x utf8 c:\\csr10\\tools\\ck3_mod_acceptance_keeper.py --repo c:\\workspace\\ck3_eternal_recurrence --root c:\\workspace\\ck3-common-runtime\\keepers\\20261010-a13 --task common-acceptance-12004-20261010-a13 --sequence 4498"
+      }
+    ],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "original_keeper_process": {
+    "pid": 17028,
+    "create_time": 1791643780.6417344,
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\csr10\\tools\\ck3_mod_acceptance_keeper.py",
+      "--repo",
+      "C:\\workspace\\ck3_eternal_recurrence",
+      "--root",
+      "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a13",
+      "--task",
+      "common-acceptance-12004-20261010-a13",
+      "--sequence",
+      "4498"
+    ]
+  },
+  "actual_current_owned_lease": {
+    "inputs": {
+      "schema": "ck3-mod-acceptance-keeper-inputs-v1",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "checkout_head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4",
+      "task_id": "common-acceptance-12004-20261010-a13",
+      "initial_sequence": 4498,
+      "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "bus_dir": "C:\\workspace\\.codex-task-bus",
+      "bus_cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "lease_module": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\screen_bus_lease.py",
+        "bytes": 15381,
+        "sha256": "d000883192b63d0aa7f5df7769a7eff0c1ed90450075e88c3d21d10943b46924"
+      },
+      "interval_seconds": 180,
+      "at_utc": "2026-10-10T14:49:40.950027+00:00",
+      "screen_acquired_by_this_tool": false
+    },
+    "lease": {
+      "checkout_head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4",
+      "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "event_id": "5314e83510fb42ce9d4ff361653a546e",
+      "expected_sequence": 4523,
+      "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "schema": "xar.promo.screen-lease-cas/v1",
+      "screen_resource": "ck3-screen:acquired",
+      "sequence": 4524,
+      "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "task_id": "common-acceptance-12004-20261010-a13",
+      "updated_at_utc": "2026-10-10T15:41:38.225801+00:00"
+    },
+    "owner_checked_at_utc": "2026-10-10T15:44:26.151314+00:00"
+  },
+  "freshness": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r51-final-steam-fresh-frame-20261010-001\\steam-frame-freshness.json",
+    "bytes": 1192,
+    "sha256": "05257afdbec08887c1bde5c2acf938a6c4be4754c237bd5da55f957dbc2af358"
+  },
+  "display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\display-final-evidence-restore-001.json",
+    "bytes": 440,
+    "sha256": "cdc0081f171a42c7dbb7121942c929e887acb87082f56ae298cd8b01c9c4b887"
+  },
+  "current_display_readback": {
+    "observed_at_utc": "2026-10-10T15:44:25.614374+00:00",
+    "EnumDisplaySettings": {
+      "width": 1024,
+      "height": 768,
+      "bits": 32,
+      "frequency": 60
+    },
+    "pyautogui_size": [
+      1024,
+      768
+    ],
+    "original_display_fit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\display-fit-001.json",
+      "bytes": 442,
+      "sha256": "a4129dab3a3c2c9523ae96b511a9b6904201f8f0912e7f2bcbfdefc78a451acb"
+    },
+    "equals_restored_and_original_before": true
+  }
+}

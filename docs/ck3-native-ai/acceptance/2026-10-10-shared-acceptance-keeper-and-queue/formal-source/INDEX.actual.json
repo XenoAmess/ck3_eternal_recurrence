@@ -1,0 +1,425 @@
+{
+  "schema": "r51-formal-source-adoption-and-validation-v1",
+  "at_utc": "2026-10-10T15:55:19.436582+00:00",
+  "files": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\baseline-original\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/baseline-original/RESULT.actual.json",
+      "bytes": 1151,
+      "sha256": "295425f9e80b207537a0cf6b122719322246d4dc8b6884148358c25059cd685f"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\baseline-original\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/baseline-original/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\baseline-original\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/baseline-original/stderr.log",
+      "bytes": 2197,
+      "sha256": "525f2e0711cdd32d3ba448cd20b7f4de18c1827a744c2c4be33ed6132163c00e"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\first-candidate-ten\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/first-candidate-ten/RESULT.actual.json",
+      "bytes": 1205,
+      "sha256": "66a0a536b2425e9619d16b8c1bac2b4e0017153daa33177c52c3581072fb2525"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\first-candidate-ten\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/first-candidate-ten/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\first-candidate-ten\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/first-candidate-ten/stderr.log",
+      "bytes": 5367,
+      "sha256": "97ecac3d3fb3a71c1316565bbe0355f567825c54bb8b41226968567d0fba6b1c"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\corrected-two-only\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/corrected-two-only/RESULT.actual.json",
+      "bytes": 1356,
+      "sha256": "5b371715d66de904238adff0fde92ebd88bbf83ab98a29dc49c88a3b56555ada"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\corrected-two-only\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/corrected-two-only/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\corrected-two-only\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/corrected-two-only/stderr.log",
+      "bytes": 297,
+      "sha256": "76e21a60c8be4a13290984a2f7d1ddf8d9c2f2090e2f6e90d87e3794e0fecfb7"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\baseline-original\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/baseline-original/RESULT.actual.json",
+      "bytes": 1293,
+      "sha256": "901346e7348f64406f7359d24c80592223ae99dbe40008fcfb03921f6dd1874c"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\baseline-original\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/baseline-original/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\baseline-original\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/baseline-original/stderr.log",
+      "bytes": 1463,
+      "sha256": "9b643e51882c106c929cbb434e8a820de989346bb470e89971e49b060b5ed45b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\corrected-dependency\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/corrected-dependency/RESULT.actual.json",
+      "bytes": 1375,
+      "sha256": "de75a24711fbcb644ead49511cdc0d9eea509a42b0264358be0c7ff74ac0f97b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\corrected-dependency\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/corrected-dependency/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\corrected-dependency\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/corrected-dependency/stderr.log",
+      "bytes": 222,
+      "sha256": "40ec582a54b8cf85593bad42edbf0b89cefd08777a15df83f4310d99cb76bcb5"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\keeper001-read-race.patch",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/keeper001-read-race.patch",
+      "bytes": 2483,
+      "sha256": "7bbfe84dffef1c394f3f9fb7c0c3d80acf6b0f3ad16021650d4ee7724aa13c37"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\keeper001-to002-nonnegative-sleep.patch",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/keeper001-to002-nonnegative-sleep.patch",
+      "bytes": 801,
+      "sha256": "e4a0adcb8daf5ce54d0bfd931ae4c2dd50eec5ac14ec02e140fdd59a310c778b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\keeper\\FOCUSED-FINAL.original.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/keeper/FOCUSED-FINAL.original.json",
+      "bytes": 2247,
+      "sha256": "9cee03b827f70d7765a493212b5c8b664b3d37cf2bdf6459920b468e9fa1ea7a"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\queue-native-zero-dependency.patch",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/queue-native-zero-dependency.patch",
+      "bytes": 1302,
+      "sha256": "10797026b61f68fca7680a6eaeb6be730d60f8246b7d0cfb34cee131714c0ce3"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\queue\\FOCUSED-DEPENDENCY.original.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/queue/FOCUSED-DEPENDENCY.original.json",
+      "bytes": 1682,
+      "sha256": "4b748d278e1665c667de57cd28fb98f1c7c9171fd879bc0022494393e73bc669"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\.gitattributes",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/.gitattributes",
+      "bytes": 29,
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\REPORT.md",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/REPORT.md",
+      "bytes": 3593,
+      "sha256": "fd62dec0e42a61bf50fffe43239394181c8035330a08047d486d66bdc8d031e2"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\FACTS.candidate.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/FACTS.candidate.json",
+      "bytes": 4760,
+      "sha256": "fdff25db04a5509a41e292565902965174f8433c8868a826a47f617b6adea56d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-shared-acceptance-fix-evidence-package-sourceonly-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-shared-acceptance-keeper-and-queue\\INDEX.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/INDEX.json",
+      "bytes": 18916,
+      "sha256": "3a946c15e06bbc18a3fc7fcd6f39dd02cd467c892b90189dc21ae44354ac6493"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\actual-retained-handle-os-exit.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "dc46979ccb8d6debbc7c4bdb8723e05f373c1a99c8ed77336805c4d6b70ab89e"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\original-normal-close-failed\\queue-result.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/original-normal-close-failed/queue-result.json",
+      "bytes": 547,
+      "sha256": "765b509aec9412da772a0ab8ab3f1bda15ddfcf05e15d35af9e7bd0e63f08e1d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\original-normal-close-failed\\stdout.log",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/original-normal-close-failed/stdout.log",
+      "bytes": 149,
+      "sha256": "6aed8a3ebed94b5ea71a00f76fc39b67b4f51fcf8e9076baea3b0e145eacae74"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\original-normal-close-failed\\normal-close-error-preserved.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/original-normal-close-failed/normal-close-error-preserved.json",
+      "bytes": 111,
+      "sha256": "78ba110fce496a38df575becafeff323ad4cdecc66bfac973d97fa5322855fe2"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\business\\SMALL-PROGRESS.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/business/SMALL-PROGRESS.actual.json",
+      "bytes": 11331,
+      "sha256": "d81e04edebf8b0b4c4c803bf0695ca17e5afcaa342711ddc594002708c2e617c"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\ADMINISTRATIVE-CLEANUP.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/ADMINISTRATIVE-CLEANUP.actual.json",
+      "bytes": 7458,
+      "sha256": "edbb6570a18b62d4dd092642fabb32565f40c45d76f7a499f0c02c336d9520cd"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\public-run\\RESULT.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/public-run/RESULT.actual.json",
+      "bytes": 1327,
+      "sha256": "ba4908fa51c8d589753848c085b796ff74e20dfa18164c789eaa4d4febe9d0f1"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\public-verify\\RESULT.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/public-verify/RESULT.actual.json",
+      "bytes": 1334,
+      "sha256": "2de47f22aed2c71dff8b8eed9f5c032ff85b1789a91e8f9619ef69e2ef4bee48"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\public-verify\\stdout.log",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/public-verify/stdout.log",
+      "bytes": 321,
+      "sha256": "e2c55619e3d93ffb8f3902efa4be8f480beeefdfb99a81eab0c184850b0ecf77"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\host-original-process-exit.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "d2349989969387faea6a0394a78b54360003f2485cc1f9bede2bbca060fbf8a9"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\keeper-actual-parent-exit.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "010d1336199cffa56aaf4280bfe47fbf2b3fcd170ab7f44e3a45c85fedaf3791"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\keeper-report.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/keeper-report.json",
+      "bytes": 448,
+      "sha256": "58a5291799a39632028f84629b8c6550befa18674993f460435495291dea701f"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\allocator-original-completion.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/allocator-original-completion.actual.json",
+      "bytes": 1667,
+      "sha256": "ae9817aee1331cde799de6a681d2d05dfe683ff5d9c6c5bf38c703a7f36e0921"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\FINAL-OFFLINE-REVIEW.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/FINAL-OFFLINE-REVIEW.actual.json",
+      "bytes": 2518,
+      "sha256": "a12fc09bad69bb62b7a9e6da08c63fc72d7095a337120d75f7f604c20d609efa"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\display-final-evidence-restore.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/display-final-evidence-restore.actual.json",
+      "bytes": 440,
+      "sha256": "cdc0081f171a42c7dbb7121942c929e887acb87082f56ae298cd8b01c9c4b887"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\screen-release\\RESULT.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/screen-release/RESULT.actual.json",
+      "bytes": 1263,
+      "sha256": "9f1b036ddc1534d666d8477f5682690dd5b960dd5971344a50712d9f38b5e3be"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\screen-release\\stdout.log",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/screen-release/stdout.log",
+      "bytes": 1313,
+      "sha256": "84ca4082358ed2983c5157e623ad94803e3b5ea4b37b45274790f841bdd5a96b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\storage\\CLOSED-RESERVATION.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/storage/CLOSED-RESERVATION.actual.json",
+      "bytes": 5914,
+      "sha256": "4d053ef5743c1b73425ce4d0a0a28cf4bd7e5c77c71aa47313871710452ffd75"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\storage\\CLOSURE-MEASURE.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/storage/CLOSURE-MEASURE.actual.json",
+      "bytes": 16535,
+      "sha256": "1746afffda0a15718f5e46061c75c9253e55b591a43b3668d93a69549bcb0937"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\storage\\CLOSURE-EXECUTION.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/storage/CLOSURE-EXECUTION.actual.json",
+      "bytes": 1636,
+      "sha256": "f4013f1d4029c568344bfa75d0ab51ff870a27597039c13f265dc132456f8b38"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\start-fresh-command001\\RESULT.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/start-fresh-command001/RESULT.actual.json",
+      "bytes": 1018,
+      "sha256": "b024c6ff47f1fba6c39fec2706fbfcede7771f74b567da3c978978f5d7f2ad58"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\start-fresh-command001\\stderr.log",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/start-fresh-command001/stderr.log",
+      "bytes": 577,
+      "sha256": "e360ada27b3604e043f7dcf2c0f7925b27b21374a382b2fbc278d4b2b2854a67"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\start-fresh-command002\\RESULT.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/start-fresh-command002/RESULT.actual.json",
+      "bytes": 1019,
+      "sha256": "c5d0d5b943895b234888d598010ee8342744c69a77ee1245909cab62d9dbee2f"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\start-fresh-command002\\stdout.log",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/start-fresh-command002/stdout.log",
+      "bytes": 1049,
+      "sha256": "442fcdd768f1fd7ac9c59f2601a7603dc8561ae5604cd7c17f55abd2190942f6"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\START-FRESH002.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/START-FRESH002.actual.json",
+      "bytes": 1192,
+      "sha256": "dd9beda70fa983961079d7dfa561087571ea71f9975c848377f4c191290aa455"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\START-OPERATOR-REVIEW.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/START-OPERATOR-REVIEW.actual.json",
+      "bytes": 1634,
+      "sha256": "f136542dc0a1126b39f1f6bde05f1ae5f0eba74b424f677601403e5cdfd07bf7"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\STARTUP-IMAGE-DESCRIPTOR.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/STARTUP-IMAGE-DESCRIPTOR.actual.json",
+      "bytes": 1780,
+      "sha256": "c7057783529e99f38080fd97631e075ce2ff9b71e891daed60137d1755a7e5bc"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\ADMIN-ATTEMPT-002.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/ADMIN-ATTEMPT-002.actual.json",
+      "bytes": 4051,
+      "sha256": "4efb2b2b893c24838ac87fbe2887c6c2aa958f9613482a2d5fd469fb15ad2348"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\ADMIN-QUEUE-002.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/ADMIN-QUEUE-002.actual.json",
+      "bytes": 2272,
+      "sha256": "73b1011f7ed3645a7190f1db2e55466eca15080b87dd11c44429f85a4379f553"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\ADMIN-EXECUTION-002.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/ADMIN-EXECUTION-002.actual.json",
+      "bytes": 960,
+      "sha256": "70f14b1b699bfe4c347874f5f7ea8173984f97b12c30b732041c73d77693fb5e"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\diagnostic\\PROJECTION.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/diagnostic/PROJECTION.actual.json",
+      "bytes": 7712,
+      "sha256": "ce627cab46d5ca9a9eb9c6c86e3952b34ef2eb1e12594fbba794d6fbe6f18ef9"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\business\\case-error-preserved.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/business/case-error-preserved.json",
+      "bytes": 213,
+      "sha256": "8a5b9e7cfc26c4c67ae2af7a4c980851d11d9ec7d4ddd3621dfb1ddd227223e2"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\closure\\STOP",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/closure/STOP",
+      "bytes": 885,
+      "sha256": "c8c4f6765b76fc08659eba8dc30f0aebbc687cfe2ec5ef9945bf065bbb23c145"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\FINAL-FRESH.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/FINAL-FRESH.actual.json",
+      "bytes": 1192,
+      "sha256": "05257afdbec08887c1bde5c2acf938a6c4be4754c237bd5da55f957dbc2af358"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\offline\\FINAL-SOURCE.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/offline/FINAL-SOURCE.actual.json",
+      "bytes": 448,
+      "sha256": "fa005917c4074563ca0e29317b7e6cb66df19554bfcefc7bf3c85c3e2a5f812c"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\INDEX.actual.json",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/INDEX.actual.json",
+      "bytes": 17606,
+      "sha256": "4d4b1eb93384ddf83c2daea9d87d8a1d4647de4713d345ae5d6b557eee2ea04f"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\REPORT.md",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/REPORT.md",
+      "bytes": 4369,
+      "sha256": "9dde5da46130c3f039552b72f6cca63d77f4b1243596570a53f49d5717087795"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-terminal-small-publication-candidate-20261010-001\\candidate\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-r51\\.gitattributes",
+      "target": "docs/li-yu-dao/acceptance/2026-10-10-i4-natural-r51/.gitattributes",
+      "bytes": 29,
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-keeper-deadline-edge-20261010-001\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/keeper-new-deadline-edge/RESULT.actual.json",
+      "bytes": 978,
+      "sha256": "0635e4484eddf29f61c48e95c93ce9524379c6626107341bb14550e21a25df09"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-keeper-deadline-edge-20261010-001\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/keeper-new-deadline-edge/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-keeper-deadline-edge-20261010-001\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/keeper-new-deadline-edge/stderr.log",
+      "bytes": 297,
+      "sha256": "a11a3579cf7e2e8b3add0d449c96a822dff966a6bb4fbc4d761326b895feaa0b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-queue-native-zero-20261010-001\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/queue-native-zero-six/RESULT.actual.json",
+      "bytes": 869,
+      "sha256": "162403d79fdb66d687a7a717e42e0b999f3dd6519537bc1ec4fa96c77443cbb9"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-queue-native-zero-20261010-001\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/queue-native-zero-six/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-queue-native-zero-20261010-001\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/queue-native-zero-six/stderr.log",
+      "bytes": 889,
+      "sha256": "cd56a31c30f119700dd5633abe9acd3188edbf392afa0c5a9b2d6f5f8a59ede0"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-r51-focused-fixes-adopted-20261010-001.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-10-shared-acceptance-keeper-and-queue/formal-source/ADOPTION.actual.json",
+      "bytes": 2394,
+      "sha256": "df4b311c8b35a46732f93d452f153f565c3049cbbb54e04efe9766db1cef9d57"
+    }
+  ],
+  "keeper_validation": "Prior 10 guards passed across original8 and corrected2; adopted successor adds one deadline-crossing PASS only, without rerunning old10.",
+  "queue_validation": "Adopted source actual six portable native-zero checks PASS; previous real-host positive sample and original failure retained.",
+  "original_runtime_business_pass": false,
+  "new_live_fix_credit": false,
+  "old_deadlines_renewed": false
+}

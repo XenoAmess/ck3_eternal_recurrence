@@ -1,0 +1,11 @@
+--- candidate001/tools/ck3_mod_acceptance_keeper.py
++++ candidate002/tools/ck3_mod_acceptance_keeper.py
+@@ -129,7 +129,7 @@
+                 while newer and newer[-1] == rows[-1] and time.monotonic() < renewal_read_deadline:
+                     require(not (root / "report.json").exists() and not (root / "STOP").exists() and
+                             not (root / "ROOT_STOP_REQUIRED.json").exists(), "Keeper stopped during ownership read")
+-                    time.sleep(min(.05, renewal_read_deadline - time.monotonic()))
++                    time.sleep(max(0.0, min(.05, renewal_read_deadline - time.monotonic())))
+                     newer = (root / "journal.jsonl").read_text(encoding="utf-8").splitlines()
+                 if not newer or newer[-1] == rows[-1]:
+                     raise

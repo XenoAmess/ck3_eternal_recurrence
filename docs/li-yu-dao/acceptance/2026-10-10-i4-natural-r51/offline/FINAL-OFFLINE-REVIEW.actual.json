@@ -1,0 +1,62 @@
+{
+  "schema": "ck3-root-direct-final-offline-review-v1",
+  "at_utc": "2026-10-10T15:44:26.151436+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "reviewer": "/root",
+  "direct_reviewed": true,
+  "offline_mode_visible": true,
+  "steam_offline_confirmed": true,
+  "direct_original_image_review": true,
+  "current_display_readback": {
+    "observed_at_utc": "2026-10-10T15:44:25.614374+00:00",
+    "EnumDisplaySettings": {
+      "width": 1024,
+      "height": 768,
+      "bits": 32,
+      "frequency": 60
+    },
+    "pyautogui_size": [
+      1024,
+      768
+    ],
+    "original_display_fit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\display-fit-001.json",
+      "bytes": 442,
+      "sha256": "a4129dab3a3c2c9523ae96b511a9b6904201f8f0912e7f2bcbfdefc78a451acb"
+    },
+    "equals_restored_and_original_before": true
+  },
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\final-steam-menu-001\\source.png",
+    "bytes": 936911,
+    "sha256": "4f8a2b63f7078ccb441c3567b2bbb411723bfa25489aed2c85b9c685b7ce626b"
+  },
+  "source_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\final-steam-menu-001\\SOURCE.actual.json",
+    "bytes": 448,
+    "sha256": "fa005917c4074563ca0e29317b7e6cb66df19554bfcefc7bf3c85c3e2a5f812c"
+  },
+  "freshness": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r51-final-steam-fresh-frame-20261010-001\\steam-frame-freshness.json",
+    "bytes": 1192,
+    "sha256": "05257afdbec08887c1bde5c2acf938a6c4be4754c237bd5da55f957dbc2af358"
+  },
+  "before_image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r51-final-steam-fresh-frame-20261010-001\\steam-before.png",
+    "bytes": 947372,
+    "sha256": "db2658d18d5739b683b7d8fc69abe289b6dfc6f565a3b664e21887ee6e42ec04"
+  },
+  "moved_image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r51-final-steam-fresh-frame-20261010-001\\steam-moved.png",
+    "bytes": 919877,
+    "sha256": "85cb0156591288fa317227f050f69320de72f3d3c489a0d8e11b77e00c29f957"
+  },
+  "display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\display-final-evidence-restore-001.json",
+    "bytes": 440,
+    "sha256": "cdc0081f171a42c7dbb7121942c929e887acb87082f56ae298cd8b01c9c4b887"
+  },
+  "launch_credit": false,
+  "business_pass": false,
+  "normal_exit_claimed": false
+}

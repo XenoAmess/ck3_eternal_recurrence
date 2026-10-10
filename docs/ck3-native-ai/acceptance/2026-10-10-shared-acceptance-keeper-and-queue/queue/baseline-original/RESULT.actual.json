@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\test_ck3_mod_acceptance_queue_native_zero.py",
+    "--queue",
+    "C:\\csr10\\tools\\ck3_mod_acceptance_queue.py",
+    "--host",
+    "C:/csr10/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "--dependency-only"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001",
+  "started_at_utc": "2026-10-10T15:37:57.037672+00:00",
+  "finished_at_utc": "2026-10-10T15:37:57.347570+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\before-frozen-dependency\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\before-frozen-dependency\\stderr.log",
+    "bytes": 1463,
+    "sha256": "9b643e51882c106c929cbb434e8a820de989346bb470e89971e49b060b5ed45b"
+  }
+}

@@ -1,0 +1,2 @@
+# Preserve original unified-diff context spaces and blank lines.
+*.patch whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

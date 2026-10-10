@@ -1,0 +1,11 @@
+test_actual_host_dependency_is_executed (__main__.NativeZeroExtraction.test_actual_host_dependency_is_executed) ... ok
+test_boolean_exit_code_does_not_mean_integer_zero (__main__.NativeZeroExtraction.test_boolean_exit_code_does_not_mean_integer_zero) ... ok
+test_crossed_native_pid_is_rejected (__main__.NativeZeroExtraction.test_crossed_native_pid_is_rejected) ... ok
+test_missing_dependency_is_rejected_before_exec (__main__.NativeZeroExtraction.test_missing_dependency_is_rejected_before_exec) ... ok
+test_native_zero_cannot_replace_retained_os_nonzero (__main__.NativeZeroExtraction.test_native_zero_cannot_replace_retained_os_nonzero) ... ok
+test_top_level_error_still_rejects_normal_zero (__main__.NativeZeroExtraction.test_top_level_error_still_rejects_normal_zero) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.156s
+
+OK

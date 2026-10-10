@@ -1,0 +1,70 @@
+test_changed_head_rejected_without_wait (__main__.LeaseRead.test_changed_head_rejected_without_wait) ... ok
+test_existing_journal_advance_retry_preserved (__main__.LeaseRead.test_existing_journal_advance_retry_preserved) ... ok
+test_extra_resource_rejected_without_wait (__main__.LeaseRead.test_extra_resource_rejected_without_wait) ... ok
+test_failed_renewal_journal_rejected (__main__.LeaseRead.test_failed_renewal_journal_rejected) ... ERROR
+test_fresh_exact_owner_unchanged (__main__.LeaseRead.test_fresh_exact_owner_unchanged) ... ok
+test_journal_lags_committed_same_owner_heartbeat (__main__.LeaseRead.test_journal_lags_committed_same_owner_heartbeat) ... ok
+test_newer_packet_without_receipt_never_accepted (__main__.LeaseRead.test_newer_packet_without_receipt_never_accepted) ... ok
+test_released_owner_rejected_without_wait (__main__.LeaseRead.test_released_owner_rejected_without_wait) ... ok
+test_stale_owner_rejected_without_wait (__main__.LeaseRead.test_stale_owner_rejected_without_wait) ... ok
+test_stop_during_wait_rejected (__main__.LeaseRead.test_stop_during_wait_rejected) ... ERROR
+
+======================================================================
+ERROR: test_failed_renewal_journal_rejected (__main__.LeaseRead.test_failed_renewal_journal_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\test_live_lease_read_race.py", line 124, in test_failed_renewal_journal_rejected
+    run()
+    ~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\test_live_lease_read_race.py", line 88, in <lambda>
+    return lambda:namespace['live_lease'](root,now=NOW),calls
+                  ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\ck3_mod_acceptance_keeper.py", line 97, in live_lease
+    require(last.get("result") == "OWNED_CAS", "Keeper no longer owns the screen")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\ck3_mod_acceptance_keeper.py", line 20, in require
+    raise ValueError(message)
+ValueError: Keeper no longer owns the screen
+
+======================================================================
+ERROR: test_stop_during_wait_rejected (__main__.LeaseRead.test_stop_during_wait_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\ck3_mod_acceptance_keeper.py", line 104, in live_lease
+    module.checked_owner(packet.get("tasks"), inputs["task_id"], lease["sequence"],
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         repo, inputs["checkout_head"], now=now)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\csr10\promo\ck3_native_war_ai\integration\screen_bus_lease.py", line 153, in checked_owner
+    require(owner.get("state") == "running" and owner.get("resources") == [SCREEN] and
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            type(owner.get("last_sequence")) is int and owner["last_sequence"] == sequence,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "screen task is not the exact running CAS owner")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\csr10\promo\ck3_native_war_ai\integration\screen_bus_lease.py", line 35, in require
+    raise RuntimeError(message)
+RuntimeError: screen task is not the exact running CAS owner
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\test_live_lease_read_race.py", line 118, in test_stop_during_wait_rejected
+    run()
+    ~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\test_live_lease_read_race.py", line 88, in <lambda>
+    return lambda:namespace['live_lease'](root,now=NOW),calls
+                  ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\ck3_mod_acceptance_keeper.py", line 130, in live_lease
+    require(not (root / "report.json").exists() and not (root / "STOP").exists() and
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            not (root / "ROOT_STOP_REQUIRED.json").exists(), "Keeper stopped during ownership read")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\ck3_mod_acceptance_keeper.py", line 20, in require
+    raise ValueError(message)
+ValueError: Keeper stopped during ownership read
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.110s
+
+FAILED (errors=2)

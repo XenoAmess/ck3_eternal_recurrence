@@ -1,0 +1,37 @@
+{
+  "schema": "ck3-native-zero-actual-host-dependency-test-v1",
+  "status": "EXACT_HOST_DEPENDENCY_BEFORE_NAMEERROR_AFTER_PASS",
+  "commands": {
+    "before-frozen-dependency": {
+      "exit_code": 1,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\before-frozen-dependency\\RESULT.actual.json",
+        "bytes": 1293,
+        "sha256": "901346e7348f64406f7359d24c80592223ae99dbe40008fcfb03921f6dd1874c"
+      }
+    },
+    "after-candidate-dependency": {
+      "exit_code": 0,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\after-candidate-dependency\\RESULT.actual.json",
+        "bytes": 1375,
+        "sha256": "de75a24711fbcb644ead49511cdc0d9eea509a42b0264358be0c7ff74ac0f97b"
+      }
+    }
+  },
+  "test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\test_ck3_mod_acceptance_queue_native_zero.py",
+    "bytes": 5975,
+    "sha256": "000b567ab3f2d5e47ecede519e1cfc81c9af9d23f252789d41104c18c4c3e00f"
+  },
+  "candidate_queue": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\ck3_mod_acceptance_queue.py",
+    "bytes": 10119,
+    "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+  },
+  "actual_host_function_bodies_used": true,
+  "portable_default_repo_paths_and_TemporaryDirectory": true,
+  "other_five_portable_guard_tests_not_run_pending_ROOT_formal_source_check": true,
+  "no_real_Git_bus_native_game_or_MAIN_calls": true,
+  "business_pass": false
+}

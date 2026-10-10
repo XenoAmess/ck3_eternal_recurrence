@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/steam_offline_fresh_frame.py",
+    "--output-dir",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r51-start-steam-fresh-frame-20261010-001"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T14:50:52.550365+00:00",
+  "finished_at_utc": "2026-10-10T14:50:53.006649+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\steam-fresh-command-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\steam-fresh-command-001\\stderr.log",
+    "bytes": 577,
+    "sha256": "e360ada27b3604e043f7dcf2c0f7925b27b21374a382b2fbc278d4b2b2854a67"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "at_utc": "2026-10-10T15:48:52.123086+00:00",
+  "source_head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-002\\ck3_mod_acceptance_keeper.py",
+        "bytes": 11311,
+        "sha256": "9ec75f89addd62f7a426442d1ce7ec9dc9973cf71a087f57de500c8f287ed7a0"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_keeper.py",
+        "bytes": 11311,
+        "sha256": "9ec75f89addd62f7a426442d1ce7ec9dc9973cf71a087f57de500c8f287ed7a0"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\ck3_mod_acceptance_queue.py",
+        "bytes": 10119,
+        "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+        "bytes": 10119,
+        "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-keeper-portable-test-sourceonly-20261010-001\\tools\\test_ck3_mod_acceptance_keeper_read_race.py",
+        "bytes": 8517,
+        "sha256": "d44f4159e2ef228039c6362d299776f8edd30f0c91082019b8ecfc7c56c73467"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_keeper_read_race.py",
+        "bytes": 8517,
+        "sha256": "d44f4159e2ef228039c6362d299776f8edd30f0c91082019b8ecfc7c56c73467"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\test_ck3_mod_acceptance_queue_native_zero.py",
+        "bytes": 5975,
+        "sha256": "000b567ab3f2d5e47ecede519e1cfc81c9af9d23f252789d41104c18c4c3e00f"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_native_zero.py",
+        "bytes": 5975,
+        "sha256": "000b567ab3f2d5e47ecede519e1cfc81c9af9d23f252789d41104c18c4c3e00f"
+      }
+    }
+  ],
+  "only_reviewed_functions_changed": true,
+  "runtime_or_business_pass": false,
+  "old_runtime_sources_modified": false
+}

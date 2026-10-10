@@ -1,0 +1,321 @@
+{
+  "schema": "lyd.r0051.small-actual-business-progress.v1",
+  "created_at_utc": "2026-10-10T15:35:08.446198+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "status": "ACTUAL_PARTIAL_PROGRESS_BUSINESS_RED",
+  "initial_saved_qualification": {
+    "school_cooldown_present": true,
+    "raw_tick_observed": "349",
+    "actor_id": 31254,
+    "faith_id": 107,
+    "rite_id": 169,
+    "headless": true,
+    "membership_present": true,
+    "landed_alive": true,
+    "expiry_date": null,
+    "remaining_days": null,
+    "other_eligibility_confirmed_by_actual_enabled_decision": false,
+    "checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 91669682,
+      "sha256": "bf8fd24b3c90735333a9a7e86a1844591fd66098d07eccd88f9d90e7a35c8968",
+      "date_raw": 53144712
+    },
+    "preserved_checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\initial-school-cooldown-checkpoint.ck3",
+      "size": 91669682,
+      "sha256": "bf8fd24b3c90735333a9a7e86a1844591fd66098d07eccd88f9d90e7a35c8968",
+      "date_raw": 53144712
+    },
+    "save_body_reads": 1,
+    "baseline_body_reads": 0
+  },
+  "initial_selection_proof": {
+    "completion_source": "official_later_actual_observation_and_independent_current_model",
+    "postcondition_verified": true,
+    "original_ack_selected_after_verified": false,
+    "original_ack_unchanged": true,
+    "decision_key": "lyd_change_school_decision"
+  },
+  "complete_school_observations": [
+    {
+      "index": 0,
+      "date_raw": 53144712,
+      "actor": 31254,
+      "paused": true,
+      "confirm_enabled": false,
+      "decision_executed": false,
+      "model_before": {
+        "native_revision": 1,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144712,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      },
+      "model_after": {
+        "native_revision": 1,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144712,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      }
+    },
+    {
+      "index": 1,
+      "date_raw": 53144736,
+      "actor": 31254,
+      "paused": true,
+      "confirm_enabled": false,
+      "decision_executed": false,
+      "model_before": {
+        "native_revision": 8,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144736,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      },
+      "model_after": {
+        "native_revision": 8,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144736,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      }
+    },
+    {
+      "index": 2,
+      "date_raw": 53144760,
+      "actor": 31254,
+      "paused": true,
+      "confirm_enabled": false,
+      "decision_executed": false,
+      "model_before": {
+        "native_revision": 13,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144760,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      },
+      "model_after": {
+        "native_revision": 13,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144760,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      }
+    },
+    {
+      "index": 3,
+      "date_raw": 53144784,
+      "actor": 31254,
+      "paused": true,
+      "confirm_enabled": false,
+      "decision_executed": false,
+      "model_before": {
+        "native_revision": 18,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144784,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      },
+      "model_after": {
+        "native_revision": 18,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144784,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      }
+    },
+    {
+      "index": 4,
+      "date_raw": 53144808,
+      "actor": 31254,
+      "paused": true,
+      "confirm_enabled": false,
+      "decision_executed": false,
+      "model_before": {
+        "native_revision": 23,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144808,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      },
+      "model_after": {
+        "native_revision": 23,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144808,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      }
+    },
+    {
+      "index": 5,
+      "date_raw": 53144832,
+      "actor": 31254,
+      "paused": true,
+      "confirm_enabled": false,
+      "decision_executed": false,
+      "model_before": {
+        "native_revision": 28,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144832,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      },
+      "model_after": {
+        "native_revision": 28,
+        "connection_generation": 1,
+        "game_pid": 2088,
+        "played_character_id": 31254,
+        "date_raw": 53144832,
+        "owner_thread_verified": true,
+        "frame_verified": true
+      }
+    }
+  ],
+  "complete_school_observation_hours": 120,
+  "sixth_advance": {
+    "row_id": "case-natural-day-0013",
+    "ok": true,
+    "requested_days": 1,
+    "elapsed_hours": 24,
+    "requested_interval_complete": true,
+    "event_boundary": null,
+    "before_date_raw": 53144832,
+    "after_date_raw": 53144856,
+    "after_paused": true,
+    "after_actor": 31254,
+    "finished_at": "2026-10-10T15:11:03.458731+00:00"
+  },
+  "sixth_snapshot": {
+    "row_id": "case-snapshot-0014",
+    "ok": true,
+    "date_raw": 53144856,
+    "paused": true,
+    "actor": 31254,
+    "native_revision": 33
+  },
+  "actual_natural_elapsed_hours": 144,
+  "actual_natural_elapsed_days": 6.0,
+  "sixth_school_observation_completed": false,
+  "sixth_school_observation_refusal": {
+    "status": "BLOCKED_NEVER_REPLAY",
+    "error": "RuntimeError('screen task is not the exact running CAS owner')",
+    "business_pass": false
+  },
+  "actual_retained_handle_os_exit": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 2088,
+    "create_time": 1791643946.5564156,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "original_finish_hold_refusal": {
+    "status": "BLOCKED_NEVER_REPLAY",
+    "error": "NameError(\"name 'finished_native_process_exit_zero_proof' is not defined\")",
+    "business_pass": false
+  },
+  "original_normal_close_result": null,
+  "original_native_zero_proof": null,
+  "later_administrative_cleanup": null,
+  "final_save": null,
+  "natural_cooldown_disappearance": null,
+  "cold_reload": null,
+  "business_pass": false,
+  "source_originals": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-natural-origin.json",
+      "bytes": 62915,
+      "sha256": "edceccb6b3834a163f04f5c00e2aed63c613ee017ce8b0256ef6fda41a2dc17c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0000.json",
+      "bytes": 41101,
+      "sha256": "7193200a6b1a6ac40463313bfab0f1e7cff5fc00ec6395f7fdf477a86e5740d9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0001.json",
+      "bytes": 41747,
+      "sha256": "a5f08ac2e7e90ef72474b5bfdcb3bcf3eabd94f603cbc505d1f072132831b94c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0002.json",
+      "bytes": 41758,
+      "sha256": "490513fdaabe1df9c637ff8b90cb35ad585d163524f91a70ada5b366c8a6d637"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0003.json",
+      "bytes": 41761,
+      "sha256": "50e09a3ededd5ee5789b7de370c93f18e2cd7b57bd1fe1af8dd92e058282e032"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0004.json",
+      "bytes": 41764,
+      "sha256": "470e0ef058f7e5cb955b079015e245b2a702d33820cfce76ebddd3bff3235650"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0005.json",
+      "bytes": 41766,
+      "sha256": "12b863e34f438ef49a47815e2501ee8d6696440556845e5002ec9a686b0e9e45"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\case-natural-day-0013.actual-results.json",
+      "bytes": 81004,
+      "sha256": "0888cb2c223843a5a2b78199885c2d445f1c66f88de49aab5c022aaf3296ceda"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\case-snapshot-0014.actual-results.json",
+      "bytes": 39363,
+      "sha256": "1efb283700d72b932c221030b693151f1b7b54b95e9f39424937061f741904cf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\i4-school-observation-0006-model-before.stdout.log",
+      "bytes": 135,
+      "sha256": "c6e383e571a2dfa3475f509a0df6f283ffc7d0cf98f654817165fadbe911ff99"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\acceptance-normal-exit-finish-hold.stdout.log",
+      "bytes": 149,
+      "sha256": "6aed8a3ebed94b5ea71a00f76fc39b67b4f51fcf8e9076baea3b0e145eacae74"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "dc46979ccb8d6debbc7c4bdb8723e05f373c1a99c8ed77336805c4d6b70ab89e"
+    }
+  ],
+  "notes": [
+    "Complete school observations0..5 cover120hours; sixth natural advance plus independent snapshot prove total144hours/6days but no sixth school enabled/disabled observation.",
+    "Initial SAVE was actually qualified by the adapter; this author consumes its small metadata only and does not read either checkpoint body.",
+    "Retained OS0 is genuine. Missing normal-close-result and original finish_hold NameError remain failures; later administrative cleanup must be qualified separately.",
+    "No exactexpiry/remaining-days/new365cycle credit; no finalSAVE/flagabsence/coldreload credit."
+  ],
+  "body_reads_by_this_author": {
+    "save": 0,
+    "native_report": 0,
+    "png": 0
+  }
+}

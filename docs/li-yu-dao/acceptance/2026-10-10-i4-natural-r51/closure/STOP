@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-10-10T15:44:26.151436+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "task_id": "common-acceptance-12004-20261010-a13",
+  "reason": "administrativecleanup",
+  "administrative_cleanup": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\ADMINISTRATIVE-CLEANUP.actual.json",
+    "bytes": 7458,
+    "sha256": "edbb6570a18b62d4dd092642fabb32565f40c45d76f7a499f0c02c336d9520cd"
+  },
+  "final_offline_review": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\FINAL-OFFLINE-REVIEW.actual.json",
+    "bytes": 2518,
+    "sha256": "a12fc09bad69bb62b7a9e6da08c63fc72d7095a337120d75f7f604c20d609efa"
+  },
+  "original_normal_close_failure_preserved": true,
+  "normal_exit_claimed": false,
+  "normal_close_qualified": false,
+  "business_pass": false
+}

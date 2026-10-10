@@ -1,0 +1,25 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r51-finish-hold-ast-dependency-sourceonly-20261010-001/admin_finish_hold_002.py",
+    "--execute"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T15:35:17.501914+00:00",
+  "finished_at_utc": "2026-10-10T15:35:19.276561+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-admin-finish-hold-execution-20261010-001\\stdout.log",
+    "bytes": 2121,
+    "sha256": "6b0d1f6437f5a173b598aa054e82d53c9c68912c843d5d547a47409126355159"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-admin-finish-hold-execution-20261010-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

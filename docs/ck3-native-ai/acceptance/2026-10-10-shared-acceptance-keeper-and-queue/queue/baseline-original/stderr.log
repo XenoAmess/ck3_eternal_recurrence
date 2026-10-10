@@ -1,0 +1,20 @@
+test_actual_host_dependency_is_executed (__main__.NativeZeroExtraction.test_actual_host_dependency_is_executed) ... ERROR
+
+======================================================================
+ERROR: test_actual_host_dependency_is_executed (__main__.NativeZeroExtraction.test_actual_host_dependency_is_executed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-finish-hold-ast-dependency-sourceonly-20261010-001\test_ck3_mod_acceptance_queue_native_zero.py", line 71, in test_actual_host_dependency_is_executed
+    proof = self.prove(self.frozen,self.report)
+  File "C:\csr10\tools\ck3_mod_acceptance_queue.py", line 49, in native_zero_proof
+    return namespace[nodes[0].name](report, report.get("managed_session_done") is True, None)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Temp\ck3-native-zero-extraction-spoj18f8\selected_actual_host_predicates.py", line 68, in finished_native_exit_zero_proof
+    return finished_native_process_exit_zero_proof(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'finished_native_process_exit_zero_proof' is not defined. Did you mean: 'finished_native_exit_zero_proof'?
+
+----------------------------------------------------------------------
+Ran 1 test in 0.153s
+
+FAILED (errors=1)

@@ -1,0 +1,36 @@
+{
+  "schema": "ck3-cas-journal-read-race-focused-final-v1",
+  "status": "CANDIDATE_FOCUSED_GUARDS_PASS",
+  "baseline_original": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\before-frozen-reproducer\\RESULT.actual.json",
+    "bytes": 1151,
+    "sha256": "295425f9e80b207537a0cf6b122719322246d4dc8b6884148358c25059cd685f"
+  },
+  "baseline_result": "Original frozen function deterministically errors with exact R51 message when same-owner heartbeat CAS commits before journal append",
+  "first_candidate_run": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\after-candidate-focused\\RESULT.actual.json",
+    "bytes": 1205,
+    "sha256": "66a0a536b2425e9619d16b8c1bac2b4e0017153daa33177c52c3581072fb2525"
+  },
+  "first_candidate_result": "8 of10 PASS; STOP/lost-journal rejected correctly with ValueError, fixture mistakenly expected RuntimeError; original error logs retained",
+  "corrected_two_only": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\after-candidate-two-fixture-corrections\\RESULT.actual.json",
+    "bytes": 1356,
+    "sha256": "5b371715d66de904238adff0fde92ebd88bbf83ab98a29dc49c88a3b56555ada"
+  },
+  "corrected_test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\test_live_lease_read_race_corrected.py",
+    "bytes": 7561,
+    "sha256": "e3ad00bf083db4178ec3ad8bf8ff9f318b18c5d0db09cf83a50ee00285e10fca"
+  },
+  "aggregate_result": "10 focused checks pass across first8 and corrected2; no previously passed checks repeated",
+  "candidate_keeper_unchanged_between_runs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\ck3_mod_acceptance_keeper.py",
+    "bytes": 11301,
+    "sha256": "10fe0ef4f6e4fcf74f12ba0648c408fc56fb8989cc9e0c7803b1dc521c3987bf"
+  },
+  "actual_R51_race_cause": "UNKNOWN; deterministic reproduction proves source read race only, queue has no timestamped bus packet",
+  "publication_or_live_or_business_credit": false,
+  "production_adopted": false,
+  "no_real_Git_bus_native_game_process_or_MAIN_calls": true
+}

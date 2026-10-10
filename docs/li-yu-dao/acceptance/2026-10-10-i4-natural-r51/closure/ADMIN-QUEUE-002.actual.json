@@ -1,0 +1,43 @@
+{
+  "status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS",
+  "at_utc": "2026-10-10T15:35:19.242597+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\ADMIN-PLAN.json",
+    "bytes": 171,
+    "sha256": "474826ef30da12732af66f652ab744cf3869b88b5d4a967319b379d07c667e07"
+  },
+  "published": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\controls\\r51-admin-native-zero-finish-hold-001.json",
+    "bytes": 171,
+    "sha256": "474826ef30da12732af66f652ab744cf3869b88b5d4a967319b379d07c667e07"
+  },
+  "step_ids": [
+    "r51-admin-native-zero-finish-hold-001"
+  ],
+  "lease": {
+    "checkout_head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4",
+    "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "event_id": "46320d1d436b4e1a98f049dab00d017f",
+    "expected_sequence": 4518,
+    "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "schema": "xar.promo.screen-lease-cas/v1",
+    "screen_resource": "ck3-screen:acquired",
+    "sequence": 4519,
+    "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "task_id": "common-acceptance-12004-20261010-a13",
+    "updated_at_utc": "2026-10-10T15:32:33.081972+00:00"
+  },
+  "claims": {
+    "sha256": "474826ef30da12732af66f652ab744cf3869b88b5d4a967319b379d07c667e07",
+    "claims": [
+      "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\control-once-ledger\\name-6c773944b12ac5734ff54b1acdef96c924c627b4696f4aaad7ac5a5a5f8a0b82.json",
+      "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\control-once-ledger\\content-474826ef30da12732af66f652ab744cf3869b88b5d4a967319b379d07c667e07.json",
+      "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\control-once-ledger\\step-3f5a173bac61045ec9500fcba7c3740039e62166ef4bbaa09234057d1d14c788.json"
+    ]
+  },
+  "business_pass": false,
+  "administrative_finish_only": true,
+  "original_public_run_and_normal_close_failure_preserved": true
+}

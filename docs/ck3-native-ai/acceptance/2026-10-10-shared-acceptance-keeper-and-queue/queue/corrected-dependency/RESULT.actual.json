@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\test_ck3_mod_acceptance_queue_native_zero.py",
+    "--queue",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\ck3_mod_acceptance_queue.py",
+    "--host",
+    "C:/csr10/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "--dependency-only"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001",
+  "started_at_utc": "2026-10-10T15:37:57.353561+00:00",
+  "finished_at_utc": "2026-10-10T15:37:57.573186+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\after-candidate-dependency\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\after-candidate-dependency\\stderr.log",
+    "bytes": 222,
+    "sha256": "40ec582a54b8cf85593bad42edbf0b89cefd08777a15df83f4310d99cb76bcb5"
+  }
+}

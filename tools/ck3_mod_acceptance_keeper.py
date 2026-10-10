@@ -89,6 +89,7 @@ def live_lease(keeper_root, frozen=None, *, now=None):
     require(ready["lease"]["task_id"] == inputs["task_id"] and
             ready["lease"]["checkout_head"] == inputs["checkout_head"], "Keeper READY identity changed")
     last_error = None
+    renewal_read_deadline = None
     for _ in range(3):
         rows = (root / "journal.jsonl").read_text(encoding="utf-8").splitlines()
         require(rows, "Keeper has no actual CAS journal")
@@ -109,8 +110,29 @@ def live_lease(keeper_root, frozen=None, *, now=None):
             last_error = error
             # Retry only when the on-disk journal actually advanced.
             newer = (root / "journal.jsonl").read_text(encoding="utf-8").splitlines()
-            if not newer or newer[-1] == rows[-1]:
+            if not newer:
                 raise
+            if newer[-1] == rows[-1]:
+                # Heartbeat commits its CAS before the keeper can append the
+                # independently checked receipt. Wait only for that same fresh
+                # owner at a newer sequence; never accept its packet as a lease.
+                tasks = packet.get("tasks")
+                owners = [row for row in tasks if isinstance(row, dict)
+                          and row.get("task_id") == inputs["task_id"]] if isinstance(tasks, list) else []
+                observed_sequence = owners[0].get("last_sequence") if len(owners) == 1 else None
+                if type(observed_sequence) is not int or observed_sequence <= lease["sequence"]:
+                    raise
+                module.checked_owner(tasks, inputs["task_id"], observed_sequence,
+                                     repo, inputs["checkout_head"], now=now)
+                if renewal_read_deadline is None:
+                    renewal_read_deadline = time.monotonic() + 3
+                while newer and newer[-1] == rows[-1] and time.monotonic() < renewal_read_deadline:
+                    require(not (root / "report.json").exists() and not (root / "STOP").exists() and
+                            not (root / "ROOT_STOP_REQUIRED.json").exists(), "Keeper stopped during ownership read")
+                    time.sleep(max(0.0, min(.05, renewal_read_deadline - time.monotonic())))
+                    newer = (root / "journal.jsonl").read_text(encoding="utf-8").splitlines()
+                if not newer or newer[-1] == rows[-1]:
+                    raise
     raise RuntimeError("Cannot obtain an exact current CAS read: " + str(last_error))
 
 

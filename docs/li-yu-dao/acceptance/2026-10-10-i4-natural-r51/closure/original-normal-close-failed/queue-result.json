@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\csr10\\tools\\ck3_mod_acceptance_queue.py",
+    "--live",
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051",
+    "--plan",
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\plans\\acceptance-normal-exit-finish-hold.json",
+    "--name",
+    "acceptance-normal-exit-finish-hold.json"
+  ],
+  "exit_code": 2
+}

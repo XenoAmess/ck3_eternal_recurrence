@@ -1,0 +1,85 @@
+{
+  "schema": "ck3-administrative-finish-hold-only-v1",
+  "at_utc": "2026-10-10T15:35:18.142461+00:00",
+  "original_failure": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\acceptance-normal-exit-finish-hold.stdout.log",
+    "bytes": 149,
+    "sha256": "6aed8a3ebed94b5ea71a00f76fc39b67b4f51fcf8e9076baea3b0e145eacae74"
+  },
+  "original_plan": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\plans\\acceptance-normal-exit-finish-hold.json",
+    "bytes": 168,
+    "sha256": "5e99f23be7c1ffbc6fee570afe3eb8538a642d9df6b655edabc74c4c91f64b1e"
+  },
+  "actual_retained_OS_exit_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0051\\case-output\\actual-retained-handle-os-exit.json",
+    "bytes": 178,
+    "sha256": "dc46979ccb8d6debbc7c4bdb8723e05f373c1a99c8ed77336805c4d6b70ab89e"
+  },
+  "administrative_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\ADMIN-PLAN.json",
+    "bytes": 171,
+    "sha256": "474826ef30da12732af66f652ab744cf3869b88b5d4a967319b379d07c667e07"
+  },
+  "original_target_and_all_claims_absent": true,
+  "lease": {
+    "checkout_head": "a5eba8607564a0978ae79bc3454431ba1ebdcfe4",
+    "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "event_id": "46320d1d436b4e1a98f049dab00d017f",
+    "expected_sequence": 4518,
+    "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "schema": "xar.promo.screen-lease-cas/v1",
+    "screen_resource": "ck3-screen:acquired",
+    "sequence": 4519,
+    "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "task_id": "common-acceptance-12004-20261010-a13",
+    "updated_at_utc": "2026-10-10T15:32:33.081972+00:00"
+  },
+  "complete_original_native_and_retained_OS_zero_proof": {
+    "status": "not_applicable",
+    "reason": "finished_native_process_exit_zero_cleanup_proven",
+    "alive_or_business_credit": false,
+    "managed_session_done": true,
+    "pid": 2088,
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0051",
+    "started_at": "2026-10-10T14:52:25.188516+00:00",
+    "finished_at": "2026-10-10T15:21:40.322343+00:00",
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "6308e99f07684bd68e8464bfc2589027",
+      "ck3_pid": 2088,
+      "ck3_creation_date": "20261010145226.556415+000",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 9956,
+      "watchdog_creation_date": "20261010145225.689363+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\control\\ck3.json": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\control\\watchdog-6308e99f07684bd68e8464bfc2589027.ready.json": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\control\\ck3.watchdog_error": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "action": "new named administrative finish_hold only",
+  "business_pass": false,
+  "original_public_run_and_normal_close_failure_preserved": true,
+  "normal_close_qualification_rewritten": false
+}

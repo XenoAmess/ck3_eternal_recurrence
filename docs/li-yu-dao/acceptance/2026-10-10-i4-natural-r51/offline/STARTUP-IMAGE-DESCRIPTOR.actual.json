@@ -1,0 +1,74 @@
+{
+  "schema": "lyd.r0051-root-steam-uia-focus-fit.v1",
+  "at_utc": "2026-10-10T14:50:34.171376+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "screen_task": "common-acceptance-12004-20261010-a13",
+  "source_root": "C:\\csr10",
+  "runtime_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+    "bytes": 6830,
+    "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+  },
+  "hwnd": 263104,
+  "pid": 7216,
+  "create_time": 1791545643.04341,
+  "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+  "before": {
+    "rect": [
+      26,
+      56,
+      1036,
+      744
+    ],
+    "placement": [
+      0,
+      1,
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        26,
+        56,
+        1036,
+        744
+      ]
+    ],
+    "zoomed": false
+  },
+  "position_requested": false,
+  "after_rect": [
+    26,
+    56,
+    1036,
+    744
+  ],
+  "screen_size": [
+    1920,
+    1080
+  ],
+  "focus_started_at_utc": "2026-10-10T14:50:33.891817+00:00",
+  "uia_set_focus_returned": true,
+  "foreground_reads": [
+    {
+      "at_utc": "2026-10-10T14:50:33.891873+00:00",
+      "hwnd": 263104
+    }
+  ],
+  "actual_foreground_hwnd": 263104,
+  "available_horizontal_shift": 20,
+  "image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r51-start-steam-window-20261010-001\\steam-restored.png",
+    "bytes": 940446,
+    "sha256": "7ac6c9b5e87a234d6879735e146a317309c32003a6accbfb1fa10a85581f06f2"
+  },
+  "method": "Win32 SW_RESTORE/fit; single UIA SetFocus; bounded actual foreground wait",
+  "keyboard_or_mouse_input_sent": false,
+  "steam_mode_mutation_requested": false,
+  "steam_offline_review": null,
+  "business_pass": false
+}

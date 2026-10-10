@@ -1,0 +1,6 @@
+test_actual_host_dependency_is_executed (__main__.NativeZeroExtraction.test_actual_host_dependency_is_executed) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.094s
+
+OK

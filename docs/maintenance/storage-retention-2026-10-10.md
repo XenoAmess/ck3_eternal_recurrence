@@ -108,3 +108,9 @@ ROOT 已解除 R46/R47 旧 seed payload 的当前用途保护，条件是保留�
 ## 14:48 UTC：新Source10/I4独立预约002
 
 原预约001保持CLOSED/0。ROOT于14:38:08 UTC实际准入新`lyd-i4-natural-expiry-4GiB-20261010-002`，峰值4,294,967,296B，含Source10源码写入上界201,326,592B、native构建0、cache seed复制0。保守项目用量131,233,343,898B，加峰值135,528,311,194B，低于原128GiB配额；当时卷空闲623,721,340,928B。旧配额2026-10-12T05:19:51.814083Z及输入/cache期限不续。[实际冻结与预检](../ck3-native-ai/acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/successor-source10-actual/INDEX.actual.json)只说明新输入已就绪，预约仍OPEN；没有提前计回收或业务通过。新Source10/O10也须在本场闭账中统计有限留存。继续使用全机器统一规则，自动预约管理器和自动GC仍未实现。
+
+## 15:55 UTC：R0051 独立预约002实际闭合
+
+原屏幕CAS4525实际释放，keeper/allocator原wait0，Steam新鲜离线画面直接审阅、原1024×768显示恢复。预约002实际CLOSED，remaining_reserved_peak_bytes=0，释放4,294,967,296B未来写入预留，不把预留额度当作物理磁盘回收。有限元数据观察到新留存逻辑小计838,105,040B，卷当时空闲622,754,476,032B；小计不是全项目用量，物理分配及历史峰值未知。[实际闭账原件](../li-yu-dao/acceptance/2026-10-10-i4-natural-r51/storage/CLOSED-RESERVATION.actual.json)。
+
+所有输入、当前v2seed、原Oct12配额及Oct17复核期限不续。新Source10/O10和R0051结果已进入有限留存分类；大save/native-report/截图不重复入库，只入小型回执和索引。终态封包触发128KiB限制时保留拒绝，将重复完整public stdout改为外置精确引用，不提高上限。本次闭账无新增删除；此前约12.41GB过期文件的清理保持其原执行记录，不能重复计为新回收。自动GC/自动预约管理器仍未实现。

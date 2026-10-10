@@ -1,0 +1,7 @@
+test_stop_during_wait_rejected (__main__.LeaseRead.test_stop_during_wait_rejected) ... ok
+test_failed_renewal_journal_rejected (__main__.LeaseRead.test_failed_renewal_journal_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.019s
+
+OK

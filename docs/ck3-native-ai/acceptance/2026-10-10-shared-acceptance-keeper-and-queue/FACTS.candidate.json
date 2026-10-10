@@ -1,0 +1,96 @@
+{
+  "schema": "ck3-shared-acceptance-fix-evidence-facts-v1",
+  "status": "EXTERNAL_PUBLICATION_CANDIDATE",
+  "commands": {
+    "keeper/baseline-original": {
+      "exit_code": 1,
+      "started_at_utc": "2026-10-10T15:25:43.078327+00:00",
+      "finished_at_utc": "2026-10-10T15:25:43.274136+00:00"
+    },
+    "keeper/first-candidate-ten": {
+      "exit_code": 1,
+      "started_at_utc": "2026-10-10T15:25:43.277878+00:00",
+      "finished_at_utc": "2026-10-10T15:25:43.556886+00:00"
+    },
+    "keeper/corrected-two-only": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T15:26:40.761243+00:00",
+      "finished_at_utc": "2026-10-10T15:26:40.920587+00:00"
+    },
+    "queue/baseline-original": {
+      "exit_code": 1,
+      "started_at_utc": "2026-10-10T15:37:57.037672+00:00",
+      "finished_at_utc": "2026-10-10T15:37:57.347570+00:00"
+    },
+    "queue/corrected-dependency": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T15:37:57.353561+00:00",
+      "finished_at_utc": "2026-10-10T15:37:57.573186+00:00"
+    }
+  },
+  "external_source_references_not_copied": {
+    "keeper001": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\ck3_mod_acceptance_keeper.py",
+      "bytes": 11301,
+      "sha256": "10fe0ef4f6e4fcf74f12ba0648c408fc56fb8989cc9e0c7803b1dc521c3987bf"
+    },
+    "keeper002": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-002\\ck3_mod_acceptance_keeper.py",
+      "bytes": 11311,
+      "sha256": "9ec75f89addd62f7a426442d1ce7ec9dc9973cf71a087f57de500c8f287ed7a0"
+    },
+    "keeper002_source_index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-002\\INDEX.json",
+      "bytes": 1225,
+      "sha256": "02a2f7e2f333c486c3b0dfed298cf5645b7ef1e9392e455c6db8d747c4172e56"
+    },
+    "keeper_corrected_external_tests": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-cas-journal-read-race-sourceonly-20261010-001\\test_live_lease_read_race_corrected.py",
+      "bytes": 7561,
+      "sha256": "e3ad00bf083db4178ec3ad8bf8ff9f318b18c5d0db09cf83a50ee00285e10fca"
+    },
+    "queue_fixed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\ck3_mod_acceptance_queue.py",
+      "bytes": 10119,
+      "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+    },
+    "queue_portable_tests": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-finish-hold-ast-dependency-sourceonly-20261010-001\\test_ck3_mod_acceptance_queue_native_zero.py",
+      "bytes": 5975,
+      "sha256": "000b567ab3f2d5e47ecede519e1cfc81c9af9d23f252789d41104c18c4c3e00f"
+    },
+    "keeper_portable_tests": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-keeper-portable-test-sourceonly-20261010-001\\tools\\test_ck3_mod_acceptance_keeper_read_race.py",
+      "bytes": 8517,
+      "sha256": "d44f4159e2ef228039c6362d299776f8edd30f0c91082019b8ecfc7c56c73467"
+    },
+    "keeper_portable_source_index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-keeper-portable-test-sourceonly-20261010-001\\INDEX.json",
+      "bytes": 3754,
+      "sha256": "4b3ef7863d505284c5b9c5c6c5bfc4573ee6e399780153bda46ad97e8c70d8ad"
+    }
+  },
+  "R51_actual_CAS_rejection_cause": "UNKNOWN",
+  "keeper001_source_race_deterministically_reproduced": true,
+  "keeper001_first_ten": "8PASS_2_FIXTURE_EXPECTED_EXCEPTION_ERRORS",
+  "keeper001_corrected_two": "2PASS_ONLY_FAILED_CHECKS_RERUN",
+  "keeper002_nonnegative_sleep": "SOURCE_ONLY_NOT_EXECUTED_IN_THIS_PACKAGE",
+  "keeper_portable_deadline_edge": "SOURCE_ONLY_PENDING_ROOT_FORMAL_SOURCE_CHECK",
+  "queue_actual_host_dependency": "ORIGINAL_NAMEERROR_IDENTICAL_POSITIVE_SAMPLE_PATCHED_PASS",
+  "queue_other_five_portable_guards": "SOURCE_ONLY_PENDING_ROOT_FORMAL_SOURCE_CHECK",
+  "original_R51_public_business_and_normal_close_failures_preserved": true,
+  "production_adopted_by_this_package": false,
+  "product_business_pass": false,
+  "live_qualification": false,
+  "packaging_created_at_utc": "2026-10-10T15:43:17.192438+00:00",
+  "external_candidate_review_at_utc": "2026-10-17T15:43:17.192438+00:00",
+  "raw_log_review_at_utc_by_command": {
+    "keeper/baseline-original": "2026-11-09T15:25:43.274136+00:00",
+    "keeper/first-candidate-ten": "2026-11-09T15:25:43.556886+00:00",
+    "keeper/corrected-two-only": "2026-11-09T15:26:40.920587+00:00",
+    "queue/baseline-original": "2026-11-09T15:37:57.347570+00:00",
+    "queue/corrected-dependency": "2026-11-09T15:37:57.573186+00:00"
+  },
+  "compact_record_review_at_utc": "2027-04-08T15:37:57.573186+00:00",
+  "copy_does_not_renew_original_deadlines": true
+}

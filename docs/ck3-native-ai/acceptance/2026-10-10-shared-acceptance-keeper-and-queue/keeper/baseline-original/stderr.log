@@ -1,0 +1,31 @@
+test_journal_lags_committed_same_owner_heartbeat (__main__.LeaseRead.test_journal_lags_committed_same_owner_heartbeat) ... ERROR
+
+======================================================================
+ERROR: test_journal_lags_committed_same_owner_heartbeat (__main__.LeaseRead.test_journal_lags_committed_same_owner_heartbeat)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\test_live_lease_read_race.py", line 92, in test_journal_lags_committed_same_owner_heartbeat
+    result = run()
+  File "C:\workspace\ck3_lyd_runtime_20261004\r51-cas-journal-read-race-sourceonly-20261010-001\test_live_lease_read_race.py", line 88, in <lambda>
+    return lambda:namespace['live_lease'](root,now=NOW),calls
+                  ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\csr10\tools\ck3_mod_acceptance_keeper.py", line 103, in live_lease
+    module.checked_owner(packet.get("tasks"), inputs["task_id"], lease["sequence"],
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         repo, inputs["checkout_head"], now=now)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\csr10\promo\ck3_native_war_ai\integration\screen_bus_lease.py", line 153, in checked_owner
+    require(owner.get("state") == "running" and owner.get("resources") == [SCREEN] and
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            type(owner.get("last_sequence")) is int and owner["last_sequence"] == sequence,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "screen task is not the exact running CAS owner")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\csr10\promo\ck3_native_war_ai\integration\screen_bus_lease.py", line 35, in require
+    raise RuntimeError(message)
+RuntimeError: screen task is not the exact running CAS owner
+
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+FAILED (errors=1)

@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/test_ck3_mod_acceptance_keeper_read_race.py",
+    "--case",
+    "test_deadline_crossed_between_loop_check_and_sleep_rejected_without_negative_sleep"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T15:49:13.454299+00:00",
+  "finished_at_utc": "2026-10-10T15:49:13.653823+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-keeper-deadline-edge-20261010-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-formal-keeper-deadline-edge-20261010-001\\stderr.log",
+    "bytes": 297,
+    "sha256": "a11a3579cf7e2e8b3add0d449c96a822dff966a6bb4fbc4d761326b895feaa0b"
+  }
+}

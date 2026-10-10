@@ -1,0 +1,27 @@
+{
+  "at_utc": "2026-10-10T15:30:24.095849+00:00",
+  "before": {
+    "width": 1920,
+    "height": 1080,
+    "bits": 32,
+    "frequency": 60
+  },
+  "target": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "change_result": 0,
+  "after": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "pyautogui_size": [
+    1024,
+    768
+  ],
+  "registry_persistence_requested": false
+}
