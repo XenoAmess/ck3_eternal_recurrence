@@ -113,6 +113,15 @@ void ConfigurePhysical(PhysicalWorld &fixture) {
   bindings.toughness_multiplier = static_cast<const std::int32_t *>(world.toughness_coefficient);
   bindings.read_context = &world.memory;
   bindings.read_memory = &Memory::Copy;
+  // Configure the shared aggregate copier without observing a preparation or
+  // invoking either preparation original. This whole owns no prior history.
+  native::PersonSixStageCaptureBindings12004 preparation;
+  preparation.memory = native::BindPersonCarrierDirect12004(kImage,
+      native::kGameVersion, native::kExecutableSha256, &Memory::Copy, &world.memory);
+  preparation.game_state_slot = reinterpret_cast<void **>(world.game_slot);
+  Require(native::InitializePersonSixStageCaptureFixture12004(preparation,
+              &PreparationOriginal, &PreparationAppendOriginal),
+          "physical writer aggregate PC copier initialization failed");
   Require(native::InitializeKnightStatConsumptionFixture12004(
               bindings, &PhysicalWrapperOriginal, &PhysicalContextOriginal),
           "new physical writer wrapper/context initialization failed");
