@@ -1,0 +1,25 @@
+{
+  "archive": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\RAW-EVIDENCE.zip",
+    "bytes": 244868,
+    "sha256": "84639b7784f14f3d362671abab58c53f032adb1eccf3fc57ac052fbc67398a40"
+  },
+  "index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\INDEX.json",
+    "bytes": 29176,
+    "sha256": "99b97168c177257fce87989eaa7f873858a6998f6ced52b8caffee1d62df287d"
+  },
+  "facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\FACTS.actual.json",
+    "bytes": 307175,
+    "sha256": "01d708e23823327369173f09c26a95bfd2e168c70e686551dc82434ee282a897"
+  },
+  "validation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\VALIDATION.actual.json",
+    "bytes": 202,
+    "sha256": "fe37f4b6f5e1359631a6665b0f01e96ed71b2f102587cdbe39f805c6f951bfa4"
+  },
+  "logical_entries": 34,
+  "unique_objects": 34,
+  "selected_bytes": 2896217
+}

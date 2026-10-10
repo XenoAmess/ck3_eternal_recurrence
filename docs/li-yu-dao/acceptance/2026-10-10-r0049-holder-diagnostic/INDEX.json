@@ -1,0 +1,576 @@
+{
+  "schema": "ck3-compressed-object-evidence-index-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0049",
+  "created_at_utc": "2026-10-10T10:02:20.807609+00:00",
+  "archive": {
+    "path": "RAW-EVIDENCE.zip",
+    "bytes": 244868,
+    "sha256": "84639b7784f14f3d362671abab58c53f032adb1eccf3fc57ac052fbc67398a40"
+  },
+  "entries": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-archive-sourceonly-20261010-001\\SOURCE-INDEX.json",
+      "logical_path": "archive-source/SOURCE-INDEX.json",
+      "bytes": 2104,
+      "sha256": "1f61f3973b8e5c1a63f58f84105e5af31e75fa834383aebd1bc041b88e23a446",
+      "object": "objects/1f61f3973b8e5c1a63f58f84105e5af31e75fa834383aebd1bc041b88e23a446"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-archive-sourceonly-20261010-001\\package_holder_run.py",
+      "logical_path": "archive-source/package_holder_run.py",
+      "bytes": 19780,
+      "sha256": "609f642d38f9792c2e229eda7ddb9473b96dbb2e1720edda054b08716647a828",
+      "object": "objects/609f642d38f9792c2e229eda7ddb9473b96dbb2e1720edda054b08716647a828"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\prepared\\initial-plan.json",
+      "logical_path": "case/prepared/initial-plan.json",
+      "bytes": 18,
+      "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4",
+      "object": "objects/06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\prepared\\saved-startup-case-contract.json",
+      "logical_path": "case/prepared/saved-startup-case-contract.json",
+      "bytes": 1194,
+      "sha256": "49c919cf8b4f8f9a60d87b05d4897d42831cd368c2a6ec2a3a15df0b58d2d4ff",
+      "object": "objects/49c919cf8b4f8f9a60d87b05d4897d42831cd368c2a6ec2a3a15df0b58d2d4ff"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\ready.json",
+      "logical_path": "keeper/READY.json",
+      "bytes": 950,
+      "sha256": "e40738135e52d6060744fb70bb66126df069ac77418733946fd73b4b6d6a3695",
+      "object": "objects/e40738135e52d6060744fb70bb66126df069ac77418733946fd73b4b6d6a3695"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\report.json",
+      "logical_path": "keeper/report.json",
+      "bytes": 448,
+      "sha256": "cc5c637637eeb8cbb4dcf86b68de9524487353529177bb0dc9b547e7e216fa15",
+      "object": "objects/cc5c637637eeb8cbb4dcf86b68de9524487353529177bb0dc9b547e7e216fa15"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\FINAL-OFFLINE-REVIEW.actual.json",
+      "logical_path": "run/FINAL-OFFLINE-REVIEW.actual.json",
+      "bytes": 503,
+      "sha256": "2d2e67b643340fa8ca8cf59d2a363957561fe5e32429794241031ede887c6190",
+      "object": "objects/2d2e67b643340fa8ca8cf59d2a363957561fe5e32429794241031ede887c6190"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\actual-retained-handle-os-exit.json",
+      "logical_path": "run/case-output/actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "bc453f9f0535bb1c60e6f69c4520101e62a38e5f1c58979a3acbbeb50ebc0b6c",
+      "object": "objects/bc453f9f0535bb1c60e6f69c4520101e62a38e5f1c58979a3acbbeb50ebc0b6c"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\case-once.json",
+      "logical_path": "run/case-output/case-once.json",
+      "bytes": 2370,
+      "sha256": "9b3cd4f8d2fed25ba769639caa49445997b487f28b9f9f3abca1d7181b7fccd5",
+      "object": "objects/9b3cd4f8d2fed25ba769639caa49445997b487f28b9f9f3abca1d7181b7fccd5"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\entry-run-result.json",
+      "logical_path": "run/case-output/entry-run-result.json",
+      "bytes": 2055501,
+      "sha256": "c09f305ef2cc858f592708d03900eff6055a991f545cad1c7df4fea8c05efc59",
+      "object": "objects/c09f305ef2cc858f592708d03900eff6055a991f545cad1c7df4fea8c05efc59"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-after.json",
+      "logical_path": "run/case-output/holder-diagnostic-after.json",
+      "bytes": 38735,
+      "sha256": "9007ef90f7e580afc29ae973c97ce7cdef7e2f4c16872d97c119549f4fa260e7",
+      "object": "objects/9007ef90f7e580afc29ae973c97ce7cdef7e2f4c16872d97c119549f4fa260e7"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-before.json",
+      "logical_path": "run/case-output/holder-diagnostic-before.json",
+      "bytes": 20845,
+      "sha256": "0a5fe81879b9227c15862b0bc75edf0402586134d694bffcfd58793956dd3b6e",
+      "object": "objects/0a5fe81879b9227c15862b0bc75edf0402586134d694bffcfd58793956dd3b6e"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-script-scope-log-windows.json",
+      "logical_path": "run/case-output/holder-diagnostic-script-scope-log-windows.json",
+      "bytes": 576339,
+      "sha256": "370d9c3b70eddbbdd5942f39006776f869dd57903477c7092f89a0bb10f37063",
+      "object": "objects/370d9c3b70eddbbdd5942f39006776f869dd57903477c7092f89a0bb10f37063"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-stage-diagnostic-case-result.json",
+      "logical_path": "run/case-output/holder-stage-diagnostic-case-result.json",
+      "bytes": 46030,
+      "sha256": "1a84a1b8ee0f906a065b5a3e55c78e148315c1ba74416565df91d2e833b3ef36",
+      "object": "objects/1a84a1b8ee0f906a065b5a3e55c78e148315c1ba74416565df91d2e833b3ef36"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\manual-quit-awaiting.json",
+      "logical_path": "run/case-output/manual-quit-awaiting.json",
+      "bytes": 631,
+      "sha256": "f49a8a610c7b44f6346433b41e0809312c0fbd9bcfdb218961b97c5d5ab97356",
+      "object": "objects/f49a8a610c7b44f6346433b41e0809312c0fbd9bcfdb218961b97c5d5ab97356"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-close-result.json",
+      "logical_path": "run/case-output/normal-close-result.json",
+      "bytes": 10145,
+      "sha256": "3ad1a1796dab5b1cf14c011492fbe6d12aed9e61ccd08ef53d669643bcd584cb",
+      "object": "objects/3ad1a1796dab5b1cf14c011492fbe6d12aed9e61ccd08ef53d669643bcd584cb"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-awaiting.json",
+      "logical_path": "run/case-output/normal-quit-awaiting.json",
+      "bytes": 633,
+      "sha256": "a7657d49d585ac80ebe5578c658697abed6a9fa5c42f85c45359590f7ff8ccfd",
+      "object": "objects/a7657d49d585ac80ebe5578c658697abed6a9fa5c42f85c45359590f7ff8ccfd"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\retained-current-process-identity.json",
+      "logical_path": "run/case-output/retained-current-process-identity.json",
+      "bytes": 109,
+      "sha256": "95ccde33c5d4196dfb336192dbabc67eedcd8c9c4525cb84a2fb49152d9ed04e",
+      "object": "objects/95ccde33c5d4196dfb336192dbabc67eedcd8c9c4525cb84a2fb49152d9ed04e"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\host-original-process-exit.json",
+      "logical_path": "run/host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "aee89cdb55b2a13711ec2a86b22b947933a37a76925aed48d9752761a065b197",
+      "object": "objects/aee89cdb55b2a13711ec2a86b22b947933a37a76925aed48d9752761a065b197"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\host-started.json",
+      "logical_path": "run/host-started.json",
+      "bytes": 4039,
+      "sha256": "3cae49f8f447a86ea040c0e03b646fe194a7b6c909a827d34687d8394a592306",
+      "object": "objects/3cae49f8f447a86ea040c0e03b646fe194a7b6c909a827d34687d8394a592306"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\ready-context.json",
+      "logical_path": "run/ready-context.json",
+      "bytes": 2487,
+      "sha256": "9287ed97e745bd3cfaefd33a82613172a5cd2525e8937bc552d17ba2d2279763",
+      "object": "objects/9287ed97e745bd3cfaefd33a82613172a5cd2525e8937bc552d17ba2d2279763"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\release-command-001\\RESULT.actual.json",
+      "logical_path": "run/release-command-001/RESULT.actual.json",
+      "bytes": 1274,
+      "sha256": "f5e8ca9bfdc39bfc92f85d15c1511debc02fccb660b25dc8cad61f3513414410",
+      "object": "objects/f5e8ca9bfdc39bfc92f85d15c1511debc02fccb660b25dc8cad61f3513414410"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\release-command-001\\stderr.log",
+      "logical_path": "run/release-command-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\release-command-001\\stdout.log",
+      "logical_path": "run/release-command-001/stdout.log",
+      "bytes": 1335,
+      "sha256": "6782cf1606d77bffd2de57696b777c0b077af6548932642e263831b72f87b26f",
+      "object": "objects/6782cf1606d77bffd2de57696b777c0b077af6548932642e263831b72f87b26f"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\manifest.json",
+      "logical_path": "runtime/manifest.json",
+      "bytes": 5447,
+      "sha256": "c849668841fd1890e6e18998023f82f3159cc07edb04d30b08c0bbc2c0c9ae5f",
+      "object": "objects/c849668841fd1890e6e18998023f82f3159cc07edb04d30b08c0bbc2c0c9ae5f"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\runtime.local.json",
+      "logical_path": "runtime/runtime.local.json",
+      "bytes": 2011,
+      "sha256": "c6c08d72edc98fa65f046bdef8ba4a2731d8dbf3fd04782b23161777963eba43",
+      "object": "objects/c6c08d72edc98fa65f046bdef8ba4a2731d8dbf3fd04782b23161777963eba43"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+      "logical_path": "supplemental/00/ADMISSION.actual.json",
+      "bytes": 7396,
+      "sha256": "024b0493a76868b60474cbc478f5ab675b874423188c9ad6aceb117dded4f8e9",
+      "object": "objects/024b0493a76868b60474cbc478f5ab675b874423188c9ad6aceb117dded4f8e9"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\CLOSED-RESERVATION.actual.json",
+      "logical_path": "supplemental/01/CLOSED-RESERVATION.actual.json",
+      "bytes": 5570,
+      "sha256": "8fc2fd731641bdf925a7d7c21a3a91d92ad68de06e9fc2dba2cc26a2b7be821e",
+      "object": "objects/8fc2fd731641bdf925a7d7c21a3a91d92ad68de06e9fc2dba2cc26a2b7be821e"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+      "logical_path": "supplemental/02/CLOSURE-MEASURE.actual.json",
+      "bytes": 20882,
+      "sha256": "91345d14987b2097b336f1f853ee5741e3e91613253829c62d2e87376263e1a3",
+      "object": "objects/91345d14987b2097b336f1f853ee5741e3e91613253829c62d2e87376263e1a3"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\ASSET-GROUPS-CLOSED.actual.json",
+      "logical_path": "supplemental/03/ASSET-GROUPS-CLOSED.actual.json",
+      "bytes": 62301,
+      "sha256": "076767554cc81d4eece014e722407b5f72f8557be0933dce75ba991dab6dfee1",
+      "object": "objects/076767554cc81d4eece014e722407b5f72f8557be0933dce75ba991dab6dfee1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-public-run-20261010-001\\RESULT.actual.json",
+      "logical_path": "supplemental/04/RESULT.actual.json",
+      "bytes": 1322,
+      "sha256": "2404e5fb51d69ca1722dbdacd39e971cf37872455f7133a81c8dbf7bbcbfe3d8",
+      "object": "objects/2404e5fb51d69ca1722dbdacd39e971cf37872455f7133a81c8dbf7bbcbfe3d8"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-public-verify-20261010-001\\RESULT.actual.json",
+      "logical_path": "supplemental/05/RESULT.actual.json",
+      "bytes": 1329,
+      "sha256": "c095e93fe41d51175d4a5e79d925ecddd3bc86bb3e7835ac0377181146a2c0f1",
+      "object": "objects/c095e93fe41d51175d4a5e79d925ecddd3bc86bb3e7835ac0377181146a2c0f1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-case-allocate-20261010-001\\RESULT.actual.json",
+      "logical_path": "supplemental/06/RESULT.actual.json",
+      "bytes": 1662,
+      "sha256": "254681c05b0f84b26c7f038c0ec4b25e76e66474af402de67d08ca7025999d5d",
+      "object": "objects/254681c05b0f84b26c7f038c0ec4b25e76e66474af402de67d08ca7025999d5d"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-exact-a4348fc3-and-f367-terminal-ci-readonly-20261010-002\\REPORT.actual.json",
+      "logical_path": "supplemental/07/REPORT.actual.json",
+      "bytes": 2402,
+      "sha256": "e11bbab834817ae6084d604e27e187ac5a00b523bb44699e346503b9d4d034ca",
+      "object": "objects/e11bbab834817ae6084d604e27e187ac5a00b523bb44699e346503b9d4d034ca"
+    }
+  ],
+  "pinned_only": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\source09-index.json",
+      "bytes": 1619935,
+      "sha256": "8adf73bd3a99a16ee3dc09a3129e1ba56725dc056c268d24c298e61473773d59",
+      "pin_source": "actual runtime manifest + path key",
+      "body_read": false,
+      "hash_recomputed": false
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\native-source09-index.json",
+      "bytes": 891863,
+      "sha256": "928147cb0f93728c56b2c073dee2e08d2c98af6d2a65028168b7bf17bd5b8cb3",
+      "pin_source": "actual runtime manifest + path key",
+      "body_read": false,
+      "hash_recomputed": false
+    },
+    {
+      "path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 244512,
+      "sha256": "a9895e966590d669bbef3f625c808b95dea1e4fca4561fe5bc0be1b647178b33",
+      "pin_source": "actual runtime manifest + path key",
+      "body_read": false,
+      "hash_recomputed": false
+    },
+    {
+      "path": "C:\\cbr2\\xar_ck3_bridge.dll",
+      "bytes": 9459712,
+      "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe",
+      "pin_source": "actual runtime manifest + path key",
+      "body_read": false,
+      "hash_recomputed": false
+    },
+    {
+      "path": "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8",
+      "pin_source": "actual runtime manifest + path key",
+      "body_read": false,
+      "hash_recomputed": false
+    }
+  ],
+  "receipt_presence": [
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-stage-diagnostic-case-result.json",
+      "logical_path": "run/case-output/holder-stage-diagnostic-case-result.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-before.json",
+      "logical_path": "run/case-output/holder-diagnostic-before.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-after.json",
+      "logical_path": "run/case-output/holder-diagnostic-after.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-script-scope-log-windows.json",
+      "logical_path": "run/case-output/holder-diagnostic-script-scope-log-windows.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-close-result.json",
+      "logical_path": "run/case-output/normal-close-result.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\actual-retained-handle-os-exit.json",
+      "logical_path": "run/case-output/actual-retained-handle-os-exit.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\retained-current-process-identity.json",
+      "logical_path": "run/case-output/retained-current-process-identity.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\case-once.json",
+      "logical_path": "run/case-output/case-once.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\case-error-preserved.json",
+      "logical_path": "run/case-output/case-error-preserved.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\entry-run-result.json",
+      "logical_path": "run/case-output/entry-run-result.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-awaiting.json",
+      "logical_path": "run/case-output/normal-quit-awaiting.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\manual-quit-awaiting.json",
+      "logical_path": "run/case-output/manual-quit-awaiting.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-automation-dispatch.json",
+      "logical_path": "run/case-output/normal-quit-automation-dispatch.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-automation-process.json",
+      "logical_path": "run/case-output/normal-quit-automation-process.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-automation-failure-preserved.json",
+      "logical_path": "run/case-output/normal-quit-automation-failure-preserved.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\host-started.json",
+      "logical_path": "run/host-started.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\host-original-process-exit.json",
+      "logical_path": "run/host-original-process-exit.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\FINAL-OFFLINE-REVIEW.actual.json",
+      "logical_path": "run/FINAL-OFFLINE-REVIEW.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\ACTUAL-CURRENT-CLOSEOUT.json",
+      "logical_path": "run/ACTUAL-CURRENT-CLOSEOUT.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\ready-context.json",
+      "logical_path": "run/ready-context.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\observer-command-001\\RESULT.actual.json",
+      "logical_path": "run/observer-command-001/RESULT.actual.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\observer-command-001\\stdout.log",
+      "logical_path": "run/observer-command-001/stdout.log",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\observer-command-001\\stderr.log",
+      "logical_path": "run/observer-command-001/stderr.log",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\release-command-001\\RESULT.actual.json",
+      "logical_path": "run/release-command-001/RESULT.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\release-command-001\\stdout.log",
+      "logical_path": "run/release-command-001/stdout.log",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\release-command-001\\stderr.log",
+      "logical_path": "run/release-command-001/stderr.log",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\run-command-001\\RESULT.actual.json",
+      "logical_path": "run/run-command-001/RESULT.actual.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\run-command-001\\stdout.log",
+      "logical_path": "run/run-command-001/stdout.log",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\run-command-001\\stderr.log",
+      "logical_path": "run/run-command-001/stderr.log",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\verify-command-001\\RESULT.actual.json",
+      "logical_path": "run/verify-command-001/RESULT.actual.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\verify-command-001\\stdout.log",
+      "logical_path": "run/verify-command-001/stdout.log",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\verify-command-001\\stderr.log",
+      "logical_path": "run/verify-command-001/stderr.log",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\startup-observer-001\\EXIT.actual.json",
+      "logical_path": "run/startup-observer-001/EXIT.actual.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\startup-observer-001\\samples.jsonl",
+      "logical_path": "run/startup-observer-001/samples.jsonl",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\startup-observer-001\\SAMPLES.actual.jsonl",
+      "logical_path": "run/startup-observer-001/SAMPLES.actual.jsonl",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\prepared\\initial-plan.json",
+      "logical_path": "case/prepared/initial-plan.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\prepared\\saved-startup-case-contract.json",
+      "logical_path": "case/prepared/saved-startup-case-contract.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\runtime.local.json",
+      "logical_path": "runtime/runtime.local.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\manifest.json",
+      "logical_path": "runtime/manifest.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\ready.json",
+      "logical_path": "keeper/READY.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\FINAL.json",
+      "logical_path": "keeper/FINAL.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\report.json",
+      "logical_path": "keeper/report.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\STOP.json",
+      "logical_path": "keeper/STOP.json",
+      "exists": false
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+      "logical_path": "supplemental/00/ADMISSION.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\CLOSED-RESERVATION.actual.json",
+      "logical_path": "supplemental/01/CLOSED-RESERVATION.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+      "logical_path": "supplemental/02/CLOSURE-MEASURE.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-storage-admission-20261010-001\\ASSET-GROUPS-CLOSED.actual.json",
+      "logical_path": "supplemental/03/ASSET-GROUPS-CLOSED.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-public-run-20261010-001\\RESULT.actual.json",
+      "logical_path": "supplemental/04/RESULT.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-public-verify-20261010-001\\RESULT.actual.json",
+      "logical_path": "supplemental/05/RESULT.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-root-case-allocate-20261010-001\\RESULT.actual.json",
+      "logical_path": "supplemental/06/RESULT.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-exact-a4348fc3-and-f367-terminal-ci-readonly-20261010-002\\REPORT.actual.json",
+      "logical_path": "supplemental/07/REPORT.actual.json",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-archive-sourceonly-20261010-001\\package_holder_run.py",
+      "logical_path": "archive-source/package_holder_run.py",
+      "exists": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-archive-sourceonly-20261010-001\\SOURCE-INDEX.json",
+      "logical_path": "archive-source/SOURCE-INDEX.json",
+      "exists": true
+    }
+  ],
+  "omitted_without_body_reads": [],
+  "unique_objects": 34,
+  "selected_logical_bytes": 2896217,
+  "object_bytes": 2896217,
+  "facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\FACTS.actual.json",
+    "bytes": 307175,
+    "sha256": "01d708e23823327369173f09c26a95bfd2e168c70e686551dc82434ee282a897"
+  },
+  "validation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\VALIDATION.actual.json",
+    "bytes": 202,
+    "sha256": "fe37f4b6f5e1359631a6665b0f01e96ed71b2f102587cdbe39f805c6f951bfa4"
+  },
+  "no_pin_harvest_or_inventory_expansion": true,
+  "retention": "Finite project policy; new summary does not extend original raw expiry",
+  "automatic_gc_or_capacity_reservations_implemented": false
+}

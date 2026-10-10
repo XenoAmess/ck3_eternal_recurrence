@@ -1,6 +1,6 @@
 # Holder / resolve 阶段公共诊断
 
-2026-10-10 接入 `li-yu-dao / holder-stage-diagnostic`，用于收窄 R47 空事务对照后仍未知的继承缓存变化原因。源码检查通过，实机 **NOT_RUN**；诊断无正式 I3b、C3、I4 或产品通过信用。
+2026-10-10 接入 `li-yu-dao / holder-stage-diagnostic`，用于收窄 R47 空事务对照后仍未知的继承缓存变化原因。R49已完成实际诊断捕获、公共run0/verify0及正常闭场；仍观察到45→40，诊断无正式 I3b、C3、I4 或产品通过信用。[实际结果](acceptance/2026-10-10-r0049-holder-diagnostic/REPORT.md)。以下分时记录保持当时状态。
 
 ## 输入和动作
 

@@ -1,0 +1,67 @@
+{
+  "schema": "lyd.r49.holder-stage-compact-projection-index.v1",
+  "created_at_utc": "2026-10-10T10:10:01.842382+00:00",
+  "inputs_original_pins_reused": {
+    "facts": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\FACTS.actual.json",
+      "bytes": 307175,
+      "sha256": "01d708e23823327369173f09c26a95bfd2e168c70e686551dc82434ee282a897"
+    },
+    "index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\INDEX.json",
+      "bytes": 29176,
+      "sha256": "99b97168c177257fce87989eaa7f873858a6998f6ced52b8caffee1d62df287d"
+    },
+    "archive": {
+      "path": "RAW-EVIDENCE.zip",
+      "bytes": 244868,
+      "sha256": "84639b7784f14f3d362671abab58c53f032adb1eccf3fc57ac052fbc67398a40"
+    },
+    "objects": [
+      {
+        "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-stage-diagnostic-case-result.json",
+        "logical_path": "run/case-output/holder-stage-diagnostic-case-result.json",
+        "bytes": 46030,
+        "sha256": "1a84a1b8ee0f906a065b5a3e55c78e148315c1ba74416565df91d2e833b3ef36",
+        "object": "objects/1a84a1b8ee0f906a065b5a3e55c78e148315c1ba74416565df91d2e833b3ef36"
+      },
+      {
+        "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-script-scope-log-windows.json",
+        "logical_path": "run/case-output/holder-diagnostic-script-scope-log-windows.json",
+        "bytes": 576339,
+        "sha256": "370d9c3b70eddbbdd5942f39006776f869dd57903477c7092f89a0bb10f37063",
+        "object": "objects/370d9c3b70eddbbdd5942f39006776f869dd57903477c7092f89a0bb10f37063"
+      }
+    ],
+    "inspection": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-stage-archived-observation-20261010-001\\INSPECTION.actual.json",
+      "bytes": 581380,
+      "sha256": "80ef833e0e50bb40ddc7c12bb510d7d9a811723fbb708e83077f05a995c17a58",
+      "pin_source": "first_read_existing_receipt"
+    }
+  },
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-stage-archived-observation-20261010-001\\compact-001\\FACTS.compact.json",
+      "bytes": 32066,
+      "sha256": "13a88f65431103048cb1061cf3b98c7ad4ccc88606197d42dcbf611ae8cc5f4d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-stage-archived-observation-20261010-001\\compact-001\\REPORT.draft.md",
+      "bytes": 3438,
+      "sha256": "2de83b0d6385c600397efecf33d7775f557d36887040d3a20639c63c350acb32"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-stage-archived-observation-20261010-001\\prepare_compact_projection.py",
+      "bytes": 10984,
+      "sha256": "04e45e52efaeed784c21cff6c8803d54593f9536fe69ea97a8ec698d5c1513b1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-stage-archived-observation-20261010-001\\derive_stage_ids.py",
+      "bytes": 2821,
+      "sha256": "c897887a7aba01ecd355ff171052b53e17c3b529ddf893bf33ac3dc16f16ec81"
+    }
+  ],
+  "MAIN_modified": false,
+  "new_business_credit": null
+}

@@ -1,0 +1,1052 @@
+{
+  "schema": "lyd.r49.archived-holder-stage-compact-observation.v1",
+  "created_at_utc": "2026-10-10T10:10:01.840909+00:00",
+  "source_kind": "DERIVED_FROM_EXISTING_ARCHIVE_AND_RETAINED_INSPECTION_ONLY",
+  "sources": {
+    "facts": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\FACTS.actual.json",
+      "bytes": 307175,
+      "sha256": "01d708e23823327369173f09c26a95bfd2e168c70e686551dc82434ee282a897"
+    },
+    "index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-diagnostic-compact-archive-20261010-001\\INDEX.json",
+      "bytes": 29176,
+      "sha256": "99b97168c177257fce87989eaa7f873858a6998f6ced52b8caffee1d62df287d"
+    },
+    "archive": {
+      "path": "RAW-EVIDENCE.zip",
+      "bytes": 244868,
+      "sha256": "84639b7784f14f3d362671abab58c53f032adb1eccf3fc57ac052fbc67398a40"
+    },
+    "objects": [
+      {
+        "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-stage-diagnostic-case-result.json",
+        "logical_path": "run/case-output/holder-stage-diagnostic-case-result.json",
+        "bytes": 46030,
+        "sha256": "1a84a1b8ee0f906a065b5a3e55c78e148315c1ba74416565df91d2e833b3ef36",
+        "object": "objects/1a84a1b8ee0f906a065b5a3e55c78e148315c1ba74416565df91d2e833b3ef36"
+      },
+      {
+        "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\holder-diagnostic-script-scope-log-windows.json",
+        "logical_path": "run/case-output/holder-diagnostic-script-scope-log-windows.json",
+        "bytes": 576339,
+        "sha256": "370d9c3b70eddbbdd5942f39006776f869dd57903477c7092f89a0bb10f37063",
+        "object": "objects/370d9c3b70eddbbdd5942f39006776f869dd57903477c7092f89a0bb10f37063"
+      }
+    ],
+    "inspection": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-holder-stage-archived-observation-20261010-001\\INSPECTION.actual.json",
+      "bytes": 581380,
+      "sha256": "80ef833e0e50bb40ddc7c12bb510d7d9a811723fbb708e83077f05a995c17a58",
+      "pin_source": "first_read_existing_receipt"
+    }
+  },
+  "cache": {
+    "cache_before_ids_ordered": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      38561,
+      39045,
+      39171,
+      39352,
+      39527,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "cache_after_ids_ordered": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "cache_before_count": 45,
+    "cache_after_count": 40,
+    "removed_IDs_in_before_order": [
+      38561,
+      39045,
+      39171,
+      39352,
+      39527
+    ],
+    "added_IDs_in_after_order": [],
+    "saved_complete_cache_ids_ordered": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "saved_cache_equals_after_native_original": true,
+    "changed_political_title_IDs": [
+      "2230",
+      "2231",
+      "2235",
+      "2262",
+      "2264"
+    ]
+  },
+  "scope_observation": {
+    "id_kind": "LOGGED_INTERNAL_ID_WITH_MATCHING_TYPED_DEBUG_SUFFIX",
+    "generational_full_id_ABI_qualification": null,
+    "title_traversal_observed_order": [
+      2230,
+      2231,
+      2262,
+      2232,
+      2263,
+      2235,
+      2264
+    ],
+    "stages": [
+      {
+        "stage": "BEFORE_CREATE",
+        "window_begin_line": 14,
+        "window_end_line": 1834,
+        "title_marker_count": 7,
+        "heir_marker_count": 100,
+        "first_scope_leaf_identity_and_marker_counts_match": true,
+        "title_leaf_lines": {
+          "2230": 16,
+          "2231": 373,
+          "2262": 730,
+          "2232": 1087,
+          "2263": 1104,
+          "2235": 1121,
+          "2264": 1478
+        }
+      },
+      {
+        "stage": "AFTER_CREATE",
+        "window_begin_line": 1835,
+        "window_end_line": 3762,
+        "title_marker_count": 7,
+        "heir_marker_count": 100,
+        "first_scope_leaf_identity_and_marker_counts_match": true,
+        "title_leaf_lines": {
+          "2230": 1837,
+          "2231": 2215,
+          "2262": 2593,
+          "2232": 2971,
+          "2263": 2989,
+          "2235": 3007,
+          "2264": 3385
+        }
+      },
+      {
+        "stage": "AFTER_HOLDER",
+        "window_begin_line": 3763,
+        "window_end_line": 5690,
+        "title_marker_count": 7,
+        "heir_marker_count": 100,
+        "first_scope_leaf_identity_and_marker_counts_match": true,
+        "title_leaf_lines": {
+          "2230": 3765,
+          "2231": 4143,
+          "2262": 4521,
+          "2232": 4899,
+          "2263": 4917,
+          "2235": 4935,
+          "2264": 5313
+        }
+      },
+      {
+        "stage": "AFTER_RESOLVE",
+        "window_begin_line": 5691,
+        "window_end_line": 7618,
+        "title_marker_count": 7,
+        "heir_marker_count": 100,
+        "first_scope_leaf_identity_and_marker_counts_match": true,
+        "title_leaf_lines": {
+          "2230": 5693,
+          "2231": 6071,
+          "2262": 6449,
+          "2232": 6827,
+          "2263": 6845,
+          "2235": 6863,
+          "2264": 7241
+        }
+      }
+    ],
+    "before_create_equals_after_create_equals_after_holder": true,
+    "first_observed_title_list_difference": "AFTER_RESOLVE",
+    "title_comparison": {
+      "2230": {
+        "before_create_through_after_holder_observed_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_resolve_observed_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "equal": false,
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "unchanged_prefix_count": 16
+      },
+      "2231": {
+        "before_create_through_after_holder_observed_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_resolve_observed_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "equal": false,
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "unchanged_prefix_count": 16
+      },
+      "2262": {
+        "before_create_through_after_holder_observed_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_resolve_observed_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "equal": false,
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "unchanged_prefix_count": 16
+      },
+      "2232": {
+        "before_create_through_after_holder_observed_order": [],
+        "after_resolve_observed_order": [],
+        "equal": true,
+        "removed_in_before_order": [],
+        "added_in_after_order": [],
+        "unchanged_prefix_count": 0
+      },
+      "2263": {
+        "before_create_through_after_holder_observed_order": [],
+        "after_resolve_observed_order": [],
+        "equal": true,
+        "removed_in_before_order": [],
+        "added_in_after_order": [],
+        "unchanged_prefix_count": 0
+      },
+      "2235": {
+        "before_create_through_after_holder_observed_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_resolve_observed_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "equal": false,
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "unchanged_prefix_count": 16
+      },
+      "2264": {
+        "before_create_through_after_holder_observed_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_resolve_observed_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "equal": false,
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "unchanged_prefix_count": 16
+      }
+    },
+    "source_windows": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\profile\\logs\\debug.log",
+        "byte_offset": 466459,
+        "bytes": 529002,
+        "window_sha256": "3e43935d5502febc011ec9ab99d5f7de1b008e11494788446c3b17c57e608205",
+        "source_after_size": 995461,
+        "truncated": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\profile\\logs\\game.log",
+        "byte_offset": 2127,
+        "bytes": 0,
+        "window_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_after_size": 2127,
+        "truncated": false
+      }
+    ],
+    "same_second_log_timestamp": "17:56:37",
+    "sequence_basis": "original_log_line_order",
+    "name_used_as_identity": false,
+    "Root_and_saved_event_target_rows_excluded": true,
+    "actor_intermediate_native_cache_snapshots": null,
+    "iterator_complete_title_heir_collection_qualification": null,
+    "getter_lazy_refresh_excluded": false,
+    "raw_literal_window_text_duplicated_here": false
+  },
+  "political_title_AST_hash_comparison": {
+    "2230": {
+      "before_AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+      "after_AST_sha256": "f1a2efd76287176c9f81a6283dda44da0680dadaae6911c415c36b147cdcef44",
+      "hash_equal_observed": false,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    },
+    "2231": {
+      "before_AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+      "after_AST_sha256": "330c5c898977976dbf6717295e2765871c9b89e8172f91cb3843b6dba3c3d75f",
+      "hash_equal_observed": false,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    },
+    "2232": {
+      "before_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+      "after_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+      "hash_equal_observed": true,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    },
+    "2235": {
+      "before_AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+      "after_AST_sha256": "5bdd15ce29f743c186f5220c3f471ccb029bdb2d69317fdad56a2024dbcacbda",
+      "hash_equal_observed": false,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    },
+    "2262": {
+      "before_AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+      "after_AST_sha256": "0bc72ee5382a77286e2455a256627c8748882e61acf3272a2d8b92ddd267e0f0",
+      "hash_equal_observed": false,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    },
+    "2263": {
+      "before_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+      "after_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+      "hash_equal_observed": true,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    },
+    "2264": {
+      "before_AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+      "after_AST_sha256": "7399bc8993e655a3d6bc91374b799ba5fb1b148c4e5f76859cc40b5915501c7c",
+      "hash_equal_observed": false,
+      "after_holder": 31254,
+      "complete_after_AST_in_original_case_result": true
+    }
+  },
+  "saved_new_title": {
+    "new_title_id": 18373,
+    "new_title_holder": 31254,
+    "new_title_held_by_actor": true,
+    "key": [
+      "x_script_692"
+    ],
+    "succession_result_type": [
+      "inheritance_child_line"
+    ],
+    "heir_ids_observed_order": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      33234,
+      37702,
+      33542,
+      34232
+    ],
+    "heirs_equal_after_resolve_title2230": true,
+    "present_saved_fields": [
+      "key",
+      "variables",
+      "holder",
+      "date",
+      "succession_result_type",
+      "heir",
+      "history",
+      "color",
+      "definite_form",
+      "destroy_if_invalid_heir",
+      "no_automatic_claims",
+      "title_name_data",
+      "treasury",
+      "nomad_name_type"
+    ],
+    "always_follows_primary_heir_saved_field_present": false,
+    "laws_saved_field_present": false,
+    "missing_field_interpreted_as_default": false
+  },
+  "saved_actor": {
+    "actor_id": 31254,
+    "laws_observed": [
+      "crown_authority_0",
+      "confederate_partition_succession_law",
+      "male_preference_law",
+      "top_liege_redirected_to_border_wars_law"
+    ],
+    "succession_result_type": [
+      "inheritance_child_line"
+    ],
+    "before_laws_not_re_read_or_newly_qualified": true
+  },
+  "closure_from_archived_facts": {
+    "normal_close": {
+      "root_normal_gui_review": {
+        "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+        "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0049",
+        "reviewer": "/root",
+        "pid": 11732,
+        "create_time": 1791625784.409819,
+        "original_hold_deadline": 1791627067.3817897,
+        "quit_request": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-awaiting.json",
+          "bytes": 633,
+          "sha256": "a7657d49d585ac80ebe5578c658697abed6a9fa5c42f85c45359590f7ff8ccfd"
+        },
+        "normal_gui_quit": true,
+        "direct_reviewed": true,
+        "review_method": "explicit operator direct image review; no automatic image-content judgment",
+        "autosave_unchecked_observed": true,
+        "autosave_unchecked_screenshot": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\unchecked-dialog.png",
+          "bytes": 1502990,
+          "sha256": "7de434273dcfbbe2f3805b0986c7c83bc3300114022c87fe6bfe5118cefcdbf7"
+        },
+        "final_click": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png.json",
+          "bytes": 1637,
+          "sha256": "885018b115ede6485e6f3d8fba9ad8648cf0ed1e214afe61b38bee7511cbb384"
+        },
+        "after_click_screenshot": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png",
+          "bytes": 1500920,
+          "sha256": "0cc819cd410d16d280dedd2bc4a5e912b96936dab85a4665ec5c94b13a7e1949"
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\unchecked-dialog.png",
+            "bytes": 1502990,
+            "sha256": "7de434273dcfbbe2f3805b0986c7c83bc3300114022c87fe6bfe5118cefcdbf7"
+          },
+          {
+            "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png.json",
+            "bytes": 1637,
+            "sha256": "885018b115ede6485e6f3d8fba9ad8648cf0ed1e214afe61b38bee7511cbb384"
+          },
+          {
+            "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png",
+            "bytes": 1500920,
+            "sha256": "0cc819cd410d16d280dedd2bc4a5e912b96936dab85a4665ec5c94b13a7e1949"
+          }
+        ],
+        "actual_os0_proven": false,
+        "actual_native0_proven": false,
+        "process_exit_claimed": false,
+        "business_pass": false
+      },
+      "operator_normal_gui_review": {
+        "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+        "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0049",
+        "reviewer": "/root",
+        "pid": 11732,
+        "create_time": 1791625784.409819,
+        "original_hold_deadline": 1791627067.3817897,
+        "quit_request": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\case-output\\normal-quit-awaiting.json",
+          "bytes": 633,
+          "sha256": "a7657d49d585ac80ebe5578c658697abed6a9fa5c42f85c45359590f7ff8ccfd"
+        },
+        "normal_gui_quit": true,
+        "direct_reviewed": true,
+        "review_method": "explicit operator direct image review; no automatic image-content judgment",
+        "autosave_unchecked_observed": true,
+        "autosave_unchecked_screenshot": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\unchecked-dialog.png",
+          "bytes": 1502990,
+          "sha256": "7de434273dcfbbe2f3805b0986c7c83bc3300114022c87fe6bfe5118cefcdbf7"
+        },
+        "final_click": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png.json",
+          "bytes": 1637,
+          "sha256": "885018b115ede6485e6f3d8fba9ad8648cf0ed1e214afe61b38bee7511cbb384"
+        },
+        "after_click_screenshot": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png",
+          "bytes": 1500920,
+          "sha256": "0cc819cd410d16d280dedd2bc4a5e912b96936dab85a4665ec5c94b13a7e1949"
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\unchecked-dialog.png",
+            "bytes": 1502990,
+            "sha256": "7de434273dcfbbe2f3805b0986c7c83bc3300114022c87fe6bfe5118cefcdbf7"
+          },
+          {
+            "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png.json",
+            "bytes": 1637,
+            "sha256": "885018b115ede6485e6f3d8fba9ad8648cf0ed1e214afe61b38bee7511cbb384"
+          },
+          {
+            "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\root-normal-quit-001\\quit-click.png",
+            "bytes": 1500920,
+            "sha256": "0cc819cd410d16d280dedd2bc4a5e912b96936dab85a4665ec5c94b13a7e1949"
+          }
+        ],
+        "actual_os0_proven": false,
+        "actual_native0_proven": false,
+        "process_exit_claimed": false,
+        "business_pass": false
+      },
+      "normal_quit_automation": null,
+      "normal_quit_automation_failure_preserved": null,
+      "retained_handle": {
+        "signaled": true,
+        "exit_code": 0,
+        "actual_retained_os0": true,
+        "pid": 11732,
+        "create_time": 1791625784.409819,
+        "retained_synchronize_query_handle_acquired": true
+      },
+      "native_zero_proof": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 11732,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0049",
+        "started_at": "2026-10-10T09:49:43.082151+00:00",
+        "finished_at": "2026-10-10T09:59:05.580236+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "cb78ff2ca3b14ca3a6ae5a9b4c914edb",
+          "ck3_pid": 11732,
+          "ck3_creation_date": "20261010094944.409818+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 15084,
+          "watchdog_creation_date": "20261010094943.593081+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\watchdog-cb78ff2ca3b14ca3a6ae5a9b4c914edb.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finish_hold_rows": [
+        {
+          "id": "acceptance-normal-exit-finish-hold",
+          "plan": {
+            "id": "acceptance-normal-exit-finish-hold",
+            "kind": "finish_hold",
+            "expect": {
+              "hold_finished": true
+            }
+          },
+          "started_at": "2026-10-10T09:59:12.224127+00:00",
+          "ok": true,
+          "result": {
+            "hold_finished": true
+          },
+          "resolved_expect": {
+            "hold_finished": true
+          },
+          "after_snapshot": {
+            "status": "not_applicable",
+            "reason": "finished_native_process_exit_zero_cleanup_proven",
+            "alive_or_business_credit": false,
+            "managed_session_done": true,
+            "pid": 11732,
+            "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0049",
+            "started_at": "2026-10-10T09:49:43.082151+00:00",
+            "finished_at": "2026-10-10T09:59:05.580236+00:00",
+            "exit_reason": "process_exit",
+            "process_exit_code": 0,
+            "shutdown": {
+              "nonce": "cb78ff2ca3b14ca3a6ae5a9b4c914edb",
+              "ck3_pid": 11732,
+              "ck3_creation_date": "20261010094944.409818+000",
+              "ck3_exit_code": 0,
+              "job_active_processes_before_termination": 0,
+              "job_active_processes_final": 0,
+              "tree_gone": true,
+              "cleanup_proven": true,
+              "final_ck3_inventory": {
+                "tasklist_returncode": 0,
+                "tasklist_pids": [],
+                "wmi_pids": [],
+                "native_pids": [],
+                "inventory_backend": "tasklist+toolhelp32",
+                "processes": []
+              },
+              "watchdog_pid": 15084,
+              "watchdog_creation_date": "20261010094943.593081+000",
+              "watchdog_state_before": "running",
+              "watchdog_state_after": "absent",
+              "control_files_absent": {
+                "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\ck3.json": true,
+                "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\watchdog-cb78ff2ca3b14ca3a6ae5a9b4c914edb.ready.json": true,
+                "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\ck3.watchdog_error": true,
+                "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-003\\state\\control\\unsafe-cleanup.json": true
+              },
+              "contract_errors": [],
+              "ok": true
+            }
+          },
+          "finished_at": "2026-10-10T09:59:12.258358+00:00"
+        }
+      ],
+      "host_finished_at": "2026-10-10T09:59:13.277865+00:00",
+      "managed_thread_finished": true,
+      "cleanup_ok": true,
+      "host_error": null,
+      "failure_shutdown_proof": null,
+      "failure_preserved": false,
+      "failure_lifecycle_completed": false,
+      "business_pass": false,
+      "normal_close_qualified": true
+    },
+    "host_original_process_exit": {
+      "at_utc": "2026-10-10T09:59:13.608788+00:00",
+      "pid": 15220,
+      "returncode": 0,
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0049",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "keeper_original_report": {
+      "schema": "xar.promo.screen-lease-keeper/v1",
+      "task_id": "common-acceptance-12004-20261010-a11",
+      "last_sequence": 4426,
+      "failure": null,
+      "thread_exited": true,
+      "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a11\\journal.jsonl",
+      "at_utc": "2026-10-10T10:00:34.299216+00:00",
+      "entry_error": null,
+      "checkout_head": "a4348fc3a226d2a6affda913fb713ed16f6954aa",
+      "screen_released": false,
+      "game_actions": false
+    },
+    "release": {
+      "schema": "codex.task_bus.v1",
+      "ok": true,
+      "task": {
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "a4348fc3a226d2a6affda913fb713ed16f6954aa"
+        },
+        "last_sequence": 4427,
+        "next_step": "",
+        "pid": 14220,
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "done",
+        "summary": "R49-diagnostic-45to40-saveonce-run0-verify0-retained-native-host0-offline-reviewed-desktop-restored-keeper0",
+        "task_id": "common-acceptance-12004-20261010-a11",
+        "updated_at_utc": "2026-10-10T10:01:33.406434+00:00"
+      },
+      "event": {
+        "schema": "codex.task_bus.v1",
+        "sequence": 4427,
+        "event_id": "db3cbd39b6be4ac38d6f4fda6750bde9",
+        "timestamp_utc": "2026-10-10T10:01:33.407732+00:00",
+        "kind": "completed",
+        "task_id": "common-acceptance-12004-20261010-a11",
+        "to": [
+          "*"
+        ],
+        "state": "done",
+        "summary": "R49-diagnostic-45to40-saveonce-run0-verify0-retained-native-host0-offline-reviewed-desktop-restored-keeper0",
+        "next_step": "",
+        "resources": [],
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "a4348fc3a226d2a6affda913fb713ed16f6954aa"
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "actual_observation": "Political heir lists first visibly differ after resolve, and final actor cache loses five IDs.",
+    "narrow_hypothesis_not_proven": "Holder assignment may dirty succession; resolve or the following stock heir getter materializes recalculation.",
+    "holder_versus_resolve_versus_getter_causal_function": null,
+    "fifth_removed_actor_ID39527_at_intermediate_stages": null,
+    "organization107_type_or_causal_role": null,
+    "next_bounded_step_proposed_only": "Use the existing exact resolve call as the next source-entry boundary; identify a directly evidenced succession commit/refresh writer before proposing a production change. Preserve atomic holder+resolve and all protections."
+  },
+  "diagnostic_execution_success_does_not_qualify_protection": true,
+  "business_PASS": false,
+  "formal_B4_or_C3_credit": null,
+  "new_tests_or_live_actions": false,
+  "save_or_native_or_wire_body_re_read": false
+}

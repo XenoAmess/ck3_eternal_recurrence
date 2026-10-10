@@ -104,3 +104,9 @@ ROOT于06:13:56 UTC持原卷锁追加[CLOSED-RESERVATION](C:/workspace/ck3_lyd_r
 R48启动证明合同失败后，managed cleanup、原host1、keeper0及CAS4416已闭场。ROOT持原卷锁关闭独立4GiB预约，remaining为0；六个互斥已知根的logical subtotal为705,185,114B，未扫描source/native或读取cache正文。该subtotal不等于全项目实际占用或物理峰值，当次free624,020,348,928B单列。
 
 源码与非cache profile14天、raw30天、小记录180天复核，必要保护最多7天；现有cache仍到Oct17 03:03:44UTC，不随复制、使用或失败续期。分类ledger和真实关闭记录已纳入[R48紧凑证据](../li-yu-dao/acceptance/2026-10-10-r0048-holder-startup-contract-red/REPORT.md)，压缩归档仅41,155B，没有新增删除量。后继接口更正位于MAIN case层，可复用Source09及v2seed，省去无必要的新runtime导出和cache快照；任何后继重型写入仍须重新准入。
+
+## 10:01 UTC：R49复用运行时后的预算关闭
+
+R49实际公共run0/verify0、原CK3句柄OS0/native0、host/keeper/allocator0及CAS4427完成后，ROOT在原卷锁内核销独立4GiB预约，remaining0。新增case003/实际run/a11及明确小回执根的已知logical subtotal708,129,647B；现有Source09/O8/native/v2seed计0，不重复计算。物理分配和历史峰值UNKNOWN，free当次623,195,856,896B；本场未新增删除量。
+
+缓存原Oct17 03:03:44UTC和配额原Oct12复核期限不续；其他新资产按checkpoint14天/raw30天/record180天复核，必要保护至多7天。约245KB紧凑归档及后续入库副本不在上述闭场计量时点内，作为有界小增量另列；没有保存第二份完整存档或wire。[实际预约、计量、分类与闭场压缩对象](../li-yu-dao/acceptance/2026-10-10-r0049-holder-diagnostic/INDEX.json)。统一自动GC/预约器仍未实现，不把本机人工闭账外推到其他机器。
