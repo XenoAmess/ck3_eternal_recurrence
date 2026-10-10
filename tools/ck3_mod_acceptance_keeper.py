@@ -62,12 +62,20 @@ def load_lease_module(repo):
     return module
 
 
-def live_lease(keeper_root, frozen=None, *, now=None):
+def live_lease(keeper_root, frozen=None, *, now=None, deadline=None):
     """Read the original journal and independently verify the actual current CAS.
 
     An informational read may race a legitimate renewal. Retry only that read;
     this function never renews, enqueues, acquires, or releases anything.
     """
+    def check_deadline():
+        if deadline is not None:
+            require(type(deadline) in (int, float) and 0 < deadline < float("inf"),
+                    "Finite original queue deadline required")
+            if time.monotonic() >= deadline:
+                raise TimeoutError("Original queue deadline elapsed during lease read")
+    check_deadline()
+    deadline_options = {"deadline": deadline} if deadline is not None else {}
     root = Path(keeper_root).resolve()
     require(not (root / "report.json").exists() and not (root / "ROOT_STOP_REQUIRED.json").exists()
             and not (root / "STOP").exists(), "Original keeper has stopped or requested STOP")
@@ -82,7 +90,8 @@ def live_lease(keeper_root, frozen=None, *, now=None):
         require(module_path in frozen["files"], "Shared lease helper absent from allocated pins")
         check_pin({**frozen["files"][module_path], "path": module_path})
     module = load_lease_module(repo)
-    require(module.checkout_head(repo) == inputs["checkout_head"], "Frozen clean lease HEAD changed")
+    require(module.checkout_head(repo, **deadline_options) == inputs["checkout_head"], "Frozen clean lease HEAD changed")
+    check_deadline()
     if frozen is not None:
         require(Path(frozen["lease_anchor"]).resolve() == repo and
                 frozen["screen_task"] == inputs["task_id"], "Keeper belongs to another allocated run")
@@ -91,6 +100,7 @@ def live_lease(keeper_root, frozen=None, *, now=None):
     last_error = None
     renewal_read_deadline = None
     for _ in range(3):
+        check_deadline()
         rows = (root / "journal.jsonl").read_text(encoding="utf-8").splitlines()
         require(rows, "Keeper has no actual CAS journal")
         last = json.loads(rows[-1])
@@ -99,12 +109,14 @@ def live_lease(keeper_root, frozen=None, *, now=None):
         require(lease["task_id"] == inputs["task_id"] and lease["checkout_head"] == inputs["checkout_head"]
                 and lease["cli_sha256"] == inputs["bus_cli_sha256"], "Keeper journal identity changed")
         packet = module.call_bus(Path(inputs["source_cli"]), Path(inputs["bus_dir"]),
-                                 inputs["bus_cli_sha256"], "list", "--stale-after", "600")
+                                 inputs["bus_cli_sha256"], "list", "--stale-after", "600", **deadline_options)
+        check_deadline()
         try:
             module.checked_owner(packet.get("tasks"), inputs["task_id"], lease["sequence"],
                                  repo, inputs["checkout_head"], now=now)
             require(not (root / "report.json").exists() and not (root / "STOP").exists() and
                     not (root / "ROOT_STOP_REQUIRED.json").exists(), "Keeper stopped during ownership read")
+            check_deadline()
             return {"inputs": inputs, "lease": lease, "owner_checked_at_utc": utc()}
         except RuntimeError as error:
             last_error = error
@@ -126,7 +138,10 @@ def live_lease(keeper_root, frozen=None, *, now=None):
                                      repo, inputs["checkout_head"], now=now)
                 if renewal_read_deadline is None:
                     renewal_read_deadline = time.monotonic() + 3
+                    if deadline is not None:
+                        renewal_read_deadline = min(renewal_read_deadline, deadline)
                 while newer and newer[-1] == rows[-1] and time.monotonic() < renewal_read_deadline:
+                    check_deadline()
                     require(not (root / "report.json").exists() and not (root / "STOP").exists() and
                             not (root / "ROOT_STOP_REQUIRED.json").exists(), "Keeper stopped during ownership read")
                     time.sleep(max(0.0, min(.05, renewal_read_deadline - time.monotonic())))

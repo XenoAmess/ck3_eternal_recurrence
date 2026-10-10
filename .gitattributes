@@ -18,6 +18,7 @@ mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol
 
 # Keep Li Yu Dao acceptance logs and their frozen SHA-256 bindings exact.
 docs/li-yu-dao/acceptance/** -text whitespace=cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-11-i4-queue-submit-overhead/standalone-test.original.patch whitespace=-blank-at-eol,cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-11-shared-readiness-window/** -text whitespace=cr-at-eol
 # Frozen R9 raw logs and numbered source excerpts preserve original whitespace.
 docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/closure/bindings/*.log -text whitespace=-blank-at-eof,cr-at-eol

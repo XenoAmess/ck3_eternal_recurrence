@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-i4-submit-overhead-sourceonly-20261011-004/run_failed_only.py",
+    "--repo",
+    "C:/workspace/ck3_eternal_recurrence"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:11:03.754856+00:00",
+  "finished_at_utc": "2026-10-10T20:11:07.457933+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stderr.log",
+    "bytes": 269,
+    "sha256": "fc44897f92152277784a248f6461bc8df72aaa8baa433b6be038ee6b40598dda"
+  }
+}

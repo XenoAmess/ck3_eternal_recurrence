@@ -1,0 +1,224 @@
+{
+  "schema": "lyd.bounded.original-step-time-projection.v1",
+  "projection_only": true,
+  "source_contents_read_count": 7,
+  "prior_aggregate_read_count": 1,
+  "source_content_bytes_this_step": 214509,
+  "prior_aggregate_bytes": 41790,
+  "records": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-natural-day-0055.actual-results.json",
+        "bytes": 81077,
+        "sha256": "81fe9978f211917c508c658294d5e76e012f909780d6bd6add478c4c89bd48e0"
+      },
+      "file_mtime_utc": "2026-10-10T18:20:05.101498+00:00",
+      "file_mtime_ns": 1791656405101497600,
+      "rows": [
+        {
+          "id": "case-natural-day-0055",
+          "started_at": "2026-10-10T18:19:57.633165+00:00",
+          "finished_at": "2026-10-10T18:20:04.769063+00:00",
+          "operation": "advance_day",
+          "tool": null
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-snapshot-0056.actual-results.json",
+        "bytes": 39399,
+        "sha256": "7cdcb51c9f5a3a90f831c95789f3982daf58f826e2bb673c431826226f593b14"
+      },
+      "file_mtime_utc": "2026-10-10T18:20:14.970693+00:00",
+      "file_mtime_ns": 1791656414970692700,
+      "rows": [
+        {
+          "id": "case-snapshot-0056",
+          "started_at": "2026-10-10T18:20:12.839357+00:00",
+          "finished_at": "2026-10-10T18:20:13.154933+00:00",
+          "operation": "tool",
+          "tool": "ck3_take_snapshot"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-school-observation-0027-model-and-tree.actual-results.json",
+        "bytes": 66092,
+        "sha256": "04963d3ac2a9a40ae1632de35cd54ad7ee0e7e5c0749ab49501b2eb97d4d6435"
+      },
+      "file_mtime_utc": "2026-10-10T18:20:22.805143+00:00",
+      "file_mtime_ns": 1791656422805142700,
+      "rows": [
+        {
+          "id": "i4-school-observation-0027-model-before",
+          "started_at": "2026-10-10T18:20:20.854513+00:00",
+          "finished_at": "2026-10-10T18:20:21.753921+00:00",
+          "operation": "tool",
+          "tool": "ck3_query_ingame_decision_item_v1"
+        },
+        {
+          "id": "i4-school-observation-0027-detail-tree",
+          "started_at": "2026-10-10T18:20:21.880763+00:00",
+          "finished_at": "2026-10-10T18:20:22.056775+00:00",
+          "operation": "tool",
+          "tool": "ck3_inspect_gui_window_tree_v1"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-school-observation-0027-model-after.actual-results.json",
+        "bytes": 21634,
+        "sha256": "3e5fcffa27f8c3d5400a752a0b89a455863eecbc66b733912763f388bd2670eb"
+      },
+      "file_mtime_utc": "2026-10-10T18:20:32.070657+00:00",
+      "file_mtime_ns": 1791656432070657100,
+      "rows": [
+        {
+          "id": "i4-school-observation-0027-model-after",
+          "started_at": "2026-10-10T18:20:30.007913+00:00",
+          "finished_at": "2026-10-10T18:20:30.248441+00:00",
+          "operation": "tool",
+          "tool": "ck3_query_ingame_decision_item_v1"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-natural-day-0055.stdout.log",
+        "bytes": 2010,
+        "sha256": "337c37fcec97544d1e8210f17d450d3f6cacc52c88f9fa72208b66642f3b18dd"
+      },
+      "file_mtime_utc": "2026-10-10T18:19:57.563543+00:00",
+      "file_mtime_ns": 1791656397563542400,
+      "receipt_times": {
+        "status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS",
+        "at_utc": "2026-10-10T18:19:57.476775+00:00"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-snapshot-0056.stdout.log",
+        "bytes": 2001,
+        "sha256": "af794f3f3d6ebc1b60ebff926b32d726015f0ba3ae3f48ead798dce3826e1b32"
+      },
+      "file_mtime_utc": "2026-10-10T18:20:12.751581+00:00",
+      "file_mtime_ns": 1791656412751581100,
+      "receipt_times": {
+        "status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS",
+        "at_utc": "2026-10-10T18:20:12.736640+00:00"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-school-observation-0027-model-and-tree.stdout.log",
+        "bytes": 2296,
+        "sha256": "e1b7d848dfccaa28336fe78293769c0e2745c9d933a1ac3a8ff38b196d57f871"
+      },
+      "file_mtime_utc": "2026-10-10T18:20:20.779294+00:00",
+      "file_mtime_ns": 1791656420779294100,
+      "receipt_times": {
+        "status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS",
+        "at_utc": "2026-10-10T18:20:20.705553+00:00"
+      }
+    }
+  ],
+  "immediate_file_metadata": [
+    {
+      "plan_name": "case-natural-day-0055",
+      ".stderr.log": {
+        "bytes": 0,
+        "mtime_utc": "2026-10-10T18:19:51.392553+00:00",
+        "mtime_ns": 1791656391392552800
+      },
+      ".stdout.log": {
+        "bytes": 2010,
+        "mtime_utc": "2026-10-10T18:19:57.563543+00:00",
+        "mtime_ns": 1791656397563542400
+      },
+      ".queue-result.json": {
+        "bytes": 521,
+        "mtime_utc": "2026-10-10T18:19:57.903811+00:00",
+        "mtime_ns": 1791656397903811200
+      },
+      ".actual-results.json": {
+        "bytes": 81077,
+        "mtime_utc": "2026-10-10T18:20:05.101498+00:00",
+        "mtime_ns": 1791656405101497600
+      }
+    },
+    {
+      "plan_name": "case-snapshot-0056",
+      ".stderr.log": {
+        "bytes": 0,
+        "mtime_utc": "2026-10-10T18:20:05.114805+00:00",
+        "mtime_ns": 1791656405114805400
+      },
+      ".stdout.log": {
+        "bytes": 2001,
+        "mtime_utc": "2026-10-10T18:20:12.751581+00:00",
+        "mtime_ns": 1791656412751581100
+      },
+      ".queue-result.json": {
+        "bytes": 515,
+        "mtime_utc": "2026-10-10T18:20:12.795720+00:00",
+        "mtime_ns": 1791656412795719700
+      },
+      ".actual-results.json": {
+        "bytes": 39399,
+        "mtime_utc": "2026-10-10T18:20:14.970693+00:00",
+        "mtime_ns": 1791656414970692700
+      }
+    },
+    {
+      "plan_name": "i4-school-observation-0027-model-and-tree",
+      ".stderr.log": {
+        "bytes": 0,
+        "mtime_utc": "2026-10-10T18:20:15.004616+00:00",
+        "mtime_ns": 1791656415004615700
+      },
+      ".stdout.log": {
+        "bytes": 2296,
+        "mtime_utc": "2026-10-10T18:20:20.779294+00:00",
+        "mtime_ns": 1791656420779294100
+      },
+      ".queue-result.json": {
+        "bytes": 561,
+        "mtime_utc": "2026-10-10T18:20:21.040226+00:00",
+        "mtime_ns": 1791656421040226000
+      },
+      ".actual-results.json": {
+        "bytes": 66092,
+        "mtime_utc": "2026-10-10T18:20:22.805143+00:00",
+        "mtime_ns": 1791656422805142700
+      }
+    },
+    {
+      "plan_name": "i4-school-observation-0027-model-after",
+      ".stderr.log": {
+        "bytes": 0,
+        "mtime_utc": "2026-10-10T18:20:22.868240+00:00",
+        "mtime_ns": 1791656422868239600
+      },
+      ".stdout.log": {
+        "bytes": 2061,
+        "mtime_utc": "2026-10-10T18:20:29.888803+00:00",
+        "mtime_ns": 1791656429888803700
+      },
+      ".queue-result.json": {
+        "bytes": 555,
+        "mtime_utc": "2026-10-10T18:20:29.929717+00:00",
+        "mtime_ns": 1791656429929716600
+      },
+      ".actual-results.json": {
+        "bytes": 21634,
+        "mtime_utc": "2026-10-10T18:20:32.070657+00:00",
+        "mtime_ns": 1791656432070657100
+      }
+    }
+  ],
+  "timestamps_are_file_mtime_not_process_timers": true,
+  "source_or_runtime_mutation": false
+}

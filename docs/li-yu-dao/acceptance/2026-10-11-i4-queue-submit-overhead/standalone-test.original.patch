@@ -1,0 +1,18 @@
+--- a/tools/test_ck3_mod_acceptance_queue_inprocess.py
++++ b/tools/test_ck3_mod_acceptance_queue_inprocess.py
+@@ -15,7 +15,7 @@
+ import unittest
+ from unittest.mock import patch
+ 
+-CANDIDATE = None
++CANDIDATE = Path(__file__).resolve().parents[1]
+ 
+ def pin(path):
+     raw=path.read_bytes()
+@@ -204,3 +204,6 @@
+                 self.assertEqual(self.module.main(argv),0)
+             self.assertEqual(enqueue.call_args.kwargs['deadline'],expected)
+             self.assertEqual(json.loads(output.getvalue()),{'fixture_only':True})
++
++if __name__ == '__main__':
++    unittest.main()

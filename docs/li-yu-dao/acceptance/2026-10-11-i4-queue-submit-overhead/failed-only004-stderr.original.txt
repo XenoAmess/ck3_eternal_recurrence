@@ -1,0 +1,6 @@
+test_08_expiry_after_final_cas_read_refuses_publication (pure_queue004_standalone.InprocessQueueTests.test_08_expiry_after_final_cas_read_refuses_publication) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.795s
+
+OK

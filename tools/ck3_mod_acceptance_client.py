@@ -78,6 +78,49 @@ def resolve_operator_reviewer(selection):
     return reviewer
 
 
+def load_pinned_control_queue(queue, frozen, previous=None):
+    """Execute complete selected sibling modules with private import bindings."""
+    import builtins
+    import types
+    queue = Path(queue).resolve()
+    require(queue.name == 'ck3_mod_acceptance_queue.py', 'Selected public queue basename differs')
+    files = frozen.get('files')
+    require(isinstance(files, dict), 'Original allocated helper pins missing')
+    sources, refs = {}, {}
+    for name in ('ck3_mod_acceptance_keeper', 'ck3_mod_acceptance_launcher', 'ck3_mod_acceptance_queue'):
+        path = queue.with_name(name + '.py')
+        declared = files.get(str(path))
+        require(isinstance(declared, dict), 'Selected queue sibling absent from frozen pins: ' + str(path))
+        raw = path.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        require(type(declared.get('bytes')) is int and len(raw) == declared['bytes'] and
+                digest == str(declared.get('sha256', '')).lower(), 'Selected queue sibling bytes changed: ' + str(path))
+        sources[name] = (path, raw)
+        refs[name] = {'path': str(path), 'bytes': len(raw), 'sha256': digest}
+    if previous is not None:
+        require(previous['refs'] == refs, 'Selected queue dependency closure changed after first submission')
+        return previous
+    modules = {}
+    for name in ('ck3_mod_acceptance_keeper', 'ck3_mod_acceptance_launcher', 'ck3_mod_acceptance_queue'):
+        path, raw = sources[name]
+        dependencies = dict(modules)
+        def selected_import(import_name, globals=None, locals=None, fromlist=(), level=0, *, dependencies=dependencies):
+            if level == 0 and import_name in dependencies:
+                return dependencies[import_name]
+            if level == 0 and import_name.startswith('ck3_mod_acceptance_'):
+                raise ImportError('Unpinned selected queue sibling import: ' + import_name)
+            return builtins.__import__(import_name, globals, locals, fromlist, level)
+        private_builtins = dict(vars(builtins))
+        private_builtins['__import__'] = selected_import
+        module = types.ModuleType('_selected_' + name + '_' + refs[name]['sha256'])
+        module.__file__ = str(path)
+        module.__package__ = None
+        module.__dict__['__builtins__'] = private_builtins
+        exec(compile(raw, str(path), 'exec'), module.__dict__)
+        modules[name] = module
+    return {'refs': refs, 'module': modules['ck3_mod_acceptance_queue'], 'modules': modules}
+
+
 class CaseClient:
     def __init__(self, selection, output=None):
         require(selection.context, 'Actual allocated run context required')
@@ -299,12 +342,52 @@ class CaseClient:
         check_pin(queue, queue_ref)
         argv = [str(self.selection.locations['python']), '-B', '-X', 'utf8', str(queue),
                 '--live', str(self.live), '--plan', str(path), '--name', name + '.json']
-        environment = dict(os.environ); environment.update(self.selection.runtime_environment)
+        import sys
+        import inspect
+        legacy_reasons = []
+        if Path(sys.executable).resolve() != Path(self.selection.locations['python']).resolve():
+            legacy_reasons.append('selected_python_differs')
+        if not all(os.environ.get(key) == value for key, value in self.selection.runtime_environment.items()):
+            legacy_reasons.append('selected_runtime_environment_differs')
+        queue_timeout = max(1, min(300, self.remaining()-reserve))
+        queue_deadline = time.monotonic() + queue_timeout
+        binding_error = None
+        if not legacy_reasons:
+            try:
+                self._queue_library = load_pinned_control_queue(queue, self.frozen, getattr(self, '_queue_library', None))
+                module = self._queue_library['module']
+                parameter = inspect.signature(module.enqueue).parameters.get('deadline')
+                if not callable(getattr(module, 'enqueue_deadline', None)) or parameter is None or parameter.kind != inspect.Parameter.KEYWORD_ONLY:
+                    legacy_reasons.append('selected_queue_deadline_api_unavailable')
+            except Exception as error:
+                binding_error = error
+        execution_mode = 'LEGACY_QUEUE_SUBPROCESS' if legacy_reasons else 'IN_PROCESS_PINNED_QUEUE_LIBRARY'
         with (self.output / (name + '.stdout.log')).open('xb') as stdout, (self.output / (name + '.stderr.log')).open('xb') as stderr:
-            result = subprocess.run(argv, cwd=self.selection.locations['repo_root'], env=environment,
-                                    stdout=stdout, stderr=stderr, timeout=max(1, min(300, self.remaining()-reserve)))
-        write_once(self.output / (name + '.queue-result.json'), {'argv': argv, 'exit_code': result.returncode})
-        require(result.returncode == 0, 'Original once-only queue failed; inspect without replay')
+            if binding_error is not None:
+                packet = {'status': 'BLOCKED_NEVER_REPLAY', 'error': repr(binding_error), 'business_pass': False}
+                returncode = 2
+                stdout.write((json.dumps(packet) + '\n').encode('utf-8')); stdout.flush()
+            elif legacy_reasons:
+                environment = dict(os.environ); environment.update(self.selection.runtime_environment)
+                result = subprocess.run(argv, cwd=self.selection.locations['repo_root'], env=environment,
+                                        stdout=stdout, stderr=stderr, timeout=max(1, min(300, self.remaining()-reserve)))
+                returncode = result.returncode
+            else:
+                try:
+                    packet = module.enqueue(self.live, path, name + '.json', deadline=queue_deadline)
+                    if time.monotonic() >= queue_deadline:
+                        raise TimeoutError('Original once-only queue deadline elapsed after publication; never replay')
+                    returncode = 0
+                except (TimeoutError, subprocess.TimeoutExpired) as error:
+                    raise subprocess.TimeoutExpired(argv, queue_timeout) from error
+                except Exception as error:
+                    packet = {'status': 'BLOCKED_NEVER_REPLAY', 'error': repr(error), 'business_pass': False}
+                    returncode = 2
+                stdout.write((json.dumps(packet) + '\n').encode('utf-8')); stdout.flush()
+        write_once(self.output / (name + '.queue-result.json'), {'argv': argv, 'exit_code': returncode,
+                   'execution_mode': execution_mode, 'argv_executed': bool(legacy_reasons),
+                   'legacy_reasons': legacy_reasons})
+        require(returncode == 0, 'Original once-only queue failed; inspect without replay')
         rows = self.await_steps(steps, timeout, reserve)
         write_once(self.output / (name + '.actual-results.json'), {'rows': rows, 'business_PASS_inferred': False})
         return rows

@@ -1,0 +1,97 @@
+{
+  "schema": "lyd-i4-queue-submit-source-evidence-v1",
+  "at_utc": "2026-10-10T20:15:16.217307+00:00",
+  "files": [
+    {
+      "file": "candidate-INDEX.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\INDEX.json",
+      "bytes": 7404,
+      "sha256": "98f60ae22a343612239f915773a8a69fc5c636574b1ca2ec35b3792fa98e2fcd"
+    },
+    {
+      "file": "copy-manifest.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\ROOT-IMPORT-COPY-MANIFEST.json",
+      "bytes": 2563,
+      "sha256": "926110d7ab3afbd964f3e560d2050467e05b998b55afda83b5e90fb4f2c0b329"
+    },
+    {
+      "file": "deadline-entry-AST.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\DEADLINE-AND-ENTRY-AST.actual.json",
+      "bytes": 883,
+      "sha256": "f2c271327f229195421e13836048e7c91cefb81fb42c9163a21137007a6e2622"
+    },
+    {
+      "file": "hold-fix.original.patch",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\HOLD-LOCAL.incremental.review.patch",
+      "bytes": 398,
+      "sha256": "8107209bd54dd3d02f13afbe0c19d33d15bdf415c985b9fcdba033554e458886"
+    },
+    {
+      "file": "standalone-test.original.patch",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\STANDALONE-TEST.patch",
+      "bytes": 601,
+      "sha256": "613ee5098088cc4473e300667d99d735ed1ea4a0dc30425a39ca8e54cd3a5bb4"
+    },
+    {
+      "file": "execution-evidence.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\EXECUTION-EVIDENCE.actual.json",
+      "bytes": 4232,
+      "sha256": "fd97ff119c330593663e12d47551c9d79650ef62e9c3c557784dee4aafd30d7d"
+    },
+    {
+      "file": "timing.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-002\\ACTUAL-TIMES.json",
+      "bytes": 7909,
+      "sha256": "f64f75ff52653b9ea53343db2309bedf7030769c5da2f281f3d6bdf4f543c489"
+    },
+    {
+      "file": "adoption.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue004-main-adoption-20261011-001.actual.json",
+      "bytes": 2957,
+      "sha256": "dbb6d9f06c9f66ff6b73729a579d40947d364d1f2af2ab307ed2de3079e783b6"
+    },
+    {
+      "file": "original003-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\RESULT.actual.json",
+      "bytes": 1004,
+      "sha256": "671bd6e72a560181cba32bf368fcfb6c744b62839dfb170d0ec38dc810cb80e6"
+    },
+    {
+      "file": "original003-stdout.original.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\stdout.log",
+      "bytes": 640,
+      "sha256": "28f21cc3d0c53e22bb26a113db92594a5bb446190fde5df65fdf8ddf3998d306"
+    },
+    {
+      "file": "original003-stderr.original.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\stderr.log",
+      "bytes": 2454,
+      "sha256": "38fa457d7eaee1599f13a8faff1d3da86ba8284666ef8e8b0a36c0acc9a64fde"
+    },
+    {
+      "file": "failed-only004-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\RESULT.actual.json",
+      "bytes": 1015,
+      "sha256": "7d040748a4e4440e0662f31adcd287faf647b6597f6f4847b6b5ccbc89ba0e63"
+    },
+    {
+      "file": "failed-only004-stdout.original.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "failed-only004-stderr.original.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stderr.log",
+      "bytes": 269,
+      "sha256": "fc44897f92152277784a248f6461bc8df72aaa8baa433b6be038ee6b40598dda"
+    }
+  ],
+  "total_original_bytes": 32329,
+  "tests": "original003 8PASS/1FAIL; successor004 only failed1PASS; prior8 reused without replay",
+  "actual_game_bus_calls": 0,
+  "live_performance": null,
+  "phase1": "75% NOT_GREEN",
+  "raw_review_after": "2026-11-09T20:11:07Z",
+  "compact_record_review_after": "2027-04-08T20:11:07Z"
+}

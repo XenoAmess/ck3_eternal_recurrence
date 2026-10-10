@@ -1,0 +1,65 @@
+{
+  "status": "SOURCE_ONLY_REVIEWED_CANDIDATE",
+  "files": [
+    {
+      "target": "tools/ck3_mod_acceptance_client.py",
+      "before": {
+        "bytes": 55397,
+        "sha256": "4db21e3c4c715accdfa0e2e72a21ebc0885d63dce47923c937276f97c2bc87e5"
+      },
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialized-20261011-004\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 60580,
+        "sha256": "c041d4cc8933a1ed9dfccd3c3484934414dcd01629904299d04b588253cec420"
+      }
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_queue.py",
+      "before": {
+        "bytes": 10119,
+        "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+      },
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialized-20261011-004\\tools\\ck3_mod_acceptance_queue.py",
+        "bytes": 11098,
+        "sha256": "692853d3716857570f0b9b5f97f5c04749c9bdfdd09a71ac89cc5e254abd74d9"
+      }
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_keeper.py",
+      "before": {
+        "bytes": 11311,
+        "sha256": "9ec75f89addd62f7a426442d1ce7ec9dc9973cf71a087f57de500c8f287ed7a0"
+      },
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialized-20261011-004\\tools\\ck3_mod_acceptance_keeper.py",
+        "bytes": 12071,
+        "sha256": "462a5e2c722a6b3b9ac1eab6bcd806cadc40851f04e843c36475d276d07c1d4d"
+      }
+    },
+    {
+      "target": "promo/ck3_native_war_ai/integration/screen_bus_lease.py",
+      "before": {
+        "bytes": 15381,
+        "sha256": "d000883192b63d0aa7f5df7769a7eff0c1ed90450075e88c3d21d10943b46924"
+      },
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialized-20261011-004\\promo\\ck3_native_war_ai\\integration\\screen_bus_lease.py",
+        "bytes": 15997,
+        "sha256": "4a8233bb640d0eeda67150da818f3898a1c9afb0229d54e4d0d39e7a932f27f0"
+      }
+    },
+    {
+      "target": "tools/test_ck3_mod_acceptance_queue_inprocess.py",
+      "before": null,
+      "create_only": true,
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\test_ck3_mod_acceptance_queue_inprocess.py",
+        "bytes": 13681,
+        "sha256": "09aa2e361d0ca18bb09c881253f502e6b6c61d15a4279c7976ff597493dd3b8f"
+      }
+    }
+  ],
+  "main_applied": false,
+  "native_changed": false
+}

@@ -1,0 +1,87 @@
+{
+  "first_focused": "8 passed;1 failed(test08), preserved",
+  "corrected_focused": "only test08 rerun;passed",
+  "receipts": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\RESULT.actual.json",
+        "bytes": 1004,
+        "sha256": "671bd6e72a560181cba32bf368fcfb6c744b62839dfb170d0ec38dc810cb80e6"
+      },
+      "exit_code": 1,
+      "started_at_utc": "2026-10-10T20:08:29.590466+00:00",
+      "finished_at_utc": "2026-10-10T20:08:34.432023+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\stdout.log",
+        "bytes": 640,
+        "sha256": "28f21cc3d0c53e22bb26a113db92594a5bb446190fde5df65fdf8ddf3998d306"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\stderr.log",
+        "bytes": 2454,
+        "sha256": "38fa457d7eaee1599f13a8faff1d3da86ba8284666ef8e8b0a36c0acc9a64fde"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-003\\RESULT.actual.json",
+        "bytes": 1121,
+        "sha256": "0bff495535e626b22d27aa8b12b474fcf66280453fda9ba5a9fb2b2a9d15a043"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T20:09:10.127923+00:00",
+      "finished_at_utc": "2026-10-10T20:09:10.311058+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-003\\stdout.log",
+        "bytes": 1415,
+        "sha256": "b282296df53c31bdca91bc8735a548b4b82bfd4f04cc309bb59386a84ecbdd72"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-003\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\RESULT.actual.json",
+        "bytes": 1015,
+        "sha256": "7d040748a4e4440e0662f31adcd287faf647b6597f6f4847b6b5ccbc89ba0e63"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T20:11:03.754856+00:00",
+      "finished_at_utc": "2026-10-10T20:11:07.457933+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stderr.log",
+        "bytes": 269,
+        "sha256": "fc44897f92152277784a248f6461bc8df72aaa8baa433b6be038ee6b40598dda"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-004\\RESULT.actual.json",
+        "bytes": 1121,
+        "sha256": "fba01aee3977165ac48965948d10d4252b078d8f52d574a69a4c7e292e37b4c9"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T20:11:13.605041+00:00",
+      "finished_at_utc": "2026-10-10T20:11:13.833921+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-004\\stdout.log",
+        "bytes": 1415,
+        "sha256": "6056ad1dc91d19a60a099cdd3494c246825127502ac8ebb87b992f497291b1da"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-004\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "normal_root_record_help_probe": "Original wrapper has no --help. Probe failed before child execution/output creation; original tool transcript7510b4 retained, no synthetic rawfile."
+}

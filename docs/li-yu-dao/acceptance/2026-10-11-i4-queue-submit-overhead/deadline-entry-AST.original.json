@@ -1,0 +1,18 @@
+{
+  "status": "SOURCE_ONLY_AST_READBACK",
+  "exact003_to004_delta": "three identifier tokens in only existing hold UTC local assignment/require",
+  "renamed_tokens": 3,
+  "monotonic_deadline_parameter_store_count": 0,
+  "all_other_production_bytes_equal003": true,
+  "all_nine_test_function_ASTs_equal003": true,
+  "standalone_default": "Path(__file__).resolve().parents[1]",
+  "standalone_entry": "unittest.main()",
+  "source_deadline_contract": {
+    "hold_deadline": "report.hold_until_utc_estimated minus time.time(); original >0/90 reserve unchanged",
+    "enqueue_deadline": "time.monotonic() versus explicit deadline",
+    "keeper_deadline": "time.monotonic(); conditional renewal wait min with deadline",
+    "git_bus_timeout": "each subprocess min(original30/60, deadline-time.monotonic())"
+  },
+  "focused_rerun_count": 1,
+  "previous_eight_rerun": false
+}

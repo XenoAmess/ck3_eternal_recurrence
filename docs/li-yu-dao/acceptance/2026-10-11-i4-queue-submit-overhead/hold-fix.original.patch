@@ -1,0 +1,6 @@
+--- 003/queue-hold-fragment
++++ 004/queue-hold-fragment
+@@ -1,2 +1,2 @@
+-    deadline = report.get("hold_until_utc_estimated")
+-    require(type(deadline) in (int, float) and deadline - time.time() > (0 if finishing else 90),+    hold_deadline = report.get("hold_until_utc_estimated")
++    require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing else 90),

@@ -112,13 +112,24 @@ def claim_plan(ledger, name, raw, ids):
     return {"sha256": digest, "claims": claimed}
 
 
-def enqueue(live, plan, name):
+def enqueue_deadline(deadline):
+    if deadline is not None:
+        require(type(deadline) in (int, float) and 0 < deadline < float("inf"),
+                "Finite original queue deadline required")
+        if time.monotonic() >= deadline:
+            raise TimeoutError("Original once-only queue deadline elapsed; never replay")
+
+
+def enqueue(live, plan, name, *, deadline=None):
+    enqueue_deadline(deadline)
+    lease_options = {"deadline": deadline} if deadline is not None else {}
     live, plan = Path(live).resolve(), Path(plan).resolve()
     require(Path(name).name == name and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,159}\.json", name),
             "New .json control basename required")
     frozen, context = frozen_run(live, all_pins=False)
     keeper = Path(context["keeper_root"]).resolve()
-    lease = live_lease(keeper, frozen)
+    lease = live_lease(keeper, frozen, **lease_options)
+    enqueue_deadline(deadline)
     report = stable_report(live / "native-report.json")
     require(Path(report["state_dir"]).resolve() == Path(frozen["state_dir"]).resolve() and
             Path(report["agent_source_root"]).resolve() == Path(frozen["source_root"]).resolve(),
@@ -134,8 +145,8 @@ def enqueue(live, plan, name):
     steps = value["steps"]
     ids = validate_steps(steps, report)
     finishing = len(steps) == 1 and steps[0].get("kind") == "finish_hold"
-    deadline = report.get("hold_until_utc_estimated")
-    require(type(deadline) in (int, float) and deadline - time.time() > (0 if finishing else 90),
+    hold_deadline = report.get("hold_until_utc_estimated")
+    require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing else 90),
             "Original host normal Quit reserve reached")
     if finishing:
         require(native_zero_proof(frozen, report) is not None, "Original shared native-zero predicate rejects finish_hold")
@@ -146,6 +157,7 @@ def enqueue(live, plan, name):
     require(controls == live / "controls" and controls.is_dir(), "Control directory crossed actual allocation")
     target = controls / name
     require(not target.exists(), "Original control target already exists; never overwrite")
+    enqueue_deadline(deadline)
     claims = claim_plan(live / "control-once-ledger", name, raw, ids)
     # Hard-link a fully written private file into the observed *.json namespace.
     # os.link is atomic and refuses an existing target on Windows and POSIX.
@@ -154,7 +166,8 @@ def enqueue(live, plan, name):
         stream.write(raw); stream.flush(); os.fsync(stream.fileno())
     require(pin(temporary)["sha256"] == claims["sha256"], "Exact control bytes changed before publish")
     try:
-        latest = live_lease(keeper, frozen)
+        latest = live_lease(keeper, frozen, **lease_options)
+        enqueue_deadline(deadline)
         os.link(temporary, target)
     finally:
         # The pending filename is never consumed by the host. Preserve it on
@@ -173,9 +186,13 @@ def main(argv=None):
     parser.add_argument("--live", type=Path, required=True)
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--name", required=True)
+    parser.add_argument("--timeout-seconds", type=float, help="Bound this original submission; no retries")
     args = parser.parse_args(argv)
     try:
-        print(json.dumps(enqueue(args.live, args.plan, args.name)), flush=True)
+        if args.timeout_seconds is not None:
+            require(0 < args.timeout_seconds < float("inf"), "Finite positive queue timeout required")
+        deadline = None if args.timeout_seconds is None else time.monotonic() + args.timeout_seconds
+        print(json.dumps(enqueue(args.live, args.plan, args.name, deadline=deadline)), flush=True)
         return 0
     except Exception as error:
         print(json.dumps({"status": "BLOCKED_NEVER_REPLAY", "error": repr(error), "business_pass": False}), flush=True)

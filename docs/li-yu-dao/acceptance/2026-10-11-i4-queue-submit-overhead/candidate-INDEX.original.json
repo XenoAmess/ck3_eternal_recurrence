@@ -1,0 +1,158 @@
+{
+  "status": "SOURCE_ONLY_WITH_ACTUAL_FOCUSED_EVIDENCE",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\build_candidate.py",
+      "bytes": 4199,
+      "sha256": "08f0328fa7deaf5aa36890d6a20fdfffb66661c4339547b047622a3abebfbc15"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\DEADLINE-AND-ENTRY-AST.actual.json",
+      "bytes": 883,
+      "sha256": "f2c271327f229195421e13836048e7c91cefb81fb42c9163a21137007a6e2622"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\EXECUTION-EVIDENCE.actual.json",
+      "bytes": 4232,
+      "sha256": "fd97ff119c330593663e12d47551c9d79650ef62e9c3c557784dee4aafd30d7d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\finalize.py",
+      "bytes": 6031,
+      "sha256": "69b0614656412726da90e6b1e50a852623b59e7e5e33a041b5d2f50bbc5aa105"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\HOLD-LOCAL.incremental.review.patch",
+      "bytes": 398,
+      "sha256": "8107209bd54dd3d02f13afbe0c19d33d15bdf415c985b9fcdba033554e458886"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\prepare_source.py",
+      "bytes": 1064,
+      "sha256": "f2a6601ebc5a7b5ad3adb7c248f44ab6b94f4499b844709b8aa0c2a4399d458d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\ROOT-IMPORT-COPY-MANIFEST.json",
+      "bytes": 2563,
+      "sha256": "926110d7ab3afbd964f3e560d2050467e05b998b55afda83b5e90fb4f2c0b329"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\run_failed_only.py",
+      "bytes": 1126,
+      "sha256": "a979f6a85b5f1633b4acf3f59605b6385e22b148fd787cce4650552d78390fc2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\STANDALONE-TEST.patch",
+      "bytes": 601,
+      "sha256": "613ee5098088cc4473e300667d99d735ed1ea4a0dc30425a39ca8e54cd3a5bb4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\test_ck3_mod_acceptance_queue_inprocess.py",
+      "bytes": 13681,
+      "sha256": "09aa2e361d0ca18bb09c881253f502e6b6c61d15a4279c7976ff597493dd3b8f"
+    }
+  ],
+  "execution_receipts": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\RESULT.actual.json",
+        "bytes": 1004,
+        "sha256": "671bd6e72a560181cba32bf368fcfb6c744b62839dfb170d0ec38dc810cb80e6"
+      },
+      "exit_code": 1,
+      "started_at_utc": "2026-10-10T20:08:29.590466+00:00",
+      "finished_at_utc": "2026-10-10T20:08:34.432023+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\stdout.log",
+        "bytes": 640,
+        "sha256": "28f21cc3d0c53e22bb26a113db92594a5bb446190fde5df65fdf8ddf3998d306"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-focused-original-exec-20261011-003\\stderr.log",
+        "bytes": 2454,
+        "sha256": "38fa457d7eaee1599f13a8faff1d3da86ba8284666ef8e8b0a36c0acc9a64fde"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-003\\RESULT.actual.json",
+        "bytes": 1121,
+        "sha256": "0bff495535e626b22d27aa8b12b474fcf66280453fda9ba5a9fb2b2a9d15a043"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T20:09:10.127923+00:00",
+      "finished_at_utc": "2026-10-10T20:09:10.311058+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-003\\stdout.log",
+        "bytes": 1415,
+        "sha256": "b282296df53c31bdca91bc8735a548b4b82bfd4f04cc309bb59386a84ecbdd72"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-003\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\RESULT.actual.json",
+        "bytes": 1015,
+        "sha256": "7d040748a4e4440e0662f31adcd287faf647b6597f6f4847b6b5ccbc89ba0e63"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T20:11:03.754856+00:00",
+      "finished_at_utc": "2026-10-10T20:11:07.457933+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-failed-guard-original-exec-20261011-004\\stderr.log",
+        "bytes": 269,
+        "sha256": "fc44897f92152277784a248f6461bc8df72aaa8baa433b6be038ee6b40598dda"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-004\\RESULT.actual.json",
+        "bytes": 1121,
+        "sha256": "fba01aee3977165ac48965948d10d4252b078d8f52d574a69a4c7e292e37b4c9"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T20:11:13.605041+00:00",
+      "finished_at_utc": "2026-10-10T20:11:13.833921+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-004\\stdout.log",
+        "bytes": 1415,
+        "sha256": "6056ad1dc91d19a60a099cdd3494c246825127502ac8ebb87b992f497291b1da"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialize-original-exec-20261011-004\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "copy_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-submit-overhead-sourceonly-20261011-004\\ROOT-IMPORT-COPY-MANIFEST.json",
+    "bytes": 2563,
+    "sha256": "926110d7ab3afbd964f3e560d2050467e05b998b55afda83b5e90fb4f2c0b329"
+  },
+  "candidate_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialized-20261011-004\\MANIFEST.actual.json",
+    "bytes": 2338,
+    "sha256": "94d9d58b49975b4da75b3848e591220cb9149e1b6d6a598a65d62339836c8ac3"
+  },
+  "candidate_patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-queue-inprocess-materialized-20261011-004\\candidate.patch",
+    "bytes": 17951,
+    "sha256": "8ff24e2353793601c3600bb08cdc2b9428da2a4c230a8dbe61acdaf4ea1ae16b"
+  },
+  "original003_preserved": true,
+  "main_applied": false,
+  "game_bus_calls": 0,
+  "performance_pass": null,
+  "focused_result": "original8PASS/1FAIL;only failed1PASS on004",
+  "standalone_entry_AST_only": true
+}

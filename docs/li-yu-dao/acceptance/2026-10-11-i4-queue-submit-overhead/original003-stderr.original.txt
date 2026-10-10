@@ -1,0 +1,23 @@
+test_01_complete_selected_modules_do_not_import_main_siblings (pure_queue_candidate_tests.InprocessQueueTests.test_01_complete_selected_modules_do_not_import_main_siblings) ... ok
+test_02_cached_code_still_checks_exact_frozen_bytes (pure_queue_candidate_tests.InprocessQueueTests.test_02_cached_code_still_checks_exact_frozen_bytes) ... ok
+test_03_direct_ack_original_refs_rows_and_no_queue_subprocess (pure_queue_candidate_tests.InprocessQueueTests.test_03_direct_ack_original_refs_rows_and_no_queue_subprocess) ... ok
+test_04_initial_lease_refusal_never_publishes_or_falls_back (pure_queue_candidate_tests.InprocessQueueTests.test_04_initial_lease_refusal_never_publishes_or_falls_back) ... ok
+test_05_second_lease_refusal_preserves_claim_and_never_retries (pure_queue_candidate_tests.InprocessQueueTests.test_05_second_lease_refusal_preserves_claim_and_never_retries) ... ok
+test_06_legacy_selection_happens_before_submit_and_only_once (pure_queue_candidate_tests.InprocessQueueTests.test_06_legacy_selection_happens_before_submit_and_only_once) ... ok
+test_07_each_git_and_bus_process_gets_remaining_original_deadline (pure_queue_candidate_tests.InprocessQueueTests.test_07_each_git_and_bus_process_gets_remaining_original_deadline) ... ok
+test_08_expiry_after_final_cas_read_refuses_publication (pure_queue_candidate_tests.InprocessQueueTests.test_08_expiry_after_final_cas_read_refuses_publication) ... FAIL
+test_09_cli_default_and_optional_deadline_share_original_enqueue (pure_queue_candidate_tests.InprocessQueueTests.test_09_cli_default_and_optional_deadline_share_original_enqueue) ... ok
+
+======================================================================
+FAIL: test_08_expiry_after_final_cas_read_refuses_publication (pure_queue_candidate_tests.InprocessQueueTests.test_08_expiry_after_final_cas_read_refuses_publication)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r53-i4-submit-overhead-sourceonly-20261011-003\test_queue_inprocess.py", line 195, in test_08_expiry_after_final_cas_read_refuses_publication
+    with self.assertRaises(TimeoutError):self.module.enqueue(self.live,plan,'late.json',deadline=150)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: TimeoutError not raised
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.271s
+
+FAILED (failures=1)

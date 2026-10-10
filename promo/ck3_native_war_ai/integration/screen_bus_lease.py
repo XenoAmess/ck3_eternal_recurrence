@@ -19,6 +19,7 @@ import re
 import subprocess
 import sys
 import threading
+import time
 import uuid
 
 
@@ -88,8 +89,19 @@ def abort_recorder_process(process: subprocess.Popen, *, receipt: Path,
         raise
 
 
+def _remaining_timeout(deadline: float | None, maximum: float) -> float:
+    if deadline is None:
+        return maximum
+    require(type(deadline) in (int, float) and 0 < deadline < float("inf"),
+            "finite original command deadline is required")
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise TimeoutError("original command deadline elapsed before process dispatch")
+    return min(maximum, remaining)
+
+
 def call_bus(source: Path, bus_dir: Path, expected_sha: str, *argv: str,
-             audit_dir: Path | None = None) -> dict:
+             audit_dir: Path | None = None, deadline: float | None = None) -> dict:
     checked_cli_pair(source, bus_dir / "bin" / "codex_task_bus.py", expected_sha)
     command = [sys.executable, str(source), "--bus-dir", str(bus_dir),
                "--expected-cli-sha256", expected_sha, *argv]
@@ -102,7 +114,7 @@ def call_bus(source: Path, bus_dir: Path, expected_sha: str, *argv: str,
     try:
         result = subprocess.run(command, capture_output=True, text=False,
                                 env={**os.environ, "PYTHONIOENCODING": "utf-8"},
-                                timeout=60, check=False)
+                                timeout=_remaining_timeout(deadline, 60), check=False)
     except (OSError, subprocess.TimeoutExpired) as error:
         if evidence is not None:
             stdout = getattr(error, "stdout", None) or ""
@@ -172,15 +184,15 @@ def checked_owner(tasks: object, task_id: str, sequence: int, repo: Path,
     return owner
 
 
-def checkout_head(repo: Path) -> str:
+def checkout_head(repo: Path, *, deadline: float | None = None) -> str:
     result = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"],
-                            capture_output=True, text=True, timeout=30, check=True)
+                            capture_output=True, text=True, timeout=_remaining_timeout(deadline, 30), check=True)
     head = result.stdout.strip()
     require(re.fullmatch(r"[a-fA-F0-9]{40}", head) is not None,
             "checkout HEAD is unavailable")
     status = subprocess.run(["git", "-C", str(repo), "status", "--porcelain=v1",
                              "--untracked-files=normal"], capture_output=True, text=True,
-                            timeout=30, check=True)
+                            timeout=_remaining_timeout(deadline, 30), check=True)
     require(not status.stdout.strip(), "screen task checkout has current tracked or untracked changes")
     return head
 
