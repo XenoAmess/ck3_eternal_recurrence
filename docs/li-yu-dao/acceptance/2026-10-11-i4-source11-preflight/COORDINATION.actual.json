@@ -1,0 +1,51 @@
+{
+  "at_utc": "2026-10-10T16:11:10.391492+00:00",
+  "actual_fresh_active_tasks": [
+    {
+      "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+      "state": "running",
+      "resources": [],
+      "stale": false,
+      "last_sequence": 4530
+    },
+    {
+      "task_id": "lyd-volume-c-admission-20261010-root",
+      "state": "running",
+      "resources": [
+        "storage-volume-c:coordinator"
+      ],
+      "stale": false,
+      "last_sequence": 4531
+    }
+  ],
+  "stale_registered_task_count": 28,
+  "runtime_process_inventory": {
+    "at_utc": "2026-10-10T16:11:10.406819+00:00",
+    "scanned_process_count": 172,
+    "python_controllers_inspected": [
+      {
+        "pid": 6140,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "actual_bus_response": {
+    "bytes": 152450,
+    "sha256": "e0d5337fc3bdb2d07ca6b56dd920bfa5d1fd49ad224939e1793f85ea0f556bfc"
+  },
+  "assigned_external_source_only_lanes_ROOT_confirmation": [
+    "r13_live_preparation",
+    "i4_resume_matrix",
+    "common_local_launch_helpers"
+  ],
+  "writer_limit_each_bytes": 33554432,
+  "all_source_audit_allowance_precharged_bytes": 134217728,
+  "unregistered_external_source_lanes_are_not_inferred_from_bus": true,
+  "ROOT_invocation_confirms_no_other_heavy_writer_or_unspent_reservation": true,
+  "old_cleanup_16MiB_is_finished_ROOT_confirmation_not_cleanup_credit": true,
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "other_reservations": []
+}

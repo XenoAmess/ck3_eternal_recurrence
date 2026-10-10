@@ -1,0 +1,36 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-storage-admission-sourceonly-20261011-004/admit_i4_storage.py",
+    "--source-only-writer",
+    "r13_live_preparation",
+    "--source-only-writer",
+    "i4_resume_matrix",
+    "--source-only-writer",
+    "common_local_launch_helpers",
+    "--source-producer",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-source11-four-path-sourceonly-20261011-001/produce_source11.py",
+    "--source-producer-bytes",
+    "17274",
+    "--source-producer-sha256",
+    "b362b77ea99a036ba22da419c89a063b587290bb06a2be421f91c3e70eb3fc0d"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T16:11:10.187821+00:00",
+  "finished_at_utc": "2026-10-10T16:11:10.700394+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261011-003\\stdout.log",
+    "bytes": 377,
+    "sha256": "0c0a7f58aaa6394b60cf15dabafb332396902a33b6c6c935f0fabbf4ae072f98"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261011-003\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

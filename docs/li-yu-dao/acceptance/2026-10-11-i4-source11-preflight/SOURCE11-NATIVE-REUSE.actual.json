@@ -1,0 +1,122 @@
+{
+  "schema": "ck3-common-runtime-python-successor-v1",
+  "source10_commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+  "source11_commit": "b539d0180b66a22ec4efa2ccf5c6acd40339e621",
+  "selected_author_commit": "120530139e409631579da7c1db7c6b2bca02a045",
+  "source10_root": "C:\\csr10",
+  "source11_root": "C:\\csr11",
+  "source10_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\source10-index.json",
+    "bytes": 1620142,
+    "sha256": "d76fc9b200a25d1512cb241ebda4c909f0f8b6aa4c13d9f6db384cbab9d25011"
+  },
+  "source10_native_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\native-source10-index.json",
+    "bytes": 892070,
+    "sha256": "b00775c91e8766411fbfb26b6c77b7be10795d2164702cfaa634666f572b6f7f"
+  },
+  "source11_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\source11-index.json",
+    "bytes": 1620485,
+    "sha256": "b1c64723d4bbf1b78d28c58a460b7cdcb18319cde1c821649d7900334ba71ce3"
+  },
+  "source11_native_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\native-source11-index.json",
+    "bytes": 892070,
+    "sha256": "e2d1f1e5ee585da9e7d2218114c8b52387309ff7d257e75be3c0e4275b6480f6"
+  },
+  "all_changed_paths": [
+    "tools/ck3_mod_acceptance_keeper.py",
+    "tools/ck3_mod_acceptance_queue.py",
+    "tools/test_ck3_mod_acceptance_keeper_read_race.py",
+    "tools/test_ck3_mod_acceptance_queue_native_zero.py"
+  ],
+  "changed_sources": [
+    {
+      "path": "C:\\csr11\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 11311,
+      "sha256": "9ec75f89addd62f7a426442d1ce7ec9dc9973cf71a087f57de500c8f287ed7a0"
+    },
+    {
+      "path": "C:\\csr11\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 10119,
+      "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+    },
+    {
+      "path": "C:\\csr11\\tools\\test_ck3_mod_acceptance_keeper_read_race.py",
+      "bytes": 8517,
+      "sha256": "d44f4159e2ef228039c6362d299776f8edd30f0c91082019b8ecfc7c56c73467"
+    },
+    {
+      "path": "C:\\csr11\\tools\\test_ck3_mod_acceptance_queue_native_zero.py",
+      "bytes": 5975,
+      "sha256": "000b567ab3f2d5e47ecede519e1cfc81c9af9d23f252789d41104c18c4c3e00f"
+    }
+  ],
+  "changed_source_blobs": [
+    {
+      "relative_path": "tools/ck3_mod_acceptance_keeper.py",
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\changed-source-blobs\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 11311,
+      "sha256": "9ec75f89addd62f7a426442d1ce7ec9dc9973cf71a087f57de500c8f287ed7a0"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_queue.py",
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\changed-source-blobs\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 10119,
+      "sha256": "1d61b6620ba2539c72d3fad056d4cfbf1567671e88717245d84e21745ca90a45"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_keeper_read_race.py",
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\changed-source-blobs\\tools\\test_ck3_mod_acceptance_keeper_read_race.py",
+      "bytes": 8517,
+      "sha256": "d44f4159e2ef228039c6362d299776f8edd30f0c91082019b8ecfc7c56c73467"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_queue_native_zero.py",
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\changed-source-blobs\\tools\\test_ck3_mod_acceptance_queue_native_zero.py",
+      "bytes": 5975,
+      "sha256": "000b567ab3f2d5e47ecede519e1cfc81c9af9d23f252789d41104c18c4c3e00f"
+    }
+  ],
+  "minimal_patch": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\source11-four-paths.patch",
+    "bytes": 19470,
+    "sha256": "804f5065916ffa18aab8ce072805fb3c3cc99dffef00a2dca9bd44d7cdbfb6e0"
+  },
+  "adopted_published_pins": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source11-four-path-sourceonly-20261011-001\\SELECTED-PINS.actual.json",
+    "bytes": 804,
+    "sha256": "7e7455071fa24ef8e713857695815d0a5c9538405671cb80bbe2a2962af37169"
+  },
+  "unchanged_copied_file_count": 7905,
+  "unchanged_copied_logical_bytes": 141059781,
+  "unchanged_copy_sizes_verified": true,
+  "hardlinks_created": 0,
+  "unchanged_file_hashes_inherited_from_verified_source10": true,
+  "successor_whole_source_hash_pass_performed": false,
+  "successor_whole_zip_created": false,
+  "native_compiled_inputs_unchanged": true,
+  "host_byte_identity_inherited": true,
+  "explicit_native_directory_python_delta": [],
+  "mcp_registration_source_unchanged": true,
+  "artifact_build_result": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-RESULT.actual.json",
+    "bytes": 498,
+    "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+  },
+  "parent_recovery_record": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-NATIVE-REUSE.actual.json",
+    "bytes": 4856,
+    "sha256": "364d3e4834f5baf0f794512d2fe65deed48b5727d4d256684f3d063a65eba02f"
+  },
+  "recovery_recipe": "Pinned complete Source10 indexed payload, then exact published keeper/queue and two portable test blobs; single-parent archive commit and new indices. No Source18 or new native/host/capability input.",
+  "capacity_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-003\\ADMISSION.actual.json",
+    "bytes": 8502,
+    "sha256": "d0afdf96c647f1b1078e88069e243a535ba7bf9e021eae56a6a0fe6fb0354917"
+  },
+  "live_qualification": "NOT_RUN",
+  "product_qualification": "NOT_ASSESSED",
+  "cache_copied": false
+}

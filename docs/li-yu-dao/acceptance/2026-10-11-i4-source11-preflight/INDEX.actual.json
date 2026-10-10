@@ -1,0 +1,106 @@
+{
+  "schema": "lyd-source11-preflight-small-actual-index-v1",
+  "business_pass": false,
+  "live_started": false,
+  "source_commit": "b539d0180b66a22ec4efa2ccf5c6acd40339e621",
+  "single_parent": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+  "files": [
+    {
+      "relative_path": "ADMISSION.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-003\\ADMISSION.actual.json",
+      "bytes": 8502,
+      "sha256": "d0afdf96c647f1b1078e88069e243a535ba7bf9e021eae56a6a0fe6fb0354917"
+    },
+    {
+      "relative_path": "COORDINATION.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-003\\COORDINATION.actual.json",
+      "bytes": 1599,
+      "sha256": "53b56aa051e066e7a164550d98683cddf49f663c40490ccdefa2dee8054b0bec"
+    },
+    {
+      "relative_path": "SOURCE11-BIND.actual.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\SOURCE11-BIND.actual.json",
+      "bytes": 2779,
+      "sha256": "419a658a1281da1faceea01722217f2e90ba29cc56f39f0dfa0f5df07c982177"
+    },
+    {
+      "relative_path": "SOURCE11-NATIVE-REUSE.actual.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\SOURCE11-NATIVE-REUSE.actual.json",
+      "bytes": 5519,
+      "sha256": "4e7dad771bd8044e11a977bd8d75bc57de888932a434a2f72ff16ebea4e10bc4"
+    },
+    {
+      "relative_path": "runtime.local.original.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\runtime.local.json",
+      "bytes": 2018,
+      "sha256": "fdd544259d250ecc3e9c961903f191b5f1ef1da7fb5217dbd62f65d13bd8c557"
+    },
+    {
+      "relative_path": "manifest.original.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\manifest.json",
+      "bytes": 6830,
+      "sha256": "891259cc3ce6b4de689a43bd9ce36dacb4a2a57285d5fb9b89993e71bbdbf4b9"
+    },
+    {
+      "relative_path": "SELECTED-PINS.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source11-four-path-sourceonly-20261011-001\\SELECTED-PINS.actual.json",
+      "bytes": 804,
+      "sha256": "7e7455071fa24ef8e713857695815d0a5c9538405671cb80bbe2a2962af37169"
+    },
+    {
+      "relative_path": "admission/RESULT.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261011-003\\RESULT.actual.json",
+      "bytes": 1390,
+      "sha256": "0cb85d326dcc386d16dc3921faa1a31d7babbb9d23fe98da3aabf6c5b6c5b673"
+    },
+    {
+      "relative_path": "freeze/RESULT.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source11-freeze-execution-20261011-001\\RESULT.actual.json",
+      "bytes": 1571,
+      "sha256": "462e2b68bb203762a53ab0210ced10c850b2919e7594324a5e8af85cd2ea8ecc"
+    },
+    {
+      "relative_path": "prepare/RESULT.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261011-003\\RESULT.actual.json",
+      "bytes": 1330,
+      "sha256": "e343d996ba6e0dca49c7ae0a6c782cfdf220ab452d5af390196897c7412eb429"
+    },
+    {
+      "relative_path": "plan/RESULT.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261011-003\\RESULT.actual.json",
+      "bytes": 1215,
+      "sha256": "071bffb6e58a989ce9ca836017b44c8d5ecb20c0aef45980ee56b253df324631"
+    },
+    {
+      "relative_path": "preflight/RESULT.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261011-003\\RESULT.actual.json",
+      "bytes": 1230,
+      "sha256": "baa34acb05b432836c54afe68a67a72651894a9abec9b20471cd45de502791ea"
+    },
+    {
+      "relative_path": "freeze/stdout.log",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source11-freeze-execution-20261011-001\\stdout.log",
+      "bytes": 1413,
+      "sha256": "a1c31119bf5bd70d848b73b380a90588540528ad620af450d44be78542e54195"
+    },
+    {
+      "relative_path": "preflight/stdout.log",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261011-003\\stdout.log",
+      "bytes": 9472,
+      "sha256": "30b999e2e18c147383b1a3cd4bc935dbacae8b5337c9bbd53ea9413a2e5b8f99"
+    }
+  ],
+  "large_originals": {
+    "prepare": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261011-003\\stdout.log",
+      "bytes": 31270,
+      "sha256": "fa192ee33121a008e5b7bc14019c15543fc0cba0c35eea36ead5a87498a1f6cf"
+    },
+    "plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261011-003\\stdout.log",
+      "bytes": 3954,
+      "sha256": "6e9da30d196c297183b5af8e26c1adbb62d7b2af03f7e091be798b1723d42618"
+    }
+  },
+  "retention": "Original review deadlines and quota expiry unchanged. Copying a receipt does not renew any input TTL."
+}

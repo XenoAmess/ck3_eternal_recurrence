@@ -1,0 +1,38 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-source11-four-path-sourceonly-20261011-001/produce_source11.py",
+    "--published-source-head",
+    "120530139e409631579da7c1db7c6b2bca02a045",
+    "--selected-pins",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-source11-four-path-sourceonly-20261011-001/SELECTED-PINS.actual.json",
+    "--selected-pins-bytes",
+    "804",
+    "--selected-pins-sha256",
+    "7e7455071fa24ef8e713857695815d0a5c9538405671cb80bbe2a2962af37169",
+    "--capacity-admission",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-003/ADMISSION.actual.json",
+    "--capacity-admission-bytes",
+    "8502",
+    "--capacity-admission-sha256",
+    "d0afdf96c647f1b1078e88069e243a535ba7bf9e021eae56a6a0fe6fb0354917"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T16:11:22.550720+00:00",
+  "finished_at_utc": "2026-10-10T16:11:44.720907+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source11-freeze-execution-20261011-001\\stdout.log",
+    "bytes": 1413,
+    "sha256": "a1c31119bf5bd70d848b73b380a90588540528ad620af450d44be78542e54195"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source11-freeze-execution-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
