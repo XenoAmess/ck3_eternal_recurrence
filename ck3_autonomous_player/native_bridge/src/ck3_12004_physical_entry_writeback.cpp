@@ -2,6 +2,9 @@
 #include "xar_bridge/ck3_12004.hpp"
 
 #include <cstring>
+#if defined(_MSC_VER)
+#include <intrin.h>
+#endif
 
 namespace xar::ck3_12004 {
 namespace {
@@ -18,6 +21,16 @@ template <class Callback> bool FaultBoundary(Callback callback) noexcept {
 #else
   return callback();
 #endif
+}
+// The legacy binding uses its guarded default when no fixture reader was
+// supplied. Pass this concrete reader to the passive observer too.
+bool DefaultCaptureRead(void *, const void *source, void *destination,
+                        std::size_t bytes) noexcept {
+  if (source == nullptr || destination == nullptr) return false;
+  return FaultBoundary([&]() noexcept {
+    std::memcpy(destination, source, bytes);
+    return true;
+  });
 }
 void Jump(std::uint8_t *destination, std::uintptr_t target) noexcept {
   constexpr std::array<std::uint8_t, 6> prefix{0xFF, 0x25, 0, 0, 0, 0};
@@ -92,17 +105,24 @@ BuildPhysicalEntryWriterTrampoline12004(std::uintptr_t image_base) noexcept {
   return result;
 }
 
-bool InitializePhysicalEntryWritebackFixture12004(PhysicalEntryWriterOriginal12004 original) noexcept {
+bool InitializePhysicalEntryWritebackFixture12004(
+    PhysicalEntryWriterOriginal12004 original,
+    const EntryFinalWriterCaptureBindings12004 &capture_bindings) noexcept {
   if (original == nullptr || g_active.load(std::memory_order_acquire) != nullptr) return false;
+  ConfigureEntryFinalWriterCapture12004(capture_bindings);
   g_original.store(original, std::memory_order_release);
   return true;
 }
 
-std::uint64_t InvokePhysicalEntryWriter12004(void *entry, void *province) noexcept {
+std::uint64_t InvokePhysicalEntryWriter12004(
+    void *entry, void *province, std::uintptr_t caller_return_address) noexcept {
   const auto original = g_original.load(std::memory_order_acquire);
   if (original == nullptr) return 0;
+  EntryFinalWriterCaptureScope12004 capture(entry, province, caller_return_address);
   KnightStatPhysicalEntryScope12004 scope(entry, province);
+  capture.EnterOriginal();
   const std::uint64_t result = original(entry, province);
+  capture.Complete(result);
   scope.Complete(result);
   return result;
 }
@@ -155,9 +175,14 @@ bool InstallPhysicalEntryWriteback12004(PhysicalEntryWritebackDetourState12004 &
     (void)state.virtual_free(state.memory_context, state.writer_trampoline, 0, MEM_RELEASE);
     state.writer_trampoline = nullptr; g_active.store(nullptr); return false;
   }
+  ConfigureEntryFinalWriterCapture12004(BindEntryFinalWriterCapture12004(
+      environment.bindings.image_base, executable_sha256,
+      environment.bindings.read_context,
+      environment.bindings.read_memory ? environment.bindings.read_memory : DefaultCaptureRead));
   g_original.store(reinterpret_cast<PhysicalEntryWriterOriginal12004>(state.writer_trampoline),
                    std::memory_order_release);
   if (!WritePatch(state, kAnchor, HookPatch())) {
+    ConfigureEntryFinalWriterCapture12004({});
     g_original.store(nullptr);
     (void)state.virtual_free(state.memory_context, state.writer_trampoline, 0, MEM_RELEASE);
     state.writer_trampoline = nullptr; g_active.store(nullptr); return false;
@@ -175,6 +200,7 @@ bool UninstallPhysicalEntryWriteback12004(PhysicalEntryWritebackDetourState12004
   if (!WritePatch(state, HookPatch(), kAnchor)) return false;
   state.installed.store(0, std::memory_order_release);
   g_original.store(nullptr); g_active.store(nullptr);
+  ConfigureEntryFinalWriterCapture12004({});
   const bool freed = state.virtual_free(state.memory_context, state.writer_trampoline, 0, MEM_RELEASE);
   if (freed) state.writer_trampoline = nullptr;
   return freed;
@@ -182,6 +208,11 @@ bool UninstallPhysicalEntryWriteback12004(PhysicalEntryWritebackDetourState12004
 
 extern "C" __declspec(noinline) std::uint64_t __fastcall
 XarPhysicalEntryWriterHook12004(void *entry, void *province) noexcept {
-  return InvokePhysicalEntryWriter12004(entry, province);
+#if defined(_MSC_VER)
+  const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+#else
+  const auto caller = reinterpret_cast<std::uintptr_t>(__builtin_return_address(0));
+#endif
+  return InvokePhysicalEntryWriter12004(entry, province, caller);
 }
 } // namespace xar::ck3_12004

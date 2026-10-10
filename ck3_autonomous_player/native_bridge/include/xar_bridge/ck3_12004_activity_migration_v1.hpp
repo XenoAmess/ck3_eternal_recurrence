@@ -18,6 +18,7 @@ inline std::uintptr_t Activity12004RvaV1(
     std::string_view sha, std::uintptr_t old12002_rva) noexcept {
   if (!IsActivity12004BuildV1(sha)) return old12002_rva;
   switch (old12002_rva) {
+  case 0x856050: return 0x856050;
   case 0x878290: return 0x878290;
   case 0x8FC200: return 0x8FC200;
   case 0x9DEA70: return 0x9DEA70;
@@ -100,6 +101,7 @@ inline std::uintptr_t Activity12004RvaV1(
   case 0x48BFD18: return 0x48BFD28;
   case 0x48BFE50: return 0x48BFE60;
   case 0x54D76F0: return 0x54D76F0;
+  case 0x54DBC00: return 0x54DBC00;
   case 0x5514438: return 0x5514438;
   case 0x5514460: return 0x5514460;
   case 0x5C67208: return 0x5C67208;
@@ -107,6 +109,7 @@ inline std::uintptr_t Activity12004RvaV1(
   case 0x5C67570: return 0x5C67570;
   case 0x5C68C50: return 0x5C68C50;
   case 0x5C6A520: return 0x5C6A520;
+  case 0x5D1E390: return 0x5D1E390;
   case 0x5D1FB40: return 0x5D1FB40;
   case 0x5D33EE8: return 0x5D33EE8;
   case 0x5D33F48: return 0x5D34048;

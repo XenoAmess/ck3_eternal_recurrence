@@ -109,3 +109,71 @@ if(BUILD_TESTING AND WIN32)
   endif()
   # The permanent Python driver invokes the native executable once through its mock endpoint.
 endif()
+
+# The actual nonwar guard diagnostic uses one fixture TU and inline production helper.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_nonwar_private_snapshot_guard_diagnostics_v1_fixture EXCLUDE_FROM_ALL
+    src/nonwar_private_snapshot_guard_diagnostics_v1_fixture.cpp)
+  target_include_directories(xar_nonwar_private_snapshot_guard_diagnostics_v1_fixture PRIVATE include)
+  target_compile_features(xar_nonwar_private_snapshot_guard_diagnostics_v1_fixture PRIVATE cxx_std_20)
+  target_compile_definitions(xar_nonwar_private_snapshot_guard_diagnostics_v1_fixture PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_nonwar_private_snapshot_guard_diagnostics_v1_fixture PRIVATE /EHsc)
+  endif()
+endif()
+
+# Actual Activity three-input compound:14 formedobjects plus qualified fullcost provider.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_activity_actual_three_bindings_connected_test EXCLUDE_FROM_ALL
+    tests/activity_actual_three_bindings_connected_12004_main.cpp
+    tests/activity_actual_three_bindings_connected_12004.cpp
+    src/activity_planner_diag_v1.cpp
+    src/activity_stage5_gold_cost_v1.cpp
+    src/activity_stage5_feast_guest_join_v1.cpp
+    src/activity_stage5_canstart_read_v1.cpp
+    src/activity_cost_slot12_passive_v1.cpp
+    src/ck3_12002_activity_feast_cost_private_transport_v1.cpp
+    src/activity_feast_stage5_start_private_serializer_v1.cpp
+    src/activity_stage5_canstart_failure_display_v1.cpp
+    src/activity_feast_guest_candidate_v1.cpp
+    src/activity_feast_guest_rule_toggle_v1.cpp
+    src/activity_feast_guest_rule_provenance_v1.cpp
+    src/activity_feast_stage5_start_v1.cpp
+    src/activity_stage5_feast_full_cost_v1.cpp)
+  target_include_directories(xar_ck3_12004_activity_actual_three_bindings_connected_test PRIVATE include src)
+  target_compile_features(xar_ck3_12004_activity_actual_three_bindings_connected_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_activity_actual_three_bindings_connected_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+    WIN32
+    _WINDOWS
+    _ITERATOR_DEBUG_LEVEL=0
+    XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1=1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1=1)
+  target_link_libraries(xar_ck3_12004_activity_actual_three_bindings_connected_test PRIVATE
+    xar_ck3_12002_runtime kernel32 user32 advapi32)
+  if(MSVC)
+    set_property(TARGET xar_ck3_12004_activity_actual_three_bindings_connected_test PROPERTY
+      MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
+    target_compile_options(xar_ck3_12004_activity_actual_three_bindings_connected_test PRIVATE
+      /O2 /EHsc /W4 /WX /permissive- /utf-8 /UNDEBUG)
+  endif()
+  # Only the new three-input export runs;stdout is retained for its strict Python consumer.
+endif()

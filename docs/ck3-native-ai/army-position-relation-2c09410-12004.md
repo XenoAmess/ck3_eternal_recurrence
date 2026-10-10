@@ -1,0 +1,15 @@
+# Army position directed predicate2C09410, actual1.20.0.4
+
+Actual current position admission calls this predicate in both actor/holder directions with R8=0. A true result from either call rejects the enclosing2C097F0 position predicate. The source-closed 360-byte body evaluates an ordered actor list, complete record-generation resolution, side membership, opposite character-generation resolution, and the separate2C09280 predicate. Empty lists return known false. Missing reads and delegated unknown results remain unavailable.
+
+`ReadArmyPosition2C0941012004(access, actor, holder, record_filter=0)` uses continuation34b's shared guarded callback and occurrence budget. The optional third native argument is a record pointer, compared by complete ID at +8. The two current callsites supply null. It must not be exposed as a political name, boolean flag, or independent transitive setting.
+
+The actor descriptor is actor+1C0 then +318, or default image RVA5459D38. Descriptor data is +0 and signed count+C. Each ordered DWORD is resolved through record registry slot5D1DE58/fallback5D1DE40: low24 index, capacity+2C, rows+20, stride10/object+8, exact full-ID+8 equality. A filter skips a resolved record whose full ID differs. The adapter preserves fallback selection and repeated list occurrences.
+
+Delegated2494B40 receives record+20 and original actor full ID+18, then record+80 if the first membership is false. First-side membership selects opposite ID record+28C; second-side membership selects record+288; neither selects FFFFFFFF. Character registry slot5C67568/fallback5C67570 uses the same index layout and exact full-ID+18 equality. Delegated2C09280 receives the resolved opposing character, unchanged holder, and R8=0. First true returns true; otherwise all occurrences must complete before false is available.
+
+The native body writes only registers and its stack. The software adapter calls no native getter and writes no game object. Its child implementations are separately source-owned by continuation51b and continuation16b. Binding, sampling, entry/return provenance, query serialization, conditional consumers and the one new connected qualification are owned by Root33b/34b/55/59d/60/10. The input query reads owned frames rather than rereading live pointers.
+
+Source evidence is external continuation48b: `source01/ARMY-POSITION-2C09410.json`, `SOURCE-FROZEN.json`, `SOURCE-PLAN.json`, and `SOURCE-GRAPH.md`. Caller evidence is continuation34b `readonly-dependency-source01/unit-position-predicate-2C097F0.json`, complete465B, span SHA-2562d18c1c2179d6e29d0252760c1cde9287064156905860592729969fd81d93a95. Actual build1.20.0.4 held executable SHA-25698702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518 was reused rather than rehashed. Only this reached360B was newly captured.
+
+No worker qualification or game observation accompanies this source packet. The connected compound is pending central10; source closure alone supplies no live position result or G2 credit.

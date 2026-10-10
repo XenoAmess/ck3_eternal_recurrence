@@ -50,6 +50,10 @@
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1_serializer.hpp"
 
+#if defined(XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004)
+#include "xar_bridge/army_observed_phase_query_12004.hpp"
+#endif
+
 #include <string>
 
 namespace xar::game {
@@ -648,6 +652,10 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
   } else result += "null";
 #else
   result += "null";
+#endif
+#if defined(XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004)
+  AppendArmyObservedPhaseQuery12004(result, strength.available, strength.native_carmy_id_observable,
+      strength.native_carmy_id, number, append_json_string);
 #endif
   result += ",\"native_carmy_id\":";
   if (strength.native_carmy_id_observable) {

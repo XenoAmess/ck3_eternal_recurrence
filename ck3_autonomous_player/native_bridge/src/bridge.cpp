@@ -27,7 +27,42 @@
 #if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
 #include "xar_bridge/conception_sample_passive_12004.hpp"
 #endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+#include "xar_bridge/army_natural_phase_observer_12004.hpp"
+#endif
+#if defined(XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004)
+#include "xar_bridge/actual_army_pre_date_prefix_observer_12004.hpp"
+#endif
+#if defined(XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004)
+#include "xar_bridge/army_regular_core_passive_12004.hpp"
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+#include "xar_bridge/actual_army_daily_assault_preparation_observer_12004.hpp"
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004)
+#include "xar_bridge/actual_army_assault_placement_observer_12004.hpp"
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+#include "xar_bridge/ck3_12004_actual_assault_consumer_journal.hpp"
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+#include "xar_bridge/ck3_12004_actual_assault_budget_journal.hpp"
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004)
+#include "xar_bridge/army_assault_group_release_observer_12004.hpp"
+#endif
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+#include "xar_bridge/army_gathering_due_natural_stage_12004.hpp"
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+#include "xar_bridge/army_actual_monthfirst_cleanup_12004.hpp"
+#endif
 #include "xar_bridge/ck3_12004_tactical_daily_sentinel.hpp"
+#if defined(XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004)
+#include "xar_bridge/entry_preceding_capture_12004.hpp"
+#include "xar_bridge/entry_final_side_capture_12004.hpp"
+#include "xar_bridge/entry_final_getter_capture_12004.hpp"
+#endif
 #include "xar_bridge/ck3_12004_default_routes_mailbox.hpp"
 #include "xar_bridge/state_snapshot_frame_v1.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
@@ -335,6 +370,7 @@
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
 #include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
+#include "xar_bridge/nonwar_private_snapshot_guard_diagnostics_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_serializer.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1_mailbox.hpp"
@@ -666,6 +702,11 @@ static xar::ck3_12004::KnightStatConsumptionDetourState12004
     g_knight_stat_consumption_12004{};
 static xar::ck3_12004::PhysicalEntryWritebackDetourState12004
     g_physical_entry_writeback_12004{};
+#if defined(XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004)
+static xar::ck3_12004::EntryPrecedingState12004 g_entry_preceding_capture_12004{};
+static xar::ck3_12004::EntryFinalSideCaptureState12004 g_entry_final_side_capture_12004{};
+static xar::ck3_12004::EntryFinalGetterCaptureState12004 g_entry_final_getter_capture_12004{};
+#endif
 #if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
 static xar::ck3_12004::ConceptionPairPassiveDetourStateV1 g_conception_pair_passive_12004{};
 #endif
@@ -674,6 +715,36 @@ static xar::ck3_12004::ConceptionPairProviderDetourState12004 g_conception_pair_
 #endif
 #if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
 static xar::ck3_12004::ConceptionSampleDetourState12004 g_conception_sample_passive_12004{};
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+static xar::ck3_12004::ArmyNaturalPhaseObserverState12004 g_army_natural_phase_observer_12004{};
+#endif
+#if defined(XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004)
+static xar::ck3_12004::ActualArmyPreDatePrefixDetourState12004 g_actual_army_pre_date_prefix_12004{};
+#endif
+#if defined(XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004)
+static xar::ck3_12004::ArmyRegularCoreDetourState12004 g_army_regular_core_passive_12004{};
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+static xar::ck3_12004::ActualArmyDailyAssaultPreparationDetourState12004 g_actual_army_daily_assault_preparation_12004{};
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004)
+static xar::ck3_12004::ActualArmyAssaultPlacementDetourState12004 g_actual_army_assault_placement_12004{};
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+static xar::ck3_12004::ActualAssaultConsumerDetourState12004 g_actual_assault_consumer_12004{};
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+static xar::ck3_12004::ActualAssaultBudgetDetourState12004 g_actual_assault_budget_12004{};
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004)
+static xar::ck3_12004::ArmyAssaultGroupReleaseDetourState12004 g_army_assault_group_release_12004{};
+#endif
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+static xar::ck3_12004::ArmyGatheringDueNaturalHook12004 g_army_gathering_due_natural_12004{};
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+static xar::ck3_12004::ArmyActualMonthfirstCleanupDetourState12004 g_army_actual_monthfirst_cleanup_12004{};
 #endif
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
@@ -15051,13 +15122,13 @@ void RunConnectedSession(
           }
           if (current_revision_allowed && revision_parsed && expected_revision == 0)
             expected_revision = state_revision;
-          if (!status_only && (!revision_parsed ||
-              expected_revision == 0 || expected_revision != state_revision ||
-              !previous_snapshot.has_value() ||
-              !xar::game::ReadSnapshot(game, current) ||
-              current != *previous_snapshot)) {
-            failure = "nonwar private snapshot revision is stale or malformed";
-          } else {
+          failure = xar::bridge::NonwarPrivateSnapshotGuardFailureV1(
+              status_only, revision_parsed, expected_revision, state_revision,
+              previous_snapshot, current,
+              [&](xar::game::Snapshot &observed) {
+                return xar::game::ReadSnapshot(game, observed);
+              });
+          if (failure.empty()) {
             xar::bridge::ActivityCostSlot12ObserverV1 *cost = nullptr;
             xar::bridge::ActivityGuestRuleProvenanceObserverV1 *provenance = nullptr;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
@@ -28457,6 +28528,93 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             g_conception_sample_passive_12004, natural_18_environment, sha))
       return FALSE;
 #endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+    xar::ck3_12004::ArmyNaturalPhaseObserverEnvironment12004 natural_33_environment{};
+    natural_33_environment.module_base = base;
+    natural_33_environment.actual_exe_sha256 = sha;
+    natural_33_environment.read = &ReadMarriageCurrentProcessMemory;
+    natural_33_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallArmyNaturalPhaseObserver12004(natural_33_environment, g_army_natural_phase_observer_12004))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004)
+    xar::ck3_12004::ActualArmyPreDatePrefixInstallEnvironment12004 natural_44_environment{};
+    natural_44_environment.primary_thread_suspended_proven = true;
+    natural_44_environment.bindings =
+        xar::ck3_12004::BindActualArmyPreDatePrefixImage12004(base, sha);
+    if (!xar::ck3_12004::InstallActualArmyPreDatePrefixObserver12004(
+            g_actual_army_pre_date_prefix_12004, natural_44_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004)
+    xar::ck3_12004::ArmyRegularCoreInstallEnvironment12004 natural_34_environment{};
+    natural_34_environment.primary_thread_suspended_proven = true;
+    natural_34_environment.bindings =
+        xar::ck3_12004::BindArmyRegularCoreImage12004(base, sha);
+    if (!xar::ck3_12004::InstallArmyRegularCorePassive12004(
+            g_army_regular_core_passive_12004, natural_34_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+    xar::ck3_12004::ActualArmyDailyAssaultPreparationInstallEnvironment12004 natural_35_environment{};
+    natural_35_environment.primary_thread_suspended_proven = true;
+    natural_35_environment.bindings =
+        xar::ck3_12004::BindActualArmyDailyAssaultPreparationImage12004(base, sha);
+    if (!xar::ck3_12004::InstallActualArmyDailyAssaultPreparationObserver12004(
+            g_actual_army_daily_assault_preparation_12004, natural_35_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004)
+    xar::ck3_12004::ActualArmyAssaultPlacementInstallEnvironment12004 natural_36_environment{};
+    natural_36_environment.primary_thread_suspended_proven = true;
+    natural_36_environment.bindings =
+        xar::ck3_12004::BindActualArmyAssaultPlacementImage12004(base, sha);
+    if (!xar::ck3_12004::InstallActualArmyAssaultPlacementObserver12004(
+            g_actual_army_assault_placement_12004, natural_36_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+    xar::ck3_12004::ActualAssaultConsumerInstallEnvironment12004 natural_37_environment{};
+    natural_37_environment.primary_thread_suspended_proven = true;
+    natural_37_environment.bindings =
+        xar::ck3_12004::BindActualAssaultConsumerJournalImage12004(base, sha);
+    if (!xar::ck3_12004::InstallActualAssaultConsumerJournal12004(
+            g_actual_assault_consumer_12004, natural_37_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+    xar::ck3_12004::ActualAssaultBudgetInstallEnvironment12004 natural_38_environment{};
+    natural_38_environment.primary_thread_suspended_proven = true;
+    natural_38_environment.bindings =
+        xar::ck3_12004::BindActualAssaultBudgetJournalImage12004(base, sha);
+    if (!xar::ck3_12004::InstallActualAssaultBudgetJournal12004(
+            g_actual_assault_budget_12004, natural_38_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004)
+    xar::ck3_12004::ArmyAssaultGroupReleaseInstallEnvironment12004 natural_39_environment{};
+    natural_39_environment.primary_thread_suspended_proven = true;
+    natural_39_environment.bindings =
+        xar::ck3_12004::BindArmyAssaultGroupReleaseImage12004(base, sha);
+    if (!xar::ck3_12004::InstallArmyAssaultGroupReleaseObserver12004(
+            g_army_assault_group_release_12004, natural_39_environment, sha))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+    g_army_gathering_due_natural_12004 = xar::ck3_12004::BindArmyGatheringDueNaturalHook12004(base, sha);
+    g_army_gathering_due_natural_12004.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallArmyGatheringDueNaturalHook12004(g_army_gathering_due_natural_12004))
+      return FALSE;
+#endif
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+    xar::ck3_12004::ArmyActualMonthfirstCleanupInstallEnvironment12004 natural_43_environment{};
+    natural_43_environment.primary_thread_suspended_proven = true;
+    natural_43_environment.bindings =
+        xar::ck3_12004::BindArmyActualMonthfirstCleanup12004(base, sha);
+    if (!xar::ck3_12004::InstallArmyActualMonthfirstCleanup12004(
+            g_army_actual_monthfirst_cleanup_12004, natural_43_environment, sha))
+      return FALSE;
+#endif
     xar::ck3_12004::ActualLossWriterJournalInstallEnvironmentV1 loss_environment{};
     loss_environment.bindings =
         xar::ck3_12004::BindActualLossWriterJournalImage12004(base, sha);
@@ -28547,6 +28705,32 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (!xar::ck3_12004::InstallPhysicalEntryWriteback12004(
             g_physical_entry_writeback_12004, physical_entry_environment, sha))
       return FALSE;
+#if defined(XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004)
+    xar::ck3_12004::EntryPrecedingInstall12004 entry_52c_environment{};
+    entry_52c_environment.primary_thread_suspended_proven = true;
+    entry_52c_environment.module_base = base;
+    entry_52c_environment.bindings =
+        xar::ck3_12004::BindEntryPrecedingCaptureImage12004(base, sha);
+    if (!xar::ck3_12004::InstallEntryPrecedingCapture12004(
+            g_entry_preceding_capture_12004, entry_52c_environment, sha))
+      return FALSE;
+    xar::ck3_12004::EntryFinalSideCaptureInstall12004 entry_31c_environment{};
+    entry_31c_environment.primary_thread_suspended_proven = true;
+    entry_31c_environment.module_base = base;
+    entry_31c_environment.bindings =
+        xar::ck3_12004::BindEntryFinalSideCaptureImage12004(base, sha);
+    if (!xar::ck3_12004::InstallEntryFinalSideCapture12004(
+            g_entry_final_side_capture_12004, entry_31c_environment, sha))
+      return FALSE;
+    xar::ck3_12004::EntryFinalGetterCaptureInstall12004 entry_09c_environment{};
+    entry_09c_environment.primary_thread_suspended_proven = true;
+    entry_09c_environment.module_base = base;
+    entry_09c_environment.bindings =
+        xar::ck3_12004::BindEntryFinalGetterCaptureImage12004(base, sha);
+    if (!xar::ck3_12004::InstallEntryFinalGetterCapture12004(
+            g_entry_final_getter_capture_12004, entry_09c_environment, sha))
+      return FALSE;
+#endif
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;
     xar::ck3_11906::TacticalDailySentinelInstallEnvironmentV1

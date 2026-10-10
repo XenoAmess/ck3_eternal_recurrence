@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
+#include "xar_bridge/entry_final_writer_capture_12004.hpp"
 
 namespace xar::ck3_12004 {
 inline constexpr std::uintptr_t kPhysicalEntryWriterRva12004 = 0x2657AA0;
@@ -36,8 +37,12 @@ bool InstallPhysicalEntryWriteback12004(PhysicalEntryWritebackDetourState12004 &
     std::string_view executable_sha256) noexcept;
 bool UninstallPhysicalEntryWriteback12004(PhysicalEntryWritebackDetourState12004 &,
     bool primary_thread_suspended_proven) noexcept;
-bool InitializePhysicalEntryWritebackFixture12004(PhysicalEntryWriterOriginal12004) noexcept;
-std::uint64_t InvokePhysicalEntryWriter12004(void *entry, void *province) noexcept;
+bool InitializePhysicalEntryWritebackFixture12004(
+    PhysicalEntryWriterOriginal12004,
+    const EntryFinalWriterCaptureBindings12004 &capture_bindings = {}) noexcept;
+std::uint64_t InvokePhysicalEntryWriter12004(
+    void *entry, void *province,
+    std::uintptr_t caller_return_address = 0) noexcept;
 extern "C" __declspec(noinline) std::uint64_t __fastcall
 XarPhysicalEntryWriterHook12004(void *entry, void *province) noexcept;
 } // namespace xar::ck3_12004

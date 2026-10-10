@@ -367,6 +367,11 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_supply_callback_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"battle_casualty_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_army_late_event_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_compiled_effect_observations_v1"}
+from .army_observed_phase_contract_12004 import (
+    FAMILIES as _ARMY_OBSERVED_PHASE_FAMILIES_12004,
+    normalize_army_observed_phase_family_12004,
+)
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= set(_ARMY_OBSERVED_PHASE_FAMILIES_12004)
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -2153,6 +2158,10 @@ def _normalize_army_strength_row(
             regiment_count=regiment_count, current_soldiers=current_soldiers,
             maximum_soldiers=maximum_soldiers,
         )
+    for family_key in _ARMY_OBSERVED_PHASE_FAMILIES_12004:
+        if family_key in value:
+            result[family_key] = normalize_army_observed_phase_family_12004(
+                family_key, value[family_key], expected_carmy_id=result["native_carmy_id"])
     if "actual_compiled_effect_observations_v1" in value:
         result["actual_compiled_effect_observations_v1"] = normalize_actual_compiled_effect_observations_v1(
             value["actual_compiled_effect_observations_v1"], expected_carmy_id=result["native_carmy_id"])

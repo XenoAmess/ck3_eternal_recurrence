@@ -361,6 +361,18 @@ std::string PhaseBInputsJson(const PersonFirstTitleVectorPhaseBInputs12004 &s) {
 }
 } // namespace
 
+PersonFirstTitleVectorReceiver12004
+ReadPersonFirstTitleVectorReceiverForCharacter12004(
+    const PersonCarrierDirect12004Bindings &b, std::uintptr_t character) {
+  PersonFirstTitleVectorReceiver12004 receiver;
+  if (!b.enabled || !b.module_base || !b.read_memory || !character) {
+    receiver.reason = "binding_or_character_unavailable";
+    return receiver;
+  }
+  ReadReceiver(b, character, receiver);
+  return receiver;
+}
+
 PersonFirstTitleVector12004DTO ReadPersonFirstTitleVectorForCharacter12004(
     const PersonCarrierDirect12004Bindings &b, std::uintptr_t character) {
   PersonFirstTitleVector12004DTO d;

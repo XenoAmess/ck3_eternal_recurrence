@@ -115,6 +115,14 @@ struct PersonFirstTitleVector12004DTO {
                          const PersonFirstTitleVector12004DTO &) = default;
 };
 
+// Pure actual28BFC50 selection, independent of Model, Title and PC inputs.
+// Caller supplies its already qualified Character. A copied null fallback is
+// preserved as selected_identity{0}; no native function is invoked.
+PersonFirstTitleVectorReceiver12004
+ReadPersonFirstTitleVectorReceiverForCharacter12004(
+    const PersonCarrierDirect12004Bindings &bindings,
+    std::uintptr_t actual_character);
+
 PersonFirstTitleVector12004DTO ReadPersonFirstTitleVectorForCharacter12004(
     const PersonCarrierDirect12004Bindings &bindings,
     std::uintptr_t actual_character);

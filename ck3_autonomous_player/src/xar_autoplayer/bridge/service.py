@@ -5327,8 +5327,8 @@ class GameplayBridgeService:
         except ValueError:
             exact4 = False
 
-        # No native producer currently publishes the strict monthly-stage
-        # packet. Its absence is unknown, not a current-query substitution.
+        # Caller-supplied stage packets and the separately retained natural
+        # journals keep their own captures; the current query fills neither.
         supplied = result.get("observed_army_stage_inputs_12004")
         if supplied is not None and not isinstance(supplied, list):
             raise BridgeUnavailableError("observed Army stage packet must be an array")
@@ -5443,7 +5443,7 @@ class GameplayBridgeService:
             if exact4 and core_input is not None:
                 if not isinstance(core_input, dict):
                     raise BridgeUnavailableError("regular core entry must be a mapping")
-                from ..simulation.army_ordered_monthly_core_12004 import project_army_ordered_monthly_core_12004
+                from .army_ordered_monthly_core_12004 import project_army_ordered_monthly_core_12004
                 core = project_army_ordered_monthly_core_12004(core_input)
             if exact4 and daily_input is not None:
                 if not isinstance(daily_input, dict):
@@ -5476,10 +5476,13 @@ class GameplayBridgeService:
                     (["observed_release_entry"] if release_input is None else []),
                 "actual_post_stage": None, "full_monthly_ready": False,
                 "core_to_daily_stage_inferred": False}})
+        from .army_observed_phase_consumption_12004 import project_army_observed_phases_12004
+        observed_phase_outputs = [project_army_observed_phases_12004(row, exact_source=exact4) for row in rows]
         return {"same_query_conditional_assault_group_contributors_12004": current_outputs,
                 "explicit_observed_army_stage_projections_12004": stage_outputs,
                 "actual_army_late_event_consumption_12004": late_event_outputs,
-                "actual_army_compiled_effect_consumption_12004": compiled_effect_outputs}
+                "actual_army_compiled_effect_consumption_12004": compiled_effect_outputs,
+                "actual_army_observed_phase_consumption_12004": observed_phase_outputs}
 
     def query_army_strengths(
         self,
