@@ -43,6 +43,50 @@ def prior_formal_binding(context, receipt, source_formal):
                if any(source_formal[key][field] != expected[key][field] for field in fields)]
     if not changed:
         return {'mode': 'exact_formal27'}
+    generated_relative = 'common/character_interactions/xqol_generated_release_interactions.txt'
+    dispatch_relative = 'common/scripted_effects/xqol_conversion_effects.txt'
+    if changed == [generated_relative, dispatch_relative]:
+        old_pins = {generated_relative: {'bytes': 14134, 'sha256': '456dbf029c115393dd04b83707802f029799ec5021a66b76959d8e3460573f0a'},
+                    dispatch_relative: {'bytes': 7458, 'sha256': '0a4f93d7019afe94cfff76f7f6129023dc08b07c96dcf61ea170a5e5c40ec7db'}}
+        new_pins = {generated_relative: {'bytes': 14943, 'sha256': '9992b5c91f2f482eb2165d33c9066978c2ca3757a281f8d0f4e99096a168bb73'},
+                    dispatch_relative: {'bytes': 8127, 'sha256': '608c7e6811b7444274947c82ba63439cabd4887e61bcb978bf196d738fe72d5f'}}
+        # This fixed two-file transform retains only R33 defense23/reverse/final6.
+        # It grants no conversion, UI, source-case or normal-close result.
+        require(context['case_inputs']['prior_core_evidence']['sha256'] ==
+                '3be254579a2a5004b6dbb15c48e5ec619f784503f2b75fe854e936bd0547dbe1' and
+                receipt['source_prepared']['sha256'] ==
+                '28e7bfca6b7165a749a4311c7182387d9a368ad8b1067175dcb9d600f6b1dfd5' and
+                receipt['source_run_id'] == '4-8e1c2f1861--xenoamess-quality-of-life--R0033' and
+                all(all(source_formal[relative][field] == old_pins[relative][field] and
+                        expected[relative][field] == new_pins[relative][field]
+                        for field in fields) for relative in changed),
+                'Only the fixed R33 stock-admission and pending-condition source equivalence is allowed')
+        current = {}
+        for relative in changed:
+            path = Path(context['case_inputs']['product_dir']) / relative
+            current[relative] = pin(path)
+            require(all(current[relative][field] == new_pins[relative][field] for field in fields),
+                    'Actual two-file conversion bytes must equal the fixed reviewed pins')
+            raw = path.read_bytes()
+            if relative == dispatch_relative:
+                require(raw.count(b'\t\t\t\t# Full stock admission is checked before creating a pending reply.\n\t\t\t\tis_character_interaction_valid = {\n\t\t\t\t\trecipient = scope:xqol_conversion_candidate\n\t\t\t\t\tinteraction = ask_for_conversion_courtier_interaction\n\t\t\t\t}\n') == 1, 'Fixed stock admission guard count changed')
+                raw = raw.replace(b'\t\t\t\t# Full stock admission is checked before creating a pending reply.\n\t\t\t\tis_character_interaction_valid = {\n\t\t\t\t\trecipient = scope:xqol_conversion_candidate\n\t\t\t\t\tinteraction = ask_for_conversion_courtier_interaction\n\t\t\t\t}\n', b'')
+                require(raw.count(b'\t\t\t\t# Full stock admission is checked before creating a pending reply.\n\t\t\t\tis_character_interaction_valid = {\n\t\t\t\t\trecipient = scope:xqol_conversion_candidate\n\t\t\t\t\tinteraction = demand_conversion_vassal_ruler_interaction\n\t\t\t\t}\n') == 2, 'Fixed stock admission guard count changed')
+                raw = raw.replace(b'\t\t\t\t# Full stock admission is checked before creating a pending reply.\n\t\t\t\tis_character_interaction_valid = {\n\t\t\t\t\trecipient = scope:xqol_conversion_candidate\n\t\t\t\t\tinteraction = demand_conversion_vassal_ruler_interaction\n\t\t\t\t}\n', b'')
+                require(raw.count(b'send_threshold = decline') == 3, 'Fixed conversion send count changed')
+                raw = raw.replace(b'send_threshold = decline', b'execute_threshold = decline')
+            else:
+                require(raw.count(b'\tis_valid = {\n\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n\t\tscope:actor.faith != scope:recipient.faith\n\t\tscope:recipient = { is_courtier_of = scope:actor }\n\t\tscope:recipient = { is_ruler = no }\n\t\tscope:recipient = { is_imprisoned = no }\n\t\ttrigger_if = {\n\t\t\tlimit = { is_ai = yes }\n\t\t\tis_adult = yes\n\t\t}\n\t\tvalid_demand_conversion_conditions_trigger = yes\n\t}') == 1, 'Fixed private ongoing condition block changed')
+                raw = raw.replace(b'\tis_valid = {\n\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n\t\tscope:actor.faith != scope:recipient.faith\n\t\tscope:recipient = { is_courtier_of = scope:actor }\n\t\tscope:recipient = { is_ruler = no }\n\t\tscope:recipient = { is_imprisoned = no }\n\t\ttrigger_if = {\n\t\t\tlimit = { is_ai = yes }\n\t\t\tis_adult = yes\n\t\t}\n\t\tvalid_demand_conversion_conditions_trigger = yes\n\t}', b'\tis_valid = {\n\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n\t\tscope:actor = {\n\t\t\tis_character_interaction_valid = {\n\t\t\t\trecipient = scope:recipient\n\t\t\t\tinteraction = ask_for_conversion_courtier_interaction\n\t\t\t}\n\t\t}\n\t}', 1)
+                require(raw.count(b'\tis_valid = {\n\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n\t\tscope:puppet_or_actor ?= {\n\t\t\tNOT = { faith = scope:recipient.faith }\n\t\t}\n\t\tscope:recipient = {\n\t\t\tOR = {\n\t\t\t\ttarget_is_liege_or_above = scope:puppet_or_actor\n\t\t\t\tis_tributary_of = scope:puppet_or_actor\n\t\t\t}\n\t\t\tis_ai = yes\n\t\t\tis_ruler = yes\n\t\t}\n\t\ttrigger_if = {\n\t\t\tlimit = { is_ai = yes }\n\t\t\tis_adult = yes\n\t\t}\n\t\tvalid_demand_conversion_conditions_trigger = yes\n\t\ttrigger_if = {\n\t\t\tlimit = { scope:is_puppet_action ?= yes }\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\tinfluence >= demand_conversion_influence_cost_value\n\t\t\t}\n\t\t}\n\t\ttrigger_if = {\n\t\t\tlimit = {\n\t\t\t\tscope:puppet_or_actor.domicile ?= {\n\t\t\t\t\tdomicile_uses_culture_and_faith = yes\n\t\t\t\t}\n\t\t\t\tscope:recipient = {\n\t\t\t\t\tis_ruler = yes\n\t\t\t\t\tgovernment_has_flag = government_is_in_steppe\n\t\t\t\t}\n\t\t\t}\n\t\t\tcustom_tooltip = {\n\t\t\t\ttext = nomads_must_inspire_tt\n\t\t\t\talways = no\n\t\t\t}\n\t\t}\n\t}') == 1, 'Fixed private ongoing condition block changed')
+                raw = raw.replace(b'\tis_valid = {\n\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n\t\tscope:puppet_or_actor ?= {\n\t\t\tNOT = { faith = scope:recipient.faith }\n\t\t}\n\t\tscope:recipient = {\n\t\t\tOR = {\n\t\t\t\ttarget_is_liege_or_above = scope:puppet_or_actor\n\t\t\t\tis_tributary_of = scope:puppet_or_actor\n\t\t\t}\n\t\t\tis_ai = yes\n\t\t\tis_ruler = yes\n\t\t}\n\t\ttrigger_if = {\n\t\t\tlimit = { is_ai = yes }\n\t\t\tis_adult = yes\n\t\t}\n\t\tvalid_demand_conversion_conditions_trigger = yes\n\t\ttrigger_if = {\n\t\t\tlimit = { scope:is_puppet_action ?= yes }\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\tinfluence >= demand_conversion_influence_cost_value\n\t\t\t}\n\t\t}\n\t\ttrigger_if = {\n\t\t\tlimit = {\n\t\t\t\tscope:puppet_or_actor.domicile ?= {\n\t\t\t\t\tdomicile_uses_culture_and_faith = yes\n\t\t\t\t}\n\t\t\t\tscope:recipient = {\n\t\t\t\t\tis_ruler = yes\n\t\t\t\t\tgovernment_has_flag = government_is_in_steppe\n\t\t\t\t}\n\t\t\t}\n\t\t\tcustom_tooltip = {\n\t\t\t\ttext = nomads_must_inspire_tt\n\t\t\t\talways = no\n\t\t\t}\n\t\t}\n\t}', b'\tis_valid = {\n\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n\t\tscope:actor = {\n\t\t\tis_character_interaction_valid = {\n\t\t\t\trecipient = scope:recipient\n\t\t\t\tinteraction = demand_conversion_vassal_ruler_interaction\n\t\t\t}\n\t\t}\n\t}', 1)
+            require(len(raw) == old_pins[relative]['bytes'] and
+                    hashlib.sha256(raw).hexdigest() == old_pins[relative]['sha256'],
+                    'Fixed conversion transforms must restore the complete original R33 source bytes')
+        return {'mode': 'r33_scoped_conversion_stock_pending_only', 'changed_files': changed,
+                'source_pins': old_pins, 'current_pins': current, 'restored_source_pins': old_pins,
+                'unchanged_formal_files': 25, 'reused_scope': 'defense23/reverse/final6 only',
+                'conversion_reply_credit': False}
     relative = 'common/scripted_effects/xqol_conversion_effects.txt'
     old = {'bytes': 7458, 'sha256': '0a4f93d7019afe94cfff76f7f6129023dc08b07c96dcf61ea170a5e5c40ec7db'}
     new = {'bytes': 7449, 'sha256': '438a44f036d3545a48d0619a526073db3829c19a6c93fab2bece19ab2bc385be'}

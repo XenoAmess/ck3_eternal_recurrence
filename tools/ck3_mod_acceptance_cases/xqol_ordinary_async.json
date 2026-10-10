@@ -54,8 +54,8 @@
       "sha256": "356c3713e7b1bf4085001313702d554be24076251a4614c62b5ce164d5b1520b"
     },
     "common/scripted_effects/zqn_async_effects.txt": {
-      "bytes": 9707,
-      "sha256": "e562e809d75ce40cb925667091ce203c0b441d7079a618086b26f394ca53779b"
+      "bytes": 14048,
+      "sha256": "f74346847cf63445502ea2702d6416bc40791538f840927f620304bfcae4d39a"
     },
     "descriptor.mod": {
       "bytes": 106,

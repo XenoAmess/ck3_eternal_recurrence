@@ -1205,7 +1205,8 @@ def episode_identity_frame(snapshot: object) -> dict[str, object]:
 
 
 def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = False,
-                                 allowed_event_instance: int | None = None) -> dict[str, object]:
+                                 allowed_event_instance: int | None = None,
+                                 allow_pause_transition: bool = False) -> dict[str, object]:
     """Bind a complete campaign frame; heartbeat is only an owner guard."""
     if not isinstance(snapshot, dict):
         raise RuntimeError("campaign pause readback lacks a complete snapshot")
@@ -1240,9 +1241,14 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
             raise RuntimeError("campaign pause readback lost the explicitly admitted event instance")
     running = (allow_running is True and snapshot.get("paused") is False
                and mailbox.get("ready") is False)
+    pause_transition = (allow_pause_transition is True and running and mailbox.get("paused") is True
+                        and mailbox.get("paused_main_thread_observed") is False
+                        and type(mailbox.get("consecutive_verified")) is int
+                        and mailbox["consecutive_verified"] == 0)
     if running and (snapshot["speed"] != 1
             or type(hello.get("connection_generation")) is not int or hello["connection_generation"] != generation
-            or mailbox.get("application_main_observed") is not True or mailbox.get("paused") is not False
+            or mailbox.get("application_main_observed") is not True
+            or (mailbox.get("paused") is not False and not pause_transition)
             or mailbox.get("paused_main_thread_observed") is not False or type(mailbox.get("ready")) is not bool
             or type(mailbox.get("consecutive_verified")) is not int or mailbox["consecutive_verified"] < 0):
         raise RuntimeError("campaign pause readback lacks the complete running owner stamp")
@@ -1268,13 +1274,16 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
     return {"identity": (pid, generation, actor, snapshot["local_player_id"], snapshot["speed"],
                          diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
             "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
-            "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"]}
+            "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"],
+            "pause_transition": pause_transition}
 
 
 def require_campaign_pause_successor(source: dict[str, object], snapshot: object, *, allow_running: bool = False,
                                      allowed_event_instance: int | None = None,
-                                     allow_actor_change: bool = False) -> dict[str, object]:
-    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance)
+                                     allow_actor_change: bool = False,
+                                      allow_pause_transition: bool = False) -> dict[str, object]:
+    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance,
+                                           allow_pause_transition=allow_pause_transition)
     identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
                         all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
     if (not identity_matches or current["rejections"] != source["rejections"]
@@ -1497,7 +1506,7 @@ class PlanClient:
     async def pause_campaign_after_advance(self, starting: dict[str, object], *, allow_event_boundary: bool = False,
                                           allow_actor_change: bool = False,
                                           command_deadline: float | None = None) -> dict[str, object]:
-        """At most one idempotent pause refresh under one original deadline."""
+        """Submit pause once, then observe full-frame convergence under the original deadline."""
         if allow_actor_change is True and allow_event_boundary is not True:
             raise ValueError("campaign actor change is exclusive to explicit event-boundary observation")
         deadline = time.monotonic() + self.args.command_timeout
@@ -1544,11 +1553,9 @@ class PlanClient:
             event_instance = campaign_event_instance(starting) if allow_event_boundary is True else None
             source = campaign_pause_frame_binding(starting, allow_running=True, allowed_event_instance=event_instance)
             actor_changed = False
-            ack = await pause({"step": "pause-map"})
+            await pause({"step": "pause-map"})
             evidence["binding"] = {"bridge_pid": source["identity"][0], "connection_generation": source["identity"][1],
                 "runtime_character_id": source["identity"][2], "owner_tid": source["identity"][6]}
-            retry_at = time.monotonic() + 1.0
-            retried = False
             previous = source
             while True:
                 current = await bounded(self.fresh)
@@ -1559,23 +1566,20 @@ class PlanClient:
                     if event_instance is None:
                         event_instance = current_event
                 observed = require_campaign_pause_successor(previous, current, allow_running=True,
-                    allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed)
+                    allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,
+                    allow_pause_transition=True)
                 actor_changed = actor_changed or observed["identity"][2] != previous["identity"][2]
                 previous = observed
+                if observed["pause_transition"] is True:
+                    evidence.setdefault("pending_owner_stamp_readbacks", []).append({
+                        "snapshot_id": current["snapshot_id"], "date_raw": current["date_raw"],
+                        "snapshot_paused": False, "owner_paused": True, "owner_ready": False,
+                        "business_credit": False})
                 if current["paused"] is True:
                     evidence.update(status="FULL_PAUSED_FRAME_OBSERVED", ending_snapshot_id=current["snapshot_id"],
                                     ending_date_raw=current["date_raw"], pause_attempt_count=len(evidence["attempts"]))
                     return current
-                if ack == "submitted" and not retried and time.monotonic() >= retry_at:
-                    # This is the sole extra action: bind its revision to the frame
-                    # just checked, avoiding an unchecked implicit second fresh().
-                    retried = True
-                    ack = await pause({"step": "pause-map", "expected_revision": current["revision"]}, fresh_revision=False)
-                    continue
-                delay = min(self.args.poll_interval, remaining())
-                if ack == "submitted" and not retried:
-                    delay = min(delay, max(0.0, retry_at - time.monotonic()))
-                await asyncio.sleep(delay)
+                await asyncio.sleep(min(self.args.poll_interval, remaining()))
         except BaseException as error:
             evidence.update(status="FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED", error_type=type(error).__name__,
                             pause_attempt_count=len(evidence["attempts"]))

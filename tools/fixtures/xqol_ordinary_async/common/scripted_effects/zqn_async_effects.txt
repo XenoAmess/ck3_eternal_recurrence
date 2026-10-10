@@ -125,6 +125,7 @@ zqn_observe_actual_replies_effect = {
    limit = { var:zqn_observation_days >= 12 }
    remove_character_flag = zqn_async_observing
    debug_log = "ZQN120: TEST FAIL async_reply_bounded_12_day_timeout"
+   zqn_diagnose_timeout_readonly_effect = yes
   }
   else = { trigger_event = { id = zqn120.2 days = 1 } }
  }
@@ -190,4 +191,67 @@ zqn_diagnose_original_low_outcome_effect = {
   debug_log_scopes = yes
   debug_log = "ZQN120: DIAG SCOPE END missing_low_observer"
  }
+}
+
+# Only after the original bounded-timeout FAIL. Read-only atoms, no reply or timing changes.
+zqn_diagnose_timeout_readonly_effect = {
+ zqn_diagnose_original_reply_counts_effect = yes
+ zqn_diagnose_original_low_outcome_effect = yes
+ if = {
+  limit = { has_variable = xqol_mass_conversion_pending }
+  if = { limit = { var:xqol_mass_conversion_pending = 0 } debug_log = "ZQN120: DIAG timeout_pending_value 0" }
+  else_if = { limit = { var:xqol_mass_conversion_pending = 1 } debug_log = "ZQN120: DIAG timeout_pending_value 1" }
+  else_if = { limit = { var:xqol_mass_conversion_pending = 2 } debug_log = "ZQN120: DIAG timeout_pending_value 2" }
+  else = { debug_log = "ZQN120: DIAG timeout_pending_value other" }
+ }
+ if = { limit = { this = character:han_8052 } debug_log = "ZQN120: DIAG timeout_owner_is_song true" }
+ else = { debug_log = "ZQN120: DIAG timeout_owner_is_song false" }
+ if = { limit = { exists = scope:actor this = scope:actor } debug_log = "ZQN120: DIAG timeout_owner_matches_actor true" }
+ else = { debug_log = "ZQN120: DIAG timeout_owner_matches_actor false" }
+ if = { limit = { any_courtier = { has_character_flag = xqol_conversion_courtier_candidate } } debug_log = "ZQN120: DIAG timeout_any_courtier_candidate true" }
+ else = { debug_log = "ZQN120: DIAG timeout_any_courtier_candidate false" }
+ if = {
+  limit = { exists = var:zqn_high }
+  debug_log = "ZQN120: DIAG timeout_high_exists true"
+  var:zqn_high = {
+   if = { limit = { has_character_flag = xqol_conversion_courtier_candidate } debug_log = "ZQN120: DIAG timeout_high_candidate true" }
+   else = { debug_log = "ZQN120: DIAG timeout_high_candidate false" }
+   if = { limit = { is_alive = yes } debug_log = "ZQN120: DIAG timeout_high_alive true" }
+   else = { debug_log = "ZQN120: DIAG timeout_high_alive false" }
+   if = { limit = { faith = faith:catholic } debug_log = "ZQN120: DIAG timeout_high_catholic true" }
+   else = { debug_log = "ZQN120: DIAG timeout_high_catholic false" }
+   if = { limit = { rite = rite:roman_rite } debug_log = "ZQN120: DIAG timeout_high_roman_rite true" }
+   else = { debug_log = "ZQN120: DIAG timeout_high_roman_rite false" }
+  }
+  if = {
+   limit = { var:zqn_high = { is_alive = yes } }
+   if = { limit = { is_character_interaction_valid = { recipient = var:zqn_high interaction = xqol_mass_conversion_courtier_interaction } } debug_log = "ZQN120: DIAG timeout_high_private_valid true" }
+   else = { debug_log = "ZQN120: DIAG timeout_high_private_valid false" }
+   if = { limit = { is_character_interaction_valid = { recipient = var:zqn_high interaction = ask_for_conversion_courtier_interaction } } debug_log = "ZQN120: DIAG timeout_high_stock_valid true" }
+   else = { debug_log = "ZQN120: DIAG timeout_high_stock_valid false" }
+  }
+ }
+ else = { debug_log = "ZQN120: DIAG timeout_high_exists false" }
+ if = {
+  limit = { exists = var:zqn_low }
+  debug_log = "ZQN120: DIAG timeout_low_exists true"
+  var:zqn_low = {
+   if = { limit = { has_character_flag = xqol_conversion_courtier_candidate } debug_log = "ZQN120: DIAG timeout_low_candidate true" }
+   else = { debug_log = "ZQN120: DIAG timeout_low_candidate false" }
+   if = { limit = { is_alive = yes } debug_log = "ZQN120: DIAG timeout_low_alive true" }
+   else = { debug_log = "ZQN120: DIAG timeout_low_alive false" }
+   if = { limit = { faith = faith:catholic } debug_log = "ZQN120: DIAG timeout_low_catholic true" }
+   else = { debug_log = "ZQN120: DIAG timeout_low_catholic false" }
+   if = { limit = { rite = rite:roman_rite } debug_log = "ZQN120: DIAG timeout_low_roman_rite true" }
+   else = { debug_log = "ZQN120: DIAG timeout_low_roman_rite false" }
+  }
+  if = {
+   limit = { var:zqn_low = { is_alive = yes } }
+   if = { limit = { is_character_interaction_valid = { recipient = var:zqn_low interaction = xqol_mass_conversion_courtier_interaction } } debug_log = "ZQN120: DIAG timeout_low_private_valid true" }
+   else = { debug_log = "ZQN120: DIAG timeout_low_private_valid false" }
+   if = { limit = { is_character_interaction_valid = { recipient = var:zqn_low interaction = ask_for_conversion_courtier_interaction } } debug_log = "ZQN120: DIAG timeout_low_stock_valid true" }
+   else = { debug_log = "ZQN120: DIAG timeout_low_stock_valid false" }
+  }
+ }
+ else = { debug_log = "ZQN120: DIAG timeout_low_exists false" }
 }

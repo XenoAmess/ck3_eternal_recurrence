@@ -8,6 +8,10 @@
 |---|---|---|
 | CK3 1.20.0.4 中低接受度资格已成立，批量改信却得到2接受/0拒绝 | `run_interaction` 的 `execute_threshold` 表示达到该AI响应等级就立即执行；`decline` 包含拒绝档。当前EXE内置文档和RTTI函数链已确认，R52实际失败吻合。旧validator强制该形状，静态绿未覆盖真实拒绝 | 需要自然AI回复的派发使用 `send_threshold = decline`，让实际回复进入原 `on_accept` / `on_decline` 后果与计数；纠正错误静态契约，仍以真实1接受/1拒绝及后果验收。不能给所有其他互动批量替换阈值，足额支付等原 `execute_threshold = accept` 有独立用途。修正采用与后继实机边界见 [R52/R53记录](../xqol-r52-r53-dispatch-and-qualification-2026-10-10.md)。 |
 
+## 运行期：私有异步互动持续资格把自身判成重复
+
+当前1.20.0.4原生人类actor的待回复查重按同一recipient匹配，不排除自身、不比较definition。private is_valid内递归stock is_character_interaction_valid会查到自己的pending；每日资格失败可静默取消，绕开on_accept/on_decline，产品pending无法收敛。发送前保留stock完整资格；持续资格由作者generator投影当前stock纯条件，不能泛删validity或强制回复。原R55具体实例/计数未观测，机理已证与修后实机通过分开记录，见[修正与验收边界](../ck3-mod-acceptance-pause-convergence-2026-10-10.md#r55-原生持续资格自阻塞修正已采用)。
+
 ## 加载/解析期
 
 | 错误信息 | 原因 | 解法 |

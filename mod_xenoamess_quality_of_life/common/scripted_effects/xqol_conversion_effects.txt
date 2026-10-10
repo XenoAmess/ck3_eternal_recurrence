@@ -86,6 +86,11 @@ xqol_mass_conversion_dispatch_next_effect = {
 		}
 		if = {
 			limit = {
+				# Full stock admission is checked before creating a pending reply.
+				is_character_interaction_valid = {
+					recipient = scope:xqol_conversion_candidate
+					interaction = ask_for_conversion_courtier_interaction
+				}
 				is_character_interaction_valid = {
 					recipient = scope:xqol_conversion_candidate
 					interaction = xqol_mass_conversion_courtier_interaction
@@ -114,6 +119,11 @@ xqol_mass_conversion_dispatch_next_effect = {
 		}
 		if = {
 			limit = {
+				# Full stock admission is checked before creating a pending reply.
+				is_character_interaction_valid = {
+					recipient = scope:xqol_conversion_candidate
+					interaction = demand_conversion_vassal_ruler_interaction
+				}
 				is_character_interaction_valid = {
 					recipient = scope:xqol_conversion_candidate
 					interaction = xqol_mass_conversion_ruler_interaction
@@ -142,6 +152,11 @@ xqol_mass_conversion_dispatch_next_effect = {
 		}
 		if = {
 			limit = {
+				# Full stock admission is checked before creating a pending reply.
+				is_character_interaction_valid = {
+					recipient = scope:xqol_conversion_candidate
+					interaction = demand_conversion_vassal_ruler_interaction
+				}
 				is_character_interaction_valid = {
 					recipient = scope:xqol_conversion_candidate
 					interaction = xqol_mass_conversion_ruler_interaction

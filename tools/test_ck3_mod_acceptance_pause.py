@@ -150,5 +150,50 @@ class RunningPauseTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(len(client.calls), 1)
 
 
+
+    async def test_owner_paused_before_snapshot_is_only_waited_without_replay(self):
+        pending = frame(revision=10)
+        pending['diagnostics']['last_heartbeat']['main_thread_query_mailbox_v1']['paused'] = True
+        client = self.client([pending] * 4 + [frame(paused=True, ready=True, revision=11)])
+        result = await client.pause(frame())
+        self.assertIs(result['paused'], True)
+        self.assertEqual(len(client.calls), 1)
+        evidence = client.report['campaign_pause_readbacks'][0]
+        self.assertEqual(len(evidence['pending_owner_stamp_readbacks']), 4)
+        self.assertTrue(all(row['business_credit'] is False for row in evidence['pending_owner_stamp_readbacks']))
+        self.assertEqual(evidence['pause_attempt_count'], 1)
+
+    async def test_pending_stamp_identity_and_original_deadline_remain_strict(self):
+        pending = frame(revision=10)
+        pending['diagnostics']['last_heartbeat']['main_thread_query_mailbox_v1']['paused'] = True
+        changes = [
+            (('diagnostics', 'connection_generation'), 2),
+            (('diagnostics', 'last_heartbeat', 'main_thread_query_mailbox_v1', 'owner_tid'), 34),
+            (('diagnostics', 'last_heartbeat', 'main_thread_query_mailbox_v1', 'date_raw'), 101),
+            (('diagnostics', 'last_heartbeat', 'main_thread_query_mailbox_v1', 'stamp_read_success'), False),
+            (('diagnostics', 'rejected_state_snapshot_count'), 1),
+            (('played_character', 'character_id'), 23),
+            (('active_event',), {'instance_id': 1}),
+            (('complete_snapshot',), False),
+        ]
+        for path, changed in changes:
+            with self.subTest(pending_drift=path):
+                target_frame = copy.deepcopy(pending)
+                target = target_frame
+                for part in path[:-1]:
+                    target = target[part]
+                target[path[-1]] = changed
+                client = self.client([target_frame, frame(paused=True, ready=True, revision=11)])
+                with self.assertRaises(RuntimeError):
+                    await client.pause(frame())
+                self.assertEqual(len(client.calls), 1)
+        client = self.client([pending], timeout=1.25)
+        with self.assertRaises(TimeoutError):
+            await client.pause(frame())
+        self.assertEqual(len(client.calls), 1)
+        self.assertEqual(client.report['campaign_pause_readbacks'][0]['status'],
+                         'FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED')
+
+
 if __name__ == "__main__":
     unittest.main()

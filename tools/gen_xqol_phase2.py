@@ -6,7 +6,10 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from xqol_vanilla_contract import native_conversion_acceptance, native_full_golden_obligation, require_sources
+from xqol_vanilla_contract import (
+    block, native_conversion_acceptance, native_definition,
+    native_full_golden_obligation, require_sources,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -173,6 +176,30 @@ def render_release_interactions() -> str:
     return "# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.\n\n" + body + "\n"
 
 
+CONVERSION_NATIVE_INTERACTIONS = {
+    "courtier": "ask_for_conversion_courtier_interaction",
+    "ruler": "demand_conversion_vassal_ruler_interaction",
+}
+
+
+def native_conversion_ongoing_conditions(kind: str) -> str:
+    """Copy stock pure conditions without rechecking the pending queue itself.
+
+    The dispatcher checks full stock interaction validity before the send. A
+    nested full validity query during a pending reply would reject that same
+    human actor/recipient pair as an existing pending interaction.
+    """
+    definition = native_definition(
+        "common/character_interactions/00_religious_interactions.txt",
+        CONVERSION_NATIVE_INTERACTIONS[kind],
+    )
+    conditions = []
+    for field in ("is_shown", "is_available", "is_valid_showing_failures_only"):
+        source = block(definition, field, indentation="\t")
+        conditions.append("\n".join(source.splitlines()[1:-1]))
+    return "\n".join(conditions)
+
+
 def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: int) -> str:
     if kind not in {"courtier", "ruler"}:
         raise ValueError(f"unsupported conversion interaction kind: {kind}")
@@ -193,12 +220,7 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 
 \tis_valid = {{
 \t\tscope:actor = {{ xqol_human_ruler_trigger = yes }}
-\t\tscope:actor = {{
-\t\t\tis_character_interaction_valid = {{
-\t\t\t\trecipient = scope:recipient
-\t\t\t\tinteraction = {'ask_for_conversion_courtier_interaction' if kind == 'courtier' else 'demand_conversion_vassal_ruler_interaction'}
-\t\t\t}}
-\t\t}}
+{native_conversion_ongoing_conditions(kind)}
 \t}}
 
 \tai_accept = {{

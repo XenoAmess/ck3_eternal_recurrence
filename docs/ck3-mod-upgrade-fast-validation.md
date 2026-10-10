@@ -1,5 +1,11 @@
 # CK3 mod升级提速与公共验收入口（2026-10-08）
 
+## 2026-10-10 Source14 已选定
+
+后续未消费产品场唯一使用[Root选定mapping](C:/workspace/ck3-upgrade-20261010/root-source14-adoption-01/runtime.adopted-source14-native-fd1f-queue04-helper03-01.json)，12610B / SHA-256 `1eed7310a0c9314d54d9520d086ba1dce2f2d44d32988b91396c2bbf2f888f67`；共同manifest46927B / `bf326bb7005cd01ec482cbceaee02459dc2cf1400941b1dbe611c02905de60b2`，host234210B / `a20854002470e0f1b1c8f04d7889031560b28b9c89c510df950e72805697dea9`。实际增量物化exit0、7.620秒：6906文件copy2和sizecheck，6905行原SHA继承，只hash新host；native fd1f、queue04、helper03和全部能力合同不变。现有公共plan/Selection/hostCLI/prepare callable一次exit0、0.202秒，没有创建profile或启动游戏。旧Source13、manifest/prepared、R54/R55/R56结果保留，选择不授实机或产品PASS。
+
+7个未消费prepared只创建新manifest-pin sibling；新ransom因observer fixture改变实际public prepare一次exit0、0.799秒，复用c46既有QA27且不重build。下一现场先admin→merit→ransom，UI/PAM−暂不消费待改信机制证据。正式仍7/10。
+
 ## 2026-10-10 公共任命采集器实际 hello 合同修正
 
 R51 在发送候选池查询之前拒绝，原因是 collector 和旧测试使用不存在的 `hello.game_version/executable_sha256/bridge_pid`。实际 native HelloFrame 使用 `expected_ck3_version/expected_ck3_sha256/pid`。最终修复只修改公共 `frame_binding` 及真实 schema 测试构造，不改产品业务、host、DLL 或各场预算；所有产品仍走同一个公共 client。

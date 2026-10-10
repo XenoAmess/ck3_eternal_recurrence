@@ -338,6 +338,32 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("all three conversion dispatch paths must send native AI replies")
     if "execute_threshold" in conversion_runtime:
         errors.append("conversion dispatch must not execute declined replies immediately")
+    # Full stock admission belongs before send, never inside pending validity.
+    for kind, native in gen_xqol_phase2.CONVERSION_NATIVE_INTERACTIONS.items():
+        private = xqol_vanilla_contract.block(
+            release_interactions, f"xqol_mass_conversion_{kind}_interaction"
+        )
+        ongoing = xqol_vanilla_contract.block(private, "is_valid", indentation="\t")
+        expected = (
+            "\tis_valid = {\n"
+            "\t\tscope:actor = { xqol_human_ruler_trigger = yes }\n"
+            + gen_xqol_phase2.native_conversion_ongoing_conditions(kind)
+            + "\n\t}"
+        )
+        if ongoing != expected or "is_character_interaction_valid" in ongoing:
+            errors.append(f"{kind} pending validity must preserve stock pure conditions without a pending-queue query")
+        guard = (
+            "\t\t\t\tis_character_interaction_valid = {\n"
+            "\t\t\t\t\trecipient = scope:xqol_conversion_candidate\n"
+            f"\t\t\t\t\tinteraction = {native}\n"
+            "\t\t\t\t}\n"
+            "\t\t\t\tis_character_interaction_valid = {\n"
+            "\t\t\t\t\trecipient = scope:xqol_conversion_candidate\n"
+            f"\t\t\t\t\tinteraction = xqol_mass_conversion_{kind}_interaction\n"
+            "\t\t\t\t}"
+        )
+        if conversion_runtime.count(guard) != (1 if kind == "courtier" else 2):
+            errors.append(f"{kind} dispatch must retain full stock and private admission before every send")
     conversion_count = (
         "change_variable = { name = xqol_mass_conversion_pending add = 1 }"
     )
