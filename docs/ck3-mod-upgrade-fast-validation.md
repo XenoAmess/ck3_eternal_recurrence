@@ -10,6 +10,8 @@ R51 在发送候选池查询之前拒绝，原因是 collector 和旧测试使�
 
 03候选曾误判 native serializer 无顶层 `title_id` 即为公开 MCP schema 缺失；完整追至 `BridgeService.query_title_holder_v1` 后确认 service 实际补齐该字段。因此03未采用，final04完整保留原 title-reference 的顶层及嵌套 ID 一致性校验与原测试。此记录保留纠正，不能从底层 serializer 单独推断公开工具合同。新的实际完整候选池及业务资格仍须在新 public prepare/run 中取得。
 
+同轮 `liege_shared_ransom` 首次公共 prepare 在支持文件 pin 检查中实际退出2：补丁生产器以 `utf-8-sig` 解码新文件，丢掉原候选的3字节 BOM；隔离目录离线检查和 `git apply --check` 均不能证明实际应用后的字节相等。只恢复原 BOM 后，该 fixture 必须精确为24863 B / `56d4678f618632e58dd2a99e74124bc0a818c5350e6f2948ab833a0d2ded0b12`，合同 pin、全部业务正文与其他成功 prepared 不改。原失败保留于 [首次四场准备目录](C:/workspace/ck3-upgrade-20261010/resume-qol-02/public-prepare-four-01/)，后继只重新准备该未成功用例；不得盲目刷新 pin 消除错误。
+
 后续普通版本迁移的工程目标是正常数小时完成，尚无实测耗时或完成ETA承诺；新引擎结构、ABI变化及核心逆向另计。提速来自集中适配、减少重复启动和自动连续消费，不改变各产品发布前源码业务合同。当前批次正式7/10（70%），TED永久发布记录已提交推送。
 
 MCP、native bridge、服务、状态/事件读取及启动/退出管理已经是共享底座。各mod独立的是fixture、business case data、adapter及正式构建；冻结版本是当次可复现证据。成本来自尚未集中覆盖的实际capability缺口、consumer不同历史snapshot及人工GUI/多轮冷启动。**永久规则：所有未来mod acceptance从[tools/ck3_mod_acceptance.py](../tools/ck3_mod_acceptance.py)公共入口选一份common runtime manifest；产品不选择或复制host/source/native版本，公共问题在共享层修一次。**旧冻结永久保留，新run消费共同绑定的当前版本。

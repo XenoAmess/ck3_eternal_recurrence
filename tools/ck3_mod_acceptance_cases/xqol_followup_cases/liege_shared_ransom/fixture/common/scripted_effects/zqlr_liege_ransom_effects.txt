@@ -1,4 +1,4 @@
-# External isolated async callback fixture. Selector/UI and PAM rewards remain separate scope.
+﻿# External isolated async callback fixture. Selector/UI and PAM rewards remain separate scope.
 zqlr_initialize_effect = {
  if = {
   limit = { NOT = { has_character_flag = zqlr_initialized } }
