@@ -31,11 +31,17 @@ def frame_binding(frame):
     require(frame.get('source')=='injected-dll-named-pipe' and frame.get('backend_id')=='native-headless'
             and frame.get('episode_projection')=='native_campaign' and actor.get('alive') is True
             and actor.get('source')=='native', 'actual native campaign/actor required')
-    require(h.get('game_version')=='1.20.0.4' and str(h.get('executable_sha256','')).lower()==EXE_SHA,
-            'eligibility proof requires exact executable')
+    # Native HelloFrame reports the selected descriptor under expected_*;
+    # the actual process is qualified only when its exact adapter is enabled.
+    require(h.get('expected_ck3_version')=='1.20.0.4'
+            and isinstance(h.get('expected_ck3_sha256'),str) and h['expected_ck3_sha256'].lower()==EXE_SHA
+            and h.get('ck3_build_match') is True and h.get('game_adapter_status')=='ready'
+            and h.get('game_adapter_id')=='ck3-1.20.0.4-msvc-x64',
+            'eligibility proof requires exact executable and actual ready matching adapter')
     values=(d.get('bridge_pid'),d.get('connection_generation'),actor.get('character_id'))
-    require(all(positive(v) for v in values) and h.get('bridge_pid')==values[0]
-            and h.get('connection_generation')==values[1], 'same PID/generation missing')
+    require(all(positive(v) for v in values) and positive(h.get('pid'))
+            and positive(h.get('connection_generation')) and h['pid']==values[0]
+            and h['connection_generation']==values[1], 'same PID/generation missing')
     require(type(frame.get('native_revision')) is int and type(frame.get('date_raw')) is int
             and isinstance(d.get('pipe_name'),str) and d['pipe_name'], 'native frame/date/pipe missing')
     return (*values,d['pipe_name'],frame['native_revision'],frame['date_raw'],frame.get('episode_run_id'))

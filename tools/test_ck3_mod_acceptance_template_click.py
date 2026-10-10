@@ -91,8 +91,52 @@ class TemplateClickTests(unittest.TestCase):
     def test_changed_target_pixels_refuse_even_if_high_correlation(self):
         changed=self.pixels.copy();changed[175,305]=[0,0,0]
         self.desktop.image=Image.fromarray(changed)
-        with self.assertRaisesRegex(RuntimeError,'exact reviewed pixels'):self.run_action()
+        with self.assertRaisesRegex(RuntimeError,'quantization tolerance'):self.run_action()
         self.assertEqual(self.desktop.clicks,[])
+    def test_r50_three_one_level_channels_only_pass_with_original_geometry_and_uniqueness(self):
+        # R50: 64x31 = 1984 pixels; these exact three RGB channel changes
+        # were the sole difference. Keep a portable random surrounding scene.
+        pixels=self.pixels.copy()
+        changes=((10,2,2,37),(0,17,1,35),(18,29,1,38))
+        for x,y,channel,value in changes:pixels[170+y,300+x,channel]=value
+        Image.fromarray(pixels).save(self.source)
+        self.payload['target']={'crop_ltrb':[300,170,364,201],'point_offset':[32,15]}
+        original_root=self.root
+        for name,error in (('one_level',None),('two_levels','quantization tolerance'),
+                           ('relative_position','relative layout'),('ambiguous','target is absent, ambiguous')):
+            with self.subTest(name=name):
+                self.root=original_root/name;self.root.mkdir()
+                changed=pixels.copy()
+                for x,y,channel,_ in changes:changed[170+y,300+x,channel]-=1
+                if name=='two_levels':changed[172,310,2]-=1
+                if name=='relative_position':
+                    patch=changed[170:201,300:364].copy()
+                    changed[170:201,300:364]=self.after_pixels[170:201,300:364]
+                    changed[180:211,315:379]=patch
+                if name=='ambiguous':changed[230:261,200:264]=changed[170:201,300:364]
+                after=changed.copy();after[170:201,300:364]=self.after_pixels[170:201,300:364]
+                self.desktop=FakeDesktop(Image.fromarray(changed),Image.fromarray(after))
+                if error:
+                    with self.assertRaisesRegex(RuntimeError,error):self.run_action()
+                    self.assertEqual(self.desktop.clicks,[])
+                    self.assertFalse(self.result()['click_completed'])
+                else:
+                    result=self.run_action()
+                    self.assertEqual(self.desktop.clicks,[[332,185,'left']])
+                    match=json.loads((self.root/'action/target-before.match.json').read_bytes())
+                    self.assertFalse(match['pixels_exact'])
+                    self.assertTrue(match['pixels_within_quantization_tolerance'])
+                    self.assertEqual(match['pixel_quantization_tolerance'],1)
+                    self.assertEqual(match['pixel_maximum_channel_difference'],1)
+                    self.assertEqual(match['pixel_channel_difference_counts'],{'0':5949,'1':3})
+                    self.assertEqual(match['pixel_changed_channel_count'],3)
+                    self.assertEqual(match['pixel_changed_pixel_count'],3)
+                    self.assertFalse(result['business_pass'])
+                    self.assertFalse(result['human_review_claimed'])
+                    receipt=json.loads((self.root/'action/mapped-click-after.png.json').read_bytes())
+                    self.assertEqual(receipt['source_age_before']['maximum_seconds'],60)
+                    self.assertEqual(result['reserve_seconds'],90)
+
     def test_changed_focus_refuses_before_input(self):
         count=[0]
         def guard():

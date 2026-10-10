@@ -1157,6 +1157,65 @@
           }
         },
         {
+          "id": "liege_shared_ransom",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "coverage": "original_L2_4_missing_liege_shared_wallet_normal_and_pillage_only",
+            "original_steps": 30,
+            "maximum_natural_days": 12,
+            "business_and_runtime_NOT_RUN": true
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 4500,
+            "hold_seconds": 600,
+            "poll_interval": 0.05
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original images, or explicitly configured public template-automation validates them without claiming human review; legal Quit To Desktop GUI with mapped receipts for coordinate input",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_appointment_blocks": [],
+            "root_complete_candidate_and_tooltip_review_required": false,
+            "normal_GUI_Quit_required": true,
+            "no_whole_product_credit": true
+          },
+          "outputs": [
+            "qol-original-followup-result.json",
+            "original-debug.raw",
+            "original-error.raw"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_liege_ransom_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_liege_shared_ransom.json"
+          }
+        },
+        {
           "id": "pam_positive",
           "status": "ready",
           "startup": {

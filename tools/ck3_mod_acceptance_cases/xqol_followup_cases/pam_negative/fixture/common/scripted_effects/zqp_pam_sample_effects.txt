@@ -31,6 +31,7 @@ zqp_setup_negative_effect = {
  set_character_faith = faith:catholic
  set_character_rite = rite:roman_rite
  every_personal_tenet = { scope:actor = { remove_personal_tenet = prev } }
+ zqp_initialize_spiritual_fulfillment_zero_effect = yes
  set_variable = { name = zqp_stock_sp_major value = major_spiritual_fulfillment_value }
  set_variable = { name = zqp_stock_sp_minor value = minor_spiritual_fulfillment_value }
  set_variable = { name = zqp_sp_acts_expected value = 0 }
@@ -131,4 +132,37 @@ zqp_observe_actual_reply_effect = {
   else_if = { limit = { var:zqp_observation_days >= 12 } remove_character_flag = zqp_async_observing debug_log = "ZQM120: TEST FAIL bounded12_natural_reply_timeout" }
   else = { trigger_event = { id = zqp120.2 days = 1 } }
  }
+}
+
+# Initialize only this isolated fixture's real engine resource, before the
+# original baseline/reward assertions. An unchanged exact-zero readback decides
+# success. Neither signed clamp endpoint is itself zero.
+zqp_initialize_spiritual_fulfillment_zero_effect = {
+ if = {
+  limit = { NOT = { AND = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 } } }
+  # A nonzero loss multiplier may reach the official -100 endpoint. Only an
+  # actual exact -100 readback permits the known +100 change toward zero.
+  change_spiritual_fulfillment = -10000
+  if = {
+   limit = { spiritual_fulfillment >= -100 spiritual_fulfillment <= -100 }
+   change_spiritual_fulfillment = 100
+  }
+  else = { debug_log = "ZQPBASE120: DIAG negative_anchor_not_reached" }
+  if = {
+   limit = { NOT = { AND = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 } } }
+   # The opposite endpoint covers the complementary unit-loss case. This is
+   # one finite fallback, not an unbounded modifier or resource search.
+   change_spiritual_fulfillment = 10000
+   if = {
+    limit = { spiritual_fulfillment >= 100 spiritual_fulfillment <= 100 }
+    change_spiritual_fulfillment = -100
+   }
+   else = { debug_log = "ZQPBASE120: DIAG positive_anchor_not_reached" }
+  }
+ }
+ if = {
+  limit = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 }
+  debug_log = "ZQPBASE120: DIAG actual_baseline_exact0"
+ }
+ else = { debug_log = "ZQPBASE120: DIAG actual_baseline_not_zero" }
 }

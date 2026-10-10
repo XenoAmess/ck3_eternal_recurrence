@@ -50,6 +50,9 @@ zqn_setup_courtiers_effect = {
  scope:zqn_low = {
   set_character_rite = rite:roman_rite
   add_opinion = { target = scope:actor modifier = hate_opinion opinion = -200 }
+  # Controlled low preference: official stock scorer reads this flag as -1500.
+  # The unchanged product interaction still queues and resolves the AI reply.
+  add_character_flag = ai_will_not_convert
  }
  set_variable = { name = zqn_high value = scope:zqn_high }
  set_variable = { name = zqn_low value = scope:zqn_low }
@@ -63,6 +66,8 @@ zqn_setup_courtiers_effect = {
    NOT = { any_tributary = { has_character_flag = xqol_conversion_ruler_candidate } }
    is_character_interaction_valid = { recipient = var:zqn_high interaction = xqol_mass_conversion_courtier_interaction }
    is_character_interaction_valid = { recipient = var:zqn_low interaction = xqol_mass_conversion_courtier_interaction }
+   # Fail closed before queueing unless the engine scores this valid low target below 0.
+   NOT = { is_character_interaction_potentially_accepted = { recipient = var:zqn_low interaction = xqol_mass_conversion_courtier_interaction ai_accept = 0 } }
    var:zqn_high = { is_ai = yes is_alive = yes is_landed = no faith = faith:catholic rite = rite:roman_rite }
    var:zqn_low = { is_ai = yes is_alive = yes is_landed = no faith = faith:catholic rite = rite:roman_rite }
   }

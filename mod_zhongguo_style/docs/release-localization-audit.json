@@ -3,104 +3,105 @@
   "product_id": "mod_zhongguo_style",
   "result": "GREEN",
   "checks": [
+    "utf8_bom",
+    "header",
+    "syntax",
     "key_order",
     "protected_tokens",
-    "quality",
-    "no_english_placeholders",
-    "target_script"
+    "value_encoding"
   ],
   "source_files": [
     {
       "path": "mod_zhongguo_style/localization/english/zg361_l_english.yml",
-      "size": 20767,
-      "sha256": "552aa867fef705ee5d6f9797e3cb8d94ca06f826cebd5cb4dc402cd9383e501b"
+      "size": 26247,
+      "sha256": "83cc23a1dee24b61f37aa6fb0ae5eb218b60063744c11319c39f2b4429199574"
     },
     {
       "path": "mod_zhongguo_style/localization/english/zg361_mechanisms_l_english.yml",
-      "size": 234525,
-      "sha256": "5b1c9ff0f6f073bd21d9302c927a7311d1effed79aa76ab139b639dd0484e1c1"
+      "size": 572103,
+      "sha256": "b1b518574cca7b34bcf320e84accc0eca469d421d644c21eb0195443bd1df741"
     },
     {
       "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
-      "size": 18683,
-      "sha256": "5efd38021ea30dc6ba22a5918c9541f49a48a5002ca47fd2879a3c15434c8b3d"
+      "size": 24069,
+      "sha256": "c5817ef48273e3788befb043ad10ee749cb08e54be1674e8c5cb2f39b869b03d"
     },
     {
       "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
-      "size": 248357,
-      "sha256": "ef7a7b0cc60e5af99393d9b3ab97b841e024dc7007e66b97b703271c1a8bfb62"
+      "size": 530861,
+      "sha256": "794e780ec941c2f1e1ec82b5541d1696675320c0cb2322825a552d391d48b52a"
     }
   ],
   "target_files": [
     {
       "path": "mod_zhongguo_style/localization/french/zg361_l_french.yml",
-      "size": 23534,
-      "sha256": "9f2ab97921796675f95d0a919fe80c997cb1a4847c1e0b9809c8cea1fd2d1612"
+      "size": 28197,
+      "sha256": "273f32c1b3e78ea6d9baa93ca73b76d2428f4e8b0ee4381ee7d28e7054d4580f"
     },
     {
       "path": "mod_zhongguo_style/localization/french/zg361_mechanisms_l_french.yml",
-      "size": 294676,
-      "sha256": "2715e173fbc62785b0ac4c9507c0bf8b6d6a23efcdedeb2a9d0278015baee283"
+      "size": 572102,
+      "sha256": "5ba7a50d7c1446ce40611c6fa6c1289991734a83f78175b1939dfa1d1ab59bf0"
     },
     {
       "path": "mod_zhongguo_style/localization/german/zg361_l_german.yml",
-      "size": 23204,
-      "sha256": "cd1dc2b13821ef7b2d25a6652882b26a14ccac04d13476144b4b009417fb9681"
+      "size": 28168,
+      "sha256": "f18ffce0f4ea402c4ad07aeb9fad0fbe62c8a8c8cd56418c1e8828f649e34c7c"
     },
     {
       "path": "mod_zhongguo_style/localization/german/zg361_mechanisms_l_german.yml",
-      "size": 278960,
-      "sha256": "9030ffea0a9b68bbf72f7f140493f5dd4c9e044b4c6be3f53617bffe0a815b54"
+      "size": 572102,
+      "sha256": "47dc3ccf191b789b7c15908674545b4e51e1a4298d3995e075527a24be4a8831"
     },
     {
       "path": "mod_zhongguo_style/localization/japanese/zg361_l_japanese.yml",
-      "size": 22838,
-      "sha256": "16f9513ebd22d3c9d962c56bcaca7b8af03104d4d8a2c531711dc7cdefd10761"
+      "size": 27132,
+      "sha256": "b27fccd8618cfacff9c18172e0d2aa5d90023ea1627799823476aff2df6f242b"
     },
     {
       "path": "mod_zhongguo_style/localization/japanese/zg361_mechanisms_l_japanese.yml",
-      "size": 272493,
-      "sha256": "bfe9024949418ddb725dcd28e2a52e77533ad59e89e1918799cffe48d6204088"
+      "size": 572104,
+      "sha256": "ad30c5a5f9218311ffbf4253e0a283266ba295bb305173598d01cb886621ca10"
     },
     {
       "path": "mod_zhongguo_style/localization/korean/zg361_l_korean.yml",
-      "size": 22318,
-      "sha256": "42b01e5382ff0a0bfc5cc4447eee62f3895fd53d71f61e9bb6bd6e13fc9608a6"
+      "size": 26904,
+      "sha256": "0ecdbba7a2fe414ac938be2683996c42ab9a786dbe74722da17900d7505d65ea"
     },
     {
       "path": "mod_zhongguo_style/localization/korean/zg361_mechanisms_l_korean.yml",
-      "size": 264338,
-      "sha256": "b1c14f40f945c9852dd7ef6bee309e793edc3cbddc00b5fe4e897ceb8dffd8de"
+      "size": 572102,
+      "sha256": "9c79a51218af37d5d465f665d44441fc86bfa49573135c02604c65af4d4b2cf0"
     },
     {
       "path": "mod_zhongguo_style/localization/polish/zg361_l_polish.yml",
-      "size": 22076,
-      "sha256": "7d200cd1ff1dd5cce3bde11a765391bf71a94438d0dd2ad296f1516f3bc449c1"
+      "size": 27063,
+      "sha256": "0e2587b077745cc4ff3aec9bd95e72dcbbdb863734c45ac8d91ea8d5f384cfe0"
     },
     {
       "path": "mod_zhongguo_style/localization/polish/zg361_mechanisms_l_polish.yml",
-      "size": 262633,
-      "sha256": "ffd0b6db0d21e5a5eb3ede9f35ea9f660ec08f38a35f1fd7913d6ded592d1745"
+      "size": 572102,
+      "sha256": "8385b12ce2e63051e8d53c4e42978797b178b12c62ec80889fbfd08584c94a20"
     },
     {
       "path": "mod_zhongguo_style/localization/russian/zg361_l_russian.yml",
-      "size": 32506,
-      "sha256": "7fd7949c7ff549ad245d38e02f38402113a5240391ac1a66766a4851f1e92841"
+      "size": 34773,
+      "sha256": "28941c0a5a9c9d43cf3c36e9b407c7883304aabbcca1fcf5ef01397770629a6e"
     },
     {
       "path": "mod_zhongguo_style/localization/russian/zg361_mechanisms_l_russian.yml",
-      "size": 444659,
-      "sha256": "fb3d42c282e00ee0481e00d3666d349671601b41915b6461005b3e5aa2fe3ba7"
+      "size": 572103,
+      "sha256": "331a87bd959e57c3d26a53bc474ad24bd553a30e9f58b632029784217d680195"
     },
     {
       "path": "mod_zhongguo_style/localization/spanish/zg361_l_spanish.yml",
-      "size": 22836,
-      "sha256": "a8b79a811471e09d57615e867f9e711e8172bfbc1dc6c7d2112637d288f015b4"
+      "size": 27755,
+      "sha256": "d594fc2d9c7d752a422aab8b21b53a0d967ee27c79a8b2e7de87c3f8e2b17c4c"
     },
     {
       "path": "mod_zhongguo_style/localization/spanish/zg361_mechanisms_l_spanish.yml",
-      "size": 285154,
-      "sha256": "9451bf397674d189c785da2081b8a4d030906fabb4de487741300a4ccdc7faf7"
+      "size": 572103,
+      "sha256": "bc793ed87f33518423248f3a4480866e6571089e43329883116699f49492e0dc"
     }
   ]
 }

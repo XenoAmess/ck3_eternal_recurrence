@@ -100,8 +100,8 @@
       "sha256": "d4995251d275b8c956f9da48731a9a5a92066a29a0a9e1054c6daa657f800b7f"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt": {
-      "bytes": 12294,
-      "sha256": "b7a570866ee22461c159aa99c0371c471f5fcd94d796aea1e56a73434a46372f"
+      "bytes": 13800,
+      "sha256": "7570a06a6edf7991f8c02737e902b28362011e57b88308b008854378c24de236"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_reward_observer_wrappers.txt": {
       "bytes": 6321,
