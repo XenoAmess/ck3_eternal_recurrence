@@ -2556,12 +2556,12 @@
           },
           "budgets": {
             "command_timeout": 300,
-            "readiness_timeout": 600,
+            "readiness_timeout": 900,
             "timeout": 2100,
             "hold_seconds": 900,
             "poll_interval": 0.5
           },
-          "budget_provenance": "Fresh successor startup readiness 600s from R38 actual launch-to-setup 417.147s and R39 pre-setup delay +71.617s; R39 original 400s RED retained. Other existing li-yu-dao budgets unchanged; no advance_day. Evidence: docs/ck3-native-ai/2026-10-10-r39-shared-runtime-startup-red.md",
+          "budget_provenance": "Future R44 startup readiness 900s: R43 retained its original 600s RED; independent read-only observation found CPU/IO active through 573.100s, without Setup completion or injection. Single prospective loading-budget comparison; Source05, business predicates and other budgets unchanged; no advance_day. Evidence: docs/ck3-native-ai/2026-10-10-r43-observed-startup-red.md",
           "required_mcp_tools": [
             "ck3_take_snapshot",
             "ck3_query_actor_cached_succession_v1",
