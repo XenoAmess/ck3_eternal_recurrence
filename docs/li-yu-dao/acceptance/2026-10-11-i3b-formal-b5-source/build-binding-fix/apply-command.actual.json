@@ -1,0 +1,22 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "git",
+    "apply",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-b5-evidence-build-binding-sourceonly-20261011-001/PATCH.diff"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:26:01.930018+00:00",
+  "finished_at_utc": "2026-10-10T20:26:01.970197+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-apply-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-apply-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

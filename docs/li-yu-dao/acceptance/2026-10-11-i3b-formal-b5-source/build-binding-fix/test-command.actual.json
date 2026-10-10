@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "tools.test_lyd_i3b_formal_b5_adapter.Cold.test_native_title_requires_exact_T_holder_four_attributes_and_law95",
+    "tools.test_lyd_i3b_formal_b5_adapter.Cold.test_reviewed_title_evidence_is_pinned_mapping_authority",
+    "tools.test_ck3_mod_acceptance_adapters.Focused.test_no_product_runtime_paths_and_all_sources_compile"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:26:02.164945+00:00",
+  "finished_at_utc": "2026-10-10T20:26:02.922769+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-focused-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-focused-20261011-001\\stderr.log",
+    "bytes": 622,
+    "sha256": "2c2d97427280f10d20010f616213fcb03a4cb49b7865717e97edbd0b2f6c6d75"
+  }
+}

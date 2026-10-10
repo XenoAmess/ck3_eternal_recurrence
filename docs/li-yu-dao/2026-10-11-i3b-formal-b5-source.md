@@ -11,3 +11,9 @@
 [小型原始证据索引](acceptance/2026-10-11-i3b-formal-b5-source/INDEX.actual.json)绑定采用补丁、独立审阅、源检查、原 git apply 和实际测试回执。`open_kaishek` 为 not-applicable：本包覆盖 Python 公共入口、来源绑定及合成验收拒绝，没有新 CK3 script 语义。未启动 CK3，未改变 Steam，未复制大存档、旧场景或缓存。
 
 下一门槛仍是正式 B4 合格世界；不得为取得该前提重复执行没有新判别/修复的旧失败工厂。B5 路由可随下一次共同 Python source 冻结，当前 Source12/native 构建固定在05717072b，不能把这次 MAIN 修改追认到已冻结输入。
+
+## 04:26 CST：官方CI发现的公共选择约束修正
+
+源码提交afbb255398的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38082794054)实际失败：通用adapter检查拒绝B5重复写死游戏EXE哈希。原8项合成测试通过仍有效，不能据此把整个CI写成通过。后继queue提交也携带这一未修正版本。
+
+最小修复删除B5重复的版本/EXE常量，从现有精确bytes/SHA绑定的字段证据读取两项，只核查询与字段映射的兼容性；公共runtime仍唯一选择host/source/native。两份JSON、reader/source/evidence绑定和通用检查保持。04:26:02 CST，两个直接受影响B5检查及原失败通用检查共3项实际exit0；旧8项未全量重跑。[原失败与修正小证据](acceptance/2026-10-11-i3b-formal-b5-source/build-binding-fix/INDEX.actual.json)分别保留。新HEAD官方CI另行确认，B4/B5实机仍待。

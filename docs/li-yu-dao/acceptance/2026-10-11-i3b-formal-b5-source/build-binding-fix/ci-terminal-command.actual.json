@@ -1,0 +1,25 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "38082794054",
+    "--json",
+    "status,conclusion,url"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:20:17.569343+00:00",
+  "finished_at_utc": "2026-10-10T20:20:18.699291+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-ci-observation-20261011-002\\stdout.log",
+    "bytes": 131,
+    "sha256": "8ed50c3ec1c75227a1896da3cba18e72ec3cc7e398f15fa2982c48e8fd06ff04"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-ci-observation-20261011-002\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

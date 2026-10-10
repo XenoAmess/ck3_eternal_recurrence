@@ -12,32 +12,35 @@ from ck3_mod_acceptance_cases import lyd_i3b_formal_adapter as b4
 
 require = b4.require
 
-TITLE_VERSION = '1.20.0.4'
-TITLE_EXE_SHA256 = '98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518'
 TITLE_BINDING_BYTES = 902
 TITLE_BINDING_SHA256 = 'daf0c2cdd1d6ef4409d11140dca0fdbbccc77f13066c73d14873d30a4731be2d'
 TITLE_EVIDENCE_BYTES = 2504
 TITLE_EVIDENCE_SHA256 = '283f6326bf97488f5e00a4be293a96afbca8d8716df9284825a32bafe73fefa6'
 
 
+def title_evidence():
+    return checked({'path': str(Path(__file__).with_name('lyd_i3b_saved_title_binding_v1.evidence.json')),
+        'bytes': TITLE_EVIDENCE_BYTES, 'sha256': TITLE_EVIDENCE_SHA256})
+
+
 def title_binding(reader=None):
     value = checked({'path': str(Path(__file__).with_name('lyd_i3b_saved_title_binding_v1.json')),
         'bytes': TITLE_BINDING_BYTES, 'sha256': TITLE_BINDING_SHA256})
-    proof = checked({'path': str(Path(__file__).with_name('lyd_i3b_saved_title_binding_v1.evidence.json')),
-        'bytes': TITLE_EVIDENCE_BYTES, 'sha256': TITLE_EVIDENCE_SHA256})
+    proof = title_evidence()
     require(value['schema'] == 'lyd.native-title.saved-field-binding.v1' and
         value['source_head'] == (reader.HEAD if reader is not None else '632f0a57a07aa6299052004589ed6f7632e7d8f7') and
         value['evidence_sha256'] == TITLE_EVIDENCE_SHA256 and
-        proof['game_version'] == TITLE_VERSION and proof['executable_sha256'] == TITLE_EXE_SHA256,
+        proof['schema'] == 'lyd.observed-saved-title-binding-evidence.v1',
         'Exact reviewed saved Title mapping/evidence/reader identity required')
     return value
 
 
 def title_build_matches(query, title):
+    proof = title_evidence()
     outer = query.get('native_result', {})
-    return all(value.get('game_version') == TITLE_VERSION and
+    return all(value.get('game_version') == proof['game_version'] and
         isinstance(value.get('executable_sha256'), str) and
-        value['executable_sha256'].lower() == TITLE_EXE_SHA256 for value in (outer, title))
+        value['executable_sha256'].lower() == proof['executable_sha256'].lower() for value in (outer, title))
 
 
 

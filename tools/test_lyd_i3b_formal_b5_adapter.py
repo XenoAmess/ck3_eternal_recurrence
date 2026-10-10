@@ -54,15 +54,16 @@ def b4_pass(data, title=90001):
 
 
 def native_title(actual, data, title=90001):
+    proof = adapter.title_evidence()
     query = original.query(actual, {'available': True, 'date_raw': actual['date_raw'], 'graph_available': True,
-        'game_version': adapter.TITLE_VERSION, 'executable_sha256': adapter.TITLE_EXE_SHA256,
+        'game_version': proof['game_version'], 'executable_sha256': proof['executable_sha256'],
         'faith_full_id': 107, 'legal_head_title_absent': False, 'head_title_full_id': title,
         'native_title_holder_full_id': 31254,
         'title_properties': {'available': True, **{key: True for key in data['title_properties']}},
         'title_laws': {'available': True, 'temporal_head_of_faith_succession_law_member': True,
             'complete_laws': [{'native_definition_id': 95, 'key': 'temporal_head_of_faith_succession_law'}]}},
         'confucian_religious_title')
-    query['native_result'].update(game_version=adapter.TITLE_VERSION, executable_sha256=adapter.TITLE_EXE_SHA256)
+    query['native_result'].update(game_version=proof['game_version'], executable_sha256=proof['executable_sha256'])
     return query
 
 
@@ -150,11 +151,44 @@ class Cold(unittest.TestCase):
         self.assertTrue(adapter.native_title_matches(actual, query, self.origin))
         changes = [lambda p: p.update(head_title_full_id=90002), lambda p: p.update(native_title_holder_full_id=65865),
             lambda p: p['title_properties'].update(always_follows_primary_heir=False),
-            lambda p: p['title_laws'].update(complete_laws=[])]
+            lambda p: p['title_laws'].update(complete_laws=[]),
+            lambda p: p.update(game_version='different'),
+            lambda p: p.update(executable_sha256='0' * 64)]
         for change in changes:
             bad = copy.deepcopy(query)
             change(bad['native_result']['confucian_religious_title'])
             self.assertFalse(adapter.native_title_matches(actual, bad, self.origin))
+        for field, wrong in (('game_version', 'different'), ('executable_sha256', '0' * 64)):
+            bad = copy.deepcopy(query)
+            bad['native_result'][field] = wrong
+            self.assertFalse(adapter.native_title_matches(actual, bad, self.origin))
+
+    def test_reviewed_title_evidence_is_pinned_mapping_authority(self):
+        proof = adapter.title_evidence()
+        binding = adapter.title_binding()
+        self.assertEqual(binding['evidence_sha256'], adapter.TITLE_EVIDENCE_SHA256)
+        self.assertEqual(adapter.title_binding(type('Reader', (), {'HEAD': binding['source_head']})), binding)
+        with self.assertRaises(ValueError):
+            adapter.title_binding(type('Reader', (), {'HEAD': 'wrong-reader-head'}))
+        actual = original.frame(777)
+        query = native_title(actual, self.data)
+        self.assertEqual(query['native_result']['game_version'], proof['game_version'])
+        self.assertEqual(query['native_result']['executable_sha256'], proof['executable_sha256'])
+        self.assertTrue(adapter.title_build_matches(query, query['native_result']['confucian_religious_title']))
+        with tempfile.TemporaryDirectory() as directory:
+            temporary = Path(directory) / 'adapter.py'
+            for name in ('lyd_i3b_saved_title_binding_v1.json', 'lyd_i3b_saved_title_binding_v1.evidence.json'):
+                temporary.with_name(name).write_bytes(Path(adapter.__file__).with_name(name).read_bytes())
+            changed = copy.deepcopy(proof)
+            changed['game_version'] = 'different'
+            temporary.with_name('lyd_i3b_saved_title_binding_v1.evidence.json').write_text(json.dumps(changed), encoding='utf-8')
+            with patch.object(adapter, '__file__', str(temporary)):
+                with self.assertRaises(ValueError):
+                    adapter.title_evidence()
+                with self.assertRaises(ValueError):
+                    adapter.title_binding()
+                with self.assertRaises(ValueError):
+                    adapter.title_build_matches(query, query['native_result']['confucian_religious_title'])
 
     def test_saved_title_qualification_unknown_fails_closed(self):
         saved = {'protection_checks': [{'matches': True} for _ in range(88)], 'protection_match': True,

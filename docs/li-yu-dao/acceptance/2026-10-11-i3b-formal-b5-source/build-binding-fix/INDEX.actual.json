@@ -1,0 +1,68 @@
+{
+  "schema": "lyd-b5-build-binding-ci-fix-v1",
+  "at_utc": "2026-10-10T20:26:48.155829+00:00",
+  "files": [
+    {
+      "file": "candidate-INDEX.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-evidence-build-binding-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 1606,
+      "sha256": "80f4a41c91c6bd73f671e5c5a4123088c309683d6937b4ae3e44201e324beb47"
+    },
+    {
+      "file": "candidate.original.patch",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-evidence-build-binding-sourceonly-20261011-001\\PATCH.diff",
+      "bytes": 6806,
+      "sha256": "08a849016b6e9bcab1bcffc3dd9589914e94cdb1204936fdb2188431a55a1bd5"
+    },
+    {
+      "file": "ci-terminal.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-ci-observation-20261011-002\\stdout.log",
+      "bytes": 131,
+      "sha256": "8ed50c3ec1c75227a1896da3cba18e72ec3cc7e398f15fa2982c48e8fd06ff04"
+    },
+    {
+      "file": "ci-terminal-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-ci-observation-20261011-002\\RESULT.actual.json",
+      "bytes": 779,
+      "sha256": "7e11093d66aeb5c49f70dbbc465541bd77795f42b0d09d0ba2441c83ff90888f"
+    },
+    {
+      "file": "ci-failed-log-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-ci-failed-log-20261011-001\\RESULT.actual.json",
+      "bytes": 756,
+      "sha256": "be8ccb57c86ab929b30543031f00daa7deec51dc89d8c53ff6c039cb572d97ed"
+    },
+    {
+      "file": "apply-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-apply-20261011-001\\RESULT.actual.json",
+      "bytes": 826,
+      "sha256": "24102d37d4e7fd2cda5bb3f84fecb1078eb2470bda331dc924fdf27b0b08895b"
+    },
+    {
+      "file": "test-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-focused-20261011-001\\RESULT.actual.json",
+      "bytes": 1178,
+      "sha256": "a453b3377dd7451313c85a05fcc8e7251165c42d6493f7be2eb84e1d6a054814"
+    },
+    {
+      "file": "test.stderr.original.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-build-binding-focused-20261011-001\\stderr.log",
+      "bytes": 622,
+      "sha256": "2c2d97427280f10d20010f616213fcb03a4cb49b7865717e97edbd0b2f6c6d75"
+    },
+    {
+      "file": "ci-failure-selected.actual.json",
+      "bytes": 3074,
+      "sha256": "9874e2147ddfe97a4c7bb317ebd7c0c272f7dd1dd0bbc497a834405be66227de",
+      "source": "bounded projection above"
+    }
+  ],
+  "total_original_or_projection_bytes": 15778,
+  "tests": "two directly affected B5 + original failed generic=3PASS; original8 not replayed",
+  "original_ci": "FAIL preserved",
+  "new_head_ci": "PENDING",
+  "live": "NOT_RUN",
+  "business_pass": false,
+  "raw_review_after": "2026-11-09T20:26:02Z",
+  "compact_record_review_after": "2027-04-08T20:26:02Z"
+}

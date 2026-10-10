@@ -1,0 +1,66 @@
+{
+  "source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-ci-failed-log-20261011-001\\stdout.log",
+    "bytes": 95032,
+    "sha256": "06779045d317303a6527e92483e6bc3b6d27bb91e0b745fc6a4cdf5f4b6cf4d7"
+  },
+  "selected_lines": [
+    {
+      "line": 419,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8187355Z ........F......."
+    },
+    {
+      "line": 420,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8188006Z ======================================================================"
+    },
+    {
+      "line": 421,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8189642Z FAIL: test_no_product_runtime_paths_and_all_sources_compile (__main__.Focused.test_no_product_runtime_paths_and_all_sources_compile)"
+    },
+    {
+      "line": 422,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8190682Z ----------------------------------------------------------------------"
+    },
+    {
+      "line": 423,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8191057Z Traceback (most recent call last):"
+    },
+    {
+      "line": 424,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8199790Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py\", line 239, in test_no_product_runtime_paths_and_all_sources_compile"
+    },
+    {
+      "line": 425,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8200624Z     self.assertNotIn('98702f88',source.lower(),str(path))"
+    },
+    {
+      "line": 426,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8200978Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
+    {
+      "line": 428,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8370896Z "
+    },
+    {
+      "line": 429,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8371101Z ----------------------------------------------------------------------"
+    },
+    {
+      "line": 430,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8371448Z Ran 16 tests in 0.358s"
+    },
+    {
+      "line": 431,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8371604Z "
+    },
+    {
+      "line": 432,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8371684Z FAILED (failures=1)"
+    },
+    {
+      "line": 433,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T20:17:30.8437204Z ##[error]Process completed with exit code 1."
+    }
+  ],
+  "omitted_assertion_line_reason": "Original line427 embeds the full escaped adapter source; full log retained externally, no giant duplicate in Git."
+}

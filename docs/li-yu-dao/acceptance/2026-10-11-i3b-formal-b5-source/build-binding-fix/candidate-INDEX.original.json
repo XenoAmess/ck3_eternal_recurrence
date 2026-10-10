@@ -1,0 +1,49 @@
+{
+  "schema": "lyd.b5-evidence-build-binding-source-only.v1",
+  "status": "SOURCE_ONLY_TESTS_NOT_EXECUTED",
+  "author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-evidence-build-binding-author-20261011-001.py",
+    "bytes": 10766,
+    "sha256": "7c3b3443c14a7625b40bbcd80afba9229828a618dee55be78f82c90516f76add"
+  },
+  "files": [
+    {
+      "path": "PATCH.diff",
+      "bytes": 6806,
+      "sha256": "08a849016b6e9bcab1bcffc3dd9589914e94cdb1204936fdb2188431a55a1bd5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1419,
+      "sha256": "f01778eceb2b4553161163df562ca44fefb32d9651e05e1788e8fecfc57d02e5"
+    },
+    {
+      "path": "ROOT-TEST-ARGV.candidate.json",
+      "bytes": 506,
+      "sha256": "f08ef293ead5965aeba64de3c7bbb253a0d78d8ae1a8f51c53464a21ef0515d3"
+    },
+    {
+      "path": "SOURCE-CHECK.actual.json",
+      "bytes": 1421,
+      "sha256": "289caa5d70f3e9591eeeed35cee60fe3d9f31e152ac29cceb8f539112fb04cae"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+      "bytes": 24908,
+      "sha256": "0458acd12188624426561382ab9df43d118cd32702b8f3c57b732e37c1fdd7fc"
+    },
+    {
+      "path": "tools/test_lyd_i3b_formal_b5_adapter.py",
+      "bytes": 15981,
+      "sha256": "f12bc37e32f4848d1eb2bc985b1ebee73b639172c81dc7fe692461a17dbdba71"
+    }
+  ],
+  "repository_targets": [
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+    "tools/test_lyd_i3b_formal_b5_adapter.py"
+  ],
+  "generic_test_unchanged": true,
+  "targeted_test_count": 3,
+  "actual_B4_B5_credit": null,
+  "whole_product_credit": false
+}

@@ -1,0 +1,8 @@
+test_native_title_requires_exact_T_holder_four_attributes_and_law95 (tools.test_lyd_i3b_formal_b5_adapter.Cold.test_native_title_requires_exact_T_holder_four_attributes_and_law95) ... ok
+test_reviewed_title_evidence_is_pinned_mapping_authority (tools.test_lyd_i3b_formal_b5_adapter.Cold.test_reviewed_title_evidence_is_pinned_mapping_authority) ... ok
+test_no_product_runtime_paths_and_all_sources_compile (tools.test_ck3_mod_acceptance_adapters.Focused.test_no_product_runtime_paths_and_all_sources_compile) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.336s
+
+OK
