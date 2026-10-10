@@ -110,3 +110,22 @@ schema admission, test, import, build, native/SDK/Game query, new game day,
 SAVE, hidden live result, specific terminal cause or G2 credit is added by
 this document. Actual4 source closure precedes the executable increment;
 full Sway lifecycle remains unfinished.
+
+## First actual finite source increment
+
+Root's sole ten-span capture completed GREEN in1.053s. Its actual result is
+`D:/codex-ck3-background-spill/sway-hidden-phase-current04-mapping/ROOT-ACTUAL-FINITE-CAPTURE01.json`,
+with source detail under `root-capture01/`. The capture itself is executable
+source acquisition, not a game query or runtime qualification.
+
+The old02-to-actual03 semantic boundary was then compared once using only
+the held02 instruction receipts and Root's captured03 instruction metadata.
+All ten complete functions, totaling14750B, have identical instruction
+boundaries and **identical raw source bytes**, with zero mismatches. No EXE
+was opened and no hash was computed by this comparison. Its small evidence is
+`D:/codex-ck3-background-spill/sway-hidden-phase-source-delivery/HELD02-ACTUAL03-SEMANTIC-BOUNDARY.json`.
+This closes reuse of the old semantic read set for those ten bodies only;
+it does not close unrequested inherited lookup, current typed slots/RTTI or
+identifier globals. Current03-to04 body-role analysis and the derived tiny
+slot/lookup request remain separately owned by the mapping lane. No current
+binder or Python build admission has been changed at this stage.
