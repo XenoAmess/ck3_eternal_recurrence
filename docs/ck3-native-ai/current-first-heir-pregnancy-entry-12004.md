@@ -821,3 +821,105 @@ This increment is research/source closure. Tests, build and runtime FIRST
 are NOTRUN; the current active-pregnancy false observations and empty child
 roster remain unchanged. No new pregnancy, birth, natural succession, M7 or
 G2 completion is credited.
+
+## Same-family trait-exclusion observer candidate (Native70, SOURCE_NOTRUN)
+
+The actual exclusion test above supplies a missing decision input: positive
+observed fertility and false active-pregnancy predicates do not establish
+whether a trait prevents this native pair attempt. Root authorized a minimal
+same-family observer for that concrete gate. Its input tree was committed
+first (`cdd49e936dfede80767c37a85af3686891ee9008`), before this source candidate.
+The qualified type/provider reuse is recorded in
+[PAIR-EXCLUSION-TYPE-BINDING.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-consumer-20261010/define-provider/PAIR-EXCLUSION-TYPE-BINDING.json).
+
+The candidate reads the actual4 **loaded TraitDB pointer slot**`0x5C67528`
+and the already captured native invalid-ID fallback slot`0x5D1E318`.
+It invokes neither`0x89E5B0` nor the synchronized original predicate
+`0x28A6280`. It applies the proved signed-ID lookup and`+0x4A4` mask8 test
+to the same household role IDs already collected by the query. A signed
+trait count of zero or less is the actual predicate's known-false case,
+including when no database definition is needed. Nonempty rows whose
+database, ID array or selected/fallback definition cannot be read have an
+independent unavailable result. Invalid IDs resolve through the real fallback;
+they are not skipped, and a null fallback is not reported as native false.
+
+The existing registered MCP remains
+`ck3_query_current_first_heir_relationship_private_v1`, using only its existing
+fresh `expected_native_revision` parameter. The new optional row leaf is:
+
+```json
+{
+  "native_conception_trait_exclusion": {
+    "source": "native_conception_trait_exclusion",
+    "status": "available",
+    "unavailable_reason": null,
+    "blocks_pair_conception": false
+  }
+}
+```
+
+For `status="unavailable"`, `blocks_pair_conception` is null and the reason
+is a nonempty string. The leaf sits on each row of
+`current_first_heir_reproductive_inputs_v1.rows`, outside its age/fertility
+availability condition. Native pregnancy remains a separate result. The
+existing strict Python validator accepts this optional leaf without inventing
+a value for older packets, and the existing registered query and Service
+retain it in the complete current relationship. No action or policy changes
+are included; a currently partnered, childless family still follows the
+existing ordinary continuation policy.
+
+```mermaid
+flowchart LR
+    Actual["Actual321B pair trait gate"] --> Raw["Read loaded DB and actual trait IDs / flags"]
+    Roles["Existing same-query heir / spouse role IDs"] --> Raw
+    Raw --> Sidecar["Private query-local companion; per-role knownbool / failure"]
+    Sidecar --> Wire["Existing household row optional leaf"]
+    Wire --> Strict["Existing strict validator; legacy absence retained"]
+    Strict --> Service["Registered query -> existing family Service result"]
+    Service --> Value["Observe this concrete pair exclusion"]
+    Value -.-> Remaining["Other eligibility gates / monthly dispatch / pending transition remain separate"]
+```
+
+The two private headers are
+`current_first_heir_conception_trait_inputs_v1.hpp` (local result and serializer
+overload) and `ck3_12004_first_heir_conception_trait_inputs.hpp` (actual4 binder
+and raw field collector). Production owners are only `bridge.cpp` and
+`current_first_heir_relationship_v1.cpp`. A query-local companion plus a new
+private seven-argument serializer overload preserves the existing public
+Snapshot, Observation, relationship, descendants and reproductive-row
+layouts; original serializer overloads remain available. The actual4 manual
+public query setup and existing family mailbox binder both bind the new raw
+slot environment, and the owning callback collects it after the existing
+household result.
+
+The existing `ck3_12004_first_heir_descendants_test.cpp` gains only a new
+`--conception-trait-exclusion-wire-dir <directory>` mode. Its six genuine
+whole-result scenes exercise:
+
+1. The heir's bit3 excludes the pair while the spouse is known false.
+2. The spouse's bit3 excludes the pair while the heir is known false.
+3. Both legal zero-trait lists are known false.
+4. Multiple IDs with nonmatching valid definitions and a final invalid ID
+   resolve the actual fallback whose bit3 blocks the heir.
+5. A missing loaded database makes a nonempty heir unavailable while the
+   spouse's empty list remains known false; fertility remains available.
+6. Both age/fertility reads fail while heir/spouse trait exclusion remains
+   independently known true/false.
+
+They retain real married-pair roles, zero children and independently false
+native pregnancy. They use real database/definition/ID-array memory layouts,
+the production collector and serializer, and the canonical actual4 wire
+identity. There is no replacement Boolean callback or native initializer call.
+One new registered query -> real Service compound consumer consumes these
+six compiled whole wires plus one derived legacy field-absent case. The
+existing fixture target is reused; old qualified modes are not replayed.
+
+The candidate's readiness is SOURCE_NOTRUN until Root builds the owning
+objects and executes that sole new compound. An available false leaf means
+only that this observed trait gate did not exclude that role in this frame.
+It is not full eligibility, a conception probability, a deadline, a promise
+of pregnancy, guardian readiness, or completion of M7 or G2. The actual
+incoming monthly scheduler, extended`+0x288`, pair-value provider details,
+clamp-name bindings and pending`+0x3E8/+0x3F0` transition remain explicit
+source dependencies. Native69 is frozen independently; this candidate is
+for Native70 integration and carries no new Game/SDK or birth credit.

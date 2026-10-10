@@ -1,5 +1,6 @@
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
+#include "xar_bridge/current_first_heir_conception_trait_inputs_v1.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include <algorithm>
@@ -48,7 +49,8 @@ void AppendOptionalBoolean(std::string &json, const std::optional<bool> &value) 
 
 std::string CurrentFirstHeirReproductiveInputsJsonV1(
     const CurrentFirstHeirReproductiveInputsV1 &read,
-    std::uint64_t native_revision) {
+    std::uint64_t native_revision,
+    const CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs) {
   std::string json = "{\"source\":\"native_current_heir_household_inputs\",\"status\":";
   AppendJsonString(json, read.status);
   json += ",\"unavailable_reason\":";
@@ -103,6 +105,22 @@ std::string CurrentFirstHeirReproductiveInputsJsonV1(
     json += ",\"is_pregnant\":";
     AppendOptionalBoolean(json, pregnancy.is_pregnant);
     json += '}';
+    if (conception_trait_inputs != nullptr) {
+      CurrentCharacterConceptionTraitExclusionReadV1 exclusion{};
+      exclusion.unavailable_reason = "native_conception_trait_row_unavailable";
+      const auto found = std::find_if(conception_trait_inputs->rows.begin(),
+          conception_trait_inputs->rows.end(),
+          [&row](const auto &candidate) { return candidate.character_id == row.character_id; });
+      if (found != conception_trait_inputs->rows.end()) exclusion = found->read;
+      json += ",\"native_conception_trait_exclusion\":{\"source\":\"native_conception_trait_exclusion\",\"status\":";
+      AppendJsonString(json, exclusion.status);
+      json += ",\"unavailable_reason\":";
+      if (exclusion.status == "available") json += "null";
+      else AppendJsonString(json, exclusion.unavailable_reason);
+      json += ",\"blocks_pair_conception\":";
+      AppendOptionalBoolean(json, exclusion.blocks_pair_conception);
+      json += '}';
+    }
     json += '}';
   }
   json += "]}";
@@ -527,6 +545,17 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
     const CurrentFirstHeirRelationshipReadV1 &read,
     std::string_view override_unavailable_reason,
     const CurrentFirstHeirChildInputsReadV1 *child_inputs) {
+  return CurrentFirstHeirRelationshipResultJsonV1(request_id, native_revision,
+      heir_character_id, read, override_unavailable_reason, child_inputs, nullptr);
+}
+
+std::string CurrentFirstHeirRelationshipResultJsonV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t heir_character_id,
+    const CurrentFirstHeirRelationshipReadV1 &read,
+    std::string_view override_unavailable_reason,
+    const CurrentFirstHeirChildInputsReadV1 *child_inputs,
+    const CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs) {
   const bool available = override_unavailable_reason.empty() &&
       read.failure == CurrentFirstHeirRelationshipFailureV1::none;
   std::string result =
@@ -576,7 +605,8 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
   }
   if (read.reproductive_inputs.has_value()) {
     result += ",\"current_first_heir_reproductive_inputs_v1\":";
-    result += CurrentFirstHeirReproductiveInputsJsonV1(*read.reproductive_inputs, native_revision);
+    result += CurrentFirstHeirReproductiveInputsJsonV1(
+        *read.reproductive_inputs, native_revision, conception_trait_inputs);
   }
   result += "}}";
   return result;

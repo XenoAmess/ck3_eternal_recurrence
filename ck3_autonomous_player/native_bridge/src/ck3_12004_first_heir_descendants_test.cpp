@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_family.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
+#include "xar_bridge/ck3_12004_first_heir_conception_trait_inputs.hpp"
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
 #include "xar_bridge/ck3_12004_event_window_context.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
@@ -554,6 +555,167 @@ void EmitPregnancyHousehold(const std::filesystem::path &directory,
             relation.betrothal_actionability.unavailable_reason == "current_heir_has_no_betrothal" &&
             constructs == 0 && destroys == 0,
         "pregnancy adds independent evidence without changing fertility status or sending actions");
+}
+
+struct ConceptionTraitFixture70 {
+  std::array<std::byte, 0x60> database{};
+  std::array<std::array<std::byte, 0x4A8>, 2> definitions{};
+  std::array<std::byte, 0x4A8> invalid_definition{};
+  std::array<const void *, 2> ordered_definitions{
+      definitions[0].data(), definitions[1].data()};
+  const void *database_ptr{database.data()};
+  const void *invalid_definition_ptr{invalid_definition.data()};
+  std::array<std::int32_t, 3> heir_trait_ids{0, 1, -1};
+  std::array<std::int32_t, 1> partner_trait_ids{1};
+  std::array<std::byte, 0x2E8> heir_extension{}, partner_extension{};
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+
+  ConceptionTraitFixture70(Fixture &fixture, std::string_view name) {
+    Put(database.data(), 0x50, ordered_definitions.data());
+    Put(database.data(), 0x5C, std::int32_t{2});
+    Put(definitions[0].data(), 0x4A4, std::uint32_t{0x1});
+    Put(definitions[1].data(), 0x4A4, std::uint32_t{0x10});
+    Put(invalid_definition.data(), 0x4A4, std::uint32_t{0x8});
+    if (name == "heir-blocked" || name == "fertility-unavailable-trait-blocked")
+      Put(definitions[0].data(), 0x4A4, std::uint32_t{0x8});
+    if (name == "spouse-blocked")
+      Put(definitions[1].data(), 0x4A4, std::uint32_t{0x8});
+    const bool empty = name == "no-traits";
+    const bool multiple = name == "multiple-traits-fallback-blocked";
+    const bool database_missing = name == "trait-db-unavailable";
+    if (database_missing) database_ptr = nullptr;
+    if (multiple) partner_trait_ids[0] = 0;
+    Put(fixture.characters[1].data(), 0xF8,
+        empty ? static_cast<std::int32_t *>(nullptr) : heir_trait_ids.data());
+    Put(fixture.characters[1].data(), 0x104, std::int32_t{empty ? 0 : multiple ? 3 : 1});
+    Put(fixture.characters[2].data(), 0xF8,
+        empty || database_missing
+            ? static_cast<std::int32_t *>(nullptr) : partner_trait_ids.data());
+    Put(fixture.characters[2].data(), 0x104,
+        std::int32_t{empty || database_missing ? 0 : 1});
+
+    Put(fixture.families[1].data(), 0x14, kPartner);
+    Put(fixture.families[2].data(), 0x14, kHeir);
+    Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+    Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+    for (const auto index : {1U, 2U}) {
+      Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+      Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+    }
+    Put(fixture.characters[1].data(), 0x68, std::int16_t{32});
+    Put(fixture.characters[2].data(), 0x68, std::int16_t{29});
+    Put(fixture.characters[1].data(), 0x1B0, heir_extension.data());
+    Put(fixture.characters[2].data(), 0x1B0, partner_extension.data());
+    Put(heir_extension.data(), 0x2E0, std::int64_t{80'000});
+    Put(partner_extension.data(), 0x2E0, std::int64_t{60'000});
+    household_gate_allows = true;
+    fixture.family.values.fertility_gate = name == "fertility-unavailable-trait-blocked"
+        ? nullptr : &HouseholdFertilityGate;
+    auto *manager = fixture.game.data() + 0x2EE40;
+    Put(manager, 0x4EA0, static_cast<void **>(nullptr));
+    Put(manager, 0x4EAC, std::int32_t{0});
+    Put(manager, 0x4E88, static_cast<void **>(nullptr));
+    Put(manager, 0x4E94, std::int32_t{0});
+  }
+};
+
+void EmitConceptionTraitExclusion70(const std::filesystem::path &directory,
+                                   std::string_view name) {
+  Fixture fixture({"current-conception-trait-household", 0, true, true, true, false});
+  ConceptionTraitFixture70 traits(fixture, name);
+  xar::ck3_12004::NativeConceptionTraitBindingsV1 trait_bindings{
+      true, &traits.database_ptr, &traits.invalid_definition_ptr};
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "conception trait scene retains the same reciprocal current married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  relation.reproductive_inputs = xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
+      fixture.family, relation);
+  const auto sidecar = xar::ck3_12004::ReadCurrentFirstHeirConceptionTraitInputsV1(
+      fixture.family, trait_bindings, relation);
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation, {}, nullptr, &sidecar);
+  const auto &descriptor = xar::game::Ck3_12004AdapterDescriptor();
+  wire = xar::game::Render12004BuildIdentity(std::move(wire), descriptor);
+  Write(directory / (std::string(name) + ".json"), wire);
+
+  constexpr std::string_view leaf_source =
+      "\"native_conception_trait_exclusion\":{\"source\":\"native_conception_trait_exclusion\"";
+  const auto first_leaf = wire.find(leaf_source);
+  Check(xar::game::IsCk3_12004Descriptor(descriptor) &&
+            first_leaf != std::string::npos &&
+            wire.find(leaf_source, first_leaf + leaf_source.size()) != std::string::npos,
+        "whole canonical actual4 wire serializes the real conception trait sidecar for both rows");
+  const auto &household = *relation.reproductive_inputs;
+  const bool fertility_missing = name == "fertility-unavailable-trait-blocked";
+  const bool database_missing = name == "trait-db-unavailable";
+  Check(household.played_character_id == kActor && household.heir_character_id == kHeir &&
+            household.date_raw == 53220000 && household.rows.size() == 2 &&
+            household.rows[0].character_id == kHeir &&
+            household.rows[1].character_id == kPartner &&
+            household.rows[0].roles == std::vector<std::string_view>{"heir"} &&
+            household.rows[1].roles == std::vector<std::string_view>{"primary_spouse", "spouse"} &&
+            sidecar.rows.size() == 2 && sidecar.rows[0].character_id == kHeir &&
+            sidecar.rows[1].character_id == kPartner,
+        "query-local sidecar follows the actual deduplicated married household receivers");
+  for (std::size_t index = 0; index < household.rows.size(); ++index) {
+    const auto &row = household.rows[index];
+    const auto &trait_read = sidecar.rows[index].read;
+    const bool heir_row = index == 0;
+    if (database_missing && heir_row) {
+      Check(trait_read.status == "unavailable" &&
+                trait_read.unavailable_reason == "native_conception_trait_database_unavailable" &&
+                !trait_read.blocks_pair_conception.has_value(),
+            "a nonempty trait list with an unavailable database is unknown rather than false");
+    } else {
+      const bool expected = heir_row
+          ? name == "heir-blocked" || name == "multiple-traits-fallback-blocked" ||
+                fertility_missing
+          : name == "spouse-blocked";
+      Check(trait_read.status == "available" && trait_read.unavailable_reason.empty() &&
+                trait_read.blocks_pair_conception == expected,
+            "actual definition bit3 and signed empty-list semantics produce the expected independent bool");
+    }
+    Check(row.native_pregnancy.status == "available" &&
+              row.native_pregnancy.unavailable_reason.empty() &&
+              row.native_pregnancy.is_pregnant == false,
+          "legal empty active-pregnancy arrays remain independently known false");
+    if (fertility_missing) {
+      Check(!row.available && !row.fertility.available &&
+                !row.age_measure_raw.has_value() && !row.unavailable_reason.empty(),
+            "unavailable fertility leaves the conception trait result independently available");
+    } else {
+      Check(row.available && row.fertility.available &&
+                row.age_measure_raw == (heir_row ? 32 : 29) &&
+                row.sex_selector_raw == (heir_row ? 0 : 1) &&
+                row.fertility.effective_raw == (heir_row ? 80'000 : 60'000),
+            "conception trait failures do not erase qualified age or fertility inputs");
+    }
+  }
+  if (name == "multiple-traits-fallback-blocked") {
+    Check(Load<std::int32_t>(fixture.characters[1].data(), 0x104) == 3 &&
+              traits.heir_trait_ids == std::array<std::int32_t, 3>{0, 1, -1} &&
+              Load<std::uint32_t>(traits.definitions[0].data(), 0x4A4) == 0x1U &&
+              Load<std::uint32_t>(traits.definitions[1].data(), 0x4A4) == 0x10U &&
+              Load<std::uint32_t>(traits.invalid_definition.data(), 0x4A4) == 0x8U &&
+              sidecar.rows[0].read.blocks_pair_conception == true &&
+              sidecar.rows[1].read.blocks_pair_conception == false,
+          "the third invalid trait ID reaches its owned nonnull fallback after two nonblocking definitions");
+  }
+  if (name == "no-traits" || database_missing) {
+    Check(Load<std::int32_t>(fixture.characters[2].data(), 0x104) == 0 &&
+              Load<const std::int32_t *>(fixture.characters[2].data(), 0xF8) == nullptr &&
+              sidecar.rows[1].read.blocks_pair_conception == false,
+          "a legal zero trait count returns a known false without requiring the trait database");
+  }
+  Check(household.status == (fertility_missing ? "partial" : "available") &&
+            relation.descendants->roster_complete && relation.descendants->native_child_count_raw == 0 &&
+            relation.betrothal_actionability.unavailable_reason == "current_heir_has_no_betrothal" &&
+            constructs == 0 && destroys == 0,
+        "six conception trait scenes add only read-only observations to the existing childless pair");
 }
 
 struct ChildTraitFixture35 {
@@ -1312,6 +1474,16 @@ void EmitChildCharacterWindowIdentity(const std::filesystem::path &directory,
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--conception-trait-exclusion-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"heir-blocked", "spouse-blocked", "no-traits",
+               "multiple-traits-fallback-blocked", "trait-db-unavailable",
+               "fertility-unavailable-trait-blocked"})
+        EmitConceptionTraitExclusion70(directory, name);
+      std::cout << "PASS actual4 current household conception trait exclusion: six new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--child-character-window-identity-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);

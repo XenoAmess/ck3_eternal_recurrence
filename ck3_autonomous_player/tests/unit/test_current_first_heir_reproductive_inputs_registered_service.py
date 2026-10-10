@@ -373,3 +373,182 @@ class CurrentFirstHeirReproductiveInputsRegisteredServiceTests(unittest.TestCase
                 "natural_succession_observed": False, "native_action_submitted": False,
                 "cases": records,
             }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    def test_current_household_conception_trait_exclusion_reaches_registered_query_and_service(self) -> None:
+        """Six production whole wires retain independent trait exclusion evidence."""
+        from mcp import Client
+
+        wire_dir = os.environ.get("XAR_CK3_12004_CONCEPTION_TRAIT_EXCLUSION_WIRE_DIR")
+        self.assertIsNotNone(wire_dir, "new compiled conception trait exclusion whole-wire directory required")
+        names = ("heir-blocked", "spouse-blocked", "no-traits",
+                 "multiple-traits-fallback-blocked", "trait-db-unavailable",
+                 "fertility-unavailable-trait-blocked")
+        packets = {name: json.loads((Path(wire_dir) / (name + ".json")).read_text(
+            encoding="utf-8")) for name in names}
+        packets["legacy-conception-trait-exclusion-absent"] = deepcopy(packets["no-traits"])
+        exclusion_key = "native_conception_trait_exclusion"
+        for row in packets["legacy-conception-trait-exclusion-absent"]["result"][LEAF]["rows"]:
+            row.pop(exclusion_key)
+        expected_values = {
+            "heir-blocked": (True, False),
+            "spouse-blocked": (False, True),
+            "no-traits": (False, False),
+            "multiple-traits-fallback-blocked": (True, False),
+            "trait-db-unavailable": (None, False),
+            "fertility-unavailable-trait-blocked": (True, False),
+        }
+        actor, heir, partner = 0x03000001, 0x03000002, 0x03000003
+        frame = {
+            "snapshot_id": "native:7", "revision": 7, "native_revision": 7,
+            "date_raw": 53220000, "paused": True, "map_ready": True,
+            "active_event": None, "pending_character_interaction": None,
+            "active_wars": [], "player_armies": [], "history": [],
+            "episode_run_id": "source-fixture-current-heir-conception-trait-exclusion70",
+            "episode_character_id": actor,
+            "played_character": {"character_id": actor, "alive": True},
+            "diagnostics": {"hello": {
+                "expected_ck3_version": CK3_12004.game_version,
+                "expected_ck3_sha256": CK3_12004.executable_sha256,
+            }},
+        }
+
+        class FixtureDriver(CallbackGameplayDriver):
+            allow_private_current_first_heir_relationship_query = True
+            allow_private_current_first_heir_betrothal_fulfillment = True
+            allow_private_family_marriage_formal_trial = True
+            require_initial_lifestyle_focus_before_date_advance = False
+
+            def __init__(self, packet: dict[str, object], state_dir: Path) -> None:
+                def no_action(_step: str, _revision: int | None):
+                    raise AssertionError("conception trait exclusion observation cannot submit or advance")
+                super().__init__(backend_id="native-headless", snapshot=lambda: deepcopy(frame),
+                    execute=no_action, action_steps=("life-advance",))
+                self.packet, self.state_dir = packet, state_dir
+                self._session_bridge_pid = os.getpid()
+                self.endpoint, self.state = self, self
+                self.requests: list[dict[str, object]] = []
+                self.relationships: list[dict[str, object]] = []
+                self.legality_reads = 0
+
+            def send(self, request: dict[str, object]) -> None:
+                if request.get("step") != STEP or request.get("expected_revision") != 7:
+                    raise AssertionError("source fixture accepts only the current-heir query")
+                self.requests.append(deepcopy(request))
+
+            def wait_for_command_result(self, request_id: str, timeout_seconds: float):
+                if not self.requests or self.requests[-1]["request_id"] != request_id:
+                    raise AssertionError("current-heir query correlation changed")
+                return deepcopy(self.packet)
+
+            def _execute_campaign_root_context_v1_query(self, *, expected_revision: int):
+                if expected_revision != 7:
+                    raise AssertionError("public heir crossed the fixture frame")
+                return {"status": "available", "query_sequence": 11,
+                        "held_title_partition": [{"primary": True,
+                                                  "first_heir_character_id": heir}]}
+
+            def query_current_first_heir_relationship_private_v1(self, **kwargs):
+                relation = query_current_first_heir_relationship_private_v1(self, **kwargs)
+                self.relationships.append(deepcopy(relation))
+                return relation
+
+            def query_observed_first_heir_marriage_legality_v1(self, *, expected_native_revision: int):
+                if expected_native_revision != 7:
+                    raise AssertionError("ordinary family query crossed the fixture frame")
+                self.legality_reads += 1
+                return {"status": "unavailable", "unavailable_reason": "source_fixture_current_household_only"}
+
+        async def consume():
+            records = []
+            with tempfile.TemporaryDirectory(prefix="xar-conception-trait70-service-") as directory:
+                for name, packet in packets.items():
+                    with self.subTest(scene=name):
+                        self.assertIs(packet["ok"], True)
+                        wire = packet["result"]
+                        driver = FixtureDriver(packet, Path(directory) / name)
+                        async with Client(create_server(driver)) as client:
+                            queried = await client.call_tool(
+                                "ck3_query_current_first_heir_relationship_private_v1",
+                                {"expected_native_revision": 7})
+                            self.assertFalse(queried.is_error)
+                            observed = queried.structured_content
+                            planned = await client.call_tool("ck3_plan_turn", {})
+                            self.assertFalse(planned.is_error)
+                            service_result = planned.structured_content
+                        self.assertEqual(observed["status"], "available")
+                        self.assertEqual(observed["exact_ck3_build"], CK3_12004.game_version)
+                        self.assertEqual(observed["exe_sha256"], CK3_12004.executable_sha256)
+                        leaf = observed[LEAF]
+                        self.assertEqual(leaf, wire[LEAF])
+                        self.assertEqual((leaf["played_character_id"], leaf["heir_character_id"],
+                            leaf["native_revision"], leaf["date_raw"]), (actor, heir, 7, 53220000))
+                        self.assertEqual(leaf["fertility_raw_scale"], 100000)
+                        rows = leaf["rows"]
+                        self.assertEqual([row["character_id"] for row in rows], [heir, partner])
+                        self.assertEqual(rows[0]["roles"], ["heir"])
+                        self.assertEqual(rows[1]["roles"], ["primary_spouse", "spouse"])
+                        self.assertEqual(observed["current_first_heir_descendants_v1"]["native_child_count_raw"], 0)
+                        self.assertIs(observed["current_first_heir_descendants_summary_v1"]["actual_direct_child_exists"], False)
+                        self.assertEqual(observed["betrothal_actionability"]["status"], "not_applicable")
+                        if name == "legacy-conception-trait-exclusion-absent":
+                            for row in rows:
+                                self.assertNotIn(exclusion_key, row)
+                        else:
+                            for row, expected in zip(rows, expected_values[name]):
+                                exclusion = row[exclusion_key]
+                                self.assertEqual(exclusion["source"], exclusion_key)
+                                self.assertIs(exclusion["blocks_pair_conception"], expected)
+                                if expected is None:
+                                    self.assertEqual(exclusion["status"], "unavailable")
+                                    self.assertIsInstance(exclusion["unavailable_reason"], str)
+                                    self.assertTrue(exclusion["unavailable_reason"])
+                                else:
+                                    self.assertEqual(exclusion["status"], "available")
+                                    self.assertIsNone(exclusion["unavailable_reason"])
+                                    self.assertIs(type(exclusion["blocks_pair_conception"]), bool)
+                        if name == "fertility-unavailable-trait-blocked":
+                            self.assertEqual(leaf["status"], "partial")
+                            for row in rows:
+                                self.assertEqual(row["status"], "unavailable")
+                                self.assertIsNone(row["age_measure_raw"])
+                                self.assertIsNone(row["sex_selector_raw"])
+                                self.assertIsNone(row["native_fertility"])
+                        else:
+                            self.assertEqual(leaf["status"], "available")
+                            for row in rows:
+                                self.assertEqual(row["status"], "available")
+                                self.assertIsNotNone(row["native_fertility"])
+                        for relation in driver.relationships:
+                            self.assertEqual(relation, observed)
+                        for request in driver.requests:
+                            self.assertNotIn("heir_character_id", request)
+                            self.assertNotIn("candidate_character_id", request)
+                        plan = service_result["plan"]
+                        self.assertEqual(plan["selected_step"], "life-advance")
+                        self.assertEqual(plan["family_marriage_status"], "current_first_heir_already_partnered")
+                        self.assertEqual(plan["family_marriage_current_relationship"], observed)
+                        self.assertEqual(driver.legality_reads, 0)
+                        self.assertNotIn("birth_probability", leaf)
+                        records.append({"scene": name,
+                            "source_wire": str(Path(wire_dir) / (
+                                ("no-traits" if name == "legacy-conception-trait-exclusion-absent" else name) + ".json")),
+                            "derived_legacy_field_absence": name == "legacy-conception-trait-exclusion-absent",
+                            "registered_query_result": observed,
+                            "registered_service_result": service_result,
+                            "query_requests": driver.requests})
+            return records
+
+        records = asyncio.run(consume())
+        self.assertEqual(len(records), 7)
+        output_path = os.environ.get("XAR_CK3_12004_CONCEPTION_TRAIT_EXCLUSION_CONSUMER_OBSERVATIONS")
+        if output_path:
+            destination = Path(output_path)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(json.dumps({
+                "qualification": "compiled_source_fixture_registered_service_only",
+                "fixture_native_conception_trait_exclusion_observed": True,
+                "live_conception_trait_exclusion_observed": False,
+                "live_pregnancy_observed": False, "new_birth_observed": False,
+                "natural_succession_observed": False, "native_action_submitted": False,
+                "cases": records,
+            }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

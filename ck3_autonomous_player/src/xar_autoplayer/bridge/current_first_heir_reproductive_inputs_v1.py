@@ -72,6 +72,22 @@ def validate_current_first_heir_reproductive_inputs_v1(
                     or not isinstance(pregnancy["unavailable_reason"], str)
                     or not pregnancy["unavailable_reason"]):
                 raise BridgeUnavailableError("unavailable native pregnancy became a boolean")
+        if "native_conception_trait_exclusion" in row:
+            exclusion = row["native_conception_trait_exclusion"]
+            if (not isinstance(exclusion, dict)
+                    or exclusion.get("source") != "native_conception_trait_exclusion"
+                    or exclusion.get("status") not in {"available", "unavailable"}
+                    or "unavailable_reason" not in exclusion
+                    or "blocks_pair_conception" not in exclusion):
+                raise BridgeUnavailableError("native household conception trait exclusion is malformed")
+            if exclusion["status"] == "available":
+                if (exclusion["unavailable_reason"] is not None
+                        or type(exclusion["blocks_pair_conception"]) is not bool):
+                    raise BridgeUnavailableError("available native conception trait exclusion lacks its boolean")
+            elif (exclusion["blocks_pair_conception"] is not None
+                    or not isinstance(exclusion["unavailable_reason"], str)
+                    or not exclusion["unavailable_reason"]):
+                raise BridgeUnavailableError("unavailable native conception trait exclusion became a boolean")
         available = row["status"] == "available"
         all_available = all_available and available
         if available:

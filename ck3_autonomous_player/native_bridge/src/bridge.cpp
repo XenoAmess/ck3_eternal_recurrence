@@ -130,6 +130,7 @@
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
+#include "xar_bridge/ck3_12004_first_heir_conception_trait_inputs.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
 #include "xar_bridge/guardian_factory_discovery_job_v1.hpp"
@@ -9513,10 +9514,11 @@ std::string CurrentFirstHeirRelationshipResultFrameV1(
     std::int32_t heir_character_id,
     const xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &read,
     std::string_view override_unavailable_reason = {}, bool crozier = false,
-    const xar::ck3_11906::CurrentFirstHeirChildInputsReadV1 *child_inputs = nullptr) {
+    const xar::ck3_11906::CurrentFirstHeirChildInputsReadV1 *child_inputs = nullptr,
+    const xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs = nullptr) {
   auto result = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
       request_id, native_revision, heir_character_id, read,
-      override_unavailable_reason, child_inputs);
+      override_unavailable_reason, child_inputs, conception_trait_inputs);
   return crozier ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(result))
                  : result;
 }
@@ -9561,6 +9563,8 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::ck3_12002::EventWindowBindings child_window_names12004{};
   xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 child_window_gui12004{};
   std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs12004{};
+  xar::ck3_12004::NativeConceptionTraitBindingsV1 conception_traits12004{};
+  std::optional<xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1> conception_trait_inputs12004{};
   std::optional<xar::bridge::GuardianFactoryDiscoveryJobV1>
       guardian_factory_discovery12004{};
 };
@@ -9630,6 +9634,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
         query.read.reproductive_inputs =
             xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
                 query.family12002, query.read);
+        query.conception_trait_inputs12004 =
+            xar::ck3_12004::ReadCurrentFirstHeirConceptionTraitInputsV1(
+                query.family12002, query.conception_traits12004, query.read);
       }
     }
     if (query.guardian_factory_discovery12004)
@@ -9665,6 +9672,8 @@ void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
   if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     const auto sha = game.descriptor().executable_sha256;
     query.family12002 = xar::ck3_12004::BindFamilyImage(base, sha);
+    query.conception_traits12004 =
+        xar::ck3_12004::BindNativeConceptionTraitInputsV1(base, sha);
     query.child_traits12004 = xar::ck3_12004::lifestyle::
         BindPlayerLifestyleSnapshotEnvironment12004V1(base, true, sha);
     query.child_window_names12004 =
@@ -19093,6 +19102,7 @@ void RunConnectedSession(
               std::string_view unavailable_reason;
               xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
               std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs{};
+              std::optional<xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1> conception_trait_inputs{};
               std::optional<xar::bridge::GuardianFactoryDiscoveryJobV1>
                   guardian_factory_discovery{};
               if (!observed_current) {
@@ -19106,6 +19116,9 @@ void RunConnectedSession(
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
                   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
                   query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+                  query.conception_traits12004 =
+                      xar::ck3_12004::BindNativeConceptionTraitInputsV1(
+                          base, game.descriptor().executable_sha256);
                   query.child_traits12004 = xar::ck3_12004::lifestyle::
                       BindPlayerLifestyleSnapshotEnvironment12004V1(
                           base, true, game.descriptor().executable_sha256);
@@ -19204,6 +19217,7 @@ void RunConnectedSession(
                   if (stable) {
                     read = query.read;
                     child_inputs = query.child_inputs12004;
+                    conception_trait_inputs = query.conception_trait_inputs12004;
                   }
                   const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1, query.ticket);
@@ -19258,7 +19272,8 @@ void RunConnectedSession(
                 auto family_frame = CurrentFirstHeirRelationshipResultFrameV1(
                     request_id, state_revision, heir_id, read,
                     unavailable_reason, xar::game::IsReviewedCrozierAdapter(game),
-                    child_inputs ? &*child_inputs : nullptr);
+                    child_inputs ? &*child_inputs : nullptr,
+                    conception_trait_inputs ? &*conception_trait_inputs : nullptr);
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
                   family_frame = xar::game::Render12004BuildIdentity(
                       std::move(family_frame), game.descriptor());
