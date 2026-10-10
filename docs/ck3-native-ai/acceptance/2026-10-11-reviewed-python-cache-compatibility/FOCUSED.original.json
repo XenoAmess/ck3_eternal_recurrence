@@ -1,0 +1,20 @@
+{
+  "schema": "source-only-synthetic-focused-result-v1",
+  "recorded_at": "2026-10-10T22:32:42.475232+00:00",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\test_reviewed_python_cache_compatibility.py"
+  ],
+  "observed_exit_code": 0,
+  "tests": 6,
+  "unittest_duration_seconds": 0.034,
+  "tool_wall_seconds": 0.293399,
+  "output_kind": "combined tool output; original stream split unavailable",
+  "real_cache_seed_exe_save_reads": 0,
+  "game_actions": 0,
+  "main_git_writes": 0,
+  "live_qualification": false
+}

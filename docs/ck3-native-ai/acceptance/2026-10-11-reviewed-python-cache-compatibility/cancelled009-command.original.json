@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-storage009-cancellation-sourceonly-20261011-001/cancel009.py",
+    "--confirm-no-materialization-or-further-writes",
+    "--other-unspent-reservations-bytes",
+    "0",
+    "--admission-command-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-storage-admission-command-20261011-009/RESULT.actual.json"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:31:01.087080+00:00",
+  "finished_at_utc": "2026-10-10T22:31:01.463253+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage009-cancel-command-20261011-001\\stdout.log",
+    "bytes": 345,
+    "sha256": "cdfd277a9242fdb21dfebfbe59f0f0d0cb27f88484aa1f9de83dbc4fe40ba793"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage009-cancel-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

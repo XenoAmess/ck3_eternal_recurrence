@@ -1,0 +1,35 @@
+{
+  "schema": "source-only-final-adoption-handoff-v1",
+  "prior_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\INDEX.json",
+    "bytes": 2244,
+    "sha256": "ee6108085211edf315ef521feb8ef26ac4f646f64e601d3f02693cdf985fa2fe"
+  },
+  "production_patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\PATCH.diff",
+    "bytes": 14374,
+    "sha256": "84b6639595493189f6fe0161fd627e44adac710eed43153c73c49f75a1722e12"
+  },
+  "test_patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\PATCH.test.diff",
+    "bytes": 8822,
+    "sha256": "99e226d71e8a26a18696248cb67ed5238f9fcdcd3797b867a42736ba6648a36a"
+  },
+  "ci_patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\PATCH.ci.diff",
+    "bytes": 632,
+    "sha256": "ff0bf906146dc4a9d88bd9195af6ee6d5ef04b59876b74ca988714e271971f9d"
+  },
+  "ast_equivalence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\LOADER-ONLY-AST-EQUIVALENCE.actual.json",
+    "bytes": 805,
+    "sha256": "cd32180b087ce156dc0cadfcc964aec69fffb9de6f3473ad7d9ed5f971764d2d"
+  },
+  "prior_six_pass": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\FOCUSED.actual.json",
+    "bytes": 696,
+    "sha256": "fa4674b7a3e281bef90855602bab6383df025bb1a7bea83c75477e77d680fc1f"
+  },
+  "tests_not_repeated": true,
+  "ci_anchor_note": "No graphics_cache command exists in actual workflow; only add new portable call after existing workshop_cache command+guard; all prior checks retained."
+}

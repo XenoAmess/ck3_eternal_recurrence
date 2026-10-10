@@ -1,0 +1,52 @@
+{
+  "schema": "source-only-candidate-index-v1",
+  "status": "SIX_SYNTHETIC_TESTS_PASS_NOT_ADOPTED_NOT_LIVE",
+  "targets": [
+    "tools/ck3_mod_acceptance_graphics_cache.py",
+    "tools/ck3_mod_acceptance.py"
+  ],
+  "files": [
+    {
+      "path": "build_candidate.py",
+      "bytes": 2020,
+      "sha256": "3a5a022a48bb6187aec99150c15bcd5866e84df0aac3e180ea1cc2836cd2e60d"
+    },
+    {
+      "path": "focused-output.actual.log",
+      "bytes": 109,
+      "sha256": "a3dbac32a68ff19f7c4436dca0d89b846a1f702a2ed2f54a3f53e2514d1972bd"
+    },
+    {
+      "path": "FOCUSED.actual.json",
+      "bytes": 696,
+      "sha256": "fa4674b7a3e281bef90855602bab6383df025bb1a7bea83c75477e77d680fc1f"
+    },
+    {
+      "path": "PATCH.diff",
+      "bytes": 14374,
+      "sha256": "84b6639595493189f6fe0161fd627e44adac710eed43153c73c49f75a1722e12"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2042,
+      "sha256": "b565e42d492fc11e8e568eecafa51b8233a23c141bf2cae4ba5914ae8b1333f9"
+    },
+    {
+      "path": "REVIEW.template.json",
+      "bytes": 594,
+      "sha256": "d2a039eccf7b5f28857b45f22b992ccc3d723bf1243646d02a1ded9fdff776fe"
+    },
+    {
+      "path": "SOURCE-CHECK.actual.json",
+      "bytes": 891,
+      "sha256": "94e96b6b4628b9a6a38b3476bb3703331a1b736353e360c6773a7bd11c5757bb"
+    },
+    {
+      "path": "test_reviewed_python_cache_compatibility.py",
+      "bytes": 8895,
+      "sha256": "1c9c70ede2aa0a39030d8ec118a7ea3b96c8b6f31031ee004d75b5af78ff1fb6"
+    }
+  ],
+  "prior_source_check_preserved": true,
+  "root_review_required": true
+}

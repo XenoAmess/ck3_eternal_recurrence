@@ -1,0 +1,31 @@
+{
+  "status": "SOURCE_ONLY_AST_PASS_TESTS_NOT_RUN",
+  "files": [
+    {
+      "path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "before": {
+        "bytes": 33562,
+        "sha256": "57fe9a32b638ca12098cb24cb930f0563f311cd07d4527b416363cd9555e5c36"
+      },
+      "after_lf": {
+        "bytes": 39545,
+        "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+      }
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "before": {
+        "bytes": 40339,
+        "sha256": "db03df59f88f81630cee68224688feb7c60749bd9648e1f17387644d758c9ac5"
+      },
+      "after_lf": {
+        "bytes": 40606,
+        "sha256": "43a84141b29031a7d3dc0194cb5cf386a73d42ed83ec36b84c85a5a21377550a"
+      }
+    }
+  ],
+  "default_key_guard": "exact v1/v2, unchanged when explicit receipt absent",
+  "cache_body_reads": 0,
+  "game_actions": 0,
+  "main_writes": 0
+}

@@ -495,6 +495,8 @@ class Selection:
         from ck3_mod_acceptance_graphics_cache import profile_enabled, prepare_graphics_cache
         if 'shader_cache_seed' in inputs and not profile_enabled(self.manifest):
             raise ValueError('Shared shader cache reuse is default OFF')
+        if 'shader_cache_python_compatibility' in inputs and 'shader_cache_seed' not in inputs:
+            raise ValueError('Reviewed Python compatibility requires an explicit seed')
         for key,value in inputs.get('case_inputs',{}).get('budgets',{}).items():
             if key not in BUDGET_FLAGS or self.case['budgets'].get(key) is not None:
                 raise ValueError('Prepare budget latebinding can only fill declared null fields: '+key)
@@ -516,7 +518,8 @@ class Selection:
         if 'shader_cache_seed' in inputs:
             from types import SimpleNamespace
             graphics=prepare_graphics_cache(SimpleNamespace(manifest=self.manifest,runtime=self.runtime,state_dir=state),
-                inputs['shader_cache_seed'],result,output)
+                inputs['shader_cache_seed'],result,output,
+                compatibility_pin=inputs.get('shader_cache_python_compatibility'))
         from ck3_mod_acceptance_prepare import write_json
         prepared={'schema':'ck3-mod-acceptance-prepared-case-v1','product':self.product_key,'case':self.case['id'],
             'runtime_manifest':pin(self.manifest_path),'case_inputs':context['case_inputs'],

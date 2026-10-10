@@ -66,3 +66,6 @@ B内closed006/007小台账有限复核未取得新增大对象的替代/可重�
 ### 06:21 CST：五份已闭场 SAVE 重复副本实际回收
 
 ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，全部持有句柄 SHA/身份匹配后，精确删除 CASE3/4/5 的 restored_campaign 与 CASE4/5 的 xar_checkpoint。5 个旧副本现不可读；逻辑回收458348713 B、API分配量458362880 B。原0240基线与R53/R54两份独立实际初始SAVE均在执行时可读并保留，其他SAVE、shadercache与失败证据不动，原期限不续。卷free增加458354688 B不独占归因；旧R52缓存146942031 B不重计，下一预约只扣本次逻辑量一次。没有业务重验或新增通过。[小原件与可用性索引](../li-yu-dao/acceptance/2026-10-11-five-save-duplicates-reclaimed/README.md)。
+
+
+06:36 CST追加：009在Source14/O14与materialize commandroot均不存在时实际取消，未来预约0，原192MiB释放属于预约释放而非磁盘回收。五副本458348713B仅在下一容量台账按同一事件扣一次。共享v2现在可按显式review收据核准Python-only runtime delta复用缓存，但没有实际复制/命中；原cacheTTL与quota截止不续。[合同与取消回执](../ck3-native-ai/2026-10-11-reviewed-python-cache-compatibility.md)。

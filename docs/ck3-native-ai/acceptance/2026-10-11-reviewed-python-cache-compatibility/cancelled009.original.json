@@ -1,0 +1,124 @@
+{
+  "schema": "ck3-common009-cancelled-before-materialization-v1",
+  "at_utc": "2026-10-10T22:31:01.441189+00:00",
+  "status": "CANCELLED_BEFORE_MATERIALIZATION",
+  "reservation_status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "reservation_id": "ck3-common-source14-192MiB-20261011-009",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-009\\ADMISSION.actual.json",
+    "bytes": 6122,
+    "sha256": "575345ef2aab5eda5c1468d7f12d52e9640ab17e3c65d5acc7a03374b58e3bc7"
+  },
+  "original_admission_unmodified": true,
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "actual_admission_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-009\\RESULT.actual.json",
+    "bytes": 1253,
+    "sha256": "a5d3f1774841853957890631318cd87bbe7ced7f24308f3ad102a84ef76ee418"
+  },
+  "actual_admission_command_exit_code": 0,
+  "cancelled_selection": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+  "original_source_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-successor-preparation-20261011-003\\PATHS-MANIFEST.actual.json",
+    "bytes": 24184,
+    "sha256": "53fa7c85f2f03e5917afae1a4b633d6087fbc6b1af574f1aeb75c27015ec55d0"
+  },
+  "reason": "Exact selected publication CI failed; ROOT cancelled before any Source14 materialization.",
+  "verified_absent_roots": [
+    "C:\\csr14",
+    "C:\\workspace\\ck3-common-runtime\\20261011-014",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-materialize-command-20261011-001"
+  ],
+  "new_source_payload_bytes": 0,
+  "new_Git_objects_or_native_build_bytes": 0,
+  "bounded_existing_small_metadata_groups": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-009",
+      "files": 2,
+      "logical_bytes": 7446,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-009",
+      "files": 3,
+      "logical_bytes": 1618,
+      "basis": "Bounded metadata only; no body hash."
+    }
+  ],
+  "known_retained_small_metadata_bytes": 9064,
+  "closing_output_bytes_or_null": null,
+  "closing_output_upper_bound_bytes": 1048576,
+  "small_increment_already_covered_by_conservative_32MiB": true,
+  "whole_project_actual_usage_bytes_or_null": null,
+  "allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "remaining_reserved_peak_bytes": 0,
+  "released_future_reservation_peak_bytes": 201326592,
+  "release_is_not_physical_deletion": true,
+  "physical_deleted_bytes": 0,
+  "cleanup_deducted_bytes": 0,
+  "conservative_project_base_preserved": 135510258348,
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "actual_process_inventory": {
+    "at_utc": "2026-10-10T22:31:01.281461+00:00",
+    "scanned_process_count": 171,
+    "python_controllers_inspected": [
+      {
+        "pid": 6772,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "active_build_processes": [],
+  "actual_bus": {
+    "tasks": [
+      {
+        "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+        "state": "running",
+        "resources": [],
+        "stale": false,
+        "last_sequence": 4652
+      },
+      {
+        "task_id": "lyd-volume-c-admission-20261010-root",
+        "state": "running",
+        "resources": [
+          "storage-volume-c:coordinator"
+        ],
+        "stale": false,
+        "last_sequence": 4653
+      }
+    ],
+    "stdout_bytes": 154964,
+    "stdout_sha256": "d067fb03aa19134627907018f9ccdee8d50c33b01a5e1eea595656b02a8c5d4c"
+  },
+  "other_unspent_reservations_bytes_ROOT_verified": 0,
+  "focused_inventory_helper_source_pin": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "fresh_free_bytes_before": 619881443328,
+  "fresh_free_bytes_after": 619881443328,
+  "free_change_attributable_to_cancellation_or_null": null,
+  "quota_override_unchanged": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "source_review_unchanged_at_utc": "2026-10-17T19:32:25.249949+00:00",
+  "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+  "automatic_renewal": false,
+  "automatic_deletion": false,
+  "source_or_runtime_qualification": false,
+  "next010_admission_granted": false
+}

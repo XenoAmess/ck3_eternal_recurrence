@@ -1,0 +1,17 @@
+{
+  "status": "EXACT_FIXTURE_AND_METHOD_AST_EQUAL",
+  "before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\test_reviewed_python_cache_compatibility.py",
+    "bytes": 8895,
+    "sha256": "1c9c70ede2aa0a39030d8ec118a7ea3b96c8b6f31031ee004d75b5af78ff1fb6"
+  },
+  "after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\test_ck3_mod_acceptance_reviewed_python_cache_compatibility.py",
+    "bytes": 8577,
+    "sha256": "284842f26b7f1b192eb2791c4e9e35a279aeede93e0a4e2cf1818268665aa7c7"
+  },
+  "logic_sha256": "911a55177cc05acc601fb10970cc2b9964e85c46f17f2ba1c0eb1d731fd76406",
+  "test_methods": 6,
+  "tests_reexecuted": false,
+  "production_patch_unchanged": true
+}

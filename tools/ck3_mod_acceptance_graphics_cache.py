@@ -275,14 +275,16 @@ def _profile_key_v2(rows, profile, read_root, *, audit=None):
     return result
 
 
-def _runtime_key(manifest, runtime, *, target=False):
+def _runtime_key(manifest, runtime, *, target=False, audit=None):
     def selected(row):
         path = Path(runtime['paths'][row['path_key']]).resolve()
         ref = {'path': str(path), **_signature(row)}
         require(_pin(path) == ref, 'Runtime input changed')
         return ref
-    source = _read(selected(manifest['source_index'])['path'])
-    native = _read(selected(manifest['native_source_index'])['path'])
+    source_ref = selected(manifest['source_index'])
+    native_ref = selected(manifest['native_source_index'])
+    source = _read(source_ref['path'])
+    native = _read(native_ref['path'])
     require(source.get('schema') == 'ck3-common-source-index-v1' and
             native.get('schema') == 'ck3-common-native-source-index-v1', 'Exact shared source indexes required')
     for index in (source, native):
@@ -297,6 +299,15 @@ def _runtime_key(manifest, runtime, *, target=False):
         selected(row)
     exe = _pin(Path(runtime['game_dir']) / 'binaries/ck3.exe')
     require(exe['sha256'] == manifest['game']['exe_sha256'], 'Actual game EXE differs from exact cache build')
+    if audit is not None:
+        require(_checked(runtime['manifest']) == manifest, 'Compatibility manifest changed')
+        host_path = Path(runtime['paths'][manifest['host']['path_key']]).resolve()
+        host_relative = host_path.relative_to(Path(runtime['paths']['source_root']).resolve()).as_posix()
+        audit.update({'manifest': runtime['manifest'], 'source_index': source_ref, 'native_index': native_ref,
+                      'files': {k: _signature(v) for k, v in source['files'].items()},
+                      'native_files': {k: _signature(v) for k, v in native['files'].items()},
+                      'host_relative': host_relative, 'profile_features': manifest.get('profile_features', {}),
+                      'entry_environment': manifest.get('entry_environment', {})})
     return {'game': manifest['game'], 'exe': _signature(exe), 'host': _signature(manifest['host']),
             'native': {key: _signature(manifest['native'][key]) for key in ('dll', 'injector')},
             'host_features': manifest.get('host_features', {}),
@@ -305,7 +316,7 @@ def _runtime_key(manifest, runtime, *, target=False):
             'native_files_sha256': _digest(native['files']), 'prepare_only_paths': sorted(PREPARE_ONLY_PATHS)}
 
 
-def _origin(origin_pin, *, key_version=1, projection_audit=None):
+def _origin(origin_pin, *, key_version=1, projection_audit=None, runtime_audit=None):
     from ck3_mod_acceptance_allocate import previous_session_closure, closed_lease, read_actual_release
     origin = _checked(origin_pin)
     names = {'frozen_argv', 'prepared_case', 'runtime_local', 'native_report', 'host_started', 'host_exit',
@@ -350,7 +361,7 @@ def _origin(origin_pin, *, key_version=1, projection_audit=None):
         snapshot = str((snapshot_root / relative).resolve())
         require(freeze['files'].get(snapshot) == _signature(row) and _signature(_pin(snapshot)) == _signature(row),
                 'Source before-launch business bytes are not frozen/exact')
-    runtime_key = _runtime_key(manifest, runtime)
+    runtime_key = _runtime_key(manifest, runtime, audit=runtime_audit)
     exe_path = str((Path(runtime['game_dir']) / 'binaries/ck3.exe').resolve())
     require(freeze['files'].get(exe_path) == runtime_key['exe'], 'Source EXE identity was not frozen by this run')
     require(type(key_version) is int and key_version in (1, 2), 'Explicit supported graphics key version required')
@@ -456,15 +467,68 @@ def freeze_shader_cache_seed(origin_pin, output, *, key_version=1):
     return _pin(path)
 
 
-def _seed(seed_pin, selection, preparation, *, projection=None):
+def _python_delta(before, after):
+    return {name: {'before': before.get(name), 'after': after.get(name)}
+            for name in sorted(before.keys() | after.keys()) if before.get(name) != after.get(name)}
+
+
+def _reviewed_python_compatibility(pin, seed_pin, seed, original, current, source, target):
+    review = _checked(pin)
+    fields = {'schema', 'seed', 'source_origin', 'source_manifest', 'target_manifest',
+              'source_index', 'target_index', 'source_native_index', 'target_native_index',
+              'source_key_sha256', 'target_key_sha256', 'source_delta', 'native_source_delta',
+              'reviewer', 'direct_reviewed', 'reason', 'qualification', 'startup_qualified', 'business_pass'}
+    require(isinstance(review, dict) and set(review) == fields and
+            review['schema'] == 'ck3-mod-acceptance-reviewed-python-cache-compatibility-v1',
+            'Exact reviewed Python compatibility receipt required')
+    require(review['direct_reviewed'] is True and isinstance(review['reviewer'], str) and review['reviewer'].strip() and
+            isinstance(review['reason'], str) and review['reason'].strip() and review['qualification'] == QUALIFICATION and
+            review['startup_qualified'] is False and review['business_pass'] is False,
+            'Explicit review cannot grant cache-hit/startup/business qualification')
+    expected = {'seed': seed_pin, 'source_origin': seed['source_origin'],
+                'source_key_sha256': _digest(original), 'target_key_sha256': _digest(current)}
+    for side, audit in (('source', source), ('target', target)):
+        expected[side + '_manifest'] = audit['manifest']
+        expected[side + '_index'] = audit['source_index']
+        expected[side + '_native_index'] = audit['native_index']
+    require(all(review[name] == value for name, value in expected.items()), 'Compatibility receipt crossed exact inputs')
+    require(original['profile'] == current['profile'], 'Python compatibility cannot change graphics/profile inputs')
+    excluded = {'host', 'source_core_sha256', 'native_files_sha256'}
+    require({k: v for k, v in original['runtime'].items() if k not in excluded} ==
+            {k: v for k, v in current['runtime'].items() if k not in excluded},
+            'Python compatibility cannot change game/native/host features')
+    for name in ('profile_features', 'entry_environment', 'host_relative'):
+        require(source[name] == target[name], 'Python compatibility crossed shared environment: ' + name)
+    require(source['host_relative'].endswith('.py'), 'Only a reviewed Python host is eligible')
+    for audit, key in ((source, original), (target, current)):
+        require(audit['files'].get(audit['host_relative']) == key['runtime']['host'],
+                'Actual host is not authenticated by its complete source index')
+    deltas = {'source_delta': _python_delta(source['files'], target['files']),
+              'native_source_delta': _python_delta(source['native_files'], target['native_files'])}
+    require(any(deltas.values()), 'A concrete reviewed Python source delta is required')
+    for name, delta in deltas.items():
+        require(review[name] == delta, 'Reviewed Python delta is not the complete exact index delta')
+        for path in delta:
+            _relative(path)
+            require(path.endswith('.py'), 'Non-Python source changes cannot use this exception')
+    return {'schema': 'ck3-mod-acceptance-python-cache-compatibility-audit-v1', 'receipt': pin,
+            **expected, 'source_runtime_key': original['runtime'], 'target_runtime_key': current['runtime'],
+            **deltas, 'qualification': QUALIFICATION, 'engine_cache_hit': None,
+            'startup_qualified': False, 'business_pass': False}
+
+
+def _seed(seed_pin, selection, preparation, *, projection=None, compatibility_pin=None, compatibility=None):
     seed = _checked(seed_pin)
     require(seed.get('schema') in (SEED_SCHEMA, SEED_SCHEMA_V2) and seed.get('qualification') == QUALIFICATION and
             seed.get('startup_qualified') is False and seed.get('business_pass') is False, 'Derivative seed cannot claim qualification')
     source_projection, target_projection = {}, {}
     version2 = seed['schema'] == SEED_SCHEMA_V2
+    require(compatibility_pin is None or version2, 'Reviewed Python compatibility requires explicit v2 seed')
+    source_runtime = {} if compatibility_pin is not None else None
+    target_runtime = {} if compatibility_pin is not None else None
     if version2:
         origin, freeze, runtime, original_key, closure = _origin(
-            seed['source_origin'], key_version=2, projection_audit=source_projection)
+            seed['source_origin'], key_version=2, projection_audit=source_projection, runtime_audit=source_runtime)
         require(seed.get('graphics_projection') == source_projection, 'Source graphics projection changed')
     else:
         origin, freeze, runtime, original_key, closure = _origin(seed['source_origin'])
@@ -472,9 +536,16 @@ def _seed(seed_pin, selection, preparation, *, projection=None):
     rows = business_files(preparation)
     profile_key = (_profile_key_v2(rows, profile, profile, audit=target_projection) if version2 else
                    _profile_key(rows, profile, profile))
-    current_key = {'runtime': _runtime_key(selection.manifest, selection.runtime, target=True), 'profile': profile_key}
-    require(seed.get('cache_key') == original_key == current_key and
-            seed.get('cache_key_sha256') == _digest(current_key), 'Graphics cache key mismatch')
+    current_key = {'runtime': _runtime_key(selection.manifest, selection.runtime, target=True, audit=target_runtime), 'profile': profile_key}
+    require(seed.get('cache_key') == original_key and
+            seed.get('cache_key_sha256') == _digest(original_key), 'Original graphics cache key mismatch')
+    if compatibility_pin is None:
+        require(original_key == current_key, 'Graphics cache key mismatch')
+    else:
+        audit = _reviewed_python_compatibility(compatibility_pin, seed_pin, seed, original_key, current_key,
+                                              source_runtime, target_runtime)
+        if compatibility is not None:
+            compatibility.update(audit)
     if version2 and projection is not None:
         projection.update({'schema': PROJECTION_SCHEMA, 'source': source_projection, 'target': target_projection})
     snapshot = _plain_path(seed['snapshot_root'], directory=True)
@@ -498,10 +569,12 @@ def _seed(seed_pin, selection, preparation, *, projection=None):
     return seed, declared, closure
 
 
-def prepare_graphics_cache(selection, seed_pin, preparation, output):
+def prepare_graphics_cache(selection, seed_pin, preparation, output, *, compatibility_pin=None):
     require(profile_enabled(selection.manifest), 'Shared shader cache reuse is default OFF')
     projection = {}
-    seed, rows, closure = _seed(seed_pin, selection, preparation, projection=projection)
+    compatibility = {}
+    seed, rows, closure = _seed(seed_pin, selection, preparation, projection=projection,
+                                compatibility_pin=compatibility_pin, compatibility=compatibility)
     profile = selection.state_dir / 'profile'
     destination = profile / 'shadercache'
     require(not destination.exists() and not destination.is_symlink(), 'New graphics destination required')
@@ -512,6 +585,8 @@ def prepare_graphics_cache(selection, seed_pin, preparation, output):
                'source_closure': closure, 'qualification': QUALIFICATION, 'business_pass': False}
     if projection:
         receipt['graphics_projection'] = projection
+    if compatibility:
+        receipt['python_runtime_compatibility'] = compatibility
     path = Path(output) / 'graphics-cache-preparation.json'
     with path.open('x', encoding='utf-8', newline='\n') as stream:
         json.dump(receipt, stream, indent=2)
@@ -553,12 +628,18 @@ def validate_prepared_graphics(selection):
     profile = selection.state_dir / 'profile'
     graphics_union(business_files(selection.prepared['preparation']), graphics, profile)
     projection = {}
-    seed, rows, closure = _seed(graphics['seed'], selection, selection.prepared['preparation'], projection=projection)
+    compatibility = {}
+    seed, rows, closure = _seed(graphics['seed'], selection, selection.prepared['preparation'], projection=projection,
+                                compatibility_pin=graphics.get('python_runtime_compatibility', {}).get('receipt'),
+                                compatibility=compatibility)
+    require(graphics.get('python_runtime_compatibility', {}) == compatibility, 'Prepared compatibility audit changed')
     require(graphics.get('graphics_projection', {}) == projection, 'Prepared graphics projection changed')
     require(graphics['cache_key_sha256'] == seed['cache_key_sha256'], 'Prepared graphics key changed')
     observed = _cache_tree(profile / 'shadercache')
     require(set(observed) == set(rows), 'Unlisted or missing prepared graphics entry')
     pins = [_pin(__file__), graphics['receipt'], graphics['seed'], seed['source_origin']]
+    if compatibility:
+        pins.append(compatibility['receipt'])
     origin = _checked(seed['source_origin'])
     pins.extend(origin['evidence'].values())
     runtime = _checked(origin['evidence']['runtime_local'])

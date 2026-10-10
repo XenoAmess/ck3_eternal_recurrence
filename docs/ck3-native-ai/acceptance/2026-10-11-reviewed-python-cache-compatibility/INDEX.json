@@ -1,0 +1,88 @@
+{
+  "schema": "ck3.reviewed-python-cache-adoption-evidence.v1",
+  "candidate_checks": 6,
+  "observed_candidate_exit_code": 0,
+  "portable_loader_AST_equal": true,
+  "tests_reexecuted_by_ROOT": false,
+  "actual_cache_copies": 0,
+  "game_actions": 0,
+  "business_or_cache_hit_credit": false,
+  "sources": [
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 40606,
+      "sha256": "43a84141b29031a7d3dc0194cb5cf386a73d42ed83ec36b84c85a5a21377550a"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_reviewed_python_cache_compatibility.py",
+      "bytes": 8577,
+      "sha256": "284842f26b7f1b192eb2791c4e9e35a279aeede93e0a4e2cf1818268665aa7c7"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 33410,
+      "sha256": "aa7b0ad9a624c629bc94279b03a48defafc9b360bc5f0a0da039bc6c890729b1"
+    }
+  ],
+  "files": [
+    {
+      "path": "candidate-INDEX.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 1548,
+      "sha256": "bdfdc15aeac9ea118f36f440553e15f2438f26ca4c3588742c4494c69d116380"
+    },
+    {
+      "path": "FOCUSED.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\FOCUSED.actual.json",
+      "bytes": 696,
+      "sha256": "fa4674b7a3e281bef90855602bab6383df025bb1a7bea83c75477e77d680fc1f"
+    },
+    {
+      "path": "focused-output.original.log",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\focused-output.actual.log",
+      "bytes": 109,
+      "sha256": "a3dbac32a68ff19f7c4436dca0d89b846a1f702a2ed2f54a3f53e2514d1972bd"
+    },
+    {
+      "path": "SOURCE-CHECK.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\SOURCE-CHECK.actual.json",
+      "bytes": 891,
+      "sha256": "94e96b6b4628b9a6a38b3476bb3703331a1b736353e360c6773a7bd11c5757bb"
+    },
+    {
+      "path": "executed-test.original.py",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-001\\test_reviewed_python_cache_compatibility.py",
+      "bytes": 8895,
+      "sha256": "1c9c70ede2aa0a39030d8ec118a7ea3b96c8b6f31031ee004d75b5af78ff1fb6"
+    },
+    {
+      "path": "portable-AST-equivalence.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\LOADER-ONLY-AST-EQUIVALENCE.actual.json",
+      "bytes": 805,
+      "sha256": "cd32180b087ce156dc0cadfcc964aec69fffb9de6f3473ad7d9ed5f971764d2d"
+    },
+    {
+      "path": "handoff-INDEX.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-python-cache-compatibility-sourceonly-20261011-002\\HANDOFF-INDEX.json",
+      "bytes": 1825,
+      "sha256": "95231bfacea52601b5730a08c3c01382917d7626a8952cd0301c87bc62e4e72f"
+    },
+    {
+      "path": "cancelled009.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-009\\CLOSED-RESERVATION.actual.json",
+      "bytes": 5175,
+      "sha256": "1baed9de61686fc0d2d37f775b40e02bb31f53133f609dd0883296ab083588e0"
+    },
+    {
+      "path": "cancelled009-command.original.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage009-cancel-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1181,
+      "sha256": "d191185eee779b1660610b9d0f937879f32657389d5a756497086afe3dadd8e0"
+    }
+  ]
+}
