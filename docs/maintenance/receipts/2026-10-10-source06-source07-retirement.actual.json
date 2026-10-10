@@ -1,0 +1,216 @@
+{
+  "schema": "xar-indexed-source-export-retirement-summary-v1",
+  "recorded_at_utc": "2026-10-10T08:26:58.469709+00:00",
+  "machine_id": "BF-202609141645",
+  "policy_version": "1.0.0",
+  "operation": "exact_indexed_payload_retirement_and_verified_audit_compression",
+  "cleanup_started_at_utc": "2026-10-10T08:16:42.157298+00:00",
+  "cleanup_finished_at_utc": "2026-10-10T08:19:19.301466+00:00",
+  "cleanup_exit_code": 0,
+  "roots": [
+    {
+      "r": 0,
+      "root": "C:\\csr6",
+      "planned_files": 7906,
+      "deleted_files": 7906,
+      "failed_files": 0,
+      "logical_deleted_bytes": 141027785,
+      "allocation_size_api_deleted_sum": 156741592,
+      "failures_sample": []
+    },
+    {
+      "r": 1,
+      "root": "C:\\csr7",
+      "planned_files": 7906,
+      "deleted_files": 7906,
+      "failed_files": 0,
+      "logical_deleted_bytes": 141030443,
+      "allocation_size_api_deleted_sum": 156752560,
+      "failures_sample": []
+    }
+  ],
+  "deleted_files": 15812,
+  "failed_files": 0,
+  "logical_deleted_source_bytes": 282058228,
+  "allocation_size_api_deleted_source_sum": 313494152,
+  "volume_free_before": 624725921792,
+  "volume_free_after": 625028612096,
+  "volume_free_delta_not_exclusively_attributable": 302690304,
+  "earlier_ETW_derived_text_logical_deleted_bytes": 11190757265,
+  "cumulative_ETW_and_source_logical_deleted_bytes": 11472815493,
+  "audit_compression": {
+    "finished_at_utc": "2026-10-10T08:24:26.483428+00:00",
+    "exit_code": 0,
+    "original_plaintext_bytes": 14512072,
+    "verified_gzip_bytes": 1752185,
+    "logical_reduction_bytes": 12759887,
+    "plaintext_allocation_sum": 14516224,
+    "gzip_allocation_sum": 1757184,
+    "availability": {
+      "schema": "lyd-two-audit-compression-availability-v1",
+      "at_utc": "2026-10-10T08:24:26.492096+00:00",
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-audit-compression-candidate-20261010-001\\RESULT.actual.json",
+        "bytes": 4200,
+        "sha256": "a1a9ad784bfbb7742e7abf20d2108cefdc650884cdea76476a5a03d68540de1c"
+      },
+      "items": [
+        {
+          "original_pin": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\IDENTITIES.plan.jsonl",
+            "bytes": 4098215,
+            "sha256": "3e68c58e312519625b0203d739eee1603c73a1b0d85e3332a4876379abf7e7b2"
+          },
+          "original_path_availability": "DELETED",
+          "gzip_pin_or_null": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-audit-compression-candidate-20261010-001\\IDENTITIES.plan.jsonl.gz",
+            "bytes": 362026,
+            "sha256": "dbf507567186f1da88374933e7a12c50d4d99ed67dcc33c72b1c2913590fee72"
+          },
+          "gzip_verified": true,
+          "gzip_decodes_to_original_pin": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\IDENTITIES.plan.jsonl",
+            "bytes": 4098215,
+            "sha256": "3e68c58e312519625b0203d739eee1603c73a1b0d85e3332a4876379abf7e7b2"
+          },
+          "original_expires_at_utc_unchanged": "2026-11-09T08:14:26.620774+00:00",
+          "error_or_null": null
+        },
+        {
+          "original_pin": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\DETAIL-LEDGER.actual.jsonl",
+            "bytes": 10413857,
+            "sha256": "78ec54d9f67294ec31e8492d18f42b00feb8140c0330c281e58d3f2dca79bb0c"
+          },
+          "original_path_availability": "DELETED",
+          "gzip_pin_or_null": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-audit-compression-candidate-20261010-001\\DETAIL-LEDGER.actual.jsonl.gz",
+            "bytes": 1390159,
+            "sha256": "3966f1762d117e189cb27fe2b9a2063baf66c7c5b15a7c1af9115edf0cea4339"
+          },
+          "gzip_verified": true,
+          "gzip_decodes_to_original_pin": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\DETAIL-LEDGER.actual.jsonl",
+            "bytes": 10413857,
+            "sha256": "78ec54d9f67294ec31e8492d18f42b00feb8140c0330c281e58d3f2dca79bb0c"
+          },
+          "original_expires_at_utc_unchanged": "2026-11-09T08:19:19.301466+00:00",
+          "error_or_null": null
+        }
+      ],
+      "original_closed_result_and_plan_remain_historical": true,
+      "summary_review_at_utc": "2027-04-08T08:19:19.301466+00:00",
+      "automatic_TTL_renewal": false
+    }
+  },
+  "tombstones": {
+    "schema": "lyd-two-source-export-tombstones-v1",
+    "objects": [
+      {
+        "root": "C:\\csr6",
+        "machine_id": "BF-202609141645",
+        "replica_id": "BF-202609141645:source06-export",
+        "category": "build",
+        "availability": "INDEXED_EXPORT_PAYLOAD_DELETED_ROOT_DIRECTORIES_AND_ANY_UNLISTED_OBJECTS_RETAINED",
+        "deleted_files": 7906,
+        "not_verified_deleted_indexed_files": 0,
+        "logical_deleted_bytes": 141027785,
+        "allocation_size_api_deleted_sum": 156741592,
+        "retained_source_index": {
+          "path": "C:\\workspace\\ck3-common-runtime\\20261010-005\\source06-index.json",
+          "bytes": 1619935,
+          "sha256": "c0114bf364cd62c5bc5b7d2326f29958c3500c9a8ab70278980282f7a7e955e1"
+        },
+        "retirement_proof": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source06-source07-retirement-proof-readonly-20261010-001\\REPORT.actual.json",
+          "bytes": 10737,
+          "sha256": "0746ba2b0ab6af083bc39764d8a4d14b6d57c530086ac214dd3ba02d294f0c5b"
+        },
+        "reason": "Superseded reproducible source export; current owners disclaim original-root consumption; exact recovery ZIP/blobs retained",
+        "original_expires_at_utc": "2026-10-24T05:22:12.246061+00:00",
+        "at_utc": "2026-10-10T08:19:19.301466+00:00"
+      },
+      {
+        "root": "C:\\csr7",
+        "machine_id": "BF-202609141645",
+        "replica_id": "BF-202609141645:source07-export",
+        "category": "build",
+        "availability": "INDEXED_EXPORT_PAYLOAD_DELETED_ROOT_DIRECTORIES_AND_ANY_UNLISTED_OBJECTS_RETAINED",
+        "deleted_files": 7906,
+        "not_verified_deleted_indexed_files": 0,
+        "logical_deleted_bytes": 141030443,
+        "allocation_size_api_deleted_sum": 156752560,
+        "retained_source_index": {
+          "path": "C:\\workspace\\ck3-common-runtime\\20261010-006\\source07-index.json",
+          "bytes": 1619935,
+          "sha256": "0061b1680c671575d55561942f1d96760fb6780d5433909929c2b7fd1006b06b"
+        },
+        "retirement_proof": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source06-source07-retirement-proof-readonly-20261010-001\\REPORT.actual.json",
+          "bytes": 10737,
+          "sha256": "0746ba2b0ab6af083bc39764d8a4d14b6d57c530086ac214dd3ba02d294f0c5b"
+        },
+        "reason": "Superseded reproducible source export; current owners disclaim original-root consumption; exact recovery ZIP/blobs retained",
+        "original_expires_at_utc": "2026-10-24T05:34:58.954778+00:00",
+        "at_utc": "2026-10-10T08:19:19.301466+00:00"
+      }
+    ],
+    "plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\PLAN.actual.json",
+      "bytes": 14404,
+      "sha256": "e1494f923dcc4fc607f6dfea8374f81bd7eaf53828407b784a1dc6e34e365eb2"
+    },
+    "result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\RESULT.actual.json",
+      "bytes": 7038,
+      "sha256": "108e3e0d3443508e2d607ae3192ef53990b06327e746bbf30c90d828fc5e6d11"
+    },
+    "historical_source_refs_remain_original": true,
+    "automatic_TTL_renewal": false,
+    "review_at_utc": "2027-04-08T08:19:19.301466+00:00"
+  },
+  "evidence": {
+    "cleanup_actual_result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\RESULT.actual.json",
+      "bytes": 7038,
+      "sha256": "108e3e0d3443508e2d607ae3192ef53990b06327e746bbf30c90d828fc5e6d11"
+    },
+    "cleanup_retained_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source06-source07-cleanup-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 1120,
+      "sha256": "20045127164b003c62e0df5c39ef9f9c3fd5bdedb75bfa1b07dd845c7920fdd5"
+    },
+    "plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-cleanup-candidate-20261010-001\\PLAN.actual.json",
+      "bytes": 14404,
+      "sha256": "e1494f923dcc4fc607f6dfea8374f81bd7eaf53828407b784a1dc6e34e365eb2"
+    },
+    "consumer_check": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source-cleanup-fresh-consumers-20261010-001\\ROOT-CONSUMERS.actual.json",
+      "bytes": 7121,
+      "sha256": "7d9bd138c77baa721c644e3cc8f685ac2488486763bead73692d83b4a256221a"
+    },
+    "retirement_proof": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source06-source07-retirement-proof-readonly-20261010-001\\REPORT.actual.json",
+      "bytes": 10737,
+      "sha256": "0746ba2b0ab6af083bc39764d8a4d14b6d57c530086ac214dd3ba02d294f0c5b"
+    },
+    "compression_actual_result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source06-source07-audit-compression-candidate-20261010-001\\RESULT.actual.json",
+      "bytes": 4200,
+      "sha256": "a1a9ad784bfbb7742e7abf20d2108cefdc650884cdea76476a5a03d68540de1c"
+    },
+    "compression_retained_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source-audit-compression-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 1222,
+      "sha256": "e0d1f5fa163da25eb688dc9894e1f986bb0638d0fbe654e0fbd242d4aca14cf4"
+    }
+  },
+  "roots_directories_recovery_inputs_current_source08_preserved": true,
+  "shader_cache_save_or_raw_evidence_deleted": false,
+  "historical_GREEN_RED_UNKNOWN_unchanged": true,
+  "historical_receipts_modified": false,
+  "automatic_TTL_renewal": false,
+  "automatic_GC_or_other_machine_cleanup_claimed": false,
+  "summary_review_at_utc": "2027-04-08T08:19:19.301466+00:00"
+}

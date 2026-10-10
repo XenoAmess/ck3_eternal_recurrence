@@ -20,6 +20,12 @@
 
 当前缓存 helper 的 key 包含完整 mod 字节及启用的外层 descriptor。新 overlay 恢复 holder 并改变终点，相对 R47 并非纯日志改动，因此旧 seed 不能按现 key 复用；不改写旧 key、seed 或原 attempt。下一场须明确处理这项输入成本，不能把缓存复制或源码测试当成实际命中或启动成功。
 
+## 16:07 本机公共准备
+
+公共 prepare 于 08:06:51 UTC、绑定 plan 于 08:07:04 UTC 实际 exit 0，blockers 为空。选用 Source08、合法 D2a seed、71 文件产品及统一生成的六件 overlay，未选 shader seed，未 allocate、preflight 或运行游戏。这里的 overlay 来自核验输入的纯生成结果，没有另行执行完整 CLI export。profile 到 Oct17 08:06:50 UTC 复核，原配额例外 Oct12 到期，不自动延长。[实际准备回执](../ck3-native-ai/acceptance/2026-10-10-holder-stage-public-source-only/PREPARE.actual.json)。
+
+当前已发布 adapter/generator 在后继 `a22e0291e` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38036746599) 成功，终态更新时间 08:16:33 UTC。`1179a5313` 和 `532035269` 的原 Official 失败保留；其 Python-only 元数据问题由并发后继修复，不将源码检查或后继 CI 成功写为实机通过。
+
 ## 验证
 
 主树采用后，5 项 adapter 测试及 3 项新生成器 AST 测试实际 exit 0，已接入原官方 CI。检查覆盖改变名单仍唯一保存、过期/不完整查询拒绝、七 AST 差异及完成变量缺失保留、去掉四个日志块后事务完整 AST 相同、D2b 停止且不继续 D3、非法模式拒绝。[精简实际回执](../ck3-native-ai/acceptance/2026-10-10-holder-stage-public-source-only/VALIDATION.actual.json)。没有重跑旧业务矩阵或旧实机。

@@ -77,3 +77,9 @@ R47已实际关闭游戏、host及keeper，独占资源CAS释放后才核销原4
 R47 cache Oct17、Source08构建Oct24、raw Nov9与代表证据七天复核分别登记；复制、闭场与本轮public2不重置已有年龄，不假装新对照结果已经替代旧未解证据。此前已删的11.19GB不重复计数；本机回执继续不代表所有机器均已执行或已装自动GC。
 
 精确原件：`C:/workspace/ck3_lyd_runtime_20261004/r47-root-storage-admission-20261010-001/ADMISSION.actual.json`，4775 B，SHA-256 `6276902ee2150dd757a774f085c49d4d68d6cf880e095cefe12cbdb5db4f8db4`。本轮限定评审：`C:/workspace/ck3_lyd_runtime_20261004/r47-storage-lifecycle-sourceonly-20261010-001/REPORT.actual.json`。原闭场、删除与旧 attempt 评审保持历史原样，出处的精确 pins 见该报告。
+
+## 2026-10-10 08:24 UTC 补记：退役证明完成后执行增量回收
+
+此前 07:12 的“恢复/历史依赖未退役”是当时状态。后续 ROOT、共享运行时及诊断执行者明确解除 Source06/07 原路径用途，恢复 ZIP/变更文件和索引核验后，已实际回收两份导出的 15,812 文件 / 282,058,228 B 逻辑量，失败 0。现行 Source08、必要存档、原始证据与缓存保留。逐文件审计材料完整验证 gzip 后回收明文，原期限不延长；[实际操作和精简回执](storage-cleanup-2026-10-10.md)记录物理分配读数、前后 free 与可用性变更。
+
+这次按已有索引和有限恢复证明执行，没有全盘重扫，也没有把 21.2 GB 旧 attempt 自动认作已可删。仍无活跃重型写入预留；holder 诊断只进行了 16 MiB 上限的小型 prepare/plan，未分配新场或启动 CK3。下一实机及缓存复制仍须新预算，128 GiB 临时配额的 Oct12 原到期不变。全部机器继续使用统一规则；跨机器自动执行和自动 GC 仍未实现。

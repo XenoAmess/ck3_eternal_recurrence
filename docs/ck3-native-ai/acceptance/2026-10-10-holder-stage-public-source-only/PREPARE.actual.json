@@ -1,0 +1,70 @@
+{
+  "schema": "lyd-holder-public-preparation-actual-v1",
+  "recorded_at_utc": "2026-10-10T08:26:58.475451+00:00",
+  "case": "li-yu-dao / holder-stage-diagnostic",
+  "public_prepare_exit_code": 0,
+  "public_bound_plan_exit_code": 0,
+  "blockers": [],
+  "runtime_status": "NOT_RUN",
+  "allocated_run_id": null,
+  "prepare_finished_at_utc": "2026-10-10T08:06:51.073112+00:00",
+  "plan_finished_at_utc": "2026-10-10T08:07:04.698053+00:00",
+  "selected_runtime": "Source08 / 20261010-007",
+  "business_pass": false,
+  "formal_I3b_C3_I4_pass": false,
+  "graphics_seed_selected": false,
+  "graphics_key_bypassed": false,
+  "actual_cli_export_generation_performed": false,
+  "pure_generated_overlay_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-holder-heir-checked-in-producer-sourceonly-20261010-001\\generated-logger-stop-001\\MANIFEST.source-only.json",
+    "bytes": 4347,
+    "sha256": "789953000e6ac1cad3f9b9f725663b21fc980cff80855dab42a0a4096ce92a3c"
+  },
+  "evidence": {
+    "prepared_case": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-001\\prepared\\prepared-case.json",
+      "bytes": 36595,
+      "sha256": "1445b796a282fc63b66862d6cd1c5699e82ac00a5ad6c8fea159cef950106e75"
+    },
+    "prepare_retained_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-public-prepare-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 1347,
+      "sha256": "b5f05804252ed8cf80b0e34540a663765aee027b91ad56fa755783895b8a165c"
+    },
+    "plan_retained_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-public-bound-plan-20261010-001\\RESULT.actual.json",
+      "bytes": 1216,
+      "sha256": "60405af9589a78dc81475720e63f897ec7be3bfda3ab5333fd6ccc894764aa73"
+    },
+    "bound_plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-public-bound-plan-20261010-001\\stdout.log",
+      "bytes": 4113,
+      "sha256": "20f7a6136ffc825478d5dabea2747f0b0009d2fa61fcb5301116c11c7a4133df"
+    },
+    "prepare_inputs": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-public-inputs-20261010-001\\PREPARE-INPUTS.actual.json",
+      "bytes": 2029,
+      "sha256": "dbba323f2e623c64b3755f1de67c232fa174dbcfd9f69f7a8e6e75f99b4cf316"
+    },
+    "capacity_and_provenance": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-public-inputs-20261010-001\\SMALL-WRITE-AND-PROVENANCE.actual.json",
+      "bytes": 1683,
+      "sha256": "ac806ba215ed34b5ec98139a79cdadf62069ed8191db2947cd45f048c8b9633a"
+    },
+    "CI_terminal_observation": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-official-a22-and-532-terminal-readonly-20261010-001\\REPORT.actual.json",
+      "bytes": 1498,
+      "sha256": "fda6497c851b558b89893ef4ab1e8f5e7329f0ff9c701b8893f0e1dd25ebb3e9"
+    }
+  },
+  "CI_at_exact_a22e0291ec88587d282ce64ca413fc6bc4fbc928": {
+    "official_run_id": 38036746599,
+    "conclusion": "success",
+    "updated_at_utc": "2026-10-10T08:16:33Z",
+    "URL": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38036746599",
+    "original_1179_and_532_failures_preserved": true
+  },
+  "prepared_profile_review_until_utc": "2026-10-17T08:06:50.365794+00:00",
+  "quota_exception_expires_at_utc": "2026-10-12T05:19:51.814083Z",
+  "automatic_TTL_renewal": false
+}
