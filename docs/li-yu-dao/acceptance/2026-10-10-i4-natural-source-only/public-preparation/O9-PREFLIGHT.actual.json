@@ -1,0 +1,219 @@
+{
+  "schema": "ck3-mod-acceptance-plan-v1",
+  "product": "li-yu-dao",
+  "case": "i4-existing-school-cooldown",
+  "case_status": "ready",
+  "shared_manifest": "C:\\workspace\\ck3-common-runtime\\20261010-009\\manifest.json",
+  "run_id": "<allocated-run-id>",
+  "host_argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\csr9\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "--agent-source-root",
+    "C:\\csr9",
+    "--game-dir",
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+    "--bridge-dll",
+    "C:\\cbr2\\xar_ck3_bridge.dll",
+    "--bridge-injector",
+    "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+    "--bridge-pipe",
+    "\\\\.\\pipe\\ck3_mod_acceptance_<allocated-run-id>",
+    "--output",
+    "C:\\workspace\\ck3-common-runtime\\runs\\<allocated-run-id>\\native-report.json",
+    "--state-dir",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\state002",
+    "--plan",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\prepared002\\initial-plan.json",
+    "--control-plan-dir",
+    "C:\\workspace\\ck3-common-runtime\\runs\\<allocated-run-id>\\controls",
+    "--private-succession-title-readonly",
+    "--saved-campaign-inject-after-load",
+    "--saved-campaign-debug-mode",
+    "--command-timeout",
+    "300",
+    "--readiness-timeout",
+    "900",
+    "--timeout",
+    "8400",
+    "--poll-interval",
+    "0.5",
+    "--hold-seconds",
+    "7200",
+    "--fixture-profile",
+    "--saved-campaign-save",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+    "--saved-campaign-save-bytes",
+    "91669783",
+    "--saved-campaign-save-sha256",
+    "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+    "--saved-campaign-player-id",
+    "31254",
+    "--saved-campaign-date-raw",
+    "53144712",
+    "--saved-campaign-product-inventory",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\prepared002\\saved-product-inventory.json"
+  ],
+  "required_mcp_tools": [
+    "ck3_take_snapshot",
+    "ck3_open_ingame_decisions_v1",
+    "ck3_select_ingame_decision_item_v1",
+    "ck3_query_ingame_decision_item_v1",
+    "ck3_inspect_gui_window_tree_v1",
+    "ck3_save_checkpoint",
+    "ck3_query_normal_exit_context_v1",
+    "ck3_request_normal_exit_v1",
+    "ck3_observe_normal_exit_v1"
+  ],
+  "opt_in_read_only_mcp_tools": [],
+  "runtime_environment": {
+    "PYTHONUTF8": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "C:\\csr9\\ck3_autonomous_player\\src;C:\\csr9\\ck3_workshop_mcp\\src;C:\\csr9\\tools"
+  },
+  "phases": [
+    "original0240_headless_event_free_admission",
+    "fresh_initial_SAVE_flag_present_and_disabled_formal_decision",
+    "strict_one_day_natural_simulation_until_first_enabled_decision",
+    "distinct_final_SAVE_flag_absent_and_same_headless_Faith_Rite_membership",
+    "actual_shared_normal_close"
+  ],
+  "budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 900,
+    "timeout": 8400,
+    "hold_seconds": 7200,
+    "poll_interval": 0.5
+  },
+  "fixture_prepare": null,
+  "adapter": {
+    "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+    "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry.json"
+  },
+  "normal_close": {
+    "owner": "shared entry/CaseClient",
+    "reserve_seconds": 90,
+    "actual_retained_OS0_and_original_native0_required": true
+  },
+  "gui_contract": null,
+  "outputs": {
+    "case_output": "{run_dir}/case-output",
+    "normal_close": "{run_dir}/case-output/normal-close-result.json"
+  },
+  "blockers": [],
+  "runtime_status": "NOT_RUN",
+  "business_acceptance": "NOT_ASSESSED",
+  "status": "READY_FOR_EXISTING_REVIEWED_LAUNCH",
+  "checked_inputs": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-009\\manifest.json",
+      "bytes": 6855,
+      "sha256": "30aec74524f51b74b332772618548ffff0e99b3916ff92501449ebe815fda183"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\prepared002\\prepared-case.json",
+      "bytes": 34325,
+      "sha256": "75cb37891bc196f09ba08fa5ec6216fb114300419ee3795dbd1ec5856338d23b"
+    },
+    {
+      "path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 244512,
+      "sha256": "a9895e966590d669bbef3f625c808b95dea1e4fca4561fe5bc0be1b647178b33"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\source09-index.json",
+      "bytes": 1619935,
+      "sha256": "8adf73bd3a99a16ee3dc09a3129e1ba56725dc056c268d24c298e61473773d59"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\native-source09-index.json",
+      "bytes": 891863,
+      "sha256": "928147cb0f93728c56b2c073dee2e08d2c98af6d2a65028168b7bf17bd5b8cb3"
+    },
+    {
+      "path": "C:\\cbr2\\xar_ck3_bridge.dll",
+      "bytes": 9459712,
+      "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+    },
+    {
+      "path": "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\prepared002\\initial-plan.json",
+      "bytes": 18,
+      "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+      "bytes": 24925,
+      "sha256": "61faab8681a3e1ff0daf92d09d600baf9e25cff44e1a459d23eb04eec1117519"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry.json",
+      "bytes": 1218,
+      "sha256": "c4c0cb8df99eb45dd9ae28ddc6da452773e2f3d06a2319ad95dc1a18e40eb90c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d"
+    }
+  ],
+  "tool_status": {
+    "ck3_take_snapshot": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_open_ingame_decisions_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.activate-ingame-decisions-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_select_ingame_decision_item_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.select-ingame-decision-item-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_query_ingame_decision_item_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.query-ingame-decision-item-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_inspect_gui_window_tree_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.inspect-gui-window-tree-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_save_checkpoint": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_query_normal_exit_context_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_request_normal_exit_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_observe_normal_exit_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    }
+  },
+  "capability_limit": "Source/build evidence only; actual live tool and product gates remain mandatory"
+}

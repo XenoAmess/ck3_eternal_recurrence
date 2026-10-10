@@ -2816,7 +2816,6 @@
           "budget_provenance": "New independent partial observation: at most 366 actual natural days within one fixed 7200-second hold; no session extension or retry",
           "required_mcp_tools": [
             "ck3_take_snapshot",
-            "ck3_execute_step",
             "ck3_open_ingame_decisions_v1",
             "ck3_select_ingame_decision_item_v1",
             "ck3_query_ingame_decision_item_v1",

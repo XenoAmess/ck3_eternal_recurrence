@@ -1,0 +1,151 @@
+{
+  "schema": "lyd.i4.o9-public-preparation-raw-evidence-index.v1",
+  "created_at_utc": "2026-10-10T13:21:51.181391+00:00",
+  "facts": {
+    "metadata_only_at_utc": "2026-10-10T13:18:34.608294+00:00",
+    "prepare_exit_code": 0,
+    "plan_exit_code": 0,
+    "preflight_exit_code": 0,
+    "preflight_finished_at_utc": "2026-10-10T13:20:14.373196+00:00",
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED",
+    "source_native_unchanged": true,
+    "actual_game_calls_by_archiver": 0,
+    "actual_tests_by_archiver": 0,
+    "CI_terminal_applies_only_to_HEAD": "3b6cad93f3882ff2e06d553c89bcd5a7537bb79d",
+    "CI_terminal_does_not_qualify_next_HEAD": true
+  },
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-009\\CAPABILITIES-METADATA-BIND.actual.json",
+        "bytes": 1718,
+        "sha256": "8622e7fb9781f38cd17917dec436f860b67d02b50e93139e4acd58fca00724d2"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-CAPABILITIES-METADATA-BIND.actual.json",
+        "bytes": 1718,
+        "sha256": "8622e7fb9781f38cd17917dec436f860b67d02b50e93139e4acd58fca00724d2"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-common-capabilities-metadata-sourceonly-20261010-001\\INDEX.json",
+        "bytes": 1536,
+        "sha256": "cf6e4f76de302f10909f7101bf5379c43ec15b78f7e6419ea9d40c1f353b23e2"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-SOURCE-INDEX.actual.json",
+        "bytes": 1536,
+        "sha256": "cf6e4f76de302f10909f7101bf5379c43ec15b78f7e6419ea9d40c1f353b23e2"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-common-capabilities-metadata-sourceonly-20261010-001\\SOURCE-EVIDENCE.actual.json",
+        "bytes": 24337,
+        "sha256": "74f00e992f2140be7f481b69dc735ef536cbfed2f3127f619833cc4c8bab4a86"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-SOURCE-EVIDENCE.actual.json",
+        "bytes": 24337,
+        "sha256": "74f00e992f2140be7f481b69dc735ef536cbfed2f3127f619833cc4c8bab4a86"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261010-002\\RESULT.actual.json",
+        "bytes": 1323,
+        "sha256": "d8584a1feb81d00d205e424c555fc8621961f57e27011b2c24ab63877c63c93d"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-PREPARE-COMMAND.actual.json",
+        "bytes": 1323,
+        "sha256": "d8584a1feb81d00d205e424c555fc8621961f57e27011b2c24ab63877c63c93d"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261010-002\\RESULT.actual.json",
+        "bytes": 1218,
+        "sha256": "14fd641d0e0f8713a9bda52f3d7fdf66eb66f74573f8322823dba52af78c64dc"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-PLAN-COMMAND.actual.json",
+        "bytes": 1218,
+        "sha256": "14fd641d0e0f8713a9bda52f3d7fdf66eb66f74573f8322823dba52af78c64dc"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261010-002\\RESULT.actual.json",
+        "bytes": 1233,
+        "sha256": "fec1da0e46569946187db4ec04a7454bd1b170d6730750af0dd8bdce523cf4da"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-PREFLIGHT-COMMAND.actual.json",
+        "bytes": 1233,
+        "sha256": "fec1da0e46569946187db4ec04a7454bd1b170d6730750af0dd8bdce523cf4da"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261010-002\\stdout.log",
+        "bytes": 9481,
+        "sha256": "fcb77c9edc4cdaa115294a97040516758196ffca75d61e64292a2131e598b5b9"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-PREFLIGHT.actual.json",
+        "bytes": 9481,
+        "sha256": "fcb77c9edc4cdaa115294a97040516758196ffca75d61e64292a2131e598b5b9"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\INPUT-BINDING-002.actual.json",
+        "bytes": 3679,
+        "sha256": "75805d3bbfa11c496bd63b56d67d09ae9e5517e5fc0debe2018193e92d717903"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O9-INPUT-BINDING.actual.json",
+        "bytes": 3679,
+        "sha256": "75805d3bbfa11c496bd63b56d67d09ae9e5517e5fc0debe2018193e92d717903"
+      },
+      "raw_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-exact-3b6cad93-terminal-readonly-20261010-001\\REPORT.actual.json",
+        "bytes": 1323,
+        "sha256": "a32864a60f4bdc0af97d56fac831ef12075fa5592e576e6a737ebc6c4fd0c008"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\EXACT-CI-3b6cad93-TERMINAL.actual.json",
+        "bytes": 1323,
+        "sha256": "a32864a60f4bdc0af97d56fac831ef12075fa5592e576e6a737ebc6c4fd0c008"
+      },
+      "raw_bytes_equal": true
+    }
+  ],
+  "historical_O8_RED_preserved": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-10-i4-natural-source-only\\public-preparation\\O8-PREFLIGHT.actual.json",
+    "bytes": 8737,
+    "sha256": "46f48533636006572b2539b7804661748a72136622cfa9e9710ec35ebdad8a0b"
+  },
+  "source_manifest_runtime_large_trees_copied": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "selected_original_bytes": 45848,
+    "budget_bytes": 131072,
+    "disk_free_before_bytes": 624053686272,
+    "record_review_due_utc": "2027-04-08T13:21:51.181391+00:00",
+    "retention_reason": "Small native-source and public-preparation provenance for the independent cooldown case; no new extension of large original input retention"
+  }
+}

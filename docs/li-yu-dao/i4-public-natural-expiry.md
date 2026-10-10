@@ -127,6 +127,29 @@ PID/connection/actor/date内。它不能证明树与模型逐字段拥有同一�
 专项检查实际通过，未重跑原17项。[修正与原审阅回执](acceptance/2026-10-10-i4-natural-source-only/selected-detail-fix/INDEX.actual.json)
 单独保存，当前仍无实机信用。
 
+2026-10-10 ROOT公开入口实际 `prepare=0`、`plan=0`，随后首次 `preflight=2`，
+原输出见外置 `i4-public-preflight-prepared-20261010-001/stdout.log`。
+该回执为 `BLOCKED / runtime_status=NOT_RUN / business_acceptance=NOT_ASSESSED`，尚未启动游戏。
+新case原误列的 `ck3_execute_step` 属于控制queue内部generic步骤，adapter并未直接调用它，
+因此只从本case的 `required_mcp_tools` 移除。其余四个真实决议/GUI接口仍保持必需：
+`ck3_open_ingame_decisions_v1`、`ck3_select_ingame_decision_item_v1`、
+`ck3_query_ingame_decision_item_v1`、`ck3_inspect_gui_window_tree_v1`。
+O8共享manifest缺少这四项的build-ready声明，metadata-only后继正在核定；
+本次源码修改不将原预检RED改写成通过，不自行选择runtime，也不触发新build/export或实机。
+
+随后2026-10-10 13:18:34 UTC，ROOT实际生成O9 metadata-only后继，补充上述四项
+build-ready声明；source/native indices、host、environment/features及graphics key保持原样，
+没有新build/export，也未授予这些接口实际live资格。ROOT第二次公开
+`prepare002=0`、`plan002=0`，`preflight002`于13:20:14 UTC实际完成且exit0、`blockers=[]`。
+结果仍为 `runtime_status=NOT_RUN / business_acceptance=NOT_ASSESSED`，无游戏或业务通过。
+[O9原始小回执索引](acceptance/2026-10-10-i4-natural-source-only/public-preparation/INDEX.O9.actual.json)
+逐项记录源/目标bytes与SHA；9份小原件按原始字节保存，旧O8 RED原件保持不变。
+完整manifest/runtime目录及大输入未复制，后续实际分配、启动、自然时间和保存验收仍待执行。
+13:22:04 UTC单次只读CI查询确认HEAD `3b6cad93f3882ff2e06d553c89bcd5a7537bb79d`
+的Official Runner CI（38054346505）与Linear history均已success；
+[该精确HEAD终态原件](acceptance/2026-10-10-i4-natural-source-only/public-preparation/EXACT-CI-3b6cad93-TERMINAL.actual.json)
+与先前EXACT-CI观察分别保存，不外推下一HEAD，也不增加Li Yu Dao业务信用。
+
 新增的纯Python测试只验新guard：缺失/错误flag形状、tick不可解释、GUI缺失或歧义、
 伪日期跳跃、事件/连接变化、累计实际时间上限、两次真实保存的预期parser形状及中间日期缺口。
 parser小样本不模拟flag自然到期，不产生实机或完整I4信用。

@@ -1,0 +1,90 @@
+{
+  "schema": "ck3.two-exact-head-ci-observation.v1",
+  "heads": [
+    {
+      "head_sha": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4",
+      "observed_at_utc": "2026-10-10T13:09:53.932849+00:00",
+      "api_total_count": 2,
+      "workflows": {
+        "Official Runner CI": {
+          "conclusion": "success",
+          "created_at": "2026-10-10T12:58:35Z",
+          "event": "push",
+          "head_sha": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38053940979",
+          "id": 38053940979,
+          "name": "Official Runner CI",
+          "run_attempt": 1,
+          "run_started_at": "2026-10-10T12:58:35Z",
+          "status": "completed",
+          "updated_at": "2026-10-10T13:08:57Z",
+          "workflow_id": 336785267
+        },
+        "Linear history": {
+          "conclusion": "success",
+          "created_at": "2026-10-10T12:58:35Z",
+          "event": "push",
+          "head_sha": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38053940980",
+          "id": 38053940980,
+          "name": "Linear history",
+          "run_attempt": 1,
+          "run_started_at": "2026-10-10T12:58:35Z",
+          "status": "completed",
+          "updated_at": "2026-10-10T12:59:21Z",
+          "workflow_id": 377165366
+        },
+        "Li Yu Dao static checks": {
+          "status": "NOT_TRIGGERED",
+          "not_counted_as_success": true
+        }
+      },
+      "all_triggered_terminal": true
+    },
+    {
+      "head_sha": "3b6cad93f3882ff2e06d553c89bcd5a7537bb79d",
+      "observed_at_utc": "2026-10-10T13:09:54.775693+00:00",
+      "api_total_count": 2,
+      "workflows": {
+        "Official Runner CI": {
+          "conclusion": null,
+          "created_at": "2026-10-10T13:04:47Z",
+          "event": "push",
+          "head_sha": "3b6cad93f3882ff2e06d553c89bcd5a7537bb79d",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38054346505",
+          "id": 38054346505,
+          "name": "Official Runner CI",
+          "run_attempt": 1,
+          "run_started_at": "2026-10-10T13:04:47Z",
+          "status": "in_progress",
+          "updated_at": "2026-10-10T13:04:50Z",
+          "workflow_id": 336785267
+        },
+        "Linear history": {
+          "conclusion": "success",
+          "created_at": "2026-10-10T13:04:47Z",
+          "event": "push",
+          "head_sha": "3b6cad93f3882ff2e06d553c89bcd5a7537bb79d",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38054346508",
+          "id": 38054346508,
+          "name": "Linear history",
+          "run_attempt": 1,
+          "run_started_at": "2026-10-10T13:04:47Z",
+          "status": "completed",
+          "updated_at": "2026-10-10T13:05:22Z",
+          "workflow_id": 377165366
+        },
+        "Li Yu Dao static checks": {
+          "status": "NOT_TRIGGERED",
+          "not_counted_as_success": true
+        }
+      },
+      "all_triggered_terminal": false
+    }
+  ],
+  "queries": 2,
+  "no_polling_logs_tests_build_game_main_git_mutation": true,
+  "each_result_applies_only_to_its_exact_head": true,
+  "runtime_or_business_qualification": false,
+  "finished_at_utc": "2026-10-10T13:09:54.779375+00:00"
+}

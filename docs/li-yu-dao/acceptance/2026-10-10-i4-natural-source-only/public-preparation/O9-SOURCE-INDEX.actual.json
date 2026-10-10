@@ -1,0 +1,35 @@
+{
+  "schema": "ck3-common-capabilities-metadata-sourceonly-candidate-v1",
+  "status": "REVIEW_ONLY_PRODUCER_NOT_EXECUTED_O9_NOT_CREATED",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-common-capabilities-metadata-sourceonly-20261010-001\\SOURCE-EVIDENCE.actual.json",
+      "bytes": 24337,
+      "sha256": "74f00e992f2140be7f481b69dc735ef536cbfed2f3127f619833cc4c8bab4a86"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-common-capabilities-metadata-sourceonly-20261010-001\\manifest-metadata-only.preview.diff",
+      "bytes": 2044,
+      "sha256": "8f3a3e09cd2097f3c7bc48f61a87c127f9dcbf386c798c7a77916ca540896045"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-common-capabilities-metadata-sourceonly-20261010-001\\publish_capabilities_metadata.py",
+      "bytes": 5932,
+      "sha256": "25942c3d1ed7bdaa56a3d2da30837366431edd41b7c495703b1921b9f74ff63b"
+    }
+  ],
+  "proposed_actual_argv_not_executed": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-common-capabilities-metadata-sourceonly-20261010-001\\publish_capabilities_metadata.py",
+    "--execute",
+    "--source-evidence-sha256",
+    "74f00e992f2140be7f481b69dc735ef536cbfed2f3127f619833cc4c8bab4a86"
+  ],
+  "future_output_root": "C:/workspace/ck3-common-runtime/20261010-009",
+  "producer_AST_parse": "PASS",
+  "budget_bytes_limit": 65536,
+  "no_MAIN_or_Git_changes": true
+}

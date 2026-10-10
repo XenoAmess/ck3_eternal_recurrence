@@ -1,0 +1,302 @@
+{
+  "schema": "ck3-common-capabilities-metadata-source-evidence-v1",
+  "at_utc": "2026-10-10T13:12:47.230943+00:00",
+  "status": "SOURCE_BUILD_READY_METADATA_OMISSION_CONFIRMED_NOT_LIVE_QUALIFIED",
+  "parent_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\manifest.json",
+    "bytes": 5447,
+    "sha256": "c849668841fd1890e6e18998023f82f3159cc07edb04d30b08c0bbc2c0c9ae5f"
+  },
+  "parent_runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\runtime.local.json",
+    "bytes": 2011,
+    "sha256": "c6c08d72edc98fa65f046bdef8ba4a2731d8dbf3fd04782b23161777963eba43"
+  },
+  "source_commit": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+  "mcp_source_actual_pin": {
+    "path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 203259,
+    "sha256": "6c4b0ad34c699d40faaf4b605aebe9d7b9d99c06dcb555780e4f92a80772a182"
+  },
+  "registered_tools": {
+    "ck3_select_ingame_decision_item_v1": {
+      "first_line": 3380,
+      "last_line": 3383
+    },
+    "ck3_query_ingame_decision_item_v1": {
+      "first_line": 3448,
+      "last_line": 3451
+    },
+    "ck3_open_ingame_decisions_v1": {
+      "first_line": 3453,
+      "last_line": 3456
+    },
+    "ck3_inspect_gui_window_tree_v1": {
+      "first_line": 3458,
+      "last_line": 3463
+    }
+  },
+  "required_native_capabilities": {
+    "ck3_open_ingame_decisions_v1": "game.command.activate-ingame-decisions-v1",
+    "ck3_select_ingame_decision_item_v1": "game.command.select-ingame-decision-item-v1",
+    "ck3_query_ingame_decision_item_v1": "game.command.query-ingame-decision-item-v1",
+    "ck3_inspect_gui_window_tree_v1": "game.command.inspect-gui-window-tree-v1"
+  },
+  "source_evidence_spans": [
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "frozen_source_index_pin": {
+        "bytes": 203259,
+        "sha256": "6c4b0ad34c699d40faaf4b605aebe9d7b9d99c06dcb555780e4f92a80772a182"
+      },
+      "first_line": 3379,
+      "last_line": 3383,
+      "text": "\n    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))\n    def ck3_select_ingame_decision_item_v1(decision_key: str, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Invoke source OnSelect once on the unique actual .3 row, then read selected detail identity.\"\"\"\n        return service.select_ingame_decision_item_v1(decision_key, expected_revision=expected_revision)"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "frozen_source_index_pin": {
+        "bytes": 203259,
+        "sha256": "6c4b0ad34c699d40faaf4b605aebe9d7b9d99c06dcb555780e4f92a80772a182"
+      },
+      "first_line": 3448,
+      "last_line": 3465,
+      "text": "    @server.tool(annotations=read_only_tool)\n    def ck3_query_ingame_decision_item_v1(decision_key: str, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Read exact .3 native decision key/owner and actual detail definition; no widget action credit.\"\"\"\n        return service.query_ingame_decision_item_v1(decision_key, expected_revision=expected_revision)\n\n    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))\n    def ck3_open_ingame_decisions_v1(expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Open the fixed exact .3 Decisions HUD button once, with later native visibility proof.\"\"\"\n        return service.open_ingame_decisions_v1(expected_revision=expected_revision)\n\n    @server.tool()\n    def ck3_inspect_gui_window_tree_v1(\n        window_kind: Literal[\"ingame_topbar\", \"decisions\", \"decision_detail\", \"courtier\", \"vivhite_courtier\", \"death_succession\", \"death_destiny\"],\n    ) -> dict[str, object]:\n        \"\"\"Read one bounded native window tree; no text, selection, hover or input.\"\"\"\n        return service.inspect_gui_window_tree_v1(window_kind)\n\n    @server.tool()"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "frozen_source_index_pin": {
+        "bytes": 679771,
+        "sha256": "8479443df188d9b797073453ccb50fd61e1688b6017ed77a8b2eeb75fffca897"
+      },
+      "first_line": 11476,
+      "last_line": 11483,
+      "text": "    def select_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:\n        method = getattr(self.driver, \"select_ingame_decision_item_v1\", None)\n        if not callable(method):\n            raise UnsupportedStepError(\"selected backend lacks the typed actual-row OnSelect\")\n        result = method(decision_key, expected_revision=expected_revision)\n        if not isinstance(result, dict) or result.get(\"schema\") != \"ck3-ingame-decision-item-action-v1\" or result.get(\"postcondition_verified\") is not True or result.get(\"action\") != \"select\":\n            raise BridgeUnavailableError(\"typed OnSelect lacks later actual selected detail proof\")\n        return result"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "frozen_source_index_pin": {
+        "bytes": 679771,
+        "sha256": "8479443df188d9b797073453ccb50fd61e1688b6017ed77a8b2eeb75fffca897"
+      },
+      "first_line": 11635,
+      "last_line": 11663,
+      "text": "    def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Observe one actual decision model identity; this does not qualify a widget action.\"\"\"\n        method = getattr(self.driver, \"query_ingame_decision_item_v1\", None)\n        if not callable(method):\n            raise UnsupportedStepError(\"selected backend lacks the typed decision model observer\")\n        result = method(decision_key, expected_revision=expected_revision)\n        if not isinstance(result, dict) or result.get(\"schema\") != \"ck3-ingame-decision-item-v1\" or result.get(\"read_only\") is not True:\n            raise BridgeUnavailableError(\"typed decision model observer returned malformed data\")\n        return result\n\n    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Open only the exact .3 HUD Decisions entry and verify actual visibility.\"\"\"\n        method = getattr(self.driver, \"open_ingame_decisions_v1\", None)\n        if not callable(method):\n            raise UnsupportedStepError(\"selected backend lacks the typed Decisions opener\")\n        result = method(expected_revision=expected_revision)\n        if not isinstance(result, dict) or result.get(\"schema\") != \"ck3-ingame-decisions-open-v1\" or result.get(\"postcondition_verified\") is not True:\n            raise BridgeUnavailableError(\"typed Decisions opener lacks later visibility proof\")\n        return result\n\n    def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:\n        \"\"\"Read a native window census; a hidden root is not an open modal.\"\"\"\n        inspect = getattr(self.driver, \"inspect_gui_window_tree_v1\", None)\n        if not callable(inspect):\n            raise UnsupportedStepError(\"selected backend has no native GUI window census\")\n        result = inspect(window_kind)\n        if not isinstance(result, dict) or result.get(\"schema\") != \"ck3-native-gui-window-tree-inspection-v1\" or result.get(\"window_kind\") != window_kind or result.get(\"read_only\") is not True:\n            raise BridgeUnavailableError(\"native GUI window census returned malformed data\")\n        return result"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "frozen_source_index_pin": {
+        "bytes": 1430381,
+        "sha256": "18d5957d55f247ed737e993a304f48416cdabe9e0c761b87aecfee6f2bb1a1c3"
+      },
+      "first_line": 6604,
+      "last_line": 6606,
+      "text": "    def select_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Invoke the exact source OnSelect once on the unique actual model row.\"\"\"\n        return self._decision_item_action_v1(decision_key, action=\"select\", expected_revision=expected_revision)"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "frozen_source_index_pin": {
+        "bytes": 1430381,
+        "sha256": "18d5957d55f247ed737e993a304f48416cdabe9e0c761b87aecfee6f2bb1a1c3"
+      },
+      "first_line": 7147,
+      "last_line": 7167,
+      "text": "    def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Read actual .3 model key/owner and selected detail identity without action credit.\"\"\"\n        from .ingame_decision_item_contract import STEP, CAPABILITY, validate_decision_key, normalize_decision_item\n        from .ingame_decisions_open_contract import opening_binding\n        validate_decision_key(decision_key)\n        starting = self.take_snapshot()\n        try:\n            binding = opening_binding(starting)\n        except ValueError as error:\n            raise BridgeUnavailableError(str(error)) from error\n        revision = int(starting[\"revision\"])\n        if expected_revision is not None:\n            _validate_revision(expected_revision, \"expected_revision\")\n            if expected_revision != revision:\n                raise PreSubmissionRevisionMismatchError(\"keyed decision query public revision changed\")\n        raw = self._execute_primitive_step(\n            STEP, expected_revision=revision, required_capability=CAPABILITY,\n            request_fields={\"decision_key\": decision_key,\n                            \"expected_player_character_id\": binding[\"played_character_id\"],\n                            \"expected_game_pid\": binding[\"game_pid\"],\n                            \"expected_connection_generation\": binding[\"connection_generation\"]},"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "frozen_source_index_pin": {
+        "bytes": 1430381,
+        "sha256": "18d5957d55f247ed737e993a304f48416cdabe9e0c761b87aecfee6f2bb1a1c3"
+      },
+      "first_line": 7180,
+      "last_line": 7201,
+      "text": "    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:\n        \"\"\"Dispatch the fixed .3 HUD button once; observe later actual Decisions visibility.\"\"\"\n        from .ingame_decisions_open_contract import (\n            STEP, CAPABILITY, opening_binding, normalize_open_result,\n            actual_visible_decisions_tree,\n        )\n        import hashlib\n        import os\n        starting = self.take_snapshot()\n        try:\n            binding = opening_binding(starting)\n        except ValueError as error:\n            raise BridgeUnavailableError(str(error)) from error\n        revision = int(starting[\"revision\"])\n        if expected_revision is not None:\n            _validate_revision(expected_revision, \"expected_revision\")\n            if expected_revision != revision:\n                raise PreSubmissionRevisionMismatchError(\"Decisions opening public revision changed\")\n        if CAPABILITY not in set(_string_list(self.capabilities().get(\"bridge_capabilities\"))):\n            raise UnsupportedStepError(\"native DLL does not advertise the exact .3 Decisions opener\")\n        # This append-only create claim survives reconnect/lost ACK. It is not\n        # removed by failure or made repeatable by a new connection generation."
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "frozen_source_index_pin": {
+        "bytes": 1430381,
+        "sha256": "18d5957d55f247ed737e993a304f48416cdabe9e0c761b87aecfee6f2bb1a1c3"
+      },
+      "first_line": 7267,
+      "last_line": 7282,
+      "text": "    def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:\n        \"\"\"Inspect one exact native root without old ingame-view RVA calls.\"\"\"\n        from .gui_window_tree_contract import (\n            GUI_WINDOW_TREE_CAPABILITY, GUI_WINDOW_TREE_STEP,\n            GUI_WINDOW_TREE_ROOTS, normalize_gui_window_tree_v1,\n        )\n        if window_kind not in GUI_WINDOW_TREE_ROOTS:\n            raise ValueError(\"unsupported GUI window census scope\")\n        raw = self._execute_primitive_step(\n            GUI_WINDOW_TREE_STEP, expected_revision=0,\n            required_capability=GUI_WINDOW_TREE_CAPABILITY,\n            request_fields={\"window_kind\": window_kind},\n            allow_frontend_revision_zero=True,\n        )\n        try:\n            return normalize_gui_window_tree_v1(raw, window_kind)"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decisions_open_contract.py",
+      "frozen_source_index_pin": {
+        "bytes": 5071,
+        "sha256": "86559e259b64c541909e75835f016822a8bb6fd7c4febb5a822f23fa1dad863d"
+      },
+      "first_line": 1,
+      "last_line": 15,
+      "text": "\"\"\"Exact .3/.4 HUD Decisions opening; no decision-row or product panel action.\"\"\"\nfrom __future__ import annotations\nfrom .version_identity import CK3_12003, CK3_12004, require_exact_native_build\n\nSTEP = \"activate-ingame-decisions-v1\"\nCAPABILITY = \"game.command.activate-ingame-decisions-v1\"\nEXE_SHA256 = \"94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6\"\n\n\ndef result_build(raw):\n    if not isinstance(raw, dict):\n        raise ValueError(\"missing exact native result\")\n    build = require_exact_native_build(raw.get(\"game_version\"), raw.get(\"executable_sha256\"))\n    if build not in (CK3_12003, CK3_12004):\n        raise ValueError(\"requires exact .3/.4 native result\")"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_contract.py",
+      "frozen_source_index_pin": {
+        "bytes": 3535,
+        "sha256": "0799d9f586c87cccbe1d216f2d70a304a83b1a483e27a3b75abdb9cb25c86699"
+      },
+      "first_line": 1,
+      "last_line": 6,
+      "text": "\"\"\"Read actual exact .3 decision model identity without projecting UI action qualification.\"\"\"\nfrom .ingame_decisions_open_contract import result_build\n\nSTEP = \"query-ingame-decision-item-v1\"\nCAPABILITY = \"game.command.query-ingame-decision-item-v1\"\n"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_action_contract.py",
+      "frozen_source_index_pin": {
+        "bytes": 5888,
+        "sha256": "d0fe43258fde8c7d3cf4702e828f5dec56e8b631004f4e68d56aba91410931fe"
+      },
+      "first_line": 1,
+      "last_line": 9,
+      "text": "\"\"\"Once-only native source OnSelect/Confirm intent and independent actual postconditions.\"\"\"\nfrom .ingame_decisions_open_contract import result_build\nfrom .ingame_decision_item_contract import normalize_decision_item\n\nSELECT_STEP = 'select-ingame-decision-item-v1'\nSELECT_CAPABILITY = 'game.command.select-ingame-decision-item-v1'\nCONFIRM_STEP = 'confirm-ingame-decision-item-v1'\nCONFIRM_CAPABILITY = 'game.command.confirm-ingame-decision-item-v1'\n"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\gui_window_tree_contract.py",
+      "frozen_source_index_pin": {
+        "bytes": 2374,
+        "sha256": "5e22cbd23833eb678275ebe254f4a76d36bb35b4feb850783666e76242e90201"
+      },
+      "first_line": 1,
+      "last_line": 6,
+      "text": "\"\"\"Native named-window census; business model and hover reads remain separate.\"\"\"\nfrom __future__ import annotations\nfrom .frontend_gui_route_contract import normalize_frontend_gui_tree_inspection_v1\n\nGUI_WINDOW_TREE_STEP = \"inspect-gui-window-tree-v1\"\nGUI_WINDOW_TREE_CAPABILITY = \"game.command.inspect-gui-window-tree-v1\""
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "frozen_source_index_pin": {
+        "bytes": 1471454,
+        "sha256": "0f5b58914aa3fd9edb16194a46be81dfbe40cef5cee1eeda622712641b9d9e85"
+      },
+      "first_line": 17503,
+      "last_line": 17505,
+      "text": "#if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)\n          } else if (step == xar::ck3_11906::kIngameDecisionsOpenV1Step) {\n            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "frozen_source_index_pin": {
+        "bytes": 1471454,
+        "sha256": "0f5b58914aa3fd9edb16194a46be81dfbe40cef5cee1eeda622712641b9d9e85"
+      },
+      "first_line": 17553,
+      "last_line": 17559,
+      "text": "#if defined(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)\n          } else if (step == xar::ck3_11906::kIngameDecisionItemSelectV1Step || step == xar::ck3_11906::kIngameDecisionItemConfirmV1Step\n#if defined(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)\n              || step == xar::ck3_11906::kIngameDecisionOutcomeConfirmV1Step\n#endif\n              ) {\n            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "frozen_source_index_pin": {
+        "bytes": 1471454,
+        "sha256": "0f5b58914aa3fd9edb16194a46be81dfbe40cef5cee1eeda622712641b9d9e85"
+      },
+      "first_line": 17699,
+      "last_line": 17702,
+      "text": "          } else if (step == xar::ck3_11906::kIngameDecisionItemQueryV1Step) {\n            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;\n            std::string decision_key; xar::game::Snapshot current{};\n            if (!xar::bridge::JsonUnsignedField(incoming.payload,\"expected_revision\",expected_revision) ||"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "frozen_source_index_pin": {
+        "bytes": 1471454,
+        "sha256": "0f5b58914aa3fd9edb16194a46be81dfbe40cef5cee1eeda622712641b9d9e85"
+      },
+      "first_line": 17860,
+      "last_line": 17864,
+      "text": "#endif\n              step == xar::ck3_11906::kFrontendGuiRouteV1Step ||\n              step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||\n              step == xar::ck3_11906::kGuiWindowTreeInspectionV1Step ||\n              step == xar::ck3_11906::"
+    },
+    {
+      "source_path": "C:\\csr9\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "frozen_source_index_pin": {
+        "bytes": 1471454,
+        "sha256": "0f5b58914aa3fd9edb16194a46be81dfbe40cef5cee1eeda622712641b9d9e85"
+      },
+      "first_line": 17916,
+      "last_line": 17924,
+      "text": "              } else if (step == xar::ck3_11906::kGuiWindowTreeInspectionV1Step) {\n                std::string window_kind;\n                if (!xar::bridge::JsonStringField(incoming.payload, \"window_kind\", window_kind, 24)) {\n                  query.gui_window_tree_scope = xar::ck3_11906::GuiWindowTreeScopeV1::unavailable;\n                } else {\n                  query.gui_window_tree_scope = xar::ck3_11906::GuiWindowTreeScopeForV1(window_kind);\n                }\n                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::inspect_gui_window_tree;\n#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)"
+    },
+    {
+      "source_path": "C:\\csr9\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "frozen_source_index_pin": {
+        "bytes": 33562,
+        "sha256": "57fe9a32b638ca12098cb24cb930f0563f311cd07d4527b416363cd9555e5c36"
+      },
+      "first_line": 298,
+      "last_line": 305,
+      "text": "    exe = _pin(Path(runtime['game_dir']) / 'binaries/ck3.exe')\n    require(exe['sha256'] == manifest['game']['exe_sha256'], 'Actual game EXE differs from exact cache build')\n    return {'game': manifest['game'], 'exe': _signature(exe), 'host': _signature(manifest['host']),\n            'native': {key: _signature(manifest['native'][key]) for key in ('dll', 'injector')},\n            'host_features': manifest.get('host_features', {}),\n            'source_core_sha256': _digest({key: _signature(row) for key, row in source['files'].items()\n                                         if key not in PREPARE_ONLY_PATHS and key not in LAUNCH_CONTROL_ONLY_PATHS}),\n            'native_files_sha256': _digest(native['files']), 'prepare_only_paths': sorted(PREPARE_ONLY_PATHS)}"
+    }
+  ],
+  "actual_build_inputs": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-INPUTS.actual.json",
+    "bytes": 3608,
+    "sha256": "70ae3c7f22627918cf43c9a9abc279033c0f3ad0a4bb99b71ae7a2b9ca0bab36"
+  },
+  "actual_build_result": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-RESULT.actual.json",
+    "bytes": 498,
+    "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+  },
+  "actual_source09_native_reuse": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\SOURCE09-NATIVE-REUSE.actual.json",
+    "bytes": 4360,
+    "sha256": "96c70ea02d514f7decfe86b36adc7673b501b1335e415400bf2a2a6cecb185fa"
+  },
+  "actual_CMakeCache_ON_lines": [
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1:BOOL=ON",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1:BOOL=ON"
+  ],
+  "existing_binary_metadata": {
+    "dll": {
+      "existing_build_pin": {
+        "path": "C:\\cbr2\\xar_ck3_bridge.dll",
+        "bytes": 9459712,
+        "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+      },
+      "observed_current_size": 9459712,
+      "observed_mtime_ns": 1791564606879992800,
+      "fresh_binary_body_hash_performed": false
+    },
+    "injector": {
+      "existing_build_pin": {
+        "path": "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+      },
+      "observed_current_size": 39936,
+      "observed_mtime_ns": 1791564561534947800,
+      "fresh_binary_body_hash_performed": false
+    }
+  },
+  "actual_I4_preflight_pin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261010-001\\stdout.log",
+    "bytes": 8737,
+    "sha256": "46f48533636006572b2539b7804661748a72136622cfa9e9710ec35ebdad8a0b"
+  },
+  "prior_actual_hello": {
+    "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0049\\native-report.json",
+    "source_line": 96,
+    "read_limit_bytes": 65536,
+    "source_full_hash_performed": false,
+    "projection": {
+      "type": "hello",
+      "pid": 11732,
+      "protocol_version": 1,
+      "expected_ck3_version": "1.20.0.4",
+      "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
+      "game_adapter_status": "ready",
+      "ck3_build_match": true,
+      "required_advertised_capabilities": [
+        "game.command.activate-ingame-decisions-v1",
+        "game.command.select-ingame-decision-item-v1",
+        "game.command.query-ingame-decision-item-v1",
+        "game.command.inspect-gui-window-tree-v1"
+      ]
+    }
+  },
+  "native_bridge_source_frozen_pin": null,
+  "qualification_boundary": "MCP registration + exact native build0 + native reuse + existing exact-build hello advertisement. No actual execution/postcondition qualification for these four tools inferred.",
+  "graphics_key_unchanged_basis": "Source09 _runtime_key lines278-305 consumes game/EXE, host/native signatures, host_features and source/native indices. It does not consume manifest runtime_id/capabilities. No cache body/seed mutation or hash was performed.",
+  "not_added": [
+    "ck3_execute_step"
+  ],
+  "no_MAIN_Git_build_export_save_cache_or_runtime_output_action": true
+}
