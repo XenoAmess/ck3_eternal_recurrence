@@ -1,5 +1,9 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-11 06:08 CST：QOL R73 槽位夹具编码归因
+
+R73/a174 使用 Source18 与新 prepared42 实机仍在原 PAM 正向 setup guard 前失败：新增 modifier 缺 UTF-8 BOM，CK3 日志明确报错，free slot 仍为1，原35步全 NOT_RUN、自然日0。场次已 OS0/allocator0/keeper0/CAS8507 完整闭合；只修 fixture BOM并更新精确合同，定向9项通过，后继必须新 prepare/live。正式仍7/10，QOL/RMTM均未发布，361继续排除。详见 [R73记录](xqol-r73-controlled-slot-bom-2026-10-11.md)。
+
 ## 2026-10-11 01:01 CST：非二期QOL阴性通过与正例准备定位
 
 R71原pam_negative35步/12日/17markers及errorguard全通过，run0/verify0、正常退出/OS0/native0/allocator/keeper/CAS全闭，签原阴性范围；合法度同步raw差值仍原GAP。R72正39在原obs02确证free==1、owned0、piety4、双setter guard未进，0business/原FAIL全闭。仅采用fixture专用+1slot准备，原AND、奖励、35步12日与生产27文件不变，后继需新prepare/live。Source18已冻结并实际选择，canonical双nonce在两场采集亲审；tier/Character query尚待实机。577082官方CI66success/20skipped/0failure。正式仍7/10，详见[新记录](xqol-r71-r72-pam-slots-2026-10-11.md)。
