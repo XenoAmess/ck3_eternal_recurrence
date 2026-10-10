@@ -1,0 +1,46 @@
+{
+  "schema": "xar.driver-lifecycle.performance-portable-recipe.v1",
+  "status": "PORTABLE_PATH_VARIANT_AUTHOR_NOT_RUN",
+  "candidate_maps": [
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "sha256": "2daba0de546670601f7a33eab859dd1db50936f1956aa8e84e1abed4e48b2938"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/cold_checkpoint_validator.py",
+      "sha256": "d89180d9abbcffcd71a33387826b751e31ecd7709683576e35cbb5358d4509a3"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_seed_rebinder.py",
+      "sha256": "2f5d73b813b137a832809593997247ff1c3006c6805724d7a92b81b266d75298"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/one_generation_preflight.py",
+      "sha256": "76d79cf9b8d288486b91953d09c10c001319a2bdc0164d33915d46b7d5dee04c"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/tests/unit/test_ordinary_seed_rebinder.py",
+      "sha256": "9b71f2f301e4ffbe6b5687a41fe9050082cec8e09f7951d8719804c04de0fb43"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/tests/unit/test_one_generation_preflight.py",
+      "sha256": "2fc3439cbe15d364a9362dc3d82989d3949960a588f4db288f18f478b6a2a59e"
+    }
+  ],
+  "baseline_source_head_from_Root": "01303c2b",
+  "baseline_source_root": "Explicit legacy checkout src directory supplied at invocation",
+  "candidate_repository": "Derived from the test file location",
+  "output_root": "TemporaryDirectory unless explicit --output-root",
+  "new_groups": [
+    "legacy-full-and-thin-consumer-equivalence-immutability-rejections",
+    "pure-cold-validator-anchor-save-errors-and-input-immutability",
+    "joined-rebind-complete-bytes-three-anchors-rollback-and-operation-counts",
+    "joined-preflight-exact-report-errors-and-operation-counts"
+  ],
+  "new_cases": 0,
+  "execution_count": 0
+}

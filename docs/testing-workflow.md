@@ -3496,3 +3496,18 @@ copies only the three lifecycle-anchor ancestor chains and keeps actual
 post-write readback plus exact original-byte rollback. Synthetic old/new
 equivalence passed four groups / 55 checks; actual full-size speed is not yet
 measured. No Driver truncation or change to save validation is introduced.
+
+
+The same four Driver lifecycle regression groups are preserved in
+`ck3_autonomous_player/tests/unit/test_driver_lifecycle_payload_performance.py`
+with the frozen portable recipe in `tests/fixtures/driver_lifecycle_payload_performance_recipe.json`.
+Invoke from the repository root with an explicit legacy checkout:
+
+```text
+python -B ck3_autonomous_player/tests/unit/test_driver_lifecycle_payload_performance.py --baseline-source-root <01303c2b-checkout>/ck3_autonomous_player/src --recipe ck3_autonomous_player/tests/fixtures/driver_lifecycle_payload_performance_recipe.json
+```
+
+The portable entry point uses temporary output and contains no machine drive
+paths. Its unchanged group/helper bodies reuse the prior external four-group /
+55-check qualification; this path variant itself is AUTHOR_NOT_RUN. It does not
+run against the live Driver or imply an additional measured qualification.
