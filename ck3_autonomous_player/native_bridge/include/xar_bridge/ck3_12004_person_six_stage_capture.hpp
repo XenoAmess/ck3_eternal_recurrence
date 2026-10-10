@@ -54,6 +54,20 @@ struct PersonSixStageBasePointInputs12004 {
   friend bool operator==(const PersonSixStageBasePointInputs12004 &,
                          const PersonSixStageBasePointInputs12004 &) = default;
 };
+struct PersonSixStagePietyCategory12004 {
+  bool observed = false;
+  bool ready = false;
+  std::string reason = "piety_category_unobserved";
+  std::optional<std::uint16_t> property_key_u16;
+  std::optional<std::uintptr_t> extension_identity;
+  std::optional<std::int64_t> score_q64;
+  std::optional<std::int32_t> cap_i32;
+  std::optional<std::int32_t> threshold_count_i32;
+  std::vector<std::int64_t> thresholds_used_q64;
+  std::optional<std::int32_t> category_i32;
+  friend bool operator==(const PersonSixStagePietyCategory12004 &,
+                         const PersonSixStagePietyCategory12004 &) = default;
+};
 struct PersonPreparationModel12004 {
   bool observed = false;
   bool ready = false;
@@ -74,6 +88,8 @@ struct PersonSixStageCapture12004DTO {
   bool ready = false;
   bool raw_counts_ready = false;
   PersonSixStageBasePointInputs12004 base_point_inputs;
+  std::array<PersonSixStagePietyCategory12004, kPersonSixStageCount12004>
+      piety_category_inputs{};
   PersonPreparationModel12004 preparation_model;
   PersonSixStagePreAggregate12004 pre_six_aggregate;
   PersonSixStagePreAggregate12004 post_six_aggregate;

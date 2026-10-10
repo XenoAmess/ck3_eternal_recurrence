@@ -1,4 +1,4 @@
-"""AUTHORED_NOTRUN: four new historical base-input whole packets, one compound.
+"""AUTHORED_NOTRUN: four new historical base/piety-input packets, one compound.
 
 Root may run the new producer and this sole consumer once. Every original
 packet passes through registered MCP, GameplayBridgeService and NativeDriver;
@@ -22,6 +22,7 @@ from xar_autoplayer.bridge.battle_person_six_stage_capture_12004 import (
     FIELD_NAME,
     emit_captured_person_base_point_12004,
     emit_captured_person_base_points_12004,
+    emit_captured_person_piety_category_12004,
     emit_captured_person_six_stage_requests_12004,
     normalize_person_six_stage_query_12004,
     select_person_six_stage_capture_12004,
@@ -50,6 +51,10 @@ ORDINALS = [0, 1, 2, 3, 5, 6, 7, 8, 10, 11]
 WEIGHTS = [700000, 800000, -300000, -200000, 100000,
            214748364700000, -214748364800000, -100000,
            -214748364800000, -214748364700000]
+PIETY_SCORES = [-1, 0, 99, 100, 200, 2**63 - 1]
+PIETY_CAPS = [-1, -1, 1, 1, 2, -1]
+PIETY_CATEGORIES = [0, 1, 1, 1, 0, 3]
+PIETY_THRESHOLDS = [[0], [0, 100], [0, 100], [0, 100, 200], [], [0, 100, 200]]
 
 
 class _Checks:
@@ -269,6 +274,38 @@ async def _consume_registered(packets, checks):
                         raw_leaf["base_point_inputs"] == leaf["base_point_inputs"] == expected_base,
                         name + ": owned pre-call signed DWORD inputs changed",
                     )
+                    categories = leaf["piety_category_inputs"]["stages"]
+                    for index, category in enumerate(categories):
+                        category_unread = partial and index == 2
+                        checks.require(
+                            category["observed"] is (not bypass)
+                            and category["ready"] is (not bypass and not category_unread)
+                            and category["property_key_u16"] == (None if bypass else 101 + index)
+                            and category["category_i32"] == (
+                                None if bypass or category_unread else PIETY_CATEGORIES[index]),
+                            name + ": piety category lost its physical key, cap/boundary or availability",
+                        )
+                        if bypass or category_unread:
+                            checks.unavailable(
+                                lambda index=index: emit_captured_person_piety_category_12004(section, index),
+                                name + ": unavailable piety source became a numerical multiplier",
+                            )
+                            continue
+                        piety = emit_captured_person_piety_category_12004(section, index)
+                        checks.require(
+                            piety["character_id"] == SUBJECT
+                            and piety["capture_sequence"] == leaf["capture_sequence"]
+                            and piety["capture_thread_id"] == leaf["capture_thread_id"]
+                            and piety["context_identity"] == leaf["context_identity"]
+                            and piety["stage_index"] == index
+                            and piety["property_key_u16"] == 101 + index
+                            and piety["category_multiplier_i32"] == PIETY_CATEGORIES[index]
+                            and piety["score_q64"] == (None if index == 4 else PIETY_SCORES[index])
+                            and piety["cap_i32"] == (None if index == 4 else PIETY_CAPS[index])
+                            and piety["threshold_count_i32"] == (None if index == 4 else 3)
+                            and piety["thresholds_used_q64"] == PIETY_THRESHOLDS[index],
+                            name + ": historical category source/emitter changed its signed operands",
+                        )
                     identity = _identity(leaf)
                     if expected_base["ready"]:
                         total_inputs[name] = emit_captured_person_base_points_12004(section)
@@ -347,6 +384,8 @@ async def _consume_registered(packets, checks):
             "registered_tool": TOOL, "real_service": "GameplayBridgeService",
             "real_driver": "NativeHeadlessGameplayDriver", "native_payload_rewritten": False,
             "whole_base_input_cases": len(total_inputs),
+            "piety_category_input_cases": len(CASES),
+            "piety_category_source": "actual28BE0B0 per-stage piety integer and actual2BA94A8 U16 key",
             "independent_readable_base_slots": sum(map(len, stage_inputs.values())),
             "unavailable_whole_base_checks": 2, "unavailable_base_slot_checks": 7,
             "frame_or_full_id_rejection_checks": 4, "check_count": checks.count,

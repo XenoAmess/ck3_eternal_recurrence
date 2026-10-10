@@ -1,4 +1,4 @@
-// AUTHORED_NOTRUN: four new historical base-operand whole-command worlds.
+// AUTHORED_NOTRUN: four new historical base/piety-source whole-command worlds.
 // Reuse synthetic memory infrastructure only; the included producer never runs.
 #define main PersonFollowing2922680BasePointsMainNotInvoked
 #include "person_following_2922680_12004_mcp_fixture.cpp"
@@ -38,6 +38,11 @@ constexpr std::array<std::int64_t, 6> kBasePointsFirstWeights{
 constexpr std::array<std::int64_t, 6> kBasePointsSecondWeights{
     800'000LL, -200'000LL, 100'000LL, -214'748'364'800'000LL, 0LL,
     -214'748'364'700'000LL};
+constexpr std::array<std::int64_t, 6> kPietyScores{
+    -1LL, 0LL, 99LL, 100LL, 200LL,
+    (std::numeric_limits<std::int64_t>::max)()};
+constexpr std::array<std::int32_t, 6> kPietyCaps{-1, -1, 1, 1, 2, -1};
+constexpr std::array<std::int32_t, 6> kPietyCategories{0, 1, 1, 1, 0, 3};
 
 std::uintptr_t BasePointsReturnBits(std::uint32_t index) {
   return std::uintptr_t{0xBADC0FFE00000000ULL} |
@@ -72,6 +77,10 @@ struct BasePointsWorld : World {
   void *empty_pc = memory.Allocate(0x70);
   void *capture_game_slot = memory.Allocate(sizeof(void *));
   void *capture_character_slot = memory.Allocate(sizeof(void *));
+  void *piety_key_table = memory.Allocate(48, kModule + 0x4807608);
+  void *piety_threshold_slot = memory.Allocate(8, kModule + 0x54582D8);
+  void *piety_threshold_count = memory.Allocate(4, kModule + 0x54582E4);
+  void *piety_thresholds = memory.Allocate(24);
   native4::PersonSixStageCaptureBindings12004 capture_bindings{};
 
   BasePointsWorld() {
@@ -90,6 +99,14 @@ struct BasePointsWorld : World {
     memory.Put(capture_game_slot, 0, game_state);
     capture_bindings.game_state_slot = reinterpret_cast<void **>(capture_game_slot);
     memory.Put(capture_character_slot, 0, character_storage);
+    memory.Put(piety_threshold_slot, 0, piety_thresholds);
+    memory.Put(piety_threshold_count, 0, std::int32_t{3});
+    for (std::size_t index = 0; index < std::size_t{3}; ++index)
+      memory.Put(piety_thresholds, index * sizeof(std::int64_t),
+                 static_cast<std::int64_t>(index) * 100LL);
+    for (std::size_t index = 0; index < std::size_t{6}; ++index)
+      memory.Put(piety_key_table, index * std::size_t{8},
+                 static_cast<std::uint16_t>(101U + index));
     base_points_original_calls = 0;
     base_points_original_character = base_points_original_context = nullptr;
     base_points_original_index = 0;
@@ -102,6 +119,10 @@ struct BasePointsWorld : World {
                    std::size_t bytes) noexcept {
     auto &world = *static_cast<BasePointsWorld *>(read_context);
     const auto address = Address(source);
+    if (world.kind == BasePointsKind::index2_unread &&
+        world.active_index == std::uint32_t{2} &&
+        address == Address(world.scratch) + 0x118 && bytes == sizeof(std::int64_t))
+      return false;
     const auto first = Address(world.subject) + kBasePointsOffset;
     if (address >= first && address < first + kBasePointsFirst.size() * kBasePointsStride) {
       Require(bytes == sizeof(std::int32_t) &&
@@ -132,6 +153,12 @@ struct BasePointsWorld : World {
       memory.Put(subject, kBasePointsOffset + index * kBasePointsStride,
                  std::int32_t{500} + static_cast<std::int32_t>(index));
     memory.Put(subject, kBasePointsOffset, values.front());
+    SetPietyInput(0);
+  }
+  void SetPietyInput(std::size_t index) {
+    memory.Put(subject, 0x1B0, index == std::size_t{4} ? nullptr : scratch);
+    memory.Put(scratch, 0x118, kPietyScores[index]);
+    memory.Put(scratch, 0x120, kPietyCaps[index]);
   }
   void OriginalMutation(std::uint32_t index) {
     const auto slot = static_cast<std::size_t>(index);
@@ -146,6 +173,8 @@ struct BasePointsWorld : World {
     if (slot + std::size_t{1} < expected_values.size())
       memory.Put(subject, kBasePointsOffset + (slot + std::size_t{1}) * kBasePointsStride,
                  expected_values[slot + std::size_t{1}]);
+    if (slot + std::size_t{1} < expected_values.size())
+      SetPietyInput(slot + std::size_t{1});
   }
   void Capture(bool bypass) {
     for (std::uint32_t index = 0; index < std::uint32_t{6}; ++index) {
@@ -206,6 +235,9 @@ struct BasePointsWorld : World {
     for (std::size_t index = 0; index < expected_values.size(); ++index)
       memory.Put(subject, kBasePointsOffset + index * kBasePointsStride,
                  std::int32_t{123'000} + static_cast<std::int32_t>(index));
+    memory.Put(scratch, 0x118, std::int64_t{-9'000});
+    memory.Put(scratch, 0x120, std::int32_t{0});
+    memory.Put(piety_thresholds, 0, std::int64_t{9'999});
   }
 };
 
@@ -275,6 +307,21 @@ void ProduceBasePoints(const std::filesystem::path &directory,
                 stage.first_pc.ready && stage.second_pc.ready &&
                 world.base_read_attempts[index] == (bypass ? std::size_t{0} : std::size_t{1}),
             "base failure hid a later base, raw count or native append stage");
+    const auto &category = leaf.piety_category_inputs[index];
+    const bool category_unread = unread && index == std::size_t{2};
+    Require(category.observed == !bypass && category.ready == (!bypass && !category_unread) &&
+                category.category_i32 == (bypass || category_unread
+                    ? std::nullopt : std::optional<std::int32_t>{kPietyCategories[index]}) &&
+                category.property_key_u16 == (bypass ? std::nullopt
+                    : std::optional<std::uint16_t>{static_cast<std::uint16_t>(101U + index)}) &&
+                category.reason == (bypass ? "piety_category_unobserved"
+                    : category_unread ? "piety_category_source_unread" : ""),
+            "piety category lost its natural per-stage key, boundary, cap or availability");
+    if (!bypass && index == std::size_t{4})
+      Require(category.extension_identity == std::uintptr_t{0} &&
+                  !category.score_q64 && !category.cap_i32 &&
+                  !category.threshold_count_i32 && category.thresholds_used_q64.empty(),
+              "native null piety extension fabricated resource operands");
   }
   if (spec.kind == BasePointsKind::mutation || recapture) {
     world.MutateAfterQuery();

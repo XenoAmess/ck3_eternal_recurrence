@@ -199,6 +199,84 @@ def _base_point_inputs(value: object, leaf: dict) -> dict:
     return result
 
 
+_PIETY_SOURCE = {
+    "source_stage": "before_each_original_count", "getter_rva": 0x28BE0B0,
+    "key_table_rva": 0x4807608, "key_stride_bytes": 8,
+    "character_extension_offset": 0x1B0, "score_offset": 0x118, "cap_offset": 0x120,
+    "threshold_pointer_rva": 0x54582D8, "threshold_count_rva": 0x54582E4,
+}
+
+
+def _piety_category_inputs(value: object, leaf: dict) -> dict:
+    field = FIELD_NAME + ".piety_category_inputs"
+    raw = _dict(value, field, {*_PIETY_SOURCE, "stages"})
+    if any(raw[key] != expected for key, expected in _PIETY_SOURCE.items()):
+        raise ValueError(field + " changed its actual category source")
+    if not isinstance(raw["stages"], list) or len(raw["stages"]) != STAGE_COUNT:
+        raise ValueError(field + " must retain six historical input slots")
+    stages = []
+    for index, value in enumerate(raw["stages"]):
+        slot = f"{field}.stages[{index}]"
+        row = _dict(value, slot, {
+            "index", "observed", "ready", "reason", "property_key_u16",
+            "extension_identity", "score_q64", "cap_i32", "threshold_count_i32",
+            "thresholds_used_q64", "category_i32",
+        })
+        result = {
+            "index": _integer(row["index"], slot + ".index", 32, unsigned=True),
+            "observed": _boolean(row["observed"], slot + ".observed"),
+            "ready": _boolean(row["ready"], slot + ".ready"),
+            "reason": _string(row["reason"], slot + ".reason", optional=True),
+            "property_key_u16": _number(row["property_key_u16"], slot + ".property_key_u16", 16, unsigned=True),
+            "extension_identity": _string(row["extension_identity"], slot + ".extension_identity", optional=True),
+            "score_q64": None if row["score_q64"] is None else _values_q64([row["score_q64"]], slot + ".score_q64")[0],
+            "cap_i32": _number(row["cap_i32"], slot + ".cap_i32", 32),
+            "threshold_count_i32": _number(row["threshold_count_i32"], slot + ".threshold_count_i32", 32),
+            "thresholds_used_q64": _values_q64(row["thresholds_used_q64"], slot + ".thresholds_used_q64"),
+            "category_i32": _number(row["category_i32"], slot + ".category_i32", 32),
+        }
+        if result["index"] != index or result["thresholds_used_q64"] is None:
+            raise ValueError(slot + " lost its physical input slot or consumed threshold prefix")
+        if result["observed"] and not leaf["stages"][index]["observed"]:
+            raise ValueError(slot + " lacks its natural count callback")
+        if not result["observed"]:
+            if (result["ready"] or result["reason"] != "piety_category_unobserved"
+                    or result["thresholds_used_q64"]
+                    or any(result[key] is not None for key in (
+                        "property_key_u16", "extension_identity", "score_q64",
+                        "cap_i32", "threshold_count_i32", "category_i32"))):
+                raise ValueError(slot + " unobserved source cannot supply a category")
+        if result["category_i32"] is not None:
+            extension = result["extension_identity"]
+            if extension is None:
+                raise ValueError(slot + " category lacks its copied extension decision")
+            if int(extension, 16) == 0:
+                expected = 0
+            else:
+                score, cap, count = (result[key] for key in (
+                    "score_q64", "cap_i32", "threshold_count_i32"))
+                if score is None or cap is None or count is None:
+                    raise ValueError(slot + " category lacks its signed resource operands")
+                used = result["thresholds_used_q64"]
+                rank = 0
+                for threshold in used:
+                    if score < threshold:
+                        break
+                    rank += 1
+                if (len(used) > max(count, 0) or rank < len(used) - 1
+                        or rank < max(count, 0) and rank == len(used)):
+                    raise ValueError(slot + " category lacks its consumed threshold boundary")
+                expected = rank if cap < 0 else min(rank, cap)
+            if result["category_i32"] != expected:
+                raise ValueError(slot + " category differs from its actual getter operands")
+        ready = (result["observed"] and result["property_key_u16"] is not None
+                 and result["category_i32"] is not None)
+        if result["ready"] is not ready or ready and result["reason"] is not None:
+            raise ValueError(slot + " readiness differs from its historical key/category")
+        stages.append(result)
+    return {**_PIETY_SOURCE, "stages": stages}
+
+
 def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     """Retain six owned stages, including incomplete and unread observations."""
     if value is None:
@@ -208,6 +286,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     has_aggregate = isinstance(value, dict) and "pre_six_aggregate" in value
     has_preparation = isinstance(value, dict) and "preparation_model" in value
     has_base_points = isinstance(value, dict) and "base_point_inputs" in value
+    has_piety_category = isinstance(value, dict) and "piety_category_inputs" in value
     raw = _dict(value, FIELD_NAME, {
         "schema", "build_version", "executable_sha256", "configured",
         "capture_observed", "capture_complete", "ready", "raw_counts_ready",
@@ -217,7 +296,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         "actual_model_write_performed", "full_helper_ready",
     } | (aggregate_fields if has_aggregate else set())
       | ({"preparation_model"} if has_preparation else set())
-      | ({"base_point_inputs"} if has_base_points else set()))
+      | ({"base_point_inputs"} if has_base_points else set())
+      | ({"piety_category_inputs"} if has_piety_category else set()))
     if (raw["schema"] != SCHEMA or require_exact_native_build(
             raw["build_version"], raw["executable_sha256"]) != CK3_12004):
         raise ValueError(FIELD_NAME + " requires its exact actual4 source identity")
@@ -307,6 +387,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         result["preparation_model"] = _preparation_model(raw["preparation_model"], result)
     if has_base_points:
         result["base_point_inputs"] = _base_point_inputs(raw["base_point_inputs"], result)
+    if has_piety_category:
+        result["piety_category_inputs"] = _piety_category_inputs(raw["piety_category_inputs"], result)
     return result
 
 
@@ -537,4 +619,26 @@ def emit_captured_person_base_point_12004(section: object, native_index: object)
         "stage_index": index,
         "source_offset_bytes": base["character_offset"] + base["stride_bytes"] * index,
         "value_i32": value,
+    }
+
+
+def emit_captured_person_piety_category_12004(section: object, native_index: object) -> dict:
+    """Publish one actual per-stage category/key and the inputs explaining it."""
+    character, leaf = _joined_leaf(section)
+    index = _integer(native_index, FIELD_NAME + ".piety_category_inputs.index", 32, unsigned=True)
+    if index >= STAGE_COUNT:
+        raise ValueError("Required native input unavailable: piety category stage")
+    inputs = leaf.get("piety_category_inputs")
+    if inputs is None:
+        raise ValueError("Required native input unavailable: piety_category_unobserved")
+    stage = inputs["stages"][index]
+    if not stage["ready"]:
+        raise ValueError("Required native input unavailable: " + stage["reason"])
+    return _base_point_provenance(character, leaf) | {
+        "stage_index": index, "property_key_u16": stage["property_key_u16"],
+        "category_multiplier_i32": stage["category_i32"],
+        "extension_identity": stage["extension_identity"],
+        "score_q64": stage["score_q64"], "cap_i32": stage["cap_i32"],
+        "threshold_count_i32": stage["threshold_count_i32"],
+        "thresholds_used_q64": list(stage["thresholds_used_q64"]),
     }
