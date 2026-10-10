@@ -212,6 +212,9 @@ std::string SerializeAppointmentWindowSnapshotV1(const AppointmentWindowSnapshot
    o<<",\"title_tier\":";if(d.available)o<<d.title_tier;else o<<"null";
    o<<",\"required_native_level\":";if(d.available)o<<d.required_native_level;else o<<"null";
    o<<",\"meets_native_level_floor\":";if(d.available)o<<d.meets_native_level_floor;else o<<"null";
+   o<<",\"current_rule_allowed_candidate_tier_ordinal\":";
+   if(d.available)o<<unsigned(d.current_rule_allowed_candidate_tier_ordinal);else o<<"null";
+   o<<",\"candidate_tier\":";if(d.available)o<<d.candidate_tier;else o<<"null";
    o<<"}";
   }
   o<<",\"breakdown_unavailable_reason\":\""<<Escape(v.breakdown_unavailable_reason)<<"\",\"unavailable_reason\":\""<<Escape(v.unavailable_reason)<<"\"}";

@@ -30,7 +30,9 @@ struct Memory {
   const std::uintptr_t rule = 0x10A000, extension = 0x10C000;
   const std::uintptr_t thresholds = 0x10E000, floors = 0x110000;
   const std::uint32_t character_id = 0x7A000006U, title_id = 0x34000002U;
-  int accumulated_reads = 0;
+  const std::uintptr_t tier_extension = 0x112000;
+  int accumulated_reads = 0, candidate_tier_reads = 0;
+  bool change_second_tier = false;
   bool change_second_sample = false;
 
   template<class T> void Put(std::uintptr_t address, T value) {
@@ -44,6 +46,8 @@ struct Memory {
         m.change_second_sample) {
       m.Put(m.extension+0x178, std::int64_t(200001));
     }
+    if (address == m.tier_extension+0x1D4 && ++m.candidate_tier_reads == 2 &&
+        m.change_second_tier) m.Put(m.tier_extension+0x1D4, std::int32_t(4));
     if (size > 64) return false;
     for (std::size_t i = 0; i < size; ++i) {
       const auto it = m.bytes.find(address+i);
@@ -59,6 +63,8 @@ struct Memory {
     Put(title+0x10, title_id); Put(title+0x48, title_template);
     Put(title_template+0x64, std::int32_t(4));
     Put(rule+0x148, std::uint8_t(0)); Put(character+0x1B0, extension);
+    Put(rule+0x149, std::uint8_t(1));
+    Put(character+0x1C0, tier_extension); Put(tier_extension+0x1D4, std::int32_t(5));
     Put(extension+0x178, std::int64_t(200000));
     Put(extension+0x180, std::int32_t(-1));
     Put(base+0x5458818, thresholds); Put(base+0x5458824, std::int32_t(3));
@@ -185,6 +191,69 @@ int main() {
       Memory m; m.Put(m.base+0x5458824, std::int32_t(257));
       AppointmentCharacterLevel12004 d;
       Check(!m.Get(d) && !d.available, "out-of-bound threshold table accepted");
+    }, passed);
+    Case("candidate_tier_does_not_redefine_native_level_floor", [] {
+      Memory m; AppointmentCharacterLevel12004 d;
+      m.Put(m.title_template+0x64, std::int32_t(3));
+      m.Put(m.floors+3*4, std::int32_t(2));
+      Check(m.Get(d) && d.available && d.native_level == 2 &&
+          d.required_native_level == 2 && d.meets_native_level_floor &&
+          d.current_rule_allowed_candidate_tier_ordinal == 1 &&
+          d.candidate_tier == 5 && d.title_tier == 3,
+          "tier observation overwrote the independent level-floor result");
+      Check(m.candidate_tier_reads == 2, "candidate tier was not sampled twice");
+      Contains(m.Wire(d), "\"current_rule_allowed_candidate_tier_ordinal\":1");
+      Contains(m.Wire(d), "\"candidate_tier\":5");
+    }, passed);
+    Case("changed_second_candidate_tier_is_not_a_stable_observation", [] {
+      Memory m; m.change_second_tier = true; AppointmentCharacterLevel12004 d;
+      Check(!m.Get(d) && !d.available && m.candidate_tier_reads == 2 &&
+          d.unavailable_reason == "native_type0_level_fields_changed",
+          "changed candidate tier escaped the existing two-sample guard");
+      Contains(m.Wire(d), "\"candidate_tier\":null");
+      Contains(m.Wire(d), "\"current_rule_allowed_candidate_tier_ordinal\":null");
+    }, passed);
+    Case("sentinel_tier_checks_full_title_generation", [] {
+      Memory m; AppointmentCharacterLevel12004 d;
+      const std::uintptr_t database=0x114000, entries=0x116000, ids=0x118000;
+      const std::uintptr_t candidate_title=0x11A000, candidate_template=0x11C000;
+      const std::uint32_t candidate_id=0x56000004U;
+      m.Put(m.tier_extension+0x1D4,std::int32_t(7));
+      m.Put(m.tier_extension+0x1EC,std::uint32_t(1));
+      m.Put(m.tier_extension+0x1E0,ids); m.Put(ids,candidate_id);
+      m.Put(m.base+0x5D1DAF8,database);
+      m.Put(database+0x20,entries);m.Put(database+0x2C,std::uint32_t(5));
+      m.Put(entries+4*0x10+8,candidate_title);
+      m.Put(candidate_title+0x10,candidate_id);
+      m.Put(candidate_title+0x48,candidate_template);
+      m.Put(candidate_template+0x64,std::int32_t(3));
+      Check(m.Get(d) && d.available && d.candidate_tier==3,
+            "cached sentinel did not resolve its first full title ID");
+      m.Put(candidate_title+0x10,candidate_id ^ 0x01000000U);
+      Check(!m.Get(d) && !d.available &&
+            d.unavailable_reason=="native_type0_level_fields_unavailable",
+            "stale title generation escaped the candidate tier guard");
+    }, passed);
+    Case("fallback_titles_and_absent_landed_extension", [] {
+      Memory m; AppointmentCharacterLevel12004 d;
+      const std::uintptr_t database=0x114000, entries=0x116000, ids=0x118000;
+      const std::uintptr_t candidate_title=0x11A000, candidate_template=0x11C000;
+      const std::uintptr_t fallback=0x11E000;
+      const std::uint32_t candidate_id=0x56000004U;
+      m.Put(m.character+0x1C0,std::uintptr_t(0));
+      m.Put(m.character+0x1D0,fallback);
+      m.Put(fallback+0x74,std::uint32_t(1));m.Put(fallback+0x68,ids);
+      m.Put(ids,candidate_id);m.Put(m.base+0x5D1DAF8,database);
+      m.Put(database+0x20,entries);m.Put(database+0x2C,std::uint32_t(5));
+      m.Put(entries+4*0x10+8,candidate_title);
+      m.Put(candidate_title+0x10,candidate_id);
+      m.Put(candidate_title+0x48,candidate_template);
+      m.Put(candidate_template+0x64,std::int32_t(3));
+      Check(m.Get(d) && d.available && d.candidate_tier==3,
+            "fallback held-title vector did not resolve its first title");
+      m.Put(m.character+0x1D0,std::uintptr_t(0));
+      Check(m.Get(d) && d.available && d.candidate_tier==0,
+            "absent landed extensions did not preserve native tier zero");
     }, passed);
     std::cerr << "PASS " << passed << " new bounded mock cases; NOT LIVE\n";
     return 0;

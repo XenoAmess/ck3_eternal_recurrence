@@ -67,6 +67,16 @@ def _normalize_character_level(v: dict[str, object], fields: dict[str, int | str
     ordinal = d.get("native_level_source_ordinal")
     if ordinal is not None:
         _integer(ordinal, 0, 255, "native level source ordinal")
+    tier_fields = ("current_rule_allowed_candidate_tier_ordinal", "candidate_tier")
+    # Additive extension: Source17's older diagnostic remains valid as-is.
+    has_tier_extension = any(name in d for name in tier_fields)
+    if has_tier_extension:
+        _require(all(name in d for name in tier_fields), "incomplete candidate tier extension")
+        if d["available"]:
+            _integer(d[tier_fields[0]], 0, 255, "allowed candidate tier ordinal")
+            _integer(d[tier_fields[1]], 0, 6, "candidate tier")
+        else:
+            _require(all(d[name] is None for name in tier_fields), "unavailable candidate tier extension has data")
     if d["available"] is False:
         _require(isinstance(d.get("unavailable_reason"), str) and bool(d["unavailable_reason"]), "missing diagnostic unavailable reason")
         for name in ("resource_extension_present", "accumulated_raw", "level_cap_raw", "native_level",

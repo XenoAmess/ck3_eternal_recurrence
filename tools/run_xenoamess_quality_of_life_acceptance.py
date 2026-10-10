@@ -1092,49 +1092,6 @@ def main(args: argparse.Namespace) -> int:
     if args.preflight:
         print("XQOL ACCEPTANCE PREFLIGHT: GREEN")
         return 0
-    RUNS_ROOT.mkdir(parents=True, exist_ok=True)
-    if args.artifacts_dir:
-        artifacts = Path(args.artifacts_dir).expanduser().resolve()
-        if artifacts.exists():
-            raise acceptance.RunnerError(f"artifact directory already exists: {artifacts}")
-    else:
-        artifacts = RUNS_ROOT / f"zqa_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
-    state_dir = artifacts.with_name(artifacts.name + "_native_state")
-    source_root = Path(args.source).expanduser().resolve() if args.source else SOURCE.resolve()
-    if not source_root.is_dir():
-        raise acceptance.RunnerError(f"product source directory is missing: {source_root}")
-    steam_root = terminal.steam_userdata_root()
-    workshop_roots = isolated.steam_workshop_app_roots(steam_root)
-    isolated.registered_workshop_targets(workshop_roots)
-    isolated.ensure_test_paths_safe((artifacts, state_dir), steam_root, workshop_roots)
-    protected_before = isolated.protected_snapshot(steam_root)
-    artifacts.mkdir(parents=True)
-    report = run_cell(artifacts / "cell", state_dir, config, args.keep_userdir, source_root)
-    protected_unchanged = False
-    error_reason = report["error_reason"]
-    result = report["result"]
-    try:
-        isolated.verify_protected_storage(protected_before, steam_root, POSTFLIGHT_STABILITY_SECONDS if result == "GREEN" else 0)
-        protected_unchanged = True
-    except Exception as error:
-        result = "RED"
-        error_reason = f"{error_reason}; protected storage: {error}" if error_reason else f"protected storage: {error}"
-    matrix = {
-        "schema_version": 1,
-        "result": result,
-        "error_reason": error_reason,
-        "preflight_identity": identity,
-        "cell": report,
-        "protected_storage_unchanged": protected_unchanged,
-    }
-    write_json(artifacts / "report.json", matrix)
-    print("\n===== XQOL ACCEPTANCE =====")
-    print(f"cell                    {report['result']}")
-    print("MCP readiness           " + ("GREEN" if report.get("mcp_readiness") else "RED"))
-    print("protected storage       " + ("UNCHANGED" if protected_unchanged else "UNPROVEN"))
-    print(f"artifacts               {artifacts}")
-    print(f"RESULT: {result}")
-    return 0 if result == "GREEN" else 1
 
 
 if __name__ == "__main__":

@@ -19,6 +19,8 @@ struct AppointmentCharacterLevel12004 {
   std::int32_t level_cap_raw = -1, native_level = 0;
   std::int32_t title_tier = 0, required_native_level = 0;
   bool meets_native_level_floor = false;
+  std::uint8_t current_rule_allowed_candidate_tier_ordinal = 0;
+  std::int32_t candidate_tier = 0;
 };
 
 bool ReadAppointmentCharacterLevel12004(

@@ -215,6 +215,37 @@ class CharacterNativeLevelContractTests(unittest.TestCase):
    packet=self.packet();packet['title_appointment']['character_level_diagnostic'][name]=value
    with self.subTest(field=name,value=value),self.assertRaises(ValueError):self.normalize(packet)
 
+ def test_candidate_tier_extension_preserves_source17_and_level_floor(self):
+  legacy=self.packet()
+  self.assertEqual(self.normalize(legacy)['title_appointment']['character_level_diagnostic'],
+                   legacy['title_appointment']['character_level_diagnostic'])
+  extended=copy.deepcopy(legacy)
+  observed=extended['title_appointment']['character_level_diagnostic']
+  observed.update(current_rule_allowed_candidate_tier_ordinal=1,candidate_tier=5)
+  result=self.normalize(extended)['title_appointment']['character_level_diagnostic']
+  self.assertEqual(result,observed)
+  for name in self.DERIVED:
+   self.assertEqual(result[name],legacy['title_appointment']['character_level_diagnostic'][name])
+  self.assertNotIn('eligible',result)
+
+ def test_candidate_tier_extension_rejects_partial_and_unavailable_data(self):
+  keys=('current_rule_allowed_candidate_tier_ordinal','candidate_tier')
+  for key in keys:
+   packet=self.packet();packet['title_appointment']['character_level_diagnostic'][key]=1
+   with self.subTest(partial=key),self.assertRaises(ValueError):self.normalize(packet)
+  unavailable=self.unavailable_packet()
+  unavailable['title_appointment']['character_level_diagnostic'].update(dict.fromkeys(keys))
+  self.assertFalse(self.normalize(unavailable)['title_appointment']['character_level_diagnostic']['available'])
+  for key in keys:
+   invalid=copy.deepcopy(unavailable);invalid['title_appointment']['character_level_diagnostic'][key]=0
+   with self.subTest(unavailable=key),self.assertRaises(ValueError):self.normalize(invalid)
+  for key,values in ((keys[0],(True,1.0,'1',None,-1,256)),
+                     (keys[1],(True,1.0,'5',None,-1,7))):
+   for value in values:
+    packet=self.packet();diagnostic=packet['title_appointment']['character_level_diagnostic']
+    diagnostic.update(zip(keys,(1,5)));diagnostic[key]=value
+    with self.subTest(field=key,value=value),self.assertRaises(ValueError):self.normalize(packet)
+
  def test_legacy_omitted_diagnostic_fields_remain_compatible(self):
   legacy_fields=contract.validate_request(11,native['requested_title_id'],0,1,native['breakdown_character_id'])
   self.assertEqual(legacy_fields['diagnostic_character_id'],0)

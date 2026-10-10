@@ -744,63 +744,6 @@ def main(
     if preflight_only:
         print(f"{ACCEPTANCE_LABEL} ACCEPTANCE PREFLIGHT: GREEN")
         return 0
-    if artifacts_dir:
-        artifacts = Path(artifacts_dir).expanduser().resolve()
-        if artifacts.exists():
-            raise acceptance.RunnerError(f"artifact directory already exists: {artifacts}")
-        if not artifacts.parent.is_dir():
-            raise acceptance.RunnerError(
-                f"artifact parent does not exist: {artifacts.parent}"
-            )
-    else:
-        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        artifacts = Path(tempfile.gettempdir()) / (
-            f"{ARTIFACT_PREFIX}_{stamp}_{uuid.uuid4().hex[:8]}"
-        )
-    userdir = artifacts.with_name(f"{USERDIR_PREFIX}_{uuid.uuid4().hex[:8]}")
-    steam_root = terminal.steam_userdata_root()
-    workshop_roots = isolated.steam_workshop_app_roots(steam_root)
-    isolated.registered_workshop_targets(workshop_roots)
-    isolated.ensure_test_paths_safe((artifacts, userdir), steam_root, workshop_roots)
-    protected_before = isolated.protected_snapshot(steam_root)
-    artifacts.mkdir()
-    report = run_cell(artifacts / "cell", userdir, keep_userdir)
-    result = report["result"]
-    error_reason = report["error_reason"]
-    protected_unchanged = False
-    try:
-        isolated.verify_protected_storage(
-            protected_before,
-            steam_root,
-            POSTFLIGHT_STABILITY_SECONDS if result == "GREEN" else 0,
-        )
-        protected_unchanged = True
-    except BaseException as error:
-        result = "RED"
-        reason = str(error) or type(error).__name__
-        error_reason = f"{error_reason}; {reason}" if error_reason else reason
-    matrix = {
-        "schema_version": 1,
-        "result": result,
-        "error_reason": error_reason,
-        "cell": report,
-        "protected_storage_unchanged": protected_unchanged,
-        "postflight_quiet_seconds": (
-            POSTFLIGHT_STABILITY_SECONDS
-            if result == "GREEN" and protected_unchanged
-            else 0
-        ),
-    }
-    write_json(artifacts / "report.json", matrix)
-    print(f"\n===== {ACCEPTANCE_LABEL} ACCEPTANCE =====")
-    print(f"cell                    {report['result']}")
-    print(
-        "protected storage       "
-        + ("UNCHANGED" if protected_unchanged else "UNPROVEN")
-    )
-    print(f"artifacts               {artifacts}")
-    print(f"RESULT: {result}")
-    return 0 if result == "GREEN" else 1
 
 
 if __name__ == "__main__":

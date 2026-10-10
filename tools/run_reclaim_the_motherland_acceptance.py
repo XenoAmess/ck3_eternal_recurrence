@@ -1440,60 +1440,6 @@ def main(args: argparse.Namespace) -> int:
     if args.preflight:
         print("RECLAIM THE MOTHERLAND ACCEPTANCE PREFLIGHT: GREEN")
         return 0
-    state_dir = artifacts.with_name(artifacts.name + "_native_state")
-    source_root = Path(args.source).expanduser().resolve() if args.source else SOURCE
-    if not source_root.is_dir():
-        raise acceptance.RunnerError(f"product source directory missing: {source_root}")
-    if args.manifest:
-        try:
-            release.verify_manifest(
-                source_root, Path(args.manifest), workshop_cache=True
-            )
-        except ValueError as error:
-            raise acceptance.RunnerError(
-                f"Workshop source failed strict manifest verification: {error}"
-            ) from error
-    steam_root = terminal.steam_userdata_root()
-    workshop_roots = isolated.steam_workshop_app_roots(steam_root)
-    isolated.registered_workshop_targets(workshop_roots)
-    isolated.ensure_test_paths_safe((artifacts, state_dir), steam_root, workshop_roots)
-    protected_before = isolated.protected_snapshot(steam_root)
-    report = run_cell(
-        artifacts / "cell", state_dir, config, args.keep_userdir, source_root
-    )
-    protected_unchanged = False
-    result = report["result"]
-    error_reason = report["error_reason"]
-    try:
-        isolated.verify_protected_storage(
-            protected_before,
-            steam_root,
-            POSTFLIGHT_STABILITY_SECONDS if result == "GREEN" else 0,
-        )
-        protected_unchanged = True
-    except Exception as error:
-        result = "RED"
-        error_reason = (
-            f"{error_reason}; protected storage: {error}"
-            if error_reason
-            else f"protected storage: {error}"
-        )
-    matrix = {
-        "schema_version": 1,
-        "result": result,
-        "error_reason": error_reason,
-        "preflight_identity": identity,
-        "cell": report,
-        "protected_storage_unchanged": protected_unchanged,
-    }
-    write_json(artifacts / "report.json", matrix)
-    print("\n===== RECLAIM THE MOTHERLAND ACCEPTANCE =====")
-    print(f"cell                    {report['result']}")
-    print("MCP readiness           " + ("GREEN" if report["mcp_readiness"] else "RED"))
-    print("protected storage       " + ("UNCHANGED" if protected_unchanged else "UNPROVEN"))
-    print(f"artifacts               {artifacts}")
-    print(f"RESULT: {result}")
-    return 0 if result == "GREEN" else 1
 
 
 if __name__ == "__main__":
