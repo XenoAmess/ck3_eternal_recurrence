@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_campaign.hpp"
+#include "xar_bridge/ck3_12004_council_task_owner_monthly_piety.hpp"
 
 #include "xar_bridge/ck3_12002_nonwar_metrics.hpp"
 #include "xar_bridge/ck3_12002_nonwar_council.hpp"
@@ -1088,10 +1089,11 @@ void PopulateEnvironment(
   environment.top_liege = reinterpret_cast<decltype(environment.top_liege)>(base + 0x28BFD80);
   environment.province_holder_character_id = reinterpret_cast<decltype(environment.province_holder_character_id)>(base + 0x247D010);
 
-  // The .2 software helper embeds unheld actual4 native addresses. Preserve
-  // existing optional absence; do not install that helper or a guessed getter.
+  // The total-player .2 helper still embeds unheld actual4 native addresses.
+  // Current task-owner piety uses the independently closed actual4 modifier.
   environment.monthly_piety = nullptr;
-  environment.task_owner_monthly_piety = nullptr;
+  environment.task_owner_monthly_piety =
+      &ReadCampaignRootTaskOwnerMonthlyPiety12004;
 }
 
 // Insert inside xar::ck3_12004::campaign_root_detail; includes mirror the old metrics TU:

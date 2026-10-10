@@ -9707,3 +9707,4 @@ if(BUILD_TESTING AND WIN32)
 endif()
 
 include(cmake/army_manager_shared_wire_12004.cmake)
+include(cmake/council_task_owner_monthly_piety_12004.cmake)

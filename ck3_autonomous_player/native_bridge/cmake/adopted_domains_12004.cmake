@@ -17,6 +17,7 @@ target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_events.cpp
   src/ck3_12004_title_holder.cpp
   src/ck3_12004_campaign.cpp
+  src/ck3_12004_council_task_owner_monthly_piety.cpp
   src/ck3_12004_hired_troop_shared_bindings.cpp
   src/ck3_12004_holy_order_bindings.cpp
   src/ck3_12004_mercenary_bindings.cpp
