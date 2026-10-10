@@ -5820,7 +5820,7 @@ class GameplayBridgeService:
         _planning_root_result: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Read the exact-build local-player campaign root while paused."""
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(
                 "campaign-root queries require a paused CK3 snapshot"
@@ -6035,7 +6035,7 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "campaign-root build mirror disagrees with bridge hello"
             )
-        current = self.snapshot()
+        current = self.snapshot(include_native_command_history=False)
         if not (
             current.get("paused") is True
             and current.get("revision") == revision
@@ -6686,7 +6686,7 @@ class GameplayBridgeService:
     ) -> dict[str, object]:
         """Aggregate root, player vitals, alerts, pending and war state."""
 
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         root = self.query_campaign_root_context_v1(
             expected_revision=expected_revision,
             **({"_planning_root_result": _planning_root_result}

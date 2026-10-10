@@ -1,0 +1,44 @@
+{
+  "purpose": "Four focused synthetic groups for campaign-root/turn-bundle native-history export avoidance.",
+  "working_directory": ".",
+  "environment": {
+    "PYTHONPATH": "ck3_autonomous_player/src"
+  },
+  "argv": [
+    "<verified-python>",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "ck3_autonomous_player/tests/unit",
+    "-p",
+    "test_service_query_history79.py",
+    "-v"
+  ],
+  "production_source": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+  "fixture_source": "ck3_autonomous_player/tests/unit/test_service_query_history79.py",
+  "test_groups": [
+    "test_01_root_output_rpc_revision_and_independent_boundaries",
+    "test_02_bundle_output_rpc_revision_and_three_reads",
+    "test_03_complete_driver_opaque_history_and_file_bytes_unchanged",
+    "test_04_poison_history_calibration_and_existing_false_path"
+  ],
+  "control": "Default repo entry derives previous root/bundle methods by reverting exactly two root and one bundle history-omission calls; no retained baseline file is needed.",
+  "qualified_execution": {
+    "entry": "External frozen recipe02 runner with explicit original old/new service-module injection",
+    "result_logical_key": "continuation-32/service-query-history79/focused-service-query-history01/RESULT.json",
+    "result_sha256": "19eba54188ba73a85f23e4cf24478085e7962ef3d9a693151a612c107b1541d8",
+    "fixture_sha256": "a1b7dabb81e9346c498dce8029b98e23e8507d337635b77c3a5ca8762cf1815c",
+    "groups_passed": 4,
+    "checks_passed": 60,
+    "runs": 1,
+    "portable_default_entry": "SOURCE_READY_NOT_EXECUTED_IN_THIS_QUALIFICATION",
+    "old_qa_replays": 0,
+    "real_driver_reads_or_hashes": 0,
+    "live_or_actual_speed_credit": false
+  },
+  "scope": "Real service methods and existing native-driver snapshot/history methods with a small fake native reply transport. Synthetic DATE_RAW and revisions are fixture inputs."
+}

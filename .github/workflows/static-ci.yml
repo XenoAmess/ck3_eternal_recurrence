@@ -111,6 +111,15 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test service history export and same-packet warm attachment without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_service_query_history79.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 -m unittest discover -s ck3_autonomous_player/tests -p "test_gameplay_mcp_packet_reader_warm.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Preserve decision history growth evidence
         if: always()
         uses: actions/upload-artifact@v4
