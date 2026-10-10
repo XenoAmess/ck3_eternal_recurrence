@@ -219,6 +219,163 @@ PersonSixStagePietyCategory12004 CopyPietyCategory(
   return result;
 }
 
+PersonSixStageClassifiedPietyRow12004 CopyClassifiedPietyRow(
+    std::uintptr_t row_address, std::uint32_t native_index,
+    const std::optional<std::uint16_t> &property_key) noexcept {
+  PersonSixStageClassifiedPietyRow12004 row;
+  row.native_index = native_index;
+  try {
+    row.pc_identity = Copy<std::uintptr_t>(row_address);
+    row.scale_q64 = Copy<std::int64_t>(row_address + 8);
+    const auto lookup = [&]() {
+      if (!property_key) {
+        row.reason = "classified_property_key_unread";
+        return;
+      }
+      // Actual23036E0 tests FFFF before reading anything through the PC.
+      if (*property_key == std::uint16_t{0xFFFF}) {
+        row.lookup_selection = "sentinel";
+        row.raw_value_q64 = std::int64_t{0};
+        row.ready = true;
+        return;
+      }
+      if (!row.pc_identity || *row.pc_identity == 0) {
+        row.reason = "classified_row_pc_unread";
+        return;
+      }
+      row.pc_count_i32 = Copy<std::int32_t>(*row.pc_identity + 0xC);
+      if (!row.pc_count_i32) {
+        row.reason = "classified_pc_count_unread";
+        return;
+      }
+      if (*row.pc_count_i32 < 0) {
+        row.reason = "classified_pc_count_negative";
+        return;
+      }
+      if (*row.pc_count_i32 == 0) {
+        row.lookup_selection = "empty";
+        row.raw_value_q64 = std::int64_t{0};
+        row.ready = true;
+        return;
+      }
+      const auto keys = Copy<std::uintptr_t>(*row.pc_identity);
+      if (!keys || *keys == 0) {
+        row.reason = "classified_pc_keys_unread";
+        return;
+      }
+      const auto count = static_cast<std::uintptr_t>(*row.pc_count_i32);
+      std::uintptr_t candidate = 0;
+      auto remaining = count;
+      // Literal2303721..2303740: advance by remaining-half, then retain
+      // half regardless of the comparison. Preserve the residual check too.
+      while (remaining != 0) {
+        const auto half = remaining >> 1;
+        const auto probed = Copy<std::uint16_t>(
+            *keys + (candidate + half) * sizeof(std::uint16_t));
+        if (!probed) {
+          row.reason = "classified_pc_key_unread";
+          return;
+        }
+        if (*probed < *property_key) candidate += remaining - half;
+        remaining = half;
+      }
+      const auto absent = [&]() {
+        row.lookup_selection = "absent";
+        row.raw_value_q64 = std::int64_t{0};
+        row.ready = true;
+      };
+      if (candidate == count) {
+        absent();
+        return;
+      }
+      const auto residual = Copy<std::uint16_t>(
+          *keys + candidate * sizeof(std::uint16_t));
+      if (!residual) {
+        row.reason = "classified_pc_key_unread";
+        return;
+      }
+      if (*property_key < *residual) {
+        absent();
+        return;
+      }
+      const auto low_index = static_cast<std::uint32_t>(candidate);
+      std::int32_t signed_index{};
+      std::memcpy(&signed_index, &low_index, sizeof(signed_index));
+      if (signed_index < 0) {
+        absent();
+        return;
+      }
+      row.lookup_selection = "mapped";
+      row.selected_index_u32 = low_index;
+      const auto values = Copy<std::uintptr_t>(*row.pc_identity + 0x68);
+      if (!values || *values == 0) {
+        row.reason = "classified_pc_values_unread";
+        return;
+      }
+      row.raw_value_q64 = Copy<std::int64_t>(
+          *values + static_cast<std::uintptr_t>(signed_index) * sizeof(std::int64_t));
+      if (!row.raw_value_q64) {
+        row.reason = "classified_pc_value_unread";
+        return;
+      }
+      row.ready = true;
+    };
+    lookup();
+    if (!row.scale_q64) {
+      row.ready = false;
+      if (row.reason.empty()) row.reason = "classified_row_scale_unread";
+    }
+  } catch (...) {
+    row.ready = false;
+    row.reason = "classified_piety_copy_failed";
+  }
+  return row;
+}
+
+PersonSixStageClassifiedPietyStage12004 CopyClassifiedPietyStage(
+    std::uintptr_t context, std::uint32_t index,
+    const std::optional<std::uint16_t> &property_key) noexcept {
+  PersonSixStageClassifiedPietyStage12004 result;
+  result.index = index;
+  result.observed = true;
+  result.property_key_u16 = property_key;
+  try {
+    result.row_count_i32 = Copy<std::int32_t>(context + 0xC);
+    if (!result.row_count_i32) {
+      result.reason = "classified_row_count_unread";
+      return result;
+    }
+    if (*result.row_count_i32 < 0) {
+      result.reason = "classified_row_count_negative";
+      return result;
+    }
+    // Actual2438980's zero-count branch has no row-pointer or key demand.
+    if (*result.row_count_i32 == 0) {
+      result.ready = true;
+      result.reason.clear();
+      return result;
+    }
+    result.row_array_identity = Copy<std::uintptr_t>(context);
+    if (!result.row_array_identity || *result.row_array_identity == 0) {
+      result.reason = "classified_row_array_unread";
+      return result;
+    }
+    const auto count = static_cast<std::uint32_t>(*result.row_count_i32);
+    result.rows.reserve(count);
+    for (std::uint32_t native_index = 0; native_index < count; ++native_index)
+      result.rows.push_back(CopyClassifiedPietyRow(
+          *result.row_array_identity + static_cast<std::uintptr_t>(native_index) * 16,
+          native_index, property_key));
+    result.ready = std::all_of(result.rows.begin(), result.rows.end(),
+        [](const auto &row) { return row.ready; });
+    result.reason = result.ready ? "" : "classified_piety_rows_partial";
+  } catch (...) {
+    result.ready = false;
+    result.reason = "classified_piety_copy_failed";
+  }
+  return result;
+}
+
 PersonSixStageCapture12004DTO EmptyResult(std::uint32_t full_character_id) {
   PersonSixStageCapture12004DTO dto;
   dto.build_version = kGameVersion;
@@ -230,6 +387,7 @@ PersonSixStageCapture12004DTO EmptyResult(std::uint32_t full_character_id) {
   for (std::uint32_t i = 0; i < dto.stages.size(); ++i) {
     auto &stage = dto.stages[i];
     stage.index = i;
+    dto.classified_piety_inputs[i].index = i;
     stage.first_pc.reason = "native_append_unobserved";
     stage.second_pc.reason = "native_append_unobserved";
     stage.first_pc.weight_q100000 = 0;
@@ -478,7 +636,8 @@ static void ObserveSixStageWithBaseline12004(
     const PersonFollowing2922680Pc *pre_six_aggregate,
     const PersonPreparationModel12004 *preparation_model,
     const std::optional<std::int32_t> *pre_count_base_point,
-    const PersonSixStagePietyCategory12004 *pre_count_piety_category) noexcept {
+    const PersonSixStagePietyCategory12004 *pre_count_piety_category,
+    const PersonSixStageClassifiedPietyStage12004 *pre_count_classified_piety) noexcept {
   if (!g_available.load(std::memory_order_acquire) ||
       caller_return_address !=
           g_bindings.memory.module_base + kPersonSixStageReturnRva12004 ||
@@ -532,6 +691,8 @@ static void ObserveSixStageWithBaseline12004(
     }
     if (pre_count_piety_category != nullptr)
       dto.piety_category_inputs[index] = *pre_count_piety_category;
+    if (pre_count_classified_piety != nullptr)
+      dto.classified_piety_inputs[index] = *pre_count_classified_piety;
     UpdateReadiness(dto);
     const auto sequence = dto.capture_sequence;
     auto record = std::make_shared<const PersonSixStageCapture12004DTO>(std::move(dto));
@@ -547,7 +708,7 @@ void ObservePersonSixStageCapture12004(
     std::uintptr_t raw_return_bits,
     std::uintptr_t caller_return_address) noexcept {
   ObserveSixStageWithBaseline12004(character, context, index, raw_return_bits,
-                                   caller_return_address, nullptr, nullptr, nullptr, nullptr);
+      caller_return_address, nullptr, nullptr, nullptr, nullptr, nullptr);
 }
 
 std::uintptr_t InvokePersonSixStageCapture12004(
@@ -559,6 +720,7 @@ std::uintptr_t InvokePersonSixStageCapture12004(
   std::optional<PersonPreparationModel12004> preparation_model;
   std::optional<std::int32_t> pre_count_base_point;
   std::optional<PersonSixStagePietyCategory12004> pre_count_piety_category;
+  std::optional<PersonSixStageClassifiedPietyStage12004> pre_count_classified_piety;
   const bool capture_this_call = g_available.load(std::memory_order_acquire) &&
       index < kPersonSixStageCount12004 &&
       character != nullptr && context != nullptr &&
@@ -571,6 +733,9 @@ std::uintptr_t InvokePersonSixStageCapture12004(
         reinterpret_cast<std::uintptr_t>(character) + 0xC0 + 4 * index);
     pre_count_piety_category = CopyPietyCategory(
         reinterpret_cast<std::uintptr_t>(character), index);
+    pre_count_classified_piety = CopyClassifiedPietyStage(
+        reinterpret_cast<std::uintptr_t>(context), index,
+        pre_count_piety_category->property_key_u16);
   }
   if (capture_this_call && index == 0) {
     // Native2438964 passes this inline PC to2303100. Own it before the
@@ -584,7 +749,8 @@ std::uintptr_t InvokePersonSixStageCapture12004(
       caller_return_address, pre_six_aggregate ? &*pre_six_aggregate : nullptr,
       preparation_model ? &*preparation_model : nullptr,
       capture_this_call ? &pre_count_base_point : nullptr,
-      pre_count_piety_category ? &*pre_count_piety_category : nullptr);
+      pre_count_piety_category ? &*pre_count_piety_category : nullptr,
+      pre_count_classified_piety ? &*pre_count_classified_piety : nullptr);
   return result;
 }
 
@@ -845,6 +1011,40 @@ std::string SerializePersonSixStageCapture12004(
     }
     out << "],\"category_i32\":"; Number(out, input.category_i32);
     out << '}';
+  }
+  out << "]}";
+  out << ",\"classified_piety_inputs\":{\"source_stage\":\"before_each_original_count\""
+      << ",\"context_rows_offset\":0,\"context_count_offset\":12,\"row_stride_bytes\":16"
+      << ",\"row_pc_offset\":0,\"row_scale_offset\":8,\"classified_reader_rva\":"
+      << std::uintptr_t{0x2438980} << ",\"key_lookup_rva\":" << std::uintptr_t{0x23036E0}
+      << ",\"stages\":[";
+  for (std::size_t i = 0; i < dto.classified_piety_inputs.size(); ++i) {
+    if (i != 0) out << ',';
+    const auto &input = dto.classified_piety_inputs[i];
+    out << "{\"index\":" << input.index << ",\"observed\":" << (input.observed ? "true" : "false")
+        << ",\"ready\":" << (input.ready ? "true" : "false") << ",\"reason\":";
+    Reason(out, input.reason);
+    out << ",\"property_key_u16\":"; Number(out, input.property_key_u16);
+    out << ",\"row_count_i32\":"; Number(out, input.row_count_i32);
+    out << ",\"row_array_identity\":"; Pointer(out, input.row_array_identity);
+    out << ",\"rows\":[";
+    for (std::size_t j = 0; j < input.rows.size(); ++j) {
+      if (j != 0) out << ',';
+      const auto &row = input.rows[j];
+      out << "{\"native_index\":" << row.native_index << ",\"ready\":"
+          << (row.ready ? "true" : "false") << ",\"reason\":";
+      Reason(out, row.reason);
+      out << ",\"pc_identity\":"; Pointer(out, row.pc_identity);
+      out << ",\"pc_count_i32\":"; Number(out, row.pc_count_i32);
+      out << ",\"lookup_selection\":"; String(out, row.lookup_selection);
+      out << ",\"selected_index_u32\":"; Number(out, row.selected_index_u32);
+      out << ",\"raw_value_q64\":";
+      if (row.raw_value_q64) out << '"' << *row.raw_value_q64 << '"'; else out << "null";
+      out << ",\"scale_q64\":";
+      if (row.scale_q64) out << '"' << *row.scale_q64 << '"'; else out << "null";
+      out << '}';
+    }
+    out << "]}";
   }
   out << "]}";
   out << ",\"base_point_inputs\":{\"source_stage\":\"before_each_original_count\"";

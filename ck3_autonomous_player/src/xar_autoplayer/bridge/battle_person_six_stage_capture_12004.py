@@ -13,6 +13,9 @@ from .battle_context_source_inputs_contract import (
 )
 from .battle_person_carrier_direct_12004 import _values_q64
 from .version_identity import CK3_12004, require_exact_native_build
+from ..simulation.battle_person_pc_merger_12004 import (
+    _divide_q_from_instructions, _signed64, native_fixed_mul_q_12004,
+)
 
 FIELD_NAME = "following_six_attribute_captured_stages"
 SCHEMA = "xar.ck3.person-native-six-stage-capture-12004-v1"
@@ -280,6 +283,137 @@ def _piety_category_inputs(value: object, leaf: dict) -> dict:
     return {**_PIETY_SOURCE, "stages": stages}
 
 
+_CLASSIFIED_PIETY_SOURCE = {
+    "source_stage": "before_each_original_count",
+    "context_rows_offset": 0, "context_count_offset": 12,
+    "row_stride_bytes": 16, "row_pc_offset": 0, "row_scale_offset": 8,
+    "classified_reader_rva": 0x2438980, "key_lookup_rva": 0x23036E0,
+}
+_CLASSIFIED_LOOKUPS = {"sentinel", "empty", "absent", "mapped", "unavailable"}
+
+
+def _classified_q64(value: object, field: str) -> int | None:
+    return None if value is None else _values_q64([value], field)[0]
+
+
+def _classified_pointer(value: object, field: str) -> str | None:
+    pointer = _string(value, field, optional=True)
+    if pointer is not None:
+        try:
+            address = int(pointer, 16)
+        except ValueError as error:
+            raise ValueError(field + " must retain a native pointer identity") from error
+        if not 0 <= address < 2**64:
+            raise ValueError(field + " must retain a native pointer identity")
+    return pointer
+
+
+def _classified_piety_row(value: object, field: str, index: int, key: int | None) -> dict:
+    raw = _dict(value, field, {
+        "native_index", "ready", "reason", "pc_identity", "pc_count_i32",
+        "lookup_selection", "selected_index_u32", "raw_value_q64", "scale_q64",
+    })
+    result = {
+        "native_index": _integer(raw["native_index"], field + ".native_index", 32, unsigned=True),
+        "ready": _boolean(raw["ready"], field + ".ready"),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+        "pc_identity": _classified_pointer(raw["pc_identity"], field + ".pc_identity"),
+        "pc_count_i32": _number(raw["pc_count_i32"], field + ".pc_count_i32", 32),
+        "lookup_selection": _string(raw["lookup_selection"], field + ".lookup_selection"),
+        "selected_index_u32": _number(raw["selected_index_u32"], field + ".selected_index_u32", 32, unsigned=True),
+        "raw_value_q64": _classified_q64(raw["raw_value_q64"], field + ".raw_value_q64"),
+        "scale_q64": _classified_q64(raw["scale_q64"], field + ".scale_q64"),
+    }
+    selection = result["lookup_selection"]
+    if result["native_index"] != index or selection not in _CLASSIFIED_LOOKUPS:
+        raise ValueError(field + " changed its physical row order or native lookup selection")
+    count, selected = result["pc_count_i32"], result["selected_index_u32"]
+    if selection == "sentinel":
+        if key != 0xFFFF or selected is not None or result["raw_value_q64"] != 0:
+            raise ValueError(field + " sentinel lookup lacks its original FFFF early zero")
+    elif selection != "unavailable":
+        if (key is None or key == 0xFFFF or result["pc_identity"] is None
+                or int(result["pc_identity"], 16) == 0):
+            raise ValueError(field + " keyed lookup lacks its original key/PC operands")
+        if selection == "mapped":
+            # The selected physical index survives an unread value QWORD.
+            if count is None or count <= 0 or selected is None or selected >= count:
+                raise ValueError(field + " mapped lookup lost its physical count/index")
+        elif (count is None or count < 0 or selected is not None
+              or result["raw_value_q64"] != 0 or selection == "empty" and count != 0):
+            raise ValueError(field + " zero lookup disagrees with its native selection")
+    ready = (selection != "unavailable" and result["raw_value_q64"] is not None
+             and result["scale_q64"] is not None)
+    if result["ready"] is not ready or (result["reason"] is None) != ready:
+        raise ValueError(field + " readiness differs from independently copied row operands")
+    return result
+
+
+def _classified_piety_inputs(value: object, leaf: dict) -> dict:
+    field = FIELD_NAME + ".classified_piety_inputs"
+    raw = _dict(value, field, {*_CLASSIFIED_PIETY_SOURCE, "stages"})
+    for key, expected in _CLASSIFIED_PIETY_SOURCE.items():
+        actual = (_string(raw[key], field + "." + key) if key == "source_stage" else
+                  _integer(raw[key], field + "." + key, 32, unsigned=True))
+        if actual != expected:
+            raise ValueError(field + " changed its actual historical classified source")
+    if not isinstance(raw["stages"], list) or len(raw["stages"]) != STAGE_COUNT:
+        raise ValueError(field + " must retain all six historical stage slots")
+    stages = []
+    for index, value in enumerate(raw["stages"]):
+        slot = f"{field}.stages[{index}]"
+        stage = _dict(value, slot, {
+            "index", "observed", "ready", "reason", "property_key_u16",
+            "row_count_i32", "row_array_identity", "rows",
+        })
+        result = {
+            "index": _integer(stage["index"], slot + ".index", 32, unsigned=True),
+            "observed": _boolean(stage["observed"], slot + ".observed"),
+            "ready": _boolean(stage["ready"], slot + ".ready"),
+            "reason": _string(stage["reason"], slot + ".reason", optional=True),
+            "property_key_u16": _number(stage["property_key_u16"], slot + ".property_key_u16", 16, unsigned=True),
+            "row_count_i32": _number(stage["row_count_i32"], slot + ".row_count_i32", 32),
+            "row_array_identity": _classified_pointer(stage["row_array_identity"], slot + ".row_array_identity"),
+        }
+        if result["index"] != index or not isinstance(stage["rows"], list):
+            raise ValueError(slot + " lost its physical stage or ordered row observations")
+        result["rows"] = [
+            _classified_piety_row(row, f"{slot}.rows[{row_index}]", row_index,
+                                  result["property_key_u16"])
+            for row_index, row in enumerate(stage["rows"])
+        ]
+        if result["observed"] and not leaf["stages"][index]["observed"]:
+            raise ValueError(slot + " lacks its natural original count callback")
+        if not result["observed"]:
+            if (result["reason"] != "classified_piety_unobserved" or result["rows"]
+                    or any(result[key] is not None for key in (
+                        "property_key_u16", "row_count_i32", "row_array_identity"))):
+                raise ValueError(slot + " unobserved source cannot supply classified operands")
+        count, pointer = result["row_count_i32"], result["row_array_identity"]
+        if count is None or count <= 0:
+            if result["rows"]:
+                raise ValueError(slot + " absent/empty row count cannot supply physical rows")
+        elif len(result["rows"]) > count:
+            raise ValueError(slot + " supplied more rows than its actual physical count")
+        # Count zero is the literal reader's early exit: no row pointer or key
+        # is required. Other stages retain their own partial source observations.
+        ready = (result["observed"] and count is not None and count >= 0 and (
+            count == 0 or (result["property_key_u16"] is not None
+                           and pointer is not None and int(pointer, 16) != 0
+                           and len(result["rows"]) == count
+                           and all(row["ready"] for row in result["rows"]))))
+        if result["ready"] is not ready or (result["reason"] is None) != ready:
+            raise ValueError(slot + " readiness differs from its own historical row source")
+        piety = leaf.get("piety_category_inputs")
+        if piety is not None:
+            piety_key = piety["stages"][index]["property_key_u16"]
+            if (piety_key is not None and result["property_key_u16"] is not None
+                    and piety_key != result["property_key_u16"]):
+                raise ValueError(slot + " changed its same-call physical piety key")
+        stages.append(result)
+    return {**_CLASSIFIED_PIETY_SOURCE, "stages": stages}
+
+
 def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     """Retain six owned stages, including incomplete and unread observations."""
     if value is None:
@@ -290,6 +424,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     has_preparation = isinstance(value, dict) and "preparation_model" in value
     has_base_points = isinstance(value, dict) and "base_point_inputs" in value
     has_piety_category = isinstance(value, dict) and "piety_category_inputs" in value
+    has_classified_piety = isinstance(value, dict) and "classified_piety_inputs" in value
     raw = _dict(value, FIELD_NAME, {
         "schema", "build_version", "executable_sha256", "configured",
         "capture_observed", "capture_complete", "ready", "raw_counts_ready",
@@ -300,7 +435,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     } | (aggregate_fields if has_aggregate else set())
       | ({"preparation_model"} if has_preparation else set())
       | ({"base_point_inputs"} if has_base_points else set())
-      | ({"piety_category_inputs"} if has_piety_category else set()))
+      | ({"piety_category_inputs"} if has_piety_category else set())
+      | ({"classified_piety_inputs"} if has_classified_piety else set()))
     if (raw["schema"] != SCHEMA or require_exact_native_build(
             raw["build_version"], raw["executable_sha256"]) != CK3_12004):
         raise ValueError(FIELD_NAME + " requires its exact actual4 source identity")
@@ -392,6 +528,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         result["base_point_inputs"] = _base_point_inputs(raw["base_point_inputs"], result)
     if has_piety_category:
         result["piety_category_inputs"] = _piety_category_inputs(raw["piety_category_inputs"], result)
+    if has_classified_piety:
+        result["classified_piety_inputs"] = _classified_piety_inputs(raw["classified_piety_inputs"], result)
     return result
 
 
@@ -644,4 +782,82 @@ def emit_captured_person_piety_category_12004(section: object, native_index: obj
         "score_q64": stage["score_q64"], "cap_i32": stage["cap_i32"],
         "threshold_count_i32": stage["threshold_count_i32"],
         "thresholds_used_q64": list(stage["thresholds_used_q64"]),
+    }
+
+
+def _classified_piety_stage(section: object, native_index: object, mode: object) -> tuple[int, dict, dict, int]:
+    character, leaf = _joined_leaf(section)
+    index = _integer(native_index, FIELD_NAME + ".classified_piety_inputs.index", 32, unsigned=True)
+    mode = _integer(mode, FIELD_NAME + ".classified_piety_inputs.mode", 32)
+    if index >= STAGE_COUNT or mode not in (1, 2):
+        raise ValueError("Required native input unavailable: classified piety stage/mode")
+    inputs = leaf.get("classified_piety_inputs")
+    if inputs is None:
+        raise ValueError("Required native input unavailable: classified_piety_unobserved")
+    return character, leaf, inputs["stages"][index], mode
+
+
+def _classified_piety_provenance(character: int, leaf: dict, stage: dict, mode: int) -> dict:
+    return _base_point_provenance(character, leaf) | {
+        "stage_index": stage["index"], "mode": mode,
+        "property_key_u16": stage["property_key_u16"],
+        "row_array_identity": stage["row_array_identity"],
+        "classified_reader_rva": _CLASSIFIED_PIETY_SOURCE["classified_reader_rva"],
+        "key_lookup_rva": _CLASSIFIED_PIETY_SOURCE["key_lookup_rva"],
+        "source_evaluated": True, "native_mode_call_observed": False,
+    }
+
+
+def _classified_piety_scaled_row(row: dict, mode: int) -> dict:
+    if not row["ready"]:
+        raise ValueError("Required native input unavailable: " + row["reason"])
+    scaled = native_fixed_mul_q_12004(row["raw_value_q64"], row["scale_q64"])
+    included = scaled > 0 if mode == 1 else scaled < 0
+    return row | {
+        "scaled_value_q64": scaled, "included": included,
+        "value_q64": scaled if included else 0,
+    }
+
+
+def emit_captured_person_classified_piety_row_12004(
+        section: object, native_index: object, row_index: object, mode: object) -> dict:
+    """Evaluate one owned ready row independently of other rows/category reads."""
+    character, leaf, stage, mode = _classified_piety_stage(section, native_index, mode)
+    index = _integer(row_index, FIELD_NAME + ".classified_piety_inputs.row_index", 32, unsigned=True)
+    if not stage["observed"] or index >= len(stage["rows"]):
+        raise ValueError("Required native input unavailable: classified piety row")
+    return (_classified_piety_provenance(character, leaf, stage, mode)
+            | _classified_piety_scaled_row(stage["rows"][index], mode))
+
+
+def emit_captured_person_classified_piety_value_12004(
+        section: object, native_index: object, mode: object) -> dict:
+    """Evaluate modes 1/2 from owned rows, then the independently known category."""
+    character, leaf, stage, mode = _classified_piety_stage(section, native_index, mode)
+    if not stage["ready"]:
+        raise ValueError("Required native input unavailable: " + stage["reason"])
+    total, included = 0, []
+    for row in stage["rows"]:
+        term = _classified_piety_scaled_row(row, mode)
+        if term["included"]:
+            included.append(row["native_index"])
+            total = _signed64(total + term["value_q64"])
+    piety = leaf.get("piety_category_inputs")
+    category_stage = piety["stages"][stage["index"]] if piety is not None else None
+    category_ready = category_stage is not None and category_stage["ready"]
+    category = category_stage["category_i32"] if category_ready else None
+    direct_term = None
+    if category_ready:
+        quotient = _divide_q_from_instructions(_signed64(category * total))
+        direct_term = quotient & 0xFFFFFFFF
+        if direct_term & 0x80000000:
+            direct_term -= 2**32
+    return _classified_piety_provenance(character, leaf, stage, mode) | {
+        "row_count_i32": stage["row_count_i32"],
+        "value_q64": total, "included_native_indexes": included,
+        "category_multiplier_i32": category,
+        "direct_term_ready": category_ready, "direct_term_i32": direct_term,
+        "direct_term_reason": (None if category_ready else
+                               category_stage["reason"] if category_stage is not None else
+                               "piety_category_unobserved"),
     }

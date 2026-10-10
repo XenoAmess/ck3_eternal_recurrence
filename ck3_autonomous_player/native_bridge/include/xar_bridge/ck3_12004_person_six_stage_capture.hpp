@@ -68,6 +68,31 @@ struct PersonSixStagePietyCategory12004 {
   friend bool operator==(const PersonSixStagePietyCategory12004 &,
                          const PersonSixStagePietyCategory12004 &) = default;
 };
+struct PersonSixStageClassifiedPietyRow12004 {
+  std::uint32_t native_index = 0;
+  bool ready = false;
+  std::string reason;
+  std::optional<std::uintptr_t> pc_identity;
+  std::optional<std::int32_t> pc_count_i32;
+  std::string lookup_selection = "unavailable";
+  std::optional<std::uint32_t> selected_index_u32;
+  std::optional<std::int64_t> raw_value_q64;
+  std::optional<std::int64_t> scale_q64;
+  friend bool operator==(const PersonSixStageClassifiedPietyRow12004 &,
+                         const PersonSixStageClassifiedPietyRow12004 &) = default;
+};
+struct PersonSixStageClassifiedPietyStage12004 {
+  std::uint32_t index = 0;
+  bool observed = false;
+  bool ready = false;
+  std::string reason = "classified_piety_unobserved";
+  std::optional<std::uint16_t> property_key_u16;
+  std::optional<std::int32_t> row_count_i32;
+  std::optional<std::uintptr_t> row_array_identity;
+  std::vector<PersonSixStageClassifiedPietyRow12004> rows;
+  friend bool operator==(const PersonSixStageClassifiedPietyStage12004 &,
+                         const PersonSixStageClassifiedPietyStage12004 &) = default;
+};
 struct PersonPreparationModel12004 {
   bool observed = false;
   bool ready = false;
@@ -90,6 +115,8 @@ struct PersonSixStageCapture12004DTO {
   PersonSixStageBasePointInputs12004 base_point_inputs;
   std::array<PersonSixStagePietyCategory12004, kPersonSixStageCount12004>
       piety_category_inputs{};
+  std::array<PersonSixStageClassifiedPietyStage12004, kPersonSixStageCount12004>
+      classified_piety_inputs{};
   PersonPreparationModel12004 preparation_model;
   PersonSixStagePreAggregate12004 pre_six_aggregate;
   PersonSixStagePreAggregate12004 post_six_aggregate;

@@ -207,3 +207,16 @@ The same launcher can use `--resume-after-first` to consume only original
 cases2-4, retaining this explicitly inferred completed prefix. The existing
 four native packets are reused; no producer, compiler or old qualification
 is replayed. Root owns the consumer-only retry and final qualification.
+
+The next selected nonzero-mode source is tracked separately in
+[classified weighted inputs](battle-person-classified-weight-inputs-12004.md):
+actual CALL2BA93D9 selects the cached87B dispatch fragment2438980. That
+Root-only source recipe does not repeat this package's qualification.
+
+Subsequent bounded source closure is recorded in that separate topic:
+Root supplied87+414+37+126 unique bytes, closing the actual weighted reader
+and its keyed query. Native71 authors an optional `classified_piety_inputs`
+historical leaf plus source-evaluated mode1/mode2 values and the direct piety
+term. Its new five-world producer and registered compound are NOTRUN;
+qualified69 and its original partial-null retry are not replayed. Other
+category operands and complete native count/FullPerson remain separate.
