@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Official MCP client harness for one coordinator-owned CK3 migration session.
 
 Normal mode starts CK3 through clean-source native_session. --sdk-smoke-test
@@ -241,10 +241,13 @@ def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str
         "host_path": str(Path(__file__).resolve()), "frozen_argv_sha256": hashlib.sha256(raw).hexdigest()}
 
 
-def finished_native_exit_zero_proof(report: dict[str, object], managed_done: bool,
-                                    episode: dict[str, object] | None = None) -> dict[str, object] | None:
-    """Current managed-session evidence only; missing proof never admits a dead snapshot."""
-    if managed_done is not True or report.get("fixture_only") is not False or "error" not in report or report["error"] is not None:
+def finished_native_process_exit_zero_proof(report: dict[str, object], managed_done: bool,
+                                    episode: dict[str, object] | None = None, *,
+                                            require_managed_thread_finished: bool = True) -> dict[str, object] | None:
+    """Complete native process/cleanup proof; top-level business errors remain independent."""
+    if managed_done is not True or report.get("fixture_only") is not False:
+        return None
+    if require_managed_thread_finished and report.get("managed_session_thread_finished") is not True:
         return None
     session = report.get("session")
     if not isinstance(session, dict) or "error" not in session or session["error"] is not None:
@@ -299,6 +302,31 @@ def finished_native_exit_zero_proof(report: dict[str, object], managed_done: boo
             "pid": pid, "pipe": native["pipe"], "started_at": native["started_at"],
             "finished_at": native["finished_at"], "exit_reason": "process_exit", "process_exit_code": 0,
             "shutdown": copy.deepcopy(shutdown)}
+
+
+def finished_native_exit_zero_proof(report: dict[str, object], managed_done: bool,
+                                    episode: dict[str, object] | None = None) -> dict[str, object] | None:
+    """Original success predicate: a top-level error still rejects qualification."""
+    if managed_done is not True or report.get("fixture_only") is not False or "error" not in report or report["error"] is not None:
+        return None
+    return finished_native_process_exit_zero_proof(
+        report, managed_done, episode, require_managed_thread_finished=False)
+
+
+def finished_native_failure_shutdown_proof(report: dict[str, object], managed_done: bool,
+                                         episode: dict[str, object] | None = None) -> dict[str, object] | None:
+    """A preserved failure can finish lifecycle only after actual native/thread cleanup."""
+    error = report.get("error")
+    if not isinstance(error, str) or not error:
+        return None
+    process = finished_native_process_exit_zero_proof(report, managed_done, episode)
+    if process is None:
+        return None
+    return {"status": "failure_shutdown_lifecycle_only",
+            "reason": "preserved_failure_native_process_exit_zero_cleanup_proven",
+            "failure_preserved": True, "host_error": error,
+            "alive_or_business_credit": False, "business_pass": False,
+            "normal_close_qualified": False, "process_exit_zero_proof": process}
 
 
 def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str, object]) -> bool:
@@ -751,6 +779,34 @@ def saved_campaign_initial_snapshot_state(value: object, pipe: str) -> str:
         else "WAITING_FOR_INITIAL_NATIVE_SEMANTIC_FRAME")
 
 
+def saved_campaign_cancelled_wait_receipt(error: BaseException) -> dict[str, object] | None:
+    """Only this exact native cancellation proves that a query never entered its executor."""
+    prefix = "MCP tool ck3_query_campaign_root_context_v1 returned an error: "
+    marker = "typed_query_failure_v1="
+    text = str(error)
+    if not isinstance(error, RuntimeError) or not text.startswith(prefix) or text.count(marker) != 1:
+        return None
+    try:
+        receipt = json.loads(text.split(marker, 1)[1])
+    except (ValueError, TypeError):
+        return None
+    empty = ("executor_enter", "executor_finish", "executor_typed_result", "final_equal",
+        "final_read", "frame_stable", "typed_result")
+    if (not isinstance(receipt, dict) or set(receipt) != set(empty) | {
+            "executor_exception", "query_type", "stage", "wait_completed", "wait_result"}
+            or receipt["query_type"] != "campaign" or receipt["stage"] != "wait"
+            or receipt["wait_completed"] is not False
+            or receipt["wait_result"] != "timeout_cancelled_before_execution"
+            or any(receipt[key] is not None for key in empty)):
+        return None
+    exception = receipt["executor_exception"]
+    if (not isinstance(exception, dict) or set(exception) != {"code", "image", "rva"}
+            or type(exception["code"]) is not int or exception["code"] != 0
+            or exception["image"] != "none" or exception["rva"] is not None):
+        return None
+    return copy.deepcopy(receipt)
+
+
 async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object], *,
         report: dict[str, object], write: object, timeout: float,
         managed_done: threading.Event | None, poll_interval: float,
@@ -768,6 +824,16 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     baseline = None
     initial_snapshot_available = False
     state["startup_observations"] = []
+    state["campaign_root_query_attempts"] = []
+    cancelled_wait_frame = None
+    cancelled_wait_retry_used = False
+
+    async def fresh_before_deadline() -> dict[str, object]:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("saved campaign observation exceeded original readiness deadline")
+        return await asyncio.wait_for(client.fresh(), timeout=remaining)
+
     while True:
         if managed_done is not None and managed_done.is_set():
             raise RuntimeError("managed session ended before saved campaign admission")
@@ -792,7 +858,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             if not initial_snapshot_available:
                 await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
                 continue
-        snapshot = await client.fresh()
+        snapshot = await fresh_before_deadline()
         launch_record = report.get("saved_campaign_launch")
         if isinstance(launch_record, dict) and launch_record.get("status") == "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED":
             if launch_record.get("argv_admitted") is not True:
@@ -821,12 +887,45 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
         root, admitted = None, None
         if frame is not None:
             stable = {k: v for k, v in frame.items() if k != "pump_epoch"}
-            if baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]:
-                if startup_case is not None:
+            if (baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]
+                    and (cancelled_wait_frame is None or frame["pump_epoch"] > cancelled_wait_frame["pump_epoch"])):
+                if startup_case is not None and "first_startup_query_admission" not in state:
                     state["first_startup_query_admission"] = {
                         "previous_frame":{**baseline[0], "pump_epoch":baseline[1]}, "current_frame":copy.deepcopy(frame)}
-                root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
-                after = await client.fresh()
+                is_retry = cancelled_wait_frame is not None
+                if is_retry:
+                    if cancelled_wait_retry_used or any(frame[key] != cancelled_wait_frame[key] for key in (
+                            "bridge_pid", "connection_generation", "actor_character_id", "date_raw",
+                            "local_player_id", "owner_tid")):
+                        raise RuntimeError("saved campaign cancelled-wait recovery crossed its paused owner identity or retry limit")
+                    cancelled_wait_retry_used = True
+                attempt = {"submitted_frame": copy.deepcopy(frame), "expected_revision": snapshot["revision"],
+                    "started_at": now(), "status": "CALL_PENDING", "retry_after_cancelled_wait": is_retry}
+                state["campaign_root_query_attempts"].append(attempt)
+                write()
+                try:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError("saved campaign root query exceeded original readiness deadline before submission")
+                    root = await asyncio.wait_for(client.call("ck3_query_campaign_root_context_v1",
+                        {"expected_revision": snapshot["revision"]}), timeout=remaining)
+                except Exception as error:
+                    receipt = saved_campaign_cancelled_wait_receipt(error)
+                    attempt.update(status="FAILED", finished_at=now(), error_type=type(error).__name__,
+                        error=str(error), typed_query_failure=receipt)
+                    state["observations"].append({"snapshot": snapshot, "frame": frame,
+                        "campaign_root": None, "binding": None, "campaign_root_query_failed": True})
+                    write()
+                    if receipt is None or is_retry or time.monotonic() >= deadline:
+                        raise
+                    cancelled_wait_frame = copy.deepcopy(attempt["submitted_frame"])
+                    state["cancelled_campaign_wait_recovery"] = {
+                        "status": "WAITING_FOR_FRESH_PAUSED_OWNER_PUMP", "retry_limit": 1,
+                        "failed_submission_frame": copy.deepcopy(cancelled_wait_frame), "product_acceptance_proven": False}
+                    baseline = None
+                    continue
+                attempt.update(status="RETURNED", finished_at=now())
+                after = await fresh_before_deadline()
                 after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None)
                 if (after_frame is not None and isinstance(root, dict)
                         and root.get("queried_snapshot_id") == after.get("snapshot_id")
@@ -838,12 +937,18 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                         after, event_proof = await admit_saved_startup_event(client, after, expected, binding,
                             startup_case, state=state, write=write, deadline=deadline, managed_done=managed_done)
                         admitted["startup_event_admission"] = event_proof
+                attempt.update(status="BOUND" if admitted is not None else "NOT_BOUND")
+                if is_retry and admitted is None:
+                    write()
+                    raise RuntimeError("saved campaign cancelled-wait recovery did not bind its exact current native root")
                 snapshot = after
             baseline = (stable, frame["pump_epoch"])
         else:
             baseline = None
         state["observations"].append({"snapshot": snapshot, "frame": frame, "campaign_root": root, "binding": admitted})
         if admitted is not None:
+            if time.monotonic() >= deadline:
+                raise TimeoutError("saved campaign root binding completed after original readiness deadline")
             state.update(status="ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND", binding=admitted,
                 finished_at=now(), actual_current_actor_bound=True)
             report["readiness"] = snapshot
@@ -895,6 +1000,8 @@ def native_server(args: argparse.Namespace) -> None:
     if getattr(args, "private_succession_title_readonly", False):
         driver_options.update(allow_private_actor_cached_succession_queries=True,
                               allow_private_confucian_readonly_queries=True)
+    if getattr(args, "private_confucian_challenger_readonly", False):
+        driver_options["allow_private_confucian_challenger_queries"] = True
     driver = RecordingDriver(
         args.bridge_pipe, endpoint=RecordingEndpoint(args.bridge_pipe),
         state_dir=args.state_dir, save_dir=args.state_dir / "profile/save games",
@@ -902,6 +1009,9 @@ def native_server(args: argparse.Namespace) -> None:
         frontend_transition_timeout_seconds=240.0 if args.saved_campaign_server else 120.0,
         checkpoint_timeout_seconds=args.command_timeout, **driver_options,
     )
+    driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
+    driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_religion_personal_parameters_query = "ck3_query_player_religion_personal_parameters_v1" in driver.case_declared_read_only_mcp_tools
     if managed_campaign_run_binding is not None:
         from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
         install_campaign_speed_presubmission_transmission(driver, PreSubmissionRevisionMismatchError)
@@ -1174,7 +1284,8 @@ def episode_identity_frame(snapshot: object) -> dict[str, object]:
 
 
 def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = False,
-                                 allowed_event_instance: int | None = None) -> dict[str, object]:
+                                 allowed_event_instance: int | None = None,
+                                 allow_pause_transition: bool = False) -> dict[str, object]:
     """Bind a complete campaign frame; heartbeat is only an owner guard."""
     if not isinstance(snapshot, dict):
         raise RuntimeError("campaign pause readback lacks a complete snapshot")
@@ -1209,9 +1320,14 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
             raise RuntimeError("campaign pause readback lost the explicitly admitted event instance")
     running = (allow_running is True and snapshot.get("paused") is False
                and mailbox.get("ready") is False)
+    pause_transition = (allow_pause_transition is True and running and mailbox.get("paused") is True
+                        and mailbox.get("paused_main_thread_observed") is False
+                        and type(mailbox.get("consecutive_verified")) is int
+                        and mailbox["consecutive_verified"] == 0)
     if running and (snapshot["speed"] != 1
             or type(hello.get("connection_generation")) is not int or hello["connection_generation"] != generation
-            or mailbox.get("application_main_observed") is not True or mailbox.get("paused") is not False
+            or mailbox.get("application_main_observed") is not True
+            or (mailbox.get("paused") is not False and not pause_transition)
             or mailbox.get("paused_main_thread_observed") is not False or type(mailbox.get("ready")) is not bool
             or type(mailbox.get("consecutive_verified")) is not int or mailbox["consecutive_verified"] < 0):
         raise RuntimeError("campaign pause readback lacks the complete running owner stamp")
@@ -1237,13 +1353,16 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
     return {"identity": (pid, generation, actor, snapshot["local_player_id"], snapshot["speed"],
                          diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
             "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
-            "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"]}
+            "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"],
+            "pause_transition": pause_transition}
 
 
 def require_campaign_pause_successor(source: dict[str, object], snapshot: object, *, allow_running: bool = False,
                                      allowed_event_instance: int | None = None,
-                                     allow_actor_change: bool = False) -> dict[str, object]:
-    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance)
+                                     allow_actor_change: bool = False,
+                                      allow_pause_transition: bool = False) -> dict[str, object]:
+    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance,
+                                           allow_pause_transition=allow_pause_transition)
     identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
                         all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
     if (not identity_matches or current["rejections"] != source["rejections"]
@@ -1466,7 +1585,7 @@ class PlanClient:
     async def pause_campaign_after_advance(self, starting: dict[str, object], *, allow_event_boundary: bool = False,
                                           allow_actor_change: bool = False,
                                           command_deadline: float | None = None) -> dict[str, object]:
-        """At most one idempotent pause refresh under one original deadline."""
+        """Submit pause once, then observe full-frame convergence under the original deadline."""
         if allow_actor_change is True and allow_event_boundary is not True:
             raise ValueError("campaign actor change is exclusive to explicit event-boundary observation")
         deadline = time.monotonic() + self.args.command_timeout
@@ -1513,11 +1632,9 @@ class PlanClient:
             event_instance = campaign_event_instance(starting) if allow_event_boundary is True else None
             source = campaign_pause_frame_binding(starting, allow_running=True, allowed_event_instance=event_instance)
             actor_changed = False
-            ack = await pause({"step": "pause-map"})
+            await pause({"step": "pause-map"})
             evidence["binding"] = {"bridge_pid": source["identity"][0], "connection_generation": source["identity"][1],
                 "runtime_character_id": source["identity"][2], "owner_tid": source["identity"][6]}
-            retry_at = time.monotonic() + 1.0
-            retried = False
             previous = source
             while True:
                 current = await bounded(self.fresh)
@@ -1528,23 +1645,20 @@ class PlanClient:
                     if event_instance is None:
                         event_instance = current_event
                 observed = require_campaign_pause_successor(previous, current, allow_running=True,
-                    allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed)
+                    allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,
+                    allow_pause_transition=True)
                 actor_changed = actor_changed or observed["identity"][2] != previous["identity"][2]
                 previous = observed
+                if observed["pause_transition"] is True:
+                    evidence.setdefault("pending_owner_stamp_readbacks", []).append({
+                        "snapshot_id": current["snapshot_id"], "date_raw": current["date_raw"],
+                        "snapshot_paused": False, "owner_paused": True, "owner_ready": False,
+                        "business_credit": False})
                 if current["paused"] is True:
                     evidence.update(status="FULL_PAUSED_FRAME_OBSERVED", ending_snapshot_id=current["snapshot_id"],
                                     ending_date_raw=current["date_raw"], pause_attempt_count=len(evidence["attempts"]))
                     return current
-                if ack == "submitted" and not retried and time.monotonic() >= retry_at:
-                    # This is the sole extra action: bind its revision to the frame
-                    # just checked, avoiding an unchecked implicit second fresh().
-                    retried = True
-                    ack = await pause({"step": "pause-map", "expected_revision": current["revision"]}, fresh_revision=False)
-                    continue
-                delay = min(self.args.poll_interval, remaining())
-                if ack == "submitted" and not retried:
-                    delay = min(delay, max(0.0, retry_at - time.monotonic()))
-                await asyncio.sleep(delay)
+                await asyncio.sleep(min(self.args.poll_interval, remaining()))
         except BaseException as error:
             evidence.update(status="FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED", error_type=type(error).__name__,
                             pause_attempt_count=len(evidence["attempts"]))
@@ -1942,11 +2056,21 @@ class PlanClient:
             try:
                 kind = step.get("kind", "tool")
                 menu_only = getattr(self.args, "frontend_mod_load_observation", False)
+                failure_shutdown = step.get("failure_shutdown") is True
+                failure_proof = None
+                if failure_shutdown:
+                    if kind != "finish_hold" or self.report.get("post_failure_exit_finish_hold") is not None:
+                        raise RuntimeError("failure shutdown is a once-only finish_hold lifecycle control")
+                    managed_done = getattr(self, "managed_done", None)
+                    failure_proof = finished_native_failure_shutdown_proof(self.report,
+                        managed_done is not None and managed_done.is_set(), self.episode_identity)
+                    if failure_proof is None:
+                        raise RuntimeError("failure finish_hold requires preserved error and actual native/thread cleanup")
                 if menu_only:
                     require_menu_observation_step(step)
                     if kind == "finish_hold":
                         managed_done = getattr(self, "managed_done", None)
-                        if finished_native_exit_zero_proof(self.report,
+                        if failure_proof is None and finished_native_exit_zero_proof(self.report,
                                 managed_done is not None and managed_done.is_set(), self.episode_identity) is None:
                             raise RuntimeError("menu-only finish_hold requires original actual managed native-zero proof")
                 if menu_only and kind != "finish_hold":
@@ -1988,6 +2112,9 @@ class PlanClient:
                 elif kind == "finish_hold":
                     self.report["hold_finished_by_control_plan"] = True
                     result = {"hold_finished": True}
+                    if failure_proof is not None:
+                        result.update(failure_preserved=True, host_error=failure_proof["host_error"],
+                            business_pass=False, normal_close_qualified=False)
                 elif kind == "terminal_window_read_only":
                     result = await self.observe_terminal_window(step)
                 elif kind == "frontend_read_only":
@@ -2017,14 +2144,16 @@ class PlanClient:
                 self.results[str(row["id"])] = result
                 if kind not in {"frontend_read_only", "terminal_window_read_only"} and not (menu_only and kind != "finish_hold"):
                     managed_done = getattr(self, "managed_done", None)
-                    proof = (finished_native_exit_zero_proof(self.report,
-                        managed_done is not None and managed_done.is_set(), self.episode_identity)
+                    proof = (failure_proof if failure_shutdown else
+                        finished_native_exit_zero_proof(self.report,
+                            managed_done is not None and managed_done.is_set(), self.episode_identity)
                         if kind == "finish_hold" else None)
                     if proof is None:
                         row["after_snapshot"] = await self.fresh()
                     else:
                         row["after_snapshot"] = proof
-                        self.report["post_exit_finish_hold"] = {"step_id": row["id"], "proof": copy.deepcopy(proof)}
+                        marker = "post_failure_exit_finish_hold" if failure_shutdown else "post_exit_finish_hold"
+                        self.report[marker] = {"step_id": row["id"], "proof": copy.deepcopy(proof)}
                 row["ok"] = True
             except Exception as error:
                 row["error"] = f"{type(error).__name__}: {error}"
@@ -2035,7 +2164,26 @@ class PlanClient:
                 self.write()
 
     async def observe_final(self) -> None:
-        """Only a successful final finish_hold can make post-exit observation inapplicable."""
+        """Proved lifecycle completion avoids a dead snapshot without clearing failures."""
+        failure_marker = self.report.get("post_failure_exit_finish_hold")
+        rows = self.report.get("steps", [])
+        managed_done = getattr(self, "managed_done", None)
+        failure_proof = finished_native_failure_shutdown_proof(self.report,
+            managed_done is not None and managed_done.is_set(), self.episode_identity)
+        if (failure_proof is not None and isinstance(failure_marker, dict) and rows
+                and self.report.get("hold_finished_by_control_plan") is True
+                and rows[-1].get("plan", {}).get("kind") == "finish_hold"
+                and rows[-1].get("plan", {}).get("failure_shutdown") is True
+                and rows[-1].get("ok") is True and all(row.get("finished_at") for row in rows)
+                and failure_marker.get("step_id") == rows[-1].get("id")
+                and failure_marker.get("proof") == failure_proof):
+            self.report["snapshot_final"] = copy.deepcopy(failure_proof)
+            self.report["diagnostics_final"] = copy.deepcopy(failure_proof)
+            self.report["final_observation"] = {"status": "not_applicable",
+                "reason": failure_proof["reason"], "after_finish_hold_step_id": failure_marker["step_id"],
+                "failure_preserved": True, "host_error": failure_proof["host_error"],
+                "alive_or_business_credit": False, "business_pass": False, "normal_close_qualified": False}
+            return
         marker = self.report.get("post_exit_finish_hold")
         rows = self.report.get("steps", [])
         managed_done = getattr(self, "managed_done", None)
@@ -2061,12 +2209,13 @@ class PlanClient:
         self.report["phase"] = "hold"
         self.report["hold_until_utc_estimated"] = time.time() + seconds
         managed_done = getattr(self, "managed_done", None)
-        managed_completion_written = managed_done is not None and managed_done.is_set()
+        managed_completion_written = (managed_done is not None and managed_done.is_set()
+            and self.report.get("managed_session_thread_finished") is True)
         self.write()
         while time.monotonic() < deadline and not self.report.get("hold_finished_by_control_plan", False):
             if not managed_completion_written and managed_done is not None and managed_done.is_set():
                 self.write()
-                managed_completion_written = True
+                managed_completion_written = self.report.get("managed_session_thread_finished") is True
             if self.control_plan_execution_depth == 0 and self.args.control_plan_dir is not None:
                 for path in sorted(self.args.control_plan_dir.glob("*.json")):
                     identity = (str(path), path.stat().st_mtime_ns)
@@ -2317,7 +2466,8 @@ def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, o
             or played.get("alive") is not True or played.get("source") != "native"
             or type(snapshot.get("local_player_id")) is not int or snapshot["local_player_id"] < 1
             or not isinstance(snapshot.get("snapshot_id"), str) or not snapshot["snapshot_id"]
-            or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] < 1):
+            or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] < 1
+            or type(snapshot.get("revision")) is not int or snapshot["revision"] < 0):
         return None
     heartbeat = diagnostics.get("last_heartbeat")
     mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
@@ -2331,7 +2481,8 @@ def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, o
         return None
     return {"actor_character_id": played["character_id"], "date_raw": selected_date,
             "local_player_id": snapshot["local_player_id"], "snapshot_id": snapshot["snapshot_id"],
-            "native_revision": snapshot["native_revision"], **submission["binding"], "pump_epoch": owner_epoch}
+            "native_revision": snapshot["native_revision"], "revision": snapshot["revision"],
+            **submission["binding"], "pump_epoch": owner_epoch}
 
 
 def capture_fixture_startup_notice_evidence(client: PlanClient, stage: str, event_id: int) -> dict[str, object]:
@@ -2892,6 +3043,10 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                     startup_baseline = None
             else:
                 startup_baseline = None
+            if qualified:
+                # Log queries and startup acknowledgement can outlive the earlier snapshot.
+                # Recheck the original owner/date/paused/event-free gate on this fresh frame.
+                snapshot = await client.fresh()
             admission_frame = fixture_whole_root_admission_frame(snapshot, submission) if qualified else None
             admission = {"status": "WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS" if not qualified else "WAITING_FOR_PAUSED_EVENT_FREE_OWNER_FRAMES",
                 "frame": admission_frame, "product_acceptance_proven": False}
@@ -3241,8 +3396,12 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "mcp_wire": str(rpc_wire.path), "mcp_calls": str(args.output.with_suffix(".mcp-calls.jsonl")),
         "server_stderr": str(stderr_path), "session": session_state, "error": None}
 
+    supervisor: threading.Thread | None = None
+
     def write() -> None:
         report["managed_session_done"] = done.is_set()
+        report["managed_session_thread_finished"] = (supervisor is None or
+            supervisor.ident is not None and not supervisor.is_alive())
         write_atomic_report(args.output, report)
 
     poll_reporting = StartupPollReporting(args.output.with_suffix(".frontend-observations.jsonl"), write)
@@ -3302,7 +3461,6 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
             "selection_permitted":False, "product_acceptance_proven":False}
         write()
 
-    supervisor: threading.Thread | None = None
     if not args.sdk_smoke_test:
         clean_imports(args.agent_source_root)
         from xar_autoplayer.environment import make_spec, verify_profile
@@ -3366,6 +3524,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     write()
     child_args = [str(Path(__file__).resolve()), "--server", "--bridge-pipe", args.bridge_pipe,
                   "--native-wire", str(native_wire), "--command-timeout", str(args.command_timeout)]
+    for tool in getattr(args, "case_read_only_mcp_tool", []):
+        child_args += ["--case-read-only-mcp-tool", tool]
     if args.sdk_smoke_test:
         child_args.append("--fixture-server")
     else:
@@ -3378,6 +3538,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         child_args.append("--saved-campaign-server")
     if getattr(args, "private_succession_title_readonly", False):
         child_args.append("--private-succession-title-readonly")
+    if getattr(args, "private_confucian_challenger_readonly", False):
+        child_args.append("--private-confucian-challenger-readonly")
     if getattr(args, "frontend_mod_load_observation", False):
         child_args += ["--frontend-mod-load-observation", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args,
@@ -3555,6 +3717,18 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         report["exception_traceback"] = traceback.format_exc()
                         if getattr(error, "ck3_write_error_context", None) is not None:
                             report["write_error_context"] = error.ck3_write_error_context
+                        if (isinstance(error, Exception) and args.hold_seconds
+                                and report.get("phase") == "executing-plan"
+                                and supervisor is not None and not done.is_set()
+                                and "hold_until_utc_estimated" not in report):
+                            report["initial_plan_failure_hold"] = {"reason": report["error"],
+                                "seconds": args.hold_seconds, "original_hold_budget": True,
+                                "business_pass": False, "normal_close_qualified": False}
+                            write()
+                            try:
+                                await client.hold(args.hold_seconds)
+                            except BaseException as hold_error:
+                                report["initial_plan_failure_hold_error"] = f"{type(hold_error).__name__}: {hold_error}"
                         if (args.frontend_robert_bootstrap and args.hold_seconds
                                 and report.get("phase") == "native-frontend-robert-bootstrap"
                                 and not done.is_set() and "frontend_diagnostic_hold" not in report):
@@ -3616,6 +3790,10 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--poll-interval", type=float, default=0.05)
     result.add_argument("--hold-seconds", type=float, default=0)
     result.add_argument("--control-plan-dir", type=Path, help="read new/updated JSON plans during hold")
+    result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(
+        "ck3_query_player_religion_context_v1", "ck3_query_player_religion_personal_parameters_v1",
+        "ck3_query_current_title_appointment_v1"),
+        help="Explicit case-declared read-only tool; default off, no related private tools enabled")
     result.add_argument("--turns", type=int, default=0, help="MCP ck3_auto_turn count after the plan")
     result.add_argument("--cold-start-checkpoint", action="store_true")
     result.add_argument("--saved-campaign-save", type=Path)
@@ -3633,6 +3811,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
     result.add_argument("--private-succession-title-readonly", action="store_true",
                         help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")
+    result.add_argument("--private-confucian-challenger-readonly", action="store_true",
+                        help="Explicit shared admission of the existing complete Faith challenger/sponsor graph query; default off")
     result.add_argument("--frontend-mod-load-observation", action="store_true",
                         help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
