@@ -1,0 +1,1116 @@
+{
+  "schema": "ck3.exact-b0e5119-ci-archive.v1",
+  "archived_at_utc": "2026-10-10T00:40:38.804823+00:00",
+  "source_ci_head": "b0e5119ccc023e99509f2d33001f7a9372cd436b",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 285926,
+    "sha256": "ed41d48b33e698030e3a34cb4cbc946b1cec0bb346148f4a8cf48faa84ce15ba"
+  },
+  "entries": [
+    {
+      "path": "exact-ci/FINAL.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\FINAL.actual.json",
+      "bytes": 2185,
+      "sha256": "bc0c3139ef5737f4fa22242777c545d7cc7c73defd78257a958ec6972ffdf726"
+    },
+    {
+      "path": "exact-ci/REMOTE-PIN.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\REMOTE-PIN.actual.json",
+      "bytes": 440,
+      "sha256": "16dbe573b9a1093585b901fcd953def7ff2fa534a3f6d442eba1fe1715f2ca24"
+    },
+    {
+      "path": "exact-ci/TERMINAL-EVIDENCE.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\TERMINAL-EVIDENCE.actual.json",
+      "bytes": 19710,
+      "sha256": "4bb50a56c616a27207bae1e92994928a7fd39de9414cb81e636ebd6c9c830c3e"
+    },
+    {
+      "path": "exact-ci/WATCH-INPUT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\WATCH-INPUT.actual.json",
+      "bytes": 457,
+      "sha256": "d77706e8d499034367e28893fa9e7b9ee507b09ebbc74da7ad385f98112acccc"
+    },
+    {
+      "path": "exact-ci/poll-001-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "89a7f533cff5df62c8ba0af54d3ed2cb84cbc7653c97129ca99fc03be791b20a"
+    },
+    {
+      "path": "exact-ci/poll-001-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-001-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-jobs-38007787292.stdout.json",
+      "bytes": 12627,
+      "sha256": "940afab1492dd89361fa1e2202a1c24d81f63d47922f1275994103b1e174237f"
+    },
+    {
+      "path": "exact-ci/poll-001-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "e9c6826dc87486fcab4419c34f5b3e2eaf0e3d60f6ad254ef64b59f67ccac165"
+    },
+    {
+      "path": "exact-ci/poll-001-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-001-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-jobs-38007787307.stdout.json",
+      "bytes": 1508,
+      "sha256": "66fe39d3c5a8c6a8a4389cd4a51eb2e33d4cc433c3fe9c9b7ec1ffb2b55ea636"
+    },
+    {
+      "path": "exact-ci/poll-001-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-runs.actual.json",
+      "bytes": 530,
+      "sha256": "49b48be4d063e75724f1b716108567ce803b771da46a0bb19a2eee96e08b38ec"
+    },
+    {
+      "path": "exact-ci/poll-001-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-001-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-runs.stdout.json",
+      "bytes": 26433,
+      "sha256": "82fb06d92154c7b71eff9c5471166106fae057cca95db17ea225f12b1c309791"
+    },
+    {
+      "path": "exact-ci/poll-001-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-001-summary.actual.json",
+      "bytes": 2273,
+      "sha256": "439d0a79952676b434104d0ddcd00f39a8931da16847b683affc7803b3b4d030"
+    },
+    {
+      "path": "exact-ci/poll-002-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "86695d6a456f40576d50b44f6e3ff29ff6256ff797005fa8f15978147688dfe2"
+    },
+    {
+      "path": "exact-ci/poll-002-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-002-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-jobs-38007787292.stdout.json",
+      "bytes": 12888,
+      "sha256": "e9231704d70dfabb06b1ae56c79fc505d98ccbc8ed0d6d9c2f3bc193d8464d61"
+    },
+    {
+      "path": "exact-ci/poll-002-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "b6a750c47b4998d7bf9487ea70209300092fc9111936cf8a0a47eebc3d77d71b"
+    },
+    {
+      "path": "exact-ci/poll-002-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-002-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-002-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-runs.actual.json",
+      "bytes": 530,
+      "sha256": "ba5312e74c8e3f89089eccb215e073e0fe2e62dcd91a93faf9c043d81e724f13"
+    },
+    {
+      "path": "exact-ci/poll-002-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-002-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-002-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-002-summary.actual.json",
+      "bytes": 2234,
+      "sha256": "f989b5b6796241ab62565a46d0181dfbc62dfb61d240fb9ff54e19047f662ba4"
+    },
+    {
+      "path": "exact-ci/poll-003-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "54a10d0c0324a53b45ec4d6318b6e354a7c4d78d6b365297a92c23fc2e2926f2"
+    },
+    {
+      "path": "exact-ci/poll-003-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-003-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-jobs-38007787292.stdout.json",
+      "bytes": 13232,
+      "sha256": "ac32b61d6f5cf6eb47017a9e9e27912d672b8039fc68cc3c8b8eeebc858ab2c8"
+    },
+    {
+      "path": "exact-ci/poll-003-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "61656638970127639e3e846b6cceacac9993c9aaa48157d69cd4f6b967f8578f"
+    },
+    {
+      "path": "exact-ci/poll-003-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-003-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-003-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-runs.actual.json",
+      "bytes": 530,
+      "sha256": "0280a42f0a1c2195e6b31383d04347cefeb412a55126d1949524237733b0eb40"
+    },
+    {
+      "path": "exact-ci/poll-003-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-003-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-003-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-003-summary.actual.json",
+      "bytes": 2259,
+      "sha256": "aa95414841fb648f8aff37a9a8e1461d8b899dc14472010954034c0e3fe58322"
+    },
+    {
+      "path": "exact-ci/poll-004-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "ed62265ca9115f3e289f73bb169b330fef18ec4d112232a4d4f9e07e4c334e92"
+    },
+    {
+      "path": "exact-ci/poll-004-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-004-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-jobs-38007787292.stdout.json",
+      "bytes": 13232,
+      "sha256": "ac32b61d6f5cf6eb47017a9e9e27912d672b8039fc68cc3c8b8eeebc858ab2c8"
+    },
+    {
+      "path": "exact-ci/poll-004-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "8e6c30b4744d1612f4060a7c4aad03b63f4d5042339e12ec9b18c4e983d8a04d"
+    },
+    {
+      "path": "exact-ci/poll-004-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-004-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-004-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-runs.actual.json",
+      "bytes": 530,
+      "sha256": "80c547db3a1f58dbb00b602bba07df77e48bd09d62393691a0164457c41361a4"
+    },
+    {
+      "path": "exact-ci/poll-004-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-004-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-004-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-004-summary.actual.json",
+      "bytes": 2259,
+      "sha256": "56cc77ceda58a92ab5e136ffaeea9338b6dcddadadf6f639acaf4dce622e04e9"
+    },
+    {
+      "path": "exact-ci/poll-005-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "4aebce3e0f52a44afb80844076acce89bdab10f18f661388c54bb3a1c3c0abb5"
+    },
+    {
+      "path": "exact-ci/poll-005-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-005-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-jobs-38007787292.stdout.json",
+      "bytes": 13232,
+      "sha256": "ac32b61d6f5cf6eb47017a9e9e27912d672b8039fc68cc3c8b8eeebc858ab2c8"
+    },
+    {
+      "path": "exact-ci/poll-005-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "77263b09af7b7fb847410050cc66c7052c3f23faa5684f09308f4d1cadb4f2d8"
+    },
+    {
+      "path": "exact-ci/poll-005-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-005-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-005-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-runs.actual.json",
+      "bytes": 530,
+      "sha256": "1cc18ca349ea7d60d0c4ecb01ffd25bc853f4fd9bdb5ae96b8c3d1f1ff3ac9e6"
+    },
+    {
+      "path": "exact-ci/poll-005-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-005-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-005-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-005-summary.actual.json",
+      "bytes": 2259,
+      "sha256": "9ba162465400c2a0bc0aec3484297045924de2b01ed0733d9ddcf80691f772bd"
+    },
+    {
+      "path": "exact-ci/poll-006-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "3b97cbea6ac2f1624225293923fb08bdd34191e5a563db86a326d900cd336aef"
+    },
+    {
+      "path": "exact-ci/poll-006-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-006-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-jobs-38007787292.stdout.json",
+      "bytes": 13232,
+      "sha256": "ac32b61d6f5cf6eb47017a9e9e27912d672b8039fc68cc3c8b8eeebc858ab2c8"
+    },
+    {
+      "path": "exact-ci/poll-006-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "60145a4a8873a61e5b0848c19410c0953af1b50b22a54caf36288c5498d1b08b"
+    },
+    {
+      "path": "exact-ci/poll-006-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-006-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-006-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-runs.actual.json",
+      "bytes": 530,
+      "sha256": "e24c3444e702d07b629e30839861d7397e15a34b4214c7340200495175352915"
+    },
+    {
+      "path": "exact-ci/poll-006-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-006-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-006-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-006-summary.actual.json",
+      "bytes": 2259,
+      "sha256": "75d4471e2ad24f95f5dfed8309cd74d678450d6f6c54818e4c4208e7932df663"
+    },
+    {
+      "path": "exact-ci/poll-007-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "48121f505d7da600c6aace30ce9eba729a3d3d4644b3e55fb77bcef81ebf5199"
+    },
+    {
+      "path": "exact-ci/poll-007-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-007-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-jobs-38007787292.stdout.json",
+      "bytes": 13318,
+      "sha256": "b34c552021f3e6ad349a0c612dd8b0c6ef4283f278a20297048b0dcdfb1cce8c"
+    },
+    {
+      "path": "exact-ci/poll-007-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "347d79c50ec7cd07e22707a80dc9d6ccf9651ff9ce8e19736672f141084f580f"
+    },
+    {
+      "path": "exact-ci/poll-007-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-007-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-007-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-runs.actual.json",
+      "bytes": 530,
+      "sha256": "03e1468f85b755d9bc8670caea0ba4a3afe33dbe1fc5fa06e361d83f422f6efd"
+    },
+    {
+      "path": "exact-ci/poll-007-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-007-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-007-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-007-summary.actual.json",
+      "bytes": 2272,
+      "sha256": "d415d663a6cd786fdf0312f1fea0cf8e4b84b8ecf29d990877cfbf1a96a14392"
+    },
+    {
+      "path": "exact-ci/poll-008-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "b10908be1d1f057830bb0ba3aba0e5e1e9033a8603959e28a7e450342a408779"
+    },
+    {
+      "path": "exact-ci/poll-008-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-008-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-jobs-38007787292.stdout.json",
+      "bytes": 14006,
+      "sha256": "7e43a8defed0801589a69d0b1c79eee56ca1cfa1283a89df3d09ca1757a5f82d"
+    },
+    {
+      "path": "exact-ci/poll-008-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "612f8100c31850cafce7ce4761e28e00522b530c62f0f92cb201a7b7072147d1"
+    },
+    {
+      "path": "exact-ci/poll-008-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-008-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-008-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-runs.actual.json",
+      "bytes": 530,
+      "sha256": "1493794240e019dfe33f603c61e20c9b7e290ffc1833acc78a8d363830203704"
+    },
+    {
+      "path": "exact-ci/poll-008-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-008-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-008-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-008-summary.actual.json",
+      "bytes": 2255,
+      "sha256": "312b4815b6c706b7d79154e7a3714dde9a511215ae8832d42083352d65c77350"
+    },
+    {
+      "path": "exact-ci/poll-009-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "c169fe8e5fbc586abedd831d4b1e63043c72896459d8a1072e8d53dadaa04f56"
+    },
+    {
+      "path": "exact-ci/poll-009-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-009-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-jobs-38007787292.stdout.json",
+      "bytes": 14135,
+      "sha256": "25e51116ec848ca3694953ee64924f5f057fac9988157715e863218194f5b508"
+    },
+    {
+      "path": "exact-ci/poll-009-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "c7178a96c1e1fc8b458735cd22abe2838cfad9fd8305933f97d03166438861d2"
+    },
+    {
+      "path": "exact-ci/poll-009-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-009-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-009-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-runs.actual.json",
+      "bytes": 530,
+      "sha256": "8026b503f7e37a05a1244b4d01715b077a49f5426cca1723f2174c8900916c70"
+    },
+    {
+      "path": "exact-ci/poll-009-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-009-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-009-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-009-summary.actual.json",
+      "bytes": 2260,
+      "sha256": "f25a03255e7ee314505108d82ade6fd12c537c3a208866beee31ddf01fc0b0ab"
+    },
+    {
+      "path": "exact-ci/poll-010-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "c831dad772407ec5634bc4aece2630f2bc18dd489d3df60f57ebcdce583d0615"
+    },
+    {
+      "path": "exact-ci/poll-010-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-010-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-jobs-38007787292.stdout.json",
+      "bytes": 14135,
+      "sha256": "25e51116ec848ca3694953ee64924f5f057fac9988157715e863218194f5b508"
+    },
+    {
+      "path": "exact-ci/poll-010-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "7a262b62d0bb043f260b8e0ed6e4d20328686dbb7d86b4f32a679f15b03e63a2"
+    },
+    {
+      "path": "exact-ci/poll-010-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-010-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-010-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-runs.actual.json",
+      "bytes": 530,
+      "sha256": "4ff2149823938f22e4ac3c10898548f1ee849ccc58792bb6e6b05bb217c306b3"
+    },
+    {
+      "path": "exact-ci/poll-010-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-010-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-010-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-010-summary.actual.json",
+      "bytes": 2260,
+      "sha256": "eb83d6a481f135b51b2e3c0d6db46c787d9f3d281aec53441cf955fa31db568e"
+    },
+    {
+      "path": "exact-ci/poll-011-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "0aa2bee31482fed2d0ab6febaf75295f53584ebe02235602334226afdf9615f8"
+    },
+    {
+      "path": "exact-ci/poll-011-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-011-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-jobs-38007787292.stdout.json",
+      "bytes": 14135,
+      "sha256": "25e51116ec848ca3694953ee64924f5f057fac9988157715e863218194f5b508"
+    },
+    {
+      "path": "exact-ci/poll-011-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "246edb2927cae929b5ca89b9cb8b5847ba8b02715d2d443c98be881a9af80d3a"
+    },
+    {
+      "path": "exact-ci/poll-011-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-011-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-011-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-runs.actual.json",
+      "bytes": 530,
+      "sha256": "11431a195c4fb9034dcbdf3e50eba4086e31bdd7179c9ab2188d0e2de4dc3332"
+    },
+    {
+      "path": "exact-ci/poll-011-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-011-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-011-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-011-summary.actual.json",
+      "bytes": 2260,
+      "sha256": "42ddfd516010d5fb76ebbcda905b8368151e7b1caa46a444e0fcb57be0b0dd3a"
+    },
+    {
+      "path": "exact-ci/poll-012-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "6a64571565a581066110b9321a1ff8bd78040f65583e0c91f10a9829ec36690b"
+    },
+    {
+      "path": "exact-ci/poll-012-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-012-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-jobs-38007787292.stdout.json",
+      "bytes": 14135,
+      "sha256": "25e51116ec848ca3694953ee64924f5f057fac9988157715e863218194f5b508"
+    },
+    {
+      "path": "exact-ci/poll-012-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "90418f6611a04452b45b0e2d60a5d9739f4786e584e9324afdaa6357bb2744c1"
+    },
+    {
+      "path": "exact-ci/poll-012-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-012-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-012-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-runs.actual.json",
+      "bytes": 530,
+      "sha256": "ecb18db6fc83cc253604a834d8dcf22ccab30aff26054d8f9dcaca864bd80bfc"
+    },
+    {
+      "path": "exact-ci/poll-012-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-012-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-012-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-012-summary.actual.json",
+      "bytes": 2260,
+      "sha256": "98442f45ad1fd4e6fb49e58f979bd2a0309b8ce5f785d8522bca7e10698f0bae"
+    },
+    {
+      "path": "exact-ci/poll-013-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "6070bdf22262ab7dade5c1fe83cf1e50aa2c33bccdb29b0208b99d11da352d4c"
+    },
+    {
+      "path": "exact-ci/poll-013-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-013-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-jobs-38007787292.stdout.json",
+      "bytes": 14565,
+      "sha256": "c80e6e95663595703aabb38d11af77628fa794ddb32f815bc4234c7823cd59b5"
+    },
+    {
+      "path": "exact-ci/poll-013-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "f00398c8c0a212eb6f53481a20d2c7de3972d1b54252ef9430e29fb06fd1ed35"
+    },
+    {
+      "path": "exact-ci/poll-013-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-013-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-013-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-runs.actual.json",
+      "bytes": 530,
+      "sha256": "b1fd7f1e79cb45df71bbb460201310e6f9cc87b7a9f04f6d7dd58c31c5fe6915"
+    },
+    {
+      "path": "exact-ci/poll-013-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-013-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-013-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-013-summary.actual.json",
+      "bytes": 2245,
+      "sha256": "b1eaf866b92433f3bf28bdc292a27d8cc68ab7e83dbce17269fae188480a4d23"
+    },
+    {
+      "path": "exact-ci/poll-014-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "aaa9ed54931039a04fb8292ea98d975b3a7aa8dca9614656ee16b3fd9c8f3c96"
+    },
+    {
+      "path": "exact-ci/poll-014-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-014-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-jobs-38007787292.stdout.json",
+      "bytes": 14565,
+      "sha256": "c80e6e95663595703aabb38d11af77628fa794ddb32f815bc4234c7823cd59b5"
+    },
+    {
+      "path": "exact-ci/poll-014-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "70a7ac1556bcaf42f78286d8c50a2f1094de9a1a252a05e024f320499b67a988"
+    },
+    {
+      "path": "exact-ci/poll-014-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-014-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-014-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-runs.actual.json",
+      "bytes": 530,
+      "sha256": "0f9fb931b11bf99c727054293c91113ac3256c49092a50e86f9748f27159e137"
+    },
+    {
+      "path": "exact-ci/poll-014-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-014-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-014-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-014-summary.actual.json",
+      "bytes": 2245,
+      "sha256": "56809cdafaef2ea8df73ab516a47695e85c44ca14681ed32cbe41c129747e13e"
+    },
+    {
+      "path": "exact-ci/poll-015-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "dfb2464cc70e2d9694520c0285e32fd89ec1297fb295663f6f0abdfe4a1106bc"
+    },
+    {
+      "path": "exact-ci/poll-015-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-015-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-jobs-38007787292.stdout.json",
+      "bytes": 14995,
+      "sha256": "414df778d325ed5e5602469e13ff94fcf9c31c48a52ad08d505f24446448d469"
+    },
+    {
+      "path": "exact-ci/poll-015-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "44f9abe3930bffc2660c984ced822220c0c9a992029bc1cfdc6590e111679228"
+    },
+    {
+      "path": "exact-ci/poll-015-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-015-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-015-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-runs.actual.json",
+      "bytes": 530,
+      "sha256": "770eef7b65f2440534dc8d74745b4e64b8427f9d8582e138f298d82126f40ddf"
+    },
+    {
+      "path": "exact-ci/poll-015-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-015-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-runs.stdout.json",
+      "bytes": 26436,
+      "sha256": "e4fda2dd4230f7bda4fbb340ec96fb3d93c021a75c37de1fe59d1a139ee656c9"
+    },
+    {
+      "path": "exact-ci/poll-015-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-015-summary.actual.json",
+      "bytes": 2242,
+      "sha256": "a5233b59eb009647d44c9570301b18ee9cc8127ebf69e7bedb95bd9891089585"
+    },
+    {
+      "path": "exact-ci/poll-016-jobs-38007787292.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-jobs-38007787292.actual.json",
+      "bytes": 497,
+      "sha256": "e9496ba3ed7f6becdbeab3bf2b161a56ca45c3520d3c336917e5836a43938a38"
+    },
+    {
+      "path": "exact-ci/poll-016-jobs-38007787292.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-jobs-38007787292.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-016-jobs-38007787292.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-jobs-38007787292.stdout.json",
+      "bytes": 16396,
+      "sha256": "71122a2294e7263216027cea74508a108c0358bd4ecfd19e5cde8a26dc997da9"
+    },
+    {
+      "path": "exact-ci/poll-016-jobs-38007787307.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-jobs-38007787307.actual.json",
+      "bytes": 496,
+      "sha256": "1b614c7e1e0d0fb304c5122aea67bca21a2bdee8a4bd8e24d2d707be7a724927"
+    },
+    {
+      "path": "exact-ci/poll-016-jobs-38007787307.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-jobs-38007787307.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-016-jobs-38007787307.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-jobs-38007787307.stdout.json",
+      "bytes": 1789,
+      "sha256": "759fcf97435a570de73c2d2f656d141d2a555a52323de23b1cc71bef5356e8ce"
+    },
+    {
+      "path": "exact-ci/poll-016-runs.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-runs.actual.json",
+      "bytes": 530,
+      "sha256": "e4f30b6878f1ac88256a8ccceb19cd6fe84eeaab23eacbeb46fe705c042fe32e"
+    },
+    {
+      "path": "exact-ci/poll-016-runs.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-runs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/poll-016-runs.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-runs.stdout.json",
+      "bytes": 26439,
+      "sha256": "90a936aa08d13e6cbeee9349734e1592cf46d994d7a59bb6c889d55d8d6d38c9"
+    },
+    {
+      "path": "exact-ci/poll-016-summary.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\poll-016-summary.actual.json",
+      "bytes": 2185,
+      "sha256": "bc0c3139ef5737f4fa22242777c545d7cc7c73defd78257a958ec6972ffdf726"
+    },
+    {
+      "path": "exact-ci/remote-exact-commit.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\remote-exact-commit.actual.json",
+      "bytes": 503,
+      "sha256": "703ed07a2fcbbe7f8f422caad6c2da9dfb9892bdc20a8f7afaff34dccdd9ba3f"
+    },
+    {
+      "path": "exact-ci/remote-exact-commit.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\remote-exact-commit.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/remote-exact-commit.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\remote-exact-commit.stdout.json",
+      "bytes": 21774,
+      "sha256": "9a63eb4a2d765bfb95166f5ee70196a7ae176934c3b7ec1da100c88bdcc28055"
+    },
+    {
+      "path": "exact-ci/remote-master-branch.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\remote-master-branch.actual.json",
+      "bytes": 469,
+      "sha256": "d3a358055b9aed9048e6b2f9c98cf2f7890b032158d7a66044e9c7a33e73ea94"
+    },
+    {
+      "path": "exact-ci/remote-master-branch.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\remote-master-branch.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/remote-master-branch.stdout.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\remote-master-branch.stdout.json",
+      "bytes": 3765,
+      "sha256": "a976dfc81762d69b5f50b9a3d07a539b52061aa9781d350baf1e09a2c0ea9a3b"
+    },
+    {
+      "path": "exact-ci/terminal-38007787292-full-api-logs-index.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787292-full-api-logs-index.actual.json",
+      "bytes": 12609,
+      "sha256": "55c6803f77c0726e9cda03f32880723cafa2894767f8b011e8f0bff4cb1ff47b"
+    },
+    {
+      "path": "exact-ci/terminal-38007787292-full-api-logs-retry-001.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787292-full-api-logs-retry-001.actual.json",
+      "bytes": 485,
+      "sha256": "692a64ecff859fc78edc9e2b86b364d16497f22d94316700dae52a4e72d429d7"
+    },
+    {
+      "path": "exact-ci/terminal-38007787292-full-api-logs-retry-001.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787292-full-api-logs-retry-001.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/terminal-38007787292-full-api-logs-retry-001.stdout.zip",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787292-full-api-logs-retry-001.stdout.zip",
+      "bytes": 124069,
+      "sha256": "4a8d24e861eb668a4d0ca2fe50c8a66d12927bae587be04f8c04491cb42ca549"
+    },
+    {
+      "path": "exact-ci/terminal-38007787307-full-api-logs-index.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787307-full-api-logs-index.actual.json",
+      "bytes": 1428,
+      "sha256": "052e19db28d3cb2f60db9e8d7b6a21d594312bb80b5cbaafb1dbc64af561c297"
+    },
+    {
+      "path": "exact-ci/terminal-38007787307-full-api-logs-retry-001.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787307-full-api-logs-retry-001.actual.json",
+      "bytes": 484,
+      "sha256": "eabd8f76e61c25ed4472cc59c6d06cef5c193702abd7027f7e191750c1afb5ff"
+    },
+    {
+      "path": "exact-ci/terminal-38007787307-full-api-logs-retry-001.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787307-full-api-logs-retry-001.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exact-ci/terminal-38007787307-full-api-logs-retry-001.stdout.zip",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-exact-b0e5119cc-ci-20261010-001\\terminal-38007787307-full-api-logs-retry-001.stdout.zip",
+      "bytes": 16670,
+      "sha256": "29eb31c4f28d97cb82143316b72c367d9985ea5d6039b9bfba0c35917ef1a510"
+    },
+    {
+      "path": "producers/r42-agent-archive-exact-b0e5119-ci-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-agent-archive-exact-b0e5119-ci-20261010-001.py",
+      "bytes": 9591,
+      "sha256": "0b7e80c9b6022b28434751c939677a1e41be98fdc48f49cfc6c078705443699f"
+    },
+    {
+      "path": "producers/r42-agent-complete-exact-b0e5119cc-ci-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-agent-complete-exact-b0e5119cc-ci-20261010-001.py",
+      "bytes": 5649,
+      "sha256": "5f098490a4e8d130ad5bbfb936d48b8f8ac835d8e7ac3a597d5f0f3625b5e18d"
+    },
+    {
+      "path": "producers/r42-agent-read-shared-step-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-agent-read-shared-step-20261010-001.py",
+      "bytes": 433,
+      "sha256": "deb57bbc690e9723512383979092e7074beca295dbfa99a1f933442427d720f2"
+    },
+    {
+      "path": "producers/r42-agent-start-exact-b0e5119cc-ci-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-agent-start-exact-b0e5119cc-ci-20261010-001.py",
+      "bytes": 1062,
+      "sha256": "b0120f1ba4308c6a1d6b06c511db7d6c42fa56fec46f7c5b19e99fbfba724999"
+    },
+    {
+      "path": "producers/r42-agent-terminal-ci-summary-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-agent-terminal-ci-summary-20261010-001.py",
+      "bytes": 667,
+      "sha256": "b310cad49e7d0105c30a72a45e7aac913c800c6abc23eaf64163769d48a19f01"
+    },
+    {
+      "path": "producers/r42-agent-watch-exact-b0e5119cc-ci-20261010-001.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-agent-watch-exact-b0e5119cc-ci-20261010-001.py",
+      "bytes": 8574,
+      "sha256": "315c7721de63efc3fc5d459e5cb601f45715443ab225b6c60f600f24ae229502"
+    }
+  ]
+}

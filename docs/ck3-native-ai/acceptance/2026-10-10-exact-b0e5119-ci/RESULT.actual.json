@@ -1,0 +1,63 @@
+{
+  "schema": "ck3.exact-b0e5119-ci-result.v1",
+  "head_sha": "b0e5119ccc023e99509f2d33001f7a9372cd436b",
+  "observed_at_utc": "2026-10-10T00:18:45.515632+00:00",
+  "actual_remote_master_at_watch_start": "b0e5119ccc023e99509f2d33001f7a9372cd436b",
+  "official": {
+    "run_id": 38007787292,
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 114080491381,
+    "shared_acceptance_conclusion": "success"
+  },
+  "linear_history": {
+    "run_id": 38007787307,
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 114080491155
+  },
+  "li_yu_dao_static_checks": {
+    "status": "NOT_TRIGGERED",
+    "not_counted_as_success": true
+  },
+  "actual_exact_head_api_total_count": 2,
+  "actual_exact_head_api_returned_count": 2,
+  "triggered_workflows_terminal": true,
+  "triggered_workflows_success": true,
+  "original_all_required_workflows_success": false,
+  "not_triggered_workflows_are_not_passed": true,
+  "terminal_evidence_pin": {
+    "bytes": 19710,
+    "sha256": "4bb50a56c616a27207bae1e92994928a7fd39de9414cb81e636ebd6c9c830c3e"
+  },
+  "verified_original_query_groups": 52,
+  "complete_workflow_logs": [
+    {
+      "workflow": "Official Runner CI",
+      "file": "terminal-38007787292-full-api-logs-retry-001.stdout.zip",
+      "bytes": 124069,
+      "sha256": "4a8d24e861eb668a4d0ca2fe50c8a66d12927bae587be04f8c04491cb42ca549",
+      "entries": 66,
+      "crc": "PASS"
+    },
+    {
+      "workflow": "Linear history",
+      "file": "terminal-38007787307-full-api-logs-retry-001.stdout.zip",
+      "bytes": 16670,
+      "sha256": "29eb31c4f28d97cb82143316b72c367d9985ea5d6039b9bfba0c35917ef1a510",
+      "entries": 7,
+      "crc": "PASS"
+    }
+  ],
+  "new_api_queries_during_packaging": 0,
+  "tests_rerun_during_packaging": 0,
+  "old_6a3_and_0c0e_failures_reclassified": false,
+  "common_runtime_live_qualification_claimed": false,
+  "product_business_or_release_pass_claimed": false,
+  "workflow_dispatch_performed": false,
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 285926,
+    "sha256": "ed41d48b33e698030e3a34cb4cbc946b1cec0bb346148f4a8cf48faa84ce15ba"
+  }
+}
