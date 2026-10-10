@@ -129,3 +129,19 @@ it does not close unrequested inherited lookup, current typed slots/RTTI or
 identifier globals. Current03-to04 body-role analysis and the derived tiny
 slot/lookup request remain separately owned by the mapping lane. No current
 binder or Python build admission has been changed at this stage.
+
+The mapping lane has now closed all ten actual03-to04 complete bodies:
+normalized instruction spans, ordered control/RIP edge shapes and local
+control topology match. Nonrelative constants, field offsets and widths
+remain concrete; this is not an inference from the shared ordinal or an
+address delta. The small source handoff is
+`D:/codex-ck3-background-spill/sway-hidden-phase-current04-mapping/CURRENT04-NATIVE-ROLE-HANDOFF.json`.
+Actual constructor RIP operands identify the three effect vptrs and two
+title/scalar vptrs. Their typed COL identities and the three slot22 original
+pointers still await Root's single tiny batch. The inherited lookup candidate
+is independently bounded by both neighboring metadata functions and remains
+unadmitted until its actual body is decoded. Existing actual4 EventWindow
+registry callbacks use `NativeStringView32(data,size,0)` for identifier lookup;
+their reuse avoids another read of identifier globals. No current production
+profile or phase-observation capability is claimed before the remaining
+native atoms close.
