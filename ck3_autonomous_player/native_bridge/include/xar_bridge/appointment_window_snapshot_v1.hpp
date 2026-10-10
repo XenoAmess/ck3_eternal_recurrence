@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/appointment_character_level12004.hpp"
 #include <cstdint>
 #include <cstddef>
 #include <string>
@@ -8,7 +9,7 @@
 namespace xar::ck3_11906 {
 inline constexpr std::string_view kCurrentTitleAppointmentCapabilityV1="game.command.query-current-title-appointment-v1";
 struct AppointmentWindowRequestV1 {
-  std::uint32_t requested_title_id=0, candidate_offset=0, candidate_limit=32, breakdown_character_id=0;
+  std::uint32_t requested_title_id=0, candidate_offset=0, candidate_limit=32, breakdown_character_id=0, diagnostic_character_id=0;
 };
 // Private pure-reader boundary. Production creates callbacks only after the
 // existing exact-build, paused application-owner and visible GUI admission.
@@ -20,6 +21,7 @@ struct AppointmentWindowAccessV1 {
   bool (*breakdown)(void *,std::uintptr_t,std::uintptr_t,std::uintptr_t &) noexcept=nullptr;
   bool (*human_player)(void *,std::uint32_t,bool &) noexcept=nullptr;
   std::uintptr_t module_base=0,handler=0,window=0,gui_root=0;
+  std::string_view admitted_executable_sha256;
 };
 struct AppointmentCandidateV1 {
   std::uint32_t character_id=0,list_index=0;
@@ -46,6 +48,8 @@ struct AppointmentWindowSnapshotV1 {
   bool breakdown_available=false;
   std::uint32_t breakdown_character_id=0;
   AppointmentScoreNodeV1 breakdown;
+  std::uint32_t diagnostic_character_id=0;
+  ck3_12004::AppointmentCharacterLevel12004 character_level_diagnostic;
   std::string breakdown_unavailable_reason,unavailable_reason;
 };
 bool ValidateAppointmentWindowRequestV1(const AppointmentWindowRequestV1 &) noexcept;

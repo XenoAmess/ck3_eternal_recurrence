@@ -332,7 +332,10 @@ zqlr_observe_pillage_full_effect = {
  debug_log = "ZQLR120: SCOPE END pillage_full_actual_after"
    zqlr_dispatch_pillage_any_effect = yes
   }
-  else = { debug_log = "ZQLR120: TEST FAIL pillage_full_real_liege_shared_wallet_revalidated" }
+  else = {
+   debug_log = "ZQLR120: TEST FAIL pillage_full_real_liege_shared_wallet_revalidated"
+   zqlr_diagnose_pillage_full_revalidation_effect = yes
+  }
  }
  else_if = { limit = { var:zqlr_wait_days >= 2 } remove_character_flag = zqlr_wait_pillage_full debug_log = "ZQLR120: TEST FAIL pillage_full_natural_release_timeout" }
  else = { trigger_event = { id = zqlr120.3 days = 1 } }
@@ -439,4 +442,139 @@ zqlr_stock_after_effect = {
   }
   else = { debug_log = "ZQLR120: TEST FAIL actual_stock_payer_prisoner_amount_or_duplicate" }
  }
+}
+
+# FAIL-only observational evidence; original compound and failure remain authoritative.
+zqlr_diagnose_pillage_full_revalidation_effect = {
+ if = {
+  limit = { var:xqol_last_bulk_ransom_count = 1 }
+  debug_log = "ZQLR120: DIAG40 bulk_count_one true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 bulk_count_one false" }
+ if = {
+  limit = { var:zqlr_stock_calls = 1 }
+  debug_log = "ZQLR120: DIAG40 stock_calls_one true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 stock_calls_one false" }
+ if = {
+  limit = { gold >= var:zqlr_expected_captor }
+  debug_log = "ZQLR120: DIAG40 captor_ge_expected true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 captor_ge_expected false" }
+ if = {
+  limit = { NOT = { gold > var:zqlr_expected_captor } }
+  debug_log = "ZQLR120: DIAG40 captor_le_expected true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 captor_le_expected false" }
+ if = {
+  limit = { var:zqlr_payer = { gold >= 1 } }
+  debug_log = "ZQLR120: DIAG40 payer_ge_one true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 payer_ge_one false" }
+ if = {
+  limit = { var:zqlr_payer = { NOT = { gold > 1 } } }
+  debug_log = "ZQLR120: DIAG40 payer_le_one true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 payer_le_one false" }
+ if = {
+  limit = { var:zqlr_first = { is_alive = yes } }
+  debug_log = "ZQLR120: DIAG40 first_alive true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 first_alive false" }
+ if = {
+  limit = { var:zqlr_first = { is_ruler = no } }
+  debug_log = "ZQLR120: DIAG40 first_unlanded true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 first_unlanded false" }
+ if = {
+  limit = { var:zqlr_first = { gold >= 0 } }
+  debug_log = "ZQLR120: DIAG40 first_gold_ge_zero true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 first_gold_ge_zero false" }
+ if = {
+  limit = { var:zqlr_first = { NOT = { gold > 0 } } }
+  debug_log = "ZQLR120: DIAG40 first_gold_le_zero true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 first_gold_le_zero false" }
+ if = {
+  limit = { var:zqlr_second = { is_alive = yes } }
+  debug_log = "ZQLR120: DIAG40 second_alive true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 second_alive false" }
+ if = {
+  limit = { var:zqlr_second = { is_ruler = no } }
+  debug_log = "ZQLR120: DIAG40 second_unlanded true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 second_unlanded false" }
+ if = {
+  limit = { var:zqlr_second = { gold >= 0 } }
+  debug_log = "ZQLR120: DIAG40 second_gold_ge_zero true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 second_gold_ge_zero false" }
+ if = {
+  limit = { var:zqlr_second = { NOT = { gold > 0 } } }
+  debug_log = "ZQLR120: DIAG40 second_gold_le_zero true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 second_gold_le_zero false" }
+ if = {
+  limit = { var:zqlr_remainder = { liege = scope:zqlr_actor.var:zqlr_payer } }
+  debug_log = "ZQLR120: DIAG40 remainder_actual_liege true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 remainder_actual_liege false" }
+ if = {
+  limit = { var:zqlr_remainder = { xqol_ransom_payer_has_gold_trigger = yes } }
+  debug_log = "ZQLR120: DIAG40 remainder_payer_has_gold true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 remainder_payer_has_gold false" }
+ if = {
+  limit = { var:zqlr_remainder = { NOT = { xqol_ransom_payer_can_pay_full_trigger = yes } } }
+  debug_log = "ZQLR120: DIAG40 remainder_cannot_pay_full true"
+ }
+ else = { debug_log = "ZQLR120: DIAG40 remainder_cannot_pay_full false" }
+ save_scope_value_as = { name = zqlr_diag40_captor_gold value = gold }
+ if = { limit = { has_variable = xqol_last_bulk_ransom_count }
+ save_scope_value_as = { name = zqlr_diag40_bulk_count value = var:xqol_last_bulk_ransom_count }
+ }
+ if = { limit = { has_variable = zqlr_stock_calls }
+ save_scope_value_as = { name = zqlr_diag40_stock_calls value = var:zqlr_stock_calls }
+ }
+ if = { limit = { has_variable = zqlr_expected_captor }
+ save_scope_value_as = { name = zqlr_diag40_expected_captor value = var:zqlr_expected_captor }
+ }
+ if = { limit = { has_variable = zqlr_expected_amount }
+ save_scope_value_as = { name = zqlr_diag40_expected_amount value = var:zqlr_expected_amount }
+ }
+ if = { limit = { has_variable = zqlr_stock_expected_payer_after }
+ save_scope_value_as = { name = zqlr_diag40_stock_expected_payer_after value = var:zqlr_stock_expected_payer_after }
+ }
+ if = { limit = { has_variable = zqlr_stock_expected_captor_after }
+ save_scope_value_as = { name = zqlr_diag40_stock_expected_captor_after value = var:zqlr_stock_expected_captor_after }
+ }
+ if = { limit = { has_variable = zqlr_payer }
+  var:zqlr_payer = {
+   save_scope_as = zqlr_diag40_payer
+   save_scope_value_as = { name = zqlr_diag40_payer_gold value = gold }
+  }
+ }
+ if = { limit = { has_variable = zqlr_first }
+  var:zqlr_first = {
+   save_scope_as = zqlr_diag40_first
+   save_scope_value_as = { name = zqlr_diag40_first_gold value = gold }
+  }
+ }
+ if = { limit = { has_variable = zqlr_second }
+  var:zqlr_second = {
+   save_scope_as = zqlr_diag40_second
+   save_scope_value_as = { name = zqlr_diag40_second_gold value = gold }
+  }
+ }
+ if = { limit = { has_variable = zqlr_remainder }
+  var:zqlr_remainder = {
+   save_scope_as = zqlr_diag40_remainder
+   save_scope_value_as = { name = zqlr_diag40_remainder_gold value = gold }
+  }
+ }
+ debug_log = "ZQLR120: DIAG40 SCOPE BEGIN pillage_full_failed_revalidation"
+ debug_log_scopes = yes
+ debug_log = "ZQLR120: DIAG40 SCOPE END pillage_full_failed_revalidation"
 }

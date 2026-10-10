@@ -5726,10 +5726,11 @@ class NativeHeadlessGameplayDriver:
 
     def query_current_title_appointment_v1(self, *, expected_revision: int,
             requested_title_id: int | None = None, candidate_offset: int = 0,
-            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
+            candidate_limit: int = 32, breakdown_character_id: int | None = None,
+            diagnostic_character_id: int | None = None) -> dict[str, object]:
         from .appointment_window_contract import CAPABILITY, STEP, EXE_SHA256, validate_request, normalize_result
         from .ingame_ui_contract import ingame_ui_build_binding
-        fields = validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id)
+        fields = validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id, diagnostic_character_id)
         starting = self.take_snapshot()
         binding = _title_camera_navigation_binding_from_snapshot(starting)
         if starting.get("paused") is not True or starting.get("map_ready") is not True:
@@ -23877,14 +23878,16 @@ class ConfiguredHybridFallbackDriver:
 
     def query_current_title_appointment_v1(self, *, expected_revision: int,
             requested_title_id: int | None = None, candidate_offset: int = 0,
-            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
+            candidate_limit: int = 32, breakdown_character_id: int | None = None,
+            diagnostic_character_id: int | None = None) -> dict[str, object]:
         from .appointment_window_contract import CAPABILITY, validate_request
-        validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id)
+        validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id, diagnostic_character_id)
         if CAPABILITY not in self.native.capabilities().get("bridge_capabilities", []):
             raise UnsupportedStepError("capability_not_available: current appointment query")
         return self.native.query_current_title_appointment_v1(expected_revision=expected_revision,
             requested_title_id=requested_title_id, candidate_offset=candidate_offset,
-            candidate_limit=candidate_limit, breakdown_character_id=breakdown_character_id)
+            candidate_limit=candidate_limit, breakdown_character_id=breakdown_character_id,
+            diagnostic_character_id=diagnostic_character_id)
 
 
     def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:

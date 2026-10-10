@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 16:49：R60通过及共同任命诊断后继
+
+R60/a161 ordinary原30步/12完整自然日PASS，run0/verify0、normal/OS0/native0/allocator0/keeper0/CAS8255闭合；queue独立数值仍null。[永久结果](xqol-r60-ordinary-async-2026-10-10.md)新增ordinary范围，旧R55/R59失败保留。正式仍7/10；剩余QOL行政、贤能、PAM±、UI及完整领主代赎，之后重整河山→361最后→廷臣礼仪picker两产品→G2。
+
+共同任命查询新增独立角色等级诊断，21compile/552等价对象复用、DLL链接与focused10项、统一Python20项通过；[精确输入/新DLL/字段边界](ck3-native-ai/appointment-character-native-level-1-20-0-4.md)。新DLL尚无实机资格，Source15单份Python索引继承冻结尚待选择，原Source14保留。行政优先合法GUI导航自然d_optimatoi查真实池；贤能等待共同诊断可用，不能强制角色入池。ransom fixture40只补失败原子观察、不改原断言，需新prepare。
+
 ## 2026-10-10 Source14 已选定
 
 后续未消费产品场唯一使用[Root选定mapping](C:/workspace/ck3-upgrade-20261010/root-source14-adoption-01/runtime.adopted-source14-native-fd1f-queue04-helper03-01.json)，12610B / SHA-256 `1eed7310a0c9314d54d9520d086ba1dce2f2d44d32988b91396c2bbf2f888f67`；共同manifest46927B / `bf326bb7005cd01ec482cbceaee02459dc2cf1400941b1dbe611c02905de60b2`，host234210B / `a20854002470e0f1b1c8f04d7889031560b28b9c89c510df950e72805697dea9`。实际增量物化exit0、7.620秒：6906文件copy2和sizecheck，6905行原SHA继承，只hash新host；native fd1f、queue04、helper03和全部能力合同不变。现有公共plan/Selection/hostCLI/prepare callable一次exit0、0.202秒，没有创建profile或启动游戏。旧Source13、manifest/prepared、R54/R55/R56结果保留，选择不授实机或产品PASS。

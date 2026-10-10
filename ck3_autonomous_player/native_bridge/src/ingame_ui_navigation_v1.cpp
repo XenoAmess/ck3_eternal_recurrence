@@ -777,7 +777,7 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
   if(k>4 || o>9 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
   if(k==4)return o==0 && r.subject_id==0 && r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() && ValidateAppointmentWindowRequestV1(r.appointment);
-  if(r.appointment.requested_title_id || r.appointment.candidate_offset || r.appointment.candidate_limit!=32 || r.appointment.breakdown_character_id)return false;
+  if(r.appointment.requested_title_id || r.appointment.candidate_offset || r.appointment.candidate_limit!=32 || r.appointment.breakdown_character_id || r.appointment.diagnostic_character_id)return false;
   if(!r.army_tooltip_kind.empty() || o==8 || o==9) {
     return k==1 && (o==0 || o==8 || o==9) && r.subject_id<=static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)()) &&
         (r.army_tooltip_kind=="supply_state" || r.army_tooltip_kind=="attrition") &&
@@ -829,9 +829,10 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
       !bridge::JsonStringField(json,"army_tooltip_kind",r.army_tooltip_kind,16))return false;
   if(json.find("\"army_tooltip_receipt\"")!=std::string_view::npos &&
       !bridge::JsonStringField(json,"army_tooltip_receipt",r.army_tooltip_receipt,32))return false;
-  for(const auto &[name,target]:std::array<std::pair<std::string_view,std::uint32_t *>,4>{{
+  for(const auto &[name,target]:std::array<std::pair<std::string_view,std::uint32_t *>,5>{{
       {"requested_title_id",&r.appointment.requested_title_id},{"candidate_offset",&r.appointment.candidate_offset},
-      {"candidate_limit",&r.appointment.candidate_limit},{"breakdown_character_id",&r.appointment.breakdown_character_id}}}) {
+      {"candidate_limit",&r.appointment.candidate_limit},{"breakdown_character_id",&r.appointment.breakdown_character_id},
+      {"diagnostic_character_id",&r.appointment.diagnostic_character_id}}}) {
     if(json.find(std::string("\"")+std::string(name)+"\"")!=std::string_view::npos) {
       std::uint64_t value=0;if(!bridge::JsonUnsignedField(json,name,value)||value>0xFFFFFFFF)return false;*target=std::uint32_t(value);
     }
@@ -891,7 +892,7 @@ bool QueryAppointment(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *han
     out.unavailable_reason="current_appointment_window_not_visible_and_enabled";return true;
   }
   AppointmentWindowAccessV1 reader{const_cast<ZhongguoScoreboardNativeEnvironmentV1 *>(&env),AppointmentRead,AppointmentTitleKey,AppointmentBreakdown,AppointmentHuman,
-    env.module_base,reinterpret_cast<std::uintptr_t>(handler),reinterpret_cast<std::uintptr_t>(window),reinterpret_cast<std::uintptr_t>(root)};
+    env.module_base,reinterpret_cast<std::uintptr_t>(handler),reinterpret_cast<std::uintptr_t>(window),reinterpret_cast<std::uintptr_t>(root),env.executable_sha256};
   if(!ReadAppointmentWindowSnapshotV1(reader,r.appointment,out.title_appointment)) {
     out.unavailable_reason=out.title_appointment.unavailable_reason;return true;
   }

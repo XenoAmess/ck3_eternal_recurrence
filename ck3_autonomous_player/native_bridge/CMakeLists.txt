@@ -1608,6 +1608,7 @@ add_library(xar_ck3_bridge SHARED
   src/title_map_navigation_v1.cpp
   src/ingame_ui_navigation_v1.cpp
   src/appointment_window_snapshot_v1.cpp
+    src/appointment_character_level12004.cpp
   src/title_map_navigation_v1_camera.cpp
   src/title_map_navigation_v1_mailbox.cpp
   src/title_map_navigation_v1_serializer.cpp
@@ -9551,6 +9552,26 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_12004_person_carrier_direct_mcp_first
     COMMAND xar_ck3_12004_person_carrier_direct_mcp_test
       "${CMAKE_BINARY_DIR}/wire/ck3_12004_person_carrier_direct_mcp_first")
+endif()
+
+# Focused appointment level leaf + actual appointment serializer, no runtime DLL.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_appointment_character_level_test
+    src/appointment_character_level12004_focused_test.cpp
+    src/appointment_character_level12004.cpp
+    src/appointment_window_snapshot_v1.cpp)
+  target_include_directories(xar_ck3_12004_appointment_character_level_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_appointment_character_level_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_appointment_character_level_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_appointment_character_level_test PRIVATE
+      /W4 /WX /Gy /permissive- /EHsc /utf-8 /UNDEBUG)
+    target_link_options(xar_ck3_12004_appointment_character_level_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12004_appointment_character_level_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_appointment_character_level_test>)
+  set_tests_properties(xar_ck3_12004_appointment_character_level_test PROPERTIES TIMEOUT 10)
 endif()
 
 # Immediate actual4 following source in the same selected-Character MCP query.

@@ -93,8 +93,8 @@
       "sha256": "d96f3dcafaec372edc5efff020c16ded1737a0cdf36812b7af34e910cf9b51ac"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/common/scripted_effects/zqlr_liege_ransom_effects.txt": {
-      "bytes": 24892,
-      "sha256": "1f1d7ad37dd25f7ce2c07d479c72c47b5758390585c7fd607c552f345c6db25e"
+      "bytes": 30264,
+      "sha256": "7f5014508c6e2d36b51f8b8966d9d8740178e17467d824f016fc1670bc63e861"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/common/scripted_effects/zqlr_stock_ransom_observer.txt": {
       "bytes": 6083,

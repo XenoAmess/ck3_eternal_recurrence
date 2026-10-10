@@ -12,13 +12,15 @@ def _integer(value: object, low: int, high: int, name: str) -> int:
     return value
 
 def validate_request(expected_revision: int, requested_title_id: int | None,
-        candidate_offset: int, candidate_limit: int, breakdown_character_id: int | None) -> dict[str, int | str]:
+        candidate_offset: int, candidate_limit: int, breakdown_character_id: int | None,
+        diagnostic_character_id: int | None = None) -> dict[str, int | str]:
     _integer(expected_revision, 0, 2**64-1, "expected_revision")
     fields: dict[str, int | str] = {"window_kind": "title_appointment", "subject_id": 0,
         "requested_title_id": 0 if requested_title_id is None else _integer(requested_title_id, 1, 2**32-2, "requested_title_id"),
         "candidate_offset": _integer(candidate_offset, 0, 4096, "candidate_offset"),
         "candidate_limit": _integer(candidate_limit, 1, 64, "candidate_limit"),
-        "breakdown_character_id": 0 if breakdown_character_id is None else _integer(breakdown_character_id, 1, 2**32-2, "breakdown_character_id")}
+        "breakdown_character_id": 0 if breakdown_character_id is None else _integer(breakdown_character_id, 1, 2**32-2, "breakdown_character_id"),
+        "diagnostic_character_id": 0 if diagnostic_character_id is None else _integer(diagnostic_character_id, 1, 2**32-2, "diagnostic_character_id")}
     return fields
 
 def _require(condition: bool, detail: str) -> None:
@@ -47,6 +49,44 @@ def _tree(node: object, budget: list[int], depth: int = 0) -> int:
     for child in children:
         _tree(child, budget, depth+1)
     return value
+
+def _normalize_character_level(v: dict[str, object], fields: dict[str, int | str], title_id: int) -> None:
+    requested = int(fields.get("diagnostic_character_id", 0))
+    _require(v.get("diagnostic_character_id", 0) == requested, "wrong diagnostic character request")
+    d = v.get("character_level_diagnostic")
+    if not requested:
+        _require(d is None, "unrequested character level diagnostic")
+        return
+    _require(isinstance(d, dict), "missing character level diagnostic")
+    if not isinstance(d, dict):
+        raise ValueError("missing character level diagnostic")
+    _require(d.get("schema") == "ck3-appointment-character-native-level-v1"
+        and type(d.get("available")) is bool, "invalid character level diagnostic")
+    _require(type(d.get("character_id")) is int and d["character_id"] == requested
+        and type(d.get("title_id")) is int and d["title_id"] == title_id, "diagnostic full-ID scope mismatch")
+    ordinal = d.get("native_level_source_ordinal")
+    if ordinal is not None:
+        _integer(ordinal, 0, 255, "native level source ordinal")
+    if d["available"] is False:
+        _require(isinstance(d.get("unavailable_reason"), str) and bool(d["unavailable_reason"]), "missing diagnostic unavailable reason")
+        for name in ("resource_extension_present", "accumulated_raw", "level_cap_raw", "native_level",
+                "title_tier", "required_native_level", "meets_native_level_floor"):
+            _require(d.get(name) is None, "unavailable diagnostic has derived data")
+        return
+    _require(ordinal == 0 and d.get("unavailable_reason") is None, "unsupported diagnostic level source")
+    _require(type(d.get("resource_extension_present")) is bool, "unknown resource extension state")
+    if d["resource_extension_present"]:
+        _integer(d.get("accumulated_raw"), -2**63, 2**63-1, "accumulated raw")
+        _integer(d.get("level_cap_raw"), -2**31, 2**31-1, "level cap raw")
+    else:
+        _require(d.get("accumulated_raw") is None and d.get("level_cap_raw") is None, "null extension has raw resource data")
+    level = _integer(d.get("native_level"), 0, 256, "native level")
+    _integer(d.get("title_tier"), 0, 6, "diagnostic title tier")
+    floor = _integer(d.get("required_native_level"), -2**31, 2**31-1, "required native level")
+    _require(type(d.get("meets_native_level_floor")) is bool
+        and d["meets_native_level_floor"] == (level >= floor), "native level floor comparison differs")
+    if not d["resource_extension_present"]:
+        _require(level == 0, "null extension native level differs")
 
 def normalize_result(raw: object, *, fields: dict[str, int | str], native_revision: int,
         date_raw: int, actor_id: int) -> dict[str, object]:
@@ -121,4 +161,5 @@ def normalize_result(raw: object, *, fields: dict[str, int | str], native_revisi
             _require(matched[0]["score_present"] is True and matched[0]["score_raw"] == total, "score breakdown total mismatch")
     else:
         _require(v.get("breakdown") is None, "unavailable breakdown has data")
+    _normalize_character_level(v, fields, current)
     return copy.deepcopy(raw)

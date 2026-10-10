@@ -74,3 +74,9 @@ R59业务失败与正常退出false不变，但实际 OS0、failure lifecycle、
 只清该已闭场生成 cache：3,780文件/157,999,920 B，失败0。原件 `C04-reclaim-a160-01-summary-23.json`：2423 B / SHA-256 `94e09cd9d5005474bae23667fb507278a52fcf385aaf4211bf474a4c1c81b003`。另2份原闭场文本做NTFS无损压缩，bytes/SHA/mtime不变，省2,723,840 B；5个已compressed原件跳过不重hash，未删证据。原件 `a160-closed-text-compression-05.json`：1396 B / SHA-256 `ef5b6b39be79f80f469a5442268aa8901d508019f24b2b0664a1f3db15ddf10f`。路径均相对 `C:/workspace/disk-cleanup-20261010/resume-05/`。
 
 计入另记的5个旧Git垃圾958,803,968 B后，当前累计实际删除分配 **30,525,547,048 B /567,458文件**；压缩节省单列，卷free变化不全部归因项目。R59处理后free30,630,338,560 B，项目保守usage32,951,724,672 B（未减压缩）。下一场仍须新的原子准入，不继承a160信用。CCC18的500项22,986,752 B、R58已owner审定的5张过时导航PNG均未删、不计回收；满足公式即停止清理。现行Source14/qa12/fd1f、原失败报告、debug/error、业务和有效图像证据均保留。
+
+### R60与独立native构建实际闭账追加
+
+R60/a161完整正常闭场后，原单场2GiB预留实际释放；三精确根一次metadata保守上界307,422,232 B。仅该已闭cache实清3780文件/157,999,920 B，失败0；另4份原件无损压缩省4,280,320 B，9份已有compressed原件跳过不重hash。累计实际删除 **30,683,546,968 B /571,238文件**，压缩不混计。原件相对 `C:/workspace/disk-cleanup-20261010/resume-05/`：`storage-coordinator/ordinary-a161-after-a160-01-reservation-52-closed.json` 7797 B / SHA-256 `199954f11982525f7b9760fccc05064ecf799b0471506acc80cdea60bd9060d6`；`C04-reclaim-a161-01-summary-23.json` 2423 B / `775bd8fbdcab06ce606f338a36e39b31637e79ac171609e18dedb401d650a332`；`a161-closed-text-compression-05.json` 1396 B / `8ae37ece1d89b9589daafef7be3e328c3b74d8031be46f769002ad1fe1f78c07`。
+
+独立native build70仅在无CK3时获新2GiB/15min准入，实际406.81秒完成DLL和focused检查，原首配置exit15保留。原result及子进程全部关闭后08:41:52Z释放，`storage-coordinator/native-level-two-targets-after-a161-01-reservation-70-closed.json` 7476 B / SHA-256 `8ff681f38caae3b87d7067ed5138062418bab7c19afdb3b4786e5d619084974b`。一次必要metadata9217entries/0.893秒，四roots加独立index路径上界419,736,344 B，包含继承hardlinks，不是实际净增。usage按整2GiB保守入账至35,248,630,632 B，未退回未证明余量；future scene credit=false。free30,198,267,904 B，未知并发卷变化不归因项目；新Source15冻结/下一场须各自准入，CCC18及五PNG仍未消费。

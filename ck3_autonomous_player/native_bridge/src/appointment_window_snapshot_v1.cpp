@@ -115,11 +115,11 @@ std::string Token(const std::vector<AppointmentCandidateV1> &v,std::uint32_t tit
 }
 }
 bool ValidateAppointmentWindowRequestV1(const AppointmentWindowRequestV1 &r) noexcept {
- return r.requested_title_id!=kInvalid&&r.breakdown_character_id!=kInvalid&&r.candidate_offset<=kMaximumPool&&r.candidate_limit>0&&r.candidate_limit<=64;
+ return r.requested_title_id!=kInvalid&&r.breakdown_character_id!=kInvalid&&r.diagnostic_character_id!=kInvalid&&r.candidate_offset<=kMaximumPool&&r.candidate_limit>0&&r.candidate_limit<=64;
 }
 bool ReadAppointmentWindowSnapshotV1(const AppointmentWindowAccessV1 &a,const AppointmentWindowRequestV1 &r,AppointmentWindowSnapshotV1 &out) noexcept {
- out={};out.requested_title_id=r.requested_title_id;out.candidate_offset=r.candidate_offset;out.breakdown_character_id=r.breakdown_character_id;
- auto fail=[&](std::string why){out.available=false;out.candidates.clear();out.breakdown_available=false;out.breakdown={};out.unavailable_reason=std::move(why);return false;};
+ out={};out.requested_title_id=r.requested_title_id;out.candidate_offset=r.candidate_offset;out.breakdown_character_id=r.breakdown_character_id;out.diagnostic_character_id=r.diagnostic_character_id;
+ auto fail=[&](std::string why){out.available=false;out.candidates.clear();out.breakdown_available=false;out.breakdown={};out.character_level_diagnostic={};out.unavailable_reason=std::move(why);return false;};
  try {
   if(!ValidateAppointmentWindowRequestV1(r)||!a.module_base||!a.handler||!a.window||!a.gui_root||!a.read||!a.title_key)return fail("invalid_private_reader_admission");
   Header h,later;Normalized norm,norm_later;std::uintptr_t title=0;std::vector<AppointmentCandidateV1> all,again;
@@ -150,6 +150,13 @@ bool ReadAppointmentWindowSnapshotV1(const AppointmentWindowAccessV1 &a,const Ap
     }
    }
    if(!out.breakdown_available)out.breakdown={};
+  }
+  if(r.diagnostic_character_id) {
+   // The real caller is the exact4 paused application-owner mailbox. h.rule
+   // and title are this window's leases; the unchanged guards below re-read
+   // the header, title/full ID, holder, law and complete candidate pool.
+   ck3_12004::ReadAppointmentCharacterLevel12004(a,a.admitted_executable_sha256,
+       h.rule,title,h.title,r.diagnostic_character_id,out.character_level_diagnostic);
   }
   std::string law_later,key_later;std::uint32_t holder_later=0;std::uintptr_t title_later=0;
   if(!HeaderRead(a,later)||later!=h||!CandidatesRead(a,later,again)||again!=all||
@@ -185,7 +192,29 @@ std::string SerializeAppointmentWindowSnapshotV1(const AppointmentWindowSnapshot
  o<<"],\"breakdown_character_id\":"<<v.breakdown_character_id<<",\"breakdown_getter_invoked\":"<<v.breakdown_getter_invoked
   <<",\"breakdown_cache_refresh_only\":true,\"breakdown_available\":"<<v.breakdown_available<<",\"breakdown\":";
  if(v.breakdown_available)TreeJson(o,v.breakdown);else o<<"null";
- o<<",\"breakdown_unavailable_reason\":\""<<Escape(v.breakdown_unavailable_reason)<<"\",\"unavailable_reason\":\""<<Escape(v.unavailable_reason)<<"\"}";
+ o<<",\"diagnostic_character_id\":"<<v.diagnostic_character_id<<",\"character_level_diagnostic\":";
+  if(!v.diagnostic_character_id)o<<"null";
+  else {
+   const auto &d=v.character_level_diagnostic;
+   o<<"{\"schema\":\"ck3-appointment-character-native-level-v1\",\"available\":"<<d.available
+    <<",\"character_id\":"<<d.character_id<<",\"title_id\":"<<d.title_id
+    <<",\"native_level_source_ordinal\":";
+   if(d.native_level_source_ordinal_available)o<<unsigned(d.native_level_source_ordinal);else o<<"null";
+   o<<",\"unavailable_reason\":";
+   if(d.available)o<<"null";else o<<'"'<<Escape(std::string(d.unavailable_reason))<<'"';
+   o<<",\"resource_extension_present\":";
+   if(d.available)o<<d.resource_extension_present;else o<<"null";
+   o<<",\"accumulated_raw\":";
+   if(d.available&&d.resource_extension_present)o<<d.accumulated_raw;else o<<"null";
+   o<<",\"level_cap_raw\":";
+   if(d.available&&d.resource_extension_present)o<<d.level_cap_raw;else o<<"null";
+   o<<",\"native_level\":";if(d.available)o<<d.native_level;else o<<"null";
+   o<<",\"title_tier\":";if(d.available)o<<d.title_tier;else o<<"null";
+   o<<",\"required_native_level\":";if(d.available)o<<d.required_native_level;else o<<"null";
+   o<<",\"meets_native_level_floor\":";if(d.available)o<<d.meets_native_level_floor;else o<<"null";
+   o<<"}";
+  }
+  o<<",\"breakdown_unavailable_reason\":\""<<Escape(v.breakdown_unavailable_reason)<<"\",\"unavailable_reason\":\""<<Escape(v.unavailable_reason)<<"\"}";
  return o.str();
 }
 }

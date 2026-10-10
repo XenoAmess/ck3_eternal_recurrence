@@ -3209,11 +3209,13 @@ def create_server(
     @server.tool()
     def ck3_query_current_title_appointment_v1(expected_revision: IngameUiRevisionV1,
             requested_title_id: int | None = None, candidate_offset: int = 0,
-            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
-        """Read the currently visible native appointment title, full-ID candidate page, scores, effective law and optional score tree. Does not open or switch windows. Fetch all pages with an identical pool token to cover the complete candidate pool."""
+            candidate_limit: int = 32, breakdown_character_id: int | None = None,
+            diagnostic_character_id: IngameUiHandleV1 | None = None) -> dict[str, object]:
+        """Read the currently visible native appointment title, full-ID candidate page, scores, effective law and optional score tree. Optional diagnostic_character_id reads that full-ID character independently of pool membership; ordinal 0 only, native level floor is not overall appointment eligibility. Does not open or switch windows. Fetch all pages with an identical pool token to cover the complete candidate pool."""
         return service.query_current_title_appointment_v1(expected_revision=expected_revision,
             requested_title_id=requested_title_id, candidate_offset=candidate_offset,
-            candidate_limit=candidate_limit, breakdown_character_id=breakdown_character_id)
+            candidate_limit=candidate_limit, breakdown_character_id=breakdown_character_id,
+            diagnostic_character_id=diagnostic_character_id)
 
     @server.tool()
     def ck3_hover_combat_knights_v1(combat_id: IngameUiHandleV1, ui_side: Literal["left", "right"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
