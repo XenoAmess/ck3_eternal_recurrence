@@ -1,0 +1,25 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r52-administrative-close-sourceonly-20261011-001/administrative_close_002.py",
+    "--execute"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T16:48:10.761649+00:00",
+  "finished_at_utc": "2026-10-10T16:50:21.285074+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r52-administrative-close-command-20261011-001\\stdout.log",
+    "bytes": 537,
+    "sha256": "23432c99f5b39cb5b9ca348bca70e12820a89c922f6b8152fb344993f301fc3a"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r52-administrative-close-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

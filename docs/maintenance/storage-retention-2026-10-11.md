@@ -21,3 +21,7 @@
 本轮对已有分类、复核集合的结论为 **NO_ELIGIBLE_CANDIDATE**。先前重复 payload 已退役，当前 v2 缓存、B3/D2a、Source09/O10 与未解代表失败仍有用途且未到原期限；没有新增删除，没有重复全树扫描，也没有将过去的删除量再次累计。此结论只覆盖已有已复核集合，不能外推全盘没有过期文件。
 
 [原始准入与协调回执](../li-yu-dao/acceptance/2026-10-11-i4-source11-preflight/INDEX.actual.json) 已保留。当前预约仍开放；实际场次结束后须核验独立进程退出、keeper/CAS 及限定新增资产元数据，再将未来写入预约归零。释放 4 GiB 预约不是物理删除 4 GiB；实际保留量、全项目占用、历史峰值分别报告。
+
+01:00 CST 追加实际闭账：R52 公共 readiness RED 保留；正常 GUI 行政退出取得实际 OS0/native0/原 host wait0，keeper 线程及 allocator 原等待0，最后 owned4551 已完成 CAS release、done/resources=[]。预约 003 于 00:59:18 实际 CLOSED，剩余未来写入预约 **0 B**；限定新增目录的保留逻辑量 **441327935 B**，闭账时可用 **622230110208 B**。[原闭账](../li-yu-dao/acceptance/2026-10-11-i4-natural-r52/reservation-closed.actual.json)与[限定元数据测量](../li-yu-dao/acceptance/2026-10-11-i4-natural-r52/reservation-measure.actual.json)仅覆盖新 CASE3/run/a14/Source11/O11 及指定小回执，不代表项目全量占用或历史峰值。后写的闭账与发布文件不在该次测量小计内；并行小源码仍由原 128 MiB 预计入覆盖。
+
+缓存/profile 原截止、Source11/O11 继承复核上限与原配额 2026-10-12T05:19:51.814083Z 均未延长。有限新证据按原策略登记复核；本轮实际物理删除 **0 B**，不把 4 GiB 预约释放或过去的清理再次累计。自动预约/自动 GC 尚未实现。

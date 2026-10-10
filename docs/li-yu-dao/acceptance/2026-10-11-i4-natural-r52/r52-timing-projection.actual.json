@@ -1,0 +1,244 @@
+{
+  "source": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.json",
+    "bytes": 762119,
+    "sha256": "18c207b9dd4724f039a8851bb0ffe8eeaa10fd6e85e7d188bdf2e2e29ccc0a70"
+  },
+  "keys": [
+    "status",
+    "phase",
+    "started_at"
+  ],
+  "top_scalars": {
+    "status": "GREEN",
+    "phase": "hold",
+    "started_at": "2026-10-10T16:24:12.581909+00:00",
+    "fixture_only": false,
+    "fixture_profile": true,
+    "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state",
+    "agent_source_root": "C:\\csr11",
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0052",
+    "native_wire": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.native-wire.jsonl",
+    "mcp_wire": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.mcp-wire.jsonl",
+    "mcp_calls": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.mcp-calls.jsonl",
+    "server_stderr": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.server-stderr.log",
+    "error": null,
+    "frontend_observations_journal": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.frontend-observations.jsonl",
+    "managed_session_done": true,
+    "managed_session_thread_finished": true,
+    "hold_until_utc_estimated": 1791657553.2688131,
+    "hold_finished_by_control_plan": true,
+    "finished_at": "2026-10-10T16:50:21.157200+00:00",
+    "cleanup_ok": true
+  },
+  "selected": {
+    "saved_campaign_restore": {
+      "keys": [
+        "status",
+        "expected",
+        "observations"
+      ],
+      "scalars": {
+        "status": "ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND",
+        "load_provider": "runtime.launch(load_save_name):single_-loadsave",
+        "new_game_requested": false,
+        "start_requested": false,
+        "fixture_setup_requested": false,
+        "product_acceptance_proven": false,
+        "finished_at": "2026-10-10T16:39:12.539320+00:00",
+        "actual_current_actor_bound": true
+      },
+      "nested_scalars": {
+        "expected": {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "actor_character_id": 31254,
+          "date_raw": 53144712,
+          "profile_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state\\profile",
+          "copied_save_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state\\profile\\save games\\restored_campaign.ck3",
+          "load_save_name": "restored_campaign",
+          "product_inventory_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\prepared\\saved-product-inventory.json",
+          "product_inventory_sha256": "c81b42691634e498ee2a553322d54a3df8aa5f7e0a94461f6e7d403eae594a39",
+          "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE",
+          "source_game_state_claimed": false,
+          "product_acceptance_proven": false
+        },
+        "observed_process_binding": {
+          "bridge_pid": 820,
+          "connection_generation": 1
+        },
+        "binding": {
+          "actor_character_id": 31254,
+          "date_raw": 53144712,
+          "local_player_id": 1,
+          "snapshot_id": "native:1",
+          "revision": 2,
+          "native_revision": 1,
+          "bridge_pid": 820,
+          "connection_generation": 1,
+          "owner_tid": 9428,
+          "pump_epoch": 6,
+          "actual_current_actor_bound": true,
+          "saved_campaign_identity_proven": true,
+          "product_acceptance_proven": false
+        }
+      },
+      "lists": {
+        "observations": {
+          "count": 3,
+          "first": [
+            {
+              "campaign_root": null,
+              "binding": null
+            }
+          ],
+          "last": [
+            {
+              "campaign_root": null,
+              "binding": null
+            },
+            {}
+          ]
+        },
+        "startup_observations": {
+          "count": 1419,
+          "first": [
+            {
+              "at": "2026-10-10T16:24:22.838492+00:00",
+              "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+              "connected": false,
+              "semantic_state_available": false,
+              "bridge_pid": null,
+              "connection_generation": 0
+            }
+          ],
+          "last": [
+            {
+              "at": "2026-10-10T16:39:09.366003+00:00",
+              "status": "WAITING_FOR_INITIAL_NATIVE_SEMANTIC_FRAME",
+              "connected": true,
+              "semantic_state_available": false,
+              "bridge_pid": 820,
+              "connection_generation": 1
+            },
+            {
+              "at": "2026-10-10T16:39:09.921505+00:00",
+              "status": "INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE",
+              "connected": true,
+              "semantic_state_available": true,
+              "bridge_pid": 820,
+              "connection_generation": 1
+            }
+          ]
+        }
+      }
+    },
+    "readiness": {
+      "keys": [
+        "date_raw",
+        "speed",
+        "paused"
+      ],
+      "scalars": {
+        "date_raw": 53144712,
+        "speed": 1,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "one_life_settlement": null,
+        "active_event": null,
+        "pending_character_interaction": null,
+        "last_checkpoint_submission": null,
+        "format_version": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "episode_projection": "native_campaign",
+        "native_rollback_war_failure": null
+      },
+      "nested_scalars": {
+        "played_character": {
+          "character_id": 31254,
+          "alive": true,
+          "source": "native",
+          "stress_points": 0,
+          "betrothed_id": null,
+          "primary_spouse_id": 36311
+        },
+        "played_character_gold": {
+          "raw": 104300000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 315000000,
+          "scale": 100000
+        },
+        "diagnostics": {
+          "protocol_version": 1,
+          "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0052",
+          "connected": true,
+          "connection_generation": 1,
+          "bridge_pid": 820,
+          "bridge_version": "0.1.0",
+          "last_error": null,
+          "semantic_state_available": true,
+          "rejected_state_snapshot_count": 0,
+          "last_rejected_state_snapshot": null,
+          "snapshot_publish_diagnostic_count": 0,
+          "last_snapshot_publish_diagnostic": null
+        },
+        "managed_campaign_run_binding": {
+          "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0052",
+          "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0052",
+          "host_path": "C:\\csr11\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+          "frozen_argv_sha256": "fd392a067bc325078bd506e50e935083f4cd346277f8363ce3139521b4e69349"
+        },
+        "native_command_history_export": {
+          "mode": "omitted",
+          "total_count": 1,
+          "included_count": 0
+        }
+      },
+      "lists": {}
+    },
+    "readiness_guard": {
+      "keys": [
+        "schema",
+        "mode",
+        "native_campaign_binding"
+      ],
+      "scalars": {
+        "schema": "ck3-paused-map-readiness-admission-v1",
+        "mode": "saved_campaign_only",
+        "one_life_identity_fabricated": false,
+        "product_acceptance_proven": false
+      },
+      "nested_scalars": {
+        "native_campaign_binding": {
+          "actor_character_id": 31254,
+          "date_raw": 53144712,
+          "local_player_id": 1,
+          "snapshot_id": "native:1",
+          "revision": 2,
+          "native_revision": 1,
+          "bridge_pid": 820,
+          "connection_generation": 1,
+          "owner_tid": 9428,
+          "pump_epoch": 6,
+          "actual_current_actor_bound": true,
+          "saved_campaign_identity_proven": true,
+          "product_acceptance_proven": false
+        }
+      },
+      "lists": {}
+    }
+  }
+}

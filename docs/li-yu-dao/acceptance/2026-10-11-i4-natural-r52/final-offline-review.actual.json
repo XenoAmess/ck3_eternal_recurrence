@@ -1,0 +1,59 @@
+{
+  "schema": "ck3-root-direct-final-offline-review-v1",
+  "at_utc": "2026-10-10T16:58:49.955898+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0052",
+  "reviewer": "/root",
+  "direct_reviewed": true,
+  "offline_mode_visible": true,
+  "steam_offline_confirmed": true,
+  "direct_original_image_review": true,
+  "current_display_readback": {
+    "observed_at_utc": "2026-10-10T16:58:49.563895+00:00",
+    "EnumDisplaySettings": {
+      "width": 1024,
+      "height": 768,
+      "bits": 32,
+      "frequency": 60
+    },
+    "pyautogui_size": [
+      1024,
+      768
+    ],
+    "original_display_fit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\display-fit-001.json",
+      "bytes": 528,
+      "sha256": "da20b7db25d88e1789119821780a7fa07450e4841b564adbad749f8571a1a6fc"
+    },
+    "equals_restored_and_original_before": true
+  },
+  "image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r52-final-steam-20261011-001\\probe-1\\steam-moved.png",
+    "bytes": 924751,
+    "sha256": "4fb6bbcfeca3a62e3b2ea13a025c9eb8d346eedf4126a507e1b21db835392d09"
+  },
+  "review_declaration_at_utc": "2026-10-10T16:58:49.955898+00:00",
+  "review_observed_at_utc_or_null": null,
+  "freshness": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r52-final-steam-20261011-001\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1183,
+    "sha256": "0ae79dfd075d9944d593d454ef75987e781ea29302f891db1304de58ac1853e5"
+  },
+  "before_image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r52-final-steam-20261011-001\\probe-1\\steam-before.png",
+    "bytes": 894923,
+    "sha256": "68cb3718f4c081672a6f3c2a35908e31064b2e0f212ad447b7cf142bdae77922"
+  },
+  "moved_image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r52-final-steam-20261011-001\\probe-1\\steam-moved.png",
+    "bytes": 924751,
+    "sha256": "4fb6bbcfeca3a62e3b2ea13a025c9eb8d346eedf4126a507e1b21db835392d09"
+  },
+  "display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\display-restore-001.json",
+    "bytes": 526,
+    "sha256": "6516d48016498bcf6dc29a7a0bbd199d5cca23025ea85a4df7ae53b352deb426"
+  },
+  "launch_credit": false,
+  "business_pass": false,
+  "normal_exit_claimed": false
+}

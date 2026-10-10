@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-10T16:51:13.370297+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0052",
+  "before": {
+    "width": 1920,
+    "height": 1080,
+    "bits": 32,
+    "frequency": 60
+  },
+  "target": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "change_result": 0,
+  "after": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "pyautogui_size": [
+    1024,
+    768
+  ],
+  "registry_persistence_requested": false
+}

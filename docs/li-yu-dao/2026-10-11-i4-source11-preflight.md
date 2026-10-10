@@ -31,3 +31,5 @@
 先发布本轮输入与跨日记录，保持 MAIN 干净，再由公共 allocator 分配新 run 与 a14 keeper，审阅新鲜 Steam 离线画面及精确 ready/frozen 绑定，随后只运行一次 CASE3。运行期间保持 checkout 冻结；完成或 RED 后依实际 OS/native/host/keeper 回执收尾、CAS 释放并闭账 003。完整到期、final SAVE、冷恢复与新完整 365 日循环仍各需自己的实际证据，当前预检不授予这些信用。
 
 R51 的业务 RED、原正常关闭失败与后来行政闭场保持原结论，见[原小证据](acceptance/2026-10-10-i4-natural-r51/INDEX.actual.json)。本轮不追认旧场通过。
+
+后续实际更新（01:00 CST）：已按上述输入独立运行 R0052；公共 run/verify 均因原就绪窗口超时保持 RED，0 业务/SAVE。正常 GUI 行政退出、原 host/keeper/allocator 等待、CAS 释放和预约 003 闭账均完成。[R52 实际终态及下一门槛](2026-10-11-i4-r52-readiness-timeout.md)保留预检时尚未运行的历史事实。

@@ -1,0 +1,57 @@
+{
+  "schema": "ck3-mod-acceptance-run-context-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0052",
+  "run_dir": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052",
+  "keeper_root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a14",
+  "prepared_case": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\prepared\\prepared-case.json",
+    "bytes": 34070,
+    "sha256": "4650439705d02e453cb76b3ebeed3a1f9c77f070f3f82cf2fef0451b5c0b5521"
+  },
+  "case_inputs": {
+    "product_dir": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-038\\content\\production",
+    "product_inventory": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\product-inventory.json",
+      "bytes": 13951,
+      "sha256": "408d43cde96156c5004b0a552ba20bb73fbd2896e794389a8734c669b134d5f2"
+    },
+    "plain_configuration": {
+      "pdx_settings.txt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-038\\userdir\\pdx_settings.txt",
+        "bytes": 7135,
+        "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+      },
+      "tutorial.txt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-038\\userdir\\tutorial.txt",
+        "bytes": 57,
+        "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+      },
+      "presets.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\plain-configuration\\presets.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\plain-configuration\\player\\game_rules\\presets.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "origin_metadata": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-r13-formal-route23-20261006-001\\inputs\\i3b-0240-native-preparation-20261006-001\\BASELINE-0240.json",
+      "bytes": 426067,
+      "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+    }
+  },
+  "product": "li-yu-dao",
+  "case": "i4-existing-school-cooldown",
+  "frozen_argv": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\frozen-argv.json",
+    "bytes": 66003,
+    "sha256": "fd392a067bc325078bd506e50e935083f4cd346277f8363ce3139521b4e69349"
+  },
+  "proof": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\direct-review-001\\operator-review.json",
+  "challenge": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\direct-review-001\\challenge.json",
+  "observed_nonce": "a9d856461ddeea3bb44a01d95f8f7212",
+  "reviewer": "/root"
+}

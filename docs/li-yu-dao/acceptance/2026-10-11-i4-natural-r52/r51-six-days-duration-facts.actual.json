@@ -1,0 +1,96 @@
+{
+  "schema": "r51-six-natural-days-bounded-duration-analysis-v1",
+  "at_utc": "2026-10-10T16:37:06.975828+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0051",
+  "original_public_run_exit": 2,
+  "business_qualification": false,
+  "public_run_started_at_utc": "2026-10-10T14:52:10.178011+00:00",
+  "first_business_step_started_at": "2026-10-10T15:06:28.563536+00:00",
+  "sixth_post_day_snapshot_finished_at": "2026-10-10T15:11:09.355896+00:00",
+  "before_first_business_step_seconds": 858.385525,
+  "business_steps_span_seconds": 280.79236,
+  "public_start_through_sixth_post_day_snapshot_seconds": 1139.177885,
+  "observed_steps_count": 35,
+  "host_step_total_seconds": 48.139512,
+  "inter_step_unallocated_seconds": 232.65284799999998,
+  "six_natural_day_host_steps_seconds": 28.658155999999998,
+  "eighteen_model_tree_query_host_seconds": 5.522947,
+  "per_day_host_seconds": [
+    6.564442,
+    4.58436,
+    4.365741,
+    3.872601,
+    4.842097,
+    4.428915
+  ],
+  "school_observation_timing": [
+    {
+      "observation": 0,
+      "span_seconds": 11.951128,
+      "host_query_seconds": 0.24031799999999998,
+      "between_query_gap_seconds": 11.71081
+    },
+    {
+      "observation": 1,
+      "span_seconds": 14.075846,
+      "host_query_seconds": 0.550721,
+      "between_query_gap_seconds": 13.525125000000001
+    },
+    {
+      "observation": 2,
+      "span_seconds": 10.891602,
+      "host_query_seconds": 0.845799,
+      "between_query_gap_seconds": 10.045803000000001
+    },
+    {
+      "observation": 3,
+      "span_seconds": 15.001094,
+      "host_query_seconds": 0.879521,
+      "between_query_gap_seconds": 14.121573
+    },
+    {
+      "observation": 4,
+      "span_seconds": 12.24372,
+      "host_query_seconds": 1.57465,
+      "between_query_gap_seconds": 10.66907
+    },
+    {
+      "observation": 5,
+      "span_seconds": 12.817088,
+      "host_query_seconds": 1.431938,
+      "between_query_gap_seconds": 11.38515
+    }
+  ],
+  "two_within_observation_gaps_total_seconds": 71.457531,
+  "queue_ack_to_host_start_sample_seconds": {
+    "school_observation0_tree": 0.024813,
+    "first_natural_day": 0.074918
+  },
+  "exact_inter_step_subcauses": "UNKNOWN: no execute_plan entry, queue subprocess spawn/end, guard completion timestamps",
+  "after_sixth_snapshot_until_public_run_return_cause": "UNKNOWN; no exact failure time in original failed queue-result",
+  "CAS_failure_cause": "UNKNOWN",
+  "host_native_whole_report_reads": 0,
+  "save_or_PE_body_reads": 0,
+  "source_and_metadata_new_read_bytes": 111830,
+  "source_and_metadata_read_limit_bytes": 131072,
+  "reads_include_host_byte_range": [
+    240000,
+    256993
+  ],
+  "minimal_future_seam": "Existing CaseClient.execute_plan(list): submit model-before / detail-tree / model-after once as an ordered readonly triple. Preserve each original ID, args, fresh_revision, paused/owner/actor/date/public+native revision proofs and original GUI/footer assessment. Natural day still an independent exactly-one-day plan; no replay or hold extension.",
+  "implementation_or_tests_or_current_R52_change": false,
+  "future_speedup_or_expiry_completion_proven": false,
+  "existing_deadlines_renewed": false,
+  "analysis_review_at_utc": "2026-10-17T16:37:06.975828+00:00",
+  "analysis_protection_reason": "Small bounded analysis for ROOT decision after current R52 closes; original asset deadlines remain unchanged",
+  "timing_projection": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-six-days-duration-review-20261011-001\\TIMINGS.derived.json",
+    "bytes": 18603,
+    "sha256": "046b59eeba6dc611152b563e85282c36e8552bf71b881947e98a37a60d62ae4b"
+  },
+  "bounded_reads": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r51-six-days-duration-review-20261011-001\\READS.json",
+    "bytes": 26708,
+    "sha256": "e88c35d606b1196a30ffd032df0bb1bc2666935da2695df305ce3f0fb9ad95ea"
+  }
+}
