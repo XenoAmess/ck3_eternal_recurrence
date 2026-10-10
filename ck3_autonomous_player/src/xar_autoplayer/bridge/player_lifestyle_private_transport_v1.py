@@ -11,6 +11,9 @@ import uuid
 from typing import Mapping
 
 from .driver import StepPostconditionError
+from .lifestyle_perk_predicate_inputs_12004 import (
+    FACTS_KEY, WIRE_KEY, decode_lifestyle_perk_predicate_source_12004,
+)
 
 
 QUERY_STEP = "private-query-player-lifestyle-formal-v1"
@@ -291,6 +294,22 @@ def query_player_lifestyle_martial_authority_private_v1(
     )
 
 
+def _with_lifestyle_perk_source_facts_12004(
+    response: dict[str, object], result: object, *,
+    snapshot_identity: str, native_revision: int, date_raw: int,
+    played_character_id: int, target_key: str | None = None,
+) -> dict[str, object]:
+    """Carry optional facts from this result using existing caller bindings."""
+    if not isinstance(result, Mapping) or result.get(WIRE_KEY) is None:
+        return response
+    return {**response, FACTS_KEY: decode_lifestyle_perk_predicate_source_12004(
+        result[WIRE_KEY], expected_snapshot_identity=snapshot_identity,
+        expected_native_revision=native_revision, expected_date_raw=date_raw,
+        expected_played_character_id=played_character_id,
+        expected_target_key=target_key,
+    )}
+
+
 def parse_player_lifestyle_diplomacy_targets_private_v1(
     response: Mapping[str, object] | None, *, expected_request_id: str,
     source_frame: Mapping[str, object],
@@ -335,9 +354,16 @@ def parse_player_lifestyle_diplomacy_targets_private_v1(
             and perk.get("target_key") == "thoughtful_perk"):
         return {"status": "red", "issue": "native_diplomacy_target_invalid"}
     if result.get("status") == "unavailable":
-        return {"status": "source_unavailable",
-                "focus_status": focus.get("status"),
-                "perk_status": perk.get("status")}
+        return _with_lifestyle_perk_source_facts_12004(
+            {"status": "source_unavailable",
+             "focus_status": focus.get("status"),
+             "perk_status": perk.get("status")}, result,
+            snapshot_identity=source_frame["snapshot_id"],
+            native_revision=source_frame["native_revision"],
+            date_raw=source_frame["date_raw"],
+            played_character_id=source_frame["played_character_id"],
+            target_key="thoughtful_perk",
+        )
     progress = focus.get("target_lifestyle_progress")
     if not (result.get("status") == "observed"
             and focus.get("status") in {"observed_native_legal",
@@ -365,9 +391,16 @@ def parse_player_lifestyle_diplomacy_targets_private_v1(
                 "xp_total_raw", "xp_within_level_raw", "xp_per_level",
                 "unspent_perk_points", "used_perk_points"))):
         return {"status": "red", "issue": "native_diplomacy_observation_invalid"}
-    return {"status": "observed", "focus": dict(focus),
-            "perk": dict(perk), "source_frame": {
-                key: source_frame.get(key) for key in bound}}
+    return _with_lifestyle_perk_source_facts_12004(
+        {"status": "observed", "focus": dict(focus),
+         "perk": dict(perk), "source_frame": {
+             key: source_frame.get(key) for key in bound}}, result,
+        snapshot_identity=source_frame["snapshot_id"],
+        native_revision=source_frame["native_revision"],
+        date_raw=source_frame["date_raw"],
+        played_character_id=source_frame["played_character_id"],
+        target_key="thoughtful_perk",
+    )
 
 
 def query_player_lifestyle_private_v1(
@@ -468,13 +501,14 @@ def query_player_lifestyle_private_v1(
         and ending.get("date_raw") == date_raw
         and ending.get("episode_run_id") == episode_run_id
     ):
-        return {
-            "status": "native_query_binding_red",
-            "step": query_step,
-            "request_id": request_id,
-            "native_result": result,
-        }
-    return {
+        return _with_lifestyle_perk_source_facts_12004(
+            {"status": "native_query_binding_red", "step": query_step,
+             "request_id": request_id, "native_result": result}, result,
+            snapshot_identity=starting["snapshot_id"],
+            native_revision=native_revision, date_raw=date_raw,
+            played_character_id=player_id,
+        )
+    response = {
         "status": "available",
         "step": query_step,
         "request_id": request_id,
@@ -489,6 +523,11 @@ def query_player_lifestyle_private_v1(
             "player_character_id": player_id,
         },
     }
+    return _with_lifestyle_perk_source_facts_12004(
+        response, result, snapshot_identity=starting["snapshot_id"],
+        native_revision=native_revision, date_raw=date_raw,
+        played_character_id=player_id,
+    )
 
 
 def query_player_lifestyle_stock_focus_combined_private_v1(

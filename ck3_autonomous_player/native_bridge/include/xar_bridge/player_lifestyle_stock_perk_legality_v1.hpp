@@ -5,6 +5,8 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
+#include <string>
 #include <string_view>
 
 namespace xar::ck3_11906 {
@@ -87,6 +89,105 @@ struct StockPerkLegalityEnvironmentV1 {
   StockPerkValidateCommandV1 validate_perk_command = nullptr;
 };
 
+struct StockPerkLegalitySourceQueryMetadataV1 {
+  std::optional<std::uint64_t> frame_identity{};
+  std::optional<std::uint64_t> query_sequence{};
+  std::optional<bool> mailbox_before_accepted{}, mailbox_after_accepted{};
+  std::optional<std::uint32_t> module_image_size{}, module_time_date_stamp{};
+  bool caller_snapshot_confirmed = false;
+  friend bool operator==(const StockPerkLegalitySourceQueryMetadataV1 &,
+                         const StockPerkLegalitySourceQueryMetadataV1 &) = default;
+};
+
+struct StockPerkLegalitySourceReadFrameV1 {
+  std::string executable_sha256;
+  std::uintptr_t module_base = 0;
+  std::string snapshot_identity;
+  std::optional<std::uint64_t> frame_identity{};
+  std::optional<std::uint64_t> query_sequence{};
+  std::optional<bool> mailbox_before_accepted{}, mailbox_after_accepted{};
+  std::optional<std::uint32_t> module_image_size{}, module_time_date_stamp{};
+  std::uint64_t public_revision = 0, native_revision = 0, proof_epoch = 0;
+  std::int32_t date_raw = 0;
+  std::uint32_t played_character_id = 0xFFFFFFFFU;
+  std::string caller_domain;
+  bool caller_snapshot_confirmed = false;
+  friend bool operator==(const StockPerkLegalitySourceReadFrameV1 &,
+                         const StockPerkLegalitySourceReadFrameV1 &) = default;
+};
+
+struct StockPerkLegalitySourceInputsV1 {
+  std::uintptr_t command_identity = 0;
+  std::optional<std::uintptr_t> registry_identity{};
+  std::optional<std::uint32_t> requested_full_character_id_u32{};
+  std::optional<std::uint32_t> registry_capacity_u32{};
+  std::optional<std::uintptr_t> indexed_character_identity{};
+  std::optional<std::uint32_t> indexed_character_full_id_u32{};
+  std::optional<bool> used_fallback{};
+  std::optional<std::uintptr_t> selected_character_identity{};
+  std::optional<std::uint32_t> selected_character_magic_u32{};
+  std::optional<std::uint32_t> selected_character_full_id_u32{};
+  std::optional<std::uint64_t> selected_character_field_1d0_u64{};
+  std::optional<std::uintptr_t> selected_perk_identity{};
+  std::optional<std::uint32_t> selected_perk_magic_u32{};
+  std::optional<bool> prefix_admitted{};
+  std::string unavailable_reason;
+  friend bool operator==(const StockPerkLegalitySourceInputsV1 &,
+                         const StockPerkLegalitySourceInputsV1 &) = default;
+};
+
+struct StockPerkLegalitySourceTailV1 {
+  std::optional<bool> value{};
+  std::string unavailable_reason;
+  friend bool operator==(const StockPerkLegalitySourceTailV1 &,
+                         const StockPerkLegalitySourceTailV1 &) = default;
+};
+
+struct StockPerkLegalitySourceTruthTraceV1 {
+  std::uintptr_t selected_perk_identity = 0;
+  std::optional<std::uintptr_t> compiled_trigger_receiver_identity{};
+  std::optional<std::uint16_t> context_root_word{};
+  std::optional<std::uint64_t> context_full_id_payload{};
+  std::optional<std::uint8_t> evaluation_flag_raw_u8{};
+  std::optional<std::uintptr_t> trigger_vtable_raw{};
+  std::optional<std::uintptr_t> root_kind_getter_slot58_raw{};
+  std::optional<std::uintptr_t> root_mask_getter_slot60_raw{};
+  std::optional<std::uintptr_t> final_evaluator_slotc8_raw{};
+  std::optional<std::uint8_t> source_projected_returned_raw_u8{};
+  std::optional<bool> value{};
+  bool context_projection_available = false;
+  bool copied_frame_ready = false;
+  bool input_leaf_ready = false;
+  bool child_source_value_ready = false;
+  bool native_callback_executed = false;
+  bool actual_trigger_evaluation_observed = false;
+  std::string unavailable_reason;
+  friend bool operator==(const StockPerkLegalitySourceTruthTraceV1 &,
+                         const StockPerkLegalitySourceTruthTraceV1 &) = default;
+};
+
+// Copied current-query child observations. Native parent legality is independent.
+// Copied pointer identities never authorize later native use of their objects.
+struct StockPerkLegalitySourcePacketV1 {
+  StockPerkLegalitySourceReadFrameV1 read_frame{};
+  std::string target_key;
+  std::optional<std::uintptr_t> current_thread_tls_array_identity{};
+  StockPerkLegalitySourceInputsV1 inputs{};
+  std::optional<StockPerkLegalitySourceTailV1> tail{};
+  std::optional<StockPerkLegalitySourceTruthTraceV1> truth_trace{};
+  std::optional<bool> value{};
+  std::string unavailable_reason;
+  std::optional<bool> native_can_select_before{};
+  std::optional<bool> native_can_select_after{};
+  bool repeated_source_match = false;
+  friend bool operator==(const StockPerkLegalitySourcePacketV1 &,
+                         const StockPerkLegalitySourcePacketV1 &) = default;
+};
+
+using StockPerkCaptureSourceQueryMetadataV1 = bool (*)(
+    void *, StockPerkLegalitySourceQueryMetadataV1 &) noexcept;
+using StockPerkCaptureSourceTlsArrayV1 = bool (*)(void *, std::uintptr_t &) noexcept;
+
 struct StockPerkLegalityAccessV1 {
   void *context = nullptr;
   StockPerkProbeMainThreadV1 is_application_main_thread = nullptr;
@@ -94,6 +195,9 @@ struct StockPerkLegalityAccessV1 {
   StockPerkReadMemoryV1 read_memory = nullptr;
   StockPerkReadPlayerStateV1 read_player_state = nullptr;
   StockPerkReadTargetPlayerStateV1 read_target_player_state = nullptr;
+  // Optional actual-query carriers; absent inputs only limit the child source.
+  StockPerkCaptureSourceQueryMetadataV1 capture_source_query_metadata = nullptr;
+  StockPerkCaptureSourceTlsArrayV1 capture_source_tls_array = nullptr;
 };
 
 enum class StockPerkLegalityStatusV1 : std::uint32_t {
@@ -128,6 +232,7 @@ struct StockPerkLegalityResultV1 {
   // formal wire may use it for one immediate revalidation/submit; it must
   // never be retained across another capture or published over JSON.
   std::uintptr_t target_definition = 0;
+  std::optional<StockPerkLegalitySourcePacketV1> source_packet{};
 };
 
 StockPerkLegalityEnvironmentV1 BindStockPerkLegalityEnvironmentV1(

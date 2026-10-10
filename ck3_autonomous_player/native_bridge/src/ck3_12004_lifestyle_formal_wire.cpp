@@ -1,7 +1,12 @@
 #include "xar_bridge/ck3_12004_lifestyle.hpp"
+#include "xar_bridge/lifestyle_perk_predicate_inputs_12004_serializer.hpp"
 #include <windows.h>
 #include <algorithm>
 #include <limits>
+#include <cstddef>
+#if defined(_MSC_VER) && defined(_M_X64)
+#include <intrin.h>
+#endif
 namespace xar::ck3_12004::lifestyle {
 namespace {
 bool ReadMemory(void *, std::uintptr_t address, void *output,
@@ -105,6 +110,68 @@ bool CaptureStockPerkFrame(void *opaque,
   output.played_character_alive = current.played_character_alive;
   output.storage_round_trip = true;
   return true;
+}
+void CaptureStockPerkModuleMetadata(
+    const PlayerLifestyleFormalWireContext12004V1 &context,
+    StockPerkLegalitySourceQueryMetadataV1 &output) noexcept {
+  const auto base = context.bindings12004.module_base;
+  IMAGE_DOS_HEADER dos{};
+  if (base == 0 || !ReadMemory(nullptr, base, &dos, sizeof(dos)) ||
+      dos.e_magic != IMAGE_DOS_SIGNATURE || dos.e_lfanew <= 0 ||
+      dos.e_lfanew > 0x100000) return;
+  const auto nt_offset = static_cast<std::uintptr_t>(dos.e_lfanew);
+  constexpr auto header_bytes = sizeof(DWORD) + sizeof(IMAGE_FILE_HEADER);
+  if (base > (std::numeric_limits<std::uintptr_t>::max)() - nt_offset -
+                 header_bytes - sizeof(IMAGE_OPTIONAL_HEADER64)) return;
+  const auto nt = base + nt_offset;
+  DWORD signature = 0;
+  IMAGE_FILE_HEADER file{};
+  if (!ReadMemory(nullptr, nt, &signature, sizeof(signature)) ||
+      signature != IMAGE_NT_SIGNATURE ||
+      !ReadMemory(nullptr, nt + sizeof(DWORD), &file, sizeof(file))) return;
+  output.module_time_date_stamp = file.TimeDateStamp;
+  constexpr auto size_offset = offsetof(IMAGE_OPTIONAL_HEADER64, SizeOfImage);
+  if (file.SizeOfOptionalHeader < size_offset + sizeof(DWORD)) return;
+  const auto optional = nt + header_bytes;
+  WORD magic = 0;
+  DWORD image_size = 0;
+  if (ReadMemory(nullptr, optional, &magic, sizeof(magic)) &&
+      magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC &&
+      ReadMemory(nullptr, optional + size_offset, &image_size,
+                 sizeof(image_size))) {
+    output.module_image_size = image_size;
+  }
+}
+bool CaptureStockPerkSourceQueryMetadata(
+    void *opaque, StockPerkLegalitySourceQueryMetadataV1 &output) noexcept {
+  auto *context = static_cast<PlayerLifestyleFormalWireContext12004V1 *>(opaque);
+  if (context == nullptr || !OnMain(*context) ||
+      !ck3_12002::IsQueryOwningThread(&context->envelope)) return false;
+  // CaptureStockPerkFrame already checks the native frame on both sides in
+  // the source collector. This callback copies the actual owning query only.
+  output = {};
+  output.query_sequence = context->envelope.ticket.sequence;
+  output.mailbox_before_accepted = true;
+  output.caller_snapshot_confirmed = true;
+  CaptureStockPerkModuleMetadata(*context, output);
+  return true;
+}
+bool CaptureStockPerkSourceTlsArray(void *opaque,
+                                  std::uintptr_t &output) noexcept {
+  auto *context = static_cast<PlayerLifestyleFormalWireContext12004V1 *>(opaque);
+  if (context == nullptr || !OnMain(*context) ||
+      !ck3_12002::IsQueryOwningThread(&context->envelope)) return false;
+#if defined(_MSC_VER) && defined(_M_X64)
+  __try {
+    output = static_cast<std::uintptr_t>(__readgsqword(0x58));
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  (void)output;
+  return false;
+#endif
 }
 bool InvokeTargetProgressGetters(
     const PlayerLifestyleSnapshotEnvironmentV1 &environment,
@@ -286,6 +353,8 @@ void ReadProfessionalWorkforcePerk(
       &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
       &ReadStockPerkPlayerState};
   access.read_target_player_state = &ReadStockPerkTargetPlayerState;
+  access.capture_source_query_metadata = &CaptureStockPerkSourceQueryMetadata;
+  access.capture_source_tls_array = &CaptureStockPerkSourceTlsArray;
   context.stock_perk_result = ReadStockPerkLegality12004V1(
       environment, access, kStockPerkLegalityFollowupTargetV1);
 }
@@ -295,6 +364,8 @@ void ReadDiplomacyPerk(PlayerLifestyleFormalWireContext12004V1 &context) noexcep
       &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
       &ReadStockPerkPlayerState};
   access.read_target_player_state = &ReadStockPerkTargetPlayerState;
+  access.capture_source_query_metadata = &CaptureStockPerkSourceQueryMetadata;
+  access.capture_source_tls_array = &CaptureStockPerkSourceTlsArray;
   context.stock_perk_result = ReadStockPerkLegality12004V1(
       environment, access, kDiplomacyThoughtfulPerkV1);
 }
@@ -364,6 +435,8 @@ bool ReadCandidates(PlayerLifestyleFormalWireContext12004V1 &context) noexcept {
     return false;
   }
   stock_access.read_target_player_state = &ReadStockPerkTargetPlayerState;
+  stock_access.capture_source_query_metadata = &CaptureStockPerkSourceQueryMetadata;
+  stock_access.capture_source_tls_array = &CaptureStockPerkSourceTlsArray;
   context.stock_perk_result =
       ReadStockPerkLegality12004V1(stock_environment, stock_access, target);
   if (!PublishStockPerkCandidates(context.stock_perk_result,
@@ -630,6 +703,7 @@ bool ExecutePlayerLifestyleMailbox12004(
   auto *context = envelope == nullptr ? nullptr :
       static_cast<PlayerLifestyleFormalWireContext12004V1 *>(envelope->typed_context);
   if (context == nullptr) return false;
+  context->stock_perk_result.source_packet.reset();
   if (!ck3_12002::EnterQueryMailbox(
           *envelope, stamp, &ExecutePlayerLifestyleMailbox12004)) {
     context->completed = false;
@@ -637,7 +711,10 @@ bool ExecutePlayerLifestyleMailbox12004(
     return true;
   }
   const bool executed = ExecutePlayerLifestyleFormalWireBody12004V1(context, stamp);
-  if (!ck3_12002::FinishQueryMailbox(*envelope)) {
+  const bool frame_accepted = ck3_12002::FinishQueryMailbox(*envelope);
+  FinishLifestylePerkPredicateSourceMailbox12004(
+      context->stock_perk_result, frame_accepted);
+  if (!frame_accepted) {
     context->completed = false;
     context->failure = "private_lifestyle_actual4_owning_frame_changed";
   }

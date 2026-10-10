@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_lifestyle_transport.hpp"
+#include "xar_bridge/lifestyle_perk_predicate_inputs_12004_serializer.hpp"
 #include "xar_bridge/protocol.hpp"
 #include <algorithm>
 #include <limits>
@@ -364,6 +365,14 @@ std::string RenderPlayerLifestyle12004(
     result += receipt.postcondition_verified ? "true" : "false";
     result += ",\"reason\":";
     AppendJsonString(result, receipt.reason);
+  }
+  if (context.mode == xar::ck3_11906::PlayerLifestyleFormalWireModeV1::query ||
+      context.mode == xar::ck3_11906::
+                          PlayerLifestyleFormalWireModeV1::query_professional_workforce_only ||
+      context.mode == xar::ck3_11906::
+                          PlayerLifestyleFormalWireModeV1::query_diplomacy_targets_only) {
+    AppendLifestylePerkPredicateSourceSibling12004(result,
+                                                  context.stock_perk_result);
   }
   result += "}}";
   return game::Render12004BuildIdentity(std::move(result), descriptor);
