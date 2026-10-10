@@ -1,0 +1,64 @@
+{
+  "schema": "ck3.previous-run-then-current-exact-head-ci-observation.v1",
+  "previous_head_sha": "4d2fce86d85ebeff7c9d5647eff0590ddd5479cb",
+  "current_head_sha": "7bb27aaea7f4f4e1662ce853b75f2c558ccf3259",
+  "queries": 2,
+  "no_polling_logs_tests_workflow_main_git_or_game_mutation": true,
+  "results_not_extrapolated_between_heads": true,
+  "runtime_or_business_qualification": false,
+  "previous_official": {
+    "observed_at_utc": "2026-10-10T12:20:39.068538+00:00",
+    "terminal": true,
+    "conclusion": "success",
+    "created_at": "2026-10-10T11:27:55Z",
+    "event": "push",
+    "head_sha": "4d2fce86d85ebeff7c9d5647eff0590ddd5479cb",
+    "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38048496282",
+    "id": 38048496282,
+    "name": "Official Runner CI",
+    "run_attempt": 1,
+    "run_started_at": "2026-10-10T11:27:55Z",
+    "status": "completed",
+    "updated_at": "2026-10-10T11:35:17Z",
+    "workflow_id": 336785267
+  },
+  "current_head": {
+    "observed_at_utc": "2026-10-10T12:20:41.672558+00:00",
+    "api_total_count": 2,
+    "workflows": {
+      "Official Runner CI": {
+        "conclusion": "success",
+        "created_at": "2026-10-10T12:10:07Z",
+        "event": "push",
+        "head_sha": "7bb27aaea7f4f4e1662ce853b75f2c558ccf3259",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38050975481",
+        "id": 38050975481,
+        "name": "Official Runner CI",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T12:10:07Z",
+        "status": "completed",
+        "updated_at": "2026-10-10T12:19:58Z",
+        "workflow_id": 336785267
+      },
+      "Linear history": {
+        "conclusion": "success",
+        "created_at": "2026-10-10T12:10:07Z",
+        "event": "push",
+        "head_sha": "7bb27aaea7f4f4e1662ce853b75f2c558ccf3259",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38050975595",
+        "id": 38050975595,
+        "name": "Linear history",
+        "run_attempt": 1,
+        "run_started_at": "2026-10-10T12:10:07Z",
+        "status": "completed",
+        "updated_at": "2026-10-10T12:10:43Z",
+        "workflow_id": 377165366
+      },
+      "Li Yu Dao static checks": {
+        "status": "NOT_TRIGGERED",
+        "not_counted_as_success": true
+      }
+    }
+  },
+  "finished_at_utc": "2026-10-10T12:20:41.674316+00:00"
+}
