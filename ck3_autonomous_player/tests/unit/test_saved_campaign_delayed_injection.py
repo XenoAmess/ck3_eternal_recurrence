@@ -131,6 +131,8 @@ class DelayedInjectionTests(unittest.TestCase):
 
     def test_lease_gate_cannot_extend_deadline_or_trigger_injection(self):
         self.log.write_bytes(MARKER)
+        # Establish a fresh fixture independently of filesystem clock resolution.
+        os.utime(self.log, ns=(self.epoch + 1_000_000_000, self.epoch + 1_000_000_000))
         gates = []
         @contextmanager
         def gate():
@@ -158,6 +160,8 @@ class DelayedInjectionTests(unittest.TestCase):
             nonlocal created
             created = True
             self.assertEqual(args[2][runtime.NATIVE_BRIDGE_PIPE_ENV], self.config.pipe_name)
+            self.assertEqual(args[0].count("-debug_mode"), 1)
+            self.assertEqual(args[0].count("-loadsave=restored_campaign"), 1)
             return self.process
         def identity(pid):
             return {'name': 'python.exe' if pid == os.getpid() else 'ck3.exe',
@@ -180,7 +184,7 @@ class DelayedInjectionTests(unittest.TestCase):
              mock.patch.object(runtime, '_inject_native_bridge', self.inject):
             with self.assertRaisesRegex(AgentError, 'failed safely.*original readiness deadline'):
                 runtime.launch(spec, native_bridge=self.config, load_save_name='restored_campaign',
-                    verify_prepared_profile=False, native_bridge_after_saved_load=True,
+                    debug_mode=True, verify_prepared_profile=False, native_bridge_after_saved_load=True,
                     native_bridge_injection_deadline=.5)
         assign.assert_called_once_with(job, self.process)
         close_job.assert_called_once_with(job)
@@ -218,6 +222,82 @@ class HostPolicyTests(unittest.TestCase):
         self.assertTrue(kwargs['native_bridge_after_saved_load'])
         self.assertEqual(record['bridge_injection_stage'], 'after_saved_campaign_setup_completion')
         self.assertFalse(record['load_completion_observation']['business_pass'])
+
+
+class SavedCampaignDebugModeTests(unittest.TestCase):
+    def test_default_command_is_byte_for_byte_unchanged(self):
+        spec = SimpleNamespace(game_exe=Path('game/ck3.exe'), profile_dir=Path('profile'))
+        expected = [str(spec.game_exe), '-gdpr-compliant', '-userdir=' + str(spec.profile_dir),
+                    '-loadsave=restored_campaign']
+        self.assertEqual(runtime._ck3_launch_command(spec, load_save_name='restored_campaign'), expected)
+        self.assertEqual(runtime._ck3_launch_command(spec, load_save_name='restored_campaign', debug_mode=False), expected)
+
+    def test_explicit_true_adds_only_one_flag_to_the_original_saved_command(self):
+        spec = SimpleNamespace(game_exe=Path('game/ck3.exe'), profile_dir=Path('profile'))
+        normal = runtime._ck3_launch_command(spec, load_save_name='restored_campaign')
+        debug = runtime._ck3_launch_command(spec, load_save_name='restored_campaign', debug_mode=True)
+        self.assertEqual(debug, [normal[0], '-debug_mode', *normal[1:]])
+        self.assertEqual(debug.count('-loadsave=restored_campaign'), 1)
+        self.assertNotIn('-continuelastsave', debug)
+
+    def test_mixed_boolean_types_are_rejected_before_any_process_check(self):
+        for value in (0, 1, None, 'true', [], {}):
+            with self.subTest(value=value), mock.patch.object(runtime, 'ck3_processes') as processes, \
+                    mock.patch.object(runtime, 'native_bridge_launch_config_from_environment') as config:
+                with self.assertRaisesRegex(AgentError, 'explicit boolean'):
+                    runtime._ck3_launch_command(object(), debug_mode=value)
+                with self.assertRaisesRegex(AgentError, 'explicit boolean'):
+                    runtime.launch(object(), debug_mode=value)
+                processes.assert_not_called()
+                config.assert_not_called()
+
+    def test_host_default_off_and_saved_only_policy(self):
+        self.assertFalse(HOST.parser().parse_args([]).saved_campaign_debug_mode)
+        for extra in ([], ['--saved-campaign-save', 'fake.ck3', '--server']):
+            args = HOST.parser().parse_args(['--saved-campaign-debug-mode', *extra])
+            with self.assertRaisesRegex(SystemExit, 'requires an explicit saved campaign'):
+                HOST.validate_saved_campaign_options(args)
+        for value in (0, 1, None, 'true', [], {}):
+            args = HOST.parser().parse_args([])
+            args.saved_campaign_debug_mode = value
+            with self.subTest(value=value), self.assertRaisesRegex(SystemExit, 'explicit boolean'):
+                HOST.validate_saved_campaign_options(args)
+
+    def test_host_accepts_explicit_saved_diagnostic_without_reading_save_body(self):
+        with tempfile.TemporaryDirectory() as directory:
+            plan = Path(directory) / 'plan.json'
+            plan.write_text('[]', encoding='utf-8')
+            args = HOST.parser().parse_args(['--saved-campaign-debug-mode', '--fixture-profile',
+                '--plan', str(plan), '--saved-campaign-save', str(Path(directory) / 'not-read.ck3'),
+                '--saved-campaign-save-bytes', '1', '--saved-campaign-save-sha256', 'a' * 64,
+                '--saved-campaign-player-id', '31254', '--saved-campaign-date-raw', '53144712',
+                '--saved-campaign-product-inventory', str(Path(directory) / 'not-read.json')])
+            HOST.validate_saved_campaign_options(args)
+            self.assertTrue(args.saved_campaign_debug_mode)
+
+    def test_wrapper_propagates_bool_and_requires_actual_debug_flag_agreement(self):
+        for requested, actual in ((False, False), (True, True), (True, False), (False, True)):
+            with self.subTest(requested=requested, actual=actual):
+                module = ModuleType('fake_managed_session')
+                exec('def native_session(spec, **kwargs):\n launch(spec, native_bridge=kwargs["native_bridge"])\n return {}\n'
+                     'def _native_session_locked(*args, **kwargs):\n return {}\n', module.__dict__)
+                command = ['ck3.exe', '-loadsave=restored_campaign']
+                if actual:
+                    command.insert(1, '-debug_mode')
+                module.launch = mock.Mock(return_value=SimpleNamespace(command=command, process=SimpleNamespace(pid=71)))
+                stop = SimpleNamespace(is_set=lambda: False)
+                args = SimpleNamespace(timeout=2100, hold_seconds=900, saved_campaign_debug_mode=requested,
+                    saved_campaign_inject_after_load=True, _saved_campaign_readiness_deadline=1234.0)
+                record = {}
+                with mock.patch('importlib.import_module', return_value=module):
+                    HOST.saved_campaign_session(object(), object(), args, stop, output_stream=None, launch_record=record)
+                kwargs = module.launch.call_args.kwargs
+                self.assertIs(kwargs['debug_mode'], requested)
+                self.assertEqual(kwargs['load_save_name'], 'restored_campaign')
+                self.assertEqual(kwargs['native_bridge_injection_deadline'], 1234.0)
+                self.assertIs(kwargs['native_bridge_stop_requested'], stop.is_set)
+                self.assertEqual(record['argv_admitted'], requested == actual)
+                self.assertIs(record['debug_mode'], requested)
 
 
 class SharedReadinessDeadlineTests(unittest.IsolatedAsyncioTestCase):

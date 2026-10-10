@@ -1,4 +1,4 @@
-"""Tracked non-debug CK3 launch and visible main-menu attestation."""
+"""Tracked CK3 launch with explicit debug opt-in and main-menu attestation."""
 
 from __future__ import annotations
 
@@ -2354,7 +2354,10 @@ def _ck3_launch_command(
     *,
     continue_last_save: bool = False,
     load_save_name: str | None = None,
+    debug_mode: bool = False,
 ) -> list[str]:
+    if type(debug_mode) is not bool:
+        raise AgentError("debug_mode requires an explicit boolean")
     if continue_last_save and load_save_name is not None:
         raise AgentError(
             "CK3 launch cannot combine -continuelastsave with -loadsave"
@@ -2378,6 +2381,8 @@ def _ck3_launch_command(
         "-gdpr-compliant",
         f"-userdir={spec.profile_dir}",
     ]
+    if debug_mode:
+        command.insert(1, "-debug_mode")
     if continue_last_save:
         command.append("-continuelastsave")
     elif load_save_name is not None:
@@ -2864,6 +2869,7 @@ def launch(
     native_bridge: NativeBridgeLaunchConfig | None = None,
     continue_last_save: bool = False,
     load_save_name: str | None = None,
+    debug_mode: bool = False,
     verify_prepared_profile: bool = True,
     prepared_xar_enabled: str = "xar_on",
     before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
@@ -2872,6 +2878,8 @@ def launch(
     native_bridge_injection_deadline: float | None = None,
     native_bridge_stop_requested: Callable[[], bool] | None = None,
 ) -> SessionHandle:
+    if type(debug_mode) is not bool:
+        raise AgentError("debug_mode requires an explicit boolean")
     native_bridge = (
         native_bridge_launch_config_from_environment()
         if native_bridge is None
@@ -2898,6 +2906,7 @@ def launch(
         spec,
         continue_last_save=continue_last_save,
         load_save_name=load_save_name,
+        debug_mode=debug_mode,
     )
     child_environment = (
         _native_bridge_child_environment(native_bridge)
