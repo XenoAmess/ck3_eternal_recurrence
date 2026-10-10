@@ -266,7 +266,7 @@ int main(int argc, char **argv) {
     const auto body = xar::bridge::SerializeCombatSimulationInputsV2(snapshot);
     Require(body.find("\"physical_entry_writeback\":{") != std::string::npos &&
                 body.find("\"origin\":\"native_physical_entry_writer\"") != std::string::npos &&
-                body.find("\"original_return_value\":18446744073709551283") != std::string::npos,
+                body.find("\"original_return_value\":\"18446744073709551283\"") != std::string::npos,
             "actual whole V2 serializer omitted the source-associated writer or unsigned return");
     const std::string packet =
         "{\"type\":\"command_result\",\"protocol_version\":1,"
