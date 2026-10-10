@@ -1,4 +1,5 @@
 #include "xar_bridge/appointment_character_level12004.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/appointment_window_snapshot_v1.hpp"
 #include <algorithm>
 #include <array>
@@ -8,7 +9,7 @@ namespace xar::ck3_12004 {
 namespace {
 using Access = ck3_11906::AppointmentWindowAccessV1;
 constexpr std::string_view kExe =
-    "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
+    xar::ck3_12004::kExecutableSha256;
 // Actual4 28BE1D0 leaf, selected by320F4B6 and320EE0D type0 branches.
 constexpr std::uintptr_t kThresholdData = 0x5458818;
 constexpr std::uintptr_t kThresholdCount = 0x5458824;

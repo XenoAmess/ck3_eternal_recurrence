@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10：执行范围纠正，R64已闭场，native最小增量修复
+
+用户明确本执行线只负责天朝二期以外的mod迁移；G2资产追问和迁移后自动继续G2的旧计划撤销，其他owner的任务不受影响。[确切范围](handover/2026-10-10-non-phase2-mod-migration-scope.md)。正式仍7/10，剩余QOL→重整河山→361既有0.3.1维护（最后），不含v0.4二期研发或自动新增廷臣picker工作。
+
+R64两个原初始步骤/root实际PASS，但公爵5人及伯爵40人全池均无玩家31883，评分/任命继任NOT_RUN，资格GAP保留。11:46:53Z正常关闭、OS/native0、allocator/keeper0、CAS8348已释放。等级诊断的null由canonical SHA大小写误拒定位，已选两文件共用常量修复，最小增量重编而不全量573对象；[业务、原件与CI](xqol-r64-merit-qualification-2026-10-10.md)。Source16 Python/host保持，后继不复制大树。
+
 ## 2026-10-10 19:12：R63资格失败已闭场，独立merit等待容量
 
 正式仍7/10（70%）。Source16六份后继输入已实际READY，PAM+被R63消费后在原启动AND失败、业务0；两项必要personal fulfillment FALSE，其他FALSE不都代表错误。原run2/verify2及normal=false保留，11:01:02Z真CLOSED、原allocator实际0/keeper0/CAS8321，未到root所以不授bootstrap修正实机通过。[原薄证据和后继](xqol-r63-pam-startup-2026-10-10.md)。PAM±共享setup原因并行静态核对；下一独立merit29原0日/预算/断言不改，fresh准入仍缺317251584 B，未allocate。

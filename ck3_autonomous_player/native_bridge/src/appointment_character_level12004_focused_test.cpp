@@ -1,4 +1,5 @@
 #include "xar_bridge/appointment_character_level12004.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/appointment_window_snapshot_v1.hpp"
 #include <cstdint>
 #include <iostream>
@@ -13,7 +14,7 @@ using xar::ck3_11906::SerializeAppointmentWindowSnapshotV1;
 using xar::ck3_12004::AppointmentCharacterLevel12004;
 using xar::ck3_12004::ReadAppointmentCharacterLevel12004;
 constexpr std::string_view kExactSha =
-    "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
+    xar::ck3_12004::kExecutableSha256;
 
 void Check(bool value, const char *message) {
   if (!value) throw std::runtime_error(message);
