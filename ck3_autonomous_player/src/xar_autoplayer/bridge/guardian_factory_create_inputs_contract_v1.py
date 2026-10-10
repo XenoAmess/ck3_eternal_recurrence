@@ -58,6 +58,8 @@ def validate_guardian_factory_create_inputs_v1(
         raise ValueError("guardian discovery requires two fixed ordered keys")
     present = [LEAF in row for row in rows]
     if not any(present):
+        if CURRENT_RELATION in value:
+            raise ValueError("current relation lacks its same-query factory input version")
         return None
     if not all(present):
         raise ValueError("guardian discovery has mixed factory input versions")
@@ -180,4 +182,136 @@ def validate_guardian_factory_create_inputs_v1(
                     raise ValueError("factory virtual-slot RVA/address association changed")
             elif in_image:
                 raise ValueError("in-image factory virtual slot lost its native RVA")
+    if CURRENT_RELATION in value:
+        _validate_current_family_relation_v1(
+            value[CURRENT_RELATION], factories=rows, qualified=qualified,
+            actor=actor, heir=native_heir,
+        )
     return deepcopy(value)
+
+
+CURRENT_RELATION = "current_family_relation_v1"
+_RELATION_TRUE_BASES = {"entry_raw_equal", "tag2_row_raw_equal", "fallback_raw_equal"}
+_RELATION_FALSE_BASES = {
+    "target_tag_rejected", "root_state_rejected", "target_state_rejected",
+    "root_peer_extension_absent", "peer_absent", "relation_entries_empty",
+    "relation_entries_exhausted",
+}
+
+
+def _optional_uint(value: object, bits: int, name: str) -> int | None:
+    return None if value is None else _uint(value, bits, name)
+
+
+def _optional_i32(value: object, name: str) -> int | None:
+    if value is None:
+        return None
+    if type(value) is not int or not -(2**31) <= value < 2**31:
+        raise ValueError(f"{name}: signed 32-bit value required")
+    return value
+
+
+def _validate_current_family_relation_v1(
+    value: object, *, factories: list[dict], qualified: bool, actor: int, heir: int,
+) -> None:
+    """Check the owned lower relation projection without invoking a trigger."""
+    fields = {
+        "schema_version", "read_only", "source", "direction",
+        "source_projection_only", "native_trigger_invoked", "parsed_target_observed",
+        "root_character_id", "target_character_id", "root_address", "target_address",
+        "target_tag_raw", "root_death_data_raw", "target_death_data_raw",
+        "identity_round_trip", "sample_stable", "ready", "rows",
+    }
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError("current family relation schema changed")
+    if type(value["schema_version"]) is not int or value["schema_version"] != 1:
+        raise ValueError("current family relation schema version changed")
+    for key, expected in (
+        ("read_only", True), ("source_projection_only", True),
+        ("native_trigger_invoked", False), ("parsed_target_observed", False),
+        ("source", "actual_4217820_lower_relation_projection"),
+        ("direction", "played_to_current_first_heir"),
+    ):
+        if type(value[key]) is not type(expected) or value[key] != expected:
+            raise ValueError(f"current family relation {key} changed")
+    root_id = _uint(value["root_character_id"], 32, "relation.root_character_id")
+    target_id = _uint(value["target_character_id"], 32, "relation.target_character_id")
+    if root_id != actor & 0xFFFFFFFF or target_id != heir & 0xFFFFFFFF:
+        raise ValueError("current family relation differs from the same query's full IDs")
+    root = _optional_uint(value["root_address"], 64, "relation.root_address")
+    target = _optional_uint(value["target_address"], 64, "relation.target_address")
+    tag = _optional_uint(value["target_tag_raw"], 32, "relation.target_tag_raw")
+    root_state = _optional_uint(value["root_death_data_raw"], 64, "relation.root_death_data_raw")
+    target_state = _optional_uint(value["target_death_data_raw"], 64, "relation.target_death_data_raw")
+    identity = _flag(value["identity_round_trip"], "relation.identity_round_trip")
+    stable = _flag(value["sample_stable"], "relation.sample_stable")
+    ready = _flag(value["ready"], "relation.ready")
+    if identity and (not root or not target or 0xFFFFFFFF in (root_id, target_id)):
+        raise ValueError("current family relation identity lacks resolved full-ID objects")
+    rows = value["rows"]
+    if not isinstance(rows, list) or len(rows) != 2:
+        raise ValueError("current family relation requires the two fixed source keys")
+    row_fields = {
+        "key", "available", "raw_value", "basis", "unavailable_reason",
+        "predicate_mode", "descriptor_reached", "descriptor_raw", "peer_address",
+        "peer_count_raw", "relation_count_raw",
+    }
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or set(row) != row_fields or row["key"] != KEYS[index]:
+            raise ValueError("current family relation key/row schema changed")
+        available = _flag(row["available"], "relation.available")
+        reached = _flag(row["descriptor_reached"], "relation.descriptor_reached")
+        descriptor = _optional_uint(row["descriptor_raw"], 64, "relation.descriptor_raw")
+        peer = _optional_uint(row["peer_address"], 64, "relation.peer_address")
+        peer_count = _optional_i32(row["peer_count_raw"], "relation.peer_count_raw")
+        count = _optional_i32(row["relation_count_raw"], "relation.relation_count_raw")
+        if type(row["predicate_mode"]) is not int or row["predicate_mode"] != 0:
+            raise ValueError("current family relation predicate mode changed")
+        basis, reason = row["basis"], row["unavailable_reason"]
+        if not isinstance(basis, str) or not isinstance(reason, str):
+            raise ValueError("current family relation source basis/reason missing")
+        if descriptor is not None:
+            factory = factories[index]
+            raw_input = factory[LEAF]["field_18_qword"]
+            if (not reached or factory["status"] != "found"
+                    or raw_input["available"] is not True
+                    or descriptor != raw_input["raw_value"]):
+                raise ValueError("current relation descriptor lost its same-key factory input")
+        if reached and (count is None or count <= 0 or not peer or peer_count is None or peer_count <= 0):
+            raise ValueError("current relation descriptor has no reached positive collection")
+        if not reached and descriptor is not None:
+            raise ValueError("current relation retained an unreached descriptor")
+        if available:
+            raw = _flag(row["raw_value"], "relation.raw_value")
+            if (not qualified or not identity or not stable or reason != ""
+                    or basis not in (_RELATION_TRUE_BASES if raw else _RELATION_FALSE_BASES)):
+                raise ValueError("current relation known value lacks its qualified source branch")
+            if basis == "target_tag_rejected":
+                admitted = tag is not None and tag != 0x43686172
+            elif basis == "root_state_rejected":
+                admitted = tag == 0x43686172 and root_state is not None and root_state != 0
+            elif basis == "target_state_rejected":
+                admitted = tag == 0x43686172 and root_state == 0 and target_state is not None and target_state != 0
+            else:
+                admitted = tag == 0x43686172 and root_state == 0 and target_state == 0
+            if not admitted:
+                raise ValueError("current relation source branch contradicts copied target/state inputs")
+            if basis in _RELATION_TRUE_BASES or basis == "relation_entries_exhausted":
+                if not reached or descriptor is None:
+                    raise ValueError("current relation comparison lost its reached raw descriptor")
+            elif reached or descriptor is not None or count not in (None, 0):
+                raise ValueError("current relation early false branch reached an extra descriptor")
+            if basis == "peer_absent" and (peer != 0 or peer_count is None or peer_count < 0):
+                raise ValueError("current relation absent peer lacks its source-null lookup")
+            if basis == "relation_entries_empty" and (not peer or peer_count is None or peer_count <= 0 or count != 0):
+                raise ValueError("current relation empty collection lacks its observed zero count")
+        elif row["raw_value"] is not None or basis != "" or reason == "":
+            raise ValueError("current relation unavailable input became a known value")
+        if not qualified and (available or reached or any(raw is not None for raw in
+                (descriptor, peer, peer_count, count))):
+            raise ValueError("unqualified completion retained stale relation inputs")
+    if ready != (qualified and identity and stable and all(row["available"] for row in rows)):
+        raise ValueError("current family relation readiness contradicts independent availability")
+    if not qualified and (identity or stable or ready or any(raw is not None for raw in
+            (root, target, tag, root_state, target_state))):
+        raise ValueError("unqualified completion retained stale relation objects")

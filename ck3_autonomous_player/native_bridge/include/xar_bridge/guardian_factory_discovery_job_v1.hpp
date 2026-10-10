@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_guardian_factory_metadata.hpp"
+#include "xar_bridge/ck3_12004_guardian_relation_observation.hpp"
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -33,6 +34,7 @@ struct GuardianFactoryDiscoveryJobV1 {
   std::string_view unavailable_reason{"job_not_executed"};
   xar::ck3_11906::MainThreadExecutionStampV1 execution_stamp{};
   std::optional<xar::ck3_12004::GuardianFactoryDiscoveryMetadata12004V1> metadata;
+  std::optional<xar::ck3_12004::GuardianCurrentFamilyRelations12004V1> current_family_relation;
 };
 
 // The same executor is called by the production family callback and the fixture.
@@ -45,6 +47,7 @@ inline bool ExecuteGuardianFactoryDiscoveryJobV1(
   job.frame_observed = false;
   job.execution_stamp = stamp;
   job.metadata.reset();
+  job.current_family_relation.reset();
   job.unavailable_reason = "frame_changed";
   if (job.executable_sha256 != xar::ck3_12004::kExecutableSha256) {
     job.unavailable_reason = "exact_build_not_admitted";
@@ -62,15 +65,19 @@ inline bool ExecuteGuardianFactoryDiscoveryJobV1(
         before != job.expected_snapshot) return true;
     auto metadata = xar::ck3_12004::ReadGuardianFactoryDiscoveryMetadata12004V1(
         job.environment, job.image_size);
+    auto relation = xar::ck3_12004::ReadGuardianCurrentFamilyRelations12004V1(
+        job.environment, metadata, before.played_character_id, job.heir_character_id);
     xar::game::Snapshot after{};
     if (!job.read_snapshot(job.snapshot_context, after) || after != before)
       return true;
     job.metadata = std::move(metadata);
+    job.current_family_relation = std::move(relation);
     job.frame_observed = true;
     job.unavailable_reason = {};
     return true;
   } catch (...) {
     job.metadata.reset();
+    job.current_family_relation.reset();
     job.unavailable_reason = "discovery_exception";
     return false;
   }
@@ -129,6 +136,57 @@ inline std::string_view Failure(
   case FailureV1::factory_record_unreadable: return "factory_record_unreadable";
   }
   return "unavailable";
+}
+
+
+inline void CurrentFamilyRelationJson(
+    std::string &output, const GuardianFactoryDiscoveryJobV1 &job,
+    bool qualified) {
+  xar::ck3_12004::GuardianCurrentFamilyRelations12004V1 empty{};
+  empty.root_character_id = std::bit_cast<std::uint32_t>(
+      job.expected_snapshot.played_character_id);
+  empty.target_character_id = std::bit_cast<std::uint32_t>(job.heir_character_id);
+  const auto &value = qualified && job.current_family_relation
+      ? *job.current_family_relation : empty;
+  output += ",\"current_family_relation_v1\":{\"schema_version\":1,"
+      "\"read_only\":true,\"source\":\"actual_4217820_lower_relation_projection\","
+      "\"direction\":\"played_to_current_first_heir\","
+      "\"source_projection_only\":true,\"native_trigger_invoked\":false,"
+      "\"parsed_target_observed\":false,\"root_character_id\":";
+  output += std::to_string(value.root_character_id);
+  output += ",\"target_character_id\":" + std::to_string(value.target_character_id);
+  output += ",\"root_address\":"; OptionalNumber(output, value.root_address);
+  output += ",\"target_address\":"; OptionalNumber(output, value.target_address);
+  output += ",\"target_tag_raw\":"; OptionalNumber(output, value.target_tag_raw);
+  output += ",\"root_death_data_raw\":"; OptionalNumber(output, value.root_death_data_raw);
+  output += ",\"target_death_data_raw\":"; OptionalNumber(output, value.target_death_data_raw);
+  output += ",\"identity_round_trip\":";
+  output += value.identity_round_trip ? "true" : "false";
+  output += ",\"sample_stable\":"; output += value.sample_stable ? "true" : "false";
+  output += ",\"ready\":"; output += value.ready ? "true" : "false";
+  output += ",\"rows\":[";
+  for (std::size_t index = 0; index < value.rows.size(); ++index) {
+    if (index != 0) output += ',';
+    const auto &row = value.rows[index];
+    output += "{\"key\":";
+    String(output, xar::ck3_12004::kGuardianTriggerKeysV1[index]);
+    output += ",\"available\":"; output += row.available ? "true" : "false";
+    output += ",\"raw_value\":";
+    output += row.raw_value ? (*row.raw_value ? "true" : "false") : "null";
+    output += ",\"basis\":"; String(output, row.basis);
+    output += ",\"unavailable_reason\":";
+    String(output, qualified ? row.unavailable_reason :
+        (job.frame_observed ? std::string_view{"completion_frame_changed"}
+                            : job.unavailable_reason));
+    output += ",\"predicate_mode\":0,\"descriptor_reached\":";
+    output += row.descriptor_reached ? "true" : "false";
+    output += ",\"descriptor_raw\":"; OptionalNumber(output, row.descriptor_raw);
+    output += ",\"peer_address\":"; OptionalNumber(output, row.peer_address);
+    output += ",\"peer_count_raw\":"; OptionalNumber(output, row.peer_count_raw);
+    output += ",\"relation_count_raw\":"; OptionalNumber(output, row.relation_count_raw);
+    output += '}';
+  }
+  output += "]}";
 }
 
 inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
@@ -232,7 +290,9 @@ inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
     String(output, rtti.unavailable_reason);
     output += "}}";
   }
-  output += "]}\n";
+  output += "]";
+  CurrentFamilyRelationJson(output, job, qualified);
+  output += "}\n";
   return output;
 }
 
