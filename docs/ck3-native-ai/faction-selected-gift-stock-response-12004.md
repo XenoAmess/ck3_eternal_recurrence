@@ -1,5 +1,12 @@
 # CK3 1.20.0.4: selected faction gift consumes the native dangerous rule
 
+2026-10-10 source increment: the selected-recipient boundary has a concrete
+continuation gap when the first direct landed leader/member is already gifted
+or natively denied. The [same-frame continuation candidate](faction-gift-candidate-continuation-12004.md)
+preserves the existing native/ordinary decision tree and prepares only new
+continuation worlds; its compile/FIRST/live status is separate from the
+qualified stock-danger comparison below.
+
 Completed background package, 2026-10-07 / 2026-W41. Research first read immutable
 source `05e7ef5b08be07afd9cd747d5d60965c3c2aee5b`. The minimum Python consumer now
 joins the chosen gift to its current native stock-danger row and gives that

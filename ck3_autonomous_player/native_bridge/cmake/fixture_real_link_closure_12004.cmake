@@ -20,7 +20,8 @@ function(xar_ck3_12004_fixture_use_real_bridge target)
   get_target_property(fixture_source_dir ${target} SOURCE_DIR)
   get_target_property(fixture_sources ${target} SOURCES)
   set(fixture_transport_sources)
-  if(target STREQUAL "xar_ck3_12004_faction_adopted_whole_test")
+  if(target STREQUAL "xar_ck3_12004_faction_adopted_whole_test" OR
+     target STREQUAL "xar_ck3_12004_faction_candidate_continue_whole_test")
     # These two TUs must call the fixture's aliased mailbox transport.
     foreach(source IN ITEMS
         src/ck3_12004_faction_mailbox.cpp
@@ -73,6 +74,7 @@ foreach(target IN ITEMS
     xar_ck3_12004_sway_whole_producer_test
     xar_ck3_12004_lifestyle_first_v1_test
     xar_ck3_12004_faction_adopted_whole_test
+    xar_ck3_12004_faction_candidate_continue_whole_test
     xar_ck3_12004_government_whole_first
     xar_ck3_12004_clergy_appointment_whole_mailbox_test
     xar_ck3_12004_clergy_candidate_terms_whole_mailbox_test

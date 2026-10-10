@@ -84,6 +84,59 @@ bool CaptureObservation(void *opaque,
   return captured;
 }
 
+// Preserve the existing targeting-vector / leader-before-member order. A
+// leader repeated in its own member vector is one recipient, not a retry.
+template <typename Visitor>
+bool VisitFactionGiftCandidates(const game::CampaignRootContextV1 &root,
+    const game::PlayerFactionAlertsV1 &alerts, Visitor visit) {
+  if (root.status != game::CampaignRootContextStatusV1::available ||
+      !root.readiness.direct_landed_vassals_ready || !root.player_character_id ||
+      alerts.status != game::PlayerFactionAlertsStatusV1::available ||
+      !alerts.readiness.targeting_rows_ready || !alerts.readiness.same_frame_ready ||
+      alerts.snapshot_revision != root.snapshot_revision || alerts.date_raw != root.date_raw ||
+      alerts.player_character_id != root.player_character_id) return false;
+  const auto eligible = [&](std::int32_t id) {
+    return id > 0 && id != *root.player_character_id && std::find(
+        root.direct_landed_vassal_character_ids.begin(), root.direct_landed_vassal_character_ids.end(),
+        id) != root.direct_landed_vassal_character_ids.end();
+  };
+  bool visited = false;
+  for (const auto &row : alerts.targeting_factions) {
+    if (row.faction_id <= 0 || row.target_character_id != *root.player_character_id || row.faction_at_war) continue;
+    const auto offer = [&](std::int32_t id) {
+      if (!eligible(id)) return false;
+      visited = true;
+      return visit(static_cast<std::uint32_t>(row.faction_id), static_cast<std::uint32_t>(id));
+    };
+    if (row.leader_character_id && offer(*row.leader_character_id)) return true;
+    for (auto id : row.character_member_ids) {
+      if (row.leader_character_id && id == *row.leader_character_id) continue;
+      if (offer(id)) return true;
+    }
+  }
+  return visited;
+}
+
+bool ObservedGiftCandidateShouldReturn(const game::FactionGiftMitigationObservationV1 &o) {
+  const auto &p = o.gift_preview;
+  // Keep incomplete source and malformed positive-quote interpretation with
+  // the existing consumer; neither is a known recipient denial to skip.
+  if (!o.source_faction_metrics_available ||
+      (p.interaction_legal && p.auto_accept &&
+       (p.gold_cost_raw <= 0 || p.gold_scale != 100000 || p.opinion_delta <= 0))) return true;
+  const bool member = o.source_faction_leader_character_id == o.recipient_character_id ||
+      std::find(o.source_faction_member_character_ids.begin(),
+          o.source_faction_member_character_ids.end(), o.recipient_character_id) !=
+          o.source_faction_member_character_ids.end();
+  // These are the existing Python chooser's observed recipient/preview terms.
+  // Reserve/budget comparison remains with that chooser; this query never sends.
+  return o.source_faction_present && o.source_faction_targeting_player &&
+      o.source_faction_target_character_id == o.player_character_id &&
+      !o.source_faction_at_war && member && o.recipient_alive && o.recipient_is_ai &&
+      o.recipient_is_direct_landed_vassal && !o.gift_opinion_present &&
+      p.available && p.interaction_legal && p.auto_accept;
+}
+
 bool Validate(void *opaque, std::uint32_t actor, std::uint32_t recipient,
     std::string_view key, bool &valid, std::string &reason) noexcept {
   auto &query = *static_cast<Query *>(opaque);
@@ -287,29 +340,10 @@ bool SelectFactionGiftPrivateCandidate12004(const game::CampaignRootContextV1 &r
     const game::PlayerFactionAlertsV1 &alerts, std::uint32_t &source,
     std::uint32_t &recipient) noexcept {
   source = recipient = 0;
-  if (root.status != game::CampaignRootContextStatusV1::available ||
-      !root.readiness.direct_landed_vassals_ready || !root.player_character_id ||
-      alerts.status != game::PlayerFactionAlertsStatusV1::available ||
-      !alerts.readiness.targeting_rows_ready || !alerts.readiness.same_frame_ready ||
-      alerts.snapshot_revision != root.snapshot_revision || alerts.date_raw != root.date_raw ||
-      alerts.player_character_id != root.player_character_id) return false;
-  const auto eligible = [&](std::int32_t id) {
-    return id > 0 && id != *root.player_character_id && std::find(
-        root.direct_landed_vassal_character_ids.begin(), root.direct_landed_vassal_character_ids.end(),
-        id) != root.direct_landed_vassal_character_ids.end();
-  };
-  for (const auto &row : alerts.targeting_factions) {
-    if (row.faction_id <= 0 || row.target_character_id != *root.player_character_id || row.faction_at_war) continue;
-    if (row.leader_character_id && eligible(*row.leader_character_id)) {
-      source = static_cast<std::uint32_t>(row.faction_id);
-      recipient = static_cast<std::uint32_t>(*row.leader_character_id); return true;
-    }
-    for (auto id : row.character_member_ids) if (eligible(id)) {
-      source = static_cast<std::uint32_t>(row.faction_id);
-      recipient = static_cast<std::uint32_t>(id); return true;
-    }
-  }
-  return false;
+  VisitFactionGiftCandidates(root, alerts, [&](std::uint32_t faction, std::uint32_t person) {
+    source = faction; recipient = person; return true;
+  });
+  return source != 0;
 }
 
 bool ExecuteFactionGiftPrivateMailbox12004(void *opaque,
@@ -345,16 +379,25 @@ bool ExecuteFactionGiftPrivateMailbox12004(void *opaque,
         query.failure = "private_faction_native_targeting_rows_unavailable";
       } else if (query.alerts.targeting_factions.empty()) {
         query.status = "known_empty"; query.complete = true;
-      } else if (!SelectFactionGiftPrivateCandidate12004(query.root, query.alerts,
-                     query.source_faction_id, query.recipient_character_id)) {
-        query.status = "no_eligible_direct_vassal"; query.complete = true;
-      } else if (!CaptureObservation(&query, query.observation)) {
-        query.failure = "private_faction_native_observation_unavailable";
       } else {
-        // Native CanSend=false is still a complete preview for the consumer.
-        query.status = query.observation.gift_preview.interaction_legal
-            ? "preview_ready" : "no_legal_candidate";
-        query.complete = true;
+        bool selected = false;
+        const bool visited = VisitFactionGiftCandidates(query.root, query.alerts,
+            [&](std::uint32_t faction, std::uint32_t person) {
+          query.source_faction_id = faction; query.recipient_character_id = person;
+          if (!CaptureObservation(&query, query.observation)) {
+            query.failure = "private_faction_native_observation_unavailable";
+            return true;
+          }
+          selected = ObservedGiftCandidateShouldReturn(query.observation);
+          return selected;
+        });
+        if (query.failure.empty()) {
+          // A known native/recipient denial may continue to another observed
+          // member. An incomplete capture above remains the original RED.
+          query.status = !visited ? "no_eligible_direct_vassal"
+              : selected ? "preview_ready" : "no_legal_candidate";
+          query.complete = true;
+        }
       }
     } else if (query.mode == Mode::submit) {
       ck3_11906::FactionGiftMitigationNativeEnvironmentV1 environment{
