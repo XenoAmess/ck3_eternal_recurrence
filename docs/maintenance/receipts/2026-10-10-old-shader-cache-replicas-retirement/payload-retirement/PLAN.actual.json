@@ -1,0 +1,108 @@
+{
+  "schema": "lyd-old-v1-seed-replica-exact-plan-v1",
+  "at_utc": "2026-10-10T12:41:11.716718+00:00",
+  "inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\INPUTS.actual.json",
+    "bytes": 3991,
+    "sha256": "f34708d69299202bfbdabd5b5a1323d92044d717496f524c954a842452307de8"
+  },
+  "executor": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\cleanup_old_seed_replicas.py",
+    "bytes": 25909,
+    "sha256": "75cdaf134e599862d222397e942b88a76de29b01eff257c7356f2c8fcb7271ff"
+  },
+  "roots": [
+    {
+      "r": 0,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\shadercache",
+      "identity": {
+        "volume_serial": 11439297576789895419,
+        "file_id": "6e082d00000001000000000000000000",
+        "legacy_file_id": 281474979661934
+      }
+    },
+    {
+      "r": 1,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\shadercache",
+      "identity": {
+        "volume_serial": 11439297576789895419,
+        "file_id": "bd572d00000001000000000000000000",
+        "legacy_file_id": 281474979682237
+      }
+    }
+  ],
+  "batches": [
+    {
+      "batch": 0,
+      "r": 0,
+      "begin": 0,
+      "end": 1000
+    },
+    {
+      "batch": 1,
+      "r": 0,
+      "begin": 1000,
+      "end": 2000
+    },
+    {
+      "batch": 2,
+      "r": 0,
+      "begin": 2000,
+      "end": 3000
+    },
+    {
+      "batch": 3,
+      "r": 0,
+      "begin": 3000,
+      "end": 3687
+    },
+    {
+      "batch": 4,
+      "r": 1,
+      "begin": 0,
+      "end": 1000
+    },
+    {
+      "batch": 5,
+      "r": 1,
+      "begin": 1000,
+      "end": 2000
+    },
+    {
+      "batch": 6,
+      "r": 1,
+      "begin": 2000,
+      "end": 3000
+    },
+    {
+      "batch": 7,
+      "r": 1,
+      "begin": 3000,
+      "end": 3687
+    }
+  ],
+  "identity_rows": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\IDENTITIES.plan.jsonl",
+    "bytes": 2968071,
+    "sha256": "6fbbe33d59f13e2f8f97edbd6466674c8810c609bfb15a0eba8fb18b1d47a149"
+  },
+  "file_count": 7374,
+  "logical_bytes": 286248040,
+  "recovery_source_count": 3687,
+  "recovery_source_READ_DATA_handles_opened_and_held": true,
+  "apply_requires_source_SHA_once_per_unique_v2_file_under_retained_READ_DATA_handle": true,
+  "plan_source_body_hashes": false,
+  "ordinal_mapping": "Source rows first: current v2 manifest files in original order. Target r/i are each old seed manifest order after exact CANDIDATE exclusions. INPUTS pins fix every path, size and SHA.",
+  "max_files_per_batch": 1000,
+  "actual_deletions": 0,
+  "target_body_reads_or_hashes": false,
+  "physical_reclaimable_bytes_or_null": null,
+  "original_expiry_unchanged": {
+    "old_cache_original_expiry_at_utc": "2026-10-17T03:03:44.013573Z",
+    "current_v2_cache_original_expiry_and_protection_at_utc": "2026-10-17T03:03:44.013573Z",
+    "early_retirement_reason": "ROOT released only redundant old payload use/protection conditionally on current v2 exact held-readable source bytes; original outcomes/evidence/manifests kept",
+    "automatic_TTL_renewal": false
+  },
+  "identity_plan_review_or_consolidate_at_utc": "2026-11-09T12:41:11.716718+00:00",
+  "summary_review_at_utc": "2027-04-08T12:41:11.716718+00:00"
+}

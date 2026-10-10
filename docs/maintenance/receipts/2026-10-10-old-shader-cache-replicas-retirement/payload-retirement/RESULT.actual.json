@@ -1,0 +1,166 @@
+{
+  "schema": "lyd-old-v1-seed-replica-cleanup-result-v1",
+  "started_at_utc": "2026-10-10T12:42:20.309787+00:00",
+  "finished_at_utc": "2026-10-10T12:44:03.267468+00:00",
+  "inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\INPUTS.actual.json",
+    "bytes": 3991,
+    "sha256": "f34708d69299202bfbdabd5b5a1323d92044d717496f524c954a842452307de8"
+  },
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\PLAN.actual.json",
+    "bytes": 3374,
+    "sha256": "dc6c19a5c057d1ea1c85fbe55697660e128b64817103c009a1daec694cc90660"
+  },
+  "checks": {
+    "ROOT_consumer_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-fresh-consumers-20261010-001\\ROOT-CONSUMERS.actual.json",
+      "bytes": 2777,
+      "sha256": "0ef432c25768265347a36a0a2923ada1447eee03ff9985f96e2f4148eb551e0c"
+    },
+    "fresh_process_inventory": {
+      "at_utc": "2026-10-10T12:42:20.157617+00:00",
+      "scanned_process_count": 175,
+      "python_controllers_inspected": [
+        {
+          "pid": 16500,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        }
+      ],
+      "blockers": [],
+      "process_absence_is_normal_exit_proof": false
+    },
+    "fresh_bus_packet": {
+      "bytes": 150388,
+      "sha256": "617c6ecf3afc53afd89413070a17dc4feee46442a11de730293232c0ba19594c"
+    },
+    "active_bus_tasks": [
+      {
+        "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+        "resources": []
+      },
+      {
+        "task_id": "lyd-volume-c-admission-20261010-root",
+        "resources": [
+          "storage-volume-c:coordinator"
+        ]
+      }
+    ]
+  },
+  "ok": true,
+  "fatal_error_or_null": null,
+  "roots": [
+    {
+      "r": 0,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": []
+    },
+    {
+      "r": 1,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": []
+    }
+  ],
+  "batches": [
+    {
+      "batch": 0,
+      "r": 0,
+      "begin": 0,
+      "end": 1000,
+      "deleted_files": 1000,
+      "failed_files": 0
+    },
+    {
+      "batch": 1,
+      "r": 0,
+      "begin": 1000,
+      "end": 2000,
+      "deleted_files": 1000,
+      "failed_files": 0
+    },
+    {
+      "batch": 2,
+      "r": 0,
+      "begin": 2000,
+      "end": 3000,
+      "deleted_files": 1000,
+      "failed_files": 0
+    },
+    {
+      "batch": 3,
+      "r": 0,
+      "begin": 3000,
+      "end": 3687,
+      "deleted_files": 687,
+      "failed_files": 0
+    },
+    {
+      "batch": 4,
+      "r": 1,
+      "begin": 0,
+      "end": 1000,
+      "deleted_files": 1000,
+      "failed_files": 0
+    },
+    {
+      "batch": 5,
+      "r": 1,
+      "begin": 1000,
+      "end": 2000,
+      "deleted_files": 1000,
+      "failed_files": 0
+    },
+    {
+      "batch": 6,
+      "r": 1,
+      "begin": 2000,
+      "end": 3000,
+      "deleted_files": 1000,
+      "failed_files": 0
+    },
+    {
+      "batch": 7,
+      "r": 1,
+      "begin": 3000,
+      "end": 3687,
+      "deleted_files": 687,
+      "failed_files": 0
+    }
+  ],
+  "logical_deleted_bytes": 286248040,
+  "allocation_size_api_deleted_sum": 302853296,
+  "allocation_method": "FILE_STANDARD_INFO.AllocationSize of exact single-link exclusive original handle",
+  "free_before": 623769145344,
+  "free_after": 624067813376,
+  "global_free_delta_not_attributed_exclusively_to_cleanup": 298668032,
+  "detail_ledger": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\DETAIL-LEDGER.actual.jsonl",
+    "bytes": 6548190,
+    "sha256": "4f4df1055299e1cc9e0e27ae9ce1f2d0d2a5b4c5a038449732533cc0d42a57f5"
+  },
+  "original_expiry_unchanged": {
+    "old_cache_original_expiry_at_utc": "2026-10-17T03:03:44.013573Z",
+    "current_v2_cache_original_expiry_and_protection_at_utc": "2026-10-17T03:03:44.013573Z",
+    "early_retirement_reason": "ROOT released only redundant old payload use/protection conditionally on current v2 exact held-readable source bytes; original outcomes/evidence/manifests kept",
+    "automatic_TTL_renewal": false
+  },
+  "detailed_ledger_and_identity_plan_expires_at_utc": "2026-11-09T12:44:03.267468+00:00",
+  "summary_review_at_utc": "2027-04-08T12:44:03.267468+00:00",
+  "recovery_source_handles_held_and_original_current_v2_SHA_verified_once_each": true,
+  "all_original_manifests_keys_receipts_unique_changed_unlisted_and_current_v2_seed_retained": true,
+  "historical_GREEN_RED_UNKNOWN_unchanged": true,
+  "MAIN_or_Git_mutation": false,
+  "no_recursive_directory_delete": true,
+  "no_auto_retry": true
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "lyd-old-v1-seed-replica-tombstones-v1",
+  "at_utc": "2026-10-10T12:44:03.267468+00:00",
+  "result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\RESULT.actual.json",
+    "bytes": 5115,
+    "sha256": "a480db8fa6614c5160ffe7d1ea4d679802cdb4c09d4206f777c6a4a389df6a7b"
+  },
+  "inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\INPUTS.actual.json",
+    "bytes": 3991,
+    "sha256": "f34708d69299202bfbdabd5b5a1323d92044d717496f524c954a842452307de8"
+  },
+  "roots": [
+    {
+      "r": 0,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": [],
+      "availability": "ONLY_PLANNED_REPLICA_FILES_DELETED",
+      "original_expires_at_utc_unchanged": "2026-10-17T03:03:44.013573Z"
+    },
+    {
+      "r": 1,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": [],
+      "availability": "ONLY_PLANNED_REPLICA_FILES_DELETED",
+      "original_expires_at_utc_unchanged": "2026-10-17T03:03:44.013573Z"
+    }
+  ],
+  "exact_paths_and_original_SHA_recoverable_by_ordinal_from_retained_metadata": true,
+  "recovery_inputs": {
+    "immutable_seed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-shader-cache-v2-seed-20261010-001\\manifest.json",
+      "bytes": 681477,
+      "sha256": "a63b9373a4771359867618be613bd1ca5906adcb142adb0d760887916b30d29b"
+    },
+    "old_manifests": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\manifest.json",
+        "bytes": 678234,
+        "sha256": "8d5122c79cf1295c9a22939c143eca3102b50655c56bedf14a64d71094c47c91"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\manifest.json",
+        "bytes": 678234,
+        "sha256": "1f58b3176ee792722c70379d7c01de7f473b33a3659a6fa24d81a17d918afec0"
+      }
+    ]
+  },
+  "old_seed_manifest_pins_are_historical_and_cannot_prove_deleted_payload_currently_available": true,
+  "R46_profile_raw_logs_and_R47_outcome_provenance_preserved": true,
+  "automatic_TTL_renewal": false,
+  "review_at_utc": "2027-04-08T12:44:03.267468+00:00"
+}

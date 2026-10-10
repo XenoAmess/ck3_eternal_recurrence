@@ -1,0 +1,56 @@
+{
+  "schema": "lyd-two-audit-compression-availability-v1",
+  "at_utc": "2026-10-10T12:52:52.638700+00:00",
+  "result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\RESULT.actual.json",
+    "bytes": 4173,
+    "sha256": "3901603fc9b06523eeb0c741bda202546de79da7ea62f2dafb366d088e705acc"
+  },
+  "items": [
+    {
+      "original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\IDENTITIES.plan.jsonl",
+        "bytes": 2968071,
+        "sha256": "6fbbe33d59f13e2f8f97edbd6466674c8810c609bfb15a0eba8fb18b1d47a149"
+      },
+      "original_path_availability": "DELETED",
+      "gzip_pin_or_null": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\IDENTITIES.plan.jsonl.gz",
+        "bytes": 254724,
+        "sha256": "cd5f6fa80d97d359dd367065c1e8ecfe1f2b5dd10f010547c304e8825eace92b"
+      },
+      "gzip_verified": true,
+      "gzip_decodes_to_original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\IDENTITIES.plan.jsonl",
+        "bytes": 2968071,
+        "sha256": "6fbbe33d59f13e2f8f97edbd6466674c8810c609bfb15a0eba8fb18b1d47a149"
+      },
+      "original_expires_at_utc_unchanged": "2026-11-09T12:41:11.716718+00:00",
+      "error_or_null": null
+    },
+    {
+      "original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\DETAIL-LEDGER.actual.jsonl",
+        "bytes": 6548190,
+        "sha256": "4f4df1055299e1cc9e0e27ae9ce1f2d0d2a5b4c5a038449732533cc0d42a57f5"
+      },
+      "original_path_availability": "DELETED",
+      "gzip_pin_or_null": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\DETAIL-LEDGER.actual.jsonl.gz",
+        "bytes": 848975,
+        "sha256": "1de0761bae955da598d0af05d4f7fe545d021879cb8cf3e2345da17074baf179"
+      },
+      "gzip_verified": true,
+      "gzip_decodes_to_original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\DETAIL-LEDGER.actual.jsonl",
+        "bytes": 6548190,
+        "sha256": "4f4df1055299e1cc9e0e27ae9ce1f2d0d2a5b4c5a038449732533cc0d42a57f5"
+      },
+      "original_expires_at_utc_unchanged": "2026-11-09T12:44:03.267468+00:00",
+      "error_or_null": null
+    }
+  ],
+  "original_closed_result_and_plan_remain_historical": true,
+  "summary_review_at_utc": "2027-04-08T12:44:03.267468+00:00",
+  "automatic_TTL_renewal": false
+}

@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r49-old-seeds-retirement-candidate-20261010-003\cleanup_old_seed_replicas.py", line 395, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r49-old-seeds-retirement-candidate-20261010-003\cleanup_old_seed_replicas.py", line 391, in main
+    apply(*values, args.coordinator_evidence)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r49-old-seeds-retirement-candidate-20261010-003\cleanup_old_seed_replicas.py", line 256, in apply
+    checks = fresh_checks(inputs, groups, coordinator_evidence)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r49-old-seeds-retirement-candidate-20261010-003\cleanup_old_seed_replicas.py", line 206, in fresh_checks
+    evidence_pin = pin(coordinator_evidence)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r49-old-seeds-retirement-candidate-20261010-003\cleanup_old_seed_replicas.py", line 40, in pin
+    require(path.stat().st_size <= limit, 'Bounded metadata/source pin exceeded')
+            ~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-fresh-consumers-20261010-001\\ROOT-CONSUMERS.actual.json'

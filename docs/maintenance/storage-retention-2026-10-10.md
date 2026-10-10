@@ -83,3 +83,14 @@ R47 cache Oct17、Source08构建Oct24、raw Nov9与代表证据七天复核分�
 此前 07:12 的“恢复/历史依赖未退役”是当时状态。后续 ROOT、共享运行时及诊断执行者明确解除 Source06/07 原路径用途，恢复 ZIP/变更文件和索引核验后，已实际回收两份导出的 15,812 文件 / 282,058,228 B 逻辑量，失败 0。现行 Source08、必要存档、原始证据与缓存保留。逐文件审计材料完整验证 gzip 后回收明文，原期限不延长；[实际操作和精简回执](storage-cleanup-2026-10-10.md)记录物理分配读数、前后 free 与可用性变更。
 
 这次按已有索引和有限恢复证明执行，没有全盘重扫，也没有把 21.2 GB 旧 attempt 自动认作已可删。仍无活跃重型写入预留；holder 诊断只进行了 16 MiB 上限的小型 prepare/plan，未分配新场或启动 CK3。下一实机及缓存复制仍须新预算，128 GiB 临时配额的 Oct12 原到期不变。全部机器继续使用统一规则；跨机器自动执行和自动 GC 仍未实现。
+
+
+## 12:53 UTC：旧 v1 shader cache 两份副本退役及审计压缩
+
+ROOT 已解除 R46/R47 旧 seed payload 的当前用途保护，条件是保留的 v2 seed 能按逐文件 bytes/SHA 恢复。实际执行在持有当前 v2 只读源句柄并逐项验真后，仅删除 R46/R47 两个旧 `shadercache` 根内的精确索引叶文件：共 7,374 件、286,248,040 B 逻辑内容，8 批，失败 0；FileStandardInfo 的 allocation-size 合计为 302,853,296 B。磁盘空闲量由 623,769,145,344 B 变为 624,067,813,376 B，其差值不排他归因于本次操作。[原字节摘要](receipts/2026-10-10-old-shader-cache-replicas-retirement/COMPACT-RECEIPT.actual.json) 与 [原生执行结果](receipts/2026-10-10-old-shader-cache-replicas-retirement/payload-retirement/RESULT.actual.json) 保留实际身份、恢复来源及 tombstone 引用。
+
+前置失败原样保留：首次 fresh probe 因 ROOT 心跳超出 600 秒而缺少必需 active ROOT，仅有原工具输出 `2ae8c4`，精确事件时间和外置 raw pin 均为 `null`；apply execution003 实际退出 1，因缺 fresh consumer receipt 在 `apply_locked` 之前拒绝。ROOT 更新心跳 sequence 4453 并生成真实 fresh receipt 后，execution004 才实际退出 0。参见[原失败事实](receipts/2026-10-10-old-shader-cache-replicas-retirement/ORIGINAL-FAILURES.actual.json) 和[失败命令及原 stderr](receipts/2026-10-10-old-shader-cache-replicas-retirement/apply-execution003-failed/RESULT.actual.json)。
+
+12:52:51–12:52:52 UTC 的审计压缩与 12:53:01–12:53:02 UTC 的摘要命令均实际退出 0。仅两份派生 audit 明文在 gzip 完整解压 size/SHA 与原 bytes 匹配后删除：9,516,261 B 明文对应 1,103,699 B gzip，逻辑净减少 8,412,562 B。gzip 留在原外置目录，未重复入库；旧 pin 的可用性由[availability 原回执](receipts/2026-10-10-old-shader-cache-replicas-retirement/audit-compression/AVAILABILITY.actual.json) 映射。当天 payload 删除累计为 12,411,834,451 B，audit 压缩累计逻辑净减少另计 28,255,049 B，两者不合并成磁盘独占回收量。
+
+当前 v2 seed、B3 signed、D2a immutable、Source09/O8、R46 失败 profile/raw logs、R47 outcome，以及两份旧 manifest/key/receipt 均保留；本次退役不授 cache-hit、业务通过或正常 GUI 退出资格。原 cache 期限 `2026-10-17T03:03:44.013573Z` 不续期；identity/detail audit 分别沿用 `2026-11-09T12:41:11.716718+00:00`、`2026-11-09T12:44:03.267468+00:00`，summary 复核日为 `2027-04-08T12:44:03.267468+00:00`。这是本机经协调者执行的精确副本退役，不代表其他机器已采用或存在自动 GC。

@@ -1,0 +1,188 @@
+{
+  "schema": "lyd-old-v1-seed-replicas-retirement-compact-receipt-v1",
+  "at_utc": "2026-10-10T12:53:02.035991+00:00",
+  "actual_payload_cleanup": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\RESULT.actual.json",
+    "bytes": 5115,
+    "sha256": "a480db8fa6614c5160ffe7d1ea4d679802cdb4c09d4206f777c6a4a389df6a7b"
+  },
+  "actual_tombstones": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\TOMBSTONES.actual.json",
+    "bytes": 2675,
+    "sha256": "fdb0211f618f772260629bfec5a0dd7f5d94898ca516f5b00d3fc17e1018edb3"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\PLAN.actual.json",
+    "bytes": 3374,
+    "sha256": "dc6c19a5c057d1ea1c85fbe55697660e128b64817103c009a1daec694cc90660"
+  },
+  "inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\INPUTS.actual.json",
+    "bytes": 3991,
+    "sha256": "f34708d69299202bfbdabd5b5a1323d92044d717496f524c954a842452307de8"
+  },
+  "original_preapply_failures_bound_pin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\ORIGINAL-FAILURES.actual.json",
+    "bytes": 4474,
+    "sha256": "174d1f3b3b8e10ac4b9c8fd38611b8918158aac0cf6b6fbe552f9c534aff53f4"
+  },
+  "original_preapply_failure_events": {
+    "first_probe": {
+      "event_time_utc_or_null": null,
+      "relative_order": "Before failed original apply execution003",
+      "provenance_kind": "ROOT conversation tool output",
+      "original_tool_output_chunk": "2ae8c4",
+      "actual_failure": "Active required ROOT missing because heartbeat12:28:31 had aged beyond600sec",
+      "external_raw_file_pin_or_null": null,
+      "precise_failure_time_not_recorded": true,
+      "source": "Actual ROOT collaboration message; no external raw file was created"
+    },
+    "execution003": {
+      "command_receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-003\\RESULT.actual.json",
+        "bytes": 1111,
+        "sha256": "f9c1db4aab78abcd29bd59d2d5e674e90dda56266e8904fcfdde7ea0cf251d0f"
+      },
+      "exit_code": 1,
+      "failure": "Missing fresh consumer receipt FileNotFoundError in fresh_checks before apply_locked",
+      "destructive_delete_entered": false
+    },
+    "manual_correction": {
+      "heartbeat_sequence": 4453,
+      "heartbeat_at_utc": "2026-10-10T12:42:18Z"
+    },
+    "execution004": {
+      "command_receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-004\\RESULT.actual.json",
+        "bytes": 1111,
+        "sha256": "aab7af45d6b7cda8d0a1c466db61d3c1f2cbec4bbbb8a2dcf0feef0ecc3d96dc"
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T12:42:19.455093+00:00",
+      "finished_at_utc": "2026-10-10T12:44:03.328562+00:00",
+      "actual_payload_cleanup": {
+        "files": 7374,
+        "logical_bytes": 286248040,
+        "failed_files": 0
+      }
+    }
+  },
+  "day_actual_logical_payload_deleted_bytes": 12411834451,
+  "audit_compression_separate_from_day_payload_total": true,
+  "actual_audit_compression": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\RESULT.actual.json",
+    "bytes": 4173,
+    "sha256": "3901603fc9b06523eeb0c741bda202546de79da7ea62f2dafb366d088e705acc"
+  },
+  "actual_audit_availability": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\AVAILABILITY.actual.json",
+    "bytes": 2651,
+    "sha256": "76cf62b7272ac1cffcf2905fd10a1a5f3e0cae25281bb0b5e10e66376adcfb8e"
+  },
+  "candidate_payload_roots": [
+    {
+      "r": 0,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": []
+    },
+    {
+      "r": 1,
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": []
+    }
+  ],
+  "actual_deleted_file_count": 7374,
+  "logical_payload_deleted_bytes": 286248040,
+  "allocation_size_api_payload_deleted_sum": 302853296,
+  "payload_cleanup_free_before": 623769145344,
+  "payload_cleanup_free_after": 624067813376,
+  "free_delta_not_attributed_exclusively_to_cleanup": 298668032,
+  "current_v2_sources_held_and_SHA_verified_once_each": true,
+  "retained_current_v2_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-shader-cache-v2-seed-20261010-001\\manifest.json",
+    "bytes": 681477,
+    "sha256": "a63b9373a4771359867618be613bd1ca5906adcb142adb0d760887916b30d29b"
+  },
+  "retained_old_original_manifests_and_keys": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\manifest.json",
+      "bytes": 678234,
+      "sha256": "8d5122c79cf1295c9a22939c143eca3102b50655c56bedf14a64d71094c47c91"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\manifest.json",
+      "bytes": 678234,
+      "sha256": "1f58b3176ee792722c70379d7c01de7f473b33a3659a6fa24d81a17d918afec0"
+    }
+  ],
+  "old_payload_availability": "PLANNED_PAYLOAD_DELETED_ORIGINAL_MANIFEST_KEY_RECEIPTS_REMAIN",
+  "audit_original_path_to_gzip_mapping": [
+    {
+      "original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\IDENTITIES.plan.jsonl",
+        "bytes": 2968071,
+        "sha256": "6fbbe33d59f13e2f8f97edbd6466674c8810c609bfb15a0eba8fb18b1d47a149"
+      },
+      "original_path_availability": "DELETED",
+      "gzip_pin_or_null": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\IDENTITIES.plan.jsonl.gz",
+        "bytes": 254724,
+        "sha256": "cd5f6fa80d97d359dd367065c1e8ecfe1f2b5dd10f010547c304e8825eace92b"
+      },
+      "gzip_verified": true,
+      "gzip_decodes_to_original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\IDENTITIES.plan.jsonl",
+        "bytes": 2968071,
+        "sha256": "6fbbe33d59f13e2f8f97edbd6466674c8810c609bfb15a0eba8fb18b1d47a149"
+      },
+      "original_expires_at_utc_unchanged": "2026-11-09T12:41:11.716718+00:00",
+      "error_or_null": null
+    },
+    {
+      "original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\DETAIL-LEDGER.actual.jsonl",
+        "bytes": 6548190,
+        "sha256": "4f4df1055299e1cc9e0e27ae9ce1f2d0d2a5b4c5a038449732533cc0d42a57f5"
+      },
+      "original_path_availability": "DELETED",
+      "gzip_pin_or_null": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\DETAIL-LEDGER.actual.jsonl.gz",
+        "bytes": 848975,
+        "sha256": "1de0761bae955da598d0af05d4f7fe545d021879cb8cf3e2345da17074baf179"
+      },
+      "gzip_verified": true,
+      "gzip_decodes_to_original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\DETAIL-LEDGER.actual.jsonl",
+        "bytes": 6548190,
+        "sha256": "4f4df1055299e1cc9e0e27ae9ce1f2d0d2a5b4c5a038449732533cc0d42a57f5"
+      },
+      "original_expires_at_utc_unchanged": "2026-11-09T12:44:03.267468+00:00",
+      "error_or_null": null
+    }
+  ],
+  "audit_plaintext_deleted_bytes_separate_from_payload": 9516261,
+  "audit_verified_gzip_logical_bytes": 1103699,
+  "original_cache_expiry_unchanged_at_utc": "2026-10-17T03:03:44.013573Z",
+  "detail_audit_expiry_unchanged_at_utc": "2026-11-09T12:44:03.267468+00:00",
+  "identity_audit_expiry_unchanged_at_utc": "2026-11-09T12:41:11.716718+00:00",
+  "summary_review_at_utc": "2027-04-08T12:44:03.267468+00:00",
+  "no_TTL_or_protection_renewal": true,
+  "R46_failure_profile_rawlogs_R47_outcome_current_v2_and_B3_D2a_Source09_O8_retained": true,
+  "no_cache_hit_business_or_normalexit_qualification_from_cleanup": true,
+  "MAIN_Git_mutation": false,
+  "bindings": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\BINDINGS.actual.json",
+    "bytes": 2229,
+    "sha256": "7ecb8e29cd0bcbea3bd5fad5e7117e8d4bad860c884c5fc4d9dd945d55ee13b9"
+  }
+}

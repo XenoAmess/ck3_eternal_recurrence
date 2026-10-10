@@ -128,3 +128,8 @@ ROOT解除旧case002与R48 frozen profile三组重复输入的后续用途，在
 本日两份ETW派生文本、退役Source06/07、R48重复输入和三个旧save副本累计实际删除 **12,125,586,411 B逻辑量（约12.13GB）**。两轮审计压缩净减少19,842,487 B另列，既有删除不重复计数。本机结果不代表其他机器已经执行，也未安装自动GC。
 
 缓存原Oct17 03:03:44UTC和配额原Oct12复核期限不续；其他新资产按checkpoint14天/raw30天/record180天复核，必要保护至多7天。约245KB紧凑归档及后续入库副本不在上述闭场计量时点内，作为有界小增量另列；没有保存第二份完整存档或wire。[实际预约、计量、分类与闭场压缩对象](../li-yu-dao/acceptance/2026-10-10-r0049-holder-diagnostic/INDEX.json)。统一自动GC/预约器仍未实现，不把本机人工闭账外推到其他机器。
+
+
+## 12:53 UTC追加：旧v1缓存副本退役闭环
+
+实际删除7,374项286,248,040B，失败0；当天payload删除累计12,411,834,451B。两份audit完整解压核对后无损压缩，另减8,412,562B，全天audit净减累计28,255,049B，不计入payload或排他磁盘free归因。当前v2与关键基线保留，期限不续。[实际摘要](receipts/2026-10-10-old-shader-cache-replicas-retirement/COMPACT-RECEIPT.actual.json)和[过程/原失败](storage-retention-2026-10-10.md)已入库；原19项小回执保留，不重复提交大jsonl/gzip。

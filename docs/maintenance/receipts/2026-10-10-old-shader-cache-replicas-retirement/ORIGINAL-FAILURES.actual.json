@@ -1,0 +1,97 @@
+{
+  "schema": "lyd-old-seed-v3-original-preapply-failures-v1",
+  "recorded_at_utc": "2026-10-10T12:47:52.025092+00:00",
+  "ROOT_initial_tool_observed_preprobe": {
+    "event_time_utc_or_null": null,
+    "relative_order": "Before failed original apply execution003",
+    "provenance_kind": "ROOT conversation tool output",
+    "original_tool_output_chunk": "2ae8c4",
+    "actual_failure": "Active required ROOT missing because heartbeat12:28:31 had aged beyond600sec",
+    "external_raw_file_pin_or_null": null,
+    "precise_failure_time_not_recorded": true,
+    "source": "Actual ROOT collaboration message; no external raw file was created"
+  },
+  "original_apply_execution003": {
+    "command_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-003\\RESULT.actual.json",
+      "bytes": 1111,
+      "sha256": "f9c1db4aab78abcd29bd59d2d5e674e90dda56266e8904fcfdde7ea0cf251d0f"
+    },
+    "exit_code": 1,
+    "started_at_utc": "2026-10-10T12:41:39.537223+00:00",
+    "finished_at_utc": "2026-10-10T12:41:40.248342+00:00",
+    "stderr_pin": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-003\\stderr.log",
+      "bytes": 1523,
+      "sha256": "dad21e1194e59f8a6f2fd0f374034b61d19e3b4243222013c26bae6da4e014ee"
+    },
+    "failure": "Missing fresh consumer receipt FileNotFoundError in fresh_checks before apply_locked",
+    "no_DETAIL_or_RESULT_created_by_failed_attempt": "ROOT observed at that time; not inferred from later files",
+    "destructive_delete_entered": false
+  },
+  "ROOT_manual_correction": {
+    "source": "Actual ROOT collaboration message",
+    "heartbeat_sequence": 4453,
+    "heartbeat_at_utc": "2026-10-10T12:42:18Z",
+    "new_actual_consumer_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-fresh-consumers-20261010-001\\ROOT-CONSUMERS.actual.json",
+      "bytes": 2777,
+      "sha256": "0ef432c25768265347a36a0a2923ada1447eee03ff9985f96e2f4148eb551e0c"
+    }
+  },
+  "original_apply_execution004": {
+    "command_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-004\\RESULT.actual.json",
+      "bytes": 1111,
+      "sha256": "aab7af45d6b7cda8d0a1c466db61d3c1f2cbec4bbbb8a2dcf0feef0ecc3d96dc"
+    },
+    "exit_code": 0,
+    "started_at_utc": "2026-10-10T12:42:19.455093+00:00",
+    "finished_at_utc": "2026-10-10T12:44:03.328562+00:00",
+    "actual_payload_cleanup": {
+      "files": 7374,
+      "logical_bytes": 286248040,
+      "failed_files": 0
+    }
+  },
+  "original_evidence_pins": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-003\\RESULT.actual.json",
+      "bytes": 1111,
+      "sha256": "f9c1db4aab78abcd29bd59d2d5e674e90dda56266e8904fcfdde7ea0cf251d0f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-003\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-003\\stderr.log",
+      "bytes": 1523,
+      "sha256": "dad21e1194e59f8a6f2fd0f374034b61d19e3b4243222013c26bae6da4e014ee"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-004\\RESULT.actual.json",
+      "bytes": 1111,
+      "sha256": "aab7af45d6b7cda8d0a1c466db61d3c1f2cbec4bbbb8a2dcf0feef0ecc3d96dc"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-004\\stdout.log",
+      "bytes": 1236,
+      "sha256": "360032ad492c78fcf30a5216b33b5262771030fc166b54eda9345528a1ce2cd8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-apply-execution-20261010-004\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-root-fresh-consumers-20261010-001\\ROOT-CONSUMERS.actual.json",
+      "bytes": 2777,
+      "sha256": "0ef432c25768265347a36a0a2923ada1447eee03ff9985f96e2f4148eb551e0c"
+    }
+  ],
+  "original_failures_or_receipts_rewritten": false,
+  "no_invented_raw_file_pin_or_exact_preprobe_time": true,
+  "no_game_business_or_normalexit_credit_from_cleanup": true
+}

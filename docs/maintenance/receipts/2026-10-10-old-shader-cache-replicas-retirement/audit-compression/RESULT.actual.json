@@ -1,0 +1,96 @@
+{
+  "schema": "lyd-two-audit-compression-result-v1",
+  "started_at_utc": "2026-10-10T12:52:52.078431+00:00",
+  "finished_at_utc": "2026-10-10T12:52:52.633120+00:00",
+  "ok": true,
+  "items": [
+    {
+      "original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\IDENTITIES.plan.jsonl",
+        "bytes": 2968071,
+        "sha256": "6fbbe33d59f13e2f8f97edbd6466674c8810c609bfb15a0eba8fb18b1d47a149"
+      },
+      "gzip_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\IDENTITIES.plan.jsonl.gz",
+      "expires_at_utc": "2026-11-09T12:41:11.716718+00:00",
+      "original_identity_or_null": {
+        "volume_serial": 11439297576789895419,
+        "file_id": "edc72c00000008000000000000000000",
+        "legacy_file_id": 2251799816620013,
+        "created_filetime": 134361096594982415,
+        "written_filetime": 134361096716405948,
+        "size": 2968071,
+        "attributes": 32,
+        "links": 1
+      },
+      "gzip_pin_or_null": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\IDENTITIES.plan.jsonl.gz",
+        "bytes": 254724,
+        "sha256": "cd5f6fa80d97d359dd367065c1e8ecfe1f2b5dd10f010547c304e8825eace92b"
+      },
+      "gzip_verified": true,
+      "disposition_ack": true,
+      "close_ack": true,
+      "source_absence_observed": true,
+      "source_logical_bytes": 2968071,
+      "source_allocated_bytes_or_null": 2969600,
+      "gzip_allocated_bytes_or_null": 258048,
+      "error_or_null": null
+    },
+    {
+      "original_pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\DETAIL-LEDGER.actual.jsonl",
+        "bytes": 6548190,
+        "sha256": "4f4df1055299e1cc9e0e27ae9ce1f2d0d2a5b4c5a038449732533cc0d42a57f5"
+      },
+      "gzip_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\DETAIL-LEDGER.actual.jsonl.gz",
+      "expires_at_utc": "2026-11-09T12:44:03.267468+00:00",
+      "original_identity_or_null": {
+        "volume_serial": 11439297576789895419,
+        "file_id": "fec72c00000004000000000000000000",
+        "legacy_file_id": 1125899909777406,
+        "created_filetime": 134361097403094805,
+        "written_filetime": 134361098431855511,
+        "size": 6548190,
+        "attributes": 32,
+        "links": 1
+      },
+      "gzip_pin_or_null": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\DETAIL-LEDGER.actual.jsonl.gz",
+        "bytes": 848975,
+        "sha256": "1de0761bae955da598d0af05d4f7fe545d021879cb8cf3e2345da17074baf179"
+      },
+      "gzip_verified": true,
+      "disposition_ack": true,
+      "close_ack": true,
+      "source_absence_observed": true,
+      "source_logical_bytes": 6548190,
+      "source_allocated_bytes_or_null": 6549504,
+      "gzip_allocated_bytes_or_null": 851968,
+      "error_or_null": null
+    }
+  ],
+  "closed_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\PLAN.actual.json",
+    "bytes": 3374,
+    "sha256": "dc6c19a5c057d1ea1c85fbe55697660e128b64817103c009a1daec694cc90660"
+  },
+  "closed_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-retirement-candidate-20261010-003\\RESULT.actual.json",
+    "bytes": 5115,
+    "sha256": "a480db8fa6614c5160ffe7d1ea4d679802cdb4c09d4206f777c6a4a389df6a7b"
+  },
+  "free_before": 624060424192,
+  "free_after": 624068820992,
+  "global_free_delta_not_attributed_exclusively_to_compression": 8396800,
+  "logical_plaintext_deleted_bytes": 9516261,
+  "plaintext_allocation_size_api_deleted_sum": 9519104,
+  "journal": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-old-seeds-audit-compression-sourceonly-20261010-003\\JOURNAL.actual.jsonl",
+    "bytes": 6721,
+    "sha256": "b5eb68f076b11fd221f973839ae571bc72e8aa30d2ae5c1e64c9f2848da8efed"
+  },
+  "old_receipts_modified": false,
+  "automatic_TTL_renewal": false,
+  "MAIN_or_Git_mutation": false,
+  "no_retry": true
+}
