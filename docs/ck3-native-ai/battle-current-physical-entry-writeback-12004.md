@@ -59,5 +59,35 @@ unsigned-sidecar equivalence without rewriting the retained whole. The existing
 per-side duplicate Regiment rule remains intact. It does not qualify native current-row publication, replay
 Native67's producer, or grant live, full Person, full Entry or G2 credit.
 
-Status: source authored; new compound FIRST not run by the author. Root owns
-native compilation and the unique retained-whole consumer execution.
+## Actual Native68 qualification, 2026-10-10 / W41
+
+Root built and qualified this package at **2026-10-10 00:32:54.320235–
+00:35:59.838942 UTC**, elapsed **185.518707 seconds**, using **16 BelowNormal
+workers**. It compiled **451 production owners**, retained **293**, refreshed
+the **444-member Runtime archive** with 299 replacements and 145 retained
+members, and linked the DLL. The sole new registered MCP / Service / real
+NativeDriver consumer passed. There was **no native fixture or producer
+execution**: the test reused Native67's retained whole, qualified with fixture
+source `813458e9c2c1ef4f5cdbee02c17613a680996643`.
+
+Root sealed the [Native68 canonical qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix68/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+at **00:38:01.828186–00:38:03.103183 UTC**. Native68's compiled and consumer
+source is `3ff84302db238fe7eaba108d39c5a3928449ca83`, following source commit
+`d08a00127e0db21e3f59f1942d16ff4f96304fca`. Native67's production and unchanged
+whole serializer remain pinned to `f19c1e4ffcb2bf7a7ac66b67970d4ab2f8342b45`;
+its corrected producer fixture qualification is separately pinned to `813458e9`.
+
+The new consumer exercises the actual Service ingress, normalizer, adapter and
+shared current-refresh join. Its current control rows are **synthetic**, one
+row per frame: a matching physical address, a different address with the same
+logical identity, and a high-bit full Regiment representation. It preserves all
+six current values and historical comparisons, the complete writer/Ci record,
+and exact signed-current / unsigned-sidecar ID equivalence. It does not claim
+that a real paused current BattleControl row has been observed.
+
+Status is **static-ready**. No game was run by this package, no old native
+producer or earlier GREEN compound was replayed, and no FullPerson, FullEntry,
+battle outcome or G2 milestone credit is granted. The next useful entrance is
+the existing paused BattleControl query followed by the existing combat-input
+query on a fresh observed combat frame; it requires no new tool or native
+source. Native66's separate cold recovery is independent of that future check.
