@@ -201,3 +201,29 @@ The child corrects only the native fixture to raw4 and checks its actual Core
 projection before source capture. Root's necessary retry compiles that one
 fixture unit and links the five retained production objects, then retries
 the same native case and runs the never-executed registered compound once.
+
+## Actual connected qualification, 2026-10-10
+
+Root's necessary fixture retry passed at
+2026-10-10T04:19:49.476097Z–04:20:03.845790Z. The inner FIRST ran from
+04:19:51.627251Z to04:20:03.835776Z (12.2085215 seconds). Fixture rebuild,
+native necessary retry and the first registered MCP consumer each exited0.
+Exactly one fixture translation unit was rebuilt; the five original
+production objects were reused. Production source remained
+`a694c9a393488b377030b5ff6acc6fc0e4bbf9ad`; the fixture correction was
+`e6d6307db3aec6c1d319f37a20d956be1461f181`.
+
+Actual receipts are
+`D:/codex-ck3-background-spill/sway-hidden-phase-source-delivery/ROOT-FIRST02-EXECUTION.json`
+and `ROOT-FIRST02/ROOT-FIRST-RESULT.json` in that same delivery directory.
+The one-read projection is `ACTUAL-FIRST02-QUALIFICATION-THIN.json` there.
+The original FIRST01 harness RED, logs and objects remain retained.
+
+This qualifies the current-build binder, inherited-scope capture and the
+registered query-to-lifecycle consumer as **static-ready / offline connected**.
+The native owner mailbox was not exercised; independent completion and
+opinion inputs were explicit synthetic normalized frames, reusing their
+prior native qualification. A whole production native rebuild and actual
+paused Game adoption remain pending. This fixture supplies no actual hidden
+phase, material outcome, terminal cause, Game-day, SAVE or G2 completion
+credit. No Game operation or original evidence rewrite occurred.
