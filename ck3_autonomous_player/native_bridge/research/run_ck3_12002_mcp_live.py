@@ -463,6 +463,11 @@ def validate_saved_campaign_options(args: argparse.Namespace) -> None:
         raise SystemExit("--saved-campaign-startup-case-contract requires an explicit saved campaign, without server mode")
     if getattr(args, "saved_campaign_inject_after_load", False) and (args.saved_campaign_save is None or args.server):
         raise SystemExit("--saved-campaign-inject-after-load requires an explicit saved campaign, without server mode")
+    debug_mode = getattr(args, "saved_campaign_debug_mode", False)
+    if type(debug_mode) is not bool:
+        raise SystemExit("--saved-campaign-debug-mode requires an explicit boolean")
+    if debug_mode and (args.saved_campaign_save is None or args.server):
+        raise SystemExit("--saved-campaign-debug-mode requires an explicit saved campaign, without server mode")
     if args.saved_campaign_save is not None:
         if (any(item is None for item in inputs) or not args.fixture_profile or args.plan is None
                 or args.server or args.sdk_smoke_test or args.sdk_error_smoke_test or args.fixture_server
@@ -598,6 +603,7 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
         launched = True
         launch_kwargs.pop("continue_last_save", None)
         launch_kwargs["load_save_name"] = "restored_campaign"
+        launch_kwargs["debug_mode"] = getattr(args, "saved_campaign_debug_mode", False)
         launch_kwargs["verify_prepared_profile"] = False
         if getattr(args, "saved_campaign_inject_after_load", False):
             launch_kwargs.update(native_bridge_after_saved_load=True,
@@ -610,10 +616,12 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
         argv = list(command) if isinstance(command, (list, tuple)) else None
         argv_admitted = (isinstance(argv, list) and all(isinstance(item, str) for item in argv)
             and argv.count("-loadsave=restored_campaign") == 1 and "-continuelastsave" not in argv
+            and argv.count("-debug_mode") == int(launch_kwargs["debug_mode"])
             and type(pid) is int and pid > 0)
         launch_record.update(status="ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED", command=argv,
             ck3_pid=pid if type(pid) is int else None, argv_admitted=argv_admitted,
-            continue_last_save=False, load_save_name="restored_campaign", captured_at=now())
+            continue_last_save=False, load_save_name="restored_campaign",
+            debug_mode=launch_kwargs["debug_mode"], captured_at=now())
         if getattr(args, "saved_campaign_inject_after_load", False):
             launch_record.update(bridge_injection_stage="after_saved_campaign_setup_completion",
                 load_completion_observation=copy.deepcopy(getattr(process, "saved_campaign_load_observation", None)))
@@ -3620,6 +3628,8 @@ def parser() -> argparse.ArgumentParser:
                         help="Explicit pinned pure proof to admit the unchanged current saved startup event; never selects an option")
     result.add_argument("--saved-campaign-inject-after-load", action="store_true",
                         help="Shared opt-in: inject once into the same managed PID after this launch's Setup completion log marker; native admission and original readiness deadline remain required")
+    result.add_argument("--saved-campaign-debug-mode", action="store_true",
+                        help="Shared saved-campaign diagnostic opt-in: append one actual -debug_mode flag to the same managed launch; default off")
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
     result.add_argument("--private-succession-title-readonly", action="store_true",
                         help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")

@@ -24,7 +24,8 @@ class SharedEntryTests(unittest.TestCase):
         self.host = self.root / 'one_shared_host.py'
         flags = ['--agent-source-root','--game-dir','--bridge-dll','--bridge-injector','--bridge-pipe',
                  '--output','--state-dir','--plan','--control-plan-dir', *entry.BUDGET_FLAGS.values(),
-                  *entry.SAVED_FLAGS.values(), '--fixture-profile', '--saved-campaign-inject-after-load']
+                  *entry.SAVED_FLAGS.values(), '--fixture-profile', '--saved-campaign-inject-after-load',
+                  '--saved-campaign-debug-mode']
         self.host.write_text("import argparse\np=argparse.ArgumentParser()\n" +
                              ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags) +
                              "raise RuntimeError('The host must never execute in these tests')\n")
@@ -114,6 +115,55 @@ class SharedEntryTests(unittest.TestCase):
         self.write(self.products_path, self.products)
         with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
             self.select()
+
+    def test_saved_debug_mode_global_default_off_and_single_flag(self):
+        self.assertNotIn('--saved-campaign-debug-mode', self.select().argv)
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled):
+                self.manifest['host_features'] = {'saved_campaign_debug_mode': enabled}
+                self.write(self.manifest_path, self.manifest)
+                self.runtime['manifest'] = entry.pin(self.manifest_path)
+                self.write(self.runtime_path, self.runtime)
+                selected = self.select()
+                self.assertEqual(selected.argv.count('--saved-campaign-debug-mode'), int(enabled))
+                self.assertEqual(selected.preflight()['blockers'], [])
+
+    def test_saved_debug_mode_is_not_routed_to_other_startup_modes(self):
+        self.manifest['host_features'] = {'saved_campaign_debug_mode': True}
+        self.write(self.manifest_path, self.manifest)
+        self.runtime['manifest'] = entry.pin(self.manifest_path)
+        self.write(self.runtime_path, self.runtime)
+        case = self.products['products']['xqol']['cases'][0]
+        for mode in ('workshop_cache', 'fixture'):
+            with self.subTest(mode=mode):
+                case['startup'] = {'mode': mode, 'state_dir': '{run_dir}/state',
+                                   'fixture_start_policy': str(self.files['initial'])}
+                self.write(self.products_path, self.products)
+                self.assertNotIn('--saved-campaign-debug-mode', self.select().argv)
+
+    def test_saved_debug_mode_rejects_non_boolean_and_unknown_global_features(self):
+        for features in ([{'saved_campaign_debug_mode': value} for value in (0, 1, None, 'true', [], {})]
+                         + [{'unreviewed_debug_override': True}]):
+            with self.subTest(features=features):
+                self.manifest['host_features'] = features
+                self.write(self.manifest_path, self.manifest)
+                self.runtime['manifest'] = entry.pin(self.manifest_path)
+                self.write(self.runtime_path, self.runtime)
+                with self.assertRaisesRegex(ValueError, 'host feature'):
+                    self.select()
+
+    def test_product_or_case_cannot_choose_saved_debug_mode(self):
+        original = copy.deepcopy(self.products)
+        for location in ('product', 'case'):
+            with self.subTest(location=location):
+                self.products = copy.deepcopy(original)
+                target = self.products['products']['xqol']
+                if location == 'case':
+                    target = target['cases'][0]
+                target['host_features'] = {'saved_campaign_debug_mode': True}
+                self.write(self.products_path, self.products)
+                with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
+                    self.select()
 
     def test_all_canonical_products_and_cases_select_the_same_runtime(self):
         repo = Path(__file__).resolve().parents[1]
