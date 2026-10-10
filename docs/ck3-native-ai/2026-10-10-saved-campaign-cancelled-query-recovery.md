@@ -34,3 +34,8 @@ NOT_GREEN。本次没有native编译、游戏启动或重型写入预约；旧�
 14:20 UTC的[单次精确CI观察](acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/ci-1420/REPORT.actual.json)
 记录：失败证据提交`7a735081f`的Official/Linear均success；修复提交`3f8cae002`的Linear
 success、Official仍in_progress。两者LYD均未触发，不能算LYD验收通过，也不外推其他HEAD。
+
+14:23 UTC勘误：上述ci-1420两份原件首次提交被Git规范化CRLF，ROOT未处理add警告就继续
+提交。现已从同一原件恢复并补该目录`* -text`，显式renormalize后逐份比较staged blob，均与
+原size/SHA相等。[原错误与修正回执](acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/ci-1420/BYTE-CORRECTION.actual.json)
+保留先前发布commit及两组字节摘要；CI观察、源码和测试结果未变。

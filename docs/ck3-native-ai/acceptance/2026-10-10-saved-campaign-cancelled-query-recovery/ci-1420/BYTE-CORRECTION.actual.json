@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.ci-original-byte-correction.v1",
+  "at_utc": "2026-10-10T14:23:10.931700+00:00",
+  "cause": "Parent .gitattributes listed specific prior subpaths; ci-1420 was not covered. Git add warned and ROOT continued before fixing it.",
+  "prior_published_commit": "4d585bcf687132da51070e36d7d3a5c6708b81e3",
+  "correction": "Restore both exact original files, add child * -text, explicitly renormalize only ci-1420, compare staged blobs to originals.",
+  "ci_observation_or_source_result_changed": false,
+  "files": [
+    {
+      "name": "REPORT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\REPORT.actual.json",
+      "original": {
+        "bytes": 3244,
+        "sha256": "cb63558825e0ddb71139dc61fa8978f842e3bc693a152695facd3ad9acd3d5ea"
+      },
+      "prior_normalized_git_blob": {
+        "bytes": 3166,
+        "sha256": "6a84cca4ea6219d81ceb609e971a4876cf69a54c31f73468ca38ea70be37e24a"
+      },
+      "prior_equal_original": false,
+      "corrected_index_blob": {
+        "bytes": 3244,
+        "sha256": "cb63558825e0ddb71139dc61fa8978f842e3bc693a152695facd3ad9acd3d5ea"
+      },
+      "corrected_equal_original": true
+    },
+    {
+      "name": "INDEX.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\INDEX.json",
+      "original": {
+        "bytes": 2134,
+        "sha256": "64c22ee67e1dad338fc7da969589546827ff8b876728fa2dd654dd9345e6b60a"
+      },
+      "prior_normalized_git_blob": {
+        "bytes": 2088,
+        "sha256": "43136abd86b6401401decc8f9e413b2381248acf85978fa29186719dfa00d07a"
+      },
+      "prior_equal_original": false,
+      "corrected_index_blob": {
+        "bytes": 2134,
+        "sha256": "64c22ee67e1dad338fc7da969589546827ff8b876728fa2dd654dd9345e6b60a"
+      },
+      "corrected_equal_original": true
+    }
+  ]
+}
