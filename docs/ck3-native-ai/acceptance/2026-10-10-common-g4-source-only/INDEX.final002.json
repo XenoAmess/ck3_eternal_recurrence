@@ -1,0 +1,67 @@
+{
+  "schema": "ck3-common-g4-final-doc-append-index-v1",
+  "at_utc": "2026-10-10T11:10:33.432625+00:00",
+  "status": "STATIC_READY",
+  "runtime_status": "NOT_RUN",
+  "previous_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\INDEX.json",
+    "bytes": 4009,
+    "sha256": "4bb0253b61c43c7a9051071a6912b224264a08993597d6880955efb68cd10b3d"
+  },
+  "actual_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\RESULT.actual.json",
+    "bytes": 5908,
+    "sha256": "857e76414f646c4992971f4ef3fc126b33c76813af176187eaadaee0f22fa3f1"
+  },
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\REPORT.md",
+    "bytes": 3005,
+    "sha256": "f206edb42ed89b96c9fb0b13d9dca55be4260a8c1503fcdf71bdda5fd1dbd9e4"
+  },
+  "focused_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\RESULT.actual.json",
+    "bytes": 1250,
+    "sha256": "33a9d1eae9035b50256736ea10fc3bbad73707ad53c741072956cbcfd4b54951"
+  },
+  "focused_stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\stderr.log",
+    "bytes": 1803,
+    "sha256": "bbe6b481d2662370e2c3645f7a78bf4f91289349bf283b33140722a1f79f0994"
+  },
+  "owned_files_current": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 207112,
+      "sha256": "a666a25365ef60c007233a8df8e0f42971ac7900706f5e02927ec44b4320159a"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 252129,
+      "sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 40205,
+      "sha256": "39fa04f92ba0cd67456d4196c6bf9bb068c504bd45b535e2066b774bbd2deb2e"
+    },
+    "tools/test_ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 21471,
+      "sha256": "150c6f41fafd2ddb9a3d755bc309f4c4187b260c42494191067e4599a29b3634"
+    },
+    "tools/test_ck3_mod_acceptance_readonly_observers.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_readonly_observers.py",
+      "bytes": 11376,
+      "sha256": "35001c4273f117c65aa6b84a1ff9ff11d6cbb27cdede50f051f1a83001b7b15e"
+    },
+    "docs/ck3-native-ai/2026-10-10-common-challenger-graph-readonly.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\2026-10-10-common-challenger-graph-readonly.md",
+      "bytes": 3515,
+      "sha256": "db7ae632fd382abf58f3e05baa431528b3024fcf5a60d3f00e259194f5857edf"
+    }
+  },
+  "delta": "Only the new topic documentation appended Source09 two-graphics-path producer limitation and shader seed runtime-key reassessment. Earlier doc pin remains historical; all five tested Python files unchanged.",
+  "source09_o8_changed": false,
+  "new_tests_run": false,
+  "new_freeze_seed_live": null
+}

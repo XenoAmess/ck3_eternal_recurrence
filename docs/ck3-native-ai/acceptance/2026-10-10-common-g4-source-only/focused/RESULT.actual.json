@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests",
+    "tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_observer_feature_is_explicit_shared_and_independent",
+    "tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_capability_declaration_preserves_pending_live_status"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T11:06:39.297250+00:00",
+  "finished_at_utc": "2026-10-10T11:06:45.245480+00:00",
+  "elapsed_seconds": 5.94823439999891,
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\stderr.log",
+    "bytes": 1803,
+    "sha256": "bbe6b481d2662370e2c3645f7a78bf4f91289349bf283b33140722a1f79f0994"
+  },
+  "game_sdk_native_callbacks": false
+}

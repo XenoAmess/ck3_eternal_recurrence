@@ -1,0 +1,61 @@
+{
+  "schema": "ck3-common-g4-reviewed-adoption.v1",
+  "created_at_utc": "2026-10-10T11:11:48.126248+00:00",
+  "status": "STATIC_READY",
+  "runtime_status": "NOT_RUN",
+  "review": "ROOT reviewed all five Python diffs, the documentation, actual focused result and final pins; no test rerun.",
+  "all_current_owned_pins_verified": true,
+  "all_five_tested_Python_pins_unchanged": true,
+  "copied_records": [
+    {
+      "relative_path": "INDEX.final002.json",
+      "bytes": 3445,
+      "sha256": "4e917ba16b0dcd30f2e0095ae95432b04a4c33a65291653e1cc4b9a8c05d2061"
+    },
+    {
+      "relative_path": "RESULT.actual.json",
+      "bytes": 5908,
+      "sha256": "857e76414f646c4992971f4ef3fc126b33c76813af176187eaadaee0f22fa3f1"
+    },
+    {
+      "relative_path": "REPORT.original.md",
+      "bytes": 3005,
+      "sha256": "f206edb42ed89b96c9fb0b13d9dca55be4260a8c1503fcdf71bdda5fd1dbd9e4"
+    },
+    {
+      "relative_path": "focused/RESULT.actual.json",
+      "bytes": 1250,
+      "sha256": "33a9d1eae9035b50256736ea10fc3bbad73707ad53c741072956cbcfd4b54951"
+    },
+    {
+      "relative_path": "focused/stderr.log",
+      "bytes": 1803,
+      "sha256": "bbe6b481d2662370e2c3645f7a78bf4f91289349bf283b33140722a1f79f0994"
+    },
+    {
+      "relative_path": "DEPENDENCIES.actual.json",
+      "bytes": 81,
+      "sha256": "1595ce4f67d288a89e46416a454008102e1514a7ff676c2a658dd71ae439c59d"
+    }
+  ],
+  "test_count": 8,
+  "test_exit_code": 0,
+  "Source09_O8_modified": false,
+  "new_runtime_or_native_build": false,
+  "game_calls": false,
+  "business_PASS": null,
+  "full_mod_PASS": null,
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_and_consolidate_by_utc": "2027-04-08T11:11:48.126248+00:00",
+    "original_raw_review_at_utc": "2026-11-09T11:09:50.890542+00:00",
+    "original_deadlines_renewed": false
+  },
+  "small_write": {
+    "member_bytes": 15492,
+    "heavy_write": false,
+    "free_before_bytes": 623863488512,
+    "free_after_copies_bytes": 623863463936
+  }
+}

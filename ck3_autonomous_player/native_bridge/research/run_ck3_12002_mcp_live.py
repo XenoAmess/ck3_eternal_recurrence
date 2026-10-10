@@ -923,6 +923,8 @@ def native_server(args: argparse.Namespace) -> None:
     if getattr(args, "private_succession_title_readonly", False):
         driver_options.update(allow_private_actor_cached_succession_queries=True,
                               allow_private_confucian_readonly_queries=True)
+    if getattr(args, "private_confucian_challenger_readonly", False):
+        driver_options["allow_private_confucian_challenger_queries"] = True
     driver = RecordingDriver(
         args.bridge_pipe, endpoint=RecordingEndpoint(args.bridge_pipe),
         state_dir=args.state_dir, save_dir=args.state_dir / "profile/save games",
@@ -3459,6 +3461,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         child_args.append("--saved-campaign-server")
     if getattr(args, "private_succession_title_readonly", False):
         child_args.append("--private-succession-title-readonly")
+    if getattr(args, "private_confucian_challenger_readonly", False):
+        child_args.append("--private-confucian-challenger-readonly")
     if getattr(args, "frontend_mod_load_observation", False):
         child_args += ["--frontend-mod-load-observation", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args,
@@ -3730,6 +3734,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
     result.add_argument("--private-succession-title-readonly", action="store_true",
                         help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")
+    result.add_argument("--private-confucian-challenger-readonly", action="store_true",
+                        help="Explicit shared admission of the existing complete Faith challenger/sponsor graph query; default off")
     result.add_argument("--frontend-mod-load-observation", action="store_true",
                         help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",

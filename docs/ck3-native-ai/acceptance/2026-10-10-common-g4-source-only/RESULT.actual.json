@@ -1,0 +1,126 @@
+{
+  "schema": "ck3-common-g4-source-only-result-v1",
+  "at_utc": "2026-10-10T11:09:50.890542+00:00",
+  "source_preimage_head": "b57d4ee9cf10306af0ea40b04bc49e514376f73c",
+  "source_after_commit": null,
+  "status": "STATIC_READY",
+  "runtime_status": "NOT_RUN",
+  "owned_files": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 207112,
+      "sha256": "a666a25365ef60c007233a8df8e0f42971ac7900706f5e02927ec44b4320159a"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 252129,
+      "sha256": "779f2b0e0a568d1eff298846ad2d5f212b1ea207377dcb486f154ea2f3480adb"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 40205,
+      "sha256": "39fa04f92ba0cd67456d4196c6bf9bb068c504bd45b535e2066b774bbd2deb2e"
+    },
+    "tools/test_ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 21471,
+      "sha256": "150c6f41fafd2ddb9a3d755bc309f4c4187b260c42494191067e4599a29b3634"
+    },
+    "tools/test_ck3_mod_acceptance_readonly_observers.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_readonly_observers.py",
+      "bytes": 11376,
+      "sha256": "35001c4273f117c65aa6b84a1ff9ff11d6cbb27cdede50f051f1a83001b7b15e"
+    },
+    "docs/ck3-native-ai/2026-10-10-common-challenger-graph-readonly.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\2026-10-10-common-challenger-graph-readonly.md",
+      "bytes": 2664,
+      "sha256": "dd3043bf52243f09adeadc78e1a37a80b3901eb4487a6833673faa695ccd6e29"
+    }
+  },
+  "before_files": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 206127,
+      "sha256": "83b108e1f8f015229817a086665256590795851183bdc34a3558f58b03158827"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 251623,
+      "sha256": "62c1d24b629980917348d27493912cb5e24b7d2b1e4ab109a4fec5f70dbe79d5"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 40050,
+      "sha256": "b0b37fd2ddd0a5f7ae031c8077a5179ea43e926a5bdf12ddac7757e4194eb5db"
+    },
+    "tools/test_ck3_mod_acceptance.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 19127,
+      "sha256": "121b4c863bf55e7925009a2a91fd9c1c2db230a578c985325651fb39ab8ff134"
+    },
+    "tools/test_ck3_mod_acceptance_readonly_observers.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_readonly_observers.py",
+      "bytes": 4250,
+      "sha256": "01ddf1161f529acf9c50f3634f606b6f73bb0881247eb25ac51fcae7365f8060"
+    }
+  },
+  "focused": {
+    "result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\RESULT.actual.json",
+      "bytes": 1250,
+      "sha256": "33a9d1eae9035b50256736ea10fc3bbad73707ad53c741072956cbcfd4b54951"
+    },
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "-v",
+      "tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests",
+      "tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_observer_feature_is_explicit_shared_and_independent",
+      "tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_capability_declaration_preserves_pending_live_status"
+    ],
+    "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+    "exit_code": 0,
+    "tests": 8,
+    "stdout": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\focused-001\\stderr.log",
+      "bytes": 1803,
+      "sha256": "bbe6b481d2662370e2c3645f7a78bf4f91289349bf283b33140722a1f79f0994"
+    },
+    "stderr_summary": "Ran 8 tests in 2.610s; OK; no skips"
+  },
+  "dependencies": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\DEPENDENCIES.actual.json",
+    "bytes": 81,
+    "sha256": "1595ce4f67d288a89e46416a454008102e1514a7ff676c2a658dd71ae439c59d"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-public-g4-source-20261010-001\\OWNED.incremental.patch",
+    "bytes": 23732,
+    "sha256": "9af85a0f9603c7dab3d29684157c51403c072e41cb270520b74def866cf21222"
+  },
+  "diff_check": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "observed_once": true
+  },
+  "source09_o8_changed": false,
+  "native_profile_service_validator_changed": false,
+  "future_runtime_manifest": null,
+  "future_live_qualification": null,
+  "drive_free_bytes_after": 623865925632,
+  "retention": {
+    "raw_result_review_at_utc": "2026-11-09T11:09:50.890542+00:00",
+    "summary_review_at_utc": "2027-04-08T11:09:50.890542+00:00",
+    "automatic_deletion": false
+  }
+}

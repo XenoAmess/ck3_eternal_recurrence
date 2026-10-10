@@ -1,0 +1,13 @@
+test_actual_service_still_rejects_disabled_permission_and_crossed_frame (tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests.test_actual_service_still_rejects_disabled_permission_and_crossed_frame) ... ok
+test_graph_is_default_off_and_independent_of_g2_g3 (tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests.test_graph_is_default_off_and_independent_of_g2_g3) ... ok
+test_graph_model_rejects_invalid_revision_and_selectors_before_service (tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests.test_graph_model_rejects_invalid_revision_and_selectors_before_service) ... ok
+test_graph_wrapper_preserves_service_arguments_response_and_annotations (tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests.test_graph_wrapper_preserves_service_arguments_response_and_annotations) ... ok
+test_host_parser_and_actual_forwarding_keep_independent_default_off (tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests.test_host_parser_and_actual_forwarding_keep_independent_default_off) ... ok
+test_registered_graph_reaches_actual_service_and_native_request_contract (tools.test_ck3_mod_acceptance_readonly_observers.ChallengerObserverTests.test_registered_graph_reaches_actual_service_and_native_request_contract) ... ok
+test_challenger_observer_feature_is_explicit_shared_and_independent (tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_observer_feature_is_explicit_shared_and_independent) ... ok
+test_challenger_capability_declaration_preserves_pending_live_status (tools.test_ck3_mod_acceptance.SharedEntryTests.test_challenger_capability_declaration_preserves_pending_live_status) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.610s
+
+OK

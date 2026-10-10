@@ -8,11 +8,18 @@ import json
 import os
 from pathlib import Path
 from typing import Annotated, Literal
-from pydantic import Field
+from pydantic import AfterValidator, Field
+
+from .confucian_challenger_graph_v1 import validate_faith_ids
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
 NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+ConfucianFaithSelectorV1 = Annotated[
+    list[Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)]],
+    Field(strict=True, min_length=1, max_length=8, json_schema_extra={"uniqueItems": True}),
+    AfterValidator(validate_faith_ids),
+]
 NormalExitSignatureV1 = Annotated[str, Field(strict=True, min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
 StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
 OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
@@ -1350,6 +1357,16 @@ def register_succession_title_readonly_tools(server, service, driver) -> None:
             """Read current religious title identity, holder, properties and laws."""
             return service.query_confucian_religious_title_v1(expected_revision=expected_revision)
         _forbid_unknown_tool_arguments_v1(server, "ck3_query_confucian_religious_title_v1")
+    if getattr(driver, "allow_private_confucian_challenger_queries", False) is True:
+        @server.tool(annotations=readonly)
+        def ck3_query_confucian_challenger_graph_v1(
+            expected_revision: NormalExitRevisionV1,
+            faith_full_ids: ConfucianFaithSelectorV1,
+        ) -> dict[str, object]:
+            """Read complete registered challengers and current-holder sponsor scopes for 1..8 Faiths."""
+            return service.query_confucian_challenger_graph_v1(
+                faith_full_ids=faith_full_ids, expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_confucian_challenger_graph_v1")
 
 
 def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:

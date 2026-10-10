@@ -1,0 +1,5 @@
+{
+  "mcp": "2.0.0",
+  "pydantic": "2.13.5",
+  "AfterValidator": "available"
+}

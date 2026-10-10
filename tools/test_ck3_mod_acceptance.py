@@ -25,7 +25,7 @@ class SharedEntryTests(unittest.TestCase):
         flags = ['--agent-source-root','--game-dir','--bridge-dll','--bridge-injector','--bridge-pipe',
                  '--output','--state-dir','--plan','--control-plan-dir', *entry.BUDGET_FLAGS.values(),
                   *entry.SAVED_FLAGS.values(), '--fixture-profile', '--saved-campaign-inject-after-load',
-                  '--saved-campaign-debug-mode']
+                   '--saved-campaign-debug-mode', '--private-confucian-challenger-readonly']
         self.host.write_text("import argparse\np=argparse.ArgumentParser()\n" +
                              ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags) +
                              "raise RuntimeError('The host must never execute in these tests')\n")
@@ -265,6 +265,41 @@ class SharedEntryTests(unittest.TestCase):
                 self.manifest['host_features'] = features
                 self.write(self.manifest_path, self.manifest)
                 with self.assertRaises(ValueError): self.select()
+
+    def test_challenger_observer_feature_is_explicit_shared_and_independent(self):
+        flag = '--private-confucian-challenger-readonly'
+        self.assertNotIn(flag, self.select().argv)
+        for enabled in (False, True):
+            self.manifest['host_features'] = {'confucian_challenger_readonly': enabled}
+            self.write(self.manifest_path, self.manifest)
+            for product in self.products['products']:
+                argv = self.select(product).argv
+                self.assertEqual(argv.count(flag), int(enabled))
+                self.assertNotIn('--private-succession-title-readonly', argv)
+        for value in (1, None, 'true'):
+            self.manifest['host_features'] = {'confucian_challenger_readonly': value}
+            self.write(self.manifest_path, self.manifest)
+            with self.assertRaisesRegex(ValueError, 'explicit booleans'): self.select()
+        self.products['products']['xqol']['cases'][0]['host_features'] = {'confucian_challenger_readonly': True}
+        self.write(self.products_path, self.products)
+        with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'): self.select()
+
+    def test_challenger_capability_declaration_preserves_pending_live_status(self):
+        name = 'ck3_query_confucian_challenger_graph_v1'
+        self.manifest['host_features'] = {'confucian_challenger_readonly': True}
+        self.case['required_mcp_tools'] = [name]
+        self.products['products']['xqol']['cases'][0] = self.case
+        self.write(self.products_path, self.products)
+        for ready in (False, True):
+            self.manifest['capabilities'][name] = {'source_build_ready': ready, 'actual_live_qualified': False}
+            self.write(self.manifest_path, self.manifest)
+            self.runtime['manifest'] = entry.pin(self.manifest_path)
+            self.write(self.runtime_path, self.runtime)
+            result = self.select().preflight()
+            self.assertEqual(result['tool_status'][name], self.manifest['capabilities'][name])
+            self.assertEqual(any('no shared build-ready evidence' in error for error in result['blockers']), not ready)
+            self.assertFalse(result['tool_status'][name]['actual_live_qualified'])
+            self.assertEqual(result['business_acceptance'], 'NOT_ASSESSED')
 
     def saved_startup_hook(self):
         with self.host.open('a') as stream:stream.write("p.add_argument('--saved-campaign-startup-case-contract')\n")
