@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from .battle_actual_geography_contract import normalize_actual_geography_v1
+from .entry_preceding_capture_contract_12004 import (
+    normalize_entry_preceding_capture_12004,
+)
 from .current_finalizer_manager_inputs_contract_v1 import (
     normalize_current_finalizer_manager_inputs_v1,
 )
@@ -66,6 +69,7 @@ _SNAPSHOT_KEYS = {
     "defender",
 }
 _OPTIONAL_SNAPSHOT_KEYS = {
+    "entry_preceding_capture_12004",
     "actual_geography_v1",
     "roll_cadence_interval",
     "current_phase_transition_inputs_v1",
@@ -731,6 +735,17 @@ def normalize_battle_control_snapshot_v1(
             value["actual_geography_v1"],
             field="battle_control_snapshot.actual_geography_v1",
         )
+    if "entry_preceding_capture_12004" in value:
+        # Optional retained raw facts have independent availability. A malformed
+        # or mismatched sidecar does not invalidate the ordinary battle frame.
+        try:
+            result["entry_preceding_capture_12004"] = (
+                normalize_entry_preceding_capture_12004(
+                    value["entry_preceding_capture_12004"], expected_combat_id=combat_id
+                )
+            )
+        except ValueError:
+            result["entry_preceding_capture_12004"] = None
     return result
 
 

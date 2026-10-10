@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_prisoner_mailbox.hpp"
+#include "xar_bridge/prisoner_selected_quote_query_capture_12004.hpp"
 #include "xar_bridge/ck3_12004_prisoner_submission_lifecycle.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
@@ -23,6 +24,8 @@ struct CollectionQuery {
   std::uintptr_t module = 0;
   PrisonerRansomBindings12004 bindings{};
   std::uint32_t ordinal = 0;
+  std::uint64_t source_query_sequence = 0;
+  PrisonerSelectedQuoteSource12004 selected_quote_source{}, negotiated_quote_source{};
   PrisonerReleasePreviewBindings12004 release_bindings{};
   std::array<PrisonerReleasePreview12004,
       bridge::kPlayerPrisonerMaximumRowsV1> release_previews{};
@@ -88,6 +91,10 @@ bool ReadPrisonerMemory(void *, std::uintptr_t address,
 #if defined(_MSC_VER)
   } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 #endif
+}
+
+bool ReadQuoteSourceMemory(void *context, const void *address, void *output, std::size_t size) noexcept {
+  return ReadPrisonerMemory(context, reinterpret_cast<std::uintptr_t>(address), output, size);
 }
 
 void AppendString(std::string &output, std::string_view value) {
@@ -187,9 +194,24 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
       query.quotes[index].failure = PlayerPrisonerRansomQuoteFailureV1::not_evaluated;
     if (query.ordinal < query.collection.returned_count) {
       const auto prisoner = query.collection.rows[query.ordinal].full_character_id;
-      query.quotes[query.ordinal] = ReadPlayerPrisonerRansomQuotePrivateV1(
+      PrisonerQuoteSourceFrame12004 source_frame{};
+      source_frame.executable_sha256 = kExecutableSha256;
+      source_frame.module_base = query.module;
+      source_frame.native_revision = query.collection.frame.native_revision;
+      source_frame.query_sequence = query.source_query_sequence;
+      source_frame.proof_epoch = query.collection.frame.proof_epoch;
+      if (query.collection.frame.date_raw >= INT32_MIN && query.collection.frame.date_raw <= INT32_MAX)
+        source_frame.date_raw = static_cast<std::int32_t>(query.collection.frame.date_raw);
+      source_frame.jailer_full_id = static_cast<std::uint32_t>(query.collection.frame.played_character_id);
+      source_frame.prisoner_full_id = prisoner;
+      // The completed collection has just verified this input frame. Each
+      // existing quote reader independently verifies its own final frame.
+      source_frame.same_frame_confirmed = true;
+      const PrisonerQuoteReadOnlyAccess12004 source_access{envelope, &ReadQuoteSourceMemory, 4096};
+      query.quotes[query.ordinal] = ReadPlayerPrisonerRansomQuoteSourcePrivateV1(
           query.bindings, query.module, query.collection.frame.played_character_id,
-          static_cast<std::int32_t>(prisoner));
+          static_cast<std::int32_t>(prisoner), query.ordinal, source_frame,
+          source_access, query.selected_quote_source);
       const PrisonerReleasePreviewAccess12004 release_access{
           access.current_thread_id, stamp.thread_id, envelope,
           &CapturePrisonerFrame, &ReadPrisonerMemory};
@@ -197,9 +219,10 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
           static_cast<std::uint32_t>(query.collection.frame.played_character_id),
           prisoner, query.release_previews[query.ordinal]);
       if (query.requested_release_mask != 0)
-        (void)ReadPrisonerNegotiatedCollectionRow12004(query.negotiated_bindings,
+        (void)ReadPrisonerNegotiatedCollectionRowSource12004(query.negotiated_bindings,
             release_access, query.collection, query.ordinal,
-            query.requested_release_mask, query.negotiated_previews);
+            query.requested_release_mask, query.negotiated_previews,
+            source_frame, source_access, query.negotiated_quote_source);
     }
   }
   if (query.material_target != 0) {
@@ -315,6 +338,7 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
         query.module, adapter.descriptor().executable_sha256);
   }
   query.ordinal = ordinal;
+  query.source_query_sequence = state.query_sequence + 1;
   query.envelope.game = &adapter;
   query.envelope.mailbox = &mailbox;
   query.envelope.expected_snapshot = published_core;
@@ -331,6 +355,15 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       query.material_target != 0 ? &query.keeper : nullptr,
       query.material_target != 0 ? &query.retained_state : nullptr);
   if (serialized.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
+  if (query.completed && query.ordinal < query.collection.returned_count) {
+    if (!AppendPrisonerSelectedQuoteSource12004(serialized, query.selected_quote_source)) {
+      failure = "selected prisoner quote source serialization unavailable"; return true;
+    }
+    if (requested_mask != 0) {
+      const auto annotation = SerializePrisonerSelectedQuoteSource12004(query.negotiated_quote_source);
+      serialized.insert(serialized.size() - 2, ",\"prisoner_negotiated_quote_source_12004\":" + annotation);
+    }
+  }
   if (query.completed)
     (void)ObservePrisonerSubmissionAfterCollection12004(state, query.collection);
   ++state.query_sequence;

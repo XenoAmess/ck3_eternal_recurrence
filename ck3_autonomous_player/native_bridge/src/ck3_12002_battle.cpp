@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/battle_control_owned_entry_preceding_12004.hpp"
 #include "xar_bridge/battle_reinforcement_arrival_admission_12003_reader.hpp"
 #include "xar_bridge/ck3_12003_current_stored_context.hpp"
 #include "xar_bridge/ck3_12003.hpp"
@@ -688,7 +689,8 @@ std::optional<game::BattleControlFullBackingInputsV1> FullBackingInputs(
 
 bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
                    const game::BattleControlRequest &req,
-                   game::BattleControlSnapshot &out) {
+                   game::BattleControlSnapshot &out,
+                   const void **observed_combat = nullptr) {
   auto *unit = Resolve(b.army_storage_slot, req.subject_public_cunit_id, 0x10);
   if (!unit)
     return false;
@@ -766,6 +768,9 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
     out.defender.selected_commander_next_roll_bounds.unavailable_reason =
         "combat_terrain_changed";
   }
+  // This pointer is local to the existing accepted sample. The optional
+  // collector receives matching bookends only after the old frame is accepted.
+  if (observed_combat != nullptr) *observed_combat = combat;
   return true;
 }
 bool Route(const BattleBindings &b, const void *unit,
@@ -2280,9 +2285,10 @@ ReadBattleTransitionSnapshot(const BattleBindings &b, const game::Snapshot &s,
   return o.status;
 }
 game::BattleControlSnapshotStatus
-ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
-                          const game::BattleControlRequest &r,
-                          game::BattleControlSnapshot &o) noexcept {
+ReadBattleControlSnapshotImpl(const BattleBindings &b, const game::Snapshot &s,
+                              const game::BattleControlRequest &r,
+                              game::BattleControlSnapshot &o,
+                              const ck3_12004::BattleAcceptedCombatCollector12004 *collector) noexcept {
   o = {};
   o.subject_public_cunit_id = r.subject_public_cunit_id;
   if (!s.paused) {
@@ -2312,7 +2318,10 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
     return o.status;
   }
   game::BattleControlSnapshot a{}, c{};
-  const bool sampled = ControlSample(b, s, r, a) && ControlSample(b, s, r, c);
+  const void *combat_before = nullptr;
+  const void *combat_after = nullptr;
+  const bool sampled = ControlSample(b, s, r, a, &combat_before) &&
+      ControlSample(b, s, r, c, &combat_after);
   if (sampled && a.full_backing_inputs_v1 != c.full_backing_inputs_v1) {
     // A changing optional census cannot invalidate the existing control frame.
     a.full_backing_inputs_v1.reset();
@@ -2343,8 +2352,33 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
   o.status = game::BattleControlSnapshotStatus::available;
   o.observed_date_raw = s.date_raw;
   o.battle_control_ready = true;
+  // The independent retained-record copy cannot change old availability.
+  // Reuse the two actual resolved Combat pointers; do not resolve a later one.
+  if (collector != nullptr && collector->collect != nullptr &&
+      combat_before != nullptr && combat_before == combat_after &&
+      At<std::int32_t>(combat_after, 8) == o.combat_id &&
+      !At<std::uint8_t>(combat_after, kBattleDailyGuardOffset)) {
+    collector->collect(collector->context, combat_after,
+                       static_cast<std::uint32_t>(o.combat_id));
+  }
   return o.status;
 }
+
+game::BattleControlSnapshotStatus
+ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
+                          const game::BattleControlRequest &r,
+                          game::BattleControlSnapshot &o) noexcept {
+  return ReadBattleControlSnapshotImpl(b, s, r, o, nullptr);
+}
+
+game::BattleControlSnapshotStatus
+ReadBattleControlSnapshotWithOwnedCombat12004(
+    const BattleBindings &b, const game::Snapshot &s,
+    const game::BattleControlRequest &r, game::BattleControlSnapshot &o,
+    const ck3_12004::BattleAcceptedCombatCollector12004 &collector) noexcept {
+  return ReadBattleControlSnapshotImpl(b, s, r, o, &collector);
+}
+
 game::BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
     const BattleBindings &b, const game::Snapshot &s,
     const game::BattleReinforcementAssignmentRequest &r,

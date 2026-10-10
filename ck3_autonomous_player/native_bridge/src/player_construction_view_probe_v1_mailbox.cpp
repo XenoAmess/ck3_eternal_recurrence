@@ -8,6 +8,7 @@
 #include <atomic>
 #include <cstring>
 #include <string_view>
+#include <utility>
 
 namespace xar::ck3_11906 {
 namespace {
@@ -239,6 +240,97 @@ std::string_view WorldDefinitionIdentityStageKey(
       return "building_type_id_duplicate";
   }
   return "none";
+}
+
+
+void Mode3String(std::string& json, std::string_view value) {
+  constexpr char digits[] = "0123456789abcdef";
+  json += '"';
+  for (const unsigned char byte : value) {
+    if (byte == '"' || byte == '\\') {
+      json += '\\';
+      json += static_cast<char>(byte);
+    } else if (byte < 0x20U) {
+      json += "\\u00";
+      json += digits[byte >> 4U];
+      json += digits[byte & 0xFU];
+    } else {
+      json += static_cast<char>(byte);
+    }
+  }
+  json += '"';
+}
+
+template<class T>
+void Mode3Integer(std::string& json, const std::optional<T>& value) {
+  json += value.has_value() ? std::to_string(*value) : "null";
+}
+
+void Mode3Inputs(std::string& json,
+    const ck3_12004::construction_owner_mode3::ConstructionOwnerMode3InputsV1& input) {
+  json += "{\"inputs_observed\":";
+  json += input.inputs_observed ? "true" : "false";
+  json += ",\"all_reached_inputs_observed\":";
+  json += input.all_reached_inputs_observed ? "true" : "false";
+  json += ",\"unavailable_input\":"; Mode3String(json, input.unavailable_input);
+  json += ",\"snapshot_revision\":";
+  json += input.snapshot_revision != 0 ? std::to_string(input.snapshot_revision) : "null";
+  json += ",\"province_id\":";
+  json += input.province_id != -1 ? std::to_string(input.province_id) : "null";
+  json += ",\"loaded_publisher_718_raw\":"; Mode3Integer(json, input.loaded_publisher_718_raw);
+  json += ",\"loaded_key_3f_raw\":"; Mode3Integer(json, input.loaded_key_3f_raw);
+  json += ",\"selected_a3_or_a4_key\":"; Mode3Integer(json, input.selected_a3_or_a4_key);
+  json += ",\"selected_a6_or_a7_key\":"; Mode3Integer(json, input.selected_a6_or_a7_key);
+  json += ",\"context_dynamic_key\":"; Mode3Integer(json, input.context_dynamic_key);
+  json += ",\"child_28be0b0_signed_eax\":"; Mode3Integer(json, input.child_28be0b0_signed_eax);
+  json += ",\"child_28b9300_signed_eax\":"; Mode3Integer(json, input.child_28b9300_signed_eax);
+  json += ",\"context_predicate_2c25010\":";
+  json += !input.context_predicate_2c25010.has_value() ? "null" :
+      *input.context_predicate_2c25010 ? "true" : "false";
+  json += ",\"components\":[";
+  for (std::size_t index = 0; index != input.components.size(); ++index) {
+    if (index != 0) json += ',';
+    const auto& component = input.components[index];
+    json += "{\"call_rva\":"; json += std::to_string(component.call_rva);
+    json += ",\"key_u16\":"; json += std::to_string(component.key_u16);
+    json += ",\"reached\":"; json += component.reached ? "true" : "false";
+    json += ",\"raw_q64\":"; Mode3Integer(json, component.raw_q64);
+    json += ",\"unavailable_input\":"; Mode3String(json, component.unavailable_input);
+    json += '}';
+  }
+  json += "]";
+  json += ",\"factor_before_context\":"; Mode3Integer(json, input.factor_before_context);
+  json += ",\"context_factor_raw\":"; Mode3Integer(json, input.context_factor_raw);
+  json += ",\"owner_factor_raw\":"; Mode3Integer(json, input.owner_factor_raw);
+  json += ",\"conditional_aggregate_raw\":"; Mode3Integer(json, input.conditional_aggregate_raw);
+  json += ",\"observed_native_producer_call\":false,\"per_building_attribution\":false,\"realized_holder_net\":false}";
+}
+
+void Mode3Packet(std::string& json,
+    const ck3_12004::PlayerHeldConstructionMode3InputResultV1& packet) {
+  json += "{\"schema\":\"xar.ck3.construction-owner-mode3-inputs-12004-v1\",\"source_executable_sha256\":";
+  Mode3String(json, ck3_12004::construction_owner_mode3::kMode3InputSourcePin12004);
+  json += ",\"current_frame_observed\":";
+  json += packet.current_frame_observed ? "true" : "false";
+  json += ",\"failure\":"; Mode3String(json, ModelFailureKey(packet.failure));
+  json += ",\"snapshot_revision\":";
+  json += packet.current_frame_observed ? std::to_string(packet.snapshot_revision) : "null";
+  json += ",\"date_raw\":";
+  json += packet.current_frame_observed ? std::to_string(packet.date_raw) : "null";
+  json += ",\"player_character_id\":";
+  json += packet.current_frame_observed ? std::to_string(packet.player_character_id) : "null";
+  json += ",\"holdings\":[";
+  if (packet.current_frame_observed) {
+    for (std::size_t index = 0; index != packet.holdings.size(); ++index) {
+      if (index != 0) json += ',';
+      const auto& holding = packet.holdings[index];
+      json += "{\"barony_title_id\":"; json += std::to_string(holding.barony_title_id);
+      json += ",\"province_id\":"; json += std::to_string(holding.province_id);
+      json += ",\"inputs\":"; Mode3Inputs(json, holding.inputs);
+      json += '}';
+    }
+  }
+  json += "]}";
 }
 
 ProbeResult FrameChanged() noexcept {
@@ -674,7 +766,12 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += '}';
     }
   }
-  json += "]}";
+  json += ']';
+  if (world_available && result.native_mode3_inputs.has_value()) {
+    json += ",\"native_mode3_inputs\":";
+    Mode3Packet(json, *result.native_mode3_inputs);
+  }
+  json += '}';
   if (query.request_private_action) {
     using Phase =
         xar::ck3::shared::PlayerWorldBuildingDirectActionPhaseV1;
@@ -736,3 +833,33 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
 }
 
 }  // namespace xar::ck3_11906
+
+namespace xar::ck3::shared {
+bool AttachPlayerConstructionNativeMode3InputsV1(
+    PlayerConstructionViewProbeResultV1& target,
+    const ck3_12004::PlayerWorldBuildingSourceResultV1& world,
+    ck3_12004::PlayerHeldConstructionMode3InputResultV1 inputs) noexcept {
+  const bool same_frame = world.source_available &&
+      world.failure == ck3_12004::PlayerWorldBuildingFailureV1::none &&
+      inputs.current_frame_observed && world.snapshot_revision != 0 &&
+      inputs.snapshot_revision == world.snapshot_revision &&
+      inputs.date_raw == world.date_raw &&
+      inputs.player_character_id == world.player_character_id;
+  if (!same_frame) {
+    const auto failure = inputs.failure;
+    inputs = {};
+    inputs.failure = failure != ck3_12004::PlayerHeldConstructionModelFailureV1::none
+        ? failure : ck3_12004::PlayerHeldConstructionModelFailureV1::frame_changed;
+  }
+  for (auto& holding : inputs.holdings) {
+    auto& input = holding.inputs;
+    input.province_pointer = 0;
+    input.slots_pointer = 0;
+    input.context_pointer = 0;
+    input.context_object_848 = 0;
+    input.returned_receiver_pointer = 0;
+  }
+  target.native_mode3_inputs = std::move(inputs);
+  return same_frame;
+}
+} // namespace xar::ck3::shared

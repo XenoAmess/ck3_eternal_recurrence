@@ -21,6 +21,9 @@ from .construction_economic_value_v1 import (
     authored_existing_monthly_income_hundredths,
     authored_monthly_income_hundredths,
 )
+from .construction_owner_mode3_inputs_12004 import (
+    mode3_province_observation_12004, normalize_mode3_world_observation_12004,
+)
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .version_identity import CK3_11906
 
@@ -245,11 +248,17 @@ def query_construction_private(driver: object, *, expected_revision: int,
                 "ending_frame": {"snapshot_id": ending.get("snapshot_id"),
                                  "revision": ending.get("revision"),
                                  "episode_run_id": ending.get("episode_run_id")}}
+    # The independent current raw-mode3 packet cannot change ordinary source
+    # status, authored selection or the retained native 718 scalar.
+    world, mode3_observation = normalize_mode3_world_observation_12004(
+        world, source_frame={"native_revision": revision, "date_raw": starting["date_raw"],
+                             "actor_character_id": starting["played_character"]["character_id"]},
+        build=build)
     if material_receipt:
         # A submitted building can remove every legal new candidate.  Its
         # independent active-construction row is material evidence even when
         # this frame has no new cost sample; never use this mode to submit.
-        return {**provenance, "status": "material_source", "world": dict(world),
+        return {**provenance, **mode3_observation, "status": "material_source", "world": dict(world),
                 "native_query_request_id": request_id,
                 "proof_epoch": probe["proof_epoch"],
                 "source_frame": {"snapshot_id": starting["snapshot_id"],
@@ -261,7 +270,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
     selected = _candidate(world, exact_ck3_build=build.game_version)
     if selected is None:
         covered = world.get("positive_income_coverage_complete") is True
-        return {**provenance, "status": ("no_legal_budgeted_building" if covered
+        return {**provenance, **mode3_observation, "status": ("no_legal_budgeted_building" if covered
                            else "evidence_insufficient"),
                 **({} if covered else {
                     "reason": "positive_income_candidate_coverage_incomplete"}),
@@ -273,7 +282,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             "date_raw": starting["date_raw"],
             "episode_run_id": episode_run_id,
             "actor_character_id": starting["played_character"]["character_id"]}}
-    return {**provenance, "status": "selected", "candidate": selected, "world": dict(world),
+    return {**provenance, **mode3_observation, "status": "selected", "candidate": selected, "world": dict(world),
             "native_query_request_id": request_id,
             "proof_epoch": probe["proof_epoch"],
             "source_frame": {"snapshot_id": starting["snapshot_id"],
@@ -449,7 +458,9 @@ def query_construction_province_income_private(
             "province_id": province_id,
             "native_province_monthly_income_observed": observed,
             "native_province_monthly_income_raw": raw,
-            "source_frame": source["source_frame"]}
+            "source_frame": source["source_frame"],
+            **mode3_province_observation_12004(
+                source, barony_title_id=barony_title_id, province_id=province_id)}
 
 
 def submit_construction_private(driver: object, *, query: Mapping[str, object],

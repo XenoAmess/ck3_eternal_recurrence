@@ -136,6 +136,7 @@
 #include "xar_bridge/ck3_12002_war_entry.hpp"
 #include "xar_bridge/ck3_12004_war.hpp"
 #include "xar_bridge/ck3_12004_battle.hpp"
+#include "xar_bridge/battle_control_owned_entry_preceding_12004.hpp"
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
@@ -7377,9 +7378,11 @@ std::string ProjectedContactScopeResultFrame(
 std::string BattleControlSnapshotResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
-    const xar::game::BattleControlSnapshot &snapshot) {
-  const auto payload =
-      xar::ck3_11906::SerializeBattleControlSnapshotV1(snapshot);
+    const xar::game::BattleControlSnapshot &snapshot,
+    const xar::ck3_12004::BattleControlOwnedEntryPreceding12004 *owned = nullptr) {
+  const auto payload = owned != nullptr && owned->snapshot == snapshot
+      ? xar::ck3_12004::SerializeBattleControlOwnedEntryPreceding12004(*owned)
+      : xar::ck3_11906::SerializeBattleControlSnapshotV1(snapshot);
   const auto resume_inputs =
       xar::ck3_11906::SerializeActiveCombatResumeInputsV1(snapshot);
   if (payload.empty() || resume_inputs.empty()) {
@@ -10765,6 +10768,7 @@ struct TypedQuery12002 {
   xar::game::ReadCombatSimulationInputsV3Result combat_result =
       xar::game::ReadCombatSimulationInputsV3Result::unavailable;
   xar::game::BattleControlSnapshot battle{};
+  std::optional<xar::ck3_12004::BattleControlOwnedEntryPreceding12004> owned_battle;
   xar::game::BattleTransitionSnapshot transition{};
   xar::game::BattleReinforcementAssignmentSnapshot reinforcement{};
   xar::game::BattleTerminalTransitionSnapshotV1 terminal{};
@@ -10903,6 +10907,9 @@ bool ExecuteTypedQuery12002(
   if (!*query.executor_enter) {
     return false;
   }
+  if constexpr (Kind == QueryKind12002::battle_control) {
+    query.owned_battle.reset();
+  }
   if (query.kind != Kind) {
     return false;
   }
@@ -11002,11 +11009,19 @@ bool ExecuteTypedQuery12002(
         if (actual4)
           bindings.current_warscore_caps =
               xar::ck3_12004::BindBattleCurrentWarscoreCaps12004(query.image_base, sha);
-        const auto status = actual4
-            ? xar::ck3_12004::ReadBattleControlSnapshot(
-                  bindings, snapshot, query.battle_request, query.battle)
-            : xar::ck3_12002::ReadBattleControlSnapshot(
-                  bindings, snapshot, query.battle_request, query.battle);
+        auto status = xar::game::BattleControlSnapshotStatus::unavailable;
+        if (actual4) {
+          query.owned_battle.emplace();
+          status = xar::ck3_12004::ReadBattleControlOwnedEntryPreceding12004(
+              bindings, snapshot, query.battle_request, true,
+              envelope->expected_snapshot_revision, *query.owned_battle);
+          query.battle = query.owned_battle->snapshot;
+          if (status != xar::game::BattleControlSnapshotStatus::available)
+            query.owned_battle.reset();
+        } else {
+          status = xar::ck3_12002::ReadBattleControlSnapshot(
+              bindings, snapshot, query.battle_request, query.battle);
+        }
         query.typed_result = status == xar::game::BattleControlSnapshotStatus::available;
         query.battle.snapshot_revision = envelope->expected_snapshot_revision;
       } else if constexpr (Kind == QueryKind12002::battle_transition) {
@@ -11146,8 +11161,14 @@ bool ExecuteTypedQuery12002(
     }
     query.executor_typed_result = query.typed_result;
     query.executor_finish = xar::ck3_12002::FinishQueryMailbox(*envelope);
+    if constexpr (Kind == QueryKind12002::battle_control) {
+      if (!query.typed_result || !*query.executor_finish) query.owned_battle.reset();
+    }
     return *query.executor_finish;
   } catch (...) {
+    if constexpr (Kind == QueryKind12002::battle_control) {
+      query.owned_battle.reset();
+    }
     return false;
   }
 }
@@ -13035,10 +13056,12 @@ std::string RunTypedQuery12002(
     const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
         g_main_thread_query_mailbox_v1, query.envelope.ticket);
     if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+      query.owned_battle.reset();
       return CommandResultFrame(request_id, step, false,
                                 "application-main typed query result was not reclaimable");
     }
     if (!completed) {
+      query.owned_battle.reset();
       return TypedQueryFailureFrame12002(
           request_id, step, query.kind, wait, wait_completed,
           frame_stable, typed_result, final_read, final_equal,
@@ -13094,7 +13117,8 @@ std::string RunTypedQuery12002(
     break;
   case QueryKind12002::battle_control:
     response = BattleControlSnapshotResultFrame(request_id, step,
-        ++state.battle_control_snapshot_query_sequence, query.battle); break;
+        ++state.battle_control_snapshot_query_sequence, query.battle,
+        query.owned_battle ? &*query.owned_battle : nullptr); break;
   case QueryKind12002::battle_transition:
     response = BattleTransitionResultFrame(request_id, step,
         ++state.battle_transition_query_sequence, query.transition); break;

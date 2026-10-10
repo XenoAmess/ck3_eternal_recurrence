@@ -57,4 +57,20 @@ bool CheckConceptionModifierContextStillCurrent12004(
     const ConceptionModifierContextBindings12004 &bindings,
     const ConceptionModifierContextObservation12004 &observation,
     std::string &reason);
+
+// Actual M4 callers may pass their source-selected default Character with
+// physical ID FFFFFFFF. The caller owns that fallback route/pointer bookend.
+// This raw entry does not read a CharacterDB slot or impose a tag/positive-ID
+// gate. The +18 physical DWORD is copied solely to keep the receiver current.
+// Existing signed M7 Resolve/Check above retain their -1 admission rule.
+ConceptionModifierContextObservation12004 ResolveRawCharacterModifierContext12004(
+    const ConceptionModifierContextBindings12004 &bindings,
+    std::uintptr_t character, std::uint32_t physical_character_id,
+    bool source_qualified_fallback);
+
+bool CheckRawCharacterModifierContextStillCurrent12004(
+    const ConceptionModifierContextBindings12004 &bindings,
+    const ConceptionModifierContextObservation12004 &observation,
+    std::uint32_t physical_character_id, bool source_qualified_fallback,
+    std::string &reason);
 } // namespace xar::ck3_12004

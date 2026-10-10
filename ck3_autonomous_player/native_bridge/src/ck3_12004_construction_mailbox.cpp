@@ -4,6 +4,7 @@
 
 #include <windows.h>
 #include <cstring>
+#include <utility>
 
 namespace xar::ck3_12004 {
 namespace {
@@ -77,6 +78,12 @@ bool ExecuteConstructionMailbox12004(void *context, const Stamp &stamp) noexcept
       q.module_base, true, access,
       {q.expected_revision, -1, 4096, kConstructionWorldLegalSampleBudgetV1});
   if (q.player_world_building_sources.source_available && Same(*owner)) {
+    // Independent copied current inputs use this same paused revision/access.
+    // Failure of this optional read never changes the old world or718 scalar.
+    auto mode3 = ReadPlayerHeldConstructionMode3InputsV1(
+        q.module_base, true, access.campaign, {q.expected_revision});
+    (void)ck3::shared::AttachPlayerConstructionNativeMode3InputsV1(
+        q.result, q.player_world_building_sources, std::move(mode3));
     if (q.request_private_action) {
       q.private_action_candidate = ck3_11906::SelectPlayerWorldBuildingActionCandidateV1(
           q.player_world_building_sources, stamp.pump_epoch, q.minimum_gold_reserve_raw);
@@ -93,6 +100,7 @@ bool ExecuteConstructionMailbox12004(void *context, const Stamp &stamp) noexcept
     }
   }
   if (!ck3_12002::FinishQueryMailbox(*envelope)) {
+    q.result.native_mode3_inputs.reset();
     q.player_world_building_sources = {};
     q.player_world_building_sources.failure = PlayerWorldBuildingFailureV1::frame_changed;
   }

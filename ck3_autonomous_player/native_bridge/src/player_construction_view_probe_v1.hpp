@@ -1,8 +1,10 @@
 #pragma once
 
 #include "domain_construction_candidate_identity_decoder_v1.hpp"
+#include "xar_bridge/ck3_12004_construction_held.hpp"
 
 #include <cstdint>
+#include <optional>
 
 namespace xar::ck3::shared {
 
@@ -75,7 +77,18 @@ struct PlayerConstructionViewProbeResultV1 final {
   std::int32_t cached_candidate_count = 0;
   PlayerConstructionHoldingViewVisibilityV1 holding_view_visibility =
       PlayerConstructionHoldingViewVisibilityV1::unavailable;
+  // Separate owned current12004 inputs. The attach helper clears every
+  // borrowed pointer before this private query survives its callback.
+  std::optional<ck3_12004::PlayerHeldConstructionMode3InputResultV1>
+      native_mode3_inputs;
 };
+
+// The existing world receipt supplies the independent frame association.
+// A mode3 failure remains local and never changes the old world/scalar result.
+[[nodiscard]] bool AttachPlayerConstructionNativeMode3InputsV1(
+    PlayerConstructionViewProbeResultV1& target,
+    const ck3_12004::PlayerWorldBuildingSourceResultV1& world,
+    ck3_12004::PlayerHeldConstructionMode3InputResultV1 inputs) noexcept;
 
 // CK3 1.19.0.6; EXE SHA-256
 // 2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86.

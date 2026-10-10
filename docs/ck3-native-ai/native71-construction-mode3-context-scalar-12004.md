@@ -1,0 +1,15 @@
+# Native71 actual mode3 context scalar
+
+The actual1.20.0.4 producer2468DA0 reaches2C82340 twice. The held full889B body is `[2C82340,2C826B9)`, with RET2C826B8 and actual pdata row `[46670656,46671545,86740296]`. `SOURCE-FREEZE.json` was written before this candidate. The source build is Steam25734779, executable identity98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518; that identity was reused rather than freshly hashing an executable.
+
+At2468E5A, the key is rawA5. At2468F50 it is rawA6 orA7. Both calls supply the preserved context pointer read at2468DDF from slots+848, and the original detail argument preserved inR12. The caller consumes the qword at returnedRAX. These keys have no attributed domain names or units. This candidate closes the actual detailNULL route supplied by03's integration.
+
+The context descriptor reads data+28 and signedDWORD count+34, then each stride8 pointer's fullDWORD+738. Title resolution uses manager5D1DAF8, fallback5D1DAE0, low24 indexing, capacity+2C, pointer table+20 with stride16/pointer+8, and complete identity+10. Title+130 selects the Character+1C0 Domain route or secondary Title+12C route. A nonnull Domain supplies fullDWORD+1B8; a null Domain orFFFFFFFF candidate falls back to the first resolved Title+128. A secondFFFFFFFF skips the occurrence. Title globals are reloaded after every accepted candidate, including duplicates, and the sentinel skip bypasses that reload.
+
+The temporary list retains first-seen completeDWORD equality. Generation bits participate and repeats do not create new child calls. The existing49 source-closed contract for full288B880430 supplies this equality proposition; this independent software loop does not call a native or compiler dispatcher. Native temporary allocation, copying and cleanup are outside this read-only projection.
+
+Each unique ID is resolved again through Character manager5C67568 and fallback5C67570. The native manager comparison and second load are separate reads; fallback is read only on a miss. CALL2C82664 reaches34's2C4D1D0 with the resolved Character, zero-extended uint16 key, original detail, and signed64 scale100000. The returned qword is added with modulo2^64 arithmetic. The exported pure child adapter is an interface to34's guarded memory result; it is never a native getter ABI.
+
+`ReadContextScalar2C82340V1` reuses06's `RawReceiverAccessV1`, read helper and full-ID registry rule. Its result retains context, key, collection occurrence, source IDs, first-seen order and resolved child pointer provenance. A native empty collection or all-sentinel list has observed raw0. Missing memory, unsupported nonnull detail, invalid traversal bounds or missing/unclosed child output keep the result unavailable. A configurable occurrence limit bounds this independent reader and is not a claimed native predicate.
+
+The new no-main fragment exports `RunConstructionOwnerMode3ContextScalar12004Cases`. It is reserved for03/10's sole fresh compound; this packet does not execute it or create an executable. Shared driver, service, serializer, CMake, Git and game state remain outside the packet.

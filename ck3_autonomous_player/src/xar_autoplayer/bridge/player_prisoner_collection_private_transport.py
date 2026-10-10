@@ -21,6 +21,9 @@ from .prisoner_negotiated_preview_contract_12003 import (
 )
 from .timeline_blocker_private_transport import _binding
 from .version_identity import CK3_12003, CK3_12004
+from .prisoner_selected_quote_source_contract_12004 import (
+    normalize_prisoner_selected_quote_source_12004,
+)
 
 
 STEP = "query-player-prisoner-collection-private-v1"
@@ -142,12 +145,15 @@ def query_player_prisoner_collection_private_v1(
         )
     envelope = frame.get("result")
     expected_envelope_keys = _ENVELOPE_KEYS
+    source_keys = {"prisoner_selected_quote_source_12004", "prisoner_negotiated_quote_source_12004"}
+    present_source_keys = source_keys & set(envelope) if isinstance(envelope, dict) else set()
     if release_material_target_character_id is not None:
         expected_envelope_keys = _ENVELOPE_KEYS | {"prisoner_release_material_opinion"}
         if isinstance(envelope, dict) and "prisoner_keeper_opinion" in envelope:
             expected_envelope_keys = expected_envelope_keys | {"prisoner_keeper_opinion"}
         if isinstance(envelope, dict) and "prisoner_retained_target_state" in envelope:
             expected_envelope_keys = expected_envelope_keys | {"prisoner_retained_target_state"}
+    expected_envelope_keys = expected_envelope_keys | present_source_keys
     if (
         not isinstance(envelope, dict) or set(envelope) != expected_envelope_keys
         or envelope.get("step") != step or envelope.get("accepted") is not True
@@ -420,6 +426,26 @@ def query_player_prisoner_collection_private_v1(
             raise BridgeUnavailableError("private prisoner collection unavailable result is malformed")
     else:
         raise BridgeUnavailableError("private prisoner collection status is malformed")
+    if present_source_keys:
+        if (provenance.get("exact_ck3_build") != CK3_12004.game_version
+                or value.get("status") != "available" or ransom_ordinal >= len(value["prisoners"])):
+            raise BridgeUnavailableError("selected quote source has no actual4 selected collection row")
+        selected = value["prisoners"][ransom_ordinal]
+        for source_key in sorted(present_source_keys):
+            kind = "ordinary_ransom" if source_key == "prisoner_selected_quote_source_12004" else "negotiated_preview"
+            if kind == "negotiated_preview" and release_option_mask_bits is None:
+                raise BridgeUnavailableError("negotiated source has no requested option mask")
+            try:
+                envelope[source_key] = normalize_prisoner_selected_quote_source_12004(
+                    envelope[source_key], native_revision=native_revision,
+                    query_sequence=envelope["query_sequence"], proof_epoch=envelope["observation_revision"],
+                    date_raw=date_raw, jailer_full_id=played["character_id"],
+                    prisoner_full_id=selected["prisoner_character_id"], source_ordinal=ransom_ordinal,
+                    quote_kind=kind,
+                    existing_quote=selected.get("ransom_quote_preview") if kind == "ordinary_ransom" else None,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
     if release_material_target_character_id is not None:
         try:
             envelope["prisoner_release_material_opinion"] = normalize_prisoner_release_material_opinion_12004(

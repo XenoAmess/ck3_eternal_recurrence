@@ -1,4 +1,4 @@
-#include "xar_bridge/ck3_12004_construction.hpp"
+#include "xar_bridge/ck3_12004_construction_held.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -303,6 +303,83 @@ ReadPlayerHeldConstructionModelSourcesV1(
     return result;
   } catch (...) {
     return Failed(PlayerHeldConstructionModelFailureV1::held_title_source);
+  }
+}
+
+
+PlayerHeldConstructionMode3InputResultV1
+ReadPlayerHeldConstructionMode3InputsV1(
+    std::uintptr_t module_base, bool exact_build_admitted,
+    const CampaignRootAccessV1 &access,
+    const PlayerHeldConstructionModelRequestV1 &request) noexcept {
+  PlayerHeldConstructionMode3InputResultV1 result;
+  const auto fail = [&](PlayerHeldConstructionModelFailureV1 failure) {
+    result.current_frame_observed = false;
+    result.failure = failure;
+    result.holdings.clear();
+    return result;
+  };
+  if (!module_base || !exact_build_admitted)
+    return fail(PlayerHeldConstructionModelFailureV1::exact_build);
+  if (!access.is_main_thread || !access.is_main_thread(access.context))
+    return fail(PlayerHeldConstructionModelFailureV1::application_main);
+  if (!access.capture_frame || !access.read_memory)
+    return fail(PlayerHeldConstructionModelFailureV1::paused_frame);
+  game::CampaignRootFrameV1 before{};
+  if (!access.capture_frame(access.context, before) ||
+      before.snapshot_revision != request.expected_snapshot_revision ||
+      !before.paused || !before.map_ready || !before.has_played_character ||
+      !before.played_character_alive || before.played_character_id <= 0)
+    return fail(PlayerHeldConstructionModelFailureV1::paused_frame);
+  try {
+    std::uintptr_t game_data = 0, character = 0;
+    if (!ReadPlayer(access, module_base, before, game_data, character))
+      return fail(PlayerHeldConstructionModelFailureV1::player_identity);
+    std::vector<PlayerHeldHoldingSourceV1> held;
+    PlayerHeldConstructionModelFailureV1 held_failure{};
+    if (!ReadHeldBaronies(access, module_base, game_data, character,
+                          before.played_character_id, held, held_failure))
+      return fail(held_failure);
+    std::uintptr_t provinces = 0;
+    std::int32_t count = 0;
+    if (!Read(access, game_data, kGameDataProvinceArrayOffset, provinces) ||
+        !Read(access, game_data, kGameDataProvinceCountOffset, count) ||
+        !provinces || count <= 0 || count > kMaxProvinces)
+      return fail(PlayerHeldConstructionModelFailureV1::holding_province_identity);
+    const construction_owner_mode3::LoadedInputAccessV1 raw_access{
+        access.context, access.read_memory, exact_build_admitted};
+    result.holdings.reserve(held.size());
+    for (const auto &holding : held) {
+      std::uintptr_t province = 0;
+      std::int32_t identity = -1;
+      if (holding.province_id <= 0 || holding.province_id >= count ||
+          !Read(access, provinces,
+                static_cast<std::size_t>(holding.province_id) * sizeof(province),
+                province) || !province ||
+          !Read(access, province, kProvinceIdentityOffset, identity) ||
+          identity != holding.province_id)
+        return fail(PlayerHeldConstructionModelFailureV1::holding_province_identity);
+      HeldConstructionMode3InputV1 row;
+      row.barony_title_id = holding.barony_title_id;
+      row.province_id = holding.province_id;
+      // A missing optional component is retained as unavailable. It does not
+      // discard construction active/inventory material or impersonate zero.
+      row.inputs = construction_owner_mode3::ReadConstructionOwnerMode3InputsV1(
+          raw_access, {module_base, exact_build_admitted, province,
+                       holding.province_id, before.snapshot_revision});
+      result.holdings.push_back(std::move(row));
+    }
+    game::CampaignRootFrameV1 after{};
+    if (!access.capture_frame(access.context, after) || after != before)
+      return fail(PlayerHeldConstructionModelFailureV1::frame_changed);
+    result.current_frame_observed = true;
+    result.failure = PlayerHeldConstructionModelFailureV1::none;
+    result.snapshot_revision = before.snapshot_revision;
+    result.date_raw = before.date_raw;
+    result.player_character_id = before.played_character_id;
+    return result;
+  } catch (...) {
+    return fail(PlayerHeldConstructionModelFailureV1::held_title_source);
   }
 }
 

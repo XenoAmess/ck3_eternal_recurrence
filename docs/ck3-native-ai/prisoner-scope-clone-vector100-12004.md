@@ -1,0 +1,13 @@
+# Ransom scope member at +100: current4 raw copy inputs
+
+Actual373ADA1 in373ACF0 calls37282B0 with fresh destination scope+100 and borrowed original scope+100. The complete322B current4 body reads signedDWORD source+C and QWORD source+0. Source capacity, source allocator, padding and source records' class names are not inferred from this layout.
+
+`ReadPrisonerScopeCloneVector10012004` uses the existing selected quote's `PrisonerQuoteSourceFrame12004` and guarded reader. It verifies the actual307C36E relation original_scope=interaction_context+8, then copies the query revision, proof epoch, date, verified full IDs and original scope identity without another clock or native call. Missing count and data remain independent nullable operands.
+
+The source-closed implemented branch is count exactly zero. Parent literal stores establish destination data null, capacity zero, count zero and allocator image+54DE270. Reused93B889780 takes its empty branch and writes count0 without nested calls. This37282B0 path skips allocation and the element loop, then writes count0 and returns. The logical header therefore defines exactly24 bytes. It does not create a physical native clone address, returned pointer or cleanup-completion witness.
+
+Positive counts retain the allocation request `count*72`, alignment8 and bounded ordered borrowed record identities. No72B record memcpy is performed. DBDB80 has a mandatory allocator slot+10 call even for old data null; 37297F0 has two nested range-copy calls. Their unique source owners54c/37d and56d/30f/32d retain those necessary boundaries. The final positive header and physical allocation are unavailable in this leaf. A negative signed count follows excess-element destruction arithmetic, so it receives no empty-header projection.
+
+53c also reaches37282B0 for original support+30, which is original scope+148. It may reuse the count0 source proof only after its own pre-copy helpers and subsequent3727EC0 effects have been qualified. The parent initializes fields before copy; those seeds alone do not establish final positive-copy values.
+
+Source-before-code receipt: external continuation48d/SOURCE-FROZEN.json SHA29882c577065d8f1b2530277622ecd965986b6ba102888ca7cc7066002419aeb. Child spanSHA9e0bd26d2cd036a19607f32c51573e1eec5310acfd4896e22fe838663ac34078; empty cleanup spanSHA7156a7e95cb379797e67d986f4cdbe2936ee932f6dca093cdad0669de1994d10. Held current4 executableSHA98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518, not rehashed. New executable bytes322; cleanup bytes93 reused; native calls and worker fixture runs zero. Only the central selected-quote source compound may execute the new fragment.

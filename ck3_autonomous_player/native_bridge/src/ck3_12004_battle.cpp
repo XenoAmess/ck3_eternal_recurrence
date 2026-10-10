@@ -1,4 +1,9 @@
 #include "xar_bridge/ck3_12004_battle.hpp"
+#include "xar_bridge/battle_control_owned_entry_preceding_12004.hpp"
+#include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
+
+#include <array>
+#include <utility>
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
 #include "xar_bridge/ck3_12003_current_stored_context.hpp"
 
@@ -159,6 +164,68 @@ game::BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
     game::BattleTransitionSnapshot &output) noexcept {
   return ck3_12002::ReadBattleTransitionSnapshot(
       bindings, paused_scope, request, output);
+}
+
+namespace {
+void CollectOwnedEntryPreceding(void *opaque, const void *combat,
+                               std::uint32_t full_id) noexcept {
+  auto &owned = *static_cast<BattleControlOwnedEntryPreceding12004 *>(opaque);
+  try {
+    const std::array owners{EntryPrecedingCombatOwner12004{
+        reinterpret_cast<std::uintptr_t>(combat), full_id}};
+    owned.entry_preceding_capture =
+        CollectEntryPrecedingCaptureForCombats12004(owners);
+  } catch (...) {
+    // A failed independent owned copy must not invalidate the old battle.
+    owned.entry_preceding_capture.reset();
+  }
+}
+} // namespace
+
+game::BattleControlSnapshotStatus ReadBattleControlOwnedEntryPreceding12004(
+    const BattleBindings &bindings, const game::Snapshot &paused_scope,
+    const game::BattleControlRequest &request, bool exact_12004_admitted,
+    std::uint64_t snapshot_revision,
+    BattleControlOwnedEntryPreceding12004 &owned) noexcept {
+  owned = {};
+  BattleAcceptedCombatCollector12004 collector{};
+  if (exact_12004_admitted && snapshot_revision != 0) {
+    collector.context = &owned;
+    collector.collect = &CollectOwnedEntryPreceding;
+  }
+  const auto status = ck3_12002::ReadBattleControlSnapshotWithOwnedCombat12004(
+      bindings, paused_scope, request, owned.snapshot, collector);
+  if (status != game::BattleControlSnapshotStatus::available) {
+    owned.entry_preceding_capture.reset();
+  } else {
+    owned.snapshot.snapshot_revision = snapshot_revision;
+  }
+  return status;
+}
+
+std::string SerializeBattleControlOwnedEntryPreceding12004(
+    const BattleControlOwnedEntryPreceding12004 &owned) {
+  auto json = ck3_11906::SerializeBattleControlSnapshotV1(owned.snapshot);
+  if (json.empty() || json.back() != '}' || !owned.entry_preceding_capture) {
+    return json;
+  }
+  try {
+    const auto raw = SerializeEntryPrecedingCapture12004(
+        *owned.entry_preceding_capture);
+    constexpr std::string_view key = ",\"entry_preceding_capture_12004\":";
+    if (!raw.empty() && json.size() + key.size() + raw.size() <=
+        ck3_11906::kBattleControlSnapshotV1WireMaximumBytes) {
+      auto appended = json;
+      appended.pop_back();
+      appended += key;
+      appended += raw;
+      appended += '}';
+      return appended;
+    }
+  } catch (...) {
+    // Retain the complete existing battle wire if its optional append failed.
+  }
+  return json;
 }
 
 } // namespace xar::ck3_12004

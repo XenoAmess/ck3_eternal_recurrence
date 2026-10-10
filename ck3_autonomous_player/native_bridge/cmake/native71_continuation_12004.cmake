@@ -47,8 +47,7 @@ if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     src/conception_pair_list_bonus_12004.cpp
     src/conception_related_pair_12004.cpp
     src/conception_last_child_date_12004.cpp
-    src/conception_secondary_context_12004.cpp
-    src/conception_modifier_context_12004.cpp)
+    src/conception_secondary_context_12004.cpp)
 endif()
 
 # New authored fixtures remain selectable; none participates in the default build.
@@ -129,3 +128,5 @@ include(cmake/conception_full_provider_12004.cmake)
 include(cmake/army_natural_connected_phase_12004.cmake)
 include(cmake/entry_final_side_connected_capture_12004.cmake)
 include(cmake/lifestyle_current_perk_source_12004.cmake)
+include(cmake/prisoner_selected_quote_source_12004.cmake)
+include(cmake/construction_owner_mode3_source_12004.cmake)

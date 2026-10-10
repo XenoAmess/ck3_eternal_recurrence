@@ -1,4 +1,5 @@
 #include "xar_bridge/conception_modifier_context_12004.hpp"
+#include <bit>
 #include <limits>
 
 namespace xar::ck3_12004 {
@@ -37,9 +38,11 @@ ConceptionModifierContextBindings12004 BindConceptionModifierContext12004(
   return result;
 }
 
-ConceptionModifierContextObservation12004 ResolveConceptionModifierContext12004(
+namespace {
+ConceptionModifierContextObservation12004 ResolveModifierContext(
     const ConceptionModifierContextBindings12004 &b,
-    std::uintptr_t character, std::int32_t full_id) {
+    std::uintptr_t character, std::int32_t full_id,
+    bool allow_source_qualified_fallback) {
   ConceptionModifierContextObservation12004 result;
   auto fail = [&](const char *reason) {
     result.reason = reason;
@@ -48,7 +51,8 @@ ConceptionModifierContextObservation12004 ResolveConceptionModifierContext12004(
   result.module_base = b.module_base;
   result.character_address = character;
   result.full_character_id = full_id;
-  if (!b.enabled || b.read_memory == nullptr || character == 0 || full_id == -1)
+  if (!b.enabled || b.read_memory == nullptr || character == 0 ||
+      (full_id == -1 && !allow_source_qualified_fallback))
     return fail("modifier_context_binding_or_character_unavailable");
   std::int32_t actual_id = -1;
   if (!Read(b, character, 0x18, actual_id) || actual_id != full_id)
@@ -90,17 +94,10 @@ ConceptionModifierContextObservation12004 ResolveConceptionModifierContext12004(
   return result;
 }
 
-bool CheckConceptionModifierContextStillCurrent12004(
-    const ConceptionModifierContextBindings12004 &b,
+bool CompareModifierContext(
     const ConceptionModifierContextObservation12004 &observation,
+    const ConceptionModifierContextObservation12004 &now,
     std::string &reason) {
-  reason.clear();
-  if (!observation.ready || observation.module_base != b.module_base) {
-    reason = "modifier_context_observation_unavailable";
-    return false;
-  }
-  const auto now = ResolveConceptionModifierContext12004(
-      b, observation.character_address, observation.full_character_id);
   if (!now.ready) { reason = now.reason; return false; }
   if (now.source != observation.source ||
       now.context_address != observation.context_address ||
@@ -114,5 +111,56 @@ bool CheckConceptionModifierContextStillCurrent12004(
     return false;
   }
   return true;
+}
+} // namespace
+
+ConceptionModifierContextObservation12004 ResolveConceptionModifierContext12004(
+    const ConceptionModifierContextBindings12004 &b,
+    std::uintptr_t character, std::int32_t full_id) {
+  return ResolveModifierContext(b, character, full_id, false);
+}
+
+bool CheckConceptionModifierContextStillCurrent12004(
+    const ConceptionModifierContextBindings12004 &b,
+    const ConceptionModifierContextObservation12004 &observation,
+    std::string &reason) {
+  reason.clear();
+  if (!observation.ready || observation.module_base != b.module_base) {
+    reason = "modifier_context_observation_unavailable";
+    return false;
+  }
+  return CompareModifierContext(observation, ResolveConceptionModifierContext12004(
+      b, observation.character_address, observation.full_character_id), reason);
+}
+
+ConceptionModifierContextObservation12004 ResolveRawCharacterModifierContext12004(
+    const ConceptionModifierContextBindings12004 &b,
+    std::uintptr_t character, std::uint32_t physical_id,
+    bool source_qualified_fallback) {
+  if (physical_id == 0xFFFFFFFFu && !source_qualified_fallback) {
+    ConceptionModifierContextObservation12004 result;
+    result.module_base = b.module_base;
+    result.character_address = character;
+    result.full_character_id = std::bit_cast<std::int32_t>(physical_id);
+    result.reason = "modifier_context_fallback_receiver_unqualified";
+    return result;
+  }
+  return ResolveModifierContext(b, character,
+      std::bit_cast<std::int32_t>(physical_id), source_qualified_fallback);
+}
+
+bool CheckRawCharacterModifierContextStillCurrent12004(
+    const ConceptionModifierContextBindings12004 &b,
+    const ConceptionModifierContextObservation12004 &observation,
+    std::uint32_t physical_id, bool source_qualified_fallback,
+    std::string &reason) {
+  reason.clear();
+  if (!observation.ready || observation.module_base != b.module_base ||
+      std::bit_cast<std::uint32_t>(observation.full_character_id) != physical_id) {
+    reason = "modifier_context_observation_unavailable";
+    return false;
+  }
+  return CompareModifierContext(observation, ResolveRawCharacterModifierContext12004(
+      b, observation.character_address, physical_id, source_qualified_fallback), reason);
 }
 } // namespace xar::ck3_12004
