@@ -1,0 +1,55 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-10T07:12:05.717747+00:00",
+  "reservation_id": "lyd-r47-source08-cache-4GiB-20261010-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "original_admission": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r47-root-storage-admission-20261010-001/ADMISSION.actual.json",
+    "bytes": 4775,
+    "sha256": "6276902ee2150dd757a774f085c49d4d68d6cf880e095cefe12cbdb5db4f8db4"
+  },
+  "original_admission_unmodified": true,
+  "new_reservation_created": false,
+  "actual_task_closed_at_utc": "2026-10-10T07:12:05.463004+00:00",
+  "actual_closed_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\release-command-001\\stdout.log",
+    "bytes": 1308,
+    "sha256": "ca9c79caa8e339dbaf910fa39e245d3534db5dfb48d6cc3b0443729438574fe0"
+  },
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+    "bytes": 6166,
+    "sha256": "62dbf1827abd6c58971adb37adc102533d32bea9414aa6aa26cd276a572b4aeb"
+  },
+  "admitted_peak_bytes": 4294967296,
+  "released_reservation_peak_bytes": 4294967296,
+  "remaining_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_peak_minus_retained_bytes": true,
+  "observed_retained_task_logical_bytes_known": 1022796752,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "unused_actual_peak_budget_bytes_or_null": null,
+  "fresh_free_bytes_at_closure": 625264418816,
+  "fresh_total_volume_bytes": 1023892852736,
+  "retention": {
+    "cache_seed_profile_and_allocator_copies_expires_at_utc": "2026-10-17T03:03:44.013573Z",
+    "cache_protected_until_utc": "2026-10-17T03:03:44.013573Z",
+    "Source08_build_expires_at_utc": "2026-10-24T06:29:37.814463+00:00",
+    "R47_checkpoint_profile_noncache_expires_at_utc": "2026-10-24T07:12:05.463004+00:00",
+    "R47_raw_evidence_expires_at_utc": "2026-11-09T07:12:05.463004+00:00",
+    "R47_representative_evidence_review_until_utc": "2026-10-17T07:12:05.463004+00:00",
+    "R47_protection_reason": "Finite review of actual R47 outcome and representative unresolved evidence; no qualification inferred",
+    "small_records_review_at_utc": "2027-04-08T07:12:05.463004+00:00",
+    "mixed_groups_require_component_retention_no_blanket_permanent_protection": true,
+    "copy_and_closure_do_not_renew_cache_age": true,
+    "auto_renew": false,
+    "expiry_is_review_not_automatic_delete": true
+  },
+  "no_auto_renewal_or_deletion": true,
+  "root_coordinator_actual_exclusive_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "automatic_reservation_manager_implemented": false,
+  "runtime_or_business_qualification": false
+}

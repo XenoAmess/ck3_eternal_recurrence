@@ -2,7 +2,7 @@
 
 ## 2026-10-10 可选着色器缓存复用
 
-LYD本机首次实际消费见[R46](ck3-native-ai/2026-10-10-r46-startup-query-red.md)：注入和暂停语义帧已取得，首campaign query执行前取消，业务未通过。后继启动顺序候选要求history-loaded与InGame两个完整日志行，不制造“最终Setup”标记；缓存核心只另外豁免runtime.py及专属延后注入测试两项启动控制源码，游戏/host/native/业务/配置保持绑定，旧seed须重新派生。该候选尚未实机验证。
+LYD本机首次实际消费见[R46](ck3-native-ai/2026-10-10-r46-startup-query-red.md)：注入和暂停语义帧已取得，首campaign query执行前取消，业务未通过。后继启动顺序要求history-loaded与InGame两个完整日志行，不制造“最终Setup”标记；缓存核心只另外豁免runtime.py及专属延后注入测试两项启动控制源码，游戏/host/native/业务/配置保持绑定，旧seed须重新派生。[R47实际对照](ck3-native-ai/2026-10-10-r47-startup-control.md)的campaign query及八步对照断言通过；原始人工退出确认缺失使公共run2/verify2保持，不能授正式产品或完整闭场PASS。单次正例不证明R46根因或缓存命中/提速。
 
 公共 prepare 支持机器共同 manifest 的 `profile_features.shader_cache_reuse=true`；默认关闭，产品或 case 不自行选择缓存版本。启用时，`--case-inputs` JSON 可提供 `shader_cache_seed={path,bytes,sha256}`，指向通过 `tools/ck3_mod_acceptance_graphics_cache.py` 的 `freeze_shader_cache_seed` library 函数生成的外置快照 manifest；该函数尚无独立 CLI。
 

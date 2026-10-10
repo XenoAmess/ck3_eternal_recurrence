@@ -1,0 +1,1414 @@
+{
+  "schema": "lyd.r47.compact-actual-facts.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+  "status": "GREEN",
+  "phase": "hold",
+  "error": null,
+  "cleanup_ok": true,
+  "managed_session_done": true,
+  "managed_session_thread_finished": true,
+  "independent_observer_exit": {
+    "at_utc": "2026-10-10T07:05:54.518713+00:00",
+    "elapsed_seconds": 1152.9208616000105,
+    "pid": 1832,
+    "process_create_time": 1791614801.4849763,
+    "wait_result": 0,
+    "actual_exit_code": 0,
+    "independent_observer_handle": true,
+    "original_createprocess_handle": false,
+    "signals_sent": false,
+    "business_pass": false
+  },
+  "current_closeout": {
+    "at_utc": "2026-10-10T07:11:42.760314+00:00",
+    "ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "case_processes": [],
+    "expected_allocation_supervision": [
+      {
+        "name": "python.exe",
+        "create_time": 1791614553.3721044,
+        "pid": 3260,
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-007/runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-009/prepared/prepared-case.json",
+          "--attempt",
+          "a09",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a09",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0046",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a08",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0046\\release-command-003\\stdout.log"
+        ]
+      },
+      {
+        "name": "python.exe",
+        "create_time": 1791614553.2804935,
+        "pid": 7616,
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\root-record-command-20261010-001.py",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-root-case-allocate-20261010-001",
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-007/runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-009/prepared/prepared-case.json",
+          "--attempt",
+          "a09",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a09",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0046",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a08",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0046\\release-command-003\\stdout.log"
+        ]
+      }
+    ],
+    "process_read_errors": [],
+    "control_files": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\ck3.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\unsafe-cleanup.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\ck3.watchdog_error",
+        "exists": false
+      }
+    ],
+    "host_original_exit": {
+      "at_utc": "2026-10-10T07:07:26.692247+00:00",
+      "pid": 15688,
+      "returncode": 0,
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "independent_observer_handle_exit": {
+      "at_utc": "2026-10-10T07:05:54.518713+00:00",
+      "elapsed_seconds": 1152.9208616000105,
+      "pid": 1832,
+      "process_create_time": 1791614801.4849763,
+      "wait_result": 0,
+      "actual_exit_code": 0,
+      "independent_observer_handle": true,
+      "original_createprocess_handle": false,
+      "signals_sent": false,
+      "business_pass": false
+    },
+    "historical_host_cleanup_ok": true,
+    "note": "Current resource closure only. Original public run/verify and retained OS/native normal-close results remain authoritative; no exit code or business result inferred."
+  },
+  "report_state_flags_by_original_path": {
+    "report.managed_session_done": true,
+    "report.managed_session_thread_finished": true,
+    "report.cleanup_ok": true
+  },
+  "actual_release_command": "release-command-001",
+  "release_command_stdout": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "655da780a6101c3b778cd199421cb30a373d75f3"
+      },
+      "last_sequence": 4396,
+      "next_step": "",
+      "pid": 2940,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R47-public2-manual-review-missing-original-CK3-host0-offline-reviewed-display-restored-keeper0",
+      "task_id": "common-acceptance-12004-20261010-a09",
+      "updated_at_utc": "2026-10-10T07:12:05.463004+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 4396,
+      "event_id": "0f8803c52ba348dda21f179ecf986e31",
+      "timestamp_utc": "2026-10-10T07:12:05.463976+00:00",
+      "kind": "completed",
+      "task_id": "common-acceptance-12004-20261010-a09",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R47-public2-manual-review-missing-original-CK3-host0-offline-reviewed-display-restored-keeper0",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "655da780a6101c3b778cd199421cb30a373d75f3"
+      }
+    }
+  },
+  "command_exit_codes_by_logical_path": {
+    "root-command/allocator/RESULT.actual.json": 0,
+    "run/challenge-command-001/RESULT.actual.json": 0,
+    "run/observer-command-001/RESULT.actual.json": 0,
+    "run/preflight-reviewed-command-001/RESULT.actual.json": 0,
+    "run/recover-final-command-001/RESULT.actual.json": 0,
+    "run/recover-initial-command-001/RESULT.actual.json": 0,
+    "run/release-command-001/RESULT.actual.json": 0,
+    "run/root-normal-quit-001/exit-menu-click-command/RESULT.actual.json": 0,
+    "run/root-normal-quit-001/menu-click-command-002/RESULT.actual.json": 0,
+    "run/root-normal-quit-001/menu-click-command/RESULT.actual.json": 2,
+    "run/root-normal-quit-001/quit-desktop-click-command/RESULT.actual.json": 0,
+    "run/root-normal-quit-001/uncheck-autosave-command/RESULT.actual.json": 0,
+    "run/run-command-001/RESULT.actual.json": 2,
+    "run/verify-command-001/RESULT.actual.json": 2
+  },
+  "host_original_process_exit": {
+    "at_utc": "2026-10-10T07:07:26.692247+00:00",
+    "pid": 15688,
+    "returncode": 0,
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "keeper_original_FINAL": null,
+  "keeper_actual_report": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "common-acceptance-12004-20261010-a09",
+    "last_sequence": 4395,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a09\\journal.jsonl",
+    "at_utc": "2026-10-10T07:11:42.769934+00:00",
+    "entry_error": null,
+    "checkout_head": "655da780a6101c3b778cd199421cb30a373d75f3",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "case_results_by_original_logical_path": {
+    "run/case-output/manual-quit-awaiting.json": {
+      "status": "MANUAL_QUIT_AWAITING_ORIGINAL_DEADLINE",
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+      "reviewer": "/root",
+      "pid": 1832,
+      "create_time": 1791614801.4849763,
+      "original_hold_deadline": 1791616046.0833154,
+      "response_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\normal-quit-root-result.json",
+      "automation_failure_preserved": null,
+      "required_evidence": "Actual operator original unchecked screenshot and canonical final mapped Quit receipt; normal GUI Quit only",
+      "helper_replay_or_new_budget": false,
+      "business_pass": false
+    },
+    "run/case-output/normal-close-result.json": {
+      "root_normal_gui_review": null,
+      "operator_normal_gui_review": null,
+      "normal_quit_automation": null,
+      "normal_quit_automation_failure_preserved": null,
+      "retained_handle": {
+        "signaled": true,
+        "exit_code": 0,
+        "actual_retained_os0": true,
+        "pid": 1832,
+        "create_time": 1791614801.4849763,
+        "retained_synchronize_query_handle_acquired": true
+      },
+      "native_zero_proof": null,
+      "finish_hold_rows": null,
+      "host_finished_at": null,
+      "managed_thread_finished": null,
+      "cleanup_ok": null,
+      "host_error": null,
+      "failure_shutdown_proof": null,
+      "failure_preserved": false,
+      "failure_lifecycle_completed": false,
+      "business_pass": false,
+      "normal_close_qualified": false
+    },
+    "run/case-output/normal-quit-awaiting.json": {
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+      "reviewer": "/root",
+      "pid": 1832,
+      "create_time": 1791614801.4849763,
+      "original_hold_deadline": 1791616046.0833154,
+      "disposition": "actual_case_evidence_recorded",
+      "live": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047",
+      "keeper_root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a09",
+      "screen_task": "common-acceptance-12004-20261010-a09",
+      "action": "Authorized operator normal GUI Quit to desktop; preserve original images, mapped clicks and unchecked autosave state",
+      "host_error_preserved": null
+    },
+    "run/case-output/transaction-control-case-result.json": {
+      "schema": "ck3-mod-acceptance-transaction-control-result-v1",
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+      "product": "li-yu-dao",
+      "case": "transaction-only-control",
+      "case_contract_qualified": true,
+      "gui_contract_qualified": true,
+      "transaction_control_pass": true,
+      "selected_option_number": 1,
+      "business_actions_submitted": 1,
+      "terminal_event_instance_id": 122,
+      "cache_before_ids": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "cache_after_ids": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "saved": {
+        "completed_variable": "lyd_factory_diag_empty_transaction_completed",
+        "completed_value": 1,
+        "new_title_id": 18373,
+        "new_title_holder": null,
+        "political_title_ast_sha256": {
+          "2230": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+          "2231": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+          "2232": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+          "2235": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+          "2262": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+          "2263": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+          "2264": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352,
+          39527,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "political_full_ast_equal": true,
+        "saved_control_qualified": true,
+        "business_pass": false,
+        "product_release_pass": false,
+        "checkpoint": {
+          "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\profile\\save games\\xar_checkpoint.ck3",
+          "bytes": 91711704,
+          "sha256": "c8dd0c7a47f181e3ebc2e2c50cde09220dd29d5c11738eb2db6f174fe13a14cf"
+        },
+        "save_body_reads": 1,
+        "baseline_body_reads": 0
+      },
+      "business_contract_applicable": false,
+      "business_pass": false,
+      "product_release_pass": false,
+      "normal_close_pending": true,
+      "formal_institution_pass": null,
+      "C3": null,
+      "I4": null
+    }
+  },
+  "case_optional_receipt_presence": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\manual-quit-awaiting.json",
+      "exists": true
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\normal-close-result.json",
+      "exists": true
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\normal-quit-awaiting.json",
+      "exists": true
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\normal-quit-root-result.json",
+      "exists": false
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\transaction-control-case-result.json",
+      "exists": true
+    }
+  ],
+  "ROOT_late_manual_quit_review": {
+    "schema": "ck3-r47-late-manual-quit-review-v1",
+    "recorded_at_utc": "2026-10-10T07:13:19.380696+00:00",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0047",
+    "reviewer": "/root",
+    "direct_unchecked_original_image_review": true,
+    "autosave_unchecked_observed": true,
+    "normal_gui_quit_requested_exactly_once": true,
+    "original_hold_deadline": 1791616046.0833154,
+    "original_response_written_before_deadline": false,
+    "original_response_remains_absent": true,
+    "submitted_to_public_client": false,
+    "reason": "ROOT did not write the response before the original deadline during context handoff. This late factual review does not repair or supersede the original public run2/verify2.",
+    "actual_original_retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 1832,
+      "create_time": 1791614801.4849763,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "normal_close_qualified": false,
+    "business_pass": false,
+    "evidence": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\menu-before.png",
+        "bytes": 2371175,
+        "sha256": "e81e46d05847fedea8857778a6288e1a8dc59b3d1de444247accbd50997db086"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\menu-click-command-002\\stdout.log",
+        "bytes": 1364,
+        "sha256": "c4dca2aa45839dd42aeb8c43e65ca0fec4fe47800ddc1ddc57c2990d443aa472"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\exit-menu-click-command\\stdout.log",
+        "bytes": 1374,
+        "sha256": "8fad606737cbe98e3014accbbab4a64b454af831e47ca7a1fb84990b3f223642"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\uncheck-autosave-command\\stdout.log",
+        "bytes": 1364,
+        "sha256": "5a1853c229b28ee39f5b334d3d0154a20ab4db8cd8827b87a0f98ea79c370478"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\unchecked-dialog.png",
+        "bytes": 1508385,
+        "sha256": "b4cf523bfa90672ce6c66a1767d039d81f233d7ea3e844f10f133c32cb27148c"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\quit-desktop-click-command\\stdout.log",
+        "bytes": 1364,
+        "sha256": "d410065ccb9b2cd9cbdaa7dd4c499fae3a19aeda721f22a773d8d6e6cd349b2d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\root-normal-quit-001\\quit-desktop-after.png",
+        "bytes": 1505520,
+        "sha256": "d6ec97e71806d3380291a06e6fd0350eed6c217a2cae8f9a4145faf65f34db2a"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\manual-quit-awaiting.json",
+        "bytes": 631,
+        "sha256": "41aa55c6d52165f86236ca133386b5ea3dd4f2495df4c8040175f8b4bea231d7"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\normal-close-result.json",
+        "bytes": 704,
+        "sha256": "67207ae22cf84f3a78857cf2cbb8d3051ad7a42e5fb39fee8439f02a01bf9a68"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\startup-observer-001\\EXIT.actual.json",
+        "bytes": 329,
+        "sha256": "e17d579fff3b4687042b5edae8af3b740b9d3e5ae35ef87e5de61d6bfe0dcf8f"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\host-original-process-exit.json",
+        "bytes": 247,
+        "sha256": "2808e4639a8f3a00e78421832dc552402cc257dbbc6e189643155ae018cefba0"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\run-command-001\\RESULT.actual.json",
+        "bytes": 1483,
+        "sha256": "cefa755a036e94d0df8aa74cd62296d984a7ac1e533665fef7dbb34f36177275"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\verify-command-001\\RESULT.actual.json",
+        "bytes": 1489,
+        "sha256": "34fb3eb700211f69019085f7d0a531b0ec6261b82d2a7bf5e98febba982e6d4a"
+      }
+    ]
+  },
+  "late_review_never_repairs_or_submits_original_manual_response": true,
+  "public_run_verify_and_host_original_exit_preserved_separately": true,
+  "selected_log_marker_facts": [
+    {
+      "source_logical_path": "profile/logs/code_revisions.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/custom_automated_stats.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/database_conflicts.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/debug.log",
+      "matches": 2,
+      "rows": [
+        {
+          "source_logical_path": "profile/logs/debug.log",
+          "line": 3955,
+          "byte_offset": 461501,
+          "kinds": [
+            "history_loaded_completion"
+          ],
+          "text": "[14:50:04][D][gameapplication.cpp:635]: Setup completion (history loaded): 61.276060 seconds\r\n",
+          "line_truncated": false
+        },
+        {
+          "source_logical_path": "profile/logs/debug.log",
+          "line": 3961,
+          "byte_offset": 462349,
+          "kinds": [
+            "idler_In_Game_literal"
+          ],
+          "text": "[14:50:14][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options\r\n",
+          "line_truncated": false
+        }
+      ],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/dedicated_server.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/error.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/game.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/gui_warnings.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/memory.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/message.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/multiplayer.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/pdxsdk.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/profile.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/setup.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/system.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    },
+    {
+      "source_logical_path": "profile/logs/text.log",
+      "matches": 0,
+      "rows": [],
+      "rows_truncated": false,
+      "source_body_complete": true,
+      "literal_presence_does_not_prove_readiness_or_injection": true
+    }
+  ],
+  "query_cancellation_executor_fields": {
+    "rows": [
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 380
+      },
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 380
+      },
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[0].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 388
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 388
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[0].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[1].result.current_event_window_context.options[0].cancel",
+        "value": false
+      },
+      {
+        "original_path": "report.steps[1].result.options[0].cancel",
+        "value": false
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 764
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 764
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[1].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 1110
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 1110
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 3
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 3
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 767
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[2].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 1486
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 1486
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 5
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 5
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 1473
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[3].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 1830
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 1830
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 5
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 5
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 1473
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[4].result.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 1830
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 1830
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 5
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 5
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 1473
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[4].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[5].result.current_event_window_context.options[0].cancel",
+        "value": false
+      },
+      {
+        "original_path": "report.steps[5].result.options[0].cancel",
+        "value": false
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 2170
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 2170
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 6
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 6
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 2167
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[5].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 2518
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 2518
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 6
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 6
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 2167
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[6].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 3186
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 3186
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 7
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 7
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 2525
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.steps[7].after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.session.report.saved_campaign_only",
+        "value": true
+      },
+      {
+        "original_path": "report.session.report.single_saved_campaign_launch",
+        "value": true
+      },
+      {
+        "original_path": "report.session.report.saved_campaign_load_name",
+        "value": "restored_campaign"
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].frame.pump_epoch",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[0].campaign_root",
+        "value": null
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].frame.pump_epoch",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[1].campaign_root",
+        "value": null
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 0
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].frame.pump_epoch",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[2].campaign_root",
+        "value": null
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 22
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 22
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].frame.pump_epoch",
+        "value": 4
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].campaign_root.campaign_root_context_ready",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].binding.pump_epoch",
+        "value": 6
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].binding.saved_campaign_identity_proven",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.observations[3].binding.startup_event_admission.pump_epoch",
+        "value": 22
+      },
+      {
+        "original_path": "report.saved_campaign_restore.first_startup_query_admission.previous_frame.pump_epoch",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.first_startup_query_admission.current_frame.pump_epoch",
+        "value": 4
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 6
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 6
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 5
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.event_context.current_event_window_context.options[0].cancel",
+        "value": false
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.event_context.options[0].cancel",
+        "value": false
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 22
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 22
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.after_snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.startup_case.admission.pump_epoch",
+        "value": 22
+      },
+      {
+        "original_path": "report.saved_campaign_restore.binding.pump_epoch",
+        "value": 6
+      },
+      {
+        "original_path": "report.saved_campaign_restore.binding.saved_campaign_identity_proven",
+        "value": true
+      },
+      {
+        "original_path": "report.saved_campaign_restore.binding.startup_event_admission.pump_epoch",
+        "value": 22
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 22
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 22
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.readiness.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.readiness_guard.native_campaign_binding.pump_epoch",
+        "value": 6
+      },
+      {
+        "original_path": "report.readiness_guard.native_campaign_binding.saved_campaign_identity_proven",
+        "value": true
+      },
+      {
+        "original_path": "report.readiness_guard.native_campaign_binding.startup_event_admission.pump_epoch",
+        "value": 22
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 32
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 32
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.capabilities.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      },
+      {
+        "original_path": "report.capabilities.campaign_root_context_v1_query_supported",
+        "value": true
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+        "value": 36
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+        "value": 36
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_requests",
+        "value": 2
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_sequence",
+        "value": 2
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_started_pump_epoch",
+        "value": 15
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.tls_marker",
+        "value": 1
+      },
+      {
+        "original_path": "report.pipe_diagnostics.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.executor_submission_enabled",
+        "value": true
+      }
+    ],
+    "matched_scalar_fields": 163,
+    "row_cap": 512,
+    "truncated": false,
+    "missing_fields_remain_UNKNOWN": true,
+    "no_executor_or_readiness_inference": true
+  },
+  "actual_source_root": "C:\\csr8",
+  "runtime_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-007\\manifest.json",
+    "bytes": 5221,
+    "sha256": "255fd41ba7d5156660054ccbeb03ebded8b2e6978e838d94968797a5ddf15b3e"
+  },
+  "runtime_source_commit": "86214a2b770ba16ff79ff0c8f8953df988afe67a",
+  "native_build_commit": "af20455212ed75000ba6136b3be308a9288cb06e",
+  "formal_or_product_PASS": null,
+  "business_credit": null,
+  "archive_success_does_not_qualify_game_or_product": true,
+  "setup_history_loaded_is_not_final_setup_or_injection": true,
+  "diagnostic_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-startup-and-query-readonly-diagnostic-20261010-001",
+  "underlying_executor_nonentry_cause": "UNKNOWN unless supported by included diagnostic",
+  "historical_R45_or_cleanup_results_not_rewritten": true
+}

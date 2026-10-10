@@ -1,0 +1,452 @@
+{
+  "schema": "lyd.r47.compact-startup-control-closeout-facts.v1",
+  "native_summary_literal": {
+    "status": "GREEN",
+    "phase": "hold",
+    "started_at": "2026-10-10T06:46:29.884423+00:00",
+    "finished_at": "2026-10-10T07:07:26.486353+00:00",
+    "managed_session_done": true,
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "error": null
+  },
+  "public_run": {
+    "exit_code": 2,
+    "started_at_utc": "2026-10-10T06:45:39.096488+00:00",
+    "finished_at_utc": "2026-10-10T07:07:26.273887+00:00"
+  },
+  "markers": [
+    {
+      "line": 3955,
+      "line_start": 461501,
+      "line_end_exclusive": 461595,
+      "complete_line": true,
+      "exact_source08_markers": [
+        "history_completion"
+      ],
+      "complete_line_in_original_observation": true,
+      "text": "[14:50:04][D][gameapplication.cpp:635]: Setup completion (history loaded): 61.276060 seconds"
+    },
+    {
+      "line": 3960,
+      "line_start": 462248,
+      "line_end_exclusive": 462349,
+      "complete_line": true,
+      "exact_source08_markers": [],
+      "complete_line_in_original_observation": true,
+      "text": "[14:50:14][D][gamestate.cpp:329]: Setup powerful vassals among a total of [35660] living character."
+    },
+    {
+      "line": 3961,
+      "line_start": 462349,
+      "line_end_exclusive": 462432,
+      "complete_line": true,
+      "exact_source08_markers": [
+        "in_game"
+      ],
+      "complete_line_in_original_observation": true,
+      "text": "[14:50:14][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options"
+    }
+  ],
+  "admission_prefix": {
+    "current_log_prefix_sha256": "eafa1bd6175ef45c9a43754b3b1746cf11ca074e4efac74c009ce1a2058dc91e",
+    "same_exact_prefix": true,
+    "both_exact_source08_markers_present": true
+  },
+  "admission_observation": {
+    "log_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\profile\\logs\\debug.log",
+    "log_epoch_ns": 1791614800513279800,
+    "log_mtime_ns": 1791615083956507800,
+    "bytes": 466445,
+    "sha256": "eafa1bd6175ef45c9a43754b3b1746cf11ca074e4efac74c009ce1a2058dc91e",
+    "line": 3955,
+    "text": "[14:50:04][D][gameapplication.cpp:635]: Setup completion (history loaded): 61.276060 seconds",
+    "in_game_line": 3961,
+    "in_game_text": "[14:50:14][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options",
+    "observed_at": "2026-10-10T06:51:23.970442+00:00",
+    "target_ck3_pid": 1832,
+    "native_identity_verified": false,
+    "business_pass": false
+  },
+  "injector": {
+    "status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+    "target_ck3_pid": 1832,
+    "pid": 15668,
+    "creation_utc": "2026-10-10T06:51:24.002000+00:00",
+    "returncode": 0,
+    "complete_process_tree_proven": true,
+    "evidence_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\injector-attempts\\795639bd4ff04ccca4f54a8066f679ee"
+  },
+  "startup_observations": {
+    "count": 507,
+    "first": {
+      "at": "2026-10-10T06:46:40.228662+00:00",
+      "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+      "connected": false,
+      "semantic_state_available": false,
+      "bridge_pid": null,
+      "connection_generation": 0
+    },
+    "last": {
+      "at": "2026-10-10T06:52:21.721095+00:00",
+      "status": "INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE",
+      "connected": true,
+      "semantic_state_available": true,
+      "bridge_pid": 1832,
+      "connection_generation": 1
+    }
+  },
+  "saved_observations": {
+    "count": 4,
+    "first": {
+      "frame": {
+        "actor_character_id": 31254,
+        "date_raw": 53144712,
+        "local_player_id": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "bridge_pid": 1832,
+        "connection_generation": 1,
+        "owner_tid": 14036,
+        "pump_epoch": 2,
+        "startup_event": {
+          "source": "native",
+          "instance_id": 121,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        }
+      },
+      "snapshot": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "map_ready": true,
+        "paused": true,
+        "date_raw": 53144712
+      },
+      "mailbox": {
+        "pump_epochs": 2,
+        "ready": true,
+        "published_sequence": 0,
+        "completed_sequence": 0,
+        "executor_started_requests": 0,
+        "executor_started_sequence": 0,
+        "executed_requests": 0,
+        "owner_tid": 14036,
+        "failure": 0
+      }
+    },
+    "last": {
+      "frame": {
+        "actor_character_id": 31254,
+        "date_raw": 53144712,
+        "local_player_id": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "bridge_pid": 1832,
+        "connection_generation": 1,
+        "owner_tid": 14036,
+        "pump_epoch": 4,
+        "startup_event": {
+          "source": "native",
+          "instance_id": 121,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        }
+      },
+      "snapshot": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "map_ready": true,
+        "paused": true,
+        "date_raw": 53144712
+      },
+      "mailbox": {
+        "pump_epochs": 22,
+        "ready": true,
+        "published_sequence": 2,
+        "completed_sequence": 2,
+        "executor_started_requests": 2,
+        "executor_started_sequence": 2,
+        "executed_requests": 2,
+        "owner_tid": 14036,
+        "failure": 0
+      }
+    }
+  },
+  "campaign_query_calls": [
+    {
+      "at": "2026-10-10T06:52:23.850092+00:00",
+      "direction": "request",
+      "message": {
+        "tool": "ck3_query_campaign_root_context_v1",
+        "arguments": {
+          "expected_revision": 2
+        },
+        "started_at": "2026-10-10T06:52:23.849046+00:00",
+        "is_error": null,
+        "ok": null,
+        "error": null
+      }
+    },
+    {
+      "at": "2026-10-10T06:52:24.620484+00:00",
+      "direction": "response",
+      "message": {
+        "tool": "ck3_query_campaign_root_context_v1",
+        "arguments": {
+          "expected_revision": 2
+        },
+        "started_at": "2026-10-10T06:52:23.849046+00:00",
+        "is_error": false,
+        "ok": true,
+        "error": null
+      }
+    }
+  ],
+  "mailbox_transition_count": 3202,
+  "mailbox_first": {
+    "at": "2026-10-10T06:51:28.879980+00:00",
+    "sequence": 1,
+    "monotonic_ms": 69555437,
+    "mailbox": {
+      "pump_epochs": 0,
+      "ready": false,
+      "published_sequence": 0,
+      "completed_sequence": 0,
+      "executor_started_requests": 0,
+      "executor_started_sequence": 0,
+      "executed_requests": 0,
+      "owner_tid": 0,
+      "failure": 0
+    }
+  },
+  "mailbox_last": {
+    "at": "2026-10-10T07:05:44.247292+00:00",
+    "sequence": 3420,
+    "monotonic_ms": 70410812,
+    "mailbox": {
+      "pump_epochs": 84662,
+      "ready": true,
+      "published_sequence": 7,
+      "completed_sequence": 7,
+      "executor_started_requests": 7,
+      "executor_started_sequence": 7,
+      "executed_requests": 7,
+      "owner_tid": 14036,
+      "failure": 0
+    }
+  },
+  "native_state_frame_count": 3,
+  "native_state_first": {
+    "at": "2026-10-10T06:52:21.110488+00:00",
+    "native_revision": 1,
+    "state": {
+      "map_ready": true,
+      "paused": true,
+      "date_raw": 53144712,
+      "played_character_id": null,
+      "active_event": {
+        "instance_id": 121,
+        "option_count": 1,
+        "option_indexes": [
+          1
+        ]
+      }
+    }
+  },
+  "native_state_last": {
+    "at": "2026-10-10T06:53:24.189617+00:00",
+    "native_revision": 3,
+    "state": {
+      "map_ready": true,
+      "paused": true,
+      "date_raw": 53144712,
+      "played_character_id": null,
+      "active_event": {
+        "instance_id": 122,
+        "option_count": 1,
+        "option_indexes": [
+          1
+        ]
+      }
+    }
+  },
+  "mcp_request_counts": {
+    "ck3_migration_pipe_diagnostics": 508,
+    "ck3_take_snapshot": 17,
+    "ck3_query_campaign_root_context_v1": 1,
+    "ck3_query_current_event_window_context_v1": 3,
+    "ck3_get_capabilities": 1,
+    "ck3_query_actor_cached_succession_v1": 2,
+    "ck3_select_event_option": 1,
+    "ck3_save_checkpoint": 1
+  },
+  "steps_count": 8,
+  "transaction_control": {
+    "case_contract_qualified": true,
+    "gui_contract_qualified": true,
+    "transaction_control_pass": true,
+    "selected_option_number": 1,
+    "business_actions_submitted": 1,
+    "terminal_event_instance_id": 122,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "normal_close_pending": true,
+    "formal_institution_pass": null,
+    "C3": null,
+    "I4": null
+  },
+  "ordered_cache_comparison": {
+    "before_count": 45,
+    "after_count": 45,
+    "saved_count": 45,
+    "before_after_exact_equal": true,
+    "before_saved_exact_equal": true
+  },
+  "saved_control": {
+    "completed_variable": "lyd_factory_diag_empty_transaction_completed",
+    "completed_value": 1,
+    "new_title_id": 18373,
+    "new_title_holder": null,
+    "political_full_ast_equal": true,
+    "saved_control_qualified": true,
+    "business_pass": false,
+    "product_release_pass": false,
+    "checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 91711704,
+      "sha256": "c8dd0c7a47f181e3ebc2e2c50cde09220dd29d5c11738eb2db6f174fe13a14cf"
+    },
+    "save_body_reads": 1,
+    "baseline_body_reads": 0
+  },
+  "normal_close_original": {
+    "root_normal_gui_review": null,
+    "operator_normal_gui_review": null,
+    "normal_quit_automation": null,
+    "normal_quit_automation_failure_preserved": null,
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 1832,
+      "create_time": 1791614801.4849763,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "native_zero_proof": null,
+    "finish_hold_rows": null,
+    "host_finished_at": null,
+    "managed_thread_finished": null,
+    "cleanup_ok": null,
+    "host_error": null,
+    "failure_shutdown_proof": null,
+    "failure_preserved": false,
+    "failure_lifecycle_completed": false,
+    "business_pass": false,
+    "normal_close_qualified": false
+  },
+  "actual_retained_exit_original": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 1832,
+    "create_time": 1791614801.4849763,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "managed_session": {
+    "started_at": "2026-10-10T06:46:40.115829+00:00",
+    "finished_at": "2026-10-10T07:05:54.935223+00:00",
+    "elapsed_seconds": 1154.819,
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "795639bd4ff04ccca4f54a8066f679ee",
+      "ck3_pid": 1832,
+      "ck3_creation_date": "20261010064641.484976+000",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 16820,
+      "watchdog_creation_date": "20261010064640.652331+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\ck3.json": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\watchdog-795639bd4ff04ccca4f54a8066f679ee.ready.json": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\ck3.watchdog_error": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009\\state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    },
+    "restart_count": 0,
+    "error": null,
+    "ok": true
+  },
+  "limits": {
+    "underlying_startup_or_previous_failure_cause": "UNKNOWN",
+    "two_marker_ordering_is_causal_proof": false,
+    "normal_close_qualified_false_is_not_overridden_by_actual_exit0": true,
+    "whole_product_or_formal_business_pass_inferred": false,
+    "collector_save_body_reads": 0,
+    "collector_live_actions": 0
+  },
+  "references": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-startup-and-query-readonly-diagnostic-20261010-001\\REPORT.actual.json",
+      "bytes": 1471957,
+      "sha256": "9104a466da0b331876694103adcc972a25649a8f0542a8ac02630212a9efb471"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\transaction-control-case-result.json",
+      "bytes": 3532,
+      "sha256": "4e3cd5166b96d10bd9c87441b28b44e19672b98b6c899f4bb91fb74b20248e8a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\normal-close-result.json",
+      "bytes": 704,
+      "sha256": "67207ae22cf84f3a78857cf2cbb8d3051ad7a42e5fb39fee8439f02a01bf9a68"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "a822b7b03ba3af404255460ff79cb600e8244503b9761dc7865624da2a35b1d7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\run-command-001\\RESULT.actual.json",
+      "bytes": 1483,
+      "sha256": "cefa755a036e94d0df8aa74cd62296d984a7ac1e533665fef7dbb34f36177275"
+    }
+  ]
+}

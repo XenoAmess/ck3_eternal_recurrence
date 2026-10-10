@@ -1,0 +1,139 @@
+{
+  "schema": "lyd-r47-reservation-close-bounded-metadata-v1",
+  "started_at_utc": "2026-10-10T07:12:05.674874+00:00",
+  "finished_at_utc": "2026-10-10T07:12:05.716866+00:00",
+  "admission": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r47-root-storage-admission-20261010-001/ADMISSION.actual.json",
+    "bytes": 4775,
+    "sha256": "6276902ee2150dd757a774f085c49d4d68d6cf880e095cefe12cbdb5db4f8db4"
+  },
+  "bindings": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-storage-closure-sourceonly-20261010-001\\BINDINGS.actual.json",
+    "bytes": 4177,
+    "sha256": "dd434dda97d35027d3452096b95289d08bd63fa1a05e678fce1ab452eec58051"
+  },
+  "machine_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-root-storage-admission-20261010-001\\MACHINE-PROFILE.actual.json",
+    "bytes": 1302,
+    "sha256": "66bad6d8a96a1913f75a44f66995b9ca1b1623ae4303bde084cc07e8ca752ae2"
+  },
+  "machine_id": "BF-202609141645",
+  "reservation_id": "lyd-r47-source08-cache-4GiB-20261010-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "actual_closed_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047\\release-command-001\\stdout.log",
+    "bytes": 1308,
+    "sha256": "ca9c79caa8e339dbaf910fa39e245d3534db5dfb48d6cc3b0443729438574fe0"
+  },
+  "actual_closed_at_utc": "2026-10-10T07:12:05.463004+00:00",
+  "keeper_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a09\\report.json",
+    "bytes": 448,
+    "sha256": "31f86d9c24809591d4bdb2970f2fed0627463399a13297ec228aff0bf1dc059a"
+  },
+  "groups": [
+    {
+      "label": "Source08 export payload",
+      "root": "C:\\csr8",
+      "status": "EXISTING_FROZEN_INDEX_DECLARED_PAYLOAD",
+      "file_count": 7906,
+      "logical_bytes": 141034944,
+      "allocated_bytes_or_null": null,
+      "source_index": {
+        "path": "C:/workspace/ck3-common-runtime/20261010-007/source08-index.json",
+        "bytes": 1619935,
+        "sha256": "317e2e857c60457fc7104a029a2eac2a03448a25210e40f27327796c2b89fc62"
+      },
+      "source_tree_or_native_directory_scanned": false,
+      "unindexed_source_overhead_bytes_or_null": null
+    },
+    {
+      "label": "Source08 runtime metadata/archive",
+      "root": "C:\\workspace\\ck3-common-runtime\\20261010-007",
+      "file_count": 12,
+      "logical_bytes": 11299514,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "errors": [],
+      "status": "BOUNDED_METADATA_MEASURED",
+      "body_reads_or_hashes": false
+    },
+    {
+      "label": "R47 immutable shader-cache seed",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001",
+      "status": "EXISTING_IMMUTABLE_SEED_MANIFEST_DECLARED_PAYLOAD",
+      "file_count": 3688,
+      "cache_file_bytes": 143124020,
+      "manifest_bytes": 678234,
+      "logical_bytes": 143802254,
+      "allocated_bytes_or_null": null,
+      "seed_manifest": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r47-shader-cache-seed-20261010-001/manifest.json",
+        "bytes": 678234,
+        "sha256": "1f58b3176ee792722c70379d7c01de7f473b33a3659a6fa24d81a17d918afec0"
+      },
+      "cache_directory_scanned_or_body_read": false
+    },
+    {
+      "label": "C9 case/prepared profile",
+      "root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-009",
+      "file_count": 3876,
+      "logical_bytes": 517921173,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "errors": [],
+      "status": "BOUNDED_METADATA_MEASURED",
+      "body_reads_or_hashes": false
+    },
+    {
+      "label": "L47 allocated profile/raw/metadata",
+      "root": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0047",
+      "file_count": 4004,
+      "logical_bytes": 205619083,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "errors": [],
+      "status": "BOUNDED_METADATA_MEASURED",
+      "body_reads_or_hashes": false
+    },
+    {
+      "label": "keeper a09 receipts",
+      "root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a09",
+      "file_count": 129,
+      "logical_bytes": 3119784,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "errors": [],
+      "status": "BOUNDED_METADATA_MEASURED",
+      "body_reads_or_hashes": false
+    }
+  ],
+  "metadata_entries_examined": 8179,
+  "observed_retained_task_logical_bytes_known": 1022796752,
+  "known_logical_bytes_are_not_exact_total_project_usage": true,
+  "measurement_limits": [
+    "Only Source08/R47seed/C9/L47/keepera09 selected groups",
+    "No whole roots census, source/native scan or cache body read/hash",
+    "Existing indexes declare export/seed payload; unindexed export overhead unknown",
+    "Per-path logical copies counted; physical allocation and historical peak unknown",
+    "External producer/helper outputs, later archive/bookkeeping are outside selected scope"
+  ],
+  "retention": {
+    "cache_seed_profile_and_allocator_copies_expires_at_utc": "2026-10-17T03:03:44.013573Z",
+    "cache_protected_until_utc": "2026-10-17T03:03:44.013573Z",
+    "Source08_build_expires_at_utc": "2026-10-24T06:29:37.814463+00:00",
+    "R47_checkpoint_profile_noncache_expires_at_utc": "2026-10-24T07:12:05.463004+00:00",
+    "R47_raw_evidence_expires_at_utc": "2026-11-09T07:12:05.463004+00:00",
+    "R47_representative_evidence_review_until_utc": "2026-10-17T07:12:05.463004+00:00",
+    "R47_protection_reason": "Finite review of actual R47 outcome and representative unresolved evidence; no qualification inferred",
+    "small_records_review_at_utc": "2027-04-08T07:12:05.463004+00:00",
+    "mixed_groups_require_component_retention_no_blanket_permanent_protection": true,
+    "copy_and_closure_do_not_renew_cache_age": true,
+    "auto_renew": false,
+    "expiry_is_review_not_automatic_delete": true
+  },
+  "allocated_physical_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "runtime_or_business_qualification": false
+}

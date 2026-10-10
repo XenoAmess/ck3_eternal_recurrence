@@ -68,4 +68,12 @@ R46 的既有 4 GiB 预留已于 06:13:56 UTC 实际闭场，剩余预留为 0�
 
 全部执行机器仍须遵守同一份 [通用策略](../storage-retention-policy.md) 与 [版本化参数](../storage-retention-policy.json)。此次真实回执仅证明 **BF-202609141645** 上的人工协调、机器/根/卷映射、预算与生命周期登记；没有核查其他机器的实际落地状态。统一自动 GC、跨机器自动预留器和自动部署仍未实现。其他机器必须自行落实相同人工步骤，未知容量、占用或副本可用性不能当作 0 或已验证。
 
+## 2026-10-10 07:12 UTC 补记：R47闭账与增量复核
+
+R47已实际关闭游戏、host及keeper，独占资源CAS释放后才核销原4 GiB峰值预留，剩余为0。六组有界metadata测量已知逻辑留存1,022,796,752 B、当时卷空闲625,264,418,816 B；这不是历史峰值、物理分配量或实际释放4 GiB的声明。闭账不含后来小型归档等增量。[实际核销](C:/workspace/ck3_lyd_runtime_20261004/r47-root-storage-admission-20261010-001/CLOSED-RESERVATION.actual.json)2,989 B / SHA `d297ee3a5506ca7e162978d8c47021a313b7a18fe0126a0f78f0c671eddba83f`；测量6,166 B / `62dbf1827abd6c58971adb37adc102533d32bea9414aa6aa26cd276a572b4aeb`。
+
+闭场后并行增量复核新增可回收0项/0 B，没有再扫盘或读大正文。Source06/07索引声明旧导出约282 MB与当前Source08大部分相同，但恢复/历史依赖未明确退役；旧143 MB seed虽文件内容相同，原绑定key、用途与Oct17保护仍不同，不直接删除。七个旧attempt约21.2 GB的退役证明仍缺，Oct12原用途复核期限不变。精确复核回执为 `BASE/r47-post-close-retention-readonly-20261010-001/REPORT.actual.json`，6,075 B / `a2a4596f53da424c808a0b0bd1527488ab8496ae276588f3c0c57713f73f64b6`；BASE沿用本机清点入口。
+
+R47 cache Oct17、Source08构建Oct24、raw Nov9与代表证据七天复核分别登记；复制、闭场与本轮public2不重置已有年龄，不假装新对照结果已经替代旧未解证据。此前已删的11.19GB不重复计数；本机回执继续不代表所有机器均已执行或已装自动GC。
+
 精确原件：`C:/workspace/ck3_lyd_runtime_20261004/r47-root-storage-admission-20261010-001/ADMISSION.actual.json`，4775 B，SHA-256 `6276902ee2150dd757a774f085c49d4d68d6cf880e095cefe12cbdb5db4f8db4`。本轮限定评审：`C:/workspace/ck3_lyd_runtime_20261004/r47-storage-lifecycle-sourceonly-20261010-001/REPORT.actual.json`。原闭场、删除与旧 attempt 评审保持历史原样，出处的精确 pins 见该报告。

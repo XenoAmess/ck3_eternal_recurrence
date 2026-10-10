@@ -1,5 +1,15 @@
 # 公共验收的正常退出与单一 GUI 操作者
 
+## R47人工确认及时落盘
+
+LYD本机R47正常菜单退出取得原CK3句柄OS0，但操作者未在原hold期限内写入确认，public run2/verify2原样保留。以后人工路线在直接审阅原始未勾选autosave图、完成canonical最终Quit点击并审阅after图后，立即调用公共记录器；不等待进程退出后才构造响应：
+
+```text
+<verified-python> -B -X utf8 tools/ck3_mod_acceptance_manual_quit_review.py --request <actual-case-output>/normal-quit-awaiting.json --unchecked-image <actual-unchecked-original.png> --final-mapped-click <actual-canonical-mapper-receipt.json> --reviewer <actual-request-reviewer> --direct-reviewed
+```
+
+记录器只读取真实request、原图及mapper收据，校验同run/实际foreground身份，精确pin后再核原deadline，以create-only写入既有`normal-quit-root-result.json`。`--direct-reviewed`必须由已亲审操作者显式给出，程序不判断checkbox内容、不点击、不声明OS0/native0或业务通过；公共client继续独立取原句柄和native闭场证明。五项定向测试验证公共mapped validator兼容、错误身份/源图、未审阅/失败点击、到期及拒绝覆盖；旧R47缺失响应不补造。
+
 ## R42实机与helper实际身份接口
 
 R42原religion_hardgate公共run0/verify0、normal-close-qualified=true；实际操作者manual fallback的原图/映射/unchecked证据、retained OS0/native0、thread/cleanup与keeper实际0/CAS7968齐备。自动helper在输入前仍因旧固定Root身份拒绝，未验证intro路线。修复只令client传`--expected-reviewer`，helper在独立参数和实际request间严格匹配；默认Root旧API兼容，空白、尾空格、None或伪Root拒绝，实际两项新检查PASS。helper后继SHA256 `b69536f84b6f7f1b71f74056fdd900a4ae8bee23847d610cc78c39d1f30d3b71`，mapping03使用外置不可变副本，不改同一manifest或业务prepared；自动后继路线与错误快速收尾仍待实机资格。

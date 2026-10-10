@@ -1,0 +1,137 @@
+{
+  "schema": "lyd-post-r47-bounded-existing-retention-review-v1",
+  "at_utc": "2026-10-10T07:15:35.411283+00:00",
+  "status": "NO_NEW_POLICY_QUALIFIED_RECLAIM_WITHOUT_PURPOSE_RETIREMENT_OR_PROTECTION_RELEASE",
+  "new_policy_qualified_candidate_count": 0,
+  "new_policy_qualified_logical_bytes": 0,
+  "source_build_reassessment": [
+    {
+      "group": "Source06 frozen export payload",
+      "root": "C:\\csr6",
+      "source_index": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-005\\source06-index.json",
+        "bytes": 1619935,
+        "sha256": "c0114bf364cd62c5bc5b7d2326f29958c3500c9a8ab70278980282f7a7e955e1"
+      },
+      "frozen_source_commit": "0628e97c09f38687c494f0b2d90db0f0b1d71d8f",
+      "file_count": 7906,
+      "declared_logical_bytes": 141027785,
+      "same_relative_path_size_and_sha256_rows_as_Source08": 7901,
+      "same_content_declared_logical_bytes": 140761275,
+      "different_rows": [
+        "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+        "ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py",
+        "tools/ck3_mod_acceptance_allocate.py",
+        "tools/ck3_mod_acceptance_graphics_cache.py",
+        "tools/test_ck3_mod_acceptance_graphics_cache.py"
+      ],
+      "missing_in_Source08": [],
+      "status": "POTENTIAL_EARLY_BUILD_RETIREMENT_REQUIRES_CURRENT_PURPOSE_DISPOSITION",
+      "no_actual_export_tree_or_native_directory_scan": true,
+      "source_index_does_not_prove_current_tree_unchanged_or_git_rebuild_availability": true
+    },
+    {
+      "group": "Source07 frozen export payload",
+      "root": "C:\\csr7",
+      "source_index": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-006\\source07-index.json",
+        "bytes": 1619935,
+        "sha256": "0061b1680c671575d55561942f1d96760fb6780d5433909929c2b7fd1006b06b"
+      },
+      "frozen_source_commit": "e8562cc04fae188f73c59ed33215126bb8bca7ac",
+      "file_count": 7906,
+      "declared_logical_bytes": 141030443,
+      "same_relative_path_size_and_sha256_rows_as_Source08": 7902,
+      "same_content_declared_logical_bytes": 140794490,
+      "different_rows": [
+        "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+        "ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py",
+        "tools/ck3_mod_acceptance_graphics_cache.py",
+        "tools/test_ck3_mod_acceptance_graphics_cache.py"
+      ],
+      "missing_in_Source08": [],
+      "status": "POTENTIAL_EARLY_BUILD_RETIREMENT_REQUIRES_CURRENT_PURPOSE_DISPOSITION",
+      "no_actual_export_tree_or_native_directory_scan": true,
+      "source_index_does_not_prove_current_tree_unchanged_or_git_rebuild_availability": true
+    }
+  ],
+  "two_old_export_declared_payload_logical_bytes": 282058228,
+  "potential_duplicate_cache": {
+    "old_seed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-shader-cache-seed-20261010-001\\manifest.json",
+      "bytes": 678234,
+      "sha256": "8d5122c79cf1295c9a22939c143eca3102b50655c56bedf14a64d71094c47c91"
+    },
+    "new_seed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-shader-cache-seed-20261010-001\\manifest.json",
+      "bytes": 678234,
+      "sha256": "1f58b3176ee792722c70379d7c01de7f473b33a3659a6fa24d81a17d918afec0"
+    },
+    "all_cache_relative_path_size_sha256_rows_equal": true,
+    "file_count": 3687,
+    "declared_cache_logical_bytes": 143124020,
+    "manifest_and_cache_key_are_distinct": true,
+    "status": "EXCLUDED_VALID_FINITE_PROTECTION_AND_UNRESOLVED_R46_PURPOSE_NOT_RETIRED",
+    "cache_protection_and_expiry_at_utc": "2026-10-17T03:03:44.013573Z",
+    "body_equality_basis": "Existing successful immutable snapshot manifests only; no new cache body read/hash",
+    "allocated_bytes_or_null": null
+  },
+  "other_existing_candidates": [
+    {
+      "group": "Two ETW full-text exports",
+      "status": "ALREADY_DELETED_NOT_COUNTED_AGAIN",
+      "previous_actual_deleted_logical_bytes": 11190757265
+    },
+    {
+      "group": "Seven old live attempts",
+      "status": "NO_NEW_RETIREMENT_OR_TTL_EXPIRY",
+      "existing_selected_attempts": [
+        10,
+        9,
+        7,
+        29,
+        15,
+        6,
+        26
+      ],
+      "existing_aggregate_logical_bytes": 21205429634,
+      "original_purpose_review_deadline_utc": "2026-10-12T05:02:36.510734+00:00"
+    },
+    {
+      "group": "Source08/C9/L47/current baselines/R45 original ETL/R46 representative raw",
+      "status": "EXCLUDED_CURRENT_OR_UNRESOLVED_PURPOSE",
+      "root_reported_R47_public_run_and_verify": 2,
+      "OS_CK3_host_observer_exit_zero_does_not_qualify_public_run": true
+    }
+  ],
+  "existing_closed_ledger_evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r46-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+      "bytes": 14821,
+      "sha256": "301227dbc710fdaa9eb2a91613041e68a2ff11630c733d533b8b25e29a16f6f0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+      "bytes": 6166,
+      "sha256": "62dbf1827abd6c58971adb37adc102533d32bea9414aa6aa26cd276a572b4aeb"
+    }
+  ],
+  "existing_Source08_source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-007\\source08-index.json",
+    "bytes": 1619935,
+    "sha256": "317e2e857c60457fc7104a029a2eac2a03448a25210e40f27327796c2b89fc62"
+  },
+  "ttl_or_protection_auto_renewal": false,
+  "metadata_only_group_index_comparison": true,
+  "fresh_fullvolume_or_recursive_asset_inventory": false,
+  "asset_body_read_hash_or_copy": false,
+  "delete_or_archive": false,
+  "MAIN_or_Git_mutation": false,
+  "physical_reclaimable_bytes_or_null": null,
+  "limits": [
+    "Existing metadata does not establish a fresh complete active-reference census",
+    "No new output qualifies another historical raw/save group as retired",
+    "Potential build retirement is a bounded proposal, not permission to delete a directory",
+    "All estimates are logical declared payload; exact deletion requires per-file current identity checks"
+  ]
+}
