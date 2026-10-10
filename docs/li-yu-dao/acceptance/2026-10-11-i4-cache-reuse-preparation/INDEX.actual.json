@@ -1,0 +1,91 @@
+{
+  "schema": "lyd-case4-cache-reuse-preparation-small-actual-v1",
+  "at_utc": "2026-10-10T17:43:32.615664+00:00",
+  "records": [
+    {
+      "file": "ADMISSION.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\ADMISSION.actual.json",
+      "bytes": 9320,
+      "sha256": "57dae5b526be78f585599daafb0abc758e7f0161ae02e2effb62938b5fe6333f"
+    },
+    {
+      "file": "COORDINATION.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\COORDINATION.actual.json",
+      "bytes": 1540,
+      "sha256": "a26f81e36d117369d71ac1924034e580fa2413fddfd101a83e58a4b838245901"
+    },
+    {
+      "file": "INPUT-BINDING.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\INPUT-BINDING.actual.json",
+      "bytes": 1693,
+      "sha256": "ad4779c9a3bccad672135438abcd4ef3b232b14cf73b410799376a1f1f0245c4"
+    },
+    {
+      "file": "cache-metadata.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-origin-metadata-20261011-001\\METADATA.actual.json",
+      "bytes": 874,
+      "sha256": "1a55f4bc8f05e2dbe6536f59a3715185a163388aaff9bab8807f56ef498f4c63"
+    },
+    {
+      "file": "cache-origin.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-origin-metadata-20261011-001\\origin.actual.json",
+      "bytes": 2142,
+      "sha256": "11bd016cab3ca404594283dc5c174adc7ce5358f202d824c65e3057ec58dc947"
+    },
+    {
+      "file": "cache-freeze.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-freeze-20261011-001.actual.json",
+      "bytes": 1408,
+      "sha256": "d86d264c5d1289d2841c8cf74fd595bf32d5569495b68883407bf5b9c3fb8b6a"
+    },
+    {
+      "file": "admission/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261011-004\\RESULT.actual.json",
+      "bytes": 1127,
+      "sha256": "523e81e2973a46ddd842139e67f809f309fcb3796a93e3635cfd4c0e9b17057f"
+    },
+    {
+      "file": "cache-freeze/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-cache-freeze-execution-20261011-001\\RESULT.actual.json",
+      "bytes": 1005,
+      "sha256": "dd3216fdf8eeaadcdaa4d3c2ca6d3b8a02f51f26bb0100d0e23474e8ea307b5c"
+    },
+    {
+      "file": "prepare/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261011-004\\RESULT.actual.json",
+      "bytes": 1321,
+      "sha256": "607a8c290c8db1aceed2cd963324310fa1b28b70cb30a2595255a3c84475be2f"
+    },
+    {
+      "file": "plan/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261011-004\\RESULT.actual.json",
+      "bytes": 1215,
+      "sha256": "107fdabef546c57b684b9ff81909e39de57442c15e48ce2dd4dc4c02540a3519"
+    },
+    {
+      "file": "preflight/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261011-004\\RESULT.actual.json",
+      "bytes": 1233,
+      "sha256": "fe5ae9cb069efc62b1a6ca5b439b831f4f59f17af7416e95a50019271d2e2ebe"
+    },
+    {
+      "file": "preflight/projection.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\case4-preflight-projection-20261011-001.actual.json",
+      "bytes": 5239,
+      "sha256": "326a13934d2dae420eef2fe1ae4bade781e4307d53effa7920c68913f50e8177"
+    }
+  ],
+  "source_runtime_reused": "Source11/O11",
+  "new_native_builds": 0,
+  "cache_seed_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r52-20261011-001\\manifest.json",
+    "bytes": 687642,
+    "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+  },
+  "allocated_or_started_by_this_preparation_packet": false,
+  "business_pass": false,
+  "engine_cache_hit_or_speedup_qualified": false,
+  "cache_review_at_utc_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "quota_override_at_utc_unchanged": "2026-10-12T05:19:51.814083+00:00",
+  "automatic_GC_or_reservation_manager_implemented": false
+}

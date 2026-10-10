@@ -1,0 +1,200 @@
+{
+  "schema": "lyd.single-saved-title-stream-observation.v1",
+  "status": "UNQUALIFIED_SELECTED_ROW",
+  "source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\checkpoints\\r4-factory-protection-red-final\\checkpoint.ck3",
+    "bytes": 91677276,
+    "sha256": "678536947b34e3600d8c76e75b68213689bb074318f5338c704343e98413424e",
+    "parser": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+    }
+  },
+  "title_id": 18373,
+  "section": "landed_titles.landed_titles",
+  "row_bytes": 719,
+  "row_sha256": "e7c092a4a04f92e5393cd9396d3c39b8bc2dd82a1fb387123576d192438a4e63",
+  "full_save_authenticated": true,
+  "source_stream_passes": 1,
+  "native_title_binding": null,
+  "saved_title_field_qualification": null,
+  "B5_pass": false,
+  "business_pass": false,
+  "input_role": "R26 protection-RED world; field research only, never seed",
+  "entries": [
+    {
+      "key": "key",
+      "value": "x_script_692"
+    },
+    {
+      "key": "variables",
+      "value": [
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "flag",
+                  "value": "lyd_c2_owner_faith"
+                },
+                {
+                  "key": "data",
+                  "value": [
+                    {
+                      "key": "type",
+                      "value": "faith"
+                    },
+                    {
+                      "key": "identity",
+                      "value": "107"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "flag",
+                  "value": "lyd_c2_owned_head_title"
+                },
+                {
+                  "key": "data",
+                  "value": [
+                    {
+                      "key": "type",
+                      "value": "value"
+                    },
+                    {
+                      "key": "identity",
+                      "value": "100000"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "holder",
+      "value": "31254"
+    },
+    {
+      "key": "date",
+      "value": "1066.10.1"
+    },
+    {
+      "key": "succession_result_type",
+      "value": "player_heir"
+    },
+    {
+      "key": "heir",
+      "value": [
+        {
+          "key": null,
+          "value": "40526"
+        }
+      ]
+    },
+    {
+      "key": "history",
+      "value": [
+        {
+          "key": "1066.10.1",
+          "value": [
+            {
+              "key": "type",
+              "value": "created"
+            },
+            {
+              "key": "holder",
+              "value": "31254"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "color",
+      "value": "rgb"
+    },
+    {
+      "key": null,
+      "value": [
+        {
+          "key": null,
+          "value": "81"
+        },
+        {
+          "key": null,
+          "value": "51"
+        },
+        {
+          "key": null,
+          "value": "255"
+        }
+      ]
+    },
+    {
+      "key": "definite_form",
+      "value": "yes"
+    },
+    {
+      "key": "destroy_if_invalid_heir",
+      "value": "yes"
+    },
+    {
+      "key": "no_automatic_claims",
+      "value": "yes"
+    },
+    {
+      "key": "always_follows_primary_heir",
+      "value": "yes"
+    },
+    {
+      "key": "laws",
+      "value": [
+        {
+          "key": null,
+          "value": "temporal_head_of_faith_succession_law"
+        }
+      ]
+    },
+    {
+      "key": "coat_of_arms_id",
+      "value": "28838"
+    },
+    {
+      "key": "title_name_data",
+      "value": [
+        {
+          "key": "name",
+          "value": "\"朱子之学儒家道统\""
+        },
+        {
+          "key": "adj",
+          "value": "\"朱子之学\""
+        }
+      ]
+    },
+    {
+      "key": "default_coa",
+      "value": "no"
+    },
+    {
+      "key": "treasury",
+      "value": []
+    },
+    {
+      "key": "nomad_name_type",
+      "value": "default"
+    }
+  ],
+  "ast_sha256": "b5442141d1e697aa1aa0bac871eadebc91cf3fa3abfab0cdd3d493aefc74c3a7"
+}

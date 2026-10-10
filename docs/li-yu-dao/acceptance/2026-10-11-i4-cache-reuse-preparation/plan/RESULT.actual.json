@@ -1,0 +1,35 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/ck3_mod_acceptance.py",
+    "plan",
+    "--runtime",
+    "C:/workspace/ck3-common-runtime/20261010-011/runtime.local.json",
+    "--products",
+    "tools/ck3_mod_acceptance_products.json",
+    "--product",
+    "li-yu-dao",
+    "--case",
+    "i4-existing-school-cooldown",
+    "--prepared-case",
+    "C:/workspace/ck3-common-runtime/cases/lyd-i4-natural-expiry-20261011-004/prepared/prepared-case.json"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T17:41:13.996569+00:00",
+  "finished_at_utc": "2026-10-10T17:41:14.191637+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261011-004\\stdout.log",
+    "bytes": 3954,
+    "sha256": "ff7c9a010b894ad1907df8c72c90e5579c4f90f7172812f4b47a7514679e9a6e"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261011-004\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

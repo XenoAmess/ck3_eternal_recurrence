@@ -1,0 +1,20 @@
+{
+  "schema": "lyd-bounded-shader-cache-origin-metadata-v1",
+  "at_utc": "2026-10-10T17:23:18.247426+00:00",
+  "source_cache": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state\\profile\\shadercache",
+  "cache_file_count": 3740,
+  "cache_logical_bytes": 146942031,
+  "cache_maximum_file_bytes": 218125,
+  "metadata_elapsed_seconds": 2.8635333999991417,
+  "origin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-origin-metadata-20261011-001\\origin.actual.json",
+    "bytes": 2142,
+    "sha256": "11bd016cab3ca404594283dc5c174adc7ce5358f202d824c65e3057ec58dc947"
+  },
+  "full_origin_or_current_key_executed": false,
+  "cache_copied": false,
+  "old_PE_source_native_or_seed_bodies_read": false,
+  "review_at_utc_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "automatic_TTL_renewal": false,
+  "business_pass": false
+}

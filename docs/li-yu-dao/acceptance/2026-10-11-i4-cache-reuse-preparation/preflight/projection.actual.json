@@ -1,0 +1,118 @@
+{
+  "schema": "lyd-case4-preflight-bounded-projection-v1",
+  "source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261011-004\\stdout.log",
+    "bytes": 2051904,
+    "sha256": "a2803a05d62ef435144950e5403886b0c39d0b72d5e61cc8e46301c15d8b2c77"
+  },
+  "public_exit_code": 0,
+  "projection": {
+    "schema": "ck3-mod-acceptance-plan-v1",
+    "product": "li-yu-dao",
+    "case": "i4-existing-school-cooldown",
+    "case_status": "ready",
+    "shared_manifest": "C:\\workspace\\ck3-common-runtime\\20261010-011\\manifest.json",
+    "run_id": "<allocated-run-id>",
+    "host_argv": {
+      "projection": "large_list_summary",
+      "entry_count": 49
+    },
+    "required_mcp_tools": {
+      "projection": "large_list_summary",
+      "entry_count": 9
+    },
+    "opt_in_read_only_mcp_tools": [],
+    "runtime_environment": {
+      "PYTHONUTF8": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPATH": "C:\\csr11\\ck3_autonomous_player\\src;C:\\csr11\\ck3_workshop_mcp\\src;C:\\csr11\\tools"
+    },
+    "phases": [
+      "original0240_headless_event_free_admission",
+      "fresh_initial_SAVE_flag_present_and_disabled_formal_decision",
+      "strict_one_day_natural_simulation_until_first_enabled_decision",
+      "distinct_final_SAVE_flag_absent_and_same_headless_Faith_Rite_membership",
+      "actual_shared_normal_close"
+    ],
+    "budgets": {
+      "command_timeout": 300,
+      "readiness_timeout": 900,
+      "timeout": 8400,
+      "hold_seconds": 7200,
+      "poll_interval": 0.5
+    },
+    "fixture_prepare": null,
+    "adapter": {
+      "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+      "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry.json"
+    },
+    "normal_close": {
+      "owner": "shared entry/CaseClient",
+      "reserve_seconds": 90,
+      "actual_retained_OS0_and_original_native0_required": true
+    },
+    "gui_contract": null,
+    "outputs": {
+      "case_output": "{run_dir}/case-output",
+      "normal_close": "{run_dir}/case-output/normal-close-result.json"
+    },
+    "blockers": [],
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED",
+    "status": "READY_FOR_EXISTING_REVIEWED_LAUNCH",
+    "checked_inputs": {
+      "projection": "large_list_summary",
+      "entry_count": 7505
+    },
+    "tool_status": {
+      "ck3_take_snapshot": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+      },
+      "ck3_open_ingame_decisions_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.activate-ingame-decisions-v1; no actual tool-call/live or product qualification inferred"
+      },
+      "ck3_select_ingame_decision_item_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.select-ingame-decision-item-v1; no actual tool-call/live or product qualification inferred"
+      },
+      "ck3_query_ingame_decision_item_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.query-ingame-decision-item-v1; no actual tool-call/live or product qualification inferred"
+      },
+      "ck3_inspect_gui_window_tree_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.inspect-gui-window-tree-v1; no actual tool-call/live or product qualification inferred"
+      },
+      "ck3_save_checkpoint": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+      },
+      "ck3_query_normal_exit_context_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+      },
+      "ck3_request_normal_exit_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+      },
+      "ck3_observe_normal_exit_v1": {
+        "source_build_ready": true,
+        "actual_live_qualified": false,
+        "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+      }
+    },
+    "capability_limit": "Source/build evidence only; actual live tool and product gates remain mandatory"
+  },
+  "not_a_replacement_for_original": true,
+  "business_pass": false
+}

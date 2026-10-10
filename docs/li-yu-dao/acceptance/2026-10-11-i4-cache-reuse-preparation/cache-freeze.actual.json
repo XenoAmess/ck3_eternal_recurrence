@@ -1,0 +1,32 @@
+{
+  "schema": "lyd-r52-derivative-cache-freeze-actual-v1",
+  "started_at_utc": "2026-10-10T17:30:49.671983+00:00",
+  "finished_at_utc": "2026-10-10T17:31:42.585766+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\ADMISSION.actual.json",
+    "bytes": 9320,
+    "sha256": "57dae5b526be78f585599daafb0abc758e7f0161ae02e2effb62938b5fe6333f"
+  },
+  "origin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-origin-metadata-20261011-001\\origin.actual.json",
+    "bytes": 2142,
+    "sha256": "11bd016cab3ca404594283dc5c174adc7ce5358f202d824c65e3057ec58dc947"
+  },
+  "seed": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r52-20261011-001\\manifest.json",
+    "bytes": 687642,
+    "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+  },
+  "source_metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-origin-metadata-20261011-001\\METADATA.actual.json",
+    "bytes": 874,
+    "sha256": "1a55f4bc8f05e2dbe6536f59a3715185a163388aaff9bab8807f56ef498f4c63"
+  },
+  "original_review_at_utc_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "cache_key_version": 2,
+  "source_full_origin_qualified": true,
+  "target_key_or_live_cache_hit_qualified": false,
+  "business_pass": false,
+  "source_runtime_or_native_rebuilt": false,
+  "automatic_TTL_renewal": false
+}

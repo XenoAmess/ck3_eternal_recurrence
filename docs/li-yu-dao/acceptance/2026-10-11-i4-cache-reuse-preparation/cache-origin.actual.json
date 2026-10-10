@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-mod-acceptance-shader-cache-origin-v1",
+  "source_run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0052",
+  "evidence": {
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\frozen-argv.json",
+      "bytes": 66003,
+      "sha256": "fd392a067bc325078bd506e50e935083f4cd346277f8363ce3139521b4e69349"
+    },
+    "prepared_case": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\prepared\\prepared-case.json",
+      "bytes": 34070,
+      "sha256": "4650439705d02e453cb76b3ebeed3a1f9c77f070f3f82cf2fef0451b5c0b5521"
+    },
+    "runtime_local": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\runtime.local.json",
+      "bytes": 2018,
+      "sha256": "fdd544259d250ecc3e9c961903f191b5f1ef1da7fb5217dbd62f65d13bd8c557"
+    },
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\native-report.json",
+      "bytes": 762119,
+      "sha256": "18c207b9dd4724f039a8851bb0ffe8eeaa10fd6e85e7d188bdf2e2e29ccc0a70"
+    },
+    "host_started": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\host-started.json",
+      "bytes": 3917,
+      "sha256": "18988141b9c4fb34aa648783153d318058402b255610bf16ba75c38de75805f1"
+    },
+    "host_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "111efe670d83339df7616ca2608327bafbe30bbad6227e5aab2435e16b06dac5"
+    },
+    "keeper_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a14\\report.json",
+      "bytes": 448,
+      "sha256": "e6e3cc77a2e07212ef5f70464d894272ac4c70bbb3030e0630976a2557a2ddb8"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0052\\release-command-001\\stdout.log",
+      "bytes": 1232,
+      "sha256": "0dc494b23beb0061a0823daf06c9779e5f2ce847fb289ba3d29553addd3979ec"
+    }
+  }
+}

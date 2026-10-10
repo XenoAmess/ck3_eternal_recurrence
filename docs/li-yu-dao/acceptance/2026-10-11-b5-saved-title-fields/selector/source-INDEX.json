@@ -1,0 +1,39 @@
+{
+  "schema": "source-only-stream-selector-packet-v1",
+  "status": "AWAITING_ROOT_REVIEW_BEFORE_REAL_SAVE_READ",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\README.md",
+      "bytes": 2525,
+      "sha256": "4cecf539c3a63cc69d968e6161bdcf17a468cfd2ec6c17c023a04412e87ece66"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\ROOT-SELECT-ARGV.actual.json",
+      "bytes": 1100,
+      "sha256": "dbcf7724f652e8f2626a59ea05dec8e51e22b84b21541d95772c784426d53181"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\select_title_row.py",
+      "bytes": 9548,
+      "sha256": "cf7845551c8217a437017aea4dee694539d743d38bd9832e649bd94ae179ddbf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\SOURCE-CHECK.actual.json",
+      "bytes": 263,
+      "sha256": "5a9a3c86f1af9ea9d040c4c29b501a304626c33404dbca207c4a311be5475124"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\test_select_title_row.py",
+      "bytes": 2443,
+      "sha256": "fb64075bdb1bb4524d106bfab9728460aa479f95f771d65d174a371480f5928e"
+    }
+  ],
+  "original_parser": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\bounded_save_parser.py",
+    "bytes": 1998,
+    "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+  },
+  "tests_executed": false,
+  "actual_save_read_executed": false,
+  "business_pass": false
+}

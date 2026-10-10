@@ -1,0 +1,40 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-saved-title-stream-selector-sourceonly-20261011-001/select_title_row.py",
+    "--save",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/r4-factory-protection-red-final/checkpoint.ck3",
+    "--bytes",
+    "91677276",
+    "--sha256",
+    "678536947b34e3600d8c76e75b68213689bb074318f5338c704343e98413424e",
+    "--title-id",
+    "18373",
+    "--parser",
+    "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+    "--parser-bytes",
+    "1998",
+    "--parser-sha256",
+    "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-r26-title18373-stream-selection-20261011-001.json"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T17:43:12.037055+00:00",
+  "finished_at_utc": "2026-10-10T17:43:19.923612+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selection-execution-20261011-001\\stdout.log",
+    "bytes": 225,
+    "sha256": "f81c56f094226c08e22d48901b9ac57e7eedd53e9bc5342180742811c50f540a"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selection-execution-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

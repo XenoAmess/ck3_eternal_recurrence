@@ -1,0 +1,36 @@
+{
+  "schema": "lyd-case4-actual-cache-input-binding-v1",
+  "at_utc": "2026-10-10T17:32:16.407943+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\ADMISSION.actual.json",
+    "bytes": 9320,
+    "sha256": "57dae5b526be78f585599daafb0abc758e7f0161ae02e2effb62938b5fe6333f"
+  },
+  "original_candidate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-admission004-sourceonly-20261011-001\\PREPARE-INPUTS.candidate.json",
+    "bytes": 2202,
+    "sha256": "98592ca03c9305979892b1a633c8eac04b9de5eca9ec68f37d42562d44d9d8e4"
+  },
+  "actual_prepare_inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\PREPARE-INPUTS.actual.json",
+    "bytes": 2436,
+    "sha256": "06c32c79b853a49672e6e896273a95e1a276caa11231ec253695f656856db75b"
+  },
+  "cache_freeze": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-freeze-20261011-001.actual.json",
+    "bytes": 1408,
+    "sha256": "d86d264c5d1289d2841c8cf74fd595bf32d5569495b68883407bf5b9c3fb8b6a"
+  },
+  "shader_cache_seed": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r52-20261011-001\\manifest.json",
+    "bytes": 687642,
+    "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+  },
+  "only_new_input_field": "shader_cache_seed",
+  "original_state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-004\\state",
+  "original_budgets_unchanged": true,
+  "new_or_extended_reservation": false,
+  "current_key_or_business_qualification_granted": false,
+  "source11_or_native_rebuilt": false,
+  "automatic_TTL_renewal": false
+}

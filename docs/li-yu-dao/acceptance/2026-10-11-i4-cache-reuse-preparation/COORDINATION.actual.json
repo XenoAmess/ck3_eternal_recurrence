@@ -1,0 +1,50 @@
+{
+  "at_utc": "2026-10-10T17:30:27.248142+00:00",
+  "actual_fresh_active_tasks": [
+    {
+      "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+      "state": "running",
+      "resources": [],
+      "stale": false,
+      "last_sequence": 4555
+    },
+    {
+      "task_id": "lyd-volume-c-admission-20261010-root",
+      "state": "running",
+      "resources": [
+        "storage-volume-c:coordinator"
+      ],
+      "stale": false,
+      "last_sequence": 4556
+    }
+  ],
+  "stale_registered_task_count": 28,
+  "runtime_process_inventory": {
+    "at_utc": "2026-10-10T17:30:27.260418+00:00",
+    "scanned_process_count": 172,
+    "python_controllers_inspected": [
+      {
+        "pid": 16708,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "actual_bus_response": {
+    "bytes": 153100,
+    "sha256": "bbc5c5475935cd75c9f91aff9f97f29a4710c3afddad3db4c7a2c9697a2da9dc"
+  },
+  "assigned_external_source_only_lanes_ROOT_confirmation": [
+    "/root/r13_live_preparation",
+    "/root/i4_resume_matrix",
+    "/root/common_local_launch_helpers"
+  ],
+  "writer_limit_each_bytes": 33554432,
+  "all_source_audit_allowance_precharged_bytes": 134217728,
+  "unregistered_external_source_lanes_are_not_inferred_from_bus": true,
+  "ROOT_invocation_confirms_no_other_heavy_writer_or_unspent_reservation": true,
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "other_reservations": []
+}

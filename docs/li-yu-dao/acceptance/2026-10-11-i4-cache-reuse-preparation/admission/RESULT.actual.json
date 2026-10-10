@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-storage-admission004-sourceonly-20261011-001/admit_i4_storage.py",
+    "--source-only-writer",
+    "/root/r13_live_preparation",
+    "--source-only-writer",
+    "/root/i4_resume_matrix",
+    "--source-only-writer",
+    "/root/common_local_launch_helpers"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T17:30:27.039628+00:00",
+  "finished_at_utc": "2026-10-10T17:30:27.515385+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261011-004\\stdout.log",
+    "bytes": 377,
+    "sha256": "46e2a1750ed64a1b0d9b6fdbd680df8747caa5a1fa4e8c40c1ed115415ac7a4d"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261011-004\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

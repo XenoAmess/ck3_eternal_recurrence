@@ -1,0 +1,66 @@
+{
+  "schema": "lyd-b5-saved-title-fields-small-actual-v1",
+  "at_utc": "2026-10-10T17:50:15.531743+00:00",
+  "records": [
+    {
+      "file": "selected-title.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-r26-title18373-stream-selection-20261011-001.json",
+      "bytes": 4446,
+      "sha256": "7cd2c6ab1800b01f79512be1938b4790c8fba407e6f68bad5e649fa340cc5d5f"
+    },
+    {
+      "file": "selector/select_title_row.py",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\select_title_row.py",
+      "bytes": 9548,
+      "sha256": "cf7845551c8217a437017aea4dee694539d743d38bd9832e649bd94ae179ddbf"
+    },
+    {
+      "file": "selector/test_select_title_row.py",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\test_select_title_row.py",
+      "bytes": 2443,
+      "sha256": "fb64075bdb1bb4524d106bfab9728460aa479f95f771d65d174a371480f5928e"
+    },
+    {
+      "file": "selector/source-INDEX.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-saved-title-stream-selector-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 1753,
+      "sha256": "221cdcd1938d5005991b1ae91a834e8f7d5bec7f6fc1c66f5fd6e4dadb08329e"
+    },
+    {
+      "file": "selection/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selection-execution-20261011-001\\RESULT.actual.json",
+      "bytes": 1613,
+      "sha256": "ecc601cbc6d1a2f1d343d6754162479c268a51242dd01aa721c4dae0167ed44c"
+    },
+    {
+      "file": "selection/stdout.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selection-execution-20261011-001\\stdout.log",
+      "bytes": 225,
+      "sha256": "f81c56f094226c08e22d48901b9ac57e7eedd53e9bc5342180742811c50f540a"
+    },
+    {
+      "file": "selection/stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selection-execution-20261011-001\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "focused/RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selector-focused-20261011-001\\RESULT.actual.json",
+      "bytes": 947,
+      "sha256": "9cf75adaab969f8266983adc4237408d9a1c83f139bf868b48baf695e21ecb98"
+    },
+    {
+      "file": "focused/stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-title-stream-selector-focused-20261011-001\\stderr.log",
+      "bytes": 108,
+      "sha256": "731497fe438734e5d846eb72a6e10623269b7612b89b976353e7d67fb6c7b7ef"
+    }
+  ],
+  "source_save_context": "R26 protection-RED final checkpoint, research only",
+  "full_save_passes_this_selection": 1,
+  "full_save_body_copied_to_git": false,
+  "native_saved_same_frame_qualified": false,
+  "B4_B5_business_pass": false,
+  "binding_or_adapter_adopted_by_this_packet": false
+}
