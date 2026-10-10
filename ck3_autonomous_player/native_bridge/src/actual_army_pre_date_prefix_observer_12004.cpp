@@ -8,6 +8,18 @@
 #endif
 namespace xar::ck3_12004 {
 namespace {
+bool MatchesStartupExecutableSha(std::string_view actual) noexcept {
+  // Digest identity is independent of hexadecimal letter case.
+  // Keep the source/wire constant spelling unchanged.
+  const std::string_view expected = kActualArmyPreDatePrefixSha12004;
+  if (actual.size() != expected.size()) return false;
+  for (std::size_t i = 0; i < actual.size(); ++i) {
+    char digit = actual[i];
+    if (digit >= 'A' && digit <= 'F') digit = static_cast<char>(digit - 'A' + 'a');
+    if (digit != expected[i]) return false;
+  }
+  return true;
+}
 // Five whole instructions, 17B; no relative or RIP operand. Resume 2A9A351.
 constexpr std::array<std::uint8_t,17> kCallbackPrologue{
   0x40,0x53,0x41,0x54,0x41,0x55,0x48,0x83,0xEC,0x40,0x4C,0x63,0xA1,0xD4,0,0,0};
@@ -197,10 +209,10 @@ bool InstallActualArmyPreDatePrefixObserver12004(
         g_active_state.load(std::memory_order_acquire) == &state &&
         environment.primary_thread_suspended_proven && environment.bindings.enabled &&
         environment.bindings.image_base == g_bindings.image_base &&
-        executable_sha256 == kActualArmyPreDatePrefixSha12004;
+        MatchesStartupExecutableSha(executable_sha256);
   }
   state.failure_flags.store(0, std::memory_order_relaxed);
-  if (executable_sha256 != kActualArmyPreDatePrefixSha12004 || !environment.bindings.enabled ||
+  if (!MatchesStartupExecutableSha(executable_sha256) || !environment.bindings.enabled ||
       environment.bindings.image_base == 0) {
     Fail(state, actual_army_prefix_install_exact_build);
     return false;
@@ -305,7 +317,7 @@ std::optional<ActualArmyPreDatePrefixObservations12004> ReadActualArmyPreDatePre
   }catch(...){return std::nullopt;}
 }
 ActualArmyPreDatePrefixBindings12004 BindActualArmyPreDatePrefixImage12004(std::uintptr_t image,std::string_view sha) noexcept {
-  ActualArmyPreDatePrefixBindings12004 out{};out.enabled=image && sha==kActualArmyPreDatePrefixSha12004;out.image_base=out.enabled?image:0;return out;
+  ActualArmyPreDatePrefixBindings12004 out{};out.enabled=image && MatchesStartupExecutableSha(sha);out.image_base=out.enabled?image:0;return out;
 }
 bool InitializeActualArmyPreDatePrefixFixture12004(const ActualArmyPreDatePrefixBindings12004 &b,ActualArmyPreDatePrefixOriginal12004 original) noexcept {
   if(g_active_state.load()!=nullptr)return false;

@@ -9,6 +9,18 @@
 
 namespace xar::ck3_12004 {
 namespace {
+bool MatchesStartupExecutableSha(std::string_view actual) noexcept {
+  // Digest identity is independent of hexadecimal letter case.
+  // Keep the source/wire constant spelling unchanged.
+  const std::string_view expected = kDailyAssaultPreparationExecutableSha256;
+  if (actual.size() != expected.size()) return false;
+  for (std::size_t i = 0; i < actual.size(); ++i) {
+    char digit = actual[i];
+    if (digit >= 'A' && digit <= 'F') digit = static_cast<char>(digit - 'A' + 'a');
+    if (digit != expected[i]) return false;
+  }
+  return true;
+}
 constexpr std::array<std::uint8_t, kActualArmyAssaultPlacementPatchBytes12004>
     kCallbackPrologue{0x48,0x89,0x5C,0x24,0x10,0x55,0x56,0x57,0x41,0x56,
                       0x41,0x57,0x48,0x81,0xEC,0x80,0x00,0x00,0x00};
@@ -229,10 +241,10 @@ bool InstallActualArmyAssaultPlacementObserver12004(
         g_active_state.load(std::memory_order_acquire) == &state &&
         environment.primary_thread_suspended_proven && environment.bindings.enabled &&
         environment.bindings.image_base == g_bindings.image_base &&
-        executable_sha256 == kDailyAssaultPreparationExecutableSha256;
+        MatchesStartupExecutableSha(executable_sha256);
   }
   state.failure_flags.store(actual_army_placement_install_none, std::memory_order_relaxed);
-  if (executable_sha256 != kDailyAssaultPreparationExecutableSha256 || !environment.bindings.enabled ||
+  if (!MatchesStartupExecutableSha(executable_sha256) || !environment.bindings.enabled ||
       environment.bindings.image_base == 0) {
     Fail(state, actual_army_placement_install_exact_build);
     return false;
@@ -311,7 +323,7 @@ bool InstallActualArmyAssaultPlacementObserver12004(
 
 
 ActualArmyAssaultPlacementBindings12004 BindActualArmyAssaultPlacementImage12004(std::uintptr_t base,std::string_view sha) noexcept {
-  ActualArmyAssaultPlacementBindings12004 out{};if(!base || sha!=kDailyAssaultPreparationExecutableSha256)return out;
+  ActualArmyAssaultPlacementBindings12004 out{};if(!base || !MatchesStartupExecutableSha(sha))return out;
   out.enabled=true;out.image_base=base;return out;
 }
 bool InitializeActualArmyAssaultPlacementFixture12004(const ActualArmyAssaultPlacementBindings12004 &bindings,ActualArmyAssaultPlacementOriginal12004 original) noexcept {
