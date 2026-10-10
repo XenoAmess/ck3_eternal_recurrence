@@ -1,4 +1,5 @@
 #include "xar_bridge/public_unit_id.hpp"
+#include "xar_bridge/first_heir_pre_read_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
@@ -19299,14 +19300,17 @@ void RunConnectedSession(
                     "current first-heir relationship needs current native revision"));
           } else {
             xar::game::Snapshot before{};
-            if (!previous_snapshot.has_value() ||
-                !xar::game::ReadSnapshot(game, before) ||
-                before != *previous_snapshot || !before.paused ||
-                !before.map_ready || !before.has_played_character ||
-                !before.played_character_alive) {
+            bool pre_read_completed = false;
+            const auto pre_read_failure = xar::bridge_detail::FirstHeirPreReadFailureV1(
+                previous_snapshot, before,
+                [&](xar::game::Snapshot &observed) {
+                  return xar::game::ReadSnapshot(game, observed);
+                }, pre_read_completed);
+            if (!pre_read_failure.empty()) {
               connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
-                      "current first-heir relationship frame changed"));
+                      xar::bridge_detail::FirstHeirPreReadErrorV1(
+                          pre_read_failure, pre_read_completed, previous_snapshot, before)));
             } else {
               const bool observed_current =
                   state.observed_primary_heir_revision == state_revision &&
