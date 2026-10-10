@@ -100,6 +100,8 @@ class Selection:
         self.manifest = read_json(self.manifest_path)
         if self.manifest.get("schema") != MANIFEST_SCHEMA:
             raise ValueError("Unsupported shared runtime manifest schema")
+        from ck3_mod_acceptance_graphics_cache import profile_enabled
+        profile_enabled(self.manifest)
         self.product_key = product_key
         self.product = self.products["products"][product_key]
         cases = ([self.products["workshop_cache_case"]] if case_id == "workshop_cache"
@@ -118,7 +120,7 @@ class Selection:
             self.case['startup'].update(self.prepared['startup'])
             if self.prepared.get('initial_plan'):
                 self.case['initial_plan'] = self.prepared['initial_plan']
-        for forbidden in ("host", "source_root", "source_index", "native", "dll", "injector", "engine", "host_args", "host_features"):
+        for forbidden in ("host", "source_root", "source_index", "native", "dll", "injector", "engine", "host_args", "host_features", "profile_features"):
             if forbidden in self.product or forbidden in self.case:
                 raise ValueError(f"Product case cannot select shared runtime: {forbidden}")
         self.context_path = context_path.resolve() if context_path else None
@@ -341,6 +343,12 @@ class Selection:
                 errors.append("Selected shared fixture policy validator: " + str(error))
             finally:
                 sys.path.remove(str(import_root))
+        if self.prepared and 'graphics_cache' in self.prepared:
+            from ck3_mod_acceptance_graphics_cache import validate_prepared_graphics
+            try:
+                checks.extend(validate_prepared_graphics(self))
+            except (KeyError, OSError, TypeError, ValueError) as error:
+                errors.append('Prepared graphics cache: ' + str(error))
         capabilities = self.manifest.get("capabilities", {})
         tool_status = {}
         for tool in self.case.get("required_mcp_tools", []):
@@ -454,6 +462,9 @@ class Selection:
         if self.case.get('status')!='ready':
             raise ValueError('Explicitly blocked product adapter cannot prepare')
         inputs=read_json(inputs_path)
+        from ck3_mod_acceptance_graphics_cache import profile_enabled, prepare_graphics_cache
+        if 'shader_cache_seed' in inputs and not profile_enabled(self.manifest):
+            raise ValueError('Shared shader cache reuse is default OFF')
         for key,value in inputs.get('case_inputs',{}).get('budgets',{}).items():
             if key not in BUDGET_FLAGS or self.case['budgets'].get(key) is not None:
                 raise ValueError('Prepare budget latebinding can only fill declared null fields: '+key)
@@ -471,12 +482,19 @@ class Selection:
         context.update(run_dir=str(output),state_dir=str(state),run_id=None)
         context['saved_campaign']=inputs.get('saved_campaign',{})
         result=self.load_adapter().prepare_case(context)
+        graphics=None
+        if 'shader_cache_seed' in inputs:
+            from types import SimpleNamespace
+            graphics=prepare_graphics_cache(SimpleNamespace(manifest=self.manifest,runtime=self.runtime,state_dir=state),
+                inputs['shader_cache_seed'],result,output)
         from ck3_mod_acceptance_prepare import write_json
         prepared={'schema':'ck3-mod-acceptance-prepared-case-v1','product':self.product_key,'case':self.case['id'],
             'runtime_manifest':pin(self.manifest_path),'case_inputs':context['case_inputs'],
             'startup':result['startup'],'initial_plan':result.get('initial_plan',self.case['initial_plan']),
             'adapter':pin(self.adapter_path),'contract':pin(self.adapter_config),'preparation':result,
             'runtime_status':'NOT_RUN','business_acceptance':'NOT_ASSESSED'}
+        if graphics is not None:
+            prepared['graphics_cache']=graphics
         path=output/'prepared-case.json';write_json(path,prepared)
         return {'status':'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN','prepared_case':pin(path),'preparation':result}
 
