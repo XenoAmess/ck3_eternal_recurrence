@@ -41,3 +41,9 @@ MCP100%、G2 5/8、NW2 2/4、M4false、M6partial、M7incomplete、自然继承0�
 本次只修正记录表示：3项已删除旧脚本的原名拆成路径 stem 与 `removed_file_extension` 元数据，仍可精确还原全部240项；历史说明不保留可执行旧入口。未修改检查器或添加豁免。`py tools/validate_python_only.py` 本地实际 GREEN，下一主线提交等待官方终态后删除临时归档ref。进度入口及路线图同步真实6067基线和退出RED，未扩大readiness。
 
 07:48:47Z已回收首次失败检出产生的5,889个派生文件，共585,854,918逻辑字节；删除对象逐项与当次新增文件清单匹配，不涉及原输入或当前完整freeze。回执为外置根下 `FAILED-CHECKOUT-COPIES-RECLAIMED.json`。本任务创建的临时operator HTTP helper也已关闭，回执 `OWNED-OPERATOR-SERVER-CLOSED.json`；旧任务operator保持原所有权。SDK、Game、owned runner已退出，screen CAS1614已释放。后续只剩主线CI及ref收口，不新增游戏重放或审计包。
+
+### 2026-10-10 16:17:45 CST 归档 ref 已删除，整合收口
+
+修正提交 master `a22e0291ec88587d282ce64ca413fc6bc4fbc928` 的 [Official Runner CI 38036746599](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38036746599) 与 [Linear history 38036746593](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38036746593) 实际 success。此前29510513的Python-only RED保留，未重跑旧SHA。官方CI通过后，已删除远端及本地 `codex/archive-original-residue-20261010`，并删除本地 `codex/native71-maintainer-resume-20261010`；实际时间 `2026-10-10T08:17:32.035760+00:00`。复核远端归档查询为空、本地两ref均不存在；没有删除其他维护者ref。回执 `D:/codex-ck3-background-spill/maintainer-resume-20261010/OWNED-INTEGRATION-REF-CLEANUP.json`。
+
+最终240项均已处理，**3合入 / 237删除或由现有主线替代 / 0待办**；64审阅包全部完成。原目录现在沿master集成，归档不再作为待处理工作保留。实际游戏基线6067、完整12流恢复包、Game关闭harness RED和存储限期保持前述事实，不因Git收口增加能力完成度。本段为删除后的永久记录，随后独立提交并正常推送。
