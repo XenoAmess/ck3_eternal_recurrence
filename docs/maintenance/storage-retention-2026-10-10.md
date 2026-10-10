@@ -4,6 +4,16 @@
 
 本文首轮审计记录现场清点和问题样本，当时没有执行删除、压缩、迁移或安装定时清理器；随后实际回收与压缩见带时间的补记和[清理实绩](storage-cleanup-2026-10-10.md)。所有执行机器共同使用 [通用策略](../storage-retention-policy.md) 与 [版本化参数](../storage-retention-policy.json)；本机容量和路径不成为跨机器前提。
 
+## 13:53 UTC：I4 R0050失败后的预约核销
+
+公共I4首次启动在恢复守卫失败，原host1/native managed shutdown1、run2/verify2，未进入业务adapter；正常GUI退出未合格。managed cleanup、原keeper/allocator退出0及屏幕独占CAS4487实际释放后，ROOT于13:53:37–13:53:38 UTC执行闭账命令，actual0。[原始核销回执](../li-yu-dao/acceptance/2026-10-10-i4-natural-startup-r50/storage/CLOSED-RESERVATION.actual.json)绑定原预约、追加输入绑定、失败报告、原始进程退出和release-command-003的实际释放结果；前两次释放命令拒绝也保留。
+
+原预约`lyd-i4-natural-expiry-4GiB-20261010-001`剩余写入预留为**0 B**。限定本场CASE、RUN、keeper及小回执根的已知新增逻辑留存为**278,937,819 B**，闭账时卷空闲623,740,022,784 B。释放的是未来写入预约，不能写成删除4GiB、实测历史峰值或物理回收量；后续小型归档不在此次测量中。
+
+闭场后的[旧state用途复核](receipts/2026-10-10-i4-old-state-review/REPORT.actual.json)实际新增可删候选为0，随即停止。旧`prepared/`与`state/`只声明77件业务/config文件537,243 B，已知旧restored save和shadercache路径均不存在；91,669,783 B恢复副本位于本次实际消费的`state002/`，其profile/cache作为未解启动代表保留。没有读取存档/cache正文、重扫目录或执行删除；两次自设小报告上限拒绝及最后纠正结果原样记载，不把目录st_size=0解释为缓存内容为空。
+
+没有从失败profile复制新cache seed或续期。新冷缓存及代表证据保护复核仍为2026-10-17T13:06:29.278808Z，checkpoint期限Oct24、raw证据Nov9、摘要复核2027-04-08；原128GiB配额例外仍Oct12到期，其他旧cache/source期限不变。`CLOSURE-MEASURE.actual.json`内一条人类说明残留旧a11/r49模板文字，实际groups、路径、绑定和进程均为a12/I4，原件不改写。自动预约管理器及自动GC仍未实现；本机闭账不证明其他机器已执行。
+
 ## 当前实测
 
 2026-10-10 12:28:43 北京时间，C 盘总量 1,023,892,852,736 B，已用 407,489,163,264 B，空闲 **616,403,689,472 B（574.07 GiB）**。当前没有临近满盘；历史多次满盘与写入失败仍是真实问题，不能拿今日读数改写历史。

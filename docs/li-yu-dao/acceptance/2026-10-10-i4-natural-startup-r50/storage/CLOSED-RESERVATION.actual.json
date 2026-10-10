@@ -1,0 +1,118 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-10T13:53:38.391005+00:00",
+  "reservation_id": "lyd-i4-natural-expiry-4GiB-20261010-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+    "bytes": 6317,
+    "sha256": "334b5ec1d28155961b2181c7cbb15f50642850696807d9af13e85d74d7f1198e"
+  },
+  "original_admission_unmodified": true,
+  "new_reservation_created": false,
+  "appended_input_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\INPUT-BINDING-002.actual.json",
+    "bytes": 3679,
+    "sha256": "75805d3bbfa11c496bd63b56d67d09ae9e5517e5fc0debe2018193e92d717903"
+  },
+  "actual_task_closed_at_utc": "2026-10-10T13:52:57.773060+00:00",
+  "actual_closed_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\release-command-003\\stdout.log",
+    "bytes": 1305,
+    "sha256": "07fc0bf84012757b9f242ab9930345f885b5bb49ff1dc885a829c2632a2939ce"
+  },
+  "actual_runtime_outcome": {
+    "status": "RED",
+    "error": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1: native gameplay step failed: application-main typed query failed or its snapshot changed; typed_query_failure_v1={\"executor_enter\":null,\"executor_exception\":{\"code\":0,\"image\":\"none\",\"rva\":null},\"executor_finish\":null,\"executor_typed_result\":null,\"final_equal\":null,\"final_read\":null,\"frame_stable\":null,\"query_type\":\"campaign\",\"stage\":\"wait\",\"typed_result\":null,\"wait_completed\":false,\"wait_result\":\"timeout_cancelled_before_execution\"}",
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.json",
+      "bytes": 3750943,
+      "sha256": "64005e2cc90417dbfbc78d50794a22f85e9142c80b74d331803d2d8d386eeee0"
+    },
+    "original_host_started": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\host-started.json",
+      "bytes": 3916,
+      "sha256": "b4a075396cfa16902d6fc45edbb581b2f74944f4353a1c02936aa100aad62b86"
+    },
+    "original_host_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "6c96e4b37f5e0bbb74ce00e73edbf9fd4af92b59e24e2a8bcf1af5e718d9ce8c"
+    },
+    "host_original_returncode": 1,
+    "actual_original_popen_wait": true,
+    "native_session_process_exit_code": null,
+    "native_shutdown_ck3_exit_code": 1,
+    "session_closure": {
+      "mode": "current-shared-managed-session"
+    },
+    "keeper_original_parent_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "2eadd3f6062430c53bff873dbba3ecc76441bdb5b490ba03b87d508c08b449c4"
+    },
+    "keeper_actual_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12\\inputs.json",
+      "bytes": 822,
+      "sha256": "a5fb93031ade86fa628f88e3e7574d2feb1502a6a1d9cce6bf10df0307ba9d4a"
+    },
+    "keeper_actual_ready": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12\\ready.json",
+      "bytes": 950,
+      "sha256": "45eb17807d5f12db415e5fb77e3280f704746d538cf55c6d834a5c0833e1b2ee"
+    },
+    "keeper_original_returncode": 0,
+    "allocator_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-allocation-20261010-001\\RESULT.actual.json",
+      "bytes": 1670,
+      "sha256": "98e58239bc20fe8c0702ea8ec79cc1a2f594b0ed544789db6ca0c58691137570"
+    },
+    "allocator_command_exit_code": 0,
+    "public_run_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261010-001\\RESULT.actual.json",
+      "bytes": 1330,
+      "sha256": "b532b8a06dac191b640ed26726572bddf435b7569426d8318306949ae4d173e3"
+    },
+    "public_run_command_exit_code": 2,
+    "normal_GUI_exit_or_business_qualification_granted_by_storage_closure": false
+  },
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+    "bytes": 17044,
+    "sha256": "b3018567c9dac64b1447cee8090db7b12915d0f0ae2fc8e84d59fe06a4b626d2"
+  },
+  "asset_groups": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\ASSET-GROUPS-CLOSED.actual.json",
+    "bytes": 49297,
+    "sha256": "482f8c1bdcaf108590ea5d56094e30676ba0b845bb33fe10d3eb5774420e94a7"
+  },
+  "admitted_peak_bytes": 4294967296,
+  "released_reservation_peak_bytes": 4294967296,
+  "remaining_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_peak_minus_retained": true,
+  "observed_retained_task_logical_bytes_known": 278937819,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "unused_actual_peak_budget_bytes_or_null": null,
+  "fresh_free_bytes_at_closure": 623740022784,
+  "fresh_total_volume_bytes": 1023892852736,
+  "retention": {
+    "new_cold_shadercache_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "checkpoint_expires_at_utc": "2026-10-24T13:52:57.773060+00:00",
+    "raw_evidence_expires_at_utc": "2026-11-09T13:52:57.773060+00:00",
+    "record_review_at_utc": "2027-04-08T13:52:57.773060+00:00",
+    "representative_protected_until_utc": "2026-10-17T13:06:29.278808+00:00",
+    "derived_exports_if_any_ttl_hours_from_actual_creation": 48,
+    "quota_override_review_unchanged_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "copy_close_and_review_do_not_renew_cache_or_existing_source_protection": true,
+    "automatic_TTL_renewal": false,
+    "automatic_deletion": false
+  },
+  "root_coordinator_actual_exclusive_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "no_auto_renewal_or_deletion": true,
+  "runtime_or_business_qualification": false,
+  "automatic_reservation_manager_implemented": false
+}

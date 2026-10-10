@@ -1,0 +1,13 @@
+{
+  "at_utc": "2026-10-10T13:51:24.394251+00:00",
+  "reviewer": "/root",
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\final-steam-menu-001\\source.png",
+    "bytes": 929455,
+    "sha256": "6b7524151415cb7efd9033a34c60ef5e0de5b079dc391591b44861f1db578533"
+  },
+  "visible_text": "离线模式",
+  "direct_original_image_review": true,
+  "reversible_window_movement_observed": true,
+  "steam_offline_confirmed": true
+}

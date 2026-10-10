@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-10T13:50:41.486163+00:00",
+  "hwnd": 263104,
+  "pid": 7216,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "image_size": [
+    1920,
+    1080
+  ],
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\final-steam-menu-001\\source.png",
+    "bytes": 929455,
+    "sha256": "6b7524151415cb7efd9033a34c60ef5e0de5b079dc391591b44861f1db578533"
+  },
+  "input_sent": false
+}

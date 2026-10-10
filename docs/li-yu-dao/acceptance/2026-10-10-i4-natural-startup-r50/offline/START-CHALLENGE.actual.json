@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-mod-acceptance-review-challenge-v1",
+  "created_at_utc": "2026-10-10T13:27:14.023483+00:00",
+  "nonce": "b2532bb3d48264f10bbe8de8ef6d9bad",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0050",
+  "screen_task": "common-acceptance-12004-20261010-a12",
+  "frozen_argv": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\frozen-argv.json",
+    "bytes": 66240,
+    "sha256": "e91715bf4cd3595c1f60cbeb4b0d3e54f0c87664a3abc0c1802dd5018be1abe1"
+  },
+  "keeper_root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12",
+  "keeper_inputs": {
+    "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12\\inputs.json",
+    "bytes": 822,
+    "sha256": "a5fb93031ade86fa628f88e3e7574d2feb1502a6a1d9cce6bf10df0307ba9d4a"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002\\steam-frame-freshness.json",
+    "bytes": 1180,
+    "sha256": "3674751988476faa2920319df0b8be8ef3286066e5e0e4e1aea0062fb85ed110"
+  },
+  "image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002\\steam-moved.png",
+    "bytes": 929663,
+    "sha256": "f87bfcdeb55158e69b6c8ea72c4290c432ec52a3f22ac634f16308b549c91e71"
+  },
+  "review_image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\direct-review-001\\direct-review.png",
+    "bytes": 935713,
+    "sha256": "0d6e0be03a1a4269aaa1f0b50cb6450c26fe8ea4e6ffd0f46610b7e31621b666"
+  },
+  "cas_at_creation": {
+    "checkout_head": "e34dc9f79d971df608a49ad397c257f127a70355",
+    "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "event_id": "b13e5a7b0ca443e090b76969222db973",
+    "expected_sequence": 4475,
+    "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "schema": "xar.promo.screen-lease-cas/v1",
+    "screen_resource": "ck3-screen:acquired",
+    "sequence": 4476,
+    "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "task_id": "common-acceptance-12004-20261010-a12",
+    "updated_at_utc": "2026-10-10T13:25:23.392790+00:00"
+  },
+  "offline_status_observed": null,
+  "business_pass": false
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/.codex-task-bus/bin/codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "common-acceptance-12004-20261010-a12",
+    "--expected-sequence",
+    "4486",
+    "--summary",
+    "R0050-startup-RED-host1-cleanup-proven-offline-reviewed-desktop-restored-keeper0-no-business"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T13:52:57.409908+00:00",
+  "finished_at_utc": "2026-10-10T13:52:57.793029+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\release-command-003\\stdout.log",
+    "bytes": 1305,
+    "sha256": "07fc0bf84012757b9f242ab9930345f885b5bb49ff1dc885a829c2632a2939ce"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\release-command-003\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

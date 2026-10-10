@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-mod-acceptance-direct-review-v1",
+  "reviewed_at_utc": "2026-10-10T13:27:51.058332+00:00",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "observed_nonce": "b2532bb3d48264f10bbe8de8ef6d9bad",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0050",
+  "screen_task": "common-acceptance-12004-20261010-a12",
+  "challenge": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\direct-review-001\\challenge.json",
+    "bytes": 2316,
+    "sha256": "808b80191c863d9f8be55ee8874790d1076bf0c60da453f60762c8d6969d8eec"
+  },
+  "frozen_argv": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\frozen-argv.json",
+    "bytes": 66240,
+    "sha256": "e91715bf4cd3595c1f60cbeb4b0d3e54f0c87664a3abc0c1802dd5018be1abe1"
+  },
+  "image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002\\steam-moved.png",
+    "bytes": 929663,
+    "sha256": "f87bfcdeb55158e69b6c8ea72c4290c432ec52a3f22ac634f16308b549c91e71"
+  },
+  "review_image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\direct-review-001\\direct-review.png",
+    "bytes": 935713,
+    "sha256": "0d6e0be03a1a4269aaa1f0b50cb6450c26fe8ea4e6ffd0f46610b7e31621b666"
+  },
+  "observed_text": "ROOT directly viewed the original moved Steam image and nonce banner; visible 离线模式 and current Windows taskbar. Original image dimensions read from file; reversible window movement evidence reviewed.",
+  "business_pass": false
+}

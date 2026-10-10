@@ -1,0 +1,47 @@
+{
+  "schema": "ck3.single-exact-head-ci-observation.v1",
+  "requested_head_sha": "e34dc9f79d971df608a49ad397c257f127a70355",
+  "observed_at_utc": "2026-10-10T13:36:34.558940+00:00",
+  "queries": 1,
+  "no_polling_logs_other_head_tests_main_git_mutation": true,
+  "result_applies_only_to_requested_exact_head": true,
+  "runtime_or_business_qualification": false,
+  "status": "OBSERVED",
+  "api_total_count": 2,
+  "workflows": {
+    "Official Runner CI": {
+      "conclusion": "success",
+      "created_at": "2026-10-10T13:24:58Z",
+      "event": "push",
+      "head_sha": "e34dc9f79d971df608a49ad397c257f127a70355",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38055623143",
+      "id": 38055623143,
+      "name": "Official Runner CI",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T13:24:58Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T13:34:41Z",
+      "workflow_id": 336785267
+    },
+    "Linear history": {
+      "conclusion": "success",
+      "created_at": "2026-10-10T13:24:58Z",
+      "event": "push",
+      "head_sha": "e34dc9f79d971df608a49ad397c257f127a70355",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38055623182",
+      "id": 38055623182,
+      "name": "Linear history",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T13:24:58Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T13:25:35Z",
+      "workflow_id": 377165366
+    },
+    "Li Yu Dao static checks": {
+      "status": "NOT_TRIGGERED",
+      "not_counted_as_success": true,
+      "scope": "No matching run in this one exact-head observation; no claim about future triggering."
+    }
+  },
+  "all_triggered_terminal": true
+}

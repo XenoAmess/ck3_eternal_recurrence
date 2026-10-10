@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\steam_offline_fresh_frame.py", line 217, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\steam_offline_fresh_frame.py", line 213, in main
+    print(json.dumps(capture(args.output_dir), ensure_ascii=False))
+                     ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\steam_offline_fresh_frame.py", line 128, in capture
+    raise RuntimeError("Steam must be the foreground window for this capture")
+RuntimeError: Steam must be the foreground window for this capture

@@ -1,0 +1,419 @@
+{
+  "schema": "lyd-i4-reservation-close-bounded-metadata-v1",
+  "started_at_utc": "2026-10-10T13:53:37.968072+00:00",
+  "finished_at_utc": "2026-10-10T13:53:38.378990+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+    "bytes": 6317,
+    "sha256": "334b5ec1d28155961b2181c7cbb15f50642850696807d9af13e85d74d7f1198e"
+  },
+  "appended_input_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\INPUT-BINDING-002.actual.json",
+    "bytes": 3679,
+    "sha256": "75805d3bbfa11c496bd63b56d67d09ae9e5517e5fc0debe2018193e92d717903"
+  },
+  "machine_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\MACHINE-PROFILE.actual.json",
+    "bytes": 1052,
+    "sha256": "415b32fa4eb156f27ee174a2c516dd6eee1317a373db32fc717817ae3f57dbbb"
+  },
+  "actual_context": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\reviewed-context.json",
+    "bytes": 2997,
+    "sha256": "09e2e9956519000150b1174ae6469c76a17df92c796c515cb85954491cea7e96"
+  },
+  "actual_task_closed_at_utc": "2026-10-10T13:52:57.773060+00:00",
+  "actual_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\release-command-003\\stdout.log",
+    "bytes": 1305,
+    "sha256": "07fc0bf84012757b9f242ab9930345f885b5bb49ff1dc885a829c2632a2939ce"
+  },
+  "keeper_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12\\report.json",
+    "bytes": 448,
+    "sha256": "df8546acc87958aa61a93bb797ad2f199ce3e38981e225e61f95b43412e64179"
+  },
+  "actual_runtime_outcome": {
+    "status": "RED",
+    "error": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1: native gameplay step failed: application-main typed query failed or its snapshot changed; typed_query_failure_v1={\"executor_enter\":null,\"executor_exception\":{\"code\":0,\"image\":\"none\",\"rva\":null},\"executor_finish\":null,\"executor_typed_result\":null,\"final_equal\":null,\"final_read\":null,\"frame_stable\":null,\"query_type\":\"campaign\",\"stage\":\"wait\",\"typed_result\":null,\"wait_completed\":false,\"wait_result\":\"timeout_cancelled_before_execution\"}",
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.json",
+      "bytes": 3750943,
+      "sha256": "64005e2cc90417dbfbc78d50794a22f85e9142c80b74d331803d2d8d386eeee0"
+    },
+    "original_host_started": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\host-started.json",
+      "bytes": 3916,
+      "sha256": "b4a075396cfa16902d6fc45edbb581b2f74944f4353a1c02936aa100aad62b86"
+    },
+    "original_host_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "6c96e4b37f5e0bbb74ce00e73edbf9fd4af92b59e24e2a8bcf1af5e718d9ce8c"
+    },
+    "host_original_returncode": 1,
+    "actual_original_popen_wait": true,
+    "native_session_process_exit_code": null,
+    "native_shutdown_ck3_exit_code": 1,
+    "session_closure": {
+      "mode": "current-shared-managed-session"
+    },
+    "keeper_original_parent_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "2eadd3f6062430c53bff873dbba3ecc76441bdb5b490ba03b87d508c08b449c4"
+    },
+    "keeper_actual_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12\\inputs.json",
+      "bytes": 822,
+      "sha256": "a5fb93031ade86fa628f88e3e7574d2feb1502a6a1d9cce6bf10df0307ba9d4a"
+    },
+    "keeper_actual_ready": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12\\ready.json",
+      "bytes": 950,
+      "sha256": "45eb17807d5f12db415e5fb77e3280f704746d538cf55c6d834a5c0833e1b2ee"
+    },
+    "keeper_original_returncode": 0,
+    "allocator_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-allocation-20261010-001\\RESULT.actual.json",
+      "bytes": 1670,
+      "sha256": "98e58239bc20fe8c0702ea8ec79cc1a2f594b0ed544789db6ca0c58691137570"
+    },
+    "allocator_command_exit_code": 0,
+    "public_run_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261010-001\\RESULT.actual.json",
+      "bytes": 1330,
+      "sha256": "b532b8a06dac191b640ed26726572bddf435b7569426d8318306949ae4d173e3"
+    },
+    "public_run_command_exit_code": 2,
+    "normal_GUI_exit_or_business_qualification_granted_by_storage_closure": false
+  },
+  "groups": [
+    {
+      "label": "entire_i4_case001",
+      "root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001",
+      "file_count": 3938,
+      "logical_bytes": 240610188,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 844424933080330
+      },
+      "observed_metadata_identity_stream_sha256": "5cb92c055b8004435f0b7b3927201355de32110ff063acbce80ee29548298564",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "checkpoint": {
+          "file_count": 182,
+          "logical_bytes": 93110642
+        },
+        "cache": {
+          "file_count": 3740,
+          "logical_bytes": 146942211
+        },
+        "raw_evidence": {
+          "file_count": 16,
+          "logical_bytes": 557335
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "actual_run",
+      "root": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050",
+      "file_count": 128,
+      "logical_bytes": 31650852,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 844424933080790
+      },
+      "observed_metadata_identity_stream_sha256": "9f78ef64249a65048476627c3163b2710c425dfd330d32445d153af15bfa0d57",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "raw_evidence": {
+          "file_count": 51,
+          "logical_bytes": 31113606
+        },
+        "checkpoint": {
+          "file_count": 77,
+          "logical_bytes": 537246
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "actual_keeper",
+      "root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a12",
+      "file_count": 117,
+      "logical_bytes": 2926155,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 1125899909791561
+      },
+      "observed_metadata_identity_stream_sha256": "427ccd5531e5b86fde4cbdb3edd5a122c4b9acc4b814ad28d2b4fd1e9b53c1c7",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 116,
+          "logical_bytes": 2919747
+        },
+        "raw_evidence": {
+          "file_count": 1,
+          "logical_bytes": 6408
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "admission_receipts",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001",
+      "file_count": 4,
+      "logical_bytes": 12680,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 1688849863212265
+      },
+      "observed_metadata_identity_stream_sha256": "39650e59ebeacd5dba62fcbd5191cb83e5161a1f7407b3540f690d3b640e8c3f",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 4,
+          "logical_bytes": 12680
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "admission_command_receipts",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-execution-20261010-001",
+      "file_count": 3,
+      "logical_bytes": 1544,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 3659174700186606
+      },
+      "observed_metadata_identity_stream_sha256": "1bd9c2f1be2628d660be222c0858f71d31660f3288167d4e55c47cee675d75f9",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 1167
+        },
+        "raw_evidence": {
+          "file_count": 2,
+          "logical_bytes": 377
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "closure_source_only",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure-latebound-20261010-002",
+      "file_count": 1,
+      "logical_bytes": 28864,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 844424933081261
+      },
+      "observed_metadata_identity_stream_sha256": "5f2332293758c140f06c5f877cf32e624d43bb3b139af18cb6eff44281d64d29",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 28864
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "allocator_command_receipts",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-allocation-20261010-001",
+      "file_count": 3,
+      "logical_bytes": 5997,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 1407374886502008
+      },
+      "observed_metadata_identity_stream_sha256": "8619954c47b62b45a488a21c510ff6dbe55f4d4159de147b30a3dcc49fdbff78",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 1670
+        },
+        "raw_evidence": {
+          "file_count": 2,
+          "logical_bytes": 4327
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "public_run_command_receipts",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261010-001",
+      "file_count": 3,
+      "logical_bytes": 15765,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 3377699723476844
+      },
+      "observed_metadata_identity_stream_sha256": "8716433c8ed6293e7660a629614b80a4acfce97511f3e83f45c3ae0c2c22c6c4",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 1330
+        },
+        "raw_evidence": {
+          "file_count": 2,
+          "logical_bytes": 14435
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "additional_small_receipts_0",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-verify-20261010-001",
+      "file_count": 3,
+      "logical_bytes": 1658,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 10696049117954082
+      },
+      "observed_metadata_identity_stream_sha256": "09cde09fd16ebfc4d59fd6253f34af95b9bdce29ef7b6fe9cc117afded239c16",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 1337
+        },
+        "raw_evidence": {
+          "file_count": 2,
+          "logical_bytes": 321
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "additional_small_receipts_1",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-final-steam-fresh-frame-20261010-002",
+      "file_count": 3,
+      "logical_bytes": 1812299,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 6192449490587689
+      },
+      "observed_metadata_identity_stream_sha256": "9c975bba2f33fb1579ac12598b25a243f113c9d084b797f8a08340342763717c",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "raw_evidence": {
+          "file_count": 2,
+          "logical_bytes": 1811119
+        },
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 1180
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    },
+    {
+      "label": "additional_small_receipts_2",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002",
+      "file_count": 3,
+      "logical_bytes": 1871817,
+      "allocated_bytes_or_null": null,
+      "hardlinked_regular_file_entries": 0,
+      "root_metadata_identity": {
+        "device": 11439297576789895419,
+        "file_id": 844424933080949
+      },
+      "observed_metadata_identity_stream_sha256": "eaa3e93fb970468b6c97d0bf31c91c519007f48bd10563db0524151c5249f52b",
+      "identity_stream_is_not_content_hash_or_portable_replica_identity": true,
+      "disjoint_component_counts": {
+        "raw_evidence": {
+          "file_count": 2,
+          "logical_bytes": 1870637
+        },
+        "record": {
+          "file_count": 1,
+          "logical_bytes": 1180
+        }
+      },
+      "status": "BOUNDED_CURRENT_METADATA_MEASURED",
+      "file_bodies_read_or_hashed": false
+    }
+  ],
+  "metadata_entries_examined": 4342,
+  "observed_new_retained_logical_bytes_known": 278937819,
+  "known_subtotal_is_not_total_project_usage": true,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "retention": {
+    "new_cold_shadercache_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "checkpoint_expires_at_utc": "2026-10-24T13:52:57.773060+00:00",
+    "raw_evidence_expires_at_utc": "2026-11-09T13:52:57.773060+00:00",
+    "record_review_at_utc": "2027-04-08T13:52:57.773060+00:00",
+    "representative_protected_until_utc": "2026-10-17T13:06:29.278808+00:00",
+    "derived_exports_if_any_ttl_hours_from_actual_creation": 48,
+    "quota_override_review_unchanged_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "copy_close_and_review_do_not_renew_cache_or_existing_source_protection": true,
+    "automatic_TTL_renewal": false,
+    "automatic_deletion": false
+  },
+  "fresh_runtime_process_inventory": {
+    "at_utc": "2026-10-10T13:53:37.775519+00:00",
+    "scanned_process_count": 174,
+    "python_controllers_inspected": [
+      {
+        "pid": 5480,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "fresh_bus_response": {
+    "bytes": 151783,
+    "sha256": "de77b723f1b464064bc18504b179f4c71665d122387ed3e06bcac48b78be4f33"
+  },
+  "stale_task_registration_count": 28,
+  "process_absence_is_not_original_exit_or_normal_exit_proof": true,
+  "existing_source09_O8_native_seed_recounted_bytes": 0,
+  "measurement_limits": [
+    "Only explicit entire_i4_case001/current run/a11 and bounded new r49 receipt roots",
+    "No existing Source09/runtime/native/immutable seed measurement or body hashing",
+    "Per-path logical bytes; physical allocation and historical peak unknown",
+    "Closure outputs written after this measure and later archives are outside the observed subtotal"
+  ],
+  "automatic_deletion_or_TTL_renewal": false
+}

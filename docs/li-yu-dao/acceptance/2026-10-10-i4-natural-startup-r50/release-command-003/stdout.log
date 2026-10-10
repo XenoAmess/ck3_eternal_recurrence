@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "e34dc9f79d971df608a49ad397c257f127a70355"
+    },
+    "last_sequence": 4487,
+    "next_step": "",
+    "pid": 14036,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0050-startup-RED-host1-cleanup-proven-offline-reviewed-desktop-restored-keeper0-no-business",
+    "task_id": "common-acceptance-12004-20261010-a12",
+    "updated_at_utc": "2026-10-10T13:52:57.773060+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4487,
+    "event_id": "0ecc720742ea4015abaf45edd8a2cf16",
+    "timestamp_utc": "2026-10-10T13:52:57.774152+00:00",
+    "kind": "completed",
+    "task_id": "common-acceptance-12004-20261010-a12",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0050-startup-RED-host1-cleanup-proven-offline-reviewed-desktop-restored-keeper0-no-business",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "e34dc9f79d971df608a49ad397c257f127a70355"
+    }
+  }
+}

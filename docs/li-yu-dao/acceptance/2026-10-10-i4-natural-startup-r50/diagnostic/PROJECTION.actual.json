@@ -1,0 +1,427 @@
+{
+  "schema": "lyd.r50.corrected-bounded-startup-projection.v1",
+  "original": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.json",
+    "bytes": 3750943,
+    "sha256": "64005e2cc90417dbfbc78d50794a22f85e9142c80b74d331803d2d8d386eeee0"
+  },
+  "corrective_body_read_count": 1,
+  "earlier_cap_failure_body_read_count": 1,
+  "top_level_keys": [
+    "status",
+    "phase",
+    "started_at",
+    "fixture_only",
+    "fixture_profile",
+    "steps",
+    "state_dir",
+    "agent_source_root",
+    "pipe",
+    "native_wire",
+    "mcp_wire",
+    "mcp_calls",
+    "server_stderr",
+    "session",
+    "error",
+    "frontend_observations_journal",
+    "profile",
+    "saved_campaign_input",
+    "saved_campaign_launch",
+    "managed_session_done",
+    "identity",
+    "mcp_initialize",
+    "mcp_tools",
+    "saved_campaign_restore",
+    "exception_traceback",
+    "snapshot_final",
+    "diagnostics_final",
+    "managed_session_thread_finished",
+    "finished_at",
+    "cleanup_ok"
+  ],
+  "top_level_scalars": {
+    "status": "RED",
+    "phase": "saved-campaign-single-command-line-restore",
+    "started_at": "2026-10-10T13:28:10.384145+00:00",
+    "fixture_only": false,
+    "fixture_profile": true,
+    "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\state002",
+    "agent_source_root": "C:\\csr9",
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0050",
+    "native_wire": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.native-wire.jsonl",
+    "mcp_wire": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.mcp-wire.jsonl",
+    "mcp_calls": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.mcp-calls.jsonl",
+    "server_stderr": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.server-stderr.log",
+    "error": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1: native gameplay step failed: application-main typed query failed or its snapshot changed; typed_query_failure_v1={\"executor_enter\":null,\"executor_exception\":{\"code\":0,\"image\":\"none\",\"rva\":null},\"executor_finish\":null,\"executor_typed_result\":null,\"final_equal\":null,\"final_read\":null,\"frame_stable\":null,\"query_type\":\"campaign\",\"stage\":\"wait\",\"typed_result\":null,\"wait_completed\":false,\"wait_result\":\"timeout_cancelled_before_execution\"}",
+    "frontend_observations_journal": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\native-report.frontend-observations.jsonl",
+    "managed_session_done": true,
+    "exception_traceback": "Traceback (most recent call last):\n  File \"C:\\csr9\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 3412, in run\n    await wait_for_saved_campaign(client, saved_campaign, report=report, write=write,\n    ...<2 lines>...\n        readiness_deadline=getattr(args, \"_saved_campaign_readiness_deadline\", None))\n  File \"C:\\csr9\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 828, in wait_for_saved_campaign\n    root = await client.call(\"ck3_query_campaign_root_context_v1\", {\"expected_revision\": snapshot[\"revision\"]})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\csr9\\...[bounded]",
+    "managed_session_thread_finished": true,
+    "finished_at": "2026-10-10T13:42:16.222131+00:00",
+    "cleanup_ok": true
+  },
+  "restore_fields": {
+    "status": "WAITING_FOR_ACTUAL_SAVED_CAMPAIGN_OWNER_FRAMES",
+    "expected": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+      "actor_character_id": 31254,
+      "date_raw": 53144712,
+      "profile_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\state002\\profile",
+      "copied_save_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\state002\\profile\\save games\\restored_campaign.ck3",
+      "load_save_name": "restored_campaign",
+      "product_inventory_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\prepared002\\saved-product-inventory.json",
+      "product_inventory_sha256": "656b3a706f9a944aa84296aa3370557fcb3133e5931b6a1236e0d2355b1b614f",
+      "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE",
+      "source_game_state_claimed": false,
+      "product_acceptance_proven": false
+    },
+    "load_provider": "runtime.launch(load_save_name):single_-loadsave",
+    "new_game_requested": false,
+    "start_requested": false,
+    "fixture_setup_requested": false,
+    "product_acceptance_proven": false,
+    "observed_process_binding": {
+      "bridge_pid": 17368,
+      "connection_generation": 1
+    }
+  },
+  "startup_observations_count": 1134,
+  "startup_first_last": [
+    {
+      "at": "2026-10-10T13:28:19.593956+00:00",
+      "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+      "connected": false,
+      "semantic_state_available": false,
+      "bridge_pid": null,
+      "connection_generation": 0
+    },
+    {
+      "at": "2026-10-10T13:39:52.616478+00:00",
+      "status": "INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE",
+      "connected": true,
+      "semantic_state_available": true,
+      "bridge_pid": 17368,
+      "connection_generation": 1
+    }
+  ],
+  "observation_count": 157,
+  "observation_shape": [
+    "snapshot",
+    "frame",
+    "campaign_root",
+    "binding"
+  ],
+  "snapshot_shape": [
+    "date_raw",
+    "speed",
+    "paused",
+    "local_player_id",
+    "map_ready",
+    "played_character",
+    "played_character_gold",
+    "played_character_prestige",
+    "played_character_piety",
+    "one_life_settlement",
+    "active_event",
+    "pending_character_interaction",
+    "active_wars",
+    "player_armies",
+    "last_checkpoint_submission",
+    "history",
+    "format_version",
+    "snapshot_id",
+    "revision",
+    "native_revision",
+    "backend_id",
+    "source",
+    "diagnostics",
+    "episode_projection",
+    "managed_campaign_run_binding",
+    "native_command_history",
+    "native_rollback_war_failure",
+    "native_rollback_war_failures",
+    "native_command_history_export"
+  ],
+  "observed_state_transitions": [
+    {
+      "index": 0,
+      "state": {
+        "date_raw": 53144712,
+        "map_ready": true,
+        "paused": true,
+        "local_player_id": 1,
+        "episode_projection": "native_campaign",
+        "actor": {
+          "character_id": 31254,
+          "source": "native",
+          "alive": true
+        },
+        "active_event": null,
+        "lobby_frontend_readiness_fields": {}
+      }
+    }
+  ],
+  "selected_observations": [
+    {
+      "index": 0,
+      "snapshot": {
+        "revision": 2,
+        "native_revision": 1,
+        "snapshot_id": "native:1",
+        "date_raw": 53144712,
+        "map_ready": true,
+        "paused": true,
+        "local_player_id": 1,
+        "episode_projection": "native_campaign",
+        "actor": {
+          "character_id": 31254,
+          "source": "native",
+          "alive": true
+        },
+        "active_event": null,
+        "lobby_frontend_readiness_fields": {},
+        "owner": {
+          "bridge_pid": 17368,
+          "connection_generation": 1,
+          "connected": true,
+          "last_error": null
+        },
+        "mailbox": {
+          "ready": true,
+          "pump_epochs": 2,
+          "owner_verified_pump_epochs": 2,
+          "owner_tid": 16776,
+          "current_tid": 16776,
+          "stamp_read_success": true
+        }
+      },
+      "frame": {
+        "actor_character_id": 31254,
+        "date_raw": 53144712,
+        "local_player_id": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "bridge_pid": 17368,
+        "connection_generation": 1,
+        "owner_tid": 16776,
+        "pump_epoch": 2
+      },
+      "campaign_root": null,
+      "binding": null
+    },
+    {
+      "index": 1,
+      "snapshot": {
+        "revision": 2,
+        "native_revision": 1,
+        "snapshot_id": "native:1",
+        "date_raw": 53144712,
+        "map_ready": true,
+        "paused": true,
+        "local_player_id": 1,
+        "episode_projection": "native_campaign",
+        "actor": {
+          "character_id": 31254,
+          "source": "native",
+          "alive": true
+        },
+        "active_event": null,
+        "lobby_frontend_readiness_fields": {},
+        "owner": {
+          "bridge_pid": 17368,
+          "connection_generation": 1,
+          "connected": true,
+          "last_error": null
+        },
+        "mailbox": {
+          "ready": true,
+          "pump_epochs": 2,
+          "owner_verified_pump_epochs": 2,
+          "owner_tid": 16776,
+          "current_tid": 16776,
+          "stamp_read_success": true
+        }
+      },
+      "frame": {
+        "actor_character_id": 31254,
+        "date_raw": 53144712,
+        "local_player_id": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "bridge_pid": 17368,
+        "connection_generation": 1,
+        "owner_tid": 16776,
+        "pump_epoch": 2
+      },
+      "campaign_root": null,
+      "binding": null
+    },
+    {
+      "index": 155,
+      "snapshot": {
+        "revision": 2,
+        "native_revision": 1,
+        "snapshot_id": "native:1",
+        "date_raw": 53144712,
+        "map_ready": true,
+        "paused": true,
+        "local_player_id": 1,
+        "episode_projection": "native_campaign",
+        "actor": {
+          "character_id": 31254,
+          "source": "native",
+          "alive": true
+        },
+        "active_event": null,
+        "lobby_frontend_readiness_fields": {},
+        "owner": {
+          "bridge_pid": 17368,
+          "connection_generation": 1,
+          "connected": true,
+          "last_error": null
+        },
+        "mailbox": {
+          "ready": true,
+          "pump_epochs": 2,
+          "owner_verified_pump_epochs": 2,
+          "owner_tid": 16776,
+          "current_tid": 16776,
+          "stamp_read_success": true
+        }
+      },
+      "frame": {
+        "actor_character_id": 31254,
+        "date_raw": 53144712,
+        "local_player_id": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "bridge_pid": 17368,
+        "connection_generation": 1,
+        "owner_tid": 16776,
+        "pump_epoch": 2
+      },
+      "campaign_root": null,
+      "binding": null
+    },
+    {
+      "index": 156,
+      "snapshot": {
+        "revision": 2,
+        "native_revision": 1,
+        "snapshot_id": "native:1",
+        "date_raw": 53144712,
+        "map_ready": true,
+        "paused": true,
+        "local_player_id": 1,
+        "episode_projection": "native_campaign",
+        "actor": {
+          "character_id": 31254,
+          "source": "native",
+          "alive": true
+        },
+        "active_event": null,
+        "lobby_frontend_readiness_fields": {},
+        "owner": {
+          "bridge_pid": 17368,
+          "connection_generation": 1,
+          "connected": true,
+          "last_error": null
+        },
+        "mailbox": {
+          "ready": true,
+          "pump_epochs": 2,
+          "owner_verified_pump_epochs": 2,
+          "owner_tid": 16776,
+          "current_tid": 16776,
+          "stamp_read_success": true
+        }
+      },
+      "frame": {
+        "actor_character_id": 31254,
+        "date_raw": 53144712,
+        "local_player_id": 1,
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "bridge_pid": 17368,
+        "connection_generation": 1,
+        "owner_tid": 16776,
+        "pump_epoch": 2
+      },
+      "campaign_root": null,
+      "binding": null
+    }
+  ],
+  "root_query_records": [],
+  "lifecycle_error_facts": [
+    {
+      "path": "root.phase",
+      "value": "saved-campaign-single-command-line-restore"
+    },
+    {
+      "path": "root.session.report.finished_at",
+      "value": "2026-10-10T13:42:15.724435+00:00"
+    },
+    {
+      "path": "root.session.report.shutdown.ck3_exit_code",
+      "value": 1
+    },
+    {
+      "path": "root.session.report.error",
+      "value": null
+    },
+    {
+      "path": "root.session.error",
+      "value": null
+    },
+    {
+      "path": "root.error",
+      "value": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1: native gameplay step failed: application-main typed query failed or its snapshot changed; typed_query_failure_v1={\"executor_enter\":null,\"executor_exception\":{\"code\":0,\"image\":\"none\",\"rva\":null},\"executor_finish\":null,\"executor_typed_result\":null,\"final_equal\":null,\"final_read\":null,\"frame_stable\":null,\"query_type\":\"campaign\",\"stage\":\"wait\",\"typed_result\":null,\"wait_completed\":false,\"wait_result\":\"timeout_cancelled_before_execution\"}"
+    },
+    {
+      "path": "root.managed_session_thread_finished",
+      "value": true
+    },
+    {
+      "path": "root.finished_at",
+      "value": "2026-10-10T13:42:16.222131+00:00"
+    },
+    {
+      "path": "root.cleanup_ok",
+      "value": true
+    }
+  ],
+  "steps_count": 0,
+  "readiness": null,
+  "readiness_guard": null,
+  "saved_campaign_launch": {
+    "status": "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED",
+    "argv_admitted": true,
+    "ck3_pid": 17368,
+    "continue_last_save": false,
+    "load_save_name": "restored_campaign",
+    "debug_mode": true,
+    "captured_at": "2026-10-10T13:39:49.508501+00:00",
+    "bridge_injection_stage": "after_saved_campaign_setup_completion",
+    "load_completion_observation": {
+      "log_path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-001\\state002\\profile\\logs\\debug.log",
+      "log_epoch_ns": 1791638899866872200,
+      "log_mtime_ns": 1791639587066099200,
+      "bytes": 479348,
+      "sha256": "e4b24e354a7dc2fac8da552af09c859f825e92517aed882896425e5c3e9891eb",
+      "line": 3957,
+      "text": "[21:39:41][D][gameapplication.cpp:635]: Setup completion (history loaded): 411.900114 seconds",
+      "in_game_line": 3951,
+      "in_game_text": "[21:37:06][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options",
+      "observed_at": "2026-10-10T13:39:47.123082+00:00",
+      "target_ck3_pid": 17368,
+      "native_identity_verified": false,
+      "business_pass": false
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.steam_fresh_desktop_frame.v1",
+  "captured_at_utc": "2026-10-10T13:26:46.562179+00:00",
+  "steam_hwnd": 263104,
+  "steam_pid": 7216,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "before_rect": [
+    26,
+    56,
+    1036,
+    744
+  ],
+  "moved_rect": [
+    46,
+    56,
+    1056,
+    744
+  ],
+  "restored_rect": [
+    26,
+    56,
+    1036,
+    744
+  ],
+  "before_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002\\steam-before.png",
+  "before_sha256": "5B4E5330F502677B2DF22B2796CABFC48296FDC28A37371BCB30AB6EA4D9B327",
+  "moved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002\\steam-moved.png",
+  "moved_sha256": "F87BFCDEB55158E69B6C8EA72C4290C432EC52A3F22AC634F16308B549C91E71",
+  "moved_identity": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-start-steam-fresh-frame-20261010-002\\steam-moved.png",
+    "bytes": 929663,
+    "sha256": "F87BFCDEB55158E69B6C8EA72C4290C432EC52A3F22AC634F16308B549C91E71"
+  },
+  "pixel_difference_bbox": [
+    4,
+    43,
+    1916,
+    1036
+  ],
+  "moving_edge_changed": true,
+  "clock_check": null,
+  "offline_status_observed": null
+}

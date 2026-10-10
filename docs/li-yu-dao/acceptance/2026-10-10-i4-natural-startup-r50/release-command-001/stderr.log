@@ -1,0 +1,4 @@
+usage: codex_task_bus.py [-h] [--bus-dir BUS_DIR]
+                         [--expected-cli-sha256 EXPECTED_CLI_SHA256]
+                         {register,status,release-screen-cas,heartbeat,notify,poll,list,install} ...
+codex_task_bus.py: error: unrecognized arguments: --expected-sequence 4486

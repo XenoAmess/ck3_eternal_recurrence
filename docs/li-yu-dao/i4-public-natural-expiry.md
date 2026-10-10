@@ -164,3 +164,27 @@ CK3 1.20.0.4/build25734779、EXE SHA
 大seed、两个新checkpoint与runtime输出均留Git外。开始、写入前及闭场按
 [通用存储策略](../storage-retention-policy.md)和版本化参数检查/登记预算与复核期限；
 既有小型观察可复用，原件过期回收时如实标记不可读，不造同名替代。
+
+
+## 2026-10-10 R0050 启动RED及闭场
+
+实际公开run于13:28:04→13:42:15 UTC返回2，verify返回2。共同host启动期的campaign
+typed query报`timeout_cancelled_before_execution`；adapter未进入、steps为空、readiness=NULL，
+0次SAVE、0游戏日。原进程host退出1、native managed shutdown记录CK3退出1，不能计作正常GUI关闭，
+也没有初始flag资格、自然届满或业务通过。
+[实际小型原件与pins](acceptance/2026-10-10-i4-natural-startup-r50/INDEX.actual.json)和
+[短报告](acceptance/2026-10-10-i4-natural-startup-r50/REPORT.md)保留原RED。
+
+keeper及其原父进程实际exit0。释放001错误参数返回2、002小写CLI SHA拒绝返回3均保留；
+只有003正确大写pin的原stdout证明CAS实际释放0/sequence4487。最终fresh002及ROOT直接审阅
+原图明确Steam离线，显示设置实际恢复；不把这些闭场事实外推为业务成功。
+[4GiB实际闭合](acceptance/2026-10-10-i4-natural-startup-r50/storage/CLOSED-RESERVATION.actual.json)
+记录remaining0、已知新增保留logical278,937,819 bytes、当时free623,740,022,784 bytes。
+原闭场模板的a11/r49旧人类文字保留并注明，以本次R0050/a12/I4实际路径与groups为准；
+无新cache-seed-snapshot、无原deadline续期，新增profile coldcache复核仍为2026-10-17T13:06:29.278808Z。
+
+一期仍75% / NOT_GREEN，正式I3b B4/B5、新Title政治保持冷重载、C3及I4待完成。
+下一步是共享启动query/owner真实故障的最小修复发布后，沿公共入口准备新run并实际取得起始资格；
+本案例继续只记既有冷却部分观察，不将本次失败重放为完整365日验收。
+e34精确CI单次原件只证明Official38055623143和Linear success；Li Yu Dao checks未触发，
+不授业务信用、不外推其他HEAD。
