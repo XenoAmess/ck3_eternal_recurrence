@@ -26184,12 +26184,19 @@ void RunConnectedSession(
             } else {
               xar::game::Snapshot admission_snapshot{};
               trace_command_entry("pre_admission_snapshot");
+              const auto admission_read_sequence =
+                  xar::bridge::ck3_12004::CaptureSnapshotReadSequence12004();
               if (!xar::game::ReadSnapshot(game, admission_snapshot)) {
+                std::string error = "war-termination admission snapshot read failed";
+                error += " expected_revision=" + std::to_string(expected_revision) +
+                         " native_revision=" + std::to_string(state_revision);
+                if (const auto receipt =
+                        xar::bridge::ck3_12004::FreshSnapshotReadFailure12004(
+                            admission_read_sequence))
+                  error += xar::bridge::ck3_12004::FormatSnapshotReadFailure12004(
+                      *receipt);
                 connected = write_frame(
-                    pipe, CommandResultFrame(
-                              request_id, step, false,
-                              "war-termination admission snapshot read "
-                              "failed"));
+                    pipe, CommandResultFrame(request_id, step, false, error));
               } else if (admission_snapshot != previous_snapshot.value()) {
                 connected = PublishSnapshot(
                     pipe, game, previous_snapshot, state_revision,

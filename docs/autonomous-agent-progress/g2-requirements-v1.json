@@ -360,13 +360,13 @@
         "saved_frame_receipt": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\runtime-01\\native78-r0094\\ordinary-days02-07\\chunk01-saved.json",
         "complete_recovery_input_packet": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json",
         "closed_result": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/ROOT-RUNTIME93-CLOSED-RESULT.json",
-        "r94_stage": "same_game_saved6077_controller_exit0_sdk_normal_exit0_warm_pending",
+        "r94_stage": "SDK79_warm_cached_identity_observed_normal_war_admission_read_RED_remaining5",
         "r94_native_and_sdk_source": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
         "local_game_work_authorized": true,
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-10T23:30:42.991009+00:00",
+        "current_index_recorded_at_utc": "2026-10-10T23:53:16.180422+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -379,7 +379,13 @@
         "current_daily_save_full12_frozen": false,
         "closed_result_round_id": 93,
         "r94_quiescent_result": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\runtime-01\\native78-r0094\\ROOT-ACTUAL-SAVED6077-QUIESCENT-RESULT.json",
-        "r94_normal_sdk_exit_result": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\runtime-01\\native78-r0094\\ROOT-ACTUAL-SDK78-NORMAL-EXIT-AT-SAVED6077.json"
+        "r94_normal_sdk_exit_result": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\runtime-01\\native78-r0094\\ROOT-ACTUAL-SDK78-NORMAL-EXIT-AT-SAVED6077.json",
+        "r94_current_SDK_source": "29a70438931da909e7f880d45eb583182de12991",
+        "r94_current_SDK_session": 14191,
+        "r94_current_SDK_exit_code": null,
+        "r94_warm_cached_public_revision": 2,
+        "r94_warm_cached_native_revision": 8,
+        "r94_war_admission_failure_result": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\runtime-01\\native78-r0094\\ROOT-ACTUAL-SDK79-WAR-ADMISSION-FAILURE.json"
       }
     }
   ],

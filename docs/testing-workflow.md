@@ -3552,3 +3552,60 @@ fake-MCP focused qualification passed once; actual live warm resume is pending.
 See Oct11 daily report for FIRST and the concrete operational recipe. The normal
 controller stop marker acts after current normal completion and at actual SAVE
 boundaries, so marker creation alone never proves the controller has stopped.
+
+
+### R94 warm transport must wait for an observed Driver frame (Oct11 actual)
+
+MCP `initialize` and the packet reader's warm `READY` only establish transport.
+They can complete while the background native pipe callback is restoring the
+full saved Driver. In SDK79/source `29a70438931da909e7f880d45eb583182de12991`,
+`NativeNamedPipeServer` invokes its frame callback synchronously. The hello
+callback first records connected/capabilities, then calls
+`_adopt_bridge_session`: it loads the full saved Driver, copies the history,
+restores episode/checkpoint fields and persists the state before the pipe
+thread can ingest subsequent semantic publications. Restoration is invoked
+by hello; a semantic frame is not its prerequisite.
+
+R94's first warm `ck3_auto_turn` returned the generic unavailable-state error
+at `2026-10-10T23:37:42.810544Z`. The retained
+`driver.full_state_persistence` event finished later at
+`23:39:27.034281Z` after `33.245702s`. The first normal request therefore ran
+before this restoration activity completed. The error text does not establish
+that CK3 was loading, and persistence timing alone does not prove
+`same_pid_hot`. Preserve that original
+`530-r0094-sdk79-first-000001-normal.json` RED.
+
+Wait for the existing hello restoration/publication activity to finish, then
+observe the current cached paused frame once through
+existing `ck3_take_snapshot` with
+`{"include_native_command_history": false}` before sending the first normal
+request. This omits the full native command transcript and does not send a
+native execute/core query. R94's actual
+`531-r0094-sdk79-cached-paused-000001-snapshot.json` succeeded at
+`23:41:47.144179Z`: hello PID `45424`, public revision `2`, native revision `8`,
+raw date `53290176`, paused/map-ready true, living actor `29829`, and original
+episode `native-29829-2bc2d599f7f9`. Fresh Python public revisions are local to
+the new protocol state; use the observed revision rather than requiring the
+old SAVE's public counter. This snapshot has no `control` restore-kind proof;
+read `same_pid_hot`/`active_resumed` from the naturally retained normal result
+when present. The snapshot establishes the current paused identity and frame,
+not a cold thirteen-stream qualification or completed business objective.
+
+The current R94 sequence is actual daily SAVE6077 and drained controller,
+normal old-SDK exit0 with the same Game/state held, complete source/all-five
+warm binding, transport attach, one successful cached paused observation,
+then a new ordinary normal request and the remaining five authorized daily
+SAVEs. Keep the old responded requests, exact successful exit, prior STOP and
+530 RED; use the new controller's distinct absent stop-file path. No reader
+source change, cold/core polling wrapper, timeout change, retry loop or repeated
+test is required for this ordering correction.
+
+Exact source call sites are `native_driver.py:1490`, `:1984`, `:10475`,
+`:10660`, `:10925`, `:2766`, `:2808`; the existing MCP tool is registered at
+`mcp_server.py:2471`. Thin actual receipts are
+`D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native78-r0094/ROOT-WARM-RESTORE-EXISTING-TIMING-THIN.json`
+and `ROOT-ACTUAL-SDK79-WARM-CACHED-PAUSED-SNAPSHOT.json` in the same directory.
+The raw 530/531 responses remain under
+`managed/operator/after-load-complete01/gameplay-responses/`; the 531 response
+is `73,185B` and was not rehashed for this source note. See the Oct11 daily
+report for the actual runtime receipts and later normal outcome.
