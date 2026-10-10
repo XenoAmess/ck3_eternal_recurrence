@@ -1,0 +1,84 @@
+{
+  "schema": "lyd-public-holder-stage-source-only-validation-v1",
+  "status": "SOURCE_ONLY_TESTED",
+  "adapter_tests": 5,
+  "new_generator_AST_tests": 3,
+  "actual_commands": [
+    {
+      "schema": "ck3-recorded-actual-command-v1",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_holder_stage_diagnostic.py"
+      ],
+      "cwd": "C:/workspace/ck3_eternal_recurrence",
+      "started_at_utc": "2026-10-10T07:58:46.275025+00:00",
+      "finished_at_utc": "2026-10-10T07:58:46.581722+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-holder-adapter-tests-20261010-001\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-holder-adapter-tests-20261010-001\\stderr.log",
+        "bytes": 108,
+        "sha256": "cbb664dffeed1e18518a7178d08d97833e4a8541935bab935b164b3c9398dd60"
+      }
+    },
+    {
+      "schema": "ck3-recorded-actual-command-v1",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "mod_li_yu_dao/tools/test_factory_diagnostic.py",
+        "FactoryDiagnosticHeirProbeTests"
+      ],
+      "cwd": "C:/workspace/ck3_eternal_recurrence",
+      "started_at_utc": "2026-10-10T07:58:46.271018+00:00",
+      "finished_at_utc": "2026-10-10T07:58:46.553063+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-holder-generator-tests-20261010-001\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-main-holder-generator-tests-20261010-001\\stderr.log",
+        "bytes": 106,
+        "sha256": "b8cf24fb33c32b2e65114603a91ee5beb5e205ff24b17f18335cbd24c3355225"
+      }
+    }
+  ],
+  "candidate_provenance": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-holder-heir-checked-in-producer-sourceonly-20261010-001\\CHECKED-IN-PRODUCER.candidate.patch",
+      "bytes": 8395,
+      "sha256": "3fd725f72975e7a58c9b2ad34ec56ec5e87d08603ba7562c51fa5ebb5cb8acee"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-holder-heir-checked-in-producer-sourceonly-20261010-001\\NEW-MODES-FOCUSED.actual.json",
+      "bytes": 1338,
+      "sha256": "9ba0b8dcc8c731a5223bd774f51a2fa7b31075a89990de7bf22b3f2cca72a374"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-stage-public-case-sourceonly-20261010-002\\PUBLIC-CASE.incremental.patch",
+      "bytes": 35444,
+      "sha256": "b7341c5b1181e7388fd3dfad75a5e973023544f3cace5e5258d6a4eb835545dd"
+    }
+  ],
+  "actual_live_run": null,
+  "actual_capture": null,
+  "actual_normal_close": null,
+  "formal_institution_pass": null,
+  "C3": null,
+  "I4": null,
+  "product_release_pass": false,
+  "four_script_logs_are_intermediate_native_cache_snapshots": false,
+  "scope_full_ID_order_and_cause": "UNKNOWN",
+  "old_cache_key_bypassed": false
+}

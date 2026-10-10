@@ -196,6 +196,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_lyd_i3b_formal_adapter.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_holder_stage_diagnostic.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 mod_li_yu_dao/tools/test_factory_diagnostic.py FactoryDiagnosticHeirProbeTests
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_workshop_cache.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_adapters.py

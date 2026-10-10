@@ -1,0 +1,166 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "case_id": "holder-stage-diagnostic",
+  "acceptance_scope": "single_D2b_holder_resolve_diagnostic_only",
+  "business_contract_applicable": false,
+  "maximum_natural_days": 0,
+  "production_source_head": "06159b964d859d30f2f07f4b183284df7d6dac47",
+  "production_file_count": 71,
+  "expected": {
+    "event_definition_key": "lyd_factory_diag.20",
+    "event_instance_id": 121,
+    "root_character_id": 31254,
+    "actor_character_id": 31254,
+    "date_raw": 53144712,
+    "native_option_indices": [
+      0
+    ]
+  },
+  "terminal_event_definition_key": "lyd_factory_diag.2",
+  "new_title_scope": "new_title",
+  "new_title_id": 18373,
+  "saved_campaign": {
+    "bytes": 91711686,
+    "sha256": "a6db85e38ba0648eca4b7e835c79d867b96ca26099698f4d4ee5269b818d822c",
+    "player_id": 31254,
+    "date_raw": 53144712
+  },
+  "baseline_cached_succession": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "political_title_ast_sha256": {
+    "2230": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+    "2231": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+    "2232": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+    "2235": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+    "2262": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+    "2263": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+    "2264": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9"
+  },
+  "baseline_packet": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r38-offline-cache-candidates-20261009-001/R34_D2a.json",
+    "bytes": 1544249,
+    "sha256": "712a8ef31d1d99c2b2f44f7419ebf87c5aa7a171ecb999c0d44621b276c973f4"
+  },
+  "overlay_files": [
+    {
+      "path": "descriptor.mod",
+      "bytes": 178,
+      "sha256": "a16a4bdff57953a01bc035cffc87aeda7a044dec637fbc7c2682eaf391ebb6a9"
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 12504,
+      "sha256": "a6899abd15ad2645523c9b62e0a1b6f487c4f59700aed896f7714a2b15ce1217"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "bytes": 1210,
+      "sha256": "249a768bc55d73ec87d29203905f5f7adb35b3bf2821edeb73985e1cf36513eb"
+    },
+    {
+      "path": "events/lyd_factory_operation_diagnostic.txt",
+      "bytes": 6458,
+      "sha256": "0bf80d41debf2c3a4aa00656f496639316a2cc5881b6147bde0be69350ce6c82"
+    },
+    {
+      "path": "localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "bytes": 1573,
+      "sha256": "e3a5089bf07731bbf4ad5d5079fd850f9b88893500c9ff288ea080a678662087"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "bytes": 1418,
+      "sha256": "d6345ce0b03f267a21a920828efece30974d40b9c445459fda9e01e5bcbb9435"
+    }
+  ],
+  "uncovered_product_business": [
+    "formal institution acceptance",
+    "C3 handoff",
+    "I4 persistence",
+    "whole product release",
+    "cache mutation cause"
+  ],
+  "control_completed_variable": "lyd_factory_diag_empty_transaction_completed",
+  "log_stages": [
+    "BEFORE_CREATE",
+    "AFTER_CREATE",
+    "AFTER_HOLDER",
+    "AFTER_RESOLVE"
+  ],
+  "script_logs_are_every_title_heir_scopes_not_intermediate_actor_cache": true,
+  "scope_full_ID_and_iterator_order_qualification": "UNKNOWN_UNTIL_ACTUAL_LOGS",
+  "script_getter_lazy_recalculation_possible": true,
+  "control_contract_source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_transaction_control.json",
+    "bytes": 3257,
+    "sha256": "fd3ebf58bd01cb2998a47c5f9faa0225d478692134b2185510074b3c0cba0955"
+  },
+  "logger_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-holder-heir-checked-in-producer-sourceonly-20261010-001\\generated-logger-stop-001\\MANIFEST.source-only.json",
+    "bytes": 4347,
+    "sha256": "789953000e6ac1cad3f9b9f725663b21fc980cff80855dab42a0a4096ce92a3c"
+  },
+  "terminal_projection": "lyd_factory_diag.2 retains identity/trigger; one effect-free stop option; no D3 continuation",
+  "parent_logger_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-holder-transaction-heir-log-sourceonly-20261010-001\\candidate-001\\MANIFEST.source-only.json",
+    "bytes": 4881,
+    "sha256": "905f9bbd6bf35a449553639d82f868bcea78893a2258c0b9114007cb4fa7c507"
+  },
+  "checked_in_overlay_producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-holder-heir-checked-in-producer-sourceonly-20261010-001\\candidate\\mod_li_yu_dao\\tools\\build_factory_diagnostic.py",
+    "bytes": 17216,
+    "sha256": "9287dc173c32f3b76156f39ed36df2315f95dc90380b4174cbcad36a6d8c0598"
+  },
+  "overlay_producer_cli_flags": [
+    "--control",
+    "full",
+    "--heir-log-probe",
+    "--stop-after-holder"
+  ]
+}

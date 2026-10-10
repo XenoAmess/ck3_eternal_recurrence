@@ -2720,6 +2720,70 @@
           },
           "legacy_upper_bounds_preserved": "No existing held session or original diagnostic step is extended or replayed; one new explicit shared case.",
           "product_release_pass": false
+        },
+        {
+          "id": "holder-stage-diagnostic",
+          "status": "ready",
+          "implementation_credit": "Source-only single holder/resolve diagnostic; actual capture/normal close pending; no formal or product credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_holder_stage_diagnostic_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_holder_stage_diagnostic.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Existing transaction-only-control shared budgets unchanged; no natural-day action or extension",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_actor_cached_succession_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "single-D2b-holder-resolve-diagnostic",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "fixed_D2a_unheld_readonly_admission",
+            "ordered_45_cache_before",
+            "single_original_D2b_holder_resolve_option",
+            "stop_at_effect_free_D2_event",
+            "complete_ordered_after_cache_any_observed_count",
+            "single_SAVE_then_one_saved_body_projection",
+            "seven_political_full_AST_deltas_and_script_scope_logs",
+            "actual_shared_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "No existing held session or original diagnostic step is extended or replayed; one new explicit shared case.",
+          "product_release_pass": false
         }
       ],
       "legacy_inventory": {
