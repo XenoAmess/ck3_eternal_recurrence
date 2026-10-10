@@ -1,0 +1,82 @@
+{
+  "schema": "ck3-source10-two-path-execution-plan-v1",
+  "status": "SOURCE_ONLY_NOT_EXECUTED_REQUIRES_NEW_ADMISSION",
+  "source_parent_commit": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+  "published_source_head": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+  "parent_export": "C:\\workspace\\ck3-common-runtime\\20261010-008",
+  "parent_runtime_metadata": "C:\\workspace\\ck3-common-runtime\\20261010-009",
+  "parent_source_root": "C:/csr9",
+  "future_source_root": "C:/csr10",
+  "future_runtime_root": "C:/workspace/ck3-common-runtime/20261010-010",
+  "existing_producer_interface": "Original reviewed Source09 argparse interface preserved, seven source/pins/admission arguments",
+  "selected_paths": {
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "bytes": 256993,
+      "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+    },
+    "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py": {
+      "bytes": 10880,
+      "sha256": "5adfdfde538b9b65b743f525efaf3aaeb684093cf5a59aef3120709fea6232e7"
+    }
+  },
+  "new_file": "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py",
+  "old_host": {
+    "bytes": 244512,
+    "sha256": "a9895e966590d669bbef3f625c808b95dea1e4fca4561fe5bc0be1b647178b33"
+  },
+  "parent_file_count": 7906,
+  "successor_file_count": 7907,
+  "parent_source_logical_bytes_from_index": 141056112,
+  "successor_source_logical_bytes_from_index": 141079473,
+  "unchanged_indexed_copy_files": 7905,
+  "heavy_write_upper_bound_bytes": 201326592,
+  "upper_bound_basis": "Successor source payload plus32MiB for new indices/freeze index/minimal patch/two recovery blobs/Git objects and small receipts; bounded below192MiB. Capacity still requires a NEW coordinated admission.",
+  "native_Cbr2_build_copy_or_rehash": false,
+  "native_directory_delta": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py"
+  ],
+  "compiled_native_CMake_CPP_inputs_unchanged": true,
+  "host_byte_identity_inherited": false,
+  "MCP_registration_unchanged": true,
+  "O9_capabilities_preserved_including_four_GUI_build_ready_live_false": true,
+  "source_index_native_source_index_host_pin_source_paths_updated_only_as_required": true,
+  "original_TTL_not_renewed": "Source10 bind inherits Source09 review_at; no old cache/evidence deadline is extended",
+  "graphics_key_conclusion": "Existing _runtime_key explicitly includes host bytes/SHA. The published new host SHA differs, and the new test also enters source_core. Old v2 seed cannot match Source10 even if graphics business inputs are unchanged. No helper/key/seed modification or R0050 RED normal-close inference.",
+  "qualification": "FUTURE_NOT_FROZEN_NOT_ALLOCATED_NOT_LIVE_NOT_PRODUCT_PASS",
+  "argv_not_executed": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\produce_source10.py",
+    "--published-source-head",
+    "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+    "--selected-pins",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\SELECTED-PINS.candidate.json",
+    "--selected-pins-bytes",
+    "<actual selected bytes>",
+    "--selected-pins-sha256",
+    "<actual selected SHA256>",
+    "--capacity-admission",
+    "<NEW ROOT admission actual path>",
+    "--capacity-admission-bytes",
+    "<NEW actual bytes>",
+    "--capacity-admission-sha256",
+    "<NEW actual SHA256>"
+  ],
+  "producer_AST_parse": "PASS",
+  "source_only_actual_operations": "Read original16302B source, O8/O9 small indexed metadata and hash only2 selected published source files; no Git/whole-source walk/export/runtime/cache/save/EXE/bus/game action",
+  "original_producer_pin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source09-two-path-successor-sourceonly-20261010-001\\produce_source09.py",
+    "bytes": 16302,
+    "sha256": "4b4c0d451b7930ca90ffa5e51e3b64ed03da0a0e114d75e354b7e13abd49f9ba"
+  },
+  "prior_source_builder_failure": {
+    "tool_output_chunk": "266a2f",
+    "exit_code": 1,
+    "time_utc_or_null": null,
+    "reason": "Wrong inferred unit test path absent; resolved actual research test filename before constructing002. No export/runtime/Git action."
+  },
+  "latest_MAIN_not_projected": "ROOT reported4d585bcf includes unrelated f773 native/provider delta. Candidate still selects fixed3f8 two paths only."
+}

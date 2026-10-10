@@ -39,3 +39,9 @@ success、Official仍in_progress。两者LYD均未触发，不能算LYD验收通
 提交。现已从同一原件恢复并补该目录`* -text`，显式renormalize后逐份比较staged blob，均与
 原size/SHA相等。[原错误与修正回执](acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/ci-1420/BYTE-CORRECTION.actual.json)
 保留先前发布commit及两组字节摘要；CI观察、源码和测试结果未变。
+
+14:30 UTC：[Source10后继候选及ROOT审阅](acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/successor-source-only/ROOT-REVIEW.actual.json)
+已保全。producer固定Source09父树及已发布3f8两条Python投影，继承O9四项GUI的build-ready /
+live-false声明；compiled native与MCP注册源码保持原冻结。预计源码逻辑141,079,473 B，写入
+上界192MiB，须在下一独立4GiB预约中显式计入。此时尚未创建Source10/O10或tag，未运行producer。
+host签名及source_core改变使旧v2seed不匹配；不绕过key或从R0050失败追认normal-close seed。

@@ -1,0 +1,14 @@
+{
+  "schema": "ck3-common-source10-two-path-pins-v1",
+  "published_source_head": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+  "changed_files": {
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "bytes": 256993,
+      "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+    },
+    "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py": {
+      "bytes": 10880,
+      "sha256": "5adfdfde538b9b65b743f525efaf3aaeb684093cf5a59aef3120709fea6232e7"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "ck3-source10-sourceonly-candidate-index-v1",
+  "status": "SOURCE_ONLY_NOT_EXECUTED_REQUIRES_NEW_ADMISSION",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\produce_source10.py",
+      "bytes": 17261,
+      "sha256": "60b8c809d10b0df950af7f3b3b260d4043a5dfe9fb5b773a4cf0c4112eeb4803"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\SELECTED-PINS.candidate.json",
+      "bytes": 551,
+      "sha256": "6f68f05c101ce47e06f605cd22339cdfa089bbab85ea1e50441f53509b1b380e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\PLAN.source-only.json",
+      "bytes": 4631,
+      "sha256": "53d732da0bdbe8042407d2414e0a6a3fed5e74bdf1fee4ffe081c0697bcbdca1"
+    }
+  ],
+  "producer_AST_parse": "PASS",
+  "no_heavy_or_Git_or_runtime_action": true
+}

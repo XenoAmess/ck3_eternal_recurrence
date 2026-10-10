@@ -1,0 +1,51 @@
+{
+  "schema": "ck3.source10-candidate-root-review.v1",
+  "at_utc": "2026-10-10T14:30:35.389667+00:00",
+  "status": "REVIEWED_SOURCE_ONLY_NOT_EXECUTED",
+  "producer_external_pin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\produce_source10.py",
+    "bytes": 17261,
+    "sha256": "60b8c809d10b0df950af7f3b3b260d4043a5dfe9fb5b773a4cf0c4112eeb4803"
+  },
+  "producer_reviewed_in_full": true,
+  "source10_created": false,
+  "runtime010_created": false,
+  "source_freeze_git_or_tag_action": false,
+  "native_build_or_cache_snapshot": false,
+  "new_heavy_write_reservation_or_business_credit": null,
+  "required_next_capacity": {
+    "new_independent_admission": true,
+    "write_peak_bytes": 4294967296,
+    "source_export_component_at_least_bytes": 201326592,
+    "previous_I4_remaining_bytes": 0
+  },
+  "fixed_selected_source_head": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+  "scope": "Source09 parent, updated Python host and new research test only; inherit O9 capability metadata; no f773 native/provider projection.",
+  "old_v2_cache_reuse": "NOT_MATCHING_NEW_HOST_SIGNATURE",
+  "original_quota_override_unchanged_review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+  "future_execution_requires_fresh_pin_availability_and_capacity": true,
+  "original_input_TTL_not_renewed": true,
+  "copies": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\INDEX.json",
+      "destination": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-10-saved-campaign-cancelled-query-recovery\\successor-source-only\\INDEX.json",
+      "bytes": 952,
+      "sha256": "fd02d5d1c143f330a11cc6b59476d5e368d273b7a589310112be0794b70b70d2",
+      "exact_raw_bytes": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\SELECTED-PINS.candidate.json",
+      "destination": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-10-saved-campaign-cancelled-query-recovery\\successor-source-only\\SELECTED-PINS.candidate.json",
+      "bytes": 551,
+      "sha256": "6f68f05c101ce47e06f605cd22339cdfa089bbab85ea1e50441f53509b1b380e",
+      "exact_raw_bytes": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\PLAN.source-only.json",
+      "destination": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-10-saved-campaign-cancelled-query-recovery\\successor-source-only\\PLAN.source-only.json",
+      "bytes": 4631,
+      "sha256": "53d732da0bdbe8042407d2414e0a6a3fed5e74bdf1fee4ffe081c0697bcbdca1",
+      "exact_raw_bytes": true
+    }
+  ]
+}
