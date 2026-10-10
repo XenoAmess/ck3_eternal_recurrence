@@ -1,7 +1,15 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+### 2026-10-10：Native71 接续的实际基线与下一交付
 
-### 2026-10-06 late update: actual Army query recovered
+当前持久基线为 **6067/H10026/raw53289936**，见 [Native71 接班整合与 R0087 续跑](../handover/2026-10-10-native71-maintainer-resume.md)。SDK/source/compiled/qualified canonical 精确pin均为 `16da78339cdff5c1a462e20bc301684594a3f800`；沿用已资格DLL，未重编或重放旧FIRST。R0087 新冷恢复实机paused资格 **13/13 GREEN**，现有普通OODA完成查询→规划→操作→观测，实际新增1天并成功SAVE；同日期SAVE与冷恢复不增加天数。证据：[冷恢复资格](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-managed-attempt02/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json)、[普通循环及已保存1日](D:/codex-ck3-background-spill/maintainer-resume-20261010/ordinary-one-day-save/BOUNDED-RESULT.json)、[checkpoint绑定](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-freeze-metadata/ROOT-ACTUAL-SAVED-CHECKPOINT-BINDING.json)。
+
+SDK **exit0**，Game因提前custody stop最终 **exit1／harness close RED**；正常Game退出尚无证明，也未证明native crash根因。完整Driver及12流freeze **GREEN**，keeper **CAS1614已释放**，关闭与释放证据回链交接。G2 **5/8**、NW2 **2/4**、M4 **false**、M6 **partial**、M7 **incomplete**、自然继承 **0**不变；Sway continue/opinion60/贡献45尚非terminal，construction receipt查询尚非completed/useful-income闭环。
+
+下一恢复使用 [6067完整恢复包](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-saved6067-freeze/RECOVERY-INPUT-PACKET.json)，带全Driver/12流并保持exact16da/Native71资格输入。P0沿现有普通策略观察建设真实completed/material/useful-income，再推进M6/M7；下一watch raw53290008仅是调度时点。现场关闭须先等Game独立exit回执，再停止custody，执行规则见 [测试流程](../testing-workflow.md)。基线保护至2026-10-17，接续或存储复核时按实际用途重新判定。
+
+
+### 历史2026-10-06 late update: actual Army query recovered
 
 Root 在 R0051 原 Robert29829 普通战役、最小化暂停现场，取得完整 Army 查询 GREEN：Army218104048 / CArmy67109093，1833/2367、39 regiments、supply100、attrition0；实际35,683,420 B native响应在67,108,864 B上限内完整写入。它是 production-live read-only primitive，不是完整 daily/monthly/future 或战争胜利。query007为15:29:48.082538–15:30:37.915800 UTC，49.833262 s；writer008为complete/success，实际来源g10471b、DLL64e934f2。随后真实 realm-law009 发布四种继承法profile；shared planner读取war termination后选择目标2606的route preview。新游戏日仍0，累计5996、Oct6原961日、natural0保持。
 

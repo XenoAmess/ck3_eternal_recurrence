@@ -1,6 +1,14 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 23:27:49 CST：38／39 canonical已成，rich Worker整链离线GREEN
+### 2026-10-10：Native71 冷恢复13/13 GREEN，普通OODA新增1日已保存
+
+最新接续见 [Native71 接班整合与 R0087 续跑](../handover/2026-10-10-native71-maintainer-resume.md)。SDK/source/compiled/qualified canonical 均为 `16da78339cdff5c1a462e20bc301684594a3f800`，复用已资格DLL，未重编或重跑旧FIRST。R0087 实际冷恢复原Robert29829普通战役，07:15:51Z新paused资格 **13/13 GREEN**；现有普通OODA实际前进1天，07:34:56Z成功SAVE。最新持久基线 **6067/H10026/raw53289936**，完整Driver及12流已冻结；冷恢复及同日期SAVE不增加游戏日。
+
+SDK **exit0**；协调者在stock Desktop关闭等待中提前停止custody，Game **exit1**，记 **harness close RED**。没有正常Game退出证明，不能据此认定native crash根因。完整12流freeze **GREEN**，现场keeper **CAS1614已释放**。G2 **5/8**、NW2 **2/4**、M4 **false**、M6 **partial**、M7 **incomplete**、自然继承 **0**保持；新增证据仅授本次冷恢复和已保存1日普通production loop。
+
+证据：[真实13项暂停资格](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-managed-attempt02/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json) · [普通OODA与1日SAVE](D:/codex-ck3-background-spill/maintainer-resume-20261010/ordinary-one-day-save/BOUNDED-RESULT.json) · [完整freeze](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-freeze-execution/ROOT-ACTUAL-COMPLETE-FREEZE-EXECUTION.json) · [keeper释放](D:/codex-ck3-background-spill/maintainer-resume-20261010/SCREEN-KEEPER-STOPPED.json)。下一恢复入口为 [6067完整恢复包](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-saved6067-freeze/RECOVERY-INPUT-PACKET.json)，限期保护至2026-10-17，复核按实际用途与通用存储策略执行。
+
+### 历史2026-10-08 23:27:49 CST：38／39 canonical已成，rich Worker整链离线GREEN
 
 Native39实际141compiler全GREEN／max64（140prod70Bridge＋70Runtime／585retained／725，fixture1），2archive＋DLL／fixturelink GREEN；新whole一个workflow／两frames GREEN0.3913295s，唯一[consumer04 GREEN4.9595138s](Z:/g2-native39-build01/root-consumer-retry04/ROOT-ACTUAL-RESULT.json)，两MCP snapshot／ping1／gameplay0。前三HarnessRED保留，Native／140CPP不重跑，compiled8de／qualification202431e1分列；38／39 canonical已seal，精确pins见[日报](daily/2026-10-08.md)。
 

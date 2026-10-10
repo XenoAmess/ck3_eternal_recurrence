@@ -33,3 +33,11 @@ MCP100%、G2 5/8、NW2 2/4、M4false、M6partial、M7incomplete、自然继承0�
 - `r0087-freeze-execution/ROOT-ACTUAL-COMPLETE-FREEZE-EXECUTION.json`、`SCREEN-KEEPER-STOPPED.json`：完整freeze与CAS释放。
 
 **下一恢复入口**为 `r0087-saved6067-freeze/RECOVERY-INPUT-PACKET.json`，十流回链 `ROOT-SAVED-TEN-STREAM-FREEZE.json`，两份supplements在同freeze目录；必须带全Driver/12流。当前基线限期保护至2026-10-17，下一次接续/存储复核重新按实际用途判定，不无限期保护所有旧副本。继续沿exact16da/Native71资格输入；新的原版观测/策略施工仍先补对应原生树与实机证据。建设下一watch raw53290008只是调度时点，不是完成ETA；优先观察真实completed/material/useful-income，随后推进M6/M7。
+
+### 2026-10-10 16:05 CST 主线发布与 CI 修正
+
+64包的逐项整合与R0087实机记录已普通推入 master `295105131ecbe334235f9da8051c862952af9a95`。该 SHA 的 [Official Runner CI 38035783581](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38035783581) 实际 failure：第46步 Python-only 检查在逐项结果 JSON 的历史删除记录中检出旧 shell 名称及旧脚本后缀。检查器9项测试通过；[Linear history 38035783594](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38035783594) success。没有据此声称官方静态全部GREEN或 CLA / signed 状态成立。
+
+本次只修正记录表示：3项已删除旧脚本的原名拆成路径 stem 与 `removed_file_extension` 元数据，仍可精确还原全部240项；历史说明不保留可执行旧入口。未修改检查器或添加豁免。`py tools/validate_python_only.py` 本地实际 GREEN，下一主线提交等待官方终态后删除临时归档ref。进度入口及路线图同步真实6067基线和退出RED，未扩大readiness。
+
+07:48:47Z已回收首次失败检出产生的5,889个派生文件，共585,854,918逻辑字节；删除对象逐项与当次新增文件清单匹配，不涉及原输入或当前完整freeze。回执为外置根下 `FAILED-CHECKOUT-COPIES-RECLAIMED.json`。本任务创建的临时operator HTTP helper也已关闭，回执 `OWNED-OPERATOR-SERVER-CLOSED.json`；旧任务operator保持原所有权。SDK、Game、owned runner已退出，screen CAS1614已释放。后续只剩主线CI及ref收口，不新增游戏重放或审计包。

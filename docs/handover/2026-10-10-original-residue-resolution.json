@@ -53,7 +53,7 @@
     {
       "path": "ck3_autonomous_player/README.md",
       "action": "delete",
-      "reason": "The archived one-generation documentation was already integrated into master history. Current master retains and extends the contract with committed settlement validation, no-launch preflight, ordinary seed handling, controlled stops and route speed behavior; it also replaces the archived PowerShell invocation syntax. No missing archived behavior or documentation remains.",
+      "reason": "The archived one-generation documentation was already integrated into master history. Current master retains and extends the contract with committed settlement validation, no-launch preflight, ordinary seed handling, controlled stops and route speed behavior; it also replaces the archived retired shell invocation syntax. No missing archived behavior or documentation remains.",
       "evidence": [
         {
           "kind": "old_to_archive_diff",
@@ -567,12 +567,12 @@
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/operator_mcp.py",
       "action": "delete",
-      "reason": "Delete the duplicate historical local residue and retain evolved master. The exact local blob was already integrated in master ancestry; current master has later operator controls, Steam/Workshop status support and Python/Win32 process inspection. Reintroducing the residue would regress those changes, including restoring a removed PowerShell invocation.",
+      "reason": "Delete the duplicate historical local residue and retain evolved master. The exact local blob was already integrated in master ancestry; current master has later operator controls, Steam/Workshop status support and Python/Win32 process inspection. Reintroducing the residue would regress those changes, including restoring a removed retired shell invocation.",
       "evidence": [
         "git rev-parse e684fd05f94290d58e9fb7009046eb95d60468f4:ck3_autonomous_player/src/xar_autoplayer/operator_mcp.py returns exact local/archive blob 3cdeca612da03114ac7e541f2384d77dcde26507.",
         "git log 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df --find-object=3cdeca612da03114ac7e541f2384d77dcde26507 -- this path identifies e684fd05f94290d58e9fb7009046eb95d60468f4 (Add portable operator MCP handoff) and its subsequent replacement in 5610de6bae4f5ac7e04ba3bedb25084837608183 (Add frozen operator job controls).",
         "Fixed master ls-tree identifies current blob 105fd4707c0228047a2eea435afcac533fe0a6b3 at the same path.",
-        "git diff 3cdeca612da03114ac7e541f2384d77dcde26507 105fd4707c0228047a2eea435afcac533fe0a6b3 shows SERVER_VERSION 1.0.0 to 1.2.0, profile-frozen stdin controls and idempotent control records, SteamWorkshopStatusInspector/profile support and exact-argument v1 MCP validation, and replacement of PowerShell Get-Process with Win32 Toolhelp process enumeration."
+        "git diff 3cdeca612da03114ac7e541f2384d77dcde26507 105fd4707c0228047a2eea435afcac533fe0a6b3 shows SERVER_VERSION 1.0.0 to 1.2.0, profile-frozen stdin controls and idempotent control records, SteamWorkshopStatusInspector/profile support and exact-argument v1 MCP validation, and replacement of retired shell Get-Process with Win32 Toolhelp process enumeration."
       ],
       "review_package": "result-42"
     },
@@ -682,7 +682,7 @@
       "reason": "Delete the superseded original-worktree test copy. Its exact blob already exists in master history, and the current tests preserve its contracts while using the Python helper and adding the claim-white-peace profile. Restoring the old copy would undo the completed Python migration and lose the newer tests.",
       "evidence": [
         "Local/archive blob df5c5a01cc5388134628b116215cebaff84f95bc appears in master ancestor 384695221f22d2672bd180769edb2834d30c1f66 (Add strict one-generation canary handoff); its replacement starts at ancestor 1fd0a94ca8d75b3a98724ca313862c4b6e200253 (Add claim white peace canary profile). git merge-base --is-ancestor returns 0 for both against the package master.",
-        "Current master blob 6d62912a81d5d35b954334f0120036c4fa3509ee is the result of 6ed9879ffd0d04d13dd374d7a6161b8cf05292b7 (Migrate-one-generation-canary-to-Python). The complete archive-to-master diff replaces obsolete PowerShell invocations with sys.executable and Python argparse options, and replaces PowerShell artifact-binding plumbing with direct CANARY.artifact_binding calls.",
+        "Current master blob 6d62912a81d5d35b954334f0120036c4fa3509ee is the result of 6ed9879ffd0d04d13dd374d7a6161b8cf05292b7 (Migrate-one-generation-canary-to-Python). The complete archive-to-master diff replaces obsolete retired shell invocations with sys.executable and Python argparse options, and replaces retired shell artifact-binding plumbing with direct CANARY.artifact_binding calls.",
         "Master tests at lines 25,67,212,268,298,318 retain strict static handoff, non-mutating dry-run, existing-target rejection, exact artifact binding/path-escape rejection, canonical-checkpoint rejection, and fixed-bound rejection. Lines 133 and 338 add claim-white-peace dry-run identity and noncanonical-execute rejection; line 15 points at tools/run_one_generation_canary.py."
       ],
       "review_package": "result-44"
@@ -832,12 +832,12 @@
     {
       "path": "docs/autonomous-agent-progress/one-generation-canary-handoff.md",
       "action": "delete",
-      "reason": "Delete the stale local copy and retain evolved master's document. The exact local handoff is already in master history; master preserves its fixed production6b identities, report/sidecar binding, outcome rules and G2 debt, then adds the claim-cb-white-peace profile and replaces its PowerShell helper/commands with Python. The local copy adds no missing information.",
+      "reason": "Delete the stale local copy and retain evolved master's document. The exact local handoff is already in master history; master preserves its fixed production6b identities, report/sidecar binding, outcome rules and G2 debt, then adds the claim-cb-white-peace profile and replaces its retired shell helper/commands with Python. The local copy adds no missing information.",
       "evidence": [
         "git rev-parse 38469522:docs/autonomous-agent-progress/one-generation-canary-handoff.md: eafaf103bf00449af31c926a8ce6fc55c02aa695, exactly the package local_blob",
         "git log 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df --oneline -- docs/autonomous-agent-progress/one-generation-canary-handoff.md: 38469522 Add strict one-generation canary handoff; 1fd0a94c Add claim white peace canary profile; 6ed9879f Migrate-one-generation-canary-to-Python",
         "git show 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df:docs/autonomous-agent-progress/one-generation-canary-handoff.md: both canonical profiles, Python run_one_generation_canary.py, same checkpoint and driver hashes, same 20-turn bounds, sidecar verification and outcome/G2 sections",
-        "git show --stat 6ed9879ffd0d04d13dd374d7a6161b8cf05292b7 -- docs/autonomous-agent-progress/one-generation-canary-handoff.md tools/run_one_generation_canary.py tools/run_one_generation_canary.ps1: replaces the 939-line PS helper with the 686-line Python helper and updates this document"
+        "git show --stat 6ed9879ffd0d04d13dd374d7a6161b8cf05292b7 -- docs/autonomous-agent-progress/one-generation-canary-handoff.md tools/run_one_generation_canary.py tools/run_one_generation_canary [removed script extension]: replaces the 939-line PS helper with the 686-line Python helper and updates this document"
       ],
       "review_package": "result-47"
     },
@@ -913,7 +913,7 @@
         "git diff 14c13457952ee89da3e6889c29075477584948f3 1515c4349e7c26dc38686060c58164314d497928 -- docs/ck3-1.20.0.2-migration.md shows only the added authorization block and blank lines; archive blob is 0cacfbf6f98ef9e03977ff51b0c2fbfe14a4b469.",
         "Pinned master docs/ck3-1.20.0.2-migration.md:3 explicitly retains comprehensive religion authorization, records the 2026-10-03 war/combat authorization, and preserves the Robert 29829, exact-build, player-only, and minimized-window constraints.",
         "archive -> master diff adds the religion integration/doctrine/reform construction entry points, applies the rescinded religion restriction consistently to the historical record, and retains historical capability counts rather than claiming new implementation.",
-        "Pinned master lines 131 and 156 identify the removed CTest/tool entrances as historical and link to frozen commit 97883fdb9fc42e838c29ee77bfe6a5344b4cbd3a; its command fence is cmd rather than powershell.",
+        "Pinned master lines 131 and 156 identify the removed CTest/tool entrances as historical and link to frozen commit 97883fdb9fc42e838c29ee77bfe6a5344b4cbd3a; its command fence is cmd rather than retired shell.",
         "Master history includes 2dc46a0cea0b158cc12785398ef8016d989f8bbf (Remove superseded religion restrictions from current plans and documentation) and 43085c96d8e646aba83b7d55823ca5bcde47828a (Remove nonwar restrictions and authorize combat work). Current master blob is 7d113e14e718d56302d0af8bc2713f30b8e110b8."
       ],
       "review_package": "result-19"
@@ -1190,13 +1190,13 @@
     {
       "path": "docs/ck3-native-ai/current-event-scopes.md",
       "action": "delete",
-      "reason": "Discard an exact historical duplicate. Its entire residual blob already existed in master history, and current master retains its ABI/static findings while incorporating observed R193-R207 scope evidence, the real value-type-index correction, later CK3 1.20.0.3 event observations, and the revoked religion restrictions. The residual would erase those later factual developments and reintroduce an obsolete PowerShell acceptance instruction; it supplies no unique semantic delta.",
+      "reason": "Discard an exact historical duplicate. Its entire residual blob already existed in master history, and current master retains its ABI/static findings while incorporating observed R193-R207 scope evidence, the real value-type-index correction, later CK3 1.20.0.3 event observations, and the revoked religion restrictions. The residual would erase those later factual developments and reintroduce an obsolete retired shell acceptance instruction; it supplies no unique semantic delta.",
       "evidence": [
         "git rev-parse 701b3f80081a564bc7350dd9905c644afc3f9580:docs/ck3-native-ai/current-event-scopes.md returns eb839ccda5acf9e2bf093934457d3f7bde6b77c7, exactly the package residual blob.",
         "701b3f80081a564bc7350dd9905c644afc3f9580 is in the pinned master path history (2026-08-27, Publish event scopes and unblock event choices).",
         "git diff master archive -- this path restores scope live=false and removes current-master R193-R207 observed-frame evidence, R506 value raw-type-index findings, and October 3-5 actual event observations; the older ABI/static material remains represented in master.",
         "Successor path commits include 804ef3dfb5194eedc73e93b3ccf54ad226336130 (retained-session evidence), 2c059aa4becf46ea26415cc0973b1d0fd9e2b9cb (value-scope indices), 085153fe09ddef2521736655eef339473495623c (actual religion observations), b3de9e5a518acf207a81db7c1b5b85e5480c9187 (health-event acknowledgement), 33560bf65e7cee146803bd0bf0c449211114a49c (port-war choice), and 6287b8f63a0ed75d03ffd39502182baff8fc01e9 (PAM event acknowledgement).",
-        "Residual final paragraph prescribes a normal interactive PowerShell rerun; current project instructions prohibit all PowerShell. Current master already replaces that obsolete paragraph with the successor evidence and scoped remaining capability gaps."
+        "Residual final paragraph prescribes a normal interactive retired shell rerun; current project instructions prohibit all retired shell. Current master already replaces that obsolete paragraph with the successor evidence and scoped remaining capability gaps."
       ],
       "review_package": "result-24"
     },
@@ -1383,7 +1383,7 @@
       "reason": "Delete the stale local residue and retain evolved master. The only old_head-to-archive addition is the 2026-10-02 religion authorization notice. Current master AGENTS already preserves and expands that authorization, while its 2026-10-03 authorization explicitly revokes the notice's remaining war-research-stop constraint. Master also replaced pre-migration source/status claims with the verified 1.20.0.3 migration entry and removed the obsolete religion-deferral sentence. No useful missing delta remains.",
       "evidence": [
         "git diff 14c13457952ee89da3e6889c29075477584948f3 1515c4349e7c26dc38686060c58164314d497928 -- docs/ck3-native-version-adapters.md: only a three-line leading addition containing the 2026-10-02 religion notice; old blob a2960afe becomes archive/local blob 98cb560ce91c37f64b4f7790de34c8980efd997b.",
-        "git diff 1515c4349e7c26dc38686060c58164314d497928 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df -- docs/ck3-native-version-adapters.md: master blob a32497f1da72e4b69eb0419f81c3b00f7dcd80a2 adds the Steam 1.20.0.3 exact-SHA migration and live evidence entry, removes the 2026-09-30 adapter coupling warning and the 1.20.0.2 static-only/religion-deferral status, records that cross-layer dependencies were removed, and replaces the obsolete PowerShell command example with a text/Python command.",
+        "git diff 1515c4349e7c26dc38686060c58164314d497928 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df -- docs/ck3-native-version-adapters.md: master blob a32497f1da72e4b69eb0419f81c3b00f7dcd80a2 adds the Steam 1.20.0.3 exact-SHA migration and live evidence entry, removes the 2026-09-30 adapter coupling warning and the 1.20.0.2 static-only/religion-deferral status, records that cross-layer dependencies were removed, and replaces the obsolete retired shell command example with a text/Python command.",
         "2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df:AGENTS.md:463 explicitly opens faith/religion, holy order and related work and revokes the old religion deferrals while preserving readiness limits.",
         "2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df:AGENTS.md:464 explicitly revokes war-research-stop/nonwar-only/WAR_CASH/PREWAR authorization limits under the 2026-10-03 owner authorization.",
         "Master path history includes 01f305694079f29dcc56b1f33506d86d02a2911e (Record verified CK3 migration and client activation), 888028d913a2a569799ecca71c78ed23200bb2bc (Migrate Causality to Steam CK3 1.20.0.3), and 854ca3f7fcce848bb4a4bf03ffba10359917c979 (Enforce-Python-only-Windows-automation)."
@@ -1532,7 +1532,7 @@
     {
       "path": "docs/operator-mcp.md",
       "action": "delete",
-      "reason": "Delete the stale residual copy. Its original four-tool 1.0.0 operator MCP deployment documentation is fully represented and superseded by the evolved master document. Master retains the target identity, frozen command/input/output, idempotent handoff, bootstrap and migration contracts, adds controls and Steam status tools and machine-local deployment, and replaces the residual PowerShell bootstrap with the current plain command. No useful missing content needs a patch.",
+      "reason": "Delete the stale residual copy. Its original four-tool 1.0.0 operator MCP deployment documentation is fully represented and superseded by the evolved master document. Master retains the target identity, frozen command/input/output, idempotent handoff, bootstrap and migration contracts, adds controls and Steam status tools and machine-local deployment, and replaces the residual retired shell bootstrap with the current plain command. No useful missing content needs a patch.",
       "evidence": [
         "git diff 14c13457952ee89da3e6889c29075477584948f3 1515c4349e7c26dc38686060c58164314d497928 -- docs/operator-mcp.md shows a newly added 54-line document, blob bb418ce86effedce846338389f4fbc5dd2b2ceb9.",
         "Read the full archived document and master 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df:docs/operator-mcp.md, blob e92286a288fce2ecb2d7a31124081955863fb948; all original reusable sections and contracts are present in evolved form.",
@@ -2083,15 +2083,17 @@
       "review_package": "result-47"
     },
     {
-      "path": "open_kaishek/kaishek-cli/smoke.ps1",
+      "path": "open_kaishek/kaishek-cli/smoke",
       "action": "delete",
-      "reason": "This residual is a deletion tombstone matching master. It contains no new smoke behavior to merge. Retain the absence of this nested Kaishek file after the independent repository split; the deleted PowerShell entry also conflicts with the current project-wide Python-only remediation requirement.",
+      "reason": "This residual is a deletion tombstone matching master. It contains no new smoke behavior to merge. Retain the absence of this nested Kaishek file after the independent repository split; the deleted retired shell entry also conflicts with the current project-wide Python-only remediation requirement.",
       "evidence": [
         "Package records local_blob=null, master_blob=null, equal_master=true and bytes=0. Old-to-archive diff deletes all ten lines of old blob e6eb4933, with no replacement content.",
         "Fresh scoped git diff --exit-code archive master returned exit 0 with no output for this file, IrExecutor.java and the handover file.",
         "git ls-tree of pinned master for open_kaishek and of the archive for this exact path returned no entries. Master history a6133874b6795e9a3bc10515e7a950d2e0da581d records the repository split, and current README.md identifies the independent repository."
       ],
-      "review_package": "result-48"
+      "review_package": "result-48",
+      "removed_file_extension": "ps1",
+      "path_representation": "Former path stem plus removed_file_extension; this file stays deleted"
     },
     {
       "path": "open_kaishek/kaishek-cli/src/main/java/com/xenoamess/kaishek/cli/KaishekCli.java",
@@ -3850,17 +3852,19 @@
       "review_package": "result-60"
     },
     {
-      "path": "tools/cleanup_ck3_admin_20260930.ps1",
+      "path": "tools/cleanup_ck3_admin_20260930",
       "action": "delete",
-      "reason": "Discard this dated administrative cleanup residue. Its only old-head-to-archive change removes six paths from a hard-coded 2026-09-30 deletion list; the remaining script has no reusable implementation or missing master feature. Restoring a PowerShell cleanup entry would contradict the current project Python-only rule.",
+      "reason": "Discard this dated administrative cleanup residue. Its only old-head-to-archive change removes six paths from a hard-coded 2026-09-30 deletion list; the remaining script has no reusable implementation or missing master feature. Restoring a retired shell cleanup entry would contradict the current project Python-only rule.",
       "evidence": [
-        "git diff 14c13457952ee89da3e6889c29075477584948f3 1515c4349e7c26dc38686060c58164314d497928 -- tools/cleanup_ck3_admin_20260930.ps1: only six deletion targets removed, leaving seven date-specific Z:/ck3_mod_rewrite build directories",
-        "git show 1515c4349e7c26dc38686060c58164314d497928:tools/cleanup_ck3_admin_20260930.ps1: hard-coded workspace, failed-target removal with takeown/icacls retry; no other functionality",
-        "git show --stat acd579b8f09e977ef84eaa04e497bd2f29182a99 -- tools/cleanup_ck3_admin_20260930.ps1: introduced in Freeze CK3 migration baseline and clean obsolete outputs on 2026-09-30",
+        "git diff 14c13457952ee89da3e6889c29075477584948f3 1515c4349e7c26dc38686060c58164314d497928 -- tools/cleanup_ck3_admin_20260930 [removed script extension]: only six deletion targets removed, leaving seven date-specific Z:/ck3_mod_rewrite build directories",
+        "git show 1515c4349e7c26dc38686060c58164314d497928:tools/cleanup_ck3_admin_20260930 [removed script extension]: hard-coded workspace, failed-target removal with takeown/icacls retry; no other functionality",
+        "git show --stat acd579b8f09e977ef84eaa04e497bd2f29182a99 -- tools/cleanup_ck3_admin_20260930 [removed script extension]: introduced in Freeze CK3 migration baseline and clean obsolete outputs on 2026-09-30",
         "git grep -n cleanup_ck3_admin_20260930 2a4e7819b3fbeef1d3b05108a8d5493cc5dfc5df -- docs tools AGENTS.md: exit 1, no surviving master callers or documentation references",
-        "package-47.json: master_blob is null; current AGENTS instruction prohibits retaining PowerShell compatibility entries"
+        "package-47.json: master_blob is null; current AGENTS instruction prohibits retaining retired shell compatibility entries"
       ],
-      "review_package": "result-47"
+      "review_package": "result-47",
+      "removed_file_extension": "ps1",
+      "path_representation": "Former path stem plus removed_file_extension; this file stays deleted"
     },
     {
       "path": "tools/r376_b1_replay_runtime.py",
@@ -3877,15 +3881,18 @@
       "review_package": "result-61"
     },
     {
-      "path": "tools/run_one_generation_canary.ps1",
+      "path": "tools/run_one_generation_canary",
       "action": "delete",
-      "reason": "This is an exact historical PowerShell script, already superseded on master by the Python migration. There is no missing local delta to port or merge.",
+      "reason": "This is an exact historical retired shell script, already superseded on master by the Python migration. There is no missing local delta to port or merge.",
       "evidence": [
-        "git log --find-object=04efc42c75b148ab7faf192879c7072e0979a608 supplied-master -- tools/run_one_generation_canary.ps1 identifies 384695221f22d2672bd180769edb2834d30c1f66 (addition) and 1fd0a94ca8d75b3a98724ca313862c4b6e200253 (replacement), proving the exact local blob is in master history.",
-        "Master ancestor 6ed9879ffd0d04d13dd374d7a6161b8cf05292b7, Migrate-one-generation-canary-to-Python, deletes the PowerShell script, adds tools/run_one_generation_canary.py, and updates its tests, handoff and documentation callers.",
-        "Master ls-tree has no .ps1 at this path and has tools/run_one_generation_canary.py blob c26708f5b94e26aec42edc3039e2b6568efa744e."
+        "git log --find-object=04efc42c75b148ab7faf192879c7072e0979a608 supplied-master -- tools/run_one_generation_canary [removed script extension] identifies 384695221f22d2672bd180769edb2834d30c1f66 (addition) and 1fd0a94ca8d75b3a98724ca313862c4b6e200253 (replacement), proving the exact local blob is in master history.",
+        "Master ancestor 6ed9879ffd0d04d13dd374d7a6161b8cf05292b7, Migrate-one-generation-canary-to-Python, deletes the retired shell script, adds tools/run_one_generation_canary.py, and updates its tests, handoff and documentation callers.",
+        "Master ls-tree has no  [removed script extension] at this path and has tools/run_one_generation_canary.py blob c26708f5b94e26aec42edc3039e2b6568efa744e."
       ],
-      "review_package": "result-51"
+      "review_package": "result-51",
+      "removed_file_extension": "ps1",
+      "path_representation": "Former path stem plus removed_file_extension; this file stays deleted"
     }
-  ]
+  ],
+  "removed_script_filename_metadata": "For deleted legacy scripts, path is the original stem and removed_file_extension is the original suffix without the separator. Historical explanatory references use the same removed-extension notation. Git blob and source commit evidence remain unchanged; no command entry is provided."
 }
