@@ -115,6 +115,21 @@ def observe_model(frame, model, decision_key):
     require(all(type(model.get(k)) is type(v) and model[k] == v for k, v in expected.items()), 'Decision model frame differs')
 
 
+def validate_selected(selected, action_frame, observation, decision_key):
+    """Accept the official later proof without reinterpreting the original ACK."""
+    require(selected.get('schema') == 'ck3-ingame-decision-item-action-v1' and
+            selected.get('step') == 'select-ingame-decision-item-v1' and selected.get('action') == 'select' and
+            selected.get('decision_key') == decision_key and selected.get('postcondition_verified') is True and
+            selected.get('status') == 'verified_selected_detail' and selected.get('verification_pending') is False,
+            'Official later selected-detail completion not proved; never replay')
+    observe_model(action_frame, selected.get('later_actual_observation', {}), decision_key)
+    require(frame_identity(observation['frame']) == frame_identity(action_frame), 'Selected detail crossed actual paused frame')
+    observe_model(observation['frame'], observation['model_after'], decision_key)
+    return {'completion_source': 'official_later_actual_observation_and_independent_current_model',
+        'postcondition_verified': True, 'original_ack_selected_after_verified': selected.get('selected_after_verified'),
+        'original_ack_unchanged': True, 'decision_key': decision_key}
+
+
 def confirm_enabled(tree):
     """Read the stock footer using the same named anchors as ConfirmReceiver.
 
@@ -259,16 +274,15 @@ def run_case(context, client):
         {'expected_revision': initial['revision']}, initial)
     selected, _ = _call(client, 'i4-school-select-detail', 'ck3_select_ingame_decision_item_v1',
         {'decision_key': data['decision_key'], 'expected_revision': frame['revision']}, frame)
-    require(selected.get('postcondition_verified') is True and selected.get('selected_after_verified') is True,
-            'Actual selected school detail not proved')
     first = observe_decision(client, data, 0)
+    selection_proof = validate_selected(selected, frame, first, data['decision_key'])
     require(first['confirm_enabled'] is False, 'Initially enabled decision cannot credit existing cooldown disappearance')
     initial_save, after_save = _call(client, 'i4-natural-initial-save-once', 'ck3_save_checkpoint',
         {'expected_revision': first['frame']['revision']}, first['frame'])
     require(initial_save.get('accepted') is True and initial_save.get('step') == 'save-checkpoint', 'Initial SAVE not accepted')
     initial_saved = read_saved(context, initial_save['checkpoint'], initial['date_raw'], data, True)
     client.checkpoint('i4-natural-origin', {'origin': origin, 'initial_frame': initial, 'decision': first,
-        'initial_saved': initial_saved,
+        'initial_saved': initial_saved, 'selection_proof': selection_proof,
         'origin_metadata': context['case_inputs']['origin_metadata'], 'source_inventory': context['case_inputs']['product_inventory']})
     before, elapsed, intervals, final = after_save, 0, [], None
     for ordinal in range(1, data['maximum_natural_days'] + 1):

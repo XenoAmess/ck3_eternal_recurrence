@@ -1,0 +1,13 @@
+{
+  "schema": "lyd.i4.source-receipt-author-failure-observed.v1",
+  "exit_code": 1,
+  "phase": "Before SOURCE-PROOF write and before any focused test invocation",
+  "error": "KeyError: 'version'",
+  "actual_policy_field": "policy_version",
+  "original_source": "validate_and_seal.py",
+  "original_raw_stdio_file": null,
+  "raw_tool_location": "functions.exec result chunk0421cf in this agent transcript; no standalone original raw stdio file exists",
+  "actual_game_calls": 0,
+  "actual_focused_tests": 0,
+  "correction": "Source successor changes only policy JSON key access to actual policy_version; original runner preserved"
+}

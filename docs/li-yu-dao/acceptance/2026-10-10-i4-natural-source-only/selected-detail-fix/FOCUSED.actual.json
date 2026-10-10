@@ -1,0 +1,65 @@
+{
+  "schema": "lyd.i4.selected-later-focused-actual.v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_natural_expiry.py",
+    "SelectedDetailCompletionGuards"
+  ],
+  "exit_code": 0,
+  "tests_selected": 3,
+  "old17_not_rerun": true,
+  "old17_class_AST_unchanged": true,
+  "source_head_before": "d74b2c880aa1edc8af6fce8245b7b7275843c59c",
+  "source_head_after": "d74b2c880aa1edc8af6fce8245b7b7275843c59c",
+  "source_pins_unchanged": true,
+  "before": {
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "path": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4:tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+      "bytes": 23717,
+      "sha256": "f804a22fe8efade1f1753a3da66f5f2403456c34e919521ae62aa2c3c70aca44"
+    },
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py": {
+      "path": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4:tools/test_ck3_mod_acceptance_i4_natural_expiry.py",
+      "bytes": 11877,
+      "sha256": "708f029af231004d66767183b682f0b1e90cf1011e24afbd68fceee5b225a454"
+    },
+    "docs/li-yu-dao/i4-public-natural-expiry.md": {
+      "path": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4:docs/li-yu-dao/i4-public-natural-expiry.md",
+      "bytes": 8378,
+      "sha256": "19217de85a2137b9db9bfd426f65dbf7b3f788f997848ab9f2557711562cbf4a"
+    }
+  },
+  "after": {
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+      "bytes": 24925,
+      "sha256": "61faab8681a3e1ff0daf92d09d600baf9e25cff44e1a459d23eb04eec1117519"
+    },
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_natural_expiry.py",
+      "bytes": 15473,
+      "sha256": "d524a1014b3361952e637734c74881944f0c8587d940a02fb19546f42f4b7d48"
+    },
+    "docs/li-yu-dao/i4-public-natural-expiry.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\i4-public-natural-expiry.md",
+      "bytes": 8814,
+      "sha256": "81df61829dcdcf6183cc0532f56e289899483475a91c34e1d74e46ff79d056d8"
+    }
+  },
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\FOCUSED.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\FOCUSED.stderr.txt",
+    "bytes": 633,
+    "sha256": "d6e3e77a5ba3d94c61c03197a441bdc7d7e9c8a665b34589867a43264bc2e2c4"
+  },
+  "actual_game_calls": 0,
+  "actual_save_body_reads": 0,
+  "business_runtime_pass": null
+}

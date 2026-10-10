@@ -205,5 +205,54 @@ class NaturalExpiryGuards(unittest.TestCase):
                 adapter.verify_case(context)
 
 
+class SelectedDetailCompletionGuards(unittest.TestCase):
+    """Source09 can verify selection later while retaining a pending native ACK."""
+    def setUp(self):
+        self.frame = frame()
+        self.key = adapter.contract()['decision_key']
+        model = {'schema': 'ck3-ingame-decision-item-v1', 'read_only': True, 'available': True,
+            'decision_key': self.key, 'detail_decision_key': self.key, 'matching_row_count': 1,
+            'native_revision': self.frame['native_revision'], 'connection_generation': 1, 'game_pid': 901,
+            'played_character_id': 31254, 'date_raw': self.frame['date_raw'], 'detail_actor_reference_key': 31254,
+            **{key: True for key in ('owner_thread_verified', 'frame_verified', 'source_abi_pins_verified',
+                'gui_owner_binding_verified', 'decisions_tree_complete', 'decisions_root_visible',
+                'row_owner_verified', 'detail_tree_complete', 'detail_root_visible', 'detail_definition_available',
+                'detail_definition_matches_target', 'detail_actor_binding_verified')}}
+        self.selected = {'schema': 'ck3-ingame-decision-item-action-v1', 'step': 'select-ingame-decision-item-v1',
+            'action': 'select', 'decision_key': self.key, 'postcondition_verified': True,
+            'status': 'verified_selected_detail', 'verification_pending': False,
+            'selected_after_verified': False, 'native_ack': {'selected_after_verified': False,
+                'postcondition_verified': False, 'status': 'acknowledged_verification_pending', 'verification_pending': True},
+            'later_actual_observation': copy.deepcopy(model)}
+        self.observation = {'frame': copy.deepcopy(self.frame), 'model_after': copy.deepcopy(model)}
+
+    def test_pending_native_ack_later_verified_actual_detail_accepted_unchanged(self):
+        original = copy.deepcopy(self.selected)
+        proof = adapter.validate_selected(self.selected, self.frame, self.observation, self.key)
+        self.assertTrue(proof['postcondition_verified'])
+        self.assertFalse(proof['original_ack_selected_after_verified'])
+        self.assertEqual(self.selected, original)
+
+    def test_unverified_or_missing_later_observation_rejected(self):
+        for mutation in ('postcondition', 'pending', 'status', 'missing_later'):
+            selected = copy.deepcopy(self.selected)
+            if mutation == 'postcondition': selected['postcondition_verified'] = False
+            elif mutation == 'pending': selected['verification_pending'] = True
+            elif mutation == 'status': selected['status'] = 'acknowledged_verification_pending'
+            else: selected.pop('later_actual_observation')
+            with self.assertRaises(ValueError):
+                adapter.validate_selected(selected, self.frame, self.observation, self.key)
+
+    def test_wrong_later_key_actor_frame_or_independent_target_rejected(self):
+        for mutation in ('key', 'actor', 'frame', 'current_target'):
+            selected, current = copy.deepcopy(self.selected), copy.deepcopy(self.observation)
+            if mutation == 'key': selected['later_actual_observation']['detail_decision_key'] = 'lyd_study_decision'
+            elif mutation == 'actor': selected['later_actual_observation']['detail_actor_reference_key'] = 65865
+            elif mutation == 'frame': selected['later_actual_observation']['date_raw'] += 24
+            else: current['model_after']['decision_key'] = 'lyd_study_decision'
+            with self.assertRaises(ValueError):
+                adapter.validate_selected(selected, self.frame, current, self.key)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

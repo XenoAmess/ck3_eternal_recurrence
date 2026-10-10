@@ -1,0 +1,8 @@
+test_pending_native_ack_later_verified_actual_detail_accepted_unchanged (__main__.SelectedDetailCompletionGuards.test_pending_native_ack_later_verified_actual_detail_accepted_unchanged) ... ok
+test_unverified_or_missing_later_observation_rejected (__main__.SelectedDetailCompletionGuards.test_unverified_or_missing_later_observation_rejected) ... ok
+test_wrong_later_key_actor_frame_or_independent_target_rejected (__main__.SelectedDetailCompletionGuards.test_wrong_later_key_actor_frame_or_independent_target_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK

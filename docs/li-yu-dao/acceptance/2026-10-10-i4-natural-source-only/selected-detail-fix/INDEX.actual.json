@@ -1,0 +1,107 @@
+{
+  "schema": "lyd.i4.selected-later-fix-source-delivery.v1",
+  "status": "STATIC_READY",
+  "created_at_utc": "2026-10-10T13:03:17.383493+00:00",
+  "source_head": "d74b2c880aa1edc8af6fce8245b7b7275843c59c",
+  "scope": [
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py",
+    "docs/li-yu-dao/i4-public-natural-expiry.md"
+  ],
+  "source_targets": {
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+      "bytes": 24925,
+      "sha256": "61faab8681a3e1ff0daf92d09d600baf9e25cff44e1a459d23eb04eec1117519"
+    },
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_natural_expiry.py",
+      "bytes": 15473,
+      "sha256": "d524a1014b3361952e637734c74881944f0c8587d940a02fb19546f42f4b7d48"
+    },
+    "docs/li-yu-dao/i4-public-natural-expiry.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\i4-public-natural-expiry.md",
+      "bytes": 8814,
+      "sha256": "81df61829dcdcf6183cc0532f56e289899483475a91c34e1d74e46ff79d056d8"
+    }
+  },
+  "source_proof": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\SOURCE-PROOF.actual.json",
+    "bytes": 3979,
+    "sha256": "e4535bdd61ff7d01c6d1c8c7cda320e64245bf7372e8d60492fa20ce47ebc103"
+  },
+  "focused": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\FOCUSED.actual.json",
+    "bytes": 2906,
+    "sha256": "f62f97221d36c9e1c9474caa1b0e276a117075a3a7a61098ca7c1e5ff93b3b33"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\candidate.patch",
+    "bytes": 8855,
+    "sha256": "b4cc1d9a4cc4110ba2ef40c7e0432bb8a3379ee55fa7def0d9332b87132083d7"
+  },
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\REPORT.md",
+    "bytes": 1367,
+    "sha256": "2b095454a2b8f374757b061f70ed675d565c552da820b809b900252a871f6afd"
+  },
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\candidate.patch",
+      "bytes": 8855,
+      "sha256": "b4cc1d9a4cc4110ba2ef40c7e0432bb8a3379ee55fa7def0d9332b87132083d7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\FOCUSED.actual.json",
+      "bytes": 2906,
+      "sha256": "f62f97221d36c9e1c9474caa1b0e276a117075a3a7a61098ca7c1e5ff93b3b33"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\FOCUSED.stderr.txt",
+      "bytes": 633,
+      "sha256": "d6e3e77a5ba3d94c61c03197a441bdc7d7e9c8a665b34589867a43264bc2e2c4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\FOCUSED.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\RECEIPT-AUTHOR-001-FAILURE.observed.json",
+      "bytes": 631,
+      "sha256": "0b3a4228e379cee8e4672557a9acbae5fdf4552943b0dd59fe0c16e875015a4a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\REPORT.md",
+      "bytes": 1367,
+      "sha256": "2b095454a2b8f374757b061f70ed675d565c552da820b809b900252a871f6afd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\SOURCE-PROOF.actual.json",
+      "bytes": 3979,
+      "sha256": "e4535bdd61ff7d01c6d1c8c7cda320e64245bf7372e8d60492fa20ce47ebc103"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\validate_and_seal.py",
+      "bytes": 7186,
+      "sha256": "c369d0fb55d673f88bc37e08492792326d1d4d46bcee33b5864963e403c9c0aa"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-selected-detail-later-proof-20261010-001\\validate_and_seal_002.py",
+      "bytes": 1073,
+      "sha256": "4c0f49f751accb8a7fee8fa825ccf18e6ddcb6fbdd7bc6122a070e2629c8dd87"
+    }
+  ],
+  "actual_runtime_pass": null,
+  "old17_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-002.actual.json",
+    "bytes": 2705,
+    "sha256": "ebc521d7594cc7b53dc80b86d78369cf6ce6676b155dca2b8f00f082cdfab35e"
+  },
+  "storage": {
+    "budget_bytes": 65536,
+    "derived_review_due_utc": "2026-10-12T13:03:17.383493+00:00",
+    "record_review_due_utc": "2027-04-08T13:03:17.383493+00:00",
+    "disk_free_at_close_bytes": 624058425344
+  }
+}

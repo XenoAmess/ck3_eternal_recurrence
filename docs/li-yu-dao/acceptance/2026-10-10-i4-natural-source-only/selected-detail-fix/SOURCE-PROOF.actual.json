@@ -1,0 +1,43 @@
+{
+  "schema": "lyd.i4.selected-later-source-proof.v1",
+  "actual_source": {
+    "path": "C:\\csr9\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+    "bytes": 1430381,
+    "sha256": "18d5957d55f247ed737e993a304f48416cdabe9e0c761b87aecfee6f2bb1a1c3"
+  },
+  "line_start": 6831,
+  "line_end": 6859,
+  "actual_excerpt": "            result = normalize_decision_action(raw, binding, decision_key, action)\n            # A missing or rejected action ACK never reaches these read-only observations.\n            # Confirm can remove its row from the list; its later proof uses the inner modal alone.\n            deadline = time.monotonic() + 5.0\n            later = None\n            while True:\n                current = self.take_snapshot()\n                if opening_binding(current) != binding or not _same_paused_native_frame(starting, current):\n                    raise BridgeUnavailableError(\"decision later observation crossed its episode/frame\")\n                if action == \"select\":\n                    later = self.query_ingame_decision_item_v1(decision_key)\n                    verified = actual_selected_detail(later, binding, decision_key)\n                else:\n                    later = self.inspect_gui_window_tree_v1(expected_window_kind)\n                    verified = actual_inner_modal_tree(later, expected_window_kind)\n                ending = self.take_snapshot()\n                if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):\n                    raise BridgeUnavailableError(\"decision after-read crossed its episode/frame\")\n                if verified:\n                    break\n                remaining = deadline - time.monotonic()\n                if remaining <= 0:\n                    raise BridgeUnavailableError(\"submitted decision action lacks its later actual postcondition; no retry\")\n                time.sleep(min(0.1, remaining))\n            result.update({\"postcondition_verified\": True, \"verification_pending\": False,\n                           \"status\": \"verified_selected_detail\" if action == \"select\" else \"verified_inner_modal_visible\",\n                           \"later_actual_observation\": later, \"native_ack\": dict(raw), \"action_request_id\": request_id,\n                           \"action_claim_path\": str(claim), \"episode_run_id\": binding[\"episode_run_id\"],\n                           \"queried_revision\": revision, \"uses_mouse\": False, \"uses_keyboard\": False, \"uses_ocr\": False})",
+  "cause": "Source09 validates independent later_actual_observation then updates postcondition/status/pending; original selected_after_verified ACK remains unchanged.",
+  "before_source_ref": "130abadbd0a7c64f18e69cda5ebd9c8771e7cdb4",
+  "actual_test_head": "d74b2c880aa1edc8af6fce8245b7b7275843c59c",
+  "AST_delta": {
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "existing_changed": [
+        "run_case"
+      ],
+      "added": [
+        "validate_selected"
+      ]
+    },
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py": {
+      "existing_changed": [],
+      "added": [
+        "SelectedDetailCompletionGuards"
+      ]
+    }
+  },
+  "prior17_actual_receipt_unchanged": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-002.actual.json",
+    "bytes": 2705,
+    "sha256": "ebc521d7594cc7b53dc80b86d78369cf6ce6676b155dca2b8f00f082cdfab35e"
+  },
+  "open_kaishek": "Existing N/A assessment reused; this delta is pure Python official DTO completion checks, not engine simulation",
+  "open_kaishek_prior_assessment": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\OPEN-KAISHEK-ASSESSMENT.actual.json",
+    "bytes": 2240,
+    "sha256": "057a6eafedd1f843de147f2aeab738c67eaf28460a8e196ffb674b9618b4fd79"
+  },
+  "storage_policy_version": "1.0.0",
+  "disk_free_before_test_bytes": 624058454016
+}

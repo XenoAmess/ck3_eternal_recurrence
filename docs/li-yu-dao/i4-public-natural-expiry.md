@@ -87,6 +87,11 @@ preflight/run/verify。不能在本案例中复用旧现场或延长旧hold。
 
 1. 实际载入原seed并保留进程句柄；确认暂停、event-free、actor/date一致。
 2. 公开打开决议并选择 `lyd_change_school_decision` 的详情，**不点击确认**。
+   Source09先保留原生选择ACK，再独立回读实际详情。原ACK的
+   `selected_after_verified=false` 可以保持原值；只有官方最终
+   `postcondition_verified=true`、`status=verified_selected_detail`、
+   `verification_pending=false`，且 `later_actual_observation` 与随后独立模型均证明
+   同一目标/actor/暂停frame，才接受选中完成。未完成或错误目标仍拒绝，不重放选择。
 3. keyed模型确认唯一目标/实际actor及frame；窗口树读取真实确认按钮 `enabled=false`。
    模型 `available=true` 仅表示找到正确对象，不证明决议可执行。
 4. 新initial SAVE/read一次；以已经读出的同一bytes写入独立
@@ -117,6 +122,10 @@ PID/connection/actor/date内。它不能证明树与模型逐字段拥有同一�
 本次新增专项检查17项实际通过，五个来源字节在测试前后保持一致；仅授`STATIC_READY`。
 [原始小回执及首次fixture错误](acceptance/2026-10-10-i4-natural-source-only/INDEX.json)均保留。
 首次错误是合成parser样本缺少必要分节换行，修正样本后通过，没有修改生产parser。
+
+随后只读接口审阅发现原ACK待验证时会被误拒，现已采用官方later实际证明；新增3项
+专项检查实际通过，未重跑原17项。[修正与原审阅回执](acceptance/2026-10-10-i4-natural-source-only/selected-detail-fix/INDEX.actual.json)
+单独保存，当前仍无实机信用。
 
 新增的纯Python测试只验新guard：缺失/错误flag形状、tick不可解释、GUI缺失或歧义、
 伪日期跳跃、事件/连接变化、累计实际时间上限、两次真实保存的预期parser形状及中间日期缺口。
