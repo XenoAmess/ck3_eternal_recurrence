@@ -119,6 +119,55 @@ def record_sway_material_from_completion(
     )
 
 
+def record_sway_phase_observation(
+    state_dir: Path, *, execution_read: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Retain a hidden executing branch independently of opinion or terminal facts."""
+    if (execution_read.get("schema") != "xar.ck3.sway-completion-execution.v1"
+            or execution_read.get("available") is not True
+            or not execution_read.get("records")):
+        return None
+    matched = _resolved_for_read(state_dir, execution_read)
+    if matched is None:
+        return None
+    ledger, resolved, receipt = matched
+    if receipt["scheme_instance_id"] != execution_read.get("scheme_instance_id"):
+        return None
+    record = execution_read["records"][-1]
+    if record["scheme_instance_generation"] != receipt["scheme_instance_generation"]:
+        return None
+    observation = {
+        "action_id": resolved["action_id"],
+        "actor_character_id": resolved["actor_character_id"],
+        "target_character_id": resolved["target_character_id"],
+        "scheme_instance_id": receipt["scheme_instance_id"],
+        "scheme_instance_generation": receipt["scheme_instance_generation"],
+        "exact_ck3_build": execution_read["exact_ck3_build"],
+        "exe_sha256": execution_read["exe_sha256"],
+        "source_native_revision": execution_read["snapshot_revision"],
+        "source_date_raw": execution_read["date_raw"],
+        "source_sequence": record["sequence"],
+        "execution_date_raw": record["date_raw"],
+        "source_branch": record["source_branch"],
+        "stock_event": record["stock_event"],
+        "phase_result": record["phase_result"],
+        "executing_input_observed": True,
+        "material_effect_observed": False,
+        "native_terminal_state_observed": False,
+        "native_observation": dict(execution_read),
+        "next_turn_consumed": False,
+    }
+    previous = resolved.get("phase_intervention")
+    if (isinstance(previous, Mapping)
+            and all(previous.get(key) == observation[key] for key in (
+                "source_sequence", "execution_date_raw", "source_branch"))):
+        return dict(previous)
+    _write(state_dir, {**ledger, "resolved": {
+        **resolved, "phase_intervention": observation,
+    }})
+    return observation
+
+
 def has_pending_sway_following_turn(state_dir: Path) -> bool:
     """Avoid an additional snapshot when no original Sway observation is due."""
     if not (state_dir / LEDGER_FILE).is_file():
@@ -132,6 +181,7 @@ def has_pending_sway_following_turn(state_dir: Path) -> bool:
                and episode[key].get("next_turn_consumed") is not True
                and (key != "stop_intervention"
                     or episode[key].get("postcondition_verified") is True)
-               for key in ("material_intervention", "terminal_intervention", "stop_intervention"))
+               for key in ("phase_intervention", "material_intervention",
+                           "terminal_intervention", "stop_intervention"))
         for episode in [resolved, *resolved.get("previous_interventions", [])]
     )

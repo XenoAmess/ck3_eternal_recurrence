@@ -44,7 +44,7 @@ flowchart TD
   L --> N[Existing normal following-turn and cold consumption]
   M --> N
   T --> N
-  E -. current typed Execute slots and consumed operands need finite closure .-> U[Actual4 native source mapping]
+  E --> U[Actual4 typed slots and operands closed by finite native source]
   S -. phase result alone supplies no terminal cause .-> X[Unknown executing terminal branch and cause]
   T -. common status1 supplies no specific cause .-> X
 ```
@@ -72,12 +72,12 @@ mapping also closes old global command-key getter `3F4F900` to current
 distinct from the named script-identifier domain. These helpers are not
 recaptured.
 
-The actual4 notification Execute profiles, three typed slots, title-wrapper
-and scalar identities, their consumed member operands and real inherited
-lookup remain unclosed. Old12002 coordinates are locators used by existing
-12003 code, not current-build evidence. Missing current roles must be derived
-from exact source rather than a uniform RVA delta. Root authorized a finite
-cache-first source request, without additional game probes:
+The initial missing source set was the actual4 notification Execute profiles,
+three typed slots, title-wrapper and scalar identities, consumed member
+operands and real inherited lookup. It is now closed by the finite source
+and tiny receipts below. Old12002 coordinates were locators used by existing
+12003 code; current roles were derived from exact source rather than a uniform
+RVA delta. Root authorized this finite cache-first request without game probes:
 
 `D:/codex-ck3-background-spill/sway-hidden-phase-source-delivery/ROOT-FINITE-NATIVE-MANIFEST.json`.
 
@@ -105,10 +105,10 @@ an empty Env32/inherited token input, independent opinion and completion
 readbacks, normal following turn and cold duplicate consumption. Root owns
 that FIRST. An available empty recorder is transport qualification only.
 
-Status: **research; finite source request authored**. No production code,
-schema admission, test, import, build, native/SDK/Game query, new game day,
-SAVE, hidden live result, specific terminal cause or G2 credit is added by
-this document. Actual4 source closure precedes the executable increment;
+Status: **research; native source closed and production delta authored;
+connected FIRST NOTRUN**. No test, import, build, native/SDK/Game query, new
+game day, SAVE, hidden live result, specific terminal cause or G2 credit is
+added by this worker. Actual4 source closure preceded the executable increment;
 full Sway lifecycle remains unfinished.
 
 ## First actual finite source increment
@@ -145,3 +145,45 @@ registry callbacks use `NativeStringView32(data,size,0)` for identifier lookup;
 their reuse avoids another read of identifier globals. No current production
 profile or phase-observation capability is claimed before the remaining
 native atoms close.
+
+## Closed native atoms and authored production increment
+
+Root's tiny capture completed at2026-10-10T03:49:46.167900Z. The
+[current native mapping](sway-hidden-phase-execution-input-native-map-12004.md)
+records five actual COL/type identities, all three slot22 originals and the
+complete162B inherited lookup. Its final thin evidence is
+`D:/codex-ck3-background-spill/sway-hidden-phase-current04-mapping/CURRENT04-FINAL-NATIVE-MAPPING.json`.
+The lookup body is byte-equal across02/03/04. It searches Env32 before the
+Env+3D0 inherited ScriptScopeData24 rows and copies each found16B token.
+This closes the required original actor/target/full SchemeID read set.
+
+The new actual4 binding supplies the current typed vptrs, original slot
+targets, inherited getter and qualified Core reader. It resolves the three
+scope identifiers with the existing actual4 script registry callbacks.
+The existing three-slot installer, capturer, copied recorder, mailbox and
+full command-result formatter are retained. Actual4 startup installs this
+observer under the existing active-scheme feature; the unchanged query gains
+exact4 identity admission and correctly stamped outer build provenance.
+Legacy default binding and serialization inputs remain available.
+
+The registered execution query now passes through Service. For the original
+verified once-start receipt, it retains the latest observed hidden phase and
+the complete returned source records as `phase_intervention` in the existing
+ledger. An empty later read cannot erase it. Repeating the same source does
+not rearm normal/cold following-turn consumption. Independent opinion,
+material and retained-terminal records remain independent; phase success
+does not supply a useful modifier or terminal cause. No second history store
+or ring is introduced. This readonly query uses the already-qualified finite
+snapshot helper because its input consumers need no command history; public
+snapshot defaults and complete driver persistence remain unchanged.
+
+The one new connected FIRST is authored at
+`ck3_autonomous_player/native_bridge/research/run_sway_execution12004_connected_first.py`.
+It compiles one current-profile owned-memory case, installs the existing
+three owned pointer slots, captures hidden failure and success through empty
+Env32/inherited ScriptScopeData24, and emits a new full command-result packet.
+One registered MCP compound consumes that packet through the real NativeDriver
+transport, original Service ledger and normal/cold turns. Completion/opinion
+are explicit synthetic normalized sources whose prior native qualification
+is reused. The native owner mailbox and actual Game installation are not
+exercised by this FIRST. Only Root may execute it; no old suite is replayed.

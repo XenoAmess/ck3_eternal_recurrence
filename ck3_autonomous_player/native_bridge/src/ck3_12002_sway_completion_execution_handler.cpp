@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12002_sway_completion_execution_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -41,9 +42,11 @@ bool HandleSwayCompletionExecutionV1(
   try {
     SwayCompletionExecutionMailboxContextV1 query{};
     std::uint64_t expected_revision{};
+    const bool actual4 = adapter.descriptor().game_version == ck3_12004::kGameVersion &&
+        adapter.descriptor().executable_sha256 == ck3_12004::kExecutableSha256;
     if (step != kSwayCompletionExecutionStepV1 || !Parse(payload, expected_revision, query.request) ||
         expected_revision != revision || !adapter.enabled() ||
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+        (!actual4 && xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256) ||
         !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive ||
         static_cast<std::uint32_t>(published.played_character_id) != query.request.actor_character_id) {
@@ -74,7 +77,9 @@ bool HandleSwayCompletionExecutionV1(
       return false;
     }
     serialized = SerializeSwayCompletionExecutionCommandResultV1(
-        query.result, revision, query.envelope.execution_stamp.date_raw, request_id);
+        query.result, revision, query.envelope.execution_stamp.date_raw, request_id,
+        actual4 ? ck3_12004::kGameVersion : "1.20.0.2",
+        actual4 ? ck3_12004::kExecutableSha256 : kExecutableSha256);
     return true;
   } catch (...) {
     failure = "sway_execution_handler_exception";

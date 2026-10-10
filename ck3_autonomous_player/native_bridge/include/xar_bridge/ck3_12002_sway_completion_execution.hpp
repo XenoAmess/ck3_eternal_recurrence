@@ -58,6 +58,13 @@ struct SwayExecutionBindings12002 {
   SwayExecutionGlobalCommandKeyGetter12002 get_global_command_key = nullptr;
   EventGetRegistry get_script_identifier_table = nullptr;
   EventResolveIdentifierName resolve_script_identifier_name = nullptr;
+  EventLookupIdentifier lookup_script_identifier_id = nullptr;
+  bool (*read_core_snapshot)(const CoreBindings &, CoreSnapshotPrefix &) noexcept = nullptr;
+  std::array<std::uintptr_t, 3> effect_vtable_rvas{
+      kSwayExecutionMessageVtableRva12002, kSwayExecutionToastVtableRva12002,
+      kSwayExecutionPopupVtableRva12002};
+  std::uintptr_t title_wrapper_vtable_rva = kSwayExecutionTitleWrapperVtableRva12002;
+  std::uintptr_t scalar_localization_vtable_rva = kSwayExecutionScalarLocalizationVtableRva12002;
 };
 
 SwayExecutionBindings12002 BindSwayExecutionImage12002(

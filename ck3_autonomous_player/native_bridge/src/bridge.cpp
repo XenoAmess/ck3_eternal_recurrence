@@ -28390,6 +28390,12 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             g_tactical_daily_sentinel_v1, tactical_sentinel_environment, sha)) {
       return FALSE;
     }
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    if (!xar::ck3_12002::InstallSwayCompletionExecution12004(
+            base, sha, g_sway_completion_execution_recorder12002,
+            g_sway_completion_execution_install12002))
+      return FALSE;
+#endif
     return xar::ck3_12002::InstallBattleTerminalJournalV1(
         g_battle_terminal_journal_12002_v1, environment) ? TRUE : FALSE;
   }

@@ -2028,7 +2028,7 @@ def create_server(
             after_sequence: int = 0,
         ) -> dict[str, object]:
             """Read native hidden Sway branch execution records for the exact instance."""
-            return driver.query_active_scheme_sway_completion_execution_private_v1(
+            return service.query_active_scheme_sway_completion_execution_private_v1(
                 expected_revision=expected_revision, target_character_id=target_character_id,
                 scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
             )

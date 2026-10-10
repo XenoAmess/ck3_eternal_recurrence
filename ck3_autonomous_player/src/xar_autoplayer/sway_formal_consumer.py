@@ -304,6 +304,10 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
         return None
     if actor_id != resolved.get("actor_character_id"):
         return None
+    phase = consume_sway_material_following_turn(
+        resolved.get("phase_intervention"), actor_character_id=actor_id,
+        native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
+    )
     material = consume_sway_material_following_turn(
         resolved.get("material_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
@@ -321,7 +325,8 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
     start_consumed = (resolved.get("next_turn_consumed") is not True
                       and (snapshot["native_revision"] > resolved["post_native_revision"]
                            or snapshot["date_raw"] > resolved["post_date_raw"]))
-    if not start_consumed and material is None and terminal is None and stop is None:
+    if (not start_consumed and phase is None and material is None
+            and terminal is None and stop is None):
         return None
     if start_consumed:
         resolved = {**resolved, "next_turn_consumed": True,
@@ -329,6 +334,8 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
                     "following_date_raw": snapshot["date_raw"]}
     if material is not None:
         resolved = {**resolved, "material_intervention": material}
+    if phase is not None:
+        resolved = {**resolved, "phase_intervention": phase}
     if terminal is not None:
         resolved = {**resolved, "terminal_intervention": terminal}
     if stop is not None:

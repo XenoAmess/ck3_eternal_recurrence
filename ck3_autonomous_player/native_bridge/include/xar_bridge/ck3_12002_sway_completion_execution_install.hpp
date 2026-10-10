@@ -44,6 +44,11 @@ bool InstallSwayCompletionExecution12002(
     SwayExecutionRecorder12002 &recorder,
     SwayCompletionExecutionInstall12002 &state) noexcept;
 
+bool InstallSwayCompletionExecution12004(
+    std::uintptr_t image_base, std::string_view executable_sha256,
+    SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state) noexcept;
+
 // Explicit fixture seam: caller-owned slots and typed originals, never RVA
 // substitution or a synthetic complete game image. Production doesn't call it.
 bool InstallSwayCompletionExecutionFixture12002(

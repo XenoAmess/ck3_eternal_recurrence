@@ -1,4 +1,7 @@
 #include "xar_bridge/ck3_12002_sway_completion_execution.hpp"
+#include "xar_bridge/ck3_12004_sway_execution.hpp"
+#include "xar_bridge/ck3_12004_event_window_context.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <cstring>
 #include <limits>
@@ -18,8 +21,10 @@ bool Copy(std::uintptr_t address, void *output, std::size_t size) noexcept {
 template <class T> bool Read(std::uintptr_t address, T &output) noexcept {
   return Copy(address, &output, sizeof(output));
 }
-bool Core(const CoreBindings &bindings, CoreSnapshotPrefix &output) noexcept {
-  __try { return ReadCoreSnapshot(bindings, output); }
+bool Core(const SwayExecutionBindings12002 &bindings, CoreSnapshotPrefix &output) noexcept {
+  __try { return bindings.read_core_snapshot != nullptr
+      ? bindings.read_core_snapshot(bindings.core, output)
+      : ReadCoreSnapshot(bindings.core, output); }
   __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 }
 bool Table(EventGetRegistry getter, void *&output) noexcept {
@@ -44,6 +49,19 @@ bool Lookup(SwayExecutionNativeLookup12002 getter, const void *environment,
   if (getter == nullptr || environment == nullptr || identifier < 0) return false;
   __try { return getter(environment, &output, identifier) == &output; }
   __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+}
+struct NativeStringView32 {
+  const char *data = nullptr;
+  std::int32_t size = 0;
+  std::int32_t padding = 0;
+};
+bool NamedIdentifier(const SwayExecutionBindings12002 &bindings, void *table,
+    std::string_view name, std::int32_t &output) noexcept {
+  if (bindings.lookup_script_identifier_id == nullptr || table == nullptr) return false;
+  const NativeStringView32 view{name.data(), static_cast<std::int32_t>(name.size()), 0};
+  __try {
+    return bindings.lookup_script_identifier_id(table, &output, &view) != nullptr && output >= 0;
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 }
 // All canonical identifiers in this source contract fit inside this buffer.
 // Compare original scalar keys, never the localized message renderer output.
@@ -88,9 +106,9 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
     return Unavailable(out, "sway_execution_build_or_entry_unavailable");
   std::uintptr_t vtable{};
   if (!Read(effect, vtable)) return Unavailable(out, "sway_execution_effect_unavailable");
-  if (vtable != b.image_base + kSwayExecutionMessageVtableRva12002 &&
-      vtable != b.image_base + kSwayExecutionToastVtableRva12002 &&
-      vtable != b.image_base + kSwayExecutionPopupVtableRva12002)
+  if (vtable != b.image_base + b.effect_vtable_rvas[0] &&
+      vtable != b.image_base + b.effect_vtable_rvas[1] &&
+      vtable != b.image_base + b.effect_vtable_rvas[2])
     return SwayExecutionCaptureResult12002::ignored;
   std::int32_t command_id{};
   std::uint8_t command_domain{};
@@ -131,11 +149,11 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
   std::uint16_t title_scope_type{};
   CopiedKey title;
   if (!Read(effect + 0x60, title_wrapper_vtable) ||
-      title_wrapper_vtable != b.image_base + kSwayExecutionTitleWrapperVtableRva12002 ||
+      title_wrapper_vtable != b.image_base + b.title_wrapper_vtable_rva ||
       !Read(effect + 0x68, title_scope_type) || title_scope_type != 4 ||
       !Read(effect + 0x70, scalar) || scalar == 0 ||
       !Read(scalar, scalar_vtable) ||
-      scalar_vtable != b.image_base + kSwayExecutionScalarLocalizationVtableRva12002 ||
+      scalar_vtable != b.image_base + b.scalar_localization_vtable_rva ||
       !Key(scalar + 0x30, title))
     return Unavailable(out, "sway_execution_authored_scalar_title_unavailable");
   if (type.Is("sway_good_message") && title.Is("sway_sway_success_message"))
@@ -145,7 +163,7 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
   else return SwayExecutionCaptureResult12002::ignored;
 
   CoreSnapshotPrefix before{};
-  if (!Core(b.core, before) || !before.map_ready || !before.has_played_character ||
+  if (!Core(b, before) || !before.map_ready || !before.has_played_character ||
       !before.played_character_alive)
     return Unavailable(out, "sway_execution_played_actor_unavailable");
   std::uintptr_t root{}, environment{};
@@ -158,9 +176,14 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
   bool owner_found = false, target_found = false, scheme_found = false;
   if (b.lookup != nullptr) {
     std::int32_t scheme_identifier{}, owner_identifier{}, target_identifier{};
-    if (!Read(reinterpret_cast<std::uintptr_t>(b.scheme_identifier), scheme_identifier) ||
-        !Read(reinterpret_cast<std::uintptr_t>(b.owner_identifier), owner_identifier) ||
-        !Read(reinterpret_cast<std::uintptr_t>(b.target_identifier), target_identifier) ||
+    const bool identifiers = b.lookup_script_identifier_id != nullptr
+        ? NamedIdentifier(b, table, "scheme", scheme_identifier) &&
+          NamedIdentifier(b, table, "owner", owner_identifier) &&
+          NamedIdentifier(b, table, "target", target_identifier)
+        : Read(reinterpret_cast<std::uintptr_t>(b.scheme_identifier), scheme_identifier) &&
+          Read(reinterpret_cast<std::uintptr_t>(b.owner_identifier), owner_identifier) &&
+          Read(reinterpret_cast<std::uintptr_t>(b.target_identifier), target_identifier);
+    if (!identifiers ||
         !Lookup(b.lookup, reinterpret_cast<const void *>(environment), scheme_identifier, out.scheme) ||
         !Lookup(b.lookup, reinterpret_cast<const void *>(environment), owner_identifier, out.owner) ||
         !Lookup(b.lookup, reinterpret_cast<const void *>(environment), target_identifier, out.target))
@@ -170,9 +193,9 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
     target_found = out.target.type != 0;
   } else {
     // Legacy hand-bound Env32 fixture inputs. Production BindImage always
-    // supplies the native overlay getter and identifier globals.
+    // supplies the native overlay getter and named identifier inputs.
     if (b.scheme_identifier != nullptr || b.owner_identifier != nullptr ||
-        b.target_identifier != nullptr)
+        b.target_identifier != nullptr || b.lookup_script_identifier_id != nullptr)
       return Unavailable(out, "sway_execution_native_scope_lookup_unavailable");
     std::uintptr_t data{};
     std::int32_t capacity{}, count{};
@@ -209,7 +232,7 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
       out.scheme_id == 0xFFFFFFFFu)
     return Unavailable(out, "sway_execution_full_scope_join_unavailable");
   CoreSnapshotPrefix after{};
-  if (!Core(b.core, after) || !FrameSame(before, after))
+  if (!Core(b, after) || !FrameSame(before, after))
     return Unavailable(out, "sway_execution_actor_date_changed");
   out.date_raw = before.clock.date_raw;
   return SwayExecutionCaptureResult12002::captured;
@@ -341,3 +364,31 @@ std::string SerializeSwayCompletionExecution12002(const SwayExecutionQueryResult
 }
 
 } // namespace xar::ck3_12002
+
+namespace xar::ck3_12004 {
+ck3_12002::SwayExecutionBindings12002 BindSwayExecutionImage12004(
+    std::uintptr_t base, std::string_view sha) noexcept {
+  ck3_12002::SwayExecutionBindings12002 bindings{};
+  bindings.core = ck3_12004::BindCoreImage(base, sha);
+  if (!bindings.core.enabled) return bindings;
+  bindings.enabled = true;
+  bindings.image_base = base;
+  bindings.read_core_snapshot = &ck3_12004::ReadCoreSnapshot;
+  bindings.effect_vtable_rvas = kSwayExecutionVtableRvas12004;
+  bindings.title_wrapper_vtable_rva = kSwayExecutionTitleWrapperRva12004;
+  bindings.scalar_localization_vtable_rva = kSwayExecutionScalarRva12004;
+  bindings.lookup = reinterpret_cast<ck3_12002::SwayExecutionNativeLookup12002>(
+      base + kSwayExecutionScopeLookupRva12004);
+  bindings.get_global_command_key =
+      reinterpret_cast<ck3_12002::SwayExecutionGlobalCommandKeyGetter12002>(
+          base + kSwayExecutionCommandKeyGetterRva12004);
+  bindings.get_script_identifier_table = reinterpret_cast<ck3_12002::EventGetRegistry>(
+      base + kEventScriptIdentifierTableGetterRva12004V1);
+  bindings.lookup_script_identifier_id = reinterpret_cast<ck3_12002::EventLookupIdentifier>(
+      base + kEventScriptIdentifierLookupRva12004V1);
+  bindings.resolve_script_identifier_name =
+      reinterpret_cast<ck3_12002::EventResolveIdentifierName>(
+          base + kEventScriptIdentifierNameResolverRva12004V1);
+  return bindings;
+}
+} // namespace xar::ck3_12004

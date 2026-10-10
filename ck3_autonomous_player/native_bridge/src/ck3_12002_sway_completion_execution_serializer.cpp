@@ -23,13 +23,15 @@ std::string Quoted(std::string_view value) {
 
 std::string SerializeSwayCompletionExecutionCommandResultV1(
     const SwayExecutionQueryResult12002 &output, std::uint64_t snapshot_revision,
-    std::int32_t date_raw, std::string_view request_id) {
+    std::int32_t date_raw, std::string_view request_id,
+    std::string_view build_version, std::string_view executable_sha256) {
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" +
       Quoted(request_id) + ",\"ok\":true,\"result\":{\"step\":" + Quoted(kSwayCompletionExecutionStepV1) +
       ",\"accepted\":true,\"status\":" + Quoted(output.available ? "available" : "unavailable") +
       ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"snapshot_revision\":" +
       std::to_string(snapshot_revision) + ",\"date_raw\":" + std::to_string(date_raw) +
-      ",\"build_version\":\"1.20.0.2\",\"executable_sha256\":" + Quoted(kExecutableSha256) +
+      ",\"build_version\":" + Quoted(build_version) +
+      ",\"executable_sha256\":" + Quoted(executable_sha256) +
       ",\"sway_completion_execution\":" + SerializeSwayCompletionExecution12002(output) +
       ",\"backend_id\":\"native-headless\"}}";
 }

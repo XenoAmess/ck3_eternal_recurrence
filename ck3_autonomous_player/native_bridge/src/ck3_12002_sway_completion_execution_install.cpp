@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
+#include "xar_bridge/ck3_12004_sway_execution.hpp"
 
 #include <atomic>
 #include <cstring>
@@ -140,6 +141,21 @@ bool InstallSwayCompletionExecutionFixture12002(
     SwayCompletionExecutionInstall12002 &state) noexcept {
   return InstallSwayCompletionExecutionFixtureWithSecondarySink12002(
       bindings, slots, originals, recorder, state, nullptr, nullptr);
+}
+
+bool InstallSwayCompletionExecution12004(
+    std::uintptr_t base, std::string_view sha, SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state) noexcept {
+  const auto bindings = ck3_12004::BindSwayExecutionImage12004(base, sha);
+  std::array<SwayCompletionNativeExecute12002 *, 3> slots{};
+  std::array<SwayCompletionNativeExecute12002, 3> originals{};
+  for (std::size_t index = 0; index < slots.size(); ++index) {
+    slots[index] = reinterpret_cast<SwayCompletionNativeExecute12002 *>(
+        base + ck3_12004::kSwayExecutionSlotRvas12004[index]);
+    originals[index] = reinterpret_cast<SwayCompletionNativeExecute12002>(
+        base + ck3_12004::kSwayExecutionExecuteRvas12004[index]);
+  }
+  return Install(bindings, slots, originals, recorder, state, false, nullptr, nullptr);
 }
 
 bool InstallSwayCompletionExecutionFixtureWithSecondarySink12002(

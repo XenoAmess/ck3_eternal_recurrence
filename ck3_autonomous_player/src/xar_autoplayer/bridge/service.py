@@ -784,6 +784,21 @@ class GameplayBridgeService:
             record_sway_terminal_observation(Path(state_dir), completion_read=result)
         return result
 
+    def query_active_scheme_sway_completion_execution_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int, after_sequence: int = 0,
+    ) -> dict[str, object]:
+        """Stage the existing exact-instance hidden phase without deriving its outcome."""
+        from ..sway_lifecycle_consumer import record_sway_phase_observation
+
+        result = self.driver.query_active_scheme_sway_completion_execution_private_v1(
+            expected_revision=expected_revision, target_character_id=target_character_id,
+            scheme_instance_id=scheme_instance_id, after_sequence=after_sequence)
+        state_dir = self._strategy_state_dir()
+        if state_dir is not None:
+            record_sway_phase_observation(Path(state_dir), execution_read=result)
+        return result
+
     def query_active_scheme_sway_outcome_opinion_private_v1(
         self, *, expected_revision: int, target_character_id: int,
     ) -> dict[str, object]:
