@@ -61,3 +61,9 @@ returned `admin_required_for_verified_readback`; no Add was attempted. Its
 settings receipt remains independently incomplete, while compilation and actual
 fixture execution succeeded. This source change adds diagnostics, not a claim
 that the original game-state reading failure has been fixed.
+
+
+Root production qualification completed: two actual production objects compiled,
+897 retained, canonical GREEN with all39 bindings, and complete SDK78 ready.
+Exact source is664c85d9dab3ff898826245e9b0a6053697e0bd6; actual Native78
+read-stage observation still awaits cold recovery from saved6076.
