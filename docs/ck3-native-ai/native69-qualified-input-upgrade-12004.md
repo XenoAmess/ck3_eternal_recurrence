@@ -116,3 +116,22 @@ construction income, completed M6/M7, war victory, full OODA or additional G2
 credit. The [current Entry ingress](battle-current-entry-cache-forecast-ingress-12004.md)
 and [R82 native Sway mapping](sway-hidden-phase-execution-input-native-map-12004.md)
 remain bounded knowledge inputs, not new game outcomes.
+
+## Vacation close and qualified71 continuation reference
+
+Root completed the current ordinary run with actual6066/H10013/raw53289912 SAVE,
+normal SDK/Game exit0, full12 freeze3/3 GREEN and keeper STOPPED_AND_RELEASED.
+Native70 and71 are actually sealed offline GREEN;71 primary compiled/qualified
+SDK16da has748 mixed owners,29 production/one fixture compile, new weighted5
+wholes/sole5 registered cases. Native69's separately disclosed inferred case1
+and old REDs remain their original facts. No new cold launch or71 live occurred.
+
+The [final maintainer vacation handover](../handover/2026-10-10-g2-native71-maintainer-vacation-handoff.md)
+records all exact actual receipts, the user vacation stop at13 of21 planned
+saved days, and unchanged MCP100/G2 5/8/NW2 2/4 boundaries. Future continuation
+now uses the current `r0086-next-native71-cold-upgrade-preparation` structure,
+actual binding template and argv; the native64 skeleton above is historical
+context. Actual final12 recovery input is at
+`D:/codex-ck3-background-spill/r0086-vacation-closeout-freeze01/RECOVERY-INPUT-PACKET.json`.
+Retain D spill/junction/cache and old FIRSTs; future source/publication heads do
+not relabel the already-compiled physical object pins. No new work opens here.
