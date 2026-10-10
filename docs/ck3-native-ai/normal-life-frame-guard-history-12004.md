@@ -49,5 +49,36 @@ or unchanged old clock test is replayed.
 
 FIRST argv and Oct10/W41 fields are in
 `D:/codex-ck3-background-spill/normal-life-frame-history-delivery/`.
-Status is **source-authored; FIRST NOTRUN**. No actual improvement, additional
-saved day, capture or G2 completion credit is claimed.
+
+## Root's sole connected FIRST qualification
+
+Root qualified source `4541d0344848bd6d2dbca934fd4c944bc473491a` with the
+single updated compound above. The execution receipt records
+**2026-10-09T23:58:59.420546+00:00 → 23:59:07.713170+00:00**, exit0 and
+**8.292624s** elapsed. The nested FIRST receipt records one connected node,
+GREEN/exit0, from **23:58:59.539123 → 23:59:07.702541 UTC**. These are fixture
+harness durations, not an observed game-day duration.
+
+The passing assertions cover the admitted normal zero-point LIFE decision,
+ordinary siege advance and materialized SAVE. They require zero counted
+unrelated-history payload deepcopies during registered planning/advancement;
+a deliberate default public full export still copies all32 counted payloads
+and is detached. Complete persisted state retains the original33 history rows
+and the completed life-advance command. The existing same-day guard, speed5
+exact one-day clock and siege-work observation also remain connected. This
+qualifies the real registered MCP/Service/Driver flow with the documented
+synthetic responses; it is not production-live or a measured speedup.
+
+Actual receipts:
+
+- `D:/codex-ck3-background-spill/normal-life-frame-history-delivery/ROOT-FIRST01-EXECUTION.json`
+- `D:/codex-ck3-background-spill/normal-life-frame-history-delivery/ROOT-FIRST01/ROOT-FIRST-RESULT.json`
+- Bounded receipt projection: `D:/codex-ck3-background-spill/normal-life-frame-history-delivery/ACTUAL-FIRST-RECEIPTS-THIN.json`
+
+Status is **fixture-live qualified; actual improvement unknown**. The receipt
+records zero game operations, zero native producer runs, no old qualification
+replay and no live credit. No additional saved day, capture or G2 completion
+is claimed. The prior hot05 actual Game/runner exit1 remains a separate retained
+failure; hot05 SDK later exited0. Cold restoration from checkpoint6051/H9922
+was pending failed-attempt freeze and custody when this qualification was
+recorded. No family code change or crash-cause conclusion is included.
