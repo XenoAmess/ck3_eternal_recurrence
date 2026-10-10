@@ -63,3 +63,14 @@ merit a159 的 fresh 原子准入如下；MAIN9f4420d5 clean/frozen、当前Sour
 公式通过即停止旧资产清理。CCC17新1000个native中间物61,648,896 B仍仅候选，未执行、不计回收。最初2957objects聚合差额没有逐项落盘，不能冒作exact清单；CCC17由Root后来单次窄metadata授权实查封卡，与聚合差额分开。
 
 原free与本次free之间的卷差不能等同本场分配：audit/其他小产物/未知并发变化分开，未知外部增长保持null。分页文件单路径只读metadata仍为5,736,935,424 B/mtime1791569723952797300，未解释差额，也未调整系统设置或6GiB规划。三个独立其他repo的owner/usage/cleanup仍null，未扫描或删除。下一原实际CLOSED后才释放当前峰值，并重新准入后序场。
+
+
+### R59 领主代赎实际闭场追加（2026-10-10）
+
+以下是后续独立时点的实际追加，前文的旧候选/准入状态和原始源稿均保持历史原样。R58 闭场 cache 实清3,824文件/161,198,896 B；其原件无损压缩另省2,494,464 B。R59 准入前 CCC17 旧中间物实际1,000文件/61,648,896 B已消费；不是前文仍候选时点的状态，也不得再次计回收。R59首次容量不足记录原样保留，后续07:42:46.035684Z实际free30,462,812,160 B通过完整30,071,062,528 B门槛，预留2GiB仅供a160。6GiB system_growth_reserve 是不受管系统/应用增长的共同规划，不是仅分页文件专用；外部应用剩余增长保持null，已知其他受管任务预留仍须另计。
+
+R59业务失败与正常退出false不变，但实际 OS0、failure lifecycle、closure3、allocator0、keeper0和CAS8243done/空资源成立后已释放单场预留。释放原件 `storage-coordinator/ransom-a160-after-a159-02-reservation-52-closed.json`：7827 B / SHA-256 `fc45e24637bb9f7a8dda239fffe0544bb821612b1dadacdd243ebd56b5e0035b`。一次 metadata pass 的三精确根保守 AllocationSize 上界278,654,440 B（4,249 entries /0.448秒），包含已计输入的可能重计，没有正文hash，不当净增长。
+
+只清该已闭场生成 cache：3,780文件/157,999,920 B，失败0。原件 `C04-reclaim-a160-01-summary-23.json`：2423 B / SHA-256 `94e09cd9d5005474bae23667fb507278a52fcf385aaf4211bf474a4c1c81b003`。另2份原闭场文本做NTFS无损压缩，bytes/SHA/mtime不变，省2,723,840 B；5个已compressed原件跳过不重hash，未删证据。原件 `a160-closed-text-compression-05.json`：1396 B / SHA-256 `ef5b6b39be79f80f469a5442268aa8901d508019f24b2b0664a1f3db15ddf10f`。路径均相对 `C:/workspace/disk-cleanup-20261010/resume-05/`。
+
+计入另记的5个旧Git垃圾958,803,968 B后，当前累计实际删除分配 **30,525,547,048 B /567,458文件**；压缩节省单列，卷free变化不全部归因项目。R59处理后free30,630,338,560 B，项目保守usage32,951,724,672 B（未减压缩）。下一场仍须新的原子准入，不继承a160信用。CCC18的500项22,986,752 B、R58已owner审定的5张过时导航PNG均未删、不计回收；满足公式即停止清理。现行Source14/qa12/fd1f、原失败报告、debug/error、业务和有效图像证据均保留。
