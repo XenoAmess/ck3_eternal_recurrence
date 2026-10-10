@@ -1,9 +1,10 @@
 # Ordinary war objectives: consume native occupier side
 
-2026-10-10. Source-only consumer prepared from private SDK source
-`91bf64589d78df866fdf6908841fc9b64e875ec7`. Root alone will execute the one
-new compound below. This source delivery has no new fixture qualification or
-live result yet.
+2026-10-10. The Python consumer implementation
+`8bb03c2012532e914dcc11bf2a1d995d5a7303b4`, prepared from private SDK source
+`91bf64589d78df866fdf6908841fc9b64e875ec7`, is **static-ready** after Root's
+single new ordinary-planner compound passed. The documentation child and later
+integrated SDK tip do not replace this tested implementation pin.
 
 ## Existing native input and concrete gap
 
@@ -55,7 +56,15 @@ already allied-occupied2585. The negative/stale scenes retain ordinary prior
 behavior, and input snapshots/history are not rewritten. No fixture executes
 an action or performs a native query.
 
-Status: **AUTHORED_NOTRUN**. The validation recipe is delivered externally for
-Root to run once after source review. No old Native61?68 producer or consumer
-is replayed. This does not establish actual-game target selection, occupation,
-war victory, a speedup, FullPerson, FullEntry, full OODA or new G2 credit.
+Root's sole invocation passed from `2026-10-10T03:21:41.165427Z` to
+`03:21:46.099438Z` (outer4.934011s; pytest reports1passed/4.33s). The receipt is
+`D:/codex-ck3-background-spill/normal-war-native-occupier-side-consumer-ROOT-FIRST01.json`;
+its `.stdout.log` records5ordinary planner scenes and2matching native-side
+remaining-target selections,0queries/0actions, unchanged input payloads and
+no old native producer replay. The missing-query, opposing-side and stale-query
+scenes preserve their prior ordinary behavior. Workers executed no validation.
+
+The result qualifies this source consumer as **static-ready**. No old
+Native61?68 producer or consumer was replayed. It does not establish actual-game
+target selection, occupation, war victory, a speedup, FullPerson, FullEntry,
+full OODA or new G2 credit. Existing current-game/SDK sources remain separate.
