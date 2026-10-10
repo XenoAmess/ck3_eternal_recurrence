@@ -1,0 +1,179 @@
+{
+  "schema": "lyd-source09-v2-holder-preparation-actual-v1",
+  "recorded_at_utc": "2026-10-10T08:55:40.236391+00:00",
+  "machine_id": "BF-202609141645",
+  "policy_version": "1.0.0",
+  "source09": {
+    "commit": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+    "single_parent": "86214a2b770ba16ff79ff0c8f8953df988afe67a",
+    "selected_author_commit": "5ecbb9aec5a39d535786dfd3f457504cd3960a55",
+    "archive_tag": {
+      "tag": "archive/ck3-common-runtime/source09-20261010-008",
+      "commit": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+      "single_parent": "86214a2b770ba16ff79ff0c8f8953df988afe67a"
+    },
+    "tag_ordinary_push_exit_code": 0,
+    "source_root": "C:/csr9",
+    "freeze_exit_code": 0,
+    "freeze_started_at_utc": "2026-10-10T08:45:50.690846+00:00",
+    "freeze_finished_at_utc": "2026-10-10T08:46:12.447127+00:00",
+    "freeze_wall_seconds": 21.75627589999931,
+    "changed_paths": [
+      "tools/ck3_mod_acceptance_graphics_cache.py",
+      "tools/test_ck3_mod_acceptance_graphics_cache.py"
+    ],
+    "independent_inherited_copy_count": 7904,
+    "whole_source_rehash_or_full_ZIP": false,
+    "native_build_performed": false,
+    "host_DLL_injector_and_MCP_registration_source_inherited": true,
+    "hardlinks_created": 0
+  },
+  "graphics": {
+    "seed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-shader-cache-v2-seed-20261010-001\\manifest.json",
+      "bytes": 681477,
+      "sha256": "a63b9373a4771359867618be613bd1ca5906adcb142adb0d760887916b30d29b"
+    },
+    "key_version": 2,
+    "files": 3687,
+    "logical_bytes": 143124020,
+    "cache_key_sha256": "afe16a01871eb4908178c0c3c19180959a04cc31d95d0f7bdc9b7281dc8095ba",
+    "source_origin": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-shared-shader-cache-candidate-20261010-002\\actual-r44-key-001\\actual-origin-probe-input.json",
+      "bytes": 2190,
+      "sha256": "50eab276af7e529085ab65e0b357b64888251b9e84d4e6eb63eca7367557e141"
+    },
+    "snapshot_exit_code": 0,
+    "snapshot_finished_at_utc": "2026-10-10T08:49:22.693701+00:00",
+    "same_graphics_input_projection": true,
+    "whole_business_digests_equal": false,
+    "engine_key_or_cache_hit_proven": false,
+    "old_seed_or_key_modified": false,
+    "source_business_digest": "ca2f8351d04e39a9bcc1534b2763d156b8015c7b5d54e6f47ab250de831e19eb",
+    "target_business_digest": "6ed23ca7b3ae8f44e813a83d1f9705d21c77999f59cd2e40bf0d4ffb1a3c3458",
+    "source_excluded_file_count": 54,
+    "target_excluded_file_count": 54,
+    "expires_at_utc": "2026-10-17T03:03:44.013573Z",
+    "automatic_TTL_renewal": false
+  },
+  "public_case": {
+    "product": "li-yu-dao",
+    "case": "holder-stage-diagnostic",
+    "prepare_exit_code": 0,
+    "bound_plan_exit_code": 0,
+    "unreviewed_preflight_exit_code": 0,
+    "blockers": [],
+    "prepared_case": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-002\\prepared\\prepared-case.json",
+      "bytes": 1296556,
+      "sha256": "4dbfea043df0df9dd25d0294910e3829986a038243c3d571b80c42b723cc2352"
+    },
+    "prepare_finished_at_utc": "2026-10-10T08:51:57.567605+00:00",
+    "preflight_finished_at_utc": "2026-10-10T08:53:28.537347+00:00",
+    "allocated_run_id": null,
+    "runtime_status": "NOT_RUN",
+    "fresh_Steam_offline_direct_review_or_allocated_lease_obtained": false,
+    "business_pass": false,
+    "formal_I3b_C3_I4_pass": false,
+    "actual_cli_export_generation_performed": false,
+    "first_prepare_wrong_registry_path_preserved_exit_code": 2,
+    "first_prepare_failed_before_profile_output_creation": true,
+    "corrected_registry_path": "tools/ck3_mod_acceptance_products.json"
+  },
+  "budget": {
+    "reservation_id": "lyd-source09-holder-graphics-4GiB-20261010-001",
+    "this_write_peak_bytes": 4294967296,
+    "current_project_usage_conservative_bytes": 121559165119,
+    "fresh_free_at_admission": 624803192832,
+    "other_unspent_reservations_bytes": 0,
+    "new_reservation_closed": false,
+    "reservation_expires_at_utc": "2026-10-10T14:45:02.559212+00:00",
+    "quota_override_expires_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "quota_override_renewed": false
+  },
+  "retention": {
+    "source_export_expires_at_utc": "2026-10-24T08:46:12.447127+00:00",
+    "unplayed_profile_noncache_expires_at_utc": "2026-10-24T08:51:57.567605+00:00",
+    "derived_protocol_output_review_at_utc": "2026-10-12T08:55:40.236391+00:00",
+    "small_summary_review_at_utc": "2027-04-08T08:55:40.236391+00:00",
+    "automatic_TTL_renewal": false
+  },
+  "evidence": {
+    "source_bind": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\SOURCE09-BIND.actual.json",
+      "bytes": 2636,
+      "sha256": "c113ff2d7db4a87c6a9c1a25800b38f8e7e86f7d982fcc7fca3c0df6464caf65"
+    },
+    "source_original_process_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source09-freeze-bind-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 2721,
+      "sha256": "101353fa91c16e859abb4ddd700f62a78ed9bee6b903d58cfbc9343ff92b06b9"
+    },
+    "source_native_reuse": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\SOURCE09-NATIVE-REUSE.actual.json",
+      "bytes": 4360,
+      "sha256": "96c70ea02d514f7decfe86b36adc7673b501b1335e415400bf2a2a6cecb185fa"
+    },
+    "tag_push": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-source09-archive-tag-ordinary-push-20261010-001\\RESULT.actual.json",
+      "bytes": 823,
+      "sha256": "cb85444411405881243bf9e2f8939d2540b957a8b45bd39e98156fff76525754"
+    },
+    "runtime": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\runtime.local.json",
+      "bytes": 2011,
+      "sha256": "c6c08d72edc98fa65f046bdef8ba4a2731d8dbf3fd04782b23161777963eba43"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\manifest.json",
+      "bytes": 5447,
+      "sha256": "c849668841fd1890e6e18998023f82f3159cc07edb04d30b08c0bbc2c0c9ae5f"
+    },
+    "admission": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+      "bytes": 4806,
+      "sha256": "897ab32835eb8c0b223a371924938da35b7075bef6adc80b51d6fd92ce6c0b17"
+    },
+    "snapshot_result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-graphics-v2-snapshot-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 2155,
+      "sha256": "173df8f8e0b41b1db89ab63c472c112731714852f7176ea2431892698cfd74f3"
+    },
+    "snapshot_retained_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-v2-snapshot-retained-command-20261010-001\\RESULT.actual.json",
+      "bytes": 909,
+      "sha256": "9674c458e142ca5f63dc85b0206c1eeb3c0e082bdafb3c64a3beea637c207028"
+    },
+    "graphics_keymatch": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-graphics-v2-snapshot-execution-20261010-001\\KEYMATCH.actual.json",
+      "bytes": 43692,
+      "sha256": "8dd5dbdaaea16edf3d92776135bccc8c233d04ee2381609443040aaebb85e432"
+    },
+    "graphics_retention": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-graphics-v2-snapshot-execution-20261010-001\\RETENTION.actual.json",
+      "bytes": 1114,
+      "sha256": "a37df4da51e12c94797e83a871e1a2adcc0f483a80086906fd17505a0582253c"
+    },
+    "prepare_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-v2-public-prepare-execution-20261010-002\\RESULT.actual.json",
+      "bytes": 1356,
+      "sha256": "086ad26031980811773ef8d406377f6f985bd729ef1d0a9805756b9f08408e48"
+    },
+    "plan_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-v2-public-bound-plan-20261010-001\\RESULT.actual.json",
+      "bytes": 1222,
+      "sha256": "0ebdc0d18a3358c3340360218e656809f6246219ae76073903c7bdcd69061f72"
+    },
+    "preflight_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-v2-public-preflight-unreviewed-20261010-001\\RESULT.actual.json",
+      "bytes": 1250,
+      "sha256": "cdba7fae537124acc0e6cdf499e2bf8e35e30dbe94e848d5c57756b8163549b9"
+    },
+    "original_wrong_registry_prepare_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-holder-v2-public-prepare-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 1360,
+      "sha256": "504da2ccd477327cbca0caa84e8f0e203fcb30719597a60ba8adb29e0068968a"
+    }
+  },
+  "historical_R47_or_prior_RED_modified": false
+}
