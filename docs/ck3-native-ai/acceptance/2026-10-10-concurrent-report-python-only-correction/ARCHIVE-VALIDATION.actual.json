@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.raw-evidence-archive-validation.v1",
+  "status": "PASS",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 274553,
+    "sha256": "8aa92157da9aa13656296bd4c75c9ba3c8370d6d2a965634da0700a35cebc984"
+  },
+  "checked_entries": 50,
+  "crc": "PASS",
+  "all_source_and_archived_bytes_match": true,
+  "all_source_and_archived_sha256_match": true,
+  "verified_actual_query_pairs": 12,
+  "query_receipts": [
+    "failure-38010875810-attempt-1-api-logs.actual.json",
+    "failure-38010875810-attempt-1-log-failed.actual.json",
+    "poll-001-jobs-38010875810.actual.json",
+    "poll-001-jobs-38010875847.actual.json",
+    "poll-001-runs.actual.json",
+    "poll-002-jobs-38010875810.actual.json",
+    "poll-002-jobs-38010875847.actual.json",
+    "poll-002-runs.actual.json",
+    "remote-exact-commit.actual.json",
+    "remote-master-branch.actual.json",
+    "terminal-38010875810-full-api-logs-retry-001.actual.json",
+    "terminal-38010875847-full-api-logs-retry-001.actual.json"
+  ],
+  "original_complete_workflow_logs": [
+    {
+      "workflow": "Official Runner CI",
+      "file": "terminal-38010875810-full-api-logs-retry-001.stdout.zip",
+      "bytes": 104135,
+      "sha256": "8706bb092f52e2ca5c0041ba037f5ebda64a1cc68b9500bdc496099295554020",
+      "crc": "PASS"
+    },
+    {
+      "workflow": "Linear history",
+      "file": "terminal-38010875847-full-api-logs-retry-001.stdout.zip",
+      "bytes": 16586,
+      "sha256": "3574b2e0ac416668767a09f99d7e2e3055b4547e6e19b7a9086654c1d5e1cd7a",
+      "crc": "PASS"
+    }
+  ],
+  "new_ci_api_queries_during_packaging": 0,
+  "tests_rerun_during_packaging": 0
+}

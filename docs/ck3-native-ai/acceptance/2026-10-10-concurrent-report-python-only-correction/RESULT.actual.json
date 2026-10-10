@@ -1,0 +1,60 @@
+{
+  "schema": "ck3.concurrent-report-python-only-ci-failure.v1",
+  "head_sha": "6baf0b73ecad9bcf9940144093293b6a1d80de4d",
+  "official": {
+    "run_id": 38010875810,
+    "conclusion": "failure",
+    "failed_step": "Enforce Python-only Windows automation",
+    "shared_acceptance_conclusion": "success"
+  },
+  "linear_history": {
+    "run_id": 38010875847,
+    "conclusion": "success"
+  },
+  "li_yu_dao_static_checks": {
+    "status": "NOT_TRIGGERED",
+    "not_counted_as_success": true
+  },
+  "python_only_unit_tests": {
+    "tests": 9,
+    "conclusion": "success"
+  },
+  "python_only_repository_validation": {
+    "exit_code": 1,
+    "violations": 3
+  },
+  "exact_source_triggers": [
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-10.md",
+      "line": 305,
+      "source_bytes": 75062,
+      "source_sha256": "a4c16b5b3e29b238a8a1bf514a3c4ff0c71332c2b5fcde86477468d3fcb88471"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "line": 2617,
+      "source_bytes": 707356,
+      "source_sha256": "7f8bc16e78a50e7dbc5e089b1d4e45ea625032f4cc8f5477fa2be562a471516b"
+    },
+    {
+      "path": "docs/testing-workflow.md",
+      "line": 3473,
+      "source_bytes": 489133,
+      "source_sha256": "12e486d6d221faea47f554288bdd94a1351767450e58ce1252c0ed221f740d70"
+    }
+  ],
+  "failure_is_descriptive_document_text_not_runtime_execution": true,
+  "correction_scope": "Only historical shell/cmdlet wording in three documents; preserve PID, RAM numbers, cancellation facts and original receipt link.",
+  "validator_policy_relaxed": false,
+  "production_runtime_modified_by_package": false,
+  "correction_validation_result_included": false,
+  "new_ci_success_claimed": false,
+  "new_ci_api_queries_during_packaging": 0,
+  "tests_rerun_during_packaging": 0,
+  "root_repository_files_modified_by_packaging": false,
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 274553,
+    "sha256": "8aa92157da9aa13656296bd4c75c9ba3c8370d6d2a965634da0700a35cebc984"
+  }
+}
