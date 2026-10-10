@@ -1,5 +1,9 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-11 01:01 CST：非二期QOL阴性通过与正例准备定位
+
+R71原pam_negative35步/12日/17markers及errorguard全通过，run0/verify0、正常退出/OS0/native0/allocator/keeper/CAS全闭，签原阴性范围；合法度同步raw差值仍原GAP。R72正39在原obs02确证free==1、owned0、piety4、双setter guard未进，0business/原FAIL全闭。仅采用fixture专用+1slot准备，原AND、奖励、35步12日与生产27文件不变，后继需新prepare/live。Source18已冻结并实际选择，canonical双nonce在两场采集亲审；tier/Character query尚待实机。577082官方CI66success/20skipped/0failure。正式仍7/10，详见[新记录](xqol-r71-r72-pam-slots-2026-10-11.md)。
+
 ## 2026-10-10 23:48 CST：R70 原业务完成，定位正式改宗作用域错误
 
 PAM 阴性 R70 原 35 步、12 日及必要业务标记完成，但正式交互的裸 `is_ai` 处于 none scope，run/verify=2；正常退出和全部资源闭合合格。已由原版 info 明确核实 `is_available` root=actor，最小生成器修复已应用，六项独立回归、生成器 current check 和完整 QOL static validator 实际通过，不改错误门禁或追认原场。Source18 实际 21 对象增量构建、DLL 链接、14 项 focused 及 EXE Defender readback 已通过，未 live；完整共享运行时仍待冻结。双 nonce 原图辅助已收编到仓库入口，只有 help/静态验证，未 UI 采集。[原场、作用域及精确证据](xqol-r70-conversion-actor-scope-2026-10-10.md)。历史清理 `39975c58` 的官方 CI 已 66 success/20 skipped/0 failure；正式仍 7/10，不涉及天朝二期。

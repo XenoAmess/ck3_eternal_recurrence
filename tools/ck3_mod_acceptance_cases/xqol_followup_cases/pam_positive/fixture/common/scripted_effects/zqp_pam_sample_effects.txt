@@ -42,6 +42,12 @@ zqp_setup_positive_effect = {
   limit = { piety_level < 4 }
   set_piety_level = { value = 4 }
  }
+ # R72 controlled fixture baseline: one slot only; no reward/resource multiplier.
+ # One-time isolated setup; original DLC/two-slot guard and tenet setters remain.
+ if = {
+  limit = { has_pam_dlc_trigger = yes free_personal_tenet_slots = 1 }
+  add_character_modifier = { modifier = zqp_controlled_personal_slot_modifier years = 1 }
+ }
  # ZQP63_OBSERVE_ONLY_BEGIN after_original_piety_branch_immediately_before_dual_setter_guard
  debug_log = "ZQP120: SETUP63 BEGIN after_original_piety_branch_immediately_before_dual_setter_guard"
  zqp_observe_personal_setup_state63_effect = yes

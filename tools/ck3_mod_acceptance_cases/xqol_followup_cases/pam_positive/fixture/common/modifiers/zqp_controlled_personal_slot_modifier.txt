@@ -1,0 +1,3 @@
+zqp_controlled_personal_slot_modifier = {
+ personal_tenet_slot_add = 1
+}

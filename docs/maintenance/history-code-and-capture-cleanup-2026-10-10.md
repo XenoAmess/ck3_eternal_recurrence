@@ -32,3 +32,11 @@ actual 回执根 `C:/workspace/disk-cleanup-20261010/resume-05/`：
 本记录 2027-04-08 复核归纳；外置明细按通用策略 30 日、摘要 180 日复核，活跃输入仍由 owner 按用途及限期保护，不无限续存。
 
 15:26Z 追加：第二批已随 `39975c5850d46b6f6c58c78f06fed741d53701bc` 普通推送。该精确 HEAD 的 [官方 CI 38062851239](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38062851239) 已完成 66 success、20 skipped、0 failure；包括共享验收、QOL、Python、静态校验及可复现构建。未重跑或下载 CI artifacts；本结论不外推后继修改或游戏业务。
+
+## 2026-10-11 01:01 CST：闭场增量回收
+
+R70已被R71实测替代的calls/wire两派生传输记录，经owner解除用途及原exact HANDLE/journal/absence流程，实际删除2files/84910080 allocated B；R71已完成用途的两传输记录实际2files/77406208B。保留两场原native-report、typed、debug/error、closure、PNG与原GREEN/RED；这些已删transport不能全文replay。两笔卷free未知残差+199413760B及+181977088B不计为清理。加此前69项，本组历史报告/传输回收73files/983904256B，约938MiB。
+
+R71/R72另各精确清理3780个已闭生成cache/157999920B；无损压缩分别5275648B/1540096B单列。Source18新archive回收108007424 allocated B，保留573objects、RSP及protocol.lib，可重建，不删除native父依赖。回执在既有外根resume-05：`retired-r70-transport-204-actual.json`2255B/`532ca9a1a1039f7ba09d527a3d2014ab47287d7d9e707fce3f9fb8467c91d68c`；`retired-r71-transport-208-actual.json`2130B/`f36b40c292e2e43126ff1657a1ca1740e771a8ee91dda4f7fced62627a786ff7`；`native-source18-archive-189-actual.json`3631B/`dc80beaed204325dec1c85fd7480e6c38e3517e2cdbbef97dafeaf0a82083a09`。R72当前最小失败原件仍保留。
+
+策略1.0.0、30日明细/180日摘要复核、限期保护及原容量公式继续，未扩范围或自动续期。更新只报告实际回收；下一scene仍独立fresh准入。[R71/R72结果](../xqol-r71-r72-pam-slots-2026-10-11.md)保留原scope。

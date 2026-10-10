@@ -6,7 +6,7 @@ XenoAmess的体验优化 1.1.1 — CK3 1.20.0.4 兼容维护
 本次变更：
 • 从当前已审原版重建行政、贤能与天朝三份任命继承投影，只保留既有玩家候选扣分；保留新版公共计分、候选等级与冷却。
 • 禁止向上转封改用新版行政机制判断，仍限定本 mod 的 guard 所有权；关闭后不移除其他来源的保护状态。
-• 批量改信与条件释放适配新版接受度、天朝等级及原生礼仪/国教礼仪上下文；显式绑定玩家 puppet_or_actor，保留原版后果与宗教拒绝门禁。批量改信现在等待AI实际回复并保留真实拒绝，不再把拒绝立即按接受执行。
+• 批量改信与条件释放适配新版接受度、天朝等级及原生礼仪/国教礼仪上下文；显式绑定玩家 puppet_or_actor，保留原版后果与宗教拒绝门禁。批量改信现在等待AI实际回复并保留真实拒绝，不再把拒绝立即按接受执行。修复批量改信等待回复时的角色判断错误，正确检查发起者条件。
 • 修正足额牵制索款的报价上下文：逐目标绑定 recipient，并用未被钱包封顶的原版报价检查能否足额支付；实际交易、强牵制规则、消耗与取整仍由原版互动执行。
 • 普通赎金采用新版 normal_ransom_cost_value；劫掠报价、真实付款人重定向、实时钱包检查和释放仍沿原版路径。只处理金钱支付，不自动选择 herd 等其他支付方式。
 • 修正朝贡防御召援的合同方向：宗主保证援助朝贡者，不表示朝贡者必须反向参战。向下自动召援现要求朝贡者负有强制参战义务；已由原版自动加入的目标不会重复召集。
@@ -22,7 +22,7 @@ Maintenance version 1.1.1 targets CK3 1.20.0.4.
 Changes:
 • Rebuilds the Administrative, Meritocratic and Celestial appointment projections from reviewed vanilla definitions, keeping only the existing player-candidate penalty and retaining new shared scoring, candidate tiers and cooldowns.
 • Uses the current administrative-mechanic check for the vassal-transfer guard and preserves ownership of this mod's protection state; disabling it does not remove another source's guard.
-• Adapts bulk conversion and conditional release to current acceptance modifiers, Celestial tiers and native Rite/state-Rite context. It binds puppet_or_actor to the player and retains vanilla consequences and religious refusal gates. Bulk conversion now waits for the AI's actual response and preserves genuine refusals instead of immediately treating a refusal as acceptance.
+• Adapts bulk conversion and conditional release to current acceptance modifiers, Celestial tiers and native Rite/state-Rite context. It binds puppet_or_actor to the player and retains vanilla consequences and religious refusal gates. Bulk conversion now waits for the AI's actual response and preserves genuine refusals instead of immediately treating a refusal as acceptance. Fixes actor-condition checks while bulk conversion awaits a reply.
 • Corrects full hook-payment quote context: binds each recipient, then checks affordability against the vanilla quote before the final wallet cap. Vanilla still performs the transaction, strong-hook handling, hook use and rounding.
 • Uses normal_ransom_cost_value for ordinary cash ransoms, retaining the raiding quote, real payer redirect, live-wallet checks and vanilla release. Other payment modes such as herd are not selected automatically.
 • Corrects the direction of tributary defensive obligations: a suzerain guarantee protects the tributary, rather than obliging it to defend the suzerain. Automatic downward calls now require a forced-participation obligation, and targets already added by vanilla are not called again.

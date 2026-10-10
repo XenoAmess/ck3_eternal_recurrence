@@ -54,6 +54,7 @@
   "song_scope_required": true,
   "fixture_files": [
     "common/on_action/zqp_startup_on_actions.txt",
+    "common/modifiers/zqp_controlled_personal_slot_modifier.txt",
     "common/scripted_effects/zqp_pam_sample_effects.txt",
     "common/scripted_effects/zqp_reward_observer_wrappers.txt",
     "descriptor.mod",
@@ -100,8 +101,8 @@
       "sha256": "d4995251d275b8c956f9da48731a9a5a92066a29a0a9e1054c6daa657f800b7f"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt": {
-      "bytes": 18402,
-      "sha256": "ceb2de85b17f3db650dd4cfd5ac66361bb268a7885e4cf22961ae977780ba9a8"
+      "bytes": 18737,
+      "sha256": "8d72393e24aafc71c9860fcb7c2b7ff431ef7e312f7af19a58930c1d7cd5ab3a"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_reward_observer_wrappers.txt": {
       "bytes": 6321,
@@ -122,6 +123,10 @@
     "xqol_followup_cases/pam_positive/original-plan.json": {
       "bytes": 19181,
       "sha256": "18fa665dff2f47814512306de8dab714ec52c7a06600b115baaf91f423a2fe0f"
+    },
+    "xqol_followup_cases/pam_positive/fixture/common/modifiers/zqp_controlled_personal_slot_modifier.txt": {
+      "bytes": 73,
+      "sha256": "a985a34d2ad4763cfd936bc990d3d73c396bcc294a04349886b4f28cf6430ee2"
     }
   }
 }
