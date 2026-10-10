@@ -2387,7 +2387,8 @@ def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, o
             or played.get("alive") is not True or played.get("source") != "native"
             or type(snapshot.get("local_player_id")) is not int or snapshot["local_player_id"] < 1
             or not isinstance(snapshot.get("snapshot_id"), str) or not snapshot["snapshot_id"]
-            or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] < 1):
+            or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] < 1
+            or type(snapshot.get("revision")) is not int or snapshot["revision"] < 0):
         return None
     heartbeat = diagnostics.get("last_heartbeat")
     mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
@@ -2401,7 +2402,8 @@ def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, o
         return None
     return {"actor_character_id": played["character_id"], "date_raw": selected_date,
             "local_player_id": snapshot["local_player_id"], "snapshot_id": snapshot["snapshot_id"],
-            "native_revision": snapshot["native_revision"], **submission["binding"], "pump_epoch": owner_epoch}
+            "native_revision": snapshot["native_revision"], "revision": snapshot["revision"],
+            **submission["binding"], "pump_epoch": owner_epoch}
 
 
 def capture_fixture_startup_notice_evidence(client: PlanClient, stage: str, event_id: int) -> dict[str, object]:
@@ -2962,6 +2964,10 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                     startup_baseline = None
             else:
                 startup_baseline = None
+            if qualified:
+                # Log queries and startup acknowledgement can outlive the earlier snapshot.
+                # Recheck the original owner/date/paused/event-free gate on this fresh frame.
+                snapshot = await client.fresh()
             admission_frame = fixture_whole_root_admission_frame(snapshot, submission) if qualified else None
             admission = {"status": "WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS" if not qualified else "WAITING_FOR_PAUSED_EVENT_FREE_OWNER_FRAMES",
                 "frame": admission_frame, "product_acceptance_proven": False}

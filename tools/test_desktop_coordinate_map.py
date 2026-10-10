@@ -331,5 +331,123 @@ class GuardedClickTests(unittest.TestCase):
         self.assertFalse(self.receipt.exists())
 
 
+
+class AgeRejectionReceiptTests(unittest.TestCase):
+    """Offline only; every desktop call uses the existing FakeDesktop."""
+    ROOT = Path(__file__).resolve().parents[1] / "pointer-fixtures" / uuid.uuid4().hex
+    FOCUS = PointerMoveTests.FOCUS
+    setUp = PointerMoveTests.setUp
+
+    def guarded(self, desktop, receipt=None):
+        return mapper.guarded_click(mapping=self.mapping, source_image=self.source,
+            receipt_path=receipt or self.receipt, desktop=desktop, button="left",
+            expected_foreground_hwnd=1001, max_source_age_seconds=60)
+
+    def assert_age_rejection(self, checked_at, reason, receipt=None):
+        receipt = receipt or self.receipt
+        desktop = FakeDesktop()
+        with patch("time.time", return_value=checked_at), \
+             patch.object(mapper, "foreground_state") as focus, \
+             self.assertRaisesRegex(ValueError, "source screenshot is expired or has a future modification time") as failure:
+            self.guarded(desktop, receipt)
+        focus.assert_not_called()
+        self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+        self.assertFalse(receipt.exists())
+        sidecar = Path(str(receipt) + ".json")
+        # Reject bare non-finite JSON tokens; quoted diagnostic repr is allowed.
+        def reject_constant(value):
+            raise AssertionError("non-standard JSON constant: " + value)
+        result = json.loads(sidecar.read_text("utf-8"), parse_constant=reject_constant)
+        self.assertEqual(result["status"], "rejected")
+        self.assertIs(result["input_performed"], False)
+        self.assertIs(result["click_completed"], False)
+        self.assertEqual(result["reason"], reason)
+        self.assertEqual(result["maximum"], 60)
+        self.assertEqual(result["source_mtime"], self.source.stat().st_mtime)
+        self.assertEqual(result["error"], str(failure.exception))
+        return result
+
+    def test_expired_age_persists_actual_seconds_before_original_rejection(self):
+        modified = self.source.stat().st_mtime
+        result = self.assert_age_rejection(modified + 61, "source_image_expired")
+        self.assertEqual(result["checked_at"], modified + 61)
+        self.assertEqual(result["age_seconds"], 61)
+
+    def test_future_mtime_persists_negative_age_without_input(self):
+        modified = self.source.stat().st_mtime
+        result = self.assert_age_rejection(modified - 1, "source_mtime_in_future")
+        self.assertEqual(result["checked_at"], modified - 1)
+        self.assertEqual(result["age_seconds"], -1)
+
+    def test_nonfinite_clock_age_is_null_with_explicit_repr_and_standard_json(self):
+        for index, value in enumerate((float("nan"), float("inf"), float("-inf"))):
+            with self.subTest(value=repr(value)):
+                result = self.assert_age_rejection(value, "source_age_nonfinite",
+                    self.directory / f"nonfinite-{index}.png")
+                self.assertIsNone(result["checked_at"])
+                self.assertIsNone(result["age_seconds"])
+                self.assertEqual(result["source_age_before"]["nonfinite_values"]["checked_at_unix"], repr(value))
+                self.assertIn("age_seconds", result["source_age_before"]["nonfinite_values"])
+
+    def test_exact_age_limit_allows_original_click_and_success_receipt(self):
+        modified = self.source.stat().st_mtime
+        desktop = FakeDesktop()
+        with patch("time.time", return_value=modified + 60), \
+             patch.object(mapper, "foreground_state", side_effect=[self.FOCUS, self.FOCUS]):
+            result = self.guarded(desktop)
+        self.assertEqual(desktop.inputs, [("click", 50, 30)])
+        self.assertEqual(len(desktop.screenshots), 1)
+        self.assertEqual(result["status"], "guarded-click-readback-matched")
+        self.assertEqual(result["source_age_before"], {"source_mtime_unix": modified,
+            "checked_at_unix": modified + 60, "age_seconds": 60, "maximum_seconds": 60})
+        self.assertNotIn("input_performed", result)
+        self.assertNotIn("reason", result)
+        self.assertEqual(json.loads(Path(str(self.receipt) + ".json").read_text("utf-8")),
+                         json.loads(json.dumps(result)))
+
+    def test_existing_sidecar_rejects_before_age_and_is_never_overwritten(self):
+        sidecar = Path(str(self.receipt) + ".json")
+        sidecar.write_text("original evidence", encoding="utf-8")
+        desktop = FakeDesktop()
+        with patch.object(mapper, "source_image_age") as age, self.assertRaisesRegex(ValueError, "sidecar already exists"):
+            self.guarded(desktop)
+        age.assert_not_called()
+        self.assertEqual(sidecar.read_text("utf-8"), "original evidence")
+        self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+
+    def test_sidecar_creation_race_preserves_original_and_never_clicks(self):
+        original_age = mapper.source_image_age
+        sidecar = Path(str(self.receipt) + ".json")
+        def racing_age(source, maximum):
+            sidecar.write_text("race winner evidence", encoding="utf-8")
+            return original_age(source, maximum)
+        desktop = FakeDesktop()
+        with patch("time.time", return_value=self.source.stat().st_mtime + 61), \
+             patch.object(mapper, "source_image_age", side_effect=racing_age), \
+             self.assertRaises(FileExistsError):
+            self.guarded(desktop)
+        self.assertEqual(sidecar.read_text("utf-8"), "race winner evidence")
+        self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+        self.assertFalse(self.receipt.exists())
+
+    def test_rejection_sidecar_write_failure_never_clicks(self):
+        desktop = FakeDesktop()
+        with patch("time.time", return_value=self.source.stat().st_mtime + 61), \
+             patch.object(Path, "open", side_effect=PermissionError("synthetic denied receipt")), \
+             self.assertRaises(PermissionError):
+            self.guarded(desktop)
+        self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+        self.assertFalse(self.receipt.exists())
+
+    def test_original_preclick_size_gate_still_runs_before_age(self):
+        desktop = FakeDesktop((101, 60))
+        with patch.object(mapper, "source_image_age") as age, \
+             self.assertRaisesRegex(ValueError, "screen size changed before guarded click"):
+            self.guarded(desktop)
+        age.assert_not_called()
+        self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+        self.assertFalse(Path(str(self.receipt) + ".json").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

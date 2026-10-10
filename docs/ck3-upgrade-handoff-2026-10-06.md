@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 18:15：Source15已选、R61局部成立、R62启动同步拒绝
+
+正式仍7/10。R61自然d_optimatoi完整池已含独立人类和AI，OFF/ON精确百万差及开关恢复成立；第三评分和GetHeir未得，整行政GAP。R62已用Source15实际启动，但公共root查询expected3/current4拒绝，业务/等级诊断0，完整失败闭场保留。[当前来源、原薄件与限制](ck3-native-ai/shared-acceptance-source15-and-startup-revision.md)覆盖下方较早的Source15待选择状态，不改旧失败。
+
+18:30追加：行政Source15新prepare25已READY；公共mapper拒绝回执及bootstrap revision稳定修正均已采用，主仓mapper27项、poll reporting13项通过，原门槛/预算/root失败直接退出不变。后继运行时须以Source15+窄补丁新冻结并绑定新manifest，旧prepared不能直接冒称已修复。当前闭场Git窗口只fetch/rebase/普通push，不merge；[磁盘实际累计及当前缺口](maintenance/storage-retention-2026-10-10-local-capacity-recovery-source15-r62.md)与新clean HEAD须满足后才再allocate。QOL→重整河山→361→廷臣礼仪picker两产品→G2顺序及简化缓存规则保持。
+
 ## 2026-10-10 16:49：R60通过及共同任命诊断后继
 
 R60/a161 ordinary原30步/12完整自然日PASS，run0/verify0、normal/OS0/native0/allocator0/keeper0/CAS8255闭合；queue独立数值仍null。[永久结果](xqol-r60-ordinary-async-2026-10-10.md)新增ordinary范围，旧R55/R59失败保留。正式仍7/10；剩余QOL行政、贤能、PAM±、UI及完整领主代赎，之后重整河山→361最后→廷臣礼仪picker两产品→G2。

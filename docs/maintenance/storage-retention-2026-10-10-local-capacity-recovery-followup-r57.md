@@ -1,5 +1,7 @@
 # 2026-10-10 本机容量恢复追加记录：R57 与 merit 单场准入
 
+后续实际事实另见[Source15、R61/R62及无损压缩追加](storage-retention-2026-10-10-local-capacity-recovery-source15-r62.md)；本页旧截点和候选状态保留，不外推为当前可用空间。
+
 记录时间：2026-10-10T07:07:55.558467+00:00。本记录只追加实际完成事实；[初期记录](storage-retention-2026-10-10-local-capacity-recovery.md) 对应的外置源稿为 6,175 B / SHA-256 `8363fabcc9073d1873395318872fe188016a3939c3ab9382e99df993b79f2f30`，原件保持原样，初期时点数据不覆盖。源稿位于 `C:/workspace/disk-cleanup-20261010/resume-05/docs/maintenance/`；这些 bytes/SHA 标识外置证据源稿，Git 入库副本可能归一换行，不宣称沿用源稿字节哈希。
 
 ## 范围与闭场

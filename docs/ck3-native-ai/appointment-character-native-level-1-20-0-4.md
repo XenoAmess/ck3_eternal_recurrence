@@ -22,3 +22,5 @@
 - [最短消费卡](C:/workspace/ck3-upgrade-20261010/r58-appointment-level-shared-mcp-wiring-03/ROOT-NATIVE-LEVEL-BUILD-CONSUME-FINAL-05.md)。运行时应继承 Source14 并只投影四个共同 Python 文件，不能把原生构建输入树直接当当前 Python runtime。
 
 这些结果为 BUILD_AND_FOCUSED_MOCK_PASS_NOT_LIVE。旧 Source14/qa12/fd1f 原件未改；实际角色31883的值、入池原因、后继Source15选择和新DLL实机资格仍待新场。原R58失败不追认，政府产品、完整QOL及正式release均未因此完成。
+
+2026-10-10 18:15 CST追加：[Source15已实际选用，R62实启但公共root版本同步拒绝](shared-acceptance-source15-and-startup-revision.md)，等级诊断NOT_RUN。上段待选择为旧时点；角色实际值、入池原因和新诊断实机资格仍未取得，不由DLL成功启动追认。

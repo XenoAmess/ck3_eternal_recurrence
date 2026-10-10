@@ -216,6 +216,14 @@ def move_pointer(
     return result
 
 
+class SourceImageAgeError(ValueError):
+    """Original age rejection with auditable, finite JSON observations."""
+    def __init__(self, observation: dict[str, object], reason: str) -> None:
+        super().__init__("source screenshot is expired or has a future modification time")
+        self.observation = observation
+        self.reason = reason
+
+
 def source_image_age(source_image: Path, maximum_seconds: float | None) -> dict[str, float] | None:
     """Optional file-age check; mtime never proves fresh desktop pixels."""
     if maximum_seconds is None:
@@ -227,7 +235,17 @@ def source_image_age(source_image: Path, maximum_seconds: float | None) -> dict[
     observed = time.time()
     age = observed - modified
     if not math.isfinite(age) or age < 0 or age > maximum_seconds:
-        raise ValueError("source screenshot is expired or has a future modification time")
+        values = {"source_mtime_unix": modified, "checked_at_unix": observed,
+                  "age_seconds": age, "maximum_seconds": maximum_seconds}
+        nonfinite = {name: repr(value) for name, value in values.items()
+                     if not math.isfinite(value)}
+        observation = {name: value if math.isfinite(value) else None
+                       for name, value in values.items()}
+        if nonfinite:
+            observation["nonfinite_values"] = nonfinite
+        reason = ("source_age_nonfinite" if not math.isfinite(age) else
+                  "source_mtime_in_future" if age < 0 else "source_image_expired")
+        raise SourceImageAgeError(observation, reason)
     return {"source_mtime_unix": modified, "checked_at_unix": observed,
             "age_seconds": age, "maximum_seconds": maximum_seconds}
 
@@ -242,7 +260,26 @@ def guarded_click(
     before_size = tuple(desktop.size())
     if before_size != mapping.live_screen_size:
         raise ValueError("live screen size changed before guarded click")
-    age = source_image_age(source_image, max_source_age_seconds)
+    try:
+        age = source_image_age(source_image, max_source_age_seconds)
+    except SourceImageAgeError as error:
+        sidecar = receipt_path.with_name(receipt_path.name + ".json")
+        observed = error.observation
+        rejection = {**asdict(mapping), "action": "click", "button": button,
+            "expected_foreground_hwnd": expected_foreground_hwnd,
+            "source_image": str(source_image.resolve()), "source_age_before": observed,
+            "source_mtime": observed["source_mtime_unix"],
+            "checked_at": observed["checked_at_unix"],
+            "age_seconds": observed["age_seconds"], "maximum": observed["maximum_seconds"],
+            "reason": error.reason, "screen_size_before": before_size,
+            "receipt_path": str(receipt_path.resolve()), "sidecar_path": str(sidecar.resolve()),
+            "status": "rejected", "input_performed": False, "click_completed": False,
+            "failures": [error.reason], "error": str(error)}
+        receipt_path.parent.mkdir(parents=True, exist_ok=True)
+        with sidecar.open("x", encoding="utf-8") as stream:
+            json.dump(rejection, stream, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
+            stream.write("\n")
+        raise
     before_focus = foreground_state() if expected_foreground_hwnd is not None else None
     if before_focus is not None and (
             before_focus["foreground_hwnd"] != expected_foreground_hwnd

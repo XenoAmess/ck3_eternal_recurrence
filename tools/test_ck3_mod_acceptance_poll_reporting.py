@@ -253,5 +253,152 @@ class PollReportingTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(json.loads(context.path.read_text(encoding="utf-8")), context.report)
 
 
+class FixtureRootRevisionTests(unittest.IsolatedAsyncioTestCase):
+    """Synthetic clients execute the actual bootstrap/gate AST; no MCP or desktop."""
+    @classmethod
+    def setUpClass(cls):
+        tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
+        names = {"fixture_whole_root_admission_frame", "wait_for_fixture_business_context", "fixture_qualification_counts"}
+        cls.definitions = [node for node in tree.body if getattr(node, "name", None) in names]
+
+    def context(self, revisions=(3,), *, change=None, error=None):
+        value = SimpleNamespace(clock=0.0, report={}, writes=0)
+        async def sleep(seconds):
+            value.clock += seconds
+        namespace = {"time": SimpleNamespace(monotonic=lambda: value.clock),
+                     "asyncio": SimpleNamespace(sleep=sleep), "PlanClient": object,
+                     "threading": threading, "StartupPollReporting": object,
+                     "now": lambda: "SYNTHETIC@" + str(value.clock)}
+        exec(compile(ast.fix_missing_locations(ast.Module(body=self.definitions, type_ignores=[])), str(HOST), "exec"), namespace)
+        submission = {"binding": {"bridge_pid": 101, "connection_generation": 7},
+                      "selected_candidate": {"selected_bookmark_start_date_raw": 100}}
+        class Client:
+            def __init__(self):
+                self.phase, self.loop, self.pump, self.current = "begin", 0, 0, 3
+                self.calls, self.last = [], None
+            def frame(self):
+                return {"map_ready": True, "paused": True, "active_event": None,
+                    "episode_projection": "native_campaign", "date_raw": 100,
+                    "played_character": {"character_id": 66, "alive": True, "source": "native"},
+                    "local_player_id": 1, "snapshot_id": "s" + str(self.current),
+                    "revision": self.current, "native_revision": 99,
+                    "diagnostics": {"bridge_pid": 101, "connection_generation": 7,
+                        "last_heartbeat": {"pid": 101, "main_thread_query_mailbox_v1": {
+                            "ready": True, "stamp_read_success": True,
+                            "pump_epochs": self.pump, "owner_verified_pump_epochs": self.pump,
+                            "owner_tid": 5, "current_tid": 5}}}}
+            async def fresh(self):
+                self.pump += 1
+                after_logs = self.phase == "after_logs"
+                if self.phase == "begin":
+                    self.loop += 1
+                if after_logs:
+                    self.current = revisions[min(self.loop - 1, len(revisions) - 1)]
+                self.last = self.frame()
+                if after_logs and change:
+                    change(self.last)
+                self.phase = "begin"
+                return copy.deepcopy(self.last)
+            async def call(self, name, arguments):
+                self.calls.append((name, copy.deepcopy(arguments)))
+                if name == "ck3_query_engine_log_literals_v1":
+                    self.phase = "after_logs"
+                    return {"schema": "xar.ck3.engine-log-literals/v1", "log_name": "debug.log",
+                        "exists": True, "read_only": True, "case_sensitive": True,
+                        "matches": [{"literal": "READY", "line_count": 1}, {"literal": "FAIL", "line_count": 0}]}
+                if name != "ck3_query_campaign_root_context_v1":
+                    raise AssertionError(name)
+                if error is not None:
+                    raise error
+                if arguments != {"expected_revision": self.current}:
+                    raise AssertionError("stale root submitted")
+                self.phase = "after_root"
+                return {"queried_snapshot_id": self.last["snapshot_id"], "queried_revision": self.current}
+        client = Client()
+        module = ModuleType("xar_autoplayer.bridge.frontend_fixture_start_contract")
+        module.require_fixture_start_submission = lambda supplied: supplied
+        module.fixture_business_context_binding = lambda snapshot, root, policy, selected: {
+            "actor": 66, "date_raw": 100, "revision": snapshot["revision"],
+            "pump_epoch": snapshot["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["pump_epochs"]}
+        value.namespace, value.client, value.submission = namespace, client, submission
+        value.module = mock.patch.dict(sys.modules, {module.__name__: module})
+        value.policy = {"required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}
+        def write():
+            value.writes += 1
+        value.write = write
+        return value
+
+    async def run_context(self, context, *, timeout=400, poll_interval=100):
+        with context.module:
+            return await context.namespace["wait_for_fixture_business_context"](
+                context.client, context.policy, context.submission, report=context.report,
+                write=context.write, timeout=timeout, poll_interval=poll_interval)
+
+    def roots(self, context):
+        return [args["expected_revision"] for name, args in context.client.calls if name == "ck3_query_campaign_root_context_v1"]
+
+    async def test_stable_public_revision_three_admits_original_binding(self):
+        context = self.context((3,))
+        result = await self.run_context(context)
+        self.assertEqual(result["status"], "ACTUAL_FIXTURE_QUALIFIED_BUSINESS_CONTEXT_BOUND")
+        self.assertEqual(self.roots(context), [3, 3])  # original two independently bound owner frames
+        self.assertEqual(result["first_whole_root_query_admission"]["current_frame"]["revision"], 3)
+        self.assertFalse(result["product_acceptance_proven"])
+
+    async def test_log_phase_revision_drift_waits_then_admits_four(self):
+        context = self.context((3, 4, 4, 4))
+        result = await self.run_context(context)
+        self.assertEqual(self.roots(context), [4, 4])
+        self.assertIsNone(result["observations"][1]["campaign_root"])
+        self.assertEqual(result["first_whole_root_query_admission"]["previous_frame"]["revision"], 4)
+        self.assertEqual(result["first_whole_root_query_admission"]["current_frame"]["revision"], 4)
+
+    async def test_unstable_revision_uses_original_deadline_without_root(self):
+        context = self.context((3, 4, 3, 4, 3))
+        with self.assertRaisesRegex(TimeoutError, "did not stabilize before deadline"):
+            await self.run_context(context)
+        self.assertEqual(context.clock, 400)
+        self.assertEqual(self.roots(context), [])
+        self.assertEqual(context.report["frontend_fixture_business_context"]["status"], "FAILED_AFTER_SINGLE_START_NO_RETRY")
+
+    async def test_post_log_paused_event_and_owner_changes_do_not_query_root(self):
+        mutations = [lambda s: s.update(paused=False), lambda s: s.update(active_event={"instance_id": 9}),
+                     lambda s: s["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"].update(current_tid=6)]
+        for change in mutations:
+            with self.subTest(change=change):
+                context = self.context(change=change)
+                with self.assertRaises(TimeoutError):
+                    await self.run_context(context, timeout=.2, poll_interval=.1)
+                self.assertEqual(self.roots(context), [])
+                self.assertEqual(context.clock, .2)
+
+    async def test_post_log_date_or_process_drift_preserves_exact_gate_error(self):
+        cases = [(lambda s: s.update(date_raw=101), "advanced away"),
+                 (lambda s: s["diagnostics"].update(bridge_pid=102), "crossed the admitted")]
+        for change, message in cases:
+            with self.subTest(message=message):
+                context = self.context(change=change)
+                with self.assertRaisesRegex(ValueError, message):
+                    await self.run_context(context)
+                self.assertEqual(self.roots(context), [])
+
+    async def test_failed_root_is_propagated_once_without_retry(self):
+        error = RuntimeError("SYNTHETIC BridgeUnavailableError revision mismatch")
+        context = self.context(error=error)
+        with self.assertRaises(RuntimeError) as raised:
+            await self.run_context(context)
+        self.assertIs(raised.exception, error)
+        self.assertEqual(self.roots(context), [3])
+        self.assertEqual(context.report["frontend_fixture_business_context"]["status"], "FAILED_AFTER_SINGLE_START_NO_RETRY")
+
+    def test_public_revision_frame_rejects_bool_negative_and_absent(self):
+        context = self.context()
+        context.client.pump = 1
+        for value in (True, -1, None):
+            frame = context.client.frame()
+            frame["revision"] = value
+            self.assertIsNone(context.namespace["fixture_whole_root_admission_frame"](frame, context.submission))
+
+
 if __name__ == "__main__":
     unittest.main()
