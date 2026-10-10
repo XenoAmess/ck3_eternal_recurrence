@@ -1,0 +1,162 @@
+{
+  "schema": "ck3-common006-reservation-closure-v1",
+  "at_utc": "2026-10-10T20:30:10.141187+00:00",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "reservation_id": "lyd-common-source-native-3GiB-20261011-006",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-006\\ADMISSION.actual.json",
+    "bytes": 5171,
+    "sha256": "34a2f08c3bff55072a2ae5c440455059694a779f87fc5107f0221d0ef065cf46"
+  },
+  "source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "source_export": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\SOURCE-EXPORT.actual.json",
+    "bytes": 4933,
+    "sha256": "221b5abee702248fd8d24fc653dd2e2ff3d0d148dad1d38b7c50c548ca828a2f"
+  },
+  "build_result": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\BUILD-RESULT.actual.json",
+    "bytes": 1526,
+    "sha256": "223036a4558ca0a1e8951ca8cc4d531d61e55cbb4da9189c23195b1756cf90b7"
+  },
+  "native_result": {
+    "path": "C:\\cbr3\\native-msvc-result.json",
+    "bytes": 1833,
+    "sha256": "03457a86e586c0a72c88d22c17744b5240e7d098b03acdede64377f6fa65e8a3"
+  },
+  "actual_original_commands": {
+    "source_export": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-export-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1158,
+      "sha256": "a85d511a022021d8b6809942b126cd57479f9da7aeef213c284981f1d2057497"
+    },
+    "native_build": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-build-command-20261011-001\\RESULT.actual.json",
+      "bytes": 2803,
+      "sha256": "9e28f7047944c70b0a5cad0ff13ce138a505e09bbf1cadab4cfb5cc15f186651"
+    },
+    "python_registration": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-registration-tests-20261011-001\\RESULT.actual.json",
+      "bytes": 1002,
+      "sha256": "071f828a151c6b17eda695bceaff74e5c7ada08ab83aa166574dbbb7ab274ecb"
+    },
+    "native_ctest": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-focused-ctest-20261011-001\\RESULT.actual.json",
+      "bytes": 1226,
+      "sha256": "66eed2cae37cca7a6123d3bf89fdba2cb20d6e2e7e8f15c067355839c67a38b8"
+    },
+    "native_graph_fixture": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-graph-fixture-20261011-001\\RESULT.actual.json",
+      "bytes": 844,
+      "sha256": "5b4751f137c926ed965e449ff52c4067306e09f8d4b84746ef0f66548d0f1307"
+    },
+    "python_native_interchange": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-python-interchange-20261011-001\\RESULT.actual.json",
+      "bytes": 984,
+      "sha256": "cf8ae527cc64db3369047ba7dfbf24851038e94c4dd33108640e0e212767fe2e"
+    }
+  },
+  "actual_original_command_exit_codes": {
+    "source_export": 0,
+    "native_build": 1,
+    "python_registration": 0,
+    "native_ctest": 8,
+    "native_graph_fixture": 0,
+    "python_native_interchange": 0
+  },
+  "compile_link_succeeded": true,
+  "build_wrapper_exit_code": 1,
+  "native_build_status": "built_defender_registration_failed",
+  "defender_status": "settings_failed",
+  "compile_success_is_not_Defender_success": true,
+  "shared_registration_qualification": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-shared-registration-qualification-20261011-001\\RESULT.actual.json",
+    "bytes": 11686,
+    "sha256": "55c5fb642365a7c8def66f246cb326cc7f74f8ab32272476ff1fa2e12a95ca3b"
+  },
+  "shared_registration_status": "PASS_SHARED_REGISTRATION_AND_INERT_SDK_DISPATCH",
+  "registration_is_not_native_payload_or_live": true,
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-006\\MEASURE.actual.json",
+    "bytes": 6571,
+    "sha256": "21a1b029ead2ff8ac32297ded8ce5e471f03137ac9085ec54e470844446ec0d3"
+  },
+  "finite_retention_groups": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-006\\ASSET-GROUPS.actual.json",
+    "bytes": 48764,
+    "sha256": "c0c5053ec97a2407bfa41675821dad4cad51945db87e3d6222a6a6fdd9ea629f"
+  },
+  "observed_retained_task_logical_bytes_known": 516918142,
+  "allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "remaining_reserved_peak_bytes": 0,
+  "old_admission_unspent_field_rewritten": false,
+  "future_reservation_return_is_not_physical_deletion": true,
+  "automatic_global_reservation_manager_implemented": false,
+  "other_unspent_reservations_bytes_ROOT_verified": 0,
+  "actual_bus": {
+    "tasks": [
+      {
+        "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+        "state": "running",
+        "resources": [],
+        "stale": false,
+        "last_sequence": 4608
+      },
+      {
+        "task_id": "lyd-volume-c-admission-20261010-root",
+        "state": "running",
+        "resources": [
+          "storage-volume-c:coordinator"
+        ],
+        "stale": false,
+        "last_sequence": 4607
+      }
+    ],
+    "stdout_bytes": 153684,
+    "stdout_sha256": "727cf571de5b9f63bfd66fa8936faf78baa7050ad9a8a7a339f0c7140c35e191"
+  },
+  "actual_runtime_inventory": {
+    "at_utc": "2026-10-10T20:30:10.137845+00:00",
+    "scanned_process_count": 174,
+    "python_controllers_inspected": [
+      {
+        "pid": 16068,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "actual_active_build_processes": [],
+  "available_bytes_before": 620593733632,
+  "available_bytes_after": 620593745920,
+  "whole_project_actual_usage_bytes_or_null": null,
+  "conservative_project_base_preserved": 133921954492,
+  "effective_project_quota_bytes": 137438953472,
+  "retention": {
+    "source_review_at_utc": "2026-10-17T19:32:25.249949+00:00",
+    "build_review_at_utc": "2026-10-24T19:32:25.249949+00:00",
+    "raw_review_at_utc": "2026-11-09T19:32:25.249949+00:00",
+    "compact_review_at_utc": "2027-04-08T19:32:25.249949+00:00",
+    "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "quota_override_unchanged": {
+      "owner": "XenoAmess / ROOT",
+      "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+      "max_project_bytes": 137438953472,
+      "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+      "auto_renew": false,
+      "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+    },
+    "automatic_renewal": false,
+    "automatic_deletion": false
+  },
+  "quota_current_at_closure": true,
+  "closure_after_reservation_deadline": false,
+  "live_qualification": false,
+  "business_qualification": false,
+  "automatic_renewal": false,
+  "automatic_deletion": false,
+  "new_python_successor_requires_new_admission": true
+}

@@ -34,3 +34,15 @@
 预约004已在原卷协调锁内按实际host/keeper等待和CAS释放闭账，未来写入预约剩余0。限定CASE4/R53/a15、新seed与指定小回执范围保留逻辑量1056211427B；额外未枚举小增量actual=null，保守上界32MiB，不冒充整个项目总占用。物理分配量与历史峰值未知，闭账时卷空闲621170180096B；并发空闲变化不全部归因于清理。Source11/O11/native/原campaign seed未重计；缓存Oct17及配额Oct12原期限未续。通用策略仍1.0.0，其他机器未运行的清理没有被标为已执行。
 
 03:22 CST，[focused预约005](../li-yu-dao/acceptance/2026-10-11-i4-native-completion-diagnostics/storage-closed005.actual.json)实际闭账。峰值预约128MiB仅供3TU定向编译、EXE和回执，无source export或完整DLL复制；限定build和3个命令目录保留逻辑量17421872B、1792项metadata，未来预约0、物理清理0。基数沿用004保守占用+实际保留+32MiB未知小增量上界，没有抵扣缓存删除；原缓存和配额期限不续。新build按策略Oct24复核。编译及测试通过，Defender设置失败独立保留；自动预约/GC仍未实现。
+
+## 2026-10-11 04:30 CST：Source12完整构建预约006闭账
+
+公共Source12的712步编译/链接、必要离线检查和运行时绑定已进入终态；构建资源已实际释放。006在原卷协调范围内实际CLOSED，未来写入预约 **0 B**。限定新增保留逻辑量 **516918142 B**，闭账时卷空闲 **620593745920 B**。源8735项沿用原索引与文件大小，构建及指定小回执只测元数据；没有重新扫描整个项目或读取旧PE、SAVE正文。
+
+未枚举小增量的实际量为null，上界32MiB；闭账后输出的实际量为null，上界1MiB，后续准入继续保守计入。物理分配量、项目总实际占用和历史峰值仍未知。释放3GiB峰值预约不等于释放3GiB磁盘空间；本包物理删除 **0 B**，不重复累计先前缓存清理。
+
+精确闭账位于 `C:/workspace/ck3_lyd_runtime_20261004/common-storage-admission-20261011-006/CLOSED-RESERVATION.actual.json`（6960B / SHA-256 `3710e6570a23e4d0c37f0deee1a9891020f619402f51952cfc1b60335ac13f8c`）；元数据测量 `MEASURE.actual.json` 为6571B / `21a1b029ead2ff8ac32297ded8ce5e471f03137ac9085ec54e470844446ec0d3`。新source/metadata按7天、build按14天、raw按30天、compact准入按180天复核，以原准入时刻锚定；已消费的2天资格准备包解除pending保护，原到期不续。缓存Oct17及原配额 `2026-10-12T05:19:51.814083Z` 均不变。
+
+下一公共Python后继只需192MiB独立新预约，不能沿用已关闭006；后续实机另计容量。全机自动预约/自动GC仍未实现，规则已入库，当前执行为人工协调。
+
+本轮精简[闭账原件](../li-yu-dao/acceptance/2026-10-11-common-source12-native-runtime/storage-CLOSED-RESERVATION.original.json)与[测量原件](../li-yu-dao/acceptance/2026-10-11-common-source12-native-runtime/storage-MEASURE.original.json)已随[Source12实绩](../li-yu-dao/2026-10-11-common-source12-native-runtime.md)入库；完整大索引和构建输出继续外置限期保留。

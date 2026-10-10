@@ -1,0 +1,445 @@
+{
+  "schema": "source12-common-shared-registration-qualification-v1",
+  "status": "PASS_SHARED_REGISTRATION_AND_INERT_SDK_DISPATCH",
+  "started_at_utc": "2026-10-10T19:57:21.271935Z",
+  "finished_at_utc": "2026-10-10T19:57:43.454761Z",
+  "source_head": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "source_module": {
+    "path": "C:\\csr12\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 208175,
+    "sha256": "fe4bb75e83b8130e53be403c67a40fd67e43ceb2992fa828ff3efd493d0c4aa5"
+  },
+  "script": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-shared-registration-qualification-20261011-001\\qualify_shared_registration.py",
+    "bytes": 18229,
+    "sha256": "04aa1e3c44d61a2f5f5e22afa1dea658295eb864325a54e0330fa14c0624ac6d"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-shared-registration-qualification-20261011-001\\METADATA.actual.json",
+    "bytes": 22256,
+    "sha256": "158a18e08fea50ee7ac81d3d261187be79ec856557485559af38f4ca8c908e25"
+  },
+  "checks_passed": 91,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "check": "parent_source12_admission_bound",
+      "pass": true
+    },
+    {
+      "check": "parent_admission_current_at_start",
+      "pass": true
+    },
+    {
+      "check": "fresh_capacity_covers_existing_parent_reservation",
+      "pass": true
+    },
+    {
+      "check": "quota_covers_parent_reservation",
+      "pass": true
+    },
+    {
+      "check": "selected_module_source_matches_frozen_pin",
+      "pass": true
+    },
+    {
+      "check": "module_file_is_selected_source12",
+      "pass": true
+    },
+    {
+      "check": "all_loaded_xar_modules_resolve_inside_source12",
+      "pass": true,
+      "loaded_count": 427,
+      "outside": []
+    },
+    {
+      "check": "registration_gate_default_absent_flags",
+      "pass": true
+    },
+    {
+      "check": "registration_gate_explicit_off",
+      "pass": true
+    },
+    {
+      "check": "registration_gate_cached_only",
+      "pass": true
+    },
+    {
+      "check": "registration_gate_confucian_readonly_only",
+      "pass": true
+    },
+    {
+      "check": "registration_gate_challenger_only",
+      "pass": true
+    },
+    {
+      "check": "all_four_exact_names",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_readonly_annotations",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_closed_input_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_readonly_annotations",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_closed_input_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_readonly_annotations",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_closed_input_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_readonly_annotations",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_closed_input_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_valid_revision_1",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_valid_revision_18446744073709551615",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_zero",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_negative",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_upper_overflow",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_bool_true",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_bool_false",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_float",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_string",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_null",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_missing_revision",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_reject_unknown_argument",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_valid_revision_1",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_valid_revision_18446744073709551615",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_zero",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_negative",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_upper_overflow",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_bool_true",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_bool_false",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_float",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_string",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_null",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_missing_revision",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_reject_unknown_argument",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_valid_revision_1",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_valid_revision_18446744073709551615",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_zero",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_negative",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_upper_overflow",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_bool_true",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_bool_false",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_float",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_string",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_null",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_missing_revision",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_reject_unknown_argument",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_valid_revision_1",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_valid_revision_18446744073709551615",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_zero",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_negative",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_upper_overflow",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_bool_true",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_bool_false",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_float",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_string",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_null",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_missing_revision",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_reject_unknown_argument",
+      "pass": true
+    },
+    {
+      "check": "G4_valid_faith_count_1",
+      "pass": true
+    },
+    {
+      "check": "G4_valid_faith_count_8",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_empty",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_nine",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_duplicate",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_tuple",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_null",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_bool_item",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_float_item",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_string_item",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_negative_item",
+      "pass": true
+    },
+    {
+      "check": "G4_reject_sentinel_item",
+      "pass": true
+    },
+    {
+      "check": "argument_model_validation_has_no_receiver_dispatch",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_actual_sdk_dispatch_once",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_actor_cached_succession_v1_inert_result_marker_visible",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_actual_sdk_dispatch_once",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_assembly_predicates_v1_inert_result_marker_visible",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_actual_sdk_dispatch_once",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_religious_title_v1_inert_result_marker_visible",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_actual_sdk_dispatch_once",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_confucian_challenger_graph_v1_inert_result_marker_visible",
+      "pass": true
+    },
+    {
+      "check": "selected_source_unchanged",
+      "pass": true
+    }
+  ],
+  "actual_sdk_dispatch_count": 4,
+  "inert_service_receivers": [
+    {
+      "method": "query_actor_cached_succession_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615
+      }
+    },
+    {
+      "method": "query_confucian_assembly_predicates_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615
+      }
+    },
+    {
+      "method": "query_confucian_religious_title_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615
+      }
+    },
+    {
+      "method": "query_confucian_challenger_graph_v1",
+      "arguments": {
+        "faith_full_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "expected_revision": 18446744073709551615
+      }
+    }
+  ],
+  "dispatch_blocker": null,
+  "shared_registration_qualified": true,
+  "service_route_qualified": true,
+  "native_driver_or_native_payload_qualified": false,
+  "live_or_business_credit": false,
+  "profile_sdk21_23_24_tests_rerun": false,
+  "default_off_qualified": true,
+  "no_profile_created": true,
+  "main_writes": 0,
+  "source_writes": 0,
+  "native_builds": 0,
+  "game_calls": 0,
+  "real_bus_calls": 0,
+  "save_body_reads": 0,
+  "manual_selected_source_text_read_bound_bytes": 49152,
+  "full_import_and_required_identity_hashing_are_not_source_snapshot_copies": true
+}

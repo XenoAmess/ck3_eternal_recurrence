@@ -1,0 +1,40 @@
+{
+  "schema": "ck3-common-runtime-build-result-v1",
+  "source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "at_utc": "2026-10-10T20:18:42.131277+00:00",
+  "exit_code": 1,
+  "compile_link_succeeded": true,
+  "command_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-build-command-20261011-001\\RESULT.actual.json",
+    "bytes": 2803,
+    "sha256": "9e28f7047944c70b0a5cad0ff13ce138a505e09bbf1cadab4cfb5cc15f186651"
+  },
+  "native_result": {
+    "path": "C:\\cbr3\\native-msvc-result.json",
+    "bytes": 1833,
+    "sha256": "03457a86e586c0a72c88d22c17744b5240e7d098b03acdede64377f6fa65e8a3"
+  },
+  "dll": {
+    "path": "C:\\cbr3\\xar_ck3_bridge.dll",
+    "bytes": 12445696,
+    "sha256": "a5dfb768bba4a6bff39884960cd34dcd269059e9b348ca631711d4f3403b8894"
+  },
+  "injector": {
+    "path": "C:\\cbr3\\xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "9b29a7506948d73c16e62b9a2568ee74701179e70d17d44e73c80e0b1ed4af48"
+  },
+  "injector_pin_origin": {
+    "path": "C:\\cbr3\\defender-exe-exclusions\\20261010T201705Z-86658440\\manifest.json",
+    "bytes": 5821,
+    "sha256": "ad6be86086c2260f95b0d6f4e3c7f3241bd05a2aec4acd0473704b93d323c230"
+  },
+  "defender_status": "settings_failed",
+  "defender_receipt": {
+    "path": "C:\\cbr3\\defender-exe-exclusions\\20261010T201705Z-86658440\\receipt.json",
+    "bytes": 3666,
+    "sha256": "6582bcd3bacee070957a0f83f8d46bdec4b21f89a38fce4d81868b075ec0f41f"
+  },
+  "live_qualification": "NOT_RUN",
+  "business_pass": false
+}

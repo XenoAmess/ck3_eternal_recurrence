@@ -1,0 +1,175 @@
+{
+  "schema": "ck3-common006-bounded-metadata-measure-v1",
+  "at_utc": "2026-10-10T20:30:10.141187+00:00",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-006\\ADMISSION.actual.json",
+    "bytes": 5171,
+    "sha256": "34a2f08c3bff55072a2ae5c440455059694a779f87fc5107f0221d0ef065cf46"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\source-index.json",
+    "bytes": 1792097,
+    "sha256": "c16649e968ac1f4bb254ea0af16b67e5e1c4ff89d9d89806e314beec8e386828"
+  },
+  "groups": [
+    {
+      "path": "C:\\csr12",
+      "files": 8735,
+      "logical_bytes": 147659373,
+      "basis": "Original exact export/index, current indexed regular-file size metadata only; no source body rehash."
+    },
+    {
+      "path": "C:\\cbr3",
+      "files": 1332,
+      "logical_bytes": 365950688,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-012",
+      "files": 15,
+      "logical_bytes": 2867206,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-006",
+      "files": 1,
+      "logical_bytes": 5171,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-export-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 1499,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-build-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 87448,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-registration-tests-20261011-001",
+      "files": 3,
+      "logical_bytes": 6222,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-focused-ctest-20261011-001",
+      "files": 3,
+      "logical_bytes": 2352,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-graph-fixture-20261011-001",
+      "files": 3,
+      "logical_bytes": 915,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-python-interchange-20261011-001",
+      "files": 3,
+      "logical_bytes": 1234,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-shared-registration-qualification-20261011-001",
+      "files": 5,
+      "logical_bytes": 54666,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-common-canonical-export-sourceonly-20261011-001",
+      "files": 3,
+      "logical_bytes": 16045,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-source12-runtime-binding-sourceonly-20261011-001",
+      "files": 4,
+      "logical_bytes": 24263,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-source12-runtime-binding-sourceonly-20261011-002",
+      "files": 6,
+      "logical_bytes": 36392,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-sourceonly-20261011-006",
+      "files": 4,
+      "logical_bytes": 29790,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-sourceonly-20261011-006-002",
+      "files": 6,
+      "logical_bytes": 33933,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-mailbox-docs-qualification-20261011-001",
+      "files": 3,
+      "logical_bytes": 82403,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-mailbox-docs-retest-20261011-001",
+      "files": 3,
+      "logical_bytes": 2409,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-bind-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 4263,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-build-resource-release-20261011-001",
+      "files": 3,
+      "logical_bytes": 1495,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-build-resource-release-20261011-002",
+      "files": 3,
+      "logical_bytes": 2275,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-mailbox-docs-qualification-sourceonly-20261011-001",
+      "files": 5,
+      "logical_bytes": 22122,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-mailbox-docs-qualification-sourceonly-20261011-002",
+      "files": 7,
+      "logical_bytes": 25978,
+      "basis": "Bounded metadata only; no body hash."
+    }
+  ],
+  "metadata_entries": 11731,
+  "metadata_elapsed_seconds": 2.3682469000050332,
+  "known_retained_logical_bytes": 516918142,
+  "allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "whole_project_logical_or_allocated_bytes_or_null": null,
+  "unenumerated_small_actual_bytes_or_null": null,
+  "unenumerated_small_upper_bound_bytes": 33554432,
+  "closing_outputs_actual_bytes_or_null": null,
+  "closing_outputs_upper_bound_bytes": 1048576,
+  "full_source_payload_or_PE_or_save_body_hashing": false,
+  "focused_process_helper_source_pin_read": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "full_project_or_old_tree_scan": false,
+  "available_bytes_before": 620593733632,
+  "available_bytes_after": 620593745920,
+  "free_change_attributable_to_this_close_or_null": null,
+  "physical_deleted_bytes": 0
+}

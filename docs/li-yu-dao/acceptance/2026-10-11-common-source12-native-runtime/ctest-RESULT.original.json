@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+    "--test-dir",
+    "C:\\cbr3",
+    "-C",
+    "Release",
+    "--output-on-failure",
+    "--no-tests=error",
+    "-R",
+    "^(xar_confucian_assembly_predicates_v1_test|xar_confucian_religious_title_readback_v1_test|xar_ck3_native_bridge_confucian_executor_registration_v1|xar_ck3_native_bridge_main_thread_query_mailbox_v1|xar_ck3_ingame_decision_outcome_contract_v1)$"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:17:31.453358+00:00",
+  "finished_at_utc": "2026-10-10T20:17:35.634603+00:00",
+  "exit_code": 8,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-focused-ctest-20261011-001\\stdout.log",
+    "bytes": 1099,
+    "sha256": "0a198c15fd2964f35764a54253c501e1cb4b4e4a7e6589a89a72c5d3d154e8d0"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-focused-ctest-20261011-001\\stderr.log",
+    "bytes": 27,
+    "sha256": "18e00877dc1071c85cd4f479d451bebeef8309022e46cf8c63b0bed5151984a4"
+  }
+}

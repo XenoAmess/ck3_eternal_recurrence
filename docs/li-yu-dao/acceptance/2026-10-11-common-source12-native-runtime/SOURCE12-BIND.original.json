@@ -1,0 +1,143 @@
+{
+  "schema": "ck3-common-source12-native-binding-v1",
+  "source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "native_build_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "created_at_utc": "2026-10-10T20:28:02.934562+00:00",
+  "source_export": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\SOURCE-EXPORT.actual.json",
+    "bytes": 4933,
+    "sha256": "221b5abee702248fd8d24fc653dd2e2ff3d0d148dad1d38b7c50c548ca828a2f"
+  },
+  "build_inputs": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\BUILD-INPUTS.actual.json",
+    "bytes": 5353,
+    "sha256": "98e2bce890243f674146aca01a84b0821ee634e9fde32f0c0c95640393707249"
+  },
+  "build_result": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\BUILD-RESULT.actual.json",
+    "bytes": 1526,
+    "sha256": "223036a4558ca0a1e8951ca8cc4d531d61e55cbb4da9189c23195b1756cf90b7"
+  },
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\manifest.json",
+    "bytes": 16491,
+    "sha256": "5f9fbfa3e08dc1c8494573673de87b6678241baf857d62b63126e00614542d90"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\runtime.local.json",
+    "bytes": 2015,
+    "sha256": "e2918cb160bb6c6bfbc8aac371f0a961ab3e7af859d5cef6fd5a2fbf2d7ac340"
+  },
+  "native_registration_tests": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-focused-ctest-20261011-001\\RESULT.actual.json",
+    "bytes": 1226,
+    "sha256": "66eed2cae37cca7a6123d3bf89fdba2cb20d6e2e7e8f15c067355839c67a38b8"
+  },
+  "python_registration_tests": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-python-registration-tests-20261011-001\\RESULT.actual.json",
+    "bytes": 1002,
+    "sha256": "071f828a151c6b17eda695bceaff74e5c7ada08ab83aa166574dbbb7ab274ecb"
+  },
+  "python_test_inputs": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\PYTHON-TEST-INPUTS.actual.json",
+    "bytes": 751,
+    "sha256": "4e259e6ec94624d7d24b40ffffdf78b24e0ef018bcee453bd31cd75b8e5b3890"
+  },
+  "native_test_inputs": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-012\\NATIVE-TEST-INPUTS.actual.json",
+    "bytes": 2174,
+    "sha256": "8cccf4edc6da6ad58c62eb379d4d317acf2978cb88549e4c7a8d8ab32124c6ab"
+  },
+  "native_graph_fixture_test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-graph-fixture-20261011-001\\RESULT.actual.json",
+    "bytes": 844,
+    "sha256": "5b4751f137c926ed965e449ff52c4067306e09f8d4b84746ef0f66548d0f1307"
+  },
+  "native_serializer_interchange_test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-python-interchange-20261011-001\\RESULT.actual.json",
+    "bytes": 984,
+    "sha256": "cf8ae527cc64db3369047ba7dfbf24851038e94c4dd33108640e0e212767fe2e"
+  },
+  "mailbox_documentation_extraction": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-mailbox-docs-qualification-20261011-001\\EXTRACTION.actual.json",
+    "bytes": 2158,
+    "sha256": "f7e4ca66d02f4ef3977304b569bf66885f706ad161593a66f8cdfddacced916a"
+  },
+  "mailbox_docs_only_retest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-mailbox-docs-retest-20261011-001\\RESULT.actual.json",
+    "bytes": 2364,
+    "sha256": "7fe3c4e74873cc40a1da37b7d9af6d7dd8dd98e29bf00ebca43aec7071e2c715"
+  },
+  "legacy11906_default_mailbox": {
+    "status": "NOT_APPLICABLE_CURRENT12004",
+    "legacy_game_version": "CK3 1.19.0.6",
+    "legacy_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "actual_abi": {
+      "path": "C:/csr12/ck3_autonomous_player/native_bridge/research/main_thread_query_mailbox_v1_abi.json",
+      "bytes": 12705,
+      "sha256": "80f6ec28d70aad75c550c5e8c2e398063b5856c72347f9890d395b6fb843ba5b"
+    },
+    "actual_fixture": {
+      "path": "C:/csr12/ck3_autonomous_player/native_bridge/research/fixtures/main_thread_query_mailbox_v1_source_contract.json",
+      "bytes": 9512,
+      "sha256": "92a26e615c29f629f5e87b079934bd6a1ab401f3bcbfd841f2c1356741c9565f"
+    },
+    "actual_header": {
+      "path": "C:/csr12/ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp",
+      "bytes": 43886,
+      "sha256": "23cbbd832be074981624dab3d7d47cda18a9ea09ff9472fff4561d9e327692b0"
+    },
+    "actual_test_source": {
+      "path": "C:/csr12/ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1_test.cpp",
+      "bytes": 120735,
+      "sha256": "278d6e796428919dc6bd73b6ecaeb8979bf5eb78b15c5f540f23659022c99fd8"
+    },
+    "test_source_identity_guard_lines": [
+      2437,
+      2444
+    ],
+    "test_source_legacy_byte_pins_follow_from_line": 2448,
+    "current_12004_native_credit_from_legacy_test": false,
+    "legacy_test_pass_claimed": false,
+    "reason": "Default test fixes legacy1.19.0.6 SHA/IAT/RVA; required current Confucian registration uses separate already-passed branch."
+  },
+  "shared_mcp_registration_qualification": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-shared-registration-qualification-20261011-001\\RESULT.actual.json",
+    "bytes": 11686,
+    "sha256": "55c5fb642365a7c8def66f246cb326cc7f74f8ab32272476ff1fa2e12a95ca3b"
+  },
+  "shared_mcp_registration_metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-shared-registration-qualification-20261011-001\\METADATA.actual.json",
+    "bytes": 22256,
+    "sha256": "158a18e08fea50ee7ac81d3d261187be79ec856557485559af38f4ca8c908e25"
+  },
+  "test_accounting": {
+    "native_ctest_passed": 4,
+    "native_ctest_failed_missing_doc": 1,
+    "initial_native_ctest_exit_code": 8,
+    "legacy_mailbox_docs_retest_exit_code": 2,
+    "legacy_mailbox_applicable_to_current12004": false,
+    "native_graph_fixture_passed": 1,
+    "initial_python_ran": 29,
+    "initial_python_passed": 28,
+    "initial_python_skipped": 1,
+    "complement_serializer_interchange_passed": 1,
+    "python_unique_successful_checks": 29
+  },
+  "template_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\manifest.json",
+    "bytes": 6830,
+    "sha256": "891259cc3ce6b4de689a43bd9ce36dacb4a2a57285d5fb9b89993e71bbdbf4b9"
+  },
+  "template_runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\runtime.local.json",
+    "bytes": 2018,
+    "sha256": "fdd544259d250ecc3e9c961903f191b5f1ef1da7fb5217dbd62f65d13bd8c557"
+  },
+  "all_capabilities_live_qualified": false,
+  "business_pass": false,
+  "graphics_key": "Not derived by binder; public prepare derives current key and rejects mismatched oldseed.",
+  "old_native_qualification_or_seed_key_reused": false,
+  "old_cache_and_quota_expiry_renewed": false,
+  "native_artifact_bodies_read_or_hashed_by_binder": false
+}

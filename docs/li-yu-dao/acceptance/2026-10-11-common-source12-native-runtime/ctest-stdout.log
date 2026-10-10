@@ -1,0 +1,20 @@
+Test project C:/cbr3
+    Start 268: xar_ck3_native_bridge_main_thread_query_mailbox_v1
+1/5 Test #268: xar_ck3_native_bridge_main_thread_query_mailbox_v1 .........***Failed    3.92 sec
+mailbox source input empty source=105905 abi=12705 fixture=9512 docs=0 exe=101040248 bridge=1505881
+
+    Start 269: xar_ck3_native_bridge_confucian_executor_registration_v1
+2/5 Test #269: xar_ck3_native_bridge_confucian_executor_registration_v1 ...   Passed    0.03 sec
+    Start 359: xar_ck3_ingame_decision_outcome_contract_v1
+3/5 Test #359: xar_ck3_ingame_decision_outcome_contract_v1 ................   Passed    0.05 sec
+    Start 397: xar_confucian_assembly_predicates_v1_test
+4/5 Test #397: xar_confucian_assembly_predicates_v1_test ..................   Passed    0.05 sec
+    Start 398: xar_confucian_religious_title_readback_v1_test
+5/5 Test #398: xar_confucian_religious_title_readback_v1_test .............   Passed    0.05 sec
+
+80% tests passed, 1 tests failed out of 5
+
+Total Test time (real) =   4.13 sec
+
+The following tests FAILED:
+	268 - xar_ck3_native_bridge_main_thread_query_mailbox_v1 (Failed)

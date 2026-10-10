@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "gh",
+    "run",
+    "list",
+    "--commit",
+    "70e7c64d814c2ea9a58550f87ac735aa6cade26e",
+    "--limit",
+    "4",
+    "--json",
+    "databaseId,name,status,conclusion,headSha,url"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:37:52.354555+00:00",
+  "finished_at_utc": "2026-10-10T20:37:53.593479+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-70e7-ci-terminal-20261011-001\\stdout.log",
+    "bytes": 472,
+    "sha256": "84c31dcfd0651a42a4d7b4ae13a205be89627967d7d5f794e0ff70ee7e93c1d9"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-70e7-ci-terminal-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

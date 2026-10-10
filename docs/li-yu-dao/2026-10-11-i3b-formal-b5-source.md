@@ -17,3 +17,5 @@
 源码提交afbb255398的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38082794054)实际失败：通用adapter检查拒绝B5重复写死游戏EXE哈希。原8项合成测试通过仍有效，不能据此把整个CI写成通过。后继queue提交也携带这一未修正版本。
 
 最小修复删除B5重复的版本/EXE常量，从现有精确bytes/SHA绑定的字段证据读取两项，只核查询与字段映射的兼容性；公共runtime仍唯一选择host/source/native。两份JSON、reader/source/evidence绑定和通用检查保持。04:26:02 CST，两个直接受影响B5检查及原失败通用检查共3项实际exit0；旧8项未全量重跑。[原失败与修正小证据](acceptance/2026-10-11-i3b-formal-b5-source/build-binding-fix/INDEX.actual.json)分别保留。新HEAD官方CI另行确认，B4/B5实机仍待。
+
+04:37:53 CST实际GitHub CLI读回：修正提交 `70e7c64d814c2ea9a58550f87ac735aa6cade26e` 的 [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38083886402) 与 [Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38083886371) 均completed/success，[原始终态回执](acceptance/2026-10-11-i3b-formal-b5-source/build-binding-fix/official-ci/INDEX.actual.json)。原afbb失败继续保留；此处只升级源码CI结论，B4/B5实机资格不变。

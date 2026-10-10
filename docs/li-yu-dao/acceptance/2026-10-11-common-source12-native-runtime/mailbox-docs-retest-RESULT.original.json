@@ -1,0 +1,44 @@
+{
+  "status": "MAILBOX_DOCS_ONLY_RETEST_FAIL",
+  "test_name": "xar_ck3_native_bridge_main_thread_query_mailbox_v1",
+  "exit_code": 2,
+  "argv": [
+    "C:/cbr3/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+    "C:/csr12/ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+    "C:/csr12/ck3_autonomous_player/native_bridge/research/main_thread_query_mailbox_v1_abi.json",
+    "C:/csr12/ck3_autonomous_player/native_bridge/research/fixtures/main_thread_query_mailbox_v1_source_contract.json",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source12-mailbox-docs-qualification-20261011-001/docs/ck3-native-ai/main-thread-query-mailbox.md",
+    "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "C:/csr12/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "C:/csr12/ck3_autonomous_player/native_bridge/include/xar_bridge/route_contact_horizon_v1_dispatch.hpp"
+  ],
+  "working_directory": "C:/cbr3",
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source12-mailbox-docs-qualification-20261011-001/MAILBOX-ARGV.actual.json",
+    "bytes": 2547,
+    "sha256": "a884fed8d307c4bae38d5d22cd5ed9a254a8cdee1b54cf8c7b3ad2f1348f45bb"
+  },
+  "documentation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source12-mailbox-docs-qualification-20261011-001/docs/ck3-native-ai/main-thread-query-mailbox.md",
+    "bytes": 77698,
+    "sha256": "89b009b4f7af67f5ded43aa8da7e097390a7b94b32acbbc86b787de589667f07"
+  },
+  "source_revision": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "git_blob": "8bad7c3a61671ef92b0bbd70eabb941229cd6e05",
+  "only_changed_argv_index": 4,
+  "started_at_utc": "2026-10-10T20:23:47.790123+00:00",
+  "finished_at_utc": "2026-10-10T20:23:51.894518+00:00",
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source12-mailbox-docs-retest-20261011-001/stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source12-mailbox-docs-retest-20261011-001/stderr.log",
+    "bytes": 45,
+    "sha256": "b324d6635c329e012c23550b83b75ee7123cdd55dc7969988d5c1ff9fb12784e"
+  },
+  "original_ctest_exit_code_preserved": 8,
+  "original_four_passed_tests_rerun": false,
+  "game_pe_rehashed_by_wrapper": false
+}

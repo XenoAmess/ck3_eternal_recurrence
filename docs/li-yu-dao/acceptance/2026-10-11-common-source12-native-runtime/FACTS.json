@@ -1,0 +1,76 @@
+{
+  "schema": "lyd.common-source12-documentation-facts.v1",
+  "at_utc": "2026-10-10T20:45:58.690838+00:00",
+  "source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "source_root": "C:/csr12",
+  "build_root": "C:/cbr3",
+  "runtime_root": "C:\\workspace\\ck3-common-runtime\\20261011-012",
+  "build_started_at_utc": "2026-10-10T19:41:28.655445+00:00",
+  "build_finished_at_utc": "2026-10-10T20:17:06.031589+00:00",
+  "compile_link_succeeded": true,
+  "build_command_exit_code": 1,
+  "defender": {
+    "status": "settings_failed",
+    "WMI_error": -2147217407,
+    "settings_verified": false
+  },
+  "test_accounting": {
+    "native_ctest_passed": 4,
+    "native_ctest_failed_missing_doc": 1,
+    "initial_native_ctest_exit_code": 8,
+    "legacy_mailbox_docs_retest_exit_code": 2,
+    "legacy_mailbox_applicable_to_current12004": false,
+    "native_graph_fixture_passed": 1,
+    "initial_python_ran": 29,
+    "initial_python_passed": 28,
+    "initial_python_skipped": 1,
+    "complement_serializer_interchange_passed": 1,
+    "python_unique_successful_checks": 29
+  },
+  "shared_registration": {
+    "checks_passed": 91,
+    "checks_failed": 0,
+    "SDK_dispatch_to_inert_receivers": 4,
+    "native_driver_or_payload_qualified": false,
+    "game_calls": 0,
+    "live_or_business_credit": false
+  },
+  "default_mailbox_current12004_applicable": false,
+  "default_mailbox_original_failures_preserved": [
+    8,
+    2
+  ],
+  "legacy_fixed_build": "1.19.0.6",
+  "bind_command_exit_code": 0,
+  "all_capabilities_actual_live_qualified": false,
+  "storage006": {
+    "status": "CLOSED",
+    "remaining_reserved_peak_bytes": 0,
+    "known_retained_logical_bytes": 516918142,
+    "asset_groups_external_only": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-006\\ASSET-GROUPS.actual.json",
+      "bytes": 48764,
+      "sha256": "c0c5053ec97a2407bfa41675821dad4cad51945db87e3d6222a6a6fdd9ea629f"
+    }
+  },
+  "CI": {
+    "head": "70e7c64d814c2ea9a58550f87ac735aa6cade26e",
+    "Official": {
+      "run_id": 38083886402,
+      "conclusion": "SUCCESS"
+    },
+    "Linear": {
+      "run_id": 38083886371,
+      "conclusion": "SUCCESS"
+    },
+    "provenance": "ROOT actual gh read; existing independent CI package, no API repetition or CI raw copy",
+    "native_build_source_is_separate_exact057170": true
+  },
+  "formal_B4_credit": false,
+  "formal_B5_credit": false,
+  "full_I4_credit": false,
+  "whole_product_credit": false,
+  "phase_work_estimate_percent": 75,
+  "retention": "Current small records preserved; external artifacts follow original retention/expiry without renewal.",
+  "large_artifact_bodies_read_or_copied_by_doc_author": false
+}

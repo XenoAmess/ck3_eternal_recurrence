@@ -140,3 +140,10 @@ R45 在精确 `fde5fb0a03d24ba00b8a09ce0a52462a50882671`、同一 Source05、正
 用户指出此前提交署名异常后，实际读回本机repo-local `Codex <codex@openai.com>`，与9月10日已记载的 `XenoAmess <xenoamess@gmail.com>` 约定不符；ROOT此前未检查配置。是谁何时改变配置仍UNKNOWN。现场释放后03:49:45Z已实际恢复姓名、邮箱并读回，两项git ident也确认XenoAmess；既有公开提交未改写、未force push。原件在 `BASE/r45-root-git-identity-correction-20261010-001`，随本轮归档保全。后续提交使用正确身份并继续fetch/rebase/普通push。
 
 冻结fde的Official38020302422、Linear38020302413实际SUCCESS，共享acceptance成功；LiYuNOT_TRIGGERED不计通过。并行完成实际ETW离线观察、缓存元数据、证据归档准备和身份纠正，未增加正式业务信用。I3b/C3/I4及一期仍NOT_GREEN，75%仅工作量估计；一期完成日期待恢复业务实机后的结果，不给无证据日期。
+
+
+## 2026-10-11：Source12 新共同 native 构建与注册资格
+
+Source12 `05717072b70d4925f10b3d523b6663d2db89d791` 在 `C:/csr12` / `C:/cbr3` 完成新编译链接；原 command exit1 是 Defender Add WMI `-2147217407` 设置失败，`build_succeeded=true`，两层事实分别保留。四项当前 Confucian/decision CTest、graph fixture、原 Python28 PASS+1 SKIP、补充 serializer1 PASS，以及共同 SDK91 PASS/4惰性接收器调用均有实际原件。默认 mailbox 的首个 docs缺失 exit8 和补 docs 后 legacy1.19.0.6 identity exit2继续保留，对当前 .4标 NOT_APPLICABLE，不授其通过。
+
+O12 `20261011-012` binder已实际0，manifest/runtime/binding分别 `5f9fbfa3...` / `e2918cb1...` / `3a19ff78...`；所有 actual live qualification仍false，不能授B4/B5/fullI4/whole产品信用。006容量预约已闭账，未来预约余额0、实留516,918,142B；没有续期旧TTL。详见[Source12专题与小原件索引](../li-yu-dao/2026-10-11-common-source12-native-runtime.md)。本段不改写旧Source02/11或历史实机结果，75%仍仅工作量估计。

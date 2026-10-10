@@ -1,0 +1,21 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\cbr3\\xar_confucian_challenger_graph_v1_test.exe",
+    "C:\\workspace\\ck3-common-runtime\\20261011-012\\graph-fixtures"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T20:18:42.301413+00:00",
+  "finished_at_utc": "2026-10-10T20:18:42.349697+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-graph-fixture-20261011-001\\stdout.log",
+    "bytes": 71,
+    "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source12-native-graph-fixture-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

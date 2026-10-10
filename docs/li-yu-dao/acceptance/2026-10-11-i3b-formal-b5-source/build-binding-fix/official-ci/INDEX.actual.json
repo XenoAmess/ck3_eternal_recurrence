@@ -1,0 +1,26 @@
+{
+  "schema": "lyd-actual-raw-evidence-index-v1",
+  "created_at_utc": "2026-10-10T20:40:09.869848+00:00",
+  "source_head": "70e7c64d814c2ea9a58550f87ac735aa6cade26e",
+  "original_files": [
+    {
+      "relative_path": "RESULT.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-70e7-ci-terminal-20261011-001\\RESULT.actual.json",
+      "bytes": 876,
+      "sha256": "928834b4f9f65ac5a4175532a8fe032a8dd8603f8cde27478513a667885bf756"
+    },
+    {
+      "relative_path": "stdout.log",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-70e7-ci-terminal-20261011-001\\stdout.log",
+      "bytes": 472,
+      "sha256": "84c31dcfd0651a42a4d7b4ae13a205be89627967d7d5f794e0ff70ee7e93c1d9"
+    },
+    {
+      "relative_path": "stderr.log",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-70e7-ci-terminal-20261011-001\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "live_credit": false
+}

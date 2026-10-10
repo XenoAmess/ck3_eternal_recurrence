@@ -1,0 +1,688 @@
+{
+  "schema": "source12-common-shared-registration-actual-metadata-v1",
+  "at_utc": "2026-10-10T19:57:43.452102Z",
+  "origins": {
+    "selected_module": {
+      "path": "C:\\csr12\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 208175,
+      "sha256": "fe4bb75e83b8130e53be403c67a40fd67e43ceb2992fa828ff3efd493d0c4aa5"
+    },
+    "selected_module_file": "C:\\csr12\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "source_head": "05717072b70d4925f10b3d523b6663d2db89d791",
+    "source_head_provenance": "ROOT supplied exact frozen Source12; no Git operation",
+    "source_root": "C:\\csr12",
+    "sys_path_prefix": [
+      "C:\\csr12\\tools",
+      "C:\\csr12\\ck3_autonomous_player\\src"
+    ],
+    "PYTHONPATH": "C:\\csr12\\ck3_autonomous_player\\src;C:\\csr12\\ck3_workshop_mcp\\src",
+    "python": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+    "sdk_distribution_version": "2.0.0",
+    "sdk_server_class": "mcp.server.mcpserver.server.MCPServer",
+    "sdk_server_source": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\server\\mcpserver\\server.py",
+      "bytes": 55896,
+      "sha256": "cc4fc52d14f07826977c9a2a386719b732507186c081601987dd58dfcee054aa"
+    },
+    "loaded_xar_module_count": 427,
+    "all_xar_modules_inside_selected_source": true,
+    "full_module_imported": true,
+    "no_profile_created": true
+  },
+  "registration_gates": [
+    {
+      "scenario": "default_absent_flags",
+      "flags": {},
+      "actual_names": []
+    },
+    {
+      "scenario": "explicit_off",
+      "flags": {
+        "allow_private_actor_cached_succession_queries": false,
+        "allow_private_confucian_readonly_queries": false,
+        "allow_private_confucian_challenger_queries": false
+      },
+      "actual_names": []
+    },
+    {
+      "scenario": "cached_only",
+      "flags": {
+        "allow_private_actor_cached_succession_queries": true
+      },
+      "actual_names": [
+        "ck3_query_actor_cached_succession_v1"
+      ]
+    },
+    {
+      "scenario": "confucian_readonly_only",
+      "flags": {
+        "allow_private_confucian_readonly_queries": true
+      },
+      "actual_names": [
+        "ck3_query_confucian_assembly_predicates_v1",
+        "ck3_query_confucian_religious_title_v1"
+      ]
+    },
+    {
+      "scenario": "challenger_only",
+      "flags": {
+        "allow_private_confucian_challenger_queries": true
+      },
+      "actual_names": [
+        "ck3_query_confucian_challenger_graph_v1"
+      ]
+    }
+  ],
+  "all_four_tools": [
+    {
+      "name": "ck3_query_actor_cached_succession_v1",
+      "description": "Read the complete current actor cache; this does not evaluate eligibility.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_query_actor_cached_succession_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_actor_cached_succession_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "ck3_query_confucian_assembly_predicates_v1",
+      "description": "Read complete current Faith members and native assembly predicates.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_query_confucian_assembly_predicates_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_confucian_assembly_predicates_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "ck3_query_confucian_religious_title_v1",
+      "description": "Read current religious title identity, holder, properties and laws.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_query_confucian_religious_title_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_confucian_religious_title_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "ck3_query_confucian_challenger_graph_v1",
+      "description": "Read complete registered challengers and current-holder sponsor scopes for 1..8 Faiths.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "faith_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Faith Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "expected_revision",
+          "faith_full_ids"
+        ],
+        "title": "ck3_query_confucian_challenger_graph_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_confucian_challenger_graph_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "argument_validation_layer": "actual SDK registered Tool.fn_metadata.arg_model.model_validate",
+  "negative_argument_cases": [
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "zero",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "negative",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "upper_overflow",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "bool_true",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "bool_false",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "float",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "string",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "null",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "missing_revision",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "case": "unknown_argument",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "zero",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "negative",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "upper_overflow",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "bool_true",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "bool_false",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "float",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "string",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "null",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "missing_revision",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "case": "unknown_argument",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "zero",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "negative",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "upper_overflow",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "bool_true",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "bool_false",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "float",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "string",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "null",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "missing_revision",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "case": "unknown_argument",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "zero",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "negative",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "upper_overflow",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "bool_true",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "bool_false",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "float",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "string",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "null",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "missing_revision",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "unknown_argument",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_empty",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_nine",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_duplicate",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_tuple",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_null",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_bool_item",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_float_item",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_string_item",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_negative_item",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "case": "faith_sentinel_item",
+      "rejected_by_actual_sdk_argument_model": true,
+      "error_type": "ValidationError"
+    }
+  ],
+  "public_sdk_call_tool_signature": "(name: 'str', arguments: 'dict[str, Any]', context: 'Context[LifespanResultT, Any] | None' = None) -> 'CallToolResult | InputRequiredResult'",
+  "dispatch": [
+    {
+      "tool": "ck3_query_actor_cached_succession_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615
+      },
+      "sdk_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"qualification_only\": true,\n  \"qualification_marker\": \"source12-inert-receiver-v1\",\n  \"method\": \"query_actor_cached_succession_v1\",\n  \"arguments\": {\n    \"expected_revision\": 18446744073709551615\n  },\n  \"native_calls\": 0,\n  \"business_credit\": false\n}"
+          }
+        ],
+        "structuredContent": {
+          "qualification_only": true,
+          "qualification_marker": "source12-inert-receiver-v1",
+          "method": "query_actor_cached_succession_v1",
+          "arguments": {
+            "expected_revision": 18446744073709551615
+          },
+          "native_calls": 0,
+          "business_credit": false
+        },
+        "isError": false,
+        "resultType": "complete"
+      },
+      "receiver": {
+        "method": "query_actor_cached_succession_v1",
+        "arguments": {
+          "expected_revision": 18446744073709551615
+        }
+      },
+      "receiver_calls_for_this_positive": 1
+    },
+    {
+      "tool": "ck3_query_confucian_assembly_predicates_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615
+      },
+      "sdk_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"qualification_only\": true,\n  \"qualification_marker\": \"source12-inert-receiver-v1\",\n  \"method\": \"query_confucian_assembly_predicates_v1\",\n  \"arguments\": {\n    \"expected_revision\": 18446744073709551615\n  },\n  \"native_calls\": 0,\n  \"business_credit\": false\n}"
+          }
+        ],
+        "structuredContent": {
+          "qualification_only": true,
+          "qualification_marker": "source12-inert-receiver-v1",
+          "method": "query_confucian_assembly_predicates_v1",
+          "arguments": {
+            "expected_revision": 18446744073709551615
+          },
+          "native_calls": 0,
+          "business_credit": false
+        },
+        "isError": false,
+        "resultType": "complete"
+      },
+      "receiver": {
+        "method": "query_confucian_assembly_predicates_v1",
+        "arguments": {
+          "expected_revision": 18446744073709551615
+        }
+      },
+      "receiver_calls_for_this_positive": 1
+    },
+    {
+      "tool": "ck3_query_confucian_religious_title_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615
+      },
+      "sdk_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"qualification_only\": true,\n  \"qualification_marker\": \"source12-inert-receiver-v1\",\n  \"method\": \"query_confucian_religious_title_v1\",\n  \"arguments\": {\n    \"expected_revision\": 18446744073709551615\n  },\n  \"native_calls\": 0,\n  \"business_credit\": false\n}"
+          }
+        ],
+        "structuredContent": {
+          "qualification_only": true,
+          "qualification_marker": "source12-inert-receiver-v1",
+          "method": "query_confucian_religious_title_v1",
+          "arguments": {
+            "expected_revision": 18446744073709551615
+          },
+          "native_calls": 0,
+          "business_credit": false
+        },
+        "isError": false,
+        "resultType": "complete"
+      },
+      "receiver": {
+        "method": "query_confucian_religious_title_v1",
+        "arguments": {
+          "expected_revision": 18446744073709551615
+        }
+      },
+      "receiver_calls_for_this_positive": 1
+    },
+    {
+      "tool": "ck3_query_confucian_challenger_graph_v1",
+      "arguments": {
+        "expected_revision": 18446744073709551615,
+        "faith_full_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "sdk_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"qualification_only\": true,\n  \"qualification_marker\": \"source12-inert-receiver-v1\",\n  \"method\": \"query_confucian_challenger_graph_v1\",\n  \"arguments\": {\n    \"faith_full_ids\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      6,\n      7,\n      8\n    ],\n    \"expected_revision\": 18446744073709551615\n  },\n  \"native_calls\": 0,\n  \"business_credit\": false\n}"
+          }
+        ],
+        "structuredContent": {
+          "qualification_only": true,
+          "qualification_marker": "source12-inert-receiver-v1",
+          "method": "query_confucian_challenger_graph_v1",
+          "arguments": {
+            "faith_full_ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "expected_revision": 18446744073709551615
+          },
+          "native_calls": 0,
+          "business_credit": false
+        },
+        "isError": false,
+        "resultType": "complete"
+      },
+      "receiver": {
+        "method": "query_confucian_challenger_graph_v1",
+        "arguments": {
+          "faith_full_ids": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "expected_revision": 18446744073709551615
+        }
+      },
+      "receiver_calls_for_this_positive": 1
+    }
+  ],
+  "dispatch_blocker": null,
+  "receiver_is_inert_double": true,
+  "native_calls": 0,
+  "game_calls": 0
+}
