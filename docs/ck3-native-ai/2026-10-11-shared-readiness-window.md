@@ -8,4 +8,4 @@ R52 的完整存档绑定在公共 readiness timeout 之后 1.582638 秒完成�
 
 实际验证：7 项新边界检查，加 2 项直接受影响的既有合同检查均通过。后两项仅补齐 synthetic runtime/binding 字段和计时读取，不重跑其他矩阵；失败启动仍先保留真实句柄再拒绝业务，business budget 仍只接受 literal true。新 7 项已接入原静态 CI 的共享验收步骤。[实际回执与源码 LF pins](acceptance/2026-10-11-shared-readiness-window/INDEX.actual.json)。最初 Git patch check 因 CRLF context 拒绝，未应用；后继按精确源码 SHA 和单一归一化 hunk 采用。缺少测试文件的初次命令 exit2 原件保留，该次未执行测试。
 
-本包仅 STATIC_ONLY；没有启动 CK3、改变既有冻结 Source11/O11 或重验 R52。下一新场还须新 runtime/容量/public 准入。冷载耗时原因、统一 host/client 权威 deadline 和同轮观察批量提交仍待独立施工，本次不授速度改善或 I4 通过信用。
+本包仅 STATIC_ONLY；没有启动 CK3、改变既有冻结 Source11/O11 或重验 R52。下一新场还须精确 runtime 选择、新案例、容量及 public 准入；仅公共调用方改动不自动要求新导出或 native 构建。冷载耗时原因、统一 host/client 权威 deadline 和同轮观察批量提交仍待独立施工，本次不授速度改善或 I4 通过信用。

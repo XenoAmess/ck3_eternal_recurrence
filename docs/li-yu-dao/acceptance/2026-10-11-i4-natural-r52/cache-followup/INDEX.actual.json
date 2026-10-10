@@ -1,0 +1,37 @@
+{
+  "schema": "lyd-r52-explicit-cache-selection-followup-v1",
+  "at_utc": "2026-10-10T17:16:38.869522+00:00",
+  "records": [
+    {
+      "file": "selection-projection.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-selection-projection-20261011-001.actual.json",
+      "bytes": 5552,
+      "sha256": "445d6c2fba6e70edbfd89c37d1c5295d5ed26ab03db0de3d9ac779cc3cfeea97"
+    },
+    {
+      "file": "profile-projection.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-profile-projection-20261011-002.actual.json",
+      "bytes": 2082,
+      "sha256": "f6c3de02d5d476557e982ed315ea1530f12bea9389b34efac69fd62f470ef966"
+    },
+    {
+      "file": "parallel-addendum.actual.md",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-reuse-readonly-20261011-001\\ADDENDUM.actual.md",
+      "bytes": 1610,
+      "sha256": "3273eec9b10e2cd067b88d0e04c89025da7559120b49d030395382c596ccef88"
+    },
+    {
+      "file": "parallel-addendum-index.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-reuse-readonly-20261011-001\\INDEX.addendum.json",
+      "bytes": 887,
+      "sha256": "6dd172205120ebdee0c291723e212e6c9b7627f9d4224e63de7ef2102a4215fe"
+    }
+  ],
+  "runtime_feature_enabled": true,
+  "prepared_graphics_cache_present_R51_R52": false,
+  "CASE3_seed_input_present": false,
+  "cache_deleted_in_this_workpack": false,
+  "complete_origin_current_key_executed": false,
+  "seed_frozen_or_promoted": false,
+  "no_new_heavy_write_or_TTL_renewal": true
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "r52-cache-selection-root-notice-addendum-v1",
+  "evidence_source": "Parent ROOT actual projection and source-review message; no original reread",
+  "selection_projection": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r52-cache-selection-projection-20261011-001.actual.json",
+    "bytes": 5552,
+    "sha256": "445d6c2fba6e70edbfd89c37d1c5295d5ed26ab03db0de3d9ac779cc3cfeea97"
+  },
+  "profile_projection_ROOT_reference_only": "C:/workspace/ck3_lyd_runtime_20261004/r52-cache-profile-projection-20261011-002.actual.json",
+  "addendum": "ADDENDUM.actual.md",
+  "actual_seed_selected_R51_R52": false,
+  "reuse_feature_R51_R52": true,
+  "administrative_RED_closure_gate_alone_forbids": false,
+  "complete_origin_current_key_qualified": null,
+  "promotion_executed": false,
+  "new_original_reads": 0,
+  "MAIN_runtime_cache_actions": 0,
+  "old_deadlines_renewed": false
+}

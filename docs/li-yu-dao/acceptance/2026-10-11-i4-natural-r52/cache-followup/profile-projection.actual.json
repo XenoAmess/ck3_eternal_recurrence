@@ -1,0 +1,70 @@
+[
+  {
+    "source": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\prepared-case.json",
+      "bytes": 34070,
+      "sha256": "07759323ecaae843b72c1f1b45e26345f9da60de67bb5a234fbe1e478d44a654"
+    },
+    "profile_preparation": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\profile-preparation.json",
+      "bytes": 29924,
+      "sha256": "6d99f3f8d90b6d76cfbd23dd325a2ab78ebedd8095f2ae1670a390008e4d4ce9"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\prepared\\prepared-case.json",
+      "bytes": 34070,
+      "sha256": "4650439705d02e453cb76b3ebeed3a1f9c77f070f3f82cf2fef0451b5c0b5521"
+    },
+    "profile_preparation": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\prepared\\profile-preparation.json",
+      "bytes": 29924,
+      "sha256": "773a8e9407c1581dcd23a369f8a01775822bec2147223c332f913e9b3379c4c9"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\runtime.local.json",
+      "bytes": 2016,
+      "sha256": "a94896227c9e63d716e3169ed6fec73a9c90646ca50dd5346ca14532dee15484"
+    },
+    "keys": [
+      "schema",
+      "manifest",
+      "python",
+      "repo_root",
+      "game_dir",
+      "userdir_root",
+      "artifacts_root",
+      "paths",
+      "reviewed_launcher",
+      "control_queue",
+      "allocation",
+      "qualification"
+    ],
+    "graphics_cache": null
+  },
+  {
+    "source": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\runtime.local.json",
+      "bytes": 2018,
+      "sha256": "fdd544259d250ecc3e9c961903f191b5f1ef1da7fb5217dbd62f65d13bd8c557"
+    },
+    "keys": [
+      "schema",
+      "manifest",
+      "python",
+      "repo_root",
+      "game_dir",
+      "userdir_root",
+      "artifacts_root",
+      "paths",
+      "reviewed_launcher",
+      "control_queue",
+      "allocation",
+      "qualification"
+    ],
+    "graphics_cache": null
+  }
+]

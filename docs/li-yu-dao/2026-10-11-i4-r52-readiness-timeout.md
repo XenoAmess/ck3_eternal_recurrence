@@ -19,7 +19,7 @@ R0052 的公共 run/verify 均实际 exit 2，首次业务步骤之前超时，0
 
 下一源码工作包补公共等待的实际起点、截止和终态回执，保持既有 900 秒上限，不重启旧窗口、不接受截止后的业务资格。统一权威 deadline 的行为调整另需明确合同与验证；本场不追认通过。
 
-01:06 CST 后续实际更新：[共享就绪窗口回执](../ck3-native-ai/2026-10-11-shared-readiness-window.md)已采用，7 项新增边界检查与 2 项直接受影响的既有检查实际通过。既有 Source11/O11 保持冻结历史，本场未重跑；下一场仍需新准入。
+01:06 CST 后续实际更新：[共享就绪窗口回执](../ck3-native-ai/2026-10-11-shared-readiness-window.md)已采用，7 项新增边界检查与 2 项直接受影响的既有检查实际通过。既有 Source11/O11 保持冻结历史，本场未重跑；下一场仍需新案例、容量及公共准入。只改公共调用方不自动要求复制新的 source/native；是否直接复用 O11 须按精确公共绑定核验。
 
 ## 实际行政收尾
 
@@ -36,3 +36,13 @@ Root 使用现有正常 Quit API，在独立 `administrative-close-001` 保留�
 R51 的精确耗时分解见[原分析](acceptance/2026-10-11-i4-natural-r52/r51-six-days-duration-report.actual.md)：公共 run 开始至首个业务 snapshot 为 **858.385525 秒**；首个 snapshot 至第六日后 snapshot 为 **280.792360 秒**。六次自然推进的 host body 合计 **28.658156 秒**，35 个 host step body 合计 **48.139512 秒**，step 间隙合计 **232.652848 秒**。重复提交边界占明显等待，但子进程、pin 校验及任务总线各自占比未计时，不作归因。把三个同轮只读观察合成有序 plan 仍只是建议，尚未实现或验收。
 
 正式 B4/B5/C3 的依赖复核见[原分析](acceptance/2026-10-11-i4-natural-r52/formal-next-case-readonly-report.actual.md)。当前 O11 没有 G2/G4 对应 MCP 注册及 capability 声明，不能只补 metadata 启用；B4 holder 漂移的生产根因仍 UNKNOWN，不能无差别重复原工厂实验。B5 公共 adapter 可独立施工，但必须先绑定实际 B4 PASS 的新 SAVE88、同一个动态 T 与正常闭场，再作零工厂冷重载。C3 继续依赖同一个真实 T 与有效 challenger/sponsor 图。本轮没有给这些正式业务增加通过信用。
+
+## 缓存选择追查（本场之后）
+
+[实际小型投影与补录](acceptance/2026-10-11-i4-natural-r52/cache-followup/INDEX.actual.json)证明 O10/O11 的 `profile_features.shader_cache_reuse=true`，但 R51/CASE2 与 R52/CASE3 的 prepared 均没有 `graphics_cache`，CASE3 输入没有 `shader_cache_seed`。公共 prepare 仅在明确选择 seed 时注入缓存。因此本场开启了能力许可、没有选择缓存输入；不能据此推断缓存被删除或发生了一次 key 拒绝。
+
+缓存 `_origin` 要求原 frozen/prepared/runtime/native/host-start/host-exit/keeper/release 八份精确来源、实际闭场与释放、启动前业务快照和完整 runtime/profile key。它消费的 `previous_session_closure` 在完整 managed/native 清理成立时不额外要求公共业务 PASS 或 normal-close 字段；行政闭场 RED 并不被这一单项禁止。完整 origin/current key 尚未运行，R51/R52 是否实际能作为 seed 仍未验。
+
+下一场前先核实保留期内 R52 缓存与精确来源，制定有界 key 验证及新 seed 容量准入；禁止只因旧 attempt 业务 RED 就跳过可复用缓存，也不能放宽 key 或复制整个用户目录。现 key 消费源码/native 索引摘要并校验必要宿主、native 与 EXE 字节，已有原件重复读成本应先审阅再执行。本轮没有扫描缓存树、freeze/promotion、缓存复制或 TTL 续期，不能承诺冷载速度已改善。
+
+B5 外置源码候选已封存，尚未采用或执行测试。Root 审阅发现其独立 saved Title 四属性/law95 资格可能 UNKNOWN；已要求此时 B5 必须 false，不能用 native 与 saved Faith/T/holder join 冒充独立保存字段资格。正式源绑定补齐后才接入公共 registry。

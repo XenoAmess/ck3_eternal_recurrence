@@ -1,0 +1,202 @@
+{
+  "records": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\prepared-case.json",
+        "bytes": 34070,
+        "sha256": "07759323ecaae843b72c1f1b45e26345f9da60de67bb5a234fbe1e478d44a654"
+      },
+      "keys": [
+        "schema",
+        "product",
+        "case",
+        "runtime_manifest",
+        "case_inputs",
+        "startup",
+        "initial_plan",
+        "adapter",
+        "contract",
+        "preparation",
+        "runtime_status",
+        "business_acceptance"
+      ],
+      "graphics_cache_present": false,
+      "graphics_cache": null,
+      "preparation_keys": [
+        "startup",
+        "initial_plan",
+        "profile_preparation",
+        "startup_evidence",
+        "files",
+        "runtime_status",
+        "business_contract_applicable",
+        "business_pass",
+        "product_release_pass"
+      ],
+      "preparation_scalars": {
+        "runtime_status": "NOT_RUN",
+        "business_contract_applicable": true,
+        "business_pass": false,
+        "product_release_pass": false
+      },
+      "profile_keys": [],
+      "profile_scalars": {},
+      "preparation_graphics_fields": {},
+      "top_source_refs": {
+        "runtime_manifest": {
+          "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+          "bytes": 6830,
+          "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+        },
+        "manifest": null,
+        "source": null,
+        "source_root": null,
+        "runtime": null
+      },
+      "profile_features": null
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\prepared\\prepared-case.json",
+        "bytes": 34070,
+        "sha256": "4650439705d02e453cb76b3ebeed3a1f9c77f070f3f82cf2fef0451b5c0b5521"
+      },
+      "keys": [
+        "schema",
+        "product",
+        "case",
+        "runtime_manifest",
+        "case_inputs",
+        "startup",
+        "initial_plan",
+        "adapter",
+        "contract",
+        "preparation",
+        "runtime_status",
+        "business_acceptance"
+      ],
+      "graphics_cache_present": false,
+      "graphics_cache": null,
+      "preparation_keys": [
+        "startup",
+        "initial_plan",
+        "profile_preparation",
+        "startup_evidence",
+        "files",
+        "runtime_status",
+        "business_contract_applicable",
+        "business_pass",
+        "product_release_pass"
+      ],
+      "preparation_scalars": {
+        "runtime_status": "NOT_RUN",
+        "business_contract_applicable": true,
+        "business_pass": false,
+        "product_release_pass": false
+      },
+      "profile_keys": [],
+      "profile_scalars": {},
+      "preparation_graphics_fields": {},
+      "top_source_refs": {
+        "runtime_manifest": {
+          "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\manifest.json",
+          "bytes": 6830,
+          "sha256": "891259cc3ce6b4de689a43bd9ce36dacb4a2a57285d5fb9b89993e71bbdbf4b9"
+        },
+        "manifest": null,
+        "source": null,
+        "source_root": null,
+        "runtime": null
+      },
+      "profile_features": null
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+        "bytes": 6830,
+        "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+      },
+      "keys": [
+        "schema",
+        "runtime_id",
+        "source_root",
+        "host",
+        "source_index",
+        "native_source_index",
+        "native",
+        "game",
+        "host_features",
+        "entry_environment",
+        "capabilities",
+        "provenance",
+        "selection_policy",
+        "qualification",
+        "profile_features"
+      ],
+      "graphics_cache_present": false,
+      "graphics_cache": null,
+      "preparation_keys": [],
+      "preparation_scalars": {},
+      "profile_keys": [],
+      "profile_scalars": {},
+      "preparation_graphics_fields": {},
+      "top_source_refs": {
+        "runtime_manifest": null,
+        "manifest": null,
+        "source": null,
+        "source_root": {
+          "path_key": "source_root"
+        },
+        "runtime": null
+      },
+      "profile_features": {
+        "shader_cache_reuse": true
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\manifest.json",
+        "bytes": 6830,
+        "sha256": "891259cc3ce6b4de689a43bd9ce36dacb4a2a57285d5fb9b89993e71bbdbf4b9"
+      },
+      "keys": [
+        "schema",
+        "runtime_id",
+        "source_root",
+        "host",
+        "source_index",
+        "native_source_index",
+        "native",
+        "game",
+        "host_features",
+        "entry_environment",
+        "capabilities",
+        "provenance",
+        "selection_policy",
+        "qualification",
+        "profile_features"
+      ],
+      "graphics_cache_present": false,
+      "graphics_cache": null,
+      "preparation_keys": [],
+      "preparation_scalars": {},
+      "profile_keys": [],
+      "profile_scalars": {},
+      "preparation_graphics_fields": {},
+      "top_source_refs": {
+        "runtime_manifest": null,
+        "manifest": null,
+        "source": null,
+        "source_root": {
+          "path_key": "source_root"
+        },
+        "runtime": null
+      },
+      "profile_features": {
+        "shader_cache_reuse": true
+      }
+    }
+  ],
+  "file_bodies_only_small_metadata": true,
+  "cache_body_or_tree_read": false
+}
