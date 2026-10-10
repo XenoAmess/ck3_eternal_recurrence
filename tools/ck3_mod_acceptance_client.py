@@ -173,24 +173,65 @@ class CaseClient:
     def wait_hold(self):
         preparation = (self.selection.prepared or {}).get('preparation', {})
         budget = 'timeout' if preparation.get('initial_plan_original_business') is True else 'readiness_timeout'
-        limit = time.monotonic() + self.selection.case['budgets'][budget]
+        started = time.monotonic()
+        started_utc = datetime.now(timezone.utc)
+        seconds = self.selection.case['budgets'][budget]
+        limit = started + seconds
         self._readiness_limit = limit
-        while time.monotonic() < limit:
-            try:
-                report = self.read_report(allow_error=True)
-            except FileNotFoundError:
-                time.sleep(.1); continue
-            # A failed original startup can already own a real held process.
-            # Retain it before the unchanged business-error gate rejects entry.
-            self.retain_held_process(report)
-            report = self.read_report()
-            require(not report.get('finished_at'), 'Shared host ended before case entry')
-            if report.get('phase') == 'hold' and all(row.get('finished_at') for row in report.get('steps', [])):
-                self.guard()
-                self.retain_process()
-                return report
-            time.sleep(.1)
-        raise TimeoutError('Original case readiness budget elapsed')
+        binding = {'run_id': self.frozen['run_id'], 'screen_task': self.frozen['screen_task'],
+            'live': str(self.live.resolve()), 'state_dir': str(self.state.resolve()),
+            'frozen_argv': self.context['frozen_argv'],
+            'runtime_manifest': self.selection.runtime['manifest']}
+        write_once(self.output / 'readiness-window.json', {
+            'schema': 'ck3-mod-acceptance-readiness-window-v1', 'binding': binding,
+            'budget_name': budget, 'budget_seconds': seconds,
+            'started_at_utc': started_utc.isoformat(), 'started_monotonic': started,
+            'deadline_monotonic': limit,
+            'deadline_at_utc_estimated': datetime.fromtimestamp(started_utc.timestamp() + seconds, timezone.utc).isoformat(),
+            'utc_deadline_is_estimate': True, 'new_wait_or_replay': False, 'business_pass': False})
+        report = None
+
+        def record(status, observed, error=None):
+            value = report if isinstance(report, dict) else {}
+            restore = value.get('saved_campaign_restore')
+            restore = restore if isinstance(restore, dict) else {}
+            write_once(self.output / 'readiness-window-result.json', {
+                'schema': 'ck3-mod-acceptance-readiness-window-result-v1', 'binding': binding,
+                'status': status, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+                'observed_monotonic': observed, 'elapsed_seconds': observed - started,
+                'deadline_monotonic': limit, 'within_original_deadline': observed < limit,
+                'host_phase': value.get('phase'), 'host_started_at': value.get('started_at'),
+                'host_finished_at': value.get('finished_at'),
+                'restore_status': restore.get('status'), 'restore_finished_at': restore.get('finished_at'),
+                'hold_until_utc_estimated': value.get('hold_until_utc_estimated'),
+                'error': type(error).__name__ + ': ' + str(error) if error is not None else None,
+                'new_wait_or_replay': False, 'business_pass': False})
+
+        try:
+            while time.monotonic() < limit:
+                try:
+                    report = self.read_report(allow_error=True)
+                except FileNotFoundError:
+                    time.sleep(.1); continue
+                # A failed original startup can already own a real held process.
+                # Retain it before the unchanged business-error gate rejects entry.
+                self.retain_held_process(report)
+                report = self.read_report()
+                require(not report.get('finished_at'), 'Shared host ended before case entry')
+                if report.get('phase') == 'hold' and all(row.get('finished_at') for row in report.get('steps', [])):
+                    self.guard()
+                    self.retain_process()
+                    observed = time.monotonic()
+                    if observed >= limit:
+                        break
+                    record('READINESS_HOLD_OBSERVED', observed)
+                    return report
+                time.sleep(.1)
+            raise TimeoutError('Original case readiness budget elapsed')
+        except BaseException as error:
+            record('READINESS_TIMEOUT' if isinstance(error, TimeoutError) else 'READINESS_ERROR',
+                   time.monotonic(), error)
+            raise
 
     def retain_held_process(self, report=None, *, wait=False):
         """Retain only an actual allocated hold; never manufacture a launch."""

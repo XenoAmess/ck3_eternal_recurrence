@@ -1,0 +1,6 @@
+test_failed_startup_retains_actual_control_handle_before_business_rejection (__main__.OperatorQuitTests.test_failed_startup_retains_actual_control_handle_before_business_rejection) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.214s
+
+OK

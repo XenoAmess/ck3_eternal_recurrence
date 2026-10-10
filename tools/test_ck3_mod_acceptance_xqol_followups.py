@@ -137,10 +137,14 @@ class OriginalCases(unittest.TestCase):
         path=options.client_source or options.support_repo/'tools/ck3_mod_acceptance_client.py'
         spec=importlib.util.spec_from_file_location('_original_wait_client',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
         for declared,success in [(True,True),(False,False),(1,False),(None,False)]:
-            with self.subTest(declared=declared):
+            with self.subTest(declared=declared), tempfile.TemporaryDirectory() as directory:
                 client=object.__new__(module.CaseClient)
+                client.output=Path(directory);client.live=client.output/'synthetic-run';client.state=client.output/'synthetic-state'
+                client.frozen={'run_id':'synthetic-run','screen_task':'synthetic-screen'}
+                client.context={'frozen_argv':{'path':'synthetic-frozen','bytes':1,'sha256':'d'*64}}
                 client.selection=types.SimpleNamespace(prepared={'preparation':{'initial_plan_original_business':declared}},
-                    case={'budgets':{'readiness_timeout':400,'timeout':4500}})
+                    case={'budgets':{'readiness_timeout':400,'timeout':4500}},
+                    runtime={'manifest':{'path':'synthetic-manifest','bytes':1,'sha256':'e'*64}})
                 reports=iter([{'phase':'initial-plan','steps':[]},{'phase':'hold','steps':[{'finished_at':'actual'}]}])
                 current_report=None
                 def read_report(allow_error=False):
@@ -149,7 +153,7 @@ class OriginalCases(unittest.TestCase):
                     return current_report
                 client.read_report=read_report;client.guard=lambda:None;client.retain_process=lambda:None
                 client.retain_held_process=lambda report:False
-                with patch.object(module.time,'monotonic',side_effect=[0,1,401]),patch.object(module.time,'sleep'):
+                with patch.object(module.time,'monotonic',side_effect=[0,1,401,402]),patch.object(module.time,'sleep'):
                     if success:self.assertEqual(client.wait_hold()['phase'],'hold')
                     else:
                         with self.assertRaises(TimeoutError):client.wait_hold()

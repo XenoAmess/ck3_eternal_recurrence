@@ -259,6 +259,7 @@ class OperatorQuitTests(unittest.TestCase):
             client.selection.manifest_path_key=lambda row:HOST if row['kind']=='host' else root/'shared-source'
             client.selection.case['budgets']={'timeout':1,'readiness_timeout':1,'hold_seconds':600}
             client.selection.prepared={}
+            client.selection.runtime={'manifest':{'path':'synthetic-manifest','bytes':1,'sha256':'a'*64}}
             client.report_path=root/'native-report.json';client._report=None;client._report_stat=None
             report.update(state_dir=str(client.state),agent_source_root=str(root/'shared-source'),
                 error='SYNTHETIC ORIGINAL STARTUP FAILURE',status='RED',finished_at=None,hold_until_utc_estimated=1000)
@@ -275,6 +276,7 @@ class OperatorQuitTests(unittest.TestCase):
             self.assertEqual(client._process['pid'],2468)
             self.assertEqual(client._process['create_time'],123.5)
             self.assertEqual(client.read_report(allow_error=True)['error'],'SYNTHETIC ORIGINAL STARTUP FAILURE')
+            self.assertEqual(self.module.read_json(client.output/'readiness-window-result.json')['status'],'READINESS_ERROR')
             self.assertIsNone(client.native_zero_proof(report))
             kernel.OpenProcess.assert_called_once_with(0x100000|0x1000,False,2468)
             client.close_handle()

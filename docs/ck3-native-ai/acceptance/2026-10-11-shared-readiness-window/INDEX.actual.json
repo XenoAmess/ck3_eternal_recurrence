@@ -1,0 +1,86 @@
+{
+  "schema": "shared-readiness-window-focused-qualification-v1",
+  "at_utc": "2026-10-10T17:07:23.235779+00:00",
+  "records": [
+    {
+      "file": "boundary-seven-RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-diagnostics-focused-20261011-002\\RESULT.actual.json",
+      "bytes": 876,
+      "sha256": "62a8df6148c40ba82ec00f1729f0dab9bdd581d54628a7c05c66fb2bb61c3ae5"
+    },
+    {
+      "file": "boundary-seven-stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-diagnostics-focused-20261011-002\\stderr.log",
+      "bytes": 110,
+      "sha256": "b9218657e13c7dda640f1e89ae16a6d8d265ccae78b8209564ab4c5a51918e02"
+    },
+    {
+      "file": "startup-error-retains-handle-RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-operator-compat-20261011-001\\RESULT.actual.json",
+      "bytes": 966,
+      "sha256": "fce4f4615af196b608cde826b19bc98d4e60b6b891b9744fc178ad7a38a9fd22"
+    },
+    {
+      "file": "startup-error-retains-handle-stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-operator-compat-20261011-001\\stderr.log",
+      "bytes": 291,
+      "sha256": "42c6fd5c05c16ad7f1169539e9e695aa8b87186a0b814d6938e5813bd0361a0b"
+    },
+    {
+      "file": "literal-business-budget-RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-business-budget-compat-20261011-001\\RESULT.actual.json",
+      "bytes": 970,
+      "sha256": "e3c778c71ce4b7091777872495ef487bb710be97d9958807461f1b099868f902"
+    },
+    {
+      "file": "literal-business-budget-stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-business-budget-compat-20261011-001\\stderr.log",
+      "bytes": 103,
+      "sha256": "2f983e0f4b81c919fc684d72f65cd78141de0fccbb7ecaec8227af33ed0e5db1"
+    },
+    {
+      "file": "initial-missing-test-preserved-RESULT.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-diagnostics-focused-20261011-001\\RESULT.actual.json",
+      "bytes": 876,
+      "sha256": "abf119c2df3e4e9b0f4b182fb21b907b3549e8042c07d973fe53b0267e00bd8a"
+    },
+    {
+      "file": "initial-missing-test-preserved-stderr.log",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-readiness-diagnostics-focused-20261011-001\\stderr.log",
+      "bytes": 221,
+      "sha256": "04538ebc5ce4c143488a615423589f76cb482ff71a401df4b3ed9c9541fa16b8"
+    }
+  ],
+  "source_normalized_pins": [
+    {
+      "path": "tools/ck3_mod_acceptance_client.py",
+      "normalized_LF_sha256": "f6a3a3452e8383015b1fa298b4e76b767528a665e6812da7d85a83a85e83a89f"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_readiness_window.py",
+      "normalized_LF_sha256": "92187ba1abb00e21e970bb7e2b2d95c078c0cfc8d76127fd8183c42268bb0adf"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_operator_quit.py",
+      "normalized_LF_sha256": "b80e6fc26dde40ef5bd4ee0ed7da4fca92fdacaf9c67f231c0bce7e07aa43b9d"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_xqol_followups.py",
+      "normalized_LF_sha256": "8eb659eef7c99eff00f2207757cbb886ebda4a60bb91f73f0b96f329c977bc90"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "normalized_LF_sha256": "41110c9ae4868501d450c7a99b4a0b063b1e6959b6136cbfac78f70580ffd26b"
+    }
+  ],
+  "new_boundary_checks": 7,
+  "directly_affected_existing_checks": 2,
+  "actual_pass_executions": 3,
+  "CK3_launched": false,
+  "R52_requalified": false,
+  "old_timeout_or_start_extended": false,
+  "earlier_git_apply_check_failed_on_CRLF_context": true,
+  "missing_test_execution_did_not_execute_tests": true,
+  "qualification": "STATIC_ONLY",
+  "live_result": "NOT_RUN"
+}
