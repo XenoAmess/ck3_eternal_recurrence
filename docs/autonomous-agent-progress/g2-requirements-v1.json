@@ -188,9 +188,9 @@
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one useful legal council adjustment and one real vassal or faction intervention",
-      "open_blocker": "Actual useful vacant-Steward appointment44fa at53286144 and four real construction starts at53288568/53288616/53288640/53288952 fall within the proposed two-year interval53286144..53303664. R93 cold material confirms the same construction tuples applied/in_progress and Steward32440 performing task_collect_taxes. The owner has not yet recorded interval selection at the actual current snapshot date. Current material collector lacks the archived44fa compact-summary input; a minimal source port is in progress. Current council formal ledger describes older d660 outside the interval: do not transfer its formal next/cold flags to44fa. One new useful vassal/faction intervention in the same selected interval remains. M4 requires visible construction start/material, not completed-building ROI or full Sway terminal attribution; NW-ECON realized benefit remains separate.",
+      "open_blocker": "Actual useful44fa Steward appointment and four real construction starts have retained material within proposed53286144..53303664. The exact33c09 Council compact join is restored and one NEW14-check static FIRST passed with a declared synthetic window; actual selection/collection awaits a qualified current paused snapshot. No oldd660 formal next/cold flags transfer to44fa. One new useful vassal/faction intervention remains. Current MCP configuration does not expose the existing CLI gift formal-trial/round options; minimal forwarding is in progress. R94 first COREwait expired before recorded game load completion; after-load sameGame qualification is authorized. M4 visible start/material does not require completed-building ROI or full Sway terminal.",
       "current_material_window": {
-        "stage": "actual_construction_and_later_council_material_selection_and_collector_pending",
+        "stage": "actual_material_and_static_collector_ready_current_selection_pending",
         "start_date_raw": 53286144,
         "end_date_raw": 53303664,
         "duration_raw_hours": 17520,
@@ -208,14 +208,14 @@
         "council_compact": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/council-steward-actual-gen2-01/ROOT-DELIVERY.json",
         "collector_source_commit": "33c09c8fc178bcb09e0b5e1c34beb4dbb603c6d2",
         "collector_cli_argument": "--council-material-summary-json",
-        "collector_execution": "not_run",
+        "collector_execution": "new_static_first_green_actual_operator_collection_not_run",
         "remaining_materials": [
-          "owner interval selection recorded at the actual current snapshot date",
-          "collector archived council compact-summary join preserving formal receipt boundaries",
+          "owner interval selection recorded at the actual current qualified snapshot date",
           "new useful vassal or faction intervention in the selected interval"
         ],
         "packet": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-m4-material-preparation/ROOT-DELIVERY.json",
-        "milestone_credit_written": false
+        "milestone_credit_written": false,
+        "collector_static_first": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-03e\\m4-material-council-join01\\targeted-first01\\RESULT.json"
       }
     },
     {
@@ -354,7 +354,7 @@
         "saved_frame_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/save-actual-day-after-observer-red01/ROOT-ACTUAL-DAY-SAVE-RESULT.json",
         "complete_recovery_input_packet": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json",
         "closed_result": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/ROOT-RUNTIME93-CLOSED-RESULT.json",
-        "r94_stage": "full12_recovery_in_progress_not_cold_live",
+        "r94_stage": "first_CORE_timeout_before_load_completion_after_load_sameGame_qualification_in_progress",
         "r94_native_and_sdk_source": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
         "local_game_work_authorized": true,
         "vacation_handoff_current": false,

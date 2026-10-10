@@ -52,11 +52,14 @@ def collect_m4_materials_v1(
     sway: Mapping[str, object] | None = None,
     campaign_root: Mapping[str, object] | None = None,
     faction_receipts: Sequence[Mapping[str, object]] = (),
+    council_material_summaries: Sequence[Mapping[str, object]] = (),
 ) -> list[dict[str, object]]:
     """Project small existing ledgers and complete faction receipt sidecars.
 
     Sway's resolved ledger has no episode field. Its binding is the supplied
     restored-state episode; its original full-instance material remains intact.
+    Optional council Root summaries retain their original action/material frame
+    and source build without writing a formal ledger or milestone credit.
     """
     rows: list[dict[str, object]] = []
 
@@ -105,6 +108,46 @@ def collect_m4_materials_v1(
                position_key=receipt.get("position_key"),
                next_turn_consumed_observed=applied.get("next_turn_consumed"),
                following_date_raw=applied.get("next_turn_date_raw"))
+
+    for summary in council_material_summaries:
+        actual = _object(summary.get("actual"))
+        if (summary.get("schema") != "xar.root-delivery/v1"
+                or actual.get("episode_run_id") != episode_run_id):
+            continue
+        readiness = _object(summary.get("readiness"))
+        candidate = actual.get("selected_candidate")
+        verified = (readiness.get("once_typed_assignment") is True
+                    and readiness.get("independent_applied_incumbent_receipt") is True
+                    and readiness.get("independent_incumbent_and_main_skill_composition") is True
+                    and actual.get("receipt_status") == "applied"
+                    and actual.get("postcondition_verified") is True
+                    and actual.get("owner_character_id") == actor_character_id
+                    and type(candidate) is int and candidate > 0
+                    and actual.get("incumbent_character_id") == candidate
+                    and actual.get("incumbent_identity_round_trip") is True
+                    and actual.get("independent_composition_vacant") is False)
+        # This compact records the original action/material frame, not a new
+        # assignment or a synthesized formal-consumer ledger entry.
+        append("council", actual.get("action_request_id"), actual.get("date_raw"),
+               actual.get("date_raw"), verified, "direct_registered_council_root_delivery_summary",
+               position_key=actual.get("position_key"),
+               next_turn_consumed_observed=readiness.get("formal_consumer_next_turn_consumed"),
+               following_date_raw=None,
+               source_provenance={
+                   "summary_schema": summary.get("schema"),
+                   "frozen_source": actual.get("frozen_source"),
+                   "executable_version": actual.get("executable_version"),
+                   "executable_sha256": actual.get("executable_sha256"),
+                   "dll_v73_sha256": actual.get("dll_v73_sha256"),
+                   "route": actual.get("route"),
+                   "incumbent_character_id": actual.get("incumbent_character_id"),
+                   "selected_stewardship": actual.get("selected_stewardship"),
+                   "post_native_revision": actual.get("post_native_revision"),
+                   "receipt_query_sequence": actual.get("receipt_query_sequence"),
+                   "independent_composition_query_sequence": actual.get("independent_composition_query_sequence"),
+                   "new_pid_holder_32440_restoration": readiness.get("new_pid_holder_32440_restoration"),
+                   "source_artifacts": summary.get("artifacts"),
+               })
 
     resolved = _object(_object(sway).get("resolved"))
     material = _object(resolved.get("material_intervention"))

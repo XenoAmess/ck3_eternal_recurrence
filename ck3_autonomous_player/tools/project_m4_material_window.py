@@ -34,6 +34,7 @@ def main() -> int:
     parser.add_argument("--end-date-raw", type=int)
     parser.add_argument("--campaign-root-json", type=Path)
     parser.add_argument("--faction-receipt-json", type=Path, action="append", default=[])
+    parser.add_argument("--council-material-summary-json", type=Path, action="append", default=[])
     args = parser.parse_args()
     sys.path.insert(0, str(args.source_root / "ck3_autonomous_player" / "src"))
     from xar_autoplayer.m4_material_window_v1 import (
@@ -66,12 +67,14 @@ def main() -> int:
         sway=read_object(args.state_dir / "active-scheme-sway-formal-private-v1.json"),
         campaign_root=root,
         faction_receipts=[read_object(path) for path in args.faction_receipt_json],
+        council_material_summaries=[read_object(path) for path in args.council_material_summary_json],
     )
     result = project_m4_window_progress_v1(window, materials)
     result["input_paths"] = {
         "window_ledger": str(args.window_ledger), "state_dir": str(args.state_dir),
         "campaign_root": str(args.campaign_root_json) if args.campaign_root_json else None,
         "faction_receipts": [str(path) for path in args.faction_receipt_json],
+        "council_material_summaries": [str(path) for path in args.council_material_summary_json],
     }
     write_object(args.output, result)
     print(json.dumps({"status": "observed", "output": str(args.output),
