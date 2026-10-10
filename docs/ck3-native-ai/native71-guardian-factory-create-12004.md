@@ -233,3 +233,120 @@ Evidence is retained under the same 26 source root at
 `ORIGINAL-RECEIVER-CONTROL-DOMAIN-ADDENDUM.json`.
 The paired R93 raw +18 binding remains unchanged. This source continuation
 establishes no relation truth, pair direction, current object or method role.
+
+### Native77 R93 finite-prefix source closure (2026-10-11)
+
+The previously unknown `48C5CB0` seed target now resolves to the retained
+`8522C0` entry. The final field in the selected 64B primary prefix also has
+closed source; the two entries have different raw-register contracts.
+Offsets below are hexadecimal.
+
+| Source static field | Target / own bytes | Defined raw output | Input or receiver reads |
+| --- | --- | --- | --- |
+| Primary +30 / 48C5CB0 | 8522C0 / 3B `RET imm16(0)` | No RAX or AL assignment | None |
+| Primary +38 / 48C5CB8 | D943E0 / 6B `MOV EAX,1; RET` | All 64 RAX bits equal 1 | None |
+
+At `372D0D9`, the caller ignores the first entry's returned register. Its
+input+E8 DWORD is forwarded but not consumed by this seed target. The target
+association remains conditional on the fresh post-`3F832A0` vptr matching
+the source-written primary vptr. The second entry has no established
+virtual caller or method role. Neither source return is a guardian truth
+value, and no method invocation or physical returned object was observed.
+
+```mermaid
+flowchart LR
+  V["source primary VT 48C5C80"] --> N["+30 -> 8522C0 / no RAX definition"]
+  V --> K["+38 -> D943E0 / raw RAX64 = 1"]
+  I["paired factory+18 QWORD -> would-be receiver+E8"] -.-> U["read/forward consumer remains unclosed"]
+```
+
+The retained 26 contracts are
+`primary-vptr-fields32-48-source01/method372ce00-source01/virtual30-field48c5cb0-source01/SOURCE-REUSE-CONTRACT.json`
+and
+`primary-prefix-field48c5cb8-source01/target-d943e0-source01/SOURCE-BRANCH-CONTRACT.json`
+under the same source root. The 25 source-map addendum is
+`VIRTUAL30-FIELD-SOURCE-REUSE.json`. All selected prefix entries now have
+source inspection; this bounds the inspected prefix, not the whole native
+relation path. Paired R93 raw inputs, their query binding and the existing
+strict API remain unchanged, with no relationship or G2 outcome credit.
+
+### Native78 R94 raw inputs and direct +E8 source consumer (2026-10-11)
+
+The preceding dashed consumer was the boundary at that source stage.
+The retained mandatory C8 method now supplies a concrete continuation:
+`42178E4` reads the original receiver's +E8 QWORD and `42178F1` passes
+it in RDX to `2596930`, with R8D=0. The 373B C8 method's own CFG is
+closed. This progresses the source path; it records no method invocation
+or current relationship result.
+
+The newer R94 observation is an independent same-query binding:
+`family-relation-d273e75189184ea4980002c59ef9d11f`, PID 45424,
+native revision 2, date raw 53290152, played 29829, first heir 38822.
+Both records are available and qualified. These record IDs and address
+bits differ from R93 and remain query data.
+
+| Fixed lookup key | R94 name/map/record ID and +10 DWORD | R94 +18 QWORD |
+| --- | --- | --- |
+| has_relation_guardian | 21819 | 2076974881960 |
+| has_relation_ward | 21824 | 2076974883680 |
+
+Both raw +18 values lie outside the admitted executable image. Their
+pointee type, contents, lifetime and callability are not inferred. The
+same admitted executable SHA/RVA permits reuse of the static source for
+both keys and both frames; it does not mix their live inputs.
+
+The minimal source dataflow is resolved input root -> selected target
+full DWORD -> root+1B0 lookup -> returned record -> named raw +18 match.
+The root storage transcription is corrected to `5C67568/5C67570` by
+the immutable 26 correction; the earlier parent contract is retained.
+Root and selected target +1D0 gates and full-generation resolver checks
+remain part of the parent source. RCX/R9 provenance does not prove
+physical pointer inequality.
+
+| Source component | Closed source behavior |
+| --- | --- |
+| A03A30 / 131B | Selects a full-DWORD target through the retained expression provider and full-generation resolver; dynamic positive-provider output remains conditional. |
+| 2949A80 / 138B | Read-only 16B record search by full target DWORD; returns a raw QWORD. Zero count returns zero. Sortedness and valid signed-count domain are explicit inputs. |
+| 2596930 / 159B | Reads returned-record +20 QWORD/+2C signed DWORD, visits 40B entries and selects predicate 25942B0 for entry R8D=0. Normal output defines all RAX bits as 0 or 1. |
+| 25942B0 / 92 reachable bytes | No calls or stores. Compares entry QWORD to raw18, then, if needed, scans stored-pointer +220 QWORD/+22C signed DWORD in 16B rows. BYTE row+C==2 selects row QWORD; other values select the reached fallback QWORD at 5D1EBF8. |
+
+The predicate never dereferences wanted raw18. Direct equality also
+allows raw0==raw0. A zero inner count skips the fallback and row reads.
+Negative counts are not clamped by either primitive; unsupported guarded
+domains remain unavailable. The predicate's true path defines low AL=1,
+with upper RAX bits unnormalized; the outer 159B function consumes AL
+and supplies the full-width normalized result.
+
+```mermaid
+flowchart LR
+  F["same-query key / factory+18 raw Q64"] -. "initial source copy only" .-> E["would-be receiver+E8"]
+  W["372E640 source CALL / R8B=1"] --> G["retained 372E000 / mandatory C8"]
+  G --> C["4217820 / source 373B"]
+  C --> T["A03A30 / selected target full DWORD"]
+  T -.-> P["dynamic expression output / current object unknown"]
+  C --> L["2949A80 / root+1B0 lookup / 138B"]
+  E -. "lifetime and prior-provider preservation" .-> R["42178E4 read -> 2596930 / 159B"]
+  L --> R
+  R --> M["25942B0 / readonly raw-bit match / 92B"]
+  M --> B["source normalized RAX64 0 or 1"]
+  B -.-> U["current named relation value not observed"]
+```
+
+The slot1 factory copy establishes an initial would-be +E8 field.
+The C8 read occurs after A03A30 and 2949A80; the readonly lookup adds no
+field writes, while actual receiver lifetime and prior provider effects
+remain separate conditions. No receiver was created. The source
+primitive supports the existing same-MCP memory projection, using the
+current resolved root/target identities and same-row factory inputs,
+without native getter invocation. The native observer and strict
+consumer are owned by 52 and 59. This source closure grants no actual
+guardian membership, human guardian/ward direction, or G2 outcome credit.
+
+Exact inputs are in `ACTUAL-R94-INPUT-BINDING.json`; the composed proof
+is `COMPOSED-RAW18-CONSUMER-SOURCE-JOIN.json`, with the 159B and 92B
+contracts under `leaf2596930-source01` and
+`predicate25942b0-source01`, in the retained continuation-25f root.
+The source-to-doc map also pins the parent C8 contract, its root-storage
+correction, the 09 target-selector contract and the full 26 lookup
+contract. Older partial-window proofs remain readable as historical
+boundaries.

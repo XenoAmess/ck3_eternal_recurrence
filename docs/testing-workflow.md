@@ -3523,3 +3523,32 @@ scenarios once (1 unittest/1.697s); it performs no live pipe operation. See
 [the source gap and evidence](ck3-native-ai/faction-gift-formal-route-gap.md).
 Current fullSDK78 remains frozen664; use a later complete reviewed SDK for these
 options. A parser test is not live gift qualification.
+
+
+### Retired operator cwd can hold an empty SDK root (Oct11 actual)
+
+SDK75 file removal completed but empty-root `rmdir` failed with WinError32.
+The two exact old R92 operator wrapper processes still had that cwd although
+the gameplay SDK and keeper had closed.01 retired the verified child181700;
+parent17508 disappeared, with exit unknown. Root then removed the empty root
+and five-entry directory. See the actual failed, cwd-lock, held-handle exit and
+completed-reclaim receipts in the Oct11 daily report. This is an observed old
+operator lifecycle residue; normal gameplay SDK exit is not proof that its
+operator wrapper exited. Resolve known owned old handles before retiring that
+derived source directory; do not stop currentGame/currentSDK or unrelated processes.
+
+
+### Canonical packet reader can resume the same owned Game
+
+`ck3_autonomous_player/tools/gameplay_mcp_packet_reader.py` provides explicit
+Python `warm_resume` configuration. Bind the current fullSDK source and complete
+five-entry package separately from compiled native source. Use the exact actual
+successful last SDK exit receipt/request and a distinct evidence directory.
+It resumes ordinary requests without issuing the cold startup queries; its
+attachment is transport-only until the first ordinary Driver request proves
+same-PID restoration. Existing responded requests remain and only that exact
+successful exit is skipped. The default cold block is unchanged. One new
+fake-MCP focused qualification passed once; actual live warm resume is pending.
+See Oct11 daily report for FIRST and the concrete operational recipe. The normal
+controller stop marker acts after current normal completion and at actual SAVE
+boundaries, so marker creation alone never proves the controller has stopped.
