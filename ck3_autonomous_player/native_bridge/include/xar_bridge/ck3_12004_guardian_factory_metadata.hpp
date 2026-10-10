@@ -34,6 +34,8 @@ struct GuardianFactoryRttiMetadata12004V1 {
 
 struct GuardianFactoryTypedMetadata12004V1 {
   ExistingGuardianFactoryMetadata12004V1 lookup;
+  // Raw factory+0x18 creation input; an observed zero remains available.
+  std::optional<std::uint64_t> factory_create_input_18_qword;
   // Source-discovery slots only: no Create/Evaluate role is assigned.
   std::array<GuardianFactoryVirtualSlotMetadata12004V1, 4> virtual_slots{};
   GuardianFactoryRttiMetadata12004V1 rtti;
@@ -52,8 +54,8 @@ BindGuardianFactoryDiscoveryEnvironment12004V1(
     const xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 &environment)
     noexcept;
 
-// Reads only the fixed two lookup records, four virtual slots each, their
-// COL/TD fields and a bounded decorated type name. Availability is independent
+// Reads the fixed two lookup records, raw factory+0x18 QWORDs, four virtual
+// slots each, COL/TD fields and a bounded decorated type name. Availability is independent
 // per record/slot/type; this metadata is not guardian pair membership.
 GuardianFactoryDiscoveryMetadata12004V1
 ReadGuardianFactoryDiscoveryMetadata12004V1(

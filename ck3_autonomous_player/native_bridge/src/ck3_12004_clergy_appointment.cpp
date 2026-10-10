@@ -27,6 +27,11 @@ bool Bytes(const Bindings &b, const void *address, void *out,
   return true;
 }
 
+bool CopySourceBytes(void *opaque, const void *address, void *out, std::size_t size) noexcept {
+  const auto *bindings = static_cast<const Bindings *>(opaque);
+  return bindings && Bytes(*bindings,address,out,size);
+}
+
 template <typename T>
 bool At(const Bindings &b, const void *object, std::size_t offset,
         T &out) noexcept {
@@ -283,6 +288,13 @@ bool ResolveCurrentClergySeat12004(const Bindings &b, std::int32_t owner_id,
 bool ReadClergyAppointment12004(const Bindings &b, std::uint64_t epoch,
                               std::int32_t candidate_id,
                               Observation &out) noexcept {
+  return ReadClergyAppointment12004(b,epoch,candidate_id,out,nullptr);
+}
+
+bool ReadClergyAppointment12004(const Bindings &b, std::uint64_t epoch,
+                              std::int32_t candidate_id, Observation &out,
+                              ClergyMode0SourceCapture12004 *source_capture) noexcept {
+  if (source_capture) source_capture->packet.reset();
   out = {}; out.capture_epoch = epoch; out.candidate_character_id = candidate_id;
   if (!Exact(b)) return Failed(out, Failure::bindings_unavailable);
   if (!b.offline_fixture) {
@@ -330,6 +342,18 @@ bool ReadClergyAppointment12004(const Bindings &b, std::uint64_t epoch,
       out.native_can_fire = fire;
     }
   }
+  if (source_capture) {
+    // Extra software reads never call CanFire or alter its independent result.
+    try {
+      const ClergyMode0SourceAccess12004 access{const_cast<Bindings *>(&b),
+          &CopySourceBytes,b.module_base,b.executable_sha256};
+      const ClergyMode0SourceSeat12004 source_seat{
+          reinterpret_cast<std::uintptr_t>(seat.task),
+          reinterpret_cast<std::uintptr_t>(seat.position),seat.task_id,seat.incumbent};
+      source_capture->packet = ReadClergyMode0SourcePacket12004(access,source_seat,
+          *source_capture,epoch,before.clock.date_raw,out.owner_character_id,candidate_id);
+    } catch (...) { source_capture->packet.reset(); }
+  }
   Seat last{};
   std::uint32_t last_owner_rite = 0, last_candidate_rite = 0;
   std::int32_t last_court_owner = -1;
@@ -338,9 +362,13 @@ bool ReadClergyAppointment12004(const Bindings &b, std::uint64_t epoch,
       !ChaplainSeat(b, owner, out.owner_character_id, last) || seat != last ||
       !Context(b, owner, candidate, last_owner_rite, last_candidate_rite, last_court_owner) ||
       owner_rite != last_owner_rite || candidate_rite != last_candidate_rite ||
-      court_owner != last_court_owner)
+      court_owner != last_court_owner) {
+    if (source_capture) source_capture->packet.reset();
     return Failed(out, Failure::state_changed);
+  }
   out.available = true; out.failure = Failure::none;
+  if (source_capture && source_capture->packet)
+    source_capture->packet->input_scope_confirmed = true;
   return true;
 }
 

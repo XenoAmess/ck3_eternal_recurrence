@@ -60,7 +60,22 @@ def capture_with_connected_driver(
         == ["has_relation_guardian", "has_relation_ward"]
     ):
         raise RuntimeError("native sidecar lacks the exact two fixed source records")
+    factory_inputs = None
+    if any("factory_create_inputs_v1" in row for row in rows):
+        from .guardian_factory_create_inputs_contract_v1 import (
+            validate_guardian_factory_create_inputs_v1,
+        )
+        command_result = (
+            json.loads(command_result_path.read_text(encoding="utf-8"))
+            if command_result_path.is_file() else None
+        )
+        factory_inputs = validate_guardian_factory_create_inputs_v1(
+            sidecar, command_result=command_result, snapshot=before,
+            family_result=family,
+        )
     return {
+        **({"native_factory_discovery_v1": factory_inputs}
+           if factory_inputs is not None else {}),
         "status": (
             "FRAME_QUALIFIED_DISCOVERY_WRITTEN"
             if sidecar.get("qualified") is True else "DISCOVERY_UNAVAILABLE"

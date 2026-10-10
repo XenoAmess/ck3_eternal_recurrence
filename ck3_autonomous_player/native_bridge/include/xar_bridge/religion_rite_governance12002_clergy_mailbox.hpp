@@ -32,6 +32,8 @@ struct PlayerClergyAppointmentMailboxContext12002 {
   // Independently bound actual .4 image; only the software Observation is shared.
   std::optional<ck3_12004::religion::clergy::Bindings> bindings12004;
   religion::clergy::Observation observation{};
+  // Actual4 optional owned packet. Borrowed frame is cleared before callback return.
+  ck3_12004::religion::clergy::ClergyMode0SourceCapture12004 mode0_source_capture;
   // Present only for the actual exact .3 adapter; the existing .2 query is unchanged.
   std::optional<ck3_12003::religion::county_conversion::Environment> county_conversion_environment;
   std::optional<ck3_12004::religion::county_conversion::Environment> county_conversion_environment12004;

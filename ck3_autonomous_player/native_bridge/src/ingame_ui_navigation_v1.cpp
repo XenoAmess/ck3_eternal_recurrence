@@ -1387,6 +1387,10 @@ ReadGuardianFactoryDiscoveryMetadata12004V1(
     auto &row = output.factories[index];
     row.lookup = records[index];
     if (row.lookup.status != ExistingGuardianFactoryStatusV1::found) continue;
+    std::uint64_t create_input_18{};
+    if (guardian_factory_lookup_detail::Read(
+            environment, row.lookup.factory_address + 0x18, create_input_18))
+      row.factory_create_input_18_qword = create_input_18;
     for (std::size_t slot = 0; slot < row.virtual_slots.size(); ++slot) {
       auto &value = row.virtual_slots[slot];
       value.available = guardian_factory_lookup_detail::Read(

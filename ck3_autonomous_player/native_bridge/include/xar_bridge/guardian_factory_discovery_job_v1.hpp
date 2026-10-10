@@ -185,6 +185,14 @@ inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
     output += ",\"factory_address\":" + std::to_string(lookup.factory_address);
     output += ",\"vtable_address\":" + std::to_string(lookup.vtable_address);
     output += ",\"opaque_descriptor_address\":" + std::to_string(lookup.descriptor_address);
+    output += ",\"factory_create_inputs_v1\":{\"schema_version\":1,\"field_10_dword\":{\"available\":";
+    output += lookup.record_name_id ? "true" : "false";
+    output += ",\"raw_value\":"; OptionalNumber(output, lookup.record_name_id);
+    output += "},\"field_18_qword\":{\"available\":";
+    output += typed.factory_create_input_18_qword ? "true" : "false";
+    output += ",\"raw_value\":";
+    OptionalNumber(output, typed.factory_create_input_18_qword);
+    output += "}}";
     output += ",\"virtual_slots\":[";
     for (std::size_t slot = 0; slot < typed.virtual_slots.size(); ++slot) {
       if (slot != 0) output += ',';

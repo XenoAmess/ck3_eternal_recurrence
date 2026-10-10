@@ -5,6 +5,7 @@
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
+#include "xar_bridge/source_read_leaf_frame_12004.hpp"
 
 #include <algorithm>
 #include <limits>
@@ -162,9 +163,23 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
     }
     if (query.bindings12004) {
       query.bindings12004->application_main_thread_id = stamp.thread_id;
+      ck3_12004::SourceReadFrame12004 borrowed_frame{};
+      borrowed_frame.executable_sha256 = "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
+      borrowed_frame.module_base = query.bindings12004->module_base;
+      // Current published Snapshot has no original numeric/string identity.
+      borrowed_frame.native_revision = envelope->expected_snapshot_revision;
+      borrowed_frame.query_sequence = envelope->ticket.sequence;
+      borrowed_frame.proof_epoch = stamp.pump_epoch; borrowed_frame.date_raw = stamp.date_raw;
+      borrowed_frame.caller_domain = kPlayerClergyAppointmentDomainKey12002;
+      borrowed_frame.caller_snapshot_confirmed = IsQueryOwningThread(envelope);
+      auto &capture = query.mode0_source_capture;
+      capture.native_revision = borrowed_frame.native_revision;
+      capture.query_sequence = borrowed_frame.query_sequence;
+      capture.proof_epoch = borrowed_frame.proof_epoch; capture.borrowed_frame = &borrowed_frame;
       (void)ck3_12004::religion::clergy::ReadClergyAppointment12004(
           *query.bindings12004, stamp.pump_epoch,
-          query.request.candidate_character_id, query.observation);
+          query.request.candidate_character_id, query.observation, &capture);
+      capture.borrowed_frame = nullptr;
     } else {
       query.bindings.application_main_thread_id = stamp.thread_id;
       (void)religion::clergy::ReadClergyAppointment12002(
@@ -179,6 +194,7 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
       out.capture_epoch = stamp.pump_epoch;
     }
     if (!out.available) {
+      query.mode0_source_capture.packet.reset();
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.owner_character_id = static_cast<std::int32_t>(frame.played_character_id);
       out.candidate_character_id = query.request.candidate_character_id;
@@ -253,8 +269,11 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
     }
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
+    if (!envelope->frame_stable) query.mode0_source_capture.packet.reset();
     return true;
   } catch (...) {
+    query.mode0_source_capture.borrowed_frame = nullptr;
+    query.mode0_source_capture.packet.reset();
     query.failure = "player_clergy_appointment_native_capture_exception";
     return false;
   }
@@ -288,6 +307,11 @@ std::string SerializePlayerClergyAppointmentResult12002(
   const auto clergy_wire = actual4
       ? ck3_12004::religion::clergy::SerializeClergyAppointment12004(query.observation)
       : religion::clergy::SerializeClergyAppointment12002(query.observation);
+  const auto mode0_wire = actual4
+      ? ",\"clergy_mode0_source\":" + (query.mode0_source_capture.packet
+          ? ck3_12004::religion::clergy::SerializeClergyMode0SourcePacket12004(
+              *query.mode0_source_capture.packet) : std::string{"null"})
+      : std::string{};
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerClergyAppointmentPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -297,7 +321,7 @@ std::string SerializePlayerClergyAppointmentResult12002(
       ",\"backend_id\":" + Quote(backend) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_clergy_appointment\":" + clergy_wire + county_wire + terms_wire + "}}";
+      ",\"player_clergy_appointment\":" + clergy_wire + county_wire + terms_wire + mode0_wire + "}}";
 }
 
 bool RunPlayerClergyAppointmentMailbox12002(

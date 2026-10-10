@@ -12,6 +12,7 @@ from .g2_private_query_transport import (
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .player_county_conversion_private_observation import normalize_player_county_conversion_v1
 from .player_clergy_candidate_terms_private_observation import normalize_player_clergy_candidate_terms_v1
+from .player_clergy_mode0_source_12004 import player_clergy_mode0_source_from_query_12004
 from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
@@ -134,8 +135,9 @@ def query_player_clergy_appointment_private_v1(
         )
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
+    source = player_clergy_mode0_source_from_query_12004(result, snapshot=before, clergy=value)
     return {
-        **value, **county, **terms, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
+        **value, **county, **terms, **source, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"], "query_date_raw": result["date_raw"],
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "query_status": result["status"], "read_only": True, "advertised": False,

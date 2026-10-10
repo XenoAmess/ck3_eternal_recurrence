@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/clergy_mode0_source_packet_12004.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy.hpp"
 
 namespace xar::ck3_12004::religion::clergy {
@@ -74,6 +75,10 @@ Bindings BindClergyAppointmentImage12004(
 bool ReadClergyAppointment12004(const Bindings &bindings,
     std::uint64_t capture_epoch, std::int32_t candidate_character_id,
     Observation &output) noexcept;
+// Optional private copied-input sidecar. Existing callers keep the four-argument ABI.
+bool ReadClergyAppointment12004(const Bindings &bindings,
+    std::uint64_t capture_epoch, std::int32_t candidate_character_id,
+    Observation &output, ClergyMode0SourceCapture12004 *source_capture) noexcept;
 bool ResolveCurrentClergySeat12004(const Bindings &bindings,
     std::int32_t owner_character_id, CurrentClergySeat &output) noexcept;
 std::string SerializeClergyAppointment12004(const Observation &value);
