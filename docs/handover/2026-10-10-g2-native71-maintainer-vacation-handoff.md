@@ -2,7 +2,7 @@
 
 ## 接班摘要
 
-本轮是维护者休假前的温和收尾，不是 G2 complete。Robert 29829 原普通战役已经真实保存到 **6066 天 / H10013 / raw53289912**。Native71 已完成离线构建、5 whole / 5 注册 MCP 资格并封存，**尚未 cold live**；当前游戏仍使用 Native60。MCP 迁移验收100%，G2 5/8，NW2 2/4；M4 false、M6 partial、M7 incomplete、自然继承0保持原边界。
+本轮是维护者休假前的温和收尾，不是 G2 complete。Robert 29829 原普通战役已经真实保存到 **6066 天 / H10013 / raw53289912**。Native71 已完成离线构建、5 whole / 5 注册 MCP 资格并封存，**尚未 cold live**；最后实机使用 Native60，现已正常退出。MCP 迁移验收100%，G2 5/8，NW2 2/4；M4 false、M6 partial、M7 incomplete、自然继承0保持原边界。
 
 最短接续顺序：
 
@@ -10,7 +10,7 @@
 2. 将来继续时，沿 `r0086-next-native71-cold-upgrade-preparation` 的现成结构、实际绑定模板和 argv，绑定最终6066 checkpoint、合格71 canonical及完整SDK源码，再走已有恢复流程。本次收尾不启动新 cold。
 3. 恢复后先记录一次真实新观测，再继续已有普通 OODA 和有界 SAVE；不等完整 Person/Entry 模型，也不重跑旧 FIRST。
 
-保留原失败 attempts、源/证据/cache，**不删除 D spill 或 junction**。物理编译主pin16da和保留对象的旧混合pins分别记录，公开整合或文档新HEAD不冒充整树重编。继续保持最小化、不抢焦点；用户将来禁用本机 CK3 时立即遵守。
+本轮交接不清理当前恢复输入、必要失败原件或 D spill / junction。后续按 [统一存储策略](../storage-retention-policy.md) 限期复核，**本交接不构成永久保留豁免**；恢复基线与 Native71 依赖的具体用途、期限见下述闭场记录。物理编译主pin16da和保留对象的旧混合pins分别记录，公开整合或文档新HEAD不冒充整树重编。继续保持最小化、不抢焦点；用户将来禁用本机 CK3 时立即遵守。
 
 Final closing facts: Native71 is actually GREEN and sealed, final6066 SAVE is
 successful, SDK/Game normal exits and complete12-stream freeze are actual,
@@ -183,7 +183,7 @@ keeper release were subsequently independently recorded:
 | Final SAVE receipt and normal runner/SDK/Game exit |SAVE GREEN04:48:01.839641Z; SDK exit0 at04:49:18.677808Z; Game PID34832 handleexit0 at04:55:52.326676Z; managed job93828 exited0 |
 | Established ten streams + release/construction supplements |Full12 freeze3/3 GREEN04:57:18.813768-04:57:42.543714Z,23.7299s |
 | Final owned custody and keeper release |Custody closed; keeper STOPPED_AND_RELEASED04:58:08.743609Z, joined/failure=null, CAS1594->1595 done/resources=[] |
-| Report commit / ordinary public push |This final private docs commit is ready for Root review; ordinary push is the remaining publication step. Lease has been released |
+| Report commit / ordinary public push |Exact pushed HEAD, Git execution receipts and observed CI status are recorded in `D:/codex-ck3-background-spill/post71-linear-publication-preparation/ROOT-ACTUAL-PUBLICATION01.json`; lease was released before publication |
 
 Root reviewed the real stock confirmation PNG and used one background Desktop
 button click, without foreground change or force kill. Typed native exit was
@@ -239,6 +239,22 @@ After publication, Root will copy only this final handover file into
 for convenient opening from the user's cwd. This single delivery is not a
 checkout reset, broad overlay or commit of that dirty historical tree.
 The exact reviewed/publication head is recorded in the Root publication receipt.
+At the first publication preparation, origin advanced by four commits to
+`9f4420d5b22e637ab8d11efb05b73aded8d56538`. Root rebased linearly,
+preserving both owners' daily/weekly append sections. Upstream introduced a
+storage policy, acceptance tooling and a live research runner update; in that comparison, the native
+production CPP/header and SDK production source did not change relative to the
+qualified71 source. This did not trigger another build or old FIRST replay.
+The canonical compiled pin remains16da. Its Git object is retained; create a
+clean source checkout at that pin when binding a future matching SDK, rather
+than assuming the mutable publication worktree still has that HEAD.
+
+The compact storage closeout is
+`D:/codex-ck3-background-spill/post71-linear-publication-preparation/ROOT-STORAGE-CLOSEOUT01.json`.
+It records current recovery/build input uses and a review deadline no later than
+2026-10-17T04:58:08Z, with no automatic renewal. This handover performs no new
+inventory, cleanup or large write after receiving the upstream policy; expired
+historical objects are assessed under the common policy by the next owner.
 
 ## Future cold restore and optional timing - NOTRUN
 
