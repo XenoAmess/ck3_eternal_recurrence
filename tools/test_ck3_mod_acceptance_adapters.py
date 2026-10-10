@@ -243,6 +243,58 @@ class Focused(unittest.TestCase):
         self.assertIn('1000000',ast.unparse(record))
         self.assertIn('pending_naturally_completed',ast.unparse(record))
 
+    def test_religion_verify_requires_exact_initial_prefix_and_stable_scope(self):
+        from ck3_mod_acceptance_cases import xqol_religion_adapter as religion
+        # Synthetic append-only natural-day log; actual parser/verifier, no client or game.
+        framed=('\n'.join([religion.MARKERS['begin'],
+            '[00:00:00][D][effectimpl.cpp:1]: Synthetic (Internal ID: 34422 - Historical ID han_8052)',
+            'Saved event targets:',
+            'xqol_startup_actor: Synthetic (Internal ID: 34422 - Historical ID han_8052)',
+            religion.MARKERS['pass'],religion.MARKERS['end']])+'\n').encode()
+        prefix=b'SYNTHETIC INITIAL LOG\n'+framed
+        appended=b'SYNTHETIC RITE OUTCOME PASS\n'
+        proof=religion.scope(prefix)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);raw_path=root/'religion-debug-original.raw'
+            result_path=root/'xqol-religion-result.json'
+            context={'output':str(root),'run_id':'SYNTHETIC_ONLY_RITES',
+                'case_contract':{'case':'religion_rite_outcomes',
+                    'required':['SYNTHETIC RITE OUTCOME PASS'],
+                    'forbidden':['SYNTHETIC RITE OUTCOME FAIL']}}
+            def save(raw,scope_proof):
+                raw_path.write_bytes(raw)
+                result={'run_id':context['run_id'],'case':'religion_rite_outcomes',
+                    'actual_actor_scope':copy.deepcopy(scope_proof),'debug_original':religion.pin(raw_path),
+                    'case_contract_qualified':True,'gui_contract_qualified':True,
+                    'business_pass':False,'product_release_pass':False}
+                result_path.write_text(json.dumps(result),encoding='utf-8')
+                return result
+            original=save(prefix+appended,proof)
+            accepted=religion.verify_case(context)
+            self.assertTrue(accepted['case_contract_qualified'])
+            self.assertEqual(accepted['actual_actor_scope'],proof)
+            self.assertFalse(accepted['business_pass'])
+            self.assertFalse(accepted['product_release_pass'])
+            self.assertEqual(entry.read_json(result_path),original)
+            for label,raw,changed in [
+                ('changed-initial-prefix',prefix.replace(b'SYNTHETIC INITIAL',b'SYNTHETIC ALTERED')+appended,proof),
+                ('duplicate-scope',prefix+appended+framed,proof),
+                ('forbidden-append',prefix+appended+b'SYNTHETIC RITE OUTCOME FAIL\n',proof),
+                ('boolean-prefix-length',prefix+appended,{**proof,'log_bytes':True}),
+                ('oversized-prefix-length',prefix+appended,{**proof,'log_bytes':len(prefix+appended)+1}),
+                *[('changed-proof-'+key,prefix+appended,{**proof,key:value}) for key,value in (
+                    ('runtime_character_id',34423),('historical_character_id','wrong'),
+                    ('raw_scope_block_hex','00'),('raw_scope_block_sha256','0'*64),
+                    ('byte_start',proof['byte_start']+1),('root_scope_used',True),
+                    ('schema','different'),('log_sha256','0'*64))],
+            ]:
+                with self.subTest(label=label):
+                    save(raw,changed)
+                    with self.assertRaises(ValueError):religion.verify_case(context)
+            save(prefix+appended,proof)
+            raw_path.write_bytes(prefix+appended+b'late change\n')
+            with self.assertRaises(ValueError):religion.verify_case(context)
+
     def test_title_holder_unwrap_preserves_raw_row_and_other_tools(self):
         # Match the registered service's result.title_holder envelope. The
         # outer status is available even when the nested holder is unavailable.

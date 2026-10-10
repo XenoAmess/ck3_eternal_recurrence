@@ -1,5 +1,6 @@
 """Original religion gates and Rite outcomes on the one shared runtime."""
 from __future__ import annotations
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -176,6 +177,13 @@ def verify_case(context):
     require(result['run_id'] == context['run_id'] and result['case'] == contract['case'], 'Religion result crossed actual run/case')
     require(pin(result['debug_original']['path']) == result['debug_original'], 'Actual original religion raw bytes changed')
     raw = Path(result['debug_original']['path']).read_bytes()
-    require(observe(raw, contract)['qualified'] and scope(raw) == result['actual_actor_scope'], 'Original religion assertions/scope not proved')
+    initial = result['actual_actor_scope']; initial_bytes = initial['log_bytes']
+    require(type(initial_bytes) is int and 0 <= initial_bytes <= len(raw) and
+            hashlib.sha256(raw[:initial_bytes]).hexdigest() == initial['log_sha256'],
+            'Original initial religion log prefix bytes/SHA changed')
+    require(scope(raw[:initial_bytes]) == initial, 'Original initial religion scope changed')
+    final_scope = {**initial, 'log_bytes': len(raw), 'log_sha256': hashlib.sha256(raw).hexdigest()}
+    require(observe(raw, contract)['qualified'] and scope(raw) == final_scope,
+            'Original religion assertions/scope not proved')
     return {**result, 'business_pass': False, 'product_release_pass': False,
             'aggregation_scope': 'Only this original religion boundary; no product/core/GUI/tooltip acceptance inferred'}
