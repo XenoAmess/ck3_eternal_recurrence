@@ -82,3 +82,17 @@ Root's first Sway whole-producer attempt on source `a320bf3986179dea279f6dba3e48
 The source shows a definite fixture counter mismatch: `Construct` counts each source context, while synthetic `Send` copies a second caller-owned context into command+20 without counting it. The real `SubmitSwayCommandV1` destroys that embedded copy separately from the source context, and both calls increment the fixture's `gDestroys`. A successful send therefore makes `gDestroys` exceed `gContexts` by one and fails the existing ACK assertion. The correction counts the send-created context; every exactly-once, pending-ACK, counter-equality and fresh-instance assertion remains intact. Production command/provider logic and all feature flags are unchanged.
 
 This Oct7/W41 correction is source-only and remains NOTRUN. No native build/test, Python import/consumer, new EXE read/hash or game/SDK operation was performed. Root will rebuild only the affected native target and retain the FIRST02 RED beside its next necessary qualification.
+
+
+### R93 actual Sway observer failure after one ordinary day (2026-10-11)
+
+Native77 R93 advanced raw date 53290128 -> 53290152 and paused. The subsequent
+Sway completion query succeeded (native revision 6, scheme generation 8), then
+the Sway opinion query failed with `current_snapshot_read_failed`, expected
+revision 6 and native revision 6. Equal revisions rule out the reported
+revision-mismatch branch, but do not identify which ReadSnapshot input failed.
+The original failed query was not repeated. One authorized protective SAVE
+persisted this day as saved6076/H10107; the seven-day controller remains RED.
+Exact originals and cause packet are retained in the R93 artifact directory;
+63/06 are tracing the actual frozen source. A successful earlier family query
+does not prove the cause of R92's historical PRE failure was repaired.
