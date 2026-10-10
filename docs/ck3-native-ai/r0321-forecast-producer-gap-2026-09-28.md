@@ -22,3 +22,13 @@ R0321 在第 27 turn、`native:23`、public revision 24、native revision 23、�
 ## 本轮可安全推进
 
 先取得来源已有的 388302 字节 `formal-report.txt`（SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30`），核对 v3 原始 payload、查询回执和前后帧，再决定是否需要 78 MB 检查点/driver/二进制的隔离只读复现。若要做短期代码增量，可增加**只读**两守军研究诊断与细粒度缺域状态，但继续保留 `selected_step=null`、`active_attack_allowed=false`，不能把这项诊断包装成 R0321 GREEN。
+
+## 2026-09-29 后续原始输入核对（2026-10-10 合回）
+
+本文最初关于正式报告尚未接收的说明记录首次摄入状态。后续来源正式报告已按 388302 字节/SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30` 验收：V3 查询位于 `/auto_run/turns/25/result`，`accepted=true/status=available/query_sequence=1`，身份为 `native:23/public24/native23`，相邻 before/after 都是暂停 raw53219928；终止计划位于 `/auto_run/turns/26/plan`。该报告仅含 V3 command envelope，原始对象位于 H3911 driver `/command_history/3919/result/combat_simulation_inputs`。H3911 摘录与母 driver 的后续接收、完整值相等和接收端 attempt4 已记在 [硬伤换算来源专题](r0321-hard-conversion-source-audit-2026-09-29.md)，不再把最初缺件请求作为当前待办。
+
+原分支 `658456459d9a0fc2a26b3679f1a23cb6002ea8ac` 的 2026-09-29 补录另保留 R0345 对象深比较的精确身份。R0345 post-run 摘录为 2081860 字节/SHA-256 `C91DDA8284E414D96FA7705AA0881A048CF0CAB2F83AB4817F7826F5C5A63F67`，由 `RECEIVER-ACK-R0345-H3928-V3-RAW-EXCERPT-v1.json` 绑定；与 H3911 摘录在各自 `/command_row/result/combat_simulation_inputs` 的完整 JSON 值相等，各有 **78887 个标量路径**，路径和值差异均为0。使用 Python3.14.7 的 `json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode('utf-8')` 规范化后，两对象均为 **2077900 字节**，SHA-256 **`EF7DCDFDC4E3FE730B7046292FCC12C481002C4E8F511F53278D5C9E4BFEC377`**。对象含军队当前省份 `[2610,2629,2629]`、逐团兵数、目标环境和空的活动战斗列表；这比字段形状相等更强。
+
+对象外查询身份分别为 H3911 `native:23/public24/native23` 与 R0345 `native:3/public4/native3`。两份正式报告均记录暂停 raw53219928、episode `native-29829-2bc2d599f7f9`、connection generation1；R0345 摘录行只含 index/command/ok/result，帧字段由其正式报告提供。当时 46065605 字节的 R0345 post-run 母 driver 未转运，不能将摘录深比较写成对母件无损相等或每字段重新从游戏读取的证明。其只读结论文件 `RECEIVER-R0345-V3-FORECAST-DIAGNOSTIC-v1.json` 为7095字节/SHA-256 `5E1CA252034AFA483F3557F5F5B4ACCBFEE8A6D73AB4FE314994A5CA380E2439`；[当日日报](../autonomous-agent-progress/daily/2026-09-29.md) 已保存 R0345 的实际失败、无物质动作或日期增长，以及接收与母件边界。两个对象相等不能区分未改变的暂停战局与复用/缓存。
+
+双守军研究的后续动作域修正已见 [现有研究专题](r0321-multi-defender-research-gate-2026-09-28.md)，硬伤诊断与后续原生输入缺口沿其原生专题处理。本补录只合回遗漏的历史出处和精确比较结果，不恢复旧分支的阶段性转运计划、draft状态或旧待办，也不重复读取大件、执行测试或增加当前实机/预测/行动完成度。
