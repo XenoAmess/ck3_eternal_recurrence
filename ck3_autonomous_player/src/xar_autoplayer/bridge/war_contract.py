@@ -83,7 +83,8 @@ from .title_holder_contract import (
     query_title_holder_v1_step,
 )
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
+from copy import deepcopy
 from .route_contact_window_contract import parse_advance_route_contact_window_step
 
 from .version_identity import (
@@ -1757,9 +1758,11 @@ def normalize_army_strengths(
     """Normalize one exact-build, row-atomic army strength result."""
     if not isinstance(value, list):
         raise ValueError("native army_strengths must be an array")
+    manager_inputs_cache: dict[tuple[object, int], tuple[object, object]] = {}
     rows = [
         _normalize_army_strength_row(
-            raw_row, name=f"army_strengths[{index}]"
+            raw_row, name=f"army_strengths[{index}]",
+            manager_inputs_cache=manager_inputs_cache,
         )
         for index, raw_row in enumerate(value)
     ]
@@ -1824,8 +1827,31 @@ def _normalize_native_army_resolution_v1(
     return result
 
 
+def _normalize_manager_input_once(
+    value: object,
+    normalizer: Callable[[object], object],
+    cache: dict[tuple[object, int], tuple[object, object]] | None,
+) -> object:
+    """Validate a shared manager object once, retaining independent row copies.
+
+    Native63 expands the six complete manager families by reference. Their
+    context-free normalizers already copy their validated input. Reuse only
+    that exact input object within one batch; equal separate objects still
+    receive independent validation, including strict bool/integer checks.
+    """
+    if cache is None or not isinstance(value, dict):
+        return normalizer(value)
+    key = (normalizer, id(value))
+    if key in cache:
+        return deepcopy(cache[key][1])
+    normalized = normalizer(value)
+    cache[key] = (value, normalized)
+    return normalized
+
+
 def _normalize_army_strength_row(
-    value: object, *, name: str
+    value: object, *, name: str,
+    manager_inputs_cache: dict[tuple[object, int], tuple[object, object]] | None = None,
 ) -> dict[str, object]:
     if (not isinstance(value, dict)
             or not _ARMY_STRENGTH_ROW_KEYS <= value.keys()
@@ -2050,17 +2076,21 @@ def _normalize_army_strength_row(
         result["current_army_flag21_inputs_v1"] = normalize_current_army_flag21_inputs_v1(
             value["current_army_flag21_inputs_v1"])
     if "current_selected_title_holder_owner_relation_v1" in value:
-        result["current_selected_title_holder_owner_relation_v1"] = normalize_current_selected_title_holder_owner_relation_v1(
-            value["current_selected_title_holder_owner_relation_v1"])
+        result["current_selected_title_holder_owner_relation_v1"] = _normalize_manager_input_once(
+            value["current_selected_title_holder_owner_relation_v1"],
+            normalize_current_selected_title_holder_owner_relation_v1, manager_inputs_cache)
     if "current_army_flag31_inputs_v1" in value:
-        result["current_army_flag31_inputs_v1"] = normalize_current_army_flag31_inputs_v1(
-            value["current_army_flag31_inputs_v1"])
+        result["current_army_flag31_inputs_v1"] = _normalize_manager_input_once(
+            value["current_army_flag31_inputs_v1"],
+            normalize_current_army_flag31_inputs_v1, manager_inputs_cache)
     if "current_army_combat_roles_phase_inputs_v1" in value:
-        result["current_army_combat_roles_phase_inputs_v1"] = normalize_current_army_combat_roles_phase_inputs_v1(
-            value["current_army_combat_roles_phase_inputs_v1"])
+        result["current_army_combat_roles_phase_inputs_v1"] = _normalize_manager_input_once(
+            value["current_army_combat_roles_phase_inputs_v1"],
+            normalize_current_army_combat_roles_phase_inputs_v1, manager_inputs_cache)
     if "current_post_admission_refresh_inputs_v1" in value:
-        result["current_post_admission_refresh_inputs_v1"] = normalize_current_post_admission_refresh_inputs_v1(
-            value["current_post_admission_refresh_inputs_v1"])
+        result["current_post_admission_refresh_inputs_v1"] = _normalize_manager_input_once(
+            value["current_post_admission_refresh_inputs_v1"],
+            normalize_current_post_admission_refresh_inputs_v1, manager_inputs_cache)
     if "current_pre_date_character_prefix_inputs_v1" in value:
         result["current_pre_date_character_prefix_inputs_v1"] = normalize_current_pre_date_character_prefix_inputs_v1(
             value["current_pre_date_character_prefix_inputs_v1"])
@@ -2068,11 +2098,13 @@ def _normalize_army_strength_row(
         result["current_pre_date_dated_append_inputs_v1"] = normalize_current_pre_date_dated_append_inputs_v1(
             value["current_pre_date_dated_append_inputs_v1"])
     if "current_daily_assault_roster_admission_v1" in value:
-        result["current_daily_assault_roster_admission_v1"] = normalize_current_daily_assault_roster_admission_v1(
-            value["current_daily_assault_roster_admission_v1"])
+        result["current_daily_assault_roster_admission_v1"] = _normalize_manager_input_once(
+            value["current_daily_assault_roster_admission_v1"],
+            normalize_current_daily_assault_roster_admission_v1, manager_inputs_cache)
     if "current_pre_date_pending_update_inputs_v1" in value:
-        result["current_pre_date_pending_update_inputs_v1"] = normalize_current_pre_date_pending_update_inputs_v1(
-            value["current_pre_date_pending_update_inputs_v1"])
+        result["current_pre_date_pending_update_inputs_v1"] = _normalize_manager_input_once(
+            value["current_pre_date_pending_update_inputs_v1"],
+            normalize_current_pre_date_pending_update_inputs_v1, manager_inputs_cache)
     if "scoped_ordered_refill_inputs_v1" in value:
         result["scoped_ordered_refill_inputs_v1"] = normalize_scoped_ordered_refill_inputs_v1(
             value["scoped_ordered_refill_inputs_v1"]
