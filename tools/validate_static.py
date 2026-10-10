@@ -2163,18 +2163,18 @@ def package_checks(errors):
             or "pyautogui.click(*new_game)" in lobby_navigation):
         errors.append("lobby navigation lacks an OCR-verified New Game transition")
     if not all(token in acceptance_runner for token in (
-            '"progression-ui": 3', "def run_progression_ui",
+            "def run_progression_ui",
             "wait_for_contract_lessons", "open_native_ledger",
             "progression_ledger_pixels", "xar_contract_complete_steward",
             "XAR: TEST DONE progression-ui")):
         errors.append("acceptance runner lacks progression milestone/PB pixel coverage")
     if not all(token in acceptance_runner for token in (
-            '"scoring-matrix": 4', "def run_scoring_matrix",
+            "def run_scoring_matrix",
             "pool_dispatchers", "expected_pool_markers",
             "XAR: TEST DONE scoring-matrix")):
         errors.append("acceptance runner lacks scoring/dedup/200-dispatcher coverage")
     if not all(token in acceptance_runner for token in (
-            '"courtier-creator": 6', "def run_courtier_creator",
+            "def run_courtier_creator",
             "open_native_courtier_creator",
             "click_first_courtier_catalog_entry",
             "cc_insufficient_gold_blocked",
@@ -2190,7 +2190,7 @@ def package_checks(errors):
             "XAR: TEST DONE courtier-creator")):
         errors.append("acceptance runner lacks real-UI courtier creator coverage")
     if not all(token in acceptance_runner for token in (
-            '"balance-long": 0', "BALANCE_FIXTURES", "declared_vanilla_rule_defaults",
+            "BALANCE_FIXTURES", "declared_vanilla_rule_defaults",
             "set_balance_applied_rules", "def run_balance_long",
             "decode_balance_wire_sample", "cadence_1095_days",
             "XAR: BALANCE DONE horizon_40", "--balance-smoke-pairs")):
@@ -2216,7 +2216,7 @@ def package_checks(errors):
         "SAVE_GAMES_DIR", 'glob("autosave*.ck3")', "autosaves.ready",
         "autosave backup verification failed", "restore_autosaves(backup)",
         "DLC_LOAD_JSON", "set_enabled_mod_profile", "ugc_3784706360.mod",
-        "create_process_via_windows_management", "outside process tree",
+        "create_process_via_windows_management",
     )
     if (any(token not in acceptance_runner for token in autosave_protection)
             or any(token not in windows_process for token in (
@@ -2228,22 +2228,23 @@ def package_checks(errors):
         errors.append("acceptance runner/watchdog lacks atomic autosave isolation")
     terminal_runner = read(ROOT / "tools/run_terminal_acceptance.py")
     if not all(token in terminal_runner for token in (
-            "configure_isolated_userdir", '"cloud_save"={ version=0 enabled=no }',
+            '"cloud_save"={ version=0 enabled=no }',
             'f"*/{STEAM_APP_ID}"', 'winreg.QueryValueEx(key, "SteamPath")',
             "if not app_dirs:", "POSTFLIGHT_STABILITY_SECONDS = 5",
-            '"steam_cloud_untouched": steam_untouched',
-            '"steam_cloud_scope":', "remote service not queried",
-            '"real_profile_before_sha256": before_digest',
-            '"real_profile_after_sha256":',
-            "terminal_harness_sha256 = harness_digest()",
-            '"terminal_harness_sha256": terminal_harness_sha256',
-            "def mark_junit_failed", 'report["result"] = "RED"',
-            "shutil.rmtree(userdir)", "userdir_removed = not userdir.exists()",
-            '"userdir_removed_after_run": userdir_removed')):
-        errors.append("terminal acceptance lacks disposable-userdir/Steam Cloud proof")
-    if terminal_runner.find("acceptance.configure_isolated_userdir(userdir, target)") > (
-            terminal_runner.find("userdir.mkdir()")):
-        errors.append("terminal acceptance validates its isolated path after writing files")
+            "def real_profile_snapshot", "def steam_cloud_snapshot",
+            "def verify_storage_stability", "def snapshot_digest",
+            "def harness_digest", "def bootstrap_userdir",
+            "profile_after != profile_before or steam_after != steam_before",
+            "def mark_junit_failed", 'report["result"] = "RED"')):
+        errors.append("retained terminal helpers lost protected-storage/report contracts")
+    for retired_runner in (acceptance_runner, terminal_runner,
+                           read(ROOT / "tools/run_vivhite_acceptance.py")):
+        retired_main = retired_runner.partition("def main(")[2].partition(
+            '\nif __name__ == "__main__":')[0]
+        if not all(token in retired_main for token in (
+                "Legacy direct CK3 acceptance launch is disabled.",
+                "tools/ck3_mod_acceptance.py", "return 2")):
+            errors.append("retired direct acceptance entry lost its public-entry redirect")
     if not all(token in acceptance_runner for token in (
             "Ironman terminal initial date unreadable",
             "Ironman terminal final date unreadable",

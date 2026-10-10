@@ -1,5 +1,9 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 23:14 CST：按新规则完成一轮代码与历史采集清理
+
+8 个旧入口合计移除 837 行不可达 main 尾部，保留 helpers/真实 preflight/统一入口；两批已有 12+9 项 focused checks 实际通过。历史数据已实际删除 69 个完整报告/采集文件，释放 821587968 allocated bytes（约 784 MiB），失败 0，保留必要薄证据及活跃输入；旧全文不可 replay 已明记。详见 [实际清理记录](maintenance/history-code-and-capture-cleanup-2026-10-10.md)。下一场空间满足原公式，待本次 clean HEAD 新鲜准入后继续 PAM−36。Main 已有 `db947a0f8` 的 exact4 Character/query 只读路线，但 Source17 未包含；须新实际 native/host 冻结再使用，不追认 R69。正式仍 7/10，不涉天朝二期。
+
 ## 2026-10-10 22:57 CST：R69 已关闭，源码诊断与历史清理
 
 正式迁移仍为原十项中的 7/10，不涉及天朝二期。R69 已取得同一头衔 OFF/ON/RESTORED 完整候选分数观测，但 GetHeir 查询触及 army-only 能力范围，run/verify=2、OS=1，不能记通过；现场资源已释放。已加入成对可选候选 tier 诊断及两项实际通过的 Python 测试，native 尚未构建。PAM ± 新 prepared-36/37 使用 QA27-08；Source17 UI/ransom 与 RMTM/fixed361 可继续。另按新存储规则移除五入口 277 行不可达代码，保留冻结输入及必要证据。详细事实和后续边界见 [R69 记录](xqol-r69-shared-query-scope-2026-10-10.md)。

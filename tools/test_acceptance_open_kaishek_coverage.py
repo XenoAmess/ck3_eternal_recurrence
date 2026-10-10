@@ -74,28 +74,31 @@ class AcceptanceCoverageTests(unittest.TestCase):
             "run_zhongguo_acceptance.py", "kaishek_preflight.run_preflight"
         )
 
-    def test_terminal_reuses_base_gate_once(self) -> None:
-        calls = _calls(_function("run_terminal_acceptance.py", "main"))
-        self.assertEqual(
-            sum(name == "acceptance.main" for _, name in calls),
-            1,
-            "terminal wrapper must delegate to the base runner exactly once",
-        )
-        self.assertFalse(
-            any(name in {"acceptance.launch_ck3_process", "launch_ck3_process"} for _, name in calls),
-            "terminal wrapper must not introduce a second launch boundary",
-        )
+    def test_retired_main_paths_only_redirect_to_public_entry(self) -> None:
+        for filename in (
+            "run_acceptance.py", "run_terminal_acceptance.py", "run_vivhite_acceptance.py",
+        ):
+            main = _function(filename, "main")
+            self.assertEqual([name for _, name in _calls(main)], ["print"])
+            returns = [node for node in main.body if isinstance(node, ast.Return)]
+            self.assertEqual(len(returns), 1)
+            self.assertIsInstance(returns[0].value, ast.Constant)
+            self.assertEqual(returns[0].value.value, 2)
+            self.assertIs(main.body[-1], returns[0])
+            self.assertTrue(any(
+                isinstance(node, ast.Constant) and isinstance(node.value, str)
+                and "tools/ck3_mod_acceptance.py" in node.value
+                for node in ast.walk(main)
+            ))
         base_calls = _calls(_function("run_acceptance.py", "preflight"))
         self.assertEqual(
             sum(name == "run_open_kaishek_preflight" for _, name in base_calls),
             1,
-            "terminal's delegated base path must contain one offline gate",
+            "retained base preflight must preserve one offline gate",
         )
 
     def test_main_paths_invoke_preflight_before_live_cells(self) -> None:
         for filename in (
-            "run_acceptance.py",
-            "run_vivhite_acceptance.py",
             "run_ox_here_acceptance.py",
             "run_ox_here_loc_smoke.py",
             "run_zhongguo_acceptance.py",

@@ -11,3 +11,11 @@
 外置候选与实际回执：`C:/workspace/ck3-upgrade-20261010/history-code-cleanup-readonly-candidate-01/`。代码候选由 Root 统一采纳后才成为仓库变更；子线程没有写 Main 或执行 Git mutation。本批没有回收数据文件，不把源码行数或 Git diff 大小冒充实际磁盘释放量。历史数据实际回收由独立磁盘 lane 记录，两个 lane 不重叠。
 
 本记录在 2027-04-08 复核归纳；当前真实引用的旧 runner 底层实现由公共入口继续消费，不以文件年龄判定废弃。当前活跃外置输入的限期保护归其 owner 台账，本记录不自动延长保护。
+
+## 第二批：主模组、终态与白绮入口
+
+Root 已核候选来源及 gzip 精确往返 pins，并在无现场占用窗口采用。两批合计 837 行不可达代码；实际历史数据回收与永久记录见 [本轮清理结果](history-code-and-capture-cleanup-2026-10-10.md)。
+
+第二批候选清理 `run_acceptance.py`、`run_terminal_acceptance.py`、`run_vivhite_acceptance.py` 中无条件 `return 2` 后的 560 行不可达实机编排；保留原 API、公共入口拒绝提示、CLI 参数、独立 preflight 和全部底层函数。源码 AST 对照确认 main 前缀和其他节点完全相同。旧 `validate_static.py` 与 open_kaishek 静态测试仍把死 main 的调度常量、旧 profile 编排和离线调用当作活跃合同，本批改为检查真实保留的 storage/report helpers、离线 preflight 及已退役入口的明确拒绝，不把死代码保留当作验收能力。
+
+候选复用 5 项现有 legacy-entry CLI/mock 测试及 4 项 open_kaishek 静态边界测试，9 项通过；变动的 runner 静态断言块单独执行通过，5 个变更 Python 文件可 compile。原有真实 preflight 的离线调用顺序仍检查。首个候选静态块实际失败，原因是旧断言还要求死 main 中的 `outside process tree` 日志；仅移除此失效日志断言后通过，真正的 `create_process_via_windows_management` helper 合同仍保留。未导入实机 runner、启动游戏、重跑产品业务矩阵或重建 native/runtime。外置候选与回执位于 `C:/workspace/ck3-upgrade-20261010/history-code-cleanup-readonly-candidate-02/`，源码统一交 Root 采纳。本批数据删除量为 0，不声称磁盘释放收益；第一批及本批原 source pins 保留于各自薄回执和父 Git 提交。
