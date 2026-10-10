@@ -1,0 +1,78 @@
+{
+  "schema": "ck3.two-exact-head-startup-recovery-ci-observation.v1",
+  "heads": [
+    {
+      "head_sha": "7a735081f737428664e7152531ae0eed459ac181",
+      "observed_at_utc": "2026-10-10T14:20:13.515112+00:00",
+      "api_total_count": 2,
+      "workflows": {
+        "Official Runner CI": {
+          "conclusion": "success",
+          "head_sha": "7a735081f737428664e7152531ae0eed459ac181",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38058561106",
+          "id": 38058561106,
+          "name": "Official Runner CI",
+          "status": "completed",
+          "updated_at": "2026-10-10T14:20:09Z",
+          "workflow_id": 336785267
+        },
+        "Linear history": {
+          "conclusion": "success",
+          "head_sha": "7a735081f737428664e7152531ae0eed459ac181",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38058561093",
+          "id": 38058561093,
+          "name": "Linear history",
+          "status": "completed",
+          "updated_at": "2026-10-10T14:11:09Z",
+          "workflow_id": 377165366
+        },
+        "Li Yu Dao static checks": {
+          "status": "NOT_TRIGGERED",
+          "not_counted_as_success": true
+        }
+      },
+      "all_triggered_terminal": true,
+      "next_gate": "CI observations are terminal success; separate actual runtime/startup acceptance remains required."
+    },
+    {
+      "head_sha": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+      "observed_at_utc": "2026-10-10T14:20:15.005618+00:00",
+      "api_total_count": 2,
+      "workflows": {
+        "Official Runner CI": {
+          "conclusion": null,
+          "head_sha": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38058914812",
+          "id": 38058914812,
+          "name": "Official Runner CI",
+          "status": "in_progress",
+          "updated_at": "2026-10-10T14:15:55Z",
+          "workflow_id": 336785267
+        },
+        "Linear history": {
+          "conclusion": "success",
+          "head_sha": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38058914771",
+          "id": 38058914771,
+          "name": "Linear history",
+          "status": "completed",
+          "updated_at": "2026-10-10T14:16:24Z",
+          "workflow_id": 377165366
+        },
+        "Li Yu Dao static checks": {
+          "status": "NOT_TRIGGERED",
+          "not_counted_as_success": true
+        }
+      },
+      "all_triggered_terminal": false,
+      "next_gate": "The exact CI result remains pending/absent or unsuccessful as recorded. Independent Root preparation may continue; no additional query or runtime/business credit is granted."
+    }
+  ],
+  "queries": 2,
+  "no_polling_rerun_dispatch_logs_build_test_game_mcp_git_bus_or_main_change": true,
+  "results_apply_only_to_each_exact_head": true,
+  "original_e34_success_not_extrapolated": true,
+  "original_R0050_RED_unchanged": true,
+  "runtime_or_business_qualification": false,
+  "finished_at_utc": "2026-10-10T14:20:15.008554+00:00"
+}

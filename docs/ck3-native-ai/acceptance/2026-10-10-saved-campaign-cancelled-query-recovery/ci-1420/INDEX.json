@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.startup-recovery-ci-readonly-index.v1",
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_startup_recovery_ci_readonly_20261010_001.py",
+    "bytes": 4778,
+    "sha256": "690d0ac7319b8508da8d8c8242a0053e3b00a21b7b8885b5f350dee010f5e5ca"
+  },
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\7a735081f.stdout.json",
+      "bytes": 622,
+      "sha256": "f12aa1ada9f70ad9023de850bcf8755c124e9a2221111e076761119172201362"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\7a735081f.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\7a735081f.QUERY.actual.json",
+      "bytes": 980,
+      "sha256": "e65f1b3a3cb14225c63dd63dee23eaf82c4c9448acafb7c359e90fd47526b3c8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\3f8cae002.stdout.json",
+      "bytes": 619,
+      "sha256": "97d4f5bcb7ed38322852c8d761f587ef87f09928f9ea5b02ebc0bc8c6b0d19bf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\3f8cae002.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\3f8cae002.QUERY.actual.json",
+      "bytes": 980,
+      "sha256": "5e76a7c8c6a079200029aec76175415ead352db6e9ed98f8e26b28f803c8ac04"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-startup-recovery-ci-readonly-20261010-001\\REPORT.actual.json",
+      "bytes": 3244,
+      "sha256": "cb63558825e0ddb71139dc61fa8978f842e3bc693a152695facd3ad9acd3d5ea"
+    }
+  ],
+  "package_limit_bytes": 12288
+}

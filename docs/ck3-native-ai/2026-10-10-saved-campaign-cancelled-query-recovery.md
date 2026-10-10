@@ -30,3 +30,7 @@ Source09/O9及历史attempt不改写；后继真实启动需要使用包含此�
 当前仅STATIC_READY，不授新的实机通过。正式B4/B5/C3/I4仍未完成，一期仍75%工作量估计 /
 NOT_GREEN。本次没有native编译、游戏启动或重型写入预约；旧缓存、存档及原失败证据保持
 既有有限期限。
+
+14:20 UTC的[单次精确CI观察](acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/ci-1420/REPORT.actual.json)
+记录：失败证据提交`7a735081f`的Official/Linear均success；修复提交`3f8cae002`的Linear
+success、Official仍in_progress。两者LYD均未触发，不能算LYD验收通过，也不外推其他HEAD。
