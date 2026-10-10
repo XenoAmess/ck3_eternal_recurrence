@@ -177,3 +177,5 @@ if(BUILD_TESTING AND WIN32)
   endif()
   # Only the new three-input export runs;stdout is retained for its strict Python consumer.
 endif()
+include(cmake/army_startup_canonical_sha_focus_12004.cmake)
+include(cmake/battle_control_owned_entry_preceding_focus_12004.cmake)
