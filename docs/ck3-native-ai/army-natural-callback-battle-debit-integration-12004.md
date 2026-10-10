@@ -10,6 +10,14 @@ casualty package `1957f9ce5e2c3093bc45eb0261972ae21dbac31e` linearly. Their
 production paths and fixtures remain distinct; existing Native67/68/69 source
 and Army shared-family normalization reuse remain in the parent history.
 
+The child also retains Root's qualified Person Python correction
+`71b069f5625111e0f34940d19bc76bb08f2ff2a5`, which accepts legitimate unread
+historical base operands. Its actual cases2–4 qualification is reused; native
+compiled source remains `b2f014c6`. The M7 conception-trait observer is appended
+from `52d812167c388a2a5057bbb1f715f5dc5dfdde33` and
+`cdd49e936dfede80767c37a85af3686891ee9008` documentation, followed by source
+`fa7a0d13140b27edada79dcf6059f892e86c4bd0`.
+
 The natural callback observer owns the original-once `24E3410` invocation and
 completed before/after supply snapshots. Exact-build startup installs it after
 the existing physical loss writer journal. The existing ArmyStrength serializer
@@ -42,15 +50,34 @@ TUs, one replaced Runtime TU, and one changed Bridge TU; this is a source list,
 not a claim about complete compile or link owner counts. `game_contract.hpp`,
 ArmyBindings, existing formatter ABI, query names and command kinds are unchanged.
 
-Root must first retain an actually qualified Native69 parent. The sole future
-FIRST recipe then runs each new whole producer once and each corresponding new
+The M7 observer adds a private query-local companion to the existing household
+query. Each actual household row receives independent
+`native_conception_trait_exclusion` availability and known boolean from the
+already closed trait gate. It preserves existing public snapshot, observation,
+relationship, descendant and reproductive structure layouts, and retains the
+old JSON formatter signatures. Two private headers affect the existing Bridge
+and `current_first_heir_relationship_v1.cpp` owners; the M7 delta adds no Runtime
+TU or broad Runtime layout dependency. Trait exclusion can remain known when a
+separate fertility input fails. It does not establish complete pair eligibility,
+pregnancy, birth or monthly scheduling.
+
+Root sealed the actual Native69 parent GREEN at 03:53:57–58 UTC on 2026-10-10:
+`entry-live-fix69/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`, compiled native
+`b2f014c6`, Python/qualification `71b069f5`, retained flags66ON/51OFF. This
+immutable parent is reused without hashing or replay. The sole future
+FIRST recipe runs each of three new whole producer modes once and each corresponding new
 registered MCP compound once from the coherent source. The natural fixture has
 five typed callback invocations across six scenes, including zero, stock rise,
 partial stock and full-ID exclusions. The battle fixture has one typed casualty
 application and one nested physical writer: hard request750000 and physical
 debit7 remain different observations. Neither fixture calls original CK3 code.
-Already qualified Army-sharing and Native69 tests are not replayed for this
-package. Any actual failure retains its original attempt and is handled by Root.
+The existing first-heir fixture gains one new conception-trait mode producing
+six whole packets; one registered Service compound consumes those six plus one
+legacy result derived solely by removing the optional leaf. Its cases cover
+heir/spouse directions, no traits, multiple traits with native fallback, missing
+TraitDB and independent fertility failure. Already qualified Army-sharing and
+Native69 Person/M6 tests are not replayed. Any actual failure retains its
+original attempt and is handled by Root.
 
 Oct10/W41: source-only integration; no static-ready, fixture-live or
 production-live credit yet. Zero new saved days, physical loss evidence,
