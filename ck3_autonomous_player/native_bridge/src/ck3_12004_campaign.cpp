@@ -126,6 +126,40 @@ struct ObservationV1 {
                          const ObservationV1 &) = default;
 };
 
+std::uint32_t ObservationDifferenceMask12004(const ObservationV1 &first,
+                                             const ObservationV1 &second) noexcept {
+  std::uint32_t mask = 0;
+  if (first.local_player_id != second.local_player_id) mask |= 1U << 0U;
+  if (first.player_character_id != second.player_character_id) mask |= 1U << 1U;
+  if (first.player_character_alive != second.player_character_alive) mask |= 1U << 2U;
+  if (first.metrics != second.metrics) mask |= 1U << 3U;
+  if (first.council != second.council) mask |= 1U << 4U;
+  if (first.realm != second.realm) mask |= 1U << 5U;
+  if (first.primary_title != second.primary_title) mask |= 1U << 6U;
+  if (first.capital_province_id != second.capital_province_id) mask |= 1U << 7U;
+  if (first.immediate_liege_character_id != second.immediate_liege_character_id) mask |= 1U << 8U;
+  if (first.top_liege_character_id != second.top_liege_character_id) mask |= 1U << 9U;
+  if (first.independent != second.independent) mask |= 1U << 10U;
+  if (first.government != second.government) mask |= 1U << 11U;
+  if (first.selected_game_rule_tokens != second.selected_game_rule_tokens) mask |= 1U << 12U;
+  if (first.native_selected_game_rule_token_count != second.native_selected_game_rule_token_count) mask |= 1U << 13U;
+  if (first.selected_game_rule_tokens_available != second.selected_game_rule_tokens_available) mask |= 1U << 14U;
+  if (first.game_data != second.game_data) mask |= 1U << 15U;
+  if (first.player_character != second.player_character) mask |= 1U << 16U;
+  if (first.primary_title_pointer != second.primary_title_pointer) mask |= 1U << 17U;
+  if (first.capital_province_pointer != second.capital_province_pointer) mask |= 1U << 18U;
+  if (first.immediate_liege_pointer != second.immediate_liege_pointer) mask |= 1U << 19U;
+  if (first.top_liege_pointer != second.top_liege_pointer) mask |= 1U << 20U;
+  if (first.government_pointer != second.government_pointer) mask |= 1U << 21U;
+  if (first.government_flags_data != second.government_flags_data) mask |= 1U << 22U;
+  if (first.selection_service != second.selection_service) mask |= 1U << 23U;
+  if (first.selected_rule_set != second.selected_rule_set) mask |= 1U << 24U;
+  if (first.selected_rule_data != second.selected_rule_data) mask |= 1U << 25U;
+  if (first.selected_rule_token_pointers != second.selected_rule_token_pointers) mask |= 1U << 26U;
+  if (first.selected_rule_tokens_native_order != second.selected_rule_tokens_native_order) mask |= 1U << 27U;
+  return mask;
+}
+
 bool GuardedDirectRead(const void *address, void *output,
                        std::size_t size) noexcept {
   if (address == nullptr || output == nullptr || size == 0) {
@@ -900,14 +934,22 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
       SetUnavailable(output, "requires_application_main");
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
+    auto *state_changed_diagnostic = failure_diagnostic == nullptr
+        ? nullptr : &failure_diagnostic->campaign_root_state_changed;
     game::CampaignRootFrameV1 before{};
-    if (!access.capture_frame(access.context, before)) {
+    if (!CaptureCampaignRootBefore12004(
+            [&](game::CampaignRootFrameV1 &frame) {
+              return access.capture_frame(access.context, frame);
+            }, request.expected_snapshot_revision, before,
+            state_changed_diagnostic)) {
       SetUnavailable(output, "state_changed");
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
     output.snapshot_revision = before.snapshot_revision;
     output.date_raw = before.date_raw;
-    if (before.snapshot_revision != request.expected_snapshot_revision) {
+    if (!MatchCampaignRootExpectedRevision12004(
+            request.expected_snapshot_revision, before,
+            state_changed_diagnostic)) {
       SetUnavailable(output, "state_changed");
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
@@ -951,8 +993,13 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     const bool second_piety_available =
         ReadMonthlyPiety(environment, second.player_character, second_piety);
     game::CampaignRootFrameV1 after{};
-    if (!access.capture_frame(access.context, after) || after != before ||
-        second != first) {
+    if (!CaptureStableCampaignRootAfter12004(
+            [&](game::CampaignRootFrameV1 &frame) {
+              return access.capture_frame(access.context, frame);
+            }, [&] { return second != first; },
+            [&] { return ObservationDifferenceMask12004(first, second); },
+            request.expected_snapshot_revision, before, after,
+            state_changed_diagnostic)) {
       SetUnavailable(output, "state_changed");
       return game::ReadCampaignRootContextResultV1::unavailable;
     }

@@ -16,6 +16,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
+#include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
 #if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
@@ -5440,6 +5441,27 @@ std::string TitleMapNavigationFailureDiagnosticFrameV1(
     result += ",\"dispatched\":";
     result += query->command.dispatched ? "true" : "false";
   }
+  return result + "}";
+}
+
+// Diagnostic-only owned copies from the actual 1.20.0.4 reader. Reuse the
+// existing side frame without changing the campaign result or its reason.
+std::string CampaignRootStateChangedDiagnosticFrame12004(
+    std::string_view request_id, std::uint64_t revision,
+    std::uint64_t query_sequence, std::uint64_t connection_generation,
+    const xar::game::Snapshot &expected,
+    const xar::ck3_12004::CampaignRootStateChangedDiagnostic12004 &detail) {
+  std::string result = "{\"type\":\"snapshot_publish_diagnostic\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"phase\":\"end\",\"status\":\"campaign-root-state-changed\",\"payload_bytes\":0,\"diagnostic_kind\":\"campaign-root-state-changed-v1\",\"revision\":";
+  result += Number(revision);
+  result += ",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"pid\":" + Number(GetCurrentProcessId());
+  result += ",\"connection_generation\":" + Number(connection_generation);
+  result += ",\"date_raw\":" + SignedNumber(expected.date_raw);
+  result += ",\"expected_actor_id\":" + SignedNumber(expected.played_character_id);
+  result += ",\"unavailable_reason\":\"state_changed\",\"detail\":";
+  result += xar::ck3_12004::SerializeCampaignRootStateChangedDiagnostic12004(detail);
   return result + "}";
 }
 
@@ -13140,6 +13162,13 @@ std::string RunTypedQuery12002(
           request_id, state.state_revision, state.campaign_root_context_query_sequence,
           state.connection_generation, query.envelope.expected_snapshot,
           query.held_partition_failure);
+    } else if (readonly_diagnostic != nullptr &&
+        query.campaign.unavailable_reason == "state_changed" &&
+        query.held_partition_failure.campaign_root_state_changed.has_value()) {
+      *readonly_diagnostic = CampaignRootStateChangedDiagnosticFrame12004(
+          request_id, state.state_revision, state.campaign_root_context_query_sequence,
+          state.connection_generation, query.envelope.expected_snapshot,
+          *query.held_partition_failure.campaign_root_state_changed);
     }
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
     state.observed_primary_heir_character_id.reset();

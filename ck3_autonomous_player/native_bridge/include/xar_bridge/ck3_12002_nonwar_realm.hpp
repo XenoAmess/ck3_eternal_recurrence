@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -48,6 +49,9 @@ struct HeldTitlePartitionFailure12002 {
   bool title_id_observed = false;
   bool successor_count_observed = false;
   bool capital_province_id_observed = false;
+  // A separate optional diagnostic family; held-title fields keep their meaning.
+  std::optional<ck3_12004::CampaignRootStateChangedDiagnostic12004>
+      campaign_root_state_changed;
 };
 
 // Reviewed against the frozen Crozier executable; no 1.19 layout reuse.
