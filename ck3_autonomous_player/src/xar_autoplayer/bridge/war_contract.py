@@ -9,6 +9,7 @@ from .province_besieging_army_selection_contract import normalize_province_besie
 
 from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
 from .army_actual_loss_writer_observations_contract import normalize_actual_loss_writer_observations_v1
+from .army_actual_supply_callback_observations_contract import normalize_actual_supply_callback_observations_v1
 from .battle_casualty_observation_contract import normalize_battle_casualty_observations_v1
 from .army_fixed_chunk0_preparation_contract import normalize_fixed_chunk0_preparation_inputs_v1
 
@@ -362,6 +363,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_fleet_supply_tick_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_daily_supply_dispatch_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_month_first_refill_call_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_loss_writer_observations_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_supply_callback_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"battle_casualty_observations_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
@@ -2154,6 +2156,12 @@ def _normalize_army_strength_row(
             value["actual_loss_writer_observations_v1"],
             current_regiment_ids=[row["army_regiment_id"]
                                   for row in result.get("regiment_strengths", [])],
+        )
+    if "actual_supply_callback_observations_v1" in value:
+        result["actual_supply_callback_observations_v1"] = normalize_actual_supply_callback_observations_v1(
+            value["actual_supply_callback_observations_v1"],
+            current_army_id=result["army_id"],
+            current_native_carmy_id=result["native_carmy_id"],
         )
     result["battle_casualty_observations_v1"] = normalize_battle_casualty_observations_v1(
         value.get("battle_casualty_observations_v1"),

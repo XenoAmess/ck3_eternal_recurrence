@@ -49,6 +49,7 @@ from .army_current_unit_arrival_prestore_disembark_write_projection import proje
 from .army_next_land_stock_supply_budget_projection import project_source_derived_next_land_stock_supply_budget_v1
 from .army_current_first_route_target_supply_contributors_projection import project_current_first_route_target_supply_contributors_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
+from .army_actual_supply_callback_observation_summary import summarize_actual_supply_callback_observations_v1
 from .army_current_callback_soldier_effects_projection import project_current_callback_soldier_effects_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
@@ -3902,6 +3903,11 @@ class GameplayBridgeService:
         ]
         return {
             "current_callback_supply_risk_v1": risks,
+            "actual_supply_callback_observation_summary_v1": [
+                {"army_id": row["army_id"],
+                 "observation": summarize_actual_supply_callback_observations_v1(row)}
+                for row in rows
+            ],
             "current_callback_soldier_effects_v1": [
                 {"army_id": row["army_id"], "projection": project_current_callback_soldier_effects_v1(
                     row, risk["projection"])}
