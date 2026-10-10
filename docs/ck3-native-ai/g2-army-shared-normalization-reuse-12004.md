@@ -1,6 +1,7 @@
 # Army shared input normalization reuse (CK3 1.20.0.4)
 
-Status: source authored; Root consumer FIRST pending. No live latency or G2 credit.
+Status: offline registered consumer FIRST GREEN; integration pending. No live
+latency measurement or G2 credit.
 
 Actual Native60 R0086 Army before/after responses were about93MB and are already
 retained with single-pass thin extraction. This work does not reread those bodies.
@@ -42,7 +43,24 @@ copies, rejects a malformed distinct input, then makes one registered
 `ck3_auto_turn` call through the existing real Driver/Service harness. The old
 seven-scene method, native producer and build are not rerun.
 
-Oct10/W41: private source candidate only; consumer FIRST pending; zero new live
-qualification, zero saved days, zero Army loss proof, no latency claim. Root may
-integrate after the sole consumer succeeds. Current SDK624, public814 and frozen
-integration91 are untouched; candidate is an independent child of91bf6458.
+Root executed the sole new compound on 2026-10-10 from
+03:06:15.773838 to 03:06:27.454977 UTC (11.681139 seconds), exit 0. The receipt is
+`D:/codex-ck3-background-spill/army-shared-normalization-reuse-12004/root-FIRST01/FIRST-CONSUMER-RECEIPT.json`;
+the invocation record is the sibling `../ROOT-ACTUAL-FIRST01.json`. Executed
+production source was `b9941fc3c9e5a9fee78d1101d328fb1221bc00c3`.
+
+The compound observed six shared-family validator calls instead of twelve,
+twelve independent family copies, and two validations per family for separate
+legacy objects. Mutable rows remained independent; malformed distinct input was
+rejected; the cache ended with its normalization call. One registered
+`ck3_auto_turn` call used one transport request through the real Driver and
+Service route. Internal values, readiness, the native command body and the
+retained packet remained unchanged. Native producer replays and old seven-scene
+test runs were both zero. Fixture structured-result byte counts belong to the
+existing Native63 sharing contract; this cache change has zero wire-byte delta.
+
+Oct10/W41: offline consumer qualification GREEN; private integration pending;
+zero new game-live qualification, zero saved days, zero Army loss proof, and no
+live latency claim. The 11.681139-second compound duration is a harness duration,
+not game-query latency. Current SDK624, public814 and frozen integration91 are
+untouched; candidate is an independent child of91bf6458.
