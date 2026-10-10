@@ -87,6 +87,8 @@ def main():
     outputs = {'owned_actual_query_wire': projection}
     for label, update in (
         ('different-generation', lambda p: p['army_strengths'][0].update(native_carmy_id=-2113929183)),
+        ('invalid-native-sentinel', lambda p: p['army_strengths'][0].update(native_carmy_id=-1)),
+        ('negative-logical-army-id', lambda p: p['army_strengths'][0].update(army_id=-1)),
         ('unobserved-builder', lambda p: p['army_strengths'][0]['actual_army_late_event_observations_v1']['events'][0]['before_context'].update(builder_called=False)),
         ('unobserved-selected-effects', lambda p: p['army_strengths'][0]['actual_army_late_event_observations_v1']['events'][0].update(selected_effects_observed=True)),
         ('wrong-source-route', lambda p: p['army_strengths'][0]['actual_army_late_event_observations_v1']['events'][0].update(caller_return_rva=0x2639CF6)),

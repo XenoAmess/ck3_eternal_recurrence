@@ -49,3 +49,9 @@
 ## 存储与来源
 
 实际新 build 读取为两次有限范围，共 717 字节；getter 220 字节复用已有解码，没有重复 capture。原始新字节由 D 上统一 `shared-span-cache` 独占范围保存，本包记录其精确路径；没有在本包另存 bin 副本。元数据、topic、候选与回执按仓库统一存储策略保留有限复核期限，闭场清单见 `CLOSE-STORAGE.json`。
+
+## Windows include context 的局部标识符更正
+
+2026-10-10：55 的实际 Windows 接线编译暴露 `small` 宏碰撞。共享 helper 仅将三处局部变量 `small` 改为 `smaller_operand`，API、表达式、分支和算术语义均未改变。canonical46 header 当前为 2595 字节，SHA-256 `581e039ae734902263ff10f53a4b9b0343281dd8d42a91a50b16018f63853150`。字节级比较已确认除此三处替换外没有变动，详见 [IDENTIFIER-CORRECTION-46.json](IDENTIFIER-CORRECTION-46.json)。
+
+原 `e020` header 仍保存在 [55/arithmetic-a03-red-frozen.hpp](../continuation-55/arithmetic-a03-red-frozen.hpp)。09:45 的原聚焦回执与原请求保持历史内容，不能把原测试改记为当前 header 的新独立测试。55 的 [focused-wire-retry02/RESULT.json](../continuation-55/focused-wire-retry02/RESULT.json) 绑定当前 `581e` header，Windows 连接编译、一次 C++ fixture 与一次 Python 严格消费均 exit 0，源 pin 前后未变；复用这份更正后的 include-context 验证，没有重跑46/47独立 fixture。Defender 仍为 PENDING，未新增实机 credit。

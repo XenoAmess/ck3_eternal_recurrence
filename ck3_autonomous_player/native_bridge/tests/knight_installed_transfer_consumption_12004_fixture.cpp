@@ -158,7 +158,6 @@ struct World {
     second = MakeContext(selected_b, false);
     installed_first = MakeContext(linked, false);
     installed_second = MakeContext(linked, false);
-    memory.Put(selected_a, 0x1B0, carrier);
   }
 
   Context MakeContext(void *owner, bool alternate_c5) {
@@ -354,6 +353,10 @@ int main(int argc, char **argv) {
     World world;
     active = &world;
     Configure(world);
+    // The transfer carrier is installed after the preparation callback setup.
+    // Before this point the selected Character has the inherited known-null
+    // piety extension; no unrelated image threshold table is claimed/backed.
+    world.memory.Put(world.selected_a, 0x1B0, world.carrier);
     TransferArena arena;
     transfer_arena = &arena;
     Transfer(world.installed_first);
@@ -404,11 +407,19 @@ int main(int argc, char **argv) {
                     context.preparation_capture_at_consumption->context_identity == Identity(world.primary.context),
                 "transfer erased owned B preparation capture");
     }
+    const auto counters = std::string("new compound actual counters: wrapper=") +
+        std::to_string(world.wrapper_original_calls) + " getter=" + std::to_string(world.context_original_calls) +
+        " transfer=" + std::to_string(world.transfer_original_calls) +
+        " preparation=" + std::to_string(world.preparation_original_calls) +
+        " append=" + std::to_string(world.preparation_append_calls) +
+        " reached_piety_key_reads=" + std::to_string(world.memory.mapped_reads) +
+        " unexpected=" + std::to_string(world.memory.unexpected_reads) +
+        " abi=" + std::to_string(world.abi_matches);
     Require(world.wrapper_original_calls == 1 && world.context_original_calls == 9 &&
                 world.transfer_original_calls == 4 && world.preparation_original_calls == 6 &&
                 world.preparation_append_calls == 0 && world.memory.mapped_reads == 6 &&
-                world.memory.unexpected_reads == 0 && world.abi_matches,
-            "new compound changed original counts, ABI or added unknown source reads");
+                world.memory.unexpected_reads == 0 && world.abi_matches, counters.c_str());
+    std::cout << counters << '\n';
     const auto body = native::SerializeKnightStatConsumptionQuery12004(*query);
     // A later natural dispatch must not change the already retained event.
     Transfer(world.installed_second);

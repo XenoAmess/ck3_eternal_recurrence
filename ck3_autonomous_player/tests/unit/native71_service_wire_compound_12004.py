@@ -71,6 +71,7 @@ def main():
                           root / "continuation-59/candidate" / base / "bridge/service.py", pins)
     from xar_autoplayer.bridge.version_identity import CK3_12004, CK3_12003
     from xar_autoplayer.bridge.driver import BridgeUnavailableError
+    from xar_autoplayer.bridge.nonwar_private_build import private_native_provenance
     from xar_autoplayer.sway_formal_consumer import LEDGER_FILE, SCHEMA
     from xar_autoplayer.bridge.active_scheme_sway_completion_execution_private_transport import normalize_active_scheme_sway_completion_execution_v1
     from xar_autoplayer.bridge.active_scheme_sway_completion_termination_private_transport import normalize_active_scheme_sway_completion_termination_v1
@@ -175,8 +176,18 @@ def main():
     termination = normalize_active_scheme_sway_completion_termination_v1(
         termination_envelope["sway_completion_termination"], snapshot=snapshot,
         target_character_id=31900, scheme_instance_id=0x02000016)
+    # Match the real private transport's metadata projection using the actual
+    # packet's admitted build and frame, preserving both envelope and canonical
+    # provenance names. This adds no query or historical context reconstruction.
+    pins.append(pin(args.source_root / base / "bridge/nonwar_private_build.py"))
     for read, envelope in ((execution, execution_envelope), (termination, termination_envelope)):
-        read.update({key: envelope[key] for key in ("build_version", "executable_sha256")})
+        provenance_snapshot = {"diagnostics": {"hello": {
+            "game_version": envelope["build_version"],
+            "executable_sha256": envelope["executable_sha256"]}}}
+        read.update(private_native_provenance(provenance_snapshot))
+        read.update({key: envelope[key] for key in (
+            "build_version", "executable_sha256", "snapshot_revision", "date_raw",
+            "backend_id", "status", "private_build", "advertised")})
     args.output_dir.mkdir(parents=True, exist_ok=True)
     state_dir = args.output_dir / "sway-ledger"
     state_dir.mkdir()

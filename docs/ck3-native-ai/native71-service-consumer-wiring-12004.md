@@ -48,3 +48,34 @@ boundaries, uses the production strict parsers and Service, and emits its exact
 input/candidate pins and observed outputs. It does not rerun old source fixtures
 or claim CK3 gameplay acceptance. At source handoff, this compound is pending
 central execution; a source candidate is not a GREEN result.
+
+
+## 2026-10-10 actual central result
+
+The new Service compound is GREEN with eight checks, consuming the unchanged
+four actual continuation38b native leaf packets and continuation56's actual
+whole-wire packet. It verifies the current group adapter, native scalar and
+readiness preservation, unknown/empty/legacy/build/Province semantics, unknown
+historical stages, both Sway query routes, original-action ledger binding,
+stable terminal consumption, completion100 phase filtering and unmatched
+status1 remaining unattributed.
+
+The first Python run completed the Army checks, then exposed a fixture metadata
+omission before Sway ledger initialization. The necessary fixture-only fix uses
+the same existing `private_native_provenance` helper as the real private query
+transport and copies actual build/frame envelope metadata. One Python retry
+passed; no native invocation or compilation was repeated. The original failed
+fixture bytes and RED receipt remain preserved. Production Service/transport
+source did not change for this correction.
+
+Exact external evidence is under
+`D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-10/service59-new-compound01/RESULT.json`
+and its `python-only-retry01/RESULT.json`, `FOCUSED-VALIDATION.json` and observed
+outputs. The verified first Service candidate was previously adopted by Root;
+the later adopted59b/59c Service source retains this wiring and adds independent
+owned journal consumers. Their dedicated whole-query compounds are also GREEN,
+as recorded in
+[the compiled-effect query topic](native71-army-compiled-effect-query-consumer-12004.md).
+These are synthetic offline observations. Full monthly production readiness
+and CK3 gameplay acceptance remain false; regular-core historical ingress and
+its capture IDs are still unobserved.

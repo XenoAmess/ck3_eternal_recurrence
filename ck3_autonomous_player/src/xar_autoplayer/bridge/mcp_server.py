@@ -1516,25 +1516,20 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_current_first_heir_relationship_private_v1(
             expected_native_revision: int,
-            guardian_capture_callback_path: str | None = None,
             guardian_capture_output_directory: str | None = None,
             guardian_capture_owned_game_pid: int | None = None,
             guardian_capture_timeout_seconds: float = 360.0,
         ) -> dict[str, object]:
             """Read the current first heir, or capture fixed guardian factory sources."""
-            if guardian_capture_callback_path is not None:
-                import runpy
+            if guardian_capture_output_directory is not None:
+                from .guardian_factory_capture_private_v1 import capture_with_runtime_owner_driver
 
-                if guardian_capture_output_directory is None or guardian_capture_owned_game_pid is None:
-                    raise ValueError("guardian capture requires output directory and owned Game PID")
+                if guardian_capture_owned_game_pid is None:
+                    raise ValueError("guardian capture requires owned Game PID")
                 before = driver.take_internal_semantic_snapshot()
                 if before.get("native_revision") != expected_native_revision:
                     raise ValueError("guardian capture expected native revision differs from current frame")
-                callback = runpy.run_path(
-                    guardian_capture_callback_path,
-                    run_name="native71_same_driver_guardian_capture_callback",
-                )["capture_with_runtime_owner_driver"]
-                return callback(
+                return capture_with_runtime_owner_driver(
                     driver,
                     owned_game_pid=guardian_capture_owned_game_pid,
                     output_directory=Path(guardian_capture_output_directory),

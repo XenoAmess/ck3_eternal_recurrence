@@ -1,7 +1,8 @@
 # Native71 Army post-date callback initial stage — 1.20.0.4
 
 Status: source ordering and direct late-body stores closed; owned event-stage
-adapter authored **NOTRUN**. No new native observer, game call, build, saved day
+adapter authored; one new synthetic offline method executed **GREEN** by
+central owner 10 on 2026-10-10. No new native observer, game call, build, saved day
 or qualification replay occurs in this package. The existing qualified
 original-once `24E3410` observer and soldier-writer journal are reused.
 
@@ -119,11 +120,30 @@ prior mutator, new detour or stock/casualty inference. An empty retained family
 means no retained matching completed invocation. It cannot prove no callback
 or unchanged preceding state.
 
-One new synthetic offline focused consumer is authored NOTRUN. It verifies
+One new synthetic offline focused consumer was executed once by central owner
+10 at 09:22:28 UTC, exit 0. It verifies
 real-callsite classification, independent repeated entry fields and full64
 passed dates, partial capture, unmatched route, zero retained records, and
 refusal to use injected later-query membership. It does not replay the existing
 native callback fixture, journal qualification or registered Service compound.
+The actual receipt is
+`D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-41/root-first/RESULT.json`.
+This receipt covers the unchanged Python leaf and one test method. The dated
+continuation63 source category correction below adds no execution credit.
 Root owns the shared Service addition, the single new focus and subsequent
 integration. Full daily/monthly execution, complete prior manager transition,
 actual historical bucket ordinal and new live evidence remain false.
+
+## Source correction — 2026-10-10 continuation63
+
+The subsequent actual 252-byte `3765760` body closes its category: it is a
+compiled-effect execution wrapper, rather than a direct history append. It
+builds a wrapper context and calls `3765E50`; it has no direct receiver/history
+store. Earlier references to append in this topic and the initial immutable
+source increment were caller-role hypotheses while that callee was unresolved.
+The source-bound arguments remain exact: `2639C9F` receives Army1D8+40 and
+`24DD7B1` receives entry-saved Army1D8+230, both with context50. Those receivers
+are compiled-effect context sources. Their child effects remain separate.
+Continuation63 owns `army_compiled_effect_entry12004.hpp` and actual ingress
+return routes `2639CA4`/`24DD7B6`; Root owns any safe reader/publication hook.
+This correction adds no current-query-to-historical association or live credit.
