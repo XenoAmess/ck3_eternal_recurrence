@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-10T23:37:32.065527+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0055",
+  "screen_task": "common-acceptance-12004-20261010-a17",
+  "actual_final_offline_review": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\final-offline-root-review-001.json",
+    "bytes": 1555,
+    "sha256": "0db6ed744cd501557816a7eaab6c4bd8a2b625a6e39428c6f9571bb97a3876cc"
+  },
+  "actual_display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\display-restore-001.json",
+    "bytes": 761,
+    "sha256": "d5411a35b0f287ddaf65032ace536ca5c42cd4b924f79c318e114ede93bd72c8"
+  },
+  "actual_public_run": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\public-run-command-001\\RESULT.actual.json",
+    "bytes": 1650,
+    "sha256": "7541bfa516621e7c2f5b9820f4b1cb1380942762648390a6db993eac3a440708"
+  },
+  "original_host_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\host-original-process-exit.json",
+    "bytes": 246,
+    "sha256": "6175659db94102897f7f40e9851e6a9a71444be71e13b292e0f732c00c86d8fb"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\native-report.json",
+    "bytes": 5794129,
+    "sha256": "95e503d80016e22aa0b80179305fc0205c6de04f3c1107003cb2c2fadf6b3007"
+  },
+  "last_observed_owned_lease": {
+    "checkout_head": "87d5f16180d5affcee16ced4fcfb18e5e89694cb",
+    "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "event_id": "1d23ce90e9df4ae68e71834201004c51",
+    "expected_sequence": 4670,
+    "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "schema": "xar.promo.screen-lease-cas/v1",
+    "screen_resource": "ck3-screen:acquired",
+    "sequence": 4671,
+    "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "task_id": "common-acceptance-12004-20261010-a17",
+    "updated_at_utc": "2026-10-10T23:35:29.250057+00:00"
+  },
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "reason": "Actual failed run administratively closed; final offline reviewed; original display restored"
+}

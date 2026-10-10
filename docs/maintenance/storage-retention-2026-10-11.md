@@ -78,3 +78,10 @@ ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，�
 独立011实际准入2GiB，ADMISSION8775B / `afbbf05faad65cb09c5980dd9d059515d2b59184a5c229b1e4b38ff995280ebb` 位于 `C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-011/ADMISSION.actual.json`。基数135510258348B +010实际161111254B +闭账1MiB +新小增量32MiB -五副本458348713B +本场2147483648B =137395107545B，低于原配额137438953472B，余43845927B。原008/009已含的小上界未再加；五副本claim1460B / `ca3b0324e41daaa27b1a0d6acc67dbb4ddaf77c000b5a8da4f5c2c41d989d5ea` 已实际唯一创建，不能再抵扣。准入卷free619678306304B不代表项目实际占用。
 
 本轮CASE6 prepare/plan/preflight实际0，新v2 seed3740文件/146942067B及profile复制已纳入011。大prepared-case/2MB stdout保持外置，原[小准备证据](../li-yu-dao/2026-10-11-i4-case6-cache-preparation.md)入库，不声称cache engine命中或业务通过。011仍ACTIVE，实际run结束和keeper/CAS释放后再按限定新资产metadata闭账；未知全量与历史峰值继续null。原配额2026-10-12T05:19:51.814083Z、cache复核2026-10-17T13:06:29.278808Z不续，策略仍1.0.0，自动GC/自动预约尚未部署。
+
+
+### R55 预约011实际闭账
+
+真实追加时间：2026-10-10T23:48:42.406614+00:00。011已于2026-10-10T23:42:56.387502Z实际CLOSED_NO_FURTHER_WRITES_RESERVED。新保留逻辑量1004823890B，未来预约0，物理删除0；结束2GiB预约不等于释放2GiB硬盘。闭账回执7496B/SHA`698328e9cef1661e3f26fe4f2bf6540adb6907e54a8d445af3a198d991cc7ae3`、限定measurement16672B/SHA`2da9f1fc5ee169e73fe09ae611068e904a97c23206b66dad0d86dfff61950a02`在`C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-011/`；原小闭账及RESULT已收入[R55永久小证据](../li-yu-dao/2026-10-11-r55-i4-natural-expiry-red.md)。free618612236288B仅是当次卷读数。
+
+闭账002仅处理public-run-command receipts嵌套在actual_run下的真实重复测量，原public2/host1/normalfalse及所有范围/partition门槛保留。旧001未执行；没有全项目扫描或重读旧PE/SAVE/cache正文。五副本458348713B既有credit不再次扣减，旧R52 cache也不再计入。新source/runtime与下一场仍须独立准入；原配额Oct12、cache Oct17截止与通用策略1.0.0不续期，自动GC尚未部署。

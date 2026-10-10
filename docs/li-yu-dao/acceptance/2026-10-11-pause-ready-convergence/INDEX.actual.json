@@ -1,0 +1,86 @@
+{
+  "schema": "r55-pause-ready-convergence-candidate-package-v1",
+  "status": "SOURCE_ONLY_ROOT_REVIEW_PENDING",
+  "files": [
+    {
+      "path": "produce_candidate.py",
+      "bytes": 6512,
+      "sha256": "bf32f96d4ade2f166dfdbf6e616e5cc32d3a7ce1f188a228b4b55b259501d961"
+    },
+    {
+      "path": "prepare_ast_loader_delta.py",
+      "bytes": 2287,
+      "sha256": "788f8ecc40c9d588414b3ac5786eb0731f2eab7c9ac4d9df7507b4eb75d111f4"
+    },
+    {
+      "path": "run_focused_once.py",
+      "bytes": 3195,
+      "sha256": "4e97a525e5f8236add3b0cef216f8fed628eeb587f08687c2701652c41d5b0ad"
+    },
+    {
+      "path": "HOST.patch",
+      "bytes": 5504,
+      "sha256": "bfd61ddfb856de025152693eeda431ba6cdca7b5b19ac51199651828d57036a1"
+    },
+    {
+      "path": "AST-LOADERS.patch",
+      "bytes": 3928,
+      "sha256": "77a6946c9893296154747c3d1559ca42e9a2a919206f63a43a5a76eb79a30e44"
+    },
+    {
+      "path": "SOURCE-INDEX.actual.json",
+      "bytes": 977,
+      "sha256": "609afd346d6d35b73cd8617154cce9a60d6b7f0a0637ac1ff2f8359377a3b3bc"
+    },
+    {
+      "path": "AST-LOADERS-INDEX.actual.json",
+      "bytes": 2194,
+      "sha256": "ea102378ba169d040bfe36f4069006089f19c701f5e71f75060d121562ef7de3"
+    },
+    {
+      "path": "TEST-RESULT.actual.json",
+      "bytes": 2180,
+      "sha256": "133fafcb93f77c21d72fd956af026fca3958554ce432c85219b4149e3fd276a6"
+    },
+    {
+      "path": "stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stderr.log",
+      "bytes": 3198,
+      "sha256": "ccc74d868c4489c82a7c19876cd5669ba7fbe9ae3ab1e8f91b831178a486a24b"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 4253,
+      "sha256": "7d843ec32c1c9d2d7de763ea7f4219b5a9885b1c387f31cae3f1a755e2b44542"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py",
+      "bytes": 11214,
+      "sha256": "bf9d1bc7dcac799238dfd9ae2a2b463367b8158ed80dee83bf0407ac8295d392"
+    }
+  ],
+  "package_bytes_before_index": 45442,
+  "target_paths": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py",
+    "tools/test_ck3_mod_acceptance_pause.py",
+    "tools/test_ck3_mod_acceptance_day_result.py",
+    "tools/test_ck3_mod_acceptance_campaign_event.py",
+    "tools/test_ck3_mod_acceptance_preaction.py"
+  ],
+  "AST_validation": "PASS",
+  "focused_tests": {
+    "run_count": 1,
+    "tests": 11,
+    "exit_code": 0
+  },
+  "strict_frame_and_successor_AST_unchanged": true,
+  "MAIN_or_Git_mutated": false,
+  "business_or_live_credit": false,
+  "source_review_after_utc": "2026-10-17T23:44:58.300072+00:00",
+  "original_quota_and_cache_deadline_renewed": false
+}

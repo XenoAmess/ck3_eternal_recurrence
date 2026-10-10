@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-10T23:37:31.417118+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0055",
+  "screen_task": "common-acceptance-12004-20261010-a17",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\final-offline-001\\probe-1\\steam-moved.png",
+    "bytes": 881087,
+    "sha256": "08fe486d265b207366b147ea45a42be7d013572801db019336de771f818da877"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\final-offline-001\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1279,
+    "sha256": "9a60cbc3f50d811fe7f3f24541b52eb5a81118d5d6385beb10e794b7bd28bf14"
+  },
+  "visual_observation": "ROOT directly viewed the new moved frame; Steam bottom visibly reads 离线模式; taskbar clock shows 07:36, after original 07:14 startup frame.",
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\native-report.json",
+    "bytes": 5794129,
+    "sha256": "95e503d80016e22aa0b80179305fc0205c6de04f3c1107003cb2c2fadf6b3007"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\host-original-process-exit.json",
+    "bytes": 246,
+    "sha256": "6175659db94102897f7f40e9851e6a9a71444be71e13b292e0f732c00c86d8fb"
+  },
+  "normal_close_qualified": false,
+  "business_pass": false
+}

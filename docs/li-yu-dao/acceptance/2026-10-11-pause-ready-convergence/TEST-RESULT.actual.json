@@ -1,0 +1,58 @@
+{
+  "schema": "r55-pause-ready-convergence-offline-test-v1",
+  "started_at_utc": "2026-10-10T23:44:56.177338+00:00",
+  "finished_at_utc": "2026-10-10T23:44:58.300072+00:00",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\ck3_autonomous_player\\tests\\unit\\test_campaign_pause_ready_convergence.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "baseline_probe": {
+    "status": "ORIGINAL_READY_ONLY_REJECTION_REPRODUCED",
+    "type": "RuntimeError",
+    "error": "campaign pause readback lost the complete same-owner frame",
+    "failed_conditions": [
+      "mailbox.get(\"ready\") is not True and not running"
+    ],
+    "fresh_count": 1,
+    "mutations": [
+      [
+        "ck3_execute_step",
+        {
+          "step": "pause-map"
+        }
+      ]
+    ]
+  },
+  "original_host": {
+    "path": "C:\\csr14\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 269082,
+    "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+  },
+  "candidate_host": {
+    "bytes": 272486,
+    "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+  },
+  "test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\ck3_autonomous_player\\tests\\unit\\test_campaign_pause_ready_convergence.py",
+    "bytes": 11214,
+    "sha256": "bf9d1bc7dcac799238dfd9ae2a2b463367b8158ed80dee83bf0407ac8295d392"
+  },
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\stderr.log",
+    "bytes": 3198,
+    "sha256": "ccc74d868c4489c82a7c19876cd5669ba7fbe9ae3ab1e8f91b831178a486a24b"
+  },
+  "live_or_business_credit": false,
+  "game_or_native_runtime_called": false,
+  "MAIN_modified": false
+}

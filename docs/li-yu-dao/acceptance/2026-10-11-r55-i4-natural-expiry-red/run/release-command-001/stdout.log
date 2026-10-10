@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "87d5f16180d5affcee16ced4fcfb18e5e89694cb"
+    },
+    "last_sequence": 4672,
+    "next_step": "",
+    "pid": 15896,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R55_day29_pause_failure_preserved_host1_cleanup_closed_normalfalse_offline_reviewed_display_restored_keeperwait0",
+    "task_id": "common-acceptance-12004-20261010-a17",
+    "updated_at_utc": "2026-10-10T23:37:50.885678+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4672,
+    "event_id": "693e5d69d86541eb84435f8c8c2f7042",
+    "timestamp_utc": "2026-10-10T23:37:50.886720+00:00",
+    "kind": "completed",
+    "task_id": "common-acceptance-12004-20261010-a17",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R55_day29_pause_failure_preserved_host1_cleanup_closed_normalfalse_offline_reviewed_display_restored_keeperwait0",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "87d5f16180d5affcee16ced4fcfb18e5e89694cb"
+    }
+  }
+}

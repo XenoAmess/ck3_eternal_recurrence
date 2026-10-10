@@ -1489,6 +1489,41 @@ def campaign_event_instance(snapshot: object) -> int | None:
     return event["instance_id"]
 
 
+def _campaign_pause_pending_ready_successor(source: dict[str, object], snapshot: dict[str, object],
+                                           error: RuntimeError, *, allow_actor_change: bool = False) -> dict[str, object]:
+    """Keep a ready-only paused transition unqualified while its original read budget runs."""
+    detail = getattr(error, "ck3_campaign_pause_frame_diagnostic", None)
+    conditions = detail.get("conditions") if isinstance(detail, dict) else None
+    if (not isinstance(conditions, list) or not conditions
+            or any(not isinstance(row, dict) or type(row.get("failed")) is not bool for row in conditions)
+            or [row.get("source") for row in conditions if row["failed"]] !=
+                ['mailbox.get("ready") is not True and not running']):
+        raise error
+    diagnostics = snapshot["diagnostics"]
+    hello = diagnostics["hello"]
+    mailbox = diagnostics["last_heartbeat"]["main_thread_query_mailbox_v1"]
+    consecutive = mailbox.get("consecutive_verified")
+    if (snapshot["paused"] is not True or mailbox.get("ready") is not False
+            or mailbox.get("paused") is not True or mailbox.get("paused_main_thread_observed") is not False
+            or mailbox.get("application_main_observed") is not True
+            or type(consecutive) is not int or not 0 <= consecutive < 2
+            or type(hello.get("connection_generation")) is not int
+            or hello["connection_generation"] != diagnostics["connection_generation"]):
+        raise error
+    current = {"identity": (diagnostics["bridge_pid"], diagnostics["connection_generation"],
+                            snapshot["played_character"]["character_id"], snapshot["local_player_id"], snapshot["speed"],
+                            diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
+               "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
+               "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"],
+               "pause_transition": False, "pending_paused_ready": True}
+    identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
+                        all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
+    if (not identity_matches or current["rejections"] != source["rejections"]
+            or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
+        raise error
+    return current
+
+
 class PlanClient:
     def __init__(self, session: object, args: argparse.Namespace, report: dict[str, object], write: object) -> None:
         self.session, self.args, self.report, self.write = session, args, report, write
@@ -1741,9 +1776,13 @@ class PlanClient:
                         raise RuntimeError("campaign pause readback changed or lost the admitted event instance")
                     if event_instance is None:
                         event_instance = current_event
-                observed = require_campaign_pause_successor(previous, current, allow_running=True,
-                    allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,
-                    allow_pause_transition=True)
+                try:
+                    observed = require_campaign_pause_successor(previous, current, allow_running=True,
+                        allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,
+                        allow_pause_transition=True)
+                except RuntimeError as error:
+                    observed = _campaign_pause_pending_ready_successor(previous, current, error,
+                        allow_actor_change=allow_actor_change and not actor_changed)
                 actor_changed = actor_changed or observed["identity"][2] != previous["identity"][2]
                 previous = observed
                 if observed["pause_transition"] is True:
@@ -1751,7 +1790,13 @@ class PlanClient:
                         "snapshot_id": current["snapshot_id"], "date_raw": current["date_raw"],
                         "snapshot_paused": False, "owner_paused": True, "owner_ready": False,
                         "business_credit": False})
-                if current["paused"] is True:
+                if observed.get("pending_paused_ready") is True:
+                    evidence.setdefault("pending_owner_stamp_readbacks", []).append({
+                        "snapshot_id": current["snapshot_id"], "date_raw": current["date_raw"],
+                        "snapshot_paused": True, "owner_paused": True, "owner_ready": False,
+                        "consecutive_verified": current["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["consecutive_verified"],
+                        "business_credit": False})
+                elif current["paused"] is True:
                     evidence.update(status="FULL_PAUSED_FRAME_OBSERVED", ending_snapshot_id=current["snapshot_id"],
                                     ending_date_raw=current["date_raw"], pause_attempt_count=len(evidence["attempts"]))
                     return current

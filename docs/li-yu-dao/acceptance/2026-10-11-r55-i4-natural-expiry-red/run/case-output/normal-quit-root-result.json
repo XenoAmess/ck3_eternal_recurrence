@@ -1,0 +1,48 @@
+{
+  "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0055",
+  "reviewer": "/root",
+  "at_utc": "2026-10-10T23:36:20.771074+00:00",
+  "pid": 16408,
+  "create_time": 1791674210.900395,
+  "original_hold_deadline": 1791681682.1008444,
+  "normal_gui_quit": false,
+  "direct_reviewed": false,
+  "evidence": [],
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "reason": "NEGATIVE_RESPONSE_HOST_FAILURE_ALREADY_EXITED_NO_OPERATOR_GUI_QUIT",
+  "expected_effect": "Reject existing manual normal-quit validation and preserve normal-close-error; do not finish_hold or replay",
+  "original_inputs": {
+    "case-output/normal-quit-awaiting.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\case-output\\normal-quit-awaiting.json",
+      "bytes": 630,
+      "sha256": "1f83f2b95010bb3a15e1c650e2c95bf4ccad6a4a845d42bbbb369206dba09192"
+    },
+    "case-output/manual-quit-awaiting.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\case-output\\manual-quit-awaiting.json",
+      "bytes": 631,
+      "sha256": "d55868598c651cae566b8db6e2b4b1ea0324171b942f07af6d7c5a0a0536cd9c"
+    },
+    "case-output/case-error-preserved.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\case-output\\case-error-preserved.json",
+      "bytes": 204,
+      "sha256": "133daf47e1f666380d9d940cf3375a1d9f8f8c8792996920e72e59f60dd66ad9"
+    },
+    "host-original-process-exit.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\host-original-process-exit.json",
+      "bytes": 246,
+      "sha256": "6175659db94102897f7f40e9851e6a9a71444be71e13b292e0f732c00c86d8fb"
+    },
+    "close-process-inspect-command-001/RESULT.actual.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\close-process-inspect-command-001\\RESULT.actual.json",
+      "bytes": 1061,
+      "sha256": "44dba7e9ed4b72ed93716cc054b340de78b28dd22c82e4916767238b111f748e"
+    },
+    "close-process-inspect-command-001/stdout.log": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\close-process-inspect-command-001\\stdout.log",
+      "bytes": 479,
+      "sha256": "e6a969fa41c22597da291b5165c5814a65c3957ca9c969a6e6faecf76391bde6"
+    }
+  }
+}

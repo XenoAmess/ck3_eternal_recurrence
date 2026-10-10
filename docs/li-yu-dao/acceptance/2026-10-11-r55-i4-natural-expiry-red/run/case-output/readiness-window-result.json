@@ -1,0 +1,34 @@
+{
+  "schema": "ck3-mod-acceptance-readiness-window-result-v1",
+  "binding": {
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0055",
+    "screen_task": "common-acceptance-12004-20261010-a17",
+    "live": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055",
+    "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-006\\state",
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\frozen-argv.json",
+      "bytes": 3026219,
+      "sha256": "25f9b5ee7c4629d82778ca35d6d2feefbdec1582e386758f22a4c111f9879788"
+    },
+    "runtime_manifest": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\manifest.json",
+      "bytes": 52685,
+      "sha256": "0b0e2cbda15e1cbd2e847abcc8215c48b5622fac80212cf5fdfb43ce2e8a4d8d"
+    }
+  },
+  "status": "READINESS_HOLD_OBSERVED",
+  "observed_at_utc": "2026-10-10T23:21:22.827362+00:00",
+  "observed_monotonic": 128945.9075396,
+  "elapsed_seconds": 286.93248329999915,
+  "deadline_monotonic": 129558.9750563,
+  "within_original_deadline": true,
+  "host_phase": "hold",
+  "host_started_at": "2026-10-10T23:16:37.607076+00:00",
+  "host_finished_at": null,
+  "restore_status": "ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND",
+  "restore_finished_at": "2026-10-10T23:21:21.478012+00:00",
+  "hold_until_utc_estimated": 1791681682.1008444,
+  "error": null,
+  "new_wait_or_replay": false,
+  "business_pass": false
+}

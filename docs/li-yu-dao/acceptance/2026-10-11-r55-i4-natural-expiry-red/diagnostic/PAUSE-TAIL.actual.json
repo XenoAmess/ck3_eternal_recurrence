@@ -1,0 +1,68 @@
+{
+  "schema": "r55-bounded-original-pause-tail-extract-v1",
+  "at_utc": "2026-10-10T23:40:45.886202+00:00",
+  "source_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\native-report.json",
+  "source_size": 5794129,
+  "source_mtime_ns": 1791675037704208900,
+  "source_file_id": 562949956499118,
+  "read_offset": 5663057,
+  "read_bytes": 131072,
+  "read_tail_sha256": "09997783897935197ed3fdcf32dfa17d73c126c9057e8aadc3bd83cdf83010f7",
+  "pause_readback_count": 29,
+  "last_two_pause_readbacks": [
+    {
+      "source": "campaign_postpause_same_owner_once_v1",
+      "starting_snapshot_id": "native:142",
+      "starting_date_raw": 53145384,
+      "attempts": [
+        {
+          "step": "pause-map",
+          "arguments": {
+            "step": "pause-map"
+          },
+          "status": "submitted",
+          "rpc_started": true
+        }
+      ],
+      "status": "FULL_PAUSED_FRAME_OBSERVED",
+      "business_credit_from_heartbeat": false,
+      "binding": {
+        "bridge_pid": 16408,
+        "connection_generation": 1,
+        "runtime_character_id": 31254,
+        "owner_tid": 1964
+      },
+      "ending_snapshot_id": "native:143",
+      "ending_date_raw": 53145384,
+      "pause_attempt_count": 1
+    },
+    {
+      "source": "campaign_postpause_same_owner_once_v1",
+      "starting_snapshot_id": "native:147",
+      "starting_date_raw": 53145408,
+      "attempts": [
+        {
+          "step": "pause-map",
+          "arguments": {
+            "step": "pause-map"
+          },
+          "status": "submitted",
+          "rpc_started": true
+        }
+      ],
+      "status": "FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED",
+      "business_credit_from_heartbeat": false,
+      "binding": {
+        "bridge_pid": 16408,
+        "connection_generation": 1,
+        "runtime_character_id": 31254,
+        "owner_tid": 1964
+      },
+      "error_type": "RuntimeError",
+      "pause_attempt_count": 1
+    }
+  ],
+  "report_whole_copied": false,
+  "mutating_replay": false,
+  "business_credit": false
+}

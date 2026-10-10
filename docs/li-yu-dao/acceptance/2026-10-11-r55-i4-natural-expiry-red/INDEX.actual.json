@@ -1,0 +1,169 @@
+{
+  "schema": "r55-permanent-small-index-v1",
+  "status": "RED",
+  "facts": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/FACTS.actual.json",
+  "selected_raw": [
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/diagnostic/EXTRACT.actual.json",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-failure-extraction-20261011-001\\EXTRACT.actual.json",
+        "bytes": 13223,
+        "sha256": "d4f122d1ec03739669d09aeada9ea7fcbd990257a079ab43cca2d2dd169845b8"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/diagnostic/PAUSE-TAIL.actual.json",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-failure-extraction-20261011-001\\PAUSE-TAIL.actual.json",
+        "bytes": 2057,
+        "sha256": "dd043e007444571d1b533b7c38dba3c4d1c436e81e84def2122124e3fc9b0a87"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/case-output/readiness-window-result.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\case-output\\readiness-window-result.json",
+        "bytes": 1497,
+        "sha256": "20c054d108dac95df83763e7ea94fbfc5b30cbf43d53042c645985082a216963"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/host-started.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\host-started.json",
+        "bytes": 3982,
+        "sha256": "b8737c32d9b392d4dd945627f5585993f5aef289b306c4542eb9bc0820afe8fe"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/host-original-process-exit.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\host-original-process-exit.json",
+        "bytes": 246,
+        "sha256": "6175659db94102897f7f40e9851e6a9a71444be71e13b292e0f732c00c86d8fb"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/keeper-actual-parent-exit.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\keeper-actual-parent-exit.json",
+        "bytes": 613,
+        "sha256": "80978261ecf0cd0519379261f3fbb9b20818dcc4f35fa42cd519bb156a90b584"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/public-run-command-001/RESULT.actual.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\public-run-command-001\\RESULT.actual.json",
+        "bytes": 1650,
+        "sha256": "7541bfa516621e7c2f5b9820f4b1cb1380942762648390a6db993eac3a440708"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/public-verify-command-001/RESULT.actual.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\public-verify-command-001\\RESULT.actual.json",
+        "bytes": 1655,
+        "sha256": "b910ec8ce91db142dd2e1200e7d88be291efeefc9652b2c0fe508f71bf403222"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/case-output/normal-quit-root-result.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\case-output\\normal-quit-root-result.json",
+        "bytes": 2505,
+        "sha256": "209d1ba3eed5b1d5020ce85aa30205e93c9e3e44990e1553243809a7d2822be0"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/final-offline-root-review-001.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\final-offline-root-review-001.json",
+        "bytes": 1555,
+        "sha256": "0db6ed744cd501557816a7eaab6c4bd8a2b625a6e39428c6f9571bb97a3876cc"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/display-restore-001.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\display-restore-001.json",
+        "bytes": 761,
+        "sha256": "d5411a35b0f287ddaf65032ace536ca5c42cd4b924f79c318e114ede93bd72c8"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/keeper-stop-proof-001.json",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\keeper-stop-proof-001.json",
+        "bytes": 2389,
+        "sha256": "deb154d27b0a356301f886a1d8dfa8cd004fa0bc305f5d757c077e84c7d39799"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/release-command-001/stdout.log",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\release-command-001\\stdout.log",
+        "bytes": 1345,
+        "sha256": "2fe252ce296951fcba314e0426bc19a3a55e738c946ca726795079e413a37e29"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/storage/CLOSED-RESERVATION.actual.json",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-011\\CLOSED-RESERVATION.actual.json",
+        "bytes": 7496,
+        "sha256": "698328e9cef1661e3f26fe4f2bf6540adb6907e54a8d445af3a198d991cc7ae3"
+      }
+    },
+    {
+      "archive_relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/storage/RESULT.actual.json",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure-command-20261011-011\\RESULT.actual.json",
+        "bytes": 2074,
+        "sha256": "279764ff0ecca03d508c05dd0d3ec409ecf7a97cc36bd6deb846d9a678fb7ae7"
+      }
+    }
+  ],
+  "external_large_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0055\\native-report.json",
+    "bytes": 5794129,
+    "sha256": "95e503d80016e22aa0b80179305fc0205c6de04f3c1107003cb2c2fadf6b3007",
+    "handle_before": {
+      "device": 11439297576789895419,
+      "file_id": 562949956499118,
+      "bytes": 5794129,
+      "mtime_ns": 1791675037704208900,
+      "links": 1
+    },
+    "handle_after": {
+      "device": 11439297576789895419,
+      "file_id": 562949956499118,
+      "bytes": 5794129,
+      "mtime_ns": 1791675037704208900,
+      "links": 1
+    },
+    "path_after": {
+      "device": 11439297576789895419,
+      "file_id": 562949956499118,
+      "bytes": 5794129,
+      "mtime_ns": 1791675037704208900,
+      "links": 1
+    },
+    "body_read_passes": 1,
+    "full_report_copied": false,
+    "one_original_file_revision_only": true
+  },
+  "B4_source_only": {
+    "INDEX": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-construction-gates-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 2221,
+      "sha256": "2355b7496d2f79d4d61edb091d84dbf7c19c29c0ddec909a98f6eb773d280e49"
+    },
+    "FACTS": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-construction-gates-sourceonly-20261011-001\\CONSTRUCTION-FACTS.source-only.json",
+      "bytes": 9774,
+      "sha256": "4151a5978e55c0d47378c2803bf9524d11d013294363d47f6f53460daf44e3e1"
+    }
+  },
+  "no_live_or_business_PASS": true
+}

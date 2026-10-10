@@ -1,0 +1,19 @@
+test_active_event_is_not_silently_admitted (__main__.PauseReadyConvergenceTests.test_active_event_is_not_silently_admitted) ... ok
+test_existing_running_to_paused_transition_still_succeeds (__main__.PauseReadyConvergenceTests.test_existing_running_to_paused_transition_still_succeeds) ... ok
+test_explicit_original_command_deadline_is_not_reset (__main__.PauseReadyConvergenceTests.test_explicit_original_command_deadline_is_not_reset) ... ok
+test_managed_session_end_is_not_waited_through (__main__.PauseReadyConvergenceTests.test_managed_session_end_is_not_waited_through) ... Executing <Task finished name='Task-17' coro=<PauseReadyConvergenceTests.test_managed_session_end_is_not_waited_through() done, defined at C:\workspace\ck3_lyd_runtime_20261004\r55-pause-ready-convergence-sourceonly-20261011-001\ck3_autonomous_player\tests\unit\test_campaign_pause_ready_convergence.py:187> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.101 seconds
+ok
+test_never_ready_exhausts_original_deadline_without_mutation_retry (__main__.PauseReadyConvergenceTests.test_never_ready_exhausts_original_deadline_without_mutation_retry) ... ok
+test_other_guard_failure_immediately_preserves_original_error (__main__.PauseReadyConvergenceTests.test_other_guard_failure_immediately_preserves_original_error) ... ok
+test_owner_identity_and_clock_changes_are_not_waitable (__main__.PauseReadyConvergenceTests.test_owner_identity_and_clock_changes_are_not_waitable) ... Executing <Task finished name='Task-32' coro=<PauseReadyConvergenceTests.test_owner_identity_and_clock_changes_are_not_waitable() done, defined at C:\workspace\ck3_lyd_runtime_20261004\r55-pause-ready-convergence-sourceonly-20261011-001\ck3_autonomous_player\tests\unit\test_campaign_pause_ready_convergence.py:124> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.736 seconds
+ok
+test_pending_paused_frame_requires_later_original_ready_guard (__main__.PauseReadyConvergenceTests.test_pending_paused_frame_requires_later_original_ready_guard) ... ok
+test_pending_sequence_cannot_regress_after_first_read (__main__.PauseReadyConvergenceTests.test_pending_sequence_cannot_regress_after_first_read) ... ok
+test_ready_false_with_two_pumps_or_bad_stamp_is_not_transition (__main__.PauseReadyConvergenceTests.test_ready_false_with_two_pumps_or_bad_stamp_is_not_transition) ... Executing <Task finished name='Task-47' coro=<PauseReadyConvergenceTests.test_ready_false_with_two_pumps_or_bad_stamp_is_not_transition() done, defined at C:\workspace\ck3_lyd_runtime_20261004\r55-pause-ready-convergence-sourceonly-20261011-001\ck3_autonomous_player\tests\unit\test_campaign_pause_ready_convergence.py:151> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.336 seconds
+ok
+test_zero_then_one_pump_remain_unqualified_until_ready (__main__.PauseReadyConvergenceTests.test_zero_then_one_pump_remain_unqualified_until_ready) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.954s
+
+OK

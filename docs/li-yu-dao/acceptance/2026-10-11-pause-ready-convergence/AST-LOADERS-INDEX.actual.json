@@ -1,0 +1,64 @@
+{
+  "schema": "r55-pause-ready-four-ast-loader-delta-v1",
+  "status": "SOURCE_ONLY_NOT_ADOPTED",
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\AST-LOADERS.patch",
+    "bytes": 3928,
+    "sha256": "77a6946c9893296154747c3d1559ca42e9a2a919206f63a43a5a76eb79a30e44"
+  },
+  "files": [
+    {
+      "path": "tools/test_ck3_mod_acceptance_pause.py",
+      "original": {
+        "bytes": 10722,
+        "sha256": "b9e55d6553f5fc17590b1a4ba9ad184681dba3bc4e5e59e091b348a168c8cad2"
+      },
+      "candidate": {
+        "bytes": 10765,
+        "sha256": "93080cd5ae5938144aec10edd80d6bb38a9b3271e601fb14b75e699161b0ed7c"
+      },
+      "delta": "only one AST extracted dependency name",
+      "new_helper_dependency_closed": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_day_result.py",
+      "original": {
+        "bytes": 7266,
+        "sha256": "884f3e7e005c92299bec561eb55cdbdc452191fb2a9bfdc52e8f9efb8e1c1afc"
+      },
+      "candidate": {
+        "bytes": 7309,
+        "sha256": "0b4b4669e22cf7072b39d4bfc65082e3925f3d564700f24a68edb6488ea05634"
+      },
+      "delta": "only one AST extracted dependency name",
+      "new_helper_dependency_closed": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_campaign_event.py",
+      "original": {
+        "bytes": 11384,
+        "sha256": "c3d9e98b9e45657a653085a5b05ceeee051233c3c21b9d1782d9f055099db87a"
+      },
+      "candidate": {
+        "bytes": 11427,
+        "sha256": "e46e287105dd2f1352d8b6d97b5ae0e21075584673e354d34b805b28c469b984"
+      },
+      "delta": "only one AST extracted dependency name",
+      "new_helper_dependency_closed": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_preaction.py",
+      "original": {
+        "bytes": 13289,
+        "sha256": "59eea950a64564b735a4722be7fd96adf937bce0204287f67312c2c65b5ff4ca"
+      },
+      "candidate": {
+        "bytes": 13332,
+        "sha256": "6e9b962044e7331b76cd9749a36b23becf2bfc473d8df9db764a8e67e8bba7e7"
+      },
+      "delta": "only one AST extracted dependency name",
+      "new_helper_dependency_closed": true
+    }
+  ],
+  "old_test_matrix_rerun": false
+}

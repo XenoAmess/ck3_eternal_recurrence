@@ -1,0 +1,24 @@
+{
+  "schema": "r55-pause-ready-source-candidate-v1",
+  "status": "SOURCE_ONLY_NOT_ADOPTED",
+  "original_host": {
+    "path": "C:\\csr14\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 269082,
+    "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+  },
+  "candidate_host": {
+    "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "bytes": 272486,
+    "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\HOST.patch",
+    "bytes": 5504,
+    "sha256": "bfd61ddfb856de025152693eeda431ba6cdca7b5b19ac51199651828d57036a1"
+  },
+  "strict_frame_and_successor_function_AST_unchanged": true,
+  "live_credit": false,
+  "business_credit": false,
+  "same_mutating_pause_submission_count": 1,
+  "original_pause_deadline_extended": false
+}

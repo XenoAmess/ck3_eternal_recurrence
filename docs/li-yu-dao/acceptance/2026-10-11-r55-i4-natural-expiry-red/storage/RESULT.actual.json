@@ -1,0 +1,44 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-storage-closure011-sourceonly-20261011-002/close-reservation-root-only.py",
+    "--context",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0055/reviewed-context.json",
+    "--context-sha256",
+    "c2ac6ea188af78a0e56ff49744c542459d626095b5b4ddca0aedfb30814cfe5a",
+    "--ready-context-sha256",
+    "1f205452c209b6eb6ea856bbf95688f671c9e51accb5f2864acbf0d24fe67c59",
+    "--reviewed-context-sha256",
+    "c2ac6ea188af78a0e56ff49744c542459d626095b5b4ddca0aedfb30814cfe5a",
+    "--keeper-root",
+    "C:/workspace/ck3-common-runtime/keepers/20261011-a17",
+    "--actual-release-command",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0055/release-command-001/stdout.log",
+    "--allocator-command-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case6-allocate-command-20261011-001/RESULT.actual.json",
+    "--public-run-command-result",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0055/public-run-command-001/RESULT.actual.json",
+    "--shader-seed-manifest-sha256",
+    "a1fab6e0e92e4a8ea394d6e85e365f5c6be619e87d4f2c16b7ed9d2623cebe06",
+    "--frozen-head",
+    "87d5f16180d5affcee16ced4fcfb18e5e89694cb"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T23:42:54.571048+00:00",
+  "finished_at_utc": "2026-10-10T23:42:56.456809+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure-command-20261011-011\\stdout.log",
+    "bytes": 668,
+    "sha256": "d508b54a6683fc70b3a32d4646365f09aea8768436d9cd849f59e14bf17b349c"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure-command-20261011-011\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
