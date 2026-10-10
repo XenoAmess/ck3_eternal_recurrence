@@ -1,5 +1,75 @@
 # Actual-child guardian relation: named Character binding (1.20.0.4)
 
+## October10 O10-2: exact next typed-factory capture contract
+
+This follow-up uses source `91bf64589d78df866fdf6908841fc9b64e875ec7`.
+It reuses Native61's qualified private discovery job and four original fixture
+sidecars; there is no new production reader, query field or fixture. Actual66's
+152-byte registrar remains an opaque sample: its length23 literal does not
+identify either guardian key. Character+1B0 proves a full-ID peer-material
+lookup, without guardian direction, membership or coverage. The remaining
+join is **actual registered factory identity → typed creation/parsed-trigger/
+evaluator ABI**; actual-child generation-aware Core resolution already exists.
+
+The Root executable entry is the existing October10 controller artifact
+`two-factory-private-discovery74/ROOT-FUTURE-NATIVE61-PRIVATE-CAPTURE.py`.
+Its one listener belongs to a newly paired qualified profile. After obtaining
+that driver's actual paused semantic frame, the typed call is:
+
+```python
+driver.query_current_first_heir_relationship_private_v1(
+    expected_native_revision=actual_native_revision,
+    guardian_factory_sidecar_path=fresh_D_sidecar_path,
+    timeout_seconds=360.0,
+)
+```
+
+Native fixes the keys to `has_relation_guardian` and `has_relation_ward`.
+The caller supplies neither names nor addresses; the transport obtains its
+actual campaign-root context internally. Root binds the qualified full SDK
+source root, owned Game PID, paired pipe and fresh output directory. The old
+f998 source argument is historical. `capture_with_connected_driver` can reuse
+the same owned driver object; a second listener against a running SDK is not
+the path. The registered family MCP accepts only `expected_native_revision`,
+so an extra sidecar argument cannot be sent through that existing tool. A
+loaded Native60 profile predates the writer; SDK source alone cannot add it.
+
+The sidecar's `qualified=true` means the job and final family snapshots matched
+one paused frame. Each row separately retains found/name_missing/factory_missing/
+unavailable, stored name, NameID/mapID/recordID, factory/VT/opaque+8, four
+unassigned virtual slots, and COL/TD/type name. A missing file is not a missing
+factory; a qualified capture is not guardian membership.
+
+Only after a real hit, join its actual in-image slot RVAs to held actual4
+runtime-function metadata, deduplicate shared guardian/ward targets, and select
+one necessary factory body from actual type/call evidence. No Create/Evaluate
+slot, function RVA or byte count is guessed from the opaque sample. No literal
+or section locator repeats. This next finite body must close the actual child
+and target argument ABI before a useful pair observer is implemented.
+
+```mermaid
+flowchart TD
+  K[Two stock membership keys] --> Q[Existing same-paused-family private capture]
+  Q --> T[Actual factory VT COL TD and unassigned slots]
+  T -. real hit selects one finite body .-> A[Typed creation and evaluator ABI]
+  C[Actual roster child fullID and occurrences] --> R[Existing Core receiver]
+  R -. typed child and guardian arguments .-> A
+  P[Held Character+1B0 material] -. guardian coverage unproved .-> A
+  A -. source closure required .-> O[Specified pair independently true or false]
+  E[Selected scope educator] -. real child-bound execution owner unclosed .-> S[Educator fullID]
+```
+
+The future pair result retains child fullID/occurrences, target fullID,
+availability and true/false. False does not mean no guardian. An empty roster
+provides no substitute child or education action. Existing age/sex, childhood
+traits, Native38 focus and Native40 nine active education-point traits are
+reused. Native43 Person numerical material is not an educator identity. The
+stock effect's randomly selected guardian/tutor/guru `scope:educator` still
+needs its real child-bound executing owner and lifetime; candidates cannot
+replace it. The monthly conception consumer remains the independent dynasty
+lane. This contract is source research: capture NOTRUN, guardian/educator
+readiness false, and new FIRST/registered-consumer/live/G2 credit all zero.
+
 2026-10-09?10 / W41. Guardian membership remains research; Native61's
 private discovery seam is static-ready on offline fixtures only. Reuse
 Root's CK3 1.20.0.4 / Steam
