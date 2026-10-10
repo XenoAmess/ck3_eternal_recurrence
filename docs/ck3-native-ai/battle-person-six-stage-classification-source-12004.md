@@ -1,6 +1,6 @@
 # Person six-stage classification and additional numerical sources, actual 1.20.0.4
 
-Status: source implemented, Root FIRST pending. This package owns the direct `2BA9430` numerical
+Status: native fixture GREEN; Python consumer retry pending. This package owns the direct `2BA9430` numerical
 source branch of the six-stage count. The separate historical per-index
 `Character+C0+4*index` base observer belongs to source `5bbff26c`; it is not
 duplicated here. FullPerson, Entry and new G2 credit remain false.
@@ -188,3 +188,22 @@ count,170B caller and86B category getter are reused. Source worker builds,
 tests, imports, Game/SDK/process contacts and EXE reads are zero. This is an
 authored readonly observer awaiting qualification, with no production-live,
 FullPerson, Entry, forecast, gameplay-day or G2 credit.
+
+Root Native69 attempt01 subsequently compiled96 production and4 fixture
+owners, linked the DLL and two fixtures, and executed this four-whole producer
+once GREEN. The consumer failed on the unchanged second native packet's
+legitimate null at `base_point_inputs.values_i32[2]`: native `observed=true`
+records an attempted per-stage copy, which can remain unread/null. The bypass
+packet independently retains six `observed=false` slots with null values.
+The minimal Python fix normalizes each nullable scalar with `_number`; every
+present operand remains a strict signed32 integer and the existing observed/
+readiness relationships stay intact. No C++ or fixture input changes follow.
+
+The prior RED is retained at
+`D:/codex-ck3-background-spill/g2-native69-build01/attempt01/logs/consumer-FIRST-person-six-stage-base-points.stderr.log`.
+Its sequential failure in case2 implies that case1's loop assertions completed;
+there is no independent case1 GREEN receipt or completed consumer report.
+The same launcher can use `--resume-after-first` to consume only original
+cases2-4, retaining this explicitly inferred completed prefix. The existing
+four native packets are reused; no producer, compiler or old qualification
+is replayed. Root owns the consumer-only retry and final qualification.

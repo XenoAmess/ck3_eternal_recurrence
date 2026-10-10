@@ -172,7 +172,10 @@ def _base_point_inputs(value: object, leaf: dict) -> dict:
         "source_stage": _string(raw["source_stage"], field + ".source_stage"),
         "character_offset": _integer(raw["character_offset"], field + ".character_offset", 32, unsigned=True),
         "stride_bytes": _integer(raw["stride_bytes"], field + ".stride_bytes", 32, unsigned=True),
-        "values_i32": _numbers(raw["values_i32"], field + ".values_i32", 32),
+        "values_i32": [
+            _number(point, f"{field}.values_i32[{index}]", 32)
+            for index, point in enumerate(raw["values_i32"])
+        ] if isinstance(raw["values_i32"], list) else None,
         "ready": _boolean(raw["ready"], field + ".ready"),
         "reason": _string(raw["reason"], field + ".reason", optional=True),
     }
