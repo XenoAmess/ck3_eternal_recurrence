@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-r43-evidence-validation-v1",
+  "checked_utc": "2026-10-10T02:38:30.677551+00:00",
+  "archive_members_exact": true,
+  "archive_crc_valid": true,
+  "all_archived_bytes_sha256_rechecked": true,
+  "all_source_bytes_sha256_rechecked": true,
+  "source_root_counts_rechecked": true,
+  "actual_command_pins_checked": true,
+  "script_derivation_pins_checked": true,
+  "ci_existing_original_query_validation_reused": 41,
+  "ci_logs_nested_revalidated": false,
+  "saved_campaign_body_reads": 0,
+  "saved_campaign_hashes_recomputed": 0,
+  "cache_bodies_read": 0,
+  "old_large_STATE_or_sourceZIP_archived": false,
+  "new_sampling": false,
+  "runtime_operations": 0,
+  "entries": 506,
+  "archive": {
+    "path": "RAW-EVIDENCE.zip",
+    "bytes": 11849698,
+    "sha256": "a42370b4d2e6a14751aab1fb1df783da766d32059e30115681a24fb404fa6d0e"
+  },
+  "facts_sha256": "ac2d35f0a735bb8adaab0223eb3e45d0b40b45b619f7f138a17c074b8eef178b",
+  "index_sha256": "ddb68ad55a33f6d7960f12f3f6706731571cb905ac4b0b9f4cfc8955391db071",
+  "evidence_valid": true,
+  "business_pass": false,
+  "normal_exit_zero_proven": false
+}

@@ -1,0 +1,649 @@
+{
+  "schema": "ck3-r43-observed-startup-red-actual-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0043",
+  "checkout_head": "a967a41d178d5a7e080415e5f2376b58a70b0f60",
+  "source_root": "C:\\csr5",
+  "started_at": "2026-10-10T02:20:19.281027+00:00",
+  "finished_at": "2026-10-10T02:30:35.424317+00:00",
+  "readiness_timeout_seconds": 600,
+  "delayed_injection_requested": true,
+  "debug_mode_requested": true,
+  "injection_admitted": false,
+  "startup_observation_count": 967,
+  "startup_first_last": [
+    {
+      "at": "2026-10-10T02:20:30.336887+00:00",
+      "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+      "connected": false,
+      "semantic_state_available": false,
+      "bridge_pid": null,
+      "connection_generation": 0
+    },
+    {
+      "at": "2026-10-10T02:30:29.741735+00:00",
+      "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+      "connected": false,
+      "semantic_state_available": false,
+      "bridge_pid": null,
+      "connection_generation": 0
+    }
+  ],
+  "saved_native_frame_count": 0,
+  "steps": [],
+  "business_pass": false,
+  "case_acceptance_pass": false,
+  "native_status": "RED",
+  "native_error": "TimeoutError: saved campaign initial native connection/semantic frame was not ready before original readiness deadline",
+  "session_error": "AgentError: native-session failed after 603.373s (launch_error): CK3 launch contract failed safely: saved startup Setup completion marker missed the original readiness deadline",
+  "historical_cleanup_ok": false,
+  "historical_session_report": null,
+  "historical_original_createprocess_handle_exit_code": null,
+  "historical_job_final_active_count": null,
+  "host_original_parent_exit_code": 1,
+  "independent_observer_handle_exit": {
+    "at_utc": "2026-10-10T02:30:33.579721+00:00",
+    "elapsed_seconds": 601.9564286999957,
+    "pid": 10656,
+    "process_create_time": 1791598831.603684,
+    "wait_result": 0,
+    "actual_exit_code": 1,
+    "independent_observer_handle": true,
+    "original_createprocess_handle": false,
+    "signals_sent": false,
+    "business_pass": false
+  },
+  "independent_observer_handle_identity": {
+    "at_utc": "2026-10-10T02:20:31.622654+00:00",
+    "process": {
+      "name": "ck3.exe",
+      "cmdline": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "-debug_mode",
+        "-gdpr-compliant",
+        "-userdir=C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-005\\state\\profile",
+        "-loadsave=restored_campaign"
+      ],
+      "pid": 10656,
+      "create_time": 1791598831.603684,
+      "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+    },
+    "creation_filetime_100ns": 134360724316036840,
+    "psutil_to_raw_filetime_delta_100ns": 8,
+    "independent_observer_handle": true,
+    "original_createprocess_handle": false,
+    "rights": [
+      "SYNCHRONIZE",
+      "PROCESS_QUERY_LIMITED_INFORMATION"
+    ]
+  },
+  "normal_exit_zero_proven": false,
+  "actual_current_closeout": {
+    "at_utc": "2026-10-10T02:33:03.851059+00:00",
+    "ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "case_processes": [],
+    "expected_allocation_supervision": [
+      {
+        "name": "python.exe",
+        "pid": 412,
+        "create_time": 1791598696.9675949,
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\root-record-command-20261010-001.py",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r43-root-case-allocate-20261010-001",
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-004/runtime.local.json",
+          "--products",
+          "tools/ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-005/prepared/prepared-case.json",
+          "--attempt",
+          "a05",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a05",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0042",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a04",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0042\\release-command-001\\stdout.log"
+        ]
+      },
+      {
+        "name": "python.exe",
+        "pid": 12832,
+        "create_time": 1791598697.0810835,
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-004/runtime.local.json",
+          "--products",
+          "tools/ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-005/prepared/prepared-case.json",
+          "--attempt",
+          "a05",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a05",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0042",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a04",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0042\\release-command-001\\stdout.log"
+        ]
+      }
+    ],
+    "process_read_errors": [],
+    "control_files": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-005\\state\\control\\ck3.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-005\\state\\control\\unsafe-cleanup.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-005\\state\\control\\ck3.watchdog_error",
+        "exists": false
+      }
+    ],
+    "host_original_exit": {
+      "at_utc": "2026-10-10T02:30:35.977935+00:00",
+      "pid": 1836,
+      "returncode": 1,
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0043",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "independent_observer_handle_exit": {
+      "at_utc": "2026-10-10T02:30:33.579721+00:00",
+      "elapsed_seconds": 601.9564286999957,
+      "pid": 10656,
+      "process_create_time": 1791598831.603684,
+      "wait_result": 0,
+      "actual_exit_code": 1,
+      "independent_observer_handle": true,
+      "original_createprocess_handle": false,
+      "signals_sent": false,
+      "business_pass": false
+    },
+    "historical_host_cleanup_ok": false,
+    "historical_ck3_exit_code": null,
+    "historical_job_final_active_count": null,
+    "normal_exit_zero_claimed": false,
+    "note": "Independent observer handle proves actual CK3 exit1; fresh census permits release. Original CreateProcess-handle and Job shutdown records are still missing; cleanup_ok=false and no typed normal0 remain unchanged."
+  },
+  "keeper_original_parent_exit_code": 0,
+  "keeper_final_task_sequence": 4324,
+  "release_expected_task_sequence": 4324,
+  "release_global_event_sequence": 4327,
+  "release_resources": [],
+  "command_exit_codes": {
+    "prepare": 0,
+    "preflight": 0,
+    "allocate": 0,
+    "run": 2,
+    "verify": 2,
+    "observer": 0,
+    "release": 0
+  },
+  "final_steam_offline_review": {
+    "at_utc": "2026-10-10T02:33:03.853155+00:00",
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0043\\steam-final-recovery-001\\probe-1\\steam-moved.png",
+    "bytes": 879000,
+    "sha256": "86030045772a749f061c9e1aa3e42f3bbdf053b86010aa21cf264c60a3938bc1",
+    "direct_original_image_review": true,
+    "visible_offline_text": "离线模式",
+    "steam_offline_confirmed": true,
+    "visible_desktop_clock": "10:31 2026/10/10",
+    "actual_window_move_observed": true
+  },
+  "restored_display": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "public_verify_result": {
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "status": "NOT_RUN_OR_PRESERVED_FAILURE",
+    "normal_close": null,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false
+  },
+  "predecessor_closure_mode": "previous-shared-failed-launch",
+  "bootstrap_reused": false,
+  "startup_metrics": {
+    "schema": "ck3-r43-written-startup-final-metrics-v1",
+    "sealed_at_utc": "2026-10-10T02:32:09.195150+00:00",
+    "status": "EXISTING_SAMPLES_SUMMARIZED_INDEPENDENT_EXIT_1",
+    "snapshot": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r43-written-startup-samples-readonly-20261010-001\\snapshot-20261010T023104749821Z.actual.json",
+      "bytes": 66898,
+      "sha256": "d9662f05e3c91b97b8093dadb1a2d32e55c910bce043fc335dd2c7794f7a662c"
+    },
+    "sample_count": 20,
+    "sample_time_bounds_utc": [
+      "2026-10-10T02:20:31.878626+00:00",
+      "2026-10-10T02:30:04.722950+00:00"
+    ],
+    "sample_elapsed_bounds_seconds": [
+      0.25528579999809153,
+      573.0995754999967
+    ],
+    "identity": {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0043\\startup-observer-001\\HANDLE-READY.actual.json",
+        "bytes": 820,
+        "sha256": "5cae81f8041695055d27523ad4713d5549f91a90aefac931e7743cf633e1bead"
+      },
+      "value": {
+        "at_utc": "2026-10-10T02:20:31.622654+00:00",
+        "process": {
+          "name": "ck3.exe",
+          "cmdline": [
+            "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+            "-debug_mode",
+            "-gdpr-compliant",
+            "-userdir=C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-005\\state\\profile",
+            "-loadsave=restored_campaign"
+          ],
+          "pid": 10656,
+          "create_time": 1791598831.603684,
+          "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+        },
+        "creation_filetime_100ns": 134360724316036840,
+        "psutil_to_raw_filetime_delta_100ns": 8,
+        "independent_observer_handle": true,
+        "original_createprocess_handle": false,
+        "rights": [
+          "SYNCHRONIZE",
+          "PROCESS_QUERY_LIMITED_INFORMATION"
+        ]
+      }
+    },
+    "cpu_percent_convention": "100 percent equals one logical CPU core; this is not whole-machine utilization.",
+    "cpu_interval_count": 19,
+    "cpu_one_core_percent_range": [
+      238.80913175261193,
+      1864.562959021764
+    ],
+    "zero_cpu_interval_count": 0,
+    "cpu_cumulative_delta_seconds": 4732.859375,
+    "io_counter_deltas_first_to_last_sample": {
+      "read_count": 72839,
+      "write_count": 24848,
+      "read_bytes": 5869441508,
+      "write_bytes": 110791970,
+      "other_count": 4290167,
+      "other_bytes": 12400242
+    },
+    "rss_bytes_range": [
+      1531904,
+      6306656256
+    ],
+    "num_threads_range": [
+      1,
+      127
+    ],
+    "last_sample": {
+      "at_utc": "2026-10-10T02:30:04.722950+00:00",
+      "elapsed_seconds": 573.0995754999967,
+      "cpu_one_core_percent_over_interval": 440.1643534733802,
+      "io_deltas": {
+        "read_count": 2921,
+        "write_count": 2634,
+        "read_bytes": 153400930,
+        "write_bytes": 5823508,
+        "other_count": 33889,
+        "other_bytes": 20704
+      },
+      "num_threads": 124,
+      "rss_bytes": 6306656256,
+      "system_memory": {
+        "total": 34193182720,
+        "available": 17863229440,
+        "percent": 47.8,
+        "used": 16329953280,
+        "free": 17863229440
+      },
+      "swap": {
+        "total": 5100273664,
+        "used": 14217216,
+        "free": 5086056448,
+        "percent": 0.3,
+        "sin": 0,
+        "sout": 0
+      }
+    },
+    "sdl_game_window_observation_count": 19,
+    "sdl_game_window_time_bounds_utc": [
+      "2026-10-10T02:21:02.080579+00:00",
+      "2026-10-10T02:30:04.722950+00:00"
+    ],
+    "sdl_game_window_samples_visible": 19,
+    "sdl_game_window_samples_iconic": 0,
+    "sdl_game_window_samples_foreground": 0,
+    "distinct_foreground_hwnd_pid_pairs": [
+      [
+        263104,
+        7216
+      ]
+    ],
+    "first_sdl_game_window_observation": {
+      "index": 2,
+      "at_utc": "2026-10-10T02:21:02.080579+00:00",
+      "elapsed_seconds": 30.457229699997697,
+      "window": {
+        "hwnd": 394686,
+        "thread_id": 13824,
+        "title": "Crusader Kings III",
+        "class": "SDL_app",
+        "visible": true,
+        "iconic": false,
+        "rect": [
+          152,
+          59,
+          1768,
+          998
+        ]
+      },
+      "foreground_hwnd": 263104,
+      "foreground_pid": 7216,
+      "foreground_is_game": false
+    },
+    "last_sdl_game_window_observation": {
+      "index": 20,
+      "at_utc": "2026-10-10T02:30:04.722950+00:00",
+      "elapsed_seconds": 573.0995754999967,
+      "window": {
+        "hwnd": 394686,
+        "thread_id": 13824,
+        "title": "Crusader Kings III",
+        "class": "SDL_app",
+        "visible": true,
+        "iconic": false,
+        "rect": [
+          152,
+          59,
+          1768,
+          998
+        ]
+      },
+      "foreground_hwnd": 263104,
+      "foreground_pid": 7216,
+      "foreground_is_game": false
+    },
+    "sample_error_count": 0,
+    "pending_partial_json": [],
+    "independent_observer_exit": {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0043\\startup-observer-001\\EXIT.actual.json",
+        "bytes": 328,
+        "sha256": "0af508d7f3fb8bbd41338ff5a04b7383c6dcf0c58f5c813caae850e59da939a5"
+      },
+      "value": {
+        "at_utc": "2026-10-10T02:30:33.579721+00:00",
+        "elapsed_seconds": 601.9564286999957,
+        "pid": 10656,
+        "process_create_time": 1791598831.603684,
+        "wait_result": 0,
+        "actual_exit_code": 1,
+        "independent_observer_handle": true,
+        "original_createprocess_handle": false,
+        "signals_sent": false,
+        "business_pass": false
+      }
+    },
+    "last_cpu_sample_to_exit_gap_seconds": 28.856853199999023,
+    "boundary": "CPU/IO/window claims end at the last sampled instant. The later independent handle proves process exit code 1; it does not prove normal exit, business success, cleanup semantics or cause. No foreground/cause or deadlock inference.",
+    "process_window_screen_api_calls": 0,
+    "signals": 0,
+    "new_sampling": false,
+    "save_body_reads": 0,
+    "repo_writes": 0,
+    "business_pass": false
+  },
+  "cache_metadata_original_and_correction_preserved": true,
+  "cache_metadata_conclusion": "No evidence that R38 was seeded with a hot profile shadercache while public profiles were not. Both materializers construct fresh profile roots without copying shadercache; retained R38 shadercache creation and file mtimes are after actual launch.",
+  "cache_metadata_unknown": [
+    "Actual shadercache hit/compile behavior",
+    "Global OS/GPU/driver cache warmth",
+    "Loading timeout cause"
+  ],
+  "cache_metadata_non_atomic_C5_limit": "Taken while ROOT owns live R43; single non-atomic metadata traversal, not a pre-launch or final inventory.",
+  "cache_configuration_correction": {
+    "schema": "lyd.r43.cache-metadata-report.correction.v1",
+    "original_report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r43-profile-cache-metadata-readonly-20261010-001\\REPORT.zh.md",
+      "bytes": 2600,
+      "sha256": "9f63326e63a917d40b94e2838fac8ae64ad2ad92876670c950c188b9a186f20f"
+    },
+    "corrected_report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r43-profile-cache-metadata-readonly-20261010-001\\REPORT.corrected.zh.md",
+      "bytes": 2719,
+      "sha256": "1a875cb2c2281e4f5ed69a043a5ac272037907e94f7a3c678a5c580e862be077"
+    },
+    "source": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r38-root-materialize-transaction-only-cold-20261009-001.py",
+      "bytes": 5216,
+      "sha256": "44ccea7587cf9cfefea2f9fca45225c5686c5f1466d11d88fe57f7dc03ff275d"
+    },
+    "source_lines": [
+      {
+        "line": 9,
+        "text": "ORIGIN = B / 'live-attempt-031'"
+      },
+      {
+        "line": 33,
+        "text": "assert not RUN.exists()"
+      },
+      {
+        "line": 59,
+        "text": "    dest = RUN / 'content' / name"
+      },
+      {
+        "line": 67,
+        "text": "userdir = RUN / 'userdir'"
+      },
+      {
+        "line": 68,
+        "text": "(userdir / 'mod').mkdir(parents=True)"
+      },
+      {
+        "line": 69,
+        "text": "(userdir / 'save games').mkdir()"
+      },
+      {
+        "line": 70,
+        "text": "settings = []"
+      },
+      {
+        "line": 71,
+        "text": "for name in ('pdx_settings.txt', 'dlc_load.json', 'tutorial.txt'):"
+      },
+      {
+        "line": 72,
+        "text": "    source = ORIGIN / 'userdir' / name"
+      },
+      {
+        "line": 73,
+        "text": "    copied = userdir / name"
+      },
+      {
+        "line": 74,
+        "text": "    shutil.copy2(source, copied)"
+      },
+      {
+        "line": 75,
+        "text": "    assert pin(source)['sha256'] == pin(copied)['sha256']"
+      },
+      {
+        "line": 76,
+        "text": "    settings.append({'source': pin(source), 'copy': pin(copied)})"
+      }
+    ],
+    "materialized_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-038\\COLD-MATERIALIZED.json",
+      "bytes": 83770,
+      "sha256": "a789ca57d6a220f7f2e7d463c58f8d65fd0dc40599fb27c195f17fe49b1942a5"
+    },
+    "R38_actual_settings_count": 3,
+    "R38_settings_sources": [
+      {
+        "source": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-031/userdir/pdx_settings.txt",
+          "bytes": 7135,
+          "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+        },
+        "copy": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-038/userdir/pdx_settings.txt",
+          "bytes": 7135,
+          "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+        }
+      },
+      {
+        "source": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-031/userdir/dlc_load.json",
+          "bytes": 231,
+          "sha256": "e39c2057e5e20bfb29cb3abd5788bf6baa7ed291b9171d60cbdbcabf5f915c77"
+        },
+        "copy": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-038/userdir/dlc_load.json",
+          "bytes": 231,
+          "sha256": "e39c2057e5e20bfb29cb3abd5788bf6baa7ed291b9171d60cbdbcabf5f915c77"
+        }
+      },
+      {
+        "source": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-031/userdir/tutorial.txt",
+          "bytes": 57,
+          "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+        },
+        "copy": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-038/userdir/tutorial.txt",
+          "bytes": 57,
+          "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+        }
+      }
+    ],
+    "public_plain_configuration_count": 4,
+    "reason": "Initial report incorrectly called the three R38 copied ordinary files four configurations and called RUN/content mounted content; original receipt/source show the exact counts/paths. No metadata recapture and no cache/seed read.",
+    "cache_conclusion_changed": false
+  },
+  "actual_debug_log_last_line": "[10:27:16][D][gamestate.cpp:329]: Setup powerful vassals among a total of [35660] living character.",
+  "setup_completion_marker_seen": false,
+  "exact_ci_final": {
+    "schema": "ck3.exact-github-ci-observation.v1",
+    "head_sha": "a967a41d178d5a7e080415e5f2376b58a70b0f60",
+    "started_at_utc": "2026-10-10T02:20:29.657707+00:00",
+    "observed_at_utc": "2026-10-10T02:27:52.122030+00:00",
+    "api_total_count": 2,
+    "returned_count": 2,
+    "workflow_status": {
+      "Official Runner CI": {
+        "id": 38016435851,
+        "status": "completed",
+        "conclusion": "success",
+        "event": "push",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38016435851",
+        "head_sha": "a967a41d178d5a7e080415e5f2376b58a70b0f60",
+        "run_attempt": 1,
+        "created_at": "2026-10-10T02:17:44Z",
+        "updated_at": "2026-10-10T02:27:04Z",
+        "all_run_ids": [
+          38016435851
+        ],
+        "jobs": [
+          {
+            "id": 114107629157,
+            "name": "static",
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": [],
+            "failed_steps": []
+          }
+        ]
+      },
+      "Linear history": {
+        "id": 38016435827,
+        "status": "completed",
+        "conclusion": "success",
+        "event": "push",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38016435827",
+        "head_sha": "a967a41d178d5a7e080415e5f2376b58a70b0f60",
+        "run_attempt": 1,
+        "created_at": "2026-10-10T02:17:44Z",
+        "updated_at": "2026-10-10T02:18:30Z",
+        "all_run_ids": [
+          38016435827
+        ],
+        "jobs": [
+          {
+            "id": 114107636303,
+            "name": "No new merge commits",
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": [],
+            "failed_steps": []
+          }
+        ]
+      },
+      "Li Yu Dao static checks": {
+        "status": "NOT_TRIGGERED",
+        "not_counted_as_success": true,
+        "basis": "No matching workflow run in actual exact-head API response"
+      }
+    },
+    "observation_only": true,
+    "workflow_dispatch_performed": false,
+    "repository_mutation_performed": false,
+    "triggered_workflows_terminal": true,
+    "triggered_workflows_success": true,
+    "not_triggered_workflows": [
+      "Li Yu Dao static checks"
+    ],
+    "all_required_workflows_success": false
+  },
+  "ci_prior_original_query_pairs_verification_reused": 41,
+  "ci_tests_rerun": 0,
+  "source05_large_package_repacked": false,
+  "save_bodies_read_or_archived": false,
+  "cause_inference": null,
+  "game_actions_by_archiver": 0
+}
