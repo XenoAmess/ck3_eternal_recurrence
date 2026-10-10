@@ -23,3 +23,10 @@ ROOT在释放后以四条有记录的本地Git identity操作读回 `XenoAmess <
 当前归档见[acceptance索引](acceptance/2026-10-10-r45-etw-startup-red/README.md)、[实际事实](acceptance/2026-10-10-r45-etw-startup-red/FACTS.actual.json)与[原件清单](acceptance/2026-10-10-r45-etw-startup-red/INDEX.json)。同目录保留RAW-EVIDENCE.zip、VALIDATION及producer源码。91MB seed、ETL、dumper、二进制、缓存正文和旧source ZIP继续只保留外置引用。归档CRC/member/bytes与小原件SHA检查见实际VALIDATION；没有新增启动、SDK、屏幕操作或业务资格。
 
 本包与外置原件是当前诊断的保全与引用，不承诺永久可读；后续按仓库retention政策实行有期限管理。已有实际路径名及历史证据不因本次措辞调整而改写。
+
+
+## 2026-10-10 派生正文可用性勘误
+
+05:08:02.907437Z，实际 `etw-cpu-001/dumper.txt`（10,098,403,170 B；历史 SHA-256 `a3ce7977583cdcf0793aa4e2724d83842b91ad1162164b82020d7e2ee9ab58a7`）已按明确授权删除，路径已确认 absent；05:08:03.071381Z，同批 synthetic `offline-stack-001/one-dumper/events.csv`（1,092,354,095 B；历史 SHA-256 `3beff29c91464316402540b84d311bf99399cec2b5d510249993cb55840fccc0`）亦已删除。上文“dumper正文留在外置原路径”记录的是原归档时状态；这些路径现在只有历史身份和 tombstone，不能再视为当前可读正文。
+
+本次保留两原 ETL，实际打开 READ_DATA 成功且 size/mtime/native identity 有据，没有重新读取或 hash ETL/大文本；已校验摘要、源码和原导出命令回执保留，可在新的容量准入后从 ETL 重建。现有 process/profile/官方 stack 不在本次清理目标内。首次完整分析与原 RED 不改，startup 根因 UNKNOWN、业务 NOT_GREEN 不变。两项精确路径、原 ETL、删除时间、容量及 INDEX/RESULT/TOMBSTONES pins 见[清理记录](../maintenance/storage-cleanup-2026-10-10.md)。
