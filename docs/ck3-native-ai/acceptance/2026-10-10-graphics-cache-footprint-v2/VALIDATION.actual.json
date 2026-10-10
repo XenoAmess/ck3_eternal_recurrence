@@ -1,0 +1,50 @@
+{
+  "schema": "ck3-graphics-footprint-v2-source-validation-v1",
+  "recorded_at_utc": "2026-10-10T08:44:08.043877+00:00",
+  "adopted_files": {
+    "tools/ck3_mod_acceptance_graphics_cache.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 33562,
+      "sha256": "57fe9a32b638ca12098cb24cb930f0563f311cd07d4527b416363cd9555e5c36"
+    },
+    "tools/test_ck3_mod_acceptance_graphics_cache.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 41024,
+      "sha256": "8105857fab6ad082d56cc17fc043a57a2349a87afd0b27ef8cf9f673937606b7"
+    }
+  },
+  "candidate_exact_bytes_adopted": true,
+  "test_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-graphics-footprint-candidate-20261010-001\\TEST-RESULT.actual.json",
+    "bytes": 784,
+    "sha256": "34b3e22e6f334968e84cc5fe3e1c3765fca9483b6baacdfb8f6965c1c36ea4a0"
+  },
+  "test_stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-graphics-footprint-candidate-20261010-001\\test.stderr.log",
+    "bytes": 5005,
+    "sha256": "742f8196255df40e38ffffba55245ee383027a6f384ed2c25dbdfc82533186a9"
+  },
+  "test_started_at_utc": "2026-10-10T08:40:01.974378+00:00",
+  "test_finished_at_utc": "2026-10-10T08:40:16.661647+00:00",
+  "portable_tests_passed": 25,
+  "previous_cases": 17,
+  "new_cases": 8,
+  "actual_retained_process_exit_code": 0,
+  "ROOT_repeated_identical_suite": false,
+  "sample_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r47-dx11-cache-key-readonly-20261010-001\\REPORT.actual.json",
+    "bytes": 8655,
+    "sha256": "36f2841b80c54e2995502ea79676dc11951286ef096dbb0b9aa07c430eda1810"
+  },
+  "project_projection_is_engine_key": false,
+  "engine_cache_lookup_current_source_validation_or_hit_proven": false,
+  "actual_cache_copy_or_new_source_freeze_performed": false,
+  "game_or_native_build_performed": false,
+  "startup_qualified": false,
+  "formal_I3b_C3_I4_or_product_pass": false,
+  "old_v1_seed_or_key_modified": false,
+  "whole_business_freeze_preserved": true,
+  "qualification": "DERIVATIVE_GRAPHICS_CANDIDATE_NOT_LIVE_NOT_PRODUCT_PASS",
+  "policy_version": "1.0.0",
+  "automatic_TTL_renewal": false
+}

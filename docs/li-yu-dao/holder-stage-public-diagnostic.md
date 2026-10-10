@@ -26,6 +26,8 @@
 
 当前已发布 adapter/generator 在后继 `a22e0291e` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38036746599) 成功，终态更新时间 08:16:33 UTC。`1179a5313` 和 `532035269` 的原 Official 失败保留；其 Python-only 元数据问题由并发后继修复，不将源码检查或后继 CI 成功写为实机通过。
 
+随后采用[公共 graphics footprint v2](../ck3-native-ai/graphics-cache-footprint-v2.md)，完整业务冻结保持，旧 seed/key 不改写。25 项 portable suite 成功；后继 Source09 与新的 v2 seed 仍待实际生产与预算，不把源码采用写成诊断实机已跑。
+
 ## 验证
 
 主树采用后，5 项 adapter 测试及 3 项新生成器 AST 测试实际 exit 0，已接入原官方 CI。检查覆盖改变名单仍唯一保存、过期/不完整查询拒绝、七 AST 差异及完成变量缺失保留、去掉四个日志块后事务完整 AST 相同、D2b 停止且不继续 D3、非法模式拒绝。[精简实际回执](../ck3-native-ai/acceptance/2026-10-10-holder-stage-public-source-only/VALIDATION.actual.json)。没有重跑旧业务矩阵或旧实机。

@@ -10,6 +10,10 @@ import stat
 FEATURE = 'shader_cache_reuse'
 ORIGIN_SCHEMA = 'ck3-mod-acceptance-shader-cache-origin-v1'
 SEED_SCHEMA = 'ck3-mod-acceptance-shader-cache-seed-v1'
+SEED_SCHEMA_V2 = 'ck3-mod-acceptance-shader-cache-seed-v2'
+FOOTPRINT_SCHEMA = 'ck3-mod-acceptance-graphics-footprint-v2'
+PROJECTION_SCHEMA = 'ck3-mod-acceptance-graphics-projection-audit-v2'
+GAMEPLAY_CLASSES = ('common/scripted_effects/*.txt', 'events/*.txt', 'localization/<language>/*.yml')
 PREPARED_SCHEMA = 'ck3-mod-acceptance-prepared-graphics-cache-v1'
 QUALIFICATION = 'DERIVATIVE_GRAPHICS_CANDIDATE_NOT_LIVE_NOT_PRODUCT_PASS'
 CONFIGS = ('pdx_settings.txt', 'tutorial.txt', 'presets.txt', 'player/game_rules/presets.txt')
@@ -151,6 +155,126 @@ def _profile_key(rows, profile, read_root):
             'outer_descriptors': outers, 'dlc_load': _signature(rows['dlc_load.json'])}
 
 
+def _gameplay_class(relative):
+    """Only these three loader namespaces are omitted; all unknown content stays."""
+    parts = PurePosixPath(relative).parts
+    if len(parts) == 3 and parts[:2] == ('common', 'scripted_effects') and parts[2].endswith('.txt'):
+        return GAMEPLAY_CLASSES[0]
+    if len(parts) == 2 and parts[0] == 'events' and parts[1].endswith('.txt'):
+        return GAMEPLAY_CLASSES[1]
+    if (len(parts) == 3 and parts[0] == 'localization' and
+            re.fullmatch(r'[A-Za-z][A-Za-z0-9_-]*', parts[1]) and parts[2].endswith('.yml')):
+        return GAMEPLAY_CLASSES[2]
+    return None
+
+
+def _dlc_routing_bytes(raw, expected, routes):
+    """Replace only the enabled_mods JSON value, preserving every other byte."""
+    text = raw.decode('utf-8-sig')
+    decoder = json.JSONDecoder(object_pairs_hook=_pairs)
+    position = len(text) - len(text.lstrip())
+    require(text[position:position + 1] == '{', 'DLC profile requires a JSON object')
+    position += 1
+    span = None
+    while True:
+        while position < len(text) and text[position] in ' \r\n\t':
+            position += 1
+        if text[position:position + 1] == '}':
+            break
+        key, position = decoder.raw_decode(text, position)
+        require(isinstance(key, str), 'DLC object key must be a string')
+        while position < len(text) and text[position] in ' \r\n\t':
+            position += 1
+        require(text[position:position + 1] == ':', 'DLC object colon missing')
+        position += 1
+        while position < len(text) and text[position] in ' \r\n\t':
+            position += 1
+        begin = position
+        value, position = decoder.raw_decode(text, position)
+        if key == 'enabled_mods':
+            require(span is None and value == expected, 'DLC enabled routing differs')
+            span = (begin, position)
+        while position < len(text) and text[position] in ' \r\n\t':
+            position += 1
+        require(text[position:position + 1] in (',', '}'), 'DLC object separator missing')
+        if text[position] == '}':
+            break
+        position += 1
+    require(span is not None, 'DLC enabled routing missing')
+    normalized = text[:span[0]] + json.dumps(routes, separators=(',', ':')) + text[span[1]:]
+    return (b'\xef\xbb\xbf' if raw.startswith(b'\xef\xbb\xbf') else b'') + normalized.encode('utf-8')
+
+
+def _profile_key_v2(rows, profile, read_root, *, audit=None):
+    """Derivative input projection; not the opaque engine lookup key or hit proof."""
+    profile, read_root = Path(profile).resolve(), _plain_path(read_root, directory=True)
+    # Excluded gameplay bytes still undergo the complete business freeze check.
+    for relative, expected in rows.items():
+        _relative(relative)
+        require(_signature(_pin(read_root / relative)) == _signature(expected),
+                'Business bytes changed before graphics footprint')
+    require(len({name.casefold() for name in rows}) == len(rows), 'Duplicate business paths')
+    require(all(name in rows for name in CONFIGS) and 'dlc_load.json' in rows,
+            'Four configurations and DLC profile required')
+    canonical = {name: _signature(row) for name, row in rows.items() if name.startswith('mod-content/')}
+    require(canonical and all(len(PurePosixPath(name).parts) >= 3 for name in canonical),
+            'Complete canonical mod inventory required')
+    enabled = _read(read_root / 'dlc_load.json').get('enabled_mods')
+    require(isinstance(enabled, list) and enabled and all(isinstance(name, str) and
+            re.fullmatch(r'mod/[A-Za-z0-9_][A-Za-z0-9_-]*\.mod', name) for name in enabled),
+            'Ordered explicitly enabled canonical outer descriptors required')
+    require(len({name.casefold() for name in enabled}) == len(enabled), 'Duplicate enabled outer descriptor')
+    outers = [name for name in rows if name.startswith('mod/')]
+    require(len(outers) == len(enabled) and set(outers) == set(enabled),
+            'Enabled outer descriptors differ from declared business inventory')
+    require({PurePosixPath(name).parts[1] for name in canonical} == {Path(name).stem for name in enabled},
+            'Enabled outer descriptors differ from canonical mod-content trees')
+    permitted = set(canonical) | set(CONFIGS) | set(outers) | {'dlc_load.json'}
+    require(set(rows) == permitted, 'Unlisted business profile entry cannot enter graphics footprint')
+    ordered, excluded, routing = [], {}, []
+    for ordinal, outer in enumerate(enabled):
+        stem = Path(outer).stem
+        prefix = 'mod-content/' + stem + '/'
+        files = {}
+        for relative, signature in canonical.items():
+            if relative.startswith(prefix):
+                within = relative[len(prefix):]
+                category = _gameplay_class(within)
+                if category is None:
+                    files[within] = signature
+                else:
+                    excluded[relative] = {'class': category, **signature}
+        raw = (read_root / outer).read_bytes()
+        require(len(raw) == rows[outer]['bytes'] and hashlib.sha256(raw).hexdigest() == rows[outer]['sha256'],
+                'Declared outer descriptor changed')
+        matches = list(re.finditer(rb'^path="([^"\r\n]+)"\r?$', raw, re.MULTILINE))
+        require(len(matches) == 1 and len(re.findall(rb'^\s*path\s*=', raw, re.MULTILINE)) == 1,
+                'Exactly one canonical quoted outer path required')
+        require(Path(matches[0][1].decode('utf-8')).resolve() ==
+                (profile / 'mod-content' / stem).resolve(), 'Outer descriptor semantic path mismatch')
+        token = '<PROFILE>/mod-content/@' + str(ordinal)
+        normalized = raw[:matches[0].start(1)] + token.encode() + raw[matches[0].end(1):]
+        ordered.append({'files': files, 'outer_descriptor': {'bytes': len(normalized),
+                        'sha256': hashlib.sha256(normalized).hexdigest()}})
+        routing.append({'ordinal': ordinal, 'declared_outer': outer, 'canonical_stem': stem})
+    dlc_raw = (read_root / 'dlc_load.json').read_bytes()
+    require(len(dlc_raw) == rows['dlc_load.json']['bytes'] and
+            hashlib.sha256(dlc_raw).hexdigest() == rows['dlc_load.json']['sha256'], 'Declared DLC profile changed')
+    dlc = _dlc_routing_bytes(dlc_raw, enabled,
+                            ['<MOD:' + str(number) + '>' for number in range(len(enabled))])
+    result = {'schema': FOOTPRINT_SCHEMA, 'excluded_gameplay_classes': list(GAMEPLAY_CLASSES),
+        'ordered_mods': ordered, 'plain_configuration': {name: _signature(rows[name]) for name in CONFIGS},
+        'dlc_load_routing_normalized': {'bytes': len(dlc), 'sha256': hashlib.sha256(dlc).hexdigest()}}
+    if audit is not None:
+        audit.update({'schema': PROJECTION_SCHEMA, 'whole_business_file_count': len(rows),
+            'whole_business_inventory_sha256': _digest({name: _signature(row) for name, row in rows.items()}),
+            'excluded_gameplay_files': excluded, 'ordered_mod_routing': routing,
+            'retained_canonical_file_count': len(canonical) - len(excluded),
+            'graphics_footprint_sha256': _digest(result), 'qualification': QUALIFICATION,
+            'engine_cache_lookup_or_hit_verified': False, 'business_pass': False})
+    return result
+
+
 def _runtime_key(manifest, runtime, *, target=False):
     def selected(row):
         path = Path(runtime['paths'][row['path_key']]).resolve()
@@ -181,7 +305,7 @@ def _runtime_key(manifest, runtime, *, target=False):
             'native_files_sha256': _digest(native['files']), 'prepare_only_paths': sorted(PREPARE_ONLY_PATHS)}
 
 
-def _origin(origin_pin):
+def _origin(origin_pin, *, key_version=1, projection_audit=None):
     from ck3_mod_acceptance_allocate import previous_session_closure, closed_lease, read_actual_release
     origin = _checked(origin_pin)
     names = {'frozen_argv', 'prepared_case', 'runtime_local', 'native_report', 'host_started', 'host_exit',
@@ -229,8 +353,11 @@ def _origin(origin_pin):
     runtime_key = _runtime_key(manifest, runtime)
     exe_path = str((Path(runtime['game_dir']) / 'binaries/ck3.exe').resolve())
     require(freeze['files'].get(exe_path) == runtime_key['exe'], 'Source EXE identity was not frozen by this run')
-    key = {'runtime': runtime_key,
-           'profile': _profile_key(rows, Path(freeze['state_dir']) / 'profile', snapshot_root)}
+    require(type(key_version) is int and key_version in (1, 2), 'Explicit supported graphics key version required')
+    profile = Path(freeze['state_dir']) / 'profile'
+    profile_key = (_profile_key(rows, profile, snapshot_root) if key_version == 1 else
+                   _profile_key_v2(rows, profile, snapshot_root, audit=projection_audit))
+    key = {'runtime': runtime_key, 'profile': profile_key}
     return origin, freeze, runtime, key, closure
 
 
@@ -277,11 +404,16 @@ def _copy(source, target, expected=None):
     return {'path': str(target.resolve()), **row}
 
 
-def freeze_shader_cache_seed(origin_pin, output):
+def freeze_shader_cache_seed(origin_pin, output, *, key_version=1):
     """Explicit future action only; caller must first select and review the actual source."""
     from ck3_mod_acceptance_allocate import runtime_process_inventory
     import psutil
-    origin, freeze, runtime, key, closure = _origin(origin_pin)
+    require(type(key_version) is int and key_version in (1, 2), 'Explicit supported graphics key version required')
+    projection = {}
+    if key_version == 1:
+        origin, freeze, runtime, key, closure = _origin(origin_pin)
+    else:
+        origin, freeze, runtime, key, closure = _origin(origin_pin, key_version=2, projection_audit=projection)
     inventory = runtime_process_inventory(psutil, os.getpid())
     require(not inventory['blockers'], 'Active game/keeper/controller blocks derivative snapshot')
     source = Path(freeze['state_dir']) / 'profile/shadercache'
@@ -303,12 +435,20 @@ def freeze_shader_cache_seed(origin_pin, output):
                 'Source cache bytes/SHA changed before snapshot completion')
     final_inventory = runtime_process_inventory(psutil, os.getpid())
     require(not final_inventory['blockers'], 'Active game/keeper/controller appeared during derivative snapshot')
-    _origin(origin_pin)
-    manifest = {'schema': SEED_SCHEMA, 'snapshot_root': str(output.resolve()), 'source_origin': origin_pin,
+    if key_version == 1:
+        _origin(origin_pin)
+    else:
+        final_projection = {}
+        final_origin = _origin(origin_pin, key_version=2, projection_audit=final_projection)
+        require(final_origin[3] == key and final_projection == projection, 'Source graphics projection changed')
+    manifest = {'schema': SEED_SCHEMA if key_version == 1 else SEED_SCHEMA_V2,
+                'snapshot_root': str(output.resolve()), 'source_origin': origin_pin,
                 'cache_key': key, 'cache_key_sha256': _digest(key), 'files': rows,
                 'source_closure': closure, 'qualification': QUALIFICATION,
                 'startup_qualified': False, 'business_pass': False,
                 'actual_process_inventory': {'before': inventory, 'after': final_inventory}}
+    if key_version == 2:
+        manifest['graphics_projection'] = projection
     path = output / 'manifest.json'
     with path.open('x', encoding='utf-8', newline='\n') as stream:
         json.dump(manifest, stream, indent=2)
@@ -316,16 +456,27 @@ def freeze_shader_cache_seed(origin_pin, output):
     return _pin(path)
 
 
-def _seed(seed_pin, selection, preparation):
+def _seed(seed_pin, selection, preparation, *, projection=None):
     seed = _checked(seed_pin)
-    require(seed.get('schema') == SEED_SCHEMA and seed.get('qualification') == QUALIFICATION and
+    require(seed.get('schema') in (SEED_SCHEMA, SEED_SCHEMA_V2) and seed.get('qualification') == QUALIFICATION and
             seed.get('startup_qualified') is False and seed.get('business_pass') is False, 'Derivative seed cannot claim qualification')
-    origin, freeze, runtime, original_key, closure = _origin(seed['source_origin'])
+    source_projection, target_projection = {}, {}
+    version2 = seed['schema'] == SEED_SCHEMA_V2
+    if version2:
+        origin, freeze, runtime, original_key, closure = _origin(
+            seed['source_origin'], key_version=2, projection_audit=source_projection)
+        require(seed.get('graphics_projection') == source_projection, 'Source graphics projection changed')
+    else:
+        origin, freeze, runtime, original_key, closure = _origin(seed['source_origin'])
     profile = selection.state_dir / 'profile'
-    current_key = {'runtime': _runtime_key(selection.manifest, selection.runtime, target=True),
-                   'profile': _profile_key(business_files(preparation), profile, profile)}
+    rows = business_files(preparation)
+    profile_key = (_profile_key_v2(rows, profile, profile, audit=target_projection) if version2 else
+                   _profile_key(rows, profile, profile))
+    current_key = {'runtime': _runtime_key(selection.manifest, selection.runtime, target=True), 'profile': profile_key}
     require(seed.get('cache_key') == original_key == current_key and
             seed.get('cache_key_sha256') == _digest(current_key), 'Graphics cache key mismatch')
+    if version2 and projection is not None:
+        projection.update({'schema': PROJECTION_SCHEMA, 'source': source_projection, 'target': target_projection})
     snapshot = _plain_path(seed['snapshot_root'], directory=True)
     require(Path(seed_pin['path']).resolve() == snapshot / 'manifest.json', 'Seed manifest crossed its immutable snapshot')
     require(set(path.name for path in snapshot.iterdir()) == {'manifest.json', 'shadercache'}, 'Unlisted snapshot entry')
@@ -349,7 +500,8 @@ def _seed(seed_pin, selection, preparation):
 
 def prepare_graphics_cache(selection, seed_pin, preparation, output):
     require(profile_enabled(selection.manifest), 'Shared shader cache reuse is default OFF')
-    seed, rows, closure = _seed(seed_pin, selection, preparation)
+    projection = {}
+    seed, rows, closure = _seed(seed_pin, selection, preparation, projection=projection)
     profile = selection.state_dir / 'profile'
     destination = profile / 'shadercache'
     require(not destination.exists() and not destination.is_symlink(), 'New graphics destination required')
@@ -358,6 +510,8 @@ def prepare_graphics_cache(selection, seed_pin, preparation, output):
     receipt = {'schema': PREPARED_SCHEMA, 'profile_dir': str(profile.resolve()), 'seed': seed_pin,
                'cache_key_sha256': seed['cache_key_sha256'], 'files': files,
                'source_closure': closure, 'qualification': QUALIFICATION, 'business_pass': False}
+    if projection:
+        receipt['graphics_projection'] = projection
     path = Path(output) / 'graphics-cache-preparation.json'
     with path.open('x', encoding='utf-8', newline='\n') as stream:
         json.dump(receipt, stream, indent=2)
@@ -398,7 +552,9 @@ def validate_prepared_graphics(selection):
     graphics = selection.prepared['graphics_cache']
     profile = selection.state_dir / 'profile'
     graphics_union(business_files(selection.prepared['preparation']), graphics, profile)
-    seed, rows, closure = _seed(graphics['seed'], selection, selection.prepared['preparation'])
+    projection = {}
+    seed, rows, closure = _seed(graphics['seed'], selection, selection.prepared['preparation'], projection=projection)
+    require(graphics.get('graphics_projection', {}) == projection, 'Prepared graphics projection changed')
     require(graphics['cache_key_sha256'] == seed['cache_key_sha256'], 'Prepared graphics key changed')
     observed = _cache_tree(profile / 'shadercache')
     require(set(observed) == set(rows), 'Unlisted or missing prepared graphics entry')
