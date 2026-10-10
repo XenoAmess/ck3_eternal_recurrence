@@ -130,3 +130,29 @@ Worker Game/SDK, process/UI, EXE/hash, build/test/import0. Root's sole new sourc
 read is266B/1read. Existing qualifications are reused, not rerun. Natural
 actual battle event, FullPerson and complete forecast/G2 credit0; Root must
 perform the new offline qualification and later observe a natural subject event.
+
+## Native70 FIRST factory assertion RED and fixture-only correction
+
+Root compiled all457 production and3 fixture objects, the Runtime archive,
+DLL and all3 fixture links GREEN at frozen source
+`147bdb227e525cbad1977ffb911c0feb7b42b1e4`. Supply callback native/consumer
+qualification was separately GREEN and is not replayed. The new battle native
+FIRST stopped at `held actual4 observer factory does not match the source-first ABI`,
+before its owned graph/application/writer and before the sole consumer.
+Original receipt/log are retained under
+`D:/codex-ck3-background-spill/g2-native70-build01/attempt01/`.
+
+The fixture supplied a lowercase hardcoded SHA, while the production exact4
+factory compares the canonical uppercase `ck3_12004.hpp::kExecutableSha256`.
+It therefore returned disabled before the combined positive assertion; no
+native operand or ABI failure was demonstrated. The minimal correction includes
+the actual4 header and uses its canonical constant directly. The positive
+factory assertion is preserved, including the wrong-SHA rejection.
+
+Only the battle fixture TU requires replacement and its EXE relink. Production
+objects/archive/DLL and the other passed qualifications remain reusable. Root
+must retry only this failed new native whole into a fresh output directory,
+then execute its previously unexecuted sole registered consumer. This worker
+did no build/test/import/hash/EXE/Game/SDK/process execution. Status remains
+**AUTHOR_NOT_RUN correction**; the original harness RED is not erased and no
+new qualification or live credit is claimed.

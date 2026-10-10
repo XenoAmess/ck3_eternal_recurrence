@@ -1,4 +1,5 @@
 #include "xar_bridge/army_strength_v1_serializer.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
 
 #include <array>
@@ -28,8 +29,7 @@ constexpr std::int32_t kDate = 53288448;
 constexpr std::int64_t kSoft = 250000;
 constexpr std::int64_t kHard = 750000;
 constexpr std::uintptr_t kImage = 0x140000000ULL;
-constexpr std::string_view kExactSha =
-    "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
+constexpr std::string_view kExactSha = native::kExecutableSha256;
 
 void Check(bool condition, const char *message) {
   if (!condition) throw std::runtime_error(message);
