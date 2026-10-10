@@ -6,7 +6,7 @@
 
 来源必须绑定实际闭场 run 的 frozen argv、prepared、runtime、host/native 报告、原进程退出和 keeper/CAS 释放。匹配键包含实际游戏 EXE、host/native、共同源码、全部业务文件及配置；仅规范化已核验的两个外层 descriptor 的 profile 路径。原始缓存不改写，新 profile 和 allocator 输入分别复制并校验声明缓存，独立于业务清单；容量预算计入全部副本，按[通用存储策略](storage-retention-policy.md)登记期限。
 
-16 项针对性测试及 LYD 本机 R0044 真实来源绑定检查通过；原作者 `dbbb73de0` 经 rebase 为 `c22d56141` 并已推送。此结果只证明源码与来源校验。后续 LYD 本机 Source06 仅从该机 Source05 增加四个公共 Python 路径，host/native 保持字节一致；实际缓存命中、启动改善与业务通过仍待实机验证，不改变其他机器已选定的共同 runtime。
+16 项针对性测试及 LYD 本机 R0044 真实来源绑定检查通过；原作者 `dbbb73de0` 经 rebase 为 `c22d56141` 并已推送。此结果只证明源码与来源校验。本机 Source06 首次快照因缺少allocator既有闭场依赖而在复制前失败，最小 Source07 补齐该单文件；实际3,687文件快照及公共prepare、plan、无context预检均通过，host/native及业务字节保持。详见[冻结、失败与实际准备](ck3-native-ai/2026-10-10-shared-shader-cache-reuse.md)。缓存命中、启动改善与业务通过仍待实机验证，不改变其他机器已选定的共同runtime。
 
 ## 2026-10-10 Source14 已选定
 
