@@ -3475,3 +3475,11 @@ After Game/SDK closure, physical RAM was still99% with1.29GB available. One read
 ### 2026-10-10 09:29:41 CST actual R0085 failure-handling note
 
 A qualifier's exit0 does not prove readiness: R0085 returned TIMED_OUT after114 core queries and0 full snapshots, so paused13/full restored qualification is absent. Preserve the failed12-stream freeze, authenticated owned-stop/component observation and keeper CAS release separately. Retained physical6051 is the durable recovery boundary; opaque current Driver/unsaved observations do not create a new SAVE. One-frame limited unwind and raw-stack address candidates do not prove deadlock or ABI cause. The exact document-only correction's private validator GREEN is distinct from historical public CI failure; the nine already-passing checker tests were not replayed. Native60/SDK624 fallback remains an unexecuted plan.
+
+### 2026-10-10：exact SDK 稀疏检出与 profile 依赖
+
+Native71 的第一次 prepare 因 `ModuleNotFoundError: ck3_workshop_mcp` 失败。即使 `prepare-profile --xar-enabled xar_off`，当前入口仍调用 `tools/build_release.py` 渲染主 mod projection，并经 `workshop_compatibility_tags.py` 导入 `ck3_workshop_mcp/src`。仅检出 `ck3_autonomous_player/` 与 `tools/` 不足；在同一 exact pin 补齐 `ck3_workshop_mcp/`、`XenoAmess_s_Eternal_Recurrence/`、`workshop/` 后，fresh attempt02 的 profile/copy/rebind/preflight 全部 exit0，随后实际 paused13 GREEN。第一次 RED 保留在 `D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-managed/prepared/01-OFFICIAL-PREPARE-PROFILE-STDERR.log`。该结论只适用当前 profile 入口，不据稀疏目录名推断 SDK 或 native 能力缺失。
+
+### 2026-10-10：先等待 Game exit，再停止 custody
+
+R0087 已成功 SAVE6067，SDK exit0。stock Exit to Desktop 点击于07:38:17.859Z提交，helper 尚在 retained-handle wait 时，协调者于07:38:28.703Z提前提交 runner custody stop；Game于07:38:30.397Z退出码1。现有证据不能证明纯 stock UI 正常退出，也不能归因为 native crash。闭场必须先等待并读取 Game 的实际独立 exit 回执，再决定 runner 收口；工具返回 running session 不是动作完成。此处修正操作者顺序，未更改生产代码或重新跑整场。
