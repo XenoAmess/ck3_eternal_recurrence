@@ -1,0 +1,15 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "case_id": "i3b-formal-b5",
+  "business_contract_applicable": true,
+  "maximum_natural_days": 0,
+  "upstream_case_id": "i3b-formal-b4",
+  "terminal_definition_key": "lyd.431",
+  "terminal_native_option_indices": [0],
+  "factory_actions": 0,
+  "event_selections": 0,
+  "new_saved_body_reads": 1,
+  "whole_product_acceptance_credit": false,
+  "acceptance_scope": "B5 cold persistence only; an actual verified and normally closed B4 PASS is mandatory."
+}

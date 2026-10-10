@@ -1,0 +1,63 @@
+{
+  "schema": "lyd.observed-saved-title-binding-evidence.v1",
+  "status": "SOURCE_ONLY_OBJECT_ASSOCIATION_CANDIDATE",
+  "refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-r26-title18373-stream-selection-20261011-001.json",
+      "bytes": 4446,
+      "sha256": "7cd2c6ab1800b01f79512be1938b4790c8fba407e6f68bad5e649fa340cc5d5f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\native-evidence\\7955b50c4e12404bbbfd83ad15bf775f\\0096-confucian-readonly-religious_title.json",
+      "bytes": 4214,
+      "sha256": "2013f5c6460a0c72e89081f920899d5372bcd552c94df7026593493c2a2a154a"
+    },
+    {
+      "path": "C:\\lr26s1\\mod_li_yu_dao\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+      "bytes": 3022,
+      "sha256": "ad1e980311a58c4fcd4c375f5f456ce0110e993b5bda328d6f47f11c2cbc4968"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_confucian_title_profile.hpp",
+      "bytes": 1325,
+      "sha256": "b28deb10837d0ef2cff4c537720fdf1eb581f048488e8d347ca8d219b16427c4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_title_properties_leaf.hpp",
+      "bytes": 2031,
+      "sha256": "5f1bf314f4530f1840390b6debd388ed997519885cd6147ac9c498f82221b455"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_title_properties_leaf.cpp",
+      "bytes": 4899,
+      "sha256": "52f3d336b176e2df0a1a631a08ce217dacce35fd6270b44d030fddcf2f9878e6"
+    }
+  ],
+  "title_id": 18373,
+  "actor_id": 31254,
+  "faith_id": 107,
+  "date_raw": 53144712,
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "g3_public_revision": 32,
+  "g3_native_revision": 31,
+  "selected_checkpoint_ordinal": "0099",
+  "same_frame_proven": false,
+  "alias": {
+    "native": "definitive_form",
+    "saved": "definite_form",
+    "basis": "Actual same object plus exact factory setter and native field +0x2c; not decoded serializer"
+  },
+  "false_token_basis": {
+    "token": "no",
+    "actual_row_path": [
+      "default_coa"
+    ],
+    "scope": "General actual CK3 token format only",
+    "target_properties_false_observed": false,
+    "absent_key_defaults_to_false": false
+  },
+  "original_B4_protection_pass": false,
+  "B5_pass": false,
+  "business_pass": false
+}

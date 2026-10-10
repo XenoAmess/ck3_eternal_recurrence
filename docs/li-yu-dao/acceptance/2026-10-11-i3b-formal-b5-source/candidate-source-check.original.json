@@ -1,0 +1,57 @@
+{
+  "schema": "lyd.b5-main-adoption-source-check.v1",
+  "status": "AST_JSON_PATCH_SOURCE_CONSISTENCY_PASS",
+  "time_utc": "2026-10-10T20:00:19.890869+00:00",
+  "production004_byte_equal": [
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json"
+  ],
+  "patch_targets": [
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json",
+    "tools/test_lyd_i3b_formal_b5_adapter.py",
+    "tools/ck3_mod_acceptance_products.json"
+  ],
+  "patch_new_files_reconstruct_exact_bytes": true,
+  "registry_reviewed_six_line_seam_and_proposed_row_equal": true,
+  "python_AST": [
+    "run_portable.py",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+    "tools/test_lyd_i3b_formal_b5_adapter.py"
+  ],
+  "JSON": [
+    "ASSEMBLY-CHECK.actual.json",
+    "REGISTRY-ROW.candidate.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json"
+  ],
+  "portable_test_methods": [
+    "test_complete_pass_uses_dynamic_title_and_full_protections",
+    "test_red_or_administrative_or_incomplete_B4_never_qualifies",
+    "test_missing_upstream_rejects_before_profile_write",
+    "test_ref_bound_verify_seed_and_shared_manifest_are_mandatory",
+    "test_native_title_requires_exact_T_holder_four_attributes_and_law95",
+    "test_saved_title_qualification_unknown_fails_closed",
+    "test_absent_B5_result_remains_false_without_an_upstream_pass",
+    "test_cold_complete_or_changed_cache_has_one_save_and_zero_mutations"
+  ],
+  "portable_test_machine_or_R26_path_dependency": false,
+  "candidate_tests_executed": false,
+  "prior_provider_seven_tests_reexecuted": false,
+  "MAIN_Git_CI_or_registry_mutations_by_this_author": false,
+  "save_or_PE_body_reads": false,
+  "actual_B4_PASS_input": null,
+  "actual_B5_qualification": null,
+  "business_credit": false,
+  "whole_product_credit": false,
+  "intermediate_assembly_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-main-adoption-sourceonly-20261011-002\\ASSEMBLY-CHECK.actual.json",
+    "bytes": 515,
+    "sha256": "3ebf1ec230355f20bbaa37afa4496ad5befa7b1f1362cb2236c511a30d2a1617"
+  }
+}

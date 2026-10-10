@@ -2722,6 +2722,71 @@
           "product_release_pass": false
         },
         {
+          "id": "i3b-formal-b5",
+          "status": "ready",
+          "implementation_credit": "Formal B5 source route; actual normally closed verified B4 PASS and a separate cold saved/native qualification mandatory. Live NOT_RUN.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Separate paused B5 using existing formal shared case bounds; no inherited deadline extension.",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_query_actor_cached_succession_v1",
+            "ck3_query_confucian_assembly_predicates_v1",
+            "ck3_query_confucian_religious_title_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "formal-i3b-B5-cold-persistence-from-verified-B4-only",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "verified_normally_closed_B4_origin",
+            "exact_B4_checkpoint_cold_start",
+            "persisted_431_identity_and_dynamic_Title",
+            "native_ordered45_before",
+            "single_paused_SAVE_same_frame_G2_G3_cache",
+            "saved_Title_four_fields_and_exact_law95",
+            "full88_protection_and_ordered45",
+            "actual_shared_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "New cold case; no factory, event selection, advance_day or reuse of a failed B4 world.",
+          "product_release_pass": false
+        },
+        {
           "id": "holder-stage-diagnostic",
           "status": "ready",
           "implementation_credit": "Source-only single holder/resolve diagnostic; actual capture/normal close pending; no formal or product credit",

@@ -1,0 +1,109 @@
+{
+  "schema": "lyd.formal-b5-main-adoption-source-only.v2",
+  "status": "SOURCE_ONLY_PORTABLE_TESTS_NOT_EXECUTED",
+  "reviewed_production_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-title-provider-sourceonly-20261011-004\\INDEX.json",
+    "bytes": 2553,
+    "sha256": "14c679aafd9c7f6afc4f7c09c518abbd8bdd239f5a3119d13817f271fdcd1633"
+  },
+  "adoption_review": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-adoption-readonly-20261011-001\\REPORT.zh.md",
+    "bytes": 8008,
+    "sha256": "dedf8529a4addd86a3e75e13a6f47d09808f7241426ae16243098654a531c94b"
+  },
+  "author_sealer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-adoption-seal-20261011-002.py",
+    "bytes": 7225,
+    "sha256": "20fc8b7f5648f03f44b3cce64f7787430060945959d72fe98e9d612c3663d1e5"
+  },
+  "files": [
+    {
+      "path": "ASSEMBLY-CHECK.actual.json",
+      "bytes": 515,
+      "sha256": "3ebf1ec230355f20bbaa37afa4496ad5befa7b1f1362cb2236c511a30d2a1617"
+    },
+    {
+      "path": "PATCH.diff",
+      "bytes": 47944,
+      "sha256": "28f161fcf20ec8f3aaf514ec02d957791c4839a89a206e2e5ebba01e66554a49"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2936,
+      "sha256": "347b9cb6d0d4394dc15216a1002948f8fa5d16632d038f54cbd97504116827e8"
+    },
+    {
+      "path": "REGISTRY-ROW.candidate.json",
+      "bytes": 2382,
+      "sha256": "8855f1fffc58c06a4e36dce1c168bd03d8cf511a00ea273f2f3eea0a395d84de"
+    },
+    {
+      "path": "run_portable.py",
+      "bytes": 1032,
+      "sha256": "95e16c2fe8456152718c66c2f11e575ee41cf215298b684378c5e206edfd0263"
+    },
+    {
+      "path": "SOURCE-CHECK.actual.json",
+      "bytes": 2675,
+      "sha256": "aa3aa0026b218617f02329df6dcfd6735fe19c3701add3752b2d2d8442c50209"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json",
+      "bytes": 532,
+      "sha256": "dd8e4870cb5e5a464e27a4263c67be7c1bb8aefbf1483ce0342d49427266c52c"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+      "bytes": 24938,
+      "sha256": "986156bf6a302ccf2ee1e3f765c9e0a3afee83fda4ca012aad867fc836f7cd52"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json",
+      "bytes": 2504,
+      "sha256": "283f6326bf97488f5e00a4be293a96afbca8d8716df9284825a32bafe73fefa6"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json",
+      "bytes": 902,
+      "sha256": "daf0c2cdd1d6ef4409d11140dca0fdbbccc77f13066c73d14873d30a4731be2d"
+    },
+    {
+      "path": "tools/test_lyd_i3b_formal_b5_adapter.py",
+      "bytes": 13716,
+      "sha256": "f2fed2ab6e78dbb05b566ca4b4df44660b33bd29f786d511a45cd248b64ea684"
+    }
+  ],
+  "repository_targets": [
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_formal_b5_adapter.py",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.evidence.json",
+    "tools/ck3_mod_acceptance_cases/lyd_i3b_saved_title_binding_v1.json",
+    "tools/test_lyd_i3b_formal_b5_adapter.py",
+    "tools/ck3_mod_acceptance_products.json"
+  ],
+  "test_entry_after_adoption": [
+    "python",
+    "-B",
+    "tools/test_lyd_i3b_formal_b5_adapter.py"
+  ],
+  "test_entry_before_adoption": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-main-adoption-sourceonly-20261011-002\\run_portable.py",
+    "--dependency-tools",
+    "C:/workspace/ck3_eternal_recurrence/tools"
+  ],
+  "source_check": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-main-adoption-sourceonly-20261011-002\\SOURCE-CHECK.actual.json",
+    "bytes": 2675,
+    "sha256": "aa3aa0026b218617f02329df6dcfd6735fe19c3701add3752b2d2d8442c50209"
+  },
+  "four_production_files_exact004": true,
+  "ROOT_applies_runs_new_eight_methods_and_commits": true,
+  "prior_seven_leaf_tests_not_repeated": true,
+  "actual_valid_B4_world_and_new_same_checkpoint_B5_qualification": null,
+  "whole_product_credit": false,
+  "package_bytes_including_INDEX": 104238
+}

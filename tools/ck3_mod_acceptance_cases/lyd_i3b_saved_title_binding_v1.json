@@ -1,0 +1,41 @@
+{
+  "schema": "lyd.native-title.saved-field-binding.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "evidence_sha256": "283f6326bf97488f5e00a4be293a96afbca8d8716df9284825a32bafe73fefa6",
+  "law": {
+    "path": [
+      "laws"
+    ],
+    "shape": "bare_scalar_list"
+  },
+  "properties": {
+    "destroy_if_invalid_heir": {
+      "path": [
+        "destroy_if_invalid_heir"
+      ],
+      "true_token": "yes",
+      "false_token": "no"
+    },
+    "no_automatic_claims": {
+      "path": [
+        "no_automatic_claims"
+      ],
+      "true_token": "yes",
+      "false_token": "no"
+    },
+    "definitive_form": {
+      "path": [
+        "definite_form"
+      ],
+      "true_token": "yes",
+      "false_token": "no"
+    },
+    "always_follows_primary_heir": {
+      "path": [
+        "always_follows_primary_heir"
+      ],
+      "true_token": "yes",
+      "false_token": "no"
+    }
+  }
+}

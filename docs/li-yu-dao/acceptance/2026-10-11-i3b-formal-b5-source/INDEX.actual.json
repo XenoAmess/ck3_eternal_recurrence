@@ -1,0 +1,58 @@
+{
+  "schema": "lyd-b5-main-source-evidence-v1",
+  "at_utc": "2026-10-10T20:09:41.315893+00:00",
+  "scope": "8 synthetic tests PASS; formal B4/B5 live NOT_RUN; phase1 75% NOT_GREEN",
+  "files": [
+    {
+      "file": "candidate-INDEX.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-main-adoption-sourceonly-20261011-002\\INDEX.json",
+      "bytes": 4162,
+      "sha256": "bc9bd7ae28dfa7f8377e3fcc6c3302ea75f692d157a42344b0e7b6f00e13eecf"
+    },
+    {
+      "file": "candidate-source-check.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-main-adoption-sourceonly-20261011-002\\SOURCE-CHECK.actual.json",
+      "bytes": 2675,
+      "sha256": "aa3aa0026b218617f02329df6dcfd6735fe19c3701add3752b2d2d8442c50209"
+    },
+    {
+      "file": "review-INDEX.original.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-adoption-readonly-20261011-001\\INDEX.json",
+      "bytes": 964,
+      "sha256": "8974c7643d896dfb92d7f823ff355fbd19c9da9dc533df8a7ee51e1049b4bcd4"
+    },
+    {
+      "file": "review-REPORT.original.md",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-adoption-readonly-20261011-001\\REPORT.zh.md",
+      "bytes": 8008,
+      "sha256": "dedf8529a4addd86a3e75e13a6f47d09808f7241426ae16243098654a531c94b"
+    },
+    {
+      "file": "apply-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-apply-20261011-002\\RESULT.actual.json",
+      "bytes": 806,
+      "sha256": "bc2bd7e7cd145e2b90215cd2b206cfe1d95e72b936de400985fbcc6a07495f84"
+    },
+    {
+      "file": "test-command.actual.json",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-focused-tests-20261011-002\\RESULT.actual.json",
+      "bytes": 852,
+      "sha256": "69b30dc16dfd4f8a6eb6334a2fc5a75dda14f5f21df76200a6f68770a67fd6d8"
+    },
+    {
+      "file": "test.stderr.original.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-focused-tests-20261011-002\\stderr.log",
+      "bytes": 111,
+      "sha256": "3c0a4bc87f7dab262e3519feb32066d56f5a1e291836550773abef614c92eac1"
+    }
+  ],
+  "total_original_bytes": 17578,
+  "adopted_patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-formal-b5-main-adoption-sourceonly-20261011-002\\PATCH.diff",
+    "bytes": 47944,
+    "sha256": "28f161fcf20ec8f3aaf514ec02d957791c4839a89a206e2e5ebba01e66554a49"
+  },
+  "large_save_report_cache_copied": false,
+  "raw_review_after": "2026-11-09T20:01:21Z",
+  "compact_record_review_after": "2027-04-08T20:01:21Z"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.formal-b5-main-adoption.readonly.v1",
+  "status": "SOURCE_ADOPTION_POSSIBLE_WITH_REGISTRY_AND_FINAL_PORTABLE_TEST_WORK",
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-b5-main-adoption-readonly-20261011-001\\REPORT.zh.md",
+    "bytes": 8008,
+    "sha256": "dedf8529a4addd86a3e75e13a6f47d09808f7241426ae16243098654a531c94b"
+  },
+  "candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r53-formal-b5-title-provider-sourceonly-20261011-004/INDEX.json",
+    "bytes": 2553,
+    "sha256": "14c679aafd9c7f6afc4f7c09c518abbd8bdd239f5a3119d13817f271fdcd1633"
+  },
+  "provider_tests_from_ROOT": {
+    "directory": "C:/workspace/ck3_lyd_runtime_20261004/r53-b5-provider-focused-20261011-004",
+    "passed": 7,
+    "repeated": false
+  },
+  "new_B4_input_fields_needed": false,
+  "actual_B4_PASS_bundle": null,
+  "actual_B5_credit": null,
+  "MAIN_modified": false,
+  "tests_executed": false,
+  "save_or_PE_read": false
+}
