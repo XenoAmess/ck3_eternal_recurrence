@@ -201,22 +201,28 @@ def observe_decision(client, data, ordinal, *, front_frame=None):
          'fresh_revision': False},
         {'id': prefix + '-detail-tree', 'tool': 'ck3_inspect_gui_window_tree_v1',
          'args': {'window_kind': 'decision_detail'}, 'fresh_revision': False},
+        {'id': prefix + '-model-after', 'tool': 'ck3_query_ingame_decision_item_v1',
+         'args': {'decision_key': data['decision_key']}, 'fresh_revision': False,
+         'bind_previous_revision': True},
     ]
-    rows = client.execute_plan(steps, prefix + '-model-and-tree')
+    rows = client.execute_plan(steps, prefix + '-readonly-observation')
     require(len(rows) == len(steps), 'Incomplete original read-only observation; never replay')
     previous, frames = frame, []
-    for step, row in zip(steps, rows):
+    for step, row in zip(steps[:2], rows[:2]):
         require(row.get('id') == step['id'] and row.get('ok') is True and not row.get('error'),
                 'Original read-only observation failed or reordered; never replay')
         after = row['after_snapshot']
         same_paused_identity(client, previous, after)
         frames.append(after)
         previous = after
-    model, tree = [row['result'] for row in rows]
+    model, tree = [row['result'] for row in rows[:2]]
     observe_model(frame, model, data['decision_key'])
     after_tree = frames[1]
-    final_model, after_model = _call(client, prefix + '-model-after', 'ck3_query_ingame_decision_item_v1',
-        {'decision_key': data['decision_key'], 'expected_revision': after_tree['revision']}, after_tree)
+    final_row = rows[2]
+    require(final_row.get('id') == steps[2]['id'] and final_row.get('ok') is True and not final_row.get('error'),
+            'Original public action failed; never replay')
+    final_model, after_model = final_row['result'], final_row['after_snapshot']
+    same_paused_identity(client, after_tree, after_model)
     observe_model(after_tree, final_model, data['decision_key'])
     enabled = confirm_enabled(tree)
     proof = {'frame': after_model, 'model_before': model, 'detail_tree': tree,

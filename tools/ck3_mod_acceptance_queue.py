@@ -67,8 +67,12 @@ def validate_steps(steps, report):
     require(len(tools) == len(metadata) and all(isinstance(name, str) for name in tools),
             "Actual current MCP metadata has duplicate or invalid names")
     from jsonschema import Draft202012Validator
-    for step in steps:
+    for index, step in enumerate(steps):
         kind = step.get("kind", "tool")
+        bind_previous = step.get("bind_previous_revision", False)
+        require(type(bind_previous) is bool, "bind_previous_revision must be a literal boolean")
+        require(not bind_previous or kind == "tool" and index > 0,
+                "Previous-row revision requires a preceding step in the same tool plan")
         require(kind in ("tool", "advance_day", "finish_hold"), "Unqualified shared queue step kind: " + str(kind))
         if kind == "tool":
             name, arguments = step.get("tool"), step.get("args", {})
@@ -78,10 +82,15 @@ def validate_steps(steps, report):
             require(isinstance(schema, dict), "Actual input schema is missing: " + name)
             fresh = step.get("fresh_revision", True)
             require(type(fresh) is bool, "fresh_revision must be a literal boolean")
+            if bind_previous:
+                require(name in {"ck3_query_ingame_decision_item_v1"} and fresh is False and
+                        "expected_revision" in schema.get("properties", {}) and
+                        "expected_revision" not in arguments,
+                        "Previous-row revision requires a declared readonly query, false fresh flag and no explicit revision")
             # The existing host obtains the exact revision just before dispatch.
             # Leave its omitted revision field out of schema.required; validate
             # every supplied field without manufacturing a placeholder value.
-            if fresh and "expected_revision" in schema.get("properties", {}) and "expected_revision" not in arguments:
+            if (fresh or bind_previous) and "expected_revision" in schema.get("properties", {}) and "expected_revision" not in arguments:
                 schema["required"] = [key for key in schema.get("required", []) if key != "expected_revision"]
             Draft202012Validator.check_schema(schema)
             Draft202012Validator(schema).validate(arguments)

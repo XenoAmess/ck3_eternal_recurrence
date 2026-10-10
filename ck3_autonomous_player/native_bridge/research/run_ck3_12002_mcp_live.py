@@ -1009,6 +1009,7 @@ def native_server(args: argparse.Namespace) -> None:
         frontend_transition_timeout_seconds=240.0 if args.saved_campaign_server else 120.0,
         checkpoint_timeout_seconds=args.command_timeout, **driver_options,
     )
+    bind_stock_grant_title_picker_permission(driver, getattr(args, "private_grant_title_picker", False))
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_religion_personal_parameters_query = "ck3_query_player_religion_personal_parameters_v1" in driver.case_declared_read_only_mcp_tools
@@ -1283,6 +1284,34 @@ def episode_identity_frame(snapshot: object) -> dict[str, object]:
             "bridge_pid": pid, "connection_generation": generation}
 
 
+def _campaign_pause_frame_rejection_detail(predicates: tuple[tuple[str, object], ...],
+                                           observations: tuple[tuple[str, bool, object], ...]) -> dict[str, object]:
+    """Bounded diagnostic of the already rejected frame; no refresh or admission."""
+    conditions = []
+    for index, (source, evaluate) in enumerate(predicates):
+        try:
+            failed = bool(evaluate())
+            unavailable = None
+        except Exception as error:
+            failed = None
+            unavailable = type(error).__name__
+        conditions.append({"index": index, "source": source, "failed": failed,
+                           "unavailable_reason": unavailable})
+    fields = {}
+    for name, present, value in observations:
+        scalar = value is None or type(value) in (bool, int, float) or (isinstance(value, str) and len(value) <= 256)
+        fields[name] = {"present": present, "type": type(value).__name__ if present else None,
+                        "value": value if present and scalar else None,
+                        "unavailable_reason": "absent" if not present else None if scalar else "non_scalar_or_over_bound"}
+    failures = [row["index"] for row in conditions if row["failed"] is True]
+    return {"schema": "ck3-campaign-pause-same-owner-frame-diagnostic-v1",
+            "original_error": "campaign pause readback lost the complete same-owner frame",
+            "first_failed_condition": failures[0] if failures else None,
+            "conditions": conditions, "observations": fields,
+            "historical_callsite": None, "underlying_cause": None,
+            "additional_snapshot_or_RPC_or_retry": False, "business_credit": False}
+
+
 def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = False,
                                  allowed_event_instance: int | None = None,
                                  allow_pause_transition: bool = False) -> dict[str, object]:
@@ -1349,7 +1378,75 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
             or type(mailbox.get("current_tid")) is not int or mailbox["current_tid"] != mailbox["owner_tid"]
             or mailbox.get("stamp_read_success") is not True or type(mailbox.get("date_raw")) is not int
             or mailbox["date_raw"] != snapshot["date_raw"]):
-        raise RuntimeError("campaign pause readback lost the complete same-owner frame")
+        error = RuntimeError("campaign pause readback lost the complete same-owner frame")
+        error.ck3_campaign_pause_frame_diagnostic = _campaign_pause_frame_rejection_detail((
+            ('snapshot.get("episode_projection") != "native_campaign"', lambda: snapshot.get("episode_projection") != "native_campaign"),
+            ('snapshot.get("backend_id") != "native-headless"', lambda: snapshot.get("backend_id") != "native-headless"),
+            ('snapshot.get("source") != "injected-dll-named-pipe"', lambda: snapshot.get("source") != "injected-dll-named-pipe"),
+            ('snapshot.get("map_ready") is not True', lambda: snapshot.get("map_ready") is not True),
+            ('type(snapshot.get("format_version")) is not int', lambda: type(snapshot.get("format_version")) is not int),
+            ('snapshot["format_version"] != 1', lambda: snapshot["format_version"] != 1),
+            ('snapshot.get("complete_snapshot") is False', lambda: snapshot.get("complete_snapshot") is False),
+            ('type(snapshot.get("paused")) is not bool', lambda: type(snapshot.get("paused")) is not bool),
+            ('played.get("alive") is not True', lambda: played.get("alive") is not True),
+            ('snapshot.get("active_event") is not None and allowed_event_instance is None', lambda: snapshot.get("active_event") is not None and allowed_event_instance is None),
+            ('snapshot.get("one_life_terminal_reason") is not None', lambda: snapshot.get("one_life_terminal_reason") is not None),
+            ('snapshot.get("snapshot_id") != "native:" + str(snapshot["native_revision"])', lambda: snapshot.get("snapshot_id") != "native:" + str(snapshot["native_revision"])),
+            ('diagnostics.get("connected") is not True', lambda: diagnostics.get("connected") is not True),
+            ('diagnostics.get("semantic_state_available") is not True', lambda: diagnostics.get("semantic_state_available") is not True),
+            ('diagnostics.get("last_error") is not None', lambda: diagnostics.get("last_error") is not None),
+            ('diagnostics.get("transport_fatal_error") is not None', lambda: diagnostics.get("transport_fatal_error") is not None),
+            ('type(hello.get("pid")) is not int', lambda: type(hello.get("pid")) is not int),
+            ('hello["pid"] != pid', lambda: hello["pid"] != pid),
+            ('type(heartbeat.get("pid")) is not int', lambda: type(heartbeat.get("pid")) is not int),
+            ('heartbeat["pid"] != pid', lambda: heartbeat["pid"] != pid),
+            ('not isinstance(diagnostics.get("pipe_name"), str)', lambda: not isinstance(diagnostics.get("pipe_name"), str)),
+            ('not diagnostics["pipe_name"]', lambda: not diagnostics["pipe_name"]),
+            ('mailbox.get("installed") is not True', lambda: mailbox.get("installed") is not True),
+            ('mailbox.get("ready") is not True and not running', lambda: mailbox.get("ready") is not True and not running),
+            ('mailbox.get("stop") is not False', lambda: mailbox.get("stop") is not False),
+            ('type(mailbox.get("failure")) is not int', lambda: type(mailbox.get("failure")) is not int),
+            ('mailbox["failure"] != 0', lambda: mailbox["failure"] != 0),
+            ('type(mailbox.get("current_tid")) is not int', lambda: type(mailbox.get("current_tid")) is not int),
+            ('mailbox["current_tid"] != mailbox["owner_tid"]', lambda: mailbox["current_tid"] != mailbox["owner_tid"]),
+            ('mailbox.get("stamp_read_success") is not True', lambda: mailbox.get("stamp_read_success") is not True),
+            ('type(mailbox.get("date_raw")) is not int', lambda: type(mailbox.get("date_raw")) is not int),
+            ('mailbox["date_raw"] != snapshot["date_raw"]', lambda: mailbox["date_raw"] != snapshot["date_raw"]),
+        ), (
+            ('snapshot.episode_projection', 'episode_projection' in snapshot, snapshot.get('episode_projection')),
+            ('snapshot.backend_id', 'backend_id' in snapshot, snapshot.get('backend_id')),
+            ('snapshot.source', 'source' in snapshot, snapshot.get('source')),
+            ('snapshot.map_ready', 'map_ready' in snapshot, snapshot.get('map_ready')),
+            ('snapshot.format_version', 'format_version' in snapshot, snapshot.get('format_version')),
+            ('snapshot.complete_snapshot', 'complete_snapshot' in snapshot, snapshot.get('complete_snapshot')),
+            ('snapshot.paused', 'paused' in snapshot, snapshot.get('paused')),
+            ('snapshot.snapshot_id', 'snapshot_id' in snapshot, snapshot.get('snapshot_id')),
+            ('snapshot.native_revision', 'native_revision' in snapshot, snapshot.get('native_revision')),
+            ('snapshot.date_raw', 'date_raw' in snapshot, snapshot.get('date_raw')),
+            ('snapshot.one_life_terminal_reason', 'one_life_terminal_reason' in snapshot, snapshot.get('one_life_terminal_reason')),
+            ('played.alive', 'alive' in played, played.get('alive')),
+            ('diagnostics.connected', 'connected' in diagnostics, diagnostics.get('connected')),
+            ('diagnostics.semantic_state_available', 'semantic_state_available' in diagnostics, diagnostics.get('semantic_state_available')),
+            ('diagnostics.last_error', 'last_error' in diagnostics, diagnostics.get('last_error')),
+            ('diagnostics.transport_fatal_error', 'transport_fatal_error' in diagnostics, diagnostics.get('transport_fatal_error')),
+            ('diagnostics.bridge_pid', 'bridge_pid' in diagnostics, diagnostics.get('bridge_pid')),
+            ('diagnostics.connection_generation', 'connection_generation' in diagnostics, diagnostics.get('connection_generation')),
+            ('diagnostics.pipe_name', 'pipe_name' in diagnostics, diagnostics.get('pipe_name')),
+            ('hello.pid', 'pid' in hello, hello.get('pid')),
+            ('heartbeat.pid', 'pid' in heartbeat, heartbeat.get('pid')),
+            ('mailbox.installed', 'installed' in mailbox, mailbox.get('installed')),
+            ('mailbox.ready', 'ready' in mailbox, mailbox.get('ready')),
+            ('mailbox.stop', 'stop' in mailbox, mailbox.get('stop')),
+            ('mailbox.failure', 'failure' in mailbox, mailbox.get('failure')),
+            ('mailbox.current_tid', 'current_tid' in mailbox, mailbox.get('current_tid')),
+            ('mailbox.owner_tid', 'owner_tid' in mailbox, mailbox.get('owner_tid')),
+            ('mailbox.stamp_read_success', 'stamp_read_success' in mailbox, mailbox.get('stamp_read_success')),
+            ('mailbox.date_raw', 'date_raw' in mailbox, mailbox.get('date_raw')),
+            ("allowed_event_instance", True, allowed_event_instance),
+            ("active_event_present", True, snapshot.get("active_event") is not None),
+            ("running_admitted", True, running),
+        ))
+        raise error
     return {"identity": (pid, generation, actor, snapshot["local_player_id"], snapshot["speed"],
                          diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
             "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
@@ -2047,7 +2144,32 @@ class PlanClient:
             self.report.setdefault("fixture_inbox_attempts", []).append(result)
             self.write()
 
+    def bind_previous_revision_arguments(self, name, arguments, previous_rows):
+        """Bind only a declared readonly query to this plan's actual previous row."""
+        if name not in {"ck3_query_ingame_decision_item_v1"}:
+            raise ValueError("Previous-row revision binding requires a declared readonly query")
+        properties = self.tools.get(name, {}).get("inputSchema", {}).get("properties", {})
+        if "expected_revision" not in properties or not isinstance(arguments, dict):
+            raise ValueError("Previous-row query does not declare expected_revision")
+        if "expected_revision" in arguments or "$" in json.dumps(arguments):
+            raise ValueError("Previous-row revision cannot mix explicit revision or symbolic references")
+        if not previous_rows:
+            raise ValueError("Previous-row revision requires a completed predecessor in this plan")
+        previous = previous_rows[-1]
+        if (not any(previous is item for item in self.report["steps"])
+                or previous.get("ok") is not True or previous.get("error")
+                or not isinstance(previous.get("finished_at"), str) or not previous["finished_at"]):
+            raise ValueError("Previous-row revision predecessor is foreign or unfinished")
+        frame = previous.get("after_snapshot")
+        revision = frame.get("revision") if isinstance(frame, dict) else None
+        if type(revision) is not int or not 0 < revision <= 2**64 - 1:
+            raise ValueError("Previous-row actual after_snapshot lacks a positive revision")
+        return {**arguments, "expected_revision": revision}, {
+            "source_step_id": previous["id"], "expected_revision": revision,
+            "source": "same-plan-completed-row.after_snapshot"}
+
     async def execute(self, steps: list[dict[str, object]]) -> None:
+        previous_rows = []
         for index, step in enumerate(steps, 1):
             row = {"id": step.get("id", f"step-{len(self.report['steps']) + 1}"),
                    "plan": step, "started_at": now(), "ok": False}
@@ -2055,7 +2177,14 @@ class PlanClient:
             self.write()
             try:
                 kind = step.get("kind", "tool")
+                bind_previous = step.get("bind_previous_revision", False)
+                if type(bind_previous) is not bool:
+                    raise ValueError("bind_previous_revision must be a literal boolean")
+                if bind_previous and (kind != "tool" or step.get("fresh_revision", True) is not False):
+                    raise ValueError("Previous-row revision requires a readonly tool and fresh_revision=false")
                 menu_only = getattr(self.args, "frontend_mod_load_observation", False)
+                if bind_previous and menu_only:
+                    raise ValueError("Previous-row revision is unavailable in menu-only observations")
                 failure_shutdown = step.get("failure_shutdown") is True
                 failure_proof = None
                 if failure_shutdown:
@@ -2130,6 +2259,9 @@ class PlanClient:
                     arguments = step.get("args", {})
                     if kind == "raw_step":
                         arguments = {"step": step["step"], **arguments}
+                    if bind_previous:
+                        arguments, row["previous_revision_binding"] = self.bind_previous_revision_arguments(
+                            name, arguments, previous_rows)
                     result = await self.invoke(name, arguments, fresh_revision=step.get("fresh_revision", True))
                 row["result"] = result
                 for path, expected in step.get("expect", {}).items():
@@ -2157,11 +2289,15 @@ class PlanClient:
                 row["ok"] = True
             except Exception as error:
                 row["error"] = f"{type(error).__name__}: {error}"
+                pause_diagnostic = getattr(error, "ck3_campaign_pause_frame_diagnostic", None)
+                if isinstance(pause_diagnostic, dict):
+                    row["campaign_pause_frame_diagnostic"] = pause_diagnostic
                 if not step.get("continue_on_error", False):
                     raise
             finally:
                 row["finished_at"] = now()
                 self.write()
+            previous_rows.append(row)
 
     async def observe_final(self) -> None:
         """Proved lifecycle completion avoids a dead snapshot without clearing failures."""
@@ -3540,6 +3676,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         child_args.append("--private-succession-title-readonly")
     if getattr(args, "private_confucian_challenger_readonly", False):
         child_args.append("--private-confucian-challenger-readonly")
+    if getattr(args, "private_grant_title_picker", False):
+        child_args.append("--private-grant-title-picker")
     if getattr(args, "frontend_mod_load_observation", False):
         child_args += ["--frontend-mod-load-observation", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args,
@@ -3774,6 +3912,14 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     return report
 
 
+def bind_stock_grant_title_picker_permission(driver, enabled: bool) -> None:
+    """The global shared host feature is the only admission source for these tools."""
+    from xar_autoplayer.bridge.grant_title_picker_v1 import PERMISSION
+    if type(enabled) is not bool:
+        raise ValueError("stock grant admission requires an explicit boolean")
+    setattr(driver, PERMISSION, enabled)
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--agent-source-root", type=Path, help="clean worktree root or package src directory")
@@ -3813,6 +3959,8 @@ def parser() -> argparse.ArgumentParser:
                         help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")
     result.add_argument("--private-confucian-challenger-readonly", action="store_true",
                         help="Explicit shared admission of the existing complete Faith challenger/sponsor graph query; default off")
+    result.add_argument("--private-grant-title-picker", action="store_true",
+                        help="Explicit shared admission of existing stock grant Title query/prepare/select/send; default off")
     result.add_argument("--frontend-mod-load-observation", action="store_true",
                         help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",

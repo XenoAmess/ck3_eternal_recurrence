@@ -1,0 +1,157 @@
+{
+  "schema": "lyd.readonly-previous-row-small-import.v1",
+  "status": "SOURCE_READY_ACTUAL_FOCUSED_15_PASS",
+  "copy_rows": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\evidence\\RESULT.actual.json",
+      "bytes": 1191,
+      "sha256": "593e03730e5963f90e04b9ae570d15db009b3aac3672b718c5c358d938559f47",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/evidence/RESULT.actual.json",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\evidence\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/evidence/stdout.log",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\evidence\\stderr.log",
+      "bytes": 3005,
+      "sha256": "8315b1400628462cd7f5f56298eaecefc3a39447ee2563b6c665bc86f489ed11",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/evidence/stderr.log",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\evidence\\STATIC-SOURCE-PROOF.original.json",
+      "bytes": 427,
+      "sha256": "2869cd889fecd538b29ab7146c3aa23cf7d00d73a3d3da8563c7e69e6b00899a",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/evidence/STATIC-SOURCE-PROOF.original.json",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\evidence\\TARGETS.original.json",
+      "bytes": 1126,
+      "sha256": "d1c94feec3ee49d1cb4283f255adfa06ad5ee14dce0907914662853d11ee08ea",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/evidence/TARGETS.original.json",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\evidence\\TEST-SOURCE-TARGETS.original.json",
+      "bytes": 1098,
+      "sha256": "a081b2faad2f1331294e5a4a6d5457d1bb6cfa96caebdb7fc18d99b21050dc36",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/evidence/TEST-SOURCE-TARGETS.original.json",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\REPORT.md",
+      "bytes": 2235,
+      "sha256": "bfdec8fea9b3689ec3e37528e1a67f6d3f9919adaa39d40b0a54c075a4b2252f",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/REPORT.md",
+      "target_before": null
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\.gitattributes",
+      "bytes": 29,
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-i4-readonly-previous-row/.gitattributes",
+      "target_before": null
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-new-and-affected-focused-20261011-001\\RESULT.actual.json",
+      "bytes": 1191,
+      "sha256": "593e03730e5963f90e04b9ae570d15db009b3aac3672b718c5c358d938559f47"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-new-and-affected-focused-20261011-001\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-new-and-affected-focused-20261011-001\\stderr.log",
+      "bytes": 3005,
+      "sha256": "8315b1400628462cd7f5f56298eaecefc3a39447ee2563b6c665bc86f489ed11"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-003\\STATIC-SOURCE-PROOF.json",
+      "bytes": 427,
+      "sha256": "2869cd889fecd538b29ab7146c3aa23cf7d00d73a3d3da8563c7e69e6b00899a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-003\\TARGETS.json",
+      "bytes": 1126,
+      "sha256": "d1c94feec3ee49d1cb4283f255adfa06ad5ee14dce0907914662853d11ee08ea"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-004\\TEST-SOURCE-TARGETS.json",
+      "bytes": 1098,
+      "sha256": "a081b2faad2f1331294e5a4a6d5457d1bb6cfa96caebdb7fc18d99b21050dc36"
+    }
+  ],
+  "ci_incremental": {
+    "target": ".github/workflows/static-ci.yml",
+    "before": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 33133,
+      "sha256": "3e7e99f2d3cdbd09dce8df5e6b01f4b611d6394c9f81350c38ab053a6a6a9d40"
+    },
+    "after": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 33216,
+      "sha256": "4b3ceb8c7e25dd9091569dcca61e8abef25f19906ee9b150b2993dc5c7bc4bf1"
+    },
+    "patch": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-ci-and-evidence-sourceonly-20261011-005\\CI.incremental.patch",
+      "bytes": 591,
+      "sha256": "c5cb710e307bdac10784b697e2bc2eb12135c80e4c9f71d473802ef30908eda7"
+    },
+    "added_command": "python -B -X utf8 tools/test_ck3_mod_acceptance_previous_row_readonly.py",
+    "existing_batch_ci_duplicate": false
+  },
+  "source_and_tests_already_owned_by_root": {
+    "production_patch": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-003\\candidate.patch",
+    "new_test": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-004\\test_ck3_mod_acceptance_previous_row_readonly.py",
+    "affected_existing_test_patch": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-004\\existing-batch-test.incremental.patch"
+  },
+  "external_failed_authors": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-002\\build_source_candidate.py",
+      "bytes": 8600,
+      "sha256": "8d80bbbb4bd9ce4231b11e9575dee6976d78f52c3d54a6f353f4f12e54f4a057",
+      "available_now_raw_hash_checked": true,
+      "retention_action": "Original left unchanged; bounded review due, no indefinite renewal."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-003\\author_successor.py",
+      "bytes": 1094,
+      "sha256": "ea9e29f9a8b4ee3c8c2e2690e1af0c33f373ef2bcc859d65912d0a4fcdf3a3e8",
+      "available_now_raw_hash_checked": true,
+      "retention_action": "Original left unchanged; bounded review due, no indefinite renewal."
+    }
+  ],
+  "actual_test_result_keys": [
+    "schema",
+    "argv",
+    "cwd",
+    "started_at_utc",
+    "finished_at_utc",
+    "exit_code",
+    "stdout",
+    "stderr"
+  ],
+  "live_speedup": null,
+  "expiry_credit": null,
+  "side_effects": {
+    "main_writes": 0,
+    "tests_executed_by_this_packet": 0,
+    "game_sdk_bus_build": 0
+  },
+  "retention": {
+    "class": "derived",
+    "review_due_utc": "2026-10-12T22:00:14.757176+00:00",
+    "reason": "Pending ROOT import of small actual qualification evidence; old source-author assets not indefinitely renewed."
+  }
+}

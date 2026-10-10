@@ -1,0 +1,40 @@
+{
+  "at_utc": "2026-10-10T21:47:44.270939+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "source_adjustment": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\display-fit-001.json",
+    "bytes": 7141,
+    "sha256": "a0aab0116dbf6a8335f135a1f97c4e2205131b849968fe78fbc98c8740481137"
+  },
+  "administrative_failure_cleanup": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\administrative-failure-cleanup-proof-001.json",
+    "bytes": 4628,
+    "sha256": "0c5bf8c136016870d1bc048bf135b80e727f79271c37dabae2ea658b93342003"
+  },
+  "before": {
+    "width": 1920,
+    "height": 1080,
+    "bits": 32,
+    "frequency": 60
+  },
+  "requested_original": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "test_result": 0,
+  "change_result": 0,
+  "after": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "pyautogui_size": [
+    1024,
+    768
+  ],
+  "registry_persistence_requested": false,
+  "business_credit": false
+}

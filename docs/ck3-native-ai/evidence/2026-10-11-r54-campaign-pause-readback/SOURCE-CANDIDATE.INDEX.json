@@ -1,0 +1,62 @@
+{
+  "status": "SOURCE_ONLY_DIAGNOSTIC_CANDIDATE_NOT_APPLIED",
+  "original_host": {
+    "path": "C:\\csr13\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 256993,
+    "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+  },
+  "actual_bounded_failure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\FAILED-DAY-0050.actual.json",
+    "bytes": 1273,
+    "sha256": "dcdf035f88c5f9323eb9b531ea03b8468e6f2bf164eb1ae0cebcc8b7b6f09fae"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\CAMPAIGN-PAUSE-DIAGNOSTIC.incremental.patch",
+    "bytes": 10353,
+    "sha256": "cdd505e7f61706c4184ba96f4e7333fbc298079aabd99dde6c05d13fbd499380"
+  },
+  "pure_leaf": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\diagnostic_leaf.py",
+    "bytes": 1703,
+    "sha256": "044f92cb498f4b8171dbc2e63cfdc93bb3dc0b0a24a9cc7be8846bd7d9b0affe"
+  },
+  "predicate_map": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\PREDICATES.source.json",
+    "bytes": 3511,
+    "sha256": "7d646f2a71c024404690568fd0e9f70ee64071ecd04e920ac380f0d418f0b3b4"
+  },
+  "focused_qualification": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\FOCUSED.actual.json",
+    "bytes": 204,
+    "sha256": "c5dcab9e37943fdae2fd0147c05316c90eb31be74ab3a9051a53236c86f02615"
+  },
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\REPORT.md",
+    "bytes": 1305,
+    "sha256": "0644e3fbf43a5c7db71040f5f29e5c99ed636a88c23920f5df82869f1af5e21a"
+  },
+  "author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\author_diagnostic_candidate.py",
+    "bytes": 14598,
+    "sha256": "31e60babe9dcf99e652b5e989fe2230684de044ef062622dbea91a0f3307a4d9"
+  },
+  "original_guard_AST_unchanged": true,
+  "original_RuntimeError_message_and_route_preserved": true,
+  "historical_failing_condition": null,
+  "historical_callsite": null,
+  "underlying_cause": null,
+  "MAIN_Csr13_O13_or_live_files_changed": false,
+  "SDK_game_process_bus_replay_or_build_calls": 0,
+  "business_credit": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "owner": "/root/r13_cold_launch",
+    "local_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001",
+    "small_write_budget_bytes": 131072,
+    "free_bytes": 619454394368,
+    "deleted_bytes": 0,
+    "expiry_renewed": false,
+    "source_review_at_utc": "2026-10-17T21:48:43.713049+00:00",
+    "record_review_at_utc": "2027-04-08T21:48:43.713049+00:00"
+  }
+}

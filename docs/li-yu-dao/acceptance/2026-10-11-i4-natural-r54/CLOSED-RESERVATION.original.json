@@ -1,0 +1,127 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-10T21:56:59.867165+00:00",
+  "reservation_id": "lyd-i4-natural-expiry-2GiB-20261011-008",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-008\\ADMISSION.actual.json",
+    "bytes": 6834,
+    "sha256": "f3f1a8a67dfea35f5dbcac1333e9bea05708f7ef63af484891adbadf24236940"
+  },
+  "original_admission_unmodified": true,
+  "new_reservation_created": false,
+  "source13_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 10486,
+    "sha256": "3052b8f523581fcb2341d3099bde35cb0dd0b129571fcb26b5d46ac4f140ffea"
+  },
+  "existing_source_native_or_original_seed_recounted_bytes": 0,
+  "actual_task_closed_at_utc": "2026-10-10T21:56:15.713496+00:00",
+  "actual_closed_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\release-command-001\\stdout.log",
+    "bytes": 1184,
+    "sha256": "bf9db83f4270ba195534a23da5628c5015b065516e0b923daf2d9a73612fb4c6"
+  },
+  "actual_case_inputs": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\inputs\\PREPARE-INPUTS.actual.json",
+    "bytes": 2202,
+    "sha256": "9d3533b35303ba0892b6f11f3a7feaf0c160a92256003160a6694f6662cb1548"
+  },
+  "actual_runtime_outcome": {
+    "status": "RED",
+    "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\native-report.json",
+      "bytes": 12329263,
+      "sha256": "674cb5d95bb344f8f3ae6d315f91068d46686d6da4b334988a8450127206c826"
+    },
+    "original_host_started": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-started.json",
+      "bytes": 3981,
+      "sha256": "74911333be9c3a6621e7d5ae5b5f133d9cea55846fbce3a82a8b62b789a5079a"
+    },
+    "original_host_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-original-process-exit.json",
+      "bytes": 246,
+      "sha256": "8c3c6a7faf7c1e2c9ae74f8e76dff2ec2d2ea9d3f67e45aa88a71701b758b453"
+    },
+    "host_original_returncode": 1,
+    "actual_original_popen_wait": true,
+    "native_session_process_exit_code": null,
+    "native_shutdown_ck3_exit_code": 1,
+    "session_closure": {
+      "mode": "current-shared-managed-session"
+    },
+    "keeper_original_parent_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "9049053fcd9b548aa5e9f9976e5b6152ba477871a699d132726b30e7332ecb20"
+    },
+    "keeper_actual_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16\\inputs.json",
+      "bytes": 822,
+      "sha256": "a07b56ce21517cf8167b534f113f161a83b38c214f81b34f74eb0f6374b8ad2c"
+    },
+    "keeper_actual_ready": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16\\ready.json",
+      "bytes": 950,
+      "sha256": "c0ce7c4bf29329853dfbb21ae0f7b27dcc933b1e509d39dfb553ea1fbda0bec1"
+    },
+    "keeper_original_returncode": 0,
+    "allocator_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case5-allocate-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1749,
+      "sha256": "6d823fd327f809fb945951db373fa12b43e2590ba3760e79ec17807cfdddc934"
+    },
+    "allocator_command_exit_code": 0,
+    "public_run_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r54-public-run-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1588,
+      "sha256": "3a80d77ea76fc8c2450aea6fa6dde2e1665cd4544744f3bd9decfd675ff3a46a"
+    },
+    "public_run_command_exit_code": 2,
+    "normal_GUI_exit_or_business_qualification_granted_by_storage_closure": false
+  },
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-008\\CLOSURE-MEASURE.actual.json",
+    "bytes": 29116,
+    "sha256": "68ec934f085ef0fca85de2876c17613a7e64d8634e0db805c25905a75ae46a0c"
+  },
+  "asset_groups": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-008\\ASSET-GROUPS-CLOSED.actual.json",
+    "bytes": 88462,
+    "sha256": "bc1a9a8f780c5e9236413db574bbbb06c8201b694a11fbbc3a29e20d83360101"
+  },
+  "admitted_peak_bytes": 2147483648,
+  "released_reservation_peak_bytes": 2147483648,
+  "remaining_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_peak_minus_retained": true,
+  "observed_retained_task_logical_bytes_known": 775397888,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "unused_actual_peak_budget_bytes_or_null": null,
+  "fresh_free_bytes_at_closure": 619456413696,
+  "fresh_total_volume_bytes": 1023892852736,
+  "retention": {
+    "original_cold_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "checkpoint_expires_at_utc": "2026-10-24T21:56:15.713496+00:00",
+    "raw_evidence_expires_at_utc": "2026-11-09T21:56:15.713496+00:00",
+    "record_review_at_utc": "2027-04-08T21:56:15.713496+00:00",
+    "representative_protected_until_utc": "2026-10-17T13:06:29.278808+00:00",
+    "derived_exports_if_any_ttl_hours_from_actual_creation": 48,
+    "quota_override_review_unchanged_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "copy_close_and_review_do_not_renew_cache_or_existing_source_protection": true,
+    "automatic_TTL_renewal": false,
+    "automatic_deletion": false,
+    "source13_O13_input_expiry_unchanged": "2026-10-17T19:32:25.249949+00:00",
+    "native_build_expiry_unchanged": "2026-10-24T19:32:25.249949+00:00",
+    "new_derived_review_at_utc": "2026-10-12T20:53:32.279232+00:00"
+  },
+  "root_coordinator_actual_exclusive_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "no_auto_renewal_or_deletion": true,
+  "runtime_or_business_qualification": false,
+  "automatic_reservation_manager_implemented": false
+}

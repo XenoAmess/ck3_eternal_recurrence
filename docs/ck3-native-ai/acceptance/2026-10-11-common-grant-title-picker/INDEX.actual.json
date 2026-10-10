@@ -1,0 +1,341 @@
+{
+  "schema": "lyd.common-grant-title-picker-permanent-evidence.v1",
+  "status": "STATIC_READY_LIVE_NOT_RUN",
+  "reviewed_source_head": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+  "original_source_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\INDEX.json",
+    "bytes": 10563,
+    "sha256": "edbc191a2fad2bd1676c2ae576013a7f6deba3f9ae2c3e08e24df5b36e1eaf8d"
+  },
+  "files": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\INDEX.json",
+        "bytes": 10563,
+        "sha256": "edbc191a2fad2bd1676c2ae576013a7f6deba3f9ae2c3e08e24df5b36e1eaf8d"
+      },
+      "archive_relative_path": "SOURCE-INDEX.original.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/SOURCE-INDEX.original.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\REPORT.md",
+        "bytes": 7287,
+        "sha256": "7a43445b959f253396559024b30584bb139ee13ec1302c30033aca89214f6a0c"
+      },
+      "archive_relative_path": "REPORT.source-only.md",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/REPORT.source-only.md",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\FUTURE-MANIFEST.fragment.json",
+        "bytes": 957,
+        "sha256": "db903795acd3138c7b3459fa4aaab0f9d48036787f4927527ffe54dc699cbb9d"
+      },
+      "archive_relative_path": "FUTURE-MANIFEST.fragment.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/FUTURE-MANIFEST.fragment.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-002\\PUBLIC-GRANT.incremental.patch",
+        "bytes": 33068,
+        "sha256": "149ccfe1f3caf17a587ed9e6f493f6f8bbb66c7259226d1652bd32cbc86e92e6"
+      },
+      "archive_relative_path": "integration/PUBLIC-GRANT.incremental.patch",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/integration/PUBLIC-GRANT.incremental.patch",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-002\\INTEGRATION-MANIFEST.json",
+        "bytes": 2629,
+        "sha256": "57967e26cc646e3ae3fb5bd391eec3ae54fd4837885de5bb0b284b3e351f7b53"
+      },
+      "archive_relative_path": "integration/INTEGRATION-MANIFEST.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/integration/INTEGRATION-MANIFEST.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-001\\INTEGRATION-MANIFEST.json",
+        "bytes": 2629,
+        "sha256": "f83431b2675416c5faa280a11c282166f26650f694a197db903bd7ed180404f2"
+      },
+      "archive_relative_path": "original-attempt/INTEGRATION-MANIFEST.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/original-attempt/INTEGRATION-MANIFEST.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\ci-001\\PUBLIC-GRANT-CI.incremental.patch",
+        "bytes": 578,
+        "sha256": "0a7cc8a445663139d01b997effc4b0a7acb3323eb566ad5f24e07c4f2c9650f0"
+      },
+      "archive_relative_path": "ci/PUBLIC-GRANT-CI.incremental.patch",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/ci/PUBLIC-GRANT-CI.incremental.patch",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\ci-001\\INTEGRATION-MANIFEST.json",
+        "bytes": 1004,
+        "sha256": "1b7d769dd58030e35d8f89a0b78c5dbeba601e5f1b019c2871fc26106e4ad7ec"
+      },
+      "archive_relative_path": "ci/INTEGRATION-MANIFEST.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/ci/INTEGRATION-MANIFEST.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\RESULT.actual.json",
+        "bytes": 2372,
+        "sha256": "372d6b4f1ec9b8a3426ebb0bc4faa7d35dbd75b0b1b4c1f0cad7e614ffda0840"
+      },
+      "archive_relative_path": "focused-001/RESULT.actual.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-001/RESULT.actual.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "focused-001/stdout.log",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-001/stdout.log",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\stderr.log",
+        "bytes": 2531,
+        "sha256": "3776fbfb03ee78860e5c0ffbbd30193e6f85f819a9e1d66c7e3cd8b12563332f"
+      },
+      "archive_relative_path": "focused-001/stderr.log",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-001/stderr.log",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\test-source.original.py",
+        "bytes": 20602,
+        "sha256": "c8405dcefd54a27733d411cb821c8403081b08b0caad1d7f1cd49f5b14108762"
+      },
+      "archive_relative_path": "focused-001/test-source.original.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-001/test-source.original.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-002\\RESULT.actual.json",
+        "bytes": 2760,
+        "sha256": "d1327110c80a573b4f5fd2153c993651a5713d76cb27c05a6a8ed085b43f7978"
+      },
+      "archive_relative_path": "focused-002/RESULT.actual.json",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-002/RESULT.actual.json",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-002\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "focused-002/stdout.log",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-002/stdout.log",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-002\\stderr.log",
+        "bytes": 249,
+        "sha256": "182bbfe6b05ca33fb40c2da59db266ecfe8155a6f5016d109294034cbc85c79d"
+      },
+      "archive_relative_path": "focused-002/stderr.log",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/focused-002/stderr.log",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_candidate.py",
+        "bytes": 12431,
+        "sha256": "a810395e5ce799da6546a1ca907ddd8a3b9fb5f20a5373f6b40a09225dd86150"
+      },
+      "archive_relative_path": "authors/prepare_candidate.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/prepare_candidate.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_ci.py",
+        "bytes": 2093,
+        "sha256": "516f5e3e543220b47c53269f3b8bfd81dea6bc4c8b937a1c90944ba6e9b0fa25"
+      },
+      "archive_relative_path": "authors/prepare_ci.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/prepare_ci.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\run_focused.py",
+        "bytes": 2428,
+        "sha256": "53b0968e9e3e57c5ee7983e6134f2bb5a03da5b8c1506dd52cbe46b54e4a5384"
+      },
+      "archive_relative_path": "authors/run_focused.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/run_focused.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\finish_candidate.py",
+        "bytes": 1107,
+        "sha256": "5f003979d9ca539a362074f0f48b7504b8f29646f29e69ef0df060e1eef4dd2c"
+      },
+      "archive_relative_path": "authors/finish_candidate.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/finish_candidate.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\run_changed_metadata.py",
+        "bytes": 2327,
+        "sha256": "b6044966c269a43d91a26b114df260e496b909bf2e6de5aeb63346716fa89c96"
+      },
+      "archive_relative_path": "authors/run_changed_metadata.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/run_changed_metadata.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\seal_packet.py",
+        "bytes": 4762,
+        "sha256": "65165925674630f5dbb90bbb371ef9aa310766054cbde55370e2563b6cfdd9e6"
+      },
+      "archive_relative_path": "authors/seal_packet.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/seal_packet.py",
+      "byte_exact_copy": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_docs_ready.py",
+        "bytes": 8590,
+        "sha256": "1f58232591a073f9514ab8a965994776b6bc809e80dc131112ac1bc5ae6eb14e"
+      },
+      "archive_relative_path": "authors/prepare_docs_ready.py",
+      "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/authors/prepare_docs_ready.py",
+      "byte_exact_copy": true
+    }
+  ],
+  "external_references_only": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\test_ck3_mod_acceptance_grant_title_picker.py",
+      "bytes": 20665,
+      "sha256": "89571c6fcfac6c1e4a73e9b33da5d3feca548feeb8d427020b7e9b0bf19daf40"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-001\\PUBLIC-GRANT.incremental.patch",
+      "bytes": 33004,
+      "sha256": "9d53f91818b2b157064db67d10731b49fcd6db7e8c161579ae3959f2c6adf434"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\TOPIC.candidate.md",
+      "bytes": 4333,
+      "sha256": "608e79ac9575c6e32376871dd311b4709bf2920751faa89013335c0c1a562d63"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\close_source_task.py",
+      "bytes": 2006,
+      "sha256": "44a036fc5fc165b3ad9aef8335e7ba9754caf99d47a02b42a65f07035e22d9e0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\TASKBUS-CLOSE.actual.json",
+      "bytes": 3025,
+      "sha256": "1a452eb1a6853aa4f51e9db440626d7621e0f3224b9829ba1425c41707033de7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\manifest.json",
+      "bytes": 25159,
+      "sha256": "69312f885d1a234ee059934f283e6a774b291cdbbd85b0d9d8a5da1359f9574f"
+    },
+    {
+      "path": "C:\\cbr3\\CMakeCache.txt",
+      "bytes": 40038,
+      "sha256": "04386219d065a3090d3367a62167e8e34adc33c4632f327b4733145ee51dc129"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\grant_title_picker_v1.py",
+      "bytes": 14768,
+      "sha256": "4d1f7e4f7c1fcabaaa8cfaf8c7ac1592c072f989418da31b7bbaff3ea9e9bbb3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\2026-10-10-common-challenger-graph-readonly.md",
+      "bytes": 3515,
+      "sha256": "db7ae632fd382abf58f3e05baa431528b3024fcf5a60d3f00e259194f5857edf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\i3b-public-formal-b4.md",
+      "bytes": 3305,
+      "sha256": "139c312e8af89423e1c21f12a7dfee8713708120c32d54a3ac1026e6012c248a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\2026-10-11-i3b-formal-b5-source.md",
+      "bytes": 3576,
+      "sha256": "9df6327cae3a92fee420dc088f25a51a72fec13f11cb7ced2e71497e08b0767e"
+    }
+  ],
+  "qualification": {
+    "first_actual_tests": 8,
+    "first_actual_passed": 7,
+    "first_actual_errors": 1,
+    "first_RED_preserved": true,
+    "changed_metadata_case_actual_tests": 1,
+    "changed_metadata_case_exit": 0,
+    "unchanged_seven_not_repeated": true,
+    "test_only_delta": "ToolAnnotations.model_dump(by_alias=True); production four paths unchanged"
+  },
+  "readonly_apply_check": {
+    "argv": [
+      "git",
+      "apply",
+      "--check",
+      "--whitespace=nowarn",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-002\\PUBLIC-GRANT.incremental.patch"
+    ],
+    "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+    "exit_code": 0,
+    "tool_chunk_id": "2ec3b7",
+    "wall_time_seconds": 0.3403299,
+    "started_utc": null,
+    "stdout": "",
+    "stderr": ""
+  },
+  "production_and_test_patch": {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-002\\PUBLIC-GRANT.incremental.patch",
+      "bytes": 33068,
+      "sha256": "149ccfe1f3caf17a587ed9e6f493f6f8bbb66c7259226d1652bd32cbc86e92e6"
+    },
+    "archive_relative_path": "integration/PUBLIC-GRANT.incremental.patch",
+    "repository_relative_path": "docs/ck3-native-ai/acceptance/2026-10-11-common-grant-title-picker/integration/PUBLIC-GRANT.incremental.patch",
+    "byte_exact_copy": true
+  },
+  "future_source_head": null,
+  "future_runtime_key": null,
+  "future_title_full_id": null,
+  "business_credit": null,
+  "existing_O13_R54_unchanged": true,
+  "MAIN_mutations": 0,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "native_builds": 0,
+  "overall_status": "75_PERCENT_ESTIMATE_NOT_GREEN",
+  "retention": {
+    "raw_commands_days": 30,
+    "summary_days": 180,
+    "scope": "small external source package only; no cache/save/ETL/wire/source-tree bodies"
+  },
+  "no_source_tree_or_large_runtime_bodies": true
+}

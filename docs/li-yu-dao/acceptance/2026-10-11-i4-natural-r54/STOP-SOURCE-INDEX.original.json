@@ -1,0 +1,46 @@
+{
+  "status": "SOURCE_ONLY_NOT_EXECUTED",
+  "predecessor_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-failure-closeout-sourceonly-20261011-001\\failure-stop-keeper.py",
+    "bytes": 7091,
+    "sha256": "ffb3afe0feebe995d34f3aa12b6c437b1a520945f338a1661c73e2bc2b622f82"
+  },
+  "preserved_failed_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r54-failure-stop-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1275,
+    "sha256": "583ae05286b6596c8fa0a49590275944394d204b30af736a1ef15a5985df66ac"
+  },
+  "original_keeper_start": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\keeper-process.json",
+    "bytes": 471,
+    "sha256": "9da6326d5682c4aa48e420db7004c61e999c9b7dddeb35e6e4b130a2be4da5e7"
+  },
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-failure-closeout-sourceonly-20261011-002\\failure-stop-keeper.py",
+      "bytes": 9570,
+      "sha256": "147521d634bc267b744d5e0b8a206a17bc8e421a3fd8c45f3af761ea734de11d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-failure-closeout-sourceonly-20261011-002\\r54_failure_cleanup.py",
+      "bytes": 7857,
+      "sha256": "64c45949a4624924c3db74731415543a25022440e9884e24a8df3b9da6ff9fa7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-failure-closeout-sourceonly-20261011-002\\PATCH.diff",
+      "bytes": 4794,
+      "sha256": "d68aa3d6742e99ca6a315a2199fafc830fd31bef8c0b40f0c2ac326a585464ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-failure-closeout-sourceonly-20261011-002\\ROOT-STOP-ARGV.actual.json",
+      "bytes": 694,
+      "sha256": "df2c761146a9679260360e2ea8233c6fe6333b8affdfc4b1e83fba96f8adb06c"
+    }
+  ],
+  "check": "AST_PARSE_PASS_ONLY_NO_EXECUTION",
+  "inventory_raw_preserved": true,
+  "exclusion": "Exact original owned keeper PID8776/ctime/argv only",
+  "CAS": null,
+  "reservation008_closed": null,
+  "MAIN_written": false
+}

@@ -1,0 +1,11 @@
+--- a/.github/workflows/static-ci.yml
++++ b/.github/workflows/static-ci.yml
+@@ -175,6 +175,8 @@
+       - name: Test shared CK3 acceptance without installed CK3
+         run: |
+           python -B -X utf8 tools/test_ck3_mod_acceptance.py
++          if not "%errorlevel%"=="0" exit /b %errorlevel%
++          python -B -X utf8 tools/test_ck3_mod_acceptance_grant_title_picker.py -v
+           if not "%errorlevel%"=="0" exit /b %errorlevel%
+           python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_window.py
+           if not "%errorlevel%"=="0" exit /b %errorlevel%

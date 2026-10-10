@@ -1,0 +1,38 @@
+{
+  "status": "SOURCE_ONLY",
+  "targets": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "before": {
+        "bytes": 256993,
+        "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+      },
+      "after": {
+        "bytes": 259616,
+        "sha256": "0f8c6c03dade0dd01b811a6fc921b1da75e459fe6a8bda29edf40587852e4e89"
+      }
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_queue.py",
+      "before": {
+        "bytes": 11098,
+        "sha256": "692853d3716857570f0b9b5f97f5c04749c9bdfdd09a71ac89cc5e254abd74d9"
+      },
+      "after": {
+        "bytes": 11846,
+        "sha256": "3e004a37c89f8bbc4a568efb25398daf6b3c40228d664d24b64d33f1a93817af"
+      }
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+      "before": {
+        "bytes": 26638,
+        "sha256": "59d7c74e919898573d6f8270b6a61c16326e44787c6f6c193365c994fc9039f3"
+      },
+      "after": {
+        "bytes": 26988,
+        "sha256": "68564d4a6d3577e7bdce0a41ff464ab51298c13ee0fa14496ad2bb7c15a29bf5"
+      }
+    }
+  ]
+}

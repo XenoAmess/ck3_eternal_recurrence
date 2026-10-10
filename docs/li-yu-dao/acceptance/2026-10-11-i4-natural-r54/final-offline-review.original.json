@@ -1,0 +1,18 @@
+{
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "visible_status": "离线模式",
+  "freshness": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-fresh-offline-002\\steam-frame-freshness.json",
+    "bytes": 1739,
+    "sha256": "233d48eedca31de6f7b927b5727adcfabe5adc935ab707739f07b126d952771c"
+  },
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-fresh-offline-002\\steam-moved.png",
+    "bytes": 647704,
+    "sha256": "B9FEDBF471078C67064DD7E2E60F410580954B9AFED8E76A3CEC1B48B18CFD22"
+  },
+  "reviewed_at_utc": "2026-10-10T21:53:06.075148+00:00"
+}

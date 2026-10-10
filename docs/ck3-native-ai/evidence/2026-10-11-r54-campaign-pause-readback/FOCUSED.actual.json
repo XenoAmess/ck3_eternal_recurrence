@@ -1,0 +1,8 @@
+{
+  "scope": "extracted pure Python only; synthetic values are not live evidence",
+  "tests_run": 6,
+  "errors": [],
+  "failures": [],
+  "passed": true,
+  "actual_game_or_SDK_or_body_or_build_calls": 0
+}

@@ -12949,6 +12949,26 @@ class GameplayBridgeService:
         except ValueError as error:
             raise BridgeUnavailableError("malformed public Confucian read: " + str(error)) from error
 
+    def grant_title_picker_v1(self, operation: str, recipient_id: int, *,
+            expected_revision: int, requested_title_full_ids: list[int],
+            expected_selected_title_full_ids: list[int], title_full_id: int | None = None,
+            desired_selected: bool | None = None) -> dict[str, object]:
+        """Use the existing guarded driver; no permission escalation or automatic selection."""
+        from .grant_title_picker_v1 import PERMISSION, request_fields
+        if getattr(self.driver, PERMISSION, False) is not True:
+            raise UnsupportedStepError("stock grant tools require explicit shared admission")
+        if type(expected_revision) is not int or not 0 < expected_revision < 2**64:
+            raise ValueError("requires the current positive public revision")
+        request_fields(operation, recipient_id, requested_title_full_ids,
+                       expected_selected_title_full_ids, title_full_id, desired_selected)
+        method = getattr(self.driver, "grant_title_picker_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the stock grant Title picker")
+        return method(operation, recipient_id, expected_revision=expected_revision,
+            requested_title_full_ids=requested_title_full_ids,
+            expected_selected_title_full_ids=expected_selected_title_full_ids,
+            title_full_id=title_full_id, desired_selected=desired_selected)
+
     def query_confucian_assembly_predicates_v1(self, *, expected_revision: int) -> dict[str, object]:
         return self._query_confucian_readonly_v1("assembly_predicates", expected_revision=expected_revision)
 

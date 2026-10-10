@@ -1,0 +1,80 @@
+{
+  "schema": "lyd.common-grant-public-source-only.v1",
+  "status": "SOURCE_ONLY_NOT_RUN",
+  "authoring_head": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+  "source_copies_created": 0,
+  "MAIN_mutations": 0,
+  "native_changes": 0,
+  "existing_O13_unchanged": true,
+  "R54_unchanged": true,
+  "future_source_head": null,
+  "future_title_full_id": null,
+  "business_credit": null,
+  "files": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "before": {
+        "bytes": 705275,
+        "sha256": "1f7fc89e83794bfd49c72b69e5c88fdd0aa8f0643f77fa8da23e04da3d1fb6bb"
+      },
+      "after": {
+        "bytes": 706734,
+        "sha256": "410320ccd6757ca7be54111296333cc36c215ca5317d7385219a67b1b23399e3"
+      },
+      "bom_preserved": true,
+      "newline_preserved": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "before": {
+        "bytes": 208175,
+        "sha256": "fe4bb75e83b8130e53be403c67a40fd67e43ceb2992fa828ff3efd493d0c4aa5"
+      },
+      "after": {
+        "bytes": 212325,
+        "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+      },
+      "bom_preserved": true,
+      "newline_preserved": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "before": {
+        "bytes": 256993,
+        "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+      },
+      "after": {
+        "bytes": 257810,
+        "sha256": "408f0799d8f1749b9409d99946d7107a989c9bb9073703026b529c17cd1bd278"
+      },
+      "bom_preserved": true,
+      "newline_preserved": true
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "before": {
+        "bytes": 40205,
+        "sha256": "39fa04f92ba0cd67456d4196c6bf9bb068c504bd45b535e2066b774bbd2deb2e"
+      },
+      "after": {
+        "bytes": 40339,
+        "sha256": "db03df59f88f81630cee68224688feb7c60749bd9648e1f17387644d758c9ac5"
+      },
+      "bom_preserved": true,
+      "newline_preserved": true
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_grant_title_picker.py",
+      "before": null,
+      "after": {
+        "bytes": 20665,
+        "sha256": "89571c6fcfac6c1e4a73e9b33da5d3feca548feeb8d427020b7e9b0bf19daf40"
+      }
+    }
+  ],
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-002\\PUBLIC-GRANT.incremental.patch",
+    "bytes": 33068,
+    "sha256": "149ccfe1f3caf17a587ed9e6f493f6f8bbb66c7259226d1652bd32cbc86e92e6"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "reviewer": "/root",
+  "at_utc": "2026-10-10T21:43:21.190610+00:00",
+  "pid": 2340,
+  "create_time": 1791666088.5202496,
+  "original_hold_deadline": 1791674170.6013706,
+  "normal_gui_quit": false,
+  "direct_reviewed": false,
+  "evidence": [],
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "reason": "NEGATIVE_RESPONSE_HOST_FAILURE_ALREADY_EXITED_NO_OPERATOR_GUI_QUIT",
+  "expected_effect": "Reject existing manual normal-quit validation and preserve normal-close-error; do not finish_hold or replay",
+  "original_inputs": {
+    "case-output/normal-quit-awaiting.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\normal-quit-awaiting.json",
+      "bytes": 630,
+      "sha256": "32ea3f3abdf44b2fa720f4047be9e6b982915e55c8b62188d78f21f4c2c8b57b"
+    },
+    "case-output/manual-quit-awaiting.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\manual-quit-awaiting.json",
+      "bytes": 631,
+      "sha256": "323e203c1aa943ee4c29e7d87a45e74409a5d616452a44233259117a5bb2a18a"
+    },
+    "case-output/case-error-preserved.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\case-error-preserved.json",
+      "bytes": 204,
+      "sha256": "89819039ae5b63b63b813e0e1cad9ee8fbd3e3e6506b0faaf5817be7d483cd83"
+    },
+    "host-original-process-exit.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-original-process-exit.json",
+      "bytes": 246,
+      "sha256": "8c3c6a7faf7c1e2c9ae74f8e76dff2ec2d2ea9d3f67e45aa88a71701b758b453"
+    }
+  }
+}

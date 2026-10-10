@@ -20,6 +20,17 @@ ConfucianFaithSelectorV1 = Annotated[
     Field(strict=True, min_length=1, max_length=8, json_schema_extra={"uniqueItems": True}),
     AfterValidator(validate_faith_ids),
 ]
+from .grant_title_picker_v1 import PERMISSION as GRANT_TITLE_PICKER_PERMISSION_V1, title_ids as validate_grant_title_ids_v1
+
+GrantTitleFullIdV1 = Annotated[int, Field(strict=True, ge=0, lt=2**32-1)]
+GrantTitleIdsV1 = Annotated[list[GrantTitleFullIdV1],
+    Field(strict=True, max_length=64, json_schema_extra={"uniqueItems": True}),
+    AfterValidator(validate_grant_title_ids_v1)]
+GrantSendTitleIdsV1 = Annotated[list[GrantTitleFullIdV1],
+    Field(strict=True, min_length=1, max_length=64, json_schema_extra={"uniqueItems": True}),
+    AfterValidator(validate_grant_title_ids_v1)]
+GrantDesiredSelectedV1 = Annotated[bool, Field(strict=True)]
+
 NormalExitSignatureV1 = Annotated[str, Field(strict=True, min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
 StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
 OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
@@ -1369,6 +1380,50 @@ def register_succession_title_readonly_tools(server, service, driver) -> None:
         _forbid_unknown_tool_arguments_v1(server, "ck3_query_confucian_challenger_graph_v1")
 
 
+def register_stock_grant_title_picker_tools(server, service, driver) -> None:
+    """Expose existing stock operations only when the shared host admitted them."""
+    if getattr(driver, GRANT_TITLE_PICKER_PERMISSION_V1, False) is not True:
+        return
+    from mcp.types import ToolAnnotations
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False,
+                                             idempotentHint=True, openWorldHint=False))
+    def ck3_query_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+            title_full_ids: GrantTitleIdsV1, expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Read the actual stock grant window; no title is selected or transferred."""
+        return service.grant_title_picker_v1("query", recipient_id, expected_revision=expected_revision,
+            requested_title_full_ids=title_full_ids, expected_selected_title_full_ids=[])
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_prepare_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+            title_full_ids: GrantTitleIdsV1, expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Open the existing stock grant window; this is not a transfer receipt."""
+        return service.grant_title_picker_v1("prepare", recipient_id, expected_revision=expected_revision,
+            requested_title_full_ids=title_full_ids, expected_selected_title_full_ids=[])
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_select_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+            title_full_id: GrantTitleFullIdV1, desired_selected: GrantDesiredSelectedV1,
+            expected_selected_title_full_ids: GrantTitleIdsV1,
+            expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Select one exact full Title ID and read the complete resulting selection."""
+        targets = list(expected_selected_title_full_ids)
+        if title_full_id not in targets:
+            targets.append(title_full_id)
+        return service.grant_title_picker_v1("select", recipient_id, expected_revision=expected_revision,
+            requested_title_full_ids=targets, expected_selected_title_full_ids=expected_selected_title_full_ids,
+            title_full_id=title_full_id, desired_selected=desired_selected)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True,
+                                             idempotentHint=False, openWorldHint=False))
+    def ck3_send_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+            expected_selected_title_full_ids: GrantSendTitleIdsV1,
+            expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Send once through stock; actual holder readback is required for transfer verification."""
+        return service.grant_title_picker_v1("send", recipient_id, expected_revision=expected_revision,
+            requested_title_full_ids=expected_selected_title_full_ids,
+            expected_selected_title_full_ids=expected_selected_title_full_ids)
+    for name in ("ck3_query_grant_title_picker_v1", "ck3_prepare_grant_title_picker_v1",
+                 "ck3_select_grant_title_picker_v1", "ck3_send_grant_title_picker_v1"):
+        _forbid_unknown_tool_arguments_v1(server, name)
+
+
 def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
     """Freeze one pinned MCP 2.0 tool to an exact top-level input object."""
     manager = getattr(server, "_tool_manager", None)
@@ -2416,6 +2471,7 @@ def create_server(
         )
 
     register_succession_title_readonly_tools(server, service, driver)
+    register_stock_grant_title_picker_tools(server, service, driver)
     semantic_snapshot = getattr(driver, "take_internal_semantic_snapshot", None)
     if (getattr(driver, "allow_private_semantic_snapshot_readonly", False) is True
             and callable(semantic_snapshot)):

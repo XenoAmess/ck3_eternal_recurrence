@@ -1,0 +1,117 @@
+{
+  "schema": "lyd.r54.failure-evidence-index.v1",
+  "status": "ACTUAL_RED_ADVANCE_PAUSE_FRAME_REFUSAL",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\REPORT.md",
+      "bytes": 2162,
+      "sha256": "0b0342703d20ec33a724b9671d7bf6159462a64ebafed246cd0520e389a05a61"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\FAILED-DAY-0050.actual.json",
+      "bytes": 1273,
+      "sha256": "dcdf035f88c5f9323eb9b531ea03b8468e6f2bf164eb1ae0cebcc8b7b6f09fae"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\case-error-preserved.original.json",
+      "bytes": 204,
+      "sha256": "89819039ae5b63b63b813e0e1cad9ee8fbd3e3e6506b0faaf5817be7d483cd83"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\case-natural-day-0050.queue-result.original.json",
+      "bytes": 626,
+      "sha256": "c5ad49626ed3a8ebd8219209698344458d84b450e905993bad5ca612b8dc4b75"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\case-natural-day-0050.stdout.original.log",
+      "bytes": 2009,
+      "sha256": "6da64c22387e510c1fefe96e60e1bffae81fa004d364a6ccaceed2cb2e2b8059"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\FACTS.actual.json",
+      "bytes": 4090,
+      "sha256": "ac0f90879c3bbb5fab2ce0311dacf12209036c74074ccbd1c89d0f2a1e7e853e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\INDEX.known.actual.json",
+      "bytes": 3091,
+      "sha256": "3cb6f166f88e2109ef50cef95b9d94402714eba399e84c522fe9474779c522a7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\read_small_failure.py",
+      "bytes": 578,
+      "sha256": "0968014fa2acc600e3be51313a96629b9f51d3fb66bc009dd7d2374e6789bb7c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\project_failure.py",
+      "bytes": 1034,
+      "sha256": "f9a23d77b16150e36c5a98e8aad8444ffccfdebc146ebe76f7ecd6bee4031973"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\read_day50_receipts.py",
+      "bytes": 617,
+      "sha256": "ab4d95d5bd8f8329133a492c1b6b22f687e5a669a50dc9bf91e5c64952f19ed8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\read_failed_row_tail.py",
+      "bytes": 1712,
+      "sha256": "77be275a53e93aa676a39e5af69d220ed6540a9a5425db1a2cf1faf91209a67e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\read_failed_row_at_root_offset.py",
+      "bytes": 2508,
+      "sha256": "0179eae8ab922a2bbf1345a6d1d44ec558768a4f784e622ed9e09a7f6002057f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\read_session_failure.py",
+      "bytes": 741,
+      "sha256": "4ea82d12dae4d914d296bdeb293d3a35c7ec23695f6cd8a7d486d34e30a28710"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\seal_known_small_facts.py",
+      "bytes": 4875,
+      "sha256": "57e00fc1b04e5e26334593c7898d66d3877a6c7c7c77a4a54ed32a46f298169e"
+    }
+  ],
+  "total_indexed_bytes": 25520,
+  "supersedes_pending_fields": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-day48-failure-readonly-20261011-001\\FACTS.actual.json",
+    "fields": [
+      "status",
+      "failed_native_row",
+      "failed_completion_diagnostics"
+    ],
+    "last_complete_query_rows_note": "Empty due to projection container omission; no passed/failed row conclusion is derived from this list."
+  },
+  "original_tool_results": {
+    "metadata": "918e9d",
+    "error_and_latest_metadata": "991156",
+    "queue_receipts": "05def3",
+    "tail_attempt_failed": "de21ec",
+    "root_offset_failed_row": "734655",
+    "known_small_package": "f61991"
+  },
+  "side_effects": {
+    "main_writes": 0,
+    "game_commands": 0,
+    "sdk_calls": 0,
+    "bus_mutations": 0,
+    "tests": 0,
+    "whole_report_read": false,
+    "whole_report_hash": null
+  },
+  "qualification": {
+    "complete_day_48": false,
+    "keyed_query_completion_failure_reproduced": null,
+    "normal_close": null,
+    "expiry": null,
+    "final_save": null,
+    "cold_reload": null
+  },
+  "retention": {
+    "class": "derived",
+    "review_due_utc": "2026-10-12T21:46:13.365072+00:00",
+    "reason": "Actual current unresolved advance pause-frame refusal; ROOT to select concise permanent closure evidence."
+  }
+}

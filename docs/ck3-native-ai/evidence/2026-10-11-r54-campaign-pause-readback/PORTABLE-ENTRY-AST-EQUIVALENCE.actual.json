@@ -1,0 +1,34 @@
+{
+  "status": "AST_EQUIVALENT_ENTRY_PROJECTION_NO_TEST_RERUN",
+  "original_source_author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\author_diagnostic_candidate.py",
+    "bytes": 14598,
+    "sha256": "31e60babe9dcf99e652b5e989fe2230684de044ef062622dbea91a0f3307a4d9"
+  },
+  "existing_six_tests_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-sourceonly-20261011-001\\FOCUSED.actual.json",
+    "bytes": 204,
+    "sha256": "c5dcab9e37943fdae2fd0147c05316c90eb31be74ab3a9051a53236c86f02615"
+  },
+  "equivalence": {
+    "load_pure": true,
+    "fixture": true,
+    "Focused": true,
+    "original_guard_fixture": true
+  },
+  "six_test_method_count": 6,
+  "portable_test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-import-sourceonly-20261011-001\\payload\\ck3_autonomous_player\\tests\\unit\\test_campaign_pause_same_owner_diagnostic.py",
+    "bytes": 5690,
+    "sha256": "c7791c093dd8a95045b01a8dbb8df6c58eaf7b4a42643480c4a98d8b095e9aea"
+  },
+  "frozen_original_guard": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-campaign-pause-import-sourceonly-20261011-001\\payload\\ck3_autonomous_player\\tests\\unit\\fixtures\\campaign_pause_same_owner_guard_before_diagnostic.py",
+    "bytes": 6500,
+    "sha256": "fec75bf147a02ab4a21ac17928f11956ed2b50d7d95a344c79830ebcf5179668"
+  },
+  "loader_reads_only_repo_Python_source": true,
+  "host_or_test_entry_executed": false,
+  "tests_rerun": 0,
+  "game_SDK_process_bus_body_or_build_calls": 0
+}

@@ -1,0 +1,24 @@
+test_all_four_public_tools_reach_real_native_driver_without_autoselection (__main__.PublicGrantRoutingTests.test_all_four_public_tools_reach_real_native_driver_without_autoselection) ... ok
+test_default_off_independent_permission_and_create_server_registration (__main__.PublicGrantRoutingTests.test_default_off_independent_permission_and_create_server_registration) ... ok
+test_metadata_annotations_and_closed_strict_schemas (__main__.PublicGrantRoutingTests.test_metadata_annotations_and_closed_strict_schemas) ... ERROR
+test_pending_send_claim_blocks_resend_and_holder_readback_is_required (__main__.PublicGrantRoutingTests.test_pending_send_claim_blocks_resend_and_holder_readback_is_required) ... ok
+test_public_feature_parser_forwarding_and_permission_binding (__main__.PublicGrantRoutingTests.test_public_feature_parser_forwarding_and_permission_binding) ... ok
+test_real_driver_revision_and_after_frame_guards_remain_effective (__main__.PublicGrantRoutingTests.test_real_driver_revision_and_after_frame_guards_remain_effective) ... ok
+test_service_checks_permission_and_fields_before_existing_driver (__main__.PublicGrantRoutingTests.test_service_checks_permission_and_fields_before_existing_driver) ... ok
+test_warning_branch_cannot_be_promoted_to_transfer_success (__main__.PublicGrantRoutingTests.test_warning_branch_cannot_be_promoted_to_transfer_success) ... ok
+
+======================================================================
+ERROR: test_metadata_annotations_and_closed_strict_schemas (__main__.PublicGrantRoutingTests.test_metadata_annotations_and_closed_strict_schemas)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-common-grant-public-route-sourceonly-20261011-001\test_ck3_mod_acceptance_grant_title_picker.py", line 219, in test_metadata_annotations_and_closed_strict_schemas
+    self.assertEqual((annotation.readOnlyHint, annotation.destructiveHint, annotation.idempotentHint), hints)
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\site-packages\pydantic\main.py", line 1042, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'ToolAnnotations' object has no attribute 'readOnlyHint'. Did you mean: 'read_only_hint'?
+
+----------------------------------------------------------------------
+Ran 8 tests in 12.445s
+
+FAILED (errors=1)

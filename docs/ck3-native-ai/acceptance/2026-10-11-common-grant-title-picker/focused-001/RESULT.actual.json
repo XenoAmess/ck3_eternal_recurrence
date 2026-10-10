@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.common-grant-public-focused-execution.v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\test_ck3_mod_acceptance_grant_title_picker.py",
+    "--repo",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "--candidate-author",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_candidate.py",
+    "-v"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "started_utc": "2026-10-10T21:20:59.980744+00:00",
+  "finished_utc": "2026-10-10T21:21:35.207467+00:00",
+  "elapsed_seconds": 35.226742999991984,
+  "exit_code": 1,
+  "head_before": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+  "head_after": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+  "scope": "OFFLINE_NEW_PUBLIC_ROUTE_ONLY_SYNTHETIC_TRANSPORT",
+  "actual_game_or_SDK_calls": 0,
+  "native_builds": 0,
+  "MAIN_mutations": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\stderr.log",
+    "bytes": 2531,
+    "sha256": "3776fbfb03ee78860e5c0ffbbd30193e6f85f819a9e1d66c7e3cd8b12563332f"
+  },
+  "test_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\test_ck3_mod_acceptance_grant_title_picker.py",
+    "bytes": 20602,
+    "sha256": "c8405dcefd54a27733d411cb821c8403081b08b0caad1d7f1cd49f5b14108762"
+  },
+  "candidate_author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_candidate.py",
+    "bytes": 12431,
+    "sha256": "a810395e5ce799da6546a1ca907ddd8a3b9fb5f20a5373f6b40a09225dd86150"
+  },
+  "candidate_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-001\\INTEGRATION-MANIFEST.json",
+    "bytes": 2629,
+    "sha256": "f83431b2675416c5faa280a11c282166f26650f694a197db903bd7ed180404f2"
+  }
+}

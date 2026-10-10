@@ -1,4 +1,4 @@
-"""Two-query batch guards only; no performance/game qualification."""
+"""Readonly observation batch guards only; no performance/game qualification."""
 from pathlib import Path
 import copy
 import sys
@@ -39,7 +39,7 @@ class Client:
 
     def execute_plan(self, steps, name):
         self.plans.append((copy.deepcopy(steps), name))
-        return copy.deepcopy(self.rows[:2] if len(steps) == 2 else self.rows[2:])
+        return copy.deepcopy(self.rows)
 
     def validate_frame(self, value):
         if value.get('paused') is not True or value.get('active_event') is not None:
@@ -50,25 +50,26 @@ class Client:
         self.checkpoints.append((name, value))
 
 
-class TwoQueryBatch(unittest.TestCase):
+class ReadonlyQueryBatch(unittest.TestCase):
     def setUp(self):
         self.data = adapter.contract()
 
     def call(self, c):
         return adapter.observe_decision(c, self.data, 7)
 
-    def test_two_then_one_submission_keeps_original_revision_anchors(self):
+    def test_single_three_row_submission_keeps_original_revision_anchors(self):
         for enabled in (False, True):
             c = Client(self.data['decision_key'], enabled)
             result = self.call(c)
             self.assertEqual(c.snapshot_calls, 1)
-            self.assertEqual([len(p[0]) for p in c.plans], [2, 1])
-            first, final = c.plans[0][0], c.plans[1][0][0]
+            self.assertEqual([len(p[0]) for p in c.plans], [3])
+            first, final = c.plans[0][0][:2], c.plans[0][0][2]
             self.assertEqual([s['tool'] for s in first], ['ck3_query_ingame_decision_item_v1', 'ck3_inspect_gui_window_tree_v1'])
             self.assertTrue(all(s['fresh_revision'] is False for s in first))
             self.assertIs(final['fresh_revision'], False)
             self.assertEqual(first[0]['args']['expected_revision'], c.initial['revision'])
-            self.assertEqual(final['args']['expected_revision'], c.rows[1]['after_snapshot']['revision'])
+            self.assertIs(final['bind_previous_revision'], True)
+            self.assertNotIn('expected_revision', final['args'])
             self.assertFalse(any('continue_on_error' in s for p in c.plans for s in p[0]))
             self.assertIs(result['confirm_enabled'], enabled)
             self.assertFalse(result['decision_executed'])
@@ -81,14 +82,16 @@ class TwoQueryBatch(unittest.TestCase):
         c.rows[2]['result'] = model(after, self.data['decision_key'])
         c.rows[2]['after_snapshot'] = copy.deepcopy(after)
         self.call(c)
-        self.assertEqual(c.plans[1][0][0]['args']['expected_revision'], 20)
+        self.assertEqual(c.rows[1]['after_snapshot']['revision'], 20)
+        self.assertIs(c.plans[0][0][2]['bind_previous_revision'], True)
+        self.assertNotIn('expected_revision', c.plans[0][0][2]['args'])
 
     def test_native_model_mismatch_is_never_replaced_by_identity_only(self):
         for index in (0, 2):
             c = Client(self.data['decision_key'])
             c.rows[index]['result']['native_revision'] += 1
             with self.assertRaises(ValueError): self.call(c)
-            self.assertEqual(len(c.plans), 1 if index == 0 else 2)
+            self.assertEqual(len(c.plans), 1)  # All three readonly queries precede adapter validation.
             self.assertEqual(c.checkpoints, [])
 
     def test_both_batch_after_snapshots_keep_original_identity_and_pause(self):
@@ -105,7 +108,7 @@ class TwoQueryBatch(unittest.TestCase):
                 with self.subTest(index=index, field=field), self.assertRaises(ValueError): self.call(c)
                 self.assertEqual(len(c.plans), 1)
 
-    def test_batch_reorder_error_or_missing_after_snapshot_reject_without_final_query(self):
+    def test_batch_reorder_error_or_missing_after_snapshot_reject_without_acceptance(self):
         for defect in ('reordered', 'error', 'missing-after'):
             c = Client(self.data['decision_key'])
             if defect == 'reordered': c.rows[0]['id'], c.rows[1]['id'] = c.rows[1]['id'], c.rows[0]['id']

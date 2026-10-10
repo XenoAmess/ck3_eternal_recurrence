@@ -1,0 +1,18 @@
+{
+  "keeper_actual_exit_code": 0,
+  "keeper_report": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "common-acceptance-12004-20261010-a16",
+    "last_sequence": 4646,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16\\journal.jsonl",
+    "at_utc": "2026-10-10T21:56:04.241185+00:00",
+    "entry_error": null,
+    "checkout_head": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "business_pass": false
+}

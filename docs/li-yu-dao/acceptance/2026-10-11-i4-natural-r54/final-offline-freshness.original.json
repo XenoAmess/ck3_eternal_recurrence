@@ -1,0 +1,61 @@
+{
+  "schema": "ck3.steam_fresh_desktop_frame.v1",
+  "captured_at_utc": "2026-10-10T21:49:58.526517+00:00",
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-r54-final-steam-vertical-20261011-001.py",
+    "bytes": 3782,
+    "sha256": "28EB2CF9CCA3008C9DD97623FBD8FA79606795BBF7F0866957F2419B3E78BFFD"
+  },
+  "movement_axis": "Y",
+  "steam_hwnd": 263104,
+  "steam_pid": 7216,
+  "steam_create_time": 1791545643.04341,
+  "desktop_size": [
+    1024,
+    768
+  ],
+  "prior_fit_rect": [
+    40,
+    40,
+    1050,
+    728
+  ],
+  "before_rect": [
+    7,
+    40,
+    1017,
+    728
+  ],
+  "moved_rect": [
+    7,
+    60,
+    1017,
+    748
+  ],
+  "restored_rect": [
+    7,
+    40,
+    1017,
+    728
+  ],
+  "before_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-fresh-offline-002\\steam-before.png",
+  "before_sha256": "0B075674543D40A857D711A1B7C7EADAA76C40B3A74A66733A600F2699D95F0F",
+  "moved_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-fresh-offline-002\\steam-moved.png",
+  "moved_sha256": "B9FEDBF471078C67064DD7E2E60F410580954B9AFED8E76A3CEC1B48B18CFD22",
+  "moved_identity": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-fresh-offline-002\\steam-moved.png",
+    "bytes": 647704,
+    "sha256": "B9FEDBF471078C67064DD7E2E60F410580954B9AFED8E76A3CEC1B48B18CFD22"
+  },
+  "pixel_difference_bbox": [
+    0,
+    27,
+    1024,
+    728
+  ],
+  "moving_edge_changed": true,
+  "clock_check": null,
+  "offline_status_observed": null,
+  "keyboard_or_mouse_sent": false,
+  "steam_mode_mutated": false
+}

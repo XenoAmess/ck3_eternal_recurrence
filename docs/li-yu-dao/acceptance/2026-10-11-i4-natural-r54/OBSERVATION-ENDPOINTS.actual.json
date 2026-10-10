@@ -1,0 +1,63 @@
+{
+  "schema": "lyd-r54-observation-endpoints-small-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "complete_observation_ordinal_range_ROOT_reported": [
+    0,
+    47
+  ],
+  "only_projected_ordinals": [
+    0,
+    47
+  ],
+  "observations": [
+    {
+      "ordinal": 0,
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\i4-school-observation-0000.json",
+        "bytes": 41228,
+        "sha256": "edf32f179d7bd8a6210350b510170305daf54d95d9a1d2b3c379d7d876ef4c93"
+      },
+      "snapshot": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53144712,
+        "paused": true,
+        "map_ready": true,
+        "active_event": null
+      },
+      "actor_character_id": 31254,
+      "bridge_pid": 2340,
+      "connection_generation": 1,
+      "confirm_enabled": false,
+      "decision_executed": false
+    },
+    {
+      "ordinal": 47,
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\i4-school-observation-0047.json",
+        "bytes": 41913,
+        "sha256": "43881398e9a4684ecc9b3da87c9e05bfbbbaceff2a0e888be908f7a4870e5725"
+      },
+      "snapshot": {
+        "snapshot_id": "native:239",
+        "revision": 193,
+        "native_revision": 239,
+        "date_raw": 53145840,
+        "paused": true,
+        "map_ready": true,
+        "active_event": null
+      },
+      "actor_character_id": 31254,
+      "bridge_pid": 2340,
+      "connection_generation": 1,
+      "confirm_enabled": false,
+      "decision_executed": false
+    }
+  ],
+  "day48_complete": false,
+  "expiry_qualified": null,
+  "final_SAVE_qualified": null,
+  "cold_reload_qualified": null,
+  "business_pass": false
+}

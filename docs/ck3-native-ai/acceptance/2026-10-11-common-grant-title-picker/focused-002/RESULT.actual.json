@@ -1,0 +1,58 @@
+{
+  "schema": "lyd.common-grant-public-focused-execution.v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\test_ck3_mod_acceptance_grant_title_picker.py",
+    "--repo",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "--candidate-author",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_candidate.py",
+    "PublicGrantRoutingTests.test_metadata_annotations_and_closed_strict_schemas",
+    "-v"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "started_utc": "2026-10-10T21:22:30.207673+00:00",
+  "finished_utc": "2026-10-10T21:22:53.983847+00:00",
+  "elapsed_seconds": 23.776178000000073,
+  "exit_code": 0,
+  "head_before": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+  "head_after": "ddbe2b97058b465b8a4bbe7484d658069ff43c6d",
+  "scope": "ONLY_CORRECTED_METADATA_SCHEMA_CASE",
+  "unchanged_seven_passed_cases_not_repeated": true,
+  "actual_game_or_SDK_calls": 0,
+  "native_builds": 0,
+  "MAIN_mutations": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-002\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-002\\stderr.log",
+    "bytes": 249,
+    "sha256": "182bbfe6b05ca33fb40c2da59db266ecfe8155a6f5016d109294034cbc85c79d"
+  },
+  "test_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\test_ck3_mod_acceptance_grant_title_picker.py",
+    "bytes": 20665,
+    "sha256": "89571c6fcfac6c1e4a73e9b33da5d3feca548feeb8d427020b7e9b0bf19daf40"
+  },
+  "candidate_author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\prepare_candidate.py",
+    "bytes": 12431,
+    "sha256": "a810395e5ce799da6546a1ca907ddd8a3b9fb5f20a5373f6b40a09225dd86150"
+  },
+  "candidate_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\candidate-002\\INTEGRATION-MANIFEST.json",
+    "bytes": 2629,
+    "sha256": "57967e26cc646e3ae3fb5bd391eec3ae54fd4837885de5bb0b284b3e351f7b53"
+  },
+  "original_RED": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\focused-001\\RESULT.actual.json",
+    "bytes": 2372,
+    "sha256": "372d6b4f1ec9b8a3426ebb0bc4faa7d35dbd75b0b1b4c1f0cad7e614ffda0840"
+  }
+}

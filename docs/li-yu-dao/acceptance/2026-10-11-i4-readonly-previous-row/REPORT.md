@@ -1,0 +1,11 @@
+# I4 readonly previous-row plan: source and focused qualification
+
+ROOT accepted the explicit readonly previous-row protocol. Natural-day advance remains a separate submission; the three original model-before/tree/model-after queries share one plan. Model-after receives the exact expected revision of this plan's immediately previous completed row's actual after_snapshot. The opt-in is a literal bool, fresh_revision=false, with a finite existing readonly query allowlist; caller revision/reference mixing and unqualified predecessor rows are refused. Default legacy behavior remains.
+
+ROOT ran nine new plus six affected portable tests once: exit 0, 2026-10-10T21:58:09.633975Z to 21:58:10.374876Z (2026-10-11 05:58 CST). Raw RESULT, empty stdout and original 3005-byte stderr are copied without newline conversion. This is focused Python qualification, not a live speedup, expiry, final SAVE or cold-reload result. R54's original day48 advance refusal remains RED; Phase I remains 75% NOT_GREEN.
+
+All previous model/frame/tree and natural-day guards remain. Final readonly query now may run before the adapter refuses an earlier model/frame; no write can cross that refusal. A final RPC failure can surface through the existing execute_plan failure path before adapter inspection, while earlier original rows/errors stay preserved. This ordering change is accepted and explicit, not a claim of earlier refusal timing.
+
+The existing six batch tests retain their qualification mutation cases. CI already runs them; this patch adds only the new nine-test repository entry. That entry defaults to actual repository source and has no external B author dependency. The external test runner is not imported into production. R13's pause diagnostics and C3 changes remain independent incremental hunks.
+
+Prior source-author failures remain externally available and unchanged, with exact pins in IMPORT-MANIFEST.json. The 002 indentation seam failure and initial 003 author SyntaxError produced no accepted production outputs; their original tool-result chunks are f1b134 and 755e8b. The corrected source author/AST proof and the actual focused receipt have separate provenance. There is no claim of a new run or runtime qualification here.

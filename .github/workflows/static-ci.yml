@@ -176,9 +176,13 @@ jobs:
         run: |
           python -B -X utf8 tools/test_ck3_mod_acceptance.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_grant_title_picker.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_window.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_i4_batch_002.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_previous_row_readonly.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_i4_natural_expiry.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
@@ -235,6 +239,8 @@ jobs:
           python -B -X utf8 tools/test_ck3_mod_acceptance_completion.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_pause.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_pause_same_owner_diagnostic.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_day_result.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

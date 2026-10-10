@@ -1,0 +1,27 @@
+{
+  "host_features": {
+    "stock_grant_title_picker": false
+  },
+  "capabilities": {
+    "ck3_query_grant_title_picker_v1": {
+      "source_build_ready": false,
+      "actual_live_qualified": false,
+      "evidence": "SOURCE_ONLY_CANDIDATE; future exact shared freeze and actual qualification required"
+    },
+    "ck3_prepare_grant_title_picker_v1": {
+      "source_build_ready": false,
+      "actual_live_qualified": false,
+      "evidence": "SOURCE_ONLY_CANDIDATE; prepare is not holder transfer"
+    },
+    "ck3_select_grant_title_picker_v1": {
+      "source_build_ready": false,
+      "actual_live_qualified": false,
+      "evidence": "SOURCE_ONLY_CANDIDATE; exact selected-set readback required"
+    },
+    "ck3_send_grant_title_picker_v1": {
+      "source_build_ready": false,
+      "actual_live_qualified": false,
+      "evidence": "SOURCE_ONLY_CANDIDATE; original claim/no-retry and complete native holder after-read remain mandatory"
+    }
+  }
+}

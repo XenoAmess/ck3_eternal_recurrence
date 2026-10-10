@@ -1,0 +1,19 @@
+{
+  "pid": 8776,
+  "create_time": 1791665947.2791085,
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\csr13\\tools\\ck3_mod_acceptance_keeper.py",
+    "--repo",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "--root",
+    "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16",
+    "--task",
+    "common-acceptance-12004-20261010-a16",
+    "--sequence",
+    "4615"
+  ]
+}

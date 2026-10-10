@@ -1,0 +1,32 @@
+{
+  "schema": "lyd.common-grant-public-ci-source-only.v1",
+  "status": "SOURCE_ONLY_NOT_RUN",
+  "relative_path": ".github/workflows/static-ci.yml",
+  "before": {
+    "bytes": 32828,
+    "sha256": "c5a3341b4242f4d61b09444cae5b5af8a5ce841cf1a6ea0dfc442d7da34cdd23"
+  },
+  "after": {
+    "bytes": 32969,
+    "sha256": "248439fbf8f805e4c7cce91bfaddfe3fb5d44c24f241d34c14ab1880e6c6d99b"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-grant-public-route-sourceonly-20261011-001\\ci-001\\PUBLIC-GRANT-CI.incremental.patch",
+    "bytes": 578,
+    "sha256": "0a7cc8a445663139d01b997effc4b0a7acb3323eb566ad5f24e07c4f2c9650f0"
+  },
+  "entry": [
+    "python",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/test_ck3_mod_acceptance_grant_title_picker.py",
+    "-v"
+  ],
+  "same_existing_shared_acceptance_job": true,
+  "existing_mcp_2_dependency": true,
+  "production_and_test_bytes_unchanged": true,
+  "CI_or_tests_executed": false,
+  "MAIN_mutations": 0,
+  "future_CI_result": null
+}

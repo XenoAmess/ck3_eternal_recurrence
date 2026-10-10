@@ -1,0 +1,129 @@
+{
+  "at_utc": "2026-10-10T21:56:04.191606+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "keeper_root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16",
+  "administrative_failure_cleanup": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\administrative-failure-cleanup-proof-001.json",
+    "bytes": 4628,
+    "sha256": "0c5bf8c136016870d1bc048bf135b80e727f79271c37dabae2ea658b93342003"
+  },
+  "normal_close_qualified": false,
+  "host_original_wait": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-original-process-exit.json",
+    "bytes": 246,
+    "sha256": "8c3c6a7faf7c1e2c9ae74f8e76dff2ec2d2ea9d3f67e45aa88a71701b758b453"
+  },
+  "host_started": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-started.json",
+    "bytes": 3981,
+    "sha256": "74911333be9c3a6621e7d5ae5b5f133d9cea55846fbce3a82a8b62b789a5079a"
+  },
+  "original_supervisor": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-supervisor-started.json",
+    "bytes": 987,
+    "sha256": "fe589bbbcfe6fcfce4bfbe9581f8059009c954051f8354bb9175a46c7a9d94c0"
+  },
+  "public_original_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r54-public-run-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1588,
+    "sha256": "3a80d77ea76fc8c2450aea6fa6dde2e1665cd4544744f3bd9decfd675ff3a46a"
+  },
+  "public_original_exit_code": 2,
+  "display_fit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\display-fit-001.json",
+    "bytes": 7141,
+    "sha256": "a0aab0116dbf6a8335f135a1f97c4e2205131b849968fe78fbc98c8740481137"
+  },
+  "display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\display-restore-001.json",
+    "bytes": 1142,
+    "sha256": "311f046c9c48f1f4c2f6b49267fbd5cdb020249a8041e8edc5fbe0081e0da4ee"
+  },
+  "actual_current_display": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "final_offline_direct_review": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-offline-root-review-001.json",
+    "bytes": 784,
+    "sha256": "6b2c0aa5d576e7a0fe4722844a4ab73e1c85c4dc746fcc4a4007a40c2ba11945"
+  },
+  "freshness": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\final-fresh-offline-002\\steam-frame-freshness.json",
+    "bytes": 1739,
+    "sha256": "233d48eedca31de6f7b927b5727adcfabe5adc935ab707739f07b126d952771c"
+  },
+  "actual_process_inventory": {
+    "at_utc": "2026-10-10T21:56:04.185838+00:00",
+    "scanned_process_count": 178,
+    "python_controllers_inspected": [
+      {
+        "pid": 3868,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      },
+      {
+        "pid": 8776,
+        "name": "python.exe",
+        "runtime_controller_match": true
+      },
+      {
+        "pid": 13336,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      },
+      {
+        "pid": 16488,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [
+      {
+        "pid": 8776,
+        "name": "python.exe",
+        "command": "c:\\users\\administrator\\appdata\\local\\programs\\python\\python313\\python.exe -b -x utf8 c:\\csr13\\tools\\ck3_mod_acceptance_keeper.py --repo c:\\workspace\\ck3_eternal_recurrence --root c:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16 --task common-acceptance-12004-20261010-a16 --sequence 4615"
+      }
+    ],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "owned_keeper_exclusion": {
+    "reason": "Only the exact original still-owned keeper to receive this STOP is excluded; original inventory is retained unchanged",
+    "original_keeper_process": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\keeper-process.json",
+      "bytes": 471,
+      "sha256": "9da6326d5682c4aa48e420db7004c61e999c9b7dddeb35e6e4b130a2be4da5e7"
+    },
+    "pid": 8776,
+    "create_time": 1791665947.2791085,
+    "actual_argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\csr13\\tools\\ck3_mod_acceptance_keeper.py",
+      "--repo",
+      "C:\\workspace\\ck3_eternal_recurrence",
+      "--root",
+      "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16",
+      "--task",
+      "common-acceptance-12004-20261010-a16",
+      "--sequence",
+      "4615"
+    ],
+    "excluded_original_inventory_row": {
+      "pid": 8776,
+      "name": "python.exe",
+      "command": "c:\\users\\administrator\\appdata\\local\\programs\\python\\python313\\python.exe -b -x utf8 c:\\csr13\\tools\\ck3_mod_acceptance_keeper.py --repo c:\\workspace\\ck3_eternal_recurrence --root c:\\workspace\\ck3-common-runtime\\keepers\\20261011-a16 --task common-acceptance-12004-20261010-a16 --sequence 4615"
+    },
+    "owned_task": "common-acceptance-12004-20261010-a16",
+    "owned_sequence": 4646,
+    "remaining_blockers": []
+  },
+  "last_observed_owned_sequence": 4646,
+  "business_pass": false,
+  "screen_released": false,
+  "action": "Stop original keeper after proved failed-session cleanup; original allocator wait and exact CAS release remain required"
+}

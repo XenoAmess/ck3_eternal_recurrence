@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r54-failure-closeout-sourceonly-20261011-002/failure-stop-keeper.py",
+    "--cleanup-proof-sha256",
+    "0c5bf8c136016870d1bc048bf135b80e727f79271c37dabae2ea658b93342003",
+    "--offline-review",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0054/final-offline-root-review-001.json",
+    "--offline-review-sha256",
+    "6b2c0aa5d576e7a0fe4722844a4ab73e1c85c4dc746fcc4a4007a40c2ba11945"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T21:56:03.122966+00:00",
+  "finished_at_utc": "2026-10-10T21:56:04.262347+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r54-failure-stop-command-20261011-002\\stdout.log",
+    "bytes": 4919,
+    "sha256": "af8f555fdb5b234be1b3269018e4b80f58415fd6f3e4aa22b12fffe7e56e986b"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r54-failure-stop-command-20261011-002\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

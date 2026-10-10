@@ -1,0 +1,102 @@
+{
+  "schema": "ck3-r54-administrative-failed-session-cleanup-v1",
+  "at_utc": "2026-10-10T21:47:44.099775+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0054",
+  "status": "FAILED_SESSION_CLEANUP_ONLY",
+  "native_status": "RED",
+  "host_error_preserved": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+  "native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\native-report.json",
+    "bytes": 12329263,
+    "sha256": "674cb5d95bb344f8f3ae6d315f91068d46686d6da4b334988a8450127206c826"
+  },
+  "native_report_identity": {
+    "bytes": 12329263,
+    "mtime_ns": 1791668253010246800,
+    "device": 11439297576789895419,
+    "file_id": 844424933181041,
+    "links": 1
+  },
+  "allocator": {
+    "path": "C:\\csr13\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "native_cleanup_projection": {
+    "finished_at": "2026-10-10T21:37:32.790446+00:00",
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "session": {
+      "report": {
+        "finished_at": "2026-10-10T21:37:32.052308+00:00",
+        "shutdown": {
+          "nonce": "4c71f23a459b490cb4e09ab77e166a4c",
+          "ck3_pid": 2340,
+          "ck3_creation_date": "20261010210128.520249+000",
+          "ck3_exit_code": 1,
+          "job_active_processes_before_termination": 1,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 11304,
+          "watchdog_creation_date": "20261010210127.706407+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\control\\watchdog-4c71f23a459b490cb4e09ab77e166a4c.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      }
+    }
+  },
+  "original_inputs": {
+    "host-started.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-started.json",
+      "bytes": 3981,
+      "sha256": "74911333be9c3a6621e7d5ae5b5f133d9cea55846fbce3a82a8b62b789a5079a"
+    },
+    "host-original-process-exit.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\host-original-process-exit.json",
+      "bytes": 246,
+      "sha256": "8c3c6a7faf7c1e2c9ae74f8e76dff2ec2d2ea9d3f67e45aa88a71701b758b453"
+    },
+    "case-output/case-error-preserved.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\case-error-preserved.json",
+      "bytes": 204,
+      "sha256": "89819039ae5b63b63b813e0e1cad9ee8fbd3e3e6506b0faaf5817be7d483cd83"
+    },
+    "case-output/normal-quit-root-result.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\normal-quit-root-result.json",
+      "bytes": 1860,
+      "sha256": "de48ce324a54a406a68ed8267c62e55b52e022d23b16ef3afd47535a0d00a9e3"
+    },
+    "case-output/normal-close-error-preserved.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\normal-close-error-preserved.json",
+      "bytes": 118,
+      "sha256": "15720dd7e934fa2336f0511ab13473e621200a7c8e68b284e547ffbe2012928e"
+    },
+    "public_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r54-public-run-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1588,
+      "sha256": "3a80d77ea76fc8c2450aea6fa6dde2e1665cd4544744f3bd9decfd675ff3a46a"
+    }
+  },
+  "actual_host_exit_code": 1,
+  "actual_public_exit_code": 2,
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "normal_gui_quit_claimed": false
+}

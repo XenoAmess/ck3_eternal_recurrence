@@ -1,0 +1,30 @@
+{
+  "status": "SOURCE_ONLY_TESTS_NOT_EXECUTED",
+  "new_test_target": "tools/test_ck3_mod_acceptance_previous_row_readonly.py",
+  "new_test": {
+    "bytes": 13044,
+    "sha256": "85169e871c43c1430c924c8405f21e50d07c4e43eed23a89067c253248e1cb68"
+  },
+  "prior_external_test": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-readonly-previous-revision-sourceonly-20261011-003\\test_previous_row_readonly.py",
+    "bytes": 12577,
+    "sha256": "5ae881da46b97bd188eefeb304a0800f4326bbe001d22a17840ebd8f2815db9d"
+  },
+  "existing_test_target": "tools/test_ck3_mod_acceptance_i4_batch_002.py",
+  "existing_test_before": {
+    "bytes": 6696,
+    "sha256": "2e737ef55f3d44ee5a2b0f0fccc4e587d2de3fbe83589fbf007cee22025f28bb"
+  },
+  "existing_test_after": {
+    "bytes": 6873,
+    "sha256": "31d86a988a6fdba9f49f54703ed8992709fb0801b5c0e2d8f7c6485acb232d75"
+  },
+  "existing_test_delta": {
+    "bytes": 4058,
+    "sha256": "b09edcdef4ecff7d669fa8fa58766175c7875cf77cd4379bd54db41125d060d6"
+  },
+  "new_focused_tests": 9,
+  "affected_existing_tests": 6,
+  "tests_executed": 0,
+  "main_writes": 0
+}

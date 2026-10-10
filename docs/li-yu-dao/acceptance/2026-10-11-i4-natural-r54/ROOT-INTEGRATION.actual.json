@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "actual_production_and_test_AST": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "bytes": 269082,
+      "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 212325,
+      "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 706734,
+      "sha256": "410320ccd6757ca7be54111296333cc36c215ca5317d7385219a67b1b23399e3"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 40339,
+      "sha256": "db03df59f88f81630cee68224688feb7c60749bd9648e1f17387644d758c9ac5"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+      "bytes": 26988,
+      "sha256": "68564d4a6d3577e7bdce0a41ff464ab51298c13ee0fa14496ad2bb7c15a29bf5"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_queue.py",
+      "bytes": 11846,
+      "sha256": "3e004a37c89f8bbc4a568efb25398daf6b3c40228d664d24b64d33f1a93817af"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_i4_batch_002.py",
+      "bytes": 6873,
+      "sha256": "31d86a988a6fdba9f49f54703ed8992709fb0801b5c0e2d8f7c6485acb232d75"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/campaign_pause_same_owner_guard_before_diagnostic.py",
+      "bytes": 6500,
+      "sha256": "fec75bf147a02ab4a21ac17928f11956ed2b50d7d95a344c79830ebcf5179668"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_campaign_pause_same_owner_diagnostic.py",
+      "bytes": 5690,
+      "sha256": "c7791c093dd8a95045b01a8dbb8df6c58eaf7b4a42643480c4a98d8b095e9aea"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_grant_title_picker.py",
+      "bytes": 20665,
+      "sha256": "89571c6fcfac6c1e4a73e9b33da5d3feca548feeb8d427020b7e9b0bf19daf40"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_previous_row_readonly.py",
+      "bytes": 13044,
+      "sha256": "85169e871c43c1430c924c8405f21e50d07c4e43eed23a89067c253248e1cb68"
+    }
+  ],
+  "CI_unique_entries_and_immediate_exit_checks": [
+    "tools/test_ck3_mod_acceptance_grant_title_picker.py",
+    "ck3_autonomous_player/tests/unit/test_campaign_pause_same_owner_diagnostic.py",
+    "tools/test_ck3_mod_acceptance_previous_row_readonly.py",
+    "tools/test_ck3_mod_acceptance_i4_batch_002.py"
+  ],
+  "tests_replayed": 0,
+  "game_or_build_calls": 0
+}

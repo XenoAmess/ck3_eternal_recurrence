@@ -54,3 +54,10 @@
 下一I4公共CASE5已单独获得008 **2GiB**峰值准入，保守已有量加峰值 **136815235244 B**，低于原配额137438953472B，余623718228B；实际卷空闲620397649920B。008只覆盖本场inputs/prepared/state、新分配的run/keeper/profile和必要输出，不授source/native重建或第二份immutable seed。原始存档与metadata只引用，不新建源seed副本。公共prepare/plan/preflight实际exit0，尚未allocate/launch。
 
 008原件 `C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-008/ADMISSION.actual.json` 为6834B / `f3f1a8a67dfea35f5dbcac1333e9bea05708f7ef63af484891adbadf24236940`。原配额Oct12、Source12/13与native/cache复核期限均不续。实机结束后再按实际进程/keeper/CAS及有限新资产闭账；没有将预留额度当作物理回收。
+
+
+### 2026-10-11 R54 预约008实际闭账与有限清理复核
+
+实际追加时间：2026-10-10T22:02:37.164748+00:00。008于2026-10-10T21:56:59.867165Z CLOSED，已知新增保留逻辑量775397888B，未来预留0，physical delete0；当时卷free619456413696B。原准入、CLOSURE-MEASURE29116B、ASSET-GROUPS88462B及其SHA均由[永久R54小包](../li-yu-dao/2026-10-11-i4-r54-pause-frame-refusal.md)回链，未重复复制大native/SAVE/PE/source。原配额2026-10-12T05:19:51.814083Z及缓存2026-10-17T13:06:29.278808Z不续，行政清理不授normal0或业务通过。
+
+B内closed006/007小台账有限复核未取得新增大对象的替代/可重建、无当前引用及保护依据，因此无新增已证可回收候选；未全B扫描或读取旧大body。该结论不表示全B没有垃圾，亦不重复计入先前已删146942031B。外置复核INDEX978B SHA727a0882e56440ec3bd129be430b1898ce6ace9457e87275ffe19e737b3aa5cc，路径C:/workspace/ck3_lyd_runtime_20261004/storage-b-closed-ledger-review-20261011-001/INDEX.json。Source14后继只读准备继续，任何新重型写入另作串行准入。

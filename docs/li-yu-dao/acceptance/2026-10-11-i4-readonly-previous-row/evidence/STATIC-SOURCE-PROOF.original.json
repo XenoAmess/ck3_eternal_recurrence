@@ -1,0 +1,13 @@
+{
+  "status": "SOURCE_ONLY_AST",
+  "checks": {
+    "host_all_prior_methods_except_execute_exact": true,
+    "host_new_binding_has_no_assert": true,
+    "queue_all_prior_functions_except_validate_steps_exact": true,
+    "adapter_all_functions_except_observe_decision_exact": true,
+    "adapter_original_model_frame_tree_guards_exact": true
+  },
+  "new_focused_tests_executed": 0,
+  "old_tests_repeated": 0,
+  "main_writes": 0
+}

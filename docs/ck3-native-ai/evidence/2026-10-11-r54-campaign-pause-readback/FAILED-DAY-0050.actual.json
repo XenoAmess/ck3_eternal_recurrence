@@ -1,0 +1,36 @@
+{
+  "schema": "lyd.r54.failed-advance-day-bounded-row.v1",
+  "qualification": "Actual failed advance row only; no whole native report read/hash, no replay, no day48 complete observation credit.",
+  "report_window": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\native-report.json",
+    "report_bytes_observed": 12329263,
+    "report_mtime_ns": 1791668253010246800,
+    "offset": 8482922,
+    "bytes_read": 131072,
+    "window_sha256": "800e93a094cbff379f7fc1866c496da54518d2dcf65316af0d808e3b63dc6234",
+    "whole_report_sha256": null,
+    "root_supplied_target_offset": 8483050
+  },
+  "exact_row": {
+    "offset": 8483047,
+    "bytes": 415,
+    "sha256": "661a57d7a58049d9f4d2e454a5950d40c0255c7a3936bea166676947c1514354"
+  },
+  "row": {
+    "id": "case-natural-day-0050",
+    "plan": {
+      "id": "case-natural-day-0050",
+      "kind": "advance_day",
+      "days": 1,
+      "timeout": 300
+    },
+    "started_at": "2026-10-10T21:37:23.249661+00:00",
+    "finished_at": "2026-10-10T21:37:27.810143+00:00",
+    "ok": false,
+    "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "after_snapshot": null,
+    "advance_day": null,
+    "result_keys": null,
+    "result": null
+  }
+}
