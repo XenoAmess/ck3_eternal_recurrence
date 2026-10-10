@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-i4-throughput-sourceonly-20261011-003/run_focused_namespace.py",
+    "--repo-root",
+    "C:/workspace/ck3_eternal_recurrence"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T18:38:20.256144+00:00",
+  "finished_at_utc": "2026-10-10T18:38:20.479700+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-day-frame-focused-20261011-001\\stdout.log",
+    "bytes": 596,
+    "sha256": "7083886c6d32507988d6dc2beb4a2248e08f4e8c97ba777f40a487c196cb6ce3"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-day-frame-focused-20261011-001\\stderr.log",
+    "bytes": 4841,
+    "sha256": "dd396de80cfb9fb9f26791d322cf430d618c2ebd0b6064c7ff617fe612fb9fc3"
+  }
+}

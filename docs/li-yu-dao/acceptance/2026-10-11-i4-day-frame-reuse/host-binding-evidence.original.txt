@@ -1,0 +1,33 @@
+Source11 captured invoke: final missing expected_revision is NOT filled with fresh_revision=False.
+    async def invoke(self, name: str, arguments: object = None, *, fresh_revision: bool = True) -> object:
+        properties = self.tools.get(name, {}).get("inputSchema", {}).get("properties", {})
+        needs_snapshot = fresh_revision and "expected_revision" in properties
+        if needs_snapshot or "$" in json.dumps(arguments):
+            await self.fresh()
+        army_ids = [
+            int(row["army_id"]) for row in self.snapshot.get("player_armies", [])
+            if isinstance(row, dict) and isinstance(row.get("army_id"), int)
+        ][:64]
+        context = {"revision": self.snapshot.get("revision"), "snapshot": self.snapshot,
+                   "army_ids": army_ids, "results": self.results, "episode": self.episode_identity}
+        resolved = resolve(arguments or {}, context)
+        if needs_snapshot and "expected_revision" not in resolved:
+            resolved["expected_revision"] = self.snapshot["revision"]
+        return await self.call(name, resolved)
+
+
+Source11 execute after every ordinary step (plan iteration is sequential):
+                self.results[str(row["id"])] = result
+                if kind not in {"frontend_read_only", "terminal_window_read_only"} and not (menu_only and kind != "finish_hold"):
+                    managed_done = getattr(self, "managed_done", None)
+                    proof = (failure_proof if failure_shutdown else
+                        finished_native_exit_zero_proof(self.report,
+                            managed_done is not None and managed_done.is_set(), self.episode_identity)
+                        if kind == "finish_hold" else None)
+                    if proof is None:
+                        row["after_snapshot"] = await self.fresh()
+                    else:
+                        row["after_snapshot"] = proof
+                        marker = "post_failure_exit_finish_hold" if failure_shutdown else "post_exit_finish_hold"
+                        self.report[marker] = {"step_id": row["id"], "proof": copy.deepcopy(proof)}
+                row["ok"] = True

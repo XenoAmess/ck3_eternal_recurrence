@@ -1,0 +1,99 @@
+{
+  "schema": "lyd.i4.day-frame-reuse-root-import-v1",
+  "at_utc": "2026-10-10T18:44:44.596050+00:00",
+  "adapter": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+    "bytes": 26638,
+    "sha256": "59d7c74e919898573d6f8270b6a61c16326e44787c6f6c193365c994fc9039f3"
+  },
+  "test": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_day_frame.py",
+    "bytes": 7260,
+    "sha256": "9cee774149a6415a1639e3bdbab24baca80499c2bfcb1775a89105e07d031d3e"
+  },
+  "files": [
+    {
+      "file": "focused-command.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-day-frame-focused-20261011-001\\RESULT.actual.json",
+        "bytes": 980,
+        "sha256": "0d4be0d236c8884498726a839ab02088be8f755f7614065a9a27dee88795a479"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-day-frame-reuse\\focused-command.actual.json",
+        "bytes": 980,
+        "sha256": "0d4be0d236c8884498726a839ab02088be8f755f7614065a9a27dee88795a479"
+      }
+    },
+    {
+      "file": "focused-stdout.actual.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-day-frame-focused-20261011-001\\stdout.log",
+        "bytes": 596,
+        "sha256": "7083886c6d32507988d6dc2beb4a2248e08f4e8c97ba777f40a487c196cb6ce3"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-day-frame-reuse\\focused-stdout.actual.log",
+        "bytes": 596,
+        "sha256": "7083886c6d32507988d6dc2beb4a2248e08f4e8c97ba777f40a487c196cb6ce3"
+      }
+    },
+    {
+      "file": "focused-stderr.actual.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-day-frame-focused-20261011-001\\stderr.log",
+        "bytes": 4841,
+        "sha256": "dd396de80cfb9fb9f26791d322cf430d618c2ebd0b6064c7ff617fe612fb9fc3"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-day-frame-reuse\\focused-stderr.actual.log",
+        "bytes": 4841,
+        "sha256": "dd396de80cfb9fb9f26791d322cf430d618c2ebd0b6064c7ff617fe612fb9fc3"
+      }
+    },
+    {
+      "file": "one-day-selected-frame.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-one-day-frame-projection-20261011-001.actual.json",
+        "bytes": 3015,
+        "sha256": "524b4000112d4d465a59fc4bac985e7f6fccaf0d716d5901fce801052355dfba"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-day-frame-reuse\\one-day-selected-frame.actual.json",
+        "bytes": 3015,
+        "sha256": "524b4000112d4d465a59fc4bac985e7f6fccaf0d716d5901fce801052355dfba"
+      }
+    },
+    {
+      "file": "candidate-one-day-qualification.original.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-throughput-sourceonly-20261011-002\\ACTUAL-FRAME-QUALIFICATION.json",
+        "bytes": 1854,
+        "sha256": "f0f19b99d16d885d62f45b7663bf600bb146173a29c0e1a6c02d40edeb0ca8c1"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-day-frame-reuse\\candidate-one-day-qualification.original.json",
+        "bytes": 1854,
+        "sha256": "f0f19b99d16d885d62f45b7663bf600bb146173a29c0e1a6c02d40edeb0ca8c1"
+      }
+    },
+    {
+      "file": "host-binding-evidence.original.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-i4-throughput-sourceonly-20261011-001\\HOST-BINDING-EVIDENCE.txt",
+        "bytes": 2150,
+        "sha256": "a770a09bd45c8644b4887afd0b3509d65e1c597fb814f79b0eef09c010833c22"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-day-frame-reuse\\host-binding-evidence.original.txt",
+        "bytes": 2150,
+        "sha256": "a770a09bd45c8644b4887afd0b3509d65e1c597fb814f79b0eef09c010833c22"
+      }
+    }
+  ],
+  "focused_tests_actual": 26,
+  "focused_exit_code": 0,
+  "current_R53_modified": false,
+  "R53_business_pass": false,
+  "runtime_speed_measured": false
+}

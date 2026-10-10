@@ -1,0 +1,40 @@
+{
+  "schema": "lyd.i4.daily-frame.actual-projection-qualification.v1",
+  "status": "SOURCE_ONLY_ACTUAL_ONE_DAY_FRAME_BOUNDARY_MATCHED",
+  "projection": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-one-day-frame-projection-20261011-001.actual.json",
+    "bytes": 3015,
+    "sha256": "524b4000112d4d465a59fc4bac985e7f6fccaf0d716d5901fce801052355dfba"
+  },
+  "original_row": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-natural-day-0003.actual-results.json",
+    "bytes": 80945,
+    "sha256": "9a80a3a22959044b897adc429d6aa0f9efb36dfc94f06498419b696aa820b422"
+  },
+  "actual_row_id": "case-natural-day-0003",
+  "projection_at_utc": "2026-10-10T18:28:25.891271+00:00",
+  "checks": {
+    "original_ok": true,
+    "one_natural_day": true,
+    "elapsed_hours": 24,
+    "event_boundary": null,
+    "projected_completed_and_host_after_snapshot_equal": true,
+    "positive_native_revision_equal": 8,
+    "public_revision_equal_this_observation": 8,
+    "same_paused_PID_generation_actor_date": true,
+    "date_raw": 53144736,
+    "PID": 15488,
+    "generation": 1,
+    "actor": 31254,
+    "actual_exact_build_match": true
+  },
+  "A": "REJECTED: fresh_revision=False does not fill an omitted expected_revision in Source11 invoke.",
+  "B": "The supplied actual one-day projection satisfies the candidate strict frame-reuse precondition. Every future day still validates independently.",
+  "limits": [
+    "Only the selected projected fields were read; original 80945-byte row was not opened.",
+    "This observed equality is not a universal paused-native-revision guarantee.",
+    "R53 remains unchanged; no test, patch application, speed or business credit."
+  ],
+  "future_candidate_runtime_result": null,
+  "tests_executed": false
+}

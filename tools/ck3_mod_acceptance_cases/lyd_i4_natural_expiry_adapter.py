@@ -177,8 +177,23 @@ def _call(client, name, tool, args, frame):
     return rows[0]['result'], after
 
 
-def observe_decision(client, data, ordinal):
-    frame = client.snapshot()
+def day_observation_frame(client, row):
+    """Use the host's actual post-step snapshot, never advance result.after."""
+    require(row.get('ok') is True and not row.get('error'), 'Original natural step failed; never replay')
+    value = row['result']
+    require(value.get('requested_days') == 1 and value.get('requested_interval_complete') is True and
+            value.get('event_boundary') is None, 'Only the completed original natural day can supply a frame')
+    completed, after = value['after'], row['after_snapshot']
+    same_paused_identity(client, completed, after)
+    require(type(after.get('native_revision')) is int and after['native_revision'] > 0 and
+            type(completed.get('native_revision')) is int and
+            after['native_revision'] == completed['native_revision'],
+            'Post-step snapshot crossed the completed actual native frame')
+    return after
+
+
+def observe_decision(client, data, ordinal, *, front_frame=None):
+    frame = client.snapshot() if front_frame is None else client.validate_frame(front_frame)
     prefix = 'i4-school-observation-' + str(ordinal).zfill(4)
     steps = [
         {'id': prefix + '-model-before', 'tool': 'ck3_query_ingame_decision_item_v1',
@@ -304,7 +319,7 @@ def run_case(context, client):
         require(elapsed + 24 <= data['maximum_natural_days'] * 24, 'Natural 366-day duration exhausted')
         row = client.advance_day(days=1, timeout=data['one_day_timeout'])
         elapsed = validate_day(row, before, initial, elapsed, data['maximum_natural_days'])
-        proof = observe_decision(client, data, ordinal)
+        proof = observe_decision(client, data, ordinal, front_frame=day_observation_frame(client, row))
         require(frame_identity(proof['frame']) == frame_identity(row['result']['after']), 'Observation moved after natural pause')
         intervals.append({'step_id': row['id'], 'elapsed_hours': row['result']['elapsed_hours'],
             'date_raw': proof['frame']['date_raw'], 'confirm_enabled': proof['confirm_enabled']})

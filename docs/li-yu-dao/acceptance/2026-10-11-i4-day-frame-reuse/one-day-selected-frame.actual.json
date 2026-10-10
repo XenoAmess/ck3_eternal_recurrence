@@ -1,0 +1,101 @@
+{
+  "schema": "lyd.r53.actual-one-day-selected-frame.v1",
+  "at_utc": "2026-10-10T18:28:25.891271+00:00",
+  "source": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-natural-day-0003.actual-results.json",
+    "bytes": 80945,
+    "sha256": "9a80a3a22959044b897adc429d6aa0f9efb36dfc94f06498419b696aa820b422"
+  },
+  "id": "case-natural-day-0003",
+  "ok": true,
+  "result": {
+    "requested_days": 1,
+    "requested_interval_complete": true,
+    "event_boundary": null,
+    "elapsed_hours": 24,
+    "before": {
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53144712,
+      "paused": true,
+      "active_event": null,
+      "source": "injected-dll-named-pipe",
+      "backend_id": "native-headless",
+      "map_ready": true,
+      "episode_projection": "native_campaign",
+      "played_character": {
+        "character_id": 31254,
+        "alive": true,
+        "source": "native"
+      },
+      "diagnostics": {
+        "bridge_pid": 15488,
+        "connection_generation": 1,
+        "hello": {
+          "pid": 15488,
+          "connection_generation": 1,
+          "expected_ck3_version": "1.20.0.4",
+          "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "game_adapter_status": "ready",
+          "ck3_build_match": true
+        }
+      }
+    },
+    "after": {
+      "revision": 8,
+      "native_revision": 8,
+      "date_raw": 53144736,
+      "paused": true,
+      "active_event": null,
+      "source": "injected-dll-named-pipe",
+      "backend_id": "native-headless",
+      "map_ready": true,
+      "episode_projection": "native_campaign",
+      "played_character": {
+        "character_id": 31254,
+        "alive": true,
+        "source": "native"
+      },
+      "diagnostics": {
+        "bridge_pid": 15488,
+        "connection_generation": 1,
+        "hello": {
+          "pid": 15488,
+          "connection_generation": 1,
+          "expected_ck3_version": "1.20.0.4",
+          "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "game_adapter_status": "ready",
+          "ck3_build_match": true
+        }
+      }
+    }
+  },
+  "after_snapshot": {
+    "revision": 8,
+    "native_revision": 8,
+    "date_raw": 53144736,
+    "paused": true,
+    "active_event": null,
+    "source": "injected-dll-named-pipe",
+    "backend_id": "native-headless",
+    "map_ready": true,
+    "episode_projection": "native_campaign",
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native"
+    },
+    "diagnostics": {
+      "bridge_pid": 15488,
+      "connection_generation": 1,
+      "hello": {
+        "pid": 15488,
+        "connection_generation": 1,
+        "expected_ck3_version": "1.20.0.4",
+        "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "game_adapter_status": "ready",
+        "ck3_build_match": true
+      }
+    }
+  }
+}
