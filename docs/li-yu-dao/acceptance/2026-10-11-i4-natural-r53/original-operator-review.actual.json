@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-mod-acceptance-direct-review-v1",
+  "reviewed_at_utc": "2026-10-10T17:55:20.948686+00:00",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "observed_nonce": "3ca411f775719583c605e22a0ef3de90",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0053",
+  "screen_task": "common-acceptance-12004-20261010-a15",
+  "frozen_argv": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\frozen-argv.json",
+    "bytes": 3024649,
+    "sha256": "8078a6cfd245dfd5adb10eabafd27659eab919ac027f66103141e6ef72779813"
+  },
+  "challenge": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\direct-review-001\\challenge.json",
+    "bytes": 2366,
+    "sha256": "2b6d4b9b6a6f2865ef8ae6ce9239cb762eff713adac11b9efa6d7c61d8c67811"
+  },
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\fresh-offline-002\\steam-moved.png",
+    "bytes": 903200,
+    "sha256": "07870513d577eecdb1663db2e060bc46c45efc23026a1c0cd05827683702df7a"
+  },
+  "review_image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\direct-review-001\\direct-review.png",
+    "bytes": 908915,
+    "sha256": "dba7945a1a82bcba1ea8d2f84a49c5bc05bbf8623e3d2a4c17e4f0233ef5901d"
+  }
+}

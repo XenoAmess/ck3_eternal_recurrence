@@ -1,0 +1,275 @@
+{
+  "schema": "lyd.r53.root-original-evidence-import-v1",
+  "at_utc": "2026-10-10T19:01:05.523813+00:00",
+  "files": [
+    {
+      "file": "final-selected-facts.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-final-selected-facts-20261011-001.actual.json",
+        "bytes": 5760,
+        "sha256": "6e49387adf6870c204d01630544f29024634e5e362c81f50d9de194170eb8590"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\final-selected-facts.actual.json",
+        "bytes": 5760,
+        "sha256": "6e49387adf6870c204d01630544f29024634e5e362c81f50d9de194170eb8590"
+      }
+    },
+    {
+      "file": "readiness-window-result.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\readiness-window-result.json",
+        "bytes": 1496,
+        "sha256": "28e4d57f7e80abe1af64f2213f0f8ca205e2e190b6a5a1a56de48bbb7ffa45b0"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\readiness-window-result.actual.json",
+        "bytes": 1496,
+        "sha256": "28e4d57f7e80abe1af64f2213f0f8ca205e2e190b6a5a1a56de48bbb7ffa45b0"
+      }
+    },
+    {
+      "file": "case-error-preserved.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\case-error-preserved.json",
+        "bytes": 206,
+        "sha256": "82c1b37eec7737fd88f8edb66bf824cfb6fecbd6604bf5a87b3e73409e1f33ac"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\case-error-preserved.actual.json",
+        "bytes": 206,
+        "sha256": "82c1b37eec7737fd88f8edb66bf824cfb6fecbd6604bf5a87b3e73409e1f33ac"
+      }
+    },
+    {
+      "file": "normal-close-result.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\normal-close-result.json",
+        "bytes": 10338,
+        "sha256": "d96f414fcc3a089d26930511ef07f3929600ffee108d69ca0358e6f294a71b1c"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\normal-close-result.actual.json",
+        "bytes": 10338,
+        "sha256": "d96f414fcc3a089d26930511ef07f3929600ffee108d69ca0358e6f294a71b1c"
+      }
+    },
+    {
+      "file": "host-original-process-exit.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\host-original-process-exit.json",
+        "bytes": 247,
+        "sha256": "cd5da0303e404cc8215f3f5ea3d5999f065fb272313399977f334296fa466476"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\host-original-process-exit.actual.json",
+        "bytes": 247,
+        "sha256": "cd5da0303e404cc8215f3f5ea3d5999f065fb272313399977f334296fa466476"
+      }
+    },
+    {
+      "file": "keeper-report.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a15\\report.json",
+        "bytes": 448,
+        "sha256": "5b6732d99200d76b10412226e395fb3b8dc87918eebad1d3c507d2364c30cfff"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\keeper-report.actual.json",
+        "bytes": 448,
+        "sha256": "5b6732d99200d76b10412226e395fb3b8dc87918eebad1d3c507d2364c30cfff"
+      }
+    },
+    {
+      "file": "screen-release-stdout.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\release-command-001\\stdout.log",
+        "bytes": 1240,
+        "sha256": "6cd3fdf99ed1df18ca8555f398bd498bbb494694472e6c144e8ba003e461da7e"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\screen-release-stdout.actual.json",
+        "bytes": 1240,
+        "sha256": "6cd3fdf99ed1df18ca8555f398bd498bbb494694472e6c144e8ba003e461da7e"
+      }
+    },
+    {
+      "file": "display-restore.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\display-restore-001.json",
+        "bytes": 846,
+        "sha256": "d8aa45a42472f2c4e3fe8a3ec06fd270a302dc54ec30e7be607a9bac60cb7416"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\display-restore.actual.json",
+        "bytes": 846,
+        "sha256": "d8aa45a42472f2c4e3fe8a3ec06fd270a302dc54ec30e7be607a9bac60cb7416"
+      }
+    },
+    {
+      "file": "public-run-command.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261011-004\\RESULT.actual.json",
+        "bytes": 1329,
+        "sha256": "6f0c43555024dbf91ee9965bb327ad161244cd52cc136ed84498282455d25a7e"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\public-run-command.actual.json",
+        "bytes": 1329,
+        "sha256": "6f0c43555024dbf91ee9965bb327ad161244cd52cc136ed84498282455d25a7e"
+      }
+    },
+    {
+      "file": "public-verify-command.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-verify-20261011-004\\RESULT.actual.json",
+        "bytes": 1336,
+        "sha256": "5383b4adc74cdf8c316921a55a56b15d29e7e419ba16a9aae5aab6f457da0322"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\public-verify-command.actual.json",
+        "bytes": 1336,
+        "sha256": "5383b4adc74cdf8c316921a55a56b15d29e7e419ba16a9aae5aab6f457da0322"
+      }
+    },
+    {
+      "file": "public-verify-stdout.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-verify-20261011-004\\stdout.log",
+        "bytes": 11347,
+        "sha256": "275f995155c8803cd7260f404235763c84637dd6003808feecc3892759ed9369"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\public-verify-stdout.actual.json",
+        "bytes": 11347,
+        "sha256": "275f995155c8803cd7260f404235763c84637dd6003808feecc3892759ed9369"
+      }
+    },
+    {
+      "file": "allocator-command.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-allocation-20261011-004\\RESULT.actual.json",
+        "bytes": 1667,
+        "sha256": "4f5da57ab0f1d3430693a802365bb46029558d18fae24000877dd3e49bb31507"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\allocator-command.actual.json",
+        "bytes": 1667,
+        "sha256": "4f5da57ab0f1d3430693a802365bb46029558d18fae24000877dd3e49bb31507"
+      }
+    },
+    {
+      "file": "original-operator-review.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\direct-review-001\\operator-review.json",
+        "bytes": 1400,
+        "sha256": "fafef8ac18bdd376303c934e3d93dbaf071c5f45ff12a6d595517e6fba305483"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\original-operator-review.actual.json",
+        "bytes": 1400,
+        "sha256": "fafef8ac18bdd376303c934e3d93dbaf071c5f45ff12a6d595517e6fba305483"
+      }
+    },
+    {
+      "file": "observation28-selected.original.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-observation28-readonly-diagnostic-20261011-001\\SELECTED-ROWS.actual.json",
+        "bytes": 9753,
+        "sha256": "b83d5202b1d5c2e7dd46e60073a1350698030777758a26a2cdc688cbad2c9c21"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\observation28-selected.original.json",
+        "bytes": 9753,
+        "sha256": "b83d5202b1d5c2e7dd46e60073a1350698030777758a26a2cdc688cbad2c9c21"
+      }
+    },
+    {
+      "file": "observation28-diagnostic.original.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-observation28-readonly-diagnostic-20261011-001\\REPORT.md",
+        "bytes": 3057,
+        "sha256": "47b43fa76c2bef8cec6ae7ce64830b68deb0a89efa34838c7bca275cdb7b0e8f"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\observation28-diagnostic.original.md",
+        "bytes": 3057,
+        "sha256": "47b43fa76c2bef8cec6ae7ce64830b68deb0a89efa34838c7bca275cdb7b0e8f"
+      }
+    },
+    {
+      "file": "cache-retirement-final.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-retirement-final-20261011-001.actual.json",
+        "bytes": 6213,
+        "sha256": "122c02ae3a3b8840c050403e51b642888969558b8860cd312cba0ddbe573598e"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\cache-retirement-final.actual.json",
+        "bytes": 6213,
+        "sha256": "122c02ae3a3b8840c050403e51b642888969558b8860cd312cba0ddbe573598e"
+      }
+    },
+    {
+      "file": "cache-protection-narrowing.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\ROOT-PROTECTION-NARROWING.actual.json",
+        "bytes": 1846,
+        "sha256": "98a29261534c6555b08d3694a1654e07419348e239ac7be813e0d34489c3e712"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\cache-protection-narrowing.actual.json",
+        "bytes": 1846,
+        "sha256": "98a29261534c6555b08d3694a1654e07419348e239ac7be813e0d34489c3e712"
+      }
+    },
+    {
+      "file": "reservation004-closed.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\CLOSED-RESERVATION.actual.json",
+        "bytes": 6122,
+        "sha256": "451d98812b72e14b8a77215bfaff1968a5c2c5d18d207e02f6198a774e5fb442"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\reservation004-closed.actual.json",
+        "bytes": 6122,
+        "sha256": "451d98812b72e14b8a77215bfaff1968a5c2c5d18d207e02f6198a774e5fb442"
+      }
+    },
+    {
+      "file": "reservation004-measure.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\CLOSURE-MEASURE.actual.json",
+        "bytes": 18349,
+        "sha256": "cdcbb49f0322159ae8832fdbc256de6f8bc4ffe7ceb6d8649c6b46af03b4b26c"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\reservation004-measure.actual.json",
+        "bytes": 18349,
+        "sha256": "cdcbb49f0322159ae8832fdbc256de6f8bc4ffe7ceb6d8649c6b46af03b4b26c"
+      }
+    },
+    {
+      "file": "reservation004-command.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure004-execution-20261011-001\\RESULT.actual.json",
+        "bytes": 2185,
+        "sha256": "36ebbf348258717a72cf3583c0e7c85a321771a069a2a4421405232e881bcc03"
+      },
+      "copied": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-natural-r53\\reservation004-command.actual.json",
+        "bytes": 2185,
+        "sha256": "36ebbf348258717a72cf3583c0e7c85a321771a069a2a4421405232e881bcc03"
+      }
+    }
+  ],
+  "copied_bytes": 85185,
+  "public_run_exit_code": 2,
+  "public_verify_exit_code": 2,
+  "business_pass": false,
+  "R52_original_READINESS_RED_unchanged": true,
+  "R52_cache_original_payload_availability": "DELETED_EXACT_MUTABLE_DUPLICATE_PAYLOAD",
+  "immutable_seed_preserved": true,
+  "screenshots_SAVE_full_native_reports_or_ledgers_copied_into_Git": false,
+  "source_only_diagnostic_report_is_not_a_fix_or_runtime_PASS": true
+}

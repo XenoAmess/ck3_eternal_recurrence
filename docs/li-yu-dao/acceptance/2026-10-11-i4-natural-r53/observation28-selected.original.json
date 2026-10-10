@@ -1,0 +1,286 @@
+{
+  "original28": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-school-observation-0028-model-and-tree.actual-results.json",
+    "bytes": 66137,
+    "mtime_ns": 1791656463132789200,
+    "sha256": "6177d60482cbc338951719cf3af182ec0fc046f97391103383df037172c4b678"
+  },
+  "rows28": [
+    {
+      "id": "i4-school-observation-0028-model-before",
+      "ok": true,
+      "started_at": "2026-10-10T18:21:00.892551+00:00",
+      "finished_at": "2026-10-10T18:21:02.318917+00:00",
+      "plan": {
+        "id": "i4-school-observation-0028-model-before",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "lyd_change_school_decision",
+          "expected_revision": 117
+        },
+        "fresh_revision": false
+      },
+      "result": {
+        "schema": "ck3-ingame-decision-item-v1",
+        "step": "query-ingame-decision-item-v1",
+        "read_only": true,
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "native_revision": 144,
+        "connection_generation": 1,
+        "game_pid": 15488,
+        "played_character_id": 31254,
+        "date_raw": 53145384,
+        "group_count": 6,
+        "row_count": 30,
+        "matching_row_count": 1,
+        "row_context_reference_key": 31254,
+        "detail_actor_reference_key": 31254,
+        "available": false,
+        "owner_thread_verified": true,
+        "frame_verified": false,
+        "source_abi_pins_verified": true,
+        "gui_owner_binding_verified": true,
+        "decisions_tree_complete": true,
+        "decisions_root_visible": true,
+        "row_owner_verified": true,
+        "row_scope_reference_available": true,
+        "detail_tree_complete": true,
+        "detail_root_visible": true,
+        "detail_definition_available": true,
+        "detail_definition_matches_target": true,
+        "detail_actor_binding_verified": true,
+        "row_widget_datacontext_verified": false,
+        "action_qualified": false,
+        "decision_key": "lyd_change_school_decision",
+        "detail_decision_key": "lyd_change_school_decision",
+        "unavailable_reason": "pipe_completion_keyed_query_binding_changed",
+        "backend_id": "native-headless",
+        "episode_run_id": null,
+        "queried_revision": 117,
+        "uses_mouse": false,
+        "uses_keyboard": false,
+        "uses_ocr": false
+      },
+      "after_snapshot": {
+        "revision": 117,
+        "native_revision": 144,
+        "date_raw": 53145384,
+        "paused": true,
+        "active_event": null,
+        "source": "injected-dll-named-pipe",
+        "backend_id": "native-headless",
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "diagnostics": {
+          "bridge_pid": 15488,
+          "connection_generation": 1,
+          "hello": {
+            "pid": 15488,
+            "connection_generation": 1,
+            "expected_ck3_version": "1.20.0.4",
+            "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "ck3_build_match": true
+          }
+        },
+        "played_character": {
+          "character_id": 31254,
+          "alive": true,
+          "source": "native"
+        }
+      }
+    },
+    {
+      "id": "i4-school-observation-0028-detail-tree",
+      "ok": true,
+      "started_at": "2026-10-10T18:21:02.568938+00:00",
+      "finished_at": "2026-10-10T18:21:02.755307+00:00",
+      "plan": {
+        "id": "i4-school-observation-0028-detail-tree",
+        "tool": "ck3_inspect_gui_window_tree_v1",
+        "args": {
+          "window_kind": "decision_detail"
+        },
+        "fresh_revision": false
+      },
+      "result": {
+        "schema": "ck3-native-gui-window-tree-inspection-v1",
+        "schema_version": 1,
+        "step": "inspect-gui-window-tree-v1",
+        "accepted": true,
+        "status": "available",
+        "scope_root_name": "decisiondetail_view",
+        "root_available": true,
+        "truncated": false,
+        "widget_count": 92,
+        "backend_id": "native-headless",
+        "read_only": true,
+        "uses_ocr": false,
+        "uses_keyboard": false,
+        "uses_mouse": false,
+        "window_kind": "decision_detail",
+        "rendered_text_available": false,
+        "selected_state_available": false,
+        "tooltip_state_available": false,
+        "business_model_available": false,
+        "selected_widgets": [
+          {
+            "runtime_name": "decisiondetail_view",
+            "child_path": "",
+            "depth": 0,
+            "child_count": 4,
+            "vtable_rva": 77048880,
+            "effective_visible": true,
+            "enabled": true
+          },
+          {
+            "runtime_name": "cost",
+            "child_path": "3/2/0/0",
+            "depth": 4,
+            "child_count": 0,
+            "vtable_rva": 77052024,
+            "effective_visible": false,
+            "enabled": true
+          },
+          {
+            "runtime_name": "cram_study_start_tutorial_highlight",
+            "child_path": "3/2/0/2/2",
+            "depth": 5,
+            "child_count": 0,
+            "vtable_rva": 76958128,
+            "effective_visible": false,
+            "enabled": true
+          },
+          {
+            "runtime_name": "back",
+            "child_path": "3/2/0/3/0",
+            "depth": 5,
+            "child_count": 7,
+            "vtable_rva": 76961544,
+            "effective_visible": false,
+            "enabled": true
+          }
+        ]
+      },
+      "after_snapshot": {
+        "revision": 117,
+        "native_revision": 144,
+        "date_raw": 53145384,
+        "paused": true,
+        "active_event": null,
+        "source": "injected-dll-named-pipe",
+        "backend_id": "native-headless",
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "diagnostics": {
+          "bridge_pid": 15488,
+          "connection_generation": 1,
+          "hello": {
+            "pid": 15488,
+            "connection_generation": 1,
+            "expected_ck3_version": "1.20.0.4",
+            "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "ck3_build_match": true
+          }
+        },
+        "played_character": {
+          "character_id": 31254,
+          "alive": true,
+          "source": "native"
+        }
+      }
+    }
+  ],
+  "original27_prefix": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-school-observation-0027-model-and-tree.actual-results.json",
+    "full_file_bytes": 66092,
+    "prefix_read_bytes": 22528,
+    "prefix_sha256": "dd97376b6ee7b17a7f78ebce7e231eb8654bb2d5b60b45d5028550621848ef26",
+    "full_file_sha256": null,
+    "reason": "Only necessary first-model row prefix read; no full-file hash claimed"
+  },
+  "model_row27": {
+    "id": "i4-school-observation-0027-model-before",
+    "ok": true,
+    "started_at": "2026-10-10T18:20:20.854513+00:00",
+    "finished_at": "2026-10-10T18:20:21.753921+00:00",
+    "plan": {
+      "id": "i4-school-observation-0027-model-before",
+      "tool": "ck3_query_ingame_decision_item_v1",
+      "args": {
+        "decision_key": "lyd_change_school_decision",
+        "expected_revision": 113
+      },
+      "fresh_revision": false
+    },
+    "result": {
+      "schema": "ck3-ingame-decision-item-v1",
+      "step": "query-ingame-decision-item-v1",
+      "read_only": true,
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "native_revision": 139,
+      "connection_generation": 1,
+      "game_pid": 15488,
+      "played_character_id": 31254,
+      "date_raw": 53145360,
+      "group_count": 6,
+      "row_count": 30,
+      "matching_row_count": 1,
+      "row_context_reference_key": 31254,
+      "detail_actor_reference_key": 31254,
+      "available": true,
+      "owner_thread_verified": true,
+      "frame_verified": true,
+      "source_abi_pins_verified": true,
+      "gui_owner_binding_verified": true,
+      "decisions_tree_complete": true,
+      "decisions_root_visible": true,
+      "row_owner_verified": true,
+      "row_scope_reference_available": true,
+      "detail_tree_complete": true,
+      "detail_root_visible": true,
+      "detail_definition_available": true,
+      "detail_definition_matches_target": true,
+      "detail_actor_binding_verified": true,
+      "row_widget_datacontext_verified": false,
+      "action_qualified": false,
+      "decision_key": "lyd_change_school_decision",
+      "detail_decision_key": "lyd_change_school_decision",
+      "unavailable_reason": "",
+      "backend_id": "native-headless",
+      "episode_run_id": null,
+      "queried_revision": 113,
+      "uses_mouse": false,
+      "uses_keyboard": false,
+      "uses_ocr": false
+    },
+    "after_snapshot": {
+      "revision": 113,
+      "native_revision": 139,
+      "date_raw": 53145360,
+      "paused": true,
+      "active_event": null,
+      "source": "injected-dll-named-pipe",
+      "backend_id": "native-headless",
+      "map_ready": true,
+      "episode_projection": "native_campaign",
+      "diagnostics": {
+        "bridge_pid": 15488,
+        "connection_generation": 1,
+        "hello": {
+          "pid": 15488,
+          "connection_generation": 1,
+          "expected_ck3_version": "1.20.0.4",
+          "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "ck3_build_match": true
+        }
+      },
+      "played_character": {
+        "character_id": 31254,
+        "alive": true,
+        "source": "native"
+      }
+    }
+  }
+}

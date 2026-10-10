@@ -1,0 +1,13 @@
+{
+  "schema": "xar.promo.screen-lease-keeper/v1",
+  "task_id": "common-acceptance-12004-20261010-a15",
+  "last_sequence": 4586,
+  "failure": null,
+  "thread_exited": true,
+  "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a15\\journal.jsonl",
+  "at_utc": "2026-10-10T18:39:50.242871+00:00",
+  "entry_error": null,
+  "checkout_head": "3574e41f8b9131ed6a397f21154c1803c13685f3",
+  "screen_released": false,
+  "game_actions": false
+}

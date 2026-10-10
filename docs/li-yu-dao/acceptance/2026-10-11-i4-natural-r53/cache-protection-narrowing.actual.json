@@ -1,0 +1,39 @@
+{
+  "schema": "ck3-r52-cache-conditional-protection-narrowing-v1",
+  "at_utc": "2026-10-10T18:12:19.817168+00:00",
+  "reviewer": "/root",
+  "target_root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state\\profile\\shadercache",
+  "replacement_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r52-20261011-001\\manifest.json",
+    "bytes": 687642,
+    "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+  },
+  "original_review_at_utc_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "reason": "Only redundant original mutable cache bytes may retire after held immutable seed and target both match manifest SHA. Original file identity/birth/mtime kept in exact plan; readiness RED, provenance, business snapshots, logs and seed all retained.",
+  "only_byte_identical_redundant_payload_release": true,
+  "changed_unique_busy_unlisted_files_retained": true,
+  "ROOT_consumer_proof": {
+    "ROOT_consumer_proof": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-consumer-20261011-001.actual.json",
+      "bytes": 4980,
+      "sha256": "c4f8f2e74be99b86ac5da384933babff320207d02d6228b36b025eb2481fcee7"
+    },
+    "bus_command": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "--expected-cli-sha256",
+      "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "list",
+      "--stale-after",
+      "600"
+    ],
+    "bus_stdout_bytes": 153845,
+    "bus_stdout_sha256": "ce03726450d152e6c6c5acec124fa40a6d101f36043964add86f4f7dcef7830c",
+    "at_utc": "2026-10-10T18:12:19.815648+00:00"
+  },
+  "runtime_or_business_credit": false,
+  "automatic_TTL_renewal": false
+}

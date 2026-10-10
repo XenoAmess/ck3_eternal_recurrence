@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-storage-closure004-sourceonly-20261011-001/close-reservation-root-only.py",
+    "--context",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0053/reviewed-context.json",
+    "--context-sha256",
+    "5c78695536a163301528bc0b350bfd8006cc2a9689b9636c001e8fe1a61eb511",
+    "--ready-context-sha256",
+    "a12e9e0161d53856f00343ed726ea106f0aaf3e54e9792cc555d85927c8cbe97",
+    "--reviewed-context-sha256",
+    "5c78695536a163301528bc0b350bfd8006cc2a9689b9636c001e8fe1a61eb511",
+    "--keeper-root",
+    "C:/workspace/ck3-common-runtime/keepers/20261011-a15",
+    "--actual-release-command",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0053/release-command-001/stdout.log",
+    "--allocator-command-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-public-allocation-20261011-004/RESULT.actual.json",
+    "--public-run-command-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-public-run-20261011-004/RESULT.actual.json",
+    "--small-receipt-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-i4-day-frame-focused-20261011-001",
+    "--small-receipt-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-public-verify-20261011-004",
+    "--small-receipt-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/r53-b5-provider-focused-20261011-004"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T18:56:28.615389+00:00",
+  "finished_at_utc": "2026-10-10T18:56:30.536364+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure004-execution-20261011-001\\stdout.log",
+    "bytes": 668,
+    "sha256": "3658073621688ede8bec99c85f7898e5259750b3cdd7860015e4a808327a6551"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure004-execution-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

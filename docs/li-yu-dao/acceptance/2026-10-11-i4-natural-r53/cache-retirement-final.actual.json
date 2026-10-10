@@ -1,0 +1,142 @@
+{
+  "schema": "ck3-r52-cache-retirement-final-v1",
+  "policy_version": "1.0.0",
+  "at_utc": "2026-10-10T18:30:52.917226+00:00",
+  "reviewer": "/root",
+  "exact_target_root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state\\profile\\shadercache",
+  "availability": "DELETED_EXACT_MUTABLE_DUPLICATE_PAYLOAD",
+  "deleted_files": 3740,
+  "logical_deleted_bytes": 146942031,
+  "allocation_size_api_deleted_sum": 155353904,
+  "global_free_deltas_not_exclusive_cleanup_credit": true,
+  "free_at_readback": 621257633792,
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r52-20261011-001\\manifest.json",
+    "bytes": 687642,
+    "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+  },
+  "preserved_immutable_seed_file_metadata_count": 3740,
+  "seed_body_hashes_verified_during_actual_held_handle_deletion_not_reread_at_close": true,
+  "old_manifest_paths_absent": 3740,
+  "target_remaining_files": 0,
+  "empty_directories_retained": 3,
+  "metadata_entries_checked": 3,
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\PLAN.actual.json",
+    "bytes": 1888,
+    "sha256": "3d66f327052602414093498e3da2985d5c0b1763ba9dbcb658eaa17f5bec3166"
+  },
+  "protection_narrowing": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\ROOT-PROTECTION-NARROWING.actual.json",
+    "bytes": 1846,
+    "sha256": "98a29261534c6555b08d3694a1654e07419348e239ac7be813e0d34489c3e712"
+  },
+  "actual_batches": [
+    {
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-000.actual.json",
+        "bytes": 1665,
+        "sha256": "abf7bc66019a70aeafdd28d2207cee4e04453cdfcba41db6437f9265071f8132"
+      },
+      "cursor": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-000.cursor.json",
+        "bytes": 1154,
+        "sha256": "a3099ee8d77dc2fb0d51c52aa6787ca34d8b37f5db373eacbeeab4f223b5db44"
+      },
+      "begin": 0,
+      "end": 1000,
+      "deleted_files": 1000,
+      "logical_deleted_bytes": 55293768,
+      "allocation_size_api_deleted_sum": 57485776,
+      "free_before": 621142712320,
+      "free_after": 621194174464,
+      "global_free_delta_not_exclusive_cleanup_credit": 51462144
+    },
+    {
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-001.actual.json",
+        "bytes": 1668,
+        "sha256": "6a34428861ffa781597a90bad5b841523f59ba4b9d77a30175d7f656fb58a3cb"
+      },
+      "cursor": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-001.cursor.json",
+        "bytes": 1157,
+        "sha256": "06e95e3cb55b6e2f9978a410bff1611c9afdd48aaf14f9716b9c5deaeaa9d993"
+      },
+      "begin": 1000,
+      "end": 2000,
+      "deleted_files": 1000,
+      "logical_deleted_bytes": 52667130,
+      "allocation_size_api_deleted_sum": 54874400,
+      "free_before": 621192495104,
+      "free_after": 621241589760,
+      "global_free_delta_not_exclusive_cleanup_credit": 49094656
+    },
+    {
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-002.actual.json",
+        "bytes": 1668,
+        "sha256": "740f69e47b045659d576806f42dca3629ee43c785c2a5321395aa05f1fb47817"
+      },
+      "cursor": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-002.cursor.json",
+        "bytes": 1157,
+        "sha256": "f9babef65a536fa001aeb00e2de18460e94617907d3004892b83dba10cdee26d"
+      },
+      "begin": 2000,
+      "end": 3000,
+      "deleted_files": 1000,
+      "logical_deleted_bytes": 22472471,
+      "allocation_size_api_deleted_sum": 24781856,
+      "free_before": 621219102720,
+      "free_after": 621242089472,
+      "global_free_delta_not_exclusive_cleanup_credit": 22986752
+    },
+    {
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-003.actual.json",
+        "bytes": 1666,
+        "sha256": "b54f0ecc03d45c1e62196575213ba5a6c3a78a3ffc6cb8b1210f1b963e01036d"
+      },
+      "cursor": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-mutable-cache-retirement-review-20261011-001\\BATCH-003.cursor.json",
+        "bytes": 1157,
+        "sha256": "4b48296cbec47c254cc621d5f49ba8c1ff9684774d382f979718d060b7072ed8"
+      },
+      "begin": 3000,
+      "end": 3740,
+      "deleted_files": 740,
+      "logical_deleted_bytes": 16508662,
+      "allocation_size_api_deleted_sum": 18211872,
+      "free_before": 621240528896,
+      "free_after": 621261127680,
+      "global_free_delta_not_exclusive_cleanup_credit": 20598784
+    }
+  ],
+  "preserved_preclaim_refusals": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-retirement-batch0-execution-20261011-001\\RESULT.actual.json",
+        "bytes": 1135,
+        "sha256": "c1334595c801bc6d7fdc5bdca874d7a00f85e2cf2904cdd8d8da5339f92d35bc"
+      },
+      "reason": "Fresh ROOT/coordinator lease preclaim gate rejected; no deletion claim or mutation in this invocation"
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-cache-retirement-batch0-execution-20261011-002\\RESULT.actual.json",
+        "bytes": 1135,
+        "sha256": "efa6a065f1702fe3b6d03e282093095c44b199bc6d7492f8c7a1b3fce0c293e5"
+      },
+      "reason": "Fresh ROOT/coordinator lease preclaim gate rejected; no deletion claim or mutation in this invocation"
+    }
+  ],
+  "R52_READINESS_RED_unchanged": true,
+  "R53_current_cache_or_live_input_deleted": false,
+  "original_seed_review_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "detailed_ledger_latest_expiry": "2026-11-09T18:29:27.190296+00:00",
+  "compact_record_review_at_utc": "2027-04-08T18:30:52.917226+00:00",
+  "automatic_TTL_renewal": false,
+  "business_credit": false,
+  "recursive_directory_deletion": false
+}

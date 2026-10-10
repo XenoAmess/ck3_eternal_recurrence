@@ -1,0 +1,136 @@
+{
+  "schema": "lyd.r53.actual-final-selected-facts.v1",
+  "at_utc": "2026-10-10T18:58:45.607784+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0053",
+  "frozen_master": "3574e41f8b9131ed6a397f21154c1803c13685f3",
+  "native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\native-report.json",
+    "bytes": 6792914,
+    "sha256": "58695b3402b5c3a6dbb0abb28a09a88c963b615d79a0bc02e2c15d078f8a111b"
+  },
+  "native_lifecycle": {
+    "status": "GREEN",
+    "phase": "hold",
+    "error": null,
+    "started_at": "2026-10-10T17:57:33.141539+00:00",
+    "finished_at": "2026-10-10T18:37:00.694782+00:00",
+    "managed_session_done": true,
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true
+  },
+  "readiness_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\readiness-window-result.json",
+    "bytes": 1496,
+    "sha256": "28e4d57f7e80abe1af64f2213f0f8ca205e2e190b6a5a1a56de48bbb7ffa45b0"
+  },
+  "readiness": {
+    "schema": "ck3-mod-acceptance-readiness-window-result-v1",
+    "binding": {
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0053",
+      "screen_task": "common-acceptance-12004-20261010-a15",
+      "live": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053",
+      "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-004\\state",
+      "frozen_argv": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\frozen-argv.json",
+        "bytes": 3024649,
+        "sha256": "8078a6cfd245dfd5adb10eabafd27659eab919ac027f66103141e6ef72779813"
+      },
+      "runtime_manifest": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\manifest.json",
+        "bytes": 6830,
+        "sha256": "891259cc3ce6b4de689a43bd9ce36dacb4a2a57285d5fb9b89993e71bbdbf4b9"
+      }
+    },
+    "status": "READINESS_HOLD_OBSERVED",
+    "observed_at_utc": "2026-10-10T18:02:45.427913+00:00",
+    "observed_monotonic": 109828.5082142,
+    "elapsed_seconds": 314.47121550000156,
+    "deadline_monotonic": 110414.0369987,
+    "within_original_deadline": true,
+    "host_phase": "hold",
+    "host_started_at": "2026-10-10T17:57:33.141539+00:00",
+    "host_finished_at": null,
+    "restore_status": "ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND",
+    "restore_finished_at": "2026-10-10T18:02:45.236511+00:00",
+    "hold_until_utc_estimated": 1791662565.3059673,
+    "error": null,
+    "new_wait_or_replay": false,
+    "business_pass": false
+  },
+  "initial_origin_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-natural-origin.json",
+    "bytes": 62930,
+    "sha256": "02f263bb40cc435d8b4d06e0982a45234bb3d38883bb9412f9e0b692eeddfe27"
+  },
+  "initial_saved": {
+    "school_cooldown_present": true,
+    "headless": true,
+    "save_body_reads": 1,
+    "baseline_body_reads": 0,
+    "checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-004\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 91669682,
+      "sha256": "e91014d23b7b375edb0c8afce9df097600dc892d7990089da13343a2c2821bd1",
+      "date_raw": 53144712
+    },
+    "preserved_checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\initial-school-cooldown-checkpoint.ck3",
+      "size": 91669682,
+      "sha256": "e91014d23b7b375edb0c8afce9df097600dc892d7990089da13343a2c2821bd1",
+      "date_raw": 53144712
+    }
+  },
+  "actual_advance_days": 28,
+  "actual_advance_hours": 672,
+  "final_advanced_date_raw": 53145384,
+  "qualified_model_after_observations_including_initial": 28,
+  "last_qualified_observation": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\i4-school-observation-0027.json",
+      "bytes": 41790,
+      "sha256": "d706e23d87cdcef4e3970fad74e8c8207007523f3b1f0690fe1f363bf8df9669"
+    },
+    "id": "i4-school-observation-0027",
+    "date_raw": 53145360,
+    "confirm_enabled": false
+  },
+  "first_failed_observation": {
+    "id": "i4-school-observation-0028-model-before",
+    "started_at": "2026-10-10T18:21:00.892551+00:00",
+    "finished_at": "2026-10-10T18:21:02.318917+00:00",
+    "command_ok": true,
+    "available": false,
+    "frame_verified": false,
+    "unavailable_reason": "pipe_completion_keyed_query_binding_changed",
+    "exact_internal_failed_predicate": "UNKNOWN_NOT_CAPTURED"
+  },
+  "normal_close": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\normal-close-result.json",
+      "bytes": 10338,
+      "sha256": "d96f414fcc3a089d26930511ef07f3929600ffee108d69ca0358e6f294a71b1c"
+    },
+    "qualified": true,
+    "retained_os0": true,
+    "native0": 0,
+    "host_finished_at": "2026-10-10T18:37:00.694782+00:00"
+  },
+  "public_verify": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-verify-20261011-004\\stdout.log",
+      "bytes": 11347,
+      "sha256": "275f995155c8803cd7260f404235763c84637dd6003808feecc3892759ed9369"
+    },
+    "status": "NOT_RUN_OR_PRESERVED_FAILURE",
+    "business_pass": false,
+    "qualified_boundary_pass": false
+  },
+  "school_choice_actions": 0,
+  "final_expiry_SAVE_performed": false,
+  "fresh_full_365_cycle_proven": false,
+  "existing_cooldown_expiry_pass": false,
+  "B4_B5_C3_I4_complete": false,
+  "phase_I": "75% / NOT_GREEN",
+  "submitted_steps_replayed": false,
+  "cache_runtime_hit_or_causal_speedup_proven": false
+}

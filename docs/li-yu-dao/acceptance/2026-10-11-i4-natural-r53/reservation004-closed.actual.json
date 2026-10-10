@@ -1,0 +1,124 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-10T18:56:30.499050+00:00",
+  "reservation_id": "lyd-i4-natural-expiry-4GiB-20261011-004",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\ADMISSION.actual.json",
+    "bytes": 9320,
+    "sha256": "57dae5b526be78f585599daafb0abc758e7f0161ae02e2effb62938b5fe6333f"
+  },
+  "original_admission_unmodified": true,
+  "new_reservation_created": false,
+  "source11_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-011\\SOURCE11-BIND.actual.json",
+    "bytes": 2779,
+    "sha256": "419a658a1281da1faceea01722217f2e90ba29cc56f39f0dfa0f5df07c982177"
+  },
+  "actual_new_immutable_shader_seed": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r52-20261011-001\\manifest.json",
+    "bytes": 687642,
+    "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+  },
+  "actual_task_closed_at_utc": "2026-10-10T18:40:12.328468+00:00",
+  "actual_closed_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\release-command-001\\stdout.log",
+    "bytes": 1240,
+    "sha256": "6cd3fdf99ed1df18ca8555f398bd498bbb494694472e6c144e8ba003e461da7e"
+  },
+  "actual_runtime_outcome": {
+    "status": "GREEN",
+    "error": null,
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\native-report.json",
+      "bytes": 6792914,
+      "sha256": "58695b3402b5c3a6dbb0abb28a09a88c963b615d79a0bc02e2c15d078f8a111b"
+    },
+    "original_host_started": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\host-started.json",
+      "bytes": 3934,
+      "sha256": "929a2bae78ee7aaedde6fa45817893f4e6800270e9dc3d26952228f155b3862d"
+    },
+    "original_host_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "cd5da0303e404cc8215f3f5ea3d5999f065fb272313399977f334296fa466476"
+    },
+    "host_original_returncode": 0,
+    "actual_original_popen_wait": true,
+    "native_session_process_exit_code": 0,
+    "native_shutdown_ck3_exit_code": 0,
+    "session_closure": {
+      "mode": "current-shared-managed-session"
+    },
+    "keeper_original_parent_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "838f26e5da95d94ab7209f02fee320ea0d3e87bbfffb8c7f3c3c2670d8f4d066"
+    },
+    "keeper_actual_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a15\\inputs.json",
+      "bytes": 822,
+      "sha256": "257dda839e6a31e0f3003421fee8b89c4149c32acf09ee1bcc4fd1051be36e60"
+    },
+    "keeper_actual_ready": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a15\\ready.json",
+      "bytes": 950,
+      "sha256": "7ac13561b1edfa9c773e2baa6eca97f429db925d66769609f7fb205dcb1c6b56"
+    },
+    "keeper_original_returncode": 0,
+    "allocator_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-allocation-20261011-004\\RESULT.actual.json",
+      "bytes": 1667,
+      "sha256": "4f5da57ab0f1d3430693a802365bb46029558d18fae24000877dd3e49bb31507"
+    },
+    "allocator_command_exit_code": 0,
+    "public_run_original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-run-20261011-004\\RESULT.actual.json",
+      "bytes": 1329,
+      "sha256": "6f0c43555024dbf91ee9965bb327ad161244cd52cc136ed84498282455d25a7e"
+    },
+    "public_run_command_exit_code": 2,
+    "normal_GUI_exit_or_business_qualification_granted_by_storage_closure": false
+  },
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\CLOSURE-MEASURE.actual.json",
+    "bytes": 18349,
+    "sha256": "cdcbb49f0322159ae8832fdbc256de6f8bc4ffe7ceb6d8649c6b46af03b4b26c"
+  },
+  "asset_groups": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\ASSET-GROUPS-CLOSED.actual.json",
+    "bytes": 63855,
+    "sha256": "efe2f7ecf7881b1cd6c5d596e6359843c6597c9ab4a4caf5efafb0af724d7c45"
+  },
+  "admitted_peak_bytes": 4294967296,
+  "released_reservation_peak_bytes": 4294967296,
+  "remaining_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_peak_minus_retained": true,
+  "observed_retained_task_logical_bytes_known": 1056211427,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "unused_actual_peak_budget_bytes_or_null": null,
+  "fresh_free_bytes_at_closure": 621170180096,
+  "fresh_total_volume_bytes": 1023892852736,
+  "retention": {
+    "original_cold_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "checkpoint_expires_at_utc": "2026-10-24T18:40:12.328468+00:00",
+    "raw_evidence_expires_at_utc": "2026-11-09T18:40:12.328468+00:00",
+    "record_review_at_utc": "2027-04-08T18:40:12.328468+00:00",
+    "representative_protected_until_utc": "2026-10-17T13:06:29.278808+00:00",
+    "derived_exports_if_any_ttl_hours_from_actual_creation": 48,
+    "quota_override_review_unchanged_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "copy_close_and_review_do_not_renew_cache_or_existing_source_protection": true,
+    "automatic_TTL_renewal": false,
+    "automatic_deletion": false,
+    "source11_O11_build_expiry_no_input_review_extension": "2026-10-17T08:45:50.800231+00:00"
+  },
+  "root_coordinator_actual_exclusive_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "no_auto_renewal_or_deletion": true,
+  "runtime_or_business_qualification": false,
+  "automatic_reservation_manager_implemented": false
+}
