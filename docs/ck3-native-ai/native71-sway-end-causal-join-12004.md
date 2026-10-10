@@ -140,3 +140,20 @@ The task uses small source/record writes only; the task-start snapshot found
 the source volume below the2GiB safety floor, so it performs no heavy build,
 source copy or binary output there. No game operation, SDK query, live end,
 new gameplay day, SAVE or milestone credit is supplied by this contract.
+
+
+M6 original-action causal persistence fix adopted at 2026-10-10T22:33:10.978615+00:00. The actual saved6076
+small Sway ledger retains its .3 native receipt and lacks top-level build/SHA.
+The production recorder incorrectly compared those missing keys with a valid
+current .4 query, so it could not persist an attributed end for this original
+action. The minimal correction validates the current normalized termination
+build/SHA against exact .4, retaining raw causal-pair validation and original
+actor/target/fullID/gen joins. Original receipt/material are not rewritten.
+One NEW deterministic persistence repro passed0.0272751s: untouched real
+saved6076 ledger plus declared identity-only synthetic .4 terminal fixture;
+before returnedNone/unchanged, after staged/persisted and file-only reopened,
+current .3 aliases and foreign target rejected. This is static-ready and no
+actual useful terminal: R93 original134217986/gen8 stillcontinue. Evidence:
+`continuation-15m6/NEW-ACTUAL-LEDGER-REPRO.json` and `M6-ACTIONABLE-PLAN.json`
+under the current D continuation root. No old FIRST/live/native/Driver replay.
+R94 remains frozenSDK78/Native78 at664c85d9; this source is for a later SDK.

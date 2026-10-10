@@ -1,5 +1,20 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-11：已保存6076天，Native78恢复准备通过
+
+当前持久基线 **6076/H10107/raw53290152**，原罗贝尔29829、自然继承0。
+R93真实冷恢复13/13通过并新增保存1天；Sway opinion随后发生实际读取错误。
+完整12流及全Driver已冻结，SDK正常退出0，Game正常关闭RED后精确受管回收1，keeper已释放。
+Native78读取阶段诊断及完整SDK78已构建，R94完整恢复/rebind/preflight通过，冷启动进行中；
+当前运行仍固定源码664c85d9。G2 **5/8**、NW2 **2/4**，M4/M6/M7尚未完成。
+
+M4沿原两年窗口核对既有真实开工/扣款与有用财政总管任命，补齐材料读取后执行一次真实封臣/派系干预；
+建设完工收益不是M4附加条件。M6继续原密谋完整有用终态，保留既有Feast/CA1成果；
+M7继续同意图自然继承，完整多角色/种子/政体矩阵仍未覆盖。下一恢复入口为
+[6076完整恢复包](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json)。
+真实状态与失败回链见[当天日报](daily/2026-10-11.md)及[G2要求账本](g2-requirements-v1.json)。
+
+
 ### 2026-10-11 LYD：R52就绪超时，现场与容量已闭合
 
 Source11/CASE3实际运行R52，公共run/verify因就绪超时均2、0业务/SAVE；独立正常GUI收尾取得OS/native/host/keeper原等待0、CAS释放与容量003归零。一期75%/NOT_GREEN保持。[当前终态及后继门槛](../li-yu-dao/2026-10-11-i4-r52-readiness-timeout.md)；[本机跨日计划](meetings/daily/2026-10-11.md#lyd本机早会补录)。

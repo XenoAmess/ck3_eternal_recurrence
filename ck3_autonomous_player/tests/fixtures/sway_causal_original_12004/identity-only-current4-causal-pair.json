@@ -1,0 +1,275 @@
+{
+  "fixture_kind": "qualified_synthetic_current4_wholewire_identity_only_projection",
+  "original_ledger_sha256": "56f10b3a4018608e0096d26dbd8d2c36dab611c65bbf6209a769a88c8a74295d",
+  "source_native_wholewire_sha256": "b44a3e1fd829bf5b43df5a65f84fe63cfa8de445d4e69a7ff92b192c9728c3f4",
+  "native_runtime_observation": false,
+  "projection": [
+    {
+      "path": "execution.sway_completion_execution.actor_character_id",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "execution.sway_completion_execution.target_character_id",
+      "old": 31900,
+      "new": 34333
+    },
+    {
+      "path": "execution.sway_completion_execution.scheme_instance_id",
+      "old": 33554454,
+      "new": 134217986
+    },
+    {
+      "path": "execution.records[0].actor_character_id",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "execution.records[0].target_character_id",
+      "old": 31900,
+      "new": 34333
+    },
+    {
+      "path": "execution.records[0].scheme_instance_id",
+      "old": 33554454,
+      "new": 134217986
+    },
+    {
+      "path": "execution.records[0].scheme_instance_generation",
+      "old": 2,
+      "new": 8
+    },
+    {
+      "path": "execution.records[0].scope.root.payload",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "execution.records[0].scope.owner.payload",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "execution.records[0].scope.target.payload",
+      "old": 31900,
+      "new": 34333
+    },
+    {
+      "path": "execution.records[0].scope.scheme.payload",
+      "old": 33554454,
+      "new": 134217986
+    },
+    {
+      "path": "termination.sway_completion_termination.actor_character_id",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "termination.sway_completion_termination.target_character_id",
+      "old": 31900,
+      "new": 34333
+    },
+    {
+      "path": "termination.sway_completion_termination.scheme_instance_id",
+      "old": 33554454,
+      "new": 134217986
+    },
+    {
+      "path": "termination.records[0].actor_character_id",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "termination.records[0].target_character_id",
+      "old": 31900,
+      "new": 34333
+    },
+    {
+      "path": "termination.records[0].scheme_instance_id",
+      "old": 33554454,
+      "new": 134217986
+    },
+    {
+      "path": "termination.records[0].scheme_instance_generation",
+      "old": 2,
+      "new": 8
+    },
+    {
+      "path": "termination.records[0].cause_relation.actor_character_id",
+      "old": 29829,
+      "new": 29829
+    },
+    {
+      "path": "termination.records[0].cause_relation.target_character_id",
+      "old": 31900,
+      "new": 34333
+    },
+    {
+      "path": "termination.records[0].cause_relation.scheme_instance_id",
+      "old": 33554454,
+      "new": 134217986
+    },
+    {
+      "path": "termination.records[0].cause_relation.scheme_instance_generation",
+      "old": 2,
+      "new": 8
+    }
+  ],
+  "other_source_transition_invocation_return_build_fields_changed": false,
+  "execution_read": {
+    "schema": "xar.ck3.sway-completion-execution.v1",
+    "available": true,
+    "unavailable_reason": "",
+    "read_only": true,
+    "observer_attached": true,
+    "actor_character_id": 29829,
+    "target_character_id": 34333,
+    "scheme_instance_id": 134217986,
+    "after_sequence": 0,
+    "earliest_sequence": 1,
+    "latest_sequence": 1,
+    "retention_gap": false,
+    "material_effect_observed": false,
+    "native_terminal_state_observed": false,
+    "records": [
+      {
+        "sequence": 1,
+        "date_raw": 53289936,
+        "actor_character_id": 29829,
+        "target_character_id": 34333,
+        "scheme_instance_id": 134217986,
+        "scheme_instance_generation": 8,
+        "source_branch": "authored_sway_complete_100_source",
+        "stock_event": null,
+        "executing_input_observed": true,
+        "exact_scope_join_ready": true,
+        "phase_result": null,
+        "message_enqueue_observed": false,
+        "material_effect_observed": false,
+        "native_terminal_state_observed": false,
+        "native_invocation": {
+          "observer_session_identity": 9,
+          "owner_thread_id": 7,
+          "toast_invocation_id": 41,
+          "branch_source_sequence": 1,
+          "copied_scopes": {
+            "root": {
+              "type": 4,
+              "subtype": 0,
+              "reserved": 0,
+              "payload": 29829
+            },
+            "owner": {
+              "type": 4,
+              "subtype": 0,
+              "reserved": 0,
+              "payload": 29829
+            },
+            "target": {
+              "type": 4,
+              "subtype": 0,
+              "reserved": 0,
+              "payload": 34333
+            },
+            "scheme": {
+              "type": 9,
+              "subtype": 0,
+              "reserved": 0,
+              "payload": 134217986
+            }
+          }
+        }
+      }
+    ],
+    "build_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "snapshot_revision": 71,
+    "date_raw": 53289936,
+    "exact_ck3_build": "1.20.0.4",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "termination_read": {
+    "schema": "xar.ck3.sway-completion-termination.v1",
+    "available": true,
+    "unavailable_reason": "",
+    "read_only": true,
+    "observer_attached": true,
+    "actor_character_id": 29829,
+    "target_character_id": 34333,
+    "scheme_instance_id": 134217986,
+    "after_sequence": 0,
+    "earliest_sequence": 1,
+    "latest_sequence": 1,
+    "retention_gap": false,
+    "session_records_only": true,
+    "material_effect_observed": false,
+    "records": [
+      {
+        "sequence": 1,
+        "source_class": "authored_end_scheme_true_execute",
+        "date_raw": 53289936,
+        "actor_character_id": 29829,
+        "target_character_id": 34333,
+        "scheme_instance_id": 134217986,
+        "scheme_instance_generation": 8,
+        "input_root_scope_kind": 9,
+        "executing_source_observed": true,
+        "pre_status": 0,
+        "pre_owner": 29829,
+        "post_read_succeeded": true,
+        "post_instance_present": true,
+        "post_storage_slot_reused": false,
+        "post_exact_instance_join_ready": true,
+        "post_status_observed": true,
+        "post_status": 1,
+        "post_owner": 4294967295,
+        "native_terminal_state_observed": true,
+        "native_terminal_transition_observed": true,
+        "material_effect_observed": false,
+        "specific_invalidation_reason": null,
+        "native_invocation": {
+          "observer_session_identity": 9,
+          "owner_thread_id": 7,
+          "original_invocation_id": 42,
+          "original_rva": 47258320,
+          "incoming_return_address_observed": true,
+          "caller_return_rva": 47610884,
+          "original_forwarded_once": true,
+          "original_returned": true,
+          "pre_frame_observed": true,
+          "pre_date_raw": 53289936,
+          "post_frame_observed": true,
+          "post_date_raw": 53289936
+        },
+        "cause_relation": {
+          "source_contract": "sway_child_end_causal_path_12004_v1",
+          "source_contract_version": 1,
+          "relationship_observed": true,
+          "observer_session_identity": 9,
+          "owner_thread_id": 7,
+          "branch_source_sequence": 1,
+          "parent_toast_invocation_id": 41,
+          "end_original_invocation_id": 42,
+          "end_original_rva": 47258320,
+          "actor_character_id": 29829,
+          "target_character_id": 34333,
+          "scheme_instance_id": 134217986,
+          "scheme_instance_generation": 8,
+          "native_returns_observed": true,
+          "native_returns_truncated": false,
+          "native_return_rvas": [
+            47610884,
+            58089798,
+            46961612
+          ]
+        }
+      }
+    ],
+    "build_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "snapshot_revision": 71,
+    "date_raw": 53289936,
+    "exact_ck3_build": "1.20.0.4",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  }
+}

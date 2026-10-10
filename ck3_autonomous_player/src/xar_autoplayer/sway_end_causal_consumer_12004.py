@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from .bridge.sway_completion_causal_private_12004 import consume_sway_end_causal_12004
+from .bridge.version_identity import CK3_12004, require_exact_native_build
 
 
 def record_sway_end_causal_observation(
@@ -21,8 +22,14 @@ def record_sway_end_causal_observation(
     if matched is None:
         return None
     ledger, resolved, receipt = matched
-    if any(resolved.get(key) != termination_read.get(key) for key in (
-            "exact_ck3_build", "exe_sha256")):
+    # The original action may predate migration and retain its build only in
+    # native_receipt. Bind current query provenance here; keep that origin intact.
+    try:
+        current_build = require_exact_native_build(
+            termination_read.get("exact_ck3_build"), termination_read.get("exe_sha256"))
+    except ValueError:
+        return None
+    if current_build != CK3_12004:
         return None
     if any(receipt.get(key) != observation[key] for key in (
             "scheme_instance_id", "scheme_instance_generation")):

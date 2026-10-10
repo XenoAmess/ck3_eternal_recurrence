@@ -167,3 +167,6 @@ docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/** -text whitespace=cr-
 
 # Preserve native cash serializer fixture bytes bound by their original provenance SHA-256.
 ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_war_cash_*.json -text whitespace=cr-at-eol
+
+# Preserve the original Sway ledger fixture bytes used by its regression SHA.
+ck3_autonomous_player/tests/fixtures/sway_causal_original_12004/saved6076-original-ledger.json -text whitespace=cr-at-eol

@@ -1,5 +1,20 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+### 2026-10-11：已保存6076天，Native78恢复准备通过
+
+当前持久基线 **6076/H10107/raw53290152**，原罗贝尔29829、自然继承0。
+R93真实冷恢复13/13通过并新增保存1天；Sway opinion随后发生实际读取错误。
+完整12流及全Driver已冻结，SDK正常退出0，Game正常关闭RED后精确受管回收1，keeper已释放。
+Native78读取阶段诊断及完整SDK78已构建，R94完整恢复/rebind/preflight通过，冷启动进行中；
+当前运行仍固定源码664c85d9。G2 **5/8**、NW2 **2/4**，M4/M6/M7尚未完成。
+
+M4沿原两年窗口核对既有真实开工/扣款与有用财政总管任命，补齐材料读取后执行一次真实封臣/派系干预；
+建设完工收益不是M4附加条件。M6继续原密谋完整有用终态，保留既有Feast/CA1成果；
+M7继续同意图自然继承，完整多角色/种子/政体矩阵仍未覆盖。下一恢复入口为
+[6076完整恢复包](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json)。
+真实状态与失败回链见[当天日报](daily/2026-10-11.md)及[G2要求账本](g2-requirements-v1.json)。
+
+
 ### 2026-10-10：Native71 接续的实际基线与下一交付
 
 当前持久基线为 **6067/H10026/raw53289936**，见 [Native71 接班整合与 R0087 续跑](../handover/2026-10-10-native71-maintainer-resume.md)。SDK/source/compiled/qualified canonical 精确pin均为 `16da78339cdff5c1a462e20bc301684594a3f800`；沿用已资格DLL，未重编或重放旧FIRST。R0087 新冷恢复实机paused资格 **13/13 GREEN**，现有普通OODA完成查询→规划→操作→观测，实际新增1天并成功SAVE；同日期SAVE与冷恢复不增加天数。证据：[冷恢复资格](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-managed-attempt02/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json)、[普通循环及已保存1日](D:/codex-ck3-background-spill/maintainer-resume-20261010/ordinary-one-day-save/BOUNDED-RESULT.json)、[checkpoint绑定](D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-freeze-metadata/ROOT-ACTUAL-SAVED-CHECKPOINT-BINDING.json)。
