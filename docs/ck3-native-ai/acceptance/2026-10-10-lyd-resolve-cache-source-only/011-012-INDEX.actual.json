@@ -1,0 +1,77 @@
+{
+  "schema": "lyd.r49.resolve-cache.compact-011-012-evidence-package.v1",
+  "status": "FIVE_ORIGINAL_COMPACT_MEMBERS_EXACT_BYTES_PACKAGED_ONCE",
+  "created_at_utc": "2026-10-10T12:54:26.878890+00:00",
+  "zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-resolve-cache-011-012-compact-evidence-sourceonly-20261010-001/COMPACT-011-012.original-bytes.zip",
+    "bytes": 6768,
+    "sha256": "499788c3e3002ca3ab52fe0fb2d8316cedec3acc5e7214d8471b3b765dd24283"
+  },
+  "members": [
+    {
+      "member": "011/INDEX.json",
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/r49-retained-cache-consumer-queue-review-20261010-011/INDEX.json",
+      "bytes": 4550,
+      "sha256": "42a61e1e29d52811289d98bc14ebb32d28eeaca64094fca50a9c455366ba3bbb",
+      "exact_original_bytes": true
+    },
+    {
+      "member": "011/REPORT.md",
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/r49-retained-cache-consumer-queue-review-20261010-011/REPORT.md",
+      "bytes": 2047,
+      "sha256": "a143d9db968dc9f421406c1fc916658d859c8075c4a17c6f1982e12c5c586cc4",
+      "exact_original_bytes": true
+    },
+    {
+      "member": "012/INDEX.json",
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-cache-before-load-gate-20261010-012/INDEX.json",
+      "bytes": 2218,
+      "sha256": "4358efc86c6d6633d334bec36ff8ba21ffd1997253261a02370f941040cd7923",
+      "exact_original_bytes": true
+    },
+    {
+      "member": "012/FACTS.actual.json",
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-cache-before-load-gate-20261010-012/FACTS.actual.json",
+      "bytes": 3364,
+      "sha256": "ce9904a38ee0f603a6d1a8a5f3fe4236e660a410d3abf7be29d853787d234cf1",
+      "exact_original_bytes": true
+    },
+    {
+      "member": "012/REPORT.md",
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-cache-before-load-gate-20261010-012/REPORT.md",
+      "bytes": 1328,
+      "sha256": "c544e79466767e43fb53fa6c3ce03b9adb3a889bce02884238b2387ebcb2e202",
+      "exact_original_bytes": true
+    }
+  ],
+  "doc_append_suggestion": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-resolve-cache-011-012-compact-evidence-sourceonly-20261010-001/DOC-APPEND-SUGGESTION.md",
+    "bytes": 896,
+    "sha256": "c7f2d45ba33a441ff9c2d8b13dcdb7c84af12b8c4f99cab638a724ced3b82b23"
+  },
+  "intentionally_excluded": [
+    "011/FACTS.actual.json (34975 bytes)",
+    "all prior full disassembly/CFG/executable/save/runtime bodies"
+  ],
+  "partial_bundle_notice": "Original INDEX references remain byte-exact; referenced artifacts outside these five members are not claimed bundled.",
+  "storage": {
+    "maximum_package_bytes": 24576,
+    "free_bytes_observed_before_small_write": 624067870720,
+    "old_4GiB_reservation_used": false,
+    "review_at_utc": "2026-10-17T12:40:40.239754+00:00",
+    "older_input_deadlines_extended": false,
+    "original_files_retained": true
+  },
+  "limits": {
+    "new_EXE_or_save_body_reads": 0,
+    "new_callee_analysis": 0,
+    "MAIN_Git_SDK_game_build_process_actions": 0,
+    "business_PASS": null,
+    "writer_and_drain": "UNKNOWN"
+  },
+  "producer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-resolve-cache-011-012-compact-evidence-sourceonly-20261010-001/package_compact.py",
+    "bytes": 5032,
+    "sha256": "3f7eb9f9c36e4d61596421b71ce38cd800cf4221de03db15face0280ffb600a3"
+  }
+}

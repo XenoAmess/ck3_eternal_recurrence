@@ -2784,6 +2784,69 @@
           },
           "legacy_upper_bounds_preserved": "No existing held session or original diagnostic step is extended or replayed; one new explicit shared case.",
           "product_release_pass": false
+        },
+        {
+          "id": "i4-existing-school-cooldown",
+          "status": "ready",
+          "implementation_credit": "Static public adapter; actual existing-cooldown observation and normal close NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 8400,
+            "hold_seconds": 7200,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "New independent partial observation: at most 366 actual natural days within one fixed 7200-second hold; no session extension or retry",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "PARTIAL_EXISTING_COOLDOWN_OBSERVATION",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "original0240_headless_event_free_admission",
+            "fresh_initial_SAVE_flag_present_and_disabled_formal_decision",
+            "strict_one_day_natural_simulation_until_first_enabled_decision",
+            "distinct_final_SAVE_flag_absent_and_same_headless_Faith_Rite_membership",
+            "actual_shared_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "All existing scenarios unchanged; no calendar setter, flag reset, school choice, full-365-cycle or cold-reload credit",
+          "product_release_pass": false
         }
       ],
       "legacy_inventory": {

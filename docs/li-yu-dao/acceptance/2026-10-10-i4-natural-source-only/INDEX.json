@@ -1,0 +1,153 @@
+{
+  "schema": "lyd.i4.existing-cooldown-source-delivery.v1",
+  "created_at_utc": "2026-10-10T12:53:12.799814+00:00",
+  "status": "STATIC_READY",
+  "source_head_at_focused_tests": "6d4ae66f82ad81cd148bae9a2a2c50942f5299c7",
+  "source_head_at_delivery": "6d4ae66f82ad81cd148bae9a2a2c50942f5299c7",
+  "source_targets": {
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+      "bytes": 23717,
+      "sha256": "f804a22fe8efade1f1753a3da66f5f2403456c34e919521ae62aa2c3c70aca44"
+    },
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry.json",
+      "bytes": 1218,
+      "sha256": "c4c0cb8df99eb45dd9ae28ddc6da452773e2f3d06a2319ad95dc1a18e40eb90c"
+    },
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_natural_expiry.py",
+      "bytes": 11877,
+      "sha256": "708f029af231004d66767183b682f0b1e90cf1011e24afbd68fceee5b225a454"
+    },
+    "docs/li-yu-dao/i4-public-natural-expiry.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\i4-public-natural-expiry.md",
+      "bytes": 7756,
+      "sha256": "87983cee21dd24c385b9face3c61e5f60696e545a65dbacd8ee4ae3d059ebc11"
+    },
+    "tools/ck3_mod_acceptance_products.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 133290,
+      "sha256": "72bb194a8ab2c771d731e6b909b863d9c335df6cd9c8e4a28d6aac7aa743562f"
+    }
+  },
+  "focused": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-002.actual.json",
+    "bytes": 2705,
+    "sha256": "ebc521d7594cc7b53dc80b86d78369cf6ce6676b155dca2b8f00f082cdfab35e"
+  },
+  "first_failure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-001.actual.json",
+    "bytes": 2696,
+    "sha256": "3b620f0ac2ebc9f39d2f5c04f252d2a4aac6126dfe6230cef72ea87d26ad0653"
+  },
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\REPORT.md",
+    "bytes": 3390,
+    "sha256": "7f9644b63bfc6ceb6a799a2d4562660b4b5758fc6b8d97f0ab38bf83753f6ba4"
+  },
+  "original_metadata_actual_ref": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-r13-formal-route23-20261006-001\\inputs\\i3b-0240-native-preparation-20261006-001\\BASELINE-0240.json",
+    "bytes": 426067,
+    "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+  },
+  "actual_game_calls": 0,
+  "actual_save_body_reads": 0,
+  "actual_elapsed_natural_days": null,
+  "actual_runtime_business_pass": null,
+  "actual_cold_reload": null,
+  "scope": "PARTIAL_EXISTING_COOLDOWN_OBSERVATION",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-001.actual.json",
+      "bytes": 2696,
+      "sha256": "3b620f0ac2ebc9f39d2f5c04f252d2a4aac6126dfe6230cef72ea87d26ad0653"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-001.stderr.txt",
+      "bytes": 5586,
+      "sha256": "736a7cbf1e0ab678431cf071a1439d026e1672abca05738d655280d71e198d79"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-001.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-002.actual.json",
+      "bytes": 2705,
+      "sha256": "ebc521d7594cc7b53dc80b86d78369cf6ce6676b155dca2b8f00f082cdfab35e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-002.stderr.txt",
+      "bytes": 2495,
+      "sha256": "113319f3087fe22ae8bd0a37d8ff552748d8bb634d6880696a3369d143fcffe3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-002.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\inspect_i4_readonly.py",
+      "bytes": 4203,
+      "sha256": "16179a634ffe524008b72d1d76ab82008944d2f37f1c2d43971332d3bf34b5cb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\inspect_origin_shape.py",
+      "bytes": 783,
+      "sha256": "127da818670b5b8c8b6d4be416c086ea5dd5f063434ded092dccbfadea33e1b3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\OPEN-KAISHEK-ASSESSMENT-002.actual.json",
+      "bytes": 2308,
+      "sha256": "b2ea4a51de740fafde88ef90b7ec21de2c68242804e077a65dcb4a24772f1cc7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\OPEN-KAISHEK-ASSESSMENT.actual.json",
+      "bytes": 2240,
+      "sha256": "057a6eafedd1f843de147f2aeab738c67eaf28460a8e196ffb674b9618b4fd79"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\read_lines.py",
+      "bytes": 311,
+      "sha256": "0e95d8c8c176f7203686391ee42ccc08c2e5657633574e9c0fb32017cd94436c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\read_public_contracts.py",
+      "bytes": 1899,
+      "sha256": "f71f7890ec9a2f742b87661020a0ee69818d608d91158e33f9688b22c31804c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\REPORT.md",
+      "bytes": 3390,
+      "sha256": "7f9644b63bfc6ceb6a799a2d4562660b4b5758fc6b8d97f0ab38bf83753f6ba4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\run_focused_002.py",
+      "bytes": 412,
+      "sha256": "c78dd372398e63359b7a6eca1b2eb8cec20f952fc93cef2539b14752332ee666"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\run_focused_once.py",
+      "bytes": 3571,
+      "sha256": "bb181335a6da09555fddf10828039dd9c84570b41330890a4e3005ea91993dca"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\seal_source_result.py",
+      "bytes": 6281,
+      "sha256": "ba33c2e1ca5b0e2e8ce3abc9d96c1944d5502f5c7e4fe738238649f5d8d0042d"
+    }
+  ],
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "packet_bytes_before_index": 38880,
+    "budget_bytes": 65536,
+    "disk_free_at_close_bytes": 624068763648,
+    "no_heavy_write": true,
+    "derived_review_due_utc": "2026-10-12T12:53:12.799814+00:00",
+    "record_review_due_utc": "2027-04-08T12:53:12.799814+00:00",
+    "continued_retention_reason": "ROOT review and publication of the five-source public-case implementation; replaceable runners need no indefinite preservation"
+  }
+}

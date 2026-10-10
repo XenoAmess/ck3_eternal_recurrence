@@ -1,5 +1,7 @@
 # 《礼与道》当前 1.20.0.4 resolve 与继承缓存研究
 
+20:55增量：011复核既有移交路径，仍未闭合queue drain；012仅核实际缓存消费前的直接callee `2494B40–2494BC2`。当前`.pdata`确认完整130B逻辑体、flags0/无CHAININFO；本体遍历第三输入对象`+8`指针／`+14`计数定义的8B元素集合，经间接谓词返回是否命中，不能认作actor的4B继承缓存writer。间接谓词未读，整个调用的纯度、getter lazy刷新、实际writer及政治Title变化因果仍UNKNOWN。该步实际PE I/O1207B（metadata864、身份pin213、新代码130），分析代码累计20704/65536B，至此停止。[五项紧凑原件](acceptance/2026-10-10-lyd-resolve-cache-source-only/011-012-INDEX.actual.json)仅6,768B ZIP；不复制011完整FACTS或重开递归研究，不增加实机或修复信用。
+
 20:33增量：010改从实际缓存读取anchor核查。已合格observer的`ReadHeader/CopyIds`只做guarded memory copy；现存当前consumer在actor`+1C0→+3A0→count+C`之间也没有call，不能把observer本身称为lazy refresh触发者。另核现有perTitle ABI：`289DA10`只是primary Title resolver，campaign完整primary数组复制和heldTitle的count/first DTO都没有闭合脚本`every_title_heir`入口。该引擎getter及实际writer仍UNKNOWN，没有据此产生新的生产变量或实机。
 
 010实际读取当前PE小头、版本、213B身份pin及限定`.data` 1MiB；两个精确猜测RTTI名称未命中后立即停止，不证明全image不存在类型，也不搜索别名或扩到`.text`。新增EXE I/O 1,052,917B，其中metadata 1,052,704B、身份pin213B；新增分析函数体0B，原分析代码累计20,574B。完整EXE SHA继承原资格，未重哈希或复制。[六项来源的精确压缩包](acceptance/2026-10-10-lyd-resolve-cache-source-only/010-AND-GETTER-INDEX.actual.json)原52,199B→17,171B，逐成员字节核验成功；原期限不续。

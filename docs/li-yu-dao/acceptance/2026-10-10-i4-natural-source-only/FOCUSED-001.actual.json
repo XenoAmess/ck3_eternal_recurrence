@@ -1,0 +1,59 @@
+{
+  "schema": "lyd.i4.new-guards-focused-actual.v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_natural_expiry.py"
+  ],
+  "exit_code": 1,
+  "source_head_before": "6d4ae66f82ad81cd148bae9a2a2c50942f5299c7",
+  "source_head_after": "6d4ae66f82ad81cd148bae9a2a2c50942f5299c7",
+  "source_pins_unchanged": true,
+  "source_targets": {
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+      "bytes": 23717,
+      "sha256": "f804a22fe8efade1f1753a3da66f5f2403456c34e919521ae62aa2c3c70aca44"
+    },
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry.json",
+      "bytes": 1218,
+      "sha256": "c4c0cb8df99eb45dd9ae28ddc6da452773e2f3d06a2319ad95dc1a18e40eb90c"
+    },
+    "tools/test_ck3_mod_acceptance_i4_natural_expiry.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_i4_natural_expiry.py",
+      "bytes": 11755,
+      "sha256": "2b3dd619a5d4866c2a96e6229d3feecf9de6fac66aa42af8f976221d8598709d"
+    },
+    "docs/li-yu-dao/i4-public-natural-expiry.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\i4-public-natural-expiry.md",
+      "bytes": 7756,
+      "sha256": "87983cee21dd24c385b9face3c61e5f60696e545a65dbacd8ee4ae3d059ebc11"
+    },
+    "tools/ck3_mod_acceptance_products.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 133290,
+      "sha256": "72bb194a8ab2c771d731e6b909b863d9c335df6cd9c8e4a28d6aac7aa743562f"
+    }
+  },
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-001.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-bounded-readiness-20261010-001\\FOCUSED-001.stderr.txt",
+    "bytes": 5586,
+    "sha256": "736a7cbf1e0ab678431cf071a1439d026e1672abca05738d655280d71e198d79"
+  },
+  "registry_change": "exactly_one_add_only_Li_Yu_Dao_case_other_registry_bytes_semantics_unchanged",
+  "AST_and_JSON_parse": true,
+  "actual_game_calls": 0,
+  "actual_save_body_reads": 0,
+  "actual_runtime_pass": null,
+  "business_acceptance": null,
+  "readiness": "RED",
+  "completed_at_utc": "2026-10-10T12:51:07.568927+00:00"
+}
