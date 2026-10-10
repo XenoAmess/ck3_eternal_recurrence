@@ -1,0 +1,189 @@
+{
+  "schema": "ck3.storage.r48-profile-replicas-retirement-compact-actual.v1",
+  "policy_version": "1.0.0",
+  "machine_id": "BF-202609141645",
+  "recorded_at_utc": "2026-10-10T10:36:52.324671+00:00",
+  "started_at_utc": "2026-10-10T10:31:35.282037+00:00",
+  "finished_at_utc": "2026-10-10T10:33:04.254416+00:00",
+  "actual_original_apply_exit_code": 0,
+  "ok": true,
+  "groups": [
+    {
+      "r": 0,
+      "root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-002\\state\\profile\\shadercache",
+      "planned_files": 3686,
+      "deleted_files": 3686,
+      "failed_files": 0,
+      "logical_deleted_bytes": 142910437,
+      "allocation_size_api_deleted_sum": 151209560,
+      "failures_sample": [],
+      "availability": "ONLY_PLANNED_REPLICA_FILES_DELETED",
+      "original_expires_at_utc_unchanged": "2026-10-17T03:03:44.013573Z"
+    },
+    {
+      "r": 1,
+      "root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-holder-stage-20261010-002\\state\\profile\\save games",
+      "planned_files": 1,
+      "deleted_files": 1,
+      "failed_files": 0,
+      "logical_deleted_bytes": 91711686,
+      "allocation_size_api_deleted_sum": 91713536,
+      "failures_sample": [],
+      "availability": "ONLY_PLANNED_REPLICA_FILES_DELETED",
+      "original_expires_at_utc_unchanged": "2026-10-24T09:21:34.771230+00:00"
+    },
+    {
+      "r": 2,
+      "root": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0048\\input-snapshots\\profile\\shadercache",
+      "planned_files": 3687,
+      "deleted_files": 3687,
+      "failed_files": 0,
+      "logical_deleted_bytes": 143124020,
+      "allocation_size_api_deleted_sum": 151426648,
+      "failures_sample": [],
+      "availability": "ONLY_PLANNED_REPLICA_FILES_DELETED",
+      "original_expires_at_utc_unchanged": "2026-10-17T03:03:44.013573Z"
+    }
+  ],
+  "deleted_file_count": 7374,
+  "failed_file_count": 0,
+  "batch_count": 9,
+  "max_files_per_batch": 1000,
+  "logical_deleted_bytes": 377746143,
+  "allocation_size_api_deleted_sum": 394349744,
+  "allocation_method": "FILE_STANDARD_INFO.AllocationSize of exact single-link exclusive original handle",
+  "volume_free_before": 623175266304,
+  "volume_free_after": 623581229056,
+  "free_delta_is_not_exclusively_attributed_to_cleanup": true,
+  "cumulative_ETW_source_exports_profile_replicas_logical_deleted_bytes": 11850561636,
+  "cumulative_count_excludes_audit_compression": true,
+  "reconstruction_inputs": {
+    "immutable_seed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-shader-cache-v2-seed-20261010-001\\manifest.json",
+      "bytes": 681477,
+      "sha256": "a63b9373a4771359867618be613bd1ca5906adcb142adb0d760887916b30d29b"
+    },
+    "R34_original_save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-034\\checkpoints\\D2a\\checkpoint.ck3",
+      "bytes": 91711686,
+      "sha256": "a6db85e38ba0648eca4b7e835c79d867b96ca26099698f4d4ee5269b818d822c"
+    }
+  },
+  "source_availability_basis": "All 3688 original files held by actual READ_DATA handles denying write/delete during plan and apply; native identity/size/mtime matched plan. SHA identity comes from retained original immutable evidence, not new source body hashes.",
+  "same_original_target_handle_SHA_then_delete": true,
+  "no_recursive_directory_deletion": true,
+  "retained": [
+    "all business/config/outer files",
+    "one original cache modified after freeze",
+    "77 run-added caches",
+    "case001 and case003/R49",
+    "R48 native report/control/frozen argv/provenance/exit/keeper/compact archive",
+    "immutable v2 seed and original R34 D2a save"
+  ],
+  "historical_prepared_and_verify_pins_do_not_prove_current_replica_availability": true,
+  "original_expiry_unchanged": {
+    "original_cache_expiry_unchanged_at_utc": "2026-10-17T03:03:44.013573Z",
+    "R48_checkpoint_expiry_unchanged_at_utc": "2026-10-24T09:21:34.771230+00:00",
+    "R48_raw_evidence_expiry_unchanged_at_utc": "2026-11-09T09:21:34.771230+00:00",
+    "R48_representative_review_unchanged_at_utc": "2026-10-17T08:45:02.559212+00:00",
+    "early_retirement_reason": "Redundant reconstructable input replicas superseded by case003; ROOT current-use release, not TTL expiry",
+    "no_automatic_TTL_or_protection_renewal": true
+  },
+  "audit": {
+    "actual_compression_exit_code": 0,
+    "plaintext_deleted_bytes": 7944793,
+    "gzip_bytes": 862193,
+    "logical_reduction_separate_from_asset_deletion": 7082600,
+    "full_decoded_original_bytes_and_SHA_verified_before_plaintext_delete": true,
+    "availability": [
+      {
+        "original_pin": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\IDENTITIES.plan.jsonl",
+          "bytes": 2968352,
+          "sha256": "b209ddba2b217aea48216a06dee92e0c9bab2532eeaf3fa79601e6351378230b"
+        },
+        "original_path_availability": "DELETED",
+        "gzip_pin_or_null": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\audit-compression\\IDENTITIES.plan.jsonl.gz",
+          "bytes": 248769,
+          "sha256": "b249370904cd4aa6726600bcc224717b3cebd6413d78771720fbaa318cb128a9"
+        },
+        "gzip_verified": true,
+        "gzip_decodes_to_original_pin": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\IDENTITIES.plan.jsonl",
+          "bytes": 2968352,
+          "sha256": "b209ddba2b217aea48216a06dee92e0c9bab2532eeaf3fa79601e6351378230b"
+        },
+        "original_expires_at_utc_unchanged": "2026-11-09T10:30:08.795352+00:00",
+        "error_or_null": null
+      },
+      {
+        "original_pin": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\DETAIL-LEDGER.actual.jsonl",
+          "bytes": 4976441,
+          "sha256": "5caa4881317cb4971f4839af609307bdca34a0a33fc9fcc6b2a4684c00bc1e35"
+        },
+        "original_path_availability": "DELETED",
+        "gzip_pin_or_null": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\audit-compression\\DETAIL-LEDGER.actual.jsonl.gz",
+          "bytes": 613424,
+          "sha256": "05e13b2934b51a57484dd12f38af10cadc8163142854d0027faab4b9dea92065"
+        },
+        "gzip_verified": true,
+        "gzip_decodes_to_original_pin": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\DETAIL-LEDGER.actual.jsonl",
+          "bytes": 4976441,
+          "sha256": "5caa4881317cb4971f4839af609307bdca34a0a33fc9fcc6b2a4684c00bc1e35"
+        },
+        "original_expires_at_utc_unchanged": "2026-11-09T10:33:04.254416+00:00",
+        "error_or_null": null
+      }
+    ],
+    "original_deadlines_not_renewed": true
+  },
+  "evidence": {
+    "inputs": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\INPUTS.actual.json",
+      "bytes": 4604,
+      "sha256": "f7e22a521c6770b87a5205107733f40272a8bf6a31f06a357e668c7ef66f6939"
+    },
+    "plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\PLAN.actual.json",
+      "bytes": 3916,
+      "sha256": "50d6294aacd38241a76ded2da1f8914d9daa4cb4153d78bb3f17f40d2285299d"
+    },
+    "actual_result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\RESULT.actual.json",
+      "bytes": 5740,
+      "sha256": "8b7720f3e8fb1fe44a0e628b5468b6fdc3618a671f78faa7c91cffaaca309dcd"
+    },
+    "tombstones": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\TOMBSTONES.actual.json",
+      "bytes": 2979,
+      "sha256": "b89c7b801ff45b789a8bd00634ae378829016ee7c5535df14084cf81bee490d9"
+    },
+    "original_apply_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-cleanup-root-apply-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 1128,
+      "sha256": "cfc14c7550d865f745ba34e3e47fb255a71464f330d585361c925bc45c35e203"
+    },
+    "actual_compression": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\audit-compression\\RESULT.actual.json",
+      "bytes": 4244,
+      "sha256": "37397ed729a8d4de47b8b1bcdb78604872417a338c0141086b777d0a3340f711"
+    },
+    "audit_availability": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-copies-cleanup-candidate-20261010-001\\audit-compression\\AVAILABILITY.actual.json",
+      "bytes": 2698,
+      "sha256": "02283a261e8c07e381eea429c9b4263fd530b87f053d1bbba778f7948b6123f1"
+    },
+    "original_compression_exit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r49-profile-cleanup-root-compression-execution-20261010-001\\RESULT.actual.json",
+      "bytes": 1341,
+      "sha256": "adffa1169b0de9431f0316aa78526f062d8b9a55b6bbbdf7c2aecf11f17ba7e4"
+    }
+  },
+  "summary_review_at_utc": "2027-04-08T10:33:04.254416+00:00",
+  "other_machines_not_claimed_cleaned": true,
+  "automatic_GC_not_installed": true
+}

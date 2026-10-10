@@ -109,4 +109,22 @@ R48启动证明合同失败后，managed cleanup、原host1、keeper0及CAS4416�
 
 R49实际公共run0/verify0、原CK3句柄OS0/native0、host/keeper/allocator0及CAS4427完成后，ROOT在原卷锁内核销独立4GiB预约，remaining0。新增case003/实际run/a11及明确小回执根的已知logical subtotal708,129,647B；现有Source09/O8/native/v2seed计0，不重复计算。物理分配和历史峰值UNKNOWN，free当次623,195,856,896B；本场未新增删除量。
 
+## 10:33 UTC：回收 R48 重复输入副本
+
+ROOT解除旧case002与R48 frozen profile三组重复输入的后续用途，在既有卷锁内复核实际进程、任务总线和恢复源后，实际删除7,374文件，9批、失败0、原进程exit0。逻辑量 **377,746,143 B**；逐文件 `FILE_STANDARD_INFO.AllocationSize` 合计394,349,744 B。卷free为623,175,266,304→623,581,229,056 B，差值不全部归因于回收。
+
+三组分别为case002的3,686份原seed缓存142,910,437 B、原restored_campaign副本91,711,686 B、R48 frozen profile的3,687份原seed缓存143,124,020 B。删除只针对既有冻结清单中的精确叶文件；同一排他句柄核FileID/size/mtime和原SHA后，记录intent、Disposition、close及实际不存在。3687份immutable v2 seed与R34 D2a原存档在操作中实际持READ_DATA句柄，源正文不重复重哈希，身份与原内容pins保留。
+
+全部84份业务/config/outer文件、1份freeze后被游戏改写的缓存、77份run新增缓存，以及case001、case003/R49均保留。R48 report/control/frozen argv/provenance/退出/keeper和紧凑归档仍可读；旧prepared/verify pins只能描述历史，不能再证明已回收profile副本现在完整可用。缓存Oct17、旧checkpoint/raw与保护的原期限不续。
+
+10:35:34 UTC，原删除进程exit0后，两份audit逐字节压缩读回验证原size/SHA，再删除明文。7,944,793 B明文变为862,193 B gzip，减少7,082,600 B单列；到期仍为Nov9 10:30:08 / 10:33:04 UTC，摘要2027-04-08复核。完整逐文件账本只外置限期保存，[小型实际回执与可用性](receipts/2026-10-10-r48-profile-replicas-retirement.actual.json)入库。
+
+## 10:40 UTC：回收三个旧 profile 存档副本
+
+对R29、R26、R10各自`userdir/save games/xar_checkpoint.ck3`，ROOT解除当前用途后逐个验证对应独立checkpoint与目标实际size/SHA相同，保留源READ_DATA句柄并禁止写入/删除，目标share0句柄核原生身份后才删除。三个实际成功、失败0、原进程exit0，共 **275,024,775 B**；实际分配合计275,034,112 B。保留副本分别为B4-factory-result-r3-signed、r4-factory-protection-red-final和0240-detach-second-post-save；全部immutable checkpoint、R29正式B3基线、R34 D2a与代表证据保留。原copy回执不改写，[逐项删除与保留源实际SHA回执](receipts/2026-10-10-three-old-save-replicas-retirement.actual.json)标明旧mutable路径已删除。
+
+原七attempt约21.2GB是历史清点；本次只释放其中三个副本，没有把整组认作垃圾或重新测算剩余量。Oct12原用途复核期限不续。卷free实际623,594,074,112→623,869,100,032 B，变化不全部归因于删除。
+
+本日两份ETW派生文本、退役Source06/07、R48重复输入和三个旧save副本累计实际删除 **12,125,586,411 B逻辑量（约12.13GB）**。两轮审计压缩净减少19,842,487 B另列，既有删除不重复计数。本机结果不代表其他机器已经执行，也未安装自动GC。
+
 缓存原Oct17 03:03:44UTC和配额原Oct12复核期限不续；其他新资产按checkpoint14天/raw30天/record180天复核，必要保护至多7天。约245KB紧凑归档及后续入库副本不在上述闭场计量时点内，作为有界小增量另列；没有保存第二份完整存档或wire。[实际预约、计量、分类与闭场压缩对象](../li-yu-dao/acceptance/2026-10-10-r0049-holder-diagnostic/INDEX.json)。统一自动GC/预约器仍未实现，不把本机人工闭账外推到其他机器。
