@@ -41,12 +41,13 @@ def native_zero_proof(frozen, report):
     host = Path(argv[argv.index("--agent-source-root") - 1]).resolve()
     check_pin({**frozen["files"][str(host)], "path": str(host)})
     tree = ast.parse(host.read_text(encoding="utf-8-sig"))
-    nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef)
-             and node.name == "finished_native_exit_zero_proof"]
-    require(len(nodes) == 1, "Selected shared host has no exact native-zero predicate")
+    names = {"finished_native_process_exit_zero_proof", "finished_native_exit_zero_proof"}
+    nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in names]
+    require(len(nodes) == len(names) and {node.name for node in nodes} == names,
+            "Selected shared host has no exact native-zero predicate dependency closure")
     namespace = {"datetime": datetime, "re": re, "copy": copy}
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(host), "exec"), namespace)
-    return namespace[nodes[0].name](report, report.get("managed_session_done") is True, None)
+    return namespace["finished_native_exit_zero_proof"](report, report.get("managed_session_done") is True, None)
 
 
 def validate_steps(steps, report):
