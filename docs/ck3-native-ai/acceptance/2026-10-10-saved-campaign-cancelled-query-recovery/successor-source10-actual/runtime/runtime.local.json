@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-mod-acceptance-runtime-v1",
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+    "bytes": 6830,
+    "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+  },
+  "python": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+  "repo_root": "C:\\workspace\\ck3_eternal_recurrence",
+  "game_dir": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III",
+  "userdir_root": "C:/workspace/ck3-common-runtime/userdir-root",
+  "artifacts_root": "C:/workspace/ck3-common-runtime/runs",
+  "paths": {
+    "source_root": "C:\\csr10",
+    "host": "C:\\csr10\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "source_index": "C:\\workspace\\ck3-common-runtime\\20261010-010\\source10-index.json",
+    "native_source_index": "C:\\workspace\\ck3-common-runtime\\20261010-010\\native-source10-index.json",
+    "dll": "C:\\cbr2\\xar_ck3_bridge.dll",
+    "injector": "C:\\cbr2\\xar_ck3_bridge_injector.exe"
+  },
+  "reviewed_launcher": {
+    "path": "C:\\csr10\\tools\\ck3_mod_acceptance_launcher.py",
+    "bytes": 16617,
+    "sha256": "5385358e080fea67248b7879b24609144ab753cf5b45b37b7316de5c581edebd"
+  },
+  "control_queue": {
+    "path": "C:\\csr10\\tools\\ck3_mod_acceptance_queue.py",
+    "bytes": 9966,
+    "sha256": "6ce990e6935f85004ecc25f4f568bb496c8fecdf1181ef217cf416b107c8b823"
+  },
+  "allocation": {
+    "lease_repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "screen_keeper": {
+      "path": "C:\\csr10\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 9726,
+      "sha256": "8152428862ffa4a3021ad09d1e0f901ee688fd943adc096b10d5bea4d8685d13"
+    },
+    "task_bus": {
+      "path": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "task_prefix": "common-acceptance-12004-20261010-"
+  },
+  "qualification": "BOUND_NOT_ALLOCATED_NOT_RUN"
+}

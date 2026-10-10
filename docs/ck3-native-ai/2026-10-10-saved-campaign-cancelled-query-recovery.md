@@ -45,3 +45,5 @@ success、Official仍in_progress。两者LYD均未触发，不能算LYD验收通
 live-false声明；compiled native与MCP注册源码保持原冻结。预计源码逻辑141,079,473 B，写入
 上界192MiB，须在下一独立4GiB预约中显式计入。此时尚未创建Source10/O10或tag，未运行producer。
 host签名及source_core改变使旧v2seed不匹配；不绕过key或从R0050失败追认normal-close seed。
+
+14:48 UTC追加：[Source10实际冻结和新CASE2公共准备](acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/successor-source10-actual/INDEX.actual.json)命令均退出0，Source10 archive commit为`b9d179bc74b69e7fc92cd82499622d224a1ab93e`。只投影已发布的host/test两路径，7905项继承复制，无native构建或硬链接。独立预约002包含192MiB源码上界；此时预约仍OPEN，prepare/plan/preflight不代替实机启动或业务通过。旧CASE1已经消费，不再分配；原输入与71文件production相同，新CASE2单独保存状态。

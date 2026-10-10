@@ -1,0 +1,24 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-storage-input-binding-sourceonly-20261010-003/append_source10_binding.py"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T14:46:31.962708+00:00",
+  "finished_at_utc": "2026-10-10T14:46:32.367450+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-input-binding-execution-20261010-001\\stdout.log",
+    "bytes": 307,
+    "sha256": "adda9849305a48f1f21edff0241b857ff474398b2d3d7931075b7d09b61acaff"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-input-binding-execution-20261010-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

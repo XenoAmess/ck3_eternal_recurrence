@@ -1,0 +1,227 @@
+{
+  "schema": "ck3-source10-small-publication-index-v1",
+  "product_business_pass": false,
+  "exact_bytes_preserved_by_local_gitattributes": true,
+  "files": [
+    {
+      "relative_path": "runtime/SOURCE10-BIND.actual.json",
+      "bytes": 2749,
+      "sha256": "0a9da46e0e8160b9b098482253c25e2f17e19ed1b87a54f377f574a152f5b047",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-BIND.actual.json",
+        "bytes": 2749,
+        "sha256": "0a9da46e0e8160b9b098482253c25e2f17e19ed1b87a54f377f574a152f5b047"
+      }
+    },
+    {
+      "relative_path": "runtime/SOURCE10-NATIVE-REUSE.actual.json",
+      "bytes": 4856,
+      "sha256": "364d3e4834f5baf0f794512d2fe65deed48b5727d4d256684f3d063a65eba02f",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-NATIVE-REUSE.actual.json",
+        "bytes": 4856,
+        "sha256": "364d3e4834f5baf0f794512d2fe65deed48b5727d4d256684f3d063a65eba02f"
+      }
+    },
+    {
+      "relative_path": "runtime/manifest.json",
+      "bytes": 6830,
+      "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+        "bytes": 6830,
+        "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+      }
+    },
+    {
+      "relative_path": "runtime/runtime.local.json",
+      "bytes": 2016,
+      "sha256": "a94896227c9e63d716e3169ed6fec73a9c90646ca50dd5346ca14532dee15484",
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\runtime.local.json",
+        "bytes": 2016,
+        "sha256": "a94896227c9e63d716e3169ed6fec73a9c90646ca50dd5346ca14532dee15484"
+      }
+    },
+    {
+      "relative_path": "source-execution/RESULT.actual.json",
+      "bytes": 1568,
+      "sha256": "8995c11887b0214bf52327711b4106b81c7005f3a1532a093c19955f76e3d437",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-root-execution-20261010-001\\RESULT.actual.json",
+        "bytes": 1568,
+        "sha256": "8995c11887b0214bf52327711b4106b81c7005f3a1532a093c19955f76e3d437"
+      }
+    },
+    {
+      "relative_path": "source-execution/stdout.log",
+      "bytes": 1169,
+      "sha256": "0bc76cd6911138fe337816a36964dfd7ed2633c397478118c5db3571c8fc1317",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-root-execution-20261010-001\\stdout.log",
+        "bytes": 1169,
+        "sha256": "0bc76cd6911138fe337816a36964dfd7ed2633c397478118c5db3571c8fc1317"
+      }
+    },
+    {
+      "relative_path": "source-execution/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-root-execution-20261010-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "public-prepare-003/RESULT.actual.json",
+      "bytes": 1320,
+      "sha256": "c8e36fb6fda35a6739a24d544a35ac7be4358947b7f46b00e1492a481f8cee81",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261010-003\\RESULT.actual.json",
+        "bytes": 1320,
+        "sha256": "c8e36fb6fda35a6739a24d544a35ac7be4358947b7f46b00e1492a481f8cee81"
+      }
+    },
+    {
+      "relative_path": "public-prepare-003/stdout.log",
+      "bytes": 31270,
+      "sha256": "5cbdde8e56ea7199a19448afc16032f7e2eca07ff9589b72be9c851d06c53f8d",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261010-003\\stdout.log",
+        "bytes": 31270,
+        "sha256": "5cbdde8e56ea7199a19448afc16032f7e2eca07ff9589b72be9c851d06c53f8d"
+      }
+    },
+    {
+      "relative_path": "public-prepare-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-prepare-20261010-003\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "public-plan-003/RESULT.actual.json",
+      "bytes": 1215,
+      "sha256": "0f2dfd65684848a6e79a6aebe775a617e057ea2558024406151063531f2744af",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261010-003\\RESULT.actual.json",
+        "bytes": 1215,
+        "sha256": "0f2dfd65684848a6e79a6aebe775a617e057ea2558024406151063531f2744af"
+      }
+    },
+    {
+      "relative_path": "public-plan-003/stdout.log",
+      "bytes": 3954,
+      "sha256": "502998361b57d12bce26fa41d2afac773490000add97c40178e53eeaee0656f3",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261010-003\\stdout.log",
+        "bytes": 3954,
+        "sha256": "502998361b57d12bce26fa41d2afac773490000add97c40178e53eeaee0656f3"
+      }
+    },
+    {
+      "relative_path": "public-plan-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-plan-prepared-20261010-003\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "public-preflight-003/RESULT.actual.json",
+      "bytes": 1230,
+      "sha256": "0ecda679300f49babe5e276929edf2b1464fad4a05018af3a51a4fef8f6d32b1",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261010-003\\RESULT.actual.json",
+        "bytes": 1230,
+        "sha256": "0ecda679300f49babe5e276929edf2b1464fad4a05018af3a51a4fef8f6d32b1"
+      }
+    },
+    {
+      "relative_path": "public-preflight-003/stdout.log",
+      "bytes": 9472,
+      "sha256": "66a683a066e45ddc3116b8dcd24db67fc4aefe50f49aefab9c97392b9b91e454",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261010-003\\stdout.log",
+        "bytes": 9472,
+        "sha256": "66a683a066e45ddc3116b8dcd24db67fc4aefe50f49aefab9c97392b9b91e454"
+      }
+    },
+    {
+      "relative_path": "public-preflight-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-public-preflight-prepared-20261010-003\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "input-binding-execution/RESULT.actual.json",
+      "bytes": 946,
+      "sha256": "ba5fecd2b5801547374c2762c4e26b9d596c3869bad239ee1db66f3abf0a9363",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-input-binding-execution-20261010-001\\RESULT.actual.json",
+        "bytes": 946,
+        "sha256": "ba5fecd2b5801547374c2762c4e26b9d596c3869bad239ee1db66f3abf0a9363"
+      }
+    },
+    {
+      "relative_path": "input-binding-execution/stdout.log",
+      "bytes": 307,
+      "sha256": "adda9849305a48f1f21edff0241b857ff474398b2d3d7931075b7d09b61acaff",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-input-binding-execution-20261010-001\\stdout.log",
+        "bytes": 307,
+        "sha256": "adda9849305a48f1f21edff0241b857ff474398b2d3d7931075b7d09b61acaff"
+      }
+    },
+    {
+      "relative_path": "input-binding-execution/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-input-binding-execution-20261010-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "inputs/ADMISSION.actual.json",
+      "bytes": 8227,
+      "sha256": "fea56a9a0857dc3a22b3a45b8029a7e22e69152ae55fa645b261cb626c6414e7",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\ADMISSION.actual.json",
+        "bytes": 8227,
+        "sha256": "fea56a9a0857dc3a22b3a45b8029a7e22e69152ae55fa645b261cb626c6414e7"
+      }
+    },
+    {
+      "relative_path": "inputs/INPUT-BINDING-003.actual.json",
+      "bytes": 4251,
+      "sha256": "a9e48e7a9c403cad4390b5da977b336134396c4043688d2f2974e3559a58b19b",
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\INPUT-BINDING-003.actual.json",
+        "bytes": 4251,
+        "sha256": "a9e48e7a9c403cad4390b5da977b336134396c4043688d2f2974e3559a58b19b"
+      }
+    },
+    {
+      "relative_path": ".gitattributes",
+      "bytes": 29,
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d"
+    },
+    {
+      "relative_path": "SUMMARY.actual.json",
+      "bytes": 2570,
+      "sha256": "a205a5ef44fa1316d8d7706f42afcec4e8fc619e33900508c05eaa33b011b110"
+    }
+  ]
+}

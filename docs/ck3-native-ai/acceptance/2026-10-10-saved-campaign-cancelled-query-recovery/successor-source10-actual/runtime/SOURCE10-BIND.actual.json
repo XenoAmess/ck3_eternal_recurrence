@@ -1,0 +1,71 @@
+{
+  "schema": "ck3-common-source10-two-path-binding-v1",
+  "source_commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+  "single_parent": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+  "selected_author_commit": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+  "changed_paths": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py"
+  ],
+  "archive_tag": {
+    "tag": "archive/ck3-common-runtime/source10-20261010-010",
+    "commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+    "single_parent": "0239d7a14b42c24f47762985dcb9124fd9ff060a"
+  },
+  "parent_bind": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\SOURCE09-BIND.actual.json",
+    "bytes": 2636,
+    "sha256": "c113ff2d7db4a87c6a9c1a25800b38f8e7e86f7d982fcc7fca3c0df6464caf65"
+  },
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+    "bytes": 6830,
+    "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\runtime.local.json",
+    "bytes": 2016,
+    "sha256": "a94896227c9e63d716e3169ed6fec73a9c90646ca50dd5346ca14532dee15484"
+  },
+  "native_reuse": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-NATIVE-REUSE.actual.json",
+    "bytes": 4856,
+    "sha256": "364d3e4834f5baf0f794512d2fe65deed48b5727d4d256684f3d063a65eba02f"
+  },
+  "inherited_dll": {
+    "path_key": "dll",
+    "bytes": 9459712,
+    "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+  },
+  "inherited_injector": {
+    "path_key": "injector",
+    "bytes": 39936,
+    "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+  },
+  "updated_host": {
+    "path_key": "host",
+    "bytes": 256993,
+    "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+  },
+  "profile_features": {
+    "shader_cache_reuse": true
+  },
+  "host_features": {
+    "succession_title_readonly": true,
+    "saved_campaign_inject_after_load": true,
+    "saved_campaign_debug_mode": true
+  },
+  "native_build_performed": false,
+  "main_branch_or_index_modified": false,
+  "source09_payload_modified": false,
+  "hardlinks_created": 0,
+  "created_at_utc": "2026-10-10T14:38:40.333724+00:00",
+  "review_at_utc": "2026-10-17T08:45:50.800231+00:00",
+  "copy_does_not_renew_original_input_TTL": true,
+  "capacity_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\ADMISSION.actual.json",
+    "bytes": 8227,
+    "sha256": "fea56a9a0857dc3a22b3a45b8029a7e22e69152ae55fa645b261cb626c6414e7"
+  },
+  "business_pass": false
+}

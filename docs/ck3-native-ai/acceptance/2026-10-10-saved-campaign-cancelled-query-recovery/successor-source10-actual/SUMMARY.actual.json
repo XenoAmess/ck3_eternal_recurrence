@@ -1,0 +1,57 @@
+{
+  "schema": "ck3-source10-small-publication-v1",
+  "source_commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+  "single_parent": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+  "archive_tag": {
+    "tag": "archive/ck3-common-runtime/source10-20261010-010",
+    "commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+    "single_parent": "0239d7a14b42c24f47762985dcb9124fd9ff060a"
+  },
+  "selected_author_commit": "3f8cae002b0619129fe98bb81d435a3c954a0b92",
+  "original_bind": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-BIND.actual.json",
+    "bytes": 2749,
+    "sha256": "0a9da46e0e8160b9b098482253c25e2f17e19ed1b87a54f377f574a152f5b047"
+  },
+  "commands": {
+    "source-execution": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T14:38:40.219026+00:00",
+      "finished_at_utc": "2026-10-10T14:39:02.560015+00:00",
+      "raw_log_review_at_utc": "2026-11-09T14:39:02.560015+00:00"
+    },
+    "public-prepare-003": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T14:46:41.211628+00:00",
+      "finished_at_utc": "2026-10-10T14:46:41.595927+00:00",
+      "raw_log_review_at_utc": "2026-11-09T14:46:41.595927+00:00"
+    },
+    "public-plan-003": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T14:46:49.849839+00:00",
+      "finished_at_utc": "2026-10-10T14:46:50.021989+00:00",
+      "raw_log_review_at_utc": "2026-11-09T14:46:50.021989+00:00"
+    },
+    "public-preflight-003": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T14:46:58.329865+00:00",
+      "finished_at_utc": "2026-10-10T14:46:59.308970+00:00",
+      "raw_log_review_at_utc": "2026-11-09T14:46:59.308970+00:00"
+    },
+    "input-binding-execution": {
+      "exit_code": 0,
+      "started_at_utc": "2026-10-10T14:46:31.962708+00:00",
+      "finished_at_utc": "2026-10-10T14:46:32.367450+00:00",
+      "raw_log_review_at_utc": "2026-11-09T14:46:32.367450+00:00"
+    }
+  },
+  "native_build_performed": false,
+  "product_business_pass": false,
+  "allocation_or_live_qualified_by_this_publication": false,
+  "content_scope": "Four original runtime metadata files, admission/input binding and five recorded command triplets; no source/index inventory/native/cache/save/profile payload",
+  "source_input_review_at_utc": "2026-10-17T08:45:50.800231+00:00",
+  "record_review_at_utc": "2027-04-08T14:39:02.560015+00:00",
+  "copy_does_not_renew_source_cache_profile_or_original_evidence_TTL": true,
+  "phase_results_are_original_facts_not_product_or_live_qualification": true,
+  "published_at_utc": "2026-10-10T14:48:44.954764+00:00"
+}

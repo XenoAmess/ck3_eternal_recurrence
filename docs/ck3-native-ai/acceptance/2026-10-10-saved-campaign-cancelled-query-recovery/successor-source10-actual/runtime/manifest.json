@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-mod-acceptance-shared-runtime-v1",
+  "runtime_id": "machine-common-12004-sourceb9d179bc7-nativeaf2045521-20261010-010",
+  "source_root": {
+    "path_key": "source_root"
+  },
+  "host": {
+    "path_key": "host",
+    "bytes": 256993,
+    "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+  },
+  "source_index": {
+    "path_key": "source_index",
+    "bytes": 1620142,
+    "sha256": "d76fc9b200a25d1512cb241ebda4c909f0f8b6aa4c13d9f6db384cbab9d25011"
+  },
+  "native_source_index": {
+    "path_key": "native_source_index",
+    "bytes": 892070,
+    "sha256": "b00775c91e8766411fbfb26b6c77b7be10795d2164702cfaa634666f572b6f7f"
+  },
+  "native": {
+    "dll": {
+      "path_key": "dll",
+      "bytes": 9459712,
+      "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+    },
+    "injector": {
+      "path_key": "injector",
+      "bytes": 39936,
+      "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+    }
+  },
+  "game": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "host_features": {
+    "succession_title_readonly": true,
+    "saved_campaign_inject_after_load": true,
+    "saved_campaign_debug_mode": true
+  },
+  "entry_environment": {
+    "PYTHONPATH_parts": [
+      {
+        "root_key": "source_root",
+        "relative_path": "ck3_autonomous_player/src"
+      },
+      {
+        "root_key": "source_root",
+        "relative_path": "ck3_workshop_mcp/src"
+      },
+      {
+        "root_key": "source_root",
+        "relative_path": "tools"
+      }
+    ]
+  },
+  "capabilities": {
+    "ck3_take_snapshot": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_query_actor_cached_succession_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_query_confucian_religious_title_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_query_current_event_window_context_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_select_event_option": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_save_checkpoint": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_query_normal_exit_context_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_request_normal_exit_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_observe_normal_exit_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Actual common DLL/injector build0; exact registered shared MCP source; no actual live qualification inferred"
+    },
+    "ck3_open_ingame_decisions_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.activate-ingame-decisions-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_select_ingame_decision_item_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.select-ingame-decision-item-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_query_ingame_decision_item_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.query-ingame-decision-item-v1; no actual tool-call/live or product qualification inferred"
+    },
+    "ck3_inspect_gui_window_tree_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false,
+      "evidence": "Exact Source09 MCP registration; actual shared native build0/reuse; prior exact-build hello advertises game.command.inspect-gui-window-tree-v1; no actual tool-call/live or product qualification inferred"
+    }
+  },
+  "provenance": {
+    "source_commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+    "native_build_commit": "af20455212ed75000ba6136b3be308a9288cb06e",
+    "build_inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-INPUTS.actual.json",
+      "bytes": 3608,
+      "sha256": "70ae3c7f22627918cf43c9a9abc279033c0f3ad0a4bb99b71ae7a2b9ca0bab36"
+    },
+    "build_result": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-RESULT.actual.json",
+      "bytes": 498,
+      "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+    },
+    "python_successor_native_equality": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-NATIVE-REUSE.actual.json",
+      "bytes": 4856,
+      "sha256": "364d3e4834f5baf0f794512d2fe65deed48b5727d4d256684f3d063a65eba02f"
+    },
+    "mcp_source": {
+      "path": "C:\\csr10\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 203259,
+      "sha256": "6c4b0ad34c699d40faaf4b605aebe9d7b9d99c06dcb555780e4f92a80772a182"
+    },
+    "source_archive_tag": {
+      "tag": "archive/ck3-common-runtime/source10-20261010-010",
+      "commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+      "single_parent": "0239d7a14b42c24f47762985dcb9124fd9ff060a"
+    }
+  },
+  "selection_policy": "One globally selected common runtime for all products. No product-selected host/source/native copy.",
+  "qualification": "PYTHON_FIX_NATIVE_INPUTS_EQUAL_NOT_LIVE_NOT_PRODUCT_PASS",
+  "profile_features": {
+    "shader_cache_reuse": true
+  }
+}

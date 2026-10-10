@@ -1,0 +1,164 @@
+{
+  "schema": "lyd-manual-coordinated-storage-admission-v1",
+  "policy": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "at_utc": "2026-10-10T14:38:08.333757+00:00",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "reservation_id": "lyd-i4-natural-expiry-4GiB-20261010-002",
+  "writer_rule": "One ROOT-serialized I4 prepare/allocate/run only; <=4 external source-only lanes precharged128MiB.",
+  "previous_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+    "bytes": 6317,
+    "sha256": "334b5ec1d28155961b2181c7cbb15f50642850696807d9af13e85d74d7f1198e"
+  },
+  "previous_closed_reservation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\CLOSED-RESERVATION.actual.json",
+    "bytes": 6417,
+    "sha256": "d5ad93bef5132519c530bf8ab846edbf2b6fbb1589a6715d63fe6c0030c98a73"
+  },
+  "usage_predecessor": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\ADMISSION.actual.json",
+    "bytes": 6317,
+    "sha256": "334b5ec1d28155961b2181c7cbb15f50642850696807d9af13e85d74d7f1198e"
+  },
+  "coordination_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\COORDINATION.actual.json",
+    "bytes": 1541,
+    "sha256": "b732cdd857df8c13d54129c982fbccc09c4d9a6dcfca4bfe558e1f17ac80b866"
+  },
+  "machine_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\MACHINE-PROFILE.actual.json",
+    "bytes": 1052,
+    "sha256": "415b32fa4eb156f27ee174a2c516dd6eee1317a373db32fc717817ae3f57dbbb"
+  },
+  "volume": "C:/",
+  "total_volume_bytes": 1023892852736,
+  "available_bytes": 623721340928,
+  "current_project_usage_conservative_bytes": 131233343898,
+  "physical_usage_exact": false,
+  "usage_basis": "130820188351B prior conservative usage +278937819B actual retained +128MiB new source/audit; no cleanup deduction.",
+  "usage_bound_components": {
+    "prior_conservative_usage_bytes": 130820188351,
+    "prior_observed_retained_bytes": 278937819,
+    "precharged_source_and_audit_bytes": 134217728,
+    "cleanup_deducted_bytes": 0
+  },
+  "this_write_peak_bytes": 4294967296,
+  "other_unspent_reservations_bytes": 0,
+  "system_growth_reserve_bytes": 10737418240,
+  "safety_margin_bytes": 21474836480,
+  "required_free_bytes": 36507222016,
+  "default_project_quota_bytes": 102389285273,
+  "effective_project_quota_bytes": 137438953472,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "quota_override_inherited_unchanged_no_renewal": true,
+  "reservation_expires_at_utc": "2026-10-10T20:38:08.333757+00:00",
+  "unspent_reserved_peak_bytes": 4294967296,
+  "automatic_reservation_manager_implemented": false,
+  "critical_section": "Same exclusive ROOT msvcrt volume byte lock; actual bus/process/free checks inside.",
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "capacity_status": "ALLOC_BUDGET_APPROVED",
+  "estimated_peak_components": {
+    "source_export_or_native_build_bytes": 201326592,
+    "native_build_bytes": 0,
+    "new_cache_seed_snapshot_bytes": 0,
+    "immutable_input_copy_bytes": 91669783,
+    "restored_campaign_profile_copy_bytes": 91669783,
+    "two_saved_checkpoints_and_immutable_copies_allowance_bytes": 419430400,
+    "cold_shadercache_allowance_bytes": 268435456,
+    "business_profile_and_allocator_copy_allowance_bytes": 33554432,
+    "native_logs_receipts_transient_allowance_bytes": 3188880850,
+    "estimate_not_actual_usage": true
+  },
+  "planned_case_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002",
+  "planned_keeper_root": null,
+  "actual_run_id_or_null": null,
+  "planned_prepared_output": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared",
+  "planned_state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state",
+  "future_source10_or_runtime_O10_actual_refs": null,
+  "actual_fresh_input_derivation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-public-inputs-20261010-003\\INPUT-DERIVATION.actual.json",
+    "bytes": 1116,
+    "sha256": "0238f40ff7b338376ba4d54c958a9a9080eb545d6d92ec758334422004ea0fbf"
+  },
+  "planned_source_export": "C:/csr10",
+  "planned_runtime_root": "C:/workspace/ck3-common-runtime/20261010-010",
+  "reviewed_Source10_producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-source10-two-path-sourceonly-20261010-002\\produce_source10.py",
+    "bytes": 17261,
+    "sha256": "60b8c809d10b0df950af7f3b3b260d4043a5dfe9fb5b773a4cf0c4112eeb4803"
+  },
+  "inherited_input_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\INPUT-BINDING-002.actual.json",
+    "bytes": 3679,
+    "sha256": "75805d3bbfa11c496bd63b56d67d09ae9e5517e5fc0debe2018193e92d717903"
+  },
+  "source_export_component_is_within_total_4GiB": true,
+  "actual_keeper_ready_or_null": null,
+  "live_started": false,
+  "prepare_inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-public-inputs-20261010-003\\PREPARE-INPUTS.actual.json",
+    "bytes": 2202,
+    "sha256": "b8e1612d7ce7a54fba29be0160b587b08982cda1e89bf1ec96a87ff67a912745"
+  },
+  "reused_inputs": {
+    "runtime": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-009\\runtime.local.json",
+      "bytes": 2011,
+      "sha256": "c2f6c3aef3dc1c9d2b2034af482a9eaab5f9793132ddba0a8f7e4dd78c1eaca9"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-009\\manifest.json",
+      "bytes": 6855,
+      "sha256": "30aec74524f51b74b332772618548ffff0e99b3916ff92501449ebe815fda183"
+    },
+    "source_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-008\\source09-index.json",
+      "bytes": 1619935,
+      "sha256": "8adf73bd3a99a16ee3dc09a3129e1ba56725dc056c268d24c298e61473773d59"
+    },
+    "campaign_seed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d"
+    }
+  },
+  "reused_source_export": "C:/csr9",
+  "reused_native_build": "C:/cbr2",
+  "warm_shader_seed_selected": false,
+  "existing_seed_or_source_protection_renewed": false,
+  "new_cold_shadercache_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "protection_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "new_assets_retention": {
+    "source_export_build_days": 14,
+    "cache_days": 7,
+    "profile_checkpoint_days": 14,
+    "raw_evidence_days": 30,
+    "derived_hours": 48,
+    "small_records_review_days": 180
+  },
+  "existing_cache_TTL_and_asset_review_not_renewed": true,
+  "previous_actual_CAS": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0050\\release-command-003\\stdout.log",
+    "bytes": 1305,
+    "sha256": "07fc0bf84012757b9f242ab9930345f885b5bb49ff1dc885a829c2632a2939ce"
+  },
+  "previous_retained_measure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-001\\CLOSURE-MEASURE.actual.json",
+    "bytes": 17044,
+    "sha256": "b3018567c9dac64b1447cee8090db7b12915d0f0ae2fc8e84d59fe06a4b626d2"
+  },
+  "after_task": "Same R49 close/wait/CAS + bounded metadata measurement, then release entire future-write peak, not peak minus retained bytes.",
+  "live_or_business_qualification": false
+}

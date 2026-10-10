@@ -104,3 +104,7 @@ ROOT 已解除 R46/R47 旧 seed payload 的当前用途保护，条件是保留�
 12:52:51–12:52:52 UTC 的审计压缩与 12:53:01–12:53:02 UTC 的摘要命令均实际退出 0。仅两份派生 audit 明文在 gzip 完整解压 size/SHA 与原 bytes 匹配后删除：9,516,261 B 明文对应 1,103,699 B gzip，逻辑净减少 8,412,562 B。gzip 留在原外置目录，未重复入库；旧 pin 的可用性由[availability 原回执](receipts/2026-10-10-old-shader-cache-replicas-retirement/audit-compression/AVAILABILITY.actual.json) 映射。当天 payload 删除累计为 12,411,834,451 B，audit 压缩累计逻辑净减少另计 28,255,049 B，两者不合并成磁盘独占回收量。
 
 当前 v2 seed、B3 signed、D2a immutable、Source09/O8、R46 失败 profile/raw logs、R47 outcome，以及两份旧 manifest/key/receipt 均保留；本次退役不授 cache-hit、业务通过或正常 GUI 退出资格。原 cache 期限 `2026-10-17T03:03:44.013573Z` 不续期；identity/detail audit 分别沿用 `2026-11-09T12:41:11.716718+00:00`、`2026-11-09T12:44:03.267468+00:00`，summary 复核日为 `2027-04-08T12:44:03.267468+00:00`。这是本机经协调者执行的精确副本退役，不代表其他机器已采用或存在自动 GC。
+
+## 14:48 UTC：新Source10/I4独立预约002
+
+原预约001保持CLOSED/0。ROOT于14:38:08 UTC实际准入新`lyd-i4-natural-expiry-4GiB-20261010-002`，峰值4,294,967,296B，含Source10源码写入上界201,326,592B、native构建0、cache seed复制0。保守项目用量131,233,343,898B，加峰值135,528,311,194B，低于原128GiB配额；当时卷空闲623,721,340,928B。旧配额2026-10-12T05:19:51.814083Z及输入/cache期限不续。[实际冻结与预检](../ck3-native-ai/acceptance/2026-10-10-saved-campaign-cancelled-query-recovery/successor-source10-actual/INDEX.actual.json)只说明新输入已就绪，预约仍OPEN；没有提前计回收或业务通过。新Source10/O10也须在本场闭账中统计有限留存。继续使用全机器统一规则，自动预约管理器和自动GC仍未实现。

@@ -1,0 +1,428 @@
+{
+  "status": "CASE_PREPARED_NOT_ALLOCATED_NOT_RUN",
+  "prepared_case": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\prepared-case.json",
+    "bytes": 34070,
+    "sha256": "07759323ecaae843b72c1f1b45e26345f9da60de67bb5a234fbe1e478d44a654"
+  },
+  "preparation": {
+    "startup": {
+      "mode": "saved_campaign",
+      "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state",
+      "saved_campaign": {
+        "save": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+        "bytes": 91669783,
+        "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+        "player_id": 31254,
+        "date_raw": 53144712,
+        "product_inventory": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\saved-product-inventory.json"
+      }
+    },
+    "initial_plan": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\initial-plan.json",
+      "bytes": 18,
+      "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+    },
+    "profile_preparation": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared\\profile-preparation.json",
+      "bytes": 29924,
+      "sha256": "6d99f3f8d90b6d76cfbd23dd325a2ab78ebedd8095f2ae1670a390008e4d4ce9"
+    },
+    "startup_evidence": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\preparation.json",
+      "bytes": 16921,
+      "sha256": "ac90d4895e6623b67603e6e2caae3e55eb1c69d24384174fc6acf30d73e0e996"
+    },
+    "files": {
+      "dlc_load.json": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\dlc_load.json",
+        "bytes": 73,
+        "sha256": "913df90d75091a6ee81e6dae148f4a39863354d7777a07362d85eea3be4cd320"
+      },
+      "mod/product.mod": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod\\product.mod",
+        "bytes": 267,
+        "sha256": "6ff4ae33cd157f90722893ddba60008124c8334e33a0f22a2b130500e8525346"
+      },
+      "mod-content/product/common/character_interactions/lyd_c2_consent_interactions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\character_interactions\\lyd_c2_consent_interactions.txt",
+        "bytes": 986,
+        "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+      },
+      "mod-content/product/common/character_interactions/lyd_c3_teacher_interactions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\character_interactions\\lyd_c3_teacher_interactions.txt",
+        "bytes": 4931,
+        "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+      },
+      "mod-content/product/common/character_interactions/lyd_i3b_nomination_interactions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\character_interactions\\lyd_i3b_nomination_interactions.txt",
+        "bytes": 954,
+        "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+      },
+      "mod-content/product/common/character_interactions/lyd_interactions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\character_interactions\\lyd_interactions.txt",
+        "bytes": 127,
+        "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+      },
+      "mod-content/product/common/decisions/lyd_c2_consent_decisions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\decisions\\lyd_c2_consent_decisions.txt",
+        "bytes": 2408,
+        "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+      },
+      "mod-content/product/common/decisions/lyd_c3_leadership_decisions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+        "bytes": 8528,
+        "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+      },
+      "mod-content/product/common/decisions/lyd_decisions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\decisions\\lyd_decisions.txt",
+        "bytes": 1774,
+        "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+      },
+      "mod-content/product/common/decisions/lyd_i3b_institution_decisions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+        "bytes": 4599,
+        "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+      },
+      "mod-content/product/common/on_action/lyd_c3_lifecycle_on_actions.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt",
+        "bytes": 544,
+        "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+      },
+      "mod-content/product/common/religion/faith_types/lyd_faiths.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\religion\\faith_types\\lyd_faiths.txt",
+        "bytes": 424,
+        "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+      },
+      "mod-content/product/common/religion/rite_types/lyd_rites.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\religion\\rite_types\\lyd_rites.txt",
+        "bytes": 13028,
+        "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+      },
+      "mod-content/product/common/religion/tenet_types/lyd_tenets.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\religion\\tenet_types\\lyd_tenets.txt",
+        "bytes": 19451,
+        "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+      },
+      "mod-content/product/common/script_values/lyd_c2_consent_values.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\script_values\\lyd_c2_consent_values.txt",
+        "bytes": 533,
+        "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+      },
+      "mod-content/product/common/script_values/lyd_i3b_institution_values.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\script_values\\lyd_i3b_institution_values.txt",
+        "bytes": 205,
+        "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_close_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_commit_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+        "bytes": 5885,
+        "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_head_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_head_effects.txt",
+        "bytes": 1352,
+        "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_response_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_response_effects.txt",
+        "bytes": 1369,
+        "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_setup_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+        "bytes": 12698,
+        "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+        "bytes": 22655,
+        "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c2_vote_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+        "bytes": 5368,
+        "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c3_challenger_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+        "bytes": 9550,
+        "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c3_council_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c3_council_effects.txt",
+        "bytes": 9687,
+        "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c3_head_factory.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+        "bytes": 3022,
+        "sha256": "bf1b40de272467afd9b1e0eb2e3c59c4f62285d0daef314cb066446467efccc7"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c3_lifecycle_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+        "bytes": 5360,
+        "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+      },
+      "mod-content/product/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+        "bytes": 1366,
+        "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+      },
+      "mod-content/product/common/scripted_effects/lyd_entry_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_entry_effects.txt",
+        "bytes": 3415,
+        "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+      },
+      "mod-content/product/common/scripted_effects/lyd_i3b_commit_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+        "bytes": 4751,
+        "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+      },
+      "mod-content/product/common/scripted_effects/lyd_i3b_response_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+        "bytes": 4939,
+        "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+      },
+      "mod-content/product/common/scripted_effects/lyd_i3b_setup_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      },
+      "mod-content/product/common/scripted_effects/lyd_i3b_terms_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_i3b_terms_effects.txt",
+        "bytes": 3842,
+        "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_10_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_10_effects.txt",
+        "bytes": 3002,
+        "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_11_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_11_effects.txt",
+        "bytes": 2887,
+        "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_12_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_12_effects.txt",
+        "bytes": 2948,
+        "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_13_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_13_effects.txt",
+        "bytes": 3035,
+        "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_14_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_14_effects.txt",
+        "bytes": 1526,
+        "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_1_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_1_effects.txt",
+        "bytes": 2798,
+        "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_2_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_2_effects.txt",
+        "bytes": 2703,
+        "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_3_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_3_effects.txt",
+        "bytes": 2756,
+        "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_4_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_4_effects.txt",
+        "bytes": 2990,
+        "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_5_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_5_effects.txt",
+        "bytes": 2901,
+        "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_6_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_6_effects.txt",
+        "bytes": 2926,
+        "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_7_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_7_effects.txt",
+        "bytes": 2972,
+        "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_8_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_8_effects.txt",
+        "bytes": 2912,
+        "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+      },
+      "mod-content/product/common/scripted_effects/lyd_practice_9_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_practice_9_effects.txt",
+        "bytes": 2983,
+        "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+      },
+      "mod-content/product/common/scripted_effects/lyd_school_2_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_school_2_effects.txt",
+        "bytes": 3902,
+        "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+      },
+      "mod-content/product/common/scripted_effects/lyd_school_3_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_school_3_effects.txt",
+        "bytes": 3877,
+        "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+      },
+      "mod-content/product/common/scripted_effects/lyd_school_4_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_school_4_effects.txt",
+        "bytes": 3982,
+        "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+      },
+      "mod-content/product/common/scripted_effects/lyd_school_5_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_school_5_effects.txt",
+        "bytes": 1968,
+        "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+      },
+      "mod-content/product/common/scripted_effects/lyd_school_effects.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_effects\\lyd_school_effects.txt",
+        "bytes": 3872,
+        "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+      },
+      "mod-content/product/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 17081,
+        "sha256": "7d79760cc3e6eb63cc67b1a10efd84d38cda098a7bff2276612f82939ad4615f"
+      },
+      "mod-content/product/common/scripted_triggers/lyd_c3_leadership_triggers.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+        "bytes": 8361,
+        "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+      },
+      "mod-content/product/common/scripted_triggers/lyd_i3b_institution_triggers.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+        "bytes": 11389,
+        "sha256": "42e169066766eab63dd1dd51803cbfb6c197f288223e3416a925bd37354fcb2d"
+      },
+      "mod-content/product/common/scripted_triggers/lyd_m3_faith_asset_triggers.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\lyd_m3_faith_asset_triggers.txt",
+        "bytes": 1298,
+        "sha256": "29e7070d62e94e35b83f5b9cbbfab7fda1139a5d8c73982cd357bffed3086baa"
+      },
+      "mod-content/product/common/scripted_triggers/lyd_player_triggers.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\lyd_player_triggers.txt",
+        "bytes": 2885,
+        "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+      },
+      "mod-content/product/descriptor.mod": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\descriptor.mod",
+        "bytes": 156,
+        "sha256": "20f413d234c3c42c3f797c2cad72995ea7d41debd583dc31e7a6d326f769383b"
+      },
+      "mod-content/product/events/lyd_c2_consent_events.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6892,
+        "sha256": "55a9a51e144b23c5b0942e054b44626372ffd63a6817b3ec1d90114d0a237496"
+      },
+      "mod-content/product/events/lyd_c3_leadership_events.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\events\\lyd_c3_leadership_events.txt",
+        "bytes": 3260,
+        "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+      },
+      "mod-content/product/events/lyd_events.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\events\\lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "mod-content/product/events/lyd_i3b_institution_events.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\events\\lyd_i3b_institution_events.txt",
+        "bytes": 5606,
+        "sha256": "954219d1bfee6242d0135c7d4426202259e63f01989c22153cf19036bbfbe116"
+      },
+      "mod-content/product/history/faiths/lyd_faith_history.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\history\\faiths\\lyd_faith_history.txt",
+        "bytes": 1171,
+        "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+      },
+      "mod-content/product/localization/english/lyd_c2_consent_l_english.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\english\\lyd_c2_consent_l_english.yml",
+        "bytes": 15844,
+        "sha256": "fedcf23c88738a5d9bfa8b11c27868e32d3152f36ad005ee81da352e761f0c17"
+      },
+      "mod-content/product/localization/english/lyd_c3_leadership_l_english.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\english\\lyd_c3_leadership_l_english.yml",
+        "bytes": 11285,
+        "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+      },
+      "mod-content/product/localization/english/lyd_content_l_english.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\english\\lyd_content_l_english.yml",
+        "bytes": 66904,
+        "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+      },
+      "mod-content/product/localization/english/lyd_i3b_institution_l_english.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\english\\lyd_i3b_institution_l_english.yml",
+        "bytes": 11134,
+        "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+      },
+      "mod-content/product/localization/english/lyd_runtime_l_english.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\english\\lyd_runtime_l_english.yml",
+        "bytes": 4461,
+        "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+      },
+      "mod-content/product/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+        "bytes": 13780,
+        "sha256": "12dfc97d4176f31ba33bbc78defe2bdd5100ac99dbabba945e6dcfa93fc16797"
+      },
+      "mod-content/product/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+        "bytes": 10389,
+        "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+      },
+      "mod-content/product/localization/simp_chinese/lyd_content_l_simp_chinese.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\lyd_content_l_simp_chinese.yml",
+        "bytes": 52952,
+        "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+      },
+      "mod-content/product/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+        "bytes": 9819,
+        "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+      },
+      "mod-content/product/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\lyd_runtime_l_simp_chinese.yml",
+        "bytes": 3707,
+        "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+      },
+      "pdx_settings.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\pdx_settings.txt",
+        "bytes": 7135,
+        "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "presets.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\presets.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tutorial.txt": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state\\profile\\tutorial.txt",
+        "bytes": 57,
+        "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+      }
+    },
+    "runtime_status": "NOT_RUN",
+    "business_contract_applicable": true,
+    "business_pass": false,
+    "product_release_pass": false
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema": "lyd-existing-budget-input-binding-v1",
+  "at_utc": "2026-10-10T14:46:32.152942+00:00",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261010-002\\ADMISSION.actual.json",
+    "bytes": 8227,
+    "sha256": "fea56a9a0857dc3a22b3a45b8029a7e22e69152ae55fa645b261cb626c6414e7"
+  },
+  "reservation_id": "lyd-i4-natural-expiry-4GiB-20261010-002",
+  "reservation_expires_at_utc": "2026-10-10T20:38:08.333757+00:00",
+  "this_write_peak_bytes": 4294967296,
+  "new_or_extended_reservation": false,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "planned_case_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002",
+  "prepared_output": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\prepared",
+  "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261010-002\\state",
+  "prepare_inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-public-inputs-20261010-003\\PREPARE-INPUTS.actual.json",
+    "bytes": 2202,
+    "sha256": "b8e1612d7ce7a54fba29be0160b587b08982cda1e89bf1ec96a87ff67a912745"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\runtime.local.json",
+    "bytes": 2016,
+    "sha256": "a94896227c9e63d716e3169ed6fec73a9c90646ca50dd5346ca14532dee15484"
+  },
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\manifest.json",
+    "bytes": 6830,
+    "sha256": "8cec658046947024c595b8530d9e45ba036b3ce10f58ea6caa05e76594ac3273"
+  },
+  "source10_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-BIND.actual.json",
+    "bytes": 2749,
+    "sha256": "0a9da46e0e8160b9b098482253c25e2f17e19ed1b87a54f377f574a152f5b047"
+  },
+  "native_reuse": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-010\\SOURCE10-NATIVE-REUSE.actual.json",
+    "bytes": 4856,
+    "sha256": "364d3e4834f5baf0f794512d2fe65deed48b5727d4d256684f3d063a65eba02f"
+  },
+  "source_export": "C:/csr10",
+  "runtime_metadata_root": "C:\\workspace\\ck3-common-runtime\\20261010-010",
+  "source_commit": "b9d179bc74b69e7fc92cd82499622d224a1ab93e",
+  "changed_paths": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "ck3_autonomous_player/native_bridge/research/test_saved_campaign_owner_query_retry.py"
+  ],
+  "native_build_performed": false,
+  "cache_snapshot_performed": false,
+  "source10_created_at_utc": "2026-10-10T14:38:40.333724+00:00",
+  "source10_review_at_utc": "2026-10-17T08:45:50.800231+00:00",
+  "original_asset_review_deadlines_unchanged": true,
+  "new_cold_shadercache_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "protection_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "fresh_available_bytes": 623553609728,
+  "required_free_bytes": 36507222016,
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "fresh_active_tasks": [
+    {
+      "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+      "state": "running",
+      "resources": [],
+      "last_sequence": 4497,
+      "stale": false
+    },
+    {
+      "task_id": "lyd-volume-c-admission-20261010-root",
+      "state": "running",
+      "resources": [
+        "storage-volume-c:coordinator"
+      ],
+      "last_sequence": 4496,
+      "stale": false
+    }
+  ],
+  "process_inventory": {
+    "at_utc": "2026-10-10T14:46:32.165773+00:00",
+    "scanned_process_count": 175,
+    "python_controllers_inspected": [
+      {
+        "pid": 17116,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "actual_allocation_run_keeper": null,
+  "qualification": "NOT_RUN_NOT_PRODUCT_PASS"
+}
