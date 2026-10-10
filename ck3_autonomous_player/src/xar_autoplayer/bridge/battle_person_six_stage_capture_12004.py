@@ -162,6 +162,43 @@ def _preparation_model(value: object, leaf: dict) -> dict:
     return result
 
 
+def _base_point_inputs(value: object, leaf: dict) -> dict:
+    field = FIELD_NAME + ".base_point_inputs"
+    raw = _dict(value, field, {
+        "source_stage", "character_offset", "stride_bytes", "observed",
+        "values_i32", "ready", "reason",
+    })
+    result = {
+        "source_stage": _string(raw["source_stage"], field + ".source_stage"),
+        "character_offset": _integer(raw["character_offset"], field + ".character_offset", 32, unsigned=True),
+        "stride_bytes": _integer(raw["stride_bytes"], field + ".stride_bytes", 32, unsigned=True),
+        "values_i32": _numbers(raw["values_i32"], field + ".values_i32", 32),
+        "ready": _boolean(raw["ready"], field + ".ready"),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+    if (result["source_stage"] != "before_each_original_count"
+            or result["character_offset"] != 0xC0 or result["stride_bytes"] != 4):
+        raise ValueError(field + " changed its actual per-stage Character source")
+    if (not isinstance(raw["observed"], list) or len(raw["observed"]) != STAGE_COUNT
+            or result["values_i32"] is None or len(result["values_i32"]) != STAGE_COUNT):
+        raise ValueError(field + " must retain the six native stage input slots")
+    result["observed"] = [
+        _boolean(observed, f"{field}.observed[{index}]")
+        for index, observed in enumerate(raw["observed"])
+    ]
+    for index, observed in enumerate(result["observed"]):
+        if observed and not leaf["stages"][index]["observed"]:
+            raise ValueError(field + " observed input lacks its actual stage callback")
+        if not observed and result["values_i32"][index] is not None:
+            raise ValueError(field + " unobserved input cannot claim a base value")
+    all_observed = leaf["raw_counts_ready"] and all(result["observed"])
+    ready = all_observed and all(value is not None for value in result["values_i32"])
+    reason = None if ready else "base_point_unread" if all_observed else "base_point_unobserved"
+    if result["ready"] is not ready or result["reason"] != reason:
+        raise ValueError(field + " readiness differs from its owned per-call inputs")
+    return result
+
+
 def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     """Retain six owned stages, including incomplete and unread observations."""
     if value is None:
@@ -170,6 +207,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
                         "aggregate_postimage_inputs_ready", "aggregate_postimage_comparison_ready"}
     has_aggregate = isinstance(value, dict) and "pre_six_aggregate" in value
     has_preparation = isinstance(value, dict) and "preparation_model" in value
+    has_base_points = isinstance(value, dict) and "base_point_inputs" in value
     raw = _dict(value, FIELD_NAME, {
         "schema", "build_version", "executable_sha256", "configured",
         "capture_observed", "capture_complete", "ready", "raw_counts_ready",
@@ -178,7 +216,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         *_POINTERS, "stages", "source_stage", "historical_capture",
         "actual_model_write_performed", "full_helper_ready",
     } | (aggregate_fields if has_aggregate else set())
-      | ({"preparation_model"} if has_preparation else set()))
+      | ({"preparation_model"} if has_preparation else set())
+      | ({"base_point_inputs"} if has_base_points else set()))
     if (raw["schema"] != SCHEMA or require_exact_native_build(
             raw["build_version"], raw["executable_sha256"]) != CK3_12004):
         raise ValueError(FIELD_NAME + " requires its exact actual4 source identity")
@@ -266,6 +305,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
                       aggregate_postimage_comparison_ready=comparison_ready)
     if has_preparation:
         result["preparation_model"] = _preparation_model(raw["preparation_model"], result)
+    if has_base_points:
+        result["base_point_inputs"] = _base_point_inputs(raw["base_point_inputs"], result)
     return result
 
 
@@ -448,4 +489,52 @@ def emit_captured_person_preparation_model_12004(section: object) -> dict:
         "historical_capture": True,
         "actual_model_write_performed": False,
         "full_helper_ready": False,
+    }
+
+
+def _base_point_provenance(character: int, leaf: dict) -> dict:
+    return {
+        "character_id": character,
+        "character_identity": leaf["character_identity"],
+        "context_identity": leaf["context_identity"],
+        "capture_sequence": leaf["capture_sequence"],
+        "capture_date_raw": leaf["capture_date_raw"],
+        "capture_thread_id": leaf["capture_thread_id"],
+        "source_stage": "before_each_original_count",
+        "historical_capture": True,
+        "actual_model_write_performed": False,
+        "full_helper_ready": False,
+    }
+
+
+def emit_captured_person_base_points_12004(section: object) -> dict:
+    """Publish six owned pre-call base DWORDs, independently of append readiness."""
+    character, leaf = _joined_leaf(section)
+    base = leaf.get("base_point_inputs")
+    if base is None or not base["ready"]:
+        reason = base["reason"] if base is not None else "base_point_unobserved"
+        raise ValueError("Required native input unavailable: " + reason)
+    return _base_point_provenance(character, leaf) | {
+        "character_offset": base["character_offset"],
+        "stride_bytes": base["stride_bytes"],
+        "values_i32": list(base["values_i32"]),
+    }
+
+
+def emit_captured_person_base_point_12004(section: object, native_index: object) -> dict:
+    """Publish one observed stage's base operand despite another unread stage."""
+    character, leaf = _joined_leaf(section)
+    index = _integer(native_index, FIELD_NAME + ".base_point_inputs.index", 32, unsigned=True)
+    if index >= STAGE_COUNT:
+        raise ValueError("Required native input unavailable: base point stage")
+    base = leaf.get("base_point_inputs")
+    if base is None or not base["observed"][index]:
+        raise ValueError("Required native input unavailable: base_point_unobserved")
+    value = base["values_i32"][index]
+    if value is None:
+        raise ValueError("Required native input unavailable: base_point_unread")
+    return _base_point_provenance(character, leaf) | {
+        "stage_index": index,
+        "source_offset_bytes": base["character_offset"] + base["stride_bytes"] * index,
+        "value_i32": value,
     }

@@ -180,6 +180,15 @@ PersonSixStageCapture12004DTO EmptyResult(std::uint32_t full_character_id) {
 void UpdateReadiness(PersonSixStageCapture12004DTO &dto) {
   dto.raw_counts_ready = std::all_of(dto.stages.begin(), dto.stages.end(),
       [](const auto &stage) { return stage.observed && stage.raw_count_i32; });
+  auto &base = dto.base_point_inputs;
+  const bool base_observed = std::all_of(base.observed.begin(), base.observed.end(),
+      [](bool observed) { return observed; });
+  const bool base_readable = std::all_of(base.values_i32.begin(), base.values_i32.end(),
+      [](const auto &value) { return value.has_value(); });
+  base.ready = dto.raw_counts_ready && base_observed && base_readable;
+  if (base.ready) base.reason.clear();
+  else base.reason = base_observed && dto.raw_counts_ready
+      ? "base_point_unread" : "base_point_unobserved";
   dto.ready = dto.capture_complete && dto.raw_counts_ready &&
       std::all_of(dto.stages.begin(), dto.stages.end(), [](const auto &stage) {
         return stage.first_pc.ready && stage.second_pc.ready;
@@ -407,7 +416,8 @@ static void ObserveSixStageWithBaseline12004(
     std::uintptr_t raw_return_bits,
     std::uintptr_t caller_return_address,
     const PersonFollowing2922680Pc *pre_six_aggregate,
-    const PersonPreparationModel12004 *preparation_model) noexcept {
+    const PersonPreparationModel12004 *preparation_model,
+    const std::optional<std::int32_t> *pre_count_base_point) noexcept {
   if (!g_available.load(std::memory_order_acquire) ||
       caller_return_address !=
           g_bindings.memory.module_base + kPersonSixStageReturnRva12004 ||
@@ -455,6 +465,10 @@ static void ObserveSixStageWithBaseline12004(
     auto &stage = dto.stages[index];
     stage.observed = true;
     stage.raw_count_i32 = raw;
+    if (pre_count_base_point != nullptr) {
+      dto.base_point_inputs.observed[index] = true;
+      dto.base_point_inputs.values_i32[index] = *pre_count_base_point;
+    }
     UpdateReadiness(dto);
     const auto sequence = dto.capture_sequence;
     auto record = std::make_shared<const PersonSixStageCapture12004DTO>(std::move(dto));
@@ -470,7 +484,7 @@ void ObservePersonSixStageCapture12004(
     std::uintptr_t raw_return_bits,
     std::uintptr_t caller_return_address) noexcept {
   ObserveSixStageWithBaseline12004(character, context, index, raw_return_bits,
-                                   caller_return_address, nullptr, nullptr);
+                                   caller_return_address, nullptr, nullptr, nullptr);
 }
 
 std::uintptr_t InvokePersonSixStageCapture12004(
@@ -480,10 +494,19 @@ std::uintptr_t InvokePersonSixStageCapture12004(
   if (original == nullptr) return 0;
   std::optional<PersonFollowing2922680Pc> pre_six_aggregate;
   std::optional<PersonPreparationModel12004> preparation_model;
-  if (g_available.load(std::memory_order_acquire) && index == 0 &&
+  std::optional<std::int32_t> pre_count_base_point;
+  const bool capture_this_call = g_available.load(std::memory_order_acquire) &&
+      index < kPersonSixStageCount12004 &&
       character != nullptr && context != nullptr &&
       caller_return_address ==
-          g_bindings.memory.module_base + kPersonSixStageReturnRva12004) {
+          g_bindings.memory.module_base + kPersonSixStageReturnRva12004;
+  if (capture_this_call) {
+    // Actual2BA960E consumes this signed DWORD for this exact stage. Own
+    // each input before its original call, without substituting a later value.
+    pre_count_base_point = Copy<std::int32_t>(
+        reinterpret_cast<std::uintptr_t>(character) + 0xC0 + 4 * index);
+  }
+  if (capture_this_call && index == 0) {
     // Native2438964 passes this inline PC to2303100. Own it before the
     // first count callback can observe or modify the aggregate.
     preparation_model = CopyPreparationModel(reinterpret_cast<std::uintptr_t>(context));
@@ -493,7 +516,8 @@ std::uintptr_t InvokePersonSixStageCapture12004(
   ObserveSixStageWithBaseline12004(reinterpret_cast<std::uintptr_t>(character),
       reinterpret_cast<std::uintptr_t>(context), index, result,
       caller_return_address, pre_six_aggregate ? &*pre_six_aggregate : nullptr,
-      preparation_model ? &*preparation_model : nullptr);
+      preparation_model ? &*preparation_model : nullptr,
+      capture_this_call ? &pre_count_base_point : nullptr);
   return result;
 }
 
@@ -731,6 +755,20 @@ std::string SerializePersonSixStageCapture12004(
   out << ",\"character_identity\":"; Pointer(out, dto.character_identity);
   out << ",\"context_identity\":"; Pointer(out, dto.context_identity);
   out << ",\"source_return_rva\":"; Pointer(out, dto.source_return_rva);
+  out << ",\"base_point_inputs\":{\"source_stage\":\"before_each_original_count\"";
+  out << ",\"character_offset\":192,\"stride_bytes\":4,\"observed\":[";
+  for (std::size_t i = 0; i < dto.base_point_inputs.observed.size(); ++i) {
+    if (i != 0) out << ',';
+    out << (dto.base_point_inputs.observed[i] ? "true" : "false");
+  }
+  out << "],\"values_i32\":[";
+  for (std::size_t i = 0; i < dto.base_point_inputs.values_i32.size(); ++i) {
+    if (i != 0) out << ',';
+    Number(out, dto.base_point_inputs.values_i32[i]);
+  }
+  out << "],\"ready\":" << (dto.base_point_inputs.ready ? "true" : "false");
+  out << ",\"reason\":"; Reason(out, dto.base_point_inputs.reason);
+  out << '}';
   out << ",\"preparation_model\":{\"observed\":"
       << (dto.preparation_model.observed ? "true" : "false");
   out << ",\"ready\":" << (dto.preparation_model.ready ? "true" : "false");

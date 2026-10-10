@@ -17,6 +17,12 @@ It joins the split native runtime fragments, records782 newly read bytes,
 and finds no demonstrated three-argument or relocated-prefix mismatch.
 This source result supplies no startup-cause, new FIRST or live qualification.
 
+The later [historical base-operand source increment](battle-person-six-stage-base-operands-12004.md)
+copies the actual Character+C0+4index DWORD before each original count call.
+It uses this same owned capture and MCP envelope, with independent input
+readiness. Its new four-world compound is authored for Root FIRST; this link
+does not update the existing native or live qualification.
+
 ## Held actual source
 
 Root captured the literal provider call on 2026-10-09 19:04:26 UTC:

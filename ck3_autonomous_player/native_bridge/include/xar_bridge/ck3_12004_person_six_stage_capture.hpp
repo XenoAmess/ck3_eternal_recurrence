@@ -46,6 +46,14 @@ struct PersonSixStagePreAggregate12004 {
   friend bool operator==(const PersonSixStagePreAggregate12004 &,
                          const PersonSixStagePreAggregate12004 &) = default;
 };
+struct PersonSixStageBasePointInputs12004 {
+  std::array<bool, kPersonSixStageCount12004> observed{};
+  std::array<std::optional<std::int32_t>, kPersonSixStageCount12004> values_i32{};
+  bool ready = false;
+  std::string reason = "base_point_unobserved";
+  friend bool operator==(const PersonSixStageBasePointInputs12004 &,
+                         const PersonSixStageBasePointInputs12004 &) = default;
+};
 struct PersonPreparationModel12004 {
   bool observed = false;
   bool ready = false;
@@ -65,6 +73,7 @@ struct PersonSixStageCapture12004DTO {
   bool capture_complete = false;
   bool ready = false;
   bool raw_counts_ready = false;
+  PersonSixStageBasePointInputs12004 base_point_inputs;
   PersonPreparationModel12004 preparation_model;
   PersonSixStagePreAggregate12004 pre_six_aggregate;
   PersonSixStagePreAggregate12004 post_six_aggregate;
