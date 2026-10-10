@@ -9,6 +9,11 @@ from ck3_mod_acceptance_prepare import write_json
 def require(value,message):
     if not value:raise ValueError(message)
 
+def verify_profile_inventory(declared,observed):
+    require(set(observed)==set(declared) and all(observed[k]['sha256']==declared[k]['sha256'] and
+            ('bytes' not in declared[k] or observed[k]['bytes']==declared[k]['bytes']) for k in declared),
+            'Cold profile changed after preparation')
+
 def closed_session(report):
     return (bool(report.get('finished_at')) and report.get('managed_session_thread_finished') is True
             and report.get('cleanup_ok') is True)
@@ -335,13 +340,16 @@ def allocate_and_keep(selection,args):
     # Hash the declared prepared profile once; runtime source qualification uses
     # the exact shared manifest/index pins, without another whole-source sweep.
     declared=prepared.get('profile',{}).get('files') or prepared.get('fixtures',{}).get('profile',{}).get('files') or prepared.get('files')
+    if 'graphics_cache' in selection.prepared:
+        from ck3_mod_acceptance_graphics_cache import profile_enabled,graphics_union
+        require(profile_enabled(selection.manifest),'Graphics cache requires shared manifest opt-in')
+        declared=graphics_union(declared,selection.prepared['graphics_cache'],profile)
     if not declared:
         policy=read_json(selection.case_path(selection.case['startup']['fixture_start_policy'])) if selection.case['startup']['mode']=='fixture' else None
         declared={relative:{'sha256':sha} for relative,sha in policy['profile_input_sha256'].items()} if policy else None
     observed={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
     if declared:
-        require(set(observed)==set(declared) and all(observed[k]['sha256']==declared[k]['sha256'] for k in declared),
-                'Cold profile changed after preparation')
+        verify_profile_inventory(declared,observed)
     files={Path(row['path']).resolve():row for row in preflight['checked_inputs']}
     files.update({p:pin(p) for p in (selection.runtime_path,selection.products_path,selection.prepared_path,
         path_at(selection.runtime['reviewed_launcher']['path'],base),path_at(selection.runtime['control_queue']['path'],base),
