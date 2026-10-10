@@ -87,6 +87,13 @@ storage-path equivalence or allocator execution. Root explicitly stopped the
 callee/read chain here. No extra capacity field, RIP read or readiness gate
 is introduced by this local logical composition.
 
+On2026-10-10, Root separately captured the56-byte spare-capacity continuation
+`C8E8F4..C8E92C`, closing its append/count/range-call operands and RET C8E92B.
+The [bounded value-insertion follow-up](battle-person-pc-value-insertion-12004.md)
+retains the earlier partial capture as history. Delegated86E500 library
+equivalence remains outside scope; the logical kernel is unchanged and needs
+no new bridge, capacity gate, fixture or old qualification replay.
+
 The three new batches total 1365 bytes in nine Root-only reads. Together with
 the 284 held bytes consumed once, they close the arithmetic and observed
 logical insertion paths above. No prior batch was read a second time.
