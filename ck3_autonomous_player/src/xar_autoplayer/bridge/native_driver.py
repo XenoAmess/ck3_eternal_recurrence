@@ -1497,6 +1497,21 @@ def load_native_driver_state_for_resume(
 ) -> dict[str, object] | None:
     """Read one driver state through the exact cold-consumer contract."""
     payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    return load_native_driver_state_for_resume_payload(payload, pipe_name)
+
+
+def load_native_driver_state_for_resume_payload(
+    payload: object,
+    pipe_name: str,
+    *,
+    include_command_history: bool = True,
+) -> dict[str, object] | None:
+    """Validate parsed state without changing its raw history or other fields.
+
+    Resume callers retain the complete normalized return by default.  Receipt
+    callers may omit command_history materialization; all existing validation
+    and the remaining returned fields still use the same consumer contract.
+    """
     if not isinstance(payload, dict):
         raise ValueError("driver state must be a JSON object")
     format_version = payload.get("format_version")
@@ -1535,10 +1550,6 @@ def load_native_driver_state_for_resume(
             or not isinstance(row.get("ok"), bool)
         ):
             raise ValueError("driver state command history is malformed")
-    # Historical timeline rows only need objective-state detail for an
-    # actually active siege.  Normalize the in-memory copy exactly as the
-    # live consumer does; this helper never writes the source artifact.
-    _compact_war_progress_history_in_place(history)
     last_checkpoint = payload.get("last_checkpoint")
     if last_checkpoint is not None and not isinstance(last_checkpoint, dict):
         raise ValueError("driver state checkpoint is malformed")
@@ -1615,12 +1626,16 @@ def load_native_driver_state_for_resume(
         from ..strategy import normalize_ordinary_campaign_goal_v1
 
         campaign_goal = normalize_ordinary_campaign_goal_v1(campaign_goal)
-    return {
+    restored = {
         "format_version": format_version,
         "bridge_pid": persisted_bridge_pid,
         "episode_character_id": character_id,
         "episode_run_id": run_id,
-        "command_history": copy.deepcopy(history),
+        **(
+            {"command_history": _resume_command_history_projection(history)}
+            if include_command_history
+            else {}
+        ),
         "last_checkpoint": copy.deepcopy(last_checkpoint),
         "rollback_war_failure": (
             copy.deepcopy(rollback_war_failures[0])
@@ -1637,6 +1652,42 @@ def load_native_driver_state_for_resume(
             lifecycle_migration_required
         ),
     }
+    return restored
+
+
+def _resume_command_history_projection(
+    history: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Compact only a local view before copying the complete resume history."""
+    projected: list[dict[str, object]] = []
+    for row in history:
+        result = row.get("result")
+        if not isinstance(result, dict):
+            projected.append(row)
+            continue
+        projected_result = dict(result)
+        changed = False
+        for name in ("war_progress_before", "war_progress_after"):
+            summary = result.get(name)
+            wars = summary.get("wars") if isinstance(summary, dict) else None
+            if not isinstance(wars, list):
+                continue
+            projected_wars: list[object] = []
+            summary_changed = False
+            for war in wars:
+                if isinstance(war, dict) and isinstance(
+                    war.get("objective_province_states"), list
+                ):
+                    projected_wars.append(dict(war))
+                    summary_changed = True
+                else:
+                    projected_wars.append(war)
+            if summary_changed:
+                projected_result[name] = {**summary, "wars": projected_wars}
+                changed = True
+        projected.append({**row, "result": projected_result} if changed else row)
+    _compact_war_progress_history_in_place(projected)
+    return copy.deepcopy(projected)
 
 
 class NativeHeadlessGameplayDriver:

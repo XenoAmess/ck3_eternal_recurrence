@@ -106,7 +106,7 @@ class NativeOneGenerationPreflightTests(unittest.TestCase):
             return_value=self.manifest,
         ), mock.patch.object(
             preflight_module,
-            "validate_cold_start_checkpoint_for_pipe",
+            "validate_cold_start_checkpoint_payload_for_pipe",
             return_value=self.checkpoint,
         ):
             return native_one_generation_preflight(
@@ -198,7 +198,7 @@ class NativeOneGenerationPreflightTests(unittest.TestCase):
         ), mock.patch.object(
             preflight_module, "verify_profile"
         ) as profile_mock, mock.patch.object(
-            preflight_module, "validate_cold_start_checkpoint_for_pipe"
+            preflight_module, "validate_cold_start_checkpoint_payload_for_pipe"
         ) as checkpoint_mock:
             report = native_one_generation_preflight(
                 self.spec,

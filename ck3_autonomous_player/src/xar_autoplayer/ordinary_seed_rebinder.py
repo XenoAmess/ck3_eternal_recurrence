@@ -10,16 +10,20 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
 from typing import Callable, ContextManager
 
-from .bridge.native_driver import load_native_driver_state_for_resume
+from .bridge.native_driver import load_native_driver_state_for_resume_payload
 from .bridge.succession_transition_contract import (
     ORDINARY_CAMPAIGN_SUCCESSION,
     bind_succession_lifecycle_from_environment_v1,
     normalize_succession_lifecycle_binding_v1,
+)
+from .cold_checkpoint_validator import (
+    validate_cold_start_checkpoint_payload_for_pipe,
 )
 from .environment import (
     EnvironmentSpec,
@@ -42,7 +46,6 @@ from .native_session import (
     NATIVE_DRIVER_STATE_FILENAME,
     NATIVE_SESSION_CHECKPOINT_FILENAME,
     NATIVE_SESSION_QUEUE_DIRNAME,
-    validate_cold_start_checkpoint_for_pipe,
 )
 from .runtime import validate_native_bridge_pipe_name
 
@@ -51,9 +54,15 @@ ORDINARY_SEED_REBIND_V1_SCHEMA = "xar.ck3.ordinary-seed-rebind/v1"
 _ORDINARY_PACT_CONTRACT = "absent_by_fresh_campaign_xar_off_contract"
 
 
-def _load_json_object(path: Path, label: str) -> dict[str, object]:
+def _load_json_object(
+    path: Path, label: str, *, source_bytes: bytes | None = None
+) -> dict[str, object]:
     try:
-        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        payload = json.loads(
+            path.read_text(encoding="utf-8-sig")
+            if source_bytes is None
+            else source_bytes.decode("utf-8-sig")
+        )
     except (OSError, UnicodeError, json.JSONDecodeError) as error:
         raise AgentError(f"{label} is unreadable: {path}: {error}") from error
     if not isinstance(payload, dict):
@@ -193,19 +202,31 @@ def _assert_save_anchor(
 def _replace_lifecycle_anchors(
     payload: dict[str, object], binding: dict[str, object]
 ) -> dict[str, object]:
-    rebound = copy.deepcopy(payload)
+    # Copy only the ancestors of the three changed lifecycle values.
+    # Every other opaque transcript value remains untouched.
+    rebound = payload.copy()
     checkpoint = rebound["last_checkpoint"]
     assert isinstance(checkpoint, dict)
+    checkpoint = checkpoint.copy()
+    rebound["last_checkpoint"] = checkpoint
     history = rebound["command_history"]
     assert isinstance(history, list)
+    history = history.copy()
+    rebound["command_history"] = history
     history_index = checkpoint["history_index"]
     assert isinstance(history_index, int)
     anchor = history[history_index - 1]
     assert isinstance(anchor, dict)
+    anchor = anchor.copy()
+    history[history_index - 1] = anchor
     result = anchor["result"]
     assert isinstance(result, dict)
+    result = result.copy()
+    anchor["result"] = result
     saved = result["checkpoint"]
     assert isinstance(saved, dict)
+    saved = saved.copy()
+    result["checkpoint"] = saved
     rebound["succession_lifecycle"] = copy.deepcopy(binding)
     checkpoint["succession_lifecycle"] = copy.deepcopy(binding)
     saved["succession_lifecycle"] = copy.deepcopy(binding)
@@ -253,8 +274,10 @@ def rebind_ordinary_seed_v1(
             ) from error
 
         source_bytes = driver_path.read_bytes()
-        source_sha256 = sha256_file(driver_path)
-        source = _load_json_object(driver_path, "ordinary seed driver state")
+        source_sha256 = hashlib.sha256(source_bytes).hexdigest()
+        source = _load_json_object(
+            driver_path, "ordinary seed driver state", source_bytes=source_bytes
+        )
         checkpoint, _anchor, _saved, source_binding = (
             _source_lifecycle_anchors(source)
         )
@@ -268,8 +291,8 @@ def rebind_ordinary_seed_v1(
             )
 
         try:
-            consumer_before = load_native_driver_state_for_resume(
-                driver_path, pipe_name
+            consumer_before = load_native_driver_state_for_resume_payload(
+                source, pipe_name, include_command_history=False
             )
         except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
             raise AgentError(
@@ -278,7 +301,9 @@ def rebind_ordinary_seed_v1(
         if consumer_before is None:
             raise AgentError("ordinary seed driver is not consumer-compatible")
         save_before = _assert_save_anchor(save_path, checkpoint)
-        validate_cold_start_checkpoint_for_pipe(spec, pipe_name)
+        validate_cold_start_checkpoint_payload_for_pipe(
+            spec, pipe_name, source
+        )
 
         rebound = _replace_lifecycle_anchors(source, target_binding)
         try:
@@ -290,15 +315,17 @@ def rebind_ordinary_seed_v1(
                 (json.dumps(rebound, ensure_ascii=False, separators=(",", ":")) + "\n")
                 .encode("utf-8"),
             )
-            consumer_after = load_native_driver_state_for_resume(
-                driver_path, pipe_name
+            target_bytes = driver_path.read_bytes()
+            target = json.loads(target_bytes.decode("utf-8-sig"))
+            consumer_after = load_native_driver_state_for_resume_payload(
+                target, pipe_name, include_command_history=False
             )
             if consumer_after is None:
                 raise AgentError(
                     "rebound ordinary seed is not consumer-compatible"
                 )
-            checkpoint_after = validate_cold_start_checkpoint_for_pipe(
-                spec, pipe_name
+            checkpoint_after = validate_cold_start_checkpoint_payload_for_pipe(
+                spec, pipe_name, target
             )
             save_after = _assert_save_anchor(
                 save_path, rebound["last_checkpoint"]
@@ -313,7 +340,7 @@ def rebind_ordinary_seed_v1(
             write_bytes_atomic(driver_path, source_bytes)
             raise
 
-        target_sha256 = sha256_file(driver_path)
+        target_sha256 = hashlib.sha256(target_bytes).hexdigest()
         return {
             "schema": ORDINARY_SEED_REBIND_V1_SCHEMA,
             "status": "rebound",

@@ -3483,3 +3483,16 @@ Native71 的第一次 prepare 因 `ModuleNotFoundError: ck3_workshop_mcp` 失败
 ### 2026-10-10：先等待 Game exit，再停止 custody
 
 R0087 已成功 SAVE6067，SDK exit0。stock Exit to Desktop 点击于07:38:17.859Z提交，helper 尚在 retained-handle wait 时，协调者于07:38:28.703Z提前提交 runner custody stop；Game于07:38:30.397Z退出码1。现有证据不能证明纯 stock UI 正常退出，也不能归因为 native crash。闭场必须先等待并读取 Game 的实际独立 exit 回执，再决定 runner 收口；工具返回 running session 不是动作完成。此处修正操作者顺序，未更改生产代码或重新跑整场。
+
+
+### Complete Driver lifecycle payload reuse (2026-10-11)
+
+R93 measured rebind at 324.041843s and preflight at 97.896991s for the complete
+2,961,367,082-byte Driver. The old rebind decoded the Driver five times;
+preflight decoded it twice. The qualified implementation shares parsed payloads
+between identity/checkpoint validators without changing the persisted raw
+command history. Consumer compaction remains a separate projection. Rebind
+copies only the three lifecycle-anchor ancestor chains and keeps actual
+post-write readback plus exact original-byte rollback. Synthetic old/new
+equivalence passed four groups / 55 checks; actual full-size speed is not yet
+measured. No Driver truncation or change to save validation is introduced.

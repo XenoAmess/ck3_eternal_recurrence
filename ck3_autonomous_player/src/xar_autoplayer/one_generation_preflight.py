@@ -4,20 +4,22 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
+import hashlib
+import json
 import uuid
 
-from .bridge.native_driver import load_native_driver_state_for_resume
+from .bridge.native_driver import load_native_driver_state_for_resume_payload
 from .bridge.succession_transition_contract import (
     ORDINARY_CAMPAIGN_SUCCESSION,
     ROGUE_ONE_LIFE,
     bind_succession_lifecycle_from_environment_v1,
     legacy_rogue_one_life_binding_v1,
 )
+from .cold_checkpoint_validator import validate_cold_start_checkpoint_payload_for_pipe
 from .environment import (
     EnvironmentSpec,
     ck3_process_inventory,
     ensure_state_path_safe,
-    sha256_file,
     verify_profile,
     write_json_atomic,
 )
@@ -26,7 +28,6 @@ from .locking import exclusive_state_lock
 from .native_session import (
     NATIVE_DRIVER_STATE_FILENAME,
     NATIVE_SESSION_QUEUE_DIRNAME,
-    validate_cold_start_checkpoint_for_pipe,
 )
 from .runtime import utc_now, validate_native_bridge_pipe_name
 
@@ -118,17 +119,25 @@ def native_one_generation_preflight(
                     f"one-generation lifecycle contract is invalid: {error}"
                 ) from error
             report["lifecycle"] = lifecycle_binding
-            checkpoint = validate_cold_start_checkpoint_for_pipe(
-                spec, pipe_name
-            )
-            driver_path = (
+            state_path = (
                 spec.state_dir
                 / NATIVE_SESSION_QUEUE_DIRNAME
                 / NATIVE_DRIVER_STATE_FILENAME
-            ).resolve()
+            )
             try:
-                driver_state = load_native_driver_state_for_resume(
-                    driver_path, pipe_name
+                driver_bytes = state_path.read_bytes()
+                driver_payload = json.loads(driver_bytes.decode("utf-8-sig"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as error:
+                raise AgentError(
+                    f"cold checkpoint state is unavailable: {state_path}: {error}"
+                ) from error
+            checkpoint = validate_cold_start_checkpoint_payload_for_pipe(
+                spec, pipe_name, driver_payload
+            )
+            driver_path = state_path.resolve()
+            try:
+                driver_state = load_native_driver_state_for_resume_payload(
+                    driver_payload, pipe_name, include_command_history=False
                 )
             except (OSError, UnicodeError, ValueError) as error:
                 raise AgentError(
@@ -177,7 +186,7 @@ def native_one_generation_preflight(
             driver_artifact = {
                 "path": str(driver_path),
                 "size": driver_path.stat().st_size,
-                "sha256": sha256_file(driver_path),
+                "sha256": hashlib.sha256(driver_bytes).hexdigest(),
                 "format_version": driver_state.get("format_version"),
                 "pipe_name": pipe_name,
                 "episode_character_id": driver_state.get(

@@ -364,19 +364,19 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
 
     def test_post_write_validation_failure_restores_source_driver(self) -> None:
         before = self.driver_path.read_bytes()
-        real_validator = rebinder_module.validate_cold_start_checkpoint_for_pipe
+        real_validator = rebinder_module.validate_cold_start_checkpoint_payload_for_pipe
         calls = 0
 
-        def fail_second(spec, pipe_name):
+        def fail_second(spec, pipe_name, payload):
             nonlocal calls
             calls += 1
             if calls == 2:
                 raise AgentError("injected post-write validator RED")
-            return real_validator(spec, pipe_name)
+            return real_validator(spec, pipe_name, payload)
 
         with mock.patch.object(
             rebinder_module,
-            "validate_cold_start_checkpoint_for_pipe",
+            "validate_cold_start_checkpoint_payload_for_pipe",
             side_effect=fail_second,
         ):
             with self.assertRaisesRegex(AgentError, "injected post-write"):
