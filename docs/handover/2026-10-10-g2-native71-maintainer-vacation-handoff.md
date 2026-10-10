@@ -285,3 +285,11 @@ turn, launch a new game for timing or claim a measured speedup from this plan.
 No new tests, project imports, builds, hashes, Game/SDK/UI actions or cold phases
 were run by this docs worker. Existing old REDs and successful qualifications
 remain separate facts; vacation handover adds no G2 completion claim.
+
+## Root final publication check and original-worktree diagnosis
+
+Root published the complete handover/source integration as73f4dfa80aa99dcb2b69f14ac7eb0a276651cc17 by ordinary linear push. Its Linear history check passed. Official Runner CI38026956232 then exposed two unresolved serializer journal readers in the isolated army route executable. The existing CI translation-unit list had omitted `ck3_12004_actual_supply_callback_journal.cpp` and `ck3_12004_battle_casualty_observer.cpp`; Root added those two existing implementations and their four direct headers to that list/input receipt. No Native71 production source or sealed DLL was changed.
+
+The same existing isolated MSVC build and route fixture completed once with exit0 at05:25:06.605727Z. Its report is `D:/codex-ck3-background-spill/post71-linear-publication-preparation/army-route-ci-closeout01/army-reader-ci-result.json`: status passed/build_succeeded, local_ck3_contacted=false, Defender registration disabled. The original official failure is retained; successor exact-HEAD publication/official status belongs in the external publication receipt. This is a concrete existing publication failure fix, not a new research or gameplay work package.
+
+The user's requested follow-up [original-worktree diagnosis](2026-10-10-original-worktree-uncommitted-diagnosis.md) explains the1478 status entries in `Z:/ck3_mod_rewrite`: the old branch remains at14c1345, with71 modified/142 deleted/1265 untracked entries.1029 untracked entries are under `_runtime`; the old ignore file lacks master's rule. The142 `open_kaishek` deletions already match the committed repository split.67 tracked modifications still differ from published master and were preserved. No bulk commit/reset/clean or original-branch switch was performed. The handover and diagnosis are delivered there as copies; their canonical files are committed on master.

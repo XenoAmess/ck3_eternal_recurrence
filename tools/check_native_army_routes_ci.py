@@ -39,6 +39,8 @@ TRANSLATION_UNITS = (
     "src/ck3_12003_current_assault_removal_reference.cpp",
     "src/ck3_12003_ordered_besieging_fixed_chunk0_preparation.cpp",
     "src/ck3_12004_actual_loss_writer_journal.cpp",
+    "src/ck3_12004_actual_supply_callback_journal.cpp",
+    "src/ck3_12004_battle_casualty_observer.cpp",
     "src/ck3_12002_army_test.cpp",
 )
 INPUTS = (
@@ -60,6 +62,10 @@ INPUTS = (
     "include/xar_bridge/army_strength_v1_serializer.hpp",
     "include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
     "include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp",
+    "include/xar_bridge/army_actual_supply_callback_observations_v1.hpp",
+    "include/xar_bridge/ck3_12004_actual_supply_callback_journal.hpp",
+    "include/xar_bridge/army_battle_casualty_observations_v1.hpp",
+    "include/xar_bridge/ck3_12004_battle_casualty_observer.hpp",
     "include/xar_bridge/army_daily_assault_active_table_collector_v1.inc.hpp",
     "include/xar_bridge/ck3_12002.hpp",
     "include/xar_bridge/ck3_12003.hpp",
