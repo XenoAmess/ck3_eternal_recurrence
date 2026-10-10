@@ -34,3 +34,12 @@ cbc789aeae0e23572f7627bd1a7db11b9c497f9d的[官方CI](https://github.com/XenoAme
 实际生产leaf编译0、focused两个CPP编译/链接0、10项bounded mock执行0（0.367s）、完整DLL链接0（1.375s），总177.850s、children[]。首次vcvars引号入口exit1及focused旧obj被/TP误当源码的exit2原件保留；仅修环境入口/对象位置，未放宽生产flags或代码守卫。精确新focused EXE已取得Defender实际verified回读。Root另将Main两CPP逐字节pin与实际编译输入核对一致，不重跑该测试。
 
 [实际构建final](C:/workspace/ck3-upgrade-20261010/r64-appointment-level-canonical-sha-build-02/NATIVE-CANONICAL-SHA-BUILD-FINAL-01.json)：3874B / SHA-256 86017d74c5517614e8565c534433199ee7376d5ec0da5b0d40acc86d477709f4。新DLL9078784B / 0394832898affec2c7d964ee16e1a0137c8db44d4a9e915f63941a489512419b；组合source index4129051B / 2ef1683163e02e0a8404191197f49d0637c3414752d268e0f8c2523419a83c8d，6915行沿用原author、2行指向新overlay，旧27db不变。BUILD/focused PASS不代表后继实机或业务PASS。
+
+
+## Source17已实际选择，原生产包装失败保留
+
+Root在7bb27aaea7f4f4e1662ce853b75f2c558ccf3259 clean状态下，对已生成的Source17执行原公共CLI plan，实际exit0/stdout4774B/空stderr/blockers=[]，随后唯一选择。[选择回执](C:/workspace/ck3-upgrade-20261010/root-resume-05/ROOT-SOURCE17-SELECTION-01.json)3768B / SHA-2567202d32f065cefa8e57e2826c246c2e957f4a42b1f655dd388e33562273af3ff。runtime14993B / 171dca156f6e0f7b318e8c319c209164067975f4f2bd8fcccccc9fa32335e31a；manifest44851B / f95886251b1746a85896232c41a0c850cfbab8b062854cf374d88723d1ab0f56，位于C:/workspace/ck3-upgrade-20261010/shared-native-canonical-hash-ready-01。
+
+Source16 Python source index d97dc649…与host ed91b819…原路径及pin精确复用，native替换为实际03948328…DLL及组合index2ef16831…；没有复制Python树、重编572对象或重hash未变正文。现有公共入口只核原生索引文件pin，可绑定完整6917行组合author，partial overlay不冒称完整物理树。尚未给予新DLL实机或产品业务PASS，已消费R64不改写，未消费prepared须精确manifest sibling，新fixture须新prepare。
+
+生产器原五件FAILED及后继诚实failure说明保留：额外-P造成同级模块导入失败，随后wrapper重复保存stdout/result超小输出cap、可信plan0未保全。六件80921B/children0，elapsed195.853034s超过原180s，不能称生产包装按时GREEN。Root没有重物化，直接既有CLI的独立实际plan0才是本次选择依据；plan只证明合同可绑定，不代表正文全验或游戏通过。

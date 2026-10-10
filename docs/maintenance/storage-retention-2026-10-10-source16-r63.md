@@ -48,3 +48,30 @@ Root随后以当前owner身份明确退役C01早期vanilla与remove-mandala两�
 三个旧cache实际 **189745728 B /9302 files**、failures=[]；`retired-original-cache-114-summary.json` 14866 B / SHA-256 `014a50f8dae817cf087285c608abd1e8615628c3df3fdac89c2f182f9587fc16`。两轮合计actual **347155008 B /9314 files**；累计actual删除 **31897057576 B /601435 files**，压缩收益另列。上述回执均在`C:/workspace/disk-cleanup-20261010/resume-05/`，无新全盘扫描或大件重hash。
 
 实际free **30093332480 B**，高于原scene门槛30071062528 B共22269952 B；该观察尚不是reservation。原cache回收期间volume仅增加183648256 B，较actual少6097472 B，残差未归因。audit实际77175736 B<83886080 B，logical301192208 B<318767104 B，未reset。新clean MAIN发布后仅一次fresh原子准入merit，不再扩扫清候选。
+
+
+## 2026-10-10 R64 closed window and native successor follow-up
+
+This is an append-only correction to earlier checkpoints. All figures below belong to this C: machine (volume total 511,776,722,944 bytes), policy 1.0.0. MAIN was not edited by the storage lane. Earlier pins and failed outcomes remain unchanged.
+
+- R64/a165 original POST is truly CLOSED: 3680 bytes, SHA-256 `300d1e0a39d628f6ce6f16126f2b1e0a15b0e29dea5758893a7e34cdfbb5cdc1`; closure3/retained OS0/allocator0/keeper0/CAS8348 done resources[]. This gives no business PASS.
+- R64 generated cache: 3,836 exact files, **161,548,976 allocated bytes** recovered; `C:/workspace/disk-cleanup-20261010/resume-05/a165-01-summary-23.json` (2372 bytes, SHA-256 `8ac1a8f6ec6ae14a524301333fc344955a86b22f7477e8239de23d8e9484c176`). Closed text compression separately saved **2,142,208 allocated bytes** (5 success, 6 already compressed skipped, 0 failures); `a165-closed-text-compression-05.json` (1396 bytes, SHA-256 `21c6c31761700d3a6e41a247ef4e0a7a84e2c8482b08b4a18ae6bd1388910182`). Original bytes/SHA/mtime were preserved.
+- Root explicitly retired redundant old SDK transport already listed by metadata24. Exact identity, size/mtime, single link, zero-share HANDLE, fsynced before-delete journal and after-close absence were checked. **39 files / 556,122,112 allocated bytes** were deleted. Two `ox-here--R0002` paths were rejected as outside this product scope and remain; four remaining rows were unconsumed once the target was met. Original reports, typed/business outputs, dedicated failure records/logs, save/profile/source and player images remain. The deleted transport itself is unavailable for full replay. Historical CLOSED unknown stays unknown; retirement does not grant PASS or normal exit.
+- Transport receipt: `retired-sdk-transport-133-actual.json` (7813 bytes, SHA-256 `6969f1bae6e47edb8a35b97001bac2a1fb77121a7b41af1266788e0b6d29f563`). Free was **29,527,019,520 -> 30,082,969,600**: volume gain 555,950,080 versus exact allocated recovery 556,122,112; residual **-172,032** is unattributed concurrent change. The receipt's broad `raw_failure_and_native_reports_business_outputs_player_images_preserved` flag means dedicated failure records, not the explicitly retired transport. No full replay availability is claimed.
+- Cumulative exact deletion is now **32,614,728,664 allocated bytes / 605,310 files**. Compression gains are separate. All unconsumed source/cache/raw queues remain candidates only; cleanup stopped.
+- Independent native build129 finished in **177.850072 seconds** with successful final DLL link and 10 focused mock cases. Earlier environment, command and link failures are retained. One bounded new-root/index metadata pass observed **23,582,656 allocation path-sum bytes**; the full **268,435,456-byte cap** is charged once, with no physical refund. `storage-coordinator/r64-canonical-native-incremental-01-reservation-129-closed.json` (8276 bytes, SHA-256 `e9ae3ab745654d4d232e372eff80ce086fe9c336510e70b34df9db88f74031fe`). This is not CK3 live qualification.
+- Source17 metadata130 is independently admitted at **131,072 bytes / 180 seconds**, at the unique `shared-native-canonical-hash-ready-01` output. It references Source16 Python/index/host and the actual new native pins; no source tree, DLL or unchanged-body copies/hashes. This checkpoint does not yet claim materialization closed or Root selection. Any later selected runtime, prepared siblings and CK3 scene require their actual pins and fresh admission.
+
+Detailed plans/availability journals expire after 30 days for consolidation and cleanup; this thin summary and availability record are reviewed after 180 days. Necessary active-input protection is bounded to a 7-day review and does not automatically renew. Never treat a retired absolute source path or deleted transport as still executable/replayable.
+
+
+范围澄清：两条ox-here R2拒绝是本次清理器allowlist未包含，并不把“牛来”移出原十产品；它仍是已完成七项之一。容量目标已达，不扩allowlist重试。此前checkpoint记录Source17尚未完成，后续Root实际选择见下节；不改写旧失败。
+
+
+## Source17已实际选择，原生产包装失败保留
+
+Root在7bb27aaea7f4f4e1662ce853b75f2c558ccf3259 clean状态下，对已生成的Source17执行原公共CLI plan，实际exit0/stdout4774B/空stderr/blockers=[]，随后唯一选择。[选择回执](C:/workspace/ck3-upgrade-20261010/root-resume-05/ROOT-SOURCE17-SELECTION-01.json)3768B / SHA-2567202d32f065cefa8e57e2826c246c2e957f4a42b1f655dd388e33562273af3ff。runtime14993B / 171dca156f6e0f7b318e8c319c209164067975f4f2bd8fcccccc9fa32335e31a；manifest44851B / f95886251b1746a85896232c41a0c850cfbab8b062854cf374d88723d1ab0f56，位于C:/workspace/ck3-upgrade-20261010/shared-native-canonical-hash-ready-01。
+
+Source16 Python source index d97dc649…与host ed91b819…原路径及pin精确复用，native替换为实际03948328…DLL及组合index2ef16831…；没有复制Python树、重编572对象或重hash未变正文。现有公共入口只核原生索引文件pin，可绑定完整6917行组合author，partial overlay不冒称完整物理树。尚未给予新DLL实机或产品业务PASS，已消费R64不改写，未消费prepared须精确manifest sibling，新fixture须新prepare。
+
+生产器原五件FAILED及后继诚实failure说明保留：额外-P造成同级模块导入失败，随后wrapper重复保存stdout/result超小输出cap、可信plan0未保全。六件80921B/children0，elapsed195.853034s超过原180s，不能称生产包装按时GREEN。Root没有重物化，直接既有CLI的独立实际plan0才是本次选择依据；plan只证明合同可绑定，不代表正文全验或游戏通过。

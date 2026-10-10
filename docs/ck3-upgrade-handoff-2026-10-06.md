@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10：Source17实际选定，后继输入并行准备
+
+本执行线只做天朝二期以外的原十mod迁移，正式仍7/10。Root已实际公共plan0并唯一选择native-only Source17，复用Source16 Python/host，仅换修复canonical SHA误拒的新0394 DLL（原10项focused PASS）；尚未live。原生产器入口/输出包装失败与195.853s超180事实保留，[实际选择与R64](xqol-r64-merit-qualification-2026-10-10.md)。新merit/PAM+公共prepare与其余未消费manifest siblings并行，下一场先取得真实角色等级；不重复已完成业务。
+
+[存储追加](maintenance/storage-retention-2026-10-10-source16-r63.md)：R64闭场cache回收161548976B/3836；退休39条旧冗余SDK transport实际556122112B，删除累计32614728664B/605310files，lossless另计。保留业务报告/typed/玩家图及当前未解关键原件，已删wire不可全量replay，历史UNKNOWN不追认。free30082969600B达到原场公式与4MiB小余量后停止，下一场仍须fresh容量与新cleanHEAD。
+
 ## 2026-10-10：执行范围纠正，R64已闭场，native最小增量修复
 
 用户明确本执行线只负责天朝二期以外的mod迁移；G2资产追问和迁移后自动继续G2的旧计划撤销，其他owner的任务不受影响。[确切范围](handover/2026-10-10-non-phase2-mod-migration-scope.md)。正式仍7/10，剩余QOL→重整河山→361既有0.3.1维护（最后），不含v0.4二期研发或自动新增廷臣picker工作。
