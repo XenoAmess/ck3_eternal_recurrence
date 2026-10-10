@@ -28,6 +28,42 @@ def native_cleanup_closed(report):
             ('tasklist_pids','wmi_pids','native_pids','processes')) and isinstance(absent,dict) and
         bool(absent) and all(v is True for v in absent.values()))
 
+def previous_session_closure(previous,freeze,report):
+    """Keep failed launch cleanup separate from a returned native shutdown."""
+    if closed_session(report):
+        require(native_cleanup_closed(report),'Previous native job/tree/inventory/control closure unproven; no OS0 inference')
+        return {'mode':'previous-shared-managed-session'}
+    session=report.get('session')
+    require(bool(report.get('finished_at')) and report.get('managed_session_thread_finished') is True and
+        report.get('status')=='RED' and report.get('cleanup_ok') is False and report.get('steps')==[] and
+        report.get('readiness') is None and isinstance(session,dict) and session.get('report') is None and
+        isinstance(session.get('error'),str) and re.fullmatch(
+            r'AgentError: native-session failed after [0-9]+(?:\.[0-9]+)?s \(launch_error\): '
+            r'CK3 launch contract failed safely: .+',session['error']),
+        'Previous live session has not proved complete cleanup or an exact safe failed launch')
+    state=Path(freeze['state_dir']).resolve()
+    require(Path(report.get('state_dir','')).resolve()==state,'Previous failed-launch state differs from frozen argv')
+    control=state/'control'
+    require(control.is_dir(),'Previous failed-launch control directory missing')
+    absent={name:not (control/name).exists() for name in ('unsafe-cleanup.json','ck3.json')}
+    absent['watchdog-*.ready.json']=not list(control.glob('watchdog-*.ready.json'))
+    require(all(absent.values()),'Previous failed-launch unsafe/PID/watchdog-ready controls remain')
+    started_path=previous/'host-started.json';exit_path=previous/'host-original-process-exit.json'
+    started=read_json(started_path);exited=read_json(exit_path)
+    require(started.get('run_id')==freeze['run_id'] and exited.get('run_id')==freeze['run_id'] and
+        started.get('actual_popen_retained') is True and exited.get('actual_original_popen_wait') is True and
+        type(started.get('pid')) is int and started['pid']>0 and type(exited.get('pid')) is int and
+        exited['pid']==started['pid'] and
+        type(exited.get('returncode')) is int and exited['returncode']==1 and
+        exited.get('normal_ck3_exit_inferred') is False,
+        'Previous failed-launch original host Popen failure is missing or crossed run/PID')
+    return {'mode':'previous-shared-failed-launch','failure_cleanup':{
+        'report':pin(previous/'native-report.json'),'host_started':pin(started_path),'host_exit':pin(exit_path),
+        'safe_launch_error':session['error'],'control_files_absent':absent,
+        'control_observed_at_utc':datetime.now(timezone.utc).isoformat(),
+        'original_cleanup_ok':False,'original_ck3_exit_code':None,'original_job_active_processes_final':None,
+        'typed_normal_exit_proven':False,'business_pass':False}}
+
 def closed_lease(keeper,release,task):
     snapshot=release.get('task',{})
     return (keeper.get('task_id')==task and keeper.get('thread_exited') is True and
@@ -286,11 +322,10 @@ def allocate_and_keep(selection,args):
                 'Previous shared scene belongs to another actual machine/ID state')
         report=read_json(previous/'native-report.json');prior_keeper=read_json(args.previous_keeper/'report.json')
         release=read_actual_release(args.previous_release)
-        require(closed_session(report),'Previous live session has not proved complete cleanup')
-        require(native_cleanup_closed(report),'Previous native job/tree/inventory/control closure unproven; no OS0 inference')
+        session_closure=previous_session_closure(previous,freeze,report)
         require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
         require_latest_screen_release(release,args.latest_screen_release)
-        closure={'mode':'previous-shared-managed-session','run_id':freeze['run_id'],
+        closure={**session_closure,'run_id':freeze['run_id'],
                  'previous_live':str(previous),'previous_keeper':str(args.previous_keeper.resolve()),
                  'release':pin(args.previous_release),'machine':binding}
     import psutil
