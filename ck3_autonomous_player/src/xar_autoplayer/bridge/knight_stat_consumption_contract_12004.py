@@ -51,6 +51,35 @@ _STAGE_FIELDS = {
     "preparation_completion_thread_id", "consumption_thread_id", "reason",
     *_STAGE_BOOLEANS, *_STAGE_COMPARISONS, *_STAGE_IDENTITIES, *_STAGE_IDS,
 }
+_TRANSFER_SCHEMA = "xar.ck3.knight-installed-transfer-lineage-12004-v1"
+_TRANSFER_CAPTURE_SCHEMA = "xar.ck3.person-installed-transfer-capture-12004-v1"
+_TRANSFER_RELATIONSHIPS = {
+    "transfer_completed_before_getter", "selected_matches_transfer_owner",
+    "getter_matches_installed_context",
+}
+_TRANSFER_SNAPSHOT_IDENTITIES = {
+    "model_a_owner_identity", "model_b_owner_identity", "observed_owner_identity",
+    "carrier_identity", "installed_model_identity", "installed_model_owner_identity",
+    "matching_installed_inline_context_identity",
+}
+_TRANSFER_SNAPSHOT_IDS = {
+    "model_a_owner_character_id", "model_b_owner_character_id", "observed_owner_character_id",
+}
+_TRANSFER_SNAPSHOT_FLAGS = {
+    "installed_owner_matches_observed_owner", "installed_model_is_a", "installed_model_is_b",
+}
+_TRANSFER_PREPARATION_IDENTITIES = {
+    "preparation_character_identity", "preparation_model_identity",
+    "preparation_context_identity", "preparation_owner_character_identity",
+}
+_TRANSFER_STAGE_FLAGS = {
+    "preparation_model_is_b", "preparation_owner_matches_before", "preparation_owner_matches_after",
+    "before_after_owner_generation_equal", "event_clock_and_thread_match", "completion_ordered_after_begin",
+}
+_TRANSFER_UNPROVEN_FLAGS = {
+    "generic_postimages_complete", "transfer_to_entry_association_proven",
+    "observer_model_write_performed", "full_person_ready", "entry_ready",
+}
 _OUTPUT_RAW_FIELDS = (
     "siege_value_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw",
 )
@@ -266,8 +295,182 @@ def _capture_at_consumption(value: object, row: dict, path: str) -> dict | None:
     return capture
 
 
+def _natural_event(value: object, path: str) -> dict:
+    raw = _dict(value, path, {"clock_identity", "sequence", "thread_id"})
+    return {
+        "clock_identity": _identity(raw["clock_identity"], path + ".clock_identity", optional=False),
+        "sequence": _raw64(raw["sequence"], path + ".sequence", unsigned=True),
+        "thread_id": _number(raw["thread_id"], path + ".thread_id", 32, unsigned=True),
+    }
+
+
+def _transfer_snapshot(value: object, path: str) -> dict:
+    fields = _TRANSFER_SNAPSHOT_IDENTITIES | _TRANSFER_SNAPSHOT_IDS | _TRANSFER_SNAPSHOT_FLAGS
+    raw = _dict(value, path, fields)
+    result = {field: _identity(raw[field], path + "." + field)
+              for field in _TRANSFER_SNAPSHOT_IDENTITIES}
+    result.update({field: _number(raw[field], path + "." + field, 32, unsigned=True)
+                   for field in _TRANSFER_SNAPSHOT_IDS})
+    result.update({field: _boolean(raw[field], path + "." + field, optional=True)
+                   for field in _TRANSFER_SNAPSHOT_FLAGS})
+    return result
+
+
+def _transfer_preparation(value: object, path: str) -> dict:
+    fields = _TRANSFER_PREPARATION_IDENTITIES | {
+        "observed", "preparation_capture_complete", "preparation_capture_sequence",
+        "preparation_capture_thread_id", "preparation_completion_thread_id",
+        "preparation_owner_character_id",
+    }
+    raw = _dict(value, path, fields)
+    result = {field: _identity(raw[field], path + "." + field)
+              for field in _TRANSFER_PREPARATION_IDENTITIES}
+    result.update({field: _boolean(raw[field], path + "." + field)
+                   for field in ("observed", "preparation_capture_complete")})
+    result["preparation_capture_sequence"] = _raw64(
+        raw["preparation_capture_sequence"], path + ".preparation_capture_sequence", unsigned=True)
+    result.update({field: _number(raw[field], path + "." + field, 32, unsigned=True)
+                   for field in ("preparation_capture_thread_id", "preparation_completion_thread_id",
+                                 "preparation_owner_character_id")})
+    return result
+
+
+def _transfer_record(value: object, path: str) -> dict:
+    raw = _dict(value, path, {"record_sequence", "offline_fixture", "stage"})
+    fields = _TRANSFER_STAGE_FLAGS | _TRANSFER_UNPROVEN_FLAGS | {
+        "observation_stage", "observed", "original_called", "original_returned", "reason",
+        "model_a_identity", "model_b_identity", "original_return_rva",
+        "before_event", "completed_event", "preparation", "before", "after",
+    }
+    source = _dict(raw["stage"], path + ".stage", fields)
+    stage = {
+        "observation_stage": _string(source["observation_stage"], path + ".stage.observation_stage"),
+        "reason": _string(source["reason"], path + ".stage.reason"),
+        "before_event": _natural_event(source["before_event"], path + ".stage.before_event"),
+        "completed_event": _natural_event(source["completed_event"], path + ".stage.completed_event"),
+        "preparation": _transfer_preparation(source["preparation"], path + ".stage.preparation"),
+        "before": _transfer_snapshot(source["before"], path + ".stage.before"),
+        "after": _transfer_snapshot(source["after"], path + ".stage.after"),
+    }
+    for field in ("model_a_identity", "model_b_identity", "original_return_rva"):
+        stage[field] = _identity(source[field], path + ".stage." + field, optional=False)
+    for field in _TRANSFER_STAGE_FLAGS | _TRANSFER_UNPROVEN_FLAGS | {
+        "observed", "original_called", "original_returned",
+    }:
+        stage[field] = _boolean(source[field], path + ".stage." + field,
+                                optional=field in _TRANSFER_STAGE_FLAGS)
+    if (stage["observation_stage"] != "actual_paired_transfer_return"
+            or any(stage[field] for field in _TRANSFER_UNPROVEN_FLAGS)):
+        raise ValueError(path + " installed identity capture cannot grant whole postimages or Entry")
+    return {
+        "record_sequence": _raw64(raw["record_sequence"], path + ".record_sequence", unsigned=True),
+        "offline_fixture": _boolean(raw["offline_fixture"], path + ".offline_fixture"),
+        "stage": stage,
+    }
+
+
+def _transfer_capture_at_consumption(value: object, path: str) -> dict:
+    fields = {
+        "schema", "build_version", "executable_sha256", "historical_capture", "configured",
+        "installed", "install_failure_flags", "request_filtered", "snapshot_revision", "observed_date_raw",
+        "requested_receiver_count", "unresolved_receiver_count", "latest_record_sequence",
+        "overwritten_records", "records",
+    }
+    raw = _dict(value, path, fields)
+    if (raw["schema"] != _TRANSFER_CAPTURE_SCHEMA
+            or require_exact_native_build(raw["build_version"], raw["executable_sha256"]) != CK3_12004):
+        raise ValueError(path + " requires the exact owned actual4 installed-transfer capture")
+    result = {field: _string(raw[field], path + "." + field)
+              for field in ("schema", "build_version", "executable_sha256")}
+    for field in ("historical_capture", "configured", "installed", "request_filtered"):
+        result[field] = _boolean(raw[field], path + "." + field)
+    for field in ("install_failure_flags", "requested_receiver_count", "unresolved_receiver_count"):
+        result[field] = _integer(raw[field], path + "." + field, 32, unsigned=True)
+    for field in ("latest_record_sequence", "overwritten_records"):
+        result[field] = _raw64(raw[field], path + "." + field, unsigned=True)
+    result["snapshot_revision"] = _raw64(
+        raw["snapshot_revision"], path + ".snapshot_revision", unsigned=True, optional=True)
+    result["observed_date_raw"] = _raw64(raw["observed_date_raw"], path + ".observed_date_raw", optional=True)
+    records = _array(raw["records"], path + ".records")
+    # These are defaults of the local single-record serialization envelope,
+    # not the later query's installation status, counters or snapshot frame.
+    if (not result["historical_capture"] or len(records) != 1
+            or any(result[field] for field in (
+                "configured", "installed", "request_filtered", "install_failure_flags",
+                "requested_receiver_count", "unresolved_receiver_count", "latest_record_sequence",
+                "overwritten_records"))
+            or result["snapshot_revision"] is not None or result["observed_date_raw"] is not None):
+        raise ValueError(path + " must preserve the before-getter owned single-record envelope")
+    result["records"] = [_transfer_record(records[0], path + ".records[0]")]
+    return result
+
+
+def _installed_transfer_lineage(value: object, row: dict, path: str) -> dict | None:
+    if value is None:
+        return None
+    optional = {"capture_at_consumption"} if isinstance(value, dict) and "capture_at_consumption" in value else set()
+    raw = _dict(value, path, _TRANSFER_RELATIONSHIPS | optional | {
+        "schema", "observation_stage", "getter_begin_event", "getter_completed_event",
+        "installed_identity_associated", "reason",
+    })
+    if raw["schema"] != _TRANSFER_SCHEMA or raw["observation_stage"] != "actual_consumed_getter_return":
+        raise ValueError(path + " requires the actual consumed getter transfer-lineage schema")
+    result = {
+        "schema": _TRANSFER_SCHEMA,
+        "observation_stage": raw["observation_stage"],
+        "getter_begin_event": _natural_event(raw["getter_begin_event"], path + ".getter_begin_event"),
+        "getter_completed_event": _natural_event(raw["getter_completed_event"], path + ".getter_completed_event"),
+        "installed_identity_associated": _boolean(raw["installed_identity_associated"], path + ".installed_identity_associated"),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+    }
+    result.update({field: _boolean(raw[field], path + "." + field, optional=True)
+                   for field in _TRANSFER_RELATIONSHIPS})
+    if "capture_at_consumption" not in raw:
+        if result["installed_identity_associated"] or any(
+                result[field] is not None for field in _TRANSFER_RELATIONSHIPS):
+            raise ValueError(path + " association lacks its before-getter owned transfer record")
+        return result
+    capture = _transfer_capture_at_consumption(raw["capture_at_consumption"], path + ".capture_at_consumption")
+    result["capture_at_consumption"] = capture
+    stage = capture["records"][0]["stage"]
+    before, after = stage["before"], stage["after"]
+    events = (stage["before_event"], stage["completed_event"],
+              result["getter_begin_event"], result["getter_completed_event"])
+    clock, thread = events[0]["clock_identity"], events[0]["thread_id"]
+    ordered = (clock != 0 and thread not in (None, 0)
+               and all(event["clock_identity"] == clock and event["thread_id"] == thread for event in events)
+               and 0 < events[0]["sequence"] < events[1]["sequence"] < events[2]["sequence"] < events[3]["sequence"])
+    selected, full_id = row["selected_character_identity"], row["selected_character_id"]
+    owner_matches = (selected not in (None, 0) and full_id is not None
+                     and selected == before["model_b_owner_identity"] == before["observed_owner_identity"]
+                     == after["observed_owner_identity"] == after["installed_model_owner_identity"]
+                     and full_id == before["model_b_owner_character_id"] == before["observed_owner_character_id"]
+                     == after["observed_owner_character_id"])
+    model, context = stage["model_a_identity"], row["context_identity"]
+    context_matches = (model != 0 and context not in (None, 0)
+                       and after["installed_model_identity"] == model
+                       and after["installed_model_is_a"] is True
+                       and after["installed_owner_matches_observed_owner"] is True
+                       and selected not in (None, 0) and full_id is not None
+                       and selected == after["installed_model_owner_identity"] == after["model_a_owner_identity"]
+                       and full_id == after["model_a_owner_character_id"]
+                       and context == model + 0x10 == after["matching_installed_inline_context_identity"])
+    facts = dict(zip(("transfer_completed_before_getter", "selected_matches_transfer_owner",
+                      "getter_matches_installed_context"), (ordered, owner_matches, context_matches)))
+    if any(result[field] is True and not facts[field] for field in _TRANSFER_RELATIONSHIPS):
+        raise ValueError(path + " relationship differs from this Ci's owned clock or receiver facts")
+    if result["installed_identity_associated"] and (
+            not all(result[field] is True for field in _TRANSFER_RELATIONSHIPS)
+            or not stage["observed"] or not stage["original_called"] or not stage["original_returned"]
+            or stage["original_return_rva"] != 0x2A3DC49
+            or row["caller_return_rva"] != _CI_RETURN_RVAS[row["property_key"] - 0xC1]):
+        raise ValueError(path + " association lacks an exact observed transfer and consumed callsite")
+    return result
+
+
 def _context(value: object, path: str) -> dict[str, object]:
-    optional_fields = (set(value) & {"preparation_stage_lineage", "preparation_capture_at_consumption"}
+    optional_fields = (set(value) & {"preparation_stage_lineage", "preparation_capture_at_consumption",
+                                   "installed_transfer_lineage"}
                        if isinstance(value, dict) else set())
     raw = _dict(value, path, _CONTEXT_FIELDS | optional_fields)
     key = _integer(raw["property_key"], path + ".property_key", 16, unsigned=True)
@@ -303,6 +506,9 @@ def _context(value: object, path: str) -> dict[str, object]:
     if "preparation_capture_at_consumption" in raw:
         result["preparation_capture_at_consumption"] = _capture_at_consumption(
             raw["preparation_capture_at_consumption"], result, path + ".preparation_capture_at_consumption")
+    if "installed_transfer_lineage" in raw:
+        result["installed_transfer_lineage"] = _installed_transfer_lineage(
+            raw["installed_transfer_lineage"], result, path + ".installed_transfer_lineage")
     return result
 
 
@@ -385,6 +591,12 @@ def _event(value: object, path: str) -> dict[str, object]:
         for index, context in enumerate(contexts)
     ]
     for index, row in enumerate(result["contexts"]):
+        transfer = row.get("installed_transfer_lineage")
+        if transfer is not None:
+            for field in ("getter_begin_event", "getter_completed_event"):
+                if transfer[field]["thread_id"] != result["thread_id"]:
+                    raise ValueError(f"{path}.contexts[{index}].installed_transfer_lineage.{field}"
+                                     + " differs from its actual wrapper thread")
         lineage = row.get("preparation_stage_lineage")
         if lineage is None:
             continue

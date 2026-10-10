@@ -5345,7 +5345,7 @@ class GameplayBridgeService:
         if stages.keys() - query_scope:
             raise BridgeUnavailableError("observed Army stage packet is outside this query scope")
 
-        current_outputs, stage_outputs, late_event_outputs = [], [], []
+        current_outputs, stage_outputs, late_event_outputs, compiled_effect_outputs = [], [], [], []
         for row in rows:
             # This family contains owned natural invocation copies. No current
             # context read, seed generation or dispatcher call occurs here.
@@ -5377,6 +5377,39 @@ class GameplayBridgeService:
                                    ["owned_actual_army_late_event_observations_v1"] if observations is None else []),
                 "later_current_context_used": False, "context_builder_call_inferred": False,
                 "parent_predicate_or_invocation_date_inferred": False,
+                "complete_effects_observed": False, "full_monthly_ready": False}})
+            compiled = row.get("actual_compiled_effect_observations_v1")
+            compiled_events = compiled.get("events", []) if isinstance(compiled, dict) and exact4 else []
+            session = isinstance(compiled, dict) and compiled["current_session_guard"] is True
+            compiled_gap = isinstance(compiled, dict) and (
+                compiled["overwritten_events"] > 0 or compiled["unattributed_capture_failures"] > 0)
+            copied_returns = [event["sequence"] for event in compiled_events if event["original_returned"]]
+            compiled_effect_outputs.append({"army_id": row["army_id"], "projection": {
+                "input_basis": "owned_natural_compiled_effect_entry_return_full_CArmy_join",
+                "status": "available" if exact4 and session and not compiled_gap
+                          else "partial" if exact4 and isinstance(compiled, dict) else "unavailable",
+                "native_carmy_id": row["native_carmy_id"], "current_session_guard": session,
+                "retention_gap_observed": compiled_gap, "owned_original_return_sequences": copied_returns,
+                "owned_original_return_observed": bool(copied_returns),
+                "actual_native_compiled_effect_return_observed": bool(copied_returns) and session,
+                "events": [{"sequence": event["sequence"], "entry_sequence": event["entry_sequence"],
+                    "thread_id": event["thread_id"], "source_kind": event["source_kind"],
+                    "callsite_rva": event["callsite_rva"], "caller_return_rva": event["caller_return_rva"],
+                    "receiver_owner_offset": event["receiver_owner_offset"],
+                    "original_returned": event["original_returned"], "original_rax_raw_u64": event["original_rax_raw_u64"],
+                    "original_rax_is_semantic_success": False, "same_root_after": event["same_root_after"],
+                    "capture_failure_flags": event["capture_failure_flags"],
+                    "before_seed_raw_u32": event["before_context"]["context_seed_10_raw_u32"],
+                    "after_seed_raw_u32": event["after_context"]["context_seed_10_raw_u32"],
+                    "negative_seed_receiver_key_2c_raw_u32": event["negative_seed_receiver_key_2c_raw_u32"],
+                    "effect_flag_raw_u8": event["effect_flag_raw_u8"],
+                    "rng_fallback_observed": False, "selected_effects_observed": False}
+                    for event in compiled_events],
+                "missing_inputs": (["exact_actual4_query_source"] if not exact4 else
+                    ["owned_actual_compiled_effect_observations_v1"] if compiled is None else
+                    ["installed_current_session_guard"] if not session else []),
+                "later_current_context_used": False, "builder_or_parent_stage_inferred": False,
+                "derived_seed": None, "date_or_frame_at_invocation": None,
                 "complete_effects_observed": False, "full_monthly_ready": False}})
             inputs = row.get("current_daily_assault_loss_inputs_v1")
             groups = inputs.get("groups") if isinstance(inputs, dict) else None
@@ -5445,7 +5478,8 @@ class GameplayBridgeService:
                 "core_to_daily_stage_inferred": False}})
         return {"same_query_conditional_assault_group_contributors_12004": current_outputs,
                 "explicit_observed_army_stage_projections_12004": stage_outputs,
-                "actual_army_late_event_consumption_12004": late_event_outputs}
+                "actual_army_late_event_consumption_12004": late_event_outputs,
+                "actual_army_compiled_effect_consumption_12004": compiled_effect_outputs}
 
     def query_army_strengths(
         self,

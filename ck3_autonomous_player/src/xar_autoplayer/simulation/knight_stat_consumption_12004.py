@@ -148,6 +148,15 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
             if "preparation_stage_lineage" in row:
                 detail["preparation_stage_lineage"] = deepcopy(row["preparation_stage_lineage"])
                 detail["historical_postimage_selected"] = False
+        if "installed_transfer_lineage" in row:
+            transfer = row["installed_transfer_lineage"]
+            detail["installed_transfer_lineage"] = deepcopy(transfer)
+            detail["installed_identity_associated"] = (
+                transfer is not None and transfer["installed_identity_associated"])
+            # An installed A identity does not supply the preparation B PC.
+            # This Ci keeps its consumed PC or its separately qualified direct
+            # completed-capture input; no transfer container was copied.
+            detail["transfer_numeric_postimage_selected"] = False
         modifiers.append(value)
         operands.append(row["operand_raw"])
         selected_ids.append(row["selected_character_id"])
@@ -244,6 +253,33 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
             "original_operands_preserved": True,
             "installed_model_transfer_inferred": False,
             "original_entry_invocation_inferred": False,
+        }
+    if any("installed_transfer_lineage" in row for row in event["contexts"]):
+        associated, transfer_inputs = [], []
+        for row in event["contexts"]:
+            lineage = row.get("installed_transfer_lineage")
+            if lineage is None:
+                continue
+            if lineage["installed_identity_associated"]:
+                associated.append(row["property_key"])
+            transfer_inputs.append({
+                "property_key": row["property_key"],
+                "selected_character_id": row["selected_character_id"],
+                "selected_character_identity": row["selected_character_identity"],
+                "consumed_context_identity": row["context_identity"],
+                "installed_identity_associated": lineage["installed_identity_associated"],
+                "lineage": deepcopy(lineage),
+            })
+        result["installed_transfer_stage_join"] = {
+            "associated_property_keys": tuple(associated),
+            "unmatched_property_keys": tuple(key for key in _KEYS if key not in associated),
+            "property_inputs": tuple(transfer_inputs),
+            "source": "same_ci_owned_installed_transfer_before_getter",
+            "later_current_query_used": False,
+            "generic_postimages_complete": False,
+            "numeric_postimage_substitution_performed": False,
+            "original_operands_preserved": True,
+            "entry_association_inferred": False,
         }
     return result
 

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+#include "xar_bridge/actual_army_compiled_effect_observer_12004.hpp"
+#endif
 #include "xar_bridge/ck3_12004_army.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
 #include "xar_bridge/ck3_12004_army_support.hpp"
@@ -241,5 +244,12 @@ game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview12004(
     const game::PreviewMoveArmyResult &preview) noexcept {
   return ck3_12002::ReadArmyProvinceSupplyForPreview(bindings, access, preview);
 }
+
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+std::optional<game::ArmyActualCompiledEffectObservationsV1>
+ReadActualArmyCompiledEffectObservationsForArmy12004(std::int32_t native_carmy_id) noexcept {
+  return ReadActualArmyCompiledEffectObservations12004(native_carmy_id);
+}
+#endif
 
 } // namespace xar::ck3_12004

@@ -98,9 +98,15 @@
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
 #include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+#include "xar_bridge/actual_army_compiled_effect_observer_12004.hpp"
+#endif
 #include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
 #include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
+#if defined(XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE)
+#include "xar_bridge/person_installed_transfer_capture_12004.hpp"
+#endif
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
 #include "xar_bridge/ck3_12004_physical_entry_writeback.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
@@ -633,12 +639,20 @@ static xar::ck3_12004::ActualSupplyCallbackJournalDetourStateV1
 static xar::ck3_12004::ActualArmyLateEventJournalDetourStateV1
     g_actual_army_late_event_journal_12004_v1{};
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+static xar::ck3_12004::ActualArmyCompiledEffectDetourStateV1
+    g_actual_army_compiled_effect_state_v1{};
+#endif
 static xar::ck3_12004::BattleCasualtyObserverDetourState12004
     g_battle_casualty_observer_12004{};
 static xar::ck3_12004::PersonTitleTailCaptureDetourState12004
     g_person_title_tail_capture_12004{};
 static xar::ck3_12004::PersonSixStageCaptureDetourState12004
     g_person_six_stage_capture_12004{};
+#if defined(XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE)
+static xar::ck3_12004::PersonInstalledTransferCaptureState12004
+    g_person_installed_transfer_capture_12004{};
+#endif
 static xar::ck3_12004::KnightStatConsumptionDetourState12004
     g_knight_stat_consumption_12004{};
 static xar::ck3_12004::PhysicalEntryWritebackDetourState12004
@@ -7365,9 +7379,22 @@ std::string BattleTerminalTransitionWithPersonSixStagesResultFrame(
     std::uint64_t query_sequence,
     const xar::game::BattleTerminalTransitionSnapshotV1 &snapshot,
     const xar::ck3_12004::PersonSixStageQuery12004DTO &captures) {
-  return xar::ck3_11906::
+  auto result = xar::ck3_11906::
       SerializeBattleTerminalTransitionCommandResultWithPersonSixStagesV1(
           request_id, step, query_sequence, snapshot, captures);
+#if defined(XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE)
+  if (!result.empty() && result.ends_with("}}")) {
+    const auto transfers =
+        xar::ck3_12004::CollectPersonInstalledTransferCaptureForOwners12004(
+            captures);
+    const auto payload =
+        xar::ck3_12004::SerializePersonInstalledTransferCapture12004(transfers);
+    if (!payload.empty())
+      result.insert(result.size() - 2,
+                    ",\"person_installed_transfers\":" + payload);
+  }
+#endif
+  return result;
 }
 
 std::string BattleReinforcementAssignmentResultFrame(
@@ -28380,6 +28407,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             army_late_event_environment, sha))
       return FALSE;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+    xar::ck3_12004::ActualArmyCompiledEffectInstallEnvironmentV1
+        army_compiled_effect_environment{};
+    army_compiled_effect_environment.primary_thread_suspended_proven = true;
+    army_compiled_effect_environment.bindings =
+        xar::ck3_12004::BindActualArmyCompiledEffectImage12004(base, sha);
+    if (!xar::ck3_12004::InstallActualArmyCompiledEffectObserver12004(
+            g_actual_army_compiled_effect_state_v1,
+            army_compiled_effect_environment, sha))
+      return FALSE;
+#endif
     xar::ck3_12004::BattleCasualtyObserverInstallEnvironment12004 casualty_environment{};
     casualty_environment.bindings =
         xar::ck3_12004::BindBattleCasualtyObserverImage12004(base, sha);
@@ -28406,6 +28444,18 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (!xar::ck3_12004::InstallPersonSixStageCapture12004(
             g_person_six_stage_capture_12004, six_stage_environment, sha))
       return FALSE;
+#if defined(XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE)
+    xar::ck3_12004::PersonInstalledTransferCaptureInstall12004
+        installed_transfer_environment{};
+    installed_transfer_environment.primary_thread_suspended_proven = true;
+    installed_transfer_environment.module_base = base;
+    installed_transfer_environment.bindings =
+        xar::ck3_12004::BindPersonInstalledTransferCaptureImage12004(base, sha);
+    if (!xar::ck3_12004::InstallPersonInstalledTransferCapture12004(
+            g_person_installed_transfer_capture_12004,
+            installed_transfer_environment, sha))
+      return FALSE;
+#endif
     xar::ck3_12004::KnightStatConsumptionInstallEnvironment12004
         knight_stat_environment{};
     knight_stat_environment.bindings =

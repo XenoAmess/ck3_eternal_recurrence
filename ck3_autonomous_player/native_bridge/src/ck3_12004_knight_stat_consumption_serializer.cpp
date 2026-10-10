@@ -128,6 +128,33 @@ void PreparationStageLineage(std::ostream &out,
   out << '}';
 }
 
+void NaturalEvent(std::ostream &out, const KnightNaturalLineageEvent12004 &event) {
+  out << "{\"clock_identity\":"; Pointer(out, event.clock_identity);
+  out << ",\"sequence\":"; Raw64(out, event.sequence);
+  out << ",\"thread_id\":"; Number(out, event.thread_id);
+  out << '}';
+}
+
+void InstalledTransferLineage(std::ostream &out,
+                              const KnightInstalledTransferLineage12004 &lineage) {
+  out << "{\"schema\":"; String(out, kKnightInstalledTransferLineageSchema12004);
+  out << ",\"observation_stage\":\"actual_consumed_getter_return\"";
+  out << ",\"getter_begin_event\":"; NaturalEvent(out, lineage.getter_begin_event);
+  out << ",\"getter_completed_event\":"; NaturalEvent(out, lineage.getter_completed_event);
+  if (lineage.capture_at_consumption)
+    out << ",\"capture_at_consumption\":" << *lineage.capture_at_consumption;
+  out << ",\"transfer_completed_before_getter\":";
+  Boolean(out, lineage.transfer_completed_before_getter);
+  out << ",\"selected_matches_transfer_owner\":";
+  Boolean(out, lineage.selected_matches_transfer_owner);
+  out << ",\"getter_matches_installed_context\":";
+  Boolean(out, lineage.getter_matches_installed_context);
+  out << ",\"installed_identity_associated\":"
+      << (lineage.installed_identity_associated ? "true" : "false");
+  out << ",\"reason\":"; Reason(out, lineage.reason);
+  out << '}';
+}
+
 void Context(std::ostream &out, const KnightConsumedContext12004 &context) {
   out << "{\"property_key\":" << context.property_key << ",\"caller_return_rva\":";
   Raw64(out, context.caller_return_rva);
@@ -151,6 +178,10 @@ void Context(std::ostream &out, const KnightConsumedContext12004 &context) {
   if (context.preparation_capture_at_consumption) {
     out << ",\"preparation_capture_at_consumption\":"
         << SerializePersonSixStageCapture12004(*context.preparation_capture_at_consumption);
+  }
+  if (context.installed_transfer_lineage) {
+    out << ",\"installed_transfer_lineage\":";
+    InstalledTransferLineage(out, *context.installed_transfer_lineage);
   }
   out << '}';
 }

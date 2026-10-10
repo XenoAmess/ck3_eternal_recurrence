@@ -15,6 +15,31 @@ inline constexpr char kKnightStatConsumptionSchema12004[] =
     "xar.ck3.knight-stat-consumption-12004-v1";
 inline constexpr std::size_t kKnightStatConsumptionCapacity12004 = 32;
 
+inline constexpr char kKnightInstalledTransferLineageSchema12004[] =
+    "xar.ck3.knight-installed-transfer-lineage-12004-v1";
+
+struct KnightNaturalLineageEvent12004 {
+  std::uintptr_t clock_identity = 0;
+  std::uint64_t sequence = 0;
+  std::optional<std::uint32_t> thread_id;
+  friend bool operator==(const KnightNaturalLineageEvent12004 &,
+                         const KnightNaturalLineageEvent12004 &) = default;
+};
+
+struct KnightInstalledTransferLineage12004 {
+  KnightNaturalLineageEvent12004 getter_begin_event, getter_completed_event;
+  // Exact standalone 13b wire, built only from the record owned before getter.
+  // Envelope defaults do not report the producer's current install status.
+  std::optional<std::string> capture_at_consumption;
+  std::optional<bool> transfer_completed_before_getter;
+  std::optional<bool> selected_matches_transfer_owner;
+  std::optional<bool> getter_matches_installed_context;
+  bool installed_identity_associated = false;
+  std::string reason;
+  friend bool operator==(const KnightInstalledTransferLineage12004 &,
+                         const KnightInstalledTransferLineage12004 &) = default;
+};
+
 struct KnightConsumedContext12004 {
   std::uint16_t property_key = 0;
   std::uint64_t caller_return_rva = 0;
@@ -33,6 +58,7 @@ struct KnightConsumedContext12004 {
   // Owned at this actual consumed-Ci return; absent in legacy records.
   std::optional<EntrySelectedReceiverStage12004> preparation_stage_lineage;
   std::optional<PersonSixStageCapture12004DTO> preparation_capture_at_consumption;
+  std::optional<KnightInstalledTransferLineage12004> installed_transfer_lineage;
   std::string reason;
   friend bool operator==(const KnightConsumedContext12004 &,
                          const KnightConsumedContext12004 &) = default;

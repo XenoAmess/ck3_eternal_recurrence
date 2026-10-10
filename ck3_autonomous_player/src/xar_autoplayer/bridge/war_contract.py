@@ -366,6 +366,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_loss_writer_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_supply_callback_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"battle_casualty_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_army_late_event_observations_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_compiled_effect_observations_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1891,9 +1892,9 @@ def _normalize_army_strength_row(
     war_ids = _strict_positive_int32_id_list(
         value.get("war_ids"), f"{name}.war_ids"
     )
-    # This strength DTO reports a generation-checked CArmy database handle.
+    # This generation-checked database FullID is serialized as a signed DWORD.
     # Generation zero/slot zero is valid; null means it was not resolved.
-    native_carmy_id = _optional_non_negative_int32(
+    native_carmy_id = _optional_native_carmy_full_id(
         value.get("native_carmy_id"), f"{name}.native_carmy_id"
     )
     regiment_count = _optional_non_negative_int32(
@@ -2152,6 +2153,9 @@ def _normalize_army_strength_row(
             regiment_count=regiment_count, current_soldiers=current_soldiers,
             maximum_soldiers=maximum_soldiers,
         )
+    if "actual_compiled_effect_observations_v1" in value:
+        result["actual_compiled_effect_observations_v1"] = normalize_actual_compiled_effect_observations_v1(
+            value["actual_compiled_effect_observations_v1"], expected_carmy_id=result["native_carmy_id"])
     if "actual_army_late_event_observations_v1" in value:
         result["actual_army_late_event_observations_v1"] = normalize_actual_army_late_event_observations_v1(
             value["actual_army_late_event_observations_v1"], expected_carmy_id=result["native_carmy_id"])
@@ -4940,6 +4944,16 @@ def _optional_positive_int32_id(value: object, name: str) -> int | None:
     return _positive_int32_id(value, name)
 
 
+def _optional_native_carmy_full_id(value: object, name: str) -> int | None:
+    # CArmy handles retain all32bits, including the signed generation byte.
+    # Zero is valid; null is unresolved; native0xFFFFFFFF is an invalid sentinel.
+    if value is None:
+        return None
+    if type(value) is not int or not -(1 << 31) <= value < (1 << 31) or value == -1:
+        raise ValueError(f"native {name} must be a signed FullID int32 or null, excluding -1")
+    return value
+
+
 def _optional_non_negative_int32(value: object, name: str) -> int | None:
     if value is None:
         return None
@@ -5060,56 +5074,7 @@ def normalize_actual_army_late_event_observations_v1(
             raise ValueError(f"{name} must be a native boolean")
 
     def context(raw):
-        raw = obj(raw, "root_copy_ready root_kind_raw_u16 root_subtype_raw_u16 root_payload_raw_u64 "
-            "context_seed_10_raw_u32 named_capacity_raw_i32 named_count_raw_i32 named_header_copy_ready "
-            "named_header_unchanged named_rows_copy_ready named_rows_truncated copied_row_count unavailable_reason rows "
-            "root_kind27_subtype0_matches named_keys_loaded complete_named_input_shape_matches source_roles "
-            "builder_called builder_callsite_rva parent_pc_rva", "actual incoming context")
-        for key in ("root_copy_ready", "named_header_copy_ready", "named_header_unchanged", "named_rows_copy_ready",
-                    "named_rows_truncated", "named_keys_loaded", "complete_named_input_shape_matches"):
-            boolean(raw[key], key)
-        for key in ("root_kind_raw_u16", "root_subtype_raw_u16"):
-            integer(raw[key], 0, 65535, key, nullable=True)
-        integer(raw["root_payload_raw_u64"], 0, (1 << 64) - 1, "root payload", nullable=True)
-        integer(raw["context_seed_10_raw_u32"], 0, (1 << 32) - 1, "seed DWORD", nullable=True)
-        for key in ("named_capacity_raw_i32", "named_count_raw_i32"):
-            integer(raw[key], -(1 << 31), (1 << 31) - 1, key, nullable=True)
-        integer(raw["copied_row_count"], 0, 32, "copied row count")
-        if not isinstance(raw["unavailable_reason"], str) or not isinstance(raw["rows"], list):
-            raise ValueError("actual context reason/rows are malformed")
-        if len(raw["rows"]) != raw["copied_row_count"]:
-            raise ValueError("actual context copied row count disagrees")
-        if raw["root_copy_ready"] and any(raw[key] is None for key in (
-                "root_kind_raw_u16", "root_subtype_raw_u16", "root_payload_raw_u64")):
-            raise ValueError("ready actual context loses copied root operands")
-        for row in raw["rows"]:
-            obj(row, "key_raw_u32 kind_raw_u16 subtype_raw_u16 payload_raw_u64", "actual named row")
-            integer(row["key_raw_u32"], 0, (1 << 32) - 1, "named key")
-            for key in ("kind_raw_u16", "subtype_raw_u16"):
-                integer(row[key], 0, 65535, key)
-            integer(row["payload_raw_u64"], 0, (1 << 64) - 1, "named payload")
-        boolean(raw["root_kind27_subtype0_matches"], "root role", nullable=True)
-        roles = raw["source_roles"]
-        if not isinstance(roles, list) or len(roles) != 3:
-            raise ValueError("actual context must retain all three source roles")
-        for role, expected_kind in zip(roles, (4, 5, 5)):
-            obj(role, "expected_kind_raw_u16 loaded_key_raw_u32 matching_key_count token_kind_and_subtype_match payload_raw_u64", "actual source role")
-            integer(role["expected_kind_raw_u16"], 0, 65535, "expected source kind")
-            if role["expected_kind_raw_u16"] != expected_kind:
-                raise ValueError("actual context changes its source role kind")
-            integer(role["loaded_key_raw_u32"], 0, (1 << 32) - 1, "loaded key")
-            integer(role["matching_key_count"], 0, 32, "matching key count")
-            boolean(role["token_kind_and_subtype_match"], "token role", nullable=True)
-            integer(role["payload_raw_u64"], 0, (1 << 64) - 1, "role payload", nullable=True)
-        if raw["complete_named_input_shape_matches"] and not (
-                raw["named_rows_copy_ready"] and not raw["named_rows_truncated"]
-                and raw["root_kind27_subtype0_matches"] is True
-                and all(role["token_kind_and_subtype_match"] is True for role in roles)):
-            raise ValueError("actual context shape readiness disagrees with copied roles")
-        # The incoming copier observes no builder invocation or parent PC.
-        if any(raw[key] is not None for key in ("builder_called", "builder_callsite_rva", "parent_pc_rva")):
-            raise ValueError("incoming context copy cannot assert an unobserved builder/parent")
-        return raw
+        return _normalize_actual_army_incoming_context_copy_12004(raw)
 
     top = obj(value, "source membership_basis observer_installed oldest_available_sequence latest_sequence "
               "overwritten_events unattributed_capture_failures event_count events", "actual late event journal")
@@ -5170,4 +5135,171 @@ def normalize_actual_army_late_event_observations_v1(
             raise ValueError("dispatcher entry/return cannot assert selected effects")
         if any(event[key] is not None for key in ("date_at_invocation", "late_parent_predicate_pc")):
             raise ValueError("dispatcher entry/return cannot assert an unobserved date/parent")
+    return deepcopy(top)
+
+
+def _normalize_actual_army_incoming_context_copy_12004(value):
+    def obj(raw, keys, name):
+        if not isinstance(raw, dict) or set(raw) != set(keys.split()):
+            raise ValueError(f"{name} has an unexpected owned observation shape")
+        return raw
+
+    def integer(raw, low, high, name, nullable=False):
+        if nullable and raw is None:
+            return
+        if type(raw) is not int or not low <= raw <= high:
+            raise ValueError(f"{name} is outside its native integer range")
+
+    def boolean(raw, name, nullable=False):
+        if nullable and raw is None:
+            return
+        if type(raw) is not bool:
+            raise ValueError(f"{name} must be a native boolean")
+
+    def context(raw):
+        raw = obj(raw, "root_copy_ready root_kind_raw_u16 root_subtype_raw_u16 root_payload_raw_u64 "
+            "context_seed_10_raw_u32 named_capacity_raw_i32 named_count_raw_i32 named_header_copy_ready "
+            "named_header_unchanged named_rows_copy_ready named_rows_truncated copied_row_count unavailable_reason rows "
+            "root_kind27_subtype0_matches named_keys_loaded complete_named_input_shape_matches source_roles "
+            "builder_called builder_callsite_rva parent_pc_rva", "actual incoming context")
+        for key in ("root_copy_ready", "named_header_copy_ready", "named_header_unchanged", "named_rows_copy_ready",
+                    "named_rows_truncated", "named_keys_loaded", "complete_named_input_shape_matches"):
+            boolean(raw[key], key)
+        for key in ("root_kind_raw_u16", "root_subtype_raw_u16"):
+            integer(raw[key], 0, 65535, key, nullable=True)
+        integer(raw["root_payload_raw_u64"], 0, (1 << 64) - 1, "root payload", nullable=True)
+        integer(raw["context_seed_10_raw_u32"], 0, (1 << 32) - 1, "seed DWORD", nullable=True)
+        for key in ("named_capacity_raw_i32", "named_count_raw_i32"):
+            integer(raw[key], -(1 << 31), (1 << 31) - 1, key, nullable=True)
+        integer(raw["copied_row_count"], 0, 32, "copied row count")
+        if not isinstance(raw["unavailable_reason"], str) or not isinstance(raw["rows"], list):
+            raise ValueError("actual context reason/rows are malformed")
+        if len(raw["rows"]) != raw["copied_row_count"]:
+            raise ValueError("actual context copied row count disagrees")
+        if raw["root_copy_ready"] and any(raw[key] is None for key in (
+                "root_kind_raw_u16", "root_subtype_raw_u16", "root_payload_raw_u64")):
+            raise ValueError("ready actual context loses copied root operands")
+        for row in raw["rows"]:
+            obj(row, "key_raw_u32 kind_raw_u16 subtype_raw_u16 payload_raw_u64", "actual named row")
+            integer(row["key_raw_u32"], 0, (1 << 32) - 1, "named key")
+            for key in ("kind_raw_u16", "subtype_raw_u16"):
+                integer(row[key], 0, 65535, key)
+            integer(row["payload_raw_u64"], 0, (1 << 64) - 1, "named payload")
+        boolean(raw["root_kind27_subtype0_matches"], "root role", nullable=True)
+        roles = raw["source_roles"]
+        if not isinstance(roles, list) or len(roles) != 3:
+            raise ValueError("actual context must retain all three source roles")
+        for role, expected_kind in zip(roles, (4, 5, 5)):
+            obj(role, "expected_kind_raw_u16 loaded_key_raw_u32 matching_key_count token_kind_and_subtype_match payload_raw_u64", "actual source role")
+            integer(role["expected_kind_raw_u16"], 0, 65535, "expected source kind")
+            if role["expected_kind_raw_u16"] != expected_kind:
+                raise ValueError("actual context changes its source role kind")
+            integer(role["loaded_key_raw_u32"], 0, (1 << 32) - 1, "loaded key")
+            integer(role["matching_key_count"], 0, 32, "matching key count")
+            boolean(role["token_kind_and_subtype_match"], "token role", nullable=True)
+            integer(role["payload_raw_u64"], 0, (1 << 64) - 1, "role payload", nullable=True)
+        if raw["complete_named_input_shape_matches"] and not (
+                raw["named_rows_copy_ready"] and not raw["named_rows_truncated"]
+                and raw["root_kind27_subtype0_matches"] is True
+                and all(role["token_kind_and_subtype_match"] is True for role in roles)):
+            raise ValueError("actual context shape readiness disagrees with copied roles")
+        # The incoming copier observes no builder invocation or parent PC.
+        if any(raw[key] is not None for key in ("builder_called", "builder_callsite_rva", "parent_pc_rva")):
+            raise ValueError("incoming context copy cannot assert an unobserved builder/parent")
+        return raw
+
+    return context(value)
+
+
+def normalize_actual_compiled_effect_observations_v1(
+    value: object, *, expected_carmy_id: int | None,
+) -> dict[str, object] | None:
+    """Bind copied natural compiled-effect records to a full current Army ID."""
+    from copy import deepcopy
+
+    if value is None:
+        return None
+
+    def obj(raw, keys, name):
+        if not isinstance(raw, dict) or set(raw) != set(keys.split()):
+            raise ValueError(f"{name} has an unexpected owned observation shape")
+        return raw
+
+    def integer(raw, low, high, name, nullable=False):
+        if nullable and raw is None:
+            return
+        if type(raw) is not int or not low <= raw <= high:
+            raise ValueError(f"{name} is outside its native integer range")
+
+    def boolean(raw, name):
+        if type(raw) is not bool:
+            raise ValueError(f"{name} must be a native boolean")
+
+    top = obj(value, "source membership_basis observer_installed current_session_guard oldest_available_sequence "
+        "latest_sequence overwritten_events unattributed_capture_failures event_count events", "actual compiled effect journal")
+    if (top["source"] != "native_natural_compiled_effect_entry_return"
+            or top["membership_basis"] != "current_full_carmy_id_join"
+            or type(expected_carmy_id) is not int or expected_carmy_id == -1):
+        raise ValueError("actual compiled effect loses its source/full CArmy join")
+    for key in ("observer_installed", "current_session_guard"):
+        boolean(top[key], key)
+    if top["current_session_guard"] != top["observer_installed"]:
+        raise ValueError("actual compiled effect session guard disagrees with installed state")
+    for key in ("oldest_available_sequence", "latest_sequence", "overwritten_events", "unattributed_capture_failures"):
+        integer(top[key], 0, (1 << 64) - 1, key)
+    integer(top["event_count"], 0, 256, "event count")
+    if not isinstance(top["events"], list) or len(top["events"]) != top["event_count"]:
+        raise ValueError("actual compiled effect count disagrees with bounded journal")
+    latest = top["latest_sequence"]
+    if (top["oldest_available_sequence"] != (max(1, latest - 255) if latest else 0)
+            or top["overwritten_events"] != max(0, latest - 256)):
+        raise ValueError("actual compiled effect retention window disagrees")
+    routes = {"positive_1e0": (0x2639CA4, 0x2639C9F, 0x40), "flag30": (0x24DD7B6, 0x24DD7B1, 0x230)}
+    previous, entries = 0, set()
+    for event in top["events"]:
+        obj(event, "sequence entry_sequence thread_id native_carmy_id caller_return_rva callsite_rva source_kind receiver_owner_offset "
+            "incoming_receiver_address_raw incoming_context_address_raw receiver_vptr_raw_u64 negative_seed_receiver_key_2c_raw_u32 "
+            "effect_flag_raw_u8 original_returned original_rax_raw_u64 same_root_after capture_failure_flags before_context after_context "
+            "rng_fallback_observed derived_seed_raw_u32 selected_effects_observed complete_effects_observed date_at_invocation frame_at_invocation",
+            "actual compiled effect event")
+        integer(event["sequence"], top["oldest_available_sequence"], latest, "event sequence")
+        integer(event["entry_sequence"], 1, (1 << 64) - 1, "entry sequence")
+        if (event["sequence"] <= previous or event["entry_sequence"] in entries
+                or event["native_carmy_id"] != expected_carmy_id):
+            raise ValueError("actual compiled effect loses completion order/entry/full generation identity")
+        previous = event["sequence"]
+        entries.add(event["entry_sequence"])
+        integer(event["thread_id"], 0, (1 << 32) - 1, "actual thread ID")
+        integer(event["native_carmy_id"], -(1 << 31), (1 << 31) - 1, "event CArmy ID")
+        for key in ("caller_return_rva", "callsite_rva"):
+            integer(event[key], 0, (1 << 64) - 1, key)
+        integer(event["receiver_owner_offset"], 0, (1 << 32) - 1, "receiver owner offset")
+        route = routes.get(event["source_kind"]) if isinstance(event["source_kind"], str) else None
+        if route != (event["caller_return_rva"], event["callsite_rva"], event["receiver_owner_offset"]):
+            raise ValueError("actual compiled effect caller/receiver source disagrees")
+        for key in ("incoming_receiver_address_raw", "incoming_context_address_raw", "original_rax_raw_u64"):
+            integer(event[key], 0, (1 << 64) - 1, key)
+        integer(event["receiver_vptr_raw_u64"], 0, (1 << 64) - 1, "receiver vptr", nullable=True)
+        integer(event["negative_seed_receiver_key_2c_raw_u32"], 0, (1 << 32) - 1, "conditional receiver key", nullable=True)
+        integer(event["effect_flag_raw_u8"], 0, 255, "effect flag", nullable=True)
+        for key in ("original_returned", "same_root_after"):
+            boolean(event[key], key)
+        integer(event["capture_failure_flags"], 0, 31, "capture failures")
+        before = _normalize_actual_army_incoming_context_copy_12004(event["before_context"])
+        after = _normalize_actual_army_incoming_context_copy_12004(event["after_context"])
+        if (before["root_copy_ready"] is not True or before["root_kind_raw_u16"] != 27
+                or before["root_subtype_raw_u16"] != 0
+                or before["root_payload_raw_u64"] != (expected_carmy_id & 0xFFFFFFFF)):
+            raise ValueError("actual compiled effect loses copied incoming Army root")
+        same_root = (after["root_copy_ready"] and after["root_kind_raw_u16"] == 27
+            and after["root_subtype_raw_u16"] == 0 and before["root_payload_raw_u64"] == after["root_payload_raw_u64"])
+        if event["same_root_after"] != same_root:
+            raise ValueError("actual compiled effect postroot equality disagrees")
+        seed = before["context_seed_10_raw_u32"]
+        if event["negative_seed_receiver_key_2c_raw_u32"] is not None and (seed is None or not seed & 0x80000000):
+            raise ValueError("nonnegative/unobserved seed cannot load the conditional receiver key")
+        if any(event[key] is not False for key in ("rng_fallback_observed", "selected_effects_observed", "complete_effects_observed")):
+            raise ValueError("entry/return does not establish fallback or selected effects")
+        if any(event[key] is not None for key in ("derived_seed_raw_u32", "date_at_invocation", "frame_at_invocation")):
+            raise ValueError("entry/return cannot manufacture derived seed/date/frame")
     return deepcopy(top)

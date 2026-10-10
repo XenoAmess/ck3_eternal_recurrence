@@ -1,9 +1,11 @@
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
+#include "xar_bridge/person_installed_transfer_capture_12004.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 #include "xar_bridge/entry_selected_receiver_stage_12004.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 
 #include <algorithm>
+#include <limits>
 #include <cstring>
 #include <memory>
 #include <mutex>
@@ -354,6 +356,81 @@ void *InvokeKnightStatWrapper12004(void *output_cache, void *linked_character,
   return result;
 }
 
+namespace {
+KnightNaturalLineageEvent12004 OwnedEvent(
+    const PersonInstalledTransferEvent12004 &event) noexcept {
+  return {event.clock_identity, event.sequence, event.thread_id};
+}
+
+KnightInstalledTransferLineage12004 InstalledTransferLineage(
+    const std::optional<PersonInstalledTransferCaptureRecord12004> &record,
+    const KnightNaturalLineageEvent12004 &begin,
+    const KnightNaturalLineageEvent12004 &end,
+    const KnightConsumedContext12004 &context, std::uint32_t thread) {
+  KnightInstalledTransferLineage12004 out;
+  out.getter_begin_event = begin;
+  out.getter_completed_event = end;
+  if (!record) {
+    out.reason = "installed_transfer_unobserved_before_getter";
+    return out;
+  }
+  PersonInstalledTransferCaptureQuery12004 owned;
+  owned.records.push_back(*record);
+  out.capture_at_consumption = SerializePersonInstalledTransferCapture12004(owned);
+  const auto &stage = record->stage;
+  const auto &before = stage.before_event;
+  const auto &completed = stage.completed_event;
+  if (before.clock_identity != 0 && completed.clock_identity != 0 &&
+      begin.clock_identity != 0 && end.clock_identity != 0 &&
+      before.thread_id && completed.thread_id && begin.thread_id && end.thread_id) {
+    out.transfer_completed_before_getter = thread != 0 &&
+        before.clock_identity == completed.clock_identity &&
+        completed.clock_identity == begin.clock_identity &&
+        begin.clock_identity == end.clock_identity &&
+        *before.thread_id == thread && *completed.thread_id == thread &&
+        *begin.thread_id == thread && *end.thread_id == thread &&
+        before.sequence != 0 && before.sequence < completed.sequence &&
+        completed.sequence < begin.sequence && begin.sequence < end.sequence;
+  }
+  if (context.selected_character_identity && context.selected_character_id &&
+      stage.before.observed_owner_identity && stage.before.observed_owner_character_id &&
+      stage.after.observed_owner_identity && stage.after.observed_owner_character_id) {
+    out.selected_matches_transfer_owner = *context.selected_character_identity != 0 &&
+        context.selected_character_identity == stage.before.observed_owner_identity &&
+        context.selected_character_id == stage.before.observed_owner_character_id &&
+        context.selected_character_identity == stage.after.observed_owner_identity &&
+        context.selected_character_id == stage.after.observed_owner_character_id;
+  }
+  if (context.context_identity && context.selected_character_identity &&
+      context.selected_character_id && stage.after.installed_model_identity &&
+      stage.after.installed_model_owner_identity &&
+      stage.after.matching_installed_inline_context_identity &&
+      stage.after.model_a_owner_identity && stage.after.model_a_owner_character_id) {
+    out.getter_matches_installed_context = *context.context_identity != 0 &&
+        stage.model_a_identity != 0 &&
+        stage.model_a_identity <= std::numeric_limits<std::uintptr_t>::max() - 0x10 &&
+        *stage.after.installed_model_identity == stage.model_a_identity &&
+        stage.after.installed_model_is_a == true &&
+        stage.after.installed_owner_matches_observed_owner == true &&
+        context.selected_character_identity == stage.after.installed_model_owner_identity &&
+        context.selected_character_identity == stage.after.model_a_owner_identity &&
+        context.selected_character_id == stage.after.model_a_owner_character_id &&
+        *stage.after.matching_installed_inline_context_identity == stage.model_a_identity + 0x10 &&
+        context.context_identity == stage.after.matching_installed_inline_context_identity;
+  }
+  out.installed_identity_associated = stage.observed && stage.original_called &&
+      stage.original_returned &&
+      stage.original_return_rva == kPersonInstalledTransferCallerReturnRva12004 &&
+      out.transfer_completed_before_getter == true &&
+      out.selected_matches_transfer_owner == true &&
+      out.getter_matches_installed_context == true;
+  out.reason = out.installed_identity_associated
+      ? "installed_identity_associated_numeric_postimage_unproven"
+      : "installed_transfer_not_associated_with_consumed_context";
+  return out;
+}
+} // namespace
+
 void *InvokeKnightStatContext12004(void *selected_character,
                                   std::uintptr_t caller_return_address) noexcept {
   const auto original = g_context_original.load(std::memory_order_acquire);
@@ -366,15 +443,31 @@ void *InvokeKnightStatContext12004(void *selected_character,
   const bool observed = site != kKnightStatContextReturns12004.end();
   const auto index = observed ? static_cast<std::size_t>(site - kKnightStatContextReturns12004.begin()) : 0;
   const auto operand = observed ? Operand(selected_character, index) : std::nullopt;
+  std::optional<std::uint32_t> selected_id;
+  std::optional<PersonInstalledTransferCaptureRecord12004> transfer;
+  if (observed) {
+    try {
+      selected_id = At<std::uint32_t>(selected_character, 0x18);
+      if (selected_id)
+        transfer = ReadPersonInstalledTransferCaptureForOwner12004(
+            reinterpret_cast<std::uintptr_t>(selected_character), *selected_id);
+    } catch (...) { g_capture_failures.fetch_add(1); }
+  }
+  // Only shared natural events are comparable to transfer completion. The
+  // family's retention sequence and Native65 preparation counter stay separate.
+  const auto begin = observed ? OwnedEvent(NextPersonNaturalLineageEvent12004())
+                              : KnightNaturalLineageEvent12004{};
   // This is the actual getter return used by the original numeric function.
   void *const result = original(selected_character);
+  const auto end = observed ? OwnedEvent(NextPersonNaturalLineageEvent12004())
+                            : KnightNaturalLineageEvent12004{};
   if (observed) {
     try {
       KnightConsumedContext12004 context;
       context.property_key = static_cast<std::uint16_t>(0xC1 + index);
       context.caller_return_rva = rva;
       context.selected_character_identity = reinterpret_cast<std::uintptr_t>(selected_character);
-      context.selected_character_id = At<std::uint32_t>(selected_character, 0x18);
+      context.selected_character_id = selected_id;
       context.context_identity = reinterpret_cast<std::uintptr_t>(result);
       context.operand_raw = operand;
       context.consumed_pc.weight_q100000 = 0;
@@ -410,6 +503,8 @@ void *InvokeKnightStatContext12004(void *selected_character,
                              g_pending->linked_character_identity, g_pending->thread_id});
       if (capture.capture_observed)
         context.preparation_capture_at_consumption = std::move(capture);
+      context.installed_transfer_lineage = InstalledTransferLineage(
+          transfer, begin, end, context, g_pending->thread_id);
       g_pending->contexts.push_back(std::move(context));
     } catch (...) { g_capture_failures.fetch_add(1); }
   }

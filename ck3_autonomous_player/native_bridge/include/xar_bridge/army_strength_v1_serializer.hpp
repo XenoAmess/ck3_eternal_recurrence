@@ -9,6 +9,11 @@
 #include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
 #endif
 
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+#include "xar_bridge/actual_army_compiled_effect_observer_12004.hpp"
+#include "xar_bridge/actual_army_compiled_effect_observations_v1.hpp"
+#endif
+
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/army_current_first_route_target_supply_contributors_v1_serializer.hpp"
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
@@ -633,6 +638,17 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     }
 #endif
   }
+  result += ",\"actual_compiled_effect_observations_v1\":";
+#if defined(XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1)
+  if (strength.available && strength.native_carmy_id_observable) {
+    if (const auto observations =
+            ck3_12004::ReadActualArmyCompiledEffectObservationsForArmy12004(strength.native_carmy_id))
+      AppendArmyActualCompiledEffectObservationsV1(result, *observations);
+    else result += "null";
+  } else result += "null";
+#else
+  result += "null";
+#endif
   result += ",\"native_carmy_id\":";
   if (strength.native_carmy_id_observable) {
     result += number(strength.native_carmy_id);
