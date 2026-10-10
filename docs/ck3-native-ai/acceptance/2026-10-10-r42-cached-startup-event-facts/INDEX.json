@@ -1,0 +1,230 @@
+{
+  "schema": "lyd.r42.cached-startup-event-facts.archive-index.v1",
+  "archive_relative_path": "RAW-EVIDENCE.zip",
+  "raw_archive": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-cached-startup-event-permanent-archive-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-r42-cached-startup-event-facts\\RAW-EVIDENCE.zip",
+    "bytes": 66078,
+    "sha256": "6f6bd0265e8698ba0cfeba6c692b4c1c0e805ed5cc32b0d54b7bde1d75f52954"
+  },
+  "original_source_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\INDEX.json",
+    "bytes": 4845,
+    "sha256": "d1f97d0f8136f861eccf61f3f3d94d84df1027898f1b3a7f03526b745560ad05"
+  },
+  "members": [
+    {
+      "member": "original/INDEX.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\INDEX.json",
+        "bytes": 4845,
+        "sha256": "d1f97d0f8136f861eccf61f3f3d94d84df1027898f1b3a7f03526b745560ad05"
+      },
+      "bytes": 4845,
+      "sha256": "d1f97d0f8136f861eccf61f3f3d94d84df1027898f1b3a7f03526b745560ad05"
+    },
+    {
+      "member": "original/SUMMARY.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\SUMMARY.actual.json",
+        "bytes": 9837,
+        "sha256": "e2c7a91a9286dbd5de62dab287a165ec78b0ac9b8bcd6f23ee942a0b2671052d"
+      },
+      "bytes": 9837,
+      "sha256": "e2c7a91a9286dbd5de62dab287a165ec78b0ac9b8bcd6f23ee942a0b2671052d"
+    },
+    {
+      "member": "original/REPORT.zh.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\REPORT.zh.md",
+        "bytes": 2353,
+        "sha256": "652ae8ef4e482e536dda325ecb59b634e77e9d081e68756b0082c1c1171f72cc"
+      },
+      "bytes": 2353,
+      "sha256": "652ae8ef4e482e536dda325ecb59b634e77e9d081e68756b0082c1c1171f72cc"
+    },
+    {
+      "member": "cached-fragments/CACHED-ACTOR-MARKER-VERIFIED.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\CACHED-ACTOR-MARKER-VERIFIED.actual.json",
+        "bytes": 300487,
+        "sha256": "f03c4b7898659f5e286e398a79265a692866e26c6680c9c2673b078e78b88b47"
+      },
+      "bytes": 300487,
+      "sha256": "f03c4b7898659f5e286e398a79265a692866e26c6680c9c2673b078e78b88b47"
+    },
+    {
+      "member": "source-cuts/SOURCE-RELATIONSHIP-CUTS.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\SOURCE-RELATIONSHIP-CUTS.actual.json",
+        "bytes": 57729,
+        "sha256": "dda5b1f956b27f5f87af40bc800945bf2e17319fa1a2ab8f44f09c5cd6379565"
+      },
+      "bytes": 57729,
+      "sha256": "dda5b1f956b27f5f87af40bc800945bf2e17319fa1a2ab8f44f09c5cd6379565"
+    },
+    {
+      "member": "index-lookup/EVENT-QUEUE-INDEX-LOOKUP.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-cached-startup-event-permanent-archive-20261010-001\\EVENT-QUEUE-INDEX-LOOKUP.actual.json",
+        "bytes": 1836,
+        "sha256": "8656218e80cefdc2a0487d19ab4004f4d7b31c7a05c5a6daa7c61ddd0c8baeb9"
+      },
+      "bytes": 1836,
+      "sha256": "8656218e80cefdc2a0487d19ab4004f4d7b31c7a05c5a6daa7c61ddd0c8baeb9"
+    },
+    {
+      "member": "source-inputs/lyd_transaction_control.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\source-inputs\\lyd_transaction_control.json",
+        "bytes": 3257,
+        "sha256": "fd3ebf58bd01cb2998a47c5f9faa0225d478692134b2185510074b3c0cba0955"
+      },
+      "bytes": 3257,
+      "sha256": "fd3ebf58bd01cb2998a47c5f9faa0225d478692134b2185510074b3c0cba0955"
+    },
+    {
+      "member": "source-inputs/lyd_transaction_control_adapter.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\source-inputs\\lyd_transaction_control_adapter.py",
+        "bytes": 24389,
+        "sha256": "f2fbbfc3c78d7cfe7d45b5c2d0afd0337dd9ebd834f7c81ce46c672dfff49964"
+      },
+      "bytes": 24389,
+      "sha256": "f2fbbfc3c78d7cfe7d45b5c2d0afd0337dd9ebd834f7c81ce46c672dfff49964"
+    },
+    {
+      "member": "source-inputs/saved-startup-case-contract.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\source-inputs\\saved-startup-case-contract.json",
+        "bytes": 951,
+        "sha256": "81b45569a40dfbf843ca5a76f29a662277ec6c34f763952109437f85c689eb2c"
+      },
+      "bytes": 951,
+      "sha256": "81b45569a40dfbf843ca5a76f29a662277ec6c34f763952109437f85c689eb2c"
+    },
+    {
+      "member": "authors/r42_cached_marker_event_inquiry_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_cached_marker_event_inquiry_20261010.py",
+        "bytes": 2252,
+        "sha256": "62b1420f891a285ce26693d55b1b9f9060c08f1889e50809ae2340a1821fe55e"
+      },
+      "bytes": 2252,
+      "sha256": "62b1420f891a285ce26693d55b1b9f9060c08f1889e50809ae2340a1821fe55e"
+    },
+    {
+      "member": "authors/r42_inspect_cached_paths_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_inspect_cached_paths_20261010.py",
+        "bytes": 1021,
+        "sha256": "000e927050d6d0fd1061c38eb674bfc5b0d17124f384ef87e5c59fb9e52ecf3d"
+      },
+      "bytes": 1021,
+      "sha256": "000e927050d6d0fd1061c38eb674bfc5b0d17124f384ef87e5c59fb9e52ecf3d"
+    },
+    {
+      "member": "authors/r42_extract_cached_marker_event_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_extract_cached_marker_event_20261010.py",
+        "bytes": 2858,
+        "sha256": "3dae9b82295047ff7c96a73c315970fb5ba0d8103d3adb2870541429a3a72dbb"
+      },
+      "bytes": 2858,
+      "sha256": "3dae9b82295047ff7c96a73c315970fb5ba0d8103d3adb2870541429a3a72dbb"
+    },
+    {
+      "member": "authors/r42_inspect_cached_actor_and_handler_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_inspect_cached_actor_and_handler_20261010.py",
+        "bytes": 2040,
+        "sha256": "d343849f2d3fc89c9ed1fd416929a0544b33e933e96d212cc5921121a84cc6d7"
+      },
+      "bytes": 2040,
+      "sha256": "d343849f2d3fc89c9ed1fd416929a0544b33e933e96d212cc5921121a84cc6d7"
+    },
+    {
+      "member": "authors/r42_verify_cached_marker_relationship_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_verify_cached_marker_relationship_20261010.py",
+        "bytes": 3659,
+        "sha256": "c7c12c039ba556306cb8eeeb43f81d73c8b98f30dc06f80cae0f0b477180a896"
+      },
+      "bytes": 3659,
+      "sha256": "c7c12c039ba556306cb8eeeb43f81d73c8b98f30dc06f80cae0f0b477180a896"
+    },
+    {
+      "member": "authors/r42_seal_cached_marker_event_report_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_seal_cached_marker_event_report_20261010.py",
+        "bytes": 9675,
+        "sha256": "dfd5db73b8cb96e1d2d98e5ee518ea2456e490525330f24f1898717c429c15ac"
+      },
+      "bytes": 9675,
+      "sha256": "dfd5db73b8cb96e1d2d98e5ee518ea2456e490525330f24f1898717c429c15ac"
+    },
+    {
+      "member": "authors/r42_read_archive_rules_and_indices_20261010.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_read_archive_rules_and_indices_20261010.py",
+        "bytes": 2469,
+        "sha256": "98d3889c685751e484cfeb63f216675e062b1183d53dbc6ab89fc2e3a0fb1c7d"
+      },
+      "bytes": 2469,
+      "sha256": "98d3889c685751e484cfeb63f216675e062b1183d53dbc6ab89fc2e3a0fb1c7d"
+    },
+    {
+      "member": "sdk-event-receipts/R034/0014-r34-D2a-stage-window-001.sdk-result.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-034\\diagnostic-mcp-client-001\\0014-r34-D2a-stage-window-001.sdk-result.json",
+        "bytes": 35092,
+        "sha256": "0bf272b9a69dda307a9ee41548854b8a14290e7bdca689835da704ab338af7c6"
+      },
+      "bytes": 35092,
+      "sha256": "0bf272b9a69dda307a9ee41548854b8a14290e7bdca689835da704ab338af7c6"
+    },
+    {
+      "member": "sdk-event-receipts/R034/0014-r34-D2a-stage-window-001.native-01.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-034\\diagnostic-mcp-client-001\\0014-r34-D2a-stage-window-001.native-01.json",
+        "bytes": 16491,
+        "sha256": "b44ac5c98a78a3c5c90cefa2eaa772ee9e4f4208d96dc35e57f8e4d3d5424a5a"
+      },
+      "bytes": 16491,
+      "sha256": "b44ac5c98a78a3c5c90cefa2eaa772ee9e4f4208d96dc35e57f8e4d3d5424a5a"
+    },
+    {
+      "member": "sdk-event-receipts/R038/0004-r38-D2a-window-001.sdk-result.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-038\\diagnostic-mcp-client-001\\0004-r38-D2a-window-001.sdk-result.json",
+        "bytes": 35092,
+        "sha256": "c9d2f709b046635e12f17dd1f0ead587bf8f4c31f20c56545fa68f0909e64d73"
+      },
+      "bytes": 35092,
+      "sha256": "c9d2f709b046635e12f17dd1f0ead587bf8f4c31f20c56545fa68f0909e64d73"
+    },
+    {
+      "member": "sdk-event-receipts/R038/0004-r38-D2a-window-001.native-01.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-038\\diagnostic-mcp-client-001\\0004-r38-D2a-window-001.native-01.json",
+        "bytes": 16491,
+        "sha256": "ac2b77afd85f72da2b3501e65d371b40d749bab1ad46e36732d479dc0d1a6e42"
+      },
+      "bytes": 16491,
+      "sha256": "ac2b77afd85f72da2b3501e65d371b40d749bab1ad46e36732d479dc0d1a6e42"
+    },
+    {
+      "member": "authors/package_evidence.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42_package_cached_startup_facts_20261010.py",
+        "bytes": 10186,
+        "sha256": "57854e44cad947971879825de1c15812755f4e273a9cf18c866dcce78f4af82d"
+      },
+      "bytes": 10186,
+      "sha256": "57854e44cad947971879825de1c15812755f4e273a9cf18c866dcce78f4af82d"
+    }
+  ],
+  "subset_boundary": "Selected evidence from original INDEX; unselected original artifacts and the three 1.54MB cache packets remain external with existing pins. No .ck3 save or native binary is included.",
+  "event_queue_index_lookup": "index-lookup/EVENT-QUEUE-INDEX-LOOKUP.actual.json",
+  "actual_business_credit": null,
+  "startup_root_cause": "UNKNOWN"
+}

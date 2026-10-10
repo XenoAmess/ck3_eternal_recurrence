@@ -1,0 +1,21 @@
+{
+  "schema": "lyd.r42.cached-startup-facts.archive-validation.v1",
+  "ok": true,
+  "layer": "archive bytes only, not tests or CK3 qualification",
+  "member_count": 21,
+  "member_set_crc_exact_bytes_sha_verified": true,
+  "raw_archive": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-cached-startup-event-permanent-archive-20261010-001\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-10-r42-cached-startup-event-facts\\RAW-EVIDENCE.zip",
+    "bytes": 66078,
+    "sha256": "6f6bd0265e8698ba0cfeba6c692b4c1c0e805ed5cc32b0d54b7bde1d75f52954"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r42-seed-marker-event-cached-readonly-20261010-001\\INDEX.json",
+    "bytes": 4845,
+    "sha256": "d1f97d0f8136f861eccf61f3f3d94d84df1027898f1b3a7f03526b745560ad05"
+  },
+  "save_body_reads": 0,
+  "new_SDK_game_or_native_actions": 0,
+  "new_tests": [],
+  "open_kaishek": "not-applicable: completed cached JSON/source/receipt archival; no new CK3 semantic execution"
+}
