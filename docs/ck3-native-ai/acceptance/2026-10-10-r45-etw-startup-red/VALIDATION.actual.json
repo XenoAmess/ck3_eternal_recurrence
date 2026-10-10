@@ -1,0 +1,17 @@
+{
+  "schema": "ck3-r45-evidence-validation-v1",
+  "checked_utc": "2026-10-10T04:30:53.475759+00:00",
+  "archive_crc_members_and_bytes": true,
+  "source_bytes_verified": true,
+  "seed_or_large_body_reads": 0,
+  "runtime_operations": 0,
+  "new_sampling": false,
+  "ci_requeried_or_retested": false,
+  "business_pass_claimed": false,
+  "entries": 743,
+  "archive": {
+    "path": "RAW-EVIDENCE.zip",
+    "bytes": 13873432,
+    "sha256": "6c0d1b994848adc004274ddbd74395d51bf1cdd3d63a238bd4bc7749c80f0363"
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "schema": "ck3-r45-runtime-actual-evidence-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0045",
+  "checkout_head": "fde5fb0a03d24ba00b8a09ce0a52462a50882671",
+  "actual_result": "ACTUAL_STARTUP_RED_NO_NATIVE_FRAME_NO_BUSINESS",
+  "readiness_timeout_seconds": 900,
+  "native_report_status": "RED",
+  "native_report_error": "TimeoutError: saved campaign initial native connection/semantic frame was not ready before original readiness deadline",
+  "historical_cleanup_ok": false,
+  "historical_session": {
+    "report": null,
+    "error": "AgentError: native-session failed after 906.434s (launch_error): CK3 launch contract failed safely: saved startup Setup completion marker missed the original readiness deadline"
+  },
+  "actual_step_count": 0,
+  "actual_current_closeout": {
+    "at_utc": "2026-10-10T03:49:21.831283+00:00",
+    "ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "case_processes": [],
+    "expected_allocation_supervision": [
+      {
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-004/runtime.local.json",
+          "--products",
+          "tools/ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-007/prepared/prepared-case.json",
+          "--attempt",
+          "a07",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a07",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0044",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a06",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0044\\release-command-001\\stdout.log"
+        ],
+        "pid": 10664,
+        "name": "python.exe",
+        "create_time": 1791602818.9315577
+      },
+      {
+        "cmdline": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\root-record-command-20261010-001.py",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-root-case-allocate-20261010-001",
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-004/runtime.local.json",
+          "--products",
+          "tools/ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-007/prepared/prepared-case.json",
+          "--attempt",
+          "a07",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a07",
+          "--previous-live",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0044",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a06",
+          "--previous-release",
+          "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0044\\release-command-001\\stdout.log"
+        ],
+        "pid": 15688,
+        "name": "python.exe",
+        "create_time": 1791602818.8206675
+      }
+    ],
+    "process_read_errors": [],
+    "control_files": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-007\\state\\control\\ck3.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-007\\state\\control\\unsafe-cleanup.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-007\\state\\control\\ck3.watchdog_error",
+        "exists": false
+      }
+    ],
+    "host_original_exit": {
+      "at_utc": "2026-10-10T03:48:46.634948+00:00",
+      "pid": 7036,
+      "returncode": 1,
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0045",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "independent_observer_handle_exit": {
+      "at_utc": "2026-10-10T03:48:44.263007+00:00",
+      "elapsed_seconds": 904.963866099999,
+      "pid": 16528,
+      "process_create_time": 1791603219.1009781,
+      "wait_result": 0,
+      "actual_exit_code": 1,
+      "independent_observer_handle": true,
+      "original_createprocess_handle": false,
+      "signals_sent": false,
+      "business_pass": false
+    },
+    "historical_host_cleanup_ok": false,
+    "historical_ck3_exit_code": null,
+    "historical_job_final_active_count": null,
+    "normal_exit_zero_claimed": false,
+    "note": "Independent observer handle proves actual CK3 exit1; fresh census permits release. Original CreateProcess-handle and Job shutdown records are still missing; cleanup_ok=false and no typed normal0 remain unchanged."
+  },
+  "actual_release": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "fde5fb0a03d24ba00b8a09ce0a52462a50882671"
+      },
+      "last_sequence": 4359,
+      "next_step": "",
+      "pid": 15216,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R45-900s-observed-timeout-closed-exit1-offline-display-restored",
+      "task_id": "common-acceptance-12004-20261010-a07",
+      "updated_at_utc": "2026-10-10T03:49:44.540764+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 4359,
+      "event_id": "a8a40e33a87e41e18acc1d220d6bbeab",
+      "timestamp_utc": "2026-10-10T03:49:44.542917+00:00",
+      "kind": "completed",
+      "task_id": "common-acceptance-12004-20261010-a07",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R45-900s-observed-timeout-closed-exit1-offline-display-restored",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "fde5fb0a03d24ba00b8a09ce0a52462a50882671"
+      }
+    }
+  },
+  "keeper_original_parent_exit": {
+    "keeper_actual_exit_code": 0,
+    "keeper_report": {
+      "schema": "xar.promo.screen-lease-keeper/v1",
+      "task_id": "common-acceptance-12004-20261010-a07",
+      "last_sequence": 4358,
+      "failure": null,
+      "thread_exited": true,
+      "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a07\\journal.jsonl",
+      "at_utc": "2026-10-10T03:49:22.243794+00:00",
+      "entry_error": null,
+      "checkout_head": "fde5fb0a03d24ba00b8a09ce0a52462a50882671",
+      "screen_released": false,
+      "game_actions": false
+    },
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0045",
+    "business_pass": false
+  },
+  "root_observed_transcript": {
+    "initial_poll": {
+      "flag": "--task-id",
+      "observed_exit_code": 2,
+      "evidence_kind": "parent observed direct tool transcript",
+      "raw_receipt_created": false
+    },
+    "corrected_poll": {
+      "flags": [
+        "--task",
+        "--ack"
+      ],
+      "observed_exit_code": 0,
+      "observed_cursor": 4349,
+      "evidence_kind": "parent observed direct tool transcript"
+    }
+  },
+  "identity_issue": {
+    "user_fixed_identity": "XenoAmess <xenoamess@gmail.com>",
+    "historical_policy_source": "2026-09-10 daily line223, as reported by ROOT",
+    "observed_local_configuration": "Codex, as reported by ROOT; recorded reads under CI identity-policy-readonly-001",
+    "who_or_when_configuration_changed": null,
+    "root_precommit_identity_check_was_missing": true,
+    "historical_R44_author_or_evidence_rewritten": false,
+    "postrelease_actual_correction_ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-root-git-identity-correction-20261010-001\\VERIFIED.actual.json",
+      "bytes": 620,
+      "sha256": "cd0f19d512ab12d0e19295977248119fed9ef78c4daab93cbb0bad13c359d91e"
+    }
+  },
+  "supplements": [
+    {
+      "role": "actual-etw/record-and-summary",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045\\etw-cpu-001",
+      "summary_ref": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045\\etw-cpu-001\\SUMMARY.actual.json",
+        "bytes": 11466,
+        "sha256": "48ebe477bdf8607560fc7bd274365a4693af3337be0193821e387231a5258cd7"
+      },
+      "tracestats_ref": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0045\\etw-cpu-001\\tracestats.txt",
+        "bytes": 985,
+        "sha256": "2066b3ec78d3f8cbd0d180ce915e891bf96780c28150089f990b9fed5f6db986"
+      }
+    },
+    {
+      "role": "actual-etw/compact-hotspot-proof",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-20261010-001",
+      "final_index_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-20261010-001\\FINAL-INDEX.json",
+        "bytes": 5185,
+        "sha256": "b2292dfbb73485d2af3224cd61c17c104508535072b50b3a269e23675296b365"
+      },
+      "compact_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-20261010-001\\COMPACT.actual.json",
+        "bytes": 59864,
+        "sha256": "d9a81a943657dfe300a1eb71eae049e083e4b64700c5e51a9d204e96ed0353b4"
+      },
+      "findings_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-20261010-001\\FINAL-FINDINGS.zh.md",
+        "bytes": 2221,
+        "sha256": "3cfbddd551e1ce88c3e29b728d2145f808c093e8acd444b154b44c7a62c408f0"
+      },
+      "hotspot_boundary_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-20261010-001\\HOTSPOT-BOUNDARY.actual.json",
+        "bytes": 9966,
+        "sha256": "e76e123889abb5d7f08e3878b05744c1ac1ef35bf230da2cada79ec3172bbd23"
+      }
+    },
+    {
+      "role": "ci/exact-fde5fb0a0",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-exact-fde5fb0a0-ci-20261010-001",
+      "final_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-exact-fde5fb0a0-ci-20261010-001\\FINAL.actual.json",
+        "bytes": 2185,
+        "sha256": "2de579824a9c8ea970d2c8419f5fbaea699c405695b70bb9d072c74346ecb9b2"
+      },
+      "terminal_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-exact-fde5fb0a0-ci-20261010-001\\TERMINAL-EVIDENCE.actual.json",
+        "bytes": 18404,
+        "sha256": "08c5fa6e3723c8a6ed2243a2e22e9932c688d979eec00ab79f5264dbfd1b1476"
+      }
+    },
+    {
+      "role": "diagnostic/shadercache-metadata",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-shadercache-metadata-comparison-readonly-20261010-001",
+      "report_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-shadercache-metadata-comparison-readonly-20261010-001\\REPORT.actual.json",
+        "bytes": 11061,
+        "sha256": "be8167ad555cd19c69fb2a24c60db1f08c904e71914ea032d649fe769dd96beb"
+      },
+      "index_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-shadercache-metadata-comparison-readonly-20261010-001\\INDEX.json",
+        "bytes": 1645,
+        "sha256": "a0383b17a59e6a40584f6e93df171a234b462eeaf82cdebe284d8a5f75def2e6"
+      }
+    },
+    {
+      "role": "actual-etw/analyzer-original-exec-001",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-original-exec-20261010-001"
+    },
+    {
+      "role": "actual-etw/analyzer-original-exec-002",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-original-exec-20261010-002"
+    },
+    {
+      "role": "actual-etw/analyzer-original-exec-003",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analysis-original-exec-20261010-003"
+    },
+    {
+      "role": "actual-etw/analyzer-source-001",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analyzer-sourceonly-20261010-001"
+    },
+    {
+      "role": "actual-etw/analyzer-source-002",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analyzer-sourceonly-20261010-002"
+    },
+    {
+      "role": "actual-etw/analyzer-source-003",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analyzer-sourceonly-20261010-003"
+    },
+    {
+      "role": "actual-etw/analyzer-source-004",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analyzer-sourceonly-20261010-004"
+    },
+    {
+      "role": "actual-etw/thread-boundary-diagnostic",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-actual-etw-offline-analyzer-thread-boundary-diagnostic-20261010-001"
+    },
+    {
+      "role": "diagnostic/R38-cache-presence-and-cleanup-history",
+      "status": "AVAILABLE",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-r38-shadercache-presence-and-cleanup-history-readonly-20261010-001",
+      "report_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-r38-shadercache-presence-and-cleanup-history-readonly-20261010-001\\REPORT.actual.json",
+        "bytes": 5766,
+        "sha256": "fc389e1ffa20700796e6ebd146803ab4fd126def08b1e01f8708b15c1f6c83f4"
+      },
+      "index_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r45-r38-shadercache-presence-and-cleanup-history-readonly-20261010-001\\INDEX.json",
+        "bytes": 2490,
+        "sha256": "777b167b8d3962736220cec3230e772866a547b809a08e5fd1c34f22107e40c9"
+      }
+    }
+  ],
+  "synthetic_semantic_or_business_credit": false,
+  "actual_cpu_cause_credit": null,
+  "seed_or_large_body_reads": 0,
+  "runtime_operations": 0,
+  "whole_product_pass_claimed": false
+}
