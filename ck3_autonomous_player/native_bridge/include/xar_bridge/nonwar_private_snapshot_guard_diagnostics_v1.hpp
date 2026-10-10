@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
+#include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
 #include <optional>
 #include <string>
 #include <string_view>
@@ -23,7 +24,13 @@ inline std::string NonwarPrivateSnapshotGuardFailureV1(
   if (expected_revision==0) return fail("expected_revision_zero");
   if (expected_revision!=native_revision) return fail("revision_mismatch");
   if (!previous) return fail("previous_snapshot_missing");
-  if (!read_current(current)) return fail("current_snapshot_read_failed");
+  const auto read_sequence = ck3_12004::CaptureSnapshotReadSequence12004();
+  if (!read_current(current)) {
+    auto error = fail("current_snapshot_read_failed");
+    if (const auto receipt = ck3_12004::FreshSnapshotReadFailure12004(read_sequence))
+      error += ck3_12004::FormatSnapshotReadFailure12004(*receipt);
+    return error;
+  }
   if (current!=*previous) {
     auto names=ck3_11906::TitleMapNavigationSnapshotDiffNamesV1(
         ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(*previous,current));

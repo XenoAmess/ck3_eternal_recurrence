@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/actor_cached_succession12004_mailbox.hpp"
 #endif
@@ -260,10 +261,26 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
 
 bool ReadCk3_12004Snapshot(const Ck3_12004AdapterBindings &bindings,
                          Snapshot &output) noexcept {
+  using ::xar::bridge::ck3_12004::BeginSnapshotReadAttempt12004;
+  using ::xar::bridge::ck3_12004::CopySnapshotReadPrefix12004;
+  using ::xar::bridge::ck3_12004::RecordSnapshotReadFailure12004;
+  using ::xar::bridge::ck3_12004::SnapshotReadFailureStage12004;
+  BeginSnapshotReadAttempt12004();
   output = {};
   ck3_12004::CoreSnapshotPrefix prefix{};
-  if (bindings.read_core_snapshot == nullptr ||
-      !bindings.read_core_snapshot(bindings.core, prefix)) return false;
+  if (bindings.read_core_snapshot == nullptr) {
+    RecordSnapshotReadFailure12004(
+        SnapshotReadFailureStage12004::core_reader_missing);
+    return false;
+  }
+  if (!bindings.read_core_snapshot(bindings.core, prefix)) {
+    RecordSnapshotReadFailure12004(SnapshotReadFailureStage12004::core_prefix);
+    return false;
+  }
+  CopySnapshotReadPrefix12004(
+      prefix.clock.date_raw, prefix.clock.speed, prefix.local_player_id,
+      prefix.clock.paused, prefix.map_ready, prefix.has_played_character,
+      prefix.played_character_id, prefix.played_character_alive);
   Snapshot observed{};
   observed.date_raw = prefix.clock.date_raw;
   observed.speed = prefix.clock.speed;
@@ -278,18 +295,28 @@ bool ReadCk3_12004Snapshot(const Ck3_12004AdapterBindings &bindings,
     return true;
   }
   const auto &foundation = bindings.snapshot_foundation12004;
-  if (!foundation) return false;
+  if (!foundation) {
+    RecordSnapshotReadFailure12004(SnapshotReadFailureStage12004::foundation_missing);
+    return false;
+  }
   if (prefix.has_played_character) {
     ck3_12004::ActorResourceBalances resources{};
     if (!ck3_12004::ReadActorResourceBalances(
-            bindings.core, prefix.played_character_id, resources)) return false;
+            bindings.core, prefix.played_character_id, resources)) {
+      RecordSnapshotReadFailure12004(SnapshotReadFailureStage12004::actor_resources);
+      return false;
+    }
     observed.played_character_gold.raw = resources.gold_raw;
     observed.played_character_prestige.raw = resources.prestige_raw;
     observed.played_character_piety.raw = resources.piety_raw;
     observed.played_character_stress_points = resources.stress_points;
     PlayedCharacterRelationships12002 relationships{};
     if (!ck3_12004::ReadPlayedCharacterRelationships(
-            bindings.core, prefix.played_character_id, relationships)) return false;
+            bindings.core, prefix.played_character_id, relationships)) {
+      RecordSnapshotReadFailure12004(
+          SnapshotReadFailureStage12004::played_relationships);
+      return false;
+    }
     observed.played_character_betrothed_id = relationships.betrothed_character_id;
     observed.played_character_primary_spouse_id =
         relationships.primary_spouse_character_id;
@@ -304,14 +331,25 @@ bool ReadCk3_12004Snapshot(const Ck3_12004AdapterBindings &bindings,
   }
   auto events = foundation->events;
   events.core = bindings.core;
-  if (!ck3_12004::ReadEventsSnapshot(events, observed) ||
-      ck3_12004::ReadWorldSnapshot12004(bindings.world, bindings.armies,
-          bindings.provinces, prefix, observed) !=
-              ck3_12004::WorldReadResult::available) return false;
+  if (!ck3_12004::ReadEventsSnapshot(events, observed)) {
+    RecordSnapshotReadFailure12004(SnapshotReadFailureStage12004::events);
+    return false;
+  }
+  const auto world = ck3_12004::ReadWorldSnapshot12004(
+      bindings.world, bindings.armies, bindings.provinces, prefix, observed);
+  if (world != ck3_12004::WorldReadResult::available) {
+    RecordSnapshotReadFailure12004(SnapshotReadFailureStage12004::world,
+                                  static_cast<std::uint32_t>(world));
+    return false;
+  }
   const auto settlement = ck3_12004::ReadSettlement(
       foundation->settlement, bindings.core, observed);
   if (settlement != ck3_12004::SettlementReadResult::published &&
-      settlement != ck3_12004::SettlementReadResult::not_published) return false;
+      settlement != ck3_12004::SettlementReadResult::not_published) {
+    RecordSnapshotReadFailure12004(SnapshotReadFailureStage12004::settlement, {},
+                                  static_cast<std::uint32_t>(settlement));
+    return false;
+  }
   output = std::move(observed);
   return true;
 }
