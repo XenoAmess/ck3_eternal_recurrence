@@ -98,3 +98,9 @@ ROOT于06:13:56 UTC持原卷锁追加[CLOSED-RESERVATION](C:/workspace/ck3_lyd_r
 08:24:26 UTC，原清理进程 exit 0 后，两份逐文件审计材料由 14,512,072 B 明文变为 1,752,185 B gzip；完整解压 size/SHA 核对成功后才删除明文。逻辑减少 12,759,887 B 单列，不再计入源码回收量。旧 PLAN/RESULT 不改写，新增可用性记录绑定 gzip 解压后的原始 pins；明文旧路径现为 deleted。两份压缩件分别在 Nov9 08:14:26 / 08:19:19 UTC 到期，摘要在 2027-04-08 08:19:19 UTC 复核，复制或压缩不续龄。
 
 [精简实际回执、两根 tombstone 与账本可用性](receipts/2026-10-10-source06-source07-retirement.actual.json)随本页入库；完整逐文件账本只在外置压缩件中有限保存，不再次提交完整清单。本机这批实际清理不代表其他机器已执行，也没有安装自动 GC。
+
+## 09:30 UTC：Source09 / R48 预算实际关闭
+
+R48启动证明合同失败后，managed cleanup、原host1、keeper0及CAS4416已闭场。ROOT持原卷锁关闭独立4GiB预约，remaining为0；六个互斥已知根的logical subtotal为705,185,114B，未扫描source/native或读取cache正文。该subtotal不等于全项目实际占用或物理峰值，当次free624,020,348,928B单列。
+
+源码与非cache profile14天、raw30天、小记录180天复核，必要保护最多7天；现有cache仍到Oct17 03:03:44UTC，不随复制、使用或失败续期。分类ledger和真实关闭记录已纳入[R48紧凑证据](../li-yu-dao/acceptance/2026-10-10-r0048-holder-startup-contract-red/REPORT.md)，压缩归档仅41,155B，没有新增删除量。后继接口更正位于MAIN case层，可复用Source09及v2seed，省去无必要的新runtime导出和cache快照；任何后继重型写入仍须重新准入。

@@ -32,4 +32,6 @@
 
 ## 验证
 
+17:35追加：R0048 实际在启动证明合同处 RED，尚未执行 option / SAVE。adapter 的来源说明多放在外层，未满足 host 的 exact 字段集合；已改为内层 `proof`，以真实 R48 帧调用完整 host 校验函数的新两项回归通过，MAIN 全7项回归通过。原 host1/managed cleanup、keeper0、CAS4416、Steam离线亲审与预算关闭已记录；不授正常 GUI 退出或业务信用。case adapter 实际从 MAIN 独立冻结，不属于 Source09 index，修复后新 prepare 可复用现 runtime/v2seed，无需另建 Source10。[失败、修复与闭场](acceptance/2026-10-10-r0048-holder-startup-contract-red/REPORT.md)。
+
 主树采用后，5 项 adapter 测试及 3 项新生成器 AST 测试实际 exit 0，已接入原官方 CI。检查覆盖改变名单仍唯一保存、过期/不完整查询拒绝、七 AST 差异及完成变量缺失保留、去掉四个日志块后事务完整 AST 相同、D2b 停止且不继续 D3、非法模式拒绝。[精简实际回执](../ck3-native-ai/acceptance/2026-10-10-holder-stage-public-source-only/VALIDATION.actual.json)。没有重跑旧业务矩阵或旧实机。

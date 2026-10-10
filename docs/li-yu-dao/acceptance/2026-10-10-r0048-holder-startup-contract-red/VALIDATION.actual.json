@@ -1,0 +1,10 @@
+{
+  "CRC": "PASS",
+  "all_object_bytes_SHA_exact": true,
+  "logical_entries": 31,
+  "unique_objects": 30,
+  "selected_receipt_read_passes_by_this_archive": 1,
+  "save_body_reads": 0,
+  "native_report_wire_or_huge_inventory_reads": 0,
+  "does_not_grant_business_or_formal_PASS": true
+}

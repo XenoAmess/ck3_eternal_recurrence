@@ -1,0 +1,25 @@
+{
+  "archive": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-red-compact-archive-20261010-001\\RAW-EVIDENCE.zip",
+    "bytes": 41155,
+    "sha256": "57451ea76e0d2f58b0baf789a25d365ed5eeef31a96206076027a6a886aaa40a"
+  },
+  "index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-red-compact-archive-20261010-001\\INDEX.json",
+    "bytes": 27009,
+    "sha256": "a465bf3fddb9bf8c3bebf8ec545aefb94007afa69eadd0ca16a37807a6e213bc"
+  },
+  "facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-red-compact-archive-20261010-001\\FACTS.actual.json",
+    "bytes": 8229,
+    "sha256": "2a62a57b1a7d67e0f19d4dbbe032aaf24cc7eb84a397022bd737cdc1c2f6b51f"
+  },
+  "validation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-red-compact-archive-20261010-001\\VALIDATION.actual.json",
+    "bytes": 285,
+    "sha256": "674c9e352c9ccf8a2045133c7dc638a02f398af46a5e385546f84b92814a7876"
+  },
+  "logical_entries": 31,
+  "unique_objects": 30,
+  "selected_bytes": 133056
+}

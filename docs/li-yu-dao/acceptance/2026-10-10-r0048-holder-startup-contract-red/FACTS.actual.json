@@ -1,0 +1,217 @@
+{
+  "schema": "lyd.r48.startup-red-compact-facts.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0048",
+  "status": "STARTUP_RED",
+  "original_error": "ValueError: saved startup pure proof did not bind the exact declared event identities",
+  "original_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0048\\native-report.json",
+    "bytes": 523643,
+    "sha256": "c57d2b6e13cd928c7bc16b8419f43640012bc2ce0c8906406000206145d9f12a"
+  },
+  "original_record_path": "$.saved_campaign_restore.startup_case",
+  "startup_snapshot_identity": {
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53144712,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 1,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "active_event": {
+      "source": "native",
+      "instance_id": 121,
+      "option_count": 1,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "paused": true,
+    "map_ready": true,
+    "episode_projection": "native_campaign"
+  },
+  "selection_attempted_original": false,
+  "holder_case_result": null,
+  "cache_before_ids": null,
+  "cache_after_ids": null,
+  "removed_IDs": null,
+  "saved_checkpoint": null,
+  "political_AST_differences": null,
+  "script_scope_log_contents": null,
+  "normal_close_result": null,
+  "absent_later_case_receipts": {
+    "holder-stage-diagnostic-case-result.json": false,
+    "holder-diagnostic-before.json": false,
+    "holder-diagnostic-after.json": false,
+    "holder-diagnostic-script-scope-log-windows.json": false,
+    "normal-close-result.json": false
+  },
+  "host_original_process_exit": {
+    "at_utc": "2026-10-10T09:19:21.272930+00:00",
+    "pid": 8872,
+    "returncode": 1,
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0048",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "observer_original_exit": null,
+  "keeper_original_report": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "common-acceptance-12004-20261010-a10",
+    "last_sequence": 4415,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261010-a10\\journal.jsonl",
+    "at_utc": "2026-10-10T09:21:17.838926+00:00",
+    "entry_error": null,
+    "checkout_head": "f367382b23d3189e8bceda909c5289c81aa65066",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "keeper_original_FINAL": null,
+  "release_original_stdout": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "f367382b23d3189e8bceda909c5289c81aa65066"
+      },
+      "last_sequence": 4416,
+      "next_step": "",
+      "pid": 6244,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R48-startup-contract-RED-option0-save0-host1-managed-cleanup-true-offline-reviewed-display-restored-keeper0",
+      "task_id": "common-acceptance-12004-20261010-a10",
+      "updated_at_utc": "2026-10-10T09:21:34.771230+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 4416,
+      "event_id": "4881c1e4cec9477dbbddb006214ff2e9",
+      "timestamp_utc": "2026-10-10T09:21:34.772285+00:00",
+      "kind": "completed",
+      "task_id": "common-acceptance-12004-20261010-a10",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R48-startup-contract-RED-option0-save0-host1-managed-cleanup-true-offline-reviewed-display-restored-keeper0",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "f367382b23d3189e8bceda909c5289c81aa65066"
+      }
+    }
+  },
+  "offline_original_review": {
+    "at_utc": "2026-10-10T09:21:17.744685+00:00",
+    "reviewer": "/root",
+    "image": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-final-steam-fresh-frame-20261010-001\\steam-moved.png",
+      "bytes": 920465,
+      "sha256": "b3cc1df537990f85f598c0011a87d4246b0f4ffe99fb09732f18a811aa7d4f63"
+    },
+    "visible_text": "离线模式",
+    "visible_clock": "17:20 2026/10/10",
+    "direct_original_image_review": true,
+    "reversible_window_movement_observed": true,
+    "steam_offline_confirmed": true
+  },
+  "command_exit_codes_original": {
+    "proof-diagnostic/FOCUSED-new2/RESULT.actual.json": 0,
+    "run/release-command-001/RESULT.actual.json": 0,
+    "supplemental/00/RESULT.actual.json": 2,
+    "supplemental/01/RESULT.actual.json": 2,
+    "supplemental/02/RESULT.actual.json": 0,
+    "supplemental/03/RESULT.actual.json": 0
+  },
+  "source_commit_original": "0239d7a14b42c24f47762985dcb9124fd9ff060a",
+  "native_build_commit_original": "af20455212ed75000ba6136b3be308a9288cb06e",
+  "root_reported_cleanup": {
+    "cleanup_ok": true,
+    "thread_finished": true,
+    "source": "ROOT R48 closed-task message; archive does not reread native-report"
+  },
+  "root_reported_option_count": 0,
+  "root_reported_SAVE_count": 0,
+  "startup_failure_cause": "holder proof had extra outer baseline_saved_campaign key",
+  "host_requires_exact_outer_keys": "expected keys + proof + business_pass",
+  "original_R48_failure_is_not_rewritten_by_offline_fixed_handler_tests": true,
+  "offline_new2_test_result": {
+    "argv": [
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-proof-contract-fix-sourceonly-20261010-001\\candidate\\tools\\test_ck3_mod_acceptance_holder_stage_diagnostic.py",
+      "HolderDiagnosticTests.test_startup_proof_passes_actual_host_validation_with_r48_packet",
+      "HolderDiagnosticTests.test_actual_host_rejects_original_r48_outer_provenance_key"
+    ],
+    "environment_overrides": {
+      "XAR_CK3_REPO_ROOT": "C:/workspace/ck3_eternal_recurrence",
+      "XAR_CK3_STARTUP_HOST_SOURCE": "C:/csr9/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+    },
+    "started_at_utc": "2026-10-10T09:25:47.278120+00:00",
+    "finished_at_utc": "2026-10-10T09:25:47.797807+00:00",
+    "exit_code": 0,
+    "stdout": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-proof-contract-fix-sourceonly-20261010-001\\FOCUSED-new2\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r48-startup-proof-contract-fix-sourceonly-20261010-001\\FOCUSED-new2\\stderr.log",
+      "bytes": 105,
+      "sha256": "190b0dfeb6bd108a6b867df6e28afe3e56df18f9a91684f6e0ca3a36d4170492"
+    },
+    "previous_five_tests_not_rerun": true,
+    "Source09_actual_pure_validation_functions_full_AST_executed": true,
+    "actual_R48_snapshot_event_packet_retained_fixture_used": true,
+    "no_live_game_SDK_save_body_or_business_credit": true
+  },
+  "archive_save_body_reads": 0,
+  "archive_native_report_body_reads": 0,
+  "cache_mutation_cause": "UNKNOWN_NOT_OBSERVED_THIS_RUN",
+  "four_getter_log_lazy_recalculation_boundary": "Not reached; future instrumentation may trigger lazy refresh",
+  "business_PASS": false,
+  "formal_institution_PASS": null,
+  "C3": null,
+  "I4": null,
+  "archive_success_does_not_qualify_game_or_product": true
+}

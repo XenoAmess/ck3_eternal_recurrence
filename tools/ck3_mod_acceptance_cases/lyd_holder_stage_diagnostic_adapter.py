@@ -94,8 +94,9 @@ def admit_saved_startup_event(context, snapshot, typed_event_packet):
     data = contract()
     require(context['expected'] == data['expected'], 'Saved startup expected identity differs')
     proof = base.observe_event(snapshot, typed_event_packet, context['expected'], data)
-    return {**context['expected'], 'proof': proof, 'business_pass': False,
-            'baseline_saved_campaign': data['saved_campaign']}
+    proof['baseline_saved_campaign'] = data['saved_campaign']
+    proof['production_source_head'] = data['production_source_head']
+    return {**context['expected'], 'proof': proof, 'business_pass': False}
 
 
 def observe_cache_after(frame, dto, data):

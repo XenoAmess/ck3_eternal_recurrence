@@ -37,3 +37,7 @@ v2 按 `enabled_mods` 实际顺序比较任意非空模组集合。仅将验证�
 新 holder case `lyd-holder-stage-20261010-002` 的公共 prepare、bound plan、无现场 context 的 preflight 均实际 exit 0、blockers 为空。首次 prepare 因 ROOT 错写 registry 路径，在建 profile 前退出 2；保留原回执，仅纠正为已有 `tools/ck3_mod_acceptance_products.json` 后执行成功。尚未 allocate、取得新鲜离线亲审或启动游戏。[实际来源、缓存与准备回执](acceptance/2026-10-10-graphics-cache-footprint-v2/PREPARE.actual.json)。
 
 此次唯一 4 GiB 峰值于08:45 UTC重新登记，保守当前占用121,559,165,119 B，空闲624,803,192,832 B；配额例外 Oct12 原到期不续。新峰值尚未闭账，供本次串行 Source09/cache/profile/单场诊断，其他任务不得重复消费。首次和后继准备的 NOT_RUN 是各自记录时刻状态，不追认旧 R47 闭场。
+
+## case 层更正与 runtime 边界（2026-10-10 追加）
+
+R48 的实际 runtime `repo_root` 指向 MAIN；公共 Selection 从该目录解析 case adapter，allocator 将 case 目录独立加入冻结 pins。Source09 的 7,906 件 index 未含 holder adapter/test。因此修复 MAIN 的启动证明合同不会改变该共享 runtime 的 cache key；应正常 fresh prepare 更新 handler pins，保持 Source09 与现有 v2 seed，不能手补旧 hook 或无必要导出新 runtime。R48 因合同失败在动作前停止，没有产生 cache hit 或业务通过证据。[本场事实](../li-yu-dao/acceptance/2026-10-10-r0048-holder-startup-contract-red/REPORT.md)。
