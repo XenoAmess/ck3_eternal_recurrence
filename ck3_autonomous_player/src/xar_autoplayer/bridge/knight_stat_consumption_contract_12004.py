@@ -21,6 +21,36 @@ _CONTEXT_FIELDS = {
     "context_matches_preparation", "owner_matches_preparation",
     "pc_matches_preparation_post", "reason",
 }
+_STAGE_SCHEMA = "xar.ck3.entry-selected-receiver-stage-12004-v1"
+_CI_RETURN_RVAS = (
+    0x2C06B03, 0x2C06B51, 0x2C06B8D, 0x2C06BC4, 0x2C06BFB,
+    0x2C06C32, 0x2C06C69, 0x2C06CA0, 0x2C06CD7,
+)
+_STAGE_BOOLEANS = {
+    "exact_consumed_callsite", "exact_capture_build", "preparation_capture_observed",
+    "preparation_capture_complete", "preparation_raw_counts_ready",
+    "completed_preparation_lineage_proven",
+}
+_STAGE_COMPARISONS = {
+    "capture_sequence_matches_record", "exact_preparation_source_return",
+    "selected_matches_capture_identity", "selected_matches_capture_id",
+    "selected_matches_model_owner_identity", "selected_matches_model_owner_id",
+    "getter_matches_capture_context", "getter_matches_preparation_model_inline",
+    "completion_on_consumption_thread", "completed_post_pc_matches_consumed",
+}
+_STAGE_IDENTITIES = {
+    "linked_character_identity", "selected_character_identity", "getter_context_identity",
+    "preparation_character_identity", "preparation_model_identity",
+    "preparation_context_identity", "preparation_owner_character_identity",
+}
+_STAGE_IDS = {"linked_character_id", "selected_character_id", "preparation_owner_character_id"}
+_STAGE_FIELDS = {
+    "schema", "property_key", "consumed_return_rva", "observation_stage",
+    "preparation_stage", "preparation_stage_observed_mask", "preparation_capture_sequence",
+    "preparation_source_return_rva", "preparation_capture_thread_id",
+    "preparation_completion_thread_id", "consumption_thread_id", "reason",
+    *_STAGE_BOOLEANS, *_STAGE_COMPARISONS, *_STAGE_IDENTITIES, *_STAGE_IDS,
+}
 _OUTPUT_RAW_FIELDS = (
     "siege_value_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw",
 )
@@ -116,8 +146,130 @@ def _pc(value: object, path: str) -> dict[str, object]:
     return result
 
 
+def _preparation_stage_lineage(value: object, row: dict, path: str) -> dict | None:
+    if value is None:
+        return None
+    raw = _dict(value, path, _STAGE_FIELDS)
+    if raw["schema"] != _STAGE_SCHEMA:
+        raise ValueError(path + " requires the actual4 selected-receiver stage schema")
+    result = {
+        "schema": _STAGE_SCHEMA,
+        "property_key": _integer(raw["property_key"], path + ".property_key", 16, unsigned=True),
+        "consumed_return_rva": _raw64(raw["consumed_return_rva"], path + ".consumed_return_rva", unsigned=True),
+        "preparation_capture_sequence": _raw64(raw["preparation_capture_sequence"], path + ".preparation_capture_sequence", unsigned=True),
+        "preparation_source_return_rva": _raw64(raw["preparation_source_return_rva"], path + ".preparation_source_return_rva", unsigned=True, optional=True),
+        "preparation_stage_observed_mask": _integer(raw["preparation_stage_observed_mask"], path + ".preparation_stage_observed_mask", 8, unsigned=True),
+        "consumption_thread_id": _integer(raw["consumption_thread_id"], path + ".consumption_thread_id", 32, unsigned=True),
+        "observation_stage": _string(raw["observation_stage"], path + ".observation_stage"),
+        "preparation_stage": _string(raw["preparation_stage"], path + ".preparation_stage"),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+    }
+    for field in _STAGE_BOOLEANS | _STAGE_COMPARISONS:
+        result[field] = _boolean(raw[field], path + "." + field,
+                                 optional=field in _STAGE_COMPARISONS)
+    for field in _STAGE_IDENTITIES:
+        result[field] = _identity(raw[field], path + "." + field)
+    for field in _STAGE_IDS | {"preparation_capture_thread_id", "preparation_completion_thread_id"}:
+        result[field] = _number(raw[field], path + "." + field, 32, unsigned=True)
+    for field, row_field in (
+        ("property_key", "property_key"), ("consumed_return_rva", "caller_return_rva"),
+        ("selected_character_id", "selected_character_id"),
+        ("selected_character_identity", "selected_character_identity"),
+        ("getter_context_identity", "context_identity"),
+    ):
+        if result[field] != row[row_field]:
+            raise ValueError(path + "." + field + " differs from this actual consumed Ci")
+    if (result["observation_stage"] != "actual_effectiveness_context_return"
+            or result["preparation_stage"] not in {
+                "unobserved", "open_native_six_stage_capture", "paused_same_thread_six_stage_completion"}
+            or result["preparation_stage_observed_mask"] > 0x3F):
+        raise ValueError(path + " changed its actual observation stage")
+    exact_call = row["caller_return_rva"] == _CI_RETURN_RVAS[row["property_key"] - 0xC1]
+    if result["exact_consumed_callsite"] is not exact_call:
+        raise ValueError(path + " exact callsite flag differs from its observed return")
+    if result["completed_preparation_lineage_proven"]:
+        if (not all(result[field] is True for field in
+                    _STAGE_BOOLEANS | _STAGE_COMPARISONS)
+                or result["preparation_stage"] != "paused_same_thread_six_stage_completion"
+                or result["preparation_stage_observed_mask"] != 0x3F
+                or result["preparation_capture_sequence"] == 0
+                or result["preparation_capture_sequence"] != row["preparation_capture_sequence"]
+                or result["preparation_source_return_rva"] != 0x291CEA9
+                or result["reason"] is not None
+                or not row["consumed_pc"]["ready"]):
+            raise ValueError(path + " completed proof lacks its owned completion facts")
+        selected, context = row["selected_character_identity"], row["context_identity"]
+        model = result["preparation_model_identity"]
+        if (selected in (None, 0) or context in (None, 0) or model in (None, 0)
+                or selected != result["preparation_character_identity"]
+                or selected != result["preparation_owner_character_identity"]
+                or row["selected_character_id"] is None
+                or row["selected_character_id"] != result["preparation_owner_character_id"]
+                or row["selected_character_id"] != row["preparation_owner_character_id"]
+                or model != row["preparation_model_identity"]
+                or context != result["preparation_context_identity"]
+                or context != row["preparation_context_identity"]
+                or context != model + 0x10
+                or row["consumed_pc"]["identity"] != context + 0x68
+                or result["consumption_thread_id"] == 0
+                or result["preparation_capture_thread_id"] != result["consumption_thread_id"]
+                or result["preparation_completion_thread_id"] != result["consumption_thread_id"]):
+            raise ValueError(path + " completed proof differs from this Ci's receiver or thread")
+    return result
+
+
+def _capture_at_consumption(value: object, row: dict, path: str) -> dict | None:
+    from .battle_person_six_stage_capture_12004 import normalize_person_six_stage_capture_12004
+
+    try:
+        capture = normalize_person_six_stage_capture_12004(value)
+    except ValueError as error:
+        raise ValueError(path + ": " + str(error)) from error
+    lineage = row.get("preparation_stage_lineage")
+    if capture is None or lineage is None:
+        return capture
+    for field, captured in (
+        ("preparation_capture_observed", capture["capture_observed"]),
+        ("preparation_capture_complete", capture["capture_complete"]),
+        ("preparation_raw_counts_ready", capture["raw_counts_ready"]),
+        ("preparation_capture_sequence", capture["capture_sequence"]),
+        ("preparation_capture_thread_id", capture["capture_thread_id"]),
+        ("preparation_completion_thread_id", capture["query_thread_id"]),
+        ("preparation_character_identity", _identity(capture["character_identity"], path)),
+        ("preparation_context_identity", _identity(capture["context_identity"], path)),
+        ("preparation_source_return_rva", _identity(capture["source_return_rva"], path)),
+        ("preparation_stage_observed_mask", sum(1 << stage["index"]
+                                               for stage in capture["stages"] if stage["observed"])),
+    ):
+        if lineage[field] != captured:
+            raise ValueError(path + " differs from the capture used by this Ci's lineage")
+    preparation = capture.get("preparation_model")
+    if preparation is not None:
+        for field, captured in (
+            ("preparation_model_identity", _identity(preparation["model_identity"], path)),
+            ("preparation_owner_character_identity", _identity(preparation["owner_character_identity"], path)),
+            ("preparation_owner_character_id", preparation["owner_character_id"]),
+        ):
+            if lineage[field] != captured:
+                raise ValueError(path + " differs from this Ci's captured Model owner")
+    if lineage["completed_preparation_lineage_proven"]:
+        post = capture.get("post_six_aggregate")
+        pc = row["consumed_pc"]
+        if (not capture["configured"] or not capture["historical_capture"]
+                or capture["character_id"] != row["selected_character_id"]
+                or preparation is None or not preparation["observed"] or not preparation["ready"]
+                or post is None or not post["observed"] or not post["pc"]["ready"]
+                or _identity(post["pc"]["identity"], path) != pc["identity"]
+                or post["pc"]["count_i32"] != pc["count_i32"]
+                or post["pc"]["properties"] != pc["properties"]):
+            raise ValueError(path + " completed proof lacks this Ci's exact owned post PC")
+    return capture
+
+
 def _context(value: object, path: str) -> dict[str, object]:
-    raw = _dict(value, path, _CONTEXT_FIELDS)
+    optional_fields = (set(value) & {"preparation_stage_lineage", "preparation_capture_at_consumption"}
+                       if isinstance(value, dict) else set())
+    raw = _dict(value, path, _CONTEXT_FIELDS | optional_fields)
     key = _integer(raw["property_key"], path + ".property_key", 16, unsigned=True)
     if not 0xC1 <= key <= 0xC9:
         raise ValueError(path + " property key is outside the nine actual knight Ci calls")
@@ -145,6 +297,12 @@ def _context(value: object, path: str) -> dict[str, object]:
         if (result[flag] is not None and result[left] is not None and result[right] is not None
                 and result[flag] != (result[left] == result[right])):
             raise ValueError(path + "." + flag + " disagrees with its observed identities")
+    if "preparation_stage_lineage" in raw:
+        result["preparation_stage_lineage"] = _preparation_stage_lineage(
+            raw["preparation_stage_lineage"], result, path + ".preparation_stage_lineage")
+    if "preparation_capture_at_consumption" in raw:
+        result["preparation_capture_at_consumption"] = _capture_at_consumption(
+            raw["preparation_capture_at_consumption"], result, path + ".preparation_capture_at_consumption")
     return result
 
 
@@ -226,6 +384,16 @@ def _event(value: object, path: str) -> dict[str, object]:
         _context(context, f"{path}.contexts[{index}]")
         for index, context in enumerate(contexts)
     ]
+    for index, row in enumerate(result["contexts"]):
+        lineage = row.get("preparation_stage_lineage")
+        if lineage is None:
+            continue
+        for field, event_field in (("linked_character_id", "linked_character_id"),
+                                   ("linked_character_identity", "linked_character_identity"),
+                                   ("consumption_thread_id", "thread_id")):
+            if lineage[field] != result[event_field]:
+                raise ValueError(f"{path}.contexts[{index}].preparation_stage_lineage.{field}"
+                                 + " differs from its actual wrapper event")
     keys = [context["property_key"] for context in result["contexts"]]
     if any(left >= right for left, right in zip(keys, keys[1:])):
         raise ValueError(path + " changed native Ci call order or repeated a consumed property")

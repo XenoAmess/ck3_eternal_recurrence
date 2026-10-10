@@ -85,6 +85,49 @@ void Pc(std::ostream &out, const PersonFollowing2922680Pc &pc) {
   out << '}';
 }
 
+void PreparationStageLineage(std::ostream &out,
+                             const EntrySelectedReceiverStage12004 &stage) {
+  out << "{\"schema\":"; String(out, kEntrySelectedReceiverStageSchema12004);
+  out << ",\"property_key\":"; out << +stage.property_key;
+  out << ",\"consumed_return_rva\":"; Raw64(out, stage.consumed_return_rva);
+  out << ",\"exact_consumed_callsite\":"; out << (stage.exact_consumed_callsite ? "true" : "false");
+  out << ",\"exact_capture_build\":"; out << (stage.exact_capture_build ? "true" : "false");
+  out << ",\"observation_stage\":"; String(out, stage.observation_stage);
+  out << ",\"preparation_stage\":"; String(out, stage.preparation_stage);
+  out << ",\"linked_character_id\":"; Number(out, stage.linked_character_id);
+  out << ",\"linked_character_identity\":"; Pointer(out, stage.linked_character_identity);
+  out << ",\"selected_character_id\":"; Number(out, stage.selected_character_id);
+  out << ",\"selected_character_identity\":"; Pointer(out, stage.selected_character_identity);
+  out << ",\"getter_context_identity\":"; Pointer(out, stage.getter_context_identity);
+  out << ",\"preparation_capture_observed\":"; out << (stage.preparation_capture_observed ? "true" : "false");
+  out << ",\"preparation_capture_complete\":"; out << (stage.preparation_capture_complete ? "true" : "false");
+  out << ",\"preparation_raw_counts_ready\":"; out << (stage.preparation_raw_counts_ready ? "true" : "false");
+  out << ",\"preparation_stage_observed_mask\":"; out << +stage.preparation_stage_observed_mask;
+  out << ",\"preparation_capture_sequence\":"; Raw64(out, stage.preparation_capture_sequence);
+  out << ",\"preparation_source_return_rva\":"; Raw64(out, stage.preparation_source_return_rva);
+  out << ",\"preparation_capture_thread_id\":"; Number(out, stage.preparation_capture_thread_id);
+  out << ",\"preparation_completion_thread_id\":"; Number(out, stage.preparation_completion_thread_id);
+  out << ",\"consumption_thread_id\":"; out << +stage.consumption_thread_id;
+  out << ",\"preparation_character_identity\":"; Pointer(out, stage.preparation_character_identity);
+  out << ",\"preparation_model_identity\":"; Pointer(out, stage.preparation_model_identity);
+  out << ",\"preparation_context_identity\":"; Pointer(out, stage.preparation_context_identity);
+  out << ",\"preparation_owner_character_identity\":"; Pointer(out, stage.preparation_owner_character_identity);
+  out << ",\"preparation_owner_character_id\":"; Number(out, stage.preparation_owner_character_id);
+  out << ",\"capture_sequence_matches_record\":"; Boolean(out, stage.capture_sequence_matches_record);
+  out << ",\"exact_preparation_source_return\":"; Boolean(out, stage.exact_preparation_source_return);
+  out << ",\"selected_matches_capture_identity\":"; Boolean(out, stage.selected_matches_capture_identity);
+  out << ",\"selected_matches_capture_id\":"; Boolean(out, stage.selected_matches_capture_id);
+  out << ",\"selected_matches_model_owner_identity\":"; Boolean(out, stage.selected_matches_model_owner_identity);
+  out << ",\"selected_matches_model_owner_id\":"; Boolean(out, stage.selected_matches_model_owner_id);
+  out << ",\"getter_matches_capture_context\":"; Boolean(out, stage.getter_matches_capture_context);
+  out << ",\"getter_matches_preparation_model_inline\":"; Boolean(out, stage.getter_matches_preparation_model_inline);
+  out << ",\"completion_on_consumption_thread\":"; Boolean(out, stage.completion_on_consumption_thread);
+  out << ",\"completed_post_pc_matches_consumed\":"; Boolean(out, stage.completed_post_pc_matches_consumed);
+  out << ",\"completed_preparation_lineage_proven\":"; out << (stage.completed_preparation_lineage_proven ? "true" : "false");
+  out << ",\"reason\":"; Reason(out, stage.reason);
+  out << '}';
+}
+
 void Context(std::ostream &out, const KnightConsumedContext12004 &context) {
   out << "{\"property_key\":" << context.property_key << ",\"caller_return_rva\":";
   Raw64(out, context.caller_return_rva);
@@ -101,6 +144,14 @@ void Context(std::ostream &out, const KnightConsumedContext12004 &context) {
   out << ",\"owner_matches_preparation\":"; Boolean(out, context.owner_matches_preparation);
   out << ",\"pc_matches_preparation_post\":"; Boolean(out, context.pc_matches_preparation_post);
   out << ",\"reason\":"; Reason(out, context.reason);
+  if (context.preparation_stage_lineage) {
+    out << ",\"preparation_stage_lineage\":";
+    PreparationStageLineage(out, *context.preparation_stage_lineage);
+  }
+  if (context.preparation_capture_at_consumption) {
+    out << ",\"preparation_capture_at_consumption\":"
+        << SerializePersonSixStageCapture12004(*context.preparation_capture_at_consumption);
+  }
   out << '}';
 }
 

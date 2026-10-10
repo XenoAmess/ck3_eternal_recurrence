@@ -65,9 +65,72 @@ def _modifier_at_consumption(row: Mapping, key: int) -> tuple[object, dict]:
                    "missing_inputs": tuple(calculation.missing)}
 
 
+def _owned_preparation_inputs_at_consumption(event: Mapping) -> tuple[dict, tuple]:
+    """Use only the capture retained at this Ci, with its completed source proof.
+
+    Equal owned copies may share the existing composition/adapter result. A
+    Character ID or capture sequence alone cannot select another Ci's capture.
+    No subsequent current-model or historical query supplies these inputs.
+    """
+    eligible = [row for row in event["contexts"]
+                if isinstance(row.get("preparation_stage_lineage"), Mapping)
+                and row["preparation_stage_lineage"]["completed_preparation_lineage_proven"] is True
+                and isinstance(row.get("preparation_capture_at_consumption"), Mapping)]
+    if not eligible:
+        return {}, ()
+    from ..bridge.battle_person_six_stage_capture_12004 import (
+        FIELD_NAME, emit_captured_person_preparation_model_12004,
+    )
+    from .battle_person_six_stage_postimage_12004 import compose_captured_six_stage_postimage_12004
+    # The qualified adapter imports _modifier_at_consumption from this module.
+    # Import it only after this consumer module is fully initialized.
+    from .battle_entry_person_stage_join_12004 import join_owned_person_postimage_to_knight_stage_12004
+
+    cached, overrides, ledger = [], {}, []
+    for row in eligible:
+        capture = row["preparation_capture_at_consumption"]
+        preparation = capture.get("preparation_model")
+        if (not capture.get("aggregate_postimage_comparison_ready")
+                or preparation is None or not preparation["ready"]):
+            continue
+        joined = None
+        for retained, prior in cached:
+            if retained == capture:
+                joined = prior
+                break
+        if joined is None:
+            section = {"character_id": capture["character_id"], FIELD_NAME: capture}
+            postimage = compose_captured_six_stage_postimage_12004(section)
+            owner = emit_captured_person_preparation_model_12004(section)
+            joined = join_owned_person_postimage_to_knight_stage_12004(postimage, owner, event)
+            cached.append((capture, joined))
+            ledger.append({
+                "capture_sequence": capture["capture_sequence"],
+                "capture_thread_id": capture["capture_thread_id"],
+                "completion_thread_id": capture["query_thread_id"],
+                "character_id": capture["character_id"],
+                "character_identity": capture["character_identity"],
+                "context_identity": capture["context_identity"],
+                "model_identity": owner["model_identity"],
+                "completion_matches_composition": postimage["completion_matches_composition"],
+                "source": "same_ci_owned_preparation_capture_at_consumption",
+            })
+        key = row["property_key"]
+        if key not in joined.historical_property_keys:
+            continue
+        index = key - 0xC1
+        detail = deepcopy(joined.property_inputs[index])
+        detail["consumed_pc_identity"] = row["consumed_pc"]["identity"]
+        detail["preparation_capture_source"] = "same_ci_owned_preparation_capture_at_consumption"
+        # Only this row's retained capture authorizes replacement of this Ci.
+        overrides[key] = (joined.inputs.effectiveness.context.aggregate_properties.values_q64[index], detail)
+    return overrides, tuple(ledger)
+
+
 def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
     """Consume one normalized event without equating its nine native contexts."""
     by_key = {row["property_key"]: row for row in event["contexts"]}
+    owned_inputs, owned_ledger = _owned_preparation_inputs_at_consumption(event)
     modifiers, operands, details = [], [], []
     selected_ids = []
     for key in _KEYS:
@@ -78,7 +141,13 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
             selected_ids.append(None)
             details.append({"property_key": key, "branch": "native_context_unobserved"})
             continue
-        value, detail = _modifier_at_consumption(row, key)
+        if key in owned_inputs:
+            value, detail = owned_inputs[key]
+        else:
+            value, detail = _modifier_at_consumption(row, key)
+            if "preparation_stage_lineage" in row:
+                detail["preparation_stage_lineage"] = deepcopy(row["preparation_stage_lineage"])
+                detail["historical_postimage_selected"] = False
         modifiers.append(value)
         operands.append(row["operand_raw"])
         selected_ids.append(row["selected_character_id"])
@@ -90,10 +159,11 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
     # makes no claim that one native PC supplied every Ci lookup.
     numerical_context = NativeModifierContext12003(PropertyContainer12003(
         _KEYS, tuple(modifiers), len(_KEYS)))
+    source_stage = ("actual4_consumed_ci_with_owned_six_stage_postimage" if owned_inputs else _STAGE)
     inputs = KnightStatStageInputs12003(
         event["linked_character_id"], event["linked_prowess_points"], _STAGE,
         KnightEffectivenessStage12003(
-            selected_id, _STAGE, numerical_context, tuple(operands),
+            selected_id, source_stage, numerical_context, tuple(operands),
             {"source_kind": "per_ci_consumed_native_pc_projection",
              "consumed_contexts": deepcopy(event["contexts"]),
              "shared_native_context_claimed": False}),
@@ -119,7 +189,7 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
                 if physical_ready else None)
         for field in _CACHE_FIELDS
     }
-    return {
+    result = {
         "sequence": event["sequence"],
         "thread_id": event["thread_id"],
         "observed_date_raw": event["observed_date_raw"],
@@ -135,7 +205,7 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
         "native_return_identity": event["native_return_identity"],
         "ready": calculated.ready,
         "missing_inputs": tuple(calculated.missing_inputs),
-        "source_stage": _STAGE,
+        "source_stage": source_stage,
         "modifier_raw": tuple(modifiers),
         "operand_raw": tuple(operands),
         "property_inputs": tuple(details),
@@ -163,6 +233,19 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
         "full_person_ready": False,
         "full_entry_ready": False,
     }
+    if any("preparation_stage_lineage" in row or "preparation_capture_at_consumption" in row
+           for row in event["contexts"]):
+        result["preparation_stage_join"] = {
+            "historical_property_keys": tuple(key for key in _KEYS if key in owned_inputs),
+            "unmatched_property_keys": tuple(key for key in _KEYS if key not in owned_inputs),
+            "owned_capture_compositions": owned_ledger,
+            "source": "same_ci_owned_preparation_capture_at_consumption",
+            "later_current_query_used": False,
+            "original_operands_preserved": True,
+            "installed_model_transfer_inferred": False,
+            "original_entry_invocation_inferred": False,
+        }
+    return result
 
 
 def project_knight_stat_consumption_12004(value: object) -> dict | None:

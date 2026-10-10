@@ -1,6 +1,8 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_person_following_2922680.hpp"
+#include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
+#include "xar_bridge/entry_selected_receiver_stage_12004.hpp"
 
 #include <array>
 #include <cstdint>
@@ -28,6 +30,9 @@ struct KnightConsumedContext12004 {
   std::optional<bool> context_matches_preparation;
   std::optional<bool> owner_matches_preparation;
   std::optional<bool> pc_matches_preparation_post;
+  // Owned at this actual consumed-Ci return; absent in legacy records.
+  std::optional<EntrySelectedReceiverStage12004> preparation_stage_lineage;
+  std::optional<PersonSixStageCapture12004DTO> preparation_capture_at_consumption;
   std::string reason;
   friend bool operator==(const KnightConsumedContext12004 &,
                          const KnightConsumedContext12004 &) = default;

@@ -1,7 +1,8 @@
 # The real startup hooks and V2 combat-input serializer share this owned ring.
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_knight_stat_consumption.cpp
-  src/ck3_12004_knight_stat_consumption_serializer.cpp)
+  src/ck3_12004_knight_stat_consumption_serializer.cpp
+  src/entry_selected_receiver_stage_12004.cpp)
 
 if(BUILD_TESTING AND WIN32)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
@@ -32,6 +33,22 @@ if(BUILD_TESTING AND WIN32)
     target_compile_options(xar_knight_stat_consumption_12004_whole PRIVATE
       /W4 /WX /permissive- /EHsc /utf-8 /UNDEBUG)
   endif()
+
+  add_executable(xar_knight_stat_consumption_stage_lineage_12004 EXCLUDE_FROM_ALL
+    tests/knight_stat_consumption_stage_lineage_12004_fixture.cpp)
+  target_link_libraries(xar_knight_stat_consumption_stage_lineage_12004 PRIVATE
+    xar_ck3_12002_runtime)
+  target_include_directories(xar_knight_stat_consumption_stage_lineage_12004 PRIVATE include)
+  target_compile_features(xar_knight_stat_consumption_stage_lineage_12004 PRIVATE cxx_std_20)
+  target_compile_definitions(xar_knight_stat_consumption_stage_lineage_12004 PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_knight_stat_consumption_stage_lineage_12004 PRIVATE
+      /W4 /WX /permissive- /EHsc /utf-8 /UNDEBUG)
+  endif()
+  add_test(NAME xar_knight_stat_consumption_stage_lineage_12004
+    COMMAND $<TARGET_FILE:xar_knight_stat_consumption_stage_lineage_12004>
+      "${CMAKE_CURRENT_BINARY_DIR}/wire/knight-stat-stage-lineage-12004")
 
   add_test(NAME xar_knight_stat_consumption_12004_whole
     COMMAND $<TARGET_FILE:xar_knight_stat_consumption_12004_whole>

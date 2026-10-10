@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
+#include "xar_bridge/entry_selected_receiver_stage_12004.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 
 #include <algorithm>
@@ -383,8 +384,9 @@ void *InvokeKnightStatContext12004(void *selected_character,
       } else context.consumed_pc.reason = "consumed_context_null";
       if (!operand) context.reason = "consumed_operand_copy_failed";
       else if (!context.consumed_pc.ready) context.reason = context.consumed_pc.reason;
+      PersonSixStageCapture12004DTO capture;
       if (context.selected_character_id) {
-        const auto capture = ReadPersonSixStageCaptureForCharacter12004(
+        capture = ReadPersonSixStageCaptureForCharacter12004(
             reinterpret_cast<std::uintptr_t>(selected_character), *context.selected_character_id);
         if (capture.capture_observed) {
           context.preparation_capture_sequence = capture.capture_sequence;
@@ -403,6 +405,11 @@ void *InvokeKnightStatContext12004(void *selected_character,
                 capture.post_six_aggregate.pc == context.consumed_pc;
         }
       }
+      context.preparation_stage_lineage = ObserveEntrySelectedReceiverStage12004(
+          capture, context, {g_pending->linked_character_id,
+                             g_pending->linked_character_identity, g_pending->thread_id});
+      if (capture.capture_observed)
+        context.preparation_capture_at_consumption = std::move(capture);
       g_pending->contexts.push_back(std::move(context));
     } catch (...) { g_capture_failures.fetch_add(1); }
   }
