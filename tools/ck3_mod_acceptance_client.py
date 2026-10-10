@@ -444,7 +444,26 @@ class CaseClient:
                     from ck3_mod_acceptance_appointment import collection_arguments
                     args=collection_arguments(action['arguments'])
                     self.checkpoint(action_name+'-once-intent',action)
-                    result=self.query_appointment_pool(**args)
+                    try:
+                        result=self.query_appointment_pool(**args)
+                    except ValueError as error:
+                        if not str(error).startswith('Appointment collection rejected:'):
+                            raise
+                        # R66 returned native data, but the stale window cache
+                        # failed collection. Keep the original paused checkpoint
+                        # so its owner can reopen the window and use a new request.
+                        report=self.guard(reserve)
+                        self.validate_frame(self.snapshot())
+                        submitted=report.get('steps',[])
+                        require(all(row.get('finished_at') and row.get('ok') is True and
+                                    not row.get('error') for row in submitted),
+                                'Appointment retry requires completed healthy host steps')
+                        result={'collection_status':'REJECTED','error':str(error),
+                            'business_pass':False,'business_acceptance':'NOT_ASSESSED',
+                            'original_hold_deadline':self._hold,
+                            'submitted_steps_never_replayed':True,
+                            'submitted_step_evidence':[{key:row.get(key) for key in
+                                ('id','finished_at','ok','error')} for row in submitted]}
                     self.checkpoint(name+'-readonly-response-'+str(action_sequence).zfill(4),result)
                     action_sequence+=1
             if response.is_file():

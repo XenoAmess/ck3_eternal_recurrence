@@ -33,9 +33,9 @@
       "tool": "ck3_query_campaign_root_context_v1",
       "args": {},
       "expect": {
-        "player_legitimacy_v1.status": "available",
-        "player_legitimacy_v1.unavailable_reason": null,
-        "player_legitimacy_v1.value.scale": 100000,
+        "campaign_root_context.player_legitimacy_v1.status": "available",
+        "campaign_root_context.player_legitimacy_v1.unavailable_reason": null,
+        "campaign_root_context.player_legitimacy_v1.value.scale": 100000,
         "player_character_id": {
           "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
         },
@@ -536,9 +536,9 @@
       "tool": "ck3_query_campaign_root_context_v1",
       "args": {},
       "expect": {
-        "player_legitimacy_v1.status": "available",
-        "player_legitimacy_v1.unavailable_reason": null,
-        "player_legitimacy_v1.value.scale": 100000,
+        "campaign_root_context.player_legitimacy_v1.status": "available",
+        "campaign_root_context.player_legitimacy_v1.unavailable_reason": null,
+        "campaign_root_context.player_legitimacy_v1.value.scale": 100000,
         "player_character_id": {
           "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
         },

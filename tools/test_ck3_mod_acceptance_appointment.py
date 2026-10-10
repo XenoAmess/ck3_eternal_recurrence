@@ -2,6 +2,7 @@
 from pathlib import Path
 import ast,copy,importlib.util,json,sys,tempfile,types,unittest
 import argparse
+from unittest.mock import patch
 parser=argparse.ArgumentParser(add_help=False)
 parser.add_argument('--support-repo',type=Path,default=Path(__file__).resolve().parents[1])
 options,remaining=parser.parse_known_args()
@@ -165,6 +166,50 @@ class Wiring(unittest.TestCase):
   for key,value in [('actual_successor_character_id',999),('chosen_character_id',101),('original_switch_restored',False)]:
    bad=copy.deepcopy(slot);bad[key]=value
    with self.assertRaises(ValueError):gov.verify_slots([bad],contract,101)
+ def test_r66_collection_rejection_keeps_checkpoint_but_host_failure_stops_it(self):
+  for healthy in (True,False):
+   with self.subTest(healthy_host=healthy), tempfile.TemporaryDirectory() as tmp:
+    c=object.__new__(clientmod.CaseClient);c.output=Path(tmp);c.frozen={'run_id':'offline-run'}
+    c.operator_reviewer='/root/operator';c._hold=1234;c.remaining=lambda:200
+    c.selection=types.SimpleNamespace(case={'id':'administrative_appointments','opt_in_read_only_mcp_tools':[a.TOOL]})
+    c.snapshot=lambda:frame();c.validate_frame=lambda f:f
+    bad=row();bad['result']['title_appointment'].update(breakdown_available=False,
+      breakdown_unavailable_reason='breakdown_total_differs_from_cached_native_score')
+    report={'steps':[bad]};original=copy.deepcopy(report);guards=[];calls=[]
+    def guard(reserve):
+     guards.append(reserve)
+     if not healthy and len(guards)>1:raise ValueError('Actual shared host failed')
+     return report
+    c.guard=guard
+    for sequence,reference in enumerate(('offline-navigation','refreshed-navigation')):
+     args={'requested_title_id':14770,'requested_title_key':'d_zhexi','expected_law':LAW,'navigation_step_id':reference}
+     action={'action':'appointment-full-pool','run_id':'offline-run','reviewer':'/root/operator','sequence':sequence,'arguments':args}
+     (c.output/('test-readonly-request-'+str(sequence).zfill(4)+'.json')).write_text(json.dumps(action),encoding='utf-8')
+    def query(**arguments):
+     calls.append(arguments)
+     if len(calls)==1:return join([bad])
+     (c.output/'test-root-result.json').write_text(json.dumps({'run_id':'offline-run','reviewer':'/root/operator'}),encoding='utf-8')
+     return {'business_acceptance':'NOT_ASSESSED'}
+    c.query_appointment_pool=query
+    with patch.object(clientmod.time,'sleep',return_value=None):
+     if healthy:
+      c.root_checkpoint('test',{},read_only_appointment=True)
+     else:
+      with self.assertRaisesRegex(ValueError,'Actual shared host failed'):
+       c.root_checkpoint('test',{},read_only_appointment=True)
+    rejected=c.output/'test-readonly-response-0000.json'
+    if healthy:
+     response=json.loads(rejected.read_text())
+     self.assertEqual(response['collection_status'],'REJECTED');self.assertFalse(response['business_pass'])
+     self.assertTrue(response['error'].startswith('Appointment collection rejected:'))
+     self.assertTrue(response['submitted_steps_never_replayed']);self.assertEqual(response['original_hold_deadline'],1234)
+     self.assertEqual(response['submitted_step_evidence'],[{key:bad.get(key) for key in ('id','finished_at','ok','error')}])
+     self.assertEqual([call['navigation_step_id'] for call in calls],['offline-navigation','refreshed-navigation'])
+     self.assertTrue((c.output/'test-readonly-response-0001.json').is_file())
+    else:
+     self.assertFalse(rejected.exists());self.assertEqual(len(calls),1)
+    self.assertEqual(c._hold,1234);self.assertEqual(report,original);self.assertTrue(all(value==90 for value in guards))
+
  def test_checkpoint_readonly_action_served_once_with_no_gui_action(self):
   with tempfile.TemporaryDirectory() as tmp:
    c=object.__new__(clientmod.CaseClient);c.output=Path(tmp);c.frozen={'run_id':'offline-run'}

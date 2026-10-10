@@ -1,5 +1,9 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10：R67路径修正、R68候选池与共用检查点
+
+本线只做天朝二期以外原十mod，正式仍7/10。R67负例资格及anchor通过后因合法度字段实际嵌套路径失败；两PAM计划/合同已定点修正，旧输入不可直接复用。R68受控2000贤能已实证level3满足floor3，但自然公国5AI/县38AI均无人类玩家，仍资格GAP，完整业务未运行。两场真闭场，下一场admin34在每相刷新同一窗口后查询；共用客户端只读收集拒绝保留健康检查点的修正已单项测试通过，host失败仍停止。[事实、证据与边界](xqol-r67-r68-candidate-pool-2026-10-10.md)。旧失败、其他owner工作与发布门禁均保留；剩余QOL→重整河山→361既有0.3.1，排除G2/二期。
+
 ## 2026-10-10：R65真实等级、R66缓存拒绝与受控正例
 
 正式仍7/10，范围只为天朝二期以外原十mod。Source17首次真实current-rule level0<floor3已定位无效自然零资源正例；原版默认不为独立ruler初始化merit。Root批准两author文件明确controlled-qualified-merit-positive-v1准备2000，仅修harness前提，完整两law/引擎人类AI池/百万三相/恢复/真实继任不降，旧R65GAP保留，尚待新prepare/live。R66 OFF池成立，ON旧窗口cache不刷新导致breakdown拒绝，整case仍RED；两场均正常trueCLOSED/CAS释放。[完整新事实与限制](xqol-r65-r66-controlled-merit-2026-10-10.md)。
