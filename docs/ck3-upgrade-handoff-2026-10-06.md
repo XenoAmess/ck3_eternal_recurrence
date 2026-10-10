@@ -1,5 +1,15 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 19:12：R63资格失败已闭场，独立merit等待容量
+
+正式仍7/10（70%）。Source16六份后继输入已实际READY，PAM+被R63消费后在原启动AND失败、业务0；两项必要personal fulfillment FALSE，其他FALSE不都代表错误。原run2/verify2及normal=false保留，11:01:02Z真CLOSED、原allocator实际0/keeper0/CAS8321，未到root所以不授bootstrap修正实机通过。[原薄证据和后继](xqol-r63-pam-startup-2026-10-10.md)。PAM±共享setup原因并行静态核对；下一独立merit29原0日/预算/断言不改，fresh准入仍缺317251584 B，未allocate。
+
+`b57d4ee9`[官方CI38046326169](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38046326169)已实际66 success/20 skipped/0 failed；后继不借用其GREEN。[Source16冻结、旧副本退役及R63缓存回收](maintenance/storage-retention-2026-10-10-source16-r63.md)累计actual删除31549902568 B/592121 files，压缩另列，不把logical/path sums或free delta当回收。
+
+G2最新6067基线优先于历史6066；交接给出的8个外机D:/Z:/确切资产路径在本机均WinError3，其他未声明副本未知。已请求可访问的manifest/共享路径/下载地址；先需6067恢复与checkpoint绑定、完整12路证据清单、匹配SDK/DLL包清单，再预算一次传输，未下载104787543 B存档、未做本机cold验收。[精确资产缺口薄卡](C:/workspace/ck3-upgrade-20261010/g2-followup-assets-availability-01/ROOT-G2-ASSETS-AVAILABILITY-01.md)。mod主线继续，不等待此输入。
+
+19:22追加：PAM+仅采用原setter前后只读观察02，未选择业务修法；负场原guard不依双槽，可独立继续。原followup9项在Main实际通过并补入统一CI，生产client不改；此前错误验证路径和旧mock不兼容如实留证。磁盘已实际清旧archive/rejected obj与明确退役的早期生成cache共347155008 B，累计31897057576 B/601435 files；free现观测比原场门槛高22269952 B。历史缺失CLOSED不补造，只作当前cache退役；新clean HEAD之后再fresh准入merit29。源码/业务断言/Source16 host/native不变，merit无需新prepare。
+
 ## 2026-10-10 18:50：公共修正已发布，Source16选定
 
 `cbdd0102913b8273922b1228af065ab785b6c82e`经fetch/rebase/普通push，官方CI38045262825终态66 success/20 skipped/0 failed。共同bootstrap44及mapper43本地40项、Python-only9项与全仓门禁通过。Source16在独立16MiB预约下单次7.924秒冻结：6,905个硬链接继承、独立host234,601 B/ed91、新增独立文件3,362,269 B，无native重编译/profile创建；Root实际选定runtime15232/a3cd2dc5，旧14/15不改。[精确pins与当前范围](ck3-native-ai/shared-acceptance-source15-and-startup-revision.md#source16实际冻结及root选定)。四未消费PAM正负/UI/领主赎金仅新manifest绑定，已消费政府场另fresh state/publicprepare；均尚未增加业务信用。正式仍7/10，容量与新clean HEAD满足后才开始下一场。

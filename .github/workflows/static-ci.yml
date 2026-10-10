@@ -168,6 +168,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_appointment.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_xqol_followups.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/test_appointment_window_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_failure_shutdown.py

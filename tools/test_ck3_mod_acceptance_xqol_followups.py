@@ -142,7 +142,13 @@ class OriginalCases(unittest.TestCase):
                 client.selection=types.SimpleNamespace(prepared={'preparation':{'initial_plan_original_business':declared}},
                     case={'budgets':{'readiness_timeout':400,'timeout':4500}})
                 reports=iter([{'phase':'initial-plan','steps':[]},{'phase':'hold','steps':[{'finished_at':'actual'}]}])
-                client.read_report=lambda:next(reports);client.guard=lambda:None;client.retain_process=lambda:None
+                current_report=None
+                def read_report(allow_error=False):
+                    nonlocal current_report
+                    if allow_error:current_report=next(reports)
+                    return current_report
+                client.read_report=read_report;client.guard=lambda:None;client.retain_process=lambda:None
+                client.retain_held_process=lambda report:False
                 with patch.object(module.time,'monotonic',side_effect=[0,1,401]),patch.object(module.time,'sleep'):
                     if success:self.assertEqual(client.wait_hold()['phase'],'hold')
                     else:

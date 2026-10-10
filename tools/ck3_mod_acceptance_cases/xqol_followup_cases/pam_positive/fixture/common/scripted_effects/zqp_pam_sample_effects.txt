@@ -31,16 +31,36 @@ zqp_setup_positive_effect = {
  set_character_faith = faith:nestorian
  set_character_rite = rite:nestorian
  every_personal_tenet = { scope:actor = { remove_personal_tenet = prev } }
+ # ZQP63_OBSERVE_ONLY_BEGIN after_original_remove_all
+ debug_log = "ZQP120: SETUP63 BEGIN after_original_remove_all"
+ zqp_observe_personal_setup_state63_effect = yes
+ debug_log = "ZQP120: SETUP63 END after_original_remove_all"
+ # ZQP63_OBSERVE_ONLY_END after_original_remove_all
  # The two real personal tenets require two actual slots (base cap is one).
  # Stock piety level 4 grants one additional slot before the original baseline.
  if = {
   limit = { piety_level < 4 }
   set_piety_level = { value = 4 }
  }
+ # ZQP63_OBSERVE_ONLY_BEGIN after_original_piety_branch_immediately_before_dual_setter_guard
+ debug_log = "ZQP120: SETUP63 BEGIN after_original_piety_branch_immediately_before_dual_setter_guard"
+ zqp_observe_personal_setup_state63_effect = yes
+ debug_log = "ZQP120: SETUP63 END after_original_piety_branch_immediately_before_dual_setter_guard"
+ # ZQP63_OBSERVE_ONLY_END after_original_piety_branch_immediately_before_dual_setter_guard
  if = {
   limit = { has_pam_dlc_trigger = yes free_personal_tenet_slots >= 2 }
   set_personal_tenet = tenet:tenet_acts_of_apostles
+ # ZQP63_OBSERVE_ONLY_BEGIN after_original_acts_setter
+ debug_log = "ZQP120: SETUP63 BEGIN after_original_acts_setter"
+ zqp_observe_personal_setup_state63_effect = yes
+ debug_log = "ZQP120: SETUP63 END after_original_acts_setter"
+ # ZQP63_OBSERVE_ONLY_END after_original_acts_setter
   set_personal_tenet = tenet:tenet_mendicant_preachers
+ # ZQP63_OBSERVE_ONLY_BEGIN after_original_mendicant_setter
+ debug_log = "ZQP120: SETUP63 BEGIN after_original_mendicant_setter"
+ zqp_observe_personal_setup_state63_effect = yes
+ debug_log = "ZQP120: SETUP63 END after_original_mendicant_setter"
+ # ZQP63_OBSERVE_ONLY_END after_original_mendicant_setter
  }
  zqp_initialize_spiritual_fulfillment_zero_effect = yes
  set_variable = { name = zqp_stock_sp_major value = major_spiritual_fulfillment_value }
@@ -257,3 +277,28 @@ zqp_initialize_spiritual_fulfillment_zero_effect = {
  }
  else = { debug_log = "ZQPBASE120: DIAG actual_baseline_not_zero" }
 }
+
+# ZQP63_OBSERVE_ONLY_HELPER_BEGIN
+zqp_observe_personal_setup_state63_effect = {
+ if = { limit = { has_pam_dlc_trigger = yes } debug_log = "ZQP120: SETUP63 pam_dlc TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 pam_dlc FALSE" }
+ if = { limit = { free_personal_tenet_slots >= 2 } debug_log = "ZQP120: SETUP63 free_ge2 TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 free_ge2 FALSE" }
+ if = { limit = { free_personal_tenet_slots = 0 } debug_log = "ZQP120: SETUP63 free_eq0 TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 free_eq0 FALSE" }
+ if = { limit = { free_personal_tenet_slots = 1 } debug_log = "ZQP120: SETUP63 free_eq1 TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 free_eq1 FALSE" }
+ if = { limit = { free_personal_tenet_slots < 0 } debug_log = "ZQP120: SETUP63 free_lt0 TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 free_lt0 FALSE" }
+ if = { limit = { any_personal_tenet = { always = yes } } debug_log = "ZQP120: SETUP63 owned_any TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 owned_any FALSE" }
+ if = { limit = { piety_level = 4 } debug_log = "ZQP120: SETUP63 piety_eq4 TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 piety_eq4 FALSE" }
+ if = { limit = { piety_level = 5 } debug_log = "ZQP120: SETUP63 piety_eq5 TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 piety_eq5 FALSE" }
+ if = { limit = { has_personal_tenet = tenet_acts_of_apostles } debug_log = "ZQP120: SETUP63 acts_member TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 acts_member FALSE" }
+ if = { limit = { has_personal_tenet = tenet_mendicant_preachers } debug_log = "ZQP120: SETUP63 mendicant_member TRUE" }
+ else = { debug_log = "ZQP120: SETUP63 mendicant_member FALSE" }
+}
+# ZQP63_OBSERVE_ONLY_HELPER_END

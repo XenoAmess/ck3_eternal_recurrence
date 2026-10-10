@@ -58,3 +58,10 @@ Source16唯一producer在disk100独立16MiB/300秒准入后一次exit0，10:45:1
 旧14/15 prepared不能直接搭新manifest。PAM正负/UI及领主赎金原未消费输入只生成顶层runtime_manifest替换的新sibling，support/fixture/profile/case_inputs/contract/initial_plan逐项保持；已消费merit/admin分别新state、各一次公共prepare，QA27-07/原断言/0日及原预算不变。本截点四sibling及两prepare仍在执行，只有实际回执才能授READY；完整现场业务仍未通过。公共Selection129比较完整pin，Windows prepared使用公共`str(Path.resolve())`；四继承Python SHA从被选manifest绑定的source_index精确行核对，不能在仅列host delta的新manifest中盲找。原计划26保留，27纠正稿未改变业务。
 
 磁盘线同时按已审索引退休旧Source10/11/12同字节派生行；差异、旧index/manifest与关键原件保留。18:38截点前五批已实清3334单链接文件/200,450,048 B；多链接项保留，该数字不外推为全部候选已回收或当前准入。冻结闭账后不再把16MiB当未来峰值重复计；活动prepare仍另预留，下一场fresh2GiB公式不变。所有后继只从公共入口使用同一Source16，原R61/R62失败及等级诊断NOT_RUN不追认。
+
+
+## R63启动资格与后继输入实际状态
+
+2026-10-10 19:12 CST追加：四sibling28及两政府fresh publicprepare29均实际READY（见[R63后继pins](../xqol-r63-pam-startup-2026-10-10.md)），前述“仍在执行”为18:50历史截点。PAM+随后被R63消费，在原复合资格阶段FAIL，35步/自然日/业务均0；两项必要fulfillment FALSE，其他FALSE不能一概判错。未到campaign root，不授bootstrap44实机通过。原失败已真CLOSED、allocator实际0/keeper0/CAS8321；PAM−暂缓，独立merit29因fresh缺317251584 B未allocate。
+
+`b57d4ee9cf10306af0ea40b04bc49e514376f73c`的[官方CI38046326169](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38046326169)实际success，static114196496323，86步=66 success/20 skipped/0 failed/0 pending。终态11:00:40Z，API实际回读11:01:35Z；[原薄回执](C:/workspace/ck3-upgrade-20261010/resume-release-ready-02/official-ci-b57d4ee9-readonly-23/ROOT-B57D4EE9-OFFICIAL-CI-ACTUAL-FINAL-23.json)22742 B，无日志/artifact下载、无重跑，不外推给后继HEAD。

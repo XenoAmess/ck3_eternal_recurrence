@@ -33,3 +33,6 @@ Root随后明确允许四个已闭构建输出NTFS无损压缩：runtime.lib、b
 下一独立实机场仍要求 **30,071,062,528 B**：2GiB单场peak+6MiB其他未消费预算+6GiB系统/应用aggregate规划+20GiB安全余量。10:24:04Z fresh free29,802,262,528 B，仍缺268,800,000 B；CK3进程为空、a164未allocate，pagefile logical5,736,935,424 B与mtime稳定，未知卷变化不编造原因。Root Git窗口未关闭，须新clean HEAD及fresh容量准入后才可启动。
 
 目前仅按既有索引审阅旧派生副本及已知旧cache，候选不是已释放。原始来源、原片、失败attempt、配置及必要业务证据继续保留；详细availability/journal按30天到期归纳，薄摘要180天复核，不自动续期，不降低业务合同、Steam离线或容量公式。
+
+
+Source16冻结、12批旧副本退役及R63真实闭场后的容量记录见[追加](storage-retention-2026-10-10-source16-r63.md)，原时点数据保持历史原样。
