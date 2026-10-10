@@ -7,3 +7,5 @@
 首次本机定向命令因记录器固定cwd与工具模块搜索路径不一致，产生4个loader错误，未进入测试场景。改用显式工具目录的6方法选择器后才形成上列实际PASS；原命令、失败stderr和后继结果分别保留。[完整小证据索引](acceptance/2026-10-11-pause-ast-ci-correction/INDEX.json)含官方原始失败步骤的无损ZIP。
 
 Source14/O14尚未物化。旧009准入不能暗改为新来源；先关闭未消费预约，再由新published exact、包含这四项修复的16路径计划与新准入生成后继。原2f与9e失败、旧计划及容量回执原样保留。此修正没有新的游戏日、SAVE、自然到期或冷重载信用，一期仍75% / NOT_GREEN。
+
+2026-10-10T22:51:55Z后续事实：修正提交 `51a43763f66fdf9e7c88a096bb2797dd6fdad769` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38091655512) 已于22:38:57Z成功，Linear亦成功。加入显式Python缓存兼容后的最终18路径Source14已实际生成并绑定，源码资格成立，实机资格仍未取得；原16路径草稿和旧失败未改写。

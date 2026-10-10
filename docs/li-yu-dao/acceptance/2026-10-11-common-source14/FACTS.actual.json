@@ -1,0 +1,101 @@
+{
+  "schema": "source14-permanent-small-facts-v1",
+  "at_utc": "2026-10-10T22:59:33.509181+00:00",
+  "published_head": "c0de7851a8a56a90eede6e1473795daac81eee7c",
+  "derived_source_head": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "source_root": "C:\\csr14",
+  "selected_path_count": 18,
+  "source_is_mixed_projection_not_full_master": true,
+  "native_build_source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "source_ready": true,
+  "shared_status": "PASS_SHARED_REGISTRATION_AND_INERT_SDK_DISPATCH",
+  "actual_default_tool_count": 173,
+  "actual_inert_on_tool_count": 177,
+  "actual_sdk_dispatch_count": 4,
+  "public_stock_feature_effective_default": false,
+  "public_stock_feature_absent_key_preserved": true,
+  "real_game_native_endpoint_bus_SAVE_calls": 0,
+  "live_or_business_credit": false,
+  "old_B_test_execution_origin_preserved": true,
+  "old_tests_rerun": false,
+  "binder001_failure": "producer Python source incorrectly parsed as JSON; failed before target writes",
+  "binder002_exit_code": 0,
+  "capacity010_closed": {
+    "bytes": 6191,
+    "sha256": "774c1af5a9bf6339985d444116c23143c710b5043f6ac0ff3c3fbd4eea1b0ab8",
+    "known_retained_bytes": 161111254,
+    "future_bytes": 0
+  },
+  "admission011_outside_package": {
+    "bytes": 8775,
+    "sha256": "afbbf05faad65cb09c5980dd9d059515d2b59184a5c229b1e4b38ff995280ebb",
+    "reservation_bytes": 2147483648,
+    "five_asset_credit_bytes": 458348713,
+    "credit_claim_count": 1
+  },
+  "CASE6_new_cache_prepare_or_live_facts": "OUT_OF_SCOPE_SEPARATE_PACKAGE",
+  "external_refs": {
+    "source_successor": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\PYTHON-SUCCESSOR.actual.json",
+      "bytes": 29687,
+      "sha256": "815a83358f184919b5ac5285fcc9541de1a97176193ece3ad13d29826802157a"
+    },
+    "binding": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\SOURCE14-BIND.actual.json",
+      "bytes": 28888,
+      "sha256": "7623c9bc9630b55621c861f1d7e9d4dc96b281c03bd51f4d3b2c2064ae54f6dd"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\manifest.json",
+      "bytes": 52685,
+      "sha256": "0b0e2cbda15e1cbd2e847abcc8215c48b5622fac80212cf5fdfb43ce2e8a4d8d"
+    },
+    "runtime": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\runtime.local.json",
+      "bytes": 2032,
+      "sha256": "ccfdf1087d624fa123382d8c5c9b5a3903c281b88221b4057bf4e5752fc31e31"
+    },
+    "source_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\source-index.json",
+      "bytes": 1794115,
+      "sha256": "75078043338e07d339f0e278052fcbdae45f81d6dcb8bfc2c0476a1434ad7144"
+    },
+    "native_source_index": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\native-source-index.json",
+      "bytes": 1019737,
+      "sha256": "874ec1f6e9e649c28278cb7a5802f80d4d43bac69d9b2912b1447b753827f686"
+    },
+    "paths_manifest": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-successor-preparation-20261011-004\\PATHS-MANIFEST.actual.json",
+      "bytes": 47000,
+      "sha256": "7ed54e57b7d2959ee0865864e064b1ab3123216efbd56192ca2097c464ccd2a8"
+    },
+    "capacity_admission010": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-010\\ADMISSION.actual.json",
+      "bytes": 6527,
+      "sha256": "a2a5d7dabb3d1516b3de1d7fd7f20ce58d3b06b05ccd3cd818422f601170e8e3"
+    },
+    "sourceonly_qualifier": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-sourceonly-20261011-001\\qualify_shared_registration.py",
+      "bytes": 17872,
+      "sha256": "2c9674bfd81e2dab0b8440f68ece173da37d5d894e4b3f1ab1406efffa4d69da"
+    },
+    "focused_source_join": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-successor-preparation-20261011-004\\FOCUSED-SOURCE-JOIN.actual.json",
+      "bytes": 8145,
+      "sha256": "78b1508e6528037a6a28e11a72339420d127d136fb272ab52ce903268bf82ec5"
+    },
+    "CI_terminal_indices": {
+      "51a": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-51a43763-ci-terminal-readonly-20261011-001\\INDEX.json",
+        "bytes": 8105,
+        "sha256": "5323992e57837e0f230909c3a9cc48f6a1c3724339963b4b4a094426a2d24a0e"
+      },
+      "c0de": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-c0de7851-ci-terminal-readonly-20261011-001\\INDEX.json",
+        "bytes": 9984,
+        "sha256": "467e2aecce061464930301d8dde80db085a9e8009fff201f9a3e27ec268395ac"
+      }
+    }
+  }
+}

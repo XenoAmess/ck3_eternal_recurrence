@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/source14-case6-cache-root-sourceonly-20261011-001/freeze_r54_v2.py",
+    "--admission",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-011/ADMISSION.actual.json",
+    "--tools-dir",
+    "C:/csr14/tools",
+    "--output",
+    "C:/workspace/ck3-common-runtime/graphics-seeds/lyd-r54-20261011-001",
+    "--result",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-natural-public-inputs-20261011-006/FREEZE.actual.json"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:54:40.807758+00:00",
+  "finished_at_utc": "2026-10-10T22:55:34.958254+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-r54-cache-freeze-command-20261011-001\\stdout.log",
+    "bytes": 1171,
+    "sha256": "e1de454dc17f3f9b57da57909d53b2069df577fc38fb6d663c2a22c271d46291"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-r54-cache-freeze-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

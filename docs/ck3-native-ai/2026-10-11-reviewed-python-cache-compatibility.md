@@ -11,3 +11,5 @@
 Source14将完整继承O13的host features；stock grant缺项的公共解析默认OFF，下一I4不会附带其私有启用flag。旧009准入已于22:31:01.087080Z—22:31:01.463253Z实际取消，未来预约0，Source14/O14与物化命令目录均不存在。释放192MiB预约不计物理删除；最终源码选择与新准入另建，不覆盖9e的失败或旧计划。
 
 本包尚未建立真实兼容收据、复制缓存或启动CK3；实际应用需继续走公共plan/prepare/allocate/preflight/run/verify。唯一新增资格为上述合成软件合同，一期仍75% / NOT_GREEN。
+
+2026-10-10T22:51:55Z后续事实：提交 `c0de7851a8a56a90eede6e1473795daac81eee7c` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38092153694) 已于22:49:19Z成功，Linear亦成功。最终18路径Source14已通过完整共享MCP注册与四条合成SDK调用链，绑定为源码可选用状态；这些结果不授缓存命中、CK3启动或业务通过。

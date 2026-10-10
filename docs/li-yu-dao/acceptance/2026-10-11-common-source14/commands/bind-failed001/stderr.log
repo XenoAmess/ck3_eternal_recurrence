@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source14-successor-preparation-20261011-004\bind_source14_final.py", line 293, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source14-successor-preparation-20261011-004\bind_source14_final.py", line 160, in main
+    refs[key],value=h.read(path,digest,count)
+                    ~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source13-python-binding-sourceonly-20261011-002\bind_python_successor.py", line 77, in read
+    return actual,json.loads(Path(path).read_text(encoding='utf-8-sig'))
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\json\decoder.py", line 348, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 3 (char 2)

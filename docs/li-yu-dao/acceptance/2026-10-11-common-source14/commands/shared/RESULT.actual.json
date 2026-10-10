@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-shared-registration-sourceonly-20261011-001/qualify_shared_registration.py",
+    "--receipt",
+    "C:/workspace/ck3-common-runtime/20261011-014/PYTHON-SUCCESSOR.actual.json",
+    "--receipt-sha256",
+    "815a83358f184919b5ac5285fcc9541de1a97176193ece3ad13d29826802157a",
+    "--published-source-head",
+    "c0de7851a8a56a90eede6e1473795daac81eee7c",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-shared-registration-qualification-20261011-001"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:45:12.541019+00:00",
+  "finished_at_utc": "2026-10-10T22:45:19.496501+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-command-20261011-001\\stdout.log",
+    "bytes": 580,
+    "sha256": "f1576d4a37726c9079e3520071795200935aa6d9c1e7f9719faf772891e6a884"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "schema": "source14-common-shared-registration-qualification-v1",
+  "status": "PASS_SHARED_REGISTRATION_AND_INERT_SDK_DISPATCH",
+  "started_at_utc": "2026-10-10T22:45:12.774795Z",
+  "argv": [
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-shared-registration-sourceonly-20261011-001/qualify_shared_registration.py",
+    "--receipt",
+    "C:/workspace/ck3-common-runtime/20261011-014/PYTHON-SUCCESSOR.actual.json",
+    "--receipt-sha256",
+    "815a83358f184919b5ac5285fcc9541de1a97176193ece3ad13d29826802157a",
+    "--published-source-head",
+    "c0de7851a8a56a90eede6e1473795daac81eee7c",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-shared-registration-qualification-20261011-001"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "checks": [
+    {
+      "check": "actual_receipt_pin",
+      "pass": true
+    },
+    {
+      "check": "actual_source14_lineage",
+      "pass": true
+    },
+    {
+      "check": "native_reuse_is_original_only",
+      "pass": true
+    },
+    {
+      "check": "future_public_stock_feature_stays_off",
+      "pass": true
+    },
+    {
+      "check": "readonly_features_from_actual_parent_manifest",
+      "pass": true
+    },
+    {
+      "check": "source_index_same_derived_head",
+      "pass": true
+    },
+    {
+      "check": "host_mcp_receipt_refs_exact",
+      "pass": true
+    },
+    {
+      "check": "full_production_module_origins",
+      "pass": true
+    },
+    {
+      "check": "all_loaded_xar_modules_inside_source14",
+      "pass": true
+    },
+    {
+      "check": "actual_host_admission_binder_present",
+      "pass": true
+    },
+    {
+      "check": "stock_absent_permission_off",
+      "pass": true
+    },
+    {
+      "check": "stock_explicit_off_same_complete_metadata",
+      "pass": true
+    },
+    {
+      "check": "stock_on_exact_four_added",
+      "pass": true
+    },
+    {
+      "check": "old_tools_metadata_unchanged",
+      "pass": true
+    },
+    {
+      "check": "registration_metadata_did_not_dispatch",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_grant_title_picker_v1_closed_actual_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_prepare_grant_title_picker_v1_closed_actual_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_select_grant_title_picker_v1_closed_actual_schema",
+      "pass": true
+    },
+    {
+      "check": "ck3_send_grant_title_picker_v1_closed_actual_schema",
+      "pass": true
+    },
+    {
+      "check": "actual_sdk_call_interface",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_grant_title_picker_v1_actual_full_sdk_service_driver_route",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_grant_title_picker_v1_synthetic_unavailable_returned",
+      "pass": true
+    },
+    {
+      "check": "ck3_query_grant_title_picker_v1_exact_synthetic_request",
+      "pass": true
+    },
+    {
+      "check": "ck3_prepare_grant_title_picker_v1_actual_full_sdk_service_driver_route",
+      "pass": true
+    },
+    {
+      "check": "ck3_prepare_grant_title_picker_v1_synthetic_unavailable_returned",
+      "pass": true
+    },
+    {
+      "check": "ck3_prepare_grant_title_picker_v1_exact_synthetic_request",
+      "pass": true
+    },
+    {
+      "check": "ck3_select_grant_title_picker_v1_actual_full_sdk_service_driver_route",
+      "pass": true
+    },
+    {
+      "check": "ck3_select_grant_title_picker_v1_synthetic_unavailable_returned",
+      "pass": true
+    },
+    {
+      "check": "ck3_select_grant_title_picker_v1_exact_synthetic_request",
+      "pass": true
+    },
+    {
+      "check": "ck3_send_grant_title_picker_v1_actual_full_sdk_service_driver_route",
+      "pass": true
+    },
+    {
+      "check": "ck3_send_grant_title_picker_v1_synthetic_unavailable_returned",
+      "pass": true
+    },
+    {
+      "check": "ck3_send_grant_title_picker_v1_exact_synthetic_request",
+      "pass": true
+    },
+    {
+      "check": "selected_source_unchanged",
+      "pass": true
+    }
+  ],
+  "game_calls": 0,
+  "real_bus_calls": 0,
+  "save_body_reads": 0,
+  "native_builds": 0,
+  "main_writes": 0,
+  "source_writes": 0,
+  "live_or_business_credit": false,
+  "profile_sdk21_23_24_tests_rerun": false,
+  "old_grant8_pause6_batch15_tests_rerun": false,
+  "no_profile_created": true,
+  "runtime_manifest_created_or_changed": false,
+  "public_runtime_stock_feature_changed": false,
+  "script": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-sourceonly-20261011-001\\qualify_shared_registration.py",
+    "bytes": 17872,
+    "sha256": "2c9674bfd81e2dab0b8440f68ece173da37d5d894e4b3f1ab1406efffa4d69da"
+  },
+  "source_head": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "source_root": "C:\\csr14",
+  "source_module": {
+    "path": "C:\\csr14\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 212325,
+    "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+  },
+  "host_source": {
+    "path": "C:\\csr14\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 269082,
+    "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+  },
+  "source_refs": {
+    "host": {
+      "path": "C:\\csr14\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 269082,
+      "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+    },
+    "mcp": {
+      "path": "C:\\csr14\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 212325,
+      "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+    },
+    "service": {
+      "path": "C:\\csr14\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 706734,
+      "sha256": "410320ccd6757ca7be54111296333cc36c215ca5317d7385219a67b1b23399e3"
+    },
+    "driver": {
+      "path": "C:\\csr14\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1441722,
+      "sha256": "f251402537ad504e7a63a5a5318abd88d721b68e72a5972d68e847b5f4205ed9"
+    },
+    "contract": {
+      "path": "C:\\csr14\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\grant_title_picker_v1.py",
+      "bytes": 14768,
+      "sha256": "4d1f7e4f7c1fcabaaa8cfaf8c7ac1592c072f989418da31b7bbaff3ea9e9bbb3"
+    },
+    "entry": {
+      "path": "C:\\csr14\\tools\\ck3_mod_acceptance.py",
+      "bytes": 40606,
+      "sha256": "43a84141b29031a7d3dc0194cb5cf386a73d42ed83ec36b84c85a5a21377550a"
+    }
+  },
+  "actual_source_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 29687,
+    "sha256": "815a83358f184919b5ac5285fcc9541de1a97176193ece3ad13d29826802157a"
+  },
+  "native_build_source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "published_source_commit": "c0de7851a8a56a90eede6e1473795daac81eee7c",
+  "source_paths_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-successor-preparation-20261011-004\\PATHS-MANIFEST.actual.json",
+    "bytes": 47000,
+    "sha256": "7ed54e57b7d2959ee0865864e064b1ab3123216efbd56192ca2097c464ccd2a8"
+  },
+  "readonly_feature_source": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\manifest.json",
+    "bytes": 25159,
+    "sha256": "69312f885d1a234ee059934f283e6a774b291cdbbd85b0d9d8a5da1359f9574f"
+  },
+  "shared_registration_qualified": true,
+  "service_route_qualified": true,
+  "existing_native_driver_route_qualified": true,
+  "native_driver_or_native_payload_qualified": false,
+  "default_off_qualified": true,
+  "stock_grant_title_picker_default_off_qualified": true,
+  "actual_sdk_dispatch_count": 4,
+  "default_tool_count": 173,
+  "opt_in_tool_count": 177,
+  "tool_census_95_observed": false,
+  "dispatch_blocker": null,
+  "finished_at_utc": "2026-10-10T22:45:19.163014Z",
+  "exit_code": 0,
+  "checks_passed": 33,
+  "checks_failed": 0,
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-qualification-20261011-001\\METADATA.actual.json",
+    "bytes": 9609,
+    "sha256": "fb3995f49ef73bdd12c8ab4425082e26af6eeef6c8387d1c808fd3eba7faaaec"
+  }
+}

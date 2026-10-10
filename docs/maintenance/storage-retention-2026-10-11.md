@@ -69,3 +69,12 @@ ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，�
 
 
 06:36 CST追加：009在Source14/O14与materialize commandroot均不存在时实际取消，未来预约0，原192MiB释放属于预约释放而非磁盘回收。五副本458348713B仅在下一容量台账按同一事件扣一次。共享v2现在可按显式review收据核准Python-only runtime delta复用缓存，但没有实际复制/命中；原cacheTTL与quota截止不续。[合同与取消回执](../ck3-native-ai/2026-10-11-reviewed-python-cache-compatibility.md)。
+
+
+### Source14 预约010闭账与CASE6预约011实际准入
+
+真实追加时间：2026-10-10T23:08:46.175750+00:00。010实际CLOSED，限定known-retained161111254B、future0、physical delete0；原件6191B / SHA-256 `774c1af5a9bf6339985d444116c23143c710b5043f6ac0ff3c3fbd4eea1b0ab8` 位于 `C:/workspace/ck3_lyd_runtime_20261004/common-storage-admission-20261011-010/CLOSED-RESERVATION.actual.json`。释放192MiB预约不等于磁盘回收。限定索引及Git只计一次，没有全B或旧PE/SAVE正文重扫。
+
+独立011实际准入2GiB，ADMISSION8775B / `afbbf05faad65cb09c5980dd9d059515d2b59184a5c229b1e4b38ff995280ebb` 位于 `C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-011/ADMISSION.actual.json`。基数135510258348B +010实际161111254B +闭账1MiB +新小增量32MiB -五副本458348713B +本场2147483648B =137395107545B，低于原配额137438953472B，余43845927B。原008/009已含的小上界未再加；五副本claim1460B / `ca3b0324e41daaa27b1a0d6acc67dbb4ddaf77c000b5a8da4f5c2c41d989d5ea` 已实际唯一创建，不能再抵扣。准入卷free619678306304B不代表项目实际占用。
+
+本轮CASE6 prepare/plan/preflight实际0，新v2 seed3740文件/146942067B及profile复制已纳入011。大prepared-case/2MB stdout保持外置，原[小准备证据](../li-yu-dao/2026-10-11-i4-case6-cache-preparation.md)入库，不声称cache engine命中或业务通过。011仍ACTIVE，实际run结束和keeper/CAS释放后再按限定新资产metadata闭账；未知全量与历史峰值继续null。原配额2026-10-12T05:19:51.814083Z、cache复核2026-10-17T13:06:29.278808Z不续，策略仍1.0.0，自动GC/自动预约尚未部署。

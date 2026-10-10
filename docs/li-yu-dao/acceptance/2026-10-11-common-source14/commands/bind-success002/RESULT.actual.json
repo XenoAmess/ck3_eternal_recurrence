@@ -1,0 +1,50 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-successor-preparation-20261011-004/bind_source14_final_002.py",
+    "--published-source-head",
+    "c0de7851a8a56a90eede6e1473795daac81eee7c",
+    "--successor-result",
+    "C:/workspace/ck3-common-runtime/20261011-014/PYTHON-SUCCESSOR.actual.json",
+    "--successor-result-bytes",
+    "29687",
+    "--successor-result-sha256",
+    "815a83358f184919b5ac5285fcc9541de1a97176193ece3ad13d29826802157a",
+    "--expected-source-commit",
+    "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+    "--source-root",
+    "C:/csr14",
+    "--metadata-root",
+    "C:/workspace/ck3-common-runtime/20261011-014",
+    "--python-qualification",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-shared-registration-qualification-20261011-001/RESULT.actual.json",
+    "--python-qualification-bytes",
+    "8159",
+    "--python-qualification-sha256",
+    "0468a3b276c79b891e4f5d1ccbba5888fda25d65a2ec8d6984f3de907c2238e6",
+    "--focused-evidence",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source14-successor-preparation-20261011-004/FOCUSED-SOURCE-JOIN.actual.json",
+    "--focused-evidence-bytes",
+    "8145",
+    "--focused-evidence-sha256",
+    "78b1508e6528037a6a28e11a72339420d127d136fb272ab52ce903268bf82ec5"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:51:55.425697+00:00",
+  "finished_at_utc": "2026-10-10T22:51:55.952088+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-bind-command-20261011-002\\stdout.log",
+    "bytes": 606,
+    "sha256": "a652b810a39789342e4f27afdcb46ce97860b735ac20f9d1ab979a6e9c7810ab"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-bind-command-20261011-002\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

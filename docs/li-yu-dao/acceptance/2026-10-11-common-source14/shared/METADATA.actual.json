@@ -1,0 +1,304 @@
+{
+  "schema": "source14-common-shared-registration-actual-metadata-v1",
+  "source_head": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "source_root": "C:\\csr14",
+  "source_module": {
+    "path": "C:\\csr14\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 212325,
+    "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+  },
+  "host_source": {
+    "path": "C:\\csr14\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 269082,
+    "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+  },
+  "full_create_server_imported": true,
+  "sdk_distribution_version": "2.0.0",
+  "operational_readonly_flags": {
+    "succession_title_readonly": true,
+    "confucian_challenger_readonly": true
+  },
+  "public_runtime_stock_feature": false,
+  "local_inert_opt_in_only": true,
+  "default_absent_tool_count": 173,
+  "explicit_off_tool_count": 173,
+  "inert_on_tool_count": 177,
+  "actual_on_census_equals_95": false,
+  "default_names_sha256": "3b0d95a8fcb5e70e5e3fbad0bfc26e9ac69c3301f5beb06bb92d89dd326fdaa2",
+  "off_metadata_sha256": "29f95fd5e1ed54446b71712c3394190283e22e27bbb2555765287978b443d40d",
+  "on_metadata_sha256": "3711c1d02c15108599665fd9d1a3da56e323e01415cf540d748741ac4b12a2bc",
+  "old_tools_byte_equivalent_as_canonical_metadata": true,
+  "added_names": [
+    "ck3_prepare_grant_title_picker_v1",
+    "ck3_query_grant_title_picker_v1",
+    "ck3_select_grant_title_picker_v1",
+    "ck3_send_grant_title_picker_v1"
+  ],
+  "grant_tools": [
+    {
+      "name": "ck3_query_grant_title_picker_v1",
+      "description": "Read the actual stock grant window; no title is selected or transferred.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "title": "Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_query_grant_title_picker_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "ck3_prepare_grant_title_picker_v1",
+      "description": "Open the existing stock grant window; this is not a transfer receipt.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "title": "Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_prepare_grant_title_picker_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_prepare_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "ck3_select_grant_title_picker_v1",
+      "description": "Select one exact full Title ID and read the complete resulting selection.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "title_full_id": {
+            "exclusiveMaximum": 4294967295,
+            "minimum": 0,
+            "title": "Title Full Id",
+            "type": "integer"
+          },
+          "desired_selected": {
+            "title": "Desired Selected",
+            "type": "boolean"
+          },
+          "expected_selected_title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "title": "Expected Selected Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "title_full_id",
+          "desired_selected",
+          "expected_selected_title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_select_grant_title_picker_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_select_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "ck3_send_grant_title_picker_v1",
+      "description": "Send once through stock; actual holder readback is required for transfer verification.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "expected_selected_title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Expected Selected Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "expected_selected_title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_send_grant_title_picker_v1Arguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_send_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "positive_dispatch": [
+    {
+      "tool": "ck3_query_grant_title_picker_v1",
+      "trace": [
+        "service",
+        "existing_driver",
+        "existing_execute",
+        "inert_primitive"
+      ],
+      "primitive_step": "query-grant-title-picker-v1",
+      "sdk_result_sha256": "f385a1e6aa5bbc8c22d7a486fc9cc9e94ac72d4f5cce25225240e8c1c933fef3",
+      "returned_synthetic_unavailable": true
+    },
+    {
+      "tool": "ck3_prepare_grant_title_picker_v1",
+      "trace": [
+        "service",
+        "existing_driver",
+        "existing_execute",
+        "inert_primitive"
+      ],
+      "primitive_step": "prepare-grant-title-picker-v1",
+      "sdk_result_sha256": "f688124779c07e293d2038e65aeef0ecd534eb106aaa49df021b9fb178c3eca0",
+      "returned_synthetic_unavailable": true
+    },
+    {
+      "tool": "ck3_select_grant_title_picker_v1",
+      "trace": [
+        "service",
+        "existing_driver",
+        "existing_execute",
+        "inert_primitive"
+      ],
+      "primitive_step": "select-grant-title-picker-v1",
+      "sdk_result_sha256": "08c110b11fca33a8f20d84e5fa3ce06e5ae5535d879cd60ca2f5782525473880",
+      "returned_synthetic_unavailable": true
+    },
+    {
+      "tool": "ck3_send_grant_title_picker_v1",
+      "trace": [
+        "service",
+        "existing_driver",
+        "existing_execute",
+        "inert_primitive"
+      ],
+      "primitive_step": "send-grant-title-picker-v1",
+      "sdk_result_sha256": "e9e8709d2dc25cd4181b0f17a96462961d4ceba19c69eba48fc4dbe796c0db9a",
+      "returned_synthetic_unavailable": true
+    }
+  ],
+  "positive_sdk_dispatch_count": 4,
+  "primitive_receiver_count": 4,
+  "synthetic_snapshot_reads": 8,
+  "native_endpoint_or_game_calls": 0
+}
