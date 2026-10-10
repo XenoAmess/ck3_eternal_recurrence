@@ -65,9 +65,35 @@ SwayTerminationCaptureResult12002 CaptureSwayTerminationBefore12002(
 bool CaptureSwayTerminationAfter12002(const SwayTerminationBindings12002 &bindings,
                                     SwayTerminationSource12002 &source) noexcept;
 
+// Optional actual4 copied invocation and source-proved relationship. No native
+// pointer is retained; absent relation never supplies a terminal cause.
+struct SwayTerminationInvocation12004 {
+  bool present = false;
+  std::uint64_t observer_session_identity = 0;
+  std::uint32_t owner_thread_id = 0;
+  std::uint64_t original_invocation_id = 0;
+  std::uintptr_t original_rva = 0;
+  bool incoming_return_address_observed = false;
+  std::uintptr_t caller_return_rva = 0;
+  bool original_forwarded_once = false;
+  bool original_returned = false;
+  bool pre_frame_observed = false;
+  std::int32_t pre_date_raw = 0;
+  bool post_frame_observed = false;
+  std::int32_t post_date_raw = 0;
+  bool causal_relationship_observed = false;
+  std::uint64_t branch_source_sequence = 0;
+  std::uint64_t parent_toast_invocation_id = 0;
+  bool native_returns_observed = false;
+  bool native_returns_truncated = false;
+  std::size_t native_return_count = 0;
+  std::array<std::uintptr_t, 32> native_return_rvas{};
+};
+
 struct SwayTerminationRecord12002 {
   std::uint64_t sequence = 0;
   SwayTerminationSource12002 source;
+  SwayTerminationInvocation12004 native_invocation{};
 };
 struct SwayTerminationQuery12002 {
   std::uint32_t actor_character_id = 0xFFFFFFFFu;
@@ -91,7 +117,8 @@ class SwayTerminationRecorder12002 {
 public:
   void SetObserverAttached(bool attached) noexcept;
   bool ObserverAttached() const noexcept;
-  bool Append(const SwayTerminationSource12002 &source) noexcept;
+  bool Append(const SwayTerminationSource12002 &source,
+      const SwayTerminationInvocation12004 *native_invocation = nullptr) noexcept;
   bool Query(const SwayTerminationQuery12002 &request,
              SwayTerminationQueryResult12002 &output) const noexcept;
 private:
@@ -112,6 +139,9 @@ struct SwayTerminationInstall12002 {
   std::array<std::uintptr_t *, 3> slots{};
   std::array<std::uintptr_t, 3> originals{};
   std::array<bool, 3> patched{};
+  bool actual12004 = false;
+  std::uint64_t observer_session_identity = 0;
+  std::size_t admitted_image_size = 0;
   bool attached = false;
   bool fixture_slots = false;
   const char *unavailable_reason = "sway_termination_observer_not_installed";
@@ -119,6 +149,10 @@ struct SwayTerminationInstall12002 {
 // Exactly three existing vtable function pointers; no generated code detour.
 // The root pins the DLL and owns state/originals through process lifetime.
 bool InstallSwayCompletionTermination12002(
+    std::uintptr_t image_base, std::string_view executable_sha256,
+    SwayTerminationRecorder12002 &recorder,
+    SwayTerminationInstall12002 &state) noexcept;
+bool InstallSwayCompletionTermination12004(
     std::uintptr_t image_base, std::string_view executable_sha256,
     SwayTerminationRecorder12002 &recorder,
     SwayTerminationInstall12002 &state) noexcept;

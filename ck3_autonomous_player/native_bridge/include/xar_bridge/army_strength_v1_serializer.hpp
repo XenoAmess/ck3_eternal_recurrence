@@ -5,6 +5,10 @@
 #include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
 #include "xar_bridge/army_battle_casualty_observations_v1_serializer.hpp"
 
+#if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
+#include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
+#endif
+
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/army_current_first_route_target_supply_contributors_v1_serializer.hpp"
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
@@ -621,6 +625,13 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
       result += ",\"actual_supply_callback_observations_v1\":";
       AppendArmyActualSupplyCallbackObservationsV1(result, *observations);
     }
+#if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
+    if (const auto observations =
+            ck3_12004::ReadActualArmyLateEventObservations12004(strength.native_carmy_id)) {
+      result += ",\"actual_army_late_event_observations_v1\":";
+      AppendArmyActualLateEventObservationsV1(result, *observations);
+    }
+#endif
   }
   result += ",\"native_carmy_id\":";
   if (strength.native_carmy_id_observable) {

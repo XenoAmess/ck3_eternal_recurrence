@@ -5,11 +5,12 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
+from .sway_completion_causal_private_12004 import normalize_sway_end_invocation_12004, normalize_sway_end_relation_12004
 from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_build
 
 
 STEP = "query-sway-completion-termination-v1-private"
@@ -75,7 +76,7 @@ def normalize_active_scheme_sway_completion_termination_v1(
         raise ValueError("native sway termination differs from its exact query identity")
     records = []
     for record in value["records"]:
-        if not isinstance(record, dict) or set(record) != _RECORD_KEYS:
+        if not isinstance(record, dict) or set(record) not in (_RECORD_KEYS, _RECORD_KEYS | {"native_invocation", "cause_relation"}):
             raise ValueError("native sway termination record schema is malformed")
         if (not isinstance(record["source_class"], str) or record["source_class"] not in _SOURCE_CLASSES
                 or any(type(record[key]) is not bool for key in _RECORD_BOOL_KEYS)
@@ -101,7 +102,11 @@ def normalize_active_scheme_sway_completion_termination_v1(
                 raise ValueError("native sway termination nullable post-state is malformed")
         # Source class, observed terminal state and observed transition are
         # separate producer facts. Absence and original return add no cause.
-        records.append(dict(record))
+        copied = dict(record)
+        if "native_invocation" in record:
+            copied["native_invocation"] = normalize_sway_end_invocation_12004(record["native_invocation"], record)
+            copied["cause_relation"] = normalize_sway_end_relation_12004(record["cause_relation"], record, copied["native_invocation"])
+        records.append(copied)
     return {**value, "records": records}
 
 
@@ -129,7 +134,7 @@ def query_active_scheme_sway_completion_termination_private_v1(
     )
     try:
         build = require_exact_native_build(result.get("build_version"), result.get("executable_sha256"))
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("backend_id") != "native-headless"
                 or not _integer(result.get("snapshot_revision"), 1, 0xFFFFFFFFFFFFFFFF)
                 or not _integer(result.get("date_raw"), -(1 << 31), (1 << 31) - 1)
@@ -141,6 +146,8 @@ def query_active_scheme_sway_completion_termination_private_v1(
             target_character_id=target_character_id, scheme_instance_id=scheme_instance_id,
             after_sequence=after_sequence,
         )
+        if build != CK3_12004 and any("native_invocation" in record for record in value["records"]):
+            raise ValueError("original end invocation belongs only to admitted actual4")
         if result.get("status") != ("available" if value["available"] else "unavailable"):
             raise ValueError("native sway termination envelope lost its source status")
     except ValueError as error:

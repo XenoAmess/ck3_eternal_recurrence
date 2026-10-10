@@ -795,8 +795,63 @@ class GameplayBridgeService:
             expected_revision=expected_revision, target_character_id=target_character_id,
             scheme_instance_id=scheme_instance_id, after_sequence=after_sequence)
         state_dir = self._strategy_state_dir()
+        # Authored completion100 is a causal source, not a hidden phase.
+        # Retain the original wire result; only the legacy phase consumer sees
+        # the filtered copy.
         if state_dir is not None:
-            record_sway_phase_observation(Path(state_dir), execution_read=result)
+            legacy_records = [record for record in result.get("records", [])
+                              if record.get("source_branch") != "authored_sway_complete_100_source"]
+            if legacy_records:
+                record_sway_phase_observation(
+                    Path(state_dir), execution_read={**result, "records": legacy_records})
+        reader = getattr(self.driver, "query_active_scheme_sway_completion_termination_private_v1", None)
+        if (callable(reader) and getattr(
+                self.driver, "allow_private_active_scheme_sway_completion_termination_query", False) is True):
+            # Execution and termination use separate sequence domains. Read the
+            # retained exact-instance end batch from its own beginning.
+            termination = reader(
+                expected_revision=expected_revision, target_character_id=target_character_id,
+                scheme_instance_id=scheme_instance_id, after_sequence=0)
+            return self._attach_sway_end_cause(result, execution_read=result,
+                                               termination_read=termination)
+        return result
+
+    def _attach_sway_end_cause(
+        self, result: dict[str, object], *, execution_read: dict[str, object],
+        termination_read: dict[str, object],
+    ) -> dict[str, object]:
+        from ..sway_end_causal_consumer_12004 import (
+            consume_sway_end_causal_12004, record_sway_end_causal_observation,
+        )
+
+        observation = consume_sway_end_causal_12004(
+            execution_read=execution_read, termination_read=termination_read)
+        state_dir = self._strategy_state_dir()
+        if observation is not None and state_dir is not None:
+            retained = record_sway_end_causal_observation(
+                Path(state_dir), execution_read=execution_read,
+                termination_read=termination_read)
+            if retained is not None:
+                observation = retained
+        return {**result, "sway_end_causal_observation_12004": observation,
+                "sway_end_cause_observed_12004": observation is not None}
+
+    def query_active_scheme_sway_completion_termination_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int, after_sequence: int = 0,
+    ) -> dict[str, object]:
+        """Retain native end records and independently join the authored source."""
+        result = self.driver.query_active_scheme_sway_completion_termination_private_v1(
+            expected_revision=expected_revision, target_character_id=target_character_id,
+            scheme_instance_id=scheme_instance_id, after_sequence=after_sequence)
+        reader = getattr(self.driver, "query_active_scheme_sway_completion_execution_private_v1", None)
+        if (callable(reader) and getattr(
+                self.driver, "allow_private_active_scheme_sway_completion_execution_query", False) is True):
+            execution = reader(
+                expected_revision=expected_revision, target_character_id=target_character_id,
+                scheme_instance_id=scheme_instance_id, after_sequence=0)
+            return self._attach_sway_end_cause(result, execution_read=execution,
+                                               termination_read=result)
         return result
 
     def query_active_scheme_sway_outcome_opinion_private_v1(
@@ -3973,6 +4028,9 @@ class GameplayBridgeService:
             try:
                 return {
                     **result,
+                    **self._native71_army_projection_rows(
+                        result, normalize_army_strengths(result["army_strengths"]),
+                        snapshot=army_snapshot),
                     **self._current_callback_supply_projection_rows(result["army_strengths"]),
                     "current_unit_new_date_entry_normalization_v1":
                         self._unit_new_date_entry_normalization_rows(result, result["army_strengths"]),
@@ -5243,6 +5301,152 @@ class GameplayBridgeService:
             "commander_readback": readback,
         }
 
+    @staticmethod
+    def _native71_army_projection_rows(
+        result: dict[str, object], rows: list[dict[str, object]], *,
+        snapshot: dict[str, object] | None,
+    ) -> dict[str, object]:
+        """Consume emitted current group inputs independently of native history.
+
+        The current query supplies physical values and the group-scoped ordered
+        selector. It cannot supply an earlier regular-core entry. Strict stage
+        adapters consume only an explicitly provided observed stage packet.
+        """
+        from .version_identity import CK3_12004
+        from .assault_eligible_contributors_12004 import project_assault_eligible_contributors_12004
+
+        source = result.get("source")
+        source = source if isinstance(source, dict) else {}
+        diagnostics = snapshot.get("diagnostics") if isinstance(snapshot, dict) else None
+        hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        hello = hello if isinstance(hello, dict) else {}
+        version = source.get("game_version", hello.get("expected_ck3_version", hello.get("game_version")))
+        sha = source.get("executable_sha256", hello.get("expected_ck3_sha256", hello.get("executable_sha256")))
+        try:
+            exact4 = require_exact_native_build(version, sha) == CK3_12004
+        except ValueError:
+            exact4 = False
+
+        # No native producer currently publishes the strict monthly-stage
+        # packet. Its absence is unknown, not a current-query substitution.
+        supplied = result.get("observed_army_stage_inputs_12004")
+        if supplied is not None and not isinstance(supplied, list):
+            raise BridgeUnavailableError("observed Army stage packet must be an array")
+        stages = {}
+        for entry in supplied or []:
+            if (not isinstance(entry, dict) or type(entry.get("army_id")) is not int
+                    or entry["army_id"] in stages
+                    or entry.keys() - {"army_id", "regular_core_entry", "daily_assault_entry", "release_entry"}):
+                raise BridgeUnavailableError("observed Army stage packet loses exact Army identity")
+            stages[entry["army_id"]] = entry
+        query_rows = result.get("army_strengths")
+        query_scope = ({item["army_id"] for item in query_rows}
+                       if isinstance(query_rows, list) else {row["army_id"] for row in rows})
+        if stages.keys() - query_scope:
+            raise BridgeUnavailableError("observed Army stage packet is outside this query scope")
+
+        current_outputs, stage_outputs, late_event_outputs = [], [], []
+        for row in rows:
+            # This family contains owned natural invocation copies. No current
+            # context read, seed generation or dispatcher call occurs here.
+            observations = row.get("actual_army_late_event_observations_v1")
+            events = observations.get("events", []) if isinstance(observations, dict) and exact4 else []
+            gap = (isinstance(observations, dict) and (
+                observations["overwritten_events"] > 0 or observations["unattributed_capture_failures"] > 0))
+            returned_sequences = [event["sequence"] for event in events if event["original_returned"]]
+            late_event_outputs.append({"army_id": row["army_id"], "projection": {
+                "input_basis": "owned_natural_invocation_copies_joined_by_full_CArmy_ID",
+                "status": "available" if exact4 and isinstance(observations, dict) and not gap
+                          else "partial" if exact4 and isinstance(observations, dict) else "unavailable",
+                "native_carmy_id": row["native_carmy_id"],
+                "observer_installed": observations.get("observer_installed") if isinstance(observations, dict) else None,
+                "retention_gap_observed": gap,
+                "natural_original_return_sequences": returned_sequences,
+                "actual_native_dispatch_return_observed": bool(returned_sequences),
+                "events": [{"sequence": event["sequence"], "source_kind": event["source_kind"],
+                    "caller_return_rva": event["caller_return_rva"],
+                    "definition_table_offset": event["definition_table_offset"],
+                    "original_returned": event["original_returned"], "same_root_after": event["same_root_after"],
+                    "capture_failure_flags": event["capture_failure_flags"],
+                    "incoming_named_rows_copied": event["before_context"]["copied_row_count"],
+                    "source_compatible_context_shape_observed": event["before_context"]["complete_named_input_shape_matches"],
+                    "actual_loaded_definition_slot_equal": event["definition_input"]["actual_loaded_table_slot_equal"],
+                    "builder_execution_observed": False, "selected_effects_observed": False}
+                    for event in events],
+                "missing_inputs": (["exact_actual4_query_source"] if not exact4 else
+                                   ["owned_actual_army_late_event_observations_v1"] if observations is None else []),
+                "later_current_context_used": False, "context_builder_call_inferred": False,
+                "parent_predicate_or_invocation_date_inferred": False,
+                "complete_effects_observed": False, "full_monthly_ready": False}})
+            inputs = row.get("current_daily_assault_loss_inputs_v1")
+            groups = inputs.get("groups") if isinstance(inputs, dict) else None
+            group_outputs = []
+            if exact4 and isinstance(groups, list):
+                for group in groups:
+                    projection = project_assault_eligible_contributors_12004(
+                        group, derived_physical_chunks=[],
+                        refresh_selection=group.get("ordered_besieging_refill_inputs_v1"))
+                    group_outputs.append(projection)
+            current_outputs.append({"army_id": row["army_id"], "projection": {
+                "source_contract_game_version": "1.20.0.4",
+                "input_basis": "same_query_current_physical_values; conditional_group_refresh_only",
+                "query_sequence": result.get("query_sequence"),
+                "capture_id": None, "actual_stage_entry_observed": False,
+                "status": ("available" if exact4 and isinstance(groups, list)
+                           and all(group.get("ready") is True for group in group_outputs)
+                           else "partial" if exact4 and isinstance(groups, list) else "unavailable"),
+                "group_budget_outputs": group_outputs,
+                "original_native_scalars_preserved": True,
+                "missing_inputs": (["exact_actual4_query_source"] if not exact4 else
+                                   ["current_daily_assault_loss_inputs_v1"] if not isinstance(groups, list) else []),
+                "actual_loss": False, "actual_effects": False,
+                "full_daily_assault_ready": False, "full_monthly_ready": False}})
+
+            entry = stages.get(row["army_id"], {})
+            core_input = entry.get("regular_core_entry")
+            daily_input = entry.get("daily_assault_entry")
+            release_input = entry.get("release_entry")
+            core = numerical = release = None
+            if exact4 and core_input is not None:
+                if not isinstance(core_input, dict):
+                    raise BridgeUnavailableError("regular core entry must be a mapping")
+                from ..simulation.army_ordered_monthly_core_12004 import project_army_ordered_monthly_core_12004
+                core = project_army_ordered_monthly_core_12004(core_input)
+            if exact4 and daily_input is not None:
+                if not isinstance(daily_input, dict):
+                    raise BridgeUnavailableError("daily assault entry must be a mapping")
+                from ..simulation.army_daily_assault_loss_consumer_12004 import project_army_daily_assault_loss_stage_12004
+                from .army_assault_group_release_12004 import project_army_assault_group_release_stage_12004
+                # Stage physical writes are explicit. Current [] above is never
+                # forwarded into the preceding-stage completeness contract.
+                stage_groups = [project_assault_eligible_contributors_12004(
+                    group, derived_physical_chunks=daily_input.get("physical_chunks"),
+                    refresh_selection=group.get("ordered_besieging_refill_inputs_v1"))
+                    for group in groups or []]
+                qualified = [group for group in stage_groups if group.get("ready") is True]
+                numerical = project_army_daily_assault_loss_stage_12004(
+                    row, stage={**daily_input, "group_budget_outputs": qualified})
+                if release_input is not None:
+                    if not isinstance(release_input, dict):
+                        raise BridgeUnavailableError("assault release entry must be a mapping")
+                    release = project_army_assault_group_release_stage_12004(
+                        row, numerical_stage=numerical, stage=release_input)
+            stage_outputs.append({"army_id": row["army_id"], "projection": {
+                "input_basis": "explicit_observed_stage_packet_only",
+                "entry_frame_id": core_input.get("entry_frame_id") if isinstance(core_input, dict) else None,
+                "capture_id": daily_input.get("capture_id") if isinstance(daily_input, dict) else None,
+                "ordered_monthly_core": core, "daily_assault_numerical": numerical,
+                "assault_group_release": release,
+                "missing_inputs": (["exact_actual4_query_source"] if not exact4 else []) +
+                    (["observed_regular_core_entry"] if core_input is None else []) +
+                    (["observed_daily_assault_entry"] if daily_input is None else []) +
+                    (["observed_release_entry"] if release_input is None else []),
+                "actual_post_stage": None, "full_monthly_ready": False,
+                "core_to_daily_stage_inferred": False}})
+        return {"same_query_conditional_assault_group_contributors_12004": current_outputs,
+                "explicit_observed_army_stage_projections_12004": stage_outputs,
+                "actual_army_late_event_consumption_12004": late_event_outputs}
+
     def query_army_strengths(
         self,
         army_ids: list[int],
@@ -5407,6 +5611,7 @@ class GameplayBridgeService:
             "ordered_besieging_entry_mode": ordered_besieging_entry_mode,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
+            **self._native71_army_projection_rows(result, selected_rows, snapshot=snapshot),
             "current_first_route_target_supply_contributors_v1": [
                 {"army_id": row["army_id"], "projection": project_current_first_route_target_supply_contributors_v1(
                     row, armycontext=first_target_army_contexts.get(row["army_id"]))}

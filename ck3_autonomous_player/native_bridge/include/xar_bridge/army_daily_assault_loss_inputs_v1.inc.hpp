@@ -33,6 +33,8 @@ struct ArmyDailyAssaultLossGroupV1 {
   std::optional<std::int32_t> native_current_expected_loss;
   std::optional<std::uint32_t> province_magic_raw_u32;
   std::optional<ArmyCurrentProvinceBesiegingContributorsV1> besieging_inputs_v1;
+  // Same actual group Province targets; independent from current scalar readiness.
+  std::optional<ArmyOrderedBesiegingRefillInputsV1> ordered_besieging_refill_inputs_v1;
   std::vector<ArmyDailyAssaultLossArmyCountV1> army_counts;
   std::string status = "unavailable", unavailable_reason;
   bool ready = false;

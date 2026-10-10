@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
+from .sway_completion_causal_private_12004 import COMPLETE_BRANCH, normalize_sway_complete_invocation_12004
 from .g2_private_query_transport import (
     private_g2_query_metadata_v1, private_g2_query_snapshot_v1,
     read_private_g2_native_query_v1,
@@ -71,9 +72,10 @@ def normalize_active_scheme_sway_completion_execution_v1(
         raise ValueError("native sway execution differs from its exact query identity")
     records = []
     for record in value["records"]:
-        if not isinstance(record, dict) or set(record) != _RECORD_KEYS:
+        if not isinstance(record, dict) or set(record) not in (_RECORD_KEYS, _RECORD_KEYS | {"native_invocation"}):
             raise ValueError("native sway execution record schema is malformed")
-        branch = _BRANCHES.get(record["source_branch"]) if isinstance(record["source_branch"], str) else None
+        complete = record["source_branch"] == COMPLETE_BRANCH
+        branch = (None, None) if complete else _BRANCHES.get(record["source_branch"]) if isinstance(record["source_branch"], str) else None
         if (not _integer(record["sequence"], 1, 0xFFFFFFFFFFFFFFFF)
                 or not _integer(record["date_raw"], -(1 << 31), (1 << 31) - 1)
                 or not _integer(record["scheme_instance_generation"], 0, 255)
@@ -87,7 +89,12 @@ def normalize_active_scheme_sway_completion_execution_v1(
                     "message_enqueue_observed", "material_effect_observed", "native_terminal_state_observed",
                 ))):
             raise ValueError("native sway execution record fields are malformed")
-        records.append(dict(record))
+        copied = dict(record)
+        if complete:
+            copied["native_invocation"] = normalize_sway_complete_invocation_12004(record.get("native_invocation"), record)
+        elif "native_invocation" in record:
+            raise ValueError("hidden phase record cannot supply a completion parent")
+        records.append(copied)
     return {**value, "records": records}
 
 
@@ -128,6 +135,8 @@ def query_active_scheme_sway_completion_execution_private_v1(
             target_character_id=target_character_id, scheme_instance_id=scheme_instance_id,
             after_sequence=after_sequence,
         )
+        if build != CK3_12004 and any(record["source_branch"] == COMPLETE_BRANCH for record in value["records"]):
+            raise ValueError("authored completion parent belongs only to admitted actual4")
         if result.get("status") != ("available" if value["available"] else "unavailable"):
             raise ValueError("native sway execution envelope lost its source status")
     except ValueError as error:

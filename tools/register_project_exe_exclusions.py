@@ -163,6 +163,9 @@ def collect_command_manifest(repo: Path, source: Path, build: Path, compiler_arg
                 value = argv[i + 1]
             elif arg.lower().startswith(prefix) and len(arg) > len(prefix):
                 value = arg[len(prefix):]
+                # CL accepts both /Fe<path> and /Fe:<path>.
+                if prefix == "/fe" and value.startswith(":"):
+                    value = value[1:]
             if value:
                 path = Path(value)
                 if not path.is_absolute():

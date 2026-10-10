@@ -1,6 +1,7 @@
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/current_first_heir_conception_trait_inputs_v1.hpp"
+#include "xar_bridge/current_first_heir_conception_candidate_inputs_v1.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include <algorithm>
@@ -47,10 +48,268 @@ void AppendOptionalBoolean(std::string &json, const std::optional<bool> &value) 
   json += value.has_value() ? (*value ? "true" : "false") : "null";
 }
 
+
+void AppendObservationHeader(std::string &json, std::string_view source,
+                             std::string_view status, std::string_view reason) {
+  json += "{\"source\":";
+  AppendJsonString(json, source);
+  json += ",\"status\":";
+  AppendJsonString(json, status);
+  json += ",\"unavailable_reason\":";
+  if (status == "available") json += "null";
+  else AppendJsonString(json, reason.empty() ? "native_input_unavailable" : reason);
+}
+template <typename T>
+void AppendObservationNumber(std::string &json, std::string_view name,
+                             const std::optional<T> &value) {
+  json += ",\""; json += name; json += "\":";
+  AppendOptionalNumber(json, value);
+}
+void AppendObservationBoolean(std::string &json, std::string_view name,
+                              const std::optional<bool> &value) {
+  json += ",\""; json += name; json += "\":";
+  AppendOptionalBoolean(json, value);
+}
+void AppendCurrentConceptionRow(std::string &json,
+    const CurrentCharacterConceptionCandidateRowV1 &row) {
+  const auto &extended = row.extended_gate;
+  json += ",\"native_conception_extended_gate\":";
+  AppendObservationHeader(json, extended.source, extended.status, extended.unavailable_reason);
+  AppendObservationBoolean(json, "extended_data_present", extended.extended_data_present);
+  AppendObservationNumber(json, "extended_288_raw_u64", extended.extended_288_raw_u64);
+  AppendObservationBoolean(json, "blocks_pair_conception", extended.blocks_pair_conception);
+  json += '}';
+  const auto &pending = row.pending_candidate;
+  json += ",\"native_conception_candidate_pending\":";
+  AppendObservationHeader(json, "native_conception_candidate_pending",
+      pending.candidate_state_available ? "available" : "unavailable",
+      pending.candidate_state_unavailable_reason);
+  AppendObservationBoolean(json, "extended_data_present", pending.extended_data_present);
+  AppendObservationNumber(json, "candidate_flag_raw_u8", pending.candidate_flag_raw);
+  json += ",\"target_status\":";
+  AppendJsonString(json, pending.target_status);
+  json += ",\"target_unavailable_reason\":";
+  if (pending.target_unavailable_reason.empty()) json += "null";
+  else AppendJsonString(json, pending.target_unavailable_reason);
+  AppendObservationNumber(json, "target_pointer_raw_u64", pending.target_pointer_raw);
+  AppendObservationNumber(json, "target_full_id_raw_u32", pending.target_full_id_raw);
+  AppendObservationNumber(json, "resolved_target_character_id", pending.resolved_target_character_id);
+  json += '}';
+  const auto &first = row.first_value;
+  json += ",\"native_conception_first_value\":";
+  AppendObservationHeader(json, first.source, first.status, first.unavailable_reason);
+  AppendObservationNumber(json, "seed_after_children_raw", first.seed_after_children_raw);
+  AppendObservationNumber(json, "adjusted_age_raw", first.adjusted_age_raw);
+  AppendObservationNumber(json, "selected_age_band_index", first.selected_age_band_index);
+  AppendObservationNumber(json, "age_product_raw", first.age_product_raw);
+  AppendObservationNumber(json, "first_output_raw", first.first_output_raw);
+  json += '}';
+  const auto &second = row.second_value;
+  json += ",\"native_conception_second_value\":";
+  AppendObservationHeader(json, "native_conception_second_value",
+      second.ready ? "available" : "unavailable", second.reason);
+  AppendObservationNumber(json, "adjusted_age_raw", second.adjusted_age_raw);
+  AppendObservationNumber(json, "selected_age_band_index", second.selected_band_index);
+  AppendObservationNumber(json, "prefinal_raw", second.prefinal_raw);
+  AppendObservationNumber(json, "second_output_raw", second.value_raw);
+  json += '}';
+  const auto &context = row.secondary_context;
+  json += ",\"native_conception_secondary_context\":";
+  AppendObservationHeader(json, context.source, context.status, context.unavailable_reason);
+  AppendObservationNumber(json, "context_7d8_raw_i32", context.context_7d8_raw_i32);
+  AppendObservationBoolean(json, "selects_alternate_relation_path", context.selects_alternate_relation_path);
+  json += ",\"resolution\":[";
+  for (std::size_t i = 0; i < context.resolution.size(); ++i) {
+    if (i != 0) json += ',';
+    json += "{\"status\":";
+    AppendJsonString(json, context.resolution[i].status);
+    AppendObservationNumber(json, "requested_full_id_raw_u32", context.resolution[i].requested_full_id);
+    json += '}';
+  }
+  json += "]}";
+}
+
+std::string CurrentConceptionPairInputsJsonV1(
+    const CurrentFirstHeirConceptionCandidateInputsReadV1 &read) {
+  std::string json;
+  AppendObservationHeader(json, "native_current_heir_household_conception_pair_inputs",
+                          read.status, read.unavailable_reason);
+  json += ",\"provider_mode_raw\":3,\"provider_fifth_argument_raw\":0,\"pairs\":[";
+  for (std::size_t i = 0; i < read.pairs.size(); ++i) {
+    if (i != 0) json += ',';
+    const auto &pair = read.pairs[i];
+    json += "{\"first_character_id\":" + std::to_string(pair.first_character_id);
+    json += ",\"second_character_id\":" + std::to_string(pair.second_character_id);
+    json += ",\"conditional_base_stage\":";
+    const bool base_available = pair.base_stage.status == ck3_12004::conception_pair_value_inputs::BaseStatus::available;
+    std::string_view base_reason = "native_base_first_raw_unavailable";
+    if (pair.base_stage.status == ck3_12004::conception_pair_value_inputs::BaseStatus::second_raw_unavailable)
+      base_reason = "native_base_second_raw_unavailable";
+    else if (pair.base_stage.status == ck3_12004::conception_pair_value_inputs::BaseStatus::floor_unavailable)
+      base_reason = "native_base_loaded_floor_unavailable";
+    AppendObservationHeader(json, "conditional_native_conception_base_stage",
+        base_available ? "available" : "unavailable", base_reason);
+    std::string_view branch = "unavailable";
+    using Branch = ck3_12004::conception_pair_value_inputs::BaseBranch;
+    if (pair.base_stage.branch == Branch::signed_minimum) branch = "signed_minimum";
+    else if (pair.base_stage.branch == Branch::fast_scale) branch = "fast_scale";
+    else if (pair.base_stage.branch == Branch::split_scale) branch = "split_scale";
+    json += ",\"branch\":"; AppendJsonString(json, branch);
+    AppendObservationNumber(json, "base_raw", pair.base_stage.raw);
+    json += '}';
+    json += ",\"loaded_numeric_inputs\":";
+    const auto &loaded = pair.loaded_numeric;
+    AppendObservationHeader(json, "native_conception_loaded_numeric_inputs",
+        loaded.inputs ? "available" : "unavailable", "native_loaded_numeric_slot_unavailable");
+    AppendObservationNumber(json, "failed_slot_rva", loaded.inputs ? std::optional<std::uint32_t>{} : loaded.failed_slot_rva);
+    const auto scalar = [&](std::string_view name, std::int64_t ck3_12004::conception_pair_value_inputs::LoadedNumericInputs::*member) {
+      AppendObservationNumber(json, name, loaded.inputs ? std::optional<std::int64_t>{(*loaded.inputs).*member} : std::nullopt);
+    };
+    using Slots = ck3_12004::conception_pair_value_inputs::LoadedNumericInputs;
+    scalar("base_average_floor", &Slots::base_average_floor);
+    scalar("linked_pair_addend", &Slots::linked_pair_addend);
+    scalar("linked_pair_title_state_addend", &Slots::linked_pair_title_state_addend);
+    scalar("both_title_state_absent_multiplier", &Slots::both_title_state_absent_multiplier);
+    scalar("first_relation_multiplier", &Slots::first_relation_multiplier);
+    scalar("second_relation_multiplier", &Slots::second_relation_multiplier);
+    scalar("alternate_relation_multiplier", &Slots::alternate_relation_multiplier);
+    json += '}';
+    const auto &bonus = pair.list_bonus;
+    json += ",\"native_pair_list_bonus\":";
+    AppendObservationHeader(json, "native_conception_pair_list_bonus", bonus.status, bonus.unavailable_reason);
+    AppendObservationBoolean(json, "primary_relation_match", bonus.primary_relation_match);
+    AppendObservationNumber(json, "first_child_count_raw", bonus.first_child_count_raw);
+    AppendObservationNumber(json, "second_child_count_raw", bonus.second_child_count_raw);
+    AppendObservationBoolean(json, "first_list_has_second_parent_witness", bonus.first_list_has_second_parent_witness);
+    AppendObservationBoolean(json, "second_list_has_first_parent_witness", bonus.second_list_has_first_parent_witness);
+    AppendObservationBoolean(json, "either_land_state_present", bonus.either_land_state_present);
+    AppendObservationBoolean(json, "apply_relation_bonus", bonus.apply_relation_bonus);
+    AppendObservationBoolean(json, "apply_land_state_bonus", bonus.apply_land_state_bonus);
+    json += '}';
+    const auto &related = pair.related_pair;
+    json += ",\"native_related_pair\":";
+    AppendObservationHeader(json, related.source, related.status, related.unavailable_reason);
+    AppendObservationBoolean(json, "second_to_first_28b3c10", related.second_to_first_28b3c10);
+    AppendObservationBoolean(json, "first_to_second_28b3c10", related.first_to_second_28b3c10);
+    AppendObservationBoolean(json, "first_second_28b3e50", related.first_second_28b3e50);
+    AppendObservationBoolean(json, "related_pair_predicate", related.related_pair_predicate);
+    json += ",\"raw_characters\":[";
+    for (std::size_t j = 0; j < related.raw_characters.size(); ++j) {
+      if (j != 0) json += ',';
+      const auto &r = related.raw_characters[j];
+      json += '{';
+      json += "\"magic_raw_u32\":"; AppendOptionalNumber(json, r.magic_raw_u32);
+      AppendObservationNumber(json, "full_id_raw_u32", r.full_id_raw_u32);
+      AppendObservationBoolean(json, "relationship_block_present", r.relationship_block_present);
+      AppendObservationNumber(json, "parent_slot0_full_id", r.parent_slot0_full_id);
+      AppendObservationNumber(json, "parent_slot1_full_id", r.parent_slot1_full_id);
+      json += '}';
+    }
+    json += "]}";
+    json += ",\"role_selection\":{\"first_title_state_present\":";
+    AppendOptionalBoolean(json, pair.first_title_state_present);
+    AppendObservationNumber(json, "first_highest_tier_raw", pair.first_highest_tier_raw);
+    AppendObservationNumber(json, "second_highest_tier_raw", pair.second_highest_tier_raw);
+    AppendObservationNumber(json, "selected_character_id", pair.selected_character_id);
+    json += '}';
+    const auto &tiers = pair.lineage_tiers;
+    json += ",\"native_lineage_tiers\":";
+    AppendObservationHeader(json, "native_conception_pair_lineage_tiers", tiers.status, tiers.unavailable_reason);
+    AppendObservationNumber(json, "first_lineage_tier_max_raw", tiers.first_lineage_tier_max_raw);
+    AppendObservationNumber(json, "second_lineage_tier_max_raw", tiers.second_lineage_tier_max_raw);
+    AppendObservationNumber(json, "pair_lineage_tier_max_raw", tiers.pair_lineage_tier_max_raw);
+    json += ",\"maximum_return_role\":";
+    if (!tiers.maximum_return_role) json += "null";
+    else AppendJsonString(json, *tiers.maximum_return_role == ck3_12004::ConceptionPairMaxReturnRole::first ? "first" : "second");
+    json += '}';
+    const auto &limit = pair.child_limit;
+    json += ",\"native_child_limit\":";
+    AppendObservationHeader(json, limit.source, limit.status == "complete" ? "available" : "unavailable", limit.unavailable_reason);
+    AppendObservationNumber(json, "table_base_raw", limit.inputs.table_base_raw);
+    AppendObservationNumber(json, "selected_relation20_living_count_raw", limit.inputs.selected_relation20_living_count_raw);
+    AppendObservationNumber(json, "selected_relation50_count_raw", limit.inputs.selected_relation50_count_raw);
+    AppendObservationNumber(json, "decrement_threshold_raw", limit.inputs.decrement_threshold_raw);
+    AppendObservationNumber(json, "accumulated_before_decrement_raw", limit.value.accumulated_before_decrement_raw);
+    AppendObservationNumber(json, "deterministic_remainder_raw", limit.value.deterministic_remainder_raw);
+    AppendObservationBoolean(json, "decremented", limit.value.decremented);
+    AppendObservationNumber(json, "child_limit_raw", limit.value.child_limit_raw);
+    json += '}';
+    const auto &count = pair.offspring_count;
+    json += ",\"native_offspring_count\":";
+    AppendObservationHeader(json, count.source, count.status, count.unavailable_reason);
+    AppendObservationBoolean(json, "family_component_present", count.family_component_present);
+    AppendObservationNumber(json, "offspring_list_count_raw_i32", count.offspring_list_count_raw_i32);
+    AppendObservationNumber(json, "native_count", count.native_count);
+    json += ",\"rows\":[";
+    for (std::size_t j = 0; j < count.rows.size(); ++j) {
+      if (j != 0) json += ',';
+      const auto &r = count.rows[j];
+      json += "{\"requested_full_id_raw_u32\":" + std::to_string(r.requested_full_id);
+      AppendObservationBoolean(json, "used_character_fallback", r.used_character_fallback);
+      AppendObservationNumber(json, "matched_full_id_raw_u32", r.matched_full_id);
+      AppendObservationNumber(json, "character_1d0_raw_u64", r.character_1d0_raw_u64);
+      AppendObservationNumber(json, "trait_count_raw_i32", r.trait_count_raw_i32);
+      AppendObservationBoolean(json, "trait_4a9_equals_one", r.trait_4a9_equals_one);
+      AppendObservationNumber(json, "first_matching_trait_id", r.first_matching_trait_id);
+      AppendObservationBoolean(json, "counted", r.counted);
+      json += '}';
+    }
+    json += "]}";
+    const auto &short_circuit = pair.short_circuit;
+    json += ",\"conditional_short_circuit\":";
+    AppendObservationHeader(json, short_circuit.source, short_circuit.status, short_circuit.reason);
+    json += ",\"branch_reason\":"; AppendJsonString(json, short_circuit.reason);
+    json += ",\"first_evaluated\":"; json += short_circuit.first_evaluated ? "true" : "false";
+    json += ",\"second_evaluated\":"; json += short_circuit.second_evaluated ? "true" : "false";
+    AppendObservationBoolean(json, "short_circuits_to_zero", short_circuit.short_circuits_to_zero);
+    AppendObservationNumber(json, "first_output_raw", short_circuit.first_output_raw);
+    const auto predicate = [&](std::string_view name,
+        const ck3_12004::ConceptionCharacterPredicate12004Read &r) {
+      json += ",\""; json += name; json += "\":";
+      AppendObservationHeader(json, "conditional_native_conception_character_predicate", r.status, r.reason);
+      json += ",\"branch_reason\":"; AppendJsonString(json, r.reason);
+      AppendObservationBoolean(json, "predicate_true", r.predicate_true);
+      AppendObservationNumber(json, "selected_measure", r.selected_measure);
+      AppendObservationNumber(json, "selected_minimum", r.selected_minimum);
+      AppendObservationNumber(json, "adjusted_maximum", r.adjusted_maximum);
+      AppendObservationNumber(json, "rounded_modifier", r.rounded_modifier);
+      json += ",\"trait_occurrences_evaluated\":" + std::to_string(r.trait_occurrences_evaluated);
+      AppendObservationNumber(json, "first_blocking_trait_occurrence", r.first_blocking_trait_occurrence);
+      json += '}';
+    };
+    predicate("first", short_circuit.first);
+    predicate("second", short_circuit.second);
+    json += '}';
+    const auto &date = pair.last_child_date;
+    json += ",\"native_last_child_date\":";
+    AppendObservationHeader(json, "native_conception_last_child_date",
+        date.date_inputs_available ? "available" : "unavailable", date.unavailable_reason);
+    json += ",\"branch_status\":"; AppendJsonString(json, date.status);
+    json += ",\"date_helper_demanded\":"; json += date.date_helper_demanded ? "true" : "false";
+    AppendObservationBoolean(json, "first_family_present", date.source.first_family_present);
+    AppendObservationNumber(json, "child_count_raw", date.source.child_count_raw);
+    AppendObservationNumber(json, "last_requested_full_id_raw_u32", date.source.last_requested_full_id_raw);
+    AppendObservationNumber(json, "selected_full_id_raw_u32", date.source.selected_full_id_raw);
+    AppendObservationBoolean(json, "selected_is_native_fallback", date.source.selected_is_native_fallback);
+    AppendObservationNumber(json, "selected_date_storage_raw64", date.selected_date_storage_raw64);
+    AppendObservationNumber(json, "loaded_month_shift_raw_i32", date.loaded_month_shift_raw_i32);
+    AppendObservationNumber(json, "current_date_raw_i32", date.current_date_raw_i32);
+    AppendObservationNumber(json, "adjusted_date_raw_i32", date.adjusted_date_raw_i32);
+    AppendObservationNumber(json, "adjusted_date_storage_raw64", date.adjusted_date_storage_raw64);
+    AppendObservationBoolean(json, "recent_child_branch_passed", date.recent_child_branch_passed);
+    json += '}';
+    AppendObservationBoolean(json, "alternate_relation_path", pair.alternate_relation_path);
+    json += '}';
+  }
+  json += "]}";
+  return json;
+}
+
 std::string CurrentFirstHeirReproductiveInputsJsonV1(
     const CurrentFirstHeirReproductiveInputsV1 &read,
     std::uint64_t native_revision,
-    const CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs) {
+    const CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs,
+    const CurrentFirstHeirConceptionCandidateInputsReadV1 *conception_candidate_inputs) {
   std::string json = "{\"source\":\"native_current_heir_household_inputs\",\"status\":";
   AppendJsonString(json, read.status);
   json += ",\"unavailable_reason\":";
@@ -121,9 +380,22 @@ std::string CurrentFirstHeirReproductiveInputsJsonV1(
       AppendOptionalBoolean(json, exclusion.blocks_pair_conception);
       json += '}';
     }
+    if (conception_candidate_inputs != nullptr) {
+      const auto found = std::find_if(conception_candidate_inputs->rows.begin(),
+          conception_candidate_inputs->rows.end(), [&row](const auto &candidate) {
+            return candidate.character_id == row.character_id;
+          });
+      if (found != conception_candidate_inputs->rows.end())
+        AppendCurrentConceptionRow(json, *found);
+    }
     json += '}';
   }
-  json += "]}";
+  json += "]";
+  if (conception_candidate_inputs != nullptr) {
+    json += ",\"conception_pair_inputs\":";
+    json += CurrentConceptionPairInputsJsonV1(*conception_candidate_inputs);
+  }
+  json += '}';
   return json;
 }
 
@@ -556,6 +828,19 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
     std::string_view override_unavailable_reason,
     const CurrentFirstHeirChildInputsReadV1 *child_inputs,
     const CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs) {
+  return CurrentFirstHeirRelationshipResultJsonV1(request_id, native_revision,
+      heir_character_id, read, override_unavailable_reason, child_inputs,
+      conception_trait_inputs, nullptr);
+}
+
+std::string CurrentFirstHeirRelationshipResultJsonV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t heir_character_id,
+    const CurrentFirstHeirRelationshipReadV1 &read,
+    std::string_view override_unavailable_reason,
+    const CurrentFirstHeirChildInputsReadV1 *child_inputs,
+    const CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs,
+    const CurrentFirstHeirConceptionCandidateInputsReadV1 *conception_candidate_inputs) {
   const bool available = override_unavailable_reason.empty() &&
       read.failure == CurrentFirstHeirRelationshipFailureV1::none;
   std::string result =
@@ -606,7 +891,8 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
   if (read.reproductive_inputs.has_value()) {
     result += ",\"current_first_heir_reproductive_inputs_v1\":";
     result += CurrentFirstHeirReproductiveInputsJsonV1(
-        *read.reproductive_inputs, native_revision, conception_trait_inputs);
+        *read.reproductive_inputs, native_revision, conception_trait_inputs,
+        conception_candidate_inputs);
   }
   result += "}}";
   return result;

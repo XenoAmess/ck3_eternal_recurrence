@@ -1516,8 +1516,30 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_current_first_heir_relationship_private_v1(
             expected_native_revision: int,
+            guardian_capture_callback_path: str | None = None,
+            guardian_capture_output_directory: str | None = None,
+            guardian_capture_owned_game_pid: int | None = None,
+            guardian_capture_timeout_seconds: float = 360.0,
         ) -> dict[str, object]:
-            """Read the current first heir's bilateral marriage relation on a paused frame."""
+            """Read the current first heir, or capture fixed guardian factory sources."""
+            if guardian_capture_callback_path is not None:
+                import runpy
+
+                if guardian_capture_output_directory is None or guardian_capture_owned_game_pid is None:
+                    raise ValueError("guardian capture requires output directory and owned Game PID")
+                before = driver.take_internal_semantic_snapshot()
+                if before.get("native_revision") != expected_native_revision:
+                    raise ValueError("guardian capture expected native revision differs from current frame")
+                callback = runpy.run_path(
+                    guardian_capture_callback_path,
+                    run_name="native71_same_driver_guardian_capture_callback",
+                )["capture_with_runtime_owner_driver"]
+                return callback(
+                    driver,
+                    owned_game_pid=guardian_capture_owned_game_pid,
+                    output_directory=Path(guardian_capture_output_directory),
+                    timeout_seconds=guardian_capture_timeout_seconds,
+                )
             return driver.query_current_first_heir_relationship_private_v1(
                 expected_native_revision=expected_native_revision,
             )
@@ -2089,7 +2111,7 @@ def create_server(
             after_sequence: int = 0,
         ) -> dict[str, object]:
             """Read native Sway termination records for the exact instance."""
-            return driver.query_active_scheme_sway_completion_termination_private_v1(
+            return service.query_active_scheme_sway_completion_termination_private_v1(
                 expected_revision=expected_revision, target_character_id=target_character_id,
                 scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
             )

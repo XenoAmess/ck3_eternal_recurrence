@@ -1,5 +1,9 @@
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
 #include "xar_bridge/ck3_12004_sway_execution.hpp"
+#include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/sway_complete_branch_12004.hpp"
+#include "xar_bridge/sway_child_end_causal_path_12004.hpp"
+#include "xar_bridge/sway_completion_causal_observer_12004.hpp"
 
 #include <atomic>
 #include <cstring>
@@ -21,6 +25,40 @@ void Invoke(std::size_t index, const void *effect, const void *context) {
     if (state->secondary_sink != nullptr) {
       state->secondary_sink(state->secondary_sink_context, effect, context);
     }
+  }
+  // Every actual4 Toast call establishes a nearest-parent barrier, including
+  // ignored/unavailable inner calls. Capture alone never substitutes Execute.
+  if (index == 1 && state != nullptr && state->attached &&
+      state->recorder != nullptr && state->observer_session_identity != 0) {
+    ck3_12004::SwayCompleteBranchSource12004 complete{};
+    const auto result = ck3_12004::CaptureSwayCompleteBranch12004(
+        state->bindings, effect, context, complete);
+    SwayExecutionInvocation12004 invocation{
+        state->observer_session_identity, GetCurrentThreadId(),
+        ck3_12004::NextSwayCausalInvocation12004()};
+    std::uint64_t sequence = 0;
+    bool captured = result == SwayExecutionCaptureResult12002::captured;
+    if (captured) {
+      SwayExecutionSource12002 source{};
+      source.branch = SwayExecutionSourceBranch12002::authored_sway_complete_100_source;
+      source.date_raw = complete.date_raw;
+      source.actor_character_id = complete.actor_character_id;
+      source.target_character_id = complete.target_character_id;
+      source.scheme_id = complete.scheme_id;
+      source.root = complete.root; source.owner = complete.owner;
+      source.target = complete.target; source.scheme = complete.scheme;
+      captured = state->recorder->Append(source, &sequence, &invocation);
+    }
+    const ck3_12004::SwayToastParentStamp12004 stamp{
+        invocation.observer_session_identity, invocation.owner_thread_id,
+        invocation.toast_invocation_id, sequence};
+    const auto original_address = reinterpret_cast<std::uintptr_t>(original);
+    ck3_12004::SwayToastParentScope12004 parent(stamp, complete, captured,
+        ck3_12004::kExecutableSha256,
+        original_address >= state->bindings.image_base ?
+            original_address - state->bindings.image_base : 0);
+    if (original != nullptr) original(effect, context);
+    return;
   }
   // The original callback is never skipped for ignored/unavailable captures.
   if (original != nullptr) original(effect, context);
@@ -155,7 +193,15 @@ bool InstallSwayCompletionExecution12004(
     originals[index] = reinterpret_cast<SwayCompletionNativeExecute12002>(
         base + ck3_12004::kSwayExecutionExecuteRvas12004[index]);
   }
-  return Install(bindings, slots, originals, recorder, state, false, nullptr, nullptr);
+  if (!Install(bindings, slots, originals, recorder, state, false, nullptr, nullptr))
+    return false;
+  state.observer_session_identity = ck3_12004::BeginSwayCausalObserverSession12004();
+  if (state.observer_session_identity == 0) {
+    (void)UninstallSwayCompletionExecution12002(state);
+    state.unavailable_reason = "sway_execution_observer_session_unavailable";
+    return false;
+  }
+  return true;
 }
 
 bool InstallSwayCompletionExecutionFixtureWithSecondarySink12002(
@@ -189,6 +235,8 @@ bool UninstallSwayCompletionExecution12002(
     complete = complete && written;
   }
   if (complete) {
+    ck3_12004::EndSwayCausalObserverSession12004(state.observer_session_identity);
+    state.observer_session_identity = 0;
     state.secondary_sink = nullptr;
     state.secondary_sink_context = nullptr;
     observer.store(nullptr, std::memory_order_release);

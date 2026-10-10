@@ -26,6 +26,7 @@ enum class SwayExecutionSourceBranch12002 {
   none,
   hidden_phase_success_source,
   hidden_phase_failure_source,
+  authored_sway_complete_100_source,
 };
 enum class SwayExecutionCaptureResult12002 {
   ignored,
@@ -95,9 +96,16 @@ SwayExecutionCaptureResult12002 CaptureSwayCompletionExecution12002(
     const SwayExecutionBindings12002 &bindings, const void *effect,
     const void *effect_context, SwayExecutionSource12002 &output) noexcept;
 
+struct SwayExecutionInvocation12004 {
+  std::uint64_t observer_session_identity = 0;
+  std::uint32_t owner_thread_id = 0;
+  std::uint64_t toast_invocation_id = 0;
+};
+
 struct SwayExecutionRecord12002 {
   std::uint64_t sequence = 0;
   SwayExecutionSource12002 source;
+  SwayExecutionInvocation12004 native_invocation{};
 };
 struct SwayExecutionQuery12002 {
   std::uint32_t actor_character_id = 0xFFFFFFFFu;
@@ -123,7 +131,9 @@ class SwayExecutionRecorder12002 {
 public:
   void SetObserverAttached(bool attached) noexcept;
   bool ObserverAttached() const noexcept;
-  bool Append(const SwayExecutionSource12002 &source) noexcept;
+  bool Append(const SwayExecutionSource12002 &source,
+      std::uint64_t *assigned_sequence = nullptr,
+      const SwayExecutionInvocation12004 *native_invocation = nullptr) noexcept;
   bool Query(const SwayExecutionQuery12002 &request,
              SwayExecutionQueryResult12002 &output) const noexcept;
 private:

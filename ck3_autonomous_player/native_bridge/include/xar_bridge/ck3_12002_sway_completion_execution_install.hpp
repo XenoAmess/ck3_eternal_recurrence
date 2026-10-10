@@ -32,6 +32,7 @@ struct SwayCompletionExecutionInstall12002 {
   std::array<SwayCompletionNativeExecute12002 *, 3> slots{};
   std::array<SwayCompletionNativeExecute12002, 3> originals{};
   std::array<bool, 3> patched{};
+  std::uint64_t observer_session_identity = 0;
   bool attached = false;
   bool fixture_slots = false;
   const char *unavailable_reason = "sway_execution_observer_not_installed";

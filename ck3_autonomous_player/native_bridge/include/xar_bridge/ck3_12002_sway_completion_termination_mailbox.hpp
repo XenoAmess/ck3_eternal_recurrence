@@ -19,7 +19,9 @@ struct SwayCompletionTerminationMailboxContextV1 {
 
 std::string SerializeSwayCompletionTerminationCommandResultV1(
     const SwayTerminationQueryResult12002 &output, std::uint64_t snapshot_revision,
-    std::int32_t date_raw, std::string_view request_id);
+    std::int32_t date_raw, std::string_view request_id,
+    std::string_view build_version = "1.20.0.2",
+    std::string_view executable_sha256 = kExecutableSha256);
 
 bool ExecuteSwayCompletionTerminationMailboxV1(
     void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept;

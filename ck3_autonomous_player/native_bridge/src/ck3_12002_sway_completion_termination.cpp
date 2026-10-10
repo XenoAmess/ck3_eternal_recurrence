@@ -1,4 +1,9 @@
 #include "xar_bridge/ck3_12002_sway_completion_termination.hpp"
+#include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/sway_end_invocation_12004.hpp"
+#include "xar_bridge/sway_child_end_causal_path_12004.hpp"
+#include "xar_bridge/sway_completion_causal_observer_12004.hpp"
+#include <intrin.h>
 
 #include <atomic>
 #include <cstring>
@@ -77,8 +82,59 @@ bool ReadInstance(const SwayTerminationBindings12002 &b, std::uint32_t id,
 std::atomic<SwayTerminationInstall12002 *> observer{nullptr};
 std::array<std::uintptr_t, 3> native_originals{};
 
-void Invoke(std::size_t index, const void *self, const void *context) {
+void Invoke(std::size_t index, const void *self, const void *context,
+            std::uintptr_t incoming_return) {
   auto *const state = observer.load(std::memory_order_acquire);
+  if (state && state->attached && state->recorder && state->actual12004) {
+    ck3_12004::SwayEndInvocationStamp12004 stamp{};
+    stamp.observer_session_identity = state->observer_session_identity;
+    stamp.owner_thread_id = GetCurrentThreadId();
+    stamp.invocation_id = ck3_12004::NextSwayCausalInvocation12004();
+    stamp.incoming_return_address_observed = incoming_return >= state->bindings.image_base &&
+        incoming_return - state->bindings.image_base < state->admitted_image_size;
+    if (stamp.incoming_return_address_observed)
+      stamp.caller_return_rva = incoming_return - state->bindings.image_base;
+    ck3_12004::SwayChildNativeReturns12004 returns{};
+    (void)ck3_12004::CaptureSwayChildNativeReturns12004(
+        state->bindings.image_base, state->admitted_image_size, returns);
+    const auto bindings = ck3_12004::BindSwayEndInvocationImage12004(
+        state->bindings.image_base, ck3_12004::kExecutableSha256);
+    ck3_12004::SwayEndInvocation12004 invocation{};
+    const auto original = native_originals[index];
+    const auto result = index == 0 ? ck3_12004::ForwardSwayEndCommand12004(
+        bindings, stamp, reinterpret_cast<ck3_12004::SwayEndNativeCommand12004>(original), self, invocation) :
+        ck3_12004::ForwardSwayEndEffect12004(bindings, stamp,
+            index == 1 ? SwayTerminationSourceClass12002::authored_end_scheme_false_execute :
+                         SwayTerminationSourceClass12002::authored_end_scheme_true_execute,
+            reinterpret_cast<ck3_12004::SwayEndNativeEffect12004>(original), self, context, invocation);
+    if (result == SwayTerminationCaptureResult12002::captured && state->attached) {
+      ck3_12004::SwayChildEndCausalRelation12004 relation{};
+      (void)ck3_12004::JoinSwayChildEndCausalPath12004(invocation, returns, relation);
+      SwayTerminationInvocation12004 detail{};
+      detail.present = true;
+      detail.observer_session_identity = stamp.observer_session_identity;
+      detail.owner_thread_id = stamp.owner_thread_id;
+      detail.original_invocation_id = stamp.invocation_id;
+      detail.original_rva = original - state->bindings.image_base;
+      detail.incoming_return_address_observed = stamp.incoming_return_address_observed;
+      detail.caller_return_rva = stamp.caller_return_rva;
+      detail.original_forwarded_once = invocation.original_forwarded_once;
+      detail.original_returned = invocation.original_returned;
+      detail.pre_frame_observed = invocation.pre_frame_observed;
+      detail.pre_date_raw = invocation.pre_frame.clock.date_raw;
+      detail.post_frame_observed = invocation.post_frame_observed;
+      detail.post_date_raw = invocation.post_frame.clock.date_raw;
+      detail.causal_relationship_observed = relation.relationship_observed;
+      detail.branch_source_sequence = relation.branch_source_sequence;
+      detail.parent_toast_invocation_id = relation.parent_toast_invocation_id;
+      detail.native_returns_observed = returns.observed;
+      detail.native_returns_truncated = returns.native_returns_truncated;
+      detail.native_return_count = returns.count;
+      detail.native_return_rvas = returns.rvas;
+      (void)state->recorder->Append(invocation.source, &detail);
+    }
+    return;
+  }
   SwayTerminationSource12002 source;
   bool captured = false;
   if (state && state->attached && state->recorder) {
@@ -99,9 +155,17 @@ void Invoke(std::size_t index, const void *self, const void *context) {
     (void)state->recorder->Append(source);
   }
 }
-void Command(const void *self) { Invoke(0, self, nullptr); }
-void EffectFalse(const void *self, const void *context) { Invoke(1, self, context); }
-void EffectTrue(const void *self, const void *context) { Invoke(2, self, context); }
+// Capture the incoming native return directly in each typed entry. Never use
+// a helper's return address, which would identify only our DLL caller.
+__declspec(noinline) void Command(const void *self) {
+  Invoke(0, self, nullptr, reinterpret_cast<std::uintptr_t>(_ReturnAddress()));
+}
+__declspec(noinline) void EffectFalse(const void *self, const void *context) {
+  Invoke(1, self, context, reinterpret_cast<std::uintptr_t>(_ReturnAddress()));
+}
+__declspec(noinline) void EffectTrue(const void *self, const void *context) {
+  Invoke(2, self, context, reinterpret_cast<std::uintptr_t>(_ReturnAddress()));
+}
 const std::array<std::uintptr_t, 3> wrappers{
     reinterpret_cast<std::uintptr_t>(&Command), reinterpret_cast<std::uintptr_t>(&EffectFalse),
     reinterpret_cast<std::uintptr_t>(&EffectTrue)};
@@ -223,11 +287,13 @@ bool CaptureSwayTerminationAfter12002(const SwayTerminationBindings12002 &b,
 }
 void SwayTerminationRecorder12002::SetObserverAttached(bool attached) noexcept { attached_ = attached; }
 bool SwayTerminationRecorder12002::ObserverAttached() const noexcept { return attached_; }
-bool SwayTerminationRecorder12002::Append(const SwayTerminationSource12002 &source) noexcept {
+bool SwayTerminationRecorder12002::Append(const SwayTerminationSource12002 &source,
+    const SwayTerminationInvocation12004 *native_invocation) noexcept {
   if (!attached_ || !source.executing_source_observed || source.source_class == SwayTerminationSourceClass12002::none)
     return false;
   const auto at = (first_ + count_) % records_.size();
-  records_[at] = {next_sequence_++, source};
+  records_[at] = {next_sequence_++, source, {}};
+  if (native_invocation != nullptr) records_[at].native_invocation = *native_invocation;
   if (count_ < records_.size()) ++count_; else first_ = (first_ + 1) % records_.size();
   return true;
 }
@@ -292,7 +358,48 @@ std::string SerializeSwayCompletionTermination12002(const SwayTerminationQueryRe
     if (s.post_status_observed) out << s.post_owner; else out << "null";
     out << ",\"native_terminal_state_observed\":" << (s.native_terminal_state_observed ? "true" : "false")
         << ",\"native_terminal_transition_observed\":" << (s.native_terminal_transition_observed ? "true" : "false")
-        << ",\"material_effect_observed\":false,\"specific_invalidation_reason\":null}";
+        << ",\"material_effect_observed\":false,\"specific_invalidation_reason\":null";
+    if (record.native_invocation.present) {
+      const auto &d = record.native_invocation;
+      out << ",\"native_invocation\":{\"observer_session_identity\":" << d.observer_session_identity
+          << ",\"owner_thread_id\":" << d.owner_thread_id
+          << ",\"original_invocation_id\":" << d.original_invocation_id
+          << ",\"original_rva\":" << d.original_rva
+          << ",\"incoming_return_address_observed\":" << (d.incoming_return_address_observed ? "true" : "false")
+          << ",\"caller_return_rva\":" << d.caller_return_rva
+          << ",\"original_forwarded_once\":" << (d.original_forwarded_once ? "true" : "false")
+          << ",\"original_returned\":" << (d.original_returned ? "true" : "false")
+          << ",\"pre_frame_observed\":" << (d.pre_frame_observed ? "true" : "false")
+          << ",\"pre_date_raw\":";
+      if (d.pre_frame_observed) out << d.pre_date_raw; else out << "null";
+      out << ",\"post_frame_observed\":" << (d.post_frame_observed ? "true" : "false")
+          << ",\"post_date_raw\":";
+      if (d.post_frame_observed) out << d.post_date_raw; else out << "null";
+      out << "},\"cause_relation\":";
+      if (!d.causal_relationship_observed) out << "null";
+      else {
+        out << "{\"source_contract\":\"sway_child_end_causal_path_12004_v1\",\"source_contract_version\":1"
+            << ",\"relationship_observed\":true,\"observer_session_identity\":" << d.observer_session_identity
+            << ",\"owner_thread_id\":" << d.owner_thread_id
+            << ",\"branch_source_sequence\":" << d.branch_source_sequence
+            << ",\"parent_toast_invocation_id\":" << d.parent_toast_invocation_id
+            << ",\"end_original_invocation_id\":" << d.original_invocation_id
+            << ",\"end_original_rva\":" << d.original_rva
+            << ",\"actor_character_id\":" << s.actor_character_id
+            << ",\"target_character_id\":" << s.target_character_id
+            << ",\"scheme_instance_id\":" << s.scheme_id
+            << ",\"scheme_instance_generation\":" << (s.scheme_id >> 24)
+            << ",\"native_returns_observed\":" << (d.native_returns_observed ? "true" : "false")
+            << ",\"native_returns_truncated\":" << (d.native_returns_truncated ? "true" : "false")
+            << ",\"native_return_rvas\":[";
+        for (std::size_t i = 0; i < d.native_return_count && i < d.native_return_rvas.size(); ++i) {
+          if (i != 0) out << ',';
+          out << d.native_return_rvas[i];
+        }
+        out << "]}";
+      }
+    }
+    out << '}';
   }
   out << "]}"; return out.str();
 }
@@ -307,6 +414,35 @@ bool InstallSwayCompletionTermination12002(std::uintptr_t base, std::string_view
     originals[i] = base + kSwayTerminationExecuteRvas12002[i];
   }
   return Install(b, slots, originals, recorder, state, false);
+}
+bool InstallSwayCompletionTermination12004(std::uintptr_t base, std::string_view sha,
+    SwayTerminationRecorder12002 &recorder, SwayTerminationInstall12002 &state) noexcept {
+  // Reject a second owner before changing the already installed dispatch mode.
+  if (observer.load(std::memory_order_acquire) || state.attached) {
+    state.unavailable_reason = "sway_termination_observer_already_installed";
+    return false;
+  }
+  const auto actual = ck3_12004::BindSwayEndInvocationImage12004(base, sha);
+  const auto session = ck3_12004::CurrentSwayCausalObserverSession12004();
+  const auto image_size = ck3_12004::ReadAdmittedSwayImageSize12004(base);
+  if (!actual.enabled || session == 0 || image_size <= 0x3766146) {
+    state.unavailable_reason = "sway_termination_actual4_binding_or_session_unavailable";
+    return false;
+  }
+  SwayTerminationBindings12002 bindings{};
+  bindings.enabled = true; bindings.image_base = base; bindings.core = actual.state.core;
+  std::array<std::uintptr_t *, 3> slots{};
+  std::array<std::uintptr_t, 3> originals{};
+  for (std::size_t i = 0; i < slots.size(); ++i) {
+    slots[i] = reinterpret_cast<std::uintptr_t *>(base + ck3_12004::kSwayEndInvocationSlotRvas12004[i]);
+    originals[i] = base + ck3_12004::kSwayEndInvocationOriginalRvas12004[i];
+  }
+  state.actual12004 = true;
+  state.observer_session_identity = session;
+  state.admitted_image_size = image_size;
+  if (Install(bindings, slots, originals, recorder, state, false)) return true;
+  state.actual12004 = false; state.observer_session_identity = 0; state.admitted_image_size = 0;
+  return false;
 }
 bool InstallSwayCompletionTerminationFixture12002(const SwayTerminationBindings12002 &b,
     const std::array<std::uintptr_t *, 3> &slots, const std::array<std::uintptr_t, 3> &originals,
@@ -326,7 +462,13 @@ bool UninstallSwayCompletionTermination12002(SwayTerminationInstall12002 &state)
     if (changed) state.patched[i] = false;
     complete = complete && written;
   }
-  if (complete) { observer.store(nullptr, std::memory_order_release); state.unavailable_reason = "sway_termination_observer_not_installed"; }
+  if (complete) {
+    observer.store(nullptr, std::memory_order_release);
+    state.actual12004 = false;
+    state.observer_session_identity = 0;
+    state.admitted_image_size = 0;
+    state.unavailable_reason = "sway_termination_observer_not_installed";
+  }
   else state.unavailable_reason = "sway_termination_uninstall_slot_restore_failed";
   return complete;
 }

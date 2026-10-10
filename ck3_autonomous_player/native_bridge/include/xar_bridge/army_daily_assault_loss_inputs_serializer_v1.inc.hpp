@@ -26,6 +26,10 @@ inline void AppendArmyCurrentDailyAssaultLossInputsV1(std::string &out,
     state(group); n("native_current_expected_loss",group.native_current_expected_loss); n("province_magic_raw_u32",group.province_magic_raw_u32);
     out += ",\"besieging_inputs_v1\":";
     if (group.besieging_inputs_v1) AppendArmyCurrentProvinceBesiegingContributorsV1(out,*group.besieging_inputs_v1,number,string); else out += "null";
+    out += ",\"ordered_besieging_refill_inputs_v1\":";
+    if (group.ordered_besieging_refill_inputs_v1)
+      AppendArmyOrderedBesiegingRefillInputsV1(out,*group.ordered_besieging_refill_inputs_v1,number,string);
+    else out += "null";
     out += ",\"army_counts\":["; bool first_army = true;
     for (const auto &army : group.army_counts) {
       if (!first_army) out += ','; first_army = false;

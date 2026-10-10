@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
+#include "xar_bridge/ck3_12003_ordered_besieging_refill_inputs.hpp"
 #include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include <algorithm>
@@ -82,6 +83,35 @@ game::ArmyDailyAssaultLossArmyCountV1 ReadArmyCount(
   return out;
 }
 
+game::ArmyOrderedBesiegingRefillInputsV1 ReadGroupBesiegingRefreshScope(
+    const ck3_12002::ArmyBindings &bindings, const game::ArmyDailyAssaultGroupV1 &group,
+    const game::ArmyCurrentProvinceBesiegingContributorsV1 &family) {
+  const auto &b = bindings.current_daily_assault_table_bindings;
+  const auto &native = bindings.current_province_besieging_bindings;
+  game::ArmyOrderedBesiegingRefillInputsV1 out{};
+  // The group family supplies the observed Province independently of whether
+  // a subject receiver or its manager refresh roster can currently be read.
+  out.province_id = family.province_id;
+  for (const auto &occurrence : group.armies.occurrences) {
+    const auto army = Resolve(b, b.army_registry_slot, b.army_fallback_slot,
+                             occurrence.raw_full_id_u32, 0x10);
+    if (!army.observation.ready) continue;
+    // Existing source-defined CArmy+124 -> complete CUnit ID/fallback route.
+    // These are actual capture labels, never the querying Army or a global alias.
+    const auto unit_id = Read<std::uint32_t>(b, army.object, 0x124);
+    if (!unit_id) continue;
+    const auto unit = Resolve(b, bindings.unit_storage_slot, native.unit_fallback_slot,
+                              unit_id, 0x10);
+    if (!unit.observation.ready) continue;
+    out = ReadOrderedBesiegingRefillInputs12003(bindings,
+        const_cast<void *>(army.object), const_cast<void *>(unit.object), family);
+    out.province_id = family.province_id;
+    return out;
+  }
+  out.unavailable_reason = "daily_assault_group_refresh_subject_unresolved";
+  return out;
+}
+
 game::ArmyDailyAssaultLossGroupV1 ReadGroup(
     const ck3_12002::ArmyBindings &bindings, const game::ArmyDailyAssaultGroupV1 &group) {
   const auto &b = bindings.current_daily_assault_table_bindings;
@@ -120,6 +150,10 @@ game::ArmyDailyAssaultLossGroupV1 ReadGroup(
     context.status = context_ready ? "available" : "partial";
     if (!context_ready) context.unavailable_reason = "daily_assault_loss_actual_siege_budget_context_partial";
     out.besieging_inputs_v1->native_assault_expected_loss = out.native_current_expected_loss;
+    // Independent optional family: a partial refresh scope must not erase
+    // the original current budget, B observation or old numerical readiness.
+    out.ordered_besieging_refill_inputs_v1 = ReadGroupBesiegingRefreshScope(
+        bindings, group, *out.besieging_inputs_v1);
     complete = context_ready && out.besieging_inputs_v1->contributors_ready;
   }
   for (const auto &occurrence : group.armies.occurrences) {

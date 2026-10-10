@@ -165,3 +165,56 @@ progress. The
 [thin current fields](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sway-material-current/ROOT-CURRENT-OBSERVATIONS.json)
 record the current result separately from the earlier SOURCE_NOTRUN recipe.
 This lane performed no live/SDK/EXE/test/build execution and no old GREEN replay.
+
+## 2026-10-10 R0087 saved6067 continuation
+
+The [Native71 handover](../handover/2026-10-10-native71-maintainer-resume.md)
+records the current saved baseline as6067/H10026/raw53289936. R0087 used
+SDK/Native71 source16da78339cdff5c1a462e20bc301684594a3f800 and the existing
+qualified exact4 reader. Its existing completion response
+`210-r0087-native71-one-day-chunk01-000008-sway-completion.json` and following
+opinion response `210-r0087-native71-one-day-chunk01-000009-sway-opinion.json`
+are under `D:/codex-ck3-background-spill/maintainer-resume-20261010/r0087-managed-attempt02/operator/gameplay-responses/`.
+They report the same raw53289936/public6/native5, actor29829/target34333,
+full134217986/generation8. The exact row remains present with owner29829 and
+status0 `continue`; terminal is false and its cause remains unknown. Total
+opinion is60, named `scheme_sway_opinion` is observed/present45, and the named
+blocker is observed absent.
+
+The small frozen original ledger is readable under
+`r0087-saved6067-freeze/frozen/active-scheme-sway-formal-private-v1.json`.
+It retains the original action and current continuing-instance read. The
+already-consumed material remains its earlier raw53289816/native17 sample,
+with named45 and total60: the later unchanged pair deliberately does not
+rearm consumption or manufacture a new gain. Its material source date and
+following-turn date must not be reported as the R0087 sample's consumption.
+The actual R0087 ordinary turn advances one day; that day alone supplies no
+new Sway benefit or end.
+
+The existing production material/lifecycle consumers already admit a later
+observed named increase when this original instance is active or is currently
+an exact retained status1. They preserve that material and independent
+terminal evidence for the ordinary following-turn consumer. The final-material
+and lifecycle qualification above is reused; this review found no current
+branch gap and changed no consumer, Driver, Service or native code.
+
+The next actual entry is the same registered pair immediately after an
+ordinary gameplay turn has reached its paused frame: use that frame's fresh
+public revision for `ck3_query_active_scheme_sway_completion_private_v1`
+with target34333/full134217986, then
+`ck3_query_active_scheme_sway_outcome_opinion_private_v1` with target34333.
+The original frozen ledger supplies generation8; each result supplies the
+current date/build/instance facts. A later named value above45 can establish
+an incremental named gain through the already admitted consumer. Exact
+retained status1 independently establishes `terminated_unattributed`; absent
+or reused storage supplies no end. A subsequent actual ordinary gameplay
+turn consumes a newly staged material/end record independently of Start,
+after which the same small ledger can be read from the next complete freeze.
+
+Opinion60 does not terminate an active Sway. After an observed retained end,
+the existing target query can inspect the current empty slot and selected
+relation: opinion above50 yields `finish_selected_relation` in the existing
+follow-up policy. A different target still requires an explicitly selected
+relation. No new Start/Stop, terminal-cause attribution or milestone credit
+follows from this recipe. The exact external recipe and thin R0087 fields
+are under `D:/codex-ck3-background-spill/maintainer-resume-20261010/continuation-06/`.

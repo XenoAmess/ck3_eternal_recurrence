@@ -365,6 +365,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_month_first_refill_call_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_loss_writer_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_supply_callback_observations_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"battle_casualty_observations_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_army_late_event_observations_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -2151,6 +2152,9 @@ def _normalize_army_strength_row(
             regiment_count=regiment_count, current_soldiers=current_soldiers,
             maximum_soldiers=maximum_soldiers,
         )
+    if "actual_army_late_event_observations_v1" in value:
+        result["actual_army_late_event_observations_v1"] = normalize_actual_army_late_event_observations_v1(
+            value["actual_army_late_event_observations_v1"], expected_carmy_id=result["native_carmy_id"])
     if "actual_loss_writer_observations_v1" in value:
         result["actual_loss_writer_observations_v1"] = normalize_actual_loss_writer_observations_v1(
             value["actual_loss_writer_observations_v1"],
@@ -5027,3 +5031,143 @@ def _strict_positive_int32_id_list(value: object, name: str) -> list[int]:
         seen.add(normalized)
         result.append(normalized)
     return result
+
+
+def normalize_actual_army_late_event_observations_v1(
+    value: object, *, expected_carmy_id: int | None,
+) -> dict[str, object] | None:
+    """Retain bounded owned natural-invocation copies, never current context."""
+    from copy import deepcopy
+
+    if value is None:
+        return None
+
+    def obj(raw, keys, name):
+        if not isinstance(raw, dict) or set(raw) != set(keys.split()):
+            raise ValueError(f"{name} has an unexpected owned observation shape")
+        return raw
+
+    def integer(raw, low, high, name, nullable=False):
+        if nullable and raw is None:
+            return
+        if type(raw) is not int or not low <= raw <= high:
+            raise ValueError(f"{name} is outside its native integer range")
+
+    def boolean(raw, name, nullable=False):
+        if nullable and raw is None:
+            return
+        if type(raw) is not bool:
+            raise ValueError(f"{name} must be a native boolean")
+
+    def context(raw):
+        raw = obj(raw, "root_copy_ready root_kind_raw_u16 root_subtype_raw_u16 root_payload_raw_u64 "
+            "context_seed_10_raw_u32 named_capacity_raw_i32 named_count_raw_i32 named_header_copy_ready "
+            "named_header_unchanged named_rows_copy_ready named_rows_truncated copied_row_count unavailable_reason rows "
+            "root_kind27_subtype0_matches named_keys_loaded complete_named_input_shape_matches source_roles "
+            "builder_called builder_callsite_rva parent_pc_rva", "actual incoming context")
+        for key in ("root_copy_ready", "named_header_copy_ready", "named_header_unchanged", "named_rows_copy_ready",
+                    "named_rows_truncated", "named_keys_loaded", "complete_named_input_shape_matches"):
+            boolean(raw[key], key)
+        for key in ("root_kind_raw_u16", "root_subtype_raw_u16"):
+            integer(raw[key], 0, 65535, key, nullable=True)
+        integer(raw["root_payload_raw_u64"], 0, (1 << 64) - 1, "root payload", nullable=True)
+        integer(raw["context_seed_10_raw_u32"], 0, (1 << 32) - 1, "seed DWORD", nullable=True)
+        for key in ("named_capacity_raw_i32", "named_count_raw_i32"):
+            integer(raw[key], -(1 << 31), (1 << 31) - 1, key, nullable=True)
+        integer(raw["copied_row_count"], 0, 32, "copied row count")
+        if not isinstance(raw["unavailable_reason"], str) or not isinstance(raw["rows"], list):
+            raise ValueError("actual context reason/rows are malformed")
+        if len(raw["rows"]) != raw["copied_row_count"]:
+            raise ValueError("actual context copied row count disagrees")
+        if raw["root_copy_ready"] and any(raw[key] is None for key in (
+                "root_kind_raw_u16", "root_subtype_raw_u16", "root_payload_raw_u64")):
+            raise ValueError("ready actual context loses copied root operands")
+        for row in raw["rows"]:
+            obj(row, "key_raw_u32 kind_raw_u16 subtype_raw_u16 payload_raw_u64", "actual named row")
+            integer(row["key_raw_u32"], 0, (1 << 32) - 1, "named key")
+            for key in ("kind_raw_u16", "subtype_raw_u16"):
+                integer(row[key], 0, 65535, key)
+            integer(row["payload_raw_u64"], 0, (1 << 64) - 1, "named payload")
+        boolean(raw["root_kind27_subtype0_matches"], "root role", nullable=True)
+        roles = raw["source_roles"]
+        if not isinstance(roles, list) or len(roles) != 3:
+            raise ValueError("actual context must retain all three source roles")
+        for role, expected_kind in zip(roles, (4, 5, 5)):
+            obj(role, "expected_kind_raw_u16 loaded_key_raw_u32 matching_key_count token_kind_and_subtype_match payload_raw_u64", "actual source role")
+            integer(role["expected_kind_raw_u16"], 0, 65535, "expected source kind")
+            if role["expected_kind_raw_u16"] != expected_kind:
+                raise ValueError("actual context changes its source role kind")
+            integer(role["loaded_key_raw_u32"], 0, (1 << 32) - 1, "loaded key")
+            integer(role["matching_key_count"], 0, 32, "matching key count")
+            boolean(role["token_kind_and_subtype_match"], "token role", nullable=True)
+            integer(role["payload_raw_u64"], 0, (1 << 64) - 1, "role payload", nullable=True)
+        if raw["complete_named_input_shape_matches"] and not (
+                raw["named_rows_copy_ready"] and not raw["named_rows_truncated"]
+                and raw["root_kind27_subtype0_matches"] is True
+                and all(role["token_kind_and_subtype_match"] is True for role in roles)):
+            raise ValueError("actual context shape readiness disagrees with copied roles")
+        # The incoming copier observes no builder invocation or parent PC.
+        if any(raw[key] is not None for key in ("builder_called", "builder_callsite_rva", "parent_pc_rva")):
+            raise ValueError("incoming context copy cannot assert an unobserved builder/parent")
+        return raw
+
+    top = obj(value, "source membership_basis observer_installed oldest_available_sequence latest_sequence "
+              "overwritten_events unattributed_capture_failures event_count events", "actual late event journal")
+    if (top["source"] != "native_natural_late_event_dispatch_entry_return"
+            or top["membership_basis"] != "current_full_carmy_id_join"
+            or type(expected_carmy_id) is not int or expected_carmy_id == -1):
+        raise ValueError("actual late event journal loses its owned source/full CArmy join")
+    boolean(top["observer_installed"], "observer installed")
+    for key in ("oldest_available_sequence", "latest_sequence", "overwritten_events", "unattributed_capture_failures"):
+        integer(top[key], 0, (1 << 64) - 1, key)
+    integer(top["event_count"], 0, 256, "event count")
+    if not isinstance(top["events"], list) or len(top["events"]) != top["event_count"]:
+        raise ValueError("actual late event count disagrees with bounded journal")
+    latest = top["latest_sequence"]
+    if (top["oldest_available_sequence"] != (max(1, latest - 255) if latest else 0)
+            or top["overwritten_events"] != max(0, latest - 256)):
+        raise ValueError("actual late event retention window disagrees")
+    routes = {"positive_1e0": (0x2639CF6, 0x168), "flag21": (0x2C448F5, 0x640), "flag30": (0x24DD7A5, 0x170)}
+    previous = 0
+    for event in top["events"]:
+        obj(event, "sequence native_carmy_id caller_return_rva source_kind definition_table_offset original_returned "
+            "same_root_after capture_failure_flags before_context after_context definition_input "
+            "effect_callback_address_raw event_callback_address_raw trigger_result_observed selected_effects_observed "
+            "complete_effects_observed date_at_invocation late_parent_predicate_pc", "actual late event")
+        integer(event["sequence"], top["oldest_available_sequence"], latest, "event sequence")
+        if event["sequence"] <= previous or event["native_carmy_id"] != expected_carmy_id:
+            raise ValueError("actual late event order/full generation join disagrees")
+        previous = event["sequence"]
+        integer(event["native_carmy_id"], -(1 << 31), (1 << 31) - 1, "event CArmy ID")
+        integer(event["caller_return_rva"], 0, (1 << 64) - 1, "caller return RVA")
+        integer(event["definition_table_offset"], 0, (1 << 32) - 1, "definition table offset")
+        route = routes.get(event["source_kind"]) if isinstance(event["source_kind"], str) else None
+        if route != (event["caller_return_rva"], event["definition_table_offset"]):
+            raise ValueError("actual late event caller/table source disagrees")
+        for key in ("original_returned", "same_root_after"):
+            boolean(event[key], key)
+        integer(event["capture_failure_flags"], 0, 15, "capture failures")
+        before, after = context(event["before_context"]), context(event["after_context"])
+        if (before["root_copy_ready"] is not True or before["root_kind_raw_u16"] != 27
+                or before["root_payload_raw_u64"] != (expected_carmy_id & 0xFFFFFFFF)):
+            raise ValueError("actual late event loses copied incoming Army root")
+        same_root = (after["root_copy_ready"] and before["root_kind_raw_u16"] == after["root_kind_raw_u16"]
+                     and before["root_payload_raw_u64"] == after["root_payload_raw_u64"])
+        if event["same_root_after"] != same_root:
+            raise ValueError("actual late event postroot equality disagrees")
+        definition = obj(event["definition_input"], "address_raw actual_loaded_table_slot_equal row_copy_complete row_index_raw "
+            "trigger_address_raw primary_effect_address_raw recursive_definition_address_raw alternate_effect_address_raw", "actual definition input")
+        for key in ("address_raw", "trigger_address_raw", "primary_effect_address_raw", "recursive_definition_address_raw", "alternate_effect_address_raw"):
+            integer(definition[key], 0, (1 << 64) - 1, key)
+        boolean(definition["actual_loaded_table_slot_equal"], "loaded table slot equality", nullable=True)
+        boolean(definition["row_copy_complete"], "definition copy complete")
+        integer(definition["row_index_raw"], -(1 << 31), (1 << 31) - 1, "definition index", nullable=True)
+        if definition["row_copy_complete"] != (definition["row_index_raw"] is not None):
+            raise ValueError("actual definition copy loses its loaded index")
+        for key in ("effect_callback_address_raw", "event_callback_address_raw"):
+            integer(event[key], 0, (1 << 64) - 1, key)
+        if any(event[key] is not False for key in ("trigger_result_observed", "selected_effects_observed", "complete_effects_observed")):
+            raise ValueError("dispatcher entry/return cannot assert selected effects")
+        if any(event[key] is not None for key in ("date_at_invocation", "late_parent_predicate_pc")):
+            raise ValueError("dispatcher entry/return cannot assert an unobserved date/parent")
+    return deepcopy(top)

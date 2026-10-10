@@ -95,6 +95,9 @@
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
+#if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
+#include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
+#endif
 #include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
 #include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
@@ -131,6 +134,7 @@
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_conception_trait_inputs.hpp"
+#include "xar_bridge/ck3_12004_first_heir_conception_candidate_inputs.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
 #include "xar_bridge/guardian_factory_discovery_job_v1.hpp"
@@ -625,6 +629,10 @@ static xar::ck3_12004::ActualLossWriterJournalDetourStateV1
     g_actual_loss_writer_journal_12004_v1{};
 static xar::ck3_12004::ActualSupplyCallbackJournalDetourStateV1
     g_actual_supply_callback_journal_12004_v1{};
+#if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
+static xar::ck3_12004::ActualArmyLateEventJournalDetourStateV1
+    g_actual_army_late_event_journal_12004_v1{};
+#endif
 static xar::ck3_12004::BattleCasualtyObserverDetourState12004
     g_battle_casualty_observer_12004{};
 static xar::ck3_12004::PersonTitleTailCaptureDetourState12004
@@ -9509,16 +9517,26 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
 }
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+bool ReadCurrentFirstHeirConceptionMemoryV1(
+    void *, const void *address, void *output, std::size_t bytes) noexcept {
+  SIZE_T copied = 0;
+  return address != nullptr && output != nullptr && bytes != 0 &&
+      ReadProcessMemory(GetCurrentProcess(), address, output, bytes, &copied) != FALSE &&
+      copied == bytes;
+}
+
 std::string CurrentFirstHeirRelationshipResultFrameV1(
     std::string_view request_id, std::uint64_t native_revision,
     std::int32_t heir_character_id,
     const xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &read,
     std::string_view override_unavailable_reason = {}, bool crozier = false,
     const xar::ck3_11906::CurrentFirstHeirChildInputsReadV1 *child_inputs = nullptr,
-    const xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs = nullptr) {
+    const xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1 *conception_trait_inputs = nullptr,
+    const xar::ck3_11906::CurrentFirstHeirConceptionCandidateInputsReadV1 *conception_candidate_inputs = nullptr) {
   auto result = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
       request_id, native_revision, heir_character_id, read,
-      override_unavailable_reason, child_inputs, conception_trait_inputs);
+      override_unavailable_reason, child_inputs, conception_trait_inputs,
+      conception_candidate_inputs);
   return crozier ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(result))
                  : result;
 }
@@ -9565,6 +9583,8 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs12004{};
   xar::ck3_12004::NativeConceptionTraitBindingsV1 conception_traits12004{};
   std::optional<xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1> conception_trait_inputs12004{};
+  xar::ck3_12004::NativeConceptionCandidateBindingsV1 conception_candidate_bindings12004{};
+  std::optional<xar::ck3_11906::CurrentFirstHeirConceptionCandidateInputsReadV1> conception_candidate_inputs12004{};
   std::optional<xar::bridge::GuardianFactoryDiscoveryJobV1>
       guardian_factory_discovery12004{};
 };
@@ -9637,6 +9657,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
         query.conception_trait_inputs12004 =
             xar::ck3_12004::ReadCurrentFirstHeirConceptionTraitInputsV1(
                 query.family12002, query.conception_traits12004, query.read);
+        query.conception_candidate_inputs12004 =
+            xar::ck3_12004::ReadCurrentFirstHeirConceptionCandidateInputsV1(
+                query.family12002, query.conception_candidate_bindings12004, query.read);
       }
     }
     if (query.guardian_factory_discovery12004)
@@ -9674,6 +9697,9 @@ void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
     query.family12002 = xar::ck3_12004::BindFamilyImage(base, sha);
     query.conception_traits12004 =
         xar::ck3_12004::BindNativeConceptionTraitInputsV1(base, sha);
+    query.conception_candidate_bindings12004 =
+        xar::ck3_12004::BindNativeConceptionCandidateInputsV1(
+            base, sha, &ReadCurrentFirstHeirConceptionMemoryV1);
     query.child_traits12004 = xar::ck3_12004::lifestyle::
         BindPlayerLifestyleSnapshotEnvironment12004V1(base, true, sha);
     query.child_window_names12004 =
@@ -19103,6 +19129,7 @@ void RunConnectedSession(
               xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
               std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs{};
               std::optional<xar::ck3_11906::CurrentFirstHeirConceptionTraitInputsReadV1> conception_trait_inputs{};
+              std::optional<xar::ck3_11906::CurrentFirstHeirConceptionCandidateInputsReadV1> conception_candidate_inputs{};
               std::optional<xar::bridge::GuardianFactoryDiscoveryJobV1>
                   guardian_factory_discovery{};
               if (!observed_current) {
@@ -19119,6 +19146,10 @@ void RunConnectedSession(
                   query.conception_traits12004 =
                       xar::ck3_12004::BindNativeConceptionTraitInputsV1(
                           base, game.descriptor().executable_sha256);
+                  query.conception_candidate_bindings12004 =
+                      xar::ck3_12004::BindNativeConceptionCandidateInputsV1(
+                          base, game.descriptor().executable_sha256,
+                          &ReadCurrentFirstHeirConceptionMemoryV1);
                   query.child_traits12004 = xar::ck3_12004::lifestyle::
                       BindPlayerLifestyleSnapshotEnvironment12004V1(
                           base, true, game.descriptor().executable_sha256);
@@ -19218,6 +19249,7 @@ void RunConnectedSession(
                     read = query.read;
                     child_inputs = query.child_inputs12004;
                     conception_trait_inputs = query.conception_trait_inputs12004;
+                    conception_candidate_inputs = query.conception_candidate_inputs12004;
                   }
                   const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1, query.ticket);
@@ -19273,7 +19305,8 @@ void RunConnectedSession(
                     request_id, state_revision, heir_id, read,
                     unavailable_reason, xar::game::IsReviewedCrozierAdapter(game),
                     child_inputs ? &*child_inputs : nullptr,
-                    conception_trait_inputs ? &*conception_trait_inputs : nullptr);
+                    conception_trait_inputs ? &*conception_trait_inputs : nullptr,
+                    conception_candidate_inputs ? &*conception_candidate_inputs : nullptr);
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
                   family_frame = xar::game::Render12004BuildIdentity(
                       std::move(family_frame), game.descriptor());
@@ -28336,6 +28369,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (!xar::ck3_12004::InstallActualSupplyCallbackJournal12004(
             g_actual_supply_callback_journal_12004_v1, supply_environment, sha))
       return FALSE;
+#if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
+    xar::ck3_12004::ActualArmyLateEventJournalInstallEnvironmentV1
+        army_late_event_environment{};
+    army_late_event_environment.bindings =
+        xar::ck3_12004::BindActualArmyLateEventJournalImage12004(base, sha);
+    army_late_event_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallActualArmyLateEventJournal12004(
+            g_actual_army_late_event_journal_12004_v1,
+            army_late_event_environment, sha))
+      return FALSE;
+#endif
     xar::ck3_12004::BattleCasualtyObserverInstallEnvironment12004 casualty_environment{};
     casualty_environment.bindings =
         xar::ck3_12004::BindBattleCasualtyObserverImage12004(base, sha);
@@ -28394,6 +28438,10 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (!xar::ck3_12002::InstallSwayCompletionExecution12004(
             base, sha, g_sway_completion_execution_recorder12002,
             g_sway_completion_execution_install12002))
+      return FALSE;
+    if (!xar::ck3_12002::InstallSwayCompletionTermination12004(
+            base, sha, g_sway_completion_termination_recorder12002,
+            g_sway_completion_termination_install12002))
       return FALSE;
 #endif
     return xar::ck3_12002::InstallBattleTerminalJournalV1(

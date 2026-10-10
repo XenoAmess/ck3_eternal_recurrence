@@ -267,13 +267,18 @@ SwayExecutionCaptureResult12002 CaptureSwayCompletionExecution12002(
 }
 void SwayExecutionRecorder12002::SetObserverAttached(bool attached) noexcept { attached_ = attached; }
 bool SwayExecutionRecorder12002::ObserverAttached() const noexcept { return attached_; }
-bool SwayExecutionRecorder12002::Append(const SwayExecutionSource12002 &source) noexcept {
+bool SwayExecutionRecorder12002::Append(const SwayExecutionSource12002 &source,
+    std::uint64_t *assigned_sequence,
+    const SwayExecutionInvocation12004 *native_invocation) noexcept {
+  if (assigned_sequence != nullptr) *assigned_sequence = 0;
   if (!attached_ || source.branch == SwayExecutionSourceBranch12002::none ||
       !source.unavailable_reason.empty()) return false;
   try {
-    SwayExecutionRecord12002 record{next_sequence_, source};
+    SwayExecutionRecord12002 record{next_sequence_, source, {}};
+    if (native_invocation != nullptr) record.native_invocation = *native_invocation;
     const auto destination = (first_ + count_) % records_.size();
     records_[destination] = std::move(record);
+    if (assigned_sequence != nullptr) *assigned_sequence = next_sequence_;
     ++next_sequence_;
     if (count_ < records_.size()) ++count_;
     else first_ = (first_ + 1) % records_.size();
@@ -322,6 +327,7 @@ const char *SwayExecutionBranchKey12002(SwayExecutionSourceBranch12002 branch) n
   switch (branch) {
   case SwayExecutionSourceBranch12002::hidden_phase_success_source: return "hidden_phase_success_source";
   case SwayExecutionSourceBranch12002::hidden_phase_failure_source: return "hidden_phase_failure_source";
+  case SwayExecutionSourceBranch12002::authored_sway_complete_100_source: return "authored_sway_complete_100_source";
   default: return "none";
   }
 }
@@ -344,20 +350,40 @@ std::string SerializeSwayCompletionExecution12002(const SwayExecutionQueryResult
     if (!first) out << ',';
     first = false;
     const auto &source = record.source;
+    const bool complete = source.branch == SwayExecutionSourceBranch12002::authored_sway_complete_100_source;
     out << "{\"sequence\":" << record.sequence << ",\"date_raw\":" << source.date_raw
         << ",\"actor_character_id\":" << source.actor_character_id
         << ",\"target_character_id\":" << source.target_character_id
         << ",\"scheme_instance_id\":" << source.scheme_id
         << ",\"scheme_instance_generation\":" << (source.scheme_id >> 24)
         << ",\"source_branch\":\"" << SwayExecutionBranchKey12002(source.branch)
-        << "\",\"stock_event\":\""
-        << (source.branch == SwayExecutionSourceBranch12002::hidden_phase_success_source ?
-            "sway_outcome.0001" : "sway_outcome.0002")
-        << "\",\"executing_input_observed\":true,\"exact_scope_join_ready\":true"
-        << ",\"phase_result\":\""
-        << (source.branch == SwayExecutionSourceBranch12002::hidden_phase_success_source ? "success" : "failure")
-        << "\",\"message_enqueue_observed\":false,\"material_effect_observed\":false"
-        << ",\"native_terminal_state_observed\":false}";
+        << "\",\"stock_event\":";
+    if (complete) out << "null";
+    else out << '\"' << (source.branch == SwayExecutionSourceBranch12002::hidden_phase_success_source ?
+        "sway_outcome.0001" : "sway_outcome.0002") << '\"';
+    out << ",\"executing_input_observed\":true,\"exact_scope_join_ready\":true,\"phase_result\":";
+    if (complete) out << "null";
+    else out << '\"' << (source.branch == SwayExecutionSourceBranch12002::hidden_phase_success_source ?
+        "success" : "failure") << '\"';
+    out << ",\"message_enqueue_observed\":false,\"material_effect_observed\":false"
+        << ",\"native_terminal_state_observed\":false";
+    if (complete) {
+      const auto &stamp = record.native_invocation;
+      out << ",\"native_invocation\":{\"observer_session_identity\":" << stamp.observer_session_identity
+          << ",\"owner_thread_id\":" << stamp.owner_thread_id
+          << ",\"toast_invocation_id\":" << stamp.toast_invocation_id
+          << ",\"branch_source_sequence\":" << record.sequence << ",\"copied_scopes\":{ ";
+      const std::array<const char *, 4> names{"root", "owner", "target", "scheme"};
+      const std::array<SwayExecutionScopeToken12002, 4> tokens{source.root, source.owner, source.target, source.scheme};
+      for (std::size_t i = 0; i < tokens.size(); ++i) {
+        if (i != 0) out << ',';
+        out << '\"' << names[i] << "\":{\"type\":" << tokens[i].type
+            << ",\"subtype\":" << tokens[i].subtype << ",\"reserved\":" << tokens[i].reserved
+            << ",\"payload\":" << tokens[i].payload << '}';
+      }
+      out << "}}";
+    }
+    out << '}';
   }
   out << "]}";
   return out.str();

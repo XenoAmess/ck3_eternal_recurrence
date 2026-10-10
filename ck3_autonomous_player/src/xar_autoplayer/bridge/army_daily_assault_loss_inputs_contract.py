@@ -9,6 +9,9 @@ from .army_daily_assault_active_table_contract import (
 from .army_province_besieging_contributors_contract import (
     normalize_current_province_besieging_contributors_v1,
 )
+from .army_ordered_besieging_refill_contract import (
+    normalize_ordered_besieging_refill_inputs_v1,
+)
 from .army_replenishment_records_contract import (
     normalize_regiment_replenishment_records_v1,
 )
@@ -17,6 +20,7 @@ _STATE = {"status", "ready", "unavailable_reason"}
 _TOP = _STATE | {"schema_version", "source", "stage", "groups", "target_regiments"}
 _GROUP = _STATE | {"native_index", "physical_slot_i64", "native_current_expected_loss",
                    "province_magic_raw_u32", "besieging_inputs_v1", "army_counts"}
+_GROUP_OPTIONAL = {"ordered_besieging_refill_inputs_v1"}
 _ARMY = _STATE | {"native_index", "raw_full_id_u32", "resolution",
                   "native_whole_current_soldiers", "regiments"}
 _REGIMENT = {"native_index", "raw_full_id_u32", "resolution", "identity_valid",
@@ -54,7 +58,10 @@ def normalize_current_daily_assault_loss_inputs_v1(value: object) -> dict | None
     _state(top, "daily assault loss root")
     groups = []
     for raw in _array(top["groups"], "groups"):
-        group = _object(raw, _GROUP, "daily assault loss group")
+        # Older producers omit the additive scope; preserve that absence.
+        if not isinstance(raw, dict) or set(raw) not in (_GROUP, _GROUP | _GROUP_OPTIONAL):
+            raise ValueError("daily assault loss group schema is malformed")
+        group = raw
         _state(group, "daily assault loss group")
         _integer(group["native_index"], "native_index", nullable=False, nonnegative=True)
         _integer(group["physical_slot_i64"], "physical_slot_i64", bits=64, nullable=False)
@@ -78,8 +85,15 @@ def normalize_current_daily_assault_loss_inputs_v1(value: object) -> dict | None
                 for field in ("current_soldiers", "maximum_soldiers"):
                     _integer(regiment[field], field)
             armies.append(deepcopy(army))
-        groups.append({**deepcopy(group), "besieging_inputs_v1": family,
-                       "army_counts": armies})
+        normalized = {**deepcopy(group), "besieging_inputs_v1": family,
+                      "army_counts": armies}
+        if "ordered_besieging_refill_inputs_v1" in group:
+            scope = normalize_ordered_besieging_refill_inputs_v1(
+                group["ordered_besieging_refill_inputs_v1"])
+            if scope is not None and (family is None or scope["province_id"] != family["province_id"]):
+                raise ValueError("daily assault group ordered scope must match its actual Province")
+            normalized["ordered_besieging_refill_inputs_v1"] = scope
+        groups.append(normalized)
     targets = []
     for raw in _array(top["target_regiments"], "target_regiments"):
         target = _object(raw, _TARGET, "daily assault writer target")
