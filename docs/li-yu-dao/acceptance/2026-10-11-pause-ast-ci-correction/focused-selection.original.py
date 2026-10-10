@@ -1,0 +1,13 @@
+import sys, unittest
+sys.path.insert(0, 'C:/workspace/ck3_eternal_recurrence/tools')
+names=[
+ 'test_ck3_mod_acceptance_pause.RunningPauseTests.test_deadline_manager_and_post_submission_drift_never_award_paused_success',
+ 'test_ck3_mod_acceptance_pause.RunningPauseTests.test_invalid_running_identity_never_submits_pause',
+ 'test_ck3_mod_acceptance_pause.RunningPauseTests.test_pending_stamp_identity_and_original_deadline_remain_strict',
+ 'test_ck3_mod_acceptance_day_result.NormalDayResultTests.test_event_and_invalid_complete_frame_do_not_produce_success_result',
+ 'test_ck3_mod_acceptance_campaign_event.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected',
+ 'test_ck3_mod_acceptance_preaction.CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict',
+]
+suite=unittest.defaultTestLoader.loadTestsFromNames(names)
+result=unittest.TextTestRunner(verbosity=2).run(suite)
+sys.exit(0 if result.wasSuccessful() else 1)

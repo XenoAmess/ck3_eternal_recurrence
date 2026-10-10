@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=9e2fad7de47a0c26cb242e988dcba54bd19c8316&per_page=100",
+    "--jq",
+    "{total_count,workflow_runs:[.workflow_runs[]|select(.name==\"Official Runner CI\" or .name==\"Linear history\")|{id,workflow_id,name,head_sha,status,conclusion,html_url,updated_at,created_at,run_started_at,run_attempt}]}"
+  ],
+  "started_at_utc": "2026-10-10T22:20:45.764895+00:00",
+  "finished_at_utc": "2026-10-10T22:20:46.511312+00:00",
+  "exit_code": 0,
+  "error": null,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-001-exact-head-list.stdout.json",
+    "bytes": 803,
+    "sha256": "fc843215a1f94a192395c8cdccc0db95a121abd5fe49573f69f63faf07dac59e"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-001-exact-head-list.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

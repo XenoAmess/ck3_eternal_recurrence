@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "test_ck3_mod_acceptance_pause.RunningPauseTests.test_deadline_manager_and_post_submission_drift_never_award_paused_success",
+    "test_ck3_mod_acceptance_day_result.DayResultTests.test_event_and_invalid_complete_frame_do_not_produce_success_result",
+    "test_ck3_mod_acceptance_campaign_event.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected",
+    "test_ck3_mod_acceptance_preaction.CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:27:10.854564+00:00",
+  "finished_at_utc": "2026-10-10T22:27:11.022445+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-pause-ast-fixture-ci-correction-focused-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-pause-ast-fixture-ci-correction-focused-20261011-001\\stderr.log",
+    "bytes": 2998,
+    "sha256": "23bd022a5fc6d94a52096241a219d21b553d57d6a597efaa035a1d959466327e"
+  }
+}

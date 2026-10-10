@@ -23,7 +23,7 @@ class NormalDayResultTests(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls):
         tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
         cls.definitions = [node for node in tree.body if isinstance(node, ast.FunctionDef)
-                           and node.name in {"campaign_pause_frame_binding", "require_campaign_pause_successor"}]
+                           and node.name in {"_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor"}]
         client = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "PlanClient")
         cls.definitions.extend(node for node in client.body if isinstance(node, ast.AsyncFunctionDef)
                                and node.name in {"advance", "pause_campaign_after_advance"})

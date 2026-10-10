@@ -1,0 +1,49 @@
+test_ck3_mod_acceptance_pause (unittest.loader._FailedTest.test_ck3_mod_acceptance_pause) ... ERROR
+test_ck3_mod_acceptance_day_result (unittest.loader._FailedTest.test_ck3_mod_acceptance_day_result) ... ERROR
+test_ck3_mod_acceptance_campaign_event (unittest.loader._FailedTest.test_ck3_mod_acceptance_campaign_event) ... ERROR
+test_ck3_mod_acceptance_preaction (unittest.loader._FailedTest.test_ck3_mod_acceptance_preaction) ... ERROR
+
+======================================================================
+ERROR: test_ck3_mod_acceptance_pause (unittest.loader._FailedTest.test_ck3_mod_acceptance_pause)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ck3_mod_acceptance_pause
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'test_ck3_mod_acceptance_pause'
+
+
+======================================================================
+ERROR: test_ck3_mod_acceptance_day_result (unittest.loader._FailedTest.test_ck3_mod_acceptance_day_result)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ck3_mod_acceptance_day_result
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'test_ck3_mod_acceptance_day_result'
+
+
+======================================================================
+ERROR: test_ck3_mod_acceptance_campaign_event (unittest.loader._FailedTest.test_ck3_mod_acceptance_campaign_event)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ck3_mod_acceptance_campaign_event
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'test_ck3_mod_acceptance_campaign_event'
+
+
+======================================================================
+ERROR: test_ck3_mod_acceptance_preaction (unittest.loader._FailedTest.test_ck3_mod_acceptance_preaction)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ck3_mod_acceptance_preaction
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'test_ck3_mod_acceptance_preaction'
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (errors=4)

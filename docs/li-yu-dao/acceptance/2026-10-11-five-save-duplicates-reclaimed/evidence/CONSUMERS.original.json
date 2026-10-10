@@ -1,0 +1,53 @@
+{
+  "at_utc": "2026-10-10T22:21:42.235167+00:00",
+  "process_inventory": {
+    "at_utc": "2026-10-10T22:21:42.024149+00:00",
+    "scanned_process_count": 170,
+    "python_controllers_inspected": [],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "active_builds": [],
+  "inventory_helper": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "task_bus": {
+    "tasks": [
+      {
+        "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+        "state": "running",
+        "resources": [],
+        "stale": false,
+        "last_sequence": 4650
+      },
+      {
+        "task_id": "lyd-volume-c-admission-20261010-root",
+        "state": "running",
+        "resources": [
+          "storage-volume-c:coordinator"
+        ],
+        "stale": false,
+        "last_sequence": 4651
+      }
+    ],
+    "stdout_bytes": 154936,
+    "stdout_sha256": "9cde3ded61c29c4b37763ea4200c9f3c6739d1405d8c2f3a8c1e2851ef3caae8"
+  },
+  "ROOT_owned_closed_cases": [
+    3,
+    4,
+    5
+  ],
+  "future_I4_SAVE_input": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+  "future_I4_cache_input": "CASE5 shadercache only; no selected SAVE replica consumed",
+  "retained_actual_initial_SAVE_paths": [
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0053\\case-output\\initial-school-cooldown-checkpoint.ck3",
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0054\\case-output\\initial-school-cooldown-checkpoint.ck3"
+  ],
+  "owner_current_use_review": "ROOT withdrew only these five redundant profile SAVE slots after R52/R53/R54 closed. Future prepare consumes canonical0240; unresolved failure analysis consumes preserved run/case-output actual SAVEs and failure JSON. Old path mentions are historical references, not active inputs.",
+  "current_active_reference_paths": [],
+  "direct_related_processes": [],
+  "unknown_access_paths": []
+}

@@ -1,0 +1,13 @@
+test_deadline_manager_and_post_submission_drift_never_award_paused_success (test_ck3_mod_acceptance_pause.RunningPauseTests.test_deadline_manager_and_post_submission_drift_never_award_paused_success) ... ok
+test_invalid_running_identity_never_submits_pause (test_ck3_mod_acceptance_pause.RunningPauseTests.test_invalid_running_identity_never_submits_pause) ... ok
+test_pending_stamp_identity_and_original_deadline_remain_strict (test_ck3_mod_acceptance_pause.RunningPauseTests.test_pending_stamp_identity_and_original_deadline_remain_strict) ... ok
+test_event_and_invalid_complete_frame_do_not_produce_success_result (test_ck3_mod_acceptance_day_result.NormalDayResultTests.test_event_and_invalid_complete_frame_do_not_produce_success_result) ... ok
+test_malformed_lost_event_owner_or_full_frame_is_rejected (test_ck3_mod_acceptance_campaign_event.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) ... Executing <Task finished name='Task-22' coro=<CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected() done, defined at C:\workspace/ck3_eternal_recurrence/tools\test_ck3_mod_acceptance_campaign_event.py:147> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.191 seconds
+ok
+test_recovery_identity_date_rejection_and_complete_frame_remain_strict (test_ck3_mod_acceptance_preaction.CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict) ... Executing <Task finished name='Task-27' coro=<CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict() done, defined at C:\workspace/ck3_eternal_recurrence/tools\test_ck3_mod_acceptance_preaction.py:186> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.266 seconds
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.220s
+
+OK

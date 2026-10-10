@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-closed-save-duplicates-retirement-sourceonly-20261011-002/delete_exact_duplicates.py",
+    "--plan-sha256",
+    "582ca3ab68e9cf091535ce7634d165a06e0e6e38e7392ca04d2dcb5237532494",
+    "--consumer-receipt",
+    "C:/workspace/ck3_lyd_runtime_20261004/five-save-duplicates-root-review-20261011-001/ROOT-REVIEW.actual.json",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/five-save-duplicates-deletion-actual-20261011-001",
+    "--reviewer",
+    "/root",
+    "--release-exact-duplicate-protection"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:21:42.411482+00:00",
+  "finished_at_utc": "2026-10-10T22:21:45.015401+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\five-save-duplicates-delete-command-20261011-001\\stdout.log",
+    "bytes": 297,
+    "sha256": "0fba558bcf58a91ced7e06a0ead95310e66fab0b4717d0b79421fd54f43e69a5"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\five-save-duplicates-delete-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

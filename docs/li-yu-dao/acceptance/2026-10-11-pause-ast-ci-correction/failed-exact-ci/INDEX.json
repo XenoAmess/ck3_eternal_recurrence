@@ -1,0 +1,131 @@
+{
+  "schema": "ck3.exact-ci-terminal-readonly-index.v1",
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_9e2fad7d_ci_terminal_readonly_20261011_001.py",
+    "bytes": 7177,
+    "sha256": "3098df17acd6768c37514fbf93eb0553ab8d36ccd1efa9c6f0b6bdb4c2bba946"
+  },
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\failed-jobs.QUERY.actual.json",
+      "bytes": 984,
+      "sha256": "f383e01a17d4a0cc26cfed3a91a209990b45dbdf3e77adbd30369d1c3cf0e861"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\failed-jobs.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\failed-jobs.stdout.json",
+      "bytes": 542,
+      "sha256": "f1c023f08bae3c8824aa3cb9c2940ade8c053823b5cb6bcf4aa33044ec10c152"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\failed-step-raw.zip",
+      "bytes": 11690,
+      "sha256": "2ccf043a9fcd19c792f54d97edfaf6fd2923b81b2c5fc4d13dc6b72111d5ed33"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\failed-step.QUERY.actual.json",
+      "bytes": 990,
+      "sha256": "f76c5514876eb5d15bcdd431906e27668069ea6410d6a8172556421f0316f2b8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\FAILURE-DIAGNOSTIC.actual.json",
+      "bytes": 7432,
+      "sha256": "df3fd88832ebf47a65d3d038f183eec570b9f8696f893233e6ed2897d9cdfae3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\FAILURE-WINDOWS.actual.json",
+      "bytes": 10412,
+      "sha256": "48a29ab110d3450ddcded72fb15609ec3bb32c5cdf6ffade2e29a3879a69a2f1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-001-exact-head-list.QUERY.actual.json",
+      "bytes": 1102,
+      "sha256": "d568563ea4a940cf2038ea8af0feb8d0ed17152b7358dbbbb9f3d8131a54934d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-001-exact-head-list.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-001-exact-head-list.stdout.json",
+      "bytes": 803,
+      "sha256": "fc843215a1f94a192395c8cdccc0db95a121abd5fe49573f69f63faf07dac59e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-002-38090919254.QUERY.actual.json",
+      "bytes": 929,
+      "sha256": "b01724d0f8216accfd68837da3c29fdd082e72931d021dc596da85aabaf07f96"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-002-38090919254.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-002-38090919254.stdout.json",
+      "bytes": 384,
+      "sha256": "07d9e20318d7bb0d9814651a7b0c703253008fa5982d575dc2e655bbbc52bc11"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-003-38090919254.QUERY.actual.json",
+      "bytes": 929,
+      "sha256": "82db6ece8fef580ecc3d5b8b5d5bf0cbab80b2775333e31c8a95421d21ec8c01"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-003-38090919254.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-003-38090919254.stdout.json",
+      "bytes": 384,
+      "sha256": "07d9e20318d7bb0d9814651a7b0c703253008fa5982d575dc2e655bbbc52bc11"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-004-38090919254.QUERY.actual.json",
+      "bytes": 929,
+      "sha256": "da7008a1338b659faf1c6670636f832ac5d55edda519f898a227ff85ddc66584"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-004-38090919254.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-004-38090919254.stdout.json",
+      "bytes": 384,
+      "sha256": "07d9e20318d7bb0d9814651a7b0c703253008fa5982d575dc2e655bbbc52bc11"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-005-38090919254.QUERY.actual.json",
+      "bytes": 929,
+      "sha256": "50e3144916e3cc61791ea8c198b27094c50e226b128d3dabb1e3148608e1d66c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-005-38090919254.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-005-38090919254.stdout.json",
+      "bytes": 387,
+      "sha256": "0e9681adf41e41e224ceb22adc7924013efe6cf9d8af32358537b653cf9372c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\REPORT.actual.json",
+      "bytes": 9427,
+      "sha256": "62501fe045579a45e1ce2f39cf93f8f788e83f06dd6580bbd8406622107e9420"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\STATE.actual.json",
+      "bytes": 3034,
+      "sha256": "61478e1437a9609c3a34b50d5782df0a5e80b856ff7a862fdcf33c9f53706341"
+    }
+  ],
+  "package_limit_bytes": 65536
+}

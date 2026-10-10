@@ -1,0 +1,184 @@
+{
+  "schema": "ck3.exact-ci-terminal-readonly-report.v1",
+  "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+  "tracking_started_at_utc": "2026-10-10T22:20:45.764814+00:00",
+  "last_metadata_observed_at_utc": "2026-10-10T22:25:28.251555+00:00",
+  "sealed_at_utc": "2026-10-10T22:27:04.364911+00:00",
+  "all_terminal": true,
+  "actual_runs": {
+    "Linear history": {
+      "conclusion": "success",
+      "created_at": "2026-10-10T22:18:22Z",
+      "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090919209",
+      "id": 38090919209,
+      "name": "Linear history",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:18:22Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:19:00Z",
+      "workflow_id": 377165366
+    },
+    "Official Runner CI": {
+      "conclusion": "failure",
+      "created_at": "2026-10-10T22:18:22Z",
+      "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090919254",
+      "id": 38090919254,
+      "name": "Official Runner CI",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:18:22Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:24:51Z",
+      "workflow_id": 336785267
+    }
+  },
+  "metadata_query_count": 5,
+  "minimum_batch_interval_seconds": 60,
+  "tracking_limit_seconds": 600,
+  "no_ci_rerun_dispatch_tests_build_game_mcp_main_or_git_mutation": true,
+  "runtime_or_business_qualification": false,
+  "other_heads_not_requeried_or_reclassified": true,
+  "first_failed_step_diagnostic": {
+    "schema": "ck3.exact-ci-first-failed-step-diagnostic.v1",
+    "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+    "job_id": 114326994271,
+    "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090919254/job/114326994271",
+    "failed_step": {
+      "completed_at": "2026-10-10T22:24:46Z",
+      "conclusion": "failure",
+      "name": "Test shared CK3 acceptance without installed CK3",
+      "number": 34,
+      "started_at": "2026-10-10T22:24:19Z",
+      "status": "completed"
+    },
+    "first_error": {
+      "original_line": 462,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2574457Z ERROR: test_deadline_manager_and_post_submission_drift_never_award_paused_success (__main__.RunningPauseTests.test_deadline_manager_and_post_submission_drift_never_award_paused_success) (successor_drift=('diagnostics', 'last_heartbeat', 'main_thread_query_mailbox_v1', 'ready'))"
+    },
+    "first_exception": {
+      "original_line": 477,
+      "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2602445Z NameError: name '_campaign_pause_frame_rejection_detail' is not defined"
+    },
+    "trace_lines": [
+      {
+        "original_line": 463,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2576670Z ----------------------------------------------------------------------"
+      },
+      {
+        "original_line": 464,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2577234Z Traceback (most recent call last):"
+      },
+      {
+        "original_line": 465,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2586913Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_pause.py\", line 149, in test_deadline_manager_and_post_submission_drift_never_award_paused_success"
+      },
+      {
+        "original_line": 466,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2588322Z     await client.pause(frame())"
+      },
+      {
+        "original_line": 467,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2589601Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1744, in pause_campaign_after_advance"
+      },
+      {
+        "original_line": 468,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2591527Z     observed = require_campaign_pause_successor(previous, current, allow_running=True,"
+      },
+      {
+        "original_line": 469,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2592680Z         allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,"
+      },
+      {
+        "original_line": 470,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2593532Z         allow_pause_transition=True)"
+      },
+      {
+        "original_line": 471,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2594832Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1461, in require_campaign_pause_successor"
+      },
+      {
+        "original_line": 472,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2596609Z     current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance,"
+      },
+      {
+        "original_line": 473,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2597699Z                                            allow_pause_transition=allow_pause_transition)"
+      },
+      {
+        "original_line": 474,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2599124Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1382, in campaign_pause_frame_binding"
+      },
+      {
+        "original_line": 475,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2600621Z     error.ck3_campaign_pause_frame_diagnostic = _campaign_pause_frame_rejection_detail(("
+      },
+      {
+        "original_line": 476,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2601422Z                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+      }
+    ],
+    "following_test_summary": [
+      {
+        "original_line": 710,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2856908Z Ran 5 tests in 0.320s"
+      },
+      {
+        "original_line": 712,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2857263Z FAILED (errors=16)"
+      },
+      {
+        "original_line": 713,
+        "text": "static\tTest shared CK3 acceptance without installed CK3\t2026-10-10T22:24:46.2872774Z ##[error]Process completed with exit code 1."
+      }
+    ],
+    "archive": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\failed-step-raw.zip",
+      "bytes": 11690,
+      "sha256": "2ccf043a9fcd19c792f54d97edfaf6fd2923b81b2c5fc4d13dc6b72111d5ed33"
+    },
+    "raw_command_output": [
+      {
+        "zip_member": "failed-step.stdout.log",
+        "bytes": 119241,
+        "sha256": "f5d99e4a7939a1c8292ad8c2ba18433ba568b681b7c1df43b1b5d18d25f154fb"
+      },
+      {
+        "zip_member": "failed-step.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "CRC_and_original_member_SHA_readback": true,
+    "failed_jobs_metadata_queries": 1,
+    "failed_step_log_commands": 1,
+    "scope": "Original CI traceback only. No test execution, production change, workflow rerun or live causality claim.",
+    "diagnostic_producers": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r53_exact_9e2fad7d_failed_jobs_20261011_001.py",
+        "bytes": 872,
+        "sha256": "5c70202c4efa25919a1dc18c34937fb9dcd46e08eba8bf3bf6ad73f20353d2bb"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_9e2fad7d_failed_jobs_readonly_20261011_001.py",
+        "bytes": 2120,
+        "sha256": "e8964a580c911eef2ffd17ca7c832b73f9fd19aeeea7ff689c2f25e4ccec7066"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r53_exact_9e2fad7d_failed_step_20261011_001.py",
+        "bytes": 878,
+        "sha256": "5fa240ece5aecd568c2f83acb09a9c91e5c624acf391b9fb9fd5f2096b5eed67"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53_exact_9e2fad7d_failed_step_readonly_20261011_001.py",
+        "bytes": 3100,
+        "sha256": "db7e3bc2b03434417484cf5cbccd579b7d87f71aba5618bb6a67fd3beb2fd03a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\seal_r53_exact_9e2fad7d_ci_failure_20261011_001.py",
+        "bytes": 4135,
+        "sha256": "e97f4dda08ad57ca7bd112b5b0e0c45bc000d23aa92270a5026196b8cca2c6e9"
+      }
+    ]
+  }
+}

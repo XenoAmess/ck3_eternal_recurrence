@@ -1,0 +1,75 @@
+{
+  "schema": "ck3.exact-ci-bounded-tracking-state.v1",
+  "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+  "started_at_utc": "2026-10-10T22:20:45.764814+00:00",
+  "last_batch_finished_at_utc": "2026-10-10T22:25:28.251555+00:00",
+  "actual_runs": {
+    "Linear history": {
+      "conclusion": "success",
+      "created_at": "2026-10-10T22:18:22Z",
+      "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090919209",
+      "id": 38090919209,
+      "name": "Linear history",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:18:22Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:19:00Z",
+      "workflow_id": 377165366
+    },
+    "Official Runner CI": {
+      "conclusion": "failure",
+      "created_at": "2026-10-10T22:18:22Z",
+      "head_sha": "9e2fad7de47a0c26cb242e988dcba54bd19c8316",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38090919254",
+      "id": 38090919254,
+      "name": "Official Runner CI",
+      "run_attempt": 1,
+      "run_started_at": "2026-10-10T22:18:22Z",
+      "status": "completed",
+      "updated_at": "2026-10-10T22:24:51Z",
+      "workflow_id": 336785267
+    }
+  },
+  "observations": [
+    {
+      "observed_at_utc": "2026-10-10T22:20:46.511312+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-001-exact-head-list.QUERY.actual.json",
+      "exit_code": 0,
+      "error": null,
+      "actual_workflows_found": [
+        "Linear history",
+        "Official Runner CI"
+      ]
+    },
+    {
+      "observed_at_utc": "2026-10-10T22:21:58.069491+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-002-38090919254.QUERY.actual.json",
+      "exit_code": 0,
+      "error": null,
+      "workflow": "Official Runner CI"
+    },
+    {
+      "observed_at_utc": "2026-10-10T22:23:05.727291+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-003-38090919254.QUERY.actual.json",
+      "exit_code": 0,
+      "error": null,
+      "workflow": "Official Runner CI"
+    },
+    {
+      "observed_at_utc": "2026-10-10T22:24:17.198937+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-004-38090919254.QUERY.actual.json",
+      "exit_code": 0,
+      "error": null,
+      "workflow": "Official Runner CI"
+    },
+    {
+      "observed_at_utc": "2026-10-10T22:25:28.247163+00:00",
+      "query_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-exact-9e2fad7d-ci-terminal-readonly-20261011-001\\query-005-38090919254.QUERY.actual.json",
+      "exit_code": 0,
+      "error": null,
+      "workflow": "Official Runner CI"
+    }
+  ],
+  "query_count": 5
+}

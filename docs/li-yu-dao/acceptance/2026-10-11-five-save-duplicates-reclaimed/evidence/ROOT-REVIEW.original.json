@@ -1,0 +1,28 @@
+{
+  "schema": "lyd.closed-common-save-duplicate-root-review.v1",
+  "at_utc": "2026-10-10T22:21:42.235167+00:00",
+  "reviewer": "/root",
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-closed-save-duplicates-retirement-sourceonly-20261011-002\\PLAN.source-only.json",
+    "bytes": 11441,
+    "sha256": "582ca3ab68e9cf091535ce7634d165a06e0e6e38e7392ca04d2dcb5237532494"
+  },
+  "protection_release_exact_paths": [
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-003\\state\\profile\\save games\\restored_campaign.ck3",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-004\\state\\profile\\save games\\restored_campaign.ck3",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-004\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\profile\\save games\\restored_campaign.ck3",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\profile\\save games\\xar_checkpoint.ck3"
+  ],
+  "current_active_reference_paths": [],
+  "direct_related_processes": [],
+  "unknown_access_paths": [],
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\five-save-duplicates-root-review-20261011-001\\CONSUMERS.actual.json",
+      "bytes": 2126,
+      "sha256": "39d9a995f6197651bd5f9ffb6dae31d2d34ac96aa8f0fcf20da13b1631f0ca01"
+    }
+  ],
+  "reason": "Early retirement of exactly five redundant copies in closed ROOT-owned cases; current canonical baseline, both distinct initial actual SAVEs, all shadercache/autosave/last_save and failure evidence remain protected under original deadlines. Deletion is conditional on all eight held-handle SHA checks matching."
+}

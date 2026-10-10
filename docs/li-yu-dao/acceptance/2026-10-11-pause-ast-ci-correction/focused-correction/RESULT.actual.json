@@ -1,0 +1,24 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/root-run-pause-ast-affected-tests-20261011-001.py"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-10T22:27:49.695738+00:00",
+  "finished_at_utc": "2026-10-10T22:27:51.220197+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-pause-ast-fixture-ci-correction-focused-20261011-002\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-pause-ast-fixture-ci-correction-focused-20261011-002\\stderr.log",
+    "bytes": 1992,
+    "sha256": "3aa1cb67f4fbb3d63346e63bc19c0c86a25e2839d73123a4f3059a7a27af10e9"
+  }
+}

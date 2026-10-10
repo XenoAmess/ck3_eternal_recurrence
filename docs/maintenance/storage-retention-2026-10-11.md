@@ -61,3 +61,8 @@
 实际追加时间：2026-10-10T22:02:37.164748+00:00。008于2026-10-10T21:56:59.867165Z CLOSED，已知新增保留逻辑量775397888B，未来预留0，physical delete0；当时卷free619456413696B。原准入、CLOSURE-MEASURE29116B、ASSET-GROUPS88462B及其SHA均由[永久R54小包](../li-yu-dao/2026-10-11-i4-r54-pause-frame-refusal.md)回链，未重复复制大native/SAVE/PE/source。原配额2026-10-12T05:19:51.814083Z及缓存2026-10-17T13:06:29.278808Z不续，行政清理不授normal0或业务通过。
 
 B内closed006/007小台账有限复核未取得新增大对象的替代/可重建、无当前引用及保护依据，因此无新增已证可回收候选；未全B扫描或读取旧大body。该结论不表示全B没有垃圾，亦不重复计入先前已删146942031B。外置复核INDEX978B SHA727a0882e56440ec3bd129be430b1898ce6ace9457e87275ffe19e737b3aa5cc，路径C:/workspace/ck3_lyd_runtime_20261004/storage-b-closed-ledger-review-20261011-001/INDEX.json。Source14后继只读准备继续，任何新重型写入另作串行准入。
+
+
+### 06:21 CST：五份已闭场 SAVE 重复副本实际回收
+
+ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，全部持有句柄 SHA/身份匹配后，精确删除 CASE3/4/5 的 restored_campaign 与 CASE4/5 的 xar_checkpoint。5 个旧副本现不可读；逻辑回收458348713 B、API分配量458362880 B。原0240基线与R53/R54两份独立实际初始SAVE均在执行时可读并保留，其他SAVE、shadercache与失败证据不动，原期限不续。卷free增加458354688 B不独占归因；旧R52缓存146942031 B不重计，下一预约只扣本次逻辑量一次。没有业务重验或新增通过。[小原件与可用性索引](../li-yu-dao/acceptance/2026-10-11-five-save-duplicates-reclaimed/README.md)。
