@@ -10,6 +10,13 @@ The existing frozen build is CK3 1.20.0.4 / Steam25734779, EXE SHA-256
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
 That identity is reused; this work performs no executable hash.
 
+The later actual Native66 startup failure led to a bounded full-body ABI
+closure for these two originals, documented in
+[six-stage original ABI](battle-person-six-stage-original-abi-12004.md).
+It joins the split native runtime fragments, records782 newly read bytes,
+and finds no demonstrated three-argument or relocated-prefix mismatch.
+This source result supplies no startup-cause, new FIRST or live qualification.
+
 ## Held actual source
 
 Root captured the literal provider call on 2026-10-09 19:04:26 UTC:
