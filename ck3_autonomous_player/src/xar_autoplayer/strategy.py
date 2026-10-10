@@ -13,6 +13,7 @@ from .current_native_war_end_conditions_v1 import (
 from .current_replenishment_army_selector_v1 import (
     select_current_replenishment_army_v1,
 )
+from .bridge.assault_holding_observation_v1 import fresh_holding_siege_states
 from .bridge.route_contact_window_contract import advance_route_contact_window_step
 from .siege_subject_contribution_v1 import observe_siege_subject_contribution
 
@@ -10898,6 +10899,7 @@ def _choose_one_life_turn_core(
                 snapshot if isinstance(snapshot, dict) else {},
                 tactical_war if isinstance(tactical_war, dict) else None,
                 exact_objective_state_by_id,
+                commands=rows,
             )
             for province_id in exact_objective_province_ids:
                 if (
@@ -15042,6 +15044,8 @@ def _player_occupied_objective_ids(
     snapshot: dict[str, object],
     war: dict[str, object] | None,
     state_by_id: dict[int, dict[str, object]],
+    *,
+    commands: list[dict[str, object]],
 ) -> set[int]:
     known_player_side: set[int] = set()
     played_character = snapshot.get("played_character")
@@ -15056,13 +15060,32 @@ def _player_occupied_objective_ids(
         owner_id = _native_int(army.get("owner_character_id"))
         if owner_id is not None:
             known_player_side.add(owner_id)
-    return {
+    occupied = {
         province_id
         for province_id, state in state_by_id.items()
         if state.get("occupation_observable") is True
         and state.get("is_occupied") is True
         and state.get("occupying_character_id") in known_player_side
     }
+    if not isinstance(war, dict):
+        return occupied
+    history = [
+        {"command": _effective_command(row), "ok": row.get("ok"),
+         "result": _effective_command_result(row)}
+        for row in _history_after_latest_restore(commands)
+    ]
+    for state in fresh_holding_siege_states(snapshot, history):
+        province_id = state["province_id"]
+        if (state["war_id"] != war.get("war_id")
+                or province_id not in state_by_id
+                or state.get("occupation_observable") is not True):
+            continue
+        # Native participant side includes allies with no current field army.
+        occupied.discard(province_id)
+        if (state.get("is_occupied") is True
+                and state.get("occupier_side") == war.get("player_side")):
+            occupied.add(province_id)
+    return occupied
 
 
 def _rank_exact_objectives(

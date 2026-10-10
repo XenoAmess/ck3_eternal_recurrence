@@ -1,4 +1,4 @@
-"""Consume current occupation-query siege rows without inventing objectives."""
+"""Consume current occupation-query holding rows without inventing objectives."""
 
 from __future__ import annotations
 
@@ -57,6 +57,10 @@ def fresh_holding_siege_states(
                 "war_id": war_id, "province_id": holding["province_id"],
                 "siege_observable": holding["siege_observable"],
                 "active_siege": holding["active_siege"],
+                "occupation_observable": holding.get("occupation_observable"),
+                "is_occupied": holding.get("is_occupied"),
+                "occupying_character_id": holding.get("occupying_character_id"),
+                "occupier_side": holding.get("occupier_side"),
                 "observation_source": "war_occupation_query",
             })
     return states
