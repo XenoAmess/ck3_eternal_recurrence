@@ -19138,9 +19138,16 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
         } else if (step == kCurrentFirstHeirRelationshipStepV1) {
           std::string guardian_factory_sidecar_path;
-          (void)xar::bridge::JsonStringField(
+          xar::bridge::GuardianFactoryDiscoveryExportV1 guardian_factory_export{};
+          guardian_factory_export.requested = incoming.payload.find(
+              "\"guardian_factory_sidecar_path\"") != std::string::npos;
+          guardian_factory_export.path_parsed = xar::bridge::JsonStringField(
               incoming.payload, "guardian_factory_sidecar_path",
               guardian_factory_sidecar_path, 32768);
+          if (guardian_factory_export.requested)
+            guardian_factory_export.error = guardian_factory_export.path_parsed
+                ? "guardian_factory_job_not_created"
+                : "guardian_factory_sidecar_path_unparsed";
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
           state.current_first_heir_betrothal_observed.reset();
           state.current_first_heir_betrothal_revision = 0;
@@ -19226,6 +19233,8 @@ void RunConnectedSession(
                 if (!guardian_factory_sidecar_path.empty() && query.adapter12002 &&
                     xar::game::IsCk3_12004Descriptor(game.descriptor())) {
                   auto &job = query.guardian_factory_discovery12004.emplace();
+                  guardian_factory_export.job_created = true;
+                  guardian_factory_export.error = "guardian_factory_job_not_reclaimed";
                   job.expected_snapshot = before;
                   job.environment = xar::ck3_12004::
                       BindGuardianFactoryDiscoveryEnvironment12004V1(
@@ -19315,6 +19324,11 @@ void RunConnectedSession(
                       query.guardian_factory_discovery12004) {
                     guardian_factory_discovery =
                         std::move(query.guardian_factory_discovery12004);
+                    guardian_factory_export.job_reclaimed = true;
+                    guardian_factory_export.job_executed = guardian_factory_discovery->executed;
+                    guardian_factory_export.job_frame_observed = guardian_factory_discovery->frame_observed;
+                    guardian_factory_export.metadata_copied = guardian_factory_discovery->metadata.has_value();
+                    guardian_factory_export.error.clear();
                   }
                 }
               }
@@ -19331,12 +19345,15 @@ void RunConnectedSession(
                 // The existing family result wire remains unchanged.
                 if (guardian_factory_discovery) {
                   std::string sidecar_error;
-                  (void)xar::bridge::CompleteGuardianFactoryDiscoveryJobV1(
+                  guardian_factory_export.completion_attempted = true;
+                  guardian_factory_export.sidecar_written =
+                      xar::bridge::CompleteGuardianFactoryDiscoveryJobV1(
                       *guardian_factory_discovery, after,
                       std::filesystem::path(std::u8string(
                           guardian_factory_sidecar_path.begin(),
                           guardian_factory_sidecar_path.end())),
                       sidecar_error);
+                  guardian_factory_export.error = std::move(sidecar_error);
                 }
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
                 if (unavailable_reason.empty() && read.failure == xar::ck3_11906::
@@ -19355,6 +19372,8 @@ void RunConnectedSession(
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
                   family_frame = xar::game::Render12004BuildIdentity(
                       std::move(family_frame), game.descriptor());
+                family_frame = xar::bridge::AppendGuardianFactoryDiscoveryExportV1(
+                    std::move(family_frame), guardian_factory_export);
                 connected = write_frame(pipe, family_frame);
               }
             }

@@ -92,3 +92,20 @@ if(BUILD_TESTING AND WIN32)
   endif()
   # Main reads tests/fixtures/conception_pair_passive_12004_joined_journal.json.
 endif()
+
+# Guardian sidecar path/transport boundary: one new main and existing protocol implementation.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_guardian_factory_sidecar_transport_focus EXCLUDE_FROM_ALL
+    tests/guardian_factory_sidecar_transport_focus.cpp
+    src/protocol.cpp)
+  target_include_directories(xar_guardian_factory_sidecar_transport_focus PRIVATE include)
+  target_compile_features(xar_guardian_factory_sidecar_transport_focus PRIVATE cxx_std_20)
+  target_compile_definitions(xar_guardian_factory_sidecar_transport_focus PRIVATE NOMINMAX)
+  if(MSVC)
+    set_property(TARGET xar_guardian_factory_sidecar_transport_focus
+      PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
+    target_compile_options(xar_guardian_factory_sidecar_transport_focus PRIVATE
+      /EHsc /W4 /WX /utf-8 /UNDEBUG)
+  endif()
+  # The permanent Python driver invokes the native executable once through its mock endpoint.
+endif()

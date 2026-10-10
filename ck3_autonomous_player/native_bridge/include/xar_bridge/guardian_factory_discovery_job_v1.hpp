@@ -230,6 +230,45 @@ inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
 
 } // namespace guardian_factory_job_detail
 
+// Private export stages remain independent of the normal family observation.
+struct GuardianFactoryDiscoveryExportV1 {
+  bool requested{};
+  bool path_parsed{};
+  bool job_created{};
+  bool job_reclaimed{};
+  bool job_executed{};
+  bool job_frame_observed{};
+  bool metadata_copied{};
+  bool completion_attempted{};
+  bool sidecar_written{};
+  std::string error;
+};
+
+inline std::string AppendGuardianFactoryDiscoveryExportV1(
+    std::string frame, const GuardianFactoryDiscoveryExportV1 &value) {
+  if (!value.requested || frame.empty() || frame.back() != '}') return frame;
+  frame.pop_back();
+  frame += ",\"guardian_factory_discovery_v1\":{\"schema_version\":1";
+  const auto flag = [&frame](std::string_view key, bool observed) {
+    frame += ',';
+    guardian_factory_job_detail::String(frame, key);
+    frame += observed ? ":true" : ":false";
+  };
+  flag("path_parsed", value.path_parsed);
+  flag("job_created", value.job_created);
+  flag("job_reclaimed", value.job_reclaimed);
+  flag("job_executed", value.job_executed);
+  flag("job_frame_observed", value.job_frame_observed);
+  flag("metadata_copied", value.metadata_copied);
+  flag("completion_attempted", value.completion_attempted);
+  flag("sidecar_written", value.sidecar_written);
+  frame += ",\"error\":";
+  if (value.error.empty()) frame += "null";
+  else guardian_factory_job_detail::String(frame, value.error);
+  frame += "}}";
+  return frame;
+}
+
 // Worker-only completion, after mailbox reclaim and the family's outer snapshot
 // comparison. A written unavailable sidecar is not a qualified paused capture.
 inline bool CompleteGuardianFactoryDiscoveryJobV1(

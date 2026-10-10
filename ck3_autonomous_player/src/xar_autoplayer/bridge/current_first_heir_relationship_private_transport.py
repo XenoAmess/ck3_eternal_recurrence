@@ -7,6 +7,7 @@ or use a proposal pending record.
 
 from __future__ import annotations
 
+import json
 import uuid
 from pathlib import Path
 
@@ -214,7 +215,9 @@ def query_current_first_heir_relationship_private_v1(
         sidecar = Path(guardian_factory_sidecar_path)
         if not str(guardian_factory_sidecar_path) or not sidecar.is_absolute():
             raise ValueError("guardian_factory_sidecar_path must be absolute")
-        sidecar_fields["guardian_factory_sidecar_path"] = str(sidecar)
+        # Native control strings are unescaped: forward separators avoid JSON
+        # backslashes while preserving the same absolute Windows file path.
+        sidecar_fields["guardian_factory_sidecar_path"] = sidecar.as_posix()
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
         raise UnsupportedStepError("private current first-heir relationship query is disabled")
     read = (getattr(driver, "take_internal_semantic_snapshot", None)
@@ -267,6 +270,14 @@ def query_current_first_heir_relationship_private_v1(
     frame = driver.state.wait_for_command_result(
         request_id, float(timeout_seconds)
     )
+    if guardian_factory_sidecar_path is not None:
+        # Preserve the original command-result object before normalization,
+        # including private native export diagnostics. This is an owned JSON
+        # object, not a claim to have retained the original pipe byte packet.
+        command_result_path = sidecar.with_name("guardian-family-command-result.json")
+        with command_result_path.open("x", encoding="utf-8") as evidence:
+            json.dump(frame, evidence, ensure_ascii=False, indent=2)
+            evidence.write("\n")
     if frame is None:
         raise BridgeUnavailableError("current heir relationship query timed out")
     if frame.get("ok") is not True:

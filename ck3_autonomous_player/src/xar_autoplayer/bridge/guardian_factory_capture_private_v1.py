@@ -45,6 +45,7 @@ def capture_with_connected_driver(
     # Preserve the ordinary family result independently from discovery status.
     family_path = output_directory / "family-result.json"
     write_json(family_path, family)
+    command_result_path = output_directory / "guardian-family-command-result.json"
     if not sidecar_path.is_file():
         raise RuntimeError(
             "family query produced no private sidecar; retain family-result.json"
@@ -65,6 +66,9 @@ def capture_with_connected_driver(
             if sidecar.get("qualified") is True else "DISCOVERY_UNAVAILABLE"
         ),
         "family_result_path": str(family_path),
+        "native_command_result_path": (
+            str(command_result_path) if command_result_path.is_file() else None
+        ),
         "native_sidecar_path": str(sidecar_path),
         "owned_game_pid": owned_game_pid,
         "actual_native_revision_before": native_revision,
@@ -117,6 +121,12 @@ def capture_with_runtime_owner_driver(
         ))
     except Exception as error:
         receipt["failure"] = f"{type(error).__name__}: {error}"
+        raw_path = output_directory / "guardian-family-command-result.json"
+        if raw_path.is_file():
+            receipt["native_command_result_path"] = str(raw_path)
+            raw = json.loads(raw_path.read_text(encoding="utf-8"))
+            if isinstance(raw, dict) and "guardian_factory_discovery_v1" in raw:
+                receipt["native_factory_export"] = raw["guardian_factory_discovery_v1"]
         raise
     finally:
         receipt["ended_at_utc"] = now()
