@@ -381,3 +381,155 @@ registered-consumer FIRST still not run. Neither native source closure nor
 these authored fixtures prove
 that spouse 38718 is currently pregnant, that a child has been born, or
 that Robert 29829 has undergone a natural succession.
+
+## 2026-10-10: natural conception checks and useful family readiness
+
+This source-only increment reuses the existing 1.20.0.4 / Steam build
+`25734779` identity and held EXE SHA-256
+`98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
+It does not rehash or read the executable, call the Game or SDK, change a policy,
+or repeat qualified observers. The private documentation base is frozen SDK
+`f255bd8c253a2fcfbb77033878b55ec8afff2091`; this is a portable documentation
+increment, not a claim that f255 is Root's current integrated SDK.
+
+The supplied household is heir FullID `38822` and spouse FullID `38718`, both
+age 22, with fertility raw values `40000` / `25000` and no observed children.
+Those individual fertility values are inputs, not a couple's conception
+probability. The available native fertility gate is an individual gate; it
+does not prove that all monthly pair eligibility, child-limit and postpartum
+conditions pass. Heir descendants zero also does not establish that the spouse
+has no earlier children or that a maternal child-limit input is zero.
+
+### The three different times
+
+| Question | Existing evidence | Consequence for this household |
+|---|---|---|
+| When is natural conception checked? | Frozen `NChildbirth.FERTILITY_CHANCE_MULTIPLIER` comment, `common/defines/00_defines.txt:374`, says every month. | The monthly native pass is the next relevant conception opportunity. Its exact next date and current pair eligibility are not closed by the comment. No guaranteed conception follows from a pass. |
+| When is an existing pregnancy revealed? | `DAYS_TO_PREGNANCY_REVEAL=60`; the pregnancy mother/father on-actions explicitly run at revealed status. | Lack of a popup or `pregnant` trait does not exclude a concealed pregnancy. Sixty days is not the next conception-check interval. |
+| When does an existing pregnancy normally deliver? | `PREGNANCY_DAYS=280`; stock also has pregnancy termination and stillbirth paths. | Neither 280 elapsed days nor pregnancy ending establishes a living newborn FullID. A current descendant roster must show the actual child and parent links. |
+
+The old frozen stock prose placed the every-month comment at line 375; its
+locator identifies line 374. No old childbirth span was reread for this
+correction. `CHILD_BIRTH_TO_PREGNANCY_WAIT=3` remains an authored value with an
+unclosed native application/unit; it is not converted into days or months here.
+
+A necessary new bounded stock seam distinguishes scheduling domains.
+`common/on_action/_on_actions.info:7` documents the playable yearly pulse as
+birthday-based, and line 13 describes the quarterly playable pulse relative to
+that yearly pulse rather than calendar quarters. There is no demonstrated edge
+from those pulses to natural conception. Likewise
+`DAYS_BETWEEN_MONTHLY_CHECK=30` at defines line 753 belongs explicitly to schemes.
+None supplies the natural conception phase or a justified 30-day deadline.
+The finite on-action locators found subsystem-specific monthly hooks, but no
+text reference tying the childbirth fertility/wait defines to a conception
+dispatcher. This is a limited source result, not proof that no native scheduler
+exists.
+
+```mermaid
+flowchart TD
+    Pair["Current resolved pair: 38822 / 38718; age and fertility inputs"] --> Family["Existing same-frame family query"]
+    Family --> Preg["Independent native is_pregnant membership per household row"]
+    Family --> Children["Complete current descendant roster and same-roster child_inputs"]
+    Family --> Continue["Existing paired-family ordinary continuation; no child=0 wait gate"]
+    Define["NChildbirth: every-month natural check"] -.-> Consumer["UNKNOWN actual4 fertility-multiplier consumer / scheduled receiver"]
+    Consumer -.-> Timing["UNKNOWN native monthly phase / next due comparison"]
+    Timing -.-> Eligible["UNKNOWN full current pair eligibility / skip reason"]
+    Pair --> Eligible
+    Eligible -.-> Roll["Native conception outcome; no promised successful date"]
+    Roll -.-> Record["Native pregnancy record creation"]
+    Record --> Preg
+    Record -.-> Reveal["Stock reveal phase: 60 nominal days"]
+    Record -.-> Delivery["Stock nominal pregnancy length: 280 days; loss paths exist"]
+    Delivery -.-> Children
+```
+
+### Existing useful query and the frame boundary
+
+`ck3_query_current_first_heir_relationship_private_v1` already returns the
+resolved current pair, independent `native_pregnancy` values, complete
+descendants and child inputs in one observation. Its existing request shape is:
+
+```json
+{
+  "tool": "ck3_query_current_first_heir_relationship_private_v1",
+  "arguments": {"expected_native_revision": 47}
+}
+```
+
+The `47` above identifies the **historical hot03 request**, not a request to
+replay. For the next Root-owned paused observation, use the fresh snapshot's
+native revision in that same integer argument; a public revision is not its
+replacement. Reuse the existing operator request route. No new endpoint,
+separate pregnancy query, child query, wrapper or SDK is needed.
+
+Historical hot03 returned both household pregnancy values available/false and
+a complete zero-child roster at native revision `47`, date_raw `53289360`.
+The thin evidence is
+[ROOT-HOT03-FAMILY-ACTUAL-THIN.json](D:/codex-ck3-background-spill/g2-source-20261010/family-native60-r0084-preparation/ROOT-HOT03-FAMILY-ACTUAL-THIN.json).
+Root is restoring the later durable 6051 frame. The older negative result is
+not promoted to that restored date. The later hot05 timeout supplies no newer
+pregnancy or child value. Empty child inputs remain a legitimate empty roster,
+not an observed child education/focus/guardian result.
+
+For ordinary already-paired family continuation, the required observation
+provider is implemented and qualified. Once Root obtains the fresh same-frame
+family result, no additional monthly schedule field is needed merely to keep
+advancing natural days and detect pregnancy/children through that existing
+query. This research adds no wait gate or new policy. Detecting a new pregnancy
+is an observation milestone; a living child, natural succession and the full
+M7/G2 loop require their own actual outcomes.
+
+### The remaining native source entry and smallest useful extension
+
+For an **exact native-aligned next-check deadline** or a diagnosis of a native
+monthly skip, the single necessary source entry is the actual4 consumer of the
+authored `NChildbirth.FERTILITY_CHANCE_MULTIPLIER`, followed to its invoking
+monthly scheduler and eligibility branch. First identify the actual receiver
+(mother, father, Character or pair), then its native due-date comparison or
+phase, and only the conditions needed to explain that scheduled check. The
+other childbirth defines are inputs to classify within this same branch, not
+permission to scan unrelated schedulers or calculate a probability from raws.
+
+The held pregnancy source closes `GameState+0xA0 -> GameData+0x2EE40` and the two
+ordered pregnancy-record arrays (`+0x4EA0/+0x4EAC`, `+0x4E88/+0x4E94`). The
+lookup compares record `+0x08` against the complete Character ID. It closes
+active pregnancy membership only. The record's conception/due timestamps,
+father fields and array phase labels have not been read. Predicate
+`0x2B6DAF0` and lookup `0x28FD1B0` are status-reader pins; they are not writer or
+monthly scheduling pins. No held exact monthly consumer RVA/extent exists in
+the bounded inventory, so this packet does not fabricate an executable capture
+range or repeat their already qualified bodies.
+
+After the actual scheduled receiver and timing branch close, extend the same
+private family/household observation only if that timing has independent
+decision value. The minimal semantic contract is the existing full-ID and
+same-frame envelope plus: native scheduled/eligible state, the actual next
+check deadline or native phase only where the source supplies one, and the
+observed native skip condition needed for this current pair. Legal unscheduled
+or ineligible values must remain distinct from failed reads. Exact widths,
+native enums and calendar conversion are determined by that future source;
+this document creates no fields that would permanently return null. A deadline
+would schedule a useful **recheck**, not promise conception or birth. Crown-law
+kind4 variable-clock projection is unrelated and must not be reused.
+
+This is a concrete next source dependency, not a new sampling authorization.
+The next source owner should return a named registration/callsite or bounded
+consumer extent first; Root can then execute its one finite capture. No broad
+repeat of `.text`, `.rdata`, `.data`, old observer decoding or old GREEN is
+requested by this increment.
+
+### Evidence and delivery state
+
+- Reused frozen source tree/read ledger:
+  [current-pregnancy-birth32/stock](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/current-pregnancy-birth32/stock/SOURCE-TREE.md).
+- New finite stock seam and exact source reads:
+  [stock-schedule/SOURCE-TREE.md](D:/codex-ck3-background-spill/m7-natural-pregnancy-schedule-20261010/stock-schedule/SOURCE-TREE.md),
+  [SOURCE-READS.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-schedule-20261010/stock-schedule/SOURCE-READS.json).
+- Held actual4 reader/provider inventory:
+  [cached-native/HELD-NATIVE-FIELDS.json](D:/codex-ck3-background-spill/m7-natural-pregnancy-schedule-20261010/cached-native/HELD-NATIVE-FIELDS.json).
+- State: documentation/source research; existing family status provider reused.
+  The exact monthly scheduling extension is not implemented or qualified.
+  Tests/FIRST/build are `NOTRUN` and unnecessary for this documentation-only
+  increment. Game/SDK calls, new EXE/bin reads, hashes, old body decodes and
+  repeat GREEN are zero. No new pregnancy, birth, education, natural succession,
+  M7 completion or G2 credit is granted.
