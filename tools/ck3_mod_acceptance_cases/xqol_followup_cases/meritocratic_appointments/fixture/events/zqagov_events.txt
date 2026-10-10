@@ -11,7 +11,12 @@ zqagov_merit.1 = {
                 exists = title:e_goryeo.holder
                 title:e_goryeo.holder = { is_alive = yes is_ai = yes has_title = title:e_goryeo is_independent_ruler = yes has_government = meritocratic_government }
             }
-            title:e_goryeo.holder = { save_scope_as = zqagov_target }
+            title:e_goryeo.holder = {
+                save_scope_as = zqagov_target
+                debug_log = "ZQAGOV: SETUP BEGIN controlled-qualified-merit-positive-v1 amount=2000"
+                change_merit = 2000
+                debug_log = "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000"
+            }
             set_player_character = scope:zqagov_target
             scope:zqagov_target = { trigger_event = { id = zqagov_merit.2 } }
         }

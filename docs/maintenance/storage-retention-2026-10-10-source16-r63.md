@@ -75,3 +75,11 @@ Root在7bb27aaea7f4f4e1662ce853b75f2c558ccf3259 clean状态下，对已生成的
 Source16 Python source index d97dc649…与host ed91b819…原路径及pin精确复用，native替换为实际03948328…DLL及组合index2ef16831…；没有复制Python树、重编572对象或重hash未变正文。现有公共入口只核原生索引文件pin，可绑定完整6917行组合author，partial overlay不冒称完整物理树。尚未给予新DLL实机或产品业务PASS，已消费R64不改写，未消费prepared须精确manifest sibling，新fixture须新prepare。
 
 生产器原五件FAILED及后继诚实failure说明保留：额外-P造成同级模块导入失败，随后wrapper重复保存stdout/result超小输出cap、可信plan0未保全。六件80921B/children0，elapsed195.853034s超过原180s，不能称生产包装按时GREEN。Root没有重物化，直接既有CLI的独立实际plan0才是本次选择依据；plan只证明合同可绑定，不代表正文全验或游戏通过。
+
+## R65/R66 与受控贤能正例：2026-10-10
+
+原45-root清单剩4条中仅追加2条必要退休SDK transport，actual15220736B/2files，达到原场公式+4MiB即停，剩2未动；actual140回执1811B/7f6210856d39f8abe08cd6d26d9ddc6ecaaf81d3c9d0b2c252fb6571d2825bf7。原39条和失败回执保留，未扩大扫描/删除业务证据。
+
+R65真CLOSED后cache actual157958960B/3780files，summary23 2373B/df01bb7ffc0d8d2c0b5d495e22c3f22f7183fa8067ac190ac25c2978fe33f51d；R66真CLOSED后cache actual161276720B/3816files，summary23 2373B/1e7558bb8db81c4232bf3f00f2f46a9eb49b47a6ef4cbcf851acc6798bf3f55a。两场lossless actual gain1552384B和2306048B另计，原bytes/SHA/mtime保持。删除累计32949185080B/612908files。最后free30571581440只是观测，未来场仍fresh，变化未全归因cache。
+
+三个Source17小输入真实close；原helper池内controlled candidate16KiB、actual8926logical/children0关闭，fullcap只计一次，不以logical冒充分配回收；来源缺失字段如实记账。R65/R66原业务/typed/截图/报告及Source17/native父树保留。[业务与Root夹具修订](../xqol-r65-r66-controlled-merit-2026-10-10.md)。

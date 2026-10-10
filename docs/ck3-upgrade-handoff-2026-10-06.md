@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10：R65真实等级、R66缓存拒绝与受控正例
+
+正式仍7/10，范围只为天朝二期以外原十mod。Source17首次真实current-rule level0<floor3已定位无效自然零资源正例；原版默认不为独立ruler初始化merit。Root批准两author文件明确controlled-qualified-merit-positive-v1准备2000，仅修harness前提，完整两law/引擎人类AI池/百万三相/恢复/真实继任不降，旧R65GAP保留，尚待新prepare/live。R66 OFF池成立，ON旧窗口cache不刷新导致breakdown拒绝，整case仍RED；两场均正常trueCLOSED/CAS释放。[完整新事实与限制](xqol-r65-r66-controlled-merit-2026-10-10.md)。
+
+Main在R66闭场后交付本次修订，后继现成独立QOL用例继续共用Source17；剩余顺序QOL→重整河山→361既有0.3.1维护，G2/二期排除。存储删除累计32949185080B/612908files、压缩另计；剩2旧transport保留，新场仍fresh。1e79官方CI已66成功/20跳过/0失败，不外推本次提交。
+
 ## 2026-10-10：Source17实际选定，后继输入并行准备
 
 本执行线只做天朝二期以外的原十mod迁移，正式仍7/10。Root已实际公共plan0并唯一选择native-only Source17，复用Source16 Python/host，仅换修复canonical SHA误拒的新0394 DLL（原10项focused PASS）；尚未live。原生产器入口/输出包装失败与195.853s超180事实保留，[实际选择与R64](xqol-r64-merit-qualification-2026-10-10.md)。新merit/PAM+公共prepare与其余未消费manifest siblings并行，下一场先取得真实角色等级；不重复已完成业务。

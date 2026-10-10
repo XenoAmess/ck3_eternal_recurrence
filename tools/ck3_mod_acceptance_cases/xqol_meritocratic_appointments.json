@@ -9,7 +9,7 @@
   "schema": "ck3-xqol-original-followup-case-v1",
   "case": "meritocratic_appointments",
   "data_directory": "xqol_followup_cases/meritocratic_appointments",
-  "acceptance_scope": "original_meritocratic_appointments_only",
+  "acceptance_scope": "controlled-qualified-merit-positive-v1",
   "post_start": {
     "government_key": "meritocratic_government",
     "primary_title_tier_key": "empire",
@@ -18,18 +18,24 @@
   "required_startup": [
     "ZQAGOV: QUAL BEGIN merit_native1066_holder",
     "ZQAGOV: QUAL PASS merit_native1066_holder",
-    "ZQAGOV: QUAL DONE merit_native1066_holder"
+    "ZQAGOV: QUAL DONE merit_native1066_holder",
+    "ZQAGOV: SETUP BEGIN controlled-qualified-merit-positive-v1 amount=2000",
+    "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000"
   ],
   "forbidden_startup": [
-    "ZQAGOV: QUAL FAIL"
+    "ZQAGOV: QUAL FAIL",
+    "ZQAGOV: SETUP FAIL controlled-qualified-merit-positive-v1"
   ],
   "required_markers": [
     "ZQAGOV: QUAL BEGIN merit_native1066_holder",
     "ZQAGOV: QUAL PASS merit_native1066_holder",
-    "ZQAGOV: QUAL DONE merit_native1066_holder"
+    "ZQAGOV: QUAL DONE merit_native1066_holder",
+    "ZQAGOV: SETUP BEGIN controlled-qualified-merit-positive-v1 amount=2000",
+    "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000"
   ],
   "forbidden_markers": [
-    "ZQAGOV: QUAL FAIL"
+    "ZQAGOV: QUAL FAIL",
+    "ZQAGOV: SETUP FAIL controlled-qualified-merit-positive-v1"
   ],
   "original_step_count": 2,
   "maximum_natural_days": 0,
@@ -74,12 +80,22 @@
       "sha256": "f9f3ba07d17addd2c4c8fea3fd9676b41493beb832e07349527fdf97656a6f2f"
     },
     "xqol_followup_cases/meritocratic_appointments/fixture/events/zqagov_events.txt": {
-      "bytes": 2126,
-      "sha256": "0cda559b093699fa090eeab68eb9e37557204d0f90f230543c5bc70911542475"
+      "bytes": 2391,
+      "sha256": "005dbcc532b7c710159fe4e1ccc8b1ef0ce3aa05ecaec19ec6de32af88cef32a"
     },
     "xqol_followup_cases/meritocratic_appointments/original-plan.json": {
       "bytes": 989,
       "sha256": "4bd013daaa2ba610f5a7894ac74ad16627002c6da3af46a9e98bdcae648fca8b"
     }
+  },
+  "fixture_preparation": {
+    "kind": "controlled-qualified-merit-positive-v1",
+    "stock_effect": "change_merit",
+    "amount": 2000,
+    "target": "title:e_goryeo.holder",
+    "applications": 1,
+    "stage": "zqagov_merit.1 original successful AI-holder guard after save_scope_as, before set_player_character",
+    "required_actual_readback": "Same-run current-rule level >= target floor, then complete engine-generated eligible human + AI pools for both original laws",
+    "credit_scope": "controlled fixture-live only; original zero-preparation R65 remains GAP"
   }
 }

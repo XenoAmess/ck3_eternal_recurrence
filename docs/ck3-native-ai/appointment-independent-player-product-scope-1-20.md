@@ -35,3 +35,7 @@ subtract = { value = 1000000 ... }
 这次核对不能证明有另一个自然独立角色满足全部原前提，也没有证明R57/R58唯一排除机制。下一轮不应将“独立只是无关harness假设”作为再次cold的依据；必须先取得原规则下人类真实自然入池的事实，才有正向分数差分可验。现有两个RED/所有GAP保留，不将候选缺席改判通过。
 
 仅产品/合同文本读取和外置薄卡。未live/native ABI/build/prepare/test、未修改MAIN/Git/fixture/helper，也未新增预算、采样或callback。
+
+## R65/R66 与受控贤能正例：2026-10-10
+
+Root已按真实R65当前规则level0<floor3及stock初始化排除独立ruler的证据，单独批准controlled-qualified-merit-positive-v1受控夹具前提修订：一次公开声明普通merit2000准备，完整真实引擎池、两法百万三相、原switch/actor/date恢复及真实AI继任保留。此决定覆盖原自然无资源正例的具体准备限制，但不将其改判通过；旧R65仍GAP，新结果只计controlled fixture-live。独立玩家及生产范围不变，不能注入名单、改评分或强制继任。[完整Root决策及证据](../xqol-r65-r66-controlled-merit-2026-10-10.md)。
