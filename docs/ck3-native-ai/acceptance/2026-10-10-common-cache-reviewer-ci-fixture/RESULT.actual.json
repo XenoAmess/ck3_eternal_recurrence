@@ -1,0 +1,86 @@
+{
+  "schema": "ck3.cache-reviewer-ci-fixture-fix.v1",
+  "original_ci_head": "0c0e36e21164d55cd9f47d2d8ab9ae7a5cbf3f63",
+  "original_official_run_id": 38006953109,
+  "original_official_conclusion": "failure",
+  "original_linear_run_id": 38006953137,
+  "original_linear_conclusion": "success",
+  "li_yu_dao_static_checks": "NOT_TRIGGERED",
+  "failed_step": "Test shared CK3 acceptance without installed CK3",
+  "failed_test": "WorkshopCacheTests.test_original_normal_close_remains_mandatory_and_no_business_pass",
+  "original_exception": "AttributeError: 'Selection' object has no attribute 'context_path'",
+  "original_cache_suite_tests": 9,
+  "original_cache_suite_errors": 1,
+  "source_head_before_fix_commit": "3704561725e583d9c9fc10f4c47c1523bb1d9643",
+  "local_after_tests": 9,
+  "local_after_exit_code": 0,
+  "local_after_argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/test_ck3_mod_acceptance_workshop_cache.py"
+  ],
+  "source_baseline_pins": [
+    {
+      "path": "tools/test_ck3_mod_acceptance_workshop_cache.py",
+      "bytes": 16303,
+      "sha256": "464335bb24bd7cac63e4afb76604fce28290620f8b6125f02694bb7bf104cd35",
+      "exact_ci_bytes": 16303,
+      "exact_ci_sha256": "464335bb24bd7cac63e4afb76604fce28290620f8b6125f02694bb7bf104cd35",
+      "same_bytes_as_original_ci": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_client.py",
+      "bytes": 50584,
+      "sha256": "1e819442f8a1d95a29d5d749a10d3447485f2df450f4cf3b95e89615451a52e0",
+      "exact_ci_bytes": 50584,
+      "exact_ci_sha256": "1e819442f8a1d95a29d5d749a10d3447485f2df450f4cf3b95e89615451a52e0",
+      "same_bytes_as_original_ci": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 38927,
+      "sha256": "95e9273b4b604d65c4772a494ad5a889fc9d92cce616b2ad7796a7644482b97a",
+      "exact_ci_bytes": 38752,
+      "exact_ci_sha256": "ac88c4ef11e72c465b5dead27bfa46d048dca78fec98318979e3eadde5a7038b",
+      "same_bytes_as_original_ci": false
+    }
+  ],
+  "fixed_source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_workshop_cache.py",
+      "bytes": 16949,
+      "sha256": "8a9e55de7399b9d7e75bb2691692df12390a427ffa4a615efdd43dafa81eb7eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 50584,
+      "sha256": "1e819442f8a1d95a29d5d749a10d3447485f2df450f4cf3b95e89615451a52e0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 38927,
+      "sha256": "95e9273b4b604d65c4772a494ad5a889fc9d92cce616b2ad7796a7644482b97a"
+    }
+  ],
+  "production_client_and_entry_unchanged_by_this_work_package": true,
+  "actual_reviewer_resolver_and_pin_checks_executed": true,
+  "reviewer_origin_asserted": true,
+  "original_normal_close_required_and_no_business_product_pass_assertions_preserved": true,
+  "new_official_ci_success_claimed": false,
+  "new_actual_runtime_or_product_acceptance_claimed": false,
+  "real_game_or_screen_process_started": false,
+  "workflow_dispatch_performed": false,
+  "source04_or_source05_runtime_repackaged": false,
+  "old_6a3_evidence_modified": false,
+  "open_kaishek_prevalidation": {
+    "status": "not-applicable",
+    "reason": "Pure Python synthetic Selection fixture; no CK3 script or gameplay semantics changed."
+  },
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 364600,
+    "sha256": "e8c347978fcc07a3834be8e1d5b5af7d1323895c3e9cbe7e9be58cc3f6ce8614"
+  }
+}

@@ -237,7 +237,15 @@ class WorkshopCacheTests(unittest.TestCase):
 
         adapter.run_case(context, Client())
         selected = object.__new__(entry.Selection)
-        selected.context = {'run_id': context['run_id']}
+        selected.run_dir = self.root / context['run_id']
+        selected.context_path = self.root / 'allocated-context.json'
+        selected.argv = ['SYNTHETIC CACHE VERIFY ONLY']
+        selected.runtime_environment = {}
+        frozen = selected.run_dir / 'frozen-argv.json'
+        self.write(frozen, {'run_id': context['run_id'], 'reviewer': '/root',
+            'argv': selected.argv, 'runtime_environment': selected.runtime_environment})
+        selected.context = {'run_id': context['run_id'], 'reviewer': '/root', 'frozen_argv': entry.pin(frozen)}
+        self.write(selected.context_path, selected.context)
         selected.adapter_context = lambda: context
         selected.load_adapter = lambda: adapter
         self.assertFalse(selected.verify()['case_acceptance_pass'])
@@ -246,6 +254,7 @@ class WorkshopCacheTests(unittest.TestCase):
         self.assertFalse(selected.verify()['case_acceptance_pass'])
         self.write(closed, {'normal_close_qualified': True})
         result = selected.verify()
+        self.assertEqual(context['operator_reviewer'], selected.context['reviewer'])
         self.assertTrue(result['case_acceptance_pass'])
         self.assertFalse(result['business_pass'])
         self.assertFalse(result['product_release_pass'])
