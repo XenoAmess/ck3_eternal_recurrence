@@ -1,0 +1,307 @@
+{
+  "schema": "lyd.resolve-cache-source-only.selected-records.v1",
+  "created_at_utc": "2026-10-10T11:16:07.411759+00:00",
+  "build": {
+    "version": "1.20.0.4",
+    "recorded_EXE_SHA256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "full_EXE_hash_recomputed_for_packet": false,
+    "source_identity_method": "See entry FACTS: current small pin plus inherited earlier qualified exact EXE SHA"
+  },
+  "archive": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-10-lyd-resolve-cache-source-only/SELECTED-SOURCE-RECORDS.zip",
+    "bytes": 59895,
+    "sha256": "c2fc65918779a9010ef42200f43196bed112ce08d340a2b652d8607267b4408f",
+    "member_count": 31,
+    "uncompressed_bytes": 172752,
+    "all_selected_original_pins_verified": true,
+    "all_members_exact_decompression_verified": true
+  },
+  "sources": [
+    {
+      "label": "entry",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-entry-bounded-20261010-001/INDEX.json",
+        "bytes": 4924,
+        "sha256": "0e13dcd0c389e973b6aa6d7e06d7dfda047a71076a0367c72177e836ca820474"
+      },
+      "selected": [
+        {
+          "member": "entry/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-entry-bounded-20261010-001/FACTS.actual.json",
+          "bytes": 16714,
+          "sha256": "851d52e0b0e6a89c77d73a7085a4bbb9c450b31a8a6e7cd14c5b2f265ed2cbea"
+        },
+        {
+          "member": "entry/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-entry-bounded-20261010-001/REPORT.md",
+          "bytes": 1441,
+          "sha256": "615ac69a178a757c4930ee9c9ca1890c86e449b191b7c79abf53d7b3ebf26b18"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "direct-callees",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-direct-callees-bounded-20261010-002/INDEX.json",
+        "bytes": 2594,
+        "sha256": "5d1408e5b2a7e92edf6e04108c522ea3147acc38d549b1e5027821172c1313a2"
+      },
+      "selected": [
+        {
+          "member": "direct-callees/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-direct-callees-bounded-20261010-002/FACTS.actual.json",
+          "bytes": 33488,
+          "sha256": "6608e012b923aa3bad5161ada9fcb15a28bda2f2c910aadaea279ed03ca41478"
+        },
+        {
+          "member": "direct-callees/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-direct-callees-bounded-20261010-002/REPORT.md",
+          "bytes": 1607,
+          "sha256": "bb43f9d65b259a5f8de684fa6b926a4db18ae9ff0f86e826da972c21b8391a50"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "preprocess",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-preprocess-bounded-20261010-003/INDEX.json",
+        "bytes": 3096,
+        "sha256": "b63d594e663491d9040f955ade6cd969f2bd8e27de7ed32ccda48efad767fc48"
+      },
+      "selected": [
+        {
+          "member": "preprocess/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-preprocess-bounded-20261010-003/FACTS.actual.json",
+          "bytes": 21880,
+          "sha256": "ac686f0149afd5b5a0140e914bd8c15f3a620b338ddeb991fb0b2c5176ef56d4"
+        },
+        {
+          "member": "preprocess/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-preprocess-bounded-20261010-003/REPORT.md",
+          "bytes": 2366,
+          "sha256": "11cee4e0d2376bb31a9a06266675fddeb7013a071d904c7ec2857600f0d5dbe5"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "char-callees",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-char-callees-bounded-20261010-004/INDEX.json",
+        "bytes": 2341,
+        "sha256": "7a05109b166ae50d6b5b69aedd4b229ec66be71931e6abd2c15d208e47985648"
+      },
+      "selected": [
+        {
+          "member": "char-callees/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-char-callees-bounded-20261010-004/FACTS.actual.json",
+          "bytes": 7563,
+          "sha256": "034a3fbf2a0b93e23959f4d4d0ff34299edce1c161b4418acb6581cd68cd2437"
+        },
+        {
+          "member": "char-callees/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-char-callees-bounded-20261010-004/REPORT.md",
+          "bytes": 1711,
+          "sha256": "10788889a3be283a2b1c9af52fe17fd3a8483f9efae0f5f7aa1d99179d03bf9a"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "land-callees",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-callees-bounded-20261010-005/INDEX.json",
+        "bytes": 4128,
+        "sha256": "8909445095052306a94564d7fe65a0371174b1f67897ef50454f3be9c6308aa7"
+      },
+      "selected": [
+        {
+          "member": "land-callees/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-callees-bounded-20261010-005/FACTS.actual.json",
+          "bytes": 9292,
+          "sha256": "d03c9562c4475a6b83808d936f397c0daf1420d8de71610734909fee97926847"
+        },
+        {
+          "member": "land-callees/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-callees-bounded-20261010-005/REPORT.md",
+          "bytes": 1566,
+          "sha256": "caee3e7263a1686850c78ed41615ec7ca5bbe5fc860d2a184d9770fec82435ec"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "next-gate",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-cache-next-gate-bounded-20261010-006/INDEX.json",
+        "bytes": 2907,
+        "sha256": "1a7b9bf150b17e70da85e1f00b050baef8c8b632277100fc44c5208bd2e997bd"
+      },
+      "selected": [
+        {
+          "member": "next-gate/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-cache-next-gate-bounded-20261010-006/FACTS.actual.json",
+          "bytes": 7166,
+          "sha256": "e274967993b89524abd94a23db93e9ba42c91cc865adfc4efb378ef552f03471"
+        },
+        {
+          "member": "next-gate/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-cache-next-gate-bounded-20261010-006/REPORT.md",
+          "bytes": 1578,
+          "sha256": "c6e30b03d8130e66e05ac2a2b5b41914db068a68bdbb624feb25c35177dda0f6"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "c3-handover-status",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/c3-handover155-source-status-20261010-001/INDEX.json",
+        "bytes": 5590,
+        "sha256": "ef42c2225322d06fda692b8fd7834c7efca75533e6c1b517beadf5cae0e8487b"
+      },
+      "selected": [
+        {
+          "member": "c3-handover-status/REPORT.source-only.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/c3-handover155-source-status-20261010-001/REPORT.source-only.md",
+          "bytes": 4314,
+          "sha256": "401df10cc4ee917077c4dad9dacbf8afc14648348584b519d9a30e6ab42fde99"
+        },
+        {
+          "member": "c3-handover-status/HISTORICAL-RESULTS.excerpt.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/c3-handover155-source-status-20261010-001/HISTORICAL-RESULTS.excerpt.json",
+          "bytes": 5235,
+          "sha256": "041921b0104e27c5e9ee50d95aeabda1164d132cb8fc82fb9e5c990bbe4797fc"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "r49-exact-head-ci",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-official-0423dfca-terminal-readonly-20261010-001/INDEX.json",
+        "bytes": 1338,
+        "sha256": "be0ad3830f402ad4b82ef11d409c7508a994c3bd2cddbbeb3b5aefe9fb9ae8dc"
+      },
+      "selected": [
+        {
+          "member": "r49-exact-head-ci/REPORT.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-official-0423dfca-terminal-readonly-20261010-001/REPORT.actual.json",
+          "bytes": 954,
+          "sha256": "241570130272ffc3f2dc5c6ffc947747aaa36a485f7fc57a9a2b0da72557d05a"
+        },
+        {
+          "member": "r49-exact-head-ci/QUERY.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-official-0423dfca-terminal-readonly-20261010-001/QUERY.actual.json",
+          "bytes": 916,
+          "sha256": "e90b8e0530d2f4bff65f0208267133b93dbb0a9447fc985cc71949a9a9ec2b0b"
+        },
+        {
+          "member": "r49-exact-head-ci/run.stdout.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-official-0423dfca-terminal-readonly-20261010-001/run.stdout.json",
+          "bytes": 402,
+          "sha256": "e0d67371782a6c1a35eb83bc1804c010644992491a38bdfe66ee4053725e6b39"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "land-next-gate",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-next-gate-bounded-20261010-007/INDEX.json",
+        "bytes": 3659,
+        "sha256": "4eef163a41851fc484107e11e347c9add5de01aff7f830c0488ab6fca772ee61"
+      },
+      "selected": [
+        {
+          "member": "land-next-gate/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-next-gate-bounded-20261010-007/FACTS.actual.json",
+          "bytes": 8850,
+          "sha256": "e204d78722aa7ddd946ada93321d5a1f27d31ead2cac66f035e630a131c1af4c"
+        },
+        {
+          "member": "land-next-gate/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-next-gate-bounded-20261010-007/REPORT.md",
+          "bytes": 1641,
+          "sha256": "f23512c892e5273a163dc4b281a3f82d4827f26ab2626a8ced5754c2e7ded9f3"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    },
+    {
+      "label": "land-vector-gate",
+      "original_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-vector-gate-bounded-20261010-008/INDEX.json",
+        "bytes": 3412,
+        "sha256": "8eda69132ab5606de75bea044c0633d13c072a7805d48030a81d2b482ac586bf"
+      },
+      "selected": [
+        {
+          "member": "land-vector-gate/FACTS.actual.json",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-vector-gate-bounded-20261010-008/FACTS.actual.json",
+          "bytes": 8301,
+          "sha256": "d6993f4fa52d5f9082e12218a5cd069a07a305aea9db72c33b633fb8c5b432fb"
+        },
+        {
+          "member": "land-vector-gate/REPORT.md",
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r49-current4-resolve-land-vector-gate-bounded-20261010-008/REPORT.md",
+          "bytes": 1778,
+          "sha256": "cc484a2d70d5644cf67a0ce6ede5cb360d3c0db2264b5e8cf80a35737557412a"
+        }
+      ],
+      "other_original_index_members": "External only; not part of this compact archive. Their original retention deadlines remain unchanged."
+    }
+  ],
+  "scope": {
+    "SDK_calls": false,
+    "game_calls": false,
+    "EXE_body_reads_by_this_producer": false,
+    "save_reads": false,
+    "whole_disassembly_copied": false,
+    "business_PASS": null,
+    "full_mod_PASS": null
+  },
+  "bounded_record_write": {
+    "max_uncompressed_members_bytes": 262144,
+    "heavy_write": false,
+    "free_before_bytes": 623862820864,
+    "free_after_archive_bytes": 623862759424,
+    "other_reservations_reopened": false
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_and_consolidate_by_utc": "2027-04-08T11:16:07.411759+00:00",
+    "original_raw_or_derived_deadlines_renewed": false,
+    "active_compact_facts_review": "Per each original FACTS storage field; this source-only record does not extend active-input protection."
+  },
+  "archive_asset": {
+    "asset_id": "lyd-current4-resolve-selected-records-20261010",
+    "replica_id": "master-docs-selected-source-records",
+    "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+    "machine_id": "BF-202609141645",
+    "root_id": "ck3_eternal_recurrence",
+    "relative_path": "docs/ck3-native-ai/acceptance/2026-10-10-lyd-resolve-cache-source-only/SELECTED-SOURCE-RECORDS.zip",
+    "category": "record",
+    "state": "closed",
+    "logical_bytes": 59895,
+    "allocated_bytes_or_null": null,
+    "closed_at_utc_or_null": "2026-10-10T11:16:07.411759+00:00",
+    "last_used_at_utc": "2026-10-10T11:16:07.411759+00:00",
+    "expires_at_utc": "2027-04-08T11:16:07.411759+00:00",
+    "active_references": [
+      "docs/ck3-native-ai/li-yu-dao-resolve-cache-12004.md"
+    ],
+    "protected_until_utc_or_null": null,
+    "protection_reason_or_null": null,
+    "source_pins_or_recipe": "sources and exact archive member pins in this record",
+    "availability": "Exact selected records locally available; publication is established by their later Git commit/push, not this producer ACK."
+  },
+  "producer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/root-seal-resolve-source-packet-20261010-001.py",
+    "bytes": 7813,
+    "sha256": "65689e862d195d8be7278493f80ca5c1f8546ab12630d2a6b1ee2d6790aa488f"
+  }
+}
