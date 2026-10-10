@@ -491,5 +491,190 @@ class GraphicsCacheTests(unittest.TestCase):
                 self.assertFalse((output / 'graphics-cache-preparation.json').exists())
 
 
+class GraphicsFootprintV2Tests(unittest.TestCase):
+    """Portable candidate-only seams; no real game/cache/host process is touched."""
+
+    def setUp(self):
+        scratch = Path(__file__).resolve().parents[2] / 'synthetic-test-work'
+        scratch.mkdir(exist_ok=True)
+        temporary = tempfile.TemporaryDirectory(prefix='footprint-v2-', dir=scratch)
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.number = 0
+
+    def profile(self, names=('product', 'fixture')):
+        self.number += 1
+        profile = self.root / str(self.number) / 'profile'
+        bodies = {name: ('config-' + name).encode() for name in cache.CONFIGS}
+        bodies['dlc_load.json'] = (json.dumps({'enabled_mods': ['mod/' + name + '.mod' for name in names],
+            'disabled_dlcs': [], 'unknown_retained_key': {'mode': 'unchanged'}}, indent=2) + '\n').encode()
+        for ordinal, name in enumerate(names):
+            prefix = 'mod-content/' + name + '/'
+            bodies[prefix + 'descriptor.mod'] = ('name="mod-position-' + str(ordinal) + '"\n').encode()
+            bodies[prefix + 'gfx/FX/example.shader'] = ('shader-' + str(ordinal)).encode()
+            bodies[prefix + 'gui/example.gui'] = b'widget = {}\n'
+            bodies[prefix + 'unknown/file.bin'] = b'unknown-retained'
+            bodies[prefix + 'common/scripted_triggers/check.txt'] = b'always = yes\n'
+            bodies[prefix + 'common/scripted_effects/effect.txt'] = b'log = "business effect"\n'
+            bodies[prefix + 'events/event.txt'] = b'namespace = synthetic\n'
+            bodies[prefix + 'localization/english/text.yml'] = b'l_english:\n key:0 "Business text"\n'
+            bodies['mod/' + name + '.mod'] = ('name="mod-position-' + str(ordinal) + '"\npath="' +
+                (profile / 'mod-content' / name).resolve().as_posix() + '"\n').encode()
+        rows = {}
+        for relative, body in bodies.items():
+            path = profile / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(body)
+            rows[relative] = cache._pin(path)
+        return profile, rows
+
+    def change(self, profile, rows, relative, body):
+        path = profile / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(body)
+        rows[relative] = cache._pin(path)
+
+    def footprint(self, profile, rows):
+        audit = {}
+        result = cache._profile_key_v2(rows, profile, profile, audit=audit)
+        return result, audit
+
+    def test_only_three_gameplay_classes_are_excluded_and_recorded(self):
+        profile, rows = self.profile()
+        before, audit_before = self.footprint(profile, rows)
+        for relative in ('common/scripted_effects/effect.txt', 'events/event.txt', 'localization/english/text.yml'):
+            self.change(profile, rows, 'mod-content/fixture/' + relative, b'changed business bytes\n')
+        after, audit_after = self.footprint(profile, rows)
+        self.assertEqual(before, after)
+        self.assertNotEqual(audit_before['whole_business_inventory_sha256'], audit_after['whole_business_inventory_sha256'])
+        self.assertEqual(set(row['class'] for row in audit_after['excluded_gameplay_files'].values()),
+                         set(cache.GAMEPLAY_CLASSES))
+        self.assertFalse(audit_after['engine_cache_lookup_or_hit_verified'])
+        self.assertFalse(audit_after['business_pass'])
+
+    def test_excluded_business_tamper_still_rejects_full_freeze(self):
+        profile, rows = self.profile()
+        (profile / 'mod-content/fixture/events/event.txt').write_bytes(b'unfrozen replacement')
+        with self.assertRaisesRegex(ValueError, 'Business bytes changed'):
+            self.footprint(profile, rows)
+
+    def test_graphics_gui_unknown_and_other_common_content_stay_in_key(self):
+        for relative in ('gfx/FX/example.shader', 'gui/example.gui', 'unknown/file.bin',
+                         'common/scripted_triggers/check.txt', 'common/unknown/entry.txt',
+                         'common/scripted_effects/nested/not-an-excluded-leaf.txt',
+                         'events/nested/unknown.txt', 'localization/english/unknown.bin'):
+            with self.subTest(relative=relative):
+                profile, rows = self.profile()
+                before, _ = self.footprint(profile, rows)
+                self.change(profile, rows, 'mod-content/fixture/' + relative, b'changed retained input')
+                self.assertNotEqual(before, self.footprint(profile, rows)[0])
+
+    def test_arbitrary_ordered_mod_routes_normalize_only_aliases(self):
+        source, source_rows = self.profile(('first', 'second', 'third'))
+        target, target_rows = self.profile(('renamed_a', 'renamed_b', 'renamed_c'))
+        before, _ = self.footprint(source, source_rows)
+        after, audit = self.footprint(target, target_rows)
+        self.assertEqual(before, after)
+        self.assertEqual(len(after['ordered_mods']), 3)
+        self.assertEqual([row['canonical_stem'] for row in audit['ordered_mod_routing']],
+                         ['renamed_a', 'renamed_b', 'renamed_c'])
+        dlc = json.loads((target / 'dlc_load.json').read_text())
+        dlc['enabled_mods'].reverse()
+        self.change(target, target_rows, 'dlc_load.json', (json.dumps(dlc, indent=2) + '\n').encode())
+        self.assertNotEqual(before, self.footprint(target, target_rows)[0])
+
+    def test_config_descriptor_and_all_nonrouting_dlc_bytes_are_retained(self):
+        changes = ('configuration', 'inner-descriptor', 'outer-nonpath', 'disabled-dlc', 'unknown-dlc', 'dlc-whitespace')
+        for what in changes:
+            with self.subTest(what=what):
+                profile, rows = self.profile()
+                before, _ = self.footprint(profile, rows)
+                if what == 'configuration':
+                    self.change(profile, rows, 'pdx_settings.txt', b'changed renderer setting')
+                elif what == 'inner-descriptor':
+                    self.change(profile, rows, 'mod-content/fixture/descriptor.mod', b'name="changed"\n')
+                elif what == 'outer-nonpath':
+                    path = profile / 'mod/fixture.mod'
+                    self.change(profile, rows, 'mod/fixture.mod', path.read_bytes().replace(b'mod-position-1', b'changed-name'))
+                elif what == 'dlc-whitespace':
+                    self.change(profile, rows, 'dlc_load.json', b' ' + (profile / 'dlc_load.json').read_bytes())
+                else:
+                    value = json.loads((profile / 'dlc_load.json').read_text())
+                    value['disabled_dlcs' if what == 'disabled-dlc' else 'unknown_retained_key'] = ['changed']
+                    self.change(profile, rows, 'dlc_load.json', (json.dumps(value, indent=2) + '\n').encode())
+                self.assertNotEqual(before, self.footprint(profile, rows)[0])
+
+    def test_duplicate_unknown_mod_path_and_outer_semantic_mismatch_reject(self):
+        for what in ('duplicate', 'unknown-mod', 'outer-path', 'path-escape'):
+            with self.subTest(what=what):
+                profile, rows = self.profile()
+                if what == 'duplicate':
+                    value = json.loads((profile / 'dlc_load.json').read_text())
+                    value['enabled_mods'] = ['mod/product.mod', 'mod/product.mod']
+                    self.change(profile, rows, 'dlc_load.json', json.dumps(value).encode())
+                elif what == 'unknown-mod':
+                    self.change(profile, rows, 'mod-content/unlisted/gfx/new.shader', b'unknown mod')
+                elif what == 'outer-path':
+                    self.change(profile, rows, 'mod/fixture.mod', b'name="fixture"\npath="C:/outside"\n')
+                else:
+                    rows['../escaped.txt'] = rows['pdx_settings.txt']
+                with self.assertRaises(ValueError):
+                    self.footprint(profile, rows)
+
+    def test_v1_key_keeps_all_business_bytes_and_original_two_mod_contract(self):
+        profile, rows = self.profile()
+        old = cache._profile_key(rows, profile, profile)
+        self.assertIn('canonical_mod_files', old)
+        self.change(profile, rows, 'mod-content/fixture/events/event.txt', b'changed business')
+        self.assertNotEqual(old, cache._profile_key(rows, profile, profile))
+        three, three_rows = self.profile(('first', 'second', 'third'))
+        with self.assertRaisesRegex(ValueError, 'Exactly two'):
+            cache._profile_key(three_rows, three, three)
+
+    def test_new_v2_seed_and_public_prepare_preserve_red_and_legacy_rejection(self):
+        # Reuse the actual existing synthetic closure/runtime/source-index fixture,
+        # including its RED startup/host exit 1, rather than mocking source admission.
+        fixture = GraphicsCacheTests()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        report_before = cache._pin(fixture.run / 'native-report.json')
+        with patch.object(allocator, 'runtime_process_inventory', return_value={
+                'blockers': [], 'process_absence_is_normal_exit_proof': False}):
+            seed = cache.freeze_shader_cache_seed(fixture.origin_pin, fixture.root / 'immutable-v2', key_version=2)
+        seed_value = cache._checked(seed)
+        self.assertEqual(seed_value['schema'], cache.SEED_SCHEMA_V2)
+        self.assertFalse(seed_value['startup_qualified'])
+        self.assertFalse(seed_value['business_pass'])
+        selection, output = fixture.target()
+        rows = selection.prepared['preparation']['profile']['files']
+        path = selection.state_dir / 'profile/mod-content/transaction_control/events/fixture.txt'
+        path.write_bytes(b'namespace = changed_business\n')
+        rows['mod-content/transaction_control/events/fixture.txt'] = cache._pin(path)
+        graphics = fixture.prepare(selection, output, seed)
+        cache.validate_prepared_graphics(selection)
+        self.assertNotEqual(graphics['graphics_projection']['source']['whole_business_inventory_sha256'],
+                            graphics['graphics_projection']['target']['whole_business_inventory_sha256'])
+        self.assertEqual(report_before, cache._pin(fixture.run / 'native-report.json'))
+        self.assertEqual(cache._read(fixture.run / 'native-report.json')['status'], 'RED')
+        legacy_seed = fixture.seed()
+        self.assertEqual(cache._checked(legacy_seed)['schema'], cache.SEED_SCHEMA)
+        legacy_target, legacy_output = fixture.target()
+        legacy_rows = legacy_target.prepared['preparation']['profile']['files']
+        legacy_event = legacy_target.state_dir / 'profile/mod-content/transaction_control/events/fixture.txt'
+        legacy_event.write_bytes(b'namespace = changed_business\n')
+        legacy_rows['mod-content/transaction_control/events/fixture.txt'] = cache._pin(legacy_event)
+        with self.assertRaisesRegex(ValueError, 'Graphics cache key mismatch'):
+            fixture.prepare(legacy_target, legacy_output, legacy_seed)
+        changed, changed_output = fixture.target()
+        new_shader = changed.state_dir / 'profile/mod-content/product/gfx/FX/changed.shader'
+        new_shader.parent.mkdir(parents=True)
+        new_shader.write_bytes(b'changed shader source')
+        changed.prepared['preparation']['profile']['files'][
+            'mod-content/product/gfx/FX/changed.shader'] = cache._pin(new_shader)
+        with self.assertRaisesRegex(ValueError, 'Graphics cache key mismatch'):
+            fixture.prepare(changed, changed_output, seed)
+        self.assertFalse((changed_output / 'graphics-cache-preparation.json').exists())
+
+
 if __name__ == '__main__':
     unittest.main()
