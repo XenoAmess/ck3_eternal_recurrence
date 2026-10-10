@@ -95,7 +95,7 @@ xqol_mass_conversion_dispatch_next_effect = {
 				interaction = xqol_mass_conversion_courtier_interaction
 				actor = scope:actor
 				recipient = scope:xqol_conversion_candidate
-				execute_threshold = decline
+				send_threshold = decline
 			}
 		}
 		else = {
@@ -123,7 +123,7 @@ xqol_mass_conversion_dispatch_next_effect = {
 				interaction = xqol_mass_conversion_ruler_interaction
 				actor = scope:actor
 				recipient = scope:xqol_conversion_candidate
-				execute_threshold = decline
+				send_threshold = decline
 			}
 		}
 		else = {
@@ -151,7 +151,7 @@ xqol_mass_conversion_dispatch_next_effect = {
 				interaction = xqol_mass_conversion_ruler_interaction
 				actor = scope:actor
 				recipient = scope:xqol_conversion_candidate
-				execute_threshold = decline
+				send_threshold = decline
 			}
 		}
 		else = {

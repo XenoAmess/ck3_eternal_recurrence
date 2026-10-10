@@ -31,6 +31,12 @@ zqp_setup_positive_effect = {
  set_character_faith = faith:nestorian
  set_character_rite = rite:nestorian
  every_personal_tenet = { scope:actor = { remove_personal_tenet = prev } }
+ # The two real personal tenets require two actual slots (base cap is one).
+ # Stock piety level 4 grants one additional slot before the original baseline.
+ if = {
+  limit = { piety_level < 4 }
+  set_piety_level = { value = 4 }
+ }
  if = {
   limit = { has_pam_dlc_trigger = yes free_personal_tenet_slots >= 2 }
   set_personal_tenet = tenet:tenet_acts_of_apostles

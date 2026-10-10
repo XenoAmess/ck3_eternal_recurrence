@@ -1,5 +1,13 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10：R52–R54闭场后修正真实派发
+
+正式发布仍 **7/10（70%）**，后续顺序QOL、重整河山、361。R52低分资格PASS后仍2接受/0拒绝；当前EXE内置文档与RTTI函数绑定已确认 `execute_threshold=decline` 会立即执行包括拒绝档，旧validator还强制此错误契约。闭场后已将三处 authored 派发改 `send_threshold=decline` 并纠正检查，原1接受/1拒绝及后果要求不改。R53个人信条两项资格false、业务0；正例现在先用原版piety level4取得第二容量，再执行原双setter，exact0/reward预算不改。原R53缺实际slots读回，未把静态容量定位冒充实机已证。新源必要六项本机L0全exit0、约4.24秒，详见[R52/R53记录](xqol-r52-r53-dispatch-and-qualification-2026-10-10.md)。修后业务尚待实机。
+
+R54领主代付已到真实stock回调，payer28755/prisoner65886/付款前钱包51（非报价或已支付证明），观察夹具在after回调引用失去的`zqlr_actor`，原FAIL保留；公共day001另有running-owner-stamp失败待分开定位。该场run2/verify2、retained OS0 failure proof、normal-qualified=false、原keeper/allocator0、CAS8140 done/resources[]；现场完整归还后才修改MAIN。PAM负例与UI尚未分配，避免已知旧派发上无效冷载。
+
+R33只保defense23/final6、R36/R38/R46付款/guard、R42/R43只读资格、R48精确直接callback的适用局部证据均不重跑。UI prior_core已增加本次三行可精确逆变换的窄来源等价，其余26文件exact一致并保留旧R33 pins，只复用不经该dispatcher的defense23/reverse/final6。R54 after观察只补当前实际imprisoner scope重绑定，四文件parser0，原day001 stamp失败独立保留。当前仍单一Source13/runtime05/native fd1f，不重编DLL；QOL现有builder单测及双构建已接入同一官方CI，完整原版static仍由本机真实执行，未做partial/skip validator。fde5官方CI64成功/20条件跳过是原截止，后继提交需自身CI。
+
 ## 2026-10-10 11:05：闭场后统一修复、只补未完成单元
 
 正式发布仍为 **7/10（70%）**；顺序保持 QOL、重整河山、361 最后。CK3 仍为本机 1.20.0.4/build25734779，全部后续产品使用原 Source13/runtime05/native fd1f，不新建产品 host 或 DLL。R46 自付赎囚与 R48 礼仪的适用局部证据已[永久保存](xqol-r46-r48-scoped-evidence-2026-10-10.md)，不重跑有效业务。

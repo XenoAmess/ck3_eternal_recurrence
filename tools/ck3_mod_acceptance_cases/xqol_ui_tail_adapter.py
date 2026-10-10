@@ -1,6 +1,7 @@
 """Original Song readonly9/UI25 in a fresh scene, with explicit prior-core evidence."""
 from __future__ import annotations
 import copy
+import hashlib
 import json
 from pathlib import Path
 
@@ -31,6 +32,43 @@ def checked_json(row):
     return read(row['path'])
 
 
+
+def prior_formal_binding(context, receipt, source_formal):
+    expected = context['case_inputs']['formal_product_files']
+    fields = ('bytes', 'sha256')
+    require(set(source_formal) == set(expected) == set(receipt['formal_product_files']) and len(expected) == 27 and
+            all(all(source_formal[key][field] == receipt['formal_product_files'][key][field]
+                    for field in fields) for key in expected), 'Prior actual core formal27 source pins changed')
+    changed = [key for key in sorted(expected)
+               if any(source_formal[key][field] != expected[key][field] for field in fields)]
+    if not changed:
+        return {'mode': 'exact_formal27'}
+    relative = 'common/scripted_effects/xqol_conversion_effects.txt'
+    old = {'bytes': 7458, 'sha256': '0a4f93d7019afe94cfff76f7f6129023dc08b07c96dcf61ea170a5e5c40ec7db'}
+    new = {'bytes': 7449, 'sha256': '438a44f036d3545a48d0619a526073db3829c19a6c93fab2bece19ab2bc385be'}
+    # This one equivalence preserves only R33 defense23/reverse/final6, whose
+    # frozen source does not call the three conversion dispatchers. No AI
+    # conversion, UI, source-case PASS or normal-close proof is inherited.
+    require(changed == [relative] and
+            context['case_inputs']['prior_core_evidence']['sha256'] ==
+            '3be254579a2a5004b6dbb15c48e5ec619f784503f2b75fe854e936bd0547dbe1' and
+            receipt['source_prepared']['sha256'] ==
+            '28e7bfca6b7165a749a4311c7182387d9a368ad8b1067175dcb9d600f6b1dfd5' and
+            receipt['source_run_id'] == '4-8e1c2f1861--xenoamess-quality-of-life--R0033' and
+            all(source_formal[relative][field] == old[field] and expected[relative][field] == new[field]
+                for field in fields), 'Only the fixed R33 conversion send-threshold source equivalence is allowed')
+    path = Path(context['case_inputs']['product_dir'])/relative
+    raw = path.read_bytes()
+    restored = raw.replace(b'send_threshold = decline', b'execute_threshold = decline')
+    require(len(raw) == new['bytes'] and hashlib.sha256(raw).hexdigest() == new['sha256'] and
+            raw.count(b'send_threshold = decline') == 3 and len(restored) == old['bytes'] and
+            hashlib.sha256(restored).hexdigest() == old['sha256'],
+            'Actual conversion source must reverse exactly three send thresholds to the original R33 bytes')
+    return {'mode': 'r33_scoped_conversion_send_only', 'changed_file': relative,
+            'source_pin': old, 'current_pin': pin(path), 'restored_source_pin': old,
+            'unchanged_formal_files': 26, 'reused_scope': 'defense23/reverse/final6 only',
+            'conversion_reply_credit': False}
+
 def prior_core(context):
     evidence = context['case_inputs']['prior_core_evidence']
     receipt = checked_json(evidence)
@@ -43,11 +81,7 @@ def prior_core(context):
     source_formal = {key.removeprefix('mod-content/product/'): value
                     for key, value in prepared['preparation']['profile']['files'].items()
                     if key.startswith('mod-content/product/')}
-    expected = context['case_inputs']['formal_product_files']
-    require(set(source_formal) == set(expected) == set(receipt['formal_product_files']) and len(expected) == 27 and
-            all(all(source_formal[key][field] == expected[key][field] == receipt['formal_product_files'][key][field]
-                    for field in ('bytes', 'sha256')) for key in expected),
-            'Prior actual core and fresh UI must use the same exact formal27 product')
+    formal_binding = prior_formal_binding(context, receipt, source_formal)
     source = receipt['source_rows']
     day = checked_json(source['actual-day-005.json'])
     final = checked_json(source['actual-original-final6-results.json'])
@@ -67,6 +101,7 @@ def prior_core(context):
             close.get('normal_close_qualified') is False,
             'Original failed case/normal-close facts must not be rewritten')
     return {'receipt': evidence, 'source_run_id': receipt['source_run_id'],
+            'formal_source_binding': formal_binding,
             'final6': source['actual-original-final6-results.json'],
             'core23': True, 'forbidden5': True, 'natural_days': 5, 'final6_qualified': True,
             'source_case_acceptance_pass': False, 'source_normal_close_qualified': False}

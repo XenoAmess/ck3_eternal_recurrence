@@ -420,6 +420,7 @@ zqlr_stock_before_effect = {
 zqlr_stock_after_effect = {
  if = {
   limit = { has_character_flag = zqlr_active }
+  save_scope_as = zqlr_actor
   if = {
    limit = {
     var:zqlr_stock_calls = 1

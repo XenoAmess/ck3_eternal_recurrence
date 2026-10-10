@@ -317,7 +317,7 @@ def check_scripts(errors: list[str]) -> None:
         "run_interaction = {",
         "interaction = demand_payment_interaction",
         "interaction = ransom_interaction",
-        "execute_threshold = decline",
+        "send_threshold = decline",
         "execute_threshold = accept",
         "xqol_release_hook_recruit_conversion_interaction",
         "xqol_mass_conversion_pending",
@@ -334,8 +334,10 @@ def check_scripts(errors: list[str]) -> None:
     conversion_runtime = effects.split(
         "xqol_bulk_conversion_threshold_effect = {", 1
     )[1].split("xqol_mass_conversion_courtier_accepted_effect = {", 1)[0]
-    if "send_threshold" in conversion_runtime:
-        errors.append("conversion dispatch must settle synchronously without pending notifications")
+    if conversion_runtime.count("send_threshold = decline") != 3:
+        errors.append("all three conversion dispatch paths must send native AI replies")
+    if "execute_threshold" in conversion_runtime:
+        errors.append("conversion dispatch must not execute declined replies immediately")
     conversion_count = (
         "change_variable = { name = xqol_mass_conversion_pending add = 1 }"
     )

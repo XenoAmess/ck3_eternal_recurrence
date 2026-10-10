@@ -126,6 +126,8 @@ jobs:
         run: python tools/test_build_ox_here_release.py
       - name: Test Mandala Purge release tooling
         run: python tools/test_build_remove_mandala_release.py
+      - name: Test XenoAmess Quality of Life release tooling
+        run: python tools/test_build_xenoamess_quality_of_life_release.py
       - name: Test Tributary Expansion Directives interaction display contract
         run: python -B -X utf8 tools/test_tributary_expansion_directives_display.py
       - name: Test Tributary Expansion Directives release tooling
@@ -405,6 +407,8 @@ jobs:
         run: python tools/build_ox_here_release.py --check
       - name: Verify reproducible Mandala Purge release
         run: python tools/build_remove_mandala_release.py --check
+      - name: Verify reproducible XenoAmess Quality of Life release
+        run: python tools/build_xenoamess_quality_of_life_release.py --check
       - name: Verify reproducible Tributary Expansion Directives release
         run: python tools/build_tributary_expansion_directives_release.py --check
       - name: Verify reproducible Celestial Commerce and Corruption release
