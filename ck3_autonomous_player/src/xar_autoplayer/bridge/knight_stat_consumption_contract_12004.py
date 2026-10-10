@@ -80,6 +80,23 @@ _TRANSFER_UNPROVEN_FLAGS = {
     "generic_postimages_complete", "transfer_to_entry_association_proven",
     "observer_model_write_performed", "full_person_ready", "entry_ready",
 }
+_PHYSICAL_SCHEMA = "xar.ck3.person-transfer-physical-postimage-12004-v1"
+_PHYSICAL_UNPROVEN = {
+    "all_native_delegate_postimages_ready", "retained_preparation_numeric_payload_compared",
+    "actual_Ci_numeric_payload_compared", "full_person_ready", "entry_ready",
+}
+_PHYSICAL_HEADER = {"data_identity": "ptr", "capacity_i32": "i32?", "count_i32": "i32?"}
+_PHYSICAL_COPY_FLAGS = {
+    "descriptor_copy_complete": "bool", "payload_copy_complete": "bool",
+    "declared_operand_copy_complete": "bool",
+}
+_PHYSICAL_BLOCK_COMPARISON = {
+    "four_descriptors_copy_complete": "bool", "four_payloads_copy_complete": "bool",
+    "four_operands_copy_complete": "bool", "a_descriptor_equals_b_before": "bool?",
+    "b_descriptor_equals_a_before": "bool?", "descriptor_cross_equal": "bool?",
+    "a_payload_equals_b_before": "bool?", "b_payload_equals_a_before": "bool?",
+    "payload_cross_equal": "bool?",
+}
 _OUTPUT_RAW_FIELDS = (
     "siege_value_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw",
 )
@@ -335,8 +352,176 @@ def _transfer_preparation(value: object, path: str) -> dict:
     return result
 
 
+def _physical_bits(value: object, path: str) -> int:
+    if type(value) is str:
+        if (len(value) != 18 or not value.startswith("0x")
+                or any(char not in "0123456789abcdefABCDEF" for char in value[2:])):
+            raise ValueError(path + " must retain exactly sixteen hexadecimal uint64 bits")
+        value = int(value[2:], 16)
+    return _integer(value, path, 64, unsigned=True)
+
+
+def _physical_field(value: object, path: str, kind: str) -> object:
+    if kind.endswith("[]"):
+        if value is None:
+            return None
+        return [_physical_field(item, f"{path}[{index}]", kind[:-2])
+                for index, item in enumerate(_array(value, path))]
+    if kind == "ptr":
+        return _identity(value, path)
+    if kind == "u64":
+        return _raw64(value, path, unsigned=True)
+    if kind == "i32?":
+        return _number(value, path, 32)
+    if kind == "i64":
+        return _raw64(value, path)
+    if kind == "u16":
+        return _integer(value, path, 16, unsigned=True)
+    if kind == "bits64":
+        return _physical_bits(value, path)
+    if kind in {"bool", "bool?"}:
+        return _boolean(value, path, optional=kind.endswith("?"))
+    if kind == "row16":
+        if (type(value) is not str or len(value) != 32
+                or any(char not in "0123456789abcdefABCDEF" for char in value)):
+            raise ValueError(path + " must retain one opaque sixteen-byte row")
+        return value
+    if kind == "text":
+        # Source allocation failures and successful E0 copies can emit empty
+        # reason strings. Keep those strings rather than inventing readiness.
+        if type(value) is not str:
+            raise ValueError(path + " must retain its native text")
+        return value
+    raise AssertionError("Unknown physical field kind: " + kind)
+
+
+def _physical_fields(value: object, path: str, layout: dict) -> dict:
+    raw = _dict(value, path, set(layout))
+    return {field: _physical_field(raw[field], path + "." + field, kind)
+            for field, kind in layout.items()}
+
+
+def _physical_scope(value: object, path: str, stage: dict, phase: str, side: str) -> dict:
+    raw = _dict(value, path, {"occurrence", "event", "phase", "side", "model_identity", "original_return_rva"})
+    result = {
+        "occurrence": _natural_event(raw["occurrence"], path + ".occurrence"),
+        "event": _natural_event(raw["event"], path + ".event"),
+        "phase": _string(raw["phase"], path + ".phase"),
+        "side": _string(raw["side"], path + ".side"),
+        "model_identity": _identity(raw["model_identity"], path + ".model_identity", optional=False),
+        "original_return_rva": _identity(raw["original_return_rva"], path + ".original_return_rva", optional=False),
+    }
+    event = stage["before_event"] if phase == "before_original" else stage["completed_event"]
+    if (result["occurrence"] != stage["before_event"] or result["event"] != event
+            or result["phase"] != phase or result["side"] != side
+            or result["model_identity"] != stage["model_" + side + "_identity"]
+            or result["original_return_rva"] != stage["original_return_rva"]):
+        raise ValueError(path + " differs from its owned original occurrence, boundary or receiver")
+    return result
+
+
+def _physical_pc_operand(value: object, path: str, stage: dict, phase: str, side: str, kind: str) -> dict:
+    fields = set(_PHYSICAL_COPY_FLAGS) | {"scope", "maximum_payload_bytes", "raw"}
+    fields |= {"payload_budget_exceeded"} if kind == "keys" else {"reason", "values_q64_raw_bits"}
+    raw = _dict(value, path, fields)
+    result = _physical_fields({field: raw[field] for field in _PHYSICAL_COPY_FLAGS}, path, _PHYSICAL_COPY_FLAGS)
+    result["scope"] = _physical_scope(raw["scope"], path + ".scope", stage, phase, side)
+    result["maximum_payload_bytes"] = _raw64(raw["maximum_payload_bytes"], path + ".maximum_payload_bytes", unsigned=True)
+    if kind == "keys":
+        result["payload_budget_exceeded"] = _boolean(raw["payload_budget_exceeded"], path + ".payload_budget_exceeded")
+        result["raw"] = _physical_fields(raw["raw"], path + ".raw", {
+            **_PHYSICAL_HEADER, "storage_identity": "ptr", "keys_u16": "u16[]",
+            "header_ready": "bool", "key_elements_ready": "bool", "reason": "text",
+        })
+        payload, stride = result["raw"]["keys_u16"], 2
+    else:
+        result["reason"] = _physical_field(raw["reason"], path + ".reason", "text")
+        result["values_q64_raw_bits"] = _physical_field(raw["values_q64_raw_bits"], path + ".values_q64_raw_bits", "bits64[]")
+        result["raw"] = _physical_fields(raw["raw"], path + ".raw", {
+            **_PHYSICAL_HEADER, "model_identity": "ptr", "block_identity": "ptr",
+            "allocator_receiver_identity": "ptr", "values_q64": "i64[]", "values_reason": "text",
+        })
+        payload, stride = result["values_q64_raw_bits"], 8
+        signed = result["raw"]["values_q64"]
+        if payload is not None and signed is not None and payload != [item & (2**64 - 1) for item in signed]:
+            raise ValueError(path + " raw Q64 bits differ from their signed source interpretation")
+    count = result["raw"]["count_i32"]
+    if payload is not None and (len(payload) * stride > result["maximum_payload_bytes"]
+                                or (count is not None and count >= 0 and len(payload) > count)):
+        raise ValueError(path + " copied payload exceeds its source budget or actual count")
+    if result["payload_copy_complete"] and (count is None or count < 0 or payload is None or len(payload) != count):
+        raise ValueError(path + " complete payload lacks its independently counted ordered copy")
+    return result
+
+
+def _physical_receiver(value: object, path: str, stage: dict, phase: str, side: str) -> dict:
+    flags = {"four_descriptors_copy_complete", "four_payloads_copy_complete", "four_operands_copy_complete"}
+    raw = _dict(value, path, flags | {"scope", "block10_rows", "block78_keys", "blocke0_values", "block248_raw64", "reason"})
+    result = {field: _boolean(raw[field], path + "." + field) for field in flags}
+    result["scope"] = _physical_scope(raw["scope"], path + ".scope", stage, phase, side)
+    result["reason"] = _physical_field(raw["reason"], path + ".reason", "text")
+    result["block78_keys"] = _physical_pc_operand(raw["block78_keys"], path + ".block78_keys", stage, phase, side, "keys")
+    result["blocke0_values"] = _physical_pc_operand(raw["blocke0_values"], path + ".blocke0_values", stage, phase, side, "values")
+    rows = _physical_fields(raw["block10_rows"], path + ".block10_rows", {
+        **_PHYSICAL_HEADER, "source": "text", "configured": "bool", "rows_ready": "bool",
+        "descriptor_ready": "bool", "reason": "text", "model_identity": "ptr", "block_identity": "ptr",
+        "row_copy_budget": "u64", "rows": "row16[]",
+    })
+    if rows["rows"] is not None and len(rows["rows"]) > rows["row_copy_budget"]:
+        raise ValueError(path + " opaque rows exceed their owned copy budget")
+    result["block10_rows"] = rows
+    tail = _dict(raw["block248_raw64"], path + ".block248_raw64", set(_PHYSICAL_COPY_FLAGS) | {"scope", "raw"})
+    result["block248_raw64"] = {
+        **_physical_fields({field: tail[field] for field in _PHYSICAL_COPY_FLAGS}, path + ".block248_raw64", _PHYSICAL_COPY_FLAGS),
+        "scope": _physical_scope(tail["scope"], path + ".block248_raw64.scope", stage, phase, side),
+        "raw": _physical_fields(tail["raw"], path + ".block248_raw64.raw", {
+            **_PHYSICAL_HEADER, "model_identity": "ptr", "block_identity": "ptr", "allocator_identity": "ptr",
+            "allocator_dispatch_vtable_identity": "ptr", "ordered_payload_raw64": "bits64[]",
+            "payload_ready": "bool", "reason": "text",
+        }),
+    }
+    return result
+
+
+def _physical_postimage(value: object, path: str, stage: dict) -> dict | None:
+    if value is None:
+        return None
+    raw = _dict(value, path, _PHYSICAL_UNPROVEN | {"schema", "before", "after", "comparison"})
+    if raw["schema"] != _PHYSICAL_SCHEMA:
+        raise ValueError(path + " requires the actual four-block physical-postimage schema")
+    result = {"schema": _PHYSICAL_SCHEMA}
+    for field in _PHYSICAL_UNPROVEN:
+        result[field] = _boolean(raw[field], path + "." + field)
+        if result[field]:
+            raise ValueError(path + " producer has not compared preparation/Ci numerics or full native delegates")
+    for name, phase in (("before", "before_original"), ("after", "after_original")):
+        pair = _dict(raw[name], path + "." + name, {"configured", "phase", "a", "b"})
+        if pair["phase"] != phase:
+            raise ValueError(path + "." + name + " changed the original-call phase")
+        result[name] = {
+            "configured": _boolean(pair["configured"], path + "." + name + ".configured"), "phase": phase,
+            **{side: _physical_receiver(pair[side], path + "." + name + "." + side, stage, phase, side)
+               for side in ("a", "b")},
+        }
+    blocks = {"block10_rows", "block78_keys", "blocke0_values", "block248_raw64"}
+    layout = {
+        "original_transfer_returned": "bool", "model_pair_matches_transfer": "bool", "snapshot_scopes_match_transfer": "bool",
+        "same_clock_and_thread": "bool?", "completion_after_begin": "bool?", "same_original_observation_ready": "bool",
+        "four_block_operand_copies_complete": "bool", "four_block_payload_comparison_ready": "bool",
+        "four_block_payloads_cross_equal": "bool?", "four_block_payload_exchange_observed": "bool",
+        "preparation_descriptor_matches_before_b": "bool?", "preparation_threads_match_original": "bool?",
+        "b_before_pc_key_value_counts_equal": "bool?", "a_after_pc_key_value_counts_equal": "bool?", "reason": "text",
+    }
+    comparison = _dict(raw["comparison"], path + ".comparison", set(layout) | blocks)
+    result["comparison"] = _physical_fields({field: comparison[field] for field in layout}, path + ".comparison", layout)
+    result["comparison"].update({block: _physical_fields(comparison[block], path + ".comparison." + block, _PHYSICAL_BLOCK_COMPARISON)
+                                 for block in blocks})
+    return result
+
+
 def _transfer_record(value: object, path: str) -> dict:
-    raw = _dict(value, path, {"record_sequence", "offline_fixture", "stage"})
+    optional = {"physical_postimage"} if isinstance(value, dict) and "physical_postimage" in value else set()
+    raw = _dict(value, path, {"record_sequence", "offline_fixture", "stage"} | optional)
     fields = _TRANSFER_STAGE_FLAGS | _TRANSFER_UNPROVEN_FLAGS | {
         "observation_stage", "observed", "original_called", "original_returned", "reason",
         "model_a_identity", "model_b_identity", "original_return_rva",
@@ -362,11 +547,14 @@ def _transfer_record(value: object, path: str) -> dict:
     if (stage["observation_stage"] != "actual_paired_transfer_return"
             or any(stage[field] for field in _TRANSFER_UNPROVEN_FLAGS)):
         raise ValueError(path + " installed identity capture cannot grant whole postimages or Entry")
-    return {
+    result = {
         "record_sequence": _raw64(raw["record_sequence"], path + ".record_sequence", unsigned=True),
         "offline_fixture": _boolean(raw["offline_fixture"], path + ".offline_fixture"),
         "stage": stage,
     }
+    if "physical_postimage" in raw:
+        result["physical_postimage"] = _physical_postimage(raw["physical_postimage"], path + ".physical_postimage", stage)
+    return result
 
 
 def _transfer_capture_at_consumption(value: object, path: str) -> dict:
@@ -408,7 +596,8 @@ def _transfer_capture_at_consumption(value: object, path: str) -> dict:
 def _installed_transfer_lineage(value: object, row: dict, path: str) -> dict | None:
     if value is None:
         return None
-    optional = {"capture_at_consumption"} if isinstance(value, dict) and "capture_at_consumption" in value else set()
+    optional = (set(value) & {"capture_at_consumption", "physical_postimage_owned_at_consumption"}
+                if isinstance(value, dict) else set())
     raw = _dict(value, path, _TRANSFER_RELATIONSHIPS | optional | {
         "schema", "observation_stage", "getter_begin_event", "getter_completed_event",
         "installed_identity_associated", "reason",
@@ -425,13 +614,20 @@ def _installed_transfer_lineage(value: object, row: dict, path: str) -> dict | N
     }
     result.update({field: _boolean(raw[field], path + "." + field, optional=True)
                    for field in _TRANSFER_RELATIONSHIPS})
+    if "physical_postimage_owned_at_consumption" in raw:
+        result["physical_postimage_owned_at_consumption"] = _boolean(
+            raw["physical_postimage_owned_at_consumption"], path + ".physical_postimage_owned_at_consumption")
     if "capture_at_consumption" not in raw:
-        if result["installed_identity_associated"] or any(
-                result[field] is not None for field in _TRANSFER_RELATIONSHIPS):
+        if (result.get("physical_postimage_owned_at_consumption") is True
+                or result["installed_identity_associated"] or any(
+                result[field] is not None for field in _TRANSFER_RELATIONSHIPS)):
             raise ValueError(path + " association lacks its before-getter owned transfer record")
         return result
     capture = _transfer_capture_at_consumption(raw["capture_at_consumption"], path + ".capture_at_consumption")
     result["capture_at_consumption"] = capture
+    if "physical_postimage_owned_at_consumption" in result and result["physical_postimage_owned_at_consumption"] is not (
+            capture["records"][0].get("physical_postimage") is not None):
+        raise ValueError(path + " physical presence marker differs from its same-Ci owned record")
     stage = capture["records"][0]["stage"]
     before, after = stage["before"], stage["after"]
     events = (stage["before_event"], stage["completed_event"],

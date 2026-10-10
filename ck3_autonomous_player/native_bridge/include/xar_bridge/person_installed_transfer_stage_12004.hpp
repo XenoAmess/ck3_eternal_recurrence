@@ -42,6 +42,10 @@ using PersonInstalledTransferPreparationReader12004 =
 using PersonInstalledTransferEventReader12004 =
     PersonInstalledTransferEvent12004 (*)(void *) noexcept;
 
+struct PersonInstalledTransferStage12004;
+using PersonInstalledTransferObserver12004 = void (*)(
+    void *, const PersonInstalledTransferStage12004 &) noexcept;
+
 struct PersonInstalledTransferBindings12004 {
   void *read_context = nullptr;
   PersonInstalledTransferRead12004 read = nullptr;
@@ -49,6 +53,11 @@ struct PersonInstalledTransferBindings12004 {
   PersonInstalledTransferPreparationReader12004 read_preparation = nullptr;
   void *event_context = nullptr;
   PersonInstalledTransferEventReader12004 next_event = nullptr;
+  // Borrowed only for this invocation. Observers copy memory at the existing
+  // original boundary; they own no native call, clock or retained global state.
+  void *physical_observer_context = nullptr;
+  PersonInstalledTransferObserver12004 before_original_observer = nullptr;
+  PersonInstalledTransferObserver12004 after_original_observer = nullptr;
 };
 
 struct PersonInstalledTransferSnapshot12004 {

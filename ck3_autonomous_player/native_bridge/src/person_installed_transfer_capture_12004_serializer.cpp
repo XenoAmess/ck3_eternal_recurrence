@@ -1,4 +1,5 @@
 #include "xar_bridge/person_installed_transfer_capture_12004.hpp"
+#include "xar_bridge/person_transfer_postimage_12004_serializer.hpp"
 
 #include <iomanip>
 #include <sstream>
@@ -124,6 +125,10 @@ std::string SerializePersonInstalledTransferCapture12004(
         << ",\"offline_fixture\":" << (record.offline_fixture ? "true" : "false")
         << ",\"stage\":";
     Stage(out, record.stage);
+    out << ",\"physical_postimage\":";
+    if (record.physical_postimage)
+      out << SerializePersonTransferPhysicalPostimage12004(*record.physical_postimage);
+    else out << "null";
     out << '}';
   }
   out << "]}";

@@ -299,6 +299,89 @@ std::string CurrentConceptionPairInputsJsonV1(
     AppendObservationBoolean(json, "recent_child_branch_passed", date.recent_child_branch_passed);
     json += '}';
     AppendObservationBoolean(json, "alternate_relation_path", pair.alternate_relation_path);
+    const auto &close = pair.normal_close_family;
+    json += ",\"native_normal_close_family\":";
+    AppendObservationHeader(json, close.source, close.status, close.unavailable_reason);
+    AppendObservationBoolean(json, "normal_close_family", close.normal_close_family);
+    AppendObservationBoolean(json, "native_return_value", close.native_return_value);
+    AppendObservationBoolean(json, "native_call_attempted",
+                             std::optional<bool>{close.native_call_attempted});
+    AppendObservationNumber(json, "first_full_id_before", close.first_full_id_before);
+    AppendObservationNumber(json, "second_full_id_before", close.second_full_id_before);
+    AppendObservationNumber(json, "first_full_id_after", close.first_full_id_after);
+    AppendObservationNumber(json, "second_full_id_after", close.second_full_id_after);
+    json += '}';
+
+    json += ",\"native_second_title_state\":";
+    AppendObservationHeader(json, "native_conception_second_title_state",
+        pair.second_title_state_status, pair.second_title_state_unavailable_reason);
+    AppendObservationNumber(json, "second_1c0_raw_u64", pair.second_1c0_raw_u64);
+    AppendObservationBoolean(json, "second_title_state_present", pair.second_title_state_present);
+    json += '}';
+    const auto &membership = pair.secondary_family_membership;
+    json += ",\"native_secondary_family_membership\":";
+    AppendObservationHeader(json, "native_conception_secondary_family_membership",
+                            membership.status, membership.unavailable_reason);
+    AppendObservationBoolean(json, "second_family_present", membership.second_family_present);
+    AppendObservationBoolean(json, "list_data_present", membership.list_data_present);
+    AppendObservationNumber(json, "list_count_raw_i32", membership.list_count_raw_i32);
+    AppendObservationNumber(json, "list_span_bytes", membership.list_span_bytes);
+    AppendObservationNumber(json, "first_match_index", membership.first_match_index);
+    AppendObservationBoolean(json, "second_family20_contains_first", membership.second_family20_contains_first);
+    json += ",\"ordered_full_ids\":[";
+    for (std::size_t index = 0; index < membership.ordered_full_ids.size(); ++index) {
+      if (index != 0) json += ',';
+      json += std::to_string(membership.ordered_full_ids[index]);
+    }
+    json += "]}";
+    const auto &reverse = pair.reverse_close_or_extended;
+    json += ",\"native_reverse_close_or_extended\":";
+    AppendObservationHeader(json, reverse.source, reverse.status, reverse.unavailable_reason);
+    AppendObservationBoolean(json, "alternate_close_or_extended", reverse.alternate_close_or_extended);
+    json += '}';
+    const auto &numeric = pair.provider_numeric;
+    const std::array<std::optional<std::int64_t>, 7> scalar_values{
+        numeric.base_average_floor, numeric.linked_pair_addend,
+        numeric.linked_pair_title_state_addend, numeric.both_title_state_absent_multiplier,
+        numeric.first_relation_multiplier, numeric.second_relation_multiplier,
+        numeric.alternate_relation_multiplier};
+    constexpr std::array<std::string_view, 7> scalar_names{
+        "base_average_floor", "linked_pair_addend", "linked_pair_title_state_addend",
+        "both_title_state_absent_multiplier", "first_relation_multiplier",
+        "second_relation_multiplier", "alternate_relation_multiplier"};
+    std::uint32_t mask = 0;
+    for (std::size_t index = 0; index < scalar_values.size(); ++index)
+      if (scalar_values[index]) mask |= std::uint32_t{1} << index;
+    json += ",\"independent_numeric_inputs\":";
+    AppendObservationHeader(json, "native_conception_independent_numeric_inputs",
+        mask == 127 ? "available" : "unavailable",
+        mask == 127 ? "" : "native_conception_independent_numeric_inputs_partial");
+    AppendObservationNumber(json, "available_mask_u8", std::optional<std::uint32_t>{mask});
+    for (std::size_t index = 0; index < scalar_values.size(); ++index)
+      AppendObservationNumber(json, scalar_names[index], scalar_values[index]);
+    json += '}';
+    const auto &provider = pair.provider_result;
+    json += ",\"conditional_pair_provider\":";
+    AppendObservationHeader(json, "conditional_native_conception_pair_provider",
+        provider.first_output_raw ? "available" : "unavailable",
+        provider.first_output_raw ? "" : (provider.unavailable_input.empty() ?
+            "native_conception_full_provider_input_unavailable" : provider.unavailable_input));
+    AppendObservationNumber(json, "first_output_raw", provider.first_output_raw);
+    AppendObservationBoolean(json, "actual_caller_zero_rejection", provider.actual_caller_zero_rejection);
+    json += ",\"selected_count_role\":";
+    if (!provider.selected_count_role) json += "null";
+    else AppendJsonString(json, *provider.selected_count_role ==
+        ck3_12004::ConceptionProviderCountRole12004::first ? "first" : "second");
+    AppendObservationNumber(json, "reached_stages_mask_u64",
+                            std::optional<std::uint64_t>{provider.reached_stages});
+    AppendObservationNumber(json, "stop_stage_raw_u8", std::optional<std::uint8_t>{
+        static_cast<std::uint8_t>(provider.stop_stage)});
+    AppendObservationNumber(json, "source_pc_rva", std::optional<std::uint32_t>{provider.source_pc});
+    AppendObservationNumber(json, "terminal_writer_rva", std::optional<std::uint32_t>{provider.terminal_writer_rva});
+    json += ",\"unavailable_input\":";
+    if (provider.unavailable_input.empty()) json += "null";
+    else AppendJsonString(json, provider.unavailable_input);
+    json += '}';
     json += '}';
   }
   json += "]}";

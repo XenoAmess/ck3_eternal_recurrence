@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "xar:person-transfer-values-snapshot-12004:v1",
+  "title": "Original Person transfer owned value operand snapshot",
+  "description": "Proposed serialization of the typed31b producer contribution. Root owns aggregate serialization/adoption. Complete value operand alone does not admit a paired PC or establish natural transfer identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scope", "descriptor", "values_q64_raw_bits", "values_q64_signed", "descriptor_copy_complete", "payload_copy_complete", "declared_operand_copy_complete", "maximum_payload_bytes", "reason"],
+  "properties": {
+    "scope": {"$ref": "#/$defs/scope"},
+    "descriptor": {"$ref": "#/$defs/descriptor"},
+    "values_q64_raw_bits": {"type": ["array", "null"], "items": {"type": "string", "pattern": "^0x[0-9a-fA-F]{16}$"}},
+    "values_q64_signed": {"type": ["array", "null"], "items": {"type": "string", "pattern": "^(0|-?[1-9][0-9]*)$"}},
+    "descriptor_copy_complete": {"type": "boolean"},
+    "payload_copy_complete": {"type": "boolean"},
+    "declared_operand_copy_complete": {"type": "boolean"},
+    "maximum_payload_bytes": {"type": "integer", "minimum": 0},
+    "reason": {"type": "string"}
+  },
+  "$defs": {
+    "identity": {"type": "string", "pattern": "^0x[0-9a-fA-F]{1,16}$"},
+    "optional_identity": {"anyOf": [{"$ref": "#/$defs/identity"}, {"type": "null"}]},
+    "optional_i32": {"type": ["integer", "null"], "minimum": -2147483648, "maximum": 2147483647},
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["clock_identity", "sequence", "thread_id"],
+      "properties": {
+        "clock_identity": {"$ref": "#/$defs/identity"},
+        "sequence": {"type": "string", "pattern": "^(0|[1-9][0-9]*)$"},
+        "thread_id": {"type": ["integer", "null"], "minimum": 0, "maximum": 4294967295}
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["occurrence", "event", "phase", "side", "model_identity", "original_return_rva"],
+      "properties": {
+        "occurrence": {"$ref": "#/$defs/event"},
+        "event": {"$ref": "#/$defs/event"},
+        "phase": {"enum": ["before_original", "after_original"]},
+        "side": {"enum": ["a", "b"]},
+        "model_identity": {"$ref": "#/$defs/identity"},
+        "original_return_rva": {"$ref": "#/$defs/identity"}
+      }
+    },
+    "descriptor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_identity", "block_identity", "allocator_receiver_identity", "data_identity", "capacity_i32", "count_i32", "values_reason"],
+      "properties": {
+        "model_identity": {"$ref": "#/$defs/identity"},
+        "block_identity": {"$ref": "#/$defs/optional_identity"},
+        "allocator_receiver_identity": {"$ref": "#/$defs/optional_identity"},
+        "data_identity": {"$ref": "#/$defs/optional_identity"},
+        "capacity_i32": {"$ref": "#/$defs/optional_i32"},
+        "count_i32": {"$ref": "#/$defs/optional_i32"},
+        "values_reason": {"type": "string"}
+      }
+    }
+  },
+  "x-relational-contract": [
+    "Sequences and signed decimal elements must fit their declared uint64/int64 ranges; raw Q64 hexadecimal bits must be exactly the bit representation of the same-position signed source interpretation.",
+    "payload_copy_complete means actual own count is nonnegative and both ordered arrays have exactly that count. Zero is an owned empty array, while partial and negative count keep payload null.",
+    "descriptor_copy_complete concerns independently copied data/capacity/count fields. Payload can be complete while capacity is unavailable. declared_operand_copy_complete is exactly descriptor && payload.",
+    "Budget refusal retains the actual count and available descriptor fields; both payload arrays are null and reason is values_payload_budget_exceeded. It never truncates count or substitutes native capacity.",
+    "Scopes are caller-owned actual original-wrapper occurrence/current event identities; this component issues no clock and does not infer lineage or event completion.",
+    "Only an aggregate same-snapshot proof with independently complete ordered keys and values, independent nonnegative counts that correlate, and exact process/Model/context/PC/thread/clock/phase joins may supply the paired numeric consumer. A component completeness flag alone cannot admit PC."
+  ]
+}

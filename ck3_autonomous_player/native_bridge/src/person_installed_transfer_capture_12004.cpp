@@ -7,6 +7,7 @@
 #include <intrin.h>
 #include <limits>
 #include <mutex>
+#include <utility>
 
 namespace xar::ck3_12004 {
 namespace {
@@ -133,13 +134,32 @@ struct Flight {
   Flight() noexcept { g_in_flight.fetch_add(1, std::memory_order_acq_rel); }
   ~Flight() { g_in_flight.fetch_sub(1, std::memory_order_acq_rel); }
 };
-void Record(const PersonInstalledTransferStage12004 &stage) noexcept {
+struct PhysicalProbe {
+  PersonTransferPostimageBindings12004 bindings;
+  std::optional<PersonTransferPhysicalPair12004> before;
+  std::optional<PersonTransferPhysicalPair12004> after;
+};
+void PhysicalBefore(void *context,
+                    const PersonInstalledTransferStage12004 &stage) noexcept {
+  auto &probe = *static_cast<PhysicalProbe *>(context);
+  probe.before = CapturePersonTransferPhysicalPair12004(
+      probe.bindings, stage, PersonTransferSnapshotPhase12004::before_original);
+}
+void PhysicalAfter(void *context,
+                   const PersonInstalledTransferStage12004 &stage) noexcept {
+  auto &probe = *static_cast<PhysicalProbe *>(context);
+  probe.after = CapturePersonTransferPhysicalPair12004(
+      probe.bindings, stage, PersonTransferSnapshotPhase12004::after_original);
+}
+void Record(const PersonInstalledTransferStage12004 &stage,
+            std::optional<PersonTransferPhysicalPostimage12004> physical) noexcept {
   if (!stage.observed || !stage.original_returned) return;
   try {
     const std::lock_guard lock(g_records_mutex);
     const auto sequence = ++g_record_sequence;
     g_records[(sequence - 1) % g_records.size()] =
-        PersonInstalledTransferCaptureRecord12004{sequence, g_offline_fixture, stage};
+        PersonInstalledTransferCaptureRecord12004{
+            sequence, g_offline_fixture, stage, std::move(physical)};
   } catch (...) {
     // Auxiliary retention failure must not change the original return value.
   }
@@ -312,9 +332,21 @@ std::uintptr_t InvokePersonInstalledTransferCapture12004(
   if (!g_available.load(std::memory_order_acquire)) return original(a, b);
   const auto return_rva = original_return_address >= g_module_base ?
       original_return_address - g_module_base : 0;
+  PhysicalProbe probe;
+  probe.bindings = BindPersonTransferPostimageInputs12004(
+      "1.20.0.4", kPersonInstalledTransferCaptureExeSha12004,
+      g_bindings.read, g_bindings.read_context);
+  auto borrowed = g_bindings;
+  borrowed.physical_observer_context = &probe;
+  borrowed.before_original_observer = PhysicalBefore;
+  borrowed.after_original_observer = PhysicalAfter;
   auto invocation = InvokePersonInstalledTransferStage12004(
-      g_bindings, original, a, b, return_rva);
-  Record(invocation.stage);
+      borrowed, original, a, b, return_rva);
+  std::optional<PersonTransferPhysicalPostimage12004> physical;
+  if (probe.before && probe.after)
+    physical = JoinPersonTransferPhysicalPostimage12004(
+        invocation.stage, std::move(*probe.before), std::move(*probe.after));
+  Record(invocation.stage, std::move(physical));
   return invocation.raw_return_bits;
 }
 

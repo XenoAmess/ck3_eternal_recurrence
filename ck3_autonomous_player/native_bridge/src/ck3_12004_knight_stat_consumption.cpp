@@ -376,6 +376,9 @@ KnightInstalledTransferLineage12004 InstalledTransferLineage(
   }
   PersonInstalledTransferCaptureQuery12004 owned;
   owned.records.push_back(*record);
+  // The record was copied before the actual getter. Its four-block payload
+  // reaches this Ci through the same retained serializer, without a new query.
+  out.physical_postimage_owned_at_consumption = record->physical_postimage.has_value();
   out.capture_at_consumption = SerializePersonInstalledTransferCapture12004(owned);
   const auto &stage = record->stage;
   const auto &before = stage.before_event;

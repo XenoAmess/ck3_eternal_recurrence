@@ -17,15 +17,8 @@ template<class T> bool Read(const ConceptionSecondValueBindings12004 &b,
   return b.read_memory(b.read_context, base + offset, &out, sizeof(out));
 }
 bool ReadModifierBF(const ConceptionSecondValueBindings12004 &b,
-                    std::uintptr_t character, std::uintptr_t extension,
+                    std::uintptr_t context,
                     std::int64_t &value, std::string &reason) {
-  std::uintptr_t model = 0, owner = 0;
-  if (!Read(b, extension, 0x258, model) || model == 0 ||
-      !Read(b, model, 8, owner) || owner != character)
-    return Fail(reason, "modifier_context_owned_model_unavailable");
-  if (model > std::numeric_limits<std::uintptr_t>::max() - 0x10)
-    return Fail(reason, "modifier_context_address_unavailable");
-  const auto context = model + 0x10;
   std::int32_t count = 0;
   std::uintptr_t keys = 0;
   if (!Read(b, context, 0x74, count) || count < 0)
@@ -146,7 +139,19 @@ bool ReadConceptionSecondValueInputs12004(
   input.selected_age_raw = override_age;
   if (override_age < 0 && !Read(b, character, 0x68, input.selected_age_raw))
     return Fail(reason, "selected_age_fallback_unavailable");
-  if (!ReadModifierBF(b, character, extension, input.modifier_bf_raw, reason))
+  ConceptionModifierContextBindings12004 modifier_bindings;
+  modifier_bindings.enabled = b.enabled;
+  modifier_bindings.module_base = b.module_base;
+  modifier_bindings.read_memory = b.read_memory;
+  modifier_bindings.read_context = b.read_context;
+  input.modifier_context = ResolveConceptionModifierContext12004(
+      modifier_bindings, character, expected_id);
+  if (!input.modifier_context.ready)
+    return Fail(reason, input.modifier_context.reason.c_str());
+  if (input.modifier_context.extension_address != extension)
+    return Fail(reason, "modifier_context_extension_changed_during_read");
+  if (!ReadModifierBF(b, input.modifier_context.context_address,
+                      input.modifier_bf_raw, reason))
     return false;
   std::uint64_t count_qword = 0;
   if (!Read(b, b.module_base, kConceptionSecondThresholdCount12004, count_qword))
@@ -183,6 +188,9 @@ bool ReadConceptionSecondValueInputs12004(
       return Fail(reason, "conditional_final_factor_unavailable");
     input.conditional_final_factor_raw = factor;
   }
+  if (!CheckConceptionModifierContextStillCurrent12004(
+          modifier_bindings, input.modifier_context, reason))
+    return false;
   output = std::move(input);
   return true;
 }

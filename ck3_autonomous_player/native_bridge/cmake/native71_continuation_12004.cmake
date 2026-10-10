@@ -46,7 +46,8 @@ if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     src/conception_pair_list_bonus_12004.cpp
     src/conception_related_pair_12004.cpp
     src/conception_last_child_date_12004.cpp
-    src/conception_secondary_context_12004.cpp)
+    src/conception_secondary_context_12004.cpp
+    src/conception_modifier_context_12004.cpp)
 endif()
 
 # New authored fixtures remain selectable; none participates in the default build.
@@ -122,3 +123,5 @@ endif()
 include(cmake/native71_compiled_effect_observer_12004.cmake)
 include(cmake/person_installed_transfer_capture_12004.cmake)
 include(cmake/native71_continuation_focused_targets_12004.cmake)
+include(cmake/person_transfer_physical_postimage_12004.cmake)
+include(cmake/conception_full_provider_12004.cmake)

@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/conception_value_arithmetic_12004.hpp"
+#include "xar_bridge/conception_modifier_context_12004.hpp"
 #include "xar_bridge/ck3_12002_family_value.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -18,6 +19,7 @@ struct ConceptionSecondValueInputs12004 {
   std::int64_t fertility_seed_raw = 0;
   std::int16_t selected_age_raw = 0;
   std::int64_t modifier_bf_raw = 0;
+  ConceptionModifierContextObservation12004 modifier_context;
   std::int32_t threshold_count_raw = 0;
   // Original native order, ending at first matching threshold or at count.
   std::vector<std::int32_t> thresholds_prefix;
@@ -62,8 +64,8 @@ ConceptionSecondValueBindings12004 BindConceptionSecondValue12004(
 
 // Root supplies the independently generation-resolved, same-frame Character
 // and existing actual4 Family fertility seed. This function calls no getter,
-// gate, lazy initializer or native value writer. An unowned/default modifier
-// context is unavailable until its direct readiness contract is closed.
+// gate, lazy initializer or native value writer. Owned and initialized-default
+// contexts use the shared resolver and are rechecked before publication.
 bool ReadConceptionSecondValueInputs12004(
     const ConceptionSecondValueBindings12004 &bindings,
     std::uintptr_t actual_character, std::int32_t expected_full_character_id,

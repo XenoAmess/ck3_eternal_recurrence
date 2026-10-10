@@ -9,6 +9,11 @@
 #include "xar_bridge/conception_pair_value_inputs_12004.hpp"
 #include "xar_bridge/conception_pair_list_bonus_12004.hpp"
 #include "xar_bridge/conception_related_pair_12004.hpp"
+#include "xar_bridge/conception_reverse_close_or_extended_12004.hpp"
+#include "xar_bridge/conception_secondary_family_membership_12004.hpp"
+#include "xar_bridge/conception_second_title_state_12004.hpp"
+#include "xar_bridge/conception_pair_provider_12004.hpp"
+#include "xar_bridge/conception_normal_close_family_12004.hpp"
 #include "xar_bridge/ck3_12004_conception_pair_max_input.hpp"
 #include "xar_bridge/conception_child_limit_12004.hpp"
 #include "xar_bridge/conception_offspring_count_12004.hpp"
@@ -36,9 +41,19 @@ struct CurrentHouseholdConceptionPairInputsV1 {
   ck3_12004::conception_pair_value_inputs::BaseResult base_stage{};
   ck3_12004::ConceptionPairListBonus12004Read list_bonus{};
   ck3_12004::ConceptionRelatedPair12004Read related_pair{};
+  ck3_12004::ConceptionNormalCloseFamily12004Read normal_close_family{};
+  ck3_12004::ConceptionReverseCloseOrExtended12004Read reverse_close_or_extended{};
+  ck3_12004::ConceptionSecondaryFamilyMembership12004Read secondary_family_membership{};
+  ck3_12004::ConceptionProviderNumericInputs12004 provider_numeric{};
+  ck3_12004::ConceptionPairProviderInputs12004 provider_inputs{};
+  ck3_12004::ConceptionPairProviderResult12004 provider_result{};
   std::optional<bool> alternate_relation_path{};
   ck3_12004::ConceptionPairMaxInput lineage_tiers{};
   std::optional<bool> first_title_state_present{};
+  std::string_view second_title_state_status = "unavailable";
+  std::string_view second_title_state_unavailable_reason = "second_title_state_binding_unavailable";
+  std::optional<std::uint64_t> second_1c0_raw_u64{};
+  std::optional<bool> second_title_state_present{};
   std::optional<std::int32_t> first_highest_tier_raw{};
   std::optional<std::int32_t> second_highest_tier_raw{};
   std::optional<std::int32_t> selected_character_id{};

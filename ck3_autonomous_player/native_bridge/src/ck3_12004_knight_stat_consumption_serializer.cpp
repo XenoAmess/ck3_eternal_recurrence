@@ -143,6 +143,10 @@ void InstalledTransferLineage(std::ostream &out,
   out << ",\"getter_completed_event\":"; NaturalEvent(out, lineage.getter_completed_event);
   if (lineage.capture_at_consumption)
     out << ",\"capture_at_consumption\":" << *lineage.capture_at_consumption;
+  if (lineage.physical_postimage_owned_at_consumption) {
+    out << ",\"physical_postimage_owned_at_consumption\":";
+    Boolean(out, lineage.physical_postimage_owned_at_consumption);
+  }
   out << ",\"transfer_completed_before_getter\":";
   Boolean(out, lineage.transfer_completed_before_getter);
   out << ",\"selected_matches_transfer_owner\":";

@@ -28,9 +28,12 @@ struct KnightNaturalLineageEvent12004 {
 
 struct KnightInstalledTransferLineage12004 {
   KnightNaturalLineageEvent12004 getter_begin_event, getter_completed_event;
-  // Exact standalone 13b wire, built only from the record owned before getter.
+  // Exact retained wire, built only from the record owned before getter.
   // Envelope defaults do not report the producer's current install status.
   std::optional<std::string> capture_at_consumption;
+  // Presence of the same owned record's optional physical copy, including
+  // independently partial copies. This grants no numeric/whole readiness.
+  std::optional<bool> physical_postimage_owned_at_consumption;
   std::optional<bool> transfer_completed_before_getter;
   std::optional<bool> selected_matches_transfer_owner;
   std::optional<bool> getter_matches_installed_context;

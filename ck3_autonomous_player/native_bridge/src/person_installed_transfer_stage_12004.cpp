@@ -139,6 +139,8 @@ PersonInstalledTransferInvocation12004 InvokePersonInstalledTransferStage12004(
   stage.preparation_owner_matches_before =
       OwnerMatches(stage.preparation, stage.before);
 
+  if (bindings.before_original_observer)
+    bindings.before_original_observer(bindings.physical_observer_context, stage);
   result.raw_return_bits = original(model_a, model_b);
   stage.original_called = true;
   stage.original_returned = true;
@@ -167,6 +169,8 @@ PersonInstalledTransferInvocation12004 InvokePersonInstalledTransferStage12004(
           stage.completed_event.sequence > stage.before_event.sequence;
   }
   stage.reason = "original_paired_transfer_returned_identity_copy";
+  if (bindings.after_original_observer)
+    bindings.after_original_observer(bindings.physical_observer_context, stage);
   return result;
 }
 

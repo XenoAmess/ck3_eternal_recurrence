@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/person_natural_lineage_clock_12004.hpp"
+#include "xar_bridge/person_transfer_postimage_capture_12004.hpp"
 
 #include <array>
 #include <atomic>
@@ -67,6 +68,9 @@ struct PersonInstalledTransferCaptureRecord12004 {
   std::uint64_t record_sequence = 0; // Retention ordinal, not an event clock.
   bool offline_fixture = false;
   PersonInstalledTransferStage12004 stage;
+  // Same original occurrence, owned before/return copies. Absence and each
+  // independently partial operand remain distinct from a completed exchange.
+  std::optional<PersonTransferPhysicalPostimage12004> physical_postimage;
 };
 
 struct PersonInstalledTransferCaptureQuery12004 {

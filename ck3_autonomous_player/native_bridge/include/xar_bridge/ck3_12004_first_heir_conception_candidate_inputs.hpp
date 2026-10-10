@@ -17,6 +17,7 @@ struct NativeConceptionCandidateBindingsV1 {
   bool (*read_memory)(void *, const void *, void *, std::size_t) noexcept = nullptr;
   void *read_context = nullptr;
   std::int32_t (*highest_tier)(void *) = nullptr;
+  ConceptionReverseCloseOrExtended12004Getter reverse_close_or_extended = nullptr;
 };
 
 inline NativeConceptionCandidateBindingsV1 BindNativeConceptionCandidateInputsV1(
@@ -28,7 +29,10 @@ inline NativeConceptionCandidateBindingsV1 BindNativeConceptionCandidateInputsV1
           module_base, read_memory, read_context,
           module_base != 0 && executable_sha256 == kExecutableSha256 &&
               read_memory != nullptr ? reinterpret_cast<std::int32_t (*)(void *)>(
-                  module_base + kFamilyHighestTierRva) : nullptr};
+                  module_base + kFamilyHighestTierRva) : nullptr,
+          module_base != 0 && executable_sha256 == kExecutableSha256 &&
+              read_memory != nullptr ? reinterpret_cast<ConceptionReverseCloseOrExtended12004Getter>(
+                  module_base + kFamilyCloseOrExtendedFamilyRva) : nullptr};
 }
 
 namespace current_conception_candidate_detail {
@@ -49,6 +53,73 @@ inline bool Field(const NativeConceptionCandidateBindingsV1 &b,
                     &output, sizeof(output));
 }
 } // namespace current_conception_candidate_detail
+
+
+// Independently copied current scalars preserve usable values when an unused
+// scalar cannot be read. The legacy all-seven diagnostic stays unchanged.
+inline ConceptionProviderNumericInputs12004 ReadProviderNumericInputsV1(
+    const NativeConceptionCandidateBindingsV1 &b) noexcept {
+  ConceptionProviderNumericInputs12004 output{};
+  std::array<std::optional<std::int64_t> *, 7> fields{
+      &output.base_average_floor, &output.linked_pair_addend,
+      &output.linked_pair_title_state_addend,
+      &output.both_title_state_absent_multiplier,
+      &output.first_relation_multiplier, &output.second_relation_multiplier,
+      &output.alternate_relation_multiplier};
+  for (std::size_t index = 0; index < fields.size(); ++index) {
+    std::int64_t raw = 0;
+    if (current_conception_candidate_detail::Field(
+            b, b.module_base, conception_pair_value_inputs::kLoadedNumericSlotRvas[index], raw))
+      *fields[index] = raw;
+  }
+  return output;
+}
+
+// Query-local automatic join. Unknown or skipped providers remain optional;
+// the source-ordered evaluator alone decides which operands are required.
+inline ConceptionPairProviderInputs12004 BuildConceptionProviderInputsV1(
+    const ck3_11906::CurrentHouseholdConceptionPairInputsV1 &pair,
+    const ck3_11906::CurrentCharacterConceptionCandidateRowV1 *first,
+    const ck3_11906::CurrentCharacterConceptionCandidateRowV1 *second,
+    std::optional<bool> first_pregnancy_record_present) noexcept {
+  ConceptionPairProviderInputs12004 input{};
+  if (pair.short_circuit.first_evaluated)
+    input.first_excluded = pair.short_circuit.first.predicate_true;
+  if (pair.short_circuit.second_evaluated)
+    input.second_excluded = pair.short_circuit.second.predicate_true;
+  input.first_pregnancy_record_present = first_pregnancy_record_present;
+  input.recent_child_gate_passes = pair.last_child_date.recent_child_branch_passed;
+  input.first_title_state_present = pair.first_title_state_present;
+  input.first_own_tier_raw = pair.first_highest_tier_raw;
+  input.second_own_tier_raw = pair.second_highest_tier_raw;
+  if (pair.selected_character_id == pair.first_character_id)
+    input.observed_count_role = ConceptionProviderCountRole12004::first;
+  else if (pair.selected_character_id == pair.second_character_id)
+    input.observed_count_role = ConceptionProviderCountRole12004::second;
+  input.selected_offspring_count_raw = pair.offspring_count.native_count;
+  input.selected_child_limit_raw = pair.child_limit.value.child_limit_raw;
+  if (first != nullptr) {
+    input.first_raw = first->first_value.first_output_raw;
+    input.first_selects_alternate = first->secondary_context.selects_alternate_relation_path;
+  }
+  if (second != nullptr) {
+    input.second_raw = second->second_value.value_raw;
+    input.second_selects_alternate = second->secondary_context.selects_alternate_relation_path;
+  }
+  input.numeric = pair.provider_numeric;
+  input.primary_relation_match = pair.list_bonus.primary_relation_match;
+  input.first_child_count_raw = pair.list_bonus.first_child_count_raw;
+  input.second_child_count_raw = pair.list_bonus.second_child_count_raw;
+  input.first_list_has_second_parent_witness = pair.list_bonus.first_list_has_second_parent_witness;
+  input.second_list_has_first_parent_witness = pair.list_bonus.second_list_has_first_parent_witness;
+  input.second_title_state_present = pair.second_title_state_present;
+  input.normal_close_family = pair.normal_close_family.normal_close_family;
+  input.normal_related_pair = pair.related_pair.related_pair_predicate;
+  input.second_family_present = pair.secondary_family_membership.second_family_present;
+  input.second_family20_contains_first = pair.secondary_family_membership.second_family20_contains_first;
+  input.alternate_close_or_extended = pair.reverse_close_or_extended.alternate_close_or_extended;
+  return input;
+}
 
 inline ck3_11906::CurrentFirstHeirConceptionCandidateInputsReadV1
 ReadCurrentFirstHeirConceptionCandidateInputsV1(
@@ -92,6 +163,9 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
   const auto second_binding = BindConceptionSecondValue12004(
       b.module_base, "1.20.0.4", kExecutableSha256, &ReadIntegerAddress,
       const_cast<NativeConceptionCandidateBindingsV1 *>(&b));
+  const auto modifier_binding = BindConceptionModifierContext12004(
+      b.module_base, "1.20.0.4", kExecutableSha256, &ReadIntegerAddress,
+      const_cast<NativeConceptionCandidateBindingsV1 *>(&b));
   const auto secondary = BindConceptionSecondaryContext12004(
       "1.20.0.4", kExecutableSha256, b.module_base, b.read_memory, b.read_context);
   for (const auto &household : relationship.reproductive_inputs->rows) {
@@ -113,8 +187,11 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
             row.character_id, first, true, &reason) &&
         ck3_12002::family_value::ReadCharacterValue(family.values,
             row.character_id, checked, true, &reason) && first == checked) {
-      auto first_inputs = ReadConceptionFirstValueInputsForCharacter12004(
-          first_binding, character, full_id, checked, &reason);
+      const auto modifier_context = ResolveConceptionModifierContext12004(
+          modifier_binding, character, row.character_id);
+      auto first_inputs = ReadConceptionFirstValueInputsWithModifierContext12004(
+          first_binding, modifier_binding, character, full_id, checked,
+          modifier_context, &reason);
       row.first_value = EvaluateConceptionFirstValue12004(first_inputs);
       if (!first_inputs) row.first_value.unavailable_reason = reason;
       ConceptionSecondValueInputs12004 second_inputs{};
@@ -150,6 +227,15 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
       b.module_base, "1.20.0.4", kExecutableSha256, b.read_memory, b.read_context);
   const auto related_binding = BindConceptionRelatedPair12004(
       "1.20.0.4", kExecutableSha256, b.module_base, b.read_memory, b.read_context);
+  const auto normal_close_family_binding = BindConceptionNormalCloseFamily12004(
+      b.module_base, kExecutableSha256, b.read_memory, b.read_context);
+  const auto secondary_membership_binding = BindConceptionSecondaryFamilyMembership12004(
+      "1.20.0.4", kExecutableSha256, b.read_memory, b.read_context);
+  const auto second_title_binding = BindConceptionSecondTitleState12004(
+      "1.20.0.4", kExecutableSha256, b.read_memory, b.read_context);
+  auto reverse_related_binding = BindConceptionReverseCloseOrExtended12004(
+      b.module_base, kExecutableSha256, b.read_memory, b.read_context);
+  reverse_related_binding.getter = b.reverse_close_or_extended;
   const auto lineage_binding = BindConceptionPairMaxInputImage(
       "1.20.0.4", kExecutableSha256, b.module_base, b.read_memory, b.read_context);
   const auto child_limit_binding = BindConceptionChildLimit12004(
@@ -172,6 +258,13 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
     const auto first = find_receiver(heir), second = find_receiver(spouse);
     const auto first_id = std::bit_cast<std::uint32_t>(heir);
     const auto second_id = std::bit_cast<std::uint32_t>(spouse);
+    const auto second_title = ReadConceptionSecondTitleStatePresenceForCharacter12004(
+        second_title_binding, second, second_id);
+    pair.second_title_state_status = second_title.status;
+    pair.second_title_state_unavailable_reason = second_title.unavailable_reason;
+    pair.second_1c0_raw_u64 = second_title.second_1c0_raw_u64;
+    pair.second_title_state_present = second_title.second_title_state_present;
+    pair.provider_numeric = ReadProviderNumericInputsV1(b);
     pair.loaded_numeric = conception_pair_value_inputs::ReadLoadedNumericInputs(
         {b.module_base, kExecutableSha256, &ReadIntegerAddress,
          const_cast<NativeConceptionCandidateBindingsV1 *>(&b)});
@@ -187,6 +280,10 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
         list_binding, first, first_id, second, second_id);
     pair.related_pair = ReadConceptionRelatedPairForHousehold12004(
         related_binding, first, first_id, second, second_id);
+    pair.secondary_family_membership = ReadConceptionSecondaryFamilyMembershipForPair12004(
+        secondary_membership_binding, second, second_id, first, first_id);
+    pair.reverse_close_or_extended = ReadConceptionReverseCloseOrExtended12004(
+        reverse_related_binding, second, second_id, first, first_id);
     pair.short_circuit = ReadConceptionPairShortCircuit12004(
         short_circuit_binding, first, first_id, second, second_id);
     const auto date_source = conception_last_child_date::ReadCurrentHouseholdSourceInputs(
@@ -200,6 +297,12 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
     pair.alternate_relation_path = SelectConceptionSecondaryRelationPath12004(
         first_row == result.rows.end() ? std::nullopt : first_row->secondary_context.selects_alternate_relation_path,
         second_row == result.rows.end() ? std::nullopt : second_row->secondary_context.selects_alternate_relation_path);
+    pair.normal_close_family = ReadConceptionNormalCloseFamilyForPair12004(
+        normal_close_family_binding, first, first_id, second, second_id,
+        first_row == result.rows.end() ? std::nullopt :
+            first_row->secondary_context.selects_alternate_relation_path,
+        second_row == result.rows.end() ? std::nullopt :
+            second_row->secondary_context.selects_alternate_relation_path);
     pair.lineage_tiers = ReadConceptionPairMaxInput(
         lineage_binding, first, first_id, second, second_id);
     std::uintptr_t title_state = 0;
@@ -231,6 +334,17 @@ ReadCurrentFirstHeirConceptionCandidateInputsV1(
         else pair.child_limit.unavailable_reason = "child_limit_lineage_tier_input_unavailable";
       }
     }
+    std::optional<bool> pregnancy_record;
+    const auto pregnancy_row = std::find_if(relationship.reproductive_inputs->rows.begin(),
+        relationship.reproductive_inputs->rows.end(),
+        [heir](const auto &r) { return r.character_id == heir; });
+    if (pregnancy_row != relationship.reproductive_inputs->rows.end() &&
+        pregnancy_row->native_pregnancy.status == "available")
+      pregnancy_record = pregnancy_row->native_pregnancy.is_pregnant;
+    pair.provider_inputs = BuildConceptionProviderInputsV1(pair,
+        first_row == result.rows.end() ? nullptr : &*first_row,
+        second_row == result.rows.end() ? nullptr : &*second_row, pregnancy_record);
+    pair.provider_result = EvaluateConceptionPairProvider12004(pair.provider_inputs);
     result.pairs.push_back(std::move(pair));
   }
   const auto checked = ck3_12002::ReadCurrentFirstHeirRelationshipV1(family, heir);

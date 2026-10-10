@@ -91,11 +91,13 @@ ConceptionFirstValue12004Bindings BindConceptionFirstValue12004(
   return {true, module_base, read_memory, read_context};
 }
 
-std::optional<ConceptionFirstValue12004Inputs>
-ReadConceptionFirstValueInputsForCharacter12004(
+static std::optional<ConceptionFirstValue12004Inputs>
+ReadConceptionFirstValueInputsCore12004(
     const ConceptionFirstValue12004Bindings &bindings,
     std::uintptr_t character, std::uint32_t expected_full_id,
     const ck3_12002::family_value::CharacterValue &current_value,
+    const ConceptionModifierContextBindings12004 *modifier_bindings,
+    const ConceptionModifierContextObservation12004 *modifier_context,
     std::string_view *reason) {
   const auto Fail = [reason](std::string_view value)
       -> std::optional<ConceptionFirstValue12004Inputs> {
@@ -131,21 +133,28 @@ ReadConceptionFirstValueInputsForCharacter12004(
       !Copy(bindings, bindings.module_base + 0x5C69ED8, input.per_child_decrement_raw))
     return Fail("native_conception_first_children_decrement_unread");
 
-  // Reuse the closed owned return of actual28C3AC0, never its lazy default path.
-  std::uintptr_t extended = 0, model = 0, model_owner = 0;
+  std::uintptr_t extended = 0, modifier = 0;
   if (!Copy(bindings, character + 0x1B0, extended))
     return Fail("native_conception_first_extended_unread");
-  if (extended == 0)
-    return Fail("native_conception_first_owned_modifier_model_unavailable");
-  if (!Copy(bindings, extended + 0x258, model))
-    return Fail("native_conception_first_modifier_model_unread");
-  if (model == 0)
-    return Fail("native_conception_first_owned_modifier_model_unavailable");
-  if (!Copy(bindings, model + 8, model_owner))
-    return Fail("native_conception_first_modifier_owner_unread");
-  if (model_owner != character)
-    return Fail("native_conception_first_modifier_owner_mismatch");
-  const auto modifier = model + 0x10;
+  if (modifier_context != nullptr) {
+    if (extended != modifier_context->extension_address)
+      return Fail("native_conception_first_modifier_context_changed");
+    modifier = modifier_context->context_address;
+  } else {
+    // Preserve the original owned-only entry point without default admission.
+    std::uintptr_t model = 0, model_owner = 0;
+    if (extended == 0)
+      return Fail("native_conception_first_owned_modifier_model_unavailable");
+    if (!Copy(bindings, extended + 0x258, model))
+      return Fail("native_conception_first_modifier_model_unread");
+    if (model == 0)
+      return Fail("native_conception_first_owned_modifier_model_unavailable");
+    if (!Copy(bindings, model + 8, model_owner))
+      return Fail("native_conception_first_modifier_owner_unread");
+    if (model_owner != character)
+      return Fail("native_conception_first_modifier_owner_mismatch");
+    modifier = model + 0x10;
+  }
   std::uintptr_t keys = 0;
   std::int32_t modifier_count = 0;
   if (!Copy(bindings, modifier + 0x68, keys) ||
@@ -172,6 +181,12 @@ ReadConceptionFirstValueInputsForCharacter12004(
                 input.modifier_bf_raw))
         return Fail("native_conception_first_modifier_value_unread");
     }
+  }
+  if (modifier_context != nullptr) {
+    std::string context_reason;
+    if (!CheckConceptionModifierContextStillCurrent12004(
+            *modifier_bindings, *modifier_context, context_reason))
+      return Fail("native_conception_first_modifier_context_changed");
   }
   std::uint64_t count_qword = 0;
   if (!Copy(bindings, bindings.module_base + 0x544FC04, count_qword))
@@ -218,6 +233,41 @@ ReadConceptionFirstValueInputsForCharacter12004(
   }
   if (reason != nullptr) *reason = {};
   return input;
+}
+
+std::optional<ConceptionFirstValue12004Inputs>
+ReadConceptionFirstValueInputsForCharacter12004(
+    const ConceptionFirstValue12004Bindings &bindings,
+    std::uintptr_t character, std::uint32_t expected_full_id,
+    const ck3_12002::family_value::CharacterValue &current_value,
+    std::string_view *reason) {
+  return ReadConceptionFirstValueInputsCore12004(
+      bindings, character, expected_full_id, current_value, nullptr, nullptr,
+      reason);
+}
+
+std::optional<ConceptionFirstValue12004Inputs>
+ReadConceptionFirstValueInputsWithModifierContext12004(
+    const ConceptionFirstValue12004Bindings &bindings,
+    const ConceptionModifierContextBindings12004 &modifier_bindings,
+    std::uintptr_t character, std::uint32_t expected_full_id,
+    const ck3_12002::family_value::CharacterValue &current_value,
+    const ConceptionModifierContextObservation12004 &modifier_context,
+    std::string_view *reason) {
+  if (!modifier_bindings.enabled || !modifier_context.ready ||
+      modifier_bindings.module_base != bindings.module_base ||
+      modifier_context.module_base != bindings.module_base ||
+      modifier_context.character_address != character ||
+      static_cast<std::uint32_t>(modifier_context.full_character_id) != expected_full_id ||
+      modifier_context.context_address == 0 ||
+      modifier_context.source == ConceptionModifierContextSource12004::Unavailable) {
+    if (reason != nullptr)
+      *reason = "native_conception_first_modifier_context_unavailable";
+    return std::nullopt;
+  }
+  return ReadConceptionFirstValueInputsCore12004(
+      bindings, character, expected_full_id, current_value, &modifier_bindings,
+      &modifier_context, reason);
 }
 
 } // namespace xar::ck3_12004

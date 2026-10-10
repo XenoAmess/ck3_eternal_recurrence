@@ -22,9 +22,12 @@ def _nullable_bool(value: dict[str, object], key: str) -> None:
         raise BridgeUnavailableError(f"native conception {key} is malformed")
 
 
-def _observation(value: object, source: str) -> dict[str, object]:
+def _observation(value: object, source: str, *, allow_not_required: bool = False) -> dict[str, object]:
+    allowed_statuses = {"available", "unavailable"}
+    if allow_not_required:
+        allowed_statuses.add("not_required")
     if (not isinstance(value, dict) or value.get("source") != source
-            or value.get("status") not in {"available", "unavailable"}
+            or value.get("status") not in allowed_statuses
             or "unavailable_reason" not in value
             or (value["unavailable_reason"] is not None if value["status"] == "available"
                 else not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"])):
@@ -218,7 +221,136 @@ def _validate_conception_pair_fields(value: object, heir: int, relation: dict[st
             for key in ("used_character_fallback", "trait_4a9_equals_one", "counted"):
                 _nullable_bool(raw, key)
         _nullable_bool(pair, "alternate_relation_path")
-        short = _observation(pair.get("conditional_short_circuit"), "conditional_actual4_pair_provider_shortcircuit")
+        if "native_normal_close_family" in pair:
+            close = _observation(
+                pair.get("native_normal_close_family"),
+                "ck3_1_20_0_4_native_normal_close_family_2912080",
+                allow_not_required=True,
+            )
+            for key in ("normal_close_family", "native_return_value", "native_call_attempted"):
+                _nullable_bool(close, key)
+            if type(close["native_call_attempted"]) is not bool:
+                raise BridgeUnavailableError("close-family call state is malformed")
+            close_ids = ("first_full_id_before", "second_full_id_before",
+                         "first_full_id_after", "second_full_id_after")
+            for key in close_ids:
+                _nullable_int(close, key, 0, 2**32-1)
+            if close["status"] == "available":
+                if (close["normal_close_family"] is None
+                        or close["native_return_value"] is not close["normal_close_family"]
+                        or close["native_call_attempted"] is not True
+                        or close["first_full_id_before"] != (pair["first_character_id"] & 0xFFFFFFFF)
+                        or close["first_full_id_after"] != close["first_full_id_before"]
+                        or close["second_full_id_before"] != (pair["second_character_id"] & 0xFFFFFFFF)
+                        or close["second_full_id_after"] != close["second_full_id_before"]):
+                    raise BridgeUnavailableError("close-family output lacks its directed identity guards")
+            elif close["normal_close_family"] is not None:
+                raise BridgeUnavailableError("unavailable close-family became a provider input")
+            if (close["native_call_attempted"] is False
+                    and close["native_return_value"] is not None):
+                raise BridgeUnavailableError("uncalled close-family getter acquired a return value")
+            if close["status"] == "not_required":
+                if (pair["alternate_relation_path"] is not True
+                        or close["native_call_attempted"] is not False
+                        or any(close[key] is not None for key in close_ids)):
+                    raise BridgeUnavailableError("skipped close-family getter lost its alternate route")
+
+        if "native_second_title_state" in pair:
+            title = _observation(pair["native_second_title_state"], "native_conception_second_title_state")
+            _nullable_int(title, "second_1c0_raw_u64", 0, 2**64-1)
+            _nullable_bool(title, "second_title_state_present")
+            if title["status"] == "available":
+                if (title["second_1c0_raw_u64"] is None or
+                        title["second_title_state_present"] is not (title["second_1c0_raw_u64"] != 0)):
+                    raise BridgeUnavailableError("second title-state lost its independent raw qword")
+            elif any(title[key] is not None for key in ("second_1c0_raw_u64", "second_title_state_present")):
+                raise BridgeUnavailableError("unavailable second title-state became a known bool")
+        if "native_reverse_close_or_extended" in pair:
+            reverse = _observation(pair["native_reverse_close_or_extended"], "native_reverse_close_or_extended_family")
+            _nullable_bool(reverse, "alternate_close_or_extended")
+            if (reverse["status"] == "available") is not (reverse["alternate_close_or_extended"] is not None):
+                raise BridgeUnavailableError("reverse family getter lost its independent directed result")
+        if "native_secondary_family_membership" in pair:
+            membership = _observation(pair["native_secondary_family_membership"], "native_conception_secondary_family_membership")
+            for key in ("second_family_present", "list_data_present", "second_family20_contains_first"):
+                _nullable_bool(membership, key)
+            _nullable_int(membership, "list_count_raw_i32", -2**31, 2**31-1)
+            _nullable_int(membership, "list_span_bytes", 0, 2**64-1)
+            _nullable_int(membership, "first_match_index", 0, 2**32-1)
+            ids = membership.get("ordered_full_ids")
+            if not isinstance(ids, list) or any(type(raw) is not int or not 0 <= raw < 2**32 for raw in ids):
+                raise BridgeUnavailableError("secondary membership lost ordered full-generation IDs")
+            if membership["status"] == "available":
+                if membership["second_family_present"] is False:
+                    if ids or any(membership[key] is not None for key in (
+                            "list_data_present", "list_count_raw_i32", "list_span_bytes",
+                            "first_match_index", "second_family20_contains_first")):
+                        raise BridgeUnavailableError("null Family bypass acquired unused membership")
+                elif membership["second_family_present"] is True:
+                    count = membership["list_count_raw_i32"]
+                    matches = [index for index, raw in enumerate(ids) if raw == (heir & 0xFFFFFFFF)]
+                    first_match = matches[0] if matches else None
+                    if (count is None or count < 0 or len(ids) != count or
+                            membership["list_span_bytes"] != count * 4 or
+                            type(membership["list_data_present"]) is not bool or
+                            (count > 0 and membership["list_data_present"] is not True) or
+                            membership["first_match_index"] != first_match or
+                            membership["second_family20_contains_first"] is not bool(matches)):
+                        raise BridgeUnavailableError("secondary membership aggregate lost its completed actual list")
+                else:
+                    raise BridgeUnavailableError("available secondary membership lacks its Family observation")
+            elif membership["second_family20_contains_first"] is not None:
+                raise BridgeUnavailableError("partial secondary list became a completed membership bool")
+        if "independent_numeric_inputs" in pair:
+            numeric = _observation(pair["independent_numeric_inputs"], "native_conception_independent_numeric_inputs")
+            _nullable_int(numeric, "available_mask_u8", 0, 127)
+            names = ("base_average_floor", "linked_pair_addend", "linked_pair_title_state_addend",
+                     "both_title_state_absent_multiplier", "first_relation_multiplier",
+                     "second_relation_multiplier", "alternate_relation_multiplier")
+            mask = numeric["available_mask_u8"]
+            if mask is None:
+                raise BridgeUnavailableError("independent numerical input mask is absent")
+            for index, name in enumerate(names):
+                _nullable_int(numeric, name, -2**63, 2**63-1)
+                if bool(mask & (1 << index)) is not (numeric[name] is not None):
+                    raise BridgeUnavailableError("independent numerical raw value became an inferred zero")
+            if (numeric["status"] == "available") is not (mask == 127):
+                raise BridgeUnavailableError("independent numerical availability disagrees with copied fields")
+        if "conditional_pair_provider" in pair:
+            provider = _observation(pair["conditional_pair_provider"], "conditional_native_conception_pair_provider")
+            _nullable_int(provider, "first_output_raw", -2**63, 2**63-1)
+            _nullable_bool(provider, "actual_caller_zero_rejection")
+            _nullable_int(provider, "reached_stages_mask_u64", 0, (1 << 21)-1)
+            _nullable_int(provider, "stop_stage_raw_u8", 0, 20)
+            for name in ("source_pc_rva", "terminal_writer_rva"):
+                _nullable_int(provider, name, 0, 2**32-1)
+            if any(provider[key] is None for key in ("reached_stages_mask_u64", "stop_stage_raw_u8", "source_pc_rva", "terminal_writer_rva")):
+                raise BridgeUnavailableError("conditional full-provider control-flow diagnostics are absent")
+            if provider.get("selected_count_role") not in (None, "first", "second"):
+                raise BridgeUnavailableError("conditional full-provider count role is malformed")
+            missing = provider.get("unavailable_input")
+            if "unavailable_input" not in provider or (missing is not None and (not isinstance(missing, str) or not missing)):
+                raise BridgeUnavailableError("conditional full-provider missing input is malformed")
+            if provider["status"] == "available":
+                if (provider["first_output_raw"] is None or
+                        provider["actual_caller_zero_rejection"] is not (provider["first_output_raw"] == 0) or
+                        provider["terminal_writer_rva"] == 0 or missing is not None):
+                    raise BridgeUnavailableError("conditional full-provider output lacks its terminal writer")
+            elif (provider["first_output_raw"] is not None or
+                    provider["actual_caller_zero_rejection"] is not None or provider["terminal_writer_rva"] != 0):
+                raise BridgeUnavailableError("unknown full-provider input became a known output")
+            mask = provider["reached_stages_mask_u64"]
+            if mask and not mask & (1 << provider["stop_stage_raw_u8"]):
+                raise BridgeUnavailableError("conditional full-provider stop stage was never reached")
+
+        short_value = pair.get("conditional_short_circuit")
+        short_source = (
+            "guarded_current_actual4_pair_provider_shortcircuit"
+            if isinstance(short_value, dict) and short_value.get("source") ==
+            "guarded_current_actual4_pair_provider_shortcircuit"
+            else "conditional_actual4_pair_provider_shortcircuit"
+        )
+        short = _observation(short_value, short_source)
         _nullable_bool(short, "short_circuits_to_zero")
         _nullable_int(short, "first_output_raw", -2**63, 2**63-1)
         if (not isinstance(short.get("branch_reason"), str)

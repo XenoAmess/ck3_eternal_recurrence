@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_family_value.hpp"
+#include "xar_bridge/conception_modifier_context_12004.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -69,6 +70,18 @@ ReadConceptionFirstValueInputsForCharacter12004(
     const ConceptionFirstValue12004Bindings &bindings,
     std::uintptr_t character, std::uint32_t expected_full_id,
     const ck3_12002::family_value::CharacterValue &current_value,
+    std::string_view *reason = nullptr);
+
+// Same-query increment: the shared resolver selects the actual owned/default
+// branch and proves current default storage alive. Read actual BF fields, then
+// recheck the shared observation before accepting first-specific inputs.
+std::optional<ConceptionFirstValue12004Inputs>
+ReadConceptionFirstValueInputsWithModifierContext12004(
+    const ConceptionFirstValue12004Bindings &bindings,
+    const ConceptionModifierContextBindings12004 &modifier_bindings,
+    std::uintptr_t character, std::uint32_t expected_full_id,
+    const ck3_12002::family_value::CharacterValue &current_value,
+    const ConceptionModifierContextObservation12004 &modifier_context,
     std::string_view *reason = nullptr);
 
 } // namespace xar::ck3_12004
