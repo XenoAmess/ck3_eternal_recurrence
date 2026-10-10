@@ -236,3 +236,25 @@ and `verdict.json` SHA-256
 `6504EB6FA1EF5C6CBA86CA97FE56370219B5CDB4E381C53DF3EA6DF0F7C5B040`.
 No gift submission, material opinion/gold/faction effect, next turn or cold
 restore was exercised, so the formal gift loop remains unqualified.
+
+
+## Oct11 06:54 CST: MCP formal gift configuration adopted
+
+The public MCP parser now accepts the existing
+`--allow-private-faction-gift-formal-trial` and `--private-faction-round-id`
+options. `main` forwards them through `load_driver` to the actual
+`NativeHeadlessGameplayBridgeDriver` used by ordinary `GameplayBridgeService`.
+This closes the concrete SDK78 entry gap: its MCP parser rejected those options
+although the CLI and Driver already implemented the bounded route. The explicit
+query/action tool registration switches retain their separate meaning; the
+formal option enables the existing ordinary-plan route, with defaults unchanged.
+No Service, native protocol, war priority, gift reserve or current SDK78 changed.
+
+Root ran one new compound configuration test once: one unittest/eight scenarios,
+GREEN/exit0, 1.697s, at22:48:35.742469..22:48:39.771925Z. It exercises the real
+parser/main/load_driver/Driver constructor/Service, mocking only the pipe endpoint
+and MCP server run. Default/query/action/formal/combined/unused-round cases and
+missing/invalid formal round are covered; no Game query/action or old test replay.
+Receipt: `D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-14-m4-config/root-first01/RESULT.json`.
+This is static-ready configuration, not an actual gift or M4 completion. A later
+complete SDK must adopt the published Python source; SDK78 remains frozen664.

@@ -3511,3 +3511,15 @@ The portable entry point uses temporary output and contains no machine drive
 paths. Its unchanged group/helper bodies reuse the prior external four-group /
 55-check qualification; this path variant itself is AUTHOR_NOT_RUN. It does not
 run against the live Driver or imply an additional measured qualification.
+
+
+### Oct11 MCP formal gift entry configuration
+
+`bridge/mcp_server.py` now forwards `--allow-private-faction-gift-formal-trial`
+and `--private-faction-round-id` to the ordinary Driver/Service. The explicit
+private query/action tool switches are independent. One new test
+`test_m4_faction_gift_mcp_formal_config_12004.py` passed eight configuration
+scenarios once (1 unittest/1.697s); it performs no live pipe operation. See
+[the source gap and evidence](ck3-native-ai/faction-gift-formal-route-gap.md).
+Current fullSDK78 remains frozen664; use a later complete reviewed SDK for these
+options. A parser test is not live gift qualification.

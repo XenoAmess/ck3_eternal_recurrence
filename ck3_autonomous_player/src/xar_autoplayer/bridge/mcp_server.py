@@ -334,6 +334,8 @@ def load_driver(
     war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
     succession_lifecycle_binding: dict[str, object] | None = None,
     allow_private_death_succession_modal_continue: bool = False,
+    allow_private_faction_gift_formal_trial: bool = False,
+    private_faction_round_id: str | None = None,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
     def selected_state_dir() -> Path:
@@ -360,6 +362,10 @@ def load_driver(
             save_dir=selected_save_dir(),
             war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
             succession_lifecycle_binding=succession_lifecycle_binding,
+            allow_private_faction_gift_formal_trial=(
+                allow_private_faction_gift_formal_trial
+            ),
+            private_faction_round_id=private_faction_round_id,
             allow_private_current_timeline_blocker_query=(
                 allow_private_death_succession_modal_continue
             ),
@@ -4606,6 +4612,14 @@ def parser() -> argparse.ArgumentParser:
         help="enable explicit private gift submit, independent receipt and cold fact read",
     )
     result.add_argument(
+        "--allow-private-faction-gift-formal-trial", action="store_true",
+        help="enable the existing bounded faction gift route on ordinary turns",
+    )
+    result.add_argument(
+        "--private-faction-round-id",
+        help="monotonic CK3 ownership round (R<number>) for the formal gift route",
+    )
+    result.add_argument(
         "--private-prisoner-ransom-action", action="store_true",
         help="enable an explicit private ransom using the current native collection quote",
     )
@@ -4807,6 +4821,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_realm_law_crown_action
             or args.private_active_scheme_sway_action or args.private_council_action
             or args.private_faction_gift_query or args.private_faction_gift_action
+            or args.allow_private_faction_gift_formal_trial
             or args.private_prisoner_ransom_action
             or args.private_player_religion_context_query
             or args.private_player_religion_doctrines_query
@@ -4856,6 +4871,10 @@ def main(argv: list[str] | None = None) -> int:
         pipe_name=args.pipe_name,
         war31_one_shot_surrender_gate=war31_gate,
         succession_lifecycle_binding=succession_lifecycle_binding,
+        allow_private_faction_gift_formal_trial=(
+            args.allow_private_faction_gift_formal_trial
+        ),
+        private_faction_round_id=args.private_faction_round_id,
         allow_private_death_succession_modal_continue=(
             args.private_death_succession_modal_continue
         ),
