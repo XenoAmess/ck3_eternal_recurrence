@@ -188,9 +188,9 @@
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one useful legal council adjustment and one real vassal or faction intervention",
-      "open_blocker": "R77 preparation is source-ready, not live. The actual vacant-Steward appointment44fa at53286144 has independent applied/incumbent/composition material and may join the owner-selected two-year interval53286144..53303664. A new construction start/material and a new useful vassal/faction intervention within that same window remain. Current Steward32440/11 has no strict improvement in the retained R76 quote; do not manufacture an equal-skill replacement. Older Sway action53220000/first benefit53249664 precedes this interval. Wartime construction is authorized and its normal current-cash/typed-submit/material/cold compound is offline GREEN, not a real new start. M4 requires visible start material, not completed-building ROI or full Sway terminal attribution; NW-ECON realized benefit remains separate.",
+      "open_blocker": "Actual useful vacant-Steward appointment44fa at53286144 and four real construction starts at53288568/53288616/53288640/53288952 fall within the proposed two-year interval53286144..53303664. R93 cold material confirms the same construction tuples applied/in_progress and Steward32440 performing task_collect_taxes. The owner has not yet recorded interval selection at the actual current snapshot date. Current material collector lacks the archived44fa compact-summary input; a minimal source port is in progress. Current council formal ledger describes older d660 outside the interval: do not transfer its formal next/cold flags to44fa. One new useful vassal/faction intervention in the same selected interval remains. M4 requires visible construction start/material, not completed-building ROI or full Sway terminal attribution; NW-ECON realized benefit remains separate.",
       "current_material_window": {
-        "stage": "prepared_source_only",
+        "stage": "actual_construction_and_later_council_material_selection_and_collector_pending",
         "start_date_raw": 53286144,
         "end_date_raw": 53303664,
         "duration_raw_hours": 17520,
@@ -209,7 +209,11 @@
         "collector_source_commit": "33c09c8fc178bcb09e0b5e1c34beb4dbb603c6d2",
         "collector_cli_argument": "--council-material-summary-json",
         "collector_execution": "not_run",
-        "remaining_materials": ["fresh ordinary construction start and independent material", "new useful vassal or faction intervention in the selected interval"],
+        "remaining_materials": [
+          "owner interval selection recorded at the actual current snapshot date",
+          "collector archived council compact-summary join preserving formal receipt boundaries",
+          "new useful vassal or faction intervention in the selected interval"
+        ],
         "packet": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-m4-material-preparation/ROOT-DELIVERY.json",
         "milestone_credit_written": false
       }
@@ -336,24 +340,27 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "The user cancelled vacation/handoff and resumed G2 parallel work. The Root-owned normal SAVE and ten-stream freeze establish6010/36524 atH9715/raw53288568 in the original Robert29829 episode, with natural successions0. R78 startup failed with C0000005 and remains retained; Native39 rich-Snapshot repair is offline-qualified, not a confirmed live repair. R79 is source-only and local CK3/live SDK use is currently forbidden. The original long campaign and same-goal natural succession qualification remain unfinished; wider ruler/seed/government coverage is not implied. The dated3845-day/v32 vacation record and then-unselected faction event remain historical, not current execution holds. Existing211-tool .4 migration acceptance is closed and is not reopened as a new campaign gate. Continue from the qualified H9715 saved pair when local game use is allowed; this background batch adds no game day, action, SAVE or succession.",
+      "open_blocker": "Current actual original Robert29829 campaign is saved6076/H10107/raw53290152, with natural successions0. R93 cold13 passed and one ordinary day was saved; required Sway opinion observation then failed current_snapshot_read_failed. R93 is closed: SDKexit0, normal Gameclose RED/authorized exact-owned fallbackexit1, full12freeze3/3 and keeper/CAS release. Native78 read-stage diagnostics and fullSDK78 are built/qualified from664c85d9; R94 full12/fullDriver recovery is in progress from the actual saved6076 pair. Local CK3 work is authorized by the current continuation task. Earlier R78/R79 failures and dated no-local-game records remain historical. Same-intent natural inheritance and wider ruler/seed/government qualification remain unfinished; Robert29829 is still the sole authorized test entry. Existing .4 tool migration acceptance is closed.",
       "current_campaign_index": {
-        "source": "Root-owned R77 H9715 normal SAVE and ten-stream freeze; R79 recovery remains source-only",
-        "source_base": "9d69a02546edf45331720f7b7632d9387d4dc8ba",
+        "source": "Root-owned R93 actual normal SAVE, complete12 frozen recovery and closed custody",
+        "source_base": "a4fa3d7fd4c8ce338490ffa8f7cce4ac2b5f0e0f",
         "actor_character_id": 29829,
         "episode_run_id": "native-29829-2bc2d599f7f9",
-        "saved_days": 6010,
+        "saved_days": 6076,
         "target_saved_days": 36524,
         "natural_successions": 0,
+        "history_index": 10107,
+        "date_raw": 53290152,
+        "saved_frame_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/save-actual-day-after-observer-red01/ROOT-ACTUAL-DAY-SAVE-RESULT.json",
+        "complete_recovery_input_packet": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json",
+        "closed_result": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/ROOT-RUNTIME93-CLOSED-RESULT.json",
+        "r94_stage": "full12_recovery_in_progress_not_cold_live",
+        "r94_native_and_sdk_source": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
+        "local_game_work_authorized": true,
         "vacation_handoff_current": false,
-        "r77_stage": "normal_save_and_ten_stream_freeze_green",
-        "r77_new_live_credit": true,
-        "historical_v32_record_retained": true,
-        "history_index": 9715,
-        "date_raw": 53288568,
-        "saved_frame_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/normal-r77-h9715-saved6010-freeze01/ROOT-SAVED-TEN-STREAM-FREEZE.json",
-        "r79_stage": "prepared_source_only",
-        "r79_new_live_credit": false
+        "historical_r77_saved_days": 6010,
+        "historical_r77_history_index": 9715,
+        "current_index_recorded_at_utc": "2026-10-10T22:29:58.746766+00:00"
       }
     }
   ],

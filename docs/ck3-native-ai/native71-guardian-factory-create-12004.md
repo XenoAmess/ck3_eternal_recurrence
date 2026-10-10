@@ -202,3 +202,34 @@ family-derived child/target pair and no guardian=false result. Membership,
 Evaluate ABI and G2 outcome credit remain absent. This addendum reuses
 retained metadata/source and the existing strict API; it runs no Game query,
 native construction/invocation, new QA, EXE read/hash or Z/Git mutation.
+
+### Native77 R93 source continuation (2026-10-11)
+
+The earlier `1242B metadata / body not inspected` frontier is superseded by
+26's complete `372CE00` source: 1242 own bytes, 300 instructions and closed
+own control flow. It conditionally writes the original receiver's +10,
++20 and +2C fields, so this source does not qualify method execution as a
+read-only getter. It does not directly read original receiver+E8.
+
+At `372D0D9`, the actual virtual operand is `[reloaded receiver vptr+30]`.
+RCX is the original receiver, RDX the original input, R8D the DWORD from
+**original input+E8**, and R9D the zero-extended original R8W. That DWORD
+is a different source cell and width from factory+18 QWORD copied by the
+149B parent to would-be receiver+E8. Own control flow proves the later
+`372D0DE` rebind to `[original input+E0]` cannot reach this call; the Win64
+nonvolatile-register domain applies to intervening normal-return callees.
+The preceding `3F832A0` effects and fresh vptr/lifetime remain unclosed.
+
+```mermaid
+flowchart LR
+  P["source primary +28 -> 372CE00 / 1242B"] --> C["372D0D9: fresh vptr +30 dispatch"]
+  C -.-> F["source-written VT seed 48C5CB0: target unknown at this append"]
+  C -.-> U["callee effects / physical vptr and lifetime unknown"]
+```
+
+Evidence is retained under the same 26 source root at
+`primary-vptr-fields32-48-source01/method372ce00-source01/`:
+`SOURCE-BRANCH-CONTRACT.json` and
+`ORIGINAL-RECEIVER-CONTROL-DOMAIN-ADDENDUM.json`.
+The paired R93 raw +18 binding remains unchanged. This source continuation
+establishes no relation truth, pair direction, current object or method role.
