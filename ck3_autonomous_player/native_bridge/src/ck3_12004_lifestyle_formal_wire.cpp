@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_lifestyle.hpp"
 #include "xar_bridge/lifestyle_perk_predicate_inputs_12004_serializer.hpp"
+#include "xar_bridge/lifestyle_perk_trigger_frontier_12004_serializer.hpp"
 #include <windows.h>
 #include <algorithm>
 #include <limits>
@@ -713,6 +714,8 @@ bool ExecutePlayerLifestyleMailbox12004(
   const bool executed = ExecutePlayerLifestyleFormalWireBody12004V1(context, stamp);
   const bool frame_accepted = ck3_12002::FinishQueryMailbox(*envelope);
   FinishLifestylePerkPredicateSourceMailbox12004(
+      context->stock_perk_result, frame_accepted);
+  FinishLifestylePerkTriggerFrontierMailbox12004(
       context->stock_perk_result, frame_accepted);
   if (!frame_accepted) {
     context->completed = false;

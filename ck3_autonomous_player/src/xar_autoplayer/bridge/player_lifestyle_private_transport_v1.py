@@ -14,6 +14,10 @@ from .driver import StepPostconditionError
 from .lifestyle_perk_predicate_inputs_12004 import (
     FACTS_KEY, WIRE_KEY, decode_lifestyle_perk_predicate_source_12004,
 )
+from .lifestyle_perk_trigger_frontier_12004 import (
+    FACTS_KEY as FRONTIER_FACTS_KEY, WIRE_KEY as FRONTIER_WIRE_KEY,
+    decode_lifestyle_perk_trigger_frontier_12004,
+)
 
 
 QUERY_STEP = "private-query-player-lifestyle-formal-v1"
@@ -300,14 +304,23 @@ def _with_lifestyle_perk_source_facts_12004(
     played_character_id: int, target_key: str | None = None,
 ) -> dict[str, object]:
     """Carry optional facts from this result using existing caller bindings."""
-    if not isinstance(result, Mapping) or result.get(WIRE_KEY) is None:
+    if not isinstance(result, Mapping):
         return response
-    return {**response, FACTS_KEY: decode_lifestyle_perk_predicate_source_12004(
-        result[WIRE_KEY], expected_snapshot_identity=snapshot_identity,
-        expected_native_revision=native_revision, expected_date_raw=date_raw,
-        expected_played_character_id=played_character_id,
-        expected_target_key=target_key,
-    )}
+    if result.get(WIRE_KEY) is not None:
+        response = {**response, FACTS_KEY: decode_lifestyle_perk_predicate_source_12004(
+            result[WIRE_KEY], expected_snapshot_identity=snapshot_identity,
+            expected_native_revision=native_revision, expected_date_raw=date_raw,
+            expected_played_character_id=played_character_id,
+            expected_target_key=target_key,
+        )}
+    if result.get(FRONTIER_WIRE_KEY) is not None:
+        response = {**response, FRONTIER_FACTS_KEY: decode_lifestyle_perk_trigger_frontier_12004(
+            result[FRONTIER_WIRE_KEY], expected_snapshot_identity=snapshot_identity,
+            expected_native_revision=native_revision, expected_date_raw=date_raw,
+            expected_played_character_id=played_character_id,
+            expected_target_key=target_key,
+        )}
+    return response
 
 
 def parse_player_lifestyle_diplomacy_targets_private_v1(

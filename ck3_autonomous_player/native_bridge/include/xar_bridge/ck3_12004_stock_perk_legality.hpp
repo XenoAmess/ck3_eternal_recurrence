@@ -12,4 +12,9 @@ namespace xar::ck3_12004::lifestyle {
 std::string SerializeStockPerkLegalitySourcePacket12004V1(
     const std::optional<StockPerkLegalitySourcePacketV1> &);
 
+
+std::string SerializeStockPerkRawTargetsSource12004V1(
+    const StockPerkLegalityResultV1 &);
+void FinishStockPerkRawTargetsSourceMailbox12004V1(
+    StockPerkLegalityResultV1 &, bool actual_finish_accepted) noexcept;
 } // namespace xar::ck3_12004::lifestyle

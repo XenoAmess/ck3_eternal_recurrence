@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_lifestyle_transport.hpp"
 #include "xar_bridge/lifestyle_perk_predicate_inputs_12004_serializer.hpp"
+#include "xar_bridge/lifestyle_perk_trigger_frontier_12004_serializer.hpp"
 #include "xar_bridge/protocol.hpp"
 #include <algorithm>
 #include <limits>
@@ -372,6 +373,8 @@ std::string RenderPlayerLifestyle12004(
       context.mode == xar::ck3_11906::
                           PlayerLifestyleFormalWireModeV1::query_diplomacy_targets_only) {
     AppendLifestylePerkPredicateSourceSibling12004(result,
+                                                  context.stock_perk_result);
+    AppendLifestylePerkTriggerFrontierSibling12004(result,
                                                   context.stock_perk_result);
   }
   result += "}}";

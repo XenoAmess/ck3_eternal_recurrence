@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_stock_perk_legality.hpp"
 #include "xar_bridge/lifestyle_perk_predicate_288b1b0_12004.hpp"
 #include "xar_bridge/source_read_leaf_frame_12004.hpp"
+#include "xar_bridge/lifestyle_trigger_frontier_12004.hpp"
 #include <algorithm>
 #include <array>
 #include <cstring>
@@ -63,6 +64,8 @@ struct Sample {
   StableKey target_lifestyle_key{};
   bool native_legal = false;
   std::optional<StockPerkLegalitySourcePacketV1> source_packet{};
+  std::optional<StockPerkLegalityRawTargetsSourceV1> raw_targets_source{};
+  std::optional<::xar::ck3_12004::LifestyleTriggerFrontierPacket12004> trigger_frontier_source{};
   friend bool operator==(const Sample &a, const Sample &b) {
     return a.frame == b.frame && a.player_state == b.player_state &&
         a.database == b.database && a.span == b.span &&
@@ -317,6 +320,346 @@ bool SamePredicateSource(StockPerkLegalitySourcePacketV1 first,
   second.native_can_select_after.reset();
   return first == second;
 }
+::xar::ck3_12004::SourceReadFrame12004 RawTargetsReadFrame(
+    const StockPerkLegalitySourceReadFrameV1 &copied) {
+  ::xar::ck3_12004::SourceReadFrame12004 out{};
+  out.executable_sha256 = copied.executable_sha256;
+  out.module_base = copied.module_base;
+  out.snapshot_identity = copied.snapshot_identity;
+  out.frame_identity = copied.frame_identity.value_or(0);
+  out.query_sequence = copied.query_sequence.value_or(0);
+  out.native_revision = copied.native_revision;
+  out.proof_epoch = copied.proof_epoch;
+  out.date_raw = copied.date_raw;
+  out.caller_domain = copied.caller_domain;
+  out.caller_snapshot_confirmed = copied.caller_snapshot_confirmed;
+  return out;
+}
+
+bool ReadRawTargetsMemory(void *opaque, const void *address, void *output,
+                          std::size_t size) noexcept {
+  const auto *access = static_cast<const StockPerkLegalityAccessV1 *>(opaque);
+  return access != nullptr &&
+      Read(*access, reinterpret_cast<std::uintptr_t>(address), output, size);
+}
+
+bool RawTargetInModule(const StockPerkLegalityRawTargetsSourceV1 &raw,
+                      std::uintptr_t address, std::size_t bytes) noexcept {
+  const auto image_size = raw.read_frame.module_image_size;
+  if (!image_size || !*image_size || address < raw.read_frame.module_base ||
+      bytes > *image_size) return false;
+  return address - raw.read_frame.module_base <= *image_size - bytes;
+}
+
+void CopyRawTargetSlot(const StockPerkLegalityAccessV1 &access,
+                      const StockPerkLegalityRawTargetsSourceV1 &raw,
+                      std::size_t offset,
+                      std::optional<std::uintptr_t> &slot_identity,
+                      std::optional<std::uintptr_t> &target_identity,
+                      std::optional<std::uintptr_t> &target_rva,
+                      std::string &reason) {
+  std::uintptr_t slot = 0;
+  if (!raw.vtable_identity || !CheckedAdd(*raw.vtable_identity, offset, slot)) {
+    reason = "trigger_vtable_identity_unavailable";
+    return;
+  }
+  slot_identity = slot;
+  if (!raw.read_frame.module_image_size || !*raw.read_frame.module_image_size) {
+    reason = "trigger_module_extent_unavailable";
+    return;
+  }
+  if (!RawTargetInModule(raw, slot, sizeof(std::uintptr_t))) {
+    reason = "trigger_vtable_slot_outside_module";
+    return;
+  }
+  std::uintptr_t target = 0;
+  if (!Read(access, slot, &target, sizeof(target))) {
+    reason = "trigger_vtable_slot_unreadable";
+    return;
+  }
+  target_identity = target;
+  if (RawTargetInModule(raw, target, 1))
+    target_rva = target - raw.read_frame.module_base;
+  else reason = "trigger_target_outside_module";
+}
+
+struct RawTargetCapture {
+  StockPerkLegalityRawTargetsSourceV1 raw;
+  // This carrier stays alive in ReadOne across its existing Validate call.
+  ::xar::ck3_12004::SourceReadFrame12004 live_frame;
+  StockPerkLegalitySourceQueryMetadataV1 metadata_before;
+  bool metadata_observed = false;
+  bool frame_before = false;
+};
+
+RawTargetCapture CaptureRawTargetsBeforeValidate(
+    const StockPerkLegalityEnvironmentV1 &env,
+    const StockPerkLegalityAccessV1 &access,
+    const StockPerkLegalityFrameV1 &frame, std::string_view target_key,
+    std::uintptr_t command_identity, std::uintptr_t selected_perk,
+    const std::optional<StockPerkLegalitySourcePacketV1> &source_packet) {
+  RawTargetCapture out{};
+  auto &raw = out.raw;
+  raw.capture_scope = env.offline_fixture ? "owned_memory_fixture" : "actual_application_query";
+  raw.target_key.assign(target_key);
+  raw.command_identity = command_identity;
+  raw.selected_perk_identity = selected_perk;
+  raw.requested_full_character_id = frame.played_character_id;
+  auto &copied = raw.read_frame;
+  copied.executable_sha256 = "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
+  copied.module_base = env.module_base;
+  copied.snapshot_identity.assign(FixedSnapshotIdentity(frame));
+  copied.public_revision = frame.public_revision;
+  copied.native_revision = frame.native_revision;
+  copied.proof_epoch = frame.proof_epoch;
+  copied.date_raw = frame.date_raw;
+  copied.played_character_id = frame.played_character_id;
+  copied.caller_domain = "stock_perk_legality_12004";
+  StockPerkLegalityFrameV1 before{};
+  out.frame_before = access.capture_frame(access.context, before) && before == frame;
+  out.metadata_observed = access.capture_source_query_metadata != nullptr &&
+      access.capture_source_query_metadata(access.context, out.metadata_before);
+  if (out.metadata_observed) {
+    copied.frame_identity = out.metadata_before.frame_identity;
+    copied.query_sequence = out.metadata_before.query_sequence;
+    copied.mailbox_before_accepted = out.metadata_before.mailbox_before_accepted;
+    copied.mailbox_after_accepted = out.metadata_before.mailbox_after_accepted;
+    copied.module_image_size = out.metadata_before.module_image_size;
+    copied.module_time_date_stamp = out.metadata_before.module_time_date_stamp;
+  }
+  copied.caller_snapshot_confirmed = out.frame_before && out.metadata_observed &&
+      out.metadata_before.caller_snapshot_confirmed;
+  out.live_frame = RawTargetsReadFrame(copied);
+  std::uintptr_t receiver = 0;
+  const bool receiver_ready = CheckedAdd(selected_perk, 0x80, receiver);
+  if (receiver_ready) raw.receiver_identity = receiver;
+  const StockPerkLegalitySourceTruthTraceV1 *matched_trace = nullptr;
+  if (source_packet && source_packet->truth_trace && receiver_ready &&
+      source_packet->read_frame == copied &&
+      source_packet->truth_trace->selected_perk_identity == selected_perk &&
+      source_packet->truth_trace->compiled_trigger_receiver_identity == raw.receiver_identity)
+    matched_trace = &*source_packet->truth_trace;
+  if (matched_trace) {
+    raw.vtable_identity = matched_trace->trigger_vtable_raw;
+    if (raw.vtable_identity && RawTargetInModule(raw, *raw.vtable_identity, 1))
+      raw.vtable_rva = *raw.vtable_identity - env.module_base;
+    else raw.vtable_unavailable_reason = "same_trace_vtable_unavailable_or_unbounded";
+    const auto reuse = [&](std::size_t offset, const std::optional<std::uintptr_t> &target,
+                           std::optional<std::uintptr_t> &slot,
+                           std::optional<std::uintptr_t> &out_target,
+                           std::optional<std::uintptr_t> &rva, std::string &reason) {
+      std::uintptr_t address = 0;
+      if (raw.vtable_identity && CheckedAdd(*raw.vtable_identity, offset, address)) slot = address;
+      out_target = target;
+      if (!target) reason = "same_trace_slot_target_unavailable";
+      else if (!slot || !RawTargetInModule(raw, *slot, sizeof(std::uintptr_t)))
+        reason = "same_trace_slot_unbounded";
+      else if (RawTargetInModule(raw, *target, 1)) rva = *target - env.module_base;
+      else reason = "trigger_target_outside_module";
+    };
+    reuse(0x58, matched_trace->root_kind_getter_slot58_raw, raw.slot58_identity,
+        raw.slot58_target_identity, raw.slot58_target_rva, raw.slot58_unavailable_reason);
+    reuse(0x60, matched_trace->root_mask_getter_slot60_raw, raw.slot60_identity,
+        raw.slot60_target_identity, raw.slot60_target_rva, raw.slot60_unavailable_reason);
+    reuse(0xC8, matched_trace->final_evaluator_slotc8_raw, raw.slotc8_identity,
+        raw.slotc8_target_identity, raw.slotc8_target_rva, raw.slotc8_unavailable_reason);
+  } else {
+    if (receiver_ready) {
+      std::uintptr_t vtable = 0;
+      if (Read(access, receiver, &vtable, sizeof(vtable))) {
+        raw.vtable_identity = vtable;
+        if (RawTargetInModule(raw, vtable, 1)) raw.vtable_rva = vtable - env.module_base;
+        else raw.vtable_unavailable_reason = copied.module_image_size
+            ? "trigger_vtable_outside_module" : "trigger_module_extent_unavailable";
+      } else raw.vtable_unavailable_reason = "trigger_vtable_unreadable";
+    } else raw.vtable_unavailable_reason = "trigger_receiver_address_unavailable";
+    CopyRawTargetSlot(access, raw, 0x58, raw.slot58_identity,
+        raw.slot58_target_identity, raw.slot58_target_rva, raw.slot58_unavailable_reason);
+    CopyRawTargetSlot(access, raw, 0x60, raw.slot60_identity,
+        raw.slot60_target_identity, raw.slot60_target_rva, raw.slot60_unavailable_reason);
+    CopyRawTargetSlot(access, raw, 0xC8, raw.slotc8_identity,
+        raw.slotc8_target_identity, raw.slotc8_target_rva, raw.slotc8_unavailable_reason);
+  }
+  raw.raw_slots_copied = raw.slot58_target_identity.has_value() &&
+      raw.slot60_target_identity.has_value() && raw.slotc8_target_identity.has_value();
+  if (source_packet) {
+    raw.selected_character_identity = source_packet->inputs.selected_character_identity;
+    raw.selected_character_full_id = source_packet->inputs.selected_character_full_id_u32;
+  }
+  if (matched_trace) {
+    raw.source_context_root_word = matched_trace->context_root_word;
+    raw.source_context_full_id_payload = matched_trace->context_full_id_payload;
+    raw.context_is_source_projection = matched_trace->context_projection_available;
+    if (raw.source_context_root_word) {
+      const ::xar::ck3_12004::SourceLeafReadOnlyAccess12004 leaf_access{
+          const_cast<StockPerkLegalityAccessV1 *>(&access), &ReadRawTargetsMemory};
+      raw.descriptor_provider = ::xar::ck3_12004::ReadTriggerScopeTableProvider3795A6012004(
+          leaf_access, out.live_frame, raw.source_context_root_word);
+    }
+  }
+  StockPerkLegalityFrameV1 after_copy{};
+  StockPerkLegalitySourceQueryMetadataV1 metadata_after_copy{};
+  const bool frame_after_copy = access.capture_frame(access.context, after_copy) && after_copy == frame;
+  const bool metadata_after_copy_observed = access.capture_source_query_metadata != nullptr &&
+      access.capture_source_query_metadata(access.context, metadata_after_copy);
+  raw.caller_before_after_confirmed = copied.caller_snapshot_confirmed && frame_after_copy &&
+      metadata_after_copy_observed && metadata_after_copy == out.metadata_before;
+  copied.caller_snapshot_confirmed = raw.caller_before_after_confirmed;
+  out.live_frame.caller_snapshot_confirmed = copied.caller_snapshot_confirmed;
+  if (!raw.caller_before_after_confirmed)
+    raw.unavailable_reason = "stock_perk_raw_targets_copy_frame_unconfirmed";
+  return out;
+}
+
+::xar::ck3_12004::LifestyleTriggerFrontierInputs12004 FrontierInputsFromRaw(
+    const StockPerkLegalityRawTargetsSourceV1 &raw) {
+  ::xar::ck3_12004::LifestyleTriggerFrontierInputs12004 out{};
+  out.capture_scope = raw.capture_scope;
+  out.read_frame = RawTargetsReadFrame(raw.read_frame);
+  out.module_image_size = raw.read_frame.module_image_size;
+  out.module_time_date_stamp = raw.read_frame.module_time_date_stamp;
+  out.public_revision = raw.read_frame.public_revision;
+  out.mailbox_before_accepted = raw.read_frame.mailbox_before_accepted;
+  out.mailbox_after_accepted = raw.read_frame.mailbox_after_accepted;
+  out.target_key = raw.target_key;
+  out.command_identity = raw.command_identity;
+  out.selected_perk_identity = raw.selected_perk_identity;
+  out.requested_full_character_id = raw.requested_full_character_id;
+  out.selected_character_identity = raw.selected_character_identity;
+  out.selected_character_full_id = raw.selected_character_full_id;
+  out.receiver_identity = raw.receiver_identity;
+  out.vtable_identity = raw.vtable_identity;
+  out.vtable_rva = raw.vtable_rva;
+  out.slot58 = {raw.slot58_identity, raw.slot58_target_identity, raw.slot58_target_rva,
+      raw.slot58_target_identity.has_value(), raw.slot58_unavailable_reason};
+  out.slot60 = {raw.slot60_identity, raw.slot60_target_identity, raw.slot60_target_rva,
+      raw.slot60_target_identity.has_value(), raw.slot60_unavailable_reason};
+  out.slotc8 = {raw.slotc8_identity, raw.slotc8_target_identity, raw.slotc8_target_rva,
+      raw.slotc8_target_identity.has_value(), raw.slotc8_unavailable_reason};
+  out.source_context_root_word = raw.source_context_root_word;
+  out.source_context_full_id_payload = raw.source_context_full_id_payload;
+  out.context_is_source_projection = raw.context_is_source_projection;
+  out.descriptor_provider = raw.descriptor_provider;
+  out.caller_before_after_confirmed = raw.caller_before_after_confirmed;
+  out.repeated_raw_match = raw.repeated_raw_match;
+  out.native_before = raw.native_before;
+  out.native_after = raw.native_after;
+  out.unavailable_reason = raw.unavailable_reason;
+  return out;
+}
+
+void RevokeRawTargetAdmission(::xar::ck3_12004::LifestyleTriggerFrontierPacket12004 &packet) {
+  packet.copied_input_binding_ready = false;
+  for (auto *lane : {&packet.descriptor_al, &packet.root_kind_ax,
+                    &packet.root_mask_qwords, &packet.final_c8_al}) {
+    lane->raw_target_ready = false;
+    lane->source_value_ready = false;
+    lane->returned_raw_u8.reset();
+    lane->returned_raw_u16.reset();
+    lane->returned_qword0.reset();
+    lane->returned_qword1.reset();
+    lane->result_source = "unavailable";
+  }
+}
+
+void FinishRawTargetValidateCapture(const StockPerkLegalityAccessV1 &access,
+    const StockPerkLegalityFrameV1 &frame, RawTargetCapture &capture,
+    ::xar::ck3_12004::LifestyleTriggerFrontierPacket12004 &packet) {
+  StockPerkLegalityFrameV1 after{};
+  StockPerkLegalitySourceQueryMetadataV1 metadata_after{};
+  const bool frame_after = access.capture_frame(access.context, after) && after == frame;
+  const bool metadata_after_observed = access.capture_source_query_metadata != nullptr &&
+      access.capture_source_query_metadata(access.context, metadata_after);
+  if (!capture.raw.caller_before_after_confirmed || !frame_after ||
+      !capture.metadata_observed || !metadata_after_observed ||
+      metadata_after != capture.metadata_before) {
+    capture.raw.caller_before_after_confirmed = false;
+    capture.raw.read_frame.caller_snapshot_confirmed = false;
+    capture.live_frame.caller_snapshot_confirmed = false;
+    capture.raw.unavailable_reason = "stock_perk_raw_targets_validate_frame_unconfirmed";
+    RevokeRawTargetAdmission(packet);
+  }
+  packet.inputs = FrontierInputsFromRaw(capture.raw);
+}
+
+bool SameRawDescriptorProvider(
+    const std::optional<::xar::ck3_12004::TriggerScopeTableProviderRaw3795A6012004> &left,
+    const std::optional<::xar::ck3_12004::TriggerScopeTableProviderRaw3795A6012004> &right) {
+  if (left.has_value() != right.has_value()) return false;
+  if (!left) return true;
+  const auto &a = *left;
+  const auto &b = *right;
+#define XAR_RAW_PROVIDER_EQ(field) if (a.field != b.field) return false
+  XAR_RAW_PROVIDER_EQ(frame);
+  XAR_RAW_PROVIDER_EQ(caller_copied_root_kind_raw_u16);
+  XAR_RAW_PROVIDER_EQ(source_provider_entry_identity);
+  XAR_RAW_PROVIDER_EQ(source_return_table_identity);
+  XAR_RAW_PROVIDER_EQ(initialization_guard_raw_i32);
+  XAR_RAW_PROVIDER_EQ(table_data_identity);
+  XAR_RAW_PROVIDER_EQ(capacity_raw_i32);
+  XAR_RAW_PROVIDER_EQ(count_raw_i32);
+  XAR_RAW_PROVIDER_EQ(caller_root_zero_bypasses_descriptor);
+  XAR_RAW_PROVIDER_EQ(selected_source_fallback);
+  XAR_RAW_PROVIDER_EQ(selected_descriptor_identity);
+  XAR_RAW_PROVIDER_EQ(descriptor_validator_pointer10);
+  XAR_RAW_PROVIDER_EQ(query_frame_ready);
+  XAR_RAW_PROVIDER_EQ(return_pointer_on_returning_native_paths_source_closed);
+  XAR_RAW_PROVIDER_EQ(any_native_field_read_attempted);
+  XAR_RAW_PROVIDER_EQ(all_attempted_native_reads_complete);
+  XAR_RAW_PROVIDER_EQ(table_header_copy_complete);
+  XAR_RAW_PROVIDER_EQ(descriptor_selection_inputs_copied);
+  XAR_RAW_PROVIDER_EQ(descriptor_validator_pointer_copied);
+  XAR_RAW_PROVIDER_EQ(copied_fields_unchanged);
+  XAR_RAW_PROVIDER_EQ(source_scalar_reads);
+  XAR_RAW_PROVIDER_EQ(missing_fields);
+  XAR_RAW_PROVIDER_EQ(unavailable_reason);
+  XAR_RAW_PROVIDER_EQ(initializer_semantics_source_closed);
+  XAR_RAW_PROVIDER_EQ(native_provider_return_observed);
+  XAR_RAW_PROVIDER_EQ(initialized_state);
+  XAR_RAW_PROVIDER_EQ(descriptor_validator_returned_raw_u8);
+  XAR_RAW_PROVIDER_EQ(descriptor_validator_result_source_ready);
+  XAR_RAW_PROVIDER_EQ(native_callback_executed);
+#undef XAR_RAW_PROVIDER_EQ
+  return true;
+}
+
+bool SameRawTargets(const StockPerkLegalityRawTargetsSourceV1 &a,
+                    const StockPerkLegalityRawTargetsSourceV1 &b) {
+  // Local stack command identities and original parent results are independent.
+#define XAR_RAW_TARGET_EQ(field) if (a.field != b.field) return false
+  XAR_RAW_TARGET_EQ(capture_scope);
+  XAR_RAW_TARGET_EQ(read_frame);
+  XAR_RAW_TARGET_EQ(target_key);
+  XAR_RAW_TARGET_EQ(selected_perk_identity);
+  XAR_RAW_TARGET_EQ(requested_full_character_id);
+  XAR_RAW_TARGET_EQ(selected_character_identity);
+  XAR_RAW_TARGET_EQ(selected_character_full_id);
+  XAR_RAW_TARGET_EQ(receiver_identity);
+  XAR_RAW_TARGET_EQ(vtable_identity);
+  XAR_RAW_TARGET_EQ(vtable_rva);
+  XAR_RAW_TARGET_EQ(slot58_identity);
+  XAR_RAW_TARGET_EQ(slot60_identity);
+  XAR_RAW_TARGET_EQ(slotc8_identity);
+  XAR_RAW_TARGET_EQ(slot58_target_identity);
+  XAR_RAW_TARGET_EQ(slot60_target_identity);
+  XAR_RAW_TARGET_EQ(slotc8_target_identity);
+  XAR_RAW_TARGET_EQ(slot58_target_rva);
+  XAR_RAW_TARGET_EQ(slot60_target_rva);
+  XAR_RAW_TARGET_EQ(slotc8_target_rva);
+  XAR_RAW_TARGET_EQ(vtable_unavailable_reason);
+  XAR_RAW_TARGET_EQ(slot58_unavailable_reason);
+  XAR_RAW_TARGET_EQ(slot60_unavailable_reason);
+  XAR_RAW_TARGET_EQ(slotc8_unavailable_reason);
+  XAR_RAW_TARGET_EQ(source_context_root_word);
+  XAR_RAW_TARGET_EQ(source_context_full_id_payload);
+  XAR_RAW_TARGET_EQ(context_is_source_projection);
+  XAR_RAW_TARGET_EQ(raw_slots_copied);
+  XAR_RAW_TARGET_EQ(caller_before_after_confirmed);
+  XAR_RAW_TARGET_EQ(unavailable_reason);
+#undef XAR_RAW_TARGET_EQ
+  return SameRawDescriptorProvider(a.descriptor_provider, b.descriptor_provider);
+}
+
 Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
                const StockPerkLegalityAccessV1 &access,
                std::string_view target_key, Sample &sample) noexcept {
@@ -416,7 +759,18 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
   command.definition = sample.target_definition;
   sample.source_packet = CapturePredicateSource(env, access, sample.frame,
       target_key, reinterpret_cast<std::uintptr_t>(&command));
-  if (!Validate(env, command, sample.native_legal)) {
+  auto raw_capture = CaptureRawTargetsBeforeValidate(env, access, sample.frame,
+      target_key, reinterpret_cast<std::uintptr_t>(&command),
+      sample.target_definition, sample.source_packet);
+  const ::xar::ck3_12004::SourceLeafReadOnlyAccess12004 leaf_access{
+      const_cast<StockPerkLegalityAccessV1 *>(&access), &ReadRawTargetsMemory};
+  sample.trigger_frontier_source = ::xar::ck3_12004::BuildLifestylePerkTriggerFrontier12004(
+      leaf_access, FrontierInputsFromRaw(raw_capture.raw));
+  const bool original_validator_completed = Validate(env, command, sample.native_legal);
+  FinishRawTargetValidateCapture(access, sample.frame, raw_capture, *sample.trigger_frontier_source);
+  sample.raw_targets_source = std::move(raw_capture.raw);
+  if (!original_validator_completed) {
+    RevokeRawTargetAdmission(*sample.trigger_frontier_source);
     return Status::unavailable_validator;
   }
   return sample.native_legal ? Status::observed_native_legal
@@ -477,6 +831,14 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
   }
   Sample first{};
   const auto first_status = ReadOne(env, access, target_key, first);
+  out.raw_targets_source = first.raw_targets_source;
+  out.trigger_frontier_source = first.trigger_frontier_source;
+  if (out.raw_targets_source &&
+      (first_status == Status::observed_native_legal ||
+       first_status == Status::observed_native_illegal))
+    out.raw_targets_source->native_before = first.native_legal;
+  if (out.raw_targets_source && out.trigger_frontier_source)
+    out.trigger_frontier_source->inputs = FrontierInputsFromRaw(*out.raw_targets_source);
   if (first.source_packet.has_value()) {
     out.source_packet = first.source_packet;
     if (first_status == Status::observed_native_legal ||
@@ -490,6 +852,22 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
   }
   Sample second{};
   const auto second_status = ReadOne(env, access, target_key, second);
+  if (out.raw_targets_source) {
+    auto &raw = *out.raw_targets_source;
+    if (second_status == Status::observed_native_legal ||
+        second_status == Status::observed_native_illegal)
+      raw.native_after = second.native_legal;
+    raw.repeated_raw_match = second.raw_targets_source.has_value() &&
+        SameRawTargets(*first.raw_targets_source, *second.raw_targets_source);
+    if (!raw.repeated_raw_match) {
+      raw.read_frame.caller_snapshot_confirmed = false;
+      raw.caller_before_after_confirmed = false;
+      raw.unavailable_reason = "stock_perk_raw_targets_changed";
+      if (out.trigger_frontier_source) RevokeRawTargetAdmission(*out.trigger_frontier_source);
+    }
+    if (out.trigger_frontier_source)
+      out.trigger_frontier_source->inputs = FrontierInputsFromRaw(raw);
+  }
   if (out.source_packet.has_value() &&
       (second_status == Status::observed_native_legal ||
        second_status == Status::observed_native_illegal))
@@ -504,6 +882,15 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
       !FrameValid(final_frame) || first != second ||
       final_frame != first.frame) {
     out.status = Status::unavailable_drift;
+    if (out.raw_targets_source) {
+      out.raw_targets_source->read_frame.caller_snapshot_confirmed = false;
+      out.raw_targets_source->caller_before_after_confirmed = false;
+      out.raw_targets_source->unavailable_reason = "stock_perk_raw_targets_original_frame_changed";
+      if (out.trigger_frontier_source) {
+        out.trigger_frontier_source->inputs = FrontierInputsFromRaw(*out.raw_targets_source);
+        RevokeRawTargetAdmission(*out.trigger_frontier_source);
+      }
+    }
     return out;
   }
   const bool state_agrees =
@@ -675,5 +1062,23 @@ std::string SerializeStockPerkLegalitySourcePacket12004V1(
   out += p.repeated_source_match ? "true" : "false";
   out += '}';
   return out;
+}
+
+std::string SerializeStockPerkRawTargetsSource12004V1(
+    const StockPerkLegalityResultV1 &result) {
+  return ::xar::ck3_12004::SerializeLifestylePerkTriggerFrontier12004(result.trigger_frontier_source);
+}
+void FinishStockPerkRawTargetsSourceMailbox12004V1(
+    StockPerkLegalityResultV1 &result, bool actual_finish_accepted) noexcept {
+  if (result.raw_targets_source) {
+    auto &raw = *result.raw_targets_source;
+    raw.read_frame.mailbox_after_accepted = actual_finish_accepted;
+    if (!actual_finish_accepted) raw.read_frame.caller_snapshot_confirmed = false;
+  }
+  if (result.trigger_frontier_source) {
+    result.trigger_frontier_source->inputs.mailbox_after_accepted = actual_finish_accepted;
+    ::xar::ck3_12004::FinalizeLifestylePerkTriggerFrontier12004(
+        *result.trigger_frontier_source, actual_finish_accepted);
+  }
 }
 } // namespace xar::ck3_12004::lifestyle

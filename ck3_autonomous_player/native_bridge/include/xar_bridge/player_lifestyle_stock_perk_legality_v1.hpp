@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/player_lifestyle_window_candidates_v1.hpp"
+#include "xar_bridge/lifestyle_trigger_frontier_types_12004.hpp"
 
 #include <array>
 #include <cstddef>
@@ -188,6 +189,35 @@ using StockPerkCaptureSourceQueryMetadataV1 = bool (*)(
     void *, StockPerkLegalitySourceQueryMetadataV1 &) noexcept;
 using StockPerkCaptureSourceTlsArrayV1 = bool (*)(void *, std::uintptr_t &) noexcept;
 
+// Successor copied targets from the live existing command. Returned values are
+// owned by the separate lane proofs, never inferred from these raw identities.
+struct StockPerkLegalityRawTargetsSourceV1 {
+  std::string capture_scope = "unavailable";
+  StockPerkLegalitySourceReadFrameV1 read_frame;
+  std::string target_key;
+  std::uintptr_t command_identity = 0, selected_perk_identity = 0;
+  std::uint32_t requested_full_character_id = 0xFFFFFFFFU;
+  std::optional<std::uintptr_t> selected_character_identity;
+  std::optional<std::uint32_t> selected_character_full_id;
+  std::optional<std::uintptr_t> receiver_identity, vtable_identity, vtable_rva;
+  std::optional<std::uintptr_t> slot58_identity, slot60_identity, slotc8_identity;
+  std::optional<std::uintptr_t> slot58_target_identity, slot60_target_identity,
+      slotc8_target_identity;
+  std::optional<std::uintptr_t> slot58_target_rva, slot60_target_rva,
+      slotc8_target_rva;
+  std::string vtable_unavailable_reason, slot58_unavailable_reason,
+      slot60_unavailable_reason, slotc8_unavailable_reason;
+  std::optional<std::uint16_t> source_context_root_word;
+  std::optional<std::uint64_t> source_context_full_id_payload;
+  bool context_is_source_projection = false;
+  std::optional<xar::ck3_12004::TriggerScopeTableProviderRaw3795A6012004>
+      descriptor_provider;
+  bool raw_slots_copied = false, caller_before_after_confirmed = false,
+      repeated_raw_match = false;
+  std::optional<bool> native_before, native_after;
+  std::string unavailable_reason;
+};
+
 struct StockPerkLegalityAccessV1 {
   void *context = nullptr;
   StockPerkProbeMainThreadV1 is_application_main_thread = nullptr;
@@ -233,6 +263,8 @@ struct StockPerkLegalityResultV1 {
   // never be retained across another capture or published over JSON.
   std::uintptr_t target_definition = 0;
   std::optional<StockPerkLegalitySourcePacketV1> source_packet{};
+  std::optional<StockPerkLegalityRawTargetsSourceV1> raw_targets_source{};
+  std::optional<xar::ck3_12004::LifestyleTriggerFrontierPacket12004> trigger_frontier_source{};
 };
 
 StockPerkLegalityEnvironmentV1 BindStockPerkLegalityEnvironmentV1(
