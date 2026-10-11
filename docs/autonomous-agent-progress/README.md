@@ -7,7 +7,9 @@ Root reclaimed only the retired active Driver3,130,567,267B; the frozen13 and or
 failures remain. Same-date protective SAVE gives0 new days/0 daily SAVE credit;
 the original five daily SAVEs to6082 remain. M4 complete/G2 6/8, NW2 2/4,
 M6partial/M7incomplete/natural0. Source84 `594979b0` is published; Native84/SDK84
-and complete SDK execution are GREEN as of 2026-10-11T04:08:32.037017+00:00; R99 cold/live is pending.
+and complete SDK execution are GREEN. R99 same-PID recovery passed13/13 at
+2026-10-11T04:43:29.913656Z; [actual qualification](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/managed/operator/same-pid-cold-recovery01/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json).
+The ordinary continuation is running; saved-day baseline remains6077, with five daily SAVEs remaining.
 Restore the applied gift ledger and keep remaining gift attempts0.
 
 
