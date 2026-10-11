@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-actual-20261011-001\\serial_retirement.py",
+    "--scope",
+    "source16_17",
+    "--phase",
+    "apply",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-actual-20261011-001\\ROOT-APPLY.actual-request.json",
+    "--sha256",
+    "934f611bfff12696754d8db0ccc1d4b13626633aabe3a3062ad7c4a8fd852fc2"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T13:47:50.295942+00:00",
+  "finished_at_utc": "2026-10-11T13:52:23.151654+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-apply-command-20261011-001\\stdout.log",
+    "bytes": 530,
+    "sha256": "d7a8118402735915a29f772fe64436d4b3f57c9a38ffa5f6247270fe25c00b4e"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-apply-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

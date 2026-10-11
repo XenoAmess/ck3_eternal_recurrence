@@ -1,0 +1,89 @@
+{
+  "schema": "lyd.source16-17.retirement.permanent-small-index.v1",
+  "at_utc": "2026-10-11T14:37:52.056495+00:00",
+  "files": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+      "path": "ADMISSION.actual.json",
+      "bytes": 11191,
+      "sha256": "c5d8e8fe27fc6f90c1acd46f209bbc1a46cbc5c6d32c889d285dc2ecbcdbef0d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+      "path": "CLOSED-RESERVATION.actual.json",
+      "bytes": 3421,
+      "sha256": "5befaff4faf882caeb6e4e2803732154e1b1ef901b60161d887acb49e07b18e3"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-held-plan-20261011-001\\PLAN.actual.json",
+      "path": "PLAN.actual.json",
+      "bytes": 3431,
+      "sha256": "55b68afc9670f2173dc1a72c4e74cd64497e134b8ceb4637e60ac889c4b9bd1b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\AGGREGATE.actual.json",
+      "path": "AGGREGATE.actual.json",
+      "bytes": 12091,
+      "sha256": "560d420050875275b44aa8ace3a173c1a830bb928eb8dac00eda656fa94359f5"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\CREDIT-EVENT.actual.json",
+      "path": "CREDIT-EVENT.actual.json",
+      "bytes": 5366,
+      "sha256": "cb34606bcb82b89748e32796406c40c8af3a91ffff6c87751c816b7280345a18"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-admit-command-20261011-001\\RESULT.actual.json",
+      "path": "admit-RESULT.actual.json",
+      "bytes": 1172,
+      "sha256": "3860e02b7dd4a9bc1dabc3c084e302b4a85e6345d3ee3eb5c5fe7d6d1ea234d4"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-plan-command-20261011-001\\RESULT.actual.json",
+      "path": "plan-RESULT.actual.json",
+      "bytes": 1226,
+      "sha256": "790463b005fa2e2a43fa6dd8ea54a361e24c419cf1edf848a7c428a53046db2b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-apply-command-20261011-001\\RESULT.actual.json",
+      "path": "apply-RESULT.actual.json",
+      "bytes": 1230,
+      "sha256": "258eff839ffb58d2403dbfc5889089a665a34b84ec859b0eaf0839d2ac0a4167"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-close-command-20261011-001\\RESULT.actual.json",
+      "path": "close-RESULT.actual.json",
+      "bytes": 1207,
+      "sha256": "76f5d360c58ba1e99540bfea5aee4d03b9831f15dc9e48e4ef822d55bed76829"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\exact-e1ce-ci-001\\INDEX.json",
+      "path": "e1ce-ci-INDEX.json",
+      "bytes": 1029,
+      "sha256": "399506b2c8a644d338c5bc3c8808f054b3882cc0cb084129b1061fa974233295"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\exact-e1ce-ci-001\\FINAL.actual.json",
+      "path": "e1ce-ci-FINAL.actual.json",
+      "bytes": 3188,
+      "sha256": "dfd3a4aed1b805cabd5d2a10a0df9b412c567392474b3c624253a5f29d9d7b55"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\exact-e1ce-ci-001\\OBSERVATIONS.actual.jsonl",
+      "path": "e1ce-ci-OBSERVATIONS.actual.jsonl",
+      "bytes": 2099,
+      "sha256": "7f9008f1b32fdc3bbbb33104d2b1d01c246ed69a186d439371b92d48f2216d44"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\exact-e1ce-ci-001\\REPORT.terminal.json",
+      "path": "e1ce-ci-REPORT.terminal.json",
+      "bytes": 1021,
+      "sha256": "0055efc98de89d22082683e4808c39c39ed9e1421942270afb78d7cefef60e58"
+    }
+  ],
+  "deleted_files": 17492,
+  "logical_deleted_bytes": 295101828,
+  "physical_free_space_not_inferred": true,
+  "old_credit_repeated": false,
+  "business_credit": false
+}

@@ -1,0 +1,109 @@
+{
+  "schema": "lyd.exact-reclamation-credit-event.v1",
+  "event_id": "lyd-source16-17-retirement-exact-reclamation-20261011-001",
+  "deduplication_key": "lyd-source16-17-retirement-exact-reclamation-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\AGGREGATE.actual.json",
+    "bytes": 12091,
+    "sha256": "560d420050875275b44aa8ace3a173c1a830bb928eb8dac00eda656fa94359f5"
+  },
+  "actual_batch_results": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-000\\RESULT.actual.json",
+      "bytes": 2158,
+      "sha256": "6dee789c036dcc25b2bababb1b60ce14edc07fe85fb3b93a426ef4e34448bf62"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-001\\RESULT.actual.json",
+      "bytes": 2163,
+      "sha256": "08969ba14cd0bd888278c1cd1eb9b683630e342eac3c2493e56bc0cd18d2580f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-002\\RESULT.actual.json",
+      "bytes": 2163,
+      "sha256": "4d7cf90ca898edea162f0fe0bce48b5a8d378329101f641a754923f9605cd8f1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-003\\RESULT.actual.json",
+      "bytes": 2165,
+      "sha256": "293e25af61cefe78c8738b31b97bb18092387864842a1f0996ba96520f400475"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-004\\RESULT.actual.json",
+      "bytes": 2165,
+      "sha256": "97560ff73201aff8aea8a72ccecac0fa07efa6d5f7e33796d0466f4ad95761c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-005\\RESULT.actual.json",
+      "bytes": 2165,
+      "sha256": "701caf900e42e4a2a8f2a20209ce7590e330f9902bbed6317e4e39e75c062e9e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-006\\RESULT.actual.json",
+      "bytes": 2165,
+      "sha256": "460ba7334e1c0c452310107da662dcd53a39ebf19d326af4ac413642292f157e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-007\\RESULT.actual.json",
+      "bytes": 2165,
+      "sha256": "c31ecacd0a808f7ed44ed8949687aa29d5a8e286d920957c8a931e72846d4498"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-008\\RESULT.actual.json",
+      "bytes": 2163,
+      "sha256": "ece27a747b528552dd6a841c99cf965f38414fd2032965d2a9d9d788e7355e85"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-009\\RESULT.actual.json",
+      "bytes": 2158,
+      "sha256": "cfe4f3d58616eb1a6bc3845be49f907f36d70aaae19dd9504da6ead6e182df5a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-010\\RESULT.actual.json",
+      "bytes": 2164,
+      "sha256": "f8237b162fb3a04b8451cc5802551a313b23de1f1a34795249d2cc607f21950d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-011\\RESULT.actual.json",
+      "bytes": 2164,
+      "sha256": "33ca5ded1e4956fd3a183a7411f34af38920b12081de5119e0f52df05652c21b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-012\\RESULT.actual.json",
+      "bytes": 2166,
+      "sha256": "8bbf3647170e17f582ab1bba2ed29773c09e6cbd635213ca229e181f5abdb6e3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-013\\RESULT.actual.json",
+      "bytes": 2166,
+      "sha256": "2f4b8b4c11b376b3f65cf4d4d7b1d8b0d7f94b516634f2c97f1ae4edde707c31"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-014\\RESULT.actual.json",
+      "bytes": 2166,
+      "sha256": "5e60393f799276794be25a1caa9ba0b3b19ef7701640ea01d3aba04e22d2a1aa"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-015\\RESULT.actual.json",
+      "bytes": 2166,
+      "sha256": "fcac6cbcf9067f4795c76685fd4bfac71a8f42fbc1e8631994a4689e86dc0cac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-016\\RESULT.actual.json",
+      "bytes": 2166,
+      "sha256": "909e8d780ec1fc368c62d986750b3ef982b487bdf036151c129ddeb5179795d4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-017\\RESULT.actual.json",
+      "bytes": 2164,
+      "sha256": "e792701880cdc5ca20b9003ddbbd8e8956c3b09cf94f14ce3f310c21bd5cf7c0"
+    }
+  ],
+  "logical_deleted_bytes": 295101828,
+  "deleted_files": 17492,
+  "reservation_claimed_or_consumed": false,
+  "future_reservation_reference": null,
+  "old_credit_repeated": false,
+  "business_credit": false
+}

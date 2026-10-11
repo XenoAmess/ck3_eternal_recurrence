@@ -1,0 +1,278 @@
+{
+  "schema": "lyd.source15-r53.retirement-serial-aggregate.v1",
+  "scope": "source16_17",
+  "at_utc": "2026-10-11T13:52:22.472183+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 11191,
+    "sha256": "c5d8e8fe27fc6f90c1acd46f209bbc1a46cbc5c6d32c889d285dc2ecbcdbef0d"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-held-plan-20261011-001\\PLAN.actual.json",
+    "bytes": 3431,
+    "sha256": "55b68afc9670f2173dc1a72c4e74cd64497e134b8ceb4637e60ac889c4b9bd1b"
+  },
+  "actual_results": [
+    {
+      "stage": "SOURCE16_17",
+      "batch": 0,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-000\\RESULT.actual.json",
+        "bytes": 2158,
+        "sha256": "6dee789c036dcc25b2bababb1b60ce14edc07fe85fb3b93a426ef4e34448bf62"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-000.command.json",
+        "bytes": 1859,
+        "sha256": "7585d851f381e251bdcce21ccbc5c112353ec73b9d000d8d6125745909e11250"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 1,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-001\\RESULT.actual.json",
+        "bytes": 2163,
+        "sha256": "08969ba14cd0bd888278c1cd1eb9b683630e342eac3c2493e56bc0cd18d2580f"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-001.command.json",
+        "bytes": 1859,
+        "sha256": "a398af12857f88a9339f342c3ae5fd08a39ae0a090b5ba0fe3c6352ba58b5fa9"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 2,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-002\\RESULT.actual.json",
+        "bytes": 2163,
+        "sha256": "4d7cf90ca898edea162f0fe0bce48b5a8d378329101f641a754923f9605cd8f1"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-002.command.json",
+        "bytes": 1859,
+        "sha256": "01d78116f923a91ffc631680edf0b732070889d37d7f2b9a300888759db5bd7c"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 3,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-003\\RESULT.actual.json",
+        "bytes": 2165,
+        "sha256": "293e25af61cefe78c8738b31b97bb18092387864842a1f0996ba96520f400475"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-003.command.json",
+        "bytes": 1859,
+        "sha256": "76eb6b71b7b54ecb602410f776ed2ed8596de0dc406472abec592bab4e2ca768"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 4,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-004\\RESULT.actual.json",
+        "bytes": 2165,
+        "sha256": "97560ff73201aff8aea8a72ccecac0fa07efa6d5f7e33796d0466f4ad95761c5"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-004.command.json",
+        "bytes": 1859,
+        "sha256": "ff22e3910d426353938701e40505c7d816c2ecb813b3d3791c46ec24f22106ec"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 5,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-005\\RESULT.actual.json",
+        "bytes": 2165,
+        "sha256": "701caf900e42e4a2a8f2a20209ce7590e330f9902bbed6317e4e39e75c062e9e"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-005.command.json",
+        "bytes": 1859,
+        "sha256": "714a354dc9f361e49cac7f6a2a696ff0680440e4d0ce77fdab2b57574efcb9da"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 6,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-006\\RESULT.actual.json",
+        "bytes": 2165,
+        "sha256": "460ba7334e1c0c452310107da662dcd53a39ebf19d326af4ac413642292f157e"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-006.command.json",
+        "bytes": 1859,
+        "sha256": "e0474243a4aec15a890444ab2d895f3d9aca3a0f63529ca7ae087f67a08bf6ce"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 7,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-007\\RESULT.actual.json",
+        "bytes": 2165,
+        "sha256": "c31ecacd0a808f7ed44ed8949687aa29d5a8e286d920957c8a931e72846d4498"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-007.command.json",
+        "bytes": 1859,
+        "sha256": "125dcbb1afd9244c4bbdfc0158072f465480bd84066c3e34bf7378db15ab6606"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 8,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-008\\RESULT.actual.json",
+        "bytes": 2163,
+        "sha256": "ece27a747b528552dd6a841c99cf965f38414fd2032965d2a9d9d788e7355e85"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-008.command.json",
+        "bytes": 1859,
+        "sha256": "06cad1207fc01cc319de302aa772886949b64f973d33db21428a8c29917a01d0"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 9,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-009\\RESULT.actual.json",
+        "bytes": 2158,
+        "sha256": "cfe4f3d58616eb1a6bc3845be49f907f36d70aaae19dd9504da6ead6e182df5a"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-009.command.json",
+        "bytes": 1859,
+        "sha256": "6d7bf7546e33d83af1593fa021a929773ad0f0c2e310da829560352cb7dc9ec7"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 10,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-010\\RESULT.actual.json",
+        "bytes": 2164,
+        "sha256": "f8237b162fb3a04b8451cc5802551a313b23de1f1a34795249d2cc607f21950d"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-010.command.json",
+        "bytes": 1860,
+        "sha256": "b1a74d42ac6ceab6b3b8ea6f1ddb710b413f049ba72945dc9b88ee6eec3f004b"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 11,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-011\\RESULT.actual.json",
+        "bytes": 2164,
+        "sha256": "33ca5ded1e4956fd3a183a7411f34af38920b12081de5119e0f52df05652c21b"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-011.command.json",
+        "bytes": 1860,
+        "sha256": "550cf4e92907e3c1876c19240c6d69fbe2d1e225312d70ecbecd2bc6c0ff6f34"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 12,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-012\\RESULT.actual.json",
+        "bytes": 2166,
+        "sha256": "8bbf3647170e17f582ab1bba2ed29773c09e6cbd635213ca229e181f5abdb6e3"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-012.command.json",
+        "bytes": 1860,
+        "sha256": "3de39ca6d4598b2d58b9645658e11742458a750c0bcf5b1234b97148b8ed0d85"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 13,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-013\\RESULT.actual.json",
+        "bytes": 2166,
+        "sha256": "2f4b8b4c11b376b3f65cf4d4d7b1d8b0d7f94b516634f2c97f1ae4edde707c31"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-013.command.json",
+        "bytes": 1860,
+        "sha256": "6f0d43fc02dcccdccf07ab7b769f8a0aaca67ff02b75fbe2939ab452add94cb0"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 14,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-014\\RESULT.actual.json",
+        "bytes": 2166,
+        "sha256": "5e60393f799276794be25a1caa9ba0b3b19ef7701640ea01d3aba04e22d2a1aa"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-014.command.json",
+        "bytes": 1860,
+        "sha256": "df187dc6614b0c195fc12d23e1ac17eb1c0d1291a5df3f1b5a0eec830416619d"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 15,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-015\\RESULT.actual.json",
+        "bytes": 2166,
+        "sha256": "fcac6cbcf9067f4795c76685fd4bfac71a8f42fbc1e8631994a4689e86dc0cac"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-015.command.json",
+        "bytes": 1860,
+        "sha256": "39c52551a08b739f6fd781e64e917a55191f38c2375716cb6dc12e2b7c49fc52"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 16,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-016\\RESULT.actual.json",
+        "bytes": 2166,
+        "sha256": "909e8d780ec1fc368c62d986750b3ef982b487bdf036151c129ddeb5179795d4"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-016.command.json",
+        "bytes": 1860,
+        "sha256": "0b1215a0d725d1ff044714a6e523a6cbb718ba93989bf9e92e73d9d7e2751dfb"
+      }
+    },
+    {
+      "stage": "SOURCE16_17",
+      "batch": 17,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001-batch-017\\RESULT.actual.json",
+        "bytes": 2164,
+        "sha256": "e792701880cdc5ca20b9003ddbbd8e8956c3b09cf94f14ce3f310c21bd5cf7c0"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-serial-actual-20261011-001\\SOURCE16_17-BATCH-017.command.json",
+        "bytes": 1860,
+        "sha256": "ed24a68b0d8db9fbfe574b3f67feb299ae07aaa01cf9c844205b002c9907bc1b"
+      }
+    }
+  ],
+  "deleted_files": 17492,
+  "logical_deleted_bytes": 295101828,
+  "all_complete": true,
+  "failure": null,
+  "stopped_no_further_writes": true,
+  "old_credit_repeated": false,
+  "retained_original_deadlines_not_extended": true,
+  "unreported_partial_deletion_is_not_credited": true,
+  "business_credit": false
+}

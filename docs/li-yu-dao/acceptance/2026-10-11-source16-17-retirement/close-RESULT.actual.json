@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\source16-17-close-overage-001\\close_source16_17.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-actual-20261011-001\\ROOT-CLOSE-overage-001.actual-request.json",
+    "--sha256",
+    "06eb4f89eefda28186a2ca5f6b2d0b9fda6e248802bb53df014a3682a8dbcfae"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T14:30:48.420964+00:00",
+  "finished_at_utc": "2026-10-11T14:30:49.300413+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-close-command-20261011-001\\stdout.log",
+    "bytes": 449,
+    "sha256": "7973967c383ecb68430989436791fcca1e4541ae1f6e1d77d889ae56280c7949"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-17-retirement-close-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

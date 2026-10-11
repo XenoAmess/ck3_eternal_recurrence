@@ -72,3 +72,5 @@ R14已以原game/client/keeper HANDLE exit0及CAS3429 DONE/resources[]闭合，�
 ## 2026-10-11 R59 / CASE10 用途退役记录
 
 [74文件实际退役与闭账](2026-10-11-r59-case10-purpose-retirement.md)：183869349 logical B单次信用，保留原零删除失败及显式两批恢复；close002为0、future0。原27份SAVE不重扣，三个未知SHA SAVE与cache/seed/Source17/native/原0240继续保留。容量与CI事实不改变一期75%估计/NOT_GREEN。
+
+- [2026-10-11 Source16/17 冗余源码回收：17492 文件 / 295101828B 实际完成](2026-10-11-source16-17-retirement.md)
