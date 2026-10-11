@@ -337,7 +337,9 @@ def plan_council_private(
                 COURT_CHAPLAIN_POSITION_KEY: "chaplain"}[position_key]
         next_plan.update({"phase": "council_private_typed_submit", "selected_step": SUBMIT_STEP,
                            "reason": f"assign one current native-legal {role} with higher observed skill"})
-    elif position_key == STEWARD_POSITION_KEY and decision["outcome"] != "QUERY_UNAVAILABLE":
+    elif position_key == STEWARD_POSITION_KEY:
+        if decision["outcome"] == "QUERY_UNAVAILABLE":
+            next_plan["council_steward_unavailable_decision"] = copy.deepcopy(decision)
         if root is None:
             root, current = _root(driver, campaign_root_result)
         chancellor = _position(root, CHANCELLOR_POSITION_KEY)

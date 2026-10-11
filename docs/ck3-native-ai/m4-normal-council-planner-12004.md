@@ -129,3 +129,37 @@ separate source/configuration gaps, not completed actions. Current war scope
 for new construction and the existing normal gift arbitration remain
 separate inputs. No timestamp relabeling, forced appointment, manual Sway
 consume or M4 counter update is introduced.
+
+## B12-3 independent seat fallback: source adopted, not run
+
+Before this increment, the default Steward branch in
+`private_council_formal_consumer_v1.py` line340 additionally required a
+non-QUERY_UNAVAILABLE decision before entering the existing Chancellor and
+Chaplain fallback. A role-specific unavailable Steward observation therefore
+suppressed both independent seat queries.
+
+This is a current source distinction, not an inference that an unavailable
+skill is zero. `ck3_12004_council_candidates.cpp` lines399-412 reads the
+requested seat's incumbent and its profile main-skill member; it can return
+`PublicFailure::incumbent_main_skill_unready` for that seat.
+`ck3_12004_council_candidates.hpp` lines58-61 selects distinct Steward
+stewardship and Chancellor diplomacy profiles.
+`council_private_transport_v1.py` lines104-105 preserves an actual unavailable
+native result, and `select_council_candidate_v1` lines180-187 returns
+QUERY_UNAVAILABLE. An available same-frame campaign root can meanwhile
+observe a vacant Chancellor seat, whose independent query does not read the
+Steward incumbent's skill.
+
+When the default Steward has no action, enter the already implemented
+Chancellor/Chaplain fallback without that extra suppression condition.
+For an unavailable Steward, retain its actual original small decision as
+`council_steward_unavailable_decision`; the command history already retains
+the source query, so no duplicate query packet is stored in the plan.
+Existing root binding, fresh per-position queries and current snapshot
+readback remain. A selected Steward action still takes priority, and the
+first selected fallback action uses the original typed submit path.
+The original vacancy/replacement permissions, native final gates, skill
+ranking, occupation policy and pending/applied persistence are unchanged.
+
+This increment is SOURCE_ADOPTED_NOT_RUN. It supplies no new appointment,
+compiled-build, material-window or M4 live credit.
