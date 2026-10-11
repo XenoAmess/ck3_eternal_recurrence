@@ -32,9 +32,22 @@
 
 四份 clone 的只读 Git object 首次删除失败后，在同一精确目标内重试完成，原失败记录保留。一条真实失效 alternates 链已最小修正到 Z 主仓 objects，Git 原生读回成功；为旧 child clone 提供对象的副本暂保留。一次 C-parent worktree 注册归类错误也已纠正后正常移除，没有重计文件回收。
 
-## 当前保留与继续工作
+## 第二阶段：24 份来源候选全部处置
 
-第一阶段结束时仍有 24 份旧 source 候选含不等价补丁或提供旧 clone 对象，语义处置尚在继续。Root 将并行核实每份内容，必要知识/实现合入 master，已包含或被替代的临时副本由唯一 C 清理线程退役。`git cherry` 的正号不是永久保留依据，也不能独自证明可删除。
+截至 `2026-10-11T08:25:08.926360+00:00`，十个并行工作包已完成 40 个唯一旧提交的语义对照：38 个已经由 master 包含或由明确后继实现取代，直接舍弃旧副本；2 个独有知识提交先由 Root 补入 [Character detachment 专题](../ck3-native-ai/army-character-detachment-suffix-12004.md)，并推送 `master d0ae5581` 后退役来源。该小补丁保留 `28B1750` 的完整 203 B own-method 控制流和 Mermaid 分支图，未恢复旧接口、旧候选状态或 live 资格。
+
+| 项目 | 第二阶段增量 | 本轮累计 |
+| --- | ---: | ---: |
+| 实际退役旧副本 | 24 | 90 |
+| 删除文件 | 207,716 | 1,123,609 |
+| 删除 logical B | 5,015,240,914 | 38,949,667,033 |
+| 删除 logical GiB | 4.67 | 36.27 |
+
+C 盘终点可用 `47,948,550,144 B / 44.66 GiB`；起点为约 0.38 GiB。完整物理回收总量仍未知，可用空间变化包含系统和其他任务影响。第二阶段删除失败、未决来源候选及延期对象父链均为 0；五条已知私有 objects 依赖按 child 先于 parent 处置，最后的等价 new-date parent 也已正常退役。
+
+这里保留的是小结论和删除回执。24 份来源副本原文件已不可读，没有新建归档源码树；第一阶段冻结 `RESULT.json` 没有改写。原有错误/失败 attempt 及必要小摘要留在回执中，三个简写证据路径已更正到实际文件并保留原记录。单纯 `git cherry +` 不再构成旧副本的保留理由。
+
+## 当前必要依赖
 
 当前 Native84 必要 C 路径包括 `migration4-complete-domain-build/strict07/cache-observers`、同根 injector，以及 `migration4-entry-live-fix/joint-army-poet-runtime20` 的 host/attach_host，因此这两个实际依赖根保留。其他未分类范围继续按台账复核；无法访问的临时根未强行处理。当前 Native84/SDK84/Source594、D 上 SAVE6077 恢复链、用户存档/mod、Steam/游戏安装和当前工作现场均未清理。
 
@@ -45,3 +58,6 @@
 完整第一阶段结果：`D:/codex-ck3-background-spill/native71-continuation-20261010/c-cleanup-high-priority-20261011/RESULT.json`，66,835 B，SHA-256 `bf8bd47c142d13c771dd616def56af05adf7e58bf7fc6ac75fe30f624c580edf`；同目录 `RESULT.md` 为小摘要。`expired-build-closure-evidence.json`、`expired-build-result.json` 保存旧构建闭场摘要与实际删除结果。
 
 三份旧提交 triage：`continuation-10/c-cleanup-three-copy-triage/TRIAGE-FINAL.json`；两份 dirty 副本 triage：`continuation-10/c-cleanup-two-dirty-copy-triage/TRIAGE-FINAL.json`，都在同一 D continuation 根。Root 的历史知识实际采用记录为 `ROOT-C-FACTION-HISTORY-SALVAGE-ADOPTION.json`。详细 ledger 按 30 天复核，小结果摘要按 180 天复核；没有声称自动 GC 已实现。
+
+
+第二阶段最终小结果：`D:/codex-ck3-background-spill/native71-continuation-20261010/c-cleanup-high-priority-20261011/PHASE2-FINAL.json`，6,946 B，SHA-256 `7dfa2dceb967b19fd74c5cbaab20c282c3bdba388c373ffdd509b91aed63f633`；同目录 `PHASE2-FINAL.md` 为摘要。`RETIRED-SEMANTIC-PENDING-COPIES.json` 是 24 份实际退役 ledger；`ROOT-SEMANTIC-CLEANUP-DECISIONS.json` 是十个并行包、40 个提交和 24 份副本的 Root 明确裁决，SHA-256 `f7b74ebc64ad0db64476a3fa2770934d25a8e7358fe75f6de843a362fc801194`。独有知识实际采用回执为 continuation 根的 `ROOT-C-EXTENSION-ORIGIN-HISTORY-SALVAGE-ADOPTION.json`，对应已推送 `d0ae5581`。
