@@ -3102,6 +3102,44 @@
           },
           "legacy_upper_bounds_preserved": "Strict/no-choice discovery unchanged. No calendar setter, flag reset, school choice, full365/cold/formal/army credit. Unknown Python policy holds original process within original deadline.",
           "product_release_pass": false
+        },
+        {
+          "id": "vanilla-faith-feedback",
+          "status": "ready",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "whole_product_acceptance_credit": false,
+          "acceptance_scope": "representative_original_confucian_feedback",
+          "fixture_changes_self_only": true,
+          "requires_separate_business_admission": true,
+          "ROOT_GUI_checkpoints_required": true
         }
       ],
       "legacy_inventory": {

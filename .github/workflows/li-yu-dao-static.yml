@@ -6,12 +6,22 @@ on:
     paths:
       - 'mod_li_yu_dao/**'
       - 'tools/extract_auto_upgrade_buildings.py'
+      - 'tools/prepare_lyd_vanilla_feedback_fixture.py'
+      - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback_adapter.py'
+      - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback.json'
+      - 'tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py'
+      - 'tools/ck3_mod_acceptance_products.json'
       - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'
       - '.github/workflows/li-yu-dao-static.yml'
   pull_request:
     paths:
       - 'mod_li_yu_dao/**'
       - 'tools/extract_auto_upgrade_buildings.py'
+      - 'tools/prepare_lyd_vanilla_feedback_fixture.py'
+      - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback_adapter.py'
+      - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback.json'
+      - 'tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py'
+      - 'tools/ck3_mod_acceptance_products.json'
       - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'
       - '.github/workflows/li-yu-dao-static.yml'
   workflow_dispatch:
@@ -42,6 +52,7 @@ jobs:
           python -B -X utf8 mod_li_yu_dao/tools/test_tenet_modifiers.py
           python -B -X utf8 mod_li_yu_dao/tools/test_challenger_tooltip.py
           python -B -X utf8 mod_li_yu_dao/tools/test_vanilla_faith_integration.py
+          python -B -X utf8 tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
           python mod_li_yu_dao/tools/test_institution_detached.py
           python mod_li_yu_dao/tools/test_factory_diagnostic.py

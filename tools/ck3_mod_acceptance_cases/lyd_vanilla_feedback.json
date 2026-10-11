@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "case_id": "vanilla-faith-feedback",
+  "acceptance_scope": "representative_original_confucian_feedback",
+  "business_contract_applicable": true,
+  "fixture_emitter": {
+    "path": "tools/prepare_lyd_vanilla_feedback_fixture.py",
+    "arguments": ["--repo", "{repo}", "--output", "{output}"],
+    "receipt_relative": "setup-receipt.json"
+  },
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "required_startup": ["LYD_FEEDBACK: SELF_JINGXUE_SETUP_APPLIED"],
+  "forbidden_startup": ["LYD_FEEDBACK: TEST FAIL"],
+  "failure_prefixes": ["LYD_FEEDBACK:"],
+  "maximum_natural_days": 0,
+  "expected_actor_character_id": 29829,
+  "faith_key": "confucian_faith",
+  "setup_rite_key": "jingxue",
+  "entry_rite_key": "lyd_rite_kongmen",
+  "school_rite_key": "lyd_rite_zhuxi",
+  "personal_tenet_key": "lyd_tenet_reverent_heaven",
+  "source_catalogue": {"directory": "mod_li_yu_dao", "builder": "mod_li_yu_dao/tools/build_release.py", "workshop_item_id": "3817934804"},
+  "uncovered_product_business": ["whole faith institution", "formal B4/B5/C3", "save/reload", "complete 36-tenet effect matrix"],
+  "runtime_status": "NOT_RUN"
+}
