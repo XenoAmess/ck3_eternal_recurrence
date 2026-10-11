@@ -141,3 +141,11 @@ The nine current-child predicates are observable through the existing query;
 educator identity, loaded education context, point computation, guardian
 selection, live snapshots, actions, births and natural succession remain
 unqualified. No local Game/SDK operation or G2 credit was added.
+
+## 2026-10-12 — Independent current education trait membership
+
+The actual4 child collector now has an optional education_traits observation for all 25 vanilla education skill/rank keys (five skills, ranks1..5). It reuses the existing TraitDatabaseGetter and CharacterHasTrait ABI, exact-build bindings0x89E5B0/0x28BB1D0, full-ID child resolver and two-sample membership reader. No new getter or layout is inferred. Stable matching keys are retained in queried order, including multiple matches; an observed empty set is distinct from unavailable and a missing legacy leaf.
+
+The serializer and strict Python validator preserve those states. Generation inputs and education needs carry the independent observation; original four-leaf completeness, guardian/martial qualification and selection policy remain unchanged. No numeric rank, education probability, or 7/12/17-threshold result is inferred from it.
+
+Root reviewed and integrated the six-file source candidate. It has not been compiled or deployed, and no tests, fixtures, native calls or live validation were run. M6 remains partial. The separate relation-materials path still lacks an ordinary producer; an empty service wiring patch was not applied. Source provenance: [candidate manifest](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk85-source-preparation/sdk86-candidates/m6-child-needs-wiring01/EDUCATION-TRAITS-CANDIDATE-MANIFEST.json).

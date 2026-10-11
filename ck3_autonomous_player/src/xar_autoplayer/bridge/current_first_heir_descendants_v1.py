@@ -22,6 +22,11 @@ EDUCATION_POINT_TRAIT_KEYS = (
     "intellect_bad_1", "intellect_bad_2", "intellect_bad_3",
     "shrewd", "dull", "inbred",
 )
+EDUCATION_TRAIT_KEYS = tuple(
+    f"education_{skill}_{rank}"
+    for skill in ("diplomacy", "martial", "stewardship", "intrigue", "learning")
+    for rank in range(1, 6)
+)
 
 
 def _integer(value: object, low: int, high: int) -> bool:
@@ -87,6 +92,24 @@ def _education_point_traits(value: object) -> None:
     elif (reason is not None or not isinstance(present, list)
           or present != [key for key in EDUCATION_POINT_TRAIT_KEYS if key in present]):
         raise BridgeUnavailableError("available current heir education-point traits are malformed")
+
+
+def _education_traits(value: object) -> None:
+    """Retain every observed education key; do not infer a numeric rank."""
+    fields = {"source", "status", "unavailable_reason", "queried_trait_keys",
+              "present_trait_keys"}
+    if (not isinstance(value, dict) or set(value) != fields
+            or value.get("source") != "native_character_has_trait"
+            or value.get("status") not in ("available", "unavailable")
+            or value.get("queried_trait_keys") != list(EDUCATION_TRAIT_KEYS)):
+        raise BridgeUnavailableError("current heir education trait observation is malformed")
+    reason, present = value["unavailable_reason"], value["present_trait_keys"]
+    if value["status"] == "unavailable":
+        if not isinstance(reason, str) or not reason or present is not None:
+            raise BridgeUnavailableError("unavailable current heir education traits are malformed")
+    elif (reason is not None or not isinstance(present, list)
+          or present != [key for key in EDUCATION_TRAIT_KEYS if key in present]):
+        raise BridgeUnavailableError("available current heir education traits are malformed")
 
 
 def _native_focus(value: object) -> None:
@@ -316,6 +339,8 @@ def _child_inputs(value: object, descendants: dict[str, object]) -> None:
         _childhood_traits(row.get("childhood_traits"))
         if "education_point_traits" in row:
             _education_point_traits(row["education_point_traits"])
+        if "education_traits" in row:
+            _education_traits(row["education_traits"])
         if "native_focus" in row:
             _native_focus(row["native_focus"])
         if "court_owner_source" in row:

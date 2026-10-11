@@ -135,6 +135,14 @@ def derive_family_generation_education_inputs_v1(
                 missing_status="not_observed" if observed is not None else missing_status,
                 reason=f"{key}_not_observed" if observed is not None else row_missing_reason,
             )
+        # Independent membership observation; original four-leaf readiness stays intact.
+        education_traits = observed.get("education_traits") if observed is not None else None
+        row["education_traits"] = deepcopy(education_traits)
+        availability["education_traits"] = _availability(
+            education_traits,
+            missing_status="not_observed" if observed is not None else missing_status,
+            reason="education_traits_not_observed" if observed is not None else row_missing_reason,
+        )
         if observed is not None and "court_owner_source" in observed:
             row["court_owner_source"] = deepcopy(observed["court_owner_source"])
         complete = all(availability[key]["status"] == "available" for key in _INPUT_LEAVES)

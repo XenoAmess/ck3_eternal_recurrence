@@ -86,6 +86,7 @@ def derive_family_education_needs_12004(
             "values": deepcopy(child["values"]),
             "childhood_traits": deepcopy(child["childhood_traits"]),
             "education_point_traits": deepcopy(child["education_point_traits"]),
+            "education_traits": deepcopy(child.get("education_traits")),
             "stock_skill_options": deepcopy(decision["stock_skill_options"]),
             "current_education_skill_inputs": deepcopy(decision["current_education_skill_inputs"]),
             "current_court_owner": deepcopy(decision["current_court_owner"]),

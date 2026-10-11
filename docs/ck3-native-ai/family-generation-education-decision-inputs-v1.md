@@ -45,3 +45,11 @@ future action/outcome consumers retain their own missing inputs.
 [Coherent source manifest](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-52/background-g2-offline-20261011/ROOT-G2-FAMILY-EDUCATION-PYTHON-SOURCE-ADOPTION-MANIFEST.json).
 
 The existing family planner consumes independent [current-child education needs and native request candidates](family-education-needs-12004.md), preserving partial observations and known focus absence.
+
+## 2026-10-12 — Independent current education trait membership
+
+The actual4 child collector now has an optional education_traits observation for all 25 vanilla education skill/rank keys (five skills, ranks1..5). It reuses the existing TraitDatabaseGetter and CharacterHasTrait ABI, exact-build bindings0x89E5B0/0x28BB1D0, full-ID child resolver and two-sample membership reader. No new getter or layout is inferred. Stable matching keys are retained in queried order, including multiple matches; an observed empty set is distinct from unavailable and a missing legacy leaf.
+
+The serializer and strict Python validator preserve those states. Generation inputs and education needs carry the independent observation; original four-leaf completeness, guardian/martial qualification and selection policy remain unchanged. No numeric rank, education probability, or 7/12/17-threshold result is inferred from it.
+
+Root reviewed and integrated the six-file source candidate. It has not been compiled or deployed, and no tests, fixtures, native calls or live validation were run. M6 remains partial. The separate relation-materials path still lacks an ordinary producer; an empty service wiring patch was not applied. Source provenance: [candidate manifest](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk85-source-preparation/sdk86-candidates/m6-child-needs-wiring01/EDUCATION-TRAITS-CANDIDATE-MANIFEST.json).

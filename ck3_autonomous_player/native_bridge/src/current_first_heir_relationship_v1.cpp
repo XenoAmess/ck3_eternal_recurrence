@@ -644,6 +644,30 @@ void AppendChildInputs(std::string &json,
       }
       json += '}';
     }
+    if (row.education_traits) {
+      const auto &education_traits = *row.education_traits;
+      json += ",\"education_traits\":{\"source\":\"native_character_has_trait\",\"status\":";
+      AppendJsonString(json, education_traits.available ? "available" : "unavailable");
+      json += ",\"unavailable_reason\":";
+      if (education_traits.available) json += "null";
+      else AppendJsonString(json, education_traits.unavailable_reason);
+      json += ",\"queried_trait_keys\":[";
+      for (std::size_t key = 0; key < kChildEducationTraitKeysV1.size(); ++key) {
+        if (key != 0) json += ',';
+        AppendJsonString(json, kChildEducationTraitKeysV1[key]);
+      }
+      json += "],\"present_trait_keys\":";
+      if (!education_traits.present_trait_keys) json += "null";
+      else {
+        json += '[';
+        for (std::size_t key = 0; key < education_traits.present_trait_keys->size(); ++key) {
+          if (key != 0) json += ',';
+          AppendJsonString(json, (*education_traits.present_trait_keys)[key]);
+        }
+        json += ']';
+      }
+      json += '}';
+    }
     if (row.court_owner_source) {
       std::ostringstream court_owner_json;
       xar::ck3_12004::AppendCurrentChildCourtOwnerReadonly12004Json(

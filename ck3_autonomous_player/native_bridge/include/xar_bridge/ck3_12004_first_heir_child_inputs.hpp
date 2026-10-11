@@ -149,11 +149,16 @@ ReadCurrentFirstHeirChildInputsV1(
   TraitDefinitions definitions{};
   TraitDefinitionsForKeys<ck3_11906::kChildEducationPointTraitKeysV1.size()>
       education_definitions{};
+  TraitDefinitionsForKeys<ck3_11906::kChildEducationTraitKeysV1.size()>
+      education_trait_definitions{};
   if (!result.rows.empty()) {
     (void)ReadTraitDefinitions(trait_environment, definitions);
     if (!ReadTraitDefinitionsForKeys(trait_environment,
             ck3_11906::kChildEducationPointTraitKeysV1, education_definitions))
       education_definitions = {};
+    if (!ReadTraitDefinitionsForKeys(trait_environment,
+            ck3_11906::kChildEducationTraitKeysV1, education_trait_definitions))
+      education_trait_definitions = {};
   }
   for (auto &row : result.rows) {
     ck3_12002::family_value::CharacterValue first{}, second{};
@@ -187,10 +192,14 @@ ReadCurrentFirstHeirChildInputsV1(
       row.childhood_traits = ReadTraits(trait_environment, definitions, character);
       row.education_point_traits = ReadTraitsForKeys(trait_environment,
           education_definitions, character, ck3_11906::kChildEducationPointTraitKeysV1);
+      row.education_traits = ReadTraitsForKeys(trait_environment,
+          education_trait_definitions, character, ck3_11906::kChildEducationTraitKeysV1);
     } else {
       row.childhood_traits.unavailable_reason = "child_full_id_or_liveness_unavailable";
       row.education_point_traits.emplace();
       row.education_point_traits->unavailable_reason = "child_full_id_or_liveness_unavailable";
+      row.education_traits.emplace();
+      row.education_traits->unavailable_reason = "child_full_id_or_liveness_unavailable";
     }
     if (!row.values.available || !row.childhood_traits.available) {
       result.status = "partial";

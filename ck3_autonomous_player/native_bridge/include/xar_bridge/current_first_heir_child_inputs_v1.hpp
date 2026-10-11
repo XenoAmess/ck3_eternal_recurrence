@@ -23,6 +23,23 @@ inline constexpr std::array<std::string_view, 9> kChildEducationPointTraitKeysV1
     "intellect_bad_1", "intellect_bad_2", "intellect_bad_3",
     "shrewd", "dull", "inbred"};
 
+// Exact current education trait membership; separate from point modifiers.
+inline constexpr std::array<std::string_view, 25> kChildEducationTraitKeysV1{
+    "education_diplomacy_1", "education_diplomacy_2",
+    "education_diplomacy_3", "education_diplomacy_4",
+    "education_diplomacy_5", "education_martial_1",
+    "education_martial_2", "education_martial_3",
+    "education_martial_4", "education_martial_5",
+    "education_stewardship_1", "education_stewardship_2",
+    "education_stewardship_3", "education_stewardship_4",
+    "education_stewardship_5", "education_intrigue_1",
+    "education_intrigue_2", "education_intrigue_3",
+    "education_intrigue_4", "education_intrigue_5",
+    "education_learning_1", "education_learning_2",
+    "education_learning_3", "education_learning_4",
+    "education_learning_5",
+};
+
 struct CurrentFirstHeirChildValuesV1 {
   bool available = false;
   std::string_view unavailable_reason = "child_character_values_unavailable";
@@ -50,6 +67,7 @@ struct CurrentFirstHeirChildInputRowV1 {
   CurrentFirstHeirChildTraitsV1 childhood_traits{};
   std::optional<CurrentFirstHeirChildFocusV1> native_focus{};
   std::optional<CurrentFirstHeirChildTraitsV1> education_point_traits{};
+  std::optional<CurrentFirstHeirChildTraitsV1> education_traits{};
   // Independent current input for this same child and native query revision.
   std::optional<xar::ck3_12004::CurrentChildCourtOwnerRead12004> court_owner_source{};
 };
