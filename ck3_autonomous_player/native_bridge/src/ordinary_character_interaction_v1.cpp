@@ -606,7 +606,7 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
                       completed, std::cref(phase.culture), character, full_id,
                       std::string_view{"better_ward_education"}, std::ref(field)) &&
                  completed;
-        }, b.actual4 ? ReadRequestGuardianTotalMartialCallback : nullptr};
+        }, b.education_rows_actual_12004 ? ReadRequestGuardianTotalMartialCallback : nullptr};
     out.request_guardian_skill_inputs = ck3_12004::ReadRequestGuardianSkillInputs12004(
         skill_access, roles[3], roles[2], r.expected_revision);
     // Additional getter calls must keep the original final request roles stable.
