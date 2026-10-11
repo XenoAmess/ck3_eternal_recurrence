@@ -123,3 +123,8 @@ absence; actual adapter/Game were not executed and the old cross-TU4 was not rep
 Evidence: [new FIRST3](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63k-r0098/root-first/ROOT-ACTUAL-FIRST3-AND-ADOPTION.json). Precise reader failure remains
 unknown pending the next actual ordinary run; Native84 production build/fullSDK84
 source binding are separate steps after source publication and R98 keeper release.
+
+
+Native84 production qualification recorded 2026-10-11T04:08:32.037017+00:00: one Bridge compile/one DLL link
+GREEN, source594979b0/archive664, completeSDK84 source594 GREEN. R99 actual
+private-reader stage/cause is pending; no runtime root-cause fix is claimed.
