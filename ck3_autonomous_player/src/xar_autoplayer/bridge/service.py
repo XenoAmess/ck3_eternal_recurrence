@@ -2061,10 +2061,25 @@ class GameplayBridgeService:
                     return planned
                 post = self.driver.query_activity_feast_hosted_post_private_v1(
                     expected_revision=int(planned["revision"]))
+                resolved = ledger.get("resolved")
+                terminal = resolved.get("lifecycle") if isinstance(resolved, dict) else None
+                retained_terminal_id = (
+                    resolved.get("activity_id")
+                    if isinstance(terminal, dict) and terminal.get("terminal_observed") is True
+                    and resolved.get("actor_character_id") == post.get("actor_character_id")
+                    and (terminal.get("activity_id"), terminal.get("actor_character_id"),
+                         terminal.get("activity_type_key")) ==
+                        (resolved.get("activity_id"), post.get("actor_character_id"), "activity_feast")
+                    else None
+                )
+                # Current readable flags take precedence over the retained receipt.
                 if any(row.get("activity_type_key") == "activity_feast"
-                       and (row.get("terminal_flags_observed") is not True
-                            or not (row.get("native_completed") is True
-                                    or row.get("native_invalidated") is True))
+                       and ((row.get("terminal_flags_observed") is not True
+                             and not (row.get("activity_id") == retained_terminal_id
+                                      and row.get("host_character_id") == post.get("actor_character_id")))
+                            or (row.get("terminal_flags_observed") is True
+                                and not (row.get("native_completed") is True
+                                         or row.get("native_invalidated") is True)))
                        for row in post["hosted_activities"]):
                     return {**planned, "plan": {**plan, "activity_feast_opportunity": {
                             "status": "current_feast_unresolved", "hosted_observation": post}}}

@@ -508,3 +508,36 @@ the native `CapturePost` entry and the serializer do not require a remaining hos
 row to expose independent actor values; the formal lifecycle retains missing-row
 terminal evidence while reading those actor values. This is source reuse evidence,
 not a new runtime result or a reason to expand the pure-copy observer.
+
+## 2026-10-11: retained terminal input to the ordinary opportunity branch
+
+Source-first consumer delta: Service._plan_private_feast_normal_v1 currently
+returns current_feast_unresolved when a hosted Feast row has unread optional
+terminal flags, even if the durable lifecycle already records an explicit
+terminal for that exact full Activity ID, actor and activity_feast type.
+Existing actual +421/+422 reads or the qualified pre-callee journal supplied
+that terminal; the formal consumer already preserves it and uses it on restore.
+
+The ordinary branch will reuse this exact receipt only for unread current
+flags on the matching hosted row. Readable current flags remain authoritative,
+including known ongoing false/false; other rows remain independently unresolved.
+The raw completion stamp and prestige/stress/XP differences never determine
+termination or payoff. Current stock eligibility, guest route and budget still
+decide whether configuration or another Start is available.
+
+SOURCE_AUTHORED_NOT_RUN: one method-only Service hunk, no producer changes,
+new query, flags, tests, imports, builds, Game or live/M6 credit. Native sources
+and durable retention are reused, not requalified.
+
+```mermaid
+flowchart LR
+  N[Existing actual terminal flags or qualified cut] --> L[Durable full Activity ID actor type terminal]
+  P[Current hosted row] --> F{Current flags readable?}
+  F -->|yes| C[Use current native flags]
+  F -->|no| M{Exact retained identity matches?}
+  L --> M
+  M -->|yes| O[Ordinary opportunity continues]
+  M -->|no| U[Current Feast unresolved]
+  O --> S[Existing stock eligibility guest route budget]
+  S --> D[Existing configure or Start decision]
+```
