@@ -88,3 +88,9 @@ R76/R77/R78另作只读metadata调查：root全文审读冻结9,420 B源码，�
 结果分别为R76 3,816文件/161,276,720 B native allocation，R77及R78各3,780文件/157,999,920 B，三根identity union合477,276,560 B。R77有Source19现存控制及prepared引用，R78有诊断prepared引用，保持保护且均未取得删除资格；R76也只是调查量。报告 `C:/workspace/ck3-upgrade-20261010/root-parallel-continue-236/qol-r76-r77-r78-cache-metadata-survey-01.json` 为7,640 B / SHA-256 `26254b9732c7082acca4c2187811625bca0f7ca045947168fd860e29b3250e1f`。保护的是用途待明确的实际输入关系，不把任何历史路径自动等同于永续引用；本轮未修改这些引用或删除缓存。
 
 调查后fresh free 28,577,722,368 B，距默认场次门槛仍差1,493,340,160 B；477,276,560 B不是已释放量，即使全数另行合格回收也不能独自补足缺口。RMTM a182的task/attempt/keeper、state父级single-use-ledger及原消费标记均实际不存在，准备文件与Source19匹配；仍不是原子准入。官方CI在提交 `dfe2e8c3bc8925da3815c0b8534a7fdae6405dd4` 已completed/success。已请求用户先在本机腾出至少3GB或指定另一获准执行位置；现场容量达标后优先RMTM core，再按原业务矩阵推进，不能承诺未经验证的发布时间。所有业务通过率及未发布状态不变。
+
+## 17:52 CST：按用户指令自主回收，容量阻挡已解除
+
+用户随后明确要求root按最新规则自主清理，不再询问其腾空间。经当前用途与精确路径复核，09:52:05Z实际完成15,936文件/2,910,665,920 B native allocation回收，221原进程wait0；09:52:38Z预约close实际exit0、children0、unspent0。闭场后fresh free 31,473,754,112 B，超过原默认场次门槛30,071,062,528 B；没有降低任何安全、系统或其他预约参数。
+
+R76/R77/R78缓存的旧保护候选经具体用途重审，确认生成shadercache非未消费Source19 prepared的输入；仅回收缓存，非缓存与代表问题证据未动。重复原件、旧截图与导出等各组资格、原件不可读状态、完整SHA和期限见[实际清理回执](maintenance/storage-retention-2026-10-11-release-capacity.md)。这不改写16:40调查时未取得资格/未删除的历史事实，也不把清理计作业务PASS。下一步仍按原默认2GiB原子准入优先RMTM core，QOL 2/6、RMTM 0/2及未发布状态不变，361不在范围。
