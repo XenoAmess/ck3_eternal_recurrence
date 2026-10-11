@@ -49,3 +49,17 @@ PAM+ 未消费43输入仅另建 manifest sibling，原 state/fixture/35步/12日
 重整河山两份未消费 Source17 输入同样另建 Source19 siblings，原 core58 / threshold62 个 profile 文件 exact、不复制或重 prepare。新根 `C:/workspace/ck3-upgrade-20261010/rmtm-source19-unused-prepared-siblings-20261011-01`，core prepared SHA-256 `7353badc987b77198d784867bf263e3413fb27b6bf19c5a7bbc083df4bed6ad9`，threshold prepared `a24363a732c87a18f5128b6910c0b78cc06a15bc47fdd4e611018cff6b5860b4`；总回执 `RMTM-TWO-MANIFEST-SIBLINGS-READY.json` / `20d7f44a2de130ee0716d15adf3e6107bc6e10565e642bc3ccf601ae3279f7b4`。两次公共 plan 各实际 exit0/blockers=[]，总逻辑 105,076 B，在128KiB小包上限内，仍无新实机/发布信用。
 
 当前下一场容量仍待准入。旧占用台账不能外推为现可释放量；已按精确根核到多份旧缓存早已空，大目录实际远小于历史值，没有据旧排行强删。相邻完整 PAM− 场次原闭账 allocation 为305,077,272 B、logical442,699,599 B，可用于新场估计复核；任何新峰估算须保留实际依据、最坏超时风险与原 safety/system-growth，不改写旧2GiB预约或把估算变化称为回收。
+
+## 14:24 CST：精确回收、无损归档与下一场估算
+
+旧 native01 的3,760个生成缓存、144个编译中间文件及1,437个干净源码文件，已按原生单链接身份分七批（每批不超过1,000文件）实际回收，随后仅对内容已空的精确旧工作树执行 Git-aware remove。各批及收尾均 exit0/CLOSED、failures=[]；累计原生 AllocationSize 释放274,244,944 B，不将并发影响下的整卷空闲差额当作精确归因。小型回执 `C:/workspace/disk-cleanup-20261010/resume-05/native01-exact-reclaim-small-handoff-259.json` / SHA-256 `8a2db66b3fddf5cb9d9f3847dfeb0b228df24b3114f298d56f3691293ab78f53` 关联全部原始批次与 child wait/exit。
+
+旧 `C:/workspace/ck3-upgrade-20261001/native/source-d19e794` 与其 worktree admin/index 现已不可读，没有同名替代证据。精确源码已由实际推送并回读的 `archive/storage-retention-20261011/native-source-d19e794` 保全，tag object `f7a69d0be5f52736089f0c128ce7ae8927f45c22`、peeled commit `d19e794041eae408666702a1039bde41639cbf6f`；176,643 B retained Git tree 与原构建 recipe 保留，可在新外置路径重建。保护理由是精确源码可恢复，复核日2026-10-18，不等于无限期保留整个历史执行树。SAVE、当前Source18/19输入、DLL/EXE及原始验收证据未纳入该批回收。
+
+另以独立256MiB/600s预约执行旧QOL R1–R56的30份无损gzip（24份transport、6份raw report）。实际child exit0 / 5.48s、30/30恢复字节数与SHA-256相等、failures=[]；原allocation148,021,248 B，archive allocation6,406,144 B，净释放141,615,104 B（未扣小型报告开销）。`C:/workspace/disk-cleanup-20261010/resume-05/old-qol-exact30-lossless-gzip-239-01/actual.json` / SHA-256 `bf2fe245aac8b6246478ef3fee2e9660e7c561b686790128e97e0b078eeae0c4` 保存逐项原身份、archive映射、恢复SHA/字节数与期限。对应旧raw路径现已不可读；恢复时必须解压到新文件并校验原SHA/字节数，不能把gzip路径或新同名文件冒充原件。R60/R71/R73–R76与当前输入不动；gzip不重置资料期限。预约行政闭账及新场准入另外保存，不以压缩成功代替。
+
+仅下一PAM+/a180批准新1GiB场次峰估算，依据相邻完整PAM−实际305,077,272 B及R76失败闭场346,479,784 B；旧2GiB历史不改，6GiB系统增长/20GiB安全余量不减，原35步/12日、timeout4500/hold600等合同不变。长超时日志密度仍可能超估，必须在实际live/state/attempt三根启动Guard251：原生文件身份union去重、区分既有基线与新增delta、30秒采样、750MiB或卷余量门槛/不可观测即通知root正常收场，不给未完成场PASS。251八项模拟自测通过，尚不代表实场监测已启动。
+
+另一条窄metadata线仅找到旧QOL R13–R17五根shadercache候选，去重allocation789,999,600 B；保护路径无交集，但尚未完成用途/期限/占用复核、未删除、没有释放信用。摘要 `C:/workspace/ck3-upgrade-20261010/root-parallel-continue-236/qol-old-state-cache-summary-01.json` / `1a3e74d883ab56fb77164f9752493b69c6fb93db84da44257054240e26bb2e8a`。不为此重复R57–R75已空缓存检查或全工作区扫描。
+
+业务进度仍QOL 2/6、重整河山0/2；本节全部为基础设施与存储事实，均不构成新实机业务或Workshop发布完成。
