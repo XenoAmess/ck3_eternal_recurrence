@@ -1,23 +1,14 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
-**Current owner instruction: Z CK3 use is released after the owner's play (Oct12); keep G2 parallel work running.**
-Root has resumed the same saved6077 campaign in owned R0100, Steam offline.
-The first loader read timed out without a full snapshot; same-PID continuation
-has obtained one full frame with13/13 restored bindings GREEN. After one
-private prisoner cached-read failure, a fresh heartbeat proves the full reader
-and cache available again. New740 ordinary work actually advanced one day;
-new750 daily SAVE continuation is running. Latest actual saved checkpoint is
-6079/H10153/raw53290224, two saved days beyond the recovery baseline.
-The original failed request was not replayed.
-Frozen Native84/fullSDK84 still use594979b0. Successor SDK85/source0503b3f2/all5
-are ready. The actual64-job production build plus one corrected TU rebuild
-completed: Runtime597 archive and Bridge DLL link GREEN. The final917-object
-binary has individual mixed source pins, including the one e66bf30a corrected TU.
-No successor binary is deployed; M6/M7 completion is not credited.
-Four additional complete equal ArmyManager MCP fields are source-connected for
-sharing; current raw evidence shows a2,931,649-byte duplicate. Actual repacked
-bytes and latency are unmeasured, and the active SDK is unchanged.
-Test suites, fixtures and replay remain cancelled. See [actual Oct12 progress](daily/2026-10-12.md).
+**Current owner instruction: Z CK3 use is released after the owner's play (Oct12); continue parallel G2 work.**
+
+R100's final actual checkpoint is **6082/H10171/raw53290296**, original Robert29829/episode. Five ordinary days since6077 are saved. The fifth advance originally returned an error; a later independent same-PID snapshot proved its actual advanced paused day, which was saved without replaying Resume/life-advance. Original RED results remain.
+
+Final SAVE persistence was independently confirmed. Outer SDK reader exited0; actual MCP application exited1. After one WM_CLOSE and one stock Exit-to-Desktop confirmation remained pending, exact-owned managed cleanup produced actual Game exit1. Normal shutdown is unproven. All13 paired recovery streams are now preserved, including the full3,397,695,563-byte Driver and spent gift ledger. Copy GREEN does not upgrade shutdown.
+
+Native85 production compile/archive/link are GREEN; its917 objects have mixed source pins, so global native/compiled/archive heads remain JSON null. Full SDK86 is fixed at7a6afbbd with all5 held inputs, the Feast syntax correction and Army4 sharing source. New Git longpaths metadata is corrected and the SDK source tree is clean. R101 has an admitted17,272,354,223-byte peak within the unchanged40GiB deadline and a freshly reviewed offline image; allocation/launch are still NOT_RUN.
+
+M7 Queue continuation candidates are being corrected to consume an already completed successor response once. M4 complete/G2 **6/8=75%**, NW2 **2/4=50%**, M6 partial, M7 incomplete and natural0 remain. Test suites, fixtures and replay remain cancelled. See [actual Oct12 progress](daily/2026-10-12.md).
 
 **Historical owner-stop instruction (superseded for CK3 use):**
 
