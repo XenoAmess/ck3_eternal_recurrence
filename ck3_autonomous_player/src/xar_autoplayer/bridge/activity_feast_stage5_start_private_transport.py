@@ -123,6 +123,95 @@ def _hosted(value: object) -> list[dict[str, object]]:
     return copied
 
 
+
+def _native_terminal_observations(value: object, *, actor_id: int) -> dict[str, object] | None:
+    """Qualify only the optional journal; unavailable data cannot gate the post."""
+    if value is None:
+        return None
+    def require(condition: bool) -> None:
+        if not condition:
+            raise ValueError("private feast native terminal journal malformed")
+    def integer(raw: object, low: int, high: int) -> bool:
+        return type(raw) is int and low <= raw <= high
+    try:
+        family_keys = {
+            "schema", "available", "unavailable_reason", "observer_attached", "process_lifetime",
+            "read_only", "query_thread_id_u32", "query_actor_full_id_u32", "record_capacity",
+            "earliest_retained_sequence_u64", "latest_capture_sequence_u64",
+            "overflow_dropped_count_u64", "record_count", "records",
+        }
+        row_keys = {
+            "capture_sequence_u64", "capture_thread_id_u32", "source_cut_rva_u64",
+            "manager_identity_u64", "activity_identity_u64", "type_identity_u64",
+            "activity_full_id_u32", "activity_instance_generation_u8", "host_character_id_i32",
+            "type_key", "completed_observed", "completed_raw_u8", "invalidated_observed",
+            "invalidated_raw_u8", "native_completion_stamp_observed",
+            "native_completion_stamp_raw_u64", "capture_frame",
+        }
+        frame_keys = {"date_raw_i64", "actor_character_id_i32", "owner_thread_id_u32",
+                      "paused", "map_ready", "has_played_character", "played_character_alive"}
+        require(isinstance(value, dict) and set(value) == family_keys
+                and value["schema"] == "activity_terminal_observations_12004_v1")
+        require(all(type(value[key]) is bool for key in
+                    ("available", "observer_attached", "process_lifetime", "read_only"))
+                and value["process_lifetime"] is True and value["read_only"] is True)
+        require(integer(value["query_thread_id_u32"], 0, 0xFFFFFFFF)
+                and integer(value["query_actor_full_id_u32"], 0, 0xFFFFFFFF)
+                and type(value["record_capacity"]) is int and value["record_capacity"] == 64
+                and integer(value["record_count"], 0, 64)
+                and isinstance(value["records"], list) and len(value["records"]) == value["record_count"])
+        require(all(integer(value[key], 0, 2**64 - 1) for key in
+                    ("earliest_retained_sequence_u64", "latest_capture_sequence_u64", "overflow_dropped_count_u64")))
+        earliest, latest = value["earliest_retained_sequence_u64"], value["latest_capture_sequence_u64"]
+        require((earliest == 0) == (latest == 0) and earliest <= latest)
+        if value["available"]:
+            require(value["unavailable_reason"] is None and value["observer_attached"] is True
+                    and value["query_thread_id_u32"] != 0 and value["query_actor_full_id_u32"] == actor_id)
+        else:
+            require(isinstance(value["unavailable_reason"], str) and bool(value["unavailable_reason"])
+                    and not value["records"])
+        rows = []
+        previous = 0
+        for row in value["records"]:
+            require(isinstance(row, dict) and set(row) == row_keys)
+            require(integer(row["capture_sequence_u64"], 1, 2**64 - 1)
+                    and earliest <= row["capture_sequence_u64"] <= latest
+                    and previous < row["capture_sequence_u64"]
+                    and integer(row["capture_thread_id_u32"], 1, 0xFFFFFFFF))
+            require(all(integer(row[key], 0, 2**64 - 1) for key in
+                        ("source_cut_rva_u64", "manager_identity_u64", "activity_identity_u64", "type_identity_u64"))
+                    and row["source_cut_rva_u64"] == 0x29BF68C)
+            require(integer(row["activity_full_id_u32"], 0, 0xFFFFFFFE)
+                    and integer(row["activity_instance_generation_u8"], 0, 255)
+                    and row["activity_instance_generation_u8"] == row["activity_full_id_u32"] >> 24
+                    and integer(row["host_character_id_i32"], -(2**31), 2**31 - 1)
+                    and (row["host_character_id_i32"] & 0xFFFFFFFF) == value["query_actor_full_id_u32"]
+                    and row["type_key"] == "activity_feast")
+            for flag, raw_key, maximum in (
+                ("completed_observed", "completed_raw_u8", 255),
+                ("invalidated_observed", "invalidated_raw_u8", 255),
+                ("native_completion_stamp_observed", "native_completion_stamp_raw_u64", 2**64 - 1),
+            ):
+                require(type(row[flag]) is bool)
+                require(integer(row[raw_key], 0, maximum) if row[flag] else row[raw_key] is None)
+            frame = row["capture_frame"]
+            require(isinstance(frame, dict) and set(frame) == frame_keys
+                    and integer(frame["date_raw_i64"], -(2**63), 2**63 - 1)
+                    and integer(frame["actor_character_id_i32"], -(2**31), 2**31 - 1)
+                    and frame["actor_character_id_i32"] == row["host_character_id_i32"]
+                    and integer(frame["owner_thread_id_u32"], 1, 0xFFFFFFFF)
+                    and frame["owner_thread_id_u32"] == row["capture_thread_id_u32"]
+                    and all(type(frame[key]) is bool for key in
+                            ("paused", "map_ready", "has_played_character", "played_character_alive"))
+                    and frame["map_ready"] is True and frame["has_played_character"] is True
+                    and frame["played_character_alive"] is True)
+            rows.append({**row, "capture_frame": dict(frame)})
+            previous = row["capture_sequence_u64"]
+        return {**value, "records": rows}
+    except ValueError:
+        return None
+
+
 def _outcome_values(value: object) -> dict[str, object]:
     """Copy native actor counters; absent reads remain None, not zero."""
     fields = {"prestige_raw", "stress_points", "reveler_present", "reveler_xp_raw"}
@@ -251,7 +340,7 @@ def _parse_payload(
     if (not isinstance(value, dict)
             or not fields <= set(value)
             or not set(value) <= fields | {"outcome_values"} | (
-                {"ordinary_guest_route"} if step == INPUT_STEP else set())
+                {"ordinary_guest_route"} if step == INPUT_STEP else {"native_terminal_observations"})
             or value["schema"] != (INPUT_SCHEMA if step == INPUT_STEP else POST_SCHEMA)
             or type(value["snapshot_revision"]) is not int
             or value["snapshot_revision"] != native_revision
@@ -267,6 +356,10 @@ def _parse_payload(
     result = {**value, "balances": balances, "hosted_activities": hosted}
     if "outcome_values" in value:
         result["outcome_values"] = _outcome_values(value["outcome_values"])
+    if step == POST_STEP and "native_terminal_observations" in value:
+        result["native_terminal_observations"] = _native_terminal_observations(
+            value["native_terminal_observations"], actor_id=actor_id,
+        )
     if step == INPUT_STEP:
         resources = value["resources"]
         if not isinstance(resources, dict) or set(resources) != set(RESOURCE_KEYS):

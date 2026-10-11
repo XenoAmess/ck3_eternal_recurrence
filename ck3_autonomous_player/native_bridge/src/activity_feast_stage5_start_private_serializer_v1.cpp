@@ -154,6 +154,71 @@ std::string SerializeActivityFeastStage5PrivateV1(
     payload += ",\"hosted_activities\":";
     AppendIdentities(payload, post.hosted, post.hosted_count);
     AppendOutcomeValues(payload, post.outcome_values);
+    payload += ",\"native_terminal_observations\":";
+    if (!post.native_terminal_observations.has_value()) {
+      payload += "null";
+    } else {
+      const auto &observations = *post.native_terminal_observations;
+      payload += "{\"schema\":\"activity_terminal_observations_12004_v1\",\"available\":";
+      payload += observations.available ? "true" : "false";
+      payload += ",\"unavailable_reason\":";
+      payload += observations.available
+                     ? "null" : "\"" + std::string(observations.unavailable_reason) + "\"";
+      payload += ",\"observer_attached\":";
+      payload += observations.observer_attached ? "true" : "false";
+      payload += ",\"process_lifetime\":true,\"read_only\":true,\"query_thread_id_u32\":" +
+          std::to_string(observations.query_thread_id) +
+          ",\"query_actor_full_id_u32\":" + std::to_string(observations.query_actor_full_id) +
+          ",\"record_capacity\":64,\"earliest_retained_sequence_u64\":" +
+          std::to_string(observations.earliest_retained_sequence) +
+          ",\"latest_capture_sequence_u64\":" + std::to_string(observations.latest_capture_sequence) +
+          ",\"overflow_dropped_count_u64\":" + std::to_string(observations.overflow_dropped_count) +
+          ",\"record_count\":" + std::to_string(observations.record_count) + ",\"records\":[";
+      for (std::uint32_t index = 0; index < observations.record_count; ++index) {
+        if (index != 0) payload += ",";
+        const auto &row = observations.records[index];
+        const auto &frame = row.capture_frame;
+        payload += "{\"capture_sequence_u64\":" + std::to_string(row.capture_sequence) +
+            ",\"capture_thread_id_u32\":" + std::to_string(row.capture_thread_id) +
+            ",\"source_cut_rva_u64\":" +
+            std::to_string(xar::ck3_12004::kActivityTerminalObservations12004CutRva) +
+            ",\"manager_identity_u64\":" + std::to_string(row.manager_identity) +
+            ",\"activity_identity_u64\":" + std::to_string(row.activity_identity) +
+            ",\"type_identity_u64\":" + std::to_string(row.type_identity) +
+            ",\"activity_full_id_u32\":" + std::to_string(row.activity_full_id) +
+            ",\"activity_instance_generation_u8\":" +
+            std::to_string(row.activity_instance_generation) +
+            ",\"host_character_id_i32\":" + std::to_string(row.host_character_id) +
+            ",\"type_key\":\"";
+        payload.append(row.type_key.data(), row.type_key_size);
+        payload += "\",\"completed_observed\":";
+        payload += row.completed_observed ? "true" : "false";
+        payload += ",\"completed_raw_u8\":";
+        payload += row.completed_observed ? std::to_string(row.completed_raw_u8) : "null";
+        payload += ",\"invalidated_observed\":";
+        payload += row.invalidated_observed ? "true" : "false";
+        payload += ",\"invalidated_raw_u8\":";
+        payload += row.invalidated_observed ? std::to_string(row.invalidated_raw_u8) : "null";
+        payload += ",\"native_completion_stamp_observed\":";
+        payload += row.native_completion_stamp_observed ? "true" : "false";
+        payload += ",\"native_completion_stamp_raw_u64\":";
+        payload += row.native_completion_stamp_observed
+                       ? std::to_string(row.native_completion_stamp_raw) : "null";
+        payload += ",\"capture_frame\":{\"date_raw_i64\":" + std::to_string(frame.date_raw) +
+            ",\"actor_character_id_i32\":" + std::to_string(frame.actor_character_id) +
+            ",\"owner_thread_id_u32\":" + std::to_string(frame.owner_thread_id) +
+            ",\"paused\":";
+        payload += frame.paused ? "true" : "false";
+        payload += ",\"map_ready\":";
+        payload += frame.map_ready ? "true" : "false";
+        payload += ",\"has_played_character\":";
+        payload += frame.has_played_character ? "true" : "false";
+        payload += ",\"played_character_alive\":";
+        payload += frame.played_character_alive ? "true" : "false";
+        payload += "}}";
+      }
+      payload += "]}";
+    }
     payload += ",\"read_only\":true,\"advertised\":false}";
     return payload;
   }

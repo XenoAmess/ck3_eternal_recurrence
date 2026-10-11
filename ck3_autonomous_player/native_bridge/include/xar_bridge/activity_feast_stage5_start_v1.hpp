@@ -7,6 +7,7 @@
 #include "xar_bridge/activity_feast_guest_rule_toggle_v1.hpp"
 #include "xar_bridge/activity_feast_guest_rule_provenance_v1.hpp"
 #include "xar_bridge/ck3_12002_feast_outcome_values.hpp"
+#include "xar_bridge/activity_terminal_observations_12004.hpp"
 
 #include <array>
 #include <cstdint>
@@ -120,6 +121,8 @@ struct ActivityFeastStage5PostV1 {
   std::uint32_t hosted_count = 0;
   std::array<ActivityHostedIdentityV1, 64> hosted{};
   FeastOutcomeValuesV1 outcome_values{};
+  std::optional<ck3_12004::ActivityTerminalObservationsSnapshot12004>
+      native_terminal_observations{};
 };
 
 enum class ActivityFeastStage5PostStatusV1 {

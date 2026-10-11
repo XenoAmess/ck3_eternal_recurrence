@@ -461,6 +461,10 @@ bool CapturePost(Context &context,
   if (outcomes.status == bridge::FeastOutcomeStatusV1::observed ||
       outcomes.status == bridge::FeastOutcomeStatusV1::observed_partial)
     output.outcome_values = outcomes.value;
+  output.native_terminal_observations =
+      ck3_12004::ReadActivityTerminalObservations12004(
+          expected, context.base, context.query->executable_sha256);
+  // Journal absence/failure is independent of the established hosted query.
   return true;
 }
 

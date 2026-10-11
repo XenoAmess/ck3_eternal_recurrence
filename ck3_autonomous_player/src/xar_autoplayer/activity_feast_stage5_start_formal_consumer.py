@@ -426,17 +426,23 @@ def read_feast_start_resolved_private_v1(driver: object) -> dict[str, object]:
         return {"status": "resolved_post_read_red", "postcondition_verified": False,
                 "error": str(exc)}
     activity_id = resolved.get("activity_id")
+    hosted_instance_observed = type(activity_id) is int and any(
+        row["activity_id"] == activity_id
+        and row["host_character_id"] == resolved["actor_character_id"]
+        and row["activity_type_key"] == "activity_feast"
+        for row in post["hosted_activities"])
     if (not (isinstance(lifecycle, Mapping) and lifecycle.get("terminal_observed") is True)
-            and (type(activity_id) is not int or not any(
-            row["activity_id"] == activity_id
-            and row["host_character_id"] == resolved["actor_character_id"]
-            and row["activity_type_key"] == "activity_feast"
-            for row in post["hosted_activities"]))):
+            and (type(activity_id) is not int or not 0 < activity_id <= 0xFFFFFFFF
+                 or not hosted_instance_observed
+                 and normalize_activity_feast_terminal_outcome_v1(
+                     post, activity_id=activity_id,
+                     actor_character_id=resolved["actor_character_id"],
+                 )["status"] not in _TERMINAL_STATUSES)):
         return {"status": "resolved_activity_unobserved", "postcondition_verified": False,
                 "post": post, "resolved": resolved}
     resolved = _record_lifecycle_observation(driver.state_dir, ledger, resolved, post)
     return {"status": "already_applied", "postcondition_verified": True,
-            "restored_activity_observed": True, "restored_post": post,
+            "restored_activity_observed": hosted_instance_observed, "restored_post": post,
             "lifecycle_observation": _lifecycle_result(resolved),
             "resolved": resolved}
 

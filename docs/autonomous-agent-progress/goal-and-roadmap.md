@@ -35,6 +35,14 @@ query's final request guardian skill profile through the existing typed request
 path; see [education planner](../ck3-native-ai/ordinary-family-education-request-planner-12004.md).
 Focus and learning operands retain their separate sources. These source inputs
 do not establish the stock effect's selected educator or an education outcome.
+The Activity source path now copies terminal inputs before the actual native
+invalidation call and carries identity-matched historical records through the
+existing hosted query and lifecycle even after object removal; see the
+[Activity source tree](../ck3-native-ai/activity-feast-mcp-migration-12004.md).
+The current object's absence remains explicit. Original capture frame, optional
+raw completion stamp and independently read terminal flags remain distinct from
+current query state, terminal cause and material payoff. These twelve production
+files are SOURCE_ADOPTED_NOT_RUN; no new runtime readiness is credited.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

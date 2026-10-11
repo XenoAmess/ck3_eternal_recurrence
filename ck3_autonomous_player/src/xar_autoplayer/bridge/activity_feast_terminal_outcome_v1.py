@@ -1,7 +1,7 @@
 """Interpret explicit native Feast terminal flags for one persisted identity.
 
-The 1.20 native completed flag is set after the completion effects return.
-Missing hosted identities and legacy rows without these flags stay unknown.
+Native flags come from a guarded hosted row or an exact retained cut record.
+Missing records and unread fields stay unknown; downstream effects are separate.
 This observation does not assign utility or attribute resource/opinion gains.
 """
 
@@ -9,7 +9,9 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from .activity_feast_stage5_start_private_transport import POST_SCHEMA, _hosted
+from .activity_feast_stage5_start_private_transport import (
+    POST_SCHEMA, _hosted, _native_terminal_observations,
+)
 from .driver import BridgeUnavailableError
 
 
@@ -51,8 +53,36 @@ def normalize_activity_feast_terminal_outcome_v1(
     if post.get("actor_character_id") != actor_character_id:
         outcome["unknown_reason"] = "host_frame_mismatch"
         return outcome
+    journal = _native_terminal_observations(
+        post.get("native_terminal_observations"), actor_id=actor_character_id,
+    )
+    if "native_terminal_observations" in post:
+        outcome["native_terminal_observations_coverage"] = (
+            {key: value for key, value in journal.items() if key != "records"}
+            if journal is not None else None)
     row = next((row for row in rows if row["activity_id"] == activity_id), None)
     if row is None:
+        # A retained cut is a historical source observation, not a live object.
+        for source in reversed(journal["records"] if journal is not None else []):
+            if (source["activity_full_id_u32"] != activity_id
+                    or source["activity_instance_generation_u8"] != activity_id >> 24
+                    or (source["host_character_id_i32"] & 0xFFFFFFFF) != actor_character_id
+                    or source["type_key"] != "activity_feast"):
+                continue
+            completed = source["completed_raw_u8"] != 0 if source["completed_observed"] else None
+            invalidated = source["invalidated_raw_u8"] != 0 if source["invalidated_observed"] else None
+            if completed is not True and invalidated is not True:
+                continue
+            outcome.update({
+                "status": "completed_and_invalidated" if completed is True and invalidated is True
+                    else "completed" if completed is True else "invalidated",
+                "terminal_flags_observed": source["completed_observed"] and source["invalidated_observed"],
+                "native_completed": completed, "native_invalidated": invalidated,
+                "native_completion_stamp_observed": source["native_completion_stamp_observed"],
+                "native_completion_stamp_raw": source["native_completion_stamp_raw_u64"],
+                "native_terminal_observation": source, "unknown_reason": None,
+            })
+            break
         return outcome
     if (row["host_character_id"] != actor_character_id
             or row["activity_type_key"] != "activity_feast"):

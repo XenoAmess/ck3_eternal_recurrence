@@ -240,6 +240,8 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
 #include "xar_bridge/activity_cost_slot12_passive_v1.hpp"
+#include "xar_bridge/activity_invalidation_precall_observer_12004.hpp"
+#include "xar_bridge/activity_terminal_observations_12004.hpp"
 #endif
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
@@ -599,6 +601,9 @@ static xar::bridge::ActivityCostSlot12ObserverV1
 static xar::ck3_11906::Bindings g_activity_cost_slot12_bindings_v1{};
 static xar::ck3_12002::CoreBindings g_activity_cost_slot12_bindings12002{};
 static xar::ck3_12004::CoreBindings g_activity_cost_slot12_bindings12004{};
+// The fixed pre-callee route and backing remain owned for process life.
+static xar::ck3_12004::ActivityInvalidationPrecallObserver12004State
+    g_activity_invalidation_precall_observer12004{};
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
 static xar::bridge::ActivityGuestRuleProvenanceObserverV1
     g_activity_guest_rule_provenance_observer_v1{};
@@ -611,6 +616,39 @@ bool ReadActivityCostSlot12MemoryV1(void *, std::uintptr_t address,
          ReadProcessMemory(GetCurrentProcess(),
                            reinterpret_cast<const void *>(address), output,
                            bytes, &copied) != FALSE && copied == bytes;
+}
+
+bool ReadActivityTerminalCaptureFrame12004(
+    void *, xar::ck3_12004::ActivityTerminalCaptureFrame12004 &output) noexcept {
+  output = {};
+  const auto owner_thread =
+      g_main_thread_query_mailbox_v1.owner_thread_id.load(
+          std::memory_order_acquire);
+  if (!g_activity_cost_slot12_bindings12004.enabled || owner_thread == 0 ||
+      GetCurrentThreadId() != owner_thread)
+    return false;
+  xar::ck3_12004::CoreSnapshotPrefix prefix{};
+  __try {
+    if (!xar::ck3_12004::ReadCoreSnapshot(
+            g_activity_cost_slot12_bindings12004, prefix))
+      return false;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+  if (g_main_thread_query_mailbox_v1.owner_thread_id.load(
+          std::memory_order_acquire) != owner_thread)
+    return false;
+  output.date_raw = prefix.clock.date_raw;
+  output.actor_character_id = prefix.played_character_id;
+  output.owner_thread_id = owner_thread;
+  output.paused = prefix.clock.paused;
+  output.map_ready = prefix.map_ready;
+  output.has_played_character = prefix.has_played_character;
+  output.played_character_alive = prefix.played_character_alive;
+  // Natural advancement remains observable while unpaused; host filtering
+  // belongs to the journal and compares the complete character DWORD.
+  return output.map_ready && output.has_played_character &&
+         output.played_character_alive;
 }
 
 bool ReadActivityCostSlot12FrameV1(
@@ -28607,6 +28645,26 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     g_activity_cost_slot12_bindings12004 =
         xar::ck3_12004::BindCoreImage(base, sha);
+    xar::ck3_12004::ActivityInvalidationPrecallObserver12004Environment
+        terminal_environment{};
+    const bool terminal_bound =
+        xar::ck3_12004::BuildActivityTerminalObservations12004Environment(
+            base, sha, nullptr, &ReadActivityCostSlot12MemoryV1,
+            &ReadActivityTerminalCaptureFrame12004, terminal_environment);
+    bool terminal_attached = false;
+    if (terminal_bound) {
+      // PrepareStartup owns the existing suspended-primary install window.
+      terminal_environment.primary_thread_suspended_proven = true;
+      terminal_attached =
+          xar::ck3_12004::InstallActivityInvalidationPrecallObserver12004(
+              g_activity_invalidation_precall_observer12004,
+              terminal_environment);
+    }
+    xar::ck3_12004::SetActivityTerminalObservations12004Attached(
+        terminal_attached, terminal_attached
+            ? nullptr
+            : terminal_bound ? "activity_terminal_observer_install_failed"
+                             : "activity_terminal_observer_binding_unavailable");
     xar::bridge::ActivityCostSlot12EnvironmentV1 cost_environment{};
     cost_environment.enabled = g_activity_cost_slot12_bindings12004.enabled;
     cost_environment.primary_thread_suspended = true;
@@ -29481,6 +29539,14 @@ XarCk3BridgeStartWithPipe(const wchar_t *pipe_name) noexcept {
 
 extern "C" __declspec(dllexport) void WINAPI XarCk3BridgeStop() noexcept {
   SignalStop();
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+  // Ordinary Stop cannot restore native code without a suspended-primary
+  // proof. Detach future journal appends and retain the fixed route/backing.
+  xar::ck3_12004::SetActivityTerminalObservations12004Attached(
+      false, "activity_terminal_observer_stopped");
+  (void)xar::ck3_12004::UninstallActivityInvalidationPrecallObserver12004(
+      g_activity_invalidation_precall_observer12004, false);
+#endif
   if (g_lifecycle.load() == 0) {
     return;
   }

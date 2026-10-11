@@ -249,3 +249,78 @@ exact `[23F6980,23F6D65)` source packet. The remaining time interpretation
 requires an existing standard date/clock contract for the exact `5C7E338`
 QWORD. Pre-callee invalidation observation is an independent source increment;
 these seven files do not observe a released object.
+
+## October 11: retained native terminal observation before the first callee
+
+Root applied twelve connected production source files as
+`SOURCE_ADOPTED_NOT_RUN`: a fixed native observer, the bounded journal and
+existing hosted-post reader, the same-response serializer, strict and durable
+consumers, four thin Bridge regions and two Runtime source registrations.
+The compiled Native84/SDK84 source remains
+`594979b0b3d4c5a395639f30b9d5d864b8a31f6d`. No test, project import,
+build, native installation or game query qualified this increment.
+
+The exact archived actual .4 body `[29BF660,29BF7C4)` supplies the cut.
+Entry RDX is preserved in RBX as the original Activity and RCX in RSI as
+its manager. The zero invalidation arm writes `Activity+422=1` at
+`29BF685`. The observer replaces only the five-byte
+`LEA RCX,[RSP+50]` at `29BF68C`, after that write and before the first
+callee. It preserves the reused register/flag state, copies through the
+callback with the original RSI/RBX identities, restores and replays the LEA,
+then continues at `29BF691`. The original call remains in place once.
+The later callees and their release effects remain unclosed; this observation
+does not prove storage release, termination cause, reward or material payoff.
+
+The journal copies the original full DWORD Activity ID and generation, host
+DWORD, type, independent completed/invalidation bytes and optional raw
+completion QWORD while the object is still borrowed at this cut. Its actual
+existing Core/GetPlayer frame restricts capture to the current player's
+hosted `activity_feast` on the known owner thread. The 64-record process
+lifetime ring preserves the original capture frame and coverage diagnostics.
+Its software sequence orders retained records; it is not a native clock.
+Missing, detached, overflowed or empty coverage does not prove event absence.
+
+The existing hosted-post response now carries the copied journal. A consumer
+can retain a known nonzero completed or invalidated byte after the object
+leaves the hosted list only when full ID/generation, host and type match its
+persisted Activity. An unread other byte stays null. The source cut, query
+date and raw completion QWORD never supply terminal flags. The complete
+matching row and its original capture frame survive through the existing
+lifecycle and Service observation path; a journal-only result keeps
+`restored_activity_observed=false`. This closes the source path for retaining
+an observed terminal fact after hosted-object removal. It adds no Activity
+action, current campaign completion or payoff credit. The `5C7E338` QWORD
+producer above is known, but its time units and interpretation remain unknown.
+
+The source flow below separates the original native call from the owned query
+data path. Dashed native edges remain unknown; all new bridge edges are source
+connections awaiting authorized runtime qualification.
+
+```mermaid
+flowchart TD
+    A["29BF685: write Activity+422=1 on the zero-flag arm"] --> B["29BF68C: pre-call cut, original RSI/RBX"]
+    B --> C["Observer source: copy player-hosted activity_feast inputs"]
+    C --> D["Restore original state and replay LEA"]
+    D --> E["29BF691: original native CALL once"]
+    E -. "unknown later effects and terminal cause" .-> U["Remaining native callees"]
+    C --> J["64 owned records: full identity, read flags, optional Q64, capture frame"]
+    J --> Q["Existing hosted query and strict decoder"]
+    Q --> M["Match full ID/generation, host and type to durable Activity"]
+    M --> L["Retain observed terminal fact; absent object stays restored_activity_observed=false"]
+```
+
+Root's direct producer-to-consumer source review found a deterministic
+disconnect before adoption: both new journal filters used the literal
+`feast`, while the existing reader and strict consumer use
+`activity_feast`. Owner 38 corrected only those two comparisons. The final
+`activity_terminal_observations_12004.cpp` is 10,191 bytes with SHA-256
+`66fdcf59a250772e4152e03e2115729b33b2c28165d86ae6e780b39fc857556d`.
+The prior candidate and its source correction remain separate receipts; this
+was a source contract failure and correction, not a runtime failure or pass.
+
+The exact twelve mappings, owner patches and the two-line amendment are
+linked by `ACTIVITY-PRECALL-TERMINAL-ADOPTION.json` under
+`D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-16/background-g2-source-round-20261011-0907/institution-activity-terminal-source-01/`.
+It references the source-first deliveries of owners 12, 38, 47, 51, 62 and
+60, and owner 29's exact archived cut proof. Root reported all twelve files
+successfully applied with exit 0; no local executable qualification followed.
