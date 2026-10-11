@@ -375,6 +375,7 @@
 #include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 #include "xar_bridge/nonwar_private_snapshot_guard_diagnostics_v1.hpp"
 #include "xar_bridge/first_heir_during_read_diagnostic_v1.hpp"
+#include "xar_bridge/war_admission_snapshot_failure_channel_v1.hpp"
 #include "xar_bridge/observed_heir_marriage_admission_diagnostic_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_serializer.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
@@ -26212,11 +26213,10 @@ void RunConnectedSession(
                 std::string error = "war-termination admission snapshot read failed";
                 error += " expected_revision=" + std::to_string(expected_revision) +
                          " native_revision=" + std::to_string(state_revision);
-                if (const auto receipt =
-                        xar::bridge::ck3_12004::FreshSnapshotReadFailure12004(
-                            admission_read_sequence))
-                  error += xar::bridge::ck3_12004::FormatSnapshotReadFailure12004(
-                      *receipt);
+                error += xar::bridge::ck3_12004::
+                    FormatWarAdmissionSnapshotFailureChannelV1(
+                        xar::game::IsCk3_12004Descriptor(game.descriptor()),
+                        admission_read_sequence);
                 connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else if (admission_snapshot != previous_snapshot.value()) {

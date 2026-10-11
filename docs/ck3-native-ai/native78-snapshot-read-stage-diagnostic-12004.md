@@ -67,3 +67,37 @@ Root production qualification completed: two actual production objects compiled,
 897 retained, canonical GREEN with all39 bindings, and complete SDK78 ready.
 Exact source is664c85d9dab3ff898826245e9b0a6053697e0bd6; actual Native78
 read-stage observation still awaits cold recovery from saved6076.
+
+## R97 war admission: expose the diagnostic channel
+
+R97 sourcefc62 passed actual cold13 and observed the old marriage successfully,
+then ordinary005 failed at02:28:15.583104Z with
+`war-termination admission snapshot read failed expected_revision=2 native_revision=2`.
+Its original error contains no child stage. The Native82 object lineage confirms
+the actual Native78 adapter object/source664 is retained; its eight false returns
+record a stage. The production header uses external inline thread-local storage
+under the same fully qualified namespace. No source evidence proves a storage
+split. Python carries the original native error unchanged.
+
+The minimal war failure formatter now reports the descriptor match, diagnostic
+sequence before/after and Fresh status. It preserves the original read count,
+Fresh exact +1 rule, guards and success behavior. A missing receipt remains
+unknown, with sequence_unchanged, sequence_not_single_attempt or
+single_attempt_without_failure_stage distinguishing the observed channel state.
+
+```mermaid
+flowchart TD
+  W[Existing war-admission ReadSnapshot] -->|false| C[Report descriptor and sequence before/after]
+  C --> F[Original Fresh exact +1 and failure stage]
+  F -->|qualified| S[Report original child stage]
+  F -->|unqualified| U[Report unknown and channel state]
+  R[R97 actual child cause] -. unknown .-> U
+```
+
+Root's sole [new two-TU FIRST](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63j-r0097/root-first/ROOT-ACTUAL-FIRST4-AND-ADOPTION.json)
+compiled0/run0 at02:43:54Z: four cases exercise the actual production header
+across two linked translation units and the failure formatter. The actual
+adapter/Game did not run; old12/5/6 cases were not replayed. Root adopted the
+candidate. Native83 compilation and the next actual read remain pending;
+no historical cause or live fix is claimed. Defender registration separately
+returned admin_required_for_verified_readback, with no Add attempted.
