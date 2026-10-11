@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r58-preaction-counter.independent-source-review.v1",
+  "status": "SOURCE_REVIEW_PASS",
+  "mandatory_fixes": [],
+  "checks": {
+    "exact_patch8934": true,
+    "before_ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": true,
+    "after_ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": true,
+    "before_tools/test_ck3_mod_acceptance_preaction.py": true,
+    "after_tools/test_ck3_mod_acceptance_preaction.py": true,
+    "production_only_exact_two_lines": true,
+    "counter_type_uint64_bound_unchanged": true,
+    "six_original_successor_conditions_unchanged": true,
+    "one_preaction_refresh_only": true,
+    "recognized_frame_exact_owner_clock_payload": true,
+    "new_complete_frame_and_rejection_unchanged": true,
+    "post_resume_no_new_readmission": true,
+    "exact_six_tests_plus_fixture": true,
+    "only_one_existing_negative_case_updated": true,
+    "actual_canonical_methods_fixture_preserved": true,
+    "new_negative_coverage_present": true
+  },
+  "source_check": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-preaction-counter-readmission-sourceonly-20261011-001\\SOURCE-CHECK.actual.json",
+    "bytes": 1648,
+    "sha256": "398a8e71912d6ff1c2ec47c606279a587b12c8cc372620843b0d9293b1ee8dc2"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-preaction-counter-readmission-sourceonly-20261011-001\\PREACTION-COUNTER.incremental.patch",
+    "bytes": 8934,
+    "sha256": "be333bcdb7f08a89b19a7b6e96bc72b3a3ca7a532c80f2dc8ab7eb5cb886e080"
+  },
+  "added_test_methods": [
+    "test_cumulative_nonzero_base_is_not_reset_or_limited_to_one_process_rejection",
+    "test_later_action_nonzero_counter_admits_only_new_complete_frame",
+    "test_nonzero_after_resume_rejection_never_restarts_action",
+    "test_nonzero_preflight_multiple_rollback_or_wrong_rejected_revision_never_admits",
+    "test_nonzero_readmission_new_rejection_keeps_original_failure_before_speed",
+    "test_nonzero_unknown_payload_stale_id_and_original_owner_clock_guards_remain"
+  ],
+  "affected_existing_test_methods": [
+    "test_unrecognized_rejections_or_submitted_pause_do_not_reanchor"
+  ],
+  "source_reconstruction": "Exact two targets after pins match; in memory only.",
+  "tests_or_producer_executed": false,
+  "MAIN_writes": false,
+  "native_UI_SDK_SAVE_cache_PE_body_reads": 0,
+  "actual_R58_recovery_qualification": null,
+  "unique_source_files_read": 4,
+  "unique_source_bytes_read": 299583
+}

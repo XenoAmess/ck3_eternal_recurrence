@@ -1975,8 +1975,8 @@ class PlanClient:
             observed = campaign_pause_frame_binding(before)
             rejected = before["diagnostics"].get("last_rejected_state_snapshot")
             rejected_revision = rejected.get("revision") if isinstance(rejected, dict) else None
-            if (pause_ack["status"] != "already_paused" or initial["rejections"] != 0
-                    or observed["rejections"] != 1 or observed["identity"] != initial["identity"]
+            if (pause_ack["status"] != "already_paused"
+                    or observed["rejections"] != initial["rejections"] + 1 or observed["identity"] != initial["identity"]
                     or before["paused"] is not True or observed["date"] != initial["date"]
                     or before["played_character"].get("source") != "native"
                     or any(observed[k] < initial[k] for k in ("revision", "native_revision", "pump"))

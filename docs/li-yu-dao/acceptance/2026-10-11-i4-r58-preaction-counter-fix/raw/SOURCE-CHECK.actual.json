@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r58.preaction-counter-source-check.v1",
+  "status": "SOURCE_ONLY_NOT_EXECUTED",
+  "targets": [
+    {
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "bytes": 275669,
+        "sha256": "f27d3bf453adacb65f40772074ace7ec52222736f2b1960b5d080d668e3856d8"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "bytes": 275663,
+        "sha256": "25ee2015a7ad257d7c2a34dbe87b0662c990d38feb58b85f3f6db8ef2e92624a"
+      }
+    },
+    {
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_preaction.py",
+        "bytes": 13332,
+        "sha256": "6e9b962044e7331b76cd9749a36b23becf2bfc473d8df9db764a8e67e8bba7e7"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_preaction.py",
+        "bytes": 20327,
+        "sha256": "793f1175bfa12e8b4c14349d8a4847f977ea377a639c3e28211f0f37e5aff195"
+      }
+    }
+  ],
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-preaction-counter-readmission-sourceonly-20261011-001\\PREACTION-COUNTER.incremental.patch",
+    "bytes": 8934,
+    "sha256": "be333bcdb7f08a89b19a7b6e96bc72b3a3ca7a532c80f2dc8ab7eb5cb886e080"
+  },
+  "AST_parse_both": true,
+  "production_only_two_lines_changed": true,
+  "production_inverse_exact": true,
+  "new_test_methods": 6,
+  "affected_existing_test_methods": 1,
+  "tests_executed": false,
+  "native_body_reads": 0
+}

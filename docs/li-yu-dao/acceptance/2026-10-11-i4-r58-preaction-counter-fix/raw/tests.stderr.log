@@ -1,0 +1,20 @@
+test_after_resume_or_postpause_rejection_still_fails_without_second_readmission (__main__.CampaignPreactionTests.test_after_resume_or_postpause_rejection_still_fails_without_second_readmission) ... ok
+test_cache_never_earns_admission_and_timeout_done_cancel_never_submit_speed (__main__.CampaignPreactionTests.test_cache_never_earns_admission_and_timeout_done_cancel_never_submit_speed) ... ok
+test_cumulative_nonzero_base_is_not_reset_or_limited_to_one_process_rejection (__main__.CampaignPreactionTests.test_cumulative_nonzero_base_is_not_reset_or_limited_to_one_process_rejection) ... ok
+test_later_action_nonzero_counter_admits_only_new_complete_frame (__main__.CampaignPreactionTests.test_later_action_nonzero_counter_admits_only_new_complete_frame) ... ok
+test_nonzero_after_resume_rejection_never_restarts_action (__main__.CampaignPreactionTests.test_nonzero_after_resume_rejection_never_restarts_action) ... ok
+test_nonzero_preflight_multiple_rollback_or_wrong_rejected_revision_never_admits (__main__.CampaignPreactionTests.test_nonzero_preflight_multiple_rollback_or_wrong_rejected_revision_never_admits) ... ok
+test_nonzero_readmission_new_rejection_keeps_original_failure_before_speed (__main__.CampaignPreactionTests.test_nonzero_readmission_new_rejection_keeps_original_failure_before_speed) ... ok
+test_nonzero_unknown_payload_stale_id_and_original_owner_clock_guards_remain (__main__.CampaignPreactionTests.test_nonzero_unknown_payload_stale_id_and_original_owner_clock_guards_remain) ... Executing <Task finished name='Task-37' coro=<CampaignPreactionTests.test_nonzero_unknown_payload_stale_id_and_original_owner_clock_guards_remain() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_preaction.py:330> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.195 seconds
+ok
+test_only_later_accepted_full_frame_rebinds_then_actual_day_is_proved (__main__.CampaignPreactionTests.test_only_later_accepted_full_frame_rebinds_then_actual_day_is_proved) ... ok
+test_original_no_rejection_success_never_uses_readmission (__main__.CampaignPreactionTests.test_original_no_rejection_success_never_uses_readmission) ... ok
+test_recovery_identity_date_rejection_and_complete_frame_remain_strict (__main__.CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict) ... Executing <Task finished name='Task-52' coro=<CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_preaction.py:186> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.417 seconds
+ok
+test_unrecognized_rejections_or_submitted_pause_do_not_reanchor (__main__.CampaignPreactionTests.test_unrecognized_rejections_or_submitted_pause_do_not_reanchor) ... Executing <Task finished name='Task-57' coro=<CampaignPreactionTests.test_unrecognized_rejections_or_submitted_pause_do_not_reanchor() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_preaction.py:164> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.291 seconds
+ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.625s
+
+OK

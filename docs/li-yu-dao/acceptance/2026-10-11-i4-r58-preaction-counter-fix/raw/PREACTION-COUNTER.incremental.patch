@@ -1,0 +1,144 @@
+--- a/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py
++++ b/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py
+@@ -1975,8 +1975,8 @@
+             observed = campaign_pause_frame_binding(before)
+             rejected = before["diagnostics"].get("last_rejected_state_snapshot")
+             rejected_revision = rejected.get("revision") if isinstance(rejected, dict) else None
+-            if (pause_ack["status"] != "already_paused" or initial["rejections"] != 0
+-                    or observed["rejections"] != 1 or observed["identity"] != initial["identity"]
++            if (pause_ack["status"] != "already_paused"
++                    or observed["rejections"] != initial["rejections"] + 1 or observed["identity"] != initial["identity"]
+                     or before["paused"] is not True or observed["date"] != initial["date"]
+                     or before["played_character"].get("source") != "native"
+                     or any(observed[k] < initial[k] for k in ("revision", "native_revision", "pump"))
+--- a/tools/test_ck3_mod_acceptance_preaction.py
++++ b/tools/test_ck3_mod_acceptance_preaction.py
+@@ -164,7 +164,7 @@
+     async def test_unrecognized_rejections_or_submitted_pause_do_not_reanchor(self):
+         variants = [
+             ("submitted", None, None),
+-            ("already_paused", paused_start(count=1), paused_start(count=2)),
++            ("already_paused", paused_start(count=1), paused_start(count=3)),
+             ("already_paused", None, change(paused_start(count=1), ("diagnostics", "rejected_state_snapshot_count"), 2)),
+         ]
+         for path, changed in [
+@@ -240,5 +240,119 @@
+         self.assertEqual(self.actions(client), ["pause-map", "set-speed-1", "resume-map", "pause-map"])
+ 
+ 
++    def nonzero_baseline_client(self, *, count=1, observed_count=None, recovery_count=None,
++                                running_count=None, rejected_revision=9, ack="already_paused",
++                                observed_changes=()):
++        """Use production methods with a later action's cumulative rejection base."""
++        observed_count = count + 1 if observed_count is None else observed_count
++        recovery_count = observed_count if recovery_count is None else recovery_count
++        running_count = observed_count if running_count is None else running_count
++        initial = paused_start(revision=8, count=count)
++        observed = paused_start(revision=8, count=observed_count)
++        rejected = rejected_frame()
++        rejected.update(revision=rejected_revision, snapshot_id=f"native:{rejected_revision}")
++        observed["diagnostics"]["last_rejected_state_snapshot"] = copy.deepcopy(rejected)
++        for path, value in observed_changes:
++            change(observed, path, value)
++
++        def frame(date, revision, *, paused, total):
++            value = successor(date, revision, paused=paused, count=total)
++            value["speed"] = 3 if date == 100 and revision <= 10 else 1
++            value["diagnostics"]["last_rejected_state_snapshot"] = copy.deepcopy(rejected)
++            return value
++
++        accepted = frame(100, 10, paused=True, total=recovery_count)
++        speed = frame(100, 11, paused=True, total=observed_count)
++        client = self.client(first=initial, readback=observed, ack=ack)
++        client.frames = iter([initial, observed, accepted, accepted,
++                             frame(124, 13, paused=False, total=running_count),
++                             frame(124, 14, paused=True, total=running_count)])
++
++        async def wait_snapshot(expected, timeout):
++            client.clock += .02
++            client.waits += 1
++            client.snapshot = copy.deepcopy(observed if client.waits == 1 else speed)
++            return client.snapshot
++
++        client.wait_snapshot = wait_snapshot
++        return client
++
++    async def test_later_action_nonzero_counter_admits_only_new_complete_frame(self):
++        client = self.nonzero_baseline_client()
++        result = await client.advance_event_boundary(self.step())
++        evidence = client.report["campaign_preaction_readmissions"]
++        self.assertEqual(len(evidence), 1)
++        self.assertEqual(evidence[0]["initial_binding"]["rejections"], 1)
++        self.assertEqual(evidence[0]["observed_rejection_binding"]["rejections"], 2)
++        self.assertEqual(evidence[0]["poll_count"], 2)
++        self.assertEqual(evidence[0]["recognized_rejected_frame"]["revision"], 9)
++        self.assertEqual(evidence[0]["recovered_binding"]["native_revision"], 10)
++        self.assertEqual(evidence[0]["status"], "ACCEPTED_COMPLETE_PAUSED_START_REBOUND")
++        self.assertEqual(result["before"]["snapshot_id"], "native:10")
++        self.assertEqual(result["elapsed_hours"], 24)
++        self.assertIs(result["requested_interval_complete"], True)
++        self.assertIs(evidence[0]["product_acceptance_proven"], False)
++        self.assertEqual(self.actions(client), ["pause-map", "set-speed-1", "resume-map", "pause-map"])
++        speed = next(row for row in client.calls if row["arguments"]["step"] == "set-speed-1")
++        self.assertEqual(speed["arguments"]["expected_revision"], 10)
++        self.assertIs(speed["fresh_revision"], False)
++
++    async def test_cumulative_nonzero_base_is_not_reset_or_limited_to_one_process_rejection(self):
++        for count in (7, 2**64 - 2):
++            with self.subTest(count=count):
++                client = self.nonzero_baseline_client(count=count)
++                result = await client.advance_event_boundary(self.step())
++                evidence = client.report["campaign_preaction_readmissions"][0]
++                self.assertEqual(evidence["initial_binding"]["rejections"], count)
++                self.assertEqual(evidence["recovered_binding"]["rejections"], count + 1)
++                self.assertEqual(evidence["refresh_attempt_count"], 1)
++                self.assertEqual(result["elapsed_hours"], 24)
++
++    async def test_nonzero_preflight_multiple_rollback_or_wrong_rejected_revision_never_admits(self):
++        for changes in ({"observed_count": 3}, {"observed_count": 0},
++                        {"rejected_revision": 10}, {"count": 2**64 - 1}):
++            with self.subTest(changes=changes):
++                client = self.nonzero_baseline_client(**changes)
++                with self.assertRaises(RuntimeError):
++                    await client.advance_event_boundary(self.step())
++                self.assertEqual(self.actions(client), ["pause-map"])
++                self.assertNotIn("campaign_preaction_readmissions", client.report)
++
++    async def test_nonzero_readmission_new_rejection_keeps_original_failure_before_speed(self):
++        client = self.nonzero_baseline_client(recovery_count=3)
++        with self.assertRaisesRegex(RuntimeError, "owner, clock or rejection"):
++            await client.advance_event_boundary(self.step())
++        self.assertEqual(self.actions(client), ["pause-map"])
++        self.assertEqual(len(client.report["campaign_preaction_readmissions"]), 1)
++        self.assertEqual(client.report["campaign_preaction_readmissions"][0]["status"],
++                         "FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED")
++
++    async def test_nonzero_unknown_payload_stale_id_and_original_owner_clock_guards_remain(self):
++        variants = [
++            {"ack": "submitted"},
++            {"observed_changes": [(("diagnostics", "last_rejected_state_snapshot", "error"), "unknown payload")]},
++            {"observed_changes": [(("diagnostics", "last_rejected_state_snapshot", "snapshot_id"), "native:5")]},
++            {"observed_changes": [(("paused",), False)]},
++            {"observed_changes": [(("diagnostics", "bridge_pid"), 12)]},
++            {"observed_changes": [(("date_raw",), 101)]},
++            {"observed_changes": [(("revision",), 7)]},
++            {"observed_changes": [(("native_revision",), 7), (("snapshot_id",), "native:7")]},
++        ]
++        for changes in variants:
++            with self.subTest(changes=changes):
++                client = self.nonzero_baseline_client(**changes)
++                with self.assertRaises(RuntimeError):
++                    await client.advance_event_boundary(self.step())
++                self.assertEqual(self.actions(client), ["pause-map"])
++                self.assertNotIn("campaign_preaction_readmissions", client.report)
++
++    async def test_nonzero_after_resume_rejection_never_restarts_action(self):
++        client = self.nonzero_baseline_client(running_count=3)
++        with self.assertRaisesRegex(RuntimeError, "owner, clock or rejection"):
++            await client.advance_event_boundary(self.step())
++        self.assertEqual(len(client.report["campaign_preaction_readmissions"]), 1)
++        self.assertEqual(self.actions(client), ["pause-map", "set-speed-1", "resume-map"])
++
++
+ if __name__ == "__main__":
+     unittest.main()
