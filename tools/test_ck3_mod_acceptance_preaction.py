@@ -51,10 +51,10 @@ class CampaignPreactionTests(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls):
         tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
         cls.definitions = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in {
-            "_campaign_pause_pending_ready_successor", "_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor", "campaign_event_instance"}]
+            "_campaign_pending_running_date", "_campaign_pause_pending_ready_successor", "_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor", "campaign_event_instance"}]
         client = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "PlanClient")
         cls.method_names = {"advance_event_boundary", "advance_campaign_event_boundary",
-                            "set_campaign_speed_one_presubmission_once", "pause_campaign_after_advance"}
+                            "set_campaign_speed_one_presubmission_once", "pause_campaign_after_advance", "wait_campaign_running_successor"}
         cls.definitions.extend(n for n in client.body if isinstance(n, ast.AsyncFunctionDef) and n.name in cls.method_names)
 
     def client(self, recovery=None, *, first=None, readback=None, ack="already_paused", post_count=1,

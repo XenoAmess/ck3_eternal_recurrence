@@ -31,10 +31,10 @@ class CampaignEventTests(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls):
         tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
         cls.definitions = [n for n in tree.body if isinstance(n, ast.FunctionDef)
-                           and n.name in {"_campaign_pause_pending_ready_successor", "_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor", "campaign_event_instance"}]
+                           and n.name in {"_campaign_pending_running_date", "_campaign_pause_pending_ready_successor", "_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor", "campaign_event_instance"}]
         client = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "PlanClient")
         cls.definitions.extend(n for n in client.body if isinstance(n, ast.AsyncFunctionDef)
-                               and n.name in {"advance", "advance_event_boundary", "advance_campaign_event_boundary", "pause_campaign_after_advance"})
+                               and n.name in {"advance", "advance_event_boundary", "advance_campaign_event_boundary", "pause_campaign_after_advance", "wait_campaign_running_successor"})
 
     def client(self, observations, *, done=False, tick=.1, rejected_step=None, cancel=False):
         before = campaign_frame(100, paused=True, revision=4)
@@ -80,10 +80,11 @@ class CampaignEventTests(unittest.IsolatedAsyncioTestCase):
                 self.calls.append(("speed-preflight", {}))
 
         value = FakeIO()
-        namespace = {"asyncio": asyncio, "json": json, "time": SimpleNamespace(monotonic=lambda: value.clock)}
+        namespace = {"asyncio": asyncio, "json": json, "now": lambda: "SYNTHETIC_ONLY",
+                     "time": SimpleNamespace(monotonic=lambda: value.clock)}
         definitions = ast.fix_missing_locations(ast.Module(body=self.definitions, type_ignores=[]))
         exec(compile(definitions, str(HOST), "exec"), namespace)
-        for name in ("advance", "advance_event_boundary", "advance_campaign_event_boundary", "pause_campaign_after_advance"):
+        for name in ("advance", "advance_event_boundary", "advance_campaign_event_boundary", "pause_campaign_after_advance", "wait_campaign_running_successor"):
             setattr(value, name, lambda *args, _name=name, **kwargs: namespace[_name](value, *args, **kwargs))
         value.binding = namespace["campaign_pause_frame_binding"]
         return value

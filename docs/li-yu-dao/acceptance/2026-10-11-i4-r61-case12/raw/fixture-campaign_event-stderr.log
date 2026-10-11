@@ -1,0 +1,7 @@
+..Executing <Task finished name='Task-12' coro=<CampaignEventTests.test_deadline_manager_cancel_and_rejected_ack_do_not_return_success() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py:166> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.148 seconds
+....Executing <Task finished name='Task-32' coro=<CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py:148> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.290 seconds
+..
+----------------------------------------------------------------------
+Ran 8 tests in 0.989s
+
+OK

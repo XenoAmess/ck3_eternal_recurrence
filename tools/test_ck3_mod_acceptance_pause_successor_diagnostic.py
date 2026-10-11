@@ -59,11 +59,11 @@ class PauseSuccessorDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         cls.frame = staticmethod(campaign_frame)
         tree = ast.parse(candidate_text())
         names = {"_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding",
-                 "require_campaign_pause_successor", "campaign_event_instance", "_campaign_pause_pending_ready_successor"}
+                 "require_campaign_pause_successor", "campaign_event_instance", "_campaign_pause_pending_ready_successor", "_campaign_pending_running_date"}
         definitions = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in names]
         client = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "PlanClient")
         methods = {"execute", "advance_event_boundary", "advance_campaign_event_boundary",
-                   "pause_campaign_after_advance"}
+                   "pause_campaign_after_advance", "wait_campaign_running_successor"}
         client.body = [n for n in client.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name in methods]
         module = ast.Module(body=[ast.ImportFrom(module="__future__", names=[ast.alias(name="annotations")], level=0),
                                  *definitions, client], type_ignores=[])

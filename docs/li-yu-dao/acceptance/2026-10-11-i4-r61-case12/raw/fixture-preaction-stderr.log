@@ -1,0 +1,8 @@
+.......Executing <Task finished name='Task-37' coro=<CampaignPreactionTests.test_nonzero_unknown_payload_stale_id_and_original_owner_clock_guards_remain() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_preaction.py:330> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.234 seconds
+...Executing <Task finished name='Task-52' coro=<CampaignPreactionTests.test_recovery_identity_date_rejection_and_complete_frame_remain_strict() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_preaction.py:186> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.436 seconds
+.Executing <Task finished name='Task-57' coro=<CampaignPreactionTests.test_unrecognized_rejections_or_submitted_pause_do_not_reanchor() done, defined at C:\workspace\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_preaction.py:164> result=None created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.280 seconds
+.
+----------------------------------------------------------------------
+Ran 12 tests in 1.732s
+
+OK

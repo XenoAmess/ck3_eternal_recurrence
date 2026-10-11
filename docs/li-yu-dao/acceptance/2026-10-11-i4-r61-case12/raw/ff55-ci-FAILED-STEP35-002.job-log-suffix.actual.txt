@@ -1,0 +1,267 @@
+rence\ck3_autonomous_player\tests\unit\test_campaign_pause_ready_convergence.py:208> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.583 seconds
+2026-10-11T13:27:54.7488448Z ...Executing <Task finished name='Task-52' coro=<PauseReadyConvergenceTests.test_ready_false_with_two_pumps_or_bad_stamp_is_not_transition() done, defined at D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_campaign_pause_ready_convergence.py:235> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.245 seconds
+2026-10-11T13:27:54.8166985Z ..
+2026-10-11T13:27:54.8167285Z ----------------------------------------------------------------------
+2026-10-11T13:27:54.8167575Z Ran 12 tests in 1.498s
+2026-10-11T13:27:54.8167693Z 
+2026-10-11T13:27:54.8167755Z OK
+2026-10-11T13:27:55.0698500Z Executing <Task finished name='Task-2' coro=<RunningDateConvergenceTests.test_actual_advance_waits_for_complete_match_without_replaying_actions() done, defined at D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_campaign_running_date_convergence.py:95> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.137 seconds
+2026-10-11T13:27:55.7331484Z ....Executing <Task finished name='Task-22' coro=<RunningDateConvergenceTests.test_other_predicates_or_nonpositive24_gap_are_not_waitable() done, defined at D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_campaign_running_date_convergence.py:130> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.452 seconds
+2026-10-11T13:27:56.3143817Z .Executing <Task finished name='Task-27' coro=<RunningDateConvergenceTests.test_pending_identity_rejections_and_clock_changes_fail_closed() done, defined at D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_campaign_running_date_convergence.py:147> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.578 seconds
+2026-10-11T13:27:56.4563986Z .Executing <Task finished name='Task-32' coro=<RunningDateConvergenceTests.test_pending_sequence_nonregression_and_final_rejection_guard_preserved() done, defined at D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_campaign_running_date_convergence.py:180> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.138 seconds
+2026-10-11T13:27:56.4582846Z .
+2026-10-11T13:27:56.4583188Z ----------------------------------------------------------------------
+2026-10-11T13:27:56.4583601Z Ran 7 tests in 1.530s
+2026-10-11T13:27:56.4583751Z 
+2026-10-11T13:27:56.4583837Z OK
+2026-10-11T13:27:56.6972902Z ...
+2026-10-11T13:27:56.6973234Z ----------------------------------------------------------------------
+2026-10-11T13:27:56.6973524Z Ran 3 tests in 0.130s
+2026-10-11T13:27:56.6973649Z 
+2026-10-11T13:27:56.6973712Z OK
+2026-10-11T13:27:57.6227492Z ...........................
+2026-10-11T13:27:57.6227845Z ----------------------------------------------------------------------
+2026-10-11T13:27:57.6228126Z Ran 27 tests in 0.844s
+2026-10-11T13:27:57.6228244Z 
+2026-10-11T13:27:57.6228302Z OK
+2026-10-11T13:27:58.2886972Z EE..EEEEEEEEEEEEExecuting <Task finished name='Task-32' coro=<CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected() done, defined at D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py:147> result=None created at C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py:101> took 0.116 seconds
+2026-10-11T13:27:58.3052649Z .
+2026-10-11T13:27:58.3052987Z ======================================================================
+2026-10-11T13:27:58.3053757Z ERROR: test_actor_change_is_explicit_once_and_never_death_proof (__main__.CampaignEventTests.test_actor_change_is_explicit_once_and_never_death_proof)
+2026-10-11T13:27:58.3054594Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3054994Z Traceback (most recent call last):
+2026-10-11T13:27:58.3061320Z   File "C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py", line 119, in run
+2026-10-11T13:27:58.3061929Z     return self._loop.run_until_complete(task)
+2026-10-11T13:27:58.3062171Z            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+2026-10-11T13:27:58.3062616Z   File "C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\base_events.py", line 726, in run_until_complete
+2026-10-11T13:27:58.3063166Z     return future.result()
+2026-10-11T13:27:58.3063351Z            ~~~~~~~~~~~~~^^
+2026-10-11T13:27:58.3063898Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 133, in test_actor_change_is_explicit_once_and_never_death_proof
+2026-10-11T13:27:58.3064464Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3065052Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3065938Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3066208Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3066794Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3067475Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3067856Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3068348Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3068597Z 
+2026-10-11T13:27:58.3068686Z ======================================================================
+2026-10-11T13:27:58.3069224Z ERROR: test_campaign_without_episode_reaches_actual_full_paused_day (__main__.CampaignEventTests.test_campaign_without_episode_reaches_actual_full_paused_day)
+2026-10-11T13:27:58.3069771Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3070076Z Traceback (most recent call last):
+2026-10-11T13:27:58.3070444Z   File "C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py", line 119, in run
+2026-10-11T13:27:58.3070803Z     return self._loop.run_until_complete(task)
+2026-10-11T13:27:58.3071019Z            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+2026-10-11T13:27:58.3071401Z   File "C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\base_events.py", line 726, in run_until_complete
+2026-10-11T13:27:58.3071782Z     return future.result()
+2026-10-11T13:27:58.3071962Z            ~~~~~~~~~~~~~^^
+2026-10-11T13:27:58.3072492Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 97, in test_campaign_without_episode_reaches_actual_full_paused_day
+2026-10-11T13:27:58.3073074Z     result = await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3073333Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3073906Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3074456Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3074713Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3075260Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3075934Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3076311Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3090067Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3090434Z 
+2026-10-11T13:27:58.3090578Z ======================================================================
+2026-10-11T13:27:58.3091160Z ERROR: test_early_event_never_earns_day_even_if_pause_arrives_at_target (__main__.CampaignEventTests.test_early_event_never_earns_day_even_if_pause_arrives_at_target)
+2026-10-11T13:27:58.3091722Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3091984Z Traceback (most recent call last):
+2026-10-11T13:27:58.3092373Z   File "C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\runners.py", line 119, in run
+2026-10-11T13:27:58.3092762Z     return self._loop.run_until_complete(task)
+2026-10-11T13:27:58.3092991Z            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+2026-10-11T13:27:58.3093405Z   File "C:\hostedtoolcache\windows\Python\3.13.15\x64\Lib\asyncio\base_events.py", line 726, in run_until_complete
+2026-10-11T13:27:58.3093961Z     return future.result()
+2026-10-11T13:27:58.3094141Z            ~~~~~~~~~~~~~^^
+2026-10-11T13:27:58.3094699Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 110, in test_early_event_never_earns_day_even_if_pause_arrives_at_target
+2026-10-11T13:27:58.3095302Z     result = await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3095567Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3096135Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3097498Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3097780Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3098375Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3099064Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3099452Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3099834Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3100085Z 
+2026-10-11T13:27:58.3100177Z ======================================================================
+2026-10-11T13:27:58.3100794Z ERROR: test_event_at_target_or_during_pause_retains_actual_full_boundary (__main__.CampaignEventTests.test_event_at_target_or_during_pause_retains_actual_full_boundary) (event_before_pause=True)
+2026-10-11T13:27:58.3101420Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3101675Z Traceback (most recent call last):
+2026-10-11T13:27:58.3102445Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 123, in test_event_at_target_or_during_pause_retains_actual_full_boundary
+2026-10-11T13:27:58.3103228Z     result = await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3103490Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3104033Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3104580Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3104837Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3105380Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3106052Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3106424Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3106757Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3106993Z 
+2026-10-11T13:27:58.3107084Z ======================================================================
+2026-10-11T13:27:58.3107692Z ERROR: test_event_at_target_or_during_pause_retains_actual_full_boundary (__main__.CampaignEventTests.test_event_at_target_or_during_pause_retains_actual_full_boundary) (event_before_pause=False)
+2026-10-11T13:27:58.3108302Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3108554Z Traceback (most recent call last):
+2026-10-11T13:27:58.3109115Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 123, in test_event_at_target_or_during_pause_retains_actual_full_boundary
+2026-10-11T13:27:58.3109785Z     result = await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3110038Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3110565Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3111112Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3111365Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3111907Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3112655Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3113041Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3113378Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3113622Z 
+2026-10-11T13:27:58.3113710Z ======================================================================
+2026-10-11T13:27:58.3114254Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (after_event=None)
+2026-10-11T13:27:58.3114816Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3115067Z Traceback (most recent call last):
+2026-10-11T13:27:58.3115624Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 152, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3116176Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3116732Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3117279Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3117532Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3118078Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3118735Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3119324Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3119805Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3120060Z 
+2026-10-11T13:27:58.3120150Z ======================================================================
+2026-10-11T13:27:58.3120950Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (after_event={'instance_id': 8})
+2026-10-11T13:27:58.3121560Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3121821Z Traceback (most recent call last):
+2026-10-11T13:27:58.3122403Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 152, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3122957Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3123513Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3124072Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3124331Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3124890Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3125648Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3126024Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3126351Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3126587Z 
+2026-10-11T13:27:58.3126668Z ======================================================================
+2026-10-11T13:27:58.3127319Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (after_event={'instance_id': True})
+2026-10-11T13:27:58.3127930Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3128189Z Traceback (most recent call last):
+2026-10-11T13:27:58.3128740Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 152, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3129288Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3129829Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3130371Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3130619Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3131168Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3131830Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3132200Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3132527Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3132763Z 
+2026-10-11T13:27:58.3132842Z ======================================================================
+2026-10-11T13:27:58.3133412Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (after_event={'instance_id': 0})
+2026-10-11T13:27:58.3133998Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3134245Z Traceback (most recent call last):
+2026-10-11T13:27:58.3134781Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 152, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3135324Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3135854Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3136394Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3136634Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3137168Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3137825Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3138188Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3138506Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3138739Z 
+2026-10-11T13:27:58.3138817Z ======================================================================
+2026-10-11T13:27:58.3139441Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (field='generation')
+2026-10-11T13:27:58.3140159Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3140418Z Traceback (most recent call last):
+2026-10-11T13:27:58.3141091Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 163, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3141647Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3142259Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3142821Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3143075Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3143615Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3144280Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3144645Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3144969Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3145207Z 
+2026-10-11T13:27:58.3145288Z ======================================================================
+2026-10-11T13:27:58.3145826Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (field='owner')
+2026-10-11T13:27:58.3146373Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3146624Z Traceback (most recent call last):
+2026-10-11T13:27:58.3147155Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 163, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3147694Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3148234Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3148761Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3149008Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3149541Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3150204Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3150568Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3150888Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3151119Z 
+2026-10-11T13:27:58.3151203Z ======================================================================
+2026-10-11T13:27:58.3151727Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (field='ready')
+2026-10-11T13:27:58.3152264Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3152513Z Traceback (most recent call last):
+2026-10-11T13:27:58.3153054Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 163, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3153675Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3154218Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3154753Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3155005Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3155541Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3156210Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3156641Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3156972Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3157212Z 
+2026-10-11T13:27:58.3157300Z ======================================================================
+2026-10-11T13:27:58.3157833Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (field='date')
+2026-10-11T13:27:58.3158397Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3158643Z Traceback (most recent call last):
+2026-10-11T13:27:58.3159187Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 163, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3159810Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3160411Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3161072Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3161324Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3161866Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3162522Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3162885Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3163203Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3163441Z 
+2026-10-11T13:27:58.3163526Z ======================================================================
+2026-10-11T13:27:58.3164063Z ERROR: test_malformed_lost_event_owner_or_full_frame_is_rejected (__main__.CampaignEventTests.test_malformed_lost_event_owner_or_full_frame_is_rejected) (field='rejection')
+2026-10-11T13:27:58.3164622Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3164865Z Traceback (most recent call last):
+2026-10-11T13:27:58.3165400Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_ck3_mod_acceptance_campaign_event.py", line 163, in test_malformed_lost_event_owner_or_full_frame_is_rejected
+2026-10-11T13:27:58.3165936Z     await value.advance_event_boundary(self.step())
+2026-10-11T13:27:58.3166469Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2163, in advance_event_boundary
+2026-10-11T13:27:58.3167000Z     return await self.advance_campaign_event_boundary(step)
+2026-10-11T13:27:58.3167241Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3167776Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\native_bridge\research\run_ck3_12002_mcp_live.py", line 2117, in advance_campaign_event_boundary
+2026-10-11T13:27:58.3168512Z     current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+2026-10-11T13:27:58.3168886Z                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-11T13:27:58.3169215Z AttributeError: 'FakeIO' object has no attribute 'wait_campaign_running_successor'
+2026-10-11T13:27:58.3169460Z 
+2026-10-11T13:27:58.3169576Z ----------------------------------------------------------------------
+2026-10-11T13:27:58.3169812Z Ran 8 tests in 0.354s
+2026-10-11T13:27:58.3169920Z 
+2026-10-11T13:27:58.3169986Z FAILED (errors=14)
+2026-10-11T13:27:58.3286630Z ##[error]Process completed with exit code 1.
+2026-10-11T13:27:58.3655899Z Post job cleanup.
+2026-10-11T13:27:58.4981836Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-11T13:27:58.5200841Z git version 2.55.0.windows.5
+2026-10-11T13:27:58.5253549Z Temporarily overriding HOME='D:\a\_temp\b08d9827-60d2-4a22-9d15-23863c4ddb6b' before making global git config changes
+2026-10-11T13:27:58.5254508Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-11T13:27:58.5264805Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence
+2026-10-11T13:27:58.5524295Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-11T13:27:58.5814782Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-11T13:27:58.9946291Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-11T13:27:59.0179851Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-11T13:27:59.4538787Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-11T13:27:59.4771469Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-11T13:27:59.8974732Z Cleaning up orphan processes
+2026-10-11T13:27:59.9170085Z Terminate orphan process: pid (8308) (vctip)
+2026-10-11T13:27:59.9385721Z Terminate orphan process: pid (4984) (mspdbsrv)
+2026-10-11T13:27:59.9395496Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -1,0 +1,24 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_pause_successor_diagnostic.py"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T13:36:35.506831+00:00",
+  "finished_at_utc": "2026-10-11T13:36:36.170451+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\pause_successor_diagnostic-dependency-test-command-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r61-shared-fixes-delivery-20261011-001\\pause_successor_diagnostic-dependency-test-command-001\\stderr.log",
+    "bytes": 106,
+    "sha256": "2927b894484c83fa3b18fd37261492e3e6991a9006ab415d87c2b94080213958"
+  }
+}
