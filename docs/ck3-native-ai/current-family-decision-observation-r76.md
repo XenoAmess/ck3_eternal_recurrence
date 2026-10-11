@@ -180,3 +180,39 @@ remain; no body read/hash/copy/freeze, no newday/SAVE. R96 will use that existin
 complete recovery. Counts G2 5/8/M4 2/3/M6partial/M7incomplete/natural0 unchanged.
 This source correction is committed/pushed directly to master; required actual
 production build, not a repeat standalone fixture, verifies its include order.
+
+
+## R96 actual Native81 cold13 GREEN; original ordinary loop underway
+
+Recorded at 2026-10-11T01:34:07.396567+00:00. [Actual paused proof](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native81-r0096/managed/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json) is
+13/13 GREEN at 2026-10-11T01:30:53.931010Z. Actual Game131616 is minimized;
+Robert29829 is alive, paused/map-ready at original date53290176, saved6077/H10120.
+Native, compiled, qualified and fullSDK source remain749809a7; Runtime archive
+source remains664c85d9. R96 allocation96/execution69ba5c07-3b1a-434d-a64e-e2f3eff38208
+and fresh Steam-offline/Toast0 were actually observed. Seven core-readiness
+queries (six earlier timeouts retained) and exactly one history-free full snapshot
+produced the proof; no extra family query or new allocation was issued.
+
+01 immediately started the original ordinary controller/session28556: first600
+normal, then original daily SAVEs toward6082. First600 actually executed/applied
+at01:33:19.659528Z, selected private-query-player-construction-receipt-v1,
+ending raw53290176/public3/native2/actor29829/original episode. This is the
+existing construction's cold result query, not a new construction action.
+[Actual first ordinary result](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native81-r0096/ROOT-ACTUAL-NATIVE81-FIRST-NORMAL.json).
+No additional priority bypass or diagnostic Game request. At this recording
+boundary no new day/SAVE or family failure branch is credited. The new diagnostic is loaded in production, but
+does not constitute a fix of R95's still-unidentified failed conjunct. Keeper60843
+holds source7498 unchanged until SDK/Game/keeper/CAS closure.
+
+32's [single actual timing read](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-32/persist-phase-parser-sdk81/actual-r0096-first-read01/RESULT.json) at01:30:25.090745Z--
+01:30:25.179784Z saw writer_wait7200ns and state_wait4400ns (child token
+907903738220800, source lines1/2). JSON+LF, UTF8, atomic wrapper and aggregate
+were not yet present in that read; missing rows are not failures or zero values.
+No sum, aggregate join or runtime-speedup conclusion is made. The source7498
+and previous docs c6db official static CI succeeded; source tests were not replayed.
+
+Readiness increment: actual production-live primitive cold observation and the
+first ordinary query for Native81/SDK81. Daily loop outcome is pending. G2 5/8, NW2 2/4,
+M4 original material2/3, M6partial, M7incomplete, natural succession0 stay unchanged.
+This report is committed/pushed directly to master; the running SDK checkout is
+independent of the newer documentation HEAD.

@@ -31,3 +31,15 @@ Source package: D:/codex-ck3-background-spill/native71-continuation-20261010/con
 Base Git source452b4e315314633f304208214fca169781c8b485; file content SHA256
 2daba0de546670601f7a33eab859dd1db50936f1956aa8e84e1abed4e48b2938.
 Adopted content SHA256 e9c2bd08f44266c58dde7bcbe12bc4f4bf297cb8ca31d5029fd02386d407ff41.
+
+
+## First actual SDK81 timing window
+
+R96 actual source749809a7 cold13 was GREEN at01:30:53.931010Z. The
+[sole small-log read](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-32/persist-phase-parser-sdk81/actual-r0096-first-read01/RESULT.json) at01:30:25.090745Z--01:30:25.179784Z
+saw two child rows: writer wait7200ns and state wait4400ns, token907903738220800,
+source lines1/2. The serialization, UTF8, atomic wrapper and aggregate rows were
+not yet present at that time. This is partial actual observation, not zero values,
+a completed persistence measurement or speedup. No Driver body was read or
+hashed, and no additional Game query was needed. The original ordinary path
+continues with the full Driver and synchronous persistence.
