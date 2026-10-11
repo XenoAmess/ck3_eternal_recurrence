@@ -117,6 +117,44 @@ bool ScriptIdentifier(const Bindings &bindings, std::string_view key,
 }
 } // namespace
 
+bool ReadPhaseCharacterCultureParameter(
+    const Bindings &bindings, const void *character,
+    std::uint32_t expected_full_id, std::string_view key,
+    CharacterCultureParameterObservation &out) noexcept {
+  out = {};
+  auto fail = [&](const char *reason) {
+    out.unavailable_reason = reason;
+    return false;
+  };
+  if (!bindings.enabled || character == nullptr ||
+      bindings.culture_has_parameter == nullptr)
+    return fail("culture_parameter_bindings_unavailable");
+  if (Load<std::uint32_t>(character, 0x18) != expected_full_id)
+    return fail("culture_character_generation_mismatch");
+  const auto raw_id = Load<std::int32_t>(character, kCharacterCultureIdOffset);
+  out.culture_full_id = static_cast<std::uint32_t>(raw_id);
+  if (raw_id == -1) return fail("character_culture_known_null");
+  void *culture = nullptr;
+  game::OptionalFullIdV3 identity{};
+  if (!Optional(bindings.culture_store, bindings.culture_fallback, raw_id,
+                0x10, identity, culture) || culture == nullptr)
+    return fail("culture_full_generation_unavailable");
+  std::int32_t identifier = -1;
+  if (!ScriptIdentifier(bindings, key, identifier))
+    return fail("culture_parameter_identifier_roundtrip_failed");
+  const bool present = bindings.culture_has_parameter(culture, identifier);
+  if (Load<std::uint32_t>(character, 0x18) != expected_full_id ||
+      Load<std::int32_t>(character, kCharacterCultureIdOffset) != raw_id ||
+      Resolve(bindings.culture_store, raw_id, 0x10) != culture ||
+      bindings.culture_fallback == nullptr ||
+      culture == *bindings.culture_fallback)
+    return fail("culture_character_or_generation_changed");
+  out.available = true;
+  out.value = present;
+  out.unavailable_reason = nullptr;
+  return true;
+}
+
 Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   Bindings result;
   if (base == 0 || sha != kExecutableSha256) return result;

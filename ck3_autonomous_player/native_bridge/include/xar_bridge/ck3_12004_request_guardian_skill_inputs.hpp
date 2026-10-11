@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xar_bridge/ck3_12002_phase_culture.hpp"
 #include <array>
 #include <bit>
 #include <cstddef>
@@ -19,6 +20,8 @@ struct RequestGuardianSkillAccess12004 {
   std::uintptr_t trait_module_base = 0;
   bool (*read_trait)(std::uintptr_t, const void *, const char *,
                      bool &) noexcept = nullptr;
+  bool (*read_education_culture)(std::uintptr_t, const void *, std::uint32_t,
+      ck3_12002::phase_culture::CharacterCultureParameterObservation &) noexcept = nullptr;
 };
 
 struct RequestGuardianSkillValue12004 {
@@ -48,6 +51,8 @@ struct RequestGuardianSkillInputs12004 {
   RequestGuardianSkillValue12004 intrigue{};
   RequestGuardianSkillValue12004 learning{};
   std::optional<std::array<RequestGuardianTraitValue12004, 4>> education_traits;
+  std::optional<ck3_12002::phase_culture::CharacterCultureParameterObservation>
+      education_culture_parameters;
 };
 
 namespace request_guardian_skill_detail_12004 {
@@ -76,6 +81,12 @@ inline void Invalidate(RequestGuardianSkillInputs12004 &out,
     field.value.reset();
     field.unavailable_reason = reason;
   }
+  if (out.education_culture_parameters) {
+    auto &field = *out.education_culture_parameters;
+    field.available = false;
+    field.value.reset();
+    field.unavailable_reason = reason;
+  }
 }
 } // namespace request_guardian_skill_detail_12004
 
@@ -95,6 +106,8 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
   out.character_id = final_secondary_actor_full_id;
   out.owning_native_revision = owning_native_revision;
   if (access.read_trait != nullptr) out.education_traits.emplace();
+  if (access.read_education_culture != nullptr)
+    out.education_culture_parameters.emplace();
   if (!final_secondary_actor_full_id) {
     Invalidate(out, "request_guardian_role_known_null");
     out.binding_status = "known_null";
@@ -162,6 +175,15 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
         field.unavailable_reason = nullptr;
       }
     }
+  }
+  if (out.education_culture_parameters && !access.read_education_culture(
+      access.trait_module_base, guardian, *final_secondary_actor_full_id,
+      *out.education_culture_parameters)) {
+    auto &field = *out.education_culture_parameters;
+    field.available = false;
+    field.value.reset();
+    if (field.unavailable_reason == nullptr)
+      field.unavailable_reason = "guardian_culture_read_unavailable";
   }
   if (access.resolve_character(access.context, *final_child_full_id) != child ||
       access.resolve_character(access.context, *final_secondary_actor_full_id) != guardian ||
@@ -231,6 +253,18 @@ inline void WriteRequestGuardianSkillInputs12004(
       text(field.unavailable_reason);
       stream << '}';
     }
+    stream << '}';
+  }
+  if (value.education_culture_parameters) {
+    const auto &field = *value.education_culture_parameters;
+    stream << ",\"education_culture_parameters\":{\"culture_full_id\":";
+    id(field.culture_full_id);
+    stream << ",\"available\":" << (field.available ? "true" : "false")
+           << ",\"better_ward_education\":";
+    stream << (field.available && field.value.has_value() ?
+        (*field.value ? "true" : "false") : "null");
+    stream << ",\"unavailable_reason\":";
+    text(field.unavailable_reason);
     stream << '}';
   }
   stream << '}';

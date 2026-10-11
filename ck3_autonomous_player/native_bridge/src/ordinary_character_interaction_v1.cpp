@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_interaction_context.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12004_phase_character.hpp"
+#include "xar_bridge/ck3_12004_phase.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
 
 #include <bit>
@@ -560,6 +561,20 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
           return Call(&ck3_12002::phase_character::ReadTraitPresence, completed,
                       traits, const_cast<void *>(character),
                       std::span<void *const>{&definition, 1}, std::ref(value)) &&
+                 completed;
+        },
+        [](std::uintptr_t base, const void *character, std::uint32_t full_id,
+           ck3_12002::phase_culture::CharacterCultureParameterObservation &field) noexcept -> bool {
+          if (base == 0) {
+            field.unavailable_reason = "culture_parameter_bindings_unavailable";
+            return false;
+          }
+          const auto phase = ck3_12004::BindPhaseImage12004(
+              base, ck3_12004::kExecutableSha256);
+          bool completed = false;
+          return Call(&ck3_12002::phase_culture::ReadPhaseCharacterCultureParameter,
+                      completed, std::cref(phase.culture), character, full_id,
+                      std::string_view{"better_ward_education"}, std::ref(field)) &&
                  completed;
         }};
     out.request_guardian_skill_inputs = ck3_12004::ReadRequestGuardianSkillInputs12004(

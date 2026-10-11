@@ -32,7 +32,7 @@ def validate_request_guardian_skill_inputs_v1(
             or context["status"] != "available"):
         raise ValueError("request guardian skill profile requires an available .4 education context")
     if (not isinstance(profile, dict)
-            or set(profile) != _PROFILE_KEYS | ({"education_traits"} if "education_traits" in profile else set())):
+            or set(profile) != _PROFILE_KEYS | ({"education_traits", "education_culture_parameters"} & set(profile))):
         raise ValueError("request guardian skill profile is not closed")
     if (profile["schema"] != PROFILE_KEY
             or profile["role_source"] != "request_guardian_secondary_actor"):
@@ -96,6 +96,23 @@ def validate_request_guardian_skill_inputs_v1(
                     raise ValueError("available request guardian education trait lacks a Boolean presence")
             elif field["value"] is not None or not _reason(field["unavailable_reason"]):
                 raise ValueError("unavailable request guardian education trait is inconsistent")
+
+    if "education_culture_parameters" in profile:
+        culture = profile["education_culture_parameters"]
+        if (not isinstance(culture, dict) or set(culture) != {
+                "culture_full_id", "available", "better_ward_education", "unavailable_reason"}
+                or type(culture["available"]) is not bool):
+            raise ValueError("request guardian education Culture parameters are not closed")
+        culture_id = culture["culture_full_id"]
+        if culture_id is not None and (type(culture_id) is not int or not 0 <= culture_id <= 2**32 - 1):
+            raise ValueError("request guardian Culture full ID is malformed")
+        if culture["available"]:
+            if (binding != "resolved" or culture_id is None or culture_id == 2**32 - 1
+                    or type(culture["better_ward_education"]) is not bool
+                    or culture["unavailable_reason"] is not None):
+                raise ValueError("available request guardian Culture lacks a qualified Boolean")
+        elif culture["better_ward_education"] is not None or not _reason(culture["unavailable_reason"]):
+            raise ValueError("unavailable request guardian Culture parameters are inconsistent")
 
 
 def project_request_guardian_focus_skills_v1(

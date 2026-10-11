@@ -63,8 +63,30 @@ trait 未知不改变独立 skills、CanSend 或原生 ready。
 Native35 与 SDK04 按这个字段合同施工；42 strict 沿既有 whole-profile 委托 SDK。
 Service 的 whole-query 保留及 SDK `raw_profile=deepcopy(profile)` 已有透传入口，
 无需新增 Service hunk。现有 focus skill 2/5、learning 1/5 请求偏好保持不变，
-本字段增量没有修改 owner50 ranking。culture override 的实际读口由13/64另行闭合；
+本字段增量没有修改 owner50 ranking。Culture 输入按下述同 profile 后继合同接线；
 本专题只记录源顺序，不报告完整表达式、动作结果或原生 AI 重放。
+
+### 同 profile 的 Culture 输入后继
+
+新增 optional `request_guardian_skill_inputs_v1.education_culture_parameters`，固定保存
+`{culture_full_id, available, better_ward_education, unavailable_reason}`。
+`culture_full_id` 保留所读完整 uint32；未读为 null。`available=true` 时必须由实际
+full-generation resolver 绑定非空 Culture，布尔值可为 true 或 false，reason 为 null。
+ID0 沿实际完整 ID 匹配处理；FFFFFFFF 只能保留在 unavailable 结果中。
+未知为 `available=false, better_ward_education=null` 加 reason，已读 ID 可保留；
+legacy 缺组仍缺省，不补 false、Culture ID 或系数。
+
+该输入继承原 profile 最终 roles[2] guardian、roles[3] child 的完整 ID、
+`request_guardian_secondary_actor` 来源和完整 64 位 revision。Culture 未知不改变
+独立 skills、traits 或 CanSend；原 parent identity/bookend 失败则使 profile 事实失效。
+Native13 复用已闭 actual4 CultureHasParameter25497F0 的249B源码、精确 key roundtrip
+和 Culture generation resolver；SDK04 追加该组验证。strict 与 composer 沿既有完整
+profile 透传，无新增 hunk。四项 trait 合同与现有2/5、1/5技能排序均保持不变。
+
+这个 raw bool 属于请求 guardian。原片段`:350–354` 只有在**实际 effect educator** 的
+Culture 命中 `better_ward_education` 时，才以 `value=10` 替换此前整个内部表达式。
+请求角色的 true/false 不证明这次 effect 选中了该角色，也不提供完整系数、XP、概率、
+结果或原生 AI 重放；本后继只增加同查询可消费的独立原始输入。
 
 ## 候选与选项的真实方向
 
@@ -102,6 +124,8 @@ flowchart LR
     G --> V[同查询技能读数]
     G --> T[四项独立教育 trait presence]
     T --> O[whole profile / owned raw_profile]
+    G --> K[Culture full ID / 独立 nullable bool]
+    K --> O
     V --> O
     O -. 请求 guardian 不等于 effect educator .-> E[实际 effect educator 仍未观察]
     R[保留原版 support 原片段] --> V

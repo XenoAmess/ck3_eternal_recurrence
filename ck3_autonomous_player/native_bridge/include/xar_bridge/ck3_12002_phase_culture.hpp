@@ -3,6 +3,7 @@
 #include "xar_bridge/combat_v3.hpp"
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -78,6 +79,17 @@ struct Bindings {
   ScriptIdentifierLookup lookup_script_identifier = nullptr;
   ScriptIdentifierName script_identifier_name = nullptr;
 };
+
+struct CharacterCultureParameterObservation {
+  bool available = false;
+  std::optional<std::uint32_t> culture_full_id;
+  std::optional<bool> value;
+  const char *unavailable_reason = "culture_parameter_not_observed";
+};
+// One exact key for the supplied Character, using the bound native predicate.
+bool ReadPhaseCharacterCultureParameter(
+    const Bindings &, const void *character, std::uint32_t expected_full_id,
+    std::string_view key, CharacterCultureParameterObservation &) noexcept;
 
 Bindings BindImage(std::uintptr_t image_base,
                    std::string_view executable_sha256) noexcept;
