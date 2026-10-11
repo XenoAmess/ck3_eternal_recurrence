@@ -587,6 +587,9 @@ from ..prisoner_release_receipt_consumer_12004 import (
     RECEIPT_STEP as PRISONER_RELEASE_RECEIPT_STEP,
     read_release_receipt_private,
 )
+from ..construction_selected_intent_continuity_v1 import (
+    project_construction_selected_intent_v1, project_construction_consumed_intent_v1,
+)
 from .domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
     submit_construction_private, query_construction_receipt,
@@ -782,7 +785,7 @@ class GameplayBridgeService:
         state_dir = self._strategy_state_dir()
         if state_dir is not None:
             record_sway_terminal_observation(Path(state_dir), completion_read=result)
-        return result
+        return self._attach_sway_terminal_sources(result, completion_read=result)
 
     def query_active_scheme_sway_completion_execution_private_v1(
         self, *, expected_revision: int, target_character_id: int,
@@ -826,14 +829,18 @@ class GameplayBridgeService:
 
         observation = consume_sway_end_causal_12004(
             execution_read=execution_read, termination_read=termination_read)
+        composed_result = self._attach_sway_terminal_sources(
+            result, execution_frame=execution_read, termination_frame=termination_read)
+        composition = composed_result.get("sway_terminal_sources_12004")
+        pair = composition.get("cause_input_pair") if isinstance(composition, dict) else None
         state_dir = self._strategy_state_dir()
         if observation is not None and state_dir is not None:
             retained = record_sway_end_causal_observation(
-                Path(state_dir), execution_read=execution_read,
-                termination_read=termination_read)
+                Path(state_dir), **(pair if isinstance(pair, dict) else {
+                    "execution_read": execution_read, "termination_read": termination_read}))
             if retained is not None:
                 observation = retained
-        return {**result, "sway_end_causal_observation_12004": observation,
+        return {**composed_result, "sway_end_causal_observation_12004": observation,
                 "sway_end_cause_observed_12004": observation is not None}
 
     def query_active_scheme_sway_completion_termination_private_v1(
@@ -867,7 +874,44 @@ class GameplayBridgeService:
         state_dir = self._strategy_state_dir()
         if state_dir is not None:
             record_sway_material_from_completion(Path(state_dir), opinion_read=result)
-        return result
+        return self._attach_sway_terminal_sources(result, opinion_read=result)
+
+    def _attach_sway_terminal_sources(
+        self, result: dict[str, object], *,
+        completion_read: dict[str, object] | None = None,
+        execution_frame: dict[str, object] | None = None,
+        termination_frame: dict[str, object] | None = None,
+        opinion_read: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        """Compose already copied actual4 inputs for the original applied Sway."""
+        from ..sway_formal_consumer import read_sway_ledger
+        from .sway_terminal_source_producer_12004 import compose_sway_terminal_sources_12004
+
+        source = next((value for value in (completion_read, execution_frame,
+                                          termination_frame, opinion_read)
+                       if isinstance(value, dict)), None)
+        if (source is None
+                or source.get("exact_ck3_build", source.get("build_version")) != "1.20.0.4"):
+            return result
+        state_dir = self._strategy_state_dir()
+        if state_dir is None:
+            return result
+        resolved = read_sway_ledger(Path(state_dir)).get("resolved")
+        receipt = resolved.get("native_receipt") if isinstance(resolved, dict) else None
+        if (not isinstance(resolved, dict) or resolved.get("status") != "applied"
+                or resolved.get("postcondition_verified") is not True
+                or not isinstance(receipt, dict)
+                or receipt.get("schema") != "active-scheme-sway-formal-private-v1"):
+            return result
+        if completion_read is None:
+            latest = resolved.get("latest_instance_observation")
+            copied = latest.get("native_observation") if isinstance(latest, dict) else None
+            completion_read = copied if isinstance(copied, dict) else None
+        composition = compose_sway_terminal_sources_12004(
+            original_resolved=resolved, completion_read=completion_read,
+            execution_frame=execution_frame, termination_frame=termination_frame,
+            opinion_read=opinion_read)
+        return {**result, "sway_terminal_sources_12004": composition}
 
     def bridge_diagnostics(self) -> dict[str, object]:
         """Return transport/private observer diagnostics without advertising capability."""
@@ -1376,7 +1420,9 @@ class GameplayBridgeService:
                         applied_construction.get("post_bridge_creation_date"),
                     ))
                 ):
-                    plan = {**plan, "construction_receipt_consumed": applied_construction}
+                    plan = {**plan, "construction_receipt_consumed": applied_construction,
+                            "construction_consumed_intent":
+                                project_construction_consumed_intent_v1(applied_construction)}
             if cross_run_plan is not None:
                 plan = {**plan, "cross_run_plan_used": cross_run_plan}
             if campaign_goal_plan is not None:
@@ -3306,6 +3352,10 @@ class GameplayBridgeService:
                 result = query_construction_receipt(
                     self.driver, pending=pending, expected_revision=int(planned["revision"]),
                 )
+                result = {**result, "construction_selected_intent":
+                    project_construction_selected_intent_v1(
+                        selected_step, pending, result,
+                        deferred_selected_step=plan.get("construction_deferred_selected_step"))}
             elif selected_step == PRIVATE_CROWN_SUBMIT_STEP:
                 result = submit_crown_authority_private_v1(self.driver, plan=plan)
             elif selected_step == PRIVATE_CROWN_RECEIPT_STEP:

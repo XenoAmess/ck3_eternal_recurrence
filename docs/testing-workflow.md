@@ -3349,6 +3349,25 @@ subprocess.Popen([str(steam_exe), "-silent"], env=launch_env)
 
 这是有实际故障证据的启动修正；既有 Steam/launcher 若已继承该变量，须正常退出后从干净环境重新打开。不要运行 CK3 来验证用户保留的游戏现场；本次恢复确认由用户提供。[父进程环境复现](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/PARENT-ENVIRONMENT-SPAWN-REPRODUCTION.json)、[环境大小写确认](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/ENVIRONMENT-CASE-CONFIRMATION.json)、[用户恢复回执](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/USER-SELF-RESTART-RESOLUTION.json)。
 
+### 2026-10-11 手动启动同故障与正常重启修复
+
+用户报告启动器通用“退出代码null”弹窗。当天日志的实际错误是05:27、05:29、05:32 UTC的
+`spawn ck3.exe ENOENT`；游戏EXE存在，launcher路径正确，Steam的CK3工坊更新已提交NoError，
+没有本次新的游戏启动日志。05:43:02 UTC只读取单个环境key，确认Steam158580和Launcher174856
+均继承`NODEFAULTCURRENTDIRECTORYINEXEPATH=1`，与上述已实测故障一致。
+
+用户明确要求修复后，01正常关闭失败launcher、请求Steam正常shutdown，确认旧Steam于
+05:44:31.752 UTC退出；05:44:32.012 UTC通过Python从仅删除该key的进程环境重开Steam171884。
+新Steam的该key已确认不存在。不改系统环境、游戏文件、模组、playset或在线/离线选择；
+没有强杀旧的零线程CK3残留。唯一Steam applaunch打开新launcher66584后，用户明确取消测试；
+未invoke“开始游戏”，大厅验证为NOT_RUN_CANCELLED_BY_OWNER，没有待继续发送输入的控制器。
+正常重启只证明环境修复，不声称游戏大厅验证成功。
+[当前单key证据](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/manual-startup-diagnosis01/ROOT-ACTUAL-SINGLE-STARTUP-ENV-KEY.json)、
+[正常重启回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/manual-startup-diagnosis01/ROOT-ACTUAL-CLEAN-STEAM-NORMAL-RESTART.json)。
+此次授权仅覆盖用户手动启动修复；用户取消后，不再操作或读取Steam、Game或窗口。
+[取消回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/manual-startup-diagnosis01/ROOT-ACTUAL-MANUAL-STARTUP-DIAGNOSIS-CANCELLED-BY-OWNER.json)。
+本机自动游玩、SDK、注入、RPC与实机验收继续停止，本轮其他本机测试也不再启动。
+
 ## ArmyBindings 新字段改变聚合初始化位置（2026-10-06 CI 实测）
 
 官方 CI `37417056493` 在 `ck3_12002_army_test.cpp:93` 报两个回调类型不匹配的 C2440。当前 Province B observer 将新增 bindings group 放在 `ArmyBindings` 首部，旧八成员聚合初始化因 brace elision 开始填入该嵌套 group，导致回调错位。具名赋值路径和新独立 observer fixture 的成功不能代替这个既有初始化入口的兼容结果。

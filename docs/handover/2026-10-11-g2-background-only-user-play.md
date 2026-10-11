@@ -9,6 +9,36 @@ compilation and necessary new software qualification remain authorized, with the
 existing64-agent team. Root integrates useful changes into master; no archive
 branches are created for this work.
 
+## Owner-authorized manual startup repair
+
+The owner subsequently reported a failed manual launch and explicitly requested
+repair. This grants agent01 the narrow Steam/launcher repair and startup
+verification needed to restore the owner's game. It does not resume SDK,
+injection, automated play, RPC, ordinary-campaign continuation or acceptance.
+The general local-game prohibition above remains in force after the repair.
+
+Today's launcher log records `spawn ck3.exe ENOENT` at05:27,05:29 and05:32 UTC.
+The stock executable exists and launcher settings point to the correct binaries
+directory. Steam's CK3 workshop update committed with NoError; the screenshot's
+patch progress does not establish a CK3 installation fault. The identical
+Oct6 inherited-environment incident and its proven remedy are documented in
+[testing workflow](../testing-workflow.md#codex-环境启动-steam-导致-launcher-enoent2026-10-06-实测).
+Current read-only confirmation found `NODEFAULTCURRENTDIRECTORYINEXEPATH=1`
+in both Steam158580 and Launcher174856. Agent01 normally closed the failed
+launcher and Steam, then started Steam171884 with only that key removed from
+its inherited environment at2026-10-11T05:44:32.012Z. No system environment,
+game files, mode or playset was changed. See the
+[current environment receipt](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/manual-startup-diagnosis01/ROOT-ACTUAL-SINGLE-STARTUP-ENV-KEY.json)
+and [normal restart receipt](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/manual-startup-diagnosis01/ROOT-ACTUAL-CLEAN-STEAM-NORMAL-RESTART.json).
+The owner then explicitly cancelled testing and ordered pure background G2
+work. Startup verification is `NOT_RUN_CANCELLED_BY_OWNER`: the single Steam
+applaunch request opened Launcher66584, but Start Game was never invoked.
+No controller remains able to send further input. Steam and the launcher were
+left for the owner. See the
+[cancellation receipt](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/manual-startup-diagnosis01/ROOT-ACTUAL-MANUAL-STARTUP-DIAGNOSIS-CANCELLED-BY-OWNER.json).
+This continuation performs source work and master integration only; no local
+tests, game launches, Steam/window operations or automated play are resumed.
+
 ## Retained actual progress and cancelled execution
 
 R99 same-PID recovery passed13/13 at2026-10-11T04:43:29.913656Z, Source594,

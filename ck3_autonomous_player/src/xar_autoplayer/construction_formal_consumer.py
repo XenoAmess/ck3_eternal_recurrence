@@ -278,6 +278,7 @@ def plan_construction_private(
             return {**planned, "plan": {**plan,
                 "phase": "construction_pending_receipt",
                 "selected_step": RECEIPT_STEP,
+                "construction_deferred_selected_step": original_step,
                 "construction_pending_action": dict(pending),
                 "reason": "query independent paused construction state before another action"}}
         if prewar:
@@ -316,6 +317,7 @@ def plan_construction_private(
             return {**planned, "plan": {**plan,
                 "phase": "construction_cold_applied_requery",
                 "selected_step": RECEIPT_STEP,
+                "construction_deferred_selected_step": original_step,
                 "construction_pending_action": dict(applied),
                 "reason": "cold restore may load an earlier checkpoint; verify construction before using ledger"}}
         plan = {**plan, "construction_receipt_consumed": dict(applied),
@@ -369,6 +371,7 @@ def plan_construction_private(
                 return {**planned, "plan": {**plan,
                     "phase": "construction_completed_income_receipt",
                     "selected_step": RECEIPT_STEP,
+                    "construction_deferred_selected_step": original_step,
                     "construction_pending_action": dict(applied),
                     "reason": "bind same-frame actual income to completed native building"}}
             if priority_applied is not None:
@@ -388,6 +391,7 @@ def plan_construction_private(
             return {**planned, "plan": {**plan,
                 "phase": "construction_completed_province_income_watch",
                 "selected_step": RECEIPT_STEP,
+                "construction_deferred_selected_step": original_step,
                 "construction_pending_action": dict(applied),
                 "reason": "retry target province aggregate after completed-slot proof"}}
         if (applied.get("completion_status") != "completed"
@@ -404,6 +408,7 @@ def plan_construction_private(
             return {**planned, "plan": {**plan,
                 "phase": "construction_completion_watch",
                 "selected_step": RECEIPT_STEP,
+                "construction_deferred_selected_step": original_step,
                 "construction_pending_action": dict(applied),
                 "reason": "read completed native building slot on a later monthly frame"}}
         if priority_applied is not None:

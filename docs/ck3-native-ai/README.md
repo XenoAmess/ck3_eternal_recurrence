@@ -20,6 +20,14 @@ same-instance status1 query while its latest cause remains unknown.
 [Actual qualification](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-57/background-g2-offline-20261011/executed-root01/RESULT.json). M4complete/G2 6/8,
 M6partial/M7incomplete/natural0, saved6077/H10134 remain the retained boundary.
 
+The owner subsequently cancelled testing and requested pure background work.
+Root integrated the existing callers for
+[Sway source composition](sway-terminal-source-composition-12004.md),
+[selected negotiated prisoner results](prisoner-negotiated-current-result-12004.md)
+and [construction receipt intent continuity](construction-selected-intent-continuity-v1.md).
+These additions are source-only, NOT_RUN; no new software or live qualification
+is claimed. Local tests and all Game/Steam/window operations stay stopped.
+
 ## 2026-10-09: Restored original campaign observes current native state
 
 The [conditional person contribution](battle-person-conditional-2921a90-12004.md)

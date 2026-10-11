@@ -480,4 +480,25 @@ def query_player_prisoner_collection_private_v1(
             "queried_release_option_keys": requested_release_option_keys,
             "queried_release_option_mask_bits": release_option_mask_bits,
         })
+    if (release_option_mask_bits is not None
+            and value["status"] == "available"
+            and provenance.get("exact_ck3_build") == CK3_12004.game_version):
+        from .prisoner_negotiated_quote_result_12004 import (
+            consume_prisoner_negotiated_quote_result_12004,
+        )
+
+        selected = value["prisoners"][ransom_ordinal]
+        try:
+            result["prisoner_negotiated_quote_result_12004"] = (
+                consume_prisoner_negotiated_quote_result_12004(
+                    selected["negotiated_release_preview"],
+                    envelope.get("prisoner_negotiated_quote_source_12004"),
+                    native_revision=native_revision, query_sequence=envelope["query_sequence"],
+                    proof_epoch=envelope["observation_revision"], date_raw=date_raw,
+                    player_character_id=played["character_id"],
+                    prisoner_character_id=selected["prisoner_character_id"],
+                    source_ordinal=ransom_ordinal,
+                    requested_option_mask_bits=release_option_mask_bits))
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
     return result
