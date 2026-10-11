@@ -365,7 +365,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T02:45:44.906214+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T03:07:47.554730+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -554,9 +554,13 @@
         "native83_unique_cross_TU_FIRST4": "ACTUAL_COMPILE0_RUN0_ADOPTED",
         "native83_FIRST4_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63j-r0097/root-first/ROOT-ACTUAL-FIRST4-AND-ADOPTION.json",
         "native83_actual_adapter_executed_by_FIRST": false,
-        "native83_production_build_status": "NOT_RUN_SOURCE_BINDING_PENDING",
+        "native83_production_build_status": "ACTUAL_EXIT0_CANONICAL_READY",
         "native83_Game_loaded": false,
-        "sdk83_status": "METADATA_TEMPLATE_ONLY_FINAL_SOURCE_PENDING"
+        "sdk83_status": "ACTUAL_COMPLETE_SOURCE_ALL5_NATIVE83_READY",
+        "native83_production_build_receipt": "D:/codex-ck3-background-spill/maintainer-resume-20261010/continuation-07/native83-thin-design/ROOT-ACTUAL-BUILD.json",
+        "sdk83_actual_execution_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-61b/sdk83-preparation/COMPLETE-SDK83-EXECUTION.json",
+        "runtime98_status": "ROOT_GO_ISSUED_FULL_ORIGINAL_RECOVERY_IN_PROGRESS",
+        "runtime98_Root_GO_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native83-r0098/ROOT-ACTUAL-R98-ROOT-GO.json"
       }
     }
   ],
