@@ -1,0 +1,31 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source16-successor-preparation-20261011-001/produce_source16.py",
+    "--plan-only",
+    "--published-source-head",
+    "f9798edadc5e31f759a7e6d633233d1cf1147001",
+    "--published-parent",
+    "a45fe488bf8640a2ae17bcf6b877e99051e3de15",
+    "--expected-main-head",
+    "2c9eeb1885fe56ca74b6ba7d9e91fd39a3c060b4"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T04:12:13.933051+00:00",
+  "finished_at_utc": "2026-10-11T04:12:14.445287+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-plan-command-20261011-001\\stdout.log",
+    "bytes": 338,
+    "sha256": "df64e7804f9012b2f6f4b2d97ea5035c6db0e351b5f3e783335af2c9a1582bf9"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-plan-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

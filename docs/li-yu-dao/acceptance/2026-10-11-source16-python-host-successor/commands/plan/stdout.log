@@ -1,0 +1,9 @@
+{
+  "paths_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-successor-preparation-20261011-001\\PATHS-MANIFEST.actual.json",
+    "bytes": 25030,
+    "sha256": "e1df7fbcd430c7bac3eb352c40719cad57502db178e41aad714ea854b410dd70"
+  },
+  "payload_bytes": 147826583,
+  "peak_bound_bytes": 201326592
+}

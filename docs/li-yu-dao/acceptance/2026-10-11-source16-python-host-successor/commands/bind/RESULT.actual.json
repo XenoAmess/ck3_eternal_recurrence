@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-successor-preparation-20261011-001\\bind_source16.py",
+    "--published-source-head",
+    "f9798edadc5e31f759a7e6d633233d1cf1147001",
+    "--expected-main-head",
+    "2c9eeb1885fe56ca74b6ba7d9e91fd39a3c060b4",
+    "--published-parent",
+    "a45fe488bf8640a2ae17bcf6b877e99051e3de15",
+    "--successor-result",
+    "C:\\workspace\\ck3-common-runtime\\20261011-016\\PYTHON-SUCCESSOR.actual.json",
+    "--successor-result-bytes",
+    "26992",
+    "--successor-result-sha256",
+    "16c330648ecede9c25317a6ae7c9fe2e88fe2a276f4a83316d606cccb6700d73",
+    "--expected-source-commit",
+    "46a9c039cd011cc574c4d663bef92b695505efbb",
+    "--source-root",
+    "C:\\csr16",
+    "--metadata-root",
+    "C:\\workspace\\ck3-common-runtime\\20261011-016",
+    "--producer-bytes",
+    "27074",
+    "--producer-sha256",
+    "2ad8711b9a148fcbce4264995a46d58b84eeb02b1556200f2aab261ea134fe8f"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T04:32:37.543480+00:00",
+  "finished_at_utc": "2026-10-11T04:32:38.033466+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-bind-command-20261011-001\\stdout.log",
+    "bytes": 606,
+    "sha256": "2287e84034e8325212e3aab532a9456aa4fcc37ff88940df3a5dcc990d1e129e"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-bind-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "source16-documentation-publication-sourceonly-v1",
+  "topic": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\2026-10-11-source16-python-host-successor-and-storage-closure.md",
+    "bytes": 5317,
+    "sha256": "17c138edb19633c349fbcec8f010b71135942b9fac1780475084d72aacef0abd"
+  },
+  "import_map": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\IMPORT-MAP.source-only.json",
+    "bytes": 9436,
+    "sha256": "c4759bc9e728799919d15c3de38f95c5e613f02af71d8474e99f01926ac3688a"
+  },
+  "raw_attributes": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\raw.gitattributes",
+    "bytes": 8,
+    "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+  },
+  "mapped_original_count": 21,
+  "mapped_original_bytes": 49192,
+  "selected_import_bytes": 54517,
+  "carry_at_original_close_bytes": 135299916303,
+  "live_2GiB_shortfall_at_original_close_bytes": 8446479,
+  "raw_receipts_copied_by_author": false,
+  "MAIN_import_executed": false,
+  "tests_or_SDK_or_build_executed": false
+}

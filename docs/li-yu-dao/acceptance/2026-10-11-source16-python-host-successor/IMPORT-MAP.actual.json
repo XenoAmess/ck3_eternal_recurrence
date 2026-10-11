@@ -1,0 +1,320 @@
+{
+  "schema": "lyd-root-source16-small-import-v1",
+  "expected_HEAD": "3f01a30cbac86bdad48b3c7bf376b19ba4875419",
+  "evidence_root": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor",
+  "permanent_map_target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/IMPORT-MAP.actual.json",
+  "files": [
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/.gitattributes",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\raw.gitattributes",
+        "bytes": 8,
+        "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/2026-10-11-source16-python-host-successor-and-storage-closure.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\2026-10-11-source16-python-host-successor-and-storage-closure.md",
+        "bytes": 5317,
+        "sha256": "17c138edb19633c349fbcec8f010b71135942b9fac1780475084d72aacef0abd"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/SOURCE16-BIND.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\SOURCE16-BIND.actual.json",
+        "bytes": 18614,
+        "sha256": "1be434a78231874421f7448fb0f825e1a03da2e98c698e22dd028419329e2668"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+        "bytes": 8618,
+        "sha256": "9fb79d2d7337d67dc2be27c41505da080de68fba6dada640f151f80574ef9365"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/CLOSED-RESERVATION.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-016\\CLOSED-RESERVATION.actual.json",
+        "bytes": 7791,
+        "sha256": "b0281299b484700a11539849d9bd88f7a246fb95b67c4bb5b1965bc55e657da1"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/plan/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-plan-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1161,
+        "sha256": "d78c7edb2eececa713792ddfe422de89acfd630391e6ca17849b785a5c86ecbf"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/plan/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-plan-command-20261011-001\\stdout.log",
+        "bytes": 338,
+        "sha256": "df64e7804f9012b2f6f4b2d97ea5035c6db0e351b5f3e783335af2c9a1582bf9"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/plan/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-plan-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/materialize/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-materialize-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1899,
+        "sha256": "90535a484e355323f7feff82766195f76211ec678a4014524cc960cfad5c619d"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/materialize/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-materialize-command-20261011-001\\stdout.log",
+        "bytes": 447,
+        "sha256": "77e4d0909876b2cc1100d0cd4c1d21ef3958c9d464c904daff77275390554abf"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/materialize/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-materialize-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/bind/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-bind-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1748,
+        "sha256": "5841ef942936365c85eeef0a6ec66f6e6025dfb2fbbacba513a1e5ff3551b7ab"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/bind/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-bind-command-20261011-001\\stdout.log",
+        "bytes": 606,
+        "sha256": "2287e84034e8325212e3aab532a9456aa4fcc37ff88940df3a5dcc990d1e129e"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/bind/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-bind-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/cache-draft/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-cache-draft-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1296,
+        "sha256": "3c70779a7ff25f32de824b518d067c0ddd3519c72610a3903852525911ee3ee3"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/cache-draft/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-cache-draft-command-20261011-001\\stdout.log",
+        "bytes": 458,
+        "sha256": "e2af5014fd372fdb5d62e98e384a9e21767ff22580714bc905abd434cd6dc218"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/cache-draft/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-cache-draft-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/cache-review/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-cache-review-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1353,
+        "sha256": "d4c91b1f2e45f1dfe9a393cf8a85b944e4c512aba7b631aa38475df1165517f1"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/cache-review/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-cache-review-command-20261011-001\\stdout.log",
+        "bytes": 451,
+        "sha256": "cbe283a1e75678df003e5946414fa19e5d14353817cc5eab8bc4c43aeb04cb79"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/cache-review/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-cache-review-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/close/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-close-command-20261011-001\\RESULT.actual.json",
+        "bytes": 3631,
+        "sha256": "f1e74f8a99af50444786ed166f275d105e77ddf4ccb89d4a0c4a7c4df1583dd6"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/close/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-close-command-20261011-001\\stdout.log",
+        "bytes": 781,
+        "sha256": "16901fc70bd9e4689b742d162b12cd8689cd254d0a41d2d8a27a83d6f40a6a4b"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/commands/close/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-close-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/INDEX.source-only.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\INDEX.source-only.json",
+        "bytes": 1224,
+        "sha256": "310a52403b7bcd7e526aa2c244c2a1defb935c8b85be4d3d00d96e4a725746b0"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-source16-python-host-successor/IMPORT-MAP.source-only.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-documentation-publish-sourceonly-20261011-001\\IMPORT-MAP.source-only.json",
+        "bytes": 9436,
+        "sha256": "c4759bc9e728799919d15c3de38f95c5e613f02af71d8474e99f01926ac3688a"
+      },
+      "action": "copy",
+      "before": null
+    },
+    {
+      "root": "repo",
+      "target": "docs/autonomous-agent-progress/daily/2026-10-11.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-permanent-import-20261011-001\\daily.append.md",
+        "bytes": 418,
+        "sha256": "308d30ed7ea19988d11b0e48ecb85142929b1e106e14481767481f17c0b45200"
+      },
+      "action": "append",
+      "before": {
+        "bytes": 132276,
+        "sha256": "cf92f92e99f09f9b779139d60d237ec08f9a05b6c86fc95298cdc3fcd462dba6"
+      },
+      "after": {
+        "bytes": 132694,
+        "sha256": "575c93dfbd1537f443dd33130c4e76ff3d74f4dfd2f2b5b4eba4c409a96392e7"
+      }
+    },
+    {
+      "root": "repo",
+      "target": "docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source16-permanent-import-20261011-001\\weekly.append.md",
+        "bytes": 358,
+        "sha256": "3d6db741c71d10fb4f7d0cf3b071e634d21f98ce1eb817c29a6c1327e1b011b1"
+      },
+      "action": "append",
+      "before": {
+        "bytes": 931787,
+        "sha256": "22e49fbca2650726f67c1f01f952e7685b7b370559448dcb7578378c330a8810"
+      },
+      "after": {
+        "bytes": 932145,
+        "sha256": "b6a967331bc59cbed9e127fc11795c21ae1313c333995dde00ec6b08e00dd0fc"
+      }
+    }
+  ],
+  "business_credit": false
+}

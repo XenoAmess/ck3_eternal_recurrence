@@ -1,0 +1,235 @@
+{
+  "schema": "source16-public-python-native-binding-lineage-v1",
+  "at_utc": "2026-10-11T04:32:38.004000+00:00",
+  "mixed_source_commit": "46a9c039cd011cc574c4d663bef92b695505efbb",
+  "single_parent_source15_commit": "da388abf331a6042595f7bd614ad49aad6c92180",
+  "ROOT_selected_final_MAIN_identity": {
+    "ROOT_selected_final_main_head": "2c9eeb1885fe56ca74b6ba7d9e91fd39a3c060b4",
+    "diagnostic_code_source_commit": "f9798edadc5e31f759a7e6d633233d1cf1147001",
+    "final_MAIN_is_not_frozen_runtime_source_commit": true,
+    "final_MAIN_extra_changes_adopted_by_this_producer": false,
+    "excluded_final_MAIN_name_status_OID": [
+      ":100644 100644 061160e26450001ef1cae280bf4c8736d288a969 7b6acd070a20b522d11dcfa0027f54b90d3054fe M\tck3_autonomous_player/native_bridge/include/xar_bridge/nonwar_private_snapshot_guard_diagnostics_v1.hpp",
+      ":100644 100644 488013d5db1bae6b8372f3b5d47e5f3809ad8ab6 f64c5393f4ddad70cb97d9ef8be0c23b5ec9cdd2 M\tck3_autonomous_player/native_bridge/include/xar_bridge/war_admission_snapshot_failure_channel_v1.hpp",
+      ":100644 100644 8377fe5e917cda67b8929901c17d3f990a0147bb 0d8a8c68e2c0af257d4742438fd128cd91fcf0af M\tck3_autonomous_player/native_bridge/research/fixtures/resolve_eh_12004/README.md",
+      ":100644 100644 fee345c7ab93402b4d36df198eb86f10a39b4c61 d2dffcef71ebb372b8a6b1998bc38ef8df202208 M\tck3_autonomous_player/native_bridge/research/fixtures/resolve_eh_12004/resolve_eh_fixture.cpp",
+      ":100644 100644 ccbf3967d58ee668a65b877e7ea266383548d5a3 bd6c5a22e2d59c8911735a9f4e7f1538df7ad1bb M\tck3_autonomous_player/native_bridge/src/bridge.cpp",
+      ":000000 100644 0000000000000000000000000000000000000000 fd512c5bc6381b7c35b7854e0e2d68a4823a49d4 A\tck3_autonomous_player/native_bridge/src/nonwar_private_snapshot_failure_channel_v1_fixture.cpp",
+      ":100644 100644 91b0a032001fd2899ee6d325c6ce420e3cabe782 3aee093de03bec1ee03fd64cc2dcd4e1689a3a09 M\tdocs/autonomous-agent-progress/README.md",
+      ":100644 100644 ad2c80e86b4f057be1b7ebdbdc867a9986acc0cd 106cf7c8bfe9ab5f8f377e6a0076da7758a1a08c M\tdocs/autonomous-agent-progress/daily/2026-10-11.md",
+      ":100644 100644 4dda2e7a9f1c5246378aa83f127d5bb57d762e96 47a621beb5b2a8cc1779968fcee54a1d3f4e7175 M\tdocs/autonomous-agent-progress/g2-requirements-v1.json",
+      ":100644 100644 d6a1ae8db7a9f1044dd8d374876206d507d56a42 c9421a5ec08d5f51a5b60e38be4b81bbb7225406 M\tdocs/autonomous-agent-progress/goal-and-roadmap.md",
+      ":100644 100644 1d5dd2780f390ab9b7555ece8dc9cbffa30f7c3e d5210c5fc6d38f0bbef8fbc11fd1ee6217c3a69a M\tdocs/autonomous-agent-progress/weekly/2026-W41.md",
+      ":100644 100644 264b654a131861cbe0bfed988f4b69015849e211 8a69c6260e349c89fec8b14f2f9ef4bd9174da49 M\tdocs/ck3-native-ai/native78-snapshot-read-stage-diagnostic-12004.md",
+      ":000000 100644 0000000000000000000000000000000000000000 3803d8446d0c029483ac4b1444ef6cc030aa601f A\tdocs/li-yu-dao/2026-10-11-b4-native-eh-source008.md",
+      ":000000 100644 0000000000000000000000000000000000000000 626b8327218cd2e95c17000f65f9c9ec598d2607 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/IMPORT-MAP.source-only.json",
+      ":000000 100644 0000000000000000000000000000000000000000 4572793bb7249e76e486652b2aa05fe588bf70b0 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/INDEX.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 dc6db9d60f7f283143a65b12a8c75f59e9df149b A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/build/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 beca3a642871baf0ab330c2c3aa57ad5491ac8ea A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/build/native-msvc-result.json",
+      ":000000 100644 0000000000000000000000000000000000000000 28ce91d281a3c2efb5566c5f7c0c80a549d01094 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/build/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 c2dadf95e09829d8a56bea49b89d323bee3a247d A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/diagnostic/FACTS.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 3148a103fe1bdd49a2af6eb7835b7fc068894b42 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/diagnostic/INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 49a286301d2a5d7edd15a443c0715158081371c2 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/diagnostic/REPORT.md",
+      ":000000 100644 0000000000000000000000000000000000000000 7dd7e09b2c997f4568c1ff73fc9233de889b0f55 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/INDEX.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 e336f3a8cfc5308d6ba8004be21707d7fcd2f354 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/copy-control-collided/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 5da774bd8000ca7ae64680137a0f943ebe284ec7 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/copy-control-collided/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 d18cba2b5f7f6e951b043cd9005f68e7e344cab4 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/direct/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 73b922d608f7849246a3435d11b75e6792b97ea9 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/direct/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 7161623a69ef5b04e317171e3fc7372f0f9ccef0 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/direct/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 75abbd1f126e35bb8811ed1e36017a2327a76d02 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/empty-direct/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f03928ffb88665a5e7c4b5bf3ee013fdbd436298 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/empty-direct/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 9c738a26237a5f2b00bd55fb346875da67496bb9 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/empty-direct/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 5b8bf1d52b05f373db7ebcb6c1262476e807c231 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-collided/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2d548147d744cbd1f89477ceaf08ffe3ac4e8f8a A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-collided/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 76f47373a516f6b9b3b02693eab2b2a30304961b A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-empty/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 3d57ff2bbb4be404bcae020ae7c66fe3804a88dd A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-empty/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 41750e7c830be06293c98ffded09e31a8b9f2d17 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-empty/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 46cd1902df8ac84273813f53a00c8fc4b33b903e A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-nested/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 8f9a1bd297410d54e820f0daf753059e75fc2c66 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-nested/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 ef0643b6baab39963bcdf60ebfd46cb01d5492b5 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-nested/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 0d1b749faf13fecadede11f6f0327035b97066df A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-normal/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 0d43a58557f6488a4037297fe175623e2d82abae A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-normal/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 82c34de940d12ddafb57e28936192e9651f3098f A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/inplace-normal/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 49a0832ecae52bdd957af1be9803d6b1b93611cb A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/no-language-active-control/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 1fef457cc7f299596e169fea046a71264c29ba96 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/no-language-active-control/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 600dd95ababf2ad2bc2dd08bf802fe7ed4d2e4f9 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/no-language-active-control/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 26f102f80805fecaf77fab8869ca2a849a6b6e9e A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/no-language-empty/RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 5de19b5435c4b3fd0c3f8d64e4d55db966acfcd5 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/no-language-empty/stderr.log",
+      ":000000 100644 0000000000000000000000000000000000000000 12ae37a8de5a583598dd19d1890473ed01d47220 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/modes/no-language-empty/stdout.log",
+      ":000000 100644 0000000000000000000000000000000000000000 5f208c76841dc80f6cb3aec164ad07ac01f9dc8b A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/storage/ADMISSION.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f47f4711ac42898eb7b20bc992857f943f882d5c A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/storage/CLOSED-RESERVATION.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 b0650f1b33c8e7f4cbe96b1771abfa60ba687877 A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/storage/close-command.RESULT.actual.json",
+      ":000000 100644 0000000000000000000000000000000000000000 d6886690f309332f7367fe7182a03e23556cb69f A\tdocs/li-yu-dao/acceptance/2026-10-11-b4-native-eh-source008/storage/close-command.stdout.log"
+    ]
+  },
+  "published_source_commit": "f9798edadc5e31f759a7e6d633233d1cf1147001",
+  "published_parent": "a45fe488bf8640a2ae17bcf6b877e99051e3de15",
+  "same_full_commit_as_published_master": false,
+  "native_build_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "parent_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\manifest.json",
+    "bytes": 60076,
+    "sha256": "c2b04084c0273177dbe31fcb72c951e887852c1fa6a89ab2f4863f7b8969edb2"
+  },
+  "parent_runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\runtime.local.json",
+    "bytes": 2032,
+    "sha256": "5681890bdd3d027a6694179b2d0fbd7f1573b5d6894764d40773b26e94dbf465"
+  },
+  "parent_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\SOURCE15-BIND.actual.json",
+    "bytes": 7148,
+    "sha256": "53204a8f3682b013bd345f56fae9993a97197fe04eb054516d94e90f2941064a"
+  },
+  "actual_materialization": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 26992,
+    "sha256": "16c330648ecede9c25317a6ae7c9fe2e88fe2a276f4a83316d606cccb6700d73"
+  },
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-successor-preparation-20261011-001\\produce_source16.py",
+    "bytes": 27074,
+    "sha256": "2ad8711b9a148fcbce4264995a46d58b84eeb02b1556200f2aab261ea134fe8f"
+  },
+  "paths_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-successor-preparation-20261011-001\\PATHS-MANIFEST.actual.json",
+    "bytes": 25030,
+    "sha256": "e1df7fbcd430c7bac3eb352c40719cad57502db178e41aad714ea854b410dd70"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "2f5053e71a37b5b4c5478cbed95b572404fb73dc196343a1382ebf95fae1b4bc"
+  },
+  "native_source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\native-source-index.json",
+    "bytes": 1019737,
+    "sha256": "abc8bcf0a564ec1ebb62fe895246a70c9583d3934a6b1bab5825bdb049c12176"
+  },
+  "selected_paths": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "operation": "replace",
+      "source15_before": {
+        "bytes": 272486,
+        "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+      },
+      "selected_after": {
+        "bytes": 275669,
+        "sha256": "f27d3bf453adacb65f40772074ace7ec52222736f2b1960b5d080d668e3856d8"
+      },
+      "published_source_head": "f9798edadc5e31f759a7e6d633233d1cf1147001"
+    }
+  ],
+  "native_entries_compared_as_metadata": 4868,
+  "native_entries_equal_except_host": 4867,
+  "native_compiled_inputs_equal_original057": true,
+  "native_bodies_rehashed": 0,
+  "inherited_registration_original_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-qualification-20261011-001\\RESULT.actual.json",
+    "bytes": 8159,
+    "sha256": "0468a3b276c79b891e4f5d1ccbba5888fda25d65a2ec8d6984f3de907c2238e6"
+  },
+  "inherited_registration_reason": "Exact MCP/service/registration inputs unchanged in full source metadata; no SDK test replay.",
+  "changed_host_diagnostic_checks": {
+    "diagnostic_index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 2109,
+      "sha256": "59a288f01868c9c0a62f546c90d544df4978116fecc566f892bf9457e80d316d"
+    },
+    "diagnostic_archive": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\ACTUAL-CHECKS.raw.zip",
+      "bytes": 2067,
+      "sha256": "d9ba4bd2f124a3c8484ffe378a764dfb61b571fbc298a031eacba7197282fdba"
+    },
+    "members": {
+      "SOURCE-CHECK.actual.json": {
+        "archive": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\ACTUAL-CHECKS.raw.zip",
+          "bytes": 2067,
+          "sha256": "d9ba4bd2f124a3c8484ffe378a764dfb61b571fbc298a031eacba7197282fdba"
+        },
+        "member": "SOURCE-CHECK.actual.json",
+        "bytes": 822,
+        "sha256": "08716539d0307a3def6dcc74d5f9a2be7012f34eb012e1ff7bccdf5fb95332be"
+      },
+      "FOCUSED.actual.json": {
+        "archive": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\ACTUAL-CHECKS.raw.zip",
+          "bytes": 2067,
+          "sha256": "d9ba4bd2f124a3c8484ffe378a764dfb61b571fbc298a031eacba7197282fdba"
+        },
+        "member": "FOCUSED.actual.json",
+        "bytes": 2523,
+        "sha256": "5d6cd49af59013488212f2a31e1b396d0f34779d5d6de0f8c68e3db97da85e22"
+      },
+      "focused.stdout.txt": {
+        "archive": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\ACTUAL-CHECKS.raw.zip",
+          "bytes": 2067,
+          "sha256": "d9ba4bd2f124a3c8484ffe378a764dfb61b571fbc298a031eacba7197282fdba"
+        },
+        "member": "focused.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "focused.stderr.txt": {
+        "archive": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\ACTUAL-CHECKS.raw.zip",
+          "bytes": 2067,
+          "sha256": "d9ba4bd2f124a3c8484ffe378a764dfb61b571fbc298a031eacba7197282fdba"
+        },
+        "member": "focused.stderr.txt",
+        "bytes": 533,
+        "sha256": "5dccfa57f3ac626309b6a21bf8ed6fd056a74dce7bb49db750f708229587f893"
+      }
+    },
+    "candidate_patch": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\HOST-DIAGNOSTIC.incremental.patch",
+      "bytes": 5718,
+      "sha256": "5f1e8a1b03ad3febb15d00237f865a5a495773916557600b22fdc62095867581"
+    },
+    "test_source": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-pause-successor-diagnostic-sourceonly-20261011-001\\test_ck3_mod_acceptance_pause_successor_diagnostic.py",
+      "bytes": 10599,
+      "sha256": "f6bfcb5e58cde22cfe2891d0e3b5549d2885e1a482e2f9a771f552437ecf3e49"
+    },
+    "previous_closed_reservations": {
+      "008": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+        "bytes": 3145,
+        "sha256": "e9e2ecdd0b38b07c04c50c88c3fe16556bcc0cb0b3a53632874a176ef9012f97"
+      },
+      "014": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-014\\CLOSED-RESERVATION.actual.json",
+        "bytes": 5517,
+        "sha256": "3ee157d0a203060f0e0fe293dfb3d6aa43c216db7e2810186bb17c474be6f526"
+      }
+    }
+  },
+  "old_pause11_result_inherited_as_history": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\TEST-RESULT.actual.json",
+    "bytes": 2180,
+    "sha256": "133fafcb93f77c21d72fd956af026fca3958554ce432c85219b4149e3fd276a6"
+  },
+  "old_tests_reexecuted": false,
+  "inherited_host_features_exact": true,
+  "stock_OFF_by_missing_public_feature_key": true,
+  "stock_grant_title_picker": false,
+  "TTL_or_quota_renewed": false,
+  "new_live_or_business_credit": false,
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\manifest.json",
+    "bytes": 80105,
+    "sha256": "33a6d668f74ab578ecd7af320e6c9086ba26b458136575a5a57d4acea86de3e1"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\runtime.local.json",
+    "bytes": 2032,
+    "sha256": "f20f27572d3c6be15f1dbd35b897ca0cfb1db018974abaa865368550e70f43dd"
+  },
+  "source_ready": true,
+  "all_capabilities_live_qualified": false,
+  "business_pass": false,
+  "next_required": "Fresh common public CLI plan/preflight; original cache/source/quota deadlines unchanged."
+}
