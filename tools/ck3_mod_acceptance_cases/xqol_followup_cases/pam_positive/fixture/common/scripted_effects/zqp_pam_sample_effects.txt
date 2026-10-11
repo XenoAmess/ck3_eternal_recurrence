@@ -44,10 +44,22 @@ zqp_setup_positive_effect = {
  }
  # R72 controlled fixture baseline: one slot only; no reward/resource multiplier.
  # One-time isolated setup; original DLC/two-slot guard and tenet setters remain.
+ # ZQP77_SLOT_DIAGNOSTIC_ONLY_BEGIN before_controlled_slot_guard
+ debug_log = "ZQPSLOT120: PHASE before_controlled_slot_guard"
+ zqp_diagnose_controlled_slot_state77_effect = yes
+ # ZQP77_SLOT_DIAGNOSTIC_ONLY_END before_controlled_slot_guard
  if = {
   limit = { has_pam_dlc_trigger = yes free_personal_tenet_slots = 1 }
   add_character_modifier = { modifier = zqp_controlled_personal_slot_modifier years = 1 }
+  # ZQP77_SLOT_DIAGNOSTIC_ONLY_BEGIN inside_guard_after_add
+  debug_log = "ZQPSLOT120: PHASE inside_guard_after_add"
+  zqp_diagnose_controlled_slot_state77_effect = yes
+  # ZQP77_SLOT_DIAGNOSTIC_ONLY_END inside_guard_after_add
  }
+ # ZQP77_SLOT_DIAGNOSTIC_ONLY_BEGIN after_controlled_slot_guard
+ debug_log = "ZQPSLOT120: PHASE after_controlled_slot_guard"
+ zqp_diagnose_controlled_slot_state77_effect = yes
+ # ZQP77_SLOT_DIAGNOSTIC_ONLY_END after_controlled_slot_guard
  # ZQP63_OBSERVE_ONLY_BEGIN after_original_piety_branch_immediately_before_dual_setter_guard
  debug_log = "ZQP120: SETUP63 BEGIN after_original_piety_branch_immediately_before_dual_setter_guard"
  zqp_observe_personal_setup_state63_effect = yes
@@ -308,3 +320,20 @@ zqp_observe_personal_setup_state63_effect = {
  else = { debug_log = "ZQP120: SETUP63 mendicant_member FALSE" }
 }
 # ZQP63_OBSERVE_ONLY_HELPER_END
+# ZQP77_SLOT_DIAGNOSTIC_ONLY_BEGIN read_only_helper
+# Reads the actual current actor only; no setter, modifier or timing changes.
+zqp_diagnose_controlled_slot_state77_effect = {
+ if = { limit = { has_character_modifier = zqp_controlled_personal_slot_modifier } debug_log = "ZQPSLOT120: controlled_modifier TRUE" }
+ else = { debug_log = "ZQPSLOT120: controlled_modifier FALSE" }
+ if = { limit = { has_pam_dlc_trigger = yes } debug_log = "ZQPSLOT120: pam_dlc TRUE" }
+ else = { debug_log = "ZQPSLOT120: pam_dlc FALSE" }
+ if = { limit = { free_personal_tenet_slots = 0 } debug_log = "ZQPSLOT120: free_eq0 TRUE" }
+ else = { debug_log = "ZQPSLOT120: free_eq0 FALSE" }
+ if = { limit = { free_personal_tenet_slots = 1 } debug_log = "ZQPSLOT120: free_eq1 TRUE" }
+ else = { debug_log = "ZQPSLOT120: free_eq1 FALSE" }
+ if = { limit = { free_personal_tenet_slots >= 2 } debug_log = "ZQPSLOT120: free_ge2 TRUE" }
+ else = { debug_log = "ZQPSLOT120: free_ge2 FALSE" }
+ if = { limit = { free_personal_tenet_slots < 0 } debug_log = "ZQPSLOT120: free_lt0 TRUE" }
+ else = { debug_log = "ZQPSLOT120: free_lt0 FALSE" }
+}
+# ZQP77_SLOT_DIAGNOSTIC_ONLY_END read_only_helper

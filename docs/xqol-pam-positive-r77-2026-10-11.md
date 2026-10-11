@@ -30,3 +30,9 @@ Guard251实际基线union 3,555,336 B，最后观察净增长275,823,408 B，未
 并行继续PAM最小原因诊断、重整河山core开场准备，以及旧QOL R13–R17五根生成shadercache的用途替代复核。五根默认168h期限尚未到，不能称自动过期；其余原输入、SAVE、错误与业务证据保留至2026-10-18复核。任何回收只在新预约、精确根/单链接/ADS/占用/独占HANDLE核验后分批执行；候选789,999,600 B尚不是实际释放量。
 
 优先在容量满足原2GiB估算后执行重整河山core。PAM+须修正并新prepare，再继续QOL两类任命及赎回。发布时间取决于剩余实机GREEN、正式tag staging、实际Workshop上传、匿名完整Change Notes回读、真实Steam缓存字节与加载及changelog master提交推送；当前不给未经验证的完成时刻。
+
+## 14:54 CST：只读诊断后继，尚未实机
+
+进一步核原日志12606/12618/12661，PAM DLC实测TRUE；原profile `disabled_dlcs=[]`。不能把禁用DLC当作本次原因。同版stock defines基础个人教义cap为1，stock `piety_level_4`有纯槽位+1，但piety getter为4不证明该派生modifier已实际计入。
+
+只对新PAM+夹具增加条件前、原条件分支内add之后、条件后的真实 `has_character_modifier` / DLC / 空槽回读；未增加setter、日期推进、奖励或通过标记。新sample为20,593 B / SHA-256 `9d59d37136125367b5219988a65e33391ad8b9d1f40e732fa5c53072f62544da`。剥除四块明确只读诊断区域后，必须逐字节恢复原18,737 B sample及原SHA；还原唯一support pin后，整个case JSON必须恢复原SHA。两项新精确回归包含在11项followups测试中，执行者及root分别实际exit0。这里只验证诊断无业务改动，不能写为槽位问题已修复或PAM已通过。

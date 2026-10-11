@@ -1,9 +1,11 @@
 """Portable focused checks for the original independent QOL case port."""
 import argparse
 import copy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
 import types
@@ -113,6 +115,41 @@ class OriginalCases(unittest.TestCase):
         for tools in ([],pam.TOOLS[:1],pam.TOOLS+['invented_tool']):
             ctx['case_spec']['opt_in_read_only_mcp_tools']=tools
             with self.assertRaises(ValueError):pam.validate_contract(ctx)
+
+    def test_pam_positive_slot_diagnostics_are_read_only_and_inverse_exact(self):
+        from xqol_vanilla_contract import block
+        ctx=context('pam_positive')
+        raw=(common.base(ctx)/'fixture/common/scripted_effects/zqp_pam_sample_effects.txt').read_bytes()
+        pattern=rb'(?ms)^ *# ZQP77_SLOT_DIAGNOSTIC_ONLY_BEGIN [^\r\n]+\r?\n.*?^ *# ZQP77_SLOT_DIAGNOSTIC_ONLY_END [^\r\n]+\r?\n'
+        inverse,count=re.subn(pattern,b'',raw)
+        self.assertEqual(count,4)
+        self.assertEqual(len(inverse),18737)
+        self.assertEqual(hashlib.sha256(inverse).hexdigest(),
+                         '8d72393e24aafc71c9860fcb7c2b7ff431ef7e312f7af19a58930c1d7cd5ab3a')
+        self.assertTrue(raw.startswith(b'\xef\xbb\xbf'))
+        text=raw.decode('utf-8-sig')
+        helper=block(text,'zqp_diagnose_controlled_slot_state77_effect')
+        assignments=set(re.findall(r'\b([A-Za-z_][A-Za-z_0-9]*)\s*=',helper))
+        self.assertEqual(assignments,{'zqp_diagnose_controlled_slot_state77_effect','if','limit','else',
+            'has_character_modifier','has_pam_dlc_trigger','free_personal_tenet_slots','debug_log'})
+        for region in re.findall(pattern,raw):
+            if b'read_only_helper' in region.splitlines()[0]:continue
+            self.assertEqual(set(re.findall(rb'\b([A-Za-z_][A-Za-z_0-9]*)\s*=',region)),
+                             {b'debug_log',b'zqp_diagnose_controlled_slot_state77_effect'})
+        self.assertEqual(text.count('zqp_diagnose_controlled_slot_state77_effect = yes'),3)
+        for phase in ('before_controlled_slot_guard','inside_guard_after_add','after_controlled_slot_guard'):
+            self.assertEqual(text.count('ZQPSLOT120: PHASE '+phase),1)
+
+    def test_pam_positive_slot_diagnostic_pin_is_only_contract_change(self):
+        ctx=context('pam_positive')
+        common.validate_contract(ctx)
+        original=copy.deepcopy(ctx['case_contract'])
+        key='xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt'
+        original['support_files'][key]={'bytes':18737,
+            'sha256':'8d72393e24aafc71c9860fcb7c2b7ff431ef7e312f7af19a58930c1d7cd5ab3a'}
+        restored=(json.dumps(original,ensure_ascii=False,indent=2)+'\n').encode('utf-8')
+        self.assertEqual(hashlib.sha256(restored).hexdigest(),
+                         '049eb0c6fcb366df23f71048c7905f845490517541aeb7668ee6e3642ee858e8')
 
     def test_stock_projection_retains_rewards_and_rejects_changed_body(self):
         keys=('conversion_tenet_acts_of_the_apostles_effect','conversion_tenet_mendicant_preachers_effect')
