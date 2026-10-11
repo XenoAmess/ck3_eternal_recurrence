@@ -1373,11 +1373,18 @@ class NativeNamedPipeServer:
         )
         self._thread.start()
         if not self._ready.wait(timeout=2.0):
+            startup_error = RuntimeError(
+                "native named-pipe server did not become ready"
+            )
+        elif self._fatal_error is not None:
+            startup_error = RuntimeError(self._fatal_error)
+        else:
+            return
+        try:
             self.close()
-            raise RuntimeError("native named-pipe server did not become ready")
-        if self._fatal_error is not None:
-            self.close()
-            raise RuntimeError(self._fatal_error)
+        except BaseException as cleanup_error:
+            raise startup_error from cleanup_error
+        raise startup_error
 
     def transport_error(self) -> str | None:
         return self._fatal_error
@@ -1411,6 +1418,9 @@ class NativeNamedPipeServer:
         thread = self._thread
         if thread is not None and thread is not threading.current_thread():
             thread.join(timeout=2.0)
+            if thread.is_alive():
+                raise BridgeUnavailableError(
+                    "native pipe pump still alive after close timeout; retain original thread")
         self._thread = None
 
     def _current_handle(self) -> int | None:

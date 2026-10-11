@@ -5182,6 +5182,7 @@ def main(argv: list[str] | None = None) -> int:
         driver,
         profile_dir=selected_state_dir / "profile",
     )
+    primary_error: BaseException | None = None
     try:
         if args.transport == "stdio":
             server.run(transport="stdio")
@@ -5193,10 +5194,21 @@ def main(argv: list[str] | None = None) -> int:
                 stateless_http=True,
                 json_response=True,
             )
+    except BaseException as error:
+        primary_error = error
+        raise
     finally:
         close = getattr(driver, "close", None)
         if callable(close):
-            close()
+            try:
+                close()
+            except BaseException as close_error:
+                if primary_error is None:
+                    raise
+                primary_error.add_note(
+                    "Driver close failed during SDK cleanup: "
+                    f"{type(close_error).__name__}: {close_error}"
+                )
     return 0
 
 

@@ -31,3 +31,10 @@ Python transport 保留原请求、原错误 frame 与提交前最后已知快�
 ## 2026-10-12：持盘失败的后续消费者保全
 
 Service在确切`executed`、successor `accepted/continued`且当次持盘诊断`failed`时，在Sway/Feast后续快照或查询之前原样返回outcome；既有MCP错误回包可保留完整`original_turn`。Runner在收到实际result的首个副本时冻结`original_result`，first-failure也保留它，避免后置只读异常先丢失已经应用的Continue事实。没有新请求、重发、额外持盘或信用；原章节验证和失败停止门禁保持。回执：[源码采用](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-M7-ORIGINAL-RESULT-SOURCE-ADOPTION.json)。当前SDK87仍未含此批新源。
+
+
+## 2026-10-12：Endpoint关闭事实与原始异常
+
+Endpoint沿原取消I/O与两秒join，线程仍alive时真实抛错并保留线程引用，不能清引用后声称driver关闭。启动ready超时或fatal先冻结原始启动RuntimeError，若关闭也失败，原错仍为顶层、关闭错保留为cause。MCP main若server.run已抛异常，driver.close失败作为note追加到原错；无原错时真实传播关闭失败。Runner既有cleanup追加与driver_closed标志保持，不新增join循环、transport、持盘或调用。SDK进程、Game退出与Endpoint关闭仍是独立事实。
+
+本批07是完整采用，未同时套用旧04。Root初次采用已写完两个源文件，但回执父目录拼错导致记录失败；随后从31909b7e真实Git preimage重建三个hunk并逐字节核对现文件，只补回执，没有重套或再次改源。[实际采用回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-M7-ENDPOINT-PRIMARY-SOURCE-ADOPTION.json)。仍为source only，冻结SDK87/f9未改，未运行测试或继承实机重验。
