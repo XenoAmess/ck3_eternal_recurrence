@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <optional>
 #include <string_view>
+#include <string>
+#include <vector>
 
 namespace xar::ck3_12003::ordinary_interaction {
 
@@ -28,6 +30,7 @@ using OuterAnswer = std::uint8_t (*)(void *, std::uint8_t, std::uint8_t,
 using DispatchFrameVerifier = bool (*)(void *) noexcept;
 
 struct Bindings {
+  bool education_rows_actual_12004 = false;
   bool enabled = false;
   ck3_12002::ContextBindings interaction{};
   DatabaseGetter get_database = nullptr;
@@ -36,13 +39,31 @@ struct Bindings {
   TwoRoleConstructor construct_two_role = nullptr;
   MenuShown is_shown = nullptr;
   ReadOption read_option = nullptr;
+  void *(*get_script_identifier_table)() = nullptr;
+  std::int32_t *(*lookup_script_identifier_id)(void *, std::int32_t *, const void *) = nullptr;
   OuterAnswer outer_answer = nullptr;
   // Internal owner wrapper callback. Never sourced from a public request.
   void *dispatch_frame_context = nullptr;
   DispatchFrameVerifier verify_dispatch_frame = nullptr;
 };
 
+struct EducationOptionRowV1 {
+  std::uint32_t declared_ordinal = 0;
+  std::uint32_t flag_full_u32 = 0;
+  std::optional<std::string> canonical_flag_key;
+  std::uint8_t bank_value_u8 = 0;
+  bool ordinal_selected = false;
+  // Source-equivalent getter(flag): first equal flag's copied byte == 1.
+  bool selected = false;
+};
+struct EducationOptionRowsV1 {
+  bool available = false;
+  std::vector<EducationOptionRowV1> rows;
+  const char *unavailable_reason = "not_sampled";
+};
+
 struct Observation {
+  EducationOptionRowsV1 education_option_rows{};
   bool native_context_available = false;
   bool ordinary_context_supported = false;
   bool actor_binding_verified = false;

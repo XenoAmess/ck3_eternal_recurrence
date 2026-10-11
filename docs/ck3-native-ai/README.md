@@ -1436,3 +1436,5 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 - 2026-10-11 background source: [Sway invalidation execution wire](sway-invalidation-execution-wire-12004.md) connects the actual title input through the existing journal/query/transport, retaining the hidden-phase-only consumer and unresolved invalidator/end relationship. `research / SOURCE_ADOPTED_NOT_RUN`.
 
 - 2026-10-11 background source: [Current child CourtOwner](current-child-court-owner-readonly-12004.md) connects the existing native child row, strict transport and actual education composer. Resolved, known-null and unavailable remain separate; Guardian state, role holder and educator selection remain independent. `research / SOURCE_ADOPTED_NOT_RUN`.
+
+- 2026-10-11 background source: [Actual education option rows](education-native-option-rows-12004.md), existing Prepare → mailbox/query → strict decoder. Preserves raw ordinals/duplicates/full flags and separate first-hit getter semantics; command support remains pending. `research / SOURCE_ADOPTED_NOT_RUN`.

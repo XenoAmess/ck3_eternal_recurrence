@@ -120,6 +120,31 @@ void QueryPayload(std::ostream &out, const OrdinaryInteractionMailboxContextV1 &
   }
   out << "},\"declared_option_count\":"; Optional(out, available ? o.declared_option_count : std::optional<std::uint32_t>{});
   out << ",\"selected_option_count\":"; Optional(out, available ? o.selected_option_count : std::optional<std::uint32_t>{});
+  if (Actual4(q) && q.request.interaction_key == "educate_child_interaction") {
+    const auto &group = o.education_option_rows;
+    const bool rows_available = available && group.available;
+    out << ",\"education_option_rows\":{\"status\":";
+    Quote(out, rows_available ? "available" : "unavailable");
+    out << ",\"rows\":[";
+    if (rows_available) {
+      for (std::size_t i = 0; i < group.rows.size(); ++i) {
+        if (i != 0) out << ',';
+        const auto &row = group.rows[i];
+        out << "{\"declared_ordinal\":" << row.declared_ordinal
+            << ",\"flag_full_u32\":" << row.flag_full_u32
+            << ",\"canonical_flag_key\":";
+        if (row.canonical_flag_key) Quote(out, *row.canonical_flag_key);
+        else out << "null";
+        out << ",\"selected\":"; Bool(out, row.selected);
+        out << ",\"bank_value_u8\":" << +row.bank_value_u8;
+        out << ",\"ordinal_selected\":"; Bool(out, row.ordinal_selected);
+        out << '}';
+      }
+    }
+    out << "],\"unavailable_reason\":";
+    Reason(out, available ? group.unavailable_reason : "native_context_unavailable", rows_available);
+    out << '}';
+  }
   out << ",\"special_payload_present\":"; Optional(out, available ? o.special_payload_present : std::optional<bool>{});
   out << ",\"shown\":"; Optional(out, available ? o.shown : std::optional<bool>{});
   out << ",\"can_send\":"; Optional(out, available ? o.can_send : std::optional<bool>{});

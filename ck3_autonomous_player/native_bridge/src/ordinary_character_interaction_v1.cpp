@@ -6,6 +6,7 @@
 #include <bit>
 #include <cstring>
 #include <limits>
+#include <utility>
 
 #if defined(_MSC_VER)
 #include <Windows.h>
@@ -136,6 +137,124 @@ bool Fail(Observation &out, const char *reason) noexcept {
   return false;
 }
 
+template <typename T>
+bool ReadEducationField(const void *base, std::size_t offset, T &value) noexcept {
+  const auto address = reinterpret_cast<std::uintptr_t>(base);
+  const auto maximum = std::numeric_limits<std::uintptr_t>::max();
+  if (address == 0 || offset > maximum - address ||
+      sizeof(T) - 1 > maximum - (address + offset)) return false;
+  return Read(base, offset, value);
+}
+
+// Consumed by Prepare on its existing owned context after validate returns.
+// Does not invoke option getters, constructors or option setters.
+void CopyEducationOptionRows(const Bindings &b, const void *storage, void *expected_definition,
+    void *expected_option_data, std::int32_t expected_count,
+    const std::array<std::optional<std::uint32_t>, 6> &expected_roles,
+    EducationOptionRowsV1 &out) noexcept {
+  out = {};
+  out.unavailable_reason = "education_option_rows_copy_unavailable";
+  try {
+    void *definition = nullptr, *option_data = nullptr, *bank = nullptr;
+    std::int32_t declared_count = -1, bank_count = -1;
+    if (!ReadEducationField(storage, 0, definition) || definition != expected_definition ||
+        !ReadEducationField(definition, 0x2258, option_data) || option_data != expected_option_data ||
+        !ReadEducationField(definition, 0x2264, declared_count) || declared_count != expected_count ||
+        declared_count < 0 || declared_count > 4096 ||
+        !ReadEducationField(storage, 0x300, bank) ||
+        !ReadEducationField(storage, 0x30C, bank_count) || bank_count < declared_count ||
+        (declared_count != 0 && (bank == nullptr || option_data == nullptr))) return;
+    auto roles_match = [&]() noexcept {
+      for (std::size_t i = 0; i < expected_roles.size(); ++i) {
+        std::int32_t id = -1;
+        if (!ReadEducationField(storage, 0x2D8 + 4 * i, id)) return false;
+        std::optional<std::uint32_t> copied;
+        if (id != -1) copied = std::bit_cast<std::uint32_t>(id);
+        if (copied != expected_roles[i]) return false;
+      }
+      return true;
+    };
+    if (!roles_match()) return;
+    std::vector<EducationOptionRowV1> rows;
+    rows.reserve(static_cast<std::size_t>(declared_count));
+    for (std::int32_t i = 0; i < declared_count; ++i) {
+      EducationOptionRowV1 row{};
+      row.declared_ordinal = static_cast<std::uint32_t>(i);
+      if (!ReadEducationField(option_data, static_cast<std::size_t>(i) * 0x730 + 0x368,
+                              row.flag_full_u32) ||
+          !ReadEducationField(bank, static_cast<std::size_t>(i), row.bank_value_u8)) return;
+      row.ordinal_selected = row.bank_value_u8 == 1;
+      rows.push_back(std::move(row));
+    }
+    for (auto &row : rows) {
+      for (const auto &first : rows) {
+        if (first.flag_full_u32 == row.flag_full_u32) {
+          row.selected = first.ordinal_selected;
+          break;
+        }
+      }
+    }
+    // Existing exact .4 forward lookup: all four views refer to NUL-terminated
+    // string literals. BYTE+0xC is zero; no old native image is called.
+    struct BorrowedScriptIdentifierView {
+      const char *data;
+      std::int32_t length;
+      std::uint8_t owned;
+      std::uint8_t padding[3];
+    };
+    static_assert(sizeof(BorrowedScriptIdentifierView) == 16);
+    constexpr std::array<std::string_view, 4> keys{
+        "convert_culture", "convert_faith", "send_to_university", "education_hook"};
+    std::array<std::optional<std::uint32_t>, 4> actual_ids{};
+    void *table = nullptr;
+    if (Call(b.get_script_identifier_table, table) && table != nullptr) {
+      for (std::size_t i = 0; i < keys.size(); ++i) {
+        const BorrowedScriptIdentifierView view{keys[i].data(),
+            static_cast<std::int32_t>(keys[i].size()), 0, {0, 0, 0}};
+        std::int32_t id = -1;
+        std::int32_t *returned = nullptr;
+        if (Call(b.lookup_script_identifier_id, returned, table, &id,
+                 static_cast<const void *>(&view)) && returned == &id && id != -1)
+          actual_ids[i] = std::bit_cast<std::uint32_t>(id);
+      }
+    }
+    for (auto &row : rows) {
+      std::optional<std::size_t> matching_key;
+      bool ambiguous = false;
+      for (std::size_t i = 0; i < actual_ids.size(); ++i) {
+        if (actual_ids[i] && *actual_ids[i] == row.flag_full_u32) {
+          if (matching_key) ambiguous = true;
+          else matching_key = i;
+        }
+      }
+      if (matching_key && !ambiguous)
+        row.canonical_flag_key = std::string(keys[*matching_key]);
+    }
+    void *definition_after = nullptr, *data_after = nullptr, *bank_after = nullptr;
+    std::int32_t count_after = -1, bank_count_after = -1;
+    if (!ReadEducationField(storage, 0, definition_after) || definition_after != definition ||
+        !ReadEducationField(definition, 0x2258, data_after) || data_after != option_data ||
+        !ReadEducationField(definition, 0x2264, count_after) || count_after != declared_count ||
+        !ReadEducationField(storage, 0x300, bank_after) || bank_after != bank ||
+        !ReadEducationField(storage, 0x30C, bank_count_after) || bank_count_after != bank_count ||
+        !roles_match()) return;
+    for (const auto &row : rows) {
+      std::uint32_t flag_after = 0;
+      std::uint8_t value_after = 0;
+      if (!ReadEducationField(option_data, static_cast<std::size_t>(row.declared_ordinal) * 0x730 + 0x368,
+                              flag_after) || flag_after != row.flag_full_u32 ||
+          !ReadEducationField(bank, row.declared_ordinal, value_after) ||
+          value_after != row.bank_value_u8) return;
+    }
+    out.rows = std::move(rows);
+    out.available = true;
+    out.unavailable_reason = nullptr;
+  } catch (...) {
+    out = {};
+    out.unavailable_reason = "education_option_rows_copy_unavailable";
+  }
+}
+
 bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
              NativeContext &context, Observation &out) noexcept {
   out = {};
@@ -225,6 +344,9 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
     return Fail(out, "outer_answer_unavailable");
   if (!Call(b.interaction.validate, can_send, storage, static_cast<void *>(nullptr)))
     return Fail(out, "can_send_unavailable");
+  if (b.education_rows_actual_12004 && r.interaction_key == "educate_child_interaction")
+    CopyEducationOptionRows(b, storage, definition, option_data, option_count, roles,
+                            out.education_option_rows);
   out.actor_alive = actor_alive;
   out.recipient_alive = recipient_alive;
   out.definition_stable_hash = std::bit_cast<std::uint32_t>(hash);
@@ -300,6 +422,9 @@ Bindings BindOrdinaryInteractionImage12004(std::uintptr_t base,
       base + ck3_12004::kPrisonerRansomSendConstructorRva12004);
   i.send_primary_vtable = base + ck3_12004::kPrisonerRansomSendPrimaryVtableRva12004;
   i.send_secondary_vtable = base + ck3_12004::kPrisonerRansomSendSecondaryVtableRva12004;
+  b.education_rows_actual_12004 = true;
+  b.get_script_identifier_table = context.get_script_identifier_table;
+  b.lookup_script_identifier_id = context.lookup_script_identifier_id;
   b.get_database = context.get_database;
   b.stable_hash = context.stable_hash;
   b.lookup_definition = context.lookup_definition;

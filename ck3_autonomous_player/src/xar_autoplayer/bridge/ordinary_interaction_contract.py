@@ -141,14 +141,53 @@ def require_result_build(raw, snapshot, payload_key):
         raise ValueError('ordinary interaction result differs from its connected native build')
 
 
+def _validate_education_option_rows(value: dict, interaction_key: str, context_status: str) -> None:
+    if value["exact_build"] != CK3_12004.game_version or interaction_key != "educate_child_interaction":
+        raise ValueError("education option rows require the actual .4 education context")
+    leaf = value["education_option_rows"]
+    if not isinstance(leaf, dict) or set(leaf) != {"status", "rows", "unavailable_reason"}:
+        raise ValueError("education option row group is not closed")
+    rows = leaf["rows"]
+    if not isinstance(rows, list) or len(rows) > 4096:
+        raise ValueError("education option rows require the ordered bounded list")
+    if leaf["status"] == "unavailable":
+        if rows:
+            raise ValueError("unavailable education option rows must be empty")
+        _reason(leaf["unavailable_reason"], "education option rows unavailable_reason")
+        return
+    if leaf["status"] != "available" or context_status != "available" or leaf["unavailable_reason"] is not None:
+        raise ValueError("available education option rows lack the owned context")
+    row_keys = {"declared_ordinal", "flag_full_u32", "canonical_flag_key",
+                "selected", "bank_value_u8", "ordinal_selected"}
+    first_selected = {}
+    for ordinal, row in enumerate(rows):
+        if not isinstance(row, dict) or set(row) != row_keys:
+            raise ValueError("education option row is not closed")
+        _integer(row["declared_ordinal"], 0, 2**32 - 1, "declared_ordinal")
+        _exact(row, "declared_ordinal", ordinal)
+        flag = _integer(row["flag_full_u32"], 0, 2**32 - 1, "flag_full_u32")
+        byte = _integer(row["bank_value_u8"], 0, 255, "bank_value_u8")
+        _exact(row, "ordinal_selected", byte == 1)
+        # The current getter uses the first equal flag's bank byte, while the
+        # command retains each ordinal's byte. Preserve duplicates and order.
+        first_selected.setdefault(flag, byte == 1)
+        _exact(row, "selected", first_selected[flag])
+        if row["canonical_flag_key"] is not None:
+            validate_interaction_key(row["canonical_flag_key"])
+    # Legacy counts were sampled earlier. Do not join them to this later bank.
+
+
 def normalize_context_payload(raw: object, binding: dict, interaction_key: str, recipient_id: int) -> dict:
     validate_interaction_key(interaction_key)
     validate_recipient_id(recipient_id)
     status = raw.get("status") if isinstance(raw, dict) else None
     if status not in {"available", "unavailable"}:
         raise ValueError("ordinary context status is malformed")
-    value = _common(raw, QUERY_KEYS, binding, interaction_key, recipient_id, QUERY_SCHEMA,
+    keys = QUERY_KEYS | {"education_option_rows"} if "education_option_rows" in raw else QUERY_KEYS
+    value = _common(raw, keys, binding, interaction_key, recipient_id, QUERY_SCHEMA,
                     "native_current_ordinary_interaction_context_1.20.0.3", True, status)
+    if "education_option_rows" in value:
+        _validate_education_option_rows(value, interaction_key, status)
     for key in ("native_context_available", "ordinary_context_supported", "active_event_present",
                 "incoming_interaction_present", "ready_to_initiate"):
         if type(value[key]) is not bool:
