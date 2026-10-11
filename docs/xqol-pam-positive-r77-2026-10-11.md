@@ -78,3 +78,13 @@ R78闭场后的fresh容量仍低于其他GUI场次原2GiB准入要求30,071,062,
 实际 review 后按失败路径 close exit0，标准237回执 `C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-r72-r73-cache-retirement-01-reservation-237-closed.json` 为2,871 B / SHA-256 `49da1aea5d203aaf5b47cb89dd5690b3d58c8dc28cc6f7f5afd3221035afdd16`。原 prepare exit1 保留，删除0、释放0、子进程0、unspent0；完整16MiB只保守计入一次，不减 usage，也不产生后继预算信用。SAVE、错误日志、原业务证据及当前输入未动，保护项仍于2026-10-18复核。
 
 该回执的全卷 fresh free 为28,602,040,320 B，低于默认2GiB场次所需30,071,062,528 B；全卷变化不归因为本包。后继先在新限额工作包内调查其他已结束精确缓存根的实际metadata，再决定是否有可回收资产；不能降低6GiB系统增长、6MiB其他预约或20GiB安全预留。RMTM core 的默认2GiB观察器只完成源码/纯边界自测，尚未准入、分配或启动。业务进度保持 QOL 2/6、RMTM 0/2，两项均未发布。
+
+## 16:40 CST：实际缓存容量调查与实机容量阻挡
+
+既有本机小台账 `qol-r57-r75-generated-cache-metadata-review-240.json`（05:43Z、17,992 B、SHA-256 `d9195dc95b3bfc4300e6716513d850e8c8f2e33e4c12ac07bd27f8fcea49d75e`）已记录其实际16个runs缓存为空，包含R72/R73/R74；本轮在准备回收前没有及时复用该信息，后续纠正，不再按旧估算反复申请回收。它明确排除R60/R71及已清理R75，不能把连续编号外推为全部为空。其他旧大候选已删除或已被较新小台账修正，本轮不重复计释放量。
+
+R76/R77/R78另作只读metadata调查：root全文审读冻结9,420 B源码，因其110秒门禁是协作式截止，另用只允许该冻结调查子进程的115秒timeout runner，再由221记录实际wait；不是把没有timeout的旧221当作自带超时。实际exit0、stderr空，调查43.246912秒/23,176 work units；缓存正文读取/哈希0、删除0。只写现有2MiB helper池内小回执，不创建新场次预约或重型资产；代码首稿超出原8KiB子限额已如实记录，root明确改为12KiB，整个小调查仍按40KiB限额，未降低任何其他预留。
+
+结果分别为R76 3,816文件/161,276,720 B native allocation，R77及R78各3,780文件/157,999,920 B，三根identity union合477,276,560 B。R77有Source19现存控制及prepared引用，R78有诊断prepared引用，保持保护且均未取得删除资格；R76也只是调查量。报告 `C:/workspace/ck3-upgrade-20261010/root-parallel-continue-236/qol-r76-r77-r78-cache-metadata-survey-01.json` 为7,640 B / SHA-256 `26254b9732c7082acca4c2187811625bca0f7ca045947168fd860e29b3250e1f`。保护的是用途待明确的实际输入关系，不把任何历史路径自动等同于永续引用；本轮未修改这些引用或删除缓存。
+
+调查后fresh free 28,577,722,368 B，距默认场次门槛仍差1,493,340,160 B；477,276,560 B不是已释放量，即使全数另行合格回收也不能独自补足缺口。RMTM a182的task/attempt/keeper、state父级single-use-ledger及原消费标记均实际不存在，准备文件与Source19匹配；仍不是原子准入。官方CI在提交 `dfe2e8c3bc8925da3815c0b8534a7fdae6405dd4` 已completed/success。已请求用户先在本机腾出至少3GB或指定另一获准执行位置；现场容量达标后优先RMTM core，再按原业务矩阵推进，不能承诺未经验证的发布时间。所有业务通过率及未发布状态不变。
