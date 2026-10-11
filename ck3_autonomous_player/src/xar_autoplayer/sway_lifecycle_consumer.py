@@ -6,6 +6,7 @@ relation material remain independent observations; status1 supplies no cause.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from copy import deepcopy
 from pathlib import Path
 
 from .sway_formal_consumer import LEDGER_FILE, _write, read_sway_ledger
@@ -27,6 +28,13 @@ def _resolved_for_read(state_dir: Path, read: Mapping[str, object]):
             for key in ("scheme_instance_id", "scheme_instance_generation")):
         return None
     return ledger, resolved, receipt
+
+
+def _same_sway_terminal_identity(previous: object, observation: Mapping[str, object]) -> bool:
+    return isinstance(previous, Mapping) and all(
+        previous.get(key) == observation.get(key) for key in (
+            "action_id", "actor_character_id", "target_character_id",
+            "scheme_instance_id", "scheme_instance_generation"))
 
 
 def record_sway_terminal_observation(
@@ -85,14 +93,112 @@ def record_sway_terminal_observation(
     # A later purge/reuse cannot erase an independently observed retained end.
     from .sway_end_causal_consumer_12004 import retain_sway_end_causal_terminal_12004
 
+    retained_common = (
+        isinstance(previous, Mapping)
+        and isinstance(previous.get("common_native_end_observation"), Mapping)
+        and _same_sway_terminal_identity(previous, observation)
+        and observation["terminal_cause_observed"] is False)
     retained = (previous if isinstance(previous, Mapping)
                 and previous.get("instance_terminal_outcome_observed") is True
-                and not terminal else retain_sway_end_causal_terminal_12004(previous, observation))
+                and (not terminal or retained_common)
+                else retain_sway_end_causal_terminal_12004(previous, observation))
     _write(state_dir, {**ledger, "resolved": {
         **resolved, "latest_instance_observation": observation,
         "terminal_intervention": dict(retained),
     }})
     return observation
+
+
+def record_sway_common_native_end_observation(
+    state_dir: Path, *, composition: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Stage a copied normal return, independently of current storage and cause."""
+    if composition.get("schema") != "xar.ck3.sway-terminal-source-composition.12004.v1":
+        return None
+    original = composition.get("original_instance")
+    common = composition.get("retained_common_end_observation")
+    if (not isinstance(original, Mapping) or not isinstance(common, Mapping)
+            or common.get("original_instance") != original
+            or common.get("source_kind") != "copied_common_native_end_original_return"
+            or common.get("native_status_raw") != 1
+            or common.get("native_terminal_state_observed") is not True
+            or common.get("terminal_cause_observed") is not False):
+        return None
+    matched = _resolved_for_read(state_dir, original)
+    if matched is None:
+        return None
+    ledger, resolved, _ = matched
+    from .bridge.sway_terminal_source_producer_12004 import _original
+    from .bridge.version_identity import CK3_12004, require_exact_native_build
+
+    source_read = common.get("source_read")
+    if not isinstance(source_read, Mapping):
+        return None
+    try:
+        if (dict(original) != _original(resolved)
+                or require_exact_native_build(
+                    source_read.get("exact_ck3_build"), source_read.get("exe_sha256")) != CK3_12004):
+            return None
+    except ValueError:
+        return None
+    record = common.get("copied_common_native_end_record")
+    if not isinstance(record, Mapping):
+        return None
+    entry, returned = record.get("entry"), record.get("returned")
+    if (not isinstance(entry, Mapping) or not isinstance(returned, Mapping)
+            or record.get("original_forwarded_once") is not True
+            or record.get("original_returned") is not True
+            or any(frame.get("scheme_full_id_observed") is not True
+                   or frame.get("scheme_full_id_raw_u32") != original["scheme_instance_id"]
+                   or frame.get("scheme_instance_generation_u8") != original["scheme_instance_generation"]
+                   for frame in (entry, returned))
+            or returned.get("status_observed") is not True
+            or returned.get("status_raw_i32") != 1
+            or returned.get("owner_observed") is not True
+            or returned.get("owner_character_full_id_raw_u32") not in (
+                original["actor_character_id"], 0xFFFFFFFF)):
+        return None
+    revision, date = source_read.get("snapshot_revision"), source_read.get("date_raw")
+    if (type(revision) is not int or not 0 < revision < 1 << 64
+            or type(date) is not int or not -(1 << 31) <= date < 1 << 31):
+        # Retain the known end without inventing numeric next-turn provenance.
+        _write(state_dir, {**ledger, "resolved": {
+            **resolved, "common_native_end_observation": deepcopy(dict(common))}})
+        return None
+    captured_event_frame = (
+        deepcopy(dict(returned["core_frame"]))
+        if returned.get("core_frame_observed") is True
+        and isinstance(returned.get("core_frame"), Mapping) else None)
+    terminal = {
+        **{key: original[key] for key in (
+            "action_id", "actor_character_id", "target_character_id",
+            "scheme_instance_id", "scheme_instance_generation")},
+        "exact_ck3_build": source_read["exact_ck3_build"],
+        "exe_sha256": source_read["exe_sha256"],
+        # These stamp the copied QUERY receipt, never the native end event.
+        "source_native_revision": revision, "source_date_raw": date,
+        "source_provenance_kind": "common_native_end_read_receipt",
+        # Event provenance is the actually copied returned Core, when observed.
+        "event_date_raw": (captured_event_frame["date_raw"]
+                           if captured_event_frame is not None else None),
+        "captured_event_frame": captured_event_frame,
+        "tracked_instance_active": False, "instance_terminal_outcome_observed": True,
+        "native_status_key": "terminated_unattributed",
+        "terminal_cause_observed": False, "terminal_cause": "unknown",
+        "native_observation": deepcopy(dict(record)),
+        "common_native_end_observation": deepcopy(dict(common)),
+        "next_turn_consumed": False,
+    }
+    previous = resolved.get("terminal_intervention")
+    if (_same_sway_terminal_identity(previous, terminal)
+            and previous.get("instance_terminal_outcome_observed") is True):
+        # Enrich an existing end without replacing its cause, date or consumption.
+        terminal = dict(previous)
+        terminal.setdefault("common_native_end_observation", deepcopy(dict(common)))
+    updated = {**resolved, "terminal_intervention": terminal}
+    updated.pop("common_native_end_observation", None)
+    _write(state_dir, {**ledger, "resolved": updated})
+    return terminal
 
 
 def record_sway_material_from_completion(

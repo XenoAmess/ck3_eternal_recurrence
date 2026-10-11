@@ -106,7 +106,33 @@ def _record_sway_material(
             and previous.get("sway_blocker_opinion") == blocker
             and previous.get("target_opinion_of_actor")
             == opinion_read.get("target_opinion_of_actor")):
-        return dict(previous)
+        # Identical named values still came from this actual new query.
+        # Refresh read provenance without rearming following-turn consumption.
+        refreshed = {
+            **previous,
+            "exact_ck3_build": opinion_read["exact_ck3_build"],
+            "exe_sha256": opinion_read["exe_sha256"],
+            "source_native_revision": opinion_read["snapshot_revision"],
+            "source_date_raw": opinion_read["date_raw"],
+        }
+        if (refreshed["source_native_revision"] != previous.get("source_native_revision")
+                or refreshed["source_date_raw"] != previous.get("source_date_raw")):
+            # Unchanged values are not a new incremental named gain.
+            refreshed["incremental_named_gain_observed"] = gain
+            refreshed["previous_scheme_sway_opinion"] = (
+                dict(old_sway) if isinstance(old_sway, Mapping) else None)
+        if terminal_observation is not None:
+            refreshed.update({
+                "completion_source_native_revision": terminal_observation["source_native_revision"],
+                "native_status_key": terminal_observation["native_status_key"],
+                "terminal_cause_observed": terminal_observation["terminal_cause_observed"],
+                "terminal_cause": terminal_observation["terminal_cause"],
+            })
+        if refreshed != previous:
+            _write(state_dir, {**ledger, "resolved": {
+                **resolved, "material_intervention": refreshed,
+            }})
+        return refreshed
     material = {
         "action_id": resolved["action_id"],
         "actor_character_id": resolved["actor_character_id"],

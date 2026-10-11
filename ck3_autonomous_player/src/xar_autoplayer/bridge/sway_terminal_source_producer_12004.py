@@ -5,6 +5,9 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 
+from .active_scheme_sway_completion_termination_private_transport import (
+    normalize_sway_common_native_end_12004,
+)
 from .sway_completion_causal_private_12004 import (
     consume_sway_end_causal_12004,
     normalize_sway_end_invocation_12004,
@@ -168,6 +171,59 @@ def _retained_end(read: Mapping[str, object] | None, original: Mapping[str, obje
     return None
 
 
+def _common_end_source(
+    read: Mapping[str, object] | None, original: Mapping[str, object],
+) -> dict[str, object] | None:
+    if read is None or not _same_instance(read, original) or "common_native_end" not in read:
+        return None
+    family = normalize_sway_common_native_end_12004(read["common_native_end"], read)
+    if not _same_instance(family, original):
+        return None
+    # Preserve partial and status0 returns independently of terminal admission.
+    return deepcopy(family)
+
+
+def _retained_common_end(
+    family: Mapping[str, object] | None, read: Mapping[str, object] | None,
+    original: Mapping[str, object],
+) -> dict[str, object] | None:
+    if family is None or family["available"] is not True or read is None:
+        return None
+    for record in reversed(family["records"]):
+        entry, returned = record["entry"], record["returned"]
+        if (record["original_forwarded_once"] is not True
+                or record["original_returned"] is not True
+                or any(frame["scheme_full_id_observed"] is not True
+                       or frame["scheme_full_id_raw_u32"] != original["scheme_instance_id"]
+                       or frame["scheme_instance_generation_u8"] != original["scheme_instance_generation"]
+                       for frame in (entry, returned))
+                or returned["status_observed"] is not True or returned["status_raw_i32"] != 1
+                or returned["owner_observed"] is not True
+                or returned["owner_character_full_id_raw_u32"] not in (
+                    original["actor_character_id"], 0xFFFFFFFF)):
+            continue
+        # The query stamp dates this copied read, never the native end event.
+        revision = read.get("source_snapshot_revision", read.get("snapshot_revision"))
+        date = read.get("source_date_raw", read.get("date_raw"))
+        source_read = {
+            "snapshot_revision": revision if _uint(revision, 64, minimum=1) else None,
+            "date_raw": date if _signed32(date) else None,
+            "exact_ck3_build": read.get("build_version", read.get("exact_ck3_build")),
+            "exe_sha256": read.get("executable_sha256", read.get("exe_sha256")),
+        }
+        return {
+            "original_instance": deepcopy(dict(original)),
+            "source_kind": "copied_common_native_end_original_return",
+            "native_status_raw": 1, "native_status_key": "terminated_unattributed",
+            "native_terminal_state_observed": True, "terminal_cause_observed": False,
+            "copied_common_native_end_record": deepcopy(record),
+            "copied_common_native_end_provenance": deepcopy({
+                key: value for key, value in family.items() if key != "records"}),
+            "source_read": source_read,
+        }
+    return None
+
+
 def _modifier(value: object) -> dict[str, object]:
     if (not isinstance(value, Mapping) or set(value) != {"observed", "present", "value"}
             or type(value["observed"]) is not bool or type(value["present"]) is not bool
@@ -218,6 +274,7 @@ def compose_sway_terminal_sources_12004(
     completion = _completion(completion_read, original)
     execution = _journal(execution_frame, "execution")
     termination = _journal(termination_frame, "termination")
+    common_end = _common_end_source(termination, original)
     pair = None
     causal = None
     if (execution is not None and termination is not None
@@ -236,6 +293,8 @@ def compose_sway_terminal_sources_12004(
         "original_instance": original,
         "current_instance_observation": _current_status(completion),
         "retained_end_observation": _retained_end(termination, original),
+        "common_native_end_source": deepcopy(common_end),
+        "retained_common_end_observation": _retained_common_end(common_end, termination, original),
         "cause_input_pair": deepcopy(pair), "causal_observation": deepcopy(causal),
         "terminal_cause_observed": causal is not None,
         "terminal_cause_key": None if causal is None else causal["cause_key"],

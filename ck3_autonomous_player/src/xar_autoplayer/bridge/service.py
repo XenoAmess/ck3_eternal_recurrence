@@ -864,7 +864,8 @@ class GameplayBridgeService:
                 scheme_instance_id=scheme_instance_id, after_sequence=0)
             return self._attach_sway_end_cause(result, execution_read=execution,
                                                termination_read=result)
-        return result
+        return self._attach_sway_terminal_sources(
+            result, termination_frame=result)
 
     def query_active_scheme_sway_outcome_opinion_private_v1(
         self, *, expected_revision: int, target_character_id: int,
@@ -890,6 +891,7 @@ class GameplayBridgeService:
     ) -> dict[str, object]:
         """Compose already copied actual4 inputs for the original applied Sway."""
         from ..sway_formal_consumer import read_sway_ledger
+        from ..sway_lifecycle_consumer import record_sway_common_native_end_observation
         from .sway_terminal_source_producer_12004 import compose_sway_terminal_sources_12004
 
         source = next((value for value in (completion_read, execution_frame,
@@ -916,6 +918,8 @@ class GameplayBridgeService:
             original_resolved=resolved, completion_read=completion_read,
             execution_frame=execution_frame, termination_frame=termination_frame,
             opinion_read=opinion_read)
+        record_sway_common_native_end_observation(
+            Path(state_dir), composition=composition)
         return {**result, "sway_terminal_sources_12004": composition}
 
     def bridge_diagnostics(self) -> dict[str, object]:

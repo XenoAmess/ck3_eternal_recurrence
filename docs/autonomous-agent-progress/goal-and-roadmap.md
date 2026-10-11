@@ -48,6 +48,13 @@ upgrades through its existing SDK and native selectors; see
 [economic upgrade targets](../ck3-native-ai/construction-known-economic-upgrades-12004.md).
 The values remain authored comparisons, with actual stock legality/cost and the
 existing independent receipt; no upgrade, completion or realized income is credited.
+The ordinary Sway observer now reads the existing completion/end/opinion paths,
+and persists a qualified copied neutral original-instance end after storage removal;
+see [Sway follow-up](../ck3-native-ai/sway-beneficial-terminal-followup-12004.md#2026-10-11-common-native-end-to-the-existing-follow-up).
+Fresh same-value opinion reads refresh query provenance without rearming consumption.
+Actual returned event frames stay distinct from read frames; terminal cause remains
+unknown. The known nonpositive-material selection gap is the next policy increment.
+This five-production-file connection is SOURCE_ADOPTED_NOT_RUN, with no M6 credit.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 
