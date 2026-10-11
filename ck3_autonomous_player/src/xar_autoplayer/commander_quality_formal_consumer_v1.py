@@ -53,52 +53,69 @@ def plan_commander_quality_formal_v1(
     if not isinstance(armies, list):
         return planned
     pursuit = plan.get("pursuit")
+    ordinary_scan = not isinstance(pursuit, Mapping)
     if isinstance(pursuit, Mapping):
-        army_id = pursuit.get("army_id")
+        army_ids = [pursuit.get("army_id")]
     else:
-        army_id = next((row.get("army_id") for row in armies
-                        if isinstance(row, Mapping)
-                        and row.get("controllable") is True), None)
-    if type(army_id) is not int:
-        return planned
+        army_ids = [row.get("army_id") for row in armies
+                    if isinstance(row, Mapping)
+                    and row.get("controllable") is True]
+    selection: dict[str, object] | None = None
+    unavailable_inputs: list[dict[str, object]] = []
+    for army_id in army_ids:
+        if type(army_id) is not int:
+            continue
+        try:
+            queried = service.query_army_commander_candidates_v1(
+                army_id, expected_revision=planned["revision"],
+            )
+        except (BridgeUnavailableError, UnsupportedStepError, ValueError) as error:
+            unavailable_selection = {
+                "schema": "xar.ck3.commander-quality-formal-consumer.v1",
+                "status": "input_unavailable", "formal_action_ready": False,
+                "selected_step": None, "baseline_selected_step": plan.get("selected_step"),
+                "assignment_executed": False, "reason": str(error),
+            }
+            if not ordinary_scan:
+                return {**planned, "plan": {**plan,
+                    "commander_quality_selection": unavailable_selection}}
+            unavailable_inputs.append({"army_id": army_id, "reason": str(error)})
+            if selection is None:
+                selection = unavailable_selection
+            continue
 
-    try:
-        queried = service.query_army_commander_candidates_v1(
-            army_id, expected_revision=planned["revision"],
-        )
-    except (BridgeUnavailableError, UnsupportedStepError, ValueError) as error:
-        return {**planned, "plan": {**plan, "commander_quality_selection": {
+        proposal = queried["commander_quality_proposal"]
+        step = proposal["selected_step"]
+        selection = {
             "schema": "xar.ck3.commander-quality-formal-consumer.v1",
-            "status": "input_unavailable", "formal_action_ready": False,
-            "selected_step": None, "baseline_selected_step": plan.get("selected_step"),
-            "assignment_executed": False, "reason": str(error),
-        }}}
-
-    proposal = queried["commander_quality_proposal"]
-    step = proposal["selected_step"]
-    selection = {
-        "schema": "xar.ck3.commander-quality-formal-consumer.v1",
-        "status": proposal["status"],
-        "automatic_consumption": True,
-        "formal_action_ready": isinstance(step, str),
-        "selected_step": step,
-        "baseline_selected_step": plan.get("selected_step"),
-        "assignment_executed": False,
-        "proposal": deepcopy(proposal),
-    }
-    if not isinstance(step, str):
-        return {**planned, "plan": {**plan, "commander_quality_selection": selection}}
-    action_plan = dict(plan)
-    action_plan.pop("required_step", None)
-    return {**planned, "plan": {
-        **action_plan,
-        "phase": "native_commander_quality_assignment",
-        "selected_step": step,
-        "reason": (
-            "a native-eligible commander improves the observed current native quality"
-            if proposal["status"] == "assign_better_candidate"
-            else "a native-eligible commander fills the observed empty commander role"
-        ),
-        "commander_quality_selection": selection,
-        "deferred_commander_baseline_plan": deepcopy(dict(plan)),
-    }}
+            "status": proposal["status"],
+            "automatic_consumption": True,
+            "formal_action_ready": isinstance(step, str),
+            "selected_step": step,
+            "baseline_selected_step": plan.get("selected_step"),
+            "assignment_executed": False,
+            "proposal": deepcopy(proposal),
+        }
+        if not isinstance(step, str):
+            continue
+        if unavailable_inputs:
+            selection["unavailable_inputs"] = unavailable_inputs
+        action_plan = dict(plan)
+        action_plan.pop("required_step", None)
+        return {**planned, "plan": {
+            **action_plan,
+            "phase": "native_commander_quality_assignment",
+            "selected_step": step,
+            "reason": (
+                "a native-eligible commander improves the observed current native quality"
+                if proposal["status"] == "assign_better_candidate"
+                else "a native-eligible commander fills the observed empty commander role"
+            ),
+            "commander_quality_selection": selection,
+            "deferred_commander_baseline_plan": deepcopy(dict(plan)),
+        }}
+    if selection is None:
+        return planned
+    if unavailable_inputs:
+        selection["unavailable_inputs"] = unavailable_inputs
+    return {**planned, "plan": {**plan, "commander_quality_selection": selection}}
