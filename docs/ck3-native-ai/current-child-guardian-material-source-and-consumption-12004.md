@@ -90,3 +90,10 @@ SDK88实际固定完整主线`306473f1`：45,796源码文件，45,773不可变�
 Native87初次prepare因把917对象与714实际argv误要求全等而RED，零compiler；已保留原源码与小回执，仅非递归移除确认为空的新输出目录。修正prepare后实际5个compiler均返回2／D8037，原始CP936日志保留，archive0／DLL0／无canonical发布。记录的编译环境只有四工具链变量，缺Windows系统项；后继attempt02正在补明确OS白名单，原因仍以实际构建回执为准。失败输出15,702,046B、后继额度4,277,168,098B与2MiB收据预留合计仍原4GiB；原runtime40GiB与10-12T16:47:28Z截止均不续。
 
 [实际配对SAVE](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/native86-r0102/ordinary-native87-adoption-save01/ROOT-ACTUAL-ADOPTION-SAVE.json)、[完整13项冻结](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/r102-final-saved-complete13-freeze/ROOT-ACTUAL-COMPLETE13-FREEZE.json)、[SDK88源码执行](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk88-source-preparation/SDK88-SOURCE-EXECUTION.json)、[原Native87实际RED](D:/codex-ck3-background-spill/g2-native87-production01/ROOT-NATIVE87-RESULT.json)。四研究组继续按各16任务复用子线程，不以64派发容量冒充持续活跃数；没有tests／fixture／FIRST。M4 complete、G2 6/8=75%、NW2 2/4=50%、M6 partial、M7 incomplete、自然跨代0保持。
+
+
+### 2026-10-12 07:39 中国标准时间 — Native88／SDK89 实际采用与 R103 配对保存
+
+Native88实际补编修正后的493，复用attempt02四GREEN与Native86其余真实来源，597成员archive及DLL链接均exit0；R103/SDK89已有13项恢复资格GREEN。这只证明构建和当前普通战役恢复，未验证新family字段或M6完整性。
+
+监护人request preference v2已源码整合至master `ff0e25d2`：martial focus消费独立validated total callback，缺失仍unknown，无raw fallback；保留0、负值、原profile与其他raw skills，source basis进入分组，普通materializer/CanSend/intent门禁不改。formal stock `$SKILL$`表达式getter链与effect educator仍未闭，不能据独立API冒教育表达式资格。当前SDK89/bdb仍v1；详细实际结果与后续源码边界见[当日日报](../autonomous-agent-progress/daily/2026-10-12.md)。
