@@ -1,0 +1,35 @@
+{
+  "schema": "lyd.r59-case10-and-unique27.permanent-index.v1",
+  "at_utc": "2026-10-11T09:19:45.972881+00:00",
+  "status": "READY_FOR_ROOT_IMPORT",
+  "facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-unique27-permanent-candidate-20261011-001\\FACTS.actual.json",
+    "bytes": 31501,
+    "sha256": "587b15a79144d3a56a18a4d39fadb04c113f2dbed13ceaed295a84c3871c0b20",
+    "archive_relative_path": "FACTS.actual.json"
+  },
+  "topic": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-unique27-permanent-candidate-20261011-001\\TOPIC.zh.md",
+    "bytes": 3265,
+    "sha256": "e4bc1a4c194146c1f75a36cd269dbb5c314b9df69d32ca3c6dea71f9b6d2a54a"
+  },
+  "original_raw_files": 36,
+  "original_raw_bytes": 122785,
+  "original_to_archive_mapping": "FACTS.actual.json.raw_mapping",
+  "importer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-source15-r53mutable-source17-docs-sourceonly-20261011-001\\import_reviewed_docs.py",
+    "bytes": 5074,
+    "sha256": "2be51856859373a1cddc5a563859321bed23c42ee824e6b860a0d898b4626820"
+  },
+  "author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-unique27-permanent-candidate-20261011-001\\seal_final.py",
+    "bytes": 18743,
+    "sha256": "a3e5d36184cc3a1c28da721eca65abaf3e501869fe7bfb27fd55928d0454d2df"
+  },
+  "native_SAVE_cache_PE_image_body_reads": 0,
+  "MAIN_writes": 0,
+  "tests_rerun": 0,
+  "previous_templates_not_rewritten": true,
+  "phase_I": "75% estimate / NOT_GREEN",
+  "business_credit": false
+}

@@ -1,0 +1,689 @@
+{
+  "schema": "lyd.r59-case10-and-unique27.permanent-facts.v1",
+  "at_utc": "2026-10-11T09:19:45.972881+00:00",
+  "status": "PUBLIC_CASE_AND_ADMINISTRATIVE_CLOSURE_COMPLETE_PARTIAL_BUSINESS_SCOPE",
+  "phase_I_progress_estimate_percent": 75,
+  "product_status": "NOT_GREEN",
+  "business_pass": false,
+  "R59": {
+    "run_root": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059",
+    "frozen_MAIN": "530d887250b470ac1edf8be0dcfd198a4b4ffbf8",
+    "scope": "PARTIAL_NATURAL_EVENT_CONTEXT_DISCOVERY",
+    "status": "PARTIAL_EVENT_CONTEXT_OBSERVED",
+    "complete_natural_intervals": 72,
+    "interval_hours": 24,
+    "elapsed_natural_hours": 1728,
+    "last_date_raw": 53146440,
+    "case_contract_qualified": true,
+    "gui_contract_qualified": true,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "event_identity": {
+      "status": "available",
+      "snapshot_revision": 366,
+      "date_raw": 53146440,
+      "current_event_instance_id": 101,
+      "event_definition_key": "bookmark.1070",
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      }
+    },
+    "options_observed": [
+      {
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true
+      },
+      {
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true
+      },
+      {
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true
+      }
+    ],
+    "partial_readiness": {
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "event_choice_actions": 0,
+    "school_choice_actions": 0,
+    "expiry_observed": null,
+    "formal_I3b": null,
+    "C3": null,
+    "I4_complete": null,
+    "cold_reload": null,
+    "fresh_full_365_cycle": null,
+    "original_case_summary_stage_normal_close_pending": true,
+    "later_normal_close_qualified": true,
+    "normal_close_ref": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-output\\normal-close-result.json",
+      "bytes": 14554,
+      "sha256": "31aba72d81d4bd2958a7c007f79d1106b220f8c67a610818a2b98c5b968bf297"
+    },
+    "native_zero_proof_original": {
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "alive_or_business_credit": false,
+      "managed_session_done": true,
+      "pid": 11744,
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0059",
+      "started_at": "2026-10-11T08:20:01.772717+00:00",
+      "finished_at": "2026-10-11T08:52:21.676338+00:00",
+      "exit_reason": "process_exit",
+      "process_exit_code": 0,
+      "shutdown": {
+        "nonce": "abd62cf802764cefb08421e56c5f1b28",
+        "ck3_pid": 11744,
+        "ck3_creation_date": "20261011082003.389868+000",
+        "ck3_exit_code": 0,
+        "job_active_processes_before_termination": 0,
+        "job_active_processes_final": 0,
+        "tree_gone": true,
+        "cleanup_proven": true,
+        "final_ck3_inventory": {
+          "tasklist_returncode": 0,
+          "tasklist_pids": [],
+          "wmi_pids": [],
+          "native_pids": [],
+          "inventory_backend": "tasklist+toolhelp32",
+          "processes": []
+        },
+        "watchdog_pid": 7892,
+        "watchdog_creation_date": "20261011082002.391855+000",
+        "watchdog_state_before": "running",
+        "watchdog_state_after": "absent",
+        "control_files_absent": {
+          "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\ck3.json": true,
+          "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\watchdog-abd62cf802764cefb08421e56c5f1b28.ready.json": true,
+          "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\ck3.watchdog_error": true,
+          "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\unsafe-cleanup.json": true
+        },
+        "contract_errors": [],
+        "ok": true
+      }
+    },
+    "native_projection": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\native-cleanup-projection.actual.json",
+      "bytes": 6441,
+      "sha256": "c0067b4abbea0bfd4723b7ca08a554939ff0ed7f13ba914101bc92016e844f5f"
+    },
+    "original_native_report_external_only": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\native-report.json",
+      "bytes": 8585338,
+      "sha256": "2cea243e0958a766ca2abd1fbcd9faee8779a257c654c93b0034794834278bf8"
+    },
+    "original_native_body_read_count_by_ROOT": 1,
+    "native_body_reads_by_this_author": 0,
+    "case_summary": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-result-summary.actual.json",
+      "bytes": 2962,
+      "sha256": "07f416a0686313866ca0ded4d9420d9b508f35c186622600413f90523cf4072d"
+    },
+    "typed_event_original": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-output\\i4-first-natural-event-context.actual-results.json",
+      "bytes": 38106,
+      "sha256": "f0d208e0ef6a37868c2f4e298a0f49d5c60ebc530b8c555513abecb9683a04d6"
+    },
+    "commands": [
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-run-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1608,
+          "sha256": "476f8af253ad838938e919e347b62bace705084d8636fa85d3aa8788b11395ab"
+        },
+        "exit_code": 0,
+        "larger_stdio_not_read_or_copied": [
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-run-command-20261011-001\\stdout.log",
+            "bytes_metadata_only": 2185854,
+            "existing_pin_source": {
+              "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-run-command-20261011-001\\RESULT.actual.json",
+              "bytes": 1608,
+              "sha256": "476f8af253ad838938e919e347b62bace705084d8636fa85d3aa8788b11395ab"
+            }
+          }
+        ]
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-verify-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1615,
+          "sha256": "c87ba305d0346ee3235b16ef1a28e1b6d30ae6e4f1aa41ffd1e04cb3ca5fff8b"
+        },
+        "exit_code": 0,
+        "larger_stdio_not_read_or_copied": [
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-verify-command-20261011-001\\stdout.log",
+            "bytes_metadata_only": 96834,
+            "existing_pin_source": {
+              "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-verify-command-20261011-001\\RESULT.actual.json",
+              "bytes": 1615,
+              "sha256": "c87ba305d0346ee3235b16ef1a28e1b6d30ae6e4f1aa41ffd1e04cb3ca5fff8b"
+            }
+          }
+        ]
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-allocate-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1948,
+          "sha256": "301531b9cb8cdcb079cd3b340b24acd5afc51726c50a7cc0a2f60e9a3ef552f1"
+        },
+        "exit_code": 0
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\stop-command-001\\RESULT.actual.json",
+          "bytes": 1234,
+          "sha256": "5a4feae62004fa2165dc2b7d8f56c49098173709b4faf15bc03c2a7a68c49f81"
+        },
+        "exit_code": 0
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-close-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1157,
+          "sha256": "803ca4efc66534e09f709157bdd31f43b980f7f955f61e446a58fa022d0de4e5"
+        },
+        "exit_code": 0
+      }
+    ],
+    "closeout_refs": {
+      "context": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\reviewed-context.json",
+        "bytes": 2992,
+        "sha256": "54e4763811ef4b51fad392bd7b8405aa42a252d4e638fdd54967b59bb6e6aef5"
+      },
+      "actual_release": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\release-command-001\\stdout.log",
+        "bytes": 1358,
+        "sha256": "586e8646549a569b678b2ee4321da46d363a26a473aedae619570da8f92cbe3c"
+      },
+      "stop_proof": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\keeper-stop-proof-001.json",
+        "bytes": 3142,
+        "sha256": "ba07f7fb6b9ad5b489cdc3bd98fdf6d9b930d2b51d8311b8b487cb0f21b562f7"
+      },
+      "final_offline_review": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\final-offline-root-review-001.json",
+        "bytes": 2425,
+        "sha256": "31a4aba448e706c9ea3a1fc1807f9c4a1f4098c1a73daa2ea08376fa6c10bd3d"
+      },
+      "display_restore": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\display-restore-001.json",
+        "bytes": 761,
+        "sha256": "1b09b2cfdc225a986b6f633a390c321c4d9fde2c45629d1dcaf5c4259d39548a"
+      },
+      "host-original-process-exit.json": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\host-original-process-exit.json",
+        "bytes": 247,
+        "sha256": "c73da2d043fb360d00af78adda88af1674fba37f2e3c7a037bdbda102d0dba5d"
+      },
+      "keeper-actual-parent-exit.json": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\keeper-actual-parent-exit.json",
+        "bytes": 613,
+        "sha256": "b3ef933258b7d24bb742044820fbf7e42c713d7139995ff719f15b5bd763b5a7"
+      }
+    },
+    "018_closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-018\\CLOSED-RESERVATION.actual.json",
+      "bytes": 5429,
+      "sha256": "05e7170439baafb7959a471ffe0d5473d278d746090c3de0ad62a9f143a6da76"
+    },
+    "018_closed_at_utc": "2026-10-11T08:58:41.296752+00:00",
+    "018_known_retained_bytes": 1028215204,
+    "018_closing_upper_bound_bytes": 1048576,
+    "018_carry_after_close_bytes": 136226205041,
+    "018_future_reserved_bytes": 0,
+    "018_AD_external_ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-018\\ADMISSION.actual.json",
+      "bytes": 10908,
+      "sha256": "f2223cb5d4e1012d6b3ad96c293a82f4f0753dbe790090d3ffe442ec40902fc0"
+    },
+    "018_measure_external_ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-018\\CLOSURE-MEASURE.actual.json",
+      "bytes": 33392,
+      "sha256": "5ec6a6c4253257bee36485d0df42d8153ef45ad94951d789f6b4bfee0bea4383"
+    }
+  },
+  "unique27": {
+    "scope": "PURPOSE_RETIRED_UNIQUE_OWN_SAVE_NOT_DUPLICATE",
+    "deleted_files": 27,
+    "logical_deleted_bytes": 2455993406,
+    "allocation_size_api_deleted_sum": 2456059904,
+    "free_change_exclusive_attribution": null,
+    "all_complete": true,
+    "no_reconstruction_promise": true,
+    "availability": "EXACT27_PURPOSE_RETIRED_PAYLOAD_ABSENT; ORIGINAL_METADATA_AND_MINIMUM_KNOWLEDGE_RETAINED",
+    "original_first_admit_failure": {
+      "original_result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1202,
+        "sha256": "c7153d13f6bd9cc42005eba59e3a79172e900beab0e22c30e9a485f098633497"
+      },
+      "exit_code": 1
+    },
+    "recovery_and_plan_apply_close_commands": [
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-recovery-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1235,
+          "sha256": "1f54a3d2023be8356a479bc65c8b3c0fa594b11be16e628bd70cb48c4dca5b70"
+        },
+        "exit_code": 0
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-plan-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1222,
+          "sha256": "d85db0a7086dd94f76994538c8f18f7e6bc5e874a71eb898fc1fe3b632bf8144"
+        },
+        "exit_code": 0
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-apply-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1226,
+          "sha256": "1c36dbe51228e489c597024431ae5deab17b1f32087e17eb8324e015a81165d3"
+        },
+        "exit_code": 0
+      },
+      {
+        "original_result": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-close-command-20261011-001\\RESULT.actual.json",
+          "bytes": 1197,
+          "sha256": "a5af8eecbc9c2c7ad1549192177feba685b6d23906dad6b0426f5d2458a49449"
+        },
+        "exit_code": 0
+      }
+    ],
+    "AD": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+      "bytes": 13159,
+      "sha256": "58d8e2b70d8205cd6fece31532f74acddde0b7ea8a33ae04701f58e346caf9fd"
+    },
+    "aggregate": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\AGGREGATE.actual.json",
+      "bytes": 2096,
+      "sha256": "efcbc511e584eef1a16f30cfed8f95d71e028a882de0b5b21dbae27929654364"
+    },
+    "event": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\CREDIT-EVENT.actual.json",
+      "bytes": 1461,
+      "sha256": "915374c4a13ea015c184d57615299e4886658c67bc2b684df5a1318375d2501d"
+    },
+    "single_use_claim": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\STORAGE-CREDIT-CLAIM.actual.json",
+      "bytes": 1178,
+      "sha256": "14fb436beeedefcfd17073bd49b255d650cce0f45be0b5851a0d35701bb0fd1a"
+    },
+    "CLOSED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+      "bytes": 2988,
+      "sha256": "ae1e38b29a047ab7e43f1f1ad21c3ec9fa22958f329d5b77d8759547305c53f8"
+    },
+    "actual_plan_external_ref_only": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\PLAN.actual.json",
+      "bytes": 34155,
+      "sha256": "7f041ca50a395509dbea0126a0095ee2218828bd738d41843ed5396f19493197"
+    },
+    "actual_batch_refs_external_only": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R7.actual.json",
+        "bytes": 9992,
+        "sha256": "d60bc7861e179edc40a0ebba1bd293f6ed9fba35441fbb1219dd2e505d67480c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R9.actual.json",
+        "bytes": 5408,
+        "sha256": "63bc93f087c3b1c2ba5af967695e108f8ec4118debf14a7165527c87f6db5c82"
+      }
+    ],
+    "measure_external_ref_only": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\MEASURE.actual.json",
+      "bytes": 7914,
+      "sha256": "271fc6933b92d8a204356212dd9d429d760e89cc1bc9c94665715389226122b1"
+    },
+    "closed_at_utc": "2026-10-11T09:13:08.316307+00:00",
+    "parent018_carry_bytes": 136226205041,
+    "admit_and_receipt_cost_before_credit_bytes": 1301867,
+    "carry_before_new_actual_event_bytes": 136227506908,
+    "new_credit_deducted_once_bytes": 2455993406,
+    "carry_after_close_bytes": 133771513502,
+    "future_reserved_bytes": 0,
+    "other_unspent_reserved_bytes": 0,
+    "old_credits_repeated_bytes": 0,
+    "retention_original": {
+      "raw_review_at_utc": "2026-11-10T09:12:54.432288+00:00",
+      "compact_review_at_utc": "2027-04-09T09:12:54.432288+00:00",
+      "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+      "original_quota_review_unchanged_at_utc": "2026-10-12T05:19:51.814083+00:00",
+      "payload_source_SAVE_cache_TTL_renewed": false,
+      "old_precharged_source_file_TTL_renewed": false,
+      "automatic_deletion": false
+    },
+    "business_credit": false
+  },
+  "protected_unchanged": [
+    "R10 original0240",
+    "R29 B3 diagnostic",
+    "R54 immutable seed",
+    "current Csr16/17/Cbr3",
+    "O15 Git objects",
+    "unclosed preparations"
+  ],
+  "raw_mapping": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\native-cleanup-projection.actual.json",
+        "bytes": 6441,
+        "sha256": "c0067b4abbea0bfd4723b7ca08a554939ff0ed7f13ba914101bc92016e844f5f"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/native-cleanup-projection.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-result-summary.actual.json",
+        "bytes": 2962,
+        "sha256": "07f416a0686313866ca0ded4d9420d9b508f35c186622600413f90523cf4072d"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/case-result-summary.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-output\\i4-first-natural-event-context.actual-results.json",
+        "bytes": 38106,
+        "sha256": "f0d208e0ef6a37868c2f4e298a0f49d5c60ebc530b8c555513abecb9683a04d6"
+      },
+      "archive_relative_path": "raw/R59/case-output/i4-first-natural-event-context.actual-results.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-output\\normal-close-result.json",
+        "bytes": 14554,
+        "sha256": "31aba72d81d4bd2958a7c007f79d1106b220f8c67a610818a2b98c5b968bf297"
+      },
+      "archive_relative_path": "raw/R59/case-output/normal-close-result.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-run-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1608,
+        "sha256": "476f8af253ad838938e919e347b62bace705084d8636fa85d3aa8788b11395ab"
+      },
+      "archive_relative_path": "raw/R59/i4-case10-run-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-verify-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1615,
+        "sha256": "c87ba305d0346ee3235b16ef1a28e1b6d30ae6e4f1aa41ffd1e04cb3ca5fff8b"
+      },
+      "archive_relative_path": "raw/R59/i4-case10-verify-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-allocate-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1948,
+        "sha256": "301531b9cb8cdcb079cd3b340b24acd5afc51726c50a7cc0a2f60e9a3ef552f1"
+      },
+      "archive_relative_path": "raw/R59/i4-case10-allocate-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-allocate-command-20261011-001\\stdout.log",
+        "bytes": 4333,
+        "sha256": "f2e7ed7d4f25e1752b6e36fdc0f73c1b8ef05a9e74384155453bb60c60f49e55"
+      },
+      "archive_relative_path": "raw/R59/i4-case10-allocate-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\stop-command-001\\RESULT.actual.json",
+        "bytes": 1234,
+        "sha256": "5a4feae62004fa2165dc2b7d8f56c49098173709b4faf15bc03c2a7a68c49f81"
+      },
+      "archive_relative_path": "raw/R59/stop-command-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\stop-command-001\\stdout.log",
+        "bytes": 1216,
+        "sha256": "738308550bae291fd7c2f1625587c15ae4bf7e469941fe1aac07584f2e84f4d4"
+      },
+      "archive_relative_path": "raw/R59/stop-command-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-close-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1157,
+        "sha256": "803ca4efc66534e09f709157bdd31f43b980f7f955f61e446a58fa022d0de4e5"
+      },
+      "archive_relative_path": "raw/R59/i4-case10-close-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case10-close-command-20261011-001\\stdout.log",
+        "bytes": 380,
+        "sha256": "cdca87981df298cfee57f004372d9ea5614099a2a33b7c659bd654a79cdc3315"
+      },
+      "archive_relative_path": "raw/R59/i4-case10-close-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\reviewed-context.json",
+        "bytes": 2992,
+        "sha256": "54e4763811ef4b51fad392bd7b8405aa42a252d4e638fdd54967b59bb6e6aef5"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/reviewed-context.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\release-command-001\\stdout.log",
+        "bytes": 1358,
+        "sha256": "586e8646549a569b678b2ee4321da46d363a26a473aedae619570da8f92cbe3c"
+      },
+      "archive_relative_path": "raw/R59/release-command-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\keeper-stop-proof-001.json",
+        "bytes": 3142,
+        "sha256": "ba07f7fb6b9ad5b489cdc3bd98fdf6d9b930d2b51d8311b8b487cb0f21b562f7"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/keeper-stop-proof-001.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\final-offline-root-review-001.json",
+        "bytes": 2425,
+        "sha256": "31a4aba448e706c9ea3a1fc1807f9c4a1f4098c1a73daa2ea08376fa6c10bd3d"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/final-offline-root-review-001.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\display-restore-001.json",
+        "bytes": 761,
+        "sha256": "1b09b2cfdc225a986b6f633a390c321c4d9fde2c45629d1dcaf5c4259d39548a"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/display-restore-001.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\host-original-process-exit.json",
+        "bytes": 247,
+        "sha256": "c73da2d043fb360d00af78adda88af1674fba37f2e3c7a037bdbda102d0dba5d"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/host-original-process-exit.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\keeper-actual-parent-exit.json",
+        "bytes": 613,
+        "sha256": "b3ef933258b7d24bb742044820fbf7e42c713d7139995ff719f15b5bd763b5a7"
+      },
+      "archive_relative_path": "raw/R59/bf-202609141645-5434332d4d--li-yu-dao--R0059/keeper-actual-parent-exit.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-018\\CLOSED-RESERVATION.actual.json",
+        "bytes": 5429,
+        "sha256": "05e7170439baafb7959a471ffe0d5473d278d746090c3de0ad62a9f143a6da76"
+      },
+      "archive_relative_path": "raw/R59/i4-root-storage-admission-20261011-018/CLOSED-RESERVATION.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+        "bytes": 2988,
+        "sha256": "ae1e38b29a047ab7e43f1f1ad21c3ec9fa22958f329d5b77d8759547305c53f8"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-storage-admission-20261011-001/CLOSED-RESERVATION.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\AGGREGATE.actual.json",
+        "bytes": 2096,
+        "sha256": "efcbc511e584eef1a16f30cfed8f95d71e028a882de0b5b21dbae27929654364"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-actual-20261011-001/AGGREGATE.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\CREDIT-EVENT.actual.json",
+        "bytes": 1461,
+        "sha256": "915374c4a13ea015c184d57615299e4886658c67bc2b684df5a1318375d2501d"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-actual-20261011-001/CREDIT-EVENT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\STORAGE-CREDIT-CLAIM.actual.json",
+        "bytes": 1178,
+        "sha256": "14fb436beeedefcfd17073bd49b255d650cce0f45be0b5851a0d35701bb0fd1a"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-actual-20261011-001/STORAGE-CREDIT-CLAIM.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+        "bytes": 13159,
+        "sha256": "58d8e2b70d8205cd6fece31532f74acddde0b7ea8a33ae04701f58e346caf9fd"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-storage-admission-20261011-001/ADMISSION.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-recovery-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1235,
+        "sha256": "1f54a3d2023be8356a479bc65c8b3c0fa594b11be16e628bd70cb48c4dca5b70"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-admit-recovery-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-recovery-command-20261011-001\\stdout.log",
+        "bytes": 399,
+        "sha256": "5fd88bd3f0c9b32912477ec9913a239658a4692f8dcf0bfa4d1ee54410deaa5e"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-admit-recovery-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-plan-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1222,
+        "sha256": "d85db0a7086dd94f76994538c8f18f7e6bc5e874a71eb898fc1fe3b632bf8144"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-plan-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-plan-command-20261011-001\\stdout.log",
+        "bytes": 258,
+        "sha256": "50901a052d0ba81658a66957850b44e2c5affdbedc81d8834d9e8aa2cb053240"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-plan-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-apply-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1226,
+        "sha256": "1c36dbe51228e489c597024431ae5deab17b1f32087e17eb8324e015a81165d3"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-apply-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-apply-command-20261011-001\\stdout.log",
+        "bytes": 528,
+        "sha256": "a72f02d411502f1a88ad4b13faf9266658b329a55c056a193a0ec0831f4a5988"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-apply-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-close-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1197,
+        "sha256": "a5af8eecbc9c2c7ad1549192177feba685b6d23906dad6b0426f5d2458a49449"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-close-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-close-command-20261011-001\\stdout.log",
+        "bytes": 455,
+        "sha256": "2940c9082a6e9dfd3a49e25647ab112c885b91ef358386c5e90ab018a2c2416f"
+      },
+      "archive_relative_path": "raw/unique27/r9-r7-unique-save-retirement-close-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1202,
+        "sha256": "c7153d13f6bd9cc42005eba59e3a79172e900beab0e22c30e9a485f098633497"
+      },
+      "archive_relative_path": "raw/unique27-original-admit-failure/r9-r7-unique-save-retirement-admit-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "raw/unique27-original-admit-failure/r9-r7-unique-save-retirement-admit-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\stderr.log",
+        "bytes": 1660,
+        "sha256": "010ac25e071a24aa7e2a40a9f1538609cc7c1ea36d1ef8d86ffa31e5601b7b88"
+      },
+      "archive_relative_path": "raw/unique27-original-admit-failure/r9-r7-unique-save-retirement-admit-command-20261011-001/stderr.log"
+    }
+  ],
+  "MAIN_import_executed": false,
+  "excluded": [
+    "native-report/wire body",
+    "SAVE",
+    "cache",
+    "PE",
+    "images",
+    "27-leaf plans/details",
+    "full MEASURE inventories",
+    "full argv/source inventories"
+  ]
+}

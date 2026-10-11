@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\admit.py", line 2, in <module>
+    if __name__=='__main__':run('admit',__file__)
+                            ~~~^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\bind_mature.py", line 51, in run
+    ns={'__name__':'reviewed_unique_'+kind,'__file__':str(path)};exec(compile(selected(kind),str(path),'exec'),ns);return ns['main']()
+                                                                                                                          ~~~~~~~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\admit.py", line 109, in main
+  File "C:\workspace\ck3_lyd_runtime_20261004\source15-r53-retirement-workflows-sourceonly-20261011-001\common.py", line 51, in parent
+    need(closed['status']=='CLOSED_NO_FURTHER_WRITES_RESERVED'and closed['remaining_reserved_peak_bytes']==0 and closed['reservation_id']==prior['reservation_id']and prior['owner_task']==ROOT and prior['coordinator_task']==COORD and closed['other_unspent_reservations_bytes_ROOT_verified']==0,'Actual same-owner closed predecessor required')
+                                                                                                                                                                                                                                         ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'other_unspent_reservations_bytes_ROOT_verified'

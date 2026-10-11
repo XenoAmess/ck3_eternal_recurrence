@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\admit_actual018.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\ADMISSION-REQUEST.actual.json",
+    "--sha256",
+    "06c7f1639a1e6b78bf847cf9f6a65e782d888dd831f935ac9ea703c467bbe778"
+  ],
+  "started_at_utc": "2026-10-11T09:12:54.122709+00:00",
+  "finished_at_utc": "2026-10-11T09:12:54.727748+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-recovery-command-20261011-001\\stdout.log",
+    "bytes": 399,
+    "sha256": "5fd88bd3f0c9b32912477ec9913a239658a4692f8dcf0bfa4d1ee54410deaa5e"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-recovery-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_subprocess_wait": true
+}

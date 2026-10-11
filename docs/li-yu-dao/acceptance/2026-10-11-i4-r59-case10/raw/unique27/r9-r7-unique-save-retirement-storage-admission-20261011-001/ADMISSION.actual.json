@@ -1,0 +1,263 @@
+{
+  "schema": "lyd-manual-coordinated-storage-admission-v1",
+  "at_utc": "2026-10-11T09:12:54.432288+00:00",
+  "capacity_status": "ALLOC_BUDGET_APPROVED",
+  "reservation_id": "lyd-r9-r7-unique-save-retirement-48MiB-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "machine_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\MACHINE-PROFILE.actual.json",
+    "bytes": 1160,
+    "sha256": "9ce38655d9c835f0db5aaf65d724318dd7db957d0e52e16f1b42b48a2276d109"
+  },
+  "policy": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "previous_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-018\\ADMISSION.actual.json",
+    "bytes": 10908,
+    "sha256": "f2223cb5d4e1012d6b3ad96c293a82f4f0753dbe790090d3ffe442ec40902fc0"
+  },
+  "previous_closed_reservation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-018\\CLOSED-RESERVATION.actual.json",
+    "bytes": 5429,
+    "sha256": "05e7170439baafb7959a471ffe0d5473d278d746090c3de0ad62a9f143a6da76"
+  },
+  "writer_rule": "One ROOT writer, R7 eighteen then R9 nine purpose-retired own SAVE leaves; no concurrent writer.",
+  "writer_scope": {
+    "UNIQUE_R7_R9": {
+      "plan": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-large-leaf-shortlist-sourceonly-20261011-001\\OWN-SAVE-LEAVES.actual.json",
+        "bytes": 28910,
+        "sha256": "6a847fd3b6bed604e0ba5728a3a019436d2aba9bd1c47d0342ef44b556de1241"
+      },
+      "executor": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-sourceonly-20261011-001\\unique_save_leaf.py",
+        "bytes": 7624,
+        "sha256": "77f6de4743eb6ce8eae558f4e4098119b596968bfb9837518b98ba3889be4c42"
+      },
+      "output_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001"
+    }
+  },
+  "this_write_peak_bytes": 50331648,
+  "unspent_reserved_peak_bytes": 50331648,
+  "estimated_peak_components": {
+    "two_unique_SAVE_batch_ledgers_bytes": 8388608,
+    "ROOT_commands_reviews_summary_bytes": 8388608,
+    "audit_transient_bytes": 4194304,
+    "remaining_receipt_margin_bytes": 29360128
+  },
+  "reservation_expires_at_utc": "2026-10-11T13:12:54.432288+00:00",
+  "current_project_usage_conservative_bytes": 136226320538,
+  "previous_closed_conservative_carry_bytes": 136226205041,
+  "small_package_exact_files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\admit_actual018.py",
+      "bytes": 1441,
+      "sha256": "b26dd065de66eb1849e19e8b45f2216eec4b7a65aee5eec7fb46cdfcbe7494cd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\ADMISSION-REQUEST.actual.json",
+      "bytes": 8568,
+      "sha256": "06c7f1639a1e6b78bf847cf9f6a65e782d888dd831f935ac9ea703c467bbe778"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-large-leaf-shortlist-sourceonly-20261011-001\\OWN-SAVE-LEAVES.actual.json",
+      "bytes": 28910,
+      "sha256": "6a847fd3b6bed604e0ba5728a3a019436d2aba9bd1c47d0342ef44b556de1241"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-sourceonly-20261011-001\\unique_save_leaf.py",
+      "bytes": 7624,
+      "sha256": "77f6de4743eb6ce8eae558f4e4098119b596968bfb9837518b98ba3889be4c42"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\admit.py",
+      "bytes": 74,
+      "sha256": "3b5f8dc380d1ea5600ba37dcefbf3bb3f742e7dceba0b8e2fcb8535f674d136e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\bind_mature.py",
+      "bytes": 6557,
+      "sha256": "2c5b5a5053c056bb75970439e93ff626dd830780a9b4d25d6b4bf15a5130dcf1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\close.py",
+      "bytes": 74,
+      "sha256": "de1b4d1050cc9ce89e3f595c8d949b8ecf25c69e8df5e7c599ff3703e3cde622"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\common.py",
+      "bytes": 6515,
+      "sha256": "974cded5a3442414d65587390ebd94155ca97ff9630a9d74381a0a3e5457df0a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 5039,
+      "sha256": "06fc66968b41b5ba6e7f85593cb84b7d47bb6b5b5d0da5603569bfe1971a8a11"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\README.zh.md",
+      "bytes": 2490,
+      "sha256": "ef3835c1d2bbfa42f432bfbaee0ac07491ba62a75390ad2de234c1e841465bda"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\ROOT-ARGV.pending.json",
+      "bytes": 870,
+      "sha256": "5a55115cb206cdabd4f6ac69434d71a603259801f80956aa9cfb76ae503b2bfa"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\ROOT-INPUTS.pending.json",
+      "bytes": 550,
+      "sha256": "d65f600274e18c051acf353be2b637e79bf9ed4de3638c2b8f819a7b3c91dc29"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\root_run.py",
+      "bytes": 7019,
+      "sha256": "460a5e6660f0c70d40ec66619e849fd77273af58b0c7b685519d6bf56861196a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\seal_source.py",
+      "bytes": 3290,
+      "sha256": "920526a3d05af6fd48ba97e306d145c83cfc40f8f3692b6eb74ebdf30909386c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\serial.py",
+      "bytes": 8647,
+      "sha256": "610a9387c8697156de36d720041173a74ac5821afbc87ea39cfb9372adfd3289"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\SOURCE-CHECK.actual.json",
+      "bytes": 733,
+      "sha256": "c5cea19f07618d808b6f49cdfd11cb8cc7bf0aae12324c132d5846248b682852"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 3085,
+      "sha256": "5da440dea3bfce9dce88064420a5c28ce2f3dcbd1c32d244601dbd5713960406"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-sourceonly-20261011-001\\README.md",
+      "bytes": 3522,
+      "sha256": "d5a394ecc2a27672cc727aa2b6af4e84746b59fc840aaf856779c1fe71b14d2e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-sourceonly-20261011-001\\ROOT-BINDING.pending.json",
+      "bytes": 837,
+      "sha256": "284e4ae39c112c05a816c7a09ff70effdefa777a2dde0f9afeba56c820ac17e3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-sourceonly-20261011-001\\SOURCE-CHECK.actual.json",
+      "bytes": 1800,
+      "sha256": "b8027a55646d180b3eea94716a7d49221fc963bc84ef5b38cc54b9458a9094ee"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-parent018-sourceonly-20261011-001\\run_with_actual018.py",
+      "bytes": 4619,
+      "sha256": "fdc7f84fb1c194b88a370cd21ceb983253d22d5f24a6d728a77e37b840fa277e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\INDEX.json",
+      "bytes": 1749,
+      "sha256": "941b4eaeb52f508f4c215c9ae9a191f09b4b17033f96f18560a65fbc0b7cce79"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\README.zh.md",
+      "bytes": 1426,
+      "sha256": "b6cfefaabd83841cded6812a19e117eaca6de2ec180064a2490a7cab73fff796"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\resume_after_failed_admit.py",
+      "bytes": 4384,
+      "sha256": "489a32b7a397543ea929d3757fed76adf4f59f48d3ad0ab92e00dbad40e3c43b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\ROOT-ARGV.json",
+      "bytes": 356,
+      "sha256": "edbe57d0e65cb26d0092621c1da11f6034f91ba5dca4aa3e5ec31a83824b22b5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\seal_source.py",
+      "bytes": 2074,
+      "sha256": "3b92f1346df65037e2a5d7f6c8099c3da0cd7f4bbce8b8a4a28f5c8dfe992d2c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\SOURCE-CHECK.actual.json",
+      "bytes": 382,
+      "sha256": "51c15efd4382a97d8c4861096346573c88f70db54d4c5f0d6a2825beceb4a146"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1202,
+      "sha256": "c7153d13f6bd9cc42005eba59e3a79172e900beab0e22c30e9a485f098633497"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\stderr.log",
+      "bytes": 1660,
+      "sha256": "010ac25e071a24aa7e2a40a9f1538609cc7c1ea36d1ef8d86ffa31e5601b7b88"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-admit-command-20261011-001\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "small_package_logical_bytes_charged_once": 115497,
+  "usage_basis": "Actual closed B4 conservative carry + exact unique small plan/source/request bytes once; no candidate/013 cleanup credit.",
+  "inherited_payloads_recounted_bytes": 0,
+  "cleanup_credit_deducted_bytes": 0,
+  "candidate_deleted_bytes_credited": 0,
+  "planned_explicit_purpose_retired_unique_SAVE_bytes": 2455993406,
+  "planned_unique_SAVE_files": 27,
+  "no_reconstruction_promise": true,
+  "duplicate_qualification": false,
+  "planned_retirement_is_not_actual_deletion": true,
+  "payload_copy_or_build_authorized": false,
+  "effective_project_quota_bytes": 137438953472,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "quota_override_inherited_unchanged_no_renewal": true,
+  "other_unspent_reservations_bytes": 0,
+  "volume": "C:/",
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "total_volume_bytes": 1023892852736,
+  "available_bytes": 618424565760,
+  "system_growth_reserve_bytes": 10737418240,
+  "safety_margin_bytes": 21474836480,
+  "required_free_bytes": 32262586368,
+  "focused_inventory_helper_source_pin": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "coordination_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\COORDINATION.actual.json",
+    "bytes": 1342,
+    "sha256": "22010dcc2b0e459c395f187515f89d39f2301bd7e805dae8671344f4eb7c00a1"
+  },
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "new_receipt_retention": {
+    "raw_review_at_utc": "2026-11-10T09:12:54.432288+00:00",
+    "compact_review_at_utc": "2027-04-09T09:12:54.432288+00:00",
+    "source_cache_SAVE_protection_renewed": false
+  },
+  "physical_usage_exact": false,
+  "whole_project_actual_usage_bytes_or_null": null,
+  "automatic_reservation_manager_implemented": false,
+  "automatic_deletion_authorized": false,
+  "ROOT_reviewed_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-recovery018-sourceonly-20261011-001\\ADMISSION-REQUEST.actual.json",
+    "bytes": 8568,
+    "sha256": "06c7f1639a1e6b78bf847cf9f6a65e782d888dd831f935ac9ea703c467bbe778"
+  },
+  "live_or_business_qualification": false
+}

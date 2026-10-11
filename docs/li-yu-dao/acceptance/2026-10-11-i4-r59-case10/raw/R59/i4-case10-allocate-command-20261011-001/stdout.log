@@ -1,0 +1,87 @@
+{
+  "status": "ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN",
+  "live": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059",
+  "task": "common-acceptance-12004-20261010-a21",
+  "sequence": 4815,
+  "keeper_ready": {
+    "at_utc": "2026-10-11T08:14:43.673541+00:00",
+    "lease": {
+      "schema": "xar.promo.screen-lease-cas/v1",
+      "task_id": "common-acceptance-12004-20261010-a21",
+      "expected_sequence": 4815,
+      "sequence": 4816,
+      "event_id": "48edcacb93c947439869021f79efdedb",
+      "updated_at_utc": "2026-10-11T08:14:43.258107+00:00",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "checkout_head": "530d887250b470ac1edf8be0dcfd198a4b4ffbf8",
+      "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "screen_resource": "ck3-screen:acquired"
+    },
+    "inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a21\\inputs.json",
+      "bytes": 822,
+      "sha256": "7056b6796a5def0a216a9f0658917324518fa865d6efd40356c7a983aa6b7827"
+    }
+  },
+  "keeper_pid": 17256,
+  "keeper_root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a21",
+  "register_to_keeper_ready_seconds": 3.520385300013004,
+  "context": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\ready-context.json",
+  "prepared_case": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\prepared\\prepared-case.json",
+  "actual_host_argv": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\frozen-argv.json",
+  "game_started": false,
+  "business_pass": false
+}
+{
+  "status": "ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN",
+  "live": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059",
+  "task": "common-acceptance-12004-20261010-a21",
+  "sequence": 4815,
+  "keeper_ready": {
+    "at_utc": "2026-10-11T08:14:43.673541+00:00",
+    "lease": {
+      "schema": "xar.promo.screen-lease-cas/v1",
+      "task_id": "common-acceptance-12004-20261010-a21",
+      "expected_sequence": 4815,
+      "sequence": 4816,
+      "event_id": "48edcacb93c947439869021f79efdedb",
+      "updated_at_utc": "2026-10-11T08:14:43.258107+00:00",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "checkout_head": "530d887250b470ac1edf8be0dcfd198a4b4ffbf8",
+      "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "screen_resource": "ck3-screen:acquired"
+    },
+    "inputs": {
+      "path": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a21\\inputs.json",
+      "bytes": 822,
+      "sha256": "7056b6796a5def0a216a9f0658917324518fa865d6efd40356c7a983aa6b7827"
+    }
+  },
+  "keeper_pid": 17256,
+  "keeper_root": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a21",
+  "register_to_keeper_ready_seconds": 3.520385300013004,
+  "context": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\ready-context.json",
+  "prepared_case": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\prepared\\prepared-case.json",
+  "actual_host_argv": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\frozen-argv.json",
+  "game_started": false,
+  "business_pass": false,
+  "keeper_actual_exit_code": 0,
+  "keeper_report": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "common-acceptance-12004-20261010-a21",
+    "last_sequence": 4833,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\ck3-common-runtime\\keepers\\20261011-a21\\journal.jsonl",
+    "at_utc": "2026-10-11T08:56:00.071016+00:00",
+    "entry_error": null,
+    "checkout_head": "530d887250b470ac1edf8be0dcfd198a4b4ffbf8",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0059"
+}

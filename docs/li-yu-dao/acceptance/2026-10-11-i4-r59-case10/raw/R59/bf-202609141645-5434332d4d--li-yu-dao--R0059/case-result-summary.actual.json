@@ -1,0 +1,101 @@
+{
+  "source": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-output\\i4-natural-event-context-result.json",
+    "bytes": 78883,
+    "sha256": "bdd23d646c75203e5d5b70dd678e41defae7d842d7af969c1986257d5a1944ea"
+  },
+  "selected_top_level": {
+    "schema": "ck3-mod-acceptance-i4-natural-event-discovery-v1",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0059",
+    "product": "li-yu-dao",
+    "case": "i4-natural-event-context",
+    "scope": "PARTIAL_NATURAL_EVENT_CONTEXT_DISCOVERY",
+    "status": "PARTIAL_EVENT_CONTEXT_OBSERVED",
+    "event": {
+      "keys": [
+        "frame",
+        "after_frame",
+        "typed_context",
+        "original_result",
+        "original_result_ref",
+        "event_choice_actions",
+        "school_choice_actions",
+        "complete_effect_preview_qualified"
+      ],
+      "scalar_fields": {
+        "event_choice_actions": 0,
+        "school_choice_actions": 0,
+        "complete_effect_preview_qualified": false
+      }
+    },
+    "natural_intervals": {
+      "count": 72,
+      "last": {
+        "keys": [
+          "step_id",
+          "elapsed_hours",
+          "date_raw",
+          "interval_kind",
+          "requested_interval_complete"
+        ],
+        "scalar_fields": {
+          "step_id": "case-natural-day-0074",
+          "elapsed_hours": 24,
+          "date_raw": 53146440,
+          "interval_kind": "event_boundary",
+          "requested_interval_complete": true
+        }
+      }
+    },
+    "elapsed_natural_hours": 1728,
+    "case_contract_qualified": true,
+    "gui_contract_qualified": true,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "initial_saved": {
+      "keys": [
+        "school_cooldown_present",
+        "raw_tick_observed",
+        "actor_id",
+        "faith_id",
+        "rite_id",
+        "headless",
+        "membership_present",
+        "landed_alive",
+        "expiry_date",
+        "remaining_days",
+        "other_eligibility_confirmed_by_actual_enabled_decision",
+        "checkpoint",
+        "preserved_checkpoint",
+        "save_body_reads",
+        "baseline_body_reads"
+      ],
+      "scalar_fields": {
+        "school_cooldown_present": true,
+        "raw_tick_observed": "349",
+        "actor_id": 31254,
+        "faith_id": 107,
+        "rite_id": 169,
+        "headless": true,
+        "membership_present": true,
+        "landed_alive": true,
+        "expiry_date": null,
+        "remaining_days": null,
+        "other_eligibility_confirmed_by_actual_enabled_decision": false,
+        "save_body_reads": 1,
+        "baseline_body_reads": 0
+      }
+    },
+    "event_choice_actions": 0,
+    "school_choice_actions": 0,
+    "normal_close_pending": true,
+    "expiry_observed": null,
+    "formal_I3b": null,
+    "C3": null,
+    "I4_complete": null,
+    "cold_reload": null,
+    "fresh_full_365_cycle": null
+  },
+  "native_body_reads": 0
+}

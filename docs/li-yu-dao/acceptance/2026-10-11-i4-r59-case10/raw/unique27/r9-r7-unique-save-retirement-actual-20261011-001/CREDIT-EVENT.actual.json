@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.exact-reclamation-credit-event.v1",
+  "event_id": "lyd-r9-r7-purpose-retired-unique-save-reclamation-20261011-001",
+  "deduplication_key": "lyd-r9-r7-purpose-retired-unique-save-reclamation-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\AGGREGATE.actual.json",
+    "bytes": 2096,
+    "sha256": "efcbc511e584eef1a16f30cfed8f95d71e028a882de0b5b21dbae27929654364"
+  },
+  "actual_batch_results": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R7.actual.json",
+      "bytes": 9992,
+      "sha256": "d60bc7861e179edc40a0ebba1bd293f6ed9fba35441fbb1219dd2e505d67480c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R9.actual.json",
+      "bytes": 5408,
+      "sha256": "63bc93f087c3b1c2ba5af967695e108f8ec4118debf14a7165527c87f6db5c82"
+    }
+  ],
+  "deleted_files": 27,
+  "logical_deleted_bytes": 2455993406,
+  "allocation_size_api_deleted_sum": 2456059904,
+  "retirement_kind": "explicit-purpose-retired-unique-own-save",
+  "no_reconstruction_promise": true,
+  "duplicate_qualification": false,
+  "reservation_claimed_or_consumed": false,
+  "future_reservation_reference": null,
+  "old_credit_repeated": false,
+  "business_credit": false
+}

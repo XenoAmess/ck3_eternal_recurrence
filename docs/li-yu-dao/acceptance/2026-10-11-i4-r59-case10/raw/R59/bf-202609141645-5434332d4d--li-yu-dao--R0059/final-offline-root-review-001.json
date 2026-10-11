@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-11T08:55:59.181377+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0059",
+  "screen_task": "common-acceptance-12004-20261010-a21",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\final-offline-001\\steam-moved.png",
+    "bytes": 901870,
+    "sha256": "40a3a60bcfc8f65f9f75137367ea820cfd0cb407f398358b5b5833fb5d991009"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\final-offline-001\\steam-frame-freshness.json",
+    "bytes": 1252,
+    "sha256": "d023ff374a3ecd34cbaa6f4278b3fd69722ea89723a2e70d640b429a989557a7"
+  },
+  "visual_observation": "ROOT directly reviewed the new original 1920x1080 moved Steam frame; the bottom status explicitly reads 离线模式, and the CK3 window is absent. Reversible Steam window movement produced changed live pixels.",
+  "ROOT_reviewed_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\ROOT-final-close-request.actual.json",
+    "bytes": 2726,
+    "sha256": "94225fd71449d5eedcf045d1e57b12280c5711a4027c4948384904220b6bb09d"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\native-report.json",
+    "bytes": 8585338,
+    "sha256": "2cea243e0958a766ca2abd1fbcd9faee8779a257c654c93b0034794834278bf8"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\native-cleanup-projection.actual.json",
+    "bytes": 6441,
+    "sha256": "c0067b4abbea0bfd4723b7ca08a554939ff0ed7f13ba914101bc92016e844f5f"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "c73da2d043fb360d00af78adda88af1674fba37f2e3c7a037bdbda102d0dba5d"
+  },
+  "normal_close_result": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\case-output\\normal-close-result.json",
+    "bytes": 14554,
+    "sha256": "31aba72d81d4bd2958a7c007f79d1106b220f8c67a610818a2b98c5b968bf297"
+  },
+  "normal_close_qualified": true,
+  "business_pass": false
+}

@@ -1,0 +1,306 @@
+{
+  "root_normal_gui_review": {
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0059",
+    "reviewer": "/root",
+    "pid": 11744,
+    "create_time": 1791706803.3898685,
+    "original_hold_deadline": 1791714327.8720427,
+    "at_utc": "2026-10-11T08:52:20.350472+00:00",
+    "normal_gui_quit": true,
+    "autosave_unchecked_observed": true,
+    "autosave_unchecked_screenshot": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step005.png",
+      "bytes": 1563789,
+      "sha256": "0932ea82a30d2dca539e0610118e6ecbfc023b52c85b484a6144f3a4e8e070cf"
+    },
+    "final_click": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\final-quit-click.png.json",
+      "bytes": 1483,
+      "sha256": "b1729b7a25ad1c2fcb5bb06b9e9a2e48eb275ebff0014e59a8a12aa5abb9edba"
+    },
+    "evidence": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\desktop.png",
+        "bytes": 2354518,
+        "sha256": "733c291c5dfd14f8d9df54d1d37e8341919071f77b2b9e0252637d700cc28248"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\capture.actual.json",
+        "bytes": 700,
+        "sha256": "dc7940557987b942086a55eb7dce6fd7e2bdfd2955577732095361991c7a48dd"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\escape-result.actual.json",
+        "bytes": 614,
+        "sha256": "9c40807b6e016329092b5f0ba85a836be51a65cde83e4d3d70f07d98cd314427"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step003.png",
+        "bytes": 2006062,
+        "sha256": "a221915ce4562a2c009464929b0a492d5c5d58e54d26bc419c6503a28b6a4f36"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\pause-menu-click.png.json",
+        "bytes": 1489,
+        "sha256": "6c643839ffeb531766dcccfde02dc729312b0c65f3eddada3c6bcdae714530ee"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\quit-menu-click.png",
+        "bytes": 1708889,
+        "sha256": "c184e585b65d41b97530423ae84e5d19fd502a4f6d588c6e59fdcc7f80f39252"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\quit-menu-click.png.json",
+        "bytes": 1481,
+        "sha256": "3a8879dc415f7593955f1053d140484db16008a1f39534ddf58e1970c89ec659"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step004.png",
+        "bytes": 1581437,
+        "sha256": "7d18392f25cf14b16355fe39267211c9415f107827b72337eb9e12268e262092"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\unchecked-click.png",
+        "bytes": 1572755,
+        "sha256": "de858c1c9d51b4d10bc69be4c7f93911c0417b99a1c28b8f1f7848d7c30a86bb"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\unchecked-click.png.json",
+        "bytes": 1481,
+        "sha256": "c2fa8f7dd4af71081542bc873eee5988b0db57cb21d314f5fad66080436d1215"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step005.png",
+        "bytes": 1563789,
+        "sha256": "0932ea82a30d2dca539e0610118e6ecbfc023b52c85b484a6144f3a4e8e070cf"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\final-quit-click.png",
+        "bytes": 1573192,
+        "sha256": "e722a6e6af9d7ba1b00d637342e344791740f23c38c3d0b459f3155d8baeb9b4"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\final-quit-click.png.json",
+        "bytes": 1483,
+        "sha256": "b1729b7a25ad1c2fcb5bb06b9e9a2e48eb275ebff0014e59a8a12aa5abb9edba"
+      }
+    ],
+    "observed_route": "ROOT directly reviewed original 1920x1080 Chinese Quit dialog, unchecked autosave_exit, then clicked Quit to desktop using the canonical mapper.",
+    "business_pass": false,
+    "original_public_normal_close_qualified": false
+  },
+  "operator_normal_gui_review": {
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0059",
+    "reviewer": "/root",
+    "pid": 11744,
+    "create_time": 1791706803.3898685,
+    "original_hold_deadline": 1791714327.8720427,
+    "at_utc": "2026-10-11T08:52:20.350472+00:00",
+    "normal_gui_quit": true,
+    "autosave_unchecked_observed": true,
+    "autosave_unchecked_screenshot": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step005.png",
+      "bytes": 1563789,
+      "sha256": "0932ea82a30d2dca539e0610118e6ecbfc023b52c85b484a6144f3a4e8e070cf"
+    },
+    "final_click": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\final-quit-click.png.json",
+      "bytes": 1483,
+      "sha256": "b1729b7a25ad1c2fcb5bb06b9e9a2e48eb275ebff0014e59a8a12aa5abb9edba"
+    },
+    "evidence": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\desktop.png",
+        "bytes": 2354518,
+        "sha256": "733c291c5dfd14f8d9df54d1d37e8341919071f77b2b9e0252637d700cc28248"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\capture.actual.json",
+        "bytes": 700,
+        "sha256": "dc7940557987b942086a55eb7dce6fd7e2bdfd2955577732095361991c7a48dd"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\escape-result.actual.json",
+        "bytes": 614,
+        "sha256": "9c40807b6e016329092b5f0ba85a836be51a65cde83e4d3d70f07d98cd314427"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step003.png",
+        "bytes": 2006062,
+        "sha256": "a221915ce4562a2c009464929b0a492d5c5d58e54d26bc419c6503a28b6a4f36"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\pause-menu-click.png.json",
+        "bytes": 1489,
+        "sha256": "6c643839ffeb531766dcccfde02dc729312b0c65f3eddada3c6bcdae714530ee"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\quit-menu-click.png",
+        "bytes": 1708889,
+        "sha256": "c184e585b65d41b97530423ae84e5d19fd502a4f6d588c6e59fdcc7f80f39252"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\quit-menu-click.png.json",
+        "bytes": 1481,
+        "sha256": "3a8879dc415f7593955f1053d140484db16008a1f39534ddf58e1970c89ec659"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step004.png",
+        "bytes": 1581437,
+        "sha256": "7d18392f25cf14b16355fe39267211c9415f107827b72337eb9e12268e262092"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\unchecked-click.png",
+        "bytes": 1572755,
+        "sha256": "de858c1c9d51b4d10bc69be4c7f93911c0417b99a1c28b8f1f7848d7c30a86bb"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\unchecked-click.png.json",
+        "bytes": 1481,
+        "sha256": "c2fa8f7dd4af71081542bc873eee5988b0db57cb21d314f5fad66080436d1215"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\step005.png",
+        "bytes": 1563789,
+        "sha256": "0932ea82a30d2dca539e0610118e6ecbfc023b52c85b484a6144f3a4e8e070cf"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\final-quit-click.png",
+        "bytes": 1573192,
+        "sha256": "e722a6e6af9d7ba1b00d637342e344791740f23c38c3d0b459f3155d8baeb9b4"
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\root-manual-quit-001\\final-quit-click.png.json",
+        "bytes": 1483,
+        "sha256": "b1729b7a25ad1c2fcb5bb06b9e9a2e48eb275ebff0014e59a8a12aa5abb9edba"
+      }
+    ],
+    "observed_route": "ROOT directly reviewed original 1920x1080 Chinese Quit dialog, unchecked autosave_exit, then clicked Quit to desktop using the canonical mapper.",
+    "business_pass": false,
+    "original_public_normal_close_qualified": false
+  },
+  "normal_quit_automation": null,
+  "normal_quit_automation_failure_preserved": null,
+  "retained_handle": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 11744,
+    "create_time": 1791706803.3898685,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "native_zero_proof": {
+    "status": "not_applicable",
+    "reason": "finished_native_process_exit_zero_cleanup_proven",
+    "alive_or_business_credit": false,
+    "managed_session_done": true,
+    "pid": 11744,
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0059",
+    "started_at": "2026-10-11T08:20:01.772717+00:00",
+    "finished_at": "2026-10-11T08:52:21.676338+00:00",
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "abd62cf802764cefb08421e56c5f1b28",
+      "ck3_pid": 11744,
+      "ck3_creation_date": "20261011082003.389868+000",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 7892,
+      "watchdog_creation_date": "20261011082002.391855+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\ck3.json": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\watchdog-abd62cf802764cefb08421e56c5f1b28.ready.json": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\ck3.watchdog_error": true,
+        "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "finish_hold_rows": [
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "plan": {
+        "id": "acceptance-normal-exit-finish-hold",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "started_at": "2026-10-11T08:52:26.057769+00:00",
+      "ok": true,
+      "result": {
+        "hold_finished": true
+      },
+      "resolved_expect": {
+        "hold_finished": true
+      },
+      "after_snapshot": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 11744,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0059",
+        "started_at": "2026-10-11T08:20:01.772717+00:00",
+        "finished_at": "2026-10-11T08:52:21.676338+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "abd62cf802764cefb08421e56c5f1b28",
+          "ck3_pid": 11744,
+          "ck3_creation_date": "20261011082003.389868+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 7892,
+          "watchdog_creation_date": "20261011082002.391855+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\watchdog-abd62cf802764cefb08421e56c5f1b28.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-context-20261011-010\\state\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finished_at": "2026-10-11T08:52:26.309099+00:00"
+    }
+  ],
+  "host_finished_at": "2026-10-11T08:52:29.703086+00:00",
+  "managed_thread_finished": true,
+  "cleanup_ok": true,
+  "host_error": null,
+  "failure_shutdown_proof": null,
+  "failure_preserved": false,
+  "failure_lifecycle_completed": false,
+  "business_pass": false,
+  "normal_close_qualified": true
+}

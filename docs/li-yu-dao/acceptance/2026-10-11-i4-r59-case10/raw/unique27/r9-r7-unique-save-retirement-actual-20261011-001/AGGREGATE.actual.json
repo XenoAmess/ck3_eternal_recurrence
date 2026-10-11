@@ -1,0 +1,50 @@
+{
+  "schema": "lyd.purpose-retired-own-save.serial-aggregate.v1",
+  "at_utc": "2026-10-11T09:13:07.614011+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 13159,
+    "sha256": "58d8e2b70d8205cd6fece31532f74acddde0b7ea8a33ae04701f58e346caf9fd"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\PLAN.actual.json",
+    "bytes": 34155,
+    "sha256": "7f041ca50a395509dbea0126a0095ee2218828bd738d41843ed5396f19493197"
+  },
+  "actual_batch_results": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R7.actual.json",
+      "bytes": 9992,
+      "sha256": "d60bc7861e179edc40a0ebba1bd293f6ed9fba35441fbb1219dd2e505d67480c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R9.actual.json",
+      "bytes": 5408,
+      "sha256": "63bc93f087c3b1c2ba5af967695e108f8ec4118debf14a7165527c87f6db5c82"
+    }
+  ],
+  "original_batch_commands": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R7.command.json",
+      "bytes": 1255,
+      "sha256": "3c47511b8eae9aa20c28d845cf656cd2b957fea8ae7856b1cdf66850ba0908a2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-actual-20261011-001\\BATCH-R9.command.json",
+      "bytes": 1255,
+      "sha256": "06084b94fd8144bc0ea1aebbe91fe5f75c0683aca6d545c7eddbc1a3ba37d1d0"
+    }
+  ],
+  "deleted_files": 27,
+  "logical_deleted_bytes": 2455993406,
+  "allocation_size_api_deleted_sum": 2456059904,
+  "all_complete": true,
+  "failure": null,
+  "stopped_no_further_writes": true,
+  "no_reconstruction_promise": true,
+  "duplicate_qualification": false,
+  "old_credit_repeated": false,
+  "original_deadlines_renewed": false,
+  "unreported_partial_deletion_is_not_credited": true,
+  "business_credit": false
+}

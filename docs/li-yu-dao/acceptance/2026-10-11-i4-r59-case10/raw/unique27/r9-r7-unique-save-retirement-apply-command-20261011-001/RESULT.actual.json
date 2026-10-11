@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\serial.py",
+    "--phase",
+    "apply",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-workflow-sourceonly-20261011-001\\APPLY-REQUEST.actual.json",
+    "--sha256",
+    "9bdcbc30d287e3dbb344541051b1594af948c575a4d368885e63338985399095"
+  ],
+  "started_at_utc": "2026-10-11T09:12:55.806329+00:00",
+  "finished_at_utc": "2026-10-11T09:13:07.649929+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-apply-command-20261011-001\\stdout.log",
+    "bytes": 528,
+    "sha256": "a72f02d411502f1a88ad4b13faf9266658b329a55c056a193a0ec0831f4a5988"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-r7-unique-save-retirement-apply-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_subprocess_wait": true
+}
