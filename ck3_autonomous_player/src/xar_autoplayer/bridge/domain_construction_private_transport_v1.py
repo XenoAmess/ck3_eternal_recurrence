@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Mapping
+import json
+import math
+import time
 import uuid
 
 from ..construction_formal_consumer import (
@@ -105,21 +108,157 @@ def _binding(driver: object, *, expected_revision: int,
     return snapshot
 
 
+_CONSTRUCTION_DIAGNOSTIC_MARKER = "construction_transport_v1"
+_CONSTRUCTION_DIAGNOSTIC_LIMIT = 4096
+
+
+def _diagnostic_scalar(value: object, text_limit: int = 128) -> object:
+    """Project a scalar without repr, arbitrary-object copying, or big encoding."""
+    if value is None or type(value) is bool:
+        return value
+    if type(value) is int:
+        return value if -(2**63) <= value < 2**63 else None
+    if type(value) is float:
+        return value if math.isfinite(value) else None
+    if type(value) is str:
+        return value[:text_limit].encode("utf-8", errors="replace")[:text_limit].decode(
+            "utf-8", errors="ignore")
+    return None
+
+
+def _construction_failure_diagnostic(
+    frame: object, *, step: str, revision: int, request_id: str,
+    timeout_seconds: object, wait_elapsed_seconds: float,
+) -> dict[str, object]:
+    """A bounded projection of this wait return, never an original wire receipt."""
+    mapping = isinstance(frame, Mapping)
+    envelope_matches = (mapping
+                        and frame.get("type") == "command_result"
+                        and frame.get("protocol_version") == 1
+                        and frame.get("request_id") == request_id)
+    result = frame.get("result") if mapping else None
+    classification = (
+        "result_absent_cause_unknown" if frame is None else
+        "invalid_envelope" if not envelope_matches else
+        "matched_native_rejected" if frame.get("ok") is False else
+        "invalid_result"
+    )
+    diagnostic: dict[str, object] = {
+        "schema_version": 1,
+        "source": _CONSTRUCTION_DIAGNOSTIC_MARKER,
+        "diagnostic_only": True,
+        "classification": classification,
+        "request_id": _diagnostic_scalar(request_id, 160),
+        "step": _diagnostic_scalar(step, 96),
+        "expected_native_revision": _diagnostic_scalar(revision),
+        "effective_timeout_seconds": _diagnostic_scalar(timeout_seconds),
+        "wait_elapsed_seconds": _diagnostic_scalar(round(wait_elapsed_seconds, 6)),
+        "frame_python_type": _diagnostic_scalar(type(frame).__name__, 64),
+        "gate_mapping": mapping,
+        "gate_type": mapping and frame.get("type") == "command_result",
+        "gate_protocol": mapping and frame.get("protocol_version") == 1,
+        "gate_request_id": mapping and frame.get("request_id") == request_id,
+        "gate_ok": mapping and frame.get("ok") is True,
+        "gate_result_mapping": mapping and isinstance(result, Mapping),
+    }
+    if mapping:
+        for key, limit in (("type", 64), ("protocol_version", 64),
+                           ("request_id", 160), ("ok", 64)):
+            diagnostic["received_" + key] = _diagnostic_scalar(frame.get(key), limit)
+    # Business/source fields only belong to this request after all identity
+    # checks match. A mismatched frame cannot supply this request's evidence.
+    if envelope_matches:
+        diagnostic["native_error"] = _diagnostic_scalar(frame.get("error"), 512)
+        diagnostic["result_python_type"] = _diagnostic_scalar(type(result).__name__, 64)
+        if isinstance(result, Mapping):
+            diagnostic["result_step"] = _diagnostic_scalar(result.get("step"), 96)
+            diagnostic["result_accepted"] = _diagnostic_scalar(result.get("accepted"))
+        # Rejected construction returns its probe at frame top level, not
+        # result.private_probe. Follow only these fixed paths, never a DTO/list.
+        fields = (
+            ("probe_status", ("private_probe", "status"), 64),
+            ("probe_failure", ("private_probe", "failure"), 128),
+            ("probe_schema_version", ("private_probe", "schema_version"), 64),
+            ("probe_advertised", ("private_probe", "advertised"), 64),
+            ("probe_snapshot_revision", ("private_probe", "snapshot_revision"), 64),
+            ("probe_date_raw", ("private_probe", "date_raw"), 64),
+            ("probe_proof_epoch", ("private_probe", "proof_epoch"), 64),
+            ("model_status", ("private_probe", "player_model_sources", "status"), 64),
+            ("model_failure", ("private_probe", "player_model_sources", "failure"), 128),
+            ("model_snapshot_revision", ("private_probe", "player_model_sources", "snapshot_revision"), 64),
+            ("model_date_raw", ("private_probe", "player_model_sources", "date_raw"), 64),
+            ("model_actor_character_id", ("private_probe", "player_model_sources", "player_character_id"), 64),
+            ("world_status", ("private_probe", "player_world_building_sources", "status"), 64),
+            ("world_failure", ("private_probe", "player_world_building_sources", "failure"), 128),
+            ("definition_identity_stage", ("private_probe", "player_world_building_sources", "definition_identity_diagnostic", "stage"), 64),
+            ("definition_identity_failed_index", ("private_probe", "player_world_building_sources", "definition_identity_diagnostic", "failed_index"), 64),
+        )
+        for name, path, limit in fields:
+            value = frame
+            for component in path:
+                value = value.get(component) if isinstance(value, Mapping) else None
+            diagnostic[name] = _diagnostic_scalar(value, limit)
+    # The shape and keys are finite. Further shorten optional text if a future
+    # field addition exceeds the byte budget; mandatory keys remain present.
+    def encoded_size() -> int:
+        return len(json.dumps(diagnostic, ensure_ascii=False, separators=(",", ":"),
+                              allow_nan=False).encode("utf-8"))
+    while encoded_size() > _CONSTRUCTION_DIAGNOSTIC_LIMIT:
+        candidates = [key for key, value in diagnostic.items()
+                      if type(value) is str and value
+                      and key not in {"source", "classification"}]
+        if not candidates:
+            # Fixed keys with null/scalar values are far below this limit;
+            # this is an explicit bounded fallback, never a full-frame copy.
+            return {"schema_version": 1, "source": _CONSTRUCTION_DIAGNOSTIC_MARKER,
+                    "diagnostic_only": True, "classification": classification,
+                    "projection_limit_reached": True,
+                    "request_id": _diagnostic_scalar(request_id, 160),
+                    "step": _diagnostic_scalar(step, 96),
+                    "native_error": _diagnostic_scalar(diagnostic.get("native_error"), 128),
+                    "definition_identity_stage": diagnostic.get("definition_identity_stage"),
+                    "probe_snapshot_revision": diagnostic.get("probe_snapshot_revision"),
+                    "probe_date_raw": diagnostic.get("probe_date_raw"),
+                    "probe_proof_epoch": diagnostic.get("probe_proof_epoch")}
+        key = max(candidates, key=lambda item: len(diagnostic[item].encode("utf-8")))
+        diagnostic[key] = _diagnostic_scalar(
+            diagnostic[key], len(diagnostic[key].encode("utf-8")) // 2)
+        diagnostic["text_truncated_to_fit"] = True
+    return diagnostic
+
+
+def construction_transport_diagnostic(error: BaseException) -> dict[str, object] | None:
+    """Expose only our bounded error attachment, not plan/cause/exception objects."""
+    diagnostic = getattr(error, "_construction_transport_diagnostic", None)
+    if (type(diagnostic) is dict
+            and diagnostic.get("source") == _CONSTRUCTION_DIAGNOSTIC_MARKER):
+        return diagnostic
+    return None
+
+
 def _send(driver: object, step: str, revision: int, request_id: str) -> dict[str, object]:
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": step, "expected_revision": revision,
     })
+    wait_started = time.monotonic()
     frame = driver.state.wait_for_command_result(
         request_id, driver.command_timeout_seconds
     )
+    wait_elapsed = time.monotonic() - wait_started
     if not (isinstance(frame, Mapping)
             and frame.get("type") == "command_result"
             and frame.get("protocol_version") == 1
             and frame.get("request_id") == request_id
             and frame.get("ok") is True
             and isinstance(frame.get("result"), Mapping)):
-        raise BridgeUnavailableError(f"{step} native result missing/rejected; keep action pending if submitted")
+        error = BridgeUnavailableError(f"{step} native result missing/rejected; keep action pending if submitted")
+        error._construction_transport_diagnostic = _construction_failure_diagnostic(
+            frame, step=step, revision=revision, request_id=request_id,
+            timeout_seconds=driver.command_timeout_seconds,
+            wait_elapsed_seconds=wait_elapsed,
+        )
+        raise error
     return dict(frame["result"])
 
 
@@ -530,8 +669,12 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
         pending = {**pending, "native_submit_error_type": type(error).__name__,
                    "native_submit_error_message": str(error)}
         write_construction_ledger(state_dir, {**ledger, "pending": pending})
-        raise StepPostconditionError("construction native submit uncertain; query state before retry",
-                                     selected_step=SUBMIT_STEP, step_result=pending) from error
+        wrapped = StepPostconditionError("construction native submit uncertain; query state before retry",
+                                         selected_step=SUBMIT_STEP, step_result=pending)
+        diagnostic = construction_transport_diagnostic(error)
+        if diagnostic is not None:
+            wrapped._construction_transport_diagnostic = diagnostic
+        raise wrapped from error
     # Preserve the actual body before interpreting the ACK. R80 returned a
     # body, but its failed predicate discarded which ACK field disagreed.
     # The later readonly world independently exposed a different selection.

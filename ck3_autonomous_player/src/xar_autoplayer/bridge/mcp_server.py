@@ -76,6 +76,7 @@ from xar_autoplayer.vanilla_events import (
 from xar_autoplayer.vanilla_events.portable_evidence import EvidenceBundleError
 
 from .driver import (
+    BridgeUnavailableError,
     DevelopmentReportDriver,
     GameplayBridgeDriver,
     HybridGameplayDriver,
@@ -2539,7 +2540,22 @@ def create_server(
     def ck3_auto_turn() -> dict[str, object]:
         """Plan and execute exactly one supported one-life gameplay turn."""
         army_service_timing = start_army_timing("mcp.auto_turn_service")
-        payload = service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
+        try:
+            payload = service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
+        except BridgeUnavailableError as error:
+            from .domain_construction_private_transport_v1 import construction_transport_diagnostic
+
+            diagnostic = construction_transport_diagnostic(error)
+            if diagnostic is None:
+                raise
+            from mcp.types import CallToolResult, TextContent
+
+            return CallToolResult(
+                content=[TextContent(type="text", text=f"Error executing tool ck3_auto_turn: {error}")],
+                is_error=True,
+                structured_content={"error_type": type(error).__name__,
+                                    "diagnostics": {"construction_transport_v1": diagnostic}},
+            )
         plan = payload.get("plan")
         result = payload.get("result")
         if (
