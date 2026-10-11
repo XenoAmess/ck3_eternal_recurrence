@@ -3619,3 +3619,17 @@ reads ROOT-OPERATOR-BOOTSTRAP.json from that directory; its owner is the origina
 managed/operator directory. Bind prior_operator_packet to that bootstrap owner
 and preserve the reader directory as a separate evidence reference. This is a
 packet-pointer correction; all12 frozen payloads and the original RED remain.
+
+
+### SDK source checkout while a screen keeper is held (actual R95)
+
+R95's fullSDK root was upgraded after SDKnormal0 but before screen keeper/CAS
+release. Keeper cleanup then failed with `screen task checkout HEAD or cleanliness differs`;
+executor0 did not prove resource release. Actual Gameforced1/custodyexited and
+the same task's existing call_bus release-screen-cas subsequently produced
+seq1920->1921/oktrue/statedone/resources[]. The failed marker remains in
+[actual R95 evidence](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native80-r0095/ROOT-ACTUAL-R95-KEEPER-EXACT-CAS-RELEASE.json).
+Keep the bound SDK checkout unchanged until the keeper/CAS is released; native
+builds in their separate source root may still run in parallel. After a real
+cleanup failure, release only the retained exact task through the existing CAS
+endpoint. No source rollback or registry-file edit was needed in this attempt.
