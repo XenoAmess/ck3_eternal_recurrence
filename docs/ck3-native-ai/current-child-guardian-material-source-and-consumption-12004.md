@@ -77,3 +77,16 @@ SDK新pure validator精确校验17个顶层字段与13个行字段，在复制�
 本批只有源码采用与独立静态审阅，没有运行测试、fixture、FIRST或教育业务重验。冻结SDK87/f9与Native86不含本批增量。后继native owner closure需按实际共享header枚举：Bridge323/492/493三项编译，保留Native86的324/Runtime504及其597成员archive，仅DLL重链；本条是源依赖结论，尚未执行后继构建。M6保持partial。
 
 采用回执：[Provider V4与SDK Wiring05](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-PROVIDER-V4-SDK-WIRING05-SOURCE-ADOPTION.json)、[Martial04](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-MARTIAL04-SOURCE-ADOPTION.json)。来源仍受原4GiB范围和2026-10-12T16:47:28.264315Z复核期限约束，未续期。
+
+
+### 2026-10-12 06:51 CST — R102 配对保存／关闭与 SDK88 源码冻结
+
+当前原普通战役暂停保存 **6082 天／H10187／raw53290296**，Robert29829、episode native-29829-2bc2d599f7f9；本次新增天数0。四条不同建设回执的恢复记录保留；原540继承人关系读取失败不重发、不补写根因。SAVE SHA为`bfe44dc34383f23faac789575aa8d1f4b71d5821f3c0275a855889a6e7ae9a55`；当前环境ab9b19ee，XARoff／pact absent。
+
+持有应用kernel handle的observer实际观察SDK application exit0，外层reader也实际exit0；SAVE persistence barrier独立GREEN，未证明fsync或断电耐久。游戏一次WM_CLOSE与一次原生“退出到桌面”后仍未退出，随后精确受管job stop实际kernel退出1，normal_Game_exit=false。13项冻结共3,582,031,120B，其中完整Driver3,397,902,660B；gift193已应用身份未重置，原输入保护期限10-18保持。旧R101 application退出码unknown、旧R100 application1与各强制退出记录保留，不外推当前0。屏幕keeper实际CAS2097释放。
+
+SDK88实际固定完整主线`306473f1`：45,796源码文件，45,773不可变同卷硬链接，所有变化文件独立；all5保留入口实际大小／SHA读回，Git实际干净detached head。共享Git对象仍依赖Z仓库，相关祖先pins按原期限保护；不得在SDK88硬链接源码运行checkout／生成器或写入。SDK88仅SOURCE_COMPLETE_NOT_RUNTIME_REBOUND。
+
+Native87初次prepare因把917对象与714实际argv误要求全等而RED，零compiler；已保留原源码与小回执，仅非递归移除确认为空的新输出目录。修正prepare后实际5个compiler均返回2／D8037，原始CP936日志保留，archive0／DLL0／无canonical发布。记录的编译环境只有四工具链变量，缺Windows系统项；后继attempt02正在补明确OS白名单，原因仍以实际构建回执为准。失败输出15,702,046B、后继额度4,277,168,098B与2MiB收据预留合计仍原4GiB；原runtime40GiB与10-12T16:47:28Z截止均不续。
+
+[实际配对SAVE](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/native86-r0102/ordinary-native87-adoption-save01/ROOT-ACTUAL-ADOPTION-SAVE.json)、[完整13项冻结](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/r102-final-saved-complete13-freeze/ROOT-ACTUAL-COMPLETE13-FREEZE.json)、[SDK88源码执行](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk88-source-preparation/SDK88-SOURCE-EXECUTION.json)、[原Native87实际RED](D:/codex-ck3-background-spill/g2-native87-production01/ROOT-NATIVE87-RESULT.json)。四研究组继续按各16任务复用子线程，不以64派发容量冒充持续活跃数；没有tests／fixture／FIRST。M4 complete、G2 6/8=75%、NW2 2/4=50%、M6 partial、M7 incomplete、自然跨代0保持。
