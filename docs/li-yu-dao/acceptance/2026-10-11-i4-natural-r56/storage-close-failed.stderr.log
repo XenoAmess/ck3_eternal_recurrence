@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure013-sourceonly-20261011-002\close_reservation013.py", line 441, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure013-sourceonly-20261011-002\close_reservation013.py", line 229, in main
+    checked(prepared['graphics_cache']['receipt'])
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure013-sourceonly-20261011-002\close_reservation013.py", line 62, in checked
+    actual, value = read(ref['path'], prepared=prepared)
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure013-sourceonly-20261011-002\close_reservation013.py", line 54, in read
+    need(p == p.resolve() and stat.S_ISREG(s.st_mode) and not p.is_symlink()
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and not s.st_file_attributes & 1024 and s.st_size <= limit, 'Bounded original metadata required: '+str(p))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure013-sourceonly-20261011-002\close_reservation013.py", line 36, in need
+    raise RuntimeError(message)
+RuntimeError: Bounded original metadata required: C:\workspace\ck3-common-runtime\cases\lyd-i4-natural-expiry-20261011-007\prepared\graphics-cache-preparation.json

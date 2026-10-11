@@ -1,0 +1,47 @@
+{
+  "schema": "c3-common-g4-new-seam-focused-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\test_c3_common_g4_observation.py",
+    "--source-binding",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\SOURCE-BINDING.json",
+    "-v"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001",
+  "started_at": "2026-10-11T01:14:45.347685+00:00",
+  "finished_at": "2026-10-11T01:15:02.950143+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\focused.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\focused.stderr.log",
+    "bytes": 1542,
+    "sha256": "d501d8ba585a8e295cb8dffdf4a36830fc8fd3c3122d9ae99a68cf75c9ad1973"
+  },
+  "source_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\SOURCE-BINDING.json",
+    "bytes": 1644,
+    "sha256": "9a00556c2c9abd24db7d493862f9657ed1d96e8dd39e27c7e3121946fd1fa0e1"
+  },
+  "production": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\c3_common_g4_observation.py",
+    "bytes": 11048,
+    "sha256": "e2ac2d3edb387584b58871dbab1f98469a17bda7f116f708a2b415ebc0d5a631"
+  },
+  "test_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\test_c3_common_g4_observation.py",
+    "bytes": 9858,
+    "sha256": "b64bc43f027afa62bafb72006b2b6a4295982d7ad6783948972c29d0d3846dca"
+  },
+  "expected_new_tests": 8,
+  "old_tests_reexecuted": 0,
+  "SDK_game_SAVE_PE_build_calls": 0,
+  "synthetic_samples_only": true,
+  "formal_C3_business_credit": null
+}

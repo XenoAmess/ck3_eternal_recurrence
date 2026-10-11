@@ -1,0 +1,460 @@
+{
+  "schema": "lyd.r56.authorized-second-native-failure-projection.v1",
+  "at_utc": "2026-10-11T01:40:16.834302+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0056",
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\native-report.json",
+    "bytes": 13335772,
+    "sha256": "68f55842797645a61e9bdb2035f648b2bfe2d3aab19d2c8c6cc496e4527321a9"
+  },
+  "read_scope": {
+    "ROOT_original_terminal_body_reads": 1,
+    "additional_authorized_body_reads_this_lane": 1,
+    "total_actual_body_reads_for_this_diagnosis": 2,
+    "reason": "Specific failed guard predicates omitted from first small terminal projection; ROOT original memory ended",
+    "no_status_or_qualification_repeat": true
+  },
+  "step292": {
+    "id": "case-natural-day-0074",
+    "started_at": "2026-10-11T01:26:05.026911+00:00",
+    "finished_at": "2026-10-11T01:26:15.504099+00:00",
+    "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "campaign_pause_frame_diagnostic": {
+      "schema": "ck3-campaign-pause-same-owner-frame-diagnostic-v1",
+      "original_error": "campaign pause readback lost the complete same-owner frame",
+      "first_failed_condition": 9,
+      "conditions": [
+        {
+          "index": 0,
+          "source": "snapshot.get(\"episode_projection\") != \"native_campaign\"",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 1,
+          "source": "snapshot.get(\"backend_id\") != \"native-headless\"",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 2,
+          "source": "snapshot.get(\"source\") != \"injected-dll-named-pipe\"",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 3,
+          "source": "snapshot.get(\"map_ready\") is not True",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 4,
+          "source": "type(snapshot.get(\"format_version\")) is not int",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 5,
+          "source": "snapshot[\"format_version\"] != 1",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 6,
+          "source": "snapshot.get(\"complete_snapshot\") is False",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 7,
+          "source": "type(snapshot.get(\"paused\")) is not bool",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 8,
+          "source": "played.get(\"alive\") is not True",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 9,
+          "source": "snapshot.get(\"active_event\") is not None and allowed_event_instance is None",
+          "failed": true,
+          "unavailable_reason": null
+        },
+        {
+          "index": 10,
+          "source": "snapshot.get(\"one_life_terminal_reason\") is not None",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 11,
+          "source": "snapshot.get(\"snapshot_id\") != \"native:\" + str(snapshot[\"native_revision\"])",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 12,
+          "source": "diagnostics.get(\"connected\") is not True",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 13,
+          "source": "diagnostics.get(\"semantic_state_available\") is not True",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 14,
+          "source": "diagnostics.get(\"last_error\") is not None",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 15,
+          "source": "diagnostics.get(\"transport_fatal_error\") is not None",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 16,
+          "source": "type(hello.get(\"pid\")) is not int",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 17,
+          "source": "hello[\"pid\"] != pid",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 18,
+          "source": "type(heartbeat.get(\"pid\")) is not int",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 19,
+          "source": "heartbeat[\"pid\"] != pid",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 20,
+          "source": "not isinstance(diagnostics.get(\"pipe_name\"), str)",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 21,
+          "source": "not diagnostics[\"pipe_name\"]",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 22,
+          "source": "mailbox.get(\"installed\") is not True",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 23,
+          "source": "mailbox.get(\"ready\") is not True and not running",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 24,
+          "source": "mailbox.get(\"stop\") is not False",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 25,
+          "source": "type(mailbox.get(\"failure\")) is not int",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 26,
+          "source": "mailbox[\"failure\"] != 0",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 27,
+          "source": "type(mailbox.get(\"current_tid\")) is not int",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 28,
+          "source": "mailbox[\"current_tid\"] != mailbox[\"owner_tid\"]",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 29,
+          "source": "mailbox.get(\"stamp_read_success\") is not True",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 30,
+          "source": "type(mailbox.get(\"date_raw\")) is not int",
+          "failed": false,
+          "unavailable_reason": null
+        },
+        {
+          "index": 31,
+          "source": "mailbox[\"date_raw\"] != snapshot[\"date_raw\"]",
+          "failed": false,
+          "unavailable_reason": null
+        }
+      ],
+      "observations": {
+        "snapshot.episode_projection": {
+          "present": true,
+          "type": "str",
+          "value": "native_campaign",
+          "unavailable_reason": null
+        },
+        "snapshot.backend_id": {
+          "present": true,
+          "type": "str",
+          "value": "native-headless",
+          "unavailable_reason": null
+        },
+        "snapshot.source": {
+          "present": true,
+          "type": "str",
+          "value": "injected-dll-named-pipe",
+          "unavailable_reason": null
+        },
+        "snapshot.map_ready": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "snapshot.format_version": {
+          "present": true,
+          "type": "int",
+          "value": 1,
+          "unavailable_reason": null
+        },
+        "snapshot.complete_snapshot": {
+          "present": false,
+          "type": null,
+          "value": null,
+          "unavailable_reason": "absent"
+        },
+        "snapshot.paused": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "snapshot.snapshot_id": {
+          "present": true,
+          "type": "str",
+          "value": "native:365",
+          "unavailable_reason": null
+        },
+        "snapshot.native_revision": {
+          "present": true,
+          "type": "int",
+          "value": 365,
+          "unavailable_reason": null
+        },
+        "snapshot.date_raw": {
+          "present": true,
+          "type": "int",
+          "value": 53146440,
+          "unavailable_reason": null
+        },
+        "snapshot.one_life_terminal_reason": {
+          "present": false,
+          "type": null,
+          "value": null,
+          "unavailable_reason": "absent"
+        },
+        "played.alive": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "diagnostics.connected": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "diagnostics.semantic_state_available": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "diagnostics.last_error": {
+          "present": true,
+          "type": "NoneType",
+          "value": null,
+          "unavailable_reason": null
+        },
+        "diagnostics.transport_fatal_error": {
+          "present": false,
+          "type": null,
+          "value": null,
+          "unavailable_reason": "absent"
+        },
+        "diagnostics.bridge_pid": {
+          "present": true,
+          "type": "int",
+          "value": 10980,
+          "unavailable_reason": null
+        },
+        "diagnostics.connection_generation": {
+          "present": true,
+          "type": "int",
+          "value": 1,
+          "unavailable_reason": null
+        },
+        "diagnostics.pipe_name": {
+          "present": true,
+          "type": "str",
+          "value": "\\\\.\\pipe\\ck3_mod_acceptance_bf-202609141645-5434332d4d--li-yu-dao--R0056",
+          "unavailable_reason": null
+        },
+        "hello.pid": {
+          "present": true,
+          "type": "int",
+          "value": 10980,
+          "unavailable_reason": null
+        },
+        "heartbeat.pid": {
+          "present": true,
+          "type": "int",
+          "value": 10980,
+          "unavailable_reason": null
+        },
+        "mailbox.installed": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "mailbox.ready": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "mailbox.stop": {
+          "present": true,
+          "type": "bool",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "mailbox.failure": {
+          "present": true,
+          "type": "int",
+          "value": 0,
+          "unavailable_reason": null
+        },
+        "mailbox.current_tid": {
+          "present": true,
+          "type": "int",
+          "value": 14688,
+          "unavailable_reason": null
+        },
+        "mailbox.owner_tid": {
+          "present": true,
+          "type": "int",
+          "value": 14688,
+          "unavailable_reason": null
+        },
+        "mailbox.stamp_read_success": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "mailbox.date_raw": {
+          "present": true,
+          "type": "int",
+          "value": 53146440,
+          "unavailable_reason": null
+        },
+        "allowed_event_instance": {
+          "present": true,
+          "type": "NoneType",
+          "value": null,
+          "unavailable_reason": null
+        },
+        "active_event_present": {
+          "present": true,
+          "type": "bool",
+          "value": true,
+          "unavailable_reason": null
+        },
+        "running_admitted": {
+          "present": true,
+          "type": "bool",
+          "value": false,
+          "unavailable_reason": null
+        }
+      },
+      "historical_callsite": null,
+      "underlying_cause": null,
+      "additional_snapshot_or_RPC_or_retry": false,
+      "business_credit": false
+    }
+  },
+  "exception_traceback_tail": "Traceback (most recent call last):\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 3897, in run\n    await client.hold(args.hold_seconds)\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 2409, in hold\n    await self.execute(plan)\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 2255, in execute\n    result = await self.advance_event_boundary(step) if step.get(\"allow_event_boundary\") is True else await self.advance(step)\n                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1867, in advance\n    after = await self.pause_campaign_after_advance(reached)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1784, in pause_campaign_after_advance\n    observed = _campaign_pause_pending_ready_successor(previous, current, error,\n        allow_actor_change=allow_actor_change and not actor_changed)\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1501, in _campaign_pause_pending_ready_successor\n    raise error\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1780, in pause_campaign_after_advance\n    observed = require_campaign_pause_successor(previous, current, allow_running=True,\n        allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,\n        allow_pause_transition=True)\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1461, in require_campaign_pause_successor\n    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance,\n                                           allow_pause_transition=allow_pause_transition)\n  File \"C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py\", line 1449, in campaign_pause_frame_binding\n    raise error\nRuntimeError: campaign pause readback lost the complete same-owner frame\n",
+  "exception_traceback_tail_cap": 5000,
+  "last_pause_readback": {
+    "source": "campaign_postpause_same_owner_once_v1",
+    "starting_snapshot_id": "native:364",
+    "starting_date_raw": 53146440,
+    "status": "FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED",
+    "business_credit_from_heartbeat": false,
+    "error_type": "RuntimeError",
+    "pause_attempt_count": 1,
+    "binding": {
+      "bridge_pid": 10980,
+      "connection_generation": 1,
+      "runtime_character_id": 31254,
+      "owner_tid": 14688
+    },
+    "attempts": [
+      {
+        "step": "pause-map",
+        "arguments": {
+          "step": "pause-map"
+        },
+        "status": "submitted",
+        "rpc_started": true
+      }
+    ]
+  },
+  "last_pause_readback_original_keys": [
+    "source",
+    "starting_snapshot_id",
+    "starting_date_raw",
+    "attempts",
+    "status",
+    "business_credit_from_heartbeat",
+    "binding",
+    "error_type",
+    "pause_attempt_count"
+  ],
+  "new_business_credit": false,
+  "original_body_modified": false
+}

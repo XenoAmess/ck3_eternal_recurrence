@@ -1,5 +1,7 @@
 # 2026-10-11 LYD 容量与到期复核
 
+09:43 CST追加：预约013实际闭账，未来预留 **0B**；限定CASE7/R56/a18/输入/实际命令及closer源码元数据保留978200491B，加1MiB闭账上界979249067B，保守carry136188544282B。原已消费信用再次抵扣0B，本闭账物理删除0B，缓存Oct17、source/native及配额Oct12期限均未续。[闭账原件](../li-yu-dao/acceptance/2026-10-11-i4-natural-r56/storage-closed.actual.json)记录实际范围及未知全项目物理占用。第一次receipt边界失败保留，后继限定精确两份JSON读取，不读缓存、SAVE或native大body。Source12–14约439949881B同字节候选与R56重复输入计划仍未删除/未计信用；下一B4构建另作192MiB独立准入。
+
 执行统一 [存储保留策略](../storage-retention-policy.md) 1.0.0。00:11 CST，Root 在既有卷独占锁内重新核验任务总线、进程、实际可用空间及原配额，创建独立预约 003；前一预约 002 已实际 CLOSED/0，没有并存的旧未用峰值预约。
 
 | 项目 | bytes |

@@ -1,0 +1,38 @@
+{
+  "schema": "c3-g4-portable-new-check-only-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\test_c3_common_g4_observation.py",
+    "--repository-source-root",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "CommonG4SeamTests.test_repository_fallback_is_synthetic_and_cli_optional",
+    "-v"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable",
+  "started_at": "2026-10-11T01:28:49.862510+00:00",
+  "finished_at": "2026-10-11T01:28:51.769185+00:00",
+  "exit_code": 0,
+  "test_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\test_c3_common_g4_observation.py",
+    "bytes": 13850,
+    "sha256": "3a9abe8057ac332fed5c75e9243cf702ddf5d27a6d143cc73c186ad98a57457e"
+  },
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\new-fallback.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\new-fallback.stderr.log",
+    "bytes": 249,
+    "sha256": "c217ea180f85cd2d94710b2cd40268b71ce36df6a21a4e46f2e93e32f18a3ffb"
+  },
+  "original_frozen_eight_tests_rerun": false,
+  "SDK_calls": 0,
+  "SAVE_body_reads": 0,
+  "native_builds": 0,
+  "live_qualification": null
+}

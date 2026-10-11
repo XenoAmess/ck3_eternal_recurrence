@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.steam_fresh_desktop_frame.v1",
+  "captured_at_utc": "2026-10-11T01:38:28.427824+00:00",
+  "steam_hwnd": 263104,
+  "steam_pid": 7216,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "before_rect": [
+    26,
+    58,
+    1036,
+    726
+  ],
+  "moved_rect": [
+    46,
+    58,
+    1056,
+    726
+  ],
+  "restored_rect": [
+    26,
+    58,
+    1036,
+    726
+  ],
+  "before_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-001\\probe-1\\steam-before.png",
+  "before_sha256": "4C98912475C0F311EF17F83CE61A5473A89E5BC4A210B2B2ED3BFBE77EBA8884",
+  "moved_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-001\\probe-1\\steam-moved.png",
+  "moved_sha256": "2A67D1A738D983BE28C5FDA120654B41D3421EC7DC72B68C787B0BFE3EC67B7E",
+  "moved_identity": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-001\\probe-1\\steam-moved.png",
+    "bytes": 886124,
+    "sha256": "2A67D1A738D983BE28C5FDA120654B41D3421EC7DC72B68C787B0BFE3EC67B7E"
+  },
+  "pixel_difference_bbox": [
+    4,
+    45,
+    1916,
+    1036
+  ],
+  "moving_edge_changed": true,
+  "clock_check": null,
+  "offline_status_observed": null
+}

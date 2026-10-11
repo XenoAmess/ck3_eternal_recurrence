@@ -1,0 +1,51 @@
+{
+  "at_utc": "2026-10-11T01:39:05.698577+00:00",
+  "reviewed_at_utc": "2026-10-11T01:38:35+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0056",
+  "screen_task": "common-acceptance-12004-20261010-a18",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-001\\probe-1\\steam-moved.png",
+    "bytes": 886124,
+    "sha256": "2a67d1a738d983be28c5fda120654b41d3421ec7dc72b68c787b0bfe3ec67b7e"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-001\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1279,
+    "sha256": "7e41299d2321b812e6f002f28f8ec9ffddf9e7c17d0f3d647bfe377da9b1b62d"
+  },
+  "visual_observation": "ROOT directly reviewed original 1920x1080 steam-moved.png: Steam bottom bar reads 离线模式; desktop taskbar shows 9:38 on 2026/10/11. Freshness receipt records actual reversible 20px horizontal window displacement and changed pixels.",
+  "image_verification": "one exact final PNG SHA read; no pixel decoding or old image reread",
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\native-report.json",
+    "bytes": 13335772,
+    "sha256": "68f55842797645a61e9bdb2035f648b2bfe2d3aab19d2c8c6cc496e4527321a9"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\native-cleanup-projection.actual.json",
+    "bytes": 2524,
+    "sha256": "56dadb5d69d0ad2f88dafda7b176d199565cd7ac596ade07eff7fff30dbb7d61"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "17ac911f4c18db802dbd02700a6f4fd837f878ffd7729e1281f2d3cc406e8aa8"
+  },
+  "actual_public_run": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\public-run-command-001\\RESULT.actual.json",
+    "bytes": 1650,
+    "sha256": "4f16158ac046f976567bc7959108a72954576025ff57ef2c6ee0c3709b9f8a50"
+  },
+  "actual_public_exit_code": 2,
+  "actual_host_returncode": 1,
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "normal_GUI_or_business_qualification_granted_by_this_helper": false,
+  "ROOT_review_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\ROOT-FINAL-REVIEW-STOP.actual-inputs.json",
+    "bytes": 2234,
+    "sha256": "584f64968e5e82a0961c0db55be2e6a0883e893ecb976a6c9916da1d63f16f3b"
+  }
+}

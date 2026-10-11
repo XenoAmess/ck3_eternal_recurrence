@@ -1,0 +1,163 @@
+{
+  "schema": "lyd-r56-original-small-evidence-index-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0056",
+  "status": "RED_EVENT_BOUNDARY_NOT_EXPIRY",
+  "phase1_percentage": 75,
+  "phase1_status": "NOT_GREEN",
+  "qualified_natural_days": 71,
+  "failed_step": "case-natural-day-0074",
+  "public_run_exit": 2,
+  "public_verify_exit": 2,
+  "host_original_exit": 1,
+  "managed_ck3_exit": 1,
+  "keeper_original_exit": 0,
+  "allocator_original_exit": 0,
+  "actual_screen_release_sequence": 4714,
+  "expiry_final_SAVE_coldreload_normal_GUI_OS0_native0_business_credit": null,
+  "native_body_diagnostic_reads": 2,
+  "raw_native_SAVE_cache_PNG_copied_to_git": false,
+  "storage_remaining_reserved_peak_bytes": 0,
+  "conservative_project_carry_bytes": 136188544282,
+  "new_delete_bytes_by_this_closure": 0,
+  "source_c3_qualification": "8 frozen DTO checks + 1 portable fallback; live NOT_RUN",
+  "files": [
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\native-cleanup-projection.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/native-cleanup-projection.actual.json",
+      "bytes": 2524,
+      "sha256": "56dadb5d69d0ad2f88dafda7b176d199565cd7ac596ade07eff7fff30dbb7d61"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\ROOT-TERMINAL-DIAGNOSTICS.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/terminal-diagnostics.actual.json",
+      "bytes": 8204,
+      "sha256": "86782f43ac9fe560c5ec68ebc47bcd69bca9fa28839cdc91cd2118d52efbf204"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\R56-FAILURE-0074-FRAME.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/failure-frame.actual.json",
+      "bytes": 15852,
+      "sha256": "bb8aee1321ecc49641881612ec7d9157cecf6c691f5f18b91ced9db2a6ca520b"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\R56-FAILURE-0074-REPORT.md",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/failure-report.md",
+      "bytes": 4903,
+      "sha256": "cf83f63ac5c5444368bdae11379451b94222b86075629770e9e67dab2908a0a1"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\public-run-command-001\\RESULT.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/public-run-command.actual.json",
+      "bytes": 1650,
+      "sha256": "4f16158ac046f976567bc7959108a72954576025ff57ef2c6ee0c3709b9f8a50"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\public-verify-command-001\\RESULT.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/public-verify-command.actual.json",
+      "bytes": 1655,
+      "sha256": "1123f21bcf2ddcc51c51b4227622caba10f31886312a73b47404dd96c68eed6f"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\public-verify-command-001\\stdout.log",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/public-verify.stdout.json",
+      "bytes": 321,
+      "sha256": "e2c55619e3d93ffb8f3902efa4be8f480beeefdfb99a81eab0c184850b0ecf77"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\host-original-process-exit.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/host-original-exit.actual.json",
+      "bytes": 247,
+      "sha256": "17ac911f4c18db802dbd02700a6f4fd837f878ffd7729e1281f2d3cc406e8aa8"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\keeper-actual-parent-exit.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/keeper-original-exit.actual.json",
+      "bytes": 613,
+      "sha256": "b7799e24179f9b8297a896cd4f1ff2974f8ddef801d426e8338a38925f2c0a8c"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\release-command-002\\stdout.log",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/release.actual.json",
+      "bytes": 1342,
+      "sha256": "267be4cd878b9c2466985d4035c1f8aaa04ccac628f4eac5429463d7b833c1ba"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\release-command-001\\stdout.log",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/release-pin-rejection.actual.json",
+      "bytes": 171,
+      "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-root-review-001.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/final-offline-root-review.actual.json",
+      "bytes": 2757,
+      "sha256": "9d32ca8da98ea07e79e44da47f90755a9a37abc273eb54c765d6834c0d45f486"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\final-offline-001\\probe-1\\steam-frame-freshness.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/final-offline-frame.actual.json",
+      "bytes": 1279,
+      "sha256": "7e41299d2321b812e6f002f28f8ec9ffddf9e7c17d0f3d647bfe377da9b1b62d"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\case-output\\normal-quit-root-result.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/normal-quit-negative.actual.json",
+      "bytes": 1987,
+      "sha256": "d0c7245904f6faf74c6ba837c6303f9a3845eb77fdb062b408d17af9aca7b50a"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\case-output\\normal-close-error-preserved.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/normal-close-error.actual.json",
+      "bytes": 118,
+      "sha256": "15720dd7e934fa2336f0511ab13473e621200a7c8e68b284e547ffbe2012928e"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-013\\CLOSED-RESERVATION.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/storage-closed.actual.json",
+      "bytes": 10049,
+      "sha256": "c77615f9d0aa1c2457b45971199f5e09b82f798a7cfd2ffff43f90df6258c801"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case7-close-command-20261011-002\\RESULT.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/storage-close-command.actual.json",
+      "bytes": 1139,
+      "sha256": "59dd053f03e122ec52910d9da9ab8d8434886cd79c0717d6341a52676007a8bc"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case7-close-command-20261011-001\\stderr.log",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/storage-close-failed.stderr.log",
+      "bytes": 1557,
+      "sha256": "3b5e75de9dcde2acc2c64965535886effdf1dd79ec2c0f95e719e793fe4e9b53"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\FOCUSED.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/c3-frozen-source-focused.actual.json",
+      "bytes": 2119,
+      "sha256": "2d2b3f88d012e57bd7d1ed1bf1ff953a0e51d294483695a3c22faee1f70b2d44"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\NEW-FALLBACK.actual.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/c3-portable-fallback.actual.json",
+      "bytes": 1659,
+      "sha256": "ed86420403490b8429ff1b9b5a67c3f5ce1c966c959f14f662e3a7dc29763d3d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\SOURCE-CHECK.json",
+      "path": "docs/li-yu-dao/acceptance/2026-10-11-i4-natural-r56/c3-portable-source-check.actual.json",
+      "bytes": 1225,
+      "sha256": "cd0b11c0ce72146516313165838eaba0c58075fa320b4213e9c8b11d0e714e01"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\c3_common_g4_observation.py",
+      "path": "tools/c3_common_g4_observation.py",
+      "bytes": 11048,
+      "sha256": "e2ac2d3edb387584b58871dbab1f98469a17bda7f116f708a2b415ebc0d5a631"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-common-g4-observation-sourceonly-20261011-001\\portable\\test_c3_common_g4_observation.py",
+      "path": "tools/test_c3_common_g4_observation.py",
+      "bytes": 13850,
+      "sha256": "3a9abe8057ac332fed5c75e9243cf702ddf5d27a6d143cc73c186ad98a57457e"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "ck3-root-normal-quit-unavailable-negative-response-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0056",
+  "reviewer": "/root",
+  "at_utc": "2026-10-11T01:29:02.696117+00:00",
+  "pid": 10980,
+  "create_time": 1791679953.4167676,
+  "original_hold_deadline": 1791687452.5629501,
+  "normal_gui_quit": false,
+  "direct_reviewed": false,
+  "autosave_unchecked_observed": null,
+  "actual_os0_proven": false,
+  "actual_native0_proven": false,
+  "business_pass": false,
+  "reason": "Actual original host already exited1 and game process is absent; no normal GUI Quit can be performed. Preserve this negative response and the original RED.",
+  "actual_ck3_process_census": [],
+  "requested_pid_absent": true,
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\case-output\\normal-quit-awaiting.json",
+      "bytes": 631,
+      "sha256": "6a68a56d04954fa2247975f8877d4ab336fd76d8e601f8d8c91902448cbc7781"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\case-output\\manual-quit-awaiting.json",
+      "bytes": 632,
+      "sha256": "93cb516505596cfbef89e013b245fba423b694e564775a517ef20906dbbd1e7c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "17ac911f4c18db802dbd02700a6f4fd837f878ffd7729e1281f2d3cc406e8aa8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\case-output\\case-error-preserved.json",
+      "bytes": 204,
+      "sha256": "43ca878267e76798ddb564732fe02d67e66947d616dc077f3a3e5a8cc5ad9da9"
+    }
+  ],
+  "expected_existing_client_outcome": "Manual normal-GUI qualification rejects this negative response; no positive review or normal-close credit is manufactured",
+  "GUI_input_or_host_queue_action_sent": false
+}

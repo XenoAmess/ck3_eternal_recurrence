@@ -1,0 +1,11 @@
+{
+  "status": "NOT_RUN_OR_PRESERVED_FAILURE",
+  "case_contract_qualified": false,
+  "gui_contract_qualified": false,
+  "business_contract_applicable": true,
+  "business_pass": false,
+  "product_release_pass": false,
+  "normal_close": null,
+  "case_acceptance_pass": false,
+  "qualified_boundary_pass": false
+}
