@@ -347,17 +347,35 @@ def _native_command_rejection_diagnostic(error: BaseException) -> dict[str, obje
             and frame.get("ok") is False):
         return None
 
+    text_truncated = False
+
     def text(value: object, limit: int) -> str | None:
+        nonlocal text_truncated
         if type(value) is not str:
             return None
-        return value[:limit].encode("utf-8", errors="replace")[:limit].decode(
-            "utf-8", errors="ignore")
+        prefix = value[:limit]
+        encoded = prefix.encode("utf-8", errors="replace")
+        projected = encoded[:limit].decode("utf-8", errors="ignore")
+        if len(value) > limit or len(encoded) > limit or projected != prefix:
+            text_truncated = True
+        return projected
+
+    def opaque_text(value: object, limit: int) -> str | None:
+        nonlocal text_truncated
+        if value is None:
+            return None
+        # Whole CSV/JSON strings survive or are omitted; never cut a label.
+        if type(value) is not str or len(value) > limit:
+            text_truncated = True
+            return None
+        encoded = value.encode("utf-8", errors="replace")
+        if len(encoded) > limit or encoded.decode("utf-8") != value:
+            text_truncated = True
+            return None
+        return value
 
     def uint64(value: object) -> int | None:
         return value if type(value) is int and 0 <= value <= 2**64 - 1 else None
-
-    def boolean(value: object) -> bool | None:
-        return value if type(value) is bool else None
 
     diagnostic: dict[str, object] = {
         "diagnostic_only": True,
@@ -366,53 +384,71 @@ def _native_command_rejection_diagnostic(error: BaseException) -> dict[str, obje
         "expected_native_revision": uint64(request.get("expected_revision")),
         "native_error": text(frame.get("error"), 512),
     }
-    thin = frame.get("campaign_root_preflight_failure_v1")
-    if isinstance(thin, Mapping) and thin.get("query_type") == "campaign":
-        predicates = thin.get("predicates")
-        projection = {
-            "query_type": "campaign",
-            "stage": text(thin.get("stage"), 96),
-            "request_native_revision": uint64(thin.get("request_native_revision")),
-            "worker_native_revision": uint64(thin.get("worker_native_revision")),
-            "predicates": {
-                key: boolean(predicates.get(key)) if isinstance(predicates, Mapping) else None
-                for key in ("revision_matches", "worker_ready", "previous_present",
-                            "observed_read", "observed_equal")
-            },
-            "read_attempted": boolean(thin.get("read_attempted")),
-            # Native owns these bounded CSV/JSON strings. They remain opaque
-            # scalars; no parsing, arbitrary nested copy, or extra read occurs.
-            "cached_scalars": text(thin.get("cached_scalars"), 768),
-            "observed_scalars": text(thin.get("observed_scalars"), 768),
-            "differing_fields": text(thin.get("differing_fields"), 512),
-            "truncated": boolean(thin.get("truncated")),
-        }
-        diagnostic["campaign_root_preflight_failure_v1"] = projection
-    else:
-        projection = {}
-    # Cap actual compact JSON bytes, including escaping inside scalar strings.
-    # Only these fixed text leaves can shrink; identity and predicate keys stay.
-    texts = [(diagnostic, "native_error"), (projection, "cached_scalars"),
-             (projection, "observed_scalars"), (projection, "differing_fields"),
-             (projection, "stage")]
-    while len(json.dumps(diagnostic, ensure_ascii=False, separators=(",", ":"),
-                         allow_nan=False).encode("utf-8")) > 4096:
-        available = [(owner, key) for owner, key in texts
-                     if type(owner.get(key)) is str and owner[key]]
-        if not available:
-            # The finite nontext shape is below the cap. Keep mandatory identity
-            # rather than returning any original object on unexpected growth.
+    projection: dict[str, object] = {}
+    if "campaign_root_preflight_failure_v1" in frame:
+        thin = frame.get("campaign_root_preflight_failure_v1")
+        predicates = thin.get("predicates") if isinstance(thin, Mapping) else None
+        predicate_keys = ("revision_matches", "worker_ready", "previous_present",
+                          "observed_read", "observed_equal")
+        valid_thin = (isinstance(thin, Mapping)
+                      and type(thin.get("query_type")) is str
+                      and thin.get("query_type") == "campaign"
+                      and type(thin.get("stage")) is str
+                      and uint64(thin.get("request_native_revision")) is not None
+                      and uint64(thin.get("worker_native_revision")) is not None
+                      and isinstance(predicates, Mapping)
+                      and all(type(predicates.get(key)) is bool for key in predicate_keys)
+                      and type(thin.get("read_attempted")) is bool
+                      and type(thin.get("truncated")) is bool
+                      and all(thin.get(key) is None or type(thin.get(key)) is str
+                              for key in ("cached_scalars", "observed_scalars", "differing_fields")))
+        if valid_thin:
+            projection = {
+                "query_type": "campaign",
+                "stage": text(thin.get("stage"), 96),
+                "request_native_revision": uint64(thin.get("request_native_revision")),
+                "worker_native_revision": uint64(thin.get("worker_native_revision")),
+                "predicates": {key: predicates[key] for key in predicate_keys},
+                "read_attempted": thin.get("read_attempted"),
+                # Native owns these opaque strings. Preserve complete differences
+                # before optional scalar summaries; no parsing or extra read.
+                "cached_scalars": opaque_text(thin.get("cached_scalars"), 1536),
+                "observed_scalars": opaque_text(thin.get("observed_scalars"), 1536),
+                "differing_fields": opaque_text(thin.get("differing_fields"), 768),
+                "truncated": thin.get("truncated"),
+            }
+            diagnostic["campaign_root_preflight_failure_v1"] = projection
+        else:
+            diagnostic["thin_schema_invalid"] = True
+    if text_truncated:
+        diagnostic["projection_truncated"] = True
+
+    def json_bytes() -> int:
+        return len(json.dumps(diagnostic, ensure_ascii=False, separators=(",", ":"),
+                              allow_nan=False).encode("utf-8"))
+
+    # Cap actual escaped UTF-8 JSON. Drop whole optional summaries first; even
+    # under pressure a difference CSV is retained whole or explicitly omitted.
+    for key in ("cached_scalars", "observed_scalars", "differing_fields"):
+        if json_bytes() <= 4096:
+            break
+        if projection.get(key) is not None:
+            projection[key] = None
+            diagnostic["projection_truncated"] = True
+    while json_bytes() > 4096:
+        value = diagnostic.get("native_error")
+        if type(value) is not str or not value:
+            # This finite identity-only shape is below the cap, including escapes.
             return {"diagnostic_only": True,
                     "native_request_id": text(request_id, 160),
                     "native_step": text(request.get("step"), 96),
                     "expected_native_revision": uint64(request.get("expected_revision")),
                     "native_error": text(frame.get("error"), 128),
                     "projection_truncated": True}
-        owner, key = max(available, key=lambda item: len(
-            json.dumps(item[0][item[1]], ensure_ascii=False).encode("utf-8")))
-        owner[key] = text(owner[key], len(owner[key].encode("utf-8")) // 2)
+        diagnostic["native_error"] = text(value, len(value.encode("utf-8")) // 2)
         diagnostic["projection_truncated"] = True
     return diagnostic
+
 
 
 def load_driver(
