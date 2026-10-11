@@ -3659,3 +3659,13 @@ parsing outlasted180s. Wrapper exit0 does not establish cold13. The reader retai
 legacy `ROOT-R85-COLD-CORE-WAIT.json` filenames, including in R99; read that actual
 record before reporting detailed core data absent. Preserve the first timeout
 and use a separate output namespace for any authorized same-PID recovery.
+
+
+R99 controller input contract (2026-10-11T05:05:16.995792+00:00): bounded_ordinary_save_root.py's
+--current-save accepts an existing ck3_save_checkpoint JSON response, whose
+checkpoint.status/date_raw are read; it does not accept the binary .ck3 save.
+The observed wrong binding raised UnicodeDecodeError after600 had already applied,
+before any610 request. Preserve600 and resume from that response with the original
+R98 520 JSON; do not replay600. The corrected recipe is NOT executed because the
+owner now prohibits local CK3 use. UnicodeDecodeError repr included the save bytes
+in the original failed logs; use bounded reads when inspecting those originals.

@@ -1,5 +1,12 @@
 # CK3 自动游玩智能体进度中心
 
+**Current owner instruction (2026-10-11T05:05:16.995792+00:00): local CK3 is reserved for the owner's play.**
+Game/SDK live queries, launches, injection, RPC/input, windows and Steam operations
+are prohibited until explicitly released. G2 continues with the existing64-agent
+background research/code/offline qualification team. Saved baseline6077/H10134;
+five daily SAVEs deferred, no new game-day credit.
+[Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
+
 **Current recovery, recorded 2026-10-11T04:01:23.385118+00:00:** R98 is closed: SDK0, owned Game forced1,
 keeper0 and CAS empty1958. The complete13 recovery includes the applied gift ledger,
 SAVE6077/H10134/raw53290176 and full Driver; [recovery packet](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native83-r0098/r0098-saved6077-gift-freeze/RECOVERY-INPUT-PACKET.json).
@@ -9,7 +16,7 @@ the original five daily SAVEs to6082 remain. M4 complete/G2 6/8, NW2 2/4,
 M6partial/M7incomplete/natural0. Source84 `594979b0` is published; Native84/SDK84
 and complete SDK execution are GREEN. R99 same-PID recovery passed13/13 at
 2026-10-11T04:43:29.913656Z; [actual qualification](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/managed/operator/same-pid-cold-recovery01/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json).
-The ordinary continuation is running; saved-day baseline remains6077, with five daily SAVEs remaining.
+Response600 completed an applied construction-receipt query. The ordinary controller then failed on its SAVE JSON path binding; the owner has now deferred local execution. Saved baseline6077, five daily SAVEs remaining.
 Restore the applied gift ledger and keep remaining gift attempts0.
 
 

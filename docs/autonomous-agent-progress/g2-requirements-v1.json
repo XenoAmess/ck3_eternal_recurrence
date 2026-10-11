@@ -351,7 +351,7 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "Original Robert remains6077/H10134, natural0. R98 complete13 is frozen with applied gift ledger. Native84/fullSDK84 Source594 executed GREEN; R99 same-PID paused qualification13/13 GREEN and ordinary continuation running. Original five daily SAVEs to6082 remain. M7 natural lifetime and wider rulers/seeds/governments remain incomplete.",
+      "open_blocker": "Original Robert remains6077/H10134, natural0. R98 complete13/applied gift retained. R99 Source594 cold13GREEN, response600 construction receipt applied at same date; D controller SAVE JSON binding failed. Local continuation is now prohibited while the owner plays; original five daily SAVEs deferred. M7 offline capability work continues; natural lifetime and wider ruler/seed/government evidence remain incomplete.",
       "current_campaign_index": {
         "source": "Root-owned R98 saved6077/H10134 complete13 and actual closed custody",
         "source_base": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
@@ -370,7 +370,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T04:46:40.643930+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T05:05:16.995792+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -595,7 +595,7 @@
         "native84_canonical": "D:/codex-ck3-background-spill/g2-native84-canonical01/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json",
         "native84_production_build_receipt": "D:\\codex-ck3-background-spill\\maintainer-resume-20261010\\continuation-07\\native84-thin-design\\ROOT-ACTUAL-BUILD-STEP.json",
         "sdk84_actual_execution_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-61b/sdk84-preparation/COMPLETE-SDK84-EXECUTION.json",
-        "runtime99_status": "SAME_PID_RECOVERY13_GREEN_ORDINARY_CONTINUATION_RUNNING",
+        "runtime99_status": "LOCAL_EXECUTION_USER_STOPPED_OFFLINE_G2_CONTINUES",
         "runtime99_first_core_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/managed/operator/ROOT-R85-COLD-CORE-WAIT.json",
         "runtime99_first_core_count": 65,
         "runtime99_first_core_command_timeouts": 5,
@@ -606,7 +606,16 @@
         "runtime99_recovery_qualification_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/managed/operator/same-pid-cold-recovery01/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json",
         "runtime99_recovery_qualified_at_utc": "2026-10-11T04:43:29.913656+00:00",
         "runtime99_recovery_readiness_core_query_count": 7,
-        "runtime99_owned_game_pid": 169036
+        "runtime99_owned_game_pid": 169036,
+        "runtime99_first_normal_status": "EXECUTED_CONSTRUCTION_RECEIPT_APPLIED_SAME_DATE",
+        "runtime99_controller_failure": "BINARY_SAVE_BOUND_AS_JSON_RESPONSE",
+        "runtime99_new_daily_SAVEs": 0,
+        "runtime99_corrected_resume600_execution": "CANCELLED_BY_OWNER_LOCAL_CK3_PROHIBITION",
+        "runtime99_user_stopped_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/ROOT-RUNTIME99-USER-STOPPED-RESULT.json",
+        "runtime99_sdk_exit_code": 0,
+        "runtime99_keeper_exit_code": 0,
+        "runtime99_CAS_released_sequence": 1976,
+        "runtime99_game_preserved_for_owner": true
       }
     }
   ],
@@ -643,5 +652,11 @@
     ]
   },
   "religion_boundary": "2026-10-02 23:33:53 Asia/Shanghai latest explicit user authorization fully opens comprehensive in-depth religious research and requires every earlier religion-deferred ban removed. Generic faith/religion/doctrine/tenet/fervor, conversion, reform, holy-order native AI trees, read-only bridge/MCP observation and corresponding policy research are permitted; the former marriage/holy-war-only exceptions and holy-order hold are no longer current limits. All earlier dated restrictive report sections are historical at-time records and currently rescinded. Exact-build evidence and actual readiness remain required for capability claims; permission itself is not completion. Robert 29829 original ordinary campaign is still the only current autonomous-player live entry. On 2026-10-03 the owner cancelled all nonwar restrictions and fully authorized war/combat native-AI research, read-only bridge/MCP observation, implementation, policy and live execution; former nonwar-only, war-research-stop, war-execution-OFF and other-maintainer-only authorization limits are rescinded. Historical OFF, zero-action and readiness evidence stays at its original source and does not become a new capability claim. Native-AI-first research, exact-build binding, player-only rules and minimized/no-focus operation continue; product publishing rules remain unchanged.",
-  "updated_at": "2026-10-08T13:39:26+08:00"
+  "updated_at": "2026-10-08T13:39:26+08:00",
+  "current_local_execution_authorization": {
+    "status": "PROHIBITED_OWNER_PLAYING_CK3",
+    "recorded_at_utc": "2026-10-11T05:05:16.995792+00:00",
+    "scope": "No local Game launch/attach/injection/query/RPC/input/window/Steam or live acceptance until explicit owner release; offline G2 work continues.",
+    "reference": "docs/handover/2026-10-11-g2-background-only-user-play.md"
+  }
 }
