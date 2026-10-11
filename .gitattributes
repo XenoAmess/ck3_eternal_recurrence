@@ -13,6 +13,7 @@ ck3_autonomous_player/native_bridge/src/ordinary_interaction_code_pins_v1.inc -t
 
 # Preserve Superman Qiang's hash-bound raw build, live and publication evidence.
 mod_superman_qiang/docs/build-evidence-*/** -text whitespace=cr-at-eol
+docs/release-changelogs/li-yu-dao/0.1.0-evidence/** -text whitespace=cr-at-eol
 mod_superman_qiang/docs/live-R*/** -text whitespace=cr-at-eol
 mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol
 
