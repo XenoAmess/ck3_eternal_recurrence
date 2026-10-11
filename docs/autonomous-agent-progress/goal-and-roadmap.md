@@ -1,6 +1,16 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
-**Current owner instruction (2026-10-11T05:05:16.995792+00:00): local CK3 is reserved for the owner's play.**
+**Current owner instruction: Z CK3 use is released after the owner's play (Oct12); keep G2 parallel work running.**
+Root has resumed the same saved6077 campaign in owned R0100, Steam offline.
+The first loader read timed out without a full snapshot; same-PID continuation
+has now obtained one full frame with13/13 restored bindings GREEN. New700/710
+ordinary decisions and daily SAVEs are executing; no unreturned days/SAVEs credited.
+Frozen Native84/fullSDK84 still use594979b0. Successor SDK85/source0503b3f2/all5
+and508 production compile-owner metadata are ready, not compiled or deployed.
+Test suites, fixtures and replay remain cancelled. See [actual Oct12 progress](daily/2026-10-12.md).
+
+**Historical owner-stop instruction (superseded for CK3 use):**
+
 Game/SDK live queries, launches, injection, RPC/input, windows and Steam operations
 are prohibited until explicitly released. The owner's later instruction also
 cancelled tests, project imports and compilation. G2 continues with parallel
@@ -114,6 +124,7 @@ B12-2 source adoption continues release selection to the next independently obse
 B12-1 source adoption resumes ordinary Feast configuration from a freshly observed current Stage2. The existing typed reads use an explicit current-stage mode with null Confirm provenance; Stage1 retains its verified-Confirm default. Native selection, capital-only choice, source-frame yielding, hosted/lifecycle rules and the Stage5 budget/Start ledger remain. SOURCE_ADOPTED_NOT_RUN; no new Feast or M6 live credit.
 B12-3 source adoption lets the existing Chancellor/Chaplain fallback run when the default Steward query is unavailable for its own incumbent skill. It preserves the original unavailable decision, Steward action priority and each role's native legality, ranking, persistence and submit/readback. SOURCE_ADOPTED_NOT_RUN; no new appointment or M4 live credit.
 2026-10-12 dated source correction: request-guardian +DC is the cached current total-martial input exposed by actual4 28B1690/enum1. Actual2C0B250 is independently bound commander base quality; its modifier19B term does not establish an education operand. Canonical prose/header corrected, values/SDK/ranking unchanged; historical B11-19 reports preserved. Sway and campaign successor intakes are NO_NEW with zero retained new files. Owner now explicitly permits Z-machine CK3 again; prepare the existing ordinary continuation with fresh offline/custody/storage evidence. No new live completion is claimed.
+Current R0100 has actual13/13 restoration bindings at saved6077/H10134 and is executing new700/710 ordinary decisions and daily SAVEs. Complete SDK85 source/all5 and the508-compile owner projection are ready, not compiled or live; see the Oct12 01:20 progress receipt.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 
