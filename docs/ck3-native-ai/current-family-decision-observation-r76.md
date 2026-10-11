@@ -154,3 +154,29 @@ and DLL link with Runtime664 archive reuse, then complete SDK81/cold load and
 one actual family reproduction.07/61/10 prepare those independent packages.
 Five remaining dailySAVEs and all milestone counts remain unchanged. This task
 is committed/pushed directly to master with the retained R95 actual status.
+
+
+## Native81 production compile RED: include order corrected before retry
+
+Recorded at 2026-10-11T01:00:20.412332+00:00. Actual Source81 supersession/finite plan both exit0.
+Production compile001 of attempt01 exited2 at00:58:20.845166Z, no DLL link:
+ck3_12004_activity_migration_v1.hpp12 resolved kExecutableSha256 in the new
+xar::bridge::ck3_12004 diagnostics namespace after the diagnostic was included
+at the top of Bridge. The minimal correction moves only that new include after
+the existing nonwar_private_snapshot_guard_diagnostics_v1 include. Diagnostic
+logic/header/fixture and six actual GREEN cases are unchanged, not replayed.
+[Original failed producer](D:/codex-ck3-background-spill/g2-native81-build01/attempt01/ROOT-NATIVE81-RESULT.json)
+remains RED. Native81 retry02 will compile one Bridge and link one DLL; no
+Runtime/archive producer or native live credit. SDK81's first execution also
+stopped before writes because its child lacked the existing quota reference;
+10 appended that existing field, preserving the original child and RED. SDK
+physical source remains452 until the actual corrected execution succeeds.
+
+R95 SDK normally exited0 at00:53:50.879368Z, Game/keeper remain paused/held.
+Root actually retired its zero-day derived Driver3045974106B at00:55:54.344089Z,
+[actual reclaim](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native80-r0095/ROOT-ACTUAL-RETIRED-R95-DERIVED-DRIVER-RECLAIM.json).
+Original005/loop failure and authoritative R94 complete6077 full12/fullDriver
+remain; no body read/hash/copy/freeze, no newday/SAVE. R96 will use that existing
+complete recovery. Counts G2 5/8/M4 2/3/M6partial/M7incomplete/natural0 unchanged.
+This source correction is committed/pushed directly to master; required actual
+production build, not a repeat standalone fixture, verifies its include order.
