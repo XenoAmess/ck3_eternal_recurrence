@@ -200,6 +200,22 @@ def run(args) -> int:
             transitions, checkpoint_pair)
         adopt_snapshot(snapshot, path, transition)
 
+    def plan_before_action(kind):
+        # Ordinary advance receipts omit terminal/episode post-frame fields.
+        # Read the existing planner before another auto or fixed Sway query so
+        # the same Queue can retain the real terminal before continuation.
+        planned, path = queue.call("ck3_plan_turn", {}, kind)
+        step = planned.get("plan", {}).get("selected_step")
+        queue.thin(kind, {"response": str(path), "selected_step": step,
+                          "snapshot_id": planned.get("snapshot_id"),
+                          "revision": planned.get("revision")})
+        if step == m7.CONTINUE_AS_RECONCILED_SUCCESSOR_STEP:
+            adopt_observed_successor()
+            return True
+        if not isinstance(step, str) or not step:
+            raise ValueError("retain unavailable/blocked ordinary plan before next action")
+        return False
+
     try:
         if m7.completed_continuation(first):
             adopt_completed_response(first, args.first_turn_response)
@@ -209,6 +225,8 @@ def run(args) -> int:
             if frame.get("one_life_terminal_reason") != "played_character_changed":
                 raise ValueError("retain actual non-successor terminal for Root review")
             adopt_observed_successor()
+        if pending_successor is None:
+            plan_before_action("initial-ordinary-plan")
         if (sway_episode_observer and frame is not None
                 and current_date > last_leaf_date):
             last_leaf_date = observe_sway(queue, frame["revision"])
@@ -239,6 +257,8 @@ def run(args) -> int:
             if current_date >= target_date and pending_successor is None:
                 status = "TARGET_DATE_REACHED_ROOT_CHECKPOINT_PENDING"
                 break
+            if plan_before_action("ordinary-plan"):
+                continue
             turn, turn_path = queue.call("ck3_auto_turn", {}, "normal")
             turns += 1
             last_successor_save_is_loop_endpoint = False
@@ -276,6 +296,8 @@ def run(args) -> int:
                 source_snapshot, source_snapshot_path = snapshot, path
             if (sway_episode_observer and current_date > before_date
                     and current_date != last_leaf_date):
+                if plan_before_action("sway-date-plan"):
+                    continue
                 last_leaf_date = observe_sway(queue, frame["revision"])
         else:
             status = "TARGET_DATE_REACHED_ROOT_CHECKPOINT_PENDING"

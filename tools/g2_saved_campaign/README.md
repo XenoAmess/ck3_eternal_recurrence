@@ -42,3 +42,8 @@ Root callers may supply a runtime_guard callback. It checks admission, expiry
 and remaining space before each queue request, including checkpoint requests;
 rejection stops before creating the request and preserves completed responses.
 The callback must raise an exception to reject; a returned value is ignored.
+
+Ordinary advance receipts omit terminal/episode post-frame fields. The controller
+therefore reads the existing planner before another auto and before a new-date
+Robert Sway observation. A ready natural succession uses the same helper to
+retain its real terminal before-snapshot before the single continuation.
