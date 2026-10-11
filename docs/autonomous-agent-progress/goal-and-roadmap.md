@@ -1,18 +1,20 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
-### 2026-10-11：已保存6076天，Native78恢复准备通过
+### 2026-10-11：原M4完成，G2达到6/8
 
-当前持久基线 **6076/H10107/raw53290152**，原罗贝尔29829、自然继承0。
-R93真实冷恢复13/13通过并新增保存1天；Sway opinion随后发生实际读取错误。
-完整12流及全Driver已冻结，SDK正常退出0，Game正常关闭RED后精确受管回收1，keeper已释放。
-Native78读取阶段诊断及完整SDK78已构建，R94完整恢复/rebind/preflight通过，冷启动进行中；
-当前运行仍固定源码664c85d9。G2 **5/8**、NW2 **2/4**，M4/M6/M7尚未完成。
+最新同日SAVE **6077/H10134/raw53290176**，原罗贝尔29829、自然继承0；完整冻结尚在执行。
+Native83及完整SDK83固定源码325ab4ac，R98真实暂停验收13/13通过。
+原选窗53286144..53303664内，有用财政总管任命、真实建设开工、实际派系成员赠礼
+已独立验证；生产材料账本刷新3/3，**M4按原契约完成**。赠礼150gold、具名修正+37，
+目标仍在派系，未声称派系解散。G2 **6/8**、NW2 **2/4**，M6部分完成、M7未完成。
 
-M4沿原两年窗口核对既有真实开工/扣款与有用财政总管任命，补齐材料读取后执行一次真实封臣/派系干预；
-建设完工收益不是M4附加条件。M6继续原密谋完整有用终态，保留既有Feast/CA1成果；
-M7继续同意图自然继承，完整多角色/种子/政体矩阵仍未覆盖。下一恢复入口为
-[6076完整恢复包](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json)。
-真实状态与失败回链见[当天日报](daily/2026-10-11.md)及[G2要求账本](g2-requirements-v1.json)。
+随后囚犯查询当前快照读取实际RED，普通循环停止，0新增日/SAVE。
+一次同日保护SAVE已成功，真实赠礼后的状态已保存；source325保持至现场完整释放。
+下一解除具体读取故障并继续原五天逐日SAVE，M6继续原密谋有用终态，M7继续自然继承与
+同意图恢复。建设完工收益仍是独立NW-ECON目标。当前冻结恢复入口为
+[6077完整恢复包](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native78-r0094/r0094-saved6077-freeze/RECOVERY-INPUT-PACKET.json)；
+完整冻结落盘后更新恢复入口。证据及决策见[当天日报](daily/2026-10-11.md)、
+[G2要求账本](g2-requirements-v1.json)和[M4实际3/3](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-13i-m4-evidence/root-selection01/R98-ACTUAL-MATERIAL-PROGRESS.json)。
 
 
 ### 2026-10-10：Native71 接续的实际基线与下一交付

@@ -10,8 +10,8 @@
   "completion_denominator": {
     "kind": "visible_ooda_milestones",
     "total": 8,
-    "complete": 5,
-    "progress_label": "5/8",
+    "complete": 6,
+    "progress_label": "6/8",
     "percent_reporting_allowed": false
   },
   "historical_prerequisites": [
@@ -149,7 +149,7 @@
       "id": "G2-M4",
       "name": "peace governance vertical slice",
       "priority": "P1-D",
-      "status": "in_progress",
+      "status": "complete",
       "latest_evidence": [
         "R639 standard-feudal independent/vassal production-live domain-capacity and active-council-task observations; artifact CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB",
         "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public query/action registration remains OFF",
@@ -184,13 +184,14 @@
         "2026-10-03T07:53:26+08:00 Asia/Shanghai V28 original current chaplain56513/task7162 actual available/none/valid_positiontrue/valid_charactertrue, nativeCanReassignfalse and independent native_can_firefalse, public2/native5/date53229840/newPID24044. Action_eligibility_completefalse; current negative final is production-live readonly primitive, not null/unavailable and not a clergy assignment/taskyield loop. Fields religion-clergy-12003/can-fire-leaf/actual-v28-current-can-fire-preparation-01/ACTUAL-REPORT-FIELDS.json SHAe39693377944943080fc3f5debc34f03dcb7dbf92c2e1bdc47dfa4c9b5c58890. Initial11923 fullhistory SDK harnessRED0calls retained, finite-02 actual2calls GREEN9.51s. Original NW-LIFE/FAMILY2of4 and G2-M4 remaining visible outcomes unchanged; no new perk/construction/income action or arbitrary final gate. Four religion source trees research and next CanPlan/confession/churchincome implementationWIP do not confer live/static completion.",
         "2026-10-03T09:29:27+08:00 Asia/Shanghai Original NW-LIFE timely TaxMan and NW-FAMILY complete/NW2of4 retained. V29 actual current/max theocratic leasegold/month21165/70554 Q100000=.21165/.70554 are independent readonly final fields, not realized income improvement or opinion/tax attribution. Church fields37e4913ce5a9479fb70c72a8aa8eb703ed7b887f378a84aff2e3702491da2f6b. No new perk/assignment/construction/income action or G2-M4 credit; next effective tax/type and headless planner work remain implementation/research, no added gate.",
         "2026-10-03T10:26:56+08:00 Asia/Shanghai v32 fixed3834/resume681/day03saved586: source8cf176b4/newPID109732. Church actual sameframe53236176 tax=.075/configuredcap=.25, finalincome=.21240/.70804gold_month are readonly primitives, not income improvement. Current Sway328/353/op-8 at53236344/native27 with dedicated modifiers observed absent and terminalfalse; no M4 credit. Government semantic readonly path consumed in10formal normal7; inclusive timers do not prove controlled speedup. Original NW-LIFE/NW-FAMILY complete retained, NW2/4.",
-        "2026-10-03T10:59:14+08:00 Asia/Shanghai Currentv32 normalstop confirmed0CK3 at3845/res692/day03saved597/goal0. Stop and finalcheckpoint0extra days, original NW-LIFE/NW-FAMILY complete/NW2of4 retained. Sway/faction/Construction no new benefit/terminal/action credit. Pendingclass county/static packets not deployedv33, no M4 milestone promotion."
+        "2026-10-03T10:59:14+08:00 Asia/Shanghai Currentv32 normalstop confirmed0CK3 at3845/res692/day03saved597/goal0. Stop and finalcheckpoint0extra days, original NW-LIFE/NW-FAMILY complete/NW2of4 retained. Sway/faction/Construction no new benefit/terminal/action credit. Pendingclass county/static packets not deployedv33, no M4 milestone promotion.",
+        "2026-10-11T03:40:54.822934+00:00: Original selected-window production collector actual exit0/material3of3. R98 gift faction-gift-ec89603e06084500bd04834632bfb063 to33435/faction50331692 has independent150gold exact debit and +37 named modifier at53290176. Root original M4 contract decision complete; receipt: D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-13i-m4-evidence/root-selection01/ROOT-ACTUAL-R98-MATERIAL-REFRESH.json."
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one useful legal council adjustment and one real vassal or faction intervention",
-      "open_blocker": "Original two-year material window53286144..53303664 selected once at22:59:06.230606Z. Useful44fa Steward and four real construction starts provide2/3 original categories. R95 original6348 applied/in_progress cold readback at raw53290176 adds no intervention; no faction root/member/quote/gift material observed. One useful vassal/faction intervention remains. Existing formal roundR95/options remain configured, while current-family actual RED is being diagnosed. No building-completion ROI or Sway-terminal gate added to original M4 contract.",
+      "open_blocker": "none for the original M4 visible outcome: original selected-window construction, useful legal Council adjustment and real faction intervention are all independently verified. Broader ECON realized benefit and general faction response remain separate capabilities.",
       "current_material_window": {
-        "stage": "actual_selected_window_two_of_three_materials",
+        "stage": "actual_selected_window_three_of_three_original_M4_complete",
         "start_date_raw": 53286144,
         "end_date_raw": 53303664,
         "duration_raw_hours": 17520,
@@ -199,9 +200,9 @@
         "selected_at_date_raw": 53290152,
         "selected_at_snapshot_id": "native:2",
         "selection_game_pid": 45424,
-        "actual_material_parts_observed": 2,
+        "actual_material_parts_observed": 3,
         "actual_material_parts_required": 3,
-        "actual_collector_result": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-13i-m4-evidence/root-selection01/ROOT-ACTUAL-COLLECTOR-RESULT.json",
+        "actual_collector_result": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-13i-m4-evidence/root-selection01/ROOT-ACTUAL-R98-MATERIAL-REFRESH.json",
         "selected_at_rule": "Record the actual current snapshot date when the owner selects the interval; never backdate selection.",
         "retained_r76_date_raw": 53288496,
         "retained_frame_days_remaining": 632,
@@ -215,13 +216,17 @@
         "council_compact": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/council-steward-actual-gen2-01/ROOT-DELIVERY.json",
         "collector_source_commit": "33c09c8fc178bcb09e0b5e1c34beb4dbb603c6d2",
         "collector_cli_argument": "--council-material-summary-json",
-        "collector_execution": "actual_root_collection_exit0_two_of_three_materials",
-        "remaining_materials": [
-          "new useful vassal or faction intervention in the selected interval"
-        ],
+        "collector_execution": "actual_root_refresh_exit0_three_of_three_materials",
+        "remaining_materials": [],
         "packet": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-m4-material-preparation/ROOT-DELIVERY.json",
         "milestone_credit_written": false,
-        "collector_static_first": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-03e\\m4-material-council-join01\\targeted-first01\\RESULT.json"
+        "collector_static_first": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-03e\\m4-material-council-join01\\targeted-first01\\RESULT.json",
+        "actual_material_progress": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-13i-m4-evidence/root-selection01/R98-ACTUAL-MATERIAL-PROGRESS.json",
+        "original_milestone_credit_written_by_Root": true,
+        "original_milestone_decided_at_utc": "2026-10-11T03:40:54.822934+00:00",
+        "faction_intervention_actual_join": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-14-m4-functional/R98-M4-THIRD-MATERIAL.json",
+        "original_window_reselected": false,
+        "original_two_of_three_result_preserved": true
       }
     },
     {
@@ -346,7 +351,7 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "Original Robert29829 remains saved6077/H10120/raw53290176, natural successions0. R94 closed/full12 frozen. Native80/fullSDK80/source452 loaded in R95 and paused13/13 passed. Four construction cold re-queries and original first-heir marriage result succeeded; no newdays/SAVEs. Next current-family query returned actual during-read frame-changed RED; three native causes share one message, actual conjunct unknown. R95 SDK0/Gameforced1/exactCASempty closed. Native81/fullSDK81/source7498 actual R96 cold13 GREEN, four construction cold results applied. R96 ordinary004 actual marriage-result later-paused-frame RED; controller1/no newday/SAVE, cold route confirmed correct; actual failed conjunct unknown. R96 SDK0/Gameforced1/keeper0/CASempty closed. Failure-only Native82 FIRST5 GREEN/build/canonical and completeSDK82 actual ready/sourcefc62; R97 cold13/marriage GREEN, ordinary005 war admission ReadSnapshot RED at equal revision2; no reader stage, actualclosed/reclaimed.63 producer/diagnostic investigation underway. R95 during-read failed conjunct remains unknown. Five dailySAVEs, M4 one faction/vassal intervention, M6 terminal, Guardian actual observation, same-intent natural inheritance and broader ruler/seed/government qualification remain open. Robert29829 is the sole authorized entry; no generic failure or static tests are counted as live fixes.",
+      "open_blocker": "Original Robert29829 latest same-date SAVE6077/H10134/raw53290176, natural successions0; complete12+new smallfaction-gift ledger freeze pending. R98 Native83/fullSDK83/source325 actual paused13 passed; independent gift completes original M4 material contract. Subsequent010 private prisoner collection failed at current ReadSnapshot before business, expected/native3, actual child cause unknown. Ordinary controllerexit1/no newdaydailySAVE. Necessary same-date protective SAVE actually succeeded; source325 stays held until closure. Original five dailySAVEs, M6 useful scheme terminal, Guardian actual observation, same-intent natural inheritance and broader ruler/seed/government qualification remain open.",
       "current_campaign_index": {
         "source": "Root-owned R94 saved6077 and actual closed custody",
         "source_base": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
@@ -365,7 +370,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T03:18:54.452222+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T03:40:54.822934+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -559,13 +564,20 @@
         "sdk83_status": "ACTUAL_COMPLETE_SOURCE_ALL5_NATIVE83_READY",
         "native83_production_build_receipt": "D:/codex-ck3-background-spill/maintainer-resume-20261010/continuation-07/native83-thin-design/ROOT-ACTUAL-BUILD.json",
         "sdk83_actual_execution_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-61b/sdk83-preparation/COMPLETE-SDK83-EXECUTION.json",
-        "runtime98_status": "ACTUAL_COLD_PAUSED_13_GREEN_ORDINARY_FIVE_DAILY_SAVES_RUNNING",
+        "runtime98_status": "ORDINARY_010_CURRENT_SNAPSHOT_READ_RED_PROTECTIVE_SAME_DATE_SAVE_GREEN_FREEZE_PENDING",
         "runtime98_Root_GO_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native83-r0098/ROOT-ACTUAL-R98-ROOT-GO.json",
         "runtime98_actual_cold_qualification_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native83-r0098/managed/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json",
         "runtime98_cold_checks_passed": 13,
         "runtime98_cold_qualified_at_utc": "2026-10-11T03:16:30.326347+00:00",
         "runtime98_actual_new_days_at_cold_qualification": 0,
-        "runtime98_actual_new_SAVEs_at_cold_qualification": 0
+        "runtime98_actual_new_SAVEs_at_cold_qualification": 0,
+        "g2_m4_complete": true,
+        "g2_m4_completion_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-13i-m4-evidence/root-selection01/ROOT-ACTUAL-R98-MATERIAL-REFRESH.json",
+        "runtime98_actual_ordinary_new_days": 0,
+        "runtime98_actual_ordinary_new_SAVEs": 0,
+        "runtime98_actual_protective_same_date_SAVE_count": 1,
+        "runtime98_actual_protective_SAVE_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native83-r0098/save-actual-gift-same-date01/ROOT-ACTUAL-SAME-DATE-GIFT-SAVE-RESULT.json",
+        "runtime98_latest_same_date_SAVE_history": "H10134"
       }
     }
   ],
