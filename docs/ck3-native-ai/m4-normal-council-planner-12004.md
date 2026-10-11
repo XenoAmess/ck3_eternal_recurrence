@@ -24,6 +24,15 @@ fallback and its existing explicit-role handling are unchanged. Native AI's
 full utility weights remain unknown; this candidate reuses the already
 implemented skill policy and does not guess a replacement score.
 
+The actual4 campaign projection binds Position lookup
+`0x2684EE0`. In `ck3_12004_campaign.cpp` lines1423-1448, validated task owner
+and scopes distinguish raw incumbent `-1` (known vacancy, serialized `null`)
+from a resolved full CharacterID; missing or unresolved tasks are unavailable.
+`campaign_root_context_contract.py` lines848-933 preserves the typed nullable
+incumbent and all five core seats. `_root` and
+`_same_frame_campaign_root_result` retain the existing actor/date/native and
+public snapshot binding. A missing position row is not an observed vacancy.
+
 The source087 registered `ck3_plan_turn` and `ck3_auto_turn` choose
 `GameplayBridgeService.plan_turn` / `auto_turn` when `nonwar_only=false`.
 Previously `plan_council_private` was called only by `plan_nonwar_turn`.
@@ -44,6 +53,13 @@ flowchart TD
   G -->|NO_CHANGE or rejected gate| L[Keep baseline advance]
   R --> I[Applied receipt plus independent matching incumbent]
   I --> F[Existing following-turn holder observation and consumption]
+  F --> K{Current old-role seat explicitly changed?}
+  K -->|Known vacancy or different holder; same-role reads agree| V[Preserve applied receipt; next_turn_consumed false]
+  V --> J[Continue existing ASSIGN_REQUIRED or REPLACE_REQUIRED dispatch]
+  J -->|Legal choice| S
+  J -->|NO_CHANGE or rejected gate| L
+  K -->|Same holder| O[Keep existing persistence flow]
+  K -->|Missing, unknown or observer conflict| H[Keep existing mismatch handling]
   S --> P
   G -. Native full AI utility remains unknown .-> X[Recorded quality boundary]
 ```
@@ -62,9 +78,35 @@ submit and receipt tokens, so its existing implementation is reused.
 An assignment ACK remains pending. An unchanged native revision retains the
 existing `council_pending_later_frame` state; Root obtains the actual later
 frame before material verification. No predicted date or synthetic receipt
-is used. The consumer's current-holder and following-turn semantics remain
-unchanged. This wiring does not promise a useful current candidate: Root's
+is used. This original wiring keeps the holder/following flow; the B11-18 increment
+below releases only an explicitly changed current seat. Neither change
+promises a useful current candidate: Root's
 fresh gates may lawfully produce `NO_CHANGE`.
+
+## B11-18 changed-holder continuation: source authored, not run
+
+Before this increment, `private_council_formal_consumer_v1.py` lines291-295
+already computed the current legal choice. Lines304-326 nevertheless returned before its existing
+ASSIGN_REQUIRED/REPLACE_REQUIRED dispatch whenever the applied assignment
+no longer matched. Thus an old receipt for A blocked a seat now known vacant
+or occupied by B.
+
+Keep the original persistence write when A still holds the seat. Otherwise,
+release this old following block only when the old-role root row explicitly
+contains `incumbent_character_id`, the applied candidate field exists, and the
+current holder differs from A. The observer must also explicitly contain the
+same incumbent: for the selected role it is the fresh query's position; for
+another role it is the independent root holder. Two explicit nulls agree on
+vacancy. Missing rows/fields, unavailable observations or disagreement retain
+the existing mismatch handling.
+
+The existing `_write` retains the historical applied receipt and current
+consumption with `next_turn_consumed=False`, then planning continues through
+the already computed selector. It neither replays A's receipt as a submission
+nor excludes A from ranking, and infers no death or removal cause. Current
+native legality, skill policy, pending/urgent handling and query path stay
+unchanged. This increment is SOURCE_AUTHORED_NOT_RUN; the historical compound
+below supplies no new qualification, appointment or M4 material credit.
 
 The sole new registered compound is
 `test_g2_normal_council_service_compound_v1.py::test_registered_normal_council_submit_receipt_following_failgate_and_war_priority`.

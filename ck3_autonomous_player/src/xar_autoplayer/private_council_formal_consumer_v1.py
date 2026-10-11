@@ -320,6 +320,14 @@ def plan_council_private(
         next_plan["council_receipt_consumed"] = consumption
         if persists:
             _write(state_dir, {**ledger, "applied": consumption})
+        elif (holder is not None and "incumbent_character_id" in holder
+                and "candidate_character_id" in applied
+                and holder["incumbent_character_id"] != applied["candidate_character_id"]
+                and isinstance(observed, Mapping)
+                and "incumbent_character_id" in observed
+                and observed["incumbent_character_id"] == holder["incumbent_character_id"]):
+            # Preserve the receipt and consume the actual changed seat below.
+            _write(state_dir, {**ledger, "applied": consumption})
         else:
             return {**planned, "revision": current["revision"], "snapshot_id": current["snapshot_id"],
                     "plan": {**next_plan, "selected_step": None,
