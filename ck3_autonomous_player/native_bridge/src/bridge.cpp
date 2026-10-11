@@ -18921,7 +18921,8 @@ void RunConnectedSession(
                   pipe, request_id, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence,
                   result == xar::game::PauseSubmitResult::already_paused &&
-                          !xar::game::IsReviewedCrozierAdapter(game)
+                          !xar::game::IsReviewedCrozierAdapter(game) &&
+                          !xar::game::IsCk3_12004Descriptor(game.descriptor())
                       ? &command_observation
                       : nullptr);
             }
@@ -18952,7 +18953,8 @@ void RunConnectedSession(
                   pipe, request_id, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence,
                   result == xar::game::ResumeSubmitResult::already_running &&
-                          !xar::game::IsReviewedCrozierAdapter(game)
+                          !xar::game::IsReviewedCrozierAdapter(game) &&
+                          !xar::game::IsCk3_12004Descriptor(game.descriptor())
                       ? &command_observation
                       : nullptr);
             }
