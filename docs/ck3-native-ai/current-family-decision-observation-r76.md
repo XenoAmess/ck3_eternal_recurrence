@@ -216,3 +216,38 @@ first ordinary query for Native81/SDK81. Daily loop outcome is pending. G2 5/8, 
 M4 original material2/3, M6partial, M7incomplete, natural succession0 stay unchanged.
 This report is committed/pushed directly to master; the running SDK checkout is
 independent of the newer documentation HEAD.
+
+
+## R96 ordinary marriage result RED; completed persistence costs observed
+
+Recorded at 2026-10-11T01:41:00.624742+00:00. Native81/fullSDK81/source7498 actual cold13 GREEN and the
+four ordinary construction-result queries succeeded at original raw53290176.
+Original ordinary004 started01:35:13.827104Z and failed01:39:07.995843Z:
+`heir marriage private command RED: observed-heir marriage result needs a later paused frame`.
+[Original response](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native81-r0096/managed/operator/gameplay-responses/610-r0096-native81-days03-07-chunk01-000004-normal.json) has is_error=true/structured_content=null,
+with no retained plan/result/native diagnostic in that envelope. Ordinary
+controller28556 exited1 at01:39:08.091427Z. No new day/SAVE; saved6077/H10120 and
+the complete R94 twelve-stream recovery packet remain authoritative.
+
+This is a different actual trigger from R95's generic during-read relationship
+failure; Native81's newly loaded failure diagnostic was not reached here.63 is
+the sole source owner for this exact production error. No retry, optional Game
+query, duplicate marriage submission, new allocation or restart was issued.
+Game131616/SDK64795/keeper60843 stay paused/held, with SDKsource7498 unchanged.
+The actual trigger and minimal fix are pending; no family fix or material credit.
+
+32's [completed small-log read](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-32/persist-phase-parser-sdk81/actual-completed-read02/RESULT.json) at01:35:00Z executed once:
+38 lines, five complete child groups and one then-partial group, five independent
+aggregate rows, issues0. Complete atomic-wrapper durations were17.2069761,
+17.7650871,17.7520893,17.7489237,17.3705247s; JSON+LF16.9956831,15.7055008,
+14.6619730,14.8786677,15.1719220s; UTF8 1.3959788--1.7398051s. Lock waits were
+at most7.2us. Independent aggregates34.0997363--36.3948561s are not token-joined
+or claimed equal to summed children.31 is examining the existing synchronous
+atomic wrapper's source for the smallest useful timing split; no extra SDK
+switch is scheduled for profiling.35 confirmed the existing history-free query
+optimization is already in held7498/currentmaster, reusing32's prior60 GREEN;
+no duplicate patch or QA. Full Driver/history/persistence semantics stay intact.
+
+G2 5/8, NW2 2/4, M4 original material2/3, M6partial, M7incomplete/natural0 remain.
+Root records this actual failure and cost evidence directly on master and will
+continue from the concrete source diagnosis rather than adding unrelated work.

@@ -43,3 +43,17 @@ not yet present at that time. This is partial actual observation, not zero value
 a completed persistence measurement or speedup. No Driver body was read or
 hashed, and no additional Game query was needed. The original ordinary path
 continues with the full Driver and synchronous persistence.
+
+
+## Completed R96 samples
+
+[The sole completed-stage read](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-32/persist-phase-parser-sdk81/actual-completed-read02/RESULT.json) at01:35:00Z observed five
+complete child groups: JSON+LF14.6619730--16.9956831s, UTF81.3959788--1.7398051s,
+atomic wrapper17.2069761--17.7650871s, lock waits at most7.2us. Five independent
+aggregate rows ranged34.0997363--36.3948561s; they have no child token and are
+not exact-sum joins. One group was still partial at that read, which was not
+repeated. The atomic wrapper boundary does not distinguish temporary write
+from replace, so no I/O substep or speedup is inferred.31's narrow source review
+will decide the smallest useful optional split for the next already-needed SDK
+change. The service-query history-free optimization was already adopted in7498;
+35's source comparison returned NO_NEW_WORK using the prior60-case qualification.
