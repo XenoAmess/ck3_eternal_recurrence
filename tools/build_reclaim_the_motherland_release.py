@@ -240,7 +240,7 @@ def _localization_entries(path: Path, language: str) -> dict[str, str]:
 
 
 def release_localization_errors(source: Path) -> list[str]:
-    """Check localization format; only Simplified Chinese has content gates."""
+    """Check localization format and the required dynamic value placeholder."""
 
     matrix: dict[str, dict[str, str]] = {}
     errors: list[str] = []
@@ -261,6 +261,14 @@ def release_localization_errors(source: Path) -> list[str]:
             errors.append(f"{language} localization has no RMTM entries")
         else:
             matrix[language] = values
+    value_key = "rmtm_offer_vassalization_recently_independent_tt"
+    value_token = "$VALUE|=+0$"
+    for language in LOCALIZATION_LANGUAGES:
+        value = matrix.get(language, {}).get(value_key, "")
+        if value.count(value_token) != 1 or value.count("$VALUE") != 1:
+            errors.append(
+                f"{language} localization must contain exactly one {value_token}: {value_key}"
+            )
     english = matrix.get("english")
     if english is None:
         return errors

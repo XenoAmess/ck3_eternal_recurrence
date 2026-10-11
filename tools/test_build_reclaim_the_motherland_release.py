@@ -19,6 +19,89 @@ import validate_reclaim_the_motherland_static as static
 REVISION = "a" * 40
 
 
+class ReleaseLocalizationDynamicValueTests(unittest.TestCase):
+    KEY = "rmtm_offer_vassalization_recently_independent_tt"
+    TOKEN = "$VALUE|=+0$"
+    VALID_VALUE = f"Newly independent: {TOKEN}"
+
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory(prefix="rmtm-dynamic-value-test-")
+        self.addCleanup(self.temp.cleanup)
+        self.source = Path(self.temp.name)
+        for language in release.LOCALIZATION_LANGUAGES:
+            self._write_locale(language, self.VALID_VALUE)
+
+    def _write_locale(
+        self, language: str, value: str | None, unrelated_value: str = "Unrelated"
+    ) -> None:
+        path = self.source / "localization" / language / f"rmtm_l_{language}.yml"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        lines = [f"l_{language}:"]
+        if value is not None:
+            lines.append(f' {self.KEY}:0 "{value}"')
+        lines.append(f' rmtm_unrelated_tt:0 "{unrelated_value}"')
+        path.write_text("\n".join(lines) + "\n", encoding="utf-8-sig")
+
+    def _assert_value_error(self, errors: list[str], language: str) -> None:
+        self.assertIn(
+            f"{language} localization must contain exactly one {self.TOKEN}: {self.KEY}",
+            errors,
+        )
+
+    def test_exact_single_token_in_all_nine_languages_passes(self) -> None:
+        self.assertEqual([], release.release_localization_errors(self.source))
+
+    def test_each_language_rejects_missing_duplicate_or_wrong_value_token(self) -> None:
+        for language in release.LOCALIZATION_LANGUAGES:
+            for value in (
+                "Newly independent",
+                f"Newly independent: {self.TOKEN} {self.TOKEN}",
+                "Newly independent: $VALUE$",
+                f"Newly independent: {self.TOKEN} $VALUE$",
+            ):
+                with self.subTest(language=language, value=value):
+                    self._write_locale(language, value)
+                    self._assert_value_error(
+                        release.release_localization_errors(self.source), language
+                    )
+                    self._write_locale(language, self.VALID_VALUE)
+
+    def test_matching_invalid_english_baseline_does_not_bypass_gate(self) -> None:
+        for value in (
+            "Newly independent",
+            f"Newly independent: {self.TOKEN} {self.TOKEN}",
+            "Newly independent: $VALUE$",
+            f"Newly independent: {self.TOKEN} $VALUE$",
+        ):
+            with self.subTest(value=value):
+                for language in release.LOCALIZATION_LANGUAGES:
+                    self._write_locale(language, value)
+                errors = release.release_localization_errors(self.source)
+                for language in release.LOCALIZATION_LANGUAGES:
+                    self._assert_value_error(errors, language)
+
+    def test_missing_target_key_in_all_languages_fails(self) -> None:
+        for language in release.LOCALIZATION_LANGUAGES:
+            self._write_locale(language, None)
+        errors = release.release_localization_errors(self.source)
+        for language in release.LOCALIZATION_LANGUAGES:
+            self._assert_value_error(errors, language)
+
+    def test_token_on_unrelated_key_does_not_satisfy_target_key(self) -> None:
+        for language in release.LOCALIZATION_LANGUAGES:
+            self._write_locale(language, "Newly independent", self.TOKEN)
+        errors = release.release_localization_errors(self.source)
+        for language in release.LOCALIZATION_LANGUAGES:
+            self._assert_value_error(errors, language)
+
+    def test_missing_english_still_checks_dynamic_value(self) -> None:
+        (self.source / "localization/english/rmtm_l_english.yml").unlink()
+        self._write_locale("simp_chinese", "Newly independent")
+        errors = release.release_localization_errors(self.source)
+        self._assert_value_error(errors, "english")
+        self._assert_value_error(errors, "simp_chinese")
+
+
 class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory(prefix="rmtm-builder-test-")
