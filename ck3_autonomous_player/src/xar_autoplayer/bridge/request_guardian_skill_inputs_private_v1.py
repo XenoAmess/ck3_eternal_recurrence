@@ -10,6 +10,7 @@ from copy import deepcopy
 
 PROFILE_KEY = "request_guardian_skill_inputs_v1"
 _SKILLS = {"diplomacy", "martial", "stewardship", "intrigue", "learning"}
+_EDUCATION_TRAITS = {"intellect_good_3", "intellect_good_2", "intellect_good_1", "shrewd"}
 _PROFILE_KEYS = {
     "schema", "role_source", "child_character_id", "character_id",
     "owning_native_revision", "binding_status", "unavailable_reason", "skills",
@@ -30,7 +31,8 @@ def validate_request_guardian_skill_inputs_v1(
             or context["interaction_key"] != "educate_child_interaction"
             or context["status"] != "available"):
         raise ValueError("request guardian skill profile requires an available .4 education context")
-    if not isinstance(profile, dict) or set(profile) != _PROFILE_KEYS:
+    if (not isinstance(profile, dict)
+            or set(profile) != _PROFILE_KEYS | ({"education_traits"} if "education_traits" in profile else set())):
         raise ValueError("request guardian skill profile is not closed")
     if (profile["schema"] != PROFILE_KEY
             or profile["role_source"] != "request_guardian_secondary_actor"):
@@ -79,6 +81,21 @@ def validate_request_guardian_skill_inputs_v1(
             "available": False, "value": None,
             "unavailable_reason": "actual4_martial_name_enum_unqualified"}:
         raise ValueError("request guardian martial name and enum remain unqualified")
+
+    if "education_traits" in profile:
+        traits = profile["education_traits"]
+        if not isinstance(traits, dict) or set(traits) != _EDUCATION_TRAITS:
+            raise ValueError("request guardian education trait inventory is not closed")
+        for field in traits.values():
+            if (not isinstance(field, dict) or set(field) != _VALUE_KEYS
+                    or type(field["available"]) is not bool):
+                raise ValueError("request guardian education trait presence is malformed")
+            if field["available"]:
+                if (binding != "resolved" or type(field["value"]) is not bool
+                        or field["unavailable_reason"] is not None):
+                    raise ValueError("available request guardian education trait lacks a Boolean presence")
+            elif field["value"] is not None or not _reason(field["unavailable_reason"]):
+                raise ValueError("unavailable request guardian education trait is inconsistent")
 
 
 def project_request_guardian_focus_skills_v1(

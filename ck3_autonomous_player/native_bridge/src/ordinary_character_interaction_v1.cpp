@@ -1,10 +1,12 @@
 #include "xar_bridge/ordinary_character_interaction_v1.hpp"
 #include "xar_bridge/ck3_12004_interaction_context.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_phase_character.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
 
 #include <bit>
 #include <cstring>
+#include <functional>
 #include <limits>
 #include <utility>
 
@@ -540,6 +542,25 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
         [](void *, const void *character, std::size_t offset,
            std::int32_t &value) noexcept -> bool {
           return ReadEducationField(character, offset, value);
+        }, b.module_base,
+        [](std::uintptr_t base, const void *character, const char *key,
+           bool &value) noexcept -> bool {
+          if (base == 0) return false;
+          const auto traits = ck3_12004::phase_character::BindImage(
+              base, ck3_12004::kExecutableSha256);
+          void *database = nullptr, *definition = nullptr;
+          if (!traits.enabled ||
+              !Read(reinterpret_cast<const void *>(base),
+                    ck3_12004::phase_character::kTraitDatabaseSlotRva, database) ||
+              database == nullptr ||
+              !Call(&ck3_12002::phase_character::FindUniqueTraitDefinition,
+                    definition, database, std::string_view{key}) ||
+              definition == nullptr) return false;
+          bool completed = false;
+          return Call(&ck3_12002::phase_character::ReadTraitPresence, completed,
+                      traits, const_cast<void *>(character),
+                      std::span<void *const>{&definition, 1}, std::ref(value)) &&
+                 completed;
         }};
     out.request_guardian_skill_inputs = ck3_12004::ReadRequestGuardianSkillInputs12004(
         skill_access, roles[3], roles[2], r.expected_revision);
@@ -627,6 +648,7 @@ Bindings BindOrdinaryInteractionImage12004(std::uintptr_t base,
   i.send_primary_vtable = base + ck3_12004::kPrisonerRansomSendPrimaryVtableRva12004;
   i.send_secondary_vtable = base + ck3_12004::kPrisonerRansomSendSecondaryVtableRva12004;
   b.education_rows_actual_12004 = true;
+  b.module_base = base;
   b.clear_local_options = context.clear_local_options;
   b.select_local_option = context.select_local_option;
   b.get_script_identifier_table = context.get_script_identifier_table;

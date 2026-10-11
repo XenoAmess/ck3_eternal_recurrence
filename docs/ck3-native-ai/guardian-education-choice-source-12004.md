@@ -43,6 +43,29 @@ focus skill 填零；已观察 learning 的独立 `learning/5` 分量仍可保�
 child traits 与失败项都各有输入和条件。缺少这些字段不允许报告完整 outcome 或概率。
 排名可以比较已观测分量，并明确哪些项未观察；原生 CanSend/Ready 决定提交。
 
+## B11-16：请求 guardian 的四项教育 trait
+
+`request_guardian_skill_inputs_v1.education_traits` 是新增的 optional 子项，固定包含
+`intellect_good_3`、`intellect_good_2`、`intellect_good_1`、`shrewd`。
+每项独立保存 `{available, value, unavailable_reason}`：已观察的 true/false 原样保留；
+未知是 `available=false, value=null` 加具体 reason。legacy 缺项保持缺省，
+known-null guardian 不生成四个 false。它们继承原 profile 的最终 roles[2]/roles[3]
+guardian/child 完整 ID、`request_guardian_secondary_actor` 来源和完整 64 位 revision；
+trait 未知不改变独立 skills、CanSend 或原生 ready。
+
+保留源码 `00_education_effects.txt:318–339` 在实际 `scope:educator` 中按 first-match
+取值：good3 为 15；否则 good2 为 10；否则 good1 OR shrewd 为 5。
+`:341–349` 随后加入技能项；`:350–354` 仍在同一 educator scope，若其 culture
+命中 `better_ward_education`，`value=10` **覆盖整个此前内部表达式**。
+这不是额外 +10，也不是 XP 或概率。请求的最终 secondary actor guardian 与 effect
+实际选定的 educator 尚无等价证明；四项请求 presence 不能据此报告完整系数或结果。
+
+Native35 与 SDK04 按这个字段合同施工；42 strict 沿既有 whole-profile 委托 SDK。
+Service 的 whole-query 保留及 SDK `raw_profile=deepcopy(profile)` 已有透传入口，
+无需新增 Service hunk。现有 focus skill 2/5、learning 1/5 请求偏好保持不变，
+本字段增量没有修改 owner50 ranking。culture override 的实际读口由13/64另行闭合；
+本专题只记录源顺序，不报告完整表达式、动作结果或原生 AI 重放。
+
 ## 候选与选项的真实方向
 
 42 receiver ledger 保留 `educate_child_interaction` 的 `secondary_actor=guardian`、
@@ -77,6 +100,10 @@ flowchart LR
     C[当前 living child / focus] --> Q[实际教育 query 最终角色]
     Q --> G[secondary actor 请求候选]
     G --> V[同查询技能读数]
+    G --> T[四项独立教育 trait presence]
+    T --> O[whole profile / owned raw_profile]
+    V --> O
+    O -. 请求 guardian 不等于 effect educator .-> E[实际 effect educator 仍未观察]
     R[保留原版 support 原片段] --> V
     V --> P[owner50 明确命名的请求排序策略]
     P --> N[指定请求原生 CanSend / Ready / step]

@@ -48,6 +48,7 @@ struct Bindings {
   // Internal owner wrapper callback. Never sourced from a public request.
   void *dispatch_frame_context = nullptr;
   DispatchFrameVerifier verify_dispatch_frame = nullptr;
+  std::uintptr_t module_base = 0; // Set by the exact .4 production binder.
 };
 
 struct EducationOptionRowV1 {

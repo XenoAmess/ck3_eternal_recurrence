@@ -16,12 +16,23 @@ struct RequestGuardianSkillAccess12004 {
   void *(*resolve_character)(void *, std::uint32_t) noexcept = nullptr;
   bool (*read_int32)(void *, const void *, std::size_t,
                     std::int32_t &) noexcept = nullptr;
+  std::uintptr_t trait_module_base = 0;
+  bool (*read_trait)(std::uintptr_t, const void *, const char *,
+                     bool &) noexcept = nullptr;
 };
 
 struct RequestGuardianSkillValue12004 {
   bool available = false;
   std::optional<std::int32_t> value;
   const char *unavailable_reason = "guardian_skill_not_observed";
+};
+
+inline constexpr std::array<const char *, 4> kRequestGuardianEducationTraitKeys12004{
+    "intellect_good_3", "intellect_good_2", "intellect_good_1", "shrewd"};
+struct RequestGuardianTraitValue12004 {
+  bool available = false;
+  std::optional<bool> value;
+  const char *unavailable_reason = "guardian_trait_not_observed";
 };
 
 struct RequestGuardianSkillInputs12004 {
@@ -36,6 +47,7 @@ struct RequestGuardianSkillInputs12004 {
   RequestGuardianSkillValue12004 stewardship{};
   RequestGuardianSkillValue12004 intrigue{};
   RequestGuardianSkillValue12004 learning{};
+  std::optional<std::array<RequestGuardianTraitValue12004, 4>> education_traits;
 };
 
 namespace request_guardian_skill_detail_12004 {
@@ -59,6 +71,11 @@ inline void Invalidate(RequestGuardianSkillInputs12004 &out,
     field->value.reset();
     field->unavailable_reason = reason;
   }
+  if (out.education_traits) for (auto &field : *out.education_traits) {
+    field.available = false;
+    field.value.reset();
+    field.unavailable_reason = reason;
+  }
 }
 } // namespace request_guardian_skill_detail_12004
 
@@ -77,6 +94,7 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
   out.child_character_id = final_child_full_id;
   out.character_id = final_secondary_actor_full_id;
   out.owning_native_revision = owning_native_revision;
+  if (access.read_trait != nullptr) out.education_traits.emplace();
   if (!final_secondary_actor_full_id) {
     Invalidate(out, "request_guardian_role_known_null");
     out.binding_status = "known_null";
@@ -123,6 +141,26 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
       field.available = true;
       field.value = second; // Preserve signed raw DWORD, including zero.
       field.unavailable_reason = nullptr;
+    }
+  }
+  if (out.education_traits) {
+    for (std::size_t index = 0; index < out.education_traits->size(); ++index) {
+      auto &field = (*out.education_traits)[index];
+      bool first_value = false, second_value = false;
+      const auto key = kRequestGuardianEducationTraitKeys12004[index];
+      const bool first_ok = access.read_trait(
+          access.trait_module_base, guardian, key, first_value);
+      const bool second_ok = access.read_trait(
+          access.trait_module_base, guardian, key, second_value);
+      if (!first_ok || !second_ok) {
+        field.unavailable_reason = "guardian_trait_read_unavailable";
+      } else if (first_value != second_value) {
+        field.unavailable_reason = "guardian_trait_values_changed";
+      } else {
+        field.available = true;
+        field.value = second_value;
+        field.unavailable_reason = nullptr;
+      }
     }
   }
   if (access.resolve_character(access.context, *final_child_full_id) != child ||
@@ -178,7 +216,24 @@ inline void WriteRequestGuardianSkillInputs12004(
   skill(value.intrigue);
   stream << ",\"learning\":";
   skill(value.learning);
-  stream << "}}";
+  stream << '}';
+  if (value.education_traits) {
+    stream << ",\"education_traits\":{";
+    for (std::size_t index = 0; index < value.education_traits->size(); ++index) {
+      if (index != 0) stream << ',';
+      const auto &field = (*value.education_traits)[index];
+      text(kRequestGuardianEducationTraitKeys12004[index]);
+      stream << ":{\"available\":" << (field.available ? "true" : "false")
+             << ",\"value\":";
+      stream << (field.available && field.value.has_value() ?
+          (*field.value ? "true" : "false") : "null");
+      stream << ",\"unavailable_reason\":";
+      text(field.unavailable_reason);
+      stream << '}';
+    }
+    stream << '}';
+  }
+  stream << '}';
 }
 
 } // namespace xar::ck3_12004
