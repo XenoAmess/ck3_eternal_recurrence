@@ -63,7 +63,7 @@ bool OnMain(const Context &context) noexcept {
 bool CurrentBound(const Context &context) noexcept {
   CoreSnapshotPrefix current{};
   const auto &expected = context.envelope.expected_snapshot;
-  return OnMain(context) && ReadCoreSnapshot(context.bindings.core, current) &&
+  return OnMain(context) && ::xar::ck3_12004::ReadCoreSnapshot(context.bindings.core, current) &&
       current.clock.date_raw == expected.date_raw &&
       current.clock.paused == expected.paused &&
       current.played_character_id == expected.played_character_id &&
@@ -90,7 +90,7 @@ lifestyle::PlayerLifestyleSelectionNativeAdapterAccessV1 CommandAccess(Context &
 }
 
 std::uintptr_t ResolveChild(Context &context, std::string_view &reason) noexcept {
-  const auto child = reinterpret_cast<std::uintptr_t>(ResolveCoreCharacter(
+  const auto child = reinterpret_cast<std::uintptr_t>(::xar::ck3_12004::ResolveCoreCharacter(
       context.bindings.core, std::bit_cast<std::int32_t>(context.child)));
   const ChildCurrentFocusReadonlyAccess12004 access{nullptr, &ReadChildMemory};
   return child_current_focus_readonly_detail::SameLivingChild(
