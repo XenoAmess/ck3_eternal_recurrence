@@ -13005,8 +13005,10 @@ std::string TypedQueryFailureFrame12002(
 std::string RunTypedQuery12002(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step, std::string_view payload,
-    std::string *readonly_diagnostic = nullptr) {
+    std::string *readonly_diagnostic = nullptr,
+    std::optional<xar::game::Snapshot> *rejected_observed_snapshot = nullptr) {
   if (readonly_diagnostic != nullptr) readonly_diagnostic->clear();
+  if (rejected_observed_snapshot != nullptr) rejected_observed_snapshot->reset();
   TypedQuery12002 query{};
   query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
@@ -13017,8 +13019,62 @@ std::string RunTypedQuery12002(
     return CommandResultFrame(request_id, step, false, "typed query request is malformed");
   }
   const auto title_failure_frame = [&](std::string_view stage,
-                                        std::string_view error) {
+                                        std::string_view error,
+                                        const std::array<bool, 5> *campaign_predicates = nullptr) {
     auto response = CommandResultFrame(request_id, step, false, error);
+    if (query.kind == QueryKind12002::campaign &&
+        xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+        campaign_predicates != nullptr) {
+      const auto &p = *campaign_predicates;
+      // Only the two already owned DTOs are inspected. The preflight read,
+      // short-circuit order, and original state_changed rejection stay intact.
+      const auto render = [&](bool include_scalars, bool truncated) {
+        std::string diagnostic = ",\"campaign_root_preflight_failure_v1\":{\"query_type\":\"campaign\",\"stage\":";
+        AppendJsonString(diagnostic, stage);
+        diagnostic += ",\"request_native_revision\":" + Number(query.envelope.expected_snapshot_revision);
+        diagnostic += ",\"worker_native_revision\":" + Number(state.state_revision);
+        diagnostic += ",\"predicates\":{\"revision_matches\":";
+        diagnostic += p[0] ? "true" : "false";
+        diagnostic += ",\"worker_ready\":";
+        diagnostic += p[1] ? "true" : "false";
+        diagnostic += ",\"previous_present\":";
+        diagnostic += p[2] ? "true" : "false";
+        diagnostic += ",\"observed_read\":";
+        diagnostic += p[3] ? "true" : "false";
+        diagnostic += ",\"observed_equal\":";
+        diagnostic += p[4] ? "true" : "false";
+        diagnostic += "},\"read_attempted\":";
+        diagnostic += p[0] && p[1] && p[2] ? "true" : "false";
+        diagnostic += ",\"cached_scalars\":";
+        if (include_scalars && p[2])
+          AppendJsonString(diagnostic, xar::bridge_detail::FirstHeirSnapshotDiagnosticScalarsV1(*state.previous_snapshot));
+        else diagnostic += "null";
+        diagnostic += ",\"observed_scalars\":";
+        if (include_scalars && p[3])
+          AppendJsonString(diagnostic, xar::bridge_detail::FirstHeirSnapshotDiagnosticScalarsV1(query.envelope.expected_snapshot));
+        else diagnostic += "null";
+        diagnostic += ",\"differing_fields\":";
+        if (p[2] && p[3])
+          AppendJsonString(diagnostic, xar::bridge_detail::FirstHeirSnapshotDifferenceNamesV1(*state.previous_snapshot, query.envelope.expected_snapshot));
+        else diagnostic += "null";
+        diagnostic += ",\"truncated\":";
+        diagnostic += truncated ? "true" : "false";
+        diagnostic += '}';
+        return diagnostic;
+      };
+      constexpr std::size_t maximum_failure_frame_bytes = 4096;
+      auto diagnostic = render(true, false);
+      if (response.size() + diagnostic.size() > maximum_failure_frame_bytes)
+        diagnostic = render(false, true);
+      // Oversized original request envelopes retain their original rejection;
+      // this diagnostic never enlarges one beyond the explicit byte limit.
+      if (response.size() + diagnostic.size() <= maximum_failure_frame_bytes) {
+        response.pop_back();
+        response += diagnostic;
+        response += '}';
+      }
+      return response;
+    }
     if (query.kind != QueryKind12002::title_map ||
         !xar::game::IsCk3_12004Descriptor(game.descriptor())) return response;
     response.pop_back();
@@ -13107,7 +13163,17 @@ std::string RunTypedQuery12002(
         : !previous_present ? "preflight_previous_snapshot_missing"
         : !observed_read ? "preflight_native_snapshot_read_failed"
         : "preflight_native_snapshot_changed";
-    return title_failure_frame(stage, "state_changed");
+    const std::array<bool, 5> campaign_predicates{
+        revision_matches, worker_ready, previous_present, observed_read, observed_equal};
+    auto response = title_failure_frame(stage, "state_changed", &campaign_predicates);
+    if (query.kind == QueryKind12002::campaign &&
+        xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+        observed_read && rejected_observed_snapshot != nullptr) {
+      // observed_equal is false. Preserve this owned observed cache DTO
+      // for normal publication after the original failed command response.
+      *rejected_observed_snapshot = std::move(query.envelope.expected_snapshot);
+    }
+    return response;
   }
   const auto &snapshot = query.envelope.expected_snapshot;
   if (!snapshot.paused) {
@@ -14903,13 +14969,21 @@ void RunConnectedSession(
               (step == xar::ck3_12004::kLoadedFeatureManifestV1Step ||
                step == xar::ck3_12002::kCampaignRootContextV1Step)))) {
           std::string readonly_diagnostic;
+          std::optional<xar::game::Snapshot> rejected_observed_snapshot;
           if (active_command_entry_trace != nullptr)
             active_command_entry_trace->dispatch_route = "typed_early";
           trace_command_entry("typed_early_handler_entered");
           const auto response = RunTypedQuery12002(
-              game, state, request_id, step, incoming.payload, &readonly_diagnostic);
+              game, state, request_id, step, incoming.payload, &readonly_diagnostic,
+              &rejected_observed_snapshot);
           if (!readonly_diagnostic.empty()) connected = write_frame(pipe, readonly_diagnostic);
           if (connected) connected = write_frame(pipe, response);
+          if (connected && rejected_observed_snapshot.has_value()) {
+            connected = PublishTimelineSnapshotWithDiagnostics(
+                pipe, request_id, game, previous_snapshot, state_revision,
+                checkpoint_submission, published_checkpoint_sequence,
+                &*rejected_observed_snapshot);
+          }
           early_step_dispatched = true;
         }
         if (active_command_entry_trace != nullptr) {

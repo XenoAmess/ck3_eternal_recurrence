@@ -7,7 +7,7 @@ import importlib
 import json
 import os
 from pathlib import Path
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Mapping
 from pydantic import AfterValidator, Field
 
 from .confucian_challenger_graph_v1 import validate_faith_ids
@@ -83,6 +83,7 @@ from .driver import (
 )
 from .mod_driver import load_data_mod_driver
 from .native_driver import (
+    _NativeCommandRejectedError,
     ConfiguredHybridFallbackDriver,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
@@ -324,6 +325,94 @@ def _ck3_project_coat_of_arms_vfs_asset_winner_v1(
         game_directory,
         logical_path,
     )
+
+
+def _native_command_rejection_diagnostic(error: BaseException) -> dict[str, object] | None:
+    """Project this matched native rejection; never copy its frame or history."""
+    if not isinstance(error, _NativeCommandRejectedError):
+        return None
+    request = getattr(error, "native_request_frame", None)
+    frame = getattr(error, "native_command_result_frame", None)
+    request_id = getattr(error, "native_request_id", None)
+    if not (isinstance(request, Mapping) and isinstance(frame, Mapping)
+            and isinstance(request_id, str) and request_id
+            and request.get("type") == "execute_step"
+            and type(request.get("protocol_version")) is int
+            and request.get("protocol_version") == 1
+            and request.get("request_id") == request_id
+            and frame.get("type") == "command_result"
+            and type(frame.get("protocol_version")) is int
+            and frame.get("protocol_version") == 1
+            and frame.get("request_id") == request_id
+            and frame.get("ok") is False):
+        return None
+
+    def text(value: object, limit: int) -> str | None:
+        if type(value) is not str:
+            return None
+        return value[:limit].encode("utf-8", errors="replace")[:limit].decode(
+            "utf-8", errors="ignore")
+
+    def uint64(value: object) -> int | None:
+        return value if type(value) is int and 0 <= value <= 2**64 - 1 else None
+
+    def boolean(value: object) -> bool | None:
+        return value if type(value) is bool else None
+
+    diagnostic: dict[str, object] = {
+        "diagnostic_only": True,
+        "native_request_id": text(request_id, 160),
+        "native_step": text(request.get("step"), 96),
+        "expected_native_revision": uint64(request.get("expected_revision")),
+        "native_error": text(frame.get("error"), 512),
+    }
+    thin = frame.get("campaign_root_preflight_failure_v1")
+    if isinstance(thin, Mapping) and thin.get("query_type") == "campaign":
+        predicates = thin.get("predicates")
+        projection = {
+            "query_type": "campaign",
+            "stage": text(thin.get("stage"), 96),
+            "request_native_revision": uint64(thin.get("request_native_revision")),
+            "worker_native_revision": uint64(thin.get("worker_native_revision")),
+            "predicates": {
+                key: boolean(predicates.get(key)) if isinstance(predicates, Mapping) else None
+                for key in ("revision_matches", "worker_ready", "previous_present",
+                            "observed_read", "observed_equal")
+            },
+            "read_attempted": boolean(thin.get("read_attempted")),
+            # Native owns these bounded CSV/JSON strings. They remain opaque
+            # scalars; no parsing, arbitrary nested copy, or extra read occurs.
+            "cached_scalars": text(thin.get("cached_scalars"), 768),
+            "observed_scalars": text(thin.get("observed_scalars"), 768),
+            "differing_fields": text(thin.get("differing_fields"), 512),
+            "truncated": boolean(thin.get("truncated")),
+        }
+        diagnostic["campaign_root_preflight_failure_v1"] = projection
+    else:
+        projection = {}
+    # Cap actual compact JSON bytes, including escaping inside scalar strings.
+    # Only these fixed text leaves can shrink; identity and predicate keys stay.
+    texts = [(diagnostic, "native_error"), (projection, "cached_scalars"),
+             (projection, "observed_scalars"), (projection, "differing_fields"),
+             (projection, "stage")]
+    while len(json.dumps(diagnostic, ensure_ascii=False, separators=(",", ":"),
+                         allow_nan=False).encode("utf-8")) > 4096:
+        available = [(owner, key) for owner, key in texts
+                     if type(owner.get(key)) is str and owner[key]]
+        if not available:
+            # The finite nontext shape is below the cap. Keep mandatory identity
+            # rather than returning any original object on unexpected growth.
+            return {"diagnostic_only": True,
+                    "native_request_id": text(request_id, 160),
+                    "native_step": text(request.get("step"), 96),
+                    "expected_native_revision": uint64(request.get("expected_revision")),
+                    "native_error": text(frame.get("error"), 128),
+                    "projection_truncated": True}
+        owner, key = max(available, key=lambda item: len(
+            json.dumps(item[0][item[1]], ensure_ascii=False).encode("utf-8")))
+        owner[key] = text(owner[key], len(owner[key].encode("utf-8")) // 2)
+        diagnostic["projection_truncated"] = True
+    return diagnostic
 
 
 def load_driver(
@@ -2546,6 +2635,10 @@ def create_server(
             from .domain_construction_private_transport_v1 import construction_transport_diagnostic
 
             diagnostic = construction_transport_diagnostic(error)
+            diagnostic_key = "construction_transport_v1"
+            if diagnostic is None:
+                diagnostic = _native_command_rejection_diagnostic(error)
+                diagnostic_key = "native_command_rejection"
             if diagnostic is None:
                 raise
             from mcp.types import CallToolResult, TextContent
@@ -2554,7 +2647,7 @@ def create_server(
                 content=[TextContent(type="text", text=f"Error executing tool ck3_auto_turn: {error}")],
                 is_error=True,
                 structured_content={"error_type": type(error).__name__,
-                                    "diagnostics": {"construction_transport_v1": diagnostic}},
+                                    "diagnostics": {diagnostic_key: diagnostic}},
             )
         plan = payload.get("plan")
         result = payload.get("result")
