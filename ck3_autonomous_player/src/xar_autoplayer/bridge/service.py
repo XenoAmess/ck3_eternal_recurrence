@@ -2057,8 +2057,8 @@ class GameplayBridgeService:
                 expected_revision=int(planned["revision"]))
             if (diag.get("planner_status") == "planner_absent"
                     or (diag.get("host_view_activity_key") == "activity_feast"
-                        and diag.get("planning_stage") == 1)):
-                # A held Stage1 opportunity gets a normal advance before another
+                        and diag.get("planning_stage") in (1, 2)):
+                # A held configuration gets a normal advance before another
                 # attempt in a new frame; configuration cannot starve time.
                 source_frame = (planned["revision"], diag.get("date_raw"))
                 if getattr(self.driver, "_feast_normal_configuration_frame_v1", None) == source_frame:
@@ -2101,7 +2101,10 @@ class GameplayBridgeService:
                         "activity_feast_opportunity": {"configuration": True,
                             "province_id": province_id, "planner_observation": diag,
                             "hosted_observation": post, "campaign_root": root,
-                            "source_frame": source_frame}}}
+                            "source_frame": source_frame,
+                            "resume_stage2": (
+                                diag.get("host_view_activity_key") == "activity_feast"
+                                and diag.get("planning_stage") == 2)}}}
             if (diag.get("host_view_activity_key") != "activity_feast"
                     or diag.get("planning_stage") != 5):
                 return {**planned, "plan": {**plan, "activity_feast_opportunity": {
@@ -3692,7 +3695,8 @@ class GameplayBridgeService:
                     raise UnsupportedStepError("ordinary Feast configuration lacks its current candidate")
                 self.driver._feast_normal_configuration_frame_v1 = opportunity["source_frame"]
                 result = configure_feast_ordinary_v1(
-                    self.driver, self, province_id=opportunity["province_id"])
+                    self.driver, self, province_id=opportunity["province_id"],
+                    resume_stage2=opportunity.get("resume_stage2") is True)
             elif selected_step == "start-activity-feast-stage5-v1-private":
                 from ..activity_feast_stage5_start_formal_consumer import consume_feast_start_private_v1
 

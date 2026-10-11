@@ -7011,24 +7011,33 @@ def _read_private_activity_feast_stage2_option_once(
     *,
     service: GameplayBridgeService,
     before: dict[str, object],
-    confirm_observation: dict[str, object],
+    confirm_observation: dict[str, object] | None,
     turn_index: int,
+    current_stage2: bool = False,
 ) -> dict[str, object]:
-    """Independently re-read the selected option after bounded stage-1 Confirm."""
+    """Read the current Stage2 option; by default require bounded Stage1 Confirm."""
     revision = before["native_revision"]
     date_raw = before["date_raw"]
     actor_id = before["played_character_id"]
     request_id = "activity-stage2-option-" + uuid.uuid4().hex
-    confirm_receipt = copy.deepcopy(confirm_observation.get("native_receipt"))
-    if (confirm_observation.get("submitted") is not True
+    confirm_receipt = copy.deepcopy(
+        confirm_observation.get("native_receipt")
+        if current_stage2 is not True and isinstance(confirm_observation, dict)
+        else None)
+    if current_stage2 is not True and (
+            not isinstance(confirm_observation, dict)
+            or confirm_observation.get("submitted") is not True
             or confirm_observation.get("same_frame") is not True):
         raise StepPostconditionError(
             "private feast stage-2 read lacks verified Confirm",
             step_result={
                 "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
                 "status": "red", "accepted": False,
-                "submitted": confirm_observation.get("submitted"),
-                "pending": True, "postcondition_verified": False,
+                "submitted": (False if current_stage2 is True else
+                              confirm_observation.get("submitted")
+                              if isinstance(confirm_observation, dict) else None),
+                "pending": current_stage2 is not True,
+                "postcondition_verified": False,
                 "confirm_native_receipt": confirm_receipt,
             },
             selected_step=_PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
@@ -7050,11 +7059,13 @@ def _read_private_activity_feast_stage2_option_once(
         after = service.snapshot()
     except Exception as exc:
         raise StepPostconditionError(
-            "private feast stage-2 option read unresolved after Confirm",
+            "private feast stage-2 option read unresolved"
+            + (" at current Stage2" if current_stage2 is True else " after Confirm"),
             step_result={
                 "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
                 "status": "red", "accepted": False,
-                "submitted": True, "pending": True,
+                "submitted": current_stage2 is not True,
+                "pending": current_stage2 is not True,
                 "postcondition_verified": False,
                 "confirm_native_receipt": confirm_receipt,
             },
@@ -7124,7 +7135,8 @@ def _read_private_activity_feast_stage2_option_once(
             step_result={
                 "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
                 "status": "red", "accepted": False,
-                "submitted": True, "pending": True,
+                "submitted": current_stage2 is not True,
+                "pending": current_stage2 is not True,
                 "postcondition_verified": False,
                 "same_frame": same_frame,
                 "activity_stage2_option": copy.deepcopy(native),
@@ -7300,28 +7312,39 @@ def _read_private_activity_feast_stage2_location_once(
     *,
     service: GameplayBridgeService,
     before: dict[str, object],
-    confirm_observation: dict[str, object],
+    confirm_observation: dict[str, object] | None,
     option_observation: dict[str, object],
     candidate_province_ids: tuple[int, ...],
     turn_index: int,
+    current_stage2: bool = False,
 ) -> dict[str, object]:
-    """Read original stage-2 destination eligibility on the Confirm frame."""
+    """Read current Stage2 destinations; by default require the Confirm frame."""
     revision = before["native_revision"]
     date_raw = before["date_raw"]
     actor_id = before["played_character_id"]
-    confirm_receipt = copy.deepcopy(confirm_observation.get("native_receipt"))
+    confirm_receipt = copy.deepcopy(
+        confirm_observation.get("native_receipt")
+        if current_stage2 is not True and isinstance(confirm_observation, dict)
+        else None)
     option_receipt = copy.deepcopy(option_observation.get("native_receipt"))
-    if (confirm_observation.get("submitted") is not True
-            or confirm_observation.get("same_frame") is not True
+    if ((current_stage2 is not True and (
+            not isinstance(confirm_observation, dict)
+            or confirm_observation.get("submitted") is not True
+            or confirm_observation.get("same_frame") is not True))
             or option_observation.get("stage_two_verified") is not True
             or option_observation.get("same_frame") is not True):
         raise StepPostconditionError(
-            "private feast stage-2 location lacks verified Confirm and option read",
+            "private feast stage-2 location lacks "
+            + ("verified current option read" if current_stage2 is True
+               else "verified Confirm and option read"),
             step_result={
                 "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
                 "status": "red", "accepted": False,
-                "submitted": confirm_observation.get("submitted"),
-                "pending": True, "postcondition_verified": False,
+                "submitted": (False if current_stage2 is True else
+                              confirm_observation.get("submitted")
+                              if isinstance(confirm_observation, dict) else None),
+                "pending": current_stage2 is not True,
+                "postcondition_verified": False,
                 "confirm_native_receipt": confirm_receipt,
                 "stage2_option_native_receipt": option_receipt,
             },
@@ -7346,11 +7369,13 @@ def _read_private_activity_feast_stage2_location_once(
         after = service.snapshot()
     except Exception as exc:
         raise StepPostconditionError(
-            "private feast stage-2 location read unresolved after Confirm",
+            "private feast stage-2 location read unresolved"
+            + (" at current Stage2" if current_stage2 is True else " after Confirm"),
             step_result={
                 "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
                 "status": "red", "accepted": False,
-                "submitted": True, "pending": True,
+                "submitted": current_stage2 is not True,
+                "pending": current_stage2 is not True,
                 "postcondition_verified": False,
                 "candidate_province_ids": list(candidate_province_ids),
                 "confirm_native_receipt": confirm_receipt,
@@ -7463,7 +7488,8 @@ def _read_private_activity_feast_stage2_location_once(
             step_result={
                 "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
                 "status": "red", "accepted": False,
-                "submitted": True, "pending": True,
+                "submitted": current_stage2 is not True,
+                "pending": current_stage2 is not True,
                 "postcondition_verified": False,
                 "same_frame": same_frame,
                 "activity_stage2_location": copy.deepcopy(native),

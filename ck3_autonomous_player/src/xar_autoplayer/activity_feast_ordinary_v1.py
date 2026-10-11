@@ -5,7 +5,9 @@ from __future__ import annotations
 OPEN_STEP = "open-activity-feast-planner-v1-private"
 
 
-def configure_feast_ordinary_v1(driver, service, *, province_id: int) -> dict[str, object]:
+def configure_feast_ordinary_v1(
+    driver, service, *, province_id: int, resume_stage2: bool = False,
+) -> dict[str, object]:
     # Import at execution time: native_auto_run constructs GameplayBridgeService.
     # These helpers retain their exact native receipts and existing same-frame
     # postconditions; this route does not synthesize a planner or Confirm receipt.
@@ -20,20 +22,23 @@ def configure_feast_ordinary_v1(driver, service, *, province_id: int) -> dict[st
 
     before = _compact_binding(driver.capabilities(), service.snapshot())
     common = {"service": service, "before": before, "turn_index": 0}
-    opened = _open_private_activity_feast_planner_once(driver, **common)
-    option = _read_private_activity_feast_stage1_option_once(
-        driver, open_observation=opened, **common)
-    if option["selected_option"]["generic_feast_confirm_ready"] is not True:
-        return {"step": OPEN_STEP, "status": "configuration_held",
-                "accepted": False, "postcondition_verified": False,
-                "no_activity_started": True, "open": opened, "stage1_option": option}
-    confirmed = _confirm_private_activity_feast_stage1_once(
-        driver, option_observation=option, **common)
+    opened = option = confirmed = None
+    if not resume_stage2:
+        opened = _open_private_activity_feast_planner_once(driver, **common)
+        option = _read_private_activity_feast_stage1_option_once(
+            driver, open_observation=opened, **common)
+        if option["selected_option"]["generic_feast_confirm_ready"] is not True:
+            return {"step": OPEN_STEP, "status": "configuration_held",
+                    "accepted": False, "postcondition_verified": False,
+                    "no_activity_started": True, "open": opened, "stage1_option": option}
+        confirmed = _confirm_private_activity_feast_stage1_once(
+            driver, option_observation=option, **common)
+    read_mode = {"current_stage2": True} if resume_stage2 else {}
     stage2 = _read_private_activity_feast_stage2_option_once(
-        driver, confirm_observation=confirmed, **common)
+        driver, confirm_observation=confirmed, **read_mode, **common)
     location = _read_private_activity_feast_stage2_location_once(
         driver, confirm_observation=confirmed, option_observation=stage2,
-        candidate_province_ids=(province_id,), **common)
+        candidate_province_ids=(province_id,), **read_mode, **common)
     if not any(row["province_id"] == province_id and row["can_select"] is True
                for row in location["location"]["candidates"]):
         return {"step": OPEN_STEP, "status": "configuration_held",
