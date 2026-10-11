@@ -5411,7 +5411,8 @@ class GameplayBridgeService:
         """Read the complete claim-CB disposition slice for one WarID."""
         step = query_war_termination_terms_step(war_id)
         result = self._execute_typed_war_step(
-            step, expected_revision=expected_revision
+            step, expected_revision=expected_revision,
+            include_native_command_history=False,
         )
         terms = result.get("war_termination_terms")
         if not isinstance(terms, dict) or terms.get("war_id") != war_id:
