@@ -190,6 +190,7 @@ jobs:
           python -B -X utf8 tools/test_c3_common_g4_observation.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_window.py
+          python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_handoff.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_i4_batch_002.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

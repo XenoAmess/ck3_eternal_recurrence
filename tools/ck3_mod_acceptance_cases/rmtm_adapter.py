@@ -73,7 +73,6 @@ def _law_phase(client, phase):
 
 def _threshold_ui_case(context, client):
     config = case_config(context)
-    client.wait_hold()
     initial, _ = observe(client, "rmtm-threshold-D0-qualified")
     start = initial["date_raw"]
     for day in (1, 2, 3):
@@ -104,7 +103,6 @@ def run_case(context, client):
         return _threshold_ui_case(context, client)
     config = case_config(context)
     require(context["case"] == "core", "Independent threshold adapter remains pending")
-    client.wait_hold()
     initial, _ = observe(client, "rmtm-D0-qualified")
     start = initial["date_raw"]
     for day in (1, 2, 3):

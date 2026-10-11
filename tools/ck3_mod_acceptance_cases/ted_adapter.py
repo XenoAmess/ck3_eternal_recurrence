@@ -99,7 +99,6 @@ def _saved_gui_tail(context, client):
 
 
 def run_case(context, client):
-    client.wait_hold()
     if context["case"] == "saved_gui_tail":
         return _saved_gui_tail(context, client)
     if context["case"] == "production_ui":
