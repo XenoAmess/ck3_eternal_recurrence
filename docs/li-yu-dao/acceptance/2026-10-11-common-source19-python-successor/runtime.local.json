@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-mod-acceptance-runtime-v1",
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\manifest.json",
+    "bytes": 120215,
+    "sha256": "a6bd696bc0653f36a29142716e634d8dd20aca76d511d020a4b535b07358dc36"
+  },
+  "python": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+  "repo_root": "C:\\workspace\\ck3_eternal_recurrence",
+  "game_dir": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III",
+  "userdir_root": "C:/workspace/ck3-common-runtime/userdir-root",
+  "artifacts_root": "C:/workspace/ck3-common-runtime/runs",
+  "paths": {
+    "source_root": "C:\\csr19",
+    "host": "C:\\csr19\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "source_index": "C:\\workspace\\ck3-common-runtime\\20261011-019\\source-index.json",
+    "native_source_index": "C:\\workspace\\ck3-common-runtime\\20261011-019\\native-source-index.json",
+    "dll": "C:\\cbr3\\xar_ck3_bridge.dll",
+    "injector": "C:\\cbr3\\xar_ck3_bridge_injector.exe"
+  },
+  "reviewed_launcher": {
+    "path": "C:\\csr19\\tools\\ck3_mod_acceptance_launcher.py",
+    "bytes": 16617,
+    "sha256": "5385358e080fea67248b7879b24609144ab753cf5b45b37b7316de5c581edebd"
+  },
+  "control_queue": {
+    "path": "C:\\csr19\\tools\\ck3_mod_acceptance_queue.py",
+    "bytes": 12365,
+    "sha256": "b5a5b758bdb1de8fd2f9fbb5453f032dca5f1372d1cdd93c50103aaa8ffe9802"
+  },
+  "allocation": {
+    "lease_repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "screen_keeper": {
+      "path": "C:\\csr19\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 12071,
+      "sha256": "462a5e2c722a6b3b9ac1eab6bcd806cadc40851f04e843c36475d276d07c1d4d"
+    },
+    "task_bus": {
+      "path": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "task_prefix": "common-acceptance-12004-20261010-"
+  },
+  "qualification": "BOUND_SOURCE_QUALIFIED_NOT_ALLOCATED_NOT_RUN"
+}

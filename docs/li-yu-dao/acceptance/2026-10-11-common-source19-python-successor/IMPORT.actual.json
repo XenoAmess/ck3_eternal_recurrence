@@ -1,0 +1,179 @@
+{
+  "schema": "lyd.source19.compact-record-import.v1",
+  "original_record_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-command-001\\RESULT.actual.json",
+    "bytes": 1678,
+    "sha256": "812d994cc3311e5e4f496d64e8111dc25cbc40bdf05b1f563796d23faf2b65fc"
+  },
+  "original_record_exit_code": 0,
+  "source_generated_at": {
+    "UTC": "2026-10-11T14:45:12.231350+00:00",
+    "CST": "2026-10-11T22:45:12.231350+08:00"
+  },
+  "actual_source_closed_at": {
+    "UTC": "2026-10-11T14:42:15.616421+00:00",
+    "CST": "2026-10-11T22:42:15.616421+08:00"
+  },
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\bind001-FAILED.stderr.log",
+        "bytes": 3104,
+        "sha256": "ada46e08e23b9577fec0977a788e7680c271b54284cf6ae9b16907a5aa1c6f36"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\bind001-FAILED.stderr.log",
+        "bytes": 3104,
+        "sha256": "ada46e08e23b9577fec0977a788e7680c271b54284cf6ae9b16907a5aa1c6f36"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\bind001_RED-RESULT.actual.json",
+        "bytes": 1748,
+        "sha256": "ee57d7c5d2217c9fcdc837df4faaed4e299e32bf83108c50f3a9288d9a6fe8e8"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\bind001_RED-RESULT.actual.json",
+        "bytes": 1748,
+        "sha256": "ee57d7c5d2217c9fcdc837df4faaed4e299e32bf83108c50f3a9288d9a6fe8e8"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\binding_success-RESULT.actual.json",
+        "bytes": 1788,
+        "sha256": "fd6f703d686bb5c7e4c72cbe4e745b0a3b19c5f104ad20eb64121347f15cac84"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\binding_success-RESULT.actual.json",
+        "bytes": 1788,
+        "sha256": "fd6f703d686bb5c7e4c72cbe4e745b0a3b19c5f104ad20eb64121347f15cac84"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\cache_review-RESULT.actual.json",
+        "bytes": 1386,
+        "sha256": "1674056fadfec8f620c5bac971f8ae5613246ea7974fea00cd12a07e7f63a0ec"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\cache_review-RESULT.actual.json",
+        "bytes": 1386,
+        "sha256": "1674056fadfec8f620c5bac971f8ae5613246ea7974fea00cd12a07e7f63a0ec"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\close-RESULT.actual.json",
+        "bytes": 2879,
+        "sha256": "2eda16c929fe4c1680e21f2ac4f0fac0be67a70ec75cccf18ae053e9ab93a737"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\close-RESULT.actual.json",
+        "bytes": 2879,
+        "sha256": "2eda16c929fe4c1680e21f2ac4f0fac0be67a70ec75cccf18ae053e9ab93a737"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\INDEX.actual.json",
+        "bytes": 8638,
+        "sha256": "bfd9b909b806e481860c8c6b62a12e3b766c0e50d5a1477dc8f6c7a3180ee161"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\INDEX.actual.json",
+        "bytes": 8638,
+        "sha256": "bfd9b909b806e481860c8c6b62a12e3b766c0e50d5a1477dc8f6c7a3180ee161"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\PROGRESS-SNIPPET.md",
+        "bytes": 305,
+        "sha256": "6607a34b6394e3cbdae7ae0b5d8d451279a3552b022c3d137a2b8e7a072a9763"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\PROGRESS-SNIPPET.md",
+        "bytes": 305,
+        "sha256": "6607a34b6394e3cbdae7ae0b5d8d451279a3552b022c3d137a2b8e7a072a9763"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\REPORT.md",
+        "bytes": 1258,
+        "sha256": "f35fecea446fbed6a145e0ebfceebec506005047f89e6907a73b1f3f653c87bb"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\REPORT.md",
+        "bytes": 1258,
+        "sha256": "f35fecea446fbed6a145e0ebfceebec506005047f89e6907a73b1f3f653c87bb"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-001\\runtime.local.json",
+        "bytes": 2033,
+        "sha256": "6bde0b86bcd4d25f44f7d94e2185f212afeb32339cd49ae9652b54ae28f0a69c"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\runtime.local.json",
+        "bytes": 2033,
+        "sha256": "6bde0b86bcd4d25f44f7d94e2185f212afeb32339cd49ae9652b54ae28f0a69c"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-command-001\\RESULT.actual.json",
+        "bytes": 1678,
+        "sha256": "812d994cc3311e5e4f496d64e8111dc25cbc40bdf05b1f563796d23faf2b65fc"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\record-generation-RESULT.actual.json",
+        "bytes": 1678,
+        "sha256": "812d994cc3311e5e4f496d64e8111dc25cbc40bdf05b1f563796d23faf2b65fc"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-command-001\\stdout.log",
+        "bytes": 496,
+        "sha256": "40585e10c963b1652338b23931b6e4216f2afe0770692a75e51869e300826717"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\record-generation-stdout.log",
+        "bytes": 496,
+        "sha256": "40585e10c963b1652338b23931b6e4216f2afe0770692a75e51869e300826717"
+      },
+      "byte_exact_readback": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case13-public-data-20261011-001\\source19-record-command-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-common-source19-python-successor\\record-generation-stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "byte_exact_readback": true
+    }
+  ],
+  "source_or_native_or_SAVE_or_cache_payload_copied": false,
+  "Git_or_tests_or_CK3_executed": false,
+  "daily_weekly_owner": "ROOT; PROGRESS-SNIPPET.md is an insertion fragment only",
+  "writer_status": "STOPPED_AFTER_IMPORT_INDEX"
+}

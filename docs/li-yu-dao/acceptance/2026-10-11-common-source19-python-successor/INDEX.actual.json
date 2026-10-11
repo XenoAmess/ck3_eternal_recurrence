@@ -1,0 +1,203 @@
+{
+  "schema": "lyd.source19.compact-static-record.v1",
+  "generated_at": {
+    "UTC": "2026-10-11T14:45:12.231350+00:00",
+    "CST": "2026-10-11T22:45:12.231350+08:00"
+  },
+  "actual_source_closed_at": {
+    "UTC": "2026-10-11T14:42:15.616421+00:00",
+    "CST": "2026-10-11T22:42:15.616421+08:00"
+  },
+  "status": "SOURCE_READY_NOT_LIVE",
+  "original_commands": {
+    "script-freeze": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-script-freeze-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1224,
+      "sha256": "78b6fccf59e11dbcf9db1f477699ea29e9ae0faf198f4bb0cc43fc45d399e6c8"
+    },
+    "plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-plan-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1179,
+      "sha256": "5e548047b90cb5648148f2a2e0885e0b2c105901b20666f2e68b4317988cd5e2"
+    },
+    "admit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-admit-command-20261011-001\\RESULT.actual.json",
+      "bytes": 2379,
+      "sha256": "6aac56055602744b808203c2634f928f8c3ed0a7dc653262a786b6d58d8fc4ae"
+    },
+    "materialize": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-materialize-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1900,
+      "sha256": "1cb113f87fa382385b34613d95450b39f5775be37e1630baf3292836eb9e5eeb"
+    },
+    "bind001_RED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-bind-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1748,
+      "sha256": "ee57d7c5d2217c9fcdc837df4faaed4e299e32bf83108c50f3a9288d9a6fe8e8"
+    },
+    "binding_success": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-bind-command-20261011-002\\RESULT.actual.json",
+      "bytes": 1788,
+      "sha256": "fd6f703d686bb5c7e4c72cbe4e745b0a3b19c5f104ad20eb64121347f15cac84"
+    },
+    "cache_draft": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-cache-draft-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1329,
+      "sha256": "184deec4187d4ae0dcda1c98972d4bbd0bae5b61e5d0a0b3511c7bee0d9330ed"
+    },
+    "cache_review": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-cache-review-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1386,
+      "sha256": "1674056fadfec8f620c5bac971f8ae5613246ea7974fea00cd12a07e7f63a0ec"
+    },
+    "close": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-close-command-20261011-001\\RESULT.actual.json",
+      "bytes": 2879,
+      "sha256": "2eda16c929fe4c1680e21f2ac4f0fac0be67a70ec75cccf18ae053e9ab93a737"
+    }
+  },
+  "original_refs": {
+    "admission": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-022\\ADMISSION.actual.json",
+      "bytes": 14319,
+      "sha256": "a101854be2366e42afa5fac9c0eefac1a3b46bb0f3fe18c8f93cda1d8a073ad8"
+    },
+    "binding": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\SOURCE19-BIND.actual.json",
+      "bytes": 16088,
+      "sha256": "4e085225b65374e4bcd3bae895119796a9d135aadf46306e5b5b078aec0dbb67"
+    },
+    "cache_mapping": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+      "bytes": 8619,
+      "sha256": "da7a7d0bf3a52d66277a8452a174a97a8e5635708912e62e1a59002f0fc7b4f0"
+    },
+    "closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-022\\CLOSED-RESERVATION.actual.json",
+      "bytes": 8703,
+      "sha256": "0a40a1479e504c5c729b10ba3c1f9e23e448004a6d99e75fa81b14c557a3a289"
+    },
+    "close_stdout": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-close-command-20261011-001\\stdout.log",
+      "bytes": 784,
+      "sha256": "2cf5b77b18a4ff1b0b447f25ec1db38adf0b864cb9f3945ae67e01e57a3477de"
+    },
+    "materialization": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\PYTHON-SUCCESSOR.actual.json",
+      "bytes": 24926,
+      "sha256": "02dfeda95926ec2df40da766ac6f2b8fa7a4fe2b65c4dc70418a87c9ecdcd137"
+    },
+    "runtime_manifest_external_only": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\manifest.json",
+      "bytes": 120215,
+      "sha256": "a6bd696bc0653f36a29142716e634d8dd20aca76d511d020a4b535b07358dc36"
+    },
+    "source_index_external_only": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\source-index.json",
+      "bytes": 1794310,
+      "sha256": "af37abe692221c4392d26b74cd6665a7eaae3482bdfa9c1c285ff7a240f8fb9a"
+    },
+    "native_source_index_external_only": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\native-source-index.json",
+      "bytes": 1019737,
+      "sha256": "985b7b9e02ebec8243f0dd02c52962d6f291f6d80554780f69b1572c5baef268"
+    }
+  },
+  "selected_host_queue_pins_from_original_materialization": {
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "bytes": 282507,
+      "sha256": "206f41a189cad449059fb2802c039d2239e0e567a4ede805ce6c4a4c14befd97"
+    },
+    "tools/ck3_mod_acceptance_queue.py": {
+      "bytes": 12365,
+      "sha256": "b5a5b758bdb1de8fd2f9fbb5453f032dca5f1372d1cdd93c50103aaa8ffe9802"
+    }
+  },
+  "failed_bind001_exit_code": 1,
+  "failed_bind001_error_preserved": true,
+  "actual_budget": {
+    "usage": 135344075885,
+    "fixed_bootstrap": 8388608,
+    "dynamic_source_peak": 201326592,
+    "total_envelope": 209715200,
+    "remaining": 0,
+    "carry": 135505120233
+  },
+  "no_new_native_or_business_qualification": true,
+  "no_TTL_or_quota_renewal": true,
+  "originals_copied": {
+    "runtime.local.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-019\\runtime.local.json",
+      "bytes": 2033,
+      "sha256": "6bde0b86bcd4d25f44f7d94e2185f212afeb32339cd49ae9652b54ae28f0a69c"
+    },
+    "bind001-FAILED.stderr.log": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-bind-command-20261011-001\\stderr.log",
+      "bytes": 3104,
+      "sha256": "ada46e08e23b9577fec0977a788e7680c271b54284cf6ae9b16907a5aa1c6f36"
+    },
+    "bind001_RED-RESULT.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-bind-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1748,
+      "sha256": "ee57d7c5d2217c9fcdc837df4faaed4e299e32bf83108c50f3a9288d9a6fe8e8"
+    },
+    "binding_success-RESULT.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-bind-command-20261011-002\\RESULT.actual.json",
+      "bytes": 1788,
+      "sha256": "fd6f703d686bb5c7e4c72cbe4e745b0a3b19c5f104ad20eb64121347f15cac84"
+    },
+    "cache_review-RESULT.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-cache-review-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1386,
+      "sha256": "1674056fadfec8f620c5bac971f8ae5613246ea7974fea00cd12a07e7f63a0ec"
+    },
+    "close-RESULT.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source19-close-command-20261011-001\\RESULT.actual.json",
+      "bytes": 2879,
+      "sha256": "2eda16c929fe4c1680e21f2ac4f0fac0be67a70ec75cccf18ae053e9ab93a737"
+    }
+  },
+  "import_files": [
+    {
+      "relative_path": "runtime.local.json",
+      "bytes": 2033,
+      "sha256": "6bde0b86bcd4d25f44f7d94e2185f212afeb32339cd49ae9652b54ae28f0a69c"
+    },
+    {
+      "relative_path": "bind001-FAILED.stderr.log",
+      "bytes": 3104,
+      "sha256": "ada46e08e23b9577fec0977a788e7680c271b54284cf6ae9b16907a5aa1c6f36"
+    },
+    {
+      "relative_path": "bind001_RED-RESULT.actual.json",
+      "bytes": 1748,
+      "sha256": "ee57d7c5d2217c9fcdc837df4faaed4e299e32bf83108c50f3a9288d9a6fe8e8"
+    },
+    {
+      "relative_path": "binding_success-RESULT.actual.json",
+      "bytes": 1788,
+      "sha256": "fd6f703d686bb5c7e4c72cbe4e745b0a3b19c5f104ad20eb64121347f15cac84"
+    },
+    {
+      "relative_path": "cache_review-RESULT.actual.json",
+      "bytes": 1386,
+      "sha256": "1674056fadfec8f620c5bac971f8ae5613246ea7974fea00cd12a07e7f63a0ec"
+    },
+    {
+      "relative_path": "close-RESULT.actual.json",
+      "bytes": 2879,
+      "sha256": "2eda16c929fe4c1680e21f2ac4f0fac0be67a70ec75cccf18ae053e9ab93a737"
+    },
+    {
+      "relative_path": "REPORT.md",
+      "bytes": 1258,
+      "sha256": "f35fecea446fbed6a145e0ebfceebec506005047f89e6907a73b1f3f653c87bb"
+    },
+    {
+      "relative_path": "PROGRESS-SNIPPET.md",
+      "bytes": 305,
+      "sha256": "6607a34b6394e3cbdae7ae0b5d8d451279a3552b022c3d137a2b8e7a072a9763"
+    }
+  ],
+  "large_originals_copied_or_read": false
+}
