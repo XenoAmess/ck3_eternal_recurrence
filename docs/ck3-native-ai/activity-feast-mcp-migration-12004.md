@@ -197,3 +197,55 @@ Feast. Root's retry used the G110-r4 runtime (reported source prefix `9cb`, DLL
 prefix `4c39596`, PID 161728); the child performed no build, test, SDK query or
 game action. Hosted and fixtures were not replayed. No Activity action,
 campaign date or G2 progress credit is added.
+
+## October 11: native completion QWORD in the existing lifecycle read
+
+Root adopted seven production source files for this path as
+`SOURCE_ADOPTED_NOT_RUN`. The currently compiled Native84/SDK84 source remains
+`594979b0b3d4c5a395639f30b9d5d864b8a31f6d`; that compiled baseline does
+not qualify these new fields. No new build, test, project import or game query
+was performed for this increment.
+
+The held actual .4 completion fragment writes `Activity+421=1` at
+`23F6D3B`, then stores the original RAX QWORD at `Activity+408` at
+`23F6D43`. The original 15-byte fragment contains no RAX definition. A subsequent exact
+997-byte actual .4 source capture closes its producer: at `23F6D34`, RAX loads
+the QWORD at module RVA `5C7E338`. Both the empty loop and normal loop end
+reach that load; no call, arithmetic or scaling changes the value before the
+store. Its units and interpretation remain unknown. This is a raw completion
+stamp input, not a completed timestamp contract; query date and object absence
+cannot supply the missing meaning.
+
+The existing hosted and requested-target readers now copy that QWORD under
+their existing player, host and full Activity identity checks. They publish
+`native_completion_stamp_observed` and `native_completion_stamp_raw`
+in the existing same-response views. A successful read preserves all unsigned
+64 bits, including zero. The target reader requires both existing samples to
+read the same value. Optional read failure or change leaves the stamp
+unavailable and preserves the prior identity status and terminal flags.
+The wire represents an unavailable raw value as null; older packets may omit
+both new fields.
+
+Strict decoding and exact identity normalization carry the pair into
+`lifecycle.latest_identity_observation`. Once a value is known, the durable
+consumer also retains the whole original source observation in
+`lifecycle.native_completion_stamp_observation`, with its original query
+date and revision. A later failed read leaves the latest observation unknown
+without erasing or relabeling that historical value. The existing Service
+result already exposes the lifecycle observation; no additional query or
+Service gate was introduced. Completion/invalidation overlap, reward
+attribution and action or material outcome credit remain separate.
+
+The exact source-first receipts are the October 11 source-round
+`institution-activity-terminal-source-01/DELIVERY.json` files under
+`continuation-12` (reader), `continuation-47` (two real serializers)
+and `continuation-51` (three Python consumers). The aggregate reference is
+`continuation-16/background-g2-source-round-20261011-0907/institution-activity-terminal-source-01/COMPLETION-STAMP-ADOPTION.json`
+under `D:/codex-ck3-background-spill/native71-continuation-20261010`.
+The raw producer source is `common-native/parent-map01/activity_complete_flags-DETAIL.json`
+in the retained Activity ledger. The completed producer closure is recorded in fresh `continuation-03`
+`institution-activity-terminal-source-01/SOURCE-CONTRACT.json`, with the
+exact `[23F6980,23F6D65)` source packet. The remaining time interpretation
+requires an existing standard date/clock contract for the exact `5C7E338`
+QWORD. Pre-callee invalidation observation is an independent source increment;
+these seven files do not observe a released object.

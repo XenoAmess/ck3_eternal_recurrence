@@ -23,6 +23,11 @@ These additions remain research / SOURCE_ADOPTED_NOT_RUN. Normal-return nonzero-
 through the existing education path. Actual command construction/dispatch and
 specific terminal cause attribution remain unqualified until authorized runtime work. Native84/fullSDK84 still represent compiled594; no new
 game days, terminal cause, succession or M6/M7 completion are credited.
+The latest background increment carries the actual raw Activity+408 QWORD through
+the existing hosted query, strict decoder and durable lifecycle record; see
+[Activity completion input](../ck3-native-ai/activity-feast-mcp-migration-12004.md#october-11-native-completion-qword-in-the-existing-lifecycle-read).
+Its producer is the actual image+5C7E338 QWORD; date interpretation remains a
+source dependency. This is SOURCE_ADOPTED_NOT_RUN.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

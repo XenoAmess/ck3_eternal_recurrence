@@ -58,6 +58,13 @@ def normalize_activity_feast_terminal_outcome_v1(
             or row["activity_type_key"] != "activity_feast"):
         outcome["unknown_reason"] = "activity_identity_mismatch"
         return outcome
+    # This raw native QWORD is independent of terminal flags and query date.
+    # Its successful zero has no inferred sentinel, units or completion meaning.
+    if "native_completion_stamp_observed" in row:
+        outcome.update({
+            "native_completion_stamp_observed": row["native_completion_stamp_observed"],
+            "native_completion_stamp_raw": row["native_completion_stamp_raw"],
+        })
     if row.get("terminal_flags_observed") is not True:
         outcome["unknown_reason"] = "terminal_flags_unobserved"
         return outcome

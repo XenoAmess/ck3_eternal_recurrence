@@ -89,10 +89,14 @@ def _hosted(value: object) -> list[dict[str, object]]:
     terminal_fields = {
         "terminal_flags_observed", "native_completed", "native_invalidated",
     }
+    stamp_fields = {"native_completion_stamp_observed", "native_completion_stamp_raw"}
     for row in value:
         if (
             not isinstance(row, dict)
-            or set(row) not in (identity_fields, identity_fields | terminal_fields)
+            or set(row) not in (
+                identity_fields, identity_fields | terminal_fields,
+                identity_fields | stamp_fields, identity_fields | terminal_fields | stamp_fields,
+            )
             or not _positive(row["activity_id"], 2**32 - 1)
             or not _positive(row["host_character_id"], 2**32 - 1)
             or not isinstance(row["activity_type_key"], str)
@@ -107,6 +111,13 @@ def _hosted(value: object) -> list[dict[str, object]]:
             or type(row["native_invalidated"]) is not bool
         ):
             raise BridgeUnavailableError("private feast hosted terminal flags malformed")
+        if stamp_fields <= set(row):
+            observed = row["native_completion_stamp_observed"]
+            raw = row["native_completion_stamp_raw"]
+            if (type(observed) is not bool
+                    or observed and (type(raw) is not int or not 0 <= raw < 2**64)
+                    or not observed and raw is not None):
+                raise BridgeUnavailableError("private feast native completion stamp malformed")
         seen.add(row["activity_id"])
         copied.append(dict(row))
     return copied

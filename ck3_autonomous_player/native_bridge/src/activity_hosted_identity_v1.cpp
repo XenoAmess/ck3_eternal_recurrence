@@ -255,7 +255,11 @@ ActivityHostedTargetStatusV1 ReadHostedTargetSample(
     const ActivityHostedIdentityEnvironmentV1 &environment,
     const ManagerSample &manager, std::int32_t host_id,
     std::uint32_t full_id, std::uint32_t target_id,
-    HostedTargetSample &sample) noexcept {
+    HostedTargetSample &sample,
+    std::uint64_t &completion_stamp_raw,
+    bool &completion_stamp_observed) noexcept {
+  completion_stamp_raw = 0;
+  completion_stamp_observed = false;
   const auto index = full_id & 0x00FFFFFFU;
   ActivityHostedIdentityV1 identity{};
   if (full_id == 0xFFFFFFFFU || manager.active_count == 0 ||
@@ -281,6 +285,15 @@ ActivityHostedTargetStatusV1 ReadHostedTargetSample(
     return ActivityHostedTargetStatusV1::activity_identity_unavailable;
   sample.type_key = identity.type_key;
   sample.type_key_size = identity.type_key_size;
+  // Actual4 23F6D43 writes RAX verbatim to Activity+408. Its producer
+  // and units are not established by the held completion-store source.
+  if (IsActivity12004BuildV1(environment.admitted_executable_sha256)) {
+    std::uint64_t raw_stamp = 0;
+    if (ReadAt(environment, sample.activity, 0x408, raw_stamp)) {
+      completion_stamp_raw = raw_stamp;
+      completion_stamp_observed = true;
+    }
+  }
   if (!ResolveTargetCharacter(environment, target_id, sample.character))
     return ActivityHostedTargetStatusV1::target_identity_unavailable;
 
@@ -397,6 +410,13 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
         identity.terminal_flags_observed = true;
         identity.native_completed = complete != 0;
         identity.native_invalidated = invalidated != 0;
+        if (IsActivity12004BuildV1(environment.admitted_executable_sha256)) {
+          std::uint64_t raw_stamp = 0;
+          if (ReadAt(environment, activity, 0x408, raw_stamp)) {
+            identity.native_completion_stamp_observed = true;
+            identity.native_completion_stamp_raw = raw_stamp;
+          }
+        }
       }
       ++result.hosted_count;
     }
@@ -499,9 +519,12 @@ ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
     return result;
   }
   HostedTargetSample first{};
+  std::uint64_t first_completion_stamp_raw = 0, last_completion_stamp_raw = 0;
+  bool first_completion_stamp_observed = false, last_completion_stamp_observed = false;
   result.status = ReadHostedTargetSample(
       layout_environment, first_manager, expected.actor_character_id, activity_full_id,
-      static_cast<std::uint32_t>(target_character_id), first);
+      static_cast<std::uint32_t>(target_character_id), first,
+      first_completion_stamp_raw, first_completion_stamp_observed);
   if (result.status != ActivityHostedTargetStatusV1::observed) return result;
 
   ManagerSample last_manager{};
@@ -520,7 +543,8 @@ ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
                               actor_last) || actor_last != actor_first ||
       ReadHostedTargetSample(layout_environment, last_manager, expected.actor_character_id,
                              activity_full_id,
-                             static_cast<std::uint32_t>(target_character_id), last) !=
+                             static_cast<std::uint32_t>(target_character_id), last,
+                             last_completion_stamp_raw, last_completion_stamp_observed) !=
           ActivityHostedTargetStatusV1::observed || last != first ||
       !environment.read_frame(environment.context, after) || after != expected) {
     result.status = ActivityHostedTargetStatusV1::snapshot_changed;
@@ -531,6 +555,11 @@ ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
   result.type_key_size = first.type_key_size;
   result.native_completed = first.completed != 0;
   result.native_invalidated = first.invalidated != 0;
+  result.native_completion_stamp_observed = first_completion_stamp_observed &&
+      last_completion_stamp_observed &&
+      first_completion_stamp_raw == last_completion_stamp_raw;
+  if (result.native_completion_stamp_observed)
+    result.native_completion_stamp_raw = first_completion_stamp_raw;
   result.attending_list_observed = true;
   result.attending_count = static_cast<std::uint32_t>(first.attending_count);
   result.target_in_attending_list = first.target_in_attending_list;

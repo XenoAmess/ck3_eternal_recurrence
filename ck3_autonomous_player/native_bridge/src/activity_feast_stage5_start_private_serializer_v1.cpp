@@ -24,6 +24,12 @@ void AppendIdentities(std::string &payload,
       payload += ",\"native_invalidated\":";
       payload += ids[index].native_invalidated ? "true" : "false";
     }
+    payload += ",\"native_completion_stamp_observed\":";
+    payload += ids[index].native_completion_stamp_observed ? "true" : "false";
+    payload += ",\"native_completion_stamp_raw\":";
+    payload += ids[index].native_completion_stamp_observed
+                   ? std::to_string(ids[index].native_completion_stamp_raw)
+                   : "null";
     payload += "}";
   }
   payload += "]";

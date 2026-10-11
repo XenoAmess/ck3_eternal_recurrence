@@ -216,6 +216,21 @@ def _record_lifecycle_observation(
             "opinion_change_raw": None,
         },
     }
+    # Retain the exact source read's date/revision with its known native stamp.
+    # Current identity reads and their unknown stamp remain independent above.
+    stamp_source = current_outcome
+    if stamp_source.get("native_completion_stamp_observed") is not True:
+        stamp_source = (previous.get("native_completion_stamp_observation")
+                        if isinstance(previous, Mapping) else None)
+        if not isinstance(stamp_source, Mapping) and isinstance(previous, Mapping):
+            stamp_source = previous.get("outcome")
+    if (isinstance(stamp_source, Mapping)
+            and stamp_source.get("native_completion_stamp_observed") is True
+            and stamp_source.get("activity_id") == resolved["activity_id"]
+            and stamp_source.get("actor_character_id") == resolved["actor_character_id"]
+            and type(stamp_source.get("native_completion_stamp_raw")) is int
+            and 0 <= stamp_source["native_completion_stamp_raw"] < 2**64):
+        lifecycle["native_completion_stamp_observation"] = dict(stamp_source)
     before_values = resolved["source_pending"].get("pre_outcome_values")
     after_values = post.get("outcome_values")
     before_values = before_values if isinstance(before_values, Mapping) else {}

@@ -49,6 +49,10 @@ struct ActivityHostedIdentityV1 {
   bool terminal_flags_observed = false;
   bool native_completed = false;
   bool native_invalidated = false;
+  // Actual 1.20.0.4 Activity+408 QWORD, independent of terminal flags.
+  // Raw source bits only; neither query date nor timestamp units inferred.
+  bool native_completion_stamp_observed = false;
+  std::uint64_t native_completion_stamp_raw = 0;
 };
 
 enum class ActivityHostedIdentityStatusV1 {
@@ -111,6 +115,9 @@ struct ActivityHostedTargetResultV1 {
   std::uint32_t character_activity_state_raw = UINT32_MAX;
   bool character_record_matches_activity = false;
   bool native_active_attendee = false;
+  // Optional raw QWORD observed consistently in both target samples.
+  bool native_completion_stamp_observed = false;
+  std::uint64_t native_completion_stamp_raw = 0;
 };
 
 std::string_view ActivityHostedTargetStatusKeyV1(

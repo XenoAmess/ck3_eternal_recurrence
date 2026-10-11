@@ -1232,6 +1232,11 @@ std::string SerializeActivityFeastGuestOpinionPrivateV1(
     result += ",\"activity_type_key\":";
     result += target_observed ? "\"" + std::string(target.type_key.data(), target.type_key_size) + "\""
                               : "null";
+    result += ",\"native_completion_stamp_observed\":";
+    result += observed_bool(target.native_completion_stamp_observed);
+    result += ",\"native_completion_stamp_raw\":";
+    result += target_observed && target.native_completion_stamp_observed
+                  ? std::to_string(target.native_completion_stamp_raw) : "null";
     result += ",\"native_completed\":" + std::string(observed_bool(target.native_completed)) +
         ",\"native_invalidated\":" + observed_bool(target.native_invalidated) +
         ",\"attending_list_observed\":" + observed_bool(target.attending_list_observed) +
