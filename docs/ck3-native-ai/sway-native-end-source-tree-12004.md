@@ -1,10 +1,12 @@
 # CK3 1.20.0.4 Sway native end 源码树
 
-2026-10-11。本文复用已闭合的实际 `.4` 父函数与两个顺序子函数，
-不新增二进制读取。版本为 CK3 `1.20.0.4` / Steam build `25734779`，EXE SHA-256
+2026-10-11。本文复用已闭合的实际 `.4` 父函数与两个顺序子函数；
+专题整合不重复读取二进制，各源 owner 的必要归档读取在合同中记录。
+版本为 CK3 `1.20.0.4` / Steam build `25734779`，EXE SHA-256
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`。
-原生入/返观察、Scheme 终态和具体终止原因分别保留；当前源码不能把共享 callback
-命名为 `on_invalidated`，也不能从 invalidated Toast 推出 native end 的原因。
+原生入/返观察、Scheme 终态和具体终止原因分别保留。实际 `.4` literal 登记与字段
+解析链已把 definition `+588` 的 property 名闭为 `on_invalidated`；这不证明当前
+handler、compiled payload 或某次终止原因，也不能从 invalidated Toast 推出原因。
 
 研究前置为 [实际 typed end 输入](native71-sway-end-invocation-12004.md)、
 [completion 到 end 的关系](native71-sway-child-end-causal-path-12004.md)、
@@ -29,13 +31,20 @@ flowchart TD
   V --> W[2A52960：Scheme+30/+34 的 literal tag/payload fill]
   W --> Y[3765760：definition+588 与同 scope 构造 argblock]
   Y --> Z[CALL 3765E50：compiled callback 执行入口]
-  Z -. token 名称与当前 compiled 内容未闭合 .-> U[具体 authored/native 终止原因 unknown]
+  Z -. 当前 compiled 内容/实际 source caller 未闭合 .-> U[具体 authored/native 终止原因 unknown]
   CT[30CF900：构造 definition D] --> CI[3764150：初始化 D+588 callback cell]
   CT --> ST[secondary slot4 cell48B9F18 → 2EEEA10]
   ST --> PK[30CFED0：numeric property key2A98 分支]
   PK -->|fresh P=D+A60；P-4D8=D+588；domain9| MP[初始 slot492E2E8 → 3764400 member parser]
   PK --> TN[3F4F8E0：token-name registry lookup]
-  TN -. actual token 字符串名 unknown .-> U
+  TN --> PN[on_invalidated：actual property 名]
+  PN -. 不证明当前 handler/终止原因 .-> U
+  SU[8546C1 CALL producer；8546CA STORE5CBEDE8] --> PR[3F4F7E0：返回 module5DC1150]
+  PR -->|guardFFFFFFFF 的慢路径| IN[3F4EAE0：literal 两表登记]
+  IN --> LR[table2 index2712：initial10904/name470D998]
+  LR --> RG[3F523B0：mutable ID 登记正常路径]
+  RG --> NS[5DC1198 array10904：名字对象 store]
+  NS --> TN
   MP -. 当前 compiled value/执行 effects unknown .-> Y
   B -->|否| L[后续公共路径]
   Z --> L
@@ -86,8 +95,9 @@ Character marker/fullID、death 字段与 linked pointer 有各自 guard；非 k
 不重复下面的新 stores/callback。其他正常路径在 `2A4AE21` 先写 `+28=1`，然后
 测试原始 DL。DL 非零才走 `889F60` 本地 scope、`2A517E0(Scheme,scope)`，以及
 `3765760(definition+588,scope)`。下节补入已闭的 literal scope fill 与 generic
-compiled callback 调用路径；token 的字符串名、当前 compiled callback 内容、完整 transitive effects 与
-具体原生 source caller 仍未闭合。本树没有据名称补成 `on_invalidated`。
+compiled callback 调用路径；后面的 actual 登记/解析链已闭 property 名
+`on_invalidated`。当前 compiled callback 内容、完整 transitive effects 与具体原生
+source caller 仍未闭合，字段名字不补成某次 invalidation 的原因。
 
 在这个子函数内，`+30 != 0` 仅跳过后面的 target cleanup，仍可到达
 `2A4B138` 的 `DWORD[Scheme+2C]=FFFFFFFF`。`+30` 不是终态字段。
@@ -155,10 +165,10 @@ target 类型或终止原因；`373A0F0` 的完整 insertion effects 仍属于�
 literal `37657E2` 的 RCX 是原输入 compiled callback，RDX 是 `&RSP+20`。
 normal return 后按各自非空字段执行条件清理，最终 `RET376585B`；wrapper
 不检查 event-specific result/status/cause。这闭合的是 actual scope/argblock 到
-compiled executor 的连接。下节进一步闭合 numeric property key `2A98` 到 definition
-`+588` 的实际字段解析入口；该 token 的字符串名、当前 compiled callback 内容、其他
-native caller 到父 end 的来源关联及具体终止原因仍为 unknown 虚线，不改变 accepted
-kinds，不补造 causal token。
+compiled executor 的连接。下节闭合 numeric property key `2A98` 到 definition
+`+588` 的实际字段解析入口，再下一节补入 `.4` literal `on_invalidated` 的登记
+来源。当前 compiled callback 内容、其他 native caller 到父 end 的来源关联及具体
+终止原因仍为 unknown 虚线，不改变 accepted kinds，不补造 causal token。
 
 新增薄合同仍位于同一 continuation 根：
 
@@ -233,12 +243,9 @@ callback，RDX 是 S，R8D 为保存 BP 的零扩展值；
 
 名字 helper 从 `QWORD[image+5CBEDE8]` 取得 runtime-built registry，按 signed
 DWORD `registry+54` 的 inclusive 上界及 `QWORD[registry+48]` 的 pointer array
-查 ordinal `10904`。返回对象的具体字符串取决于实际 registration/name cell，
-当前未持有该名字来源；fallback literal `472C488` 不能当作 `2A98` 的名字。
-目前闭合的是 **numeric `2A98` → callback 字段 `D+588` / domain9**，不能写成
-`on_invalidated` 已证明，更不能把静态字段连接当作某次自然终止的原因。下一项
-必要名字输入仅是这个 registry 的实际 registration producer 或同一 token 的
-name cell 来源；不扩扫 caller、manager 或 compiled engine。
+查 ordinal `10904`。helper 自身没有名字 literal；下节用本轮实际 registration/
+record/name 来源闭合 `2A98` 的 property 名。fallback literal `472C488` 仍不能
+替代该名字；静态字段连接仍不证明某次自然终止的原因。
 
 本段原件均在同一 continuation 根，薄合同/源 pin 为：
 
@@ -253,6 +260,73 @@ name cell 来源；不扩扫 caller、manager 或 compiled engine。
 `SOURCE_ADOPTED_NOT_RUN` 边界不变。各源 owner 对冻结归档的有限读取/复用记录在
 原件中；专题整合没有再次读取二进制。未新增生产代码、资格运行或
 Game/Steam/UI/RPC，未赋予自然 invalidator 原因信用。
+
+## 实际 token 登记链与 `on_invalidated` 名字来源
+
+2026-10-11 新 source round 补充：专题整合只读各 owner 的新薄合同，旧父树不重读，
+不重复二进制读取。源 owners 的有限新增归档读取见下列实际回执。
+名字来自同一 `.4` EXE 的实际 literal 数据和登记源码，
+不来自 `.2` 地址迁移、旧名字推测或 Toast 邻接。
+
+既有 startup 在 `8546C1 CALL3F4F7E0` 后，由 `8546CA` 将返回 RAX 写入
+`QWORD[image+5CBEDE8]`。`3F4F7E0` 的已持有 107B 源中，两条正常出口都
+返回 **地址** `module+5DC1150`，不是加载该地址的 QWORD；只有 CRT guard
+`DWORD[5DC1148]==FFFFFFFF` 的慢路径调用 `3F4EAE0`。initializer 实际
+1940B 自身 CFG 已闭。两表来源如下：
+
+| literal 表 | 实际 module RVA 范围 | 16B record 数 |
+| --- | --- | ---: |
+| table1 | `[4471670,44717B0)` | 20 |
+| table2 | `[46E0D60,4703120)` | 8764 |
+
+每条实际使用 signed DWORD `+0` 初始 token ID 与 QWORD `+8` C-string
+pointer；`+4..7` 未由该登记源消费。实际扫描两表的 8784 个 ID 后，初始
+`10904/2A98` 只有一条：table2 的零基 index `2712`，record RVA `46EB6E0`。
+
+```text
+record46EB6E0 raw16B = 982a00000000000098d9704401000000
+namecell46EB6E8      = VA14470D998 / moduleRVA470D998
+name raw15B          = 6f6e5f696e76616c69646174656400
+ASCII                = on_invalidated ; raw15B includes terminal00
+```
+
+initializer 在 table2 路径把 record ID 复制到 `DWORD[rbp+6F]`，按 literal
+name 构造 32B string object，并在 `3F4F198 CALL3F523B0` 时把该 mutable ID
+local 的地址作为 stack `+28` 参数传入。返回后 `3F4F1C9` **重读** local ID，
+`3F4F1E4` 再写 `QWORD[QWORD[image+5DC1198]+postchildID*8]`；`5DC1198`
+就是 registry `+48` 的 array pointer cell。因此只发现 initial record 还不足以
+单独宣布最终 ordinal；这里复用有序登记 ID 效果合同补上这个源连接。
+
+`3F523B0` 的实际 911B 自身源没有 ID 算术或 through-ID store。
+collision `29CECB0` 的 128B 只经 arg5 读取 DWORD，复制到 bucket `+28`；
+没有向其子调用显式传递该 ID pointer。growth `3F52B60` 的 908B 经 arg6
+读取同 DWORD 并复制到 entry `+28`，显式 ID pointer 只下传已闭 collision
+的 arg5 或同函数自身的 arg6，正常返回后不再写 ID。有限 ordinary-return
+自递归因此保持原始 ID；这里不证明递归会终止，INT3 非正常返回 arm 也不
+纳入该结论。在 caller ID storage、name 和 bucket 分离的正常源码域中，
+这条有序连接保留 initial DWORD `10904`，故 initializer 返回后重读的 ID
+仍为 `10904`，上述实际 store 把该名字对象写入 `namearray[10904]`。
+
+正常源域中的最终名字 store 与 `3F4F8E0(ECX2A98)` 查表入口相接，再接上
+`30CFED0` 的 numeric-key 分支和静态初始化 member 入口，闭合的是
+**property `on_invalidated` → definition callback `D+588` / domain9**。
+当前 registry array/vptr/handler、callback 的 compiled payload 或实际执行
+postimage 未由这次 source round 观察。即使实际 native end 的 rawDL 非零，
+仍不能仅凭这个字段名给某次终止赋 invalidated 原因；其他实际 native caller
+的来源关联和 source-specific causal observation 继续按原专题单独保留。
+
+新 round 薄输入相对 continuation 根为：
+
+- `continuation-15/background-g2-source-round-20261011-0907/m6-registry-producer-3f4f7e0/SOURCE-CONTRACT.json`，SHA `e76b3cf6c5c04d57591a4e160d40140cce6be88090c9fa61560056c7fa053b21`。
+- `continuation-22/background-g2-source-round-20261011-0907/m6-registry-init-3f4eae0/SOURCE-REGISTRY-INITIALIZER-CONTRACT.json`，SHA `b0d83bc16c619a84b1e84edf522d881b35e856cd45f89cc43eb7e8a72a9b3026`。
+- `continuation-07/background-g2-source-round-20261011-0907/m6-token10904-record-source/ACTUAL-TOKEN10904-INITIAL-RECORD-CANDIDATE.json`，SHA `459cf475ca5b1bfe28f2ac234a8a2090d8e10300e998d80bd522e0604fc0aaa6`；初始 record 与最终 ordinal 的证明分别保留。
+- `continuation-15/background-g2-source-round-20261011-0907/m6-token-id-collision-29cecb0/SOURCE-CONTRACT.json`，SHA `67e3cc228b136b53321d017c5fbafba1753a7d43297e9934277dfee7be00e72f`。
+- `continuation-26/background-g2-source-round-20261011-0907/m6-token-registration-3f523b0-source/ACTUAL-03F523B0-SOURCE.json`，SHA `fa5af8152d10cdfcc9efec09db5ec492f8cad4d3acda9918cbaf22faba235405`；911B 登记自身源与 collision/growth 薄合同共同构成有序 ID 效果连接。
+- `continuation-21/background-g2-source-round-20261011-0907/m6-token-id-growth-3f52b60/ID-EFFECTS.json`，SHA `4d1d3500a67742977f909eb95f7743c558c06ba964916bcb4d4d169c51824b7d`；owned 908B SHA `8c40fbbd16db99223b524d9be997f9c6c2f56e24f615ca6756e49e2ed83f0444`。
+
+只更新同一源码知识专题；生产 API、accepted kinds、typed observation 的当前
+运行资格均未改。无 tests、项目 imports、编译、Game/Steam/UI/process/SDK/RPC
+或新 reader；本专题整合不重复源 owners 的必要归档读取。
 
 ## 中立入/返与终止原因的边界
 

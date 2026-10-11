@@ -19,6 +19,8 @@ The `bf3697e1` education explicit request/parser/Driver/materializer/family call
 group is also integrated. The common native end entry/return observer and its
 existing query/strict/Service connection are integrated in the current source
 package; see [native Sway end source](../ck3-native-ai/sway-native-end-source-tree-12004.md).
+Actual .4 registration now binds property `on_invalidated` to definition+588 /
+domain9. Its current compiled payload and a particular terminal cause remain unobserved.
 These additions remain research / SOURCE_ADOPTED_NOT_RUN. Normal-return nonzero-option command copying is source-closed and admitted
 through the existing education path. Actual command construction/dispatch and
 specific terminal cause attribution remain unqualified until authorized runtime work. Native84/fullSDK84 still represent compiled594; no new
