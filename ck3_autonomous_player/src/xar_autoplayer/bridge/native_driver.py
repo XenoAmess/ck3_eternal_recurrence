@@ -10412,7 +10412,9 @@ class NativeHeadlessGameplayDriver:
             payload["rollback_war_failures"] = rollback_war_failures
         return payload
 
-    def _encode_driver_state_locked(self) -> bytes:
+    def _encode_driver_state_locked(
+        self, *, persistence_step: str | None = None
+    ) -> bytes:
         """Encode the current locked state without cloning its full history."""
         rollback_war_failures = self._rollback_war_failures
         payload = {
@@ -10438,14 +10440,33 @@ class NativeHeadlessGameplayDriver:
         # first playable snapshot supplies the restored physical origin.
         if not self._rollback_war_failures_migration_required:
             payload["rollback_war_failures"] = rollback_war_failures
-        return (
-            json.dumps(
-                payload,
-                ensure_ascii=False,
-                separators=(",", ":"),
+        serialization_timing = (
+            start_army_timing("driver.full_state_json_serialization")
+            if persistence_step is not None
+            else None
+        )
+        try:
+            serialized = (
+                json.dumps(
+                    payload,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                )
+                + "\n"
             )
-            + "\n"
-        ).encode("utf-8")
+        finally:
+            if persistence_step is not None:
+                finish_army_timing(serialization_timing, step=persistence_step)
+        encoding_timing = (
+            start_army_timing("driver.full_state_utf8_encoding")
+            if persistence_step is not None
+            else None
+        )
+        try:
+            return serialized.encode("utf-8")
+        finally:
+            if persistence_step is not None:
+                finish_army_timing(encoding_timing, step=persistence_step)
 
     def _managed_restore_request_state(
         self, transaction: dict[str, object]
@@ -10923,21 +10944,54 @@ class NativeHeadlessGameplayDriver:
         if self.state_dir is None:
             return
         persistence_timing = start_army_timing("driver.full_state_persistence")
+        persistence_step = (
+            f"persist-driver-state:{persistence_timing[2]}"
+            if persistence_timing is not None
+            else None
+        )
         try:
+            write_lock_timing = (
+                start_army_timing("driver.full_state_write_lock_wait")
+                if persistence_step is not None
+                else None
+            )
             with self._driver_state_write_lock:
+                if persistence_step is not None:
+                    finish_army_timing(write_lock_timing, step=persistence_step)
                 try:
                     # Encode one immutable snapshot under the state lock, then
                     # keep the write lock through its atomic replacement.  A
                     # query appended while those bytes are being written sets
                     # dirty again for the next barrier/close.
+                    state_lock_timing = (
+                        start_army_timing("driver.full_state_state_lock_wait")
+                        if persistence_step is not None
+                        else None
+                    )
                     with self._driver_state_lock:
+                        if persistence_step is not None:
+                            finish_army_timing(state_lock_timing, step=persistence_step)
                         if self._session_bridge_pid is None:
                             return
-                        encoded = self._encode_driver_state_locked()
+                        if persistence_step is None:
+                            encoded = self._encode_driver_state_locked()
+                        else:
+                            encoded = self._encode_driver_state_locked(
+                                persistence_step=persistence_step
+                            )
                         self._driver_state_dirty = False
-                    write_bytes_atomic(
-                        self._native_driver_state_path(), encoded
+                    write_timing = (
+                        start_army_timing("driver.full_state_atomic_write")
+                        if persistence_step is not None
+                        else None
                     )
+                    try:
+                        write_bytes_atomic(
+                            self._native_driver_state_path(), encoded
+                        )
+                    finally:
+                        if persistence_step is not None:
+                            finish_army_timing(write_timing, step=persistence_step)
                 except (OSError, TypeError, ValueError) as error:
                     # A gameplay command has already happened by this point.  Keep
                     # the live agent usable and surface persistence failure in
