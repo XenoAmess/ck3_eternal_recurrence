@@ -26,6 +26,11 @@ and qualified; this lane reads no EXE and replays no qualification.
 
 ```mermaid
 flowchart TD
+  DP[Durable pending action after cold restart] --> CQ[Existing paused target query: typed player Sway rows]
+  CQ --> UQ{Exactly one same-target full ID and generation}
+  UQ -->|unique observed row| RI[Independent recovered identity; no submission receipt]
+  RI --> O
+  UQ -->|missing or ambiguous| IU[Identity unknown; pending is not resent]
   O[Original resolved player target full ID generation] --> C
   C[Existing actual4 completion query] --> J{Exact native instance state}
   J -->|status0| A[Retain active instance; no new Start]
@@ -202,3 +207,36 @@ causal fact, ledger or submission check changes. This source-ledger increment
 precedes the runner hunk and claims no executed ordinary selection, new private
 Sway application or qualification; no tests, imports, builds or game operations
 were run.
+
+## 2026-10-11 cold recovery retains observed instance identity
+
+The pending recovery branch already resolves a matching active Sway without
+resending: `_resolved(..., receipt=None)` preserves that independent active
+postcondition. It previously discarded the query's fullID/generation, while the
+runner, terminal producer, lifecycle and material consumers obtained identity
+only from `native_receipt`. A cold recovered episode therefore lost the input
+needed to observe its later end and follow-up. Native receipt mode depends on
+the process-local `pending_ack`; a new process cannot reconstruct that receipt.
+
+The existing target query already serializes the player's typed Sway rows in
+`active_sway_instances` and retains its paused actor/date, query/native revision
+and exact build provenance. The minimal source increment stores a separate
+`recovered_instance_observation` only for exactly one same-target row in that
+same query. Schema `xar.ck3.sway-recovered-instance-observation.v1` and source kind
+`matching_active_readback_recovery` retain pending action/actor/target, the
+observed fullID/generation, copied `active_instance` and actual `source_read`
+query/build/hash/date/capture/container/snapshot stamps.
+`submission_receipt_available=false` records the absence;
+`native_receipt` remains `None`. Missing, unread or multiple matching rows add no
+identity. This associates an observed active instance with recovery; it does not
+prove submission, payment, terminal outcome or cause.
+
+The shared `_resolved_instance_identity` keeps the successful receipt route and
+otherwise exposes this independently retained identity to lifecycle, material,
+the terminal producer, `Service._attach_sway_terminal_sources` and runner. The runner uses its fullID/generation for the
+existing permission-separated completion, termination and opinion reads, with
+the original paused frame check. Later end/material observations still supply
+their own facts before the existing follow-up policy. No native getter, query,
+submission gate, receipt or cause is replaced. This source ledger precedes the
+production hunks; no binary read, test, import, build, game query or new runtime
+qualification was performed for this increment.

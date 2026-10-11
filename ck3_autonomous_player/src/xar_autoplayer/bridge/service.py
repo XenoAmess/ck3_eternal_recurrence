@@ -890,7 +890,7 @@ class GameplayBridgeService:
         opinion_read: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Compose already copied actual4 inputs for the original applied Sway."""
-        from ..sway_formal_consumer import read_sway_ledger
+        from ..sway_formal_consumer import _resolved_instance_identity, read_sway_ledger
         from ..sway_lifecycle_consumer import record_sway_common_native_end_observation
         from .sway_terminal_source_producer_12004 import compose_sway_terminal_sources_12004
 
@@ -906,9 +906,13 @@ class GameplayBridgeService:
         resolved = read_sway_ledger(Path(state_dir)).get("resolved")
         receipt = resolved.get("native_receipt") if isinstance(resolved, dict) else None
         if (not isinstance(resolved, dict) or resolved.get("status") != "applied"
-                or resolved.get("postcondition_verified") is not True
-                or not isinstance(receipt, dict)
-                or receipt.get("schema") != "active-scheme-sway-formal-private-v1"):
+                or resolved.get("postcondition_verified") is not True):
+            return result
+        if receipt is None:
+            if _resolved_instance_identity(resolved) is None:
+                return result
+        elif (not isinstance(receipt, dict)
+              or receipt.get("schema") != "active-scheme-sway-formal-private-v1"):
             return result
         if completion_read is None:
             latest = resolved.get("latest_instance_observation")

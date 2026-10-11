@@ -28,7 +28,7 @@ def record_sway_material_intervention(
     Call after the two existing registered read tools, then use the ordinary
     gameplay turn.  The following-turn consumer already lives on that path.
     """
-    from .sway_formal_consumer import read_sway_ledger
+    from .sway_formal_consumer import _resolved_instance_identity, read_sway_ledger
 
     if (sway_read.get("schema") != "active-scheme-sway-private-read-v1"
             or opinion_read.get("schema") != "xar.ck3.sway-outcome-opinion-v1"
@@ -45,9 +45,9 @@ def record_sway_material_intervention(
             or any(resolved.get(key) != sway_read[key]
                    for key in ("actor_character_id", "target_character_id"))):
         raise ValueError("Sway material does not belong to the resolved player intervention")
-    receipt = resolved.get("native_receipt")
+    receipt = _resolved_instance_identity(resolved)
     if not isinstance(receipt, Mapping):
-        raise ValueError("Sway material requires the original full-instance receipt")
+        raise ValueError("Sway material requires the original full-instance identity")
     instance_id = receipt.get("scheme_instance_id")
     generation = receipt.get("scheme_instance_generation")
     if type(instance_id) is not int or type(generation) is not int:
@@ -75,9 +75,11 @@ def _record_sway_material(
     current_terminal_observed: bool = False,
 ) -> dict[str, object]:
     """Share the named-material projection across census and exact-instance reads."""
-    from .sway_formal_consumer import _write
+    from .sway_formal_consumer import _resolved_instance_identity, _write
 
-    receipt = resolved["native_receipt"]
+    receipt = _resolved_instance_identity(resolved)
+    if receipt is None:
+        raise ValueError("Sway material lacks the original full-instance identity")
     instance_id = receipt["scheme_instance_id"]
     generation = receipt["scheme_instance_generation"]
     terminal = bool(terminal_observation and terminal_observation.get(

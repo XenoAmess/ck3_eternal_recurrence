@@ -45,6 +45,31 @@ def _actual4(value: Mapping[str, object]) -> None:
 
 def _original(resolved: Mapping[str, object]) -> dict[str, object]:
     receipt = resolved.get("native_receipt")
+    if receipt is None:
+        from ..sway_formal_consumer import _resolved_instance_identity
+
+        observed = _resolved_instance_identity(resolved)
+        if (resolved.get("status") != "applied" or resolved.get("postcondition_verified") is not True
+                or observed is None):
+            raise ValueError("Sway producer lacks the recovered instance observation")
+        actor, target = resolved.get("actor_character_id"), resolved.get("target_character_id")
+        full_id, generation = observed["scheme_instance_id"], observed["scheme_instance_generation"]
+        if (not all(_uint(item) and item != 0xFFFFFFFF for item in (actor, target, full_id))
+                or not _uint(generation, 8) or generation != full_id >> 24):
+            raise ValueError("Sway producer recovered full identity is malformed")
+        source_read = observed["source_read"]
+        origin = (source_read.get("exact_ck3_build"), source_read.get("exe_sha256"))
+        if origin != _ORIGINAL_12003:
+            _actual4(source_read)
+        return {
+            "action_id": resolved["action_id"], "actor_character_id": actor,
+            "target_character_id": target, "scheme_instance_id": full_id,
+            "scheme_instance_generation": generation,
+            "original_exact_ck3_build": origin[0], "original_exe_sha256": origin[1],
+            "original_identity_source_kind": "matching_active_readback_recovery",
+            "submission_receipt_available": False,
+            "recovered_instance_observation": deepcopy(dict(observed)),
+        }
     if (resolved.get("status") != "applied" or resolved.get("postcondition_verified") is not True
             or not isinstance(receipt, Mapping)
             or receipt.get("schema") != "active-scheme-sway-formal-private-v1"

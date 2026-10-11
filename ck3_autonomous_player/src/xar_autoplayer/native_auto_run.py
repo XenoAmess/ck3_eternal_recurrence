@@ -8413,28 +8413,34 @@ def _observe_private_active_scheme_sway_once(
     if (isinstance(state_dir, Path)
             and any(getattr(driver, permission, False) is True
                     for permission in lifecycle_permissions)):
-        from .sway_formal_consumer import LEDGER_FILE, read_sway_ledger
+        from .sway_formal_consumer import (
+            LEDGER_FILE, _resolved_instance_identity, read_sway_ledger,
+        )
 
         if (state_dir / LEDGER_FILE).is_file():
             resolved = read_sway_ledger(state_dir)["resolved"]
             receipt = (resolved.get("native_receipt")
                        if isinstance(resolved, dict) else None)
-            full_id = receipt.get("scheme_instance_id") if isinstance(receipt, dict) else None
-            generation = (receipt.get("scheme_instance_generation")
-                          if isinstance(receipt, dict) else None)
+            identity = (_resolved_instance_identity(resolved)
+                        if isinstance(resolved, dict) and receipt is None else receipt)
+            full_id = identity.get("scheme_instance_id") if isinstance(identity, dict) else None
+            generation = (identity.get("scheme_instance_generation")
+                          if isinstance(identity, dict) else None)
             if (isinstance(resolved, dict)
                     and resolved.get("status") == "applied"
                     and resolved.get("postcondition_verified") is True
                     and resolved.get("actor_character_id") == before.get("played_character_id")
                     and resolved.get("target_character_id") == target_character_id
-                    and isinstance(receipt, dict)
-                    and receipt.get("schema") == "active-scheme-sway-formal-private-v1"
-                    and receipt.get("stage") == "applied"
-                    and receipt.get("postcondition_verified") is True
+                    and isinstance(identity, dict)
+                    and (receipt is None or (
+                        isinstance(receipt, dict)
+                        and receipt.get("schema") == "active-scheme-sway-formal-private-v1"
+                        and receipt.get("stage") == "applied"
+                        and receipt.get("postcondition_verified") is True))
                     and isinstance(resolved.get("action_id"), str) and resolved["action_id"]
-                    and receipt.get("action_id") == resolved["action_id"]
-                    and all(type(receipt.get(key)) is int
-                            and receipt[key] == resolved.get(key)
+                    and identity.get("action_id") == resolved["action_id"]
+                    and all(type(identity.get(key)) is int
+                            and identity[key] == resolved.get(key)
                             for key in ("actor_character_id", "target_character_id"))
                     and type(full_id) is int and 0 <= full_id < 0xFFFFFFFF
                     and type(generation) is int and 0 <= generation <= 255

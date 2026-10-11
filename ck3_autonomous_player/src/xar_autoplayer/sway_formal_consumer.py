@@ -131,6 +131,37 @@ def _read_now(driver: object, target: int) -> tuple[dict[str, object], dict[str,
     return snapshot, read
 
 
+def _resolved_instance_identity(resolved: Mapping[str, object]) -> Mapping[str, object] | None:
+    receipt = resolved.get("native_receipt")
+    if isinstance(receipt, Mapping):
+        return receipt
+    if receipt is not None:
+        return None
+    observed = resolved.get("recovered_instance_observation")
+    if (not isinstance(observed, Mapping)
+            or observed.get("schema") != "xar.ck3.sway-recovered-instance-observation.v1"
+            or observed.get("source_kind") != "matching_active_readback_recovery"
+            or observed.get("submission_receipt_available") is not False
+            or any(observed.get(key) != resolved.get(key) for key in (
+                "action_id", "actor_character_id", "target_character_id"))):
+        return None
+    instance_id = observed.get("scheme_instance_id")
+    generation = observed.get("scheme_instance_generation")
+    row, source = observed.get("active_instance"), observed.get("source_read")
+    if (type(instance_id) is not int or not 0 <= instance_id < 0xFFFFFFFF
+            or type(generation) is not int or not 0 <= generation <= 255
+            or not isinstance(row, Mapping) or any(row.get(key) != observed.get(key)
+                for key in ("scheme_instance_id", "scheme_instance_generation", "target_character_id"))
+            or not isinstance(source, Mapping)
+            or source.get("schema") != "active-scheme-sway-private-read-v1"
+            or any(key not in source for key in (
+                "exact_ck3_build", "exe_sha256", "queried_snapshot_id", "queried_revision",
+                "queried_native_revision", "snapshot_revision", "date_raw", "capture_epoch",
+                "container_generation", "post_snapshot_id"))):
+        return None
+    return observed
+
+
 def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
               read: Mapping[str, object], receipt: Mapping[str, object] | None,
               state_dir: Path) -> dict[str, object]:
@@ -151,6 +182,30 @@ def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
         "native_receipt": dict(receipt) if receipt is not None else None,
         "next_turn_consumed": False,
     }
+    if receipt is None:
+        rows = read.get("active_sway_instances")
+        if isinstance(rows, list) and all(isinstance(row, Mapping) for row in rows):
+            matching = [row for row in rows
+                        if row.get("target_character_id") == pending["target_character_id"]]
+            if len(matching) == 1:
+                row = matching[0]
+                instance_id, generation = row.get("scheme_instance_id"), row.get("scheme_instance_generation")
+                if (type(instance_id) is int and 0 <= instance_id < 0xFFFFFFFF
+                        and type(generation) is int and 0 <= generation <= 255):
+                    result["recovered_instance_observation"] = {
+                        "schema": "xar.ck3.sway-recovered-instance-observation.v1",
+                        "source_kind": "matching_active_readback_recovery",
+                        **{key: result[key] for key in (
+                            "action_id", "actor_character_id", "target_character_id")},
+                        "scheme_instance_id": instance_id,
+                        "scheme_instance_generation": generation,
+                        "active_instance": dict(row),
+                        "source_read": {key: read.get(key) for key in (
+                            "schema", "exact_ck3_build", "exe_sha256", "queried_snapshot_id",
+                            "queried_revision", "queried_native_revision", "snapshot_revision",
+                            "date_raw", "capture_epoch", "container_generation", "post_snapshot_id")},
+                        "submission_receipt_available": False,
+                    }
     previous = ledger["resolved"]
     if isinstance(previous, Mapping):
         history = list(previous.get("previous_interventions", []))

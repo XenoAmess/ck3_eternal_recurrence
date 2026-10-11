@@ -9,7 +9,7 @@ from collections.abc import Mapping
 from copy import deepcopy
 from pathlib import Path
 
-from .sway_formal_consumer import LEDGER_FILE, _write, read_sway_ledger
+from .sway_formal_consumer import LEDGER_FILE, _resolved_instance_identity, _write, read_sway_ledger
 from .sway_material_consumer import _record_sway_material
 
 
@@ -23,7 +23,7 @@ def _resolved_for_read(state_dir: Path, read: Mapping[str, object]):
             or any(resolved.get(key) != read.get(key) for key in (
                 "actor_character_id", "target_character_id"))):
         return None
-    receipt = resolved.get("native_receipt")
+    receipt = _resolved_instance_identity(resolved)
     if not isinstance(receipt, Mapping) or any(type(receipt.get(key)) is not int
             for key in ("scheme_instance_id", "scheme_instance_generation")):
         return None
