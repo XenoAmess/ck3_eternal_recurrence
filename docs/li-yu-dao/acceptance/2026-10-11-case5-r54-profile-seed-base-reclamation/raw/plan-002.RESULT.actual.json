@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-003\\serial_profiles.py",
+    "--phase",
+    "plan",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-root-request-author-sourceonly-20261011-002\\ROOT-PLAN.actual-001.json",
+    "--sha256",
+    "2e023e75d89ef6250d16b58caf2400a84477b20ad71addc232d55edaaf5dcbbe"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T05:07:39.635590+00:00",
+  "finished_at_utc": "2026-10-11T05:07:40.310556+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-plan-command-20261011-002\\stdout.log",
+    "bytes": 561,
+    "sha256": "07c2484e62f0a729175f347009d08d5684f104fef4c9dfb8e26f369ec333ed7a"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-plan-command-20261011-002\\stderr.log",
+    "bytes": 450,
+    "sha256": "f4aec738e96411d12984e0d1af6a7315c924f0e23881563bd7fc5900dd4313a4"
+  }
+}

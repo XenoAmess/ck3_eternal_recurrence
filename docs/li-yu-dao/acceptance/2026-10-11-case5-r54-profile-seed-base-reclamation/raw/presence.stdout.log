@@ -1,0 +1,23 @@
+{
+  "manifest_bytes": 687704,
+  "seed_indexed_files": 3740,
+  "target_present": 0,
+  "target_missing": 3740,
+  "present_matching_size": 0,
+  "present_logical_bytes": 0,
+  "missing_sample": [
+    "dx11/ps_5_0/00000000004359E4.bin",
+    "dx11/ps_5_0/00000000004359E4.scache",
+    "dx11/ps_5_0/000000000050C206.bin",
+    "dx11/ps_5_0/000000000050C206.scache",
+    "dx11/ps_5_0/0000000000C4E69A.bin",
+    "dx11/ps_5_0/0000000000C4E69A.scache",
+    "dx11/ps_5_0/0000000000DBFEDB.bin",
+    "dx11/ps_5_0/0000000000DBFEDB.scache",
+    "dx11/ps_5_0/00000000011C92AA.bin",
+    "dx11/ps_5_0/00000000011C92AA.scache"
+  ],
+  "cache_body_reads": 0,
+  "deletions": 0,
+  "actual_credit": 0
+}

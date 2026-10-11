@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-base-cache-retirement-actual-20261011-001\delete_exact_profile_base_cache.py", line 369, in <module>
+    if __name__=='__main__': main()
+                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-base-cache-retirement-actual-20261011-001\delete_exact_profile_base_cache.py", line 363, in main
+    if args.plan: plan(values,args)
+                  ~~~~^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-base-cache-retirement-actual-20261011-001\delete_exact_profile_base_cache.py", line 221, in plan
+    _,tinfo=guard_leaf(held,old,core,native,tp,row,0x80,3)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-base-cache-retirement-actual-20261011-001\delete_exact_profile_base_cache.py", line 197, in guard_leaf
+    handle=core.opened(stack,native,path,access,share)
+  File "C:\workspace\ck3_lyd_runtime_20261004\storage-cleanup-20261010-001\cleanup_two_derived_texts.py", line 64, in opened
+    require(handle!=ctypes.c_void_p(-1).value,"CreateFile guard failed: "+str(path)+" "+str(ctypes.WinError(ctypes.get_last_error())))
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\storage-cleanup-20261010-001\cleanup_two_derived_texts.py", line 36, in require
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CreateFile guard failed: C:\workspace\ck3-common-runtime\cases\lyd-i4-natural-expiry-20261011-005\state\profile\shadercache\dx11\ps_5_0\00000000004359E4.bin [WinError 2] 系统找不到指定的文件。

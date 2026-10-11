@@ -1,0 +1,35 @@
+{
+  "schema": "lyd.closed-profiles.seed-base.serial-aggregate.v1",
+  "at_utc": "2026-10-11T05:07:40.279630+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 59985,
+    "sha256": "ecaa647c88ec4fe6b62dec869cdd6829f5cddc46963ed9281da50761f1746b45"
+  },
+  "actual_ROOT_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-root-request-author-sourceonly-20261011-002\\ROOT-PLAN.actual-001.json",
+    "bytes": 455,
+    "sha256": "2e023e75d89ef6250d16b58caf2400a84477b20ad71addc232d55edaaf5dcbbe"
+  },
+  "actual_results": [],
+  "logical_deleted_bytes": 0,
+  "deleted_files": 0,
+  "all4_complete": false,
+  "failure": {
+    "stage": "CASE5",
+    "phase": "plan",
+    "command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-serial-actual-20261011-001\\CASE5-PLAN.command.json",
+      "bytes": 1055,
+      "sha256": "289b06f6425d288cb3623b311abfd0648db809c381ee3a32df498b49e9540b2d"
+    },
+    "exit_code": 1,
+    "credit": "ZERO_NO_APPLY_STARTED"
+  },
+  "stopped_no_further_writes": true,
+  "old_credit_repeated": false,
+  "retained_original_deadlines_not_extended": true,
+  "old_prepared_validator": "RESTORE_REQUIRED",
+  "business_credit": false,
+  "automatic_retry": false
+}

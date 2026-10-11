@@ -1,0 +1,19 @@
+{
+  "schema": "lyd.exact-reclamation-credit-event.v1",
+  "event_id": "lyd-closed-case5-profile-seed-base-20261011-001",
+  "deduplication_key": "lyd-closed-case5-profile-seed-base-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-serial-actual-20261011-001\\AGGREGATE.actual.json",
+    "bytes": 1387,
+    "sha256": "9c85fa9ddd0efb7f53611c6bd13a95bbb8ba6cf8f879dd462996dc73a43b07a4"
+  },
+  "actual_batch_results": [],
+  "logical_deleted_bytes": 0,
+  "deleted_files": 0,
+  "reservation_claimed_or_consumed": false,
+  "future_reservation_reference": null,
+  "old_credit_repeated": false,
+  "business_credit": false,
+  "physical_free_delta_exclusive_attribution": null
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\\admit_profiles.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-root-request-author-sourceonly-20261011-001\\ROOT-ADMIT.actual-001.json",
+    "--sha256",
+    "5c2590a4bfeb2d22fda58af14ee6824cc7f9798d0a66999b0aecd9f372fb54e5"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T05:01:23.406508+00:00",
+  "finished_at_utc": "2026-10-11T05:01:23.583161+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-admit-command-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-seed-base-retirement-admit-command-20261011-001\\stderr.log",
+    "bytes": 717,
+    "sha256": "dfe67f5a97767af89c90df48bdc130bcf141c2ef26a4bba3f82703052ff6bb56"
+  }
+}

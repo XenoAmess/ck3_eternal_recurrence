@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/case5-profile-base-constructor-sourceonly-20261011-003/construct_case5.py",
+    "--facts-sha256",
+    "2ff94b09cb77dd61f5de0f793d1c5393ff2b275e302200dff4e34134d99856b1",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/case5-profile-base-cache-retirement-actual-20261011-001"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T04:55:56.255688+00:00",
+  "finished_at_utc": "2026-10-11T04:55:56.399832+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-base-cache-constructor-command-20261011-002\\stdout.log",
+    "bytes": 503,
+    "sha256": "5c194826e56fc0f4e063e700e0e5979717c67258763d2b5950db5cfb02100924"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case5-profile-base-cache-constructor-command-20261011-002\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,31 @@
+--- workflow002/admit
++++ workflow003/admit
+@@ -114,7 +114,7 @@
+     unique = {}
+     for ref in small:
+         path = Path(ref['path']).resolve()
+-        need(path.is_relative_to(B) and path.suffix.lower() in ('.py','.json','.patch','.md','.log','.txt'),
++        need(path.is_relative_to(B) and path.suffix.lower() in ('.py','.json','.patch','.md','.log','.txt','.diff'),
+              'Only exact small source/plan/receipt files under B may be charged')
+         if path in unique:
+             need(unique[path] == ref, 'Conflicting small file pins')
+@@ -130,8 +130,8 @@
+     pp=[Path(v).absolute() for v in parallel['explicit_paths']]
+     repo=Path('C:/workspace/ck3_eternal_recurrence')
+     need(len(pp)==len(set(pp)) and all(p==p.resolve() and (p.is_relative_to(B) or p.is_relative_to(repo/'docs') or p.is_relative_to(repo/'.git')) for p in pp),'Finite existing/future bookkeeping paths only')
+-    owned=[Path(__file__).resolve().parent,AD,OUT,B/'case5-profile-base-cache-retirement-actual-20261011-001',B/'case5-profile-seed-base-retirement-serial-actual-20261011-001']
+-    owned += [B/('case5-profile-seed-base-retirement-'+k+'-command-20261011-001') for k in ('admit','plan','apply','close')]
++    owned=[Path(__file__).resolve().parent,OUT,B/'case5-profile-base-cache-retirement-actual-20261011-001',B/'case5-profile-seed-base-retirement-serial-actual-20261011-001']
++    owned += [B/('case5-profile-seed-base-retirement-'+k+'-command-20261011-002') for k in ('admit','plan','apply','close')]
+     need(all(p not in unique and not any(p==r or p.is_relative_to(r) or r.is_relative_to(p) for r in owned) for p in pp),'Parallel precharge must not overlap cleanup measurement/precharged files')
+     need(small_bytes <= 4*MIB and not OUT.exists(), 'Small package bound/create-only admission failed')
+     closed_ref = request['previous_closed_reservation']
+@@ -202,7 +202,7 @@
+                 'inherited_payloads_recounted_bytes':0,'cleanup_credit_deducted_bytes':0,'candidate_deleted_bytes_credited':0,
+                 'planned_profile_base_maximum_bytes':146942067,'planned_profile_base_maximum_files':3740,
+                 'explicit_serial_receipt_root':str(B/'case5-profile-seed-base-retirement-serial-actual-20261011-001'),
+-                'explicit_command_roots':[str(B/('case5-profile-seed-base-retirement-'+k+'-command-20261011-001')) for k in ('admit','plan','apply','close')],
++                'explicit_command_roots':[str(B/('case5-profile-seed-base-retirement-'+k+'-command-20261011-002')) for k in ('admit','plan','apply','close')],
+                 'planned_retirement_is_not_actual_deletion':True,'payload_copy_or_build_authorized':False,
+                 'effective_project_quota_bytes':quota,'quota_override':prior['quota_override'],
+                 'quota_override_inherited_unchanged_no_renewal':True,'other_unspent_reservations_bytes':0,

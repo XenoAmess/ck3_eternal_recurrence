@@ -1,0 +1,11 @@
+--- C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\construct_case5.py
++++ C:\workspace\ck3_lyd_runtime_20261004\case5-profile-base-constructor-sourceonly-20261011-003\construct_case5.py
+@@ -78,7 +78,7 @@
+  fp=H/'FACTS.source-only.json';need(ref(fp)['sha256']==a.facts_sha256,'Exact reviewed facts required');facts=json.loads(fp.read_bytes())
+  output=a.output.resolve();need(output==OUTPUT and not output.exists(),'Exact fresh CASE5 source output only')
+  for key in ('closed','inputs','freeze','freeze_command','origin'):
+-  r=facts[key];need(Path(r['path']).stat().st_size<=20000 and ref(r['path'])==r,'Small original metadata changed')
++  r=facts[key];need(Path(r['path']).stat().st_size<=20000 and ref(r['path'])==dict(r,path=str(Path(r['path']))),'Small original metadata changed')
+  output.mkdir()
+  def new(name,value):
+   raw=value.encode() if isinstance(value,str) else (json.dumps(value,indent=2)+'\n').encode()

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\construct_case5.py", line 94, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\construct_case5.py", line 81, in main
+    r=facts[key];need(Path(r['path']).stat().st_size<=20000 and ref(r['path'])==r,'Small original metadata changed')
+                 ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\construct_case5.py", line 10, in need
+    if not ok:raise RuntimeError(msg)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Small original metadata changed

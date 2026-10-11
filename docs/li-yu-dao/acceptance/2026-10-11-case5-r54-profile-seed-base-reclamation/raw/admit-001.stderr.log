@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\admit_profiles.py", line 5, in <module>
+    exec(compile(selected('admit'),__file__,'exec'),ns);ns['main']()
+                                                        ~~~~~~~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\admit_profiles.py", line 117, in main
+  File "C:\workspace\ck3_lyd_runtime_20261004\case5-profile-seed-base-retirement-workflow-sourceonly-20261011-002\admit_profiles.py", line 28, in need
+RuntimeError: Only exact small source/plan/receipt files under B may be charged
