@@ -100,6 +100,7 @@ def project_army_observed_phases_12004(row, *, exact_source):
     consumer_stages=[]
     if consumer:
         from ..simulation.army_actual_assault_consumer_stage_12004 import map_actual_assault_consumer_stage_12004
+        from .army_observed_assault_consumer_outcome_12004 import project_observed_assault_consumer_outcome_12004
         from ..simulation.army_daily_assault_loss_consumer_12004 import project_army_daily_assault_loss_stage_12004
         for event in consumer['events']:
             phase_record=_phase_for(phases,event['parent']['phase_entry_event'])
@@ -127,6 +128,9 @@ def project_army_observed_phases_12004(row, *, exact_source):
                 'returned_dependencies_complete':event['returned_dependencies_complete'],
                 'native_group_budget_observations':budgets,
                 'conditional_numerical_projection':projected,'missing_inputs':mapped['missing'],
+                'actual_return_outcome_12004':project_observed_assault_consumer_outcome_12004(
+                    event,phase_record,exact_source=exact_source,
+                    family_current_session_guard=consumer['current_session_guard']),
                 'child_budget_promoted_to_simultaneous_entry_B':False})
     release=_family(row,RELEASE)
     if release:

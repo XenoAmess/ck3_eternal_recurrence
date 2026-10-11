@@ -1423,3 +1423,6 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 
 - [R0051 bounded waypoint: actual order and independent current state](war-bounded-waypoint-r0051-12003.md): public4/native3 actual route; current Army latency evidence, arrival and saved-day still pending.
 2026-10-06 后台新增：[paired native fertility发布候选](first-heir-adult-pair-inputs-12003.md#source-candidate-paired-fertility-publication)沿既有FAMILY48 reader/wire/transport进入正式plan/pending，source candidate / FIRST NOT RUN。新原生build、compiled-wire与sole新transport method资格归Root，不复用relationship1/1或preview2/2替代。
+
+
+- 2026-10-11 pure-background source: [actual daily assault callback return consumption](army-actual-assault-return-consumption-12004.md). Existing phase consumer connected; research / SOURCE_ADOPTED_NOT_RUN, no tests/build/Game.
