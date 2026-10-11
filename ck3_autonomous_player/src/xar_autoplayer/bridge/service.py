@@ -4894,7 +4894,7 @@ class GameplayBridgeService:
             raise UnsupportedStepError(
                 "selected backend cannot query native marriage choices"
             )
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         result = self.execute_step(
             QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
             expected_revision=(
@@ -4952,7 +4952,7 @@ class GameplayBridgeService:
             raise UnsupportedStepError(
                 "selected backend cannot query native war declarations"
             )
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         result = self.execute_step(
             QUERY_DECLARABLE_WARS_STEP,
             expected_revision=(
@@ -5393,7 +5393,8 @@ class GameplayBridgeService:
         """Read whether this player's white-peace proposal is still pending."""
         step = query_outbound_war_white_peace_status_step(war_id)
         result = self._execute_typed_war_step(
-            step, expected_revision=expected_revision
+            step, expected_revision=expected_revision,
+            include_native_command_history=False,
         )
         status = result.get("outbound_war_white_peace_status")
         if not isinstance(status, dict) or status.get("war_id") != war_id:
@@ -5435,7 +5436,8 @@ class GameplayBridgeService:
             )
         step = query_war_termination_exit_terms_step(war_id)
         result = self._execute_typed_war_step(
-            step, expected_revision=expected_revision
+            step, expected_revision=expected_revision,
+            include_native_command_history=False,
         )
         terms = result.get("war_termination_exit_terms")
         if not isinstance(terms, dict) or terms.get("war_id") != war_id:
@@ -14135,7 +14137,8 @@ class GameplayBridgeService:
             subject_army_id, target_province_id
         )
         result = self._execute_typed_war_step(
-            step, expected_revision=expected_revision
+            step, expected_revision=expected_revision,
+            include_native_command_history=False,
         )
         scope = result.get("actual_contact_scope")
         if not (
