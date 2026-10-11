@@ -1,0 +1,149 @@
+{
+  "schema": "lyd-manual-coordinated-storage-admission-v1",
+  "at_utc": "2026-10-10T23:56:45.035770+00:00",
+  "reservation_id": "ck3-common-source15-192MiB-20261011-012",
+  "capacity_status": "ALLOC_BUDGET_APPROVED",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "policy": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "machine_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\MACHINE-PROFILE.actual.json",
+    "bytes": 1160,
+    "sha256": "9ce38655d9c835f0db5aaf65d724318dd7db957d0e52e16f1b42b48a2276d109"
+  },
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "previous_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-011\\ADMISSION.actual.json",
+    "bytes": 8775,
+    "sha256": "afbbf05faad65cb09c5980dd9d059515d2b59184a5c229b1e4b38ff995280ebb"
+  },
+  "previous_closed_reservation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-011\\CLOSED-RESERVATION.actual.json",
+    "bytes": 7496,
+    "sha256": "698328e9cef1661e3f26fe4f2bf6540adb6907e54a8d445af3a198d991cc7ae3"
+  },
+  "previous_retained_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-011\\CLOSURE-MEASURE.actual.json",
+    "bytes": 16672,
+    "sha256": "2da9f1fc5ee169e73fe09ae611068e904a97c23206b66dad0d86dfff61950a02"
+  },
+  "source15_paths_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\PATHS-MANIFEST.actual.json",
+    "bytes": 13285,
+    "sha256": "c2debe4cfc592df5f3f6385526cd1ad10f2a6b205cf37870e7d985bf6a7a7f3d"
+  },
+  "source15_producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\produce_source15.py",
+    "bytes": 21379,
+    "sha256": "496ddd59dc77b89d844311eaa335dd62abb3ba5aef1815194e55629f4d469cf7"
+  },
+  "planned_source_export": "C:\\csr15",
+  "planned_metadata_root": "C:\\workspace\\ck3-common-runtime\\20261011-015",
+  "successor_base_source_commit": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "selected_published_commit": "e3b331428dafb94f8030b829c9630418b0195b7f",
+  "native_build_source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "full_source_and_native_same_commit": false,
+  "planned_command_roots": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-materialize-command-20261011-001"
+  ],
+  "this_write_peak_bytes": 201326592,
+  "unspent_reserved_peak_bytes": 201326592,
+  "new_source_export_peak_bound_bytes": 201326592,
+  "new_native_build_bytes": 0,
+  "new_Defender_registration_bytes": 0,
+  "new_cache_seed_snapshot_bytes": 0,
+  "new_profile_or_save_copy_bytes": 0,
+  "other_unspent_reservations_bytes": 0,
+  "current_project_usage_conservative_bytes": 136252447787,
+  "physical_usage_exact": false,
+  "actual_whole_project_usage_bytes_or_null": null,
+  "usage_bound_components": {
+    "prior011_conservative_project_base_bytes": 135247623897,
+    "actual011_known_retained_bytes": 1004823890,
+    "inherited_prior011_components": {
+      "prior010_base_bytes": 135510258348,
+      "actual010_known_retained_bytes": 161111254,
+      "010_closing_outputs_upper_bound_bytes": 1048576,
+      "new_post010_close_small_actual_bytes_or_null": null,
+      "new_post010_close_small_upper_bound_bytes": 33554432,
+      "new_post010_small_scope": "Only small increments after010 closure; inherited008/009 bounds not added again.",
+      "old008_or009_or_O14_Git_added_again_bytes": 0,
+      "cleanup_deducted_bytes": 458348713,
+      "released_peak_treated_as_physical_reclaim_bytes": 0
+    },
+    "inherited_cleanup_credit_already_deducted_once_bytes": 458348713,
+    "additional_charge_for_inherited_small_bounds_bytes": 0,
+    "cleanup_deducted_again_bytes": 0,
+    "unexecuted_R54_mutable_reclamation_credit_bytes": 0,
+    "released_peak_treated_as_physical_reclaim_bytes": 0
+  },
+  "cleanup_credit_events": [
+    {
+      "event_id": "lyd-five-save-duplicate-reclamation-20261010T222144Z",
+      "logical_bytes": 458348713,
+      "actual_deletion": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\five-save-duplicates-deletion-actual-20261011-001\\RESULT.actual.json",
+        "bytes": 7428,
+        "sha256": "5a4f134e6b6f7461427a74b3aaf7d96b316cae6d54500c6fe930277077dc9456"
+      },
+      "claim": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\five-save-duplicates-deletion-actual-20261011-001\\STORAGE-CREDIT-CLAIM.actual.json",
+        "bytes": 1460,
+        "sha256": "ca3b0324e41daaa27b1a0d6acc67dbb4ddaf77c000b5a8da4f5c2c41d989d5ea"
+      }
+    }
+  ],
+  "estimated_peak_components": {
+    "single_new_source_payload": 147823400,
+    "two_indices_allowance": 3145728,
+    "selected_recovery_blobs": 326533,
+    "external_git_index_objects_bound": 16777216,
+    "receipts_manifest_allowance": 2097152
+  },
+  "known_planned_peak_sum_bytes": 170170029,
+  "estimate_is_actual_peak": false,
+  "total_volume_bytes": 1023892852736,
+  "available_bytes": 618756358144,
+  "system_growth_reserve_bytes": 10737418240,
+  "safety_margin_bytes": 21474836480,
+  "required_free_bytes": 32413581312,
+  "effective_project_quota_bytes": 137438953472,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "quota_override_inherited_unchanged_no_renewal": true,
+  "reservation_expires_at_utc": "2026-10-11T03:56:45.035770+00:00",
+  "writer_rule": "One ROOT serialized Source15 materialize/bind only. No native build, Defender action, cache/save/profile copy or live run.",
+  "source_review_unchanged_at_utc": "2026-10-17T19:32:25.249949+00:00",
+  "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "copying_renews_original_retention": false,
+  "automatic_renewal": false,
+  "automatic_deletion": false,
+  "coordination_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-012\\COORDINATION.actual.json",
+    "bytes": 1324,
+    "sha256": "9758951bf7602284c13ab9d768355063fa957c762cc6dc5c03e764c8c8c8f61b"
+  },
+  "focused_inventory_helper_source_pin": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "automatic_reservation_manager_implemented": false,
+  "source_materialize_executed": false,
+  "new_host_MCP_registration_qualification": null,
+  "new_runtime_binding_or_live_qualification": null,
+  "next_live_2GiB_admission_granted": false,
+  "live_or_business_qualification": false
+}

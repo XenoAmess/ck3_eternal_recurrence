@@ -1,0 +1,111 @@
+{
+  "schema": "common-source15-publication-copy-manifest-v1",
+  "status": "EXTERNAL_CANDIDATE_NOT_APPLIED_TO_MAIN",
+  "files": [
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\20261011-015\\PYTHON-SUCCESSOR.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/PYTHON-SUCCESSOR.actual.json",
+      "bytes": 15247,
+      "sha256": "5196f78188f6f7865b46d3ab15d9bcc5f1a6eec3d7d5e738690043d7bb37c365"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\20261011-015\\SOURCE15-BIND.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/SOURCE15-BIND.actual.json",
+      "bytes": 7148,
+      "sha256": "53204a8f3682b013bd345f56fae9993a97197fe04eb054516d94e90f2941064a"
+    },
+    {
+      "source": "C:\\workspace\\ck3-common-runtime\\20261011-015\\runtime.local.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/runtime.local.json",
+      "bytes": 2032,
+      "sha256": "5681890bdd3d027a6694179b2d0fbd7f1573b5d6894764d40773b26e94dbf465"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-012\\ADMISSION.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/storage/ADMISSION.actual.json",
+      "bytes": 7400,
+      "sha256": "c2fb27a7faa185eae995ce4b4f8d62982f1f1053766f88a0c96b3df90b5901fc"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-plan-command-20261011-001\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/plan/RESULT.actual.json",
+      "bytes": 1099,
+      "sha256": "5cf8dde35560724f0ea05340a436fb06ca00125d9fa946ad95c591f132dc4129"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-plan-command-20261011-001\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/plan/stdout.log",
+      "bytes": 338,
+      "sha256": "078d36f4ffa95eff4c64fc6e36c3bdeb236942982cdaa954bb9452187cd06101"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-plan-command-20261011-001\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/plan/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-materialize-command-20261011-001\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/materialize/RESULT.actual.json",
+      "bytes": 1806,
+      "sha256": "d47bcd136afd47a78b052ebec547ad319534e77045fd58cf0a54051321269267"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-materialize-command-20261011-001\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/materialize/stdout.log",
+      "bytes": 447,
+      "sha256": "95662c25ccdb364223965d89d009928557c108e9bee8ed30064f70ac83f6a7ee"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-materialize-command-20261011-001\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/materialize/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-bind-command-20261011-001\\RESULT.actual.json",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/bind/RESULT.actual.json",
+      "bytes": 1660,
+      "sha256": "377dc6394ece66b0899272218b357748180186f6ddf9974305be100e5a0e2784"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-bind-command-20261011-001\\stdout.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/bind/stdout.log",
+      "bytes": 605,
+      "sha256": "88e2bd7ca597e44a31e601b294d135bb1c8ee7ca1714815eba57d385e4839019"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-bind-command-20261011-001\\stderr.log",
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/commands/bind/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": null,
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/FACTS.actual.json",
+      "bytes": 3755,
+      "sha256": "0e45c81be2383e488cafb4c63a21b8936ab9c05a0d0f4a02519089db0c7186d0"
+    },
+    {
+      "source": null,
+      "target": "docs/ck3-native-ai/2026-10-11-common-source15-pause-ready-convergence.md",
+      "bytes": 2660,
+      "sha256": "4d00e56af669661d057dae582e4fd5a0d5884cb9dc20f4ddc41a19776294fc1e"
+    }
+  ],
+  "source_only_index_reference_only": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\INDEX.source-only.json",
+    "bytes": 3411,
+    "sha256": "9a9972f40064bb826dd7eaca13691f99d89b6c39aacbf4ff4890afdcc7158326"
+  },
+  "manifest_reference_only": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\manifest.json",
+    "bytes": 60076,
+    "sha256": "c2b04084c0273177dbe31fcb72c951e887852c1fa6a89ab2f4863f7b8969edb2"
+  },
+  "original_stdio_copied_exactly": true,
+  "new_tests_SDK_CLI_executed": false,
+  "MAIN_Git_modified": false,
+  "live_business_credit": false,
+  "TTL_renewed": false
+}

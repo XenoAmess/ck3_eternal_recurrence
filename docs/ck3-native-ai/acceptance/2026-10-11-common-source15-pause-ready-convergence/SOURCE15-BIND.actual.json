@@ -1,0 +1,167 @@
+{
+  "schema": "source15-public-python-native-binding-lineage-v1",
+  "at_utc": "2026-10-10T23:58:31.768398+00:00",
+  "mixed_source_commit": "da388abf331a6042595f7bd614ad49aad6c92180",
+  "single_parent_source14_commit": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "published_source_commit": "e3b331428dafb94f8030b829c9630418b0195b7f",
+  "published_parent": "92e7f5d1c83745e70c0cc2c8c2c268c9f0b03641",
+  "same_full_commit_as_published_master": false,
+  "native_build_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "parent_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\manifest.json",
+    "bytes": 52685,
+    "sha256": "0b0e2cbda15e1cbd2e847abcc8215c48b5622fac80212cf5fdfb43ce2e8a4d8d"
+  },
+  "parent_runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\runtime.local.json",
+    "bytes": 2032,
+    "sha256": "ccfdf1087d624fa123382d8c5c9b5a3903c281b88221b4057bf4e5752fc31e31"
+  },
+  "parent_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\SOURCE14-BIND.actual.json",
+    "bytes": 28888,
+    "sha256": "7623c9bc9630b55621c861f1d7e9d4dc96b281c03bd51f4d3b2c2064ae54f6dd"
+  },
+  "actual_materialization": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 15247,
+    "sha256": "5196f78188f6f7865b46d3ab15d9bcc5f1a6eec3d7d5e738690043d7bb37c365"
+  },
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\produce_source15.py",
+    "bytes": 21379,
+    "sha256": "496ddd59dc77b89d844311eaa335dd62abb3ba5aef1815194e55629f4d469cf7"
+  },
+  "paths_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\PATHS-MANIFEST.actual.json",
+    "bytes": 13285,
+    "sha256": "c2debe4cfc592df5f3f6385526cd1ad10f2a6b205cf37870e7d985bf6a7a7f3d"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "b796be6a99c1867eca045a601e0f82b68315507ee059ca6197fac3546b291220"
+  },
+  "native_source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\native-source-index.json",
+    "bytes": 1019737,
+    "sha256": "9fd2826fda1d7002406cc34473d609d9b7d4aa2c5e2107dd503bce8664061be4"
+  },
+  "selected_paths": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 269082,
+        "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+      },
+      "selected_after": {
+        "bytes": 272486,
+        "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py",
+      "operation": "add",
+      "source14_before": null,
+      "selected_after": {
+        "bytes": 11214,
+        "sha256": "bf9d1bc7dcac799238dfd9ae2a2b463367b8158ed80dee83bf0407ac8295d392"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_pause.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 10722,
+        "sha256": "b9e55d6553f5fc17590b1a4ba9ad184681dba3bc4e5e59e091b348a168c8cad2"
+      },
+      "selected_after": {
+        "bytes": 10765,
+        "sha256": "93080cd5ae5938144aec10edd80d6bb38a9b3271e601fb14b75e699161b0ed7c"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_day_result.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 7266,
+        "sha256": "884f3e7e005c92299bec561eb55cdbdc452191fb2a9bfdc52e8f9efb8e1c1afc"
+      },
+      "selected_after": {
+        "bytes": 7309,
+        "sha256": "0b4b4669e22cf7072b39d4bfc65082e3925f3d564700f24a68edb6488ea05634"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_campaign_event.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 11384,
+        "sha256": "c3d9e98b9e45657a653085a5b05ceeee051233c3c21b9d1782d9f055099db87a"
+      },
+      "selected_after": {
+        "bytes": 11427,
+        "sha256": "e46e287105dd2f1352d8b6d97b5ae0e21075584673e354d34b805b28c469b984"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_preaction.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 13289,
+        "sha256": "59eea950a64564b735a4722be7fd96adf937bce0204287f67312c2c65b5ff4ca"
+      },
+      "selected_after": {
+        "bytes": 13332,
+        "sha256": "6e9b962044e7331b76cd9749a36b23becf2bfc473d8df9db764a8e67e8bba7e7"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    }
+  ],
+  "native_entries_compared_as_metadata": 4868,
+  "native_entries_equal_except_host": 4867,
+  "native_compiled_inputs_equal_original057": true,
+  "native_bodies_rehashed": 0,
+  "inherited_registration_original_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-qualification-20261011-001\\RESULT.actual.json",
+    "bytes": 8159,
+    "sha256": "0468a3b276c79b891e4f5d1ccbba5888fda25d65a2ec8d6984f3de907c2238e6"
+  },
+  "inherited_registration_reason": "Exact MCP/service/registration inputs unchanged in full source metadata; no SDK test replay.",
+  "changed_host_original_pause11_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\TEST-RESULT.actual.json",
+    "bytes": 2180,
+    "sha256": "133fafcb93f77c21d72fd956af026fca3958554ce432c85219b4149e3fd276a6"
+  },
+  "pause_patch_source_package": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\INDEX.actual.json",
+    "bytes": 2792,
+    "sha256": "56cd9af640530e193e782087d301242c47db52f3315ed279dae080962335366a"
+  },
+  "original_host11_tests_reexecuted": false,
+  "inherited_host_features_exact": true,
+  "stock_OFF_by_missing_public_feature_key": true,
+  "stock_grant_title_picker": false,
+  "TTL_or_quota_renewed": false,
+  "new_live_or_business_credit": false,
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\manifest.json",
+    "bytes": 60076,
+    "sha256": "c2b04084c0273177dbe31fcb72c951e887852c1fa6a89ab2f4863f7b8969edb2"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\runtime.local.json",
+    "bytes": 2032,
+    "sha256": "5681890bdd3d027a6694179b2d0fbd7f1573b5d6894764d40773b26e94dbf465"
+  },
+  "source_ready": true,
+  "all_capabilities_live_qualified": false,
+  "business_pass": false,
+  "next_required": "Fresh common public CLI plan/preflight; original cache/source/quota deadlines unchanged."
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "ck3-r54-cache-conditional-protection-narrowing-v1",
+  "at_utc": "2026-10-10T23:52:55.318354+00:00",
+  "reviewer": "/root",
+  "target_root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\profile\\shadercache",
+  "replacement_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\manifest.json",
+    "bytes": 687704,
+    "sha256": "a1fab6e0e92e4a8ea394d6e85e365f5c6be619e87d4f2c16b7ed9d2623cebe06"
+  },
+  "original_review_at_utc_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\PLAN.actual.json",
+    "bytes": 2740,
+    "sha256": "7769230d00028faab07a0cd0aeccd4194c553a6c4c2e70f56a324c6ef1588413"
+  },
+  "reason": "Only byte-identical redundant R54 mutable shadercache payload loses its rebuildable-copy owner use. Retained immutable R54 seed, actual origin metadata/business snapshots, Source14, CASE6 and R55 inputs remain protected. Held source/target SHA equality required for each exact file.",
+  "only_byte_identical_redundant_payload_release": true,
+  "changed_unique_busy_unlisted_files_retained": true,
+  "ROOT_consumer_proof": {
+    "ROOT_consumer_proof": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\ROOT-CONSUMER-000.actual.json",
+      "bytes": 1837,
+      "sha256": "308195d4ff95c1bc6b5681962b1709a72b543c461498020c9035d2dcf18da137"
+    },
+    "bus_command": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "--expected-cli-sha256",
+      "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "list",
+      "--stale-after",
+      "600"
+    ],
+    "bus_stdout_bytes": 155617,
+    "bus_stdout_sha256": "5c6b636162a6f78578bc44d5a01e871ad8e8919b78dd8dc8673d3e5a6efd29c9",
+    "at_utc": "2026-10-10T23:52:55.318058+00:00"
+  },
+  "runtime_or_business_credit": false,
+  "automatic_TTL_renewal": false
+}

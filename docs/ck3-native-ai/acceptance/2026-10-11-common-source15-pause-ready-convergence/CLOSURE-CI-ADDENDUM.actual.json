@@ -1,0 +1,61 @@
+{
+  "schema": "common-source15-publication-actual-close-addendum-v1",
+  "at_utc": "2026-10-11T00:08:20.956729+00:00",
+  "supersedes_only_prior_package_missing012_closure_status": true,
+  "original_package_facts_preserved": true,
+  "actual012_closed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-012\\CLOSED-RESERVATION.actual.json",
+    "bytes": 6200,
+    "sha256": "c7251842d864f0b84199ad7578ba3434a0ac14957d05ce2a742ca4ff5e2fc0e3"
+  },
+  "known_retained_logical_bytes": 159991748,
+  "remaining_reserved_peak_bytes": 0,
+  "physical_deleted_bytes": 0,
+  "whole_project_usage_unknown": true,
+  "available_bytes_after": 618560679936,
+  "actual_close_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-command-20261011-012\\RESULT.actual.json",
+    "bytes": 1987,
+    "sha256": "e39d8d77367b55e37626a8b74e548e02cff7f109f594e69dbb846a06e67dbf63"
+  },
+  "actual_close_started_at_utc": "2026-10-11T00:07:03.419577+00:00",
+  "actual_close_finished_at_utc": "2026-10-11T00:07:05.644195+00:00",
+  "actual_close_exit_code": 0,
+  "actual_close_stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-command-20261011-012\\stdout.log",
+    "bytes": 781,
+    "sha256": "f7299bf4f25b5cad109f2febe7de090b2a96a7d74ca9cfd780e32cc87a4d3bbf"
+  },
+  "actual_close_stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-closure-command-20261011-012\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "exact_published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f",
+  "official_exact_ci": {
+    "run_id": 38096386796,
+    "job_id": 114343037131,
+    "conclusion": "success",
+    "completed_at_utc": "2026-10-11T00:00:53Z"
+  },
+  "linear_exact_ci": {
+    "run_id": 38096386829,
+    "job_id": 114343037472,
+    "conclusion": "success",
+    "completed_at_utc": "2026-10-10T23:50:53Z"
+  },
+  "CI_original_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-exact-e3b33142-ci-terminal-readonly-20261011-001\\REPORT.actual.json",
+    "bytes": 3217,
+    "sha256": "7cae6574024fa288b5ebcd00f87c018a4b068c11702796b0c3d99aa0f01e1bc6"
+  },
+  "reviewed_python_cache_compatibility_reference_only": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+    "bytes": 8618,
+    "sha256": "4cef250f885a7b2754bc44b0e9ebbd29ce2e93c62fe0ff5bae8c75e7f511f113"
+  },
+  "cache_hit_or_live_business_qualification": false,
+  "future_CASE7_capacity_granted": false,
+  "remote_successor_does_not_change_Source15_selection": true,
+  "all_original_deadlines_unchanged": true
+}

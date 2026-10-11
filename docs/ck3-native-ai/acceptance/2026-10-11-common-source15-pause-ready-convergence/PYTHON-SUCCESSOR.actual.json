@@ -1,0 +1,397 @@
+{
+  "schema": "common-source15-python-successor-v1",
+  "at_utc": "2026-10-10T23:57:15.430683+00:00",
+  "source_commit": "da388abf331a6042595f7bd614ad49aad6c92180",
+  "single_parent": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "published_source_commit": "e3b331428dafb94f8030b829c9630418b0195b7f",
+  "published_parent": "92e7f5d1c83745e70c0cc2c8c2c268c9f0b03641",
+  "source_is_mixed_projection_not_full_master": true,
+  "source_root": "C:\\csr15",
+  "metadata_root": "C:\\workspace\\ck3-common-runtime\\20261011-015",
+  "base_inputs": {
+    "source-index.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\source-index.json",
+      "bytes": 1794115,
+      "sha256": "75078043338e07d339f0e278052fcbdae45f81d6dcb8bfc2c0476a1434ad7144"
+    },
+    "native-source-index.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\native-source-index.json",
+      "bytes": 1019737,
+      "sha256": "874ec1f6e9e649c28278cb7a5802f80d4d43bac69d9b2912b1447b753827f686"
+    },
+    "PYTHON-SUCCESSOR.actual.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\PYTHON-SUCCESSOR.actual.json",
+      "bytes": 29687,
+      "sha256": "815a83358f184919b5ac5285fcc9541de1a97176193ece3ad13d29826802157a"
+    },
+    "SOURCE14-BIND.actual.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\SOURCE14-BIND.actual.json",
+      "bytes": 28888,
+      "sha256": "7623c9bc9630b55621c861f1d7e9d4dc96b281c03bd51f4d3b2c2064ae54f6dd"
+    },
+    "manifest.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\manifest.json",
+      "bytes": 52685,
+      "sha256": "0b0e2cbda15e1cbd2e847abcc8215c48b5622fac80212cf5fdfb43ce2e8a4d8d"
+    },
+    "runtime.local.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\runtime.local.json",
+      "bytes": 2032,
+      "sha256": "ccfdf1087d624fa123382d8c5c9b5a3903c281b88221b4057bf4e5752fc31e31"
+    }
+  },
+  "paths_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\PATHS-MANIFEST.actual.json",
+    "bytes": 13285,
+    "sha256": "c2debe4cfc592df5f3f6385526cd1ad10f2a6b205cf37870e7d985bf6a7a7f3d"
+  },
+  "capacity_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-012\\ADMISSION.actual.json",
+    "bytes": 7400,
+    "sha256": "c2fb27a7faa185eae995ce4b4f8d62982f1f1053766f88a0c96b3df90b5901fc"
+  },
+  "producer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\produce_source15.py",
+    "bytes": 21379,
+    "sha256": "496ddd59dc77b89d844311eaa335dd62abb3ba5aef1815194e55629f4d469cf7"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "b796be6a99c1867eca045a601e0f82b68315507ee059ca6197fac3546b291220"
+  },
+  "native_source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\native-source-index.json",
+    "bytes": 1019737,
+    "sha256": "9fd2826fda1d7002406cc34473d609d9b7d4aa2c5e2107dd503bce8664061be4"
+  },
+  "selected_paths": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 269082,
+        "sha256": "0941760c809324bedca12aaa8a514030273c8662d7d84b0494426213193f9132"
+      },
+      "selected_after": {
+        "bytes": 272486,
+        "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py",
+      "operation": "add",
+      "source14_before": null,
+      "selected_after": {
+        "bytes": 11214,
+        "sha256": "bf9d1bc7dcac799238dfd9ae2a2b463367b8158ed80dee83bf0407ac8295d392"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_pause.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 10722,
+        "sha256": "b9e55d6553f5fc17590b1a4ba9ad184681dba3bc4e5e59e091b348a168c8cad2"
+      },
+      "selected_after": {
+        "bytes": 10765,
+        "sha256": "93080cd5ae5938144aec10edd80d6bb38a9b3271e601fb14b75e699161b0ed7c"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_day_result.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 7266,
+        "sha256": "884f3e7e005c92299bec561eb55cdbdc452191fb2a9bfdc52e8f9efb8e1c1afc"
+      },
+      "selected_after": {
+        "bytes": 7309,
+        "sha256": "0b4b4669e22cf7072b39d4bfc65082e3925f3d564700f24a68edb6488ea05634"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_campaign_event.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 11384,
+        "sha256": "c3d9e98b9e45657a653085a5b05ceeee051233c3c21b9d1782d9f055099db87a"
+      },
+      "selected_after": {
+        "bytes": 11427,
+        "sha256": "e46e287105dd2f1352d8b6d97b5ae0e21075584673e354d34b805b28c469b984"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    },
+    {
+      "relative_path": "tools/test_ck3_mod_acceptance_preaction.py",
+      "operation": "replace",
+      "source14_before": {
+        "bytes": 13289,
+        "sha256": "59eea950a64564b735a4722be7fd96adf937bce0204287f67312c2c65b5ff4ca"
+      },
+      "selected_after": {
+        "bytes": 13332,
+        "sha256": "6e9b962044e7331b76cd9749a36b23becf2bfc473d8df9db764a8e67e8bba7e7"
+      },
+      "published_source_head": "e3b331428dafb94f8030b829c9630418b0195b7f"
+    }
+  ],
+  "excluded_published_changes": [
+    {
+      "relative_path": ".github/workflows/static-ci.yml",
+      "status": "M",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/autonomous-agent-progress/daily/2026-10-11.md",
+      "status": "M",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "status": "M",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/2026-10-11-pause-ready-convergence.md",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/2026-10-11-r55-i4-natural-expiry-red.md",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/.gitattributes",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/AST-LOADERS-INDEX.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/AST-LOADERS.patch",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/HOST.patch",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/INDEX.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/SOURCE-INDEX.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/TEST-RESULT.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-pause-ready-convergence/stderr.log",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/.gitattributes",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/FACTS.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/INDEX.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/diagnostic/EXTRACT.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/diagnostic/PAUSE-TAIL.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/case-output/normal-quit-root-result.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/case-output/readiness-window-result.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/display-restore-001.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/final-offline-root-review-001.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/host-original-process-exit.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/host-started.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/keeper-actual-parent-exit.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/keeper-stop-proof-001.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/public-run-command-001/RESULT.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/public-verify-command-001/RESULT.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/run/release-command-001/stdout.log",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/storage/CLOSED-RESERVATION.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/li-yu-dao/acceptance/2026-10-11-r55-i4-natural-expiry-red/storage/RESULT.actual.json",
+      "status": "A",
+      "adopted": false
+    },
+    {
+      "relative_path": "docs/maintenance/storage-retention-2026-10-11.md",
+      "status": "M",
+      "adopted": false
+    }
+  ],
+  "native_build_source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "native_directory_python_delta": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+  ],
+  "all_other_native_index_entries_equal": true,
+  "unchanged_native_entry_count": 4867,
+  "native_Cpp_CMake_compiled_inputs_unchanged": true,
+  "whole_native_index_equal": false,
+  "host": {
+    "path": "C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 272486,
+    "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+  },
+  "mcp_source": {
+    "path": "C:\\csr15\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 212325,
+    "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+  },
+  "inherited_host_features": {
+    "succession_title_readonly": true,
+    "saved_campaign_inject_after_load": true,
+    "saved_campaign_debug_mode": true,
+    "confucian_challenger_readonly": true
+  },
+  "stock_grant_title_picker": false,
+  "next_I4_forbidden_flag": "--private-grant-title-picker",
+  "base_compiled_artifact_refs": {
+    "manifest.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\manifest.json",
+      "bytes": 52685,
+      "sha256": "0b0e2cbda15e1cbd2e847abcc8215c48b5622fac80212cf5fdfb43ce2e8a4d8d"
+    },
+    "runtime.local.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\runtime.local.json",
+      "bytes": 2032,
+      "sha256": "ccfdf1087d624fa123382d8c5c9b5a3903c281b88221b4057bf4e5752fc31e31"
+    },
+    "SOURCE14-BIND.actual.json": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-014\\SOURCE14-BIND.actual.json",
+      "bytes": 28888,
+      "sha256": "7623c9bc9630b55621c861f1d7e9d4dc96b281c03bd51f4d3b2c2064ae54f6dd"
+    }
+  },
+  "reviewed_pause_source_and_original_test_evidence": {
+    "INDEX.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\INDEX.actual.json",
+      "bytes": 2792,
+      "sha256": "56cd9af640530e193e782087d301242c47db52f3315ed279dae080962335366a"
+    },
+    "SOURCE-INDEX.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\SOURCE-INDEX.actual.json",
+      "bytes": 977,
+      "sha256": "609afd346d6d35b73cd8617154cce9a60d6b7f0a0637ac1ff2f8359377a3b3bc"
+    },
+    "AST-LOADERS-INDEX.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\AST-LOADERS-INDEX.actual.json",
+      "bytes": 2194,
+      "sha256": "ea102378ba169d040bfe36f4069006089f19c701f5e71f75060d121562ef7de3"
+    },
+    "TEST-RESULT.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\TEST-RESULT.actual.json",
+      "bytes": 2180,
+      "sha256": "133fafcb93f77c21d72fd956af026fca3958554ce432c85219b4149e3fd276a6"
+    }
+  },
+  "compiled_artifacts_copied": false,
+  "native_build_performed": false,
+  "Defender_attempted": false,
+  "unchanged_source_hashes_inherited": true,
+  "full_source_rehash": false,
+  "copied_unchanged_file_count": 8741,
+  "source_payload_bytes": 147823400,
+  "actual_output_bytes_before_receipt": 159807173,
+  "git_bytes": 8842320,
+  "peak_bound_bytes": 201326592,
+  "no_second_temp_tree": true,
+  "MAIN_before_after_HEAD": "e3b331428dafb94f8030b829c9630418b0195b7f",
+  "MAIN_before_after_index": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\.git\\index",
+    "bytes": 8831559,
+    "sha256": "c51ad2d2d46cbbdf4a9dd733486ca78363a0af98197dad8c88127164392712e6"
+  },
+  "MAIN_write": false,
+  "old_roots_overwritten": false,
+  "runtime_manifest_created": false,
+  "registration_qualification_inherited_by_binder": null,
+  "selection_preflight": null,
+  "new_live_or_business_PASS": null,
+  "tests_run": false,
+  "retention_not_renewed": true
+}

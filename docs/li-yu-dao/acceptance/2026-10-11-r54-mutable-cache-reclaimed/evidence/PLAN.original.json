@@ -1,0 +1,61 @@
+{
+  "schema": "ck3-r54-cache-exact-native-plan-v1",
+  "at_utc": "2026-10-10T23:49:51.426065+00:00",
+  "executor": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\delete_exact_r54_cache.py",
+    "bytes": 22027,
+    "sha256": "535408e7085203069f24dd817763dcb28218edec66f246d4e2ecb7e54933de40"
+  },
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\manifest.json",
+    "bytes": 687704,
+    "sha256": "a1fab6e0e92e4a8ea394d6e85e365f5c6be619e87d4f2c16b7ed9d2623cebe06"
+  },
+  "closed_context": {
+    "candidate": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-review-20261011-001\\FACTS.source-only.json",
+      "bytes": 7021,
+      "sha256": "70b1bb961eebbac64f9fe5979549ec740ad6867a7238c14042f34b3b143fdfcf"
+    },
+    "R54_closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-008\\CLOSED-RESERVATION.actual.json",
+      "bytes": 6414,
+      "sha256": "87f9756d18edd0d0b48f007be7799090b11ab3d4d573f7979e832936a23a5876"
+    },
+    "R55_closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-011\\CLOSED-RESERVATION.actual.json",
+      "bytes": 7496,
+      "sha256": "698328e9cef1661e3f26fe4f2bf6540adb6907e54a8d445af3a198d991cc7ae3"
+    }
+  },
+  "target_root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-005\\state\\profile\\shadercache",
+  "source_root": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\shadercache",
+  "target_root_identity": {
+    "volume_serial": 11439297576789895419,
+    "file_id": "8e862e00000003000000000000000000",
+    "legacy_file_id": 844424933181070
+  },
+  "source_root_identity": {
+    "volume_serial": 11439297576789895419,
+    "file_id": "2cc82e00000001000000000000000000",
+    "legacy_file_id": 281474979776556
+  },
+  "identities": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\IDENTITIES.plan.jsonl",
+    "bytes": 1802804,
+    "sha256": "6a36769b8f7ea59515459aa385b7b22eaec73d025b7965a1181d9b0c336cf8f7"
+  },
+  "count": 3740,
+  "logical_bytes": 146942067,
+  "max_batch": 1000,
+  "batches": 4,
+  "metadata_objects_including_parent_guards": 74814,
+  "elapsed_seconds": 12.72308540000813,
+  "body_reads_or_deletion": false,
+  "metadata_birth_mtime_preserved": true,
+  "original_review_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "protection_release": "PROPOSED_ONLY_ROOT_FRESH_APPLY_REVIEW_REQUIRED",
+  "byte_equality": "UNKNOWN_NOT_HASHED",
+  "actual_reclaimed_bytes": 0,
+  "prior_five_SAVE_or_R52_credit_repeated": false
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "ck3-r55-input-cache-exact-batch-result-v1",
+  "started_at_utc": "2026-10-11T00:11:02.149879+00:00",
+  "finished_at_utc": "2026-10-11T00:11:15.381437+00:00",
+  "batch": 0,
+  "begin": 0,
+  "end": 1000,
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-duplicate-input-retirement-sourceonly-20261011-001\\BATCH-000.claim.json",
+    "bytes": 1246,
+    "sha256": "541f2653827370d24f457204cfe533d9c9ab3d4189d537505eb00a21ea2b72c3"
+  },
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-duplicate-input-retirement-sourceonly-20261011-001\\PLAN.actual.json",
+    "bytes": 2780,
+    "sha256": "1be84d26a8b6d95d87eddda4f1b034290b914d20cc6b0f00b35c21cd7ecb74ac"
+  },
+  "deleted_files": 1000,
+  "logical_deleted_bytes": 55295596,
+  "allocation_size_api_deleted_sum": 57485776,
+  "free_before": 618923327488,
+  "free_after": 618979782656,
+  "global_free_delta_not_exclusive_cleanup_credit": 56455168,
+  "ok": true,
+  "failure_or_null": null,
+  "detail": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-duplicate-input-retirement-sourceonly-20261011-001\\BATCH-000.detail.jsonl",
+    "bytes": 1018579,
+    "sha256": "4049fdef8d65b310f4b7edee5e046655f8f08511120234f7386971bec3681143"
+  },
+  "original_review_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "identity_and_detail_retention_expires_at_utc": "2026-11-10T00:11:15.381437+00:00",
+  "compact_summary_review_at_utc": "2027-04-09T00:11:15.381437+00:00",
+  "old_R55_input_cache_metadata_historical_not_current_availability": true,
+  "seed_and_original_failure_evidence_retained": true,
+  "recursive_directory_deletion": false,
+  "automatic_retry": false,
+  "business_credit": false
+}

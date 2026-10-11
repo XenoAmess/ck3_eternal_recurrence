@@ -1,0 +1,78 @@
+{
+  "schema": "common-source15-actual-publication-facts-v1",
+  "assembled_at_utc": "2026-10-11T00:01:36.606101+00:00",
+  "source_commit": "da388abf331a6042595f7bd614ad49aad6c92180",
+  "single_parent": "9832c9a6c48f219d36e1f978089389b8bb2592a6",
+  "published_source_commit": "e3b331428dafb94f8030b829c9630418b0195b7f",
+  "same_full_commit_as_published_master": false,
+  "source_root": "C:\\csr15",
+  "metadata_root": "C:\\workspace\\ck3-common-runtime\\20261011-015",
+  "source_payload_bytes": 147823400,
+  "selected_python_path_count": 6,
+  "host": {
+    "path": "C:\\csr15\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 272486,
+    "sha256": "e4fdf567195080e6e6d3fce291ca869ed11ba00da9b103d7fbb28266ae16d442"
+  },
+  "mcp_source": {
+    "path": "C:\\csr15\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 212325,
+    "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+  },
+  "compiled_native_build_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "compiled_build_root": "C:/cbr3",
+  "native_entries_unchanged_except_host": 4867,
+  "native_compilation_performed": false,
+  "MCP_service_registration_inputs_unchanged": true,
+  "inherited_registration": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-qualification-20261011-001\\RESULT.actual.json",
+    "bytes": 8159,
+    "sha256": "0468a3b276c79b891e4f5d1ccbba5888fda25d65a2ec8d6984f3de907c2238e6"
+  },
+  "new_host_original_pause11_test_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-pause-ready-convergence-sourceonly-20261011-001\\TEST-RESULT.actual.json",
+    "bytes": 2180,
+    "sha256": "133fafcb93f77c21d72fd956af026fca3958554ce432c85219b4149e3fd276a6"
+  },
+  "new_host_is_not_old_Source14_test_host": true,
+  "original_11_tests_rerun": false,
+  "actual_commands": {
+    "plan": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-plan-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1099,
+      "sha256": "5cf8dde35560724f0ea05340a436fb06ca00125d9fa946ad95c591f132dc4129"
+    },
+    "materialize": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-materialize-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1806,
+      "sha256": "d47bcd136afd47a78b052ebec547ad319534e77045fd58cf0a54051321269267"
+    },
+    "bind": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-bind-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1660,
+      "sha256": "377dc6394ece66b0899272218b357748180186f6ddf9974305be100e5a0e2784"
+    }
+  },
+  "manifest_reference_only": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\manifest.json",
+    "bytes": 60076,
+    "sha256": "c2b04084c0273177dbe31fcb72c951e887852c1fa6a89ab2f4863f7b8969edb2"
+  },
+  "source_only_preparation_index_original_identity": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source15-successor-preparation-20261011-001\\INDEX.source-only.json",
+    "bytes": 3411,
+    "sha256": "9a9972f40064bb826dd7eaca13691f99d89b6c39aacbf4ff4890afdcc7158326"
+  },
+  "source_ready": true,
+  "all_capabilities_live_qualified": false,
+  "business_pass": false,
+  "storage012_closure_actual_reference_or_null": null,
+  "storage012_closure_as_of_package": "NOT_PROVIDED_TO_THIS_PACKAGE",
+  "next_CASE7_capacity_admission_granted": false,
+  "next_CASE7_allocate_or_run_credit": false,
+  "deadlines_renewed": false,
+  "quota_expires_at_utc": "2026-10-12T05:19:51.814083+00:00",
+  "cache_review_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "source_review_at_utc": "2026-10-17T19:32:25.249949+00:00",
+  "native_build_review_at_utc": "2026-10-24T19:32:25.249949+00:00"
+}

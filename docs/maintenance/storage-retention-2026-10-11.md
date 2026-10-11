@@ -85,3 +85,11 @@ ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，�
 真实追加时间：2026-10-10T23:48:42.406614+00:00。011已于2026-10-10T23:42:56.387502Z实际CLOSED_NO_FURTHER_WRITES_RESERVED。新保留逻辑量1004823890B，未来预约0，物理删除0；结束2GiB预约不等于释放2GiB硬盘。闭账回执7496B/SHA`698328e9cef1661e3f26fe4f2bf6540adb6907e54a8d445af3a198d991cc7ae3`、限定measurement16672B/SHA`2da9f1fc5ee169e73fe09ae611068e904a97c23206b66dad0d86dfff61950a02`在`C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-011/`；原小闭账及RESULT已收入[R55永久小证据](../li-yu-dao/2026-10-11-r55-i4-natural-expiry-red.md)。free618612236288B仅是当次卷读数。
 
 闭账002仅处理public-run-command receipts嵌套在actual_run下的真实重复测量，原public2/host1/normalfalse及所有范围/partition门槛保留。旧001未执行；没有全项目扫描或重读旧PE/SAVE/cache正文。五副本458348713B既有credit不再次扣减，旧R52 cache也不再计入。新source/runtime与下一场仍须独立准入；原配额Oct12、cache Oct17截止与通用策略1.0.0不续期，自动GC尚未部署。
+
+### Source15 012闭账及新重复副本回收
+
+2026-10-11 08:15 CST：012已实际CLOSED，新保留159991748B、未来预约0、物理删除0；[Source15小事实与闭账引用](../ck3-native-ai/acceptance/2026-10-11-common-source15-pause-ready-convergence/ADDENDUM.md)固定闭账6200B/SHA`c7251842d864f0b84199ad7578ba3434a0ac14957d05ce2a742ca4ff5e2fc0e3`。保守carry变为136412439535B；结束预约不作为物理回收。
+
+[R54可变缓存实际回收](../li-yu-dao/acceptance/2026-10-11-r54-mutable-cache-reclaimed/README.md)：四批0，3740文件/146942067B logical，allocation API155353904B。新唯一event尚未claim。随后四SAVE实际0回收366678829B，两保留锚+四目标共550018294B均以持有句柄核SHA，原0240及R55独立初始SAVE不删。RUN55重复输入缓存四批0回收3740文件/146942067B；原不可变seed和CASE6可变缓存不删。[两类小型永久索引](../li-yu-dao/acceptance/2026-10-11-r55-duplicate-inputs-reclaimed/README.md)已实际采用，保存原五份小回执；executor/identity/ledger只回链外置原件，避免再复制审计正文。
+
+三项新logical回收合计660562963B，尚未从任何新reservation重复扣减。卷free差额不全部归因于清理；旧458348713B SAVE与146942031B R52 credit不再累计。Source08—11当前仅有metadata plan0，恢复CAS、删除及其credit均未执行。下一实机维持完整2GiB预算，等待实际回收与独立准入，不扩大配额或延长Oct12/Oct17期限。大型identity/detail留外置30日，小回执180日复核，策略1.0.0不变。

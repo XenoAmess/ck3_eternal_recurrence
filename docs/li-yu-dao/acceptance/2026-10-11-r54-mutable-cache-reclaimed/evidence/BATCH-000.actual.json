@@ -1,0 +1,39 @@
+{
+  "schema": "ck3-r54-cache-exact-batch-result-v1",
+  "started_at_utc": "2026-10-10T23:52:55.332038+00:00",
+  "finished_at_utc": "2026-10-10T23:53:10.706118+00:00",
+  "batch": 0,
+  "begin": 0,
+  "end": 1000,
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\BATCH-000.claim.json",
+    "bytes": 1254,
+    "sha256": "bcc6a35cd25cc66f57b29d32748da5a24b014149b3978dd63606a29e4319c86c"
+  },
+  "plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\PLAN.actual.json",
+    "bytes": 2740,
+    "sha256": "7769230d00028faab07a0cd0aeccd4194c553a6c4c2e70f56a324c6ef1588413"
+  },
+  "deleted_files": 1000,
+  "logical_deleted_bytes": 55295596,
+  "allocation_size_api_deleted_sum": 57485776,
+  "free_before": 618599743488,
+  "free_after": 618655809536,
+  "global_free_delta_not_exclusive_cleanup_credit": 56066048,
+  "ok": true,
+  "failure_or_null": null,
+  "detail": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-retirement-after-r55-closed-20261011-001\\BATCH-000.detail.jsonl",
+    "bytes": 1018633,
+    "sha256": "d9e615cfa585b4db8f2e0571a26af7da316966ba9e8710cf0f2afc199cd2b21e"
+  },
+  "original_review_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "identity_and_detail_retention_expires_at_utc": "2026-11-09T23:53:10.706118+00:00",
+  "compact_summary_review_at_utc": "2027-04-08T23:53:10.706118+00:00",
+  "old_R54_cache_metadata_historical_not_current_availability": true,
+  "seed_and_original_failure_evidence_retained": true,
+  "recursive_directory_deletion": false,
+  "automatic_retry": false,
+  "business_credit": false
+}
