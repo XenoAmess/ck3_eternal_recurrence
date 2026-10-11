@@ -29,7 +29,14 @@ flowchart TD
   V --> W[2A52960：Scheme+30/+34 的 literal tag/payload fill]
   W --> Y[3765760：definition+588 与同 scope 构造 argblock]
   Y --> Z[CALL 3765E50：compiled callback 执行入口]
-  Z -. compiled actual event key 未闭合 .-> U[具体 authored/native 终止原因 unknown]
+  Z -. token 名称与当前 compiled 内容未闭合 .-> U[具体 authored/native 终止原因 unknown]
+  CT[30CF900：构造 definition D] --> CI[3764150：初始化 D+588 callback cell]
+  CT --> ST[secondary slot4 cell48B9F18 → 2EEEA10]
+  ST --> PK[30CFED0：numeric property key2A98 分支]
+  PK -->|fresh P=D+A60；P-4D8=D+588；domain9| MP[初始 slot492E2E8 → 3764400 member parser]
+  PK --> TN[3F4F8E0：token-name registry lookup]
+  TN -. actual token 字符串名 unknown .-> U
+  MP -. 当前 compiled value/执行 effects unknown .-> Y
   B -->|否| L[后续公共路径]
   Z --> L
   L --> K[Scheme+30 仅选择此子函数的 late target cleanup]
@@ -79,7 +86,7 @@ Character marker/fullID、death 字段与 linked pointer 有各自 guard；非 k
 不重复下面的新 stores/callback。其他正常路径在 `2A4AE21` 先写 `+28=1`，然后
 测试原始 DL。DL 非零才走 `889F60` 本地 scope、`2A517E0(Scheme,scope)`，以及
 `3765760(definition+588,scope)`。下节补入已闭的 literal scope fill 与 generic
-compiled callback 调用路径；compiled actual event key、完整 transitive effects 与
+compiled callback 调用路径；token 的字符串名、当前 compiled callback 内容、完整 transitive effects 与
 具体原生 source caller 仍未闭合。本树没有据名称补成 `on_invalidated`。
 
 在这个子函数内，`+30 != 0` 仅跳过后面的 target cleanup，仍可到达
@@ -148,9 +155,10 @@ target 类型或终止原因；`373A0F0` 的完整 insertion effects 仍属于�
 literal `37657E2` 的 RCX 是原输入 compiled callback，RDX 是 `&RSP+20`。
 normal return 后按各自非空字段执行条件清理，最终 `RET376585B`；wrapper
 不检查 event-specific result/status/cause。这闭合的是 actual scope/argblock 到
-compiled executor 的连接，尚未闭合 definition `+588` 所代表的 actual event key、
-其他 native caller 到父 end 的来源关联或具体终止原因。Mermaid 中这三项仍为
-unknown 虚线，不改变 accepted kinds，不补造 causal token。
+compiled executor 的连接。下节进一步闭合 numeric property key `2A98` 到 definition
+`+588` 的实际字段解析入口；该 token 的字符串名、当前 compiled callback 内容、其他
+native caller 到父 end 的来源关联及具体终止原因仍为 unknown 虚线，不改变 accepted
+kinds，不补造 causal token。
 
 新增薄合同仍位于同一 continuation 根：
 
@@ -160,6 +168,91 @@ unknown 虚线，不改变 accepted kinds，不补造 causal token。
 
 此次知识增量保持 source-only：reader 两个文件不变，未执行 local tests、
 production imports、CL/link、Game/Steam/UI/RPC 或新的入/返捕获。
+
+## Definition callback 字段与 numeric key 的实际生产入口
+
+2026-10-11 增量：只复用本轮各 owner 已闭的 `.4` 薄源码合同。旧 `.2` 的
+`30CFEF0` / `2EEEA30` 只作历史 locator；本段没有搬用旧字段、地址差或事件名。
+当前 slot1 的 `3832660` 是 generic TLS/string wrapper，没有直接 `+588` / key
+访问，不能据该候选把它命名为 property parser。实际字段链来自 slot4。
+
+| 实际源 | 已闭范围 | 这次闭合的字段/调用事实 |
+| --- | --- | --- |
+| `30CF900` 构造器 | 1423B，自身 CFG | primary vptr `48B9F30`；secondary vptr `48B9EF8`；`30CFB95 CALL3764150` 的 RCX 是 `D+588` |
+| `3764150` 初始化器 | 351B，自身 CFG | 六个 cell `448/498/4E8/538/588/5D8` 间隔 `50` hex，即 80B；本体不含 event/key 名 |
+| secondary slot4 | literal cell `48B9F18` 与 12B thunk | cell 指向 `2EEEA10`；signed vtordisp 调整后 tail-JMP 实际 `30CFED0` |
+| `30CFED0` | 3848B pdata row；3706B code，自身 CFG | 入口 R8D 的 numeric key `2A98`，在指定字段条件下到 `D+588` 的 virtual `+8` 调用 |
+| `3F4F8E0` | 292B，自身 CFG | ECX `2A98` / ordinal `10904` 从运行时 token-name registry 取名字对象；本体无该 key 的名字 literal |
+| initializer seed 静态 slot `492E2E8` | literal cell 与 `3764400` 509B 自身 CFG | RCX 是 callback cell，RDX 是原输入 S，R8W `9` 保存到 BP；不是当前 handler 观察 |
+
+构造器 incoming R9D 非零时写 vbtable `489A808`，其中 signed DWORD `+4=A58`；
+secondary receiver 为 `P=D+A60`，vtordisp `DWORD[D+A5C]=0`。R9D 为零时保留
+输入 vbtable，不能无条件换成 `D+A60`。slot4 的实际 12B 是：
+
+```text
+2EEEA10  movsxd rax,DWORD[rcx-4]
+2EEEA14  sub rcx,rax
+2EEEA17  jmp 30CFED0
+```
+
+因此 thunk 自身没有固定 `-A18` 或 `-4D8`。`P-4D8` 来自随后实际 parser 的
+字段 receiver 运算，不能把它移到 thunk 或零 R9D 构造域。
+
+`3764150` 在 callback cell 内直接写 vptr `492E2E0`；`+08 DWORD0`、
+`+0C BYTE0`、`+10/+18 QWORD0`、`+20 DWORD0`、`+24 BYTE1`、
+`+28/+30/+38 QWORD0`、`+40 QWORD=image+54F2A90`，以及 `+48 DWORDFFFFFFFF`。
+最后一项仅在 manager available 路径被其原 DWORD `+14` 替换。自身直接 stores
+定义 80B cell 中的 70B；`0D..0F`、`25..27`、`4C..4F` 未写，不能补成零。
+这些是初始化字段，不能把 manager、allocator 或 compiled value 的 transitive
+effects 视为本次已闭，也不能从 vptr/default values 推出 callback 事件名。
+
+`30CFED0` 将入口 RCX/RDX 保存为 P/S。入口 key `2A98` 经过实际 signed dispatch，
+在 `30D038D SUB R8D,2A89` / `30D039A SUB R8D,F` 后到 `30D043A`。
+只有 `DWORD[P-49C]==0` 才走下面的 member 调用；非零路径转去错误处理。
+在前置 `856720(P-4A8)` 之后，`30D0458` 以 ECX `2A98` 调用 token-name helper；
+随后通过 `3F82EE0` 把名字视图交给 S，实际 member setup 为：
+
+```text
+30D0481  RCX=P-4D8         ; 非零 R9D 构造域下为 D+588
+30D0488  R8D=9
+30D0491  RDX=S
+30D0494  CALL QWORD[QWORD[RCX]+8]
+30D049A  CALL3F83000       ; RCX=S，member RAX 未由自身消费
+```
+
+此支路没有重新供应 R9；也没有直接 store 当前 compiled callback 内容。
+初始化 seed vptr `492E2E0` 的静态 `+8` cell `492E2E8` 指向 `3764400`；这不是
+当前 vptr/handler 的实际观察。parser 前置 helper 跨调用的当前对象存活与该次
+virtual dispatch 未经实机验证，不由初始化 seed 补成已执行。该 member 源接收同
+callback / S / R8W `9`；在 `+10 QWORD0` 路径调用 `3F84E40` 初始化 `+10..2F`
+的 32B，并把 `A07BA0` 返回 EAX 写入 `+2C`。`DWORD[S+1C8]==3` 或
+`DWORD[S+E8]==0` 的自身正常支路在 `376459A` 调用 virtual `+18`，RCX 是同
+callback，RDX 是 S，R8D 为保存 BP 的零扩展值；
+其他模式调用 `3710E30`。这些实际调用闭合字段解析入口与 member 正常 CFG，
+并不闭合外部 value engine 的当前 payload、执行结果或终止原因。
+
+名字 helper 从 `QWORD[image+5CBEDE8]` 取得 runtime-built registry，按 signed
+DWORD `registry+54` 的 inclusive 上界及 `QWORD[registry+48]` 的 pointer array
+查 ordinal `10904`。返回对象的具体字符串取决于实际 registration/name cell，
+当前未持有该名字来源；fallback literal `472C488` 不能当作 `2A98` 的名字。
+目前闭合的是 **numeric `2A98` → callback 字段 `D+588` / domain9**，不能写成
+`on_invalidated` 已证明，更不能把静态字段连接当作某次自然终止的原因。下一项
+必要名字输入仅是这个 registry 的实际 registration producer 或同一 token 的
+name cell 来源；不扩扫 caller、manager 或 compiled engine。
+
+本段原件均在同一 continuation 根，薄合同/源 pin 为：
+
+- `continuation-22/m6-scheme-type-callback-producer01/SOURCE-CALLBACK-PRODUCER-CONTRACT.json`，SHA `ffc9785e74db06f884a53569e89afc562e07b73aae07fceafbf32a11c7d13287`。
+- `continuation-15/background-g2-offline-20261011/scheme-callback-init-3764150/SOURCE-CONTRACT.json`，SHA `3e3afb296d680b7f0decc4d7e3a92c1642a30de7b6896400a315b89772819544`。
+- `continuation-07/m6-scheme-secondary-slot4-2eeea10/ACTUAL-02EEEA10-SOURCE.json`；owned 12B SHA `dd9271751f729f76119b1befb0472b770ca5abe688c177d93f54f6c8fe531fb0`。
+- `continuation-26/background-g2-offline-20261011/m6-property-parser-30cfed0-source01/SOURCE-BRANCH-CONTRACT.json`，SHA `c44efa8e6e68fe610e3966be37fa47b2fcd4fbd4bba48ffa8608b809fe9c98d3`。末尾 142B alignment/switch data 不算作代码。
+- `continuation-22/m6-token-name-3f4f8e0-source01/SOURCE-TOKEN-NAME-CONTRACT.json`，SHA `d128f37b7ef4893113ab2aee7afcb5a3931de13e2d5cb2c00bb7ebb0f13ca67e`。
+- `continuation-15/background-g2-offline-20261011/callback-member-slot-492e2e8/SOURCE-CONTRACT.json`，SHA `06567d37de859812e71e16757abd612639940a0d03c8e4560dbfb18f518c6032`；其源 packet SHA `19f7afe3dbc7c967da89d53cdcc02d423d1e0186c1d515f8021f6c33dbf4d1fb`。
+
+本次仍为 source-only 知识增量；现有 typed reader、十一文件观察/查询连接及其
+`SOURCE_ADOPTED_NOT_RUN` 边界不变。各源 owner 对冻结归档的有限读取/复用记录在
+原件中；专题整合没有再次读取二进制。未新增生产代码、资格运行或
+Game/Steam/UI/RPC，未赋予自然 invalidator 原因信用。
 
 ## 中立入/返与终止原因的边界
 
