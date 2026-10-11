@@ -1,0 +1,42 @@
+{
+  "at_utc": "2026-10-11T10:55:17.374583+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0060",
+  "screen_task": "common-acceptance-12004-20261010-a22",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\final-offline-001\\steam-moved.png",
+    "bytes": 920918,
+    "sha256": "a3380193880552b5876b9305226771cfb679450eaf521cbd486450dde52fcd9a"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\final-offline-001\\steam-frame-freshness.json",
+    "bytes": 1252,
+    "sha256": "c7b0e8c3e43c624fea874c9fa425c9df1107c7ec0370f016d2495772d9d1ccb5"
+  },
+  "visual_observation": "ROOT directly reviewed the new final-offline-001 original image: Steam bottom explicitly shows 离线模式, desktop clock18:53 on2026/10/11; CK3 window absent. Current fresh movement receipt confirms independent Steam window pixels. This is a failure closure; normal GUI Quit and business PASS are not claimed.",
+  "ROOT_reviewed_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\final-review-ROOT-REQUEST.actual.json",
+    "bytes": 2585,
+    "sha256": "91e0901c95a521aad0e52e1684842b1ae361a73b4e860c0979a26bac7ccab14f"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\native-report.json",
+    "bytes": 8388383,
+    "sha256": "1555e33e4bd5eac584db3140b6d87fd2e6aebb0d1b96482d3c1c737475c5f416"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\native-cleanup-projection.actual.json",
+    "bytes": 3030,
+    "sha256": "24472d6035cb1aff15f565fe1e50a474b59dd42305231a7a08b8fa0e11fc6acd"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "4eb681079cb165dcd8b54b503739b9ba3c02dcb9b2a42ac7227f3cd9ee86dda3"
+  },
+  "normal_close_result": null,
+  "normal_close_qualified": false,
+  "business_pass": false
+}

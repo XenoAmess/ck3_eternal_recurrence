@@ -1,0 +1,67 @@
+{
+  "schema": "lyd.native-cleanup-field-projection.v1",
+  "at_utc": "2026-10-11T10:52:35.622559+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0060",
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\native-report.json",
+    "bytes": 8388383,
+    "sha256": "1555e33e4bd5eac584db3140b6d87fd2e6aebb0d1b96482d3c1c737475c5f416"
+  },
+  "original_public_run_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case11-run-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1630,
+    "sha256": "6c94ba02d1655523c77b7f3ee29d4885c9568876031b754d9b19a6ca0878e3d8"
+  },
+  "original_host_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "4eb681079cb165dcd8b54b503739b9ba3c02dcb9b2a42ac7227f3cd9ee86dda3"
+  },
+  "projection": {
+    "finished_at": "2026-10-11T10:48:01.561611+00:00",
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "status": "RED",
+    "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "session": {
+      "report": {
+        "finished_at": "2026-10-11T10:48:00.956211+00:00",
+        "process_exit_code": null,
+        "shutdown": {
+          "ok": true,
+          "cleanup_proven": true,
+          "tree_gone": true,
+          "job_active_processes_final": 0,
+          "contract_errors": [],
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\watchdog-dffbbf585e3d428fbda98592c7881234.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\unsafe-cleanup.json": true
+          },
+          "ck3_exit_code": 1,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "processes": []
+          }
+        }
+      }
+    }
+  },
+  "source_readback": {
+    "producer": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure013-sourceonly-20261011-001\\project_native_cleanup.py",
+      "bytes": 5989,
+      "sha256": "0e459729b13e94ea0d09ff6498431ed2f08f2697d9a183dbf2a605ae15f86cff"
+    },
+    "raw_bytes_consumed": 8388383,
+    "original_raw_read_count_by_this_projection_function": 0,
+    "method": "ROOT original terminal raw bytes; exact SHA and JSON parsed once",
+    "missing_fields_are_not_filled": true,
+    "original_raw_read_count_by_ROOT": 1
+  },
+  "normal_GUI_close_or_business_pass_inferred": false
+}

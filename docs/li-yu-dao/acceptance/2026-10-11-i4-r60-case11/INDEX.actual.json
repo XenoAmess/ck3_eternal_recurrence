@@ -1,0 +1,184 @@
+{
+ "schema": "lyd.r60.permanent-small-evidence-index.v1",
+ "status": "SEALED_WITH_STORAGE019_PENDING",
+ "facts": {
+  "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case11-public-sourceonly-20261011-001/r60-permanent-candidate-001/FACTS.actual.json",
+  "bytes": 3238,
+  "sha256": "6eabc2f77535fc8e52ee776962383447537b7b64b825e7b83ebf6d516403c23d"
+ },
+ "topic": {
+  "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case11-public-sourceonly-20261011-001/r60-permanent-candidate-001/TOPIC.zh.md",
+  "bytes": 2351,
+  "sha256": "a0abe5a6c8af09e9fd02bcfc6b12ecf8cc7e0e289b40acd8f5ee075edc00ce8e"
+ },
+ "raw": [
+  {
+   "name": "native-failure",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/root-native-failure-small-projection.actual.json",
+    "bytes": 3889,
+    "sha256": "3a508b069a7506daf4f28e8f381d7f2e586df1cadf176fc72dc66a2d5753a221"
+   },
+   "archived_relative_path": "raw/native-failure.json"
+  },
+  {
+   "name": "native-cleanup",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/native-cleanup-projection.actual.json",
+    "bytes": 3030,
+    "sha256": "24472d6035cb1aff15f565fe1e50a474b59dd42305231a7a08b8fa0e11fc6acd"
+   },
+   "archived_relative_path": "raw/native-cleanup.json"
+  },
+  {
+   "name": "initial-origin",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/root-initial-origin-projection.actual.json",
+    "bytes": 2631,
+    "sha256": "f0c72203d157e3e44691c90e7c614b435cfb4756f4ae5c028fc2c4f0f5fa7705"
+   },
+   "archived_relative_path": "raw/initial-origin.json"
+  },
+  {
+   "name": "run-command",
+   "original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case11-run-command-20261011-001/RESULT.actual.json",
+    "bytes": 1630,
+    "sha256": "6c94ba02d1655523c77b7f3ee29d4885c9568876031b754d9b19a6ca0878e3d8"
+   },
+   "archived_relative_path": "raw/run-command.json"
+  },
+  {
+   "name": "verify-command",
+   "original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case11-verify-command-20261011-001/RESULT.actual.json",
+    "bytes": 1635,
+    "sha256": "60fc0dd564633b1cc135facc4a7dbb0fac6f313b712d0a6fa24c57d49626cccd"
+   },
+   "archived_relative_path": "raw/verify-command.json"
+  },
+  {
+   "name": "host-exit",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "4eb681079cb165dcd8b54b503739b9ba3c02dcb9b2a42ac7227f3cd9ee86dda3"
+   },
+   "archived_relative_path": "raw/host-exit.json"
+  },
+  {
+   "name": "case-error",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/case-output/case-error-preserved.json",
+    "bytes": 204,
+    "sha256": "4f786be623dee0889bc2e0b1557f28205ec1513bf4100ca5df5ffa3a6e6994ce"
+   },
+   "archived_relative_path": "raw/case-error.json"
+  },
+  {
+   "name": "normal-close-error",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/case-output/normal-close-error-preserved.json",
+    "bytes": 118,
+    "sha256": "15720dd7e934fa2336f0511ab13473e621200a7c8e68b284e547ffbe2012928e"
+   },
+   "archived_relative_path": "raw/normal-close-error.json"
+  },
+  {
+   "name": "root-negative-gui",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/case-output/normal-quit-root-result.json",
+    "bytes": 1124,
+    "sha256": "e6c8045b7ee084b220489c5bd84a3f2aa1085a49e0db60265a9ffbe5caacb771"
+   },
+   "archived_relative_path": "raw/root-negative-gui.json"
+  },
+  {
+   "name": "stop-command",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/stop-command-001/RESULT.actual.json",
+    "bytes": 1264,
+    "sha256": "e161c482d9bc2449276e5280eed8098cb7deffde8328360f0bc425cd89c8fcc2"
+   },
+   "archived_relative_path": "raw/stop-command.json"
+  },
+  {
+   "name": "release-command",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/release-command-001/RESULT.actual.json",
+    "bytes": 1342,
+    "sha256": "beb3160592bd089c1640bf704e9d77accc2f28d320287da048f6dd11e1797c74"
+   },
+   "archived_relative_path": "raw/release-command.json"
+  },
+  {
+   "name": "release-stdout",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/release-command-001/stdout.log",
+    "bytes": 1364,
+    "sha256": "d52ada4d9ff72a80db2860a992d3555b0eedac2bf7807982c2feb4d34a206b32"
+   },
+   "archived_relative_path": "raw/release-stdout.log"
+  },
+  {
+   "name": "final-offline-review",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/final-offline-root-review-001.json",
+    "bytes": 2286,
+    "sha256": "8b598c420b58a241046043cc76958e962cd7e699ec174bf9f6fa2360806e567d"
+   },
+   "archived_relative_path": "raw/final-offline-review.json"
+  },
+  {
+   "name": "display-restore",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/display-restore-001.json",
+    "bytes": 761,
+    "sha256": "3a02b6e3ffe906368ec04ca0fca00730e5ec3a121c72cb0296981429afa1ed78"
+   },
+   "archived_relative_path": "raw/display-restore.json"
+  },
+  {
+   "name": "keeper-stop-proof",
+   "original": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0060/keeper-stop-proof-001.json",
+    "bytes": 2901,
+    "sha256": "55663097397597bffcf28ea974fe05b8ba9fdebc777aee958451ed62441e7ee8"
+   },
+   "archived_relative_path": "raw/keeper-stop-proof.json"
+  },
+  {
+   "name": "allocator-command",
+   "original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case11-allocate-command-20261011-001/RESULT.actual.json",
+    "bytes": 1965,
+    "sha256": "bed81c4e5377f6e01b8841e3cc242a1ff2a43618336a25805a1b737f19854864"
+   },
+   "archived_relative_path": "raw/allocator-command.json"
+  }
+ ],
+ "main_writes": 0,
+ "native_report_body_reads": 0,
+ "save_body_reads": 0,
+ "storage019_closed": null,
+ "author_cap_failure": {
+  "actual_exit_code": 1,
+  "tool_chunk": "9a3601",
+  "measured_candidate_bytes": 69948,
+  "cap_bytes": 65536,
+  "cause": "duplicate derived original refs; raw originals unchanged",
+  "game_failure": false
+ },
+ "second_cap_check": {
+  "actual_exit_code": 1,
+  "tool_chunk": "789d8c",
+  "candidate_bytes": 66809,
+  "derived_outputs_written": false
+ },
+ "third_cap_check": {
+  "actual_exit_code": 1,
+  "tool_chunk": "35d600",
+  "candidate_bytes": 65690,
+  "derived_outputs_written": false
+ }
+}

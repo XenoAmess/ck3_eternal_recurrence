@@ -1,0 +1,77 @@
+{
+  "schema": "lyd.r60.initial-origin-small-projection.v1",
+  "at_utc": "2026-10-11T10:34:15.659310+00:00",
+  "reviewer": "/root",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0060",
+  "original_origin": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\case-output\\i4-continuation-origin.json",
+    "bytes": 62412,
+    "sha256": "2ca335db453a9e7b0f9b507662c2e296f145b5bf093303c31be103c3b772777d"
+  },
+  "existing_cooldown_only": true,
+  "initial_saved": {
+    "school_cooldown_present": true,
+    "raw_tick_observed": "349",
+    "actor_id": 31254,
+    "faith_id": 107,
+    "rite_id": 169,
+    "headless": true,
+    "membership_present": true,
+    "landed_alive": true,
+    "expiry_date": null,
+    "remaining_days": null,
+    "other_eligibility_confirmed_by_actual_enabled_decision": false,
+    "checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 91669682,
+      "sha256": "195c35fa7c0e997c36259495744ae422b8b99ebbe734c8ef47b1bdb3d9488a34",
+      "date_raw": 53144712
+    },
+    "preserved_checkpoint": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\case-output\\initial-school-cooldown-checkpoint.ck3",
+      "size": 91669682,
+      "sha256": "195c35fa7c0e997c36259495744ae422b8b99ebbe734c8ef47b1bdb3d9488a34",
+      "date_raw": 53144712
+    },
+    "save_body_reads": 1,
+    "baseline_body_reads": 0
+  },
+  "initial_confirm_enabled": false,
+  "initial_frame": {
+    "ck3_pid": null,
+    "pid": null,
+    "generation": null,
+    "date_raw": 53144712,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 1,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "revision": 2,
+    "native_revision": 1,
+    "snapshot_id": "native:1"
+  },
+  "original_seed_body_reads_by_ROOT": 0,
+  "native_body_reads_by_ROOT": 0,
+  "cleanup_not_executed": true
+}

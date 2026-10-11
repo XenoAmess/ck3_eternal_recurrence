@@ -1,0 +1,110 @@
+{
+ "schema": "lyd.r60.permanent-compact-facts.v1",
+ "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0060",
+ "status": "RED",
+ "phase_i_percent_estimate": 75,
+ "product_status": "NOT_GREEN",
+ "public_run_exit": 2,
+ "public_verify_exit": 2,
+ "host_original_popen_exit": 1,
+ "failed_step": {
+  "id": "case-natural-day-0045",
+  "ok": false,
+  "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+  "started_at": "2026-10-11T10:47:50.097636+00:00",
+  "finished_at": "2026-10-11T10:47:53.220805+00:00"
+ },
+ "last_complete_school_observation": {
+  "days": 42,
+  "hours": 1008,
+  "date_raw": 53145720,
+  "basis": "ROOT last small school observation; conservative qualified observation boundary"
+ },
+ "day_0044": {
+  "request_may_have_advanced_another_day": true,
+  "full_82263_byte_result_not_read": true,
+  "additional_qualified_school_day": null
+ },
+ "initial": {
+  "existing_cooldown_only": true,
+  "confirm_enabled": false,
+  "saved": {
+   "school_cooldown_present": true,
+   "raw_tick_observed": "349",
+   "actor_id": 31254,
+   "faith_id": 107,
+   "rite_id": 169,
+   "headless": true,
+   "membership_present": true,
+   "landed_alive": true,
+   "expiry_date": null,
+   "remaining_days": null,
+   "other_eligibility_confirmed_by_actual_enabled_decision": false,
+   "save_body_reads": 1,
+   "baseline_body_reads": 0
+  },
+  "frame": {
+   "ck3_pid": null,
+   "pid": null,
+   "generation": null,
+   "date_raw": 53144712,
+   "revision": 2,
+   "native_revision": 1,
+   "snapshot_id": "native:1"
+  }
+ },
+ "shutdown": {
+  "managed_session_thread_finished": true,
+  "cleanup_ok": true,
+  "shutdown": {
+   "ok": true,
+   "cleanup_proven": true,
+   "tree_gone": true,
+   "job_active_processes_final": 0,
+   "ck3_exit_code": 1
+  }
+ },
+ "crash_attribution": "UNKNOWN; host actively performed cleanup after pause-readback failure",
+ "normal_gui_quit": false,
+ "normal_close_qualified": false,
+ "administrative_closeout": {
+  "stop_command_exit": 0,
+  "stop_finished_at_utc": "2026-10-11T10:55:18.473057+00:00",
+  "allocator_exit": 0,
+  "allocator_finished_at_utc": "2026-10-11T10:55:19.090505+00:00",
+  "release_command_exit": 0,
+  "cas_expected_sequence": 4870,
+  "cas_released_sequence": 4871,
+  "cas_event_id": "8d1833519c884867b0c980b10b3c5fa3",
+  "cas_done_at_utc": "2026-10-11T10:55:54.692672Z",
+  "resources": [],
+  "final_offline_review": true,
+  "display_restored": "1024x768@60",
+  "keeper_report_exit": 0,
+  "keeper_thread_exited": true,
+  "storage_019_closed": null,
+  "storage_019_carry": null
+ },
+ "credits": {
+  "initial_saved_observed": true,
+  "event_choice": false,
+  "expiry": null,
+  "cold_reload": null,
+  "full_i4": false,
+  "business_pass": false
+ },
+ "original_native_report_reference_only": {
+  "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\native-report.json",
+  "bytes": 8388383,
+  "sha256": "1555e33e4bd5eac584db3140b6d87fd2e6aebb0d1b96482d3c1c737475c5f416"
+ },
+ "scope": {
+  "native_report_reads_by_this_candidate": 0,
+  "save_body_reads_by_this_candidate": 0,
+  "game_actions": 0,
+  "tests_run": 0,
+  "main_writes": 0,
+  "old_R58_R59_evidence_reads": 0
+ },
+ "selected_original_refs": "INDEX.actual.json raw[]; raw original bytes unchanged"
+}

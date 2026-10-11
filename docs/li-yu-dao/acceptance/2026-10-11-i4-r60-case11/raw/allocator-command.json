@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case7-public-entry-sourceonly-20261011-001\\with_selected_environment.py",
+    "--entry",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "--execute",
+    "--",
+    "allocate",
+    "--runtime",
+    "C:\\workspace\\ck3-common-runtime\\20261011-017\\runtime.local.json",
+    "--products",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+    "--product",
+    "li-yu-dao",
+    "--case",
+    "i4-natural-expiry-event-continuation",
+    "--prepared-case",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\prepared\\prepared-case.json",
+    "--attempt",
+    "a22",
+    "--keeper-output",
+    "C:/workspace/ck3-common-runtime/keepers/20261011-a22",
+    "--previous-live",
+    "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0059",
+    "--previous-keeper",
+    "C:/workspace/ck3-common-runtime/keepers/20261011-a21",
+    "--previous-release",
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0059\\release-command-001\\stdout.log"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T10:13:46.496152+00:00",
+  "finished_at_utc": "2026-10-11T10:55:19.090505+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case11-allocate-command-20261011-001\\stdout.log",
+    "bytes": 4343,
+    "sha256": "2e96d8459ef65b672a9de8193e5b87d2ed168656423bcd5cb91d15d5cf3395f7"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case11-allocate-command-20261011-001\\stderr.log",
+    "bytes": 1454,
+    "sha256": "a3bbd2df1a22dc67d783d592c88cd94b446985e13031441b17d55b601ca7e877"
+  }
+}

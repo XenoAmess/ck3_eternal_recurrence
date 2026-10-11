@@ -1,0 +1,125 @@
+{
+  "schema": "lyd.r60.native-terminal-failure-small-projection.v1",
+  "at_utc": "2026-10-11T10:52:35.623163+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0060",
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0060\\native-report.json",
+    "bytes": 8388383,
+    "sha256": "1555e33e4bd5eac584db3140b6d87fd2e6aebb0d1b96482d3c1c737475c5f416"
+  },
+  "same_single_raw_read_and_single_JSON_parse_as_cleanup_projection": true,
+  "top_level_keys": [
+    "status",
+    "phase",
+    "started_at",
+    "fixture_only",
+    "fixture_profile",
+    "steps",
+    "state_dir",
+    "agent_source_root",
+    "pipe",
+    "native_wire",
+    "mcp_wire",
+    "mcp_calls",
+    "server_stderr",
+    "session",
+    "error",
+    "frontend_observations_journal",
+    "profile",
+    "saved_campaign_input",
+    "saved_campaign_launch",
+    "managed_session_done",
+    "managed_session_thread_finished",
+    "identity",
+    "mcp_initialize",
+    "mcp_tools",
+    "saved_campaign_restore",
+    "readiness",
+    "readiness_guard",
+    "capabilities",
+    "pipe_diagnostics",
+    "hold_until_utc_estimated",
+    "control_plans",
+    "campaign_preaction_readmissions",
+    "campaign_speed_presubmission",
+    "campaign_pause_readbacks",
+    "exception_traceback",
+    "snapshot_final",
+    "diagnostics_final",
+    "finished_at",
+    "cleanup_ok"
+  ],
+  "status": "RED",
+  "phase": "hold",
+  "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+  "failed_steps": [
+    {
+      "id": "case-natural-day-0045",
+      "ok": false,
+      "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+      "started_at": "2026-10-11T10:47:50.097636+00:00",
+      "finished_at": "2026-10-11T10:47:53.220805+00:00"
+    }
+  ],
+  "native_session_report_keys": [
+    "format_version",
+    "kind",
+    "mode",
+    "pipe",
+    "pid",
+    "started_at",
+    "finished_at",
+    "elapsed_seconds",
+    "exit_reason",
+    "process_exit_code",
+    "shutdown",
+    "restart_count",
+    "restart_shutdowns",
+    "cold_start_checkpoint",
+    "frontend_first_warmup",
+    "startup_slot0_probe",
+    "terminal",
+    "error",
+    "ok",
+    "injector_attestation",
+    "saved_campaign_only",
+    "single_saved_campaign_launch",
+    "saved_campaign_load_name",
+    "saved_campaign_launch"
+  ],
+  "cleanup": {
+    "finished_at": "2026-10-11T10:48:01.561611+00:00",
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "status": "RED",
+    "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "session": {
+      "report": {
+        "finished_at": "2026-10-11T10:48:00.956211+00:00",
+        "process_exit_code": null,
+        "shutdown": {
+          "ok": true,
+          "cleanup_proven": true,
+          "tree_gone": true,
+          "job_active_processes_final": 0,
+          "contract_errors": [],
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\watchdog-dffbbf585e3d428fbda98592c7881234.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-011\\state\\control\\unsafe-cleanup.json": true
+          },
+          "ck3_exit_code": 1,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "processes": []
+          }
+        }
+      }
+    }
+  },
+  "business_pass": false
+}
