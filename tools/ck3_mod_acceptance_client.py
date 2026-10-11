@@ -802,6 +802,8 @@ class CaseClient:
         """Request normal GUI Quit, then prove retained OS0 and shared native0."""
         import ctypes
         require(self._handle is not None, 'No retained game handle; never manufacture OS exit')
+        require(self._kernel.WaitForSingleObject(self._handle, 0) == 258,
+                'Retained CK3 is no longer running; normal GUI Quit unavailable')
         request=self.checkpoint('normal-quit-awaiting',{'run_id':self.frozen['run_id'],'reviewer':self.normal_quit_reviewer(),
             'pid':self._process['pid'],'create_time':self._process['create_time'],
             'original_hold_deadline':self._hold,'disposition':disposition,

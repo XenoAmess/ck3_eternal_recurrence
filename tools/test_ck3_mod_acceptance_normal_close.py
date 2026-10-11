@@ -68,7 +68,8 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         def exit_code(_handle, pointer):
             ctypes.cast(pointer, ctypes.POINTER(ctypes.c_uint32)).contents.value = os_exit
             return 1
-        client._kernel = SimpleNamespace(WaitForSingleObject=lambda _handle, _timeout: 0,
+        waits = iter((258,))  # Live at normal_close entry; then the original GUI exit is observed.
+        client._kernel = SimpleNamespace(WaitForSingleObject=lambda _handle, _timeout: next(waits, 0),
                                         GetExitCodeProcess=exit_code)
         pipe = r'\\.\pipe\synthetic-root-review-race'
         report = {'fixture_only': False, 'error': None, 'pipe': pipe, 'phase': 'hold',
@@ -88,6 +89,53 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                         'native_pids': [], 'processes': []}}}}}
         client.read_report = lambda allow_error=False: report
         return client, clock, client_time, report
+
+    def process_poll_client(self, root, wait_result):
+        client = self.module.CaseClient.__new__(self.module.CaseClient)
+        client._handle = object()
+        client._kernel = SimpleNamespace(WaitForSingleObject=Mock(return_value=wait_result))
+        client._process = {'pid': 2468, 'create_time': 123.5}
+        client.frozen = {'run_id': 'synthetic-retained-process-poll', 'screen_task': 'synthetic-screen'}
+        client._hold = 123456.5
+        client.live = root / client.frozen['run_id']
+        client.keeper = root / 'synthetic-keeper'
+        client.normal_quit_reviewer = Mock(return_value='/root')
+        client.read_report = Mock(return_value={'error': 'original pause readback failure'})
+        client.start_normal_quit_automation = Mock()
+        return client
+
+    def test_signaled_retained_process_rejects_before_quit_checkpoint_or_automation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for wait_result in (0, 0xFFFFFFFF):
+                with self.subTest(wait_result=wait_result):
+                    client = self.process_poll_client(Path(directory), wait_result)
+                    client.checkpoint = Mock()
+                    with self.assertRaisesRegex(ValueError, 'no longer running; normal GUI Quit unavailable'):
+                        client.normal_close('business_failure_preserved')
+                    client._kernel.WaitForSingleObject.assert_called_once_with(client._handle, 0)
+                    client.checkpoint.assert_not_called()
+                    client.start_normal_quit_automation.assert_not_called()
+                    client.read_report.assert_not_called()
+
+    def test_running_retained_process_enters_original_quit_checkpoint(self):
+        class ReachedOriginalCheckpoint(Exception):
+            pass
+
+        with tempfile.TemporaryDirectory() as directory:
+            client = self.process_poll_client(Path(directory), 258)
+            client.checkpoint = Mock(side_effect=ReachedOriginalCheckpoint)
+            with self.assertRaises(ReachedOriginalCheckpoint):
+                client.normal_close('business_failure_preserved')
+            client._kernel.WaitForSingleObject.assert_called_once_with(client._handle, 0)
+            client.checkpoint.assert_called_once()
+            name, request = client.checkpoint.call_args.args
+            self.assertEqual(name, 'normal-quit-awaiting')
+            self.assertEqual((request['pid'], request['create_time']), (2468, 123.5))
+            self.assertEqual(request['original_hold_deadline'], client._hold)
+            self.assertEqual(request['disposition'], 'business_failure_preserved')
+            self.assertEqual(request['host_error_preserved'], 'original pause readback failure')
+            client.read_report.assert_called_once_with(allow_error=True)
+            client.start_normal_quit_automation.assert_not_called()
 
     def test_terminal_host_and_os0_wait_for_explicit_root_review(self):
         with tempfile.TemporaryDirectory() as directory:
