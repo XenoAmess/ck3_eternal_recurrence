@@ -9110,7 +9110,8 @@ std::string ActorArmyRolePrivateFailureDiagnosticsV1(
   boolean("terminal_slot_owned", terminal_slot_owned);
   result += ",\"slot_callback_matches\":";
   result += !terminal_slot_owned ? "null" :
-      mailbox.executor == &ExecuteActorArmyRolePrivateQueryV1 ? "true" : "false";
+      mailbox.executor.load(std::memory_order_acquire) ==
+              &ExecuteActorArmyRolePrivateQueryV1 ? "true" : "false";
   result += ",\"slot_context_matches\":";
   result += !terminal_slot_owned ? "null" :
       mailbox.executor_context == &query ? "true" : "false";

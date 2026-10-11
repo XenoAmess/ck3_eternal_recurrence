@@ -81,7 +81,7 @@ bool OwnsSlot(const QueryMailboxEnvelope &query) noexcept {
              query.ticket.sequence &&
          mailbox.owner_thread_id.load(std::memory_order_acquire) ==
              query.execution_stamp.thread_id &&
-         mailbox.executor == query.executor &&
+         mailbox.executor.load(std::memory_order_acquire) == query.executor &&
          mailbox.executor_context == &query;
 }
 

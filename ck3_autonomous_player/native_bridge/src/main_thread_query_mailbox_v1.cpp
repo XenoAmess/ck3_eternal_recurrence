@@ -1054,7 +1054,7 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_feast_stage2_confirm12002;
   mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
   mailbox.snapshot_observer_context = environment.snapshot_observer_context;
-  mailbox.executor = nullptr;
+  mailbox.executor.store(nullptr, std::memory_order_release);
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
   mailbox.execution_stamp = {};
@@ -1582,7 +1582,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
 
   const auto sequence =
       mailbox.next_sequence.fetch_add(1, std::memory_order_acq_rel) + 1;
-  mailbox.executor = executor;
+  mailbox.executor.store(executor, std::memory_order_release);
   mailbox.executor_context = context;
   mailbox.executor_succeeded = false;
   mailbox.execution_stamp = {};
@@ -1735,7 +1735,7 @@ MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
       ticket.sequence) {
     return MainThreadQueryReclaimResultV1::ticket_mismatch;
   }
-  mailbox.executor = nullptr;
+  mailbox.executor.store(nullptr, std::memory_order_release);
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
   mailbox.execution_stamp = {};
@@ -1822,8 +1822,8 @@ bool ObserveMainThreadPumpAndDrainV1(
 #endif
   }
   AdvanceConsecutiveOwnerPumpProof(mailbox, before);
-  const auto queued_executor = mailbox.executor;
-  const bool frontend_request_queued =
+  const auto queued_executor = mailbox.executor.load(std::memory_order_acquire);
+  const bool frontend_request_queued_hint =
       mailbox.state.load(std::memory_order_acquire) ==
           MainThreadQueryMailboxStateV1::queued &&
       queued_executor != nullptr &&
@@ -1837,7 +1837,7 @@ bool ObserveMainThreadPumpAndDrainV1(
     // deciding whether the fixed frontend executor may drain.
     mailbox.owner_thread_id.store(before.thread_id,
                                   std::memory_order_release);
-    if (!frontend_request_queued) {
+    if (!frontend_request_queued_hint) {
       mailbox.drain_guard.clear(std::memory_order_release);
       return false;
     }
@@ -1874,10 +1874,22 @@ bool ObserveMainThreadPumpAndDrainV1(
     mailbox.drain_guard.clear(std::memory_order_release);
     return false;
   }
-  const auto executor = mailbox.executor;
+  const auto executor = mailbox.executor.load(std::memory_order_acquire);
   void *const context = mailbox.executor_context;
   if (sequence == 0 || executor == nullptr || context == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
+    mailbox.completed_sequence.store(sequence, std::memory_order_release);
+    mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
+                        std::memory_order_release);
+    mailbox.drain_guard.clear(std::memory_order_release);
+    return false;
+  }
+
+  // The pre-claim callback peek is advisory. Cancellation/reclaim can publish
+  // a different ticket before this pump acquires executing ownership.
+  const bool frontend_request_claimed =
+      executor == mailbox.permitted_frontend_executor;
+  if (!gameplay_pause_observed && !frontend_request_claimed) {
     mailbox.completed_sequence.store(sequence, std::memory_order_release);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);
@@ -1919,7 +1931,7 @@ bool ObserveMainThreadPumpAndDrainV1(
   // Production frontend contexts have the typed shape below; offline mailbox
   // fixtures may supply a synthetic frontend executor with a different context.
   const auto *frontend_context =
-      frontend_request_queued && !mailbox.offline_fixture
+      frontend_request_claimed && !mailbox.offline_fixture
           ? static_cast<const FrontendGuiRouteMailboxContextV1 *>(context)
           : nullptr;
   const bool actual4_route_query = frontend_context != nullptr &&

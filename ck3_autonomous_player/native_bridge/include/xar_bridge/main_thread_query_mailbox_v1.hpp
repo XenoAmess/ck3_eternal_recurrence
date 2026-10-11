@@ -673,9 +673,11 @@ struct MainThreadQueryMailboxV1 {
   MainThreadExecutionStampV1 last_owner_verified_stamp{};
   bool last_owner_verified_stamp_valid = false;
 
-  // Single-producer/single-consumer slot.  The publishing/queued release-store
-  // is the ownership boundary for these plain fields.
-  MainThreadQueryExecutorV1 executor = nullptr;
+  // Single-producer/single-consumer slot. The callback is also peeked before
+  // slot ownership, so only this pointer must support concurrent observation.
+  std::atomic<MainThreadQueryExecutorV1> executor{nullptr};
+  // Publishing/queued release-store remains the ownership boundary for the
+  // plain context and results.
   void *executor_context = nullptr;
   bool executor_succeeded = false;
   MainThreadExecutionStampV1 execution_stamp{};
