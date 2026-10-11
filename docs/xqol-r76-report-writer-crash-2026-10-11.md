@@ -35,3 +35,17 @@ Source18 冻结原件不修改。后继公共 runtime 需独立小型冻结、�
 共享公共入口已新增显式 `--previous-failure-close`，仅核验这类真实 writer 崩溃后的行政资源闭场：冻结输入、原报告/错误、原客户端及 keeper/allocator 的真实等待、实际非零 CK3 retained exit、原 host 身份消失、当前无进程 blocker、exact CAS 释放和控制文件已清。该路径保留 `original_host_exit_code=null` / `original_host_wait_proven=false`、非正常退出、业务/发布 false；原正常关闭门和 graphics-cache seed 门不放宽。
 
 新增九项直接生产函数检查最终一次 9/9 PASS / 1.338s。第一次真实 R76 输入绑定暴露 manifest 路径斜杠表示差异，最小修正仅规范化路径比较，bytes/SHA 继续 exact；随后真实绑定 PASS、runtime blockers=[]、旧报告 SHA 前后不变。独立勘误 `FAILED-ATTEMPT-RETAINED-EXIT1-CORRECTION-01.json` 的 SHA-256 为 `f0567aa710915ecdb366a5847fc49a9e8efaa5a6b6b39e52ce00f4a1967819a2`，下次 allocate 必须显式传它，不得把旧报告修成 finished。
+
+## 13:52 CST：Source19 实际冻结与两产品公共准备
+
+修复包已 rebase 并普通推送至 master `1a9be0f1b55bab887c4d83ecc6d6afac2b195470`。新公共 source 仅把已验证的 `write_atomic_report` 函数投影进冻结 Source18；其余 6,905 文件同卷硬链接继承，native/provider/caps 不变，不复制当前 master 整份 host。
+
+第一次物化在 canonical host 函数位置映射失败，`pause_campaign_after_advance` 是类方法，原 producer 仅遍历 AST 顶层。原 `shared-source19-report-writer-ready-01` partial 与 `SOURCE19-ORIGINAL-FAILURE-01.json` 保留 FAIL；独立预约已失败闭账。最小后继通过完整 AST.walk 按原 name+range 匹配，十项均找到真实定义、无 legacy 项，九项函数字节不变，writer 范围仅增加四行。第二次实际物化 exit0 / 6.163s，独立逻辑写入 3,470,618 B，16MiB预约闭账且无物理回收信用。
+
+已选定共同 runtime：`C:/workspace/ck3-upgrade-20261010/shared-source19-report-writer-ready-02/runtime.future-source19-report-writer-01.json`，17,281 B / SHA-256 `46b46bbaeb5ae5b2d66ad4207dfd11df43237dcf7a3cb69612140a63d53e1ce2`；manifest 59,321 B / SHA-256 `53dbd92dff1a8d53d227343b4684bf0e1dadf9fc6f160f9be63510abe76ef04a`。完整 source-index 为 3,110,279 B / `8c0b8ff62f6e73b9c346ac526e0f511780e633717356a0abf31b3be515531b4c`。实际成功 close 为同根 `OWNER-DIRECT-DISK-CLOSE-01.json` / `d1598023c2cf78cc62fb7b9092c8e01d85861a8edcbecbc926b2ef94a0ca3dc8`。
+
+PAM+ 未消费43输入仅另建 manifest sibling，原 state/fixture/35步/12日/时间预算不变；新 prepared 位于同根 `prepared-siblings/xqol--pam_positive/prepared-case.json` / SHA-256 `b16d56c277475ee9a429b3c9c969fba8585565a73bad7e3a6f7275c2daa303e2`。新组合公共 plan 实际 exit0、blockers=[]，尚未 allocate/启动。
+
+重整河山两份未消费 Source17 输入同样另建 Source19 siblings，原 core58 / threshold62 个 profile 文件 exact、不复制或重 prepare。新根 `C:/workspace/ck3-upgrade-20261010/rmtm-source19-unused-prepared-siblings-20261011-01`，core prepared SHA-256 `7353badc987b77198d784867bf263e3413fb27b6bf19c5a7bbc083df4bed6ad9`，threshold prepared `a24363a732c87a18f5128b6910c0b78cc06a15bc47fdd4e611018cff6b5860b4`；总回执 `RMTM-TWO-MANIFEST-SIBLINGS-READY.json` / `20d7f44a2de130ee0716d15adf3e6107bc6e10565e642bc3ccf601ae3279f7b4`。两次公共 plan 各实际 exit0/blockers=[]，总逻辑 105,076 B，在128KiB小包上限内，仍无新实机/发布信用。
+
+当前下一场容量仍待准入。旧占用台账不能外推为现可释放量；已按精确根核到多份旧缓存早已空，大目录实际远小于历史值，没有据旧排行强删。相邻完整 PAM− 场次原闭账 allocation 为305,077,272 B、logical442,699,599 B，可用于新场估计复核；任何新峰估算须保留实际依据、最坏超时风险与原 safety/system-growth，不改写旧2GiB预约或把估算变化称为回收。
