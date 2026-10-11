@@ -144,6 +144,28 @@ void QueryPayload(std::ostream &out, const OrdinaryInteractionMailboxContextV1 &
     out << "],\"unavailable_reason\":";
     Reason(out, available ? group.unavailable_reason : "native_context_unavailable", rows_available);
     out << '}';
+    const auto &material = o.education_request_materialization;
+    const bool material_available = available && material.available;
+    out << ",\"education_request_materialization\":{\"status\":";
+    Quote(out, material_available ? "available" : "unavailable");
+    out << ",\"child_full_id\":"; Optional(out, q.request.child_full_id);
+    out << ",\"guardian_full_id\":"; Optional(out, q.request.guardian_full_id);
+    out << ",\"requested_option_keys\":";
+    if (q.request.requested_option_keys) {
+      out << '[';
+      for (std::size_t i = 0; i < q.request.requested_option_keys->size(); ++i) {
+        if (i != 0) out << ',';
+        Quote(out, (*q.request.requested_option_keys)[i]);
+      }
+      out << ']';
+    } else out << "null";
+    out << ",\"pair_matches\":";
+    Optional(out, available ? material.pair_matches : std::optional<bool>{});
+    out << ",\"option_keys_match\":";
+    Optional(out, available ? material.option_keys_match : std::optional<bool>{});
+    out << ",\"unavailable_reason\":";
+    Reason(out, available ? material.unavailable_reason : "native_context_unavailable", material_available);
+    out << '}';
   }
   out << ",\"special_payload_present\":"; Optional(out, available ? o.special_payload_present : std::optional<bool>{});
   out << ",\"shown\":"; Optional(out, available ? o.shown : std::optional<bool>{});

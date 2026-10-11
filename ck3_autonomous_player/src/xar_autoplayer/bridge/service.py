@@ -2143,6 +2143,7 @@ class GameplayBridgeService:
         campaign_root_result: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Use the fixed existing pair before the ordinary unpartnered route."""
+        education_relationship = None
         if getattr(
             self.driver, "allow_private_current_first_heir_betrothal_fulfillment", False
         ) is True:
@@ -2219,14 +2220,107 @@ class GameplayBridgeService:
                     }
                     raise error from retry_error
             current_plan = current.get("plan")
+            if isinstance(current_plan, dict):
+                education_relationship = current_plan.get("current_betrothal_relationship")
             if (isinstance(current_plan, dict)
                     and current_plan.get("current_betrothal_fulfillment") is True):
-                return current
-        return plan_family_marriage_private(
+                return self._plan_private_family_education_v1(
+                    current, snapshot, relationship=education_relationship)
+        family = plan_family_marriage_private(
             self.driver, planned, snapshot,
             prewar_arbitration=prewar_arbitration,
             **({"wartime_arbitration": True} if wartime_arbitration else {}),
         )
+        return self._plan_private_family_education_v1(
+            family, snapshot, relationship=education_relationship)
+
+    def _plan_private_family_education_v1(
+        self, planned: dict[str, object], snapshot: dict[str, object], *,
+        relationship: object = None,
+    ) -> dict[str, object]:
+        """Use actual child and native final education inputs at a family opportunity."""
+        plan = planned.get("plan")
+        if not isinstance(plan, dict) or plan.get("selected_step") != "life-advance":
+            return planned
+        if not isinstance(relationship, dict):
+            relationship = plan.get("family_marriage_current_relationship")
+        if not isinstance(relationship, dict):
+            return planned
+        inputs = relationship.get("family_generation_education_decision_inputs_v1")
+        if not isinstance(inputs, dict):
+            return planned
+        children = inputs.get("children")
+        rows = children.get("rows") if isinstance(children, dict) else None
+        if not isinstance(rows, list) or not rows:
+            return planned
+        if not all(callable(getattr(self.driver, name, None)) for name in (
+            "query_character_interaction_ordinary_v1",
+            "initiate_character_interaction_ordinary_v1",
+        )):
+            return planned
+        from .education_payload_materializer_private_v1 import (
+            prepare_education_payload_review_v1,
+        )
+
+        observations = []
+        seen = set()
+        for child in rows:
+            child_id = child["raw_character_id"]
+            if child_id in seen:
+                continue
+            seen.add(child_id)
+            query = self.query_character_interaction_ordinary_v1(
+                "educate_child_interaction", child_id,
+                expected_revision=int(planned["revision"]),
+            )
+            native = query["character_interaction_ordinary_context"]
+            roles = native["effective_roles"]
+            observation = {"child_full_id": child_id, "default_query": query}
+            observations.append(observation)
+            guardian_id = roles["secondary_actor_id"]
+            if (native["status"] != "available" or native["can_send"] is not True
+                    or roles["secondary_recipient_id"] != child_id
+                    or guardian_id is None):
+                continue
+            option_source = native.get("education_option_rows")
+            if not isinstance(option_source, dict) or option_source["status"] != "available":
+                continue
+            selected_rows = [row for row in option_source["rows"] if row["ordinal_selected"]]
+            if any(row["canonical_flag_key"] is None for row in selected_rows):
+                continue
+            requested_keys = list(dict.fromkeys(row["canonical_flag_key"] for row in selected_rows))
+            intent = {"interaction_key": "educate_child_interaction", "recipient_id": child_id,
+                      "child_full_id": child_id, "guardian_full_id": guardian_id,
+                      "requested_option_keys": requested_keys}
+            preflight = self.query_character_interaction_ordinary_v1(
+                intent["interaction_key"], intent["recipient_id"],
+                expected_revision=int(planned["revision"]),
+                child_full_id=child_id, guardian_full_id=guardian_id,
+                requested_option_keys=requested_keys,
+            )
+            observation["selected_request_query"] = preflight
+            review = prepare_education_payload_review_v1(
+                preflight, snapshot, expected_revision=int(planned["revision"]),
+                recipient_id=child_id, child_full_id=child_id,
+                guardian_full_id=guardian_id, requested_option_keys=requested_keys,
+            )
+            observation["semantic_request_review"] = review
+            final = preflight["character_interaction_ordinary_context"]
+            if (final["ready_to_initiate"] is not True or final["can_send"] is not True
+                    or review["status"] != "available"):
+                continue
+            return {**planned, "plan": {**plan,
+                "phase": "family_education_ordinary_submission",
+                "selected_step": "initiate-character-interaction-ordinary-v1",
+                "family_education_inputs": inputs,
+                "family_education_observations": observations,
+                "family_education_request": intent,
+                "reason": "submit the observed native-ready ward and guardian education intent",
+            }}
+        return {**planned, "plan": {**plan,
+            "family_education_inputs": inputs,
+            "family_education_observations": observations,
+        }}
 
     def _plan_private_family_wartime_v1(
         self, planned: dict[str, object], snapshot: object,
@@ -3391,6 +3485,16 @@ class GameplayBridgeService:
 
                 result = {"step": selected_step,
                           **reconcile_feast_start_private_v1(self.driver)}
+            elif (selected_step == "initiate-character-interaction-ordinary-v1"
+                  and isinstance(plan.get("family_education_request"), dict)):
+                request = plan["family_education_request"]
+                result = self.initiate_character_interaction_ordinary_v1(
+                    request["interaction_key"], request["recipient_id"],
+                    expected_revision=int(planned["revision"]),
+                    child_full_id=request["child_full_id"],
+                    guardian_full_id=request["guardian_full_id"],
+                    requested_option_keys=request["requested_option_keys"],
+                )
             elif selected_step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP:
                 result = submit_current_first_heir_betrothal_fulfillment_private(
                     self.driver, plan=plan, snapshot=self.snapshot())
@@ -12869,6 +12973,8 @@ class GameplayBridgeService:
 
     def query_character_interaction_ordinary_v1(
         self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+        child_full_id: int | None = None, guardian_full_id: int | None = None,
+        requested_option_keys: list[str] | None = None,
     ) -> dict[str, object]:
         from .ordinary_interaction_contract import (
             validate_interaction_key, validate_recipient_id, interaction_binding,
@@ -12881,7 +12987,14 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend lacks ordinary interaction query")
         before = self.driver.take_snapshot()
         binding = interaction_binding(before, expected_revision)
-        result = method(interaction_key, recipient_id, expected_revision=expected_revision)
+        education_request = {
+            key: value for key, value in (
+                ("child_full_id", child_full_id), ("guardian_full_id", guardian_full_id),
+                ("requested_option_keys", requested_option_keys),
+            ) if value is not None
+        }
+        result = method(interaction_key, recipient_id, expected_revision=expected_revision,
+                        **education_request)
         after = self.driver.take_snapshot()
         if not same_query_frame(before, after, binding):
             raise BridgeUnavailableError("ordinary interaction query changed its actual frame")
@@ -12889,6 +13002,8 @@ class GameplayBridgeService:
 
     def initiate_character_interaction_ordinary_v1(
         self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+        child_full_id: int | None = None, guardian_full_id: int | None = None,
+        requested_option_keys: list[str] | None = None,
     ) -> dict[str, object]:
         from .ordinary_interaction_contract import (
             validate_interaction_key, validate_recipient_id, interaction_binding,
@@ -12901,7 +13016,14 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend lacks ordinary interaction initiation")
         before = self.driver.take_snapshot()
         binding = interaction_binding(before, expected_revision, initiating=True)
-        result = method(interaction_key, recipient_id, expected_revision=expected_revision)
+        education_request = {
+            key: value for key, value in (
+                ("child_full_id", child_full_id), ("guardian_full_id", guardian_full_id),
+                ("requested_option_keys", requested_option_keys),
+            ) if value is not None
+        }
+        result = method(interaction_key, recipient_id, expected_revision=expected_revision,
+                        **education_request)
         after = self.driver.take_snapshot()
         later = after_control_binding(before, after, binding)
         return normalize_public_initiation(result, binding, interaction_key, recipient_id, later)

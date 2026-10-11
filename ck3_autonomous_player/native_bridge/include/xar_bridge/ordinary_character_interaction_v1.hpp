@@ -39,6 +39,8 @@ struct Bindings {
   TwoRoleConstructor construct_two_role = nullptr;
   MenuShown is_shown = nullptr;
   ReadOption read_option = nullptr;
+  void (*clear_local_options)(void *) = nullptr;
+  void (*select_local_option)(void *, std::int32_t) = nullptr;
   void *(*get_script_identifier_table)() = nullptr;
   std::int32_t *(*lookup_script_identifier_id)(void *, std::int32_t *, const void *) = nullptr;
   OuterAnswer outer_answer = nullptr;
@@ -62,8 +64,16 @@ struct EducationOptionRowsV1 {
   const char *unavailable_reason = "not_sampled";
 };
 
+struct EducationRequestMaterializationV1 {
+  bool available = false;
+  std::optional<bool> pair_matches;
+  std::optional<bool> option_keys_match;
+  const char *unavailable_reason = "not_sampled";
+};
+
 struct Observation {
   EducationOptionRowsV1 education_option_rows{};
+  EducationRequestMaterializationV1 education_request_materialization{};
   bool native_context_available = false;
   bool ordinary_context_supported = false;
   bool actor_binding_verified = false;

@@ -19049,8 +19049,32 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    @staticmethod
+    def _ordinary_education_request_fields(
+        interaction_key: str, child_full_id: int | None,
+        guardian_full_id: int | None, requested_option_keys: list[str] | None,
+    ) -> dict[str, object]:
+        from .ordinary_interaction_contract import validate_interaction_key, validate_recipient_id
+        if interaction_key != "educate_child_interaction":
+            if any(value is not None for value in (child_full_id, guardian_full_id, requested_option_keys)):
+                raise ValueError("education request fields require educate_child_interaction")
+            return {}
+        if (child_full_id is None) != (guardian_full_id is None):
+            raise ValueError("education child and guardian must be supplied together")
+        fields = {}
+        for name, value in (("child_full_id", child_full_id), ("guardian_full_id", guardian_full_id)):
+            if value is not None:
+                fields[name] = validate_recipient_id(value)
+        if requested_option_keys is not None:
+            if type(requested_option_keys) not in (list, tuple):
+                raise ValueError("requested_option_keys requires an explicit list")
+            fields["requested_option_keys"] = [validate_interaction_key(key) for key in requested_option_keys]
+        return fields
+
     def query_character_interaction_ordinary_v1(
         self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+        child_full_id: int | None = None, guardian_full_id: int | None = None,
+        requested_option_keys: list[str] | None = None,
     ) -> dict[str, object]:
         from .ordinary_interaction_contract import (
             QUERY_STEP, QUERY_CAPABILITY, validate_interaction_key, validate_recipient_id,
@@ -19058,6 +19082,8 @@ class NativeHeadlessGameplayDriver:
         )
         validate_interaction_key(interaction_key)
         validate_recipient_id(recipient_id)
+        education_fields = self._ordinary_education_request_fields(
+            interaction_key, child_full_id, guardian_full_id, requested_option_keys)
         before = self.take_snapshot()
         try:
             binding = interaction_binding(before, expected_revision)
@@ -19068,7 +19094,8 @@ class NativeHeadlessGameplayDriver:
             request_fields={"interaction_key": interaction_key, "recipient_id": recipient_id,
                 "expected_player_character_id": binding["played_character_id"],
                 "expected_game_pid": binding["game_pid"],
-                "expected_connection_generation": binding["connection_generation"]})
+                "expected_connection_generation": binding["connection_generation"],
+                **education_fields})
         after = self.take_snapshot()
         if not same_query_frame(before, after, binding):
             raise BridgeUnavailableError("ordinary interaction query crossed its actual frame")
@@ -19080,6 +19107,8 @@ class NativeHeadlessGameplayDriver:
 
     def initiate_character_interaction_ordinary_v1(
         self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+        child_full_id: int | None = None, guardian_full_id: int | None = None,
+        requested_option_keys: list[str] | None = None,
     ) -> dict[str, object]:
         from .ordinary_interaction_contract import (
             INITIATE_STEP, INITIATE_CAPABILITY, validate_interaction_key, validate_recipient_id,
@@ -19088,6 +19117,8 @@ class NativeHeadlessGameplayDriver:
         )
         validate_interaction_key(interaction_key)
         validate_recipient_id(recipient_id)
+        education_fields = self._ordinary_education_request_fields(
+            interaction_key, child_full_id, guardian_full_id, requested_option_keys)
         before = self.take_snapshot()
         try:
             binding = interaction_binding(before, expected_revision, initiating=True)
@@ -19096,14 +19127,45 @@ class NativeHeadlessGameplayDriver:
         if INITIATE_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
             raise UnsupportedStepError("native DLL lacks ordinary interaction initiation")
         # Read actual final terms before creating a durable one-send claim.
+        if interaction_key == "educate_child_interaction" and any(
+                value is None for value in (child_full_id, guardian_full_id, requested_option_keys)):
+            raise ValueError("education initiation requires exact child, guardian and option intent")
         terms = self.query_character_interaction_ordinary_v1(interaction_key, recipient_id,
-            expected_revision=expected_revision)
+            expected_revision=expected_revision, **education_fields)
         if terms["character_interaction_ordinary_context"]["ready_to_initiate"] is not True:
             raise BridgeUnavailableError("ordinary interaction is not currently ready to initiate")
         current = self.take_snapshot()
         if not same_query_frame(before, current, binding):
             raise BridgeUnavailableError("ordinary interaction preflight crossed its actual frame")
         request_id = f"ordinary-interaction-{uuid.uuid4().hex}"
+        if interaction_key == "educate_child_interaction":
+            from .education_payload_materializer_private_v1 import (
+                REQUEST_SCHEMA, prepare_education_payload_review_v1,
+                materialize_reviewed_education_payload_v1,
+            )
+            try:
+                prepared = prepare_education_payload_review_v1(terms, current,
+                    expected_revision=expected_revision, recipient_id=recipient_id,
+                    child_full_id=child_full_id, guardian_full_id=guardian_full_id,
+                    requested_option_keys=requested_option_keys)
+                if prepared["status"] != "available":
+                    raise ValueError("education payload unavailable: " + prepared["reason"])
+                # Bind content to this actual fresh query, never a planner's old token.
+                materialized = materialize_reviewed_education_payload_v1({
+                    "schema": REQUEST_SCHEMA, "request_id": request_id,
+                    "review_token": prepared["review_token"],
+                    "expected_snapshot_id": terms["queried_snapshot_id"],
+                    "expected_revision": expected_revision,
+                    "expected_native_revision": terms["queried_native_revision"],
+                    "recipient_id": recipient_id, "child_full_id": child_full_id,
+                    "guardian_full_id": guardian_full_id,
+                    "requested_option_keys": requested_option_keys,
+                }, terms, current)
+                intent = materialized["request_intent"]
+                education_fields = {key: intent[key] for key in (
+                    "child_full_id", "guardian_full_id", "requested_option_keys")}
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
         try:
             claim = create_once_claim(self._native_driver_state_path().parent / "ordinary-interaction-actions",
                 binding, interaction_key, recipient_id, request_id,
@@ -19118,7 +19180,8 @@ class NativeHeadlessGameplayDriver:
                 request_fields={"interaction_key": interaction_key, "recipient_id": recipient_id,
                     "expected_player_character_id": binding["played_character_id"],
                     "expected_game_pid": binding["game_pid"],
-                    "expected_connection_generation": binding["connection_generation"]})
+                    "expected_connection_generation": binding["connection_generation"],
+                    **education_fields})
         except Exception as error:
             # This is host diagnostic evidence, never a fabricated native ACK.
             with claim.with_suffix(".unknown.json").open("x", encoding="utf-8", newline="\n") as evidence:

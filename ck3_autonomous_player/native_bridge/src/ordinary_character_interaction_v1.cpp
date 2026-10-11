@@ -60,6 +60,22 @@ bool Valid(const OrdinaryInteractionRequestV1 &r) noexcept {
   for (const unsigned char c : r.interaction_key)
     if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
           (c >= '0' && c <= '9') || c == '_')) return false;
+  const bool has_pair = r.child_full_id.has_value();
+  const bool has_options = r.requested_option_keys.has_value();
+  if (has_pair != r.guardian_full_id.has_value() ||
+      ((has_pair || has_options) && r.interaction_key != "educate_child_interaction"))
+    return false;
+  if (has_pair && (*r.child_full_id == 0 || *r.child_full_id == UINT32_MAX ||
+                   *r.guardian_full_id == 0 || *r.guardian_full_id == UINT32_MAX))
+    return false;
+  if (has_options) {
+    for (const auto &key : *r.requested_option_keys) {
+      if (key.empty() || key.size() > 128) return false;
+      for (const unsigned char c : key)
+        if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+              (c >= '0' && c <= '9') || c == '_')) return false;
+    }
+  }
   return true;
 }
 
@@ -255,10 +271,129 @@ void CopyEducationOptionRows(const Bindings &b, const void *storage, void *expec
   }
 }
 
+bool ReadEffectiveEducationRoles(void *storage,
+    std::array<std::optional<std::uint32_t>, 6> &roles) noexcept {
+  for (std::size_t i = 0; i < roles.size(); ++i) {
+    std::int32_t id = -1;
+    if (!Read(storage, 0x2D8 + sizeof(id) * i, id)) return false;
+    roles[i] = id == -1 ? std::optional<std::uint32_t>{} :
+                         std::optional<std::uint32_t>{std::bit_cast<std::uint32_t>(id)};
+  }
+  return true;
+}
+
+bool HasEducationRequest(const OrdinaryInteractionRequestV1 &r) noexcept {
+  return r.child_full_id.has_value() || r.requested_option_keys.has_value();
+}
+
+// Only this existing temporary context is modified. The native selector takes
+// the original row ordinal, including every matching duplicate flag row.
+bool ApplyEducationOptionIntent(const Bindings &b, void *storage,
+    const OrdinaryInteractionRequestV1 &r, const EducationOptionRowsV1 &rows,
+    bool &applied, const char *&reason) noexcept {
+  applied = !r.requested_option_keys.has_value();
+  reason = nullptr;
+  if (applied) return true;
+  if (!rows.available) {
+    reason = rows.unavailable_reason;
+    return true;
+  }
+  if (!b.clear_local_options || !b.select_local_option) {
+    reason = "education_option_setters_unavailable";
+    return true;
+  }
+  try {
+    const auto &keys = *r.requested_option_keys;
+    for (const auto &key : keys) {
+      bool found = false;
+      for (const auto &row : rows.rows)
+        if (row.canonical_flag_key && *row.canonical_flag_key == key) found = true;
+      if (!found) {
+        reason = "requested_education_option_key_unavailable";
+        return true;
+      }
+    }
+    std::vector<std::int32_t> ordinals;
+    for (const auto &row : rows.rows) {
+      if (!row.canonical_flag_key) continue;
+      bool requested = false;
+      for (const auto &key : keys)
+        if (*row.canonical_flag_key == key) requested = true;
+      if (requested) ordinals.push_back(static_cast<std::int32_t>(row.declared_ordinal));
+    }
+    if (!CallVoid(b.clear_local_options, storage)) {
+      reason = "education_option_clear_unavailable";
+      return false;
+    }
+    for (const auto ordinal : ordinals) {
+      if (!CallVoid(b.select_local_option, storage, ordinal)) {
+        reason = "education_option_selection_unavailable";
+        return false;
+      }
+    }
+    if (!CallVoid(b.interaction.refresh, storage, true) ||
+        !CallVoid(b.interaction.finalize, storage)) {
+      reason = "education_option_finalization_unavailable";
+      return false;
+    }
+    applied = true;
+    return true;
+  } catch (...) {
+    reason = "education_option_intent_copy_unavailable";
+    return false;
+  }
+}
+
+void CompleteEducationRequestMaterialization(const OrdinaryInteractionRequestV1 &r,
+    const std::array<std::optional<std::uint32_t>, 6> &roles,
+    const EducationOptionRowsV1 &rows, bool options_applied,
+    const char *option_reason, EducationRequestMaterializationV1 &out) noexcept {
+  out = {};
+  if (r.child_full_id)
+    out.pair_matches = roles[2] == r.guardian_full_id && roles[3] == r.child_full_id;
+  if (r.requested_option_keys && rows.available && options_applied) {
+    bool match = true, known = true;
+    for (const auto &row : rows.rows) {
+      if (!row.ordinal_selected) continue;
+      if (!row.canonical_flag_key) { known = false; continue; }
+      bool requested = false;
+      for (const auto &key : *r.requested_option_keys)
+        if (*row.canonical_flag_key == key) requested = true;
+      if (!requested) match = false;
+    }
+    for (const auto &key : *r.requested_option_keys) {
+      bool selected = false;
+      for (const auto &row : rows.rows)
+        if (row.ordinal_selected && row.canonical_flag_key &&
+            *row.canonical_flag_key == key) selected = true;
+      if (!selected) match = false;
+    }
+    if (known) out.option_keys_match = match;
+  }
+  if (out.pair_matches && !*out.pair_matches)
+    out.unavailable_reason = "education_requested_pair_changed";
+  else if (r.requested_option_keys && !options_applied)
+    out.unavailable_reason = option_reason ? option_reason : "education_option_intent_unavailable";
+  else if (!rows.available)
+    out.unavailable_reason = rows.unavailable_reason;
+  else if (r.requested_option_keys && !out.option_keys_match)
+    out.unavailable_reason = "selected_education_option_key_unavailable";
+  else if (out.option_keys_match && !*out.option_keys_match)
+    out.unavailable_reason = "education_requested_option_keys_changed";
+  else {
+    out.available = true;
+    out.unavailable_reason = nullptr;
+  }
+}
+
 bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
              NativeContext &context, Observation &out) noexcept {
   out = {};
   if (!Valid(r)) return Fail(out, "request_invalid");
+  const bool education = b.education_rows_actual_12004 &&
+      r.interaction_key == "educate_child_interaction";
+  if (HasEducationRequest(r) && !education)
+    return Fail(out, "education_request_bindings_unavailable");
   if (!b.enabled || !b.interaction.enabled || !b.interaction.core.enabled ||
       b.interaction.destroy == nullptr) return Fail(out, "bindings_unavailable");
   void *actor = Resolve(b.interaction.core,
@@ -281,6 +416,8 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
     return Fail(out, "interaction_definition_unavailable");
   context.destroy = b.interaction.destroy;
   void *constructed = nullptr;
+  // Preserve the actual native redirect: the request's original recipient is
+  // a candidate input, while the effective primary recipient may be its liege.
   if (!Call(b.construct_two_role, constructed, context.bytes.data(), definition,
             r.expected_player_character_id, std::bit_cast<std::int32_t>(r.recipient_id),
             static_cast<void *>(nullptr), true) || constructed != context.bytes.data())
@@ -297,6 +434,34 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
       return Fail(out, "effective_roles_unavailable");
     if (id != -1) roles[i] = std::bit_cast<std::uint32_t>(id);
   }
+  if (education && r.child_full_id &&
+      (roles[2] != r.guardian_full_id || roles[3] != r.child_full_id)) {
+    // Reuse an already matching redirected context. Only a different requested
+    // secondary pair needs reconstruction, using its observed primary roles.
+    if (!roles[0] || !roles[1])
+      return Fail(out, "education_default_primary_roles_unavailable");
+    const auto primary_actor = std::bit_cast<std::int32_t>(*roles[0]);
+    const auto primary_recipient = std::bit_cast<std::int32_t>(*roles[1]);
+    const auto intermediary = roles[4] ? std::bit_cast<std::int32_t>(*roles[4]) :
+                                       std::int32_t{-1};
+    const bool destroyed = CallVoid(context.destroy, storage);
+    context.constructed = false;
+    context.bytes.fill(std::byte{0});
+    if (!destroyed) return Fail(out, "education_default_context_cleanup_unavailable");
+    constructed = nullptr;
+    if (!Call(b.interaction.construct_all_roles, constructed, storage, definition,
+              primary_actor, primary_recipient,
+              std::bit_cast<std::int32_t>(*r.guardian_full_id),
+              std::bit_cast<std::int32_t>(*r.child_full_id), intermediary,
+              static_cast<void *>(nullptr)) || constructed != storage)
+      return Fail(out, "education_requested_context_unavailable");
+    context.constructed = true;
+    if (!CallVoid(b.interaction.refresh, storage, true) ||
+        !CallVoid(b.interaction.finalize, storage))
+      return Fail(out, "education_requested_context_finalization_unavailable");
+    if (!ReadEffectiveEducationRoles(storage, roles))
+      return Fail(out, "education_requested_roles_unavailable");
+  }
   void *option_data = nullptr, *special = nullptr;
   std::int32_t option_count = -1;
   if (!Read(definition, 0x2258, option_data) ||
@@ -304,6 +469,20 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
       option_count > 4096 || (option_count != 0 && option_data == nullptr) ||
       !Read(storage, 0x330, special))
     return Fail(out, "ordinary_shape_sample_unavailable");
+  bool options_applied = !r.requested_option_keys.has_value();
+  const char *option_reason = nullptr;
+  if (education && r.requested_option_keys) {
+    EducationOptionRowsV1 initial_rows{};
+    CopyEducationOptionRows(b, storage, definition, option_data, option_count, roles, initial_rows);
+    if (!ApplyEducationOptionIntent(b, storage, r, initial_rows, options_applied, option_reason))
+      return Fail(out, option_reason);
+    if (!ReadEffectiveEducationRoles(storage, roles) ||
+        !Read(definition, 0x2258, option_data) ||
+        !Read(definition, 0x2264, option_count) || option_count < 0 ||
+        option_count > 4096 || (option_count != 0 && option_data == nullptr) ||
+        !Read(storage, 0x330, special))
+      return Fail(out, "education_option_materialization_readback_unavailable");
+  }
   std::uint32_t selected_count = 0;
   for (std::int32_t i = 0; i < option_count; ++i) {
     std::uint32_t flag = 0;
@@ -344,9 +523,14 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
     return Fail(out, "outer_answer_unavailable");
   if (!Call(b.interaction.validate, can_send, storage, static_cast<void *>(nullptr)))
     return Fail(out, "can_send_unavailable");
-  if (b.education_rows_actual_12004 && r.interaction_key == "educate_child_interaction")
+  if (education) {
+    if (!ReadEffectiveEducationRoles(storage, roles))
+      return Fail(out, "education_final_roles_unavailable");
     CopyEducationOptionRows(b, storage, definition, option_data, option_count, roles,
                             out.education_option_rows);
+    CompleteEducationRequestMaterialization(r, roles, out.education_option_rows,
+        options_applied, option_reason, out.education_request_materialization);
+  }
   out.actor_alive = actor_alive;
   out.recipient_alive = recipient_alive;
   out.definition_stable_hash = std::bit_cast<std::uint32_t>(hash);
@@ -363,9 +547,12 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
   out.outer_answer_status = outer_status;
   out.native_context_available = true;
   out.unavailable_reason = nullptr;
-  out.ordinary_context_supported = option_count == 0 && special == nullptr;
+  const bool request_materialized = !HasEducationRequest(r) ||
+      out.education_request_materialization.available;
+  out.ordinary_context_supported = option_count == 0 && special == nullptr && request_materialized;
   out.unsupported_reason = special != nullptr ? "special_payload_unsupported" :
-      (option_count != 0 ? "declared_options_unsupported" : nullptr);
+      (!request_materialized ? out.education_request_materialization.unavailable_reason :
+       option_count != 0 ? "declared_options_unsupported" : nullptr);
   return true;
 }
 
@@ -423,6 +610,8 @@ Bindings BindOrdinaryInteractionImage12004(std::uintptr_t base,
   i.send_primary_vtable = base + ck3_12004::kPrisonerRansomSendPrimaryVtableRva12004;
   i.send_secondary_vtable = base + ck3_12004::kPrisonerRansomSendSecondaryVtableRva12004;
   b.education_rows_actual_12004 = true;
+  b.clear_local_options = context.clear_local_options;
+  b.select_local_option = context.select_local_option;
   b.get_script_identifier_table = context.get_script_identifier_table;
   b.lookup_script_identifier_id = context.lookup_script_identifier_id;
   b.get_database = context.get_database;

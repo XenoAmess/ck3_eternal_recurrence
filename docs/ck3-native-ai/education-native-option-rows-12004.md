@@ -6,7 +6,7 @@ Exact build: CK3 1.20.0.4 / Steam 25734779 / EXE SHA-256 `98702F88A547CDE2EAF29A
 
 The original counts were sampled earlier and are not reinterpreted as this later bank snapshot. The decoder validates the real first-hit getter semantics independently from ordinal selection. Non-education queries retain their prior wire. The existing support/ready formula remains unchanged; option-row availability does not grant education command readiness.
 
-Root adopted four connected production files. The standalone education materializer remains external until its actual Driver caller and native request/Prepare path can be adopted together. No new query, TU, build option or fake dispatch entry was added. The real command work continues with explicit child/guardian roles and requested canonical option keys.
+Root first adopted four connected option-query files, then adopted the ten-file explicit request and existing caller group. The materializer is now called by the real Driver and family planner. No new query, TU or build option was added. Nonzero declared options remain unsupported while the actual command-owned copy source edges are being closed.
 
 ```mermaid
 flowchart LR
@@ -14,10 +14,23 @@ flowchart LR
   B --> C[First matching flag getter and separate ordinal selection]
   C --> D[Existing mailbox query serializer]
   D --> E[Existing strict ordinary query decoder]
-  E -. source construction pending .-> F[Explicit role and option intent command]
-  F -. execution not run .-> G[Actual education result]
+  E --> F[Existing Driver and family caller: explicit child/guardian and keys]
+  F --> H[Actual redirected primary roles and local ordinal selection]
+  H --> I[Same-query role and bank readback]
+  I --> J[Materializer and existing once-claim entry]
+  J -. nonzero options unsupported; execution not run .-> G[Actual education result]
 ```
 
 Qualification: `research / SOURCE_ADOPTED_NOT_RUN`. No tests, project imports, compilation, Game/Steam operations, live queries or native invocation ran. Native84/SDK84 remain compiled Source594; the source commit skips remote CI. No new live, M6/M7 completion or natural succession credit is claimed.
 
 Source packages: external `continuation-44/background-g2-offline-20261011/type4-source-chain01/DELIVERY.json` and `continuation-55/background-g2-offline-20261011/education-native-entry/dual-rows-canonical-a02/ROOT-ADOPTION-MANIFEST.json`. Actual adoption receipt: `D:/codex-ck3-background-spill/native71-continuation-20261010/ROOT-EDUCATION-OPTION-QUERY-SOURCE-ADOPTION-20261011.json`.
+
+## Explicit request and existing caller source integration
+
+The existing ordinary request accepts an atomic full-uint32 child/guardian pair and an independent optional canonical option-key list. An absent list retains native defaults; an empty list requests all options off. Existing non-education wire behavior is retained. The actual two-role constructor may redirect the primary recipient to a liege: that observed primary recipient, actor and intermediary are retained. A matching secondary pair reuses the same context; a different pair uses the existing all-role constructor with those actual primary roles.
+
+The existing native option callbacks clear and select every matching original ordinal, preserving duplicate flags and order. Final role and bank observations are copied after native validation in the same query. The seven-field `education_request_materialization` annotation describes request/readback matching; it does not establish command-owned copying. The strict decoder keeps raw rows and canonical projections independent.
+
+The actual family caller preserves the already queried relationship, consumes the current child rows, submits explicit pair/options through the existing Driver and reviews that same query with the adopted materializer. Only the existing native readiness and CanSend result can select the existing initiation step. The support formula still requires zero declared options and an absent special payload, with an additional request-materialization match for supplied operands. Stock education with nonzero options therefore remains unsupported for dispatch. Existing owner/TLS/frame and once-claim rules are unchanged.
+
+Qualification: `research / SOURCE_ADOPTED_NOT_RUN`. No tests, imports, compilation, Game/Steam/UI/RPC operations or live reads. Actual adoption receipt: `D:/codex-ck3-background-spill/native71-continuation-20261010/ROOT-EDUCATION-EXPLICIT-QUERY-SOURCE-ADOPTION-20261011.json`. Actual command constructor `2968150 -> 3076B60` is the continuing source-copy entry; the required child effects remain in the shared source ledger.

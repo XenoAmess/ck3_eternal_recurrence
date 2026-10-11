@@ -66,6 +66,31 @@ class FlatJsonCursor final {
     return false;
   }
 
+  bool ReadStringArray(std::vector<std::string> &value) {
+    if (!Consume('[')) {
+      return false;
+    }
+    std::vector<std::string> parsed;
+    if (Consume(']')) {
+      value = std::move(parsed);
+      return true;
+    }
+    for (;;) {
+      std::string_view key;
+      if (!ReadString(key) || !IsInteractionKey(key)) {
+        return false;
+      }
+      parsed.emplace_back(key);
+      if (Consume(']')) {
+        value = std::move(parsed);
+        return true;
+      }
+      if (!Consume(',')) {
+        return false;
+      }
+    }
+  }
+
   bool ReadUnsigned(std::uint64_t &value) noexcept {
     SkipWhitespace();
     if (position_ == json_.size() || json_[position_] < '0' ||
@@ -112,10 +137,11 @@ class FlatJsonCursor final {
   std::size_t position_ = 0;
 };
 
-constexpr std::array<std::string_view, 10> kFieldNames{
+constexpr std::array<std::string_view, 13> kFieldNames{
     "type", "protocol_version", "request_id", "step", "interaction_key",
     "recipient_id", "expected_revision", "expected_player_character_id",
-    "expected_game_pid", "expected_connection_generation"};
+    "expected_game_pid", "expected_connection_generation",
+    "child_full_id", "guardian_full_id", "requested_option_keys"};
 
 std::size_t FieldIndex(std::string_view key) noexcept {
   for (std::size_t index = 0; index < kFieldNames.size(); ++index) {
@@ -130,6 +156,25 @@ std::size_t FieldIndex(std::string_view key) noexcept {
 
 bool OrdinaryInteractionRequestValidV1(
     const OrdinaryInteractionRequestV1 &request) noexcept {
+  const bool has_child = request.child_full_id.has_value();
+  const bool has_guardian = request.guardian_full_id.has_value();
+  if (has_child != has_guardian ||
+      ((has_child || request.requested_option_keys.has_value()) &&
+       request.interaction_key != "educate_child_interaction")) {
+    return false;
+  }
+  if (has_child &&
+      (*request.child_full_id == 0 || *request.child_full_id == kInvalidCharacterId ||
+       *request.guardian_full_id == 0 || *request.guardian_full_id == kInvalidCharacterId)) {
+    return false;
+  }
+  if (request.requested_option_keys.has_value()) {
+    for (const auto &key : *request.requested_option_keys) {
+      if (!IsInteractionKey(key)) {
+        return false;
+      }
+    }
+  }
   return IsInteractionKey(request.interaction_key) &&
          request.recipient_id != 0 &&
          request.recipient_id != kInvalidCharacterId &&
@@ -149,7 +194,7 @@ bool ParseOrdinaryInteractionRequestV1(
     if (!cursor.Consume('{')) {
       return false;
     }
-    for (std::size_t ordinal = 0; ordinal < kFieldNames.size(); ++ordinal) {
+    for (std::size_t ordinal = 0; !cursor.Consume('}'); ++ordinal) {
       if (ordinal != 0 && !cursor.Consume(',')) {
         return false;
       }
@@ -166,7 +211,13 @@ bool ParseOrdinaryInteractionRequestV1(
         return false;
       }
       seen = static_cast<std::uint16_t>(seen | field_bit);
-      if (index == 0 || index == 2 || index == 3 || index == 4) {
+      if (index == 12) {
+        std::vector<std::string> keys;
+        if (!cursor.ReadStringArray(keys)) {
+          return false;
+        }
+        parsed.requested_option_keys = std::move(keys);
+      } else if (index == 0 || index == 2 || index == 3 || index == 4) {
         std::string_view value;
         if (!cursor.ReadString(value)) {
           return false;
@@ -235,12 +286,23 @@ bool ParseOrdinaryInteractionRequestV1(
           case 9:
             parsed.expected_connection_generation = value;
             break;
+          case 10:
+          case 11:
+            if (value == 0 || value >= kInvalidCharacterId) {
+              return false;
+            }
+            if (index == 10) {
+              parsed.child_full_id = static_cast<std::uint32_t>(value);
+            } else {
+              parsed.guardian_full_id = static_cast<std::uint32_t>(value);
+            }
+            break;
           default:
             return false;
         }
       }
     }
-    if (seen != 0x03ffU || !cursor.Consume('}') || !cursor.AtEnd() ||
+    if ((seen & 0x03ffU) != 0x03ffU || !cursor.AtEnd() ||
         !OrdinaryInteractionRequestValidV1(parsed)) {
       return false;
     }

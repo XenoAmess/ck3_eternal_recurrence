@@ -177,13 +177,55 @@ def _validate_education_option_rows(value: dict, interaction_key: str, context_s
     # Legacy counts were sampled earlier. Do not join them to this later bank.
 
 
+def _validate_education_request_materialization(value: dict, interaction_key: str, context_status: str) -> None:
+    if value["exact_build"] != CK3_12004.game_version or interaction_key != "educate_child_interaction":
+        raise ValueError("education request materialization requires the actual .4 education context")
+    leaf = value["education_request_materialization"]
+    fields = {"status", "child_full_id", "guardian_full_id", "requested_option_keys",
+              "pair_matches", "option_keys_match", "unavailable_reason"}
+    if not isinstance(leaf, dict) or set(leaf) != fields or leaf["status"] not in {"available", "unavailable"}:
+        raise ValueError("education request materialization is not closed")
+    has_pair = leaf["child_full_id"] is not None
+    if has_pair != (leaf["guardian_full_id"] is not None):
+        raise ValueError("education request materialization requires the complete pair")
+    if has_pair:
+        validate_recipient_id(leaf["child_full_id"])
+        validate_recipient_id(leaf["guardian_full_id"])
+    keys = leaf["requested_option_keys"]
+    if keys is not None:
+        if not isinstance(keys, list):
+            raise ValueError("education requested option keys require the original list")
+        for key in keys:
+            validate_interaction_key(key)
+    for field, supplied in (("pair_matches", has_pair), ("option_keys_match", keys is not None)):
+        if not supplied:
+            _exact(leaf, field, None)
+        elif leaf[field] is not None and type(leaf[field]) is not bool:
+            raise ValueError("education request match observation is malformed")
+    if leaf["status"] == "unavailable":
+        _reason(leaf["unavailable_reason"], "education request unavailable_reason")
+        return
+    rows = value.get("education_option_rows")
+    if (context_status != "available" or not isinstance(rows, dict) or rows["status"] != "available"
+            or leaf["unavailable_reason"] is not None):
+        raise ValueError("available education request lacks the owned post-validate context")
+    if has_pair:
+        _exact(leaf, "pair_matches", True)
+        _exact(value["effective_roles"], "secondary_recipient_id", leaf["child_full_id"])
+        _exact(value["effective_roles"], "secondary_actor_id", leaf["guardian_full_id"])
+    if keys is not None:
+        _exact(leaf, "option_keys_match", True)
+    # Actual option matching belongs to the owned native context. Nullable
+    # canonical projections, duplicate rows and earlier counts stay independent.
+
+
 def normalize_context_payload(raw: object, binding: dict, interaction_key: str, recipient_id: int) -> dict:
     validate_interaction_key(interaction_key)
     validate_recipient_id(recipient_id)
     status = raw.get("status") if isinstance(raw, dict) else None
     if status not in {"available", "unavailable"}:
         raise ValueError("ordinary context status is malformed")
-    keys = QUERY_KEYS | {"education_option_rows"} if "education_option_rows" in raw else QUERY_KEYS
+    keys = QUERY_KEYS | ({"education_option_rows", "education_request_materialization"} & set(raw))
     value = _common(raw, keys, binding, interaction_key, recipient_id, QUERY_SCHEMA,
                     "native_current_ordinary_interaction_context_1.20.0.3", True, status)
     if "education_option_rows" in value:
@@ -199,6 +241,8 @@ def normalize_context_payload(raw: object, binding: dict, interaction_key: str, 
     roles = value["effective_roles"]
     if not isinstance(roles, dict) or set(roles) != set(ROLES):
         raise ValueError("ordinary context role inventory is malformed")
+    if "education_request_materialization" in value:
+        _validate_education_request_materialization(value, interaction_key, status)
     if status == "unavailable":
         if any(value[key] is not None for key in TERM_KEYS) or any(roles[key] is not None for key in ROLES):
             raise ValueError("unavailable ordinary terms must be an all-null group")
@@ -233,6 +277,11 @@ def normalize_context_payload(raw: object, binding: dict, interaction_key: str, 
     _integer(value["outer_answer_status"], 0, 2, "outer_answer_status")
     ordinary = (value["declared_option_count"] == 0 and value["selected_option_count"] == 0
                 and value["special_payload_present"] is False)
+    materialization = value.get("education_request_materialization")
+    if materialization is not None:
+        requested = any(materialization[key] is not None for key in (
+            "child_full_id", "guardian_full_id", "requested_option_keys"))
+        ordinary = ordinary and (not requested or materialization["status"] == "available")
     _exact(value, "ordinary_context_supported", ordinary)
     if ordinary:
         if value["unsupported_reason"] is not None:

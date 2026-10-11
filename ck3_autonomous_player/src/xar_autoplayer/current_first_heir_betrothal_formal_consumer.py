@@ -212,7 +212,8 @@ def plan_current_first_heir_betrothal_fulfillment_private(
                if campaign_root_result is not None else {}))
     if (relation.get("status") == "available"
             and relation.get("betrothed_character_id") is None):
-        return planned
+        return {**planned, "plan": {**plan,
+            "current_betrothal_relationship": deepcopy(relation)}}
     choice = evaluate_current_betrothal_fulfillment(relation, snapshot)
     fields = {"current_betrothal_relationship": deepcopy(relation),
               "current_betrothal_choice": choice,
