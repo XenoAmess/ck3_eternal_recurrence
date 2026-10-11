@@ -101,8 +101,8 @@
       "sha256": "d4995251d275b8c956f9da48731a9a5a92066a29a0a9e1054c6daa657f800b7f"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt": {
-      "bytes": 20593,
-      "sha256": "9d59d37136125367b5219988a65e33391ad8b9d1f40e732fa5c53072f62544da"
+      "bytes": 23066,
+      "sha256": "c72ea38124468577802d81a4a791d183a7c92cf78bd8916d9a373ee819e42c7d"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_reward_observer_wrappers.txt": {
       "bytes": 6321,
@@ -113,8 +113,8 @@
       "sha256": "3f8d05dad090418eba686d2e1c8821763ffc7a69936164ea9eb61dcef195a0c7"
     },
     "xqol_followup_cases/pam_positive/fixture/events/zqp_pam_events.txt": {
-      "bytes": 222,
-      "sha256": "dd40084261bf225244ff7db4d8fe749065a054e63a813495c0b5c01c328e26e7"
+      "bytes": 426,
+      "sha256": "aca333d018cb82108547c7f18ebb956fa7402ed7b14a85e292e12b9c434220b4"
     },
     "xqol_followup_cases/pam_positive/frontend-rules-plan.json": {
       "bytes": 179,

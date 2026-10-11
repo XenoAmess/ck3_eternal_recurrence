@@ -60,6 +60,18 @@ zqp_setup_positive_effect = {
  debug_log = "ZQPSLOT120: PHASE after_controlled_slot_guard"
  zqp_diagnose_controlled_slot_state77_effect = yes
  # ZQP77_SLOT_DIAGNOSTIC_ONLY_END after_controlled_slot_guard
+ # ZQP78_BOUNDARY_CANDIDATE_BEGIN deferred_boundary
+ # One isolated scheduling candidate, not a proven slot fix. No days or retry.
+ # Stock game_start uses delayed hidden events; paused D0 execution is unproven.
+ debug_log = "ZQPSLOT120: BOUNDARY queued_once_after_original_slot_prior"
+ trigger_event = { id = zqp120.3 delayed = yes }
+}
+
+zqp_complete_positive_setup_after_slot_boundary_effect = {
+ # Original saved scopes must survive; diagnostics do not recreate or mutate them.
+ debug_log = "ZQPSLOT120: BOUNDARY entered_hidden_delayed_continuation"
+ zqp_diagnose_slot_boundary_state78_effect = yes
+ # ZQP78_BOUNDARY_CANDIDATE_END deferred_boundary
  # ZQP63_OBSERVE_ONLY_BEGIN after_original_piety_branch_immediately_before_dual_setter_guard
  debug_log = "ZQP120: SETUP63 BEGIN after_original_piety_branch_immediately_before_dual_setter_guard"
  zqp_observe_personal_setup_state63_effect = yes
@@ -337,3 +349,26 @@ zqp_diagnose_controlled_slot_state77_effect = {
  else = { debug_log = "ZQPSLOT120: free_lt0 FALSE" }
 }
 # ZQP77_SLOT_DIAGNOSTIC_ONLY_END read_only_helper
+# ZQP78_BOUNDARY_DIAGNOSTIC_ONLY_BEGIN read_only_helper
+zqp_diagnose_slot_boundary_state78_effect = {
+ if = { limit = { is_ai = no this = character:han_8052 } debug_log = "ZQPSLOT120: BOUNDARY current_named_player TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY current_named_player FALSE" }
+ if = { limit = { this = scope:actor } debug_log = "ZQPSLOT120: BOUNDARY saved_actor_matches_current TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY saved_actor_matches_current FALSE" }
+ if = { limit = { this = scope:puppet_or_actor } debug_log = "ZQPSLOT120: BOUNDARY puppet_or_actor_matches_current TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY puppet_or_actor_matches_current FALSE" }
+ if = { limit = { this = scope:xqol_startup_actor } debug_log = "ZQPSLOT120: BOUNDARY startup_actor_matches_current TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY startup_actor_matches_current FALSE" }
+ if = { limit = { piety_level = 4 } debug_log = "ZQPSLOT120: BOUNDARY piety_eq4 TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY piety_eq4 FALSE" }
+ if = { limit = { any_personal_tenet = { always = yes } } debug_log = "ZQPSLOT120: BOUNDARY owned_any TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY owned_any FALSE" }
+ zqp_diagnose_controlled_slot_state77_effect = yes
+ if = { limit = { free_personal_tenet_slots = 2 } debug_log = "ZQPSLOT120: BOUNDARY free_eq2 TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY free_eq2 FALSE" }
+ if = { limit = { free_personal_tenet_slots = 3 } debug_log = "ZQPSLOT120: BOUNDARY free_eq3 TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY free_eq3 FALSE" }
+ if = { limit = { free_personal_tenet_slots >= 4 } debug_log = "ZQPSLOT120: BOUNDARY free_ge4 TRUE" }
+ else = { debug_log = "ZQPSLOT120: BOUNDARY free_ge4 FALSE" }
+}
+# ZQP78_BOUNDARY_DIAGNOSTIC_ONLY_END read_only_helper

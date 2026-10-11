@@ -60,3 +60,11 @@ allocator本次未由221包裹，初始stdout/operation没有磁盘原件，不�
 从prepare到实际finish为576.952437秒，小于600秒；16MiB独立包已真实closed并整额计入保守usage一次。其标准237 closed为3,259 B / SHA-256 `2f80629a10d03f080f1bf97ceff151d586c263ec97d0a778d38264b907703d36`。物理释放量不等于整卷free变化，不重复记回收信用。
 
 R78闭场后的fresh容量仍低于其他GUI场次原2GiB准入要求30,071,062,528 B。R72–R76五根新方案尚未执行，20批方案因600秒风险被拒绝准入；后继缩为R72/R73两根、最多8批/8,000文件，须先完成源码审阅、真实闭场绑定、新预约及精确metadata资格审阅，不能预记释放量。其他实机现场建议顺序为RMTM core、QOL admin、RMTM threshold、QOL merit、QOL ransom，PAM边界候选保留并行代码诊断。QOL仍2/6、RMTM仍0/2，两项均未发布；发布时刻继续受全部正式门禁约束。
+
+## 16:05 CST：单次 delayed 边界候选，仅静态通过
+
+只在验收fixture中将原slot设置后的整个后半段拆到 `zqp120.3` hidden continuation，通过一次 `delayed = yes` 触发；不重复初始化，不推进日期，不修改产品业务文件。新增日志只读检查current actor、此前saved scopes、piety、modifier及slots。sample/events/contract三件的tested inverse均与8384e6f3e基线Git原件逐字节相等；原35步/12自然日/readiness400、双槽双setter、奖励、support allowlist及required/forbidden均保持。
+
+独立代码审阅仅授静态候选通过；执行者及root分别实际完成原11项与新4项回归，exit0，diff-check0。新sample为23,066 B / SHA-256 `c72ea38124468577802d81a4a791d183a7c92cf78bd8916d9a373ee819e42c7d`，events为426 B / SHA-256 `aca333d018cb82108547c7f18ebb956fa7402ed7b14a85e292e12b9c434220b4`。外置静态回执 `root-parallel-continue-236/pam-delayed-boundary-candidate-static-01.json`，6,749 B / SHA-256 `f6d5e18ade5361f0175c4c501bd930b2d69d427494bcdfdd055de9bbbc8581c9`。
+
+尚未新prepare、分配或启动CK3。paused D0是否调度及真实scope传播均未证明；若不进入、仍单槽、跨日或scope不符，保留RED，不延长预算或连续试槽位。原Source19、R77/R78及所有旧profile/prepared不变。先让RMTM core取得现场窗口，不能把本候选或静态测试计入业务矩阵/发布完成。

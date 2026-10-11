@@ -24,6 +24,8 @@ ck3_mod_acceptance_cases.__path__.insert(0,str(HERE/'ck3_mod_acceptance_cases'))
 from ck3_mod_acceptance_cases import xqol_followup_common as common
 from ck3_mod_acceptance_cases import xqol_government_adapter as government
 from ck3_mod_acceptance_cases import xqol_pam_adapter as pam
+from test_ck3_mod_acceptance_xqol_pam_boundary import (
+    restore_pre_boundary_sample, restore_pre_boundary_contract)
 
 def config(name):
     return json.loads((HERE/'ck3_mod_acceptance_cases'/('xqol_'+name+'.json')).read_bytes())
@@ -120,6 +122,7 @@ class OriginalCases(unittest.TestCase):
         from xqol_vanilla_contract import block
         ctx=context('pam_positive')
         raw=(common.base(ctx)/'fixture/common/scripted_effects/zqp_pam_sample_effects.txt').read_bytes()
+        raw=restore_pre_boundary_sample(raw)
         pattern=rb'(?ms)^ *# ZQP77_SLOT_DIAGNOSTIC_ONLY_BEGIN [^\r\n]+\r?\n.*?^ *# ZQP77_SLOT_DIAGNOSTIC_ONLY_END [^\r\n]+\r?\n'
         inverse,count=re.subn(pattern,b'',raw)
         self.assertEqual(count,4)
@@ -143,7 +146,7 @@ class OriginalCases(unittest.TestCase):
     def test_pam_positive_slot_diagnostic_pin_is_only_contract_change(self):
         ctx=context('pam_positive')
         common.validate_contract(ctx)
-        original=copy.deepcopy(ctx['case_contract'])
+        original=restore_pre_boundary_contract(ctx['case_contract'])
         key='xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt'
         original['support_files'][key]={'bytes':18737,
             'sha256':'8d72393e24aafc71c9860fcb7c2b7ff431ef7e312f7af19a58930c1d7cd5ab3a'}

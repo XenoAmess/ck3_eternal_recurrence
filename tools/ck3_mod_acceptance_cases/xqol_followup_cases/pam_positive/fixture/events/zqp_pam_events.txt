@@ -1,3 +1,6 @@
 ﻿namespace = zqp120
 zqp120.1 = { type = character_event hidden = yes immediate = { zqp_initialize_effect = yes } }
 zqp120.2 = { type = character_event hidden = yes immediate = { zqp_observe_actual_reply_effect = yes } }
+# ZQP78_BOUNDARY_CANDIDATE_EVENT_BEGIN
+zqp120.3 = { type = character_event hidden = yes immediate = { zqp_complete_positive_setup_after_slot_boundary_effect = yes } }
+# ZQP78_BOUNDARY_CANDIDATE_EVENT_END
