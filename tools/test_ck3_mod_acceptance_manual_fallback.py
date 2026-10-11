@@ -54,7 +54,8 @@ class ManualFallbackTests(unittest.TestCase):
                 self.module.write_once(root/'normal-quit-root-result.json',reviewed);clock.review_written=True
         fake_time=SimpleNamespace(time=lambda:clock.now,sleep=sleep)
         def exit_code(_handle,pointer):ctypes.cast(pointer,ctypes.POINTER(ctypes.c_uint32)).contents.value=0;return 1
-        c._kernel=SimpleNamespace(WaitForSingleObject=lambda *_:0,GetExitCodeProcess=exit_code)
+        waits=iter((258,))  # Alive at Quit entry; original GUI exit is observed afterwards.
+        c._kernel=SimpleNamespace(WaitForSingleObject=lambda *_:next(waits,0),GetExitCodeProcess=exit_code)
         pipe=r'\\.\pipe\SYNTHETIC-NO-NATIVE-PROCESS'
         error='RuntimeError: SYNTHETIC original startup TEST FAIL'
         report={'fixture_only':False,'error':error,'pipe':pipe,'phase':'hold','managed_session_done':True,
