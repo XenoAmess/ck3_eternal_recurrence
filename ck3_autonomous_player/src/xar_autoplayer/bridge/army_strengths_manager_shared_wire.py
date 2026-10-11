@@ -22,7 +22,13 @@ FIELD_NAMES = (
     "current_army_combat_roles_phase_inputs_v1",
     "current_army_flag31_inputs_v1",
 )
-_FIELD_SET = frozenset(FIELD_NAMES)
+_ADDITIONAL_FIELD_NAMES = (
+    "current_army_condition30_inputs_v1",
+    "current_army_flag20_inputs_v1",
+    "current_army_flag21_inputs_v1",
+    "current_pre_date_character_prefix_inputs_v1",
+)
+_FIELD_SET = frozenset(FIELD_NAMES + _ADDITIONAL_FIELD_NAMES)
 _BUNDLE_KEYS = frozenset({"schema_version", "army_ids", "fields"})
 
 
@@ -57,6 +63,16 @@ def pack_army_strengths_manager_inputs(
             for name in FIELD_NAMES
         ):
             return payload
+    # Preserve the original six-family admission. Later equal complete fields
+    # join independently; missing or divergent values retain their inline shape.
+    for name in _ADDITIONAL_FIELD_NAMES:
+        if (
+            name in first
+            and (first[name] is None or isinstance(first[name], dict))
+            and all(name in row and row[name] == first[name] for row in rows[1:])
+        ):
+            present.append(name)
+    shared_names = frozenset(present)
     try:
         army_ids = public_cunit_ids(
             [row.get("army_id") for row in rows], "army_strengths.army_ids",
@@ -67,7 +83,7 @@ def pack_army_strengths_manager_inputs(
     return {
         **payload,
         "army_strengths": [
-            {name: value for name, value in row.items() if name not in _FIELD_SET}
+            {name: value for name, value in row.items() if name not in shared_names}
             for row in rows
         ],
         SHARED_KEY: {
@@ -114,7 +130,7 @@ def expand_army_strengths_manager_inputs(
         or not set(fields) <= _FIELD_SET
         or any(value is not None and not isinstance(value, dict) for value in fields.values())
     ):
-        raise ValueError(f"{SHARED_KEY}.fields must be a nonempty subset of the six object-or-null families")
+        raise ValueError(f"{SHARED_KEY}.fields must be a nonempty subset of the supported object-or-null families")
     if any(name in row for row in rows for name in fields):
         raise ValueError(f"{SHARED_KEY} fields collide with inline Army fields")
     result = {

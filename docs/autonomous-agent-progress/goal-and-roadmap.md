@@ -6,13 +6,17 @@ The first loader read timed out without a full snapshot; same-PID continuation
 has obtained one full frame with13/13 restored bindings GREEN. After one
 private prisoner cached-read failure, a fresh heartbeat proves the full reader
 and cache available again. New740 ordinary work actually advanced one day;
-new750 daily SAVE continuation is running. Saved cumulative remains6077 until
-an actual checkpoint returns. The original failed request was not replayed.
+new750 daily SAVE continuation is running. Latest actual saved checkpoint is
+6079/H10153/raw53290224, two saved days beyond the recovery baseline.
+The original failed request was not replayed.
 Frozen Native84/fullSDK84 still use594979b0. Successor SDK85/source0503b3f2/all5
 are ready. The actual64-job production build plus one corrected TU rebuild
 completed: Runtime597 archive and Bridge DLL link GREEN. The final917-object
 binary has individual mixed source pins, including the one e66bf30a corrected TU.
 No successor binary is deployed; M6/M7 completion is not credited.
+Four additional complete equal ArmyManager MCP fields are source-connected for
+sharing; current raw evidence shows a2,931,649-byte duplicate. Actual repacked
+bytes and latency are unmeasured, and the active SDK is unchanged.
 Test suites, fixtures and replay remain cancelled. See [actual Oct12 progress](daily/2026-10-12.md).
 
 **Historical owner-stop instruction (superseded for CK3 use):**

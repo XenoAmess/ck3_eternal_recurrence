@@ -42,7 +42,7 @@ members:
 | --- | --- |
 | `schema_version` | Integer1. |
 | `army_ids` | The full ordered public Army IDs of all rows in this result. |
-| `fields` | A nonempty subset of the six original field names, with their complete original values. |
+| `fields` | A nonempty subset of the six original field names and the four later MCP fields listed below, with their complete original values. |
 
 The six names are:
 
@@ -178,3 +178,62 @@ changes.
 At sealing time Root's SDK237 hot02 check still used the same live Native60
 game instance. Native63 deployment, the ordinary Army `auto_turn` observation
 and its real byte/latency measurements remain the next verification boundary.
+
+
+## 2026-10-12 actual750: four additional equal MCP fields
+
+Source-only extension; the active Native84 / frozen SDK
+`594979b0b3d4c5a395639f30b9d5d864b8a31f6d` session remains unchanged.
+The actual available ordinary response is retained at
+[750 Army auto-turn](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/managed/operator/same-pid-cold-recovery01/gameplay-responses/750-r0100-native84-five-daily-save-after-recovery-chunk02-000001-normal.json).
+Its completed tool interval is 2026-10-11T17:55:12.183023Z to
+17:58:05.105098Z, or 172.922075 seconds. This does not attribute that duration
+to serialization, normalization or any individual native array.
+
+The 64,414,919-byte file was inspected under a 128 MiB read limit without
+copying it. It contains one 1,109-character text summary and structured
+content; neither its plan nor result exports full Driver history or a full
+Snapshot. The Army result has query sequence 2 and two ordered Army IDs:
+`218104048`, `134218098`. Its compact result is 30,170,359 bytes:
+the two inline Army rows occupy 11,944,496 bytes and the existing six-family
+shared bundle occupies 18,156,412 bytes. The plan is 50,801 compact bytes.
+The larger file includes its pretty JSON formatting.
+
+Complete dict equality, including field presence, was observed for all four
+additional families across both actual Army rows:
+
+| Additional field | Complete equality | Compact bytes in one copy |
+| --- | --- | ---: |
+| `current_army_condition30_inputs_v1` | true | 649,490 |
+| `current_army_flag20_inputs_v1` | true | 405,146 |
+| `current_army_flag21_inputs_v1` | true | 846,089 |
+| `current_pre_date_character_prefix_inputs_v1` | true | 1,030,924 |
+| Total | | 2,931,649 |
+
+Each complete family contains the 455-entry original roster and 455 ordered
+occurrences. The retained six-family bundle includes 524 pending-table
+records and 12 combat-manager roster references. The first Army also carries
+one `native_gathering_due_natural_stage_12004` record whose complete value is
+5,232,765 compact bytes; this distinct input remains inline and unchanged.
+
+The Python MCP packer preserves the original six-family admission and adds
+each later field only when every row contains its complete equal object or
+null value. Missing, unequal or unsupported additional values stay inline;
+they do not disable the original six-family bundle. Only fields selected for
+sharing are removed from inline rows. The same expansion helper accepts the
+four extra names and restores every original value before independent
+per-Army normalizers or external consumers use the result. Absence, null,
+ordered Army IDs, occurrences and full nested values remain distinct.
+The bundle schema version remains 1.
+
+The complete equal values allow this MCP body to omit one 2,931,649-byte
+compact duplicate when the extension is deployed, apart from small bundle-key
+overhead. Repacked runtime bytes and latency remain unmeasured. Native
+serialization, native DTOs, the world, war policy and
+Driver history remain unchanged. The C++ serializer continues to share its
+original six families; this Python-only extension requires no DLL rebuild.
+The existing direct Army, execute-step and auto-turn result builders already
+call this common helper. The source inspection and actual-field equality
+above are the new evidence; no tests, replay, registry qualification, project
+imports or RPC were run for this extension. Deployment and subsequent actual
+response measurements remain with Root.
