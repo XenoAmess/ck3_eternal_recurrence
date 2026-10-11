@@ -114,3 +114,13 @@ PAM新工作包只复用正式27文件与plain输入、生成未消费新state�
 原正常GUI退出路线完成，实际保留HANDLE的PID3412 / creation1791722213.6755033已signaled/OS0；`normal_close_qualified=false`，failure lifecycle proof成立，不能把失败退出写成正常业务闭场通过。observer按精确argv/PID/creation行政停止；原allocator和keeper实际退出0；fresh CAS8795为done/resources[]。空间预约仍须独立封口，CAS释放不是空间释放。共享readiness交接修复的[官方CI 38138708034](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38138708034)已completed/success，仍不计产品业务验收。下一实机优先RMTM core，PAM两阶段初始化只留候选研究；业务进度QOL 2/6、RMTM 0/2，两项均未发布，361不在范围。
 
 20:56 CST追加实际空间封口：post-close与storage-close各一次exit0，[标准52 closed](C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/pam-positive-a183-source19-delayed-default2gib-01-reservation-52-closed.json) 7,826 B / `b05e930f385d0d28f27d229a3b587720862f48ab6d78cd33fbcb227f8e0d3f33`。closure3全部TRUE，原业务三布尔仍FALSE；三根native保守新增386,867,800 B，usage37,503,536,856 B，峰值未超过2GiB，unspent0。fresh free30,038,048,768 B，比下场默认门槛30,071,062,528 B少33,013,760 B；不降低任何参数，先精确增量回收。后续可先准入独立4MiB输入准备，不能把其小预约当作2GiB实机准入。
+
+## 21:42 CST：两阶段启动候选，仅静态回归通过
+
+R79的delayed路线不再用于新场：原先设置faith/rite/piety/槽位modifier的前半段移至`on_game_start`一次早期初始化，`on_game_start_after_lobby`同步执行原后半段；不再依赖paused D0的hidden delayed调度。早期使用私有保存scope，晚期在尝试标记后仅执行一次；早期角色、原faith/rite/piety、无已有个人教义或双槽条件任一不成立即保留D0 FAIL，不补设、不重试、不推进日期。跨hook是否刷新槽位缓存及早期角色是否可用仍须实机证明。
+
+候选仅改hook/sample/两件support pin/边界测试共4文件。实际移动代码的逆向恢复仍与原20,593 B sample及SHA `9d59d37136125367b5219988a65e33391ad8b9d1f40e732fa5c53072f62544da`相等；原后半段4,084 B与queue及后续15,324 B逐字节不变。6项startup ACK、16项required、forbidden、35步、12自然日、400秒readiness及其余原预算均保持。
+
+[静态候选回执](C:/workspace/ck3-upgrade-20261010/pam-two-phase-candidate-controls-20261011-01/PAM-TWO-PHASE-CANDIDATE-STATIC-01.json) 3,617 B / SHA `eadb27aa5c9e042647441fcf511efb70bddc9c114b6ed51506bf5a11cef71bdb`。首次Windows命令引用错误在测试前SyntaxError退出1、0 tests，原回执保留；纠正命令后的唯一实际回归为4项boundary加11项followups，共15 tests/0.070秒，原221 wait exit0（1,041 B / `6f459df3f58d1c90ea70ee2714e4451764a8b68569ee2c312d6b622eef5db73a`），diff-check0。root已全文审阅实际diff及测试stderr，未重复运行测试。
+
+本候选未prepare、build、allocate或启动游戏；Source19及RMTM冻结输入未动。不能将静态通过写为PAM已修复，业务计数仍QOL 2/6、RMTM 0/2；下一实机仍优先RMTM core。

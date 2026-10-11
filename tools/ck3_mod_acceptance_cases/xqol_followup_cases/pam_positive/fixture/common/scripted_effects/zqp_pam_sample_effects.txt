@@ -26,11 +26,22 @@ zqp_initialize_effect = {
  }
 }
 
-zqp_setup_positive_effect = {
+# ZQP80_EARLY_PRIOR_BEGIN
+# Only the named historical character is configured here; no player claim.
+# Early actor availability and cross-hook slot-cache refresh remain unproven.
+zqp_prepare_positive_prior_early_effect = {
+ if = {
+  limit = {
+   is_alive = yes has_title = title:h_china has_government = celestial_government is_independent_ruler = yes
+   NOT = { has_character_flag = zqp_positive_prior_initialized }
+  }
+  add_character_flag = zqp_positive_prior_initialized
+  save_scope_as = zqp_early_song
+# ZQP80_MOVED_ORIGINAL_PRIOR_BEGIN
  # Engine setters use real faith, rite and tenet scopes. Recheck actual predicates.
  set_character_faith = faith:nestorian
  set_character_rite = rite:nestorian
- every_personal_tenet = { scope:actor = { remove_personal_tenet = prev } }
+ every_personal_tenet = { scope:zqp_early_song = { remove_personal_tenet = prev } }
  # ZQP63_OBSERVE_ONLY_BEGIN after_original_remove_all
  debug_log = "ZQP120: SETUP63 BEGIN after_original_remove_all"
  zqp_observe_personal_setup_state63_effect = yes
@@ -60,18 +71,39 @@ zqp_setup_positive_effect = {
  debug_log = "ZQPSLOT120: PHASE after_controlled_slot_guard"
  zqp_diagnose_controlled_slot_state77_effect = yes
  # ZQP77_SLOT_DIAGNOSTIC_ONLY_END after_controlled_slot_guard
- # ZQP78_BOUNDARY_CANDIDATE_BEGIN deferred_boundary
- # One isolated scheduling candidate, not a proven slot fix. No days or retry.
- # Stock game_start uses delayed hidden events; paused D0 execution is unproven.
- debug_log = "ZQPSLOT120: BOUNDARY queued_once_after_original_slot_prior"
- trigger_event = { id = zqp120.3 delayed = yes }
+# ZQP80_MOVED_ORIGINAL_PRIOR_END
+ }
 }
+# ZQP80_EARLY_PRIOR_END
 
+# ZQP80_LATE_BRIDGE_BEGIN
+zqp_setup_positive_effect = {
+ if = {
+  limit = { NOT = { has_character_flag = zqp_positive_suffix_attempted } }
+  add_character_flag = zqp_positive_suffix_attempted
+  debug_log = "ZQPSLOT120: BOUNDARY after_lobby_original_prior_readback_D0"
+  zqp_observe_personal_setup_state63_effect = yes
+  zqp_diagnose_slot_boundary_state78_effect = yes
+  if = {
+   limit = {
+    has_character_flag = zqp_positive_prior_initialized
+    faith = faith:nestorian rite = rite:nestorian piety_level >= 4
+    NOT = { any_personal_tenet = { always = yes } }
+    has_pam_dlc_trigger = yes free_personal_tenet_slots >= 2
+   }
+   zqp_complete_positive_setup_after_slot_boundary_effect = yes
+  }
+  else = { debug_log = "ZQP120: TEST FAIL early_prior_or_two_slots_D0" }
+ }
+}
+# ZQP80_LATE_BRIDGE_END
+
+# ZQP80_SYNCHRONOUS_SUFFIX_BEGIN
 zqp_complete_positive_setup_after_slot_boundary_effect = {
- # Original saved scopes must survive; diagnostics do not recreate or mutate them.
- debug_log = "ZQPSLOT120: BOUNDARY entered_hidden_delayed_continuation"
+ # Actual player scopes are established in the same after-lobby call stack.
+ debug_log = "ZQPSLOT120: BOUNDARY entered_after_lobby_synchronous_continuation"
  zqp_diagnose_slot_boundary_state78_effect = yes
- # ZQP78_BOUNDARY_CANDIDATE_END deferred_boundary
+# ZQP80_MOVED_ORIGINAL_SUFFIX_BEGIN
  # ZQP63_OBSERVE_ONLY_BEGIN after_original_piety_branch_immediately_before_dual_setter_guard
  debug_log = "ZQP120: SETUP63 BEGIN after_original_piety_branch_immediately_before_dual_setter_guard"
  zqp_observe_personal_setup_state63_effect = yes
@@ -152,6 +184,7 @@ zqp_complete_positive_setup_after_slot_boundary_effect = {
  }
  else = { debug_log = "ZQP120: TEST FAIL no_eligible_landed_vassal_sample" }
 }
+# ZQP80_SYNCHRONOUS_SUFFIX_END
 
 zqp_seed_one_async_reply_effect = {
  # This explicitly bypasses the bulk selection and formal draft50 UI.

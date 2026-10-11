@@ -97,12 +97,12 @@
       "sha256": "b249ea7ca187d852bdc82ec201fb775b8a087caa66d9f855613ae5ce833fa2de"
     },
     "xqol_followup_cases/pam_positive/fixture/common/on_action/zqp_startup_on_actions.txt": {
-      "bytes": 205,
-      "sha256": "d4995251d275b8c956f9da48731a9a5a92066a29a0a9e1054c6daa657f800b7f"
+      "bytes": 365,
+      "sha256": "4d46c80523104c298ea2656d35e85e3162afa8ae9222c5a261193b1854f8ce8f"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt": {
-      "bytes": 23066,
-      "sha256": "c72ea38124468577802d81a4a791d183a7c92cf78bd8916d9a373ee819e42c7d"
+      "bytes": 24167,
+      "sha256": "d9ee497cee4fb7d78bb494aa01a77aea879ed420d7646edb012027513fa9c4dc"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_reward_observer_wrappers.txt": {
       "bytes": 6321,

@@ -1,7 +1,11 @@
-﻿on_game_start_after_lobby = { on_actions = { zqp120_start } }
+﻿on_game_start = { on_actions = { zqp120_early_start } }
+zqp120_early_start = {
+ effect = { character:han_8052 = { zqp_prepare_positive_prior_early_effect = yes } }
+}
+on_game_start_after_lobby = { on_actions = { zqp120_start } }
 zqp120_start = {
  effect = {
   debug_log = "ZQP120: TEST BEGIN engine_startup"
-  random_player = { trigger_event = { id = zqp120.1 } }
+  random_player = { zqp_initialize_effect = yes }
  }
 }
