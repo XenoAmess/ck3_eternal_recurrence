@@ -346,7 +346,7 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "Original Robert29829 remains saved6077/H10120/raw53290176, natural successions0. R94 closed/full12 frozen. Native80/fullSDK80/source452 loaded in R95 and paused13/13 passed. Four construction cold re-queries and original first-heir marriage result succeeded; no newdays/SAVEs. Next current-family query returned actual during-read frame-changed RED; three native causes share one message, actual conjunct unknown. R95 SDK0/Gameforced1/exactCASempty closed. Native81/fullSDK81/source7498 actual R96 cold13 GREEN, four construction cold results applied. R96 ordinary004 actual marriage-result later-paused-frame RED; controller1/no newday/SAVE, cold route confirmed correct; actual failed conjunct unknown. R96 SDK0/Gameforced1/keeper0/CASempty closed. Failure-only Native82 FIRST5 GREEN/source adopted; build/fullSDK next. R95 during-read failed conjunct remains unknown. Five dailySAVEs, M4 one faction/vassal intervention, M6 terminal, Guardian actual observation, same-intent natural inheritance and broader ruler/seed/government qualification remain open. Robert29829 is the sole authorized entry; no generic failure or static tests are counted as live fixes.",
+      "open_blocker": "Original Robert29829 remains saved6077/H10120/raw53290176, natural successions0. R94 closed/full12 frozen. Native80/fullSDK80/source452 loaded in R95 and paused13/13 passed. Four construction cold re-queries and original first-heir marriage result succeeded; no newdays/SAVEs. Next current-family query returned actual during-read frame-changed RED; three native causes share one message, actual conjunct unknown. R95 SDK0/Gameforced1/exactCASempty closed. Native81/fullSDK81/source7498 actual R96 cold13 GREEN, four construction cold results applied. R96 ordinary004 actual marriage-result later-paused-frame RED; controller1/no newday/SAVE, cold route confirmed correct; actual failed conjunct unknown. R96 SDK0/Gameforced1/keeper0/CASempty closed. Failure-only Native82 FIRST5 GREEN/build/canonical and completeSDK82 actual ready/sourcefc62; R97 fullprepare executing, actual marriage failed conjunct still unknown. R95 during-read failed conjunct remains unknown. Five dailySAVEs, M4 one faction/vassal intervention, M6 terminal, Guardian actual observation, same-intent natural inheritance and broader ruler/seed/government qualification remain open. Robert29829 is the sole authorized entry; no generic failure or static tests are counted as live fixes.",
       "current_campaign_index": {
         "source": "Root-owned R94 saved6077 and actual closed custody",
         "source_base": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
@@ -365,7 +365,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T01:50:35.614702+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T02:05:41.681496+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -465,7 +465,22 @@
         "native82_actual_FIRST_new_cases": 5,
         "native82_actual_FIRST_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63i-r0096/root-first/ROOT-ACTUAL-FIRST-AND-ADOPTION.json",
         "native82_Game_loaded": false,
-        "sdk82_atomic_subtiming_actual_values_observed": false
+        "sdk82_atomic_subtiming_actual_values_observed": false,
+        "native82_source": "fc62d3cd705c81e66d3072faa5c99bcaa0437d49",
+        "native82_archive_source": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
+        "native82_actual_build_status": "GREEN_ONE_BRIDGE_898_RETAINED_899_UNION",
+        "native82_canonical": "D:/codex-ck3-background-spill/g2-native82-canonical01/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json",
+        "native82_dll_sha256": "c6d1410882ca34fd2e538f0abc91cdfefa14d236613c6fac54309b53b45ea4c9",
+        "sdk82_actual_full_source_file_count": 45036,
+        "sdk82_actual_source": "fc62d3cd705c81e66d3072faa5c99bcaa0437d49",
+        "sdk82_actual_bound_index": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-61b/sdk82-preparation/SDK82-BOUND-COLD-ADOPTION-INDEX.json",
+        "r97_stage": "ACTUAL_NATIVE82_COMPLETE_SDK82_READY_SOLE_FULL_PREPARE_RUNNING",
+        "r97_fullprepare_session_id": 67182,
+        "r97_saved_day_baseline": 6077,
+        "r97_original_saved_day_target": 6082,
+        "r97_new_days_credited": 0,
+        "r97_new_SAVEs_credited": 0,
+        "r97_capacity_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-10/ACTUAL-R97-BOUND-ARGV-EXISTING-RUNTIME34-CAPACITY.json"
       }
     }
   ],
