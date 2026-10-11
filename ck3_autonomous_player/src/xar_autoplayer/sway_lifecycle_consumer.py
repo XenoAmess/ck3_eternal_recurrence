@@ -83,9 +83,11 @@ def record_sway_terminal_observation(
                             if key.startswith("following_")
                             or key == "next_turn_consumed"})
     # A later purge/reuse cannot erase an independently observed retained end.
+    from .sway_end_causal_consumer_12004 import retain_sway_end_causal_terminal_12004
+
     retained = (previous if isinstance(previous, Mapping)
                 and previous.get("instance_terminal_outcome_observed") is True
-                and not terminal else observation)
+                and not terminal else retain_sway_end_causal_terminal_12004(previous, observation))
     _write(state_dir, {**ledger, "resolved": {
         **resolved, "latest_instance_observation": observation,
         "terminal_intervention": dict(retained),

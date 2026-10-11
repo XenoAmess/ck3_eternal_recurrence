@@ -157,3 +157,44 @@ actual useful terminal: R93 original134217986/gen8 stillcontinue. Evidence:
 `continuation-15m6/NEW-ACTUAL-LEDGER-REPRO.json` and `M6-ACTIONABLE-PLAN.json`
 under the current D continuation root. No old FIRST/live/native/Driver replay.
 R94 remains frozenSDK78/Native78 at664c85d9; this source is for a later SDK.
+
+
+## Consumed causal terminal survives a later ordinary status1 read
+
+Recorded 2026-10-11T05:28:06.389938+00:00, under the owner's local CK3 prohibition. The production
+record_sway_terminal_observation previously selected each new terminal row as
+terminal_intervention. A later status1 query reports cause unknown, so it replaced
+an already attributed and consumed intervention, losing causal_observation and
+resetting next_turn_consumed. The existing hidden-source causal writer and
+following-turn consumer remain the authority for the earlier observation.
+
+The two-file correction adds a pure selector beside the existing causal recorder
+and uses it at the lifecycle write. For the same original action, full instance,
+generation, actor/target and exact build, a valid previously observed completion
+cause remains unchanged when the fresh retained query independently observes
+status1 without a cause. The latest_instance_observation and returned raw query
+remain current and unknown. Previous causal proof, consumption and following
+fields retain their original provenance; no fresh end or benefit is inferred.
+
+```mermaid
+flowchart TD
+  A[Existing source-proved exact end] --> B[Recorded causal terminal]
+  B --> C[Ordinary following consumer marks consumed]
+  C --> D[File ledger reopen]
+  D --> E[Fresh same-instance retained status1 query]
+  E --> F[Latest observation retains unknown cause]
+  C --> G[Original causal proof and consumed fields retained]
+  E --> G
+```
+
+Root adopted the two production files and the permanent new regression
+tests/unit/test_sway_causal_terminal_retention_12004.py. The sole new offline
+execution passed5 tests, errors0/failures0, using complete actual production
+causal/formal/material/lifecycle modules. Synthetic source frames pass the real
+causal writer and following consumer, then a file reopen and two fresh ordinary
+lifecycle writes preserve the entire intervention. The retained unknown raw
+query stays independent. [Actual first result](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-57/background-g2-offline-20261011/executed-root01/RESULT.json).
+The repository test has only LF normalization relative to the qualified external
+fixture; executable text is equal, and passed tests were not replayed.
+No native binary build, SDK switch, Game/Steam/query/input or actual useful
+terminal occurred. M6 remains partial; original Robert remains6077/H10134.

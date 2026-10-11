@@ -13,7 +13,11 @@ is already implemented and originally qualified offline onOctober8. Current
 same-target repeat retains the former episode, admits only the recorded
 beneficial retained-end branch and passes the existing native/context gates.
 Its stale pending/blocker wording is corrected by reusing that exact evidence,
-with no new test, Game action or terminal credit. M4complete/G2 6/8,
+with no new test, Game action or terminal credit. Separately, the
+[causal terminal continuity fix](native71-sway-end-causal-join-12004.md#consumed-causal-terminal-survives-a-later-ordinary-status1-read)
+passed5 new offline tests: prior attributed/consumed proof survives a later
+same-instance status1 query while its latest cause remains unknown.
+[Actual qualification](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-57/background-g2-offline-20261011/executed-root01/RESULT.json). M4complete/G2 6/8,
 M6partial/M7incomplete/natural0, saved6077/H10134 remain the retained boundary.
 
 ## 2026-10-09: Restored original campaign observes current native state

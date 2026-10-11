@@ -5,8 +5,58 @@ from __future__ import annotations
 from collections.abc import Mapping
 from pathlib import Path
 
-from .bridge.sway_completion_causal_private_12004 import consume_sway_end_causal_12004
+from .bridge.sway_completion_causal_private_12004 import COMPLETE_BRANCH, consume_sway_end_causal_12004
 from .bridge.version_identity import CK3_12004, require_exact_native_build
+
+
+def retain_sway_end_causal_terminal_12004(
+    previous: object, observation: Mapping[str, object],
+) -> dict[str, object]:
+    """Keep an admitted historical cause beside an honest later status1 read."""
+    current = dict(observation)
+    if (not isinstance(previous, Mapping)
+            or previous.get("instance_terminal_outcome_observed") is not True
+            or previous.get("terminal_cause_observed") is not True
+            or observation.get("instance_terminal_outcome_observed") is not True
+            or observation.get("terminal_cause_observed") is not False):
+        return current
+    cause = previous.get("causal_observation")
+    native = observation.get("native_observation")
+    identity = ("action_id", "actor_character_id", "target_character_id",
+                "scheme_instance_id", "scheme_instance_generation",
+                "exact_ck3_build", "exe_sha256")
+    if (not isinstance(cause, Mapping) or not isinstance(native, Mapping)
+            or any(key not in previous or previous[key] != observation.get(key)
+                   or cause.get(key) != previous[key] for key in identity)
+            or cause.get("schema") != "xar.ck3.sway-end-causal-observation.12004.v1"
+            or previous.get("terminal_cause") != COMPLETE_BRANCH
+            or cause.get("cause_key") != COMPLETE_BRANCH
+            or cause.get("terminal_cause_observed") is not True
+            or cause.get("native_terminal_transition_observed") is not True
+            or type(cause.get("native_status_raw")) is not int
+            or cause["native_status_raw"] != 1):
+        return current
+    try:
+        if require_exact_native_build(
+                observation.get("exact_ck3_build"), observation.get("exe_sha256")) != CK3_12004:
+            return current
+    except ValueError:
+        return current
+    if (native.get("schema") != "xar.ck3.sway_completion.v1"
+            or native.get("available") is not True
+            or any(native.get(key) != observation.get(key) for key in identity[1:])
+            or any(native.get(key) is not True for key in (
+                "instance_source_observed", "instance_present", "exact_instance_join_ready",
+                "native_status_observed", "native_terminal_state_observed"))
+            or native.get("storage_slot_reused") is not False
+            or type(native.get("native_status_raw")) is not int
+            or native["native_status_raw"] != 1
+            or type(native.get("native_owner_raw")) is not int
+            or native["native_owner_raw"] not in (observation["actor_character_id"], 0xFFFFFFFF)):
+        return current
+    # This retains a previously validated intervention. It never attributes the
+    # fresh read, replays native evidence, or resets consumption after a cold load.
+    return dict(previous)
 
 
 def record_sway_end_causal_observation(
