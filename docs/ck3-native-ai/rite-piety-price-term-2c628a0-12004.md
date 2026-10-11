@@ -1,0 +1,13 @@
+# Rite term consumed by the final piety-price calculation
+
+Actual CK3 1.20.0.4 `2C62CC0` calls `2C628A0` at `2C62D04` with the original current Rite and actor, mode zero and null detail. It consumes the returned first signed Q64 as the Rite term in the final create/reform piety-price arithmetic. The numeric reader is `ReadRitePietyPriceTerm2C628A012004` in `rite_piety_price_term_2c628a0_readonly_12004.hpp`, using the existing `PietyPriceNumericAccess12004` callback. It carries the caller's unmodified revision as metadata.
+
+The complete 1054-byte parent source is held in the 03 offline packet's `ACTUAL-2C628A0-SOURCE.json` (SHA-256 `5171a4ed8ab327727901a638247d156de39fc6727ae47e92f21a8963ff502df7`). Existing complete `A07970` and `37542D0` sources were reused without acquiring child bytes. The reader copies the loaded provider at module RVA `5D1DD50`, its `EF0` definition table and entry `22` at table offset `110`. A null loaded provider remains unavailable because its native diagnostic path is not called.
+
+Definition byte `7C` equal to zero returns known Q64 zero before any actor, Rite, name or context demand. Otherwise, the expression-null branch of actual `37542D0` returns signed Q64 `68` when byte `7B` is nonzero, or known zero when that byte is zero. Sign and all 64 value bits are retained. A zero flag never reads `68`.
+
+The expression-null numerical branch consumes neither the constructed R8 context nor the R9 name input. These branches therefore do not require actor/Rite fields, string interning, context constructors, profiling or explanation data. This is a copied-input numerical projection: `actual_original_consumed_values` stays false and no native execution, live price or affordability qualification is claimed.
+
+An expression-present branch retains the actual actor `18`, Rite `8` and Rite `4B8` raw DWORDs with keys loaded from `5D4BF0C`, `5D4C2CC` and `5D4BE98`. Their native root descriptors are respectively `4`, `2A` and `D`; no full-ID masking or semantic conversion is applied. It records the expression-plus-eight receiver, vtable and slot `30` target. The returned Q64 of the actual virtual call at `375438F` remains unavailable until that concrete value producer is closed. The reader never treats a vtable address as a result, calls a getter or falls back to a literal on that branch.
+
+49 owns composition with the entered base-plus-223 value, this Rite term and the separate actor-224 term. The existing draft resource-cost query must publish a genuinely collected final value before its consumer can use it for create/reform affordability. This source candidate supplies zero/literal terms; no live query or software qualification has run for this packet.

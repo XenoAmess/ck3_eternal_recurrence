@@ -174,14 +174,17 @@ PietyPriceA0F0B0DynamicReadonly12004 ReadPietyPriceA0F0B0DynamicReadonly12004(
             ProjectCompiledExpressionVariant3755500ProviderMetadata12004(*out.variant_source);
         if (out.variant_source->list_count_before_raw_i32 != out.count_before_raw_i32) {
           out.unavailable_reason = "piety_dynamic_parent_and_variant_count_mismatch";
-        } else if (!out.variant_source->source_result_ready || !out.variant_source->variant_tag_raw_u16 ||
-                   !out.variant_source->variant_payload_raw_q64) {
+        } else if (!out.variant_source->source_result_ready || !out.variant_source->variant_tag_raw_u16) {
           out.unavailable_reason = out.variant_source->unavailable_reason;
           if (out.unavailable_reason.empty()) out.unavailable_reason = "piety_dynamic_variant_output_unavailable";
         } else if (out.variant_source->list_count_after_raw_i32 != out.count_before_raw_i32) {
           out.unavailable_reason = "piety_dynamic_parent_and_variant_count_mismatch";
         } else if (*out.variant_source->variant_tag_raw_u16 == 1) {
-          out.eax_raw_i32 = ProjectVariantPayload(*out.variant_source->variant_payload_raw_q64);
+          // A0F2DB tests WORDtag first; only tag1 reaches the Q64 load at A0F2EC.
+          if (out.variant_source->variant_payload_raw_q64)
+            out.eax_raw_i32 = ProjectVariantPayload(*out.variant_source->variant_payload_raw_q64);
+          else
+            out.unavailable_reason = "piety_dynamic_tag1_payload_unavailable";
         } else {
           out.fallback_before_raw_i32 = ReadOperand<std::int32_t>(access, inputs.expression_identity, 0x98);
           out.eax_raw_i32 = out.fallback_before_raw_i32;

@@ -79,11 +79,33 @@ bool ExecutePlayerReligionDraftResourceCostsMailbox12002(
       out.failure = "published_frame_changed";
     } else {
       out.draft_observed = window.window != nullptr;
+      std::optional<ck3_12004::religion_price_source::ReligionCreationPriceSourceProbe12004> source_probe;
+      if (query.source_price_access.exact_12004_bound) {
+        ck3_12004::religion_price_source::ReligionCreationPriceSourceFrame12004 source_frame{};
+        source_frame.actual_application_query = true;
+        source_frame.snapshot_revision = envelope->expected_snapshot_revision;
+        source_frame.query_sequence = envelope->ticket.sequence;
+        source_frame.capture_epoch = stamp.pump_epoch;
+        source_frame.date_raw = out.date_raw;
+        source_frame.played_character_id = out.played_character_id;
+        source_frame.owning_thread_id = stamp.thread_id;
+        source_frame.stamp_date_raw = stamp.date_raw;
+        source_frame.stamp_paused = stamp.paused;
+        source_frame.mailbox_before_accepted = IsQueryOwningThread(envelope);
+        source_probe.emplace(ck3_12004::religion_price_source::BeginReligionCreationPriceSource12004(
+            query.source_price_access, reinterpret_cast<std::uintptr_t>(window.window), source_frame));
+      }
       religion_reform::CurrentDraftView view{
           const_cast<void *>(window.window), static_cast<std::int32_t>(window.played_character_id),
           stamp.pump_epoch, window.date_raw};
       (void)religion_reform::ReadCurrentRiteCreationBaseResourceCosts12002(
           query.cost_bindings, view, out.base_resource_cost_quote);
+      if (source_probe) {
+        const auto &quote = out.base_resource_cost_quote.draft_quote;
+        out.source_price_packet.emplace(
+            ck3_12004::religion_price_source::CompleteReligionCreationPriceSource12004(
+                *source_probe, quote.editing_owned_current_rite, quote.available));
+      }
       if (out.draft_observed && !out.base_resource_cost_quote.draft_quote.available)
         out.failure = religion_reform::RiteCreationCostFailureKey(
             out.base_resource_cost_quote.draft_quote.failure);
@@ -91,7 +113,10 @@ bool ExecutePlayerReligionDraftResourceCostsMailbox12002(
         out.available = true;
     }
     query.completed = true;
-    (void)FinishQueryMailbox(*envelope);
+    const bool source_mailbox_after_accepted = FinishQueryMailbox(*envelope);
+    if (out.source_price_packet)
+      ck3_12004::religion_price_source::FinishReligionCreationPriceSourceMailbox12004(
+          *out.source_price_packet, source_mailbox_after_accepted);
     return true;
   } catch (...) {
     query.failure = "player_religion_draft_resource_costs_native_capture_exception";
@@ -129,7 +154,11 @@ std::string SerializePlayerReligionDraftResourceCostsResult12002(
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
       ",\"player_religion_draft_resource_costs\":" +
-      SerializePlayerReligionDraftResourceCostsObservation12002(query.observation) + "}}";
+      SerializePlayerReligionDraftResourceCostsObservation12002(query.observation) +
+      (query.observation.source_price_packet ?
+          ",\"religion_creation_price_source_12004\":" +
+          ck3_12004::religion_price_source::SerializeReligionCreationPriceSource12004(
+              *query.observation.source_price_packet) : std::string{}) + "}}";
 }
 
 bool RunPlayerReligionDraftResourceCostsMailbox12002(PlayerReligionDraftResourceCostsMailboxContext12002 &query,
@@ -202,6 +231,9 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
           module, adapter.descriptor().executable_sha256);
       query.cost_bindings = ck3_12004::religion::BindRiteCreationCostsImage12004(
           module, adapter.descriptor().executable_sha256);
+      query.source_price_access =
+          ck3_12004::religion_price_source::BindReligionCreationPriceSourceAccess12004(
+              module, adapter.descriptor().executable_sha256);
     } else {
       query.window_bindings = religion_reform::BindCurrentRiteCreationWindow12002(
           module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));

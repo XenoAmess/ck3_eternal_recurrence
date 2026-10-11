@@ -10,3 +10,7 @@ target_sources(xar_ck3_12002_runtime PRIVATE
   src/religion_owned_edit_dynamic_base_price_12004.cpp)
 
 # Five case-only TUs and the header-only evaluator are not production sources.
+
+target_sources(xar_ck3_12002_runtime PRIVATE
+  src/collection_piety_price_term_2c4d660_12004.cpp
+  src/religion_creation_price_source_12004.cpp)

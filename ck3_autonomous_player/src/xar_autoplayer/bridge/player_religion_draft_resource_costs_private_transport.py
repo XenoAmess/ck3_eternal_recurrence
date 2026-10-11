@@ -8,6 +8,10 @@ from copy import deepcopy
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .religion_creation_price_source_12004 import (
+    FACTS_KEY as PRICE_SOURCE_FACTS_KEY, WIRE_KEY as PRICE_SOURCE_WIRE_KEY,
+    decode_religion_creation_price_source_12004,
+)
 from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
@@ -148,9 +152,15 @@ def query_player_religion_draft_resource_costs_private_v1(
             raise ValueError("native draft resource envelope lost its source status")
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
-    return {
+    response = {
         **value, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"], "query_date_raw": result["date_raw"],
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "status": result["status"], "read_only": True, "advertised": False,
     }
+    if result.get(PRICE_SOURCE_WIRE_KEY) is not None:
+        response[PRICE_SOURCE_FACTS_KEY] = decode_religion_creation_price_source_12004(
+            result[PRICE_SOURCE_WIRE_KEY], snapshot=before, resource_costs=value,
+            snapshot_revision=result["snapshot_revision"], query_date_raw=result["date_raw"],
+        )
+    return response

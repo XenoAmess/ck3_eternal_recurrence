@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/religion_reform12002_resource_costs.hpp"
 #include "xar_bridge/religion_reform12002_window.hpp"
+#include "xar_bridge/religion_creation_price_source_12004.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -22,12 +23,15 @@ struct PlayerReligionDraftResourceCostsObservation12002 {
   std::uint32_t played_character_id = 0xFFFFFFFFU;
   religion_reform::DraftWindowView current_window{};
   religion_reform::BaseResourceCostQuote base_resource_cost_quote{};
+  std::optional<ck3_12004::religion_price_source::ReligionCreationPriceSourcePacket12004>
+      source_price_packet;
 };
 
 struct PlayerReligionDraftResourceCostsMailboxContext12002 {
   QueryMailboxEnvelope envelope{};
   religion_reform::DraftWindowBindings window_bindings{};
   religion_reform::CostBindings cost_bindings{};
+  ck3_12004::piety_price_raw_inputs::PietyPriceNumericAccess12004 source_price_access{};
   PlayerReligionDraftResourceCostsObservation12002 observation{};
   bool completed = false;
   std::string failure;

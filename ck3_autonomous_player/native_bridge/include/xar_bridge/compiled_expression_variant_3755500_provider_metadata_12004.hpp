@@ -16,6 +16,11 @@ struct CompiledExpressionVariant3755500ProviderMetadata12004 {
   std::optional<std::uintptr_t> list_data_identity, first_row_identity;
   std::optional<std::uintptr_t> provider_receiver_identity, provider_vtable;
   std::optional<std::uintptr_t> type_mask_slot30_raw_va, value_slot20_raw_va;
+  std::optional<std::uint32_t> positive_occurrence_index;
+  // Separate source-conditional copies, never actual post-mask dispatch.
+  std::optional<bool> type_mask_predicate_true_if_normal_return;
+  std::optional<std::uintptr_t> conditional_value_receiver_identity, conditional_value_vtable;
+  std::optional<std::uintptr_t> conditional_value_slot20_candidate;
   // A fitted VA-minus-module difference. Exact image membership and a body
   // at this candidate RVA remain unqualified; no code bytes are read.
   std::optional<std::uint32_t> value_slot20_module_relative_rva_candidate;

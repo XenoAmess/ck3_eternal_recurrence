@@ -127,20 +127,11 @@ ReadCompiledExpressionVariant3755500Readonly12004(
     return out;
   }
 
-  // Positive count reaches two actual virtual methods. Their identities and
-  // current operands are witnesses; reading them never supplies their result.
-  out.list_data_identity = ReadOperand<std::uintptr_t>(access, inputs.expression_list_identity);
-  if (out.list_data_identity && *out.list_data_identity != 0) {
-    out.first_row_identity = *out.list_data_identity;
-    out.provider_receiver_identity = ReadOperand<std::uintptr_t>(access, *out.first_row_identity);
-    if (out.provider_receiver_identity && *out.provider_receiver_identity != 0) {
-      out.provider_vtable = ReadOperand<std::uintptr_t>(access, *out.provider_receiver_identity);
-      if (out.provider_vtable && *out.provider_vtable != 0) {
-        out.type_mask_slot30 = ReadOperand<std::uintptr_t>(access, *out.provider_vtable, 0x30);
-        out.value_producer_slot20 = ReadOperand<std::uintptr_t>(access, *out.provider_vtable, 0x20);
-      }
-    }
-  }
+  // Source3755551 initializes EBX0: only this first occurrence can be
+  // selected without the preceding row's actual returned-variant witness.
+  out.positive_occurrence_index = std::uint32_t{0};
+  // The mask target is copied before its predicate. The value target belongs
+  // to the conditional reloaded receiver/vptr at3755638/3B, not this copy.
   // 37555D5..55E7: choose inline list+70 if its first QWORD is nonzero,
   // otherwise original R9, then copy32B into the real value-producer context.
   out.embedded_tuple_first_qword = ReadOperand<std::uintptr_t>(
@@ -156,6 +147,31 @@ ReadCompiledExpressionVariant3755500Readonly12004(
     if (out.selected_tuple_identity && *out.selected_tuple_identity != 0)
       out.selected_tuple_before_raw = ReadOperand<std::array<std::uint8_t, 32>>(
           access, *out.selected_tuple_identity);
+  }
+  out.list_data_identity = ReadOperand<std::uintptr_t>(access, inputs.expression_list_identity);
+  if (out.list_data_identity && *out.list_data_identity != 0) {
+    out.first_row_identity = *out.list_data_identity;
+    out.provider_receiver_identity = ReadOperand<std::uintptr_t>(access, *out.first_row_identity);
+    if (out.provider_receiver_identity && *out.provider_receiver_identity != 0) {
+      out.provider_vtable = ReadOperand<std::uintptr_t>(access, *out.provider_receiver_identity);
+      if (out.provider_vtable && *out.provider_vtable != 0) {
+        out.type_mask_slot30 = ReadOperand<std::uintptr_t>(access, *out.provider_vtable, 0x30);
+      }
+    }
+  }
+  // Literal375560C/10 bypasses the returned mask bytes for rootWORD0.
+  // A nonzero root needs the actual returned mask16; its body target is
+  // not held, so neither a true/false predicate nor slot20 is fabricated.
+  if (out.incoming_root_tag_raw_u16 && *out.incoming_root_tag_raw_u16 == 0)
+    out.type_mask_predicate_true_if_normal_return = true;
+  if (out.type_mask_predicate_true_if_normal_return == true &&
+      out.first_row_identity && out.type_mask_slot30 && *out.type_mask_slot30 != 0) {
+    out.value_producer_receiver_identity = ReadOperand<std::uintptr_t>(access, *out.first_row_identity);
+    if (out.value_producer_receiver_identity && *out.value_producer_receiver_identity != 0) {
+      out.value_producer_vtable = ReadOperand<std::uintptr_t>(access, *out.value_producer_receiver_identity);
+      if (out.value_producer_vtable && *out.value_producer_vtable != 0)
+        out.conditional_value_slot20_candidate = ReadOperand<std::uintptr_t>(access, *out.value_producer_vtable, 0x20);
+    }
   }
   if (!RecopyReachedRootAndCount(access, out)) return out;
   out.unavailable_reason = "compiled_variant_dynamic_type_mask_and_value_producer_unclosed";

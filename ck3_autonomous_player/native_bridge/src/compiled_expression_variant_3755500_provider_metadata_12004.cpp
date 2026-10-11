@@ -23,6 +23,11 @@ ProjectCompiledExpressionVariant3755500ProviderMetadata12004(
   out.provider_vtable = source.provider_vtable;
   out.type_mask_slot30_raw_va = source.type_mask_slot30;
   out.value_slot20_raw_va = source.value_producer_slot20;
+  out.positive_occurrence_index = source.positive_occurrence_index;
+  out.type_mask_predicate_true_if_normal_return = source.type_mask_predicate_true_if_normal_return;
+  out.conditional_value_receiver_identity = source.value_producer_receiver_identity;
+  out.conditional_value_vtable = source.value_producer_vtable;
+  out.conditional_value_slot20_candidate = source.conditional_value_slot20_candidate;
   if (source.module_base != 0 && out.value_slot20_raw_va &&
       *out.value_slot20_raw_va >= source.module_base) {
     const auto relative = *out.value_slot20_raw_va - source.module_base;
@@ -51,15 +56,19 @@ ProjectCompiledExpressionVariant3755500ProviderMetadata12004(
     out.unavailable_reason = "compiled_positive_provider_receiver_unavailable";
   } else if (!out.provider_vtable || *out.provider_vtable == 0) {
     out.unavailable_reason = "compiled_positive_provider_vtable_unavailable";
-  } else if (!out.value_slot20_raw_va || *out.value_slot20_raw_va == 0) {
-    out.unavailable_reason = "compiled_positive_provider_value_slot20_unavailable";
   } else if (!out.type_mask_slot30_raw_va || *out.type_mask_slot30_raw_va == 0) {
     out.unavailable_reason = "compiled_positive_provider_type_mask_slot30_unavailable";
   } else if (!out.selected_tuple_identity || *out.selected_tuple_identity == 0 ||
              !out.selected_tuple_before_raw || !out.selected_tuple_after_raw) {
     out.unavailable_reason = "compiled_positive_provider_selected_tuple_unavailable";
+  } else if (!out.type_mask_predicate_true_if_normal_return) {
+    out.unavailable_reason = "compiled_positive_type_mask_return_and_predicate_unclosed";
+  } else if (!out.conditional_value_receiver_identity || *out.conditional_value_receiver_identity == 0 ||
+             !out.conditional_value_vtable || *out.conditional_value_vtable == 0 ||
+             !out.conditional_value_slot20_candidate || *out.conditional_value_slot20_candidate == 0) {
+    out.unavailable_reason = "compiled_positive_conditional_value_receiver_or_target_unavailable";
   } else {
-    out.unavailable_reason = "compiled_positive_provider_type_mask_and_returned_value_unclosed";
+    out.unavailable_reason = "compiled_positive_mask_normal_return_and_value_body_unclosed";
   }
   return out;
 }

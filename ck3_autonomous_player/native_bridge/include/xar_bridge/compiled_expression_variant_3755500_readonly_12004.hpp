@@ -44,6 +44,18 @@ struct CompiledExpressionVariant3755500Readonly12004 {
   bool named_tuple_numeric_input_demanded = false;
   bool native_method_invoked = false;
   std::optional<std::uintptr_t> list_data_identity, first_row_identity;
+  // First positive occurrence only. No later row is reached without the
+  // preceding actual mask/returned-variant result; this is not a full loop.
+  std::optional<std::uint32_t> positive_occurrence_index;
+  // The predicate follows a normally returned slot30 call. RootWORD0 makes
+  // it true without consuming the mask bytes; missing nonzero-root mask
+  // bytes leave it unknown. This never claims the native call occurred.
+  std::optional<bool> type_mask_predicate_true_if_normal_return;
+  std::optional<std::uintptr_t> value_producer_receiver_identity, value_producer_vtable;
+  // Pair only with the reloaded value receiver/vptr. The legacy slot20
+  // field below remains absent so an old mask-receiver projector cannot
+  // attach a conditional target to the wrong receiver.
+  std::optional<std::uintptr_t> conditional_value_slot20_candidate;
   std::optional<std::uintptr_t> provider_receiver_identity, provider_vtable;
   std::optional<std::uintptr_t> type_mask_slot30, value_producer_slot20;
   std::optional<std::uintptr_t> embedded_tuple_first_qword, selected_tuple_identity;
