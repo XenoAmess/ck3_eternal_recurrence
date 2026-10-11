@@ -68,3 +68,13 @@ R78闭场后的fresh容量仍低于其他GUI场次原2GiB准入要求30,071,062,
 独立代码审阅仅授静态候选通过；执行者及root分别实际完成原11项与新4项回归，exit0，diff-check0。新sample为23,066 B / SHA-256 `c72ea38124468577802d81a4a791d183a7c92cf78bd8916d9a373ee819e42c7d`，events为426 B / SHA-256 `aca333d018cb82108547c7f18ebb956fa7402ed7b14a85e292e12b9c434220b4`。外置静态回执 `root-parallel-continue-236/pam-delayed-boundary-candidate-static-01.json`，6,749 B / SHA-256 `f6d5e18ade5361f0175c4c501bd930b2d69d427494bcdfdd055de9bbbc8581c9`。
 
 尚未新prepare、分配或启动CK3。paused D0是否调度及真实scope传播均未证明；若不进入、仍单槽、跨日或scope不符，保留RED，不延长预算或连续试槽位。原Source19、R77/R78及所有旧profile/prepared不变。先让RMTM core取得现场窗口，不能把本候选或静态测试计入业务矩阵/发布完成。
+
+## 16:25 CST：R72/R73 精确清点停止，零回收已闭账
+
+候选提交 `70e2d01729f9378d3429d1e8973293b8fb162483` 的官方 CI [38123666594](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38123666594) 已实际读回 completed/success；仍只证明代码门禁，不是 PAM 或发布验收。
+
+新两根缓存包经 root 全文审阅 producer/admission/matching closer 及独立只读审阅后，实际 admission exit0；prepare 于08:22:26.873440Z开始，在 R72 精确 `shadercache/dx11/{ps_5_0,vs_5_0}` 范围读到空集合，按原门禁 exit1，未继续 R73，未生成 QUALIFIED 或 SUMMARY，也未执行任何删除批。不能沿用此前每根3,780文件/约158MB的估算，不能由 R72 空外推 R73 或其他根为空。
+
+实际 review 后按失败路径 close exit0，标准237回执 `C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-r72-r73-cache-retirement-01-reservation-237-closed.json` 为2,871 B / SHA-256 `49da1aea5d203aaf5b47cb89dd5690b3d58c8dc28cc6f7f5afd3221035afdd16`。原 prepare exit1 保留，删除0、释放0、子进程0、unspent0；完整16MiB只保守计入一次，不减 usage，也不产生后继预算信用。SAVE、错误日志、原业务证据及当前输入未动，保护项仍于2026-10-18复核。
+
+该回执的全卷 fresh free 为28,602,040,320 B，低于默认2GiB场次所需30,071,062,528 B；全卷变化不归因为本包。后继先在新限额工作包内调查其他已结束精确缓存根的实际metadata，再决定是否有可回收资产；不能降低6GiB系统增长、6MiB其他预约或20GiB安全预留。RMTM core 的默认2GiB观察器只完成源码/纯边界自测，尚未准入、分配或启动。业务进度保持 QOL 2/6、RMTM 0/2，两项均未发布。
