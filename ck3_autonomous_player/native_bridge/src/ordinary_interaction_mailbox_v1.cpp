@@ -89,7 +89,10 @@ bool Available(const OrdinaryInteractionMailboxContextV1 &q,
       o.intermediary_score_raw.has_value() && o.outer_answer_status.has_value() &&
       *o.outer_answer_status <= 2 && *o.selected_option_count <= *o.declared_option_count &&
       (!o.ordinary_context_supported ||
-       (*o.declared_option_count == 0 && !*o.special_payload_present)) &&
+       (!*o.special_payload_present &&
+        (*o.declared_option_count == 0 ||
+         (Actual4(q) && q.request.interaction_key == "educate_child_interaction" &&
+          o.education_option_rows.available && o.education_request_materialization.available)))) &&
       o.actor_binding_verified && o.recipient_binding_verified &&
       q.proof.owner_thread_verified && q.proof.tls_verified &&
       q.proof.frame_verified && q.proof.owner_thread_id != 0 &&

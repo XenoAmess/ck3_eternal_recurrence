@@ -526,6 +526,8 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
   if (education) {
     if (!ReadEffectiveEducationRoles(storage, roles))
       return Fail(out, "education_final_roles_unavailable");
+    if (!Read(storage, 0x330, special))
+      return Fail(out, "education_final_payload_unavailable");
     CopyEducationOptionRows(b, storage, definition, option_data, option_count, roles,
                             out.education_option_rows);
     CompleteEducationRequestMaterialization(r, roles, out.education_option_rows,
@@ -549,10 +551,14 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
   out.unavailable_reason = nullptr;
   const bool request_materialized = !HasEducationRequest(r) ||
       out.education_request_materialization.available;
-  out.ordinary_context_supported = option_count == 0 && special == nullptr && request_materialized;
+  const bool education_options_copy_supported = b.education_rows_actual_12004 &&
+      r.interaction_key == "educate_child_interaction" &&
+      out.education_option_rows.available && out.education_request_materialization.available;
+  out.ordinary_context_supported = (option_count == 0 || education_options_copy_supported) &&
+      special == nullptr && request_materialized;
   out.unsupported_reason = special != nullptr ? "special_payload_unsupported" :
       (!request_materialized ? out.education_request_materialization.unavailable_reason :
-       option_count != 0 ? "declared_options_unsupported" : nullptr);
+       (option_count != 0 && !education_options_copy_supported) ? "declared_options_unsupported" : nullptr);
   return true;
 }
 

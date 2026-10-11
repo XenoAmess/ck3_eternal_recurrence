@@ -1444,3 +1444,5 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 - 2026-10-11 background source: [Education explicit request and actual callers](education-native-option-rows-12004.md#explicit-request-and-existing-caller-source-integration). Native role/option readback, parser, Driver, materializer and existing family caller connected; nonzero-option dispatch still unsupported. `research / SOURCE_ADOPTED_NOT_RUN`.
 
 - 2026-10-11 background source: [Common native Sway end observation](sway-native-end-source-tree-12004.md#connected-common-native-end-observation-source), fixed actual call -> independent entry/return ring -> existing query/strict/Service. Includes the scope/callback source tree delta; specific end cause remains unknown. `research / SOURCE_ADOPTED_NOT_RUN`.
+
+- 2026-10-11 background source: [Education nonzero option command copying](education-native-option-rows-12004.md#normal-return-command-copy-source-and-a05-consumer). Existing native constructor copies N BYTE bank values/order on normal return; final same-context special payload and matching native/strict formulas connected. `research / SOURCE_ADOPTED_NOT_RUN`; no runtime dispatch credit.

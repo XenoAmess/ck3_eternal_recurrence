@@ -19,8 +19,9 @@ The `bf3697e1` education explicit request/parser/Driver/materializer/family call
 group is also integrated. The common native end entry/return observer and its
 existing query/strict/Service connection are integrated in the current source
 package; see [native Sway end source](../ck3-native-ai/sway-native-end-source-tree-12004.md).
-These additions remain research / SOURCE_ADOPTED_NOT_RUN. Nonzero-option
-command-owned copy and actual terminal cause attribution remain under construction. Native84/fullSDK84 still represent compiled594; no new
+These additions remain research / SOURCE_ADOPTED_NOT_RUN. Normal-return nonzero-option command copying is source-closed and admitted
+through the existing education path. Actual command construction/dispatch and
+specific terminal cause attribution remain unqualified until authorized runtime work. Native84/fullSDK84 still represent compiled594; no new
 game days, terminal cause, succession or M6/M7 completion are credited.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).

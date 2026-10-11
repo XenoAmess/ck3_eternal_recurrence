@@ -275,13 +275,22 @@ def normalize_context_payload(raw: object, binding: dict, interaction_key: str, 
     for key in ("recipient_score_raw", "intermediary_score_raw"):
         _integer(value[key], -(2**63), 2**63 - 1, key)
     _integer(value["outer_answer_status"], 0, 2, "outer_answer_status")
-    ordinary = (value["declared_option_count"] == 0 and value["selected_option_count"] == 0
-                and value["special_payload_present"] is False)
+    legacy_zero_options = (value["declared_option_count"] == 0
+                           and value["selected_option_count"] == 0)
     materialization = value.get("education_request_materialization")
+    request_honored = True
     if materialization is not None:
         requested = any(materialization[key] is not None for key in (
             "child_full_id", "guardian_full_id", "requested_option_keys"))
-        ordinary = ordinary and (not requested or materialization["status"] == "available")
+        request_honored = not requested or materialization["status"] == "available"
+    rows = value.get("education_option_rows")
+    education_copy_supported = (
+        value["exact_build"] == CK3_12004.game_version
+        and interaction_key == "educate_child_interaction"
+        and rows is not None and rows["status"] == "available"
+        and materialization is not None and materialization["status"] == "available")
+    ordinary = (value["special_payload_present"] is False and request_honored
+                and (legacy_zero_options or education_copy_supported))
     _exact(value, "ordinary_context_supported", ordinary)
     if ordinary:
         if value["unsupported_reason"] is not None:
