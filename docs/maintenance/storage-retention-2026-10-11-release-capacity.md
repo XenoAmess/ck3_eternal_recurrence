@@ -74,3 +74,13 @@ R17实际A/B GUI均明确显示新近脱离旧朝 **−50**，C1–C5通过，Co
 A186失败资源闭账现已实际完成：`coord/rmtm-core-a186-valuefix-default2gib-01-reservation-52-closed.json`，10828B/SHA `e9668e4639a332e51bd22f3a9d0187ec322a4533090c14764d3485e2d47105af`，状态CLOSED_STORAGE_RESERVATION_RELEASED；实际221 wait `C:/workspace/ck3-upgrade-20261006/resume-root-01/a186-failure-storage-close-02-process-exit.json`，931B/SHA `462d9617664f5ba036f5728e1027f70e939ae719f579025ebcb35ea36de5aea4`，exit0。keeper/allocator实际0，CAS8987 done/resources[]；这仅释放失败场资源，不授正常退出或业务PASS。
 
 同次四根metadata占用 **630,610,040B**，闭账current project usage **39,296,503,096B**、free **29,010,063,360B**；第四个F控制根119,864B已计入本次占用，只计一次，后继不得再次加收其cap。旧receipt中budget charge文字保留其历史原貌，不改原件或追溯造信用。失败adapter02路径绑定actual1及后继成功闭账均保留。当前业务仍 **QOL2/6、RMTM0/2，总2/8=25%；release0/2**，存储闭账不是发布完成。
+
+## 2026-10-12 追加：R17 已闭场 shadercache 实际退役，admin 仅完成公共准备检查
+
+R17/a186失败资源52已实际关闭后，精确退役其准备根 `C10/rmtm-value-fix-fresh-publicprepare-20261012-02/state/profile` 的指定shadercache：**3820 files / 4 batches / 160,604,976B**，22.6299558s；admit/execute/close实际0，bodyhash0、无目录删除。旧shader字节现已不可读取；后续重新编译不保证相同历史字节。非cache原件、当前DLL及输入、R17独立heir/hidden回调缺口的关键native/typed/GUI/SAVE证据继续保护至2026-10-18复核，不改业务GAP或nativeOS1。
+
+实际小摘要 `C10/r17-cache-retirement-20261012-01/ACTUAL-SUMMARY.json`，1879B/SHA `efaa24f68602c193ef44fe7cc23fdffdd9eefd8f2db55ed3de1af4414826d5e0`；对应CONTROL下221 wait `r17-cache-execute-01-process-exit.json`，987B/SHA `04a32cee8d16bce15c70b6a05e5081fc1a390a77fb5f4486cdb594b604e1c140`。标准237闭账 `coord/post-r76-r17-cache-retirement-01-reservation-237-closed.json`，2267B/SHA `ba9c01a992df99d2886270fc06af9377613d15af73e0742ac1ad371e9045ecd4`，actual0；原16MiB full-cap后继仅计一次，不从usage扣回收信用。
+
+实际native回收累计 **5,313,440,944B**；此轮后实际free **29,472,485,376B**，距当时默认2GiB准入仍差 **598,577,152B**，未准入下一场。整卷free差额不全归因于本轮回收。
+
+下一QOL `administrative_appointments` 的公共plan/preflight已各actual0、blockers=[]；preflight状态 `READY_FOR_EXISTING_REVIEWED_LAUNCH`，runtime_status=NOT_RUN、business_acceptance=NOT_ASSESSED，尚未allocate/run。小型实际wait位于 `C10/qol-next-admin-controls-20261012-01/`：`admin-public-plan-01-process-exit.json`970B/SHA `f89503ec796dcda31febbec13f581a456b2333c24491c0936c64399fe489d3d0`；`admin-public-preflight-01-process-exit.json`986B/SHA `375aae3be0d407044150b5d9a0e3ae4f3c126559ea19c11f9ad7335468e41fcc`。准备检查不授存储准入、GUI资格或业务PASS，业务仍2/8=25%、release0/2。
