@@ -1,0 +1,12 @@
+--- source017/close_source017.py
++++ close-recovery/close_source017.py
+@@ -120,7 +120,8 @@
+     roots += [path.absolute() for path in args.small_receipt_root]
+     roots += [Path(__file__).absolute().parent]
+     roots = list(dict.fromkeys(roots))
+-    need(all(root in (META, ADMIT, B/'common-storage-admission-command-20261011-017') or
++    need(all(root in (META, ADMIT, B/'common-storage-admission-command-20261011-017',
++         B/'common-source16-storage-carry-correction-sourceonly-20261011-017') or
+          root.parent == B and root.name.startswith(('common-source17-', 'source17-')) for root in roots),
+          'Only explicit current common/source17 receipt children; never B recursively')
+     need(all(not left.is_relative_to(right) for left in roots for right in roots if left != right), 'Overlapping metadata roots double-charge')

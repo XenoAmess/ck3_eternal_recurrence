@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "<string>", line 10, in <module>
+    runpy.run_path('C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-storage-sourceonly-20261011-017\\admit_source17.py',run_name="__main__")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-storage-sourceonly-20261011-017\admit_source17.py", line 200, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-storage-sourceonly-20261011-017\admit_source17.py", line 62, in main
+    prior_ref, prior, closed_ref, closed, carry, carry_refs = committed_carry(g, request)
+                                                              ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source16-storage-carry-correction-sourceonly-20261011-017\committed_carry.py", line 120, in committed_carry
+    old_credit_clear = event['old_credit_repeated'] is False if profiles else event['old_R55_or_other_credit_repeated'] is False
+                                                                              ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'old_R55_or_other_credit_repeated'

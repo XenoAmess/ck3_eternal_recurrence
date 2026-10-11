@@ -1,0 +1,231 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "closure_kind": "common-source17-bounded-indexed-metadata-v1",
+  "at_utc": "2026-10-11T08:03:42.922435+00:00",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "reservation_id": "ck3-common-source17-192MiB-20261011-017",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-017\\ADMISSION.actual.json",
+    "bytes": 7743,
+    "sha256": "7c12c9c74edcaa821e2d252854d05846de923517076f903027e96fc01324613a"
+  },
+  "original_admission_unmodified": true,
+  "ROOT_reviewed_closure_inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-close-binding-20261011-001\\ROOT-INPUTS.actual.json",
+    "bytes": 824,
+    "sha256": "72a101d5e12b996f640aeedfffe8e24883654d46b2045e979f8106d086745999"
+  },
+  "source_successor": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-017\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 10659,
+    "sha256": "06e49440d035e49c9b914ae4ff4c0ba39adc353290a0852a95c919d22bcd1251"
+  },
+  "source_commit": "b12c466f6d308a745275a0d0911aededca3840e4",
+  "native_build_source_commit_preserved": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "actual_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-017\\SOURCE17-BIND.actual.json",
+    "bytes": 6633,
+    "sha256": "626bf24c5677f498f4e107c5c5c2e8b8a616960fc4a54ad702299260d4643dec"
+  },
+  "binding_source_ready_as_reported": true,
+  "closure_grants_runtime_qualification": false,
+  "actual_successor_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-materialize-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1897,
+    "sha256": "0d6c7de25f97416bd645567b210df1e81a8e3a77a21402832a746114f27e158a"
+  },
+  "actual_successor_command_exit_code": 0,
+  "actual_binding_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-bind-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1747,
+    "sha256": "8b959837ba17f0edaee721fb28a3cf131b34a87bc7a43c14a85582347c514534"
+  },
+  "actual_binding_command_exit_code": 0,
+  "historical_original_commands": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-script-freeze-command-20261011-001\\RESULT.actual.json",
+        "bytes": 904,
+        "sha256": "7dd7b2ef81d7df6ffaad19058c47d0a5f99ded6138af7978d11da02cb4726248"
+      },
+      "exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-plan-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1161,
+        "sha256": "91731fdf3434ac18b85fba2bd48b56137f58cb598cc8c5247a055bd82d957e81"
+      },
+      "exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-017\\RESULT.actual.json",
+        "bytes": 3628,
+        "sha256": "0d2dfac26a3d78d848dc30036c1a683c637d8fb12125ee8296d7acb50c40f0e9"
+      },
+      "exit_code": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-docs-prefetch-command-20261011-001\\RESULT.actual.json",
+        "bytes": 768,
+        "sha256": "5297370786dd4362a10531bd200f56fc821c23799177d4588afe74552960d01e"
+      },
+      "exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-close-command-20261011-001\\RESULT.actual.json",
+        "bytes": 6089,
+        "sha256": "474df53681e024e206aab123f6d23c931661d940bef67932372c22a34bcf2a01"
+      },
+      "exit_code": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-close-recovery-command-20261011-001\\RESULT.actual.json",
+        "bytes": 6528,
+        "sha256": "ebf4873b87c4f4eab39d564bd4b4b522f2ee0990f3597c92e8ab26509ff2ada4"
+      },
+      "exit_code": 1
+    }
+  ],
+  "additional_terminal_commands": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-draft-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1329,
+        "sha256": "673d40bb028aa26df5926eb4f70a2a29be10059fef91206cb7adbf28d48d8952"
+      },
+      "exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-review-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1386,
+        "sha256": "77479700aa8958a48f7c48703df1b362fb62ab04d9f539420bcebb2e78b9d0a1"
+      },
+      "exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-admit-recovery-command-20261011-001\\RESULT.actual.json",
+        "bytes": 2152,
+        "sha256": "85936a7d46ddbac1d00de2a48642780f1efb291b7e0d215f54d3bb4715ba2bb6"
+      },
+      "exit_code": 0
+    }
+  ],
+  "old_failures_or_cancelled_prior_not_rewritten": true,
+  "O17_Git_counted_once": true,
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-017\\MEASURE.actual.json",
+    "bytes": 15006,
+    "sha256": "23216dcfabeedec34fbd19db933b9fd77e0ce6fe6bc2422241b2aadbb13d6913"
+  },
+  "finite_retention_groups": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-017\\ASSET-GROUPS.actual.json",
+    "bytes": 82975,
+    "sha256": "4ee31017fb32e7070155e4e72fb83bdf26039dd4954ea15b5a6beb4573db6d42"
+  },
+  "observed_retained_task_logical_bytes_known": 160161385,
+  "allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "remaining_reserved_peak_bytes": 0,
+  "old_admission_unspent_field_rewritten": false,
+  "admitted_peak_bytes": 201326592,
+  "released_reservation_peak_bytes": 201326592,
+  "release_is_end_of_future_reservation_not_physical_reclamation": true,
+  "closing_outputs_upper_bound_bytes": 1048576,
+  "logical_new_actual_credit_deducted_once_bytes": 0,
+  "new_actual_single_use_claims": [],
+  "old_013_or_other_credit_deducted_again_bytes": 0,
+  "conservative_project_carry_before_actual_events_bytes": 135196810189,
+  "conservative_project_carry_after_close_bytes": 135196810189,
+  "future_reservation_return_is_not_physical_deletion": true,
+  "physical_deleted_bytes": 0,
+  "cleanup_deducted_bytes": 0,
+  "other_unspent_reservations_bytes_ROOT_verified": 0,
+  "actual_bus": {
+    "tasks": [
+      {
+        "task_id": "lyd-transaction-control-scaffold-l0-20261009-root",
+        "state": "running",
+        "resources": [],
+        "stale": false,
+        "last_sequence": 4811
+      },
+      {
+        "task_id": "lyd-volume-c-admission-20261010-root",
+        "state": "running",
+        "resources": [
+          "storage-volume-c:coordinator"
+        ],
+        "stale": false,
+        "last_sequence": 4812
+      }
+    ],
+    "stdout_bytes": 158959,
+    "stdout_sha256": "9ccd06c5343801e482795c82f20a975466aadc39006e6570fb20c7a7cd5ca8bc"
+  },
+  "actual_runtime_inventory": {
+    "at_utc": "2026-10-11T08:03:42.918905+00:00",
+    "scanned_process_count": 177,
+    "python_controllers_inspected": [
+      {
+        "pid": 5548,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      },
+      {
+        "pid": 13460,
+        "name": "python.exe",
+        "runtime_controller_match": false
+      }
+    ],
+    "blockers": [],
+    "process_absence_is_normal_exit_proof": false
+  },
+  "actual_active_build_processes": [],
+  "available_bytes_before": 619536699392,
+  "available_bytes_after": 619536699392,
+  "whole_project_actual_usage_bytes_or_null": null,
+  "conservative_project_base_preserved": 135035600228,
+  "effective_project_quota_bytes": 137438953472,
+  "retention": {
+    "source_review_at_utc": "2026-10-17T19:32:25.249949+00:00",
+    "raw_review_at_utc": "2026-11-10T07:52:40.861410+00:00",
+    "compact_review_at_utc": "2027-04-09T07:52:40.861410+00:00",
+    "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+    "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+    "quota_override_unchanged": {
+      "owner": "XenoAmess / ROOT",
+      "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+      "max_project_bytes": 137438953472,
+      "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+      "auto_renew": false,
+      "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+    },
+    "automatic_renewal": false,
+    "automatic_deletion": false
+  },
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "quota_current_at_closure": true,
+  "closure_after_reservation_deadline": false,
+  "native_build_performed": false,
+  "live_qualification": false,
+  "business_qualification": false,
+  "automatic_renewal": false,
+  "automatic_deletion": false,
+  "new_live_requires_independent_live_admission": true
+}

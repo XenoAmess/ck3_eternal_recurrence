@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source17-carry-recovery-sourceonly-20261011-001/admit_source17_recovery.py",
+    "--inputs",
+    "C:/workspace/ck3_lyd_runtime_20261004/source17-ROOT-admit-binding-20261011-001/ROOT-INPUTS.actual.json",
+    "--inputs-sha256",
+    "efec9f798e0eef68ecf59ef1a78379b53de129b3212cdb728642d722af6881c3",
+    "--confirm-single-root-writer",
+    "--other-unspent-reservations-bytes",
+    "0",
+    "--paths-manifest-bytes",
+    "8698",
+    "--paths-manifest-sha256",
+    "ad2a919685be82e4b761a76d988aacd75d79885ac22f4c5225839ad11f71a519",
+    "--producer-bytes",
+    "1885",
+    "--producer-sha256",
+    "7c5a1cbd294235fe9c004d5c2a18c6c70d94837f7509676515e9c356c5f2899f",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source17-materialize-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source17-bind-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source17-cache-draft-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source17-cache-review-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/common-source17-close-command-20261011-001"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T07:52:40.671757+00:00",
+  "finished_at_utc": "2026-10-11T07:52:41.095700+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-admit-recovery-command-20261011-001\\stdout.log",
+    "bytes": 365,
+    "sha256": "b081a8f8c28b690a531909a0f4cd906816b9f61f2d432a42b3a936cb5f13c603"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-admit-recovery-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

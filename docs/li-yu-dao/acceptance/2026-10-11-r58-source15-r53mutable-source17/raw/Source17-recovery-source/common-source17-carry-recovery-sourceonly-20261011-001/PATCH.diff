@@ -1,0 +1,55 @@
+--- carry017/committed_carry.py
++++ carry-recovery/committed_carry.py
+@@ -61,6 +61,37 @@
+     return refs
+ 
+ 
++def r53_results(aggregate, event, prior_ref, claim):
++    rows = aggregate['actual_results']
++    root = B/'r53-mutable-cache-retirement-serial-actual-20261011-001'
++    stage_root = B/'r53-mutable-cache-retirement-actual-20261011-001'
++    need(aggregate['scope'] == 'r53' and aggregate['admission'] == prior_ref and
++         Path(claim['actual_aggregate']['path']).absolute() == root/'AGGREGATE.actual.json' and
++         Path(claim['canonical_event']['path']).absolute() == root/'CREDIT-EVENT.actual.json' and
++         type(rows) is list and len(rows) == 4 and aggregate['all_complete'] is True and
++         aggregate['failure'] is None and aggregate['stopped_no_further_writes'] is True and
++         aggregate['old_credit_repeated'] is False and
++         event['event_id'] == 'lyd-r53-mutable-cache-retirement-exact-reclamation-20261011-001' and
++         event['old_credit_repeated'] is False,
++         'Exact completed R53 mutable serial aggregate/event contract differs')
++    refs = []
++    for batch, row in enumerate(rows):
++        need(type(row) is dict and set(row) == {'stage', 'batch', 'result', 'command'} and
++             row['stage'] == 'R53_MUTABLE' and type(row['batch']) is int and row['batch'] == batch,
++             'Exact R53_MUTABLE batch0..3 serial rows required')
++        for key, path in (
++                ('result', stage_root/('BATCH-'+str(batch).zfill(3)+'.actual.json')),
++                ('command', root/('R53_MUTABLE-BATCH-'+str(batch).zfill(3)+'.command.json'))):
++            ref = row[key]
++            need(type(ref) is dict and set(ref) == {'path', 'bytes', 'sha256'} and
++                 Path(ref['path']).absolute() == path and type(ref['bytes']) is int and
++                 0 < ref['bytes'] <= MIB and type(ref['sha256']) is str and len(ref['sha256']) == 64 and
++                 all(c in '0123456789abcdef' for c in ref['sha256']),
++                 'Exact committed R53 result/command ref3 differs')
++        refs.append(row['result'])
++    return refs
++
++
+ def committed_carry(g, request):
+     seen = []
+     prior_ref = request['previous_admission']
+@@ -116,8 +147,12 @@
+         event_id = claim['event_id']
+         amount = integer(claim['logical_credit_bytes'], 'claimed logical credit')
+         profiles = aggregate.get('schema') == 'lyd.closed-profiles.seed-base.serial-aggregate.v1'
+-        results = profile_results(aggregate, event, prior_ref, claim) if profiles else aggregate.get('actual_results', aggregate.get('actual_batch_results'))
+-        old_credit_clear = event['old_credit_repeated'] is False if profiles else event['old_R55_or_other_credit_repeated'] is False
++        r53 = aggregate.get('schema') == 'lyd.source15-r53.retirement-serial-aggregate.v1'
++        results = (profile_results(aggregate, event, prior_ref, claim) if profiles else
++                   r53_results(aggregate, event, prior_ref, claim) if r53 else
++                   aggregate.get('actual_results', aggregate.get('actual_batch_results')))
++        old_credit_clear = (event['old_credit_repeated'] is False if profiles or r53 else
++                            event['old_R55_or_other_credit_repeated'] is False)
+         need(type(event_id) is str and event_id and event_id not in ids and str(marker) not in paths and
+              claim['deduplication_key'] == event_id and (amount >= 0 if profiles else amount > 0) and
+              event['schema'] == 'lyd.exact-reclamation-credit-event.v1' and

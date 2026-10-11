@@ -1,0 +1,376 @@
+{
+  "schema": "ck3-common017-bounded-metadata-measure-v1",
+  "at_utc": "2026-10-11T08:03:42.922435+00:00",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-017\\ADMISSION.actual.json",
+    "bytes": 7743,
+    "sha256": "7c12c9c74edcaa821e2d252854d05846de923517076f903027e96fc01324613a"
+  },
+  "actual_successor": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-017\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 10659,
+    "sha256": "06e49440d035e49c9b914ae4ff4c0ba39adc353290a0852a95c919d22bcd1251"
+  },
+  "actual_binding": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-017\\SOURCE17-BIND.actual.json",
+    "bytes": 6633,
+    "sha256": "626bf24c5677f498f4e107c5c5c2e8b8a616960fc4a54ad702299260d4643dec"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-017\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "802d4024ecad86425234c69b9161b39a6da9cad941e470ab0dabcc58f47b4cab"
+  },
+  "groups": [
+    {
+      "path": "C:\\csr17",
+      "files": 8747,
+      "logical_bytes": 147826828,
+      "basis": "Exact completed source index; current indexed regular-file metadata only; original SHA pins inherited."
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-017",
+      "files": 16,
+      "logical_bytes": 12030080,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-017",
+      "files": 2,
+      "logical_bytes": 9067,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-017",
+      "files": 3,
+      "logical_bytes": 5092,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-materialize-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 2344,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-bind-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 2352,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-script-freeze-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 1726,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-plan-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 1498,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-docs-prefetch-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 875,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-close-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 7307,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-close-recovery-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 9333,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-draft-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 1787,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-review-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 1837,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-admit-recovery-command-20261011-001",
+      "files": 3,
+      "logical_bytes": 2517,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-storage-sourceonly-20261011-017",
+      "files": 11,
+      "logical_bytes": 49949,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source16-storage-carry-correction-sourceonly-20261011-017",
+      "files": 5,
+      "logical_bytes": 17919,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-root-metadata-author-sourceonly-20261011-001",
+      "files": 10,
+      "logical_bytes": 30012,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-successor-preparation-20261011-001",
+      "files": 6,
+      "logical_bytes": 17498,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-close-binding-20261011-001",
+      "files": 2,
+      "logical_bytes": 8984,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-admit-binding-20261011-001",
+      "files": 2,
+      "logical_bytes": 6959,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-materialize-binding-20261011-001",
+      "files": 1,
+      "logical_bytes": 3746,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-bind-binding-20261011-001",
+      "files": 1,
+      "logical_bytes": 3596,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-draft-binding-20261011-001",
+      "files": 1,
+      "logical_bytes": 3213,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-review-binding-20261011-001",
+      "files": 1,
+      "logical_bytes": 3235,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-carry-recovery-sourceonly-20261011-001",
+      "files": 7,
+      "logical_bytes": 25829,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-close-recovery-sourceonly-20261011-001",
+      "files": 6,
+      "logical_bytes": 33209,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-successor-sourceonly-20261011-001",
+      "files": 7,
+      "logical_bytes": 31348,
+      "basis": "Bounded metadata only; no body hash."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-root-execute-phase-20261011-001.py",
+      "files": 1,
+      "logical_bytes": 5428,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-root-execute-phase-20261011-001.py",
+        "bytes": 5428,
+        "sha256": "c8c9c157b34d1a2ac23a9297952c68796d1256098b683f1dfbb8cb96a8cfd8f4"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-admit-inputs-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 1842,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-admit-inputs-20261011-001.actual.json",
+        "bytes": 1842,
+        "sha256": "0bfa825a3d9db231c8389c164e961767f7135043faf27a599dfbcb771786e5ec"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-materialize-inputs-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 388,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-materialize-inputs-20261011-001.actual.json",
+        "bytes": 388,
+        "sha256": "8603d2f8447bbba3752c656467f36254bbe500efe1a52873819d37427f8da603"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-bind-inputs-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 365,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-bind-inputs-20261011-001.actual.json",
+        "bytes": 365,
+        "sha256": "cfbfeedd3e94e5acf1a11ed13cfcf7a516044e53847ca74784675f065e22bf55"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-draft-inputs-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 366,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-draft-inputs-20261011-001.actual.json",
+        "bytes": 366,
+        "sha256": "6b20df4ce7003763a00b6272566383d82ebed7aabe304e529f7285986c3379b0"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-review-inputs-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 888,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-review-inputs-20261011-001.actual.json",
+        "bytes": 888,
+        "sha256": "269ebf869d58293aedf04f5fe485d90ac74368259e5454ca0c5f1c1cf46d9cd1"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-close-inputs-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 5691,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-close-inputs-20261011-001.actual.json",
+        "bytes": 5691,
+        "sha256": "2346288500f965cf50918fe1acca330b0cb5a5425ea5c1d2d17fcd5ced3b0fc2"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-admit-author-result-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 1183,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-admit-author-result-20261011-001.actual.json",
+        "bytes": 1183,
+        "sha256": "c94e6f651eba4e793e2420dd405d18ba8a21141414a80a67c6f0973dcda8d9be"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-materialize-author-result-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 982,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-materialize-author-result-20261011-001.actual.json",
+        "bytes": 982,
+        "sha256": "eed2b3d84cb00e2940b19760794ba181605c2a18a30dc30997cd37b39968fe55"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-bind-author-result-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 954,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-bind-author-result-20261011-001.actual.json",
+        "bytes": 954,
+        "sha256": "674c9a99e47c444e1b2e22f1e0ba23e794a7253f6405e4db584f76b029599d22"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-draft-author-result-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 982,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-draft-author-result-20261011-001.actual.json",
+        "bytes": 982,
+        "sha256": "a6ddcc367446517b719156bcd6ab530bc836eff83eaedacb576c41692f15e2c1"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-review-author-result-20261011-001.actual.json",
+      "files": 1,
+      "logical_bytes": 1011,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-cache-review-author-result-20261011-001.actual.json",
+        "bytes": 1011,
+        "sha256": "84e17aeeb7bd12913c6ae2bbc29636b5527e8f1985c95a7a4bc1fccbada79107"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-preparation-commit-message-20261011-001.txt",
+      "files": 1,
+      "logical_bytes": 256,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-preparation-commit-message-20261011-001.txt",
+        "bytes": 256,
+        "sha256": "73f374ef989487dcbc712ba97d51d22a85a7e9dc9f908c58cc316f6527744c8f"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-root-close-recovery-execute-20261011-001.py",
+      "files": 1,
+      "logical_bytes": 1237,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-root-close-recovery-execute-20261011-001.py",
+        "bytes": 1237,
+        "sha256": "d5bf9d6f376e65af6c0252a8509abcf51d82853a4113a29811555ebeba9a437e"
+      }
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-root-close-recovery-execute-20261011-002.py",
+      "files": 1,
+      "logical_bytes": 1672,
+      "basis": "Exact bounded small receipt",
+      "pin": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-root-close-recovery-execute-20261011-002.py",
+        "bytes": 1672,
+        "sha256": "ba9d1e2f23cfbb695a52e2b7cd2dd0d6e64eb8877c0990023864f5c7ca582122"
+      }
+    }
+  ],
+  "metadata_entries": 9290,
+  "metadata_elapsed_seconds": 1.8537121000117622,
+  "known_retained_logical_bytes": 160161385,
+  "allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "whole_project_logical_or_allocated_bytes_or_null": null,
+  "unenumerated_small_actual_bytes_or_null": null,
+  "inherited_small_upper_bounds_already_charged_no_addition": true,
+  "closing_outputs_actual_bytes_or_null": null,
+  "closing_outputs_upper_bound_bytes": 1048576,
+  "O17_Git_and_recovery_blobs_charged_once_inside_metadata_root": true,
+  "successor_git_bytes_not_added_again": 8815252,
+  "full_source_PE_or_save_body_hashing": false,
+  "focused_process_helper_source_pin_read": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "full_project_or_old_tree_scan": false,
+  "available_bytes_before": 619536699392,
+  "available_bytes_after": 619536699392,
+  "free_change_attributable_to_this_close_or_null": null,
+  "physical_deleted_bytes": 0
+}

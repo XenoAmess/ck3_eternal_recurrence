@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-r53-retirement-workflows-sourceonly-20261011-001\\serial_retirement.py",
+    "--scope",
+    "r53",
+    "--phase",
+    "plan",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-r53-retirement-workflows-sourceonly-20261011-001\\r53-mutable-cache-retirement-bind-plan.actual-request.json",
+    "--sha256",
+    "85d78cc06781055ca6c34d45e750c376c3a887db0f10d739813dc8c5d1a7695c"
+  ],
+  "started_at_utc": "2026-10-11T07:44:01.522829+00:00",
+  "finished_at_utc": "2026-10-11T07:44:15.577610+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-plan-command-20261011-001\\stdout.log",
+    "bytes": 265,
+    "sha256": "8160c3c132fec3f34a99b0285a73269a6dbf01526e39f4ba4913336962d77039"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-plan-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_subprocess_wait": true
+}

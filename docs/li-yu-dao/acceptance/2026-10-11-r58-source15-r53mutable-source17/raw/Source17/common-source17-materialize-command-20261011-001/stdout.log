@@ -1,0 +1,10 @@
+{
+  "receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-017\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 10659,
+    "sha256": "06e49440d035e49c9b914ae4ff4c0ba39adc353290a0852a95c919d22bcd1251"
+  },
+  "derived_source_commit": "b12c466f6d308a745275a0d0911aededca3840e4",
+  "published_source_commit": "4c12fce400b204361f686dd86ab056c7d4120f3a",
+  "native_build_source_commit": "05717072b70d4925f10b3d523b6663d2db89d791"
+}

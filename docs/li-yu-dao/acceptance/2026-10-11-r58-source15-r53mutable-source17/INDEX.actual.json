@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.retirement-runtime-permanent-index.v1",
+  "at_utc": "2026-10-11T08:08:34.474800+00:00",
+  "status": "READY_FOR_ROOT_IMPORT",
+  "facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-source15-r53mutable-source17-permanent-candidate-20261011-001\\FACTS.actual.json",
+    "bytes": 54203,
+    "sha256": "f7bc5b567a85c33d6c2ad6828df83d097acef2efb76919330df15ca7a129ca5d",
+    "archive_relative_path": "FACTS.actual.json"
+  },
+  "topic": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-source15-r53mutable-source17-permanent-candidate-20261011-001\\TOPIC.zh.md",
+    "bytes": 3739,
+    "sha256": "071ce1a692c4e8b53d3b9c0e1dd6b869db2c52733c19dd8bcae47493a6693a16"
+  },
+  "original_raw_files": 79,
+  "original_raw_bytes": 250578,
+  "raw_mapping_is_in": "FACTS.actual.json.original_raw_mapping",
+  "author_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-source15-r53mutable-source17-docs-sourceonly-20261011-001\\seal_final.py",
+    "bytes": 18263,
+    "sha256": "e0fa97703e7a1cf686ad8110a53d577e8a9964b843ddb39b507a7596ee2f662e"
+  },
+  "importer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-source15-r53mutable-source17-docs-sourceonly-20261011-001\\import_reviewed_docs.py",
+    "bytes": 5074,
+    "sha256": "2be51856859373a1cddc5a563859321bed23c42ee824e6b860a0d898b4626820"
+  },
+  "final_facts_pending": false,
+  "MAIN_import_executed": false,
+  "business_credit": false,
+  "phase_I": "75% estimate / NOT_GREEN"
+}

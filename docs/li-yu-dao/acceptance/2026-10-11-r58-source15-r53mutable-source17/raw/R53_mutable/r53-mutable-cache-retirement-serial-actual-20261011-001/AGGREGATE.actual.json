@@ -1,0 +1,82 @@
+{
+  "schema": "lyd.source15-r53.retirement-serial-aggregate.v1",
+  "scope": "r53",
+  "at_utc": "2026-10-11T07:45:15.271503+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 7342,
+    "sha256": "1aea56d1c3da4f01bfd94eda11f1d83f935c9841cafcfd585cfc62f05b118380"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\PLAN.actual.json",
+    "bytes": 4010,
+    "sha256": "883cba7f1e593fa961801d968d7cea58d4c5d8baec67ca41074d56922d4c2f54"
+  },
+  "actual_results": [
+    {
+      "stage": "R53_MUTABLE",
+      "batch": 0,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\BATCH-000.actual.json",
+        "bytes": 1681,
+        "sha256": "5743a729eba2269b2c3970d45b05db2c6e6b10f6bb0df38982e1f1667c35050f"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-serial-actual-20261011-001\\R53_MUTABLE-BATCH-000.command.json",
+        "bytes": 1428,
+        "sha256": "5f5fb245a06b16bf510e2a4a6fdd83860cd47a718b1aac4ad4d1014db8a81f66"
+      }
+    },
+    {
+      "stage": "R53_MUTABLE",
+      "batch": 1,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\BATCH-001.actual.json",
+        "bytes": 1684,
+        "sha256": "f7d4013f4d0815fa5ab03614a9f374ab6e1911cd0f3a769996c0f26cb6280f7b"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-serial-actual-20261011-001\\R53_MUTABLE-BATCH-001.command.json",
+        "bytes": 1428,
+        "sha256": "1d983bf4f6538ec91ac8eaaf80f156d8362ca3ed6babeeebe2b3310ae1f16b7e"
+      }
+    },
+    {
+      "stage": "R53_MUTABLE",
+      "batch": 2,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\BATCH-002.actual.json",
+        "bytes": 1684,
+        "sha256": "5a9ebf7117494e0f2142e2ec0f917d32238406771c764ad0cc88d3b11dfd19ba"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-serial-actual-20261011-001\\R53_MUTABLE-BATCH-002.command.json",
+        "bytes": 1428,
+        "sha256": "ef89e25053c2361fdb84419621ad73fc223575a7fb1ffdaaa5a4d196d667be1a"
+      }
+    },
+    {
+      "stage": "R53_MUTABLE",
+      "batch": 3,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\BATCH-003.actual.json",
+        "bytes": 1682,
+        "sha256": "4afe0910d54f1ccec8ac5b5b47067f66f37700dbc326972797afa8cde24aec2e"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-serial-actual-20261011-001\\R53_MUTABLE-BATCH-003.command.json",
+        "bytes": 1428,
+        "sha256": "cd9b97202d8e47ae501109df3d52f1b6fa98e6ba30f8775ba0185d6173f1cec3"
+      }
+    }
+  ],
+  "deleted_files": 3728,
+  "logical_deleted_bytes": 145991635,
+  "all_complete": true,
+  "failure": null,
+  "stopped_no_further_writes": true,
+  "old_credit_repeated": false,
+  "retained_original_deadlines_not_extended": true,
+  "unreported_partial_deletion_is_not_credited": true,
+  "business_credit": false
+}

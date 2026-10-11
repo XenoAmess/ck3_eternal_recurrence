@@ -1,0 +1,152 @@
+{
+  "schema": "lyd.source15-r53.retirement-serial-aggregate.v1",
+  "scope": "source15",
+  "at_utc": "2026-10-11T07:43:10.646109+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 9716,
+    "sha256": "757f3e6b2c39c13574555ccf2b93108a836243d20b2a8b3bf763d2ef3333e554"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-held-plan-20261011-001\\PLAN.actual.json",
+    "bytes": 2284,
+    "sha256": "a740db7faf6db708731400787becac6e158e832a89f231ad80a166a665db97d5"
+  },
+  "actual_results": [
+    {
+      "stage": "SOURCE15",
+      "batch": 0,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-000\\RESULT.actual.json",
+        "bytes": 2139,
+        "sha256": "7d794f1e173da983a09ef2d1a213f1fa3b54c3f4c4e8d1c86f9e7c1e10d93572"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-000.command.json",
+        "bytes": 1829,
+        "sha256": "576c3527eed684a76075dbe4d1b848d51397eeb9c762f3fd4632893d156557a9"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 1,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-001\\RESULT.actual.json",
+        "bytes": 2144,
+        "sha256": "c8738560094f462102e6521ed2a9d625622034d8279528ad939753b3a0e72aa9"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-001.command.json",
+        "bytes": 1829,
+        "sha256": "f1bde9325107d406d21df137b00505e9c8663c9dd79d844a6c7e7d7935ba5d75"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 2,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-002\\RESULT.actual.json",
+        "bytes": 2144,
+        "sha256": "0626a4af8cf54457b5ecc481c7395296095ce4a0313937a5080ddb957b20d25c"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-002.command.json",
+        "bytes": 1829,
+        "sha256": "1a6f92813291b576cf77330a8348eea9eeb6589a4051f143513c019cae18e24f"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 3,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-003\\RESULT.actual.json",
+        "bytes": 2146,
+        "sha256": "f2969cd44238f338d70655f14d3330dfbe45b25978201978379ab4db740fc9f0"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-003.command.json",
+        "bytes": 1829,
+        "sha256": "9c400a0b7653d96fd3454246f3824d00b508cd21436b7bb1e9a94b4e0220f40c"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 4,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-004\\RESULT.actual.json",
+        "bytes": 2146,
+        "sha256": "1014a82dbec2c87fd987a00e0a8e4a3f435ad740f5b97dc6c0981754e0950027"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-004.command.json",
+        "bytes": 1829,
+        "sha256": "02924c0c43ab75037bdeacd3d3d1de6e6b0ac14f235909621a1a2c976b00b01b"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 5,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-005\\RESULT.actual.json",
+        "bytes": 2146,
+        "sha256": "5575aa329ce7811b4e5975dfbb7d1b405f2dc4336350a784ed3d414c7a04ea38"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-005.command.json",
+        "bytes": 1829,
+        "sha256": "84d3f7f9656ae716985908da3451c5e514d67ae46c1b351e235a872136b36674"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 6,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-006\\RESULT.actual.json",
+        "bytes": 2146,
+        "sha256": "7676a8c893611712c6e12dcf51dadf78b716a8fa6ae827f9308069f8c24140ad"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-006.command.json",
+        "bytes": 1829,
+        "sha256": "805f6a262c45903dc4d65628758440498e84ee5813b3ecc52d283a2a3c29fd38"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 7,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-007\\RESULT.actual.json",
+        "bytes": 2146,
+        "sha256": "67cacf227154621d0eeafa9dcd0e74e418ab59eda06d2b454c4df9566ac6be26"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-007.command.json",
+        "bytes": 1829,
+        "sha256": "07a0e3d3365c9d930125c0002bb3232e2a8a6806f0e398fd1d131306644496af"
+      }
+    },
+    {
+      "stage": "SOURCE15",
+      "batch": 8,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001-batch-008\\RESULT.actual.json",
+        "bytes": 2144,
+        "sha256": "1ec2c380d1a8011d25ca170f2a42bd9af76a6892670308be8585aa4d277957bb"
+      },
+      "command": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-serial-actual-20261011-001\\SOURCE15-BATCH-008.command.json",
+        "bytes": 1829,
+        "sha256": "a48d4655880e07c850ee4af5a5c81bd3dc087253fc64d2d0143291f6c1d60a58"
+      }
+    }
+  ],
+  "deleted_files": 8746,
+  "logical_deleted_bytes": 147550914,
+  "all_complete": true,
+  "failure": null,
+  "stopped_no_further_writes": true,
+  "old_credit_repeated": false,
+  "retained_original_deadlines_not_extended": true,
+  "unreported_partial_deletion_is_not_credited": true,
+  "business_credit": false
+}

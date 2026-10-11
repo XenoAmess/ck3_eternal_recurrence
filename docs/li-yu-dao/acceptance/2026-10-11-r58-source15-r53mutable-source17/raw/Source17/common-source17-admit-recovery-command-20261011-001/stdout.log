@@ -1,0 +1,1 @@
+{"admission": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-017\\ADMISSION.actual.json", "bytes": 7743, "sha256": "7c12c9c74edcaa821e2d252854d05846de923517076f903027e96fc01324613a"}, "usage_plus_peak_bytes": 135236926820, "quota_spare_bytes": 2202026652, "fresh_free_bytes": 619717283840, "required_free_bytes": 32413581312}

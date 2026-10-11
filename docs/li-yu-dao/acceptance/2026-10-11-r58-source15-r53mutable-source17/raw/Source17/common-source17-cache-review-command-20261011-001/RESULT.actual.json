@@ -1,0 +1,35 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-case6-cache-root-sourceonly-20261011-001\\prepare_python_review.py",
+    "--tools-dir",
+    "C:\\csr17\\tools",
+    "--seed-manifest",
+    "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\manifest.json",
+    "--target-runtime",
+    "C:\\workspace\\ck3-common-runtime\\20261011-017\\runtime.local.json",
+    "--output",
+    "C:\\workspace\\ck3-common-runtime\\20261011-017\\REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+    "--reviewer",
+    "/root",
+    "--direct-reviewed"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T07:59:05.515055+00:00",
+  "finished_at_utc": "2026-10-11T07:59:06.244151+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-review-command-20261011-001\\stdout.log",
+    "bytes": 451,
+    "sha256": "591ee7ee978f79a8f21f6b22a0d74e6e18abc57911df1b021c3d4d1ca72aec43"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-review-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,2 @@
+{"stage": "plan", "exit_code": 0}
+{"plan_phase": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-profile-base-cache-serial-actual-20261011-001\\PLAN-PHASE.actual.json", "bytes": 622, "sha256": "b38ba1fb4a04f512803a41546d547dc66ebab150818bdac0374adda74956b638"}, "actual_deletions": 0, "apply_requires_fresh_ROOT_reviews": true}

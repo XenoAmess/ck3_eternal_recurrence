@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-close-recovery-sourceonly-20261011-001\close_source17_recovery.py", line 27, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-close-recovery-sourceonly-20261011-001\close_source17_recovery.py", line 24, in main
+    runpy.run_path(str(CLOSER), run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-close-recovery-sourceonly-20261011-001\close_source017.py", line 243, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-close-recovery-sourceonly-20261011-001\close_source017.py", line 145, in main
+    groups = [indexed_source(measure, source_index, successor['source_payload_bytes']), *(measure.tree(root) for root in roots)]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-close-recovery-sourceonly-20261011-001\close_source017.py", line 145, in <genexpr>
+    groups = [indexed_source(measure, source_index, successor['source_payload_bytes']), *(measure.tree(root) for root in roots)]
+                                                                                          ~~~~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-storage-closure-sourceonly-20261011-006-002\close_common_storage.py", line 141, in tree
+    self.directory(root);count=logical=0
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-storage-closure-sourceonly-20261011-006-002\close_common_storage.py", line 122, in directory
+    require(path==path.resolve() and stat.S_ISDIR(self.stat(path).st_mode),'Noncanonical metadata root/parent')
+                                                  ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-storage-closure-sourceonly-20261011-006-002\close_common_storage.py", line 117, in stat
+    self.entries+=1;self.budget();info=path.stat(follow_symlinks=False)
+                                       ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-successor-preparation-sourceonly-20261011-001'

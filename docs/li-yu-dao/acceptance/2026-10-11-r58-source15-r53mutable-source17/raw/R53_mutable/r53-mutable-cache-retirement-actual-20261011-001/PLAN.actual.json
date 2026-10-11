@@ -1,0 +1,86 @@
+{
+  "schema": "ck3-r53-mutable-cache-exact-native-plan-v1",
+  "at_utc": "2026-10-11T07:44:15.496429+00:00",
+  "executor": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\delete_exact_profile_base_cache.py",
+    "bytes": 27869,
+    "sha256": "9d66108b66b62f6783b90b6e1e5add12f0a057248331dfee8ad998d5fb690fc1"
+  },
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\manifest.json",
+    "bytes": 687704,
+    "sha256": "a1fab6e0e92e4a8ea394d6e85e365f5c6be619e87d4f2c16b7ed9d2623cebe06"
+  },
+  "closed_context": {
+    "candidate": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\CACHE-CANDIDATE.source-only.json",
+      "bytes": 1500,
+      "sha256": "2a5f26c24d9d6141d7611e516bbd50f25192278b35072858acf56514a6acacd7"
+    },
+    "assessment": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r52-r53-mutable-cache-current-metadata-assessment-20261011-001.json",
+      "bytes": 5022,
+      "sha256": "2cbdd373643742ee9625d034ff2ad3491a748c75fde61a199bc60431d3f96ad6"
+    },
+    "R54_closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-008\\CLOSED-RESERVATION.actual.json",
+      "bytes": 6414,
+      "sha256": "87f9756d18edd0d0b48f007be7799090b11ab3d4d573f7979e832936a23a5876"
+    },
+    "stage_closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\CLOSED-RESERVATION.actual.json",
+      "bytes": 6122,
+      "sha256": "451d98812b72e14b8a77215bfaff1968a5c2c5d18d207e02f6198a774e5fb442"
+    },
+    "original_seed": {
+      "path": "C:/workspace/ck3-common-runtime/graphics-seeds/lyd-r52-20261011-001/manifest.json",
+      "bytes": 687642,
+      "sha256": "df8eaf809648214e3ba1d6593365d29694daeb78be8f0dec6b8f6ddf556e517c"
+    },
+    "freeze": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-public-inputs-20261011-006\\FREEZE.actual.json",
+      "bytes": 1248,
+      "sha256": "534ce0ef4251b606aca17bd6bda820ce2a490402226b35fed23fea24ddb70613"
+    },
+    "freeze_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-r54-cache-freeze-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1309,
+      "sha256": "acc383d1088cce7a0891847353ae6b81eceb4a829b4132eb4aef0079b33fe9a3"
+    },
+    "freeze_origin": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-case6-cache-root-sourceonly-20261011-001\\ORIGIN.candidate.json",
+      "bytes": 2144,
+      "sha256": "549677144c5a972e86441c9acdfa43cd6cd25c8ed8db1886ccd7ea40988b8e11"
+    }
+  },
+  "target_root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-expiry-20261011-004\\state\\profile\\shadercache",
+  "source_root": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\shadercache",
+  "target_root_identity": {
+    "volume_serial": 11439297576789895419,
+    "file_id": "ff112e00000003000000000000000000",
+    "legacy_file_id": 844424933151231
+  },
+  "source_root_identity": {
+    "volume_serial": 11439297576789895419,
+    "file_id": "2cc82e00000001000000000000000000",
+    "legacy_file_id": 281474979776556
+  },
+  "identities": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-actual-20261011-001\\IDENTITIES.plan.jsonl",
+    "bytes": 1796855,
+    "sha256": "d766ceacc86e0553611c49423687d3215658addbe7adeb7167fb30fad2950b69"
+  },
+  "count": 3728,
+  "logical_bytes": 145991635,
+  "max_batch": 1000,
+  "batches": 4,
+  "metadata_objects_including_parent_guards": 74574,
+  "elapsed_seconds": 13.326407199987443,
+  "body_reads_or_deletion": false,
+  "metadata_birth_mtime_preserved": true,
+  "original_review_unchanged": "2026-10-17T13:06:29.278808+00:00",
+  "protection_release": "PROPOSED_ONLY_ROOT_FRESH_APPLY_REVIEW_REQUIRED",
+  "byte_equality": "UNKNOWN_NOT_HASHED",
+  "actual_reclaimed_bytes": 0,
+  "prior_five_SAVE_or_R52_credit_repeated": false
+}

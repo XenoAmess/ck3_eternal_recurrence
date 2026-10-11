@@ -1,0 +1,50 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import hashlib,importlib.util,runpy,sys\nfrom pathlib import Path\nfor name,size,sha in [('C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source17-storage-sourceonly-20261011-017\\\\admit_source17.py', 14420, '42d00ff72958ca8b9db7db196b50da98dc9cea80256250eb7693a533a1696c51'), ('C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source17-storage-sourceonly-20261011-017\\\\volume_guards.py', 1236, 'a493dfb774de80150d001f466ced05b3785702360f319ae29fc52a2d507770f0'), ('C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source16-storage-carry-correction-sourceonly-20261011-017\\\\committed_carry.py', 9430, '1df3062524fbf7f330af19bae5eef41a1bbaca38dd89fb584c4265a4fcc1a45e')]:\n raw=Path(name).read_bytes()\n if len(raw)!=size or hashlib.sha256(raw).hexdigest()!=sha:raise RuntimeError(\"Frozen admission import changed\")\nsys.path.insert(0,'C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source17-storage-sourceonly-20261011-017')\nspec=importlib.util.spec_from_file_location(\"committed_carry\",'C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source16-storage-carry-correction-sourceonly-20261011-017\\\\committed_carry.py')\nmodule=importlib.util.module_from_spec(spec);sys.modules[\"committed_carry\"]=module;spec.loader.exec_module(module)\nsys.argv=['C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source17-storage-sourceonly-20261011-017\\\\admit_source17.py']+sys.argv[1:]\nrunpy.run_path('C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\common-source17-storage-sourceonly-20261011-017\\\\admit_source17.py',run_name=\"__main__\")\n",
+    "--inputs",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source17-ROOT-admit-binding-20261011-001\\ROOT-INPUTS.actual.json",
+    "--inputs-sha256",
+    "efec9f798e0eef68ecf59ef1a78379b53de129b3212cdb728642d722af6881c3",
+    "--confirm-single-root-writer",
+    "--other-unspent-reservations-bytes",
+    "0",
+    "--paths-manifest-bytes",
+    "8698",
+    "--paths-manifest-sha256",
+    "ad2a919685be82e4b761a76d988aacd75d79885ac22f4c5225839ad11f71a519",
+    "--producer-bytes",
+    "1885",
+    "--producer-sha256",
+    "7c5a1cbd294235fe9c004d5c2a18c6c70d94837f7509676515e9c356c5f2899f",
+    "--planned-command-root",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-materialize-command-20261011-001",
+    "--planned-command-root",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-bind-command-20261011-001",
+    "--planned-command-root",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-draft-command-20261011-001",
+    "--planned-command-root",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-cache-review-command-20261011-001",
+    "--planned-command-root",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source17-close-command-20261011-001"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T07:45:31.015587+00:00",
+  "finished_at_utc": "2026-10-11T07:45:31.219245+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-017\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-command-20261011-017\\stderr.log",
+    "bytes": 1464,
+    "sha256": "5915e1d3b45b48bfe745e7cfc2c9cf30f0c66f06fbb0022c726582f2de5a8c0d"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r58-retirement-workflow-sourceonly-20261011-001/close_r58.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r58-retirement-workflow-sourceonly-20261011-001/CLOSE-REQUEST.actual.json",
+    "--sha256",
+    "9b41dd481e1f00462948c70d661840f6523e8166d30aedb9eb9a075fb1073601"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T07:30:26.059502+00:00",
+  "finished_at_utc": "2026-10-11T07:30:28.931941+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-retirement-close-command-20261011-001\\stdout.log",
+    "bytes": 451,
+    "sha256": "bf4c3b20dbc0a1faef10826f0323ebdca4a3b3df49602280025942e98ec76c93"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-retirement-close-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

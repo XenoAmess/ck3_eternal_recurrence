@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-storage-sourceonly-20261011-017\close_source017.py", line 242, in <module>
+    main()
+    ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-storage-sourceonly-20261011-017\close_source017.py", line 123, in main
+    need(all(root in (META, ADMIT, B/'common-storage-admission-command-20261011-017') or
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         root.parent == B and root.name.startswith(('common-source17-', 'source17-')) for root in roots),
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         'Only explicit current common/source17 receipt children; never B recursively')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-source17-storage-sourceonly-20261011-017\volume_guards.py", line 10, in need
+    if not value:raise RuntimeError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Only explicit current common/source17 receipt children; never B recursively

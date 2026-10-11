@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-r53-retirement-workflows-sourceonly-20261011-001\\serial_retirement.py",
+    "--scope",
+    "source15",
+    "--phase",
+    "plan",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-r53-retirement-workflows-sourceonly-20261011-001\\source15-retirement-bind-plan.actual-request.json",
+    "--sha256",
+    "822e877929468e12b79aed076d7adc497373ecb3d89b0066794e3241ba56e3a1"
+  ],
+  "started_at_utc": "2026-10-11T07:41:10.021332+00:00",
+  "finished_at_utc": "2026-10-11T07:41:10.487718+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-plan-command-20261011-001\\stdout.log",
+    "bytes": 256,
+    "sha256": "0597f6d4d2e57c9f9f3a2534b45ec926dcc54b2254348186b3b186c0f3dd7cc2"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-plan-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_subprocess_wait": true
+}

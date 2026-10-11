@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-r53-retirement-workflows-sourceonly-20261011-001\\admit_r53.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-r53-retirement-workflows-sourceonly-20261011-001\\r53-mutable-cache-retirement-bind-admit.actual-request.json",
+    "--sha256",
+    "bd6d5958b5002c9b06a6fb4bffcc497cb15601e7df6760d26a8e088d45276295"
+  ],
+  "started_at_utc": "2026-10-11T07:44:00.959081+00:00",
+  "finished_at_utc": "2026-10-11T07:44:01.364733+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-admit-command-20261011-001\\stdout.log",
+    "bytes": 398,
+    "sha256": "b282d1a2fc9a18c14ef9d437a63183bf025ce22c59272fde37f1aedd9415c4ed"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-mutable-cache-retirement-admit-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_subprocess_wait": true
+}

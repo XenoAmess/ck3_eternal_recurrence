@@ -1,0 +1,9 @@
+{"stage": "saves", "exit_code": 0}
+{"stage": "cache-0", "exit_code": 0}
+{"stage": "cache-1", "exit_code": 0}
+{"stage": "cache-2", "exit_code": 0}
+{"stage": "cache-3", "exit_code": 0}
+{"stage": "finalize", "exit_code": 0}
+{"aggregate": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-duplicate-inputs-retirement-actual-20261011-001\\AGGREGATE.actual.json", "bytes": 1724, "sha256": "cf7cdb78eca11dcea053ddcf8230bfa26f38530ec84a33abecc5a2ac324f4d1a"}, "event": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-duplicate-inputs-retirement-actual-20261011-001\\CREDIT-EVENT.actual.json", "bytes": 1970, "sha256": "d1c90b4ea8a9cc1e1ca23d20180899d36547c9671b23fc736742a3fdfec5be96"}}
+{"profile_apply_request": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-retirement-workflow-sourceonly-20261011-001\\SERIAL-PROFILE-APPLY.actual.json", "bytes": 1481, "sha256": "409ae4f77aee8e844031beb2bad385009cd4344c8043f49abf0dfdc88035e375"}, "apply_executed": false}
+{"aggregate": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-profile-base-cache-serial-actual-20261011-001\\AGGREGATE.actual.json", "bytes": 3417, "sha256": "639eb53db9a9d42f2b87e48923332fa91f4a18c85faec43d9250458de6ec1dee"}, "credit": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r58-profile-base-cache-serial-actual-20261011-001\\CREDIT-EVENT.actual.json", "bytes": 1817, "sha256": "51333f94a4eedfea2da4fbaa44c91c49c591580a53f0a1a433938bc8686e70b8"}, "all4_complete": true, "logical_actual_only": 146942067, "deleted_files": 3740}

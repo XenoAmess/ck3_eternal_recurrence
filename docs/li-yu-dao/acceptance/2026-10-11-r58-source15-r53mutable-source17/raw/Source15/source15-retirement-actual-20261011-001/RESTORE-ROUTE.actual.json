@@ -1,0 +1,64 @@
+{
+  "schema": "lyd.source15-supplier-restoration-route.v1",
+  "at_utc": "2026-10-11T07:41:09.092793+00:00",
+  "target_root": "C:/csr15",
+  "supplier_root": "C:/csr16",
+  "target_commit": "da388abf331a6042595f7bd614ad49aad6c92180",
+  "supplier_commit": "46a9c039cd011cc574c4d663bef92b695505efbb",
+  "target_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "b796be6a99c1867eca045a601e0f82b68315507ee059ca6197fac3546b291220"
+  },
+  "supplier_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "2f5053e71a37b5b4c5478cbed95b572404fb73dc196343a1382ebf95fae1b4bc"
+  },
+  "supplier_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-016\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 26992,
+    "sha256": "16c330648ecede9c25317a6ae7c9fe2e88fe2a276f4a83316d606cccb6700d73"
+  },
+  "target_original_receipt": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-015\\PYTHON-SUCCESSOR.actual.json",
+    "bytes": 15247,
+    "sha256": "5196f78188f6f7865b46d3ab15d9bcc5f1a6eec3d7d5e738690043d7bb37c365"
+  },
+  "executor": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source15-retirement-actual-20261011-001\\retire_source15.py",
+    "bytes": 17637,
+    "sha256": "871bf91ec93290b179b74d7d1797eb1d7f4e3d46252e4f6fe7a71e57d07fc51f"
+  },
+  "non_host_same_path_entries": 8746,
+  "non_host_logical_bytes": 147550914,
+  "retained_original_host": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+  "original_O15_Git_indices_hosts_and_original_native_provenance_preserved": true,
+  "legacy_tools_covered": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source08-11-retirement-feasibility-readonly-20261011-001\\source08_11_retirement.py",
+      "bytes": 24872,
+      "sha256": "c7272494dd41c4cf0f94c21983047dc517d9135f96ceb93fba6d5830e6e258a8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source12-14-exact-retirement-sourceonly-20261011-001\\retire_source12_14.py",
+      "bytes": 17537,
+      "sha256": "e2fbba6c1bf533c89fd8d4928cddf3294aad4e3fe78b5e38803bf75cd72e8a2e"
+    }
+  ],
+  "restore_chain": [
+    "Before any historical old supplier consumption, independently admit the exact restoration peak.",
+    "ROOT uses this executor restore-batch for all missing selected Csr15 non-host members, source Csr16 same relative_path/bytes/SHA; existing files must match, no overwrite.",
+    "After exact Csr15 supply-layer restoration, original Source08-14 tools and original pinned inputs remain usable without rewriting their history."
+  ],
+  "restoration_additional_payload_upper_bytes": 147550914,
+  "per_batch_extra_peak_bytes": 2097152,
+  "availability_before_retirement": "CURRENT_ORIGINAL_NOT_YET_RETIRED",
+  "availability_after_successful_retirement": "SELECTED_SUPPLIER_MEMBERS_RESTORE_REQUIRED",
+  "original_recipes_modified": false,
+  "automatic_restore": false,
+  "actual_restored_bytes": 0,
+  "actual_deleted_bytes": 0,
+  "metadata_same_path_identity_only_not_body_SHA_qualification": true,
+  "old_source_review_unchanged": "2026-10-17T19:32:25.249949+00:00"
+}
