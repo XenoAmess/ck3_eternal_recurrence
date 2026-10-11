@@ -803,7 +803,8 @@ class GameplayBridgeService:
         # the filtered copy.
         if state_dir is not None:
             legacy_records = [record for record in result.get("records", [])
-                              if record.get("source_branch") != "authored_sway_complete_100_source"]
+                              if record.get("source_branch") in {
+                                  "hidden_phase_success_source", "hidden_phase_failure_source"}]
             if legacy_records:
                 record_sway_phase_observation(
                     Path(state_dir), execution_read={**result, "records": legacy_records})

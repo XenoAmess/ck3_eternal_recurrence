@@ -3688,3 +3688,20 @@ before any610 request. Preserve600 and resume from that response with the origin
 R98 520 JSON; do not replay600. The corrected recipe is NOT executed because the
 owner now prohibits local CK3 use. UnicodeDecodeError repr included the save bytes
 in the original failed logs; use bounded reads when inspecting those originals.
+
+
+## Owner testing cancellation: automatic remote CI corrected
+
+Recorded 2026-10-11T06:40:41.371973+00:00. Local Root/worker imports, tests, compilation and game operations
+remained stopped. However, ordinary pushes automatically triggered the existing
+Official Runner CI; earlier source-report zero-operation counts describe local
+execution only, and must not be read as absence of remote automatic workflows.
+Root requested cancellation of the two still-running own source runs
+[38118451732](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38118451732)
+and [38118369510](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38118369510);
+both cancel requests were accepted. Earlier automatic runs were already completed.
+No result/log was read and none was used to qualify the new G2 sources. Subsequent
+source commits include `[skip ci]`; no workflow configuration was changed.
+[Cancellation receipt](D:/codex-ck3-background-spill/native71-continuation-20261010/ROOT-AUTOMATIC-CI-CANCELLATION-20261011.json).
+Native84/fullSDK84 remain compiled594, and source additions remain research /
+SOURCE_ADOPTED_NOT_RUN. No new Game query, input, days or SAVE was performed.

@@ -27,6 +27,7 @@ enum class SwayExecutionSourceBranch12002 {
   hidden_phase_success_source,
   hidden_phase_failure_source,
   authored_sway_complete_100_source,
+  authored_sway_invalidated_title_source,
 };
 enum class SwayExecutionCaptureResult12002 {
   ignored,

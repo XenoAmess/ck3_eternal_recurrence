@@ -328,6 +328,7 @@ const char *SwayExecutionBranchKey12002(SwayExecutionSourceBranch12002 branch) n
   case SwayExecutionSourceBranch12002::hidden_phase_success_source: return "hidden_phase_success_source";
   case SwayExecutionSourceBranch12002::hidden_phase_failure_source: return "hidden_phase_failure_source";
   case SwayExecutionSourceBranch12002::authored_sway_complete_100_source: return "authored_sway_complete_100_source";
+  case SwayExecutionSourceBranch12002::authored_sway_invalidated_title_source: return "authored_sway_invalidated_title_source";
   default: return "none";
   }
 }
@@ -350,7 +351,9 @@ std::string SerializeSwayCompletionExecution12002(const SwayExecutionQueryResult
     if (!first) out << ',';
     first = false;
     const auto &source = record.source;
-    const bool complete = source.branch == SwayExecutionSourceBranch12002::authored_sway_complete_100_source;
+    const bool authored_toast =
+        source.branch == SwayExecutionSourceBranch12002::authored_sway_complete_100_source ||
+        source.branch == SwayExecutionSourceBranch12002::authored_sway_invalidated_title_source;
     out << "{\"sequence\":" << record.sequence << ",\"date_raw\":" << source.date_raw
         << ",\"actor_character_id\":" << source.actor_character_id
         << ",\"target_character_id\":" << source.target_character_id
@@ -358,16 +361,16 @@ std::string SerializeSwayCompletionExecution12002(const SwayExecutionQueryResult
         << ",\"scheme_instance_generation\":" << (source.scheme_id >> 24)
         << ",\"source_branch\":\"" << SwayExecutionBranchKey12002(source.branch)
         << "\",\"stock_event\":";
-    if (complete) out << "null";
+    if (authored_toast) out << "null";
     else out << '\"' << (source.branch == SwayExecutionSourceBranch12002::hidden_phase_success_source ?
         "sway_outcome.0001" : "sway_outcome.0002") << '\"';
     out << ",\"executing_input_observed\":true,\"exact_scope_join_ready\":true,\"phase_result\":";
-    if (complete) out << "null";
+    if (authored_toast) out << "null";
     else out << '\"' << (source.branch == SwayExecutionSourceBranch12002::hidden_phase_success_source ?
         "success" : "failure") << '\"';
     out << ",\"message_enqueue_observed\":false,\"material_effect_observed\":false"
         << ",\"native_terminal_state_observed\":false";
-    if (complete) {
+    if (authored_toast) {
       const auto &stamp = record.native_invocation;
       out << ",\"native_invocation\":{\"observer_session_identity\":" << stamp.observer_session_identity
           << ",\"owner_thread_id\":" << stamp.owner_thread_id

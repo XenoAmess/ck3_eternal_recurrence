@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_sway_execution.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/sway_complete_branch_12004.hpp"
+#include "xar_bridge/sway_invalidation_branch_12004.hpp"
 #include "xar_bridge/sway_child_end_causal_path_12004.hpp"
 #include "xar_bridge/sway_completion_causal_observer_12004.hpp"
 
@@ -48,6 +49,24 @@ void Invoke(std::size_t index, const void *effect, const void *context) {
       source.root = complete.root; source.owner = complete.owner;
       source.target = complete.target; source.scheme = complete.scheme;
       captured = state->recorder->Append(source, &sequence, &invocation);
+    } else {
+      ck3_12004::SwayInvalidationBranchSource12004 invalidation{};
+      if (ck3_12004::CaptureSwayInvalidationBranch12004(
+              state->bindings, effect, context, invalidation) ==
+          SwayExecutionCaptureResult12002::captured) {
+        SwayExecutionSource12002 source{};
+        source.branch = SwayExecutionSourceBranch12002::authored_sway_invalidated_title_source;
+        source.date_raw = invalidation.date_raw;
+        source.actor_character_id = invalidation.actor_character_id;
+        source.target_character_id = invalidation.target_character_id;
+        source.scheme_id = invalidation.scheme_id;
+        source.root = invalidation.root; source.owner = invalidation.owner;
+        source.target = invalidation.target; source.scheme = invalidation.scheme;
+        (void)state->recorder->Append(source, &sequence, &invocation);
+      }
+      // Stock on_invalidated Toasts contain a reason child, not an end child.
+      // Preserve the nearest-parent barrier; this input cannot arm the proved
+      // completion-parent relation or borrow an outer matching Toast.
     }
     const ck3_12004::SwayToastParentStamp12004 stamp{
         invocation.observer_session_identity, invocation.owner_thread_id,

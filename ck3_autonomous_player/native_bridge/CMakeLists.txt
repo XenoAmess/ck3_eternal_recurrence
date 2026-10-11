@@ -1068,6 +1068,7 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_serializer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_install.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/sway_invalidation_branch_12004.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/sway_completion_causal_observer_12004.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/sway_end_invocation_12004.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/sway_complete_branch_12004.cpp"

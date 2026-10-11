@@ -16,6 +16,7 @@ from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_nat
 
 STEP = "query-sway-completion-execution-v1-private"
 SCHEMA = "xar.ck3.sway-completion-execution.v1"
+INVALIDATION_INPUT_BRANCH = "authored_sway_invalidated_title_source"
 PERMISSION = "allow_private_active_scheme_sway_completion_execution_query"
 _CONTEXT_KEYS = {
     "schema", "available", "unavailable_reason", "read_only", "observer_attached",
@@ -74,8 +75,8 @@ def normalize_active_scheme_sway_completion_execution_v1(
     for record in value["records"]:
         if not isinstance(record, dict) or set(record) not in (_RECORD_KEYS, _RECORD_KEYS | {"native_invocation"}):
             raise ValueError("native sway execution record schema is malformed")
-        complete = record["source_branch"] == COMPLETE_BRANCH
-        branch = (None, None) if complete else _BRANCHES.get(record["source_branch"]) if isinstance(record["source_branch"], str) else None
+        authored_toast = record["source_branch"] in (COMPLETE_BRANCH, INVALIDATION_INPUT_BRANCH)
+        branch = (None, None) if authored_toast else _BRANCHES.get(record["source_branch"]) if isinstance(record["source_branch"], str) else None
         if (not _integer(record["sequence"], 1, 0xFFFFFFFFFFFFFFFF)
                 or not _integer(record["date_raw"], -(1 << 31), (1 << 31) - 1)
                 or not _integer(record["scheme_instance_generation"], 0, 255)
@@ -90,7 +91,7 @@ def normalize_active_scheme_sway_completion_execution_v1(
                 ))):
             raise ValueError("native sway execution record fields are malformed")
         copied = dict(record)
-        if complete:
+        if authored_toast:
             copied["native_invocation"] = normalize_sway_complete_invocation_12004(record.get("native_invocation"), record)
         elif "native_invocation" in record:
             raise ValueError("hidden phase record cannot supply a completion parent")
@@ -135,8 +136,8 @@ def query_active_scheme_sway_completion_execution_private_v1(
             target_character_id=target_character_id, scheme_instance_id=scheme_instance_id,
             after_sequence=after_sequence,
         )
-        if build != CK3_12004 and any(record["source_branch"] == COMPLETE_BRANCH for record in value["records"]):
-            raise ValueError("authored completion parent belongs only to admitted actual4")
+        if build != CK3_12004 and any(record["source_branch"] in (COMPLETE_BRANCH, INVALIDATION_INPUT_BRANCH) for record in value["records"]):
+            raise ValueError("authored Sway Toast input belongs only to admitted actual4")
         if result.get("status") != ("available" if value["available"] else "unavailable"):
             raise ValueError("native sway execution envelope lost its source status")
     except ValueError as error:
