@@ -1,0 +1,40 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\native-src",
+    "--build-dir",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\build-001",
+    "--vs-install",
+    "C:/Program Files/Microsoft Visual Studio/18/Community",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "2",
+    "--target",
+    "lyd_b4_resolve_eh_fixture_12004",
+    "--defender-external-candidate",
+    "lyd-b4-resolve-EH-source008",
+    "--configure",
+    "--build"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T03:31:42.401127+00:00",
+  "finished_at_utc": "2026-10-11T03:31:47.883921+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-build-command-20261011-001\\stdout.log",
+    "bytes": 4468,
+    "sha256": "da54449f53fe31fd5525cf7392b5dbe007726e53158fb252882a3b84cde70f03"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-build-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,5 @@
+EH seq=1 kind=1 tid=13320 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=25af9f2d0
+EH seq=2 kind=6 tid=13320 code=e06d7363 flags=00000001 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=25af9f2d0
+EH seq=3 kind=10 tid=13320 code=e06d7363 flags=00000002 actual=25af9e020 forwarded=25af9e020 scope=0/0 pc=1154ed41010 frame=25af9f2b0 expected=25af9f2d0
+EH seq=4 kind=2 tid=13320 code=e06d7363 flags=00000002 actual=25af9e020 forwarded=25af9e020 scope=0/0 pc=7ff73f04174a frame=25af9f2d0 expected=25af9f2d0
+EH seq=5 kind=3 tid=13320 code=00000000 flags=00000000 actual=25af9e020 forwarded=25af9e020 scope=1/1 pc=7ff73f04174a frame=25af9f2d0 expected=25af9f2d0

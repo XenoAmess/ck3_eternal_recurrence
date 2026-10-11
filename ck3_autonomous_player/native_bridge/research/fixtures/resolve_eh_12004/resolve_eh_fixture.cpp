@@ -33,7 +33,7 @@ bool IsDirect(Mode m) noexcept {return m==Mode::direct || m==Mode::empty_direct;
 bool IsHandlerFree(Mode m) noexcept {return m==Mode::no_language_empty || m==Mode::no_language_active;}
 enum class Kind : unsigned { original_frame=1, handler_entry, cleanup_entry,
     nested_filter, nested_continued, outer_filter, outer_continued,
-    handler_normal_return, handler_validation_failure };
+    handler_normal_return, handler_validation_failure, handler_arrival };
 struct Event {
     unsigned seq{}, kind{};
     DWORD thread{}, code{}, flags{}, scope_actual{}, scope_forwarded{};
@@ -53,6 +53,20 @@ struct State {
     PDISPATCHER_CONTEXT active_actual{}, active_forwarded{};
 };
 thread_local State g{}; // Initialized on the owner thread before any exception.
+
+// Future diagnostic only: original fresh mode stderr is create-only in the runner.
+void PersistEvent(const Event& e) noexcept {
+    char line[512];
+    const int n=std::snprintf(line,sizeof(line),
+        "EH seq=%u kind=%u tid=%lu code=%08lx flags=%08lx actual=%llx forwarded=%llx scope=%lu/%lu pc=%llx frame=%llx expected=%llx\n",
+        e.seq,e.kind,e.thread,e.code,e.flags,e.actual_dc,e.forwarded_dc,
+        e.scope_actual,e.scope_forwarded,e.pc,e.frame,e.expected_frame);
+    DWORD written{};
+    const HANDLE out=GetStdHandle(STD_ERROR_HANDLE);
+    if(n<=0 || n>=static_cast<int>(sizeof(line)) || out==INVALID_HANDLE_VALUE || !out ||
+       !WriteFile(out,line,static_cast<DWORD>(n),&written,nullptr) ||
+       written!=static_cast<DWORD>(n) || !FlushFileBuffers(out)) g.failed=true;
+}
 
 void Record(Kind kind, PEXCEPTION_RECORD er=nullptr,
             PDISPATCHER_CONTEXT actual=nullptr, PDISPATCHER_CONTEXT forwarded=nullptr,
@@ -75,6 +89,7 @@ void Record(Kind kind, PEXCEPTION_RECORD er=nullptr,
         e.target=forwarded->TargetIp; e.history=reinterpret_cast<ULONG64>(forwarded->HistoryTable);
     }
     if (e.thread!=g.owner) g.failed=true;
+    PersistEvent(e); // Persist before a later escaping exception prevents Dump.
 }
 
 int NestedFilter(PEXCEPTION_POINTERS ep) noexcept {
@@ -111,6 +126,13 @@ struct Guard {
 struct PrimaryException { unsigned fixture_marker{0xF005}; };
 __declspec(noinline) void ThrowPrimary() { throw PrimaryException{}; }
 
+// Genuine potentially-throwing C++ observation with no live Guard in its caller.
+// The compiler's actual IP map remains authoritative; Prepare still checks both PCs.
+__declspec(noinline) void ObserveEmptyFrame() {
+    Record(Kind::original_frame);
+    if (g.empty_active_branch == 2) ThrowPrimary(); // Explicit reachability witness only.
+}
+
 __declspec(noinline) void Original() {
     Guard guard;
     CONTEXT context{};
@@ -128,14 +150,14 @@ __declspec(noinline) void OriginalEmpty() {
     { Guard guard; } // Actual cleanup completes before the only marker.
     // A real, opt-in active-cleanup path keeps actual FH4 metadata in this function.
     // The nine ordinary modes leave this volatile input zero and never enter it.
-    if (g.empty_active_branch != 0) {
+    if (g.empty_active_branch == 1) {
         Guard auxiliary;
         ThrowPrimary();
     }
     CONTEXT context{};
     RtlCaptureContext(&context);
     g.expected_original_frame=context.Rsp;
-    Record(Kind::original_frame);
+    ObserveEmptyFrame();
     __nop(); __nop(); __nop(); __nop(); __nop(); __nop(); __nop(); __nop();
     __nop(); __nop(); __nop(); __nop(); __nop(); __nop(); __nop(); __nop();
     ThrowPrimary();
@@ -167,9 +189,13 @@ void RestoreIdentity(PDISPATCHER_CONTEXT d,const Identity& old) noexcept {
 }
 extern "C" EXCEPTION_DISPOSITION __cdecl ForwardOriginal(
     PEXCEPTION_RECORD er,PVOID prefix_frame,PCONTEXT context,PDISPATCHER_CONTEXT actual) {
+    Record(Kind::handler_arrival,er,actual,actual,reinterpret_cast<ULONG64>(prefix_frame));
     DWORD data_rva{};
     std::memcpy(&data_rva,actual->HandlerData,sizeof(data_rva));
-    if(data_rva!=kDataRva) __fastfail(7);
+    if(data_rva!=kDataRva) {
+        Record(Kind::handler_validation_failure,er,actual,actual,reinterpret_cast<ULONG64>(prefix_frame));
+        __fastfail(7);
+    }
     auto* data=reinterpret_cast<HandlerData*>(actual->ImageBase+data_rva);
     const auto prefix=reinterpret_cast<ULONG64>(prefix_frame);
     if (!data || data->magic!=0xB4F0054E41544956 || data->owner!=g.owner ||
@@ -431,10 +457,12 @@ int main(int argc,char** argv) {
     else {std::fputs("unknown exact fixture mode\n",stderr);return 2;}
     // Reachability witness only. It never earns an empty-state PASS and is not in the nine-mode argv.
     if(argc==3) {
-        if(g.mode!=Mode::empty_direct || std::strcmp(argv[2],"--exercise-empty-active-branch")!=0) {
+        if(g.mode!=Mode::empty_direct) {
             std::fputs("auxiliary arm is only explicit empty-direct layout witness\n",stderr);return 2;
         }
-        g.empty_active_branch=1;
+        if(std::strcmp(argv[2],"--exercise-empty-active-branch")==0)g.empty_active_branch=1;
+        else if(std::strcmp(argv[2],"--exercise-empty-frame-throw")==0)g.empty_active_branch=2;
+        else {std::fputs("unknown empty-direct witness\n",stderr);return 2;}
     }
     g.owner=GetCurrentThreadId();
     Installation x{};

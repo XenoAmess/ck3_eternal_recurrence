@@ -1,0 +1,32 @@
+{
+  "schema": "lyd.b4.original-native-mode-command.v1",
+  "argv": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+    "inplace-nested"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\build-001",
+  "started_at_utc": "2026-10-11T03:32:23.283193+00:00",
+  "finished_at_utc": "2026-10-11T03:32:23.368258+00:00",
+  "original_pid": 17152,
+  "actual_original_popen_wait": true,
+  "timeout_seconds": 20,
+  "timed_out": false,
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-native-modes-20261011-001\\inplace-nested\\stdout.log",
+    "bytes": 3767,
+    "sha256": "368008f239df4e4e368c5faca7fe3f7677c1351fece947096ab27a9b32344ffa"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-native-modes-20261011-001\\inplace-nested\\stderr.log",
+    "bytes": 1223,
+    "sha256": "f7c49a730ee637fa56d3271eaa5d16f219c9e2e6c37f39fb01c7359780998456"
+  },
+  "exact_executable": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+    "bytes": 34816,
+    "sha256": "4a942a9e925c98812b5f30dbdff93b3e25a6447548d35ff84af42de46564c37c"
+  },
+  "CK3_called": false,
+  "CK3_installer_qualified": false
+}

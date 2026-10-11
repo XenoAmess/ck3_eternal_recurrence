@@ -1,0 +1,4 @@
+EH seq=1 kind=3 tid=14872 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=0
+EH seq=2 kind=1 tid=14872 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=ca9b8ff550
+EH seq=3 kind=6 tid=14872 code=e06d7363 flags=00000001 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=ca9b8ff550
+EH seq=4 kind=7 tid=14872 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=ca9b8ff550

@@ -1,0 +1,7 @@
+EH seq=1 kind=1 tid=17308 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=b498ff870
+EH seq=2 kind=6 tid=17308 code=e06d7363 flags=00000001 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=b498ff870
+EH seq=3 kind=10 tid=17308 code=e06d7363 flags=00000002 actual=b498fe5c0 forwarded=b498fe5c0 scope=0/0 pc=17f64191010 frame=b498ff850 expected=b498ff870
+EH seq=4 kind=2 tid=17308 code=e06d7363 flags=00000002 actual=b498fe5c0 forwarded=b498fe5c0 scope=0/0 pc=7ff73f04174a frame=b498ff870 expected=b498ff870
+EH seq=5 kind=3 tid=17308 code=00000000 flags=00000000 actual=b498fe5c0 forwarded=b498fe5c0 scope=1/1 pc=7ff73f04174a frame=b498ff870 expected=b498ff870
+EH seq=6 kind=8 tid=17308 code=e06d7363 flags=00000002 actual=b498fe5c0 forwarded=b498fe5c0 scope=1/1 pc=7ff73f04174a frame=b498ff870 expected=b498ff870
+EH seq=7 kind=7 tid=17308 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=b498ff870

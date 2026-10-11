@@ -1,0 +1,1 @@
+{"closed_reservation": {"path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json", "bytes": 3145, "sha256": "e9e2ecdd0b38b07c04c50c88c3fe16556bcc0cb0b3a53632874a176ef9012f97"}, "new_known_retained_bytes": 1364232, "conservative_project_carry_after_close_bytes": 136064394857, "remaining_reserved_peak_bytes": 0}

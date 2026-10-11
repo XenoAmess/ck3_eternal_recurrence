@@ -1,0 +1,114 @@
+{
+  "schema": "lyd-manual-coordinated-storage-admission-v1",
+  "at_utc": "2026-10-11T03:31:00.293621+00:00",
+  "reservation_id": "lyd-b4-EH-fixture-source008-192MiB-20261011-001",
+  "capacity_status": "ALLOC_BUDGET_APPROVED",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "policy": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "machine_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-004\\MACHINE-PROFILE.actual.json",
+    "bytes": 1160,
+    "sha256": "9ce38655d9c835f0db5aaf65d724318dd7db957d0e52e16f1b42b48a2276d109"
+  },
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "previous_closed_reservation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-014\\CLOSED-RESERVATION.actual.json",
+    "bytes": 5517,
+    "sha256": "3ee157d0a203060f0e0fe293dfb3d6aa43c216db7e2810186bb17c474be6f526"
+  },
+  "previous_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-014\\ADMISSION.actual.json",
+    "bytes": 9214,
+    "sha256": "52f9b00e1322912e66197ceb722e51df80af2917f4ed75b5bc7f257db39f0a31"
+  },
+  "actual_previous_close_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case8-close-command-20261011-014-003\\RESULT.actual.json",
+    "bytes": 1156,
+    "sha256": "31d4a02233df93c32df0028aff43dd16a5617ab0eba4bbc25bf72cb3226d9c81"
+  },
+  "actual_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-ROOT-admission.actual-001.json",
+    "bytes": 975,
+    "sha256": "2b2d9e8b48caefac7cfd1f26d09e851b6b3df8f3511bbd1f03041e6d2decf0d3"
+  },
+  "current_reviewed_build_producer": {
+    "path": "C:/workspace/ck3_eternal_recurrence/tools/run_native_msvc.py",
+    "bytes": 12996,
+    "sha256": "6573597b544c658e2281f76c0a2e7a2779f37c8a2c1137d6fe116f52fa1c7881"
+  },
+  "focused_inventory_helper_source_pin": {
+    "path": "C:\\csr12\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 33215,
+    "sha256": "2763c2a8721f8ec6b38e4966c10987395cd1458ee889d699c20347abbde18d31"
+  },
+  "preparation_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-preparation-sourceonly-20261011-001\\INDEX.json",
+    "bytes": 2337,
+    "sha256": "637d59380e68d97af585e3d73abf4878e463ae2ebd8356a5fecbcea867cb308f"
+  },
+  "planned_source_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\native-src",
+  "planned_build_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\build-001",
+  "planned_exact_EXE": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-008\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+  "target": "lyd_b4_resolve_eh_fixture_12004",
+  "configuration": "Release",
+  "jobs": 2,
+  "network_required": false,
+  "current_project_usage_conservative_bytes": 136061982049,
+  "physical_usage_exact": false,
+  "usage_bound_components": {
+    "actual_CASE8_closed_conservative_carry_bytes": 136061962175,
+    "new_preparation_package_exact_bytes_charged_once": 19874,
+    "previous_PATCH_review_source007_added_again_bytes": 0,
+    "new_cleanup_credit_bytes": 0
+  },
+  "this_write_peak_bytes": 201326592,
+  "unspent_reserved_peak_bytes": 201326592,
+  "other_unspent_reservations_bytes": 0,
+  "estimated_peak_components": {
+    "new_source008_materialized_bytes_upper_bound": 65536,
+    "build_objects_link_EXE_temporary_bytes": 167706624,
+    "build_Defender_admission_receipts_bytes": 8388608,
+    "nine_mode_stdout_stderr_actual_bytes": 25165824
+  },
+  "new_source008_bytes_within_peak_charged_once_on_closure": true,
+  "estimated_not_actual_peak": true,
+  "total_volume_bytes": 1023892852736,
+  "available_bytes": 618729054208,
+  "system_growth_reserve_bytes": 10737418240,
+  "safety_margin_bytes": 21474836480,
+  "required_free_bytes": 32413581312,
+  "effective_project_quota_bytes": 137438953472,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "reservation_expires_at_utc": "2026-10-11T07:31:00.293621+00:00",
+  "quota_override_inherited_unchanged_no_renewal": true,
+  "source_review_unchanged_at_utc": "2026-10-17T19:32:25.249949+00:00",
+  "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "existing_source008_review_by_utc": "2026-10-25T00:00:00Z",
+  "copying_renews_original_retention": false,
+  "automatic_renewal": false,
+  "automatic_deletion": false,
+  "writer_rule": "ROOT materialize008/build once; nine original modes once serially; no optional witnesses/CK3.",
+  "coordination_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture008-storage-admission-20261011-001\\COORDINATION.actual.json",
+    "bytes": 1268,
+    "sha256": "ed8e925126cb6a1f6197a677ddd5fd519cfcafb030b3ea7531621e5ffa787824"
+  },
+  "build_executed": false,
+  "Defender_registered": false,
+  "tests_executed": false,
+  "live_or_business_qualification": false
+}
