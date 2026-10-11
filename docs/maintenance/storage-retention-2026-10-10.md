@@ -114,3 +114,9 @@ ROOT 已解除 R46/R47 旧 seed payload 的当前用途保护，条件是保留�
 原屏幕CAS4525实际释放，keeper/allocator原wait0，Steam新鲜离线画面直接审阅、原1024×768显示恢复。预约002实际CLOSED，remaining_reserved_peak_bytes=0，释放4,294,967,296B未来写入预留，不把预留额度当作物理磁盘回收。有限元数据观察到新留存逻辑小计838,105,040B，卷当时空闲622,754,476,032B；小计不是全项目用量，物理分配及历史峰值未知。[实际闭账原件](../li-yu-dao/acceptance/2026-10-10-i4-natural-r51/storage/CLOSED-RESERVATION.actual.json)。
 
 所有输入、当前v2seed、原Oct12配额及Oct17复核期限不续。新Source10/O10和R0051结果已进入有限留存分类；大save/native-report/截图不重复入库，只入小型回执和索引。终态封包触发128KiB限制时保留拒绝，将重复完整public stdout改为外置精确引用，不提高上限。本次闭账无新增删除；此前约12.41GB过期文件的清理保持其原执行记录，不能重复计为新回收。自动GC/自动预约管理器仍未实现。
+
+## 2026-10-11 14:48 UTC：QOL/RMTM R15 生成缓存精确退役
+
+旧unused01在mkdir/STARTED之前因fresh task claim拒绝，实际删除0，失败闭账及原件保留。新02独立预约后，仅删除已消费R15 profile的 `shadercache/dx11/ps_5_0`、`vs_5_0` 精确叶文件：3,780件、4个不超过1,000件的批次、24.6992128s，实际AllocationSize回收157,999,920B；按用途退役，不谎称168h TTL已到。目录保留，旧缓存字节已不可读取；可由保留游戏/正式mod/fixture/profile输入重建新缓存，不能还原历史字节。原native/raw/debug/error/SAVE/非cache/输入快照/正式源继续保护至2026-10-18复核，理由为未解pause owner/clock/rejection故障及后续对照，不自动续期。
+
+[原执行摘要](C:/workspace/ck3-upgrade-20261010/r15-cache-retirement-20261011-02/ACTUAL-SUMMARY.json) 1,884B/SHA `d7d3eaf60dc6f91c0f6d2a7bffe614dd35e5ea4d2e606be84ee560432481c3ff`；[标准237闭账](C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-r15-cache-retirement-02-reservation-237-closed.json) 2,271B/SHA `2ed2b128974f05756a1cb61930ebf0797e2cfca1a92b2958955b3d2e53b104d0`，actual parent0/children0/unspent0。原52分别发现旧失败01与新02整16MiB cap各一次，不手工重复加收，不把回收量当作项目usage扣减信用。本任务四轮精确回收累计3,616,011,856B，全卷free差额不排他归因；不授业务PASS或正常OS0，未部署自动GC。
