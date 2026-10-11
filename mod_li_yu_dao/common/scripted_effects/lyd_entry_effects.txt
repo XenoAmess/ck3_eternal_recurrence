@@ -1,14 +1,528 @@
 ﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
 lyd_enter_effect = {
     if = {
-        limit = { lyd_can_enter_trigger = yes }
+        limit = { lyd_can_enter_trigger = yes faith = faith:confucian_faith faith = rite:lyd_rite_kongmen.faith }
         set_character_rite = rite:lyd_rite_kongmen
         if = {
-            limit = { rite = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith }
+            limit = { rite = rite:lyd_rite_kongmen faith = faith:confucian_faith faith = rite:lyd_rite_kongmen.faith }
             add_character_flag = lyd_enabled
+            lyd_learn_catalogue_tenets_effect = yes
             trigger_event = lyd.1
         }
         else = { debug_log = "LYD_ENTER_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+lyd_learn_catalogue_tenets_effect = {
+    if = { limit = {
+        lyd_is_player_trigger = yes
+        lyd_can_use_school_trigger = yes
+        faith = faith:confucian_faith
+        faith = { exists = main_rite }
+    }
+        faith = {
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_heaven status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_heaven status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_heaven status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_heaven status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_reverent_heaven status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sincerity_solitude status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sincerity_solitude status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sincerity_solitude status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sincerity_solitude status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_sincerity_solitude status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ritual_music status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ritual_music status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ritual_music status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ritual_music status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_ritual_music status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ancestral_reverence status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ancestral_reverence status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ancestral_reverence status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ancestral_reverence status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_ancestral_reverence status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_names_duties status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_names_duties status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_names_duties status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_names_duties status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_names_duties status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_humaneness_righteousness status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_humaneness_righteousness status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_humaneness_righteousness status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_humaneness_righteousness status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_humaneness_righteousness status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_remonstrance status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_remonstrance status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_remonstrance status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_remonstrance status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_righteous_remonstrance status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sage_transmission status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sage_transmission status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sage_transmission status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_sage_transmission status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_sage_transmission status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_extend_sprouts status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_extend_sprouts status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_extend_sprouts status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_extend_sprouts status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_extend_sprouts status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_deliberate_cultivation status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_deliberate_cultivation status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_deliberate_cultivation status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_deliberate_cultivation status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_deliberate_cultivation status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_qi status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_qi status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_qi status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_righteous_qi status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_righteous_qi status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_portent_reflection status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_portent_reflection status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_portent_reflection status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_portent_reflection status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_portent_reflection status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_qi_kinship status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_qi_kinship status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_qi_kinship status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_qi_kinship status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_qi_kinship status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_investigate_principle status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_investigate_principle status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_investigate_principle status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_investigate_principle status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_investigate_principle status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_attention status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_attention status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_attention status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_reverent_attention status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_reverent_attention status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_original_heart status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_original_heart status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_original_heart status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_original_heart status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_original_heart status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_innate_knowing status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_innate_knowing status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_innate_knowing status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_innate_knowing status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_innate_knowing status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_knowing_acting status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_textual_ritual status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_textual_ritual status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_textual_ritual status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_textual_ritual status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_textual_ritual status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_classical_synthesis status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_classical_synthesis status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_classical_synthesis status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_classical_synthesis status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_classical_synthesis status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_annals_judgment status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_annals_judgment status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_annals_judgment status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_annals_judgment status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_annals_judgment status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_constant_heaven status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_constant_heaven status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_constant_heaven status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_constant_heaven status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_constant_heaven status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restore_nature status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restore_nature status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restore_nature status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restore_nature status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_restore_nature status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ordinary_life status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ordinary_life status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ordinary_life status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ordinary_life status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_ordinary_life status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_six_arts status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_six_arts status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_six_arts status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_six_arts status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_six_arts status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_philological_way status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_philological_way status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_philological_way status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_philological_way status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_philological_way status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_moral_achievement status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_moral_achievement status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_moral_achievement status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_moral_achievement status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_moral_achievement status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restrain_violence status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restrain_violence status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restrain_violence status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_restrain_violence status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_restrain_violence status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_subtle_intentions status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_subtle_intentions status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_subtle_intentions status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_subtle_intentions status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_subtle_intentions status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_responsive_interpretation status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_responsive_interpretation status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_responsive_interpretation status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_responsive_interpretation status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_responsive_interpretation status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_images_numbers status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_images_numbers status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_images_numbers status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_images_numbers status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_images_numbers status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_profound_interpretation status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_profound_interpretation status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_profound_interpretation status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_profound_interpretation status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_profound_interpretation status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting_support status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting_support status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting_support status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_knowing_acting_support status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_knowing_acting_support status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ongoing_generation status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ongoing_generation status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ongoing_generation status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_ongoing_generation status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_ongoing_generation status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_quiet_self_attainment status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_quiet_self_attainment status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_quiet_self_attainment status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_quiet_self_attainment status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_quiet_self_attainment status = permitted }
+        }
+
+        if = {
+            limit = { NOT = { OR = {
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_recognition_everywhere status = core } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_recognition_everywhere status = permitted } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_recognition_everywhere status = known } }
+                main_rite = { has_tenet_status = { tenet = lyd_tenet_recognition_everywhere status = prohibited } }
+            } } }
+            set_tenet_status = { tenet = lyd_tenet_recognition_everywhere status = permitted }
+        }
+        }
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_reverent_heaven } }
+            add_known_tenet = lyd_tenet_reverent_heaven
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_sincerity_solitude } }
+            add_known_tenet = lyd_tenet_sincerity_solitude
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_ritual_music } }
+            add_known_tenet = lyd_tenet_ritual_music
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_ancestral_reverence } }
+            add_known_tenet = lyd_tenet_ancestral_reverence
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_names_duties } }
+            add_known_tenet = lyd_tenet_names_duties
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_humaneness_righteousness } }
+            add_known_tenet = lyd_tenet_humaneness_righteousness
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_righteous_remonstrance } }
+            add_known_tenet = lyd_tenet_righteous_remonstrance
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_sage_transmission } }
+            add_known_tenet = lyd_tenet_sage_transmission
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_extend_sprouts } }
+            add_known_tenet = lyd_tenet_extend_sprouts
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_deliberate_cultivation } }
+            add_known_tenet = lyd_tenet_deliberate_cultivation
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_righteous_qi } }
+            add_known_tenet = lyd_tenet_righteous_qi
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_portent_reflection } }
+            add_known_tenet = lyd_tenet_portent_reflection
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_qi_kinship } }
+            add_known_tenet = lyd_tenet_qi_kinship
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_investigate_principle } }
+            add_known_tenet = lyd_tenet_investigate_principle
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_reverent_attention } }
+            add_known_tenet = lyd_tenet_reverent_attention
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_original_heart } }
+            add_known_tenet = lyd_tenet_original_heart
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_innate_knowing } }
+            add_known_tenet = lyd_tenet_innate_knowing
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_knowing_acting } }
+            add_known_tenet = lyd_tenet_knowing_acting
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_textual_ritual } }
+            add_known_tenet = lyd_tenet_textual_ritual
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_classical_synthesis } }
+            add_known_tenet = lyd_tenet_classical_synthesis
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_annals_judgment } }
+            add_known_tenet = lyd_tenet_annals_judgment
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_constant_heaven } }
+            add_known_tenet = lyd_tenet_constant_heaven
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_restore_nature } }
+            add_known_tenet = lyd_tenet_restore_nature
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_ordinary_life } }
+            add_known_tenet = lyd_tenet_ordinary_life
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_six_arts } }
+            add_known_tenet = lyd_tenet_six_arts
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_philological_way } }
+            add_known_tenet = lyd_tenet_philological_way
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_moral_achievement } }
+            add_known_tenet = lyd_tenet_moral_achievement
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_restrain_violence } }
+            add_known_tenet = lyd_tenet_restrain_violence
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_subtle_intentions } }
+            add_known_tenet = lyd_tenet_subtle_intentions
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_responsive_interpretation } }
+            add_known_tenet = lyd_tenet_responsive_interpretation
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_images_numbers } }
+            add_known_tenet = lyd_tenet_images_numbers
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_profound_interpretation } }
+            add_known_tenet = lyd_tenet_profound_interpretation
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_knowing_acting_support } }
+            add_known_tenet = lyd_tenet_knowing_acting_support
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_ongoing_generation } }
+            add_known_tenet = lyd_tenet_ongoing_generation
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_quiet_self_attainment } }
+            add_known_tenet = lyd_tenet_quiet_self_attainment
+        }
+
+        if = { limit = { NOT = { knows_tenet = lyd_tenet_recognition_everywhere } }
+            add_known_tenet = lyd_tenet_recognition_everywhere
+        }
     }
 }
 lyd_open_school_effect = {

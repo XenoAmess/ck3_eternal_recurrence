@@ -5,9 +5,7 @@ lyd_common_faith = {
         color = { 236 190 85 }
         icon = jingxue
     }
-    main_rite = lyd_rite_kongmen
-    historical = no
-    # Retain the game's Confucian site set in this iteration.
+    historical = yes
     eminent_holy_sites = { qufu chang_an }
     holy_sites = { luoyang bianliang mount_qingcheng }
 }

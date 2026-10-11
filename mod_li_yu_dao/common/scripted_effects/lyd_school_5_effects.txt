@@ -1,7 +1,7 @@
 ﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
 lyd_adopt_yanli_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_yanli } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_yanli faith = rite:lyd_rite_yanli.faith NOT = { rite = rite:lyd_rite_yanli } }
         set_character_rite = rite:lyd_rite_yanli
         if = {
             limit = { rite = rite:lyd_rite_yanli faith = rite:lyd_rite_yanli.faith }
@@ -13,7 +13,7 @@ lyd_adopt_yanli_effect = {
 
 lyd_adopt_qianjia_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_qianjia } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_qianjia faith = rite:lyd_rite_qianjia.faith NOT = { rite = rite:lyd_rite_qianjia } }
         set_character_rite = rite:lyd_rite_qianjia
         if = {
             limit = { rite = rite:lyd_rite_qianjia faith = rite:lyd_rite_qianjia.faith }
@@ -25,7 +25,7 @@ lyd_adopt_qianjia_effect = {
 
 lyd_adopt_changzhou_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_changzhou } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_changzhou faith = rite:lyd_rite_changzhou.faith NOT = { rite = rite:lyd_rite_changzhou } }
         set_character_rite = rite:lyd_rite_changzhou
         if = {
             limit = { rite = rite:lyd_rite_changzhou faith = rite:lyd_rite_changzhou.faith }
@@ -37,7 +37,7 @@ lyd_adopt_changzhou_effect = {
 
 lyd_adopt_jingshi_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jingshi } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_jingshi faith = rite:lyd_rite_jingshi.faith NOT = { rite = rite:lyd_rite_jingshi } }
         set_character_rite = rite:lyd_rite_jingshi
         if = {
             limit = { rite = rite:lyd_rite_jingshi faith = rite:lyd_rite_jingshi.faith }

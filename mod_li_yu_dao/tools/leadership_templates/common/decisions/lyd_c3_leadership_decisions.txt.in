@@ -30,9 +30,90 @@ lyd_c3_register_challenger_decision = {
     is_shown = { lyd_c3_player_actor_trigger = yes lyd_c3_claim_current_trigger = yes NOT = { has_variable = lyd_c3_claim_title } }
     is_valid = {
         custom_description = {
-            text = lyd_c3_native_challenger_ready
-            lyd_c3_native_challenger_admitted_trigger = yes
+            text = lyd_c3_challenger_has_head_tt
+            exists = faith.religious_head
+            exists = faith.religious_head_title
         }
+        # Match the backend's existing nonempty-scope guard before reading the incumbent.
+        trigger_if = {
+            limit = { exists = faith.religious_head exists = faith.religious_head_title exists = faith.religious_head_title.holder }
+            faith.religious_head = {
+                custom_description = {
+                    text = lyd_c3_challenger_head_alive_tt
+                    is_alive = yes
+                }
+                custom_description = {
+                    text = lyd_c3_challenger_head_faith_tt
+                    faith = root.faith
+                }
+            }
+            faith.religious_head_title = {
+                custom_description = {
+                    text = lyd_c3_challenger_head_holder_tt
+                    holder = root.faith.religious_head
+                }
+            }
+            custom_description = {
+                text = lyd_c3_challenger_not_head_tt
+                this != faith.religious_head
+            }
+        }
+        trigger_else = {
+            custom_description = {
+                text = lyd_c3_challenger_head_holder_tt
+                always = no
+            }
+        }
+        custom_description = {
+            text = lyd_c3_challenger_actor_tt
+            lyd_c3_player_actor_trigger = yes
+        }
+        custom_description = {
+            text = lyd_c3_challenger_not_antipope_tt
+            pam_is_antipope_trigger = no
+        }
+        custom_description = {
+            text = lyd_c3_challenger_not_sponsor_tt
+            pam_is_antipope_sponsor_trigger = no
+        }
+        custom_description = {
+            text = lyd_c3_challenger_duchy_tt
+            highest_held_title_tier >= tier_duchy
+        }
+        custom_description = {
+            text = lyd_c3_challenger_capital_tt
+            exists = capital_county
+        }
+        custom_description = {
+            text = lyd_c3_challenger_head_type_tt
+            faith = { OR = { has_doctrine_parameter = temporal_head_of_faith has_doctrine_parameter = spiritual_head_of_faith } }
+        }
+        rite = {
+            custom_description = {
+                text = lyd_c3_challenger_rite_head_tt
+                NOT = { rite_has_parameter = no_head_of_faith }
+            }
+            custom_description = {
+                text = lyd_c3_challenger_gender_tt
+                rite_has_allowed_gender_for_clergy = root
+            }
+        }
+        custom_description = {
+            text = lyd_c3_challenger_no_council_tt
+            NOT = { has_variable = lyd_c3_active }
+        }
+        custom_description = {
+            text = lyd_c3_challenger_no_title_tt
+            NOT = { has_variable = lyd_c3_claim_title }
+        }
+        custom_description = {
+            text = lyd_c3_challenger_no_proposal_tt
+            faith = {
+                NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }
+            }
+        }
+        # Preserve the unchanged backend as the final admission guard.
+        hidden_trigger = { lyd_c3_native_challenger_admitted_trigger = yes }
     }
     effect = {
         custom_tooltip = lyd_c3_register_challenger_result

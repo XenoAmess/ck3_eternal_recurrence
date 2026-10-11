@@ -1,7 +1,7 @@
 ﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
 lyd_adopt_kongmen_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith NOT = { rite = rite:lyd_rite_kongmen } }
         set_character_rite = rite:lyd_rite_kongmen
         if = {
             limit = { rite = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith }
@@ -13,7 +13,7 @@ lyd_adopt_kongmen_effect = {
 
 lyd_adopt_mengzi_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_mengzi faith = rite:lyd_rite_mengzi.faith NOT = { rite = rite:lyd_rite_mengzi } }
         set_character_rite = rite:lyd_rite_mengzi
         if = {
             limit = { rite = rite:lyd_rite_mengzi faith = rite:lyd_rite_mengzi.faith }
@@ -25,7 +25,7 @@ lyd_adopt_mengzi_effect = {
 
 lyd_adopt_xunzi_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_xunzi faith = rite:lyd_rite_xunzi.faith NOT = { rite = rite:lyd_rite_xunzi } }
         set_character_rite = rite:lyd_rite_xunzi
         if = {
             limit = { rite = rite:lyd_rite_xunzi faith = rite:lyd_rite_xunzi.faith }
@@ -37,7 +37,7 @@ lyd_adopt_xunzi_effect = {
 
 lyd_adopt_dongzhongshu_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_dongzhongshu } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_dongzhongshu faith = rite:lyd_rite_dongzhongshu.faith NOT = { rite = rite:lyd_rite_dongzhongshu } }
         set_character_rite = rite:lyd_rite_dongzhongshu
         if = {
             limit = { rite = rite:lyd_rite_dongzhongshu faith = rite:lyd_rite_dongzhongshu.faith }
@@ -49,7 +49,7 @@ lyd_adopt_dongzhongshu_effect = {
 
 lyd_adopt_guwen_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_guwen } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_guwen faith = rite:lyd_rite_guwen.faith NOT = { rite = rite:lyd_rite_guwen } }
         set_character_rite = rite:lyd_rite_guwen
         if = {
             limit = { rite = rite:lyd_rite_guwen faith = rite:lyd_rite_guwen.faith }
@@ -61,7 +61,7 @@ lyd_adopt_guwen_effect = {
 
 lyd_adopt_zhengxuan_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_zhengxuan faith = rite:lyd_rite_zhengxuan.faith NOT = { rite = rite:lyd_rite_zhengxuan } }
         set_character_rite = rite:lyd_rite_zhengxuan
         if = {
             limit = { rite = rite:lyd_rite_zhengxuan faith = rite:lyd_rite_zhengxuan.faith }
@@ -73,7 +73,7 @@ lyd_adopt_zhengxuan_effect = {
 
 lyd_adopt_wangsu_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_wangsu faith = rite:lyd_rite_wangsu.faith NOT = { rite = rite:lyd_rite_wangsu } }
         set_character_rite = rite:lyd_rite_wangsu
         if = {
             limit = { rite = rite:lyd_rite_wangsu faith = rite:lyd_rite_wangsu.faith }
@@ -85,7 +85,7 @@ lyd_adopt_wangsu_effect = {
 
 lyd_adopt_wangbi_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangbi } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_wangbi faith = rite:lyd_rite_wangbi.faith NOT = { rite = rite:lyd_rite_wangbi } }
         set_character_rite = rite:lyd_rite_wangbi
         if = {
             limit = { rite = rite:lyd_rite_wangbi faith = rite:lyd_rite_wangbi.faith }

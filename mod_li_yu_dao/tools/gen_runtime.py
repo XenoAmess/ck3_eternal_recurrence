@@ -31,29 +31,23 @@ def build_outputs() -> dict[str, bytes]:
     def script(path: str, text: str) -> None:
         outputs[path] = encoded(HEADER + text.strip() + "\n")
 
-    script("common/religion/faith_types/lyd_faiths.txt", f"""
-{PARENT_FAITH} = {{
-    faith_details = {{
+    # Compatibility definition only. Normal entry never creates or joins it.
+    # historical=yes leaves an unused legacy faith dead; existing saves retain
+    # their actual faith/rite objects and must not be mass-migrated here.
+    script("common/religion/faith_types/lyd_faiths.txt", """
+lyd_common_faith = {
+    faith_details = {
         religion = confucianism_religion
-        color = {{ 236 190 85 }}
+        color = { 236 190 85 }
         icon = jingxue
-    }}
-    main_rite = {MAIN_RITE_ID}
-    historical = no
-    # Retain the game's Confucian site set in this iteration.
-    eminent_holy_sites = {{ qufu chang_an }}
-    holy_sites = {{ luoyang bianliang mount_qingcheng }}
-}}
+    }
+    historical = yes
+    eminent_holy_sites = { qufu chang_an }
+    holy_sites = { luoyang bianliang mount_qingcheng }
+}
 """)
-    permitted = " ".join(tenet.script_id for tenet in ACTIVE_TENETS)
-    script("history/faiths/lyd_faith_history.txt", f"""
-{PARENT_FAITH} = {{
-    1.1.1 = {{
-        main_rite = {MAIN_RITE_ID}
-        permitted = {{ {permitted} }}
-    }}
-}}
-""")
+    # Do not redeclare vanilla dated main rites or replace its tenet statuses.
+    script("history/faiths/lyd_faith_history.txt", "# Legacy compatibility placeholder; no faith history is authored.\n")
     # Display gates omit automation details; execution gates still require a player.
     script("common/scripted_triggers/lyd_player_triggers.txt", """
 lyd_display_eligible_trigger = {
@@ -67,7 +61,9 @@ lyd_is_player_trigger = {
 }
 lyd_can_enter_display_trigger = {
     lyd_display_eligible_trigger = yes
-    faith = { religion = religion:confucianism_religion }
+    faith = faith:@PRODUCT_FAITH@
+    exists = rite:lyd_rite_kongmen
+    faith = rite:lyd_rite_kongmen.faith
     custom_description = {
         text = lyd_not_current_faith_head_tt
         subject = root
@@ -121,17 +117,46 @@ lyd_can_study_trigger = {
 }
 """.replace("@PRODUCT_FAITH@", PARENT_FAITH).replace(
         "@PRODUCT_RITE_GATE@", "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in ACTIVE_RITES) + " }"))
+    # Stock faith-scoped status and character-scoped knowledge operations.
+    # Only new LYD IDs without an existing explicit status are registered;
+    # vanilla tenets and prior player prohibitions are never overwritten.
+    tenet_registration = "\n".join(f"""
+        if = {{
+            limit = {{ NOT = {{ OR = {{
+                main_rite = {{ has_tenet_status = {{ tenet = {tenet.script_id} status = core }} }}
+                main_rite = {{ has_tenet_status = {{ tenet = {tenet.script_id} status = permitted }} }}
+                main_rite = {{ has_tenet_status = {{ tenet = {tenet.script_id} status = known }} }}
+                main_rite = {{ has_tenet_status = {{ tenet = {tenet.script_id} status = prohibited }} }}
+            }} }} }}
+            set_tenet_status = {{ tenet = {tenet.script_id} status = permitted }}
+        }}""" for tenet in ACTIVE_TENETS)
+    personal_learning = "\n".join(f"""
+        if = {{ limit = {{ NOT = {{ knows_tenet = {tenet.script_id} }} }}
+            add_known_tenet = {tenet.script_id}
+        }}""" for tenet in ACTIVE_TENETS)
     script("common/scripted_effects/lyd_entry_effects.txt", f"""
 lyd_enter_effect = {{
     if = {{
-        limit = {{ lyd_can_enter_trigger = yes }}
+        limit = {{ lyd_can_enter_trigger = yes faith = faith:{PARENT_FAITH} faith = rite:{MAIN_RITE_ID}.faith }}
         set_character_rite = rite:{MAIN_RITE_ID}
         if = {{
-            limit = {{ rite = rite:{MAIN_RITE_ID} faith = rite:{MAIN_RITE_ID}.faith }}
+            limit = {{ rite = rite:{MAIN_RITE_ID} faith = faith:{PARENT_FAITH} faith = rite:{MAIN_RITE_ID}.faith }}
             add_character_flag = lyd_enabled
+            lyd_learn_catalogue_tenets_effect = yes
             trigger_event = lyd.1
         }}
         else = {{ debug_log = "LYD_ENTER_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }}
+    }}
+}}
+lyd_learn_catalogue_tenets_effect = {{
+    if = {{ limit = {{
+        lyd_is_player_trigger = yes
+        lyd_can_use_school_trigger = yes
+        faith = faith:{PARENT_FAITH}
+        faith = {{ exists = main_rite }}
+    }}
+        faith = {{{tenet_registration}
+        }}{personal_learning}
     }}
 }}
 lyd_open_school_effect = {{
@@ -152,7 +177,7 @@ lyd_open_study_effect = {{
         school_effects.append(f"""
 lyd_adopt_{rite.slug}_effect = {{
     if = {{
-        limit = {{ lyd_can_change_school_trigger = yes NOT = {{ rite = rite:{rite.script_id} }} }}
+        limit = {{ lyd_can_change_school_trigger = yes exists = rite:{rite.script_id} faith = rite:{rite.script_id}.faith NOT = {{ rite = rite:{rite.script_id} }} }}
         set_character_rite = rite:{rite.script_id}
         if = {{
             limit = {{ rite = rite:{rite.script_id} faith = rite:{rite.script_id}.faith }}
@@ -211,6 +236,7 @@ lyd_adopt_{rite.slug}_effect = {{
         decision("lyd_enter_decision", "lyd_can_enter_trigger = yes", "lyd_enter_effect", display_gate="lyd_can_enter_display_trigger = yes"),
         decision("lyd_change_school_decision", "lyd_can_use_school_trigger = yes", "lyd_open_school_effect", "lyd_can_change_school_display_trigger = yes", display_gate="lyd_can_use_school_display_trigger = yes"),
         decision("lyd_study_decision", "lyd_can_use_school_trigger = yes", "lyd_open_study_effect", "lyd_can_study_display_trigger = yes", display_gate="lyd_can_use_school_display_trigger = yes"),
+        decision("lyd_learn_tenets_decision", "lyd_can_use_school_trigger = yes faith = faith:confucian_faith", "lyd_learn_catalogue_tenets_effect"),
     )))
     script("common/character_interactions/lyd_interactions.txt", "# No independent NPC interaction entry points in iteration 1.\n")
     events = ["namespace = lyd\n", """
@@ -246,7 +272,7 @@ lyd.{10 + page_index} = {{
             events.append(f"""
     option = {{
         name = lyd_adopt_{rite.slug}
-        trigger = {{ lyd_can_change_school_display_trigger = yes NOT = {{ rite = rite:{rite.script_id} }} }}
+        trigger = {{ lyd_can_change_school_display_trigger = yes exists = rite:{rite.script_id} faith = rite:{rite.script_id}.faith NOT = {{ rite = rite:{rite.script_id} }} }}
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_{rite.slug}_effect = yes
     }}
@@ -291,17 +317,21 @@ lyd.{10 + page_index} = {{
     script("events/lyd_events.txt", "".join(events))
 
     loc = {
-        PARENT_FAITH: ("儒家共宗", "The Confucian Communion"),
-        PARENT_FAITH + "_adj": ("儒家共宗", "Confucian Communion"),
-        PARENT_FAITH + "_adherent": ("儒者", "Confucian"),
-        PARENT_FAITH + "_adherent_plural": ("儒者", "Confucians"),
-        PARENT_FAITH + "_desc": ("诸儒以经典、礼仪与修身为共同根基。各家可以同尊先圣而解释天、性、心与祭礼有别；共宗不要求诸家只存一说。", "The traditions share the classics, ritual and self-cultivation, while differing over Heaven, nature, mind and sacrifice. Communion need not erase their differences."),
+        "lyd_common_faith": ("旧版儒家共宗", "Legacy Confucian Communion"),
+        "lyd_common_faith_adj": ("儒家共宗", "Confucian Communion"),
+        "lyd_common_faith_adherent": ("儒者", "Confucian"),
+        "lyd_common_faith_adherent_plural": ("儒者", "Confucians"),
+        "lyd_common_faith_desc": ("仅供旧试玩存档兼容；新入门归属原版儒家，不再创建或加入这个平行共同体。旧职务、争统与议案须先依法处理，不会自动清除。", "Compatibility for older trial saves only. New admission stays in vanilla Confucianism. Existing offices, challenges and proposals are not automatically cleared."),
         "lyd_enter_decision": ("入儒门，习经礼", "Enter the Confucian Tradition"),
         "lyd_not_current_faith_head_tt": ("当前角色不是当前信仰的领袖", "The current character is not the head of their current faith."),
         "lyd_not_current_rite_head_tt": ("当前角色不是当前礼仪的领袖", "The current character is not the head of their current rite."),
-        "lyd_enter_decision_desc": ("立志以经典、礼仪与修身为本，加入儒家共宗，从孔门经礼开始问学。", "Join the Confucian Communion through study, ritual and self-cultivation, beginning with the Kongmen tradition."),
-        "lyd_enter_decision_tooltip": ("加入儒家共宗的孔门经礼", "Join the Kongmen rite of the Confucian Communion"),
+        "lyd_enter_decision_desc": ("在原版儒家信仰内，从孔门经礼开始问学。只改本人礼仪，并研读新增信条、登记尚无状态的新信条为允许；不改信仰、原版主礼仪或其他信众，保留既有信条状态。宗主职责须先处理。", "Begin the Kongmen tradition within vanilla Confucianism. Change your rite and learn the new tenets, registering those without a prior status as permitted. Your faith, its vanilla main rite, other followers and existing tenet statuses remain unchanged. Resolve religious offices first."),
+        "lyd_enter_decision_tooltip": ("保留原版儒家信仰，采用孔门经礼并研读新增信条", "Keep vanilla Confucian faith, adopt the Kongmen rite and learn the new tenets"),
         "lyd_enter_decision_confirm": ("由我践行", "Begin my practice"),
+        "lyd_learn_tenets_decision": ("研读诸家信条", "Study the Traditions’ Tenets"),
+        "lyd_learn_tenets_decision_desc": ("本人研读本模组的36张信条，并把尚无状态的新信条登记为原版儒家允许的信条。保留既有核心、允许、已知及禁用状态，不改原版信条、主礼仪或其他人物；个人信条仍须在原版个人信念窗口主动选择，沿用其槽位与费用。", "Learn this mod’s 36 tenets personally and register new tenets without an existing status as permitted in vanilla Confucianism. Existing core, permitted, known and prohibited statuses remain unchanged, as do vanilla tenets, the main rite and other characters. Choose personal tenets in the vanilla Personal Beliefs window, under its slot and cost rules."),
+        "lyd_learn_tenets_decision_tooltip": ("研读新增信条，不自动选取个人信条", "Learn the new tenets without automatically choosing personal beliefs"),
+        "lyd_learn_tenets_decision_confirm": ("读书明理", "Study their teachings"),
         "lyd_change_school_decision": ("择师问道", "Seek a Tradition"),
         "lyd_change_school_decision_desc": ("审读诸家经说，选择自己信从的礼仪与学统。", "Examine the teachings and choose a tradition to follow."),
         "lyd_change_school_decision_tooltip": ("选择礼仪与学统", "Choose a rite and tradition"),
@@ -315,7 +345,7 @@ lyd.{10 + page_index} = {{
         "lyd_welcome_continue": ("学而时习之", "Learn and practice regularly"),
         "lyd_choose_school_t": ("诸儒之学", "The Confucian Traditions"),
         "lyd_choose_school_desc": ("同读圣贤之书，诸家所重各有不同：仁与礼、性与教、天与祭、理与心。此番改从学统，当先明其义。", "The traditions emphasize different readings of humaneness, ritual, nature, teaching, Heaven, principle and mind. I must understand a teaching before following it."),
-        "lyd_adopt_school_tt": ("改从此礼仪；一年内不能再次择师。", "Adopt this rite. You may seek another tradition after one year."),
+        "lyd_adopt_school_tt": ("仅在同一信仰内改从此礼仪；一年内不能再次择师。不迁移其他信众。", "Adopt this rite within your current faith only. Other followers do not move. You may seek another tradition after one year."),
         "lyd_study_cooldown_tt": ("完成此次修习后，180 天内不能再次践礼修身。", "Completing this practice prevents another cultivation session for 180 days."),
         "lyd_admission_failed_t": ("尚未改从学统", "Unable to Adopt the Tradition"),
         "lyd_admission_failed_desc": ("此次未能改从所选学统，我仍奉行原先礼仪。待处理当前宗主职责或礼仪限制后，再行问学。此次不会开始择师或修习的等待期。", "I still follow my previous rite. I must resolve any current religious leadership duties or restrictions before adopting another tradition. This attempt starts no waiting period for study or changing traditions."),

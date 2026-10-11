@@ -21,7 +21,7 @@
  lyd_i3b_cancel:0 "Withdraw this round"
  lyd_i3b_confirm:0 "Enact the revalidated terms"
  lyd_i3b_pending:0 "This round is not ready for enactment"
- lyd_i3b_begin_valid_tt:0 "Requires an eligible main-rite player; a detached Communion also requires its actual current native main-rite head. All rites must belong to this mod and remain headless with compatible clergy; no other held headship or challenger title, native Communion challenger, or competing proposal is allowed."
+ lyd_i3b_begin_valid_tt:0 "This flow applies only to a detached or legacy trial community whose rites all belong to this mod. It does not take over vanilla Confucianism containing Jingxue or Daoxue. Requires an eligible main-rite player; a detached community also requires its actual current native main-rite head. All rites must remain headless with compatible clergy; no other held headship or challenger title, native challenger, or competing proposal is allowed."
  lyd_i3b_nominate_valid_tt:0 "The draft and roster must remain valid; I must be a qualified scholar of an active school without an accepted representative."
  lyd_i3b_seal_valid_tt:0 "The draft and roster must remain valid. Every active school needs an accepted qualified representative and at least one eligible scholar. Nominate missing representatives first. An active school with no eligible scholars must acquire real qualifications, then withdraw and restart; it cannot count as dormant or receive invented votes."
  lyd_i3b_current_valid_tt:0 "The initiator, Communion, main rite, full roster, eligibility and this round’s locks must still match. Withdraw and restart an invalid proposal."

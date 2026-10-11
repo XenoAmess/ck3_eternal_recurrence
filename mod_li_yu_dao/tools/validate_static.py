@@ -77,6 +77,8 @@ PROVEN_NATIVE_EFFECT_OPERATIONS = frozenset({
     "add_to_variable_list", "remove_list_variable", "add_character_flag", "remove_character_flag",
     "add_gold", "remove_short_term_gold", "add_piety", "add_prestige", "add_stress", "add_learning_lifestyle_xp",
     "add_doctrine", "remove_doctrine", "change_rite_doctrine", "set_character_rite",
+    # Stock pam_ecumenical_council_effects / 00_religion_effects: faith status and character knowledge.
+    "set_tenet_status", "add_known_tenet",
     "trigger_event", "create_dynamic_title", "create_title_and_vassal_change", "change_title_holder",
     "resolve_title_and_vassal_change", "set_religious_head_title", "remove_religious_head_title",
     # Current stock 00_decisions_effects.txt:1681-1697 proves character-scope removal.
@@ -235,6 +237,8 @@ def validate(source: Path = SOURCE) -> dict:
             if identifier + suffix not in english:
                 errors.append(f"unlocalized tenet: {identifier + suffix}")
     for identifier, rite in rites.items():
+        if identifier.startswith("lyd_rite_") and not any(e.key == "faith" and e.value == "confucian_faith" for e in rite.entries):
+            errors.append(f"LYD rite must enrich vanilla confucian_faith: {identifier}")
         core = blocks(rite, "tenets")
         if len(core) != 1 or len(core[0].entries) != 3 or len({entry.key for entry in core[0].entries}) != 3 or any(entry.operator is not None for entry in core[0].entries):
             errors.append(f"rite needs three distinct native tenets: {identifier}")

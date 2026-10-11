@@ -1,7 +1,7 @@
 ﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
 lyd_adopt_guoxiang_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_guoxiang } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_guoxiang faith = rite:lyd_rite_guoxiang.faith NOT = { rite = rite:lyd_rite_guoxiang } }
         set_character_rite = rite:lyd_rite_guoxiang
         if = {
             limit = { rite = rite:lyd_rite_guoxiang faith = rite:lyd_rite_guoxiang.faith }
@@ -13,7 +13,7 @@ lyd_adopt_guoxiang_effect = {
 
 lyd_adopt_jingshu_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_jingshu faith = rite:lyd_rite_jingshu.faith NOT = { rite = rite:lyd_rite_jingshu } }
         set_character_rite = rite:lyd_rite_jingshu
         if = {
             limit = { rite = rite:lyd_rite_jingshu faith = rite:lyd_rite_jingshu.faith }
@@ -25,7 +25,7 @@ lyd_adopt_jingshu_effect = {
 
 lyd_adopt_hanyu_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_hanyu } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_hanyu faith = rite:lyd_rite_hanyu.faith NOT = { rite = rite:lyd_rite_hanyu } }
         set_character_rite = rite:lyd_rite_hanyu
         if = {
             limit = { rite = rite:lyd_rite_hanyu faith = rite:lyd_rite_hanyu.faith }
@@ -37,7 +37,7 @@ lyd_adopt_hanyu_effect = {
 
 lyd_adopt_liao_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_liao } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_liao faith = rite:lyd_rite_liao.faith NOT = { rite = rite:lyd_rite_liao } }
         set_character_rite = rite:lyd_rite_liao
         if = {
             limit = { rite = rite:lyd_rite_liao faith = rite:lyd_rite_liao.faith }
@@ -49,7 +49,7 @@ lyd_adopt_liao_effect = {
 
 lyd_adopt_zhoudunyi_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhoudunyi } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_zhoudunyi faith = rite:lyd_rite_zhoudunyi.faith NOT = { rite = rite:lyd_rite_zhoudunyi } }
         set_character_rite = rite:lyd_rite_zhoudunyi
         if = {
             limit = { rite = rite:lyd_rite_zhoudunyi faith = rite:lyd_rite_zhoudunyi.faith }
@@ -61,7 +61,7 @@ lyd_adopt_zhoudunyi_effect = {
 
 lyd_adopt_chengbrothers_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_chengbrothers } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_chengbrothers faith = rite:lyd_rite_chengbrothers.faith NOT = { rite = rite:lyd_rite_chengbrothers } }
         set_character_rite = rite:lyd_rite_chengbrothers
         if = {
             limit = { rite = rite:lyd_rite_chengbrothers faith = rite:lyd_rite_chengbrothers.faith }
@@ -73,7 +73,7 @@ lyd_adopt_chengbrothers_effect = {
 
 lyd_adopt_zhangzai_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhangzai } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_zhangzai faith = rite:lyd_rite_zhangzai.faith NOT = { rite = rite:lyd_rite_zhangzai } }
         set_character_rite = rite:lyd_rite_zhangzai
         if = {
             limit = { rite = rite:lyd_rite_zhangzai faith = rite:lyd_rite_zhangzai.faith }
@@ -85,7 +85,7 @@ lyd_adopt_zhangzai_effect = {
 
 lyd_adopt_shaoyong_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_shaoyong } }
+        limit = { lyd_can_change_school_trigger = yes exists = rite:lyd_rite_shaoyong faith = rite:lyd_rite_shaoyong.faith NOT = { rite = rite:lyd_rite_shaoyong } }
         set_character_rite = rite:lyd_rite_shaoyong
         if = {
             limit = { rite = rite:lyd_rite_shaoyong faith = rite:lyd_rite_shaoyong.faith }

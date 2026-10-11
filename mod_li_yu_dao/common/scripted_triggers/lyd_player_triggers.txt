@@ -10,7 +10,9 @@ lyd_is_player_trigger = {
 }
 lyd_can_enter_display_trigger = {
     lyd_display_eligible_trigger = yes
-    faith = { religion = religion:confucianism_religion }
+    faith = faith:confucian_faith
+    exists = rite:lyd_rite_kongmen
+    faith = rite:lyd_rite_kongmen.faith
     custom_description = {
         text = lyd_not_current_faith_head_tt
         subject = root

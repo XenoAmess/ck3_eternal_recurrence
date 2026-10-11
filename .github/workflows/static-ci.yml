@@ -184,6 +184,7 @@ jobs:
       - name: Test shared CK3 acceptance without installed CK3
         run: |
           python -B -X utf8 tools/test_ck3_mod_acceptance.py
+          python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_native_projection.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_grant_title_picker.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%

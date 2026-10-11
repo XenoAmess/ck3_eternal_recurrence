@@ -39,6 +39,9 @@ jobs:
           python mod_li_yu_dao/tools/test_school_consent.py
           python mod_li_yu_dao/tools/test_c2_preview_scope.py --report /tmp/lyd-c2-preview-scope.json
           python mod_li_yu_dao/tools/test_content_leadership.py
+          python -B -X utf8 mod_li_yu_dao/tools/test_tenet_modifiers.py
+          python -B -X utf8 mod_li_yu_dao/tools/test_challenger_tooltip.py
+          python -B -X utf8 mod_li_yu_dao/tools/test_vanilla_faith_integration.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
           python mod_li_yu_dao/tools/test_institution_detached.py
           python mod_li_yu_dao/tools/test_factory_diagnostic.py

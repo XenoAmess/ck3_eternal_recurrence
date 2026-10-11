@@ -249,6 +249,7 @@ class ContentLeadershipIntegrationTests(unittest.TestCase):
             setters = [(e.value,ancestors) for e,ancestors in ops if e.key == "set_character_rite"]
             self.assertEqual(setters, [(f"rite:{rite}", ("if",))], f"{slug}: affects another scope")
             self.assertTrue(contains_direct_fragment(one(one(effect,"if"),"limit"), f"NOT = {{ rite = rite:{rite} }}"))
+            self.assertTrue(contains_direct_fragment(one(one(effect,"if"),"limit"), f"exists = rite:{rite} faith = rite:{rite}.faith"))
             post = one(one(one(effect,"if"),"if"),"limit")
             self.assertTrue(has(post,"rite",f"rite:{rite}"))
             self.assertTrue(has(post,"faith",f"rite:{rite}.faith"))

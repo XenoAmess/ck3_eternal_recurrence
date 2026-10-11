@@ -28,7 +28,37 @@ def native_cleanup_closed(report):
             ('tasklist_pids','wmi_pids','native_pids','processes')) and isinstance(absent,dict) and
         bool(absent) and all(v is True for v in absent.values()))
 
-def previous_session_closure(previous,freeze,report):
+def previous_native_cleanup(previous,freeze):
+    """Reuse the original terminal parse; the native body is only statted here."""
+    native_path=previous/'native-report.json'
+    projection_path=previous/'native-cleanup-projection.actual.json'
+    if not projection_path.exists():
+        return read_json(native_path),None,None
+    require(projection_path.stat().st_size<=1048576,'Previous native cleanup projection exceeds small receipt limit')
+    raw=projection_path.read_bytes()
+    require(len(raw)<=1048576,'Previous native cleanup projection exceeds small receipt limit')
+    value=json.loads(raw.decode('utf-8-sig'))
+    require(isinstance(value,dict) and value.get('schema')=='lyd.native-cleanup-field-projection.v1' and
+            value.get('run_id')==freeze['run_id'],'Previous native cleanup projection crossed run/schema')
+    original=value.get('original_native_report',{})
+    require(isinstance(original,dict) and Path(original.get('path','')).resolve()==native_path.resolve() and
+            type(original.get('bytes')) is int and original['bytes']>0 and native_path.is_file() and
+            native_path.stat().st_size==original['bytes'] and
+            re.fullmatch(r'[0-9a-fA-F]{64}',str(original.get('sha256',''))) is not None,
+            'Previous native cleanup projection original path/size/pin differs')
+    host_path=previous/'host-original-process-exit.json';host=value.get('original_host_exit',{})
+    require(isinstance(host,dict) and Path(host.get('path','')).resolve()==host_path.resolve(),
+            'Previous native cleanup projection host exit path differs')
+    check_pin(host_path,host)
+    exited=read_json(host_path)
+    require(exited.get('run_id')==freeze['run_id'] and exited.get('actual_original_popen_wait') is True and
+            type(exited.get('returncode')) is int,'Previous native cleanup projection original host wait differs')
+    report=value.get('projection')
+    require(isinstance(report,dict),'Previous native cleanup projection fields missing')
+    projection_pin={'path':str(projection_path),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+    return report,original,projection_pin
+
+def previous_session_closure(previous,freeze,report,report_reference=None):
     """Keep failed launch cleanup separate from a returned native shutdown."""
     if closed_session(report):
         require(native_cleanup_closed(report),'Previous native job/tree/inventory/control closure unproven; no OS0 inference')
@@ -58,7 +88,8 @@ def previous_session_closure(previous,freeze,report):
         exited.get('normal_ck3_exit_inferred') is False,
         'Previous failed-launch original host Popen failure is missing or crossed run/PID')
     return {'mode':'previous-shared-failed-launch','failure_cleanup':{
-        'report':pin(previous/'native-report.json'),'host_started':pin(started_path),'host_exit':pin(exit_path),
+        'report':report_reference if report_reference is not None else pin(previous/'native-report.json'),
+        'host_started':pin(started_path),'host_exit':pin(exit_path),
         'safe_launch_error':session['error'],'control_files_absent':absent,
         'control_observed_at_utc':datetime.now(timezone.utc).isoformat(),
         'original_cleanup_ok':False,'original_ck3_exit_code':None,'original_job_active_processes_final':None,
@@ -475,12 +506,19 @@ def allocate_and_keep(selection,args):
         require(freeze.get('identity_allocation',{}).get('machine_id')==machine and
                 Path(freeze.get('identity_allocation',{}).get('state_root','')).resolve()==state_root,
                 'Previous shared scene belongs to another actual machine/ID state')
-        report=read_json(previous/'native-report.json');prior_keeper=read_json(args.previous_keeper/'report.json')
+        report_reference=None;report_projection=None
+        if failure_path:
+            report=read_json(previous/'native-report.json')
+        else:
+            report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
+        prior_keeper=read_json(args.previous_keeper/'report.json')
         release=(read_failed_runtime_release(args.previous_release) if failure_path else
                  read_actual_release(args.previous_release))
         session_closure=(previous_runtime_failure_closure(previous,freeze,report,failure_path,
                             args.previous_keeper,args.previous_release,bus_packet) if failure_path else
-                         previous_session_closure(previous,freeze,report))
+                         previous_session_closure(previous,freeze,report,report_reference))
+        if report_projection is not None:
+            session_closure['native_cleanup_projection']=report_projection
         require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
         require_latest_screen_release(release,args.latest_screen_release)
         closure={**session_closure,'run_id':freeze['run_id'],

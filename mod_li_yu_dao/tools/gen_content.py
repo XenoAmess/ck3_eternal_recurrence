@@ -1,7 +1,7 @@
 """Generate the first native content package from the authored catalogue.
 
-This generator emits eight rite definitions, their fifteen core tenets and
-Chinese/English localization. It never generates a faith override, history,
+This generator emits 36 rite definitions, their 36 tenets and
+Chinese/English localization with authored native modifier tradeoffs. It never generates a faith override, history,
 events, effects, triggers, decisions, or gameplay acceptance evidence.
 """
 
@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import codecs
+from decimal import Decimal
 import json
 from pathlib import Path
 
@@ -22,6 +23,8 @@ from content_data import (
     ACTIVE_RITES,
     ACTIVE_TENETS,
     TENETS,
+    MODIFIER_SPECS,
+    MODIFIER_SCOPES,
     validate_catalogue,
 )
 
@@ -61,7 +64,7 @@ def render_rites() -> str:
 def render_tenets() -> str:
     lines = [
         GENERATED_HEADER,
-        f"# CK3 {GAME_VERSION}; additive 36-tenet catalogue. No all-character modifiers.",
+        f"# CK3 {GAME_VERSION}; 36 tenets with native character/county/personal modifiers.",
         "# Faith selection uses Faith scope. Personal selection has Character scope.",
         "# Faith can_pick has no unguarded is_ai check: its actor can be null.",
         "# Parameters are capability flags, not proof that practice events are connected.",
@@ -92,9 +95,14 @@ def render_tenets() -> str:
             "\tpersonal_tenet_parameters = {",
             f"\t\t{tenet.parameter_id}",
             "\t}",
-            "}",
-            "",
         ])
+        for scope in MODIFIER_SCOPES:
+            values = getattr(tenet.effects, scope)
+            if values:
+                lines.append(f"\t{scope} = {{")
+                lines.extend(f"\t\t{item.key} = {item.value}" for item in values)
+                lines.append("\t}")
+        lines.extend(["}", ""])
     return "\n".join(lines)
 
 
@@ -102,6 +110,40 @@ def _quote_localization(value: str) -> str:
     if any(char in value for char in ("\r", "\n", "\x00")):
         raise ValueError("Localization values must be single lines")
     return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def modifier_value_text(item, language: str) -> str:
+    spec = MODIFIER_SPECS[item.key]
+    value = Decimal(item.value)
+    if spec.unit in {'percent', 'percentage_points'}:
+        value *= 100
+    text = format(value, '+f')
+    if '.' in text:
+        text = text.rstrip('0').rstrip('.')
+    zh = language == 'simp_chinese'
+    units = {
+        'percent': '%',
+        'points': '点' if zh else ' points',
+        'percentage_points': '个百分点' if zh else ' percentage points',
+        'percentage_point_number': '个百分点' if zh else ' percentage points',
+        'monthly_points': '点/月' if zh else ' points/month',
+        'per_devotion_level': '点/每级奉献' if zh else ' points per devotion level',
+    }
+    return (spec.label_zh if zh else spec.label_en) + ' ' + text + units[spec.unit]
+
+def tenet_effects_text(tenet, language: str) -> str:
+    zh = language == 'simp_chinese'
+    labels = {
+        'character_modifier': '常规角色（采用此信条的信仰/礼仪）' if zh else 'Ordinary characters of the faith/rite using this tenet',
+        'county_modifier': '采用此信条的信仰/礼仪伯爵领' if zh else 'Counties of the faith/rite using this tenet',
+        'personal_tenet_modifier': '个人信条（仅主动选为个人信条的可玩角色）' if zh else 'Personal tenet (only playable characters choosing it personally)',
+    }
+    parts = []
+    for scope in MODIFIER_SCOPES:
+        values = getattr(tenet.effects, scope)
+        if values:
+            parts.append(labels[scope] + (': ' if not zh else '：') + ('；' if zh else '; ').join(modifier_value_text(v, language) for v in values))
+    return ('。' if zh else '. ').join(parts) + ('。' if zh else '.')
 
 
 def localization_entries(language: str) -> dict[str, str]:
@@ -127,7 +169,7 @@ def localization_entries(language: str) -> dict[str, str]:
         put(f"{tenet.script_id}_name", tenet.name_zh if zh else tenet.name_en)
         belief = tenet.belief_zh if zh else tenet.belief_en
         practice = tenet.practice_zh if zh else tenet.practice_en
-        put(f"{tenet.script_id}_desc", f"{belief} {practice}")
+        put(f"{tenet.script_id}_desc", f"{belief} {practice} {tenet_effects_text(tenet, language)}")
         put(f"doctrine_parameter_{tenet.parameter_id}", practice)
 
     for practice in PRACTICES:

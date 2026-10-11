@@ -27,56 +27,56 @@ lyd.10 = {
 
     option = {
         name = lyd_adopt_kongmen
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith NOT = { rite = rite:lyd_rite_kongmen } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_kongmen_effect = yes
     }
 
     option = {
         name = lyd_adopt_mengzi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_mengzi faith = rite:lyd_rite_mengzi.faith NOT = { rite = rite:lyd_rite_mengzi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_mengzi_effect = yes
     }
 
     option = {
         name = lyd_adopt_xunzi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_xunzi faith = rite:lyd_rite_xunzi.faith NOT = { rite = rite:lyd_rite_xunzi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_xunzi_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhengxuan
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_zhengxuan faith = rite:lyd_rite_zhengxuan.faith NOT = { rite = rite:lyd_rite_zhengxuan } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhengxuan_effect = yes
     }
 
     option = {
         name = lyd_adopt_wangsu
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_wangsu faith = rite:lyd_rite_wangsu.faith NOT = { rite = rite:lyd_rite_wangsu } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wangsu_effect = yes
     }
 
     option = {
         name = lyd_adopt_jingshu
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_jingshu faith = rite:lyd_rite_jingshu.faith NOT = { rite = rite:lyd_rite_jingshu } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_jingshu_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhuxi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_zhuxi faith = rite:lyd_rite_zhuxi.faith NOT = { rite = rite:lyd_rite_zhuxi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhuxi_effect = yes
     }
 
     option = {
         name = lyd_adopt_lujiuyuan
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_lujiuyuan faith = rite:lyd_rite_lujiuyuan.faith NOT = { rite = rite:lyd_rite_lujiuyuan } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_lujiuyuan_effect = yes
     }
@@ -98,49 +98,49 @@ lyd.11 = {
 
     option = {
         name = lyd_adopt_dongzhongshu
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_dongzhongshu } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_dongzhongshu faith = rite:lyd_rite_dongzhongshu.faith NOT = { rite = rite:lyd_rite_dongzhongshu } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_dongzhongshu_effect = yes
     }
 
     option = {
         name = lyd_adopt_guwen
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_guwen } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_guwen faith = rite:lyd_rite_guwen.faith NOT = { rite = rite:lyd_rite_guwen } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_guwen_effect = yes
     }
 
     option = {
         name = lyd_adopt_wangbi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangbi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_wangbi faith = rite:lyd_rite_wangbi.faith NOT = { rite = rite:lyd_rite_wangbi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wangbi_effect = yes
     }
 
     option = {
         name = lyd_adopt_guoxiang
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_guoxiang } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_guoxiang faith = rite:lyd_rite_guoxiang.faith NOT = { rite = rite:lyd_rite_guoxiang } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_guoxiang_effect = yes
     }
 
     option = {
         name = lyd_adopt_hanyu
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_hanyu } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_hanyu faith = rite:lyd_rite_hanyu.faith NOT = { rite = rite:lyd_rite_hanyu } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_hanyu_effect = yes
     }
 
     option = {
         name = lyd_adopt_liao
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_liao } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_liao faith = rite:lyd_rite_liao.faith NOT = { rite = rite:lyd_rite_liao } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_liao_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhoudunyi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhoudunyi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_zhoudunyi faith = rite:lyd_rite_zhoudunyi.faith NOT = { rite = rite:lyd_rite_zhoudunyi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhoudunyi_effect = yes
     }
@@ -168,49 +168,49 @@ lyd.12 = {
 
     option = {
         name = lyd_adopt_chengbrothers
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_chengbrothers } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_chengbrothers faith = rite:lyd_rite_chengbrothers.faith NOT = { rite = rite:lyd_rite_chengbrothers } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_chengbrothers_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhangzai
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhangzai } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_zhangzai faith = rite:lyd_rite_zhangzai.faith NOT = { rite = rite:lyd_rite_zhangzai } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhangzai_effect = yes
     }
 
     option = {
         name = lyd_adopt_shaoyong
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_shaoyong } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_shaoyong faith = rite:lyd_rite_shaoyong.faith NOT = { rite = rite:lyd_rite_shaoyong } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_shaoyong_effect = yes
     }
 
     option = {
         name = lyd_adopt_wanganshi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wanganshi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_wanganshi faith = rite:lyd_rite_wanganshi.faith NOT = { rite = rite:lyd_rite_wanganshi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wanganshi_effect = yes
     }
 
     option = {
         name = lyd_adopt_sushi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_sushi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_sushi faith = rite:lyd_rite_sushi.faith NOT = { rite = rite:lyd_rite_sushi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_sushi_effect = yes
     }
 
     option = {
         name = lyd_adopt_huxiang
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_huxiang } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_huxiang faith = rite:lyd_rite_huxiang.faith NOT = { rite = rite:lyd_rite_huxiang } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_huxiang_effect = yes
     }
 
     option = {
         name = lyd_adopt_yongjia
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yongjia } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_yongjia faith = rite:lyd_rite_yongjia.faith NOT = { rite = rite:lyd_rite_yongjia } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_yongjia_effect = yes
     }
@@ -238,49 +238,49 @@ lyd.13 = {
 
     option = {
         name = lyd_adopt_yongkang
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yongkang } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_yongkang faith = rite:lyd_rite_yongkang.faith NOT = { rite = rite:lyd_rite_yongkang } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_yongkang_effect = yes
     }
 
     option = {
         name = lyd_adopt_wucheng
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wucheng } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_wucheng faith = rite:lyd_rite_wucheng.faith NOT = { rite = rite:lyd_rite_wucheng } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wucheng_effect = yes
     }
 
     option = {
         name = lyd_adopt_chenxianzhang
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_chenxianzhang } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_chenxianzhang faith = rite:lyd_rite_chenxianzhang.faith NOT = { rite = rite:lyd_rite_chenxianzhang } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_chenxianzhang_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhanruoshui
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhanruoshui } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_zhanruoshui faith = rite:lyd_rite_zhanruoshui.faith NOT = { rite = rite:lyd_rite_zhanruoshui } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhanruoshui_effect = yes
     }
 
     option = {
         name = lyd_adopt_wangyangming
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangyangming } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_wangyangming faith = rite:lyd_rite_wangyangming.faith NOT = { rite = rite:lyd_rite_wangyangming } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wangyangming_effect = yes
     }
 
     option = {
         name = lyd_adopt_jiangyou
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jiangyou } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_jiangyou faith = rite:lyd_rite_jiangyou.faith NOT = { rite = rite:lyd_rite_jiangyou } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_jiangyou_effect = yes
     }
 
     option = {
         name = lyd_adopt_taizhou
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_taizhou } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_taizhou faith = rite:lyd_rite_taizhou.faith NOT = { rite = rite:lyd_rite_taizhou } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_taizhou_effect = yes
     }
@@ -308,49 +308,49 @@ lyd.14 = {
 
     option = {
         name = lyd_adopt_liuzongzhou
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_liuzongzhou } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_liuzongzhou faith = rite:lyd_rite_liuzongzhou.faith NOT = { rite = rite:lyd_rite_liuzongzhou } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_liuzongzhou_effect = yes
     }
 
     option = {
         name = lyd_adopt_donglin
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_donglin } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_donglin faith = rite:lyd_rite_donglin.faith NOT = { rite = rite:lyd_rite_donglin } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_donglin_effect = yes
     }
 
     option = {
         name = lyd_adopt_wangfuzhi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangfuzhi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_wangfuzhi faith = rite:lyd_rite_wangfuzhi.faith NOT = { rite = rite:lyd_rite_wangfuzhi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wangfuzhi_effect = yes
     }
 
     option = {
         name = lyd_adopt_yanli
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yanli } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_yanli faith = rite:lyd_rite_yanli.faith NOT = { rite = rite:lyd_rite_yanli } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_yanli_effect = yes
     }
 
     option = {
         name = lyd_adopt_qianjia
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_qianjia } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_qianjia faith = rite:lyd_rite_qianjia.faith NOT = { rite = rite:lyd_rite_qianjia } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_qianjia_effect = yes
     }
 
     option = {
         name = lyd_adopt_changzhou
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_changzhou } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_changzhou faith = rite:lyd_rite_changzhou.faith NOT = { rite = rite:lyd_rite_changzhou } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_changzhou_effect = yes
     }
 
     option = {
         name = lyd_adopt_jingshi
-        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshi } }
+        trigger = { lyd_can_change_school_display_trigger = yes exists = rite:lyd_rite_jingshi faith = rite:lyd_rite_jingshi.faith NOT = { rite = rite:lyd_rite_jingshi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_jingshi_effect = yes
     }

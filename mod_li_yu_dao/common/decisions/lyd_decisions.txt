@@ -37,3 +37,16 @@ lyd_study_decision = {
     effect = { lyd_open_study_effect = yes }
     ai_will_do = { base = 0 }
 }
+
+lyd_learn_tenets_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_learn_tenets_decision_desc
+    selection_tooltip = lyd_learn_tenets_decision_tooltip
+    confirm_text = lyd_learn_tenets_decision_confirm
+    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes faith = faith:confucian_faith }
+    is_valid = { lyd_can_use_school_trigger = yes faith = faith:confucian_faith  }
+    effect = { lyd_learn_catalogue_tenets_effect = yes }
+    ai_will_do = { base = 0 }
+}
