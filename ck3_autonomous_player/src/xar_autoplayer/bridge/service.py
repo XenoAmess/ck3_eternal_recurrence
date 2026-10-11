@@ -2317,12 +2317,16 @@ class GameplayBridgeService:
             candidate = project_family_education_request_candidate_12004(child_needs, native)
             observation = {"child_full_id": child_id, "needs": copy.deepcopy(child_needs),
                            "candidate": candidate, "default_query": query,
+                           "default_request_intent": None, "request_preference_pair": None,
+                           "request_attempts": [],
                            "default_request_guardian_focus_skills":
                                project_request_guardian_focus_skills_v1(child_needs, native)}
             observations.append(observation)
             guardian_id = candidate["guardian_full_id"]
-            if candidate["available"] is not True or native["can_send"] is not True:
+            if candidate["available"] is not True:
                 continue
+            observation["request_preference_pair"] = {
+                "child_full_id": child_id, "guardian_full_id": guardian_id}
             option_source = native.get("education_option_rows")
             if not isinstance(option_source, dict) or option_source["status"] != "available":
                 continue
@@ -2335,11 +2339,41 @@ class GameplayBridgeService:
                       "requested_option_keys": requested_keys}
             observation["default_request_intent"] = intent
 
-        preference = order_family_education_request_candidates_12004(observations)
-        for observation_index in preference["ordered_observation_indices"]:
+        # This comparer reads pair identity only from its intent carrier. Missing
+        # default keys stay unknown in observations; pair-only inputs invent no keys.
+        preference_inputs = [
+            {**observation, "default_request_intent":
+                observation["default_request_intent"]
+                if observation["default_request_intent"] is not None
+                else observation["request_preference_pair"]}
+            for observation in observations
+        ]
+        preference = order_family_education_request_candidates_12004(preference_inputs)
+        preference["input_basis"] = "observed post-final pair identity; missing default option keys remain unknown"
+        preference["attempt_order"] = "all observed selected-option intents, then one explicit all-off intent per pair"
+        for record in preference["candidates"]:
+            record["intent_identity_source"] = (
+                "observed_selected_options" if observations[record["observation_index"]]["default_request_intent"] is not None
+                else "observed_pair_only")
+        attempts = []
+        for variant in ("observed_selected_options", "explicit_all_options_off"):
+            for observation_index in preference["ordered_observation_indices"]:
+                observation = observations[observation_index]
+                original = observation["default_request_intent"]
+                if variant == "observed_selected_options":
+                    if original is None:
+                        continue
+                    intent = original
+                else:
+                    if original is not None and original["requested_option_keys"] == []:
+                        continue
+                    pair = observation["request_preference_pair"]
+                    intent = {**pair, "interaction_key": "educate_child_interaction",
+                              "recipient_id": pair["child_full_id"], "requested_option_keys": []}
+                attempts.append((observation_index, intent, variant))
+        for observation_index, intent, variant in attempts:
             observation = observations[observation_index]
             child_needs = observation["needs"]
-            intent = observation["default_request_intent"]
             child_id = intent["child_full_id"]
             guardian_id = intent["guardian_full_id"]
             requested_keys = intent["requested_option_keys"]
@@ -2361,6 +2395,12 @@ class GameplayBridgeService:
                 project_family_education_request_candidate_12004(child_needs, final))
             observation["selected_request_guardian_focus_skills"] = (
                 project_request_guardian_focus_skills_v1(child_needs, final))
+            observation["request_attempts"].append({
+                "variant": variant, "request_intent": copy.deepcopy(intent),
+                "query": preflight, "semantic_request_review": review,
+                "candidate": observation["selected_request_candidate"],
+                "request_guardian_focus_skills": observation["selected_request_guardian_focus_skills"],
+            })
             if (final["ready_to_initiate"] is not True or final["can_send"] is not True
                     or review["status"] != "available"):
                 continue
@@ -2370,6 +2410,7 @@ class GameplayBridgeService:
                 "family_education_inputs": inputs,
                 "family_education_observations": observations,
                 "family_education_request": intent,
+                "family_education_request_variant": variant,
                 "family_education_request_preference": preference,
                 "reason": "submit the preferred native-ready ward and guardian education intent",
             }}

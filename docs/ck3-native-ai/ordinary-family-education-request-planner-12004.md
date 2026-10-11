@@ -12,11 +12,12 @@ flowchart TD
     D --> E[52 project actual secondary ward and request guardian]
     D --> F[54 guarded request guardian raw skills]
     F --> G[50 strict optional leaf normalization]
-    E --> H[Complete child, guardian and canonical option intent]
+    E --> H[Observed child and guardian pair; original option intent stays separate]
     H --> P[Source-informed request preference over finite observed pairs]
     B --> P
     G --> P
-    P --> I[Existing selected-request ordinary preflight]
+    P --> R[Original selected-key intents first; then one explicit empty-key request per pair]
+    R --> I[Existing selected-request ordinary preflight]
     I --> J[50 retain final candidate and actual-focus raw skill observations]
     B --> J
     I --> K[Existing prepare education payload review]
@@ -44,6 +45,31 @@ The current source qualifies signed DWORD raw diplomacy, stewardship, intrigue a
 The normalizer admits and validates this optional leaf, then preserves it in the complete public query. The existing materializer binds that complete query into its semantic content token. The token records content and frame; it supplies no user approval or native dispatch authority. The preexisting a05 ordinary support and Ready expressions are unchanged by this leaf. Partial skills, missing focus and martial unavailability introduce no new submit condition.
 
 Options continue to retain every ordered row, duplicate full flag and raw bank byte. `ordinal_selected` is the own ordinal byte equal to one; compatibility `selected` remains the getter's first equal flag result. The request uses the current canonical keys of ordinal-selected rows. The final native query continues to determine option intent, role matches, CanSend, cost and frame.
+
+## DEFAULT rejection and the explicit empty-key fallback
+
+The caller previously discarded an available observed child/guardian pair on
+DEFAULT `can_send=false`. That actual default query, candidate and raw profile
+are preserved; the false result does not determine a same-pair explicit `[]`
+query. Derivable ordinal-selected keys remain `default_request_intent`, including
+known `[]`; unavailable rows/keys leave it `None`. A separate identity carrier
+contains only observed pair IDs. The same-method comparison adapter records its
+input basis; unknown default keys are not asserted empty.
+
+Original selected-key intents are tried first in existing preference order.
+If none selects a ready step, each pair gets one explicit `[]` fallback. Original
+`[]` intents are not repeated. Every attempted query, review, final candidate
+and raw profile is retained; compatibility `selected_request_*` describes the latest attempt.
+DEFAULT false is not rewritten. The attempted query's actual Ready, CanSend and
+available materializer review still select the existing initiation step.
+
+The [existing native option source](education-native-option-rows-12004.md)
+separates absent keys (native defaults) from `[]` (request all off). Clear is
+followed by refresh/finalize/validate and actual role/bank/request readback; the
+finalizer's toggle byte is not CanSend. Final readback must honor the request;
+Service neither synthesizes zero bytes nor assumes legality. This source ledger
+precedes the Service hunk. No new key, role assignment, AI or outcome meaning,
+execution or qualification is claimed; no test, import, build or query was run.
 
 Source owners are 52 (`family_education_needs_12004.py`), 54 (`ck3_12004_request_guardian_skill_inputs.hpp`), 55 (the existing ordinary query's profile read and serializer), and 50 (this caller and optional-leaf ingress). Existing 30 ordered-copy proof and 55 a05 support remain reused without another copy or allocator qualification. The package's adoption manifest pins the exact small source sections and owner handoffs.
 
