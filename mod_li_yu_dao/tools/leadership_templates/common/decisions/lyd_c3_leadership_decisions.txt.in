@@ -112,9 +112,9 @@ lyd_c3_register_challenger_decision = {
                 NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }
             }
         }
-        # Preserve the unchanged backend as the final admission guard.
-        hidden_trigger = { lyd_c3_native_challenger_admitted_trigger = yes }
     }
+    # Both validation fields limit execution; keep the unchanged backend guard.
+    is_valid_showing_failures_only = { lyd_c3_native_challenger_admitted_trigger = yes }
     effect = {
         custom_tooltip = lyd_c3_register_challenger_result
         hidden_effect = { if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_register_native_claim_effect = yes } }

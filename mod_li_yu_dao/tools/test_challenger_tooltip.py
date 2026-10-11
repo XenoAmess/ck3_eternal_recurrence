@@ -40,15 +40,13 @@ def canonical(body, definitions):
     """Erase display wrappers and inline only the two admission trigger calls.
 
     Conjunct order is irrelevant; scope/logical wrappers, operators, both branches
-    and all their predicates remain. The final hidden guard is checked separately.
+    and all their predicates remain. Both native validation fields are checked.
     """
     values = []
     for entry in body.entries:
         if entry.key == 'custom_description':
             unlabelled = Block(tuple(item for item in entry.value.entries if item.key != 'text'))
             values.extend(canonical(unlabelled, definitions))
-        elif entry.key == 'hidden_trigger':
-            continue
         elif entry.key in definitions and entry.value == 'yes':
             values.extend(canonical(definitions[entry.key], definitions))
         elif isinstance(entry.value, Block):
@@ -68,18 +66,24 @@ class ChallengerTooltipTests(unittest.TestCase):
             'lyd_c3_native_challenger_eligible_trigger',
         )}
 
-    def test_visible_conditions_preserve_backend_admission_ast(self):
-        self.assertEqual(
-            canonical(self.definitions['lyd_c3_native_challenger_admitted_trigger'], self.definitions),
-            canonical(block(self.proposed, 'is_valid'), self.definitions),
-        )
+    def test_both_valid_fields_preserve_backend_admission_ast(self):
+        backend = canonical(self.definitions['lyd_c3_native_challenger_admitted_trigger'], self.definitions)
+        visible = canonical(block(self.proposed, 'is_valid'), self.definitions)
+        final = canonical(block(self.proposed, 'is_valid_showing_failures_only'), self.definitions)
+        self.assertEqual(visible, backend)
+        self.assertEqual(final, backend)
+        # Both native validation fields are ANDed; duplicate conjuncts are idempotent.
+        joined = tuple(sorted(set(visible + final), key=repr))
+        self.assertEqual(joined, tuple(sorted(set(backend), key=repr)))
 
     def test_final_backend_guard_and_nonempty_incumbent_scope_are_preserved(self):
         valid = block(self.proposed, 'is_valid')
-        final = valid.entries[-1]
-        self.assertEqual(final.key, 'hidden_trigger')
-        self.assertEqual(final.value, parse_clausewitz('lyd_c3_native_challenger_admitted_trigger = yes'))
-        self.assertEqual(sum(e.key == 'hidden_trigger' for e in valid.entries), 1)
+        final = block(self.proposed, 'is_valid_showing_failures_only')
+        self.assertEqual(final, parse_clausewitz('lyd_c3_native_challenger_admitted_trigger = yes'))
+        keys = [entry.key for entry in self.proposed.entries]
+        self.assertLess(keys.index('is_valid'), keys.index('is_valid_showing_failures_only'))
+        for body in (valid, final):
+            self.assertFalse(any(entry.key == 'hidden_trigger' for entry, _ in visit(body)))
         expected = block(self.definitions['lyd_c3_native_challenger_eligible_trigger'], 'trigger_if')
         actual = block(valid, 'trigger_if')
         self.assertEqual(block(actual, 'limit'), block(expected, 'limit'))

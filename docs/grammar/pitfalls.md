@@ -524,3 +524,11 @@ CK3 **1.20.0.3** 原版 `events/_events.info:62–66` 明确 fullscreen_event �
 原版 `.3` `tgp_japan_decision_events.txt:1423–1429` 使用同形 presence-gated 长度读取，`tgp_china_career_events.txt:209–218` 提供 paired trigger_else。
 changed parser 只证明语法；[fresh R0006](../ck3-1.20.0.3-vivhite-compatibility-2026-10-04.md#白绮先加载-r0006核心通过空列表错误消失真实-decisions-入口通过)
 才证明四类生产缺列表签名归零且原购买金额、配置和实际交付条件继续通过。660条不同的fixture预览错误仍在，不由该修复外推为零日志。
+
+## 决议条件中的 `hidden_trigger` 未被识别（2026-10-12，CK3 1.20.0.4）
+
+| 现象 | 原因 | 解法及证据边界 |
+| --- | --- | --- |
+| `Unknown trigger type 'hidden_trigger'`，挑战者决议加载时出现 | 把未经当前原版支持的包装器写入 `is_valid` | 可读 `custom_description` 条件留在 `is_valid`，最终后端资格使用决议原生字段 `is_valid_showing_failures_only`；原版 `_decisions.info` 定义两字段均限制执行。AST 检查二者与原后端谓词等价，不能用生成成功代替修复后的实机加载与提示观察。 |
+
+实际失败、最小修复及尚未验证项见 [LYD R0064](../li-yu-dao/acceptance/2026-10-12-r64-feedback-start-red.md)。
