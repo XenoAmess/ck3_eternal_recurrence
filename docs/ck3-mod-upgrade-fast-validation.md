@@ -233,3 +233,15 @@ R14/a182 使用同一 Source19 runtime 和正式36文件候选。实际公共 ru
 离线验证各实际执行一次：新交互测试1项覆盖RMTM core/threshold与TED production_ui三条公共入口，现有readiness 7项通过（含第二次等待仍拒绝）。测试在第一次业务观察前以明确synthetic异常停止，不启动游戏、不授业务PASS；新回归已加入现有静态CI步骤。
 
 本场共同自动正常Quit完成，原PID7300/ctime1791720056.2492695的 retained HANDLE 实读OS退出0，native GREEN及normal-close qualified只授生命周期。Root实际等待observer退出15（管理性停止，非CK3退出）、keeper/原allocator退出0，12:13:42 UTC [CAS8778](C:/workspace/ck3-upgrade-20261006/resume-root-01/a182-screen-release-01.json) done/resources=[]。并行完成PAM delayed-boundary新输入的小型prepare候选和贤能来源池tier门槛定位；均未授新业务信用。当前用户指定两产品仍为QOL 2/6、RMTM 0/2，合计2/8；两者1.20候选均未发布，361不在本轮执行范围。
+
+## 2026-10-11 22:18 CST：RMTM R15 的第二次暂停快照拒绝
+
+R15/a184 使用冻结 Source19 与新准备的正式36文件、全新state，默认2GiB原52于13:50Z准入。R14重复readiness修复已实际越过，D1原自然日仅提交一次，日期53144328→53144352；Root逐项审阅同一宋actor34422、原事件实例2 `tgp_dynastic_cycle.0081` 与实例1 `rmtm.1001`，各只选择一次真实启用选项并读回事件推进。未重放D1；局部成功不授core整场PASS。
+
+14:04:30Z原 `case-natural-day-0002` 在preflight pause读回失败，尚未提交speed/resume或推进D2。原 [native-report](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--reclaim-the-motherland--R0015/native-report.json) 的异常链为 `campaign pause readback owner, clock or rejection state changed`。原mcp-calls末段证明前后PID2220/gen1/actor34422/ownerTid16328/localPlayer1/date53144352/speed1不变，native revision仍12，pump44150→44172；实际变化是累计rejected_count 1→2。新被拒帧native:13的原native-wire载荷含 `played_character.stress_points=-1`。D1已有同类0→1拒绝并恢复native:5，冻结host只允许累计0→1，因此D2恢复分支拒绝。不能把该故障归因为RMTM业务或角色切换，也不能放宽decoder把-1冒充合法stress。
+
+源码链已定位：已暂停命令返回core-only `command_observation`，stress保留默认-1；pause/resume发布条件只排除 `IsReviewedCrozierAdapter`，而该predicate只认1.20.0.2/.3，不认本场1.20.0.4，故部分快照进入完整serializer。下一项为共享native两处发布条件的最小修复；不扩大全局ABI predicate、不降低原业务/预算、不追认本场。新native与全局runtime仍待实际增量构建及下一新场资格验证。
+
+公共 [run实际exit2](C:/workspace/ck3-upgrade-20261010/rmtm-scene-resume-02/core--a184/run-01-process-exit.json) SHA `60fc36f750f19de137efd8a80a6ebee22e064b7743a98e0230193354cd86c9b8`；[verify实际exit2](C:/workspace/ck3-upgrade-20261010/rmtm-scene-resume-02/core--a184/verify-01-process-exit.json) SHA `5a6b61474db26fc6865e92466b30f12ab470cb72d38ddb402e19883661ee77fd`，原正文为BLOCKED/NOT_RUN/NOT_ASSESSED、缺少 `rmtm-verdict-input.json`，不制造缺失的business flags。原managed session实际CK3退出1、jobfinal0、treegone、cleanup proven、inventory空、watchdog/control absent；没有正常GUI退出、native0或retained HANDLE退出0凭据。Root只用明确false的normal-quit结果结束已死进程的人工等待，原validator拒绝保留，不把管理性结束冒充正常关闭。
+
+Root实际等待观察器exit15、keeper/原allocator exit0，14:18:33Z [CAS8828](C:/workspace/ck3-upgrade-20261006/resume-root-01/a184-screen-release-01.json) done/resources=[]，未控制其他游戏。容量预约的failure-only闭账另行处理，不能沿用要求OS0的旧正常闭场收据。原报告/wire与本故障必要证据owner `/root`，2026-10-18复核、不自动续期。并行完成admin03与ransom当前正式27文件的代码胶水离线校验、PAM两阶段候选入库及旧监控派生回收；未将prepare/源码/资源资格授成业务PASS。当前仍QOL 2/6、RMTM 0/2、合计2/8（25%），两者未发布，361不在范围。
