@@ -8,11 +8,18 @@ background research and source implementation using the existing64-agent team;
 this describes the team, not a claim that64 workers are simultaneously active.
 Saved baseline6077/H10134; five daily SAVEs deferred, no new game-day credit.
 
-Current source integrations are published on master: `02d590d0` connected Sway,
-prisoner quote and construction consumers; `0f199156` connected family education
-inputs and Person callback entry/return source; `ebfc18e5` connected actual assault
-return outcomes to the existing phase consumer. All new additions remain
-research / SOURCE_ADOPTED_NOT_RUN. Native84/fullSDK84 still represent compiled594.
+Current source integrations are published on master. Earlier connected packages
+are `02d590d0` (Sway, prisoner quote, construction), `0f199156` (family and Person),
+`ebfc18e5` (actual assault return), `aa9c607c` (child relation materials),
+`fad094c9` (religion price source) and `36bef2bb` (construction receipt continuity).
+Latest connected source: `fc9569c0` [Sway invalidation title input](../ck3-native-ai/sway-invalidation-execution-wire-12004.md),
+`0241b1bb` [child CourtOwner](../ck3-native-ai/current-child-court-owner-readonly-12004.md),
+and `b62d3c54` [actual education option query](../ck3-native-ai/education-native-option-rows-12004.md).
+These additions remain research / SOURCE_ADOPTED_NOT_RUN. Education command
+roles/options and the independent native Sway end relationship are still under
+source construction. Native84/fullSDK84 still represent compiled594; no new
+game days, terminal cause, succession or M6/M7 completion are credited.
+All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 
 **Current recovery, recorded 2026-10-11T04:01:23.385118+00:00:** R98 is closed: SDK0, owned Game forced1,
