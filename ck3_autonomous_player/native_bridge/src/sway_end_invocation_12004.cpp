@@ -77,6 +77,39 @@ bool ReadInstance(const SwayEndInvocationBindings12004 &bindings,
   output.present = true;
   return true;
 }
+// Copy the actual call operand directly. Its independent raw fields do
+// not claim storage membership; the supplied observer frame is a copied
+// provenance input and is not refreshed by a native getter here.
+void ReadCommonFrame(const SwayEndInvocationBindings12004 &bindings,
+                     const void *actual_scheme,
+                     const CoreSnapshotPrefix *previous_observer_frame,
+                     SwayCommonTerminationFrame12004 &output) noexcept {
+  output = {};
+  if (previous_observer_frame)
+    output.core_frame_observed = Copy(
+        reinterpret_cast<std::uintptr_t>(previous_observer_frame),
+        &output.core_frame, sizeof(output.core_frame));
+  if (!actual_scheme) return;
+  const auto scheme = reinterpret_cast<std::uintptr_t>(actual_scheme);
+  std::uintptr_t table{}, type{};
+  std::uint32_t marker{};
+  output.scheme_header_observed = Read(scheme, table) &&
+      table == bindings.image_base + bindings.state.instance_vtable_rva &&
+      Read(scheme + 0x14, marker) && marker == 0x5363686D &&
+      Read(scheme + 0x20, type) && IsSway(type, bindings);
+  output.scheme_full_id_observed = Read(scheme + 0x10,
+                                       output.scheme_full_id_raw_u32);
+  if (output.scheme_full_id_observed)
+    output.scheme_instance_generation_u8 = static_cast<std::uint8_t>(
+        output.scheme_full_id_raw_u32 >> 24);
+  output.status_observed = Read(scheme + 0x28, output.status_raw_i32);
+  output.owner_observed = Read(scheme + 0x2C,
+                              output.owner_character_full_id_raw_u32);
+  output.other_kind_observed = Read(scheme + 0x30, output.other_kind_raw_u32);
+  if (output.other_kind_observed && output.other_kind_raw_u32 == 0)
+    output.target_observed = Read(scheme + 0x34,
+                                 output.target_character_full_id_raw_u32);
+}
 bool Ready(const SwayEndInvocationBindings12004 &bindings) noexcept {
   return bindings.enabled && bindings.image_base && bindings.state.enabled &&
          bindings.state.core.enabled;
@@ -223,6 +256,64 @@ SwayEndCaptureResult12004 ForwardSwayEndEffect12004(
   output.original_returned = true;
   if (result == SwayEndCaptureResult12004::captured)
     (void)CaptureSwayEndAfter12004(bindings, output);
+  return result;
+}
+SwayEndCaptureResult12004 CaptureSwayCommonTerminationBefore12004(
+    const SwayEndInvocationBindings12004 &bindings,
+    const SwayEndInvocationStamp12004 &stamp, const void *actual_scheme,
+    std::uint8_t raw_dl, const CoreSnapshotPrefix *previous_observer_frame,
+    SwayCommonTerminationObservation12004 &output) noexcept {
+  output = {};
+  output.stamp = stamp;
+  output.incoming_dl_observed = true;
+  output.incoming_dl_raw_u8 = raw_dl;
+  if (!Ready(bindings) || !ValidStamp(stamp) || !actual_scheme)
+    return SwayEndCaptureResult12004::unavailable;
+  ReadCommonFrame(bindings, actual_scheme, previous_observer_frame, output.entry);
+  if (!output.entry.scheme_header_observed ||
+      !output.entry.scheme_full_id_observed)
+    return SwayEndCaptureResult12004::unavailable;
+  if (output.entry.scheme_full_id_raw_u32 == 0xFFFFFFFFu)
+    return SwayEndCaptureResult12004::ignored;
+  return SwayEndCaptureResult12004::captured;
+}
+
+bool CaptureSwayCommonTerminationAfter12004(
+    const SwayEndInvocationBindings12004 &bindings, const void *actual_scheme,
+    const CoreSnapshotPrefix *previous_observer_frame,
+    SwayCommonTerminationObservation12004 &output) noexcept {
+  output.returned = {};
+  output.return_same_scheme_full_id_observed = false;
+  output.return_same_scheme_full_id = false;
+  if (!Ready(bindings) || !ValidStamp(output.stamp) || !actual_scheme ||
+      !output.original_returned)
+    return false;
+  ReadCommonFrame(bindings, actual_scheme, previous_observer_frame, output.returned);
+  output.return_same_scheme_full_id_observed =
+      output.entry.scheme_header_observed && output.entry.scheme_full_id_observed &&
+      output.returned.scheme_header_observed &&
+      output.returned.scheme_full_id_observed;
+  if (output.return_same_scheme_full_id_observed)
+    output.return_same_scheme_full_id = output.entry.scheme_full_id_raw_u32 ==
+        output.returned.scheme_full_id_raw_u32;
+  return output.returned.scheme_header_observed &&
+         output.returned.scheme_full_id_observed;
+}
+
+SwayEndCaptureResult12004 ForwardSwayCommonTermination12004(
+    const SwayEndInvocationBindings12004 &bindings,
+    const SwayEndInvocationStamp12004 &stamp,
+    SwayEndNativeCommonTermination12004 original, const void *actual_scheme,
+    std::uint8_t raw_dl, const CoreSnapshotPrefix *previous_observer_frame,
+    SwayCommonTerminationObservation12004 &output) {
+  const auto result = CaptureSwayCommonTerminationBefore12004(
+      bindings, stamp, actual_scheme, raw_dl, previous_observer_frame, output);
+  if (!original) return SwayEndCaptureResult12004::unavailable;
+  output.original_forwarded_once = true;
+  original(actual_scheme, raw_dl);
+  output.original_returned = true;
+  (void)CaptureSwayCommonTerminationAfter12004(
+      bindings, actual_scheme, previous_observer_frame, output);
   return result;
 }
 } // namespace xar::ck3_12004

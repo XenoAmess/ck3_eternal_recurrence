@@ -45,12 +45,150 @@ def _integer(value: object, minimum: int, maximum: int) -> bool:
     return type(value) is int and minimum <= value <= maximum
 
 
+
+_COMMON_NATIVE_END_KEY = "common_native_end"
+_COMMON_FAMILY_KEYS = {
+    "schema", "source_contract", "available", "unavailable_reason", "read_only",
+    "observer_attached", "observer_session_identity", "owner_thread_id",
+    "actor_character_id", "target_character_id", "scheme_instance_id",
+    "scheme_instance_generation", "after_sequence", "earliest_sequence",
+    "latest_sequence", "retention_gap", "session_records_only", "records",
+}
+_COMMON_RECORD_KEYS = {
+    "sequence", "observer_session_identity", "owner_thread_id", "original_invocation_id",
+    "callsite_rva", "callee_rva", "call_return_rva", "incoming_return_address_observed",
+    "caller_return_rva", "incoming_dl_observed", "incoming_dl_raw_u8", "entry",
+    "original_forwarded_once", "original_returned", "returned",
+    "return_same_scheme_full_id_observed", "return_same_scheme_full_id",
+}
+_COMMON_FRAME_KEYS = {
+    "scheme_header_observed", "scheme_full_id_observed", "scheme_full_id_raw_u32",
+    "scheme_instance_generation_u8", "status_observed", "status_raw_i32",
+    "owner_observed", "owner_character_full_id_raw_u32", "other_kind_observed",
+    "other_kind_raw_u32", "target_observed", "target_character_full_id_raw_u32",
+    "core_frame_observed", "core_frame",
+}
+_COMMON_CORE_KEYS = {"date_raw", "speed", "paused", "local_player_id", "map_ready",
+                     "has_played_character", "played_character_id", "played_character_alive"}
+
+
+def _normalize_common_native_end_frame_12004(value: object) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != _COMMON_FRAME_KEYS:
+        raise ValueError("common native end frame schema is malformed")
+    for key in ("scheme_header_observed", "scheme_full_id_observed", "status_observed",
+                "owner_observed", "other_kind_observed", "target_observed", "core_frame_observed"):
+        if type(value[key]) is not bool:
+            raise ValueError("common native end frame read flag is malformed")
+    for flag, key, minimum, maximum in (
+        ("scheme_full_id_observed", "scheme_full_id_raw_u32", 0, 0xFFFFFFFF),
+        ("scheme_full_id_observed", "scheme_instance_generation_u8", 0, 255),
+        ("status_observed", "status_raw_i32", -(1 << 31), (1 << 31) - 1),
+        ("owner_observed", "owner_character_full_id_raw_u32", 0, 0xFFFFFFFF),
+        ("other_kind_observed", "other_kind_raw_u32", 0, 0xFFFFFFFF),
+        ("target_observed", "target_character_full_id_raw_u32", 0, 0xFFFFFFFF),
+    ):
+        if (value[flag] and not _integer(value[key], minimum, maximum)
+                or not value[flag] and value[key] is not None):
+            raise ValueError("common native end nullable raw field is malformed")
+    if (value["scheme_full_id_observed"]
+            and value["scheme_instance_generation_u8"] != value["scheme_full_id_raw_u32"] >> 24):
+        raise ValueError("common native end generation differs from its full ID")
+    if value["target_observed"] and not (value["other_kind_observed"] and value["other_kind_raw_u32"] == 0):
+        raise ValueError("common native end character target has no observed kind0")
+    core = value["core_frame"]
+    if value["core_frame_observed"]:
+        if (not isinstance(core, dict) or set(core) != _COMMON_CORE_KEYS
+                or any(not _integer(core[key], -(1 << 31), (1 << 31) - 1)
+                       for key in ("date_raw", "speed", "local_player_id", "played_character_id"))
+                or any(type(core[key]) is not bool for key in
+                       ("paused", "map_ready", "has_played_character", "played_character_alive"))):
+            raise ValueError("common native end supplied core frame is malformed")
+    elif core is not None:
+        raise ValueError("common native end missing core frame was filled")
+    return {**value, "core_frame": dict(core) if core is not None else None}
+
+
+def normalize_sway_common_native_end_12004(
+    value: object, context: Mapping[str, object],
+) -> dict[str, object]:
+    """Preserve the independent common entry/return family without a cause."""
+    if (not isinstance(value, dict) or set(value) != _COMMON_FAMILY_KEYS
+            or value["schema"] != "xar.ck3.sway-common-native-end.v1"
+            or value["source_contract"] != "actual_2a48877_2a4adf0_v1"):
+        raise ValueError("common native end family schema is malformed")
+    if (any(type(value[key]) is not bool for key in
+            ("available", "read_only", "observer_attached", "retention_gap", "session_records_only"))
+            or value["read_only"] is not True or value["session_records_only"] is not True
+            or not isinstance(value["unavailable_reason"], str)
+            or bool(value["unavailable_reason"]) == value["available"]
+            or any(not _integer(value[key], 0, 0xFFFFFFFFFFFFFFFF) for key in
+                   ("observer_session_identity", "after_sequence", "earliest_sequence", "latest_sequence"))
+            or not _integer(value["owner_thread_id"], 0, 0xFFFFFFFF)
+            or any(not _integer(value[key], 0, 0xFFFFFFFF) or value[key] != context[key]
+                   for key in ("actor_character_id", "target_character_id", "scheme_instance_id"))
+            or not _integer(value["scheme_instance_generation"], 0, 255)
+            or value["scheme_instance_generation"] != value["scheme_instance_id"] >> 24
+            or value["after_sequence"] != 0 or not isinstance(value["records"], list)):
+        raise ValueError("common native end family fields are malformed")
+    if value["available"] and (not value["observer_attached"]
+            or value["observer_session_identity"] == 0 or value["owner_thread_id"] == 0):
+        raise ValueError("common native end availability has no admitted session/thread")
+    earliest, latest = value["earliest_sequence"], value["latest_sequence"]
+    if ((earliest == 0) != (latest == 0) or earliest > latest
+            or not value["available"] and value["records"]):
+        raise ValueError("common native end independent ring bounds are malformed")
+    records = []
+    previous_sequence = 0
+    for row in value["records"]:
+        if not isinstance(row, dict) or set(row) != _COMMON_RECORD_KEYS:
+            raise ValueError("common native end record schema is malformed")
+        if (any(not _integer(row[key], 1, 0xFFFFFFFFFFFFFFFF) for key in
+                ("sequence", "observer_session_identity", "original_invocation_id"))
+                or not _integer(row["owner_thread_id"], 1, 0xFFFFFFFF)
+                or row["observer_session_identity"] != value["observer_session_identity"]
+                or row["owner_thread_id"] != value["owner_thread_id"]
+                or not earliest <= row["sequence"] <= latest
+                or row["sequence"] <= previous_sequence
+                or any(not _integer(row[key], 0, 0xFFFFFFFFFFFFFFFF) or row[key] != rva for key, rva in
+                       (("callsite_rva", 0x2A48877), ("callee_rva", 0x2A4ADF0), ("call_return_rva", 0x2A4887C)))
+                or any(type(row[key]) is not bool for key in
+                       ("incoming_return_address_observed", "incoming_dl_observed", "original_forwarded_once",
+                        "original_returned", "return_same_scheme_full_id_observed"))
+                or row["incoming_return_address_observed"] is not False or row["caller_return_rva"] is not None):
+            raise ValueError("common native end invocation/source provenance is malformed")
+        if (row["incoming_dl_observed"] and not _integer(row["incoming_dl_raw_u8"], 0, 255)
+                or not row["incoming_dl_observed"] and row["incoming_dl_raw_u8"] is not None):
+            raise ValueError("common native end incoming DL was changed or filled")
+        entry = _normalize_common_native_end_frame_12004(row["entry"])
+        returned = _normalize_common_native_end_frame_12004(row["returned"])
+        if (entry["scheme_full_id_observed"] is not True
+                or entry["scheme_full_id_raw_u32"] != value["scheme_instance_id"]
+                or entry["owner_observed"] is not True
+                or entry["owner_character_full_id_raw_u32"] != value["actor_character_id"]
+                or entry["target_observed"] is not True
+                or entry["target_character_full_id_raw_u32"] != value["target_character_id"]):
+            raise ValueError("common native end entry differs from its full query identities")
+        same_id = row["return_same_scheme_full_id"]
+        if row["return_same_scheme_full_id_observed"]:
+            if (type(same_id) is not bool or entry["scheme_header_observed"] is not True
+                    or returned["scheme_header_observed"] is not True
+                    or entry["scheme_full_id_observed"] is not True
+                    or returned["scheme_full_id_observed"] is not True
+                    or same_id != (entry["scheme_full_id_raw_u32"] == returned["scheme_full_id_raw_u32"])):
+                raise ValueError("common native end full-ID diagnostic is malformed")
+        elif same_id is not None:
+            raise ValueError("common native end unobserved full-ID diagnostic was filled")
+        records.append({**row, "entry": entry, "returned": returned})
+        previous_sequence = row["sequence"]
+    return {**value, "records": records}
+
+
 def normalize_active_scheme_sway_completion_termination_v1(
     value: object, *, snapshot: Mapping[str, object], target_character_id: int,
     scheme_instance_id: int, after_sequence: int = 0,
 ) -> dict[str, object]:
     """Preserve actual source and post-state flags without assigning a cause."""
-    if (not isinstance(value, dict) or set(value) != _CONTEXT_KEYS
+    if (not isinstance(value, dict) or set(value) not in (_CONTEXT_KEYS, _CONTEXT_KEYS | {_COMMON_NATIVE_END_KEY})
             or value["schema"] != SCHEMA):
         raise ValueError("native sway termination schema is malformed")
     if (any(type(value[key]) is not bool for key in (
@@ -107,7 +245,12 @@ def normalize_active_scheme_sway_completion_termination_v1(
             copied["native_invocation"] = normalize_sway_end_invocation_12004(record["native_invocation"], record)
             copied["cause_relation"] = normalize_sway_end_relation_12004(record["cause_relation"], record, copied["native_invocation"])
         records.append(copied)
-    return {**value, "records": records}
+    normalized = {**value, "records": records}
+    if _COMMON_NATIVE_END_KEY in value:
+        normalized[_COMMON_NATIVE_END_KEY] = normalize_sway_common_native_end_12004(
+            value[_COMMON_NATIVE_END_KEY], value,
+        )
+    return normalized
 
 
 def query_active_scheme_sway_completion_termination_private_v1(
@@ -148,6 +291,8 @@ def query_active_scheme_sway_completion_termination_private_v1(
         )
         if build != CK3_12004 and any("native_invocation" in record for record in value["records"]):
             raise ValueError("original end invocation belongs only to admitted actual4")
+        if build != CK3_12004 and _COMMON_NATIVE_END_KEY in value:
+            raise ValueError("common native end observation belongs only to admitted actual4")
         if result.get("status") != ("available" if value["available"] else "unavailable"):
             raise ValueError("native sway termination envelope lost its source status")
     except ValueError as error:

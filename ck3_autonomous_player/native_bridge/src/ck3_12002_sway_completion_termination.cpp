@@ -3,6 +3,7 @@
 #include "xar_bridge/sway_end_invocation_12004.hpp"
 #include "xar_bridge/sway_child_end_causal_path_12004.hpp"
 #include "xar_bridge/sway_completion_causal_observer_12004.hpp"
+#include "xar_bridge/sway_common_termination_callsite_observer_12004.hpp"
 #include <intrin.h>
 
 #include <atomic>
@@ -81,6 +82,110 @@ bool ReadInstance(const SwayTerminationBindings12002 &b, std::uint32_t id,
 }
 std::atomic<SwayTerminationInstall12002 *> observer{nullptr};
 std::array<std::uintptr_t, 3> native_originals{};
+
+// Receiver pointers persist only during this same-thread native call, never in
+// retained observations. Nested fixedsite calls have distinct matched entries.
+struct CommonNativeEndPending12004 {
+  SwayTerminationRecorder12002 *recorder = nullptr;
+  std::uintptr_t receiver = 0;
+  bool capture_attempted = false;
+  ck3_12004::SwayCommonTerminationObservation12004 observation{};
+};
+thread_local std::array<CommonNativeEndPending12004, 16> common_pending{};
+thread_local std::size_t common_pending_count = 0;
+thread_local std::size_t common_pending_overflow = 0;
+void CommonNativeEndBefore12004(void *context, std::uintptr_t receiver,
+    std::uint64_t rdx) noexcept {
+  if (context) static_cast<SwayTerminationRecorder12002 *>(context)->
+      CaptureCommonNativeEndBefore12004(receiver, rdx);
+}
+void CommonNativeEndAfter12004(void *context, std::uint64_t rax) noexcept {
+  if (context) static_cast<SwayTerminationRecorder12002 *>(context)->
+      CaptureCommonNativeEndAfter12004(rax);
+}
+template <typename T> void CommonObserved(std::ostream &out, bool observed,
+    T value) {
+  if (observed) out << value; else out << "null";
+}
+void CommonQuoted(std::ostream &out, std::string_view value) {
+  constexpr char hex[] = "0123456789abcdef";
+  out << '"';
+  for (const unsigned char ch : value) {
+    if (ch == '\\' || ch == '"') out << '\\' << static_cast<char>(ch);
+    else if (ch < 32) out << "\\u00" << hex[ch >> 4] << hex[ch & 15];
+    else out << static_cast<char>(ch);
+  }
+  out << '"';
+}
+void SerializeCommonFrame12004(std::ostream &out,
+    const ck3_12004::SwayCommonTerminationFrame12004 &f) {
+  out << "{\"scheme_header_observed\":" << (f.scheme_header_observed ? "true" : "false")
+      << ",\"scheme_full_id_observed\":" << (f.scheme_full_id_observed ? "true" : "false")
+      << ",\"scheme_full_id_raw_u32\":";
+  CommonObserved(out, f.scheme_full_id_observed, f.scheme_full_id_raw_u32);
+  out << ",\"scheme_instance_generation_u8\":";
+  CommonObserved(out, f.scheme_full_id_observed, static_cast<std::uint32_t>(f.scheme_instance_generation_u8));
+  out << ",\"status_observed\":" << (f.status_observed ? "true" : "false") << ",\"status_raw_i32\":";
+  CommonObserved(out, f.status_observed, f.status_raw_i32);
+  out << ",\"owner_observed\":" << (f.owner_observed ? "true" : "false") << ",\"owner_character_full_id_raw_u32\":";
+  CommonObserved(out, f.owner_observed, f.owner_character_full_id_raw_u32);
+  out << ",\"other_kind_observed\":" << (f.other_kind_observed ? "true" : "false") << ",\"other_kind_raw_u32\":";
+  CommonObserved(out, f.other_kind_observed, f.other_kind_raw_u32);
+  out << ",\"target_observed\":" << (f.target_observed ? "true" : "false") << ",\"target_character_full_id_raw_u32\":";
+  CommonObserved(out, f.target_observed, f.target_character_full_id_raw_u32);
+  out << ",\"core_frame_observed\":" << (f.core_frame_observed ? "true" : "false") << ",\"core_frame\":";
+  if (!f.core_frame_observed) out << "null";
+  else {
+    const auto &c = f.core_frame;
+    out << "{\"date_raw\":" << c.clock.date_raw << ",\"speed\":" << c.clock.speed
+        << ",\"paused\":" << (c.clock.paused ? "true" : "false")
+        << ",\"local_player_id\":" << c.local_player_id << ",\"map_ready\":" << (c.map_ready ? "true" : "false")
+        << ",\"has_played_character\":" << (c.has_played_character ? "true" : "false")
+        << ",\"played_character_id\":" << c.played_character_id
+        << ",\"played_character_alive\":" << (c.played_character_alive ? "true" : "false") << '}';
+  }
+  out << '}';
+}
+void SerializeCommonNativeEnd12004(std::ostream &out,
+    const SwayTerminationQuery12002 &request,
+    const SwayCommonNativeEndQueryResult12004 &r) {
+  out << "{\"schema\":\"xar.ck3.sway-common-native-end.v1\",\"source_contract\":\"actual_2a48877_2a4adf0_v1\""
+      << ",\"available\":" << (r.available ? "true" : "false") << ",\"unavailable_reason\":";
+  CommonQuoted(out, r.unavailable_reason);
+  out << ",\"read_only\":true,\"observer_attached\":" << (r.observer_attached ? "true" : "false")
+      << ",\"observer_session_identity\":" << r.observer_session_identity << ",\"owner_thread_id\":" << r.owner_thread_id
+      << ",\"actor_character_id\":" << request.actor_character_id << ",\"target_character_id\":" << request.target_character_id
+      << ",\"scheme_instance_id\":" << request.scheme_id << ",\"scheme_instance_generation\":" << (request.scheme_id >> 24)
+      << ",\"after_sequence\":0,\"earliest_sequence\":" << r.earliest_sequence << ",\"latest_sequence\":" << r.latest_sequence
+      << ",\"retention_gap\":" << (r.retention_gap ? "true" : "false") << ",\"session_records_only\":true,\"records\":[";
+  bool first = true;
+  for (const auto &row : r.records) {
+    if (!first) out << ',';
+    first = false;
+    const auto &o = row.observation;
+    const auto &s = o.stamp;
+    out << "{\"sequence\":" << row.sequence << ",\"observer_session_identity\":" << s.observer_session_identity
+        << ",\"owner_thread_id\":" << s.owner_thread_id << ",\"original_invocation_id\":" << s.invocation_id
+        << ",\"callsite_rva\":" << ck3_12004::kSwayCommonTerminationCallsiteRva12004
+        << ",\"callee_rva\":" << ck3_12004::kSwayCommonTerminationOriginalRva12004
+        << ",\"call_return_rva\":" << ck3_12004::kSwayCommonTerminationCallerReturnRva12004
+        << ",\"incoming_return_address_observed\":" << (s.incoming_return_address_observed ? "true" : "false")
+        << ",\"caller_return_rva\":";
+    CommonObserved(out, s.incoming_return_address_observed, s.caller_return_rva);
+    out << ",\"incoming_dl_observed\":" << (o.incoming_dl_observed ? "true" : "false") << ",\"incoming_dl_raw_u8\":";
+    CommonObserved(out, o.incoming_dl_observed, static_cast<std::uint32_t>(o.incoming_dl_raw_u8));
+    out << ",\"entry\":";
+    SerializeCommonFrame12004(out, o.entry);
+    out << ",\"original_forwarded_once\":" << (o.original_forwarded_once ? "true" : "false")
+        << ",\"original_returned\":" << (o.original_returned ? "true" : "false") << ",\"returned\":";
+    SerializeCommonFrame12004(out, o.returned);
+    out << ",\"return_same_scheme_full_id_observed\":" << (o.return_same_scheme_full_id_observed ? "true" : "false")
+        << ",\"return_same_scheme_full_id\":";
+    if (o.return_same_scheme_full_id_observed) out << (o.return_same_scheme_full_id ? "true" : "false"); else out << "null";
+    out << '}';
+  }
+  out << "]}";
+}
 
 void Invoke(std::size_t index, const void *self, const void *context,
             std::uintptr_t incoming_return) {
@@ -285,6 +390,154 @@ bool CaptureSwayTerminationAfter12002(const SwayTerminationBindings12002 &b,
   out.native_terminal_transition_observed = out.pre_status == 0 && after.status == 1;
   return true;
 }
+bool SwayTerminationRecorder12002::ConfigureCommonNativeEnd12004(
+    std::uintptr_t image_base, std::string_view sha) noexcept {
+  if (common_configured_) return false;
+  common_configured_ = true;
+  common_attached_ = false;
+  try {
+    const auto actual = ck3_12004::BindSwayEndInvocationImage12004(image_base, sha);
+    common_session_identity_ = ck3_12004::CurrentSwayCausalObserverSession12004();
+    if (!actual.enabled || common_session_identity_ == 0) {
+      common_unavailable_reason_ = "common_native_end_binding_or_session_unavailable";
+      return false;
+    }
+    common_bindings_.enabled = true;
+    common_bindings_.image_base = image_base;
+    common_bindings_.core = actual.state.core;
+    common_unavailable_reason_ = "common_native_end_observer_not_attached";
+    return true;
+  } catch (...) { common_internal_error_ = true; return false; }
+}
+void SwayTerminationRecorder12002::SetCommonNativeEndObserverAttached12004(
+    bool attached, const char *reason) noexcept {
+  common_attached_ = false;
+  try {
+    if (!common_configured_ || !common_bindings_.enabled || common_internal_error_ ||
+        common_session_identity_ == 0 || common_session_identity_ != ck3_12004::CurrentSwayCausalObserverSession12004()) {
+      common_unavailable_reason_ = "common_native_end_binding_or_session_unavailable";
+      return;
+    }
+    common_attached_ = attached;
+    common_unavailable_reason_ = attached ? "" : (reason && *reason ? reason : "common_native_end_observer_not_attached");
+  } catch (...) { common_attached_ = false; common_internal_error_ = true; }
+}
+void SwayTerminationRecorder12002::CaptureCommonNativeEndBefore12004(
+    std::uintptr_t receiver, std::uint64_t rdx) noexcept {
+  if (common_pending_count == common_pending.size()) { ++common_pending_overflow; return; }
+  auto &pending = common_pending[common_pending_count++];
+  pending = {};
+  pending.recorder = this;
+  if (!common_attached_ || common_internal_error_ || !common_bindings_.enabled ||
+      common_session_identity_ == 0 || common_session_identity_ != ck3_12004::CurrentSwayCausalObserverSession12004()) return;
+  ck3_12004::SwayEndInvocationStamp12004 stamp{};
+  stamp.observer_session_identity = common_session_identity_;
+  stamp.owner_thread_id = GetCurrentThreadId();
+  std::uint32_t unbound_thread = 0;
+  (void)common_owner_thread_id_.compare_exchange_strong(unbound_thread, stamp.owner_thread_id,
+      std::memory_order_acq_rel, std::memory_order_acquire);
+  if (common_owner_thread_id_.load(std::memory_order_acquire) != stamp.owner_thread_id) return;
+  stamp.invocation_id = ck3_12004::NextSwayCausalInvocation12004();
+  // The fixedsite stub does not copy the natural native return address.
+  // Keep its read flag false; source constants are serialized separately.
+  const auto bindings = ck3_12004::BindSwayEndInvocationImage12004(
+      common_bindings_.image_base, ck3_12004::kExecutableSha256);
+  pending.receiver = receiver;
+  pending.capture_attempted = true;
+  (void)ck3_12004::CaptureSwayCommonTerminationBefore12004(
+      bindings, stamp, reinterpret_cast<const void *>(receiver),
+      static_cast<std::uint8_t>(rdx & 0xFFU), nullptr, pending.observation);
+}
+void SwayTerminationRecorder12002::CaptureCommonNativeEndAfter12004(
+    std::uint64_t returned_rax_bits) noexcept {
+  (void)returned_rax_bits; // No source-proved return-value semantics.
+  if (common_pending_overflow != 0) { --common_pending_overflow; return; }
+  if (common_pending_count == 0) return;
+  auto pending = common_pending[--common_pending_count];
+  common_pending[common_pending_count] = {};
+  if (pending.recorder != this || !pending.capture_attempted || !common_attached_ ||
+      pending.observation.stamp.owner_thread_id != GetCurrentThreadId() ||
+      pending.observation.stamp.observer_session_identity != common_session_identity_ ||
+      common_session_identity_ != ck3_12004::CurrentSwayCausalObserverSession12004()) return;
+  // This post callback exists only after the stub's single actual CALL returns.
+  pending.observation.original_forwarded_once = true;
+  pending.observation.original_returned = true;
+  const auto bindings = ck3_12004::BindSwayEndInvocationImage12004(
+      common_bindings_.image_base, ck3_12004::kExecutableSha256);
+  (void)ck3_12004::CaptureSwayCommonTerminationAfter12004(bindings,
+      reinterpret_cast<const void *>(pending.receiver), nullptr, pending.observation);
+  pending.receiver = 0;
+  (void)AppendCommonNativeEnd12004(pending.observation);
+}
+bool SwayTerminationRecorder12002::AppendCommonNativeEnd12004(
+    const ck3_12004::SwayCommonTerminationObservation12004 &o) noexcept {
+  if (!common_configured_ || !common_attached_ || common_internal_error_ ||
+      !o.original_forwarded_once || !o.original_returned ||
+      o.stamp.observer_session_identity != common_session_identity_ ||
+      common_session_identity_ == 0 || common_session_identity_ != ck3_12004::CurrentSwayCausalObserverSession12004() ||
+      o.stamp.owner_thread_id == 0 || o.stamp.owner_thread_id != GetCurrentThreadId() ||
+      o.stamp.owner_thread_id != common_owner_thread_id_.load(std::memory_order_acquire) ||
+      o.stamp.invocation_id == 0 || o.stamp.incoming_return_address_observed ||
+      o.stamp.caller_return_rva != 0) return false;
+  const auto at = (common_first_ + common_count_) % common_records_.size();
+  common_records_[at] = {common_next_sequence_++, o};
+  if (common_count_ < common_records_.size()) ++common_count_;
+  else common_first_ = (common_first_ + 1) % common_records_.size();
+  return true;
+}
+void SwayTerminationRecorder12002::QueryCommonNativeEnd12004(
+    const SwayTerminationQuery12002 &request, SwayCommonNativeEndQueryResult12004 &out) const {
+  out = {};
+  out.observer_attached = common_attached_;
+  out.observer_session_identity = common_session_identity_;
+  out.owner_thread_id = GetCurrentThreadId();
+  if (common_internal_error_) { out.unavailable_reason = "common_native_end_internal_error"; return; }
+  if (!common_attached_) {
+    const auto reason = common_unavailable_reason_.load(std::memory_order_acquire);
+    out.unavailable_reason = reason && *reason ? reason : "common_native_end_observer_not_attached";
+    return;
+  }
+  if (common_session_identity_ == 0 || common_session_identity_ != ck3_12004::CurrentSwayCausalObserverSession12004() ||
+      out.owner_thread_id == 0) { out.unavailable_reason = "common_native_end_owning_session_unavailable"; return; }
+  std::uint32_t unbound_thread = 0;
+  (void)common_owner_thread_id_.compare_exchange_strong(unbound_thread, out.owner_thread_id,
+      std::memory_order_acq_rel, std::memory_order_acquire);
+  const auto recorded_thread = common_owner_thread_id_.load(std::memory_order_acquire);
+  if (recorded_thread != 0 && recorded_thread != out.owner_thread_id) {
+    out.unavailable_reason = "common_native_end_owning_thread_mismatch"; return;
+  }
+  if (request.actor_character_id == 0xFFFFFFFFu || request.target_character_id == 0xFFFFFFFFu || request.scheme_id == 0xFFFFFFFFu) {
+    out.unavailable_reason = "common_native_end_query_identity_unavailable"; return;
+  }
+  if (common_count_ != 0) {
+    out.earliest_sequence = common_records_[common_first_].sequence;
+    out.latest_sequence = common_records_[(common_first_ + common_count_ - 1) % common_records_.size()].sequence;
+    out.retention_gap = out.earliest_sequence > 1;
+  }
+  for (std::size_t i = 0; i < common_count_; ++i) {
+    const auto &row = common_records_[(common_first_ + i) % common_records_.size()];
+    const auto &o = row.observation;
+    if (o.stamp.observer_session_identity == common_session_identity_ && o.stamp.owner_thread_id == out.owner_thread_id &&
+        o.entry.scheme_full_id_observed && o.entry.scheme_full_id_raw_u32 == request.scheme_id &&
+        o.entry.owner_observed && o.entry.owner_character_full_id_raw_u32 == request.actor_character_id &&
+        o.entry.target_observed && o.entry.target_character_full_id_raw_u32 == request.target_character_id)
+      out.records.push_back(row);
+  }
+  out.available = true;
+}
+bool BuildSwayCommonTerminationObserverEnvironment12004(
+    std::uintptr_t base, std::string_view sha, SwayTerminationRecorder12002 &recorder,
+    ck3_12004::SwayCommonTerminationCallsiteObserver12004Environment &out) noexcept {
+  out = {};
+  if (!recorder.ConfigureCommonNativeEnd12004(base, sha)) return false;
+  out.exact_12004_build_admitted = true;
+  out.module_base = base;
+  out.callback_context = &recorder;
+  out.before = &CommonNativeEndBefore12004;
+  out.after = &CommonNativeEndAfter12004;
+  // Suspension proof belongs to the cold Bridge caller, never this factory.
+  return true;
+}
 void SwayTerminationRecorder12002::SetObserverAttached(bool attached) noexcept { attached_ = attached; }
 bool SwayTerminationRecorder12002::ObserverAttached() const noexcept { return attached_; }
 bool SwayTerminationRecorder12002::Append(const SwayTerminationSource12002 &source,
@@ -301,6 +554,10 @@ bool SwayTerminationRecorder12002::Query(const SwayTerminationQuery12002 &reques
                                        SwayTerminationQueryResult12002 &out) const noexcept {
   out = {}; out.request = request; out.observer_attached = attached_;
   try {
+    if (common_configured_) {
+      out.common_native_end.emplace();
+      QueryCommonNativeEnd12004(request, *out.common_native_end);
+    }
     if (!attached_) { out.unavailable_reason = "sway_termination_observer_not_attached"; return false; }
     if (request.actor_character_id == 0xFFFFFFFFu || request.target_character_id == 0xFFFFFFFFu ||
         request.scheme_id == 0xFFFFFFFFu) {
@@ -318,7 +575,14 @@ bool SwayTerminationRecorder12002::Query(const SwayTerminationQuery12002 &reques
         out.records.push_back(record);
     }
     out.available = true; return true;
-  } catch (...) { out.available = false; out.records.clear(); out.unavailable_reason = "sway_termination_query_internal_error"; return false; }
+  } catch (...) {
+    out.available = false; out.records.clear(); out.unavailable_reason = "sway_termination_query_internal_error";
+    if (out.common_native_end) {
+      out.common_native_end->available = false; out.common_native_end->records.clear();
+      out.common_native_end->unavailable_reason = "common_native_end_query_internal_error";
+    }
+    return false;
+  }
 }
 const char *SwayTerminationSourceKey12002(SwayTerminationSourceClass12002 source) noexcept {
   switch (source) {
@@ -401,7 +665,12 @@ std::string SerializeSwayCompletionTermination12002(const SwayTerminationQueryRe
     }
     out << '}';
   }
-  out << "]}"; return out.str();
+  out << ']';
+  if (r.common_native_end) {
+    out << ",\"common_native_end\":";
+    SerializeCommonNativeEnd12004(out, r.request, *r.common_native_end);
+  }
+  out << '}'; return out.str();
 }
 bool InstallSwayCompletionTermination12002(std::uintptr_t base, std::string_view sha,
     SwayTerminationRecorder12002 &recorder, SwayTerminationInstall12002 &state) noexcept {

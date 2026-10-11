@@ -134,6 +134,7 @@
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
+#include "xar_bridge/sway_common_termination_callsite_observer_12004.hpp"
 #endif
 #include "xar_bridge/ck3_12002_war_entry.hpp"
 #include "xar_bridge/ck3_12004_war.hpp"
@@ -558,6 +559,8 @@ static xar::ck3_12002::SwayTerminationRecorder12002
     g_sway_completion_termination_recorder12002{};
 static xar::ck3_12002::SwayTerminationInstall12002
     g_sway_completion_termination_install12002{};
+static xar::ck3_12004::SwayCommonTerminationCallsiteObserver12004State
+    g_sway_common_termination_callsite_observer12004{};
 struct SwayInvalidationReasonSinkContext12002 {
   xar::ck3_12002::SwayInvalidationReasonBindings12002 bindings{};
   xar::ck3_12002::SwayInvalidationReasonRecorder12002 recorder{};
@@ -572,6 +575,16 @@ static void CaptureSwayInvalidationReasonSink12002(
 }
 struct SwayCompletionExecutionWorkerLifetime12002 {
   ~SwayCompletionExecutionWorkerLifetime12002() noexcept {
+    // Ordinary Stop has no suspended-primary proof; retain process-lifetime
+    // backing and publish detached availability without claiming restoration.
+    const bool common_restored =
+        xar::ck3_12004::UninstallSwayCommonTerminationCallsiteObserver12004(
+            g_sway_common_termination_callsite_observer12004, false);
+    g_sway_completion_termination_recorder12002
+        .SetCommonNativeEndObserverAttached12004(
+            false, common_restored
+                ? "sway_common_end_observer_stopped"
+                : "sway_common_end_stop_primary_suspend_unproven");
     g_sway_invalidation_reason_sink12002.recorder.SetObserverAttached(false);
     (void)xar::ck3_12002::UninstallSwayCompletionTermination12002(
         g_sway_completion_termination_install12002);
@@ -28870,6 +28883,27 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
     }
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    xar::ck3_12004::SwayCommonTerminationCallsiteObserver12004Environment
+        sway_common_environment{};
+    const bool sway_common_environment_ready =
+        xar::ck3_12002::BuildSwayCommonTerminationObserverEnvironment12004(
+            base, sha, g_sway_completion_termination_recorder12002,
+            sway_common_environment);
+    bool sway_common_installed = false;
+    if (sway_common_environment_ready) {
+      // This existing PrepareStartup call runs before the primary is resumed.
+      sway_common_environment.primary_thread_suspended_proven = true;
+      sway_common_installed =
+          xar::ck3_12004::InstallSwayCommonTerminationCallsiteObserver12004(
+              g_sway_common_termination_callsite_observer12004,
+              sway_common_environment);
+    }
+    g_sway_completion_termination_recorder12002
+        .SetCommonNativeEndObserverAttached12004(
+            sway_common_installed, sway_common_installed ? nullptr
+                : (sway_common_environment_ready
+                    ? "sway_common_end_callsite_install_failed"
+                    : "sway_common_end_source_binding_unavailable"));
     if (!xar::ck3_12002::InstallSwayCompletionExecution12004(
             base, sha, g_sway_completion_execution_recorder12002,
             g_sway_completion_execution_install12002))

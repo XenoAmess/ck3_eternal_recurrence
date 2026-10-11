@@ -1442,3 +1442,5 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 - 2026-10-11 held-source tree: [Actual native Sway end](sway-native-end-source-tree-12004.md), 565B parent → 398B cleanup → 875B status/end, preserving rawDL and the independent callback/caller unknowns. Common-end observation code remains under source construction; this tree grants no current terminal cause.
 
 - 2026-10-11 background source: [Education explicit request and actual callers](education-native-option-rows-12004.md#explicit-request-and-existing-caller-source-integration). Native role/option readback, parser, Driver, materializer and existing family caller connected; nonzero-option dispatch still unsupported. `research / SOURCE_ADOPTED_NOT_RUN`.
+
+- 2026-10-11 background source: [Common native Sway end observation](sway-native-end-source-tree-12004.md#connected-common-native-end-observation-source), fixed actual call -> independent entry/return ring -> existing query/strict/Service. Includes the scope/callback source tree delta; specific end cause remains unknown. `research / SOURCE_ADOPTED_NOT_RUN`.

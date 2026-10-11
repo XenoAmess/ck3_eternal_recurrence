@@ -1,12 +1,19 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/sway_common_termination_observation_12004.hpp"
 
 #include <array>
+#include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
+
+namespace xar::ck3_12004 {
+struct SwayCommonTerminationCallsiteObserver12004Environment;
+}
 
 namespace xar::ck3_12002 {
 
@@ -101,6 +108,23 @@ struct SwayTerminationQuery12002 {
   std::uint32_t scheme_id = 0xFFFFFFFFu;
   std::uint64_t after_sequence = 0;
 };
+// Independently retained neutral actual4 observations. This sequence does not
+// share the three-source recorder cursor and supplies no accepted source kind.
+struct SwayCommonNativeEndRecord12004 {
+  std::uint64_t sequence = 0;
+  ck3_12004::SwayCommonTerminationObservation12004 observation{};
+};
+struct SwayCommonNativeEndQueryResult12004 {
+  bool available = false;
+  std::string unavailable_reason;
+  bool observer_attached = false;
+  std::uint64_t observer_session_identity = 0;
+  std::uint32_t owner_thread_id = 0;
+  std::uint64_t earliest_sequence = 0;
+  std::uint64_t latest_sequence = 0;
+  bool retention_gap = false;
+  std::vector<SwayCommonNativeEndRecord12004> records;
+};
 struct SwayTerminationQueryResult12002 {
   bool available = false;
   std::string unavailable_reason;
@@ -110,6 +134,7 @@ struct SwayTerminationQueryResult12002 {
   std::uint64_t latest_sequence = 0;
   bool retention_gap = false;
   std::vector<SwayTerminationRecord12002> records;
+  std::optional<SwayCommonNativeEndQueryResult12004> common_native_end;
 };
 // Native entry and query belong to the same owning-thread pump. Records cover
 // this observer session; constructing a recorder doesn't grant availability.
@@ -121,13 +146,45 @@ public:
       const SwayTerminationInvocation12004 *native_invocation = nullptr) noexcept;
   bool Query(const SwayTerminationQuery12002 &request,
              SwayTerminationQueryResult12002 &output) const noexcept;
+  // Called only by the cold owning Bridge installation path. An explicit
+  // failed configuration/attachment remains independently queryable.
+  bool ConfigureCommonNativeEnd12004(std::uintptr_t image_base,
+      std::string_view executable_sha256) noexcept;
+  // A non-null failure reason must be a process-lifetime fixed string literal.
+  void SetCommonNativeEndObserverAttached12004(bool attached,
+      const char *unavailable_reason = nullptr) noexcept;
+  void CaptureCommonNativeEndBefore12004(std::uintptr_t actual_scheme,
+      std::uint64_t actual_rdx) noexcept;
+  void CaptureCommonNativeEndAfter12004(std::uint64_t returned_rax_bits) noexcept;
+  bool AppendCommonNativeEnd12004(
+      const ck3_12004::SwayCommonTerminationObservation12004 &observation) noexcept;
 private:
+  void QueryCommonNativeEnd12004(const SwayTerminationQuery12002 &request,
+      SwayCommonNativeEndQueryResult12004 &output) const;
+  bool common_configured_ = false;
+  std::atomic<bool> common_attached_{false};
+  std::atomic<bool> common_internal_error_{false};
+  std::atomic<const char *> common_unavailable_reason_{"common_native_end_observer_not_attached"};
+  mutable std::atomic<std::uint32_t> common_owner_thread_id_{0};
+  SwayTerminationBindings12002 common_bindings_{};
+  std::uint64_t common_session_identity_ = 0;
+  std::uint64_t common_next_sequence_ = 1;
+  std::size_t common_first_ = 0;
+  std::size_t common_count_ = 0;
+  std::array<SwayCommonNativeEndRecord12004, kSwayTerminationCapacity12002> common_records_{};
   bool attached_ = false;
   std::uint64_t next_sequence_ = 1;
   std::size_t first_ = 0;
   std::size_t count_ = 0;
   std::array<SwayTerminationRecord12002, kSwayTerminationCapacity12002> records_{};
 };
+// Pure environment binding plus callbacks; installation remains owned by the
+// existing Bridge caller. The caller supplies the actual suspension proof and
+// publishes Install's real result through SetCommonNativeEndObserverAttached.
+bool BuildSwayCommonTerminationObserverEnvironment12004(
+    std::uintptr_t image_base, std::string_view executable_sha256,
+    SwayTerminationRecorder12002 &recorder,
+    ck3_12004::SwayCommonTerminationCallsiteObserver12004Environment &output) noexcept;
 const char *SwayTerminationSourceKey12002(SwayTerminationSourceClass12002 source) noexcept;
 // Bare JSON body for the coordinator-owned transport serializer to embed.
 std::string SerializeSwayCompletionTermination12002(

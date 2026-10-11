@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12004_sway.hpp"
 #include "xar_bridge/ck3_12002_sway_completion_termination.hpp"
+#include "xar_bridge/sway_common_termination_observation_12004.hpp"
 
 #include <array>
 #include <type_traits>
@@ -38,13 +39,7 @@ SwayEndInvocationBindings12004 BindSwayEndInvocationImage12004(
 // Root obtains _ReturnAddress() in the typed entry itself, before calling a
 // helper. A helper's return address identifies the wrapper, not its native
 // caller. Root also owns session lifecycle and unique invocation allocation.
-struct SwayEndInvocationStamp12004 {
-  std::uint64_t observer_session_identity = 0;
-  std::uint32_t owner_thread_id = 0;
-  std::uint64_t invocation_id = 0;
-  bool incoming_return_address_observed = false;
-  std::uintptr_t caller_return_rva = 0;
-};
+// SwayEndInvocationStamp12004 is shared unchanged in the neutral header.
 
 // No receiver, context, root, storage or instance pointer persists here.
 // Native state and source invocation are independent of specific end cause.
@@ -87,5 +82,29 @@ SwayEndCaptureResult12004 ForwardSwayEndEffect12004(
     SwayEndSourceClass12004 source_class, SwayEndNativeEffect12004 original,
     const void *effect, const void *effect_context,
     SwayEndInvocation12004 &output);
+
+// Actual common call: RCX is the Scheme and only the raw DL byte is
+// consumed. The fixed callsite forwards the same operands; no source class
+// or specific terminal cause is assigned by this independent observation.
+using SwayEndNativeCommonTermination12004 = void (*)(const void *scheme,
+                                                    std::uint8_t raw_dl);
+SwayEndCaptureResult12004 CaptureSwayCommonTerminationBefore12004(
+    const SwayEndInvocationBindings12004 &bindings,
+    const SwayEndInvocationStamp12004 &stamp, const void *actual_scheme,
+    std::uint8_t raw_dl, const CoreSnapshotPrefix *previous_observer_frame,
+    SwayCommonTerminationObservation12004 &output) noexcept;
+bool CaptureSwayCommonTerminationAfter12004(
+    const SwayEndInvocationBindings12004 &bindings, const void *actual_scheme,
+    const CoreSnapshotPrefix *previous_observer_frame,
+    SwayCommonTerminationObservation12004 &output) noexcept;
+// The frame argument is an already copied observer frame. This path does
+// not invoke ReadCoreSnapshot, a clock getter or another native query.
+// Original exceptions propagate, with no fabricated returned observation.
+SwayEndCaptureResult12004 ForwardSwayCommonTermination12004(
+    const SwayEndInvocationBindings12004 &bindings,
+    const SwayEndInvocationStamp12004 &stamp,
+    SwayEndNativeCommonTermination12004 original, const void *actual_scheme,
+    std::uint8_t raw_dl, const CoreSnapshotPrefix *previous_observer_frame,
+    SwayCommonTerminationObservation12004 &output);
 
 } // namespace xar::ck3_12004

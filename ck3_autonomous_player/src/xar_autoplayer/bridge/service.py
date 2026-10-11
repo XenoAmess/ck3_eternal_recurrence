@@ -841,6 +841,10 @@ class GameplayBridgeService:
                     "execution_read": execution_read, "termination_read": termination_read}))
             if retained is not None:
                 observation = retained
+        # Strict termination transport owns this independent neutral family.
+        if "common_native_end" in termination_read:
+            composed_result = {**composed_result,
+                               "common_native_end": termination_read["common_native_end"]}
         return {**composed_result, "sway_end_causal_observation_12004": observation,
                 "sway_end_cause_observed_12004": observation is not None}
 
