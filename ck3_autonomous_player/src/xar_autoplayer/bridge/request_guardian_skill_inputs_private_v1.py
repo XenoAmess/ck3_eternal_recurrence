@@ -77,10 +77,6 @@ def validate_request_guardian_skill_inputs_v1(
                 raise ValueError("available request guardian skill lacks a signed raw value")
         elif field["value"] is not None or not _reason(field["unavailable_reason"]):
             raise ValueError("unavailable request guardian skill is inconsistent")
-    if skills["martial"] != {
-            "available": False, "value": None,
-            "unavailable_reason": "actual4_martial_name_enum_unqualified"}:
-        raise ValueError("request guardian martial name and enum remain unqualified")
 
     if "education_traits" in profile:
         traits = profile["education_traits"]

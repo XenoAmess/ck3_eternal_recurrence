@@ -45,8 +45,7 @@ struct RequestGuardianSkillInputs12004 {
   const char *binding_status = "unavailable";
   const char *unavailable_reason = "guardian_skill_binding_not_observed";
   RequestGuardianSkillValue12004 diplomacy{};
-  RequestGuardianSkillValue12004 martial{
-      false, std::nullopt, "actual4_martial_name_enum_unqualified"};
+  RequestGuardianSkillValue12004 martial{};
   RequestGuardianSkillValue12004 stewardship{};
   RequestGuardianSkillValue12004 intrigue{};
   RequestGuardianSkillValue12004 learning{};
@@ -70,8 +69,9 @@ inline void Invalidate(RequestGuardianSkillInputs12004 &out,
                        const char *reason) noexcept {
   out.binding_status = "unavailable";
   out.unavailable_reason = reason;
-  for (auto *field : std::array<RequestGuardianSkillValue12004 *, 4>{
-           &out.diplomacy, &out.stewardship, &out.intrigue, &out.learning}) {
+  for (auto *field : std::array<RequestGuardianSkillValue12004 *, 5>{
+           &out.diplomacy, &out.martial, &out.stewardship, &out.intrigue,
+           &out.learning}) {
     field->available = false;
     field->value.reset();
     field->unavailable_reason = reason;
@@ -132,12 +132,14 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
   }
 
   // Actual4 28B1690 valid enum arm: DWORD[Character+D8+enum*4].
-  // Current four named council profiles prove enums 0,2,3,4. No enum1 guess.
-  constexpr std::array<std::size_t, 4> offsets{0xD8, 0xE0, 0xE4, 0xE8};
-  std::array<RequestGuardianSkillValue12004 *, 4> fields{
-      &out.diplomacy, &out.stewardship, &out.intrigue, &out.learning};
-  std::array<std::int32_t, 4> first{};
-  std::array<bool, 4> first_read{};
+  // Named martial parent 2C0B250 reads cached DWORD[Character+DC].
+  // This excludes its modifier19B term and is not total martial.
+  constexpr std::array<std::size_t, 5> offsets{0xD8, 0xDC, 0xE0, 0xE4, 0xE8};
+  std::array<RequestGuardianSkillValue12004 *, 5> fields{
+      &out.diplomacy, &out.martial, &out.stewardship, &out.intrigue,
+      &out.learning};
+  std::array<std::int32_t, 5> first{};
+  std::array<bool, 5> first_read{};
   for (std::size_t index = 0; index < fields.size(); ++index)
     first_read[index] = access.read_int32(
         access.context, guardian, offsets[index], first[index]);
