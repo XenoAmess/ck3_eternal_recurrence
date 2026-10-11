@@ -225,7 +225,8 @@ def normalize_context_payload(raw: object, binding: dict, interaction_key: str, 
     status = raw.get("status") if isinstance(raw, dict) else None
     if status not in {"available", "unavailable"}:
         raise ValueError("ordinary context status is malformed")
-    keys = QUERY_KEYS | ({"education_option_rows", "education_request_materialization"} & set(raw))
+    keys = QUERY_KEYS | ({"education_option_rows", "education_request_materialization",
+                          "request_guardian_skill_inputs_v1"} & set(raw))
     value = _common(raw, keys, binding, interaction_key, recipient_id, QUERY_SCHEMA,
                     "native_current_ordinary_interaction_context_1.20.0.3", True, status)
     if "education_option_rows" in value:
@@ -243,6 +244,12 @@ def normalize_context_payload(raw: object, binding: dict, interaction_key: str, 
         raise ValueError("ordinary context role inventory is malformed")
     if "education_request_materialization" in value:
         _validate_education_request_materialization(value, interaction_key, status)
+    if "request_guardian_skill_inputs_v1" in value:
+        from .request_guardian_skill_inputs_private_v1 import (
+            validate_request_guardian_skill_inputs_v1,
+        )
+        validate_request_guardian_skill_inputs_v1(
+            value["request_guardian_skill_inputs_v1"], value)
     if status == "unavailable":
         if any(value[key] is not None for key in TERM_KEYS) or any(roles[key] is not None for key in ROLES):
             raise ValueError("unavailable ordinary terms must be an all-null group")

@@ -532,6 +532,17 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
                             out.education_option_rows);
     CompleteEducationRequestMaterialization(r, roles, out.education_option_rows,
         options_applied, option_reason, out.education_request_materialization);
+    const ck3_12004::RequestGuardianSkillAccess12004 skill_access{
+        const_cast<ck3_12002::CoreBindings *>(&b.interaction.core),
+        [](void *opaque, std::uint32_t full_id) noexcept -> void * {
+          return Resolve(*static_cast<const ck3_12002::CoreBindings *>(opaque), full_id);
+        },
+        [](void *, const void *character, std::size_t offset,
+           std::int32_t &value) noexcept -> bool {
+          return ReadEducationField(character, offset, value);
+        }};
+    out.request_guardian_skill_inputs = ck3_12004::ReadRequestGuardianSkillInputs12004(
+        skill_access, roles[3], roles[2], r.expected_revision);
   }
   out.actor_alive = actor_alive;
   out.recipient_alive = recipient_alive;

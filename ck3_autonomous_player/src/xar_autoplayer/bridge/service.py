@@ -2253,8 +2253,15 @@ class GameplayBridgeService:
         inputs = relationship.get("family_generation_education_decision_inputs_v1")
         if not isinstance(inputs, dict):
             return planned
-        children = inputs.get("children")
-        rows = children.get("rows") if isinstance(children, dict) else None
+        from ..family_education_needs_12004 import (
+            derive_family_education_needs_12004,
+            project_family_education_request_candidate_12004,
+        )
+        needs = derive_family_education_needs_12004(inputs)
+        planned = {**planned, "plan": {**plan, "family_education_inputs": inputs,
+                                      "family_education_needs": needs}}
+        plan = planned["plan"]
+        rows = needs["rows"]
         if not isinstance(rows, list) or not rows:
             return planned
         if not all(callable(getattr(self.driver, name, None)) for name in (
@@ -2265,11 +2272,14 @@ class GameplayBridgeService:
         from .education_payload_materializer_private_v1 import (
             prepare_education_payload_review_v1,
         )
+        from .request_guardian_skill_inputs_private_v1 import (
+            project_request_guardian_focus_skills_v1,
+        )
 
         observations = []
         seen = set()
-        for child in rows:
-            child_id = child["raw_character_id"]
+        for child_needs in rows:
+            child_id = child_needs["raw_character_id"]
             if child_id in seen:
                 continue
             seen.add(child_id)
@@ -2278,13 +2288,14 @@ class GameplayBridgeService:
                 expected_revision=int(planned["revision"]),
             )
             native = query["character_interaction_ordinary_context"]
-            roles = native["effective_roles"]
-            observation = {"child_full_id": child_id, "default_query": query}
+            candidate = project_family_education_request_candidate_12004(child_needs, native)
+            observation = {"child_full_id": child_id, "needs": copy.deepcopy(child_needs),
+                           "candidate": candidate, "default_query": query,
+                           "default_request_guardian_focus_skills":
+                               project_request_guardian_focus_skills_v1(child_needs, native)}
             observations.append(observation)
-            guardian_id = roles["secondary_actor_id"]
-            if (native["status"] != "available" or native["can_send"] is not True
-                    or roles["secondary_recipient_id"] != child_id
-                    or guardian_id is None):
+            guardian_id = candidate["guardian_full_id"]
+            if candidate["available"] is not True or native["can_send"] is not True:
                 continue
             option_source = native.get("education_option_rows")
             if not isinstance(option_source, dict) or option_source["status"] != "available":
@@ -2310,6 +2321,10 @@ class GameplayBridgeService:
             )
             observation["semantic_request_review"] = review
             final = preflight["character_interaction_ordinary_context"]
+            observation["selected_request_candidate"] = (
+                project_family_education_request_candidate_12004(child_needs, final))
+            observation["selected_request_guardian_focus_skills"] = (
+                project_request_guardian_focus_skills_v1(child_needs, final))
             if (final["ready_to_initiate"] is not True or final["can_send"] is not True
                     or review["status"] != "available"):
                 continue

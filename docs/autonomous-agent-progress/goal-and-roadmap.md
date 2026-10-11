@@ -28,6 +28,11 @@ the existing hosted query, strict decoder and durable lifecycle record; see
 [Activity completion input](../ck3-native-ai/activity-feast-mcp-migration-12004.md#october-11-native-completion-qword-in-the-existing-lifecycle-read).
 Its producer is the actual image+5C7E338 QWORD; date interpretation remains a
 source dependency. This is SOURCE_ADOPTED_NOT_RUN.
+The family education caller now consumes current-child needs and the ordinary
+query's final request guardian skill profile through the existing typed request
+path; see [education planner](../ck3-native-ai/ordinary-family-education-request-planner-12004.md).
+Focus and learning operands retain their separate sources. These source inputs
+do not establish the stock effect's selected educator or an education outcome.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

@@ -169,6 +169,10 @@ void QueryPayload(std::ostream &out, const OrdinaryInteractionMailboxContextV1 &
     out << ",\"unavailable_reason\":";
     Reason(out, available ? material.unavailable_reason : "native_context_unavailable", material_available);
     out << '}';
+    if (available && o.request_guardian_skill_inputs) {
+      out << ",\"request_guardian_skill_inputs_v1\":";
+      ck3_12004::WriteRequestGuardianSkillInputs12004(out, *o.request_guardian_skill_inputs);
+    }
   }
   out << ",\"special_payload_present\":"; Optional(out, available ? o.special_payload_present : std::optional<bool>{});
   out << ",\"shown\":"; Optional(out, available ? o.shown : std::optional<bool>{});

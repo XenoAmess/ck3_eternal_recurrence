@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_context.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
+#include "xar_bridge/ck3_12004_request_guardian_skill_inputs.hpp"
 
 #include <array>
 #include <cstdint>
@@ -74,6 +75,7 @@ struct EducationRequestMaterializationV1 {
 struct Observation {
   EducationOptionRowsV1 education_option_rows{};
   EducationRequestMaterializationV1 education_request_materialization{};
+  std::optional<ck3_12004::RequestGuardianSkillInputs12004> request_guardian_skill_inputs;
   bool native_context_available = false;
   bool ordinary_context_supported = false;
   bool actor_binding_verified = false;

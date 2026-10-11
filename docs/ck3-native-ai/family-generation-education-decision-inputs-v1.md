@@ -43,3 +43,5 @@ education credit is claimed. The separate native child-material package and
 future action/outcome consumers retain their own missing inputs.
 
 [Coherent source manifest](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-52/background-g2-offline-20261011/ROOT-G2-FAMILY-EDUCATION-PYTHON-SOURCE-ADOPTION-MANIFEST.json).
+
+The existing family planner consumes independent [current-child education needs and native request candidates](family-education-needs-12004.md), preserving partial observations and known focus absence.
