@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-retirement-sourceonly-20261011-001\\execution-candidate-001\\serial.py",
+    "--phase",
+    "batch",
+    "--batch",
+    "CASE10",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-ROOT-audit-20261011-001\\APPLY-REQUEST.actual.json",
+    "--sha256",
+    "bb0012b693e407e1cfb42f3a154f315e8f66ea6fe80cec36bb7ae93aa62f133a"
+  ],
+  "started_at_utc": "2026-10-11T11:14:10.662127+00:00",
+  "finished_at_utc": "2026-10-11T11:14:10.839099+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-CASE10.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-CASE10.stderr.log",
+    "bytes": 996,
+    "sha256": "2c7d31aee81372ac090bff55d5e904ed84e2c1c243bd35c6d18f1f844c5ee1e2"
+  },
+  "original_subprocess_wait": true
+}

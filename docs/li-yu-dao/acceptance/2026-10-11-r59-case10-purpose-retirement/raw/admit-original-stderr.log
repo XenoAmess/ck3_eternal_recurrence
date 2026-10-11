@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py", line 8, in <module>
+    run(phase)
+    ~~~^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\budget_projection.py", line 210, in run
+    return namespace['main']()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:admit", line 87, in main
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:admit", line 28, in need
+RuntimeError: Only exact small source/plan/receipt files under B may be charged

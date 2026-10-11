@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py", line 8, in <module>
+    run(phase)
+    ~~~^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\budget_projection.py", line 210, in run
+    return namespace['main']()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:close", line 239, in main
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:close", line 138, in metadata
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:close", line 109, in group
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:close", line 45, in regular
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\admission-close-candidate-001\run_budget.py:close", line 32, in need
+RuntimeError: Exact regular non-reparse file required

@@ -65,3 +65,8 @@ R14已以原game/client/keeper HANDLE exit0及CAS3429 DONE/resources[]闭合，�
 [验收报告](acceptance/2026-10-07-r0014-19e6601/REPORT.md)。修复后新HEAD/新cold验收另行记录。
 
 闭合后 root 已完成 numeric/preview/factory/reader3 源码整合；实际 reader112、law11、preview6 通过，static70 runtime files GREEN。详见[独立 afterclose 附录](acceptance/2026-10-07-r0014-19e6601/AFTERCLOSE-INTEGRATION.md)；原 R14 runtime19/B4B5 RED不改，新修复提交HEAD及新cold验收尚无信用。
+
+
+## 2026-10-11 R59 / CASE10 用途退役记录
+
+[74文件实际退役与闭账](2026-10-11-r59-case10-purpose-retirement.md)：183869349 logical B单次信用，保留原零删除失败及显式两批恢复；close002为0、future0。原27份SAVE不重扣，三个未知SHA SAVE与cache/seed/Source17/native/原0240继续保留。容量与CI事实不改变一期75%估计/NOT_GREEN。

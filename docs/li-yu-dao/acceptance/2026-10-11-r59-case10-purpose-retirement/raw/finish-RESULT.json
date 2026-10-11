@@ -1,0 +1,34 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-batch-phase-recovery-20261011-001/finish_recovery.py",
+    "--recovery-index-sha256",
+    "d26a178abf25c162cb9bbe4513a1b6a3b0bc309c50dd05d82d7b73ea41cc9946",
+    "--actual-command",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-purpose-retirement-batch-CASE10-command-20261011-001/RESULT.actual.json",
+    "--actual-command-sha256",
+    "5d28b1264efeaa73704992d01b71d556eb724d6dee0af50b84a2f0769311b3b4",
+    "--actual-command",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-purpose-retirement-batch-R59-command-20261011-001/RESULT.actual.json",
+    "--actual-command-sha256",
+    "09d965b6175a38729c8829c919e13a3cfb47441a7c632737f6927e04480d282a"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T11:25:58.915604+00:00",
+  "finished_at_utc": "2026-10-11T11:25:59.385442+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-finish-command-20261011-001\\stdout.log",
+    "bytes": 877,
+    "sha256": "187c695e4e693cd1fe2ac58394d798c71d599bae86b4dc01878e899aeb8dfcdd"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-finish-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "lyd.purpose-retired-own-save.serial-aggregate.v1",
+  "at_utc": "2026-10-11T11:14:10.844643+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 16270,
+    "sha256": "3231f5a8e5708ac95a49984335dfc327cdde691cc6178a7c081bd65d2d253cca"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\PLAN.actual.json",
+    "bytes": 85048,
+    "sha256": "52d7795de0cbeeba1a2be33797e79d0cc88510a89acd6d40d5f5727c1d36e74e"
+  },
+  "actual_batch_results": [],
+  "original_batch_commands": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-CASE10.command.json",
+      "bytes": 1270,
+      "sha256": "fdc5357ca99cbc87b822e6ab16779253b6d97b9450fde3ef0a4a7306b004c86e"
+    }
+  ],
+  "deleted_files": 0,
+  "logical_deleted_bytes": 0,
+  "allocation_size_api_deleted_sum": 0,
+  "all_complete": false,
+  "failure": {
+    "phase": "batch",
+    "scope": "CASE10",
+    "original_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-CASE10.command.json",
+      "bytes": 1270,
+      "sha256": "fdc5357ca99cbc87b822e6ab16779253b6d97b9450fde3ef0a4a7306b004c86e"
+    },
+    "exit_code": 1
+  },
+  "stopped_no_further_writes": true,
+  "no_reconstruction_promise": true,
+  "duplicate_qualification": false,
+  "old_credit_repeated": false,
+  "original_deadlines_renewed": false,
+  "unreported_partial_deletion_is_not_credited": true,
+  "business_credit": false
+}

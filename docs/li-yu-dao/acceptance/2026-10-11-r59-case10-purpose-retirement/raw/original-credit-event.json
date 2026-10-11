@@ -1,0 +1,22 @@
+{
+  "schema": "lyd.exact-reclamation-credit-event.v1",
+  "event_id": "lyd-r59-case10-purpose-retirement-exact-reclamation-20261011-001",
+  "deduplication_key": "lyd-r59-case10-purpose-retirement-exact-reclamation-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\AGGREGATE.actual.json",
+    "bytes": 1681,
+    "sha256": "556213b78d81858d4d3e2118783ffbb7169b4a6bc5b91ea21c29b1726bbd48de"
+  },
+  "actual_batch_results": [],
+  "deleted_files": 0,
+  "logical_deleted_bytes": 0,
+  "allocation_size_api_deleted_sum": 0,
+  "retirement_kind": "explicit-purpose-retired-unique-own-save",
+  "no_reconstruction_promise": true,
+  "duplicate_qualification": false,
+  "reservation_claimed_or_consumed": false,
+  "future_reservation_reference": null,
+  "old_credit_repeated": false,
+  "business_credit": false
+}

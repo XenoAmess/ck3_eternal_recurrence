@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-retirement-sourceonly-20261011-001/execution-candidate-001/serial.py",
+    "--phase",
+    "batch",
+    "--batch",
+    "R59",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-purpose-retirement-ROOT-audit-20261011-001/BATCH-R59-REQUEST.recovery-001.actual.json",
+    "--sha256",
+    "f6b66db40c1bf9b582d8bc8ad9b418e3eeee22cccf1df47d5b519279d9d20ce5"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T11:25:48.026438+00:00",
+  "finished_at_utc": "2026-10-11T11:25:49.072601+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-batch-R59-command-20261011-001\\stdout.log",
+    "bytes": 255,
+    "sha256": "895b3a0c35d01cc7ced2468634f5c46f09741609e848b5ae14b38d046875d082"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-batch-R59-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

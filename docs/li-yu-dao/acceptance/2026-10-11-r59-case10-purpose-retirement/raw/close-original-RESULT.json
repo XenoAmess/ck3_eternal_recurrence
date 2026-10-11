@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-retirement-sourceonly-20261011-001/admission-close-candidate-001/run_budget.py",
+    "close",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r59-case10-purpose-retirement-ROOT-audit-20261011-001/CLOSE-REQUEST.recovery-001.actual.json",
+    "--sha256",
+    "41d51d6e3c047bf3201644e09cf737a2e3c94729a354e4c237c842d79e5ffa36"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T11:27:01.781035+00:00",
+  "finished_at_utc": "2026-10-11T11:27:02.477908+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-close-command-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-close-command-20261011-001\\stderr.log",
+    "bytes": 1330,
+    "sha256": "ca0fe4c7642d9e199e990725fb5fcfddd8c8d09fe05691a7c7f2b42647f48b26"
+  }
+}

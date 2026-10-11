@@ -1,0 +1,64 @@
+{
+  "schema": "lyd.r59-case10.explicit-zero-delete-batch-recovery.v1",
+  "source_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-batch-phase-recovery-20261011-001\\INDEX.json",
+    "bytes": 2929,
+    "sha256": "d26a178abf25c162cb9bbe4513a1b6a3b0bc309c50dd05d82d7b73ea41cc9946"
+  },
+  "original_zero_delete_refs": {
+    "aggregate": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\AGGREGATE.actual.json",
+      "bytes": 1681,
+      "sha256": "556213b78d81858d4d3e2118783ffbb7169b4a6bc5b91ea21c29b1726bbd48de"
+    },
+    "credit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\CREDIT-EVENT.actual.json",
+      "bytes": 953,
+      "sha256": "c1d7d2874d51c4e3ced10bf4e5817984d9f39e4ca46c108bb91e3766f50e0819"
+    },
+    "batch_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-CASE10.command.json",
+      "bytes": 1270,
+      "sha256": "fdc5357ca99cbc87b822e6ab16779253b6d97b9450fde3ef0a4a7306b004c86e"
+    }
+  },
+  "actual_batch_requests": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-ROOT-audit-20261011-001\\BATCH-CASE10-REQUEST.recovery-001.actual.json",
+      "bytes": 4354,
+      "sha256": "afee84729bbd731a3c11fd835a19013f63dc9e50bc981646c09c9a15106202f8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-ROOT-audit-20261011-001\\BATCH-R59-REQUEST.recovery-001.actual.json",
+      "bytes": 4351,
+      "sha256": "f6b66db40c1bf9b582d8bc8ad9b418e3eeee22cccf1df47d5b519279d9d20ce5"
+    }
+  ],
+  "actual_batch_commands": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-batch-CASE10-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1287,
+      "sha256": "5d28b1264efeaa73704992d01b71d556eb724d6dee0af50b84a2f0769311b3b4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-batch-R59-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1275,
+      "sha256": "09d965b6175a38729c8829c919e13a3cfb47441a7c632737f6927e04480d282a"
+    }
+  ],
+  "new_aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\AGGREGATE.recovery-001.actual.json",
+    "bytes": 2125,
+    "sha256": "3eb79d6e84d1df3d37db514c6d1dc9b7e6397bc9c534d7f1fce1bf00d67bbf2c"
+  },
+  "new_credit": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\CREDIT-EVENT.recovery-001.actual.json",
+    "bytes": 1485,
+    "sha256": "9e74005ac95f979abe049b3ae7cb3ffc5e8f6e5e3997610b46d8eb9f83852f72"
+  },
+  "event_id_unchanged": "lyd-r59-case10-purpose-retirement-exact-reclamation-20261011-001",
+  "one_original_single_claim_marker": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\STORAGE-CREDIT-CLAIM.actual.json",
+  "original_apply_or_zero_files_overwritten": false,
+  "old_credit_repeated": false,
+  "new_admission": false
+}

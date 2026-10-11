@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\execution-candidate-001\serial.py", line 34, in <module>
+    exec(compile(projected(), str(HERE / 'serial.py') + ':retained-serial', 'exec'))
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\execution-candidate-001\serial.py:retained-serial", line 97, in <module>
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\execution-candidate-001\serial.py:retained-serial", line 93, in main
+  File "C:\workspace\ck3_lyd_runtime_20261004\r59-case10-retirement-sourceonly-20261011-001\execution-candidate-001\common.py:retained-common", line 8, in need
+    'KEY': repr('R59_CASE10'), 'COUNT': '74', 'GROSS': '183869349',
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Exact reviewed phase differs

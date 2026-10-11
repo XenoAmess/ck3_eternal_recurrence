@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.exact-reclamation-credit-event.v1",
+  "event_id": "lyd-r59-case10-purpose-retirement-exact-reclamation-20261011-001",
+  "deduplication_key": "lyd-r59-case10-purpose-retirement-exact-reclamation-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\AGGREGATE.recovery-001.actual.json",
+    "bytes": 2125,
+    "sha256": "3eb79d6e84d1df3d37db514c6d1dc9b7e6397bc9c534d7f1fce1bf00d67bbf2c"
+  },
+  "actual_batch_results": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-CASE10.actual.json",
+      "bytes": 41288,
+      "sha256": "f6d7d0ace9d197935183c0726c88c08280e3e43148211c61e4ec6310152e11f8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-purpose-retirement-actual-20261011-001\\BATCH-R59.actual.json",
+      "bytes": 1484,
+      "sha256": "7797e35b8f4dff51e10a9713d7bafe1d7a2753c6cdcd573bb39ca864607e7293"
+    }
+  ],
+  "deleted_files": 74,
+  "logical_deleted_bytes": 183869349,
+  "allocation_size_api_deleted_sum": 183998696,
+  "retirement_kind": "explicit-purpose-retired-unique-own-save",
+  "no_reconstruction_promise": true,
+  "duplicate_qualification": false,
+  "reservation_claimed_or_consumed": false,
+  "future_reservation_reference": null,
+  "old_credit_repeated": false,
+  "business_credit": false
+}
