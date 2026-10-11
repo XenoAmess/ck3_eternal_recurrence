@@ -25,3 +25,13 @@ Source19控制中出现profile祖先路径，并不表示其每个shadercache是
 闭场后只读校验实际PASS：永久回执的全部精确pins与计数匹配，计划删除路径均不存在，保留证明及原件仍可读；清理回执包实际native allocation为580,720 B，低于16MiB预算。校验时free为31,471,820,800 B，默认容量门槛仍满足。
 
 本轮只解除容量阻挡，业务验收仍QOL 2/6、RMTM 0/2，两项未发布；下一步优先原RMTM core默认2GiB场次，再推进QOL余项，不涉及361迁移。
+
+## 2026-10-11 21:18 CST：R14/R79 生成缓存提前退役，下一场仍未准入
+
+13:17:17Z 原精确删除器实际完成两场已闭场 profile 的 8 批删除：7,560 个文件，native AllocationSize 合计 **315,999,840 B**，48.967 秒，未删除目录。对象仅为 `rmtm-source12-core-01/state/profile/shadercache` 和 `qol-pam-delayed-boundary-20261011-01/state/profile/shadercache` 内冻结的 dx11 两个分支。两场原公开 session/native cleanup/lease 均已闭合；它们不属于原 prepared 不可变输入，新 RMTM prepare 明确未复制旧 state、未使用 shader cache seed。按用途提前退役，不以失败、目录名或年龄单独推断过期。非缓存 profile、存档、日志、原始报告、代表失败、正式源及当前 Source19 均未动，owner `/root`，2026-10-18 复核、不自动续期。历史缓存字节现已不可读取；保留的游戏、Source19 与 mod 输入只能重新编译新缓存，不保证恢复历史字节。
+
+首次 admit 因 R79 prepared 的 profile 字段路径不同实际 exit1，发生在预约和删除前；01 源码、计划及失败原件保留。02 只修正这层字段选择，未替换删除循环或降低预算。随后 admit、execute、close 均由原 221 等待得实际 exit0，children0、unspent0；16MiB 清理包整额继续由原52计入一次，RMTM prepare 4MiB 计一次、既有 PAM prepare 不重复计费，不从 usage 扣除回收信用。
+
+小型原件位于 `C:/workspace/ck3-upgrade-20261010/r14-r79-cache-retirement-20261011-01/ACTUAL-SUMMARY.json`（2,684B，SHA `3ee967b1bfe274f5ee804960ff61d68d254cc322a86dfffbd1d3a7e8ca3b2366`）；原 execute wait（990B，SHA `0c3721ab92f45be04982fdcf7233cb0a426934ada9db0f5cfe8bcf5c38b11946`）在同级 `r14-r79-cache-retirement-controls-20261011-01/r14r79-execute-01-process-exit.json`。标准237闭账为 `C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-r14-r79-cache-retirement-01-reservation-237-closed.json`，实际 close wait（985B，SHA `86178749708ec3cc1ab6c1ad57e404b271c82a1113f41ae244865bf6cf1f2f73`）留在控制包。小型清理记录复核期限为2027-04-09，不代表自动GC。
+
+累计两轮实际 native 回收 **3,226,665,760 B**，不把卷空闲变化全部归因于本次删除。卷上其他增长使 13:18Z 新 RMTM/core/a184 原52实际仍 **BLOCKED**：available 29,885,378,560B，required 30,071,062,528B，差185,683,968B。blocked 原件6,630B / SHA `588910864f6721f7b16877a150df84fcffe8fc80bdb5819afe4ef8e743198578`；admission命令exit0仅代表完成检查，不等于准入。此时尚未 allocate、启动观察或游戏。继续核查有替代证据的项目派生资产，不降低2GiB场次、6GiB系统增长、20GiB安全量及6MiB其他预约门槛；业务进度仍2/8，无发布完成声明。
