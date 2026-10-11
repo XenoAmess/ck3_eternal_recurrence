@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-closure014-sourceonly-20261011-002\\close_reservation014.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-014\\ROOT-CLOSURE.actual-002.json",
+    "--sha256",
+    "13c680baea84722f238fc4f0d8efb67c84bb1a3b01e905890b725098f30becbe"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T03:29:46.428721+00:00",
+  "finished_at_utc": "2026-10-11T03:29:47.003932+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case8-close-command-20261011-014-002\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case8-close-command-20261011-014-002\\stderr.log",
+    "bytes": 1544,
+    "sha256": "436e10597a2f62e79fbb120ceb80cf7141c7910b719f172a80a9e27ec6805209"
+  }
+}

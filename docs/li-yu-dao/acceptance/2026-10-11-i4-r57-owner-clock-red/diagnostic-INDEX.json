@@ -1,0 +1,84 @@
+{
+  "schema": "r57-day0004-bounded-functional-diagnostic-v1",
+  "sealed_at": "2026-10-11T03:16:21.414883+00:00",
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\native-report.json",
+    "bytes": 965315,
+    "sha256": "c20f35110fb46ac960b868f4375a50d5e327892e345e3d9509b30a0121f06eeb"
+  },
+  "read_metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\READ.actual.json",
+    "bytes": 681,
+    "sha256": "0006feb103f2aa89a8e5b11cb87b0d9d9f050fb03c55c25673b2aaaccc0d37b6"
+  },
+  "functional_projection": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\EXTRACT.actual.json",
+    "bytes": 3000,
+    "sha256": "616c7f59f0f3690aa012ee813a015115fe0467a82daaeb6223040963a6b50428"
+  },
+  "first_cap_failure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\FIRST-CAP-FAILURE.actual.json",
+    "bytes": 835,
+    "sha256": "d5ce0fc2dd00b306f24801146e0494b730790025bc97572430b7ffd1d7fe22ec"
+  },
+  "first_combined_tool_output": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\first-cap.tool-output.txt",
+    "bytes": 403,
+    "sha256": "12ef52724611b91ed7277571572463f20cf53c8323d9071ad3c4929b2b70fdec"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\native-cleanup-projection.actual.json",
+    "bytes": 2970,
+    "sha256": "c11e2a5323604faf82b1c7b7bb1d211593c229a84d6a06a687b3b6d6e65ebcd2"
+  },
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\extract_once.py",
+      "bytes": 5531,
+      "sha256": "d978bd143226e7f140d2b2ee08726d20389ff2ec806d3821061d1939a40ac6b5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\extract_corrected.py",
+      "bytes": 7268,
+      "sha256": "cc712bda9ab7aad2cfdfc4321fd2a01257671371efbafa66f421528c5ac3643a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\seal_report.py",
+      "bytes": 5241,
+      "sha256": "3cec88f91b9b34a84a4d1f2ba930cce239e1591db6c6c2a0a017fcb226034c97"
+    }
+  ],
+  "actual_commands": [
+    {
+      "tool_chunk": "39bd5a",
+      "exit_code": 1,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\extract_once.py"
+      ]
+    },
+    {
+      "tool_chunk": "3463dc",
+      "exit_code": 0,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\extract_corrected.py"
+      ]
+    }
+  ],
+  "cwd": "C:/workspace/ck3_lyd_runtime_20261004",
+  "report_body_reads": 2,
+  "corrective_second_read_explicit_ROOT_authorization": true,
+  "third_read_performed": false,
+  "day0003_body_reads": 1,
+  "runtime_queries": 0,
+  "SAVE_body_reads": 0,
+  "MAIN_edits": 0,
+  "GUI_or_business_credit": null
+}

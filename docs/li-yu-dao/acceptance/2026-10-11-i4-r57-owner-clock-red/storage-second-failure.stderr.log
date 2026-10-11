@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-002\close_reservation014.py", line 147, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-002\close_reservation014.py", line 104, in main
+    before,bb=g.process_guard(inv);bus_before=g.fresh_bus(tasks)
+                                              ~~~~~~~~~~~^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-storage-closure-sourceonly-20261011-006-002\close_common_storage.py", line 106, in fresh_bus
+    require(not any('ck3-screen:acquired' in row.get('resources',[]) for row in registered)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     and active.keys()==expected.keys() and all(row.get('resources')==expected[name] for name,row in active.items()),
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     'Fresh exact ROOT/coordinator/source-only ownership not proved')
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\common-storage-closure-sourceonly-20261011-006-002\close_common_storage.py", line 38, in require
+    if not value:raise RuntimeError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Fresh exact ROOT/coordinator/source-only ownership not proved

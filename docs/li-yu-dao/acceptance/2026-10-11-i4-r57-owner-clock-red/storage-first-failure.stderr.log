@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-001\close_reservation014.py", line 146, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-001\close_reservation014.py", line 84, in main
+    C(PC['graphics_cache']['receipt'])
+    ~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-001\close_reservation014.py", line 35, in C
+    actual,value=read(ref['path'],cap);N(eq(actual,ref),'Original descriptor change');return value
+                 ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-001\close_reservation014.py", line 29, in read
+    ref=pin(path,cap);return ref,json.loads(Path(path).read_bytes())
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-001\close_reservation014.py", line 24, in pin
+    N(path==path.resolve() and stat.S_ISREG(s.st_mode) and not path.is_symlink() and not s.st_file_attributes&1024 and s.st_size<=cap,'Bounded regular original m')
+    ~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-storage-closure014-sourceonly-20261011-001\close_reservation014.py", line 20, in N
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Bounded regular original m

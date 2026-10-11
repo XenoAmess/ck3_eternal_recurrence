@@ -1,0 +1,96 @@
+{
+  "schema": "r57-day0004-corrective-functional-projection-v1",
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\native-report.json",
+    "bytes": 965315,
+    "sha256": "c20f35110fb46ac960b868f4375a50d5e327892e345e3d9509b30a0121f06eeb"
+  },
+  "root_error": "RuntimeError: campaign pause readback owner, clock or rejection state changed",
+  "selected_rows": [
+    {
+      "pointer": "/steps/9",
+      "id": "case-natural-day-0004",
+      "error": "RuntimeError: campaign pause readback owner, clock or rejection state changed",
+      "frame_core_fields": [],
+      "complete_named_predicate_booleans": [],
+      "event_boundaries": [],
+      "typed_context_scalar_fields": [
+        {
+          "pointer": "/steps/9/plan/allow_event_boundary",
+          "value": true
+        }
+      ]
+    }
+  ],
+  "all_error_locations": [
+    {
+      "pointer": "",
+      "error": "RuntimeError: campaign pause readback owner, clock or rejection state changed"
+    },
+    {
+      "pointer": "/steps/8/result/before/diagnostics/last_rejected_state_snapshot",
+      "error": "native played_character stress_points is malformed"
+    },
+    {
+      "pointer": "/steps/8/result/running_successor/diagnostics/last_rejected_state_snapshot",
+      "error": "native played_character stress_points is malformed"
+    },
+    {
+      "pointer": "/steps/8/result/after/diagnostics/last_rejected_state_snapshot",
+      "error": "native played_character stress_points is malformed"
+    },
+    {
+      "pointer": "/steps/8/after_snapshot/diagnostics/last_rejected_state_snapshot",
+      "error": "native played_character stress_points is malformed"
+    },
+    {
+      "pointer": "/steps/9",
+      "error": "RuntimeError: campaign pause readback owner, clock or rejection state changed"
+    },
+    {
+      "pointer": "/campaign_preaction_readmissions/0/recognized_rejected_frame",
+      "error": "native played_character stress_points is malformed"
+    },
+    {
+      "pointer": "/snapshot_final/diagnostics/last_rejected_state_snapshot",
+      "error": "native played_character stress_points is malformed"
+    },
+    {
+      "pointer": "/diagnostics_final/diagnostics/last_rejected_state_snapshot",
+      "error": "native played_character stress_points is malformed"
+    }
+  ],
+  "target_locations": [
+    {
+      "pointer": "/steps/9",
+      "keys": [
+        "id",
+        "plan",
+        "started_at",
+        "ok",
+        "error",
+        "finished_at"
+      ]
+    },
+    {
+      "pointer": "/steps/9/plan",
+      "keys": [
+        "id",
+        "kind",
+        "days",
+        "timeout",
+        "allow_event_boundary"
+      ]
+    }
+  ],
+  "day0003_known_ROOT_fact": {
+    "date_raw": 53144736,
+    "complete_natural_24h": true,
+    "body_read_again": false
+  },
+  "whole_typedcontext_or_DTO_copied": false,
+  "report_read_count": 2,
+  "third_read_performed": false,
+  "missing_fields_not_inferred": true,
+  "normal_GUI_business_credit": null
+}

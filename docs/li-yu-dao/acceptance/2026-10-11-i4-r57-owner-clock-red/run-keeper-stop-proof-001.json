@@ -1,0 +1,57 @@
+{
+  "at_utc": "2026-10-11T03:19:42.677986+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0057",
+  "screen_task": "common-acceptance-12004-20261010-a19",
+  "actual_final_offline_review": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\final-offline-root-review-001.json",
+    "bytes": 1851,
+    "sha256": "84c1061deb86d822563be513bb345e269630d3f159520b7f78f748486fbeb04e"
+  },
+  "actual_display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\display-restore-001.json",
+    "bytes": 761,
+    "sha256": "713bdd7fbfc6729dd4acfaccd1276b826c6337f7fcd2328707c26596b80f60a4"
+  },
+  "actual_public_run": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case8-run-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1611,
+    "sha256": "b7ce0770e7d1227ba8acaae7b7369a5e76c86fc296fb9ca1f6a1e19911f854c2"
+  },
+  "actual_public_verify": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case8-verify-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1611,
+    "sha256": "65a4bbefd422d92bbb29d30458f66e4963e4596b43e7fd8d67fcae0b5d4eb55d"
+  },
+  "original_host_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "7d7645acd4f681dc63dc3385bd9255e50f27a3d9516d5868f7436d3ecd510c13"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\native-report.json",
+    "bytes": 965315,
+    "sha256": "c20f35110fb46ac960b868f4375a50d5e327892e345e3d9509b30a0121f06eeb"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\native-cleanup-projection.actual.json",
+    "bytes": 2970,
+    "sha256": "c11e2a5323604faf82b1c7b7bb1d211593c229a84d6a06a687b3b6d6e65ebcd2"
+  },
+  "last_observed_owned_lease": {
+    "checkout_head": "91fabf43ae4b9c162a8cdcbd2ab98bbf353cb62f",
+    "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "event_id": "bef8e3e3029649f89ef38a49c6cabdc1",
+    "expected_sequence": 4746,
+    "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "schema": "xar.promo.screen-lease-cas/v1",
+    "screen_resource": "ck3-screen:acquired",
+    "sequence": 4749,
+    "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "task_id": "common-acceptance-12004-20261010-a19",
+    "updated_at_utc": "2026-10-11T03:18:41.597907+00:00"
+  },
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "reason": "Actual failed run administratively closed; final offline reviewed; original display restored"
+}

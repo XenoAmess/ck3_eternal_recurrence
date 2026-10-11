@@ -1,0 +1,20 @@
+{
+  "tool_chunk": "39bd5a",
+  "exit_code": 1,
+  "source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\extract_once.py",
+    "bytes": 5531,
+    "sha256": "d978bd143226e7f140d2b2ee08726d20389ff2ec806d3821061d1939a40ac6b5"
+  },
+  "combined_tool_output": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-day0004-readonly-diagnostic-20261011-001\\first-cap.tool-output.txt",
+    "bytes": 403,
+    "sha256": "12ef52724611b91ed7277571572463f20cf53c8323d9071ad3c4929b2b70fdec"
+  },
+  "separate_stdout": null,
+  "separate_stderr": null,
+  "separate_streams_not_captured_by_original_tool": true,
+  "report_body_reads": 1,
+  "day0003_body_reads": 1,
+  "reason_for_second_read": "ROOT explicitly authorized corrective functional extraction after first projection cap failure"
+}

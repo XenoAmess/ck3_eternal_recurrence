@@ -1,0 +1,34 @@
+{
+  "at_utc": "2026-10-11T03:19:42.059929+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0057",
+  "fit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\display-fit-001.json",
+    "bytes": 7141,
+    "sha256": "f7550a6329c22dbc72d00906f54ecd7f4f721ffd46133410c89de26497eb1e9b"
+  },
+  "before": {
+    "width": 1920,
+    "height": 1080,
+    "bits": 32,
+    "frequency": 60
+  },
+  "original": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "test_result": 0,
+  "change_result": 0,
+  "after": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "pyautogui_size": [
+    1024,
+    768
+  ],
+  "registry_persistence_requested": false
+}

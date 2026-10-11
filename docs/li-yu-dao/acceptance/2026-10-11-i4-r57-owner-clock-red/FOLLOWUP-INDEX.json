@@ -1,0 +1,62 @@
+{
+  "schema": "lyd-r57-actual-diagnostic-fix-and-close-v1",
+  "files": [
+    {
+      "target": "diagnostic-fix-INDEX.json",
+      "bytes": 2109,
+      "sha256": "59a288f01868c9c0a62f546c90d544df4978116fecc566f892bf9457e80d316d"
+    },
+    {
+      "target": "diagnostic-fix-REPORT.zh.md",
+      "bytes": 1674,
+      "sha256": "dd5bcd269e4c8f3a805dfea0383f1b5cf87a733975cad7eb0fc00e01d22c9533"
+    },
+    {
+      "target": "diagnostic-fix-ACTUAL-CHECKS.raw.zip",
+      "bytes": 2067,
+      "sha256": "d9ba4bd2f124a3c8484ffe378a764dfb61b571fbc298a031eacba7197282fdba"
+    },
+    {
+      "target": "diagnostic-fix-FIRST-FOCUSED-FAILURE.compact.zip",
+      "bytes": 2661,
+      "sha256": "c1cd14d0bf6d5c5f18257e585ff9414e2ef26e1d04e3fa506aec021e9d256d22"
+    },
+    {
+      "target": "storage-closed.actual.json",
+      "bytes": 5517,
+      "sha256": "3ee157d0a203060f0e0fe293dfb3d6aa43c216db7e2810186bb17c474be6f526"
+    },
+    {
+      "target": "storage-close-command.actual.json",
+      "bytes": 1156,
+      "sha256": "31d4a02233df93c32df0028aff43dd16a5617ab0eba4bbc25bf72cb3226d9c81"
+    },
+    {
+      "target": "storage-close-stdout.log",
+      "bytes": 379,
+      "sha256": "c4c27866817fe1d1e03ed4fd7021158b962bd5aee7af163501dc71837f1816e5"
+    },
+    {
+      "target": "storage-first-failure.actual.json",
+      "bytes": 1118,
+      "sha256": "77a55d305f7868df57c08490f634d8828093b68df5783dcf6645f5ab9fc139a8"
+    },
+    {
+      "target": "storage-first-failure.stderr.log",
+      "bytes": 1670,
+      "sha256": "524c739fd84e6d752f249aa2167b556c8dba6c700c9ae0b9bb1cb2a76de3e641"
+    },
+    {
+      "target": "storage-second-failure.actual.json",
+      "bytes": 1157,
+      "sha256": "d33e3eb7c7cf4e80b7ce124d3a95fd5e9a5483ba2f26eb9dbc2c4d7db639300e"
+    },
+    {
+      "target": "storage-second-failure.stderr.log",
+      "bytes": 1544,
+      "sha256": "436e10597a2f62e79fbb120ceb80cf7141c7910b719f172a80a9e27ec6805209"
+    }
+  ],
+  "original_R57_cause": "UNKNOWN",
+  "new_live_executed": false
+}

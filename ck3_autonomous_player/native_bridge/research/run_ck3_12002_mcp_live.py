@@ -1457,14 +1457,52 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
 def require_campaign_pause_successor(source: dict[str, object], snapshot: object, *, allow_running: bool = False,
                                      allowed_event_instance: int | None = None,
                                      allow_actor_change: bool = False,
-                                      allow_pause_transition: bool = False) -> dict[str, object]:
+                                      allow_pause_transition: bool = False,
+                                       diagnostic_callsite: str | None = None) -> dict[str, object]:
     current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance,
                                            allow_pause_transition=allow_pause_transition)
     identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
                         all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
     if (not identity_matches or current["rejections"] != source["rejections"]
             or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
-        raise RuntimeError("campaign pause readback owner, clock or rejection state changed")
+        error = RuntimeError("campaign pause readback owner, clock or rejection state changed")
+        try:
+            # Diagnose only the already rejected pair; never refresh or admit it.
+            def typed(value: object) -> dict[str, object]:
+                scalar = value is None or type(value) in (bool, int) or (type(value) is str and len(value) <= 256)
+                return {"type": type(value).__name__, "value": value if scalar else None,
+                        "unavailable_reason": None if scalar else "non_scalar_or_over_bound"}
+
+            def binding(value: dict[str, object]) -> dict[str, object]:
+                identity = value["identity"]
+                names = ("pid", "generation", "actor", "local_player_id", "speed", "pipe_name",
+                         "owner_tid", "pending_character_interaction")
+                return {"identity": {name: typed(identity[index]) for index, name in enumerate(names)},
+                        **{key: typed(value[key]) for key in
+                           ("date", "revision", "native_revision", "pump", "rejections", "pause_transition")}}
+
+            conditions = [{"source": "not identity_matches", "failed": not identity_matches},
+                          {"source": 'current["rejections"] != source["rejections"]',
+                           "failed": current["rejections"] != source["rejections"]}]
+            conditions.extend({"source": f'current["{key}"] < source["{key}"]',
+                               "failed": current[key] < source[key]}
+                              for key in ("date", "revision", "native_revision", "pump"))
+            error.ck3_campaign_pause_frame_diagnostic = {
+                "schema": "ck3-campaign-pause-successor-rejection-diagnostic-v1",
+                "original_error": str(error), "callsite": diagnostic_callsite,
+                "conditions": conditions,
+                "first_failed_condition": next(index for index, condition in enumerate(conditions) if condition["failed"]),
+                "source_binding": binding(source), "current_binding": binding(current),
+                "allow_running": allow_running, "allowed_event_instance": allowed_event_instance,
+                "allow_actor_change": allow_actor_change, "allow_pause_transition": allow_pause_transition,
+                "underlying_cause": None, "additional_snapshot_or_RPC_or_retry": False, "business_credit": False}
+        except Exception as capture_error:
+            error.ck3_campaign_pause_frame_diagnostic = {
+                "schema": "ck3-campaign-pause-successor-rejection-diagnostic-v1",
+                "original_error": str(error), "callsite": diagnostic_callsite,
+                "capture_error_type": type(capture_error).__name__, "underlying_cause": None,
+                "additional_snapshot_or_RPC_or_retry": False, "business_credit": False}
+        raise error
     return current
 
 
@@ -1677,7 +1715,7 @@ class PlanClient:
         async def full_frame() -> tuple[dict[str, object], dict[str, object]]:
             seconds = remaining()
             frame = await asyncio.wait_for(self.fresh(), seconds)
-            bound = require_campaign_pause_successor(source, frame)
+            bound = require_campaign_pause_successor(source, frame, diagnostic_callsite="speed_presubmission.full_frame")
             if frame.get("paused") is not True or bound["date"] != source["date"]:
                 raise RuntimeError("speed pre-submission refresh changed the actual paused date")
             return frame, bound
@@ -1779,7 +1817,7 @@ class PlanClient:
                 try:
                     observed = require_campaign_pause_successor(previous, current, allow_running=True,
                         allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,
-                        allow_pause_transition=True)
+                        allow_pause_transition=True, diagnostic_callsite="pause_campaign_after_advance.readback")
                 except RuntimeError as error:
                     observed = _campaign_pause_pending_ready_successor(previous, current, error,
                         allow_actor_change=allow_actor_change and not actor_changed)
@@ -1928,7 +1966,7 @@ class PlanClient:
         before = await bounded(lambda: self.wait_snapshot({"paused": True}, remaining()))
         campaign_event_instance(before)
         try:
-            paused = require_campaign_pause_successor(initial, before)
+            paused = require_campaign_pause_successor(initial, before, diagnostic_callsite="advance_campaign_event_boundary.preflight")
         except RuntimeError as error:
             # No speed or resume has been submitted. Only the specifically
             # observed already-paused refresh rejection can admit a new start.
@@ -1963,7 +2001,7 @@ class PlanClient:
                     recovered = await bounded(self.fresh)
                     readmission["poll_count"] += 1
                     campaign_event_instance(recovered)
-                    current = require_campaign_pause_successor(observed, recovered)
+                    current = require_campaign_pause_successor(observed, recovered, diagnostic_callsite="advance_campaign_event_boundary.readmission")
                     if (recovered["paused"] is not True or current["date"] != initial["date"]
                             or recovered["played_character"].get("source") != "native"
                             or recovered["diagnostics"].get("last_rejected_state_snapshot") != rejected):
@@ -2003,7 +2041,8 @@ class PlanClient:
             current = await bounded(self.fresh)
             instance = campaign_event_instance(current)
             observed = require_campaign_pause_successor(source, current, allow_running=True,
-                allowed_event_instance=instance, allow_actor_change=allow_actor_change and not actor_changed)
+                allowed_event_instance=instance, allow_actor_change=allow_actor_change and not actor_changed,
+                diagnostic_callsite="advance_campaign_event_boundary.running")
             if current["played_character"].get("source") != "native":
                 raise ValueError("campaign event-boundary player is not native")
             actor_changed = actor_changed or observed["identity"][2] != source["identity"][2]

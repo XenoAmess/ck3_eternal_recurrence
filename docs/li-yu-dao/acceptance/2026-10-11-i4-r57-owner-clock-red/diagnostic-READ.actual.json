@@ -1,0 +1,16 @@
+{
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0057\\native-report.json",
+    "bytes": 965315,
+    "sha256": "c20f35110fb46ac960b868f4375a50d5e327892e345e3d9509b30a0121f06eeb"
+  },
+  "read_started_at": "2026-10-11T03:12:33.055382+00:00",
+  "read_finished_at": "2026-10-11T03:12:33.064948+00:00",
+  "mtime_ns": 1791687903498428700,
+  "file_id": 844424933102888,
+  "metadata_stable_during_read": true,
+  "terminal_basis": "ROOT reports host wait1 and public run terminal; this read does not infer GUI success",
+  "report_read_ordinal": 2,
+  "third_read_performed": false,
+  "day0003_read_again": false
+}

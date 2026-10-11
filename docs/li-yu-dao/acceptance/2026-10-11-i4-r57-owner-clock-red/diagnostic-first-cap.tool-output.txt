@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r57-day0004-readonly-diagnostic-20261011-001\extract_once.py", line 82, in <module>
+    if len(raw)>12288:raise ValueError('Projection cap exceeded; report already read once')
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Projection cap exceeded; report already read once
