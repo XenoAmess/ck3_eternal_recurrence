@@ -2,6 +2,8 @@
 
 0.1.0 Beta 已于 2026-10-11 发布到 [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804)，兼容声明 CK3 1.20.*，当前实机版本 1.20.0.4。源码采用`lyd`命名空间，不覆盖原版经学、道学或基督教定义。正式安装仅使用`tools/build_release.py`产生的staging。
 
+开发中的 0.1.1 改为直接丰富原版儒家：36 种新增礼仪归属 `confucian_faith`，保留经学、道学与原版主礼仪；36 项信条各有常规增益、代价与个人选择效果。正常入门不再新建共宗，旧定义只作历史兼容。详见[原版儒家接入与旧档边界](docs/vanilla-confucian-integration.md)。当前工坊仍是上文 0.1.0，新版本尚未完成实机与上传。
+
 一期验收尚未完成。B4 政治继承候选与玩家继承状态保护有已知失败；新制度头衔冷重载、向同信 NPC 授予和 C3 完整争议链未完成合格验收。推荐独立新存档，后续不保证试玩存档无问题迁移。玩家可见范围见[工坊说明](../workshop/li_yu_dao_description.bbcode)。
 
 当前按迭代施工；运行功能和证据以[验收矩阵](docs/acceptance-matrix.md)及仓库`docs/li-yu-dao/`报告为准。静态通过不代表已完成实机。
