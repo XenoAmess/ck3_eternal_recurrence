@@ -111,3 +111,8 @@ ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，�
 公共 CASE7 prepare、plan、preflight 原命令均 exit0：50.388 s、0.423 s、29.392 s；预检 READY_FOR_EXISTING_REVIEWED_LAUNCH，blockers=[]。实际 prepared-case 1,338,827 B / SHA256 6e69150792193fd925b5d7af143951e5e447859f5c3c5f409ab70ed7c5291bde，仅引用外置原件，不将完整缓存索引搬上库。绑定 Source15/O15、原0240 SAVE和现有R54种子，未新增 native build/SDK重验/immutable seed；源码与实际启动、缓存命中、业务通过分别记录。尚未 allocate/启动，下一步是冻结干净主线、取得当次新鲜离线图并执行 I4 现有冷却自然到期；全一期仍75% / NOT_GREEN。
 
 并行拓扑：旧 Source08–11 可恢复退役及容量入账完成；B4 handler 研究继续，实际发现 FH4 collided unwind 的 ScopeIndex 保全缺口，安装保持阻断；013 实机闭账源码在外置准备，终态字段保持待填。未新建分支；同步只用 fetch/rebase/普通 push。
+
+
+### 2026-10-11 10:26 CST：Source12–14/R56重复输入回收已闭环
+
+ROOT两组串行命令实际0：Source12–14回收26,185件439,949,881B，R56回收3,744件513,620,896B；总29,929件953,570,777B为逻辑大小，物理净释放未知。48MiB预约实际CLOSED、未来0；两canonical事件各消费一次，保守carry135,259,079,798B。251,369B准入前小文件不重计，新增审计20,407,008B加1MiB闭账上界。旧host/受保护三import/Git与alternates、0240/R54 seed/Source15/Cbr3/CASE7独有SAVE与新增cache保留，旧payload恢复前标记RESTORE_REQUIRED。原期限不续，第一期75% NOT_GREEN；详见 [永久专题](../li-yu-dao/2026-10-11-source12-14-r56-reclamation.md)。

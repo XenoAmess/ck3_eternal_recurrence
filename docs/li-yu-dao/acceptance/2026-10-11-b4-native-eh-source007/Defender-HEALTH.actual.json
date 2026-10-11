@@ -1,0 +1,71 @@
+{
+  "schema": "lyd.b4.defender.readonly-health.v1",
+  "observed_at": "2026-10-11T02:24:48.883644+00:00",
+  "original_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r55-b4-resolve-native-eh-fixture-sourceonly-20261011-006/build-001/defender-exe-exclusions/20261011T015317Z-5b37090b/receipt.json",
+    "bytes": 1935,
+    "sha256": "9de55bf978d68996debb4936338f505f4b29bc6c025c4cdae6294eea3917c290"
+  },
+  "original": {
+    "status": "settings_failed",
+    "error_stage": "Add-invocation",
+    "error_type": "com_error",
+    "admin_token": true,
+    "before": [],
+    "after": [],
+    "partial_mutation": false
+  },
+  "current_admin": true,
+  "fixed_broker_policy_exists": false,
+  "services": {
+    "WinDefend": {
+      "CurrentState": 1,
+      "Win32ExitCode": 1077,
+      "ServiceSpecificExitCode": 0,
+      "ProcessId": 0,
+      "StartType": 4
+    },
+    "WdNisSvc": {
+      "CurrentState": 1,
+      "Win32ExitCode": 1077,
+      "ServiceSpecificExitCode": 0,
+      "ProcessId": 0,
+      "StartType": 4
+    },
+    "Winmgmt": {
+      "CurrentState": 4,
+      "Win32ExitCode": 0,
+      "ServiceSpecificExitCode": 0,
+      "ProcessId": 3280,
+      "StartType": 2
+    }
+  },
+  "WMI": {
+    "preferences": {
+      "rows": 1,
+      "ExclusionPath_count": 0
+    },
+    "status": {
+      "error_type": "com_error",
+      "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectSet', '无效查询 ', None, 0, -2147217385), None)"
+    },
+    "Add_metadata_only": {
+      "input_names": [
+        "AttackSurfaceReductionOnlyExclusions",
+        "AttackSurfaceReductionRules_Actions",
+        "AttackSurfaceReductionRules_Ids",
+        "ControlledFolderAccessAllowedApplications",
+        "ControlledFolderAccessProtectedFolders",
+        "ExclusionExtension",
+        "ExclusionPath",
+        "ExclusionProcess",
+        "Force",
+        "SharedSignaturesPath",
+        "ThreatIDDefaultAction_Actions",
+        "ThreatIDDefaultAction_Ids"
+      ]
+    }
+  },
+  "Add_invocations": 0,
+  "settings_changed": false
+}

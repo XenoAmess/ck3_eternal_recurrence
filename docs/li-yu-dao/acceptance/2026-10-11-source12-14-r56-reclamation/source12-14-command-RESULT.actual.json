@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/source12-14-serial-orchestrator-sourceonly-20261011-001/run_serial.py",
+    "--admission",
+    "C:/workspace/ck3_lyd_runtime_20261004/retirement-receipts-storage-admission-20261011-001/ADMISSION.actual.json",
+    "--admission-sha256",
+    "5d27af8d58630929ab131f79b563d9494d443bda6325b2d23989418f719cbadf",
+    "--root-reviewed-exclusions-and-sole-writer",
+    "--execute"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T02:17:33.481015+00:00",
+  "finished_at_utc": "2026-10-11T02:23:33.437547+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source12-14-root-serial-command-20261011-001\\stdout.log",
+    "bytes": 8271,
+    "sha256": "2a962cca425548a166874bf62f8c40b411ede527922718dfad7744ca83946138"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source12-14-root-serial-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

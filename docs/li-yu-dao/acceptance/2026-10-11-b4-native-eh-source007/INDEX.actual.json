@@ -1,0 +1,312 @@
+{
+  "schema": "lyd.b4.source007.original-small-evidence-publication.v1",
+  "rows": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-007\\native-src\\resolve_eh_fixture.cpp",
+        "bytes": 25328,
+        "sha256": "2d6d653860d243f012fcb668fcc7904cd78013f29cec8e23082173070b55b656"
+      },
+      "published": "ck3_autonomous_player\\native_bridge\\research\\fixtures\\resolve_eh_12004\\resolve_eh_fixture.cpp"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-007\\native-src\\CMakeLists.txt",
+        "bytes": 681,
+        "sha256": "106843b8827b3971088d725fd18c5ce422cf3d4a07ca67c1bcf0ebc8ccd23428"
+      },
+      "published": "ck3_autonomous_player\\native_bridge\\research\\fixtures\\resolve_eh_12004\\CMakeLists.txt"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\INDEX.actual.json",
+        "bytes": 3746,
+        "sha256": "726ed15fdc3d10edb6b4e2a0b2b64d582732a4b087b3a464d58100cb7421bb31"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\modes-INDEX.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\direct\\RESULT.actual.json",
+        "bytes": 1429,
+        "sha256": "e1ec8499ca386142618c792ba0f59fb9eb331549c26d4854ea3bdcbab288811d"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\direct\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\direct\\stdout.log",
+        "bytes": 1798,
+        "sha256": "f740cdec000f8906e4e21301d2bad03eddc277a2c26d82682160c594959a2984"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\direct\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\direct\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\direct\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-normal\\RESULT.actual.json",
+        "bytes": 1452,
+        "sha256": "bbfb494ac9cafa4496dd8d1063ce7495aca1685ef917d0b2e711150336d57774"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-normal\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-normal\\stdout.log",
+        "bytes": 2729,
+        "sha256": "68ef70964cb3c6b5e5d17315918bc34428a949703d16393a284254670478a967"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-normal\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-normal\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-normal\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-nested\\RESULT.actual.json",
+        "bytes": 1452,
+        "sha256": "9cee7ce03ea327c4ba2858b17fc942ebcc1c523c117536aa9e4f3fdf506b3ee0"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-nested\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-nested\\stdout.log",
+        "bytes": 3353,
+        "sha256": "27fe1d657950aa9cf0d41a0e9b2d6fe9720f2131f72a7940ea73247f52ff8ea2"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-nested\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-nested\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-nested\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-collided\\RESULT.actual.json",
+        "bytes": 1465,
+        "sha256": "97cafe244f58ab5a0139a0d1582503c965216acbc1d718918cf16fb3f959e7b7"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-collided\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-collided\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-collided\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-collided\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-collided\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\copy-control-collided\\RESULT.actual.json",
+        "bytes": 1479,
+        "sha256": "23437ebd6259b2442779263ab81e0835a44324c9eadc22f0dd38036e5be90844"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\copy-control-collided\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\copy-control-collided\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\copy-control-collided\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\copy-control-collided\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\copy-control-collided\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\empty-direct\\RESULT.actual.json",
+        "bytes": 1447,
+        "sha256": "edd5e72cb9bc3ffc7a8c2281ba4955b1634ced474d8c4ef2de08237142857932"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\empty-direct\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\empty-direct\\stdout.log",
+        "bytes": 1841,
+        "sha256": "6ffa5d4fd8749a2bba575ffaab9d767ee47fee2a025506bc6462aad44a441e9a"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\empty-direct\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\empty-direct\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\empty-direct\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-empty\\RESULT.actual.json",
+        "bytes": 1449,
+        "sha256": "03332def4aa3bc3e677792a8128cbb0686b914dd2ccb931f4c90ad449fd7c0a1"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-empty\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-empty\\stdout.log",
+        "bytes": 563,
+        "sha256": "16f5fa17c037b4ddfb213aa277173e9ee8d452dbb20c56142dece10864d8a06b"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-empty\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-empty\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\inplace-empty\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-empty\\RESULT.actual.json",
+        "bytes": 1461,
+        "sha256": "58699b4fb3d499a813fc5b89a0094eb6c93620ba26f543e7698dcbbf5483cc65"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\no-language-empty\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-empty\\stdout.log",
+        "bytes": 567,
+        "sha256": "6bd197da440887fcc1f3f3f6b38b44477ebbf2bc240a282fecb8a5fce9724272"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\no-language-empty\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-empty\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\no-language-empty\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-active-control\\RESULT.actual.json",
+        "bytes": 1489,
+        "sha256": "aed4464ec7e68ea63f7f693ed5b86fa3daab8fa725010e1faefba0e58bee39e4"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\no-language-active-control\\RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-active-control\\stdout.log",
+        "bytes": 1557,
+        "sha256": "bff13cd00bc48089874efd781ed2edd6847fe675005c86d0263bc8ce19bfb3a0"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\no-language-active-control\\stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-active-control\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\no-language-active-control\\stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-007\\build-001\\native-msvc-result.json",
+        "bytes": 2121,
+        "sha256": "538e876c2c84122889eec9b4ea27a3fd55bc936e193a09ea137d185b1aa5e029"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\native-msvc-result.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-build-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1457,
+        "sha256": "920bc8a18bc3dca3bb0d1f951521ee18b450d09ba0ed1f211d5898dd7855d086"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\build-command.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-command-20261011-001\\RESULT.actual.json",
+        "bytes": 914,
+        "sha256": "a2f18eab619c7dc02b39b77ca27320c78eacc8e284e3c957a838413b8ff96715"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\modes-command.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-defender-add-readonly-diagnostic-20261011-001\\HEALTH.actual.json",
+        "bytes": 2021,
+        "sha256": "f1ece3b3e6d84680e7659c3e91c752696411edea0e557c89c53064f91e359867"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\Defender-HEALTH.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+        "bytes": 2974,
+        "sha256": "a4798e95cf761d6b52dc71a615c1f5cd56869e397ffdca9c2a126af13db465e3"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\storage-CLOSED-RESERVATION.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-close-command-20261011-003\\RESULT.actual.json",
+        "bytes": 1136,
+        "sha256": "86738c56bed420c4b5c84694a8eb880f844f0dcd92cdce9712ac71f4d668988f"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\close-command.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-readonly-diagnostic-20261011-001\\REPORT.md",
+        "bytes": 3107,
+        "sha256": "057c3c7deaedc3a5ed6963649c5fb3f724bbbab2d88bc8b39ccb4fd63ef00d77"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\remaining-diagnostic.md"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-readonly-diagnostic-20261011-001\\METADATA.actual.json",
+        "bytes": 3360,
+        "sha256": "70cc6b32e89ef651bfac751cf11cde4ba9a762cc86c849cf8fab742a184f8797"
+      },
+      "published": "docs\\li-yu-dao\\acceptance\\2026-10-11-b4-native-eh-source007\\own-PE-metadata.actual.json"
+    }
+  ],
+  "fixture_only": true,
+  "game_B4_qualification": null,
+  "source007_budget_close_pending": false
+}

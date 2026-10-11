@@ -1,0 +1,66 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-11T02:45:25.201788+00:00",
+  "reservation_id": "lyd-b4-EH-fixture-source007-192MiB-20261011-001",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 5592,
+    "sha256": "ac5e237a783c096e4212ead6d913e48ae334a05e8f38fa39b063aabb3f6fd39f"
+  },
+  "original_admission_unmodified": true,
+  "actual_ROOT_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-ROOT-closure.actual-003.json",
+    "bytes": 3466,
+    "sha256": "934254d94c664b8c72d2d1d34bcb0de7cb4788188dc2495bacf89d420fed1090"
+  },
+  "ROOT_confirm_no_more_builds_or_executions": true,
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-storage-admission-20261011-001\\CLOSURE-MEASURE.actual.json",
+    "bytes": 12235,
+    "sha256": "b90d9d99c0d89c27728d6edc9a19aa82ac33368043775caceb1bffb5ef061f12"
+  },
+  "observed_retained_task_logical_bytes_known": 1342547,
+  "closing_outputs_upper_bound_bytes": 1048576,
+  "known_retained_plus_closing_upper_bound_bytes": 2391123,
+  "conservative_project_carry_after_close_bytes": 135261491305,
+  "already_charged_source_bytes_not_added_again": 20384,
+  "released_reservation_peak_bytes": 201326592,
+  "remaining_reserved_peak_bytes": 0,
+  "other_unspent_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_physical_reclaim": true,
+  "cleanup_deducted_again_bytes": 0,
+  "new_reservation_created": false,
+  "fresh_free_bytes_at_closure": 619606085632,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "TTL_or_quota_renewed": false,
+  "Defender_registration_verified": false,
+  "original_build_exit_code": 1,
+  "original_modes_exit_codes": [
+    0,
+    0,
+    0,
+    3762467842,
+    3221226505,
+    0,
+    3,
+    3,
+    0
+  ],
+  "native_game_installer_qualification": null,
+  "live_or_business_qualification": false,
+  "source_review_unchanged_at_utc": "2026-10-17T19:32:25.249949+00:00",
+  "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "existing_source007_review_by_utc": "2026-10-25T00:00:00Z"
+}

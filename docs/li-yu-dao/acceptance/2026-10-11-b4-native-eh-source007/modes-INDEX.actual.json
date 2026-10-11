@@ -1,0 +1,102 @@
+{
+  "schema": "lyd.b4.native-nine-mode-original-index.v1",
+  "executable": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-007\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+    "bytes": 33792,
+    "sha256": "c30e7d8bd8e6b3d3f7896fe76f24f38a9f89cde864101b410c4e5a52034609a8"
+  },
+  "modes": [
+    {
+      "mode": "direct",
+      "exit_code": 0,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\direct\\RESULT.actual.json",
+        "bytes": 1429,
+        "sha256": "e1ec8499ca386142618c792ba0f59fb9eb331549c26d4854ea3bdcbab288811d"
+      }
+    },
+    {
+      "mode": "inplace-normal",
+      "exit_code": 0,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-normal\\RESULT.actual.json",
+        "bytes": 1452,
+        "sha256": "bbfb494ac9cafa4496dd8d1063ce7495aca1685ef917d0b2e711150336d57774"
+      }
+    },
+    {
+      "mode": "inplace-nested",
+      "exit_code": 0,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-nested\\RESULT.actual.json",
+        "bytes": 1452,
+        "sha256": "9cee7ce03ea327c4ba2858b17fc942ebcc1c523c117536aa9e4f3fdf506b3ee0"
+      }
+    },
+    {
+      "mode": "inplace-collided",
+      "exit_code": 3762467842,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-collided\\RESULT.actual.json",
+        "bytes": 1465,
+        "sha256": "97cafe244f58ab5a0139a0d1582503c965216acbc1d718918cf16fb3f959e7b7"
+      }
+    },
+    {
+      "mode": "copy-control-collided",
+      "exit_code": 3221226505,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\copy-control-collided\\RESULT.actual.json",
+        "bytes": 1479,
+        "sha256": "23437ebd6259b2442779263ab81e0835a44324c9eadc22f0dd38036e5be90844"
+      }
+    },
+    {
+      "mode": "empty-direct",
+      "exit_code": 0,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\empty-direct\\RESULT.actual.json",
+        "bytes": 1447,
+        "sha256": "edd5e72cb9bc3ffc7a8c2281ba4955b1634ced474d8c4ef2de08237142857932"
+      }
+    },
+    {
+      "mode": "inplace-empty",
+      "exit_code": 3,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\inplace-empty\\RESULT.actual.json",
+        "bytes": 1449,
+        "sha256": "03332def4aa3bc3e677792a8128cbb0686b914dd2ccb931f4c90ad449fd7c0a1"
+      }
+    },
+    {
+      "mode": "no-language-empty",
+      "exit_code": 3,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-empty\\RESULT.actual.json",
+        "bytes": 1461,
+        "sha256": "58699b4fb3d499a813fc5b89a0094eb6c93620ba26f543e7698dcbbf5483cc65"
+      }
+    },
+    {
+      "mode": "no-language-active-control",
+      "exit_code": 0,
+      "timed_out": false,
+      "result": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-native-modes-20261011-001\\no-language-active-control\\RESULT.actual.json",
+        "bytes": 1489,
+        "sha256": "aed4464ec7e68ea63f7f693ed5b86fa3daab8fa725010e1faefba0e58bee39e4"
+      }
+    }
+  ],
+  "native_game_installer_qualification": null,
+  "all_live": false
+}

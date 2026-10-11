@@ -1,0 +1,114 @@
+{
+  "schema": "lyd.b4.fixture007.actual-byte-metadata-extraction.v1",
+  "own_fixture_exe": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r55-b4-resolve-native-eh-fixture-sourceonly-20261011-007/build-001/bin/lyd_b4_resolve_eh_fixture_12004.exe",
+    "bytes": 33792,
+    "sha256": "c30e7d8bd8e6b3d3f7896fe76f24f38a9f89cde864101b410c4e5a52034609a8"
+  },
+  "EXE_body_reads": 1,
+  "actual_EXE_execution": false,
+  "CK3_PE_or_SAVE_read": false,
+  "runtime_entry_count": 74,
+  "markers": [
+    {
+      "begin_rva": "0x1670",
+      "end_rva": "0x16fb",
+      "unwind_rva": "0x835c",
+      "marker_rvas": [
+        "0x16e5"
+      ],
+      "marker_count": 1,
+      "prolog_hex": "4881ec08050000488d8c2410050000e8bcf9ffff9033d241b8d0040000488d4c",
+      "unwind_header_hex": "11070200",
+      "version": 1,
+      "flags": 2,
+      "prolog_size": 7,
+      "unwind_code_slots": 2,
+      "frame_register": 0,
+      "frame_offset": 0,
+      "unwind_codes_hex": "0701a100",
+      "handler_rva": "0x425c",
+      "func_info_rva": "0x836c",
+      "func_info_prefix_hex": "28758300007d830000020a80100000411402150202000000",
+      "func_header_hex": "0x28",
+      "func_header": {
+        "isCatch": false,
+        "isSeparated": false,
+        "BBT": false,
+        "UnwindMap": true,
+        "TryBlockMap": false,
+        "EHs": true,
+        "NoExcept": false,
+        "reserved": false
+      },
+      "unwind_map_rva": "0x8375",
+      "ip_map_rva": "0x837d",
+      "ip_map_entries": 1,
+      "ip_states": [
+        {
+          "ip_rva": "0x16f5",
+          "state": 0
+        }
+      ],
+      "call_hex": "e8460e0000",
+      "call_target_rva": "0x2540",
+      "call_return_rva": "0x16fa",
+      "actual_marker_plus8_state": -1,
+      "actual_return_PC_state": 0,
+      "failed_admissions_in_source_order": []
+    },
+    {
+      "begin_rva": "0x1700",
+      "end_rva": "0x17b6",
+      "unwind_rva": "0x8384",
+      "marker_rvas": [
+        "0x17a0"
+      ],
+      "marker_count": 1,
+      "prolog_hex": "40534881ec00050000488d8c2410050000e82af9ffff488d8c2410050000e85d",
+      "unwind_header_hex": "11090300",
+      "version": 1,
+      "flags": 2,
+      "prolog_size": 9,
+      "unwind_code_slots": 3,
+      "frame_register": 0,
+      "frame_offset": 0,
+      "unwind_codes_hex": "0901a0000230",
+      "handler_rva": "0x425c",
+      "func_info_rva": "0x8398",
+      "func_info_prefix_hex": "28a1830000a9830000020a80100000411404a602ba000000",
+      "func_header_hex": "0x28",
+      "func_header": {
+        "isCatch": false,
+        "isSeparated": false,
+        "BBT": false,
+        "UnwindMap": true,
+        "TryBlockMap": false,
+        "EHs": true,
+        "NoExcept": false,
+        "reserved": false
+      },
+      "unwind_map_rva": "0x83a1",
+      "ip_map_rva": "0x83a9",
+      "ip_map_entries": 2,
+      "ip_states": [
+        {
+          "ip_rva": "0x1753",
+          "state": 0
+        },
+        {
+          "ip_rva": "0x17b0",
+          "state": -1
+        }
+      ],
+      "call_hex": "e88b0d0000",
+      "call_target_rva": "0x2540",
+      "call_return_rva": "0x17b5",
+      "actual_marker_plus8_state": 0,
+      "actual_return_PC_state": -1,
+      "failed_admissions_in_source_order": []
+    }
+  ],
+  "symbol_names_not_read": true,
+  "inference_limit": "RVA rows are joined to mode stdout by actual unwind flag/code signatures, not invented PDB names."
+}

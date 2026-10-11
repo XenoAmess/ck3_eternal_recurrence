@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-storage-closure-sourceonly-20261011-003\\close_fixture007.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-ROOT-closure.actual-003.json",
+    "--sha256",
+    "934254d94c664b8c72d2d1d34bcb0de7cb4788188dc2495bacf89d420fed1090"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T02:45:24.678422+00:00",
+  "finished_at_utc": "2026-10-11T02:45:25.232710+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-close-command-20261011-003\\stdout.log",
+    "bytes": 383,
+    "sha256": "860e04185f5c2acf65f8f079ea492b2b9bff44afb4fb57633e31fc1a0b9b9eeb"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture007-close-command-20261011-003\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
