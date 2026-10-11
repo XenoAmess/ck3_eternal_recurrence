@@ -69,7 +69,8 @@ original participant completion CALL and carries the paired observations through
 the existing hosted query and durable lifecycle; see
 [original CALL counter source](../ck3-native-ai/activity-feast-mcp-migration-12004.md#october-11-counters-around-one-original-participant-completion-call).
 Full identity and actual return pairing qualify individual read differences only.
-XP and complete activity payoff remain unknown. Eleven production mappings are
+CALL-scope XP and complete activity payoff remain unknown. The existing independent
+paused-query XP route is separate and connected. Eleven production mappings are
 SOURCE_ADOPTED_NOT_RUN; neither material readiness nor live capability increased.
 The existing religion quote now captures the original dynamic Rite CALL's
 local Q64 output in its own query and exposes a matched independent term through
@@ -91,7 +92,11 @@ interval through the hosted query and durable lifecycle; see
 Its actual after-cut follows both the completion and the original28BEF00 call.
 Per-record scope and independent raw counter differences stay explicit; no single
 effect or complete activity payoff is inferred. This is SOURCE_ADOPTED_NOT_RUN.
-Reveler raw XP is the next concrete source input being researched in parallel.
+Reveler raw XP reuse is source-closed: the existing same-actor paused query, strict
+decoder and durable lifecycle already read it after Activity removal. The optional
+pure-copy CALL journal lacks28BA210 XP-start source and remains unknown; this is
+not a blocker for that independent readback. See [XP reuse](../ck3-native-ai/activity-feast-mcp-migration-12004.md#2026-10-11-reveler-xp-reuse-no_new).
+No production modification or fresh runtime result was needed.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

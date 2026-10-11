@@ -464,3 +464,47 @@ preserving the first-call package and the already published child-focus and Rite
 changes. There is no second observer class, duplicate Runtime registration or
 whole-file aggregate adoption. The existing lifecycle and Service retain the
 exact per-record interval; they do not deduplicate or sum its material differences.
+
+## 2026-10-11: Reveler XP reuse, NO_NEW
+
+The existing paused owning-thread query already publishes same-actor Reveler XP
+and persists its independent raw difference. CapturePost reads
+ReadFeastOutcomeValues12002 regardless of a hosted Activity match; the
+hosted-post serializer emits outcome_values even when the hosted list is empty.
+Python _outcome_values accepts the independent signed-64 XP/null field, and
+_record_lifecycle_observation retains it and its raw difference. The retained
+terminal path permits this same-actor read after the Activity object disappears.
+This source connection needs no new production hunk or query.
+
+The exact .4 function table admits 28BB0D0 (251-byte track getter) and
+30E56F0 (193-byte named-track index). The existing Feast reader resolves the
+unique lifestyle_reveler definition, observes presence, and requests the empty
+default track. Known absence leaves XP null; it does not turn hidden
+reveler_points into zero. Known presence plus a successful empty native span
+can preserve XP zero; a nonempty default span requires definition track count 1.
+
+The pure-copy completion journal has a separate source frontier. The actual
+getter finds the trait-list position, calls 28BA210 at 28BB17F to compute
+the XP start, and only then addresses Character +140 with that start. That
+callee is not closed in the held surface; neither trait ordinal nor trait-list
+position can substitute for its result. 880430 search and raw definition-key
+identity are additional unclosed direct-copy dependencies. The journal keeps
+its existing no_raw_only_reveler_xp_reader; no native getter is added to an
+observer callback. This optional CALL-scope gap is not a blocker for the
+already connected paused-query material readback.
+
+Owner03 contract 30cc17cbd3deb4c3c31ea6ed6afb94e600429e2b36999d7518ad82e7928cbb1e
+and owner24 delivery fd16a97980da92a7968d622aaaffebc4c58566c36fac08beb5d37ffb2585e8ba
+freeze the held-source boundary; owner19 records the existing caller chain.
+This is a source knowledge correction with zero production changes, tests,
+imports, builds or game execution. Raw .4 width is signed 64 bits; this review
+does not qualify XP units, current XP, reward attribution, compiled594, M6 or G2.
+
+
+The final consumer source receipt is [owner19 DELIVERY](D:/codex-ck3-background-spill/native71-continuation-20261010/background-g2-source-round-20261011-1152/owner-19/activity-reveler-xp-consumer-01/DELIVERY.json),
+SHA-256 `4c5ed9e7066cedc7aa5c61631975b0c233bf8dcd3961108e7795e38add63067e`.
+It records six exact current caller paths and their source locations. In particular,
+the native `CapturePost` entry and the serializer do not require a remaining hosted
+row to expose independent actor values; the formal lifecycle retains missing-row
+terminal evidence while reading those actor values. This is source reuse evidence,
+not a new runtime result or a reason to expand the pure-copy observer.
