@@ -1,6 +1,7 @@
 #pragma once
 #include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 #include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
+#include "xar_bridge/war_admission_snapshot_failure_channel_v1.hpp"
 #include <optional>
 #include <string>
 #include <string_view>
@@ -13,7 +14,8 @@ template<class ReadCurrent>
 inline std::string NonwarPrivateSnapshotGuardFailureV1(
     bool status_only,bool revision_parsed,std::uint64_t expected_revision,
     std::uint64_t native_revision,const std::optional<game::Snapshot> &previous,
-    game::Snapshot &current,ReadCurrent &&read_current) {
+    game::Snapshot &current,ReadCurrent &&read_current,
+    std::optional<bool> actual4_descriptor = {}) {
   const auto fail=[&](std::string_view cause) {
     return std::string("nonwar private snapshot revision is stale or malformed: cause=")+
         std::string(cause)+" expected_revision="+std::to_string(expected_revision)+
@@ -27,6 +29,9 @@ inline std::string NonwarPrivateSnapshotGuardFailureV1(
   const auto read_sequence = ck3_12004::CaptureSnapshotReadSequence12004();
   if (!read_current(current)) {
     auto error = fail("current_snapshot_read_failed");
+    if (actual4_descriptor.has_value())
+      return error + ck3_12004::FormatSnapshotReadFailureChannel12004(
+          *actual4_descriptor, read_sequence);
     if (const auto receipt = ck3_12004::FreshSnapshotReadFailure12004(read_sequence))
       error += ck3_12004::FormatSnapshotReadFailure12004(*receipt);
     return error;

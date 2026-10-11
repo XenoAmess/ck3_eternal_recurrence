@@ -15184,7 +15184,7 @@ void RunConnectedSession(
               previous_snapshot, current,
               [&](xar::game::Snapshot &observed) {
                 return xar::game::ReadSnapshot(game, observed);
-              });
+              }, xar::game::IsCk3_12004Descriptor(game.descriptor()));
           if (failure.empty()) {
             xar::bridge::ActivityCostSlot12ObserverV1 *cost = nullptr;
             xar::bridge::ActivityGuestRuleProvenanceObserverV1 *provenance = nullptr;

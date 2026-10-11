@@ -26,4 +26,11 @@ inline std::string FormatWarAdmissionSnapshotFailureChannelV1(
   }
   return text;
 }
+// The same owned diagnostic channel is also used by the Nonwar caller.
+// This alias performs no additional read and preserves exact Fresh semantics.
+inline std::string FormatSnapshotReadFailureChannel12004(
+    bool actual4_descriptor, std::uint64_t before_sequence) {
+  return FormatWarAdmissionSnapshotFailureChannelV1(
+      actual4_descriptor, before_sequence);
+}
 } // namespace xar::bridge::ck3_12004

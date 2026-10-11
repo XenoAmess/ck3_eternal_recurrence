@@ -101,3 +101,25 @@ adapter/Game did not run; old12/5/6 cases were not replayed. Root adopted the
 candidate. Native83 compilation and the next actual read remain pending;
 no historical cause or live fix is claimed. Defender registration separately
 returned admin_required_for_verified_readback, with no Add attempted.
+
+
+## R98 actual private-prisoner guard read failure and shared channel
+
+Recorded 2026-10-11T03:51:20.023940+00:00; exact1.20.0.4/Steam25734779 build remains frozen. R98 ordinary010
+failed before prisoner business at the common NonwarPrivateSnapshotGuardFailureV1
+caller (Bridge15182..15186), whose callback makes one ReadSnapshot. Original error:
+`cause=current_snapshot_read_failed expected_revision=3 native_revision=3`.
+No read stage is present; no child cause is inferred. Original response and
+failure receipt are retained under native83-r0098. Private transport lines124..145
+forwards frame.error without trim; Python requires no change.
+
+The guard's failed-read renderer now accepts optional descriptor metadata; Bridge
+passes actual IsCk3_12004Descriptor. With metadata, it reuses the63j formatter via
+a general alias to expose before/after sequence and Fresh/read-stage facts.
+Without metadata, the old wire remains. Actual read count/guard semantics and
+success path are unchanged. Root's sole new FIRST3 compiled/linked0/run0, proving
+new real-guard glue for absent receipt, one stamped failure and legacy metadata
+absence; actual adapter/Game were not executed and the old cross-TU4 was not replayed.
+Evidence: [new FIRST3](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63k-r0098/root-first/ROOT-ACTUAL-FIRST3-AND-ADOPTION.json). Precise reader failure remains
+unknown pending the next actual ordinary run; Native84 production build/fullSDK84
+source binding are separate steps after source publication and R98 keeper release.

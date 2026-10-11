@@ -370,7 +370,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T03:40:54.822934+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T03:51:20.023940+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -577,7 +577,12 @@
         "runtime98_actual_ordinary_new_SAVEs": 0,
         "runtime98_actual_protective_same_date_SAVE_count": 1,
         "runtime98_actual_protective_SAVE_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native83-r0098/save-actual-gift-same-date01/ROOT-ACTUAL-SAME-DATE-GIFT-SAVE-RESULT.json",
-        "runtime98_latest_same_date_SAVE_history": "H10134"
+        "runtime98_latest_same_date_SAVE_history": "H10134",
+        "native84_unique_guard_FIRST3": "ACTUAL_COMPILE0_RUN0_ADOPTED",
+        "native84_FIRST3_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63k-r0098/root-first/ROOT-ACTUAL-FIRST3-AND-ADOPTION.json",
+        "native84_production_build_status": "NOT_RUN_SOURCE_PUBLICATION_AND_CUSTODY_RELEASE_PENDING",
+        "native84_actual_adapter_executed_by_FIRST": false,
+        "sdk84_status": "METADATA_SUCCESSOR_FINAL_SOURCE_PENDING"
       }
     }
   ],
