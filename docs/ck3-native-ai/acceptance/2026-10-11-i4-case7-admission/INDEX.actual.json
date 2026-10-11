@@ -1,0 +1,86 @@
+{
+  "schema": "i4-case7-admission-exact-original-index-v1",
+  "files": [
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/ADMISSION.actual.json",
+      "bytes": 14672,
+      "sha256": "165d879f5b8cd9ba1656b9e4254aa251ff73d032ec05f3b34878913ef5b8ef03",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-013\\ADMISSION.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/PREPARE-INPUTS.actual.json",
+      "bytes": 2694,
+      "sha256": "7c1f15ff932c7de27f1ce97ff6fd348c3f52d4f8339f12d43e17c91c0191a091",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-natural-public-inputs-20261011-007\\PREPARE-INPUTS.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/claims/01-STORAGE-CREDIT-CLAIM.actual.json",
+      "bytes": 1752,
+      "sha256": "38a31f666e2867b4ef9aeba1a3a5ee88facb929988f7c766be234b7576e4c588",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r54-mutable-cache-permanent-candidate-20261011-001\\files\\STORAGE-CREDIT-CLAIM.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/claims/02-STORAGE-CREDIT-CLAIM.actual.json",
+      "bytes": 1756,
+      "sha256": "1cabae33572686faf6e23157eab4e5bce41faf041f4679fa27ea0696cf162c5e",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-duplicate-inputs-permanent-candidate-20261011-001\\files\\SAVE\\STORAGE-CREDIT-CLAIM.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/claims/03-STORAGE-CREDIT-CLAIM.actual.json",
+      "bytes": 1760,
+      "sha256": "4726015782a5aeaeabf53ed8bfe00ff1477cee972462f2c6705414056dc23219",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-duplicate-inputs-permanent-candidate-20261011-001\\files\\cache\\STORAGE-CREDIT-CLAIM.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/claims/04-STORAGE-CREDIT-CLAIM.actual.json",
+      "bytes": 1745,
+      "sha256": "43862908a85d83095b8cb5af688d21c71b2b1ff7eee2f16d5822dde11fe91d32",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\source08-11-retirement-permanent-summary-20261011-001\\STORAGE-CREDIT-CLAIM.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/command/RESULT.actual.json",
+      "bytes": 2048,
+      "sha256": "65acdf9ff2875ea88ccb370915d32624e4401353adf04f096f7c7fe1503a3e5e",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-admission-command-20261011-013\\RESULT.actual.json"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/command/stdout.log",
+      "bytes": 1438,
+      "sha256": "7b396bfb830f3caac8f4a1579a8f79e10ecf72eaf1343202d8ef75e20611b53a",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-admission-command-20261011-013\\stdout.log"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/command/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-admission-command-20261011-013\\stderr.log"
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/FACTS.actual.json",
+      "bytes": 4274,
+      "sha256": "fee131ab179a7654f00cbb09af45df9ae422099ee9ff29f2ff41bc3d872bdcb4",
+      "original_source": null
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/REPORT.zh.md",
+      "bytes": 1283,
+      "sha256": "7394300ea22ecbc85d86862c7e3b9af4e15d838c353cf1c67943ef3710cb6a13",
+      "original_source": null
+    },
+    {
+      "target": "docs/ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/.gitattributes",
+      "bytes": 29,
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "original_source": null
+    }
+  ],
+  "actual_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-013\\ADMISSION.actual.json",
+    "bytes": 14672,
+    "sha256": "165d879f5b8cd9ba1656b9e4254aa251ff73d032ec05f3b34878913ef5b8ef03"
+  },
+  "original_source32_five_files_unchanged": true,
+  "prepared_actual_binding_pending": true,
+  "MAIN_Git_changed": false,
+  "TTL_renewed": false
+}

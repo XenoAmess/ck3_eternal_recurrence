@@ -1,0 +1,45 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-storage-admission-sourceonly-20261011-013/admit_case7.py",
+    "--confirm-single-root-writer",
+    "--other-unspent-reservations-bytes",
+    "0",
+    "--credit-inputs",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-storage-inputs-actual-20261011-001/CREDIT-INPUTS.final.actual.json",
+    "--credit-inputs-sha256",
+    "2d09f8ef1e248b2cf39d4966bf53fc07924319860f1bf7304fb04390dbd282b7",
+    "--planned-input-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-natural-public-inputs-20261011-007",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-formal-input-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-prepare-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-plan-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-preflight-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-allocate-command-20261011-001",
+    "--planned-command-root",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case7-close-command-20261011-001"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T00:39:24.063549+00:00",
+  "finished_at_utc": "2026-10-11T00:39:24.489257+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-admission-command-20261011-013\\stdout.log",
+    "bytes": 1438,
+    "sha256": "7b396bfb830f3caac8f4a1579a8f79e10ecf72eaf1343202d8ef75e20611b53a"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-storage-admission-command-20261011-013\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

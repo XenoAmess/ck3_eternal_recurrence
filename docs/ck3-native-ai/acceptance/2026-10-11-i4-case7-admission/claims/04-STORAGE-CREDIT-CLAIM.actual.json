@@ -1,0 +1,33 @@
+{
+  "schema": "lyd-single-storage-credit-claim-v1",
+  "at_utc": "2026-10-11T00:39:24.241343+00:00",
+  "event_id": "lyd-source08-11-indexed-retirement-20261011-001",
+  "target_reservation_id": "lyd-i4-CASE7-full-live-2GiB-20261011-013",
+  "target_admission_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-013\\ADMISSION.actual.json",
+  "actual_reclamation_credit_event": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source08-11-retirement-permanent-summary-20261011-001\\CREDIT-EVENT.actual.json",
+    "bytes": 8297,
+    "sha256": "4bdfef4842f77a333c91b1763eac135dea17e8e2210b65818f2ad2340ca37834"
+  },
+  "logical_credit_bytes": 563263222,
+  "previous_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-012\\ADMISSION.actual.json",
+    "bytes": 7400,
+    "sha256": "c2fb27a7faa185eae995ce4b4f8d62982f1f1053766f88a0c96b3df90b5901fc"
+  },
+  "previous_closed_reservation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-storage-admission-20261011-012\\CLOSED-RESERVATION.actual.json",
+    "bytes": 6200,
+    "sha256": "c7251842d864f0b84199ad7578ba3434a0ac14957d05ce2a742ca4ff5e2fc0e3"
+  },
+  "actual_recovery_closed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source08-11-recovery-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+    "bytes": 14061,
+    "sha256": "ef58855e080f176151557f3946622a0bf8a94812b5f824dace4267a8d19ebf56"
+  },
+  "actual_volume_lock": "C:\\workspace\\.codex-task-bus\\lyd-volume-c.admission.lock",
+  "canonical_event_raw_unmodified": true,
+  "automatic_retry_allowed": false,
+  "claim_alone_is_not_admission_success": true,
+  "failed_or_partial_admission_claim_must_be_preserved": true
+}

@@ -93,3 +93,19 @@ ROOT 原命令实际 exit0：3 个保留源与 5 个目标共读 733357860 B，�
 [R54可变缓存实际回收](../li-yu-dao/acceptance/2026-10-11-r54-mutable-cache-reclaimed/README.md)：四批0，3740文件/146942067B logical，allocation API155353904B。新唯一event尚未claim。随后四SAVE实际0回收366678829B，两保留锚+四目标共550018294B均以持有句柄核SHA，原0240及R55独立初始SAVE不删。RUN55重复输入缓存四批0回收3740文件/146942067B；原不可变seed和CASE6可变缓存不删。[两类小型永久索引](../li-yu-dao/acceptance/2026-10-11-r55-duplicate-inputs-reclaimed/README.md)已实际采用，保存原五份小回执；executor/identity/ledger只回链外置原件，避免再复制审计正文。
 
 三项新logical回收合计660562963B，尚未从任何新reservation重复扣减。卷free差额不全部归因于清理；旧458348713B SAVE与146942031B R52 credit不再累计。Source08—11当前仅有metadata plan0，恢复CAS、删除及其credit均未执行。下一实机维持完整2GiB预算，等待实际回收与独立准入，不扩大配额或延长Oct12/Oct17期限。大型identity/detail留外置30日，小回执180日复核，策略1.0.0不变。
+
+### Source08–11 可恢复退役实际补记（实际原件已绑定）
+
+保留 08:15 历史计划原文；本段只记录其后真实终态。Source08–11永久摘要 INDEX.actual.json 2670 B / SHA9990d26bd5b9a1c8ddbb1bb68258824a2e11275a53c21869a3ea0d1032a80cf1 绑定非 host 31624 文件/gross 563263222 B，以及恢复 CAS 141 项/10721390 B。恢复 CAS 为最小唯一旧字节集合，不能从 gross 删除量中推断 free 的排他归因。
+
+保留四旧 host 原路径、全部旧 O metadata/Git objects、Cbr2/Cbr3、当前 Source13–15、全部 cache/SAVE；旧源 payload 需要已审恢复入口，原 frozen index/commit 历史保持。48 MiB 预约闭账=source08-11-recovery-admission-20261011-001/CLOSED-RESERVATION.actual.json 14061 B / SHAef58855e080f176151557f3946622a0bf8a94812b5f824dace4267a8d19ebf56；其未来0不代表物理删除。四清理事件 gross 合计1223826185 B 仅供 013 一次实际 claim（PENDING（未执行/claim=NULL）），不在本补记重复扣减。原到期/保护期限不自动续期。
+
+精确0abb双CI成功原 REPORT2905 B/SHA9c9c067ea5b4511d90c6f0e8db0acb3aea2c54a05d058950bc2ff80ad0419b83、INDEX11806 B/SHA8e8c2c34c36fafc4a6b658f5b7001dca07a0fe3f98ba5159695827a984438aff 仅引用，不复制大 logs。
+
+### LYD CASE7 容量准入及公共预检（08:46 CST 实际补记）
+
+013 原容量命令实际 exit0，四份回收记录各创建一次 claim，gross 合计 1,223,826,185 B。独立恢复作业的 retained 加 closing bound 20,681,865 B 先计回，再扣四份新逻辑回收；usage=135,209,295,215 B，完整 2 GiB 峰值后为 137,356,778,863 B，距原 quota 余 82,174,609 B。实际 free=619,700,330,496 B，required=34,359,738,368 B。原截止、缓存/源码复核期限不续，未来预约不是物理删除。原 ADMISSION、四 claims、输入与命令原件见 [013 小型永久证据](../ck3-native-ai/acceptance/2026-10-11-i4-case7-admission/INDEX.actual.json).
+
+公共 CASE7 prepare、plan、preflight 原命令均 exit0：50.388 s、0.423 s、29.392 s；预检 READY_FOR_EXISTING_REVIEWED_LAUNCH，blockers=[]。实际 prepared-case 1,338,827 B / SHA256 6e69150792193fd925b5d7af143951e5e447859f5c3c5f409ab70ed7c5291bde，仅引用外置原件，不将完整缓存索引搬上库。绑定 Source15/O15、原0240 SAVE和现有R54种子，未新增 native build/SDK重验/immutable seed；源码与实际启动、缓存命中、业务通过分别记录。尚未 allocate/启动，下一步是冻结干净主线、取得当次新鲜离线图并执行 I4 现有冷却自然到期；全一期仍75% / NOT_GREEN。
+
+并行拓扑：旧 Source08–11 可恢复退役及容量入账完成；B4 handler 研究继续，实际发现 FH4 collided unwind 的 ScopeIndex 保全缺口，安装保持阻断；013 实机闭账源码在外置准备，终态字段保持待填。未新建分支；同步只用 fetch/rebase/普通 push。
