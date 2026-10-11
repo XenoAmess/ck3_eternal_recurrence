@@ -70,6 +70,13 @@ the existing hosted query and durable lifecycle; see
 Full identity and actual return pairing qualify individual read differences only.
 XP and complete activity payoff remain unknown. Eleven production mappings are
 SOURCE_ADOPTED_NOT_RUN; neither material readiness nor live capability increased.
+The existing religion quote now captures the original dynamic Rite CALL's
+local Q64 output in its own query and exposes a matched independent term through
+the source model and strict consumer; see
+[dynamic Rite observation](../ck3-native-ai/rite-dynamic-original-call-q64-observation-12004.md).
+Raw RAX is separate, known zero is retained, and missing/conflicting values stay
+unknown. Complete original price provenance remains distinct. Fifteen production
+files are SOURCE_ADOPTED_NOT_RUN, with no new religion action or live credit.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

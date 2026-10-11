@@ -340,6 +340,158 @@ std::string Model(const std::optional<CreatePietyFinalPriceSourceObservation1200
       ",\"actor_property_224\":" + ActorTerm(out.actor_property_224) +
       ",\"final_piety_price_raw_q64\":" + Number(out.final_piety_price_raw_q64) + "}";
 }
+RiteDynamicQueryBinding12004 DynamicBindingFromInputs(
+    const ReligionCreationPriceSourceFrame12004 &frame,
+    const ReligionCreationPriceSourceInputs12004 &inputs) noexcept {
+  RiteDynamicQueryBinding12004 out;
+  out.actual_application_query = frame.actual_application_query;
+  out.mailbox_before_accepted = frame.mailbox_before_accepted;
+  out.snapshot_revision = frame.snapshot_revision;
+  out.query_sequence = frame.query_sequence;
+  out.capture_epoch = frame.capture_epoch;
+  out.date_raw = frame.date_raw;
+  out.stamp_date_raw = frame.stamp_date_raw;
+  out.stamp_paused = frame.stamp_paused;
+  out.played_character_id = frame.played_character_id;
+  out.owning_thread_id = frame.owning_thread_id;
+  out.actual_window = inputs.window_identity;
+  out.price_payload_identity = inputs.price_payload_identity;
+  const auto copy_identity = [](const auto &identity) {
+    return RiteDynamicResolvedIdentity12004{identity.ready,
+        identity.selected_identity, identity.resolved_full_id};
+  };
+  out.first_actor = copy_identity(inputs.first_actor);
+  out.current_rite = copy_identity(inputs.current_rite);
+  out.second_actor = copy_identity(inputs.second_actor);
+  return out;
+}
+
+std::string DynamicFrame(const ReligionCreationPriceSourceFrame12004 &v) {
+  return "{\"snapshot_revision\":" + std::to_string(v.snapshot_revision) +
+      ",\"query_sequence\":" + std::to_string(v.query_sequence) +
+      ",\"capture_epoch\":" + std::to_string(v.capture_epoch) +
+      ",\"date_raw\":" + std::to_string(v.date_raw) +
+      ",\"played_character_id\":" + std::to_string(v.played_character_id) +
+      ",\"owning_thread_id\":" + std::to_string(v.owning_thread_id) +
+      ",\"stamp_date_raw\":" + std::to_string(v.stamp_date_raw) +
+      ",\"stamp_paused\":" + Boolean(v.stamp_paused) +
+      ",\"mailbox_before_accepted\":" + Boolean(v.mailbox_before_accepted) +
+      ",\"mailbox_after_accepted\":" + Boolean(v.mailbox_after_accepted) + "}";
+}
+
+std::string DynamicIdentity(const RiteDynamicResolvedIdentity12004 &v) {
+  return "{\"ready\":" + Boolean(v.ready) +
+      ",\"selected_identity_u64\":" + Number(v.selected_identity) +
+      ",\"resolved_full_id_u32\":" + Number(v.resolved_full_id) + "}";
+}
+
+std::string DynamicBinding(const RiteDynamicQueryBinding12004 &v) {
+  return "{\"actual_application_query\":" + Boolean(v.actual_application_query) +
+      ",\"mailbox_before_accepted\":" + Boolean(v.mailbox_before_accepted) +
+      ",\"snapshot_revision\":" + std::to_string(v.snapshot_revision) +
+      ",\"query_sequence\":" + std::to_string(v.query_sequence) +
+      ",\"capture_epoch\":" + std::to_string(v.capture_epoch) +
+      ",\"date_raw\":" + std::to_string(v.date_raw) +
+      ",\"stamp_date_raw\":" + std::to_string(v.stamp_date_raw) +
+      ",\"stamp_paused\":" + Boolean(v.stamp_paused) +
+      ",\"played_character_id\":" + std::to_string(v.played_character_id) +
+      ",\"owning_thread_id\":" + std::to_string(v.owning_thread_id) +
+      ",\"actual_window_u64\":" + std::to_string(v.actual_window) +
+      ",\"price_payload_identity_u64\":" + Number(v.price_payload_identity) +
+      ",\"first_actor\":" + DynamicIdentity(v.first_actor) +
+      ",\"current_rite\":" + DynamicIdentity(v.current_rite) +
+      ",\"second_actor\":" + DynamicIdentity(v.second_actor) + "}";
+}
+
+std::string DynamicPre(const RiteDynamicPrecallRegisters12004 &v) {
+  return "{\"helper_rbp_u64\":" + std::to_string(v.helper_rbp) +
+      ",\"expression_receiver_rcx_u64\":" + std::to_string(v.expression_receiver_rcx) +
+      ",\"vptr_rax_u64\":" + std::to_string(v.vptr_rax) +
+      ",\"target_r10_u64\":" + std::to_string(v.target_r10) +
+      ",\"definition_rsi_u64\":" + std::to_string(v.definition_rsi) +
+      ",\"native_context_r12_u64\":" + std::to_string(v.native_context_r12) +
+      ",\"native_r9_r15_u64\":" + std::to_string(v.native_r9_r15) +
+      ",\"helper_out_rdi_u64\":" + std::to_string(v.helper_out_rdi) + "}";
+}
+
+std::string DynamicOccurrence(const RiteDynamicCallOccurrence12004 &v) {
+  return "{\"occurrence_index\":" + std::to_string(v.occurrence_index) +
+      ",\"borrowed_scope_identity_u64\":" + std::to_string(v.borrowed_scope_identity) +
+      ",\"pre_thread_id_u32\":" + std::to_string(v.pre_thread_id) +
+      ",\"post_thread_id_u32\":" + Number(v.post_thread_id) +
+      ",\"pre\":" + DynamicPre(v.pre) +
+      ",\"description_pointer_u64\":" + Number(v.description_pointer) +
+      ",\"parent_return_address_u64\":" + Number(v.parent_return_address) +
+      ",\"parent_actor_u64\":" + Number(v.parent_actor) +
+      ",\"parent_current_rite_u64\":" + Number(v.parent_current_rite) +
+      ",\"parent_term_output_u64\":" + Number(v.parent_term_output) +
+      ",\"parent_detail_u64\":" + Number(v.parent_detail) +
+      ",\"actor_full_id_raw_u32\":" + Number(v.actor_full_id_raw_u32) +
+      ",\"rite_full_id_raw_u32\":" + Number(v.rite_full_id_raw_u32) +
+      ",\"actor_context_key_raw_u32\":" + Number(v.actor_context_key_raw_u32) +
+      ",\"rite_context_key_raw_u32\":" + Number(v.rite_context_key_raw_u32) +
+      ",\"rite_link_full_id_raw_u32\":" + Number(v.rite_link_full_id_raw_u32) +
+      ",\"rite_link_context_key_raw_u32\":" + Number(v.rite_link_context_key_raw_u32) +
+      ",\"post_actor_full_id_raw_u32\":" + Number(v.post_actor_full_id_raw_u32) +
+      ",\"post_rite_full_id_raw_u32\":" + Number(v.post_rite_full_id_raw_u32) +
+      ",\"pairing_ambiguous\":" + Boolean(v.pairing_ambiguous) +
+      ",\"normal_return_observed\":" + Boolean(v.normal_return_observed) +
+      ",\"observed_normal_return_rva_u64\":" + std::to_string(v.observed_normal_return_rva) +
+      ",\"raw_returned_rax_u64\":" + Number(v.raw_returned_rax) +
+      ",\"local_output_raw_q64_i64\":" + Number(v.local_output_raw_q64) + "}";
+}
+
+std::string DynamicScope(const RiteDynamicCallJournalSnapshot12004 &v) {
+  return "{\"borrowed_scope_identity_u64\":" + std::to_string(v.borrowed_scope_identity) +
+      ",\"scope_thread_id_u32\":" + std::to_string(v.scope_thread_id) +
+      ",\"scope_started\":" + Boolean(v.scope_started) +
+      ",\"scope_closed\":" + Boolean(v.scope_closed) +
+      ",\"allocation_failed\":" + Boolean(v.allocation_failed) +
+      ",\"capacity_exceeded\":" + Boolean(v.capacity_exceeded) +
+      ",\"reentrant_callback_rejected\":" + Boolean(v.reentrant_callback_rejected) +
+      ",\"thread_mismatch_observed\":" + Boolean(v.thread_mismatch_observed) +
+      ",\"dropped_pre_count\":" + std::to_string(v.dropped_pre_count) +
+      ",\"unmatched_post_count\":" + std::to_string(v.unmatched_post_count) +
+      ",\"occurrence_capacity\":" + std::to_string(RiteDynamicCallJournalScope12004::maximum_occurrences) +
+      ",\"occurrence_count\":" + std::to_string(v.occurrences.size()) + "}";
+}
+
+std::string DynamicExpectedValue(const RitePietyObservedTermExpected12004 &v) {
+  return "{\"module_base_u64\":" + std::to_string(v.module_base) +
+      ",\"actor_u64\":" + std::to_string(v.actor) +
+      ",\"current_rite_u64\":" + std::to_string(v.current_rite) +
+      ",\"definition_u64\":" + std::to_string(v.definition) +
+      ",\"expression_u64\":" + std::to_string(v.expression) +
+      ",\"expression_receiver_u64\":" + std::to_string(v.expression_receiver) +
+      ",\"expression_vtable_u64\":" + std::to_string(v.expression_vtable) +
+      ",\"expression_virtual_30_u64\":" + std::to_string(v.expression_virtual_30) +
+      ",\"revision\":" + std::to_string(v.revision) +
+      ",\"actor_full_id_raw_u32\":" + Number(v.actor_full_id_raw_u32) +
+      ",\"actor_context_key_raw_u32\":" + Number(v.actor_context_key_raw_u32) +
+      ",\"rite_full_id_raw_u32\":" + Number(v.rite_full_id_raw_u32) +
+      ",\"rite_context_key_raw_u32\":" + Number(v.rite_context_key_raw_u32) +
+      ",\"rite_link_full_id_raw_u32\":" + Number(v.rite_link_full_id_raw_u32) +
+      ",\"rite_link_context_key_raw_u32\":" + Number(v.rite_link_context_key_raw_u32) +
+      ",\"dynamic_prefix_copied\":" + Boolean(v.dynamic_prefix_copied) + "}";
+}
+
+std::string DynamicAdmissionValue(const RitePietyObservedTermAdmission12004 &v) {
+  return "{\"admitted\":" + Boolean(v.admitted) +
+      ",\"reason\":" + Quote(v.reason) +
+      ",\"matching_record_count\":" + std::to_string(v.matching_record_count) +
+      ",\"selected_record_index\":" + Number(v.selected_record_index) +
+      ",\"matching_values_agree\":" + Boolean(v.matching_values_agree) +
+      ",\"observed_q64_raw\":" + Number(v.observed_q64_raw) + "}";
+}
+
+std::string DynamicTermValue(const RitePietyPriceTerm2C628A012004 &v) {
+  return "{\"route\":" + std::to_string(static_cast<unsigned>(v.route)) +
+      ",\"source_ready\":" + Boolean(v.source_ready) +
+      ",\"native_term_raw_q64\":" + Number(v.native_term_raw_q64) +
+      ",\"dynamic_dispatch_operands_copied\":" + Boolean(v.dynamic_dispatch_operands_copied) +
+      ",\"natural_dynamic_q64_observed\":" + Boolean(v.natural_dynamic_q64_observed) + "}";
+}
+
 } // namespace
 
 piety_price_raw_inputs::PietyPriceNumericAccess12004
@@ -347,6 +499,11 @@ BindReligionCreationPriceSourceAccess12004(
     std::uintptr_t base, std::string_view hash) noexcept {
   if (!base || hash != kReligionPriceSourceExecutableSha25612004) return {};
   return {base, nullptr, ProcessRead, true};
+}
+
+RiteDynamicQueryBinding12004 CopyReligionRiteDynamicQueryBinding12004(
+    const ReligionCreationPriceSourceProbe12004 &probe) noexcept {
+  return DynamicBindingFromInputs(probe.packet.frame, probe.packet.before);
 }
 
 ReligionCreationPriceSourceProbe12004 BeginReligionCreationPriceSource12004(
@@ -372,10 +529,13 @@ ReligionCreationPriceSourceProbe12004 BeginReligionCreationPriceSource12004(
   return probe;
 }
 
-ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
+static ReligionCreationPriceSourcePacket12004 CompleteSourceWithObservedInputs(
     ReligionCreationPriceSourceProbe12004 &probe,
-    std::optional<bool> selector, bool quote_available) noexcept {
+    std::optional<bool> selector, bool quote_available,
+    const RitePietyObservedTermInputs12004 *observed_inputs) noexcept {
   auto &packet = probe.packet;
+  if (observed_inputs)
+    packet.rite_dynamic_query_binding = observed_inputs->expected_query_binding;
   packet.editing_owned_current_rite = quote_available ? selector : std::nullopt;
   try {
     if (packet.before.complete && packet.editing_owned_current_rite &&
@@ -387,11 +547,23 @@ ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
       bindings.entry_numeric.access = access;
       // Both dynamic operand callbacks intentionally remain absent.
       const auto &inputs = packet.before;
-      packet.source_model.emplace(ReadCreatePietyFinalPriceSourceModel12004(
-          bindings, *inputs.price_payload_identity,
-          *inputs.current_rite.selected_identity, *inputs.second_actor.selected_identity,
-          *inputs.second_actor.resolved_full_id, *inputs.current_rite.resolved_full_id,
-          packet.frame.snapshot_revision, *inputs.second_actor.used_fallback));
+      if (observed_inputs) {
+        auto observed = ReadCreatePietyFinalPriceSourceModel12004(
+            bindings, *inputs.price_payload_identity,
+            *inputs.current_rite.selected_identity, *inputs.second_actor.selected_identity,
+            *inputs.second_actor.resolved_full_id, *inputs.current_rite.resolved_full_id,
+            packet.frame.snapshot_revision, *inputs.second_actor.used_fallback,
+            *observed_inputs);
+        packet.source_model.emplace(std::move(observed.source_model));
+        packet.rite_observed_admission = std::move(observed.rite_observed_admission);
+        packet.rite_observed_expectation = std::move(observed.rite_observed_expectation);
+      } else {
+        packet.source_model.emplace(ReadCreatePietyFinalPriceSourceModel12004(
+            bindings, *inputs.price_payload_identity,
+            *inputs.current_rite.selected_identity, *inputs.second_actor.selected_identity,
+            *inputs.second_actor.resolved_full_id, *inputs.current_rite.resolved_full_id,
+            packet.frame.snapshot_revision, *inputs.second_actor.used_fallback));
+      }
     }
     if (packet.before.complete) {
       packet.after = ReadInputs(probe, packet.before.window_identity);
@@ -416,6 +588,20 @@ ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
   packet.copied_read_count = probe.copied_reads.size();
   packet.copied_bytes = probe.copied_bytes;
   return std::move(packet);
+}
+
+ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
+    ReligionCreationPriceSourceProbe12004 &probe,
+    std::optional<bool> selector, bool quote_available) noexcept {
+  return CompleteSourceWithObservedInputs(probe, selector, quote_available, nullptr);
+}
+
+ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
+    ReligionCreationPriceSourceProbe12004 &probe,
+    std::optional<bool> selector, bool quote_available,
+    const RitePietyObservedTermInputs12004 &observed_inputs) noexcept {
+  return CompleteSourceWithObservedInputs(probe, selector, quote_available,
+                                         &observed_inputs);
 }
 
 void FinishReligionCreationPriceSourceMailbox12004(
@@ -462,4 +648,69 @@ std::string SerializeReligionCreationPriceSource12004(
       ",\"source_model\":" + Model(packet.source_model) +
       ",\"final_piety_price_raw_q64\":" + Number(packet.final_piety_price_raw_q64) + "}";
 }
+std::string SerializeReligionRiteDynamicTermObservations12004(
+    const ReligionCreationPriceSourcePacket12004 &packet) {
+  if (!packet.rite_dynamic_journal) return "null";
+  const auto &journal = *packet.rite_dynamic_journal;
+  const auto &frame = packet.frame;
+  std::optional<bool> bookends;
+  if (packet.copied_spans_still_current && packet.input_mappings_still_current)
+    bookends = *packet.copied_spans_still_current &&
+               *packet.input_mappings_still_current;
+  const auto expected_binding = DynamicBindingFromInputs(frame, packet.before);
+  const bool same_query = frame.actual_application_query &&
+      frame.mailbox_before_accepted &&
+      frame.mailbox_after_accepted == std::optional<bool>{true} &&
+      frame.stamp_paused && frame.date_raw == frame.stamp_date_raw &&
+      bookends == std::optional<bool>{true} &&
+      journal.source_pin == kRiteDynamicJournalSourcePin12004 &&
+      journal.module_base != 0 && journal.scope_started && journal.scope_closed &&
+      journal.borrowed_scope_identity != 0 && journal.scope_thread_id != 0 &&
+      journal.scope_thread_id == frame.owning_thread_id &&
+      packet.rite_dynamic_query_binding &&
+      *packet.rite_dynamic_query_binding == expected_binding &&
+      journal.binding == expected_binding;
+  const auto *term = packet.source_model && packet.source_model->rite_term
+                         ? &*packet.source_model->rite_term : nullptr;
+  const bool term_ready = same_query && packet.rite_observed_admission &&
+      packet.rite_observed_admission->admitted &&
+      packet.rite_observed_admission->observed_q64_raw.has_value() &&
+      packet.rite_observed_expectation && term && term->source_ready &&
+      term->natural_dynamic_q64_observed &&
+      term->native_term_raw_q64 == packet.rite_observed_admission->observed_q64_raw;
+  std::string_view reason = "actual_rite_dynamic_admission_not_reached";
+  if (frame.mailbox_after_accepted != std::optional<bool>{true})
+    reason = "source_mailbox_after_guard_rejected";
+  else if (bookends != std::optional<bool>{true})
+    reason = "source_bookends_changed_or_unavailable";
+  else if (!same_query)
+    reason = "source_dynamic_journal_binding_unavailable";
+  else if (packet.rite_observed_admission)
+    reason = packet.rite_observed_admission->reason;
+  std::string occurrences = "[";
+  for (std::size_t index = 0; index < journal.occurrences.size(); ++index) {
+    if (index != 0) occurrences += ",";
+    occurrences += DynamicOccurrence(journal.occurrences[index]);
+  }
+  occurrences += "]";
+  return "{\"schema\":" + Quote("religion-rite-dynamic-term-observations-12004-v1") +
+      ",\"game_version\":" + Quote("1.20.0.4") +
+      ",\"executable_sha256\":" + Quote(kReligionPriceSourceExecutableSha25612004) +
+      ",\"source_kind\":" + Quote("original_call_term_observation") +
+      ",\"capture_scope\":" + Quote(frame.actual_application_query ? "actual_application_query" : "owned_memory_fixture") +
+      ",\"source_pin\":" + Quote(journal.source_pin) +
+      ",\"module_base_u64\":" + std::to_string(journal.module_base) +
+      ",\"frame\":" + DynamicFrame(frame) +
+      ",\"bookends_current\":" + Boolean(bookends) +
+      ",\"same_query_admitted\":" + Boolean(same_query) +
+      ",\"term_observation_ready\":" + Boolean(term_ready) +
+      ",\"reason\":" + Quote(reason) +
+      ",\"query_binding\":" + DynamicBinding(journal.binding) +
+      ",\"scope\":" + DynamicScope(journal) +
+      ",\"occurrences\":" + occurrences +
+      ",\"admission\":" + (packet.rite_observed_admission ? DynamicAdmissionValue(*packet.rite_observed_admission) : "null") +
+      ",\"rite_term\":" + (term ? DynamicTermValue(*term) : "null") +
+      ",\"expected_operands\":" + (packet.rite_observed_expectation ? DynamicExpectedValue(*packet.rite_observed_expectation) : "null") + "}";
+}
+
 } // namespace xar::ck3_12004::religion_price_source

@@ -854,6 +854,8 @@ list(APPEND XAR_CK3_12002_SOURCES
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_battle_current_state.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_maa_recruitment.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/owned_regiments.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/rite_dynamic_call_journal_12004.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/rite_named_fixed_q64_observer_12004.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_invalidation_precall_observer_12004.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_terminal_observations_12004.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_completion_effect_counter_observer_12004.cpp"

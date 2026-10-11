@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/create_piety_final_price_source_model_12004.hpp"
+#include "xar_bridge/create_piety_final_price_observed_term_12004.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -69,6 +70,12 @@ struct ReligionCreationPriceSourcePacket12004 {
   std::optional<piety_price_raw_inputs::CreatePietyFinalPriceSourceObservation12004>
       source_model;
   std::optional<std::int64_t> final_piety_price_raw_q64;
+  std::optional<RiteDynamicQueryBinding12004> rite_dynamic_query_binding;
+  std::optional<RiteDynamicCallJournalSnapshot12004> rite_dynamic_journal;
+  std::optional<piety_price_raw_inputs::RitePietyObservedTermAdmission12004>
+      rite_observed_admission;
+  std::optional<piety_price_raw_inputs::RitePietyObservedTermExpected12004>
+      rite_observed_expectation;
 };
 
 // The probe is local to one owning application-thread mailbox execution. It
@@ -97,6 +104,14 @@ ReligionCreationPriceSourceProbe12004 BeginReligionCreationPriceSource12004(
 ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
     ReligionCreationPriceSourceProbe12004 &, std::optional<bool> existing_selector,
     bool existing_native_quote_available) noexcept;
+RiteDynamicQueryBinding12004 CopyReligionRiteDynamicQueryBinding12004(
+    const ReligionCreationPriceSourceProbe12004 &) noexcept;
+ReligionCreationPriceSourcePacket12004 CompleteReligionCreationPriceSource12004(
+    ReligionCreationPriceSourceProbe12004 &, std::optional<bool> existing_selector,
+    bool existing_native_quote_available,
+    const piety_price_raw_inputs::RitePietyObservedTermInputs12004 &) noexcept;
+std::string SerializeReligionRiteDynamicTermObservations12004(
+    const ReligionCreationPriceSourcePacket12004 &);
 void FinishReligionCreationPriceSourceMailbox12004(
     ReligionCreationPriceSourcePacket12004 &, bool actual_finish_accepted) noexcept;
 std::string SerializeReligionCreationPriceSource12004(

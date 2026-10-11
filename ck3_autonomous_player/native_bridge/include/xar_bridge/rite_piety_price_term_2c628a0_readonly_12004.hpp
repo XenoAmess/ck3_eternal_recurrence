@@ -15,6 +15,7 @@ enum class RitePietyPriceTermRoute12004 : std::uint8_t {
     evaluator_flag_zero,
     evaluator_literal,
     dynamic_expression_value_unavailable,
+    dynamic_expression_observed_return,
 };
 
 struct RitePietyPriceTerm2C628A012004 {
@@ -47,6 +48,8 @@ struct RitePietyPriceTerm2C628A012004 {
     std::optional<std::uint32_t> rite_link_full_id_raw_u32;
     std::optional<std::uint32_t> rite_link_context_key_raw_u32;
     bool dynamic_context_operands_copied = false;
+    bool dynamic_dispatch_operands_copied = false;
+    bool natural_dynamic_q64_observed = false;
 };
 
 inline RitePietyPriceTerm2C628A012004 ReadRitePietyPriceTerm2C628A012004(
@@ -169,6 +172,7 @@ inline RitePietyPriceTerm2C628A012004 ReadRitePietyPriceTerm2C628A012004(
         result.reason = "dynamic_expression_virtual_30_unreadable";
         return result;
     }
+    result.dynamic_dispatch_operands_copied = true;
     // Copied receiver/vtable addresses do not supply the returned Q64.
     // Never fall back to literal+68 on this branch or actively evaluate it.
     result.reason = "actual_virtual_expression_q64_source_unavailable";

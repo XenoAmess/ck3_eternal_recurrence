@@ -20,6 +20,10 @@
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+#include "xar_bridge/rite_dynamic_call_journal_12004.hpp"
+#include "xar_bridge/rite_named_fixed_q64_observer_12004.hpp"
+#endif
 #if defined(XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004)
 #include "xar_bridge/conception_pair_passive_12004.hpp"
 #endif
@@ -763,6 +767,12 @@ static xar::ck3_12004::KnightStatConsumptionDetourState12004
     g_knight_stat_consumption_12004{};
 static xar::ck3_12004::PhysicalEntryWritebackDetourState12004
     g_physical_entry_writeback_12004{};
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+// Native relays and callback modules remain owned for process life, including
+// partial install failure. Ordinary Stop/DllMain have no relay quiescence proof.
+static xar::ck3_12004::RiteNamedFixedQ64Observer12004State
+    g_rite_named_fixed_q64_observer_12004{};
+#endif
 #if defined(XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004)
 static xar::ck3_12004::EntryPrecedingState12004 g_entry_preceding_capture_12004{};
 static xar::ck3_12004::EntryFinalSideCaptureState12004 g_entry_final_side_capture_12004{};
@@ -28646,6 +28656,19 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (xar::game::IsCk3_12004Descriptor(game->descriptor())) {
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     const auto sha = game->descriptor().executable_sha256;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+    xar::ck3_12004::RiteNamedFixedQ64Observer12004Environment rite_environment{};
+    rite_environment.exact_12004_build_admitted = true;
+    // The injector invokes this existing cold-start entry before primary resume.
+    rite_environment.primary_thread_suspended_proven = true;
+    rite_environment.module_base = base;
+    rite_environment.capture_context = nullptr;
+    rite_environment.pre_capture = &xar::ck3_12004::CaptureRiteDynamicPrecall12004;
+    rite_environment.post_capture = &xar::ck3_12004::CaptureRiteDynamicPostcall12004;
+    if (!xar::ck3_12004::InstallRiteNamedFixedQ64Observer12004(
+            g_rite_named_fixed_q64_observer_12004, rite_environment))
+      return FALSE;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     g_activity_cost_slot12_bindings12004 =
         xar::ck3_12004::BindCoreImage(base, sha);

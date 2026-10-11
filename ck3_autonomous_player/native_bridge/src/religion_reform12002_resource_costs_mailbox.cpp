@@ -80,6 +80,8 @@ bool ExecutePlayerReligionDraftResourceCostsMailbox12002(
     } else {
       out.draft_observed = window.window != nullptr;
       std::optional<ck3_12004::religion_price_source::ReligionCreationPriceSourceProbe12004> source_probe;
+      std::optional<ck3_12004::RiteDynamicQueryBinding12004> rite_dynamic_binding;
+      std::optional<ck3_12004::RiteDynamicCallJournalScope12004> rite_dynamic_scope;
       if (query.source_price_access.exact_12004_bound) {
         ck3_12004::religion_price_source::ReligionCreationPriceSourceFrame12004 source_frame{};
         source_frame.actual_application_query = true;
@@ -94,6 +96,11 @@ bool ExecutePlayerReligionDraftResourceCostsMailbox12002(
         source_frame.mailbox_before_accepted = IsQueryOwningThread(envelope);
         source_probe.emplace(ck3_12004::religion_price_source::BeginReligionCreationPriceSource12004(
             query.source_price_access, reinterpret_cast<std::uintptr_t>(window.window), source_frame));
+        rite_dynamic_binding.emplace(
+            ck3_12004::religion_price_source::CopyReligionRiteDynamicQueryBinding12004(
+                *source_probe));
+        // The raw reader bypasses copied_reads for transient native stack cells.
+        rite_dynamic_scope.emplace(source_probe->access, *rite_dynamic_binding);
       }
       religion_reform::CurrentDraftView view{
           const_cast<void *>(window.window), static_cast<std::int32_t>(window.played_character_id),
@@ -102,9 +109,19 @@ bool ExecutePlayerReligionDraftResourceCostsMailbox12002(
           query.cost_bindings, view, out.base_resource_cost_quote);
       if (source_probe) {
         const auto &quote = out.base_resource_cost_quote.draft_quote;
-        out.source_price_packet.emplace(
-            ck3_12004::religion_price_source::CompleteReligionCreationPriceSource12004(
-                *source_probe, quote.editing_owned_current_rite, quote.available));
+        if (rite_dynamic_scope && rite_dynamic_binding) {
+          const ck3_12004::piety_price_raw_inputs::RitePietyObservedTermInputs12004 observed{
+              &rite_dynamic_scope->Snapshot(), *rite_dynamic_binding};
+          out.source_price_packet.emplace(
+              ck3_12004::religion_price_source::CompleteReligionCreationPriceSource12004(
+                  *source_probe, quote.editing_owned_current_rite, quote.available, observed));
+          out.source_price_packet->rite_dynamic_journal.emplace(
+              rite_dynamic_scope->TakeSnapshot());
+        } else {
+          out.source_price_packet.emplace(
+              ck3_12004::religion_price_source::CompleteReligionCreationPriceSource12004(
+                    *source_probe, quote.editing_owned_current_rite, quote.available));
+        }
       }
       if (out.draft_observed && !out.base_resource_cost_quote.draft_quote.available)
         out.failure = religion_reform::RiteCreationCostFailureKey(
@@ -158,6 +175,10 @@ std::string SerializePlayerReligionDraftResourceCostsResult12002(
       (query.observation.source_price_packet ?
           ",\"religion_creation_price_source_12004\":" +
           ck3_12004::religion_price_source::SerializeReligionCreationPriceSource12004(
+              *query.observation.source_price_packet) : std::string{}) +
+      (query.observation.source_price_packet ?
+          ",\"religion_rite_dynamic_term_observations_12004\":" +
+          ck3_12004::religion_price_source::SerializeReligionRiteDynamicTermObservations12004(
               *query.observation.source_price_packet) : std::string{}) + "}}";
 }
 

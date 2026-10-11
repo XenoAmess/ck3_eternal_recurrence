@@ -10,7 +10,10 @@ from .g2_private_query_transport import private_g2_query_metadata_v1, read_priva
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
 from .religion_creation_price_source_12004 import (
     FACTS_KEY as PRICE_SOURCE_FACTS_KEY, WIRE_KEY as PRICE_SOURCE_WIRE_KEY,
+    OBSERVATIONS_FACTS_KEY as RITE_OBSERVATIONS_FACTS_KEY,
+    OBSERVATIONS_WIRE_KEY as RITE_OBSERVATIONS_WIRE_KEY,
     decode_religion_creation_price_source_12004,
+    decode_religion_rite_dynamic_term_observations_12004,
 )
 from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
@@ -158,9 +161,18 @@ def query_player_religion_draft_resource_costs_private_v1(
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "status": result["status"], "read_only": True, "advertised": False,
     }
+    observations = decode_religion_rite_dynamic_term_observations_12004(
+        result.get(RITE_OBSERVATIONS_WIRE_KEY),
+        price_source_packet=result.get(PRICE_SOURCE_WIRE_KEY),
+        snapshot=before, resource_costs=value,
+        snapshot_revision=result["snapshot_revision"], query_date_raw=result["date_raw"],
+    )
+    if RITE_OBSERVATIONS_WIRE_KEY in result:
+        response[RITE_OBSERVATIONS_FACTS_KEY] = observations
     if result.get(PRICE_SOURCE_WIRE_KEY) is not None:
         response[PRICE_SOURCE_FACTS_KEY] = decode_religion_creation_price_source_12004(
             result[PRICE_SOURCE_WIRE_KEY], snapshot=before, resource_costs=value,
             snapshot_revision=result["snapshot_revision"], query_date_raw=result["date_raw"],
+            rite_dynamic_observations=observations,
         )
     return response
