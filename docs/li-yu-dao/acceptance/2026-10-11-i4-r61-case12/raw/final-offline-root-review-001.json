@@ -1,0 +1,42 @@
+{
+  "at_utc": "2026-10-11T12:53:53.292268+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0061",
+  "screen_task": "common-acceptance-12004-20261010-a23",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\final-offline-002\\probe-1\\steam-moved.png",
+    "bytes": 900875,
+    "sha256": "ca7b54c30ade357b7c42a2bff6e5a08ba6f8ac14ea69d8386829aca57869f6f3"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\final-offline-002\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1279,
+    "sha256": "bf70a0fd6b5814e4460164fbab27d7090d5aaf98b2bca5edd7ec3ed6e7d6590c"
+  },
+  "visual_observation": "ROOT directly viewed the fresh moved original Steam image; the lower status bar visibly reads 离线模式. CK3 is absent. Original business failure remains RED.",
+  "ROOT_reviewed_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-final-close-input-002.json",
+    "bytes": 2738,
+    "sha256": "daf3a6e7f9ffdaddc2b2d5330c44ed2c6853a20791713c1ad52a683538076805"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\native-report.json",
+    "bytes": 2301861,
+    "sha256": "297ceffaf84db609fc1bb76999c623acbf790f1a2bb396423559cf79a345b780"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\native-cleanup-projection.actual.json",
+    "bytes": 26112,
+    "sha256": "2c7af35010e8aaafa29b567417aef2348be85fb1c78de4edb178935bb6e62c30"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "a8c82f6b23cf8c154dbb8f36bb7c29637f05775060f290fab731c527c2b97118"
+  },
+  "normal_close_result": null,
+  "normal_close_qualified": false,
+  "business_pass": false
+}

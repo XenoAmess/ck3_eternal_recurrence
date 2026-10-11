@@ -232,6 +232,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_queue_inprocess.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_queue_failure_shutdown.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_readonly_observers.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_local_launch.py
@@ -263,6 +265,8 @@ jobs:
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_pause_same_owner_diagnostic.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_running_date_convergence.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_day_result.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

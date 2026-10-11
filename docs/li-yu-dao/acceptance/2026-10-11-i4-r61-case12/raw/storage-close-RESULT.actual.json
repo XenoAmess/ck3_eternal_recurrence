@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case12-closure-sourceonly-20261011-001\\with_actual_prepared_seed_key.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261011-021\\ROOT-CLOSE.actual-inputs-003.json",
+    "--sha256",
+    "3be0edbc0101695be336a745c32249754bf03d9eb811229954dac721e284d911"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T13:16:38.623904+00:00",
+  "finished_at_utc": "2026-10-11T13:16:39.955906+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case12-close-command-20261011-004\\stdout.log",
+    "bytes": 379,
+    "sha256": "c783579743ae104198b0854985db29464309c988bceef06e4c97b30152bb28b1"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case12-close-command-20261011-004\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "schema": "ck3-mod-acceptance-reviewed-python-cache-compatibility-v1",
+  "seed": {
+    "path": "C:\\workspace\\ck3-common-runtime\\graphics-seeds\\lyd-r54-20261011-001\\manifest.json",
+    "bytes": 687704,
+    "sha256": "a1fab6e0e92e4a8ea394d6e85e365f5c6be619e87d4f2c16b7ed9d2623cebe06"
+  },
+  "source_origin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\source14-case6-cache-root-sourceonly-20261011-001\\ORIGIN.candidate.json",
+    "bytes": 2144,
+    "sha256": "549677144c5a972e86441c9acdfa43cd6cd25c8ed8db1886ccd7ea40988b8e11"
+  },
+  "source_key_sha256": "dc94eeb8e96b844867f4ff2a003bc90ef12ac6c914282bcedfd7ca9bc16a61fc",
+  "target_key_sha256": "3286855c0c4011b19c5f5f6adc1430856e33bff07596fde6f82d39528ac92e69",
+  "source_delta": {
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "before": {
+        "bytes": 256993,
+        "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+      },
+      "after": {
+        "bytes": 277329,
+        "sha256": "09b3fff2c73ad868b06c41da4e7e879d5c82f80f5167a7d551fde0f3b85ec9e0"
+      }
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "before": {
+        "bytes": 208175,
+        "sha256": "fe4bb75e83b8130e53be403c67a40fd67e43ceb2992fa828ff3efd493d0c4aa5"
+      },
+      "after": {
+        "bytes": 212325,
+        "sha256": "dd4de404b38d38554f84e932e1566ac92db0b08617de301ff608b1aeeae311e4"
+      }
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": {
+      "before": {
+        "bytes": 705275,
+        "sha256": "1f7fc89e83794bfd49c72b69e5c88fdd0aa8f0643f77fa8da23e04da3d1fb6bb"
+      },
+      "after": {
+        "bytes": 706734,
+        "sha256": "410320ccd6757ca7be54111296333cc36c215ca5317d7385219a67b1b23399e3"
+      }
+    },
+    "ck3_autonomous_player/tests/unit/fixtures/campaign_pause_same_owner_guard_before_diagnostic.py": {
+      "before": null,
+      "after": {
+        "bytes": 6500,
+        "sha256": "fec75bf147a02ab4a21ac17928f11956ed2b50d7d95a344c79830ebcf5179668"
+      }
+    },
+    "ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py": {
+      "before": null,
+      "after": {
+        "bytes": 11214,
+        "sha256": "bf9d1bc7dcac799238dfd9ae2a2b463367b8158ed80dee83bf0407ac8295d392"
+      }
+    },
+    "ck3_autonomous_player/tests/unit/test_campaign_pause_same_owner_diagnostic.py": {
+      "before": null,
+      "after": {
+        "bytes": 5690,
+        "sha256": "c7791c093dd8a95045b01a8dbb8df6c58eaf7b4a42643480c4a98d8b095e9aea"
+      }
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "before": {
+        "bytes": 40205,
+        "sha256": "39fa04f92ba0cd67456d4196c6bf9bb068c504bd45b535e2066b774bbd2deb2e"
+      },
+      "after": {
+        "bytes": 40606,
+        "sha256": "43a84141b29031a7d3dc0194cb5cf386a73d42ed83ec36b84c85a5a21377550a"
+      }
+    },
+    "tools/ck3_mod_acceptance_cases/lyd_i4_natural_expiry_adapter.py": {
+      "before": {
+        "bytes": 26638,
+        "sha256": "59d7c74e919898573d6f8270b6a61c16326e44787c6f6c193365c994fc9039f3"
+      },
+      "after": {
+        "bytes": 26988,
+        "sha256": "68564d4a6d3577e7bdce0a41ff464ab51298c13ee0fa14496ad2bb7c15a29bf5"
+      }
+    },
+    "tools/ck3_mod_acceptance_graphics_cache.py": {
+      "before": {
+        "bytes": 33562,
+        "sha256": "57fe9a32b638ca12098cb24cb930f0563f311cd07d4527b416363cd9555e5c36"
+      },
+      "after": {
+        "bytes": 39545,
+        "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+      }
+    },
+    "tools/ck3_mod_acceptance_queue.py": {
+      "before": {
+        "bytes": 11098,
+        "sha256": "692853d3716857570f0b9b5f97f5c04749c9bdfdd09a71ac89cc5e254abd74d9"
+      },
+      "after": {
+        "bytes": 11846,
+        "sha256": "3e004a37c89f8bbc4a568efb25398daf6b3c40228d664d24b64d33f1a93817af"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_campaign_event.py": {
+      "before": {
+        "bytes": 11342,
+        "sha256": "6f619f539bed1221cea95e7baa0278de6ad5881b916db614a4344390859c95fc"
+      },
+      "after": {
+        "bytes": 11427,
+        "sha256": "e46e287105dd2f1352d8b6d97b5ae0e21075584673e354d34b805b28c469b984"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_day_result.py": {
+      "before": {
+        "bytes": 7224,
+        "sha256": "88f9ff1ea94ce9a97105ec5dfd68d83d5e8b0bf7499ca5288e30193716b1e266"
+      },
+      "after": {
+        "bytes": 7309,
+        "sha256": "0b4b4669e22cf7072b39d4bfc65082e3925f3d564700f24a68edb6488ea05634"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_grant_title_picker.py": {
+      "before": null,
+      "after": {
+        "bytes": 20665,
+        "sha256": "89571c6fcfac6c1e4a73e9b33da5d3feca548feeb8d427020b7e9b0bf19daf40"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_i4_batch_002.py": {
+      "before": {
+        "bytes": 6696,
+        "sha256": "2e737ef55f3d44ee5a2b0f0fccc4e587d2de3fbe83589fbf007cee22025f28bb"
+      },
+      "after": {
+        "bytes": 6873,
+        "sha256": "31d86a988a6fdba9f49f54703ed8992709fb0801b5c0e2d8f7c6485acb232d75"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_i4_day_frame.py": {
+      "before": {
+        "bytes": 7260,
+        "sha256": "9cee774149a6415a1639e3bdbab24baca80499c2bfcb1775a89105e07d031d3e"
+      },
+      "after": {
+        "bytes": 7695,
+        "sha256": "433dbebdf719fe178e21e0659d4082a60de1de13731559f7f19235a46737da92"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_pause.py": {
+      "before": {
+        "bytes": 10680,
+        "sha256": "2a1b963b02298bd4ea6bd876b113ed23f7e8b3bb1d544699fc1982cbec80883d"
+      },
+      "after": {
+        "bytes": 10765,
+        "sha256": "93080cd5ae5938144aec10edd80d6bb38a9b3271e601fb14b75e699161b0ed7c"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_preaction.py": {
+      "before": {
+        "bytes": 13247,
+        "sha256": "05b84d62e03c93d293db8750a0c50ce70f86064b84ccbc545023e96f6c9f123e"
+      },
+      "after": {
+        "bytes": 13332,
+        "sha256": "6e9b962044e7331b76cd9749a36b23becf2bfc473d8df9db764a8e67e8bba7e7"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_previous_row_readonly.py": {
+      "before": null,
+      "after": {
+        "bytes": 13044,
+        "sha256": "85169e871c43c1430c924c8405f21e50d07c4e43eed23a89067c253248e1cb68"
+      }
+    },
+    "tools/test_ck3_mod_acceptance_reviewed_python_cache_compatibility.py": {
+      "before": null,
+      "after": {
+        "bytes": 8577,
+        "sha256": "284842f26b7f1b192eb2791c4e9e35a279aeede93e0a4e2cf1818268665aa7c7"
+      }
+    }
+  },
+  "native_source_delta": {
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "before": {
+        "bytes": 256993,
+        "sha256": "d0e2c7a1d9d0febd7c8d9e1a2c111c2dc2d37cca274c63228d113d1b5867156e"
+      },
+      "after": {
+        "bytes": 277329,
+        "sha256": "09b3fff2c73ad868b06c41da4e7e879d5c82f80f5167a7d551fde0f3b85ec9e0"
+      }
+    }
+  },
+  "reviewer": "/root",
+  "direct_reviewed": true,
+  "reason": "Reviewed complete Python delta: grant registration, readonly batching, AST tests, cache compatibility bridge and startup/pause diagnostics; engine, native and graphics/profile inputs retained",
+  "qualification": "DERIVATIVE_GRAPHICS_CANDIDATE_NOT_LIVE_NOT_PRODUCT_PASS",
+  "startup_qualified": false,
+  "business_pass": false,
+  "source_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\manifest.json",
+    "bytes": 25159,
+    "sha256": "69312f885d1a234ee059934f283e6a774b291cdbbd85b0d9d8a5da1359f9574f"
+  },
+  "source_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\source-index.json",
+    "bytes": 1793164,
+    "sha256": "87e8b019f9be8af623637407c0d811f395d3b68cda2bbeed639dabfb9b2701e0"
+  },
+  "source_native_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-013\\native-source-index.json",
+    "bytes": 1019737,
+    "sha256": "37d122346f1a1d76eb87bdc8e6db6af2dc4d8de77970a7c6b6d95d2981387397"
+  },
+  "target_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\manifest.json",
+    "bytes": 102955,
+    "sha256": "0b68ba7600a0bfa2b2da8dee09f6f8c890bfc58b00397e0f81f00fa644f6fed1"
+  },
+  "target_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\source-index.json",
+    "bytes": 1794310,
+    "sha256": "3db2e69f53567e25ad73b2b7606f34019f3f8346340e6595c0e896e7410b3f23"
+  },
+  "target_native_index": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\native-source-index.json",
+    "bytes": 1019737,
+    "sha256": "9c28b7cb7ee7f9d4d44cbdb330d62aa73559e3fe1f9c981e0fed364e228b0777"
+  }
+}

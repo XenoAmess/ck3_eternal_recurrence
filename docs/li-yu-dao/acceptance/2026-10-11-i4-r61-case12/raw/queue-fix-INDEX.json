@@ -1,0 +1,95 @@
+{
+  "schema": "lyd.queue-failure-shutdown-source-only-index.v1",
+  "status": "SOURCE_ONLY_READY_FOR_ROOT_REVIEW",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/ADMIN-REQUEST.bound.json",
+      "bytes": 3094,
+      "sha256": "3e90c8a19b9052a983c629ff619d473f21fae67ecdf045eeb1debf0fb0d19408"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/admin_failure_finish.py",
+      "bytes": 10106,
+      "sha256": "d72c5d1053e0ef6d2219481f9673b9fdfd6e5b251f5b17b0f4af4656c613d667"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/BASELINE.json",
+      "bytes": 521,
+      "sha256": "3159c5ab3e3a45831664c1c286afd002046f743ebb9ee70c1498f786e0716aa1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/build_candidate.py",
+      "bytes": 3381,
+      "sha256": "60ea342f9311170f1c6fd2466062d1bddabd825afa1d5beb0a5b8f2a24c9086b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/ck3_mod_acceptance_queue.py",
+      "bytes": 12365,
+      "sha256": "b5a5b758bdb1de8fd2f9fbb5453f032dca5f1372d1cdd93c50103aaa8ffe9802"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/PATCH.diff",
+      "bytes": 2689,
+      "sha256": "e60b5446eb6b3e781ad0e6423b971f8d24e1b7d2fdd7c48e8a9433552f70d1dc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/RECOVERY-PLAN.json",
+      "bytes": 304,
+      "sha256": "3b7151141e4b2a028fdecc7d2310aa07fac769b43860fb66b04d3e43a01159e4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/REPORT.md",
+      "bytes": 2770,
+      "sha256": "3a38d58b00d08c26117e7078c3de858be1bf9b0ba86a24575d8059ac459cd5e0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/ROOT-ARGV.json",
+      "bytes": 698,
+      "sha256": "86fa2ad865e660e86ab19d45ce88be2a5b416de9ce3bc7de4e1cb872ee061c2f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/run_focused.py",
+      "bytes": 1461,
+      "sha256": "fc0168543264addc617a0a7d6622b1ddc4b804a006de4f3d6138cb82e4044520"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/seal_admin.py",
+      "bytes": 3881,
+      "sha256": "a3315debb2117c8349a61b9c3ec1a1abd981699ca3933157004d82487747ba72"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/TEST-RESULT.actual.json",
+      "bytes": 1384,
+      "sha256": "a67fdd99d36343abc53721c78066c2913db0883c7198fa579ecb444f094a3a79"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/TEST.stderr.log",
+      "bytes": 863,
+      "sha256": "c1e21198afc6cc544a2b8948c15d4bde6d67bfb90703301e02f8e990348e79ab"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/TEST.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/test_ck3_mod_acceptance_queue_failure_shutdown.py",
+      "bytes": 7825,
+      "sha256": "9931b97fe6992eca8b8e9b057eded30cd816689fc54d8c14a234f0f432d1f282"
+    }
+  ],
+  "test_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/TEST-RESULT.actual.json",
+    "bytes": 1384,
+    "sha256": "a67fdd99d36343abc53721c78066c2913db0883c7198fa579ecb444f094a3a79"
+  },
+  "admin_request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/ADMIN-REQUEST.bound.json",
+    "bytes": 3094,
+    "sha256": "3e90c8a19b9052a983c629ff619d473f21fae67ecdf045eeb1debf0fb0d19408"
+  },
+  "admin_executed": false,
+  "native_runtime_report_read_by_author": false,
+  "business_credit": false,
+  "ttl_renewed": false
+}

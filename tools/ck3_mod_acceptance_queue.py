@@ -35,19 +35,23 @@ def stable_report(path):
             time.sleep(.05)
 
 
-def native_zero_proof(frozen, report):
+def native_zero_proof(frozen, report, *, failure_shutdown=False):
     """Use the exact shared host predicate; never infer exit from process absence."""
     argv = frozen["argv"]
     host = Path(argv[argv.index("--agent-source-root") - 1]).resolve()
     check_pin({**frozen["files"][str(host)], "path": str(host)})
     tree = ast.parse(host.read_text(encoding="utf-8-sig"))
+    require(type(failure_shutdown) is bool, "failure_shutdown must be a literal boolean")
+    predicate = "finished_native_failure_shutdown_proof" if failure_shutdown else "finished_native_exit_zero_proof"
     names = {"finished_native_process_exit_zero_proof", "finished_native_exit_zero_proof"}
+    if failure_shutdown:
+        names.add(predicate)
     nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in names]
     require(len(nodes) == len(names) and {node.name for node in nodes} == names,
             "Selected shared host has no exact native-zero predicate dependency closure")
     namespace = {"datetime": datetime, "re": re, "copy": copy}
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(host), "exec"), namespace)
-    return namespace["finished_native_exit_zero_proof"](report, report.get("managed_session_done") is True, None)
+    return namespace[predicate](report, report.get("managed_session_done") is True, None)
 
 
 def validate_steps(steps, report):
@@ -99,6 +103,8 @@ def validate_steps(steps, report):
                     "One original natural day per shared queued step required")
         else:
             require(len(steps) == 1, "Native-zero finish_hold must be the only submitted step")
+            require(type(step.get("failure_shutdown", False)) is bool,
+                    "failure_shutdown must be a literal boolean")
     return ids
 
 
@@ -158,7 +164,9 @@ def enqueue(live, plan, name, *, deadline=None):
     require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing else 90),
             "Original host normal Quit reserve reached")
     if finishing:
-        require(native_zero_proof(frozen, report) is not None, "Original shared native-zero predicate rejects finish_hold")
+        failure_shutdown = steps[0].get("failure_shutdown") is True
+        require(native_zero_proof(frozen, report, failure_shutdown=failure_shutdown) is not None,
+                "Original shared native-zero predicate rejects finish_hold")
     else:
         require(not report.get("error") and not report.get("cleanup_ok"), "Original host failed or completed cleanup")
     argv = frozen["argv"]

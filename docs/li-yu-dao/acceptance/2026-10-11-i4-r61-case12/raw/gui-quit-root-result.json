@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0061",
+  "reviewer": "/root",
+  "pid": 10432,
+  "create_time": 1791720433.1207829,
+  "original_hold_deadline": 1791727963.821447,
+  "quit_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\case-output\\normal-quit-awaiting.json",
+    "bytes": 700,
+    "sha256": "a7fad3eca1b756766cadd51b114c09b47ab2e05cb6e452df20b15df617e16d94"
+  },
+  "normal_gui_quit": true,
+  "direct_reviewed": true,
+  "review_method": "explicit operator direct image review; no automatic image-content judgment",
+  "autosave_unchecked_observed": true,
+  "autosave_unchecked_screenshot": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-unchecked-autosave-001.png",
+    "bytes": 1569235,
+    "sha256": "de90f8e5826a0e7c7dcd91196fd245985b2e34380041f87aed471bdde2b99e44"
+  },
+  "final_click": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-quit-desktop-after-001.png.json",
+    "bytes": 1615,
+    "sha256": "54fac5ca52274cc90c95eb6415f5e043719bc34d5687f48e91928be16f2e43df"
+  },
+  "after_click_screenshot": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-quit-desktop-after-001.png",
+    "bytes": 1579770,
+    "sha256": "3ccd43d90808b11e92264f847f98c977b51c2ecbd9bdb3ec7909b63276724a5e"
+  },
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-unchecked-autosave-001.png",
+      "bytes": 1569235,
+      "sha256": "de90f8e5826a0e7c7dcd91196fd245985b2e34380041f87aed471bdde2b99e44"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-quit-desktop-after-001.png.json",
+      "bytes": 1615,
+      "sha256": "54fac5ca52274cc90c95eb6415f5e043719bc34d5687f48e91928be16f2e43df"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-quit-desktop-after-001.png",
+      "bytes": 1579770,
+      "sha256": "3ccd43d90808b11e92264f847f98c977b51c2ecbd9bdb3ec7909b63276724a5e"
+    }
+  ],
+  "actual_os0_proven": false,
+  "actual_native0_proven": false,
+  "process_exit_claimed": false,
+  "business_pass": false
+}

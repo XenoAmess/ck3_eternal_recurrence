@@ -1,0 +1,106 @@
+{
+  "schema": "lyd.common-source18.permanent-index.v1",
+  "status": "READY_FOR_ROOT_IMPORT",
+  "facts": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/FACTS.actual.json",
+    "bytes": 5603,
+    "sha256": "5d8e1eed47de6221e70bda6a5ef201f0d273792b1360879886aa109453acaae5"
+  },
+  "raw": [
+    {
+      "name": "materialize",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source18-materialize-command-20261011-001/RESULT.actual.json",
+        "bytes": 1884,
+        "sha256": "e7ba2adf720ed885537a90ddbfc9a5a2b2ef4b4c7a92777e917e3a8f9a58d20c"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/materialize-RESULT.actual.json",
+        "bytes": 1884,
+        "sha256": "e7ba2adf720ed885537a90ddbfc9a5a2b2ef4b4c7a92777e917e3a8f9a58d20c"
+      }
+    },
+    {
+      "name": "bind",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source18-bind-command-20261011-001/RESULT.actual.json",
+        "bytes": 1735,
+        "sha256": "c248b4c33c69d24be6094098e50bd8dd83376718bcb4253ea67f0ac2f618f77b"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/bind-RESULT.actual.json",
+        "bytes": 1735,
+        "sha256": "c248b4c33c69d24be6094098e50bd8dd83376718bcb4253ea67f0ac2f618f77b"
+      }
+    },
+    {
+      "name": "cache-review",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source18-cache-review-command-20261011-001/RESULT.actual.json",
+        "bytes": 1367,
+        "sha256": "f88001f5f604423c150e5ae1b62fa02c1de5b0eabebcf06e11015077501afac1"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/cache-review-RESULT.actual.json",
+        "bytes": 1367,
+        "sha256": "f88001f5f604423c150e5ae1b62fa02c1de5b0eabebcf06e11015077501afac1"
+      }
+    },
+    {
+      "name": "close",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source18-close-command-20261011-001/RESULT.actual.json",
+        "bytes": 4562,
+        "sha256": "d375757ca572c6977af760a4ffcd8c5f3d4f372758cf68ddf43782438ab9b1f1"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/close-RESULT.actual.json",
+        "bytes": 4562,
+        "sha256": "d375757ca572c6977af760a4ffcd8c5f3d4f372758cf68ddf43782438ab9b1f1"
+      }
+    },
+    {
+      "name": "close-stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/common-source18-close-command-20261011-001/stdout.log",
+        "bytes": 784,
+        "sha256": "0222e4c046957900fd87769bb36846045293dd03bd24eefadf1decd9e94b3203"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/close-stdout.log",
+        "bytes": 784,
+        "sha256": "0222e4c046957900fd87769bb36846045293dd03bd24eefadf1decd9e94b3203"
+      }
+    },
+    {
+      "name": "closed",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-020/CLOSED-RESERVATION.actual.json",
+        "bytes": 8403,
+        "sha256": "ed3de25c44964406d4f936928dae01dfdb49f14bbedaeedda9899ca9e4be47b8"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/closed.actual.json",
+        "bytes": 8403,
+        "sha256": "ed3de25c44964406d4f936928dae01dfdb49f14bbedaeedda9899ca9e4be47b8"
+      }
+    },
+    {
+      "name": "review",
+      "original": {
+        "path": "C:/workspace/ck3-common-runtime/20261011-018/REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+        "bytes": 8619,
+        "sha256": "672b0494725f68dfc4e5771bebb59b8a427509beb7fe5615d2b0eecf43ab325b"
+      },
+      "copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/source18-permanent-candidate-20261011-001/raw/review.actual.json",
+        "bytes": 8619,
+        "sha256": "672b0494725f68dfc4e5771bebb59b8a427509beb7fe5615d2b0eecf43ab325b"
+      }
+    }
+  ],
+  "old_closed_draft_reference_only": "C:/workspace/ck3_lyd_runtime_20261004/source18-r61-document-append-sourceonly-20261011-001/INDEX.source-only.json",
+  "old_draft_not_modified": true,
+  "actual_READBACK_tool_chunk": "e4cfd4",
+  "MAIN_import_executed": false
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/admin_failure_finish.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/ADMIN-REQUEST.bound.json",
+    "--sha256",
+    "3e90c8a19b9052a983c629ff619d473f21fae67ecdf045eeb1debf0fb0d19408",
+    "--execute"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T12:46:07.613394+00:00",
+  "finished_at_utc": "2026-10-11T12:46:12.926007+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-failure-exit-recovery-command-001\\stdout.log",
+    "bytes": 2408,
+    "sha256": "b0c3e90fdb76a4a9326d6596af15269ec0935404637f89281a6daf579d6bd9be"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0061\\root-failure-exit-recovery-command-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

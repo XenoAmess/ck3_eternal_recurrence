@@ -1,0 +1,10 @@
+test_default_and_false_preserve_error_rejection_before_claim (__main__.FailureShutdownQueue.test_default_and_false_preserve_error_rejection_before_claim) ... ok
+test_explicit_failure_uses_real_host_proof_and_once_publication (__main__.FailureShutdownQueue.test_explicit_failure_uses_real_host_proof_and_once_publication) ... ok
+test_failure_requires_thread_and_native_cleanup_exit_zero (__main__.FailureShutdownQueue.test_failure_requires_thread_and_native_cleanup_exit_zero) ... ok
+test_legacy_normal_exit_route_remains_accepted (__main__.FailureShutdownQueue.test_legacy_normal_exit_route_remains_accepted) ... ok
+test_nonliteral_failure_flags_reject_before_claim (__main__.FailureShutdownQueue.test_nonliteral_failure_flags_reject_before_claim) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.542s
+
+OK

@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case12-public-sourceonly-20261011-001\\queue-failure-shutdown-sourceonly-001\\test_ck3_mod_acceptance_queue_failure_shutdown.py",
+    "--queue",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case12-public-sourceonly-20261011-001\\queue-failure-shutdown-sourceonly-001\\ck3_mod_acceptance_queue.py",
+    "--host",
+    "C:/csr18/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "--tools",
+    "C:/csr18/tools"
+  ],
+  "started_at_utc": "2026-10-11T12:42:06.668023+00:00",
+  "finished_at_utc": "2026-10-11T12:42:07.540577+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/TEST.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-case12-public-sourceonly-20261011-001/queue-failure-shutdown-sourceonly-001/TEST.stderr.log",
+    "bytes": 863,
+    "sha256": "c1e21198afc6cc544a2b8948c15d4bde6d67bfb90703301e02f8e990348e79ab"
+  },
+  "live_actions": false,
+  "native_runtime_report_read": false
+}

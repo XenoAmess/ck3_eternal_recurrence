@@ -1,0 +1,134 @@
+{
+  "schema": "lyd.common-source18.permanent-compact-facts.v1",
+  "status": "SOURCE_READY_NO_LIVE_CREDIT",
+  "source_identity": {
+    "derived": "1161228d52f1cc092a3c2d202a302ae49c01cc27",
+    "parent_source17": "b12c466f6d308a745275a0d0911aededca3840e4",
+    "published_code": "2a82239aa7fede4b0667e411bcd66c6193ddd1ed",
+    "published_parent": "712b17b800414624d1dd038fda4d5d15ad2904fc",
+    "ROOT_selected_MAIN": "2ea42cc522a9e53c1d67ab9f611b689243f2e1a1",
+    "source_root": "C:\\csr18",
+    "metadata_root": "C:\\workspace\\ck3-common-runtime\\20261011-018",
+    "full_master_projection": false
+  },
+  "selected_host": {
+    "path": "C:\\csr18\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 277329,
+    "sha256": "09b3fff2c73ad868b06c41da4e7e879d5c82f80f5167a7d551fde0f3b85ec9e0"
+  },
+  "source_ready": true,
+  "native_build_source_commit": "05717072b70d4925f10b3d523b6663d2db89d791",
+  "native_compiled_inputs_unchanged": true,
+  "native_build_performed": false,
+  "native_entries_compared": 4868,
+  "native_entries_equal_except_host": 4867,
+  "original_registration_inherited": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source14-shared-registration-qualification-20261011-001\\RESULT.actual.json",
+    "bytes": 8159,
+    "sha256": "0468a3b276c79b891e4f5d1ccbba5888fda25d65a2ec8d6984f3de907c2238e6"
+  },
+  "old_tests_reexecuted": false,
+  "stock_grant_title_picker": false,
+  "manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\manifest.json",
+    "bytes": 102955,
+    "sha256": "0b68ba7600a0bfa2b2da8dee09f6f8c890bfc58b00397e0f81f00fa644f6fed1"
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\runtime.local.json",
+    "bytes": 2033,
+    "sha256": "77d76998a5cece426807901527305ad3e4a444fc511eb752c5c0e94b9f91b993"
+  },
+  "large_indexes_reference_only": {
+    "source": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\source-index.json",
+      "bytes": 1794310,
+      "sha256": "3db2e69f53567e25ad73b2b7606f34019f3f8346340e6595c0e896e7410b3f23"
+    },
+    "native": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261011-018\\native-source-index.json",
+      "bytes": 1019737,
+      "sha256": "9c28b7cb7ee7f9d4d44cbdb330d62aa73559e3fe1f9c981e0fed364e228b0777"
+    },
+    "paths": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\common-source18-successor-preparation-20261011-001\\PATHS-MANIFEST.actual.json",
+      "bytes": 15353,
+      "sha256": "62700259c0753e24b21ea798f605f8c3af540658e39683bb2a23320124540eac"
+    }
+  },
+  "original_materialization": {
+    "path": "C:/workspace/ck3-common-runtime/20261011-018/PYTHON-SUCCESSOR.actual.json",
+    "bytes": 17316,
+    "sha256": "67eb1d2fbe281489785ec8abcc7a2f6827ed49d11777c3ceccc840100408bb7d"
+  },
+  "original_binding": {
+    "path": "C:/workspace/ck3-common-runtime/20261011-018/SOURCE18-BIND.actual.json",
+    "bytes": 15127,
+    "sha256": "4ec3999e3eaecab5f0d7afcc34af187a3abce6135090f7daade94d6b5eaa957b"
+  },
+  "cache_compatibility_review": {
+    "original": {
+      "path": "C:/workspace/ck3-common-runtime/20261011-018/REVIEWED-PYTHON-CACHE-COMPATIBILITY.actual.json",
+      "bytes": 8619,
+      "sha256": "672b0494725f68dfc4e5771bebb59b8a427509beb7fe5615d2b0eecf43ab325b"
+    },
+    "direct_reviewed": true,
+    "qualification": "DERIVATIVE_GRAPHICS_CANDIDATE_NOT_LIVE_NOT_PRODUCT_PASS",
+    "startup_qualified": false,
+    "business_pass": false
+  },
+  "storage020": {
+    "original_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261011-020/CLOSED-RESERVATION.actual.json",
+      "bytes": 8403,
+      "sha256": "ed3de25c44964406d4f936928dae01dfdb49f14bbedaeedda9899ca9e4be47b8"
+    },
+    "known_retained_bytes": 160049472,
+    "closing_upper_bytes": 1048576,
+    "carry": 134674767582,
+    "future_reserved_bytes": 0,
+    "new_credit_bytes": 0,
+    "retention": {
+      "source_review_at_utc": "2026-10-17T19:32:25.249949+00:00",
+      "raw_review_at_utc": "2026-11-10T11:44:34.883043+00:00",
+      "compact_review_at_utc": "2027-04-09T11:44:34.883043+00:00",
+      "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+      "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+      "quota_override_unchanged": {
+        "owner": "XenoAmess / ROOT",
+        "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+        "max_project_bytes": 137438953472,
+        "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+        "auto_renew": false,
+        "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+      },
+      "automatic_renewal": false,
+      "automatic_deletion": false
+    }
+  },
+  "actual_command_terminal": {
+    "materialize": {
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-11T11:45:35.060295+00:00"
+    },
+    "bind": {
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-11T11:46:23.469285+00:00"
+    },
+    "cache-review": {
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-11T11:47:01.042531+00:00"
+    },
+    "close": {
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-11T11:49:34.667401+00:00"
+    }
+  },
+  "phase_i_percent_estimate": 75,
+  "product_status": "NOT_GREEN",
+  "new_native_or_live_credit": false,
+  "business_pass": false,
+  "MAIN_writes_by_this_author": 0,
+  "native_SAVE_cache_body_reads": 0,
+  "tests_rerun": 0
+}

@@ -1562,6 +1562,41 @@ def _campaign_pause_pending_ready_successor(source: dict[str, object], snapshot:
     return current
 
 
+def _campaign_pending_running_date(source: dict[str, object], snapshot: dict[str, object],
+                                   error: RuntimeError) -> dict[str, object]:
+    """Keep the exact one-day running publication gap unqualified, never repair its fields."""
+    detail = getattr(error, "ck3_campaign_pause_frame_diagnostic", None)
+    conditions = detail.get("conditions") if isinstance(detail, dict) else None
+    if (str(error) != "campaign pause readback lost the complete same-owner frame"
+            or not isinstance(detail, dict)
+            or detail.get("schema") != "ck3-campaign-pause-same-owner-frame-diagnostic-v1"
+            or not isinstance(conditions, list) or len(conditions) != 32
+            or any(not isinstance(row, dict) or row.get("index") != index
+                   or type(row.get("failed")) is not bool
+                   for index, row in enumerate(conditions))
+            or [row["index"] for row in conditions if row["failed"]] != [31]
+            or conditions[31].get("source") != 'mailbox["date_raw"] != snapshot["date_raw"]'):
+        raise error
+    diagnostics = snapshot["diagnostics"]
+    mailbox = diagnostics["last_heartbeat"]["main_thread_query_mailbox_v1"]
+    if (snapshot["paused"] is not False or snapshot.get("active_event") is not None
+            or mailbox.get("ready") is not False or mailbox.get("paused") is not False
+            or mailbox.get("date_raw") != snapshot["date_raw"] + 24
+            or not 1 <= mailbox["date_raw"] <= 2**31 - 1):
+        raise error
+    current = {"identity": (diagnostics["bridge_pid"], diagnostics["connection_generation"],
+                            snapshot["played_character"]["character_id"], snapshot["local_player_id"], snapshot["speed"],
+                            diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
+               "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
+               "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"],
+               "pause_transition": False, "pending_mailbox_date": mailbox["date_raw"]}
+    if (current["identity"] != source["identity"] or current["rejections"] != source["rejections"]
+            or any(current[key] < source[key] for key in ("date", "revision", "native_revision", "pump"))
+            or current["pending_mailbox_date"] < source.get("pending_mailbox_date", source["date"])):
+        raise error
+    return current
+
+
 class PlanClient:
     def __init__(self, session: object, args: argparse.Namespace, report: dict[str, object], write: object) -> None:
         self.session, self.args, self.report, self.write = session, args, report, write
@@ -1915,6 +1950,47 @@ class PlanClient:
             result.update(requested_interval_complete=True, event_boundary=None)
         return result
 
+    async def wait_campaign_running_successor(self, source: dict[str, object], bounded: object,
+                                              remaining: object, *, allow_actor_change: bool = False) -> tuple:
+        """Only observe a sole date-publication gap under the caller's original deadline."""
+        previous, pending_error, evidence = source, None, None
+        try:
+            while True:
+                current = await bounded(self.fresh)
+                instance = campaign_event_instance(current)
+                try:
+                    observed = require_campaign_pause_successor(previous, current, allow_running=True,
+                        allowed_event_instance=instance, allow_actor_change=allow_actor_change,
+                        diagnostic_callsite="advance_campaign_event_boundary.running")
+                except RuntimeError as error:
+                    previous = _campaign_pending_running_date(previous, current, error)
+                    if evidence is None:
+                        pending_error = error
+                        evidence = {"source": "campaign_running_date_publication_observation_v1",
+                            "started_at": now(), "status": "WAITING_FOR_COMPLETE_DATE_MATCH",
+                            "original_rejection": error.ck3_campaign_pause_frame_diagnostic,
+                            "pending_observation_count": 0, "business_credit": False,
+                            "pause_or_resume_submitted_by_observer": False}
+                        self.report.setdefault("campaign_running_date_readbacks", []).append(evidence)
+                    evidence.update(pending_observation_count=evidence["pending_observation_count"] + 1,
+                        last_unqualified_snapshot_id=current["snapshot_id"],
+                        last_unqualified_date_raw=previous["date"],
+                        last_observed_mailbox_date_raw=previous["pending_mailbox_date"])
+                    await asyncio.sleep(min(self.args.poll_interval, remaining()))
+                    continue
+                if pending_error is not None:
+                    # Even a coherent older pair cannot erase an observed later owner date.
+                    if observed["date"] < previous["pending_mailbox_date"]:
+                        raise pending_error
+                    evidence.update(status="COMPLETE_ORIGINAL_GUARDS_OBSERVED", finished_at=now(),
+                        ending_snapshot_id=current["snapshot_id"], ending_date_raw=observed["date"])
+                return current, instance, observed
+        except BaseException as error:
+            if evidence is not None:
+                evidence.update(status="FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED", finished_at=now(),
+                    error_type=type(error).__name__, error=str(error))
+            raise
+
     async def advance_campaign_event_boundary(self, step: dict[str, object]) -> dict[str, object]:
         """Observe one actual campaign day or event; never manufacture an episode."""
         if step.get("allow_event_boundary") is not True or type(step.get("days", 1)) is not int or step.get("days", 1) != 1:
@@ -2038,11 +2114,8 @@ class PlanClient:
                 or resume_ack.get("accepted") is not True or resume_ack.get("status") not in ("submitted", "already_running")):
             raise RuntimeError("campaign event-boundary advance received an unadmitted resume ACK")
         while True:
-            current = await bounded(self.fresh)
-            instance = campaign_event_instance(current)
-            observed = require_campaign_pause_successor(source, current, allow_running=True,
-                allowed_event_instance=instance, allow_actor_change=allow_actor_change and not actor_changed,
-                diagnostic_callsite="advance_campaign_event_boundary.running")
+            current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+                allow_actor_change=allow_actor_change and not actor_changed)
             if current["played_character"].get("source") != "native":
                 raise ValueError("campaign event-boundary player is not native")
             actor_changed = actor_changed or observed["identity"][2] != source["identity"][2]
