@@ -3633,3 +3633,29 @@ Keep the bound SDK checkout unchanged until the keeper/CAS is released; native
 builds in their separate source root may still run in parallel. After a real
 cleanup failure, release only the retained exact task through the existing CAS
 endpoint. No source rollback or registry-file edit was needed in this attempt.
+
+
+## Steam capture result and foreground cleanup are separate outcomes
+
+Observed in R99, recorded 2026-10-11T04:21:56.018331+00:00: `capture_offline.py:36` raised
+`SetForegroundWindow: No error message is available` in its final foreground
+restore, after `steam_offline_fresh_frame.capture` had written the fresh frame and
+restored the Steam rectangle. The wrapper exit1 and original exception remain;
+the old foreground HWND was not retained and its final state is unknown.
+Root inspected the already-captured image once: the main pane and bottom bar
+explicitly show offline mode. Existing freshness receipt records the20px movement
+and changed pixels; ToastEnabled readback is0. Root independently accepted that
+offline evidence and continued the same attempt, without another capture/window
+action. [Acceptance](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/ROOT-ACTUAL-EXISTING-OFFLINE-FRAME-ACCEPTED.json)
+references the original cleanupRED. A wrapper cleanup error must be reported
+separately from the completed capture; it does not invalidate an independently
+verified image. This does not establish successful foreground restoration.
+
+
+R99 core observation (2026-10-11T04:31:31.674253+00:00): `native_session_ready` can precede ApplicationMain
+readiness. The saved [core65 record](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/managed/operator/ROOT-R85-COLD-CORE-WAIT.json) contains5 command
+timeouts followed by60 application_main_not_ready returns; later existing log
+parsing outlasted180s. Wrapper exit0 does not establish cold13. The reader retains
+legacy `ROOT-R85-COLD-CORE-WAIT.json` filenames, including in R99; read that actual
+record before reporting detailed core data absent. Preserve the first timeout
+and use a separate output namespace for any authorized same-PID recovery.

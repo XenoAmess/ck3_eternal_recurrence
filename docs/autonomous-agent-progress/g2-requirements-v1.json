@@ -370,7 +370,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T04:08:32.037017+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T04:31:31.674253+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -594,7 +594,15 @@
         "native84_published_source_head": "594979b0b3d4c5a395639f30b9d5d864b8a31f6d",
         "native84_canonical": "D:/codex-ck3-background-spill/g2-native84-canonical01/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json",
         "native84_production_build_receipt": "D:\\codex-ck3-background-spill\\maintainer-resume-20261010\\continuation-07\\native84-thin-design\\ROOT-ACTUAL-BUILD-STEP.json",
-        "sdk84_actual_execution_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-61b/sdk84-preparation/COMPLETE-SDK84-EXECUTION.json"
+        "sdk84_actual_execution_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-61b/sdk84-preparation/COMPLETE-SDK84-EXECUTION.json",
+        "runtime99_status": "FIRST_CORE180_TIMEOUT_SAME_PID_RECOVERY_PREPARING",
+        "runtime99_first_core_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-r0099/managed/operator/ROOT-R85-COLD-CORE-WAIT.json",
+        "runtime99_first_core_count": 65,
+        "runtime99_first_core_command_timeouts": 5,
+        "runtime99_first_core_application_main_not_ready_count": 60,
+        "runtime99_full_snapshot_count": 0,
+        "runtime99_cold_checks_passed": 0,
+        "runtime99_new_saved_days": 0
       }
     }
   ],
