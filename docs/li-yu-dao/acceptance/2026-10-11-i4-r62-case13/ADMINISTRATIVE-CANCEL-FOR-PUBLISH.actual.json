@@ -1,0 +1,17 @@
+{
+  "schema": "lyd.operator-cancel-for-user-request.v1",
+  "started_at_utc": "2026-10-11T15:06:01.009221+00:00",
+  "finished_at_utc": "2026-10-11T15:06:11.056786+00:00",
+  "user_request": "\u5148\u53d1\u5e03\u5230steam\uff0c\u8bd5\u73a9\u540e\u7ee7\u7eed\u9a8c\u6536",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0062",
+  "reason": "User prioritised first Workshop playable release; interrupt this acceptance attempt",
+  "actual_pid": 15896,
+  "actual_process_create_time": 1791730637.245188,
+  "actual_hwnd": 259851808,
+  "action": "PostMessage WM_CLOSE once to inspected CK3 window",
+  "process_observed_absent": false,
+  "original_host_and_public_waits_still_required": true,
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "no_failure_shutdown_predicate_invented": true
+}

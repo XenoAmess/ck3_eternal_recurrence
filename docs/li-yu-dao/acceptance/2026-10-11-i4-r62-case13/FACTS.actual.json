@@ -1,0 +1,124 @@
+{
+  "schema": "lyd.r62.compact-terminal-facts.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0062",
+  "source_projection": {
+    "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0062/native-cleanup-projection.actual.json",
+    "bytes": 26108,
+    "sha256": "8d3b9302ba815c424b431d0e9bc398a0361fd50994da73e84cd7ec2810b1d9cd"
+  },
+  "cleanup_projection": {
+    "finished_at": "2026-10-11T15:14:59.285232+00:00",
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "status": "RED",
+    "error": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "session": {
+      "report": {
+        "finished_at": "2026-10-11T15:14:46.775314+00:00",
+        "process_exit_code": 0,
+        "shutdown": {
+          "ok": true,
+          "cleanup_proven": true,
+          "tree_gone": true,
+          "job_active_processes_final": 0,
+          "contract_errors": [],
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-013\\state\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-013\\state\\control\\watchdog-4be234b7d9c34a30b28acbdf5a5a99c4.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-013\\state\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-i4-natural-event-continuation-20261011-013\\state\\control\\unsafe-cleanup.json": true
+          },
+          "ck3_exit_code": 0,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "processes": []
+          }
+        }
+      }
+    }
+  },
+  "failure": {
+    "step_id": "case-natural-day-0009",
+    "pointer": "/steps/32/campaign_pause_frame_diagnostic",
+    "original_error": "campaign pause readback lost the complete same-owner frame",
+    "first_failed_condition": 23,
+    "failed_condition_indices": [
+      23
+    ],
+    "condition_count": 32,
+    "other31_conditions_failed": false,
+    "typed_values": {
+      "snapshot.paused": {
+        "present": true,
+        "type": "bool",
+        "value": true,
+        "unavailable_reason": null
+      },
+      "snapshot.date_raw": {
+        "present": true,
+        "type": "int",
+        "value": 53144856,
+        "unavailable_reason": null
+      },
+      "snapshot.native_revision": {
+        "present": true,
+        "type": "int",
+        "value": 35,
+        "unavailable_reason": null
+      },
+      "diagnostics.bridge_pid": {
+        "present": true,
+        "type": "int",
+        "value": 15896,
+        "unavailable_reason": null
+      },
+      "diagnostics.connection_generation": {
+        "present": true,
+        "type": "int",
+        "value": 1,
+        "unavailable_reason": null
+      },
+      "mailbox.ready": {
+        "present": true,
+        "type": "bool",
+        "value": false,
+        "unavailable_reason": null
+      },
+      "mailbox.current_tid": {
+        "present": true,
+        "type": "int",
+        "value": 6580,
+        "unavailable_reason": null
+      },
+      "mailbox.owner_tid": {
+        "present": true,
+        "type": "int",
+        "value": 6580,
+        "unavailable_reason": null
+      },
+      "mailbox.date_raw": {
+        "present": true,
+        "type": "int",
+        "value": 53144856,
+        "unavailable_reason": null
+      }
+    },
+    "underlying_cause": null
+  },
+  "ROOT_native_one_read_provenance": {
+    "read_started_at_utc": "2026-10-11T15:15:49.875966+00:00",
+    "read_finished_at_utc": "2026-10-11T15:15:49.883898+00:00",
+    "native_file_read_count": 1,
+    "raw_bytes_consumed": 1914901
+  },
+  "native_body_read_by_record_writer": false,
+  "normal_close_qualified": false,
+  "business_status": "RED",
+  "storage023_closed": null,
+  "storage_status": "PENDING_ROOT_LATE_BIND",
+  "admin_publication_intent_is_not_sole_failure_cause": true,
+  "PhaseI": "75% NOT_GREEN"
+}

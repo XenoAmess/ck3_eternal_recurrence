@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-11T15:16:39.607656+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0062",
+  "screen_task": "common-acceptance-12004-20261010-a24",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\final-offline-001\\steam-moved.png",
+    "bytes": 952215,
+    "sha256": "7c8de15971fe39e2e9baf50aca65aaca1670cf18ba4cf3e99c6de84be50289df"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\final-offline-001\\steam-frame-freshness.json",
+    "bytes": 1252,
+    "sha256": "d5882e5e72112bb79f0bb1f9f938923f075d81ccaf0d97bd3f733eb2ee6d2600"
+  },
+  "visual_observation": "ROOT directly viewed current moved Steam frame; bottom bar reads 离线模式; CK3 window is closed. Fresh frame displacement receipt belongs to R0062.",
+  "ROOT_reviewed_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\final-review-request-001.json",
+    "bytes": 2952,
+    "sha256": "d32f70883e2f034050249a5b458c0473015c44b68dad26fb699426b9f22817bf"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\native-report.json",
+    "bytes": 1914901,
+    "sha256": "1f8119937a7ef7078d4c8606532cb4df8cfd792e7a031403245de0a12bc981fb"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\native-cleanup-projection.actual.json",
+    "bytes": 26108,
+    "sha256": "8d3b9302ba815c424b431d0e9bc398a0361fd50994da73e84cd7ec2810b1d9cd"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "191a31909a550ac632e48b496f655ab725ee0cfc785c3321566a4627c49fb848"
+  },
+  "normal_close_result": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0062\\case-output\\normal-close-result.json",
+    "bytes": 11612,
+    "sha256": "81e78c43a1f73de1daa5d252242d30db525b0650471eaf57896cd65d26e8ad25"
+  },
+  "normal_close_qualified": false,
+  "business_pass": false
+}
