@@ -39,3 +39,25 @@ and unrun. G2/M4/M6/M7 readiness and saved-day credit do not change.
 
 [63 source/delivery](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63/background-g2-offline-20261011/DELIVERY.json),
 [35 connected caller delivery](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-35/background-g2-offline-20261011/FINAL-CONNECTED-DELIVERY.json).
+
+
+## First ACK retention and consumed-receipt synchronization
+
+Recorded 2026-10-11T06:33:23.917018+00:00; source fixes adopted into master, research /
+SOURCE_ADOPTED_NOT_RUN. The first material receipt was reconstructed from pending
+state and copied cash/budget fields, but omitted `native_ack` before clearing
+pending. Later cold rechecks could only preserve the already reduced receipt.
+The optional copy now retains the original ACK on that first receipt; independent
+material postconditions still determine the result. ACK does not grant success
+or income credit.
+
+The formal consumer can prioritize an earlier receipt A while Service initially
+projects the latest receipt B. Its two actual receipt-selection/update points
+now recompute `construction_consumed_intent` from the receipt they consume.
+Thus the action ID and material tuple describe A when A is selected, including
+a later cash-enriched version of A. Existing pending branches, economic rules
+and query counts remain as before.
+
+[Actual source receipt](D:/codex-ck3-background-spill/native71-continuation-20261010/ROOT-CONSTRUCTION-RECEIPT-SOURCE-FIXES-20261011.json).
+Per owner instruction no imports, tests, compilation or local Game/Steam/window
+operations were performed. No new days, saves or live outcome was produced.

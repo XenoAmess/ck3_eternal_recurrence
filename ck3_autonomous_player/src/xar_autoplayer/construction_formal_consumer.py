@@ -18,6 +18,9 @@ from .construction_economic_outcome_v1 import (
     completed_construction_cash_fields_v1, construction_economic_outcome_v1,
     prepare_construction_cash_fields_v1,
 )
+from .construction_selected_intent_continuity_v1 import (
+    project_construction_consumed_intent_v1,
+)
 from .lifestyle_formal_consumer import ROOT_QUERY_STEP, _same_frame_feudal_scope
 
 
@@ -321,6 +324,7 @@ def plan_construction_private(
                 "construction_pending_action": dict(applied),
                 "reason": "cold restore may load an earlier checkpoint; verify construction before using ledger"}}
         plan = {**plan, "construction_receipt_consumed": dict(applied),
+                "construction_consumed_intent": project_construction_consumed_intent_v1(applied),
                 "construction_economic_outcome": construction_economic_outcome_v1(
                     applied, exact_ck3_build=private_native_build_identity(
                         snapshot).game_version)}
@@ -355,6 +359,7 @@ def plan_construction_private(
                 priority_applied = priority_construction_receipt(
                     driver, ledger, snapshot, process_identity=process_identity)
                 plan = {**plan, "construction_receipt_consumed": applied,
+                        "construction_consumed_intent": project_construction_consumed_intent_v1(applied),
                         "construction_economic_outcome": fields["construction_economic_outcome"],
                         "construction_cash_outcome": observed}
         if (applied.get("completion_status") == "completed"

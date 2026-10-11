@@ -865,7 +865,9 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                 pending.get("original_quote_gold_debit_observed_raw")),
             actual_authored_monthly_income_delta_hundredths=None,
         )
-    for field in ("pre_cash_v2", "construction_monthly_budget"):
+    # Retain the original submit ACK as evidence on the first material receipt.
+    # This readonly query still relies on its independent material postcondition.
+    for field in ("native_ack", "pre_cash_v2", "construction_monthly_budget"):
         if field in pending:
             receipt[field] = pending[field]
     if cold_recheck:
