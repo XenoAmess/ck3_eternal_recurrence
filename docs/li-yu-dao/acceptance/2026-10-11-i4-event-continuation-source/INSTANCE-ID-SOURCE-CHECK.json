@@ -1,0 +1,28 @@
+{
+  "schema": "lyd.i4.continuation-instance-ID-source-check.v1",
+  "original_package_unchanged": true,
+  "adapter_before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-event-continuation-candidate-20261011-001\\candidate\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_event_continuation_adapter.py",
+    "bytes": 28650,
+    "sha256": "57912a17f0640e784300f3aed4d94bb8d27d7618b9daeaa70facdda8d3961edf"
+  },
+  "adapter_after": {
+    "bytes": 28724,
+    "sha256": "fa0368a6e150cb1b035c5337fea3b6688a9f71f1232cf6c3b78b5557477df59d"
+  },
+  "actual_instance_in_query_gap_reload_intent_action_IDs": true,
+  "choice_cap_unchanged": 1,
+  "AST_parse": true,
+  "tests_executed": false,
+  "test_before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-event-continuation-candidate-20261011-001\\candidate\\tools\\test_lyd_i4_natural_event_continuation.py",
+    "bytes": 17218,
+    "sha256": "d729fba55e0f0a59fb83bdd2c7a4b713823ae4b82dd3574cc9d9ac26dc63544c"
+  },
+  "test_after": {
+    "bytes": 18714,
+    "sha256": "2e1cefb852bc81aba122b02c7b3ecc7ea8f5919cfba8d25f095cca3544e6a68b"
+  },
+  "test_methods": 10,
+  "test_fixture_uses_actual_current_instance": true
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_eternal_recurrence/tools/test_lyd_i4_natural_event_continuation.py",
+    "ContinuationTests.test_partial_interval_then_choice_and_next_day_are_contiguous_once",
+    "-v"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T09:50:06.775490+00:00",
+  "finished_at_utc": "2026-10-11T09:50:07.083427+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001\\i4-public-case-corrected-test-command\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001\\i4-public-case-corrected-test-command\\stderr.log",
+    "bytes": 273,
+    "sha256": "134f0345b020c5860773f6b144f1e038a59ca26ea12d264683822a8375d23648"
+  }
+}

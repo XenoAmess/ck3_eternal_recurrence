@@ -1,0 +1,44 @@
+test_actual_snapshot_count_and_current_typed_identity_are_independent (__main__.ContinuationTests.test_actual_snapshot_count_and_current_typed_identity_are_independent) ... ok
+test_boundary_owner_date_cap_and_complete_hours_remain_original_guards (__main__.ContinuationTests.test_boundary_owner_date_cap_and_complete_hours_remain_original_guards) ... ok
+test_consumed_event_choice_cannot_be_submitted_again (__main__.ContinuationTests.test_consumed_event_choice_cannot_be_submitted_again) ... ok
+test_explicit_reevaluate_fresh_query_then_sole_choice_no_advance_replay (__main__.ContinuationTests.test_explicit_reevaluate_fresh_query_then_sole_choice_no_advance_replay) ... ok
+test_explicit_shared_main_namespace_and_reviewed_overlay_source_consumed (__main__.ContinuationTests.test_explicit_shared_main_namespace_and_reviewed_overlay_source_consumed) ... ok
+test_failed_reload_stays_in_gap_and_cannot_fall_back_to_old_policy (__main__.ContinuationTests.test_failed_reload_stays_in_gap_and_cannot_fall_back_to_old_policy) ... ok
+test_new_instance_after_sole_choice_reaches_hold_with_unique_ids (__main__.ContinuationTests.test_new_instance_after_sole_choice_reaches_hold_with_unique_ids) ... ok
+test_partial_interval_then_choice_and_next_day_are_contiguous_once (__main__.ContinuationTests.test_partial_interval_then_choice_and_next_day_are_contiguous_once) ... ERROR
+test_submitted_choice_old_instance_or_owner_mismatch_never_replays (__main__.ContinuationTests.test_submitted_choice_old_instance_or_owner_mismatch_never_replays) ... ok
+test_unknown_contract_holds_same_frame_then_explicit_abort_without_choice (__main__.ContinuationTests.test_unknown_contract_holds_same_frame_then_explicit_abort_without_choice) ... ok
+
+======================================================================
+ERROR: test_partial_interval_then_choice_and_next_day_are_contiguous_once (__main__.ContinuationTests.test_partial_interval_then_choice_and_next_day_are_contiguous_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\test_lyd_i4_natural_event_continuation.py", line 165, in test_partial_interval_then_choice_and_next_day_are_contiguous_once
+    value = adapter.observe_existing(self.context(), client, adapter.contract(), frame(), frame(), Policy(client))
+  File "C:\workspace\ck3_eternal_recurrence\tools\ck3_mod_acceptance_cases\lyd_i4_natural_event_continuation_adapter.py", line 319, in observe_existing
+    proof = reopen_school(client, data, frame, ordinal)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1169, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1173, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1240, in _execute_mock_call
+    result = effect(*args, **kwargs)
+TypeError: ContinuationTests.test_partial_interval_then_choice_and_next_day_are_contiguous_once.<locals>.observed() takes 3 positional arguments but 4 were given
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.135s
+
+FAILED (errors=1)
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\root-apply-test-i4-event-continuation-20261011-001.py", line 36, in <module>
+    run([PY,'-B','-X','utf8',str(MAIN/'tools/test_lyd_i4_natural_event_continuation.py'),'-v'])
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\root-apply-test-i4-event-continuation-20261011-001.py", line 9, in run
+    subprocess.run(argv,cwd=MAIN,check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe', '-B', '-X', 'utf8', 'C:\\workspace\\ck3_eternal_recurrence\\tools\\test_lyd_i4_natural_event_continuation.py', '-v']' returned non-zero exit status 1.

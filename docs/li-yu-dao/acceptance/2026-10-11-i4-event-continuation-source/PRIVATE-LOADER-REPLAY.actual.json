@@ -1,0 +1,139 @@
+{
+  "schema": "lyd.i4.actual-shared-private-policy-loader-replay.v1",
+  "source_public_typed_receipt": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-r59-case10\\raw\\R59\\case-output\\i4-first-natural-event-context.actual-results.json",
+    "bytes": 38106,
+    "sha256": "f0d208e0ef6a37868c2f4e298a0f49d5c60ebc530b8c555513abecb9683a04d6"
+  },
+  "status": "recommended",
+  "failed_checks": [],
+  "selected_option_number": 3,
+  "selected_native_option_index": 2,
+  "actual_source_binding": {
+    "base_MAIN_policy_root": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer",
+    "reviewed_overlay_root": null,
+    "actual_imported_sources": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\__init__.py",
+        "bytes": 13061,
+        "sha256": "cd78bb588214e060d12a5609a98199e4e2dd23f76b044a2a579b53b244fd4fd8"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\builds.py",
+        "bytes": 1859,
+        "sha256": "afd7f9fb5abf7ea91fb4888767135027db9f9390151e5df6edaa719d19e73712"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\migration_1_20_0_4.py",
+        "bytes": 2764,
+        "sha256": "676e34e1cf85100eee461fe78567117d8f7f4418d80be0fc0e47b5583af2c6b2"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\policy.py",
+        "bytes": 67430,
+        "sha256": "3ea551880bb029ce4ce8455e28da3d68fc74149a979fc6bf6609514375852549"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_coming_age1002_12003.py",
+        "bytes": 5540,
+        "sha256": "77e388b9135a0a245c2e7f1249714e62ffb16213c1ad3a9dcb8702c167f8259a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_dynastic_cycle_intro_12003.py",
+        "bytes": 4313,
+        "sha256": "fc18e4ac80b07b1c3fa83b7e9a9dd3cbeee97bff31fe7d1ab732d602fc4e3add"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_faction_demand1001_12003.py",
+        "bytes": 4764,
+        "sha256": "d1a1f59bd97da29d60b397605946d93ccc6b2040c8639f02a694c62f5665ff6b"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_0801_12003.py",
+        "bytes": 10093,
+        "sha256": "9b512301466ba0c3854baf0b46eb721901a7e5ab4a05a74945d824bd82070db1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_arrival_12003.py",
+        "bytes": 6613,
+        "sha256": "41b34a7cf57494c8c3960d8c281576d3154dd3094b435beaf0b5b8785b404f91"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_brawl6003_12003.py",
+        "bytes": 102991,
+        "sha256": "9e4f713bd515f41acdedf864231c9cf1b45111733d68c6097f618b40c81fb73d"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_completion7101_12003.py",
+        "bytes": 41434,
+        "sha256": "bdb52f4d7919f8c90d7c0e77a24bc45306eac7bdc5aea3130f0f9cae6abf11c2"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_drinks_12003.py",
+        "bytes": 10211,
+        "sha256": "2086c4759785567f1ec96322bbd98cdc8b8832b43bd277c52a3e475c077cb20c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_fowl9002_12003.py",
+        "bytes": 7218,
+        "sha256": "0a3b3c1a28b0a62da16d787cd5a74775b4469264b192eabba28c536c67a50a1c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_fowl_12003.py",
+        "bytes": 8174,
+        "sha256": "5bef4f3b3716ea40bf9d5c5b2e55c35a6f7e397cb112d18baf823bb89b14188d"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_feast_start_12003.py",
+        "bytes": 7534,
+        "sha256": "bfbbd89c1d2f49848f677b7cf58ce9370108cdc2a59fe57bb3569457394efb8e"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_laamp_conquest_notice_12003.py",
+        "bytes": 4757,
+        "sha256": "d5357be8f80a36e43e589e78eecca5c146688913e94534a8740756e80413a083"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_marriage_notice_12003.py",
+        "bytes": 4674,
+        "sha256": "5aee9a113379bd82e102b81d46ee5444f9aa12812509c5629e8be011fb7d5c4c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_norman_sicily1070_12003.py",
+        "bytes": 6816,
+        "sha256": "6aea24aa8cd21d31f83e3ff33b02e0e57f3b69708124dec56ad881cab2230916"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_religion_rite_growth_12003.py",
+        "bytes": 9775,
+        "sha256": "d0a667e56f6701e64d3826c947afa3835c6d6423613f68dced056597e8437e9e"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_stress1701_12003.py",
+        "bytes": 12729,
+        "sha256": "535f322c5f827f2b80cfdc97c759aa33f412901e13c9ca6802a3fb3053def050"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_travel_completion1000_12003.py",
+        "bytes": 31520,
+        "sha256": "31c86e2a152bf9f9eab0e55234c021686f5f86cb2845718f3e1a653d4f66c24f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\registry.py",
+        "bytes": 19336,
+        "sha256": "ca4b1618edb45ef9c7f67a456bb9cdebe72fdeb427e2f25c20e401a821dad546"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\source_index.py",
+        "bytes": 16133,
+        "sha256": "1deacab5e77dc99edc6ec07c5878948ab91b3cd89424a8bfa38eb7dee405f5ee"
+      }
+    ],
+    "installed_or_Csr_policy_import_used": false
+  },
+  "live_query": false,
+  "option_submitted": false,
+  "army_credit": false,
+  "semantic_decision_ready": false,
+  "business_pass": false
+}

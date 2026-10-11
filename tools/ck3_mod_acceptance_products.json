@@ -3036,6 +3036,72 @@
           },
           "legacy_upper_bounds_preserved": "Existing strict case unchanged; event_choice_actions=0/school_choice_actions=0; no expiry/full365/cold/formal credit",
           "product_release_pass": false
+        },
+        {
+          "id": "i4-natural-expiry-event-continuation",
+          "status": "ready",
+          "implementation_credit": "Source-only existing-cooldown continuation through one reviewed bookmark.1070 third option; live NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_event_continuation_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_event_continuation.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 8400,
+            "hold_seconds": 7200,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Existing 366-day actual-duration cap and 7200 hold / 900 readiness / 8400 timeout unchanged; one reviewed event choice; no deadline extension",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "PARTIAL_EXISTING_COOLDOWN_EVENT_CONTINUATION",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "original0240_headless_event_free_admission",
+            "fresh_initial_SAVE_flag_present_disabled_school",
+            "contiguous_natural_one_day_or_event_boundary_maximum366days",
+            "fresh_typed_registry_bookmark1070_third_option_once_or_bounded_ROOT_policy_hold",
+            "reopen_school_readonly_continue_existing_cooldown",
+            "distinct_final_SAVE_flag_absent_same_headless_Faith_Rite",
+            "actual_shared_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "Strict/no-choice discovery unchanged. No calendar setter, flag reset, school choice, full365/cold/formal/army credit. Unknown Python policy holds original process within original deadline.",
+          "product_release_pass": false
         }
       ],
       "legacy_inventory": {

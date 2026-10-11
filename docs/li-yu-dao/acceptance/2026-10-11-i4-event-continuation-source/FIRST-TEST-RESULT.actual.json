@@ -1,0 +1,24 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/root-apply-test-i4-event-continuation-20261011-001.py"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T09:49:42.076335+00:00",
+  "finished_at_utc": "2026-10-11T09:49:43.111742+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001\\i4-public-case-tests-command\\stdout.log",
+    "bytes": 829,
+    "sha256": "6453492a51492a41f2a50acbab59605caebcbb0376e75767b6b597a48712c064"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001\\i4-public-case-tests-command\\stderr.log",
+    "bytes": 4523,
+    "sha256": "a0cbb6af72ad2dc3d9709062bea9d8222d85bcfe097c5f856efbb326ddee073b"
+  }
+}

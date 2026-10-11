@@ -1,0 +1,6 @@
+test_partial_interval_then_choice_and_next_day_are_contiguous_once (__main__.ContinuationTests.test_partial_interval_then_choice_and_next_day_are_contiguous_once) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.018s
+
+OK
