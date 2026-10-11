@@ -119,3 +119,38 @@ flowchart TD
   ADV -. real player-liege health event only .-> HE[Existing health.3102 safe option]
   H -. native gate rejection attribution not published .-> ATTR[Age/modifier vs trait flag inputs: finite follow-on]
 ```
+
+
+## R95 exact1.20.0.4 ordinary current-family during-read RED
+
+Native80/source452 and fullSDK80/source452, Runtimearchive664, ownedGame169496,
+originalRobert29829 at saved6077/raw53290176. Retained ordinary005 is589B and
+only reports `current first-heir relationship frame changed during read`.
+[Actual failure](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native80-r0095/ROOT-ACTUAL-ORDINARY-FAMILY-FAILURE.json)
+has no native failed-conjunct field. Source bridge.cpp19478 short-circuits final
+ReadSnapshot failure, complete Snapshot inequality and local relationship
+frame_changed into that text. This is not a Python public revision comparison.
+Prior004 accepted marriage/cold recovery for38822/38718 has no ending_snapshot,
+so it is not a replacement same-frame proof. No day/SAVE or root-cause credit.
+The next construction entry is a failure-only diagnostic using the existing
+Snapshot diff and failed-read information without another native read or a
+changed acceptance predicate. Exact-build EXE SHA remains
+98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518.
+
+
+## First-heir during-read diagnostic: actual FIRST6 GREEN, source adopted
+
+Root actually compiled, linked and ran the six new diagnostic scenarios once,
+both exit0 at 2026-10-11T00:50:56.751525+00:00. No old tests or Game queries were replayed.
+[Actual FIRST/adoption](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63h-r0095/root-first/ROOT-ACTUAL-FIRST-AND-ADOPTION.json)
+and [source delivery](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63h-r0095/DELIVERY.json)
+bind the new inline header, two Bridge hunks and standalone fixture. The same
+one ReadSnapshot and original three conditions/order remain. Error diagnostics
+distinguish snapshot_read_failed/full_snapshot_changed/relationship_frame_changed,
+include only existing owned fields and the fresh failed-read stage if available.
+Success wire and native acceptance are unchanged. State remains static-ready;
+actual005 conjunct and repair remain unknown. Native81 is one Bridge compilation
+and DLL link with Runtime664 archive reuse, then complete SDK81/cold load and
+one actual family reproduction.07/61/10 prepare those independent packages.
+Five remaining dailySAVEs and all milestone counts remain unchanged. This task
+is committed/pushed directly to master with the retained R95 actual status.

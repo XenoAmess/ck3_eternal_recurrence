@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/first_heir_pre_read_diagnostic_v1.hpp"
+#include "xar_bridge/first_heir_during_read_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
@@ -19475,12 +19476,16 @@ void RunConnectedSession(
                 }
               }
               xar::game::Snapshot after{};
-              if (!xar::game::ReadSnapshot(game, after) || after != before ||
-                  read.failure == xar::ck3_11906::
-                      CurrentFirstHeirRelationshipFailureV1::frame_changed) {
+              const auto during_read_error = xar::bridge_detail::FirstHeirDuringReadErrorV1(
+                  before, after, [&](xar::game::Snapshot &observed) {
+                    return xar::game::ReadSnapshot(game, observed);
+                  }, read.failure, xar::ck3_11906::
+                      CurrentFirstHeirRelationshipFailureV1::frame_changed,
+                  expected_revision, state_revision, heir_id);
+              if (!during_read_error.empty()) {
                 connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
-                    "current first-heir relationship frame changed during read"));
+                        during_read_error));
               } else {
                 // Sidecar completion stays on the worker and follows both the
                 // mailbox reclaim and this family's final snapshot comparison.

@@ -188,7 +188,7 @@
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one useful legal council adjustment and one real vassal or faction intervention",
-      "open_blocker": "Actual useful44fa Steward appointment and four real construction starts have retained material within proposed53286144..53303664. The exact33c09 Council compact join is restored and its NEW14-check static FIRST passed. Root actually selected the window at qualified raw53290152 on2026-10-10T22:59:06.230606Z; one offline collector returned two of three actual materials, with no Game commands or milestone credit. No oldd660 formal next/cold flags transfer to44fa. One new useful vassal/faction intervention remains. MCP now forwards the existing formal-trial/round options; one new eight-scenario configuration test is GREEN, with adoption into a later complete SDK pending. R94 after-load sameGame13/13 qualification is GREEN at22:53:48Z; the original early cold-load timeout is preserved and the remaining six ordinary days are executing. M4 visible start/material does not require completed-building ROI or full Sway terminal.",
+      "open_blocker": "Original two-year material window53286144..53303664 selected once at22:59:06.230606Z. Useful44fa Steward and four real construction starts provide2/3 original categories. R95 original6348 applied/in_progress cold readback at raw53290176 adds no intervention; no faction root/member/quote/gift material observed. One useful vassal/faction intervention remains. Existing formal roundR95/options remain configured, while current-family actual RED is being diagnosed. No building-completion ROI or Sway-terminal gate added to original M4 contract.",
       "current_material_window": {
         "stage": "actual_selected_window_two_of_three_materials",
         "start_date_raw": 53286144,
@@ -346,7 +346,7 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "Original Robert29829 is saved6077/H10120/raw53290176, natural successions0. R94 cold13/13 and one dailySAVE are actual GREEN. SDK79/source29 warm cached paused identity was observed, then ordinary war-admission ReadSnapshot returned RED before the semantic adapter. SDK79normal0/Game managedfallback1/keeper0/CASempty are actual closed; complete6077 full12 is now actually frozen as all12/fullDriver, current complete recovery6077. Five dailySAVEs remain. Guardian current-family readonly projection native9/Python21 is static-qualified and Native79 canonical is complete, but not Game-loaded. Native80 diagnostic canonical and complete SDK80 source452 are actually ready; R95 actual paused13/13 is GREEN and first ordinary normal is pending; real failed field, M4 faction material, M6 terminal, same-intent natural inheritance and broader ruler/seed/government qualification remain open. Robert29829 is the sole authorized test entry; existing .4 MCP migration is complete.",
+      "open_blocker": "Original Robert29829 remains saved6077/H10120/raw53290176, natural successions0. R94 closed/full12 frozen. Native80/fullSDK80/source452 loaded in R95 and paused13/13 passed. Four construction cold re-queries and original first-heir marriage result succeeded; no newdays/SAVEs. Next current-family query returned actual during-read frame-changed RED; three native causes share one message, actual conjunct unknown. Game169496/SDK99383 held paused/drained. Failure-only source diagnostic in progress. Five dailySAVEs, M4 one faction/vassal intervention, M6 terminal, Guardian actual observation, same-intent natural inheritance and broader ruler/seed/government qualification remain open. Robert29829 is the sole authorized entry; no generic failure or static tests are counted as live fixes.",
       "current_campaign_index": {
         "source": "Root-owned R94 saved6077 and actual closed custody",
         "source_base": "664c85d9dab3ff898826245e9b0a6053697e0bd6",
@@ -365,7 +365,7 @@
         "vacation_handoff_current": false,
         "historical_r77_saved_days": 6010,
         "historical_r77_history_index": 9715,
-        "current_index_recorded_at_utc": "2026-10-11T00:30:23.257627+00:00",
+        "current_index_recorded_at_utc": "2026-10-11T00:51:19.283019+00:00",
         "r94_cold_qualified_at_utc": "2026-10-10T22:53:48.173928Z",
         "r94_owned_game_pid": 45424,
         "r94_new_daily_saves": 1,
@@ -406,8 +406,16 @@
         "r95_owned_game_pid": 169496,
         "r95_source": "452b4e315314633f304208214fca169781c8b485",
         "r95_cold_qualified_at_utc": "2026-10-11T00:25:58.561669Z",
-        "r95_normal_stage": "FIRST_PENDING",
-        "r95_cold_qualification_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native80-r0095/managed/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json"
+        "r95_normal_stage": "FIVE_RECOVERY_QUERIES_GREEN_CURRENT_FAMILY_READ_RED_PAUSED",
+        "r95_cold_qualification_receipt": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native80-r0095/managed/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json",
+        "r95_new_days": 0,
+        "r95_new_SAVEs": 0,
+        "r95_remaining_daily_saves": 5,
+        "r95_ordinary_controller_exit_code": 1,
+        "r95_actual_family_failure_result": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native80-r0095/ROOT-ACTUAL-ORDINARY-FAMILY-FAILURE.json",
+        "r95_family_failure_actual_conjunct": "unknown",
+        "r95_diagnostic_source_status": "MASTER_ADOPTED_ACTUAL_FIRST6_GREEN_NATIVE81_PENDING",
+        "r95_diagnostic_first_receipt": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-63h-r0095\\root-first\\ROOT-ACTUAL-FIRST-AND-ADOPTION.json"
       }
     }
   ],
