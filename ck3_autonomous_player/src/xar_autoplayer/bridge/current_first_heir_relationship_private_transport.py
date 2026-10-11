@@ -7,6 +7,7 @@ or use a proposal pending record.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import uuid
 from pathlib import Path
@@ -27,6 +28,63 @@ from .nonwar_private_build import private_native_provenance
 
 STEP = "query-current-first-heir-relationship-v1-private"
 SCHEMA = "xar.ck3.current-first-heir-relationship.v1"
+
+
+_CHILD_MATERIALS = "current_child_relation_materials_v1"
+_MATERIAL_SIDECAR_READ_LIMIT = 4 * 1024 * 1024
+
+
+def _attach_same_query_relation_materials(
+    family: dict[str, object], *, frame: dict[str, object], request_id: str,
+    before: dict[str, object], after: dict[str, object], sidecar: Path,
+) -> dict[str, object]:
+    """Consume only this request's completed export through the existing validator."""
+    proof = frame.get("guardian_factory_discovery_v1")
+    completed = ("path_parsed", "job_created", "job_reclaimed", "job_executed",
+                 "job_frame_observed", "metadata_copied", "completion_attempted", "sidecar_written")
+    if (frame.get("request_id") != request_id or not isinstance(proof, dict)
+            or type(proof.get("schema_version")) is not int
+            or proof.get("schema_version") != 1
+            or any(proof.get(key) is not True for key in completed)
+            or "error" not in proof
+            or proof.get("error") is not None):
+        raise BridgeUnavailableError("same-query relation material export incomplete")
+    before_diagnostics = before.get("diagnostics")
+    after_diagnostics = after.get("diagnostics")
+    if not isinstance(before_diagnostics, dict) or not isinstance(after_diagnostics, dict):
+        raise BridgeUnavailableError("same-query relation material source binding unavailable")
+    for key in ("bridge_pid", "connection_generation"):
+        value = before_diagnostics.get(key)
+        if (type(value) is not int or not 0 < value < 2**64
+                or type(after_diagnostics.get(key)) is not int
+                or after_diagnostics.get(key) != value):
+            raise BridgeUnavailableError("same-query relation material source binding changed")
+    with sidecar.open("rb") as stream:
+        raw = stream.read(_MATERIAL_SIDECAR_READ_LIMIT + 1)
+    if len(raw) > _MATERIAL_SIDECAR_READ_LIMIT:
+        raise BridgeUnavailableError("same-query relation material exceeds read budget")
+    discovery = json.loads(raw.decode("utf-8"))
+    from .guardian_factory_create_inputs_contract_v1 import (
+        validate_guardian_factory_create_inputs_v1,
+    )
+    owned = validate_guardian_factory_create_inputs_v1(
+        discovery, command_result=frame, snapshot=before, family_result=family)
+    # Preserve legacy absence and explicit-unavailable contents unchanged.
+    # Generic witnesses still do not qualify guardian-role equivalence.
+    if owned is None or _CHILD_MATERIALS not in owned:
+        return family
+    family[_CHILD_MATERIALS] = owned[_CHILD_MATERIALS]
+    family["current_child_relation_materials_source_v1"] = {
+        "request_id": request_id, "binding_scope": "query_before_after",
+        "bridge_pid": before_diagnostics["bridge_pid"],
+        "connection_generation": before_diagnostics["connection_generation"],
+        "native_revision": before["native_revision"], "date_raw": before["date_raw"],
+        "played_character_id": before["played_character"]["character_id"],
+        "heir_character_id": family["heir_character_id"],
+        "sidecar_bytes": len(raw), "sidecar_sha256": hashlib.sha256(raw).hexdigest(),
+        "same_request_export_completed": True,
+    }
+    return family
 
 
 def _same_frame_campaign_root_result(
@@ -202,12 +260,17 @@ def query_current_first_heir_relationship_private_v1(
     timeout_seconds: float = 360.0,
     campaign_root_result: dict[str, object] | None = None,
     guardian_factory_sidecar_path: str | Path | None = None,
+    include_relation_materials: bool = False,
 ) -> dict[str, object]:
-    """Read the normal family result; optionally write Root's discovery sidecar.
+    """Read the existing family request, optionally retaining validated materials.
 
-    The explicit private path adds no family response fields or public MCP tool.
-    Its parent directory must already exist; the caller owns that output file.
+    Explicit capture paths preserve their legacy output. Ordinary material mode
+    consumes its fresh sidecar in memory and adds no request or public MCP tool.
     """
+    if type(include_relation_materials) is not bool:
+        raise ValueError("include_relation_materials must be boolean")
+    if include_relation_materials and guardian_factory_sidecar_path is None:
+        raise ValueError("ordinary relation materials require this query's sidecar")
     sidecar_fields: dict[str, object] = {}
     if guardian_factory_sidecar_path is not None:
         if not isinstance(guardian_factory_sidecar_path, (str, Path)):
@@ -218,6 +281,8 @@ def query_current_first_heir_relationship_private_v1(
         # Native control strings are unescaped: forward separators avoid JSON
         # backslashes while preserving the same absolute Windows file path.
         sidecar_fields["guardian_factory_sidecar_path"] = sidecar.as_posix()
+        if include_relation_materials and sidecar.exists():
+            raise FileExistsError("ordinary relation materials require a fresh sidecar")
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
         raise UnsupportedStepError("private current first-heir relationship query is disabled")
     read = (getattr(driver, "take_internal_semantic_snapshot", None)
@@ -270,7 +335,7 @@ def query_current_first_heir_relationship_private_v1(
     frame = driver.state.wait_for_command_result(
         request_id, float(timeout_seconds)
     )
-    if guardian_factory_sidecar_path is not None:
+    if guardian_factory_sidecar_path is not None and not include_relation_materials:
         # Preserve the original command-result object before normalization,
         # including private native export diagnostics. This is an owned JSON
         # object, not a claim to have retained the original pipe byte packet.
@@ -300,8 +365,9 @@ def query_current_first_heir_relationship_private_v1(
            (heir_id if heir_id is not None else -1)
     ):
         raise BridgeUnavailableError("current heir relationship identity changed")
+    after = read()
     _require_same_paused_frame(
-        read(), before, expected_native_revision, played_id
+        after, before, expected_native_revision, played_id
     )
     base = {
         "schema": SCHEMA, "schema_version": 1,
@@ -324,6 +390,13 @@ def query_current_first_heir_relationship_private_v1(
         base["family_generation_education_decision_inputs_v1"] = (
             derive_family_generation_education_decision_inputs_v1(descendants)
         )
+    def finish(family: dict[str, object]) -> dict[str, object]:
+        if include_relation_materials:
+            return _attach_same_query_relation_materials(
+                family, frame=frame, request_id=request_id,
+                before=before, after=after, sidecar=sidecar)
+        return family
+
     if result.get("status") == "unavailable":
         reason = result.get("unavailable_reason")
         if (not isinstance(reason, str) or not reason
@@ -337,10 +410,10 @@ def query_current_first_heir_relationship_private_v1(
                 result[REPRODUCTIVE_INPUTS_LEAF], actor=played_id, heir=heir_id,
                 native_revision=expected_native_revision, date_raw=before["date_raw"],
                 relation=result)
-        return {**base, "status": "unavailable", "unavailable_reason": reason,
+        return finish({**base, "status": "unavailable", "unavailable_reason": reason,
                 "betrothal_actionability": _current_pair_actionability(
                     result.get("betrothal_actionability"), actor=played_id,
-                    heir=heir_id, partner=None)}
+                    heir=heir_id, partner=None)})
     if result.get("status") != "available" or heir_id is None:
         raise BridgeUnavailableError("current heir relationship status is invalid")
     betrothed = result.get("betrothed_character_id")
@@ -365,11 +438,11 @@ def query_current_first_heir_relationship_private_v1(
             result[REPRODUCTIVE_INPUTS_LEAF], actor=played_id, heir=heir_id,
             native_revision=expected_native_revision, date_raw=before["date_raw"],
             relation=result)
-    return {**base, "status": "available", "unavailable_reason": None,
+    return finish({**base, "status": "available", "unavailable_reason": None,
             "bilateral_verified": True,
             "betrothed_character_id": betrothed,
             "primary_spouse_character_id": primary_spouse,
             "spouse_character_ids": spouses,
             "betrothal_actionability": _current_pair_actionability(
                 result.get("betrothal_actionability"), actor=played_id,
-                heir=heir_id, partner=betrothed)}
+                heir=heir_id, partner=betrothed)})

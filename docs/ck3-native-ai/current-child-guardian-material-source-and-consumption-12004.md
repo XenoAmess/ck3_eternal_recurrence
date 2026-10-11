@@ -55,3 +55,10 @@ flowchart LR
 
 The next functional dependency is the actual child court-owner and educator
 selection/action source. Generic material false alone cannot select a fallback.
+
+
+## 2026-10-12：普通同查询材料接线源码采用
+
+Root采用三Python文件的ordinary材料入口：已启用private family且有state root时，用一个独占临时目录向原family QueryNative提供sidecar路径；从该同请求完成的原生导出经既有严格validator取`current_child_relation_materials_v1`，交给现有education needs。没有额外query/RPC，也没有调用capture wrapper或保留每轮完整command-result副本。八项完成标志、必需nullable error键、request、暂停前后native revision/date/played/heir、PID/generation与所选子女顺序均沿原资格检查；available、unavailable、legacy absent分别保留。generic witness不能升为已任命educator。
+
+Python最多读4MiB+1并拒绝超限；这是读取上限，不是Native sidecar物理写入上限，实际运行仍受任务整体容量门禁。临时目录正常退出即回收；进程被终止留下的残件按通用策略复核，不宣称自动GC已部署。本次源码已审阅，未运行测试或实机；冻结SDK87/f9仍保留旧普通入口，本增量待后继SDK采用。M6仍partial。

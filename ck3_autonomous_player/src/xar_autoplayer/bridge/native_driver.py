@@ -40,6 +40,7 @@ from pathlib import Path
 import secrets
 import shutil
 import struct
+import tempfile
 import threading
 import time
 from typing import Protocol
@@ -3842,6 +3843,23 @@ class NativeHeadlessGameplayDriver:
             query_current_first_heir_relationship_private_v1,
         )
 
+        if (guardian_factory_sidecar_path is None and self.state_dir is not None
+                and self.allow_private_current_first_heir_relationship_query is True):
+            # One existing family request owns this fresh scratch directory.
+            # Temporary sidecar bytes are consumed before cleanup, not archived.
+            material_root = (self.state_dir.resolve() / "native-family-materials")
+            material_root.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory(prefix="query-", dir=material_root) as directory:
+                query_directory = Path(directory).resolve()
+                if query_directory.parent != material_root:
+                    raise BridgeUnavailableError("family material scratch escaped its state root")
+                return query_current_first_heir_relationship_private_v1(
+                    self, expected_native_revision=expected_native_revision,
+                    timeout_seconds=timeout_seconds,
+                    campaign_root_result=campaign_root_result,
+                    guardian_factory_sidecar_path=query_directory / "guardian-two-factory-source.json",
+                    include_relation_materials=True,
+                )
         return query_current_first_heir_relationship_private_v1(
             self, expected_native_revision=expected_native_revision,
             timeout_seconds=timeout_seconds,

@@ -2286,7 +2286,8 @@ class GameplayBridgeService:
         from ..family_education_request_preference_12004 import (
             order_family_education_request_candidates_12004,
         )
-        needs = derive_family_education_needs_12004(inputs)
+        needs = derive_family_education_needs_12004(
+            inputs, child_relation_materials=relationship.get("current_child_relation_materials_v1"))
         planned = {**planned, "plan": {**plan, "family_education_inputs": inputs,
                                       "family_education_needs": needs}}
         plan = planned["plan"]
