@@ -1,0 +1,45 @@
+{
+  "schema": "lyd-0.1.0-cache-close-evidence-index-v1",
+  "recorded_at_utc": "2026-10-11T17:48:39.492030+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0063",
+  "cache_acceptance_pass": true,
+  "new_features_live_pass": false,
+  "files": [
+    {
+      "repository_file": "cache-close-2026-10-12.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\cache-close-projection.actual.json",
+      "bytes": 2998,
+      "sha256": "e440629ba6f83864295ed9cba38be0b78752e88fc1c15260583f24e547a7417b"
+    },
+    {
+      "repository_file": "cache-native-cleanup-2026-10-12.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\native-cleanup-projection.actual.json",
+      "bytes": 2787,
+      "sha256": "8ac3e2dd0ffd423bcabd4bd66069b6b401ee32fa662b6e768012863540829de8"
+    },
+    {
+      "repository_file": "cache-verify-command-2026-10-12.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261012-025\\cache-verify-command-001\\RESULT.actual.json",
+      "bytes": 1689,
+      "sha256": "6bd1fef3a1de01a741666aff92fa60794fa59241d8a4e94be04b66c4f8694d63"
+    },
+    {
+      "repository_file": "cache-game-exit-2026-10-12.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "9595bb8545f0245110a020cf3543f8140030624b8bfbb46d96b67e9a2da7ba3e"
+    },
+    {
+      "repository_file": "cache-host-exit-2026-10-12.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "55514a27d323752a72571d861ad86701519232f5d362b7416e5eb013c0ad4090"
+    },
+    {
+      "repository_file": "cache-screen-release-2026-10-12.json",
+      "original_path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\release-command-001\\stdout.log",
+      "bytes": 1263,
+      "sha256": "cdf9c02715104dec9cb9abe8ac9279b1a06317aa76b28a8140ab50a6412b3417"
+    }
+  ]
+}

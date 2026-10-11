@@ -2057,7 +2057,7 @@ class GameplayBridgeService:
                 expected_revision=int(planned["revision"]))
             if (diag.get("planner_status") == "planner_absent"
                     or (diag.get("host_view_activity_key") == "activity_feast"
-                        and diag.get("planning_stage") in (1, 2)):
+                        and diag.get("planning_stage") in (1, 2))):
                 # A held configuration gets a normal advance before another
                 # attempt in a new frame; configuration cannot starve time.
                 source_frame = (planned["revision"], diag.get("date_raw"))

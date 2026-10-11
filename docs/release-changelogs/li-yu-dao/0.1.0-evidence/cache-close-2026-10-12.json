@@ -1,0 +1,71 @@
+{
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0063",
+  "product": "li-yu-dao",
+  "case": "workshop_cache",
+  "item_id": "3817934804",
+  "cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3817934804",
+  "file_count": 71,
+  "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+  "combined_managed_cache_profile_and_actual_menu_load": true,
+  "case_contract_qualified": true,
+  "gui_contract_qualified": true,
+  "case_acceptance_pass": true,
+  "qualified_boundary_pass": true,
+  "business_contract_applicable": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "schema": "lyd-workshop-cache-close-projection-v1",
+  "original_verify": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261012-025\\cache-verify-command-001\\stdout.log",
+    "bytes": 103480,
+    "sha256": "4008e381c0abe1bf4bd2d62f8b7fc295fd79a7ffd4ee44ce6996d882d0cd2f93"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\native-cleanup-projection.actual.json",
+    "bytes": 2787,
+    "sha256": "8ac3e2dd0ffd423bcabd4bd66069b6b401ee32fa662b6e768012863540829de8"
+  },
+  "actual_retained_os_exit": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 17372,
+    "create_time": 1791738572.4365468,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "original_host_exit": {
+    "at_utc": "2026-10-11T17:26:58.868310+00:00",
+    "pid": 16608,
+    "returncode": 0,
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0063",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "normal_close_qualified": true,
+  "final_steam_offline_direct_review": {
+    "reviewer": "/root",
+    "observed_offline": true,
+    "freshness": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\final-offline-001\\steam-frame-freshness.json",
+      "bytes": 1254,
+      "sha256": "0f8e17d2c4975bae8c3d00807f839b13223512b6636104e3e53ec19b9da79eab"
+    },
+    "original_image": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\final-offline-001\\steam-moved.png",
+      "bytes": 1256024,
+      "sha256": "ea62ec8e00ae10c18a91c7896f4c68500599812ec867104cfade488c7d834f0a"
+    }
+  },
+  "screen_release": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\release-command-001\\stdout.log",
+    "bytes": 1263,
+    "sha256": "cdf9c02715104dec9cb9abe8ac9279b1a06317aa76b28a8140ab50a6412b3417"
+  },
+  "display_restore": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\display-restore-001.json",
+    "bytes": 177,
+    "sha256": "af1be1ac11b7a4aebb842e643bd60bb4f37cf1c50e514b4c3155dc0580cbe395"
+  },
+  "forced_shutdown_performed": false
+}

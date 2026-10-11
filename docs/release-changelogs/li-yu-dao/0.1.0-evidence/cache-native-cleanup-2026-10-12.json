@@ -1,0 +1,61 @@
+{
+  "schema": "lyd.native-cleanup-field-projection.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0063",
+  "original_native_report": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\native-report.json",
+    "bytes": 1299555,
+    "sha256": "30f0a57d43a0f9cdf68cf93dc2f05c6e8e2549a9ff23f661d830745e3bd91c38"
+  },
+  "original_host_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "55514a27d323752a72571d861ad86701519232f5d362b7416e5eb013c0ad4090"
+  },
+  "projection": {
+    "finished_at": "2026-10-11T17:26:57.085334+00:00",
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "status": "GREEN",
+    "error": null,
+    "state_dir": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261012-014\\state002",
+    "agent_source_root": "C:\\csr19",
+    "session": {
+      "report": {
+        "finished_at": "2026-10-11T17:26:50.725388+00:00",
+        "shutdown": {
+          "nonce": "b04b7ed808f04710b17ea2903691ff31",
+          "ck3_pid": 17372,
+          "ck3_creation_date": "20261011170932.436546+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 12756,
+          "watchdog_creation_date": "20261011170931.441570+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261012-014\\state002\\control\\ck3.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261012-014\\state002\\control\\watchdog-b04b7ed808f04710b17ea2903691ff31.ready.json": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261012-014\\state002\\control\\ck3.watchdog_error": true,
+            "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261012-014\\state002\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      }
+    }
+  },
+  "single_functional_parse_started_utc": "2026-10-11T17:46:17.897934+00:00",
+  "single_functional_parse_finished_utc": "2026-10-11T17:46:17.915591+00:00",
+  "original_native_body_read_or_hash_permitted_after_projection": false
+}

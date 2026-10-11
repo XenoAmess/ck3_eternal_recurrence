@@ -1,0 +1,41 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case5-public-entry-sourceonly-20261011-001\\with_selected_environment.py",
+    "--entry",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "--execute",
+    "--",
+    "verify",
+    "--runtime",
+    "C:\\workspace\\ck3-common-runtime\\20261012-lyd-cache-capabilities-001\\runtime.local.json",
+    "--products",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+    "--product",
+    "li-yu-dao",
+    "--case",
+    "workshop_cache",
+    "--prepared-case",
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261012-014\\prepared002\\prepared-case.json",
+    "--run-context",
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0063\\reviewed-context.json"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T17:31:06.163349+00:00",
+  "finished_at_utc": "2026-10-11T17:31:06.594069+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261012-025\\cache-verify-command-001\\stdout.log",
+    "bytes": 103480,
+    "sha256": "4008e381c0abe1bf4bd2d62f8b7fc295fd79a7ffd4ee44ce6996d882d0cd2f93"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-root-storage-admission-20261012-025\\cache-verify-command-001\\stderr.log",
+    "bytes": 1150,
+    "sha256": "110d5415403ebbf8317ca1e525e39580f01aab7f8cc4378d01abfa4bcaf2b0a4"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "439364cca5bcc7899417aaade008ebf3360f020f"
+    },
+    "last_sequence": 4981,
+    "next_step": "",
+    "pid": 16100,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0063_cache_exact_loaded_normalOS0_host0_final_offline_display_restored",
+    "task_id": "common-acceptance-12004-20261010-a25",
+    "updated_at_utc": "2026-10-11T17:37:08.421637+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4981,
+    "event_id": "b06fb43c169343bfadf91cf86211b756",
+    "timestamp_utc": "2026-10-11T17:37:08.422745+00:00",
+    "kind": "completed",
+    "task_id": "common-acceptance-12004-20261010-a25",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0063_cache_exact_loaded_normalOS0_host0_final_offline_display_restored",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "439364cca5bcc7899417aaade008ebf3360f020f"
+    }
+  }
+}
