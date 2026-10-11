@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_marriage_probe.hpp"
+#include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
 #include <atomic>
 #include <utility>
 
@@ -112,18 +113,35 @@ SnapshotObserverDiagnostics12002 WorkerAdapter::snapshot_observer_diagnostics() 
 
 bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
   output = {};
+  using FailureStage = xar::bridge::ck3_12004::SnapshotReadFailureStage12004;
+  const bool actual4 = game::IsCk3_12004Descriptor(descriptor());
+  if (actual4) xar::bridge::ck3_12004::BeginSnapshotReadAttempt12004();
+  const auto unavailable = [actual4](FailureStage stage) noexcept {
+    if (actual4) xar::bridge::ck3_12004::RecordSnapshotReadFailure12004(stage);
+    return false;
+  };
   try {
     const auto diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
     std::lock_guard guard(snapshot_mutex_);
-    if (!snapshot_.has_value() || !diagnostics.observed_stamp_read_success ||
-        diagnostics.observed_tls_initialized != 1 ||
-        diagnostics.observed_tls_main_thread_marker != 1 ||
-        snapshot_epoch_ == 0 ||
-        snapshot_->date_raw != diagnostics.observed_date_raw ||
-        snapshot_->paused != diagnostics.observed_paused) return false;
+    if (!snapshot_.has_value())
+      return unavailable(FailureStage::worker_snapshot_cache_absent);
+    if (!diagnostics.observed_stamp_read_success)
+      return unavailable(FailureStage::worker_snapshot_stamp_unobserved);
+    if (diagnostics.observed_tls_initialized != 1)
+      return unavailable(FailureStage::worker_snapshot_tls_uninitialized);
+    if (diagnostics.observed_tls_main_thread_marker != 1)
+      return unavailable(FailureStage::worker_snapshot_tls_marker_invalid);
+    if (snapshot_epoch_ == 0)
+      return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
+    if (snapshot_->date_raw != diagnostics.observed_date_raw)
+      return unavailable(FailureStage::worker_snapshot_date_mismatch);
+    if (snapshot_->paused != diagnostics.observed_paused)
+      return unavailable(FailureStage::worker_snapshot_pause_mismatch);
     output = *snapshot_;
     return true;
-  } catch (...) { return false; }
+  } catch (...) {
+    return unavailable(FailureStage::worker_snapshot_exception);
+  }
 }
 
 bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {

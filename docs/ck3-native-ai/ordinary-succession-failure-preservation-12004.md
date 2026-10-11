@@ -38,3 +38,12 @@ Service在确切`executed`、successor `accepted/continued`且当次持盘诊断
 Endpoint沿原取消I/O与两秒join，线程仍alive时真实抛错并保留线程引用，不能清引用后声称driver关闭。启动ready超时或fatal先冻结原始启动RuntimeError，若关闭也失败，原错仍为顶层、关闭错保留为cause。MCP main若server.run已抛异常，driver.close失败作为note追加到原错；无原错时真实传播关闭失败。Runner既有cleanup追加与driver_closed标志保持，不新增join循环、transport、持盘或调用。SDK进程、Game退出与Endpoint关闭仍是独立事实。
 
 本批07是完整采用，未同时套用旧04。Root初次采用已写完两个源文件，但回执父目录拼错导致记录失败；随后从31909b7e真实Git preimage重建三个hunk并逐字节核对现文件，只补回执，没有重套或再次改源。[实际采用回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-M7-ENDPOINT-PRIMARY-SOURCE-ADOPTION.json)。仍为source only，冻结SDK87/f9未改，未运行测试或继承实机重验。
+
+
+## 2026-10-12：WorkerAdapter同次失败门诊断
+
+R102 的首次继承人关系请求在原始回包中返回 `during_read_guard=snapshot_read_failed`，after仍为unknown。源码确认最终during读取走WorkerAdapter；缓存采样会先令epoch为0、锁外读取后再发布，但原回包没有指出具体失败门，不能据此归因采样窗口。
+
+已采用两文件四hunk：actual4 WorkerAdapter每次沿原读取开始一次TLS诊断，在原cache、stamp、TLS、epoch、date、pause及exception短路处记录对应stage；现有during helper直接读取同次Fresh/Format。旧enum值保持，新增值仅追加。没有重读、重试、放宽守卫、替用旧缓存或伪造prefix；原失败请求不重发。实际失败门与根因仍unknown，M7 incomplete／自然跨代0。
+
+[实际源码采用回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-WORKER-FAILURE-STAGE08-SOURCE-ADOPTION.json)。冻结SDK87／Native86／R102未改，生产编译待新的实际SDK88 pin与Native87依赖闭包。15项源审与4项补丁复核完成；无测试、fixture或继承业务复验。

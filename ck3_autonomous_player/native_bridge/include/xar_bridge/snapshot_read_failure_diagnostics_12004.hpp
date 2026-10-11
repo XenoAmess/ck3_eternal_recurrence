@@ -7,7 +7,11 @@
 namespace xar::bridge::ck3_12004 {
 enum class SnapshotReadFailureStage12004 : std::uint8_t {
   none, core_reader_missing, core_prefix, foundation_missing, actor_resources,
-  played_relationships, events, world, settlement
+  played_relationships, events, world, settlement,
+  worker_snapshot_cache_absent, worker_snapshot_stamp_unobserved,
+  worker_snapshot_tls_uninitialized, worker_snapshot_tls_marker_invalid,
+  worker_snapshot_epoch_unpublished, worker_snapshot_date_mismatch,
+  worker_snapshot_pause_mismatch, worker_snapshot_exception
 };
 
 // Owned facts from one actual4 read attempt. A failed prefix has no qualified
@@ -80,6 +84,22 @@ inline std::string_view SnapshotReadFailureStageName12004(
     case SnapshotReadFailureStage12004::events: return "events";
     case SnapshotReadFailureStage12004::world: return "world";
     case SnapshotReadFailureStage12004::settlement: return "settlement";
+    case SnapshotReadFailureStage12004::worker_snapshot_cache_absent:
+      return "worker_snapshot_cache_absent";
+    case SnapshotReadFailureStage12004::worker_snapshot_stamp_unobserved:
+      return "worker_snapshot_stamp_unobserved";
+    case SnapshotReadFailureStage12004::worker_snapshot_tls_uninitialized:
+      return "worker_snapshot_tls_uninitialized";
+    case SnapshotReadFailureStage12004::worker_snapshot_tls_marker_invalid:
+      return "worker_snapshot_tls_marker_invalid";
+    case SnapshotReadFailureStage12004::worker_snapshot_epoch_unpublished:
+      return "worker_snapshot_epoch_unpublished";
+    case SnapshotReadFailureStage12004::worker_snapshot_date_mismatch:
+      return "worker_snapshot_date_mismatch";
+    case SnapshotReadFailureStage12004::worker_snapshot_pause_mismatch:
+      return "worker_snapshot_pause_mismatch";
+    case SnapshotReadFailureStage12004::worker_snapshot_exception:
+      return "worker_snapshot_exception";
     case SnapshotReadFailureStage12004::none: return "none";
   }
   return "unknown";
