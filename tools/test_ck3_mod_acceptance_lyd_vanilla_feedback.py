@@ -71,7 +71,9 @@ class Client:
             model = {'accepted': True}
         return [{'id': step['id'], 'ok': True, 'result': model}]
 
-    def root_checkpoint(self, name, request):
+    def root_checkpoint(self, name, request, reserve=420):
+        if reserve != 420:
+            raise ValueError('Seven-minute normal exit reserve required')
         phase = request['phase']
         self.reviews.append(phase)
         facts = {key: True for key in request['requirements']}

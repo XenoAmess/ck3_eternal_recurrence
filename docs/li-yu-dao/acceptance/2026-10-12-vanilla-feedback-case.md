@@ -9,3 +9,5 @@
 2026-10-12 02:02（Asia/Shanghai）：专项代码集成后的 9 项离线合同测试退出 0，实际命令回执为 `C:/workspace/ck3_lyd_runtime_20261004/i4-root-storage-admission-20261012-025/feedback-integrated-case-tests-command-001/RESULT.actual.json`。本记录截至此时尚无新实机结果，不赋予 whole-product / release 通过结论。
 
 上一提交 `5165c50256fff3dcbe24769671f1dc0aaabd3c7a` 的 Official CI 与 Linear CI 已分别成功；该提交没有匹配 LYD workflow 的路径过滤条件，LYD 状态为 NOT_TRIGGERED。源码及历史实机证据均不外推为本轮 0.1.1 运行通过。
+
+首次实机冻结前调整：R0063 在正常退出点击后约 6 分钟才取得原始 host wait0。因此本 case 首次声明 hold 为 1800 秒、总 timeout 为 3000 秒，并在 ROOT checkpoint 保留 420 秒退出时间；不是给已运行会话续时。磁盘峰值仍为单场 512 MiB，不新增存档、native 构建或源树副本。

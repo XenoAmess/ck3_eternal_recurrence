@@ -3119,8 +3119,8 @@
           "budgets": {
             "command_timeout": 300,
             "readiness_timeout": 400,
-            "timeout": 2100,
-            "hold_seconds": 900,
+            "timeout": 3000,
+            "hold_seconds": 1800,
             "poll_interval": 0.5
           },
           "required_mcp_tools": [
@@ -3131,7 +3131,7 @@
           ],
           "normal_close": {
             "owner": "shared entry/CaseClient",
-            "reserve_seconds": 90,
+            "reserve_seconds": 420,
             "actual_retained_OS0_and_original_native0_required": true
           },
           "business_contract_applicable": true,

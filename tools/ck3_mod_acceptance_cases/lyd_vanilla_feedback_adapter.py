@@ -150,7 +150,7 @@ def review_phase(context, client, phase, frame, records):
         'same_frame_GUI_qualification': False, 'no_automatic_retry': True,
         'personal_tenet_mutation_typed_capability': 'ABSENT; use ROOT official Personal Beliefs GUI',
         'no_HoF_before_declare_required': True, 'business_pass_inferred': False}
-    response = client.root_checkpoint('feedback-' + phase, request)
+    response = client.root_checkpoint('feedback-' + phase, request, reserve=420)
     write_once(Path(context['output']) / ('feedback-' + phase + '-review-preserved.json'), response)
     require(response.get('run_id') == context['run_id'] and response.get('reviewer') == client.operator_reviewer and
             response.get('status') == 'complete', 'ROOT review pending/wrong scene')
