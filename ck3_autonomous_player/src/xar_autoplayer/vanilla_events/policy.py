@@ -637,6 +637,91 @@ def _scope_projection_checks(
     return checks
 
 
+def _bookmark1070_selected_scope_projection(
+    context: Mapping[str, object],
+    contract: Mapping[str, object],
+    knowledge: Mapping[str, object],
+) -> tuple[dict[str, object], dict[str, object], dict[str, bool]]:
+    """Review only .c's root dependency; retain unrelated raw scope rows."""
+
+    digest = "5A5CE08980D8C4FDA1DCF40EC26E12D8973C01286F4DA42A6D939776CFD50E03"
+    analysis = knowledge.get("analysis")
+    review = (
+        analysis.get("selected_option_scope_dependency_review")
+        if isinstance(analysis, Mapping) else None
+    )
+    hashes = _policy_source_hashes(analysis)
+    profile = _selected_choice_effect_profile(knowledge, 2)
+    provenance = context.get("provenance")
+    root = context.get("root_scope")
+    scopes = context.get("saved_scopes")
+    raw_names = [
+        row.get("name") if isinstance(row, Mapping) else None
+        for row in scopes
+    ] if isinstance(scopes, list) else []
+    checks = {
+        "bookmark1070_exact_current_source": bool(
+            knowledge.get("ck3_build") == "1.20.0.4"
+            and knowledge.get("ck3_exe_sha256")
+            == SUPPORTED_CK3_EXE_SHA256["1.20.0.4"]
+            and isinstance(hashes, Mapping)
+            and hashes.get("events/bookmark_events.txt") == digest
+        ),
+        "bookmark1070_selected_scope_dependency_review": review == {
+            "schema": "xar.ck3.source-reviewed-selected-option-scopes/v1",
+            "ck3_build": "1.20.0.4",
+            "selected_native_option_index": 2,
+            "source_sha256": digest,
+            "root_dependencies": ["root.capital_province"],
+            "saved_scope_dependencies": [],
+            "common_after_effects": [],
+        },
+        "bookmark1070_native_context_backend": bool(
+            isinstance(provenance, Mapping)
+            and provenance.get("backend_id")
+            == "ck3-1.20.0.4-native-event-window-v1"
+        ),
+        "bookmark1070_root_scope_metadata": bool(
+            isinstance(root, Mapping)
+            and _integer(root.get("raw_type_index")) == 4
+            and _integer(root.get("subtype")) == 0
+        ),
+        "bookmark1070_all_raw_scope_rows_named_unique": bool(
+            isinstance(scopes, list)
+            and all(isinstance(name, str) and bool(name) for name in raw_names)
+            and len(raw_names) == len(set(raw_names))
+        ),
+        "bookmark1070_all_raw_scope_rows_structured": bool(
+            isinstance(scopes, list)
+            and all(isinstance(row, Mapping)
+                    and isinstance(row.get("scope"), Mapping) for row in scopes)
+        ),
+        "bookmark1070_selected_effect_dependencies": bool(
+            _integer(contract.get("selected_native_option_index")) == 2
+            and _integer(contract.get("selected_option_number")) == 3
+            and isinstance(profile, Mapping)
+            and profile.get("source_sha256") == digest
+            and profile.get("selected_option_effects") == [{
+                "effect": "spawn_army",
+                "levies": 125,
+                "men_at_arms": {"bowmen": 50, "light_horsemen": 50,
+                                "armored_horsemen": 25},
+                "location": "root.capital_province",
+            }]
+            and profile.get("common_after_effects") == []
+            and profile.get("observable_postcondition") is None
+        ),
+    }
+    # The selected authored effect reads root.capital_province, not a named
+    # saved scope. This projection does not certify inherited scope identities
+    # or observe the capital/army outcome. The original context is untouched.
+    selected_contract = {
+        **contract, "saved_scope_count": 0,
+        "saved_scope_name_sets": ((),), "scope_types": {},
+    }
+    return {**context, "saved_scopes": []}, selected_contract, checks
+
+
 def _source_bound_witch_scope_projection(
     context: Mapping[str, object],
     contract: Mapping[str, object],
@@ -1426,7 +1511,14 @@ def recommend_registered_vanilla_event_option_v1(
         else:
             checks["r0109_all_scope_rows_named_unique"] = False
             checks["r0109_authored_roles_present"] = False
-    checks.update(_scope_projection_checks(scope_context, contract, character_id))
+    scope_contract = contract
+    bookmark1070_scope_projection = build == "1.20.0.4" and event_key == "bookmark.1070"
+    if bookmark1070_scope_projection:
+        scope_context, scope_contract, dependency_checks = (
+            _bookmark1070_selected_scope_projection(event_context, contract, knowledge)
+        )
+        checks.update(dependency_checks)
+    checks.update(_scope_projection_checks(scope_context, scope_contract, character_id))
     if witch_boolean_scope_names_match is not None:
         checks["trait_specific_4001_boolean_scope_names_exact"] = (
             witch_boolean_scope_names_match
@@ -1571,6 +1663,13 @@ def recommend_registered_vanilla_event_option_v1(
     )
     if poet_comparison is not None:
         result["poet_long_term_decision_context"] = poet_comparison["decision_context"]
+    if bookmark1070_scope_projection:
+        result["scope_projection_source"] = "source-reviewed-selected-option-dependencies"
+        result["selected_scope_dependencies"] = {
+            "root": "root.capital_province", "saved_scope_names": [],
+            "raw_inherited_scope_rows_preserved": True,
+            "inherited_scope_identity_qualified": False,
+        }
     return result
 
 

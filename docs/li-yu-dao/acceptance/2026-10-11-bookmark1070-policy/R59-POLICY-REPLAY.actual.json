@@ -1,0 +1,27 @@
+{
+  "status": "recommended",
+  "failed_checks": [],
+  "selected_option_number": 3,
+  "selected_native_option_index": 2,
+  "selected_rendered_index": 2,
+  "semantic_decision_ready": false,
+  "semantic_optimal": false,
+  "scope_projection_source": "source-reviewed-selected-option-dependencies",
+  "selected_scope_dependencies": {
+    "root": "root.capital_province",
+    "saved_scope_names": [],
+    "raw_inherited_scope_rows_preserved": true,
+    "inherited_scope_identity_qualified": false
+  },
+  "unavailable_reason": null,
+  "schema": "lyd.bookmark1070.saved-public-context-policy-replay.v1",
+  "source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-11-i4-r59-case10\\raw\\R59\\case-output\\i4-first-natural-event-context.actual-results.json",
+    "bytes": 38106,
+    "sha256": "f0d208e0ef6a37868c2f4e298a0f49d5c60ebc530b8c555513abecb9683a04d6"
+  },
+  "live_query": false,
+  "event_option_submitted": false,
+  "army_outcome_qualified": false,
+  "business_pass": false
+}

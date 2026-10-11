@@ -1,0 +1,31 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "ck3_autonomous_player/tests/unit",
+    "-p",
+    "test_vanilla_event_registry_policy.py",
+    "-v"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T09:26:00.954666+00:00",
+  "finished_at_utc": "2026-10-11T09:26:04.519505+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\bookmark1070-policy-tests-command-20261011-001\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\bookmark1070-policy-tests-command-20261011-001\\stderr.log",
+    "bytes": 10048,
+    "sha256": "586ec41533145f8cf65f51762468d77e9223573ba76ac3b56ea4ba59516d0410"
+  }
+}

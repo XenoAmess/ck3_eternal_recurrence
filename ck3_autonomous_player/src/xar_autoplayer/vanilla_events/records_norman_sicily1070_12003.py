@@ -15,12 +15,20 @@ NORMAN_SICILY1070_12003_RECORDS: Final = {'bookmark.1070': {'contract': {'date_p
                    'analysis': {'exact_build': {'game_version': '1.20.0.3',
                                                 'ck3_executable_sha256': '94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6',
                                                 'steam_build_id': 25652598},
+                                'selected_option_scope_dependency_review': {
+                                    'schema': 'xar.ck3.source-reviewed-selected-option-scopes/v1',
+                                    'ck3_build': '1.20.0.4',
+                                    'selected_native_option_index': 2,
+                                    'source_sha256': '5A5CE08980D8C4FDA1DCF40EC26E12D8973C01286F4DA42A6D939776CFD50E03',
+                                    'root_dependencies': ('root.capital_province',),
+                                    'saved_scope_dependencies': (),
+                                    'common_after_effects': ()},
                                 'readiness': 'static-ready',
                                 'new_live_evidence': False,
                                 'material_evidence_boundary': 'Exact installed source knowledge '
                                                               'only; actual acknowledgement '
                                                               'belongs to separate '
-                                                              'image/instance/revision-bound '
+                                                              'typed-instance/revision-bound '
                                                               'evidence',
                                 'source_sha256': {'events/bookmark_events.txt': '5A5CE08980D8C4FDA1DCF40EC26E12D8973C01286F4DA42A6D939776CFD50E03',
                                                   'localization/simp_chinese/bookmark/bookmark_rags_to_riches_1066_l_simp_chinese.yml': '89F12E753511E0688FB002420BC66B1F5CBFD85D20F5B83F0D2F2333141629DD'},
@@ -61,7 +69,7 @@ NORMAN_SICILY1070_12003_RECORDS: Final = {'bookmark.1070': {'contract': {'date_p
                                                                    'source_anchors': ['events/bookmark_events.txt:1210-1423'],
                                                                    'source_sha256': '5A5CE08980D8C4FDA1DCF40EC26E12D8973C01286F4DA42A6D939776CFD50E03'},
                                 'safe_option_rationale': 'Important multiple-choice event, not an '
-                                                         'empty acknowledgement. Explicit '
-                                                         'source/image-bound operator choice '
-                                                         'required; index2 still creates troops.'},
+                                                         'empty acknowledgement. Source-reviewed '
+                                                         'bounded continuation, not an optimal '
+                                                         'choice; index2 still creates troops.'},
                    'observations': {}}}

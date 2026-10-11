@@ -495,6 +495,165 @@ def _health_3104_punishment_context() -> dict[str, object]:
     }
 
 
+class Bookmark1070SelectedScopePolicyTests(unittest.TestCase):
+    """Synthetic R59-shaped metadata; no live or material-result credit."""
+
+    @staticmethod
+    def context() -> dict[str, object]:
+        character_ids = {
+            "governor": 33486, "holder": 33773,
+            "astrologer_character": 47525, "new_councillor": 47521,
+            "disciple": 33668, "elder": 29054, "emperor": 38665,
+        }
+        rows = [{"name": name, "name_identifier": index + 1,
+                 "scope": _scope("character", character_id=character_id)}
+                for index, (name, character_id) in enumerate(character_ids.items())]
+        # These inherited identities are deliberately unqualified in this
+        # synthetic fixture. .c does not read them or emperor/pope.
+        for name, type_key, raw_type in (
+            ("new_nomad_title", "landed_title", 5),
+            ("pool_province", "province", 8),
+        ):
+            scope = _scope(type_key)
+            scope["raw_type_index"] = raw_type
+            rows.append({"name": name, "name_identifier": len(rows) + 1,
+                         "scope": scope})
+        return {
+            "schema": "current-event-window-context-v1", "schema_version": 1,
+            "status": "available", "window_match_count": 1,
+            "event_definition_key": "bookmark.1070",
+            "root_scope": _scope("character", character_id=31254),
+            "saved_scopes": rows,
+            "options": [_option(0, 0), _option(1, 1), _option(2, 2)],
+            "provenance": {"backend_id": "ck3-1.20.0.4-native-event-window-v1"},
+            "readiness": {"effect_preview_ready": False,
+                          "semantic_decision_ready": False},
+        }
+
+    @staticmethod
+    def recommend(context: dict[str, object]) -> dict[str, object]:
+        return recommend_registered_vanilla_event_option_v1(
+            context, played_character_id=31254, snapshot_option_count=3,
+        )
+
+    def test_bookmark1070_c_accepts_inherited_scopes_without_mutation(self) -> None:
+        context = self.context()
+        before = copy.deepcopy(context)
+        result = self.recommend(context)
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["failed_checks"], [])
+        self.assertEqual(result["selected_option_number"], 3)
+        self.assertEqual(result["selected_native_option_index"], 2)
+        self.assertFalse(result["semantic_decision_ready"])
+        self.assertFalse(result["semantic_optimal"])
+        self.assertEqual(result["scope_projection_source"],
+                         "source-reviewed-selected-option-dependencies")
+        self.assertFalse(result["selected_scope_dependencies"][
+            "inherited_scope_identity_qualified"])
+        profile = result["choice_effect_profile"]
+        self.assertEqual(profile["selected_option_effects"][0]["levies"], 125)
+        self.assertEqual(profile["selected_option_effects"][0]["men_at_arms"],
+                         {"bowmen": 50, "light_horsemen": 50,
+                          "armored_horsemen": 25})
+        self.assertIsNone(profile["observable_postcondition"])
+        self.assertEqual(context, before)
+
+    def test_bookmark1070_c_has_no_named_scope_dependency(self) -> None:
+        context = self.context()
+        context["saved_scopes"] = []
+        self.assertEqual(self.recommend(context)["status"], "recommended")
+        context["saved_scopes"] = [{"name": "unrelated", "scope": {
+            "status": "unavailable", "typed_identity": {"status": "unavailable"},
+        }}]
+        self.assertEqual(self.recommend(context)["status"], "recommended")
+
+    def test_bookmark1070_rejects_missing_duplicate_or_malformed_scope_rows(self) -> None:
+        for mutation in ("missing", "duplicate", "empty-name", "no-scope", "not-row"):
+            with self.subTest(mutation=mutation):
+                context = self.context()
+                if mutation == "missing":
+                    del context["saved_scopes"]
+                elif mutation == "duplicate":
+                    context["saved_scopes"].append(copy.deepcopy(context["saved_scopes"][0]))
+                elif mutation == "empty-name":
+                    context["saved_scopes"][0]["name"] = ""
+                elif mutation == "no-scope":
+                    context["saved_scopes"][0]["scope"] = None
+                else:
+                    context["saved_scopes"].append(None)
+                self.assertEqual(self.recommend(context)["status"], "blocked")
+
+    def test_bookmark1070_rejects_unqualified_root_or_wrong_backend(self) -> None:
+        for mutation in ("wrong-id", "raw-type", "subtype", "missing-identity", "backend"):
+            with self.subTest(mutation=mutation):
+                context = self.context()
+                if mutation == "wrong-id":
+                    context["root_scope"]["typed_identity"]["character_id"] = 31255
+                elif mutation == "raw-type":
+                    context["root_scope"]["raw_type_index"] = 5
+                elif mutation == "subtype":
+                    context["root_scope"]["subtype"] = False
+                elif mutation == "missing-identity":
+                    del context["root_scope"]["typed_identity"]
+                else:
+                    context["provenance"]["backend_id"] = "ck3-1.20.0.3-native-event-window-v1"
+                self.assertEqual(self.recommend(context)["status"], "blocked")
+
+    def test_bookmark1070_rejects_source_or_dependency_review_drift(self) -> None:
+        for mutation in ("source", "missing-review", "dependency", "choice", "effect"):
+            with self.subTest(mutation=mutation):
+                knowledge = query_vanilla_event_knowledge_v1("bookmark.1070", "1.20.0.4")
+                if mutation == "source":
+                    knowledge["analysis"]["source_sha256"]["events/bookmark_events.txt"] = "0" * 64
+                elif mutation == "missing-review":
+                    del knowledge["analysis"]["selected_option_scope_dependency_review"]
+                elif mutation == "dependency":
+                    knowledge["analysis"]["selected_option_scope_dependency_review"][
+                        "saved_scope_dependencies"] = ("pope",)
+                elif mutation == "choice":
+                    knowledge["contract"]["selected_native_option_index"] = 0
+                    knowledge["contract"]["selected_option_number"] = 1
+                else:
+                    knowledge["analysis"]["selected_choice_effect_profile"][
+                        "selected_option_effects"].append({"effect": "add_opinion"})
+                with mock.patch("xar_autoplayer.vanilla_events.policy.query_vanilla_event_knowledge_v1",
+                                return_value=knowledge):
+                    self.assertEqual(self.recommend(self.context())["status"], "blocked")
+
+    def test_bookmark1070_rejects_wrong_current_executable_contract(self) -> None:
+        knowledge = query_vanilla_event_knowledge_v1("bookmark.1070", "1.20.0.4")
+        knowledge["ck3_exe_sha256"] = "0" * 64
+        with mock.patch("xar_autoplayer.vanilla_events.policy.query_vanilla_event_knowledge_v1",
+                        return_value=knowledge):
+            self.assertEqual(self.recommend(self.context())["status"], "blocked")
+
+    def test_bookmark1070_keeps_complete_option_projection_checks(self) -> None:
+        for mutation in ("missing-option", "native-index", "hidden", "disabled", "fallback"):
+            with self.subTest(mutation=mutation):
+                context = self.context()
+                if mutation == "missing-option":
+                    context["options"].pop()
+                elif mutation == "native-index":
+                    context["options"][2]["native_option_index"] = 1
+                elif mutation == "hidden":
+                    context["options"][2]["shown"] = False
+                elif mutation == "disabled":
+                    context["options"][2]["enabled"] = False
+                else:
+                    context["options"][2]["fallback"] = True
+                self.assertEqual(self.recommend(context)["status"], "blocked")
+
+    def test_bookmark1070_does_not_change_historical_12003_scope_handling(self) -> None:
+        context = self.context()
+        context["provenance"]["backend_id"] = "ck3-1.20.0.3-native-event-window-v1"
+        self.assertEqual(self.recommend(context)["status"], "blocked")
+
+    def test_bookmark1070_projection_does_not_relax_another_event(self) -> None:
+        context = _context()
+        context["saved_scopes"].append({"name": "unrelated", "scope": _scope("province")})
+        self.assertEqual(_recommend(context)["status"], "blocked")
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_health_3104_r19_three_option_variant_spares_physician(
         self,
