@@ -375,6 +375,7 @@
 #include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 #include "xar_bridge/nonwar_private_snapshot_guard_diagnostics_v1.hpp"
 #include "xar_bridge/first_heir_during_read_diagnostic_v1.hpp"
+#include "xar_bridge/observed_heir_marriage_admission_diagnostic_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_serializer.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1_mailbox.hpp"
@@ -20693,69 +20694,85 @@ void RunConnectedSession(
           (void)xar::bridge::JsonBooleanField(incoming.payload, "fulfill_existing_betrothal",
                                             cold_fulfill_existing_betrothal);
           xar::game::Snapshot before{};
-          if (!xar::bridge::JsonUnsignedField(
-                  incoming.payload, "expected_revision", expected_revision) ||
-              expected_revision != state_revision ||
-              !previous_snapshot.has_value() ||
-              !xar::game::ReadSnapshot(game, before) ||
-              before != *previous_snapshot || !before.paused ||
-              !before.map_ready ||
-              (cold_recovery
-                   ? (!xar::bridge::JsonUnsignedField(
-                          incoming.payload, "heir_character_id", cold_heir) ||
-                      !xar::bridge::JsonUnsignedField(
-                          incoming.payload, "candidate_character_id",
-                          cold_candidate) ||
-                      !xar::bridge::JsonUnsignedField(
-                          incoming.payload, "recipient_character_id",
-                          cold_recipient) ||
-                      !xar::bridge::JsonUnsignedField(
-                          incoming.payload, "source_date_raw", source_date_raw) ||
-                      cold_heir == 0 || cold_heir > INT32_MAX ||
-                      cold_candidate == 0 || cold_candidate > INT32_MAX ||
-                      cold_recipient == 0 || cold_recipient > INT32_MAX ||
-                      cold_candidate == cold_heir ||
-                      (cold_fulfill_existing_betrothal &&
-                       (child_route || !xar::bridge::JsonBooleanField(incoming.payload,
-                           "matrilineal_option_selected", cold_matrilineal))) ||
-                      source_date_raw > static_cast<std::uint64_t>(before.date_raw) ||
-                      (child_route
-                           ? (!xar::bridge::JsonBooleanField(
-                                  incoming.payload,
-                                  "matrilineal_option_selected",
-                                  cold_matrilineal) ||
-                              cold_matrilineal == child_default_route ||
+          const bool result_revision_parsed = xar::bridge::JsonUnsignedField(
+              incoming.payload, "expected_revision", expected_revision);
+          auto admission_error = xar::bridge_detail::ObservedHeirMarriageAdmissionErrorV1(
+              result_revision_parsed, expected_revision, state_revision,
+              previous_snapshot, before, [&](xar::game::Snapshot &observed) {
+                return xar::game::ReadSnapshot(game, observed);
+              }, [&]() -> std::string_view {
+                if (cold_recovery) {
+                  if (!xar::bridge::JsonUnsignedField(incoming.payload,
+                          "heir_character_id", cold_heir)) return "cold_heir_parse_failed";
+                  if (!xar::bridge::JsonUnsignedField(incoming.payload,
+                          "candidate_character_id", cold_candidate)) return "cold_candidate_parse_failed";
+                  if (!xar::bridge::JsonUnsignedField(incoming.payload,
+                          "recipient_character_id", cold_recipient)) return "cold_recipient_parse_failed";
+                  if (!xar::bridge::JsonUnsignedField(incoming.payload,
+                          "source_date_raw", source_date_raw)) return "cold_source_date_parse_failed";
+                  if (cold_heir == 0 || cold_heir > INT32_MAX) return "cold_heir_out_of_range";
+                  if (cold_candidate == 0 || cold_candidate > INT32_MAX) return "cold_candidate_out_of_range";
+                  if (cold_recipient == 0 || cold_recipient > INT32_MAX) return "cold_recipient_out_of_range";
+                  if (cold_candidate == cold_heir) return "cold_candidate_is_heir";
+                  if (cold_fulfill_existing_betrothal) {
+                    if (child_route) return "cold_fulfillment_child_route";
+                    if (!xar::bridge::JsonBooleanField(incoming.payload,
+                            "matrilineal_option_selected", cold_matrilineal))
+                      return "cold_fulfillment_lineality_parse_failed";
+                  }
+                  if (source_date_raw > static_cast<std::uint64_t>(before.date_raw))
+                    return "cold_source_date_in_future";
+                  if (child_route) {
+                    if (!xar::bridge::JsonBooleanField(incoming.payload,
+                            "matrilineal_option_selected", cold_matrilineal))
+                      return "cold_child_lineality_parse_failed";
+                    if (cold_matrilineal == child_default_route) return "cold_child_lineality_route_mismatch";
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
-                              ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(cold_heir)).failure !=
-                                  xar::ck3_11906::
-                                      PlayerChildMarriageSubjectFailureV1::none)
+                    if (ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(cold_heir)).failure !=
+                        xar::ck3_11906::PlayerChildMarriageSubjectFailureV1::none)
+                      return "cold_child_subject_unavailable";
 #else
-                              true)
+                    return "cold_child_route_disabled";
 #endif
-                           : (state.observed_primary_heir_revision != state_revision ||
-                              state.observed_primary_heir_connection_generation !=
-                                  connection_generation ||
-                              !state.observed_primary_heir_character_id.has_value() ||
-                              *state.observed_primary_heir_character_id !=
-                                  static_cast<std::int32_t>(cold_heir))))
-                   : (child_route
+                  } else {
+                    if (state.observed_primary_heir_revision != state_revision)
+                      return "cold_observed_heir_revision_mismatch";
+                    if (state.observed_primary_heir_connection_generation != connection_generation)
+                      return "cold_observed_heir_connection_mismatch";
+                    if (!state.observed_primary_heir_character_id.has_value())
+                      return "cold_observed_heir_missing";
+                    if (*state.observed_primary_heir_character_id != static_cast<std::int32_t>(cold_heir))
+                      return "cold_observed_heir_identity_mismatch";
+                  }
+                } else if (child_route) {
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
-                          ? (!state.child_matrilineal_pending_submission.has_value() ||
-                             state.child_matrilineal_pending_submission
-                                     ->matrilineal_option_selected ==
-                                 child_default_route ||
-                             expected_revision <= state.child_matrilineal_pending_submission
-                                                      ->pre_native_revision)
+                  if (!state.child_matrilineal_pending_submission.has_value())
+                    return "warm_child_pending_missing";
+                  if (state.child_matrilineal_pending_submission->matrilineal_option_selected == child_default_route)
+                    return "warm_child_lineality_route_mismatch";
+                  if (expected_revision <= state.child_matrilineal_pending_submission->pre_native_revision)
+                    return "warm_child_revision_not_later";
 #else
-                          ? true
+                  return "warm_child_route_disabled";
 #endif
-                          : (!state.marriage_family_pending_submission.has_value() ||
-                             expected_revision <= state.marriage_family_pending_submission
-                                                      ->pre_native_revision)))) {
+                } else {
+                  if (!state.marriage_family_pending_submission.has_value()) return "warm_heir_pending_missing";
+                  if (expected_revision <= state.marriage_family_pending_submission->pre_native_revision)
+                    return "warm_heir_revision_not_later";
+                }
+                return {};
+              });
+          if (!admission_error.empty()) {
+            admission_error += "; cold_recovery=" + std::to_string(cold_recovery) +
+                "; child_route=" + std::to_string(child_route) +
+                "; observed_primary_heir_revision=" + std::to_string(state.observed_primary_heir_revision) +
+                "; observed_primary_heir_connection_generation=" +
+                    std::to_string(state.observed_primary_heir_connection_generation) +
+                "; connection_generation=" + std::to_string(connection_generation) +
+                "; observed_primary_heir_id=" + (state.observed_primary_heir_character_id.has_value()
+                    ? std::to_string(*state.observed_primary_heir_character_id) : "unknown");
             connected = write_frame(
-                pipe, CommandResultFrame(
-                          request_id, step, false,
-                          "observed-heir marriage result needs a later paused frame"));
+                pipe, CommandResultFrame(request_id, step, false, admission_error));
           } else {
             xar::bridge::ObservedHeirMarriagePendingV1 pending{};
             if (cold_recovery) {

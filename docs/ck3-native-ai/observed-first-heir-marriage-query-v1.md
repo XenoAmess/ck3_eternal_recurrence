@@ -73,3 +73,46 @@ gate is still needed before promotion. No existing `open_kaishek` field or
 published ABI changed; a future consumer must explicitly negotiate the
 new private schema and exact DLL feature flag, not infer it from M5 query
 availability.
+
+## 2026-10-11 R96：1.20.0.4 cold-result admission 首失败诊断
+
+R96 的普通回合 `000004` 在 `01:39:07.995843Z` 实际返回
+`observed-heir marriage result needs a later paused frame`。当次 Native81／SDK
+来源为 `749809a735401bdd1f3114833d77a7af339e4cbe`，Runtime archive 仍复用
+`664c85d9dab3ff898826245e9b0a6053697e0bd6`。现场没有推进新日或取得新 SAVE；
+基线是 H10120／正常日 6077／raw date `53290176`。
+
+这段错误文本对应 `bridge.cpp` 的复合 result-admission gate，不独指日期或
+revision 条件。既有小 ledger 的 pending 为 null，已确认 marriage 属于旧 PID
+45424、post native revision 147；当前 PID 为 131616，已保留的暂停 frame native
+revision 为 2。`_plan_existing_resolution` 根据 PID／creation 变化选择 cold
+recovery，cold transport 用当前 `before.native_revision` 构造 expected revision，
+不会将旧 post 147 或 source pre 139 当作当前 revision。cold source date 允许等于
+当前 date；此文本不能据此解释成必须先推进一天。此前 R95 的同日 cold marriage
+成功结果也不能替代 R96 失败请求的 before／after。
+
+当次 `000004` 原响应 structured content 为 null，没有保留 native request ID、
+command result 或失败 frame。因此实际失败合取项仍未知。现有 gate 的原顺序为：
+revision 解析与 native state 相等、previous snapshot 存在、一次 Snapshot 读取成功、
+与 previous 完整相等、paused、map ready，再按 cold／warm 路由验证 pair、source
+date 与同帧 primary heir，或 pending submission 与 later revision。
+
+新 [`observed_heir_marriage_admission_diagnostic_v1.hpp`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/observed_heir_marriage_admission_diagnostic_v1.hpp)
+及 Bridge 的失败分支命名首个失败 predicate。快照差异复用既有 27 字段报告；读取
+失败只消费本次读取的同线程 fresh stage；未完成读取的 observed 值标为 unknown。
+错误还附已有 native state 的继承人 revision／connection／optional identity。
+原 guard 顺序、Snapshot 至多一次读取、cold child 的原条件读取、冷暖路线、后续
+bilateral verification 与成功 wire 均保持原行为。这是具体故障诊断，不授予实机
+blocker 已修复或实际原因已知的信用。
+
+Root 在 `2026-10-11T01:47:08.942393Z` 首次执行唯一新增
+[`observed_heir_marriage_admission_diagnostic_v1_fixture.cpp`](../../ck3_autonomous_player/native_bridge/src/observed_heir_marriage_admission_diagnostic_v1_fixture.cpp)：
+compile／run exit 0，5 个新 admission-helper 案例 GREEN，旧 63h 六案例重放 0，
+Game query 0；生产 Bridge 的 native callbacks 未由该夹具执行。三个生产／夹具文件
+已由 Root 采纳，下一 Native82 build／实机判据另记，不能外推为 R96 原因复现。
+
+保留的小证据入口（原期限 `2026-10-11T08:41:22.843427Z` 不续，届时复核 D 过程资产）：
+
+- `D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native81-r0096/ROOT-ACTUAL-ORDINARY-FAMILY-FAILURE.json`：实际错误、小 ledger 与缺失 native frame 边界。
+- `D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63i-r0096/SOURCE-FINDINGS.json`：冷路由与原 gate 调用顺序、exact source pins。
+- `D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-63i-r0096/root-first/ROOT-ACTUAL-FIRST-AND-ADOPTION.json`：Root 唯一首次 5 案例实际回执，实际失败项仍 `UNKNOWN_PENDING_NATIVE82_LIVE`。

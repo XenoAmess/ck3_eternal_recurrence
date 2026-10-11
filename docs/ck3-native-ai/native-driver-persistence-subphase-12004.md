@@ -57,3 +57,16 @@ from replace, so no I/O substep or speedup is inferred.31's narrow source review
 will decide the smallest useful optional split for the next already-needed SDK
 change. The service-query history-free optimization was already adopted in7498;
 35's source comparison returned NO_NEW_WORK using the prior60-case qualification.
+
+
+## Optional atomic write/replace split for the next required SDK upgrade
+
+The actual17s wrapper samples justified separating its two synchronous steps.
+31's Environment/native_driver patch adds optional existing-token stages
+`driver.full_state_temp_write_bytes` and `driver.full_state_replace`, using the
+same logger and original temporary path/bytes/replace/exception handling. With
+profiling off, the two-argument writer call and lazy-import-free branch stay.
+Root adopted both files and py_compile exited0 at observed01:49:36Z. No new
+functional test or profiling-only SDK restart. These stages enter SDK82 with
+the already-needed marriage admission diagnostic; actual values and performance
+improvements remain unobserved. Existing whole-wrapper and aggregate rows stay.

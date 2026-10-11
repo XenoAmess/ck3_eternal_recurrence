@@ -10986,9 +10986,15 @@ class NativeHeadlessGameplayDriver:
                         else None
                     )
                     try:
-                        write_bytes_atomic(
-                            self._native_driver_state_path(), encoded
-                        )
+                        if persistence_step is None:
+                            write_bytes_atomic(
+                                self._native_driver_state_path(), encoded
+                            )
+                        else:
+                            write_bytes_atomic(
+                                self._native_driver_state_path(), encoded,
+                                timing_step=persistence_step,
+                            )
                     finally:
                         if persistence_step is not None:
                             finish_army_timing(write_timing, step=persistence_step)

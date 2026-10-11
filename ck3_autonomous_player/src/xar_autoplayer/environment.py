@@ -315,11 +315,28 @@ def snapshot_digest(snapshot: object) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def write_bytes_atomic(path: Path, payload: bytes) -> None:
+def write_bytes_atomic(
+    path: Path, payload: bytes, *, timing_step: str | None = None
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
-    temporary.write_bytes(payload)
-    os.replace(temporary, path)
+    if timing_step is None:
+        temporary.write_bytes(payload)
+        os.replace(temporary, path)
+        return
+
+    from .bridge.army_query_timing import finish_army_timing, start_army_timing
+
+    write_timing = start_army_timing("driver.full_state_temp_write_bytes")
+    try:
+        temporary.write_bytes(payload)
+    finally:
+        finish_army_timing(write_timing, step=timing_step)
+    replace_timing = start_army_timing("driver.full_state_replace")
+    try:
+        os.replace(temporary, path)
+    finally:
+        finish_army_timing(replace_timing, step=timing_step)
 
 
 def write_text_atomic(path: Path, text: str, encoding: str = "utf-8") -> None:
