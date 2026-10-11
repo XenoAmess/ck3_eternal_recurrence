@@ -178,6 +178,73 @@ def _material_post(pending: Mapping[str, object], post: Mapping[str, object]) ->
     return True
 
 
+def _original_call_counter_observation(
+    resolved: Mapping[str, object], post: Mapping[str, object], previous: object,
+) -> dict[str, object] | None:
+    """Keep exact original-call faces independently from pre-start/post counters."""
+    activity_id, actor_id = resolved["activity_id"], resolved["actor_character_id"]
+    journal = post.get("native_completion_effect_counter_observations")
+    records = []
+    if (isinstance(journal, Mapping) and journal.get("available") is True
+            and journal.get("query_actor_full_id_u32") == actor_id
+            and post.get("actor_character_id") == actor_id):
+        for row in journal["records"]:
+            before, after = row["before"], row["after"]
+            if not (before["activity_full_id_observed"] is True
+                    and before["activity_full_id_u32"] == activity_id
+                    and before["activity_instance_generation_u8"] == activity_id >> 24
+                    and before["host_observed"] is True
+                    and (before["host_character_id_i32"] & 0xFFFFFFFF) == actor_id
+                    and before["type_key_observed"] is True
+                    and before["type_key"] == "activity_feast"
+                    and before["participant_full_id_observed"] is True
+                    and before["participant_full_id_u32"] == actor_id):
+                continue
+            paired_ids = bool(
+                row["original_call_return_observed"] is True
+                and row["same_activity_full_id_observed"] is True
+                and row["same_activity_full_id"] is True
+                and row["same_participant_full_id_observed"] is True
+                and row["same_participant_full_id"] is True
+            )
+            changes = {
+                key: (after[raw_key] - before[raw_key]
+                      if paired_ids and before[flag] is True and after[flag] is True else None)
+                for key, flag, raw_key in (
+                    ("prestige_raw", "prestige_observed", "prestige_raw_i64"),
+                    ("stress_points", "stress_observed", "stress_raw_i32"),
+                )
+            }
+            changes["reveler_xp_raw"] = None
+            records.append({"native_observation": row, "counter_changes_raw": changes})
+    if records:
+        return {
+            "activity_id": activity_id, "actor_character_id": actor_id,
+            "activity_type_key": "activity_feast",
+            "scope": "one_original_completion_call_per_record",
+            "records": records,
+            "journal_coverage": {key: value for key, value in journal.items() if key != "records"},
+            "source_query_provenance": {
+                key: post[key] for key in (
+                    "snapshot_revision", "date_raw", "actor_character_id", "exact_ck3_build",
+                    "exe_sha256", "queried_snapshot_id", "queried_revision", "queried_native_revision",
+                    "post_snapshot_id",
+                ) if key in post
+            },
+            "retained_from_previous_observation": False,
+            "benefit_verified": False, "counter_changes_attributed_to_feast": False,
+        }
+    value = previous.get("value_observation") if isinstance(previous, Mapping) else None
+    retained = value.get("original_call_scope_counter_observation") if isinstance(value, Mapping) else None
+    if (isinstance(retained, Mapping) and retained.get("activity_id") == activity_id
+            and retained.get("actor_character_id") == actor_id
+            and retained.get("activity_type_key") == "activity_feast"):
+        # Preserve the actual old query binding; software sequence/date is not
+        # a cross-process call identity and these records are never summed.
+        return {**retained, "retained_from_previous_observation": True}
+    return None
+
+
 def _record_lifecycle_observation(
     state_dir: Path, ledger: Mapping[str, object], resolved: Mapping[str, object],
     post: Mapping[str, object],
@@ -267,6 +334,14 @@ def _record_lifecycle_observation(
             key: post[key] for key in ("exact_ck3_build", "exe_sha256", "queried_snapshot_id")
             if key in post},
     })
+    lifecycle["value_observation"]["original_call_scope_counter_observation"] = (
+        _original_call_counter_observation(resolved, post, previous)
+    )
+    call_journal = post.get("native_completion_effect_counter_observations")
+    if isinstance(call_journal, Mapping):
+        lifecycle["value_observation"]["original_call_scope_journal_coverage"] = {
+            key: value for key, value in call_journal.items() if key != "records"
+        }
     # Completion callbacks, conclusion-event choices, income and other effects
     # are separate sources. These balance differences are observations only.
     updated = {**resolved, "lifecycle": lifecycle}

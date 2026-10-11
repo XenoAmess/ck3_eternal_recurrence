@@ -212,6 +212,157 @@ def _native_terminal_observations(value: object, *, actor_id: int) -> dict[str, 
         return None
 
 
+def _native_completion_effect_counter_observations(
+    value: object, *, actor_id: int,
+) -> dict[str, object] | None:
+    """Qualify only the optional original-call source, preserving unknown faces."""
+    if value is None:
+        return None
+    def require(condition: bool) -> None:
+        if not condition:
+            raise ValueError("private feast original-call counter journal malformed")
+    def integer(raw: object, low: int, high: int) -> bool:
+        return type(raw) is int and low <= raw <= high
+    family_keys = {
+        "schema", "available", "unavailable_reason", "observer_attached", "read_only",
+        "process_lifetime", "query_thread_id_u32", "query_actor_full_id_u32", "record_capacity",
+        "earliest_retained_sequence_u64", "latest_capture_sequence_u64",
+        "overflow_dropped_count_u64", "pairing_dropped_count_u64", "record_count", "records",
+    }
+    row_keys = {
+        "capture_sequence_u64", "observer_invocation_sequence_u64", "capture_thread_id_u32",
+        "source_call_rva_u64", "source_callee_rva_u64", "source_return_rva_u64",
+        "activity_identity_u64", "participant_identity_u64", "effect_identity_u64",
+        "native_context_identity_u64", "original_parent_rsp_u64", "original_call_return_observed",
+        "before", "after", "same_activity_full_id_observed", "same_activity_full_id",
+        "same_participant_full_id_observed", "same_participant_full_id",
+    }
+    face_keys = {
+        "frame_observed", "frame", "activity_full_id_observed", "activity_full_id_u32",
+        "activity_instance_generation_u8", "host_observed", "host_character_id_i32",
+        "type_observed", "type_identity_u64", "type_key_observed", "type_key",
+        "participant_full_id_observed", "participant_full_id_u32",
+        "participant_instance_generation_u8", "resource_extension_observed",
+        "resource_extension_identity_u64", "prestige_observed", "prestige_raw_i64",
+        "stress_observed", "stress_raw_i32", "reveler_xp_observed", "reveler_xp_raw_i64",
+        "reveler_xp_unavailable_reason",
+    }
+    frame_keys = {
+        "date_raw_i64", "actor_character_id_i32", "owner_thread_id_u32", "paused",
+        "map_ready", "has_played_character", "played_character_alive",
+    }
+    try:
+        require(isinstance(value, dict) and set(value) == family_keys
+                and value["schema"] == "activity_completion_effect_counter_observations_12004_v1")
+        require(all(type(value[key]) is bool for key in
+                    ("available", "observer_attached", "read_only", "process_lifetime"))
+                and value["read_only"] is True and value["process_lifetime"] is True)
+        require(integer(value["query_thread_id_u32"], 0, 0xFFFFFFFF)
+                and integer(value["query_actor_full_id_u32"], 0, 0xFFFFFFFF)
+                and type(value["record_capacity"]) is int and value["record_capacity"] == 64
+                and integer(value["record_count"], 0, 64)
+                and isinstance(value["records"], list)
+                and len(value["records"]) == value["record_count"])
+        require(all(integer(value[key], 0, 2**64 - 1) for key in
+                    ("earliest_retained_sequence_u64", "latest_capture_sequence_u64",
+                     "overflow_dropped_count_u64", "pairing_dropped_count_u64")))
+        earliest, latest = value["earliest_retained_sequence_u64"], value["latest_capture_sequence_u64"]
+        require((earliest == 0) == (latest == 0) and earliest <= latest)
+        if value["available"]:
+            require(value["unavailable_reason"] is None and value["observer_attached"] is True
+                    and value["query_thread_id_u32"] != 0 and value["query_actor_full_id_u32"] == actor_id)
+        else:
+            require(isinstance(value["unavailable_reason"], str)
+                    and bool(value["unavailable_reason"]) and not value["records"])
+        rows = []
+        previous = 0
+        for row in value["records"]:
+            require(isinstance(row, dict) and set(row) == row_keys)
+            require(integer(row["capture_sequence_u64"], 1, 2**64 - 1)
+                    and earliest <= row["capture_sequence_u64"] <= latest
+                    and previous < row["capture_sequence_u64"]
+                    and integer(row["observer_invocation_sequence_u64"], 1, 2**64 - 1)
+                    and integer(row["capture_thread_id_u32"], 1, 0xFFFFFFFF)
+                    and type(row["original_call_return_observed"]) is bool)
+            for key, expected in (("source_call_rva_u64", 0x23F6B82),
+                                  ("source_callee_rva_u64", 0x3765760),
+                                  ("source_return_rva_u64", 0x23F6B87)):
+                require(integer(row[key], 0, 2**64 - 1) and row[key] == expected)
+            require(all(integer(row[key], 0, 2**64 - 1) for key in
+                        ("activity_identity_u64", "participant_identity_u64", "effect_identity_u64",
+                         "native_context_identity_u64", "original_parent_rsp_u64")))
+            faces = {}
+            for side in ("before", "after"):
+                face = row[side]
+                require(isinstance(face, dict) and set(face) == face_keys)
+                for flag, raw_key, low, high in (
+                    ("activity_full_id_observed", "activity_full_id_u32", 0, 0xFFFFFFFF),
+                    ("host_observed", "host_character_id_i32", -(2**31), 2**31 - 1),
+                    ("type_observed", "type_identity_u64", 0, 2**64 - 1),
+                    ("participant_full_id_observed", "participant_full_id_u32", 0, 0xFFFFFFFF),
+                    ("resource_extension_observed", "resource_extension_identity_u64", 0, 2**64 - 1),
+                    ("prestige_observed", "prestige_raw_i64", -(2**63), 2**63 - 1),
+                    ("stress_observed", "stress_raw_i32", -(2**31), 2**31 - 1),
+                ):
+                    require(type(face[flag]) is bool)
+                    require(integer(face[raw_key], low, high) if face[flag] else face[raw_key] is None)
+                for field in ("activity", "participant"):
+                    generation = face[field + "_instance_generation_u8"]
+                    if face[field + "_full_id_observed"]:
+                        require(integer(generation, 0, 255)
+                                and generation == face[field + "_full_id_u32"] >> 24)
+                    else:
+                        require(generation is None)
+                require(type(face["type_key_observed"]) is bool)
+                require(isinstance(face["type_key"], str) and 0 < len(face["type_key"]) <= 64
+                        if face["type_key_observed"] else face["type_key"] is None)
+                require(face["reveler_xp_observed"] is False and face["reveler_xp_raw_i64"] is None
+                        and face["reveler_xp_unavailable_reason"] == "no_raw_only_reveler_xp_reader")
+                require(type(face["frame_observed"]) is bool)
+                frame = face["frame"]
+                if face["frame_observed"]:
+                    require(isinstance(frame, dict) and set(frame) == frame_keys
+                            and integer(frame["date_raw_i64"], -(2**63), 2**63 - 1)
+                            and integer(frame["actor_character_id_i32"], -(2**31), 2**31 - 1)
+                            and integer(frame["owner_thread_id_u32"], 1, 0xFFFFFFFF)
+                            and frame["owner_thread_id_u32"] == row["capture_thread_id_u32"]
+                            and all(type(frame[key]) is bool for key in
+                                    ("paused", "map_ready", "has_played_character", "played_character_alive")))
+                else:
+                    require(frame is None)
+                for counter in ("prestige", "stress"):
+                    if face[counter + "_observed"]:
+                        require(face["resource_extension_observed"] is True)
+                        if face["resource_extension_identity_u64"] == 0:
+                            raw_key = "prestige_raw_i64" if counter == "prestige" else "stress_raw_i32"
+                            require(face[raw_key] == 0)
+                faces[side] = {**face, "frame": dict(frame) if frame is not None else None}
+            before = faces["before"]
+            require(all(before[key] is True for key in
+                        ("frame_observed", "activity_full_id_observed", "host_observed",
+                         "type_observed", "type_key_observed", "participant_full_id_observed"))
+                    and before["type_key"] == "activity_feast"
+                    and before["participant_full_id_u32"] == actor_id
+                    and (before["frame"]["actor_character_id_i32"] & 0xFFFFFFFF) == actor_id)
+            for field in ("activity", "participant"):
+                flag = row["same_" + field + "_full_id_observed"]
+                equal = row["same_" + field + "_full_id"]
+                require(type(flag) is bool)
+                if flag:
+                    require(type(equal) is bool
+                            and all(faces[side][field + "_full_id_observed"] is True
+                                    for side in ("before", "after"))
+                            and equal == (faces["before"][field + "_full_id_u32"]
+                                          == faces["after"][field + "_full_id_u32"]))
+                else:
+                    require(equal is None)
+            rows.append({**row, **faces})
+            previous = row["capture_sequence_u64"]
+        return {**value, "records": rows}
+    except ValueError:
+        return None
+
+
 def _outcome_values(value: object) -> dict[str, object]:
     """Copy native actor counters; absent reads remain None, not zero."""
     fields = {"prestige_raw", "stress_points", "reveler_present", "reveler_xp_raw"}
@@ -340,7 +491,8 @@ def _parse_payload(
     if (not isinstance(value, dict)
             or not fields <= set(value)
             or not set(value) <= fields | {"outcome_values"} | (
-                {"ordinary_guest_route"} if step == INPUT_STEP else {"native_terminal_observations"})
+                {"ordinary_guest_route"} if step == INPUT_STEP else {
+                    "native_terminal_observations", "native_completion_effect_counter_observations"})
             or value["schema"] != (INPUT_SCHEMA if step == INPUT_STEP else POST_SCHEMA)
             or type(value["snapshot_revision"]) is not int
             or value["snapshot_revision"] != native_revision
@@ -359,6 +511,12 @@ def _parse_payload(
     if step == POST_STEP and "native_terminal_observations" in value:
         result["native_terminal_observations"] = _native_terminal_observations(
             value["native_terminal_observations"], actor_id=actor_id,
+        )
+    if step == POST_STEP and "native_completion_effect_counter_observations" in value:
+        result["native_completion_effect_counter_observations"] = (
+            _native_completion_effect_counter_observations(
+                value["native_completion_effect_counter_observations"], actor_id=actor_id,
+            )
         )
     if step == INPUT_STEP:
         resources = value["resources"]

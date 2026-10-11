@@ -8,6 +8,7 @@
 #include "xar_bridge/activity_feast_guest_rule_provenance_v1.hpp"
 #include "xar_bridge/ck3_12002_feast_outcome_values.hpp"
 #include "xar_bridge/activity_terminal_observations_12004.hpp"
+#include "xar_bridge/activity_completion_effect_counter_observations_12004.hpp"
 
 #include <array>
 #include <cstdint>
@@ -123,6 +124,8 @@ struct ActivityFeastStage5PostV1 {
   FeastOutcomeValuesV1 outcome_values{};
   std::optional<ck3_12004::ActivityTerminalObservationsSnapshot12004>
       native_terminal_observations{};
+  std::optional<ck3_12004::ActivityCompletionEffectCounterSnapshot12004>
+      native_completion_effect_counter_observations{};
 };
 
 enum class ActivityFeastStage5PostStatusV1 {

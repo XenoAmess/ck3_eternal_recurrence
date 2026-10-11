@@ -856,6 +856,8 @@ list(APPEND XAR_CK3_12002_SOURCES
   "${CMAKE_CURRENT_SOURCE_DIR}/src/owned_regiments.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_invalidation_precall_observer_12004.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_terminal_observations_12004.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_completion_effect_counter_observer_12004.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/activity_completion_effect_counter_observations_12004.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_maa_create.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_maa_create_private_mailbox.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_army_supply_timing.cpp"

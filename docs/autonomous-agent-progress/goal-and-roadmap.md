@@ -62,6 +62,13 @@ the existing native selected-request preflight; see
 Unknown components keep their availability and original slots. This source-informed
 preference is not native AI replay or an observed education outcome. The two production
 files remain SOURCE_ADOPTED_NOT_RUN; child-focus query/action/receipt is still in progress.
+The Activity path now records player prestige/stress raw counters around one
+original participant completion CALL and carries the paired observations through
+the existing hosted query and durable lifecycle; see
+[original CALL counter source](../ck3-native-ai/activity-feast-mcp-migration-12004.md#october-11-counters-around-one-original-participant-completion-call).
+Full identity and actual return pairing qualify individual read differences only.
+XP and complete activity payoff remain unknown. Eleven production mappings are
+SOURCE_ADOPTED_NOT_RUN; neither material readiness nor live capability increased.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

@@ -464,6 +464,9 @@ bool CapturePost(Context &context,
   output.native_terminal_observations =
       ck3_12004::ReadActivityTerminalObservations12004(
           expected, context.base, context.query->executable_sha256);
+  output.native_completion_effect_counter_observations =
+      ck3_12004::ReadActivityCompletionEffectCounterObservations12004(
+          expected, context.base, context.query->executable_sha256);
   // Journal absence/failure is independent of the established hosted query.
   return true;
 }

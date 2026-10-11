@@ -324,3 +324,80 @@ linked by `ACTIVITY-PRECALL-TERMINAL-ADOPTION.json` under
 It references the source-first deliveries of owners 12, 38, 47, 51, 62 and
 60, and owner 29's exact archived cut proof. Root reported all twelve files
 successfully applied with exit 0; no local executable qualification followed.
+
+## October 11: counters around one original participant completion call
+
+Root adopted the eleven connected production mappings as
+`SOURCE_ADOPTED_NOT_RUN`. The increment adds a paired fixed observer, a bounded counter
+journal, the existing hosted-post response and strict lifecycle consumer,
+thin Bridge install/stop hunks and two unconditional Runtime sources. There
+was no test, project import, compilation, installation or game observation.
+Native84/SDK84 still compiles source
+`594979b0b3d4c5a395639f30b9d5d864b8a31f6d`; these new source paths do not
+upgrade current campaign, terminal cause, material payoff or readiness.
+
+The held actual .4 completion parent has two calls to `3765760`. This increment
+observes only the first conditional call at `23F6B82`, returning to `23F6B87`.
+The wrapper passes its original callback and scope operands to dispatch
+`3765E50`; neither the transitive script contents nor overall Feast rewards
+are inferred. The five-byte pre-cut at `23F6B7D` is `LEA RDX,[RSP+40]`;
+the seven-byte post-cut at `23F6B87` is `MOV RCX,[R13+3A0]`. Both instructions
+are replayed and the original CALL stays in place once. The post site is also
+the guard-bypass target, so post-only arrival cannot produce a paired record.
+The observer requires its actual before record, same physical operands and
+the copied native return word before emitting the after callback.
+
+R13 is the original Activity, R14 the resolved participant Character with its
+actual full DWORD ID, and the scope address is the original parent RSP+40.
+R12+370 is the actual effect operand after the host helper; no class,
+requested-participant substitution or software physical alias is inferred.
+The 354-byte `23F9BB0` source closes the selected-row fast domain only.
+
+The before callback qualifies the actual player participant and raw
+`activity_feast` type. Host remains an independently copied DWORD. It reads
+the participant's resource extension and independently copies signed prestige
+QWORD at +130 and stress DWORD at +2F8 before and after this original call.
+The actual .4 retained migration proofs are `actor_prestige_leaf-DETAIL.json`
+at `28BE020` and `actor_stress_leaf-DETAIL.json` at `28BC560`. The latter is an
+18-byte member proof, not a complete getter return; the complete actual
+`2BA9430` parent independently proves signed stress load, its multiplication
+by 100000 and the null-extension zero domain. The old .2 `28BC580` address is
+not reused as a .4 getter. Unread fields stay null, observed zero stays known,
+and XP remains `no_raw_only_reveler_xp_reader`: no TraitDB or native track
+getter is called in either callback.
+
+The 64-record journal preserves both faces and coverage in existing hosted-post
+`native_completion_effect_counter_observations`. The strict durable consumer
+matches full Activity generation, host/type and player participant, retaining
+original records and query binding through later missing coverage. A field
+difference requires its paired return, both full-ID comparisons true and both
+read flags. Software sequences are neither clocks nor cross-process identities;
+the differences are not summed or attributed to whole-Feast rewards. Existing
+pre-start/post counters and false benefit attribution remain independent;
+Service already exposes the lifecycle observation.
+
+Source review caught duplicate same-namespace constant names in the first
+journal header and corrected those names before the final header freeze.
+That was a source correction, not a compiler or runtime failure/pass; the
+final frozen header and CPP pins are recorded in the adoption mappings.
+The raw Activity+408 producer remains module `5C7E338`; no exact setter or
+standard-clock association was found in the bounded retained contracts, so
+its units remain unknown. No further date or generic effect tree was added.
+
+The eleven maps and owner source-first receipts are in
+`ACTIVITY-COMPLETION-CALL-COUNTERS-ADOPTION.json` under
+`D:/codex-ck3-background-spill/native71-continuation-20261010/background-g2-source-round-20261011-1152/owner-16/activity-completion-effect-counters-01/`.
+Closed 0907 sources remain read-only and are not replayed.
+
+```mermaid
+flowchart LR
+  P[Actual player participant R14 and Activity R13] --> B[Before23F6B7D raw prestige and stress]
+  B --> C[Original CALL23F6B82 to3765760 executes once]
+  C --> R[Actual normal return23F6B87 with matched before]
+  R --> A[After raw prestige and stress]
+  A --> J[Owned journal with full identity and original frame]
+  J --> Q[Existing hosted post query and strict decoder]
+  Q --> L[Durable independent CALL scope counter differences]
+  C -. effect contents and complete activity payoff unknown .-> U[unknown overall reward attribution]
+  P -. no raw only reader .-> X[unknown reveler XP]
+```

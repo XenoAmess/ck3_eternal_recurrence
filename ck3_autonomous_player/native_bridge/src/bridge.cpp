@@ -242,6 +242,8 @@
 #include "xar_bridge/activity_cost_slot12_passive_v1.hpp"
 #include "xar_bridge/activity_invalidation_precall_observer_12004.hpp"
 #include "xar_bridge/activity_terminal_observations_12004.hpp"
+#include "xar_bridge/activity_completion_effect_counter_observer_12004.hpp"
+#include "xar_bridge/activity_completion_effect_counter_observations_12004.hpp"
 #endif
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
@@ -604,6 +606,8 @@ static xar::ck3_12004::CoreBindings g_activity_cost_slot12_bindings12004{};
 // The fixed pre-callee route and backing remain owned for process life.
 static xar::ck3_12004::ActivityInvalidationPrecallObserver12004State
     g_activity_invalidation_precall_observer12004{};
+static xar::ck3_12004::ActivityCompletionEffectCounterObserver12004State
+    g_activity_completion_effect_counter_observer12004{};
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
 static xar::bridge::ActivityGuestRuleProvenanceObserverV1
     g_activity_guest_rule_provenance_observer_v1{};
@@ -28645,6 +28649,27 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     g_activity_cost_slot12_bindings12004 =
         xar::ck3_12004::BindCoreImage(base, sha);
+    xar::ck3_12004::ActivityCompletionEffectCounterObserver12004Environment
+        counter_environment{};
+    const bool counter_bound =
+        xar::ck3_12004::BuildActivityCompletionEffectCounterObservations12004Environment(
+            base, sha, nullptr, &ReadActivityCostSlot12MemoryV1,
+            &ReadActivityTerminalCaptureFrame12004, counter_environment);
+    bool counter_attached = false;
+    if (counter_bound) {
+      // The existing PrepareStartup window owns suspended-primary proof.
+      counter_environment.primary_thread_suspended_proven = true;
+      counter_attached =
+          xar::ck3_12004::InstallActivityCompletionEffectCounterObserver12004(
+              g_activity_completion_effect_counter_observer12004,
+              counter_environment);
+    }
+    xar::ck3_12004::SetActivityCompletionEffectCounterObservations12004Attached(
+        counter_attached, counter_attached
+            ? nullptr
+            : counter_bound
+                ? "activity_completion_effect_counter_install_failed"
+                : "activity_completion_effect_counter_binding_unavailable");
     xar::ck3_12004::ActivityInvalidationPrecallObserver12004Environment
         terminal_environment{};
     const bool terminal_bound =
@@ -29546,6 +29571,10 @@ extern "C" __declspec(dllexport) void WINAPI XarCk3BridgeStop() noexcept {
       false, "activity_terminal_observer_stopped");
   (void)xar::ck3_12004::UninstallActivityInvalidationPrecallObserver12004(
       g_activity_invalidation_precall_observer12004, false);
+  xar::ck3_12004::SetActivityCompletionEffectCounterObservations12004Attached(
+      false, "activity_completion_effect_counter_stopped");
+  (void)xar::ck3_12004::UninstallActivityCompletionEffectCounterObserver12004(
+      g_activity_completion_effect_counter_observer12004, false);
 #endif
   if (g_lifecycle.load() == 0) {
     return;
