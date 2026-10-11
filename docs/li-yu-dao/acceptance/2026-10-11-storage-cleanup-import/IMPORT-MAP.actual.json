@@ -1,0 +1,422 @@
+{
+  "schema": "lyd-root-cleanup-permanent-import-map-v1",
+  "expected_HEAD": "2c9eeb1885fe56ca74b6ba7d9e91fd39a3c060b4",
+  "files": [
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/AGGREGATE.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\AGGREGATE.actual.json",
+        "bytes": 1724,
+        "sha256": "7ba0e49486606af50b536680ba20f0ae55fd32e6d09206e2994c5db7ab757d96"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1724,
+        "sha256": "7ba0e49486606af50b536680ba20f0ae55fd32e6d09206e2994c5db7ab757d96"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/CREDIT-EVENT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\CREDIT-EVENT.actual.json",
+        "bytes": 1970,
+        "sha256": "e42b6f15dad9fb37d5154e16289cff919e061324e8b0375459eac54ecd5709f5"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1970,
+        "sha256": "e42b6f15dad9fb37d5154e16289cff919e061324e8b0375459eac54ecd5709f5"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/STORAGE-CREDIT-CLAIM.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\STORAGE-CREDIT-CLAIM.actual.json",
+        "bytes": 1194,
+        "sha256": "63e7390c8831e0bc220379d79ee12ea74f7d3a3eabdf2501eaca990715fce7e3"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1194,
+        "sha256": "63e7390c8831e0bc220379d79ee12ea74f7d3a3eabdf2501eaca990715fce7e3"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/CLOSED-002.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\CLOSED-002.actual.json",
+        "bytes": 2974,
+        "sha256": "6e229d821aca67640f517152ddeaac68ad9fd0f53b0f153070a9db526bff59f8"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 2974,
+        "sha256": "6e229d821aca67640f517152ddeaac68ad9fd0f53b0f153070a9db526bff59f8"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/001-admit.RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\001-admit.RESULT.actual.json",
+        "bytes": 1153,
+        "sha256": "e43a1a1f8e98cd5e8478e9cd714652ceb6f4825108462686d7d4dfa1cc36a629"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1153,
+        "sha256": "e43a1a1f8e98cd5e8478e9cd714652ceb6f4825108462686d7d4dfa1cc36a629"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/001-serial.RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\001-serial.RESULT.actual.json",
+        "bytes": 1156,
+        "sha256": "f8713f920a3091d326912f00cde32356fe8821a8ba79f12c734b61b0f5a29f37"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1156,
+        "sha256": "f8713f920a3091d326912f00cde32356fe8821a8ba79f12c734b61b0f5a29f37"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/001-zero-close.RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\001-zero-close.RESULT.actual.json",
+        "bytes": 1204,
+        "sha256": "881ba8028d8b8619e8a20e911d9bb37bb038fd1ac794cfdd54aac081fe0b0fb7"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1204,
+        "sha256": "881ba8028d8b8619e8a20e911d9bb37bb038fd1ac794cfdd54aac081fe0b0fb7"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/002-admit.RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\002-admit.RESULT.actual.json",
+        "bytes": 1153,
+        "sha256": "34dcab324450085a4dd65b1cc5d8f8c911d24d9d6183bee3d0652a69e032a65c"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1153,
+        "sha256": "34dcab324450085a4dd65b1cc5d8f8c911d24d9d6183bee3d0652a69e032a65c"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/002-serial.RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\002-serial.RESULT.actual.json",
+        "bytes": 1155,
+        "sha256": "7db5d22da5f8e6ca1c6e11b84441814cb51bb8c142e07a89e18d98efddfa7870"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1155,
+        "sha256": "7db5d22da5f8e6ca1c6e11b84441814cb51bb8c142e07a89e18d98efddfa7870"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/002-close.RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\002-close.RESULT.actual.json",
+        "bytes": 1157,
+        "sha256": "4425554ee995e5cf5456d3a9b08a984115905c7cfb565feca66aebef34f33ffc"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1157,
+        "sha256": "4425554ee995e5cf5456d3a9b08a984115905c7cfb565feca66aebef34f33ffc"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/001-plan.COMMAND.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\001-plan.COMMAND.actual.json",
+        "bytes": 2671,
+        "sha256": "9048769b2836661a914efda709c951dd9e2e48871e61d418a8ed4cd77b4f4b54"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 2671,
+        "sha256": "9048769b2836661a914efda709c951dd9e2e48871e61d418a8ed4cd77b4f4b54"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/CI-f979.REPORT.zh.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\CI-f979.REPORT.zh.md",
+        "bytes": 937,
+        "sha256": "d4b70eda2db6cd81cd9e7501192dcb25c28ffb9b02592ffa1bb70b6091df72eb"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 937,
+        "sha256": "d4b70eda2db6cd81cd9e7501192dcb25c28ffb9b02592ffa1bb70b6091df72eb"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/CI-2c9e.REPORT.zh.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\raw\\CI-2c9e.REPORT.zh.md",
+        "bytes": 937,
+        "sha256": "aec5944fd5399c56b5981c055b46067d6ef325b97f47a42fa3934f6d9b1d51db"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 937,
+        "sha256": "aec5944fd5399c56b5981c055b46067d6ef325b97f47a42fa3934f6d9b1d51db"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/2026-10-11-r57-duplicate-reclamation.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\2026-10-11-r57-duplicate-reclamation.md",
+        "bytes": 2261,
+        "sha256": "c6170b42fc4453fd473c4908f149bcd5519a8f19e5f0b9e9bb04c8021b669914"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 2261,
+        "sha256": "c6170b42fc4453fd473c4908f149bcd5519a8f19e5f0b9e9bb04c8021b669914"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/INDEX.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\INDEX.actual.json",
+        "bytes": 4656,
+        "sha256": "40268cdd2ab07a3554a3444d6ed75d4670c9b7dbfede4da82590412f9e1451fb"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 4656,
+        "sha256": "40268cdd2ab07a3554a3444d6ed75d4670c9b7dbfede4da82590412f9e1451fb"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/AGGREGATE.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/AGGREGATE.actual.json",
+        "bytes": 8330,
+        "sha256": "8c3bab37263883c781c4236740d104632168b0cc5ff473db3ca51d86729bf253"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 8330,
+        "sha256": "8c3bab37263883c781c4236740d104632168b0cc5ff473db3ca51d86729bf253"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/CREDIT-EVENT.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/CREDIT-EVENT.actual.json",
+        "bytes": 3852,
+        "sha256": "05460dfd4a8c95c03c123560c8cb761b5a5949a159d78fe64c5be08f4f21f280"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 3852,
+        "sha256": "05460dfd4a8c95c03c123560c8cb761b5a5949a159d78fe64c5be08f4f21f280"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/STORAGE-CREDIT-CLAIM.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/STORAGE-CREDIT-CLAIM.actual.json",
+        "bytes": 1151,
+        "sha256": "484358d7398eb037cd13426eadcedecc18429b1c3a73aa165b1358f7a9d86080"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1151,
+        "sha256": "484358d7398eb037cd13426eadcedecc18429b1c3a73aa165b1358f7a9d86080"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/CLOSED-RESERVATION.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/CLOSED-RESERVATION.actual.json",
+        "bytes": 2996,
+        "sha256": "0e2749808bbca41e4ae88e54c613a704ca5ec49728e51022f85b01dc81bebfb5"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 2996,
+        "sha256": "0e2749808bbca41e4ae88e54c613a704ca5ec49728e51022f85b01dc81bebfb5"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/profile-seed-base-retirement-admit-command-20261011-001.RESULT.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/profile-seed-base-retirement-admit-command-20261011-001.RESULT.actual.json",
+        "bytes": 1219,
+        "sha256": "df0b8ef3ab477482e717db91caf4516c0defb39dc45b81a7174fc8191f790e6c"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1219,
+        "sha256": "df0b8ef3ab477482e717db91caf4516c0defb39dc45b81a7174fc8191f790e6c"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/profile-seed-base-retirement-plan-command-20261011-001.RESULT.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/profile-seed-base-retirement-plan-command-20261011-001.RESULT.actual.json",
+        "bytes": 1244,
+        "sha256": "5b9b197170c96846279c931d872236d5f08df944ca7f8b24326ccf2447051ad0"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1244,
+        "sha256": "5b9b197170c96846279c931d872236d5f08df944ca7f8b24326ccf2447051ad0"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/profile-seed-base-retirement-apply-command-20261011-001.RESULT.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/profile-seed-base-retirement-apply-command-20261011-001.RESULT.actual.json",
+        "bytes": 1242,
+        "sha256": "46830c887f2b7fa2ad4905f4482e48ffcc63dcd72b3ba609513d950f259566b8"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1242,
+        "sha256": "46830c887f2b7fa2ad4905f4482e48ffcc63dcd72b3ba609513d950f259566b8"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/profile-seed-base-retirement-close-command-20261011-001.RESULT.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/raw/profile-seed-base-retirement-close-command-20261011-001.RESULT.actual.json",
+        "bytes": 1213,
+        "sha256": "67b9ed2ae600d340383578f50c857ffc118fa68ed643f95218fb9320740c185a"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 1213,
+        "sha256": "67b9ed2ae600d340383578f50c857ffc118fa68ed643f95218fb9320740c185a"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/2026-10-11-closed-profiles-seed-base-reclamation.md",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/2026-10-11-closed-profiles-seed-base-reclamation.md",
+        "bytes": 2060,
+        "sha256": "5f49cda28868f9c925951220c3e5b84618d4c4838aad02ec8b07d2338236e758"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 2060,
+        "sha256": "5f49cda28868f9c925951220c3e5b84618d4c4838aad02ec8b07d2338236e758"
+      }
+    },
+    {
+      "target": "docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/INDEX.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/profile-seed-base-retirement-permanent-candidate-20261011-001/INDEX.actual.json",
+        "bytes": 3080,
+        "sha256": "cf09a80121364cf7cdc88a4fde48fe14dc9e805ddc00d9a7229071cbb6551775"
+      },
+      "action": "copy",
+      "before": null,
+      "after": {
+        "bytes": 3080,
+        "sha256": "cf09a80121364cf7cdc88a4fde48fe14dc9e805ddc00d9a7229071cbb6551775"
+      }
+    },
+    {
+      "target": "docs/autonomous-agent-progress/daily/2026-10-11.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\cleanup-permanent-import-20261011-002\\daily-append.actual.md",
+        "bytes": 939,
+        "sha256": "991740971d3bd6fc789e4df5a92eecbbafe44799d63a2054aaf4cf23ee44a77a"
+      },
+      "action": "append",
+      "before": {
+        "bytes": 126637,
+        "sha256": "9896778b6309c378c2495e3f8b12b185244151e3b0f6d9d1ef11d12f032f2224"
+      },
+      "after": {
+        "bytes": 127576,
+        "sha256": "69c4b278470c793d091ceb54f54efa7dc0d2898b718f60b83483fb9d6331f336"
+      }
+    },
+    {
+      "target": "docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\cleanup-permanent-import-20261011-002\\weekly-append.actual.md",
+        "bytes": 939,
+        "sha256": "991740971d3bd6fc789e4df5a92eecbbafe44799d63a2054aaf4cf23ee44a77a"
+      },
+      "action": "append",
+      "before": {
+        "bytes": 926148,
+        "sha256": "d09e8f3b8d5f7dd550eb15012174ceccc8d1a6271e6dd2e1f5d614c774317ba6"
+      },
+      "after": {
+        "bytes": 927087,
+        "sha256": "17a8b6bcdf1b4b0a58bcf3640d19280f16a728c0b2ade8ecd16f751126dcfc2c"
+      }
+    },
+    {
+      "target": ".gitattributes",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\cleanup-permanent-import-20261011-002\\gitattributes-append.actual.txt",
+        "bytes": 165,
+        "sha256": "b0dc838e0208959844f90b9f1b8edaad144f5a236cbc82a427a789a2e3432ef1"
+      },
+      "action": "append",
+      "before": {
+        "bytes": 15827,
+        "sha256": "bf2c83aa7635c40d37c053a7864bf0a4ad50a5db12faca14f00489e5e2eb365d"
+      },
+      "after": {
+        "bytes": 15992,
+        "sha256": "55c852628068144785a75c3c4f6060e49a7c21d037c21a7c4652014ad3cd9715"
+      }
+    }
+  ],
+  "original_source_manifests": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-duplicate-reclamation-permanent-candidate-20261011-001\\IMPORT-MANIFEST.json",
+      "bytes": 5992,
+      "sha256": "31a464ddfa7c1a2eff3f05bfd8f5423ec9b7adfc8cdce28d4a37cfa4fa637fe7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\profile-seed-base-retirement-permanent-candidate-20261011-001\\IMPORT-MANIFEST.json",
+      "bytes": 4644,
+      "sha256": "586398eb8cd9b4a1cb182b6d4391c3a73e5ba2310c6879106dfef4fa9eb73928"
+    }
+  ],
+  "permanent_map_target": "docs/li-yu-dao/acceptance/2026-10-11-storage-cleanup-import/IMPORT-MAP.actual.json",
+  "source16_binding_sha256": "1be434a78231874421f7448fb0f825e1a03da2e98c698e22dd028419329e2668",
+  "business_credit": false
+}

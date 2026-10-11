@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-retirement-failed-plan-close-sourceonly-20261011-001\\close_failed_plan.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-retirement-failed-plan-close-sourceonly-20261011-001\\ROOT-CLOSE.actual.json",
+    "--sha256",
+    "98043dc73e31a258e92aa6affd2c27057f233b511a9c8a87d6dc2b53e5f971bf"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T04:02:24.702622+00:00",
+  "finished_at_utc": "2026-10-11T04:02:25.322535+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-retirement-failed-plan-close-command-20261011-001\\stdout.log",
+    "bytes": 406,
+    "sha256": "18276b1f20c9b7be5ec7c5b2ac3f2b69efec60bf7a927c59d86dd8f7e06af4c5"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-retirement-failed-plan-close-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -170,3 +170,6 @@ ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_war_cash_*.json 
 
 # Preserve the original Sway ledger fixture bytes used by its regression SHA.
 ck3_autonomous_player/tests/fixtures/sway_causal_original_12004/saved6076-original-ledger.json -text whitespace=cr-at-eol
+
+docs/li-yu-dao/acceptance/2026-10-11-r57-duplicate-reclamation/raw/** -text
+docs/li-yu-dao/acceptance/2026-10-11-closed-profiles-seed-base-reclamation/raw/** -text

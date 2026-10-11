@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r57-retirement-workflow-sourceonly-20261011-002/admit_r57.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r57-retirement-workflow-sourceonly-20261011-002/ADMISSION-REQUEST.actual.json",
+    "--sha256",
+    "a0e36a08e38e50f8b46c0c5f4ec091f8f7ff1833b7812f13d53b63d1ff2d9336"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T04:08:18.165265+00:00",
+  "finished_at_utc": "2026-10-11T04:08:18.627310+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-retirement-admission-command-20261011-002\\stdout.log",
+    "bytes": 393,
+    "sha256": "b46b372a4c2e34b267c7f8e1df48c084eaeaa6ab1cdaf1a16599ebf0e329a4d9"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-retirement-admission-command-20261011-002\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

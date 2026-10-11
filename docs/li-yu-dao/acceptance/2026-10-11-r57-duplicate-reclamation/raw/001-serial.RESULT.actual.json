@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r57-retirement-workflow-sourceonly-20261011-001/serial_r57.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r57-retirement-workflow-sourceonly-20261011-001/SERIAL-REQUEST.actual.json",
+    "--sha256",
+    "15b945ffde3cf091739266abcb88d2ec4258df496f9f14a7ae3d7c6b54ef1015"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T03:56:22.479904+00:00",
+  "finished_at_utc": "2026-10-11T03:56:23.672246+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-root-retirement-serial-command-20261011-001\\stdout.log",
+    "bytes": 35,
+    "sha256": "e4bcf0463d1936f9b3527a151b641f3f815ea0dac43c70dc4c097e3a33fb5dce"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r57-root-retirement-serial-command-20261011-001\\stderr.log",
+    "bytes": 594,
+    "sha256": "067bc6ba67176b217b30d0e20baf4988f27520cb2a26f2a44c329ae36339fba5"
+  }
+}

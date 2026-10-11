@@ -1,0 +1,28 @@
+{
+  "schema": "lyd-cleanup-import-postformat-v1",
+  "change": "Remove one extra LF at EOF from imported progress documents; raw receipts unchanged",
+  "files": [
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-11.md",
+      "before": {
+        "bytes": 127576,
+        "sha256": "69c4b278470c793d091ceb54f54efa7dc0d2898b718f60b83483fb9d6331f336"
+      },
+      "after": {
+        "bytes": 127575,
+        "sha256": "54f3c801b5da80ab5b443e203f73ecb452f869a5d9870fd6555900572f2dc23e"
+      }
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "before": {
+        "bytes": 927087,
+        "sha256": "17a8b6bcdf1b4b0a58bcf3640d19280f16a728c0b2ade8ecd16f751126dcfc2c"
+      },
+      "after": {
+        "bytes": 927086,
+        "sha256": "e402666c69982399855e192e470ced6f1e21417c13695d79a8773e88c3f27d16"
+      }
+    }
+  ]
+}

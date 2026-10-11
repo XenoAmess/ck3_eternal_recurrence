@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\profile-seed-base-retirement-workflow-sourceonly-20261011-001\\serial_profiles.py",
+    "--phase",
+    "apply",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\profile-seed-base-retirement-serial-actual-20261011-001\\ROOT-APPLY.actual-001.json",
+    "--sha256",
+    "bcff71e374396bed8fc780fd23a6fc2e88b76f9a07241ab3b752076520821d48"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T04:23:31.477692+00:00",
+  "finished_at_utc": "2026-10-11T04:26:48.179394+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\profile-seed-base-retirement-apply-command-20261011-001\\stdout.log",
+    "bytes": 562,
+    "sha256": "de99dbc8f397d19cb18245704ebdd2536af9bd5311c1a0a44cafcf966c8cf7df"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\profile-seed-base-retirement-apply-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

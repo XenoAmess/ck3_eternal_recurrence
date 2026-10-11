@@ -1,0 +1,80 @@
+{
+  "schema": "lyd.exact-reclamation-credit-event.v1",
+  "event_id": "lyd-closed-profiles-seed-base-20261011-001",
+  "deduplication_key": "lyd-closed-profiles-seed-base-20261011-001",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "aggregate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\profile-seed-base-retirement-serial-actual-20261011-001\\AGGREGATE.actual.json",
+    "bytes": 8330,
+    "sha256": "8c3bab37263883c781c4236740d104632168b0cc5ff473db3ca51d86729bf253"
+  },
+  "actual_batch_results": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case6-profile-base-cache-retirement-actual-20261011-001\\BATCH-000.actual.json",
+      "bytes": 1710,
+      "sha256": "0b50fc3f396f6d236cfb9d28bc36639a3e9a6462b0af1b93d6080577f7e390c0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case6-profile-base-cache-retirement-actual-20261011-001\\BATCH-001.actual.json",
+      "bytes": 1713,
+      "sha256": "12e2f1cf486dac146dddea75f5dfd309c007491a8eda585f3725f48c7f10ff2b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case6-profile-base-cache-retirement-actual-20261011-001\\BATCH-002.actual.json",
+      "bytes": 1713,
+      "sha256": "51b870945e29667d4dcc05669246f08e574d28e83a3dfe2259442f460128ba86"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case6-profile-base-cache-retirement-actual-20261011-001\\BATCH-003.actual.json",
+      "bytes": 1711,
+      "sha256": "dc4d8022c512291cffc9c211ff3d1be27f037be9eba2a62f079c53e03aacd3a6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case7-profile-base-cache-retirement-actual-20261011-001\\BATCH-000.actual.json",
+      "bytes": 1710,
+      "sha256": "ab1bdb0c65be7d696cacdd28c7953da062d608499b980a1c15b4ae6ac8db02e4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case7-profile-base-cache-retirement-actual-20261011-001\\BATCH-001.actual.json",
+      "bytes": 1713,
+      "sha256": "94bb78c80b7eed14fb77788058321710d10d030f4d939252fcdf5eeb542dca96"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case7-profile-base-cache-retirement-actual-20261011-001\\BATCH-002.actual.json",
+      "bytes": 1713,
+      "sha256": "75defbd4aa33fa396e0f36c01e36f5a723a144710d1adb75b6c262aaa8bdd1c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case7-profile-base-cache-retirement-actual-20261011-001\\BATCH-003.actual.json",
+      "bytes": 1711,
+      "sha256": "62b61e9c36f06f9ed3232310738e14d402f9af4c486b2d65943a4f5777908bec"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case8-profile-base-cache-retirement-actual-20261011-001\\BATCH-000.actual.json",
+      "bytes": 1710,
+      "sha256": "9bd6bcd7ed2ff2b5ceabc20c4dac4f223b197c7107abd66a32fdac409f5244b9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case8-profile-base-cache-retirement-actual-20261011-001\\BATCH-001.actual.json",
+      "bytes": 1713,
+      "sha256": "ef838c91f0efeba9f935502c071f93433a3f9f17451f2030dc2787c03e5b18bd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case8-profile-base-cache-retirement-actual-20261011-001\\BATCH-002.actual.json",
+      "bytes": 1713,
+      "sha256": "b9df3ffa286910775772d02477d52788c0552ae583473eeb4dbc0d5f3d4d3f12"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\case8-profile-base-cache-retirement-actual-20261011-001\\BATCH-003.actual.json",
+      "bytes": 1711,
+      "sha256": "fa513e1315ec1e8f436b54a1d1fdda6a4bebc6e070fe9665a27ae4dc508b23f4"
+    }
+  ],
+  "logical_deleted_bytes": 440826201,
+  "deleted_files": 11220,
+  "reservation_claimed_or_consumed": false,
+  "future_reservation_reference": null,
+  "old_credit_repeated": false,
+  "business_credit": false,
+  "physical_free_delta_exclusive_attribution": null
+}
