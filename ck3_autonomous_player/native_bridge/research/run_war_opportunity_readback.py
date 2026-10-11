@@ -97,7 +97,17 @@ async def query_frame(driver: Any, actor_id: int, date_raw: int,
             result = await client.call_tool(name, args)
             require(not getattr(result, "is_error", False), f"{name} returned MCP error")
             calls.append(name)
-            return common._structured(result, tool_name=name)
+            payload = common._structured(result, tool_name=name)
+            if name == "ck3_take_snapshot":
+                history_export = payload.get("native_command_history_export")
+                require(not (
+                    isinstance(history_export, dict)
+                    and history_export.get("mode") == "omitted"
+                ), "native command history was explicitly omitted; "
+                   "read-only command verification is unavailable")
+                require(isinstance(payload.get("native_command_history"), list),
+                        "native command history is unavailable")
+            return payload
 
         capabilities = await call("ck3_get_capabilities", {})
         diagnostics = capabilities.get("diagnostics")
