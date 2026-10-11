@@ -1,7 +1,11 @@
 # Sway beneficial retained end to an ordinary follow-up
 
-2026-10-08 / ISO 2026-W41. Source-only work on
-`a59b2df4a2b3ab6a951bfdc4f12845faf27439d7`; FIRST is `SOURCE_NOTRUN`.
+Initial source work: 2026-10-08 / ISO 2026-W41, on
+`a59b2df4a2b3ab6a951bfdc4f12845faf27439d7`. Current status reconciled
+2026-10-11: already adopted by `8e0f317d`, with subsequent actual4 consumer
+migration `97b25aa5`; the original offline compound passed on October8.
+The [source and existing qualification index](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-01-m6c/M6C-RESULT.json)
+records this reconciliation without replaying that qualification.
 The held actual CK3 1.20.0.4 SHA is
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
 No native address, query, Start contract or schema is replaced.
@@ -45,17 +49,18 @@ flowchart TD
   V --> W[Consume current and prior episode observations independently]
 ```
 
-The concrete production blocker is the unconditional same-player/same-target
-`already_applied` branch in `consume_sway_private_once`. A resolved once-start
-permanently suppresses another episode even after independent retained-end and
-current positive material observations. Different selected targets can already
-start, but resolution replaces the old episode. The minimal consumer change
-admits a fresh repeat only for the beneficial retained-end branch above, keeps
-the ordinary selected-target legality/context policy, and preserves prior
-episodes inside `resolved.previous_interventions`. The original top-level
-ledger shape and pending recovery remain unchanged. Pending actions never get
-resent. A retarget continues to require a separately selected target; this
-package adds no global ranking or hidden faction inference.
+The original source change addressed an unconditional same-player/same-target
+`already_applied` branch. It is already implemented in the current
+`consume_sway_private_once`: `_same_target_followup` admits
+`repeat_selected_target` after the original instance has an independently
+observed retained end and positive named relation material for the queried raw
+date. The existing empty-slot, opinion ceiling50, complete native CanSend/legal
+and event/interaction checks still govern a new Start. A fresh UUID identifies
+the new action, and resolution preserves the old episode inside
+`resolved.previous_interventions`. The original top-level ledger shape and
+pending recovery remain unchanged; pending actions never get resent. Retarget
+still requires a separately selected target. This closes the former permanent
+same-target suppression; it adds no global ranking or hidden faction inference.
 
 Current named material must be observed for the queried raw date. A persistent
 positive modifier is relationship value, not proof of a new gain or terminal
@@ -67,7 +72,9 @@ The ordinary following-turn hook consumes archived episode records too, so
 starting a new legal episode does not discard an unconsumed prior end/material.
 The sole new compound is
 `ck3_autonomous_player/tests/unit/test_sway_beneficial_followup_12004.py`.
-Root alone will execute it once. Its source inputs/backend are synthetic and
+The original [Root qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-python-functional-first01/sway/ROOT-FIRST-RESULT.json)
+executed once on2026-10-08T05:50:36.361277Z..05:50:43.612804Z, exit0,
+`1 passed in 6.36s`. Its source inputs/backend are synthetic and
 its consumer, registered query callbacks and Service turn are production code.
 It covers repeat, prior record retention through normal turn/cold reopen,
 continuation, finish, retarget and pending recovery in one compound. No new

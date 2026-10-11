@@ -1,5 +1,21 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-11: Background-only G2 continuation
+
+The owner now reserves local CK3 for personal play. Automation stopped with
+SDK/keeper exit0 and CAS1976 released; no further Game/Steam/window/query/input
+operation is authorized until explicit release. See the
+[current handover](../handover/2026-10-11-g2-background-only-user-play.md).
+The64-agent team continues offline native-source research and useful code.
+
+The [beneficial Sway repeat path](sway-beneficial-terminal-followup-12004.md)
+is already implemented and originally qualified offline onOctober8. Current
+same-target repeat retains the former episode, admits only the recorded
+beneficial retained-end branch and passes the existing native/context gates.
+Its stale pending/blocker wording is corrected by reusing that exact evidence,
+with no new test, Game action or terminal credit. M4complete/G2 6/8,
+M6partial/M7incomplete/natural0, saved6077/H10134 remain the retained boundary.
+
 ## 2026-10-09: Restored original campaign observes current native state
 
 The [conditional person contribution](battle-person-conditional-2921a90-12004.md)
