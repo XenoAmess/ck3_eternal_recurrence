@@ -1,0 +1,18 @@
+{
+  "state_dir": null,
+  "saved_campaign": {
+    "save": null,
+    "bytes": null,
+    "sha256": null,
+    "player_id": null,
+    "date_raw": null
+  },
+  "case_inputs": {
+    "expected_upstream_run_id": null,
+    "natural_expiry_verified_origin": {
+      "prepared_case": null,
+      "run_context": null,
+      "public_verify_command": null
+    }
+  }
+}

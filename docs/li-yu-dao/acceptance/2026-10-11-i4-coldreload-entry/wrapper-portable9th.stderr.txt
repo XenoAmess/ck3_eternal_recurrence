@@ -1,0 +1,6 @@
+test_09_existing_wrapper_uses_exact_execution_and_selected_context (_portable_cold.ColdContract.test_09_existing_wrapper_uses_exact_execution_and_selected_context) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.432s
+
+OK

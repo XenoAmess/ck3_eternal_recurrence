@@ -1,0 +1,24 @@
+{
+  "schema": "lyd.i4.event-discovery.focused-evidence.v1",
+  "status": "FOUR_FIXTURE_TESTS_EXIT0_NOT_RUNTIME",
+  "original_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-event-discovery-focused-command-20261011-001\\RESULT.actual.json",
+    "bytes": 883,
+    "sha256": "74eaae00254f31e1f9490292de41aeb37a85156c1e3efb927b2a9926c4971166"
+  },
+  "original_stdio": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-event-discovery-focused-command-20261011-001\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-event-discovery-focused-command-20261011-001\\stderr.log",
+      "bytes": 731,
+      "sha256": "0684ae94500c8ea45fc77cf33b4f8aa05c2ffca2cfd228bfd8a52445dda1164d"
+    }
+  ],
+  "runtime_credit": null,
+  "prepare_executed": false,
+  "strict_R56_RED_unchanged": true
+}

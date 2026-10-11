@@ -1,0 +1,68 @@
+{
+  "schema": "lyd-manual-coordinated-storage-reservation-closure-v1",
+  "at_utc": "2026-10-11T02:08:12.102492+00:00",
+  "reservation_id": "lyd-b4-EH-fixture-source006-192MiB-20261011-001",
+  "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+  "owner_task": "lyd-transaction-control-scaffold-l0-20261009-root",
+  "coordinator_task": "lyd-volume-c-admission-20261010-root",
+  "machine_id": "BF-202609141645",
+  "original_admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r56-b4-eh-fixture-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 6029,
+    "sha256": "35c7dd2a634f93e0206a013b6a14e5cc46bd75b1fd172fd00a7a6e42c390916a"
+  },
+  "original_admission_unmodified": true,
+  "actual_ROOT_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-ROOT-closure.ACTUAL.json",
+    "bytes": 1646,
+    "sha256": "1864c2317a9a99c3d0061668ae3cd3989126bb4e84219aa15d90b6cba2f6f964"
+  },
+  "ROOT_confirm_no_more_builds_or_executions": true,
+  "bounded_metadata_measurement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r56-b4-eh-fixture-storage-admission-20261011-001\\CLOSURE-MEASURE.actual.json",
+    "bytes": 11156,
+    "sha256": "88c5341b44cfbfc5e2a03f56bafb6de6e8b5984f84e61aa086607bc61e3d7e07"
+  },
+  "observed_retained_task_logical_bytes_known": 1302807,
+  "closing_outputs_upper_bound_bytes": 1048576,
+  "known_retained_plus_closing_upper_bound_bytes": 2351383,
+  "conservative_project_carry_after_close_bytes": 136190943622,
+  "already_charged_source_bytes_not_added_again": 47957,
+  "released_reservation_peak_bytes": 201326592,
+  "remaining_reserved_peak_bytes": 0,
+  "other_unspent_reserved_peak_bytes": 0,
+  "release_is_end_of_future_write_reservation_not_physical_reclaim": true,
+  "cleanup_deducted_again_bytes": 0,
+  "new_reservation_created": false,
+  "physical_allocated_bytes_or_null": null,
+  "historical_peak_bytes_or_null": null,
+  "fresh_free_bytes_at_closure": 618639585280,
+  "quota_override": {
+    "owner": "XenoAmess / ROOT",
+    "reason": "Existing CK3 execution trees exceed the new default quota. Preserve current LYD baselines while reducing historical assets; admit only one bounded Source06/cache/R46 task.",
+    "max_project_bytes": 137438953472,
+    "review_at_utc": "2026-10-12T05:19:51.814083+00:00",
+    "auto_renew": false,
+    "next_action": "Review old execution trees and expire superseded inputs; no additional heavy task without a new admission."
+  },
+  "source_review_unchanged_at_utc": "2026-10-17T19:32:25.249949+00:00",
+  "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+  "original_cache_review_unchanged_at_utc": "2026-10-17T13:06:29.278808+00:00",
+  "existing_source006_review_by_utc": "2026-10-25T00:00:00Z",
+  "TTL_or_quota_renewed": false,
+  "Defender_registration_verified": false,
+  "original_build_exit_code": 1,
+  "original_modes_exit_codes": [
+    0,
+    3,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3
+  ],
+  "native_game_installer_qualification": null,
+  "live_or_business_qualification": false
+}

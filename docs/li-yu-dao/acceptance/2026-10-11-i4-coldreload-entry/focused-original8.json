@@ -1,0 +1,28 @@
+{
+  "schema": "lyd-i4-cold-source-test-result-v1",
+  "request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\FOCUSED-REQUEST.actual.json",
+    "bytes": 773,
+    "sha256": "3b910ee0091a5ee9e192da67a4fc18a4d91090601c4a282a715586882df7b9a8"
+  },
+  "exit_code": 0,
+  "test_methods": 8,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\focused.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\focused.stderr.txt",
+    "bytes": 1313,
+    "sha256": "49c4b852f5d9afe2c2942109bc6adfee5c869391331a028620437e598c1eecb2"
+  },
+  "original_tool_result": {
+    "chunk_id": "311dfe",
+    "wall_time_seconds": 1.0189042,
+    "exit_code": 0,
+    "output": ""
+  },
+  "inert_fixtures_only": true,
+  "SDK_game_SAVE_real_checkpoint_or_MAIN_actions": false
+}

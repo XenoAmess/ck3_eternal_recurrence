@@ -1,0 +1,28 @@
+{
+  "schema": "lyd-i4-cold-portable-source-test-result-v1",
+  "request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\PORTABLE-FOCUSED-REQUEST.actual.json",
+    "bytes": 1004,
+    "sha256": "d759bc3f793b9a950a333ac807ac926519d0f6165a11ef1f6521323be711a99d"
+  },
+  "exit_code": 0,
+  "test_methods": 8,
+  "test_class_AST_exact_unchanged": true,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\portable-focused.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\portable-focused.stderr.txt",
+    "bytes": 1313,
+    "sha256": "9d5b0cfc35034a91fac22ee5b5b57318aafb8ee69f26740dda76227c43bcef65"
+  },
+  "original_tool_result": {
+    "chunk_id": "646eb0",
+    "wall_time_seconds": 0.8471897,
+    "exit_code": 0,
+    "output": ""
+  },
+  "no_real_checkpoint_or_SDK_game_calls": true
+}

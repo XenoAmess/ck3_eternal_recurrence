@@ -1,0 +1,124 @@
+{
+  "schema": "lyd.coldreload-b4.original-small-receipt-index.v1",
+  "original_receipts": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\FOCUSED-RESULT.actual.json",
+        "bytes": 1084,
+        "sha256": "ba7860d479bd15290ad72f4d0b7fff785bfea4b53fbd431039aa670b15a7ce14"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/focused-original8.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\PORTABLE-FOCUSED-RESULT.actual.json",
+        "bytes": 1122,
+        "sha256": "6fc80cc4746db9537b8703ff2c532956260287606ee5b75f254f217b0c14cd54"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/focused-portable8.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\WRAPPER-FOCUSED-RESULT-002.actual.json",
+        "bytes": 1038,
+        "sha256": "f2aac4cc6e3931eee6c6c5c8018a6dfbdf00d8e4d7ad5103373fd3c9dc0a7575"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/wrapper-external1.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\PORTABLE-WRAPPER-RESULT.actual.json",
+        "bytes": 1035,
+        "sha256": "46f419f71fc4169b37cf657bae9b40e1b5da79ea218a26bf7675d4baf9fcd205"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/wrapper-portable9th.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\portable-wrapper.stderr.txt",
+        "bytes": 274,
+        "sha256": "07367d5c7a7c765d11548545de0dd142befedaa9332b93e5d510a7af3870ccc1"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/wrapper-portable9th.stderr.txt",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\wrapper-focused.stderr.txt",
+        "bytes": 1906,
+        "sha256": "a207c5cc6d51c191acb420b0733664803d85b5db970fabd9435b95b8a759caf9"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/wrapper-first-fixture-red.stderr.txt",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\CASE-INPUTS.pending.json",
+        "bytes": 352,
+        "sha256": "90b645af887808e31451b414ca0807dce9b352336010cb444c72d2c1688f961e"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/CASE-INPUTS.pending.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0056\\public-verify-command-001\\RESULT.actual.json",
+        "bytes": 1655,
+        "sha256": "1123f21bcf2ddcc51c51b4227622caba10f31886312a73b47404dd96c68eed6f"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/R56-public-verify-RED.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-native-modes-20261011-001\\INDEX.actual.json",
+        "bytes": 3701,
+        "sha256": "e79bfafbf6ef04351885974380cad79951e725504ef0f48501cbc61b14026dcb"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/B4-modes-INDEX.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-006\\build-001\\native-msvc-result.json",
+        "bytes": 2121,
+        "sha256": "280f53da284cf163daad488fec0e4e4938d221c76d740cfac64620ef9e01d70a"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/B4-native-msvc-result.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-build-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1451,
+        "sha256": "55de31fe4e9bdd193d1dcda61e9e9ed061dc62aa57dda324325bb074d5f2308b"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/B4-build-command.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r56-b4-eh-fixture-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+        "bytes": 3042,
+        "sha256": "000c800fc018db92e41121622806b5923e1842ba3790a0e93d2b04c818f80e62"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/B4-CLOSED-RESERVATION.json",
+      "operation": "create_exact_bytes"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-native-modes-20261011-001\\inplace-normal\\stdout.log",
+        "bytes": 539,
+        "sha256": "147d9087e01e3fbbadf312b607b2579158ae9318269a7cbf07277c649d4f1f79"
+      },
+      "destination": "docs/li-yu-dao/acceptance/2026-10-11-i4-coldreload-entry/B4-inplace-normal.stdout.log",
+      "operation": "create_exact_bytes"
+    }
+  ],
+  "original_bytes_preserved": true,
+  "live_credit": false
+}

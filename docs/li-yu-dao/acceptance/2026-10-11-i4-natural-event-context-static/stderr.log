@@ -1,0 +1,9 @@
+test_cross_owner_typed_query_is_rejected_without_second_submission (__main__.DiscoveryTests.test_cross_owner_typed_query_is_rejected_without_second_submission) ... ok
+test_existing_nonboundary_day_keeps_original_day_guard (__main__.DiscoveryTests.test_existing_nonboundary_day_keeps_original_day_guard) ... ok
+test_ninety_days_without_event_is_no_event_not_success (__main__.DiscoveryTests.test_ninety_days_without_event_is_no_event_not_success) ... ok
+test_typed_boundary_preserves_real_partial_interval_and_zero_choices (__main__.DiscoveryTests.test_typed_boundary_preserves_real_partial_interval_and_zero_choices) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.037s
+
+OK

@@ -1,0 +1,24 @@
+{
+  "schema": "lyd-i4-portable-wrapper-check-result-v1",
+  "request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\PORTABLE-WRAPPER-REQUEST.actual.json",
+    "bytes": 1289,
+    "sha256": "e19d86adeb10c1cc33a51022fba1eb9340790c0bea7b1a3d2c7aa4c57859f732"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 0.6791322999924887,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\portable-wrapper.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-expiry-coldreload-entry-sourceonly-20261011-001\\portable-wrapper.stderr.txt",
+    "bytes": 274,
+    "sha256": "07367d5c7a7c765d11548545de0dd142befedaa9332b93e5d510a7af3870ccc1"
+  },
+  "new_test_methods": 1,
+  "old8_repeated": false,
+  "real_wrapper_R56_dependencies": false,
+  "sdk_game_main_actions": 0
+}

@@ -2851,6 +2851,68 @@
           "product_release_pass": false
         },
         {
+          "id": "i4-expiry-cold-reload",
+          "status": "ready",
+          "implementation_credit": "Public source candidate for partial existing-cooldown cold persistence; actual verified natural expiry final SAVE and qualified normal close mandatory. Live NOT_RUN.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_expiry_cold_reload_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_expiry_cold_reload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Paused cold observation uses existing B5 shared bounds; original deadlines and source expiry unchanged.",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "i4-partial-existing-cooldown-cold-persistence-only",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "qualified_natural_public_verify_and_normal_close_origin",
+            "exact_expiry_final_SAVE_cold_start",
+            "actual_enabled_school_decision_readonly",
+            "one_new_cold_SAVE_flag_absent_HoR_and_headless_Faith_Rite_membership",
+            "actual_shared_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "No school confirmation, calendar setter, advance_day, cooldown reset, factory, event choice or reuse of a failed world. Partial cold persistence never credits a fresh365 cycle or whole I4.",
+          "product_release_pass": false
+        },
+        {
           "id": "i4-existing-school-cooldown",
           "status": "ready",
           "implementation_credit": "Static public adapter; actual existing-cooldown observation and normal close NOT_RUN",
@@ -2910,6 +2972,69 @@
             "normal_close": "{run_dir}/case-output/normal-close-result.json"
           },
           "legacy_upper_bounds_preserved": "All existing scenarios unchanged; no calendar setter, flag reset, school choice, full-365-cycle or cold-reload credit",
+          "product_release_pass": false
+        },
+        {
+          "id": "i4-natural-event-context",
+          "status": "ready",
+          "implementation_credit": "Source-only event identity/presentation discovery; no event choice or expiry credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_event_context_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_i4_natural_event_context.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 8400,
+            "hold_seconds": 7200,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "At most 90 actual natural days; unchanged 7200 hold / 900 readiness / 8400 timeout, no retry or extension",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "PARTIAL_NATURAL_EVENT_CONTEXT_DISCOVERY",
+          "whole_product_acceptance_credit": false,
+          "phases": [
+            "original0240_headless_event_free_admission",
+            "fresh_initial_SAVE_flag_present_and_disabled_school_decision",
+            "natural_one_day_or_event_boundary_maximum90days",
+            "first_event_fresh_typed_context_no_choice",
+            "actual_shared_normal_close"
+          ],
+          "outputs": {
+            "case_output": "{run_dir}/case-output",
+            "normal_close": "{run_dir}/case-output/normal-close-result.json"
+          },
+          "legacy_upper_bounds_preserved": "Existing strict case unchanged; event_choice_actions=0/school_choice_actions=0; no expiry/full365/cold/formal credit",
           "product_release_pass": false
         }
       ],

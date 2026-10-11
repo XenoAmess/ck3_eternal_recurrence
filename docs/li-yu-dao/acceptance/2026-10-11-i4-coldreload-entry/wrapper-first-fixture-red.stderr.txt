@@ -1,0 +1,23 @@
+test_existing_wrapper_execute_once_and_identity_rejections (__main__.WrapperRegression.test_existing_wrapper_execute_once_and_identity_rejections) ... ERROR
+
+======================================================================
+ERROR: test_existing_wrapper_execute_once_and_identity_rejections (__main__.WrapperRegression.test_existing_wrapper_execute_once_and_identity_rejections)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-expiry-coldreload-entry-sourceonly-20261011-001\test_wrapper_public_argv.py", line 80, in test_existing_wrapper_execute_once_and_identity_rejections
+    self.assertEqual(cold.upstream(f.context)['seed'], f.seed)
+                     ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-expiry-coldreload-entry-sourceonly-20261011-001\candidate\tools\ck3_mod_acceptance_cases\lyd_i4_expiry_cold_reload_adapter.py", line 130, in upstream
+    return {'startup': {'mode': 'saved_campaign', 'state_dir': str(state), 'saved_campaign': {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-expiry-coldreload-entry-sourceonly-20261011-001\candidate\tools\ck3_mod_acceptance_cases\lyd_i4_expiry_cold_reload_adapter.py", line 96, in verified_public_argv
+    seed['bytes'] == checkpoint['size'] and seed['sha256'].lower() == checkpoint['sha256'].lower() and
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\ck3_mod_acceptance_cases\lyd_transaction_control_adapter.py", line 19, in require
+    raise ValueError(message)
+ValueError: Exactly one original wrapper execution marker required
+
+----------------------------------------------------------------------
+Ran 1 test in 0.158s
+
+FAILED (errors=1)

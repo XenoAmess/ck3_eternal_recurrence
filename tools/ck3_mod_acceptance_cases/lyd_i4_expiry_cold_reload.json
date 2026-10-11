@@ -1,0 +1,25 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "case_id": "i4-expiry-cold-reload",
+  "scope": "PARTIAL_EXISTING_COOLDOWN_COLD_PERSISTENCE",
+  "upstream_case": "i4-existing-school-cooldown",
+  "actor_id": 31254,
+  "faith_id": 107,
+  "rite_id": 169,
+  "head_of_rite_id": 31254,
+  "decision_key": "lyd_change_school_decision",
+  "maximum_natural_days": 0,
+  "school_choice_actions": 0,
+  "cold_SAVE_actions": 1,
+  "new_SAVE_body_reads": 1,
+  "adapter_seed_body_reads": 0,
+  "does_not_credit": [
+    "fresh_full_365_cycle",
+    "exact_expiry_date",
+    "formal_I3b",
+    "C3",
+    "I4_complete",
+    "product_release"
+  ]
+}
