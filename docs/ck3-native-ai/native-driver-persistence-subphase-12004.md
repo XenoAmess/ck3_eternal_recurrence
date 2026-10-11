@@ -87,3 +87,21 @@ Changing that encoder alone does not establish a reduction in complete JSON
 serialization cost. This direction is closed without a cache, mutation protocol,
 patch, new tests or SDK switch. The existing SDK82 write/replace observations
 and actual ordinary-play blockers remain the next useful inputs.
+
+## Actual SDK82 temporary-write and replace costs
+
+32's [one R97 small-log read](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-32/persist-phase-parser-sdk81/successor-sdk82/actual-r0097-cold-read01/RESULT.json)
+at02:21:52Z captured25 lines and three complete groups, with all five original
+and two optional child stages present. The cold group's JSON+LF was14.4464341s,
+temporary write16.5742232s, replace0.2103991s, and whole atomic wrapper16.7863311s.
+The other two temporary writes were18.0340707/16.7973506s; replacements were
+0.2977288/0.2019946s. Independent aggregates were32.6285171/34.5827447/33.3400558s;
+they are not exact-sum joins. The observed wrapper cost mainly lies in writing
+the temporary file, alongside substantial full JSON serialization cost. These
+measurements establish no speedup or new functional readiness.
+
+The live log grew between the output-size estimate and the sole parser read,
+exceeding the original128KiB parser child by3057B. That fact remains in the
+result.10 amended the same child to136KiB within the unchanged4MiB source quota
+before the3431B result was written; final child137560B and source1136428B fit.
+No repeated log read, Driver body inspection, extra Game query or QA followed.
