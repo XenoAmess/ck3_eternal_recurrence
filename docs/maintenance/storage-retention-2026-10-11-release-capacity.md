@@ -35,3 +35,13 @@ Source19控制中出现profile祖先路径，并不表示其每个shadercache是
 小型原件位于 `C:/workspace/ck3-upgrade-20261010/r14-r79-cache-retirement-20261011-01/ACTUAL-SUMMARY.json`（2,684B，SHA `3ee967b1bfe274f5ee804960ff61d68d254cc322a86dfffbd1d3a7e8ca3b2366`）；原 execute wait（990B，SHA `0c3721ab92f45be04982fdcf7233cb0a426934ada9db0f5cfe8bcf5c38b11946`）在同级 `r14-r79-cache-retirement-controls-20261011-01/r14r79-execute-01-process-exit.json`。标准237闭账为 `C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-r14-r79-cache-retirement-01-reservation-237-closed.json`，实际 close wait（985B，SHA `86178749708ec3cc1ab6c1ad57e404b271c82a1113f41ae244865bf6cf1f2f73`）留在控制包。小型清理记录复核期限为2027-04-09，不代表自动GC。
 
 累计两轮实际 native 回收 **3,226,665,760 B**，不把卷空闲变化全部归因于本次删除。卷上其他增长使 13:18Z 新 RMTM/core/a184 原52实际仍 **BLOCKED**：available 29,885,378,560B，required 30,071,062,528B，差185,683,968B。blocked 原件6,630B / SHA `588910864f6721f7b16877a150df84fcffe8fc80bdb5819afe4ef8e743198578`；admission命令exit0仅代表完成检查，不等于准入。此时尚未 allocate、启动观察或游戏。继续核查有替代证据的项目派生资产，不降低2GiB场次、6GiB系统增长、20GiB安全量及6MiB其他预约门槛；业务进度仍2/8，无发布完成声明。
+
+## 2026-10-11 21:49 CST：旧只读监控中间/派生退役，RMTM/core a184 已准入
+
+13:48:44Z 实际完成一个精确批次，删除29件旧只读监控中间报告副本/派生JSON，native AllocationSize 合计 **231,346,176 B**，1.601261秒、failures0、bodyhash0，未删除目录。范围仅 C05 的 `xqol-religion06-live-monitor-agent-01`（10件）、`xqol-defense07-live-monitor-agent-01`（7件）和 `xqol-payment-live-monitor-agent-01`（12件）。保留各组最后完整代表 raw：religion006、defense008、payment007，以及原source/debug/error/小结/控制记录；特别是 R8/R9 原 LIVE native report 路径已经不可读，不能把薄JSON或旧source绑定说成仍存的完整原件。用途结束的早期capture/派生投影按明确授权提前退役，不声称相同SHA去重、历史字节可恢复，也不改写 R8有限D0/whole-root缺口、R9 setup failure、R6 NO_ACTUAL_D1 的原判定。
+
+原221的 admit/execute/close 均 actor `/root`、实际wait0；13:49:16Z标准237闭账 COMPLETE，原child0、unspent0。新包后继usage按16MiB整额计一次，RMTM262的4MiB计一次、既有PAM262不重复计费；不从usage扣回收信用，不降低2GiB场次、6GiB增长、20GiB安全或6MiB其他预约。代表原件 owner `/root`、2026-10-18复核，不自动续期；小闭账记录2027-04-09复核。
+
+实际summary：`C:/workspace/ck3-upgrade-20261010/old-monitor-retirement-20261011-01/ACTUAL-SUMMARY.json`，1,317B，SHA `2eb399073ffb9b7c425a555dadebebddb40b47fb1e694f5976e7f742dcd11a39`。execute wait：控制包下 `monitor-execute-01-process-exit.json`，987B，SHA `87f8fecd6c00914e5b316429d1e8025b988e8833bef2e83a3e36e885e55edc70`。标准237闭账：`C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-old-monitor-retirement-01-reservation-237-closed.json`，2,540B，SHA `5c81aef8b376bfdbb7987854a7aa61b13a215d4ddc090dfc7329ea80c8c2ee1e`。
+
+执行前free 29,847,240,704B，执行后30,078,582,784B、闭账30,078,496,768B；全卷变化不全归因于删除。本文三轮实际native回收累计 **3,458,011,936 B**。此前 a184 BLOCKED 原件保留；随后root实际完成原52重新准入（42,749B，SHA `961e60ec435eebad561e7b3d3e2ca35dbe84e7aa69006586bac30c27581d0cb6`），RMTM core R0015/a184 已启动，业务结果仍待实际验收，不能把清理、准入或启动写成PASS/发布完成。
