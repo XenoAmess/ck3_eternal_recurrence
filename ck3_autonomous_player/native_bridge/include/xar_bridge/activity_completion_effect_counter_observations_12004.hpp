@@ -16,7 +16,8 @@ inline constexpr std::uintptr_t kActivityCompletionEffectCounterObservationCallR
 inline constexpr std::uintptr_t kActivityCompletionEffectCounterObservationReturnRva12004 =
     0x23F6B87;
 
-// Each face is independently copied around the one original natural call.
+// Each face is independently copied at the descriptor-qualified natural
+// scope boundaries; a delayed scope can include the following native call.
 // XP is specifically unavailable: the existing XP helper invokes a native
 // TraitDB/track getter and is not used by these guarded raw readers.
 struct ActivityCompletionEffectCounterFace12004 {
@@ -54,6 +55,7 @@ struct ActivityCompletionEffectCounterObservation12004 {
   std::uintptr_t effect_identity = 0;
   std::uintptr_t native_context_identity = 0;
   std::uintptr_t original_parent_rsp = 0;
+  // Qualified normal scope return; second scope samples BA7, not B9F.
   bool original_call_return_observed = false;
   ActivityCompletionEffectCounterFace12004 before{};
   ActivityCompletionEffectCounterFace12004 after{};
@@ -61,6 +63,15 @@ struct ActivityCompletionEffectCounterObservation12004 {
   bool same_activity_full_id = false;
   bool same_participant_full_id_observed = false;
   bool same_participant_full_id = false;
+  std::uintptr_t source_call_rva =
+      kActivityCompletionEffectCounterObservationCallRva12004;
+  std::uintptr_t source_return_rva =
+      kActivityCompletionEffectCounterObservationReturnRva12004;
+  std::uintptr_t source_after_cut_rva =
+      kActivityCompletionEffectCounterObservationReturnRva12004;
+  std::uintptr_t intervening_call_rva = 0;
+  std::uintptr_t intervening_callee_rva = 0;
+  const char *observation_scope = "original_completion_call";
 };
 
 struct ActivityCompletionEffectCounterSnapshot12004 {

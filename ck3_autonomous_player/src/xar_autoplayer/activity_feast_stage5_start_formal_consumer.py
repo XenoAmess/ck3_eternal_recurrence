@@ -221,7 +221,7 @@ def _original_call_counter_observation(
         return {
             "activity_id": activity_id, "actor_character_id": actor_id,
             "activity_type_key": "activity_feast",
-            "scope": "one_original_completion_call_per_record",
+            "scope": "one_owned_native_call_interval_per_record",
             "records": records,
             "journal_coverage": {key: value for key, value in journal.items() if key != "records"},
             "source_query_provenance": {

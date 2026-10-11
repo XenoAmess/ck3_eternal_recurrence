@@ -17,6 +17,11 @@ struct ActivityCompletionEffectOperands12004 {
   std::uintptr_t original_parent_rsp = 0;
   std::uint64_t invocation_sequence = 0;
   std::uint32_t thread_id = 0;
+  std::uintptr_t source_call_rva = 0x23F6B82;
+  std::uintptr_t source_return_rva = 0x23F6B87;
+  std::uintptr_t source_after_cut_rva = 0x23F6B87;
+  std::uintptr_t intervening_call_rva = 0;
+  std::uintptr_t intervening_callee_rva = 0;
 };
 
 } // namespace xar::bridge
@@ -29,6 +34,13 @@ inline constexpr std::uintptr_t kActivityCompletionEffectCounterCallRva12004 = 0
 inline constexpr std::uintptr_t kActivityCompletionEffectCounterCalleeRva12004 = 0x3765760;
 inline constexpr std::uintptr_t kActivityCompletionEffectCounterPostRva12004 = 0x23F6B87;
 inline constexpr std::uintptr_t kActivityCompletionEffectCounterContinueRva12004 = 0x23F6B8E;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterSecondPreRva12004 = 0x23F6B95;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterSecondCallRva12004 = 0x23F6B9A;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterSecondReturnRva12004 = 0x23F6B9F;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterInterveningCallRva12004 = 0x23F6BA2;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterInterveningCalleeRva12004 = 0x28BEF00;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterSecondPostRva12004 = 0x23F6BA7;
+inline constexpr std::uintptr_t kActivityCompletionEffectCounterSecondContinueRva12004 = 0x23F6BB2;
 inline constexpr std::size_t kActivityCompletionEffectCounterStubCapacity12004 = 384;
 
 using ActivityCompletionEffectCounterCapture12004 = void (*)(
@@ -65,8 +77,8 @@ struct ActivityCompletionEffectCounterObserver12004Window {
   std::size_t stub_bytes = 0;
   std::size_t patch_bytes = 0;
   bool patch_owned_or_uncertain = false;
-  std::array<std::uint8_t, 7> original_patch{};
-  std::array<std::uint8_t, 7> installed_patch{};
+  std::array<std::uint8_t, 11> original_patch{};
+  std::array<std::uint8_t, 11> installed_patch{};
 };
 
 // Process-lifetime state. Ordinary Stop calls Uninstall(false), retaining the
@@ -80,9 +92,15 @@ struct ActivityCompletionEffectCounterObserver12004State {
   std::atomic<std::uint64_t> bypass_post_count{0};
   std::atomic<std::uint64_t> uncorrelated_post_count{0};
   std::atomic<std::uint64_t> dropped_before_count{0};
+  std::atomic<std::uint64_t> second_before_count{0};
+  std::atomic<std::uint64_t> second_returned_count{0};
+  std::atomic<std::uint64_t> second_bypass_post_count{0};
+  std::atomic<std::uint64_t> second_uncorrelated_post_count{0};
+  std::atomic<std::uint64_t> second_dropped_before_count{0};
   ActivityCompletionEffectCounterObserver12004Environment environment{};
   std::uintptr_t native_return_target = 0;
-  std::array<ActivityCompletionEffectCounterObserver12004Window, 2> windows{};
+  std::uintptr_t second_sample_return_target = 0;
+  std::array<ActivityCompletionEffectCounterObserver12004Window, 4> windows{};
 };
 
 struct ActivityCompletionEffectCounterObserver12004Diagnostics {
@@ -93,6 +111,11 @@ struct ActivityCompletionEffectCounterObserver12004Diagnostics {
   std::uint64_t bypass_post_count = 0;
   std::uint64_t uncorrelated_post_count = 0;
   std::uint64_t dropped_before_count = 0;
+  std::uint64_t second_before_count = 0;
+  std::uint64_t second_returned_count = 0;
+  std::uint64_t second_bypass_post_count = 0;
+  std::uint64_t second_uncorrelated_post_count = 0;
+  std::uint64_t second_dropped_before_count = 0;
 };
 
 bool InstallActivityCompletionEffectCounterObserver12004(

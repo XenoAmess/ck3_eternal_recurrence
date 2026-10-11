@@ -337,11 +337,18 @@ std::string SerializeActivityFeastStage5PrivateV1(
             ",\"observer_invocation_sequence_u64\":" + std::to_string(row.observer_invocation_sequence) +
             ",\"capture_thread_id_u32\":" + std::to_string(row.capture_thread_id) +
             ",\"source_call_rva_u64\":" +
-            std::to_string(xar::ck3_12004::kActivityCompletionEffectCounterObservationCallRva12004) +
+            std::to_string(row.source_call_rva) +
             ",\"source_callee_rva_u64\":" + std::to_string(std::uint64_t{0x3765760}) +
             ",\"source_return_rva_u64\":" +
-            std::to_string(xar::ck3_12004::kActivityCompletionEffectCounterObservationReturnRva12004) +
-            ",\"activity_identity_u64\":" + std::to_string(row.activity_identity) +
+            std::to_string(row.source_return_rva) +
+            ",\"source_after_cut_rva_u64\":" + std::to_string(row.source_after_cut_rva) +
+            ",\"intervening_call_rva_u64\":" +
+            (row.intervening_call_rva ? std::to_string(row.intervening_call_rva) : "null") +
+            ",\"intervening_callee_rva_u64\":" +
+            (row.intervening_callee_rva ? std::to_string(row.intervening_callee_rva) : "null") +
+            ",\"observation_scope\":";
+        append_counter_quoted(row.observation_scope);
+        payload += ",\"activity_identity_u64\":" + std::to_string(row.activity_identity) +
             ",\"participant_identity_u64\":" + std::to_string(row.participant_identity) +
             ",\"effect_identity_u64\":" + std::to_string(row.effect_identity) +
             ",\"native_context_identity_u64\":" + std::to_string(row.native_context_identity) +

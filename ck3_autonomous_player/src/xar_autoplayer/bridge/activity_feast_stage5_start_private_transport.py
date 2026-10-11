@@ -237,6 +237,10 @@ def _native_completion_effect_counter_observations(
         "before", "after", "same_activity_full_id_observed", "same_activity_full_id",
         "same_participant_full_id_observed", "same_participant_full_id",
     }
+    scope_keys = {
+        "source_after_cut_rva_u64", "intervening_call_rva_u64",
+        "intervening_callee_rva_u64", "observation_scope",
+    }
     face_keys = {
         "frame_observed", "frame", "activity_full_id_observed", "activity_full_id_u32",
         "activity_instance_generation_u8", "host_observed", "host_character_id_i32",
@@ -277,17 +281,33 @@ def _native_completion_effect_counter_observations(
         rows = []
         previous = 0
         for row in value["records"]:
-            require(isinstance(row, dict) and set(row) == row_keys)
+            require(isinstance(row, dict) and set(row) in (row_keys, row_keys | scope_keys))
             require(integer(row["capture_sequence_u64"], 1, 2**64 - 1)
                     and earliest <= row["capture_sequence_u64"] <= latest
                     and previous < row["capture_sequence_u64"]
                     and integer(row["observer_invocation_sequence_u64"], 1, 2**64 - 1)
                     and integer(row["capture_thread_id_u32"], 1, 0xFFFFFFFF)
                     and type(row["original_call_return_observed"]) is bool)
-            for key, expected in (("source_call_rva_u64", 0x23F6B82),
-                                  ("source_callee_rva_u64", 0x3765760),
-                                  ("source_return_rva_u64", 0x23F6B87)):
-                require(integer(row[key], 0, 2**64 - 1) and row[key] == expected)
+            require(all(integer(row[key], 0, 2**64 - 1) for key in
+                        ("source_call_rva_u64", "source_callee_rva_u64", "source_return_rva_u64"))
+                    and row["source_callee_rva_u64"] == 0x3765760)
+            if "source_after_cut_rva_u64" in row:
+                require(integer(row["source_after_cut_rva_u64"], 0, 2**64 - 1)
+                        and all(row[key] is None or integer(row[key], 0, 2**64 - 1) for key in
+                                ("intervening_call_rva_u64", "intervening_callee_rva_u64"))
+                        and isinstance(row["observation_scope"], str))
+                descriptor = (row["source_call_rva_u64"], row["source_return_rva_u64"],
+                              row["source_after_cut_rva_u64"], row["intervening_call_rva_u64"],
+                              row["intervening_callee_rva_u64"])
+                require((descriptor, row["observation_scope"]) in (
+                    ((0x23F6B82, 0x23F6B87, 0x23F6B87, None, None), "original_completion_call"),
+                    ((0x23F6B9A, 0x23F6B9F, 0x23F6BA7, 0x23F6BA2, 0x28BEF00),
+                     "original_completion_call_and_following_native_call"),
+                ))
+            else:
+                # The original first-call row owns no composite scope fields.
+                require((row["source_call_rva_u64"], row["source_return_rva_u64"])
+                        == (0x23F6B82, 0x23F6B87))
             require(all(integer(row[key], 0, 2**64 - 1) for key in
                         ("activity_identity_u64", "participant_identity_u64", "effect_identity_u64",
                          "native_context_identity_u64", "original_parent_rsp_u64")))

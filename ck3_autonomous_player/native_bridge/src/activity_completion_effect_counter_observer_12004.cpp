@@ -25,6 +25,31 @@ constexpr std::array<std::uint8_t, 25> kActualAnchor{
     0xE8, 0xD9, 0xEB, 0x36, 0x01,
     0x49, 0x8B, 0x8D, 0xA0, 0x03, 0x00, 0x00};
 
+// B87..BB2 also proves both original CALLs in the second composite scope.
+constexpr std::array<std::uint8_t, 43> kActualSecondAnchor{
+    0x49,0x8B,0x8D,0xA0,0x03,0x00,0x00,
+    0x48,0x81,0xC1,0xE0,0x08,0x00,0x00,
+    0x48,0x8D,0x54,0x24,0x40, 0xE8,0xC1,0xEB,0x36,0x01,
+    0x49,0x8B,0xCE, 0xE8,0x59,0x83,0x4C,0x00,
+    0x48,0x8B,0x48,0x08, 0x80,0xB9,0x3C,0x05,0x00,0x00,0x00};
+
+bool SetSourceScope(Operands &value, std::uintptr_t source_call_rva) noexcept {
+  value.source_call_rva = source_call_rva;
+  if (source_call_rva == kActivityCompletionEffectCounterCallRva12004) {
+    value.source_return_rva = kActivityCompletionEffectCounterPostRva12004;
+    value.source_after_cut_rva = kActivityCompletionEffectCounterPostRva12004;
+    value.intervening_call_rva = 0;
+    value.intervening_callee_rva = 0;
+    return true;
+  }
+  if (source_call_rva != kActivityCompletionEffectCounterSecondCallRva12004) return false;
+  value.source_return_rva = kActivityCompletionEffectCounterSecondReturnRva12004;
+  value.source_after_cut_rva = kActivityCompletionEffectCounterSecondPostRva12004;
+  value.intervening_call_rva = kActivityCompletionEffectCounterInterveningCallRva12004;
+  value.intervening_callee_rva = kActivityCompletionEffectCounterInterveningCalleeRva12004;
+  return true;
+}
+
 struct Pending {
   State *owner = nullptr;
   Operands operands{};
@@ -34,6 +59,7 @@ struct PendingStack {
   std::size_t size = 0;
   State *overflow_owner = nullptr;
   std::uintptr_t overflow_parent_rsp = 0;
+  std::uintptr_t overflow_source_call_rva = 0;
 };
 thread_local PendingStack g_pending{};
 
@@ -49,7 +75,10 @@ bool Active(State *state) noexcept {
 bool SameOperands(const Operands &a, const Operands &b) noexcept {
   return a.activity == b.activity && a.participant == b.participant &&
       a.effect == b.effect && a.native_context == b.native_context &&
-      a.original_parent_rsp == b.original_parent_rsp && a.thread_id == b.thread_id;
+      a.original_parent_rsp == b.original_parent_rsp && a.thread_id == b.thread_id &&
+      a.source_call_rva == b.source_call_rva && a.source_return_rva == b.source_return_rva &&
+      a.source_after_cut_rva == b.source_after_cut_rva &&
+      a.intervening_call_rva == b.intervening_call_rva && a.intervening_callee_rva == b.intervening_callee_rva;
 }
 
 Operands PhysicalOperands(std::uintptr_t activity, std::uintptr_t participant,
@@ -68,13 +97,17 @@ Operands PhysicalOperands(std::uintptr_t activity, std::uintptr_t participant,
 extern "C" void ActivityCompletionEffectCounterBeforeThunk12004(
     State *state, std::uintptr_t activity, std::uintptr_t participant,
     std::uintptr_t effect, std::uintptr_t native_context,
-    std::uintptr_t original_parent_rsp, std::uintptr_t) noexcept {
+    std::uintptr_t original_parent_rsp, std::uintptr_t, std::uintptr_t source_call_rva) noexcept {
   if (!Active(state)) return;
   auto operands = PhysicalOperands(activity, participant, effect, native_context, original_parent_rsp);
-  operands.invocation_sequence = state->before_count.fetch_add(1, std::memory_order_relaxed) + 1;
+  if (!SetSourceScope(operands, source_call_rva)) return;
+  const bool second = source_call_rva == kActivityCompletionEffectCounterSecondCallRva12004;
+  auto &before_count = second ? state->second_before_count : state->before_count;
+  auto &dropped_before_count = second ? state->second_dropped_before_count : state->dropped_before_count;
+  operands.invocation_sequence = before_count.fetch_add(1, std::memory_order_relaxed) + 1;
   auto &pending = g_pending;
   if (pending.overflow_owner != nullptr) {
-    state->dropped_before_count.fetch_add(1, std::memory_order_relaxed);
+    dropped_before_count.fetch_add(1, std::memory_order_relaxed);
     return;
   }
   // A fresh before at the same physical parent stack supersedes a stale
@@ -89,7 +122,8 @@ extern "C" void ActivityCompletionEffectCounterBeforeThunk12004(
   if (pending.size == pending.entries.size() || operands.invocation_sequence == 0) {
     pending.overflow_owner = state;
     pending.overflow_parent_rsp = original_parent_rsp;
-    state->dropped_before_count.fetch_add(1, std::memory_order_relaxed);
+    pending.overflow_source_call_rva = source_call_rva;
+    dropped_before_count.fetch_add(1, std::memory_order_relaxed);
     return;
   }
   pending.entries[pending.size++] = {state, operands};
@@ -100,43 +134,61 @@ extern "C" void ActivityCompletionEffectCounterBeforeThunk12004(
 extern "C" void ActivityCompletionEffectCounterAfterThunk12004(
     State *state, std::uintptr_t activity, std::uintptr_t participant,
     std::uintptr_t effect, std::uintptr_t native_context,
-    std::uintptr_t original_parent_rsp, std::uintptr_t last_native_return_pc) noexcept {
+    std::uintptr_t original_parent_rsp, std::uintptr_t last_native_return_pc,
+    std::uintptr_t source_call_rva) noexcept {
   if (!Active(state)) return;
   auto &pending = g_pending;
+  const bool second = source_call_rva == kActivityCompletionEffectCounterSecondCallRva12004;
+  Operands scope{};
+  if (!SetSourceScope(scope, source_call_rva)) return;
+  auto &bypass_post_count = second ? state->second_bypass_post_count : state->bypass_post_count;
+  auto &uncorrelated_post_count = second ? state->second_uncorrelated_post_count : state->uncorrelated_post_count;
+  auto &returned_count = second ? state->second_returned_count : state->returned_count;
+  const auto required_return_word = second ? state->second_sample_return_target : state->native_return_target;
+  // First post also has a guard bypass; second is after the independent
+  // existing28BEF00 CALL. Its real return marker is BA7, not B9F.
   // The post cut is also the first-CALL guard-bypass target. Copy the native
   // return word before stub pushes overwrite it, and reject the bypass even
   // if a previous nonlocal exit left a same-stack pending record.
-  if (last_native_return_pc != state->native_return_target) {
-    state->bypass_post_count.fetch_add(1, std::memory_order_relaxed);
+  if (last_native_return_pc != required_return_word) {
+    bypass_post_count.fetch_add(1, std::memory_order_relaxed);
     return;
   }
   if (pending.overflow_owner != nullptr) {
-    if (pending.overflow_owner == state && pending.overflow_parent_rsp == original_parent_rsp) {
+    if (pending.overflow_owner == state && pending.overflow_parent_rsp == original_parent_rsp &&
+        pending.overflow_source_call_rva == source_call_rva) {
       pending.overflow_owner = nullptr;
       pending.overflow_parent_rsp = 0;
+      pending.overflow_source_call_rva = 0;
     }
-    state->uncorrelated_post_count.fetch_add(1, std::memory_order_relaxed);
+    uncorrelated_post_count.fetch_add(1, std::memory_order_relaxed);
     return;
   }
   auto operands = PhysicalOperands(activity, participant, effect, native_context, original_parent_rsp);
+  (void)SetSourceScope(operands, source_call_rva);
   // Search from the youngest record so stale nested nonlocal exits cannot
   // obstruct an exact outer return. No unmatched post emits an after callback.
   for (std::size_t i = pending.size; i != 0; --i) {
     const auto &entry = pending.entries[i - 1];
-    if (entry.owner != state || entry.operands.original_parent_rsp != original_parent_rsp) continue;
+    if (entry.owner != state || entry.operands.original_parent_rsp != original_parent_rsp ||
+        entry.operands.source_call_rva != source_call_rva) continue;
+    // BA7 has no native effect input in a preserved register. Retain the
+    // genuine same-call before RCX identity; do not reread mutable type data
+    // or label this composite-scope sample an immediate effect postimage.
+    if (second) operands.effect = entry.operands.effect;
     if (!SameOperands(entry.operands, operands)) {
       pending.size = i - 1;
-      state->uncorrelated_post_count.fetch_add(1, std::memory_order_relaxed);
+      uncorrelated_post_count.fetch_add(1, std::memory_order_relaxed);
       return;
     }
     operands.invocation_sequence = entry.operands.invocation_sequence;
     pending.size = i - 1;
-    state->returned_count.fetch_add(1, std::memory_order_relaxed);
+    returned_count.fetch_add(1, std::memory_order_relaxed);
     // Remove the correlation before the callback so reentry owns its record.
     state->environment.after(state->environment.callback_context, operands);
     return;
   }
-  state->uncorrelated_post_count.fetch_add(1, std::memory_order_relaxed);
+  uncorrelated_post_count.fetch_add(1, std::memory_order_relaxed);
 }
 
 bool Add(std::uintptr_t base, std::uintptr_t rva, std::uintptr_t &result) noexcept {
@@ -274,7 +326,7 @@ void Preserve(Emitter &out) noexcept {
   // Copy original[RSP-8] before any push overwrites the native return word.
   // Then eight pushes (flags + seven volatile GPRs) and184B reserve leave
   // RSP at originalRSP-256,16-aligned for the observer callback. Slots20,
-  //28,30 are arguments5..7; XMM0..5 are saved at40..90 using disp32.
+  //28,30,38 are arguments5..8; XMM0..5 are saved at40..90 using disp32.
   out.Bytes({0xFF, 0x74, 0x24, 0xF8});
   out.Bytes({0x9C, 0x50, 0x51, 0x52, 0x41, 0x50, 0x41, 0x51, 0x41, 0x52, 0x41, 0x53});
   out.Bytes({0x48, 0x81, 0xEC, 0xB8, 0x00, 0x00, 0x00});
@@ -294,7 +346,8 @@ void Restore(Emitter &out) noexcept {
   out.Bytes({0x48, 0x8D, 0x64, 0x24, 0x08}); // discard copied word without altering flags
 }
 
-std::size_t BuildStub(State &state, Window &window, bool after, Stub &code) noexcept {
+std::size_t BuildStub(State &state, Window &window, bool after,
+                      std::uintptr_t source_call_rva, Stub &code) noexcept {
   code.fill(0x90);
   Emitter out{code};
   Preserve(out);
@@ -304,9 +357,14 @@ std::size_t BuildStub(State &state, Window &window, bool after, Stub &code) noex
   out.Bytes({0x48, 0x89, 0x54, 0x24, 0x20}); // argument5
   out.Bytes({0x48, 0x8B, 0x84, 0x24, 0xF8, 0x00, 0x00, 0x00});
   out.Bytes({0x48, 0x89, 0x44, 0x24, 0x30}); // argument7=pre-push native return word
+  out.Bytes({0x48, 0xB8});
+  out.U64(source_call_rva);
+  out.Bytes({0x48, 0x89, 0x44, 0x24, 0x38}); // argument8=actual fixed CALL descriptor
   out.Bytes({0x49, 0x8B, 0xD5}); // RDX=actual Activity R13
   out.Bytes({0x4D, 0x8B, 0xC6}); // R8=actual participant R14
-  if (after) out.Bytes({0x4D, 0x8D, 0x8C, 0x24, 0x70, 0x03, 0x00, 0x00});
+  if (after && source_call_rva == kActivityCompletionEffectCounterSecondCallRva12004)
+    out.Bytes({0x45, 0x33, 0xC9}); // effect comes only from the owned before operand
+  else if (after) out.Bytes({0x4D, 0x8D, 0x8C, 0x24, 0x70, 0x03, 0x00, 0x00});
   else out.Bytes({0x4C, 0x8B, 0x8C, 0x24, 0xE0, 0x00, 0x00, 0x00}); // R9=saved native RCX
   out.Bytes({0x48, 0xB9});
   out.U64(reinterpret_cast<std::uintptr_t>(&state));
@@ -388,18 +446,21 @@ bool ReleaseUnusedBacking(State &state) noexcept {
   if (released) {
     state.environment = {};
     state.native_return_target = 0;
+    state.second_sample_return_target = 0;
   }
   return released;
 }
 
 bool HasOwnedPatch(const State &state) noexcept {
-  return state.windows[0].patch_owned_or_uncertain || state.windows[1].patch_owned_or_uncertain;
+  for (const auto &window : state.windows) if (window.patch_owned_or_uncertain) return true;
+  return false;
 }
 
 void FinishFailedInstall(State &state) noexcept {
   state.callbacks_enabled.store(false, std::memory_order_release);
   // Restore the pre window first so no new original-CALL pair can begin.
-  for (auto &window : state.windows) (void)RestoreWindow(state, window);
+  for (const auto index : {std::size_t{0}, std::size_t{2}, std::size_t{1}, std::size_t{3}})
+    (void)RestoreWindow(state, state.windows[index]);
   if (HasOwnedPatch(state)) {
     state.installed.store(true, std::memory_order_release);
     return; // uncertain target still owns its executable backing and state
@@ -414,7 +475,7 @@ void FinishFailedInstall(State &state) noexcept {
 bool InstallActivityCompletionEffectCounterObserver12004(
     State &state, const ActivityCompletionEffectCounterObserver12004Environment &environment) noexcept {
   if (state.installed.load(std::memory_order_acquire) || state.windows[0].stub != nullptr ||
-      state.windows[1].stub != nullptr) {
+      state.windows[1].stub != nullptr || state.windows[2].stub != nullptr || state.windows[3].stub != nullptr) {
     Fail(state, activity_completion_effect_counter_failure_already_owned);
     return false;
   }
@@ -436,14 +497,25 @@ bool InstallActivityCompletionEffectCounterObserver12004(
   auto &post = state.windows[1];
   pre.patch_bytes = 5;
   post.patch_bytes = 7;
+  auto &second_pre = state.windows[2];
+  auto &second_post = state.windows[3];
+  second_pre.patch_bytes = 5;
+  second_post.patch_bytes = 11;
   if (!Add(environment.module_base, kActivityCompletionEffectCounterAnchorRva12004, anchor) ||
       !Add(environment.module_base, kActivityCompletionEffectCounterPreRva12004, pre.patch_target) ||
       !Add(environment.module_base, kActivityCompletionEffectCounterCallRva12004, pre.continue_target) ||
       !Add(environment.module_base, kActivityCompletionEffectCounterPostRva12004, post.patch_target) ||
       !Add(environment.module_base, kActivityCompletionEffectCounterContinueRva12004, post.continue_target) ||
+      !Add(environment.module_base, kActivityCompletionEffectCounterSecondPreRva12004, second_pre.patch_target) ||
+      !Add(environment.module_base, kActivityCompletionEffectCounterSecondCallRva12004, second_pre.continue_target) ||
+      !Add(environment.module_base, kActivityCompletionEffectCounterSecondPostRva12004, second_post.patch_target) ||
+      !Add(environment.module_base, kActivityCompletionEffectCounterSecondContinueRva12004, second_post.continue_target) ||
       !Equal(anchor, kActualAnchor.data(), kActualAnchor.size()) ||
+      !Equal(post.patch_target, kActualSecondAnchor.data(), kActualSecondAnchor.size()) ||
       !CopyFrom(pre.patch_target, pre.original_patch.data(), pre.patch_bytes) ||
-      !CopyFrom(post.patch_target, post.original_patch.data(), post.patch_bytes)) {
+      !CopyFrom(post.patch_target, post.original_patch.data(), post.patch_bytes) ||
+      !CopyFrom(second_pre.patch_target, second_pre.original_patch.data(), second_pre.patch_bytes) ||
+      !CopyFrom(second_post.patch_target, second_post.original_patch.data(), second_post.patch_bytes)) {
     Fail(state, activity_completion_effect_counter_failure_anchor);
     return false;
   }
@@ -454,12 +526,18 @@ bool InstallActivityCompletionEffectCounterObserver12004(
   }
   state.environment = environment;
   state.native_return_target = post.patch_target;
+  state.second_sample_return_target = second_post.patch_target;
   state.callbacks_enabled.store(false, std::memory_order_relaxed);
   state.before_count.store(0, std::memory_order_relaxed);
   state.returned_count.store(0, std::memory_order_relaxed);
   state.bypass_post_count.store(0, std::memory_order_relaxed);
   state.uncorrelated_post_count.store(0, std::memory_order_relaxed);
   state.dropped_before_count.store(0, std::memory_order_relaxed);
+  state.second_before_count.store(0, std::memory_order_relaxed);
+  state.second_returned_count.store(0, std::memory_order_relaxed);
+  state.second_bypass_post_count.store(0, std::memory_order_relaxed);
+  state.second_uncorrelated_post_count.store(0, std::memory_order_relaxed);
+  state.second_dropped_before_count.store(0, std::memory_order_relaxed);
   for (std::size_t index = 0; index != state.windows.size(); ++index) {
     auto &window = state.windows[index];
     std::uintptr_t jump_next = 0;
@@ -475,7 +553,9 @@ bool InstallActivityCompletionEffectCounterObserver12004(
       return false;
     }
     Stub bytes{};
-    window.stub_bytes = BuildStub(state, window, index == 1, bytes);
+    window.stub_bytes = BuildStub(state, window, (index % 2) == 1,
+        index < 2 ? kActivityCompletionEffectCounterCallRva12004
+                  : kActivityCompletionEffectCounterSecondCallRva12004, bytes);
     DWORD previous = 0;
     const bool wrote = window.stub_bytes != 0 &&
         CopyTo(reinterpret_cast<std::uintptr_t>(window.stub), bytes.data(), bytes.size());
@@ -496,7 +576,7 @@ bool InstallActivityCompletionEffectCounterObserver12004(
     std::memcpy(window.installed_patch.data() + 1, &relative, sizeof(relative));
   }
   // The post observer exists before any pre observer can begin a pair.
-  for (const auto index : {std::size_t{1}, std::size_t{0}}) {
+  for (const auto index : {std::size_t{1}, std::size_t{3}, std::size_t{0}, std::size_t{2}}) {
     auto &window = state.windows[index];
     const auto written = WritePatch(state, window, window.original_patch.data(), window.installed_patch.data());
     window.patch_owned_or_uncertain = written != WriteResult::original_preserved;
@@ -522,7 +602,8 @@ bool UninstallActivityCompletionEffectCounterObserver12004(
   }
   state.callbacks_enabled.store(false, std::memory_order_release);
   bool restored = true;
-  for (auto &window : state.windows) if (!RestoreWindow(state, window)) restored = false;
+  for (const auto index : {std::size_t{0}, std::size_t{2}, std::size_t{1}, std::size_t{3}})
+    if (!RestoreWindow(state, state.windows[index])) restored = false;
   if (!restored) return false;
   state.installed.store(false, std::memory_order_release);
   g_active.store(nullptr, std::memory_order_release);
@@ -539,6 +620,11 @@ ReadActivityCompletionEffectCounterObserver12004Diagnostics(const State &state) 
   result.bypass_post_count = state.bypass_post_count.load(std::memory_order_relaxed);
   result.uncorrelated_post_count = state.uncorrelated_post_count.load(std::memory_order_relaxed);
   result.dropped_before_count = state.dropped_before_count.load(std::memory_order_relaxed);
+  result.second_before_count = state.second_before_count.load(std::memory_order_relaxed);
+  result.second_returned_count = state.second_returned_count.load(std::memory_order_relaxed);
+  result.second_bypass_post_count = state.second_bypass_post_count.load(std::memory_order_relaxed);
+  result.second_uncorrelated_post_count = state.second_uncorrelated_post_count.load(std::memory_order_relaxed);
+  result.second_dropped_before_count = state.second_dropped_before_count.load(std::memory_order_relaxed);
   return result;
 }
 

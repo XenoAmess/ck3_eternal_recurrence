@@ -147,9 +147,33 @@ ActivityCompletionEffectCounterFace12004 ReadFace(
   return face;
 }
 
+const char *KnownObservationScope(
+    const bridge::ActivityCompletionEffectOperands12004 &operands) noexcept {
+  if (operands.source_call_rva == 0x23F6B82 &&
+      operands.source_return_rva == 0x23F6B87 &&
+      operands.source_after_cut_rva == 0x23F6B87 &&
+      operands.intervening_call_rva == 0 &&
+      operands.intervening_callee_rva == 0) {
+    return "original_completion_call";
+  }
+  if (operands.source_call_rva == 0x23F6B9A &&
+      operands.source_return_rva == 0x23F6B9F &&
+      operands.source_after_cut_rva == 0x23F6BA7 &&
+      operands.intervening_call_rva == 0x23F6BA2 &&
+      operands.intervening_callee_rva == 0x28BEF00) {
+    return "original_completion_call_and_following_native_call";
+  }
+  return nullptr;
+}
+
 bool SameOperands(const bridge::ActivityCompletionEffectOperands12004 &a,
                   const bridge::ActivityCompletionEffectOperands12004 &b) noexcept {
   return a.invocation_sequence == b.invocation_sequence &&
+      a.source_call_rva == b.source_call_rva &&
+      a.source_return_rva == b.source_return_rva &&
+      a.source_after_cut_rva == b.source_after_cut_rva &&
+      a.intervening_call_rva == b.intervening_call_rva &&
+      a.intervening_callee_rva == b.intervening_callee_rva &&
       a.thread_id == b.thread_id && a.activity == b.activity &&
       a.participant == b.participant && a.effect == b.effect &&
       a.native_context == b.native_context &&
@@ -164,7 +188,8 @@ bool CallbacksAdmitted(const Journal *journal,
       operands.activity != 0 && operands.participant != 0 &&
       operands.effect != 0 && operands.native_context != 0 &&
       operands.original_parent_rsp != 0 && operands.invocation_sequence != 0 &&
-      operands.thread_id != 0 && operands.thread_id == GetCurrentThreadId();
+      operands.thread_id != 0 && operands.thread_id == GetCurrentThreadId() &&
+      KnownObservationScope(operands) != nullptr;
 }
 
 void Before(void *opaque,
@@ -222,9 +247,15 @@ void After(void *opaque,
   record.effect_identity = operands.effect;
   record.native_context_identity = operands.native_context;
   record.original_parent_rsp = operands.original_parent_rsp;
-  // The observer after seam requires its genuine before and copied native
-  // return PC at the original CALL continuation; bypass post never calls it.
+  // Genuine before pairs with the last-native return marker at the
+  // descriptor-qualified after cut; bypass post never calls this seam.
   record.original_call_return_observed = true;
+  record.source_call_rva = operands.source_call_rva;
+  record.source_return_rva = operands.source_return_rva;
+  record.source_after_cut_rva = operands.source_after_cut_rva;
+  record.intervening_call_rva = operands.intervening_call_rva;
+  record.intervening_callee_rva = operands.intervening_callee_rva;
+  record.observation_scope = KnownObservationScope(operands);
   record.before = before;
   record.after = after;
   record.same_activity_full_id_observed =

@@ -401,3 +401,66 @@ flowchart LR
   C -. effect contents and complete activity payoff unknown .-> U[unknown overall reward attribution]
   P -. no raw only reader .-> X[unknown reveler XP]
 ```
+
+## Second completion interval: source-only extension
+
+The reused actual `.4` parent `[23F6980,23F6D65)` supplies the second
+`CALL23F6B9A -> 3765760`, whose natural return is `23F6B9F`.
+Its actual effect operand is `QWORD[R13+3A0]+8E0`; its context is the
+original parent `RSP+40`, with Activity R13 and resolved participant R14.
+The first guard bypass also reaches this second call.
+
+The pre-window is the five-byte `LEA RDX,[RSP+40]` at `23F6B95`.
+The immediate return has only the three-byte `MOV RCX,R14`, followed
+by the existing `CALL23F6BA2 -> 28BEF00`. The selected after-window is
+the eleven-byte MOV/CMP span at `23F6BA7`, resuming at `23F6BB2`.
+Both original CALLs remain in their natural positions and execute once.
+BA7 is a measurement after completion plus that following native call;
+it is not an immediate second-return measurement.
+
+| Record | Completion CALL / natural return | Actual after-cut | Intervening CALL / callee |
+| --- | --- | --- | --- |
+| First | 23F6B82 / 23F6B87 | 23F6B87 | absent |
+| Second | 23F6B9A / 23F6B9F | 23F6BA7 | 23F6BA2 / 28BEF00 |
+
+Each owned row preserves this exact scope separately from its raw
+prestige/stress faces. The copied native return word matches the actual
+after-cut. Strict decoding admits only these two complete tuples.
+The existing lifecycle/Service result retains the row and independent
+counter differences without summing records or assigning overall Feast
+benefit. XP remains unavailable through `no_raw_only_reveler_xp_reader`.
+
+The finite actual 489-byte `28BEF00` source is not a wholly pure getter:
+nonnull Character+1B0 / carrier+4F8 returns directly, while its fallback
+writes globals and calls initialization/cleanup children. That source
+boundary is included in the second interval, with no purity gate and no
+child expansion. Its source contract is `owner-03/activity-after-return-
+28bef00-source-01/SOURCE-CONTRACT.json` in the 1152 round, SHA-256
+`8db41a423801d763dd06ee79341d3ce18e4d7d98490ab2541b22b07639f4fc52`.
+
+This extension is SOURCE_ADOPTED_NOT_RUN: no tests, imports, build or
+Game execution. Native84/SDK84 still bind compiled source
+`594979b0b3d4c5a395639f30b9d5d864b8a31f6d`; no natural observation or
+material payoff credit is added. The Activity+408 source remains the raw
+module+5C7E338 QWORD with units unknown.
+
+
+
+```mermaid
+flowchart LR
+  P[Second before cut23F6B95 and original operands] --> C[Original completion CALL23F6B9A]
+  C --> R[Natural completion return23F6B9F]
+  R --> N[Original following CALL23F6BA2 to28BEF00]
+  N --> A[Actual after cut23F6BA7]
+  A --> J[Owned row with full five-address scope]
+  J --> W[Existing hosted query strict decoder and lifecycle]
+  W --> O[Independent prestige and stress raw differences]
+  R -. no immediate snapshot .-> U[unknown individual completion contribution]
+  O -. no raw XP reader .-> X[unknown Reveler XP and complete payoff]
+```
+
+Root adopted the four thin production patches and the source-first topic while
+preserving the first-call package and the already published child-focus and Rite
+changes. There is no second observer class, duplicate Runtime registration or
+whole-file aggregate adoption. The existing lifecycle and Service retain the
+exact per-record interval; they do not deduplicate or sum its material differences.

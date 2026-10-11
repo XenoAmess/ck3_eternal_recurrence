@@ -85,6 +85,13 @@ Source-proved childhood preference selects only an observed absent focus with
 actual native legality. Existing focus and ordinary guardian requests retain their
 own paths. Only an independent same-child requested-key observation can close the
 pending action. This is SOURCE_ADOPTED_NOT_RUN; M7 and natural succession stay unchanged.
+Seven existing production files also connect the second Activity completion
+interval through the hosted query and durable lifecycle; see
+[second completion scope](../ck3-native-ai/activity-feast-mcp-migration-12004.md#second-completion-interval-source-only-extension).
+Its actual after-cut follows both the completion and the original28BEF00 call.
+Per-record scope and independent raw counter differences stay explicit; no single
+effect or complete activity payoff is inferred. This is SOURCE_ADOPTED_NOT_RUN.
+Reveler raw XP is the next concrete source input being researched in parallel.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 
