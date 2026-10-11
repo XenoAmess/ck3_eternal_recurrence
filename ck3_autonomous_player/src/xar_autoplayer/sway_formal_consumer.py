@@ -185,10 +185,29 @@ def _same_target_followup(resolved: Mapping[str, object],
         return {**followup, "decision": "finish_selected_relation"}
     material = resolved.get("material_intervention")
     if (not isinstance(material, Mapping)
-            or material.get("dedicated_benefit_observed") is not True
             or material.get("source_date_raw") != readback["date_raw"]):
         return {**followup, "decision": "observe_current_named_relation_material"}
-    return {**followup, "decision": "repeat_selected_target"}
+    if material.get("dedicated_benefit_observed") is True:
+        return {**followup, "decision": "repeat_selected_target"}
+
+    # A complete current zero/negative named benefit ends observation of this
+    # selected attempt. Unknown measurements still need their own read.
+    from .sway_material_consumer import _points
+
+    sway = material.get("scheme_sway_opinion")
+    blocker = material.get("sway_blocker_opinion")
+    if (material.get("dedicated_benefit_observed") is False
+            and material.get("source_native_revision") == readback["queried_native_revision"]
+            and all(material.get(key) == resolved[key]
+                    for key in ("action_id", "actor_character_id", "target_character_id"))
+            and material.get("scheme_instance_id") == terminal["scheme_instance_id"]
+            and material.get("scheme_instance_generation") == terminal["scheme_instance_generation"]
+            and isinstance(sway, Mapping) and isinstance(blocker, Mapping)):
+        sway_points, blocker_points = _points(sway), _points(blocker)
+        if sway_points is not None and sway_points <= 0 and blocker_points is not None:
+            return {**followup, "decision": "return_to_opportunity_selection",
+                    "dedicated_benefit_observed": False}
+    return {**followup, "decision": "observe_current_named_relation_material"}
 
 
 def consume_sway_private_once(driver: object, *, target_character_id: int,

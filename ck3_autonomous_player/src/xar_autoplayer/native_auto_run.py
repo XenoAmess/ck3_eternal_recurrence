@@ -891,6 +891,7 @@ def native_auto_run(
     private_active_scheme_sway_observation: dict[str, object] | None = None
     private_active_scheme_sway_formal: dict[str, object] | None = None
     private_active_scheme_sway_following_turn: dict[str, object] | None = None
+    private_active_scheme_sway_returned_to_opportunities = False
     private_child_matrilineal_pending_observation: dict[str, object] | None = None
     private_first_heir_companion_observation: dict[str, object] | None = None
     private_realm_law_paused_observation: dict[str, object] | None = None
@@ -1881,7 +1882,8 @@ def native_auto_run(
                 )
                 status = "private_realm_law_paused_observed"
                 break
-            if private_active_scheme_sway_target is not None:
+            if (private_active_scheme_sway_target is not None
+                    and not private_active_scheme_sway_returned_to_opportunities):
                 current_attempt["stage"] = "private_active_scheme_sway_read"
                 private_active_scheme_sway_observation = (
                     _observe_private_active_scheme_sway_once(
@@ -1936,7 +1938,15 @@ def native_auto_run(
                         private_active_scheme_sway_formal["status"])
                 else:
                     status = "private_active_scheme_sway_observed"
-                break
+                sway_followup = (
+                    private_active_scheme_sway_formal.get("followup")
+                    if allow_private_active_scheme_sway_formal_trial is True else None)
+                if (isinstance(sway_followup, dict)
+                        and sway_followup.get("decision") == "return_to_opportunity_selection"):
+                    private_active_scheme_sway_returned_to_opportunities = True
+                    current_attempt["sway_followup"] = copy.deepcopy(sway_followup)
+                else:
+                    break
             if (
                 allow_private_prisoner_collection_observation is True
                 and private_prisoner_collection_observation is None
@@ -4056,7 +4066,8 @@ def native_auto_run(
             )
             and cleanup.get("ok") is True
         )
-        if private_active_scheme_sway_target is not None:
+        if (private_active_scheme_sway_target is not None
+                and not private_active_scheme_sway_returned_to_opportunities):
             common_sway_proof = bool(
                 primary_error is None
                 and isinstance(private_active_scheme_sway_observation, dict)
@@ -4427,6 +4438,7 @@ def native_auto_run(
             if candidate_intercept_qualified
             else "private_action_applied"
             if (private_active_scheme_sway_target is not None
+                and not private_active_scheme_sway_returned_to_opportunities
                 and allow_private_active_scheme_sway_formal_trial is True
                 and qualified)
             else ("private_action_applied"
@@ -4481,6 +4493,8 @@ def native_auto_run(
                 private_active_scheme_sway_formal)}
             if allow_private_active_scheme_sway_formal_trial is True else {}
         ),
+        **({"private_active_scheme_sway_returned_to_opportunities": True}
+           if private_active_scheme_sway_returned_to_opportunities else {}),
         **(
             {"private_active_scheme_sway_following_turn": copy.deepcopy(
                 private_active_scheme_sway_following_turn)}

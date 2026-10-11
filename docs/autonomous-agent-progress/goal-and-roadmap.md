@@ -53,7 +53,8 @@ and persists a qualified copied neutral original-instance end after storage remo
 see [Sway follow-up](../ck3-native-ai/sway-beneficial-terminal-followup-12004.md#2026-10-11-common-native-end-to-the-existing-follow-up).
 Fresh same-value opinion reads refresh query provenance without rearming consumption.
 Actual returned event frames stay distinct from read frames; terminal cause remains
-unknown. The known nonpositive-material selection gap is the next policy increment.
+unknown. Fresh known nonpositive material now releases the ended fixed target to
+the existing ordinary opportunity selector; unknown material remains observable.
 This five-production-file connection is SOURCE_ADOPTED_NOT_RUN, with no M6 credit.
 The family education caller now compares its finite observed request pairs using
 the retained stock focus/learning skill weights and tries preferred requests through

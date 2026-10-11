@@ -41,7 +41,9 @@ flowchart TD
   Q -->|matching active| A
   Q -->|other occupied scheme| D[Defer new start]
   Q -->|opinion above50| F[Finish this selected relation attempt]
-  Q -->|empty and legal and opinion at most50| N[New UUID repeat of selected target]
+  Q -->|empty, fresh positive named benefit, legal and opinion at most50| N[New UUID repeat of selected target]
+  Q -->|original ended, empty and fresh known nonpositive named benefit| NP[Return to existing ordinary opportunity selection]
+  Q -->|named material unread or stale| NM[Observe current named relation material]
   R[New explicitly selected relation with existing legal empty-slot terms] --> E[New UUID retarget]
   N --> I[Existing pending ACK receipt independent active read]
   E --> I
@@ -135,10 +137,9 @@ to `_same_target_followup`: an independent retained end, fresh positive named
 material, an empty slot, opinion at most50 and the existing native legal and
 event/interaction terms. A new UUID starts only the admitted next episode.
 
-One policy gap remains: known current nonpositive named material and unavailable
-material still share `observe_current_named_relation_material`. They must not
-be credited as a positive benefit or used to directly retry the same zero-value
-target. This increment does not claim that next selection policy is resolved.
+At that source increment, known current nonpositive named material and unavailable
+material still shared `observe_current_named_relation_material`. The following
+policy increment separates these states without treating no benefit as a cause.
 
 The final source receipts are the
 [51 producer contract](D:/codex-ck3-background-spill/native71-continuation-20261010/background-g2-source-round-20261011-1152/owner-51/m6-common-end-lifecycle/DELIVERY.json),
@@ -150,3 +151,36 @@ Their SHA prefixes are respectively `15e917c7`, `30e9a3ff`, `f9945aa3` and
 qualified; the October8 compound above does not qualify it. This topic writer
 performed no binary read, production import, test, build or game query, and
 claims no new native terminal cause, material gain or continuous-runtime credit.
+
+## 2026-10-11 known nonpositive material returns to opportunity selection
+
+The existing exact4 independent opinion reader distinguishes a complete absent
+modifier (`observed=true`, `present=false`, `value=null`) from an unread one.
+`sway_material_consumer._points` maps the former to known zero and preserves an
+observed signed modifier value; an unread or malformed measurement stays unknown.
+The current material record already stores both named measurements and the
+original action/actor/target/full SchemeID/generation with its query date and
+native revision. This increment reuses those inputs and reads no new native leaf.
+
+When the original instance has an independently retained terminal observation,
+the slot is empty, and current same-original material is complete and nonpositive,
+`_same_target_followup` returns `return_to_opportunity_selection`. Both named
+measurements must be known and the material date/revision must match the current
+target query. Current positive material keeps the existing repeat path. Missing,
+partial, stale or mismatched material keeps `observe_current_named_relation_material`.
+No result labels the original instance completed, failed, cancelled or invalidated.
+
+The fixed-target runner previously broke after every formal result, so a new
+decision label alone would not reach another opportunity. It now releases that
+selected target for this run only on the known nonpositive result, preserves the
+original observation/formal result, and falls through to its existing
+`auto_turn`/`auto_nonwar_turn` planning and execution path. Subsequent ordinary
+turns do not reread or automatically retry the released fixed target. Another
+explicitly selected target remains subject to the existing submission contract.
+The ordinary result keeps ordinary qualification and outcome reporting; this
+release does not qualify a new private Sway action.
+
+This two-file source increment fixes the concrete ended/empty/known-zero loop.
+It does not change terminal or material provenance, consume records again, add
+native APIs or weaken any submission check. Tests, project imports, builds and
+game operations were not run; previous qualification does not cover this change.
