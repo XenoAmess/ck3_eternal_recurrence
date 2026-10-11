@@ -54,12 +54,41 @@ inline constexpr std::array<std::pair<std::string_view, int>, 5>
   return std::nullopt;
 }
 
-// Actual .4 stock content reuses these two retained unconditional values.
+// Exact .4 unconditional province income for the two economic upgrade chains.
+// Tier3..8 declarations match the frozen stock script-values source.
+inline constexpr std::array<std::pair<std::string_view, int>, 14>
+    kAuthoredEconomicBuildingIncomeHundredths12004{{
+        {"farm_estates_02", 115},
+        {"farm_estates_03", 160},
+        {"farm_estates_04", 205},
+        {"farm_estates_05", 250},
+        {"farm_estates_06", 295},
+        {"farm_estates_07", 340},
+        {"farm_estates_08", 385},
+        {"common_tradeport_02", 55},
+        {"common_tradeport_03", 75},
+        {"common_tradeport_04", 95},
+        {"common_tradeport_05", 115},
+        {"common_tradeport_06", 135},
+        {"common_tradeport_07", 155},
+        {"common_tradeport_08", 175},
+    }};
+
+[[nodiscard]] inline std::optional<int> AuthoredExistingIncomeHundredths12004(
+    std::string_view key) noexcept {
+  for (const auto &[building_key, income] :
+       kAuthoredEconomicBuildingIncomeHundredths12004) {
+    if (building_key == key) return income;
+  }
+  return AuthoredExistingIncomeHundredths(key);
+}
+
 // This is authored province income, not observed tax or completion credit.
 [[nodiscard]] inline int AuthoredTargetIncomeHundredths12004(
     std::string_view key) noexcept {
-  if (key == "farm_estates_02" || key == "common_tradeport_02") {
-    return AuthoredExistingIncomeHundredths(key).value_or(0);
+  for (const auto &[building_key, income] :
+       kAuthoredEconomicBuildingIncomeHundredths12004) {
+    if (building_key == key) return income;
   }
   return AuthoredIncomeHundredths(key);
 }

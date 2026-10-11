@@ -450,7 +450,9 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
       };
       std::vector<ScanDefinition> positive_definitions;
       std::vector<ScanDefinition> remaining_definitions;
-      positive_definitions.reserve(ck3_11906::kAuthoredBuildingIncomeHundredthsV1.size() + 2);
+      positive_definitions.reserve(
+          ck3_11906::kAuthoredBuildingIncomeHundredthsV1.size() +
+          ck3_11906::kAuthoredEconomicBuildingIncomeHundredths12004.size());
       remaining_definitions.reserve(definitions.size());
       bool all_definition_keys_classified = true;
       for (const auto &[building_type_id, definition] : definitions) {

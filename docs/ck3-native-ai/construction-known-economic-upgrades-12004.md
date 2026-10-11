@@ -62,3 +62,8 @@ semantics are unchanged.
 Status: **SOURCE_ADOPTED_NOT_RUN**. This package performs no tests, project
 imports, compilation, linking, SDK/RPC or game execution, and claims no actual
 upgrade, completion or income result. Root adopted all six production source files; compiled594 and live readiness remain unchanged.
+
+
+The later [higher-tier source successor](construction-economic-higher-tiers-12004.md)
+adds twelve exact source-valued targets and higher observed occupants to the
+current .4 path. This tier-two package remains its historical prerequisite.

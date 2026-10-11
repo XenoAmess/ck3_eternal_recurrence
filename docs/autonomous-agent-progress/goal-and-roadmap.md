@@ -97,6 +97,7 @@ decoder and durable lifecycle already read it after Activity removal. The option
 pure-copy CALL journal lacks28BA210 XP-start source and remains unknown; this is
 not a blocker for that independent readback. See [XP reuse](../ck3-native-ai/activity-feast-mcp-migration-12004.md#2026-10-11-reveler-xp-reuse-no_new).
 No production modification or fresh runtime result was needed.
+Twelve source-qualified farm and tradeport targets through tier eight now extend the exact .4 economic selection from21 to33 known keys. Target and observed occupant use the same authored values through the existing native and SDK selectors. Four production files are SOURCE_ADOPTED_NOT_RUN; no actual upgrade or realized tax is credited. See [economic source](../ck3-native-ai/construction-economic-higher-tiers-12004.md).
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

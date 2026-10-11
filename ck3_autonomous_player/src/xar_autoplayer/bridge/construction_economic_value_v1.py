@@ -1,4 +1,4 @@
-"""Narrow exact-build authored province monthly-income values for new buildings.
+"""Narrow exact-build authored province monthly-income values for buildings.
 
 The key is copied from the native legal CBuildingType in the current paused
 frame. These are script values, not observed character tax or promised ROI.
@@ -34,6 +34,10 @@ installed content depot 1158311, manifest 5078208590259867811, also containing
 game/common/buildings. This is retained content-depot evidence, not a new local
 file hash or a new review of the original 1.19.0.6 / .2 table. Actual .4 native
 cost, legality and slot operands have separate finite executable source proof.
+The .4 farm-estate and tradeport targets through tier eight use the exact
+excellent/normal tax declarations and aliases in the same script-values file.
+Their unconditional income also supplies the existing-slot comparison; it is
+not observed effective tax, conditional income, completion or realised ROI.
 """
 
 from __future__ import annotations
@@ -55,7 +59,7 @@ _AUTHOR_MONTHLY_INCOME_HUNDREDTHS = {
 
 # Exact .3 keys from the actual completed inventory. Target eligibility remains
 # the tier-one table above on older builds. Actual .4 additionally reuses
-# the two economic tier-two values as targets; other keys remain old-slot only.
+# the two economic tier-two values as targets; other .3 keys stay old-slot only.
 _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003 = {
     **_AUTHOR_MONTHLY_INCOME_HUNDREDTHS,
     "farm_estates_02": 115,
@@ -65,6 +69,26 @@ _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003 = {
     "military_camps_01": 0,
 }
 
+# Explicit actual .4 upgrade targets and same-key existing-slot values.
+# Preserve the older-build dictionaries; these values close the declared
+# excellent/normal aliases individually and do not extrapolate an income curve.
+_AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004 = {
+    "farm_estates_02": 115,
+    "farm_estates_03": 160,
+    "farm_estates_04": 205,
+    "farm_estates_05": 250,
+    "farm_estates_06": 295,
+    "farm_estates_07": 340,
+    "farm_estates_08": 385,
+    "common_tradeport_02": 55,
+    "common_tradeport_03": 75,
+    "common_tradeport_04": 95,
+    "common_tradeport_05": 115,
+    "common_tradeport_06": 135,
+    "common_tradeport_07": 155,
+    "common_tradeport_08": 175,
+}
+
 
 def authored_monthly_income_hundredths(
     building_key: object, *, exact_ck3_build: str = "1.19.0.6",
@@ -72,11 +96,11 @@ def authored_monthly_income_hundredths(
     if (not isinstance(building_key, str)
             or exact_ck3_build not in {"1.19.0.6", "1.20.0.2", "1.20.0.3", "1.20.0.4"}):
         return None
-    if exact_ck3_build == "1.20.0.4" and building_key in {
-            "farm_estates_02", "common_tradeport_02"}:
-        # Reuse the retained unconditional values; stock legality/cost and
-        # the observed old slot still decide whether this is a candidate.
-        return _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003[building_key]
+    if (exact_ck3_build == "1.20.0.4"
+            and building_key in _AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004):
+        # Native legality/cost and the observed old slot still decide whether
+        # this exact authored value can become a construction candidate.
+        return _AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004[building_key]
     return _AUTHOR_MONTHLY_INCOME_HUNDREDTHS.get(building_key)
 
 
@@ -85,6 +109,9 @@ def authored_existing_monthly_income_hundredths(
 ) -> int | None:
     if not isinstance(building_key, str):
         return None
+    if (exact_ck3_build == "1.20.0.4"
+            and building_key in _AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004):
+        return _AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004[building_key]
     if exact_ck3_build in {"1.20.0.3", "1.20.0.4"}:
         return _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003.get(building_key)
     return authored_monthly_income_hundredths(

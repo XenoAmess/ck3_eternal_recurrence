@@ -114,7 +114,9 @@ SelectPlayerWorldBuildingActionCandidateImpl(
     const auto old_income =
         empty ? std::optional<int>{0}
               : occupant->building_key
-                    ? AuthoredExistingIncomeHundredths(*occupant->building_key)
+                    ? (exact_12004_upgrade_targets
+                           ? AuthoredExistingIncomeHundredths12004(*occupant->building_key)
+                           : AuthoredExistingIncomeHundredths(*occupant->building_key))
                     : std::nullopt;
     if (!old_income || income - *old_income <= 0) {
       saw_unvalued = true;
