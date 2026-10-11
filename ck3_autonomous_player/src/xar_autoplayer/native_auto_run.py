@@ -3041,6 +3041,23 @@ def native_auto_run(
                     "date_raw": natural_transition["date_raw"],
                 }
                 evidence.append("natural_successor_continued")
+                persistence_diagnostic = outcome.get("result", {}).get(
+                    "driver_state_persistence_diagnostic")
+                if (isinstance(persistence_diagnostic, dict)
+                        and persistence_diagnostic.get("status") == "failed"):
+                    natural_transition["original_result"] = copy.deepcopy(outcome["result"])
+                    natural_transition["driver_state_persistence_diagnostic"] = copy.deepcopy(
+                        persistence_diagnostic)
+                    error = AgentError(
+                        "natural continuation already applied; driver-state persistence attempt failed; "
+                        "durability unconfirmed; do not resend Continue")
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="natural_succession_persistence_failed",
+                        message=str(error),
+                        error=error,
+                    )
+                    raise error
                 if (
                     succession_lifecycle_binding["lifecycle"]
                     == ORDINARY_CAMPAIGN_SUCCESSION

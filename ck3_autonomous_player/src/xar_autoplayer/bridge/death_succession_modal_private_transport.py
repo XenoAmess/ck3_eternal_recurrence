@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import time
 import uuid
 from collections.abc import Mapping
@@ -54,6 +55,71 @@ def _post_query_binding(snapshot: Mapping[str, object]) -> dict[str, object]:
         ),
     }
 
+
+def _require_submission_ack(
+    ack: object,
+    *,
+    native_revision: int,
+    date_raw: int,
+    expected_played_character_id: int,
+) -> int:
+    if not isinstance(ack, dict):
+        raise BridgeUnavailableError("death-succession Close ACK is not an object")
+    expected_ack_keys = {
+        "step",
+        "accepted",
+        "status",
+        "snapshot_revision",
+        "date_raw",
+        "played_character_id",
+        "action_observation_revision",
+        "identity_verified",
+        "can_continue_verified",
+        "paused_by_succession_verified",
+        "has_open_succession_verified",
+        "controller_vtable_verified",
+        "controller_open_verified",
+        "close_invocations",
+        "material_result_verified",
+        "private_build",
+        "advertised",
+        "backend_id",
+    }
+    if (
+        set(ack) != expected_ack_keys
+        or any(
+            type(ack.get(key)) is not int
+            for key in ("snapshot_revision", "date_raw", "played_character_id", "close_invocations")
+        )
+        or ack.get("step") != CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP
+        or ack.get("accepted") is not True
+        or ack.get("status") != "submitted"
+        or ack.get("snapshot_revision") != native_revision
+        or ack.get("date_raw") != date_raw
+        or ack.get("played_character_id") != expected_played_character_id
+        or ack.get("close_invocations") != 1
+        or ack.get("material_result_verified") is not False
+        or ack.get("private_build") is not True
+        or ack.get("advertised") is not False
+        or ack.get("backend_id") != "native-headless"
+        or any(
+            ack.get(key) is not True
+            for key in (
+                "identity_verified",
+                "can_continue_verified",
+                "paused_by_succession_verified",
+                "has_open_succession_verified",
+                "controller_vtable_verified",
+                "controller_open_verified",
+            )
+        )
+    ):
+        raise BridgeUnavailableError(
+            "death-succession Close ACK shape changed; action state is unknown"
+        )
+    return _positive_int(
+        ack.get("action_observation_revision"), "action_observation_revision"
+    )
 
 def _submitted_unconfirmed_result(
     *,
@@ -205,22 +271,88 @@ def continue_death_succession_modal_private_v1(
         )
 
     request_id = "death-succession-close-" + uuid.uuid4().hex
-    driver.endpoint.send(
-        {
-            "type": "execute_step",
-            "protocol_version": 1,
-            "request_id": request_id,
-            "step": CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP,
-            "expected_revision": native_revision,
-            "expected_date_raw": date_raw,
-            "expected_played_character_id": expected_played_character_id,
-        }
-    )
+    request = {
+        "type": "execute_step",
+        "protocol_version": 1,
+        "request_id": request_id,
+        "step": CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP,
+        "expected_revision": native_revision,
+        "expected_date_raw": date_raw,
+        "expected_played_character_id": expected_played_character_id,
+    }
+    driver.endpoint.send(request)
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
     if frame is None:
         raise BridgeUnavailableError(
             "death-succession Close ACK timed out; action state is unknown"
         )
+    reclaim_failure = frame.get("death_succession_close_failure_v1")
+    if frame.get("ok") is False and "death_succession_close_failure_v1" in frame:
+        # Preserve the parsed RED and last known input; no new post observation.
+        evidence = {
+            "ok": False,
+            "business_material_verified": False,
+            "native_request_id": request_id,
+            "native_request_frame": copy.deepcopy(request),
+            "native_command_result_frame": copy.deepcopy(frame),
+            "actual_pre_submission_snapshot": copy.deepcopy(dict(before)),
+            "native_reclaim_failure": copy.deepcopy(reclaim_failure),
+            "wire_bytes_preserved": False,
+            "ending_frame_source": "pre_submission_last_known_only",
+        }
+        unknown = {
+            **evidence,
+            "step": CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP,
+            "accepted": None,
+            "status": "submission_unknown",
+            "material_result_verified": False,
+            "initial_query": copy.deepcopy(initial),
+            "submission_ack": None,
+            "post_query_attempts": [],
+            "postcondition_queries": [],
+            "postcondition_query": None,
+            "life_advance_result": None,
+            "post_failure": str(frame.get("error") or "native Close reclaim failed"),
+        }
+        try:
+            if (
+                not isinstance(reclaim_failure, dict)
+                or frame.get("type") != "command_result"
+                or type(frame.get("protocol_version")) is not int
+                or frame.get("protocol_version") != 1
+                or frame.get("request_id") != request_id
+                or reclaim_failure.get("stage") != "reclaim"
+                or reclaim_failure.get("status") != "submitted_unconfirmed"
+                or reclaim_failure.get("material_result_verified") is not False
+                or reclaim_failure.get("business_material_verified") is not False
+                or type(reclaim_failure.get("reclaim_result_enum")) is not int
+                or reclaim_failure["reclaim_result_enum"] < 0
+                or not isinstance(reclaim_failure.get("submitted_ack_frame_exact_json"), str)
+            ):
+                raise BridgeUnavailableError("native Close reclaim diagnostic is invalid")
+            original_ack_frame = json.loads(reclaim_failure["submitted_ack_frame_exact_json"])
+            if (
+                not isinstance(original_ack_frame, dict)
+                or original_ack_frame.get("type") != "command_result"
+                or type(original_ack_frame.get("protocol_version")) is not int
+                or original_ack_frame.get("protocol_version") != 1
+                or original_ack_frame.get("request_id") != request_id
+                or original_ack_frame.get("ok") is not True
+            ):
+                raise BridgeUnavailableError("retained native Close ACK envelope is invalid")
+            retained_ack = original_ack_frame.get("result")
+            _require_submission_ack(
+                retained_ack, native_revision=native_revision, date_raw=date_raw,
+                expected_played_character_id=expected_played_character_id)
+        except (BridgeUnavailableError, ValueError, TypeError, RecursionError) as error:
+            unknown["retained_ack_validation_error"] = f"{type(error).__name__}: {error}"
+            return unknown
+        result = _submitted_unconfirmed_result(
+            ack=retained_ack, initial=initial, post_attempts=[],
+            date_raw=date_raw, snapshot=before,
+            failure=str(frame.get("error") or "native Close reclaim failed"))
+        result.update(evidence)
+        return result
     if (
         frame.get("type") != "command_result"
         or frame.get("protocol_version") != 1
@@ -233,57 +365,9 @@ def continue_death_succession_modal_private_v1(
             + str(frame.get("error") or "unknown")
         )
     ack = frame["result"]
-    expected_ack_keys = {
-        "step",
-        "accepted",
-        "status",
-        "snapshot_revision",
-        "date_raw",
-        "played_character_id",
-        "action_observation_revision",
-        "identity_verified",
-        "can_continue_verified",
-        "paused_by_succession_verified",
-        "has_open_succession_verified",
-        "controller_vtable_verified",
-        "controller_open_verified",
-        "close_invocations",
-        "material_result_verified",
-        "private_build",
-        "advertised",
-        "backend_id",
-    }
-    if (
-        set(ack) != expected_ack_keys
-        or ack.get("step") != CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP
-        or ack.get("accepted") is not True
-        or ack.get("status") != "submitted"
-        or ack.get("snapshot_revision") != native_revision
-        or ack.get("date_raw") != date_raw
-        or ack.get("played_character_id") != expected_played_character_id
-        or ack.get("close_invocations") != 1
-        or ack.get("material_result_verified") is not False
-        or ack.get("private_build") is not True
-        or ack.get("advertised") is not False
-        or ack.get("backend_id") != "native-headless"
-        or any(
-            ack.get(key) is not True
-            for key in (
-                "identity_verified",
-                "can_continue_verified",
-                "paused_by_succession_verified",
-                "has_open_succession_verified",
-                "controller_vtable_verified",
-                "controller_open_verified",
-            )
-        )
-    ):
-        raise BridgeUnavailableError(
-            "death-succession Close ACK shape changed; action state is unknown"
-        )
-    action_observation_revision = _positive_int(
-        ack.get("action_observation_revision"), "action_observation_revision"
-    )
+    action_observation_revision = _require_submission_ack(
+        ack, native_revision=native_revision, date_raw=date_raw,
+        expected_played_character_id=expected_played_character_id)
 
     try:
         after_ack = driver.take_snapshot()

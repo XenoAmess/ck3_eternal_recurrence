@@ -25264,6 +25264,7 @@ void RunConnectedSession(
                       request_id, action.execution_stamp.pump_epoch,
                       action.receipt);
                 }
+                const std::string submitted_ack_frame_exact_json = response;
                 if (response.empty()) {
                   const auto error = xar::ck3_11906::
                       DeathSuccessionModalContinueFailureMessageV1(
@@ -25281,6 +25282,20 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "application-main death-succession modal continue result was not reclaimable");
+                  if (!submitted_ack_frame_exact_json.empty()) {
+                    // Keep the real ACK as evidence; the outer command stays RED.
+                    response.pop_back();
+                    response += ",\"death_succession_close_failure_v1\":{"
+                                "\"stage\":\"reclaim\","
+                                "\"status\":\"submitted_unconfirmed\","
+                                "\"material_result_verified\":false,"
+                                "\"business_material_verified\":false,"
+                                "\"reclaim_result_enum\":";
+                    response += std::to_string(static_cast<int>(reclaimed));
+                    response += ",\"submitted_ack_frame_exact_json\":";
+                    AppendJsonString(response, submitted_ack_frame_exact_json);
+                    response += "}}";
+                  }
                 }
                 connected = write_frame(pipe, response);
               }

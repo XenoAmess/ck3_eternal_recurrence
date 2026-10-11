@@ -8608,9 +8608,28 @@ class NativeHeadlessGameplayDriver:
                 if step == QUERY_ARMY_STRENGTHS_STEP else None
             )
             try:
-                self._record_command(step, ok=True, result=result)
+                persistence_failure = self._record_command(step, ok=True, result=result)
             finally:
                 finish_army_timing(army_record_timing)
+            if (
+                step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+                and result.get("accepted") is True
+                and result.get("status") == "continued"
+                and persistence_failure is not None
+            ):
+                attempt = persistence_failure.get("attempt_binding")
+                result = {
+                    **result,
+                    "driver_state_persistence_diagnostic": {
+                        **copy.deepcopy(persistence_failure),
+                        "logical_transition_state": "applied",
+                        "attempt_binding_matches_result": (
+                            isinstance(attempt, dict)
+                            and attempt.get("episode_character_id") == result.get("successor_character_id")
+                            and attempt.get("episode_run_id") == result.get("episode_run_id")
+                        ),
+                    },
+                }
             return result
         finally:
             finish_army_timing(life_advance_timing, step=step)
@@ -10093,7 +10112,7 @@ class NativeHeadlessGameplayDriver:
         ok: bool,
         result: dict[str, object] | None = None,
         error: str | None = None,
-    ) -> None:
+    ) -> dict[str, object] | None:
         with self._history_lock:
             if step == _RESTORE_CHECKPOINT_STEP:
                 if ok:
@@ -10143,7 +10162,9 @@ class NativeHeadlessGameplayDriver:
             self._command_history.append(row)
             self._driver_state_dirty = True
         if not (ok and _is_deferred_read_only_history_step(step)):
-            self._persist_driver_state()
+            return self._persist_driver_state(
+                capture_failure_diagnostic=(
+                    ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP))
 
     def _observe_arrange_marriage_outcome(
         self, snapshot: dict[str, object]
@@ -10992,9 +11013,12 @@ class NativeHeadlessGameplayDriver:
                 )
             return None
 
-    def _persist_driver_state(self) -> None:
+    def _persist_driver_state(
+        self, *, capture_failure_diagnostic: bool = False
+    ) -> dict[str, object] | None:
         if self.state_dir is None:
             return
+        attempt_binding: dict[str, object] | None = None
         persistence_timing = start_army_timing("driver.full_state_persistence")
         persistence_step = (
             f"persist-driver-state:{persistence_timing[2]}"
@@ -11025,6 +11049,16 @@ class NativeHeadlessGameplayDriver:
                             finish_army_timing(state_lock_timing, step=persistence_step)
                         if self._session_bridge_pid is None:
                             return
+                        if capture_failure_diagnostic:
+                            # Freeze this attempt's encoded identity, not later live state.
+                            attempt_binding = {
+                                "pipe_name": self.pipe_name,
+                                "bridge_pid": self._session_bridge_pid,
+                                "episode_character_id": self._episode_character_id,
+                                "episode_run_id": self._episode_run_id,
+                                "succession_lifecycle": copy.deepcopy(self._succession_lifecycle),
+                                "campaign_goal": copy.deepcopy(self._campaign_goal),
+                            }
                         if persistence_step is None:
                             encoded = self._encode_driver_state_locked()
                         else:
@@ -11055,14 +11089,26 @@ class NativeHeadlessGameplayDriver:
                     # the live agent usable and surface persistence failure in
                     # capabilities instead of falsely reporting that the game
                     # command failed.
+                    persistence_error = f"{type(error).__name__}: {error}"
                     with self._driver_state_lock:
                         self._driver_state_dirty = True
-                        self._driver_state_error = (
-                            f"{type(error).__name__}: {error}"
-                        )
+                        self._driver_state_error = persistence_error
+                        if capture_failure_diagnostic:
+                            self._natural_successor_persistence_unconfirmed = True
+                    if capture_failure_diagnostic:
+                        return {
+                            "schema": "xar.ck3.driver-state-persistence-attempt/v1",
+                            "status": "failed",
+                            "durability_status": "unconfirmed",
+                            "error_type": type(error).__name__,
+                            "error": persistence_error,
+                            "attempt_binding": attempt_binding,
+                        }
                 else:
                     with self._driver_state_lock:
                         self._driver_state_error = None
+                        if getattr(self, "_natural_successor_persistence_unconfirmed", False):
+                            self._natural_successor_persistence_unconfirmed = False
         finally:
             finish_army_timing(persistence_timing, step="persist-driver-state")
 
@@ -23564,6 +23610,9 @@ class NativeHeadlessGameplayDriver:
         dispose_normal_exit_observer_v1(self)
         while True:
             with self._driver_state_lock:
+                if getattr(self, "_natural_successor_persistence_unconfirmed", False):
+                    # Preserve this failed natural attempt; cleanup must not retry it.
+                    break
                 flush_driver_state = bool(
                     self.state_dir is not None
                     and self._session_bridge_pid is not None

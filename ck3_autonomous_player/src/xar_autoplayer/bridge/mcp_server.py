@@ -2687,6 +2687,41 @@ def create_server(
             )
         plan = payload.get("plan")
         result = payload.get("result")
+        persistence_diagnostic = (
+            result.get("driver_state_persistence_diagnostic")
+            if isinstance(result, dict) else None
+        )
+        if (
+            isinstance(result, dict)
+            and result.get("step") == "continue-as-reconciled-successor"
+            and result.get("accepted") is True
+            and result.get("status") == "continued"
+            and isinstance(persistence_diagnostic, dict)
+            and persistence_diagnostic.get("status") == "failed"
+        ):
+            from mcp.types import CallToolResult, TextContent
+
+            # The transition is already applied. This RED concerns durability;
+            # the original executed payload remains evidence, never a retry.
+            return CallToolResult(
+                content=[TextContent(
+                    type="text",
+                    text="Error executing tool ck3_auto_turn: natural continuation already applied; "
+                         "driver-state persistence attempt failed; durability unconfirmed; do not resend Continue",
+                )],
+                is_error=True,
+                structured_content={
+                    "error_type": "NaturalSuccessorPersistenceAttemptFailed",
+                    "diagnostics": {
+                        "natural_succession_driver_state_persistence_v1": {
+                            "logical_transition_state": "applied",
+                            "durability_status": "unconfirmed",
+                            "persistence_attempt": persistence_diagnostic,
+                            "original_turn": payload,
+                        },
+                    },
+                },
+            )
         if (
             isinstance(plan, dict)
             and plan.get("selected_step") == "query-army-strengths-v1"
