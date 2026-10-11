@@ -47,3 +47,9 @@ Ordinary advance receipts omit terminal/episode post-frame fields. The controlle
 therefore reads the existing planner before another auto and before a new-date
 Robert Sway observation. A ready natural succession uses the same helper to
 retain its real terminal before-snapshot before the single continuation.
+
+Initial, fresh SAVE and reused successor SAVE inputs must name the actual living
+paused ordinary episode, its played actor and retained campaign goal. A terminal
+endpoint stops before SAVE for Root review. Close and successor SAVE readbacks
+also retain the verified live transition's PID and connection generation; cold
+initial inputs use their own newly qualified process.

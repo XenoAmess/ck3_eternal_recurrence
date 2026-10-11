@@ -40,6 +40,27 @@ def latest_refs(result: dict, normal: Path, completion: Path, opinion: Path):
     return normal, completion, opinion
 
 
+def require_live_checkpoint_input(loop, snapshot, expected_episode, retained_goal):
+    """Check the actual living ordinary episode before saving or crediting it."""
+    played = snapshot.get("played_character", {})
+    actor = played.get("character_id")
+    lifecycle = snapshot.get("succession_lifecycle", {})
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or played.get("alive") is not True
+            or type(actor) is not int or actor <= 0
+            or snapshot.get("episode_character_id") != actor
+            or not isinstance(snapshot.get("episode_run_id"), str)
+            or not snapshot["episode_run_id"]
+            or any(snapshot.get(key) != expected_episode.get(key) for key in (
+                "episode_character_id", "episode_run_id"))
+            or snapshot.get("one_life_terminal") is not False
+            or snapshot.get("one_life_terminal_reason") is not None
+            or lifecycle.get("lifecycle") != "ordinary_campaign_succession"
+            or lifecycle.get("xar_enabled") != "xar_off"):
+        raise ValueError("checkpoint input is not its actual paused living ordinary episode")
+    loop.m7.goal_matches(retained_goal, snapshot.get("campaign_goal"), actor, increment=0)
+
+
 def run(args) -> int:
     spec = importlib.util.spec_from_file_location("_root_checkpoint_loop", LOOP_SOURCE)
     loop = importlib.util.module_from_spec(spec)
@@ -59,6 +80,10 @@ def run(args) -> int:
         initial_snapshot = loop.body(loop.read(snapshot_path))
         initial_save = loop.body(loop.read(save_path))
         checkpoint = initial_save.get("checkpoint", {})
+        initial_episode = {key: initial_snapshot.get(key) for key in (
+            "episode_character_id", "episode_run_id")}
+        retained_goal = initial_snapshot.get("campaign_goal")
+        require_live_checkpoint_input(loop, initial_snapshot, initial_episode, retained_goal)
         if (checkpoint.get("status") != "saved"
                 or checkpoint.get("date_raw") != initial_snapshot.get("date_raw")
                 or not isinstance(initial_snapshot.get("episode_run_id"), str)
@@ -109,6 +134,10 @@ def run(args) -> int:
             actual_normal_days = result["actual_days_from_initial"]
             chunk["actual_normal_days_from_loop"] = actual_normal_days
             reuse_successor_save = result.get("last_successor_save_is_loop_endpoint") is True
+            transitions = result.get("natural_succession_transitions", [])
+            expected_goal = (transitions[-1]["campaign_goal_after"]
+                             if transitions else retained_goal)
+            expected_episode = result["current_episode"]
             if actual_normal_days <= 0 and not reuse_successor_save:
                 chunk["checkpoint_status"] = "NO_NEW_NORMAL_DAYS_NO_SAVE"
                 status = "ROOT_STOPPED_AT_SAVED_CHECKPOINT"
@@ -119,6 +148,8 @@ def run(args) -> int:
                 snapshot = loop.body(loop.read(next_snapshot_path))
                 saved = loop.body(loop.read(next_save_path))
                 checkpoint = saved.get("checkpoint", {})
+                require_live_checkpoint_input(
+                    loop, snapshot, expected_episode, expected_goal)
                 if (checkpoint.get("status") != "saved"
                         or checkpoint.get("date_raw") != result["current_date_raw"]
                         or checkpoint.get("date_raw") != snapshot.get("date_raw")):
@@ -135,6 +166,8 @@ def run(args) -> int:
                 # Exact normal snapshot/SAVE request shapes from ROOT-QUEUE-R85-LIFECYCLE.py.
                 snapshot, next_snapshot_path = queue.call(
                     "ck3_take_snapshot", {"include_native_command_history": False}, "snapshot")
+                require_live_checkpoint_input(
+                    loop, snapshot, expected_episode, expected_goal)
                 revision = snapshot.get("revision")
                 if type(revision) is not int or revision <= 0:
                     raise ValueError("normal SAVE requires the fresh actual PUBLIC revision")
@@ -162,6 +195,7 @@ def run(args) -> int:
             saved_days += actual_saved_days
             saved_date = checkpoint["date_raw"]
             snapshot_path, save_path = next_snapshot_path, next_save_path
+            retained_goal = snapshot["campaign_goal"]
             chunk.update({
                 "checkpoint_status": "SAVED", "snapshot": str(snapshot_path),
                 "save": str(save_path), "date_raw": saved_date,

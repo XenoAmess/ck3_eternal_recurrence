@@ -93,6 +93,15 @@ def require_current_successor(snapshot, transition):
         raise ValueError("successor checkpoint input is not its actual living paused episode")
     goal_matches(transition["campaign_goal_after"], snapshot.get("campaign_goal"),
                  transition["successor_character_id"], increment=0)
+    # Compare only this live transition; cold initial inputs use their new process.
+    predecessor = transition.get("predecessor_binding", {})
+    successor = transition.get("successor_episode_binding", {})
+    observed = snapshot.get("diagnostics", {})
+    if any(type(successor.get(key)) is not int or successor[key] <= 0
+           or predecessor.get(key) != successor[key]
+           or observed.get(key) != successor[key]
+           for key in ("bridge_pid", "connection_generation")):
+        raise ValueError("live successor changed its verified native process/connection")
 
 
 def continue_successor(queue, expected_episode, transitions):
