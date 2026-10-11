@@ -261,6 +261,7 @@
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
 #include "xar_bridge/player_lifestyle_formal_wire_v1.hpp"
 #include "xar_bridge/ck3_12004_lifestyle_transport.hpp"
+#include "xar_bridge/child_education_focus_private_12004.hpp"
 #endif
 #include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
@@ -11990,6 +11991,8 @@ public:
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
     nonwar.lifestyle =
         &xar::ck3_12004::lifestyle::ExecutePlayerLifestyleMailbox12004;
+    environment.permitted_executor_child_education_focus12004 =
+        &xar::ck3_12004::education::ExecuteChildEducationFocusMailbox12004;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
     nonwar.factions = &xar::ck3_12004::ExecutePlayerFactionAlertsMailbox12004;
@@ -14364,6 +14367,8 @@ void RunConnectedSession(
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
   xar::ck3_12004::lifestyle::PlayerLifestyleTransport12004 lifestyle_transport4{};
+  xar::ck3_12004::education::ChildEducationFocusTransport12004
+      child_education_focus_transport4{};
 #endif
   auto &sequence = state.sequence;
   const auto connection_generation = state.connection_generation;
@@ -15350,6 +15355,7 @@ void RunConnectedSession(
                                   kPlayerLifestyleFormalPrivateSubmitFocusStepV1
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateReceiptStepV1
+                   && !xar::ck3_12004::education::AcceptsChildEducationFocusStep12004(step)
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
                    && step !=
@@ -17438,6 +17444,39 @@ void RunConnectedSession(
                 // its receipt to the actual publisher revision, like lifestyle.
                 previous_snapshot.reset();
                 connected = PublishSnapshot(pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+              }
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+          if (xar::ck3_12004::education::AcceptsChildEducationFocusStep12004(step)) {
+            if (!previous_snapshot.has_value()) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "private child education focus published snapshot unavailable"));
+            } else if (!xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                          "private child education focus exact build unavailable"));
+            } else {
+              const auto lifestyle4 =
+                  xar::ck3_12004::lifestyle::BindPlayerLifestyleImage12004(
+                      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                      game.descriptor().executable_sha256);
+              const auto response =
+                  xar::ck3_12004::education::HandleChildEducationFocus12004(
+                      child_education_focus_transport4, request_id, step, incoming.payload,
+                      game, lifestyle4, *previous_snapshot, state_revision,
+                      g_main_thread_query_mailbox_v1);
+              connected = write_frame(pipe, response);
+              if (connected &&
+                  xar::ck3_12004::education::ChildEducationFocusNeedsPostSubmitSnapshot12004(
+                      child_education_focus_transport4, request_id)) {
+                previous_snapshot.reset();
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
               }
             }

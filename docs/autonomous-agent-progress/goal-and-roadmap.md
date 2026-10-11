@@ -62,7 +62,8 @@ the existing native selected-request preflight; see
 [education choice sources](../ck3-native-ai/guardian-education-choice-source-12004.md).
 Unknown components keep their availability and original slots. This source-informed
 preference is not native AI replay or an observed education outcome. The two production
-files remain SOURCE_ADOPTED_NOT_RUN; child-focus query/action/receipt is still in progress.
+files remain SOURCE_ADOPTED_NOT_RUN; the connected child-focus query/action/receipt
+is now adopted below, with runtime qualification still unclaimed.
 The Activity path now records player prestige/stress raw counters around one
 original participant completion CALL and carries the paired observations through
 the existing hosted query and durable lifecycle; see
@@ -77,6 +78,13 @@ the source model and strict consumer; see
 Raw RAX is separate, known zero is retained, and missing/conflicting values stay
 unknown. Complete original price provenance remains distinct. Fifteen production
 files are SOURCE_ADOPTED_NOT_RUN, with no new religion action or live credit.
+Fourteen production files now connect the actual child-focus query, original
+native command and later independent receipt through the exact executor and
+ordinary family caller; see [child focus source](../ck3-native-ai/child-education-focus-private-12004.md).
+Source-proved childhood preference selects only an observed absent focus with
+actual native legality. Existing focus and ordinary guardian requests retain their
+own paths. Only an independent same-child requested-key observation can close the
+pending action. This is SOURCE_ADOPTED_NOT_RUN; M7 and natural succession stay unchanged.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

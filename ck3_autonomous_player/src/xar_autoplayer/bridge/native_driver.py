@@ -4038,6 +4038,40 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=timeout_seconds,
         )
 
+    def query_child_education_focus_private_v1(
+        self, *, child_full_id: int, target_key: str, expected_revision: int,
+    ) -> dict[str, object]:
+        from .child_education_focus_private_v1 import (
+            query_child_education_focus_private_v1,
+        )
+
+        return query_child_education_focus_private_v1(
+            self, child_full_id=child_full_id, target_key=target_key,
+            expected_revision=expected_revision,
+        )
+
+    def submit_child_education_focus_private_v1(
+        self, *, query: dict[str, object], expected_revision: int,
+    ) -> dict[str, object]:
+        from .child_education_focus_private_v1 import (
+            submit_child_education_focus_private_v1,
+        )
+
+        return submit_child_education_focus_private_v1(
+            self, query=query, expected_revision=expected_revision,
+        )
+
+    def query_child_education_focus_receipt_private_v1(
+        self, *, pending: dict[str, object], expected_revision: int,
+    ) -> dict[str, object]:
+        from .child_education_focus_private_v1 import (
+            query_child_education_focus_receipt_private_v1,
+        )
+
+        return query_child_education_focus_receipt_private_v1(
+            self, pending=pending, expected_revision=expected_revision,
+        )
+
     def query_player_lifestyle_formal_private_v1(
         self, *, expected_revision: int | None = None
     ) -> dict[str, object]:

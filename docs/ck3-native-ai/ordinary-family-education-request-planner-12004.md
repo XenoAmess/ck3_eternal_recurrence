@@ -46,3 +46,20 @@ The normalizer admits and validates this optional leaf, then preserves it in the
 Options continue to retain every ordered row, duplicate full flag and raw bank byte. `ordinal_selected` is the own ordinal byte equal to one; compatibility `selected` remains the getter's first equal flag result. The request uses the current canonical keys of ordinal-selected rows. The final native query continues to determine option intent, role matches, CanSend, cost and frame.
 
 Source owners are 52 (`family_education_needs_12004.py`), 54 (`ck3_12004_request_guardian_skill_inputs.hpp`), 55 (the existing ordinary query's profile read and serializer), and 50 (this caller and optional-leaf ingress). Existing 30 ordered-copy proof and 55 a05 support remain reused without another copy or allocator qualification. The package's adoption manifest pins the exact small source sections and owner handoffs.
+
+The private child-focus consumer is `Service._plan_private_family_child_focus_v1`, mounted before the existing guardian request path at a family education opportunity. It queries complete observed living-child IDs without using an older family focus absence or unknown value as native legality. The five current stock options supply an explicit `source_informed_childhood_focus_preference_12004.v1`: known affinity adds20 and known disaffinity adds-20. Equal available component sets compare by their known sum, unknowns retain the original option slots, and the original five-key order breaks ties. This preference supplies no education outcome probability.
+
+Each preferred key uses `query_child_education_focus_private_v1`. Only that actual query's available, absent current focus and native_legal true select `private-select-child-education-focus-v1`; a present focus is retained without replacement. Native false and unavailable observations stay distinct. `auto_turn` calls the actual private Driver submit method with the selected query. Its ACK or unknown send state remains pending in the existing durable command history. No new ledger is introduced.
+
+The next family opportunity reads the owning submission by action ID from that history. A later native revision can use `query_child_education_focus_receipt_private_v1`; only its independent same-child `observed_applied` result records applied state. A pending or unavailable receipt preserves the original submission and permits the separate ordinary guardian request fallback. The actual played controller and validators belong to the new native query and owning command; no age, guardian or manual control predicate is invented by this consumer.
+
+```mermaid
+flowchart LR
+    N[Existing needs and five source options] --> Q[Actual child focus query]
+    Q -->|current focus absent and native legal| S[Private Driver submit]
+    Q -->|present or unavailable or native false| O[Existing guardian request fallback]
+    S --> H[Existing durable command history: pending]
+    H --> R[Later same-child native receipt]
+    R -->|observed applied| A[Retain independent material readback]
+    R -->|pending or unavailable| O
+```

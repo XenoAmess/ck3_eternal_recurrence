@@ -2268,6 +2268,10 @@ class GameplayBridgeService:
         planned = {**planned, "plan": {**plan, "family_education_inputs": inputs,
                                       "family_education_needs": needs}}
         plan = planned["plan"]
+        planned = self._plan_private_family_child_focus_v1(planned, snapshot, needs)
+        plan = planned["plan"]
+        if plan.get("selected_step") != "life-advance":
+            return planned
         rows = needs["rows"]
         if not isinstance(rows, list) or not rows:
             return planned
@@ -2359,6 +2363,127 @@ class GameplayBridgeService:
             "family_education_observations": observations,
             "family_education_request_preference": preference,
         }}
+
+    def _plan_private_family_child_focus_v1(
+        self, planned: dict[str, object], snapshot: dict[str, object],
+        needs: dict[str, object],
+    ) -> dict[str, object]:
+        """Choose a concrete child focus request; observe applied state separately."""
+        methods = tuple(getattr(self.driver, name, None) for name in (
+            "query_child_education_focus_private_v1",
+            "submit_child_education_focus_private_v1",
+            "query_child_education_focus_receipt_private_v1",
+        ))
+        history_view = getattr(self.driver, "_with_internal_planning_view", None)
+        if (not all(callable(method) for method in methods) or not callable(history_view)
+                or getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is not True):
+            return planned
+        from ..strategy import _effective_command, _effective_command_result
+
+        submit_step = "private-select-child-education-focus-v1"
+        receipt_step = "private-query-child-education-focus-receipt-v1"
+
+        def unresolved(frame, history):
+            closed = set()
+            controller = frame["played_character"]["character_id"] & 0xFFFFFFFF
+            for row in reversed(history):
+                step = _effective_command(row)
+                if step not in (submit_step, receipt_step):
+                    continue
+                result = _effective_command_result(row)
+                if not isinstance(result, dict):
+                    continue
+                if step == receipt_step:
+                    submission = result.get("submission")
+                    if (isinstance(submission, dict) and result.get("status") == "observed_applied"
+                            and result.get("observed_applied") is True):
+                        closed.add(submission["action_request_id"])
+                    continue
+                action_id = result.get("action_request_id")
+                if action_id in closed:
+                    continue
+                if result.get("status") == "rejected_before_submit":
+                    closed.add(action_id)
+                    continue
+                if result.get("status") not in (
+                    "action_state_unknown", "submit_unknown", "submitted_verification_pending",
+                ):
+                    continue
+                source = result["pre_frame"]
+                if (source["episode_run_id"] == frame["episode_run_id"]
+                        and source["controller_full_id"] == controller):
+                    return {"pending": copy.deepcopy(result)}
+            return {"pending": None}
+
+        pending = history_view(snapshot, unresolved)["pending"]
+        observations = []
+        state = {"policy": "source_informed_childhood_focus_preference_12004.v1",
+                 "observations": observations, "pending": pending, "receipt": None}
+        planned = {**planned, "plan": {**planned["plan"],
+                   "family_child_education_focus": state}}
+        if pending is not None:
+            if snapshot["native_revision"] <= pending["pre_frame"]["native_revision"]:
+                return planned
+            receipt = methods[2](pending=pending, expected_revision=int(planned["revision"]))
+            state["receipt"] = receipt
+            if receipt["status"] != "observed_applied" or receipt["observed_applied"] is not True:
+                return planned
+            state["observed_applied"] = copy.deepcopy(receipt)
+            state["pending"] = None
+
+        seen = set()
+        for child_needs in needs["rows"]:
+            child_id = child_needs["raw_character_id"]
+            if child_id in seen:
+                continue
+            seen.add(child_id)
+            preferences = []
+            groups = {}
+            for index, option in enumerate(child_needs["stock_skill_options"]):
+                affinity = option["childhood_affinity"]
+                disaffinity = option["childhood_disaffinity"]
+                signature = (affinity["available"], disaffinity["available"])
+                components = {
+                    "affinity": (20 if affinity["raw_value"] else 0)
+                                if affinity["available"] else None,
+                    "disaffinity": (-20 if disaffinity["raw_value"] else 0)
+                                   if disaffinity["available"] else None,
+                }
+                values = [value for value in components.values() if value is not None]
+                record = {"source_option_index": index, "target_key": option["focus_key"],
+                          "availability": signature, "components": components,
+                          "known_component_sum": sum(values) if values else None,
+                          "complete_component_sum": sum(values) if all(signature) else None,
+                          "source_option": copy.deepcopy(option)}
+                preferences.append(record)
+                groups.setdefault(signature, []).append(record)
+            ordered_groups = {signature: iter(sorted(records, key=lambda item:
+                (-item["known_component_sum"], item["source_option_index"]) if any(signature)
+                else (item["source_option_index"],))) for signature, records in groups.items()}
+            ordered = [next(ordered_groups[record["availability"]]) for record in preferences]
+            observation = {"child_full_id": child_id, "needs": copy.deepcopy(child_needs),
+                           "focus_source_frame": copy.deepcopy(child_needs["frame"]),
+                           "preferences": preferences,
+                           "ordered_target_keys": [record["target_key"] for record in ordered],
+                           "queries": []}
+            observations.append(observation)
+            for preference in ordered:
+                query = methods[0](child_full_id=child_id, target_key=preference["target_key"],
+                                   expected_revision=int(planned["revision"]))
+                observation["queries"].append(query)
+                focus = query["current_focus"]
+                if focus["available"] is True and focus["presence"] == "present":
+                    observation["current_focus_present"] = True
+                    break
+                if (query["status"] == "available" and query["native_legal"] is True
+                        and focus["available"] is True and focus["presence"] == "absent"):
+                    return {**planned, "plan": {**planned["plan"],
+                        "selected_step": submit_step,
+                        "phase": "family_child_education_focus_submission",
+                        "family_child_education_focus_query": query,
+                        "reason": "select the preferred native-legal focus for the observed child",
+                    }}
+        return planned
 
     def _plan_private_family_wartime_v1(
         self, planned: dict[str, object], snapshot: object,
@@ -3523,6 +3648,12 @@ class GameplayBridgeService:
 
                 result = {"step": selected_step,
                           **reconcile_feast_start_private_v1(self.driver)}
+            elif (selected_step == "private-select-child-education-focus-v1"
+                  and isinstance(plan.get("family_child_education_focus_query"), dict)):
+                result = self.driver.submit_child_education_focus_private_v1(
+                    query=plan["family_child_education_focus_query"],
+                    expected_revision=int(planned["revision"]),
+                )
             elif (selected_step == "initiate-character-interaction-ordinary-v1"
                   and isinstance(plan.get("family_education_request"), dict)):
                 request = plan["family_education_request"]
@@ -3734,8 +3865,13 @@ class GameplayBridgeService:
                 ),
             }
         outcome = {
-            "status": ("pending" if selected_step == "start-activity-feast-stage5-v1-private"
-                       and result.get("postcondition_verified") is not True else "executed"),
+            "status": ("pending" if (
+                selected_step == "start-activity-feast-stage5-v1-private"
+                and result.get("postcondition_verified") is not True) or (
+                selected_step == "private-select-child-education-focus-v1"
+                and result.get("status") in (
+                    "action_state_unknown", "submit_unknown", "submitted_verification_pending"))
+                else "executed"),
             "selected_step": selected_step,
             "plan": plan,
             "result": result,

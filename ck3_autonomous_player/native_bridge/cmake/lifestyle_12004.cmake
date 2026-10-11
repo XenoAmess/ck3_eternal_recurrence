@@ -7,6 +7,9 @@ set(XAR_CK3_12004_LIFESTYLE_DOMAIN_SOURCES
   src/ck3_12004_lifestyle_selection_native_commands.cpp
   src/ck3_12004_lifestyle_selection_action.cpp
   src/ck3_12004_lifestyle_formal_wire.cpp
+  src/child_education_focus_private_12004.cpp
+  src/child_education_focus_native_command_12004.cpp
+  src/child_education_focus_definition_readonly_12004.cpp
   src/ck3_12004_lifestyle_transport.cpp)
 if(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
   target_sources(xar_ck3_12002_runtime PRIVATE ${XAR_CK3_12004_LIFESTYLE_DOMAIN_SOURCES})

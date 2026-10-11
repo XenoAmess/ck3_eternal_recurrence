@@ -386,6 +386,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_confucian_religious_title12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_confucian_challenger_graph12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_ordinary_interaction12003 = nullptr;
+  // Fixed actual4 child-education query/action/receipt executor identity.
+  MainThreadQueryExecutorV1 permitted_executor_child_education_focus12004 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_draft_doctrine_choices12002 = nullptr;
@@ -627,6 +629,8 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_confucian_religious_title12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_confucian_challenger_graph12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_ordinary_interaction12003 = nullptr;
+  // Fixed actual4 child-education query/action/receipt executor identity.
+  MainThreadQueryExecutorV1 permitted_executor_child_education_focus12004 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_draft_doctrine_choices12002 = nullptr;
