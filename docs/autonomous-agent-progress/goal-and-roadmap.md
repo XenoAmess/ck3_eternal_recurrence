@@ -3,14 +3,16 @@
 **Current owner instruction: Z CK3 use is released after the owner's play (Oct12); keep G2 parallel work running.**
 Root has resumed the same saved6077 campaign in owned R0100, Steam offline.
 The first loader read timed out without a full snapshot; same-PID continuation
-has obtained one full frame with13/13 restored bindings GREEN. New700/710
-ordinary work subsequently stopped on an actual private prisoner cached-snapshot
-read failure. A single fresh core read is available/partial; full-reader recovery
-is unproven. No new days or SAVEs are credited beyond6077.
+has obtained one full frame with13/13 restored bindings GREEN. After one
+private prisoner cached-read failure, a fresh heartbeat proves the full reader
+and cache available again. New740 ordinary work actually advanced one day;
+new750 daily SAVE continuation is running. Saved cumulative remains6077 until
+an actual checkpoint returns. The original failed request was not replayed.
 Frozen Native84/fullSDK84 still use594979b0. Successor SDK85/source0503b3f2/all5
-are ready. The actual64-job production build completed507 of508 compilations;
-one12004 ADL error is corrected in master e66bf30a. Single-TU rebuild and archive/
-link preparation are underway; no successor binary is deployed.
+are ready. The actual64-job production build plus one corrected TU rebuild
+completed: Runtime597 archive and Bridge DLL link GREEN. The final917-object
+binary has individual mixed source pins, including the one e66bf30a corrected TU.
+No successor binary is deployed; M6/M7 completion is not credited.
 Test suites, fixtures and replay remain cancelled. See [actual Oct12 progress](daily/2026-10-12.md).
 
 **Historical owner-stop instruction (superseded for CK3 use):**
