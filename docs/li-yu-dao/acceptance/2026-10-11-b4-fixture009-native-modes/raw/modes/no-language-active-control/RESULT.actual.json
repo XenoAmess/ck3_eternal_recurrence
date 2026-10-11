@@ -1,0 +1,28 @@
+{
+  "schema": "lyd.b4.original-native-mode-command.v1",
+  "argv": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+    "no-language-active-control"
+  ],
+  "started_at_utc": "2026-10-11T09:33:16.299846+00:00",
+  "finished_at_utc": "2026-10-11T09:33:16.320349+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\stdout.log",
+    "bytes": 1557,
+    "sha256": "3b28a33ac875049a5f9c3d68f7c49fb36914d81fa7699696d1d7f4df13a33b06"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\stderr.log",
+    "bytes": 624,
+    "sha256": "97576dfb75c095aa2e735601ca9ef1f38b786a3a9d2519d100ace3ef9f830945"
+  },
+  "exact_executable": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+    "bytes": 36352,
+    "sha256": "b5fe3b22a74ec7ad418a8080e8b8f15e98611200752859a9e3975e0850594b1d"
+  },
+  "actual_original_popen_wait": true,
+  "timed_out": false,
+  "original_pid": 15084
+}

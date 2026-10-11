@@ -1,0 +1,43 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "status": "settings_failed",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "before": [],
+  "after": [],
+  "calls": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+      "call_error_type": "com_error"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+      "size": 36352,
+      "sha256": "b5fe3b22a74ec7ad418a8080e8b8f15e98611200752859a9e3975e0850594b1d",
+      "target": "lyd_b4_resolve_eh_fixture_12004",
+      "target_id": "lyd_b4_resolve_eh_fixture_12004::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "settings_success_is_runtime_trust": false,
+  "exclusion_types_written": [
+    "ExclusionPath exact files"
+  ],
+  "manifest_sha256": "4f546b80903568fd5e3d631728785cc41659ff4d199ca860e7333d8d6860de75",
+  "admin_token": true,
+  "readback_visibility": "same administrative token and WMI client for before/after",
+  "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "error_type": "com_error",
+  "error_stage": "Add-invocation",
+  "verified_requested_paths": [],
+  "missing_requested_paths": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe"
+  ],
+  "observed_prior_settings_preserved": true,
+  "partial_mutation": false
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "lyd.b4.fixture009.permanent-index.v1",
+  "at_utc": "2026-10-11T09:57:56.609890+00:00",
+  "status": "READY_FOR_ROOT_CREATE_ONLY_IMPORT",
+  "facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-permanent-candidate-20261011-001\\FACTS.actual.json",
+    "bytes": 36510,
+    "sha256": "10473cc297d21ca4ca0b3cce55087f3a2599dc7149959a559e05831d652fcb51",
+    "archive_relative_path": "FACTS.actual.json"
+  },
+  "topic": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-permanent-candidate-20261011-001\\TOPIC.zh.md",
+    "bytes": 3217,
+    "sha256": "6264286cd54a5205ab4961ad8b49f5d6f9707484b8421bca77e18f713c7463c4"
+  },
+  "original_raw_files": 45,
+  "original_raw_bytes": 93508,
+  "raw_mapping_is_in": "FACTS.actual.json.raw_mapping",
+  "author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-permanent-candidate-20261011-001\\seal_permanent.py",
+    "bytes": 14924,
+    "sha256": "34bf535530484aa98935a3b712b05256e8260fca445631686d89a7e69d06d32f"
+  },
+  "MAIN_daily_writes": 0,
+  "new_tests_build_modes_system_queries": 0,
+  "business_credit": false
+}

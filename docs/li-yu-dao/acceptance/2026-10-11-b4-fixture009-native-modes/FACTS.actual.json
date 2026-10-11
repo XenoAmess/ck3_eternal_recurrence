@@ -1,0 +1,815 @@
+{
+  "schema": "lyd.b4.fixture009.permanent-facts.v1",
+  "at_utc": "2026-10-11T09:57:56.609890+00:00",
+  "status": "NATIVE_DIAGNOSTIC_TERMINALS_CLOSED_NOT_GAME_QUALIFICATION",
+  "modes": [
+    {
+      "mode": "direct",
+      "classification_ROOT_confirmed": "PASS",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\direct\\RESULT.actual.json",
+        "bytes": 1239,
+        "sha256": "1f1119198e694ee5b3dfbb9de114aa10a5dfeb51384a9a9c21d6b633b6263387"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\direct\\stdout.log",
+          "bytes": 1794,
+          "sha256": "a96808fae22bed073b813d64307642fce04863f249fd9273ddc2751e413f704f"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\direct\\stderr.log",
+          "bytes": 841,
+          "sha256": "260f38587920c746a4eb1ca0bebb92bad068a574f2fb4c5f24a44b8469776240"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "inplace-normal",
+      "classification_ROOT_confirmed": "PASS",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-normal\\RESULT.actual.json",
+        "bytes": 1265,
+        "sha256": "86b561be6769e2af3800491f4442cbe0ee683496aa88fd58bddea83d649c1c43"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-normal\\stdout.log",
+          "bytes": 3557,
+          "sha256": "0915a2fe75535d3397cf476ed9b7c949bf1bad4ad3050086f6ba8a135e947ea4"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-normal\\stderr.log",
+          "bytes": 2166,
+          "sha256": "7d5f6949ef3b0f5a63f780a1ff009f9ee9793b5019828cf7b0da99631b71c9dd"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "inplace-nested",
+      "classification_ROOT_confirmed": "PASS",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-nested\\RESULT.actual.json",
+        "bytes": 1265,
+        "sha256": "acddb5a7d040aece3fcf8329cd19aaf1660edce7446ee0e7be0c87a6f0ef01ff"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-nested\\stdout.log",
+          "bytes": 4172,
+          "sha256": "05cbea1b1a81931af56cc972d2bf5be7a3d21a131d5ea52b967e6026a1197037"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-nested\\stderr.log",
+          "bytes": 2575,
+          "sha256": "34b057e6631ad92c4e8d27abc7cc86e7f467c48b69de731e9198189be3fd7478"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "inplace-collided",
+      "classification_ROOT_confirmed": "RED",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\RESULT.actual.json",
+        "bytes": 1277,
+        "sha256": "fd0b396abe8551b30775fa585747ab47a28460ef7f78151be9264ad09bd45f11"
+      },
+      "exit_code": 3762467842,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\stderr.log",
+          "bytes": 1959,
+          "sha256": "78b0e95ca03e62fbff07934e625dcc5144e724fa21720ad876ff0da83c6e16f9"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "copy-control-collided",
+      "classification_ROOT_confirmed": "RED",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\RESULT.actual.json",
+        "bytes": 1291,
+        "sha256": "898c6434a5b6f59440e31dcde5383a957d8c62ec800c816118b914f4beb6609b"
+      },
+      "exit_code": 3221226505,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\stderr.log",
+          "bytes": 2845,
+          "sha256": "4f34154c5343c2d3179897fcd63956fd2a5427db52963af4339715aff85fd81f"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "empty-direct",
+      "classification_ROOT_confirmed": "PASS",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\empty-direct\\RESULT.actual.json",
+        "bytes": 1257,
+        "sha256": "53c37d43cc4871393727bc699286a96e9027b5fa87f2d1bdaf7a69414f1658b5"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\empty-direct\\stdout.log",
+          "bytes": 1845,
+          "sha256": "8de39f8f316b44510a78f9b3200c65b2b635a9b385649f2f050062ccce22e03c"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\empty-direct\\stderr.log",
+          "bytes": 827,
+          "sha256": "d08046dc268c6c41336cc17baaf9d768b1261568eb5870ae348003dabfb5de5a"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "inplace-empty",
+      "classification_ROOT_confirmed": "PASS",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-empty\\RESULT.actual.json",
+        "bytes": 1261,
+        "sha256": "881f0e3d345c87a80c71ef5dd131c36a0bf8a7f86b149ead0dc41fa0e5ea67ff"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-empty\\stdout.log",
+          "bytes": 3508,
+          "sha256": "f7c51040c65a393433198de70d33b4ebaa1838f3fa62111bd0e155216a0b552a"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-empty\\stderr.log",
+          "bytes": 2057,
+          "sha256": "bd37d9c0315096ae7f9a75a8b4c0bf9a0ed4587ff774075c06c85c01291243ba"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "no-language-empty",
+      "classification_ROOT_confirmed": "PASS",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-empty\\RESULT.actual.json",
+        "bytes": 1273,
+        "sha256": "0d5407fc53057f9071d33a2107b07b66b2a2dd4c01532bed2b0bc3515ce6f1a9"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-empty\\stdout.log",
+          "bytes": 1846,
+          "sha256": "524f9f3cd1300048e29a599e5a361c200621a4c577cabf150a3c949ea091ef36"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-empty\\stderr.log",
+          "bytes": 823,
+          "sha256": "b9b3390662f214cdfadfb6227907d8ab9fe78bc25894d24d1c75b475e2005c47"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    {
+      "mode": "no-language-active-control",
+      "classification_ROOT_confirmed": "EXPECTED_NEGATIVE",
+      "timed_out": false,
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\RESULT.actual.json",
+        "bytes": 1300,
+        "sha256": "22b4b000e8fd39d23c6a21ebf731d2d12bae697053be9954a8824c4fb906d225"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\stdout.log",
+          "bytes": 1557,
+          "sha256": "3b28a33ac875049a5f9c3d68f7c49fb36914d81fa7699696d1d7f4df13a33b06"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\stderr.log",
+          "bytes": 624,
+          "sha256": "97576dfb75c095aa2e735601ca9ef1f38b786a3a9d2519d100ace3ef9f830945"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    }
+  ],
+  "mode_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\INDEX.actual.json",
+    "bytes": 3857,
+    "sha256": "282317365c6d4647a5f676ce55323fef03556a2ae6fa16e728d833cae93c9026"
+  },
+  "executable_identity_existing_pin_only": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\build-001\\bin\\lyd_b4_resolve_eh_fixture_12004.exe",
+    "bytes": 36352,
+    "sha256": "b5fe3b22a74ec7ad418a8080e8b8f15e98611200752859a9e3975e0850594b1d"
+  },
+  "mode_summary": {
+    "PASS": 6,
+    "EXPECTED_NEGATIVE": 1,
+    "RED": 2
+  },
+  "build": {
+    "native_compile_succeeded": true,
+    "outer_exit_code": 1,
+    "outer_failure_scope": "Defender settings_failed",
+    "original_command": {
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1457,
+        "sha256": "88a56d3dc3b8aa84dcf59da0bb83f14d1530607de20f015c12df492a51e00425"
+      },
+      "exit_code": 1,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\stdout.log",
+          "bytes": 4468,
+          "sha256": "c92375862fa6b3005028e524daa6d13c309487cc2adbd48a5fbcec4034455831"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    "Defender_registration_verified": false,
+    "original_existing_readonly_report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001\\DEFENDER-READONLY-AGENT-REPORT.actual.json",
+      "bytes": 9200,
+      "sha256": "b7512066c73dbacae66e71ff150671a2bf49f1c9322bb7e303d54c2f4ee97c7b"
+    },
+    "original_Add_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009/build-001/defender-exe-exclusions/20261011T093045Z-de79193d/receipt.json",
+      "bytes": 1935,
+      "sha256": "f7b41706c33b5cd7004fea59eab25dac2bfcbb34e9897bbcfa0229a032524522"
+    },
+    "Add_inner_hresult": "0x80041001 WBEM_E_FAILED",
+    "admin_token": true,
+    "WinDefend_existing_observation": "DISABLED/STOPPED",
+    "status_provider_existing_observation": "WBEM_E_FAILED",
+    "fixed_broker_existing_observation": "ABSENT",
+    "exact_provider_internal_cause": null,
+    "new_system_queries_or_mutations": 0
+  },
+  "source_analysis": {
+    "original_candidate_index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\INDEX.json",
+      "bytes": 2343,
+      "sha256": "8b4c9ca151cd9ad7a46a8202530ec86327cfb8c7e3db2968e8ea26eed6f096da"
+    },
+    "original_analysis": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\ANALYSIS.actual.json",
+      "bytes": 2957,
+      "sha256": "92b4f5d57d95160fadf5237de51b3a142d3e58d84d2a81a8c671f5fe714f7f9f"
+    },
+    "inplace": {
+      "exit_code": 3762467842,
+      "last_seq": 7,
+      "last_kind": 14,
+      "second_handler_arrival_observed": false,
+      "collision_filter_observed": false,
+      "target_entered_observed": false,
+      "exact_cause": null
+    },
+    "copy": {
+      "exit_code": 3221226505,
+      "second_search_seq": 8,
+      "search_flags": 0,
+      "data_read_seq": 9,
+      "data_rva": 20480,
+      "data_rejected_observed": false,
+      "identity_rejected_seq": 10,
+      "identity_rejected_kind": 12,
+      "exact_identity_predicate": null,
+      "collision_filter_observed": false,
+      "target_entered_observed": false
+    },
+    "conclusions": [
+      "Both failures precede the new outer collision filter, so changing its target did not address the observed stop.",
+      "Copy reaches the existing identity-rejection guard after valid data DWORD; its exact failing term is not recorded.",
+      "In-place has no durable second handler/filter observation; unhandled collision exit alone does not identify the missing stack-search boundary.",
+      "Installed CRT source returns CONTINUE_SEARCH for custom non-C++ code in __FrameUnwindFilter; it does not justify asserting a C++ double-throw terminate cause."
+    ],
+    "source010_status": "SOURCE_ONLY_NOT_A_FIX_QUALIFICATION",
+    "source010_build_or_modes": 0,
+    "exact_copy_identity_predicate": null,
+    "exact_inplace_escaping_boundary": null,
+    "installer_qualification": null,
+    "CK3_business_credit": false
+  },
+  "CI": [
+    {
+      "exact_head": "c5d81519e06a9c221885b642608c95b2b994690f",
+      "results": [
+        {
+          "id": 38128106418,
+          "name": "Linear history",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38128106418"
+        },
+        {
+          "id": 38128106446,
+          "name": "Official Runner CI",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38128106446"
+        }
+      ],
+      "original_report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-c5d81519e-ci-metadata-20261011-001\\REPORT.terminal.json",
+        "bytes": 1001,
+        "sha256": "6067e822157c527b35f5803c02ccf80d06847eeb1b814b10cfd9faabb4dd128d"
+      },
+      "original_metadata": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-c5d81519e-ci-metadata-20261011-001\\FINAL.actual.json",
+        "bytes": 3188,
+        "sha256": "d007b6067605bb35c7996dc8903f421bdce6f443325a31e3678ffb2332b5fb8f"
+      }
+    },
+    {
+      "exact_head": "6ccba583bf3ade10d6a63861a39228764c2ab108",
+      "results": [
+        {
+          "id": 38128484777,
+          "name": "Linear history",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38128484777"
+        },
+        {
+          "id": 38128484791,
+          "name": "Official Runner CI",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38128484791"
+        }
+      ],
+      "original_report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-6ccba583b-ci-metadata-20261011-001\\REPORT.terminal.json",
+        "bytes": 1003,
+        "sha256": "11b8b8a0f994c8aba0401ee19f74fee3a553abcfedc8b32f77435fff951efa9e"
+      },
+      "original_metadata": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-6ccba583b-ci-metadata-20261011-001\\FINAL.actual.json",
+        "bytes": 3188,
+        "sha256": "53b19898b50ed4e7acc916598b5bfa5f36e889d42e706792239f4dc3af54b624"
+      }
+    }
+  ],
+  "dafe57f01_new_CI_qualification": null,
+  "closed": {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+      "bytes": 3228,
+      "sha256": "a9ff3d027eab8df2924016806994fbdea51933640e9cd24a3541a6d661b20ebe"
+    },
+    "original_admission": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-storage-admission-20261011-001\\ADMISSION.actual.json",
+      "bytes": 6621,
+      "sha256": "4f7fa43887360e9713400eee3b9c88c1dccc3c6ec72b8afcc970fee4d4a39177"
+    },
+    "original_ROOT_request": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-ROOT-closure.actual.json",
+      "bytes": 3134,
+      "sha256": "bc1576ac8ad4a37302df362e043430f1cb16c0a701fe72f0d69cee73ec7950e2"
+    },
+    "close_command": {
+      "original_RESULT": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-close-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1121,
+        "sha256": "df556d1b35c59be2cf36b647669f1adf2cc8df8c7c5327912e58e857899081e1"
+      },
+      "exit_code": 0,
+      "small_stdio": {
+        "stdout.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-close-command-20261011-001\\stdout.log",
+          "bytes": 383,
+          "sha256": "e859856300d87138321d32984f68a28e4d7d92b4b75db161ce90af1056490789"
+        },
+        "stderr.log": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-close-command-20261011-001\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "larger_stdio_not_read_or_copied": []
+    },
+    "closed_at_utc": "2026-10-11T09:53:44.478844+00:00",
+    "known_retained_bytes": 2305126,
+    "closing_upper_bound_bytes": 1048576,
+    "carry_after_close_bytes": 133774939451,
+    "future_reserved_bytes": 0,
+    "other_unspent_reserved_bytes": 0,
+    "new_cleanup_credit": 0,
+    "TTL_renewed": false,
+    "measure_external_ref_only": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-storage-admission-20261011-001\\CLOSURE-MEASURE.actual.json",
+      "bytes": 12935,
+      "sha256": "31ec464e8a5a0082122c61091d46099a9c20dd3c8ef8c21f5f3b3b6f86c5a0d1"
+    },
+    "source_review_unchanged_at_utc": "2026-10-17T19:32:25.249949+00:00",
+    "native_build_review_unchanged_at_utc": "2026-10-24T19:32:25.249949+00:00",
+    "source009_review_unchanged_at_utc": "2026-10-25T00:00:00Z"
+  },
+  "raw_mapping": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-storage-admission-20261011-001\\CLOSED-RESERVATION.actual.json",
+        "bytes": 3228,
+        "sha256": "a9ff3d027eab8df2924016806994fbdea51933640e9cd24a3541a6d661b20ebe"
+      },
+      "archive_relative_path": "raw/closure/b4-fixture009-storage-admission-20261011-001/CLOSED-RESERVATION.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-ROOT-closure.actual.json",
+        "bytes": 3134,
+        "sha256": "bc1576ac8ad4a37302df362e043430f1cb16c0a701fe72f0d69cee73ec7950e2"
+      },
+      "archive_relative_path": "raw/closure/ck3_lyd_runtime_20261004/b4-fixture009-ROOT-closure.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-storage-admission-20261011-001\\ADMISSION.actual.json",
+        "bytes": 6621,
+        "sha256": "4f7fa43887360e9713400eee3b9c88c1dccc3c6ec72b8afcc970fee4d4a39177"
+      },
+      "archive_relative_path": "raw/closure/b4-fixture009-storage-admission-20261011-001/ADMISSION.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-close-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1121,
+        "sha256": "df556d1b35c59be2cf36b647669f1adf2cc8df8c7c5327912e58e857899081e1"
+      },
+      "archive_relative_path": "raw/closure/b4-fixture009-close-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-close-command-20261011-001\\stdout.log",
+        "bytes": 383,
+        "sha256": "e859856300d87138321d32984f68a28e4d7d92b4b75db161ce90af1056490789"
+      },
+      "archive_relative_path": "raw/closure/b4-fixture009-close-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-close-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "raw/closure/b4-fixture009-close-command-20261011-001/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\INDEX.actual.json",
+        "bytes": 3857,
+        "sha256": "282317365c6d4647a5f676ce55323fef03556a2ae6fa16e728d833cae93c9026"
+      },
+      "archive_relative_path": "raw/modes/b4-fixture009-native-modes-actual-20261011-001/INDEX.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\direct\\RESULT.actual.json",
+        "bytes": 1239,
+        "sha256": "1f1119198e694ee5b3dfbb9de114aa10a5dfeb51384a9a9c21d6b633b6263387"
+      },
+      "archive_relative_path": "raw/modes/direct/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\direct\\stdout.log",
+        "bytes": 1794,
+        "sha256": "a96808fae22bed073b813d64307642fce04863f249fd9273ddc2751e413f704f"
+      },
+      "archive_relative_path": "raw/modes/direct/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\direct\\stderr.log",
+        "bytes": 841,
+        "sha256": "260f38587920c746a4eb1ca0bebb92bad068a574f2fb4c5f24a44b8469776240"
+      },
+      "archive_relative_path": "raw/modes/direct/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-normal\\RESULT.actual.json",
+        "bytes": 1265,
+        "sha256": "86b561be6769e2af3800491f4442cbe0ee683496aa88fd58bddea83d649c1c43"
+      },
+      "archive_relative_path": "raw/modes/inplace-normal/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-normal\\stdout.log",
+        "bytes": 3557,
+        "sha256": "0915a2fe75535d3397cf476ed9b7c949bf1bad4ad3050086f6ba8a135e947ea4"
+      },
+      "archive_relative_path": "raw/modes/inplace-normal/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-normal\\stderr.log",
+        "bytes": 2166,
+        "sha256": "7d5f6949ef3b0f5a63f780a1ff009f9ee9793b5019828cf7b0da99631b71c9dd"
+      },
+      "archive_relative_path": "raw/modes/inplace-normal/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-nested\\RESULT.actual.json",
+        "bytes": 1265,
+        "sha256": "acddb5a7d040aece3fcf8329cd19aaf1660edce7446ee0e7be0c87a6f0ef01ff"
+      },
+      "archive_relative_path": "raw/modes/inplace-nested/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-nested\\stdout.log",
+        "bytes": 4172,
+        "sha256": "05cbea1b1a81931af56cc972d2bf5be7a3d21a131d5ea52b967e6026a1197037"
+      },
+      "archive_relative_path": "raw/modes/inplace-nested/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-nested\\stderr.log",
+        "bytes": 2575,
+        "sha256": "34b057e6631ad92c4e8d27abc7cc86e7f467c48b69de731e9198189be3fd7478"
+      },
+      "archive_relative_path": "raw/modes/inplace-nested/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\RESULT.actual.json",
+        "bytes": 1277,
+        "sha256": "fd0b396abe8551b30775fa585747ab47a28460ef7f78151be9264ad09bd45f11"
+      },
+      "archive_relative_path": "raw/modes/inplace-collided/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "raw/modes/inplace-collided/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\stderr.log",
+        "bytes": 1959,
+        "sha256": "78b0e95ca03e62fbff07934e625dcc5144e724fa21720ad876ff0da83c6e16f9"
+      },
+      "archive_relative_path": "raw/modes/inplace-collided/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\RESULT.actual.json",
+        "bytes": 1291,
+        "sha256": "898c6434a5b6f59440e31dcde5383a957d8c62ec800c816118b914f4beb6609b"
+      },
+      "archive_relative_path": "raw/modes/copy-control-collided/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "raw/modes/copy-control-collided/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\stderr.log",
+        "bytes": 2845,
+        "sha256": "4f34154c5343c2d3179897fcd63956fd2a5427db52963af4339715aff85fd81f"
+      },
+      "archive_relative_path": "raw/modes/copy-control-collided/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\empty-direct\\RESULT.actual.json",
+        "bytes": 1257,
+        "sha256": "53c37d43cc4871393727bc699286a96e9027b5fa87f2d1bdaf7a69414f1658b5"
+      },
+      "archive_relative_path": "raw/modes/empty-direct/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\empty-direct\\stdout.log",
+        "bytes": 1845,
+        "sha256": "8de39f8f316b44510a78f9b3200c65b2b635a9b385649f2f050062ccce22e03c"
+      },
+      "archive_relative_path": "raw/modes/empty-direct/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\empty-direct\\stderr.log",
+        "bytes": 827,
+        "sha256": "d08046dc268c6c41336cc17baaf9d768b1261568eb5870ae348003dabfb5de5a"
+      },
+      "archive_relative_path": "raw/modes/empty-direct/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-empty\\RESULT.actual.json",
+        "bytes": 1261,
+        "sha256": "881f0e3d345c87a80c71ef5dd131c36a0bf8a7f86b149ead0dc41fa0e5ea67ff"
+      },
+      "archive_relative_path": "raw/modes/inplace-empty/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-empty\\stdout.log",
+        "bytes": 3508,
+        "sha256": "f7c51040c65a393433198de70d33b4ebaa1838f3fa62111bd0e155216a0b552a"
+      },
+      "archive_relative_path": "raw/modes/inplace-empty/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-empty\\stderr.log",
+        "bytes": 2057,
+        "sha256": "bd37d9c0315096ae7f9a75a8b4c0bf9a0ed4587ff774075c06c85c01291243ba"
+      },
+      "archive_relative_path": "raw/modes/inplace-empty/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-empty\\RESULT.actual.json",
+        "bytes": 1273,
+        "sha256": "0d5407fc53057f9071d33a2107b07b66b2a2dd4c01532bed2b0bc3515ce6f1a9"
+      },
+      "archive_relative_path": "raw/modes/no-language-empty/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-empty\\stdout.log",
+        "bytes": 1846,
+        "sha256": "524f9f3cd1300048e29a599e5a361c200621a4c577cabf150a3c949ea091ef36"
+      },
+      "archive_relative_path": "raw/modes/no-language-empty/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-empty\\stderr.log",
+        "bytes": 823,
+        "sha256": "b9b3390662f214cdfadfb6227907d8ab9fe78bc25894d24d1c75b475e2005c47"
+      },
+      "archive_relative_path": "raw/modes/no-language-empty/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\RESULT.actual.json",
+        "bytes": 1300,
+        "sha256": "22b4b000e8fd39d23c6a21ebf731d2d12bae697053be9954a8824c4fb906d225"
+      },
+      "archive_relative_path": "raw/modes/no-language-active-control/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\stdout.log",
+        "bytes": 1557,
+        "sha256": "3b28a33ac875049a5f9c3d68f7c49fb36914d81fa7699696d1d7f4df13a33b06"
+      },
+      "archive_relative_path": "raw/modes/no-language-active-control/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\no-language-active-control\\stderr.log",
+        "bytes": 624,
+        "sha256": "97576dfb75c095aa2e735601ca9ef1f38b786a3a9d2519d100ace3ef9f830945"
+      },
+      "archive_relative_path": "raw/modes/no-language-active-control/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\RESULT.actual.json",
+        "bytes": 1457,
+        "sha256": "88a56d3dc3b8aa84dcf59da0bb83f14d1530607de20f015c12df492a51e00425"
+      },
+      "archive_relative_path": "raw/build/b4-fixture009-build-command-20261011-001/RESULT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\stdout.log",
+        "bytes": 4468,
+        "sha256": "c92375862fa6b3005028e524daa6d13c309487cc2adbd48a5fbcec4034455831"
+      },
+      "archive_relative_path": "raw/build/b4-fixture009-build-command-20261011-001/stdout.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "raw/build/b4-fixture009-build-command-20261011-001/stderr.log"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001\\DEFENDER-READONLY-AGENT-REPORT.actual.json",
+        "bytes": 9200,
+        "sha256": "b7512066c73dbacae66e71ff150671a2bf49f1c9322bb7e303d54c2f4ee97c7b"
+      },
+      "archive_relative_path": "raw/defender/b4-fixture009-parallel-small-notes-20261011-001/DEFENDER-READONLY-AGENT-REPORT.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009/build-001/defender-exe-exclusions/20261011T093045Z-de79193d/receipt.json",
+        "bytes": 1935,
+        "sha256": "f7b41706c33b5cd7004fea59eab25dac2bfcbb34e9897bbcfa0229a032524522"
+      },
+      "archive_relative_path": "raw/defender/20261011T093045Z-de79193d/receipt.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\INDEX.json",
+        "bytes": 2343,
+        "sha256": "8b4c9ca151cd9ad7a46a8202530ec86327cfb8c7e3db2968e8ea26eed6f096da"
+      },
+      "archive_relative_path": "raw/source-analysis/b4-fixture-source010-diagnostic-candidate-20261011-001/INDEX.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\ANALYSIS.actual.json",
+        "bytes": 2957,
+        "sha256": "92b4f5d57d95160fadf5237de51b3a142d3e58d84d2a81a8c671f5fe714f7f9f"
+      },
+      "archive_relative_path": "raw/source-analysis/b4-fixture-source010-diagnostic-candidate-20261011-001/ANALYSIS.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-c5d81519e-ci-metadata-20261011-001\\REPORT.terminal.json",
+        "bytes": 1001,
+        "sha256": "6067e822157c527b35f5803c02ccf80d06847eeb1b814b10cfd9faabb4dd128d"
+      },
+      "archive_relative_path": "raw/CI/exact-c5d81519e-ci-metadata-20261011-001/REPORT.terminal.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-c5d81519e-ci-metadata-20261011-001\\FINAL.actual.json",
+        "bytes": 3188,
+        "sha256": "d007b6067605bb35c7996dc8903f421bdce6f443325a31e3678ffb2332b5fb8f"
+      },
+      "archive_relative_path": "raw/CI/exact-c5d81519e-ci-metadata-20261011-001/FINAL.actual.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-6ccba583b-ci-metadata-20261011-001\\REPORT.terminal.json",
+        "bytes": 1003,
+        "sha256": "11b8b8a0f994c8aba0401ee19f74fee3a553abcfedc8b32f77435fff951efa9e"
+      },
+      "archive_relative_path": "raw/CI/exact-6ccba583b-ci-metadata-20261011-001/REPORT.terminal.json"
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-6ccba583b-ci-metadata-20261011-001\\FINAL.actual.json",
+        "bytes": 3188,
+        "sha256": "53b19898b50ed4e7acc916598b5bfa5f36e889d42e706792239f4dc3af54b624"
+      },
+      "archive_relative_path": "raw/CI/exact-6ccba583b-ci-metadata-20261011-001/FINAL.actual.json"
+    }
+  ],
+  "native_PE_SAVE_reads": 0,
+  "build_mode_test_runs_by_this_author": 0,
+  "MAIN_or_daily_writes": 0,
+  "phase_I_progress_estimate_percent": 75,
+  "product_status": "NOT_GREEN",
+  "business_credit": false
+}

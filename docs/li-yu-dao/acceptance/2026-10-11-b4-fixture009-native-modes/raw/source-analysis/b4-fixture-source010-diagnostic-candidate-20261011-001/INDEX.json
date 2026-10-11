@@ -1,0 +1,49 @@
+{
+  "schema": "lyd.b4.fixture010-diagnostic-candidate.v1",
+  "status": "SOURCE_ONLY_NOT_A_FIX_QUALIFICATION",
+  "parent_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\native-src\\resolve_eh_fixture.cpp",
+    "bytes": 28995,
+    "sha256": "11410685655b084879111efbe8ddc4ab7eee235b815290abff39759c84ec8ac2"
+  },
+  "files": {
+    "ANALYSIS.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\ANALYSIS.actual.json",
+      "bytes": 2957,
+      "sha256": "92b4f5d57d95160fadf5237de51b3a142d3e58d84d2a81a8c671f5fe714f7f9f"
+    },
+    "CRT-SOURCE-WINDOWS.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\CRT-SOURCE-WINDOWS.actual.json",
+      "bytes": 3498,
+      "sha256": "315fb672e8aa81a32b9817d7744c2b8aa6ff39a9008e9df1e930e7740317ce2e"
+    },
+    "PATCH.diff": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\PATCH.diff",
+      "bytes": 7263,
+      "sha256": "fede2ccb4ed0361bcc26dc75de1c965170540ee6a8af649ef2e0ac148d61b9b2"
+    },
+    "README.md": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\README.md",
+      "bytes": 2921,
+      "sha256": "f91b0970d2492a172cbcd2bded432ed90224f769ed7092b9bbb60db1b2866b0f"
+    },
+    "resolve_eh_fixture.cpp": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\resolve_eh_fixture.cpp",
+      "bytes": 31334,
+      "sha256": "e5a7a4b2f283c27497721728d32a32a984ebef6313f656d4df408ade49816f54"
+    },
+    "SOURCE-PATCH.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001\\SOURCE-PATCH.json",
+      "bytes": 1124,
+      "sha256": "ae423a3dc09e4fbacbdeba908fbdde82686fd1eb9f4cc12ea56ae3b84edc7a21"
+    }
+  },
+  "source_consistency_checks_only": true,
+  "tests_build_modes_PE_CK3_SAVE_calls": 0,
+  "future_build": null,
+  "future_mode_results": null,
+  "copy_exact_failed_predicate": null,
+  "inplace_exact_escaping_boundary": null,
+  "native_game_installer_qualification": null,
+  "live_or_business_credit": false
+}

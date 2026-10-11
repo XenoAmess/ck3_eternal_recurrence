@@ -1,0 +1,138 @@
+{
+  "schema": "lyd.b4.fixture009.defender-existing-readonly-agent-report.v1",
+  "status": "PRESERVED_EXISTING_TURN_OBSERVATIONS_NOT_A_NEW_SYSTEM_PROBE",
+  "observed_at_utc": null,
+  "report_request": "Preserve already completed read-only observations; no repeated system query.",
+  "receipt_ref": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009/build-001/defender-exe-exclusions/20261011T093045Z-de79193d/receipt.json",
+    "bytes": 1935,
+    "sha256": "f7b41706c33b5cd7004fea59eab25dac2bfcbb34e9897bbcfa0229a032524522"
+  },
+  "executable_identity_from_original_receipt_only": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009/build-001/bin/lyd_b4_resolve_eh_fixture_12004.exe",
+    "bytes": 36352,
+    "sha256": "b5fe3b22a74ec7ad418a8080e8b8f15e98611200752859a9e3975e0850594b1d",
+    "target": "lyd_b4_resolve_eh_fixture_12004",
+    "EXE_read_or_rehashed_for_this_report": false
+  },
+  "original_receipt_observation": {
+    "status": "settings_failed",
+    "admin_token": true,
+    "before": [],
+    "after": [],
+    "error_stage": "Add-invocation",
+    "outer_hresult": "0x80020009",
+    "inner_hresult": "0x80041001",
+    "inner_name": "WBEM_E_FAILED",
+    "return_value": null,
+    "return_value_available": false,
+    "verified_requested_paths": [],
+    "partial_mutation": false,
+    "observed_prior_settings_preserved": true
+  },
+  "existing_readonly_commands": [
+    {
+      "command": "sc.exe query WinDefend",
+      "shell": "cmd.exe",
+      "login": false,
+      "observed_at_utc": null,
+      "exit_code": 0,
+      "returned": {
+        "service_name": "WinDefend",
+        "type": 16,
+        "type_text": "WIN32_OWN_PROCESS",
+        "state": 1,
+        "state_text": "STOPPED",
+        "win32_exit_code": 1077,
+        "win32_exit_code_hex": "0x435",
+        "service_exit_code": 0,
+        "checkpoint": 0,
+        "wait_hint": 0
+      }
+    },
+    {
+      "command": "sc.exe qc WinDefend",
+      "shell": "cmd.exe",
+      "login": false,
+      "observed_at_utc": null,
+      "exit_code": 0,
+      "returned": {
+        "service_name": "WinDefend",
+        "type": 16,
+        "type_text": "WIN32_OWN_PROCESS",
+        "start_type": 4,
+        "start_type_text": "DISABLED",
+        "error_control": 1,
+        "binary_path": "\"C:\\Program Files\\Windows Defender\\MsMpEng.exe\"",
+        "dependencies": [
+          "RpcSs"
+        ],
+        "service_start_name": "LocalSystem"
+      }
+    },
+    {
+      "command": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe -B -X utf8 -c exec(bytes.fromhex('66726f6d20706174686c696220696d706f727420506174680a696d706f7274206a736f6e0a696d706f727420707974686f6e636f6d2c77696e3332636f6d2e636c69656e740a707974686f6e636f6d2e436f496e697469616c697a6528290a646566207175657279286c6162656c2c6e616d6573706163652c73716c2c6669656c6473293a0a207472793a0a20207376633d77696e3332636f6d2e636c69656e742e4765744f626a656374282777696e6d676d74733a7b696d706572736f6e6174696f6e4c6576656c3d696d706572736f6e6174657d215c5c5c5c2e5c5c272b6e616d657370616365290a2020726f77733d5b5d0a2020666f7220726f7720696e207376632e4578656351756572792873716c293a0a20202076616c7565733d7b7d0a202020666f72206b657920696e206669656c64733a0a202020207472793a76616c7565735b6b65795d3d726f772e50726f706572746965735f2e4974656d286b6579292e56616c75650a2020202065786365707420457863657074696f6e3a76616c7565735b6b65795d3d4e6f6e650a202020726f77732e617070656e642876616c756573290a20207072696e74286a736f6e2e64756d70732864696374286c6162656c3d6c6162656c2c71756572795f7375636365656465643d547275652c726f77733d726f7773292c656e737572655f61736369693d46616c736529290a2065786365707420457863657074696f6e206173206572726f723a0a20207072696e74286a736f6e2e64756d70732864696374286c6162656c3d6c6162656c2c71756572795f7375636365656465643d46616c73652c6572726f725f747970653d74797065286572726f72292e5f5f6e616d655f5f2c6572726f723d737472286572726f7229292c656e737572655f61736369693d46616c736529290a71756572792827446566656e6465722072756e74696d6520737461747573272c27726f6f745c5c4d6963726f736f66745c5c57696e646f77735c5c446566656e646572272c2753454c454354202a2046524f4d204d5346545f4d70436f6d7075746572537461747573272c5b27414d53657276696365456e61626c6564272c27416e74697669727573456e61626c6564272c27416e746973707977617265456e61626c6564272c275265616c54696d6550726f74656374696f6e456e61626c6564272c27414d52756e6e696e674d6f6465272c27414d50726f6475637456657273696f6e272c27416e746976697275735369676e617475726556657273696f6e275d290a7175657279282757696e646f777320536563757269747943656e74657220616e746976697275732070726f64756374272c27726f6f745c5c536563757269747943656e74657232272c2753454c45435420646973706c61794e616d652c70726f6475637453746174652046524f4d20416e7469566972757350726f64756374272c5b27646973706c61794e616d65272c2770726f647563745374617465275d290a726f6f743d506174682827433a2f50726f6772616d2046696c65732f58415220434b332050726f6a656374204558452042726f6b657227290a7072696e74286a736f6e2e64756d707328646963742862726f6b65725f726f6f743d73747228726f6f74292c726f6f745f6578697374733d726f6f742e65786973747328292c706f6c6963795f6578697374733d28726f6f742f27706f6c6963792e6a736f6e27292e65786973747328292c62726f6b65725f6f725f7461736b5f696e766f6b65643d46616c73652929290a707974686f6e636f6d2e436f556e696e697469616c697a6528290a'))",
+      "shell": "cmd.exe",
+      "login": false,
+      "observed_at_utc": null,
+      "exit_code": 0,
+      "python_source": "from pathlib import Path\nimport json\nimport pythoncom,win32com.client\npythoncom.CoInitialize()\ndef query(label,namespace,sql,fields):\n try:\n  svc=win32com.client.GetObject('winmgmts:{impersonationLevel=impersonate}!\\\\\\\\.\\\\'+namespace)\n  rows=[]\n  for row in svc.ExecQuery(sql):\n   values={}\n   for key in fields:\n    try:values[key]=row.Properties_.Item(key).Value\n    except Exception:values[key]=None\n   rows.append(values)\n  print(json.dumps(dict(label=label,query_succeeded=True,rows=rows),ensure_ascii=False))\n except Exception as error:\n  print(json.dumps(dict(label=label,query_succeeded=False,error_type=type(error).__name__,error=str(error)),ensure_ascii=False))\nquery('Defender runtime status','root\\\\Microsoft\\\\Windows\\\\Defender','SELECT * FROM MSFT_MpComputerStatus',['AMServiceEnabled','AntivirusEnabled','AntispywareEnabled','RealTimeProtectionEnabled','AMRunningMode','AMProductVersion','AntivirusSignatureVersion'])\nquery('Windows SecurityCenter antivirus product','root\\\\SecurityCenter2','SELECT displayName,productState FROM AntiVirusProduct',['displayName','productState'])\nroot=Path('C:/Program Files/XAR CK3 Project EXE Broker')\nprint(json.dumps(dict(broker_root=str(root),root_exists=root.exists(),policy_exists=(root/'policy.json').exists(),broker_or_task_invoked=False)))\npythoncom.CoUninitialize()\n",
+      "returned": [
+        {
+          "label": "Defender runtime status",
+          "query_succeeded": false,
+          "error_type": "com_error",
+          "error": "(-2147217407, 'OLE error 0x80041001', None, None)",
+          "observed_values": null
+        },
+        {
+          "label": "Windows SecurityCenter antivirus product",
+          "query_succeeded": true,
+          "rows": [],
+          "scope": "Only the current root/SecurityCenter2 AntiVirusProduct registration query was empty; does not prove absence of all security software."
+        },
+        {
+          "broker_root": "C:\\Program Files\\XAR CK3 Project EXE Broker",
+          "root_exists": false,
+          "policy_exists": false,
+          "broker_or_task_invoked": false
+        }
+      ]
+    }
+  ],
+  "source_review": {
+    "path": "C:/workspace/ck3_eternal_recurrence/tools/register_project_exe_exclusions.py",
+    "class": "DefenderWmi",
+    "add_exec_method_line": 273,
+    "registration_Add_invocation_lines": [
+      381,
+      386
+    ],
+    "admin_branch": "Direct Defender WMI; broker dispatch applies to non-admin path.",
+    "decoding_failure": false,
+    "provider_internal_call_stack": null
+  },
+  "conclusion": {
+    "confirmed_system_boundary": "WinDefend was disabled and stopped; the read-only Defender runtime-status query also returned WBEM_E_FAILED.",
+    "causal_limit": "This explains an unavailable Defender runtime boundary consistent with Add failure; exact internal provider cause is UNKNOWN.",
+    "broker_applicability": "Fixed broker runtime and policy were absent in the observed current filesystem; historical installation documentation grants no current installation proof.",
+    "registration_verified": false,
+    "build_and_settings_must_be_recorded_separately": true,
+    "executable_fix_within_current_readonly_scope": null
+  },
+  "preservation": {
+    "system_queries_repeated_for_report": false,
+    "receipt_pinned_file_only": true,
+    "system_mutations": false,
+    "Add_retried": false,
+    "service_started_or_reconfigured": false,
+    "broker_installed_or_invoked": false,
+    "policy_changed": false,
+    "MAIN_written": false,
+    "PE_native_SAVE_read": false,
+    "new_scene_evidence_claimed": false,
+    "unrecorded_original_UTC_fields_kept_null": true,
+    "whole_notes_root_sealed": false,
+    "owned_output": "DEFENDER-READONLY-AGENT-REPORT.actual.json"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "lyd.b4.fixture009-collision-source-analysis.v1",
+  "parent_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r55-b4-resolve-native-eh-fixture-sourceonly-20261011-009\\native-src\\resolve_eh_fixture.cpp",
+    "bytes": 28995,
+    "sha256": "11410685655b084879111efbe8ddc4ab7eee235b815290abff39759c84ec8ac2"
+  },
+  "actual_traces": [
+    {
+      "mode": "inplace-collided",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\inplace-collided\\stderr.log",
+        "bytes": 1959,
+        "sha256": "78b0e95ca03e62fbff07934e625dcc5144e724fa21720ad876ff0da83c6e16f9"
+      }
+    },
+    {
+      "mode": "copy-control-collided",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\copy-control-collided\\stderr.log",
+        "bytes": 2845,
+        "sha256": "4f34154c5343c2d3179897fcd63956fd2a5427db52963af4339715aff85fd81f"
+      }
+    }
+  ],
+  "actual_mode_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/b4-fixture009-native-modes-actual-20261011-001/INDEX.actual.json",
+    "bytes": 3857,
+    "sha256": "282317365c6d4647a5f676ce55323fef03556a2ae6fa16e728d833cae93c9026"
+  },
+  "inplace": {
+    "exit_code": 3762467842,
+    "last_seq": 7,
+    "last_kind": 14,
+    "second_handler_arrival_observed": false,
+    "collision_filter_observed": false,
+    "target_entered_observed": false,
+    "exact_cause": null
+  },
+  "copy": {
+    "exit_code": 3221226505,
+    "second_search_seq": 8,
+    "search_flags": 0,
+    "data_read_seq": 9,
+    "data_rva": 20480,
+    "data_rejected_observed": false,
+    "identity_rejected_seq": 10,
+    "identity_rejected_kind": 12,
+    "exact_identity_predicate": null,
+    "collision_filter_observed": false,
+    "target_entered_observed": false
+  },
+  "source_boundaries": {
+    "ForwardOriginal": 196,
+    "identity_context_equality": 209,
+    "original_handler_call": 232,
+    "PrimaryTargetFilter": 418,
+    "CollisionTargetFilter": 425,
+    "RunPrimaryTarget": 433,
+    "RunCollisionTargets": 439,
+    "qualification": 513
+  },
+  "conclusions": [
+    "Both failures precede the new outer collision filter, so changing its target did not address the observed stop.",
+    "Copy reaches the existing identity-rejection guard after valid data DWORD; its exact failing term is not recorded.",
+    "In-place has no durable second handler/filter observation; unhandled collision exit alone does not identify the missing stack-search boundary.",
+    "Installed CRT source returns CONTINUE_SEARCH for custom non-C++ code in __FrameUnwindFilter; it does not justify asserting a C++ double-throw terminate cause."
+  ],
+  "candidate_scope": "diagnostic only; no guard/target/qualification changes",
+  "linked_runtime_binary_symbolization_performed": false,
+  "compile_executed": false,
+  "modes_executed": false,
+  "CK3_called": false,
+  "fix_completed": null
+}

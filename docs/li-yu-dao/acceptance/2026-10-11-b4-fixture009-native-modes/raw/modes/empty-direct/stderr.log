@@ -1,0 +1,4 @@
+EH seq=1 kind=3 tid=16456 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=0 image=0 function=0 data=0 context=0 target=0 history=0 guard=a66d6ff950 data_rva=00000000
+EH seq=2 kind=1 tid=16456 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=a66d6ff450 image=0 function=0 data=0 context=0 target=0 history=0 guard=a66d6ff950 data_rva=00000000
+EH seq=3 kind=6 tid=16456 code=e06d7363 flags=00000001 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=a66d6ff450 image=0 function=0 data=0 context=0 target=0 history=0 guard=a66d6ff950 data_rva=00000000
+EH seq=4 kind=7 tid=16456 code=00000000 flags=00000000 actual=0 forwarded=0 scope=0/0 pc=0 frame=0 expected=a66d6ff450 image=0 function=0 data=0 context=0 target=0 history=0 guard=a66d6ff950 data_rva=00000000

@@ -1,0 +1,65 @@
+{
+  "schema": "lyd.b4.fixture009-storage-close-request.v1",
+  "ROOT_confirm_no_more_builds_or_executions": true,
+  "other_unspent_reservations_bytes": 0,
+  "source_only_tasks": [],
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-storage-admission-20261011-001\\ADMISSION.actual.json",
+    "bytes": 6621,
+    "sha256": "4f7fa43887360e9713400eee3b9c88c1dccc3c6ec72b8afcc970fee4d4a39177"
+  },
+  "mode_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-native-modes-actual-20261011-001\\INDEX.actual.json",
+    "bytes": 3857,
+    "sha256": "282317365c6d4647a5f676ce55323fef03556a2ae6fa16e728d833cae93c9026"
+  },
+  "build_command": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-build-command-20261011-001\\RESULT.actual.json",
+    "bytes": 1457,
+    "sha256": "88a56d3dc3b8aa84dcf59da0bb83f14d1530607de20f015c12df492a51e00425"
+  },
+  "terminal_commands": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-admit-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1108,
+      "sha256": "cfec335c85b49019cba42df6f92085769fc5215267503dd8e49c9fd5ac393002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-materialize-command-20261011-001\\RESULT.actual.json",
+      "bytes": 1160,
+      "sha256": "26ada4f622c08b7c6d1339e3abf3230bbdcb4e9a8a6bb7936a490df78a0bf527"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-modes-command-20261011-001\\RESULT.actual.json",
+      "bytes": 900,
+      "sha256": "e8aaef8e345c6a7642be7be30dcee483da3c61b480131e60e4695523a21a2320"
+    }
+  ],
+  "ROOT_script_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-build-b4-fixture009-20261011-001.py",
+      "bytes": 793,
+      "sha256": "897b0f829f5e52e7ab0510880607d103a983570a9c88fbce5dfa4f117ce88476"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-run-b4-fixture009-modes-20261011-001.py",
+      "bytes": 3511,
+      "sha256": "d6f98fe4291938f3fdc00d668385d4e6620abf1a658a31ecac26ca3c50a33ae2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-close-b4-fixture009-20261011-001.py",
+      "bytes": 2608,
+      "sha256": "25e0b3a8f7f735ee7442ff24438c1c91732b8e573fa45a8dfeeddcac94a564bc"
+    }
+  ],
+  "parallel_small_receipt_roots": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r59-case10-unique27-permanent-candidate-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\bookmark1070-policy-candidate-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\bookmark1070-policy-tests-command-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-event-continuation-candidate-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-c5d81519e-ci-metadata-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\exact-6ccba583b-ci-metadata-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture-source010-diagnostic-candidate-20261011-001",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\b4-fixture009-parallel-small-notes-20261011-001"
+  ]
+}
