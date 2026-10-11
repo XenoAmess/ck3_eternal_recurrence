@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r53-input-cache-retirement-sourceonly-20261011-001\admit_profiles.py", line 3, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r53-input-cache-retirement-sourceonly-20261011-001\admit_profiles.py", line 154, in main
+  File "C:\workspace\ck3_lyd_runtime_20261004\r53-input-cache-retirement-sourceonly-20261011-001\admit_profiles.py", line 28, in need
+RuntimeError: Small package bound/create-only admission failed

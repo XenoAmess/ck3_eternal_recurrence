@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-retirement-sourceonly-20261011-004\\serial_profiles.py",
+    "--phase",
+    "plan",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-root-request-author-sourceonly-20261011-001\\ROOT-PLAN.actual-001.json",
+    "--sha256",
+    "d1c7ae6fdae2aa8909b39f94de4c44f5a1d72a53b5dd61acfeb758a048d1bff2"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T05:44:49.682750+00:00",
+  "finished_at_utc": "2026-10-11T05:45:02.792334+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-retirement-plan-command-20261011-001\\stdout.log",
+    "bytes": 306,
+    "sha256": "f70c9bd4979c3218fe9a0f2263c07bf232e1e269c2586ead9c727c3583f59fdc"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-retirement-plan-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

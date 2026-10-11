@@ -1,0 +1,17 @@
+--- r53-input-cache-retirement-sourceonly-20261011-001/admit_profiles.py
++++ r53-input-cache-retirement-sourceonly-20261011-005/admit_profiles.py
+@@ -3 +2,0 @@
+-if __name__=='__main__':main()
+--- r53-input-cache-retirement-sourceonly-20261011-001/serial_profiles.py
++++ r53-input-cache-retirement-sourceonly-20261011-005/serial_profiles.py
+@@ -3 +2,0 @@
+-if __name__=='__main__':main()
+--- r53-input-cache-retirement-sourceonly-20261011-001/close_profiles.py
++++ r53-input-cache-retirement-sourceonly-20261011-005/close_profiles.py
+@@ -3 +2,0 @@
+-if __name__=='__main__':main()
+--- r53-input-cache-retirement-sourceonly-20261011-004/admission_receipt.py
++++ r53-input-cache-retirement-sourceonly-20261011-005/admission_receipt.py
+@@ -28 +28 @@
+-  and err.endswith('RuntimeError: Small package bound/create-only admission failed\n'),'Exact duplicate second entry and create-only refusal evidence required')
++  and err.endswith('RuntimeError: Small package bound/create-only admission failed\r\n'),'Exact duplicate second entry and create-only refusal evidence required')

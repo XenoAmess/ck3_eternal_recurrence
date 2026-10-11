@@ -1,0 +1,29 @@
+{
+  "schema": "lyd.independent-source-review.index.v1",
+  "status": "SOURCE_REVIEW_PASS",
+  "mandatory_fixes": [],
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-single-entry-admission-recovery-independent-review-20261011-001\\REPORT.md",
+      "bytes": 3125,
+      "sha256": "2ec4f1e5fd8e5dd011f9a04ab98639f8d3abfd22892ef85bc20cbd3769df7e79"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-single-entry-admission-recovery-independent-review-20261011-001\\CHECKS.source-review.json",
+      "bytes": 4876,
+      "sha256": "0d6af8013db3d198f376c981949ef96384b0dd1aaef405c94d5bb8b98ad2ff0a"
+    }
+  ],
+  "review_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-single-entry-admission-recovery-independent-review-20261011-001\\review_source.py",
+    "bytes": 7035,
+    "sha256": "61c6a7f5ed33b04a729f4d691991b4d23f5e418871a805f54ccb9258f1818722"
+  },
+  "seal_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-single-entry-admission-recovery-independent-review-20261011-001\\seal_review.py",
+    "bytes": 905,
+    "sha256": "c911b32d1b6e4bb320c7f011b9e9615eeaf5cd7a98db8890e87bbd412447c6dc"
+  },
+  "producer_execution": false,
+  "actual_cleanup_or_closure_credit": null
+}

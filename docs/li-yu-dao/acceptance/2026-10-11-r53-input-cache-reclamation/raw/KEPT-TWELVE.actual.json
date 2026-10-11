@@ -1,0 +1,97 @@
+{
+  "schema": "lyd.r53-excluded-twelve-current-metadata.v1",
+  "at_utc": "2026-10-11T05:49:05.427400+00:00",
+  "excluded_count": 12,
+  "excluded_logical_bytes": 950396,
+  "all_excluded_present_original_size": true,
+  "records": [
+    {
+      "relative_path": "dx11/ps_5_0/000000001128B72D.bin",
+      "present_regular": true,
+      "bytes": 13504,
+      "mtime_ns": 1791654720372327400,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/ps_5_0/000000001128B72D.scache",
+      "present_regular": true,
+      "bytes": 217950,
+      "mtime_ns": 1791654720374331100,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/ps_5_0/0000000086275424.bin",
+      "present_regular": true,
+      "bytes": 14660,
+      "mtime_ns": 1791654721593335900,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/ps_5_0/0000000086275424.scache",
+      "present_regular": true,
+      "bytes": 217935,
+      "mtime_ns": 1791654721595362900,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/ps_5_0/00000000A5F7DF2F.bin",
+      "present_regular": true,
+      "bytes": 16096,
+      "mtime_ns": 1791654721997027500,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/ps_5_0/00000000A5F7DF2F.scache",
+      "present_regular": true,
+      "bytes": 217916,
+      "mtime_ns": 1791654721998025400,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/vs_5_0/0000000037B1380B.bin",
+      "present_regular": true,
+      "bytes": 3508,
+      "mtime_ns": 1791654723357681500,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/vs_5_0/0000000037B1380B.scache",
+      "present_regular": true,
+      "bytes": 80620,
+      "mtime_ns": 1791654723359668800,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/vs_5_0/00000000B38FECA7.bin",
+      "present_regular": true,
+      "bytes": 3508,
+      "mtime_ns": 1791654724463176800,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/vs_5_0/00000000B38FECA7.scache",
+      "present_regular": true,
+      "bytes": 80586,
+      "mtime_ns": 1791654724464176200,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/vs_5_0/00000000B8B58F3C.bin",
+      "present_regular": true,
+      "bytes": 3508,
+      "mtime_ns": 1791654724515259500,
+      "body_SHA_not_read": true
+    },
+    {
+      "relative_path": "dx11/vs_5_0/00000000B8B58F3C.scache",
+      "present_regular": true,
+      "bytes": 80605,
+      "mtime_ns": 1791654724516258500,
+      "body_SHA_not_read": true
+    }
+  ],
+  "cache_body_reads": 0,
+  "deleted_files": 0,
+  "new_credit_bytes": 0,
+  "retention_renewed": false
+}

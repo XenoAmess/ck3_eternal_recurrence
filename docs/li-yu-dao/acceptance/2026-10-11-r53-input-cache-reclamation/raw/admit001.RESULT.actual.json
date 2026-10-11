@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-retirement-sourceonly-20261011-001\\admit_profiles.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-root-request-author-sourceonly-20261011-001\\ROOT-ADMIT.actual-001.json",
+    "--sha256",
+    "e87a01066d7e580d04e5d865c450ab450a7738cf585229d4d5abca9262ee8116"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T05:37:21.507670+00:00",
+  "finished_at_utc": "2026-10-11T05:37:22.017601+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-retirement-admit-command-20261011-001\\stdout.log",
+    "bytes": 397,
+    "sha256": "e42c2a364563d2a0c72cf27d23df533c58cdcef412cc66a59933ac09aaa4a63c"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r53-input-cache-retirement-admit-command-20261011-001\\stderr.log",
+    "bytes": 581,
+    "sha256": "602f8f78edc6c64620ce17f4826f5566b44a27335752dc0e5a5679a62334e49d"
+  }
+}
