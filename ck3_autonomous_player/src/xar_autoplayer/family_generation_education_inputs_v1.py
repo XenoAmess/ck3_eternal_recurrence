@@ -135,6 +135,8 @@ def derive_family_generation_education_inputs_v1(
                 missing_status="not_observed" if observed is not None else missing_status,
                 reason=f"{key}_not_observed" if observed is not None else row_missing_reason,
             )
+        if observed is not None and "court_owner_source" in observed:
+            row["court_owner_source"] = deepcopy(observed["court_owner_source"])
         complete = all(availability[key]["status"] == "available" for key in _INPUT_LEAVES)
         row["observed_inputs_complete"] = complete
         row["status"] = "available" if complete else "partial"

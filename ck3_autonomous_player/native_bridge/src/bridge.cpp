@@ -9722,6 +9722,8 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   bool frame_observed = false;
   xar::ck3_12002::family_obligations_lineage::Bindings lineage12002{};
   bool observe_descendants12004 = false;
+  xar::ck3_12004::ChildCourtOwnerReadAccess12004 child_court_owner_access12004{};
+  std::uint64_t child_native_revision12004 = 0;
   xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 child_traits12004{};
   xar::ck3_12002::EventWindowBindings child_window_names12004{};
   xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 child_window_gui12004{};
@@ -9790,7 +9792,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
             xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
                 query.family12002, query.child_traits12004,
                 *query.read.descendants,
-                {nullptr, &ReadCurrentFirstHeirConceptionMemoryV1});
+                {nullptr, &ReadCurrentFirstHeirConceptionMemoryV1},
+                &query.child_court_owner_access12004,
+                query.child_native_revision12004);
         query.child_inputs12004->typed_windows =
             xar::ck3_11906::ReadCurrentFirstHeirTypedWindows12004V1(
                 query.child_window_gui12004, query.child_window_names12004);
@@ -19368,6 +19372,9 @@ void RunConnectedSession(
                   query.child_traits12004 = xar::ck3_12004::lifestyle::
                       BindPlayerLifestyleSnapshotEnvironment12004V1(
                           base, true, game.descriptor().executable_sha256);
+                  query.child_court_owner_access12004 = {
+                      base, nullptr, &ReadCurrentFirstHeirConceptionMemoryV1, true};
+                  query.child_native_revision12004 = state_revision;
                   query.child_window_names12004 =
                       xar::ck3_12004::BindEventWindowImage12004(
                           base, game.descriptor().executable_sha256);

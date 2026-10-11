@@ -60,6 +60,27 @@ def _current_focus(row: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _current_court_owner(row: dict[str, object], native_revision: int) -> dict[str, object]:
+    from .education_child_court_owner_readonly_12004 import (
+        child_court_owner_from_current_child_source_12004,
+    )
+    source = row.get("court_owner_source")
+    observed = child_court_owner_from_current_child_source_12004(
+        row["raw_character_id"], source, native_revision=native_revision,
+    )
+    return {
+        "available": observed.available,
+        "source_qualified": observed.source_qualified,
+        "present": observed.owner_id is not None if observed.available else None,
+        "known_null": observed.owner_id is None if observed.available else None,
+        "owner_character_id_raw": observed.owner_id,
+        "basis": "current_child_native_court_owner_source_projection",
+        "unavailable_reason": None if observed.available else (
+            source.get("unavailable_reason") or "court_owner_source_unavailable"
+            if isinstance(source, dict) else "court_owner_source_not_observed"),
+    }
+
+
 def derive_family_generation_education_decision_inputs_v1(
     descendants: dict[str, object] | None,
 ) -> dict[str, object]:
@@ -103,6 +124,9 @@ def derive_family_generation_education_decision_inputs_v1(
             "raw_character_id": child["raw_character_id"],
             "occurrence_indices": list(child["occurrence_indices"]),
             "current_focus": focus,
+            "current_court_owner": _current_court_owner(
+                child, generation["frame"]["native_revision"],
+            ),
             "stock_skill_options": options,
             "current_education_skill_inputs": deepcopy(current_option),
         })

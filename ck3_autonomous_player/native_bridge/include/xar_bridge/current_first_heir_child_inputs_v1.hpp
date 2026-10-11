@@ -2,6 +2,7 @@
 
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
 #include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
+#include "xar_bridge/ck3_12004_child_court_owner_readonly.hpp"
 
 #include <array>
 #include <cstdint>
@@ -49,6 +50,8 @@ struct CurrentFirstHeirChildInputRowV1 {
   CurrentFirstHeirChildTraitsV1 childhood_traits{};
   std::optional<CurrentFirstHeirChildFocusV1> native_focus{};
   std::optional<CurrentFirstHeirChildTraitsV1> education_point_traits{};
+  // Independent current input for this same child and native query revision.
+  std::optional<xar::ck3_12004::CurrentChildCourtOwnerRead12004> court_owner_source{};
 };
 
 // This leaf describes distinct living actual children, while the owning

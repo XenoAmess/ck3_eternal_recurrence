@@ -1434,3 +1434,5 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 - 2026-10-11 pure-background source: [religion creation price same-response source](religion-creation-price-same-response-source-12004.md). Seventeen connected production files adopted; native quote independent, research / SOURCE_ADOPTED_NOT_RUN, no tests/build/Game.
 
 - 2026-10-11 background source: [Sway invalidation execution wire](sway-invalidation-execution-wire-12004.md) connects the actual title input through the existing journal/query/transport, retaining the hidden-phase-only consumer and unresolved invalidator/end relationship. `research / SOURCE_ADOPTED_NOT_RUN`.
+
+- 2026-10-11 background source: [Current child CourtOwner](current-child-court-owner-readonly-12004.md) connects the existing native child row, strict transport and actual education composer. Resolved, known-null and unavailable remain separate; Guardian state, role holder and educator selection remain independent. `research / SOURCE_ADOPTED_NOT_RUN`.

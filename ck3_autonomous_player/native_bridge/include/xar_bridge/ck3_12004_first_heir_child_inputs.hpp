@@ -115,7 +115,9 @@ ReadCurrentFirstHeirChildInputsV1(
     const ck3_12002::FamilyBindings &bindings,
     const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &trait_environment,
     const ck3_11906::CurrentFirstHeirDescendantsReadV1 &descendants,
-    const ChildCurrentFocusReadonlyAccess12004 &focus_access = {}) noexcept {
+    const ChildCurrentFocusReadonlyAccess12004 &focus_access = {},
+    const ChildCourtOwnerReadAccess12004 *court_owner_access = nullptr,
+    std::uint64_t owning_native_revision = 0) noexcept {
   using namespace first_heir_descendants_detail;
   using namespace first_heir_child_inputs_detail;
   ck3_11906::CurrentFirstHeirChildInputsReadV1 result{};
@@ -175,6 +177,11 @@ ReadCurrentFirstHeirChildInputsV1(
     row.native_focus = ReadChildCurrentFocusReadonly12004(
         trait_environment, focus_access, row.character_id,
         reinterpret_cast<std::uintptr_t>(character));
+    if (court_owner_access != nullptr) {
+      row.court_owner_source = ReadCurrentChildCourtOwnerReadonly12004(
+          *court_owner_access, std::bit_cast<std::uint32_t>(row.character_id),
+          owning_native_revision);
+    }
     if (character != nullptr &&
         Load<void *>(character, kCharacterDeathDataOffset) == nullptr) {
       row.childhood_traits = ReadTraits(trait_environment, definitions, character);

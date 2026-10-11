@@ -105,6 +105,79 @@ def _native_focus(value: object) -> None:
         raise BridgeUnavailableError("available current heir child focus values are malformed")
 
 
+def _court_owner_source(
+    value: object, *, child_id: int, native_revision: int,
+) -> None:
+    """Keep the current child's owner observation independent of education roles."""
+    if value is None:
+        return  # Optional observation absent; distinct from a known-null owner.
+    fields = {
+        "schema", "status", "unavailable_reason", "child_character_id",
+        "native_revision", "court_owner_present", "court_owner_id", "child_address",
+        "court_owner_address", "getter_return_address", "fallback_address",
+        "fallback_full_id_raw", "relation_owner_id_raw", "source_path",
+        "fallback_reached", "getter_projection_complete", "identity_round_trip",
+        "sample_stable", "source_qualified",
+    }
+    if (not isinstance(value, dict) or set(value) != fields
+            or value["schema"] != "xar.ck3.current-child-court-owner-readonly/1.20.0.4/v1"
+            or value["status"] not in ("resolved", "known_null", "unavailable")
+            or not _integer(value["child_character_id"], 0, 2**32)
+            or value["child_character_id"] != child_id & 0xFFFFFFFF
+            or not _integer(value["native_revision"], 1, 2**64)
+            or value["native_revision"] != native_revision
+            or any(type(value[key]) is not bool for key in (
+                "fallback_reached", "getter_projection_complete", "identity_round_trip",
+                "sample_stable", "source_qualified"))
+            or any(not isinstance(value[key], str) for key in (
+                "unavailable_reason", "source_path"))
+            or any(value[key] is not None and not _integer(value[key], 0, 2**32)
+                   for key in ("court_owner_id", "fallback_full_id_raw", "relation_owner_id_raw"))
+            or any(value[key] is not None and not _integer(value[key], 0, 2**64)
+                   for key in ("child_address", "court_owner_address", "getter_return_address",
+                               "fallback_address"))
+            or value["court_owner_present"] is not None
+            and type(value["court_owner_present"]) is not bool):
+        raise BridgeUnavailableError("current heir child court-owner source is malformed")
+    owner, address = value["court_owner_id"], value["court_owner_address"]
+    if value["status"] == "unavailable":
+        if (value["unavailable_reason"] == "" or value["source_qualified"]
+                or value["court_owner_present"] is not None
+                or owner is not None or address is not None):
+            raise BridgeUnavailableError("unavailable court-owner source became a known owner")
+        return
+    if (value["unavailable_reason"] != "" or not value["source_qualified"]
+            or not value["getter_projection_complete"] or not value["identity_round_trip"]
+            or not value["sample_stable"] or not value["child_address"]
+            or value["child_character_id"] == 0xFFFFFFFF):
+        raise BridgeUnavailableError("known court-owner source lacks its current child bookends")
+    if value["status"] == "resolved":
+        if (value["court_owner_present"] is not True or owner is None or owner == 0xFFFFFFFF
+                or not address or value["getter_return_address"] != address
+                or value["fallback_reached"] or value["fallback_address"] is not None
+                or value["fallback_full_id_raw"] is not None
+                or value["source_path"] not in (
+                    "landed_noncharacter_context_returns_child", "landed_invalid_context_returns_child",
+                    "landed_character_context", "unlanded_current_relation_owner")):
+            raise BridgeUnavailableError("resolved court-owner source lost its actual getter result")
+        if value["source_path"] in (
+                "landed_noncharacter_context_returns_child", "landed_invalid_context_returns_child") and (
+                owner != value["child_character_id"] or address != value["child_address"]):
+            raise BridgeUnavailableError("court-owner source returning the child changed its full identity")
+    else:
+        fallback = value["fallback_address"]
+        if (value["court_owner_present"] is not False or owner is not None or address is not None
+                or not value["fallback_reached"] or fallback is None
+                or value["getter_return_address"] != fallback
+                or value["source_path"] not in (
+                    "unlanded_relation_absent_fallback", "unlanded_storage_null_fallback",
+                    "unlanded_index_out_of_bounds_fallback", "unlanded_object_null_fallback",
+                    "unlanded_generation_mismatch_fallback")
+                or (value["fallback_full_id_raw"] is not None if fallback == 0
+                    else value["fallback_full_id_raw"] != 0xFFFFFFFF)):
+            raise BridgeUnavailableError("known-null court-owner source lacks its completed fallback result")
+
+
 def _typed_windows(value: object, *, native_revision: int) -> None:
     """Keep fixed-window diagnostics independent of the child observations."""
     required = {"source", "native_revision", "window_handler_status",
@@ -245,6 +318,11 @@ def _child_inputs(value: object, descendants: dict[str, object]) -> None:
             _education_point_traits(row["education_point_traits"])
         if "native_focus" in row:
             _native_focus(row["native_focus"])
+        if "court_owner_source" in row:
+            _court_owner_source(
+                row["court_owner_source"], child_id=row["character_id"],
+                native_revision=value["native_revision"],
+            )
         all_available = (all_available and row["values"]["status"] == "available"
                          and row["childhood_traits"]["status"] == "available")
     if (status == "available") is not all_available:

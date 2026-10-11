@@ -5,6 +5,7 @@
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include <algorithm>
+#include <sstream>
 
 namespace xar::ck3_11906 {
 namespace {
@@ -642,6 +643,13 @@ void AppendChildInputs(std::string &json,
         json += ']';
       }
       json += '}';
+    }
+    if (row.court_owner_source) {
+      std::ostringstream court_owner_json;
+      xar::ck3_12004::AppendCurrentChildCourtOwnerReadonly12004Json(
+          court_owner_json, *row.court_owner_source);
+      json += ",\"court_owner_source\":";
+      json += court_owner_json.str();
     }
     json += '}';
   }
