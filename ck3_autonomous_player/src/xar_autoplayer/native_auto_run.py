@@ -1942,7 +1942,9 @@ def native_auto_run(
                     private_active_scheme_sway_formal.get("followup")
                     if allow_private_active_scheme_sway_formal_trial is True else None)
                 if (isinstance(sway_followup, dict)
-                        and sway_followup.get("decision") == "return_to_opportunity_selection"):
+                        and sway_followup.get("decision") in {
+                            "return_to_opportunity_selection", "finish_selected_relation",
+                        }):
                     private_active_scheme_sway_returned_to_opportunities = True
                     current_attempt["sway_followup"] = copy.deepcopy(sway_followup)
                 else:

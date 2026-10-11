@@ -41,6 +41,7 @@ flowchart TD
   Q -->|matching active| A
   Q -->|other occupied scheme| D[Defer new start]
   Q -->|opinion above50| F[Finish this selected relation attempt]
+  F --> NP
   Q -->|empty, fresh positive named benefit, legal and opinion at most50| N[New UUID repeat of selected target]
   Q -->|original ended, empty and fresh known nonpositive named benefit| NP[Return to existing ordinary opportunity selection]
   Q -->|named material unread or stale| NM[Observe current named relation material]
@@ -184,3 +185,20 @@ This two-file source increment fixes the concrete ended/empty/known-zero loop.
 It does not change terminal or material provenance, consume records again, add
 native APIs or weaken any submission check. Tests, project imports, builds and
 game operations were not run; previous qualification does not cover this change.
+
+The existing `_same_target_followup` also emits `finish_selected_relation` when
+the original terminal has been independently observed, no matching Sway remains
+active, the slot is empty and actual current target opinion is above50. This
+branch precedes material evaluation; it does not require a new named gain or
+identify a native end cause. The runner previously released only
+`return_to_opportunity_selection`, so this already established finish decision
+still reached `break`. The minimal runner increment accepts both completed
+selection decisions in the same existing run-local release path: it preserves
+the observation/formal result, then reaches ordinary Service
+`auto_turn`/`auto_nonwar_turn` opportunity selection. Later turns do not reread
+or automatically retry that released fixed target. Active, occupied and unknown
+observations retain their existing branches. No formal threshold, native limit,
+causal fact, ledger or submission check changes. This source-ledger increment
+precedes the runner hunk and claims no executed ordinary selection, new private
+Sway application or qualification; no tests, imports, builds or game operations
+were run.
