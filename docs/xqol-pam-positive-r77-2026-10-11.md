@@ -94,3 +94,11 @@ R76/R77/R78另作只读metadata调查：root全文审读冻结9,420 B源码，�
 用户随后明确要求root按最新规则自主清理，不再询问其腾空间。经当前用途与精确路径复核，09:52:05Z实际完成15,936文件/2,910,665,920 B native allocation回收，221原进程wait0；09:52:38Z预约close实际exit0、children0、unspent0。闭场后fresh free 31,473,754,112 B，超过原默认场次门槛30,071,062,528 B；没有降低任何安全、系统或其他预约参数。
 
 R76/R77/R78缓存的旧保护候选经具体用途重审，确认生成shadercache非未消费Source19 prepared的输入；仅回收缓存，非缓存与代表问题证据未动。重复原件、旧截图与导出等各组资格、原件不可读状态、完整SHA和期限见[实际清理回执](maintenance/storage-retention-2026-10-11-release-capacity.md)。这不改写16:40调查时未取得资格/未删除的历史事实，也不把清理计作业务PASS。下一步仍按原默认2GiB原子准入优先RMTM core，QOL 2/6、RMTM 0/2及未发布状态不变，361不在范围。
+
+## 20:23 CST：后继PAM delayed-boundary输入已实际准备
+
+RMTM R14/a182已运行，因adapter重复就绪等待在D0前停止；三行最小修复及8项离线回归已推送 `c1b55f130e05bcfdae5d6694db969a398bcfc9be`，见[实际失败及修复](ck3-mod-upgrade-fast-validation.md#2026-10-11-rmtm-r14公共就绪等待的唯一所有者)。本场原OS0、keeper/allocator0、CAS8778与closure3成立，标准52预约已实际释放：7,760 B / SHA-256 `8f731558c2001cd7c1856c39b40f1228d87372d30d7a9f1df2a99c62a6e9bc63`；保守项目占用37,112,474,752 B。闭账生产器变量遮蔽及第一版storage adapter提前stdout造成的metadata不一致均保留原失败；只修局部输出后实际成功，不改业务或原51门禁。
+
+PAM新工作包只复用正式27文件与plain输入、生成未消费新state；原35步/12自然日/400秒资格及全部预算不变，不复制旧profile/cache、不重建正式产品。[实际准备READY](C:/workspace/ck3-upgrade-20261010/qol-pam-delayed-boundary-20261011-01/PUBLICPREPARE-READY.json) 7,942 B / `02d1af3de2594ff31434b2e6e49e78fd1b147721e741b661695e0d3f72e2738f`；prepared-case 29,973 B / `7e3709a2d01da1b0b181c3f87597dcb529e48e3fa797c1037159c72d5db2da9c`。真正公共prepare与prepared-plan各执行一次均0，elapsed1.049719秒；尚未分配或启动。
+
+[标准262闭账](C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/source19-pam-delayed-boundary-01-reservation-262-closed.json) 4,633 B / `ff9e58b427c71b3563bdd2dd67cb5cf27a35a04dfc8e785211d2ed6f8ab5a2e0`：真实后代写入0、native最终路径上界2,018,792 B，physical_peak_proven=false；完整4MiB后继只保守计入一次，usage37,116,669,056 B，不发回收或未来容量信用。next-scene consumer必须显式识别这个新262闭包，原52不会自动扫描它。小control artifacts在原other6MiB内另限128KiB，不降或扩大6MiB；新scene仍单独申请原默认2GiB。准备成功不授PAM业务PASS，两产品未发布状态保持。
