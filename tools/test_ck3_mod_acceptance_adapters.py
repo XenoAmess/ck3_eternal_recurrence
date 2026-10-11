@@ -522,4 +522,150 @@ class FailedLaunchPredecessor(unittest.TestCase):
         self.report['cleanup_ok']=True
         with self.assertRaisesRegex(ValueError,'no OS0 inference'):self.check()
 
+class FailedRuntimeClosureTests(unittest.TestCase):
+    """Actual public failure-admission functions, with no game/Steam/bus mutation."""
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name);self.previous=self.root/'synthetic-live';self.previous.mkdir()
+        self.state=self.root/'state';(self.state/'control').mkdir(parents=True)
+        self.keeper_root=self.root/'keeper';self.keeper_root.mkdir()
+        self.run_id='SYNTHETIC_ONLY-R0076';self.task='SYNTHETIC_ONLY-a179'
+        self.freeze={'run_id':self.run_id,'cell':'administrative_appointments','state_dir':str(self.state),
+            'source_root':str(self.root/'source'),'argv':['SYNTHETIC_ONLY-host'],'screen_task':self.task,
+            'runtime_manifest':{'path':str(self.root/'SYNTHETIC_ONLY-manifest'),'bytes':1,'sha256':'a'*64}}
+        self.report={'status':'RUNNING','phase':'hold','finished_at':None,'state_dir':str(self.state),
+            'agent_source_root':self.freeze['source_root'],'steps':[{'ok':True}],'readiness':{'ready':True}}
+        self.save(self.previous/'frozen-argv.json',self.freeze)
+        self.save(self.previous/'native-report.json',self.report)
+        (self.previous/'harness-stderr.log').write_text(
+            'PermissionError: [WinError 5] SYNTHETIC_ONLY replace-report-from-partial\n',encoding='utf-8')
+        self.launch={'harness_pid':71,'create_time':1.5,'argv':self.freeze['argv']}
+        self.save(self.previous/'launch.json',self.launch)
+        self.save(self.previous/'keeper-process.json',{'pid':72,'create_time':2.5})
+        (self.previous/'case-output').mkdir()
+        self.identity={'pid':73,'create_time':3.5,'retained_synchronize_query_handle_acquired':True}
+        self.game_exit={**self.identity,'signaled':True,'exit_code':1,'actual_retained_os0':False}
+        self.save(self.previous/'case-output/retained-current-process-identity.json',self.identity)
+        self.save(self.previous/'case-output/actual-retained-handle-os-exit.json',self.game_exit)
+        self.keeper={'task_id':self.task,'thread_exited':True,'last_sequence':11}
+        self.save(self.keeper_root/'report.json',self.keeper)
+        self.save(self.previous/'keeper-actual-parent-exit.json',{'run_id':self.run_id,
+            'keeper_actual_exit_code':0,'keeper_report':self.keeper})
+        runtime=self.save(self.root/'runtime.json',{'manifest':{**self.freeze['runtime_manifest'],
+            'path':(self.root/'SYNTHETIC_ONLY-manifest').as_posix()}})
+        prepared=self.save(self.root/'prepared.json',{'runtime_manifest':self.freeze['runtime_manifest'],
+            'startup':{'state_dir':str(self.state)}})
+        self.save(self.root/'context.json',{'run_id':self.run_id,'run_dir':str(self.previous)})
+        def waited(mode,code):
+            argv=[sys.executable,str(HERE/'ck3_mod_acceptance.py'),mode,'--runtime',runtime['path'],
+                  '--prepared-case',prepared['path']]
+            argv+=['--run-context',str(self.root/'context.json')] if mode=='run' else [
+                '--attempt','a179','--keeper-output',str(self.keeper_root)]
+            operation=self.save(self.root/(mode+'-operation.json'),{'argv':argv})
+            stdout=self.root/(mode+'.stdout');stdout.write_text('SYNTHETIC_ONLY',encoding='utf-8')
+            stderr=self.root/(mode+'.stderr');stderr.write_text('',encoding='utf-8')
+            return self.save(self.root/(mode+'-exit.json'),{'schema':'xar-root-exact-public-command-exit-v1',
+                'returncode':code,'operation':operation,'stdout':entry.pin(stdout),'stderr':entry.pin(stderr),
+                'business_or_release_pass_claimed':False})
+        self.release_path=self.root/'release.json'
+        task={'task_id':self.task,'state':'done','resources':[],'last_sequence':12}
+        event={'task_id':self.task,'state':'done','resources':[],'sequence':12}
+        task_pin=self.save(self.root/'actual-task.json',task)
+        raw=(json.dumps(event)+'\n').encode('utf-8');stream=self.root/'bus-events.jsonl';stream.write_bytes(raw)
+        self.save(self.release_path,{'schema':'xar-screen-release-canonical-reconstruction-v1',
+            'source_event_raw_utf8':raw.decode('utf-8'),'source_event_byte_offset':0,'source_event_bytes':len(raw),
+            'source_event_raw_sha256':hashlib.sha256(raw).hexdigest(),'source_event_stream':str(stream),
+            'actual_task_pin':task_pin,'task':task,'event':event,'release_confirmed_by_canonical_readback':True})
+        self.bundle={'schema':'xar-failed-report-writer-attempt-resource-closed-v1',
+            'status':'FAILED_ATTEMPT_RESOURCE_CLOSED','run_id':self.run_id,'case':self.freeze['cell'],
+            'attempt':'a179','next_previous_live':str(self.previous),'normal_close_qualified':False,
+            'business_pass':False,'release_pass':False,'original_evidence_not_rewritten':True,
+            'native_report_unfinished':True,'native_report':entry.pin(self.previous/'native-report.json'),
+            'harness_stderr':entry.pin(self.previous/'harness-stderr.log'),
+            'original_launch_pin':entry.pin(self.previous/'launch.json'),'prepared_case':prepared,'runtime':runtime,
+            'run_process_exit':waited('run',2),'allocator_actual_exit':waited('allocate',0),
+            'keeper_actual_exit':entry.pin(self.previous/'keeper-actual-parent-exit.json'),
+            'canonical_screen_release_pin':entry.pin(self.release_path)}
+        self.close_path=self.root/'failure-close.json';self.bus_packet={'tasks':[]};self.present={}
+        class Gone(Exception):pass
+        def process(pid):
+            if pid not in self.present:raise Gone()
+            return SimpleNamespace(create_time=lambda:self.present[pid])
+        self.psutil=SimpleNamespace(Process=process,NoSuchProcess=Gone,process_iter=lambda fields:[])
+
+    @staticmethod
+    def save(path,value):
+        path.write_text(json.dumps(value),encoding='utf-8');return entry.pin(path)
+
+    def check(self,correction=False):
+        self.save(self.close_path,self.bundle);path=self.close_path
+        if correction:
+            path=self.root/'correction.json'
+            self.save(path,{'schema':'xar-failed-report-writer-retained-exit-correction-v1','run_id':self.run_id,
+                'original_resource_close_pin':entry.pin(self.close_path),'host_exit_code':None,'host_wait_proven':False,
+                'normal_close_qualified':False,'business_pass':False,'release_pass':False,
+                'actual_retained_exit_pin':entry.pin(self.previous/'case-output/actual-retained-handle-os-exit.json'),
+                'retained_identity_pin':entry.pin(self.previous/'case-output/retained-current-process-identity.json'),
+                'frozen_argv_pin':entry.pin(self.previous/'frozen-argv.json'),
+                'original_launch_pin':entry.pin(self.previous/'launch.json'),'retained_process':self.game_exit,
+                'original_ck3_exit_code':1,'retained_actual_OS0':False,'host_pid':71,'host_create_time':1.5})
+        with patch.dict(sys.modules,{'psutil':self.psutil}):
+            return allocation.previous_runtime_failure_closure(self.previous,self.freeze,self.report,path,
+                self.keeper_root,self.release_path,self.bus_packet)
+
+    def test_actual_failure_functions_admit_only_resources_and_preserve_original_report(self):
+        original=(self.previous/'native-report.json').read_bytes()
+        result=self.check(correction=True);proof=result['failure_cleanup']
+        self.assertEqual(result['mode'],'previous-shared-failed-report-writer-runtime')
+        self.assertTrue(proof['administrative_resource_admission_only'])
+        self.assertEqual(proof['original_ck3_exit_code'],1)
+        self.assertIsNone(proof['original_host_exit_code'])
+        for key in ('original_host_wait_proven','actual_retained_os0','normal_close_qualified',
+                    'typed_normal_exit_proven','business_pass','release_pass'):
+            self.assertIs(proof[key],False)
+        self.assertEqual((self.previous/'native-report.json').read_bytes(),original)
+        self.assertEqual(result['actual_process_inventory']['blockers'],[])
+        with self.assertRaisesRegex(ValueError,'exact safe failed launch'):
+            allocation.previous_session_closure(self.previous,self.freeze,self.report)
+
+    def test_crossed_run_is_not_an_administrative_close(self):
+        self.bundle['run_id']='SYNTHETIC_ONLY-other'
+        with self.assertRaisesRegex(ValueError,'crossed run/case/live'):self.check()
+
+    def test_changed_original_report_pin_is_rejected(self):
+        (self.previous/'native-report.json').write_text('{}',encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'Pinned input changed'):self.check()
+
+    def test_host_same_pid_and_creation_time_still_alive_is_rejected(self):
+        self.present[71]=1.5
+        with self.assertRaisesRegex(ValueError,'original host identity still present'):self.check()
+
+    def test_pid_reuse_is_not_the_original_host_identity(self):
+        self.present[71]=99.5
+        self.assertEqual(self.check()['failure_cleanup']['original_host_exit_code'],None)
+
+    def test_retained_ck3_exit_zero_is_not_claimed_by_failure_route(self):
+        self.game_exit.update(exit_code=0,actual_retained_os0=True)
+        self.save(self.previous/'case-output/actual-retained-handle-os-exit.json',self.game_exit)
+        with self.assertRaisesRegex(ValueError,'retained CK3 nonzero exit proof differs'):self.check()
+
+    def test_actual_screen_owner_or_unresolved_control_still_blocks(self):
+        self.bus_packet={'tasks':[{'resources':['ck3-screen:acquired']}]}
+        with self.assertRaisesRegex(ValueError,'still has a screen owner'):self.check()
+        self.bus_packet={'tasks':[]}
+        (self.state/'control/unsafe-cleanup.json').write_text('{}',encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'controls remain'):self.check()
+
+    def test_canonical_reconstruction_must_match_actual_event_stream(self):
+        (self.root/'bus-events.jsonl').write_text('SYNTHETIC_ONLY-wrong',encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'actual canonical event stream'):self.check()
+
+    def test_failure_flag_cannot_be_used_as_first_machine_bootstrap(self):
+        selected=SimpleNamespace(prepared_path=Path('prepared'),context=None)
+        args=SimpleNamespace(first_machine_bootstrap=Path('bootstrap'),previous_failure_close=Path('failure'),
+            attempt='a179',keeper_output=Path('keeper'),previous_release=Path('release'),
+            previous_live=None,previous_keeper=None)
+        with self.assertRaisesRegex(ValueError,'mutually exclusive'):
+            allocation.allocate_and_keep(selected,args)
+
 if __name__=='__main__':unittest.main()

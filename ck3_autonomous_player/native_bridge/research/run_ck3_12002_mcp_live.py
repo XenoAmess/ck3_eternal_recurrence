@@ -3578,11 +3578,15 @@ def write_atomic_report(path: Path, report: dict[str, object]) -> None:
             os.fsync(stream.fileno())
             operation = "close-report-partial"
         operation = "replace-report-from-partial"
-        for attempt in range(20):
+        # R0076 exhausted the former 0.95-second Windows replace retry window.
+        # Its lock holder was not established; keep retries bounded at 20 seconds.
+        replace_attempts = 401
+        for attempt in range(replace_attempts):
             try:
                 os.replace(partial, path)
             except PermissionError as error:
-                if os.name != "nt" or getattr(error, "winerror", None) not in (5, 32, 33) or attempt == 19:
+                if (os.name != "nt" or getattr(error, "winerror", None) not in (5, 32, 33)
+                        or attempt == replace_attempts - 1):
                     raise
                 time.sleep(0.05)
             else:

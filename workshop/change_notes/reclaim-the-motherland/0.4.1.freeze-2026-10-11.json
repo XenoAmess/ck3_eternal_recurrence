@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-workshop-change-notes-draft-freeze-v1",
+  "path": "workshop/change_notes/reclaim-the-motherland/0.4.1.txt",
+  "bytes": 3008,
+  "characters": 2118,
+  "lines": 20,
+  "sha256": "d975091b7d8c372e6783413c5c0f3b313856087ff6437e37d67883b44c6cf98e",
+  "normalization": "UTF-8, LF, no trailing newline",
+  "target_item_id": "3798404599",
+  "version": "0.4.1",
+  "previous_public_version": "0.4.0",
+  "frozen_before_submit": true,
+  "publication_status": "DRAFT_NOT_PUBLISHED",
+  "verified_at_utc": "2026-10-11T05:33:32+00:00",
+  "target_game_version": "1.20.0.4",
+  "target_game_build": "25734779",
+  "target_game_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "previous_freeze": {
+    "path": "workshop/change_notes/reclaim-the-motherland/0.4.1.freeze.json",
+    "bytes": 1374,
+    "sha256": "eba282554b249c5413dbed0e1076ba0e885289c2ba0816eac35360c59ccd69eb",
+    "preserved_unchanged": true
+  },
+  "notes_bytes_changed": false,
+  "submitted": false,
+  "public_entry_id": null,
+  "public_full_text_verified": false,
+  "current_version_source_acceptance": "PENDING",
+  "post_publication_cache_acceptance": "Exact actual Steam-downloaded files against formal staging and proof CK3 mounted/loaded the cache; no business retest"
+}

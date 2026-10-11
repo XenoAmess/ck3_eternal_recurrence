@@ -18,6 +18,92 @@ import uuid
 HOST = Path(__file__).resolve().parents[1] / "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
 
 
+class AtomicReportReplaceTests(unittest.TestCase):
+    """Execute the production writer; R0076's specific lock holder is unproven."""
+
+    @classmethod
+    def setUpClass(cls):
+        tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
+        cls.definitions = [node for node in tree.body
+                           if getattr(node, "name", None) in {"annotate_write_error", "write_atomic_report"}]
+
+    def context(self, replace):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        path = Path(directory.name) / "report.json"
+        path.write_text('{"original": true}\n', encoding="utf-8")
+        value = SimpleNamespace(path=path, sleeps=[], report={"phase": "hold", "status": "RUNNING",
+            "steps": [{"id": "SYNTHETIC_ONLY", "ok": False, "finished_at": None}]})
+        namespace = {"Path": Path, "json": json, "uuid": uuid, "traceback": traceback,
+                     "os": SimpleNamespace(name="nt", fsync=os.fsync, replace=replace),
+                     "time": SimpleNamespace(sleep=value.sleeps.append)}
+        module = ast.fix_missing_locations(ast.Module(body=self.definitions, type_ignores=[]))
+        exec(compile(module, str(HOST), "exec"), namespace)
+        value.write = namespace["write_atomic_report"]
+        return value
+
+    @staticmethod
+    def denied(winerror=5):
+        error = PermissionError(13, "SYNTHETIC replace denial")
+        error.winerror = winerror
+        return error
+
+    def test_denial_longer_than_old_budget_then_success_installs_same_complete_partial(self):
+        calls = []
+        value = None
+
+        def replace(partial, target):
+            calls.append(partial)
+            self.assertEqual(json.loads(partial.read_text(encoding="utf-8")), value.report)
+            self.assertEqual(json.loads(target.read_text(encoding="utf-8")), {"original": True})
+            if len(calls) <= 200:
+                raise self.denied()
+            os.replace(partial, target)
+
+        value = self.context(replace)
+        value.write(value.path, value.report)
+        self.assertEqual(len(calls), 201)
+        self.assertEqual(len(set(calls)), 1)
+        self.assertAlmostEqual(sum(value.sleeps), 10.0)
+        self.assertEqual(json.loads(value.path.read_text(encoding="utf-8")), value.report)
+        self.assertEqual(list(value.path.parent.glob(".report.json.partial-*")), [])
+
+    def test_non_transient_denial_fails_immediately_and_preserves_original_and_partial(self):
+        error = self.denied(87)
+        replace = mock.Mock(side_effect=error)
+        value = self.context(replace)
+        with self.assertRaises(PermissionError) as raised:
+            value.write(value.path, value.report)
+        self.assertIs(raised.exception, error)
+        self.assertEqual(replace.call_count, 1)
+        self.assertEqual(value.sleeps, [])
+        self.check_failure_artifacts(value, error)
+
+    def test_persistent_transient_denial_exhausts_finite_budget_without_losing_error(self):
+        error = self.denied()
+        replace = mock.Mock(side_effect=error)
+        value = self.context(replace)
+        with self.assertRaises(PermissionError) as raised:
+            value.write(value.path, value.report)
+        self.assertIs(raised.exception, error)
+        self.assertEqual(replace.call_count, 401)
+        self.assertEqual(len(value.sleeps), 400)
+        self.assertAlmostEqual(sum(value.sleeps), 20.0)
+        self.check_failure_artifacts(value, error)
+
+    def check_failure_artifacts(self, value, error):
+        self.assertEqual(json.loads(value.path.read_text(encoding="utf-8")), {"original": True})
+        partials = list(value.path.parent.glob(".report.json.partial-*"))
+        self.assertEqual(len(partials), 1)
+        self.assertEqual(json.loads(partials[0].read_text(encoding="utf-8")), value.report)
+        context = error.ck3_write_error_context
+        self.assertEqual(context["operation"], "replace-report-from-partial")
+        self.assertEqual(context["report_path"], str(value.path))
+        self.assertEqual(context["partial_path"], str(partials[0]))
+        self.assertEqual(context["phase"], "hold")
+        self.assertEqual(context["last_step_id"], "SYNTHETIC_ONLY")
+
+
 class PollReportingTests(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
