@@ -1,0 +1,42 @@
+{
+  "at_utc": "2026-10-11T06:31:48.593828+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0058",
+  "screen_task": "common-acceptance-12004-20261010-a20",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "image": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\final-offline-001\\probe-1\\steam-moved.png",
+    "bytes": 907167,
+    "sha256": "157f1e662cb622483dc4138fdaf2b4f4eac5a212d9b4bcd4ffaae488696e41a2"
+  },
+  "frame": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\final-offline-001\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1279,
+    "sha256": "ca4d18772ed2200316652ae4fe4744bd85bfbce8168af612b877b2ac8d7ce90f"
+  },
+  "visual_observation": "ROOT directly reviewed this new1920x1080 final image: Steam bottom center 离线模式, taskbar14:26 on2026/10/11; actual reversible window movement freshness passed. Original CK3/host ended1; no normal GUI Quit claimed.",
+  "ROOT_reviewed_request": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\ROOT-FINAL-REVIEW-STOP.request.actual.json",
+    "bytes": 2556,
+    "sha256": "49a3c6c69a17416e260c19d601ef7cf6f5efe8ca935066ccccc88d3507802ba0"
+  },
+  "native_closed_metadata": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\native-report.json",
+    "bytes": 993691,
+    "sha256": "04c37d31fc7d789dc886b1a9fdac819a25e27982dfd0ae48d6fc6504e9722bd3"
+  },
+  "native_cleanup_projection": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\native-cleanup-projection.actual.json",
+    "bytes": 13118,
+    "sha256": "02e00137048ed0e370b6f146227b99c47301c5629e76fbc1061f8042f63d66fc"
+  },
+  "host_original_exit": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\host-original-process-exit.json",
+    "bytes": 247,
+    "sha256": "535e1b5fda32f21eeabf851b3cbb0b8caa35e7c117273d290d9b8507e76f2608"
+  },
+  "normal_close_result": null,
+  "normal_close_qualified": false,
+  "business_pass": false
+}

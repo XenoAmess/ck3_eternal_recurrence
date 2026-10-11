@@ -1,0 +1,11 @@
+--- original/admit_case9.py
++++ candidate/admit_case9.py
+@@ -97,7 +97,7 @@
+  need(g.regular(SEED/'manifest.json').st_size==cache['seed']['bytes'],'Seed manifest missing/size differs; public prepare performs original cache qualification')
+  case_ref,case_source=g.read(CASE9,'baf8c8067e8be6175d0c03cdcff54f447ce8bc997b9c91302d5dc64c943cc16b')
+  anchor_ref,anchor=g.read(CASE9_ANCHOR,'80ddcc913246e1cb8557c884e3bc676c208170acf49aadc9f0e42b3ce139d570')
+- need(case_source['schema']=='lyd.i4.case9.public-source-only.v1' and case_source['existing_parent_index']==anchor_ref and anchor['inherited_refs']['shader_cache_seed']==cache['seed'] and anchor['inherited_refs']['saved_campaign']['sha256']=='1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d' and anchor['inherited_refs']['saved_campaign']['bytes']==91669783,'CASE9 original0240/R54 source contract differs')
++ need(case_source['schema']=='lyd.i4.case9.public-source-only.v1' and dict(case_source['existing_parent_index'],path=str(Path(case_source['existing_parent_index']['path']).absolute()))==anchor_ref and anchor['inherited_refs']['shader_cache_seed']==cache['seed'] and anchor['inherited_refs']['saved_campaign']['sha256']=='1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d' and anchor['inherited_refs']['saved_campaign']['bytes']==91669783,'CASE9 original0240/R54 source contract differs')
+  policy=g.checked(prior['policy']);machine=g.checked(prior['machine_profile'])
+  need(policy['policy_version']==machine['policy_version']=='1.0.0' and socket.gethostname()==prior['machine_id']==machine['machine_id']=='BF-202609141645' and prior['effective_project_quota_bytes']==ad16['effective_project_quota_bytes']==parent_ad['effective_project_quota_bytes']==QUOTA and prior['quota_override']==ad16['quota_override']==parent_ad['quota_override'] and prior['quota_override']['review_at_utc']==DEADLINE and prior['quota_override']['auto_renew'] is False,'Original machine/policy/quota/deadline differs')
+  helper,helper_ref=vg.inventory_helper(g,prior);lock_path=Path(prior['actual_volume_lock'])

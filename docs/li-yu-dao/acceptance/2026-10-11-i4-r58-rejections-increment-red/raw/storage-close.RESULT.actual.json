@@ -1,0 +1,28 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\root-case9-close-scoped-successor-20261011-001.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case9-storage-reviewed-20261011-015-002\\CLOSE.ROOT.actual.json",
+    "--sha256",
+    "124c9374b49c3784b10f2662296ac237b46222a6d6d0baf48bd05a568e37eb29"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T06:34:00.610524+00:00",
+  "finished_at_utc": "2026-10-11T06:34:01.846211+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case9-close-command-20261011-001\\stdout.log",
+    "bytes": 379,
+    "sha256": "6e1620cbd90e509497c631736caa35627a7419c0b795d71a9a715bbe6941338c"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-case9-close-command-20261011-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

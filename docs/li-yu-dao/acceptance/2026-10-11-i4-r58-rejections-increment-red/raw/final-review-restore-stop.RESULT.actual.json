@@ -1,0 +1,29 @@
+{
+  "schema": "ck3-recorded-actual-command-v1",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\case9-final-close-helper-sourceonly-20261011-001\\final_review_restore_stop.py",
+    "--request",
+    "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\ROOT-FINAL-REVIEW-STOP.request.actual.json",
+    "--sha256",
+    "49a3c6c69a17416e260c19d601ef7cf6f5efe8ca935066ccccc88d3507802ba0",
+    "--direct-reviewed"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-11T06:31:47.402180+00:00",
+  "finished_at_utc": "2026-10-11T06:31:49.519425+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\final-review-restore-stop-command-001\\stdout.log",
+    "bytes": 1218,
+    "sha256": "dea8e9866486228f92e0a2e74ce4abf0551ce3d44e271d3fa89f047e511d5787"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0058\\final-review-restore-stop-command-001\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
