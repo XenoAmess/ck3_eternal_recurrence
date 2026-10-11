@@ -132,8 +132,8 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
   }
 
   // Actual4 28B1690 valid enum arm: DWORD[Character+D8+enum*4].
-  // Named martial parent 2C0B250 reads cached DWORD[Character+DC].
-  // This excludes its modifier19B term and is not total martial.
+  // Martial enum1 is the current total-skill cache, DWORD[Character+DC].
+  // Commander base quality 2C0B250 separately adds modifier19B to this cache.
   constexpr std::array<std::size_t, 5> offsets{0xD8, 0xDC, 0xE0, 0xE4, 0xE8};
   std::array<RequestGuardianSkillValue12004 *, 5> fields{
       &out.diplomacy, &out.martial, &out.stewardship, &out.intrigue,

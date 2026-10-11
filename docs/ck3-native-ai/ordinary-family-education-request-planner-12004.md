@@ -48,6 +48,8 @@ Options continue to retain every ordered row, duplicate full flag and raw bank b
 
 ## DEFAULT rejection and the explicit empty-key fallback
 
+2026-10-12 source correction: the earlier martial-unqualified statement above predates B11-19. The current profile includes signed current total-martial cache at Character+DC, qualified through actual4 28B1690/enum1; the independently bound commander base-quality score and its modifier19B term are separate. See the dated correction in [the skill source topic](selected-education-request-guardian-skills-12004.md). Values, ranking and unavailable joins retain their existing behavior; the actual .4 script-expression getter, effect-selected educator and complete education result remain unproved.
+
 The caller previously discarded an available observed child/guardian pair on
 DEFAULT `can_send=false`. That actual default query, candidate and raw profile
 are preserved; the false result does not determine a same-pair explicit `[]`
