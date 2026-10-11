@@ -5,14 +5,14 @@
 当前持久基线 **6077/H10120/raw53290176**，原罗贝尔29829、自然继承0。
 R94冷恢复13/13通过并新增保存1天；完整SDK79热重开后，普通战争结算查询的快照读取发生实际RED。
 SDK正常退出0；Game正常关闭RED后精确受管回收1；keeper退出0、CAS释放。
-6077完整12流仍保留、冻结待执行，上一完整恢复包仍为6076。Native79已构建并完成canonical；
-Native80诊断已构建并完成canonical；完整SDK80原地升级及6077完整冻结正并行进行，尚无新的live修复信用。
+6077完整12流及全Driver已冻结，SDK80完整源码452已原地升级完成，Native80已构建并完成canonical；
+R95完整冷恢复已获施工授权，尚无新的live修复信用。
 G2 **5/8**、NW2 **2/4**，M4已核验原窗口材料 **2/3**，M6部分完成、M7尚未完成。
 
-下一步冻结6077，使用R95普通规划返回实际失败读取字段，修复后完成剩余五天逐日SAVE；
+下一步完成R95冷恢复，使用普通规划返回实际失败读取字段，修复后完成剩余五天逐日SAVE；
 原M4封臣/派系干预与M6密谋终态沿既有优先级继续。建设完工收益不是M4附加条件。
-当前上一完整恢复入口为
-[6076完整恢复包](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native77-r0093/r0093-saved6076-freeze/RECOVERY-INPUT-PACKET.json)。
+当前完整恢复入口为
+[6077完整恢复包](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native78-r0094/r0094-saved6077-freeze/RECOVERY-INPUT-PACKET.json)。
 真实状态与失败回链见[当天日报](daily/2026-10-11.md)及[G2要求账本](g2-requirements-v1.json)。
 
 

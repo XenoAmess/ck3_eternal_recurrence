@@ -3609,3 +3609,13 @@ The raw 530/531 responses remain under
 `managed/operator/after-load-complete01/gameplay-responses/`; the 531 response
 is `73,185B` and was not rehashed for this source note. See the Oct11 daily
 report for the actual runtime receipts and later normal outcome.
+
+
+### Complete recovery packet: bootstrap owner versus reader directory (R95 actual)
+
+R95 actual prepare failed at2026-10-11T00:14:33.938178Z before fullcopy because
+prior_operator_packet named reader after-load-complete01. The existing prepare
+reads ROOT-OPERATOR-BOOTSTRAP.json from that directory; its owner is the original
+managed/operator directory. Bind prior_operator_packet to that bootstrap owner
+and preserve the reader directory as a separate evidence reference. This is a
+packet-pointer correction; all12 frozen payloads and the original RED remain.
