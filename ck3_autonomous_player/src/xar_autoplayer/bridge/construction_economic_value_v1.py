@@ -34,8 +34,8 @@ installed content depot 1158311, manifest 5078208590259867811, also containing
 game/common/buildings. This is retained content-depot evidence, not a new local
 file hash or a new review of the original 1.19.0.6 / .2 table. Actual .4 native
 cost, legality and slot operands have separate finite executable source proof.
-The .4 farm-estate and tradeport targets through tier eight use the exact
-excellent/normal tax declarations and aliases in the same script-values file.
+The explicit .4 economic upgrade targets through tier eight use the exact
+excellent/normal/poor tax declarations and aliases in the same script-values file.
 Their unconditional income also supplies the existing-slot comparison; it is
 not observed effective tax, conditional income, completion or realised ROI.
 """
@@ -71,7 +71,7 @@ _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003 = {
 
 # Explicit actual .4 upgrade targets and same-key existing-slot values.
 # Preserve the older-build dictionaries; these values close the declared
-# excellent/normal aliases individually and do not extrapolate an income curve.
+# excellent/normal/poor aliases individually; no extrapolated income curve.
 _AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004 = {
     "farm_estates_02": 115,
     "farm_estates_03": 160,
@@ -87,6 +87,34 @@ _AUTHOR_UPGRADE_MONTHLY_INCOME_HUNDREDTHS_12004 = {
     "common_tradeport_06": 135,
     "common_tradeport_07": 155,
     "common_tradeport_08": 175,
+    "pastures_02": 55,
+    "pastures_03": 75,
+    "pastures_04": 95,
+    "pastures_05": 115,
+    "pastures_06": 135,
+    "pastures_07": 155,
+    "pastures_08": 175,
+    "orchards_02": 55,
+    "orchards_03": 75,
+    "orchards_04": 95,
+    "orchards_05": 115,
+    "orchards_06": 135,
+    "orchards_07": 155,
+    "orchards_08": 175,
+    "hunting_grounds_02": 40,
+    "hunting_grounds_03": 55,
+    "hunting_grounds_04": 70,
+    "hunting_grounds_05": 85,
+    "hunting_grounds_06": 100,
+    "hunting_grounds_07": 115,
+    "hunting_grounds_08": 130,
+    "plantations_02": 40,
+    "plantations_03": 55,
+    "plantations_04": 70,
+    "plantations_05": 85,
+    "plantations_06": 100,
+    "plantations_07": 115,
+    "plantations_08": 130,
 }
 
 

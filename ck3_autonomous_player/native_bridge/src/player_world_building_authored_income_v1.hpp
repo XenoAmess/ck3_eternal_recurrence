@@ -54,9 +54,9 @@ inline constexpr std::array<std::pair<std::string_view, int>, 5>
   return std::nullopt;
 }
 
-// Exact .4 unconditional province income for the two economic upgrade chains.
-// Tier3..8 declarations match the frozen stock script-values source.
-inline constexpr std::array<std::pair<std::string_view, int>, 14>
+// Exact .4 unconditional province income for six economic upgrade chains.
+// Tier2..8 declarations match the frozen stock script-values source.
+inline constexpr std::array<std::pair<std::string_view, int>, 42>
     kAuthoredEconomicBuildingIncomeHundredths12004{{
         {"farm_estates_02", 115},
         {"farm_estates_03", 160},
@@ -72,6 +72,34 @@ inline constexpr std::array<std::pair<std::string_view, int>, 14>
         {"common_tradeport_06", 135},
         {"common_tradeport_07", 155},
         {"common_tradeport_08", 175},
+        {"pastures_02", 55},
+        {"pastures_03", 75},
+        {"pastures_04", 95},
+        {"pastures_05", 115},
+        {"pastures_06", 135},
+        {"pastures_07", 155},
+        {"pastures_08", 175},
+        {"orchards_02", 55},
+        {"orchards_03", 75},
+        {"orchards_04", 95},
+        {"orchards_05", 115},
+        {"orchards_06", 135},
+        {"orchards_07", 155},
+        {"orchards_08", 175},
+        {"hunting_grounds_02", 40},
+        {"hunting_grounds_03", 55},
+        {"hunting_grounds_04", 70},
+        {"hunting_grounds_05", 85},
+        {"hunting_grounds_06", 100},
+        {"hunting_grounds_07", 115},
+        {"hunting_grounds_08", 130},
+        {"plantations_02", 40},
+        {"plantations_03", 55},
+        {"plantations_04", 70},
+        {"plantations_05", 85},
+        {"plantations_06", 100},
+        {"plantations_07", 115},
+        {"plantations_08", 130},
     }};
 
 [[nodiscard]] inline std::optional<int> AuthoredExistingIncomeHundredths12004(
