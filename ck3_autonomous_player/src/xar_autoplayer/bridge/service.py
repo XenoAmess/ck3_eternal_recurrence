@@ -2261,6 +2261,9 @@ class GameplayBridgeService:
             derive_family_education_needs_12004,
             project_family_education_request_candidate_12004,
         )
+        from ..family_education_request_preference_12004 import (
+            order_family_education_request_candidates_12004,
+        )
         needs = derive_family_education_needs_12004(inputs)
         planned = {**planned, "plan": {**plan, "family_education_inputs": inputs,
                                       "family_education_needs": needs}}
@@ -2311,6 +2314,16 @@ class GameplayBridgeService:
             intent = {"interaction_key": "educate_child_interaction", "recipient_id": child_id,
                       "child_full_id": child_id, "guardian_full_id": guardian_id,
                       "requested_option_keys": requested_keys}
+            observation["default_request_intent"] = intent
+
+        preference = order_family_education_request_candidates_12004(observations)
+        for observation_index in preference["ordered_observation_indices"]:
+            observation = observations[observation_index]
+            child_needs = observation["needs"]
+            intent = observation["default_request_intent"]
+            child_id = intent["child_full_id"]
+            guardian_id = intent["guardian_full_id"]
+            requested_keys = intent["requested_option_keys"]
             preflight = self.query_character_interaction_ordinary_v1(
                 intent["interaction_key"], intent["recipient_id"],
                 expected_revision=int(planned["revision"]),
@@ -2338,11 +2351,13 @@ class GameplayBridgeService:
                 "family_education_inputs": inputs,
                 "family_education_observations": observations,
                 "family_education_request": intent,
-                "reason": "submit the observed native-ready ward and guardian education intent",
+                "family_education_request_preference": preference,
+                "reason": "submit the preferred native-ready ward and guardian education intent",
             }}
         return {**planned, "plan": {**plan,
             "family_education_inputs": inputs,
             "family_education_observations": observations,
+            "family_education_request_preference": preference,
         }}
 
     def _plan_private_family_wartime_v1(

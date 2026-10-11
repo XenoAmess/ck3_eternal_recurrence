@@ -13,7 +13,10 @@ flowchart TD
     D --> F[54 guarded request guardian raw skills]
     F --> G[50 strict optional leaf normalization]
     E --> H[Complete child, guardian and canonical option intent]
-    H --> I[Existing selected-request ordinary preflight]
+    H --> P[Source-informed request preference over finite observed pairs]
+    B --> P
+    G --> P
+    P --> I[Existing selected-request ordinary preflight]
     I --> J[50 retain final candidate and actual-focus raw skill observations]
     B --> J
     I --> K[Existing prepare education payload review]
@@ -23,6 +26,14 @@ flowchart TD
 ```
 
 `Service._plan_private_family_education_v1` derives needs once and traverses their existing living-child order. The plan retains known-empty, partial and unknown inputs even when no child query is needed. Each queried child observation contains its needs, complete default candidate and default query. The selected request uses the candidate's generation-preserved child and guardian IDs, followed by the existing explicit pair and option preflight. Its observation also retains the final candidate and final raw skill projection.
+
+The finite default queries are collected before the selected-request preflights. `family_education_request_preference_12004.py` gives their complete pair/key intents an explicit request preference using `(2 * corresponding focus skill + learning) / 5`. The weights reuse the retained stock education skill component described in [the source contract](guardian-education-choice-source-12004.md). The named focus operand is chosen from the needs row's current education focus key and the identity-bound query profile's raw named skill. This preference preserves the family focus frame and guardian query frame separately and permits their revisions to differ. It does not change the existing stricter same-frame focus observation projection. A profile must match the candidate child full ID, guardian full ID and its own query revision before its values influence the preference.
+
+Only candidates with identical available component sets are compared by descending known weighted numerator. Different availability sets retain their original occurrence slots. Unknown focus, martial or learning stays unknown; no operand becomes zero and no candidate is removed for an unavailable skill. Ties use original occurrence, child full ID, guardian full ID and observation index. The planner records the component values, both source frames, complete or partial score, and actual attempt order. It then uses the original explicit pair and canonical keys for each preflight in that order. Native Ready, CanSend and the existing materializer review still determine the selected step.
+
+Authored before/after example, with no execution: the first child has diplomacy focus and the observed request guardian has diplomacy 6 and learning 10, giving numerator 22. The second child has stewardship focus and the same observed request guardian has stewardship 16 and learning 10, giving numerator 42. Previously the first ready request was attempted first. The new complete-component preference tries the second request first; if its native preflight rejects it, the first remains available for an attempt. This example describes the authored selection rule and supplies no runtime result.
+
+This is an explicit source-informed request policy. Full native AI willingness clauses are not retained, and the stock effect's selected educator is not observed by the request guardian profile. The culture branch can reset the effect component to 10; other traits and modifiers are not supplied here. The preference therefore records no AI replay, educator assignment or education outcome prediction.
 
 Focus management states distinguish known absence, a present education focus, another present focus and an unavailable focus. These states describe observed focus management. They do not establish HasGuardian, an assigned guardian, an adult shortlist or the effect's saved educator scope. The present family transport supplies no same-command generic child relation materials; their observation remains unavailable instead of joining another capture's sidecar.
 

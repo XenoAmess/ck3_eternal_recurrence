@@ -55,6 +55,13 @@ Fresh same-value opinion reads refresh query provenance without rearming consump
 Actual returned event frames stay distinct from read frames; terminal cause remains
 unknown. The known nonpositive-material selection gap is the next policy increment.
 This five-production-file connection is SOURCE_ADOPTED_NOT_RUN, with no M6 credit.
+The family education caller now compares its finite observed request pairs using
+the retained stock focus/learning skill weights and tries preferred requests through
+the existing native selected-request preflight; see
+[education choice sources](../ck3-native-ai/guardian-education-choice-source-12004.md).
+Unknown components keep their availability and original slots. This source-informed
+preference is not native AI replay or an observed education outcome. The two production
+files remain SOURCE_ADOPTED_NOT_RUN; child-focus query/action/receipt is still in progress.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 
