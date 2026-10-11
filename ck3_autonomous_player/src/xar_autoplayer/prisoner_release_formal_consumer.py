@@ -227,10 +227,15 @@ def plan_release_formal(
                 _fresh_private_pump(driver, _frame(snapshot)[2])
                 fresh = driver.query_player_prisoner_collection_private_v1(**query)
                 choice, observation = _observed_choice(snapshot, fresh, war_reads)
-                if choice is not None and any(choice[key] != candidate[key] for key in (
+                if choice is None:
+                    continue
+                if any(choice[key] != candidate[key] for key in (
                         "source_ordinal", "prisoner_character_id",
                         "release_option_keys", "release_option_mask_bits")):
-                    raise ValueError("chosen release intent changed before submit")
+                    choice = None
+                    observation = {"status": "input_unavailable",
+                                   "reason": "chosen release intent changed before submit"}
+                    continue
                 break
     except (BridgeUnavailableError, KeyError, TypeError, ValueError) as error:
         return {**planned, "plan": {**plan, "prisoner_release_observation": {

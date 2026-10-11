@@ -187,3 +187,15 @@ A future genuine combat/siege capture in Robert's ordinary campaign triggers
 the complete current query/offer/baseline/release/fresh-custody/retained-material
 recipe. Current prisoners0 supplies no action or live credit, and this work
 does not delay existing clock or Byzantine goals.
+
+## B12-2 refreshed earlier offer continuation — 2026-10-12
+
+This source revision keeps B11-17's latest same-frame observation per ordinal and original reverse query order. Its previous stopping rule above remains a historical source fact. The further gap is the unconditional break after refreshing the first earlier actionable candidate: if that fresh preview is refused or unavailable, another independently observed ordinal is never refreshed.
+
+Continue to the next different observed ordinal when the fresh preview supplies no actionable choice. When it supplies a choice, retain the existing prisoner/full ID, ordinal, option keys and mask identity check; an inconsistent intent clears that choice, retains the existing input-unavailable diagnostic and continues. Only an actionable fresh choice matching the original intent ends the loop and reaches the existing typed submit path. A refused, unavailable or inconsistent ordinal never regains its historical terms.
+
+Every later candidate still uses the existing fresh pump and same-public-revision query for its original ordinal and option-key intent. Absent option keys versus an explicit empty list remain distinct. Existing current-frame/custody checks, native CanSend/acceptance, war retention and positive-ransom priority remain unchanged. Query or observation exceptions keep the original outer exception behavior; no new try block is added. Stop immediately at the first matching actionable refreshed offer so it remains the native mailbox's latest selected release. If none remains actionable, preserve the original baseline and existing observation path.
+
+The concrete source trigger is: latest ordinal2 is non-actionable, earlier ordinal1 was actionable but its refresh is refused, and earlier ordinal0 has a separate actionable observation. The revised loop can refresh ordinal0 through the existing API. This is sequential selection of one existing offer, without new Native bindings, schemas, option ranking, thresholds or priorities.
+
+Readiness on source adoption is `SOURCE_ADOPTED_NOT_RUN`. The original FIRST results and B11-17 history above are unchanged and do not qualify this continuation. This increment ran no tests, application imports, builds, CK3/Steam/runtime/RPC/native calls or UI operations. It supplies no natural release, material benefit or M4/G2/M6/M7 live credit.
