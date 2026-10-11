@@ -30,6 +30,7 @@
 - `mod_change_holding_types/` — “地产类型转换（XenoAmess维护版）”；维护版 Workshop item id：**3812510834**；上游 **3337428403** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py --release-localization` 生成的 17 文件 staging。
 - `mod_superman_qiang/` — “超人强：越超人越强”原创独立版；Workshop item id：**3812991990**；无上游产品；正式发布只使用其 `tools/build_release.py` 生成的 22 文件 staging。测试方案、实机和发布证据在该模组 `docs/`，永久 changelog 在 `docs/release-changelogs/superman-qiang/`；remote_file_id 仅保留用户目录外层 `.mod`。
 - `mod_superman_qiang/` — 原创独立版“超人强：越超人越强”；Workshop item ID 待实际首次发布；规则、验收及发布记录在其 `docs/`。正式上传只用其 `tools/build_release.py` 生成的 22 文件 staging，角色经验与六项净属性修正由变量保存，生成文件只改生成器再运行。
+- `mod_li_yu_dao/` — “礼与道：儒家礼仪与学统 / Rites and the Way”；Workshop item ID：**3817934804**。0.1.0 Beta 为首次公开试玩基线，一期仍未完整验收。正式上传只用其 `tools/build_release.py` 生成的 71 文件 staging；说明见 `workshop/li_yu_dao_description.bbcode`，永久发布记录见 `docs/release-changelogs/li-yu-dao/`，`remote_file_id` 仅保留用户目录外层 `.mod`。
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `coat_of_arms_editer_of_ck3/` — 独立 Vue 3 家徽编辑器；正式站点由 GitHub Pages Actions 构建，禁止把 CK3、MCP 或 Java 后端变成线上运行依赖

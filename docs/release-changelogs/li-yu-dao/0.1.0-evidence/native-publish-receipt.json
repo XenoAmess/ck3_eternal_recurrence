@@ -1,0 +1,22 @@
+{
+  "app_id": 1158310,
+  "create_result": 1,
+  "created_at": "2026-10-11T15:50:42.320576+00:00",
+  "item_id": "3817934804",
+  "legal_agreement_required": false,
+  "operation": "create",
+  "operation_id": "li-yu-dao-0.1.0-beta-initial-20261011",
+  "payload_sha256": "f7aba138ccbdf1830d24e412d1d4743bd876813553b43d3aaaadf765de0a75f5",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-11T15:50:55.134936+00:00",
+  "tags": [
+    "Religion",
+    "Decisions",
+    "1.20 'Crozier'"
+  ],
+  "tags_only": false,
+  "update_scope": "content_and_metadata",
+  "updated_at": "2026-10-11T15:50:55.134966+00:00"
+}

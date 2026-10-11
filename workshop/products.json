@@ -111,11 +111,11 @@
     {
       "key": "li-yu-dao",
       "directory": "mod_li_yu_dao",
-      "workshop_item_id": null,
+      "workshop_item_id": "3817934804",
       "forbidden_upstream_ids": [],
       "builder": "mod_li_yu_dao/tools/build_release.py",
       "release_flags": ["--output", "{new-output}"],
-      "publication": "development-only; no Workshop target"
+      "publication": "0.1.0 Beta; initial public Workshop baseline"
     }
   ]
 }

@@ -1,0 +1,81 @@
+{
+  "status": "ANONYMOUS_PUBLIC_TAGS_VERIFIED_CORRECTED_HREF",
+  "verified": true,
+  "source_api": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-beta-release-20261011-001\\public-verification-002\\public_item_api_raw.json",
+    "bytes": 3368,
+    "sha256": "e6d1e042e8f1d0ad45ba1af360e2837cc0af3c05f90ac5c7bc464cdead70b6d9"
+  },
+  "source_html": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-beta-release-20261011-001\\public-tags-002\\public-item.html",
+    "bytes": 59011,
+    "sha256": "06671cc8c2d9c75f97006e6bcc403fe925a22dcf9e730745790dc5e65095aae1"
+  },
+  "http_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-beta-release-20261011-001\\public-tags-002\\HTTP.actual.json",
+    "bytes": 7954,
+    "sha256": "7a5c4d24710a64ca81b91c08d6f9d50ce29a3db4026c2cad7425160b662402f5"
+  },
+  "actual": {
+    "item_id": "3817934804",
+    "owner": "76561198273714027",
+    "creator_app_id": 1158310,
+    "consumer_app_id": 1158310,
+    "complete_tags": [
+      "Religion",
+      "Decisions",
+      "1.20 'Crozier'"
+    ],
+    "compatible_version_sidebar": {
+      "value": "1.20 'Crozier'",
+      "href": "https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27",
+      "host": "steamcommunity.com",
+      "path": "/workshop/browse/",
+      "query": {
+        "appid": [
+          "1158310"
+        ],
+        "browsesort": [
+          "toprated"
+        ],
+        "section": [
+          "readytouseitems"
+        ],
+        "requiredtags[]": [
+          "1.20 'Crozier'"
+        ]
+      },
+      "original_html_fragment": "<span class=\"workshopTagsTitle\">Compatible Version:&nbsp;</span><a href=\"https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27\">1.20 'Crozier'</a>",
+      "match_count": 1,
+      "raw_href_attribute": "https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27"
+    }
+  },
+  "checks": {
+    "api_result": true,
+    "item_id": true,
+    "creator_app_id": true,
+    "consumer_app_id": true,
+    "owner": true,
+    "complete_tags_exact_order": true,
+    "public_visibility": true,
+    "not_banned": true,
+    "main_page_complete_http200": true,
+    "compatible_sidebar_unique": true,
+    "compatible_value": true,
+    "requiredtags_link": true
+  },
+  "api_ref_reused_without_new_api_request": true,
+  "main_page_attempts_this_successor": 1,
+  "prior_failure_001_preserved": true,
+  "sdk_or_desktop_calls": 0,
+  "release_or_cache_business_pass_claimed": false,
+  "correction": {
+    "superseded": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-beta-release-20261011-001\\public-tags-002\\VERIFIED.actual.json",
+      "bytes": 2471,
+      "sha256": "6fef652d11f16e124725081d009d837471a7c4bfd79316fbffac5a25c064bdd5"
+    },
+    "reason": "Python html.unescape decoded the unescaped URL query &section as legacy &sect. Corrected derivative preserves raw href and decodes only semicolon-terminated entities in this actual attribute. Original HTTP/API/HTML remain exact and unchanged; no additional network request.",
+    "additional_network_requests": 0
+  }
+}

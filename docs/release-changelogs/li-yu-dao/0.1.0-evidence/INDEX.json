@@ -1,0 +1,62 @@
+{
+  "schema": "lyd-first-public-beta-evidence-v1",
+  "item_id": "3817934804",
+  "tag": "li-yu-dao-v0.1.0-beta.1",
+  "commit": "19f9947666fa9816c55524ecdc6cfc52a63b7ce7",
+  "files": [
+    {
+      "path": "native-publish-receipt.json",
+      "bytes": 675,
+      "sha256": "4fed0c2f076062a6852f29e76355dbd78ea293e13ad0cb795ceb8337fc9744df"
+    },
+    {
+      "path": "public-verification.json",
+      "bytes": 756,
+      "sha256": "7ce4a8dff26421f4fefa04cd4cc53d418f1231fac88f17be4854eadb9cad4dbc"
+    },
+    {
+      "path": "public-item-api.json",
+      "bytes": 3368,
+      "sha256": "e6d1e042e8f1d0ad45ba1af360e2837cc0af3c05f90ac5c7bc464cdead70b6d9"
+    },
+    {
+      "path": "NOTES.frozen.json",
+      "bytes": 1931,
+      "sha256": "aade3616723e7e903751757b926a5a5b856a544ae47681f192bd47ad80927053"
+    },
+    {
+      "path": "formal.manifest.json",
+      "bytes": 13206,
+      "sha256": "60838b6228e7e4f9940b47b2a101295aac90188e1a1f64d8836a1ece57d92caf"
+    },
+    {
+      "path": "native-download.json",
+      "bytes": 1210,
+      "sha256": "49b5935f7290d6e878eb7577082b4169bd42725cd4641fd28d81c0566ae8715e"
+    },
+    {
+      "path": "static-report.json",
+      "bytes": 9387,
+      "sha256": "b65a4a2625b29e4ebf54f5358f7850e707306d231479faea4c9a15107b89af9b"
+    },
+    {
+      "path": "public-tags.json",
+      "bytes": 3314,
+      "sha256": "7cebe3cf4231db5231174dc540e2c231a85c925890d447f905d4ff779f41c82a"
+    }
+  ],
+  "external_release_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-beta-release-20261011-001",
+  "final_offline_image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-beta-release-20261011-001\\screen-013.png",
+    "bytes": 848545,
+    "sha256": "13e7aa5ddbf97b197eb073a2935ae5f546042f0cb81b3859d79c8ca7279e202f"
+  },
+  "offline_direct_review": {
+    "reviewer": "ROOT",
+    "text": "离线模式",
+    "image_taken_at_utc": "2026-10-11T15:54:57.553194+00:00"
+  },
+  "cache_load_status": "PENDING",
+  "raw_retention_policy": "docs/storage-retention-policy.md; raw_evidence 30 days; active inputs require bounded protection",
+  "created_at_utc": "2026-10-11T16:00:06.538913+00:00"
+}

@@ -2542,7 +2542,7 @@
     },
     "li-yu-dao": {
       "directory": "mod_li_yu_dao",
-      "workshop_item_id": null,
+      "workshop_item_id": "3817934804",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/mod_li_yu_dao/tools/build_release.py",
       "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
@@ -2587,7 +2587,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3817934804"
           },
           "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
           "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
