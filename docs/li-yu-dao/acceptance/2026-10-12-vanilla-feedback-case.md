@@ -13,3 +13,5 @@
 首次实机冻结前调整：R0063 在正常退出点击后约 6 分钟才取得原始 host wait0。因此本 case 首次声明 hold 为 1800 秒、总 timeout 为 3000 秒，并在 ROOT checkpoint 保留 420 秒退出时间；不是给已运行会话续时。磁盘峰值仍为单场 512 MiB，不新增存档、native 构建或源树副本。
 
 R0064 的 400 秒准备窗口实际超时，且随后发现已有 native 构建未启用 Robert 选角。后继场在启动前将准备窗口声明为 900 秒；原场期限保持不动，必须先修复构建配置才可重新验收。实际失败、正常退出与语法修复见 [R0064 记录](2026-10-12-r64-feedback-start-red.md)。原“单场不构建”的范围不包括为解决这次真实配置故障另行准入的构建工作包。
+
+03:20 CST 后继配置增加原生只读 `ck3_query_player_religion_context_v1`、`ck3_query_player_religion_personal_parameters_v1` opt-in/required，以及既有 G3 `ck3_query_confucian_religious_title_v1` required。仅增加观测，个人信条选择和决议确认仍由 ROOT 操作原版界面。集成后的9项离线合同检查实际退出0；native新构建仍在执行，尚无这些口的新实机资格。context 的 faith/rite 与 personal 的已选信条键能帮助确认身份及选择，boolean parameters 不能替代实际数值修正、已知/允许目录或来源归因。

@@ -3127,7 +3127,14 @@
             "ck3_take_snapshot",
             "ck3_open_ingame_decisions_v1",
             "ck3_query_ingame_decision_item_v1",
-            "ck3_select_ingame_decision_item_v1"
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1",
+            "ck3_query_confucian_religious_title_v1"
+          ],
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1"
           ],
           "normal_close": {
             "owner": "shared entry/CaseClient",
