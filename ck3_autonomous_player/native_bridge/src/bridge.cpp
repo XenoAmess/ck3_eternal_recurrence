@@ -9736,6 +9736,67 @@ bool ReadCurrentFirstHeirConceptionMemoryV1(
       copied == bytes;
 }
 
+struct CurrentChildEducationCultureReadContext12004 {
+  const xar::ck3_12004::CoreBindings *core{};
+  const xar::ck3_12002::phase_culture::Bindings *culture{};
+};
+
+// Native loads/predicates stay under SEH, matching the existing interaction reader.
+bool ReadCurrentChildEducationCultureParameter12004(
+    void *opaque, std::uint32_t full_id,
+    xar::ck3_12002::phase_culture::CharacterCultureParameterObservation &output) noexcept {
+  output.available = false;
+  output.value.reset();
+  output.culture_full_id.reset();
+  output.unavailable_reason = "child_education_culture_not_observed";
+  if (opaque == nullptr) return false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    const auto *context = static_cast<const CurrentChildEducationCultureReadContext12004 *>(opaque);
+    if (context->core == nullptr || context->culture == nullptr ||
+        !context->core->enabled || !context->culture->enabled) {
+      output.unavailable_reason = "child_education_culture_bindings_unavailable";
+      return false;
+    }
+    void *character = xar::ck3_12004::ResolveCoreCharacter(
+        *context->core, std::bit_cast<std::int32_t>(full_id));
+    std::uintptr_t death_data = 0;
+    if (character == nullptr || !ReadCurrentFirstHeirConceptionMemoryV1(nullptr,
+        static_cast<const std::byte *>(character) + xar::ck3_12004::kCharacterDeathDataOffset,
+        &death_data, sizeof(death_data)) || death_data != 0) {
+      output.unavailable_reason = "child_education_target_identity_or_liveness_unavailable";
+      return false;
+    }
+    if (!xar::ck3_12002::phase_culture::ReadPhaseCharacterCultureParameter(
+        *context->culture, character, full_id, "better_ward_education", output)) {
+      output.available = false;
+      output.value.reset();
+      return false;
+    }
+    if (xar::ck3_12004::ResolveCoreCharacter(*context->core,
+        std::bit_cast<std::int32_t>(full_id)) != character ||
+        !ReadCurrentFirstHeirConceptionMemoryV1(nullptr,
+            static_cast<const std::byte *>(character) + xar::ck3_12004::kCharacterDeathDataOffset,
+            &death_data, sizeof(death_data)) || death_data != 0) {
+      output.available = false;
+      output.value.reset();
+      output.culture_full_id.reset();
+      output.unavailable_reason = "child_education_target_identity_or_liveness_changed";
+      return false;
+    }
+    return true;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output.available = false;
+    output.value.reset();
+    output.culture_full_id.reset();
+    output.unavailable_reason = "child_education_culture_native_exception";
+    return false;
+  }
+#endif
+}
+
 std::string CurrentFirstHeirRelationshipResultFrameV1(
     std::string_view request_id, std::uint64_t native_revision,
     std::int32_t heir_character_id,
@@ -9897,6 +9958,28 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
         }
       }
       (void)xar::bridge::ExecuteGuardianFactoryDiscoveryJobV1(&job, stamp);
+      if (job.frame_observed && query.observe_descendants12004 &&
+          query.read.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none &&
+          query.read.descendants && query.child_inputs12004 &&
+          job.native_revision == query.child_native_revision12004 &&
+          job.expected_snapshot == query.expected_snapshot &&
+          job.executable_sha256 == xar::ck3_12004::kExecutableSha256) {
+        try {
+          const auto phase = xar::ck3_12004::BindPhaseImage12004(
+              reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), job.executable_sha256);
+          CurrentChildEducationCultureReadContext12004 context{
+              &query.family12002.context.core, &phase.culture};
+          job.current_child_education_provider =
+              xar::bridge::ReadCurrentChildEducationProviderInputs12004(
+                  *query.read.descendants, *query.child_inputs12004,
+                  job.native_revision, before.date_raw, before.played_character_id,
+                  query.heir_character_id, job.request_id, &context,
+                  &ReadCurrentChildEducationCultureParameter12004);
+        } catch (...) {
+          // An optional owned copy failure does not fabricate an empty roster.
+          job.current_child_education_provider.reset();
+        }
+      }
     }
     xar::game::Snapshot after{};
     query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) &&
@@ -19674,6 +19757,9 @@ void RunConnectedSession(
                       query.guardian_factory_discovery12004) {
                     guardian_factory_discovery =
                         std::move(query.guardian_factory_discovery12004);
+                    // Reclaimed job is owned; the adapter borrow ends with query.
+                    guardian_factory_discovery->snapshot_context = nullptr;
+                    guardian_factory_discovery->read_snapshot = nullptr;
                     guardian_factory_export.job_reclaimed = true;
                     guardian_factory_export.job_executed = guardian_factory_discovery->executed;
                     guardian_factory_export.job_frame_observed = guardian_factory_discovery->frame_observed;

@@ -330,6 +330,12 @@ def run(args) -> int:
                 "episode_character_id": transitions[-1]["successor_character_id"],
                 "episode_run_id": transitions[-1]["episode_run_id"],
             } if transitions else current_episode),
+            "current_episode_evidence_source": (
+                "last_verified_transition_snapshot" if transitions
+                else "last_controller_adopted_snapshot"),
+            "live_episode_after_error": (
+                "unverified" if status == "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
+                else "not_applicable"),
             "original_sway_episode_observation_ended": not sway_episode_observer,
             "latest_successor_snapshot": (str(latest_successor_snapshot)
                                           if latest_successor_snapshot else None),

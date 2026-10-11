@@ -21,3 +21,13 @@ Python transport 保留原请求、原错误 frame 与提交前最后已知快�
 涉及 `native_bridge/src/bridge.cpp`、`death_succession_modal_private_transport.py`、`native_driver.py`、`mcp_server.py` 和 `native_auto_run.py`。Native Close 增量需要后继 Bridge producer 与 DLL 重链；Python 与原生须按实际构建版本分别登记。
 
 候选经过 15 项独立源码审阅及定向修订复核。Root 逐 hunk 核对唯一精确 preimage，保留源文件 CRLF/LF 后采用；没有用宽松 token 匹配或项目导入预演。回执：[源码采用](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-M7-EXACT-NORMALIZED-SOURCE-ADOPTION.json)。原 4 GiB 来源范围与 `2026-10-12T16:47:28.264315Z` 期限不续。
+
+
+## 2026-10-12：Root章节结果来源明确化
+
+普通循环结果的`current_episode`保持原last verified transition/controller adopted snapshot语义，新增明确来源字段；循环异常后`live_episode_after_error=unverified`，不以错误中的旧章节字段声称当前实机章节已验证。原outbox失败与pending请求保留，不解析错误结果来增加天数、继承次数或SAVE信用。源码采用回执为外置`ROOT-EPISODE-PROVENANCE-SOURCE-ADOPTION.json`；没有新增执行调用。
+
+
+## 2026-10-12：持盘失败的后续消费者保全
+
+Service在确切`executed`、successor `accepted/continued`且当次持盘诊断`failed`时，在Sway/Feast后续快照或查询之前原样返回outcome；既有MCP错误回包可保留完整`original_turn`。Runner在收到实际result的首个副本时冻结`original_result`，first-failure也保留它，避免后置只读异常先丢失已经应用的Continue事实。没有新请求、重发、额外持盘或信用；原章节验证和失败停止门禁保持。回执：[源码采用](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-M7-ORIGINAL-RESULT-SOURCE-ADOPTION.json)。当前SDK87仍未含此批新源。

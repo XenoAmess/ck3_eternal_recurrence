@@ -47,9 +47,30 @@ def _child_materials(child_id: int, source: dict[str, object] | None) -> dict[st
     }
 
 
+def _education_provider_inputs(
+    child_id: int, indices: list[int], source: dict[str, object],
+) -> dict[str, object]:
+    # This optional object was validated with the same original family command.
+    # Keep it separate from older child inputs and generic relation witnesses.
+    observation = None
+    if source["collection_available"]:
+        observation = next((row for row in source["rows"] if row["child_full_id"] == child_id), None)
+        if observation is None or observation["occurrence_indices"] != indices:
+            raise ValueError("same-query education provider child projection changed")
+    return {
+        "observed": True, "read_only": True, "status": source["status"],
+        "collection_available": source["collection_available"],
+        "observation": deepcopy(observation),
+        "unavailable_reason": source["unavailable_reason"],
+        "m6_inputs_complete": False, "guardian_role_equivalence_qualified": False,
+    }
+
+
 def derive_family_education_needs_12004(
     inputs: dict[str, object] | None, *,
     child_relation_materials: dict[str, object] | None = None,
+    child_education_provider_inputs: dict[str, object] | None = None,
+    child_education_provider_source: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Project observed focus states and missing reads without suppressing rows.
 
@@ -65,6 +86,11 @@ def derive_family_education_needs_12004(
         "living_child_classification_complete": False,
         "known_empty": None, "rows": [], "source_projection_only": True,
     }
+    if child_education_provider_inputs is not None:
+        if type(child_education_provider_source) is not dict:
+            raise ValueError("same-query education provider source proof unavailable")
+        result["query_owned_education_provider_inputs_v1"] = deepcopy(child_education_provider_inputs)
+        result["query_owned_education_provider_inputs_source_v1"] = deepcopy(child_education_provider_source)
     if inputs is None:
         return result
     result.update({key: deepcopy(inputs[key]) for key in (
@@ -92,6 +118,9 @@ def derive_family_education_needs_12004(
             "current_court_owner": deepcopy(decision["current_court_owner"]),
             "relation_materials": _child_materials(child["raw_character_id"], child_relation_materials),
         })
+        if child_education_provider_inputs is not None:
+            result["rows"][-1]["education_provider_inputs"] = _education_provider_inputs(
+                child["raw_character_id"], child["occurrence_indices"], child_education_provider_inputs)
     return result
 
 

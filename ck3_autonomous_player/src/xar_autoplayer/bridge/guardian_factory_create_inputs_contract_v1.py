@@ -7,6 +7,11 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from .current_child_education_provider_inputs_v1 import (
+    LEAF as CURRENT_CHILD_EDUCATION_PROVIDER,
+    validate_current_child_education_provider_inputs_v1,
+)
+
 LEAF = "factory_create_inputs_v1"
 DISCOVERY = "xar.ck3.guardian-factory-discovery.v1"
 EXACT_SHA = "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
@@ -58,7 +63,8 @@ def validate_guardian_factory_create_inputs_v1(
         raise ValueError("guardian discovery requires two fixed ordered keys")
     present = [LEAF in row for row in rows]
     if not any(present):
-        if CURRENT_RELATION in value or CURRENT_CHILD_MATERIALS in value:
+        if (CURRENT_RELATION in value or CURRENT_CHILD_MATERIALS in value
+                or value.get(CURRENT_CHILD_EDUCATION_PROVIDER) is not None):
             raise ValueError("current relation facts lack their same-query factory input version")
         return None
     if not all(present):
@@ -193,7 +199,17 @@ def validate_guardian_factory_create_inputs_v1(
             qualified=qualified, revision=revision, actor=actor,
             heir=native_heir, date=date,
         )
-    return deepcopy(value)
+    education_provider = None
+    if CURRENT_CHILD_EDUCATION_PROVIDER in value:
+        education_provider = validate_current_child_education_provider_inputs_v1(
+            value[CURRENT_CHILD_EDUCATION_PROVIDER], family_result=family_result,
+            qualified=qualified, request_id=request, revision=revision,
+            actor=actor, heir=native_heir, date=date,
+        )
+    owned = deepcopy(value)
+    if CURRENT_CHILD_EDUCATION_PROVIDER in value:
+        owned[CURRENT_CHILD_EDUCATION_PROVIDER] = education_provider
+    return owned
 
 
 CURRENT_RELATION = "current_family_relation_v1"

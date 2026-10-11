@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004_guardian_factory_metadata.hpp"
 #include "xar_bridge/ck3_12004_guardian_relation_observation.hpp"
 #include "xar_bridge/ck3_12004_current_child_relation_materials.hpp"
+#include "xar_bridge/current_child_education_provider_inputs_12004.hpp"
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -39,6 +40,7 @@ struct GuardianFactoryDiscoveryJobV1 {
   bool current_child_roster_bound{};
   std::vector<std::uint32_t> current_child_character_ids;
   std::optional<xar::ck3_12004::CurrentChildrenRelationMaterials12004V1> current_child_relation_materials;
+  std::optional<CurrentChildEducationProviderInputs12004> current_child_education_provider;
 };
 
 // The same executor is called by the production family callback and the fixture.
@@ -53,6 +55,7 @@ inline bool ExecuteGuardianFactoryDiscoveryJobV1(
   job.metadata.reset();
   job.current_family_relation.reset();
   job.current_child_relation_materials.reset();
+  job.current_child_education_provider.reset();
   job.unavailable_reason = "frame_changed";
   if (job.executable_sha256 != xar::ck3_12004::kExecutableSha256) {
     job.unavailable_reason = "exact_build_not_admitted";
@@ -87,6 +90,7 @@ inline bool ExecuteGuardianFactoryDiscoveryJobV1(
     job.metadata.reset();
     job.current_family_relation.reset();
     job.current_child_relation_materials.reset();
+    job.current_child_education_provider.reset();
     job.unavailable_reason = "discovery_exception";
     return false;
   }
@@ -392,6 +396,10 @@ inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
   output += "]";
   CurrentFamilyRelationJson(output, job, qualified);
   CurrentChildRelationMaterialsJson(output, job, qualified);
+  output += ",\"current_child_education_provider_inputs_v1\":";
+  if (qualified && job.current_child_education_provider)
+    output += SerializeCurrentChildEducationProviderInputs12004(*job.current_child_education_provider);
+  else output += "null";
   output += "}\n";
   return output;
 }

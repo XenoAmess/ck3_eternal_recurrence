@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12004_phase_character.hpp"
 #include "xar_bridge/ck3_12004_phase.hpp"
+#include "xar_bridge/ck3_12004_army_support.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
 
 #include <bit>
@@ -163,6 +164,35 @@ bool ReadEducationField(const void *base, std::size_t offset, T &value) noexcept
   if (address == 0 || offset > maximum - address ||
       sizeof(T) - 1 > maximum - (address + offset)) return false;
   return Read(base, offset, value);
+}
+
+// Read one admitted Character total-skill value through the existing actual4 binder.
+// This source is a native API observation, separate from education expression identity.
+bool ReadRequestGuardianTotalMartialCallback(std::uintptr_t base,
+    const void *character, std::uint32_t full_id, std::int32_t &value) noexcept {
+#if defined(_MSC_VER) && defined(_WIN32)
+  if (base == 0 || character == nullptr) return false;
+  const auto native = ck3_12004::BindCommanderImage12004(
+      base, ck3_12004::kExecutableSha256);
+  if (!native.enabled || !native.current_total_martial_observer_enabled ||
+      native.get_current_total_skill == nullptr) return false;
+  auto *target = const_cast<void *>(character);
+  std::uint32_t observed_id = UINT32_MAX;
+  bool alive = false;
+  if (!ReadEducationField(character, 0x18, observed_id) || observed_id != full_id ||
+      !Alive(target, alive) || !alive) return false;
+  std::int32_t sampled = 0;
+  if (!Call(native.get_current_total_skill, sampled, target, std::int32_t{1}))
+    return false;
+  alive = false;
+  if (!ReadEducationField(character, 0x18, observed_id) || observed_id != full_id ||
+      !Alive(target, alive) || !alive) return false;
+  value = sampled;
+  return true;
+#else
+  (void)base; (void)character; (void)full_id; (void)value;
+  return false;
+#endif
 }
 
 // Consumed by Prepare on its existing owned context after validate returns.
@@ -576,9 +606,20 @@ bool Prepare(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
                       completed, std::cref(phase.culture), character, full_id,
                       std::string_view{"better_ward_education"}, std::ref(field)) &&
                  completed;
-        }};
+        }, b.actual4 ? ReadRequestGuardianTotalMartialCallback : nullptr};
     out.request_guardian_skill_inputs = ck3_12004::ReadRequestGuardianSkillInputs12004(
         skill_access, roles[3], roles[2], r.expected_revision);
+    // Additional getter calls must keep the original final request roles stable.
+    // A failed bookend invalidates this optional observation alone.
+    auto &total = out.request_guardian_skill_inputs->total_martial_callback_v1;
+    if (total) {
+      std::array<std::optional<std::uint32_t>, 6> roles_after{};
+      if (!ReadEffectiveEducationRoles(storage, roles_after) || roles_after != roles) {
+        total->available = false;
+        total->value.reset();
+        total->unavailable_reason = "total_martial_callback_roles_changed";
+      }
+    }
   }
   out.actor_alive = actor_alive;
   out.recipient_alive = recipient_alive;

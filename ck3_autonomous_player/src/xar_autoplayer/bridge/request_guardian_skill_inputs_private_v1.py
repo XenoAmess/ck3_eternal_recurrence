@@ -32,7 +32,10 @@ def validate_request_guardian_skill_inputs_v1(
             or context["status"] != "available"):
         raise ValueError("request guardian skill profile requires an available .4 education context")
     if (not isinstance(profile, dict)
-            or set(profile) != _PROFILE_KEYS | ({"education_traits", "education_culture_parameters"} & set(profile))):
+            or set(profile) != _PROFILE_KEYS | ({
+                "education_traits", "education_culture_parameters",
+                "total_martial_callback_v1",
+            } & set(profile))):
         raise ValueError("request guardian skill profile is not closed")
     if (profile["schema"] != PROFILE_KEY
             or profile["role_source"] != "request_guardian_secondary_actor"):
@@ -77,6 +80,30 @@ def validate_request_guardian_skill_inputs_v1(
                 raise ValueError("available request guardian skill lacks a signed raw value")
         elif field["value"] is not None or not _reason(field["unavailable_reason"]):
             raise ValueError("unavailable request guardian skill is inconsistent")
+
+    if "total_martial_callback_v1" in profile:
+        total = profile["total_martial_callback_v1"]
+        keys = {"source", "target_character_id", "available", "value",
+                "unavailable_reason"}
+        if (not isinstance(total, dict) or set(total) != keys
+                or total["source"] != "native_character_total_skill_callback"
+                or type(total["available"]) is not bool):
+            raise ValueError("request guardian total martial callback is not closed")
+        target = total["target_character_id"]
+        if ((target is not None and (
+                type(target) is not int or not 0 <= target <= 2**32 - 2))
+                or type(target) is not type(profile["character_id"])
+                or target != profile["character_id"]):
+            raise ValueError("request guardian total martial target is mismatched")
+        if total["available"]:
+            if (binding != "resolved" or target is None
+                    or type(total["value"]) is not int
+                    or not -(2**31) <= total["value"] <= 2**31 - 1
+                    or total["unavailable_reason"] is not None):
+                raise ValueError("available request guardian total martial is malformed")
+        elif (total["value"] is not None
+                or not _reason(total["unavailable_reason"])):
+            raise ValueError("unavailable request guardian total martial is malformed")
 
     if "education_traits" in profile:
         traits = profile["education_traits"]

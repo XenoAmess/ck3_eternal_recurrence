@@ -1009,6 +1009,10 @@ def native_auto_run(
             ),
             "cleanup": None,
         }
+        if isinstance(attempt.get("original_result"), dict):
+            first_failure["original_result"] = copy.deepcopy(
+                attempt["original_result"]
+            )
         if isinstance(attempt.get("epidemic_recovery_pre"), dict):
             first_failure["epidemic_recovery_pre"] = copy.deepcopy(
                 attempt["epidemic_recovery_pre"]
@@ -2125,6 +2129,22 @@ def native_auto_run(
             current_attempt["plan"] = copy.deepcopy(plan)
             current_attempt["selected_step"] = step
             current_attempt["result"] = copy.deepcopy(outcome.get("result"))
+            persistence_result = current_attempt["result"]
+            persistence_diagnostic = (
+                persistence_result.get("driver_state_persistence_diagnostic")
+                if isinstance(persistence_result, dict) else None
+            )
+            if (
+                step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+                and isinstance(persistence_result, dict)
+                and persistence_result.get("accepted") is True
+                and persistence_result.get("status") == "continued"
+                and isinstance(persistence_diagnostic, dict)
+                and persistence_diagnostic.get("status") == "failed"
+            ):
+                current_attempt["original_result"] = copy.deepcopy(
+                    persistence_result
+                )
             turn_class = _turn_class(step, outcome_status, plan)
             retry = outcome.get("read_only_query_retry")
             if retry is not None:

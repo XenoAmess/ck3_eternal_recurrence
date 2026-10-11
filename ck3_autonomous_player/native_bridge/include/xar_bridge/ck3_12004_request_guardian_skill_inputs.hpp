@@ -10,8 +10,9 @@
 
 namespace xar::ck3_12004 {
 
-// Trusted same-query access. The ordinary caller wraps its existing guarded
-// full-generation Resolve and ReadEducationField; this leaf invokes no getter.
+// Trusted same-query access. The ordinary caller wraps guarded full-generation
+// Resolve and ReadEducationField. The optional total-martial callback uses an
+// independently guarded actual4 native API; no education script getter is asserted.
 struct RequestGuardianSkillAccess12004 {
   void *context = nullptr;
   void *(*resolve_character)(void *, std::uint32_t) noexcept = nullptr;
@@ -22,12 +23,22 @@ struct RequestGuardianSkillAccess12004 {
                      bool &) noexcept = nullptr;
   bool (*read_education_culture)(std::uintptr_t, const void *, std::uint32_t,
       ck3_12002::phase_culture::CharacterCultureParameterObservation &) noexcept = nullptr;
+  bool (*read_total_martial)(std::uintptr_t, const void *, std::uint32_t,
+                              std::int32_t &) noexcept = nullptr;
 };
 
 struct RequestGuardianSkillValue12004 {
   bool available = false;
   std::optional<std::int32_t> value;
   const char *unavailable_reason = "guardian_skill_not_observed";
+};
+
+// Independent native total-skill callback observation, owned by the same request.
+struct CharacterTotalMartialCallbackValue12004V1 {
+  std::optional<std::uint32_t> target_character_id;
+  bool available = false;
+  std::optional<std::int32_t> value;
+  const char *unavailable_reason = "total_martial_callback_not_observed";
 };
 
 inline constexpr std::array<const char *, 4> kRequestGuardianEducationTraitKeys12004{
@@ -49,6 +60,7 @@ struct RequestGuardianSkillInputs12004 {
   RequestGuardianSkillValue12004 stewardship{};
   RequestGuardianSkillValue12004 intrigue{};
   RequestGuardianSkillValue12004 learning{};
+  std::optional<CharacterTotalMartialCallbackValue12004V1> total_martial_callback_v1;
   std::optional<std::array<RequestGuardianTraitValue12004, 4>> education_traits;
   std::optional<ck3_12002::phase_culture::CharacterCultureParameterObservation>
       education_culture_parameters;
@@ -75,6 +87,12 @@ inline void Invalidate(RequestGuardianSkillInputs12004 &out,
     field->available = false;
     field->value.reset();
     field->unavailable_reason = reason;
+  }
+  if (out.total_martial_callback_v1) {
+    auto &field = *out.total_martial_callback_v1;
+    field.available = false;
+    field.value.reset();
+    field.unavailable_reason = reason;
   }
   if (out.education_traits) for (auto &field : *out.education_traits) {
     field.available = false;
@@ -105,6 +123,10 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
   out.child_character_id = final_child_full_id;
   out.character_id = final_secondary_actor_full_id;
   out.owning_native_revision = owning_native_revision;
+  if (access.read_total_martial != nullptr) {
+    out.total_martial_callback_v1.emplace();
+    out.total_martial_callback_v1->target_character_id = final_secondary_actor_full_id;
+  }
   if (access.read_trait != nullptr) out.education_traits.emplace();
   if (access.read_education_culture != nullptr)
     out.education_culture_parameters.emplace();
@@ -155,6 +177,23 @@ inline RequestGuardianSkillInputs12004 ReadRequestGuardianSkillInputs12004(
     } else {
       field.available = true;
       field.value = second; // Preserve signed raw DWORD, including zero.
+      field.unavailable_reason = nullptr;
+    }
+  }
+  if (out.total_martial_callback_v1) {
+    auto &field = *out.total_martial_callback_v1;
+    std::int32_t first_value = 0, second_value = 0;
+    const bool first_ok = access.read_total_martial(
+        access.trait_module_base, guardian, *final_secondary_actor_full_id, first_value);
+    const bool second_ok = access.read_total_martial(
+        access.trait_module_base, guardian, *final_secondary_actor_full_id, second_value);
+    if (!first_ok || !second_ok) {
+      field.unavailable_reason = "total_martial_callback_read_unavailable";
+    } else if (first_value != second_value) {
+      field.unavailable_reason = "total_martial_callback_value_changed";
+    } else {
+      field.available = true;
+      field.value = second_value; // Preserve signed raw integer, including zero.
       field.unavailable_reason = nullptr;
     }
   }
@@ -267,6 +306,20 @@ inline void WriteRequestGuardianSkillInputs12004(
         (*field.value ? "true" : "false") : "null");
     stream << ",\"unavailable_reason\":";
     text(field.unavailable_reason);
+    stream << '}';
+  }
+  if (value.total_martial_callback_v1) {
+    const auto &field = *value.total_martial_callback_v1;
+    stream << ",\"total_martial_callback_v1\":{"
+           << "\"source\":\"native_character_total_skill_callback\","
+           << "\"target_character_id\":";
+    id(field.target_character_id);
+    stream << ",\"available\":" << (field.available ? "true" : "false")
+           << ",\"value\":";
+    if (field.available && field.value.has_value()) stream << *field.value;
+    else stream << "null";
+    stream << ",\"unavailable_reason\":";
+    text(field.available ? nullptr : field.unavailable_reason);
     stream << '}';
   }
   stream << '}';

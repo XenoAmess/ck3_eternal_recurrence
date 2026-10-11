@@ -2287,7 +2287,9 @@ class GameplayBridgeService:
             order_family_education_request_candidates_12004,
         )
         needs = derive_family_education_needs_12004(
-            inputs, child_relation_materials=relationship.get("current_child_relation_materials_v1"))
+            inputs, child_relation_materials=relationship.get("current_child_relation_materials_v1"),
+            child_education_provider_inputs=relationship.get("current_child_education_provider_inputs_v1"),
+            child_education_provider_source=relationship.get("current_child_education_provider_inputs_source_v1"))
         planned = {**planned, "plan": {**plan, "family_education_inputs": inputs,
                                       "family_education_needs": needs}}
         plan = planned["plan"]
@@ -3444,7 +3446,26 @@ class GameplayBridgeService:
         return self._consume_feast_after_turn(self._consume_sway_after_turn(
             self._execute_planned_turn(self.plan_turn(), before_submit=before_submit)))
 
+    @staticmethod
+    def _natural_successor_persistence_failed(outcome: dict[str, object]) -> bool:
+        result = outcome.get("result")
+        diagnostic = (
+            result.get("driver_state_persistence_diagnostic")
+            if isinstance(result, dict) else None
+        )
+        return bool(
+            outcome.get("status") == "executed"
+            and isinstance(result, dict)
+            and result.get("step") == "continue-as-reconciled-successor"
+            and result.get("accepted") is True
+            and result.get("status") == "continued"
+            and isinstance(diagnostic, dict)
+            and diagnostic.get("status") == "failed"
+        )
+
     def _consume_feast_after_turn(self, outcome: dict[str, object]) -> dict[str, object]:
+        if self._natural_successor_persistence_failed(outcome):
+            return outcome
         state_dir = self._strategy_state_dir()
         if outcome.get("status") != "executed" or state_dir is None:
             return outcome
@@ -3468,6 +3489,8 @@ class GameplayBridgeService:
 
     def _consume_sway_after_turn(self, outcome: dict[str, object]) -> dict[str, object]:
         """Consume staged Sway observations on the ordinary managed turn path."""
+        if self._natural_successor_persistence_failed(outcome):
+            return outcome
         from ..sway_formal_consumer import consume_sway_following_turn
         from ..sway_lifecycle_consumer import has_pending_sway_following_turn
 

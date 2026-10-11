@@ -62,3 +62,18 @@ selection/action source. Generic material false alone cannot select a fallback.
 Root采用三Python文件的ordinary材料入口：已启用private family且有state root时，用一个独占临时目录向原family QueryNative提供sidecar路径；从该同请求完成的原生导出经既有严格validator取`current_child_relation_materials_v1`，交给现有education needs。没有额外query/RPC，也没有调用capture wrapper或保留每轮完整command-result副本。八项完成标志、必需nullable error键、request、暂停前后native revision/date/played/heir、PID/generation与所选子女顺序均沿原资格检查；available、unavailable、legacy absent分别保留。generic witness不能升为已任命educator。
 
 Python最多读4MiB+1并拒绝超限；这是读取上限，不是Native sidecar物理写入上限，实际运行仍受任务整体容量门禁。临时目录正常退出即回收；进程被终止留下的残件按通用策略复核，不宣称自动GC已部署。本次源码已审阅，未运行测试或实机；冻结SDK87/f9仍保留旧普通入口，本增量待后继SDK采用。M6仍partial。
+
+
+## 2026-10-12：教育材料与总军事值源码接线
+
+Root逐hunk采用Provider V4原生owned DTO和Wiring05 SDK：原成功family查询的同请求导出独立携带`current_child_education_provider_inputs_v1`，保留完整子女roster、重复出现位置、25项特质membership、目标文化参数`better_ward_education`的true/false/null与culture full ID。原before/after、回收、request、实际build、revision、date、played/heir门禁保持；8项完成标志与原可空error仍须通过。当前输入异常不能转成已知空名单；特质membership必须按catalog严格递增，拒绝乱序而不排序。
+
+SDK新pure validator精确校验17个顶层字段与13个行字段，在复制前限制该leaf为64KiB UTF-8 JSON；缺席或null仍为unknown。孤立非null叶不能被legacy早返吞掉。普通transport分别附加教育与generic材料，education needs只读投影两者的独立来源。没有新query、RPC、rank或readiness；实际导师、Rite教育键、education_type/progress仍为null，`m6_inputs_complete=false`与`guardian_role_equivalence_qualified=false`保持。
+
+正式教育脚本的`better_ward_education`检查位于`scope:educator`，不是由参数名称推断的child scope。当前Provider所读同名参数明确属于child文化，只保留该目标的事实，不能替代实际educator的文化输入；guardian相关字段继续null。Source06的15路复核尚未找到权威educator producer，新增外置文件0B。
+
+另采用`total_martial_callback_v1`：通过既有actual4 total-skill绑定读取请求secondary actor的总军事值，保留完整target身份、两次一致采样、原始有符号数值（包括0）、before/after alive及角色bookend。该5-key可选字段与原raw skill及教育表达式来源独立，不能据此更改原教育评分。三处源分别为request技能header、ordinary interaction实现与strict Python decoder。
+
+本批只有源码采用与独立静态审阅，没有运行测试、fixture、FIRST或教育业务重验。冻结SDK87/f9与Native86不含本批增量。后继native owner closure需按实际共享header枚举：Bridge323/492/493三项编译，保留Native86的324/Runtime504及其597成员archive，仅DLL重链；本条是源依赖结论，尚未执行后继构建。M6保持partial。
+
+采用回执：[Provider V4与SDK Wiring05](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-PROVIDER-V4-SDK-WIRING05-SOURCE-ADOPTION.json)、[Martial04](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/ROOT-MARTIAL04-SOURCE-ADOPTION.json)。来源仍受原4GiB范围和2026-10-12T16:47:28.264315Z复核期限约束，未续期。

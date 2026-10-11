@@ -71,10 +71,14 @@ def _attach_same_query_relation_materials(
         discovery, command_result=frame, snapshot=before, family_result=family)
     # Preserve legacy absence and explicit-unavailable contents unchanged.
     # Generic witnesses still do not qualify guardian-role equivalence.
-    if owned is None or _CHILD_MATERIALS not in owned:
+    if owned is None:
         return family
-    family[_CHILD_MATERIALS] = owned[_CHILD_MATERIALS]
-    family["current_child_relation_materials_source_v1"] = {
+    from .current_child_education_provider_inputs_v1 import (
+        LEAF as EDUCATION_PROVIDER, SOURCE_LEAF as EDUCATION_PROVIDER_SOURCE,
+    )
+    if EDUCATION_PROVIDER not in owned and _CHILD_MATERIALS not in owned:
+        return family
+    source = {
         "request_id": request_id, "binding_scope": "query_before_after",
         "bridge_pid": before_diagnostics["bridge_pid"],
         "connection_generation": before_diagnostics["connection_generation"],
@@ -84,7 +88,16 @@ def _attach_same_query_relation_materials(
         "sidecar_bytes": len(raw), "sidecar_sha256": hashlib.sha256(raw).hexdigest(),
         "same_request_export_completed": True,
     }
-    return family
+    # Each new optional attachment has an independently owned source proof.
+    # A null leaf retains unknown; it does not become an empty inventory.
+    attached = dict(family)
+    if EDUCATION_PROVIDER in owned:
+        attached[EDUCATION_PROVIDER] = owned[EDUCATION_PROVIDER]
+        attached[EDUCATION_PROVIDER_SOURCE] = dict(source)
+    if _CHILD_MATERIALS in owned:
+        attached[_CHILD_MATERIALS] = owned[_CHILD_MATERIALS]
+        attached["current_child_relation_materials_source_v1"] = dict(source)
+    return attached
 
 
 def _same_frame_campaign_root_result(
