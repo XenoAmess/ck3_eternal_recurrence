@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import fixture_engine_prepare as prep
+import reclaim_the_motherland_scope_witness as witness
 
 START = 'on_game_start_after_lobby = { on_actions = { rqa120_start } }\nrqa120_start = {\n    effect = {\n        debug_log = "RQA120: TEST BEGIN engine_startup"\n        set_global_variable = rqa120_stock_join_dispatch_armed\n        rqa120_try_dispatch_after_stock_join_effect = yes\n    }\n}\n'
 
@@ -166,7 +167,29 @@ CHECKPOINT
     return "namespace = rqa120\n\n" + event("rqa120.1", initialize) + "\n" + event("rqa120.2", tick)
 
 
-def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False) -> dict:
+def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None) -> dict:
+    if formal_product_dir is None:
+        raise ValueError("Scope-witness callback projection requires the selected formal product directory")
+    formal_event = formal_product_dir.resolve() / witness.CALLBACK_RELATIVE
+    fixture_source = repo / "tools/fixtures/reclaim_the_motherland_acceptance" / witness.FIXTURE_RELATIVE
+    projected_fixture, fixture_proof = witness.project(fixture_source.read_bytes(), "execute")
+    projected_event, callback_proof = witness.project(formal_event.read_bytes(), "callback")
+    scope_witness_proof = {
+        "schema": "rmtm-readonly-succession-scope-witness-projection-v1",
+        "projector": {"path": str(Path(witness.__file__).resolve()), "sha256": prep.digest(Path(witness.__file__))},
+        "scope_dump_count": 3, "temporary_scopes_and_logs_only": True,
+        "scope_dump_count_basis": "One original fixture execute and one original hidden rmtm.2001 callback; duplicates are not suppressed or credited",
+        "callback_observer_guard": "Existing fixture rqa_waiting_for_succession flag; original product call is not guarded",
+        "formal_staging_modified": False,
+        "effective_formal_file_override": witness.CALLBACK_RELATIVE,
+        "fixture_overlay_loaded_after_formal_product": True,
+        "projections": [
+            {"relative": witness.FIXTURE_RELATIVE, "source_path": str(fixture_source.resolve()), **fixture_proof},
+            {"relative": witness.CALLBACK_RELATIVE, "source_path": str(formal_event), **callback_proof},
+        ],
+        "current_build_scope_dump_format": "NOT_OBSERVED",
+        "runtime_status": "NOT_RUN", "business_pass": False,
+    }
     repo, output = prep.checked_output(repo, output)
     if not 10 <= duration <= 30:
         raise ValueError("compressed political-memory duration must be between 10 and 30 days")
@@ -176,6 +199,9 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
              source / "common/decision_group_types/rqa_decision_group_types.txt", source / "events/rqa_events.txt",
              *sorted((source / "localization").rglob("*.yml"))]
     prep.copy_files(source, output, files)
+    (output / witness.FIXTURE_RELATIVE).write_bytes(projected_fixture)
+    with (output / witness.CALLBACK_RELATIVE).open("xb") as stream:
+        stream.write(projected_event)
     prep.write_script(output, "common/script_values/rqa_values.txt",
                       f"# External acceptance-only timer compression: production remains 1825 days.\nrmtm_recent_independence_duration_days = {duration}\n")
     body, proof = prep.decision_effect(repo, "mod_reclaim_the_motherland", "common/decisions/rmtm_restoration_decisions.txt", "rmtm_claim_restoration_decision")
@@ -247,6 +273,7 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
     return prep.finish_receipt(repo, source, output, files, {
         "product":"mod_reclaim_the_motherland", "ui_checkpoints":ui_checkpoints, "threshold_ui":threshold_ui,
         "effective_law_contract":effective_law_contract,
+        "scope_witness_projection":scope_witness_proof,
         "core_marker_inventory":core_markers if threshold_ui else None,
         "threshold_UI_does_not_credit_core36":threshold_ui,
         "bookmark":"1066-09-15; begin as any human ruler except the Song emperor",
@@ -275,8 +302,9 @@ def main() -> None:
     parser.add_argument("--compressed-days", type=int, required=True)
     parser.add_argument("--game-dir", type=Path)
     parser.add_argument("--threshold-ui", action="store_true")
+    parser.add_argument("--formal-product-dir", type=Path, required=True)
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui)
+    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "runtime_status":"NOT_RUN", "ui_checkpoints":args.ui_checkpoints}))
 
 

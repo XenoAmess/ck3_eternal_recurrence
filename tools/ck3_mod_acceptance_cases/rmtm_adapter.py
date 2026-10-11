@@ -21,10 +21,14 @@ def prepare_case(context):
     arguments = [
         "--repo", repo, "--output", fixture, "--ui-checkpoints",
         "--compressed-days", str(days), "--game-dir", context["game_dir"],
+        "--formal-product-dir", context["case_inputs"]["product_dir"],
     ]
     if context["case"] == "threshold_ui":
         arguments.append("--threshold-ui")
     emitter = invoke_fixture_prepare(context, repo / "tools/prepare_reclaim_the_motherland_1_20_fixture.py", arguments)
+    fixture_receipt = fixture.with_suffix(".prepare.json")
+    scope_witness = {"receipt": pin(fixture_receipt), "projection": json.loads(
+        fixture_receipt.read_text(encoding="utf-8-sig"))["scope_witness_projection"]}
     prepared = materialize_fixture_profile(context, fixture, context["case_inputs"]["product_dir"],
                                            context["case_inputs"]["plain_configuration"])
     return {"startup": {"mode": "fixture", "state_dir": prepared["state_dir"],
@@ -32,6 +36,7 @@ def prepare_case(context):
                         "frontend_rules_plan": context["case_inputs"]["frontend_rules_plan"]},
             "initial_plan": str(repo / "tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json"),
             "fixtures": {"emitter": emitter, "profile": prepared,
+                          "scope_witness_projection": scope_witness,
                          "compressed_days": days, "natural_day_cap": 14},
             "business_pass": False}
 

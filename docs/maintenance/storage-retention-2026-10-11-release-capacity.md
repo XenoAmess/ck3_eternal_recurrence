@@ -45,3 +45,32 @@ Source19控制中出现profile祖先路径，并不表示其每个shadercache是
 实际summary：`C:/workspace/ck3-upgrade-20261010/old-monitor-retirement-20261011-01/ACTUAL-SUMMARY.json`，1,317B，SHA `2eb399073ffb9b7c425a555dadebebddb40b47fb1e694f5976e7f742dcd11a39`。execute wait：控制包下 `monitor-execute-01-process-exit.json`，987B，SHA `87f8fecd6c00914e5b316429d1e8025b988e8833bef2e83a3e36e885e55edc70`。标准237闭账：`C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/post-r76-old-monitor-retirement-01-reservation-237-closed.json`，2,540B，SHA `5c81aef8b376bfdbb7987854a7aa61b13a215d4ddc090dfc7329ea80c8c2ee1e`。
 
 执行前free 29,847,240,704B，执行后30,078,582,784B、闭账30,078,496,768B；全卷变化不全归因于删除。本文三轮实际native回收累计 **3,458,011,936 B**。此前 a184 BLOCKED 原件保留；随后root实际完成原52重新准入（42,749B，SHA `961e60ec435eebad561e7b3d3e2ca35dbe84e7aa69006586bac30c27581d0cb6`），RMTM core R0015/a184 已启动，业务结果仍待实际验收，不能把清理、准入或启动写成PASS/发布完成。
+
+## 2026-10-12 追加：Source20 中间库、R16 缓存及过期过程输出实际退役
+
+以下均已实际执行并按标准237闭账，不是候选量；admit/execute/close实际0，未删除目录，未以整卷free差额代替逐项native AllocationSize。外根前缀 `C10` 为 `C:/workspace/ck3-upgrade-20261010`，`coord` 为 `C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator`。
+
+| 已结束用途的精确资产 | 实际删除 | 小摘要（路径、bytes、SHA-256） | 标准237 CLOSED（路径、bytes、SHA-256） |
+| --- | --- | --- | --- |
+| Source20 已完成链接的 `build-01/xar_ck3_12002_runtime.lib` | 1 file / **108,007,424B**；0.7598035s | `C10/source20-runtime-archive-retirement-20261011-01/ACTUAL-SUMMARY.json`；1428B；`a3b433382efdd834c5d4e85a968b4f12e48d018daba14094abed32f85d91d850` | `coord/post-r76-source20-runtime-archive-retirement-01-reservation-237-closed.json`；3717B；`dc3dd1f6f2b9174ebe38d60c88a125e2b93f169dbca3643ece2bcf6f2e00246f` |
+| R0016/a185 已闭场 profile 的 shadercache | 3820 files / 4 batches / **160,604,976B**；22.4564087s | `C10/r16-cache-retirement-20261012-01/ACTUAL-SUMMARY.json`；1879B；`88db77a7ef7ee247633b48aeeb8461f18e632092f1ae7d2d8fc2fe5e5380ce57` | `coord/post-r76-r16-cache-retirement-01-reservation-237-closed.json`；2867B；`43f444351353e6567dfc99418103990bf5a951140299b2e3655a4a1294acdd79` |
+| 已明确提前解除用途保护的旧 transport/poll streams | 53 files / **954,867,712B**；1 batch / 1.2016206s | `C10/obsolete-transport-retirement-20261012-01/ACTUAL-SUMMARY.json`；1361B；`aac2b7f4d6b0f1230f8020c91a2eb6b35931105d06b6091ed1534000f32b6b44` | `coord/post-r76-obsolete-transport-retirement-01-reservation-237-closed.json`；2883B；`64d16fefcc9a90aedc7d4fa5a9010b014bc1fd201e15eaa0d50b10f56e67899b` |
+| 已完成行政用途的 pure LIST stdout | 900 files / **313,344,000B**；11.5201828s | `C10/obsolete-admin-list-retirement-20261012-01/ACTUAL-SUMMARY.json`；1371B；`3571a1b8f733f7276d573b672b12149d728e384719b5bdae0bfd3b3efb6d48a9` | `coord/post-r76-obsolete-admin-list-retirement-01-reservation-237-closed.json`；2390B；`ee0f61b89779cf45061cbf32c359fe94469c56cbe8cea6a1f149ce614e6118b1` |
+
+Source20 只退役 `C10/source20-complete-timeline-native-build-01/build-01/xar_ck3_12002_runtime.lib`（logical108,004,896B）；保留349个父objects、精确LIB argv/RSP、source/index和冻结DLL，可以重新构建新archive，不声称恢复历史archive字节。R16仅退役其已闭场准备根 `C10/rmtm-core-source20-current-formal-publicprepare-20261011-01/state/profile` 内指定shadercache；不是R17当前profile，未授R16业务PASS。
+
+53个旧过程流由QOL精确12 files/328,515,584B及C7精确41 files/626,352,128B组成；不含 `g2-player-claims-stock` R0001，也不涉及361。900份LIST stdout在2026-10-11T19:08:47.857Z实际退役；其对应CONTROL下实际221 wait `admin-execute-01-process-exit.json`，1005B/SHA `0487c4b71345729f01a6582e0baaa121183b54090d94d55055afecd82ab4796b`。以上执行bodyhash=0；被删除的旧transport及LIST stdout正文现已不可读取，不能由摘要恢复历史raw字节，也未制造同名替代。
+
+原argv/result/stderr、keeper、native报告、关键typed/pools、debug/error、GUI、SAVE及source inputs继续按具体用途保护至 **2026-10-18复核**；尤其保留a184/R15原生异常及typed/wire关键代表，R20原RED及OS未知也不改写。保护不是无限续存，届时重新核对未解决问题及后续引用。
+
+沿[此前四轮已闭账累计3,616,011,856B](storage-retention-2026-10-10.md)，本次四项新增1,536,824,112B，实际native回收累计 **5,152,835,968B**；不重复累计早先回收项。整卷free变化包含其他写入/释放，不能全额归因；每个16MiB reservation full-cap后继仅计一次，不产生usage负信用或新的启动授权。LIST闭账后实际free **29,321,334,784B**，距当时默认2GiB准入门槛仍差 **749,727,744B**，未据此准入下一场。
+
+## 2026-10-12 追加：R17 业务进展与失败资源闭账分离
+
+VALUE占位符九语言修复的实际输入commit为 `42e32cf310bb91bfcea272e08ce2f213ed7dbcb9`。12个相关测试、static、builder check及36文件formal各actual0；01父导入失败保留为FAILED_PARTIAL，不能把四个child0写成prepare成功。02 fresh publicprepare/plan实际0，之后用于R0017/a186；旧R16 GUI RED与正常OS0历史不被追认PASS。
+
+R17实际A/B GUI均明确显示新近脱离旧朝 **−50**，C1–C5通过，Continue仅一次，真实死亡GUI已资格；D5切到37989，D6实际stock `realm_maintenance.2001` 的ROOT37989/prev34422/same title18371，D7原snapshot仍37989。但原执行时独立engine heir及hidden `rmtm.2001` fullTitle回调因果仍为GAP；stock事件不能冒充产品hidden回调。**2026-10-11T18:32:08.887Z是原normal Quit reserve截止，不是52预约到期。** run02/verify01实际2，verdict缺失；native GREEN仅证明清理完成，实际native shutdown CK3 exit1，原host wait未知、旧retained snapshot exit=null、observer child wait=None，normalOS0=false。详见[R17继承缺口专题](../reclaim-the-motherland-r17-succession-gap-2026-10-12.md)。
+
+A186失败资源闭账现已实际完成：`coord/rmtm-core-a186-valuefix-default2gib-01-reservation-52-closed.json`，10828B/SHA `e9668e4639a332e51bd22f3a9d0187ec322a4533090c14764d3485e2d47105af`，状态CLOSED_STORAGE_RESERVATION_RELEASED；实际221 wait `C:/workspace/ck3-upgrade-20261006/resume-root-01/a186-failure-storage-close-02-process-exit.json`，931B/SHA `462d9617664f5ba036f5728e1027f70e939ae719f579025ebcb35ea36de5aea4`，exit0。keeper/allocator实际0，CAS8987 done/resources[]；这仅释放失败场资源，不授正常退出或业务PASS。
+
+同次四根metadata占用 **630,610,040B**，闭账current project usage **39,296,503,096B**、free **29,010,063,360B**；第四个F控制根119,864B已计入本次占用，只计一次，后继不得再次加收其cap。旧receipt中budget charge文字保留其历史原貌，不改原件或追溯造信用。失败adapter02路径绑定actual1及后继成功闭账均保留。当前业务仍 **QOL2/6、RMTM0/2，总2/8=25%；release0/2**，存储闭账不是发布完成。
