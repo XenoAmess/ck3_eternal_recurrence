@@ -1,4 +1,4 @@
-namespace = zqagov_admin
+﻿namespace = zqagov_admin
 
 zqagov_admin.1 = {
     type = character_event

@@ -1,4 +1,4 @@
-on_game_start_after_lobby = { on_actions = { zqlr120_start } }
+﻿on_game_start_after_lobby = { on_actions = { zqlr120_start } }
 zqlr120_start = {
  effect = {
   debug_log = "ZQLR120: TEST BEGIN engine_startup"

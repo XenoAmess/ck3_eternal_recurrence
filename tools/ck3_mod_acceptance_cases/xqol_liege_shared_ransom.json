@@ -89,24 +89,24 @@
       "sha256": "b74e49bd6df559afaa9e7c0dacbd2d10418a81f4f2385d087bf56724d3c46fa6"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/common/on_action/zqlr_startup_on_actions.txt": {
-      "bytes": 206,
-      "sha256": "d96f3dcafaec372edc5efff020c16ded1737a0cdf36812b7af34e910cf9b51ac"
+      "bytes": 209,
+      "sha256": "c91be22781a09aa4a22a99a9d388eae60463d6ea8e6bc46f9266b2168029e339"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/common/scripted_effects/zqlr_liege_ransom_effects.txt": {
       "bytes": 30264,
       "sha256": "7f5014508c6e2d36b51f8b8966d9d8740178e17467d824f016fc1670bc63e861"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/common/scripted_effects/zqlr_stock_ransom_observer.txt": {
-      "bytes": 6083,
-      "sha256": "0b10136c742ff9302a32975742fcd30a84680f653a1bd17c50d0bb6937b9aae8"
+      "bytes": 6086,
+      "sha256": "1028fcd76a75c1fb9ea43fc23d5353e46d6d9dbc658c1c772218904b913042a6"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/descriptor.mod": {
       "bytes": 103,
       "sha256": "58c8c062ac8fcdf43ef50c53c2079e2f8a19c9a7baada1bf0df66a8cd8fe17b7"
     },
     "xqol_followup_cases/liege_shared_ransom/fixture/events/zqlr_ransom_events.txt": {
-      "bytes": 352,
-      "sha256": "2e6690b1cae9f216a2905199a7467245890188a30ffdebaa27236a03a4d3c6f4"
+      "bytes": 355,
+      "sha256": "fd3e9138cbe28c61dcedd08256e940995c02d584eaa1737c98252704a86c40e9"
     },
     "xqol_followup_cases/liege_shared_ransom/frontend-rules-plan.json": {
       "bytes": 179,

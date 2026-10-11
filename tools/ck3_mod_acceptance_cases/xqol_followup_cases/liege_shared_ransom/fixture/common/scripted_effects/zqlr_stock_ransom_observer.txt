@@ -1,4 +1,4 @@
-ransom_interaction_effect = {
+﻿ransom_interaction_effect = {
  scope:imprisoner = { zqlr_stock_before_effect = yes }
 
 	# For mass actions where an option is not selected manually

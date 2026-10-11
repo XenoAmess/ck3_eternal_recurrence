@@ -84,3 +84,21 @@ R17/a186失败资源52已实际关闭后，精确退役其准备根 `C10/rmtm-va
 实际native回收累计 **5,313,440,944B**；此轮后实际free **29,472,485,376B**，距当时默认2GiB准入仍差 **598,577,152B**，未准入下一场。整卷free差额不全归因于本轮回收。
 
 下一QOL `administrative_appointments` 的公共plan/preflight已各actual0、blockers=[]；preflight状态 `READY_FOR_EXISTING_REVIEWED_LAUNCH`，runtime_status=NOT_RUN、business_acceptance=NOT_ASSESSED，尚未allocate/run。小型实际wait位于 `C10/qol-next-admin-controls-20261012-01/`：`admin-public-plan-01-process-exit.json`970B/SHA `f89503ec796dcda31febbec13f581a456b2333c24491c0936c64399fe489d3d0`；`admin-public-preflight-01-process-exit.json`986B/SHA `375aae3be0d407044150b5d9a0e3ae4f3c126559ea19c11f9ad7335468e41fcc`。准备检查不授存储准入、GUI资格或业务PASS，业务仍2/8=25%、release0/2。
+
+## 2026-10-12 追加：596项实际回收及A187/R80日志拒绝后的正常资源闭账
+
+此前批准的596个精确旧派生文件已实际退役：admit/execute/close均0，释放native AllocationSize **656,019,456B**，8.9860608s，无目录删除、bodyhash0；累计实际回收 **5,969,460,400B**。小摘要 `C10/rmtm-r16-navigation-retirement-20261012-01/ACTUAL-SUMMARY.json`1770B/SHA `1859942e5ac6b798173d03736fe7f4e0d36a1f4d17d70214575090872c5a69c3`；execute221为981B/SHA `27cebf9d999e104c13a88651be87da1035c9322e531813460c205fe3aeac9562`。标准237实际CLOSED/COMPLETE、children0/unspent0，16MiB full-cap后继仅计一次。该阶段实际free30,263,693,312B，不把全卷差额全部归因于本轮删除。
+
+A187原默认2GiB预约随后实际ADMITTED：required30,071,062,528B、当时free30,263,758,848B、headroom192,696,320B、usage39,346,834,744B；三个新增16MiB包各计一次，非回收负信用。原keeper READY并不等于allocator已terminal；以下为此后实际运行及闭场结果，保留此前准备阶段NOT_RUN的历史身份。
+
+QOL `administrative_appointments` R0080/a187在D0 paused完成全部原任命业务观察：当场新鲜读回 `d_optimatoi` 对象1861、holder30599；AI37981 score81；player29912开关off时−945、on时−1000945、恢复off后−945，raw精确delta **−100000000000**。实际GetHeir GUI及Source20 character读回均绑定37981；没有通过死亡或转封制造结果。原root结果25150B/SHA `4826b7c15157b29b09e04e118b3f48cf33eade954b9efbebf3c3dc9c429670f3`保留。
+
+但canonical fixture的 `events/zqagov_events.txt` 与 `common/on_action/zqagov_start.txt` 发出两项BOM warning，原classifier按原门槛严格拒绝；原error17670B/SHA `48734b6752e2c4e599294c4bf9352c6f1d0398132e624504bf2ef50f4ef2f09a`保留。run/verify实际2，verify为NOT_RUN/businessfalse，不能把已取得业务观察补成旧场GREEN。实际run wait在 `C10/qol-scene-resume-03/administrative_appointments--a187/run-01-process-exit.json`987B/SHA `3962ba73e481470e446f395b0300cff8d45964cef6d8480a517de3c1d5905b29`；verify wait同根 `verify-01-process-exit.json`996B/SHA `a3e2aad8ec6dc163cdd8e4ae7ad23614452831c25ad2f10bd20e8863afee4dee`。
+
+本场实际正常GUI Quit、retained CK3 OS0、native GREEN；observer原parent实际15，redirect child wait=None仍未知，不能推为0。keeper/allocator实际0，CAS9037 done/resources[]。`C10/qol-scene-resume-03/administrative_appointments--a187/POST-RUN-CLOSE-01.json`39732B/SHA `076b6d1ca727556adacea8c58b246a584fea179b81e251d6df957e68109dbed1`绑定三项公共closure=true、normal_close_qualified=true、businessfalse。post-close-01旧checker pin拒绝原件保留；03仅纠正checker绑定到frozen `02a6244d` 的实际版本，未改变业务判定；post-close-02实际0，不追认失败尝试。
+
+标准51 `storage-close-01`实际wait0，receipt1014B/SHA `2e534527394940d3bf85835b7aac87edb45e04e8b4f8e07ff997e27ae41ab6ca`。`coord/qol-admin-a187-source20-default2gib-01-reservation-52-closed.json`7901B/SHA `b1d969f952d3f2b95f16e3e281a1058e02e39a1749674003ec74fb8fd498baa9`于2026-10-11T20:43:32.221955Z实际CLOSED_STORAGE_RESERVATION_RELEASED：同次三个闭场根新增保守占用 **477,995,152B**、current project usage **39,824,829,896B**、free **28,852,498,432B**，释放原2GiB活动预约，unspent0/future credit=false。全根保守加计并未按删除量回扣usage，也不自动授下一场准入。
+
+原native/typed/完整候选及GUI、BOM错误、正常退出和失败闭场尝试按具体用途保护至 **2026-10-18复核**，不改外置原件。下一计划仅补七个canonical fixture文件BOM及三项支持pins，再fresh publicprepare；**本记录不声明该修复或新prepare已经完成**，不放宽classifier。业务仍 **QOL2/6、RMTM0/2、合计2/8=25%；release0/2**。
+
+随后完成最小编码修复：七个canonical脚本仅增加首部`EF BB BF`、三份case合同同步精确pins；删除新增三字节后，全部正文与原SHA一致，含stock observer的232个CRLF/237个LF。classifier/common/host/Source20与正式产品字节未改。定向回归仅实际运行一次，1 test/0.015s/OK/exit0；`C10/qol-fixture-encoding-controls-20261012-01/fixture-bom-unit-01-process-exit.json`984B/SHA `4dea4475db26c8dbf52d743f649932026fbc8d6545d9171dcce4a446f21b994e`，stderr103B/SHA `869abd0e2b84452f4b1d9e29207b48a28b92e272d1df9ca35a154860fce6d539`。控制包限64KiB，纳入原OTHER6MiB且下次保守usage全额计一次，无新profile或实机；新prepare及实机仍待执行，不追认R80。

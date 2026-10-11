@@ -1,4 +1,4 @@
-namespace = zqagov_merit
+﻿namespace = zqagov_merit
 
 zqagov_merit.1 = {
     type = character_event
