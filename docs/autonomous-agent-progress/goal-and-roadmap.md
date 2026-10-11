@@ -2,9 +2,17 @@
 
 **Current owner instruction (2026-10-11T05:05:16.995792+00:00): local CK3 is reserved for the owner's play.**
 Game/SDK live queries, launches, injection, RPC/input, windows and Steam operations
-are prohibited until explicitly released. G2 continues with the existing64-agent
-background research/code/offline qualification team. Saved baseline6077/H10134;
-five daily SAVEs deferred, no new game-day credit.
+are prohibited until explicitly released. The owner's later instruction also
+cancelled tests, project imports and compilation. G2 continues with parallel
+background research and source implementation using the existing64-agent team;
+this describes the team, not a claim that64 workers are simultaneously active.
+Saved baseline6077/H10134; five daily SAVEs deferred, no new game-day credit.
+
+Current source integrations are published on master: `02d590d0` connected Sway,
+prisoner quote and construction consumers; `0f199156` connected family education
+inputs and Person callback entry/return source; `ebfc18e5` connected actual assault
+return outcomes to the existing phase consumer. All new additions remain
+research / SOURCE_ADOPTED_NOT_RUN. Native84/fullSDK84 still represent compiled594.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 
 **Current recovery, recorded 2026-10-11T04:01:23.385118+00:00:** R98 is closed: SDK0, owned Game forced1,

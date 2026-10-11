@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
-#include "xar_bridge/ck3_12004_lifestyle.hpp"
+#include "xar_bridge/ck3_12004_child_current_focus_readonly.hpp"
 #include "xar_bridge/current_first_heir_child_inputs_v1.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
@@ -105,58 +105,6 @@ inline ck3_11906::CurrentFirstHeirChildTraitsV1 ReadTraits(
                            ck3_11906::kChildhoodTraitKeysV1);
 }
 
-// Reuse the admitted generic Character getter, fallback and stable-key source.
-// The complete native leaf and its Character wrapper have no age/player gate.
-inline ck3_11906::CurrentFirstHeirChildFocusV1 ReadFocusSample(
-    const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
-    void *character) noexcept {
-  ck3_11906::CurrentFirstHeirChildFocusV1 result{};
-  if (character == nullptr || environment.current_focus == nullptr ||
-      environment.focus_fallback_slot_address == 0) return result;
-  void *const focus = environment.current_focus(character);
-  if (focus == nullptr) {
-    result.unavailable_reason = "child_current_focus_getter_failed";
-    return result;
-  }
-  std::uintptr_t fallback = 0;
-  if (!ReadMemory(nullptr, environment.focus_fallback_slot_address,
-                  &fallback, sizeof(fallback))) {
-    result.unavailable_reason = "child_current_focus_fallback_read_failed";
-    return result;
-  }
-  if (reinterpret_cast<std::uintptr_t>(focus) == fallback) {
-    result.available = true;
-    result.unavailable_reason = {};
-    result.presence = "absent";
-    return result;
-  }
-  game::PlayerLifestyleStableKeyV1 key{};
-  if (!lifestyle::ReadPlayerLifestyleMsvcStableKey12004V1(
-          nullptr, ReadMemory, reinterpret_cast<std::uintptr_t>(focus) + 0x18, key)) {
-    result.unavailable_reason = "child_current_focus_key_read_failed";
-    return result;
-  }
-  result.available = true;
-  result.unavailable_reason = {};
-  result.presence = "present";
-  result.key = std::string(lifestyle::PlayerLifestyleStableKeyView12004V1(key));
-  return result;
-}
-
-inline ck3_11906::CurrentFirstHeirChildFocusV1 ReadFocus(
-    const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
-    void *character) noexcept {
-  const auto first = ReadFocusSample(environment, character);
-  if (!first.available) return first;
-  auto second = ReadFocusSample(environment, character);
-  if (!second.available) return second;
-  if (first.presence != second.presence || first.key != second.key) {
-    second = {};
-    second.unavailable_reason = "child_current_focus_changed";
-  }
-  return second;
-}
-
 } // namespace first_heir_child_inputs_detail
 
 // Receivers originate in the same current-first-heir raw descendant roster.
@@ -166,7 +114,8 @@ inline ck3_11906::CurrentFirstHeirChildInputsReadV1
 ReadCurrentFirstHeirChildInputsV1(
     const ck3_12002::FamilyBindings &bindings,
     const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &trait_environment,
-    const ck3_11906::CurrentFirstHeirDescendantsReadV1 &descendants) noexcept {
+    const ck3_11906::CurrentFirstHeirDescendantsReadV1 &descendants,
+    const ChildCurrentFocusReadonlyAccess12004 &focus_access = {}) noexcept {
   using namespace first_heir_descendants_detail;
   using namespace first_heir_child_inputs_detail;
   ck3_11906::CurrentFirstHeirChildInputsReadV1 result{};
@@ -223,16 +172,16 @@ ReadCurrentFirstHeirChildInputsV1(
     }
     void *character = xar::ck3_12004::ResolveCoreCharacter(
         bindings.context.core, row.character_id);
+    row.native_focus = ReadChildCurrentFocusReadonly12004(
+        trait_environment, focus_access, row.character_id,
+        reinterpret_cast<std::uintptr_t>(character));
     if (character != nullptr &&
         Load<void *>(character, kCharacterDeathDataOffset) == nullptr) {
       row.childhood_traits = ReadTraits(trait_environment, definitions, character);
-      row.native_focus = ReadFocus(trait_environment, character);
       row.education_point_traits = ReadTraitsForKeys(trait_environment,
           education_definitions, character, ck3_11906::kChildEducationPointTraitKeysV1);
     } else {
       row.childhood_traits.unavailable_reason = "child_full_id_or_liveness_unavailable";
-      row.native_focus.emplace();
-      row.native_focus->unavailable_reason = "child_full_id_or_liveness_unavailable";
       row.education_point_traits.emplace();
       row.education_point_traits->unavailable_reason = "child_full_id_or_liveness_unavailable";
     }

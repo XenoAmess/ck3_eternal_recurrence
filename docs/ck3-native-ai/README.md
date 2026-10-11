@@ -1426,3 +1426,6 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 
 
 - 2026-10-11 pure-background source: [actual daily assault callback return consumption](army-actual-assault-return-consumption-12004.md). Existing phase consumer connected; research / SOURCE_ADOPTED_NOT_RUN, no tests/build/Game.
+
+
+- 2026-10-11 pure-background source: [current child native material source and same-response consumption](current-child-guardian-material-source-and-consumption-12004.md). Nine connected production files adopted; research / SOURCE_ADOPTED_NOT_RUN, no tests/build/Game.

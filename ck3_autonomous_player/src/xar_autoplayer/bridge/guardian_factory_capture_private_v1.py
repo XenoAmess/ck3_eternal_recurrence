@@ -62,7 +62,8 @@ def capture_with_connected_driver(
         raise RuntimeError("native sidecar lacks the exact two fixed source records")
     factory_inputs = None
     if (any("factory_create_inputs_v1" in row for row in rows)
-            or "current_family_relation_v1" in sidecar):
+            or "current_family_relation_v1" in sidecar
+            or "current_child_relation_materials_v1" in sidecar):
         from .guardian_factory_create_inputs_contract_v1 import (
             validate_guardian_factory_create_inputs_v1,
         )
@@ -78,6 +79,10 @@ def capture_with_connected_driver(
         factory_inputs.get("current_family_relation_v1")
         if factory_inputs is not None else None
     )
+    child_materials = (
+        factory_inputs.get("current_child_relation_materials_v1")
+        if factory_inputs is not None else None
+    )
     from .guardian_factory_create_inputs_contract_v1 import (
         DECISION_INPUTS, project_guardian_family_decision_inputs_v1,
     )
@@ -88,6 +93,8 @@ def capture_with_connected_driver(
         DECISION_INPUTS: decision_inputs,
         **({"current_family_relation_v1": current_relation}
            if current_relation is not None else {}),
+        **({"current_child_relation_materials_v1": child_materials}
+           if child_materials is not None else {}),
         **({"native_factory_discovery_v1": factory_inputs}
            if factory_inputs is not None else {}),
         "status": (

@@ -6,8 +6,9 @@ Recorded 2026-10-11T05:10:27.507250+00:00. [Current instruction and stop evidenc
 supersede older local-execution plans. SDK/keeper exited0 and CAS1976 was released;
 Game was preserved without further operation. No local Game/Steam/SDK live query,
 launch, attachment, injection, input or real-game acceptance until explicit release.
-This stops local execution, while G2 functional research and offline implementation
-continue with the existing64-agent team.
+The owner's later instruction also cancels tests, project imports and compilation.
+G2 functional research and source implementation continue with the existing
+64-agent team; that team size does not describe simultaneous active workers.
 
 Actual retained baseline:6077/H10134/full13, original Robert29829, natural0;
 M4 complete/G2 6/8/NW2 2/4/M6 partial/M7 incomplete. Native84/SDK84 Source594

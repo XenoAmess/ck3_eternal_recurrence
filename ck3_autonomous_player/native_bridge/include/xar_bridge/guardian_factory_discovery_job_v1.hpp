@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12004_guardian_factory_metadata.hpp"
 #include "xar_bridge/ck3_12004_guardian_relation_observation.hpp"
+#include "xar_bridge/ck3_12004_current_child_relation_materials.hpp"
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -35,6 +36,9 @@ struct GuardianFactoryDiscoveryJobV1 {
   xar::ck3_11906::MainThreadExecutionStampV1 execution_stamp{};
   std::optional<xar::ck3_12004::GuardianFactoryDiscoveryMetadata12004V1> metadata;
   std::optional<xar::ck3_12004::GuardianCurrentFamilyRelations12004V1> current_family_relation;
+  bool current_child_roster_bound{};
+  std::vector<std::uint32_t> current_child_character_ids;
+  std::optional<xar::ck3_12004::CurrentChildrenRelationMaterials12004V1> current_child_relation_materials;
 };
 
 // The same executor is called by the production family callback and the fixture.
@@ -48,6 +52,7 @@ inline bool ExecuteGuardianFactoryDiscoveryJobV1(
   job.execution_stamp = stamp;
   job.metadata.reset();
   job.current_family_relation.reset();
+  job.current_child_relation_materials.reset();
   job.unavailable_reason = "frame_changed";
   if (job.executable_sha256 != xar::ck3_12004::kExecutableSha256) {
     job.unavailable_reason = "exact_build_not_admitted";
@@ -67,17 +72,21 @@ inline bool ExecuteGuardianFactoryDiscoveryJobV1(
         job.environment, job.image_size);
     auto relation = xar::ck3_12004::ReadGuardianCurrentFamilyRelations12004V1(
         job.environment, metadata, before.played_character_id, job.heir_character_id);
+    auto child_materials = xar::ck3_12004::ReadCurrentChildrenRelationMaterials12004V1(
+        job.environment, metadata, job.current_child_roster_bound, job.current_child_character_ids);
     xar::game::Snapshot after{};
     if (!job.read_snapshot(job.snapshot_context, after) || after != before)
       return true;
     job.metadata = std::move(metadata);
     job.current_family_relation = std::move(relation);
+    job.current_child_relation_materials = std::move(child_materials);
     job.frame_observed = true;
     job.unavailable_reason = {};
     return true;
   } catch (...) {
     job.metadata.reset();
     job.current_family_relation.reset();
+    job.current_child_relation_materials.reset();
     job.unavailable_reason = "discovery_exception";
     return false;
   }
@@ -189,6 +198,96 @@ inline void CurrentFamilyRelationJson(
   output += "]}";
 }
 
+
+inline std::string_view ChildIdentityStatus(
+    xar::ck3_12004::ChildRelationCharacterIdentityStatus12004V1 value) noexcept {
+  using Status = xar::ck3_12004::ChildRelationCharacterIdentityStatus12004V1;
+  switch (value) {
+  case Status::resolved: return "resolved";
+  case Status::known_null: return "known_null";
+  default: return "unavailable";
+  }
+}
+
+inline void CurrentChildRelationMaterialsJson(
+    std::string &output, const GuardianFactoryDiscoveryJobV1 &job,
+    bool qualified) {
+  const bool observed = qualified && job.current_child_relation_materials.has_value();
+  const bool bound = observed && job.current_child_relation_materials->roster_bound;
+  const bool collected = observed && job.current_child_relation_materials->collection_available;
+  output += ",\"current_child_relation_materials_v1\":{\"schema_version\":1,"
+      "\"read_only\":true,\"source\":\"current_child_generic_named_material_projection\","
+      "\"source_projection_only\":true,\"guardian_role_equivalence_qualified\":false,"
+      "\"inventory_scope\":\"same_query_selected_living_actual_child_rows\",\"roster_bound\":";
+  output += bound ? "true" : "false";
+  output += ",\"collection_available\":"; output += collected ? "true" : "false";
+  output += ",\"unavailable_reason\":";
+  String(output, !qualified ? (job.frame_observed ? std::string_view{"completion_frame_changed"}
+                                                : job.unavailable_reason)
+                           : observed ? job.current_child_relation_materials->unavailable_reason
+                                      : std::string_view{"current_child_roster_not_observed"});
+  output += ",\"child_character_ids\":[";
+  if (bound) {
+    const auto &ids = job.current_child_relation_materials->child_character_ids;
+    for (std::size_t index = 0; index < ids.size(); ++index) {
+      if (index != 0) output += ',';
+      output += std::to_string(ids[index]);
+    }
+  }
+  output += "],\"rows\":[";
+  if (collected) {
+    const auto &rows = job.current_child_relation_materials->rows;
+    for (std::size_t index = 0; index < rows.size(); ++index) {
+      if (index != 0) output += ',';
+      const auto &peers = rows[index].peers;
+      const auto &presence = rows[index].named_guardian_material;
+      output += "{\"child_character_id\":" + std::to_string(peers.child_character_id);
+      output += ",\"child_identity_status\":"; String(output, ChildIdentityStatus(peers.child_identity_status));
+      output += ",\"child_address\":"; OptionalNumber(output, peers.child_address);
+      output += ",\"peers\":{\"available\":"; output += peers.available ? "true" : "false";
+      output += ",\"inventory_complete\":"; output += peers.inventory_complete ? "true" : "false";
+      output += ",\"identities_complete\":"; output += peers.identities_complete ? "true" : "false";
+      output += ",\"identity_round_trip\":"; output += peers.identity_round_trip ? "true" : "false";
+      output += ",\"sample_stable\":"; output += peers.sample_stable ? "true" : "false";
+      output += ",\"extension_address\":"; OptionalNumber(output, peers.peer_extension_address);
+      output += ",\"data_address\":"; OptionalNumber(output, peers.peer_data_address);
+      output += ",\"count_raw\":"; OptionalNumber(output, peers.peer_count_raw);
+      output += ",\"basis\":"; String(output, peers.basis);
+      output += ",\"unavailable_reason\":"; String(output, peers.unavailable_reason);
+      output += ",\"rows\":[";
+      for (std::size_t peer_index = 0; peer_index < peers.rows.size(); ++peer_index) {
+        if (peer_index != 0) output += ',';
+        const auto &peer = peers.rows[peer_index];
+        output += "{\"peer_character_id\":" + std::to_string(peer.peer_character_id);
+        output += ",\"material_address\":" + std::to_string(peer.material_address);
+        output += ",\"identity_status\":"; String(output, ChildIdentityStatus(peer.identity_status));
+        output += ",\"character_address\":"; OptionalNumber(output, peer.character_address);
+        output += ",\"character_tag_raw\":"; OptionalNumber(output, peer.character_tag_raw);
+        output += ",\"lookup_address\":"; OptionalNumber(output, peer.lookup_address);
+        output += ",\"observed_full_id\":"; OptionalNumber(output, peer.observed_full_id);
+        output += ",\"identity_available\":"; output += peer.identity_available ? "true" : "false";
+        output += ",\"unavailable_reason\":"; String(output, peer.unavailable_reason);
+        output += '}';
+      }
+      output += "]},\"guardian_named_material\":{\"available\":";
+      output += presence.available ? "true" : "false";
+      output += ",\"identity_round_trip\":"; output += presence.identity_round_trip ? "true" : "false";
+      output += ",\"inventory_join_complete\":"; output += presence.inventory_join_complete ? "true" : "false";
+      output += ",\"sample_stable\":"; output += presence.sample_stable ? "true" : "false";
+      output += ",\"named_material_present\":";
+      output += presence.named_material_present ? (*presence.named_material_present ? "true" : "false") : "null";
+      output += ",\"matched_peer_full_id\":"; OptionalNumber(output, presence.matched_peer_full_id);
+      output += ",\"matched_peer_character_address\":"; OptionalNumber(output, presence.matched_peer_character_address);
+      output += ",\"witness_identity_available\":"; output += presence.witness_identity_available ? "true" : "false";
+      output += ",\"witness_identity_status\":"; String(output, ChildIdentityStatus(presence.witness_identity_status));
+      output += ",\"basis\":"; String(output, presence.basis);
+      output += ",\"unavailable_reason\":"; String(output, presence.unavailable_reason);
+      output += "}}";
+    }
+  }
+  output += "]}";
+}
+
 inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
                         bool qualified) {
   std::string output =
@@ -292,6 +391,7 @@ inline std::string Json(const GuardianFactoryDiscoveryJobV1 &job,
   }
   output += "]";
   CurrentFamilyRelationJson(output, job, qualified);
+  CurrentChildRelationMaterialsJson(output, job, qualified);
   output += "}\n";
   return output;
 }

@@ -9789,7 +9789,8 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
         query.child_inputs12004 =
             xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
                 query.family12002, query.child_traits12004,
-                *query.read.descendants);
+                *query.read.descendants,
+                {nullptr, &ReadCurrentFirstHeirConceptionMemoryV1});
         query.child_inputs12004->typed_windows =
             xar::ck3_11906::ReadCurrentFirstHeirTypedWindows12004V1(
                 query.child_window_gui12004, query.child_window_names12004);
@@ -9807,9 +9808,26 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
                 query.family12002, query.conception_candidate_bindings12004, query.read);
       }
     }
-    if (query.guardian_factory_discovery12004)
-      (void)xar::bridge::ExecuteGuardianFactoryDiscoveryJobV1(
-          &*query.guardian_factory_discovery12004, stamp);
+    if (query.guardian_factory_discovery12004) {
+      auto &job = *query.guardian_factory_discovery12004;
+      job.current_child_roster_bound = false;
+      job.current_child_character_ids.clear();
+      if (query.child_inputs12004 &&
+          query.child_inputs12004->status != "unavailable") {
+        try {
+          std::vector<std::uint32_t> ids;
+          ids.reserve(query.child_inputs12004->rows.size());
+          for (const auto &row : query.child_inputs12004->rows)
+            ids.push_back(std::bit_cast<std::uint32_t>(row.character_id));
+          job.current_child_character_ids = std::move(ids);
+          job.current_child_roster_bound = true;
+        } catch (...) {
+          // No observed empty roster is inferred from a failed owned copy.
+          job.current_child_character_ids.clear();
+        }
+      }
+      (void)xar::bridge::ExecuteGuardianFactoryDiscoveryJobV1(&job, stamp);
+    }
     xar::game::Snapshot after{};
     query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) &&
         after == before && (query.outbound_only12002 || query.alliance_pair_only12002 || query.bilateral_only12002 || query.child_only12002 ||

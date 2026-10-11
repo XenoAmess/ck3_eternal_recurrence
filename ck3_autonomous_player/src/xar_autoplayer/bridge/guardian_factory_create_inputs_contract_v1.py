@@ -58,8 +58,8 @@ def validate_guardian_factory_create_inputs_v1(
         raise ValueError("guardian discovery requires two fixed ordered keys")
     present = [LEAF in row for row in rows]
     if not any(present):
-        if CURRENT_RELATION in value:
-            raise ValueError("current relation lacks its same-query factory input version")
+        if CURRENT_RELATION in value or CURRENT_CHILD_MATERIALS in value:
+            raise ValueError("current relation facts lack their same-query factory input version")
         return None
     if not all(present):
         raise ValueError("guardian discovery has mixed factory input versions")
@@ -187,10 +187,17 @@ def validate_guardian_factory_create_inputs_v1(
             value[CURRENT_RELATION], factories=rows, qualified=qualified,
             actor=actor, heir=native_heir,
         )
+    if CURRENT_CHILD_MATERIALS in value:
+        _validate_current_child_relation_materials_v1(
+            value[CURRENT_CHILD_MATERIALS], family_result=family_result,
+            qualified=qualified, revision=revision, actor=actor,
+            heir=native_heir, date=date,
+        )
     return deepcopy(value)
 
 
 CURRENT_RELATION = "current_family_relation_v1"
+CURRENT_CHILD_MATERIALS = "current_child_relation_materials_v1"
 DECISION_INPUTS = "guardian_family_decision_inputs_v1"
 _RELATION_TRUE_BASES = {"entry_raw_equal", "tag2_row_raw_equal", "fallback_raw_equal"}
 _RELATION_FALSE_BASES = {
@@ -266,7 +273,7 @@ def project_guardian_family_decision_inputs_v1(
             "basis": "", "unavailable_reason": "current_relation_not_observed",
         } for key in KEYS]
 
-    return {
+    projected = {
         "schema": "xar.guardian-family-decision-inputs.v1", "schema_version": 1,
         "read_only": True, "source_projection_only": True,
         "native_trigger_invoked": False,
@@ -283,6 +290,13 @@ def project_guardian_family_decision_inputs_v1(
         # leaf_availability entries, including available focus absence.
         "children": derive_family_generation_education_inputs_v1(descendants),
     }
+    if owned_native_sidecar is not None and CURRENT_CHILD_MATERIALS in owned_native_sidecar:
+        # Keep the native generic materials and typed witnesses independent
+        # from education inputs and from any guardian-role interpretation.
+        projected[CURRENT_CHILD_MATERIALS] = deepcopy(
+            owned_native_sidecar[CURRENT_CHILD_MATERIALS]
+        )
+    return projected
 
 
 def _optional_uint(value: object, bits: int, name: str) -> int | None:
@@ -295,6 +309,225 @@ def _optional_i32(value: object, name: str) -> int | None:
     if type(value) is not int or not -(2**31) <= value < 2**31:
         raise ValueError(f"{name}: signed 32-bit value required")
     return value
+
+
+def _material_object(value: object, fields: set[str], name: str) -> dict:
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError(f"{name}: native field set changed")
+    return value
+
+
+def _material_text(value: object, name: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{name}: string required")
+    return value
+
+
+def _material_identity(value: object, name: str) -> str:
+    if value not in ("unavailable", "resolved", "known_null"):
+        raise ValueError(f"{name}: native identity status changed")
+    return value
+
+
+def _selected_material_child_ids(
+    family_result: dict, *, revision: int, actor: int, heir: int, date: int,
+) -> list[int]:
+    from .current_first_heir_descendants_v1 import LEAF as DESCENDANTS
+
+    descendants = family_result.get(DESCENDANTS)
+    child_inputs = descendants.get("child_inputs") if isinstance(descendants, dict) else None
+    if not isinstance(child_inputs, dict) or child_inputs.get("status") not in (
+            "available", "partial"):
+        raise ValueError("child materials lack the normalized selected child input rows")
+    frame = {"native_revision": revision, "played_character_id": actor,
+             "heir_character_id": None if heir == -1 else heir, "date_raw": date}
+    for container in (descendants, child_inputs):
+        if any(type(container.get(key)) is not type(expected)
+               or container.get(key) != expected for key, expected in frame.items()):
+            raise ValueError("child materials combine different selected descendant frames")
+    rows = child_inputs.get("rows")
+    if not isinstance(rows, list):
+        raise ValueError("child materials lack ordered selected child inputs")
+    ids = []
+    for row in rows:
+        character = row.get("character_id") if isinstance(row, dict) else None
+        if type(character) is not int or not -(2**31) <= character < 2**31:
+            raise ValueError("selected child input full generation ID is malformed")
+        ids.append(character & 0xFFFFFFFF)
+    return ids
+
+
+def _validate_material_peer(row: object) -> None:
+    row = _material_object(row, {
+        "peer_character_id", "material_address", "identity_status",
+        "character_address", "character_tag_raw", "lookup_address",
+        "observed_full_id", "identity_available", "unavailable_reason",
+    }, "child material peer")
+    peer_id = _uint(row["peer_character_id"], 32, "peer_character_id")
+    _uint(row["material_address"], 64, "material_address")
+    status = _material_identity(row["identity_status"], "peer.identity_status")
+    address = _optional_uint(row["character_address"], 64, "peer.character_address")
+    lookup = _optional_uint(row["lookup_address"], 64, "peer.lookup_address")
+    observed = _optional_uint(row["observed_full_id"], 32, "peer.observed_full_id")
+    tag = _optional_uint(row["character_tag_raw"], 32, "peer.character_tag_raw")
+    available = _flag(row["identity_available"], "peer.identity_available")
+    reason = _material_text(row["unavailable_reason"], "peer.unavailable_reason")
+    if available:
+        if (status != "resolved" or not address or lookup != address
+                or observed != peer_id or tag != 0x43686172 or reason != ""):
+            raise ValueError("available peer identity lost its full-ID/tag source join")
+    elif address is not None or status == "resolved" or reason == "":
+        raise ValueError("unavailable peer identity became a resolved character")
+
+
+def _validate_material_peers(child: dict) -> dict:
+    peers = _material_object(child["peers"], {
+        "available", "inventory_complete", "identities_complete", "identity_round_trip",
+        "sample_stable", "extension_address", "data_address", "count_raw", "basis",
+        "unavailable_reason", "rows",
+    }, "child material peers")
+    for key in ("available", "inventory_complete", "identities_complete",
+                "identity_round_trip", "sample_stable"):
+        _flag(peers[key], "peers." + key)
+    extension = _optional_uint(peers["extension_address"], 64, "peers.extension_address")
+    data = _optional_uint(peers["data_address"], 64, "peers.data_address")
+    count = _optional_i32(peers["count_raw"], "peers.count_raw")
+    basis = _material_text(peers["basis"], "peers.basis")
+    reason = _material_text(peers["unavailable_reason"], "peers.unavailable_reason")
+    rows = peers["rows"]
+    if not isinstance(rows, list):
+        raise ValueError("child material peer inventory must retain an ordered list")
+    for row in rows:
+        _validate_material_peer(row)
+    if peers["available"]:
+        if (not peers["inventory_complete"] or not peers["identity_round_trip"]
+                or not peers["sample_stable"] or child["child_identity_status"] != "resolved"
+                or not child["child_address"] or reason != ""):
+            raise ValueError("available peer inventory lacks its owned child/source facts")
+        if basis == "generic_peer_extension_absent":
+            admitted = extension == 0 and data is None and count is None and not rows
+        elif basis == "generic_peer_entries_empty":
+            admitted = bool(extension) and data is None and count == 0 and not rows
+        elif basis == "generic_full_id_peer_inventory":
+            admitted = bool(extension) and bool(data) and count is not None and count > 0 and count == len(rows)
+        else:
+            admitted = False
+        if not admitted:
+            raise ValueError("peer inventory completeness contradicts its copied branch")
+        if peers["identities_complete"] != all(
+                row["identity_status"] != "unavailable" for row in rows):
+            raise ValueError("peer identity completeness contradicts typed identity results")
+    elif (peers["inventory_complete"] or peers["identities_complete"]
+          or rows or basis != "" or reason == ""):
+        raise ValueError("unavailable peer inventory became a complete observation")
+    if peers["identity_round_trip"] and (
+            child["child_identity_status"] != "resolved" or not child["child_address"]):
+        raise ValueError("child identity round trip lacks its resolved full-ID object")
+    return peers
+
+
+def _validate_named_child_material(value: object, peers: dict) -> None:
+    value = _material_object(value, {
+        "available", "identity_round_trip", "inventory_join_complete", "sample_stable",
+        "named_material_present", "matched_peer_full_id", "matched_peer_character_address",
+        "witness_identity_available", "witness_identity_status", "basis", "unavailable_reason",
+    }, "guardian named material")
+    for key in ("available", "identity_round_trip", "inventory_join_complete",
+                "sample_stable", "witness_identity_available"):
+        _flag(value[key], "named_material." + key)
+    present = value["named_material_present"]
+    matched = _optional_uint(value["matched_peer_full_id"], 32, "named_material.matched_peer_full_id")
+    address = _optional_uint(value["matched_peer_character_address"], 64, "named_material.matched_peer_character_address")
+    status = _material_identity(value["witness_identity_status"], "named_material.witness_identity_status")
+    basis = _material_text(value["basis"], "named_material.basis")
+    reason = _material_text(value["unavailable_reason"], "named_material.unavailable_reason")
+    if not value["available"]:
+        if (present is not None or matched is not None or address is not None
+                or value["witness_identity_available"] or status != "unavailable"
+                or basis != "" or reason == ""):
+            raise ValueError("unavailable named material became a known presence or witness")
+        return
+    _flag(present, "named_material.named_material_present")
+    if (not value["identity_round_trip"] or not value["inventory_join_complete"]
+            or not value["sample_stable"] or not peers["available"]
+            or not peers["inventory_complete"] or not peers["identity_round_trip"]
+            or not peers["sample_stable"] or reason != ""):
+        raise ValueError("known named material lacks its owned generic inventory join")
+    if present:
+        matches = [row for row in peers["rows"]
+                   if row["peer_character_id"] == matched and row["material_address"] != 0]
+        if matched is None or not matches or basis not in _RELATION_TRUE_BASES:
+            raise ValueError("present named material lacks its copied peer/material witness")
+        if value["witness_identity_available"]:
+            if status != "resolved" or not address or not any(
+                    row["identity_available"] and row["character_address"] == address
+                    for row in matches):
+                raise ValueError("named material resolved witness differs from its peer identity")
+        elif address is not None or status == "resolved":
+            raise ValueError("named material promoted an unresolved character witness")
+        if status == "known_null" and not any(row["identity_status"] == "known_null" for row in matches):
+            raise ValueError("named material known-null witness differs from its peer identity")
+    elif (matched is not None or address is not None or value["witness_identity_available"]
+          or status != "unavailable" or basis != (
+              "generic_inventory_empty" if not peers["rows"] else "named_materials_exhausted")):
+        raise ValueError("absent named material became a guardian identity")
+
+
+def _validate_current_child_relation_materials_v1(
+    value: object, *, family_result: dict, qualified: bool,
+    revision: int, actor: int, heir: int, date: int,
+) -> None:
+    """Retain generic materials; neither a null peer nor material false is HasGuardian."""
+    value = _material_object(value, {
+        "schema_version", "read_only", "source", "source_projection_only",
+        "guardian_role_equivalence_qualified", "inventory_scope", "roster_bound",
+        "collection_available", "unavailable_reason", "child_character_ids", "rows",
+    }, "current child relation materials")
+    for key, expected in (
+        ("schema_version", 1), ("read_only", True),
+        ("source", "current_child_generic_named_material_projection"),
+        ("source_projection_only", True), ("guardian_role_equivalence_qualified", False),
+        ("inventory_scope", "same_query_selected_living_actual_child_rows"),
+    ):
+        if type(value[key]) is not type(expected) or value[key] != expected:
+            raise ValueError(f"current child relation materials {key} changed")
+    bound = _flag(value["roster_bound"], "child_materials.roster_bound")
+    collected = _flag(value["collection_available"], "child_materials.collection_available")
+    reason = _material_text(value["unavailable_reason"], "child_materials.unavailable_reason")
+    ids, rows = value["child_character_ids"], value["rows"]
+    if not isinstance(ids, list) or not isinstance(rows, list):
+        raise ValueError("child materials require ordered full-ID and observation lists")
+    for child_id in ids:
+        _uint(child_id, 32, "child_materials.child_character_id")
+    if bound:
+        if not qualified:
+            raise ValueError("child materials lost their same-query selected full-ID roster")
+        selected_ids = _selected_material_child_ids(
+            family_result, revision=revision, actor=actor, heir=heir, date=date,
+        )
+        # The native catch path can retain a bound source shell after the owned
+        # ID vector copy failed. Only a completed collection claims a full list.
+        if collected and ids != selected_ids:
+            raise ValueError("child materials lost their same-query selected full-ID roster")
+    elif ids or collected:
+        raise ValueError("unbound child materials acquired an observed selected roster")
+    if not collected:
+        if rows or reason == "":
+            raise ValueError("unavailable child collection acquired observed rows")
+        return
+    if not qualified or not bound or reason != "" or len(rows) != len(ids):
+        raise ValueError("collected child materials lost their selected roster binding")
+    for child, expected_id in zip(rows, ids):
+        child = _material_object(child, {
+            "child_character_id", "child_identity_status", "child_address",
+            "peers", "guardian_named_material",
+        }, "child material observation")
+        if _uint(child["child_character_id"], 32, "child.character_id") != expected_id:
+            raise ValueError("child material observation full-ID/order changed")
+        _material_identity(child["child_identity_status"], "child.identity_status")
+        _optional_uint(child["child_address"], 64, "child.address")
+        peers = _validate_material_peers(child)
+        _validate_named_child_material(child["guardian_named_material"], peers)
 
 
 def _validate_current_family_relation_v1(
