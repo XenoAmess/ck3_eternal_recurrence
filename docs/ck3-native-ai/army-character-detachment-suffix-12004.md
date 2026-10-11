@@ -192,3 +192,73 @@ No native call, import, test, build, SDK query or paused artifact is credited.
 Selected origin-helper source closure remains necessary for origin observation.
 Mutator/post-call gaps stay selected dependencies, with no forecast prerequisite
 added to current legal OODA or migration acceptance.
+
+
+## Historical extension-origin own-method source recovered on 2026-10-11
+
+The October7 detached source notes `e0075a9b5967f68eff1195a32cc70022f3ce3074`
+and `3486eb8ee60618e67999be52205d778cb9a740cc` recorded the complete actual4
+own method **`28B1750..28B181B`,203B**. This supplements the earlier30B cache
+stop above. It recovers source knowledge only: no old candidate status,
+interface, binding, test, native invocation or live qualification is restored.
+The existing current-input/reset contract remains unchanged.
+
+The four selected ranges are `[28B1750,28B176E)`30B,
+`[28B176E,28B1809)`155B, `[28B1809,28B1815)`12B and
+`[28B1815,28B181B)`6B; padding before28B1820 is excluded. The prefix preserves
+Character inRBX, calls capital-role28B1CB0 and tests output DWORD85C forProv.
+A Prov result uses the6B ordinary restore/return with that output unchanged.
+
+Non-Prov reloads Character1B8 into a saved extension pointer. Null selects
+the12B fallback. Nonnull calls **`28C0160(Character,&local)`** and retains its
+returned pointer. When fresh Character registry5C67568 is nonnull, the DWORD
+at that pointer is the requested full ID: low24 selects the slot16+8, while
+the candidate's complete18 ID must match. A miss/null registry uses fallback
+5C67570. Only tag1C=Char and fullID18!=FFFFFFFF admit the selected Character.
+A valid Character calls **`2B9CA60(selectedCharacter)`**, whose output is
+returned directly. Otherwise **`896E90(savedExtension+0xC8)`** supplies a
+second Character candidate; the same tag/fullID checks select2B9CA60 or the
+same fallback. The12B fallback loads the QWORD Province pointer from5D1E390,
+restoresRDI and reaches the held return; it reads no fallback-object85C.
+
+Own-body writes are stack saves only. The direct body does not read
+extensionF8, extensionQWORD100 or a date. These statements do not close the
+selected callees' read sets or effects. Capital28B1CB0,28C0160,896E90 and
+2B9CA60 remain separate dependencies; a standing capital/location observation
+cannot become the parent's post-reset origin. No whole-helper readonly,
+current after-reset origin, post-mutator date or future-loop credit follows.
+
+The historical notes name three Root capture receipts:
+`character-extension-origin-map01/SELECTED-EXTENSION-ORIGIN-CAPTURE.json`,
+`character-extension-origin-map02/SELECTED-EXTENSION-ORIGIN-SUCCESSORS-CAPTURE.json`
+and `character-extension-origin-map03/SELECTED-EXTENSION-ORIGIN-FALLBACK-CAPTURE.json`.
+This cleanup review read the exact old Git diffs and compared masterc07ad905;
+it did not reopen those raw receipts or reread native bytes. Their recorded
+203B own-source closure is preserved here before the detached copies are
+retired. Temporary source-cost counters and superseded capture plans are omitted.
+
+
+The recovered own-method branches are shown below; selected callee effects
+remain separate unknown source dependencies.
+
+```mermaid
+flowchart TD
+    O[28B1750 own method] --> C[Call capital-role 28B1CB0]
+    C --> P{Output tag is Prov?}
+    P -->|yes| R[Return output]
+    P -->|no| E{Saved Character 1B8 is nonnull?}
+    E -->|no| F[Load fallback Province pointer 5D1E390]
+    E -->|yes| H[Call 28C0160 and resolve full Character ID]
+    H --> V{Char tag and valid full ID?}
+    V -->|yes| L[Call 2B9CA60]
+    V -->|no| A[Call 896E90 with saved extension C8]
+    A --> B{Char tag and valid full ID?}
+    B -->|yes| L
+    B -->|no| F
+    L --> R
+    F --> R
+    C -. callee effects unknown .-> U[Separate selected callee source dependencies]
+    H -. callee effects unknown .-> U
+    A -. callee effects unknown .-> U
+    L -. callee effects unknown .-> U
+```
