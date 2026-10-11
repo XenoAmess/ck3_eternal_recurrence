@@ -32,7 +32,8 @@ inline constexpr std::array<std::pair<std::string_view, int>, 19>
 }
 
 // Retained exact .3/.4 completed-slot values from the SDK. These keys value
-// an existing occupant only; they do not extend the tier-one target table.
+// an existing occupant. Only the explicit .4 target lookup below also uses
+// the two economic upgrade keys; legacy lookup remains tier-one only.
 inline constexpr std::array<std::pair<std::string_view, int>, 5>
     kAuthoredExistingOnlyBuildingIncomeHundredthsV1{{
         {"farm_estates_02", 115}, {"common_tradeport_02", 55},
@@ -51,6 +52,16 @@ inline constexpr std::array<std::pair<std::string_view, int>, 5>
   }
   // A known zero-income occupant is usable; an unknown key is not zero.
   return std::nullopt;
+}
+
+// Actual .4 stock content reuses these two retained unconditional values.
+// This is authored province income, not observed tax or completion credit.
+[[nodiscard]] inline int AuthoredTargetIncomeHundredths12004(
+    std::string_view key) noexcept {
+  if (key == "farm_estates_02" || key == "common_tradeport_02") {
+    return AuthoredExistingIncomeHundredths(key).value_or(0);
+  }
+  return AuthoredIncomeHundredths(key);
 }
 
 } // namespace xar::ck3_11906

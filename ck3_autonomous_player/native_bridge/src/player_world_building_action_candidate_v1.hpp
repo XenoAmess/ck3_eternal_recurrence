@@ -42,6 +42,13 @@ SelectPlayerWorldBuildingActionCandidateV1(
     const PlayerWorldBuildingSourceResultV1 &source,
     std::uint64_t proof_epoch, std::int64_t minimum_gold_reserve_raw) noexcept;
 
+// The actual .4 mailbox admits the two source-closed economic upgrades.
+// Older callers retain the tier-one target set through the function above.
+[[nodiscard]] PlayerWorldBuildingActionCandidateV1
+SelectPlayerWorldBuildingActionCandidate12004(
+    const PlayerWorldBuildingSourceResultV1 &source,
+    std::uint64_t proof_epoch, std::int64_t minimum_gold_reserve_raw) noexcept;
+
 // Fresh stock Province+0x620 material state, independently read after a
 // native receiver ACK. The newer application-main proof epoch is supplied by
 // the paused mailbox; a same-frame cached tuple is insufficient.

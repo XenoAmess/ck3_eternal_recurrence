@@ -1,5 +1,5 @@
 #include "xar_bridge/ck3_12004_construction.hpp"
-#include "ck3_12002_construction_authored_income.hpp"
+#include "player_world_building_authored_income_v1.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -450,7 +450,7 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
       };
       std::vector<ScanDefinition> positive_definitions;
       std::vector<ScanDefinition> remaining_definitions;
-      positive_definitions.reserve(ck3_12002::kAuthoredBuildingIncomeHundredthsV1.size());
+      positive_definitions.reserve(ck3_11906::kAuthoredBuildingIncomeHundredthsV1.size() + 2);
       remaining_definitions.reserve(definitions.size());
       bool all_definition_keys_classified = true;
       for (const auto &[building_type_id, definition] : definitions) {
@@ -460,7 +460,7 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
           remaining_definitions.push_back({building_type_id, definition, 0});
           continue;
         }
-        const int income = ck3_12002::AuthoredIncomeHundredths(key);
+        const int income = ck3_11906::AuthoredTargetIncomeHundredths12004(key);
         (income > 0 ? positive_definitions : remaining_definitions)
             .push_back({building_type_id, definition, income});
       }

@@ -37,11 +37,12 @@ bool HoldingIdle(const PlayerWorldBuildingSourceResultV1 &source,
 
 } // namespace
 
-PlayerWorldBuildingActionCandidateV1
-SelectPlayerWorldBuildingActionCandidateV1(
+static PlayerWorldBuildingActionCandidateV1
+SelectPlayerWorldBuildingActionCandidateImpl(
     const PlayerWorldBuildingSourceResultV1 &source,
     const std::uint64_t proof_epoch,
-    const std::int64_t minimum_gold_reserve_raw) noexcept {
+    const std::int64_t minimum_gold_reserve_raw,
+    const bool exact_12004_upgrade_targets) noexcept {
   PlayerWorldBuildingActionCandidateV1 result{};
   if (!source.source_available ||
       source.failure != PlayerWorldBuildingFailureV1::none ||
@@ -84,7 +85,9 @@ SelectPlayerWorldBuildingActionCandidateV1(
         minimum_gold_reserve_raw > source.player_gold_raw - cost) {
       continue;
     }
-    const auto income = AuthoredIncomeHundredths(sample.building_key);
+    const auto income = exact_12004_upgrade_targets
+                            ? AuthoredTargetIncomeHundredths12004(sample.building_key)
+                            : AuthoredIncomeHundredths(sample.building_key);
     if (income <= 0) {
       saw_unvalued = true;
       continue;
@@ -168,6 +171,24 @@ SelectPlayerWorldBuildingActionCandidateV1(
       source.player_gold_raw - selected->cost_raw_native[0];
   result.stock_cost_raw_native = selected->cost_raw_native;
   return result;
+}
+
+PlayerWorldBuildingActionCandidateV1
+SelectPlayerWorldBuildingActionCandidateV1(
+    const PlayerWorldBuildingSourceResultV1 &source,
+    const std::uint64_t proof_epoch,
+    const std::int64_t minimum_gold_reserve_raw) noexcept {
+  return SelectPlayerWorldBuildingActionCandidateImpl(
+      source, proof_epoch, minimum_gold_reserve_raw, false);
+}
+
+PlayerWorldBuildingActionCandidateV1
+SelectPlayerWorldBuildingActionCandidate12004(
+    const PlayerWorldBuildingSourceResultV1 &source,
+    const std::uint64_t proof_epoch,
+    const std::int64_t minimum_gold_reserve_raw) noexcept {
+  return SelectPlayerWorldBuildingActionCandidateImpl(
+      source, proof_epoch, minimum_gold_reserve_raw, true);
 }
 
 bool ObservePlayerWorldBuildingMaterialResultV1(

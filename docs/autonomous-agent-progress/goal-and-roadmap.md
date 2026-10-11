@@ -43,6 +43,11 @@ The current object's absence remains explicit. Original capture frame, optional
 raw completion stamp and independently read terminal flags remain distinct from
 current query state, terminal cause and material payoff. These twelve production
 files are SOURCE_ADOPTED_NOT_RUN; no new runtime readiness is credited.
+The exact .4 construction path now admits two legal, source-valued economic
+upgrades through its existing SDK and native selectors; see
+[economic upgrade targets](../ck3-native-ai/construction-known-economic-upgrades-12004.md).
+The values remain authored comparisons, with actual stock legality/cost and the
+existing independent receipt; no upgrade, completion or realized income is credited.
 All new source commits use `[skip ci]` while the owner's stop-testing instruction applies.
 [Background-only handover](../handover/2026-10-11-g2-background-only-user-play.md).
 

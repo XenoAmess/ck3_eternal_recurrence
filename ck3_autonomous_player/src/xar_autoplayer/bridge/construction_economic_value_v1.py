@@ -54,7 +54,8 @@ _AUTHOR_MONTHLY_INCOME_HUNDREDTHS = {
 }
 
 # Exact .3 keys from the actual completed inventory. Target eligibility remains
-# the tier-one table above; these extra keys describe the old slot only.
+# the tier-one table above on older builds. Actual .4 additionally reuses
+# the two economic tier-two values as targets; other keys remain old-slot only.
 _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003 = {
     **_AUTHOR_MONTHLY_INCOME_HUNDREDTHS,
     "farm_estates_02": 115,
@@ -71,6 +72,11 @@ def authored_monthly_income_hundredths(
     if (not isinstance(building_key, str)
             or exact_ck3_build not in {"1.19.0.6", "1.20.0.2", "1.20.0.3", "1.20.0.4"}):
         return None
+    if exact_ck3_build == "1.20.0.4" and building_key in {
+            "farm_estates_02", "common_tradeport_02"}:
+        # Reuse the retained unconditional values; stock legality/cost and
+        # the observed old slot still decide whether this is a candidate.
+        return _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003[building_key]
     return _AUTHOR_MONTHLY_INCOME_HUNDREDTHS.get(building_key)
 
 

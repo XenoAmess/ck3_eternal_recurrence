@@ -85,7 +85,7 @@ bool ExecuteConstructionMailbox12004(void *context, const Stamp &stamp) noexcept
     (void)ck3::shared::AttachPlayerConstructionNativeMode3InputsV1(
         q.result, q.player_world_building_sources, std::move(mode3));
     if (q.request_private_action) {
-      q.private_action_candidate = ck3_11906::SelectPlayerWorldBuildingActionCandidateV1(
+      q.private_action_candidate = ck3_11906::SelectPlayerWorldBuildingActionCandidate12004(
           q.player_world_building_sources, stamp.pump_epoch, q.minimum_gold_reserve_raw);
       if (q.private_action_candidate.ready) {
         ConstructionActionRequestV1 request{};
