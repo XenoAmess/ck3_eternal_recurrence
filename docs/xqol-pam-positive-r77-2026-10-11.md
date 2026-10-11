@@ -102,3 +102,13 @@ RMTM R14/a182已运行，因adapter重复就绪等待在D0前停止；三行最�
 PAM新工作包只复用正式27文件与plain输入、生成未消费新state；原35步/12自然日/400秒资格及全部预算不变，不复制旧profile/cache、不重建正式产品。[实际准备READY](C:/workspace/ck3-upgrade-20261010/qol-pam-delayed-boundary-20261011-01/PUBLICPREPARE-READY.json) 7,942 B / `02d1af3de2594ff31434b2e6e49e78fd1b147721e741b661695e0d3f72e2738f`；prepared-case 29,973 B / `7e3709a2d01da1b0b181c3f87597dcb529e48e3fa797c1037159c72d5db2da9c`。真正公共prepare与prepared-plan各执行一次均0，elapsed1.049719秒；尚未分配或启动。
 
 [标准262闭账](C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/source19-pam-delayed-boundary-01-reservation-262-closed.json) 4,633 B / `ff9e58b427c71b3563bdd2dd67cb5cf27a35a04dfc8e785211d2ed6f8ab5a2e0`：真实后代写入0、native最终路径上界2,018,792 B，physical_peak_proven=false；完整4MiB后继只保守计入一次，usage37,116,669,056 B，不发回收或未来容量信用。next-scene consumer必须显式识别这个新262闭包，原52不会自动扫描它。小control artifacts在原other6MiB内另限128KiB，不降或扩大6MiB；新scene仍单独申请原默认2GiB。准备成功不授PAM业务PASS，两产品未发布状态保持。
+
+## 20:48 CST：R79/a183 delayed 候选实机 RED，未进入业务计划
+
+实际默认2GiB准入、公共allocate/preflight/run各一次；[本场预约](C:/workspace/disk-cleanup-20261010/resume-05/storage-coordinator/pam-positive-a183-source19-delayed-default2gib-01-reservation-52.json) 39,316 B / SHA-256 `c369aa53f702a386dcda2a9b85a2bf23aa2443f6049f69f8b572c044c5225b4c`。Source19、正式27文件、35步、12日与原预算均未变。root亲阅两张本次nonce原图及Steam“离线模式”，未使用旧截图推定新鲜度。
+
+原debug.log实际显示宋朝角色34422绑定成立，controlled modifier已添加但同一D0仍free_eq1；仅出现 `BOUNDARY queued_once_after_original_slot_prior`，没有hidden continuation进入及后续两条必需READY。Source19 `wait_for_fixture_business_context` 在startup事件确认和执行计划之前严格等待全部资格标记；paused D0的延迟事件与该门禁形成等待闭环。保留原400秒资格超时，不删必需标记、不提前推进天数或救活原attempt。该候选被实机否定，35步尚未执行，不授PAM通过。
+
+[run真实exit2](C:/workspace/ck3-upgrade-20261010/qol-scene-resume-02/pam_positive--a183/run-01-process-exit.json) 942 B / `84d0a5e4e47f8bc86a610de60884162b655815bc42d3a22501dabe56526bafee`；[verify真实exit2](C:/workspace/ck3-upgrade-20261010/qol-scene-resume-02/pam_positive--a183/verify-01-process-exit.json) 950 B / `9c9c898d0fbdeea6421c08a9c9ae2d0eac1ee181ab9b658b49e57f47b6967f63`。native RED原因为 `TimeoutError: actual qualified fixture government/tier/player did not stabilize before deadline`。verify的NOT_RUN仅指业务适配器未执行，不能抹去本次真实CK3启动。
+
+原正常GUI退出路线完成，实际保留HANDLE的PID3412 / creation1791722213.6755033已signaled/OS0；`normal_close_qualified=false`，failure lifecycle proof成立，不能把失败退出写成正常业务闭场通过。observer按精确argv/PID/creation行政停止；原allocator和keeper实际退出0；fresh CAS8795为done/resources[]。空间预约仍须独立封口，CAS释放不是空间释放。共享readiness交接修复的[官方CI 38138708034](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38138708034)已completed/success，仍不计产品业务验收。下一实机优先RMTM core，PAM两阶段初始化只留候选研究；业务进度QOL 2/6、RMTM 0/2，两项均未发布，361不在范围。
