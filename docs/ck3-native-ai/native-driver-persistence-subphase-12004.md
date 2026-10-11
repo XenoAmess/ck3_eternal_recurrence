@@ -70,3 +70,20 @@ Root adopted both files and py_compile exited0 at observed01:49:36Z. No new
 functional test or profiling-only SDK restart. These stages enter SDK82 with
 the already-needed marriage admission diagnostic; actual values and performance
 improvements remain unobserved. Existing whole-wrapper and aggregate rows stay.
+
+## Complete JSON prefix reuse: no small change established
+
+35's [bounded source review](D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-35/performance-service-query-history79/ENCODE-PREFIX-FEASIBILITY-FC62.json)
+at02:13:29Z returned `NO_SMALL_FIX`. In held sourcefc62,
+`_observe_arrange_marriage_outcome` mutates an older row's nested
+`marriage_result` at native_driver.py:10144 without changing history count or
+list identity. Restore also replaces, filters and reindexes history. An encoded
+prefix therefore cannot be reused solely from count, list identity or the
+existing dirty Boolean. This is a concrete source counterexample, not a claim
+that the mutation occurred in the five measured R96 samples.
+
+The current encoder already references history without a complete deepcopy.
+Changing that encoder alone does not establish a reduction in complete JSON
+serialization cost. This direction is closed without a cache, mutation protocol,
+patch, new tests or SDK switch. The existing SDK82 write/replace observations
+and actual ordinary-play blockers remain the next useful inputs.
