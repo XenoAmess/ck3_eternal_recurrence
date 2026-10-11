@@ -46,11 +46,11 @@ def read_release_ledger(state_dir: Path) -> dict[str, object]:
 
 def _observed_inputs(
     driver: object, snapshot: dict[str, object],
-) -> tuple[dict[str, object] | None, list[dict[str, object]]]:
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     def collect(view: dict[str, object], native_history: list[dict[str, object]]):
         history = [row for row in view.get("history", []) if isinstance(row, dict)]
         history.extend(row for row in native_history if isinstance(row, dict))
-        collection = None
+        collections: dict[int, dict[str, object]] = {}
         war_results: dict[str, dict[str, object]] = {}
         for row in history:
             result = row.get("result")
@@ -61,18 +61,20 @@ def _observed_inputs(
                     and result.get("queried_revision") == snapshot.get("revision")
                     and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
                     and result.get("snapshot_revision") == snapshot.get("native_revision")):
-                collection = result
+                ordinal = _selected_ordinal(result.get("step"))
+                collections.pop(ordinal, None)
+                collections[ordinal] = result
             elif isinstance(command, str):
                 war_results[command] = result
         wars = snapshot.get("active_wars")
         war_reads = [war_results.get(query_war_prisoner_release_pairs_v1_step(
             war["war_id"]), {}) for war in wars] if isinstance(wars, list) else []
-        return {"collection": collection, "war_reads": war_reads}
+        return {"collections": list(collections.values()), "war_reads": war_reads}
 
     planning_view = getattr(driver, "_with_internal_planning_view", None)
     observed = (planning_view(snapshot, collect) if callable(planning_view)
                 else collect(snapshot, snapshot.get("native_command_history", [])))
-    return observed["collection"], observed["war_reads"]
+    return observed["collections"], observed["war_reads"]
 
 
 def _positive_ransom_has_priority(
@@ -196,7 +198,8 @@ def plan_release_formal(
     if isinstance(read_ransom_ledger(state_dir)["pending"], dict):
         return planned
     try:
-        collection, war_reads = _observed_inputs(driver, snapshot)
+        collections, war_reads = _observed_inputs(driver, snapshot)
+        collection = collections[-1] if collections else None
         refresh = getattr(driver, "_prisoner_release_requery_required", None)
         if isinstance(refresh, dict):
             signature = (collection.get("queried_snapshot_id"), collection.get("snapshot_revision"),
@@ -210,6 +213,25 @@ def plan_release_formal(
         if collection is None:
             return planned
         choice, observation = _observed_choice(snapshot, collection, war_reads)
+        if choice is None:
+            for earlier in reversed(collections[:-1]):
+                candidate, _ = _observed_choice(snapshot, earlier, war_reads)
+                if candidate is None:
+                    continue
+                # Native keeps only the latest selected offer. Restore this
+                # earlier ordinal's exact query intent before typed submit.
+                query = {"expected_revision": snapshot["revision"],
+                         "ransom_ordinal": candidate["source_ordinal"]}
+                if "queried_release_option_keys" in earlier:
+                    query["release_option_keys"] = earlier["queried_release_option_keys"]
+                _fresh_private_pump(driver, _frame(snapshot)[2])
+                fresh = driver.query_player_prisoner_collection_private_v1(**query)
+                choice, observation = _observed_choice(snapshot, fresh, war_reads)
+                if choice is not None and any(choice[key] != candidate[key] for key in (
+                        "source_ordinal", "prisoner_character_id",
+                        "release_option_keys", "release_option_mask_bits")):
+                    raise ValueError("chosen release intent changed before submit")
+                break
     except (BridgeUnavailableError, KeyError, TypeError, ValueError) as error:
         return {**planned, "plan": {**plan, "prisoner_release_observation": {
             "status": "input_unavailable", "reason": str(error)}}}

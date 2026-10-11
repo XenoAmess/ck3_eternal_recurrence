@@ -52,14 +52,20 @@ action plan.
 ```mermaid
 flowchart TD
   A[Current native collection full ID and selected13 offer] --> B[Actual Driver query history and current public/native frame]
-  B --> C[Formal Service plan_turn]
+  B --> T[Latest same-frame collection per ordinal, ordered by last query]
+  T --> C[Formal Service plan_turn]
   C --> Q{Required save, urgent action or opening focus}
   Q -->|yes| R[Keep existing required action]
   Q -->|no| D{Existing accepted positive ransom opportunity}
   D -->|yes| E[Keep existing ransom route]
   D -->|no| F{Observed release accepted and current CanSend}
-  F -->|false or refused| G[Keep unchanged baseline plan]
-  F -->|true| H[Keep urgent action; use idle or generic readonly opportunity]
+  F -->|latest actionable| H[Keep urgent action; use idle or generic readonly opportunity]
+  F -->|latest not actionable| U{Earlier ordinal latest actionable offer}
+  U -->|none| G[Keep unchanged baseline plan]
+  U -->|first candidate| V[Fresh pump and same ordinal / original option-key intent query]
+  V --> W{Original predicates and prisoner / ordinal / keys / mask still match}
+  W -->|false or unavailable| G
+  W -->|true, actual fresh costs and answer| H
   H --> I[Copy exact observed collection mask keys costs answer into proposal]
   I --> J[Formal Service execution]
   J --> K[Existing Driver submit_player_prisoner_release_private_v1]
@@ -87,13 +93,40 @@ played character and urgent events remain authoritative. If final arbitration
 keeps another action, the ordinary root enrichment resumes in the same call.
 Following a submitted release it resumes on the next turn.
 
-The current-query requirement means this entry consumes the most recent
-selected offer; it does not enumerate or optimize all thirteen option
-combinations. The retained release receipt does not yet automatically resolve
+The current-query requirement uses each ordinal's latest same-frame offer,
+with the latest query first and an earlier candidate refreshed before submit.
+It does not enumerate or optimize all thirteen option combinations. The retained release receipt does not yet automatically resolve
 the formal pending ledger. A fresh full-ID custody and relationship observation
 and its receipt resolver remain the next integration after a real submission.
 No queue ACK, event disappearance or absent prisoner collection alone is used
 as a named-opinion outcome.
+
+## B11-17 per-ordinal selection increment: source authored, not run
+
+Before this increment, `prisoner_release_formal_consumer.py::_observed_inputs`
+overwrote one collection at line64: a later refused ordinal hid an earlier accepted
+one. Retain only the last same-frame collection for each ordinal, ordered by
+last query. An actionable latest query keeps the original submit path without
+another query. Only if it is not actionable, inspect the other ordinals'
+latest observations in reverse query order.
+
+The first earlier actionable candidate requires the existing fresh pump and
+`query_player_prisoner_collection_private_v1` at the same public revision,
+ordinal and original option-key intent. Preserve absent keys (`None`, default)
+versus an explicitly supplied empty list. Reapply `_observed_choice` to the
+fresh preview: current custody/full ID, native acceptance/CanSend, war retention
+and positive-ransom priority remain unchanged. Prisoner, ordinal, keys and mask
+must still match; costs and answer come from this actual fresh preview. A fresh
+unavailable/refused result stops this selection, without falling back to older
+terms for that ordinal or directly submitting historical terms.
+
+The native mailbox reads the selected release preview at lines218-220 and
+retains only the most recent `current_release` at lines371-390. The existing
+ransom planner already refreshes its chosen ordinal at lines240-255.
+This increment reuses that path without
+new Native APIs, thresholds or option ranking. It is SOURCE_AUTHORED_NOT_RUN;
+the older GREEN below does not qualify this change, and natural release or
+material benefit credit remains zero.
 
 ## Qualification boundary
 
