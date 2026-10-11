@@ -400,7 +400,7 @@ def _native_command_rejection_diagnostic(error: BaseException) -> dict[str, obje
                       and all(type(predicates.get(key)) is bool for key in predicate_keys)
                       and type(thin.get("read_attempted")) is bool
                       and type(thin.get("truncated")) is bool
-                      and all(thin.get(key) is None or type(thin.get(key)) is str
+                      and all(key in thin and (thin[key] is None or type(thin[key]) is str)
                               for key in ("cached_scalars", "observed_scalars", "differing_fields")))
         if valid_thin:
             projection = {
