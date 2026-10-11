@@ -76,14 +76,17 @@ def ending_frame(turn: dict) -> dict | None:
 
 
 class Queue:
-    def __init__(self, packet: Path, output: Path, prefix: str, timeout: float):
+    def __init__(self, packet: Path, output: Path, prefix: str, timeout: float, runtime_guard=None):
         self.inbox = packet / "gameplay-requests"
         self.outbox = packet / "gameplay-responses"
         self.output, self.prefix, self.timeout = output, prefix, timeout
         self.sequence = 0
         self.requests = []
+        self.runtime_guard = runtime_guard
 
     def call(self, tool: str, arguments: dict, kind: str) -> tuple[dict, Path]:
+        if self.runtime_guard is not None:
+            self.runtime_guard(tool, arguments, kind)
         self.sequence += 1
         name = f"{self.prefix}-{self.sequence:06d}-{kind}.json"
         request_path = self.inbox / name
@@ -157,7 +160,8 @@ def run(args) -> int:
     initial_completion = body(read(args.sway_completion))
     last_leaf_date = initial_opinion["date_raw"]
     args.output.mkdir(parents=True, exist_ok=False)
-    queue = Queue(args.packet, args.output, args.prefix, args.response_timeout_seconds)
+    queue = Queue(args.packet, args.output, args.prefix, args.response_timeout_seconds,
+                  getattr(args, "runtime_guard", None))
     started = datetime.now(timezone.utc).isoformat()
     turns = 0
     status = "RUNNING"

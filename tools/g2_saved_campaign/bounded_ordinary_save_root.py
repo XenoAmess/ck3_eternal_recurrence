@@ -87,6 +87,7 @@ def run(args) -> int:
                 # Actual current SAVE was paired with snapshot above or below.
                 matched_checkpoint_episode={key: checkpoint[key] for key in (
                     "episode_character_id", "episode_run_id", "succession_lifecycle")},
+                runtime_guard=getattr(args, "runtime_guard", None),
             )
             code = loop.run(ordinary_args)
             result_path = chunk_output / "LOOP-RESULT.json"
@@ -128,7 +129,8 @@ def run(args) -> int:
                 checkpoint_output.mkdir()
                 queue = loop.Queue(args.packet, checkpoint_output,
                                    chunk_prefix + "-checkpoint",
-                                   args.response_timeout_seconds)
+                                   args.response_timeout_seconds,
+                                   getattr(args, "runtime_guard", None))
                 checkpoint_requests = queue.requests
                 # Exact normal snapshot/SAVE request shapes from ROOT-QUEUE-R85-LIFECYCLE.py.
                 snapshot, next_snapshot_path = queue.call(

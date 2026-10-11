@@ -38,3 +38,7 @@ d58916661a104513347735a9ff9dde5377d4397c1642d4c2ab2fafd747faa2f9.
 Historical preparation used Root's 96 KiB source admission within the existing
 4 GiB SDK86 source scope, with deadline 2026-10-12T16:47:28.264315Z unchanged.
 Each live run needs its own current runtime admission and protected input refs.
+Root callers may supply a runtime_guard callback. It checks admission, expiry
+and remaining space before each queue request, including checkpoint requests;
+rejection stops before creating the request and preserves completed responses.
+The callback must raise an exception to reject; a returned value is ignored.
