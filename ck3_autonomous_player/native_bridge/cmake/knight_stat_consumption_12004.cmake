@@ -2,6 +2,8 @@
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_knight_stat_consumption.cpp
   src/ck3_12004_knight_stat_consumption_serializer.cpp
+  src/person_callback_entry_inputs_12004.cpp
+  src/person_current_input_outcome_binding_12004.cpp
   src/entry_selected_receiver_stage_12004.cpp)
 
 if(BUILD_TESTING AND WIN32)

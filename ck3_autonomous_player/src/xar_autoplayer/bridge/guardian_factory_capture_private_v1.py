@@ -78,7 +78,14 @@ def capture_with_connected_driver(
         factory_inputs.get("current_family_relation_v1")
         if factory_inputs is not None else None
     )
+    from .guardian_factory_create_inputs_contract_v1 import (
+        DECISION_INPUTS, project_guardian_family_decision_inputs_v1,
+    )
+    decision_inputs = project_guardian_family_decision_inputs_v1(
+        factory_inputs, family_result=family,
+    )
     return {
+        DECISION_INPUTS: decision_inputs,
         **({"current_family_relation_v1": current_relation}
            if current_relation is not None else {}),
         **({"native_factory_discovery_v1": factory_inputs}

@@ -183,6 +183,14 @@ void Context(std::ostream &out, const KnightConsumedContext12004 &context) {
     out << ",\"preparation_capture_at_consumption\":"
         << SerializePersonSixStageCapture12004(*context.preparation_capture_at_consumption);
   }
+  if (context.preparation_entry_inputs) {
+    out << ",\"preparation_entry_inputs\":"
+        << SerializePersonCallbackEntryInputs12004(*context.preparation_entry_inputs);
+  }
+  if (context.current_input_outcome_binding) {
+    out << ",\"current_input_outcome_binding\":"
+        << SerializePersonCurrentInputOutcomeBinding12004(*context.current_input_outcome_binding);
+  }
   if (context.installed_transfer_lineage) {
     out << ",\"installed_transfer_lineage\":";
     InstalledTransferLineage(out, *context.installed_transfer_lineage);

@@ -3,6 +3,8 @@
 #include "xar_bridge/ck3_12004_person_following_2922680.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 #include "xar_bridge/entry_selected_receiver_stage_12004.hpp"
+#include "xar_bridge/person_callback_entry_inputs_12004.hpp"
+#include "xar_bridge/person_current_input_outcome_binding_12004.hpp"
 
 #include <array>
 #include <cstdint>
@@ -61,7 +63,10 @@ struct KnightConsumedContext12004 {
   // Owned at this actual consumed-Ci return; absent in legacy records.
   std::optional<EntrySelectedReceiverStage12004> preparation_stage_lineage;
   std::optional<PersonSixStageCapture12004DTO> preparation_capture_at_consumption;
+  // Independent owned history copied before this same actual Ci getter.
+  std::optional<PersonCallbackEntryInputs12004> preparation_entry_inputs;
   std::optional<KnightInstalledTransferLineage12004> installed_transfer_lineage;
+  std::optional<PersonCurrentInputOutcomeBinding12004> current_input_outcome_binding;
   std::string reason;
   friend bool operator==(const KnightConsumedContext12004 &,
                          const KnightConsumedContext12004 &) = default;

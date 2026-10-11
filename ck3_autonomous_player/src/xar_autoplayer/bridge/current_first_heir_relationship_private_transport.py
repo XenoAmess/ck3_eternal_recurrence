@@ -318,6 +318,12 @@ def query_current_first_heir_relationship_private_v1(
             native_revision=expected_native_revision, date_raw=before["date_raw"])
         base[DESCENDANTS_LEAF] = descendants
         base[DESCENDANTS_SUMMARY] = summarize_current_first_heir_descendants_v1(descendants)
+        from ..family_generation_education_decision_v1 import (
+            derive_family_generation_education_decision_inputs_v1,
+        )
+        base["family_generation_education_decision_inputs_v1"] = (
+            derive_family_generation_education_decision_inputs_v1(descendants)
+        )
     if result.get("status") == "unavailable":
         reason = result.get("unavailable_reason")
         if (not isinstance(reason, str) or not reason

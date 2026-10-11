@@ -28,6 +28,13 @@ and [construction receipt intent continuity](construction-selected-intent-contin
 These additions are source-only, NOT_RUN; no new software or live qualification
 is claimed. Local tests and all Game/Steam/window operations stay stopped.
 
+The next source-only integration connects
+[current-family education decision inputs](family-generation-education-decision-inputs-v1.md)
+to the existing family query and Guardian capture, and
+[Person callback entry/outcome copies](person-callback-entry-outcome-source-12004.md)
+to the existing Ci getter/serializer/decoder. Both remain unexecuted research;
+the previously compiled Native84/fullSDK84 artifacts are unchanged.
+
 ## 2026-10-09: Restored original campaign observes current native state
 
 The [conditional person contribution](battle-person-conditional-2921a90-12004.md)

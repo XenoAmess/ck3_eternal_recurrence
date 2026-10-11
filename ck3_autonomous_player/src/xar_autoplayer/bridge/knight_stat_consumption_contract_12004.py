@@ -118,6 +118,32 @@ _QUERY_FIELDS = {
     "schema", "build_version", "executable_sha256", "configured", "observer_installed",
     "oldest_available_sequence", "latest_sequence", "overwritten_events", "events", "reason",
 }
+_ENTRY_INPUT_SCHEMA = "xar.ck3.person-callback-entry-inputs-12004-v1"
+_ENTRY_INPUT_FLAGS = {
+    "exact_image_bound", "getter_site_observed", "entry_event_observed",
+}
+_ENTRY_INPUT_COMPARISONS = {
+    "capture_identity_matches_selected", "capture_thread_matches_entry",
+    "completion_thread_matches_entry", "preparation_owner_matches_selected",
+}
+_ENTRY_INPUT_FIELDS = {
+    "schema", "source_stage", "selected_character_identity", "selected_character_id",
+    "getter_caller_return_rva", "getter_begin_event", "preparation_at_entry", "reason",
+    *_ENTRY_INPUT_FLAGS, *_ENTRY_INPUT_COMPARISONS,
+}
+_INPUT_OUTCOME_SCHEMA = "xar.ck3.person-current-input-outcome-binding-12004-v1"
+_INPUT_OUTCOME_FACTS = {
+    "selected_full_generation_matches_return", "getter_site_matches_return",
+    "getter_occurrence_matches_return", "entry_preparation_owner_and_thread_match",
+    "same_native65_preparation_identity", "same_preparation_model_context_owner",
+    "entry_pc_matches_returned_preparation", "entry_pc_matches_consumed_pc",
+}
+_INPUT_OUTCOME_FIELDS = {
+    "schema", "selected_character_identity", "selected_character_id",
+    "getter_caller_return_rva", "returned_character_identity", "returned_character_id",
+    "returned_context_identity", "source_input_bound_to_consumption", "reason",
+    *_INPUT_OUTCOME_FACTS,
+}
 
 
 def _raw64(value: object, path: str, *, unsigned: bool = False,
@@ -319,6 +345,63 @@ def _natural_event(value: object, path: str) -> dict:
         "sequence": _raw64(raw["sequence"], path + ".sequence", unsigned=True),
         "thread_id": _number(raw["thread_id"], path + ".thread_id", 32, unsigned=True),
     }
+
+
+def _preparation_entry_inputs(value: object, path: str) -> dict | None:
+    """Decode the independently owned history copied before this Ci getter."""
+    if value is None:
+        return None
+    from .battle_person_six_stage_capture_12004 import normalize_person_six_stage_capture_12004
+
+    raw = _dict(value, path, _ENTRY_INPUT_FIELDS)
+    if raw["schema"] != _ENTRY_INPUT_SCHEMA or raw["source_stage"] != "before_original_ci_getter":
+        raise ValueError(path + " requires the before-original-Ci entry input schema")
+    try:
+        capture = normalize_person_six_stage_capture_12004(raw["preparation_at_entry"])
+    except ValueError as error:
+        raise ValueError(path + ".preparation_at_entry: " + str(error)) from error
+    result = {
+        "schema": _ENTRY_INPUT_SCHEMA, "source_stage": "before_original_ci_getter",
+        "selected_character_identity": _identity(raw["selected_character_identity"], path + ".selected_character_identity", optional=False),
+        "selected_character_id": _integer(raw["selected_character_id"], path + ".selected_character_id", 32, unsigned=True),
+        "getter_caller_return_rva": _identity(raw["getter_caller_return_rva"], path + ".getter_caller_return_rva", optional=False),
+        "getter_begin_event": _natural_event(raw["getter_begin_event"], path + ".getter_begin_event"),
+        "preparation_at_entry": capture,
+        "reason": _string(raw["reason"], path + ".reason"),
+    }
+    for field in _ENTRY_INPUT_FLAGS | _ENTRY_INPUT_COMPARISONS:
+        result[field] = _boolean(raw[field], path + "." + field,
+                                 optional=field in _ENTRY_INPUT_COMPARISONS)
+    # Entry history is never substituted for the separately captured after
+    # preparation or the actual consumed PC. Comparisons may be false or null.
+    return result
+
+
+def _current_input_outcome_binding(value: object, path: str) -> dict | None:
+    """Keep the native pure comparison's eight facts and three-state result."""
+    if value is None:
+        return None
+    raw = _dict(value, path, _INPUT_OUTCOME_FIELDS)
+    if raw["schema"] != _INPUT_OUTCOME_SCHEMA:
+        raise ValueError(path + " requires the current-input-outcome binding schema")
+    result = {
+        "schema": _INPUT_OUTCOME_SCHEMA,
+        "selected_character_identity": _identity(raw["selected_character_identity"], path + ".selected_character_identity", optional=False),
+        "selected_character_id": _integer(raw["selected_character_id"], path + ".selected_character_id", 32, unsigned=True),
+        "getter_caller_return_rva": _identity(raw["getter_caller_return_rva"], path + ".getter_caller_return_rva", optional=False),
+        "returned_character_identity": _identity(raw["returned_character_identity"], path + ".returned_character_identity"),
+        "returned_character_id": _number(raw["returned_character_id"], path + ".returned_character_id", 32, unsigned=True),
+        "returned_context_identity": _identity(raw["returned_context_identity"], path + ".returned_context_identity"),
+        "source_input_bound_to_consumption": _boolean(raw["source_input_bound_to_consumption"], path + ".source_input_bound_to_consumption", optional=True),
+        "reason": _string(raw["reason"], path + ".reason"),
+    }
+    for field in _INPUT_OUTCOME_FACTS:
+        result[field] = _boolean(raw[field], path + "." + field, optional=True)
+    facts = [result[field] for field in _INPUT_OUTCOME_FACTS]
+    aggregate = False if any(fact is False for fact in facts) else None if any(fact is None for fact in facts) else True
+    if result["source_input_bound_to_consumption"] is not aggregate:
+        raise ValueError(path + " aggregate differs from its eight native three-state facts")
+    return result
 
 
 def _transfer_snapshot(value: object, path: str) -> dict:
@@ -666,7 +749,8 @@ def _installed_transfer_lineage(value: object, row: dict, path: str) -> dict | N
 
 def _context(value: object, path: str) -> dict[str, object]:
     optional_fields = (set(value) & {"preparation_stage_lineage", "preparation_capture_at_consumption",
-                                   "installed_transfer_lineage"}
+                                   "installed_transfer_lineage", "preparation_entry_inputs",
+                                   "current_input_outcome_binding"}
                        if isinstance(value, dict) else set())
     raw = _dict(value, path, _CONTEXT_FIELDS | optional_fields)
     key = _integer(raw["property_key"], path + ".property_key", 16, unsigned=True)
@@ -705,6 +789,12 @@ def _context(value: object, path: str) -> dict[str, object]:
     if "installed_transfer_lineage" in raw:
         result["installed_transfer_lineage"] = _installed_transfer_lineage(
             raw["installed_transfer_lineage"], result, path + ".installed_transfer_lineage")
+    if "preparation_entry_inputs" in raw:
+        result["preparation_entry_inputs"] = _preparation_entry_inputs(
+            raw["preparation_entry_inputs"], path + ".preparation_entry_inputs")
+    if "current_input_outcome_binding" in raw:
+        result["current_input_outcome_binding"] = _current_input_outcome_binding(
+            raw["current_input_outcome_binding"], path + ".current_input_outcome_binding")
     return result
 
 

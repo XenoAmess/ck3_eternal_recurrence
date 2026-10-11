@@ -458,8 +458,15 @@ void *InvokeKnightStatContext12004(void *selected_character,
   }
   // Only shared natural events are comparable to transfer completion. The
   // family's retention sequence and Native65 preparation counter stay separate.
-  const auto begin = observed ? OwnedEvent(NextPersonNaturalLineageEvent12004())
-                              : KnightNaturalLineageEvent12004{};
+  const auto natural_begin = observed ? NextPersonNaturalLineageEvent12004()
+                                      : PersonInstalledTransferEvent12004{};
+  const auto begin = OwnedEvent(natural_begin);
+  std::optional<PersonCallbackEntryInputs12004> preparation_entry;
+  if (observed && selected_id)
+    preparation_entry = CapturePersonCallbackEntryInputs12004(
+        BindPersonCallbackEntryInputs12004(kExecutableSha256),
+        reinterpret_cast<std::uintptr_t>(selected_character), *selected_id,
+        rva, natural_begin);
   // This is the actual getter return used by the original numeric function.
   void *const result = original(selected_character);
   const auto end = observed ? OwnedEvent(NextPersonNaturalLineageEvent12004())
@@ -471,6 +478,7 @@ void *InvokeKnightStatContext12004(void *selected_character,
       context.caller_return_rva = rva;
       context.selected_character_identity = reinterpret_cast<std::uintptr_t>(selected_character);
       context.selected_character_id = selected_id;
+      context.preparation_entry_inputs = std::move(preparation_entry);
       context.context_identity = reinterpret_cast<std::uintptr_t>(result);
       context.operand_raw = operand;
       context.consumed_pc.weight_q100000 = 0;
@@ -508,6 +516,9 @@ void *InvokeKnightStatContext12004(void *selected_character,
         context.preparation_capture_at_consumption = std::move(capture);
       context.installed_transfer_lineage = InstalledTransferLineage(
           transfer, begin, end, context, g_pending->thread_id);
+      if (context.preparation_entry_inputs)
+        context.current_input_outcome_binding = BindPersonCurrentInputOutcome12004(
+            *context.preparation_entry_inputs, context);
       g_pending->contexts.push_back(std::move(context));
     } catch (...) { g_capture_failures.fetch_add(1); }
   }

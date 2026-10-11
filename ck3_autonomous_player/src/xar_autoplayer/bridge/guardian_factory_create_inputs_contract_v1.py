@@ -191,12 +191,98 @@ def validate_guardian_factory_create_inputs_v1(
 
 
 CURRENT_RELATION = "current_family_relation_v1"
+DECISION_INPUTS = "guardian_family_decision_inputs_v1"
 _RELATION_TRUE_BASES = {"entry_raw_equal", "tag2_row_raw_equal", "fallback_raw_equal"}
 _RELATION_FALSE_BASES = {
     "target_tag_rejected", "root_state_rejected", "target_state_rejected",
     "root_peer_extension_absent", "peer_absent", "relation_entries_empty",
     "relation_entries_exhausted",
 }
+
+
+def project_guardian_family_decision_inputs_v1(
+    owned_native_sidecar: dict[str, object] | None, *,
+    family_result: dict[str, object],
+) -> dict[str, object]:
+    """Expose independent facts from the already validated same-query results.
+
+    Callers supply the owned result of validate_guardian_factory_create_inputs_v1
+    and the existing normalized family query. This adapter reads no native data.
+    The named relation rows describe played -> current first heir; they do not
+    identify a child's guardian, choose an educator or authorize an interaction.
+    """
+    from .current_first_heir_descendants_v1 import LEAF as DESCENDANTS
+    from ..family_generation_education_inputs_v1 import (
+        derive_family_generation_education_inputs_v1,
+    )
+
+    revision = _uint(family_result.get("native_revision"), 64, "family.native_revision")
+    if revision == 0:
+        raise ValueError("decision inputs require the normalized native revision")
+    heir = family_result.get("heir_character_id")
+    native_heir = -1 if heir is None else heir
+    if type(native_heir) is not int or not -(2**31) <= native_heir < 2**31:
+        raise ValueError("decision inputs require the normalized full heir identity")
+    descendants = family_result.get(DESCENDANTS)
+    if descendants is not None and not isinstance(descendants, dict):
+        raise ValueError("decision inputs require normalized descendants")
+
+    actor = descendants.get("played_character_id") if descendants is not None else None
+    date = descendants.get("date_raw") if descendants is not None else None
+    relation = None
+    if owned_native_sidecar is not None:
+        if (not isinstance(owned_native_sidecar, dict)
+                or owned_native_sidecar.get("schema") != DISCOVERY
+                or type(owned_native_sidecar.get("native_revision")) is not int
+                or owned_native_sidecar["native_revision"] != revision
+                or type(owned_native_sidecar.get("heir_character_id")) is not int
+                or owned_native_sidecar["heir_character_id"] != native_heir):
+            raise ValueError("decision inputs lost the owned family query binding")
+        sidecar_actor = owned_native_sidecar["played_character_id"]
+        sidecar_date = owned_native_sidecar["date_raw"]
+        if (actor is not None and actor != sidecar_actor
+                or date is not None and date != sidecar_date):
+            raise ValueError("decision inputs combine different descendant frames")
+        actor, date = sidecar_actor, sidecar_date
+        relation = owned_native_sidecar.get(CURRENT_RELATION)
+
+    if descendants is not None and (
+            type(descendants.get("native_revision")) is not int
+            or descendants["native_revision"] != revision
+            or descendants.get("heir_character_id") not in (None, heir)):
+        raise ValueError("decision inputs lost the normalized descendant binding")
+
+    relation_rows = []
+    if relation is not None:
+        for row in relation["rows"]:
+            relation_rows.append({
+                "key": row["key"], "available": row["available"],
+                "value": row["raw_value"], "basis": row["basis"],
+                "unavailable_reason": row["unavailable_reason"],
+            })
+    else:
+        relation_rows = [{
+            "key": key, "available": False, "value": None,
+            "basis": "", "unavailable_reason": "current_relation_not_observed",
+        } for key in KEYS]
+
+    return {
+        "schema": "xar.guardian-family-decision-inputs.v1", "schema_version": 1,
+        "read_only": True, "source_projection_only": True,
+        "native_trigger_invoked": False,
+        "frame": {
+            "native_revision": revision, "played_character_id": actor,
+            "heir_character_id": heir, "date_raw": date,
+        },
+        "relation": {
+            "direction": "played_to_current_first_heir",
+            "ready": relation["ready"] if relation is not None else False,
+            "rows": relation_rows,
+        },
+        # Aggregate completeness is diagnostic; callers consume individual
+        # leaf_availability entries, including available focus absence.
+        "children": derive_family_generation_education_inputs_v1(descendants),
+    }
 
 
 def _optional_uint(value: object, bits: int, name: str) -> int | None:
