@@ -2446,6 +2446,24 @@ class PlanClient:
                         self.control_plan_execution_depth += 1
                         try:
                             await self.execute(plan)
+                        except RuntimeError as error:
+                            diagnostic = getattr(error, "ck3_campaign_pause_frame_diagnostic", None)
+                            if (str(error) != "campaign pause readback lost the complete same-owner frame"
+                                    or not isinstance(diagnostic, dict)
+                                    or diagnostic.get("schema") != "ck3-campaign-pause-same-owner-frame-diagnostic-v1"):
+                                raise
+                            # The failed plan stays consumed and RED. Keep this
+                            # client/game only for the remainder of the same hold.
+                            if self.report.get("error") is None:
+                                self.report["error"] = f"{type(error).__name__}: {error}"
+                            self.report.setdefault("control_plan_pause_readback_failures", []).append({
+                                "control_plan": str(path), "original_error": str(error),
+                                "diagnostic": copy.deepcopy(diagnostic),
+                                "consumed_control_plan_preserved": True,
+                                "original_hold_deadline_preserved": True,
+                                "mutation_replayed": False, "business_pass": False,
+                                "normal_close_qualified": False})
+                            self.write()
                         finally:
                             self.control_plan_execution_depth -= 1
             await asyncio.sleep(min(0.25, max(0, deadline - time.monotonic())))
