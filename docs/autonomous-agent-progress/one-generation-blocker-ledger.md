@@ -1,5 +1,31 @@
 # 一代人自治：阻塞与能力债账本
 
+## Current continuation: owner uses local CK3; offline G2 work only
+
+Recorded 2026-10-11T05:10:27.507250+00:00. [Current instruction and stop evidence](../handover/2026-10-11-g2-background-only-user-play.md)
+supersede older local-execution plans. SDK/keeper exited0 and CAS1976 was released;
+Game was preserved without further operation. No local Game/Steam/SDK live query,
+launch, attachment, injection, input or real-game acceptance until explicit release.
+This stops local execution, while G2 functional research and offline implementation
+continue with the existing64-agent team.
+
+Actual retained baseline:6077/H10134/full13, original Robert29829, natural0;
+M4 complete/G2 6/8/NW2 2/4/M6 partial/M7 incomplete. Native84/SDK84 Source594
+are qualified and R99 cold13 passed. Response600 applied a construction receipt
+query at the same date; the following controller's binary-SAVE/JSON argument
+mistake advanced no day. Five daily SAVEs are deferred by the owner; the fixed
+resume600 recipe must not execute during this prohibition.
+
+Offline priorities: useful scheme terminal/cause and continuous episode handling;
+education/guardian inputs that still prevent decisions; required complete combat
+and current callback inputs; loaded legal terms and price inputs. Begin with the
+recorded native trees and existing source/qualification packets. Reuse GREEN
+receipts, close concrete source dependencies, adopt useful code or precise topic
+updates into master, and identify unresolved inputs. No theoretical safety audit,
+duplicate QA or source-only result grants new live, natural succession or game days.
+02 coordinates functional work; Root alone integrates Git and shared reports.
+Older dated sections below remain historical evidence, not current task gates.
+
 
 ### 2026-10-06 late update: actual Army query recovered
 
