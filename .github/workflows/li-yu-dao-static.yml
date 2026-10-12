@@ -10,6 +10,8 @@ on:
       - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback_adapter.py'
       - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback.json'
       - 'tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py'
+      - 'tools/ck3_mod_acceptance_cases/lyd_release012_keypaths_adapter.py'
+      - 'tools/test_lyd_release012_keypaths.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'
       - '.github/workflows/li-yu-dao-static.yml'
@@ -21,6 +23,8 @@ on:
       - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback_adapter.py'
       - 'tools/ck3_mod_acceptance_cases/lyd_vanilla_feedback.json'
       - 'tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py'
+      - 'tools/ck3_mod_acceptance_cases/lyd_release012_keypaths_adapter.py'
+      - 'tools/test_lyd_release012_keypaths.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'
       - '.github/workflows/li-yu-dao-static.yml'
@@ -54,6 +58,7 @@ jobs:
           python -B -X utf8 mod_li_yu_dao/tools/test_challenger_tooltip.py
           python -B -X utf8 mod_li_yu_dao/tools/test_vanilla_faith_integration.py
           python -B -X utf8 tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py
+          python -B -X utf8 tools/test_lyd_release012_keypaths.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
           python -B -X utf8 mod_li_yu_dao/tools/test_institution_tooltips.py
           python -B -X utf8 mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py
