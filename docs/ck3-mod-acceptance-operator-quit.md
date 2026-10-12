@@ -1,5 +1,13 @@
 # 公共验收的正常退出与单一 GUI 操作者
 
+## 2026-10-13：进程先退出仍等待期限内的正常退出复核
+
+`e57563fb` 的[全仓CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38318914043)暴露四项真实回归，并在未改源码时全部本地复现。`84c5dc8c4a7819ea14af6681cfcdd986a5d48979` 在人工复核循环中遇原进程句柄signaled就直接退出，导致OS0/native0先于操作者落盘时，合法迟到复核没有等待，错误reviewer也未校验。
+
+`CaseClient.normal_close` 现在对仍可取得正常退出资格的OS0/native0保留原hold期限内的复核窗口。OS读取失败或非0、或host已经终结且native/thread/cleanup/error不满足正常资格时及时返回。入口已经退出的跳过规则、原reviewer/scene核验、最终资格谓词和原deadline保持；不重放动作、不增加等待预算。
+
+原四项断言保留，新增六种终态失败反例。两专题23个不同方法均取得PASS：首轮22 PASS，另1项因本次runner缺少`tools/PYTHONPATH`发生导入错误，保留该exit1，补实际环境后仅重验该项并PASS。外置 `C:/workspace/ck3_lyd_runtime_20261004/lyd-i3b-not-nand-fix-20261013-039/normal-close-ci-fix-001/INDEX.actual.json` SHA-256 `9928d9c2e11e4ff979f5d74b5a7a2da8e7eb1657e4bbd8f1c3d489b29730d956`，小证据共41901 B。没有新实机信用；已冻结的Source19运行时不自动加载MAIN这次修改。
+
 ## R47人工确认及时落盘
 
 LYD本机R47正常菜单退出取得原CK3句柄OS0，但操作者未在原hold期限内写入确认，public run2/verify2原样保留。以后人工路线在直接审阅原始未勾选autosave图、完成canonical最终Quit点击并审阅after图后，立即调用公共记录器；不等待进程退出后才构造响应：

@@ -857,9 +857,16 @@ class CaseClient:
                 'helper_replay_or_new_budget':False, 'business_pass':False})
             print('CK3_MANUAL_QUIT_CHECKPOINT '+str(manual),flush=True)
             while self.remaining()>0 and not response.is_file():
-                if self._kernel.WaitForSingleObject(self._handle,0)==0:
-                    break
                 report=self.read_report(allow_error=True)
+                if self._kernel.WaitForSingleObject(self._handle,0)==0:
+                    exit_code=ctypes.c_uint32()
+                    if not self._kernel.GetExitCodeProcess(self._handle,ctypes.byref(exit_code)) or exit_code.value!=0:
+                        break
+                    # OS0 may precede the operator's review; preserve its original deadline.
+                    if report.get('finished_at') and not (self.native_zero_proof(report) is not None
+                            and report.get('managed_session_thread_finished') is True
+                            and report.get('cleanup_ok') is True and not report.get('error')):
+                        break
                 time.sleep(.1)
         review=read_json(response) if manual_required and response.is_file() else None
         if review is not None:

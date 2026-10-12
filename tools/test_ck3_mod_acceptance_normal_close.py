@@ -173,6 +173,32 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                 self.assertFalse(result['normal_close_qualified'])
                 client.execute_plan.assert_not_called()
 
+    def test_terminal_failure_does_not_wait_for_unqualifiable_manual_review(self):
+        for failure in ('os_nonzero', 'os_unavailable', 'native_nonzero', 'thread', 'cleanup', 'host_error'):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                client, clock, fake_time, report = self.make_client(root,
+                    os_exit=1 if failure=='os_nonzero' else 0,
+                    native_exit=1 if failure=='native_nonzero' else 0)
+                if failure=='os_unavailable':
+                    client._kernel.GetExitCodeProcess=lambda *_: 0
+                elif failure=='thread':
+                    report['managed_session_thread_finished']=False
+                elif failure=='cleanup':
+                    report['cleanup_ok']=False
+                elif failure=='host_error':
+                    report['error']='original host failure'
+                original = copy.deepcopy(report)
+                with patch.object(self.module, 'time', fake_time):
+                    result = client.normal_close('synthetic-terminal-failure')
+                self.assertEqual(clock.now, 0)
+                self.assertEqual(client._hold, 1)
+                self.assertFalse(result['normal_close_qualified'])
+                self.assertIsNone(result['root_normal_gui_review'])
+                self.assertFalse((root / 'normal-quit-root-result.json').exists())
+                self.assertEqual(report, original)
+                client.execute_plan.assert_not_called()
+
     def test_late_review_from_another_reviewer_is_still_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             client, _, fake_time, _ = self.make_client(Path(directory), reviewer='not-root')

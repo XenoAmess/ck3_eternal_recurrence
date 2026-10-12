@@ -21,3 +21,9 @@
 小型验证根 `C:/workspace/ck3_lyd_runtime_20261004/lyd-i3b-not-nand-fix-20261013-039`，总131436 B，未启动游戏、SDK或原生构建。`SOURCE-CHECK.actual.json` 18275 B / SHA-256 `39de2731e0782d3e9896cba4ee1d240fce56144ea9c83959e3ec950b6d9584f0` 保留准确argv、cwd、时间、exit及stdout/stderr pins；`INDEX.json` 11359 B / `20afd9b6dfab4a6d6db006ff62c92953b7de1cbf33f24ddc391fc5d8fb77fb12`。失败stderr499 B / `169055c75e0fd3e1fbd87ab3f148ae00d5f8cde8df75bfed6abc93184faae790`。旧A38已经闭账，未再写入。
 
 后继实机须重新冻结并加载修正版，先验证缺代表时封案确实禁用，再完成实际代表提名、各派2/3与签署、所有玩家同意、保存前后政治保护及宗主结果。R0076只能保留为旧实现的失败与部分覆盖，不能向修正版授予成功信用。
+
+## e57563fb CI实际结果（2026-10-13 07:00 CST补记）
+
+提交 `e57563fb24fdbd735be04616fc9b215da1c9cb51` 的 [LYD专项](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38318913881)与[线性历史](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38318914417)均SUCCESS；[全仓检查](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38318914043)为FAILURE，全部attempt1，没有重跑。失败位于shared CK3 acceptance的normal-close/reviewer组：两项等待时间、一项跨scene迟到复核拒绝和一项默认人工退出资格断言，共四项。公共退出实现与测试夹具的归因另行核实，不能把此次全仓CI写成通过或改写为LYD业务失败。CLA当前没有状态报告，不记作失败。
+
+外置 `ci-e57563fb-001/INDEX.json` 7745 B / SHA-256 `50fb4188a70ccd65816d06e0ab57522cfe42076f20da0bde3680ec40e0b384c5`；17份小原件共162806 B，保留原run/check/status/jobs及8192 B失败日志片段。已停止查询该终态提交。
