@@ -11440,7 +11440,7 @@ class GameplayBridgeService:
                 "capability_not_available: selected backend cannot center "
                 "the map on a landed title"
             )
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(
                 "title-map navigation requires a paused CK3 snapshot"
@@ -11506,7 +11506,7 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "title-map navigation build mirror disagrees with bridge hello"
             )
-        current = self.snapshot()
+        current = self.snapshot(include_native_command_history=False)
         try:
             current_binding = _title_map_navigation_binding(current)
         except ValueError as error:

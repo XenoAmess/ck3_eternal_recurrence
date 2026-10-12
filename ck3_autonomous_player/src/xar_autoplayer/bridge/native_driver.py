@@ -8323,7 +8323,7 @@ class NativeHeadlessGameplayDriver:
                 "capability_not_available: native DLL cannot center the map "
                 "on a landed title"
             )
-        starting = self.take_snapshot()
+        starting = self.take_snapshot(include_native_command_history=False)
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native title-map navigation requires a paused snapshot"
@@ -8377,6 +8377,7 @@ class NativeHeadlessGameplayDriver:
                     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY
                 ),
                 request_fields={"title_key": key},
+                include_native_command_history=False,
             )
         except _NativeCommandRejectedError as error:
             if error.native_error not in TITLE_MAP_NAVIGATION_V1_REJECTION_CODES:
@@ -8408,7 +8409,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native title-map navigation build mirror disagrees with bridge hello"
             )
-        ending = self.take_snapshot()
+        ending = self.take_snapshot(include_native_command_history=False)
         try:
             ending_binding = _title_camera_navigation_binding_from_snapshot(
                 ending
