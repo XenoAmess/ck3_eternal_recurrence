@@ -33,7 +33,7 @@ lyd_i3b_begin_decision = {
         custom_description = { text = lyd_i3b_begin_faith_challengers_tt subject = root faith = { NOT = { any_religious_head_challenger = { always = yes } } } }
         custom_description = { text = lyd_i3b_begin_compatible_rites_tt subject = root faith = { NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes } } } } }
         custom_description = { text = lyd_i3b_begin_rite_rounds_tt subject = root faith = { NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } } } }
-        hidden_trigger = { lyd_i3b_can_begin_trigger = yes } }
+        custom_description = { text = lyd_i3b_begin_complete_tt subject = root lyd_i3b_can_begin_trigger = yes } }
     effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_begin_trigger = yes } lyd_i3b_begin_effect = yes } } }
     ai_will_do = { base = 0 }
 }
@@ -51,7 +51,7 @@ lyd_i3b_nominate_self_decision = {
         custom_description = { text = lyd_i3b_nominate_phase_tt subject = root var:lyd_i3b_phase = 1 }
         custom_description = { text = lyd_i3b_nominate_active_rite_tt subject = root rite = { var:lyd_i3b_dormant = 0 } }
         custom_description = { text = lyd_i3b_nominate_delegate_tt subject = root rite = { NOT = { has_variable = lyd_i3b_delegate } } }
-        hidden_trigger = { lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } }
+        custom_description = { text = lyd_i3b_nominate_complete_tt subject = root lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } }
     effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } lyd_i3b_nominate_self_effect = yes } } }
     ai_will_do = { base = 0 }
 }

@@ -54,6 +54,8 @@
  lyd_i3b_result_native_hor_failed_tt:0 "The detached Communion’s actual native main-rite head no longer matches this round’s authorized initiator after enactment. The real native state is retained without assigning a replacement or claiming success."
  lyd_i3b_result_unclassified_tt:0 "Failure class 6: unclassified postcondition failure; independently read back the actual objects before investigation."
  lyd_i3b_doctrine_clause_tt:0 "Institution terms: the current Faith and complete following rite list replace no head with temporal head. Vanilla Jingxue/Daoxue do not opt out. Tenets, main rite and followers stay unchanged. First candidate: [lyd_i3b_actor.GetTitledFirstName]. Dormant rites are terms but contribute no affirmative votes."
+ lyd_i3b_begin_complete_tt:0 "All initiation conditions above must be met."
+ lyd_i3b_nominate_complete_tt:0 "All nomination conditions above must be met."
  lyd_i3b_begin_player_tt:0 "I am a human player."
  lyd_i3b_begin_alive_tt:0 "I am alive."
  lyd_i3b_begin_adult_tt:0 "I am an adult."

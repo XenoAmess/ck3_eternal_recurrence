@@ -672,7 +672,7 @@ lyd_i3b_show_result_effect = {
             validity = '\n        '.join(
                 f'custom_description = {{ text = lyd_i3b_{prefix}_{key}_tt subject = root {condition} }}'
                 for key, condition in requirements
-            ) + f'\n        hidden_trigger = {{ {gate} }}'
+            ) + f'\n        custom_description = {{ text = lyd_i3b_{prefix}_complete_tt subject = root {gate} }}'
         decisions.append(f'''{name} = {{
     picture = {{ reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }}
     decision_group_type = religious ai_check_interval = 0
@@ -796,6 +796,8 @@ lyd_i3b_nominate_interaction = {
                                      'Institution terms: the current Faith and complete following rite list replace no head with temporal head. Vanilla Jingxue/Daoxue do not opt out. Tenets, main rite and followers stay unchanged. First candidate: [lyd_i3b_actor.GetTitledFirstName]. Dormant rites are terms but contribute no affirmative votes.'),
     }
     loc.update({
+        'lyd_i3b_begin_complete_tt':('上述创设条件须全部满足。','All initiation conditions above must be met.'),
+        'lyd_i3b_nominate_complete_tt':('上述提名条件须全部满足。','All nomination conditions above must be met.'),
         'lyd_i3b_begin_player_tt':('本人为玩家。','I am a human player.'),
         'lyd_i3b_begin_alive_tt':('本人在世。','I am alive.'),
         'lyd_i3b_begin_adult_tt':('本人已成年。','I am an adult.'),

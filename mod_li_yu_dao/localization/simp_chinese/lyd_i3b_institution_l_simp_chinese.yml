@@ -54,6 +54,8 @@
  lyd_i3b_result_native_hor_failed_tt:0 "实施后独立共同体的实际主礼仪领袖与本轮授权人不一致；保留真实原生状态，不补写领袖或宣告成功。"
  lyd_i3b_result_unclassified_tt:0 "失败类别 6：未分类后置失败，须独立读回实际对象后调查。"
  lyd_i3b_doctrine_clause_tt:0 "制度条款：当前整个信仰及以下完整礼仪名单均由“无宗主”改为“世俗宗主”，原版经学、道学不豁免；不改信条、主礼仪或信众归属。首任候选：[lyd_i3b_actor.GetTitledFirstName]。休眠礼仪同列条款，但不贡献赞成票。"
+ lyd_i3b_begin_complete_tt:0 "上述创设条件须全部满足。"
+ lyd_i3b_nominate_complete_tt:0 "上述提名条件须全部满足。"
  lyd_i3b_begin_player_tt:0 "本人为玩家。"
  lyd_i3b_begin_alive_tt:0 "本人在世。"
  lyd_i3b_begin_adult_tt:0 "本人已成年。"

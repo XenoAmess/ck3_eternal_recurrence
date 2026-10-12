@@ -319,17 +319,19 @@ class ActualScriptTests(unittest.TestCase):
                     continue
                 prefix,suffixes=previews[name]
                 self.assertEqual([e.key for e in valid.entries],
-                                 ['custom_description']*len(suffixes)+['hidden_trigger'],name)
+                                 ['custom_description']*(len(suffixes)+1),name)
                 self.assertTrue(all(e.operator=='=' for e in valid.entries),name)
                 tooltips=blocks(valid,'custom_description')
                 self.assertEqual([scalar(t,'text') for t in tooltips],
-                                 [prefix+suffix+'_tt' for suffix in suffixes],name)
+                                 [prefix+suffix+'_tt' for suffix in suffixes]+[prefix+'complete_tt'],name)
                 for tooltip in tooltips:
                     self.assertEqual(scalar(tooltip,'subject'),'root',name)
-                hidden=one(valid,'hidden_trigger')
+                self.assertFalse(any(e.key=='hidden_trigger' for e,_ in walk(valid)),name)
+                summary=tooltips[-1]
+                complete=Block([e for e in summary.entries if e.key not in {'text','subject'}])
                 executed=one(one(one(one(body,'effect'),'hidden_effect'),'if'),'limit')
                 self.assertEqual([e.value for e in executed.entries if e.key=='lyd_i3b_actor_trigger'],['yes'],name)
-                self.assertEqual(semantic_entries(hidden.entries),
+                self.assertEqual(semantic_entries(complete.entries),
                                  semantic_entries([e for e in executed.entries if e.key!='lyd_i3b_actor_trigger']),name)
         failures=one(self.c.defs['lyd_i3b_nominate_interaction'],'is_valid_showing_failures_only')
         for scope in ('scope:actor','scope:recipient'):

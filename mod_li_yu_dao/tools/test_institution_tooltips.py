@@ -53,17 +53,25 @@ class InstitutionTooltipTests(unittest.TestCase):
                 for e in self.validity(suffix).entries
                 if e.key == 'custom_description'}
 
+    def summary_key(self, suffix):
+        prefix = 'begin' if suffix == 'begin' else 'nominate'
+        return f'lyd_i3b_{prefix}_complete_tt'
+
+    def complete_gate(self, suffix):
+        summary = self.rows(suffix)[self.summary_key(suffix)]
+        return Block(tuple(e for e in summary.entries if e.key not in {'text', 'subject'}))
+
     def visible_result(self, suffix, state):
         actor, _, _, _, globals_, env = state
         engine = TooltipPolicy(self.defs, actor, globals_, env.copy())
         visible = Block([e for e in self.validity(suffix).entries
-                         if e.key != 'hidden_trigger'])
+                         if scalar(e.value, 'text') != self.summary_key(suffix)])
         return engine.block(visible, actor)
 
     def original_result(self, suffix, state):
         actor, _, _, _, globals_, env = state
         engine = PolicyAST(self.defs, actor, globals_, env.copy())
-        return engine.block(one(self.validity(suffix), 'hidden_trigger'), actor)
+        return engine.block(self.complete_gate(suffix), actor)
 
     def nomination_world(self):
         state = world(detached=False, active=True)
@@ -78,7 +86,7 @@ class InstitutionTooltipTests(unittest.TestCase):
         }
         for suffix, gate in expected.items():
             with self.subTest(suffix=suffix):
-                self.assertEqual(one(self.validity(suffix), 'hidden_trigger'), parse_clausewitz(gate))
+                self.assertEqual(self.complete_gate(suffix), parse_clausewitz(gate))
                 original = parse_clausewitz('hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes ' + gate + ' } lyd_i3b_' + suffix + '_effect = yes } }')
                 self.assertEqual(one(self.decisions[f'lyd_i3b_{suffix}_decision'], 'effect'), original)
 
@@ -116,6 +124,8 @@ class InstitutionTooltipTests(unittest.TestCase):
                         state[4]['faith:confucian_faith'] = state[2]
                     change(*state)
                     self.assertEqual(self.visible_result('begin', state), self.original_result('begin', state))
+                    engine = TooltipPolicy(self.defs, state[0], state[4], state[5].copy())
+                    self.assertEqual(engine.block(self.validity('begin'), state[0]), self.original_result('begin', state))
         for field, value in [('learning', 5), ('is_imprisoned', True)]:
             state = world(detached=False, active=False)
             state[0].fields[field] = value
@@ -136,6 +146,8 @@ class InstitutionTooltipTests(unittest.TestCase):
                 state = self.nomination_world()
                 change(*state)
                 self.assertEqual(self.visible_result('nominate_self', state), self.original_result('nominate_self', state))
+                engine = TooltipPolicy(self.defs, state[0], state[4], state[5].copy())
+                self.assertEqual(engine.block(self.validity('nominate_self'), state[0]), self.original_result('nominate_self', state))
         self.assertTrue(self.visible_result('nominate_self', self.nomination_world()))
 
     def test_learning_and_free_status_have_distinct_red_rows(self):
@@ -159,7 +171,11 @@ class InstitutionTooltipTests(unittest.TestCase):
     def test_requirements_are_separate_localized_and_generated(self):
         for suffix, count in [('begin', 25), ('nominate_self', 9)]:
             rows = self.rows(suffix)
-            self.assertEqual(len(rows), count)
+            self.assertEqual(len(rows), count + 1)
+            self.assertEqual([entry.key for entry in self.validity(suffix).entries],
+                             ['custom_description'] * (count + 1))
+            self.assertEqual(scalar(self.validity(suffix).entries[-1].value, 'text'), self.summary_key(suffix))
+            self.assertNotIn('hidden_trigger', self.outputs[DECISIONS].decode('utf-8-sig'))
             for language in ('simp_chinese', 'english'):
                 raw = self.outputs[f'localization/{language}/lyd_i3b_institution_l_{language}.yml']
                 self.assertTrue(raw.startswith(b'\xef\xbb\xbf'))
