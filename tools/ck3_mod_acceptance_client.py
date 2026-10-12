@@ -469,6 +469,10 @@ class CaseClient:
         case=self.selection.case
         require(case['id'] in CASES and TOOL in case.get('required_mcp_tools',[]) and
                 TOOL in case.get('opt_in_read_only_mcp_tools',[]), 'Appointment read requires explicit UI/government case opt in')
+        contract=(self.selection.adapter_context()['case_contract']
+                  if case['id']=='meritocratic_appointments' and self.selection.product_key=='xqol' else {})
+        allow_empty=(contract.get('case')=='meritocratic_appointments' and
+                     contract.get('gui_review_scope')=='merit_two_law_loaded_pool_v1')
         self.guard()
         frame=self.snapshot(); binding=frame_binding(frame)
         require(self._process and self._process['pid']==binding[0] and
@@ -503,12 +507,15 @@ class CaseClient:
             self.validate_frame(row['after_snapshot']);rows.append(row)
             v=row.get('result',{}).get('title_appointment',{})
             end=v.get('next_offset');count=v.get('full_candidate_count')
-            require(type(end) is int and type(count) is int and offset<end<=min(offset+64,count)<=4096,
+            empty_page=(allow_empty and breakdown_character_id is None and len(rows)==1 and
+                        type(end) is int and type(count) is int and offset==end==count==0)
+            require(empty_page or
+                    type(end) is int and type(count) is int and offset<end<=min(offset+64,count)<=4096,
                     'Appointment page did not make bounded progress')
             if end==count: break
             offset=end
         proof=join_pages(rows,frame,requested_title_id=requested_title_id,requested_title_key=requested_title_key,
-                         expected_law=expected_law,breakdown_character_id=breakdown_character_id)
+                         expected_law=expected_law,breakdown_character_id=breakdown_character_id,allow_empty=allow_empty)
         require(holder.get('holder_character_id')==proof['requested_holder_character_id'] and
                 (reference_kind=='navigation' or reference['holder_character_id']==proof['requested_holder_character_id']),
                 'Independent input title holder differs from native normalization holder')

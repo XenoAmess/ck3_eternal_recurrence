@@ -98,6 +98,28 @@ class LoadedLaws(unittest.TestCase):
             self.assertNotIn('score_raw_off',slot)
             self.assertFalse(any(c['character_id']==101 for c in slot['candidates']))
 
+    def test_empty_pool_is_a_complete_observation_only_in_loaded_scope(self):
+        value=row(breakdown=None)
+        value['result']['title_appointment'].update(full_candidate_count=0,
+            source_pool_count=0,candidate_offset=0,next_offset=0,candidates=[])
+        arguments=dict(requested_title_id=14770,requested_title_key='d_offline',
+                       expected_law=value['result']['title_appointment']['effective_succession_law_key'])
+        with self.assertRaises(ValueError):
+            appointment.join_pages([value],frame(),**arguments)
+        proof=appointment.join_pages([value],frame(),allow_empty=True,**arguments)
+        self.assertEqual(proof['candidates'],[])
+        self.assertEqual(proof['full_candidate_count'],0)
+        with self.assertRaises(ValueError):
+            appointment.join_pages([value,value],frame(),allow_empty=True,**arguments)
+        with self.assertRaises(ValueError):
+            appointment.join_pages([value],frame(),allow_empty=True,breakdown_character_id=101,**arguments)
+        slots=[dict(title_id=i+1,law=law,direct_original_review=True,candidates=[])
+               for i,law in enumerate(CONTRACT_VALUE['appointment_laws'])]
+        self.assertTrue(gov.verify_slots(slots,CONTRACT_VALUE,101))
+        old={**CONTRACT_VALUE,'gui_review_scope':gov.MERIT_REPRESENTATIVE}
+        with self.assertRaises(ValueError):
+            gov.verify_slots(slots,old,101)
+
     def test_actual_title_law_holder_and_manual_pool_cannot_be_replaced(self):
         for field,value in [('title_id',888),('title_key','k_wrong'),('law','other_law'),
                             ('requested_title_id',888),('requested_title_key','d_wrong'),

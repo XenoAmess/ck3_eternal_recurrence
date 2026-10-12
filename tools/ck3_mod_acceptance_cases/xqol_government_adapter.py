@@ -61,7 +61,7 @@ def verify_slots(slots,contract,actor):
             require(slot.get('full_candidates_reviewed') is True and
                     slot.get('eligibility_and_score_breakdown_reviewed') is True, 'Original complete candidate/tooltip review missing')
         candidates=slot.get('candidates')
-        require(isinstance(candidates,list) and candidates and all(type(x.get('character_id')) is int and x['character_id']>0 and
+        require(isinstance(candidates,list) and (candidates or loaded_pool(contract)) and all(type(x.get('character_id')) is int and x['character_id']>0 and
                 type(x.get('eligible')) is bool and type(x.get('is_ai')) is bool for x in candidates),
                 'Original actual complete candidate rows missing')
         require(len({x['character_id'] for x in candidates})==len(candidates), 'Actual candidate duplicated')

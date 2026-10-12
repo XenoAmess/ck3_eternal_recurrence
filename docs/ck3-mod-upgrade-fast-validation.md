@@ -10,6 +10,10 @@ PAM 正向 [A198/R0089](C:/workspace/ck3-upgrade-20261010/focused-scenes-2026101
 
 A199 [实际公共 run 退出2](C:/workspace/ck3-upgrade-20261010/focused-scenes-20261013-01/meritocratic_appointments--a199/public-run-01-process-exit.json)（SHA-256 `40937da7a70d59c757191b8dd77d523c4fab0590763ee52b581286424c14518e`）。Root明确提交 `normal_gui_quit=false` 取消已死进程的人工等待；原验证器如实拒绝，没有正常GUI或 retained OS0 凭据。原生报告记录退出1、完整清理；observer行政停止15、allocator0、keeper实际停止后 [CAS9542](C:/workspace/ck3-upgrade-20261006/resume-root-01/a199-screen-release-01.json) done/resources=[]，只证明资源释放。失败关键原件由 `/root` 保护至2026-10-18复核，不自动续期。
 
+A200/R0091 已取得海州文职7人、北界军职0人的完整原生候选池，头衔、持有人、法律及当前窗口绑定均核对。军职原生结果为有效空池，旧采集器却要求分页必须前进，故原公共 run/verify 退出2保持，不改写为PASS。公共采集器只对本轮 `merit_two_law_loaded_pool_v1` 范围接受单页完整空池，其他范围、分页与身份绑定保持严格；最小离线测试通过，不改生产mod、fixture或native字节。
+
+修复后的纯聚合器对A200原始两条记录作[同场缩减范围补充](C:/workspace/ck3-upgrade-20261010/focused-controls-20261013-02/A200-SAME-RUN-LOADED-LAWS-SUPPLEMENT-01.json)（6039B / SHA-256 `5f1acec1c6b9e73511716abb1c4f592ee38e23ab49503965da2c153fcf1b130f`），只授两条法律加载及完整7/0候选池资格；不授玩家分数、实际任命、原公共case或产品发布PASS，不为采集器修正重复启动相同场景。原场实际正常GUI退出、retained OS0/native0、cleanup/thread、keeper停止及CAS释放均成立。[实际存储闭场](C:/workspace/ck3-upgrade-20261010/focused-scenes-20261013-01/meritocratic_appointments--a200/POST-RUN-CLOSE-01.json)保留实际后置卷空间softstop：observer进程返回0是外置包装器未传播返回码，不证明无压力；未制造停止15或重写原失败。必要原件由Root保护至2026-10-18复核。
+
 其余新增实测维持滑条7个关键阶段、赎金4个代表交易、重整河山核心路径与50/51阈值两场。正式上传、真实Steam下载缓存与实际加载、公开完整Change Notes回读及永久changelog仍须完成；本节不授两产品发布完成资格。
 
 ## 2026-10-10 可选着色器缓存复用

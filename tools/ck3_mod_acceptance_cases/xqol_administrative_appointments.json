@@ -49,8 +49,8 @@
       "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
     },
     "xqol_government_adapter.py": {
-      "bytes": 12669,
-      "sha256": "507bf798abcb785a7e111dbdbd08cacb9ff3f13280c22f634ebf9672ae809a47"
+      "bytes": 12696,
+      "sha256": "07e4f90ecf99bada78508ca9a16417923027bd222a6ded84c22f7dc0af27e7bc"
     },
     "xqol_scope.py": {
       "bytes": 10804,

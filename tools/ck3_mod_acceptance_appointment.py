@@ -101,7 +101,8 @@ def title_reference(row, frame, requested_title_id, requested_title_key):
             'requested_title_id':requested_title_id,'requested_title_key':requested_title_key,
             'holder_character_id':holder['holder_character_id'],'navigation_claimed':False}
 
-def join_pages(rows, anchor, *, requested_title_id, requested_title_key, expected_law, breakdown_character_id=None):
+def join_pages(rows, anchor, *, requested_title_id, requested_title_key, expected_law, breakdown_character_id=None,
+               allow_empty=False):
     binding=frame_binding(anchor)
     require(positive(requested_title_id) and isinstance(requested_title_key,str) and requested_title_key
             and isinstance(expected_law,str) and expected_law and isinstance(rows,list) and rows,
@@ -137,13 +138,18 @@ def join_pages(rows, anchor, *, requested_title_id, requested_title_key, expecte
                 and v.get('ai_control_available') is True and v.get('score_fixed_point_scale')==100000,
                 'effective law/full pool/AI/scale unavailable')
         count=v.get('full_candidate_count'); token=v.get('pool_consistency_token')
-        require(type(count) is int and 0<count<=4096 and count==v.get('source_pool_count')
+        empty_pool=(allow_empty is True and breakdown_character_id is None and len(rows)==1 and
+                    type(count) is int and count==0 and type(v.get('source_pool_count')) is int)
+        require(type(count) is int and (0<count<=4096 or empty_pool) and count==v.get('source_pool_count')
                 and isinstance(token,str) and re.fullmatch(r'fnv1a64:[0-9a-f]{16}',token), 'pool count/token missing')
         state={k:v.get(k) for k in fields}
         if common is None: common=state
         require(state==common, 'page title/law/count/token/scope changed')
         page=v.get('candidates'); end=v.get('next_offset')
-        require(v.get('candidate_offset')==offset and type(end) is int and offset<end<=min(count,offset+64)
+        empty_page=(empty_pool and type(v.get('candidate_offset')) is int and
+                    type(end) is int and offset==end==0)
+        require(v.get('candidate_offset')==offset and type(end) is int and
+                (offset<end<=min(count,offset+64) or empty_page)
                 and isinstance(page,list) and len(page)==end-offset, 'page skipped/truncated/duplicated')
         for index,c in enumerate(page,offset):
             require(isinstance(c,dict) and c.get('list_index')==index and positive(c.get('character_id'))
