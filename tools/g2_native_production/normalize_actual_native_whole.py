@@ -137,7 +137,7 @@ def deps(j, cx):
 	spec = j['dependencies']
 	need(spec['policy'] == 'fresh_capture' and spec['required'] is True and
 		 spec['accepted_versions'] == cx['accepted_versions'], 'fresh ')
-	ref, pkt = json_file(j['dependencies_file'], cx['roots'], cx['json_bound'])
+	dr, pkt = json_file(j['dependencies_file'], cx['roots'], cx['json_bound'])
 	need(isinstance(pkt.get('Version'), str) and pkt['Version'] in cx['accepted_versions'] and
 		 isinstance(pkt.get('Data'), dict), 'suppor')
 	data = pkt['Data']
@@ -168,7 +168,7 @@ def deps(j, cx):
 		need(all(pk(r['path']) == pk(path) for r in rows
 				 if Path(r['path']).name.casefold() == Path(path).name.casefold()), 'mixed ')
 	need(all(pk(v) in keys for v in spec.get('required_includes', [])), 'requir')
-	return ref, sr, rows, pkt
+	return dr, sr, rows, pkt
 def argv_option(argv, flag):
 	values = []
 	for i, token in enumerate(argv):
@@ -245,7 +245,7 @@ def main():
 	cfg_path = absolute(args.input_manifest).resolve(strict=True)
 	ir, cfg = json_file(str(cfg_path), [str(cfg_path.parent)], 65536)
 	need(cfg['schema'] == 'xar.native.whole917.normalizer-input.v1', 'input ')
-	ctx = dict(roots=cfg['read_roots'], json_bound=33554432, artifact_bound=cfg['artifact_max_bytes'],
+	ctx = dict(roots=cfg['read_roots'], json_bound=67108864, artifact_bound=cfg['artifact_max_bytes'],
 	   sdk_root=cfg['sdk_source_root'], build_root=None, file_cache={},
 			   project_header_roots=cfg['project_header_roots'],
 			   external_dependency_roots=cfg['qualified_external_header_roots'])

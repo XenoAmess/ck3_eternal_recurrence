@@ -22,6 +22,15 @@ repeat its whole-file hash or run the Game/SDK.
 - The explicitly corrected Source18 read 2,081 bytes: 2,017 bytes across nine
   owner intervals and four 16-byte raw contexts. It saved all 524 linear
   instruction rows, with no rejected row or recursive callee follow.
+- Scope C Source20 completed a separate 2,933,220-byte `.pdata` scan of
+  244,435 records. Each chosen destination has one containing entry and equals
+  its beginning: `[45513488,45513601)` and `[45513744,45513857)`, both 113 bytes.
+  It read no bodies and retained all formal qualifications as false.
+- The first independently admitted Scope D attempt, Source21, stopped before
+  any EXE read. Its decoder import succeeded, but its package-version comparison
+  failed. Installed distribution metadata reports Capstone 5.0.9, while the
+  installed module declares `__version__` 5.0.7. These fields must be qualified
+  separately; neither establishes an observed native engine version.
 
 Full `.pdata` intervals and complete linear decoding do not establish complete
 logical functions. The 18-byte interval beginning at RVA 57849856 and the
@@ -52,10 +61,25 @@ candidate destinations **45513488** and **45513744**. This arithmetic grants
 neither an instruction boundary nor callability. The other two context patterns
 give neighboring candidates, 45513360 and 45513616, which are deferred.
 
-The next selected operation is a fresh, separately admitted `.pdata` lookup of
-only the two chosen destinations, with no body read. Scope D body ranges and
-byte budgets must come from the actual lookup result. Generic container and
-allocator callees are not automatically followed.
+Root next selected only the two full 113-byte intervals from the actual Scope C
+lookup. A corrected decoder identity contract still requires a new Scope D
+admission and actual result. Generic container and allocator callees are not
+automatically followed.
+
+## Installed education script source
+
+The support effect explicitly forwards a martial focus as `$SKILL$=martial`.
+It chooses a random current guardian as `educator`; without a guardian it uses
+the court owner's tutor, then guru. A requested guardian does not establish
+which educator the effect actually selected.
+
+In `scope:educator`, the selected skill and learning terms are multiplied by
+authored factors 0.4 and 0.2 in the success weight. The success entry's base
+weight is 60, and its effect separately adds two education points. The culture
+expression contains `value=10`; it is not independently established as an
+add-ten operation. Optional House predicate semantics and native value encoding
+remain unresolved. Script thresholds and displayed trait ranks do not qualify
+a typed numeric getter or current education outcome.
 
 ## Small evidence references and retention
 
@@ -70,6 +94,12 @@ They are finite research inputs, not permanent availability promises.
 | `sdk85-source-preparation/sdk86-candidates/m6-stock-getter-body-source18/SOURCE18-ROOT-BODY-RESULT.json` | 50562 | `4ddf3023ae9b24eb1fc24b2d5e81d68129d5a181ec94507c4ad4e4d1598e5c2f` |
 | `ROOT-M6-SOURCE18-ACTUAL-BODY-THIN.jsonl` | 51043 | `b128890c4dc7a811d88cf00e08b23a3a59b1af5c366718439f9e4929b72a8cd7` |
 | `ROOT-M6-PRIMARY-CELL-CANDIDATE-ARITHMETIC.json` | 2934 | `8c47a81fc47077d5ea1694b1c1b21281fe0bd3fba5f3963d5888c899df33e7fd` |
+| `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pdata-source20/SOURCE20-ROOT-PRIMARY-CELL-PDATA-RESULT.json` | 4003 | `8955f55e16d52cec68478f2d1fdaf91e579468d9d072558f7e53f1d32b4e96c0` |
+
+Source21's separate failed body result retains zero read bytes, zero instruction
+rows and the actual decoder import failure. The installed source intake is
+`ROOT-INSTALLED-CAPSTONE-SOURCE-METADATA.json`; no package installation, engine
+version query or extra decoder import was used to establish its text facts.
 
 Two independent parallel source groups analyzed the retained rows; Root read
 their final contracts and preserved the conservative saved-slot qualification
