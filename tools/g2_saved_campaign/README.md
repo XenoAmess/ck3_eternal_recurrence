@@ -53,3 +53,12 @@ paused ordinary episode, its played actor and retained campaign goal. A terminal
 endpoint stops before SAVE for Root review. Close and successor SAVE readbacks
 also retain the verified live transition's PID and connection generation; cold
 initial inputs use their own newly qualified process.
+
+`root_owned_wm_close_once.py` requests one ordinary window close for Root's
+already owned Game PID/HWND. The required
+`--expected-creation-filetime-100ns` is the raw integer from that owned
+process. It must match the same held kernel handle before WM_CLOSE is posted.
+Request acceptance and observed process exit are separate receipts; a timeout
+does not authorize another close request. Root links its independently verified
+current SAVE. The sender does not verify a SAVE or prove autosave/orderly exit.
+The source has two static reviews; its promotion does not grant runtime credit.
