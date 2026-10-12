@@ -95,6 +95,141 @@ def previous_session_closure(previous,freeze,report,report_reference=None):
         'original_cleanup_ok':False,'original_ck3_exit_code':None,'original_job_active_processes_final':None,
         'typed_normal_exit_proven':False,'business_pass':False}}
 
+def previous_never_launched_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
+    """Close an allocated checkout failure without inventing a native/OS exit."""
+    bundle=read_json(close_path)
+    require(bundle.get('schema')=='ck3-mod-acceptance-never-launched-closure-v1' and
+            bundle.get('run_id')==freeze['run_id'],'Exact never-launched predecessor bundle required')
+    ready_path=previous/'ready-context.json';ready=read_json(ready_path)
+    require(ready.get('run_id')==freeze['run_id'] and
+            Path(ready.get('run_dir','')).resolve()==previous.resolve() and
+            Path(ready.get('keeper_root','')).resolve()==keeper_root.resolve(),
+            'Never-launched READY crossed run/keeper')
+    check_pin(previous/'frozen-argv.json',ready['frozen_argv'])
+    keeper_path=keeper_root/'report.json';keeper=read_json(keeper_path)
+    require(keeper.get('task_id')==freeze['screen_task'] and keeper.get('thread_exited') is True and
+            keeper.get('failure') is None and keeper.get('game_actions') is False and
+            keeper.get('entry_error')=="RuntimeError('screen task checkout has current tracked or untracked changes')",
+            'Exact terminated prelaunch checkout keeper failure required')
+    parent_path=previous/'keeper-actual-parent-exit.json';parent=read_json(parent_path)
+    require(parent.get('run_id')==freeze['run_id'] and parent.get('keeper_report')==keeper and
+            type(parent.get('keeper_actual_exit_code')) is int and parent['keeper_actual_exit_code']==1,
+            'Original failed keeper parent wait required')
+    row=bundle.get('allocator_result',{});command_path=Path(row.get('path',''))
+    check_pin(command_path,row);command=read_json(command_path);argv=command.get('argv',[])
+    def argument(name):
+        require(isinstance(argv,list) and argv.count(name)==1 and argv.index(name)+1<len(argv),
+                'Never-launched original allocator argument missing: '+name)
+        return argv[argv.index(name)+1]
+    require(command.get('schema')=='ck3-recorded-actual-command-v1' and
+            type(command.get('exit_code')) is int and command['exit_code']==0 and
+            bool(command.get('finished_at_utc')) and 'allocate' in argv and
+            Path(argument('--keeper-output')).resolve()==keeper_root.resolve() and
+            Path(argument('--prepared-case')).resolve()==Path(ready['prepared_case']['path']).resolve(),
+            'Original allocator terminal0 crossed prepared case/keeper')
+    names=('launch-intent.json','launch.json','host-started.json','host-supervisor.json','supervisor.json',
+           'host-original-process-exit.json','native-report.json','native-cleanup-projection.actual.json')
+    absent={name:not (previous/name).exists() for name in names}
+    state=Path(freeze['state_dir']).resolve()
+    absent['state/control']=not (state/'control').exists()
+    controls=previous/'controls'
+    absent['run/controls/*']=controls.is_dir() and not any(controls.iterdir())
+    require(all(absent.values()),'Never-launched predecessor has launch/native/PID/control evidence')
+    tasks=bus_packet.get('tasks',[])
+    matching=[task for task in tasks if task.get('task_id')==freeze['screen_task']]
+    require(closed_lease(keeper,release,freeze['screen_task']) and len(matching)==1 and
+            matching[0].get('state') in ('done','waiting') and matching[0].get('resources')==[] and
+            matching[0].get('last_sequence')>=release['task']['last_sequence'],
+            'Never-launched predecessor actual CAS release/current no-owner unproven')
+    import psutil
+    inventory=runtime_process_inventory(psutil,os.getpid())
+    require(not inventory['blockers'],'Never-launched CK3/keeper/controller still present')
+    return {'mode':'previous-shared-never-launched-checkout-failure',
+            'actual_process_inventory':inventory,'failure_cleanup':{
+                'close':pin(close_path),'original_evidence':{'ready':pin(ready_path),
+                  'frozen':pin(previous/'frozen-argv.json'),'keeper':pin(keeper_path),
+                  'keeper_parent_wait':pin(parent_path),'allocator':pin(command_path)},
+                'absent_launch_native_and_control_evidence':absent,
+                'native_session_started':False,'host_started':False,'typed_normal_exit_proven':False,
+                'original_ck3_exit_code':None,'business_pass':False}}
+
+def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
+    """Admit the observed exited keeper before READY; its missing OS wait stays unknown."""
+    bundle=read_json(close_path)
+    require(bundle.get('schema')=='ck3-mod-acceptance-pre-ready-closure-v1' and
+            bundle.get('run_id')==freeze['run_id'],'Exact pre-READY predecessor bundle required')
+    evidence={}
+    for key,path in {'allocated_context':previous/'allocated-context.json',
+        'frozen_argv':previous/'frozen-argv.json','keeper_process':previous/'keeper-process.json',
+        'keeper_stderr':previous/'keeper-stderr.log'}.items():
+        row=bundle[key]
+        require(Path(row['path']).resolve()==path.resolve(),'Pre-READY evidence crossed path: '+key)
+        check_pin(path,row);evidence[key]=pin(path)
+    context=read_json(previous/'allocated-context.json')
+    require(context.get('run_id')==freeze['run_id'] and
+            Path(context.get('run_dir','')).resolve()==previous.resolve() and
+            Path(context.get('keeper_root','')).resolve()==keeper_root.resolve(),
+            'Pre-READY allocated context crossed run/keeper')
+    row=bundle['allocator_result'];command_path=Path(row['path']);check_pin(command_path,row)
+    command=read_json(command_path);argv=command.get('argv',[])
+    def argument(values,name):
+        require(isinstance(values,list) and values.count(name)==1 and values.index(name)+1<len(values),
+                'Pre-READY original argument missing: '+name)
+        return values[values.index(name)+1]
+    require(command.get('schema')=='ck3-recorded-actual-command-v1' and
+            type(command.get('exit_code')) is int and command['exit_code']==2 and
+            command.get('finished_at_utc') and 'allocate' in argv and
+            Path(argument(argv,'--keeper-output')).resolve()==keeper_root.resolve() and
+            Path(argument(argv,'--prepared-case')).resolve()==Path(context['prepared_case']['path']).resolve(),
+            'Original pre-READY allocator terminal2 crossed keeper/case')
+    stdout=bundle['allocator_stdout']
+    require(Path(stdout['path']).resolve()==Path(command['stdout']['path']).resolve() and
+            stdout['bytes']==command['stdout']['bytes'] and stdout['sha256']==command['stdout']['sha256'],
+            'Pre-READY original allocator stdout differs')
+    check_pin(Path(stdout['path']),stdout);blocked=read_json(Path(stdout['path']))
+    require(blocked.get('status')=='BLOCKED' and
+            blocked.get('error')=='Original keeper failed before READY; preserve actual stderr' and
+            'RuntimeError: bus source or installed CLI is missing' in (previous/'keeper-stderr.log').read_text(encoding='utf-8'),
+            'Exact pre-READY installed-bus failure required')
+    process=read_json(previous/'keeper-process.json');keeper_argv=process.get('argv',[])
+    require(type(process.get('pid')) is int and process['pid']>0 and
+            type(process.get('create_time')) in (int,float) and
+            Path(argument(keeper_argv,'--root')).resolve()==keeper_root.resolve() and
+            argument(keeper_argv,'--task')==freeze['screen_task'],
+            'Pre-READY original keeper process identity crossed task/root')
+    registered=read_json(previous/'screen-registration.json')
+    sequence=registered.get('task',{}).get('last_sequence')
+    require(registered.get('ok') is True and registered.get('task',{}).get('task_id')==freeze['screen_task'] and
+            type(sequence) is int and int(argument(keeper_argv,'--sequence'))==sequence,
+            'Pre-READY original registration/keeper sequence differs')
+    names=('ready-context.json','launch-intent.json','launch.json','host-started.json','host-supervisor.json',
+           'supervisor.json','host-original-process-exit.json','native-report.json',
+           'native-cleanup-projection.actual.json','keeper-actual-parent-exit.json','keeper-pre-ready-parent-exit.json')
+    absent={name:not (previous/name).exists() for name in names}
+    absent['keeper_root']=not keeper_root.exists()
+    absent['state/control']=not (Path(freeze['state_dir'])/'control').exists()
+    absent['run/controls/*']=(previous/'controls').is_dir() and not any((previous/'controls').iterdir())
+    require(all(absent.values()),'Pre-READY predecessor has READY/launch/native/control/keeper evidence')
+    snapshot=release.get('task',{});tasks=bus_packet.get('tasks',[])
+    matching=[task for task in tasks if task.get('task_id')==freeze['screen_task']]
+    require(release.get('ok') is True and snapshot.get('task_id')==freeze['screen_task'] and
+            snapshot.get('state') in ('done','waiting') and snapshot.get('resources')==[] and
+            type(snapshot.get('last_sequence')) is int and snapshot['last_sequence']>sequence and
+            len(matching)==1 and matching[0].get('state') in ('done','waiting') and
+            matching[0].get('resources')==[] and matching[0].get('last_sequence')>=snapshot['last_sequence'],
+            'Pre-READY actual CAS release/current no-owner unproven')
+    import psutil
+    require(not psutil.pid_exists(process['pid']),'Pre-READY original keeper PID still present')
+    inventory=runtime_process_inventory(psutil,os.getpid())
+    require(not inventory['blockers'],'Pre-READY CK3/keeper/controller still present')
+    evidence.update(allocator=pin(command_path),allocator_stdout=pin(Path(stdout['path'])),
+                    registration=pin(previous/'screen-registration.json'))
+    return {'mode':'previous-shared-pre-ready-keeper-failure','actual_process_inventory':inventory,
+        'failure_cleanup':{'close':pin(close_path),'original_evidence':evidence,
+            'absent_launch_native_and_control_evidence':absent,'original_keeper_exit_code':None,
+            'original_keeper_wait_proven':False,'native_session_started':False,'host_started':False,
+            'typed_normal_exit_proven':False,'original_ck3_exit_code':None,'business_pass':False}}
+
 def closed_lease(keeper,release,task):
     snapshot=release.get('task',{})
     return (keeper.get('task_id')==task and keeper.get('thread_exited') is True and
@@ -465,6 +600,27 @@ def runtime_process_inventory(psutil,caller_pid):
             'python_controllers_inspected':inspected,'blockers':blockers,
             'process_absence_is_normal_exit_proof':False}
 
+def keeper_command(python,keeper,lease_repo,keeper_root,task,sequence,bus_dir,bus_sha):
+    return [str(python),'-B','-X','utf8',str(keeper),'--repo',str(lease_repo),
+        '--root',str(keeper_root.resolve()),'--task',task,'--sequence',str(sequence),
+        '--bus-dir',str(bus_dir),'--bus-cli',str(lease_repo/'tools/codex_task_bus.py'),
+        '--bus-cli-sha256',bus_sha.upper()]
+
+def wait_for_keeper_ready(child,keeper_root,live,started,stdout,stderr):
+    while not (keeper_root/'ready.json').exists():
+        polled=child.poll()
+        if polled is not None:
+            waited=child.wait();stdout.close();stderr.close()
+            write_json(live/'keeper-pre-ready-parent-exit.json',{
+                'schema':'ck3-keeper-pre-ready-original-parent-exit-v1','run_id':live.name,
+                'pid':child.pid,'actual_original_popen_wait':True,
+                'actual_poll_exit_code':polled,'keeper_actual_exit_code':waited,
+                'ready_absent':not (keeper_root/'ready.json').exists(),
+                'at_utc':datetime.now(timezone.utc).isoformat(),'game_started':False,'business_pass':False})
+            raise ValueError('Original keeper failed before READY; preserve actual stderr')
+        require(time.monotonic()-started<30,'Original keeper did not become READY within existing bound')
+        time.sleep(.02)
+
 def allocate_and_keep(selection,args):
     require(selection.prepared_path and not selection.context,'One prepared unused case and no allocated context required')
     bootstrap_path=getattr(args,'first_machine_bootstrap',None)
@@ -507,19 +663,32 @@ def allocate_and_keep(selection,args):
                 Path(freeze.get('identity_allocation',{}).get('state_root','')).resolve()==state_root,
                 'Previous shared scene belongs to another actual machine/ID state')
         report_reference=None;report_projection=None
-        if failure_path:
+        failure_schema=read_json(failure_path).get('schema') if failure_path else None
+        never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
+        pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
+        if never_launched or pre_ready:
+            report=None
+        elif failure_path:
             report=read_json(previous/'native-report.json')
         else:
             report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
-        prior_keeper=read_json(args.previous_keeper/'report.json')
+        prior_keeper=read_json(args.previous_keeper/'report.json') if not pre_ready else None
         release=(read_failed_runtime_release(args.previous_release) if failure_path else
                  read_actual_release(args.previous_release))
-        session_closure=(previous_runtime_failure_closure(previous,freeze,report,failure_path,
-                            args.previous_keeper,args.previous_release,bus_packet) if failure_path else
-                         previous_session_closure(previous,freeze,report,report_reference))
+        if pre_ready:
+            session_closure=previous_pre_ready_closure(previous,freeze,failure_path,
+                            args.previous_keeper,release,bus_packet)
+        elif never_launched:
+            session_closure=previous_never_launched_closure(previous,freeze,failure_path,
+                            args.previous_keeper,release,bus_packet)
+        else:
+            session_closure=(previous_runtime_failure_closure(previous,freeze,report,failure_path,
+                                args.previous_keeper,args.previous_release,bus_packet) if failure_path else
+                             previous_session_closure(previous,freeze,report,report_reference))
         if report_projection is not None:
             session_closure['native_cleanup_projection']=report_projection
-        require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
+        if not pre_ready:
+            require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
         require_latest_screen_release(release,args.latest_screen_release)
         closure={**session_closure,'run_id':freeze['run_id'],
                  'previous_live':str(previous),'previous_keeper':str(args.previous_keeper.resolve()),
@@ -552,10 +721,14 @@ def allocate_and_keep(selection,args):
         path_at(selection.runtime['reviewed_launcher']['path'],base),path_at(selection.runtime['control_queue']['path'],base),
         bus,keeper,Path(__file__),root/'tools/ck3_live_run_id.py',lease_repo/'tools/codex_task_bus.py',
         lease_repo/'promo/ck3_native_war_ai/integration/screen_bus_lease.py')})
+    for row in selection.runtime.get('allocator_overlay',{}).values():
+        if isinstance(row,dict) and {'path','bytes','sha256'}<=row.keys():
+            check_pin(Path(row['path']),row);files[Path(row['path']).resolve()]=row
     if selection.adapter_path:
         files.update({p:pin(p) for p in sorted(selection.adapter_path.parent.glob('*')) if p.is_file()})
-        files.update({p:pin(p) for p in (Path(__file__).with_name('ck3_mod_acceptance.py'),
-            Path(__file__).with_name('ck3_mod_acceptance_client.py'),Path(__file__).with_name('ck3_mod_acceptance_prepare.py'))})
+        shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
+        files.update({p:pin(p) for p in (shared_tools/'ck3_mod_acceptance.py',
+            shared_tools/'ck3_mod_acceptance_client.py',shared_tools/'ck3_mod_acceptance_prepare.py')})
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
         for row in [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()]:
@@ -610,15 +783,12 @@ def allocate_and_keep(selection,args):
     require(result.returncode==0,'Actual register failed; preserve consumed input and do not replay')
     registration=json.loads(result.stdout);sequence=registration['task']['last_sequence']
     started=time.monotonic()
-    keeper_argv=[str(selection.locations['python']),'-B','-X','utf8',str(keeper),'--repo',str(lease_repo),
-        '--root',str(args.keeper_output.resolve()),'--task',task,'--sequence',str(sequence)]
+    keeper_argv=keeper_command(selection.locations['python'],keeper,lease_repo,args.keeper_output,
+                               task,sequence,bus_dir,bus_ref['sha256'])
     stdout=(live/'keeper-stdout.log').open('xb');stderr=(live/'keeper-stderr.log').open('xb')
     child=subprocess.Popen(keeper_argv,cwd=root,stdout=stdout,stderr=stderr)
     write_json(live/'keeper-process.json',{'pid':child.pid,'create_time':psutil.Process(child.pid).create_time(),'argv':keeper_argv})
-    while not (args.keeper_output/'ready.json').exists():
-        require(child.poll() is None,'Original keeper failed before READY; preserve actual stderr')
-        require(time.monotonic()-started<30,'Original keeper did not become READY within existing bound')
-        time.sleep(.02)
+    wait_for_keeper_ready(child,args.keeper_output,live,started,stdout,stderr)
     ready=read_json(args.keeper_output/'ready.json')
     context['frozen_argv']=pin(live/'frozen-argv.json')
     write_json(live/'ready-context.json',context)
