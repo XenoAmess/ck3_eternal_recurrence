@@ -67,17 +67,21 @@ PHASE4_PROBE = "rqa_execute_vassalization_probe_gui"
 PHASE4_GUI_RELATIVE = "gui/rqa120_phase4_manual.gui"
 PHASE4_MANUAL_GUI = '''window = {
     name = "rqa120_phase4_manual_window"
+    alwaystransparent = yes
     size = { 560 180 }
     layer = tutorial
     parentanchor = top
     position = { 0 80 }
     visible = "[GetPlayer.IsValid]"
     vbox = {
+        alwaystransparent = yes
         size = { 100% 100% }
         visible = "[GetScriptedGui('rqa_execute_vassalization_probe_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
         text_multi = { text = "rqa120_phase4_instructions" autoresize = yes }
         text_multi = { text = "[GetPlayer.MakeScope.Var('rqa_vassalization_target_a').Char.GetShortUIName]" autoresize = yes }
+        text_multi = { raw_text = "A character_id=[GetPlayer.MakeScope.Var('rqa_vassalization_target_a').Char.GetID] primary_title_id=[GetPlayer.MakeScope.Var('rqa_vassalization_target_a').Char.GetPrimaryTitle.GetID]" autoresize = yes }
         text_multi = { text = "[GetPlayer.MakeScope.Var('rqa_vassalization_target_b').Char.GetShortUIName]" autoresize = yes }
+        text_multi = { raw_text = "B character_id=[GetPlayer.MakeScope.Var('rqa_vassalization_target_b').Char.GetID] primary_title_id=[GetPlayer.MakeScope.Var('rqa_vassalization_target_b').Char.GetPrimaryTitle.GetID]" autoresize = yes }
         button_standard = {
             name = "rqa120_phase4_original_probe_once"
             size = { 100% 40 }

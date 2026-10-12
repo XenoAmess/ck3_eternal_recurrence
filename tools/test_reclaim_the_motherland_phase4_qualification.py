@@ -26,6 +26,7 @@ from test_reclaim_the_motherland_contract import parse_clausewitz
 SOURCE = ROOT / "tools/fixtures/reclaim_the_motherland_acceptance"
 CONFIG = ROOT / "tools/ck3_mod_acceptance_cases/rmtm_core.json"
 BASELINE = "f573a8f8a1a1df31704d06f5149a2758cd1fc5a1"
+UI_BASELINE = "161be27533bbb6bc42cde2fe47c127e3e028f59a"
 
 
 class Phase4PreSendQualification(unittest.TestCase):
@@ -121,6 +122,32 @@ class Phase4PreSendQualification(unittest.TestCase):
         self.assertEqual(receipt["runtime_status"], "NOT_RUN")
         self.assertFalse(receipt["business_pass"])
         self.assertTrue(receipt["original_d4_two_refusals_still_required"])
+
+    def test_transparent_ancestors_and_full_ids_exactly_invert_to_previous_widget(self):
+        previous = subprocess.check_output(["git", "show", UI_BASELINE + ":tools/prepare_reclaim_the_motherland_1_20_fixture.py"], cwd=ROOT)
+        assignment = next(node for node in ast.parse(previous.decode("utf-8-sig")).body
+                          if isinstance(node, ast.Assign)
+                          and any(isinstance(target, ast.Name) and target.id == "PHASE4_MANUAL_GUI"
+                                  for target in node.targets))
+        old_widget = ast.literal_eval(assignment.value).encode("utf-8-sig")
+        widget = emitter.phase4_support(SOURCE)[emitter.PHASE4_GUI_RELATIVE]
+        additions = [b"    alwaystransparent = yes\n", b"        alwaystransparent = yes\n"]
+        for slot in ("a", "b"):
+            scope = f"GetPlayer.MakeScope.Var('rqa_vassalization_target_{slot}').Char"
+            link = f'        text_multi = {{ text = "[{scope}.GetShortUIName]" autoresize = yes }}\n'.encode()
+            full_ids = (f'        text_multi = {{ raw_text = "{slot.upper()} character_id=[{scope}.GetID] '
+                        f'primary_title_id=[{scope}.GetPrimaryTitle.GetID]" autoresize = yes }}\n').encode()
+            self.assertIn(link + full_ids, widget)
+            additions.append(full_ids)
+        lines = widget.splitlines(keepends=True)
+        for addition in additions:
+            self.assertEqual(lines.count(addition), 1)
+            lines.remove(addition)
+        self.assertEqual(b"".join(lines), old_widget)
+        self.assertEqual(widget.count(b"alwaystransparent = yes"), 2)
+        self.assertEqual(widget.count(b"raw_text ="), 2)
+        button = b"        button_standard = {\n"
+        self.assertEqual(widget.split(button, 1)[1], old_widget.split(button, 1)[1])
 
     def test_original_business_source_and_all_36_families_remain_unchanged(self):
         for relative in ("tools/fixtures/reclaim_the_motherland_acceptance/common/scripted_effects/rqa_effects.txt",
