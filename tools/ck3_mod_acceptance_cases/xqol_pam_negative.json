@@ -73,8 +73,8 @@
       "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
     },
     "xqol_pam_adapter.py": {
-      "bytes": 1177,
-      "sha256": "f3d2ebfefbe15399a2259101239a2262daff707e7353cfaf9d6f012415b5b4cf"
+      "bytes": 1131,
+      "sha256": "2e267a5a4bfecdaffa48d2fde4cc6208471e679df321584f3f27a02a9132c354"
     },
     "xqol_scope.py": {
       "bytes": 10804,

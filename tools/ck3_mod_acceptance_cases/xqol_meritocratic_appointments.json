@@ -60,8 +60,8 @@
       "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
     },
     "xqol_government_adapter.py": {
-      "bytes": 9738,
-      "sha256": "da485bf51688b6be7bc26a9bc0a50fdb5021c98f6c32da23de19c9e168be6bb9"
+      "bytes": 10913,
+      "sha256": "c68bba4d4d60d7e575196cbef8283072e81a95530d6acaa6dc85807d3d8dc592"
     },
     "xqol_scope.py": {
       "bytes": 10804,
@@ -128,5 +128,19 @@
       "stock_creation_restriction_source": "game/common/landed_titles/05_goryeo.txt:70-80",
       "credit_scope": "External controlled grant only, not a default-GUI fix or product PASS; A190/R0082 and all original v1 GAP evidence remain unchanged"
     }
-  }
+  },
+  "gui_review_scope": "merit_two_law_representative_toggle_v1",
+  "representative_evidence_roles": [
+    "human-score-off",
+    "human-score-on",
+    "human-score-restored"
+  ],
+  "reused_shared_coverage": [
+    "ordinary_appointments",
+    "administrative_appointments"
+  ],
+  "coverage_exclusions": [
+    "full GUI candidate tooltip matrix",
+    "repeat AI appointment/heir proof already accepted in shared ordinary/administrative cells"
+  ]
 }

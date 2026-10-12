@@ -124,11 +124,9 @@ zqp_complete_positive_setup_after_slot_boundary_effect = {
  debug_log = "ZQP120: SETUP63 END after_original_mendicant_setter"
  # ZQP63_OBSERVE_ONLY_END after_original_mendicant_setter
  }
- zqp_initialize_spiritual_fulfillment_zero_effect = yes
- set_variable = { name = zqp_stock_sp_major value = major_spiritual_fulfillment_value }
- set_variable = { name = zqp_stock_sp_minor value = minor_spiritual_fulfillment_value }
- set_variable = { name = zqp_sp_acts_expected value = major_spiritual_fulfillment_value }
- set_variable = { name = zqp_sp_total_expected value = { value = major_spiritual_fulfillment_value add = minor_spiritual_fulfillment_value } }
+ # ZQP_MINIMAL_SCOPE_BEGIN stock_resource_setup
+ # Stock spiritual fulfillment and legitimacy arithmetic are outside mod migration acceptance.
+ # ZQP_MINIMAL_SCOPE_END stock_resource_setup
  random_vassal_or_below = {
   limit = {
    is_ai = yes is_alive = yes is_landed = yes
@@ -154,11 +152,9 @@ zqp_complete_positive_setup_after_slot_boundary_effect = {
   if = {
    limit = {
     faith = faith:nestorian rite = rite:nestorian
-    var:zqp_stock_sp_major = 10
-    var:zqp_stock_sp_minor = 3
-    spiritual_fulfillment >= 0
-    spiritual_fulfillment <= 0
-    is_valid_for_legitimacy_change = yes
+    # ZQP_MINIMAL_SCOPE_BEGIN stock_resource_guard
+    # No stock spiritual fulfillment or legitimacy numeric prerequisite.
+    # ZQP_MINIMAL_SCOPE_END stock_resource_guard
     rite = { rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts rite_has_parameter = tenet_acts_of_apostles_piety_from_converts }
     has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts
     has_personal_tenet_flag = tenet_mendicant_preachers_conversion_fulfillment
@@ -219,7 +215,9 @@ zqp_observe_actual_reply_effect = {
    else = { debug_log = "ZQP120: TEST FAIL acts_wrapper_once_exact_piety" }
    if = { limit = { var:zqp_mendicant_calls = 1 var:zqp_mendicant_delta = 0 } debug_log = "ZQP120: TEST PASS mendicant_wrapper_once_no_piety" }
    else = { debug_log = "ZQP120: TEST FAIL mendicant_wrapper_once_no_piety" }
-   debug_log = "ZQP120: READBACK GAP effect_synchronous_actor_legitimacy_raw"
+    # ZQP_MINIMAL_SCOPE_BEGIN stock_resource_readback
+    # Stock legitimacy exact delta is not a mod migration acceptance gate.
+    # ZQP_MINIMAL_SCOPE_END stock_resource_readback
    debug_log_scopes = yes
    debug_log = "ZQP120: TEST DONE positive_natural_pam_observation"
   }

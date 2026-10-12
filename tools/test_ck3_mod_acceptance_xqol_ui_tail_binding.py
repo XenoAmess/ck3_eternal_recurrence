@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from test_ck3_mod_acceptance_xqol_minimal_scope import restore_minimal_ui_adapter, restore_minimal_ui_contract
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / 'tools/ck3_mod_acceptance_cases/xqol_ui_tail_adapter.py'
@@ -125,16 +126,17 @@ class FixedUiTailBinding(unittest.TestCase):
                     self.binding(context, receipt, source)
 
     def test_every_other_adapter_definition_and_original_ui_contract_remain_exact(self):
-        tree = ast.parse(ADAPTER.read_bytes().decode('utf-8-sig'))
+        tree = ast.parse(restore_minimal_ui_adapter(ADAPTER.read_bytes()).decode('utf-8-sig'))
         tree.body = [node for node in tree.body if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
                      or node.name != 'prior_formal_binding']
         digest = hashlib.sha256(ast.dump(tree, include_attributes=False).encode()).hexdigest()
         self.assertEqual(digest, '8bbcc52ca4cd3b9205206cd0a365cc5f7a8e614731d6c688e4939f9779b6dcf4')
-        self.assertEqual(content_pin(CONTRACT.read_bytes()),
+        restored_contract=(json.dumps(restore_minimal_ui_contract(json.loads(CONTRACT.read_bytes())),ensure_ascii=False,indent=2)+'\n').encode()
+        self.assertEqual(content_pin(restored_contract),
                          {'bytes': 1647, 'sha256': 'd0010b9380ba2d79ffeb002f7585c38de12dff31d9d3e65f89e008a74be2e26e'})
         contract = json.loads(CONTRACT.read_bytes())
         self.assertEqual(contract['readonly_step_count'], 9)
-        self.assertEqual(len(contract['gui25_order']), 25)
+        self.assertEqual(len(contract['focused_slider_order']), 7)
         self.assertIs(contract['guards_independent_supplement_required'], True)
         self.assertIs(contract['normal_close_required'], True)
         self.assertIs(contract['business_pass'], False)

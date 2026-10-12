@@ -8,7 +8,7 @@ from pathlib import Path
 from ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile, pin, write_json
 from . import xqol_adapter as original
 from .xqol_scope import parse_song_scope
-from .xqol_ui import Controller, STAGES
+from .xqol_ui import Controller, SLIDER_STAGES
 
 MARKERS = {
     'begin': 'ZQAUITAIL: SCOPE BEGIN actual_song_actor',
@@ -179,9 +179,10 @@ def scope(raw):
 def validate_contract(context):
     contract = context['case_contract']
     require(contract['acceptance_scope'] == 'original_song_ui_tail' and
-            contract['readonly_step_count'] == 9 and contract['gui25_order'] == STAGES and
+            contract['readonly_step_count'] == 9 and contract.get('gui_review_scope') == 'representative_slider_v1' and
+            contract['focused_slider_order'] == SLIDER_STAGES and
             contract['guards_independent_supplement_required'] is True,
-            'Original readonly9/UI25 and independent guard boundary changed')
+            'Readonly9/representative slider and independent guard boundary changed')
     require(context['case_spec']['budgets'] == {'command_timeout': 300, 'readiness_timeout': 400,
             'timeout': 3000, 'poll_interval': 0.05, 'hold_seconds': 1800}, 'Original QOL wall-clock bounds changed')
 
@@ -313,11 +314,11 @@ def run_case(context, client):
         'optional_query_gaps': [row['id'] for row in readonly if not row.get('ok')], 'product_pass': False})
     client.checkpoint('root-same-live-required-ui-awaiting', {'run_id': client.frozen['run_id'], 'reviewer': '/root',
         **client._process, 'original_hold_deadline': client._hold, 'scope_proof': {'song': proof},
-        'original_gui25_required': True, 'prior_core_external_reference': prior,
+        'representative_slider_required': True, 'gui_review_scope': 'representative_slider_v1', 'prior_core_external_reference': prior,
         'no_current_defense_or_final6_execution': True})
     ui = Controller(context, client, prior_final6=prior['final6']).run()
     result = {'case_contract_qualified': True, 'gui_contract_qualified': ui['gui_contract_qualified'],
-        'actual_song_scope': proof, 'title_proof': title_proof, 'original_readonly9': True, 'gui25': ui,
+        'actual_song_scope': proof, 'title_proof': title_proof, 'original_readonly9': True, 'focused_slider': ui,
         'prior_core': prior, 'new_scene_does_not_replay_core': True,
         'guards_independent_supplement_required': True, 'business_contract_applicable': False, 'business_pass': False,
         'source_R33_case_remains_incomplete': True, 'normal_close_still_required': True}

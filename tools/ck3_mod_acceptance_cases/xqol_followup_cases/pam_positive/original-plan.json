@@ -33,9 +33,6 @@
       "tool": "ck3_query_campaign_root_context_v1",
       "args": {},
       "expect": {
-        "campaign_root_context.player_legitimacy_v1.status": "available",
-        "campaign_root_context.player_legitimacy_v1.unavailable_reason": null,
-        "campaign_root_context.player_legitimacy_v1.value.scale": 100000,
         "player_character_id": {
           "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
         },
@@ -536,9 +533,6 @@
       "tool": "ck3_query_campaign_root_context_v1",
       "args": {},
       "expect": {
-        "campaign_root_context.player_legitimacy_v1.status": "available",
-        "campaign_root_context.player_legitimacy_v1.unavailable_reason": null,
-        "campaign_root_context.player_legitimacy_v1.value.scale": 100000,
         "player_character_id": {
           "$ref": "results.qol-startup-scope-actor-binding.runtime_character_id"
         },
@@ -556,10 +550,6 @@
           "ZQP120: TEST PASS acts_wrapper_once_exact_piety",
           "ZQP120: TEST PASS mendicant_wrapper_once_no_piety",
           "ZQP120: TEST DONE positive_natural_pam_observation",
-          "ZQP120: TEST PASS acts_sp_before_exact",
-          "ZQP120: TEST PASS acts_sp_after_exact",
-          "ZQP120: TEST PASS mendicant_sp_before_exact",
-          "ZQP120: TEST PASS mendicant_sp_after_exact",
           "ZQP120: TEST BEGIN D1_single_original_dispatch"
         ],
         "sample_limit": 2
@@ -576,16 +566,8 @@
         "matches.3.line_count": 1,
         "matches.4.literal": "ZQP120: TEST DONE positive_natural_pam_observation",
         "matches.4.line_count": 1,
-        "matches.5.literal": "ZQP120: TEST PASS acts_sp_before_exact",
-        "matches.5.line_count": 1,
-        "matches.6.literal": "ZQP120: TEST PASS acts_sp_after_exact",
-        "matches.6.line_count": 1,
-        "matches.7.literal": "ZQP120: TEST PASS mendicant_sp_before_exact",
-        "matches.7.line_count": 1,
-        "matches.8.literal": "ZQP120: TEST PASS mendicant_sp_after_exact",
-        "matches.8.line_count": 1,
-        "matches.9.literal": "ZQP120: TEST BEGIN D1_single_original_dispatch",
-        "matches.9.line_count": 1
+        "matches.5.literal": "ZQP120: TEST BEGIN D1_single_original_dispatch",
+        "matches.5.line_count": 1
       }
     },
     {

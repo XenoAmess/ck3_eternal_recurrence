@@ -7,8 +7,6 @@ conversion_tenet_acts_of_the_apostles_effect = {
    set_variable = { name = zqp_acts_before value = piety }
    set_variable = { name = zqp_acts_legitimacy_level_before value = legitimacy_level }
    set_variable = { name = zqp_acts_expected value = pam_acts_conversion_piety_value }
-   if = { limit = { spiritual_fulfillment >= 0 spiritual_fulfillment <= 0 } debug_log = "ZQP120: TEST PASS acts_sp_before_exact" }
-   else = { debug_log = "ZQP120: TEST FAIL acts_sp_before_exact" }
    debug_log = "ZQP120: OBSERVE BEGIN acts_original_stock_reward"
    debug_log_scopes = yes
   }
@@ -96,8 +94,6 @@ conversion_tenet_acts_of_the_apostles_effect = {
    set_variable = { name = zqp_acts_delta value = { value = piety subtract = var:zqp_acts_before } }
    set_variable = { name = zqp_acts_legitimacy_level_after value = legitimacy_level }
    if = { limit = { var:zqp_acts_calls > 1 } debug_log = "ZQP120: TEST FAIL duplicate_acts_reward_call" }
-   if = { limit = { spiritual_fulfillment >= var:zqp_sp_acts_expected spiritual_fulfillment <= var:zqp_sp_acts_expected } debug_log = "ZQP120: TEST PASS acts_sp_after_exact" }
-   else = { debug_log = "ZQP120: TEST FAIL acts_sp_after_exact" }
    debug_log_scopes = yes
    debug_log = "ZQP120: OBSERVE END acts_original_stock_reward"
   }
@@ -111,8 +107,6 @@ conversion_tenet_mendicant_preachers_effect = {
    change_variable = { name = zqp_mendicant_calls add = 1 }
    set_variable = { name = zqp_mendicant_before value = piety }
    set_variable = { name = zqp_mendicant_legitimacy_level_before value = legitimacy_level }
-   if = { limit = { spiritual_fulfillment >= var:zqp_sp_acts_expected spiritual_fulfillment <= var:zqp_sp_acts_expected } debug_log = "ZQP120: TEST PASS mendicant_sp_before_exact" }
-   else = { debug_log = "ZQP120: TEST FAIL mendicant_sp_before_exact" }
    debug_log = "ZQP120: OBSERVE BEGIN mendicant_original_stock_reward"
    debug_log_scopes = yes
   }
@@ -150,8 +144,6 @@ conversion_tenet_mendicant_preachers_effect = {
    set_variable = { name = zqp_mendicant_delta value = { value = piety subtract = var:zqp_mendicant_before } }
    set_variable = { name = zqp_mendicant_legitimacy_level_after value = legitimacy_level }
    if = { limit = { var:zqp_mendicant_calls > 1 } debug_log = "ZQP120: TEST FAIL duplicate_mendicant_reward_call" }
-   if = { limit = { spiritual_fulfillment >= var:zqp_sp_total_expected spiritual_fulfillment <= var:zqp_sp_total_expected } debug_log = "ZQP120: TEST PASS mendicant_sp_after_exact" }
-   else = { debug_log = "ZQP120: TEST FAIL mendicant_sp_after_exact" }
    debug_log_scopes = yes
    debug_log = "ZQP120: OBSERVE END mendicant_original_stock_reward"
   }

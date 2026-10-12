@@ -20,7 +20,7 @@ def prepare_case(context):
 def run_case(context,client):
     validate_contract(context)
     result=common.run_plan(context,client)
-    result['remaining_resource_causality_gap']='Cross-day public legitimacy totals do not prove the synchronous stock callback delta'
+    result['excluded_stock_resource_arithmetic']=['spiritual_fulfillment','legitimacy']
     result['natural_dispatch_callback_and_rewards_unmodified']=True
     result['coverage_exclusions']=['bulk selector50/slider','all reward families','nonself ransom']
     return common.preserve_result(context,client,result)

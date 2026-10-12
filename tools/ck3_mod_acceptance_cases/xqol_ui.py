@@ -13,6 +13,7 @@ STAGES=['civic-candidates','military-candidates','million-off','million-on','mil
 STAGES += ['cancel-'+str(p) for p in (0,1,49,50,51,99,100)]
 STAGES += ['save-'+str(p) for p in (100,99,51,50,49,1,0)]
 STAGES += ['restore-anchor','map-clean']
+SLIDER_STAGES=['slider-anchor','cancel-0','cancel-100','save-100','save-0','restore-anchor','map-clean']
 
 def require(value,message):
     if not value: raise RuntimeError(message)
@@ -40,6 +41,7 @@ class Controller:
             global REPO,PY,COORD
             from types import SimpleNamespace
             self.context=context;self.client=client;self.operator_reviewer=_operator_reviewer(client)
+            self.stages=(SLIDER_STAGES if context['case_contract'].get('gui_review_scope')=='representative_slider_v1' else STAGES)
             REPO=Path(context['repo_root']);PY=client.selection.locations['python'];COORD=REPO/'tools/desktop_coordinate_map.py'
             self.a=SimpleNamespace(keeper_root=client.keeper)
             self.out=client.output/'ui25';require(not self.out.exists(),'UI25 output already consumed; never replay')
@@ -145,7 +147,7 @@ class Controller:
     def publish(self):
             scene=self.capture('scene-'+str(self.seq).zfill(4))
             write(self.out/('await-'+str(self.seq).zfill(4)+'.json'),{'sequence':self.seq,'run_id':self.live.name,'operator_reviewer':self.operator_reviewer,
-              'stage':STAGES[self.stage] if self.stage<len(STAGES) else 'all-records-present',
+              'stage':self.stages[self.stage] if self.stage<len(self.stages) else 'all-records-present',
               'original_png':scene,'deadline':self.deadline,'remaining_seconds':self.remaining(),'request_path':str(self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')),
               'actions':['click','template-click','move','drag','scroll','typed','record','gap','finish'],'no_business_result_from_input_ACK':True})
             print('QOL_SAME_LIVE_SCENE '+str(self.out/('await-'+str(self.seq).zfill(4)+'.json')),flush=True)
@@ -211,7 +213,7 @@ class Controller:
                 'wheel_steps':req.get('wheel_steps'),'receipt':pin(receipt),'before_focus':before,'after_focus':after,
                 'value_truth':'ROOT_MUST_READ_THE_NEW_ORIGINAL_PERCENT_OR_CANDIDATE_LIST','input_ACK_is_not_business_PASS':True})
     def record(self,req,prefix):
-            stage=STAGES[self.stage];o=req.get('observation',{})
+            stage=self.stages[self.stage];o=req.get('observation',{})
             require(req.get('stage')==stage and isinstance(o,dict),'Only the current actual business checkpoint may be recorded')
             evidence=req.get('evidence',[]);require(evidence and all(pin(r['path'])==r for r in evidence),'Preserved original root evidence required')
             require(any(r['path']==self.latest['path'] for r in evidence),'Current original PNG must be part of actual review')
@@ -271,9 +273,10 @@ class Controller:
             row={'stage':stage,'observation':o,'evidence':evidence,'operator_reviewer':self.operator_reviewer,'root_review_request':pin(self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')),'status':'ROOT_ORIGINAL_REVIEW_RECORDED_NO_PRODUCT_PASS_INFERRED'}
             write(self.out/(prefix+'.review.json'),row);self.records[stage]=row;self.stage+=1
     def finish(self,reason):
-            result={'run_id':self.frozen['run_id'],'records':self.records,'gaps':self.gaps,'remaining_stages':STAGES[self.stage:],'reason':reason,
-                'status':'ACTUAL_ROOT_REVIEWS_RECORDED' if self.stage==len(STAGES) and not self.gaps else 'INCOMPLETE_GAPS_PRESERVED',
-                'gui_contract_qualified':self.stage==len(STAGES) and not self.gaps,'product_release_pass':False,'deadline_unchanged':self.deadline}
+            result={'run_id':self.frozen['run_id'],'records':self.records,'gaps':self.gaps,'remaining_stages':self.stages[self.stage:],'reason':reason,
+                'status':'ACTUAL_ROOT_REVIEWS_RECORDED' if self.stage==len(self.stages) and not self.gaps else 'INCOMPLETE_GAPS_PRESERVED',
+                'gui_contract_qualified':self.stage==len(self.stages) and not self.gaps,'product_release_pass':False,'deadline_unchanged':self.deadline,
+                'gui_review_scope':self.context['case_contract'].get('gui_review_scope','original_ui25')}
             write(self.out/'actual-same-live-records.json',result)
             return result
     def run(self):
@@ -289,8 +292,8 @@ class Controller:
                         if req['typed_action']!='snapshot':self.typed('snapshot',{},prefix+'-independent-native-after')
                     elif action=='record':self.record(req,prefix)
                     elif action=='gap':
-                        require(req.get('stage')==STAGES[self.stage] and req.get('reason'),'Explicit current-stage gap required')
-                        self.gaps.append({'stage':STAGES[self.stage],'reason':req['reason'],'request':pin(request),'original_png':self.latest});self.stage+=1
+                        require(req.get('stage')==self.stages[self.stage] and req.get('reason'),'Explicit current-stage gap required')
+                        self.gaps.append({'stage':self.stages[self.stage],'reason':req['reason'],'request':pin(request),'original_png':self.latest});self.stage+=1
                     elif action=='finish':return self.finish(req.get('reason','Root requested preserved normal closure'))
                     else:raise RuntimeError('Unsupported request action; no speculative input')
                     write(self.out/(prefix+'.complete.json'),{'request':pin(request),'stage_index':self.stage,'input_ACK_is_not_business_pass':True})

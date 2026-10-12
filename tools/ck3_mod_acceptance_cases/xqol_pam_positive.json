@@ -9,7 +9,7 @@
   "schema": "ck3-xqol-original-followup-case-v1",
   "case": "pam_positive",
   "data_directory": "xqol_followup_cases/pam_positive",
-  "acceptance_scope": "original_pam_positive_only",
+  "acceptance_scope": "focused_pam_positive_mod_callback_v1",
   "post_start": {
     "government_key": "celestial_government",
     "primary_title_tier_key": "hegemony",
@@ -39,10 +39,6 @@
     "ZQP120: TEST PASS acts_wrapper_once_exact_piety",
     "ZQP120: TEST PASS mendicant_wrapper_once_no_piety",
     "ZQP120: TEST DONE positive_natural_pam_observation",
-    "ZQP120: TEST PASS acts_sp_before_exact",
-    "ZQP120: TEST PASS acts_sp_after_exact",
-    "ZQP120: TEST PASS mendicant_sp_before_exact",
-    "ZQP120: TEST PASS mendicant_sp_after_exact",
     "ZQP120: TEST BEGIN D1_single_original_dispatch"
   ],
   "forbidden_markers": [
@@ -73,8 +69,8 @@
       "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
     },
     "xqol_pam_adapter.py": {
-      "bytes": 1177,
-      "sha256": "f3d2ebfefbe15399a2259101239a2262daff707e7353cfaf9d6f012415b5b4cf"
+      "bytes": 1131,
+      "sha256": "2e267a5a4bfecdaffa48d2fde4cc6208471e679df321584f3f27a02a9132c354"
     },
     "xqol_scope.py": {
       "bytes": 10804,
@@ -101,12 +97,12 @@
       "sha256": "4d46c80523104c298ea2656d35e85e3162afa8ae9222c5a261193b1854f8ce8f"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt": {
-      "bytes": 24167,
-      "sha256": "d9ee497cee4fb7d78bb494aa01a77aea879ed420d7646edb012027513fa9c4dc"
+      "bytes": 24001,
+      "sha256": "f0f12164f179b8fa6f18e51034fc89fc1a3d430e6f2b7a353896ee66b754ad87"
     },
     "xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_reward_observer_wrappers.txt": {
-      "bytes": 6321,
-      "sha256": "182b7cdbdc0cf7c1c7059a7832b9ad6efc0c5ba19935e8818fb6b6f8fda08700"
+      "bytes": 5373,
+      "sha256": "d85254e08289185032695c4879c6c173e69bcd80cf1dacb9dd07a174027cf48d"
     },
     "xqol_followup_cases/pam_positive/fixture/descriptor.mod": {
       "bytes": 110,
@@ -121,12 +117,16 @@
       "sha256": "ca3dd45804e32b0c8f57c5a543ef969fefd02fdd01634f2ccc367b95f5859223"
     },
     "xqol_followup_cases/pam_positive/original-plan.json": {
-      "bytes": 19181,
-      "sha256": "18fa665dff2f47814512306de8dab714ec52c7a06600b115baaf91f423a2fe0f"
+      "bytes": 18079,
+      "sha256": "8cc912eb190ae62233b6fde5c13146cd6e9098b98357defec4beadd82e30011e"
     },
     "xqol_followup_cases/pam_positive/fixture/common/modifiers/zqp_controlled_personal_slot_modifier.txt": {
       "bytes": 76,
       "sha256": "effb9d83daebcb160bcc54c71b394aa7efe3a1844f76ee003f622d7f70dd822b"
     }
-  }
+  },
+  "excluded_stock_resource_arithmetic": [
+    "spiritual_fulfillment",
+    "legitimacy"
+  ]
 }

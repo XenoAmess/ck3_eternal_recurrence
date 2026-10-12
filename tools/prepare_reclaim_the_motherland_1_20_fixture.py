@@ -93,6 +93,39 @@ PHASE4_MANUAL_GUI = '''window = {
 '''
 
 
+FOCUSED_OPTION = "focused_keypaths"
+FOCUSED_EDITS = (
+    (PHASE4_SEND, b"            add_character_flag = rqa_ready_for_succession # owned keypaths; no vanilla Offer probe\n"),
+    (b"            limit = { var:rqa120_stage = 4 has_character_flag = rqa_waiting_for_vassalization_probe }\n",
+     b"            limit = { var:rqa120_stage = 4 has_character_flag = rqa_ready_for_succession } # owned keypaths\n"),
+    (b"            rqa_verify_vassalization_probe_effect = yes\n",
+     b"            # owned keypaths: no stochastic vanilla double-refusal assertion\n"),
+)
+
+
+def focused_project(raw: bytes, *, inverse=False) -> bytes:
+    """Skip only the fixture's vanilla Offer round; retain owned chain/timing."""
+    newline = b"\r\n" if b"\r\n" in raw else b"\n"
+    for before, after in FOCUSED_EDITS:
+        before, after = (value.replace(b"\n", newline) for value in (before, after))
+        old, new = (after, before) if inverse else (before, after)
+        if raw.count(old) != 1 or new in raw:
+            raise ValueError("Exact owned-keypaths fixture anchor changed")
+        raw = raw.replace(old, new, 1)
+    return raw
+
+
+def focused_projection_receipt(raw: bytes, projected: bytes) -> dict:
+    inverse = focused_project(projected, inverse=True)
+    if inverse != raw or focused_project(raw) != projected:
+        raise ValueError("Owned-keypaths inverse changed the original fixture")
+    return {"schema": "rmtm-owned-keypaths-fixture-projection-v1", "enabled": True,
+            "original_driver": witness.byte_pin(raw), "projected_driver": witness.byte_pin(projected),
+            "inverse_driver": witness.byte_pin(inverse), "inverse_byte_exact": True,
+            "vanilla_offer_actions_executed": False, "production_modified": False,
+            "scope_dump_count_unchanged": 3, "runtime_status": "NOT_RUN", "business_pass": False}
+
+
 def phase4_enabled(value=False, *, ui_checkpoints=True, threshold_ui=False) -> bool:
     if type(value) is not bool:
         raise ValueError("phase4_pre_send_gui_qualification must be a strict JSON boolean")
@@ -264,9 +297,11 @@ CHECKPOINT
     return "namespace = rqa120\n\n" + event("rqa120.1", initialize) + "\n" + event("rqa120.2", tick)
 
 
-def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None, phase4_pre_send_gui_qualification: bool = False) -> dict:
+def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None, phase4_pre_send_gui_qualification: bool = False, focused_keypaths: bool = False) -> dict:
     qualified_phase4 = phase4_enabled(phase4_pre_send_gui_qualification,
                                     ui_checkpoints=ui_checkpoints, threshold_ui=threshold_ui)
+    if type(focused_keypaths) is not bool or (focused_keypaths and (qualified_phase4 or not ui_checkpoints)):
+        raise ValueError("Owned keypaths require UI checkpoints without the legacy Offer qualification")
     if formal_product_dir is None:
         raise ValueError("Scope-witness callback projection requires the selected formal product directory")
     formal_event = formal_product_dir.resolve() / witness.CALLBACK_RELATIVE
@@ -312,7 +347,12 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
     prep.write_script(output, "common/on_action/rqa120_on_actions.txt", START)
     original_driver = events(ui_checkpoints).encode("utf-8-sig")
     phase4_receipt = {}
-    if qualified_phase4:
+    if focused_keypaths:
+        projected_driver = focused_project(original_driver)
+        phase4_receipt[FOCUSED_OPTION] = focused_projection_receipt(original_driver, projected_driver)
+        with (output / "events/rqa120_events.txt").open("xb") as stream:
+            stream.write(projected_driver)
+    elif qualified_phase4:
         projected_driver = phase4_project(original_driver)
         support = phase4_support(source)
         phase4_receipt[PHASE4_OPTION] = phase4_projection_receipt(source, original_driver, projected_driver, support)
@@ -331,6 +371,9 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
             ("english", "Continue RMTM Core Acceptance", "Continue with the succession", "Observe the ministry budget and offer acceptance reasons first. Released targets: [ROOT.Var('rqa_vassalization_target_a').Char.GetShortUIName] and [ROOT.Var('rqa_vassalization_target_b').Char.GetShortUIName]. Continue after capturing the UI."),
             ("simp_chinese", "继续重整河山核心验收", "继续继承验收", "先查看三省六部预算与提议附庸的接受理由。已释放目标：[ROOT.Var('rqa_vassalization_target_a').Char.GetShortUIName]、[ROOT.Var('rqa_vassalization_target_b').Char.GetShortUIName]。完成界面取证后继续。"),
         ):
+            if focused_keypaths:
+                description = ("Inspect the Later title, retained personal/loyal realm and nine ministers; inspect then cancel the budget. Continue once for real succession." if language == "english" else
+                               "先核后朝头衔、保留的亲领与忠臣树及九席；预算只查看并取消。取证后仅继续一次真实继承。")
             loc = f'l_{language}:\n rqa120_continue_decision:0 "{title}"\n rqa120_continue_decision_desc:0 "{description}"\n rqa120_continue_decision_tooltip:0 "{title}"\n rqa120_continue_decision_confirm:0 "{confirm}"\n'
             prep.write_script(output, f"localization/{language}/rqa120_l_{language}.yml", loc)
     if threshold_ui:
@@ -354,6 +397,9 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
     ]
     old_law_markers = {f"RQA: {kind} PASS {name}" for kind, name in pending_families}
     markers = [marker for marker in markers if marker not in old_law_markers]
+    if focused_keypaths:
+        markers = [marker for marker in markers if not any(name in marker for name in (
+            "phase4_offer_vassalization_paths_valid", "phase4_two_released_rulers_refused_immediate_vassalization"))]
     markers += [f"RQA: {kind} PENDING_PHYSICAL {name}" for kind, name in pending_families]
     effective_law_contract = {
         "schema": "rmtm-effective-single-heir-actual-rows-v1",
@@ -398,13 +444,15 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
         "required_markers":markers, "reject_markers":["RQA: TEST FAIL", "RQA120: TEST FAIL"],
         "production_effect_projections":[proof], "stock_observer_projection":stock_proof,
         "timer_compression":{"production_days":1825, "prepared_fixture_days":duration, "reason":"preserve recent independence through the daily driver, then observe actual engine expiry"},
-        "coverage":"Existing production shattering/offer interaction/succession/restoration consequences and ministry entitlement/budget flags. Government budget UI, numeric acceptance reasons and production decision clicks remain separate UI checks.",
-        "ui_steps":["Close the native Chaos notification to allow time to advance.",
+        "coverage":("Owned qualification/Chaos/Later/personal land/loyal tree/ministry/succession/death/restoration; vanilla Offer totals and stochastic refusals are outside this release scope." if focused_keypaths else "Existing production shattering/offer interaction/succession/restoration consequences and ministry entitlement/budget flags. Government budget UI, numeric acceptance reasons and production decision clicks remain separate UI checks."),
+        "ui_steps":(["Observe the actual Chaos event once; preserve the D3 physical law/title conjunction.",
+                     "At D4 inspect Later empty de jure, personal/loyal realm, nine incumbents and budget; Cancel budget without executing it.",
+                     "Continue once; prove execute-time heir, real predecessor death and same-title recovery. The separate threshold_ui cell uses the real 50/51 production GUI."] if focused_keypaths else ["Close the native Chaos notification to allow time to advance.",
                     "At READY ui_after_chaos pause, inspect Later title empty de jure and retained personal/loyal realm.",
                     "Open Three Departments and Six Ministries; capture nine incumbents and the budget controls.",
                     "Use the target names in Continue RMTM Core Acceptance to open the real offer-vassalization dialog; capture recent independence -50, fixed ordinary rank +10 when difference >1, and absence of celestial/hegemony perks.",
                     "Click the fixture Continue decision after UI capture; close informational events as needed; advance until core DONE.",
-                    "In an additional UI attempt inspect the production restoration decision validity and confirmation at its threshold state."],
+                    "In an additional UI attempt inspect the production restoration decision validity and confirmation at its threshold state."]),
     })
 
 
@@ -418,8 +466,9 @@ def main() -> None:
     parser.add_argument("--threshold-ui", action="store_true")
     parser.add_argument("--formal-product-dir", type=Path, required=True)
     parser.add_argument("--phase4-pre-send-gui-qualification", action="store_true")
+    parser.add_argument("--focused-keypaths", action="store_true")
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir, args.phase4_pre_send_gui_qualification)
+    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir, args.phase4_pre_send_gui_qualification, args.focused_keypaths)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "runtime_status":"NOT_RUN", "ui_checkpoints":args.ui_checkpoints}))
 
 

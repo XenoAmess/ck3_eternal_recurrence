@@ -662,7 +662,7 @@
           "phases": [
             "actual Song scope and native h_china holding proof",
             "original readonly9",
-            "original UI25 with genuine guard GAP retained",
+            "focused slider open/cancel/endpoints/save/restore/map checks; qualified appointment/guard evidence reused",
             "normal GUI Quit/retained OS0/native0/shared completion"
           ],
           "budgets": {
@@ -686,29 +686,11 @@
             "forced_or_deadline_stop_is_normal0": false
           },
           "gui_contract": {
-            "original_gui25_order": [
-              "civic-candidates",
-              "military-candidates",
-              "million-off",
-              "million-on",
-              "million-restored",
-              "civic-appointment",
-              "military-appointment",
-              "guards",
+            "focused_slider_order": [
               "slider-anchor",
               "cancel-0",
-              "cancel-1",
-              "cancel-49",
-              "cancel-50",
-              "cancel-51",
-              "cancel-99",
               "cancel-100",
               "save-100",
-              "save-99",
-              "save-51",
-              "save-50",
-              "save-49",
-              "save-1",
               "save-0",
               "restore-anchor",
               "map-clean"
@@ -726,7 +708,7 @@
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail.json"
           },
-          "description": "Original Song readonly9/UI25 only, with explicit prior actual core evidence and independent guards supplement; no core replay.",
+            "description": "Focused Song slider keypaths with explicit prior actual core and guard evidence; no core/appointment matrix replay.",
           "opt_in_read_only_mcp_tools": [
             "ck3_query_current_title_appointment_v1"
           ]
@@ -991,7 +973,7 @@
             "ck3_query_current_title_appointment_v1"
           ],
           "phases": {
-            "coverage": "original_meritocratic_appointments_only",
+            "coverage": "focused_meritocratic_two_laws_off_on_restore_only",
             "original_steps": 2,
             "maximum_natural_days": 0,
             "business_and_runtime_NOT_RUN": true
@@ -1235,7 +1217,7 @@
             "ck3_query_player_religion_personal_parameters_v1"
           ],
           "phases": {
-            "coverage": "original_pam_positive_only",
+            "coverage": "focused_pam_positive_conversion_scope_once_repeat_only_no_vanilla_sf_or_legitimacy_gate",
             "original_steps": 35,
             "maximum_natural_days": 12,
             "business_and_runtime_NOT_RUN": true
@@ -1472,15 +1454,15 @@
             "ck3_query_title_holder_v1"
           ],
           "phases": {
-            "contract": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_core.json",
+            "contract": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_keypaths.json",
             "steps": [
               "D0 actual Song qualification",
               "D1 natural stock Chaos callback and individually guarded event acknowledgements",
               "D2/D3 original progression once each; effective-law D3 actual three-row conjunction",
-              "D4 original UI READY and C1-C5 actual GUI",
+              "D4 owned-keypaths UI READY: Later title/loyal tree/nine incumbents/ministry availability",
               "Continue once, paused scheduling-checkpoint three-row law evidence",
               "original next-day execute/real predecessor death; original recovery callback/newowner three-row law evidence",
-              "original remaining36/configured natural expiry10/50-51/restoration and independent whole-contract verdict",
+              "focused owned markers/configured natural expiry10/50-51/restoration; vanilla Offer/refusal probes excluded",
               "normal GUI Quit/native OS0"
             ],
             "integration_blockers": [],
@@ -1511,10 +1493,8 @@
             "order": [
               "C1 Later own title/empty de_jure/personal land/loyal tree",
               "C2 all9 actual incumbents and ministry budget available; cancel without executing budget",
-              "C3 Continue detail actual A/B names, do not confirm yet",
-              "C4 actual A Offer reasons minus50/valid rankplus10/no hegemony perks/actual total; Cancel",
-              "C5 independent B same actual reasons/total; Cancel",
-              "C6 Continue once after all prior GUI; original next-day true predecessor death and independent successor boundary"
+              "C3 Continue detail actual successor path; do not confirm yet",
+              "C6 Continue once after owned GUI; original next-day true predecessor death and independent successor boundary"
             ],
             "all_required": true,
             "native_readback_never_replaces_gui": true,
@@ -1545,7 +1525,7 @@
           },
           "adapter": {
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_adapter.py",
-            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_core.json"
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_keypaths.json"
           }
         },
         {

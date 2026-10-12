@@ -17,6 +17,8 @@
     "RQA120: TEST FAIL"
   ],
   "case": "threshold_ui",
+  "release_scope": "owned_keypaths",
+  "excluded_release_requirements": ["vanilla Offer reasons, totals and stochastic double refusal"],
   "required_exact_count": 1,
   "required_markers": [
     "RQAUI: TEST PASS china_control_reset",

@@ -8,6 +8,12 @@ import re
 require=common.require
 validate_contract=common.validate_contract
 verify_case=common.verify_case
+MERIT_REPRESENTATIVE='merit_two_law_representative_toggle_v1'
+
+
+def representative(contract):
+    return (contract.get('case')=='meritocratic_appointments' and
+            contract.get('gui_review_scope')==MERIT_REPRESENTATIVE)
 
 
 def prepare_case(context):
@@ -39,8 +45,13 @@ def verify_slots(slots,contract,actor):
         require(type(title) is int and title>0 and title not in seen and slot.get('law')==law,
                 'Actual distinct government title/law missing')
         seen.append(title)
-        require(slot.get('direct_original_review') is True and slot.get('full_candidates_reviewed') is True and
-                slot.get('eligibility_and_score_breakdown_reviewed') is True, 'Original complete candidate/tooltip review missing')
+        require(slot.get('direct_original_review') is True, 'Original GUI review missing')
+        if representative(contract):
+            require(slot.get('representative_toggle_reviewed') is True,
+                    'Both migrated laws require actual representative off/on/restored review')
+        else:
+            require(slot.get('full_candidates_reviewed') is True and
+                    slot.get('eligibility_and_score_breakdown_reviewed') is True, 'Original complete candidate/tooltip review missing')
         candidates=slot.get('candidates')
         require(isinstance(candidates,list) and candidates and all(type(x.get('character_id')) is int and x['character_id']>0 and
                 type(x.get('eligible')) is bool and type(x.get('is_ai')) is bool for x in candidates),
@@ -55,10 +66,11 @@ def verify_slots(slots,contract,actor):
                 slot.get('auto_appointment_enabled_restored_score') is False, 'Original actual off/on/off toggle readback missing')
         require(type(slot.get('original_switch_enabled')) is bool and slot.get('original_switch_restored') is True and
                 slot.get('final_switch_enabled')==slot['original_switch_enabled'], 'Original appointment switch not restored')
-        chosen=slot.get('chosen_character_id')
-        require(chosen in [x['character_id'] for x in candidates if x['eligible'] is True and x['is_ai'] is True] and
-                slot.get('actual_successor_character_id')==chosen and slot.get('native_appointment_confirmed') is True,
-                'Original actual eligible AI appointment/successor missing')
+        if not representative(contract):
+            chosen=slot.get('chosen_character_id')
+            require(chosen in [x['character_id'] for x in candidates if x['eligible'] is True and x['is_ai'] is True] and
+                    slot.get('actual_successor_character_id')==chosen and slot.get('native_appointment_confirmed') is True,
+                    'Original actual eligible AI appointment/successor missing')
     return True
 
 
@@ -97,17 +109,23 @@ def run_case(context,client):
     require(root['result'].get('campaign_root_context_ready') is True and observed.get('player_character_id')==actor and
             observed.get('date_raw')==frame['date_raw'] and observed.get('government',{}).get('key')==c['post_start']['government_key'] and
             observed.get('independent') is True, 'Actual government/actor/independence differs from original cell')
+    requirements=(['each migrated law: representative human off/on/restored tooltip, exact million penalty and switch restore',
+                   'actual native law/title/holder and naturally eligible human pool binding; controlled grant is not eligibility',
+                   'ordinary/administrative accepted evidence supplies shared tooltip/AI-heir coverage; no new heir claim']
+                  if representative(c) else
+                  ['actual matching native law and complete candidates/eligibility/score tooltip',
+                   'independent human naturally in candidate pool; exact off/on/off million scores and original switch restore',
+                   'actual eligible AI chosen and actual successor/appointment confirmed'])
     response=client.root_checkpoint('qol-original-government-appointment',{
         'case':context['case'],'actual_actor_character_id':actor,'actual_frame':frame,
         'appointment_laws':c['appointment_laws'],'original_million_penalty':1000000,
-        'requirements':['actual matching native law and complete candidates/eligibility/score tooltip',
-          'independent human naturally in candidate pool; exact off/on/off million scores and original switch restore',
-          'actual eligible AI chosen and actual successor/appointment confirmed',
-          'fresh original images plus mapped input receipts when coordinates used; no guessed title/character IDs'],
+        'requirements':requirements+['fresh original images plus mapped input receipts when coordinates used; no guessed title/character IDs'],
+        'gui_review_scope':c.get('gui_review_scope','original_full_appointment'),
+        'representative_evidence_roles':c.get('representative_evidence_roles',[]),
         'required_response':{'completed':True,'current_scene_reviewed':True,'slots':[],'evidence':[]},
         'typed_slot_fields':['requested_title_id','requested_title_key','title_id','title_key','law',
             'appointment_pool_off','appointment_pool_on','appointment_pool_restored'],
-        'typed_query_scope':'qualification data only; original human/AI/score/successor/switch assertions all remain required'
+        'typed_query_scope':'current native pool/actor/score/switch binding; GUI requirements are case-specific'
         },read_only_appointment=True)
     require(response.get('completed') is True and response.get('current_scene_reviewed') is True,
             'Original government GUI block incomplete/GAP')

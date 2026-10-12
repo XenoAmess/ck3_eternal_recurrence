@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 import re
 import unittest
+from test_ck3_mod_acceptance_xqol_minimal_scope import (
+    restore_minimal_sample, restore_minimal_plan, restore_minimal_pam_contract)
 
 HERE = Path(__file__).resolve().parent
 CASES = HERE / 'ck3_mod_acceptance_cases'
@@ -35,6 +37,7 @@ def remove_one(raw, pattern):
 
 
 def restore_pre_boundary_sample(raw):
+    raw = restore_minimal_sample(raw)
     # Reconstruct from the actual moved bytes, not from a stored replacement.
     priors = re.findall(PRIOR_REGION, raw)
     suffixes = re.findall(SUFFIX_REGION, raw)
@@ -56,7 +59,7 @@ def restore_pre_boundary_events(raw):
 
 
 def restore_pre_boundary_contract(value):
-    restored = copy.deepcopy(value)
+    restored = restore_minimal_pam_contract(value)
     restored['support_files'][SAMPLE_KEY] = copy.deepcopy(OLD_SAMPLE)
     restored['support_files'][EVENTS_KEY] = copy.deepcopy(OLD_EVENTS)
     restored['support_files'][HOOK_KEY] = copy.deepcopy(OLD_HOOK)
@@ -164,7 +167,7 @@ class TwoPhaseCandidate(unittest.TestCase):
         self.assertEqual(contract['original_step_count'], 35)
         self.assertEqual(contract['maximum_natural_days'], 12)
         self.assertEqual(contract['original_budgets']['readiness_timeout'], 400)
-        self.check_pin((DATA / 'original-plan.json').read_bytes(), {
+        self.check_pin(restore_minimal_plan((DATA / 'original-plan.json').read_bytes()), {
             'bytes': 19181, 'sha256': '18fa665dff2f47814512306de8dab714ec52c7a06600b115baaf91f423a2fe0f'})
         # The full old contract pin above also fixes every other support file,
         # reward source, required/forbidden literal, budget and fixture allowlist.

@@ -7,6 +7,7 @@ import re
 import unittest
 
 from xqol_vanilla_contract import block
+from test_ck3_mod_acceptance_xqol_minimal_scope import restore_minimal_merit_contract
 
 
 CASES = Path(__file__).resolve().parent / "ck3_mod_acceptance_cases"
@@ -38,7 +39,7 @@ def restore_pre_v2_merit_event(raw):
 
 
 def restore_pre_v2_merit_contract(contract):
-    value = copy.deepcopy(contract)
+    value = restore_minimal_merit_contract(contract)
     preparation = value["fixture_preparation"]
     if value["acceptance_scope"] != SCOPE_V2 or preparation["kind"] != SCOPE_V2:
         raise ValueError("Expected explicit controlled merit v2 contract")
@@ -182,7 +183,7 @@ class MeritDirectParentFixture(unittest.TestCase):
         self.assertIn("setup does not imply eligibility", grant["required_actual_readback"][-1])
         self.assertEqual(len(self.contract["support_files"]), 9)
         changed = {k for k, v in self.contract["support_files"].items() if v != restored["support_files"][k]}
-        self.assertEqual(changed, {EVENT_KEY})
+        self.assertEqual(changed, {EVENT_KEY, 'xqol_government_adapter.py'})
         for relative, expected in self.contract["support_files"].items():
             raw = (CASES / relative).read_bytes()
             self.assertEqual(expected, {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()})

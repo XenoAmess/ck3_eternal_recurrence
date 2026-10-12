@@ -29,10 +29,15 @@ PHASE4_SEND_FACTS = [
 ]
 
 
+def focused_keypaths(context):
+    return "case_spec" in context and case_config(context).get("release_scope") == "owned_keypaths"
+
+
 def phase4_enabled(context):
     value = context.get("case_inputs", {}).get(PHASE4_OPTION, False)
     require(type(value) is bool, PHASE4_OPTION + " must be a strict JSON boolean")
     require(not value or context["case"] == "core", "Pre-send qualification is core-only, not threshold_ui")
+    require(not value or not focused_keypaths(context), "Fresh owned-keypaths inputs must omit the legacy Offer qualification")
     return value
 
 
@@ -42,7 +47,7 @@ def validate_contract(context, *, require_prepared=False):
     config = case_config(context)
     require(config["natural_game_day_limit"] == 14 and config["fixture_recent_independence_override_days"] == 10,
             "Original timer contract changed")
-    if context["case"] == "core":
+    if context["case"] == "core" and not focused_keypaths(context):
         require((config["original_family_count"], config["unchanged_family_count"],
                  config["physical_qualified_family_count"]) == (36, 33, 3), "Original36 contract changed")
     inputs = context.get("case_inputs", {})
@@ -72,12 +77,18 @@ def _validate_prepared_materialization(context, enabled):
             "Prepared core/UI flags differ")
     source = Path(context["repo_root"]) / "tools/fixtures/reclaim_the_motherland_acceptance"
     original = emitter.events(True).encode("utf-8-sig")
+    focused = focused_keypaths(context)
     support = emitter.phase4_support(source) if enabled else {}
     if enabled:
         widget = support[emitter.PHASE4_GUI_RELATIVE]
         require(b"on_start" not in widget and b"trigger_when" not in widget and widget.count(b".Execute(") == 1,
                 "Diagnostic widget must have only one manual onclick action")
-    expected_driver = emitter.phase4_project(original) if enabled else original
+    expected_driver = emitter.focused_project(original) if focused else emitter.phase4_project(original) if enabled else original
+    if focused:
+        require(receipt.get(emitter.FOCUSED_OPTION) == emitter.focused_projection_receipt(original, expected_driver),
+                "Owned-keypaths projection receipt/inverse differs or claims runtime credit")
+    else:
+        require(emitter.FOCUSED_OPTION not in receipt, "Legacy case cannot consume a focused fixture")
     if enabled:
         require(receipt.get(PHASE4_OPTION) == emitter.phase4_projection_receipt(source, original, expected_driver, support),
                 "Pre-send projection receipt/inverse differs or claims runtime credit")
@@ -132,6 +143,8 @@ def prepare_case(context):
         arguments.append("--threshold-ui")
     if qualified_phase4:
         arguments.append("--phase4-pre-send-gui-qualification")
+    if focused_keypaths(context):
+        arguments.append("--focused-keypaths")
     emitter = invoke_fixture_prepare(context, repo / "tools/prepare_reclaim_the_motherland_1_20_fixture.py", arguments)
     fixture_receipt = fixture.with_suffix(".prepare.json")
     scope_witness = {"receipt": pin(fixture_receipt), "projection": json.loads(
@@ -284,15 +297,22 @@ def run_case(context, client):
     for day in (1, 2, 3):
         original_day(client, "rmtm-D" + str(day), start, config["natural_game_day_limit"])
     d3, d3_verdict = _law_phase(client, "d3")
+    focused = focused_keypaths(context)
     phase4 = _phase4_pre_send(context, client, d3_verdict) if phase4_enabled(context) else None
     original_day(client, "rmtm-D4", start, config["natural_game_day_limit"])
     literals(client, "rmtm-original-ui-ready", ["RQA120: TEST READY ui_after_chaos"], config["forbidden_markers"])
-    review(client, "rmtm-C1-C5", [
-        "later_empty_dejure_personal_land_loyal_subtree", "nine_exact_incumbents_real_budget_cancel",
-        "continue_actual_A_B_names", "offer_A_minus50_rank10_total_no_hegemony_perks_cancel",
-        "offer_B_minus50_rank10_total_no_hegemony_perks_cancel",
-    ], {"scope": "Original GUI C1-C5; typed readiness never substitutes for actual UI",
-        "next": "Open the real fixture Continue decision only after these views are captured."})
+    if focused:
+        review(client, "rmtm-owned-keypaths-GUI", [
+            "later_empty_dejure_personal_land_loyal_subtree", "nine_exact_incumbents_real_budget_cancel",
+        ], {"scope": "Owned Later/realm/ministry GUI only; no vanilla Offer reasons, totals or refusal gate",
+            "next": "Continue once only after the owned views are captured."})
+    else:
+        review(client, "rmtm-C1-C5", [
+            "later_empty_dejure_personal_land_loyal_subtree", "nine_exact_incumbents_real_budget_cancel",
+            "continue_actual_A_B_names", "offer_A_minus50_rank10_total_no_hegemony_perks_cancel",
+            "offer_B_minus50_rank10_total_no_hegemony_perks_cancel",
+        ], {"scope": "Original GUI C1-C5; typed readiness never substitutes for actual UI",
+            "next": "Open the real fixture Continue decision only after these views are captured."})
     review(client, "rmtm-Continue-once", ["original_continue_confirmed_once", "paused_before_next_day_execute"], {
         "original_predeath_boundary": "Continue scheduling checkpoint, not an immediately adjacent execute-time death witness",
         "no_native_player_death_Continue_credit": True,
@@ -318,11 +338,18 @@ def run_case(context, client):
     debug = Path(client.output) / "rmtm-final-debug.log.raw"
     with debug.open("xb") as stream:
         stream.write(client.log_bytes())
-    review(client, "rmtm-original-final-business", [
-        "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
-        "two_real_offer_paths_and_refusals", "natural_both_title_timer_expiry",
-        "original50_51_source_boundaries_and_actual_restoration_outcome",
-    ], {"independent_threshold_UI_case_still_required": True})
+    if focused:
+        review(client, "rmtm-owned-keypaths-final", [
+            "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
+            "natural_both_title_timer_expiry", "original50_51_source_boundaries_and_actual_restoration_outcome",
+        ], {"independent_threshold_UI_case_still_required": True,
+            "excluded_release_scope": "Vanilla Offer formulas and stochastic double refusal; old RED remains historical RED."})
+    else:
+        review(client, "rmtm-original-final-business", [
+            "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
+            "two_real_offer_paths_and_refusals", "natural_both_title_timer_expiry",
+            "original50_51_source_boundaries_and_actual_restoration_outcome",
+        ], {"independent_threshold_UI_case_still_required": True})
     client.checkpoint("rmtm-verdict-input", {
         "d3": str(d3), "predeath": str(predeath), "postdeath": str(postdeath), "debug_log": pin(debug),
         "initial_date_raw": start, "last_date_raw": postdeath_verdict["date_raw"],
@@ -331,6 +358,25 @@ def run_case(context, client):
     })
     return {"status": "business_phases_observed_normal_close_pending", "business_pass": False,
             "law_phases": [d3_verdict, predeath_verdict, postdeath_verdict], "natural_day_cap": 14}
+
+
+def focused_marker_verdict(config, raw, bundle, helper):
+    """Recheck actual owned markers/law rows; never filter a recorded FAIL."""
+    law = helper.evaluate_bundle(bundle)
+    lines = raw.decode("utf-8-sig", errors="replace").splitlines()
+    require(not any(token in line for token in config["forbidden_markers"] for line in lines),
+            "Owned-keypaths actual FAIL gate rejected")
+    expected = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in config["families"]]
+    expected += [config["begin"], config["done"], "RQA120: TEST DONE core"]
+    counts = {literal: sum(literal in line for line in lines) for literal in expected}
+    require(all(count == config["required_exact_count"] for count in counts.values()),
+            "Owned-keypaths missing/repeated actual source marker")
+    pending = {item for items in helper.FAMILIES.values() for item in items}
+    require(not any(f"RQA: {kind} PASS {name}" in line for kind, name in pending for line in lines),
+            "Legacy PASS cannot replace physical law qualification")
+    return {"release_scope": "owned_keypaths", "marker_and_law_contract_qualified": True,
+            "marker_counts": counts, "actual_law_qualification": law,
+            "legacy_full36_credit": False, "business_pass": False}
 
 
 def verify_case(context):
@@ -352,12 +398,21 @@ def verify_case(context):
                 "full36_core_or_death_credit": False}
     data = json.loads((output / "rmtm-verdict-input.json").read_text(encoding="utf-8-sig"))
     require(pin(data["debug_log"]["path"]) == data["debug_log"], "Original final frozen log changed")
-    verdict_path = output / "rmtm-original36-and-effective-law-verdict.json"
-    args = SimpleNamespace(d3=Path(data["d3"]), predeath=Path(data["predeath"]),
-                           postdeath=Path(data["postdeath"]), debug_log=Path(data["debug_log"]["path"]), output=verdict_path)
-    code = caller.final(args, caller.load_helper())
-    require(code == 0, "Original33 plus all three actual physical-gated families rejected")
-    proofs = final_root_evidence(context, ["rmtm-C1-C5", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-original-final-business"])
+    focused = focused_keypaths(context)
+    if focused:
+        bundle = {"schema": "rmtm-effective-single-heir-actual-rows-v1",
+                  "phases": [caller.phase_evidence(Path(data[name])) for name in ("d3", "predeath", "postdeath")]}
+        verdict = focused_marker_verdict(case_config(context), Path(data["debug_log"]["path"]).read_bytes(), bundle, caller.load_helper())
+        write_once(output / "rmtm-owned-keypaths-and-effective-law-verdict.json", verdict)
+        names = ["rmtm-owned-keypaths-GUI", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-owned-keypaths-final"]
+    else:
+        verdict_path = output / "rmtm-original36-and-effective-law-verdict.json"
+        args = SimpleNamespace(d3=Path(data["d3"]), predeath=Path(data["predeath"]),
+                               postdeath=Path(data["postdeath"]), debug_log=Path(data["debug_log"]["path"]), output=verdict_path)
+        code = caller.final(args, caller.load_helper())
+        require(code == 0, "Original33 plus all three actual physical-gated families rejected")
+        names = ["rmtm-C1-C5", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-original-final-business"]
+    proofs = final_root_evidence(context, names)
     if phase4_enabled(context):
         phase4 = data.get(PHASE4_OPTION)
         require(isinstance(phase4, dict) and set(phase4) == {"qualification", "probe_once"},
@@ -372,6 +427,7 @@ def verify_case(context):
         proofs += extra
     else:
         require(PHASE4_OPTION not in data, "Run/verify phase4 option differs")
-    return {"case_contract_qualified": True, "gui_contract_qualified": True, "business_contract_applicable": True, "marker_and_law_contract_qualified": True, "original_family_count": 36,
+    return {"case_contract_qualified": True, "gui_contract_qualified": True, "business_contract_applicable": True, "marker_and_law_contract_qualified": True,
+            **({"release_scope": "owned_keypaths", "legacy_full36_credit": False} if focused else {"original_family_count": 36}),
             "actual_review_evidence": proofs, "source_pass": False, "business_pass": False,
             "requires_shared_normal_close_and_independent_threshold_UI": True}
