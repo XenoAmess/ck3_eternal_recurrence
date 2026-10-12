@@ -1,0 +1,105 @@
+{
+  "schema": "lyd-workshop-cache-and-closure-summary-v1",
+  "recorded_at_utc": "2026-10-12T08:26:41.874962+00:00",
+  "product": "li-yu-dao",
+  "item_id": "3817934804",
+  "public_version": "0.1.1 Alpha",
+  "published_tag": "li-yu-dao-v0.1.1-alpha.1",
+  "published_commit": "119b97d97aa1bd50780f5a02c88aafa8619916be",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0068",
+  "cache_file_count": 71,
+  "cache_matches_formal": true,
+  "actual_load_evidence": "combined managed real Steam cache profile binding plus actual stable main menu",
+  "independent_engine_vfs_path_readback": "UNKNOWN",
+  "campaign_started": false,
+  "business_tests_repeated": false,
+  "ck3_retained_os_exit": 0,
+  "native_process_exit": 0,
+  "host_original_exit": 0,
+  "public_run_exit": 0,
+  "public_verify_exit": 0,
+  "allocator_original_exit": 0,
+  "keeper_original_exit": 0,
+  "normal_close_qualified": true,
+  "screen_release_sequence": 5068,
+  "steam_final_offline_directly_reviewed": true,
+  "display_restored": [
+    1024,
+    768
+  ],
+  "phase_one_status": "NOT_GREEN",
+  "new_0_1_2_live_credit": false,
+  "exit_observation": "Quit was delayed; Windows not-responding ghost retained. Native process ended normally at 08:13:23Z; ROOT closure review and host completion followed at 08:21Z. Delay cause UNKNOWN.",
+  "refs": {
+    "formal_manifest": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-0.1.1-alpha-metadata-20261012-001\\published-formal.manifest.json",
+      "bytes": 13208,
+      "sha256": "d368a9915575328629f0bee8197e1e9931d3b9ba5e543f415cd3486cc872cfc3"
+    },
+    "native_download": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-0.1.1-alpha-metadata-20261012-001\\native-download.actual.json",
+      "bytes": 1297,
+      "sha256": "59c31d4c23e1f533a76b90d5f4a724edef1195b6cd7d137f972ce4ba532484d1"
+    },
+    "public_notes": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-0.1.1-alpha-metadata-20261012-001\\public-verification-004\\verification.json",
+      "bytes": 758,
+      "sha256": "5c027ab7ae8588dde56d11a4d1c26b2b2bd1456cb27947a37a0880668842bac1"
+    },
+    "public_tags": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam-0.1.1-alpha-metadata-20261012-001\\public-tags.actual.json",
+      "bytes": 3237,
+      "sha256": "ad2fa4808ecbed9ea1f630014c1408e570ad36721ab5ff5be4604124489d78c4"
+    },
+    "cache_case": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0068\\case-output\\workshop-cache-case-result.json",
+      "bytes": 92954,
+      "sha256": "ba77c66fa5752e57b8edb0e6a621f91de59562f51489518dc5bf4ef54ebf818c"
+    },
+    "original_handle": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0068\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "65c9223ca7ec8b279555ea197caa2b9cba5b5679534b2a3a5c7ac4584e51740a"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0068\\case-output\\normal-close-result.json",
+      "bytes": 10196,
+      "sha256": "375577c29b3433230efaaa1f5068b803cb6f8b18772a902c36fc55950ea3c5fc"
+    },
+    "host_original_wait": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0068\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "b281472f1e252a5a3a52d19248a0a7670e4a771a4b61f22445665e304df6238f"
+    },
+    "keeper_original_wait": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0068\\keeper-actual-parent-exit.json",
+      "bytes": 613,
+      "sha256": "0a5452c91cf1c578938b08ddb8adcb898ba76976400db3e5ac9d5c8d15323c88"
+    },
+    "screen_release": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0068\\release-command-001\\stdout.log",
+      "bytes": 1371,
+      "sha256": "296b83ec10f2cf6bfa9d89f1786757b821e9207da6fefe3e09d4dd1928bd86ee"
+    },
+    "public_run_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\successor19-run-command-001\\RESULT.actual.json",
+      "bytes": 1658,
+      "sha256": "4144ff7d052001d256e4e65890d70d0472dffdca425c4d2a77d856fac972ad88"
+    },
+    "public_verify_command": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\successor19-verify-command-001\\RESULT.actual.json",
+      "bytes": 1667,
+      "sha256": "cae08808970968b1e18b6e8345db1b8b249010dbb32fbbe4962eafe62150b555"
+    },
+    "display_restore": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\desktop19\\display-restore-001.json",
+      "bytes": 465,
+      "sha256": "d7a0f471f0e2b403093e8fd944cbf2a1de287154aa30b0c43b4b864d059119fd"
+    },
+    "final_offline_frame": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\desktop19\\final-offline-004.capture.json",
+      "bytes": 516,
+      "sha256": "7cc3884afc035678b0c022b96075cc197d75c338a6bba447a363857decfbb639"
+    }
+  }
+}

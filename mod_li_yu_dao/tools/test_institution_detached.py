@@ -37,7 +37,7 @@ def world(detached=True,active=True):
     actor.fields['held_titles']=political; npc.fields['held_titles']=[]
     target.fields['characters']=[actor,npc]
     main.fields.update(head_of_rite=actor if detached else None,rite_counties=1)
-    actor.variables.update(lyd_i3b_faith=target,lyd_i3b_main=main,lyd_i3b_serial=7,lyd_i3b_nonce=9,lyd_i3b_phase=2,lyd_i3b_authority_mode=int(detached),lyd_i3b_result_authority_mode=int(detached))
+    actor.variables.update(lyd_i3b_faith=target,lyd_i3b_main=main,lyd_i3b_actor_rite=main,lyd_i3b_serial=7,lyd_i3b_nonce=9,lyd_i3b_phase=2,lyd_i3b_authority_mode=int(detached),lyd_i3b_result_authority_mode=int(detached))
     if active:actor.variables['lyd_i3b_active']=1
     if detached:actor.variables.update(lyd_i3b_required_native_hor=actor,lyd_i3b_result_native_hor=actor)
     actor.lists.update(lyd_i3b_rites=rites[:],lyd_i3b_members=[actor,npc],lyd_i3b_political_titles=political[:])
@@ -161,6 +161,10 @@ def cases():
     add('political claim without office is no mandate and no office veto',actor,True,lambda a,n,f,r,g,e:a.variables.update(lyd_c3_claim_faith=f))
     add('common captured route valid',current,True,detached=False)
     add('detached captured route valid',current,True)
+    for detached in (False,True):
+        route='detached' if detached else 'common'
+        add(route+' missing captured actor rite',current,False,lambda a,n,f,r,g,e:a.variables.pop('lyd_i3b_actor_rite'),detached=detached)
+        add(route+' substituted captured actor rite',current,False,lambda a,n,f,r,g,e:a.variables.update(lyd_i3b_actor_rite=Scope('differentRite')),detached=detached)
     add('missing captured mode fails closed',current,False,lambda a,n,f,r,g,e:a.variables.pop('lyd_i3b_authority_mode'))
     add('forged common mode on same-type Faith105',current,False,lambda a,n,f,r,g,e:a.variables.update(lyd_i3b_authority_mode=0))
     add('forged detached mode on common Faith32',current,False,lambda a,n,f,r,g,e:a.variables.update(lyd_i3b_authority_mode=1),detached=False)
@@ -201,6 +205,7 @@ def cases():
 def source_graph(c):
     begin=one(c.effects['lyd_i3b_begin_effect'],'if')
     assert contains_direct_fragment(one(begin,'limit'),'lyd_i3b_can_begin_trigger = yes')
+    assert contains_direct_fragment(begin,'set_variable = { name = lyd_i3b_actor_rite value = rite }')
     branch=[e.value for e in begin.entries if e.key=='if' and contains_direct_fragment(one(e.value,'limit'),'faith = faith:lyd_common_faith')]
     assert len(branch)==1;branch=branch[0]
     assert contains_direct_fragment(branch,'set_variable = { name = lyd_i3b_authority_mode value = 0 }')
@@ -208,7 +213,8 @@ def source_graph(c):
     commit=one(c.effects['lyd_i3b_commit_effect'],'if')
     assert contains_direct_fragment(one(commit,'limit'),'lyd_i3b_native_admitted_trigger = yes')
     keys=[e.key for e in commit.entries]
-    assert keys.index('lyd_i3b_capture_authority_receipt_effect')<keys.index('var:lyd_i3b_faith')
+    assert keys.index('lyd_i3b_capture_authority_receipt_effect')<keys.index('lyd_c3_create_owned_temporal_head_effect')
+    assert contains_direct_fragment(commit,'set_variable = { name = lyd_c3_head_creation_authorized value = 1 } lyd_c3_create_owned_temporal_head_effect = yes remove_variable = lyd_c3_head_creation_authorized')
     assert contains_direct_fragment(one(one(commit,'if'),'limit'),'lyd_i3b_native_authority_postcondition_trigger = yes')
     failures=one(commit,'else')
     assert contains_direct_fragment(failures,'else_if = { limit = { NOT = { lyd_i3b_native_authority_postcondition_trigger = yes } } set_variable = { name = lyd_i3b_result_code value = 7 } }')
@@ -237,6 +243,7 @@ def main():
     assert contains_direct_fragment(captured_guard,
         'this = var:lyd_i3b_required_native_hor var:lyd_i3b_main.head_of_rite = var:lyd_i3b_required_native_hor')
     changes=[
+        ('captured actor rite identity','    faith = var:lyd_i3b_faith\n    rite = var:lyd_i3b_actor_rite\n    faith.main_rite = var:lyd_i3b_main\n','    faith = var:lyd_i3b_faith\n    faith.main_rite = var:lyd_i3b_main\n'),
         ('detached current HoR equality','    this = rite.head_of_rite\n',''),
         ('all-owned Faith rites','    NOT = { any_faith_rite = { NOT = { lyd_i3b_owned_rite_trigger = yes } } }\n',''),
         ('held foreign HoF title','            is_head_of_faith = yes\n',''),
