@@ -105,7 +105,7 @@ def select_war_hotspot(
                     _add(candidates, index,
                          0 if army.get("controllable") is True else 1,
                          war_id, army_id, current, "battle")
-                elif army.get("army_state") == "siege" or army.get("siege_days_left") is not None:
+                elif army.get("army_state") in {"siege", "sieging"} or army.get("siege_days_left") is not None:
                     _add(candidates, index,
                          2 if army.get("controllable") is True else 3,
                          war_id, army_id, current, "siege")
@@ -164,7 +164,7 @@ def follow_war_hotspot(
     cursor_park = park_cursor() if park_cursor is not None else None
     if park_cursor is not None and (
         not isinstance(cursor_park, dict)
-        or cursor_park.get("status") not in {"parked", "skipped_minimized"}
+        or cursor_park.get("status") not in {"parked", "skipped_minimized", "skipped_other_virtual_desktop"}
     ):
         raise ValueError(f"CK3 cursor was not parked inside the map window: {cursor_park}")
     result = service.center_map_on_landed_title_v1(

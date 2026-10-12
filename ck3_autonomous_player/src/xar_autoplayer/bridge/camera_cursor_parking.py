@@ -48,6 +48,39 @@ def _minimized_owned_ck3_window() -> dict[str, object] | None:
             "window_count": len(windows)}
 
 
+def _background_owned_ck3_window() -> dict[str, object] | None:
+    """Skip global pointer input only for a verified hidden virtual desktop."""
+    import win32gui
+    import win32process
+    from .windows_virtual_desktop import window_virtual_desktop
+
+    try:
+        inventory = ck3_process_inventory().get("processes", [])
+        if len(inventory) != 1 or str(inventory[0].get("name", "")).casefold() != "ck3.exe":
+            return None
+        pid = int(inventory[0]["pid"])
+        windows = []
+        def collect(hwnd: int, _extra: object) -> bool:
+            if (win32gui.IsWindowVisible(hwnd)
+                    and win32process.GetWindowThreadProcessId(hwnd)[1] == pid):
+                windows.append(int(hwnd))
+            return True
+        win32gui.EnumWindows(collect, None)
+        if len(windows) != 1:
+            return None
+        hwnd = windows[0]
+        if win32gui.GetWindowText(hwnd) != "Crusader Kings III" or win32gui.IsIconic(hwnd):
+            return None
+        observed = window_virtual_desktop(hwnd)
+        if (observed["on_current_virtual_desktop"] is not False
+                or not (int(observed["dwm_cloaked_flags"]) & 2)):
+            return None
+        return {"status": "skipped_other_virtual_desktop", "ck3_pid": pid,
+                "mouse_input": False, **observed}
+    except (AgentError, OSError, ValueError):
+        return None
+
+
 def park_foreground_ck3_cursor() -> dict[str, object]:
     """Move to an interior client point when CK3 owns the foreground window."""
 
@@ -66,6 +99,9 @@ def park_foreground_ck3_cursor() -> dict[str, object]:
         minimized = _minimized_owned_ck3_window()
         if minimized is not None:
             return minimized
+        background = _background_owned_ck3_window()
+        if background is not None:
+            return background
         return {"status": "no_foreground_window"}
     length = user32.GetWindowTextLengthW(hwnd)
     title_buffer = ctypes.create_unicode_buffer(length + 1)
@@ -75,7 +111,21 @@ def park_foreground_ck3_cursor() -> dict[str, object]:
         minimized = _minimized_owned_ck3_window()
         if minimized is not None:
             return minimized
+        background = _background_owned_ck3_window()
+        if background is not None:
+            return background
         return {"status": "ck3_not_foreground", "foreground_title": title}
+    import win32gui
+    import win32process
+    try:
+        inventory = ck3_process_inventory().get("processes", [])
+    except AgentError:
+        return {"status": "owned_process_unconfirmed", "mouse_input": False}
+    if (len(inventory) != 1
+            or str(inventory[0].get("name", "")).casefold() != "ck3.exe"
+            or int(inventory[0]["pid"]) != win32process.GetWindowThreadProcessId(hwnd)[1]
+            or win32gui.IsIconic(hwnd)):
+        return {"status": "owned_window_unconfirmed", "mouse_input": False}
     rect = wintypes.RECT()
     if not user32.GetClientRect(hwnd, ctypes.byref(rect)):
         raise OSError("GetClientRect failed for the foreground CK3 window")
@@ -88,6 +138,8 @@ def park_foreground_ck3_cursor() -> dict[str, object]:
     before = wintypes.POINT()
     if not user32.GetCursorPos(ctypes.byref(before)):
         raise OSError("GetCursorPos failed before CK3 cursor parking")
+    if user32.GetForegroundWindow() != hwnd:
+        return {"status": "foreground_changed", "mouse_input": False}
     if not user32.SetCursorPos(point.x, point.y):
         raise OSError("SetCursorPos failed for the foreground CK3 window")
     after = wintypes.POINT()

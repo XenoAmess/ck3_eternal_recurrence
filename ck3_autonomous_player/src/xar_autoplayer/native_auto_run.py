@@ -133,8 +133,7 @@ from .sway_formal_consumer import (
     consume_sway_following_turn,
 )
 from .bridge.service import GameplayBridgeService
-from .bridge.war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
-from .bridge.camera_cursor_parking import park_foreground_ck3_cursor
+from .bridge.war_hotspot_camera import LandedProvinceIndex
 from .bridge.settlement_contract import (
     normalize_fixed_score,
     normalize_one_life_settlement,
@@ -1245,6 +1244,8 @@ def native_auto_run(
             if landed_title_dir.is_dir()
             else None
         )
+        if camera_index is not None:
+            service.bind_war_hotspot_camera_index(camera_index)
         session_thread = threading.Thread(
             target=supervise,
             name="xar-native-auto-run-session",
@@ -1992,25 +1993,6 @@ def native_auto_run(
                 opening_date_raw = before.get("date_raw")
                 driver.require_initial_lifestyle_focus_before_date_advance = True
                 driver.initial_lifestyle_focus_gate_stage = "await_submit"
-            if camera_index is not None:
-                try:
-                    semantic = before.get("_semantic")
-                    if not isinstance(semantic, dict):
-                        raise ValueError("readiness frame has no bound war snapshot")
-                    current_attempt["camera_follow"] = follow_war_hotspot(
-                        service, {
-                            "revision": before.get("revision"),
-                            "active_wars": semantic.get("active_wars"),
-                        }, camera_index,
-                        park_cursor=park_foreground_ck3_cursor,
-                    )
-                except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
-                    # Presentation failure cannot invent or replace a gameplay
-                    # action.  The failed follow remains visible in this turn.
-                    current_attempt["camera_follow"] = {
-                        "status": "unavailable",
-                        "reason": f"{type(error).__name__}: {error}",
-                    }
             if (
                 opening_focus_gate is not None
                 and opening_focus_gate["stage"] != "complete"
@@ -2114,6 +2096,12 @@ def native_auto_run(
                             )
                             raise
                     current_attempt["stage"] = "opaque_auto_turn"
+                finally:
+                    camera_follow = service.last_camera_follow
+                    if camera_follow is not None:
+                        current_attempt["camera_follow"] = copy.deepcopy(camera_follow)
+                    else:
+                        current_attempt["camera_follow"] = None
             outcome["pre_submission_revision_replans"] = (
                 pre_submission_revision_replans
             )

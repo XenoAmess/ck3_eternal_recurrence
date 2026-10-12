@@ -37,11 +37,39 @@ inline bool HaveSharedArmyManagerInputsV1(
   return true;
 }
 
+// Extra fields join only after the original six-family group is admitted.
+inline ArmyStrengthManagerInputsModeV1 ArmyStrengthsQueryModeV1(
+    std::span<const ArmyStrengthSnapshot> rows) {
+  if (!HaveSharedArmyManagerInputsV1(rows))
+    return ArmyStrengthManagerInputsModeV1::inline_values;
+  unsigned bits = static_cast<unsigned>(
+      ArmyStrengthManagerInputsModeV1::query_shared);
+  const auto add = [&](auto member, ArmyStrengthManagerInputsModeV1 flag) {
+    const auto &first = rows.front().*member;
+    if (!first.has_value()) return;
+    for (const auto &row : rows.subspan(1)) {
+      if ((row.*member) != first) return;
+    }
+    bits |= static_cast<unsigned>(flag);
+  };
+  add(&ArmyStrengthSnapshot::current_army_condition30_inputs_v1,
+      ArmyStrengthManagerInputsModeV1::shared_condition30);
+  add(&ArmyStrengthSnapshot::current_army_flag20_inputs_v1,
+      ArmyStrengthManagerInputsModeV1::shared_flag20);
+  add(&ArmyStrengthSnapshot::current_army_flag21_inputs_v1,
+      ArmyStrengthManagerInputsModeV1::shared_flag21);
+  add(&ArmyStrengthSnapshot::current_pre_date_character_prefix_inputs_v1,
+      ArmyStrengthManagerInputsModeV1::shared_character_prefix);
+  return static_cast<ArmyStrengthManagerInputsModeV1>(bits);
+}
+
 template <class Number, class Int32Array, class JsonString>
 inline void AppendArmyManagerInputsSharedV1(
     std::string &out, std::span<const ArmyStrengthSnapshot> rows,
     Number number, Int32Array append_int32_array,
-    JsonString append_json_string) {
+    JsonString append_json_string,
+    ArmyStrengthManagerInputsModeV1 mode =
+        ArmyStrengthManagerInputsModeV1::query_shared) {
   out += "{\"schema_version\":1,\"army_ids\":[";
   for (std::size_t index = 0; index < rows.size(); ++index) {
     if (index != 0) out += ',';
@@ -92,6 +120,34 @@ inline void AppendArmyManagerInputsSharedV1(
         out, *source.current_army_flag31_inputs_v1,
         number, append_int32_array, append_json_string);
   }
+  if (ArmyStrengthSharesExtraInputV1(
+          mode, ArmyStrengthManagerInputsModeV1::shared_condition30) &&
+      source.current_army_condition30_inputs_v1) {
+    key("current_army_condition30_inputs_v1");
+    AppendArmyCurrentCondition30InputsV1(
+        out, *source.current_army_condition30_inputs_v1, number, append_json_string);
+  }
+  if (ArmyStrengthSharesExtraInputV1(
+          mode, ArmyStrengthManagerInputsModeV1::shared_flag20) &&
+      source.current_army_flag20_inputs_v1) {
+    key("current_army_flag20_inputs_v1");
+    AppendArmyCurrentFlag20InputsV1(
+        out, *source.current_army_flag20_inputs_v1, number, append_json_string);
+  }
+  if (ArmyStrengthSharesExtraInputV1(
+          mode, ArmyStrengthManagerInputsModeV1::shared_flag21) &&
+      source.current_army_flag21_inputs_v1) {
+    key("current_army_flag21_inputs_v1");
+    AppendArmyCurrentFlag21InputsV1(
+        out, *source.current_army_flag21_inputs_v1, number, append_json_string);
+  }
+  if (ArmyStrengthSharesExtraInputV1(
+          mode, ArmyStrengthManagerInputsModeV1::shared_character_prefix) &&
+      source.current_pre_date_character_prefix_inputs_v1) {
+    key("current_pre_date_character_prefix_inputs_v1");
+    AppendArmyCurrentPreDateCharacterPrefixInputsV1(
+        out, *source.current_pre_date_character_prefix_inputs_v1, number, append_json_string);
+  }
   out += "}}";
 }
 
@@ -102,9 +158,8 @@ inline void AppendArmyStrengthsQueryMembersV1(
     std::string &out, std::span<const ArmyStrengthSnapshot> rows,
     Number number, Int32Array append_int32_array,
     JsonString append_json_string, RowWriter append_row) {
-  const bool shared = HaveSharedArmyManagerInputsV1(rows);
-  const auto mode = shared ? ArmyStrengthManagerInputsModeV1::query_shared
-                          : ArmyStrengthManagerInputsModeV1::inline_values;
+  const auto mode = ArmyStrengthsQueryModeV1(rows);
+  const bool shared = mode != ArmyStrengthManagerInputsModeV1::inline_values;
   out += ",\"army_strengths\":[";
   for (std::size_t index = 0; index < rows.size(); ++index) {
     if (index != 0) out += ',';
@@ -114,7 +169,7 @@ inline void AppendArmyStrengthsQueryMembersV1(
   if (shared) {
     out += ",\"army_manager_inputs_shared_v1\":";
     AppendArmyManagerInputsSharedV1(
-        out, rows, number, append_int32_array, append_json_string);
+        out, rows, number, append_int32_array, append_json_string, mode);
   }
 }
 

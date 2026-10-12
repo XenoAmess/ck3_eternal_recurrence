@@ -624,6 +624,50 @@ class GameplayBridgeService:
         self._last_war_family_observation: tuple[object, object, object] | None = None
         self._opening_martial_episode_v1: str | None = None
         self._opening_martial_observation_v1: dict[str, object] | None = None
+        self._war_hotspot_camera_index = None
+        self._war_hotspot_camera_index_error: str | None = None
+        self.last_camera_follow: dict[str, object] | None = None
+
+    def bind_war_hotspot_camera_index(self, index: object) -> None:
+        """Use the managed runner's actual installation for presentation only."""
+        from .war_hotspot_camera import LandedProvinceIndex
+        if not isinstance(index, LandedProvinceIndex):
+            raise TypeError("camera index must come from the installed landed-title files")
+        self._war_hotspot_camera_index = index
+        self._war_hotspot_camera_index_error = None
+
+    def _follow_war_hotspot_before_turn(self) -> dict[str, object] | None:
+        from .war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
+        from .camera_cursor_parking import park_foreground_ck3_cursor
+
+        try:
+            capabilities = self.capabilities().get("bridge_capabilities")
+            if (not isinstance(capabilities, list)
+                    or CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY not in capabilities):
+                return None
+            if self._war_hotspot_camera_index is None:
+                if self._war_hotspot_camera_index_error is not None:
+                    return {"status": "unavailable", "reason": self._war_hotspot_camera_index_error}
+                state_dir = self._strategy_state_dir()
+                if state_dir is None:
+                    raise ValueError("camera follow lacks the managed installation manifest")
+                manifest = json.loads((Path(state_dir) / "profile" / "xar-autoplayer-environment.json").read_text(encoding="utf-8-sig"))
+                game = manifest.get("game")
+                executable = game.get("executable") if isinstance(game, dict) else None
+                if not isinstance(executable, str) or not executable:
+                    raise ValueError("camera follow lacks the manifest's exact game executable")
+                game_exe = Path(executable)
+                if game_exe.name.lower() != "ck3.exe" or game_exe.parent.name.lower() != "binaries":
+                    raise ValueError("camera follow cannot derive the declared installation root")
+                self.bind_war_hotspot_camera_index(LandedProvinceIndex.from_game_dir(game_exe.parent.parent))
+            snapshot = self.snapshot(include_native_command_history=False)
+            return follow_war_hotspot(self, snapshot, self._war_hotspot_camera_index,
+                                      park_cursor=park_foreground_ck3_cursor)
+        except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
+            reason = f"{type(error).__name__}: {error}"
+            if self._war_hotspot_camera_index is None:
+                self._war_hotspot_camera_index_error = reason
+            return {"status": "unavailable", "reason": reason}
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
         """Bind the runner-owned real product-checkpoint provider once."""
@@ -3451,8 +3495,13 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
-        return self._consume_feast_after_turn(self._consume_sway_after_turn(
+        # Camera placement precedes planning, so its receipt cannot stale an
+        # already selected gameplay step. All ordinary execution guards remain.
+        self.last_camera_follow = self._follow_war_hotspot_before_turn()
+        outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
             self._execute_planned_turn(self.plan_turn(), before_submit=before_submit)))
+        return ({**outcome, "camera_follow": self.last_camera_follow}
+                if self.last_camera_follow is not None else outcome)
 
     @staticmethod
     def _natural_successor_persistence_failed(outcome: dict[str, object]) -> bool:

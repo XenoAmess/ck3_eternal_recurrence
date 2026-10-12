@@ -8,6 +8,8 @@ import os
 
 class NativeOverlay:
     def __init__(self):
+        self.closed = False
+        self.hwnd = 0
         self.user = c.WinDLL("user32", use_last_error=True)
         self.gdi = c.WinDLL("gdi32", use_last_error=True)
         kernel = c.WinDLL("kernel32", use_last_error=True)
@@ -117,13 +119,19 @@ class NativeOverlay:
             raise c.WinError(c.get_last_error())
         width = min(760, max(500, int(self.user.GetSystemMetrics(0) * .30)))
         height = min(760, max(440, int(self.user.GetSystemMetrics(1) * .45)))
-        # NOACTIVATE, LAYERED, TRANSPARENT, TOOLWINDOW, TOPMOST are present before creation.
-        self.hwnd = self.user.CreateWindowExW(0x080800A8, self.name, self.title, 0x80000000,
+        # An independent APPWINDOW can be assigned a virtual desktop without
+        # coupling its input queue to the Game process through a window owner.
+        self.hwnd = self.user.CreateWindowExW(0x080C0028, self.name, self.title, 0x80000000,
                                               24, 88, width, height, None, None, self.instance, None)
-        if not self.hwnd or not self.user.SetLayeredWindowAttributes(self.hwnd, 0, 240, 2):
+        if not self.hwnd or not self.user.SetLayeredWindowAttributes(self.hwnd, 0, 0, 2):
             raise c.WinError(c.get_last_error())
         self.user.ShowWindow(self.hwnd, 4)
-        if not self.user.SetWindowPos(self.hwnd, c.c_void_p(-1), 0, 0, 0, 0, 0x53):
+        if not self.user.SetWindowPos(self.hwnd, c.c_void_p(-1), 0, 0, 0, 0, 0x253):
+            raise c.WinError(c.get_last_error())
+
+    def set_content_visible(self, visible):
+        if not self.user.SetLayeredWindowAttributes(self.hwnd, 0, 240 if visible else 0, 2):
+            self.destroy()
             raise c.WinError(c.get_last_error())
 
     def update(self, body, title="智能体 · 实时决策"):
@@ -167,10 +175,12 @@ class NativeOverlay:
 
     def run(self, tick):
         self.tick = tick
-        if not self.user.SetTimer(self.hwnd, 1, 350, None):
-            raise c.WinError(c.get_last_error())
         message = w.MSG()
         try:
+            if not self.user.IsWindow(self.hwnd):
+                return
+            if not self.user.SetTimer(self.hwnd, 1, 350, None):
+                raise c.WinError(c.get_last_error())
             while True:
                 result = self.user.GetMessageW(c.byref(message), None, 0, 0)
                 if result == -1:
@@ -180,9 +190,15 @@ class NativeOverlay:
                 self.user.TranslateMessage(c.byref(message))
                 self.user.DispatchMessageW(c.byref(message))
         finally:
-            if self.user.IsWindow(self.hwnd):
-                self.user.KillTimer(self.hwnd, 1)
-                self.user.DestroyWindow(self.hwnd)
-            for resource in (self.title_font, self.body_font, self.brush):
-                self.gdi.DeleteObject(resource)
-            self.user.UnregisterClassW(self.name, self.instance)
+            self.close()
+
+    def close(self):
+        if self.closed:
+            return
+        self.closed = True
+        if self.user.IsWindow(self.hwnd):
+            self.user.KillTimer(self.hwnd, 1)
+            self.user.DestroyWindow(self.hwnd)
+        for resource in (self.title_font, self.body_font, self.brush):
+            self.gdi.DeleteObject(resource)
+        self.user.UnregisterClassW(self.name, self.instance)

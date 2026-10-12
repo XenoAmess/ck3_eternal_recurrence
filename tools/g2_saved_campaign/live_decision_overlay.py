@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import argparse
+import atexit
 import ctypes
 import json
 import os
+import sys
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decision_overlay_window import NativeOverlay
 
 
@@ -17,6 +19,7 @@ def outcome_text(body):
     status = inner.get("status", body.get("status", ""))
     return {"submitted": "已提交，等待读回", "executed": "本步骤已返回",
             "available": "查询已返回", "enacted": "已读回施行结果",
+            "centered": "镜头位置已读回", "already_centered": "镜头已在目标处",
             "blocked": "受阻", "rejected": "已拒绝"}.get(status, status or "已返回")
 
 
@@ -45,6 +48,7 @@ def action_name(step):
         "raise-troops-default": "在集结点召集部队",
         "life-advance": "推进时间并观察局势变化",
         "save-checkpoint": "保存当前局面",
+        "center-map-on-landed-title-v1": "将镜头对准战争热点",
         "enact-realm-law-crown-v1-private": "提升王权",
         "verify-realm-law-crown-v1-private": "独立确认王权变更",
         "private-submit-player-construction-v1": "按预算启动建筑施工",
@@ -59,6 +63,8 @@ def action_name(step):
             ("query-war-termination-options-", "核对战争结束条件"),
             ("select-event-option-", "选择事件选项"),
             ("move-army-", "指挥军队移动"),
+            ("preview-move-army-", "预览行军路线"),
+            ("query-route-contact-horizon-v1-", "核对行军途中的接敌时序"),
             ("query-combat-", "评估战斗"),
         ):
             if step.startswith(prefix):
@@ -80,6 +86,9 @@ def reason_text(plan):
         "crown_independent_receipt": "上一项王权动作已提交；读取独立结果，避免重复提交。",
     }
     reasons["native_war_army_strength_query"] = "先读取双方现有兵力、原生军力与补员信息，再决定进攻路线。"
+    reasons["native_war_route_preview"] = "移动前按当前日期和起点核对通往战争目标的实际路线。"
+    reasons["native_war_candidate_contact_horizon"] = "路线存在交叉，先核对未来一天双方到达与接敌时序。"
+    reasons["native_war_capital_regroup_hold_progress"] = "进攻路线均不安全，暂守当前首都，推进后重评战争与路线。"
     return reasons.get(phase, plan.get("reason") or "等待实际决策理由。")
 
 
@@ -100,11 +109,14 @@ def war_reason(plan):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--session", type=Path, required=True)
+    parser.add_argument("--launch-receipt", type=Path,
+                        help="Exact launch receipt when continuing this session after a process restart")
     parser.add_argument("--campaign-label", default="当前自动游玩局")
     parser.add_argument("--target-label", action="append", default=[], metavar="ID=NAME")
     args = parser.parse_args()
     session = args.session.resolve()
-    launch = json.loads((session / "ROOT-ACTUAL-GAME-LAUNCH.json").read_text(encoding="utf-8"))
+    launch_path = args.launch_receipt or session / "ROOT-ACTUAL-GAME-LAUNCH.json"
+    launch = json.loads(launch_path.read_text(encoding="utf-8"))
     targets = {}
     for value in args.target_label:
         key, separator, label = value.partition("=")
@@ -126,15 +138,43 @@ def main():
         kernel.CloseHandle(handle)
         raise ctypes.WinError(ctypes.get_last_error())
     created = times[0].value / 10_000_000 - 11_644_473_600
-    expected = datetime.strptime(launch["creation_date"].split("+")[0], "%Y%m%d%H%M%S.%f").replace(tzinfo=timezone.utc)
+    date = launch["creation_date"]
+    expected = datetime.strptime(date[:21], "%Y%m%d%H%M%S.%f").replace(
+        tzinfo=timezone(timedelta(minutes=int(date[21:]))))
     if abs(created - expected.timestamp()) > .001:
         kernel.CloseHandle(handle)
         raise RuntimeError("Game process generation differs from the launch receipt")
     user = ctypes.WinDLL("user32", use_last_error=True)
     user.GetForegroundWindow.restype = ctypes.c_void_p
     foreground_before = user.GetForegroundWindow()
+    held = [handle]
+    def release_game_handle():
+        if held[0]:
+            kernel.CloseHandle(held[0])
+            held[0] = None
+    atexit.register(release_game_handle)
+    import win32gui
+    import win32process
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "ck3_autonomous_player" / "src"))
+    from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop, move_own_window_to_desktop
+    game_windows = []
+    def collect_game_window(game_hwnd, _extra):
+        if (win32gui.IsWindowVisible(game_hwnd)
+                and win32process.GetWindowThreadProcessId(game_hwnd)[1] == launch["pid"]
+                and win32gui.GetWindowText(game_hwnd) == "Crusader Kings III"):
+            game_windows.append(game_hwnd)
+    win32gui.EnumWindows(collect_game_window, None)
+    if len(game_windows) != 1:
+        raise RuntimeError("overlay requires one exact owned Game window")
+    game_hwnd = game_windows[0]
+    game_desktop = window_virtual_desktop(game_hwnd)
     window = NativeOverlay()
+    atexit.register(window.close)
     hwnd = window.hwnd
+    overlay_desktop = move_own_window_to_desktop(hwnd, str(game_desktop["desktop_id"]))
+    window.set_content_visible(game_desktop["on_current_virtual_desktop"] is True
+                               and game_desktop["dwm_cloaked_flags"] == 0
+                               and not win32gui.IsIconic(game_hwnd))
     get_style = user.GetWindowLongPtrW
     get_style.argtypes = [ctypes.c_void_p, ctypes.c_int]
     get_style.restype = ctypes.c_ssize_t
@@ -145,9 +185,10 @@ def main():
     reason = ""
     last_render = None
     blocker = ""
+    camera_text = ""
 
     def tick():
-        nonlocal war_decision, current, reason, last_render, blocker
+        nonlocal war_decision, current, reason, last_render, blocker, camera_text, game_desktop, overlay_desktop
         process_state = kernel.WaitForSingleObject(handle, 0)
         if process_state == 0 or (session / "STOP-DECISION-OVERLAY").exists():
             window.destroy()
@@ -155,18 +196,42 @@ def main():
         if process_state != 258:
             raise ctypes.WinError(ctypes.get_last_error())
         try:
+            if (not win32gui.IsWindow(game_hwnd)
+                    or win32process.GetWindowThreadProcessId(game_hwnd)[1] != launch["pid"]):
+                window.destroy()
+                return
+            observed_game_desktop = window_virtual_desktop(game_hwnd)
+            if observed_game_desktop["desktop_id"] != game_desktop["desktop_id"]:
+                window.set_content_visible(False)
+                overlay_desktop = move_own_window_to_desktop(hwnd, str(observed_game_desktop["desktop_id"]))
+                game_desktop = observed_game_desktop
+            window.set_content_visible(observed_game_desktop["on_current_virtual_desktop"] is True
+                                       and observed_game_desktop["dwm_cloaked_flags"] == 0
+                                       and not win32gui.IsIconic(game_hwnd))
             for path in sorted((session / "responses").glob("*.json")):
                 if path.name in seen:
                     continue
                 if path.stat().st_size > 16 * 1024 * 1024:
-                    seen.add(path.name)
-                    current = "回执过大，悬浮窗跳过正文；原件保留"
-                    continue
-                row = json.loads(path.read_text(encoding="utf-8"))
+                    summary_path = session / "display-responses" / path.name
+                    if summary_path.exists() and summary_path.stat().st_size <= 128 * 1024:
+                        row = json.loads(summary_path.read_text(encoding="utf-8"))
+                    else:
+                        current = "回执过大，等待实际 SDK 摘要；原件保留"
+                        break
+                else:
+                    row = json.loads(path.read_text(encoding="utf-8"))
                 result, body = decode(row)
                 plan = body.get("plan") if isinstance(body.get("plan"), dict) else {}
                 step = body.get("selected_step") or body.get("step") or plan.get("selected_step")
                 tool = row.get("request", {}).get("tool", "")
+                camera = body.get("camera_follow")
+                if isinstance(camera, dict):
+                    camera_text = "镜头跟随：" + outcome_text(camera)
+                    hotspot = camera.get("hotspot")
+                    if isinstance(hotspot, dict):
+                        camera_text += " · " + str(hotspot.get("title_key", hotspot.get("province_id", "")))
+                    if camera.get("status") == "unavailable":
+                        camera_text += "（本轮未确认）"
                 stamp = row.get("ended_at_utc", "")
                 try:
                     clock = datetime.fromisoformat(stamp).astimezone().strftime("%H:%M:%S") if stamp else "时间未记录"
@@ -194,19 +259,27 @@ def main():
                     if isinstance(step, str) and step.startswith("declare-war-"):
                         wars = inner.get("active_wars", [])
                         target_id = plan.get("declaration", {}).get("target_character_id")
+                        title_ids = plan.get("declaration", {}).get("target_title_ids")
                         matched = [war for war in wars if isinstance(war, dict)
                                    and war.get("primary_opponent_character_id") == target_id
                                    and war.get("player_side") == "attacker"
-                                   and war.get("targeted_title_ids") == plan.get("declaration", {}).get("target_title_ids")]
+                                   and war.get("targeted_title_ids") == title_ids
+                                   and type(war.get("war_id")) is int and war["war_id"] > 0]
                         war_decision = "向" + targets.get(target_id, f"角色 #{target_id}") + "宣战"
-                        if len(matched) == 1 and inner.get("accepted") is True:
+                        if (type(target_id) is int and isinstance(title_ids, list) and title_ids
+                                and all(type(value) is int for value in title_ids)
+                                and len(matched) == 1 and inner.get("accepted") is True):
                             war_decision += f" · 已读回战争 #{matched[0].get('war_id')}"
                         else:
                             war_decision += " · 战争结果未确认"
                         war_decision += "\n理由：" + war_reason(plan)
-                    if (step == "query-army-strengths-v1" and isinstance(inner.get("army_strengths"), list)
-                            and inner.get("accepted") is not False and body.get("status") == "executed"):
+                    army_rows = inner.get("army_strengths", inner.get("armies"))
+                    if (step == "query-army-strengths-v1" and isinstance(army_rows, list)
+                            and inner.get("accepted") is True and body.get("status") == "executed"):
                         blocker = ""
+                        current += "\n军队兵力：" + "；".join(
+                            f"#{army.get('army_id')}：{army.get('current_soldiers')} 人"
+                            for army in army_rows[:6] if isinstance(army, dict))
                     records.append(f"{clock} 返回 · {action_name(step)} · {status}")
                 records[:] = records[-8:]
                 seen.add(path.name)
@@ -216,6 +289,8 @@ def main():
                 item = json.loads(sorted(pending)[-1].read_text(encoding="utf-8"))
                 pending_text = "\n请求处理中：" + item.get("tool", "") + "（结果尚未确认）"
             content = "本局：" + args.campaign_label + "\n" + current + pending_text
+            if camera_text:
+                content += "\n" + camera_text
             if blocker:
                 content += "\n未解决阻点：军力读取超限，尚未取得成功回执。"
             if war_decision:
@@ -227,10 +302,15 @@ def main():
                 window.update(content)
                 last_render = content
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+            window.set_content_visible(False)
+            last_render = None
             window.update("回执读取暂不可用：" + type(error).__name__, "实时决策 · 数据暂不可用")
 
     receipt = {"session": str(session), "game_pid": launch["pid"], "overlay_hwnd": hwnd,
                "game_creation_filetime": times[0].value, "overlay_pid": os.getpid(),
+               "launch_receipt": str(launch_path),
+               "game_hwnd": game_hwnd, "game_virtual_desktop": game_desktop,
+               "overlay_virtual_desktop": overlay_desktop,
                "at_utc": datetime.now(timezone.utc).isoformat(),
                "observed_extended_style": get_style(hwnd, -20),
                "foreground_before": foreground_before, "foreground_after": user.GetForegroundWindow(),
@@ -244,7 +324,8 @@ def main():
         tick()
         window.run(tick)
     finally:
-        kernel.CloseHandle(handle)
+        window.close()
+        release_game_handle()
         with (session / f"ROOT-DECISION-OVERLAY-{os.getpid()}-CLOSED.json").open("x", encoding="utf-8") as f:
             json.dump({"at_utc": datetime.now(timezone.utc).isoformat(), "game_pid": launch["pid"]}, f)
 

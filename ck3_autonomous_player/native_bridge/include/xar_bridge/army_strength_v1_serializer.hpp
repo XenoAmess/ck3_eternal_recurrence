@@ -595,9 +595,20 @@ inline void AppendArmyCurrentDisembarkPenaltyV1(
 }
 
 enum class ArmyStrengthManagerInputsModeV1 {
-  inline_values,
-  query_shared,
+  inline_values = 0,
+  query_shared = 1,
+  // Extra values are flags; complete query modes retain the query_shared bit.
+  shared_condition30 = 2,
+  shared_flag20 = 4,
+  shared_flag21 = 8,
+  shared_character_prefix = 16,
 };
+
+inline bool ArmyStrengthSharesExtraInputV1(
+    ArmyStrengthManagerInputsModeV1 mode,
+    ArmyStrengthManagerInputsModeV1 field) {
+  return (static_cast<unsigned>(mode) & static_cast<unsigned>(field)) != 0U;
+}
 
 template <class Number, class Int32Array, class JsonString>
 inline void AppendArmyStrengthV1WithManagerInputsMode(
@@ -765,17 +776,23 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     AppendArmyCurrentCharacterDetachmentInputsV1(
         result, *strength.current_character_detachment_inputs_v1, number, append_json_string);
   }
-  if (strength.current_army_condition30_inputs_v1) {
+  if (!ArmyStrengthSharesExtraInputV1(
+          manager_inputs_mode, ArmyStrengthManagerInputsModeV1::shared_condition30) &&
+      strength.current_army_condition30_inputs_v1) {
     result += ",\"current_army_condition30_inputs_v1\":";
     AppendArmyCurrentCondition30InputsV1(result, *strength.current_army_condition30_inputs_v1,
         number, append_json_string);
   }
-  if (strength.current_army_flag20_inputs_v1) {
+  if (!ArmyStrengthSharesExtraInputV1(
+          manager_inputs_mode, ArmyStrengthManagerInputsModeV1::shared_flag20) &&
+      strength.current_army_flag20_inputs_v1) {
     result += ",\"current_army_flag20_inputs_v1\":";
     AppendArmyCurrentFlag20InputsV1(result, *strength.current_army_flag20_inputs_v1,
         number, append_json_string);
   }
-  if (strength.current_army_flag21_inputs_v1) {
+  if (!ArmyStrengthSharesExtraInputV1(
+          manager_inputs_mode, ArmyStrengthManagerInputsModeV1::shared_flag21) &&
+      strength.current_army_flag21_inputs_v1) {
     result += ",\"current_army_flag21_inputs_v1\":";
     AppendArmyCurrentFlag21InputsV1(result, *strength.current_army_flag21_inputs_v1,
         number, append_json_string);
@@ -822,7 +839,9 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     AppendArmyCurrentPreDatePendingUpdateInputsV1(result, *strength.current_pre_date_pending_update_inputs_v1,
         number, append_json_string);
   }
-  if (strength.current_pre_date_character_prefix_inputs_v1) {
+  if (!ArmyStrengthSharesExtraInputV1(
+          manager_inputs_mode, ArmyStrengthManagerInputsModeV1::shared_character_prefix) &&
+      strength.current_pre_date_character_prefix_inputs_v1) {
     result += ",\"current_pre_date_character_prefix_inputs_v1\":";
     AppendArmyCurrentPreDateCharacterPrefixInputsV1(result, *strength.current_pre_date_character_prefix_inputs_v1,
         number, append_json_string);
