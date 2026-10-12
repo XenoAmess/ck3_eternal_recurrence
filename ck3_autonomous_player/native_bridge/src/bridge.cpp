@@ -15724,13 +15724,18 @@ void RunConnectedSession(
                    }()
 #endif
 #if defined(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
-                   && ![&]() {
+                    && ![&]() {
                      std::int32_t actor_character_id = -1;
                      std::int32_t war_id = -1;
                      std::int32_t public_army_id = -1;
                      return xar::ck3_11906::ParseActorArmyRolePrivateStepV1(
                          step, actor_character_id, war_id, public_army_id);
-                   }()
+                    }()
+#endif
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+                    && step != "enable-army-gathering-research-sampling-v1"
+                    && step != "disable-army-gathering-research-sampling-v1"
+                    && step != "query-army-gathering-research-sampling-v1"
 #endif
         ) {
           if (active_command_entry_trace != nullptr)
