@@ -128,3 +128,29 @@ source binding are separate steps after source publication and R98 keeper releas
 Native84 production qualification recorded 2026-10-11T04:08:32.037017+00:00: one Bridge compile/one DLL link
 GREEN, source594979b0/archive664, completeSDK84 source594 GREEN. R99 actual
 private-reader stage/cause is pending; no runtime root-cause fix is claimed.
+
+
+## Worker publication observation source — 2026-10-12
+
+The failure receipt now carries an optional owned scalar observation from the
+existing WorkerAdapter cache lock. It distinguishes initial cache inspection,
+before/after the existing wait, diagnostics refresh and final guards. Mailbox
+diagnostic values retain their separate sampling stage because their independent
+atomic loads are not one coherent cache/publication frame. Pending owner/epoch
+are absent when no request is active; expected ticket exists only when the wait
+actually occurs. Known zero/false values remain distinct from unknown.
+
+The formatter reports the read sequence and last safely copied observation.
+No raw published epoch/owner member exists, so those facts remain unknown. The
+catch path does not read shared fields after losing the cache lock. The original
+read order, atomic/diagnostic load count, guards, Fresh exact +1 rule, retry policy
+and 250ms wait budget remain unchanged. This change identifies observations;
+R103's original failure cause remains unknown.
+
+The private DTO, inline TLS and formatter definitions changed. Future adoption
+requires a fresh source freeze and compilation of their complete consumer set.
+Current SDK91/Native89 remain fixed at source
+`50a1a5451227d1b30f42394dd02ddfbaea26a1ff` and do not include this addition.
+Root and two independent reviewers read the complete 332-line source patch;
+no tests, fixtures or FIRST were run. This is source adoption, with no runtime,
+new ordinary-day or natural-succession credit.

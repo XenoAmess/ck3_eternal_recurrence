@@ -141,6 +141,52 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
     auto diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
     std::unique_lock guard(snapshot_mutex_);
     const auto current_thread_id = GetCurrentThreadId();
+    using View = xar::bridge::ck3_12004::WorkerSnapshotObservation12004;
+    using ViewStage = xar::bridge::ck3_12004::WorkerSnapshotObservationStage12004;
+    using MailboxStage = xar::bridge::ck3_12004::WorkerMailboxSampleStage12004;
+    View view{};
+    auto diagnostic_sample_stage = MailboxStage::initial_pre_cache_lock;
+    const auto capture_observation = [&](ViewStage stage) noexcept {
+      if (!actual4) return;
+      view.observed_at_stage = stage;
+      view.diagnostic_sample_stage = diagnostic_sample_stage;
+      view.cache_present = snapshot_.has_value();
+      view.current_cache_epoch = snapshot_epoch_;
+      view.cache_revision = snapshot_revision_;
+      view.raw_generation_counter = snapshot_observation_generation_;
+      view.pending_generation = snapshot_pending_generation_;
+      view.last_committed_raw_generation = snapshot_published_generation_;
+      view.active_raw_target_epoch.reset();
+      view.active_raw_owner_thread_id.reset();
+      if (snapshot_pending_generation_ != 0) {
+        if (snapshot_pending_epoch_ != 0) view.active_raw_target_epoch = snapshot_pending_epoch_;
+        if (snapshot_pending_owner_thread_id_ != 0)
+          view.active_raw_owner_thread_id = snapshot_pending_owner_thread_id_;
+      }
+      view.cache_date_raw.reset();
+      view.cache_paused.reset();
+      if (snapshot_) {
+        view.cache_date_raw = snapshot_->date_raw;
+        view.cache_paused = snapshot_->paused;
+      }
+      view.created_worker_thread_id = worker_thread_id_;
+      view.reader_thread_id = current_thread_id;
+      view.mailbox_pump_epoch = diagnostics.pump_epochs;
+      view.mailbox_owner_thread_id = diagnostics.owner_thread_id;
+      view.mailbox_observed_thread_id = diagnostics.observed_current_thread_id;
+      view.mailbox_stamp_read_success = diagnostics.observed_stamp_read_success;
+      view.mailbox_stop_requested = diagnostics.stop_requested;
+      view.mailbox_tls_initialized = diagnostics.observed_tls_initialized;
+      view.mailbox_tls_main_thread_marker = diagnostics.observed_tls_main_thread_marker;
+      view.mailbox_date_raw.reset();
+      view.mailbox_paused.reset();
+      if (diagnostics.observed_stamp_read_success) {
+        view.mailbox_date_raw = diagnostics.observed_date_raw;
+        view.mailbox_paused = diagnostics.observed_paused;
+      }
+      xar::bridge::ck3_12004::RecordWorkerSnapshotObservation12004(view);
+    };
+    capture_observation(ViewStage::initial_cache_lock);
     // Only the creating worker may await a raw read already in flight. The
     // owner and unrelated callers never wait for work on the owner itself.
     if (snapshot_.has_value() && snapshot_epoch_ == 0 &&
@@ -154,10 +200,15 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       const auto owner_thread_id = snapshot_pending_owner_thread_id_;
       const auto deadline = std::chrono::steady_clock::now() +
           std::chrono::milliseconds(250);
+      view.expected_wait_ticket =
+          xar::bridge::ck3_12004::WorkerSnapshotWaitTicket12004{generation, epoch, owner_thread_id};
+      capture_observation(ViewStage::before_wait);
       const bool terminal = snapshot_changed_.wait_until(guard, deadline, [&] {
         return snapshot_pending_generation_ != generation ||
             mailbox_->stop_requested.load(std::memory_order_acquire);
       });
+      view.wait_terminal = terminal;
+      capture_observation(ViewStage::after_wait);
       if (!terminal || mailbox_->stop_requested.load(std::memory_order_acquire) ||
           snapshot_pending_generation_ != 0 ||
           snapshot_published_generation_ != generation || snapshot_epoch_ != epoch)
@@ -166,7 +217,9 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       // lock, then require the same pump epoch on both sides of that read.
       guard.unlock();
       diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
+      diagnostic_sample_stage = MailboxStage::post_wait_cache_unlocked;
       guard.lock();
+      capture_observation(ViewStage::after_diagnostics_refresh);
       if (snapshot_pending_generation_ != 0 ||
           snapshot_published_generation_ != generation || snapshot_epoch_ != epoch ||
           diagnostics.stop_requested ||
@@ -176,6 +229,7 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
           diagnostics.observed_current_thread_id != owner_thread_id)
         return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
     }
+    capture_observation(ViewStage::final_guards);
     if (!snapshot_.has_value())
       return unavailable(FailureStage::worker_snapshot_cache_absent);
     if (!diagnostics.observed_stamp_read_success)
