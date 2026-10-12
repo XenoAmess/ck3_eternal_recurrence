@@ -30,7 +30,7 @@ lyd_i3b_commit_effect = {
             faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main
             faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes }
             lyd_i3b_native_authority_postcondition_trigger = yes
-            NOT = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
+            NOT = { any_in_list = { variable = lyd_i3b_rites NAND = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
             NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }
         }
             faith = { set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_i3b_actor } }
@@ -41,13 +41,13 @@ lyd_i3b_commit_effect = {
         }
         else = {
             # First failed class, retaining the real partial native state.
-            if = { limit = { NOT = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main } }
+            if = { limit = { NAND = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main } }
                 set_variable = { name = lyd_i3b_result_code value = 2 }
             }
-            else_if = { limit = { NOT = { faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } } }
+            else_if = { limit = { NAND = { faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } } }
                 set_variable = { name = lyd_i3b_result_code value = 3 }
             }
-            else_if = { limit = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
+            else_if = { limit = { any_in_list = { variable = lyd_i3b_rites NAND = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
                 set_variable = { name = lyd_i3b_result_code value = 4 }
             }
             else_if = { limit = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }

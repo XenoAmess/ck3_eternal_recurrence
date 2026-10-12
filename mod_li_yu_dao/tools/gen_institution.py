@@ -211,16 +211,16 @@ lyd_i3b_current_trigger = {
     NOT = { has_variable = lyd_c3_active }
     faith = {
         lyd_i3b_headless_faith_trigger = yes
-        NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial } } }
+        NOT = { any_faith_rite = { NAND = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial } } }
         NOT = { any_faith_character = {
             is_alive = yes
-            NOT = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }
+            NAND = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }
         } }
     }
     NOT = { any_in_list = {
         variable = lyd_i3b_rites
         save_temporary_scope_as = lyd_i3b_checked_rite
-        NOT = {
+        NAND = {
             faith = $ACTOR$.var:lyd_i3b_faith
             lyd_i3b_compatible_rite_trigger = yes
             var:lyd_i3b_owner = $ACTOR$
@@ -243,7 +243,7 @@ lyd_i3b_current_trigger = {
     } }
     NOT = { any_in_list = {
         variable = lyd_i3b_members
-        NOT = {
+        NAND = {
             is_alive = yes faith = $ACTOR$.var:lyd_i3b_faith rite = var:lyd_i3b_member_rite
             var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial
             trigger_if = { limit = { var:lyd_i3b_was_elector = 1 } lyd_i3b_elector_trigger = yes }
@@ -275,7 +275,7 @@ lyd_i3b_representatives_ready_trigger = {
     NOT = { any_in_list = {
         variable = lyd_i3b_rites
         var:lyd_i3b_dormant = 0
-        NOT = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }
+        NAND = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }
     } }
 }
 lyd_i3b_can_seal_trigger = {
@@ -617,7 +617,7 @@ lyd_i3b_commit_effect = {
             faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main
             faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes }
             lyd_i3b_native_authority_postcondition_trigger = yes
-            NOT = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
+            NOT = { any_in_list = { variable = lyd_i3b_rites NAND = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
             NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }
         }
             faith = { set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_i3b_actor } }
@@ -628,13 +628,13 @@ lyd_i3b_commit_effect = {
         }
         else = {
             # First failed class, retaining the real partial native state.
-            if = { limit = { NOT = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main } }
+            if = { limit = { NAND = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main } }
                 set_variable = { name = lyd_i3b_result_code value = 2 }
             }
-            else_if = { limit = { NOT = { faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } } }
+            else_if = { limit = { NAND = { faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } } }
                 set_variable = { name = lyd_i3b_result_code value = 3 }
             }
-            else_if = { limit = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
+            else_if = { limit = { any_in_list = { variable = lyd_i3b_rites NAND = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
                 set_variable = { name = lyd_i3b_result_code value = 4 }
             }
             else_if = { limit = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }
@@ -748,6 +748,7 @@ lyd_i3b_show_result_effect = {
 lyd_i3b_nominate_interaction = {
     category = interaction_category_religion common_interaction = yes
     desc = lyd_i3b_terms_desc auto_accept = yes
+    use_diplomatic_range = no
     is_shown = { scope:actor = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 } scope:recipient = { faith = scope:actor.faith lyd_i3b_elector_trigger = yes } }
     is_valid_showing_failures_only = {
         scope:actor = { custom_description = { text = lyd_i3b_nomination_actor_valid_tt subject = scope:actor lyd_i3b_current_trigger = { ACTOR = scope:actor } var:lyd_i3b_phase = 1 } }

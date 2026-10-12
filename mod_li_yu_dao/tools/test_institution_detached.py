@@ -91,12 +91,12 @@ class PolicyAST:
     def entry(self,e,current):
         key,value=e.key,e.value
         if key=='save_temporary_scope_as':self.env['scope:'+value]=current;return True
-        if key in {'AND','NOT','NOR','OR'}:
-            if key in {'AND','NOT'}:
+        if key in {'AND','NOT','NOR','OR','NAND'}:
+            if key in {'AND','NAND'}:
                 conjunction=self.block(value,current)
                 return conjunction if key=='AND' else not conjunction
             vals=[self.entry(x,current) for x in value.entries]
-            return {'AND':lambda:all(vals),'NOT':lambda:not all(vals),'NOR':lambda:not any(vals),'OR':lambda:any(vals)}[key]()
+            return any(vals) if key=='OR' else not any(vals)
         if key in self.defs:
             previous=self.env.copy()
             if isinstance(value,Block):
@@ -172,12 +172,32 @@ def cases():
     add('captured HoR substituted',current,False,lambda a,n,f,r,g,e:a.variables.update(lyd_i3b_required_native_hor=n))
     add('captured HoR missing',current,False,lambda a,n,f,r,g,e:a.variables.pop('lyd_i3b_required_native_hor'))
     add('new live human outside captured roster',current,False,lambda a,n,f,r,g,e:f.fields['characters'].append(Scope('newHuman',dict(n.fields))))
+    def new_rite_with_stale_serial(a,n,f,r,g,e):
+        extra=g['rite:lyd_rite_kongmen']
+        extra.variables.update(lyd_i3b_owner=a,lyd_i3b_serial=6)
+        f.fields['rites'].append(extra)
+    def new_member_with_stale_serial(a,n,f,r,g,e):
+        extra=Scope('newMember',dict(n.fields),{'lyd_i3b_member_owner':a,'lyd_i3b_member_serial':6})
+        f.fields['characters'].append(extra)
+    add('new Faith rite with matching owner but stale serial',current,False,new_rite_with_stale_serial)
+    add('new Faith member with matching owner but stale serial',current,False,new_member_with_stale_serial)
     add('member owner changes',current,False,lambda a,n,f,r,g,e:n.variables.update(lyd_i3b_member_owner=n))
     add('member serial changes',current,False,lambda a,n,f,r,g,e:n.variables.update(lyd_i3b_member_serial=6))
     add('rite serial changes',current,False,lambda a,n,f,r,g,e:r.variables.update(lyd_i3b_serial=6))
+    add('rite owner alone changes',current,False,lambda a,n,f,r,g,e:r.variables.update(lyd_i3b_owner=n))
+    add('captured rite faith alone changes',current,False,lambda a,n,f,r,g,e:r.fields.update(faith=Scope('foreignFaith')))
+    add('captured member dies',current,False,lambda a,n,f,r,g,e:n.fields.update(is_alive=False))
+    add('captured member rite alone changes',current,False,lambda a,n,f,r,g,e:n.fields.update(rite=Scope('foreignRite')))
+    add('captured member player status alone changes',current,False,lambda a,n,f,r,g,e:n.fields.update(is_ai=False))
     add('member eligibility changes',current,False,lambda a,n,f,r,g,e:n.fields.update(learning=14))
     add('current ritual county drift',current,False,lambda a,n,f,r,g,e:r.fields.update(rite_counties=2))
     add('C2 foreign proposal lock',current,False,lambda a,n,f,r,g,e:r.variables.update(lyd_c2_proposal_owner=n))
+    add('C3 foreign proposal lock',current,False,lambda a,n,f,r,g,e:r.variables.update(lyd_c3_proposal_owner=n))
+    def missing_main_delegate(a,n,f,r,g,e):
+        a.variables['lyd_i3b_phase']=1
+        r.variables.update(lyd_i3b_total=258,lyd_i3b_yes=130,lyd_i3b_signed=0)
+        r.variables.pop('lyd_i3b_delegate')
+    add('258 scholars without representative cannot seal','lyd_i3b_can_seal_trigger',False,missing_main_delegate,detached=False)
     add('all detached mandates satisfied',ready,True)
     add('all common mandates satisfied',ready,True,detached=False)
     add('two thirds below threshold',ready,False,lambda a,n,f,r,g,e:r.variables.update(lyd_i3b_yes=1))
@@ -264,6 +284,15 @@ def main():
         ('each representative signature','var:lyd_i3b_signed = 1','always = yes'),
         ('exact nonce','        var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce\n','        always = yes\n'),
         ('exact serial','        var:lyd_i3b_serial = scope:lyd_i3b_event_serial\n','        always = yes\n'),
+        ('missing representative conjunction',
+         'NAND = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }',
+         'NOT = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }'),
+        ('rite owner and serial conjunction',
+         'NAND = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial }',
+         'NOT = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial }'),
+        ('member owner and serial conjunction',
+         'NAND = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }',
+         'NOT = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }'),
     ]
     mutants=[]
     for name,before,after in changes:

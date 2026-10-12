@@ -191,16 +191,16 @@ lyd_i3b_current_trigger = {
     NOT = { has_variable = lyd_c3_active }
     faith = {
         lyd_i3b_headless_faith_trigger = yes
-        NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial } } }
+        NOT = { any_faith_rite = { NAND = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial } } }
         NOT = { any_faith_character = {
             is_alive = yes
-            NOT = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }
+            NAND = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }
         } }
     }
     NOT = { any_in_list = {
         variable = lyd_i3b_rites
         save_temporary_scope_as = lyd_i3b_checked_rite
-        NOT = {
+        NAND = {
             faith = $ACTOR$.var:lyd_i3b_faith
             lyd_i3b_compatible_rite_trigger = yes
             var:lyd_i3b_owner = $ACTOR$
@@ -223,7 +223,7 @@ lyd_i3b_current_trigger = {
     } }
     NOT = { any_in_list = {
         variable = lyd_i3b_members
-        NOT = {
+        NAND = {
             is_alive = yes faith = $ACTOR$.var:lyd_i3b_faith rite = var:lyd_i3b_member_rite
             var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial
             trigger_if = { limit = { var:lyd_i3b_was_elector = 1 } lyd_i3b_elector_trigger = yes }
@@ -255,7 +255,7 @@ lyd_i3b_representatives_ready_trigger = {
     NOT = { any_in_list = {
         variable = lyd_i3b_rites
         var:lyd_i3b_dormant = 0
-        NOT = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }
+        NAND = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }
     } }
 }
 lyd_i3b_can_seal_trigger = {

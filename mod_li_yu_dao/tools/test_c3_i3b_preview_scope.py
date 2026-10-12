@@ -187,8 +187,72 @@ def invert_vanilla_authority(block):
     return block
 
 
+def invert_i3b_conjunction_negations(block):
+    """Invert only five reviewed I3b NOT-to-NAND repairs, keeping the old SHA.
+
+    Jomini's NOT/NOR negates disjunction. These predicates reject a member when
+    any required fact fails, so they need NAND. Match each complete body and its
+    definition before projecting the repair away for the historical baseline.
+    """
+    bodies = {
+        'lyd_i3b_current_trigger': (
+            'lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial',
+            'var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial',
+            '''faith = $ACTOR$.var:lyd_i3b_faith
+               lyd_i3b_compatible_rite_trigger = yes
+               var:lyd_i3b_owner = $ACTOR$
+               var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial
+               rite_counties = var:lyd_i3b_counties
+               NOT = { has_variable = lyd_c2_proposal_owner }
+               NOT = { has_variable = lyd_c3_proposal_owner }
+               trigger_if = {
+                   limit = { var:lyd_i3b_dormant = 1 }
+                   rite_counties = 0
+                   $ACTOR$.var:lyd_i3b_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_i3b_checked_rite } } }
+               }
+               trigger_else = {
+                   var:lyd_i3b_total > 0
+                   trigger_if = { limit = { exists = var:lyd_i3b_delegate }
+                       var:lyd_i3b_delegate = { lyd_i3b_elector_trigger = yes rite = scope:lyd_i3b_checked_rite faith = $ACTOR$.var:lyd_i3b_faith }
+                   }
+               }''',
+            '''is_alive = yes faith = $ACTOR$.var:lyd_i3b_faith rite = var:lyd_i3b_member_rite
+               var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial
+               trigger_if = { limit = { var:lyd_i3b_was_elector = 1 } lyd_i3b_elector_trigger = yes }
+               trigger_else = { NOT = { lyd_i3b_elector_trigger = yes } }
+               trigger_if = { limit = { var:lyd_i3b_was_player = 1 } is_ai = no }
+               trigger_else = { is_ai = yes }''',
+        ),
+        'lyd_i3b_representatives_ready_trigger': (
+            'exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0',
+        ),
+    }
+    for name, sources in bodies.items():
+        body = definition(block, name)
+        for source in sources:
+            expected = Entry('NAND', '=', parse_clausewitz(source))
+            matches = 0
+            def invert(value):
+                nonlocal matches
+                rows = []
+                for entry in value.entries:
+                    if entry == expected:
+                        matches += 1
+                        rows.append(Entry('NOT', entry.operator, entry.value))
+                    else:
+                        rows.append(Entry(entry.key, entry.operator,
+                            invert(entry.value) if isinstance(entry.value, Block) else entry.value))
+                return Block(tuple(rows))
+            body = invert(body)
+            if matches != 1:
+                raise ValueError('Reviewed I3b NAND body differs: ' + name)
+        block = Block(tuple(Entry(e.key, e.operator, body) if e.key == name else e for e in block.entries))
+    return block
+
+
 def strip_declared(block,relative):
     if relative==I3:
+        block=invert_i3b_conjunction_negations(block)
         block=invert_vanilla_authority(block)
         block=invert_phase2_mandate(block)
     return strip_added(block)
@@ -227,11 +291,11 @@ class Evaluator:
                 if i<len(block.entries) and block.entries[i].key=='trigger_else':fallback=block.entries[i].value;i+=1
                 answer=self.block(Block(v.entries[1:]),current,previous) if condition else self.block(fallback,current,previous) if fallback is not None else True
             elif k=='trigger_else':raise AssertionError('orphan trigger_else')
-            elif k in ('AND','NOT'):
+            elif k in ('AND','NAND'):
                 children=self.block(v,current,previous);answer=children if k=='AND' else not children
-            elif k in ('OR','NOR','NAND'):
+            elif k in ('OR','NOR','NOT'):
                 children=[self.block(Block((x,)),current,previous) for x in v.entries]
-                answer=any(children) if k=='OR' else not any(children) if k=='NOR' else not all(children)
+                answer=any(children) if k=='OR' else not any(children)
             elif k=='always':answer=v=='yes'
             elif k=='exists':answer=self.resolve(v,current,previous,True) is not MISSING
             elif k=='has_variable':answer=v in current.variables

@@ -16,12 +16,14 @@ from test_institution_detached import PolicyAST, Scope, world
 import gen_institution
 
 DECISIONS = 'common/decisions/lyd_i3b_institution_decisions.txt'
-UNCHANGED_POLICY = {
+# Nine explicit NOT-to-NAND repairs and the nomination range declaration were
+# independently projected back to the previous ASTs before updating two hashes.
+FROZEN_POLICY = {
     'common/script_values/lyd_i3b_institution_values.txt': '61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156',
     'common/scripted_effects/lyd_i3b_setup_effects.txt': 'fa913461b91dbd8a876dd4fac320c6f3d5a15222afd650b4fc68276e8cad03c7',
     'common/scripted_effects/lyd_i3b_response_effects.txt': 'cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6',
-    'common/scripted_effects/lyd_i3b_commit_effects.txt': 'dd327b875eb0c374937461a8d8cde8a384a994911260d9065fa2b51387a68d3c',
-    'common/character_interactions/lyd_i3b_nomination_interactions.txt': '410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98',
+    'common/scripted_effects/lyd_i3b_commit_effects.txt': '3ed15ca1de2b4da8b5d9132cb657c496406fa90cd697f7e99b1193d2101df7b0',
+    'common/character_interactions/lyd_i3b_nomination_interactions.txt': '8abe1c814b89c74954a651f03baebd1aaaaff76c82dd03ed1be336058a9fdca7',
 }
 # The new support/progress tests invert only declared UI/AI additions before
 # comparing these old ASTs. Authority, callbacks and player options stay frozen.
@@ -165,13 +167,69 @@ class InstitutionTooltipTests(unittest.TestCase):
         self.assertTrue(engine.entry(Entry(
             'custom_description', '=', rows['lyd_i3b_nominate_adult_tt']), state[0]))
 
-    def test_policy_rosters_votes_and_callbacks_are_byte_unchanged(self):
+    def test_policy_rosters_votes_and_callbacks_match_reviewed_bytes(self):
         # The separate original-player tests invert only the reviewed I3b actor
         # and mode-2 changes against the existing frozen trigger AST hash.
-        for path, digest in UNCHANGED_POLICY.items():
+        for path, digest in FROZEN_POLICY.items():
             with self.subTest(path=path):
                 self.assertEqual(hashlib.sha256(self.outputs[path]).hexdigest(), digest)
                 self.assertEqual((SOURCE / path).read_bytes(), self.outputs[path])
+
+    def test_not_and_nor_negate_disjunction_while_nand_negates_conjunction(self):
+        from test_c3_i3b_preview_scope import Evaluator, world as preview_world
+        state = world()
+        engine = PolicyAST(self.defs, state[0], state[4], state[5])
+        preview = preview_world()
+        other = Evaluator(preview['actor'], preview['common'])
+        for first in (False, True):
+            for second in (False, True):
+                for word in ('NOT', 'NOR', 'NAND'):
+                    with self.subTest(word=word, first=first, second=second):
+                        clause = parse_clausewitz(word + ' = { always = ' +
+                            ('yes' if first else 'no') + ' always = ' +
+                            ('yes' if second else 'no') + ' }')
+                        expected = not (first and second) if word == 'NAND' else not (first or second)
+                        self.assertEqual(engine.block(clause, state[0]), expected)
+                        self.assertEqual(other.block(clause, preview['actor']), expected)
+
+    def test_258_scholars_without_delegate_rejects_actual_seal_decision_and_effect(self):
+        state = world(detached=False)
+        actor, _, _, rite, globals_, env = state
+        actor.variables['lyd_i3b_phase'] = 1
+        rite.variables.update(lyd_i3b_total=258, lyd_i3b_yes=130, lyd_i3b_signed=0)
+        rite.variables.pop('lyd_i3b_delegate')
+        engine = TooltipPolicy(self.defs, actor, globals_, env)
+        self.assertTrue(engine.run('lyd_i3b_current_trigger'))
+        self.assertFalse(engine.run('lyd_i3b_representatives_ready_trigger'))
+        seal = self.decisions['lyd_i3b_seal_decision']
+        self.assertFalse(engine.block(one(seal, 'is_valid'), actor))
+        effect = one(one(one(seal, 'effect'), 'hidden_effect'), 'if')
+        self.assertFalse(engine.block(one(effect, 'limit'), actor))
+        corpus = Corpus()
+        self.assertFalse(engine.block(one(one(corpus.effects['lyd_i3b_seal_effect'], 'if'), 'limit'), actor))
+        rite.variables['lyd_i3b_delegate'] = actor
+        self.assertTrue(engine.run('lyd_i3b_representatives_ready_trigger'))
+        self.assertTrue(engine.block(one(seal, 'is_valid'), actor))
+        rite.variables['lyd_i3b_total'] = 0
+        self.assertFalse(engine.run('lyd_i3b_representatives_ready_trigger'))
+
+    def test_global_nomination_retains_actor_recipient_and_acceptance_guards(self):
+        body = parse_clausewitz(self.outputs[
+            'common/character_interactions/lyd_i3b_nomination_interactions.txt'].decode('utf-8-sig')).entries[0].value
+        self.assertEqual(scalar(body, 'use_diplomatic_range'), 'no')
+        state = self.nomination_world()
+        actor, npc, faith, _, globals_, env = state
+        env.update({'scope:actor': actor, 'scope:recipient': npc})
+        engine = TooltipPolicy(self.defs, actor, globals_, env)
+        self.assertTrue(engine.block(one(body, 'is_shown'), actor))
+        self.assertTrue(engine.block(one(body, 'is_valid_showing_failures_only'), actor))
+        for field, bad in [('learning', 14), ('is_imprisoned', True), ('faith', Scope('foreign'))]:
+            old = npc.fields[field]
+            npc.fields[field] = bad
+            self.assertFalse(engine.block(one(body, 'is_valid_showing_failures_only'), actor), field)
+            npc.fields[field] = old
+        self.assertEqual(one(body, 'on_auto_accept'), parse_clausewitz(
+            'hidden_effect = { lyd_i3b_nominate_effect = yes }'))
 
     def test_requirements_are_separate_localized_and_generated(self):
         for suffix, count in [('begin', 25), ('nominate_self', 9)]:
