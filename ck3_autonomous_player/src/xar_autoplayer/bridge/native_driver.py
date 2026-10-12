@@ -10529,14 +10529,14 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         try:
-            serialized = (
-                json.dumps(
-                    payload,
-                    ensure_ascii=False,
-                    separators=(",", ":"),
-                )
-                + "\n"
+            encoded = bytearray()
+            encoder = json.JSONEncoder(
+                ensure_ascii=False,
+                separators=(",", ":"),
             )
+            for chunk in encoder.iterencode(payload):
+                encoded.extend(chunk.encode("utf-8"))
+            encoded.extend(b"\n")
         finally:
             if persistence_step is not None:
                 finish_army_timing(serialization_timing, step=persistence_step)
@@ -10546,7 +10546,7 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         try:
-            return serialized.encode("utf-8")
+            return bytes(encoded)
         finally:
             if persistence_step is not None:
                 finish_army_timing(encoding_timing, step=persistence_step)
