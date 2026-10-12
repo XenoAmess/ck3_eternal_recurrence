@@ -1,6 +1,7 @@
 """Portable focused checks for the original independent QOL case port."""
 import argparse
 import copy
+from decimal import Decimal
 import hashlib
 import importlib.util
 import json
@@ -197,6 +198,143 @@ class OriginalCases(unittest.TestCase):
                     if success:self.assertEqual(client.wait_hold()['phase'],'hold')
                     else:
                         with self.assertRaises(TimeoutError):client.wait_hold()
+
+class RansomAtomicReceipt(unittest.TestCase):
+    """Static/script-shape checks and an exact arithmetic model, not CK3 proof."""
+
+    phases = ('normal_full', 'normal_any', 'pillage_full', 'pillage_any')
+    effect_key = ('xqol_followup_cases/liege_shared_ransom/fixture/common/'
+                  'scripted_effects/zqlr_liege_ransom_effects.txt')
+    region = re.compile(rb'(?ms)^([ ]*)# ZQLR85_ATOMIC_RECEIPT_BEGIN ([^\r\n]+)\n'
+                        rb'.*?^\1# ZQLR85_ATOMIC_RECEIPT_END \2\n')
+
+    def fixture(self):
+        return (HERE/'ck3_mod_acceptance_cases'/self.effect_key).read_bytes()
+
+    def test_exact_inverse_bom_pin_and_original_contract(self):
+        raw = self.fixture()
+        self.assertTrue(raw.startswith(b'\xef\xbb\xbf'))
+        self.assertNotIn(b'\r', raw)
+        regions = list(self.region.finditer(raw))
+        self.assertEqual(len(regions), 13)
+        labels = {m.group(2).decode('ascii') for m in regions}
+        self.assertEqual(labels, {'before', 'after_values', 'after_verified',
+            'court_setup normal', 'court_setup pillage',
+            *('reset '+phase for phase in self.phases),
+            *('delayed '+phase for phase in self.phases)})
+
+        def undo(match):
+            if match.group(2).startswith(b'delayed '):
+                return match.group(1)+b'gold >= var:zqlr_expected_captor NOT = { gold > var:zqlr_expected_captor }\n'
+            if match.group(2).startswith(b'court_setup '):
+                return match.group(1)+b'scope:zqlr_payer = { add_courtier = scope:zqlr_first add_courtier = scope:zqlr_second }\n'
+            return b''
+
+        inverse = self.region.sub(undo, raw)
+        self.assertEqual(len(inverse), 30264)
+        self.assertEqual(hashlib.sha256(inverse).hexdigest(),
+                         '7f5014508c6e2d36b51f8b8966d9d8740178e17467d824f016fc1670bc63e861')
+        ctx = context('liege_shared_ransom')
+        common.validate_contract(ctx)
+        contract = ctx['case_contract']
+        self.assertEqual(contract['support_files'][self.effect_key],
+                         {'bytes':len(raw), 'sha256':hashlib.sha256(raw).hexdigest()})
+        old_contract = copy.deepcopy(contract)
+        old_contract['support_files'][self.effect_key] = {
+            'bytes':30264, 'sha256':'7f5014508c6e2d36b51f8b8966d9d8740178e17467d824f016fc1670bc63e861'}
+        self.assertEqual(hashlib.sha256((json.dumps(old_contract,ensure_ascii=False,indent=2)+'\n').encode()).hexdigest(),
+                         '1c391554ad054865cdf49ca22a718b992201cd5fc3cfcd175c0c576425e7a0cf')
+        self.assertEqual(len(contract['required_markers']), 22)
+        self.assertEqual(contract['original_step_count'], 30)
+        self.assertEqual(contract['maximum_natural_days'], 12)
+        self.assertEqual(contract['original_budgets'], {
+            'command_timeout':300, 'readiness_timeout':400, 'timeout':4500,
+            'hold_seconds':600, 'poll_interval':0.05})
+        wrapper_key = self.effect_key.replace('zqlr_liege_ransom_effects.txt', 'zqlr_stock_ransom_observer.txt')
+        wrapper = (HERE/'ck3_mod_acceptance_cases'/wrapper_key).read_bytes()
+        self.assertEqual((len(wrapper), hashlib.sha256(wrapper).hexdigest()),
+                         (6086, '1028fcd76a75c1fb9ea43fc23d5353e46d6d9dbc658c1c772218904b913042a6'))
+
+    def test_four_phase_resets_original_gate_and_saved_strict_deltas(self):
+        from xqol_vanilla_contract import block
+        text = self.fixture().decode('utf-8-sig')
+        before = block(text, 'zqlr_stock_before_effect')
+        after = block(text, 'zqlr_stock_after_effect')
+        for phase in self.phases:
+            flag = 'zqlr_stock_'+phase+'_verified'
+            dispatch = block(text, 'zqlr_dispatch_'+phase+'_effect')
+            delayed = block(text, 'zqlr_observe_'+phase+'_effect')
+            self.assertIn('remove_character_flag = '+flag, dispatch)
+            self.assertLess(dispatch.index('remove_character_flag = '+flag), dispatch.index('xqol_bulk_ransom_'))
+            self.assertIn('remove_character_flag = '+flag, before)
+            self.assertEqual(text.count('add_character_flag = '+flag), 1)
+            self.assertIn('has_character_flag = zqlr_wait_'+phase+' } add_character_flag = '+flag, after)
+            self.assertIn('has_character_flag = '+flag, delayed)
+            self.assertIn('var:xqol_last_bulk_ransom_count = 1 var:zqlr_stock_calls = 1', delayed)
+            self.assertNotRegex(delayed, r'(?m)^\s*gold\s*[><=]')
+            self.assertIn('var:zqlr_payer = { gold >= ', delayed)
+            for side in ('captor', 'payer'):
+                self.assertIn('var:zqlr_stock_'+side+'_delta >= var:zqlr_stock_receipt_amount '
+                              'NOT = { var:zqlr_stock_'+side+'_delta > var:zqlr_stock_receipt_amount }', delayed)
+            self.assertIn('var:zqlr_stock_receipt_amount >= var:zqlr_expected_amount '
+                          'NOT = { var:zqlr_stock_receipt_amount > var:zqlr_expected_amount }', delayed)
+        for side, value in [('captor','gold'), ('payer','scope:payer.gold')]:
+            self.assertIn('set_variable = { name = zqlr_stock_'+side+'_before value = '+value+' }', before)
+            self.assertIn('set_variable = { name = zqlr_stock_'+side+'_after value = '+value+' }', after)
+        self.assertIn('set_variable = { name = zqlr_stock_receipt_amount value = var:zqlr_expected_amount }', before)
+        self.assertIn('name = zqlr_stock_captor_delta value = var:zqlr_stock_captor_after', after)
+        self.assertIn('name = zqlr_stock_captor_delta subtract = var:zqlr_stock_captor_before', after)
+        self.assertIn('name = zqlr_stock_payer_delta value = var:zqlr_stock_payer_before', after)
+        self.assertIn('name = zqlr_stock_payer_delta subtract = var:zqlr_stock_payer_after', after)
+        gate = after.index('var:zqlr_stock_calls = 1')
+        first_flag = after.index('add_character_flag = zqlr_stock_normal_full_verified')
+        for original in ('scope:payer = var:zqlr_payer',
+                         'scope:prisoner = { is_alive = yes is_ruler = no is_imprisoned = no',
+                         'scope:payer = { gold >= scope:zqlr_actor.var:zqlr_stock_expected_payer_after NOT = { gold > scope:zqlr_actor.var:zqlr_stock_expected_payer_after } }',
+                         'gold >= var:zqlr_stock_expected_captor_after NOT = { gold > var:zqlr_stock_expected_captor_after }'):
+            self.assertIn(original, after[gate:first_flag])
+
+    def test_court_setup_only_adds_children_not_already_in_the_payer_court(self):
+        regions = {m.group(2).decode('ascii'):m.group(0).decode('utf-8')
+                   for m in self.region.finditer(self.fixture())}
+        for phase in ('normal', 'pillage'):
+            region = regions['court_setup '+phase]
+            self.assertEqual(len(re.findall(r'\bif\s*=', region)), 2)
+            self.assertEqual(region.count('is_courtier_of = scope:zqlr_payer'), 2)
+            self.assertNotIn('else', region)
+            for child in ('first', 'second'):
+                scope = 'scope:zqlr_'+child
+                self.assertEqual(region.count('add_courtier = '+scope), 1)
+                self.assertIn('limit = { '+scope+' = { NOT = { is_courtier_of = scope:zqlr_payer } } }\n'
+                              '   add_courtier = '+scope, region)
+                # Exact guard model, not an engine claim; structure above binds it.
+                for already_in_court, expected_calls in ((True, 0), (False, 1)):
+                    calls = []
+                    if not already_in_court:
+                        calls.append(scope)
+                    self.assertEqual(len(calls), expected_calls)
+
+    def test_exact_receipt_model_rejects_wrong_amount_duplicate_missing_or_wrong_phase(self):
+        # Mirrors the structurally checked exact gates above; not an engine emulator.
+        def accepted(captor_before, captor_after, payer_before, payer_after, amount,
+                     calls=1, receipt=True, phase='pillage_full', expected_phase='pillage_full',
+                     same_payer=True, released=True, fresh_eligible=True, delayed_captor='2599.32'):
+            cb, ca, pb, pa, expected = map(Decimal, (captor_before,captor_after,payer_before,payer_after,amount))
+            verified = calls == 1 and same_payer and released and ca == cb+expected and pa == pb-expected
+            # The delayed captor wallet is intentionally not a transaction-time operand.
+            return verified and receipt and phase == expected_phase and ca-cb == expected and pb-pa == expected and fresh_eligible
+
+        good = ('2528', '2603', '76', '1', '75')
+        self.assertTrue(accepted(*good))
+        self.assertTrue(accepted(*good, delayed_captor='2607.91'))
+        for bad in [('2528','2602.99999','76','1','75'),
+                    ('2528','2603','76','1.00001','75'),
+                    ('2528','2603','76','1','74')]:
+            self.assertFalse(accepted(*bad))
+        for kwargs in ({'calls':2}, {'receipt':False}, {'phase':'normal_full'},
+                       {'same_payer':False}, {'released':False}, {'fresh_eligible':False}):
+            self.assertFalse(accepted(*good, **kwargs))
+
 
 if __name__=='__main__':
     unittest.main(argv=[sys.argv[0],*remaining])

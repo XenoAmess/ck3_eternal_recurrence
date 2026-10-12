@@ -65,7 +65,18 @@ zqlr_make_normal_pair_effect = {
   father = scope:zqlr_payer
   save_scope_as = zqlr_second
  }
- scope:zqlr_payer = { add_courtier = scope:zqlr_first add_courtier = scope:zqlr_second }
+ # ZQLR85_ATOMIC_RECEIPT_BEGIN court_setup normal
+ scope:zqlr_payer = {
+  if = {
+   limit = { scope:zqlr_first = { NOT = { is_courtier_of = scope:zqlr_payer } } }
+   add_courtier = scope:zqlr_first
+  }
+  if = {
+   limit = { scope:zqlr_second = { NOT = { is_courtier_of = scope:zqlr_payer } } }
+   add_courtier = scope:zqlr_second
+  }
+ }
+ # ZQLR85_ATOMIC_RECEIPT_END court_setup normal
  imprison = { target = scope:zqlr_first type = dungeon }
  imprison = { target = scope:zqlr_second type = dungeon }
  set_variable = { name = zqlr_first value = scope:zqlr_first }
@@ -117,6 +128,9 @@ zqlr_dispatch_normal_full_effect = {
   set_variable = { name = zqlr_expected_captor value = gold }
   change_variable = { name = zqlr_expected_captor add = var:zqlr_quote }
   set_variable = { name = zqlr_stock_calls value = 0 }
+  # ZQLR85_ATOMIC_RECEIPT_BEGIN reset normal_full
+  remove_character_flag = zqlr_stock_normal_full_verified
+  # ZQLR85_ATOMIC_RECEIPT_END reset normal_full
   set_variable = { name = zqlr_wait_days value = 0 }
   add_character_flag = zqlr_wait_normal_full
   debug_log = "ZQLR120: TEST PASS normal_full_revalidated"
@@ -147,7 +161,12 @@ zqlr_observe_normal_full_effect = {
   if = {
    limit = {
     var:xqol_last_bulk_ransom_count = 1 var:zqlr_stock_calls = 1
-    gold >= var:zqlr_expected_captor NOT = { gold > var:zqlr_expected_captor }
+    # ZQLR85_ATOMIC_RECEIPT_BEGIN delayed normal_full
+    has_character_flag = zqlr_stock_normal_full_verified
+    var:zqlr_stock_captor_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_captor_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_payer_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_payer_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_receipt_amount >= var:zqlr_expected_amount NOT = { var:zqlr_stock_receipt_amount > var:zqlr_expected_amount }
+    # ZQLR85_ATOMIC_RECEIPT_END delayed normal_full
     var:zqlr_payer = { gold >= 1 NOT = { gold > 1 } }
     var:zqlr_first = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
     var:zqlr_second = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
@@ -180,6 +199,9 @@ zqlr_dispatch_normal_any_effect = {
   set_variable = { name = zqlr_expected_captor value = gold }
   change_variable = { name = zqlr_expected_captor add = 1 }
   set_variable = { name = zqlr_stock_calls value = 0 }
+  # ZQLR85_ATOMIC_RECEIPT_BEGIN reset normal_any
+  remove_character_flag = zqlr_stock_normal_any_verified
+  # ZQLR85_ATOMIC_RECEIPT_END reset normal_any
   set_variable = { name = zqlr_wait_days value = 0 }
   add_character_flag = zqlr_wait_normal_any
   debug_log = "ZQLR120: TEST PASS normal_any_revalidated"
@@ -200,7 +222,12 @@ zqlr_observe_normal_any_effect = {
   if = {
    limit = {
     var:xqol_last_bulk_ransom_count = 1 var:zqlr_stock_calls = 1
-    gold >= var:zqlr_expected_captor NOT = { gold > var:zqlr_expected_captor }
+    # ZQLR85_ATOMIC_RECEIPT_BEGIN delayed normal_any
+    has_character_flag = zqlr_stock_normal_any_verified
+    var:zqlr_stock_captor_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_captor_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_payer_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_payer_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_receipt_amount >= var:zqlr_expected_amount NOT = { var:zqlr_stock_receipt_amount > var:zqlr_expected_amount }
+    # ZQLR85_ATOMIC_RECEIPT_END delayed normal_any
     var:zqlr_payer = { gold >= 0 NOT = { gold > 0 } }
     var:zqlr_first = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
     var:zqlr_second = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
@@ -237,7 +264,18 @@ zqlr_make_pillage_pair_effect = {
   father = scope:zqlr_payer
   save_scope_as = zqlr_second
  }
- scope:zqlr_payer = { add_courtier = scope:zqlr_first add_courtier = scope:zqlr_second }
+ # ZQLR85_ATOMIC_RECEIPT_BEGIN court_setup pillage
+ scope:zqlr_payer = {
+  if = {
+   limit = { scope:zqlr_first = { NOT = { is_courtier_of = scope:zqlr_payer } } }
+   add_courtier = scope:zqlr_first
+  }
+  if = {
+   limit = { scope:zqlr_second = { NOT = { is_courtier_of = scope:zqlr_payer } } }
+   add_courtier = scope:zqlr_second
+  }
+ }
+ # ZQLR85_ATOMIC_RECEIPT_END court_setup pillage
  imprison = { target = scope:zqlr_first type = dungeon }
  imprison = { target = scope:zqlr_second type = dungeon }
  set_variable = { name = zqlr_first value = scope:zqlr_first }
@@ -290,6 +328,9 @@ zqlr_dispatch_pillage_full_effect = {
   set_variable = { name = zqlr_expected_captor value = gold }
   change_variable = { name = zqlr_expected_captor add = var:zqlr_quote }
   set_variable = { name = zqlr_stock_calls value = 0 }
+  # ZQLR85_ATOMIC_RECEIPT_BEGIN reset pillage_full
+  remove_character_flag = zqlr_stock_pillage_full_verified
+  # ZQLR85_ATOMIC_RECEIPT_END reset pillage_full
   set_variable = { name = zqlr_wait_days value = 0 }
   add_character_flag = zqlr_wait_pillage_full
   debug_log = "ZQLR120: TEST PASS pillage_full_revalidated"
@@ -320,7 +361,12 @@ zqlr_observe_pillage_full_effect = {
   if = {
    limit = {
     var:xqol_last_bulk_ransom_count = 1 var:zqlr_stock_calls = 1
-    gold >= var:zqlr_expected_captor NOT = { gold > var:zqlr_expected_captor }
+    # ZQLR85_ATOMIC_RECEIPT_BEGIN delayed pillage_full
+    has_character_flag = zqlr_stock_pillage_full_verified
+    var:zqlr_stock_captor_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_captor_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_payer_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_payer_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_receipt_amount >= var:zqlr_expected_amount NOT = { var:zqlr_stock_receipt_amount > var:zqlr_expected_amount }
+    # ZQLR85_ATOMIC_RECEIPT_END delayed pillage_full
     var:zqlr_payer = { gold >= 1 NOT = { gold > 1 } }
     var:zqlr_first = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
     var:zqlr_second = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
@@ -356,6 +402,9 @@ zqlr_dispatch_pillage_any_effect = {
   set_variable = { name = zqlr_expected_captor value = gold }
   change_variable = { name = zqlr_expected_captor add = 1 }
   set_variable = { name = zqlr_stock_calls value = 0 }
+  # ZQLR85_ATOMIC_RECEIPT_BEGIN reset pillage_any
+  remove_character_flag = zqlr_stock_pillage_any_verified
+  # ZQLR85_ATOMIC_RECEIPT_END reset pillage_any
   set_variable = { name = zqlr_wait_days value = 0 }
   add_character_flag = zqlr_wait_pillage_any
   debug_log = "ZQLR120: TEST PASS pillage_any_revalidated"
@@ -376,7 +425,12 @@ zqlr_observe_pillage_any_effect = {
   if = {
    limit = {
     var:xqol_last_bulk_ransom_count = 1 var:zqlr_stock_calls = 1
-    gold >= var:zqlr_expected_captor NOT = { gold > var:zqlr_expected_captor }
+    # ZQLR85_ATOMIC_RECEIPT_BEGIN delayed pillage_any
+    has_character_flag = zqlr_stock_pillage_any_verified
+    var:zqlr_stock_captor_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_captor_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_payer_delta >= var:zqlr_stock_receipt_amount NOT = { var:zqlr_stock_payer_delta > var:zqlr_stock_receipt_amount }
+    var:zqlr_stock_receipt_amount >= var:zqlr_expected_amount NOT = { var:zqlr_stock_receipt_amount > var:zqlr_expected_amount }
+    # ZQLR85_ATOMIC_RECEIPT_END delayed pillage_any
     var:zqlr_payer = { gold >= 0 NOT = { gold > 0 } }
     var:zqlr_first = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
     var:zqlr_second = { is_alive = yes is_ruler = no gold >= 0 NOT = { gold > 0 } }
@@ -409,6 +463,15 @@ zqlr_stock_before_effect = {
  if = {
   limit = { has_character_flag = zqlr_active }
   change_variable = { name = zqlr_stock_calls add = 1 }
+  # ZQLR85_ATOMIC_RECEIPT_BEGIN before
+  remove_character_flag = zqlr_stock_normal_full_verified
+  remove_character_flag = zqlr_stock_normal_any_verified
+  remove_character_flag = zqlr_stock_pillage_full_verified
+  remove_character_flag = zqlr_stock_pillage_any_verified
+  set_variable = { name = zqlr_stock_captor_before value = gold }
+  set_variable = { name = zqlr_stock_payer_before value = scope:payer.gold }
+  set_variable = { name = zqlr_stock_receipt_amount value = var:zqlr_expected_amount }
+  # ZQLR85_ATOMIC_RECEIPT_END before
   set_variable = { name = zqlr_actual_stock_payer value = scope:payer }
   set_variable = { name = zqlr_actual_stock_prisoner value = scope:prisoner }
   set_variable = { name = zqlr_stock_expected_payer_after value = scope:payer.gold }
@@ -424,6 +487,14 @@ zqlr_stock_after_effect = {
  if = {
   limit = { has_character_flag = zqlr_active }
   save_scope_as = zqlr_actor
+  # ZQLR85_ATOMIC_RECEIPT_BEGIN after_values
+  set_variable = { name = zqlr_stock_captor_after value = gold }
+  set_variable = { name = zqlr_stock_payer_after value = scope:payer.gold }
+  set_variable = { name = zqlr_stock_captor_delta value = var:zqlr_stock_captor_after }
+  change_variable = { name = zqlr_stock_captor_delta subtract = var:zqlr_stock_captor_before }
+  set_variable = { name = zqlr_stock_payer_delta value = var:zqlr_stock_payer_before }
+  change_variable = { name = zqlr_stock_payer_delta subtract = var:zqlr_stock_payer_after }
+  # ZQLR85_ATOMIC_RECEIPT_END after_values
   if = {
    limit = {
     var:zqlr_stock_calls = 1
@@ -432,6 +503,12 @@ zqlr_stock_after_effect = {
     scope:payer = { gold >= scope:zqlr_actor.var:zqlr_stock_expected_payer_after NOT = { gold > scope:zqlr_actor.var:zqlr_stock_expected_payer_after } }
     gold >= var:zqlr_stock_expected_captor_after NOT = { gold > var:zqlr_stock_expected_captor_after }
    }
+   # ZQLR85_ATOMIC_RECEIPT_BEGIN after_verified
+   if = { limit = { has_character_flag = zqlr_wait_normal_full } add_character_flag = zqlr_stock_normal_full_verified }
+   else_if = { limit = { has_character_flag = zqlr_wait_normal_any } add_character_flag = zqlr_stock_normal_any_verified }
+   else_if = { limit = { has_character_flag = zqlr_wait_pillage_full } add_character_flag = zqlr_stock_pillage_full_verified }
+   else_if = { limit = { has_character_flag = zqlr_wait_pillage_any } add_character_flag = zqlr_stock_pillage_any_verified }
+   # ZQLR85_ATOMIC_RECEIPT_END after_verified
    if = { limit = { has_character_flag = zqlr_wait_normal_full } debug_log = "ZQLR120: STOCK PASS normal_full" }
    else_if = { limit = { has_character_flag = zqlr_wait_normal_any } debug_log = "ZQLR120: STOCK PASS normal_any" }
    else_if = { limit = { has_character_flag = zqlr_wait_pillage_full } debug_log = "ZQLR120: STOCK PASS pillage_full" }
