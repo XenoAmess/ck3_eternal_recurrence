@@ -31,6 +31,11 @@ repeat its whole-file hash or run the Game/SDK.
   failed. Installed distribution metadata reports Capstone 5.0.9, while the
   installed module declares `__version__` 5.0.7. These fields must be qualified
   separately; neither establishes an observed native engine version.
+- The independently corrected Scope D Source22 actually exited 0. It read
+  exactly 226 bytes and saved all 54 instructions across the two complete
+  113-byte intervals. The actual module path and module 5.0.7, distribution
+  5.0.9 and two named text pins matched the separate new admission. The engine
+  version remains unknown. Source21's zero-read failure remains unchanged.
 
 Full `.pdata` intervals and complete linear decoding do not establish complete
 logical functions. The 18-byte interval beginning at RVA 57849856 and the
@@ -61,10 +66,18 @@ candidate destinations **45513488** and **45513744**. This arithmetic grants
 neither an instruction boundary nor callability. The other two context patterns
 give neighboring candidates, 45513360 and 45513616, which are deferred.
 
-Root next selected only the two full 113-byte intervals from the actual Scope C
-lookup. A corrected decoder identity contract still requires a new Scope D
-admission and actual result. Generic container and allocator callees are not
-automatically followed.
+Root selected and completed only the two full 113-byte intervals from the actual
+Scope C lookup. Both allocate an object with argument `0x138`, install several
+RIP-relative addresses, set the DWORD at `+0x40` to `0x165`, copy the input DWORD
+at `+0x10` into the new object at `+8`, set byte `+0xC` to zero and return the new
+object. This is construction/initialization evidence; it does not read a
+qualified skill scalar or establish the input as a Character receiver.
+
+The five distinct RIP-relative destinations are 71987760, 75428416, 75428688,
+75428992 and 75429264, within the recorded `.rdata` geometry. The three direct
+callee destinations are 69352340, 57854576 and 10517600. Their values identify
+possible next inputs, without authorizing new pointer windows, callee bodies,
+callback ABI or formal getter use. Generic callees are not automatically followed.
 
 ## Installed education script source
 
@@ -81,6 +94,15 @@ add-ten operation. Optional House predicate semantics and native value encoding
 remain unresolved. Script thresholds and displayed trait ranks do not qualify
 a typed numeric getter or current education outcome.
 
+The complete support failure branch has base weight 40, negative-intellect
+terms and a missing-educator term of 20; it contains no education-points write
+or selected-skill/learning term. Later helpers and notification code do not
+close the final education-trait writer. The complete `educate_child` acceptance
+hook binds ward/guardian role aliases and delegates to
+`educate_child_interaction_effect`. Its two relation setters occur inside
+`show_as_tooltip`, so they do not prove an actual guardian relation. The
+delegated effect's authoritative body and runtime endstate remain unresolved.
+
 ## Small evidence references and retention
 
 These local evidence names are relative to
@@ -95,6 +117,7 @@ They are finite research inputs, not permanent availability promises.
 | `ROOT-M6-SOURCE18-ACTUAL-BODY-THIN.jsonl` | 51043 | `b128890c4dc7a811d88cf00e08b23a3a59b1af5c366718439f9e4929b72a8cd7` |
 | `ROOT-M6-PRIMARY-CELL-CANDIDATE-ARITHMETIC.json` | 2934 | `8c47a81fc47077d5ea1694b1c1b21281fe0bd3fba5f3963d5888c899df33e7fd` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pdata-source20/SOURCE20-ROOT-PRIMARY-CELL-PDATA-RESULT.json` | 4003 | `8955f55e16d52cec68478f2d1fdaf91e579468d9d072558f7e53f1d32b4e96c0` |
+| `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-body-source22/SOURCE22-ROOT-PRIMARY-CELL-BODY-RESULT.json` | 9616 | `94a450c8c132345786f9c3429219c06fe2613d071462656d412b887d89abf3e5` |
 
 Source21's separate failed body result retains zero read bytes, zero instruction
 rows and the actual decoder import failure. The installed source intake is

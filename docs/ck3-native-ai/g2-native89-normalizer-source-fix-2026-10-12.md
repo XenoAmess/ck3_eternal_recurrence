@@ -32,7 +32,29 @@ Evidence remains external under `g2-native89-production01/closure03`:
 `ROOT-WHOLE917-NORMALIZER-ACTUAL-STOP-02.json` and
 `ROOT-WHOLE917-CLOSURE-PROOF-02.json`. A proof file alone is insufficient;
 runtime adoption requires actual exit 0, proof readback and the independent
-execution receipt. The third invocation is pending at this record's creation.
+execution receipt. The third invocation was pending at this record's creation.
+
+At 04:06:19 UTC, the third invocation actually exited 0 after 530.62 seconds.
+Root read the complete proof and external execution receipt. The proof binds
+all 917 fresh owners and dependency outputs, zero reused owners, 597 exact
+ordered archive members and the actual link closure to SDK91
+`50a1a5451227d1b30f42394dd02ddfbaea26a1ff`. The 17,807,360-byte DLL has SHA-256
+`7d97c73e24a68db1cf6cc67b7cb684a551fd0130df5d5a13bf5e092ac0e2fc02`.
+
+The independent proof is `ROOT-WHOLE917-CLOSURE-PROOF-03.json`, 10,475 bytes,
+SHA-256 `e2077b1cbbc58b42ce09f2a0913c3670ad0c2aef3c651543e8de07872f94c00d`.
+Its execution receipt is `ROOT-WHOLE917-NORMALIZER-EXECUTION-03.json`, 2,123
+bytes, SHA-256 `b2d9b825714d3579d275dff4e92a15d882880ce592fde11a7031795089a38edd`.
+The first failure and second timeout proof remain unchanged. No normalizer
+process termination occurred in the unsuccessful timeout-cleanup attempts.
+
+Root derived separate small loader metadata, preserving the exact three
+original helper EXE rows and their original provenance, and adding the actual
+new DLL row. No helper binary was rehashed or copied for this derivation.
+An initial metadata summary used an absent `name` key after writing the three
+metadata files; the corrected summary read and compared those files without
+overwriting them. This compile closure does not grant Game, family or M7
+qualification. R104 runtime adoption remains a separate actual operation.
 
 The original source/build review deadline remains 2026-10-12 16:47:28.264315 UTC.
 The current saved campaign and its full13 input keep their separate limited
