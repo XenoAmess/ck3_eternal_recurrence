@@ -946,6 +946,15 @@ class _NativeCommandResultTimeoutError(BridgeUnavailableError):
         )
 
 
+class _NativeBridgeAdoptionRefusedError(BridgeUnavailableError):
+    """An incompatible persisted lifecycle cannot be adopted by this run."""
+
+    def __init__(self, message: str, *, reason: str, attempted_bridge_pid: int) -> None:
+        self.reason = reason
+        self.attempted_bridge_pid = attempted_bridge_pid
+        super().__init__(message)
+
+
 class NativeBridgeEndpoint(Protocol):
     """Transport boundary kept small enough for deterministic offline tests."""
 
@@ -1365,6 +1374,7 @@ class NativeNamedPipeServer:
         self._stop = threading.Event()
         self._ready = threading.Event()
         self._fatal_error: str | None = None
+        self._adoption_refusal: dict[str, object] | None = None
         self._handle_lock = threading.Lock()
         self._handle: int | None = None
         self._write_lock = threading.Lock()
@@ -1402,6 +1412,10 @@ class NativeNamedPipeServer:
 
     def transport_error(self) -> str | None:
         return self._fatal_error
+
+    def transport_diagnostic(self) -> dict[str, object] | None:
+        with self._handle_lock:
+            return dict(self._adoption_refusal) if self._adoption_refusal is not None else None
 
     def send(self, frame: dict[str, object], *, packet_evidence_path: Path | None = None) -> None:
         payload = json.dumps(
@@ -1513,6 +1527,22 @@ class NativeNamedPipeServer:
                     continue
                 if self._on_frame is not None:
                     self._on_frame(frame)
+            except _NativeBridgeAdoptionRefusedError as error:
+                # The first refusal is terminal for this endpoint. It is not a
+                # malformed JSON frame, nor permission to reconnect and migrate.
+                with self._handle_lock:
+                    if self._fatal_error is None:
+                        self._fatal_error = str(error)
+                        self._adoption_refusal = {
+                            "schema": "native-bridge-adoption-refusal-v1",
+                            "exception_type": type(error).__name__,
+                            "stage": "hello_adoption",
+                            "reason": error.reason,
+                            "message": str(error),
+                            "attempted_bridge_pid": error.attempted_bridge_pid,
+                        }
+                self._stop.set()
+                return
             except (UnicodeDecodeError, json.JSONDecodeError, ValueError):
                 continue
 
@@ -2057,6 +2087,8 @@ class NativeHeadlessGameplayDriver:
         diagnostics = dict(result["diagnostics"])
         transport_error = self._transport_error()
         diagnostics["transport_fatal_error"] = transport_error
+        diagnostic_reader = getattr(self.endpoint, "transport_diagnostic", None)
+        diagnostics["transport_refusal"] = diagnostic_reader() if callable(diagnostic_reader) else None
         action_steps = set(_string_list(result.get("action_steps")))
         # The native arm capability is a parameterized protocol template,
         # never a directly executable action literal.  Only the bounded
@@ -2747,6 +2779,8 @@ class NativeHeadlessGameplayDriver:
     def diagnostics(self) -> dict[str, object]:
         result = self.state.diagnostics()
         result["transport_fatal_error"] = self._transport_error()
+        diagnostic_reader = getattr(self.endpoint, "transport_diagnostic", None)
+        result["transport_refusal"] = diagnostic_reader() if callable(diagnostic_reader) else None
         with self._driver_state_lock:
             pending = getattr(self, "_pending_declaration_query", None)
             result["pending_declaration_query"] = (
@@ -10690,17 +10724,21 @@ class NativeHeadlessGameplayDriver:
                         and self._succession_lifecycle["xar_enabled"]
                         == "xar_on"
                     ):
-                        raise BridgeUnavailableError(
+                        raise _NativeBridgeAdoptionRefusedError(
                             "legacy driver state is only compatible with the "
-                            "frozen rogue xar_on profile"
+                            "frozen rogue xar_on profile",
+                            reason="legacy_lifecycle_incompatible",
+                            attempted_bridge_pid=bridge_pid,
                         )
                 elif (
                     restored.get("succession_lifecycle")
                     != self._succession_lifecycle
                 ):
-                    raise BridgeUnavailableError(
+                    raise _NativeBridgeAdoptionRefusedError(
                         "persisted succession lifecycle differs from the frozen "
-                        "run profile"
+                        "run profile",
+                        reason="persisted_lifecycle_mismatch",
+                        attempted_bridge_pid=bridge_pid,
                     )
 
         should_persist = False
