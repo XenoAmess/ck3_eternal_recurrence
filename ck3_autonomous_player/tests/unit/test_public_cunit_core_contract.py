@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player/src"))
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver, BridgeUnavailableError
 from xar_autoplayer.bridge import war_contract as war
+from xar_autoplayer.bridge.army_strengths_profile_contract import (
+    ARMY_OBSERVED_PHASE_COVERAGE_KEY, ARMY_STRENGTHS_PROFILE_KEY, ORDINARY_CORE_PROFILE,
+)
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from test_native_bridge_driver import FakeEndpoint, _army, _hello, _snapshot, _war, _army_strength
 
@@ -32,11 +35,14 @@ class PublicCUnitCoreContractTests(unittest.TestCase):
         row = {**_army_strength(0, "player", [42]), "native_carmy_id": 0}
         def answer(frame):
             if frame.get("type") == "execute_step":
+                self.assertEqual(frame[ARMY_STRENGTHS_PROFILE_KEY], ORDINARY_CORE_PROFILE)
                 endpoint.publish({"type": "command_result", "protocol_version": 1,
                     "request_id": frame["request_id"], "ok": True,
                     "result": {"step": frame["step"], "accepted": True,
                                "status": "available", "query_sequence": 7,
-                               "army_strengths": [row]}})
+                               "army_strengths": [row],
+                               ARMY_STRENGTHS_PROFILE_KEY: frame[ARMY_STRENGTHS_PROFILE_KEY],
+                               ARMY_OBSERVED_PHASE_COVERAGE_KEY: "not_requested"}})
         endpoint.send_hook = answer
         start = driver.take_snapshot()
         service = GameplayBridgeService(driver)
