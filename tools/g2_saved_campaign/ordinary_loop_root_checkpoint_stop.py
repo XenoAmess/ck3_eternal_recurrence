@@ -10,9 +10,41 @@ import argparse
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import sys
 import time
 
 import m7_ordinary_successor_queue as m7
+
+
+def _note_diagnostic_failure(original, phase: str, secondary) -> None:
+    """Keep diagnostic failure best-effort; never replace the selected error."""
+    note = None
+    try:
+        note = f"Root diagnostic failed at {phase}; original error retained"
+        note += (f"; original={type(original).__name__}: {str(original)[:1024]}"
+                 f"; secondary={type(secondary).__name__}: {str(secondary)[:512]}")
+        context = getattr(original, "root_response_context", None)
+        if isinstance(context, dict):
+            refs = {}
+            for key in ("request", "response", "tool", "request_expected_revision"):
+                value = context.get(key)
+                if isinstance(value, str):
+                    refs[key] = value[:384]
+                elif value is None or type(value) is int:
+                    refs[key] = value
+            note += "; original_context_refs_excerpt=" + json.dumps(
+                refs, ensure_ascii=False, separators=(",", ":"))
+        note = note[:4096]
+        original.add_note(note)
+    except Exception:
+        pass
+    if note is None:
+        return
+    try:
+        sys.stderr.write(note[:4096] + "\n")
+        sys.stderr.flush()
+    except Exception:
+        pass
 
 
 BINDING_STATUS = "ROOT_ACTUAL_NATIVE60_FIRST_RESPONSE_BOUND"
@@ -237,6 +269,9 @@ def run(args) -> int:
             raise ValueError("retain unavailable/blocked ordinary plan before next action")
         return False
 
+    primary_error = primary_traceback = None
+    unwinding_error = None
+    diagnostic_failed = False
     try:
         if m7.completed_continuation(first):
             adopt_completed_response(first, args.first_turn_response)
@@ -323,54 +358,77 @@ def run(args) -> int:
         else:
             status = "TARGET_DATE_REACHED_ROOT_CHECKPOINT_PENDING"
     except Exception as error:
+        primary_error, primary_traceback = error, error.__traceback__
         status = "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
-        queue.thin("error", {
-            "error": repr(error), "pending_requests_not_resent": True,
-            "original_response_context": getattr(error, "root_response_context", None),
-        })
+        try:
+            queue.thin("error", {
+                "error": repr(error), "pending_requests_not_resent": True,
+                "original_response_context": getattr(error, "root_response_context", None),
+            })
+        except Exception as diagnostic_error:
+            diagnostic_failed = True
+            _note_diagnostic_failure(primary_error, "ERROR thin", diagnostic_error)
+    except BaseException as interruption:
+        unwinding_error = interruption
+        raise
     finally:
-        write(args.output / "LOOP-RESULT.json", {
-            "status": status, "started_at_utc": started,
-            "ended_at_utc": datetime.now(timezone.utc).isoformat(),
-            "qualification": str(args.qualification), "initial_snapshot": str(args.initial_snapshot),
-            "first_turn_response": str(args.first_turn_response),
-            "sway_baseline_responses": [str(args.sway_completion), str(args.sway_opinion)],
-            "initial_original_scheme": {key: initial_completion.get(key) for key in (
-                "scheme_instance_id", "scheme_instance_generation", "native_status_key")},
-            "starting_date_raw": start_date, "current_date_raw": current_date,
-            "target_date_raw": target_date, "actual_days_from_initial": (current_date-start_date)/24,
-            "normal_turns": turns, "requests": queue.requests,
-            "new_full_snapshot_queries": sum(
-                "snapshot" in Path(item["response"]).name
-                or "save-readback" in Path(item["response"]).name
-                or "player-decision-readback" in Path(item["response"]).name
-                for item in queue.requests),
-            "checkpoint_calls": sum(
-                Path(item["response"]).name.endswith("-m7-successor-save.json")
-                for item in queue.requests),
-            "natural_succession_transitions": transitions,
-            "natural_continuation_turns": len(transitions),
-            "current_episode": ({
-                "episode_character_id": transitions[-1]["successor_character_id"],
-                "episode_run_id": transitions[-1]["episode_run_id"],
-            } if transitions else current_episode),
-            "current_episode_evidence_source": (
-                "last_verified_transition_snapshot" if transitions
-                else "last_controller_adopted_snapshot"),
-            "live_episode_after_error": (
-                "unverified" if status == "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
-                else "not_applicable"),
-            "original_sway_episode_observation_ended": not sway_episode_observer,
-            "latest_successor_snapshot": (str(latest_successor_snapshot)
-                                          if latest_successor_snapshot else None),
-            "latest_successor_save": (str(latest_successor_save)
-                                      if latest_successor_save else None),
-            "last_successor_save_is_loop_endpoint": last_successor_save_is_loop_endpoint,
-            "successor_checkpoint_pending": (pending_successor is not None
-                or bool(transitions and transitions[-1]["successor_checkpoint"].get("status") != "saved")),
-            "policy_or_ledger_edits": 0, "new_sway_start_stop_retarget": 0,
-            "checkpoint_owner": "Root normal checkpoint operation after this helper",
-        })
+        selected_error = unwinding_error if unwinding_error is not None else primary_error
+        try:
+            write(args.output / "LOOP-RESULT.json", {
+                "original_error": repr(selected_error) if selected_error is not None else None,
+                "original_response_context": getattr(selected_error, "root_response_context", None),
+                "original_exception_notes_excerpt": [
+                    note[:4096] for note in getattr(selected_error, "__notes__", [])[:4]
+                    if isinstance(note, str)
+                ] if selected_error is not None else [],
+                "status": status, "started_at_utc": started,
+                "ended_at_utc": datetime.now(timezone.utc).isoformat(),
+                "qualification": str(args.qualification), "initial_snapshot": str(args.initial_snapshot),
+                "first_turn_response": str(args.first_turn_response),
+                "sway_baseline_responses": [str(args.sway_completion), str(args.sway_opinion)],
+                "initial_original_scheme": {key: initial_completion.get(key) for key in (
+                    "scheme_instance_id", "scheme_instance_generation", "native_status_key")},
+                "starting_date_raw": start_date, "current_date_raw": current_date,
+                "target_date_raw": target_date, "actual_days_from_initial": (current_date-start_date)/24,
+                "normal_turns": turns, "requests": queue.requests,
+                "new_full_snapshot_queries": sum(
+                    "snapshot" in Path(item["response"]).name
+                    or "save-readback" in Path(item["response"]).name
+                    or "player-decision-readback" in Path(item["response"]).name
+                    for item in queue.requests),
+                "checkpoint_calls": sum(
+                    Path(item["response"]).name.endswith("-m7-successor-save.json")
+                    for item in queue.requests),
+                "natural_succession_transitions": transitions,
+                "natural_continuation_turns": len(transitions),
+                "current_episode": ({
+                    "episode_character_id": transitions[-1]["successor_character_id"],
+                    "episode_run_id": transitions[-1]["episode_run_id"],
+                } if transitions else current_episode),
+                "current_episode_evidence_source": (
+                    "last_verified_transition_snapshot" if transitions
+                    else "last_controller_adopted_snapshot"),
+                "live_episode_after_error": (
+                    "unverified" if status == "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
+                    else "not_applicable"),
+                "original_sway_episode_observation_ended": not sway_episode_observer,
+                "latest_successor_snapshot": (str(latest_successor_snapshot)
+                                              if latest_successor_snapshot else None),
+                "latest_successor_save": (str(latest_successor_save)
+                                          if latest_successor_save else None),
+                "last_successor_save_is_loop_endpoint": last_successor_save_is_loop_endpoint,
+                "successor_checkpoint_pending": (pending_successor is not None
+                    or bool(transitions and transitions[-1]["successor_checkpoint"].get("status") != "saved")),
+                "policy_or_ledger_edits": 0, "new_sway_start_stop_retarget": 0,
+                "checkpoint_owner": "Root normal checkpoint operation after this helper",
+            })
+        except Exception as diagnostic_error:
+            if selected_error is None:
+                raise
+            diagnostic_failed = True
+            _note_diagnostic_failure(selected_error, "LOOP-RESULT", diagnostic_error)
+    if primary_error is not None and diagnostic_failed:
+        raise primary_error.with_traceback(primary_traceback)
     return 0 if status in {
         "TARGET_DATE_REACHED_ROOT_CHECKPOINT_PENDING",
         "ROOT_STOP_AT_NORMAL_CHECKPOINT_PENDING",

@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 import importlib.util
 import json
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 
 
@@ -61,6 +62,37 @@ def require_live_checkpoint_input(loop, snapshot, expected_episode, retained_goa
     loop.m7.goal_matches(retained_goal, snapshot.get("campaign_goal"), actor, increment=0)
 
 
+def _note_diagnostic_failure(original, phase: str, secondary) -> None:
+    """Keep diagnostic failure best-effort; never replace the selected error."""
+    note = None
+    try:
+        note = f"Root diagnostic failed at {phase}; original error retained"
+        note += (f"; original={type(original).__name__}: {str(original)[:1024]}"
+                 f"; secondary={type(secondary).__name__}: {str(secondary)[:512]}")
+        context = getattr(original, "root_response_context", None)
+        if isinstance(context, dict):
+            refs = {}
+            for key in ("request", "response", "tool", "request_expected_revision"):
+                value = context.get(key)
+                if isinstance(value, str):
+                    refs[key] = value[:384]
+                elif value is None or type(value) is int:
+                    refs[key] = value
+            note += "; original_context_refs_excerpt=" + json.dumps(
+                refs, ensure_ascii=False, separators=(",", ":"))
+        note = note[:4096]
+        original.add_note(note)
+    except Exception:
+        pass
+    if note is None:
+        return
+    try:
+        sys.stderr.write(note[:4096] + "\n")
+        sys.stderr.flush()
+    except Exception:
+        pass
+
+
 def run(args) -> int:
     spec = importlib.util.spec_from_file_location("_root_checkpoint_loop", LOOP_SOURCE)
     loop = importlib.util.module_from_spec(spec)
@@ -75,6 +107,9 @@ def run(args) -> int:
     chunks = []
     checkpoint_requests = []
     status, error = "RUNNING", None
+    primary_error = primary_traceback = None
+    unwinding_error = None
+    diagnostic_failed = False
     try:
         # These are Root's already-completed current snapshot/SAVE, not new calls.
         initial_snapshot = loop.body(loop.read(snapshot_path))
@@ -220,28 +255,50 @@ def run(args) -> int:
         else:
             status = "ROOT_BOUNDED_CHUNKS_SAVED"
     except Exception as caught:
+        primary_error, primary_traceback = caught, caught.__traceback__
         status = "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
-        error = repr(caught)
+        try:
+            error = repr(caught)
+        except Exception as diagnostic_error:
+            diagnostic_failed = True
+            _note_diagnostic_failure(primary_error, "BOUNDED error text", diagnostic_error)
+    except BaseException as interruption:
+        unwinding_error = interruption
+        raise
     finally:
-        receipt = {
-            "status": status, "started_at_utc": started, "ended_at_utc": now(),
-            "packet": str(args.packet), "qualification": str(args.qualification),
-            "chunks_requested": args.chunks, "days_per_chunk": args.days_per_chunk,
-            "chunks": chunks, "current_saved_date_raw": saved_date,
-            "saved_normal_days_cumulative": saved_days,
-            "saved_count_origin": "Root supplied initial count plus completed ordinary-loop actual days only",
-            "current_snapshot": str(snapshot_path), "current_save": str(save_path),
-            "last_normal": str(normal_path),
-            "last_sway_completion": str(completion_path),
-            "last_sway_opinion": str(opinion_path),
-            "checkpoint_requests_retained": checkpoint_requests,
-            "error": error, "failed_pending_never_resent": True,
-            "Actor_Game_source_policy_changes": 0,
-            "Driver_save_body_reads_hashes_history_trims": 0,
-            "new_qualification_runs": 0,
-        }
-        loop.write(args.output / "BOUNDED-RESULT.json", receipt)
-        print(json.dumps(receipt, ensure_ascii=False, separators=(",", ":")), flush=True)
+        selected_error = unwinding_error if unwinding_error is not None else primary_error
+        try:
+            receipt = {
+                "original_response_context": getattr(selected_error, "root_response_context", None),
+                "original_exception_notes_excerpt": [
+                    note[:4096] for note in getattr(selected_error, "__notes__", [])[:4]
+                    if isinstance(note, str)
+                ] if selected_error is not None else [],
+                "status": status, "started_at_utc": started, "ended_at_utc": now(),
+                "packet": str(args.packet), "qualification": str(args.qualification),
+                "chunks_requested": args.chunks, "days_per_chunk": args.days_per_chunk,
+                "chunks": chunks, "current_saved_date_raw": saved_date,
+                "saved_normal_days_cumulative": saved_days,
+                "saved_count_origin": "Root supplied initial count plus completed ordinary-loop actual days only",
+                "current_snapshot": str(snapshot_path), "current_save": str(save_path),
+                "last_normal": str(normal_path),
+                "last_sway_completion": str(completion_path),
+                "last_sway_opinion": str(opinion_path),
+                "checkpoint_requests_retained": checkpoint_requests,
+                "error": error, "failed_pending_never_resent": True,
+                "Actor_Game_source_policy_changes": 0,
+                "Driver_save_body_reads_hashes_history_trims": 0,
+                "new_qualification_runs": 0,
+            }
+            loop.write(args.output / "BOUNDED-RESULT.json", receipt)
+            print(json.dumps(receipt, ensure_ascii=False, separators=(",", ":")), flush=True)
+        except Exception as diagnostic_error:
+            if selected_error is None:
+                raise
+            diagnostic_failed = True
+            _note_diagnostic_failure(selected_error, "BOUNDED-RESULT", diagnostic_error)
+    if primary_error is not None and diagnostic_failed:
+        raise primary_error.with_traceback(primary_traceback)
     return 0 if status in {
         "ROOT_BOUNDED_CHUNKS_SAVED", "ROOT_STOPPED_AT_SAVED_CHECKPOINT",
     } else 1
