@@ -850,6 +850,8 @@ class CaseClient:
                 'helper_replay_or_new_budget':False, 'business_pass':False})
             print('CK3_MANUAL_QUIT_CHECKPOINT '+str(manual),flush=True)
             while self.remaining()>0 and not response.is_file():
+                if self._kernel.WaitForSingleObject(self._handle,0)==0:
+                    break
                 report=self.read_report(allow_error=True)
                 time.sleep(.1)
         review=read_json(response) if manual_required and response.is_file() else None
