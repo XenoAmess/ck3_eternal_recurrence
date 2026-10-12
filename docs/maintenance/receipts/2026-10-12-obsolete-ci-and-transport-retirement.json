@@ -1,0 +1,115 @@
+{
+  "schema": "xar-project-storage-retirement-summary-v1",
+  "policy_version": "1.0.0",
+  "recorded_at_utc": "2026-10-12T03:15:01Z",
+  "owner_task": "ck3-xqol-rmtm-release-20261011-root",
+  "machine_id": "4号执行者",
+  "state": "retired_deleted",
+  "purpose_basis": "Root explicitly ended the old isolated project CI environment rerun purpose and eleven exact historical transport purposes. Neither age, failed-attempt status nor byte duplication was used as the sole qualification.",
+  "assets": [
+    {
+      "asset_id": "ci-cmd-guards-r1-private-environment",
+      "replica_id": "executor4-ci-cmd-guards-r1-private-environment",
+      "root_id": "ck3-upgrade-20261001",
+      "relative_path": "audits/ci-cmd-guards-r1/dependency-venv",
+      "category": "build",
+      "deleted_files": 4255,
+      "logical_bytes": 231596316,
+      "allocated_bytes_or_null": 159086208,
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "protection_reason_or_null": null,
+      "last_used_at_utc": "2026-10-01T05:58:11.696245+00:00",
+      "last_used_at_basis": "Retained original handoff timestamp, not a claim of last filesystem access.",
+      "expires_at_utc": "2026-10-12T03:14:05.559925+00:00",
+      "expiry_basis": "Owner-ended purpose; actual retirement completion timestamp, not the default fourteen-day build TTL.",
+      "source_pins_or_recipe": {
+        "owner_source_commit": "e7d1bcc0c18105aa3fe5335862340d8cd8183f4f",
+        "retained_cfg_relative_path": "audits/ci-cmd-guards-r1/dependency-venv/pyvenv.cfg",
+        "retained_cfg_bytes": 395,
+        "retained_cfg_sha256": "0dd3d07dca2d003171377791ad4cba6f46e15bd9bf0c5ede2e427ae14cb7c4e6",
+        "recipe_boundary": "Retained original cfg, parent CI handoff/reports/probes/diffs, source and requirements permit a functional new CI environment. No complete wheel-byte freeze or exact old FILE_ID reconstruction is promised."
+      },
+      "availability": "Deleted historical environment leaves are no longer readable; directories and original pyvenv.cfg remain. Current MAIN interpreter and dependencies were not removed."
+    },
+    {
+      "asset_id": "qol-r60-r81-r82-rmtm-r18-exact-eleven-transports",
+      "replica_id": "executor4-qol-r60-r81-r82-rmtm-r18-exact-eleven-transports",
+      "root_id": "ck3-upgrade-20261004",
+      "relative_path": "live; exact eleven paths and original metadata are in the pinned plan",
+      "category": "raw_evidence",
+      "deleted_files": 11,
+      "logical_bytes": 429174518,
+      "allocated_bytes_or_null": 184717312,
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "protection_reason_or_null": null,
+      "last_used_at_utc": null,
+      "last_used_at_basis": "Exact original mtimes are retained per file in the plan; no filesystem access timestamp is inferred.",
+      "expires_at_utc": "2026-10-12T03:14:05.559925+00:00",
+      "expiry_basis": "Root-ended individual diagnostic purposes, not an assertion that all associated faults were fixed.",
+      "source_pins_or_recipe": "Only R60 native-wire; R81 four transport streams; R82 and RMTM R18 mcp-calls, mcp-wire and frontend-observations. All other files excluded.",
+      "availability": "Deleted whole historical transport bytes, ordering and peripheral timestamps are permanently unreadable. No same-name replacement or exact reconstruction is claimed."
+    }
+  ],
+  "evidence_root_id": "ck3-upgrade-20261010",
+  "control_relative_path": "obsolete-ci-transport-retirement-controls-20261012-01",
+  "package_relative_path": "obsolete-ci-transport-retirement-20261012-01",
+  "plan": {
+    "filename": "retirement-plan-02.json",
+    "bytes": 16659,
+    "sha256": "53e30f51c251902ab3cd57fe21558a0cd2d6825053b17a1f9823f0effc8edf49"
+  },
+  "qualification": {
+    "filename": "QUALIFICATION-01.json",
+    "bytes": 10795,
+    "sha256": "088068515aaf5e307adb67b2667792c5962da06f2611bd4a7f15396c6319a364"
+  },
+  "actual_summary": {
+    "filename": "ACTUAL-SUMMARY.json",
+    "bytes": 4267,
+    "sha256": "cfd084a1699f108792c457e41bd972770f1bc539dc14a2b4d2492460ce5cf6c4"
+  },
+  "initial_exact_private_ci_metadata": {
+    "filename": "CI-INITIAL-EXACT-METADATA.json.gz",
+    "bytes": 76944,
+    "sha256": "bc468c8b8869be531c665aa2985b37ebb382b470de5bde70e4441982d30335e5"
+  },
+  "actual_execute_parent_wait": {
+    "filename": "ci-transport-execute-01-process-exit.json",
+    "bytes": 1032,
+    "sha256": "65a410333d094d8b3f213b6c458246a11e9f61b69c79d504d96a415c11db38b4",
+    "returncode": 0
+  },
+  "actual_reservation_close": {
+    "root_id": "storage-coordinator",
+    "filename": "post-r76-obsolete-ci-transport-retirement-01-reservation-237-closed.json",
+    "bytes": 3417,
+    "sha256": "9d8c61fb32443f9a77ece5d07adbe90b27bbcad0d5c57da28386c60bf478d2d3",
+    "closed_at_utc": "2026-10-12T03:14:38.447240+00:00",
+    "children_remaining": 0,
+    "unspent_reservation_bytes": 0
+  },
+  "actual_successful_batches": 6,
+  "maximum_files_per_batch": 1000,
+  "actual_deleted_files": 4266,
+  "actual_allocation_released_bytes": 343803520,
+  "actual_seconds": 57.89484530000482,
+  "body_hashes": 0,
+  "directories_retained": true,
+  "free_before_bytes": 29746569216,
+  "free_after_bytes": 30510604288,
+  "volume_delta_is_not_exclusive_reclaim_attribution": true,
+  "preserved": "All native-report.json, ROOT/typed/debug/error/GUI/SAVE and immutable inputs, R82/RMTM18 native-wire, current interpreter/dependencies and Source20 runtime. Minimum necessary unresolved evidence is protected through 2026-10-18 review without automatic renewal. Historical PASS/RED/GAP remain unchanged.",
+  "finite_accounting": {
+    "control_full_cap_charge_once_bytes": 262144,
+    "package_full_cap_charge_once_bytes": 16777216,
+    "baseline_usage_already_charged_before_package_bytes": 41098757144,
+    "reclaimed_bytes_not_subtracted_from_conservative_usage": true,
+    "system_growth_safety_OTHER_reserves_unchanged": true
+  },
+  "preparation_findings": "Unadmitted plan01 rounded nanosecond integers through JavaScript Number. It is retained unchanged. Plan02 preserves all eleven original decimal values and passed independent Python integer comparison before admission. No operation used plan01. First code window expired; a separate explicit Root-authorized window retained the same single 256KiB pool. No operation card was created or used as authority.",
+  "business_pass": false,
+  "product_release_pass": false,
+  "record_review_at_utc": "2027-04-10T03:14:38.448719+00:00"
+}
