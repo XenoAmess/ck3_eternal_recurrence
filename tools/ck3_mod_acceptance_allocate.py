@@ -401,6 +401,108 @@ def previous_runtime_failure_closure(previous,freeze,report,close_path,keeper_ro
         'release_pass':False,'control_files_absent':absent,'administrative_resource_admission_only':True},
         'actual_process_inventory':inventory}
 
+def previous_failed_resource_closure(previous,freeze,close_path,keeper_root,release_path,bus_packet):
+    """Admit failed-case resource closure, never native/OS0/normal/PASS credit."""
+    evidence={}
+    def original(row,expected=None):
+        path=Path(row['path']).resolve()
+        require(expected is None or path==Path(expected).resolve(),'Failed-resource original path differs')
+        require(type(row.get('bytes')) is int and 0<row['bytes']<=1048576 and
+                path.stat().st_size==row['bytes'],'Failed-resource receipt exceeds small bound')
+        check_pin(path,row);evidence[str(path)]=row
+        return read_json(path)
+    require(close_path.stat().st_size<=1048576,'Failed-resource closure exceeds small bound')
+    bundle=read_json(close_path)
+    require(bundle.get('schema')=='lyd.actual-failed-resource-closure.v1' and
+            bundle.get('run_id')==freeze['run_id'] and
+            Path(bundle.get('keeper_root','')).resolve()==keeper_root.resolve(),
+            'Failed-resource closure crossed run/keeper')
+    stop=original(bundle['original_stop_proof'],previous/'keeper-stop-proof-001.json')
+    late={'original_stop_proof','allocator_original_wait','actual_CAS_release','keeper_actual_exit'}
+    require({k:v for k,v in bundle.items() if k not in late}==
+            {k:v for k,v in stop.items() if k not in late},'Failed-resource original STOP facts changed')
+    require(stop.get('schema')==bundle['schema'] and stop.get('run_id')==freeze['run_id'] and
+            stop.get('resource_close_only_not_native_or_normal_acceptance') is True and
+            stop.get('original_failure_preserved') is True and stop.get('business_pass') is False and
+            stop.get('game_os_exit_zero_qualified') is False and stop.get('normal_gui_quit_qualified') is False and
+            stop.get('native_cleanup_qualified') is None and stop.get('native_report_read') is False,
+            'Failed-resource closure must preserve unknown native/OS exit and failed business')
+    normal=original(bundle['original_normal_close_result'],previous/'case-output/normal-close-result.json')
+    require(normal==stop.get('normal_close_result_original') and normal.get('normal_close_qualified') is False and
+            normal.get('business_pass') is False,'Failed-resource normal close differs or claims PASS')
+    host=original(bundle['original_host_started'],previous/'host-started.json')
+    exited=original(bundle['original_host_exit'],previous/'host-original-process-exit.json')
+    supervisor=original(bundle['original_host_supervisor'],previous/'host-supervisor-started.json')
+    require(host.get('run_id')==freeze['run_id'] and host.get('actual_popen_retained') is True and
+            host.get('argv')==freeze['argv'] and exited.get('run_id')==freeze['run_id'] and
+            exited.get('pid')==host.get('pid') and exited.get('actual_original_popen_wait') is True and
+            type(exited.get('returncode')) is int and exited['returncode']==0 and
+            exited.get('normal_ck3_exit_inferred') is False and exited.get('business_pass') is False and
+            bundle.get('original_host_actual_wait_returncode')==0 and
+            supervisor.get('pid')==host.get('supervisor_pid'),'Failed-resource original host/supervisor wait differs')
+    def waited(row,mode,code):
+        value=original(row);argv=value.get('argv',[])
+        require(value.get('schema')=='ck3-recorded-actual-command-v1' and
+                type(value.get('exit_code')) is int and value['exit_code']==code and
+                bool(value.get('finished_at_utc')) and isinstance(argv,list) and
+                argv.count('--runtime')==1 and argv.index('--runtime')>0 and
+                argv[argv.index('--runtime')-1]==mode,'Failed-resource original public '+mode+' completion differs')
+        def argument(flag):
+            require(argv.count(flag)==1 and argv.index(flag)+1<len(argv),'Missing public '+flag)
+            return argv[argv.index(flag)+1]
+        require(argument('--case')==freeze['cell'] and Path(argument('--prepared-case')).resolve()==
+                (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve(),
+                'Failed-resource public command crossed case/preparation')
+        if mode=='run':
+            context=read_json(Path(argument('--run-context')))
+            require(context.get('schema')=='ck3-mod-acceptance-run-context-v1' and
+                    context.get('run_id')==freeze['run_id'] and
+                    Path(context.get('run_dir','')).resolve()==previous.resolve(),
+                    'Failed-resource public run crossed live context')
+        else:
+            require(Path(argument('--keeper-output')).resolve()==keeper_root.resolve(),
+                    'Failed-resource allocator crossed keeper')
+        return argument('--runtime')
+    require(bundle.get('original_public_exit_code')==2 and Path(waited(bundle['public_run'],'run',2)).resolve()==
+            Path(waited(bundle['allocator_original_wait'],'allocate',0)).resolve(),
+            'Failed-resource original public runtime differs')
+    keeper=read_json(keeper_root/'report.json')
+    keeper_exit=original(bundle['keeper_actual_exit'],previous/'keeper-actual-parent-exit.json')
+    require(keeper_exit.get('run_id')==freeze['run_id'] and type(keeper_exit.get('keeper_actual_exit_code')) is int and
+            keeper_exit['keeper_actual_exit_code']==0 and keeper_exit.get('keeper_report')==keeper and
+            keeper.get('thread_exited') is True and keeper.get('failure') is None and keeper.get('entry_error') is None,
+            'Failed-resource keeper original wait/thread differs')
+    original(bundle['actual_CAS_release'],release_path)
+    release=read_actual_release(release_path);task=release['task'];event=release.get('event',{})
+    require(closed_lease(keeper,release,freeze['screen_task']) and task.get('state')=='done' and
+            event.get('task_id')==freeze['screen_task'] and event.get('sequence')==task['last_sequence'] and
+            event.get('state')=='done' and event.get('resources')==[],'Failed-resource exact CAS completion differs')
+    require(isinstance(bus_packet.get('tasks'),list) and
+            not any('ck3-screen:acquired' in row.get('resources',[]) for row in bus_packet['tasks']),
+            'Failed-resource still has a screen owner')
+    import psutil
+    keeper_identity=original(bundle['keeper_process'],previous/'keeper-process.json')
+    game_path=previous/'case-output/retained-current-process-identity.json'
+    game=original(pin(game_path),game_path)
+    for label,identity in (('host',host),('keeper',keeper_identity),('CK3',game)):
+        require(type(identity.get('pid')) is int and identity['pid']>0 and
+                type(identity.get('create_time')) in (int,float),'Failed-resource '+label+' identity missing')
+        try:present=psutil.Process(identity['pid']).create_time()==identity['create_time']
+        except psutil.NoSuchProcess:present=False
+        require(not present,'Failed-resource original '+label+' still present')
+    require(type(supervisor.get('pid')) is int and supervisor['pid']>0 and not psutil.pid_exists(supervisor['pid']),
+            'Failed-resource original supervisor still present')
+    inventory=runtime_process_inventory(psutil,os.getpid())
+    require(not inventory['blockers'],'Failed-resource CK3/keeper/controller still running')
+    for path in (previous/'frozen-argv.json',keeper_root/'report.json'):
+        evidence[str(path.resolve())]=pin(path)
+    return {'mode':'previous-shared-failed-attempt-resource-closed','failure_cleanup':{
+        'close':pin(close_path),'original_evidence':evidence,'original_host_exit_code':exited['returncode'],
+        'original_host_wait_proven':True,'original_ck3_exit_code':None,'actual_retained_os0':False,
+        'native_cleanup_qualified':None,'normal_close_qualified':False,'typed_normal_exit_proven':False,
+        'business_pass':False,'release_pass':False,'administrative_resource_admission_only':True},
+        'actual_process_inventory':inventory}
+
 def require_latest_screen_release(previous,latest_path):
     if latest_path is None:return
     latest=read_actual_release(latest_path);task=latest.get('task',{});old=previous['task']
@@ -666,7 +768,8 @@ def allocate_and_keep(selection,args):
         failure_schema=read_json(failure_path).get('schema') if failure_path else None
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
-        if never_launched or pre_ready:
+        failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
+        if never_launched or pre_ready or failed_resource:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
@@ -675,7 +778,10 @@ def allocate_and_keep(selection,args):
         prior_keeper=read_json(args.previous_keeper/'report.json') if not pre_ready else None
         release=(read_failed_runtime_release(args.previous_release) if failure_path else
                  read_actual_release(args.previous_release))
-        if pre_ready:
+        if failed_resource:
+            session_closure=previous_failed_resource_closure(previous,freeze,failure_path,
+                            args.previous_keeper,args.previous_release,bus_packet)
+        elif pre_ready:
             session_closure=previous_pre_ready_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
         elif never_launched:

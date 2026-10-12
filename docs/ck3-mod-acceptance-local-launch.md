@@ -70,3 +70,7 @@ launcher 在写入一次性 `launch-intent.json` 后启动公共 supervisor，�
 ```
 
 十项回归覆盖 fresh nonce/run binding、过期审核、原图变更、缺失直接审核/离线确认、冻结 pin 变更、STOP 和真实 CAS owner/stale 拒绝、内容/ID 重发拒绝、实际元数据参数校验，以及一个无害 Python 子进程的真实 exit7 保全。测试不启动 CK3、Steam，不连接任务总线、不取得屏幕。
+
+2026-10-12 的既有正常退出 MCP 配置接点与终止结果处理见[受管退出配置](ck3-native-ai/shared-acceptance-normal-exit-profile-2026-10-12.md)。profile 来源绑定和直接执行测试仅代表源码已验；当次实际进程退出与 native cleanup 仍各自取证。
+
+同日 R0069 的失败已释放资源，但原 `--previous-failure-close` 只接受报告写入器崩溃或启动前失败，无法承接该场次。新 `previous_failed_resource_closure` 分支显式消费原 STOP 证明及实际 public run2、原 host wait0、keeper 父 wait0/线程结束、最终 CAS release 小原件；分配时再检查原进程身份已结束和当前无占用。它不读大 native-report，不把 host0或进程消失算作 CK3 OS0；正常退出、native cleanup、业务及发布资格仍为 false/NULL。原报告写入器分支保留。新增10项回归通过，证据在 `C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/r69-predecessor-001/focused-command-001/RESULT.actual.json`。本次仅接受已保全的 `lyd.actual-failed-resource-closure.v1` 原件与后续真实完成回执，不是允许任意失败状态直接续跑。

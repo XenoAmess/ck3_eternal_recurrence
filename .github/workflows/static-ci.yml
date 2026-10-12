@@ -81,6 +81,10 @@ jobs:
         run: python -m unittest discover -s tools -p "test_*vanilla_event_research.py"
       - name: Test native verifier evidence scope without CK3
         run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
+      - name: Test managed normal-exit profile and terminal host execution without CK3
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_normal_exit_profile.py
+      - name: Test failed-attempt resource closure without normal-exit credit
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_failed_resource_closure.py
       - name: Test isolated native army route producer without CK3
         run: python -X utf8 tools/check_native_army_routes_ci.py --build-dir "%RUNNER_TEMP%\native-army-route-ci"
       - name: Test keyed query completion diagnostics without CK3

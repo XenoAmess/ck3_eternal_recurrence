@@ -1009,6 +1009,7 @@ def native_server(args: argparse.Namespace) -> None:
         frontend_transition_timeout_seconds=240.0 if args.saved_campaign_server else 120.0,
         checkpoint_timeout_seconds=args.command_timeout, **driver_options,
     )
+    bind_normal_exit_managed_profile(driver, args)
     bind_stock_grant_title_picker_permission(driver, getattr(args, "private_grant_title_picker", False))
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
@@ -2431,7 +2432,17 @@ class PlanClient:
                     if actual != expected:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
                 self.results[str(row["id"])] = result
-                if kind not in {"frontend_read_only", "terminal_window_read_only"} and not (menu_only and kind != "finish_hold"):
+                terminal_exit_result = (kind == "tool" and isinstance(result, dict)
+                    and result.get("snapshot_after_required") is False
+                    and result.get("action") == "confirm_desktop"
+                    and ((step.get("tool") == "ck3_request_normal_exit_v1"
+                          and isinstance(step.get("args"), dict)
+                          and step["args"].get("action") == "confirm_desktop"
+                          and result.get("schema") == "ck3-normal-exit-request-result-v1")
+                         or (step.get("tool") == "ck3_observe_normal_exit_v1"
+                             and result.get("schema") == "ck3-normal-exit-process-observation-result-v1")))
+                if (kind not in {"frontend_read_only", "terminal_window_read_only"}
+                        and not (menu_only and kind != "finish_hold") and not terminal_exit_result):
                     managed_done = getattr(self, "managed_done", None)
                     proof = (failure_proof if failure_shutdown else
                         finished_native_exit_zero_proof(self.report,
@@ -3839,6 +3850,9 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     write()
     child_args = [str(Path(__file__).resolve()), "--server", "--bridge-pipe", args.bridge_pipe,
                   "--native-wire", str(native_wire), "--command-timeout", str(args.command_timeout)]
+    if getattr(args, "normal_exit_managed_profile", None) is not None:
+        child_args += ["--normal-exit-managed-profile", str(args.normal_exit_managed_profile),
+                       "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
     for tool in getattr(args, "case_read_only_mcp_tool", []):
         child_args += ["--case-read-only-mcp-tool", tool]
     if args.sdk_smoke_test:
@@ -4091,6 +4105,32 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     return report
 
 
+def bind_normal_exit_managed_profile(driver, args) -> None:
+    """Opt in to the existing source-inventory contract for this actual userdir."""
+    path = getattr(args, "normal_exit_managed_profile", None)
+    digest = getattr(args, "normal_exit_managed_profile_sha256", None)
+    if path is None and digest is None:
+        return
+    if path is None or not isinstance(digest, str) or re.fullmatch(r"[0-9a-fA-F]{64}", digest) is None:
+        raise ValueError("normal exit requires an explicit managed profile and exact SHA-256")
+    raw = Path(path).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != digest.lower():
+        raise ValueError("normal-exit managed profile bytes changed")
+    profile = json.loads(raw)
+    state = args.state_dir.resolve()
+    if (Path(profile["state_directory"]).resolve() != state
+            or Path(profile["userdir"]).resolve() != state / "profile"
+            or Path(profile["evidence_directory"]).resolve() != args.output.resolve().parent):
+        raise ValueError("normal-exit managed profile differs from the actual host state/output")
+    guard_raw = Path(profile["guard_profile"]).read_bytes()
+    if hashlib.sha256(guard_raw).hexdigest() != profile["guard_profile_sha256"].lower():
+        raise ValueError("normal-exit target binding bytes changed")
+    profile["guard"] = json.loads(guard_raw)
+    from xar_autoplayer.bridge.normal_exit_source_inventory_v1 import verify_source_inventory_v1
+    verify_source_inventory_v1(profile["normal_exit_source_inventory"], profile)
+    driver.normal_exit_managed_profile = profile
+
+
 def bind_stock_grant_title_picker_permission(driver, enabled: bool) -> None:
     """The global shared host feature is the only admission source for these tools."""
     from xar_autoplayer.bridge.grant_title_picker_v1 import PERMISSION
@@ -4106,6 +4146,9 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--game-dir", type=Path)
     result.add_argument("--bridge-dll", type=Path)
     result.add_argument("--bridge-injector", type=Path)
+    result.add_argument("--normal-exit-managed-profile", type=Path,
+                        help="Explicit actual managed-profile/source-inventory binding; default off")
+    result.add_argument("--normal-exit-managed-profile-sha256")
     result.add_argument("--bridge-pipe", default=r"\\.\pipe\xar_ck3_bridge_migration_12002")
     result.add_argument("--output", type=Path)
     result.add_argument("--plan", type=Path, help="JSON {steps:[...]} or step array")
