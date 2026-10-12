@@ -3,19 +3,19 @@ lyd_i3b_begin_decision = {
     picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
     decision_group_type = religious ai_check_interval = 0
     desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_begin_decision
-    is_shown = { is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_owned_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active } }
+    is_shown = { is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_supported_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active } }
     is_valid = { custom_description = { text = lyd_i3b_begin_player_tt subject = root is_ai = no }
         custom_description = { text = lyd_i3b_begin_alive_tt subject = root is_alive = yes }
         custom_description = { text = lyd_i3b_begin_adult_tt subject = root is_adult = yes }
         custom_description = { text = lyd_i3b_begin_landed_tt subject = root is_landed = yes }
         custom_description = { text = lyd_i3b_begin_capable_tt subject = root NOT = { has_trait = incapable } }
         custom_description = { text = lyd_i3b_begin_confucian_tt subject = root religion = religion:confucianism_religion }
-        custom_description = { text = lyd_i3b_begin_joined_tt subject = root has_character_flag = lyd_enabled }
-        custom_description = { text = lyd_i3b_begin_new_rite_tt subject = root lyd_member_rite_trigger = yes }
+        custom_description = { text = lyd_i3b_begin_joined_tt subject = root OR = { has_character_flag = lyd_enabled AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } } } }
+        custom_description = { text = lyd_i3b_begin_new_rite_tt subject = root OR = { lyd_member_rite_trigger = yes AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } } } }
         custom_description = { text = lyd_i3b_begin_authority_tt subject = root OR = {
             AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
             lyd_i3b_detached_authority_trigger = yes
-            AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+            AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } }
         } }
         custom_description = { text = lyd_i3b_begin_duchy_tt subject = root highest_held_title_tier >= tier_duchy }
         custom_description = { text = lyd_i3b_begin_gender_tt subject = root save_temporary_scope_as = lyd_i3b_actor_check rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check } }

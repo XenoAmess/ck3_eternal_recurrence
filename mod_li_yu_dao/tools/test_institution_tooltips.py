@@ -1,4 +1,4 @@
-"""Granular institution requirements against actual generated policy ASTs.
+"""Granular institution requirements and original-player route policy ASTs.
 
 Synthetic scope evaluation checks UI/authorization equivalence, not CK3 UI,
 native head creation, scholarly votes or a live institution outcome.
@@ -17,7 +17,6 @@ import gen_institution
 
 DECISIONS = 'common/decisions/lyd_i3b_institution_decisions.txt'
 UNCHANGED_POLICY = {
-    'common/scripted_triggers/lyd_i3b_institution_triggers.txt': 'ac31d6bd19b3d897f37a9229027cafe797d4ed43cce970355879da629464c286',
     'common/script_values/lyd_i3b_institution_values.txt': '61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156',
     'common/scripted_effects/lyd_i3b_terms_effects.txt': '00216b79ad3c3db91d9bc172f29e5a21982abf104ffc6862d3e2edf370562d8c',
     'common/scripted_effects/lyd_i3b_setup_effects.txt': 'fa913461b91dbd8a876dd4fac320c6f3d5a15222afd650b4fc68276e8cad03c7',
@@ -163,6 +162,8 @@ class InstitutionTooltipTests(unittest.TestCase):
             'custom_description', '=', rows['lyd_i3b_nominate_adult_tt']), state[0]))
 
     def test_policy_rosters_votes_and_callbacks_are_byte_unchanged(self):
+        # The separate original-player tests invert only the reviewed I3b actor
+        # and mode-2 changes against the existing frozen trigger AST hash.
         for path, digest in UNCHANGED_POLICY.items():
             with self.subTest(path=path):
                 self.assertEqual(hashlib.sha256(self.outputs[path]).hexdigest(), digest)
@@ -194,6 +195,169 @@ class InstitutionTooltipTests(unittest.TestCase):
         nominate = next(line for line in cn.splitlines() if line.startswith(' lyd_i3b_nominate_learning_tt:'))
         self.assertIn('不能自提名', nominate)
         self.assertIn('不保证直接增加学识', nominate)
+
+
+def original_confucian_world(rite_name='jingxue', active=False):
+    """Synthetic untouched original Faith; no admission flag or fixture credit."""
+    actor, npc, faith, old, globals_, env = world(detached=False, active=active)
+    globals_['faith:lyd_common_faith'] = Scope('unused_legacy_faith')
+    globals_['faith:confucian_faith'] = faith
+    originals = {}
+    for name in ('jingxue', 'daoxue'):
+        rite = Scope(name, {'faith': faith,
+                           'doctrines': {'doctrine_no_head', 'doctrine_theocracy_lay_clergy'},
+                           'rite_counties': 0, 'allowed_gender': True})
+        originals[name] = rite
+        globals_['rite:' + name] = rite
+        faith.fields['rites'].append(rite)
+    chosen = originals[rite_name]
+    faith.fields['main_rite'] = originals['jingxue']
+    old.fields['rite_counties'] = 0
+    chosen.fields['rite_counties'] = 1
+    for member in (actor, npc):
+        member.fields['rite'] = chosen
+        member.fields['flags'] = set()
+        if active:
+            member.variables['lyd_i3b_member_rite'] = chosen
+    actor.variables.update(lyd_i3b_actor_rite=chosen,
+                           lyd_i3b_main=originals['jingxue'],
+                           lyd_i3b_authority_mode=2,
+                           lyd_i3b_result_authority_mode=2)
+    if active:
+        actor.lists['lyd_i3b_rites'] = faith.fields['rites'][:]
+        for rite in faith.fields['rites']:
+            live = rite is chosen
+            rite.variables.update(lyd_i3b_owner=actor, lyd_i3b_serial=7,
+                                  lyd_i3b_counties=int(live),
+                                  lyd_i3b_dormant=int(not live),
+                                  lyd_i3b_total=2 if live else 0,
+                                  lyd_i3b_yes=2 if live else 0,
+                                  lyd_i3b_signed=int(live))
+            rite.variables.pop('lyd_i3b_delegate', None)
+            if live:
+                rite.variables['lyd_i3b_delegate'] = actor
+    return actor, npc, faith, chosen, globals_, env
+
+
+class OriginalConfucianInitiationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.defs = Corpus().triggers
+        InstitutionTooltipTests.setUpClass()
+        cls.ui = InstitutionTooltipTests()
+
+    def policy(self, state, trigger='lyd_i3b_can_begin_trigger'):
+        return PolicyAST(self.defs, state[0], state[4], state[5].copy()).run(trigger)
+
+    def test_untouched_jingxue_and_daoxue_can_begin_without_admission_or_learning15(self):
+        for rite in ('jingxue', 'daoxue'):
+            with self.subTest(rite=rite):
+                state = original_confucian_world(rite)
+                state[0].fields['learning'] = 5
+                self.assertFalse(self.policy(state, 'lyd_c3_player_actor_trigger'))
+                self.assertTrue(self.policy(state))
+                decision = self.ui.decisions['lyd_i3b_begin_decision']
+                engine = TooltipPolicy(self.defs, state[0], state[4], state[5].copy())
+                self.assertTrue(engine.block(one(decision, 'is_shown'), state[0]))
+                self.assertTrue(engine.block(one(decision, 'is_valid'), state[0]))
+
+    def test_supported_mod_rite_on_original_faith_needs_no_admission_flag(self):
+        state = world(detached=False, active=False)
+        state[4]['faith:lyd_common_faith'] = Scope('unused_legacy_faith')
+        state[4]['faith:confucian_faith'] = state[2]
+        state[0].fields['flags'].clear()
+        self.assertTrue(self.policy(state))
+
+    def test_original_route_retains_player_duchy_gender_and_office_guards(self):
+        changes = (
+            ('AI', lambda a,n,f,r,g,e: a.fields.update(is_ai=True)),
+            ('dead', lambda a,n,f,r,g,e: a.fields.update(is_alive=False)),
+            ('child', lambda a,n,f,r,g,e: a.fields.update(is_adult=False)),
+            ('unlanded', lambda a,n,f,r,g,e: a.fields.update(is_landed=False)),
+            ('incapable', lambda a,n,f,r,g,e: a.fields['traits'].add('incapable')),
+            ('count', lambda a,n,f,r,g,e: a.fields.update(highest_held_title_tier=2)),
+            ('gender', lambda a,n,f,r,g,e: r.fields.update(allowed_gender=False)),
+            ('office', lambda a,n,f,r,g,e: a.fields['held_titles'].append(Scope('other_head', {'is_head_of_faith': True}))),
+            ('pending', lambda a,n,f,r,g,e: a.variables.update(lyd_c3_active=1)),
+        )
+        for name, change in changes:
+            with self.subTest(reason=name):
+                state = original_confucian_world()
+                change(*state)
+                self.assertFalse(self.policy(state))
+                self.assertFalse(self.ui.visible_result('begin', state))
+
+    def test_foreign_faith_unsupported_or_incompatible_rites_cannot_begin(self):
+        changes = (
+            ('foreign_faith', lambda a,n,f,r,g,e: g.update({'faith:confucian_faith': Scope('other_faith')})),
+            ('wrong_religion', lambda a,n,f,r,g,e: a.fields.update(religion='religion:other')),
+            ('unsupported_actor', lambda a,n,f,r,g,e: a.fields.update(rite=Scope('foreign_rite', {'faith': f, 'allowed_gender': True}))),
+            ('foreign_rite_in_roster', lambda a,n,f,r,g,e: f.fields['rites'].append(Scope('foreign_rite', {'faith': f}))),
+            ('incompatible_original', lambda a,n,f,r,g,e: r.fields['doctrines'].add('doctrine_spiritual_head')),
+            ('existing_head', lambda a,n,f,r,g,e: f.fields.update(religious_head=n)),
+            ('existing_challenger', lambda a,n,f,r,g,e: f.fields['challengers'].append(Scope('challenger', {'holder': n}))),
+        )
+        for name, change in changes:
+            with self.subTest(reason=name):
+                state = original_confucian_world()
+                change(*state)
+                self.assertFalse(self.policy(state))
+
+    def test_legacy_and_detached_still_need_the_original_admission_and_authority(self):
+        for detached in (False, True):
+            state = world(detached=detached, active=False)
+            self.assertTrue(self.policy(state))
+            state[0].fields['flags'].clear()
+            self.assertFalse(self.policy(state))
+        state = world(detached=True, active=False)
+        state[3].fields['head_of_rite'] = state[1]
+        self.assertFalse(self.policy(state))
+
+    def test_captured_mode2_keeps_exact_actor_rite_and_original_main(self):
+        for rite in ('jingxue', 'daoxue'):
+            state = original_confucian_world(rite, active=True)
+            self.assertTrue(self.policy(state, 'lyd_i3b_current_trigger'))
+            state[0].fields['rite'] = state[4]['rite:daoxue' if rite == 'jingxue' else 'rite:jingxue']
+            self.assertFalse(self.policy(state, 'lyd_i3b_captured_authority_trigger'))
+            self.assertFalse(self.policy(state, 'lyd_i3b_current_trigger'))
+        state = original_confucian_world(active=True)
+        state[2].fields['main_rite'] = state[4]['rite:daoxue']
+        self.assertFalse(self.policy(state, 'lyd_i3b_current_trigger'))
+
+    def test_original_route_still_requires_real_scholars_quorum_and_every_player_consent(self):
+        for reason in ('no_scholars', 'no_delegate', 'quorum', 'human_consent', 'political_holder'):
+            with self.subTest(reason=reason):
+                state = original_confucian_world(active=True)
+                self.assertTrue(self.policy(state, 'lyd_i3b_ready_trigger'))
+                actor, npc, _, rite, _, _ = state
+                if reason == 'no_scholars':
+                    for member in (actor, npc):
+                        member.fields['learning'] = 5
+                        member.variables['lyd_i3b_was_elector'] = 0
+                    rite.variables.update(lyd_i3b_total=0, lyd_i3b_yes=0)
+                    rite.variables.pop('lyd_i3b_delegate')
+                elif reason == 'no_delegate':
+                    rite.variables.pop('lyd_i3b_delegate')
+                elif reason == 'quorum':
+                    rite.variables['lyd_i3b_yes'] = 1
+                elif reason == 'human_consent':
+                    actor.variables['lyd_i3b_player_yes'] = 0
+                else:
+                    actor.lists['lyd_i3b_political_titles'][0].fields['holder'] = npc
+                self.assertFalse(self.policy(state, 'lyd_i3b_ready_trigger'))
+
+    def test_full_trigger_delta_inverts_exactly_and_global_c3_is_unchanged(self):
+        from test_c3_i3b_preview_scope import I3, BASELINE_AST_SHA256, strip_declared
+        tree = parse_clausewitz(gen_institution.build_outputs()[I3].decode('utf-8-sig'))
+        original = strip_declared(tree, I3)
+        self.assertEqual(hashlib.sha256(repr(original).encode('utf-8')).hexdigest(),
+                         BASELINE_AST_SHA256[I3])
+        self.assertEqual(self.defs['lyd_c3_player_actor_trigger'], parse_clausewitz('''
+            is_ai = no is_alive = yes is_adult = yes is_landed = yes
+            NOT = { has_trait = incapable }
+            religion = religion:confucianism_religion
+            has_character_flag = lyd_enabled lyd_member_rite_trigger = yes
+        '''))
 
 
 if __name__ == '__main__':

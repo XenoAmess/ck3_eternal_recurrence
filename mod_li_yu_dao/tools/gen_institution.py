@@ -99,13 +99,31 @@ lyd_i3b_detached_authority_trigger = {
     }
     trigger_else = { always = no }
 }
+# Only I3b permits untouched vanilla Confucian players to initiate. The common
+# C3 school actor gate remains unchanged for every other mechanism and for the
+# legacy/detached routes; no admission flag or new rite is imposed on mode 2.
+lyd_i3b_player_actor_trigger = {
+    OR = {
+        lyd_c3_player_actor_trigger = yes
+        AND = {
+            is_ai = no
+            is_alive = yes
+            is_adult = yes
+            is_landed = yes
+            NOT = { has_trait = incapable }
+            religion = religion:confucianism_religion
+            faith = faith:confucian_faith
+            rite = { lyd_i3b_supported_rite_trigger = yes }
+        }
+    }
+}
 lyd_i3b_actor_trigger = {
-    lyd_c3_player_actor_trigger = yes
+    lyd_i3b_player_actor_trigger = yes
     lyd_i3b_no_other_office_trigger = yes
     OR = {
         AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
         lyd_i3b_detached_authority_trigger = yes
-        AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+        AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } }
     }
     highest_held_title_tier >= tier_duchy
     save_temporary_scope_as = lyd_i3b_actor_check
@@ -120,7 +138,7 @@ lyd_i3b_captured_authority_trigger = {
             var:lyd_i3b_authority_mode = 2
             faith = faith:confucian_faith
             rite = var:lyd_i3b_actor_rite
-            rite = { lyd_i3b_owned_rite_trigger = yes }
+            rite = { lyd_i3b_supported_rite_trigger = yes }
         }
         AND = {
             var:lyd_i3b_authority_mode = 1
@@ -609,12 +627,12 @@ lyd_i3b_show_result_effect = {
         ('landed', 'is_landed = yes'),
         ('capable', 'NOT = { has_trait = incapable }'),
         ('confucian', 'religion = religion:confucianism_religion'),
-        ('joined', 'has_character_flag = lyd_enabled'),
-        ('new_rite', 'lyd_member_rite_trigger = yes'),
+        ('joined', 'OR = { has_character_flag = lyd_enabled AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } } }'),
+        ('new_rite', 'OR = { lyd_member_rite_trigger = yes AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } } }'),
         ('authority', '''OR = {
             AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
             lyd_i3b_detached_authority_trigger = yes
-            AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+            AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } }
         }'''),
         ('duchy', 'highest_held_title_tier >= tier_duchy'),
         ('gender', 'save_temporary_scope_as = lyd_i3b_actor_check rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check }'),
@@ -662,7 +680,7 @@ lyd_i3b_show_result_effect = {
         elif suffix=='begin':
             # Eligibility belongs in is_valid; a blocked human school member
             # can still inspect the real institution terms and prerequisites.
-            shown='is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_owned_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active }'
+            shown='is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_supported_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active }'
         description='lyd_i3b_result_review_desc' if suffix=='result_review' else 'lyd_i3b_terms_desc'
         requirements = begin_requirements if suffix == 'begin' else nomination_requirements if suffix == 'nominate_self' else None
         if requirements is None:
@@ -804,9 +822,9 @@ lyd_i3b_nominate_interaction = {
         'lyd_i3b_begin_landed_tt':('本人有领地。','I am landed.'),
         'lyd_i3b_begin_capable_tt':('本人没有无能特质。','I do not have the Incapable trait.'),
         'lyd_i3b_begin_confucian_tt':('本人属于儒家宗教。','I belong to the Confucian religion.'),
-        'lyd_i3b_begin_joined_tt':('本人已通过入门启用学派玩法。','I have entered the school system.'),
-        'lyd_i3b_begin_new_rite_tt':('本人当前采用本模组的新礼仪。','I currently follow one of this mod’s new rites.'),
-        'lyd_i3b_begin_authority_tt':('发起路线符合当前信仰：原版儒家新礼仪玩家可直接发起；旧独立共宗须属主礼仪；分离共同体须本人为实际主礼仪领袖。','My initiation route matches my Faith: a new-rite vanilla Confucian player may initiate directly; legacy Communion requires its main rite; a detached Communion requires its actual main-rite head.'),
+        'lyd_i3b_begin_joined_tt':('本人属于原版儒家的受支持礼仪；旧共宗或分离共同体路线仍须先启用学派玩法。','I follow a supported rite of vanilla Confucianism; legacy or detached Communion routes still require school admission.'),
+        'lyd_i3b_begin_new_rite_tt':('本人采用原版儒家的经学、道学或本模组新礼仪；其他路线须采用本模组新礼仪。','I follow Jingxue, Daoxue or a new mod rite within vanilla Confucianism; other routes require a new mod rite.'),
+        'lyd_i3b_begin_authority_tt':('发起路线符合当前信仰：原版儒家经学、道学或新礼仪玩家可直接发起；旧独立共宗须属主礼仪；分离共同体须本人为实际主礼仪领袖。','My initiation route matches my Faith: a vanilla Confucian player of Jingxue, Daoxue or a new mod rite may initiate directly; legacy Communion requires its main rite; a detached Communion requires its actual main-rite head.'),
         'lyd_i3b_begin_duchy_tt':('本人最高头衔至少为公国。','My highest title is at least a duchy.'),
         'lyd_i3b_begin_gender_tt':('本人的性别符合当前礼仪的教士要求。','My gender is permitted for clergy by my current rite.'),
         'lyd_i3b_begin_offices_tt':('本人未持有宗主、争议宗主或本模组争统办公头衔。','I hold no headship, challenger or mod claim-office title.'),

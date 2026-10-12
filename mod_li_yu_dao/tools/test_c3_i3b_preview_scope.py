@@ -81,12 +81,24 @@ def invert_phase2_mandate(block):
     return Block(tuple(Entry(e.key,e.operator,projected) if e is ready[0] else e for e in block.entries))
 
 def invert_vanilla_authority(block):
-    """Invert only the reviewed 88d0e0d18 authority additions, in exact contexts.
+    """Invert the reviewed vanilla authority and original-player route additions.
 
     The original baseline hash still freezes every other expression. New
     branches must match in full before this test projects them away.
     """
     additions = {
+        'lyd_i3b_player_actor_trigger': '''
+            OR = {
+                lyd_c3_player_actor_trigger = yes
+                AND = {
+                    is_ai = no is_alive = yes is_adult = yes is_landed = yes
+                    NOT = { has_trait = incapable }
+                    religion = religion:confucianism_religion
+                    faith = faith:confucian_faith
+                    rite = { lyd_i3b_supported_rite_trigger = yes }
+                }
+            }
+        ''',
         'lyd_i3b_supported_rite_trigger': '''
             OR = { lyd_i3b_owned_rite_trigger = yes this = rite:jingxue this = rite:daoxue }
         ''',
@@ -108,6 +120,9 @@ def invert_vanilla_authority(block):
             raise ValueError('Reviewed vanilla authority definition differs: '+name)
     block=Block(tuple(e for e in block.entries if e.key not in additions))
     edits = (
+        ('lyd_i3b_actor_trigger',
+         'lyd_i3b_player_actor_trigger = yes',
+         'lyd_c3_player_actor_trigger = yes'),
         ('lyd_i3b_compatible_rite_trigger',
          'lyd_i3b_supported_rite_trigger = yes',
          'lyd_i3b_owned_rite_trigger = yes'),
@@ -118,7 +133,7 @@ def invert_vanilla_authority(block):
             OR = {
                 AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
                 lyd_i3b_detached_authority_trigger = yes
-                AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+                AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } }
             }
         ''', '''
             OR = { faith = faith:lyd_common_faith lyd_i3b_detached_authority_trigger = yes }
@@ -131,7 +146,7 @@ def invert_vanilla_authority(block):
                     var:lyd_i3b_authority_mode = 2
                     faith = faith:confucian_faith
                     rite = var:lyd_i3b_actor_rite
-                    rite = { lyd_i3b_owned_rite_trigger = yes }
+                    rite = { lyd_i3b_supported_rite_trigger = yes }
                 }
             }
         ''', 'REMOVE_MODE2'),
@@ -228,6 +243,7 @@ class Evaluator:
             elif k in ('pam_is_antipope_trigger','pam_is_antipope_sponsor_trigger'):answer=current.values[k]==(v=='yes')
             elif k in ('lyd_i3b_only_owned_rites_faith_trigger',):answer=current.values['owned_rites']
             elif k=='lyd_i3b_owned_rite_trigger':answer=current.values['owned_rite']
+            elif k=='lyd_i3b_supported_rite_trigger':answer=current.values['owned_rite'] or current.name in {'jingxue','daoxue'}
             elif k=='lyd_i3b_detached_authority_trigger':answer=self.block(self.detached,current,previous)
             elif k=='any_faith_character':answer=any([self.block(v,c,current) for c in current.values['characters']])
             elif isinstance(v,Block):answer=self.block(v,self.resolve(k,current,previous),current)

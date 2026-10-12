@@ -79,13 +79,31 @@ lyd_i3b_detached_authority_trigger = {
     }
     trigger_else = { always = no }
 }
+# Only I3b permits untouched vanilla Confucian players to initiate. The common
+# C3 school actor gate remains unchanged for every other mechanism and for the
+# legacy/detached routes; no admission flag or new rite is imposed on mode 2.
+lyd_i3b_player_actor_trigger = {
+    OR = {
+        lyd_c3_player_actor_trigger = yes
+        AND = {
+            is_ai = no
+            is_alive = yes
+            is_adult = yes
+            is_landed = yes
+            NOT = { has_trait = incapable }
+            religion = religion:confucianism_religion
+            faith = faith:confucian_faith
+            rite = { lyd_i3b_supported_rite_trigger = yes }
+        }
+    }
+}
 lyd_i3b_actor_trigger = {
-    lyd_c3_player_actor_trigger = yes
+    lyd_i3b_player_actor_trigger = yes
     lyd_i3b_no_other_office_trigger = yes
     OR = {
         AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
         lyd_i3b_detached_authority_trigger = yes
-        AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+        AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } }
     }
     highest_held_title_tier >= tier_duchy
     save_temporary_scope_as = lyd_i3b_actor_check
@@ -100,7 +118,7 @@ lyd_i3b_captured_authority_trigger = {
             var:lyd_i3b_authority_mode = 2
             faith = faith:confucian_faith
             rite = var:lyd_i3b_actor_rite
-            rite = { lyd_i3b_owned_rite_trigger = yes }
+            rite = { lyd_i3b_supported_rite_trigger = yes }
         }
         AND = {
             var:lyd_i3b_authority_mode = 1

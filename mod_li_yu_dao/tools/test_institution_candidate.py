@@ -145,7 +145,7 @@ class ActualScriptTests(unittest.TestCase):
 
     def test_vanilla_authority_captures_actor_rite_separately_from_original_main(self):
         actor=self.c.triggers['lyd_i3b_actor_trigger']
-        self.assertTrue(contains_direct_fragment(one(actor,'OR'),'AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }'))
+        self.assertTrue(contains_direct_fragment(one(actor,'OR'),'AND = { faith = faith:confucian_faith rite = { lyd_i3b_supported_rite_trigger = yes } }'))
         self.assertFalse(any(e.key=='rite' and e.value=='faith.main_rite' for e in actor.entries))
         supported=self.c.triggers['lyd_i3b_supported_faith_trigger']
         self.assertTrue(contains_direct_fragment(one(supported,'OR'),'AND = { this = faith:confucian_faith NOT = { any_faith_rite = { NOT = { lyd_i3b_supported_rite_trigger = yes } } } }'))
@@ -158,7 +158,7 @@ class ActualScriptTests(unittest.TestCase):
             'AND = { var:lyd_i3b_authority_mode = 2 faith = faith:confucian_faith rite = var:lyd_i3b_actor_rite }'))
         shown=one(self.c.defs['lyd_i3b_begin_decision'],'is_shown')
         self.assertFalse(has(shown,'lyd_i3b_actor_trigger'))
-        self.assertTrue(has(shown,'lyd_i3b_owned_rite_trigger','yes'))
+        self.assertTrue(has(shown,'lyd_i3b_supported_rite_trigger','yes'))
 
     def test_only_commit_can_change_doctrine_and_requires_all_guards_first(self):
         danger={'remove_doctrine','add_doctrine','change_rite_doctrine'}
