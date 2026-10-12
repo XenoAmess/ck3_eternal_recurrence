@@ -29,6 +29,33 @@ BASELINE = "f573a8f8a1a1df31704d06f5149a2758cd1fc5a1"
 
 
 class Phase4PreSendQualification(unittest.TestCase):
+    def test_unprepared_plan_preflight_is_pure_but_bound_inputs_require_actual_receipt(self):
+        from test_ck3_mod_acceptance import SharedEntryTests
+        sample = SharedEntryTests('test_three_products_select_one_host_source_and_native')
+        sample.setUp()
+        try:
+            case = sample.products['products']['reclaim-motherland']['cases'][0]
+            case['adapter'] = {'path': str(ROOT / 'tools/ck3_mod_acceptance_cases/rmtm_adapter.py'),
+                               'config': str(CONFIG)}
+            sample.products['product_inventory'] = str(sample.files['inventory'])
+            sample.write(sample.products_path, sample.products)
+            selection = sample.select('reclaim-motherland')
+            self.assertIsNone(selection.prepared)
+            self.assertEqual(selection.describe()['runtime_status'], 'NOT_RUN')
+            self.assertEqual(selection.preflight()['blockers'], [])
+            unprepared = selection.adapter_context()
+            self.assertFalse(adapter.validate_contract(unprepared)['business_pass'])
+            for inputs in ({'product_dir': str(ROOT / 'mod_reclaim_the_motherland')},
+                           {'plain_configuration': {}}):
+                with self.subTest(bound_inputs=inputs), self.assertRaises(OSError):
+                    adapter.validate_contract({**unprepared, 'case_inputs': inputs})
+            with self.assertRaises(OSError):
+                adapter.validate_contract(unprepared, require_prepared=True)
+            self.assertLess(sum(path.stat().st_size for path in sample.root.rglob('*') if path.is_file()), 4 * 1024 * 1024)
+        finally:
+            sample.doCleanups()
+        self.assertFalse(sample.root.exists())
+
     def test_strict_opt_in_core_and_ui_only(self):
         self.assertFalse(emitter.phase4_enabled())
         self.assertFalse(adapter.phase4_enabled({"case": "core", "case_inputs": {}}))

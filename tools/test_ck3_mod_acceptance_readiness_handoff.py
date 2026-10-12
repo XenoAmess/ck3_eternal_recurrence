@@ -1,5 +1,6 @@
 """Offline public-run/readiness handoff; no launcher, native or desktop calls."""
 from pathlib import Path
+from contextlib import nullcontext
 from types import SimpleNamespace
 from unittest import TestCase, main
 from unittest.mock import Mock, patch
@@ -80,7 +81,10 @@ class ReadinessHandoff(TestCase):
                         captured_receipts[name] = (client.output / name).read_bytes()
                     raise StopAtFirstObservation('SYNTHETIC-ADAPTER-ENTRY-ONLY')
 
-                with patch.object(entry, 'check_pin'), \
+                validation_boundary = (patch.object(adapter, 'validate_contract')
+                                       if adapter is rmtm_adapter else nullcontext())
+                with validation_boundary as validated, \
+                     patch.object(entry, 'check_pin'), \
                      patch.object(entry.subprocess, 'run', return_value=SimpleNamespace(returncode=0)) as launch, \
                      patch.object(client_source, 'CaseClient', side_effect=make_client), \
                      patch.object(client_source.time, 'monotonic', return_value=100.0), \
@@ -96,6 +100,8 @@ class ReadinessHandoff(TestCase):
                 client.wait_hold.assert_called_once_with()
                 observe.assert_called_once_with(client, prefix)
                 day.assert_not_called()
+                if adapter is rmtm_adapter:
+                    validated.assert_called_once_with({'case': case}, require_prepared=True)
                 client.normal_close.assert_called_once_with('business_failure_preserved')
                 client.close_handle.assert_called_once_with()
                 self.assertEqual(result['case_error'], 'StopAtFirstObservation: SYNTHETIC-ADAPTER-ENTRY-ONLY')

@@ -36,10 +36,8 @@ def phase4_enabled(context):
     return value
 
 
-def validate_contract(context):
-    """Pure prepared-input validation; no GUI, query, launch, or PASS credit."""
-    from tools import prepare_reclaim_the_motherland_1_20_fixture as emitter
-    from tools import reclaim_the_motherland_scope_witness as witness
+def validate_contract(context, *, require_prepared=False):
+    """Validate the pure contract; bound preparations also require full receipts."""
     enabled = phase4_enabled(context)
     config = case_config(context)
     require(config["natural_game_day_limit"] == 14 and config["fixture_recent_independence_override_days"] == 10,
@@ -47,6 +45,19 @@ def validate_contract(context):
     if context["case"] == "core":
         require((config["original_family_count"], config["unchanged_family_count"],
                  config["physical_qualified_family_count"]) == (36, 33, 3), "Original36 contract changed")
+    inputs = context.get("case_inputs", {})
+    # Public unprepared preflight has no materialized profile yet. A real
+    # preparation binds these inputs; never use receipt.exists() to skip a
+    # missing/deleted receipt of an otherwise bound prepared case.
+    if require_prepared or any(key in inputs for key in ("product_dir", "plain_configuration")):
+        return _validate_prepared_materialization(context, enabled)
+    return {"phase4_pre_send_gui_qualification": enabled, "runtime_status": "NOT_RUN", "business_pass": False}
+
+
+def _validate_prepared_materialization(context, enabled):
+    """Actual receipt/inverse/load-order checks, never a pure planning gate."""
+    from tools import prepare_reclaim_the_motherland_1_20_fixture as emitter
+    from tools import reclaim_the_motherland_scope_witness as witness
     state = Path(context["state_dir"])
     startup = json.loads((state / "preparation.json").read_text(encoding="utf-8-sig"))
     preparation = check_evidence(startup["preparation"])
@@ -127,7 +138,7 @@ def prepare_case(context):
         fixture_receipt.read_text(encoding="utf-8-sig"))["scope_witness_projection"]}
     prepared = materialize_fixture_profile(context, fixture, context["case_inputs"]["product_dir"],
                                            context["case_inputs"]["plain_configuration"])
-    validate_contract(context)
+    validate_contract(context, require_prepared=True)
     return {"startup": {"mode": "fixture", "state_dir": prepared["state_dir"],
                         "fixture_start_policy": prepared["fixture_start_policy"]["path"],
                         "frontend_rules_plan": context["case_inputs"]["frontend_rules_plan"]},
@@ -263,7 +274,7 @@ def _threshold_ui_case(context, client):
 
 
 def run_case(context, client):
-    validate_contract(context)
+    validate_contract(context, require_prepared=True)
     if context["case"] == "threshold_ui":
         return _threshold_ui_case(context, client)
     config = case_config(context)
@@ -325,7 +336,7 @@ def run_case(context, client):
 def verify_case(context):
     from tools import reclaim_the_motherland_effective_law_acceptance as caller
     output = Path(context["output"])
-    validate_contract(context)
+    validate_contract(context, require_prepared=True)
     if context["case"] == "threshold_ui":
         data = json.loads((output / "rmtm-threshold-verdict-input.json").read_text(encoding="utf-8-sig"))
         evidence = caller.phase_evidence(Path(data["d3"]))
