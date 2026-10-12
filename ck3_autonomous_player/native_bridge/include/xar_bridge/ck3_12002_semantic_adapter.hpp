@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_console_fixture.hpp"
 #include "xar_bridge/verified_owner_wake_v1.hpp"
 #include <atomic>
+#include <condition_variable>
 #include <mutex>
 #include <optional>
 
@@ -99,12 +100,20 @@ private:
   mutable ck3_11906::VerifiedOwnerWakeCountersV1 owner_wake_counters_{};
   const game::GameAdapter *native_ = nullptr;
   ck3_11906::MainThreadQueryMailboxV1 *mailbox_ = nullptr;
+  const std::uint32_t worker_thread_id_ = 0;
   ConsoleFixtureBindings console_fixture_{};
   mutable std::mutex snapshot_mutex_;
+  mutable std::condition_variable snapshot_changed_;
   std::optional<game::Snapshot> snapshot_;
   std::uint64_t snapshot_epoch_ = 0;
   std::uint64_t snapshot_revision_ = 0;
   std::uint64_t next_snapshot_sample_ms_ = 0;
+  // These tokens describe one in-flight raw read, not bridge/native revision.
+  std::uint64_t snapshot_observation_generation_ = 0;
+  std::uint64_t snapshot_pending_generation_ = 0;
+  std::uint64_t snapshot_published_generation_ = 0;
+  std::uint64_t snapshot_pending_epoch_ = 0;
+  std::uint32_t snapshot_pending_owner_thread_id_ = 0;
   std::atomic<std::uint64_t> observer_started_ms_{0};
   std::atomic<std::uint64_t> observer_completed_ms_{0};
   std::atomic<std::uint64_t> observer_last_read_ms_{0};

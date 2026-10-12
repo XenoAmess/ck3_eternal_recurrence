@@ -7,10 +7,26 @@
 #include "xar_bridge/ck3_12002_marriage_probe.hpp"
 #include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
 #include <atomic>
+#include <chrono>
+#include <limits>
 #include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
+bool ReadOwnerSnapshotForPublication(
+    const game::GameAdapter &native, game::Snapshot &output) noexcept {
+#if defined(_MSC_VER)
+  // Translate a raw-reader fault while no snapshot cache mutex is held.
+  __try {
+    return native.read_snapshot(output);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  return native.read_snapshot(output);
+#endif
+}
+
 bool ReadTimelineCommandObservation(
     const game::GameAdapter &native,
     const ck3_11906::MainThreadQueryMailboxV1 &mailbox,
@@ -93,7 +109,8 @@ WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
 WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
                              ck3_11906::MainThreadQueryMailboxV1 &mailbox,
                              const ConsoleFixtureBindings &console_fixture) noexcept
-    : native_(&native_adapter), mailbox_(&mailbox), console_fixture_(console_fixture) {}
+    : native_(&native_adapter), mailbox_(&mailbox),
+      worker_thread_id_(GetCurrentThreadId()), console_fixture_(console_fixture) {}
 const game::GameAdapter &WorkerAdapter::native_adapter() const noexcept { return *native_; }
 const game::AdapterDescriptor &WorkerAdapter::descriptor() const noexcept { return native_->descriptor(); }
 bool WorkerAdapter::enabled() const noexcept { return native_->enabled(); }
@@ -121,8 +138,44 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
     return false;
   };
   try {
-    const auto diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
-    std::lock_guard guard(snapshot_mutex_);
+    auto diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
+    std::unique_lock guard(snapshot_mutex_);
+    const auto current_thread_id = GetCurrentThreadId();
+    // Only the creating worker may await a raw read already in flight. The
+    // owner and unrelated callers never wait for work on the owner itself.
+    if (snapshot_.has_value() && snapshot_epoch_ == 0 &&
+        snapshot_pending_generation_ != 0 && snapshot_pending_epoch_ != 0 &&
+        snapshot_pending_owner_thread_id_ != 0 &&
+        current_thread_id == worker_thread_id_ &&
+        current_thread_id != snapshot_pending_owner_thread_id_ &&
+        !mailbox_->stop_requested.load(std::memory_order_acquire)) {
+      const auto generation = snapshot_pending_generation_;
+      const auto epoch = snapshot_pending_epoch_;
+      const auto owner_thread_id = snapshot_pending_owner_thread_id_;
+      const auto deadline = std::chrono::steady_clock::now() +
+          std::chrono::milliseconds(250);
+      const bool terminal = snapshot_changed_.wait_until(guard, deadline, [&] {
+        return snapshot_pending_generation_ != generation ||
+            mailbox_->stop_requested.load(std::memory_order_acquire);
+      });
+      if (!terminal || mailbox_->stop_requested.load(std::memory_order_acquire) ||
+          snapshot_pending_generation_ != 0 ||
+          snapshot_published_generation_ != generation || snapshot_epoch_ != epoch)
+        return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
+      // Diagnostics are independent atomic loads. Refresh outside the cache
+      // lock, then require the same pump epoch on both sides of that read.
+      guard.unlock();
+      diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
+      guard.lock();
+      if (snapshot_pending_generation_ != 0 ||
+          snapshot_published_generation_ != generation || snapshot_epoch_ != epoch ||
+          diagnostics.stop_requested ||
+          mailbox_->stop_requested.load(std::memory_order_acquire) ||
+          diagnostics.pump_epochs != epoch ||
+          mailbox_->pump_epochs.load(std::memory_order_acquire) != epoch ||
+          diagnostics.observed_current_thread_id != owner_thread_id)
+        return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
+    }
     if (!snapshot_.has_value())
       return unavailable(FailureStage::worker_snapshot_cache_absent);
     if (!diagnostics.observed_stamp_read_success)
@@ -131,7 +184,7 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       return unavailable(FailureStage::worker_snapshot_tls_uninitialized);
     if (diagnostics.observed_tls_main_thread_marker != 1)
       return unavailable(FailureStage::worker_snapshot_tls_marker_invalid);
-    if (snapshot_epoch_ == 0)
+    if (snapshot_epoch_ == 0 || diagnostics.pump_epochs == 0)
       return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
     if (snapshot_->date_raw != diagnostics.observed_date_raw)
       return unavailable(FailureStage::worker_snapshot_date_mismatch);
@@ -145,14 +198,17 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
 }
 
 bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  std::uint64_t generation = 0;
   try {
     const bool actual4 = game::IsCk3_12004Descriptor(descriptor()) &&
         supports_snapshot();
     if (!enabled() || (!game::IsReviewedCrozierAdapter(*this) && !actual4) ||
+        stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
         GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
         stamp.tls_main_thread_marker != 1) return false;
     {
       std::lock_guard guard(snapshot_mutex_);
+      if (snapshot_pending_generation_ != 0) return false;
       // Match the bridge heartbeat cadence. Date/pause transitions sample
       // immediately; typed requests still read a fresh raw frame on owner.
       if (snapshot_.has_value() && snapshot_epoch_ != 0 &&
@@ -161,12 +217,18 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
         snapshot_epoch_ = stamp.pump_epoch;
         return true;
       }
+      if (snapshot_observation_generation_ ==
+          std::numeric_limits<std::uint64_t>::max()) return false;
+      generation = ++snapshot_observation_generation_;
+      snapshot_pending_generation_ = generation;
+      snapshot_pending_epoch_ = stamp.pump_epoch;
+      snapshot_pending_owner_thread_id_ = stamp.thread_id;
       snapshot_epoch_ = 0;
     }
     game::Snapshot observed{};
     const auto read_started_ms = GetTickCount64();
     observer_started_ms_.store(read_started_ms);
-    const bool available = native_->read_snapshot(observed) &&
+    const bool available = ReadOwnerSnapshotForPublication(*native_, observed) &&
         observed.date_raw == stamp.date_raw && observed.paused == stamp.paused;
     const auto read_completed_ms = GetTickCount64();
     observer_last_read_ms_.store(read_completed_ms - read_started_ms);
@@ -175,18 +237,30 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     std::lock_guard guard(snapshot_mutex_);
     if (!available) {
       snapshot_.reset();
+      snapshot_pending_generation_ = 0;
+      snapshot_changed_.notify_all();
       return false;
     }
     if (!snapshot_.has_value() || *snapshot_ != observed) ++snapshot_revision_;
     snapshot_ = std::move(observed);
     snapshot_epoch_ = stamp.pump_epoch;
     next_snapshot_sample_ms_ = GetTickCount64() + 250;
+    snapshot_published_generation_ = generation;
+    snapshot_pending_generation_ = 0;
+    snapshot_changed_.notify_all();
     return true;
   } catch (...) {
     observer_last_read_available_.store(false);
     observer_completed_ms_.store(GetTickCount64());
-    try { std::lock_guard guard(snapshot_mutex_); snapshot_.reset(); snapshot_epoch_ = 0; }
-    catch (...) {}
+    try {
+      std::lock_guard guard(snapshot_mutex_);
+      if (snapshot_pending_generation_ == generation) {
+        snapshot_.reset();
+        snapshot_epoch_ = 0;
+        snapshot_pending_generation_ = 0;
+        snapshot_changed_.notify_all();
+      }
+    } catch (...) {}
     return false;
   }
 }
