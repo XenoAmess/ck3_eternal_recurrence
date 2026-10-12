@@ -3104,6 +3104,58 @@
           "product_release_pass": false
         },
         {
+          "id": "release012-keypaths",
+          "status": "ready",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_release012_keypaths_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_release012_keypaths.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 3000,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_confucian_assembly_predicates_v1",
+            "ck3_query_confucian_religious_title_v1",
+            "ck3_query_actor_cached_succession_v1"
+          ],
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_personal_parameters_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 420,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "whole_product_acceptance_credit": false,
+          "acceptance_scope": "release012_original_confucian_and_representative_tenet_business",
+          "fixture_changes_self_only": true,
+          "requires_separate_business_admission": true,
+          "ROOT_GUI_checkpoints_required": true,
+          "optional_HoF_full_consent_cell": true,
+          "actual_selected_actor_bound_at_first_snapshot": true
+        },
+        {
           "id": "vanilla-faith-feedback",
           "status": "ready",
           "adapter": {

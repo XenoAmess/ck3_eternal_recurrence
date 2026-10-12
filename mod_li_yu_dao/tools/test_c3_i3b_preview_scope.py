@@ -80,8 +80,101 @@ def invert_phase2_mandate(block):
     projected = Block(tuple(previous if e==declared else e for e in ready[0].value.entries))
     return Block(tuple(Entry(e.key,e.operator,projected) if e is ready[0] else e for e in block.entries))
 
+def invert_vanilla_authority(block):
+    """Invert only the reviewed 88d0e0d18 authority additions, in exact contexts.
+
+    The original baseline hash still freezes every other expression. New
+    branches must match in full before this test projects them away.
+    """
+    additions = {
+        'lyd_i3b_supported_rite_trigger': '''
+            OR = { lyd_i3b_owned_rite_trigger = yes this = rite:jingxue this = rite:daoxue }
+        ''',
+        'lyd_i3b_supported_faith_trigger': '''
+            OR = {
+                lyd_i3b_only_owned_rites_faith_trigger = yes
+                AND = {
+                    this = faith:confucian_faith
+                    religion = religion:confucianism_religion
+                    exists = main_rite
+                    main_rite = { lyd_i3b_supported_rite_trigger = yes }
+                    NOT = { any_faith_rite = { NOT = { lyd_i3b_supported_rite_trigger = yes } } }
+                }
+            }
+        ''',
+    }
+    for name, expected in additions.items():
+        if definition(block,name) != parse_clausewitz(expected):
+            raise ValueError('Reviewed vanilla authority definition differs: '+name)
+    block=Block(tuple(e for e in block.entries if e.key not in additions))
+    edits = (
+        ('lyd_i3b_compatible_rite_trigger',
+         'lyd_i3b_supported_rite_trigger = yes',
+         'lyd_i3b_owned_rite_trigger = yes'),
+        ('lyd_i3b_headless_faith_trigger',
+         'lyd_i3b_supported_faith_trigger = yes',
+         'lyd_i3b_only_owned_rites_faith_trigger = yes'),
+        ('lyd_i3b_actor_trigger', '''
+            OR = {
+                AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
+                lyd_i3b_detached_authority_trigger = yes
+                AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+            }
+        ''', '''
+            OR = { faith = faith:lyd_common_faith lyd_i3b_detached_authority_trigger = yes }
+            rite = faith.main_rite
+        '''),
+        ('lyd_i3b_captured_authority_trigger', '''
+            OR = {
+                AND = { var:lyd_i3b_authority_mode = 0 faith = faith:lyd_common_faith }
+                AND = {
+                    var:lyd_i3b_authority_mode = 2
+                    faith = faith:confucian_faith
+                    rite = var:lyd_i3b_actor_rite
+                    rite = { lyd_i3b_owned_rite_trigger = yes }
+                }
+            }
+        ''', 'REMOVE_MODE2'),
+        ('lyd_i3b_native_authority_postcondition_trigger', '''
+            OR = {
+                var:lyd_i3b_result_authority_mode = 0
+                AND = {
+                    var:lyd_i3b_result_authority_mode = 2
+                    faith = faith:confucian_faith
+                    rite = var:lyd_i3b_actor_rite
+                    faith.main_rite = var:lyd_i3b_main
+                }
+            }
+        ''', 'REMOVE_MODE2'),
+        ('lyd_i3b_current_trigger',
+         'rite = var:lyd_i3b_actor_rite',
+         'rite = var:lyd_i3b_main'),
+    )
+    for name, expected, previous in edits:
+        body=definition(block,name)
+        if previous=='REMOVE_MODE2':
+            expected_or=parse_clausewitz(expected).entries[0]
+            if len(body.entries)!=1 or body.entries[0].key!='OR':
+                raise ValueError('Reviewed authority OR differs: '+name)
+            children=body.entries[0].value.entries
+            if len(children)!=3 or children[:2]!=expected_or.value.entries:
+                raise ValueError('Reviewed mode2 branch differs: '+name)
+            replacement=Block((Entry('OR','=',Block((children[0],children[2]))),))
+        else:
+            expected_entries=parse_clausewitz(expected).entries
+            previous_entries=parse_clausewitz(previous).entries
+            positions=[i for i in range(len(body.entries)) if body.entries[i:i+len(expected_entries)]==expected_entries]
+            if len(positions)!=1:
+                raise ValueError('Reviewed vanilla authority term differs: '+name)
+            i=positions[0]
+            replacement=Block(body.entries[:i]+previous_entries+body.entries[i+len(expected_entries):])
+        block=Block(tuple(Entry(e.key,e.operator,replacement) if e.key==name else e for e in block.entries))
+    return block
+
+
 def strip_declared(block,relative):
     if relative==I3:
+        block=invert_vanilla_authority(block)
         block=invert_phase2_mandate(block)
     return strip_added(block)
 
@@ -90,7 +183,7 @@ class Evaluator:
         self.actor=actor;self.common=common;self.saved={};self.reads=[]
     def resolve(self,path,current,previous=None,safe=False):
         if path.startswith(('faith:','religion:','rite:')):
-            answer=self.common if path=='faith:lyd_common_faith' else path
+            answer=self.common if path=='faith:lyd_common_faith' else self.common.values.get('vanilla_faith',path) if path=='faith:confucian_faith' else path
         else:
             parts=path.split('.')
             if parts[0] in ('root','$ACTOR$','this','prev'):
@@ -134,6 +227,7 @@ class Evaluator:
             elif k=='save_temporary_scope_as':self.saved[v]=current;answer=True
             elif k in ('pam_is_antipope_trigger','pam_is_antipope_sponsor_trigger'):answer=current.values[k]==(v=='yes')
             elif k in ('lyd_i3b_only_owned_rites_faith_trigger',):answer=current.values['owned_rites']
+            elif k=='lyd_i3b_owned_rite_trigger':answer=current.values['owned_rite']
             elif k=='lyd_i3b_detached_authority_trigger':answer=self.block(self.detached,current,previous)
             elif k=='any_faith_character':answer=any([self.block(v,c,current) for c in current.values['characters']])
             elif isinstance(v,Block):answer=self.block(v,self.resolve(k,current,previous),current)
@@ -147,14 +241,14 @@ def world():
     actor=Scope('actor',{'is_alive':True,'is_adult':True,'traits':set(),'highest_held_title_tier':3,'capital_county':Scope('capital'),'pam_is_antipope_trigger':False,'pam_is_antipope_sponsor_trigger':False})
     faith=Scope('faith',{'parameters':{'temporal_head_of_faith'},'owned_rites':True,'characters':[]})
     common=Scope('common',{'owned_rites':True})
-    rite=Scope('rite',{'parameters':set(),'gender_allowed':True,'rite_counties':0,'faith':faith})
+    rite=Scope('rite',{'parameters':set(),'gender_allowed':True,'rite_counties':0,'faith':faith,'owned_rite':True})
     head=Scope('head',{'is_alive':True,'is_adult':True,'traits':set(),'faith':faith,'rite':rite})
     title=Scope('title',{'holder':head},{'lyd_c2_owned_head_title':1,'lyd_c2_owner_faith':faith})
     actor.values.update(faith=faith,rite=rite)
     faith.values.update(religious_head=head,religious_head_title=title,main_rite=rite)
     common.values['main_rite']=rite
     rite.values['head_of_rite']=head
-    actor.variables.update(lyd_c3_round_faith=faith,lyd_c3_round_head=head,lyd_c3_round_title=title,lyd_i3b_main=rite,lyd_i3b_authority_mode=1,lyd_i3b_required_native_hor=actor,lyd_i3b_result_authority_mode=1,lyd_i3b_result_native_hor=actor)
+    actor.variables.update(lyd_c3_round_faith=faith,lyd_c3_round_head=head,lyd_c3_round_title=title,lyd_i3b_main=rite,lyd_i3b_actor_rite=rite,lyd_i3b_authority_mode=1,lyd_i3b_required_native_hor=actor,lyd_i3b_result_authority_mode=1,lyd_i3b_result_native_hor=actor)
     rite.variables.update(lyd_c3_delegate_required=1,lyd_c3_delegate=head)
     return dict(actor=actor,faith=faith,common=common,rite=rite,head=head,title=title)
 
@@ -247,6 +341,14 @@ def run(source,baseline=None):
     test('post_detached_missing_target','post',lambda w:(detached(w),w['actor'].variables.pop('lyd_i3b_result_native_hor')),False,True)
     test('post_detached_current_hor_missing','post',lambda w:w['rite'].values.pop('head_of_rite'),False,True)
     test('post_detached_hor_drift','post',lambda w:w['actor'].variables.update(lyd_i3b_result_native_hor=w['head']),False)
+    def vanilla(w):
+        w['common'].values['vanilla_faith']=w['faith']
+        w['actor'].variables.update(lyd_i3b_authority_mode=2,lyd_i3b_result_authority_mode=2)
+    test('captured_vanilla_mode2','captured',vanilla,True)
+    test('captured_vanilla_rite_drift','captured',lambda w:(vanilla(w),w['actor'].variables.update(lyd_i3b_actor_rite=Scope('other'))),False)
+    test('captured_vanilla_foreign_rite','captured',lambda w:(vanilla(w),w['rite'].values.update(owned_rite=False)),False)
+    test('post_vanilla_mode2','post',vanilla,True)
+    test('post_vanilla_main_drift','post',lambda w:(vanilla(w),w['faith'].values.update(main_rite=Scope('other'))),False)
     return {'result':'PASS_SOURCE_ONLY','script_tree_preservation':'PASS_EXACT_AST_AFTER_FINITE_DECLARED_INVERSE','cases':cases,'guard_removal_mutants':mutants,'live':'NOT_RUN','boundary':'Focused test double evaluation. No old C2/11/118 tests run; no CK3 renderer or field proof.'}
 
 def main():

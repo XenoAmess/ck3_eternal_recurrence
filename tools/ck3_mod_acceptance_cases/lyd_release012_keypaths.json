@@ -1,0 +1,72 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "case_id": "release012-keypaths",
+  "acceptance_scope": "release012_original_confucian_and_representative_tenet_business",
+  "business_contract_applicable": true,
+  "fixture_emitter": {
+    "path": "tools/prepare_lyd_vanilla_feedback_fixture.py",
+    "arguments": ["--repo", "{repo}", "--output", "{output}"],
+    "receipt_relative": "setup-receipt.json"
+  },
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "required_startup": ["LYD_FEEDBACK: SELF_JINGXUE_SETUP_APPLIED"],
+  "forbidden_startup": ["LYD_FEEDBACK: TEST FAIL"],
+  "failure_prefixes": ["LYD_FEEDBACK:"],
+  "maximum_natural_days": 0,
+  "expected_actor_character_id": null,
+  "phases": [
+    {
+      "id": "baseline", "required": true, "maximum_option_actions": 0,
+      "requirements": ["selected_actor_personally_confirmed", "original_confucian_faith_and_jingxue_actual", "original_rites_and_main_rite_preserved", "no_head_of_faith_actual", "production84_manifest_and_actual_profile_loaded", "no_new_LYD_engine_parse_scope_or_unknown_key_errors"],
+      "instructions": "Review actual selected actor and fixture self-only boundary; runtime actor ID comes from snapshot, never receipt's historical Robert label. Preserve actual official GUI/load/error evidence. Resolve startup vanilla events using their reviewed source through existing ROOT controls; unknown events remain held. A fixture marker is not business PASS."
+    },
+    {
+      "id": "entry", "required": true, "maximum_option_actions": 1,
+      "decision_key": "lyd_enter_decision",
+      "allowed_options": {"lyd.1": [0]},
+      "requirements": ["entry_visible_and_enabled_original_confucian", "production_entry_confirmed_once", "only_selected_self_rite_changed_to_kongmen", "faith_and_original_main_rite_preserved", "all36_distinct_tenets_visible_in_original_personal_belief_catalogue"],
+      "instructions": "Read actual selected decision detail; model.available is not IsValid. Confirm production entry once through official GUI. Welcome may be acknowledged by fresh typed native0 mapping. Read actual rite identity and original Personal Beliefs catalogue; learning/permission is not actual selection."
+    },
+    {
+      "id": "begin_eligibility", "required": true, "maximum_option_actions": 0,
+      "decision_key": "lyd_i3b_begin_decision",
+      "requirements": ["original_confucian_begin_visible", "actual_begin_conditions_personally_read", "actual_enabled_or_specific_unmet_conditions_recorded", "no_begin_or_factory_invoked_during_inspection"],
+      "instructions": "Inspect original Confucian authority_mode2 begin conditions without confirming. Record actual enabled status and any unmet title/HoR/learning/rite/clergy condition explicitly, never infer enabled from model.available. A disabled but correctly explained actual condition qualifies only this visibility cell, not creation."
+    },
+    {
+      "id": "T03", "required": true, "maximum_option_actions": 2,
+      "decision_key": "lyd_play_ritual_music_decision",
+      "allowed_options": {"lyd.1002": [0, 1]},
+      "requirements": ["T03_core_kongmen_eligibility_actual", "open_then_cancel_cost_zero", "production_paid_option_confirmed_exactly_once", "actual_gold150_cost_and_stress_xp_modifier_effects_readback", "actual_CD1095_reentry_disabled"],
+      "instructions": "First open/confirm decision via official UI; choose actual cancel native1, inspect unchanged wallet. Reopen via official UI, then choose paid native0 once. Read source-attributed actual gold -150/stress -60 subject to floor/diplomacy XP400/actor+capital-county modifiers1095 and CD1095; tooltip text or ACK alone fails. No resource setter."
+    },
+    {
+      "id": "personal_T01", "required": true, "maximum_option_actions": 0,
+      "requirements": ["T01_not_in_actual_core_set", "T01_selected_via_original_personal_beliefs_GUI", "original_slot_and_selection_costs_honored", "effective_T01_source_attributed_actor_modifier_observed"],
+      "instructions": "Use existing original Personal Beliefs GUI legally. Adapter subsequently verifies actual personal_tenet_keys contains lyd_tenet_reverent_heaven. Permission/learned/catalogue presence is not selection. Record actual actor modifier contribution; religion query is not a wallet/modifier API."
+    },
+    {
+      "id": "T01", "required": true, "maximum_option_actions": 1,
+      "decision_key": "lyd_play_reverent_heaven_decision",
+      "allowed_options": {"lyd.1000": [0, 1]},
+      "requirements": ["T01_personal_OR_core_decision_available_actual", "production_paid_option_confirmed_exactly_once", "actual_piety200_cost_legitimacy_prestige_capital_and_modifier_readback", "actual_CD1460_reentry_disabled"],
+      "instructions": "Core lacks T01 while actual personal slot has it: inspect/confirm decision then fresh paid native0 once. Read actual piety -200/legitimacy100 subject to cap/prestige250/capital control25 subject to cap/stewardship modifier1095/CD1460. No wallet assumptions or synthetic grants."
+    },
+    {
+      "id": "T33", "required": true, "maximum_option_actions": 1,
+      "decision_key": "lyd_play_knowing_acting_support_decision",
+      "allowed_options": {"lyd.1032": [0, 2]},
+      "requirements": ["T33_legally_selected_or_actual_core", "initial_practice_stage_unavailable", "production_inquiry_option_confirmed_exactly_once", "actual_gold100_cost_learningXP600_inquiry_flag_and_CD365_readback", "immediate_second_stage_disabled_without_calendar_or_flag_mutation"],
+      "instructions": "If required, legally choose T33 in an available original personal slot before opening this decision. If no legal slot/resources, mark partial/skip with actual blocker. Inquiry native0 only; native1 practice is NEVER authorized in this zero-day case. Observe gold -100/learningXP600/inquiry_completed/mod365/CD365 and immediate no-skip. Full second stage requires separate real natural365 cycle; no credit here."
+    },
+    {
+      "id": "institution", "required": false, "maximum_option_actions": 32,
+      "allowed_options": {"lyd.410": [0, 1], "lyd.411": [0, 1], "lyd.412": [0, 1], "lyd.413": [0, 1, 2], "lyd.430": [0, 1, 2, 3], "lyd.431": [0], "lyd.432": [0]},
+      "requirements": ["original_confucian_production_begin_once", "all_actual_non_dormant_rites_and_electors_included", "production_quorum_and_all_human_consent_actual", "actual_serial_nonce_and_all_rite_signatures_current", "factory_confirmed_once_only_after_actual_mandate", "full_saved_political_title_AST_holder_heir_and_realm_laws_unchanged", "saved_owned_ownerfaith_holder_result1_and_recognized_leader_join"],
+      "instructions": "Optional natural full production consent path: begin, nominate through official decision/interaction, preserve NPC60/40 NO, seal, all real ballots/signatures. No vote/NPC/title injection or fixture mandate. Pre-institution fresh SAVE/cache/G2/G3 supplied; ROOT must read its full political baseline. Before native0 factory: status admit_commit with exact three prerequisite facts and actual SAVE/mandate evidence. Then fresh current430 choose_option; after complete adapter obtains new SAVE/cache/G3, verifies distinct native Title holder/faith/law95/fourproperties and ordered cache unchanged. ROOT full saved AST/heir/law/readback remains necessary. Missing consent may be partial/skip; separate actual coldB5 and C3 never inferred."
+    }
+  ],
+  "uncovered_product_business": ["full36_live_effect_matrix", "T33_natural365_second_stage", "new_HoF_independent_cold_reload", "C3", "whole_I4"],
+  "runtime_status": "NOT_RUN"
+}
