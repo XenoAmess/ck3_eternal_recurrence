@@ -490,13 +490,18 @@ def run(args) -> int:
     target_date = start_date + args.days * 24
     frame = ending_frame(first)
     current_date = frame["ending_date_raw"] if frame else start_date
-    initial_opinion = body(read(args.sway_opinion))
-    initial_completion = body(read(args.sway_completion))
-    sway_binding = load_sway_observer_binding(args, initial)
-    sway_episode_observer = (
-        type(initial.get("episode_character_id")) is int
-        and initial["episode_character_id"] == sway_binding["episode_character_id"]
-        and initial.get("episode_run_id") == sway_binding["episode_run_id"])
+    initial_opinion = initial_completion = sway_binding = None
+    sway_episode_observer = False
+    if args.sway_observer_binding is not None:
+        if args.sway_completion is None or args.sway_opinion is None:
+            raise ValueError("Sway observer binding requires both baseline responses")
+        initial_opinion = body(read(args.sway_opinion))
+        initial_completion = body(read(args.sway_completion))
+        sway_binding = load_sway_observer_binding(args, initial)
+        sway_episode_observer = (
+            type(initial.get("episode_character_id")) is int
+            and initial["episode_character_id"] == sway_binding["episode_character_id"]
+            and initial.get("episode_run_id") == sway_binding["episode_run_id"])
     if sway_episode_observer:
         played = initial.get("played_character", {})
         if (initial.get("paused") is not True or initial.get("map_ready") is not True
@@ -506,7 +511,8 @@ def run(args) -> int:
             raise ValueError("Sway current episode is not the bound paused living actor")
         require_sway_baseline(args.sway_completion, initial_completion, sway_binding, initial, args.packet, completion=True)
         require_sway_baseline(args.sway_opinion, initial_opinion, sway_binding, initial, args.packet)
-    last_leaf_date = initial_opinion["date_raw"]
+    sway_observer_enabled_initially = sway_episode_observer
+    last_leaf_date = initial_opinion["date_raw"] if initial_opinion is not None else start_date
     args.output.mkdir(parents=True, exist_ok=False)
     queue = Queue(args.packet, args.output, args.prefix, args.response_timeout_seconds,
                   getattr(args, "runtime_guard", None))
@@ -679,11 +685,15 @@ def run(args) -> int:
                 "ended_at_utc": datetime.now(timezone.utc).isoformat(),
                 "qualification": str(args.qualification), "initial_snapshot": str(args.initial_snapshot),
                 "first_turn_response": str(args.first_turn_response),
-                "sway_baseline_responses": [str(args.sway_completion), str(args.sway_opinion)],
-                "sway_observer_binding": str(args.sway_observer_binding),
-                "sway_query_witness_reference": sway_binding["query_witness_reference"],
-                "initial_original_scheme": {key: initial_completion.get(key) for key in (
-                    "scheme_instance_id", "scheme_instance_generation", "native_status_key")},
+                "sway_baseline_responses": ([str(args.sway_completion), str(args.sway_opinion)]
+                                            if sway_binding is not None else None),
+                "sway_observer_binding": (str(args.sway_observer_binding)
+                                          if sway_binding is not None else None),
+                "sway_query_witness_reference": (sway_binding["query_witness_reference"]
+                                                 if sway_binding is not None else None),
+                "initial_original_scheme": ({key: initial_completion.get(key) for key in (
+                    "scheme_instance_id", "scheme_instance_generation", "native_status_key")}
+                                            if initial_completion is not None else None),
                 "starting_date_raw": start_date, "current_date_raw": current_date,
                 "target_date_raw": target_date, "actual_days_from_initial": (current_date-start_date)/24,
                 "normal_turns": turns, "requests": queue.requests,
@@ -707,7 +717,10 @@ def run(args) -> int:
                 "live_episode_after_error": (
                     "unverified" if status == "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
                     else "not_applicable"),
-                "original_sway_episode_observation_ended": not sway_episode_observer,
+                "sway_observer_enabled_initially": sway_observer_enabled_initially,
+                "last_sway_leaf_date_raw": (last_leaf_date if sway_observer_enabled_initially else None),
+                "original_sway_episode_observation_ended": (
+                    sway_observer_enabled_initially and not sway_episode_observer),
                 "latest_successor_snapshot": (str(latest_successor_snapshot)
                                               if latest_successor_snapshot else None),
                 "latest_successor_save": (str(latest_successor_save)
@@ -734,9 +747,10 @@ def run(args) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("packet", "qualification", "initial-snapshot",
-                 "sway-completion", "sway-opinion", "sway-observer-binding", "output"):
+    for name in ("packet", "qualification", "initial-snapshot", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
+    for name in ("sway-completion", "sway-opinion", "sway-observer-binding"):
+        parser.add_argument("--" + name, type=Path)
     parser.add_argument("--first-turn-response", "--resume-response",
                         dest="first_turn_response", type=Path, required=True,
                         help="Root latest completed ordinary response before this serial loop")

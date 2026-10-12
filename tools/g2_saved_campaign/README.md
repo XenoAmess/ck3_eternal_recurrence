@@ -7,7 +7,7 @@ pure helper. All gameplay calls go through Root's existing file-queue SDK
 executor. These files do not start a second SDK or Game process. Root supplies
 the actual GREEN qualification, snapshot/SAVE pair and response references.
 
-Both entry points require `--sway-observer-binding` naming Root's actual
+Both entry points accept an optional `--sway-observer-binding` naming Root's actual
 `xar.r104.dynamic-sway-observer-binding.v1` record. The observer uses that
 record's full actor, target, scheme instance/generation, episode, process and
 frame identities. It does not fall back to a historical target or scheme.
@@ -18,8 +18,10 @@ capacity-guard success cannot supply those business observations.
 
 The target query verifies an explicitly known target; it does not discover or
 choose one. Without fresh target evidence, Root can continue ordinary strategy
-requests while leaving this observer disabled. The bounded controller itself
-still requires its binding input. An adopted successor permanently disables
+requests while leaving this observer disabled. Without a binding, both entry
+points skip Sway baseline reads and observer queries. Supplying a binding
+requires both completion and opinion baselines. Initially disabled observation
+does not count as an ended original episode. An adopted successor permanently disables
 the original episode's observer; it does not retarget it. An unavailable Sway
 observation remains unknown and does not establish campaign death.
 
@@ -54,8 +56,8 @@ The dynamic observer update uses the fully reviewed Source20 diff and actual
 prepared Root copies; its adjacent queue already matches SDK91 source
 `50a1a5451227d1b30f42394dd02ddfbaea26a1ff` exactly. Current source SHA-256 pins:
 
-- Ordinary loop: `4ad5eb62bd66a8b86852bdabce353ac43b7370a031cc183de749b919803726d5`.
-- Bounded owner: `2b4c2041c79c1e721ec4ce37a8b54c5172186579604c232fd8c653f7b4eb5830`.
+- Ordinary loop: `29ff49490bbda12ff78ac156cee4c9b28d6ffdf634a59f316f642f59bb701260`.
+- Bounded owner: `a5ea8edc8a00a62527c3b06564fa98d82cef6c72774ef6e9dd6a0a165616b0d5`.
 - Adjacent queue: `088b65abf0006f140f5d36d38e838281f1cd9402779fd2a77b725aaa3d9195f6`.
 
 The source update creates no runtime binding, query witness or acceptance credit.

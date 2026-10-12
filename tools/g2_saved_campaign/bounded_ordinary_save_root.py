@@ -27,7 +27,7 @@ def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def latest_refs(result: dict, normal: Path, completion: Path, opinion: Path):
+def latest_refs(result: dict, normal: Path, completion: Path | None, opinion: Path | None):
     """Use completed loop response references without reparsing normal payloads."""
     for request in result["requests"]:
         response = Path(request["response"])
@@ -102,6 +102,8 @@ def run(args) -> int:
     snapshot_path, save_path = args.current_snapshot, args.current_save
     normal_path = args.resume_response
     completion_path, opinion_path = args.sway_completion, args.sway_opinion
+    if args.sway_observer_binding is None:
+        completion_path = opinion_path = None
     saved_days = args.saved_normal_days
     saved_date = None
     chunks = []
@@ -240,8 +242,8 @@ def run(args) -> int:
                 "saved_normal_days_cumulative": saved_days,
                 "saved_count_origin": "prior explicit saved count + LOOP-RESULT.actual_days_from_initial",
                 "last_normal": str(normal_path),
-                "last_sway_completion": str(completion_path),
-                "last_sway_opinion": str(opinion_path),
+                "last_sway_completion": (str(completion_path) if completion_path is not None else None),
+                "last_sway_opinion": (str(opinion_path) if opinion_path is not None else None),
             })
             chunk["natural_succession_transitions"] = result.get("natural_succession_transitions", [])
             chunk["reused_actual_successor_endpoint_save"] = reuse_successor_save
@@ -283,8 +285,8 @@ def run(args) -> int:
                 "saved_count_origin": "Root supplied initial count plus completed ordinary-loop actual days only",
                 "current_snapshot": str(snapshot_path), "current_save": str(save_path),
                 "last_normal": str(normal_path),
-                "last_sway_completion": str(completion_path),
-                "last_sway_opinion": str(opinion_path),
+                "last_sway_completion": (str(completion_path) if completion_path is not None else None),
+                "last_sway_opinion": (str(opinion_path) if opinion_path is not None else None),
                 "checkpoint_requests_retained": checkpoint_requests,
                 "error": error, "failed_pending_never_resent": True,
                 "Actor_Game_source_policy_changes": 0,
@@ -308,8 +310,10 @@ def run(args) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("packet", "qualification", "current-snapshot", "current-save",
-                 "resume-response", "sway-completion", "sway-opinion", "sway-observer-binding", "output"):
+                 "resume-response", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
+    for name in ("sway-completion", "sway-opinion", "sway-observer-binding"):
+        parser.add_argument("--" + name, type=Path)
     parser.add_argument("--saved-normal-days", type=float, required=True)
     parser.add_argument("--prefix", required=True)
     parser.add_argument("--chunks", type=int, default=4)
