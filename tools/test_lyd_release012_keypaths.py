@@ -122,6 +122,119 @@ class Release012Tests(unittest.TestCase):
                             for s in client.steps))
         self.assertFalse(any('confirm' in s['tool'] or 'select_event_option' in s['tool'] for s in client.steps))
 
+    def navigation_phase(self, **changes):
+        return {'id': 'preparation', 'requirements': ['actual_learning_and_costs'],
+            'instructions': 'Actual ROOT review', 'maximum_option_actions': 8,
+            'navigation_decision_keys': sorted(case.NAVIGATION_DECISIONS),
+            'maximum_navigation_actions': 3, **changes}
+
+    def navigation_request(self, **changes):
+        return {'status': 'navigate_decision', 'decision_key': 'lyd_change_school_decision',
+            'navigation_intent_id': 'school-001', 'evidence': [self.ref], **changes}
+
+    def navigation_review(self, requests, *, phase=None, deadline=2000, remaining=5000):
+        client = Client(responses=[*requests, {'status': 'partial', 'evidence': [self.ref]}])
+        client.phase_deadline = deadline
+        client.remaining = lambda: remaining
+        with patch.object(case.time, 'time', return_value=1000):
+            result = case.review_cell(self.context, client, case.binding(frame()),
+                                      phase or self.navigation_phase(), set())
+        return client, result
+
+    def test_explicit_navigation_dispatches_only_safe_three_tools_and_never_qualifies(self):
+        client, result = self.navigation_review([self.navigation_request(
+            facts={'actual_learning_and_costs': True})])
+        self.assertEqual([s['tool'] for s in client.steps], [
+            'ck3_open_ingame_decisions_v1', 'ck3_query_ingame_decision_item_v1',
+            'ck3_select_ingame_decision_item_v1'])
+        self.assertTrue(all(s['args'].get('decision_key') == 'lyd_change_school_decision'
+                            for s in client.steps[1:]))
+        self.assertEqual(result['submitted_navigation_actions'], 1)
+        self.assertEqual(result['submitted_option_actions'], 0)
+        self.assertFalse(result['qualified'])
+        self.assertFalse(result['last_navigation']['qualification_assigned'])
+        self.assertNotIn('actual_learning_and_costs', client.requests[-1])
+        self.assertEqual(client.reserves, [600, 600])
+
+    def test_explicit_navigation_rejects_wrong_key_phase_and_undeclared_contract(self):
+        for label, phase, request in (
+            ('key', self.navigation_phase(), self.navigation_request(decision_key='lyd_i3b_begin_decision')),
+            ('phase', self.navigation_phase(id='baseline'), self.navigation_request()),
+            ('undeclared', self.navigation_phase(navigation_decision_keys=[]), self.navigation_request())):
+            with self.subTest(label=label):
+                client, result = self.navigation_review([request], phase=phase)
+                self.assertEqual(client.steps, [])
+                self.assertEqual(result['submitted_navigation_actions'], 0)
+                self.assertNotIn('navigate_decision', client.requests[0]['responses']
+                    if label != 'key' else [])
+                self.assertFalse(result['qualified'])
+
+    def test_explicit_navigation_consumes_intent_before_failed_dispatch_and_rejects_duplicate(self):
+        with patch.object(case, 'navigate', side_effect=ValueError('original navigation failed')) as nav:
+            client, result = self.navigation_review([self.navigation_request(), self.navigation_request()])
+        nav.assert_called_once()
+        self.assertEqual(result['submitted_navigation_actions'], 1)
+        self.assertIn('already consumed', result['last_contract_error'])
+        self.assertEqual(client.steps, [])
+        self.assertFalse(result['qualified'])
+
+    def test_explicit_navigation_limit_cannot_be_extended_by_new_intent(self):
+        requests = [self.navigation_request(decision_key=key, navigation_intent_id='nav-' + str(i))
+                    for i, key in enumerate(sorted(case.NAVIGATION_DECISIONS))]
+        requests.append(self.navigation_request(navigation_intent_id='fourth-new-intent'))
+        client, result = self.navigation_review(requests)
+        self.assertEqual(len(client.steps), 9)
+        self.assertEqual(result['submitted_navigation_actions'], 3)
+        self.assertIn('action limit', result['last_contract_error'])
+        self.assertFalse(result['qualified'])
+
+    def test_explicit_navigation_original_phase_and_total_deadline_boundaries(self):
+        for deadline, remaining in ((1299, 5000), (2000, 900), (None, 5000)):
+            with self.subTest(deadline=deadline, remaining=remaining):
+                client, result = self.navigation_review([self.navigation_request()],
+                    deadline=deadline, remaining=remaining)
+                self.assertEqual(client.steps, [])
+                self.assertEqual(result['submitted_navigation_actions'], 0)
+        client, result = self.navigation_review([self.navigation_request()], deadline=1300, remaining=901)
+        self.assertEqual(len(client.steps), 3)
+        self.assertEqual(result['submitted_navigation_actions'], 1)
+
+    def test_explicit_navigation_refuses_crossed_ROOT_identity_or_missing_evidence(self):
+        for change in ({'run_id': 'OTHER'}, {'reviewer': 'OTHER'}):
+            with self.subTest(change=change):
+                with patch.object(case, 'navigate') as nav, self.assertRaises(ValueError):
+                    self.navigation_review([self.navigation_request(**change)])
+                nav.assert_not_called()
+        client, result = self.navigation_review([self.navigation_request(evidence=[])])
+        self.assertEqual(client.steps, [])
+        self.assertEqual(result['submitted_navigation_actions'], 0)
+        self.assertFalse(result['qualified'])
+
+    def test_explicit_navigation_elapsed_first_call_blocks_second_without_replay(self):
+        clock = [1000.0]
+        client = Client(responses=[self.navigation_request(),
+            {'status': 'partial', 'evidence': [self.ref]}])
+        client.phase_deadline = 1400.0
+        client.remaining = lambda: 5000
+        original_execute = client.execute_plan
+
+        def execute(steps, name):
+            rows = original_execute(steps, name)
+            clock[0] += 150.0
+            return rows
+
+        client.execute_plan = execute
+        with patch.object(case.time, 'time', side_effect=lambda: clock[0]):
+            result = case.review_cell(self.context, client, case.binding(frame()),
+                                      self.navigation_phase(), set())
+        self.assertEqual([step['tool'] for step in client.steps], ['ck3_open_ingame_decisions_v1'])
+        self.assertEqual(result['submitted_navigation_actions'], 1)
+        self.assertEqual(result['submitted_option_actions'], 0)
+        self.assertIn('300s', result['last_contract_error'])
+        self.assertIsNone(result['last_navigation'])
+        self.assertFalse(result['qualified'])
+        self.assertEqual(client.phase_deadline, 1400.0)
+
     def test_option_number_uses_actual_rendered_mapping_not_native_index(self):
         packet = event_packet()
         args, key = case.option_arguments(packet,

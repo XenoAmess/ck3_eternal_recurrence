@@ -7,6 +7,8 @@ ROOT reviews unsupported wallet/modifier/SAVE fields; ACKs never prove effects.
 from __future__ import annotations
 
 from pathlib import Path
+import math
+import time
 
 from ck3_mod_acceptance_cases import generic_product_adapter as generic
 from ck3_mod_acceptance_cases import lyd_i3b_formal_adapter as formal
@@ -21,6 +23,9 @@ CACHE = 'ck3_query_actor_cached_succession_v1'
 EVENT = 'ck3_query_current_event_window_context_v1'
 PROPERTIES = ('destroy_if_invalid_heir', 'no_automatic_claims',
               'definitive_form', 'always_follows_primary_heir')
+NAVIGATION_DECISIONS = frozenset((
+    'lyd_change_school_decision', 'lyd_play_quiet_self_attainment_decision',
+    'lyd_play_sage_transmission_decision'))
 
 
 def prepare_case(context):
@@ -79,8 +84,15 @@ def religion(client, initial, name, *, personal=False):
     return value
 
 
-def navigate(client, initial, name, decision_key):
+def navigate(client, initial, name, decision_key, *, deadline=None):
+    def guard_navigation_call():
+        if deadline is not None:
+            require(deadline - time.time() >= 300 and client.remaining() > 900,
+                    'Navigation call needs 300s on the original phase and more than 900s total reserve')
+
+    guard_navigation_call()
     call(client, initial, name + '-open', 'ck3_open_ingame_decisions_v1')
+    guard_navigation_call()
     frame, row = call(client, initial, name + '-model', 'ck3_query_ingame_decision_item_v1',
                       {'decision_key': decision_key})
     model = row['result']
@@ -94,6 +106,7 @@ def navigate(client, initial, name, decision_key):
             all(model.get(k) is True for k in ('owner_thread_verified', 'frame_verified',
                 'source_abi_pins_verified', 'gui_owner_binding_verified', 'decisions_tree_complete',
                 'decisions_root_visible', 'row_owner_verified')), 'Decision model owner/frame differs')
+    guard_navigation_call()
     _, selected = call(client, initial, name + '-select', 'ck3_select_ingame_decision_item_v1',
                        {'decision_key': decision_key})
     action = selected['result']
@@ -192,6 +205,18 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
     commit_event, precommit, factory_submitted, precommit_requested = None, None, False, False
     initial_requested = before_head is not None
     phase_options = set()
+    navigation_intents = set()
+    navigation_keys = phase.get('navigation_decision_keys', [])
+    navigation_limit = phase.get('maximum_navigation_actions', 0)
+    navigation_enabled = (phase['id'] == 'preparation' and type(navigation_keys) is list and
+        all(type(key) is str for key in navigation_keys) and
+        0 < len(navigation_keys) == len(set(navigation_keys)) <= len(NAVIGATION_DECISIONS) and
+        set(navigation_keys) <= NAVIGATION_DECISIONS and type(navigation_limit) is int and
+        0 < navigation_limit <= len(navigation_keys))
+    # The caller's existing finite phase clock is captured once, never renewed
+    # by navigation, observe, a new ROOT response or a pending selection ACK.
+    navigation_deadline = getattr(client, 'phase_deadline', None)
+    last_navigation = None
     while True:
         attempts += 1
         name = 'release012-' + phase['id'] + '-' + str(attempts).zfill(4)
@@ -213,9 +238,15 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
             'optional_observations': phase.get('optional_observations', []),
             'actual_precommit_bundle': precommit,
             'last_contract_error': last_error, 'submitted_option_actions': actions,
+            'decision_navigation': {'allowed_keys': navigation_keys if navigation_enabled else [],
+                'maximum_actions': navigation_limit if navigation_enabled else 0,
+                'submitted_actions': len(navigation_intents), 'last_navigation': last_navigation,
+                'request_fields': ['decision_key', 'navigation_intent_id'],
+                'opens_detail_only_no_Confirm_options_or_qualification': True},
             'responses': ['complete', 'partial', 'skip', 'abort', 'observe', 'choose_option',
                           'read_precommit', 'admit_commit'] +
-                         (['enter_institution'] if phase['id'] == 'institution' else []),
+                         (['enter_institution'] if phase['id'] == 'institution' else []) +
+                         (['navigate_decision'] if navigation_enabled else []),
             'choose_option': 'Supply exact current event_definition_key/native_option_index; adapter freshly re-queries and maps visible public number. No guessed tuple or replay.',
             'unavailable_native_fields': 'Wallets, effective modifiers, complete saved political AST/heirs/laws require actual original GUI/new SAVE evidence.',
             'original_hold_deadline_unchanged': True, 'whole_product_pass_inferred': False,
@@ -224,6 +255,36 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
                 response.get('reviewer') == client.operator_reviewer, 'ROOT response crossed live owner')
         status = response.get('status')
         if status == 'observe':
+            continue
+        if status == 'navigate_decision':
+            try:
+                key, intent = response.get('decision_key'), response.get('navigation_intent_id')
+                require(navigation_enabled and type(key) is str and key in navigation_keys,
+                        'Decision navigation is not declared for this phase/key')
+                require(type(intent) is str and 0 < len(intent) <= 128 and
+                        Path(intent).name == intent and intent not in navigation_intents,
+                        'Navigation intent missing or already consumed; never replay')
+                require(len(navigation_intents) < navigation_limit, 'Phase navigation action limit reached')
+                require(type(navigation_deadline) in (int, float) and math.isfinite(navigation_deadline) and
+                        navigation_deadline - time.time() >= 300 and client.remaining() > 900,
+                        'Navigation needs 300s on the original phase and more than 900s total reserve')
+                refs = response.get('evidence')
+                require(type(refs) is list and refs, 'Navigation needs actual ROOT source/UI evidence')
+                for ref in refs:
+                    check_evidence(ref)
+                navigation_intents.add(intent)  # consume BEFORE any original public submission
+                write_once(Path(context['output']) / (name + '-navigation-intent.json'), {
+                    'run_id': context['run_id'], 'reviewer': client.operator_reviewer,
+                    'phase': phase['id'], 'decision_key': key, 'navigation_intent_id': intent,
+                    'original_phase_deadline': navigation_deadline, 'evidence': refs,
+                    'Confirm_or_event_option_authorized': False, 'qualification_assigned': False})
+                navigate(client, initial, name + '-navigation', key, deadline=navigation_deadline)
+                last_navigation = {'decision_key': key, 'navigation_intent_id': intent,
+                    'detail_navigation_completed': True, 'Confirm_performed': False,
+                    'event_option_submitted': False, 'qualification_assigned': False}
+                last_error = None
+            except ValueError as error:
+                last_error = str(error)
             continue
         if status in {'enter_institution', 'choose_option', 'read_precommit', 'admit_commit'}:
             try:
@@ -313,6 +374,7 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
         result = {'phase': phase['id'], 'status': status, 'qualified': qualified,
             'before_native_binding': initial, 'after_native_binding': binding(after),
             'review': response, 'submitted_option_actions': actions, 'last_contract_error': last_error,
+            'submitted_navigation_actions': len(navigation_intents), 'last_navigation': last_navigation,
             'optional_observations': observations, 'actual_initial_political_bundle': before_head,
             'fresh_signed_precommit_bundle': precommit, 'factory_submitted_by_adapter': factory_submitted}
         return result
