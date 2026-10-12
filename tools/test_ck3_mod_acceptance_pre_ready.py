@@ -76,6 +76,85 @@ class PreReadyFailureTests(unittest.TestCase):
         self.assertEqual(args.bus_cli,lease/'tools/codex_task_bus.py')
         self.assertEqual(args.bus_cli_sha256,'A'*64)
 
+    def test_exact_legacy_keeper_uses_only_original_flags_and_bus_binding(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            keeper=Path(temporary)/'screen_keeper.py';keeper.write_bytes(b'known frozen legacy')
+            with patch.object(allocation,'LEGACY_KEEPER_SHA',allocation.pin(keeper)['sha256']):
+                args=('python',keeper,Path('lease'),Path('new-keeper'),'task-a31',5055,
+                      allocation.LEGACY_KEEPER_BUS,allocation.LEGACY_KEEPER_BUS_SHA)
+                argv=allocation.keeper_command(*args)
+                self.assertEqual(argv[5:],['--repo','lease','--root',str(Path('new-keeper').resolve()),
+                                          '--task','task-a31','--sequence','5055'])
+                self.assertNotIn('--bus-dir',argv)
+                with self.assertRaisesRegex(ValueError,'original installed bus'):
+                    allocation.keeper_command(*args[:-2],Path('another-bus'),args[-1])
+                with self.assertRaisesRegex(ValueError,'original installed bus'):
+                    allocation.keeper_command(*args[:-1],'0'*64)
+
+    def test_legacy_argparse_failure_retains_actual_wait2_not_normal_exit(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);run=root/'run';run.mkdir();(run/'controls').mkdir()
+            keeper=root/'keeper';state=root/'state';state.mkdir();prepared=root/'prepared.json'
+            source=root/'screen_keeper.py';source.write_bytes(b'x'*1600)
+            def write(path,value):path.write_text(json.dumps(value),encoding='utf-8')
+            write(prepared,{})
+            legacy=allocation.pin(source)
+            freeze={'run_id':'run','state_dir':str(state),'screen_task':'task-a31',
+                    'files':{str(source.resolve()):{k:legacy[k] for k in ('bytes','sha256')}}}
+            write(run/'frozen-argv.json',freeze)
+            write(run/'allocated-context.json',{'run_id':'run','run_dir':str(run),'keeper_root':str(keeper),
+                                               'prepared_case':allocation.pin(prepared)})
+            extras=['--bus-dir',str(root/'bus'),'--bus-cli',str(root/'lease/tools/codex_task_bus.py'),
+                    '--bus-cli-sha256','A'*64]
+            write(run/'keeper-process.json',{'pid':77,'create_time':1.5,
+                'argv':['python','-B','-X','utf8',str(source),'--repo',str(root/'lease'),
+                        '--root',str(keeper),'--task','task-a31','--sequence','5055',*extras]})
+            (run/'keeper-stderr.log').write_text('usage: original legacy flags\n'
+                'screen_keeper.py: error: unrecognized arguments: '+' '.join(extras)+'\n',encoding='utf-8')
+            parent=run/'keeper-pre-ready-parent-exit.json'
+            wait={'schema':'ck3-keeper-pre-ready-original-parent-exit-v1','run_id':'run','pid':77,
+                  'actual_original_popen_wait':True,'actual_poll_exit_code':2,'keeper_actual_exit_code':2,
+                  'ready_absent':True,'game_started':False,'business_pass':False}
+            write(parent,wait)
+            stdout=root/'stdout.log'
+            write(stdout,{'status':'BLOCKED','error':'Original keeper failed before READY; preserve actual stderr'})
+            operation=root/'operation.json'
+            write(operation,{'schema':'xar-root-exact-public-command-v1','actor':'/root',
+                'argv':['entry.py','allocate','--keeper-output',str(keeper),'--prepared-case',str(prepared)]})
+            command=root/'exit.json'
+            write(command,{'schema':'xar-root-exact-public-command-exit-v1','actor':'/root','returncode':2,
+                'finished_utc':'actual','operation':allocation.pin(operation),'stdout':allocation.pin(stdout)})
+            write(run/'screen-registration.json',{'ok':True,'task':{'task_id':'task-a31','last_sequence':5055}})
+            bundle=root/'pre-ready.json'
+            def seal():
+                write(bundle,{'schema':'ck3-mod-acceptance-pre-ready-closure-v1','run_id':'run',
+                    'allocator_result':allocation.pin(command),'allocator_stdout':allocation.pin(stdout),
+                    'keeper_parent_wait':allocation.pin(parent),
+                    **{key:allocation.pin(run/name) for key,name in {'allocated_context':'allocated-context.json',
+                      'frozen_argv':'frozen-argv.json','keeper_process':'keeper-process.json',
+                      'keeper_stderr':'keeper-stderr.log'}.items()}})
+            seal()
+            task={'task_id':'task-a31','last_sequence':5056,'state':'done','resources':[]}
+            with (patch.object(allocation,'LEGACY_KEEPER_SHA',legacy['sha256']),
+                  patch.dict(sys.modules,{'psutil':SimpleNamespace(pid_exists=Mock(return_value=False))}),
+                  patch.object(allocation,'runtime_process_inventory',return_value={'blockers':[]})):
+                def close():return allocation.previous_pre_ready_closure(run,freeze,bundle,keeper,
+                                                                         {'ok':True,'task':task},{'tasks':[task]})
+                proof=close()['failure_cleanup']
+                self.assertEqual(proof['original_keeper_exit_code'],2)
+                self.assertTrue(proof['original_keeper_wait_proven'])
+                self.assertEqual(proof['original_evidence']['keeper_parent_wait'],allocation.pin(parent))
+                self.assertFalse(proof['typed_normal_exit_proven'])
+                self.assertFalse(proof['business_pass'])
+                self.assertIsNone(proof['original_ck3_exit_code'])
+                for field,value in [('pid',78),('keeper_actual_exit_code',0),('actual_original_popen_wait',False)]:
+                    with self.subTest(field=field):
+                        write(parent,{**wait,field:value});seal()
+                        with self.assertRaisesRegex(ValueError,'original keeper argparse wait2'):close()
+                write(parent,wait);seal()
+                (run/'host-started.json').write_text('{}',encoding='utf-8')
+                with self.assertRaisesRegex(ValueError,'READY/launch/native'):close()
+
     def test_future_pre_ready_exit_retains_original_wait_before_failure(self):
         with tempfile.TemporaryDirectory() as temporary:
             run=Path(temporary)/'new-run';run.mkdir();keeper=Path(temporary)/'never-created'

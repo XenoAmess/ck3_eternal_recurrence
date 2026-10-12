@@ -9,6 +9,10 @@ from ck3_mod_acceptance_prepare import write_json
 def require(value,message):
     if not value:raise ValueError(message)
 
+LEGACY_KEEPER_SHA='2afdf264b509a045c878fd1ee94426cf418cd747a5773ded43a83001a3813def'
+LEGACY_KEEPER_BUS=Path('C:/workspace/.codex-task-bus')
+LEGACY_KEEPER_BUS_SHA='B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE'
+
 def verify_profile_inventory(declared,observed):
     require(set(observed)==set(declared) and all(observed[k]['sha256']==declared[k]['sha256'] and
             ('bytes' not in declared[k] or observed[k]['bytes']==declared[k]['bytes']) for k in declared),
@@ -154,7 +158,7 @@ def previous_never_launched_closure(previous,freeze,close_path,keeper_root,relea
                 'original_ck3_exit_code':None,'business_pass':False}}
 
 def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
-    """Admit the observed exited keeper before READY; its missing OS wait stays unknown."""
+    """Keep historical unknown waits; retain the observed argparse original wait2."""
     bundle=read_json(close_path)
     require(bundle.get('schema')=='ck3-mod-acceptance-pre-ready-closure-v1' and
             bundle.get('run_id')==freeze['run_id'],'Exact pre-READY predecessor bundle required')
@@ -171,14 +175,24 @@ def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bu
             Path(context.get('keeper_root','')).resolve()==keeper_root.resolve(),
             'Pre-READY allocated context crossed run/keeper')
     row=bundle['allocator_result'];command_path=Path(row['path']);check_pin(command_path,row)
-    command=read_json(command_path);argv=command.get('argv',[])
+    command=read_json(command_path);recorded_command=command
+    retained_allocator=command.get('schema')=='xar-root-exact-public-command-exit-v1'
+    if retained_allocator:
+        operation=command.get('operation',{});operation_path=Path(operation.get('path',''))
+        check_pin(operation_path,operation);recorded_command=read_json(operation_path)
+        require(command.get('actor')=='/root' and recorded_command.get('actor')=='/root' and
+                recorded_command.get('schema')=='xar-root-exact-public-command-v1',
+                'Pre-READY actual allocator wait/operation differs')
+        evidence['allocator_operation']=pin(operation_path)
+    argv=recorded_command.get('argv',[])
     def argument(values,name):
         require(isinstance(values,list) and values.count(name)==1 and values.index(name)+1<len(values),
                 'Pre-READY original argument missing: '+name)
         return values[values.index(name)+1]
-    require(command.get('schema')=='ck3-recorded-actual-command-v1' and
-            type(command.get('exit_code')) is int and command['exit_code']==2 and
-            command.get('finished_at_utc') and 'allocate' in argv and
+    code=command.get('returncode') if retained_allocator else command.get('exit_code')
+    finished=command.get('finished_utc') if retained_allocator else command.get('finished_at_utc')
+    require((retained_allocator or command.get('schema')=='ck3-recorded-actual-command-v1') and
+            type(code) is int and code==2 and finished and 'allocate' in argv and
             Path(argument(argv,'--keeper-output')).resolve()==keeper_root.resolve() and
             Path(argument(argv,'--prepared-case')).resolve()==Path(context['prepared_case']['path']).resolve(),
             'Original pre-READY allocator terminal2 crossed keeper/case')
@@ -188,15 +202,48 @@ def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bu
             'Pre-READY original allocator stdout differs')
     check_pin(Path(stdout['path']),stdout);blocked=read_json(Path(stdout['path']))
     require(blocked.get('status')=='BLOCKED' and
-            blocked.get('error')=='Original keeper failed before READY; preserve actual stderr' and
-            'RuntimeError: bus source or installed CLI is missing' in (previous/'keeper-stderr.log').read_text(encoding='utf-8'),
-            'Exact pre-READY installed-bus failure required')
+            blocked.get('error')=='Original keeper failed before READY; preserve actual stderr',
+            'Exact pre-READY allocator failure required')
     process=read_json(previous/'keeper-process.json');keeper_argv=process.get('argv',[])
     require(type(process.get('pid')) is int and process['pid']>0 and
             type(process.get('create_time')) in (int,float) and
             Path(argument(keeper_argv,'--root')).resolve()==keeper_root.resolve() and
             argument(keeper_argv,'--task')==freeze['screen_task'],
             'Pre-READY original keeper process identity crossed task/root')
+    stderr=(previous/'keeper-stderr.log').read_text(encoding='utf-8')
+    missing_bus='RuntimeError: bus source or installed CLI is missing' in stderr
+    parent_path=previous/'keeper-pre-ready-parent-exit.json'
+    parent=None
+    if not missing_bus:
+        # Only the actual pinned four-argument legacy keeper's rejected bus tail.
+        keeper_paths=[Path(value).resolve() for value in keeper_argv
+                      if Path(value).name=='screen_keeper.py']
+        require(len(keeper_paths)==1,'Exact pre-READY legacy keeper source required')
+        keeper_path=keeper_paths[0];keeper_ref=freeze.get('files',{}).get(str(keeper_path),{})
+        require(keeper_ref.get('bytes')==1600 and keeper_ref.get('sha256')==LEGACY_KEEPER_SHA,
+                'Pre-READY legacy keeper frozen source differs')
+        check_pin(keeper_path,keeper_ref)
+        extras=['--bus-dir',argument(keeper_argv,'--bus-dir'),
+                '--bus-cli',argument(keeper_argv,'--bus-cli'),
+                '--bus-cli-sha256',argument(keeper_argv,'--bus-cli-sha256')]
+        require(keeper_argv[keeper_argv.index('--sequence')+2:]==extras and stderr.splitlines() and
+                stderr.splitlines()[-1]=='screen_keeper.py: error: unrecognized arguments: '+' '.join(extras),
+                'Exact pre-READY unsupported legacy bus arguments required')
+        parent_ref=bundle.get('keeper_parent_wait',{})
+        require(Path(parent_ref.get('path','')).resolve()==parent_path.resolve(),
+                'Pre-READY original keeper wait path differs')
+        check_pin(parent_path,parent_ref);parent=read_json(parent_path)
+        require(parent.get('schema')=='ck3-keeper-pre-ready-original-parent-exit-v1' and
+                parent.get('run_id')==freeze['run_id'] and parent.get('pid')==process['pid'] and
+                parent.get('actual_original_popen_wait') is True and
+                type(parent.get('actual_poll_exit_code')) is int and parent['actual_poll_exit_code']==2 and
+                type(parent.get('keeper_actual_exit_code')) is int and parent['keeper_actual_exit_code']==2 and
+                parent.get('ready_absent') is True and parent.get('game_started') is False and
+                parent.get('business_pass') is False,
+                'Pre-READY exact original keeper argparse wait2 required')
+        evidence['keeper_parent_wait']=pin(parent_path)
+    require(not retained_allocator or parent is not None,
+            'Actual allocator wait variant requires the observed legacy argparse wait2')
     registered=read_json(previous/'screen-registration.json')
     sequence=registered.get('task',{}).get('last_sequence')
     require(registered.get('ok') is True and registered.get('task',{}).get('task_id')==freeze['screen_task'] and
@@ -204,8 +251,9 @@ def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bu
             'Pre-READY original registration/keeper sequence differs')
     names=('ready-context.json','launch-intent.json','launch.json','host-started.json','host-supervisor.json',
            'supervisor.json','host-original-process-exit.json','native-report.json',
-           'native-cleanup-projection.actual.json','keeper-actual-parent-exit.json','keeper-pre-ready-parent-exit.json')
+            'native-cleanup-projection.actual.json','keeper-actual-parent-exit.json')
     absent={name:not (previous/name).exists() for name in names}
+    if parent is None:absent['keeper-pre-ready-parent-exit.json']=not parent_path.exists()
     absent['keeper_root']=not keeper_root.exists()
     absent['state/control']=not (Path(freeze['state_dir'])/'control').exists()
     absent['run/controls/*']=(previous/'controls').is_dir() and not any((previous/'controls').iterdir())
@@ -226,8 +274,10 @@ def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bu
                     registration=pin(previous/'screen-registration.json'))
     return {'mode':'previous-shared-pre-ready-keeper-failure','actual_process_inventory':inventory,
         'failure_cleanup':{'close':pin(close_path),'original_evidence':evidence,
-            'absent_launch_native_and_control_evidence':absent,'original_keeper_exit_code':None,
-            'original_keeper_wait_proven':False,'native_session_started':False,'host_started':False,
+            'absent_launch_native_and_control_evidence':absent,'original_keeper_exit_code':2 if parent else None,
+            'original_keeper_wait_proven':parent is not None,
+            'original_keeper_error_kind':'legacy-keeper-unsupported-bus-arguments' if parent else 'installed-bus-missing',
+            'native_session_started':False,'host_started':False,
             'typed_normal_exit_proven':False,'original_ck3_exit_code':None,'business_pass':False}}
 
 def closed_lease(keeper,release,task):
@@ -703,8 +753,14 @@ def runtime_process_inventory(psutil,caller_pid):
             'process_absence_is_normal_exit_proof':False}
 
 def keeper_command(python,keeper,lease_repo,keeper_root,task,sequence,bus_dir,bus_sha):
-    return [str(python),'-B','-X','utf8',str(keeper),'--repo',str(lease_repo),
-        '--root',str(keeper_root.resolve()),'--task',task,'--sequence',str(sequence),
+    argv=[str(python),'-B','-X','utf8',str(keeper),'--repo',str(lease_repo),
+        '--root',str(keeper_root.resolve()),'--task',task,'--sequence',str(sequence)]
+    if hashlib.sha256(Path(keeper).read_bytes()).hexdigest()==LEGACY_KEEPER_SHA:
+        require(Path(bus_dir).resolve()==LEGACY_KEEPER_BUS.resolve() and
+                bus_sha.upper()==LEGACY_KEEPER_BUS_SHA,
+                'Pinned legacy keeper requires its original installed bus and SHA')
+        return argv
+    return argv+[
         '--bus-dir',str(bus_dir),'--bus-cli',str(lease_repo/'tools/codex_task_bus.py'),
         '--bus-cli-sha256',bus_sha.upper()]
 
