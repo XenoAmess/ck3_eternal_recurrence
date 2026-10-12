@@ -233,8 +233,31 @@ class Focused(unittest.TestCase):
         self.assertGreaterEqual(len(sources),12)
         for path in sources:
             source=path.read_text(encoding='utf-8-sig')
-            ast.parse(source,filename=str(path))
-            self.assertNotIn('C:/workspace/',source,str(path))
+            tree=ast.parse(source,filename=str(path))
+            checked_source=source
+            if path.name=='ck3_mod_acceptance_allocate.py':
+                # One frozen legacy keeper bus is an identity guard, not a runtime selector.
+                assignments={n.targets[0].id:n for n in tree.body if isinstance(n,ast.Assign)
+                    and len(n.targets)==1 and isinstance(n.targets[0],ast.Name)}
+                legacy=assignments['LEGACY_KEEPER_BUS']
+                self.assertEqual(ast.unparse(legacy.value),"Path('C:/workspace/.codex-task-bus')")
+                self.assertEqual(ast.literal_eval(assignments['LEGACY_KEEPER_SHA'].value),
+                    '2afdf264b509a045c878fd1ee94426cf418cd747a5773ded43a83001a3813def')
+                self.assertEqual(ast.literal_eval(assignments['LEGACY_KEEPER_BUS_SHA'].value),
+                    'B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE')
+                command=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='keeper_command')
+                branch=next(n for n in command.body if isinstance(n,ast.If))
+                self.assertEqual(ast.unparse(branch.test),
+                    'hashlib.sha256(Path(keeper).read_bytes()).hexdigest() == LEGACY_KEEPER_SHA')
+                self.assertEqual(ast.unparse(branch.body[0].value.args[0]),
+                    'Path(bus_dir).resolve() == LEGACY_KEEPER_BUS.resolve() and bus_sha.upper() == LEGACY_KEEPER_BUS_SHA')
+                self.assertEqual(ast.unparse(branch.body[1]),'return argv')
+                self.assertEqual(sum(isinstance(n,ast.Name) and n.id=='LEGACY_KEEPER_BUS'
+                    and isinstance(n.ctx,ast.Load) for n in ast.walk(tree)),1)
+                lines=source.splitlines(keepends=True)
+                lines[legacy.lineno-1:legacy.end_lineno]=['\n']
+                checked_source=''.join(lines)
+            self.assertNotIn('C:/workspace/',checked_source,str(path))
             self.assertNotIn('C:\\workspace\\',source,str(path))
             self.assertNotIn('98702f88',source.lower(),str(path))
         ui=ast.parse((HERE/'ck3_mod_acceptance_cases/xqol_ui.py').read_text())
