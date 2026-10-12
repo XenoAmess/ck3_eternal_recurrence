@@ -41,6 +41,11 @@ repeat its whole-file hash or run the Game/SDK.
   75428992; all 128 bytes and 16 complete QWORD cells were saved. Their raw
   bytes are identical. The 512-byte gap, common address and two secondary
   contexts were not read. No decoder, target follow or new whole-EXE hash ran.
+- Scope F Source25 had its own Root numeric admission and actually exited 0.
+  It read one complete 2,933,220-byte `.pdata` range in 45 exact reads, parsed
+  and validated all 244,435 records, and retained all sixteen prior pointer
+  occurrences. All pre/post and final EXE stat checks matched. No target body,
+  unwind, string, decoder or additional whole-EXE hash was read.
 
 Full `.pdata` intervals and complete linear decoding do not establish complete
 logical functions. The 18-byte interval beginning at RVA 57849856 and the
@@ -100,11 +105,26 @@ context/offset observations.
 | `+48` | 8725184 | 8722112 | same |
 | `+56` | 14238688 | 14235616 | same |
 
-The seven unique target coordinates are proposed inputs for a separately
-admitted `.pdata` lookup. No target body was read or selected, and no function
-entry, formal dispatch consumer, Character receiver, return type or scale was
-qualified. Equality of the first 64 bytes does not establish equality of the
-whole tables or a complete negative certificate for skill getters.
+At Scope E's completion, the seven unique target coordinates were proposed
+inputs for a separate `.pdata` lookup. Source25 subsequently completed that
+lookup, with the following metadata results:
+
+| Target RVA | Complete metadata lookup | Unique interval, when present | Bytes |
+| --- | --- | --- | ---: |
+| 57862592 | entry equals begin | `[57862592,57862680)` | 88 |
+| 8725184 | no containing record | unresolved | — |
+| 45034960 | entry equals begin | `[45034960,45035050)` | 90 |
+| 8725440 | no containing record | unresolved | — |
+| 10542224 | no containing record | unresolved | — |
+| 57855488 | entry equals begin | `[57855488,57856730)` | 1242 |
+| 14238688 | no containing record | unresolved | — |
+
+Absence of a containing `.pdata` record does not prove that a target is not a
+function or entry. The three unique intervals qualify only metadata ownership;
+their bodies and unwind data remain unread. No formal dispatch consumer,
+Character receiver, return type, scale or callback ABI is qualified. Equality
+of the first 64 bytes does not establish equality of the whole tables or a
+complete negative certificate for skill getters.
 
 ## Installed education script source
 
@@ -147,6 +167,27 @@ in this one file; travel, relation afterstate and the full acceptance chain
 remain unresolved. This is installed source text with stable metadata, not a
 runtime build pin or observed player outcome.
 
+Source25 subsequently located the complete `ward_depart_effect` in
+`00_education_effects.txt:3288–3471`, rather than Source24's interaction file.
+The six exact named candidates were checked once, with stable metadata; the
+184-line body was then read once and shared among fourteen source lanes.
+Source24's earlier limited-file absence and unknown remain historical facts.
+
+The no-travel branch has an actual authored relation writer: when the specified
+guardian lacks the specified ward relation, line 3343 sets guardian→ward inside
+`hidden_effect`. This differs from the earlier tooltip setters. The branch also
+transfers the ward's culture/faith character flags to guardian→ward relation
+flags and removes the character flags; it does not perform conversion. Neither
+the flags nor the setter prove an actual current relation or conversion result.
+
+Travel-needed branches instead create plans and two-year role-valued
+travelling/waiting variables, with separate named start/cancel/arrival hooks.
+Those hooks remain unread. The ward's ten-year requester variable stores
+`puppet_or_actor`; none of these expiration literals is an education-point
+value or acquisition cadence. This complete body does not directly write
+education points, focus, final trait rank or the support effect's selected
+educator. Nested effects and hooks keep those wider outcomes unresolved.
+
 ## Small evidence references and retention
 
 These local evidence names are relative to
@@ -163,6 +204,7 @@ They are finite research inputs, not permanent availability promises.
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pdata-source20/SOURCE20-ROOT-PRIMARY-CELL-PDATA-RESULT.json` | 4003 | `8955f55e16d52cec68478f2d1fdaf91e579468d9d072558f7e53f1d32b4e96c0` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-body-source22/SOURCE22-ROOT-PRIMARY-CELL-BODY-RESULT.json` | 9616 | `94a450c8c132345786f9c3429219c06fe2613d071462656d412b887d89abf3e5` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pointer-source24/SOURCE24-ROOT-PRIMARY-CELL-POINTER-RESULT.json` | 11107 | `b02c49fd91af3ebc50529c14db119a46d52bd863a09237e2aa706ccd0c874a38` |
+| `sdk85-source-preparation/sdk86-candidates/m6-primary-pointer-owner-source25/SOURCE25-ROOT-PRIMARY-POINTER-OWNER-RESULT.json` | 6917 | `10ec9ef2ba501c6c5fae5b18abe5eee29360d6211d8c412fdd181f763f74fe5d` |
 
 Source24's new reviewed plan is 5808 bytes, SHA-256
 `64d677d5d63e453508d8cb988ecc9348edfb8afd0903922167aad4a5e84c4927`;
@@ -177,6 +219,18 @@ The education text contracts are the separate
 candidate parent. Their decoded source-line transcripts do not claim byte-exact
 original-file hashes. Two whole-contract static reviews passed; no live
 education, guardian or native-getter qualification was added.
+
+Source25's independent numeric admission is 6213 bytes, SHA-256
+`29dcc7b1a0280974f55e4f573f9fcc0355e3de7e0756f26850f0b77beb695747`;
+its reviewed plan is 8383 bytes, SHA-256
+`7417a333f24d25c17fea312669d366f257a8919604b5e0911a7d083315889cd0`.
+The leaf used 53204 source bytes and 7424 output bytes. The sole intake took
+1.0582305 seconds. Root read the complete result and retained all three matches
+and four complete-scan missing results without assigning semantic function types.
+The education Source25 contract is
+`sdk85-source-preparation/sdk86-candidates/g2-education-ward-depart-consumer-source25/SOURCE-CONTRACT.json`.
+Root read its full decoded 184-line transcript; the contract explicitly removes
+leading indentation and does not claim a byte-exact installed-file copy.
 
 Source21's separate failed body result retains zero read bytes, zero instruction
 rows and the actual decoder import failure. The installed source intake is

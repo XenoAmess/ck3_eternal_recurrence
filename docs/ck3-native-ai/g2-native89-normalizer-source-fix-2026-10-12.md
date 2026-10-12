@@ -56,6 +56,50 @@ metadata files; the corrected summary read and compared those files without
 overwriting them. This compile closure does not grant Game, family or M7
 qualification. R104 runtime adoption remains a separate actual operation.
 
+## R104 actual runtime, 05:35 UTC update
+
+Root adopted the homogeneous Native89 DLL for a separate R104 ordinary
+campaign attempt. The new Game PID is 191172, with kernel creation ticks
+`134362549441966160`; it remained minimized. Fresh desktop pixels were reviewed
+to confirm Steam offline before the actual launch. No Steam mode change or
+desktop test fixture occurred.
+
+The first SDK qualification wrapper failed before SDK startup or RPC:
+`ModuleNotFoundError: No module named 'native_source_profile'`. Its phase RED,
+stderr and empty guard leaf remain unchanged. An explicitly separate Source27
+startup repair inserted the reviewed F22 source directory into this wrapper's
+Python search path before the original stdio owner was executed. It did not
+reprepare the campaign, relaunch the Game or resend a business request.
+
+The repaired held SDK session observed five original core-readiness timeouts,
+then a sixth ready result. Its single full paused snapshot subsequently passed
+all thirteen qualification checks at 05:26:29 UTC. These are thirteen checks,
+not thirteen accepted capability families or R104 final full13 closure. The
+actual frame was date 53290320, public revision 2, native revision 1, living
+actor 29829, run `native-29829-2bc2d599f7f9`, bridge PID 191172 and connection
+generation 1. Ordinary succession remained `xar_off` and the campaign goal
+retained zero reconciled successions.
+
+The first ordinary `ck3_auto_turn` was submitted once to that same held SDK.
+Its original response completed at 05:35:18 UTC with status `executed` and
+step `private-query-player-construction-receipt-v1`. It rechecked a restored
+construction receipt and returned the same date/public/native frame. Historical
+plan observations remain historical; they are not current-build qualifications.
+No new date, natural successor or SAVE was established. Verified saved-day
+credit remains the R103 baseline of 6082, with zero additional saved days.
+
+Actual evidence is external below
+`native71-continuation-20261010/runtime-01/native84-resume-20261012/native89-r0104/`:
+
+- `managed/operator/ROOT-R85-COLD-CORE-WAIT.json`, including all original core outcomes.
+- `managed/operator/ROOT-R85-COLD-PAUSED-SNAPSHOT-QUALIFIED.json` and its original full response.
+- `root-first-ordinary01/ROOT-ACTUAL-FIRST-ORDINARY.json`.
+- `managed/operator/gameplay-responses/810-r0104-first-ordinary-000001-normal.json`.
+
+The SDK application, outer supervisor and Game were still running at this
+update. No final SAVE, normal Game exit, natural M7 acceptance or R104 final
+freeze is inferred from startup, source review or the ordinary response.
+
 The original source/build review deadline remains 2026-10-12 16:47:28.264315 UTC.
 The current saved campaign and its full13 input keep their separate limited
 protection. Copies and source fixes do not extend either deadline; reclamation
