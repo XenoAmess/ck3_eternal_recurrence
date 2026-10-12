@@ -45,6 +45,8 @@
 UIA 通过精确 HWND、Name、AutomationId 定位的语义动作不经过截图坐标，但必须验证业务结果。
 2026-09-12 实测 React Select 的 `Invoke`/`Select` 可以返回成功却未选中；通过聚焦组合框、导航键选中后，必须读取显示的选中名称。
 
+2026-10-12 CK3 1.20.0.4 的 R0072 实测：在前台窗口、控件焦点和 US0409 均已确认时，`pyautogui` 虚拟键 Escape 未关闭原生面板；复用 `tools/ck3_stability_fixture/windows.py` 的 Win32 `SendInput` 扫描码方式后，逐帧确认面板关闭并打开原生退出菜单。滚轮调用及滚动条点击未取得完整条件列表，不能以输入ACK声称已滚动。后继可复用已有 `MouseInput` 原语，但原生 wheel 路径尚无本轮实机通过；不得由键盘成功外推滚轮成功。原始观察和出处见 [R0072](li-yu-dao/acceptance/2026-10-12-headship-and-tenet-playstyles/LIVE-R0072.md)。
+
 ## 验证命令
 
 ```text

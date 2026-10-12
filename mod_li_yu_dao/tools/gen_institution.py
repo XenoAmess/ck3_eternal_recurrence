@@ -314,12 +314,55 @@ lyd_i3b_ready_trigger = {
     script('common/script_values/lyd_i3b_institution_values.txt',r'''
 lyd_i3b_quorum_value = { value = var:lyd_i3b_yes multiply = 3 subtract = { value = var:lyd_i3b_total multiply = 2 } }
 ''')
-    terms=['lyd_i3b_show_terms_effect = {','    custom_tooltip = lyd_i3b_doctrine_clause_tt',
+    terms=['lyd_i3b_show_terms_effect = {','    hidden_effect = { save_scope_as = lyd_i3b_progress_actor }',
+           '    custom_tooltip = lyd_i3b_doctrine_clause_tt',
+           '    custom_tooltip = lyd_i3b_npc_support_tt',
            '    every_in_list = { variable = lyd_i3b_rites']
     for rite in catalogue.RITES:
         terms.append(f'        if = {{ limit = {{ this = rite:{rite.script_id} }} custom_tooltip = lyd_i3b_term_{rite.slug}_tt }}')
     for vanilla in ('jingxue','daoxue'):
         terms.append(f'        if = {{ limit = {{ this = rite:{vanilla} }} custom_tooltip = lyd_i3b_term_{vanilla}_tt }}')
+    # Display only captured fields from this actor's round. Missing or foreign
+    # records are unknown, never zero. Scope aliases do not alter proposal state.
+    terms.append(r'''
+        hidden_effect = { save_scope_as = lyd_i3b_progress_rite }
+        if = { limit = {
+            scope:lyd_i3b_progress_actor = { has_variable = lyd_i3b_active has_variable = lyd_i3b_serial }
+            has_variable = lyd_i3b_owner has_variable = lyd_i3b_serial
+            has_variable = lyd_i3b_yes has_variable = lyd_i3b_total
+            has_variable = lyd_i3b_signed has_variable = lyd_i3b_dormant
+        }
+            if = { limit = {
+                var:lyd_i3b_owner = scope:lyd_i3b_progress_actor
+                var:lyd_i3b_serial = scope:lyd_i3b_progress_actor.var:lyd_i3b_serial
+            }
+                custom_tooltip = lyd_i3b_progress_count_tt
+                if = { limit = { var:lyd_i3b_dormant = 1 }
+                    custom_tooltip = lyd_i3b_progress_dormant_tt
+                }
+                else = {
+                    if = { limit = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 }
+                        custom_tooltip = lyd_i3b_progress_quorum_tt
+                    }
+                    else = { custom_tooltip = lyd_i3b_progress_no_quorum_tt }
+                    if = { limit = { exists = var:lyd_i3b_delegate }
+                        var:lyd_i3b_delegate = { hidden_effect = { save_scope_as = lyd_i3b_progress_delegate } }
+                        custom_tooltip = lyd_i3b_progress_delegate_tt
+                    }
+                    else = { custom_tooltip = lyd_i3b_progress_no_delegate_tt }
+                    if = { limit = { var:lyd_i3b_signed = 1 }
+                        custom_tooltip = lyd_i3b_progress_signed_tt
+                    }
+                    else_if = { limit = { var:lyd_i3b_signed = 0 }
+                        custom_tooltip = lyd_i3b_progress_unsigned_tt
+                    }
+                    else = { custom_tooltip = lyd_i3b_progress_unknown_tt }
+                }
+            }
+            else = { custom_tooltip = lyd_i3b_progress_unknown_tt }
+        }
+        else = { custom_tooltip = lyd_i3b_progress_unknown_tt }
+''')
     terms += ['    }','}']
     script('common/scripted_effects/lyd_i3b_terms_effects.txt','\n'.join(terms))
     script('common/scripted_effects/lyd_i3b_setup_effects.txt',r'''
@@ -715,7 +758,24 @@ lyd_i3b_nominate_interaction = {
 }
 ''')
     events=['namespace = lyd']
+    def npc_chance(support):
+        # The initiator is also the first headship candidate. Opinion is read
+        # from the NPC option recipient toward that candidate, not in reverse.
+        # Stock syntax: 00_marriage_interactions opinion/value; religious event
+        # ai_chance modifier/factor. Positive factors keep both choices possible.
+        friendly, hostile, learned, unlearned = ('1.5', '0.5', '1.25', '0.8') if support else ('0.75', '1.5', '0.9', '1.1')
+        modifiers = ((friendly, 'opinion = { target = scope:lyd_i3b_actor value >= 50 }'),
+                     (hostile, 'opinion = { target = scope:lyd_i3b_actor value <= -50 }'),
+                     (learned, 'scope:lyd_i3b_actor = { learning >= 20 }'),
+                     (unlearned, 'scope:lyd_i3b_actor = { learning < 10 }'))
+        return f'ai_chance = {{ base = {60 if support else 40}\n' + ''.join(
+            f'''            modifier = {{ factor = {factor}
+                trigger_if = {{ limit = {{ exists = scope:lyd_i3b_actor }} {condition} }}
+                trigger_else = {{ always = no }}
+            }}\n''' for factor, condition in modifiers) + '        }'
     def event(id,title,gate,options):
+        if id in (410,411,413):
+            options=options.replace('ai_chance = { base = 60 }',npc_chance(True)).replace('ai_chance = { base = 40 }',npc_chance(False))
         # Read-only effect tooltip enumerates the exact captured rite objects.
         options=options.replace('option = { name =','option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name =')
         events.append(f'''lyd.{id} = {{ type = character_event title = {title} desc = lyd_i3b_terms_desc theme = faith trigger = {{ {gate} }} {options} }}''')
@@ -814,6 +874,16 @@ lyd_i3b_nominate_interaction = {
                                      'Institution terms: the current Faith and complete following rite list replace no head with temporal head. Vanilla Jingxue/Daoxue do not opt out. Tenets, main rite and followers stay unchanged. First candidate: [lyd_i3b_actor.GetTitledFirstName]. Dormant rites are terms but contribute no affirmative votes.'),
     }
     loc.update({
+        'lyd_i3b_npc_support_tt':('NPC的中性赞成／反对权重为60／40。对首任宗主候选（发起者）的好感至少50会提高支持，至多-50会降低支持；候选学识至少20会提高支持，不足10会降低支持。各项仅有限加权，赞成与反对始终都有可能；不替代玩家选择。本轮学者票不可改投；若要改善关系或培养候选后重议，请先撤回。各派进度为本轮捕获记录，名单与资格仍须完整重核，所有玩家同意另行要求。','Neutral NPC support/refusal weights are 60/40. Opinion of the first headship candidate (the initiator) of at least 50 raises support; at most -50 lowers it. Candidate Learning of at least 20 raises support; below 10 lowers it. These are finite weights: support and refusal remain possible and never replace human choices. Scholarly ballots cannot be recast this round; withdraw before improving relations or developing the candidate for a new round. School progress shows captured round records, subject to full roster and eligibility revalidation; every human must still consent separately.'),
+        'lyd_i3b_progress_count_tt':('[lyd_i3b_progress_rite.GetName]：赞成 [lyd_i3b_progress_rite.MakeScope.Var(\'lyd_i3b_yes\').GetValue|0] ／合格学者 [lyd_i3b_progress_rite.MakeScope.Var(\'lyd_i3b_total\').GetValue|0]。','[lyd_i3b_progress_rite.GetName]: affirmative ballots [lyd_i3b_progress_rite.MakeScope.Var(\'lyd_i3b_yes\').GetValue|0] / eligible scholars [lyd_i3b_progress_rite.MakeScope.Var(\'lyd_i3b_total\').GetValue|0].'),
+        'lyd_i3b_progress_dormant_tt':('本轮休眠礼仪：列入制度条款，但不贡献赞成票或代替活跃派授权。','Dormant this round: included in the institution terms, without affirmative votes or a mandate for an active school.'),
+        'lyd_i3b_progress_quorum_tt':('本派已达到三分之二学者授权。','This school has reached its two-thirds scholarly mandate.'),
+        'lyd_i3b_progress_no_quorum_tt':('本派尚未达到三分之二学者授权；合格学者为零也不能通过。','This school has not reached its two-thirds scholarly mandate; zero eligible scholars cannot pass.'),
+        'lyd_i3b_progress_delegate_tt':('本派已接受提名的代表：[lyd_i3b_progress_delegate.GetTitledFirstName]。','Accepted representative: [lyd_i3b_progress_delegate.GetTitledFirstName].'),
+        'lyd_i3b_progress_no_delegate_tt':('本派尚无已接受提名的代表。','This school has no accepted representative yet.'),
+        'lyd_i3b_progress_signed_tt':('代表已签署本轮。','The representative has signed this round.'),
+        'lyd_i3b_progress_unsigned_tt':('代表尚未签署本轮。','The representative has not signed this round.'),
+        'lyd_i3b_progress_unknown_tt':('[lyd_i3b_progress_rite.GetName]：无法读取匹配本人本轮的完整进度记录；不按零票或已通过处理。','[lyd_i3b_progress_rite.GetName]: complete progress for my matching round is unavailable; this is neither zero ballots nor approval.'),
         'lyd_i3b_begin_complete_tt':('上述创设条件须全部满足。','All initiation conditions above must be met.'),
         'lyd_i3b_nominate_complete_tt':('上述提名条件须全部满足。','All nomination conditions above must be met.'),
         'lyd_i3b_begin_player_tt':('本人为玩家。','I am a human player.'),

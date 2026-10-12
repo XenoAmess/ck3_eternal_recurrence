@@ -1,6 +1,8 @@
 ﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
 lyd_i3b_show_terms_effect = {
+    hidden_effect = { save_scope_as = lyd_i3b_progress_actor }
     custom_tooltip = lyd_i3b_doctrine_clause_tt
+    custom_tooltip = lyd_i3b_npc_support_tt
     every_in_list = { variable = lyd_i3b_rites
         if = { limit = { this = rite:lyd_rite_kongmen } custom_tooltip = lyd_i3b_term_kongmen_tt }
         if = { limit = { this = rite:lyd_rite_mengzi } custom_tooltip = lyd_i3b_term_mengzi_tt }
@@ -40,5 +42,44 @@ lyd_i3b_show_terms_effect = {
         if = { limit = { this = rite:lyd_rite_jingshi } custom_tooltip = lyd_i3b_term_jingshi_tt }
         if = { limit = { this = rite:jingxue } custom_tooltip = lyd_i3b_term_jingxue_tt }
         if = { limit = { this = rite:daoxue } custom_tooltip = lyd_i3b_term_daoxue_tt }
+
+        hidden_effect = { save_scope_as = lyd_i3b_progress_rite }
+        if = { limit = {
+            scope:lyd_i3b_progress_actor = { has_variable = lyd_i3b_active has_variable = lyd_i3b_serial }
+            has_variable = lyd_i3b_owner has_variable = lyd_i3b_serial
+            has_variable = lyd_i3b_yes has_variable = lyd_i3b_total
+            has_variable = lyd_i3b_signed has_variable = lyd_i3b_dormant
+        }
+            if = { limit = {
+                var:lyd_i3b_owner = scope:lyd_i3b_progress_actor
+                var:lyd_i3b_serial = scope:lyd_i3b_progress_actor.var:lyd_i3b_serial
+            }
+                custom_tooltip = lyd_i3b_progress_count_tt
+                if = { limit = { var:lyd_i3b_dormant = 1 }
+                    custom_tooltip = lyd_i3b_progress_dormant_tt
+                }
+                else = {
+                    if = { limit = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 }
+                        custom_tooltip = lyd_i3b_progress_quorum_tt
+                    }
+                    else = { custom_tooltip = lyd_i3b_progress_no_quorum_tt }
+                    if = { limit = { exists = var:lyd_i3b_delegate }
+                        var:lyd_i3b_delegate = { hidden_effect = { save_scope_as = lyd_i3b_progress_delegate } }
+                        custom_tooltip = lyd_i3b_progress_delegate_tt
+                    }
+                    else = { custom_tooltip = lyd_i3b_progress_no_delegate_tt }
+                    if = { limit = { var:lyd_i3b_signed = 1 }
+                        custom_tooltip = lyd_i3b_progress_signed_tt
+                    }
+                    else_if = { limit = { var:lyd_i3b_signed = 0 }
+                        custom_tooltip = lyd_i3b_progress_unsigned_tt
+                    }
+                    else = { custom_tooltip = lyd_i3b_progress_unknown_tt }
+                }
+            }
+            else = { custom_tooltip = lyd_i3b_progress_unknown_tt }
+        }
+        else = { custom_tooltip = lyd_i3b_progress_unknown_tt }
+
     }
 }

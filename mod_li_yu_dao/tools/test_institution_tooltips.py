@@ -18,12 +18,16 @@ import gen_institution
 DECISIONS = 'common/decisions/lyd_i3b_institution_decisions.txt'
 UNCHANGED_POLICY = {
     'common/script_values/lyd_i3b_institution_values.txt': '61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156',
-    'common/scripted_effects/lyd_i3b_terms_effects.txt': '00216b79ad3c3db91d9bc172f29e5a21982abf104ffc6862d3e2edf370562d8c',
     'common/scripted_effects/lyd_i3b_setup_effects.txt': 'fa913461b91dbd8a876dd4fac320c6f3d5a15222afd650b4fc68276e8cad03c7',
     'common/scripted_effects/lyd_i3b_response_effects.txt': 'cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6',
     'common/scripted_effects/lyd_i3b_commit_effects.txt': 'dd327b875eb0c374937461a8d8cde8a384a994911260d9065fa2b51387a68d3c',
     'common/character_interactions/lyd_i3b_nomination_interactions.txt': '410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98',
-    'events/lyd_i3b_institution_events.txt': '954219d1bfee6242d0135c7d4426202259e63f01989c22153cf19036bbfbe116',
+}
+# The new support/progress tests invert only declared UI/AI additions before
+# comparing these old ASTs. Authority, callbacks and player options stay frozen.
+PREVIOUS_PRESENTATION_AST = {
+    'common/scripted_effects/lyd_i3b_terms_effects.txt': '91505124f0c4a32218398b0bab359694bc80b9e7b8a96b27180b93e346c4c69e',
+    'events/lyd_i3b_institution_events.txt': '49ecae7bfd0906752bbac20e75a8aca99bce3415054c2fd17e380f85bba6160c',
 }
 
 
@@ -358,6 +362,202 @@ class OriginalConfucianInitiationTests(unittest.TestCase):
             religion = religion:confucianism_religion
             has_character_flag = lyd_enabled lyd_member_rite_trigger = yes
         '''))
+
+
+class SupportPolicy(PolicyAST):
+    """Evaluate generated chance predicates with directional NPC opinions."""
+    def entry(self, entry, current):
+        if entry.key == 'opinion':
+            target = self.resolve(scalar(entry.value, 'target'), current)
+            if target is None:
+                raise AssertionError('Opinion read before candidate scope exists')
+            comparison = next(e for e in entry.value.entries if e.key == 'value')
+            value = current.fields['opinions'][target]
+            threshold = int(comparison.value)
+            return {'>=': value >= threshold, '<=': value <= threshold}[comparison.operator]
+        return super().entry(entry, current)
+
+
+class InstitutionSupportProgressTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.outputs = gen_institution.build_outputs()
+        cls.events = {e.key: e.value for e in parse_clausewitz(
+            cls.outputs['events/lyd_i3b_institution_events.txt'].decode('utf-8-sig')).entries
+            if isinstance(e.value, Block)}
+        cls.terms = parse_clausewitz(cls.outputs[
+            'common/scripted_effects/lyd_i3b_terms_effects.txt'].decode('utf-8-sig'))
+        cls.defs = Corpus().triggers
+
+    def chances(self, event_id):
+        return {scalar(option, 'name'): one(option, 'ai_chance')
+                for option in [e.value for e in self.events[f'lyd.{event_id}'].entries if e.key == 'option']
+                if any(e.key == 'ai_chance' for e in option.entries)}
+
+    def weight(self, chance, opinion=0, learning=15, npc_learning=15, missing_actor=False):
+        actor = Scope('candidate', {'learning': learning, 'opinions': {}})
+        npc = Scope('voter', {'learning': npc_learning, 'opinions': {actor: opinion}})
+        actor.fields['opinions'][npc] = 100  # Reverse opinion must not matter.
+        env = {} if missing_actor else {'scope:lyd_i3b_actor': actor}
+        engine = SupportPolicy({}, npc, {}, env)
+        result = float(scalar(chance, 'base'))
+        for modifier in [e.value for e in chance.entries if e.key == 'modifier']:
+            condition = Block(tuple(e for e in modifier.entries if e.key != 'factor'))
+            if engine.block(condition, npc):
+                result *= float(scalar(modifier, 'factor'))
+        return result
+
+    def test_three_npc_events_share_bounded_weights_and_human_choice_stays_unweighted(self):
+        expected = None
+        for event_id, yes_name in [(410, 'lyd_i3b_yes'), (411, 'lyd_i3b_yes'), (413, 'lyd_i3b_sign')]:
+            choices = self.chances(event_id)
+            pair = (choices[yes_name], choices['lyd_i3b_no'])
+            if expected is not None:
+                self.assertEqual(pair, expected)
+            expected = pair
+            self.assertEqual([len([e for e in c.entries if e.key == 'modifier']) for c in pair], [4, 4])
+            self.assertEqual([self.weight(c) for c in pair], [60, 40])
+        self.assertEqual(self.chances(412), {})
+        self.assertEqual(self.weight(self.chances(413)['lyd_i3b_wait']), 0)
+
+    def test_directional_opinion_thresholds_are_exact(self):
+        chances = self.chances(411)
+        for opinion, weights in [(-50, (30, 60)), (-49, (60, 40)), (49, (60, 40)), (50, (90, 30))]:
+            with self.subTest(opinion=opinion):
+                self.assertEqual(tuple(self.weight(chances[k], opinion) for k in ('lyd_i3b_yes', 'lyd_i3b_no')), weights)
+
+    def test_learning_is_candidate_learning_with_exact_10_and_20_boundaries(self):
+        chances = self.chances(411)
+        for learning, weights in [(9, (48, 44)), (10, (60, 40)), (19, (60, 40)), (20, (75, 36))]:
+            with self.subTest(learning=learning):
+                self.assertEqual(tuple(self.weight(chances[k], learning=learning, npc_learning=100)
+                                       for k in ('lyd_i3b_yes', 'lyd_i3b_no')), weights)
+
+    def test_extreme_support_refusal_and_absent_scope_never_force_an_answer(self):
+        yes, no = self.chances(411)['lyd_i3b_yes'], self.chances(411)['lyd_i3b_no']
+        for opinion in (-100, -50, -49, 0, 49, 50, 100):
+            for learning in (0, 9, 10, 19, 20, 100):
+                y, n = self.weight(yes, opinion, learning), self.weight(no, opinion, learning)
+                self.assertGreaterEqual(y, 24)
+                self.assertLessEqual(y, 112.5)
+                self.assertGreaterEqual(n, 27)
+                self.assertLessEqual(n, 66)
+        self.assertEqual(self.weight(yes, missing_actor=True), 60)
+        self.assertEqual(self.weight(no, missing_actor=True), 40)
+
+    def progress(self, state):
+        actor, _, _, _, globals_, env = state
+        engine = PolicyAST(self.defs, actor, globals_, env.copy())
+        rows = []
+
+        def execute(body, current):
+            branch = None
+            for entry in body.entries:
+                key, value = entry.key, entry.value
+                if key == 'variable':
+                    continue
+                if key == 'save_scope_as':
+                    engine.env['scope:' + value] = current
+                elif key == 'custom_tooltip':
+                    rows.append((engine.env.get('scope:lyd_i3b_progress_rite'), value,
+                                 engine.env.get('scope:lyd_i3b_progress_delegate')))
+                elif key in {'if', 'else_if', 'else'}:
+                    take = key == 'else' or engine.block(one(value, 'limit'), current)
+                    if key != 'if':
+                        take = not branch and take
+                    branch = take if key == 'if' else branch or take
+                    if take:
+                        execute(Block(tuple(e for e in value.entries if e.key != 'limit')), current)
+                elif key == 'every_in_list':
+                    for item in current.lists.get(scalar(value, 'variable'), []):
+                        execute(value, item)
+                elif key == 'hidden_effect':
+                    execute(value, current)
+                else:
+                    target = engine.resolve(key, current)
+                    if not isinstance(target, Scope) or not isinstance(value, Block):
+                        raise AssertionError('Unexpected state-changing or unknown progress operation: ' + key)
+                    execute(value, target)
+        execute(one(self.terms, 'lyd_i3b_show_terms_effect'), actor)
+        return rows
+
+    def test_progress_uses_actual_captured_counts_and_changes_no_round_state(self):
+        state = original_confucian_world(active=True)
+        actor, npc, faith, rite, _, _ = state
+        rite.variables.update(lyd_i3b_yes=1, lyd_i3b_total=3, lyd_i3b_signed=0, lyd_i3b_delegate=npc)
+        scopes = [actor, npc, faith] + faith.fields['rites']
+        before = [(dict(s.variables), {k: list(v) for k, v in s.lists.items()}) for s in scopes]
+        rows = self.progress(state)
+        own = [(key, delegate) for r, key, delegate in rows if r is rite]
+        self.assertIn(('lyd_i3b_progress_count_tt', None), own)
+        self.assertIn(('lyd_i3b_progress_no_quorum_tt', None), own)
+        self.assertIn(('lyd_i3b_progress_delegate_tt', npc), own)
+        self.assertIn(('lyd_i3b_progress_unsigned_tt', npc), own)
+        self.assertEqual(before, [(dict(s.variables), {k: list(v) for k, v in s.lists.items()}) for s in scopes])
+        rite.variables.update(lyd_i3b_yes=2, lyd_i3b_signed=1)
+        keys = {key for r, key, _ in self.progress(state) if r is rite}
+        self.assertIn('lyd_i3b_progress_quorum_tt', keys)
+        self.assertIn('lyd_i3b_progress_signed_tt', keys)
+
+    def test_progress_missing_foreign_or_old_round_fields_are_unknown_not_zero(self):
+        for change in (lambda a, r: r.variables.pop('lyd_i3b_yes'),
+                       lambda a, r: r.variables.update(lyd_i3b_owner=Scope('foreign')),
+                       lambda a, r: r.variables.update(lyd_i3b_serial=6),
+                       lambda a, r: a.variables.pop('lyd_i3b_active')):
+            state = original_confucian_world(active=True)
+            change(state[0], state[3])
+            own = [key for r, key, _ in self.progress(state) if r is state[3]]
+            self.assertIn('lyd_i3b_progress_unknown_tt', own)
+            self.assertNotIn('lyd_i3b_progress_count_tt', own)
+
+    def test_zero_electors_no_delegate_and_dormant_are_distinct(self):
+        state = original_confucian_world(active=True)
+        rite = state[3]
+        rite.variables.update(lyd_i3b_yes=0, lyd_i3b_total=0, lyd_i3b_signed=0)
+        rite.variables.pop('lyd_i3b_delegate')
+        keys = {key for r, key, _ in self.progress(state) if r is rite}
+        self.assertIn('lyd_i3b_progress_no_quorum_tt', keys)
+        self.assertIn('lyd_i3b_progress_no_delegate_tt', keys)
+        self.assertIn('lyd_i3b_progress_unsigned_tt', keys)
+        dormant = state[4]['rite:daoxue']
+        keys = {key for r, key, _ in self.progress(state) if r is dormant}
+        self.assertIn('lyd_i3b_progress_dormant_tt', keys)
+        self.assertNotIn('lyd_i3b_progress_quorum_tt', keys)
+        self.assertNotIn('lyd_i3b_progress_signed_tt', keys)
+
+    def test_old_terms_callbacks_and_player_choices_survive_only_declared_additions(self):
+        body = one(self.terms, 'lyd_i3b_show_terms_effect')
+        self.assertEqual([e.key for e in body.entries], ['hidden_effect', 'custom_tooltip', 'custom_tooltip', 'every_in_list'])
+        self.assertEqual(body.entries[0].value, parse_clausewitz('save_scope_as = lyd_i3b_progress_actor'))
+        rites = body.entries[-1].value
+        self.assertEqual(rites.entries[-3].value, parse_clausewitz('save_scope_as = lyd_i3b_progress_rite'))
+        self.assertEqual([e.key for e in rites.entries[-2:]], ['if', 'else'])
+        old_terms = Block((Entry('lyd_i3b_show_terms_effect', '=', Block((body.entries[1],
+            Entry('every_in_list', '=', Block(rites.entries[:-3]))))),))
+        self.assertEqual(hashlib.sha256(repr(old_terms).encode()).hexdigest(),
+                         PREVIOUS_PRESENTATION_AST['common/scripted_effects/lyd_i3b_terms_effects.txt'])
+
+        def strip_chances(body):
+            entries = []
+            for e in body.entries:
+                if e.key == 'ai_chance':
+                    value = Block(tuple(x for x in e.value.entries if x.key != 'modifier'))
+                else:
+                    value = strip_chances(e.value) if isinstance(e.value, Block) else e.value
+                entries.append(Entry(e.key, e.operator, value))
+            return Block(tuple(entries))
+        events = parse_clausewitz(self.outputs['events/lyd_i3b_institution_events.txt'].decode('utf-8-sig'))
+        self.assertEqual(hashlib.sha256(repr(strip_chances(events)).encode()).hexdigest(),
+                         PREVIOUS_PRESENTATION_AST['events/lyd_i3b_institution_events.txt'])
+
+    def test_progress_localization_reads_variables_and_explains_non_guaranteed_support(self):
+        for language in ('simp_chinese', 'english'):
+            loc = self.outputs[f'localization/{language}/lyd_i3b_institution_l_{language}.yml'].decode('utf-8-sig')
+            for key in ('count', 'dormant', 'quorum', 'no_quorum', 'delegate', 'no_delegate', 'signed', 'unsigned', 'unknown'):
+                self.assertEqual(loc.count(f' lyd_i3b_progress_{key}_tt:0 "'), 1)
+            self.assertIn("lyd_i3b_progress_rite.MakeScope.Var('lyd_i3b_yes').GetValue|0", loc)
+            self.assertIn("lyd_i3b_progress_rite.MakeScope.Var('lyd_i3b_total').GetValue|0", loc)
+            self.assertIn('60/40' if language == 'english' else '60／40', loc)
 
 
 if __name__ == '__main__':
