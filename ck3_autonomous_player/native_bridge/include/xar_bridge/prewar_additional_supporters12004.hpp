@@ -15,6 +15,17 @@ enum class PrewarAdditionalSupportSource12004 : std::uint8_t {
 };
 
 using PrewarAdditionalObjectGetter12004 = void *(*)(void *);
+using PrewarAdditionalFullIdGetter12004 =
+    std::uint32_t *(*)(void *, std::uint32_t *);
+using PrewarAdditionalPredicate12004 = bool (*)(void *);
+
+enum class PrewarAdditionalRoleStatus12004 : std::uint8_t {
+  unavailable, known_empty, living_character, dead_character
+};
+enum class PrewarAdditionalLookupStatus12004 : std::uint8_t {
+  unobserved, root_unavailable, absent_id, index_out_of_bounds,
+  entry_unavailable, full_id_mismatch, type_mismatch, resolved
+};
 
 struct PrewarAdditionalSupportersBindings12004 {
   bool enabled = false;
@@ -22,8 +33,6 @@ struct PrewarAdditionalSupportersBindings12004 {
   void **character_fallback_slot = nullptr;
   PrewarAdditionalObjectGetter12004 immediate_liege = nullptr;
   PrewarAdditionalObjectGetter12004 top_liege = nullptr;
-  // Unmapped callbacks stay null. No guessed image RVA is admitted.
-  PrewarAdditionalObjectGetter12004 diarch = nullptr;
   PrewarAdditionalObjectGetter12004 character_faith = nullptr;
   PrewarAdditionalObjectGetter12004 faith_head = nullptr;
   PrewarAdditionalObjectGetter12004 religious_authority = nullptr;
@@ -33,6 +42,16 @@ struct PrewarAdditionalSupportersBindings12004 {
   const void *compiled_effect_vtable = nullptr;
   const void *compiled_effect_execute = nullptr;
   void **event_manager_slot = nullptr;
+  // Different typed receivers: Character -> full DiarchyID, then the
+  // resolved Diarchy -> full CharacterID. Native pointer types omit noexcept.
+  PrewarAdditionalFullIdGetter12004 character_diarchy_full_id = nullptr;
+  PrewarAdditionalFullIdGetter12004 diarchy_diarch_full_id = nullptr;
+  PrewarAdditionalPredicate12004 has_active_diarchy = nullptr;
+  void **diarchy_storage_slot = nullptr;
+  void **diarchy_fallback_slot = nullptr;
+  PrewarAdditionalObjectGetter12004 religious_challenger = nullptr;
+  std::array<void **, 3> formal_head_storage_slots{};
+  std::array<void **, 3> formal_head_fallback_slots{};
 };
 
 // Borrowed only during the owning query. These are the actual fresh finalized
@@ -66,6 +85,58 @@ struct PrewarForcedInitialParticipant12004 {
   std::uint8_t active_level_index_raw = 0;
   std::uint8_t default_level_index_raw = 0;
   bool operator==(const PrewarForcedInitialParticipant12004 &) const = default;
+};
+
+struct PrewarAdditionalDiarchObservation12004 {
+  std::int32_t source_root_character_id = -1;
+  bool auxiliary_observed = false;
+  bool auxiliary_present = false;
+  bool association_id_observed = false;
+  bool association_out_pointer_echo = false;
+  std::uint32_t association_full_id_raw = 0xFFFFFFFFU;
+  bool active_predicate_observed = false;
+  bool active_predicate_value = false;
+  PrewarAdditionalLookupStatus12004 diarchy_lookup =
+      PrewarAdditionalLookupStatus12004::unobserved;
+  bool diarchy_fallback_observed = false;
+  std::uint32_t diarchy_full_id_raw = 0xFFFFFFFFU;
+  std::uint32_t diarchy_magic_raw = 0;
+  bool diarch_id_observed = false;
+  bool diarch_out_pointer_echo = false;
+  std::uint32_t diarch_full_id_raw = 0xFFFFFFFFU;
+  bool character_fields_observed = false;
+  std::uint32_t character_full_id_raw = 0xFFFFFFFFU;
+  std::uint32_t character_magic_raw = 0;
+  bool character_core_identity_verified = false;
+  bool character_alive = false;
+  PrewarAdditionalRoleStatus12004 status =
+      PrewarAdditionalRoleStatus12004::unavailable;
+  bool operator==(const PrewarAdditionalDiarchObservation12004 &) const = default;
+};
+
+struct PrewarAdditionalAuthorityObservation12004 {
+  std::int32_t source_root_character_id = -1;
+  bool getter_observed = false;
+  bool returned_object_present = false;
+  bool returned_fields_observed = false;
+  std::uint32_t returned_full_id_raw = 0xFFFFFFFFU;
+  std::uint32_t returned_magic_raw = 0;
+  bool returned_core_identity_verified = false;
+  bool returned_alive = false;
+  bool challenger_getter_observed = false;
+  bool challenger_fields_observed = false;
+  std::uint32_t challenger_full_id_raw = 0xFFFFFFFFU;
+  std::uint32_t challenger_magic_raw = 0;
+  bool returned_matches_observed_challenger = false;
+  std::array<bool, 4> formal_chain_id_observed{};
+  std::array<std::uint32_t, 4> formal_chain_full_ids_raw{};
+  std::array<PrewarAdditionalLookupStatus12004, 4> formal_chain_lookup{};
+  std::array<bool, 4> formal_chain_fallback_observed{};
+  // FF/invalid return stays unavailable until the challenger empty branch
+  // and every required native root are independently qualified.
+  PrewarAdditionalRoleStatus12004 status =
+      PrewarAdditionalRoleStatus12004::unavailable;
+  bool operator==(const PrewarAdditionalAuthorityObservation12004 &) const = default;
 };
 
 struct PrewarAdditionalSupportersSnapshot12004 {
@@ -107,6 +178,10 @@ struct PrewarAdditionalSupportersSnapshot12004 {
   std::vector<PrewarAdditionalSupporter12004> candidates;
   std::vector<PrewarForcedInitialParticipant12004> forced_participants;
   std::vector<PrewarForcedInitialParticipant12004> excluded_primary_defender_collisions;
+  std::vector<PrewarAdditionalDiarchObservation12004> diarch_observations;
+  // One qualified observer is shared by root adjacency and follower selection.
+  // Rows retain native order; followers reuse an already observed root row.
+  std::vector<PrewarAdditionalAuthorityObservation12004> authority_observations;
   std::string_view reason;
   bool operator==(const PrewarAdditionalSupportersSnapshot12004 &) const = default;
 };

@@ -113,3 +113,15 @@ Root 的 build02 两个实际 owner TU（Bridge、Gathering）编译、链接退
 - SDK v2 transport、来源绑定及真实并发缓存 CAS 的新增 12 个用例通过；Service 新增 8 个用例最终通过。首轮 Service 3 过、5 失败，原因包括 fixture 的实际规划视图和 bridge version 资格，以及 partial 二次规划元数据的错误预期；修正 fixture 后只复验失败项，原件保留。另两个真实 MCP→Service 提交前回调用例通过，覆盖先发布决策和发布异常时零 selected submission。合计 22 个唯一新增用例通过，没有重跑旧矩阵。
 
 外置回执分别位于 `R/acceptance/lane06`、`lane08`、`lane09`、`lane10` 和 `R/native-profile/build04/repair02/ROOT-BUILD-RESULT.json`。新增请求解析 EXE 的 Defender 登记读回为 `admin_required_for_verified_readback`，不是设置成功；测试通过也不能替代管理员实际登记回执。完整新开局、录像和持续游玩仍未完成。
+
+## 具名参战关系 getter 增量
+
+新增 actual4 的 Character→Diarchy→Diarch 类型化关系读取和具名宗教 authority 读取，使用完整 generation ID、原生输出指针回显、Core 对象重解析、SEH 叶和两次同帧独立比对。diarchy 的实际 ID=-1 可作为该叶的已观察空值；宗教返回无效 sentinel 时仍保留 unknown，不能把读失败当作“没有宗教领袖”。宗教追随者枚举移除了未经证明的 self-authority 捷径。这里的具名 GUI getter 资格不自动证明同名脚本属性或全部 join-war 角色资格。
+
+新公共 schema、协议、SDK 和策略均未改。Root 从实际 sourceDependencies 选出五个消费者 TU，两个 MainThread owner 分别编译，因此实际补编六个 job；六项编译、610 成员 archive 和链接均退出 0。build05 DLL 为 18,169,856 B，SHA-256 `bcfff62ead6080c05238fb97f3a2da7b6829788353ff3908431e99da9e6e9e65`；累计生产组 753,458,107 B，仍在 2 GiB 子预算内。源码前后哈希稳定；尚未冷载、尚无该 getter 的实机业务资格。
+
+共同采样策略新增独立单 TU 验证，六场景、33 断言通过，覆盖在途关闭、拒绝忙碌重开、禁止旧 epoch 发布及 drain 后显式清理；没有重跑既有矩阵。新 EXE 的 Defender 实际读回仍未确认。
+
+普通 claim/de jure/conquest 的开战脚本含非空公共 helper，原先只认 count0/null row 的资格不能证明这些正常路径完整。正在补当次实际节点、调用方和参战源的只读投影；现有完整盟友和联邦成员 superset 可覆盖已核对的相应脚本子集，但不能据此吞掉其余未知节点。当前新宣战资格与完整重开演示继续标记未验收。
+
+新增回执：`R/native-profile/build05/ROOT-BUILD-RESULT.json`、`R/acceptance/lane08/common-policy-01/receipt.json`；具名来源静态合同及增量分别为 `R/fresh-run-plan/ACTUAL4-TYPED-GETTER-SOURCE-CONTRACT.json` 和 `ACTUAL4-TYPED-GETTER-SOURCE-DELTA01.json`。它们均按原准入期限复核，静态读取和编译不代表实际部署。

@@ -39,6 +39,42 @@ bool Getter(PrewarAdditionalObjectGetter12004 getter, void *input, void *&out) n
   out = getter(input); return true;
 #endif
 }
+bool FullIdGetter(PrewarAdditionalFullIdGetter12004 getter, void *input,
+                  std::uint32_t expected, std::uint32_t &out, bool &echo) noexcept {
+  // The poison differs from the directly observed leaf input, including FF.
+  // ret==out alone cannot turn an untouched initialized value into a sample.
+  out = expected ^ 0xFFFFFFFFU; echo = false;
+  if (!getter || !input) return false;
+#if defined(_MSC_VER)
+  __try {
+    echo = getter(input, &out) == &out;
+    return echo && out == expected;
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#else
+  echo = getter(input, &out) == &out;
+  return echo && out == expected;
+#endif
+}
+bool Predicate(PrewarAdditionalPredicate12004 predicate, void *input, bool &out) noexcept {
+  out = false;
+  if (!predicate || !input) return false;
+#if defined(_MSC_VER)
+  __try { out = predicate(input); return true; }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#else
+  out = predicate(input); return true;
+#endif
+}
+const void *GuardedCoreResolve(const CoreBindings &core, std::int32_t id) noexcept {
+  // The shared resolver reads registry memory directly. Keep AV handling in
+  // this trivial leaf, before control can reach owned C++ containers.
+#if defined(_MSC_VER)
+  __try { return xar::ck3_12004::ResolveCoreCharacter(core, id); }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return nullptr; }
+#else
+  return xar::ck3_12004::ResolveCoreCharacter(core, id);
+#endif
+}
 void Reason(PrewarAdditionalSupportersSnapshot12004 &out, std::string_view value) noexcept {
   if (out.reason.empty()) out.reason = value;
 }
@@ -47,10 +83,139 @@ bool Identity(const PrewarAdditionalSupportersBindings12004 &b, const void *p,
   const void *death = nullptr;
   id = -1; alive = false;
   if (!Read(p, kCharacterFullIdOffset, id) || id == -1 ||
-      xar::ck3_12004::ResolveCoreCharacter(b.core, id) != p ||
+      GuardedCoreResolve(b.core, id) != p ||
       !Read(p, kCharacterDeathDataOffset, death)) return false;
   alive = death == nullptr;
   return true;
+}
+bool CharacterRole(const PrewarAdditionalSupportersBindings12004 &b, const void *p,
+                   std::uint32_t &raw_id, std::uint32_t &magic,
+                   bool &fields_observed, bool &alive) noexcept {
+  fields_observed = Read(p, 0x18, raw_id) && Read(p, 0x1C, magic);
+  std::int32_t id = -1;
+  return fields_observed && magic == 0x43686172U && raw_id != 0xFFFFFFFFU &&
+      Identity(b, p, id, alive) && static_cast<std::uint32_t>(id) == raw_id;
+}
+void *Lookup(void **storage_slot, void **fallback_slot, std::uint32_t id,
+             std::size_t full_id_offset, PrewarAdditionalLookupStatus12004 &status,
+             bool &fallback_observed, std::uint32_t &actual) noexcept {
+  void *storage = nullptr, *slots = nullptr, *fallback = nullptr, *p = nullptr;
+  std::int32_t count = 0;
+  status = PrewarAdditionalLookupStatus12004::root_unavailable;
+  fallback_observed = Read(fallback_slot, 0, fallback) && fallback;
+  if (!Read(storage_slot, 0, storage) || !storage || !fallback_observed ||
+      !Read(storage, 0x20, slots) || !Read(storage, 0x2C, count) ||
+      count < 0 || count > kMaximumSlots || (count && !slots)) return nullptr;
+  if (id == 0xFFFFFFFFU) {
+    status = PrewarAdditionalLookupStatus12004::absent_id; return nullptr;
+  }
+  const auto index = id & 0x00FFFFFFU;
+  if (index >= static_cast<std::uint32_t>(count)) {
+    status = PrewarAdditionalLookupStatus12004::index_out_of_bounds; return nullptr;
+  }
+  status = PrewarAdditionalLookupStatus12004::entry_unavailable;
+  if (!Read(slots, static_cast<std::size_t>(index) * 16 + 8, p) || !p || p == fallback ||
+      !Read(p, full_id_offset, actual)) return nullptr;
+  if (actual != id) {
+    status = PrewarAdditionalLookupStatus12004::full_id_mismatch; return nullptr;
+  }
+  status = PrewarAdditionalLookupStatus12004::resolved;
+  return p;
+}
+PrewarAdditionalDiarchObservation12004 ObserveDiarch(
+    const PrewarAdditionalSupportersBindings12004 &b, void *root, std::int32_t root_id) noexcept {
+  PrewarAdditionalDiarchObservation12004 row{};
+  row.source_root_character_id = root_id;
+  std::int32_t verified_id = -1; bool alive = false;
+  std::uint32_t root_magic = 0;
+  if (!Identity(b, root, verified_id, alive) || verified_id != root_id || !alive ||
+      !Read(root, 0x1C, root_magic) || root_magic != 0x43686172U) return row;
+  row.active_predicate_observed = Predicate(b.has_active_diarchy, root, row.active_predicate_value);
+  // HasActive is retained as an observation only: missing roots can produce
+  // false, and its unexpanded condition is not an empty-association predicate.
+  void *auxiliary = nullptr;
+  row.auxiliary_observed = Read(root, 0x1C8, auxiliary);
+  row.auxiliary_present = auxiliary != nullptr;
+  std::uint32_t expected = 0xFFFFFFFFU;
+  if (!row.auxiliary_observed || (auxiliary && !Read(auxiliary, 0x30, expected))) return row;
+  row.association_id_observed = FullIdGetter(b.character_diarchy_full_id, root, expected,
+      row.association_full_id_raw, row.association_out_pointer_echo);
+  if (!row.association_id_observed) return row;
+  if (row.association_full_id_raw == 0xFFFFFFFFU) {
+    row.status = PrewarAdditionalRoleStatus12004::known_empty; return row;
+  }
+  void *diarchy = Lookup(b.diarchy_storage_slot, b.diarchy_fallback_slot,
+      row.association_full_id_raw, 8, row.diarchy_lookup,
+      row.diarchy_fallback_observed, row.diarchy_full_id_raw);
+  if (!diarchy) return row;
+  if (!Read(diarchy, 0xC, row.diarchy_magic_raw) || row.diarchy_magic_raw != 0x44696163U) {
+    row.diarchy_lookup = PrewarAdditionalLookupStatus12004::type_mismatch; return row;
+  }
+  if (!Read(diarchy, 0x24, expected)) return row;
+  row.diarch_id_observed = FullIdGetter(b.diarchy_diarch_full_id, diarchy, expected,
+      row.diarch_full_id_raw, row.diarch_out_pointer_echo);
+  if (!row.diarch_id_observed) return row;
+  if (row.diarch_full_id_raw == 0xFFFFFFFFU) {
+    row.status = PrewarAdditionalRoleStatus12004::known_empty; return row;
+  }
+  const void *character = GuardedCoreResolve(
+      b.core, static_cast<std::int32_t>(row.diarch_full_id_raw));
+  row.character_core_identity_verified = CharacterRole(b, character, row.character_full_id_raw,
+      row.character_magic_raw, row.character_fields_observed, row.character_alive) &&
+      row.character_full_id_raw == row.diarch_full_id_raw;
+  if (row.character_core_identity_verified)
+    row.status = row.character_alive ? PrewarAdditionalRoleStatus12004::living_character :
+        PrewarAdditionalRoleStatus12004::dead_character;
+  return row;
+}
+PrewarAdditionalAuthorityObservation12004 ObserveAuthority(
+    const PrewarAdditionalSupportersBindings12004 &b, void *root, std::int32_t root_id) noexcept {
+  PrewarAdditionalAuthorityObservation12004 row{};
+  row.source_root_character_id = root_id;
+  std::int32_t verified_id = -1; bool root_alive = false;
+  std::uint32_t root_magic = 0;
+  if (!Identity(b, root, verified_id, root_alive) || verified_id != root_id || !root_alive ||
+      !Read(root, 0x1C, root_magic) || root_magic != 0x43686172U) return row;
+  // 2BE1B80 has no input guard. The current Core/type guard above is required.
+  // Its actual returned authority keeps the native challenger priority.
+  void *authority = nullptr, *challenger = nullptr;
+  row.getter_observed = Getter(b.religious_authority, root, authority);
+  row.returned_object_present = authority != nullptr;
+  if (!row.getter_observed) return row;
+  row.returned_core_identity_verified = CharacterRole(b, authority, row.returned_full_id_raw,
+      row.returned_magic_raw, row.returned_fields_observed, row.returned_alive);
+  row.challenger_getter_observed = Getter(b.religious_challenger, root, challenger);
+  if (row.challenger_getter_observed)
+    row.challenger_fields_observed = Read(challenger, 0x18, row.challenger_full_id_raw) &&
+        Read(challenger, 0x1C, row.challenger_magic_raw);
+  row.returned_matches_observed_challenger = row.returned_core_identity_verified &&
+      row.challenger_fields_observed && challenger == authority &&
+      row.challenger_magic_raw == 0x43686172U &&
+      row.challenger_full_id_raw == row.returned_full_id_raw;
+  if (row.returned_core_identity_verified) {
+    row.status = row.returned_alive ? PrewarAdditionalRoleStatus12004::living_character :
+        PrewarAdditionalRoleStatus12004::dead_character;
+    return row;
+  }
+  // Invalid/FF is still unknown. Observe the exact formal fallback chain for
+  // diagnostics, without substituting fallback pointers or inventing types.
+  constexpr std::size_t input_offsets[]{0xB4, 0x4B8, 0x300, 0x128};
+  constexpr std::size_t identity_offsets[]{8, 8, 0x10, 0x18};
+  void *object = root;
+  for (std::size_t i = 0; i < 4; ++i) {
+    row.formal_chain_id_observed[i] = Read(object, input_offsets[i], row.formal_chain_full_ids_raw[i]);
+    if (!row.formal_chain_id_observed[i]) break;
+    std::uint32_t actual = 0xFFFFFFFFU;
+    void **storage = i < 3 ? b.formal_head_storage_slots[i] : b.core.character_storage_slot;
+    void **fallback = i < 3 ? b.formal_head_fallback_slots[i] : b.character_fallback_slot;
+    object = Lookup(storage, fallback, row.formal_chain_full_ids_raw[i], identity_offsets[i],
+        row.formal_chain_lookup[i], row.formal_chain_fallback_observed[i], actual);
+    if (!object) break;
+  }
+  return row;
+}
+bool RoleComplete(PrewarAdditionalRoleStatus12004 status) noexcept {
+  return status != PrewarAdditionalRoleStatus12004::unavailable;
 }
 void Append(PrewarAdditionalSupportersSnapshot12004 &out, std::int32_t root,
             std::int32_t id, PrewarAdditionalSupportSource12004 source) {
@@ -169,27 +334,14 @@ bool ForcedRound(const PrewarAdditionalSupportersBindings12004 &b, void *root,
 bool Followers(const PrewarAdditionalSupportersBindings12004 &b,
                const std::vector<void *> &roots, const std::vector<std::int32_t> &root_ids,
                PrewarAdditionalSupportersSnapshot12004 &out) {
-  // Stock religious_head_call requires the selected leader's actual
-  // religious_head_or_challenger to be that leader. A mapped callback can
-  // prove this source inapplicable; a different formal head alone cannot.
-  std::vector<bool> source_needed(roots.size(), true);
-  bool complete = b.religious_authority != nullptr;
-  void *fallback = nullptr;
-  const bool fallback_observed = Read(b.character_fallback_slot, 0, fallback);
-  for (std::size_t j = 0; j < roots.size(); ++j) {
-    void *authority = nullptr;
-    if (!b.religious_authority || !Getter(b.religious_authority, roots[j], authority) ||
-        !fallback_observed) { complete = false; continue; }
-    if (!authority || authority == fallback) { source_needed[j] = false; continue; }
-    std::int32_t id = -1; bool alive = false;
-    if (!Identity(b, authority, id, alive)) { complete = false; continue; }
-    source_needed[j] = authority == roots[j];
-  }
-  if (std::find(source_needed.begin(), source_needed.end(), true) == source_needed.end())
-    return complete;
+  // The join_war recipient can also be a peer's authority. A leader's own
+  // authority!=self does not prove its reverse follower set empty. Both
+  // finalized roots therefore use the whole current Character storage source.
+  bool complete = true;
+  if (out.authority_observations.size() < roots.size()) return false;
   void *storage = nullptr, *slots = nullptr;
   std::int32_t capacity = 0;
-  if (!b.character_faith || !b.faith_head || !Read(b.core.character_storage_slot, 0, storage) ||
+  if (!Read(b.core.character_storage_slot, 0, storage) ||
       !Read(storage, kCharacterStorageSlotsOffset, slots) ||
       !Read(storage, kCharacterStorageCapacityOffset, capacity) ||
       capacity < 0 || capacity > kMaximumSlots || (capacity && !slots)) return false;
@@ -197,7 +349,7 @@ bool Followers(const PrewarAdditionalSupportersBindings12004 &b,
   std::vector<void *> root_faiths;
   for (std::size_t j = 0; j < roots.size(); ++j) {
     void *faith = nullptr;
-    if (source_needed[j] && (!Getter(b.character_faith, roots[j], faith) || !faith)) complete = false;
+    (void)Getter(b.character_faith, roots[j], faith);
     root_faiths.push_back(faith);
   }
   for (std::int32_t i = 0; i < capacity; ++i) {
@@ -213,18 +365,31 @@ bool Followers(const PrewarAdditionalSupportersBindings12004 &b,
       complete = false; continue;
     }
     if (!alive) { out.dead_source_character_ids.push_back(id); continue; }
-    void *faith = nullptr, *head = nullptr, *authority = nullptr;
-    if (!Getter(b.character_faith, p, faith) || !faith ||
-        !Getter(b.faith_head, faith, head)) { complete = false; continue; }
-    const bool authority_sampled = b.religious_authority && Getter(b.religious_authority, p, authority);
-    if (b.religious_authority && !authority_sampled) complete = false;
+    PrewarAdditionalAuthorityObservation12004 authority{};
+    bool reused_root = false;
+    for (std::size_t j = 0; j < roots.size(); ++j) if (id == root_ids[j]) {
+      authority = out.authority_observations[j]; reused_root = true; break;
+    }
+    if (!reused_root) {
+      authority = ObserveAuthority(b, p, id);
+      out.authority_observations.push_back(authority);
+    }
+    const bool authority_qualified = RoleComplete(authority.status);
+    if (!authority_qualified) complete = false;
+    if (authority.status == PrewarAdditionalRoleStatus12004::dead_character)
+      out.dead_source_character_ids.push_back(static_cast<std::int32_t>(authority.returned_full_id_raw));
+    void *faith = nullptr, *head = nullptr;
+    if (!authority_qualified) {
+      if (Getter(b.character_faith, p, faith) && faith) (void)Getter(b.faith_head, faith, head);
+    }
     for (std::size_t j = 0; j < roots.size(); ++j) {
-      if (!source_needed[j]) continue;
-      // Same-faith adjacency deliberately over-includes possible challenger
-      // followers while the exact authority/challenger callback is unbound.
-      // It is not an observed follower identity or future callability result.
-      if (head == roots[j] || (authority_sampled && authority == roots[j]) ||
-          (root_faiths[j] && faith == root_faiths[j]))
+      // Exact authority is the primary source. Same-faith/formal-head
+      // adjacency is retained only as a partial conservative superset for an
+      // unknown authority, never as challenger replacement or completeness.
+      if ((authority.status == PrewarAdditionalRoleStatus12004::living_character &&
+           authority.returned_full_id_raw == static_cast<std::uint32_t>(root_ids[j])) ||
+          (!authority_qualified && (head == roots[j] ||
+           (root_faiths[j] && faith == root_faiths[j]))))
         Append(out, root_ids[j], id, PrewarAdditionalSupportSource12004::religious_follower);
     }
   }
@@ -245,6 +410,17 @@ PrewarAdditionalSupportersBindings12004 BindPrewarAdditionalSupportersImage12004
   b.top_liege = reinterpret_cast<PrewarAdditionalObjectGetter12004>(base + 0x28BFD80);
   b.character_faith = reinterpret_cast<PrewarAdditionalObjectGetter12004>(context.character_faith);
   b.faith_head = reinterpret_cast<PrewarAdditionalObjectGetter12004>(governance.heads.faith_religious_head);
+  b.religious_authority = reinterpret_cast<PrewarAdditionalObjectGetter12004>(base + 0x2BE1B80);
+  b.religious_challenger = reinterpret_cast<PrewarAdditionalObjectGetter12004>(base + 0x2BE19F0);
+  b.character_diarchy_full_id = reinterpret_cast<PrewarAdditionalFullIdGetter12004>(base + 0x28BE7C0);
+  b.diarchy_diarch_full_id = reinterpret_cast<PrewarAdditionalFullIdGetter12004>(base + 0x106B470);
+  b.has_active_diarchy = reinterpret_cast<PrewarAdditionalPredicate12004>(base + 0x2C36720);
+  b.diarchy_storage_slot = reinterpret_cast<void **>(base + 0x5D20318);
+  b.diarchy_fallback_slot = reinterpret_cast<void **>(base + 0x5D20310);
+  b.formal_head_storage_slots = {reinterpret_cast<void **>(base + 0x5D1E2F8),
+      reinterpret_cast<void **>(base + 0x5D1E300), reinterpret_cast<void **>(base + 0x5D1DAF8)};
+  b.formal_head_fallback_slots = {reinterpret_cast<void **>(base + 0x5C67670),
+      reinterpret_cast<void **>(base + 0x5D1E2E0), reinterpret_cast<void **>(base + 0x5D1DAE0)};
   b.subject_contract_storage_slot = reinterpret_cast<void **>(base + 0x5D1EB88);
   b.subject_contract_fallback_slot = reinterpret_cast<void **>(base + 0x5D1EB40);
   b.subject_contract_database_slot = reinterpret_cast<void **>(base + 0x5D1DED0);
@@ -278,26 +454,33 @@ bool ReadPrewarAdditionalSupporters12004(
     std::vector<void *> roots{scope.additional, scope.recipient};
     std::vector<std::int32_t> ids{out.additional_character_id, out.recipient_character_id};
     out.immediate_liege_complete = true; out.top_liege_complete = true;
-    out.diarch_complete = b.diarch != nullptr;
-    out.religious_authority_complete = b.religious_authority != nullptr;
+    out.diarch_complete = true;
+    out.religious_authority_complete = true;
     for (std::size_t i = 0; i < roots.size(); ++i) {
       out.immediate_liege_complete &= Neighbor(b, roots[i], ids[i], b.immediate_liege,
           PrewarAdditionalSupportSource12004::immediate_liege, out);
       out.top_liege_complete &= Neighbor(b, roots[i], ids[i], b.top_liege,
           PrewarAdditionalSupportSource12004::top_liege, out);
-      if (b.diarch) out.diarch_complete &= Neighbor(b, roots[i], ids[i], b.diarch,
-          PrewarAdditionalSupportSource12004::diarch, out);
-      if (b.religious_authority) out.religious_authority_complete &= Neighbor(b, roots[i], ids[i],
-          b.religious_authority, PrewarAdditionalSupportSource12004::religious_authority, out);
-      else {
-        void *faith = nullptr, *head = nullptr;
-        if (Getter(b.character_faith, roots[i], faith) &&
-            Getter(b.faith_head, faith, head) && head) {
-          std::int32_t head_id = -1; bool alive = false;
-          if (Identity(b, head, head_id, alive) && alive)
-            Append(out, ids[i], head_id, PrewarAdditionalSupportSource12004::religious_authority);
-        }
-      }
+      const auto diarch = ObserveDiarch(b, roots[i], ids[i]);
+      out.diarch_observations.push_back(diarch);
+      out.diarch_complete &= RoleComplete(diarch.status);
+      if (diarch.status == PrewarAdditionalRoleStatus12004::living_character)
+        Append(out, ids[i], static_cast<std::int32_t>(diarch.character_full_id_raw),
+            PrewarAdditionalSupportSource12004::diarch);
+      else if (diarch.status == PrewarAdditionalRoleStatus12004::dead_character)
+        out.dead_source_character_ids.push_back(static_cast<std::int32_t>(diarch.character_full_id_raw));
+      else if (diarch.diarch_id_observed && diarch.diarch_full_id_raw != 0xFFFFFFFFU)
+        out.unresolved_source_character_ids.push_back(static_cast<std::int32_t>(diarch.diarch_full_id_raw));
+      const auto authority = ObserveAuthority(b, roots[i], ids[i]);
+      out.authority_observations.push_back(authority);
+      out.religious_authority_complete &= RoleComplete(authority.status);
+      if (authority.status == PrewarAdditionalRoleStatus12004::living_character)
+        Append(out, ids[i], static_cast<std::int32_t>(authority.returned_full_id_raw),
+            PrewarAdditionalSupportSource12004::religious_authority);
+      else if (authority.status == PrewarAdditionalRoleStatus12004::dead_character)
+        out.dead_source_character_ids.push_back(static_cast<std::int32_t>(authority.returned_full_id_raw));
+      else if (authority.returned_fields_observed && authority.returned_full_id_raw != 0xFFFFFFFFU)
+        out.unresolved_source_character_ids.push_back(static_cast<std::int32_t>(authority.returned_full_id_raw));
     }
     out.religious_follower_complete = Followers(b, roots, ids, out);
     void *database = nullptr, *term = nullptr;
@@ -310,7 +493,7 @@ bool ReadPrewarAdditionalSupporters12004(
         out.war_started_on_action_known_empty && out.holy_initial_participants_complete &&
         out.excluded_primary_defender_collisions.empty();
     if (!out.diarch_complete || !out.religious_authority_complete)
-      Reason(out, "prewar_additional_diarch_or_challenger_source_unmapped");
+      Reason(out, "prewar_additional_diarch_or_authority_source_unqualified");
     else if (!out.immediate_liege_complete || !out.top_liege_complete ||
              !out.religious_follower_complete || !out.forced_contract_subset_complete)
       Reason(out, "prewar_additional_source_partial");
