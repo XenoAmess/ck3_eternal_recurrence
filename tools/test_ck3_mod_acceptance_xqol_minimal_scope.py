@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import re
 import unittest
+from unittest import mock
 
 CASES = Path(__file__).resolve().parent / 'ck3_mod_acceptance_cases'
 PAM_PREFIX = 'xqol_followup_cases/pam_positive/'
@@ -200,6 +201,50 @@ class FocusedMigration(unittest.TestCase):
             self.assertIn(gate,source)
         self.assertTrue(contract['normal_close_required'])
         self.assertTrue(contract['guards_independent_supplement_required'])
+
+    def _record_slider_save(self, stage, contract, observation):
+        from ck3_mod_acceptance_cases import xqol_ui as ui
+        value=object.__new__(ui.Controller)
+        value.context={'case_contract':contract};value.stages=[stage];value.stage=0
+        value.records={'slider-anchor':{'observation':{'persisted_anchor':50}}}
+        value.seq=0;value.out=Path('mock-only-ui-output');value.operator_reviewer='/root'
+        source={'path':'mock-only-original.png','bytes':1,'sha256':'0'*64}
+        value.latest=source
+        request={'stage':stage,'observation':{'direct_original_review':True,**observation},'evidence':[source]}
+        with mock.patch.object(ui,'pin',return_value=source),mock.patch.object(ui,'write') as write:
+            value.record(request,'action-0000')
+            write.assert_called_once()
+        self.assertEqual(value.stage,1)
+
+    def test_ui_focused_persistence_keeps_save_readback_and_no_script_clear(self):
+        contract={'case':'ui_tail','gui_review_scope':'representative_slider_v1'}
+        for stage,p in (('save-100',100),('save-0',0),('restore-anchor',50)):
+            actual={'draft_value':p,'save_option_executed':True,'reopened_persisted_value':p,
+                    'no_script_pending_clear_or_setfaith':True}
+            for old_chain in ({},{'pending_naturally_completed':False,'summary_count':0,'event_windows_cleared':False}):
+                with self.subTest(stage=stage,chain=old_chain):
+                    self._record_slider_save(stage,contract,{**actual,**old_chain})
+            for field,bad in (('draft_value',p+1),('save_option_executed',False),
+                              ('reopened_persisted_value',p+1),('no_script_pending_clear_or_setfaith',False)):
+                with self.subTest(stage=stage,field=field),self.assertRaises(RuntimeError):
+                    self._record_slider_save(stage,contract,{**actual,field:bad})
+
+    def test_ui_legacy_save_still_requires_exact_natural_chain(self):
+        legacy={'case':'defense_and_ui'}
+        for stage,p in (('save-100',100),('save-0',0),('restore-anchor',50)):
+            actual={'draft_value':p,'save_option_executed':True,'reopened_persisted_value':p,
+                    'no_script_pending_clear_or_setfaith':True}
+            chain={'pending_naturally_completed':True,'summary_count':1,'event_windows_cleared':True}
+            with self.subTest(stage=stage,chain='complete'):
+                self._record_slider_save(stage,legacy,{**actual,**chain})
+            for missing in chain:
+                incomplete={key:val for key,val in chain.items() if key!=missing}
+                with self.subTest(stage=stage,missing=missing),self.assertRaises(RuntimeError):
+                    self._record_slider_save(stage,legacy,{**actual,**incomplete})
+        with self.assertRaises(RuntimeError):
+            self._record_slider_save('save-0',{'case':'defense_and_ui','gui_review_scope':'representative_slider_v1'},
+                {'draft_value':0,'save_option_executed':True,'reopened_persisted_value':0,
+                 'no_script_pending_clear_or_setfaith':True})
 
 
 if __name__=='__main__':unittest.main()

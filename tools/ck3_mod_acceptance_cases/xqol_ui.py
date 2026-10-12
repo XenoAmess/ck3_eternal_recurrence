@@ -265,7 +265,9 @@ class Controller:
             elif stage.startswith('save-') or stage=='restore-anchor':
                 p=int(stage.split('-')[1]) if stage.startswith('save-') else self.records['slider-anchor']['observation']['persisted_anchor']
                 require(o.get('draft_value')==p and o.get('save_option_executed') is True and o.get('reopened_persisted_value')==p,'Actual boundary save/reopen differs')
-                require(o.get('pending_naturally_completed') is True and o.get('summary_count')==1 and o.get('event_windows_cleared') is True,'Actual natural pending/one summary/clean window closure missing')
+                focused=(self.context['case_contract'].get('case')=='ui_tail' and self.context['case_contract'].get('gui_review_scope')=='representative_slider_v1')
+                if not focused:
+                    require(o.get('pending_naturally_completed') is True and o.get('summary_count')==1 and o.get('event_windows_cleared') is True,'Actual natural pending/one summary/clean window closure missing')
                 require(o.get('no_script_pending_clear_or_setfaith') is True,'Natural chain may not be replaced by script clears')
             elif stage=='map-clean':
                 frame=self.typed('snapshot',{},prefix+'-map');require(frame.get('active_event') is None,'Actual map still has an event')

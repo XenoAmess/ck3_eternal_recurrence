@@ -22,6 +22,12 @@ A200/R0091 已取得海州文职7人、北界军职0人的完整原生候选池�
 
 UI与重整河山两合同补写与既有registry完全一致的 `original_budgets` 元数据供共同空间观察器读取；不降低timeout/readiness/hold/command/poll预算，不改变正式mod文件。未消费旧UI准备件只因这一合同绑定变化另行prepare，不计为一次业务重跑。
 
+A203/R0093 实读原门槛50、0取消后仍50、100取消后仍50，三份原图检查点已记录；100保存后也实际重开读到100，但未记录完整保存检查点。随后尝试查看消息历史时，action27因截图超过60秒被坐标保护器拒绝，公共run/verify均退出2，剩余保存0、恢复原值、地图清理未验。原[失败记录](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0093/case-output/case-error-preserved.json)不改判；正常GUI退出、retained OS0/native0、cleanup/thread及CAS9617成立，[实际资源闭场](C:/workspace/ck3-upgrade-20261010/focused-scenes-20261013-01/ui_tail--a203/POST-RUN-CLOSE-01.json)保留业务RED。
+
+本场观察器实际退出2：22:51:20 UTC卷可用量28,418,297,856B低于本场软停28,460,449,792B，当时场内新增分配仅288,756,240B。Root未及时轮询并响应该告警，直到业务失败后才直接审阅；精确发现时间未单独记录，不能将正常退出包装成及时压力闭场或无压力PASS。后继必须每轮操作检查告警/剩余预算，先补实际容量，不能降低系统/安全预留；超过60秒先取新原图再点击。本场关键失败与三项部分证据由Root保护至2026-10-18复核，其余派生物按通用策略分类。
+
+遵照用户继续缩减要求，下一滑条场只新验UI持久化：真实Save及重开百分比、取消、恢复原值、最后地图清理；不在每次Save另验异步回调完整业务或精确汇总次数。不得脚本清pending或setfaith，重新打开仍须经过实际可用的生产决议。完整旧UI25保留原自然完成/单次汇总/清窗合同；这项缩减不追授A203或旧场case/product PASS。
+
 ## 2026-10-10 可选着色器缓存复用
 
 LYD本机首次实际消费见[R46](ck3-native-ai/2026-10-10-r46-startup-query-red.md)：注入和暂停语义帧已取得，首campaign query执行前取消，业务未通过。后继启动顺序要求history-loaded与InGame两个完整日志行，不制造“最终Setup”标记；缓存核心只另外豁免runtime.py及专属延后注入测试两项启动控制源码，游戏/host/native/业务/配置保持绑定，旧seed须重新派生。[R47实际对照](ck3-native-ai/2026-10-10-r47-startup-control.md)的campaign query及八步对照断言通过；原始人工退出确认缺失使公共run2/verify2保持，不能授正式产品或完整闭场PASS。单次正例不证明R46根因或缓存命中/提速。
