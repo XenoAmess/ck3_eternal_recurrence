@@ -60,6 +60,7 @@ class ReviewerSeam(unittest.TestCase):
                 value.operator_reviewer = controller._operator_reviewer(SimpleNamespace(operator_reviewer=reviewer))
                 value.out = ui
                 value.live = root / 'test-R0001'
+                value.stages = list(controller.STAGES)
                 value.seq = value.stage = 0
                 value.deadline = 2**40
                 value.remaining = lambda: 900
@@ -72,6 +73,7 @@ class ReviewerSeam(unittest.TestCase):
                 awaiting = json.loads((ui / 'await-0000.json').read_bytes())
                 self.assertEqual(awaiting['operator_reviewer'], reviewer)
                 self.assertEqual(awaiting['sequence'], 0)
+                self.assertEqual(awaiting['stage'], controller.STAGES[0])
                 self.assertEqual(awaiting['deadline'], 2**40)
                 request = {'reviewer': reviewer, 'run_id': value.live.name, 'sequence': 0, 'source': source}
                 value.source_guard(request)
