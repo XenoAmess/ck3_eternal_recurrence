@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 import time
@@ -167,11 +169,288 @@ class Queue:
         print(json.dumps(value, ensure_ascii=False, separators=(",", ":")), flush=True)
 
 
-def observe_sway(queue: Queue, revision: int) -> int:
+
+def _sway_int(value, low=1, high=(1 << 64) - 1):
+    return type(value) is int and low <= value <= high
+
+
+def _sway_reference(reference, limit=65536):
+    if (type(reference) is not dict or set(reference) != {"path", "bytes", "sha256"}
+            or type(reference["path"]) is not str or not Path(reference["path"]).is_absolute()
+            or not _sway_int(reference["bytes"], 1, limit)
+            or type(reference["sha256"]) is not str
+            or len(reference["sha256"]) != 64
+            or any(c not in "0123456789abcdef" for c in reference["sha256"])):
+        raise ValueError("Sway observer requires an explicit bounded actual reference")
+    path = Path(reference["path"])
+    if path.stat().st_size != reference["bytes"]:
+        raise ValueError("Sway observer reference size changed")
+    raw = path.read_bytes()
+    if (len(raw) != reference["bytes"]
+            or hashlib.sha256(raw).hexdigest() != reference["sha256"]):
+        raise ValueError("Sway observer reference bytes changed")
+    value = json.loads(raw.decode("utf-8-sig"))
+    if type(value) is not dict:
+        raise ValueError("Sway observer reference is not an object")
+    return value, path.resolve()
+
+
+def _sway_response_pair(witness, request_key, response_key, packet, tool, arguments):
+    request, request_path = _sway_reference(witness[request_key])
+    raw, response_path = _sway_reference(witness[response_key], 8 * 1024 * 1024)
+    if (request_path.parent != (packet / "gameplay-requests").resolve()
+            or response_path.parent != (packet / "gameplay-responses").resolve()
+            or request_path.suffix != ".json" or response_path.name != request_path.name
+            or request.get("tool") != tool or request.get("arguments") != arguments
+            or type(request.get("arguments")) is not dict):
+        raise ValueError("Sway seed is not its actual same-packet request/response")
+    # Integer equality alone would accept bool; validate the real argument types.
+    if any(type(request["arguments"].get(key)) is not type(value)
+           for key, value in arguments.items()):
+        raise ValueError("Sway seed request argument types changed")
+    return body(raw)
+
+
+def load_sway_observer_binding(args, current_snapshot):
+    path = args.sway_observer_binding
+    if type(path) is not Path and not isinstance(path, Path):
+        raise ValueError("Sway observer binding must be an explicit Path")
+    if not path.is_absolute() or not 0 < path.stat().st_size <= 16384:
+        raise ValueError("Sway observer binding is absent or exceeds 16 KiB")
+    binding = read(path)
+    if (type(binding) is not dict
+            or binding.get("schema") != "xar.r104.dynamic-sway-observer-binding.v1"):
+        raise ValueError("Sway observer binding schema is not the explicit Root contract")
+    for key in ("actor_character_id", "target_character_id", "scheme_instance_id",
+                "episode_character_id", "owned_game_pid"):
+        if not _sway_int(binding.get(key), 1, 0xFFFFFFFF):
+            raise ValueError("Sway binding lacks full integer identity: " + key)
+    for key in ("creation_filetime_100ns", "connection_generation",
+                "seed_public_revision", "seed_native_revision"):
+        if not _sway_int(binding.get(key)):
+            raise ValueError("Sway binding lacks actual integer provenance: " + key)
+    if (not _sway_int(binding.get("scheme_instance_generation"), 0, 255)
+            or not _sway_int(binding.get("seed_date_raw"), -(1 << 63), (1 << 63) - 1)
+            or binding["actor_character_id"] == binding["target_character_id"]
+            or binding["episode_character_id"] != binding["actor_character_id"]
+            or type(binding.get("episode_run_id")) is not str or not binding["episode_run_id"]
+            or type(binding.get("seed_snapshot_id")) is not str or not binding["seed_snapshot_id"]):
+        raise ValueError("Sway binding has malformed episode, frame or instance")
+    witness, _ = _sway_reference(binding["query_witness_reference"])
+    packet = args.packet.resolve()
+    if (witness.get("schema") != "xar.r104.root-held-queue-query-witness.v1"
+            or witness.get("status") != "ACTUAL_TARGET_QUERY_PUBLISHED_AND_RESPONDED_IN_HELD_SESSION"
+            or type(witness.get("packet")) is not str
+            or Path(witness["packet"]).resolve() != packet):
+        raise ValueError("Sway binding lacks the actual held-queue query witness")
+    for key in ("owned_game_pid", "creation_filetime_100ns", "connection_generation"):
+        if type(witness.get(key)) is not int or witness[key] != binding[key]:
+            raise ValueError("Sway query witness differs from its current owner: " + key)
+    if type(witness.get("bridge_pid")) is not int or witness["bridge_pid"] != binding["owned_game_pid"]:
+        raise ValueError("Sway query witness lacks its actual bridge process")
+    ready, _ = _sway_reference(witness["actual_ready_reference"])
+    if (ready.get("status") != "ACTUAL_NEW_NATIVE_SESSION_READY_GAME_ALIVE"
+            or type(ready.get("pid")) is not int or ready["pid"] != binding["owned_game_pid"]
+            or type(ready.get("owned_game_pid")) is not int or ready["owned_game_pid"] != ready["pid"]
+            or type(ready.get("creation_filetime_100ns")) is not int
+            or ready["creation_filetime_100ns"] != binding["creation_filetime_100ns"]
+            or type(ready.get("kernel_wait_result")) is not int or ready["kernel_wait_result"] != 258
+            or ready.get("kernel_identity_observed_while_handle_held") is not True
+            or ready.get("CloseHandle_ok") is not True
+            or type(ready.get("operator_packet")) is not str
+            or Path(ready["operator_packet"]).resolve() != packet
+            or type(ready.get("owned_job_id")) is not str or not ready["owned_job_id"]
+            or any(type(ready.get(key)) is not str or not Path(ready[key]).is_absolute()
+                   for key in ("operator_handoff_reference", "ready_stdout_reference"))
+            or type(ready.get("owned_job_started_unix")) not in (int, float)
+            or not math.isfinite(ready["owned_job_started_unix"])
+            or ready["owned_job_started_unix"] <= 0):
+        raise ValueError("Sway query is not bound to its actual owned kernel-ready identity")
+    # The existing guard emits one immutable JSON per call; it is capacity-only.
+    guard, _ = _sway_reference(witness["guard_before_publish_receipt_reference"])
+    owner = guard.get("owned_process_observation")
+    if (guard.get("status") != "GREEN"
+            or guard.get("qualification_scope") != "next_request_capacity_only"
+            or guard.get("tool") != "ck3_query_active_scheme_sway_target_private_v1"
+            or type(guard.get("kind")) is not str or guard["kind"] != witness["guard_kind"]
+            or type(guard.get("runtime_config_reference")) is not str
+            or guard["runtime_config_reference"] != witness["runtime_config_reference"]
+            or type(guard.get("owned_game_pid")) is not int
+            or guard["owned_game_pid"] != binding["owned_game_pid"]
+            or type(guard.get("expected_creation_filetime_100ns")) is not int
+            or guard["expected_creation_filetime_100ns"] != binding["creation_filetime_100ns"]
+            or type(owner) is not dict):
+        raise ValueError("Sway query guard is not the actual accepted owner check for this call")
+    for key, expected in (("pid", binding["owned_game_pid"]),
+                          ("expected_creation_filetime_100ns", binding["creation_filetime_100ns"]),
+                          ("creation_filetime_100ns", binding["creation_filetime_100ns"]),
+                          ("kernel_wait_result", 258)):
+        if type(owner.get(key)) is not int or owner[key] != expected:
+            raise ValueError("Sway query guard observed a different kernel identity")
+    if (owner.get("kernel_identity_observed_while_handle_held") is not True
+            or owner.get("CloseHandle_ok") is not True
+            or type(owner.get("image_name")) is not str
+            or Path(owner["image_name"]).name.casefold() != "ck3.exe"):
+        raise ValueError("Sway query guard did not observe the expected held CK3 process")
+    expected_arguments = {"expected_revision": binding["seed_public_revision"],
+                          "target_character_id": binding["target_character_id"]}
+    if (witness.get("tool") != guard["tool"]
+            or type(witness.get("arguments")) is not dict
+            or witness["arguments"] != expected_arguments
+            or any(type(witness["arguments"].get(key)) is not int for key in expected_arguments)):
+        raise ValueError("Sway query witness differs from the actual guarded target arguments")
+    seed_raw, _ = _sway_reference(witness["current_snapshot_reference"], 8 * 1024 * 1024)
+    caps_raw, _ = _sway_reference(witness["current_capabilities_reference"], 8 * 1024 * 1024)
+    seed, caps = body(seed_raw), body(caps_raw)
+    for snapshot in (seed, current_snapshot):
+        if type(snapshot.get("diagnostics")) is not dict or type(snapshot.get("capabilities")) is not dict:
+            raise ValueError("Sway observer snapshot lacks current session diagnostics")
+        diagnostics = snapshot.get("diagnostics", {})
+        embedded = snapshot.get("capabilities", {}).get("diagnostics", {})
+        for observed in (diagnostics, embedded):
+            if (type(observed.get("bridge_pid")) is not int
+                    or observed["bridge_pid"] != binding["owned_game_pid"]
+                    or type(observed.get("connection_generation")) is not int
+                    or observed["connection_generation"] != binding["connection_generation"]):
+                raise ValueError("Sway observer snapshot belongs to a different bridge session")
+    diagnostics = caps.get("diagnostics", {})
+    if (type(diagnostics.get("bridge_pid")) is not int
+            or diagnostics["bridge_pid"] != binding["owned_game_pid"]
+            or type(diagnostics.get("connection_generation")) is not int
+            or diagnostics["connection_generation"] != binding["connection_generation"]):
+        raise ValueError("Sway observer capabilities differ from the actual query owner")
+    played = seed.get("played_character", {})
+    if (seed.get("paused") is not True or seed.get("map_ready") is not True
+            or played.get("alive") is not True
+            or type(played.get("character_id")) is not int
+            or played["character_id"] != binding["actor_character_id"]
+            or type(seed.get("episode_character_id")) is not int
+            or seed["episode_character_id"] != binding["episode_character_id"]
+            or seed.get("episode_run_id") != binding["episode_run_id"]
+            or seed.get("snapshot_id") != binding["seed_snapshot_id"]):
+        raise ValueError("Sway seed snapshot is not the bound paused living episode")
+    for source, declared in (("revision", "seed_public_revision"),
+                             ("native_revision", "seed_native_revision"), ("date_raw", "seed_date_raw")):
+        if type(seed.get(source)) is not int or seed[source] != binding[declared]:
+            raise ValueError("Sway seed snapshot differs from the actual query frame")
+    target = _sway_response_pair(witness, "request_reference", "response_reference", packet,
+        "ck3_query_active_scheme_sway_target_private_v1",
+        {"expected_revision": binding["seed_public_revision"],
+         "target_character_id": binding["target_character_id"]})
+    for key in ("actor_character_id", "target_character_id"):
+        if type(target.get(key)) is not int or target[key] != binding[key]:
+            raise ValueError("Sway actual target query differs from the chosen role identity")
+    for key, declared in (("date_raw", "seed_date_raw"), ("snapshot_revision", "seed_native_revision"),
+                          ("queried_revision", "seed_public_revision"), ("queried_native_revision", "seed_native_revision")):
+        if type(target.get(key)) is not int or target[key] != binding[declared]:
+            raise ValueError("Sway actual target query differs from its frame")
+    if (target.get("queried_snapshot_id") != binding["seed_snapshot_id"]
+            or not _sway_int(target.get("capture_epoch")) or not _sway_int(target.get("container_generation"))
+            or target.get("matching_sway_active") is not True
+            or type(target.get("active_sway_instances")) is not list):
+        raise ValueError("Sway actual target query lacks an observed active instance")
+    matches = [row for row in target["active_sway_instances"] if type(row) is dict
+        and type(row.get("target_character_id")) is int and row["target_character_id"] == binding["target_character_id"]
+        and type(row.get("scheme_instance_id")) is int and row["scheme_instance_id"] == binding["scheme_instance_id"]
+        and type(row.get("scheme_instance_generation")) is int
+        and row["scheme_instance_generation"] == binding["scheme_instance_generation"]]
+    if len(matches) != 1:
+        raise ValueError("Sway actual target query has no unique full instance/generation match")
+    seed_frame = {"revision": binding["seed_public_revision"],
+                  "native_revision": binding["seed_native_revision"], "ending_date_raw": binding["seed_date_raw"]}
+    for request_key, response_key, tool, completion in (
+            ("completion_request_reference", "completion_response_reference",
+             "ck3_query_active_scheme_sway_completion_private_v1", True),
+            ("opinion_request_reference", "opinion_response_reference",
+             "ck3_query_active_scheme_sway_outcome_opinion_private_v1", False)):
+        arguments = dict(expected_arguments)
+        if completion:
+            arguments["scheme_instance_id"] = binding["scheme_instance_id"]
+        leaf = _sway_response_pair(witness, request_key, response_key, packet, tool, arguments)
+        require_sway_leaf(leaf, binding, seed_frame, Path(witness[response_key]["path"]), completion=completion)
+    normal = _sway_response_pair(witness, "completed_normal_request_reference",
+        "completed_normal_response_reference", packet, "ck3_auto_turn", {})
+    end = ending_frame(normal)
+    # This joins existing frame fields, not a new semantic normal-result qualification.
+    # Root must verify the actual completed-normal endpoint; absent fields stay pending.
+    if end is None:
+        raise ValueError("Root actual normal endpoint frame is pending; preserve its response")
+    for key, expected in (("ending_date_raw", binding["seed_date_raw"]),
+                          ("revision", binding["seed_public_revision"]),
+                          ("native_revision", binding["seed_native_revision"])):
+        if type(end.get(key)) is not int or end[key] != expected:
+            raise ValueError("Root actual normal endpoint lacks its matched seed frame")
+    for key, expected in (("played_character_id", binding["actor_character_id"]),
+                          ("episode_character_id", binding["episode_character_id"]),
+                          ("episode_run_id", binding["episode_run_id"])):
+        if end.get(key) is not None and (type(end[key]) is not type(expected) or end[key] != expected):
+            raise ValueError("Root actual normal endpoint contradicts the observed seed episode")
+    return binding
+
+
+def require_sway_baseline(path, leaf, binding, snapshot, packet, *, completion=False):
+    if (not _sway_int(snapshot.get("revision")) or not _sway_int(snapshot.get("native_revision"))
+            or not _sway_int(snapshot.get("date_raw"), -(1 << 63), (1 << 63) - 1)):
+        raise ValueError("Sway baseline requires a strictly typed actual current snapshot frame")
+    path = path.resolve()
+    request_path = packet.resolve() / "gameplay-requests" / path.name
+    if (path.parent != (packet / "gameplay-responses").resolve() or path.suffix != ".json"
+            or not 0 < request_path.stat().st_size <= 8192):
+        raise ValueError("Sway baseline is not an actual request/response of this packet")
+    arguments = {"expected_revision": snapshot["revision"], "target_character_id": binding["target_character_id"]}
+    tool = "ck3_query_active_scheme_sway_outcome_opinion_private_v1"
+    if completion:
+        tool = "ck3_query_active_scheme_sway_completion_private_v1"
+        arguments["scheme_instance_id"] = binding["scheme_instance_id"]
+    request = read(request_path)
+    if (request.get("tool") != tool or type(request.get("arguments")) is not dict
+            or request["arguments"] != arguments
+            or any(type(request["arguments"].get(key)) is not int for key in arguments)):
+        raise ValueError("Sway baseline request differs from its current actual snapshot")
+    frame = {"revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
+             "ending_date_raw": snapshot["date_raw"]}
+    require_sway_leaf(leaf, binding, frame, path, completion=completion)
+    if snapshot["snapshot_id"] == binding["seed_snapshot_id"]:
+        witness, _ = _sway_reference(binding["query_witness_reference"])
+        key = "completion_response_reference" if completion else "opinion_response_reference"
+        if path != Path(witness[key]["path"]).resolve():
+            raise ValueError("Sway initial baseline is not the exact witnessed seed response")
+
+
+def require_sway_leaf(value, binding, frame, response_path, *, completion=False):
+    if type(value.get("available")) is not bool:
+        raise ValueError("Sway observer leaf lacks a typed availability result")
+    for key, expected in (("actor_character_id", binding["actor_character_id"]),
+                          ("target_character_id", binding["target_character_id"]),
+                          ("queried_revision", frame["revision"]),
+                          ("queried_native_revision", frame["native_revision"]),
+                          ("date_raw", frame["ending_date_raw"])):
+        if type(value.get(key)) is not int or value[key] != expected:
+            error = ValueError("Sway observer returned a different actual identity/frame: " + key)
+            error.root_response_context = {"response": str(response_path),
+                "sway_binding": str(binding["query_witness_reference"]["path"])}
+            raise error
+    if completion and (type(value.get("scheme_instance_id")) is not int
+            or (value["available"] is True and value.get("scheme_instance_generation") is None)
+            or value["scheme_instance_id"] != binding["scheme_instance_id"]
+            or (value.get("scheme_instance_generation") is not None
+                and (type(value["scheme_instance_generation"]) is not int
+                     or value["scheme_instance_generation"] != binding["scheme_instance_generation"]))):
+        error = ValueError("Sway completion returned a different full instance/generation")
+        error.root_response_context = {"response": str(response_path),
+            "sway_binding": str(binding["query_witness_reference"]["path"])}
+        raise error
+
+
+def observe_sway(queue: Queue, frame: dict, binding: dict) -> int:
+    if (not _sway_int(frame.get("revision")) or not _sway_int(frame.get("native_revision"))
+            or not _sway_int(frame.get("ending_date_raw"), -(1 << 63), (1 << 63) - 1)):
+        raise ValueError("Sway observer requires the actual completed current frame")
+    revision = frame["revision"]
     completion, completion_path = queue.call(
         "ck3_query_active_scheme_sway_completion_private_v1",
-        {"expected_revision": revision, "target_character_id": 34333,
-         "scheme_instance_id": 134217986}, "sway-completion")
+        {"expected_revision": revision, "target_character_id": binding["target_character_id"],
+         "scheme_instance_id": binding["scheme_instance_id"]}, "sway-completion")
     queue.thin("sway-completion", {
         "response": str(completion_path),
         **{key: completion.get(key) for key in (
@@ -183,9 +462,10 @@ def observe_sway(queue: Queue, revision: int) -> int:
             "terminal_cause_observed", "terminal_cause", "queried_revision",
             "queried_native_revision")},
     })
+    require_sway_leaf(completion, binding, frame, completion_path, completion=True)
     opinion, opinion_path = queue.call(
         "ck3_query_active_scheme_sway_outcome_opinion_private_v1",
-        {"expected_revision": revision, "target_character_id": 34333}, "sway-opinion")
+        {"expected_revision": revision, "target_character_id": binding["target_character_id"]}, "sway-opinion")
     queue.thin("sway-opinion", {
         "response": str(opinion_path),
         **{key: opinion.get(key) for key in (
@@ -194,6 +474,7 @@ def observe_sway(queue: Queue, revision: int) -> int:
             "scheme_sway_opinion", "sway_blocker_opinion", "queried_revision",
             "queried_native_revision")},
     })
+    require_sway_leaf(opinion, binding, frame, opinion_path)
     return opinion["date_raw"]
 
 
@@ -211,6 +492,20 @@ def run(args) -> int:
     current_date = frame["ending_date_raw"] if frame else start_date
     initial_opinion = body(read(args.sway_opinion))
     initial_completion = body(read(args.sway_completion))
+    sway_binding = load_sway_observer_binding(args, initial)
+    sway_episode_observer = (
+        type(initial.get("episode_character_id")) is int
+        and initial["episode_character_id"] == sway_binding["episode_character_id"]
+        and initial.get("episode_run_id") == sway_binding["episode_run_id"])
+    if sway_episode_observer:
+        played = initial.get("played_character", {})
+        if (initial.get("paused") is not True or initial.get("map_ready") is not True
+                or played.get("alive") is not True
+                or type(played.get("character_id")) is not int
+                or played["character_id"] != sway_binding["actor_character_id"]):
+            raise ValueError("Sway current episode is not the bound paused living actor")
+        require_sway_baseline(args.sway_completion, initial_completion, sway_binding, initial, args.packet, completion=True)
+        require_sway_baseline(args.sway_opinion, initial_opinion, sway_binding, initial, args.packet)
     last_leaf_date = initial_opinion["date_raw"]
     args.output.mkdir(parents=True, exist_ok=False)
     queue = Queue(args.packet, args.output, args.prefix, args.response_timeout_seconds,
@@ -225,7 +520,6 @@ def run(args) -> int:
     last_successor_save_is_loop_endpoint = False
     current_episode = {key: initial.get(key) for key in (
         "episode_character_id", "episode_run_id")}
-    sway_episode_observer = initial.get("episode_character_id") == 29829
     source_snapshot, source_snapshot_path = initial, args.initial_snapshot
     checkpoint_pair = getattr(args, "matched_checkpoint_episode", None)
 
@@ -240,7 +534,7 @@ def run(args) -> int:
         pending_successor = transition
         latest_successor_snapshot = path
         source_snapshot, source_snapshot_path = snapshot, path
-        sway_episode_observer = False  # Robert's fixed scheme ends with his actual episode.
+        sway_episode_observer = False  # The explicitly bound scheme ends with its actual episode.
 
     def adopt_observed_successor():
         snapshot, path, transition = m7.continue_successor(
@@ -285,7 +579,7 @@ def run(args) -> int:
             plan_before_action("initial-ordinary-plan")
         if (sway_episode_observer and frame is not None
                 and current_date > last_leaf_date):
-            last_leaf_date = observe_sway(queue, frame["revision"])
+            last_leaf_date = observe_sway(queue, frame, sway_binding)
         while current_date < target_date or pending_successor is not None:
             if pending_successor is not None:
                 snapshot, path, saved_path = m7.checkpoint_if_clear(queue, pending_successor)
@@ -354,7 +648,7 @@ def run(args) -> int:
                     and current_date != last_leaf_date):
                 if plan_before_action("sway-date-plan"):
                     continue
-                last_leaf_date = observe_sway(queue, frame["revision"])
+                last_leaf_date = observe_sway(queue, frame, sway_binding)
         else:
             status = "TARGET_DATE_REACHED_ROOT_CHECKPOINT_PENDING"
     except Exception as error:
@@ -386,6 +680,8 @@ def run(args) -> int:
                 "qualification": str(args.qualification), "initial_snapshot": str(args.initial_snapshot),
                 "first_turn_response": str(args.first_turn_response),
                 "sway_baseline_responses": [str(args.sway_completion), str(args.sway_opinion)],
+                "sway_observer_binding": str(args.sway_observer_binding),
+                "sway_query_witness_reference": sway_binding["query_witness_reference"],
                 "initial_original_scheme": {key: initial_completion.get(key) for key in (
                     "scheme_instance_id", "scheme_instance_generation", "native_status_key")},
                 "starting_date_raw": start_date, "current_date_raw": current_date,
@@ -439,7 +735,7 @@ def run(args) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("packet", "qualification", "initial-snapshot",
-                 "sway-completion", "sway-opinion", "output"):
+                 "sway-completion", "sway-opinion", "sway-observer-binding", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--first-turn-response", "--resume-response",
                         dest="first_turn_response", type=Path, required=True,

@@ -140,6 +140,7 @@ def run(args) -> int:
                 packet=args.packet, qualification=args.qualification,
                 initial_snapshot=snapshot_path, first_turn_response=normal_path,
                 sway_completion=completion_path, sway_opinion=opinion_path,
+                sway_observer_binding=args.sway_observer_binding,
                 output=chunk_output, prefix=chunk_prefix,
                 days=args.days_per_chunk,
                 response_timeout_seconds=args.response_timeout_seconds,
@@ -307,7 +308,7 @@ def run(args) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("packet", "qualification", "current-snapshot", "current-save",
-                 "resume-response", "sway-completion", "sway-opinion", "output"):
+                 "resume-response", "sway-completion", "sway-opinion", "sway-observer-binding", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--saved-normal-days", type=float, required=True)
     parser.add_argument("--prefix", required=True)
