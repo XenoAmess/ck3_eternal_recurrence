@@ -36,6 +36,11 @@ repeat its whole-file hash or run the Game/SDK.
   113-byte intervals. The actual module path and module 5.0.7, distribution
   5.0.9 and two named text pins matched the separate new admission. The engine
   version remains unknown. Source21's zero-read failure remains unchanged.
+- Scope E Source24 had a separate Root numeric admission and actually exited
+  0. It read only two independent 64-byte windows, at RVA 75428416 and
+  75428992; all 128 bytes and 16 complete QWORD cells were saved. Their raw
+  bytes are identical. The 512-byte gap, common address and two secondary
+  contexts were not read. No decoder, target follow or new whole-EXE hash ran.
 
 Full `.pdata` intervals and complete linear decoding do not establish complete
 logical functions. The 18-byte interval beginning at RVA 57849856 and the
@@ -79,6 +84,28 @@ callee destinations are 69352340, 57854576 and 10517600. Their values identify
 possible next inputs, without authorizing new pointer windows, callee bodies,
 callback ABI or formal getter use. Generic callees are not automatically followed.
 
+The selected final primary windows contain the following address coordinates
+in both contexts. These are eight observed cells per window, not an established
+complete table or callable slots. Duplicate addresses retain their distinct
+context/offset observations.
+
+| Offset in each window | Target RVA | Arithmetic file offset | Observed classification |
+| --- | ---: | ---: | --- |
+| `+0` | 57862592 | 57859520 | full eight-byte raw-backed `.text` coordinate |
+| `+8` | 8725184 | 8722112 | same |
+| `+16` | 45034960 | 45031888 | same |
+| `+24` | 8725440 | 8722368 | same |
+| `+32` | 10542224 | 10539152 | same |
+| `+40` | 57855488 | 57852416 | same |
+| `+48` | 8725184 | 8722112 | same |
+| `+56` | 14238688 | 14235616 | same |
+
+The seven unique target coordinates are proposed inputs for a separately
+admitted `.pdata` lookup. No target body was read or selected, and no function
+entry, formal dispatch consumer, Character receiver, return type or scale was
+qualified. Equality of the first 64 bytes does not establish equality of the
+whole tables or a complete negative certificate for skill getters.
+
 ## Installed education script source
 
 The support effect explicitly forwards a martial focus as `$SKILL$=martial`.
@@ -101,7 +128,24 @@ close the final education-trait writer. The complete `educate_child` acceptance
 hook binds ward/guardian role aliases and delegates to
 `educate_child_interaction_effect`. Its two relation setters occur inside
 `show_as_tooltip`, so they do not prove an actual guardian relation. The
-delegated effect's authoritative body and runtime endstate remain unresolved.
+separately observed complete wrapper at `00_interaction_effects.txt:1977–1984`
+calls `education_flags_tooltips_effect` in ward scope, then calls
+`ward_depart_effect` in its incoming scope. Source23's earlier command-path
+failure and education locator Source22's imprecise JavaScript mtime
+serialization remain preserved.
+
+Source24 observed the complete flags helper at `:1986–2127`. Requested culture
+and faith conversion set ten-year flags on the ward; the age branches choose
+descriptions and do not perform conversion. University acceptance requires the
+authored option and location branches. Its payer is `puppet_or_actor`, using
+`monumental_gold_value` with the conditional House reduction, not an observed
+fixed gold amount. The ward receives university and conditional Confucian
+learning modifiers; the non-university Confucian branch adds a modifier, not a
+trait. This complete helper contains no direct guardian-relation, education
+points, focus or final-rank writer. The outer `ward_depart_effect` was not found
+in this one file; travel, relation afterstate and the full acceptance chain
+remain unresolved. This is installed source text with stable metadata, not a
+runtime build pin or observed player outcome.
 
 ## Small evidence references and retention
 
@@ -118,6 +162,21 @@ They are finite research inputs, not permanent availability promises.
 | `ROOT-M6-PRIMARY-CELL-CANDIDATE-ARITHMETIC.json` | 2934 | `8c47a81fc47077d5ea1694b1c1b21281fe0bd3fba5f3963d5888c899df33e7fd` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pdata-source20/SOURCE20-ROOT-PRIMARY-CELL-PDATA-RESULT.json` | 4003 | `8955f55e16d52cec68478f2d1fdaf91e579468d9d072558f7e53f1d32b4e96c0` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-body-source22/SOURCE22-ROOT-PRIMARY-CELL-BODY-RESULT.json` | 9616 | `94a450c8c132345786f9c3429219c06fe2613d071462656d412b887d89abf3e5` |
+| `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pointer-source24/SOURCE24-ROOT-PRIMARY-CELL-POINTER-RESULT.json` | 11107 | `b02c49fd91af3ebc50529c14db119a46d52bd863a09237e2aa706ccd0c874a38` |
+
+Source24's new reviewed plan is 5808 bytes, SHA-256
+`64d677d5d63e453508d8cb988ecc9348edfb8afd0903922167aad4a5e84c4927`;
+its independent numeric admission is 3860 bytes, SHA-256
+`9ddf9c51c3d6d8c8b72aa9312c87fc6e4a4271c81e4ed71453065a47784a9c2e`.
+The leaf used 47114 source bytes and 11605 output bytes under its separate
+64 KiB allowances. Root read the entire result; each selected range was read
+once, all pre/post stat checks matched, and elapsed intake was 0.0290521 s.
+The education text contracts are the separate
+`g2-education-accept-consumer-source23/SOURCE-CONTRACT.json` and
+`g2-education-accept-consumer-source24/SOURCE-CONTRACT.json` leaves under the same
+candidate parent. Their decoded source-line transcripts do not claim byte-exact
+original-file hashes. Two whole-contract static reviews passed; no live
+education, guardian or native-getter qualification was added.
 
 Source21's separate failed body result retains zero read bytes, zero instruction
 rows and the actual decoder import failure. The installed source intake is
