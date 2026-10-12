@@ -17,25 +17,25 @@ zqagov_merit.1 = {
                 title:d_haeju = {
                     exists = holder
                     de_jure_liege = title:k_goguryeo
-                    has_title_law = meritocratic_appointment_succession_law
                     holder = {
                         is_alive = yes
                         is_ai = yes
                         is_independent_ruler = no
                         liege = title:e_goryeo.holder
                         primary_title = title:d_haeju
+                        has_realm_law = meritocratic_appointment_succession_law
                     }
                 }
                 title:d_bukgye = {
                     exists = holder
                     de_jure_liege = title:k_goguryeo
-                    has_title_law = meritocratic_military_appointment_succession_law
                     holder = {
                         is_alive = yes
                         is_ai = yes
                         is_independent_ruler = no
                         liege = title:e_goryeo.holder
                         primary_title = title:d_bukgye
+                        has_realm_law = meritocratic_military_appointment_succession_law
                     }
                 }
                 # ZQAGOV_MERIT_V2_END preconditions
@@ -112,7 +112,7 @@ zqagov_merit.2 = {
                     holder.liege = scope:zqagov_v2_civic_liege_before
                     holder.liege = scope:zqagov_target
                     holder.primary_title = title:d_haeju
-                    has_title_law = meritocratic_appointment_succession_law
+                    holder = { has_realm_law = meritocratic_appointment_succession_law }
                     de_jure_liege = {
                         this = scope:zqagov_v2_parent_title
                         holder = scope:zqagov_target
@@ -123,7 +123,7 @@ zqagov_merit.2 = {
                     holder.liege = scope:zqagov_v2_military_liege_before
                     holder.liege = scope:zqagov_target
                     holder.primary_title = title:d_bukgye
-                    has_title_law = meritocratic_military_appointment_succession_law
+                    holder = { has_realm_law = meritocratic_military_appointment_succession_law }
                     de_jure_liege = {
                         this = scope:zqagov_v2_parent_title
                         holder = scope:zqagov_target

@@ -88,8 +88,8 @@ class MeritDirectParentFixture(unittest.TestCase):
             target = block(pre, "title:" + title, indentation=" " * 16)
             self.assertIn("exists = holder", target)
             self.assertIn("de_jure_liege = title:k_goguryeo", target)
-            self.assertIn("has_title_law = " + law, target)
             holder = block(target, "holder", indentation=" " * 20)
+            self.assertIn("has_realm_law = " + law, holder)
             for assertion in ("is_alive = yes", "is_ai = yes", "is_independent_ruler = no",
                               "liege = title:e_goryeo.holder", "primary_title = title:" + title):
                 self.assertIn(assertion, holder)
@@ -127,7 +127,7 @@ class MeritDirectParentFixture(unittest.TestCase):
             for assertion in ("holder = scope:zqagov_v2_" + role + "_holder_before",
                               "holder.liege = scope:zqagov_v2_" + role + "_liege_before",
                               "holder.liege = scope:zqagov_target", "holder.primary_title = title:" + title,
-                              "has_title_law = " + law):
+                              "holder = { has_realm_law = " + law + " }"):
                 self.assertIn(assertion, target)
             direct = block(target, "de_jure_liege", indentation=" " * 20)
             self.assertIn("this = scope:zqagov_v2_parent_title", direct)
@@ -141,6 +141,18 @@ class MeritDirectParentFixture(unittest.TestCase):
                           "allowed_candidate_tier", "change_merit", "trigger_event", "add_trait",
                           "remove_trait", "set_variable", "advance_day"):
             self.assertNotIn(forbidden, inserted)
+
+    def test_both_original_law_gates_use_holder_realm_scope_before_and_after_grant(self):
+        # Stock appointment laws are realm laws; a title-local gate rejects the
+        # normal effective law before the controlled grant (A192/R0084).
+        for region in ("preconditions", "post_readback_open"):
+            for title, law in LAWS.items():
+                with self.subTest(region=region, title=title, law=law):
+                    target = block(self.regions[region], "title:" + title, indentation=" " * 16)
+                    holder = block(target, "holder", indentation=" " * 20)
+                    self.assertEqual(holder.count("has_realm_law = " + law), 1)
+                    self.assertNotIn("has_realm_law", target.replace(holder, "", 1))
+                    self.assertNotIn("has_title_law", target)
 
     def test_contract_inverse_preserves_original_markers_budgets_nine_supports_and_plan(self):
         restored = restore_pre_v2_merit_contract(self.contract)
