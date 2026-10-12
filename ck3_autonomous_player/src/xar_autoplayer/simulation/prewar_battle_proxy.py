@@ -115,20 +115,24 @@ def forecast_prewar_power_battle(
 
 
 def prewar_declaration_admission(forecast: Mapping[str, object]) -> dict[str, object]:
-    """Permit decisive candidate battles without pretending the prior is exact."""
+    """Report the proxy's risk score without authorizing war on that score alone."""
 
     lower = forecast.get("resolved_win_wilson95_lower")
     count = forecast.get("sample_count")
     unresolved = forecast.get("no_resolution")
-    admitted = bool(
+    risk_budget_passed = bool(
         forecast.get("status") == "estimated"
         and isinstance(lower, (int, float)) and lower >= 0.95
         and isinstance(count, int) and count > 0
         and isinstance(unresolved, int) and unresolved <= count // 20
     )
     return {
-        "admitted": admitted,
-        "reason": "decisive_aggregate_battle_prior" if admitted else "aggregate_battle_prior_risk_too_high",
+        "admitted": False,
+        "reason": (
+            "independent_force_coalition_evidence_required" if risk_budget_passed
+            else "aggregate_battle_prior_risk_too_high"
+        ),
+        "proxy_risk_budget_passed": risk_budget_passed,
         "minimum_wilson_lower": 0.95,
         "maximum_unresolved_fraction": 0.05,
         "native_parity_required": False,

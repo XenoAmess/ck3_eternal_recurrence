@@ -6062,8 +6062,8 @@ def _forecast_required_war_entry_plan(
         "phase": "native_war_entry_forecast_required",
         "selected_step": advance,
         "reason": (
-            "the legal candidate was evaluated by the bounded aggregate "
-            "battle prior, but its risk budget does not support this declaration"
+            "the aggregate prewar proxy cannot authorize a declaration without "
+            "independent same-frame force and coalition coverage"
         ),
         "decision": {
             "policy": candidate["rule_id"],
@@ -6080,9 +6080,7 @@ def _forecast_required_war_entry_plan(
             "advance_contract": "native_life_advance" if advance else None,
         },
         "required_capabilities": [
-            "game.command.query-prewar-scope-v1-N",
-            "game.command.query-prewar-combat-simulation-inputs-v3-N",
-            "game.forecast.combat-monte-carlo-v1",
+            "game.command.query-prewar-force-coalition-coverage-v1-N",
         ],
         "prewar_forecast_admission_available": forecast.get("status") == "estimated",
         "prewar_battle_forecast": forecast,
