@@ -134,40 +134,10 @@
       "kind": "TEST",
       "representation": "PENDING_PHYSICAL",
       "name": "phase3_later_dynasty_realm_and_ministry_inherited"
-    },
-    {
-      "kind": "TEST",
-      "representation": "PASS",
-      "name": "phase4_recent_independence_expired"
-    },
-    {
-      "kind": "TEST",
-      "representation": "PASS",
-      "name": "china_control_reset"
-    },
-    {
-      "kind": "TEST",
-      "representation": "PASS",
-      "name": "fifty_percent_below_claim_threshold"
-    },
-    {
-      "kind": "TEST",
-      "representation": "PASS",
-      "name": "original_fifty_one_percent_threshold_reached"
-    },
-    {
-      "kind": "TEST",
-      "representation": "PASS",
-      "name": "restoration_decision_ready"
-    },
-    {
-      "kind": "TEST",
-      "representation": "PASS",
-      "name": "original_mandate_effect_plus_later_title_destroyed"
     }
   ],
   "begin": "RQA: TEST BEGIN reclaim",
-  "done": "RQA: TEST DONE reclaim",
+  "done": "RQA120: TEST DONE owned_core",
   "required_exact_count": 1,
   "forbidden_markers": [
     "RQA: TEST FAIL",
@@ -192,6 +162,8 @@
   "excluded_release_requirements": [
     "vanilla Offer full reason/rank/legitimacy numerical revalidation",
     "stochastic double refusal",
+    "natural ten-day recent-independence expiry wait",
+    "core duplicate 50/51 percent and restoration tail; independent threshold UI owns these checks",
     "legacy full36 completion credit"
   ],
   "owned_gui_requirements": [
@@ -214,5 +186,12 @@
   ],
   "independent_threshold_ui_still_required": true,
   "no_repeated_D2_chaos_dispatch": true,
-  "no_native_player_death_continue_credit": true
+  "no_native_player_death_continue_credit": true,
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 5400,
+    "poll_interval": 1.0,
+    "hold_seconds": 3600
+  }
 }

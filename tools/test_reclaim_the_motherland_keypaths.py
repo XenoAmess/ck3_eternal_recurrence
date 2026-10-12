@@ -73,12 +73,17 @@ class OwnedKeypaths(unittest.TestCase):
         return {"case": "core", "repo_root": str(ROOT), "case_inputs": {},
                 "case_spec": {"adapter": {"config": str(CONFIG)}}}
 
-    def test_scope_removes_only_offer_families_and_retains_law_failure_boundary(self):
+    def test_scope_removes_offer_and_duplicate_tail_but_retains_law_failure_boundary(self):
         old = json.loads(CONFIG.with_name("rmtm_core.json").read_text(encoding="utf-8-sig"))
         removed = {"phase4_offer_vassalization_paths_valid",
-                   "phase4_two_released_rulers_refused_immediate_vassalization"}
+                   "phase4_two_released_rulers_refused_immediate_vassalization",
+                   "phase4_recent_independence_expired", "china_control_reset",
+                   "fifty_percent_below_claim_threshold", "original_fifty_one_percent_threshold_reached",
+                   "restoration_decision_ready", "original_mandate_effect_plus_later_title_destroyed"}
         current = self.config()
         self.assertEqual(current["families"], [row for row in old["families"] if row["name"] not in removed])
+        self.assertEqual(len(current["families"]), 26)
+        self.assertEqual(current["done"], emitter.FOCUSED_DONE)
         for key in ("natural_game_day_limit", "fixture_recent_independence_override_days", "forbidden_markers", "post_start"):
             self.assertEqual(current[key], old[key])
         self.assertEqual(witness.byte_pin((SOURCE / witness.FIXTURE_RELATIVE).read_bytes())["sha256"],
@@ -90,7 +95,7 @@ class OwnedKeypaths(unittest.TestCase):
         self.assertEqual(threshold["release_scope"], "owned_keypaths")
         self.assertIn("RQAUI: TEST PASS actual_production_restoration_effect_observed", threshold["required_markers"])
 
-    def test_three_driver_changes_exact_inverse_bom_and_original_owned_timing(self):
+    def test_five_driver_changes_exact_inverse_bom_and_original_succession_timing(self):
         original = emitter.events(True).encode("utf-8-sig")
         for raw in (original, original.replace(b"\n", b"\r\n")):
             focused = emitter.focused_project(raw)
@@ -99,9 +104,13 @@ class OwnedKeypaths(unittest.TestCase):
             self.assertNotIn(emitter.PHASE4_SEND.rstrip(), focused)
             self.assertNotIn(b"rqa_verify_vassalization_probe_effect = yes", focused)
             for token in (b"rqa_verify_chaos_effect = yes", b"rqa_execute_succession_effect = yes",
-                          b"rqa_prepare_threshold_effect = yes", b"rqa120_production_restoration_effect = yes",
+                          b"rqa120_production_restoration_effect = yes",
                           b"rqa120_stage value = 90", b"rqa120.2 days = 3"):
                 self.assertEqual(focused.count(token), raw.count(token))
+            self.assertEqual(focused.count(b"rqa_prepare_threshold_effect = yes"),
+                             raw.count(b"rqa_prepare_threshold_effect = yes") - 1)
+            self.assertEqual(focused.count(emitter.FOCUSED_DONE.encode("ascii")), 1)
+            self.assertNotIn(b"rqa_verify_recent_independence_expiry_effect = yes", focused)
             parse_clausewitz(focused.decode("utf-8-sig"))
             proof = emitter.focused_projection_receipt(raw, focused)
             self.assertEqual(proof["original_driver"], proof["inverse_driver"])
@@ -113,7 +122,7 @@ class OwnedKeypaths(unittest.TestCase):
         bundle = {"schema": "rmtm-effective-single-heir-actual-rows-v1",
                   "phases": [phase("d3", 11, 1000), phase("predeath", 11, 1001), phase("postdeath", 22, 1002)]}
         expected = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in config["families"]]
-        raw = ("\n".join(expected + [config["begin"], config["done"], "RQA120: TEST DONE core"]) + "\n").encode()
+        raw = ("\n".join(expected + [config["begin"], config["done"]]) + "\n").encode()
         self.assertFalse(adapter.focused_marker_verdict(config, raw, bundle, law)["business_pass"])
         for badraw in (raw + b"RQA: TEST FAIL phase4_two_released_rulers_refused_immediate_vassalization\n",
                        raw + expected[0].encode() + b"\n", raw.replace(expected[0].encode(), b"missing"),
@@ -164,16 +173,18 @@ class OwnedKeypaths(unittest.TestCase):
 
     def test_run_keeps_d3_d4_and_succession_but_never_requests_offer_reviews(self):
         with tempfile.TemporaryDirectory(prefix="rmtm-keypaths-route-") as directory:
-            client = SimpleNamespace(output=directory, log_bytes=lambda: b"RQA120: TEST DONE core\n",
-                                     checkpoint=lambda name, value: value)
             seen_days, seen_phases, seen_reviews = [], [], []
+            client = SimpleNamespace(output=directory,
+                                     log_bytes=lambda: (emitter.FOCUSED_DONE + "\n").encode("ascii")
+                                     if "rmtm-D8" in seen_days else b"",
+                                     checkpoint=lambda name, value: value)
             context = self.context()
             with patch.object(adapter, "validate_contract"), patch.object(adapter, "observe", return_value=({"date_raw": 1000}, None)), \
                  patch.object(adapter, "original_day", side_effect=lambda c, name, *a, **k: seen_days.append(name)), \
                  patch.object(adapter, "_law_phase", side_effect=lambda c, name: (seen_phases.append(name) or Path("test-" + name), {"date_raw": 1007})), \
                  patch.object(adapter, "literals"), patch.object(adapter, "review", side_effect=lambda c, name, *a: seen_reviews.append(name)):
                 self.assertFalse(adapter.run_case(context, client)["business_pass"])
-            self.assertEqual(seen_days, ["rmtm-D" + str(day) for day in range(1, 8)])
+            self.assertEqual(seen_days, ["rmtm-D" + str(day) for day in range(1, 9)])
             self.assertEqual(seen_phases, ["d3", "predeath", "postdeath"])
             self.assertEqual(seen_reviews, ["rmtm-owned-keypaths-GUI", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-owned-keypaths-final"])
             self.assertLess(sum(path.stat().st_size for path in Path(directory).rglob("*") if path.is_file()), 1024)

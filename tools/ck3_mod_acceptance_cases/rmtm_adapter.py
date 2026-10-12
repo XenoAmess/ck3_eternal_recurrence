@@ -330,9 +330,10 @@ def run_case(context, client):
     # The original execute effect schedules the two-day succession probe.
     # Its three pending families must exist before the physical postdeath join.
     postdeath, postdeath_verdict = _law_phase(client, "postdeath")
+    completion = config["done"] if focused else "RQA120: TEST DONE core"
     for day in range(8, config["natural_game_day_limit"] + 1):
         raw = client.log_bytes()
-        if b"RQA120: TEST DONE core" in raw:
+        if completion.encode("ascii") in raw:
             break
         original_day(client, "rmtm-D" + str(day), start, config["natural_game_day_limit"], allow_actor_change=True)
     debug = Path(client.output) / "rmtm-final-debug.log.raw"
@@ -341,9 +342,8 @@ def run_case(context, client):
     if focused:
         review(client, "rmtm-owned-keypaths-final", [
             "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
-            "natural_both_title_timer_expiry", "original50_51_source_boundaries_and_actual_restoration_outcome",
         ], {"independent_threshold_UI_case_still_required": True,
-            "excluded_release_scope": "Vanilla Offer formulas and stochastic double refusal; old RED remains historical RED."})
+            "excluded_release_scope": "Vanilla Offer formulas, stochastic double refusal, expiry wait and duplicate threshold/restoration tail; old RED remains historical RED."})
     else:
         review(client, "rmtm-original-final-business", [
             "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
@@ -367,7 +367,7 @@ def focused_marker_verdict(config, raw, bundle, helper):
     require(not any(token in line for token in config["forbidden_markers"] for line in lines),
             "Owned-keypaths actual FAIL gate rejected")
     expected = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in config["families"]]
-    expected += [config["begin"], config["done"], "RQA120: TEST DONE core"]
+    expected += [config["begin"], config["done"]]
     counts = {literal: sum(literal in line for line in lines) for literal in expected}
     require(all(count == config["required_exact_count"] for count in counts.values()),
             "Owned-keypaths missing/repeated actual source marker")

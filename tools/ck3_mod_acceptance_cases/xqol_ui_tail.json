@@ -35,5 +35,12 @@
     "save-0",
     "restore-anchor",
     "map-clean"
-  ]
+  ],
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 3000,
+    "poll_interval": 0.05,
+    "hold_seconds": 1800
+  }
 }

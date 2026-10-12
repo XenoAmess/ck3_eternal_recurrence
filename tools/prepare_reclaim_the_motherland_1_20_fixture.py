@@ -94,17 +94,31 @@ PHASE4_MANUAL_GUI = '''window = {
 
 
 FOCUSED_OPTION = "focused_keypaths"
+FOCUSED_DONE = "RQA120: TEST DONE owned_core"
 FOCUSED_EDITS = (
     (PHASE4_SEND, b"            add_character_flag = rqa_ready_for_succession # owned keypaths; no vanilla Offer probe\n"),
     (b"            limit = { var:rqa120_stage = 4 has_character_flag = rqa_waiting_for_vassalization_probe }\n",
      b"            limit = { var:rqa120_stage = 4 has_character_flag = rqa_ready_for_succession } # owned keypaths\n"),
     (b"            rqa_verify_vassalization_probe_effect = yes\n",
      b"            # owned keypaths: no stochastic vanilla double-refusal assertion\n"),
+    (b"                var:rqa_defecting_direct.primary_title = {\n"
+     b"                    NOT = { exists = var:rmtm_recently_independent_from_restoration_hegemony }\n"
+     b"                }\n"
+     b"                var:rqa_control_ruler.primary_title = {\n"
+     b"                    NOT = { exists = var:rmtm_recently_independent_from_restoration_hegemony }\n"
+     b"                }\n",
+     b"                # owned core completes after the original succession aggregate, not timer expiry\n"),
+    (b"            rqa_verify_recent_independence_expiry_effect = yes\n"
+     b"            add_character_flag = rqa_threshold_pending\n"
+     b"            rqa_prepare_threshold_effect = yes\n"
+     b"            set_variable = { name = rqa120_stage value = 7 }\n",
+     b"            set_variable = { name = rqa120_stage value = 99 }\n"
+     b'            debug_log = "' + FOCUSED_DONE.encode("ascii") + b'"\n'),
 )
 
 
 def focused_project(raw: bytes, *, inverse=False) -> bytes:
-    """Skip only the fixture's vanilla Offer round; retain owned chain/timing."""
+    """Skip vanilla Offer and duplicate expiry/threshold tail; keep succession timing."""
     newline = b"\r\n" if b"\r\n" in raw else b"\n"
     for before, after in FOCUSED_EDITS:
         before, after = (value.replace(b"\n", newline) for value in (before, after))
@@ -123,7 +137,10 @@ def focused_projection_receipt(raw: bytes, projected: bytes) -> dict:
             "original_driver": witness.byte_pin(raw), "projected_driver": witness.byte_pin(projected),
             "inverse_driver": witness.byte_pin(inverse), "inverse_byte_exact": True,
             "vanilla_offer_actions_executed": False, "production_modified": False,
-            "scope_dump_count_unchanged": 3, "runtime_status": "NOT_RUN", "business_pass": False}
+            "scope_dump_count_unchanged": 3,
+            "completion_scope": "original succession aggregate only; independent threshold UI remains required",
+            "completion_marker": FOCUSED_DONE,
+            "runtime_status": "NOT_RUN", "business_pass": False}
 
 
 def phase4_enabled(value=False, *, ui_checkpoints=True, threshold_ui=False) -> bool:
@@ -399,7 +416,10 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
     markers = [marker for marker in markers if marker not in old_law_markers]
     if focused_keypaths:
         markers = [marker for marker in markers if not any(name in marker for name in (
-            "phase4_offer_vassalization_paths_valid", "phase4_two_released_rulers_refused_immediate_vassalization"))]
+            "phase4_offer_vassalization_paths_valid", "phase4_two_released_rulers_refused_immediate_vassalization",
+            "phase4_recent_independence_expired", "china_control_reset", "fifty_percent_below_claim_threshold",
+            "original_fifty_one_percent_threshold_reached", "restoration_decision_ready",
+            "original_mandate_effect_plus_later_title_destroyed", "TEST DONE reclaim"))]
     markers += [f"RQA: {kind} PENDING_PHYSICAL {name}" for kind, name in pending_families]
     effective_law_contract = {
         "schema": "rmtm-effective-single-heir-actual-rows-v1",
@@ -414,8 +434,9 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
         "source_pass": False,
         "business_pass": False,
     }
-    markers += ["RQA120: TEST BEGIN engine_startup", "RQA120: TEST PASS later_ministry_budget_gate",
-                "RQA120: TEST PASS restoration_later_title_unheld", "RQA120: TEST DONE core"]
+    markers += ["RQA120: TEST BEGIN engine_startup", "RQA120: TEST PASS later_ministry_budget_gate"]
+    markers += ([FOCUSED_DONE] if focused_keypaths else
+                ["RQA120: TEST PASS restoration_later_title_unheld", "RQA120: TEST DONE core"])
     if ui_checkpoints:
         markers.append("RQA120: TEST READY ui_after_chaos")
     core_markers = list(markers)
@@ -438,13 +459,13 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
         "threshold_UI_does_not_credit_core36":threshold_ui,
         "bookmark":"1066-09-15; begin as any human ruler except the Song emperor",
         "entry":"on_game_start_after_lobby -> rqa120.1 -> daily hidden rqa120.2; successor driver is explicitly scheduled before predecessor death",
-        "expected_game_days":duration + 2, "max_game_days":14,
+        "expected_game_days":8 if focused_keypaths and not threshold_ui else duration + 2, "max_game_days":14,
         "completion_within_day_cap":"must be proved by actual markers; configured duration does not grant expiry credit",
         "game_rules":{"rmtm_hegemon_fate":"rmtm_reclaim_the_motherland", "rmtm_pro_hegemon_choice":"rmtm_divided_hearts"},
         "required_markers":markers, "reject_markers":["RQA: TEST FAIL", "RQA120: TEST FAIL"],
         "production_effect_projections":[proof], "stock_observer_projection":stock_proof,
-        "timer_compression":{"production_days":1825, "prepared_fixture_days":duration, "reason":"preserve recent independence through the daily driver, then observe actual engine expiry"},
-        "coverage":("Owned qualification/Chaos/Later/personal land/loyal tree/ministry/succession/death/restoration; vanilla Offer totals and stochastic refusals are outside this release scope." if focused_keypaths else "Existing production shattering/offer interaction/succession/restoration consequences and ministry entitlement/budget flags. Government budget UI, numeric acceptance reasons and production decision clicks remain separate UI checks."),
+        "timer_compression":{"production_days":1825, "prepared_fixture_days":duration, "reason":("Original fixture duration preserved; owned core does not wait for expiry or duplicate threshold UI." if focused_keypaths else "preserve recent independence through the daily driver, then observe actual engine expiry")},
+        "coverage":("Owned qualification/Chaos/Later/personal land/loyal tree/ministry/succession/death; expiry and duplicate restoration tail excluded; independent threshold UI still required." if focused_keypaths else "Existing production shattering/offer interaction/succession/restoration consequences and ministry entitlement/budget flags. Government budget UI, numeric acceptance reasons and production decision clicks remain separate UI checks."),
         "ui_steps":(["Observe the actual Chaos event once; preserve the D3 physical law/title conjunction.",
                      "At D4 inspect Later empty de jure, personal/loyal realm, nine incumbents and budget; Cancel budget without executing it.",
                      "Continue once; prove execute-time heir, real predecessor death and same-title recovery. The separate threshold_ui cell uses the real 50/51 production GUI."] if focused_keypaths else ["Close the native Chaos notification to allow time to advance.",

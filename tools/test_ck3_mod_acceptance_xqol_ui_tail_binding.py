@@ -126,6 +126,16 @@ class FixedUiTailBinding(unittest.TestCase):
                     self.binding(context, receipt, source)
 
     def test_every_other_adapter_definition_and_original_ui_contract_remain_exact(self):
+        registry = json.loads((ROOT / 'tools/ck3_mod_acceptance_products.json').read_bytes())
+        for product, case, filename in (
+                ('xqol', 'ui_tail', 'xqol_ui_tail.json'),
+                ('reclaim-motherland', 'core', 'rmtm_keypaths.json'),
+                ('reclaim-motherland', 'threshold_ui', 'rmtm_threshold_ui.json')):
+            with self.subTest(product=product, case=case):
+                current = json.loads((CONTRACT.parent / filename).read_bytes())
+                registered = next(item for item in registry['products'][product]['cases']
+                                  if item['id'] == case)
+                self.assertEqual(current['original_budgets'], registered['budgets'])
         tree = ast.parse(restore_minimal_ui_adapter(ADAPTER.read_bytes()).decode('utf-8-sig'))
         tree.body = [node for node in tree.body if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
                      or node.name != 'prior_formal_binding']

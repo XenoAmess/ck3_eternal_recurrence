@@ -43,5 +43,12 @@
     "rqaui_verify_actual_restoration_decision"
   ],
   "original_real_production_action": "actual restoration decision confirmation; fixture never executes production restoration",
-  "independent_cell_no_core36_or_death_credit": true
+  "independent_cell_no_core36_or_death_credit": true,
+  "original_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 400,
+    "timeout": 5400,
+    "poll_interval": 1.0,
+    "hold_seconds": 3600
+  }
 }

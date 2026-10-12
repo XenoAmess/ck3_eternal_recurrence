@@ -118,7 +118,7 @@ def restore_minimal_ui_contract(contract):
     from ck3_mod_acceptance_cases.xqol_ui import STAGES
     value={}
     for key,item in contract.items():
-        if key in ('gui_review_scope','focused_slider_order'):continue
+        if key in ('gui_review_scope','focused_slider_order','original_budgets'):continue
         value[key]=copy.deepcopy(item)
         if key=='readonly_step_count':value['gui25_order']=list(STAGES)
     value['new_scene_scope']='New actual Song owner/actor/title-key; original readonly9 and UI25. No defense/reverse/final6 replay.'

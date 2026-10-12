@@ -16,6 +16,12 @@ A200/R0091 已取得海州文职7人、北界军职0人的完整原生候选池�
 
 其余新增实测维持滑条7个关键阶段、赎金4个代表交易、重整河山核心路径与50/51阈值两场。正式上传、真实Steam下载缓存与实际加载、公开完整Change Notes回读及永久changelog仍须完成；本节不授两产品发布完成资格。
 
+赎金 A202/R0092 已完成原12自然日、四种领主共享钱包交易，公共 [run](C:/workspace/ck3-upgrade-20261010/focused-scenes-20261013-01/liege_shared_ransom--a202/public-run-01-process-exit.json) 与 [verify](C:/workspace/ck3-upgrade-20261010/focused-scenes-20261013-01/liege_shared_ransom--a202/public-verify-01-process-exit.json) 均实际退出0；原验证器 `case_acceptance_pass/qualified_boundary_pass=true`，仍保留其 `business_pass/product_release_pass=false` 的聚合边界。实际 retained OS0/native0、自动正常GUI退出、cleanup/thread、keeper/CAS与[标准存储闭场](C:/workspace/ck3-upgrade-20261010/focused-scenes-20261013-01/liege_shared_ransom--a202/POST-RUN-CLOSE-01.json)已齐，未增加手动交易或重跑旧分支。
+
+重整河山核心进一步由32缩为26 families：不再等待原十天独立计时到期，也不在继承主场重复50/51及恢复决议尾段；这些门槛只在独立threshold UI场执行一次。仍保持真实前任死亡、执行时引擎继承人、原恢复回调、同完整头衔、d3/predeath/postdeath物理法律联合核对、忠臣树及九席/预算取消。完成标记单列为 `RQA120: TEST DONE owned_core`，预计D8、原14天上限与死亡/两日探针调度不改，不授旧full36信用。五个窄离线检查实际通过，只证明投影逆变换、真实失败边界和D8路由；新核心实机尚待执行。
+
+UI与重整河山两合同补写与既有registry完全一致的 `original_budgets` 元数据供共同空间观察器读取；不降低timeout/readiness/hold/command/poll预算，不改变正式mod文件。未消费旧UI准备件只因这一合同绑定变化另行prepare，不计为一次业务重跑。
+
 ## 2026-10-10 可选着色器缓存复用
 
 LYD本机首次实际消费见[R46](ck3-native-ai/2026-10-10-r46-startup-query-red.md)：注入和暂停语义帧已取得，首campaign query执行前取消，业务未通过。后继启动顺序要求history-loaded与InGame两个完整日志行，不制造“最终Setup”标记；缓存核心只另外豁免runtime.py及专属延后注入测试两项启动控制源码，游戏/host/native/业务/配置保持绑定，旧seed须重新派生。[R47实际对照](ck3-native-ai/2026-10-10-r47-startup-control.md)的campaign query及八步对照断言通过；原始人工退出确认缺失使公共run2/verify2保持，不能授正式产品或完整闭场PASS。单次正例不证明R46根因或缓存命中/提速。
