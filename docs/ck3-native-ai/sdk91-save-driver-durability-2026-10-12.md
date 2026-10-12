@@ -79,9 +79,13 @@ encoder 和固定 `.tmp` 写入方式没有改变。
 
 该回执证明这次编码快照的写入/替换调用返回及记录到编码的绑定；它不是 fsync、
 掉电耐久性、native SAVE 执行时身份、跨实例排他或后续恢复证明。Service 的
-已读 `execute_step` / `save_checkpoint` 路径保留非 Army 原结果；MCP 最终出口
-可见性仍待精确源码审查，不能声称已取得公开生产回执。未来 SDK 冻结与实际
-资格另行执行，当前新增持盘天数为 0。
+已读 `execute_step` / `save_checkpoint` 路径保留非 Army 原结果。后续 Source31
+检查了 canonical `bridge/mcp_server.py`：完整 `ck3_save_checkpoint` 在
+2755–2759，直接 `return service.save_checkpoint(expected_revision=expected_revision)`，
+没有 handler 内的结果重建或字段筛除。Root 也读了全部五行；这条项目源码返回
+链可以携带新顶层字段。框架最终序列化、运行期注册与实际公开回执仍未观测，
+冻结 SDK91 的旧运行不因此获得新回执。未来 SDK 冻结与实际资格另行执行，
+当前新增持盘天数为 0。
 
 最终外置候选为 Source25 的 `sdk91-save-replacement-attempt.patch`，9792 bytes，
 SHA-256 `83a985212909f2f641e2396601b6bc7b02e2b5d30a552264b02d0a494f88e85c`；

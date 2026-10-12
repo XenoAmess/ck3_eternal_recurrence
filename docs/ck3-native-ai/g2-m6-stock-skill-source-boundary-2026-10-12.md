@@ -230,7 +230,15 @@ ward-liege notification blocks, so they are not unconditional. Travel/request
 variable cleanup follows both valid and invalid branches; missing variables
 cannot prove success, refusal, conversion or education-point progress. Actual
 conversion, callback identity, event consumers and education outcome remain
-unqualified. Two named on-start hooks are the next pure-text investigation.
+unqualified. Source28 then checked the two named on-start hooks using only the
+same two pinned text inputs. Both unique complete definitions are empty:
+`on_guardian_depart_for_ward = {}` at childhood line 958 and
+`on_ward_depart_for_guardian = {}` at line 779. One author read those two lines
+and shared them with fourteen roles. The hooks themselves do not initialize
+aliases, bind variables or delegate effects. This closes only the local
+authored-body absence; it does not prove engine saved-scope restoration is
+missing or broken. No retained dispatcher path/RVA is established here, so no
+new engine callback, nearby RVA or typed identity is inferred.
 
 ## Small evidence references and retention
 
@@ -296,6 +304,16 @@ Root read all 256 contract lines, including both complete decoded bodies. Its
 transcript intentionally removes leading indentation and is not a raw-file
 hash or a fresh body-reader metadata certificate. Two complete locator-source
 reviews and fourteen semantic roles preserve the callback identity unknowns.
+
+The subsequent education Source28 contract is
+`sdk85-source-preparation/sdk86-candidates/g2-education-onstart-alias-source28/SOURCE-CONTRACT.json`.
+Root read all 218 contract lines, including the exact two body-reader lines.
+The sole locator returned 103294 text bytes with two matching upfront and
+post-read stats. Two complete 150-line locator-source reviews passed; all
+fourteen semantic roles retained the local-empty versus engine-unknown boundary.
+The body launcher did not emit fresh stat evidence of its own; it uses the
+preceding locator's pins. Neither empty hooks nor pending-variable cleanup
+replace an actual requested child/guardian relation observation.
 
 At the user's subsequent request, this machine is reserved for their CK3 play.
 No further Game/SDK requests, desktop use or EXE reads run in this research

@@ -61,3 +61,20 @@ C 盘终点可用 `47,948,550,144 B / 44.66 GiB`；起点为约 0.38 GiB。完�
 
 
 第二阶段最终小结果：`D:/codex-ck3-background-spill/native71-continuation-20261010/c-cleanup-high-priority-20261011/PHASE2-FINAL.json`，6,946 B，SHA-256 `7dfa2dceb967b19fd74c5cbaab20c282c3bdba388c373ffdd509b91aed63f633`；同目录 `PHASE2-FINAL.md` 为摘要。`RETIRED-SEMANTIC-PENDING-COPIES.json` 是 24 份实际退役 ledger；`ROOT-SEMANTIC-CLEANUP-DECISIONS.json` 是十个并行包、40 个提交和 24 份副本的 Root 明确裁决，SHA-256 `f7b74ebc64ad0db64476a3fa2770934d25a8e7358fe75f6de843a362fc801194`。独有知识实际采用回执为 continuation 根的 `ROOT-C-EXTENSION-ORIGIN-HISTORY-SALVAGE-ADOPTION.json`，对应已推送 `d0ae5581`。
+
+## 2026-10-12 后台增量复核
+
+继续用户授权的高优先级清理线程，按同一策略读取旧明确裁决后，对第二阶段
+24 个精确 C 子根执行一次只读 metadata 入口；父树、个人文件、游戏与依赖不纳入。
+实际命令 `py -3.13 -B -X utf8 readonly_c24_metadata_inventory.py` 退出 0，
+工具回执为 `1908b8`。每个根都逐项在自身路径观察为 `MISSING_OBSERVED`；
+没有扫描树、正文读取、哈希、C 写入或删除。实际发现文件/目录/错误均为 0。
+
+这批现在没有现存回收候选，不把历史已删除量再次记为新回收。`released_bytes`
+为 null；mtime 不构成 TTL，且观察不是原子全卷快照。原命令未采绝对解释器路径
+或版本读回，不能补填这些事实。只保留原工具结果与此小结，不复制完整旧库存。
+
+Native89 的新 DLL 仍沿用原 injector、host/attach_host 来源，前述两项 C 依赖根
+继续按用途和既有期限保留。用户占用 CK3 期间，清理与研究均保持后台文件操作；
+不会以新 DLL 或停用实机作为删除仍需依赖的理由。未分类对象继续精确复核，
+没有扩大为 C 父树清扫或部署自动 GC。
