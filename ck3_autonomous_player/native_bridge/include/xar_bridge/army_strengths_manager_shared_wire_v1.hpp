@@ -37,13 +37,14 @@ inline bool HaveSharedArmyManagerInputsV1(
   return true;
 }
 
-// Extra fields join only after the original six-family group is admitted.
+// Extra fields share independently; the base bit retains original six admission.
 inline ArmyStrengthManagerInputsModeV1 ArmyStrengthsQueryModeV1(
     std::span<const ArmyStrengthSnapshot> rows) {
-  if (!HaveSharedArmyManagerInputsV1(rows))
+  if (rows.size() < 2)
     return ArmyStrengthManagerInputsModeV1::inline_values;
-  unsigned bits = static_cast<unsigned>(
-      ArmyStrengthManagerInputsModeV1::query_shared);
+  unsigned bits = HaveSharedArmyManagerInputsV1(rows)
+      ? static_cast<unsigned>(ArmyStrengthManagerInputsModeV1::query_shared)
+      : 0U;
   const auto add = [&](auto member, ArmyStrengthManagerInputsModeV1 flag) {
     const auto &first = rows.front().*member;
     if (!first.has_value()) return;
@@ -84,37 +85,43 @@ inline void AppendArmyManagerInputsSharedV1(
     append_json_string(out, name);
     out += ':';
   };
-  if (source.current_daily_assault_roster_admission_v1) {
+  if (ArmyStrengthSharesManagerInputsV1(mode) &&
+      source.current_daily_assault_roster_admission_v1) {
     key("current_daily_assault_roster_admission_v1");
     AppendArmyCurrentDailyAssaultRosterAdmissionV1(
         out, *source.current_daily_assault_roster_admission_v1,
         number, append_json_string);
   }
-  if (source.current_pre_date_pending_update_inputs_v1) {
+  if (ArmyStrengthSharesManagerInputsV1(mode) &&
+      source.current_pre_date_pending_update_inputs_v1) {
     key("current_pre_date_pending_update_inputs_v1");
     AppendArmyCurrentPreDatePendingUpdateInputsV1(
         out, *source.current_pre_date_pending_update_inputs_v1,
         number, append_json_string);
   }
-  if (source.current_post_admission_refresh_inputs_v1) {
+  if (ArmyStrengthSharesManagerInputsV1(mode) &&
+      source.current_post_admission_refresh_inputs_v1) {
     key("current_post_admission_refresh_inputs_v1");
     AppendArmyCurrentPostAdmissionRefreshInputsV1(
         out, *source.current_post_admission_refresh_inputs_v1,
         number, append_json_string);
   }
-  if (source.current_selected_title_holder_owner_relation_v1) {
+  if (ArmyStrengthSharesManagerInputsV1(mode) &&
+      source.current_selected_title_holder_owner_relation_v1) {
     key("current_selected_title_holder_owner_relation_v1");
     AppendArmyCurrentSelectedTitleHolderOwnerRelationV1(
         out, *source.current_selected_title_holder_owner_relation_v1,
         number, append_json_string);
   }
-  if (source.current_army_combat_roles_phase_inputs_v1) {
+  if (ArmyStrengthSharesManagerInputsV1(mode) &&
+      source.current_army_combat_roles_phase_inputs_v1) {
     key("current_army_combat_roles_phase_inputs_v1");
     AppendArmyCurrentCombatRolesPhaseInputsV1(
         out, *source.current_army_combat_roles_phase_inputs_v1,
         number, append_int32_array, append_json_string);
   }
-  if (source.current_army_flag31_inputs_v1) {
+  if (ArmyStrengthSharesManagerInputsV1(mode) &&
+      source.current_army_flag31_inputs_v1) {
     key("current_army_flag31_inputs_v1");
     AppendArmyCurrentFlag31InputsV1(
         out, *source.current_army_flag31_inputs_v1,

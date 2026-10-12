@@ -597,7 +597,8 @@ inline void AppendArmyCurrentDisembarkPenaltyV1(
 enum class ArmyStrengthManagerInputsModeV1 {
   inline_values = 0,
   query_shared = 1,
-  // Extra values are flags; complete query modes retain the query_shared bit.
+  // The query_shared bit represents the original six-family group.
+  // Extra flags are independent; an extra-only shared bundle is valid.
   shared_condition30 = 2,
   shared_flag20 = 4,
   shared_flag21 = 8,
@@ -608,6 +609,12 @@ inline bool ArmyStrengthSharesExtraInputV1(
     ArmyStrengthManagerInputsModeV1 mode,
     ArmyStrengthManagerInputsModeV1 field) {
   return (static_cast<unsigned>(mode) & static_cast<unsigned>(field)) != 0U;
+}
+
+inline bool ArmyStrengthSharesManagerInputsV1(
+    ArmyStrengthManagerInputsModeV1 mode) {
+  return ArmyStrengthSharesExtraInputV1(
+      mode, ArmyStrengthManagerInputsModeV1::query_shared);
 }
 
 template <class Number, class Int32Array, class JsonString>
@@ -722,7 +729,7 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     AppendArmyCurrentDailyAssaultTableV1(result, *strength.current_daily_assault_table_v1,
                                        number, append_json_string);
   }
-  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+  if (!ArmyStrengthSharesManagerInputsV1(manager_inputs_mode) &&
       strength.current_daily_assault_roster_admission_v1) {
     result += ",\"current_daily_assault_roster_admission_v1\":";
     AppendArmyCurrentDailyAssaultRosterAdmissionV1(result, *strength.current_daily_assault_roster_admission_v1,
@@ -797,27 +804,27 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     AppendArmyCurrentFlag21InputsV1(result, *strength.current_army_flag21_inputs_v1,
         number, append_json_string);
   }
-  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+  if (!ArmyStrengthSharesManagerInputsV1(manager_inputs_mode) &&
       strength.current_selected_title_holder_owner_relation_v1) {
     result += ",\"current_selected_title_holder_owner_relation_v1\":";
     xar::game::AppendArmyCurrentSelectedTitleHolderOwnerRelationV1(
         result, *strength.current_selected_title_holder_owner_relation_v1,
         number, append_json_string);
   }
-  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+  if (!ArmyStrengthSharesManagerInputsV1(manager_inputs_mode) &&
       strength.current_army_flag31_inputs_v1) {
     result += ",\"current_army_flag31_inputs_v1\":";
     AppendArmyCurrentFlag31InputsV1(result, *strength.current_army_flag31_inputs_v1,
         number, append_int32_array, append_json_string);
   }
-  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+  if (!ArmyStrengthSharesManagerInputsV1(manager_inputs_mode) &&
       strength.current_army_combat_roles_phase_inputs_v1) {
     result += ",\"current_army_combat_roles_phase_inputs_v1\":";
     AppendArmyCurrentCombatRolesPhaseInputsV1(
         result, *strength.current_army_combat_roles_phase_inputs_v1,
         number, append_int32_array, append_json_string);
   }
-  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+  if (!ArmyStrengthSharesManagerInputsV1(manager_inputs_mode) &&
       strength.current_post_admission_refresh_inputs_v1) {
     result += ",\"current_post_admission_refresh_inputs_v1\":";
     AppendArmyCurrentPostAdmissionRefreshInputsV1(result, *strength.current_post_admission_refresh_inputs_v1,
@@ -833,7 +840,7 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     AppendArmyCurrentAssaultRemovalReferenceInputsV1(result, *strength.current_assault_removal_reference_inputs_v1,
                                                    number, append_json_string);
   }
-  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+  if (!ArmyStrengthSharesManagerInputsV1(manager_inputs_mode) &&
       strength.current_pre_date_pending_update_inputs_v1) {
     result += ",\"current_pre_date_pending_update_inputs_v1\":";
     AppendArmyCurrentPreDatePendingUpdateInputsV1(result, *strength.current_pre_date_pending_update_inputs_v1,
