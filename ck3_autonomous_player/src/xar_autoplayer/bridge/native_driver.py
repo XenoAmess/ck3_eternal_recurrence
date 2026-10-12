@@ -3085,7 +3085,7 @@ class NativeHeadlessGameplayDriver:
         from .council_private_transport_v1 import query_council_private_v1
         from .nonwar_private_build import private_native_build_identity
 
-        source = private_native_build_identity(self.take_snapshot())
+        source = private_native_build_identity(self.take_snapshot_without_native_command_history())
         return query_council_private_v1(
             self, expected_revision=expected_revision, position_key=position_key,
             timeout_seconds=self.command_timeout_seconds,
@@ -7052,7 +7052,7 @@ class NativeHeadlessGameplayDriver:
         from .aub_business_state_contract import QUERY_STEP, QUERY_CAPABILITY, policy_binding, normalize_state
         if QUERY_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
             raise UnsupportedStepError("native DLL does not advertise AUB fixed flags query")
-        starting=self.take_snapshot()
+        starting=self.take_snapshot_without_native_command_history()
         try:binding=policy_binding(starting)
         except ValueError as error:raise BridgeUnavailableError(str(error)) from error
         revision=starting["revision"];_validate_revision(revision,"snapshot revision")
@@ -7063,7 +7063,7 @@ class NativeHeadlessGameplayDriver:
             request_fields={"expected_player_character_id":binding["played_character_id"],"expected_game_pid":binding["game_pid"],
                             "expected_connection_generation":binding["connection_generation"]})
         try:
-            result=normalize_state(raw,binding);ending=self.take_snapshot()
+            result=normalize_state(raw,binding);ending=self.take_snapshot_without_native_command_history()
             if policy_binding(ending)!=binding or not _same_paused_native_frame(starting,ending):raise ValueError("AUB state crossed actual episode/frame")
         except ValueError as error:raise BridgeUnavailableError(str(error)) from error
         result.update({"episode_run_id":binding["episode_run_id"],"queried_revision":revision,
@@ -7133,7 +7133,7 @@ class NativeHeadlessGameplayDriver:
         from .aub_policy_options_contract import QUERY_STEP, QUERY_CAPABILITY, policy_binding, normalize_policy_result
         if QUERY_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
             raise UnsupportedStepError("native DLL does not advertise exact .3 AUB policy query")
-        starting=self.take_snapshot()
+        starting=self.take_snapshot_without_native_command_history()
         try:binding=policy_binding(starting)
         except ValueError as error:raise BridgeUnavailableError(str(error)) from error
         revision=starting["revision"]
@@ -7146,7 +7146,7 @@ class NativeHeadlessGameplayDriver:
                             "expected_connection_generation":binding["connection_generation"]})
         try:
             result=normalize_policy_result(raw,binding)
-            ending=self.take_snapshot()
+            ending=self.take_snapshot_without_native_command_history()
             if policy_binding(ending)!=binding or not _same_paused_native_frame(starting,ending):
                 raise ValueError("AUB query crossed actual episode/frame")
         except ValueError as error:raise BridgeUnavailableError(str(error)) from error
@@ -7238,7 +7238,7 @@ class NativeHeadlessGameplayDriver:
                 raise ValueError("expected_revision must fit uint64")
         if CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
             raise UnsupportedStepError("native DLL does not advertise exact .3 White text variables")
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             binding = business_binding(starting)
             revision = starting["revision"]
@@ -7257,7 +7257,7 @@ class NativeHeadlessGameplayDriver:
         )
         try:
             result = normalize_white_rendered_text(raw, binding)
-            ending = self.take_snapshot()
+            ending = self.take_snapshot_without_native_command_history()
             if business_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
                 raise ValueError("White text query crossed its episode/frame")
         except ValueError as error:
@@ -7280,7 +7280,7 @@ class NativeHeadlessGameplayDriver:
                 raise ValueError("expected_revision must fit uint64")
         if CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
             raise UnsupportedStepError("native DLL does not advertise exact .3 White business variables")
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             binding = business_binding(starting)
             revision = starting["revision"]
@@ -7299,7 +7299,7 @@ class NativeHeadlessGameplayDriver:
         )
         try:
             result = normalize_white_player_business_variables(raw, binding)
-            ending = self.take_snapshot()
+            ending = self.take_snapshot_without_native_command_history()
             if business_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
                 raise ValueError("White business query crossed its episode/frame")
         except ValueError as error:
@@ -7325,7 +7325,7 @@ class NativeHeadlessGameplayDriver:
         from .ingame_decision_item_contract import STEP, CAPABILITY, validate_decision_key, normalize_decision_item
         from .ingame_decisions_open_contract import opening_binding
         validate_decision_key(decision_key)
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             binding = opening_binding(starting)
         except ValueError as error:
@@ -7344,7 +7344,7 @@ class NativeHeadlessGameplayDriver:
         )
         try:
             result = normalize_decision_item(raw, binding, decision_key)
-            ending = self.take_snapshot()
+            ending = self.take_snapshot_without_native_command_history()
             if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
                 raise ValueError("keyed decision query crossed its episode/frame")
         except ValueError as error:
@@ -12141,7 +12141,7 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native arrange-marriage result lacks query_sequence"
                 )
-            current_character = self.take_snapshot().get("played_character")
+            current_character = self.take_snapshot_without_native_command_history().get("played_character")
             current_character_id = (
                 current_character.get("character_id")
                 if isinstance(current_character, dict)
@@ -12786,7 +12786,7 @@ class NativeHeadlessGameplayDriver:
         if request is None:
             raise UnsupportedStepError("malformed projected-contact scope v1 query step")
         subject_id, target_id, entry_id = request
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError("projected-contact queries require a paused snapshot")
         if starting.get("revision") != expected_revision:
@@ -12822,7 +12822,7 @@ class NativeHeadlessGameplayDriver:
             )
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError("native projected-contact query crossed a snapshot revision")
         return {
@@ -14288,7 +14288,7 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError("malformed full uint32 TitleID own-laws query")
         if expected_revision is not None:
             title_own_laws_revision(expected_revision)
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             actor_id = title_own_laws_query_actor(starting)
         except ValueError as error:
@@ -14326,7 +14326,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(f"native title own-laws query is malformed: {error}") from error
         if (result["status"] == "available") != value["available"]:
             raise BridgeUnavailableError("native title own-laws query status disagrees with availability")
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current) or current.get("date_raw") != starting.get("date_raw"):
             raise BridgeUnavailableError("native title own-laws query crossed a paused frame")
         try:
@@ -14347,7 +14347,7 @@ class NativeHeadlessGameplayDriver:
         title_ids = parse_query_player_claims_v1_step(step)
         if title_ids is None:
             raise UnsupportedStepError("malformed ordered TitleID player claims query")
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             actor_id = player_claims_query_actor(starting)
         except ValueError as error:
@@ -14386,7 +14386,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(f"native player claims query is malformed: {error}") from error
         if (result["status"] == "available") != value["available"]:
             raise BridgeUnavailableError("native player claims query status disagrees with availability")
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError("native player claims query crossed a paused frame")
         try:
@@ -14410,7 +14410,7 @@ class NativeHeadlessGameplayDriver:
         title_id = parse_query_title_holder_v1_step(step)
         if title_id is None:
             raise UnsupportedStepError("malformed TitleID holder query")
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             actor_id = title_holder_query_actor(starting)
         except ValueError as error:
@@ -14444,7 +14444,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(f"native title holder query is malformed: {error}") from error
         if (result["status"] == "available") != value["available"]:
             raise BridgeUnavailableError("native title holder query status disagrees with availability")
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError("native title holder query crossed a paused frame")
         try:
@@ -14468,7 +14468,7 @@ class NativeHeadlessGameplayDriver:
         war_id = parse_query_war_occupation_targets_v1_step(step)
         if war_id is None:
             raise UnsupportedStepError("malformed full WarID occupation-targets query")
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         try:
             actor_id, player_side = war_occupation_query_scope(starting, war_id)
         except ValueError as error:
@@ -14503,7 +14503,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(f"native occupation targets are malformed: {error}") from error
         if (result["status"] == "available") != value["available"]:
             raise BridgeUnavailableError("native occupation status disagrees with collection availability")
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError("native occupation targets crossed a paused frame")
         try:
@@ -15792,7 +15792,7 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """Read an exact-build legacy AI or current county material frame."""
         step = QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native steward development query requires a paused snapshot"
@@ -15867,7 +15867,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native steward development envelope disagrees with its frame"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not (
             _same_paused_native_frame(starting, current)
             and starting.get("revision") == current.get("revision")
