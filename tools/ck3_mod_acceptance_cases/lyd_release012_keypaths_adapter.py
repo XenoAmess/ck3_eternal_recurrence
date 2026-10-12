@@ -147,23 +147,48 @@ def current_event(client, initial, name):
 def option_arguments(packet, choice, allowed, consumed, *, commit_admitted=False):
     event, frame = packet['event'], packet['frame']
     definition, index = choice.get('event_definition_key'), choice.get('native_option_index')
-    require(type(index) is int and definition == event['event_definition_key'] and
+    require(type(index) is int and index >= 0 and definition == event['event_definition_key'] and
             index in allowed.get(definition, []), 'Choice is outside reviewed production phase')
     require(definition != 'lyd.430' or index != 0 or commit_admitted,
             'Factory needs fresh actual precommit protection/quorum review')
     key = (event['current_event_instance_id'], index)
     require(key not in consumed, 'Submitted option cannot be replayed')
-    options = [o for o in event.get('options', []) if o.get('native_option_index') == index]
+    options = [o for o in event.get('options', [])
+               if type(o.get('native_option_index')) is int and o['native_option_index'] == index]
     require(len(options) == 1 and options[0].get('shown') is True and options[0].get('enabled') is True,
             'Requested original option is not actually shown/enabled')
     rendered = options[0].get('rendered_index')
     require(type(rendered) is int and rendered >= 0, 'Actual rendered option index missing')
-    native = (frame.get('active_event') or {}).get('options', [])
-    visible = [o for o in native if o.get('index') == rendered]
-    require(len(visible) == 1 and visible[0].get('option_number') == rendered + 1 and
+    active = frame.get('active_event') or {}
+    require(active.get('instance_id') == key[0], 'Snapshot event instance differs')
+    native = active.get('options', [])
+    # The public service passes N-1 to the authored native option selector.
+    # rendered_index only describes presentation after hidden options are removed.
+    number = index + 1
+    visible = [o for o in native if type(o.get('index')) is int and o['index'] == index]
+    numbered = [o for o in native if o.get('option_number') == number]
+    require(len(visible) == len(numbered) == 1 and visible[0] is numbered[0] and
+            type(visible[0].get('option_number')) is int and
             visible[0].get('enabled') is True, 'Snapshot/public option mapping differs')
-    return {'option_number': rendered + 1, 'event_instance_id': key[0],
+    return {'option_number': number, 'event_instance_id': key[0],
             'expected_revision': frame['revision']}, key
+
+
+def validate_option_ack(row, args, key):
+    result = row.get('result') or {}
+    require(row.get('ok') is True and result.get('accepted') is True and
+            result.get('event_instance_id') == key[0] and
+            type(result.get('option_number')) is int and
+            result['option_number'] == args['option_number'] and
+            type(result.get('option_index')) is int and result['option_index'] == key[1],
+            'Original choice differs from intent; never replay')
+    selection = result.get('event_selection')
+    if selection is not None:
+        require(isinstance(selection, dict), 'Original native selection malformed; never replay')
+        if 'selected_native_option_index' in selection:
+            selected = selection['selected_native_option_index']
+            require(type(selected) is int and selected == key[1],
+                    'Original native choice differs from intent; never replay')
 
 
 def native_head_bundle(client, initial, name):
@@ -247,7 +272,7 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
                           'read_precommit', 'admit_commit'] +
                          (['enter_institution'] if phase['id'] == 'institution' else []) +
                          (['navigate_decision'] if navigation_enabled else []),
-            'choose_option': 'Supply exact current event_definition_key/native_option_index; adapter freshly re-queries and maps visible public number. No guessed tuple or replay.',
+            'choose_option': 'Supply exact current event_definition_key/native_option_index; adapter freshly re-queries and maps authored native index to public number. No guessed tuple or replay.',
             'unavailable_native_fields': 'Wallets, effective modifiers, complete saved political AST/heirs/laws require actual original GUI/new SAVE evidence.',
             'original_hold_deadline_unchanged': True, 'whole_product_pass_inferred': False,
         }, reserve=600)
@@ -345,9 +370,7 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
             rows = client.execute_plan([{'id': name + '-choice', 'tool': 'ck3_select_event_option',
                 'args': args, 'fresh_revision': False}], name + '-choice')
             row = rows[0]
-            require(row.get('ok') is True and row.get('result', {}).get('accepted') is True and
-                    row['result'].get('event_instance_id') == key[0] and
-                    row['result'].get('option_number') == args['option_number'], 'Original choice failed; never replay')
+            validate_option_ack(row, args, key)
             after = client.validate_frame(row['after_snapshot'], require_event_free=False)
             same_scene(initial, after)
             require((after.get('active_event') or {}).get('instance_id') != key[0],

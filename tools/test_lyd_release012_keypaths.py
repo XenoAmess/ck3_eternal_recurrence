@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -35,7 +36,7 @@ def event_packet():
     f = frame()
     f['active_event'] = {'instance_id': 101, 'options': [
         {'index': 0, 'option_number': 1, 'enabled': True},
-        {'index': 1, 'option_number': 2, 'enabled': True}]}
+        {'index': 2, 'option_number': 3, 'enabled': True}]}
     event = {'schema': 'current-event-window-context-v1', 'status': 'available',
         'window_match_count': 1, 'event_definition_key': 'lyd.1032',
         'current_event_instance_id': 101, 'snapshot_revision': 7, 'date_raw': 53144712,
@@ -235,13 +236,89 @@ class Release012Tests(unittest.TestCase):
         self.assertFalse(result['qualified'])
         self.assertEqual(client.phase_deadline, 1400.0)
 
-    def test_option_number_uses_actual_rendered_mapping_not_native_index(self):
+    def test_hidden_middle_option_keeps_authored_native_number(self):
         packet = event_packet()
         args, key = case.option_arguments(packet,
             {'event_definition_key': 'lyd.1032', 'native_option_index': 2}, {'lyd.1032': [2]}, set())
-        self.assertEqual(args['option_number'], 2)
+        self.assertEqual(args['option_number'], 3)
         self.assertEqual(key, (101, 2))
         self.assertEqual(args['expected_revision'], 8)
+
+    def test_hidden_first_option_public9_reaches_native8_in_actual_service(self):
+        sys.path.insert(0, str(REPO / 'ck3_autonomous_player' / 'src'))
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+
+        packet = event_packet()
+        packet['event'].update(event_definition_key='lyd.10', options=[{
+            'native_option_index': i, 'rendered_index': i - 1 if i else None,
+            'shown': i != 0, 'enabled': i != 0} for i in range(10)])
+        packet['frame']['active_event'].update(option_count=10, options=[
+            {'index': i, 'option_number': i + 1, 'enabled': i != 0} for i in range(10)])
+        args, key = case.option_arguments(packet,
+            {'event_definition_key': 'lyd.10', 'native_option_index': 8}, {'lyd.10': [8]}, set())
+        calls = []
+        owner = SimpleNamespace(snapshot=lambda: packet['frame'],
+            capabilities=lambda: {'action_steps': ['select-event-option-9']},
+            execute_step=lambda step, **kwargs: calls.append((step, kwargs)) or {'accepted': True})
+        ack = GameplayBridgeService.select_event_option(owner, **args)
+        self.assertEqual(calls, [('select-event-option-9', {'expected_revision': 8})])
+        self.assertEqual(ack['option_index'], 8)
+        case.validate_option_ack({'ok': True, 'result': ack}, args, key)
+
+    def test_no_hidden_options_keep_existing_public_numbers(self):
+        packet = event_packet()
+        packet['event']['options'][1].update(native_option_index=1, rendered_index=1)
+        packet['frame']['active_event']['options'][1].update(index=1, option_number=2)
+        for index in (0, 1):
+            with self.subTest(index=index):
+                args, _ = case.option_arguments(packet,
+                    {'event_definition_key': 'lyd.1032', 'native_option_index': index},
+                    {'lyd.1032': [0, 1]}, set())
+                self.assertEqual(args['option_number'], index + 1)
+
+    def test_snapshot_option_mapping_missing_or_conflicting_rejected(self):
+        original = event_packet()
+        cases = []
+        for missing in ('index', 'option_number'):
+            packet = copy.deepcopy(original)
+            del packet['frame']['active_event']['options'][1][missing]
+            cases.append(packet)
+        for field, value in (('index', 1), ('option_number', 2), ('option_number', '3'),
+                             ('enabled', False)):
+            packet = copy.deepcopy(original)
+            packet['frame']['active_event']['options'][1][field] = value
+            cases.append(packet)
+        for extra in ({'index': 2, 'option_number': 3, 'enabled': True},
+                      {'index': 99, 'option_number': 3, 'enabled': True}):
+            packet = copy.deepcopy(original)
+            packet['frame']['active_event']['options'].append(extra)
+            cases.append(packet)
+        packet = copy.deepcopy(original)
+        packet['frame']['active_event']['instance_id'] = 102
+        cases.append(packet)
+        for packet in cases:
+            with self.subTest(active=packet['frame']['active_event']):
+                with self.assertRaises(ValueError):
+                    case.option_arguments(packet,
+                        {'event_definition_key': 'lyd.1032', 'native_option_index': 2},
+                        {'lyd.1032': [2]}, set())
+
+    def test_selection_ack_must_match_original_native_intent(self):
+        args, key = case.option_arguments(event_packet(),
+            {'event_definition_key': 'lyd.1032', 'native_option_index': 2}, {'lyd.1032': [2]}, set())
+        ack = {'accepted': True, 'event_instance_id': 101, 'option_number': 3, 'option_index': 2}
+        case.validate_option_ack({'ok': True, 'result': ack}, args, key)
+        case.validate_option_ack({'ok': True, 'result': {**ack,
+            'event_selection': {'selected_native_option_index': 2}}}, args, key)
+        bad_acks = [{k: v for k, v in ack.items() if k != 'option_index'},
+                    {**ack, 'option_index': 1}, {**ack, 'option_index': '2'},
+                    {**ack, 'option_number': 2, 'option_index': 1},
+                    {**ack, 'event_selection': {'selected_native_option_index': 1}},
+                    {**ack, 'event_selection': {'selected_native_option_index': None}}]
+        for bad in bad_acks:
+            with self.subTest(ack=bad):
+                with self.assertRaises(ValueError):
+                    case.validate_option_ack({'ok': True, 'result': bad}, args, key)
 
     def test_disabled_wrong_definition_and_consumed_choices_rejected(self):
         packet = event_packet()
