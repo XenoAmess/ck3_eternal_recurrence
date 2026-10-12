@@ -27,6 +27,20 @@ from .army_strengths_manager_shared_wire import (
     SHARED_KEY as ARMY_MANAGER_INPUTS_SHARED_KEY,
     expand_army_strengths_manager_inputs,
 )
+from .army_strengths_profile_contract import (
+    ARMY_OBSERVED_PHASE_COVERAGE_KEY,
+    ARMY_STRENGTHS_CACHE_VALIDATION_SCHEMA,
+    ARMY_STRENGTHS_PROFILE_KEY,
+    ORDINARY_CORE_PROFILE,
+    require_army_strengths_profile,
+    validate_army_strengths_profile_coverage,
+)
+from .army_gathering_research_sampling_contract import (
+    DISABLE_STEP as DISABLE_ARMY_GATHERING_RESEARCH_SAMPLING_STEP,
+    ENABLE_STEP as ENABLE_ARMY_GATHERING_RESEARCH_SAMPLING_STEP,
+    QUERY_STEP as QUERY_ARMY_GATHERING_RESEARCH_SAMPLING_STEP,
+    normalize_army_gathering_research_sampling_result,
+)
 
 from collections.abc import Callable, Mapping
 import copy
@@ -63,7 +77,7 @@ from .application_main_pump_readiness import (
     wait_for_verified_pump,
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
-from .version_identity import require_exact_native_build
+from .version_identity import CK3_12004, require_exact_native_build
 from .player_event_trait_membership_contract import (
     normalize_player_event_trait_membership_v1,
     played_character_event_trait_observation_v1,
@@ -4381,7 +4395,13 @@ class NativeHeadlessGameplayDriver:
             # Ordinary simulation consumes the engine's actual current player,
             # including natural succession. It does not infer XAR game rules,
             # bind a one-life identity, or expose a counter-policy terminal.
-            return {**snapshot, "episode_projection": "native_campaign"}
+            army_query = self._army_strength_cache_for_snapshot(
+                snapshot, episode_run_id=snapshot.get("episode_run_id"),
+            )
+            return {
+                **snapshot, "episode_projection": "native_campaign",
+                **self._army_strength_snapshot_fields(army_query),
+            }
         played_character = snapshot.get("played_character")
         current_character_id = (
             played_character.get("character_id")
@@ -4701,33 +4721,7 @@ class NativeHeadlessGameplayDriver:
             "declaration_query_sequence": declaration_query_sequence,
             "arrange_marriage_choices": arrange_marriage_choices,
             "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
-            "army_strengths": (
-                # The cache reader already detached these complete rows.
-                # Transfer its local list into this new semantic snapshot.
-                army_strength_query["army_strengths"]
-                if isinstance(army_strength_query, dict)
-                else []
-            ),
-            "army_strengths_status": (
-                army_strength_query.get("status")
-                if isinstance(army_strength_query, dict)
-                else None
-            ),
-            "army_strengths_query_sequence": (
-                army_strength_query.get("query_sequence")
-                if isinstance(army_strength_query, dict)
-                else None
-            ),
-            "army_strengths_queried_snapshot_id": (
-                army_strength_query.get("queried_snapshot_id")
-                if isinstance(army_strength_query, dict)
-                else None
-            ),
-            "army_strengths_queried_revision": (
-                army_strength_query.get("queried_revision")
-                if isinstance(army_strength_query, dict)
-                else None
-            ),
+            **self._army_strength_snapshot_fields(army_strength_query),
             "combat_simulation_inputs": (
                 copy.deepcopy(
                     combat_simulation_inputs_query[
@@ -5102,14 +5096,47 @@ class NativeHeadlessGameplayDriver:
             return []
         return trace
 
+    @staticmethod
+    def _army_strength_query_actor(snapshot: dict[str, object]) -> int | None:
+        """Return only the actual living actor of a paused playable frame."""
+        actor = snapshot.get("played_character")
+        actor_id = actor.get("character_id") if isinstance(actor, dict) else None
+        if (
+            snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and isinstance(actor, dict) and actor.get("alive") is True
+            and type(actor_id) is int and 0 <= actor_id <= 2**31 - 1
+        ):
+            return actor_id
+        return None
+
+    @staticmethod
+    def _army_strength_snapshot_fields(
+        query: dict[str, object] | None,
+    ) -> dict[str, object]:
+        """Transfer reader-owned rows into either episode projection."""
+        query = query if isinstance(query, dict) else {}
+        return {
+            "army_strengths": query.get("army_strengths", []),
+            "army_strengths_status": query.get("status"),
+            "army_strengths_query_sequence": query.get("query_sequence"),
+            "army_strengths_queried_snapshot_id": query.get("queried_snapshot_id"),
+            "army_strengths_queried_revision": query.get("queried_revision"),
+            ARMY_STRENGTHS_PROFILE_KEY: query.get(ARMY_STRENGTHS_PROFILE_KEY),
+            ARMY_OBSERVED_PHASE_COVERAGE_KEY: query.get(ARMY_OBSERVED_PHASE_COVERAGE_KEY),
+        }
+
     def _army_strength_cache_for_snapshot(
         self,
         snapshot: dict[str, object],
         *,
         episode_run_id: str | None,
+        profile: str = ORDINARY_CORE_PROFILE,
     ) -> dict[str, object] | None:
-        """Project only the complete query bound to this paused native frame."""
-        if snapshot.get("paused") is not True:
+        """Detach a previously validated query for this exact frame/profile."""
+        require_army_strengths_profile(profile)
+        actor_id = self._army_strength_query_actor(snapshot)
+        if actor_id is None:
             return None
         diagnostics = snapshot.get("diagnostics")
         connection_generation = (
@@ -5123,35 +5150,61 @@ class NativeHeadlessGameplayDriver:
                 return None
             binding = cached.get("cache_binding")
             rows = cached.get("army_strengths")
+            coverage = (
+                "not_requested" if profile == ORDINARY_CORE_PROFILE
+                else "exported_retained"
+            )
+            sequence = cached.get("query_sequence")
+            if not (
+                cached.get("validation_schema") == ARMY_STRENGTHS_CACHE_VALIDATION_SCHEMA
+                and cached.get(ARMY_STRENGTHS_PROFILE_KEY) == profile
+                and cached.get(ARMY_OBSERVED_PHASE_COVERAGE_KEY) == coverage
+                and type(cached.get("status")) is str
+                and cached.get("status") in {"available", "partial"}
+                and type(sequence) is int and 1 <= sequence <= 2**64 - 1
+                and isinstance(rows, list)
+                and isinstance(binding, dict)
+                and set(binding) == {
+                    "native_revision", "snapshot_id", "revision", "date_raw",
+                    "connection_generation", "episode_run_id",
+                    "actor_character_id",
+                }
+                and binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("date_raw") == snapshot.get("date_raw")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and type(binding.get("actor_character_id")) is int
+                and binding.get("actor_character_id") == actor_id
+            ):
+                self._army_strength_query = None
+                return None
             try:
-                expected_scope = army_strength_scope(snapshot)
-                normalized = normalize_army_strengths(
-                    rows, expected_scope=expected_scope
+                expected_scope = tuple(
+                    (row["army_id"], row["scope_role"], tuple(row["war_ids"]))
+                    for row in army_strength_scope(snapshot)
                 )
             except ValueError:
                 self._army_strength_query = None
                 return None
-            if not (
-                isinstance(binding, dict)
-                and binding.get("native_revision")
-                == snapshot.get("native_revision")
-                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
-                and binding.get("connection_generation")
-                == connection_generation
-                and binding.get("episode_run_id") == episode_run_id
-                and cached.get("status")
-                == army_strength_query_status(normalized)
-            ):
+            if cached.get("scope") != expected_scope:
                 self._army_strength_query = None
                 return None
             return {
                 "status": cached["status"],
-                "army_strengths": copy.deepcopy(normalized),
-                "query_sequence": cached["query_sequence"],
-                "queried_snapshot_id": snapshot.get("snapshot_id"),
-                "queried_revision": snapshot.get("revision"),
-                "queried_native_revision": snapshot.get("native_revision"),
-                "episode_run_id": episode_run_id,
+                "army_strengths": copy.deepcopy(rows),
+                "query_sequence": sequence,
+                ARMY_STRENGTHS_PROFILE_KEY: profile,
+                ARMY_OBSERVED_PHASE_COVERAGE_KEY: coverage,
+                "queried_snapshot_id": binding["snapshot_id"],
+                "queried_revision": binding["revision"],
+                "queried_native_revision": binding["native_revision"],
+                "queried_date_raw": binding["date_raw"],
+                "queried_connection_generation": binding["connection_generation"],
+                "episode_run_id": binding["episode_run_id"],
             }
 
     def _war_termination_cache_for_snapshot(
@@ -12894,6 +12947,139 @@ class NativeHeadlessGameplayDriver:
                              ok=True, result=result)
         return result
 
+    def query_army_strengths(
+        self, *, profile: str = ORDINARY_CORE_PROFILE,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read an explicit Army profile without advancing the game.
+
+        Full retained journals are an on-demand query, not an ordinary planner
+        default. A rejected profile never falls back to another profile.
+        """
+        profile = require_army_strengths_profile(profile)
+        try:
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+            starting = self.take_internal_semantic_snapshot()
+            selected_revision = (
+                expected_revision if expected_revision is not None
+                else int(starting["revision"])
+            )
+            result = self._execute_army_strength_query(
+                starting=starting, selected_revision=selected_revision,
+                profile=profile,
+            )
+        except Exception as error:
+            timing = start_army_timing("driver.record_command")
+            try:
+                self._record_command(
+                    QUERY_ARMY_STRENGTHS_STEP, ok=False, result=None,
+                    error=f"{type(error).__name__}: {error}",
+                )
+            finally:
+                finish_army_timing(timing)
+            raise
+        timing = start_army_timing("driver.record_command")
+        try:
+            self._record_command(QUERY_ARMY_STRENGTHS_STEP, ok=True, result=result)
+        finally:
+            finish_army_timing(timing)
+        return result
+
+    def set_army_gathering_research_sampling_v1(
+        self, enabled: bool, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Explicitly enable or disable research capture; never retry pending."""
+        if type(enabled) is not bool:
+            raise ValueError("Gathering research sampling enabled must be an explicit boolean")
+        step = (
+            ENABLE_ARMY_GATHERING_RESEARCH_SAMPLING_STEP if enabled
+            else DISABLE_ARMY_GATHERING_RESEARCH_SAMPLING_STEP
+        )
+        return self._execute_army_gathering_research_sampling_step(
+            step, expected_revision=expected_revision,
+        )
+
+    def query_army_gathering_research_sampling_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read capture state without enabling capture or clearing its history."""
+        return self._execute_army_gathering_research_sampling_step(
+            QUERY_ARMY_GATHERING_RESEARCH_SAMPLING_STEP,
+            expected_revision=expected_revision,
+        )
+
+    def _execute_army_gathering_research_sampling_step(
+        self, step: str, *, expected_revision: int,
+    ) -> dict[str, object]:
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_internal_semantic_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError("Gathering research sampling control requires pause")
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("Gathering sampling source revision is stale")
+        diagnostics = starting.get("diagnostics")
+        hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        try:
+            build = require_exact_native_build(
+                hello.get("expected_ck3_version", hello.get("game_version"))
+                if isinstance(hello, dict) else None,
+                hello.get("expected_ck3_sha256", hello.get("executable_sha256"))
+                if isinstance(hello, dict) else None,
+            )
+            if build != CK3_12004:
+                raise ValueError("Gathering research sampling requires CK3 1.20.0.4")
+        except ValueError as error:
+            raise BridgeUnavailableError("Gathering sampling requires the frozen exact .4 build") from error
+        capabilities = self.state.capabilities()
+        if QUERY_ARMY_STRENGTHS_CAPABILITY not in set(
+            _string_list(capabilities.get("bridge_capabilities"))
+        ):
+            raise UnsupportedStepError("Native does not advertise the Army query capability")
+        try:
+            raw = self._execute_primitive_step(
+                step, expected_revision=expected_revision,
+                required_capability=QUERY_ARMY_STRENGTHS_CAPABILITY,
+                include_native_command_history=False,
+                internal_semantic_snapshot=True,
+            )
+            try:
+                result = normalize_army_gathering_research_sampling_result(
+                    raw, expected_step=step,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"malformed Gathering research sampling receipt: {error}"
+                ) from error
+            current = self.take_internal_semantic_snapshot()
+            if (
+                not _same_paused_native_frame(starting, current)
+                or starting.get("revision") != current.get("revision")
+                or starting.get("date_raw") != current.get("date_raw")
+            ):
+                raise BridgeUnavailableError("Gathering sampling control crossed its paused frame")
+            result = {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+                "queried_date_raw": starting.get("date_raw"),
+            }
+        except Exception as error:
+            self._record_command(step, ok=False, result=None, error=f"{type(error).__name__}: {error}")
+            raise
+        finally:
+            if step != QUERY_ARMY_GATHERING_RESEARCH_SAMPLING_STEP:
+                # Once a set enters Native execution, an unknown outcome is not
+                # a rollback: its capture gate or epoch may already have changed.
+                # Local preflight rejects above leave the existing cache alone.
+                with self._driver_state_lock:
+                    self._army_strength_query = None
+        # A handled busy/pending set is not a successful enable/disable. Keep
+        # the exact Native state in history and return it without an auto retry.
+        self._record_command(step, ok=result["accepted"], result=result)
+        return result
+
     def _execute_projected_contact_scope_v1_query(
         self, step: str, *, expected_revision: int | None,
     ) -> dict[str, object]:
@@ -13151,6 +13337,7 @@ class NativeHeadlessGameplayDriver:
             return self._execute_army_strength_query(
                 starting=starting,
                 selected_revision=selected_revision,
+                profile=ORDINARY_CORE_PROFILE,
             )
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if actual_contact_query is not None:
@@ -14084,11 +14271,17 @@ class NativeHeadlessGameplayDriver:
         *,
         starting: dict[str, object],
         selected_revision: int,
+        profile: str = ORDINARY_CORE_PROFILE,
     ) -> dict[str, object]:
-        """Read the full published army scope without advancing CK3 state."""
-        if starting.get("paused") is not True:
+        """Read a profile of the complete published Army scope in one frame."""
+        profile = require_army_strengths_profile(profile)
+        # A failed refresh must not leave an older query advertised as its result.
+        with self._driver_state_lock:
+            self._army_strength_query = None
+        actor_id = self._army_strength_query_actor(starting)
+        if actor_id is None:
             raise BridgeUnavailableError(
-                "native army-strength query requires a paused snapshot"
+                "native army-strength query requires a paused, map-ready living actor"
             )
         try:
             expected_scope = army_strength_scope(starting)
@@ -14105,6 +14298,7 @@ class NativeHeadlessGameplayDriver:
             # The native semantic reader can wait 30s for its owning thread.
             # Leave time for that terminal result to reach this caller.
             timeout_seconds=max(self.command_timeout_seconds, 35.0),
+            request_fields={ARMY_STRENGTHS_PROFILE_KEY: profile},
         )
         if (
             set(result) - {ARMY_MANAGER_INPUTS_SHARED_KEY}
@@ -14115,6 +14309,8 @@ class NativeHeadlessGameplayDriver:
                 "query_sequence",
                 "army_strengths",
                 "backend_id",
+                ARMY_STRENGTHS_PROFILE_KEY,
+                ARMY_OBSERVED_PHASE_COVERAGE_KEY,
             }
             or result.get("step") != QUERY_ARMY_STRENGTHS_STEP
             or result.get("accepted") is not True
@@ -14128,6 +14324,7 @@ class NativeHeadlessGameplayDriver:
             # Expand the lossless wire view before the existing independent
             # per-row normalization. The raw command evidence stays unchanged.
             result = expand_army_strengths_manager_inputs(result, detached=False)
+            validate_army_strengths_profile_coverage(result, expected_profile=profile)
             rows = normalize_army_strengths(
                 result.get("army_strengths"),
                 expected_scope=expected_scope,
@@ -14154,7 +14351,15 @@ class NativeHeadlessGameplayDriver:
                 "native army-strength query lacks query_sequence"
             )
         current = self.take_internal_semantic_snapshot()
-        if not _same_paused_native_frame(starting, current):
+        if self._army_strength_query_actor(current) != actor_id:
+            raise BridgeUnavailableError(
+                "native army-strength query changed its played actor or playable state"
+            )
+        if (
+            not _same_paused_native_frame(starting, current)
+            or starting.get("revision") != current.get("revision")
+            or starting.get("date_raw") != current.get("date_raw")
+        ):
             raise BridgeUnavailableError(
                 "native army-strength query crossed a snapshot revision"
             )
@@ -14176,16 +14381,30 @@ class NativeHeadlessGameplayDriver:
         cache_binding = {
             "native_revision": starting.get("native_revision"),
             "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "date_raw": starting.get("date_raw"),
             "connection_generation": connection_generation,
             "episode_run_id": starting.get("episode_run_id"),
+            "actor_character_id": actor_id,
+        }
+        # Normalize exactly once at publication, then privately detach from the
+        # caller's returned rows. Snapshot reads only compare the frozen binding
+        # and ordered scope before making their single independent copy.
+        cache_entry = {
+            "validation_schema": ARMY_STRENGTHS_CACHE_VALIDATION_SCHEMA,
+            ARMY_STRENGTHS_PROFILE_KEY: profile,
+            ARMY_OBSERVED_PHASE_COVERAGE_KEY: result[ARMY_OBSERVED_PHASE_COVERAGE_KEY],
+            "status": status,
+            "scope": tuple(
+                (row["army_id"], row["scope_role"], tuple(row["war_ids"]))
+                for row in expected_scope
+            ),
+            "army_strengths": copy.deepcopy(rows),
+            "query_sequence": query_sequence,
+            "cache_binding": cache_binding,
         }
         with self._driver_state_lock:
-            self._army_strength_query = {
-                "status": status,
-                "army_strengths": copy.deepcopy(rows),
-                "query_sequence": query_sequence,
-                "cache_binding": cache_binding,
-            }
+            self._army_strength_query = cache_entry
         return {
             **result,
             "status": status,
@@ -14194,6 +14413,9 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": starting.get("native_revision"),
+            "queried_date_raw": starting.get("date_raw"),
+            "queried_connection_generation": connection_generation,
+            "queried_episode_run_id": starting.get("episode_run_id"),
         }
 
     def _execute_combat_simulation_inputs_query(

@@ -11128,6 +11128,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
     def test_army_strength_query_is_atomic_cached_and_mcp_subset_filtered(
         self,
     ) -> None:
+        from xar_autoplayer.bridge.army_strengths_profile_contract import OBSERVED_PHASE_KEYS
+
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name,
@@ -11172,9 +11174,19 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             ["query-army-strengths-v1"],
         )
 
+        query_sequence = 6
+
         def answer(frame: dict[str, object]) -> None:
+            nonlocal query_sequence
             if frame.get("type") != "execute_step":
                 return
+            requested_profile = frame["army_strengths_profile"]
+            self.assertIn(requested_profile, {"ordinary_core_v1", "observed_history_full_v1"})
+            query_sequence += 1
+            reply_rows = copy.deepcopy(full_rows)
+            if requested_profile == "observed_history_full_v1":
+                for row in reply_rows:
+                    row.update({key: None for key in OBSERVED_PHASE_KEYS})
             endpoint.publish(
                 {
                     "type": "command_result",
@@ -11185,8 +11197,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "step": frame["step"],
                         "accepted": True,
                         "status": "partial",
-                        "query_sequence": 7,
-                        "army_strengths": full_rows,
+                        "query_sequence": query_sequence,
+                        "army_strengths": reply_rows,
+                        "army_strengths_profile": requested_profile,
+                        "army_observed_phase_coverage": (
+                            "not_requested" if requested_profile == "ordinary_core_v1"
+                            else "exported_retained"
+                        ),
                     },
                 }
             )
@@ -11227,6 +11244,23 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [row["army_id"] for row in available_subset["army_strengths"]],
             [81],
         )
+
+        diagnostic_subset = service.query_army_strengths(
+            [81], expected_revision=int(cached["revision"]),
+            profile="observed_history_full_v1",
+        )
+        self.assertEqual(diagnostic_subset["army_strengths_profile"], "observed_history_full_v1")
+        self.assertEqual(diagnostic_subset["army_observed_phase_coverage"], "exported_retained")
+        for key in OBSERVED_PHASE_KEYS:
+            self.assertIn(key, diagnostic_subset["army_strengths"][0])
+            self.assertIsNone(diagnostic_subset["army_strengths"][0][key])
+        self.assertEqual(driver.take_snapshot()["army_strengths"], [])
+        ordinary_subset = service.query_army_strengths(
+            [81], expected_revision=int(cached["revision"]),
+        )
+        self.assertEqual(ordinary_subset["army_strengths_profile"], "ordinary_core_v1")
+        self.assertEqual(ordinary_subset["army_observed_phase_coverage"], "not_requested")
+        self.assertFalse(any(key in ordinary_subset["army_strengths"][0] for key in OBSERVED_PHASE_KEYS))
 
         endpoint.publish(
             _snapshot(
@@ -11285,6 +11319,34 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 for frame in endpoint.frames
             )
         )
+
+    def test_army_strength_old_reply_without_profile_metadata_is_not_accepted(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint)
+        endpoint.publish(_hello("game.state.snapshot", "game.command.query-army-strengths-v1"))
+        endpoint.publish(_snapshot(
+            40, played_character={"character_id": 707, "alive": True},
+            player_armies=[_army(81)], active_wars=[],
+        ))
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            self.assertEqual(frame["army_strengths_profile"], "ordinary_core_v1")
+            endpoint.publish({
+                "type": "command_result", "protocol_version": 1,
+                "request_id": frame["request_id"], "ok": True,
+                "result": {"step": frame["step"], "accepted": True,
+                           "status": "available", "query_sequence": 1,
+                           "army_strengths": [_army_strength(81, "player", [])]},
+            })
+
+        endpoint.send_hook = answer
+        with self.assertRaisesRegex(BridgeUnavailableError, "malformed status"):
+            driver.query_army_strengths()
+        self.assertIsNone(driver._army_strength_query)
+        self.assertFalse(driver._command_history[-1]["ok"])
+        driver.close()
 
     def test_outbound_white_peace_status_is_same_frame_typed_query(
         self,

@@ -3480,10 +3480,11 @@ void AppendArmyStrength(
     std::string &result,
     const xar::game::ArmyStrengthSnapshot &strength,
     xar::game::ArmyStrengthManagerInputsModeV1 manager_inputs_mode =
-        xar::game::ArmyStrengthManagerInputsModeV1::inline_values) {
+        xar::game::ArmyStrengthManagerInputsModeV1::inline_values,
+    bool include_observed_phase_history = true) {
   xar::game::AppendArmyStrengthV1WithManagerInputsMode(
       result, strength, SignedNumber, AppendInt32Array, AppendJsonString,
-      manager_inputs_mode);
+      manager_inputs_mode, include_observed_phase_history);
   if (strength.native_owner_recall_inputs_v1.has_value()) {
     result.pop_back();
     result += ",\"native_owner_recall_inputs_v1\":";
@@ -9283,10 +9284,47 @@ std::string DefenderDeJureExitTermsResultFrameV1(
   return result;
 }
 
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+std::string ArmyGatheringResearchSamplingResultFrame12004(
+    std::string_view request_id, std::string_view step,
+    const xar::ck3_12004::ArmyGatheringResearchSamplingState12004 &sampling) {
+  const std::string_view status = sampling.enabled ? "enabled" :
+      sampling.busy ? "busy" : sampling.clear_completed ? "disabled" : "clear_pending";
+  const bool query = step == "query-army-gathering-research-sampling-v1";
+  const bool accepted = query || status == "enabled" || status == "disabled";
+  const std::string_view readiness = !sampling.enabled ? "off" :
+      sampling.busy ? "inflight" : sampling.qualified_records == 0 ?
+      "awaiting_sample" : "retained_observation";
+  std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":";
+  result += accepted ? "true" : "false";
+  result += ",\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"army_gathering_research_sampling_v1\":{\"capture_enabled\":";
+  result += sampling.enabled ? "true" : "false";
+  result += ",\"busy\":";
+  result += sampling.busy ? "true" : "false";
+  result += ",\"clear_completed\":";
+  result += sampling.clear_completed ? "true" : "false";
+  result += ",\"epoch\":" + Number(sampling.epoch);
+  result += ",\"active_captures\":" + Number(sampling.active_captures);
+  result += ",\"retained_records\":" + Number(sampling.retained_records);
+  result += ",\"qualified_records\":" + Number(sampling.qualified_records);
+  result += ",\"readiness\":";
+  AppendJsonString(result, readiness);
+  result += "}}}";
+  return result;
+}
+#endif
+
 std::string ArmyStrengthsResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     xar::game::ReadArmyStrengthsResult query_result,
-    const std::vector<xar::game::ArmyStrengthSnapshot> &strengths) {
+    const std::vector<xar::game::ArmyStrengthSnapshot> &strengths,
+    xar::game::ArmyStrengthQueryProfileV1 profile) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -9299,9 +9337,22 @@ std::string ArmyStrengthsResultFrame(
                 : "partial";
   result += "\",\"query_sequence\":";
   result += Number(query_sequence);
+  const bool include_observed_phase_history =
+      xar::game::ArmyStrengthQueryProfileIncludesObservedHistoryV1(profile);
+  if (profile != xar::game::ArmyStrengthQueryProfileV1::legacy_full) {
+    result += ",\"army_strengths_profile\":";
+    AppendJsonString(result, xar::game::ArmyStrengthQueryProfileNameV1(profile));
+    result += ",\"army_observed_phase_coverage\":";
+    AppendJsonString(result, include_observed_phase_history ? "exported_retained" : "not_requested");
+  }
   xar::game::AppendArmyStrengthsQueryMembersV1(
       result, std::span<const xar::game::ArmyStrengthSnapshot>(strengths),
-      SignedNumber, AppendInt32Array, AppendJsonString, AppendArmyStrength);
+      SignedNumber, AppendInt32Array, AppendJsonString,
+      [include_observed_phase_history](std::string &out,
+          const xar::game::ArmyStrengthSnapshot &strength,
+          xar::game::ArmyStrengthManagerInputsModeV1 mode) {
+        AppendArmyStrength(out, strength, mode, include_observed_phase_history);
+      });
   result += "}}";
   return result;
 }
@@ -25975,43 +26026,92 @@ void RunConnectedSession(
               }
             }
           }
-        } else if (step == "query-army-strengths-v1") {
-          xar::ck3_12002::g_army_strength_query_diagnostic_v1.Reset();
-          std::vector<xar::game::ArmyStrengthSnapshot> strengths;
-          const auto query_result =
-              xar::game::ReadArmyStrengths(game, strengths);
-          std::string army_result_frame;
-          if (query_result ==
-                  xar::game::ReadArmyStrengthsResult::available ||
-              query_result ==
-                  xar::game::ReadArmyStrengthsResult::partial) {
-            ++army_strength_query_sequence;
-            army_result_frame = ArmyStrengthsResultFrame(
-                request_id, army_strength_query_sequence, query_result, strengths);
-          } else {
-            std::string error =
-                "CK3 army-strength query is unavailable";
-            if (query_result ==
-                xar::game::ReadArmyStrengthsResult::requires_paused) {
-              error = "CK3 army-strength query requires a paused map";
-            } else if (query_result ==
-                       xar::game::ReadArmyStrengthsResult::
-                           no_played_character) {
-              error = "no living played CK3 character";
-            } else {
-              error += xar::ck3_12002::g_army_strength_query_diagnostic_v1.FailureSuffix();
-            }
-            army_result_frame = CommandResultFrame(request_id, step, false, error);
-          }
-          const auto rendered = xar::game::RenderCrozierBuildIdentity(
-              std::move(army_result_frame), game.descriptor());
-          connected = xar::bridge::WriteArmyStrengthResultFrameV1(
-              pipe, rendered, army_strength_query_sequence, state.army_result_write);
-          if (!connected && state.army_result_write.frame.stage ==
-                                xar::bridge::FrameWriteStage::size_limit) {
+        } else if (step == "enable-army-gathering-research-sampling-v1" ||
+                   step == "disable-army-gathering-research-sampling-v1" ||
+                   step == "query-army-gathering-research-sampling-v1") {
+          std::uint64_t expected_revision = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision == 0 || expected_revision != state_revision ||
+              !previous_snapshot.has_value() || !previous_snapshot->paused) {
             connected = write_frame(pipe, CommandResultFrame(
-                request_id, step, false, xar::bridge::ArmyStrengthResultSizeLimitErrorV1(
-                    state.army_result_write.frame)));
+                request_id, step, false, "army_gathering_research_sampling_frame_invalid"));
+          } else {
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+            if (!g_army_gathering_due_natural_12004.installed) {
+              connected = write_frame(pipe, CommandResultFrame(
+                  request_id, step, false, "army_gathering_research_sampling_unavailable"));
+            } else {
+              const auto sampling = step == "query-army-gathering-research-sampling-v1" ?
+                  xar::ck3_12004::ReadArmyGatheringResearchSamplingState12004() :
+                  xar::ck3_12004::SetArmyGatheringResearchSampling12004(
+                      step == "enable-army-gathering-research-sampling-v1");
+              connected = write_frame(pipe, sampling.available ?
+                  ArmyGatheringResearchSamplingResultFrame12004(request_id, step, sampling) :
+                  CommandResultFrame(request_id, step, false,
+                      "army_gathering_research_sampling_unavailable"));
+            }
+#else
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, "army_gathering_research_sampling_unavailable"));
+#endif
+          }
+        } else if (step == "query-army-strengths-v1") {
+          const auto profile =
+              xar::game::ParseArmyStrengthQueryProfileV1(incoming.payload);
+          if (profile == xar::game::ArmyStrengthQueryProfileV1::invalid) {
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, "army_strengths_profile_invalid"));
+          } else if (!xar::game::ArmyStrengthQueryProfileAvailableV1(profile)) {
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, "army_strengths_observed_history_unavailable"));
+          } else {
+            xar::ck3_12002::g_army_strength_query_diagnostic_v1.Reset();
+            std::vector<xar::game::ArmyStrengthSnapshot> strengths;
+            const auto query_result =
+                xar::game::ReadArmyStrengths(game, strengths);
+            std::string army_result_frame;
+            if (query_result ==
+                    xar::game::ReadArmyStrengthsResult::available ||
+                query_result ==
+                    xar::game::ReadArmyStrengthsResult::partial) {
+              ++army_strength_query_sequence;
+              army_result_frame = ArmyStrengthsResultFrame(
+                  request_id, army_strength_query_sequence, query_result, strengths, profile);
+            } else {
+              std::string error =
+                  "CK3 army-strength query is unavailable";
+              if (query_result ==
+                  xar::game::ReadArmyStrengthsResult::requires_paused) {
+                error = "CK3 army-strength query requires a paused map";
+              } else if (query_result ==
+                         xar::game::ReadArmyStrengthsResult::
+                             no_played_character) {
+                error = "no living played CK3 character";
+              } else {
+                error += xar::ck3_12002::g_army_strength_query_diagnostic_v1.FailureSuffix();
+              }
+              army_result_frame = CommandResultFrame(request_id, step, false, error);
+            }
+            const auto rendered = xar::game::RenderCrozierBuildIdentity(
+                std::move(army_result_frame), game.descriptor());
+            // Reject the actual UTF-8 reply before attempting to write it. The
+            // small error keeps this pipe usable; no profile fallback occurs.
+            if (xar::game::ArmyStrengthQueryReplyExceedsTransportLimitV1(
+                    rendered.size(), xar::bridge::kMaximumFrameBytes)) {
+              connected = write_frame(pipe, CommandResultFrame(
+                  request_id, step, false, xar::game::ArmyStrengthQueryReplySizeLimitErrorV1(
+                      profile, rendered.size(), xar::bridge::kMaximumFrameBytes)));
+            } else {
+              connected = xar::bridge::WriteArmyStrengthResultFrameV1(
+                  pipe, rendered, army_strength_query_sequence, state.army_result_write);
+              if (!connected && state.army_result_write.frame.stage ==
+                                    xar::bridge::FrameWriteStage::size_limit) {
+                connected = write_frame(pipe, CommandResultFrame(
+                    request_id, step, false, xar::game::ArmyStrengthQueryReplySizeLimitErrorV1(
+                        profile, rendered.size(), xar::bridge::kMaximumFrameBytes)));
+              }
+            }
           }
         } else if (step.starts_with(
                        xar::ck3_11906::kCombatPhaseEventTraceV1StepPrefix)) {

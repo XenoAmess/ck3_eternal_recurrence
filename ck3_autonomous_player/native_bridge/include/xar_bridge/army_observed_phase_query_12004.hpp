@@ -111,7 +111,11 @@ template<class N,class S> void AppendArmyObservedPhaseQuery12004(std::string &ou
   field("actual_army_assault_group_release_observations_v1");
   if(joined) {if(const auto release=ck3_12004::ReadArmyAssaultGroupReleaseObservations12004(full_id)) AppendArmyAssaultGroupReleaseObservations12004(out,*release);else out += "null";} else out += "null";
   field("native_gathering_due_natural_stage_12004");
-  if(joined) out += ck3_12004::SerializeArmyGatheringDueNaturalStage12004(ck3_12004::ReadArmyGatheringDueNaturalForArmy12004(full_id)); else out += "null";
+  if(joined) {
+    if(const auto sampled=ck3_12004::ReadSampledArmyGatheringDueNaturalForArmy12004(full_id))
+      out += ck3_12004::SerializeArmyGatheringDueNaturalStage12004(*sampled);
+    else out += "null";
+  } else out += "null";
   field("actual_army_cleanup_observations_v1");
   if(joined) {
     auto cleanup=ck3_12004::ReadArmyActualMonthfirstCleanupJournal12004();

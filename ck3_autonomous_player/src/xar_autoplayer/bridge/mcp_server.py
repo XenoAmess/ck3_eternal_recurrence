@@ -2980,17 +2980,21 @@ def create_server(
         expected_revision: int | None = None,
         ordered_refill_entry_mode: Literal["observed_prepared", "fixed_chunk0_prepare"] = "observed_prepared",
         ordered_besieging_entry_mode: Literal["observed_prepared", "fixed_chunk0_prepare"] = "observed_prepared",
+        profile: Literal["ordinary_core_v1", "observed_history_full_v1"] = "ordinary_core_v1",
     ) -> Annotated[CallToolResult, dict[str, object]]:
         """Read soldiers and AI base power; never interpret them as win odds.
 
         Choose the observed or conditional preparation entry for scoped refill.
         The separate B entry uses the actual refreshed target physical union.
+        Ordinary core omits retained phase journals. Request full explicitly to
+        read the retained journals; unavailable/null observations stay unknown.
         """
         payload = service.query_army_strengths(
             army_ids,
             expected_revision=expected_revision,
             ordered_refill_entry_mode=ordered_refill_entry_mode,
             ordered_besieging_entry_mode=ordered_besieging_entry_mode,
+            profile=profile,
         )
         return build_army_strengths_mcp_result(payload)
 
@@ -2999,6 +3003,29 @@ def create_server(
         CallToolResult, dict[str, object]
     ]
     server.tool()(ck3_query_army_strengths)
+
+    @server.tool()
+    def ck3_set_army_gathering_research_sampling_v1(
+        enabled: Annotated[bool, Field(strict=True)],
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Explicit research capture control; ordinary/full queries never enable it.
+
+        Busy or clear_pending preserves the actual pending state; this call
+        does not retry or claim that journal clearing has completed.
+        """
+        return service.set_army_gathering_research_sampling_v1(
+            enabled, expected_revision=expected_revision,
+        )
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_army_gathering_research_sampling_v1(
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Read research capture state; readiness here is sampling, not Army readiness."""
+        return service.query_army_gathering_research_sampling_v1(
+            expected_revision=expected_revision,
+        )
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_projected_contact_scope_v1(

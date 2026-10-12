@@ -1,5 +1,7 @@
 # CK3 自动游玩智能体进度中心
 
+**当前入口（2026-10-13）：[G2 运行就绪状态纠正](../ck3-native-ai/g2-runtime-readiness-correction-2026-10-13.md)。当前运行就绪未验收；旧 5/8、6/8 是历史合同计数，不能解释为可稳定打战争。以下日期记录保留当时事实。**
+
 **Current owner instruction (2026-10-11T05:05:16.995792+00:00): local CK3 is reserved for the owner's play.**
 Game/SDK live queries, launches, injection, RPC/input, windows and Steam operations
 are prohibited until explicitly released. G2 continues with the existing64-agent

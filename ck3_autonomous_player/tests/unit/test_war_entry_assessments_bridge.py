@@ -882,15 +882,14 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
         self.assertIsNone(plan["war_entry_expected_utility"]["eu_lower_raw"])
         self.assertTrue(plan["prewar_forecast_admission_available"])
         self.assertFalse(plan["prewar_forecast_admission"]["admitted"])
-        self.assertIn(
-            "game.command.query-prewar-combat-simulation-inputs-v3-N",
+        self.assertEqual(
             plan["required_capabilities"],
+            ["game.command.query-prewar-force-coalition-coverage-v1-N"],
         )
         self.assertNotIn(
             "game.command.query-combat-simulation-inputs-v3-N",
             plan["required_capabilities"],
         )
-        self.assertIn("game.forecast.combat-monte-carlo-v1", plan["required_capabilities"])
 
     def test_feudal_de_jure_below_old_overmatch_still_enters_forecast(self) -> None:
         snapshot = _r759_like_entry_snapshot(target=909)
@@ -910,7 +909,7 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
         self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
         self.assertEqual(plan["selected_step"], "life-advance")
 
-    def test_general_native_declaration_uses_decisive_aggregate_battle_prior(self) -> None:
+    def test_general_native_declaration_retains_decisive_prior_without_authority(self) -> None:
         snapshot = _r759_like_entry_snapshot(target=909)
         snapshot["declarable_wars"] = [_declaration(909)]
         snapshot["campaign_root_context"]["independent"] = True
@@ -926,10 +925,15 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             snapshot=snapshot,
             action_steps={"declare-war-909-17-0", "life-advance"},
         )
-        self.assertEqual(plan["phase"], "native_war_declaration")
-        self.assertEqual(plan["selected_step"], "declare-war-909-17-0")
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+        self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["decision"]["policy"], "general-native-war-entry-battle-prior-v1")
-        self.assertTrue(plan["prewar_forecast_admission"]["admitted"])
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
+        self.assertFalse(plan["decision"]["automatic_declaration_enabled"])
+        self.assertTrue(plan["prewar_forecast_admission"]["proxy_risk_budget_passed"])
+        self.assertFalse(plan["prewar_forecast_admission"]["admitted"])
+        self.assertEqual(plan["war_entry_candidate"]["typed_declaration_step"], "declare-war-909-17-0")
+        self.assertTrue(plan["war_entry_candidate"]["typed_declaration_available"])
         self.assertFalse(plan["prewar_battle_forecast"]["calibrated_probability"])
 
     def test_de_jure_candidate_scope_stays_observable_without_declaration(self) -> None:
@@ -1088,7 +1092,7 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             55_223 - 85_000,
         )
 
-    def test_player_claim_selector_compares_all_county_targets_and_ignores_religious_cb(
+    def test_player_claim_selector_preserves_best_county_candidate_without_proxy_authority(
         self,
     ) -> None:
         claims = [
@@ -1136,13 +1140,17 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(plan["phase"], "native_war_declaration")
-        self.assertEqual(plan["selected_step"], "declare-war-33621-11-0")
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+        self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["declaration"]["target_character_id"], 33_621)
         self.assertEqual(plan["declaration"]["casus_belli_key"], "claim_cb")
         self.assertEqual(plan["decision"]["claimant_character_id"], 29_829)
-        self.assertEqual(plan["decision"]["outcome"], "DECLARE")
-        self.assertTrue(plan["prewar_forecast_admission"]["admitted"])
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
+        self.assertFalse(plan["decision"]["automatic_declaration_enabled"])
+        self.assertTrue(plan["prewar_forecast_admission"]["proxy_risk_budget_passed"])
+        self.assertFalse(plan["prewar_forecast_admission"]["admitted"])
+        self.assertEqual(plan["war_entry_candidate"]["typed_declaration_step"], "declare-war-33621-11-0")
+        self.assertTrue(plan["war_entry_candidate"]["typed_declaration_available"])
         self.assertFalse(plan["prewar_battle_forecast"]["calibrated_probability"])
         self.assertEqual(
             plan["decision"]["policy"],

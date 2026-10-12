@@ -4,7 +4,7 @@ from xar_autoplayer.simulation.prewar_battle_proxy import (
 )
 
 
-def test_prewar_aggregate_trials_are_reproducible_and_expose_assumptions():
+def test_prewar_aggregate_trials_are_reproducible_without_declaration_authority():
     assessment = {
         "actor_power_base_raw": 4_000_000,
         "target_power_total_raw": 1_000_000,
@@ -15,7 +15,10 @@ def test_prewar_aggregate_trials_are_reproducible_and_expose_assumptions():
     assert first == forecast_prewar_power_battle(assessment, declaration_id="candidate-1")
     assert first["wins"] + first["losses"] + first["no_resolution"] == 256
     assert first["calibrated_probability"] is False
-    assert prewar_declaration_admission(first)["admitted"] is True
+    admission = prewar_declaration_admission(first)
+    assert admission["proxy_risk_budget_passed"] is True
+    assert admission["admitted"] is False
+    assert admission["reason"] == "independent_force_coalition_evidence_required"
 
 
 def test_marginal_power_and_invalid_input_do_not_authorize_declaration():

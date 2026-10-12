@@ -132,5 +132,18 @@ ArmyGatheringDueNaturalStage12004 InvokeArmyGatheringDueNatural12004(
     std::optional<std::uint8_t> actual_saved_mask = std::nullopt) noexcept;
 std::vector<ArmyGatheringDueNaturalStage12004> ReadArmyGatheringDueNaturalJournal12004();
 std::vector<ArmyGatheringDueNaturalStage12004> ReadArmyGatheringDueNaturalForArmy12004(std::uint32_t owned_full_id);
+struct ArmyGatheringResearchSamplingState12004 {
+  bool available = false, enabled = false, busy = false, clear_completed = false;
+  std::uint64_t epoch = 0, active_captures = 0;
+  std::size_t retained_records = 0, qualified_records = 0;
+};
+// Independent module observation control. Reads and query profiles never enable
+// sampling. Repeated on/off requests are idempotent; busy disable is not clear.
+ArmyGatheringResearchSamplingState12004 ReadArmyGatheringResearchSamplingState12004() noexcept;
+ArmyGatheringResearchSamplingState12004 SetArmyGatheringResearchSampling12004(bool enabled) noexcept;
+// Null means disabled, inflight, no qualified retained observation, or no
+// observed full-ID match. It never invents an observed-empty subject history.
+std::optional<std::vector<ArmyGatheringDueNaturalStage12004>>
+ReadSampledArmyGatheringDueNaturalForArmy12004(std::uint32_t owned_full_id);
 void ClearArmyGatheringDueNaturalJournal12004() noexcept;
 } // namespace xar::ck3_12004

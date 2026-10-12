@@ -5973,11 +5973,32 @@ class GameplayBridgeService:
                 "actual_army_compiled_effect_consumption_12004": compiled_effect_outputs,
                 "actual_army_observed_phase_consumption_12004": observed_phase_outputs}
 
+    def set_army_gathering_research_sampling_v1(
+        self, enabled: bool, *, expected_revision: int
+    ) -> dict[str, object]:
+        control = getattr(self.driver, "set_army_gathering_research_sampling_v1", None)
+        if not callable(control):
+            raise UnsupportedStepError(
+                "selected backend cannot control Gathering research sampling"
+            )
+        return control(enabled=enabled, expected_revision=expected_revision)
+
+    def query_army_gathering_research_sampling_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
+        query = getattr(self.driver, "query_army_gathering_research_sampling_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError(
+                "selected backend cannot query Gathering research sampling"
+            )
+        return query(expected_revision=expected_revision)
+
     def query_army_strengths(
         self,
         army_ids: list[int],
         *,
         expected_revision: int | None = None,
+        profile: str = "ordinary_core_v1",
         ordered_refill_entry_mode: str = "observed_prepared",
         ordered_besieging_entry_mode: str = "observed_prepared",
     ) -> dict[str, object]:
@@ -5992,6 +6013,12 @@ class GameplayBridgeService:
         ordered_besieging_entry_mode independently selects the actual B target
         union's observed or same-query conditional preparation input.
         """
+        from .army_strengths_profile_contract import (
+            ORDINARY_CORE_PROFILE,
+            require_army_strengths_profile,
+            validate_army_strengths_profile_coverage,
+        )
+        profile = require_army_strengths_profile(profile)
         if ordered_refill_entry_mode not in ("observed_prepared", "fixed_chunk0_prepare"):
             raise ValueError("unknown ordered_refill_entry_mode")
         if ordered_besieging_entry_mode not in ("observed_prepared", "fixed_chunk0_prepare"):
@@ -6028,10 +6055,24 @@ class GameplayBridgeService:
             if expected_revision is not None
             else int(snapshot["revision"])
         )
-        result = self.driver.execute_step(
-            QUERY_ARMY_STRENGTHS_STEP,
-            expected_revision=selected_revision,
-        )
+        typed_query = getattr(self.driver, "query_army_strengths", None)
+        if callable(typed_query):
+            result = typed_query(profile=profile, expected_revision=selected_revision)
+            try:
+                validate_army_strengths_profile_coverage(result, expected_profile=profile)
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native army-strength profile coverage is malformed: {error}"
+                ) from error
+        else:
+            if profile != ORDINARY_CORE_PROFILE:
+                raise UnsupportedStepError(
+                    "selected backend cannot request observed Army history"
+                )
+            result = self.driver.execute_step(
+                QUERY_ARMY_STRENGTHS_STEP,
+                expected_revision=selected_revision,
+            )
         try:
             rows = normalize_army_strengths(
                 result.get("army_strengths"), expected_scope=scope

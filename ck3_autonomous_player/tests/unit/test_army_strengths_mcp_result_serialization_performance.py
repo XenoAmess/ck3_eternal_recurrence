@@ -1,4 +1,4 @@
-"""One registered MCP serialization regression with synthetic Service output.
+"""Registered compact MCP serialization regression with synthetic Service output.
 
 This does not load a native wire, import an older test, or query a game.
 The baseline invokes the installed SDK's real ordinary-dict conversion.
@@ -83,6 +83,8 @@ def _synthetic_complete_service_result() -> dict[str, object]:
         "scope_status": "available",
         "scope": "player-and-active-war-participants",
         "query_sequence": 2,
+        "army_strengths_profile": "ordinary_core_v1",
+        "army_observed_phase_coverage": "not_requested",
         "revision": 4,
         "native_revision": 3,
         "source": {
@@ -129,7 +131,7 @@ def _synthetic_complete_service_result() -> dict[str, object]:
 class ArmyStrengthsMcpResultSerializationPerformanceTests(
     unittest.IsolatedAsyncioTestCase
 ):
-    async def test_first_registered_army_result_preserves_all_observations_without_duplicate_json(
+    async def test_registered_army_strengths_outputs_compact_text_and_structured_without_large_journals(
         self,
     ) -> None:
         direct_payload = _synthetic_complete_service_result()
@@ -142,6 +144,8 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             "accepted": True,
             "status": "available",
             "query_sequence": 2,
+            "army_strengths_profile": "ordinary_core_v1",
+            "army_observed_phase_coverage": "not_requested",
             "army_strengths": direct_payload["army_strengths"],
             "backend_id": "synthetic_transport_fixture",
             "queried_snapshot_id": "synthetic-execute-army-7001",
@@ -167,6 +171,7 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             "expected_revision": 4,
             "ordered_refill_entry_mode": "observed_prepared",
             "ordered_besieging_entry_mode": "fixed_chunk0_prepare",
+            "profile": "ordinary_core_v1",
         }
         execute_arguments = {
             "step": army_step,
@@ -201,12 +206,16 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
                 ordered_besieging_entry_mode: Literal[
                     "observed_prepared", "fixed_chunk0_prepare"
                 ] = "observed_prepared",
+                profile: Literal[
+                    "ordinary_core_v1", "observed_history_full_v1"
+                ] = "ordinary_core_v1",
             ) -> dict[str, object]:
                 legacy_direct_calls.append({
                     "army_ids": army_ids,
                     "expected_revision": expected_revision,
                     "ordered_refill_entry_mode": ordered_refill_entry_mode,
                     "ordered_besieging_entry_mode": ordered_besieging_entry_mode,
+                    "profile": profile,
                 })
                 return direct_payload
 
@@ -279,6 +288,7 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             "step", "accepted", "status", "query_sequence", "army_strengths",
             "backend_id", "queried_snapshot_id", "queried_revision",
             "queried_native_revision",
+            "army_strengths_profile", "army_observed_phase_coverage",
         })
         self.assertNotIn("source", execute_payload)
         self.assertNotIn("army_ids", execute_payload)
@@ -298,17 +308,20 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             self.assertFalse(legacy.is_error)
             self.assertFalse(compact.is_error)
             self.assertEqual(legacy.structured_content, expected)
-            self.assertEqual(compact.structured_content, expected)
             self.assertEqual(len(legacy.content), 1)
             self.assertEqual(len(compact.content), 1)
             self.assertEqual(json.loads(legacy.content[0].text), expected)
 
             summary = json.loads(compact.content[0].text)
+            self.assertEqual(compact.structured_content, summary)
             self.assertEqual(set(summary), {
                 "accepted", "status", "query_sequence", "source",
                 "army_ids", "armies", "result_location",
+                "army_strengths_profile", "army_observed_phase_coverage",
             })
-            self.assertEqual(summary["result_location"], "structuredContent")
+            self.assertEqual(summary["result_location"], "compact_mcp_summary")
+            self.assertEqual(summary["army_strengths_profile"], "ordinary_core_v1")
+            self.assertEqual(summary["army_observed_phase_coverage"], "not_requested")
             self.assertEqual(summary["source"], {"revision": 4, "native_revision": 3})
             self.assertEqual(summary["army_ids"], summary_ids)
             self.assertEqual([row["army_id"] for row in summary["armies"]], summary_ids)
@@ -328,27 +341,19 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             self.assertGreater(len(legacy_wire), 256 * 1024)
             self.assertLessEqual(len(compact_wire), len(legacy_wire) * 0.60)
             decoded = json.loads(compact_wire)
-            self.assertEqual(decoded["structuredContent"], expected)
-            if route == "execute_army":
-                self.assertNotIn("source", decoded["structuredContent"])
-                self.assertNotIn("army_ids", decoded["structuredContent"])
-                self.assertNotIn("scope_army_ids", decoded["structuredContent"])
-                self.assertNotIn("same_input_conditional_projection",
-                                 decoded["structuredContent"])
-
-            kept = decoded["structuredContent"]["army_strengths"][0]
-            occurrences = kept["synthetic_observed_roster"]["occurrences"]
-            self.assertEqual(occurrences, expected["army_strengths"][0][
-                "synthetic_observed_roster"]["occurrences"])
-            self.assertEqual([row["native_index"] for row in occurrences],
-                             list(range(4096)))
-            self.assertEqual(occurrences[1]["raw_full_id_u32"], 0xAB000001)
-            self.assertEqual(occurrences[2]["raw_full_id_u32"], 0xAB000001)
-            self.assertEqual(occurrences[0]["raw_full_id_u32"], 0)
-            self.assertIs(occurrences[0]["native_predicate"], False)
-            self.assertIsNone(occurrences[0]["nullable_operand"])
-            self.assertEqual(occurrences[1]["owner_full_id_u32"], 0xFFFFFFFF)
-            self.assertEqual(kept["synthetic_observed_scalar_inputs"]["mode_raw_u8"], 255)
+            self.assertEqual(decoded["structuredContent"], summary)
+            self.assertEqual(json.loads(decoded["content"][0]["text"]), summary)
+            self.assertNotIn("army_strengths", decoded["structuredContent"])
+            self.assertNotIn("scope_army_ids", decoded["structuredContent"])
+            self.assertNotIn("same_input_conditional_projection", decoded["structuredContent"])
+            self.assertNotIn(b"synthetic_observed_roster", compact_wire)
+            self.assertNotIn(b"occurrences", compact_wire)
+            self.assertLess(len(compact_wire), 4096)
+            for kept, original in zip(summary["armies"], expected["army_strengths"]):
+                for field in ("army_id", "native_carmy_id", "current_soldiers",
+                              "maximum_soldiers", "ai_base_power_raw", "status"):
+                    self.assertEqual(kept[field], original[field])
+                self.assertEqual(kept["current_attrition_fraction_raw"], 0)
             pair_metrics[route] = {
                 "wire_serializations": {"legacy": 1, "compact": 1},
                 "legacy_wire_bytes": len(legacy_wire),
@@ -356,8 +361,10 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
                 "compact_to_legacy_byte_ratio": len(compact_wire) / len(legacy_wire),
                 "text_summary_bytes": summary_bytes,
                 "army_rows": len(expected["army_strengths"]),
-                "original_ordered_occurrences_per_row": len(occurrences),
-                "all_observation_fields_retained": True,
+                "original_ordered_occurrences_per_row": 4096,
+                "internal_payload_unchanged": True,
+                "mcp_large_observation_fields_exported": False,
+                "text_and_structured_summary_equal": True,
             }
 
         output = os.environ.get("XAR_ARMY_RESULT_PERFORMANCE_CASE_OUTPUT")

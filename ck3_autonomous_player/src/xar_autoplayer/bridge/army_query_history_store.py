@@ -21,6 +21,7 @@ REFERENCE_KIND = "complete-driver-army-query-result-json-v1"
 _RESULT_FIELDS = (
     "step", "accepted", "status", "backend_id", "query_sequence",
     "queried_snapshot_id", "queried_revision", "queried_native_revision",
+    "army_strengths_profile", "army_observed_phase_coverage",
 )
 _ARMY_FIELDS = (
     "army_id", "status", "scope_role", "native_carmy_id", "owner_character_id",

@@ -55,6 +55,7 @@
 #endif
 
 #include <string>
+#include <string_view>
 
 namespace xar::game {
 
@@ -594,6 +595,215 @@ inline void AppendArmyCurrentDisembarkPenaltyV1(
   out += '}';
 }
 
+enum class ArmyStrengthQueryProfileV1 {
+  legacy_full,
+  ordinary_core,
+  observed_history_full,
+  invalid,
+};
+
+namespace army_strength_profile_json_v1 {
+
+// Control requests are objects. Only a unique top-level, decoded profile key
+// selects a profile; nested keys and string contents never select one.
+class Reader {
+ public:
+  explicit Reader(std::string_view json) : json_(json) {}
+
+  ArmyStrengthQueryProfileV1 Read() {
+    auto profile = ArmyStrengthQueryProfileV1::legacy_full;
+    bool found = false;
+    Space();
+    if (!Take('{')) return ArmyStrengthQueryProfileV1::invalid;
+    Space();
+    if (!Take('}')) {
+      for (;;) {
+        std::string key;
+        if (!String(&key)) return ArmyStrengthQueryProfileV1::invalid;
+        Space();
+        if (!Take(':')) return ArmyStrengthQueryProfileV1::invalid;
+        Space();
+        if (key == "army_strengths_profile") {
+          std::string value;
+          if (found || !String(&value)) return ArmyStrengthQueryProfileV1::invalid;
+          found = true;
+          if (value == "ordinary_core_v1")
+            profile = ArmyStrengthQueryProfileV1::ordinary_core;
+          else if (value == "observed_history_full_v1")
+            profile = ArmyStrengthQueryProfileV1::observed_history_full;
+          else
+            return ArmyStrengthQueryProfileV1::invalid;
+        } else if (!Value(0)) {
+          return ArmyStrengthQueryProfileV1::invalid;
+        }
+        Space();
+        if (Take('}')) break;
+        if (!Take(',')) return ArmyStrengthQueryProfileV1::invalid;
+        Space();
+      }
+    }
+    Space();
+    return offset_ == json_.size() ? profile : ArmyStrengthQueryProfileV1::invalid;
+  }
+
+ private:
+  void Space() {
+    while (offset_ < json_.size() &&
+           (json_[offset_] == ' ' || json_[offset_] == '\t' ||
+            json_[offset_] == '\n' || json_[offset_] == '\r')) ++offset_;
+  }
+  bool Take(char value) {
+    if (offset_ == json_.size() || json_[offset_] != value) return false;
+    ++offset_;
+    return true;
+  }
+  static bool Digit(char value) { return value >= '0' && value <= '9'; }
+  bool String(std::string *output = nullptr) {
+    if (!Take('"')) return false;
+    if (output != nullptr) output->clear();
+    while (offset_ < json_.size()) {
+      auto value = static_cast<unsigned char>(json_[offset_++]);
+      if (value == '"') return true;
+      if (value < 0x20U) return false;
+      if (value == '\\') {
+        if (offset_ == json_.size()) return false;
+        value = static_cast<unsigned char>(json_[offset_++]);
+        switch (value) {
+        case '"': case '\\': case '/': break;
+        case 'b': value = '\b'; break;
+        case 'f': value = '\f'; break;
+        case 'n': value = '\n'; break;
+        case 'r': value = '\r'; break;
+        case 't': value = '\t'; break;
+        case 'u': {
+          unsigned unit = 0;
+          for (unsigned index = 0; index < 4; ++index) {
+            if (offset_ == json_.size()) return false;
+            const char hex = json_[offset_++];
+            unsigned digit = 0;
+            if (hex >= '0' && hex <= '9') digit = static_cast<unsigned>(hex - '0');
+            else if (hex >= 'a' && hex <= 'f') digit = static_cast<unsigned>(hex - 'a' + 10);
+            else if (hex >= 'A' && hex <= 'F') digit = static_cast<unsigned>(hex - 'A' + 10);
+            else return false;
+            unit = unit * 16U + digit;
+          }
+          // Profile names are ASCII. A non-ASCII unit cannot match one.
+          value = unit <= 0x7fU ? static_cast<unsigned char>(unit) : '?';
+          break;
+        }
+        default: return false;
+        }
+      }
+      // Bounded scratch storage; long unrelated keys/values cannot match a
+      // profile, and skipped values never allocate a string.
+      if (output != nullptr && output->size() < 128U)
+        output->push_back(static_cast<char>(value));
+    }
+    return false;
+  }
+  bool Literal(std::string_view value) {
+    if (json_.substr(offset_, value.size()) != value) return false;
+    offset_ += value.size();
+    return true;
+  }
+  bool Number() {
+    Take('-');
+    if (offset_ == json_.size()) return false;
+    if (!Take('0')) {
+      if (json_[offset_] < '1' || json_[offset_] > '9') return false;
+      do { ++offset_; } while (offset_ < json_.size() && Digit(json_[offset_]));
+    }
+    if (Take('.')) {
+      if (offset_ == json_.size() || !Digit(json_[offset_])) return false;
+      do { ++offset_; } while (offset_ < json_.size() && Digit(json_[offset_]));
+    }
+    if (offset_ < json_.size() && (json_[offset_] == 'e' || json_[offset_] == 'E')) {
+      ++offset_;
+      if (offset_ < json_.size() && (json_[offset_] == '+' || json_[offset_] == '-')) ++offset_;
+      if (offset_ == json_.size() || !Digit(json_[offset_])) return false;
+      do { ++offset_; } while (offset_ < json_.size() && Digit(json_[offset_]));
+    }
+    return true;
+  }
+  bool Value(unsigned depth) {
+    if (depth > 64U || offset_ == json_.size()) return false;
+    if (json_[offset_] == '"') return String();
+    if (Take('{')) {
+      Space();
+      if (Take('}')) return true;
+      for (;;) {
+        if (!String()) return false;
+        Space();
+        if (!Take(':')) return false;
+        Space();
+        if (!Value(depth + 1U)) return false;
+        Space();
+        if (Take('}')) return true;
+        if (!Take(',')) return false;
+        Space();
+      }
+    }
+    if (Take('[')) {
+      Space();
+      if (Take(']')) return true;
+      for (;;) {
+        if (!Value(depth + 1U)) return false;
+        Space();
+        if (Take(']')) return true;
+        if (!Take(',')) return false;
+        Space();
+      }
+    }
+    return Literal("true") || Literal("false") || Literal("null") || Number();
+  }
+
+  std::string_view json_;
+  std::size_t offset_ = 0;
+};
+
+}  // namespace army_strength_profile_json_v1
+
+inline ArmyStrengthQueryProfileV1 ParseArmyStrengthQueryProfileV1(std::string_view payload) {
+  return army_strength_profile_json_v1::Reader(payload).Read();
+}
+
+inline bool ArmyStrengthQueryProfileAvailableV1(ArmyStrengthQueryProfileV1 profile) noexcept {
+  if (profile == ArmyStrengthQueryProfileV1::invalid) return false;
+#if defined(XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004)
+  return true;
+#else
+  return profile != ArmyStrengthQueryProfileV1::observed_history_full;
+#endif
+}
+
+inline bool ArmyStrengthQueryProfileIncludesObservedHistoryV1(
+    ArmyStrengthQueryProfileV1 profile) noexcept {
+  return profile == ArmyStrengthQueryProfileV1::legacy_full ||
+         profile == ArmyStrengthQueryProfileV1::observed_history_full;
+}
+
+inline std::string_view ArmyStrengthQueryProfileNameV1(ArmyStrengthQueryProfileV1 profile) noexcept {
+  switch (profile) {
+  case ArmyStrengthQueryProfileV1::legacy_full: return "legacy_full";
+  case ArmyStrengthQueryProfileV1::ordinary_core: return "ordinary_core_v1";
+  case ArmyStrengthQueryProfileV1::observed_history_full: return "observed_history_full_v1";
+  default: return "invalid";
+  }
+}
+
+inline bool ArmyStrengthQueryReplyExceedsTransportLimitV1(
+    std::size_t actual_bytes, std::size_t limit_bytes) noexcept {
+  return actual_bytes > limit_bytes;
+}
+
+inline std::string ArmyStrengthQueryReplySizeLimitErrorV1(
+    ArmyStrengthQueryProfileV1 profile, std::size_t actual_bytes, std::size_t limit_bytes) {
+  return "payload_exceeds_transport_limit requested_profile=" +
+         std::string(ArmyStrengthQueryProfileNameV1(profile)) +
+         " actual_bytes=" + std::to_string(actual_bytes) +
+         " limit_bytes=" + std::to_string(limit_bytes);
+}
+
 enum class ArmyStrengthManagerInputsModeV1 {
   inline_values = 0,
   query_shared = 1,
@@ -622,7 +832,8 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     std::string &result,
     const ArmyStrengthSnapshot &strength, Number number,
     Int32Array append_int32_array, JsonString append_json_string,
-    ArmyStrengthManagerInputsModeV1 manager_inputs_mode) {
+    ArmyStrengthManagerInputsModeV1 manager_inputs_mode,
+    bool include_observed_phase_history = true) {
   result += "{\"status\":\"";
   result += strength.available ? "available" : "unavailable";
   result += "\",\"army_id\":";
@@ -672,8 +883,12 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
   result += "null";
 #endif
 #if defined(XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004)
-  AppendArmyObservedPhaseQuery12004(result, strength.available, strength.native_carmy_id_observable,
-      strength.native_carmy_id, number, append_json_string);
+  if (include_observed_phase_history) {
+    AppendArmyObservedPhaseQuery12004(result, strength.available, strength.native_carmy_id_observable,
+        strength.native_carmy_id, number, append_json_string);
+  }
+#else
+  (void)include_observed_phase_history;
 #endif
   result += ",\"native_carmy_id\":";
   if (strength.native_carmy_id_observable) {

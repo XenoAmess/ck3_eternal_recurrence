@@ -18,6 +18,51 @@ constexpr std::string_view kSha = "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336
 std::mutex journal_mutex;
 std::vector<ArmyGatheringDueNaturalStage12004> journal;
 constexpr std::size_t kJournalLimit = 64;
+bool research_sampling_enabled = false;
+bool research_clear_completed = true;
+std::uint64_t research_epoch = 0;
+std::uint64_t active_research_captures = 0;
+
+ArmyGatheringResearchSamplingState12004 SamplingStateLocked() noexcept {
+  ArmyGatheringResearchSamplingState12004 out;
+  out.available = true;
+  out.enabled = research_sampling_enabled;
+  out.busy = active_research_captures != 0;
+  out.clear_completed = research_clear_completed;
+  out.epoch = research_epoch;
+  out.active_captures = active_research_captures;
+  out.retained_records = journal.size();
+  out.qualified_records = static_cast<std::size_t>(std::count_if(
+      journal.begin(), journal.end(), [](const auto &row) {
+        return row.observed && row.original_called && row.original_returned;
+      }));
+  return out;
+}
+
+struct ResearchCapturePermit {
+  bool admitted = false;
+  std::uint64_t epoch = 0;
+  ResearchCapturePermit() noexcept {
+    try {
+      std::lock_guard<std::mutex> lock(journal_mutex);
+      if (research_sampling_enabled &&
+          active_research_captures != (std::numeric_limits<std::uint64_t>::max)()) {
+        epoch = research_epoch;
+        ++active_research_captures;
+        admitted = true;
+      }
+    } catch (...) {}
+  }
+  ~ResearchCapturePermit() {
+    if (!admitted) return;
+    try {
+      std::lock_guard<std::mutex> lock(journal_mutex);
+      --active_research_captures;
+    } catch (...) {}
+  }
+  ResearchCapturePermit(const ResearchCapturePermit &) = delete;
+  ResearchCapturePermit &operator=(const ResearchCapturePermit &) = delete;
+};
 
 struct Capture {
   const ArmyGatheringDueNaturalBindings12004 &b;
@@ -250,6 +295,17 @@ ArmyGatheringDueNaturalStage12004 InvokeArmyGatheringDueNatural12004(
     const ArmyGatheringDueNaturalBindings12004 &b, ArmyGatheringDueNaturalOriginal12004 original,
     void *primary_arg, const void *date_arg, std::uintptr_t pc, std::optional<std::uint8_t> mask) noexcept {
   ArmyGatheringDueNaturalStage12004 out; out.actual_return_rva = pc; out.actual_saved_mask = mask;
+  // Admission is fixed for this intercepted call, before parent/manager copies.
+  // Ordinary play still invokes the original exactly once with opaque RAX.
+  const ResearchCapturePermit permit;
+  if (!permit.admitted) {
+    if (original) {
+      out.original_called = true;
+      out.raw_return_bits = original(primary_arg, date_arg);
+      out.original_returned = true;
+    }
+    return out;
+  }
   auto primary = reinterpret_cast<std::uintptr_t>(primary_arg);
   auto date = reinterpret_cast<std::uintptr_t>(date_arg);
   try {
@@ -309,8 +365,11 @@ ArmyGatheringDueNaturalStage12004 InvokeArmyGatheringDueNatural12004(
       out.same_clock_thread_order = Ordered(out);
     }
     std::lock_guard<std::mutex> lock(journal_mutex);
-    if (journal.size() == kJournalLimit) journal.erase(journal.begin());
-    journal.push_back(out);
+    // A disable immediately stops publication from an admitted older call.
+    if (research_sampling_enabled && research_epoch == permit.epoch) {
+      if (journal.size() == kJournalLimit) journal.erase(journal.begin());
+      journal.push_back(out);
+    }
   } catch (...) { out.unavailable_reason = "returned_capture_or_journal_failed"; }
   return out;
 }
@@ -330,8 +389,58 @@ std::vector<ArmyGatheringDueNaturalStage12004> ReadArmyGatheringDueNaturalForArm
   }
   return out;
 }
+ArmyGatheringResearchSamplingState12004 ReadArmyGatheringResearchSamplingState12004() noexcept {
+  try {
+    std::lock_guard<std::mutex> lock(journal_mutex);
+    return SamplingStateLocked();
+  } catch (...) { return {}; }
+}
+ArmyGatheringResearchSamplingState12004 SetArmyGatheringResearchSampling12004(bool enabled) noexcept {
+  try {
+    std::lock_guard<std::mutex> lock(journal_mutex);
+    if (enabled) {
+      if (research_sampling_enabled || active_research_captures != 0)
+        return SamplingStateLocked();
+      if (research_epoch == (std::numeric_limits<std::uint64_t>::max)()) return {};
+      journal.clear();
+      ++research_epoch;
+      research_clear_completed = false;
+      research_sampling_enabled = true;
+    } else {
+      research_sampling_enabled = false;
+      if (active_research_captures != 0) return SamplingStateLocked();
+      if (!research_clear_completed) {
+        if (research_epoch == (std::numeric_limits<std::uint64_t>::max)()) return {};
+        journal.clear();
+        ++research_epoch;
+        research_clear_completed = true;
+      }
+    }
+    return SamplingStateLocked();
+  } catch (...) { return {}; }
+}
+std::optional<std::vector<ArmyGatheringDueNaturalStage12004>>
+ReadSampledArmyGatheringDueNaturalForArmy12004(std::uint32_t full_id) {
+  std::lock_guard<std::mutex> lock(journal_mutex);
+  if (!research_sampling_enabled || active_research_captures != 0 || full_id == 0xFFFFFFFF ||
+      std::none_of(journal.begin(), journal.end(), [](const auto &row) {
+        return row.observed && row.original_called && row.original_returned;
+      })) return std::nullopt;
+  std::vector<ArmyGatheringDueNaturalStage12004> out;
+  for (const auto &stage : journal) {
+    bool matched = false;
+    for (const auto *snapshot : {&stage.entry, &stage.returned})
+      for (const auto *rows : {&snapshot->queued_armies, &snapshot->roster_armies})
+        for (const auto &row : *rows)
+          if (row.receiver.resolution_complete && row.receiver.selected_full_id == full_id)
+            matched = true;
+    if (matched) out.push_back(stage);
+  }
+  if (out.empty()) return std::nullopt;
+  return out;
+}
 void ClearArmyGatheringDueNaturalJournal12004() noexcept {
-  try { std::lock_guard<std::mutex> lock(journal_mutex); journal.clear(); } catch (...) {}
+  (void)SetArmyGatheringResearchSampling12004(false);
 }
 
 namespace {

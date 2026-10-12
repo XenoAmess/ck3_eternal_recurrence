@@ -33,6 +33,8 @@ def _army_strengths_summary(payload: dict[str, object]) -> dict[str, object]:
         "accepted": payload.get("accepted"),
         "status": payload.get("status"),
         "query_sequence": payload.get("query_sequence"),
+        "army_strengths_profile": payload.get("army_strengths_profile"),
+        "army_observed_phase_coverage": payload.get("army_observed_phase_coverage"),
         "source": {
             "revision": (
                 source.get("revision")
