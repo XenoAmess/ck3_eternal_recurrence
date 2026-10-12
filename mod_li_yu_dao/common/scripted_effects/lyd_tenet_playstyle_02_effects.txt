@@ -87,4 +87,3 @@ add_character_modifier = { modifier = lyd_play_qi_kinship_option_0_character day
 add_character_flag = { flag = lyd_play_qi_kinship_cooldown days = 1460 }
 }
 }
-

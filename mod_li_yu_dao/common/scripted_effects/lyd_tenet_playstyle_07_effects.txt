@@ -44,4 +44,3 @@ add_character_modifier = { modifier = lyd_play_recognition_everywhere_option_2_c
 add_character_flag = { flag = lyd_play_recognition_everywhere_cooldown days = 1095 }
 }
 }
-

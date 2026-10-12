@@ -90,4 +90,3 @@ add_character_modifier = { modifier = lyd_play_ongoing_generation_option_0_chara
 add_character_flag = { flag = lyd_play_ongoing_generation_cooldown days = 1825 }
 }
 }
-

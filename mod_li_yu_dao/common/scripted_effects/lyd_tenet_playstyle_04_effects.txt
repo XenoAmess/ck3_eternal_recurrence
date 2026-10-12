@@ -91,4 +91,3 @@ add_character_modifier = { modifier = lyd_play_six_arts_option_1_character days 
 add_character_flag = { flag = lyd_play_six_arts_cooldown days = 1095 }
 }
 }
-

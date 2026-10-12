@@ -93,4 +93,3 @@ add_character_modifier = { modifier = lyd_play_classical_synthesis_option_0_char
 add_character_flag = { flag = lyd_play_classical_synthesis_cooldown days = 1460 }
 }
 }
-

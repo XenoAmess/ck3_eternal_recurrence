@@ -952,4 +952,3 @@ is_at_war = yes
 }
 
 lyd_play_recognition_everywhere_available_trigger = { lyd_play_recognition_everywhere_ready_trigger = yes OR = { lyd_play_recognition_everywhere_option_0_trigger = yes lyd_play_recognition_everywhere_option_1_trigger = yes lyd_play_recognition_everywhere_option_2_trigger = yes } }
-

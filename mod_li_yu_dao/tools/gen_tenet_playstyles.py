@@ -73,7 +73,7 @@ def design_document() -> bytes:
 
 
 def encoded(text: str) -> bytes:
-    return text.encode('utf-8-sig')
+    return (text.rstrip() + '\n').encode('utf-8-sig')
 
 
 def option_key(p: Practice, index: int) -> str:

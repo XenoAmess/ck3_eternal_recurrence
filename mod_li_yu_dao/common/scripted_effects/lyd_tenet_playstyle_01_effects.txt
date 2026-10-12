@@ -99,4 +99,3 @@ random_courtier = { limit = { is_alive = yes is_adult = yes } add_learning_lifes
 add_character_flag = { flag = lyd_play_sage_transmission_cooldown days = 1460 }
 }
 }
-

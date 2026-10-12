@@ -89,4 +89,3 @@ add_character_modifier = { modifier = lyd_play_subtle_intentions_option_0_charac
 add_character_flag = { flag = lyd_play_subtle_intentions_cooldown days = 1095 }
 }
 }
-
