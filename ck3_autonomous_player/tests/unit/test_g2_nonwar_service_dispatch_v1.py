@@ -1,4 +1,4 @@
-"""Production nonwar service/MCP dispatch with preserved Council SDK DTOs."""
+"""Council service contracts and full public MCP dispatch."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import pytest
 
 from test_private_council_formal_consumer_v1 import ActualCouncilDriver
 from xar_autoplayer import strategy
-from xar_autoplayer.bridge.mcp_server import create_server, parser
+from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP, SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
@@ -128,38 +128,10 @@ def test_council_off_and_default_inactive_government_leave_no_ledger_and_advance
     assert not (tmp_path / LEDGER_FILENAME).exists()
 
 
-def test_public_mcp_nonwar_flag_runs_real_service_and_preserves_actual_wars(tmp_path):
+def test_public_mcp_uses_full_plan_and_auto_contract(tmp_path):
     async def run():
         from mcp import Client
 
-        driver = NonwarActualCouncilDriver(tmp_path)
-        driver.nonwar_only = True
-        driver.allow_private_council_action = False
-        driver.allow_private_m5_joint_collector = True
-        actual_wars = copy.deepcopy(driver.data["pre_snapshot"]["active_wars"])
-        with forbid_legacy_planning(), patch.object(GameplayBridgeService, "plan_turn", side_effect=AssertionError("legacy plan")), patch.object(GameplayBridgeService, "auto_turn", side_effect=AssertionError("legacy auto")):
-            async with Client(create_server(driver)) as client:
-                planned = await client.call_tool("ck3_plan_turn", {})
-                assert not planned.is_error, planned.content
-                assert planned.structured_content["plan"]["selected_step"] == "life-advance"
-                assert planned.structured_content["plan"]["active_wars"] == actual_wars
-                advanced = await client.call_tool("ck3_auto_turn", {})
-                assert not advanced.is_error, advanced.content
-                assert advanced.structured_content["selected_step"] == "life-advance"
-                assert advanced.structured_content["plan"]["active_wars"] == actual_wars
-        assert driver.take_snapshot()["active_wars"] == actual_wars
-        assert len(driver.advance_calls) == 1
-        assert driver.query_calls == driver.root_calls == 0
-
-    asyncio.run(run())
-
-
-def test_public_mcp_default_flag_keeps_legacy_plan_and_auto_contract(tmp_path):
-    async def run():
-        from mcp import Client
-
-        assert parser().parse_args([]).nonwar_only is False
-        assert parser().parse_args(["--nonwar-only"]).nonwar_only is True
         driver = NonwarActualCouncilDriver(tmp_path)
         driver.allow_private_council_action = False
         plan_contract = {"snapshot_id": "legacy:1", "revision": 1, "plan": {"selected_step": "legacy-step"}}

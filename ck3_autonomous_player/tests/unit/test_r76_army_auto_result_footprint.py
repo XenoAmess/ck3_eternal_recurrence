@@ -6,7 +6,6 @@ import json
 import os
 from pathlib import Path
 import sys
-from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -77,9 +76,7 @@ class R76ArmyAutoResultFootprintTests(unittest.IsolatedAsyncioTestCase):
         }
         baseline_calls = []
         with patch.object(GameplayBridgeService, "auto_turn", autospec=True,
-                          side_effect=[army, ordinary, blocked]) as auto, patch.object(
-            GameplayBridgeService, "auto_nonwar_turn", autospec=True, return_value=army
-        ) as nonwar:
+                          side_effect=[army, ordinary, blocked]) as auto:
             server = create_server(object())
 
             @server.tool()
@@ -92,13 +89,9 @@ class R76ArmyAutoResultFootprintTests(unittest.IsolatedAsyncioTestCase):
             unchanged_ordinary = await server.call_tool("ck3_auto_turn", {})
             unchanged_blocked = await server.call_tool("ck3_auto_turn", {})
             tools = {tool.name: tool for tool in await server.list_tools()}
-            legacy_route_server = create_server(SimpleNamespace(nonwar_only=True))
-            unchanged_route = await legacy_route_server.call_tool("ck3_auto_turn", {})
 
         self.assertEqual(auto.call_count, 3)
         self.assertTrue(all(call.kwargs == {} and len(call.args) == 1 for call in auto.call_args_list))
-        nonwar.assert_called_once()
-        self.assertEqual(nonwar.call_args.kwargs, {})
         self.assertEqual(baseline_calls, [True])
         for field in ("input_schema", "output_schema"):
             production_schema = getattr(tools["ck3_auto_turn"], field)
@@ -108,7 +101,7 @@ class R76ArmyAutoResultFootprintTests(unittest.IsolatedAsyncioTestCase):
                 {key: value for key, value in baseline_schema.items() if key != "title"},
             )
         self.assertEqual(army, original)
-        for output in (baseline, compact, unchanged_route):
+        for output in (baseline, compact):
             self.assertFalse(output.is_error)
             self.assertEqual(output.structured_content, original)
         self.assertEqual(json.loads(baseline.content[0].text), original)
@@ -121,7 +114,6 @@ class R76ArmyAutoResultFootprintTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(summary["result_location"], "structuredContent")
         self.assertNotIn("synthetic_ordered_inputs", compact.content[0].text)
         self.assertLess(len(compact.content[0].text.encode("utf-8")), 4096)
-        self.assertEqual(unchanged_route.content, compact.content)
         for output, expected in ((unchanged_ordinary, ordinary), (unchanged_blocked, blocked)):
             self.assertFalse(output.is_error)
             self.assertEqual(output.structured_content, expected)
@@ -150,7 +142,6 @@ class R76ArmyAutoResultFootprintTests(unittest.IsolatedAsyncioTestCase):
                 "full_structured_packet_preserved": True,
                 "ordinary_and_blocked_conversion_preserved": True,
                 "auto_service_calls": auto.call_count,
-                "legacy_nonwar_service_calls": nonwar.call_count,
                 "actual_game_queries": 0, "native_producer_executions": 0,
             }, indent=2) + "\n", encoding="utf-8")
 

@@ -441,7 +441,6 @@ def native_auto_run(
     ),
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
-    nonwar_only: bool = False,
     allow_private_government_runtime_adapter_query: bool = False,
     allow_private_lifestyle_formal_trial: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
@@ -1161,7 +1160,6 @@ def native_auto_run(
         )
         # This controlled, private Python route does not change the native
         # driver's public action registration or capability advertisement.
-        driver.nonwar_only = nonwar_only is True
         driver.allow_private_government_runtime_adapter_query = (
             allow_private_government_runtime_adapter_query is True
         )
@@ -2049,11 +2047,10 @@ def native_auto_run(
             # canonical checkpoint path.
             current_attempt["stage"] = "opaque_auto_turn"
             pre_submission_revision_replans = 0
-            planned_auto_turn = service.auto_nonwar_turn if nonwar_only is True else service.auto_turn
             while True:
                 try:
                     outcome = (
-                        planned_auto_turn(before_submit=opening_guard_before_submit)
+                        service.auto_turn(before_submit=opening_guard_before_submit)
                         if (
                             opening_focus_gate is not None
                             or private_child_matrilineal_pending_recovery_only is True
@@ -2061,7 +2058,7 @@ def native_auto_run(
                             or exact_move_contract is not None
                             or allow_private_epidemic_recovery_near_pair is True
                         )
-                        else planned_auto_turn()
+                        else service.auto_turn()
                     )
                     break
                 except PreSubmissionRevisionMismatchError as error:
@@ -4663,7 +4660,6 @@ def native_auto_run(
             else {}
         ),
         "fixed_seed": fixed_seed,
-        "nonwar_only": nonwar_only is True,
         "private_government_runtime_adapter_query_enabled": allow_private_government_runtime_adapter_query is True,
         "bounds": {
             "requested_turns": turn_count,

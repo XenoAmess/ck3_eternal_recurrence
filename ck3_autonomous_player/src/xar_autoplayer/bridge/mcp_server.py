@@ -2659,14 +2659,14 @@ def create_server(
     @server.tool()
     def ck3_plan_turn() -> dict[str, object]:
         """Choose the next one-life gameplay step from the shared planner."""
-        return service.plan_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.plan_turn()
+        return service.plan_turn()
 
     @server.tool()
     def ck3_auto_turn() -> dict[str, object]:
         """Plan and execute exactly one supported one-life gameplay turn."""
         army_service_timing = start_army_timing("mcp.auto_turn_service")
         try:
-            payload = service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
+            payload = service.auto_turn()
         except BridgeUnavailableError as error:
             from .domain_construction_private_transport_v1 import construction_transport_diagnostic
 
@@ -4660,10 +4660,6 @@ def create_server(
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(prog="xar-ck3-mcp")
     result.add_argument(
-        "--nonwar-only", action="store_true",
-        help="plan nonwar opportunities, receipts and normal time advance through the public turn tools",
-    )
-    result.add_argument(
         "--driver",
         default=os.environ.get("XAR_CK3_BRIDGE_DRIVER", "vision-report"),
         help=(
@@ -5059,7 +5055,6 @@ def main(argv: list[str] | None = None) -> int:
             args.private_death_succession_modal_continue
         ),
     )
-    driver.nonwar_only = args.nonwar_only
     if args.allow_private_construction_formal_trial:
         driver.allow_private_construction_formal_trial = True
     if args.allow_private_family_marriage_formal_trial:
