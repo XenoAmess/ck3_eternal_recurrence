@@ -50,3 +50,41 @@ Root 使用现有接口的最小 SAVE barrier 检查表如下。每项分别保�
 5. 分开报告游戏保存 materialization、当前 Driver 错误状态、文件变化和关闭结果。`saved`、error=null、dirty=false、stat 变化及 close ACK，无论单独还是组合，都不能补出当前接口缺失的 per-attempt persist proof。缺少该证明时，Driver durability 保持 unknown；不据此重发原 SAVE、删改历史或实现新 Driver 功能。
 
 原失败、未知和历史运行记录保持各自原状；本文不给新增 SAVE、自然继任或游戏天数信用。
+
+## 2026-10-12 后续源码整合：SAVE 专属替换回执
+
+上述冻结 SDK91 的行为保持历史原样。Root 随后将 SAVE 专属回执实现整合进
+仓库的 `ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py`。
+采用前，Git 比较确认该文件与 `50a1a5451227d1b30f42394dd02ddfbaea26a1ff`
+相同；最终 180 行候选经两份完整文本审阅及 Root 全文审阅后采用，Root 再读
+完整实际 diff。没有运行测试、验证性 import、SDK 或游戏；本次改动没有写入
+冻结 SDK91 或热替换 R104。
+
+成功 SAVE 的原业务结果现在另带顶层 `driver_state_replace_receipt`。它在原结果
+已深拷贝进历史之后添加，不递归写入该条历史。回执的 scope 固定为
+`WRITE_REPLACE_RETURNED_NOT_FSYNC`，业务 `checkpoint.saved` 与 Driver 替换结果
+分别报告。
+
+记录器在原共享 history/state RLock 内冻结实际 row、1-based index、checkpoint
+副本及记录时 pipe/PID/episode 身份。原 write lock 和编码 state lock 内核对
+实际 indexed row、checkpoint、last_checkpoint、history index 与 record-to-encode
+身份，再由原 encoder 一次编码完整历史。身份不匹配仍执行原完整持盘；回执
+保持 `unconfirmed`，不会修补预定 checkpoint index 或省略写入。
+
+只有实际 `write_bytes_atomic` 正常返回后才标记 `write_replace_returned=true`；
+同时绑定核对通过才报告 `status=replaced`。无 state/PID 为 `unconfirmed`；
+原捕获的编码或写入异常另报告 `failed`，保留原 dirty/error 和 SAVE 业务结果。
+普通持盘的 None 返回及既有 successor 失败回执保持原语义，文件格式、完整
+encoder 和固定 `.tmp` 写入方式没有改变。
+
+该回执证明这次编码快照的写入/替换调用返回及记录到编码的绑定；它不是 fsync、
+掉电耐久性、native SAVE 执行时身份、跨实例排他或后续恢复证明。Service 的
+已读 `execute_step` / `save_checkpoint` 路径保留非 Army 原结果；MCP 最终出口
+可见性仍待精确源码审查，不能声称已取得公开生产回执。未来 SDK 冻结与实际
+资格另行执行，当前新增持盘天数为 0。
+
+最终外置候选为 Source25 的 `sdk91-save-replacement-attempt.patch`，9792 bytes，
+SHA-256 `83a985212909f2f641e2396601b6bc7b02e2b5d30a552264b02d0a494f88e85c`；
+配套契约为 6757 bytes，SHA-256
+`6f29390a11ffaa8e50e3c1fc167cda77ef8869319f16913d049610bc3b883aa1`。
+候选保留完整 55 行 encoder 的既有源码与读入边界，原额度和期限不续。

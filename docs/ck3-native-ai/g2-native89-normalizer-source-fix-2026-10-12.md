@@ -104,3 +104,42 @@ The original source/build review deadline remains 2026-10-12 16:47:28.264315 UTC
 The current saved campaign and its full13 input keep their separate limited
 protection. Copies and source fixes do not extend either deadline; reclamation
 continues under the common storage policy.
+
+## R104 user occupation and local release, 06:26 UTC update
+
+The next four original ordinary requests completed without replay. Three
+continued the construction-receipt queries on the same known frame. The fifth
+ordinary request returned at 06:11:30 UTC with step
+`query-observed-first-heir-marriage-result-v1-private` and result status
+`marriage`; its result did not establish a new ending frame. These source and
+receipt observations add no new date, SAVE, saved-day or natural M7 credit.
+
+The user then reserved this machine for their own CK3 play and prohibited
+further managed CK3 use. Root stopped all new Game/SDK requests and desktop
+work. A proposed one-shot WM_CLOSE refused before submission because the
+previous HWND no longer belonged to the selected PID. The subsequent held
+kernel-identity observation confirmed old Game PID 191172 and its exact
+creation ticks had already exited, with actual exit code 1. No close message
+or forced termination was sent; an orderly Game exit or its cause is not proved.
+
+Root atomically published one local `exit_client` marker to the existing file
+inbox. The original reader handles that marker by returning before any MCP
+call; it was not a Game RPC. The outer reader finished at 06:24:30 UTC with
+actual exit code 0. At 06:26:35 UTC, a separate held kernel identity observation
+confirmed SDK application PID 26348, creation ticks `134362559499577153`, had
+exited with actual code 0. The screen keeper released its own CAS lease at
+06:23:23 UTC, sequence 2375. Steam mode, OBS, ToDesk and user-owned processes
+were not changed by these release operations.
+
+The new small external records are
+`ROOT-USER-OCCUPATION-LOCAL-RELEASE.json` and
+`ROOT-USER-OCCUPATION-SDK-OBSERVATION.json`, beside the existing R104 packet;
+screen release is in the separate `r104-screen-preparation/SCREEN-KEEPER-STOPPED.json`.
+Original response files, failures and last verified R103 saved baseline remain
+unchanged. This release is not a new final SAVE/full13 freeze, SDK durability
+acceptance or normal Game-exit proof. Saved-day credit stays 6082 plus 0.
+
+The existing 64-lane research team continues pure background source work and
+master integration. No further EXE reads, Game/SDK requests, screen operation
+or test execution are authorized in this attempt while the user occupies CK3.
+The original storage deadlines remain in force.

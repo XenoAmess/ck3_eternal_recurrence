@@ -8640,6 +8640,12 @@ class NativeHeadlessGameplayDriver:
                         ),
                     },
                 }
+            if step == "save-checkpoint" and persistence_failure is not None:
+                # Add the separate receipt after the original result was recorded.
+                result = {
+                    **result,
+                    "driver_state_replace_receipt": copy.deepcopy(persistence_failure),
+                }
             return result
         finally:
             finish_army_timing(life_advance_timing, step=step)
@@ -10123,6 +10129,7 @@ class NativeHeadlessGameplayDriver:
         result: dict[str, object] | None = None,
         error: str | None = None,
     ) -> dict[str, object] | None:
+        save_request: tuple[dict[str, object], int, object, dict[str, object]] | None = None
         with self._history_lock:
             if step == _RESTORE_CHECKPOINT_STEP:
                 if ok:
@@ -10171,10 +10178,27 @@ class NativeHeadlessGameplayDriver:
                 row["error"] = error
             self._command_history.append(row)
             self._driver_state_dirty = True
+            if ok and step == "save-checkpoint":
+                recorded_result = row.get("result")
+                checkpoint = (
+                    recorded_result.get("checkpoint")
+                    if isinstance(recorded_result, dict) else None
+                )
+                save_request = (
+                    row, len(self._command_history), copy.deepcopy(checkpoint),
+                    {
+                        "pipe_name": self.pipe_name,
+                        "bridge_pid": self._session_bridge_pid,
+                        "episode_character_id": self._episode_character_id,
+                        "episode_run_id": self._episode_run_id,
+                    },
+                )
         if not (ok and _is_deferred_read_only_history_step(step)):
             return self._persist_driver_state(
                 capture_failure_diagnostic=(
-                    ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP))
+                    ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP),
+                save_request=save_request,
+            )
 
     def _observe_arrange_marriage_outcome(
         self, snapshot: dict[str, object]
@@ -11024,10 +11048,22 @@ class NativeHeadlessGameplayDriver:
             return None
 
     def _persist_driver_state(
-        self, *, capture_failure_diagnostic: bool = False
+        self, *, capture_failure_diagnostic: bool = False,
+        save_request: tuple[dict[str, object], int, object, dict[str, object]] | None = None,
     ) -> dict[str, object] | None:
+        save_receipt: dict[str, object] | None = (
+            {
+                "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+                "status": "unconfirmed",
+                "write_replace_returned": False,
+                "save_binding_verified": False,
+                "reason": "persistence_not_attempted",
+                "attempt_binding": None,
+            }
+            if save_request is not None else None
+        )
         if self.state_dir is None:
-            return
+            return save_receipt
         attempt_binding: dict[str, object] | None = None
         persistence_timing = start_army_timing("driver.full_state_persistence")
         persistence_step = (
@@ -11058,8 +11094,8 @@ class NativeHeadlessGameplayDriver:
                         if persistence_step is not None:
                             finish_army_timing(state_lock_timing, step=persistence_step)
                         if self._session_bridge_pid is None:
-                            return
-                        if capture_failure_diagnostic:
+                            return save_receipt
+                        if capture_failure_diagnostic or save_receipt is not None:
                             # Freeze this attempt's encoded identity, not later live state.
                             attempt_binding = {
                                 "pipe_name": self.pipe_name,
@@ -11069,6 +11105,53 @@ class NativeHeadlessGameplayDriver:
                                 "succession_lifecycle": copy.deepcopy(self._succession_lifecycle),
                                 "campaign_goal": copy.deepcopy(self._campaign_goal),
                             }
+                        state_path = (
+                            self._native_driver_state_path()
+                            if save_receipt is not None else None
+                        )
+                        if save_request is not None and save_receipt is not None:
+                            (
+                                saved_row, saved_index, saved_checkpoint,
+                                recorded_session,
+                            ) = save_request
+                            recorded_result = saved_row.get("result")
+                            binding_verified = bool(
+                                0 < saved_index <= len(self._command_history)
+                                and self._command_history[saved_index - 1] is saved_row
+                                and saved_row.get("index") == saved_index
+                                and saved_row.get("command") == "save-checkpoint"
+                                and saved_row.get("ok") is True
+                                and isinstance(saved_checkpoint, dict)
+                                and isinstance(recorded_result, dict)
+                                and recorded_result.get("checkpoint") == saved_checkpoint
+                                and self._last_checkpoint == saved_checkpoint
+                                and saved_checkpoint.get("history_index") == saved_index
+                                and saved_checkpoint.get("episode_character_id") is not None
+                                and saved_checkpoint.get("episode_run_id") is not None
+                                and isinstance(attempt_binding, dict)
+                                and all(
+                                    recorded_session.get(field) == attempt_binding[field]
+                                    for field in (
+                                        "pipe_name", "bridge_pid",
+                                        "episode_character_id", "episode_run_id",
+                                    )
+                                )
+                                and saved_checkpoint.get("episode_character_id")
+                                == attempt_binding["episode_character_id"]
+                                and saved_checkpoint.get("episode_run_id")
+                                == attempt_binding["episode_run_id"]
+                            )
+                            save_receipt.update(
+                                save_binding_verified=binding_verified,
+                                reason="awaiting_write_replace" if binding_verified
+                                else "save_binding_mismatch",
+                                attempt_binding=attempt_binding,
+                                recorded_session_binding=copy.deepcopy(recorded_session),
+                                save_history_index=saved_index,
+                                checkpoint=copy.deepcopy(saved_checkpoint),
+                                encoded_history_rows=len(self._command_history),
+                                driver_state_path=str(state_path),
+                            )
                         if persistence_step is None:
                             encoded = self._encode_driver_state_locked()
                         else:
@@ -11084,11 +11167,13 @@ class NativeHeadlessGameplayDriver:
                     try:
                         if persistence_step is None:
                             write_bytes_atomic(
-                                self._native_driver_state_path(), encoded
+                                state_path if state_path is not None
+                                else self._native_driver_state_path(), encoded
                             )
                         else:
                             write_bytes_atomic(
-                                self._native_driver_state_path(), encoded,
+                                state_path if state_path is not None
+                                else self._native_driver_state_path(), encoded,
                                 timing_step=persistence_step,
                             )
                     finally:
@@ -11114,11 +11199,27 @@ class NativeHeadlessGameplayDriver:
                             "error": persistence_error,
                             "attempt_binding": attempt_binding,
                         }
+                    if save_receipt is not None:
+                        save_receipt.update(
+                            status="failed",
+                            reason="encoding_or_write_replace_failed",
+                            error_type=type(error).__name__,
+                            error=persistence_error,
+                        )
+                        return save_receipt
                 else:
                     with self._driver_state_lock:
                         self._driver_state_error = None
                         if getattr(self, "_natural_successor_persistence_unconfirmed", False):
                             self._natural_successor_persistence_unconfirmed = False
+                    if save_receipt is not None:
+                        save_receipt["write_replace_returned"] = True
+                        if save_receipt["save_binding_verified"]:
+                            save_receipt["status"] = "replaced"
+                            save_receipt.pop("reason", None)
+                        else:
+                            save_receipt["reason"] = "save_binding_mismatch"
+                        return save_receipt
         finally:
             finish_army_timing(persistence_timing, step="persist-driver-state")
 

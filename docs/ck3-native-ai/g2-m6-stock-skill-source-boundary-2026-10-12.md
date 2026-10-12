@@ -46,6 +46,11 @@ repeat its whole-file hash or run the Game/SDK.
   and validated all 244,435 records, and retained all sixteen prior pointer
   occurrences. All pre/post and final EXE stat checks matched. No target body,
   unwind, string, decoder or additional whole-EXE hash was read.
+- Scope G Source26 had its own independent numeric admission and actually
+  exited 0 before the later user CK3 occupation prohibition. It read exactly
+  178 bytes in two complete intervals, 88 and 90 bytes, retaining all 56
+  instruction rows, with zero rejected rows and matching pre/post/final stats.
+  Its two bounded reads did not follow callees, globals, strings or unwind data.
 
 Full `.pdata` intervals and complete linear decoding do not establish complete
 logical functions. The 18-byte interval beginning at RVA 57849856 and the
@@ -120,11 +125,27 @@ lookup, with the following metadata results:
 | 14238688 | no containing record | unresolved | — |
 
 Absence of a containing `.pdata` record does not prove that a target is not a
-function or entry. The three unique intervals qualify only metadata ownership;
-their bodies and unwind data remain unread. No formal dispatch consumer,
+function or entry. The three unique intervals qualified only metadata ownership
+at Scope F. Scope G subsequently read the complete 88- and 90-byte bodies;
+the 1242-byte body and all unwind data remain unread. No formal dispatch consumer,
 Character receiver, return type, scale or callback ABI is qualified. Equality
 of the first 64 bytes does not establish equality of the whole tables or a
 complete negative certificate for skill getters.
+
+The 88-byte body at RVA 57862592 checks the incoming object's byte at `+0xC`
+and DWORD at `+8` against either -1 or 0. Its invalid path returns zero. The
+valid paths call unexamined helpers, then compare a returned carrier's QWORD
+at `+0x18` against 16: below that threshold they return the carrier address;
+otherwise they load its first pointer. This is compatible with inline versus
+indirect string storage, without qualifying a formal C++ type, Character
+receiver, numeric skill load or callee roles.
+
+The 90-byte body at RVA 45034960 calls with object+0x48, writes an address into
+the object's first QWORD, conditionally calls with an unread global, and uses
+the incoming flags' lowest bit to decide whether to call with object and size
+0x138. It returns the saved incoming address, without proving the object remains
+alive. This mutation is teardown-shaped, not a closed read-only skill getter;
+formal destructor/delete/class and callable ABI remain unknown.
 
 ## Installed education script source
 
@@ -188,6 +209,29 @@ value or acquisition cadence. This complete body does not directly write
 education points, focus, final trait rank or the support effect's selected
 educator. Nested effects and hooks keep those wider outcomes unresolved.
 
+Source27 subsequently read two complete arrival callbacks in
+`childhood_on_actions.txt`: `on_guardian_arrive_at_ward:962-1061` and
+`on_ward_arrive_at_guardian:783-915`, 233 lines total. Its unique locator checked
+only that file and `travel_on_actions.txt`, reading 103294 bytes with stable
+size/mtime metadata; the latter had neither definition. One author obtained
+the two bounded bodies and shared them with fourteen source lanes.
+
+The valid branches contain bare actual `set_relation_ward=scope:ward` at 980
+and `set_relation_guardian=scope:guardian` at 826. Their receiver is the current
+callback scope; the bodies do not explicitly rebind it to the named guardian or
+ward. Variable-target checks and named aliases are not equated in these bodies.
+Plan owner and callback names therefore do not prove engine scope persistence
+or actual full-ID identity. Court visits, opinion/event delegation and the
+conversion-flag handoff are authored paths, not current afterstate readbacks.
+
+All invalid-arrival relation removals observed here are tooltip-only. Conditional
+travel cancellation and default-location reset are nested within optional
+ward-liege notification blocks, so they are not unconditional. Travel/request
+variable cleanup follows both valid and invalid branches; missing variables
+cannot prove success, refusal, conversion or education-point progress. Actual
+conversion, callback identity, event consumers and education outcome remain
+unqualified. Two named on-start hooks are the next pure-text investigation.
+
 ## Small evidence references and retention
 
 These local evidence names are relative to
@@ -205,6 +249,7 @@ They are finite research inputs, not permanent availability promises.
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-body-source22/SOURCE22-ROOT-PRIMARY-CELL-BODY-RESULT.json` | 9616 | `94a450c8c132345786f9c3429219c06fe2613d071462656d412b887d89abf3e5` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-cell-pointer-source24/SOURCE24-ROOT-PRIMARY-CELL-POINTER-RESULT.json` | 11107 | `b02c49fd91af3ebc50529c14db119a46d52bd863a09237e2aa706ccd0c874a38` |
 | `sdk85-source-preparation/sdk86-candidates/m6-primary-pointer-owner-source25/SOURCE25-ROOT-PRIMARY-POINTER-OWNER-RESULT.json` | 6917 | `10ec9ef2ba501c6c5fae5b18abe5eee29360d6211d8c412fdd181f763f74fe5d` |
+| `sdk85-source-preparation/sdk86-candidates/m6-primary-pointer-body-source26/SOURCE26-ROOT-PRIMARY-POINTER-BODY-RESULT.json` | 22962 | `3e32f92e39ac1f47babf34d1c83635bc6090115aeda94d2a2ccdeeb9fe596aed` |
 
 Source24's new reviewed plan is 5808 bytes, SHA-256
 `64d677d5d63e453508d8cb988ecc9348edfb8afd0903922167aad4a5e84c4927`;
@@ -231,6 +276,32 @@ The education Source25 contract is
 `sdk85-source-preparation/sdk86-candidates/g2-education-ward-depart-consumer-source25/SOURCE-CONTRACT.json`.
 Root read its full decoded 184-line transcript; the contract explicitly removes
 leading indentation and does not claim a byte-exact installed-file copy.
+
+Source26's independent numeric admission is 4373 bytes, SHA-256
+`4fea98cbff77a20a323ed8b574cf472dc39a4d3ad2ede349e90212c4735e2776`;
+its reviewed plan is 6750 bytes, SHA-256
+`8754d02520c50c672d25b46e0286fba7cd53cdb48e5db82380fb39b58ab04f24`.
+Root read the complete actual result. Elapsed intake was 0.2109116 seconds;
+the decoder module remained 5.0.7 at the admitted path. Distribution 5.0.9 was
+a prior observation, not revalidated, and the engine version remains unknown.
+The shared semantic contract is 6250 bytes, SHA-256
+`df9832e6bfd5d8bd49dcd1f81ae7b35b7f0c4cd09f806e79938ffbf841654755`.
+Fifteen roles retained all 56 basic rows; two complete projection reviews plus
+the final narrow delta review passed. The leaf used 58781 source and 23478
+output bytes under separate 64 KiB bounds.
+
+The Source27 education contract is
+`sdk85-source-preparation/sdk86-candidates/g2-education-arrival-onaction-source27/SOURCE-CONTRACT.json`.
+Root read all 256 contract lines, including both complete decoded bodies. Its
+transcript intentionally removes leading indentation and is not a raw-file
+hash or a fresh body-reader metadata certificate. Two complete locator-source
+reviews and fourteen semantic roles preserve the callback identity unknowns.
+
+At the user's subsequent request, this machine is reserved for their CK3 play.
+No further Game/SDK requests, desktop use or EXE reads run in this research
+attempt. Adjacent pointer-window work remains source preparation only; pure
+text research and master integration continue. This restriction does not
+grant a new qualification or renew any source/storage deadline.
 
 Source21's separate failed body result retains zero read bytes, zero instruction
 rows and the actual decoder import failure. The installed source intake is
