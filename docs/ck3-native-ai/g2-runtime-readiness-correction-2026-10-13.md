@@ -143,3 +143,5 @@ build06 最初六个 TU 中五个编译通过，navigation 因新头文件缺少
 新 private declaration-node 查询只复制非空 CB 数据库槽和有界节点身份，两次完整 witness 比较；不调用 getter 的未知慢路径、选择器、效果或 RNG。完整成功和失败 wire 均限定 8192 B，超限整体拒绝。结构捕获不等于参战来源完整，主攻／主守角色仍未观察，`participant_coverage_complete`、`war_permission` 固定 false；普通非空开战脚本的具体调用、参数、角色变换及事件后代仍待闭合，正式 v2 不放宽。
 
 新增回执：`R/native-profile/build06/ROOT-BUILD-FAILED.json`、`R/native-profile/build06/repair01/ROOT-BUILD-RESULT.json`、`R/acceptance/lane11/native-compile01-receipt.json`、`native-run01-receipt.json`、`PROJECT-EXE-REGISTRATION.json` 和 `R/ROOT-NODE-SOURCE-DELTA-ADMISSION.json`。新开局、当次画面、决策文字、录像和持续日期推进仍未完成，不能将本节改为“全部问题修复”。
+
+暂停恢复增量：原窗口优先层在地图未暂停时直接阻塞，挡住普通战争路径已有的 `pause-map`。现仅在地图确实就绪、paused=False 且现有暂停能力可用时选择一次 `pause-map`，不读取或关闭弹窗；能力缺失及暂停状态未知继续阻塞。新增两个实际 Strategy／Service 入口场景通过，规划阶段零弹窗或战争发送。首次 fixture 将 Driver 构造期 ping 混入规划断言而失败，保留原件，明确区分启动期后只复验这两个失败场景；旧 27 项和终局增量未重跑。回执为 `R/acceptance/lane11/liveness03-receipt.json` 和 `liveness04-receipt.json`。这是 Python 规划修复，不改变 B6 原生构建，也不增加实机信用。

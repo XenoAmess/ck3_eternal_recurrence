@@ -89,8 +89,13 @@ def plan_ordinary_war_declared_overview_v1(
     selected = None
     reason = "war overview visibility is unknown"
     status = "blocked"
-    if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+    if snapshot.get("map_ready") is not True:
         reason = "war overview requires a paused, ready frame"
+    elif snapshot.get("paused") is not True:
+        if snapshot.get("paused") is False and "pause-map" in steps:
+            selected, reason, status = "pause-map", "pause the ready map before observing or closing the war overview", "ready"
+        else:
+            reason = "war overview requires a paused frame and pause-map is unavailable"
     elif presence == "visible" and isinstance(pending, Mapping):
         if not current_attempt and can_query and QUERY_WAR_DECLARED_OVERVIEW_V1_STEP in steps:
             selected, reason, status = QUERY_WAR_DECLARED_OVERVIEW_V1_STEP, "observe the pending close once without resubmitting it", "ready"
