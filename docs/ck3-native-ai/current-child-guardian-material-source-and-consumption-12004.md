@@ -97,3 +97,27 @@ Native87初次prepare因把917对象与714实际argv误要求全等而RED，零c
 Native88实际补编修正后的493，复用attempt02四GREEN与Native86其余真实来源，597成员archive及DLL链接均exit0；R103/SDK89已有13项恢复资格GREEN。这只证明构建和当前普通战役恢复，未验证新family字段或M6完整性。
 
 监护人request preference v2已源码整合至master `ff0e25d2`：martial focus消费独立validated total callback，缺失仍unknown，无raw fallback；保留0、负值、原profile与其他raw skills，source basis进入分组，普通materializer/CanSend/intent门禁不改。formal stock `$SKILL$`表达式getter链与effect educator仍未闭，不能据独立API冒教育表达式资格。当前SDK89/bdb仍v1；详细实际结果与后续源码边界见[当日日报](../autonomous-agent-progress/daily/2026-10-12.md)。
+
+### 2026-10-12 08:30 中国标准时间 — actual4 静态字符串与引用候选
+
+Root对本机Steam实际build25734779的1.20.0.4固定EXE做一次身份SHA读回：`98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`，101,040,248B，mtime_ns1791307594040564100；image base5368709120。先64KiB文件头，后新explicit plan扫描file-backed .rdata strings/pointers、.data pointers和.text code，并读完整exception directory；没有Game/API调用、完整EXE复制或旧Driver/SAVE读hash。原source4GiB／flatleaf128KiB／复核期限不续。
+
+声明范围（半开RVA）：.rdata [71147520,88271466)、.data [88272896,96844288)、.text [4096,71145544)，exception [98316288,101249508)。保守重复读取上限116,960,384B；实际116,960,346B、1.227152秒、可控单buffer峰值1,048,594B；OS RSS未知。headers与xref两次独立准入均exit0，xref四phase COMPLETE，未重试或截断候选。剩余section与其他指令形式未扫，负证据仅限已声明匹配模式。
+
+| 名称 | ASCII字符串RVA | QWORD pattern slots RVA |
+| --- | ---: | --- |
+| martial | 72280072 | 71543824、74359816 |
+| learning | 72280056 | 71543848、74364728 |
+
+| LEA pattern RVA | 7字节 | 指向字符串 | pdata半开范围 |
+| ---: | --- | --- | --- |
+| 927407 | 488d1552c14004 | martial | [905904,932302) |
+| 928157 | 488d1554be4004 | learning | [905904,932302) |
+| 5921185 | 488d05608ef403 | martial | [5921168,5921320) |
+| 5921505 | 488d05108df403 | learning | [5921488,5921640) |
+| 14325800 | 488d15d94f7403 | martial | [14324000,14326565) |
+| 14326015 | 488d15f24e7403 | learning | [14324000,14326565) |
+
+六个pattern的完整7B均落在所匹配pdata范围内，unmatched=[]；这仍不是verified instruction boundary或高层函数身份。四候选owner共29,267B，此步未读其body。QWORD字段类型、formal expression注册／callback、接收者Character与effect-selected Educator、数值scale全部未qualified；不能以该表替代独立total-martial API或stock教育operand证明。下一步只对这些明确候选做有新数值准入的有限静态反汇编，优先两个152B小范围。
+
+[原始header回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk85-source-preparation/sdk86-candidates/m6-static-pe-intake-source12/SOURCE12-ROOT-ACTUAL-HEADERS.json)、[固定xref计划](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk85-source-preparation/sdk86-candidates/m6-static-pe-intake-source12/SOURCE12-ROOT-XREFS-PLAN.json)、[完整xref回执](D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/sdk85-source-preparation/sdk86-candidates/m6-static-pe-intake-source12/SOURCE12-ROOT-ACTUAL-XREFS.json)。回执formal_registration_qualified与receiver_type_qualified明确false；保存结果不提升M6完成状态。
