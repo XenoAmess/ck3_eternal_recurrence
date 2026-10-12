@@ -298,9 +298,39 @@ class ActualScriptTests(unittest.TestCase):
         representatives=self.c.triggers['lyd_i3b_representatives_ready_trigger']
         self.assertTrue(has(representatives,'exists','var:lyd_i3b_delegate'))
         self.assertTrue(has(representatives,'var:lyd_i3b_total','0','>'))
+        previews={
+            'lyd_i3b_begin_decision':('lyd_i3b_begin_',(
+                'player','alive','adult','landed','capable','confucian','joined','new_rite',
+                'authority','duchy','gender','offices','challenger','sponsor','claim',
+                'own_round','c2_round','c3_round','supported_faith','faith_doctrine',
+                'head_title','head','faith_challengers','compatible_rites','rite_rounds')),
+            'lyd_i3b_nominate_self_decision':('lyd_i3b_nominate_',(
+                'current','alive','adult','free','capable','learning','phase',
+                'active_rite','delegate')),
+        }
+        def semantic_entries(entries):
+            return [(e.key,e.operator,semantic_entries(e.value.entries) if isinstance(e.value,Block) else e.value)
+                    for e in entries]
         for name,body in self.c.defs.items():
             if name.startswith('lyd_i3b_') and name.endswith('_decision'):
-                valid=one(body,'is_valid');self.assertEqual([e.key for e in valid.entries],['custom_description'])
+                valid=one(body,'is_valid')
+                if name not in previews:
+                    self.assertEqual([e.key for e in valid.entries],['custom_description'])
+                    continue
+                prefix,suffixes=previews[name]
+                self.assertEqual([e.key for e in valid.entries],
+                                 ['custom_description']*len(suffixes)+['hidden_trigger'],name)
+                self.assertTrue(all(e.operator=='=' for e in valid.entries),name)
+                tooltips=blocks(valid,'custom_description')
+                self.assertEqual([scalar(t,'text') for t in tooltips],
+                                 [prefix+suffix+'_tt' for suffix in suffixes],name)
+                for tooltip in tooltips:
+                    self.assertEqual(scalar(tooltip,'subject'),'root',name)
+                hidden=one(valid,'hidden_trigger')
+                executed=one(one(one(one(body,'effect'),'hidden_effect'),'if'),'limit')
+                self.assertEqual([e.value for e in executed.entries if e.key=='lyd_i3b_actor_trigger'],['yes'],name)
+                self.assertEqual(semantic_entries(hidden.entries),
+                                 semantic_entries([e for e in executed.entries if e.key!='lyd_i3b_actor_trigger']),name)
         failures=one(self.c.defs['lyd_i3b_nominate_interaction'],'is_valid_showing_failures_only')
         for scope in ('scope:actor','scope:recipient'):
             self.assertEqual([e.key for e in one(failures,scope).entries],['custom_description'])
