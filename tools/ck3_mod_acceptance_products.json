@@ -973,7 +973,7 @@
             "ck3_query_current_title_appointment_v1"
           ],
           "phases": {
-            "coverage": "focused_meritocratic_two_laws_off_on_restore_only",
+            "coverage": "focused_meritocratic_two_laws_loaded_complete_pool_binding",
             "original_steps": 2,
             "maximum_natural_days": 0,
             "business_and_runtime_NOT_RUN": true
@@ -1003,7 +1003,9 @@
               "meritocratic_appointment_succession_law",
               "meritocratic_military_appointment_succession_law"
             ],
-            "root_complete_candidate_and_tooltip_review_required": true,
+            "gui_review_scope": "merit_two_law_loaded_pool_v1",
+            "root_complete_candidate_pool_review_required": true,
+            "human_score_runtime_newly_covered": false,
             "normal_GUI_Quit_required": true,
             "no_whole_product_credit": true
           },

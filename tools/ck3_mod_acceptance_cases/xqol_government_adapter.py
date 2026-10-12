@@ -9,6 +9,7 @@ require=common.require
 validate_contract=common.validate_contract
 verify_case=common.verify_case
 MERIT_REPRESENTATIVE='merit_two_law_representative_toggle_v1'
+MERIT_LOADED_POOL='merit_two_law_loaded_pool_v1'
 
 
 def representative(contract):
@@ -18,6 +19,11 @@ def representative(contract):
 
 def prepare_case(context):
     return common.prepare_case(context,song=False)
+
+
+def loaded_pool(contract):
+    return (contract.get('case')=='meritocratic_appointments' and
+            contract.get('gui_review_scope')==MERIT_LOADED_POOL)
 
 
 def actual_scope(raw,contract):
@@ -46,7 +52,9 @@ def verify_slots(slots,contract,actor):
                 'Actual distinct government title/law missing')
         seen.append(title)
         require(slot.get('direct_original_review') is True, 'Original GUI review missing')
-        if representative(contract):
+        if loaded_pool(contract):
+            pass  # This migration scope makes no human-score or appointment claim.
+        elif representative(contract):
             require(slot.get('representative_toggle_reviewed') is True,
                     'Both migrated laws require actual representative off/on/restored review')
         else:
@@ -57,6 +65,8 @@ def verify_slots(slots,contract,actor):
                 type(x.get('eligible')) is bool and type(x.get('is_ai')) is bool for x in candidates),
                 'Original actual complete candidate rows missing')
         require(len({x['character_id'] for x in candidates})==len(candidates), 'Actual candidate duplicated')
+        if loaded_pool(contract):
+            continue
         require(any(x['character_id']==actor and x['eligible'] is True and x['is_ai'] is False for x in candidates) and
                 slot.get('independent_human_candidate') is True, 'Original human must naturally be an eligible candidate')
         off,on,restored=slot.get('score_off'),slot.get('score_on'),slot.get('score_restored')
@@ -80,6 +90,14 @@ def verify_native_slots(client,slots,contract,actor,frame):
     require(isinstance(slots,list) and len(slots)==len(contract['appointment_laws']),
             'All original native government slots required')
     for slot,law in zip(slots,contract['appointment_laws']):
+        if loaded_pool(contract):
+            pool=client.appointment_receipt(slot.get('appointment_pool'),frame,completed_score_phase=True)
+            bind_observation(slot,pool,law=law)
+            holder=pool['requested_holder_character_id']
+            require(slot.get('actual_holder_character_id',holder)==holder,
+                    'Reviewed holder differs from actual complete-pool holder')
+            slot['actual_holder_character_id']=holder
+            continue
         pools=[client.appointment_receipt(slot.get('appointment_pool_'+phase),frame,completed_score_phase=True)
                for phase in ('off','on','restored')]
         bind_observation(slot,pools[0],law=law)
@@ -109,7 +127,11 @@ def run_case(context,client):
     require(root['result'].get('campaign_root_context_ready') is True and observed.get('player_character_id')==actor and
             observed.get('date_raw')==frame['date_raw'] and observed.get('government',{}).get('key')==c['post_start']['government_key'] and
             observed.get('independent') is True, 'Actual government/actor/independence differs from original cell')
-    requirements=(['each migrated law: representative human off/on/restored tooltip, exact million penalty and switch restore',
+    requirements=(['each migrated law: one current visible Appointment window and complete native candidate pool',
+                   'actual native title/law/holder bound to the same paused actor/date; no human inclusion or score claim',
+                   'shared ordinary/administrative evidence is reused; Merit human-score runtime is NOT newly covered']
+                  if loaded_pool(c) else
+                  ['each migrated law: representative human off/on/restored tooltip, exact million penalty and switch restore',
                    'actual native law/title/holder and naturally eligible human pool binding; controlled grant is not eligibility',
                    'ordinary/administrative accepted evidence supplies shared tooltip/AI-heir coverage; no new heir claim']
                   if representative(c) else
@@ -118,14 +140,17 @@ def run_case(context,client):
                    'actual eligible AI chosen and actual successor/appointment confirmed'])
     response=client.root_checkpoint('qol-original-government-appointment',{
         'case':context['case'],'actual_actor_character_id':actor,'actual_frame':frame,
-        'appointment_laws':c['appointment_laws'],'original_million_penalty':1000000,
+        'appointment_laws':c['appointment_laws'],'original_million_penalty':None if loaded_pool(c) else 1000000,
         'requirements':requirements+['fresh original images plus mapped input receipts when coordinates used; no guessed title/character IDs'],
         'gui_review_scope':c.get('gui_review_scope','original_full_appointment'),
         'representative_evidence_roles':c.get('representative_evidence_roles',[]),
         'required_response':{'completed':True,'current_scene_reviewed':True,'slots':[],'evidence':[]},
-        'typed_slot_fields':['requested_title_id','requested_title_key','title_id','title_key','law',
-            'appointment_pool_off','appointment_pool_on','appointment_pool_restored'],
-        'typed_query_scope':'current native pool/actor/score/switch binding; GUI requirements are case-specific'
+        'typed_slot_fields':['requested_title_id','requested_title_key','title_id','title_key','law']+
+            (['appointment_pool'] if loaded_pool(c) else
+             ['appointment_pool_off','appointment_pool_on','appointment_pool_restored']),
+        'typed_query_scope':('current native pool/title/law/holder and same paused actor/date; no human-score claim'
+                             if loaded_pool(c) else
+                             'current native pool/actor/score/switch binding; GUI requirements are case-specific')
         },read_only_appointment=True)
     require(response.get('completed') is True and response.get('current_scene_reviewed') is True,
             'Original government GUI block incomplete/GAP')
@@ -150,4 +175,8 @@ def run_case(context,client):
         client.validate_frame(row['after_snapshot']);holders.append(row)
     result.update(government_root=root,actual_government_scope=proof,gui_slots=response['slots'],gui_evidence=evidence,actual_holder_rows=holders,
                   root_checkpoint_response=response)
+    if loaded_pool(c):
+        result.update(merit_migration_scope=MERIT_LOADED_POOL,
+                      merit_human_score_runtime_newly_covered=False,
+                      reused_shared_coverage=c.get('reused_shared_coverage',[]))
     return common.preserve_result(context,client,result)

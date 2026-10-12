@@ -227,6 +227,7 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_review.py
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_retained_exit.py
+          python -B -X utf8 tools/test_ck3_mod_acceptance_merit_loaded_pool_scope.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_normal_quit_reviewer.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

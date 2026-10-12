@@ -165,6 +165,9 @@ class FocusedMigration(unittest.TestCase):
     def test_merit_representative_keeps_real_human_score_and_restore_admin_stays_full(self):
         from ck3_mod_acceptance_cases import xqol_government_adapter as government
         contract=json.loads((CASES/'xqol_meritocratic_appointments.json').read_bytes())
+        # Keep testing the old representative branch when current scope is reduced.
+        contract['gui_review_scope']='merit_two_law_representative_toggle_v1'
+        contract['representative_evidence_roles']=['human-score-off','human-score-on','human-score-restored']
         slots=[]
         for i,law in enumerate(contract['appointment_laws'],1):
             slots.append({'title_id':i,'law':law,'direct_original_review':True,'representative_toggle_reviewed':True,

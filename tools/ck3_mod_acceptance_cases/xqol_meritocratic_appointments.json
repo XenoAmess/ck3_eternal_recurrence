@@ -60,8 +60,8 @@
       "sha256": "da2208f6b2379f9f667989695ede8045735a0cbe0423ea4ba70db978b6609cfa"
     },
     "xqol_government_adapter.py": {
-      "bytes": 10913,
-      "sha256": "c68bba4d4d60d7e575196cbef8283072e81a95530d6acaa6dc85807d3d8dc592"
+      "bytes": 12669,
+      "sha256": "507bf798abcb785a7e111dbdbd08cacb9ff3f13280c22f634ebf9672ae809a47"
     },
     "xqol_scope.py": {
       "bytes": 10804,
@@ -99,7 +99,7 @@
     "target": "title:e_goryeo.holder",
     "applications": 1,
     "stage": "zqagov_merit.1 original successful AI-holder guard after save_scope_as, before set_player_character",
-    "required_actual_readback": "Same-run current-rule level >= target floor, then complete engine-generated eligible human + AI pools for both original laws",
+    "required_actual_readback": "Same-run current-rule level >= target floor, then complete engine-generated candidate pools for both original laws; controlled setup does not establish human eligibility",
     "credit_scope": "controlled fixture-live only; original zero-preparation R65 remains GAP",
     "controlled_title_grant": {
       "title": "title:k_goguryeo",
@@ -122,24 +122,21 @@
         "Same independent human actor and D0, e_goryeo remains primary title",
         "Each target's immediate de_jure_liege is saved k_goguryeo and its holder is the same actor",
         "Both original target holders, effective laws, primary titles and direct lieges remain unchanged",
-        "Complete engine-generated human + AI candidate pools for both original laws; setup does not imply eligibility"
+        "Complete engine-generated candidate pools for both original laws; human inclusion and score changes are not newly covered"
       ],
       "stock_default_gui_can_create": false,
       "stock_creation_restriction_source": "game/common/landed_titles/05_goryeo.txt:70-80",
       "credit_scope": "External controlled grant only, not a default-GUI fix or product PASS; A190/R0082 and all original v1 GAP evidence remain unchanged"
     }
   },
-  "gui_review_scope": "merit_two_law_representative_toggle_v1",
-  "representative_evidence_roles": [
-    "human-score-off",
-    "human-score-on",
-    "human-score-restored"
-  ],
+  "gui_review_scope": "merit_two_law_loaded_pool_v1",
+  "representative_evidence_roles": [],
   "reused_shared_coverage": [
     "ordinary_appointments",
     "administrative_appointments"
   ],
   "coverage_exclusions": [
+    "Merit independent-human inclusion and score-change runtime are NOT newly covered",
     "full GUI candidate tooltip matrix",
     "repeat AI appointment/heir proof already accepted in shared ordinary/administrative cells"
   ]
