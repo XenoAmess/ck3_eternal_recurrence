@@ -5,8 +5,6 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, cast
 
-from .army_strengths_manager_shared_wire import pack_army_strengths_manager_inputs
-
 if TYPE_CHECKING:
     from mcp.types import CallToolResult
 
@@ -56,12 +54,12 @@ def _army_strengths_summary(payload: dict[str, object]) -> dict[str, object]:
             {field: row.get(field) for field in _SUMMARY_ARMY_FIELDS}
             for row in rows
         ],
-        "result_location": "structuredContent",
+        "result_location": "compact_mcp_summary",
     }
 
 
 def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResult:
-    """Keep the complete Service result in structured content and summarize text.
+    """Return a compact MCP summary of the complete internal Service result.
 
     MCP imports stay lazy so baseline installs do not require the optional SDK.
     The caller supplies the complete Army result from a direct query or step.
@@ -76,12 +74,12 @@ def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResul
                 text=json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
             )
         ],
-        structured_content=pack_army_strengths_manager_inputs(payload),
+        structured_content=summary,
     )
 
 
 def build_army_auto_turn_mcp_result(payload: dict[str, object]) -> CallToolResult:
-    """Preserve the original Army auto-turn packet with a compact text summary."""
+    """Return a compact summary of the Army auto-turn result."""
     from mcp.types import CallToolResult, TextContent
 
     plan = cast(dict[str, object], payload["plan"])
@@ -91,14 +89,11 @@ def build_army_auto_turn_mcp_result(payload: dict[str, object]) -> CallToolResul
         "selected_step": payload.get("selected_step"),
         "plan": {key: plan.get(key) for key in ("selected_step", "phase")},
         "result": _army_strengths_summary(result),
-        "result_location": "structuredContent",
+        "result_location": "compact_mcp_summary",
     }
     return CallToolResult(
         content=[TextContent(
             type="text", text=json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
         )],
-        structured_content={
-            **payload,
-            "result": pack_army_strengths_manager_inputs(result),
-        },
+        structured_content=summary,
     )

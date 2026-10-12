@@ -1715,6 +1715,7 @@ class NativeHeadlessGameplayDriver:
         frontend_transition_timeout_seconds: float = 120.0,
         life_advance_timeout_seconds: float = 30.0,
         state_dir: str | os.PathLike[str] | None = None,
+        army_query_history_sidecar_limit_bytes: int = 0,
         save_dir: str | os.PathLike[str] | None = None,
         checkpoint_timeout_seconds: float = 30.0,
         checkpoint_poll_interval_seconds: float = 0.1,
@@ -1901,6 +1902,10 @@ class NativeHeadlessGameplayDriver:
             else legacy_rogue_one_life_binding_v1()
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
+        if type(army_query_history_sidecar_limit_bytes) is not int or army_query_history_sidecar_limit_bytes < 0:
+            raise ValueError("Army history sidecar limit must be a nonnegative integer")
+        self.army_query_history_sidecar_limit_bytes = army_query_history_sidecar_limit_bytes
+        self._army_query_history_store = None
         self.save_dir = Path(save_dir) if save_dir is not None else None
         self.checkpoint_timeout_seconds = _positive_seconds(
             checkpoint_timeout_seconds, "checkpoint_timeout_seconds"
@@ -10174,7 +10179,17 @@ class NativeHeadlessGameplayDriver:
                 "ok": ok,
             }
             if result is not None:
-                row["result"] = copy.deepcopy(result)
+                if step == QUERY_ARMY_STRENGTHS_STEP and self.state_dir is not None:
+                    from .army_query_history_store import ArmyQueryHistoryStore
+
+                    if self._army_query_history_store is None:
+                        self._army_query_history_store = ArmyQueryHistoryStore(
+                            self._native_driver_state_path().parent / "army-query-history-results",
+                            self.army_query_history_sidecar_limit_bytes,
+                        )
+                    row["result"] = self._army_query_history_store.record(result)
+                else:
+                    row["result"] = copy.deepcopy(result)
             if error is not None:
                 row["error"] = error
             self._command_history.append(row)
