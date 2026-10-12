@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/army_observer_research_sampling_12004.hpp"
 
 #include "xar_bridge/person_natural_lineage_clock_12004.hpp"
 #include <cstddef>
@@ -61,6 +62,19 @@ struct ArmyNaturalPhaseScope12004 {
 // One adapter to the existing process-lifetime clock owned by continuation 13.
 ArmyNaturalPhaseEvent12004 NextArmyNaturalPhaseEvent12004(void * = nullptr) noexcept;
 ArmyNaturalPhaseScope12004 CopyActiveArmyNaturalPhaseScope12004() noexcept;
+// Copies the actual TLS metadata while deliberately leaving roster unavailable.
+// This never copies the owned full-ID vector and does not sample native memory.
+ArmyNaturalPhaseScope12004 CopyActiveArmyNaturalPhaseMetadata12004() noexcept;
+struct ArmyNaturalPhaseRosterOccurrence12004 {
+  std::int32_t index = 0;
+  std::uint32_t full_id = 0;
+};
+// Synchronous scalar proof from the actual owned TLS roster; no vector copy.
+std::optional<ArmyNaturalPhaseRosterOccurrence12004> ReadActiveArmyNaturalPhaseRosterOccurrence12004(
+    std::uintptr_t iterator, std::uintptr_t end, std::uint32_t iterator_full_id,
+    const ArmyNaturalPhaseEvent12004 &child, std::size_t maximum_occurrences) noexcept;
+ArmyObserverResearchSamplingState12004 ReadArmyNaturalPhaseResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetArmyNaturalPhaseResearchSampling12004(bool enabled) noexcept;
 
 struct ArmyNaturalPhaseBindings12004 {
   void *read_context = nullptr;
@@ -112,6 +126,7 @@ bool ObserveArmyNaturalPhaseSavedMask12004(std::uintptr_t secondary_manager,
     std::uintptr_t actual_child_return_rva, std::uint8_t actual_saved_mask) noexcept;
 
 std::vector<ArmyNaturalPhaseRecord12004> ReadArmyNaturalPhaseJournal12004();
+std::optional<std::vector<ArmyNaturalPhaseRecord12004>> ReadSampledArmyNaturalPhaseJournal12004();
 struct ArmyNaturalPhaseJournalStatus12004 {
   bool read_complete = false;
   std::size_t capacity = 64;

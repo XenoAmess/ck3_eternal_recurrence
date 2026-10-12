@@ -7,6 +7,11 @@ import json
 from pathlib import Path
 from typing import Iterable
 
+from .ordinary_prewar_force_admission_v2 import (
+    PREWAR_FORCE_COALITION_V2_CAPABILITY,
+    assess_ordinary_prewar_force_admission_v2,
+)
+
 from .current_native_war_end_conditions_v1 import (
     assess_current_native_war_end_conditions_v1,
 )
@@ -6016,8 +6021,10 @@ def _forecast_required_war_entry_plan(
     candidate: dict[str, object],
     campaign_root: dict[str, object],
     available_steps: set[str],
+    *,
+    snapshot: dict[str, object] | None = None,
 ) -> dict[str, object]:
-    """Run the bounded prewar battle prior for a same-frame legal candidate."""
+    """Admit current qualified forces; retain the battle prior as diagnostics."""
 
     advance = "life-advance" if "life-advance" in available_steps else None
     power_eu = _war_entry_power_eu_projection(assessment)
@@ -6027,9 +6034,10 @@ def _forecast_required_war_entry_plan(
         declaration_id=declaration_id if isinstance(declaration_id, str) else "",
     )
     admission = prewar_declaration_admission(forecast)
+    force_admission = assess_ordinary_prewar_force_admission_v2(snapshot, declaration)
     typed_step = candidate.get("typed_declaration_step")
     if (
-        admission["admitted"] is True
+        force_admission["declare_admitted"] is True
         and candidate.get("typed_declaration_available") is True
         and isinstance(typed_step, str)
         and typed_step in available_steps
@@ -6038,7 +6046,7 @@ def _forecast_required_war_entry_plan(
             "policy": "one-life-turn-v1",
             "phase": "native_war_declaration",
             "selected_step": typed_step,
-            "reason": "the same-frame legal declaration passes the bounded aggregate battle prior's conservative risk budget",
+            "reason": "the same-frame legal declaration has complete executable force and potential enemy coverage within the current force risk budget",
             "decision": {
                 "policy": candidate["rule_id"],
                 "outcome": "DECLARE",
@@ -6048,22 +6056,25 @@ def _forecast_required_war_entry_plan(
                 "claimant_character_id": declaration.get("claimant_character_id"),
                 "native_power_assessment_consumed": True,
                 "automatic_declaration_enabled": True,
-                "forecast_model_fidelity": forecast["model_fidelity"],
+                "forecast_model_fidelity": forecast.get("model_fidelity"),
+                "force_risk_qualified": True,
+                "force_risk_policy": force_admission["force_risk"]["policy"],
             },
             "declaration": dict(declaration),
             "war_entry_assessment": dict(assessment),
             "war_entry_candidate": dict(candidate),
             "prewar_battle_forecast": forecast,
             "prewar_forecast_admission": admission,
-            "prewar_forecast_admission_available": True,
+            "prewar_forecast_admission_available": forecast.get("status") == "estimated",
+            "prewar_force_admission": force_admission,
         }
     return {
         "policy": "one-life-turn-v1",
         "phase": "native_war_entry_forecast_required",
         "selected_step": advance,
         "reason": (
-            "the aggregate prewar proxy cannot authorize a declaration without "
-            "independent same-frame force and coalition coverage"
+            "the current force and coalition evaluation does not authorize "
+            "this declaration: " + str(force_admission["reason"])
         ),
         "decision": {
             "policy": candidate["rule_id"],
@@ -6074,17 +6085,24 @@ def _forecast_required_war_entry_plan(
             "claimant_character_id": declaration.get("claimant_character_id"),
             "native_power_assessment_consumed": True,
             "campaign_root_context_consumed": True,
-            "forecast_required": True,
+            "force_coalition_coverage_required": force_admission["status"] == "unknown",
             "automatic_declaration_enabled": False,
             "eu_lower_raw": None,
             "advance_contract": "native_life_advance" if advance else None,
         },
         "required_capabilities": [
-            "game.command.query-prewar-force-coalition-coverage-v1-N",
+            PREWAR_FORCE_COALITION_V2_CAPABILITY,
         ],
         "prewar_forecast_admission_available": forecast.get("status") == "estimated",
         "prewar_battle_forecast": forecast,
         "prewar_forecast_admission": admission,
+        "prewar_force_admission": force_admission,
+        "required_prewar_force_coalition_query": (
+            force_admission["required_prewar_force_coalition_query"]
+            if candidate.get("typed_declaration_available") is True
+            and isinstance(typed_step, str) and typed_step in available_steps
+            else None
+        ),
         "declaration": dict(declaration),
         "war_entry_assessment": dict(assessment),
         "war_entry_expected_utility": power_eu,
@@ -14462,6 +14480,7 @@ def _choose_one_life_turn_core(
                     claim_entry,
                     campaign_root,
                     available_steps,
+                    snapshot=snapshot if isinstance(snapshot, dict) else None,
                 )
     declaration = _preferred_native_declaration(
         raw_declarations,
@@ -14551,6 +14570,9 @@ def _choose_one_life_turn_core(
             and not isinstance(conservative_margin, bool)
             and conservative_margin < 0
             and isinstance(snapshot, dict)
+            and assess_ordinary_prewar_force_admission_v2(
+                snapshot, declaration
+            ).get("declare_admitted") is not True
         ):
             raw_declarations = snapshot.get("declarable_wars")
             unassessed = [
@@ -14612,6 +14634,7 @@ def _choose_one_life_turn_core(
                 conservative_entry,
                 campaign_root,
                 available_steps,
+                snapshot=snapshot if isinstance(snapshot, dict) else None,
             )
         # A final-legal native declaration can still be compared with the
         # bounded aggregate battle prior when the narrow historical county
@@ -14662,8 +14685,6 @@ def _choose_one_life_turn_core(
             and fresh_assessment
             and same_frame_general_scope
             and claimant_valid
-            and assessment_row.get("actor_network_contribution_raw") == 0
-            and assessment_row.get("actor_power_total_raw") == assessment_row.get("actor_power_base_raw")
             and declaration.get("source") == "native"
             and isinstance(typed_declaration_step, str)
             and typed_declaration_step in available_steps
@@ -14692,6 +14713,7 @@ def _choose_one_life_turn_core(
                 },
                 campaign_root if isinstance(campaign_root, dict) else {},
                 available_steps,
+                snapshot=snapshot if isinstance(snapshot, dict) else None,
             )
             return {**plan, "war_entry_faction_context": faction_context}
         # A legal declaration can still lack the independent, same-frame
@@ -14705,8 +14727,6 @@ def _choose_one_life_turn_core(
                 ("independent_feudal_economic_scope", same_frame_general_scope),
                 ("current_faction_alert_" + str(faction_context["status"]), faction_context["prior_scope_eligible"]),
                 ("claimant_identity", claimant_valid),
-                ("actor_power_without_unbounded_allies", assessment_row.get("actor_network_contribution_raw") == 0
-                 and assessment_row.get("actor_power_total_raw") == assessment_row.get("actor_power_base_raw")),
                 ("native_declaration", declaration.get("source") == "native"),
                 ("typed_declaration_available", isinstance(typed_declaration_step, str)
                  and typed_declaration_step in available_steps),

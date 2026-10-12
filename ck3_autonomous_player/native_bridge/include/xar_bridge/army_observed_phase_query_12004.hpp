@@ -76,16 +76,15 @@ template<class N,class S> void AppendArmyObservedPhaseQuery12004(std::string &ou
       AppendActualArmyAssaultPlacementObservations12004(out,*placement,preparation,number,string);
     else out += "null";
   } else out += "null";
-  const auto phase_records = joined ? ck3_12004::ReadArmyNaturalPhaseJournal12004() : std::vector<ck3_12004::ArmyNaturalPhaseRecord12004>{};
+  const auto phase_records = joined ? ck3_12004::ReadSampledArmyNaturalPhaseJournal12004() : std::nullopt;
   std::vector<ck3_12004::ArmyNaturalPhaseRecord12004> matching_phases;
-  std::set<std::uintptr_t> primary_managers;
-  for(const auto &record:phase_records) {
+  if(phase_records) for(const auto &record:*phase_records) {
     if(RosterContains(record.scope.original_army_roster,full_id)) {
-      matching_phases.push_back(record);primary_managers.insert(record.scope.primary_manager_identity);
+      matching_phases.push_back(record);
     }
   }
   field("army_natural_phase_observations_v1");
-  if(joined) {
+  if(joined && phase_records && !matching_phases.empty()) {
     out += '{';Writer<N,S>w{out,number,string};w.Integer("schema_version",1);
     w.Text("source",std::string("owned_native_natural_army_phase_records"));
     w.Text("membership_basis",std::string("captured_parent_roster_full_CArmy_ID_occurrences"));
@@ -94,17 +93,21 @@ template<class N,class S> void AppendArmyObservedPhaseQuery12004(std::string &ou
   } else out += "null";
   field("actual_army_regular_core_observations_v1");
   if(joined) {
-    auto core=ck3_12004::ReadArmyRegularCoreJournal12004();
-    core.events.erase(std::remove_if(core.events.begin(),core.events.end(),[&](const auto &event){
+    if(auto core=ck3_12004::ReadSampledArmyRegularCoreJournal12004()) {
+    core->events.erase(std::remove_if(core->events.begin(),core->events.end(),[&](const auto &event){
       return std::none_of(event.entry.army_refresh_occurrences.begin(),event.entry.army_refresh_occurrences.end(),
         [&](const auto &occurrence){return occurrence.resolved_full_id && static_cast<std::uint32_t>(*occurrence.resolved_full_id)==full_id;});
-    }),core.events.end());
+    }),core->events.end());
+    if(core->events.empty())out += "null";
+    else {
     out += '{';Writer<N,S>w{out,number,string};w.Integer("schema_version",1);
     w.Text("source",std::string("native_natural_army_regular_core_entry_return"));
     w.Text("membership_basis",std::string("captured_core_entry_resolved_Army_roster_full_ID"));
-    w.Boolean("observer_initialized",core.observer_initialized);w.Boolean("observer_installed",core.observer_installed);
-    w.Integer("latest_journal_sequence",core.latest_journal_sequence);w.Integer("overwritten_events",core.overwritten_events);w.Integer("publication_failures",core.publication_failures);
-    w.Key("events");Array(out,core.events,[&](const auto &event){CoreEvent(out,event,number,string);});out += '}';
+    w.Boolean("observer_initialized",core->observer_initialized);w.Boolean("observer_installed",core->observer_installed);
+    w.Integer("latest_journal_sequence",core->latest_journal_sequence);w.Integer("overwritten_events",core->overwritten_events);w.Integer("publication_failures",core->publication_failures);
+    w.Key("events");Array(out,core->events,[&](const auto &event){CoreEvent(out,event,number,string);});out += '}';
+    }
+    } else out += "null";
   } else out += "null";
   field("army_actual_assault_consumer_observations_v1");
   if(joined) {if(const auto consumer=ck3_12004::ReadActualAssaultConsumerObservations12004(full_id)) AppendArmyActualAssaultConsumerObservations12004(out,*consumer);else out += "null";} else out += "null";
@@ -118,26 +121,25 @@ template<class N,class S> void AppendArmyObservedPhaseQuery12004(std::string &ou
   } else out += "null";
   field("actual_army_cleanup_observations_v1");
   if(joined) {
-    auto cleanup=ck3_12004::ReadArmyActualMonthfirstCleanupJournal12004();
-    cleanup.events.erase(std::remove_if(cleanup.events.begin(),cleanup.events.end(),[&](const auto &event){return !RosterContains(event.phase.original_army_roster,full_id);}),cleanup.events.end());
-    out += "{\"membership_basis\":\"parent_entry_roster_membership\",\"journal\":";
-    ck3_12004::AppendArmyActualMonthfirstCleanupObservations12004(out,cleanup);out += '}';
+    if(auto cleanup=ck3_12004::ReadSampledArmyActualMonthfirstCleanupJournal12004()) {
+      cleanup->events.erase(std::remove_if(cleanup->events.begin(),cleanup->events.end(),[&](const auto &event){return !RosterContains(event.phase.original_army_roster,full_id);}),cleanup->events.end());
+      if(cleanup->events.empty()) out += "null";
+      else {
+        out += "{\"membership_basis\":\"parent_entry_roster_membership\",\"journal\":";
+        ck3_12004::AppendArmyActualMonthfirstCleanupObservations12004(out,*cleanup);out += '}';
+      }
+    } else out += "null";
   } else out += "null";
   field("actual_army_pre_date_prefix_observations_v1");
   if(joined) {
-    out += "{\"membership_basis\":\"complete_literal_prefix_return_roster_full_ID\",\"journals\":[";
-    bool first=true;
-    for(auto primary:primary_managers) {
-      if(auto prefix=ck3_12004::ReadActualArmyPreDatePrefixObservations12004(primary)) {
-        prefix->events.erase(std::remove_if(prefix->events.begin(),prefix->events.end(),[&](const auto &event){
-          const auto &roster=event.captured_original_roster;
-          return !event.original_roster_capture_complete || !roster.complete || roster.capture_rva!=ck3_12004::kActualArmyPreDatePrefixReturnRva12004 || !RosterContains(roster,full_id);
-        }),prefix->events.end());
-        if(prefix->events.empty()) continue;
-        if(!first) out += ',';first=false;out += ck3_12004::SerializeActualArmyPreDatePrefixObservations12004(*prefix);
+    if(const auto journals=ck3_12004::ReadSampledActualArmyPreDatePrefixForArmy12004(full_id)) {
+      out += "{\"membership_basis\":\"complete_literal_prefix_return_roster_full_ID\",\"journals\":[";
+      bool first=true;
+      for(const auto &prefix:*journals) {
+        if(!first) out += ',';first=false;out += ck3_12004::SerializeActualArmyPreDatePrefixObservations12004(prefix);
       }
-    }
-    out += "]}";
+      out += "]}";
+    } else out += "null";
   } else out += "null";
 }
 } // namespace xar::game

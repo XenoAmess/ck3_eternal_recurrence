@@ -1796,7 +1796,11 @@ class NativeHeadlessGameplayDriver:
         succession_lifecycle_binding: dict[str, object] | None = None,
         war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
         episode_projection: str = "one_life",
+        allow_private_prewar_force_coalition_query: bool = False,
     ) -> None:
+        if type(allow_private_prewar_force_coalition_query) is not bool:
+            raise ValueError("private prewar force/coalition permission must be an explicit boolean")
+        self.allow_private_prewar_force_coalition_query = allow_private_prewar_force_coalition_query
         if episode_projection not in {"one_life", "native_campaign"}:
             raise ValueError("episode_projection must be one_life or native_campaign")
         if episode_projection == "native_campaign" and succession_lifecycle_binding is not None:
@@ -2016,6 +2020,8 @@ class NativeHeadlessGameplayDriver:
         self._battle_control_snapshot_v1_query: dict[str, object] | None = None
         self._active_combat_retreat_v1_token: dict[str, object] | None = None
         self._war_entry_assessments_query: dict[str, object] | None = None
+        self._prewar_force_coalition_v2_query: dict[str, object] | None = None
+        self._prewar_force_coalition_v2_attempt = 0
         self._war_entry_assessments_two_read_trace: list[dict[str, object]] = []
         self._campaign_root_context_query: dict[str, object] | None = None
         self._war_termination_options: dict[int, dict[str, object]] = {}
@@ -3214,6 +3220,77 @@ class NativeHeadlessGameplayDriver:
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
         )
+
+    def query_prewar_force_coalition_coverage_v1(
+        self, declaration_id: str, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one partial coalition, preserving a bounded history receipt."""
+        from .prewar_force_coalition_transport import (
+            STEP, prewar_force_coalition_history_summary,
+            query_prewar_force_coalition_coverage_v1,
+        )
+        try:
+            result = query_prewar_force_coalition_coverage_v1(
+                self, declaration_id, expected_revision=expected_revision,
+                timeout_seconds=max(self.command_timeout_seconds, 35.0),
+            )
+        except Exception as error:
+            self._record_command(STEP, ok=False, result=None, error=f"{type(error).__name__}: {error}")
+            raise
+        # Keep full current semantic data for this caller. Durable history uses
+        # a distinct summary, with no giant array copy or fake replacement DTO.
+        self._record_command(STEP, ok=True, result=prewar_force_coalition_history_summary(result))
+        return result
+
+    def query_prewar_force_coalition_coverage_v2(
+        self, declaration_id: str, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read and publish one formal same-frame coalition observation."""
+        from .prewar_force_coalition_v2_transport import (
+            STEP, prewar_force_coalition_v2_history_summary,
+            publish_prewar_force_coalition_v2_query,
+            query_prewar_force_coalition_coverage_v2,
+        )
+        # A fresh attempt replaces the previous observation. An unsuccessful
+        # request must not make its old qualified answer look current.
+        with self._driver_state_lock:
+            self._prewar_force_coalition_v2_attempt += 1
+            attempt = self._prewar_force_coalition_v2_attempt
+            self._prewar_force_coalition_v2_query = None
+        try:
+            result = query_prewar_force_coalition_coverage_v2(
+                self, declaration_id, expected_revision=expected_revision,
+                timeout_seconds=max(self.command_timeout_seconds, 35.0),
+            )
+            if not publish_prewar_force_coalition_v2_query(self, result, attempt_token=attempt):
+                raise BridgeUnavailableError("prewar v2 query was superseded by a newer request")
+        except Exception as error:
+            self._record_command(STEP, ok=False, result=None, error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(STEP, ok=True, result=prewar_force_coalition_v2_history_summary(result))
+        return result
+
+    def get_current_prewar_force_coalition_coverage_v2(
+        self, declaration_id: str, snapshot: Mapping[str, object],
+    ) -> dict[str, object] | None:
+        """Return an isolated validated observation while all current leases hold."""
+        from .prewar_force_coalition_v2_transport import (
+            get_current_prewar_force_coalition_coverage_v2,
+        )
+        return get_current_prewar_force_coalition_coverage_v2(self, declaration_id, snapshot)
+
+    def _prewar_force_coalition_v2_snapshot_fields(
+        self, snapshot: Mapping[str, object],
+    ) -> dict[str, object]:
+        with self._driver_state_lock:
+            entry = self._prewar_force_coalition_v2_query
+            selected = entry.get("selected_declaration") if isinstance(entry, Mapping) else None
+            declaration_id = selected.get("declaration_id") if isinstance(selected, Mapping) else None
+        query = (
+            self.get_current_prewar_force_coalition_coverage_v2(declaration_id, snapshot)
+            if isinstance(declaration_id, str) else None
+        )
+        return {"prewar_force_coalition_coverage_v2_query": query}
 
     def query_active_scheme_sway_outcome_opinion_private_v1(
         self, *, expected_revision: int, target_character_id: int,
@@ -4435,6 +4512,7 @@ class NativeHeadlessGameplayDriver:
             return {
                 **snapshot, "episode_projection": "native_campaign",
                 **self._army_strength_snapshot_fields(army_query),
+                **self._prewar_force_coalition_v2_snapshot_fields(snapshot),
             }
         played_character = snapshot.get("played_character")
         current_character_id = (
@@ -4756,6 +4834,9 @@ class NativeHeadlessGameplayDriver:
             "arrange_marriage_choices": arrange_marriage_choices,
             "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
             **self._army_strength_snapshot_fields(army_strength_query),
+            **self._prewar_force_coalition_v2_snapshot_fields(
+                {**snapshot, "episode_run_id": episode_run_id},
+            ),
             "combat_simulation_inputs": (
                 copy.deepcopy(
                     combat_simulation_inputs_query[

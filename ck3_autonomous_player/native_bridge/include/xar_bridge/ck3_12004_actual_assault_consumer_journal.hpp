@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_actual_assault_consumer_observations_v1.hpp"
+#include "xar_bridge/army_observer_research_sampling_12004.hpp"
 #include <array>
 #include <atomic>
 #include <string_view>
@@ -74,5 +75,7 @@ std::uintptr_t InvokeActualAssaultConsumerObserver12004(void *manager,
     std::optional<std::uintptr_t> caller_return_rva) noexcept;
 std::optional<ArmyActualAssaultConsumerObservationsV1>
 ReadActualAssaultConsumerObservations12004(std::uint32_t owned_army_full_id) noexcept;
+ArmyObserverResearchSamplingState12004 ReadActualAssaultConsumerResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetActualAssaultConsumerResearchSampling12004(bool enabled) noexcept;
 extern "C" std::uintptr_t __fastcall XarActualAssaultConsumerHook12004(void *) noexcept;
 } // namespace xar::ck3_12004

@@ -24,6 +24,7 @@ struct JournalSlot {
 };
 std::array<JournalSlot, game::kArmyAssaultReleaseJournalCapacity12004> g_slots{};
 std::mutex g_journal_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::uint64_t g_latest_sequence = 0;
 std::uint64_t g_unattributed_failures = 0;
 std::uint64_t g_ignored_noncanonical = 0;
@@ -32,6 +33,20 @@ ArmyAssaultGroupReleaseBindings12004 g_bindings{};
 std::atomic<bool> g_available{false};
 std::atomic<ArmyAssaultGroupReleaseOriginal12004> g_original{nullptr};
 std::atomic<ArmyAssaultGroupReleaseDetourState12004 *> g_active_state{nullptr};
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained = 0, qualified = 0;
+  for (const auto &slot : g_slots) {
+    if (slot.sequence == 0 || slot.sequence != slot.event.sequence) continue;
+    ++retained;
+    if (slot.event.original_returned) ++qualified;
+  }
+  return g_research_sampling.StateLocked(true, retained, qualified);
+}
+void ClearSamplingJournalLocked() {
+  for (auto &slot : g_slots) slot = {};
+  g_latest_sequence = g_unattributed_failures = g_ignored_noncanonical = 0;
+}
 
 template <typename Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -163,8 +178,10 @@ bool InitializeRuntime(const ArmyAssaultGroupReleaseBindings12004 &bindings,
   return true;
 }
 
-void Publish(Event &event, bool before_identity_complete) noexcept {
+void Publish(Event &event, bool before_identity_complete,
+             const army_observer_research_detail_12004::Permit &permit) noexcept {
   const std::lock_guard lock(g_journal_mutex);
+  if (!permit.CanPublishLocked()) return;
   if (!before_identity_complete) {
     ++g_unattributed_failures;
     return;
@@ -363,6 +380,7 @@ bool InstallArmyAssaultGroupReleaseObserver12004(
 
 std::optional<game::ArmyAssaultGroupReleaseObservations12004>
 ReadArmyAssaultGroupReleaseObservations12004(std::uint32_t exact_native_carmy_full_id) noexcept {
+  if (exact_native_carmy_full_id == 0xFFFFFFFFU) return std::nullopt;
   if (!g_available.load(std::memory_order_acquire)) return std::nullopt;
   const auto *active = g_active_state.load(std::memory_order_acquire);
   const bool guarded = active != nullptr && g_bindings.enabled && g_bindings.image_base != 0 &&
@@ -372,6 +390,8 @@ ReadArmyAssaultGroupReleaseObservations12004(std::uint32_t exact_native_carmy_fu
     game::ArmyAssaultGroupReleaseObservations12004 result{};
     result.observer_installed = guarded; result.current_session_guard = guarded;
     const std::lock_guard lock(g_journal_mutex);
+    if (!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records == 0)
+      return std::nullopt;
     result.latest_sequence = g_latest_sequence;
     result.oldest_available_sequence = g_latest_sequence == 0 ? 0 :
         g_latest_sequence <= g_slots.size() ? 1 : g_latest_sequence - g_slots.size() + 1;
@@ -386,14 +406,29 @@ ReadArmyAssaultGroupReleaseObservations12004(std::uint32_t exact_native_carmy_fu
       if (std::find(before.raw_full_ids_u32.begin(), end, exact_native_carmy_full_id) != end)
         result.events.push_back(slot.event);
     }
+    if (result.events.empty()) return std::nullopt;
     return result;
   } catch (...) { return std::nullopt; }
+}
+
+ArmyObserverResearchSamplingState12004 ReadArmyAssaultGroupReleaseResearchSampling12004() noexcept {
+  try { const std::lock_guard lock(g_journal_mutex); return SamplingStateLocked(); }
+  catch (...) { return {}; }
+}
+ArmyObserverResearchSamplingState12004 SetArmyAssaultGroupReleaseResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_journal_mutex);
+    if (!g_research_sampling.SetLocked(enabled, ClearSamplingJournalLocked)) return {};
+    return SamplingStateLocked();
+  } catch (...) { return {}; }
 }
 
 namespace {
 std::uint64_t Observe(std::uint64_t caller_return_rva, const void *record) noexcept {
   const auto original = g_original.load(std::memory_order_acquire);
   if (original == nullptr) return 0; // Unreachable for an installed process-lifetime hook.
+  const army_observer_research_detail_12004::Permit permit(g_journal_mutex, g_research_sampling);
+  if (!permit.admitted()) return original(record);
   if (caller_return_rva != 0x2A981AE) return original(record);
   Event event{};
   event.thread_id = GetCurrentThreadId();
@@ -429,7 +464,7 @@ std::uint64_t Observe(std::uint64_t caller_return_rva, const void *record) noexc
       event.parent.entry_event.sequence < event.entry_event.sequence &&
       event.entry_event.sequence < event.returned_event.sequence;
   if (event.same_clock_thread_order != true) event.capture_failure_flags |= game::assault_release_capture_clock;
-  Publish(event, true);
+  Publish(event, true, permit);
   return returned;
 }
 } // namespace

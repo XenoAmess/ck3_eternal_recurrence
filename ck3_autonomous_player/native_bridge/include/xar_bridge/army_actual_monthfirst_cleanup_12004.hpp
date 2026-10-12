@@ -3,6 +3,7 @@
 #define XAR_ARMY_ACTUAL_MONTHFIRST_CLEANUP_12004 1
 
 #include "xar_bridge/army_natural_phase_scope_12004.hpp"
+#include "xar_bridge/army_observer_research_sampling_12004.hpp"
 
 #include <array>
 #include <atomic>
@@ -112,6 +113,9 @@ ArmyActualMonthfirstCleanupRecord12004 InvokeArmyActualMonthfirstCleanup12004(
     void *primary_manager, const void *passed_date, std::uintptr_t caller_return_rva) noexcept;
 
 ArmyActualMonthfirstCleanupJournal12004 ReadArmyActualMonthfirstCleanupJournal12004() noexcept;
+std::optional<ArmyActualMonthfirstCleanupJournal12004> ReadSampledArmyActualMonthfirstCleanupJournal12004() noexcept;
+ArmyObserverResearchSamplingState12004 ReadArmyActualMonthfirstCleanupResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetArmyActualMonthfirstCleanupResearchSampling12004(bool enabled) noexcept;
 void ClearArmyActualMonthfirstCleanupJournalFixture12004() noexcept;
 
 using ArmyActualMonthfirstCleanupAlloc12004 =

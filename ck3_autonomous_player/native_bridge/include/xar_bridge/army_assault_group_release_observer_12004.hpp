@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/army_assault_group_release_observations_12004.hpp"
+#include "xar_bridge/army_observer_research_sampling_12004.hpp"
 #include <array>
 #include <atomic>
 #include <cstddef>
@@ -78,6 +79,8 @@ bool InstallArmyAssaultGroupReleaseObserver12004(
     std::string_view executable_sha256) noexcept;
 std::optional<game::ArmyAssaultGroupReleaseObservations12004>
 ReadArmyAssaultGroupReleaseObservations12004(std::uint32_t exact_native_carmy_full_id) noexcept;
+ArmyObserverResearchSamplingState12004 ReadArmyAssaultGroupReleaseResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetArmyAssaultGroupReleaseResearchSampling12004(bool enabled) noexcept;
 extern "C" std::uint64_t __fastcall XarArmyAssaultGroupReleaseHook12004(const void *record_plus10) noexcept;
 
 // Typed fixture invokes an owned original; never performs a native release,

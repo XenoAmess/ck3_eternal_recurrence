@@ -26,6 +26,9 @@ def outcome_text(body):
 def decode(row):
     if not isinstance(row, dict):
         raise ValueError("Response is not a JSON object")
+    if (row.get("tool") == "root_before_auto_turn_submit"
+            and isinstance(row.get("body"), dict)):
+        return {}, row["body"]
     result = row.get("result", {})
     if not isinstance(result, dict):
         raise ValueError("Response result is not a JSON object")
@@ -78,7 +81,8 @@ def reason_text(plan):
         "native_war_discovery": "先读取当前合法目标，再选择战争。",
         "native_war_entry_assessment": "宣战前比较真实战略兵力。",
         "native_war_entry_assessment_alternative": "当前目标评估依赖额外战略力量；继续比较其他合法目标。",
-        "native_war_declaration": "当前合法宣战通过了战前模型的保守风险门槛。",
+        "native_war_declaration": "宣战前核对当前兵力、潜在敌方联军和风险政策。",
+        "native_war_entry_forecast_required": "当前兵力与联军评估尚未授权本次宣战；本轮不宣战。",
         "native_war_raise": "战争已实际存在，但还没有可控制军队；先召集部队。",
         "native_war_gathering_progress": "部队仍在集结；推进时间，完成后再指挥移动。",
         "native_war_termination_query": "先核对战争分数、对方响应和结束条件。",
@@ -93,16 +97,57 @@ def reason_text(plan):
 
 
 def war_reason(plan):
+    summary = reason_text(plan)
+    admission = plan.get("prewar_force_admission")
+    v2_present = "prewar_force_admission" in plan
+    if v2_present:
+        admission = admission if isinstance(admission, dict) else {}
+        risk = admission.get("force_risk")
+        risk = risk if isinstance(risk, dict) else {}
+        policy = risk.get("policy")
+        policy = policy if isinstance(policy, dict) else {}
+        lower, upper = risk.get("actor_lower_soldiers"), risk.get("enemy_upper_soldiers")
+        numerator = policy.get("minimum_actor_to_enemy_ratio_numerator")
+        denominator = policy.get("minimum_actor_to_enemy_ratio_denominator")
+        qualified = (risk.get("status") == "qualified"
+                     and risk.get("force_risk_qualified") is True
+                     and type(lower) is int and lower >= 0
+                     and type(upper) is int and upper >= 0
+                     and type(numerator) is int and numerator > 0
+                     and type(denominator) is int and denominator > 0)
+        if qualified:
+            summary += f"\n我方当前可执行动员下界 {lower} 人；完整潜在初始敌方联军库存上界 {upper} 人。"
+            summary += ("\n我方下界取已证明可召集的未召集兵力与已召集且可指挥兵力的较大值，"
+                        "不叠加未证明互斥的部队。")
+            summary += ("\n敌方上界覆盖全部已观察潜在初始参战者的当前库存；"
+                        "不预测未来招募、补员、雇佣或到达时序。")
+            summary += (f"\n整数政策门槛 {numerator}/{denominator}："
+                        f"我方下界 × {denominator} ≥ 敌方上界 × {numerator}。"
+                        "这是风险余量政策，不是胜率或战斗保证。")
+        else:
+            summary += "\n当前兵力风险准入未确认；不从旧代理值或简化推演补足资格。"
+        if (not qualified or admission.get("status") != "qualified"
+                or admission.get("declare_admitted") is not True):
+            actual_reason = admission.get("reason") or risk.get("reason") or plan.get("reason")
+            summary += "\n实际未准入原因：" + str(actual_reason or "准入数据缺失或格式不合格")
+        missing = risk.get("missing_required_domains")
+        if isinstance(missing, list) and missing:
+            summary += "\n缺失证据域：" + "、".join(value for value in missing if isinstance(value, str))
     assessment = plan.get("war_entry_assessment", {})
+    assessment = assessment if isinstance(assessment, dict) else {}
     actor = assessment.get("actor_power_total_raw")
     target = assessment.get("target_power_total_raw")
-    summary = reason_text(plan)
-    if isinstance(actor, (int, float)) and isinstance(target, (int, float)) and target > 0:
-        summary += f"\n战前综合军力约为目标的 {actor / target:.2f} 倍（非士兵数）。"
+    historical = []
+    if type(actor) in (int, float) and type(target) in (int, float) and actor >= 0 and target > 0:
+        historical.append(f"综合军力代理约为目标的 {actor / target:.2f} 倍（非士兵数）")
     forecast = plan.get("prewar_battle_forecast", {})
+    forecast = forecast if isinstance(forecast, dict) else {}
     wins, samples = forecast.get("wins"), forecast.get("sample_count")
-    if isinstance(wins, int) and isinstance(samples, int) and samples > 0:
-        summary += f"\n简化推演 {wins}/{samples} 占优；这是战前估计，不代表战果。"
+    if type(wins) is int and type(samples) is int and 0 <= wins <= samples and samples > 0:
+        historical.append(f"简化推演 {wins}/{samples} 占优")
+    if historical:
+        summary += "\n历史诊断" + ("（不作为本次宣战理由）" if v2_present else "（不代表当前准入或战果）")
+        summary += "：" + "；".join(historical) + "。"
     return summary
 
 
@@ -113,6 +158,9 @@ def main():
                         help="Exact launch receipt when continuing this session after a process restart")
     parser.add_argument("--campaign-label", default="当前自动游玩局")
     parser.add_argument("--target-label", action="append", default=[], metavar="ID=NAME")
+    parser.add_argument("--desktop-id", help="Exact managed Desktop1 GUID; reject a different Game desktop")
+    parser.add_argument("--decision-text-file", type=Path,
+                        help="New small file below session, written atomically for a dedicated OBS text source")
     args = parser.parse_args()
     session = args.session.resolve()
     launch_path = args.launch_receipt or session / "ROOT-ACTUAL-GAME-LAUNCH.json"
@@ -168,12 +216,39 @@ def main():
         raise RuntimeError("overlay requires one exact owned Game window")
     game_hwnd = game_windows[0]
     game_desktop = window_virtual_desktop(game_hwnd)
+    import uuid
+    desktop_id = str(uuid.UUID(args.desktop_id or game_desktop["desktop_id"]))
+    if game_desktop["desktop_id"] != desktop_id:
+        raise RuntimeError("Game has not reached the managed desktop")
+    decision_text = args.decision_text_file.resolve() if args.decision_text_file else None
+    def publish_decision_text(content):
+        if not decision_text:
+            return
+        payload = ("进程绑定：PID " + str(launch["pid"]) + " · " + date
+                   + "\n面板含本局最后已知回执；不将历史回执计为本次新动作。\n" + content).encode("utf-8")
+        if len(payload) > 32768:
+            raise ValueError("decision text exceeded its finite byte limit")
+        temporary = decision_text.with_name(decision_text.name + f".{os.getpid()}.{uuid.uuid4().hex}.pending")
+        try:
+            with temporary.open("xb") as stream:
+                stream.write(payload)
+            os.replace(temporary, decision_text)
+        finally:
+            try:
+                temporary.unlink()
+            except FileNotFoundError:
+                pass
+    if decision_text:
+        if not decision_text.is_relative_to(session) or decision_text.exists():
+            raise ValueError("decision text must be a new file below this session")
+        with decision_text.open("x", encoding="utf-8") as stream:
+            stream.write("进程绑定：PID " + str(launch["pid"]) + " · " + date
+                         + "\n等待本次进程的真实回执；未确认新行动。\n")
     window = NativeOverlay()
     atexit.register(window.close)
     hwnd = window.hwnd
     overlay_desktop = move_own_window_to_desktop(hwnd, str(game_desktop["desktop_id"]))
-    window.set_content_visible(game_desktop["on_current_virtual_desktop"] is True
-                               and game_desktop["dwm_cloaked_flags"] == 0
+    window.set_content_visible(overlay_desktop["desktop_id"] == desktop_id
                                and not win32gui.IsIconic(game_hwnd))
     get_style = user.GetWindowLongPtrW
     get_style.argtypes = [ctypes.c_void_p, ctypes.c_int]
@@ -186,27 +261,36 @@ def main():
     last_render = None
     blocker = ""
     camera_text = ""
+    def close_panel(message):
+        try:
+            publish_decision_text(message + "此前内容仅为最后已知回执。")
+        finally:
+            window.set_content_visible(False)
+            window.destroy()
 
     def tick():
         nonlocal war_decision, current, reason, last_render, blocker, camera_text, game_desktop, overlay_desktop
         process_state = kernel.WaitForSingleObject(handle, 0)
         if process_state == 0 or (session / "STOP-DECISION-OVERLAY").exists():
-            window.destroy()
+            close_panel("面板已停止：游戏已退出或 owner 已请求停止。")
             return
         if process_state != 258:
-            raise ctypes.WinError(ctypes.get_last_error())
+            close_panel("面板已停止：游戏内核状态未知。")
+            return
         try:
             if (not win32gui.IsWindow(game_hwnd)
                     or win32process.GetWindowThreadProcessId(game_hwnd)[1] != launch["pid"]):
-                window.destroy()
+                close_panel("面板已停止：原游戏窗口已失效。")
                 return
             observed_game_desktop = window_virtual_desktop(game_hwnd)
-            if observed_game_desktop["desktop_id"] != game_desktop["desktop_id"]:
+            if observed_game_desktop["desktop_id"] != desktop_id:
+                close_panel("面板已停止：游戏离开固定管理桌面。")
+                return
+            overlay_desktop = window_virtual_desktop(hwnd)
+            if overlay_desktop["desktop_id"] != desktop_id:
                 window.set_content_visible(False)
-                overlay_desktop = move_own_window_to_desktop(hwnd, str(observed_game_desktop["desktop_id"]))
-                game_desktop = observed_game_desktop
-            window.set_content_visible(observed_game_desktop["on_current_virtual_desktop"] is True
-                                       and observed_game_desktop["dwm_cloaked_flags"] == 0
+                overlay_desktop = move_own_window_to_desktop(hwnd, desktop_id)
+            window.set_content_visible(overlay_desktop["desktop_id"] == desktop_id
                                        and not win32gui.IsIconic(game_hwnd))
             for path in sorted((session / "responses").glob("*.json")):
                 if path.name in seen:
@@ -223,7 +307,7 @@ def main():
                 result, body = decode(row)
                 plan = body.get("plan") if isinstance(body.get("plan"), dict) else {}
                 step = body.get("selected_step") or body.get("step") or plan.get("selected_step")
-                tool = row.get("request", {}).get("tool", "")
+                tool = row.get("request", {}).get("tool") or row.get("tool", "")
                 camera = body.get("camera_follow")
                 if isinstance(camera, dict):
                     camera_text = "镜头跟随：" + outcome_text(camera)
@@ -247,14 +331,23 @@ def main():
                         current = "暂停：接口返回错误"
                         reason = message[:260] or row.get("client_error", "")
                     records.append(f"{clock} 失败 · {current}")
+                elif tool == "root_before_auto_turn_submit":
+                    if body.get("status") == "planned" and plan:
+                        current = "提交前计划 · " + action_name(step)
+                        reason = war_reason(plan)
+                        records.append(f"{clock} 提交前计划 · {action_name(step)}")
+                    else:
+                        current = "提交前计划不可用"
+                        reason = "Root 提交前记录缺少 planned 状态或实际 plan；未确认任何动作结果。"
+                        records.append(f"{clock} 提交前记录不可用")
                 elif tool == "ck3_plan_turn":
                     current = "计划中 · " + action_name(step)
-                    reason = reason_text(plan)
+                    reason = war_reason(plan)
                     records.append(f"{clock} 计划 · {action_name(step)}")
                 elif tool == "ck3_auto_turn" or step:
                     status = outcome_text(body)
                     current = "实际结果 · " + action_name(step) + "（" + str(status) + "）"
-                    reason = reason_text(plan) if plan else reason
+                    reason = war_reason(plan) if plan else reason
                     inner = body.get("result") if isinstance(body.get("result"), dict) else body
                     if isinstance(step, str) and step.startswith("declare-war-"):
                         wars = inner.get("active_wars", [])
@@ -300,14 +393,30 @@ def main():
             content += "\n\n数据来自本局实际请求与回执；请求返回不等于战斗获胜。"
             if content != last_render:
                 window.update(content)
+                publish_decision_text(content)
                 last_render = content
-        except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        except Exception as error:
             window.set_content_visible(False)
+            try:
+                publish_decision_text("决策数据暂不可用：" + type(error).__name__
+                                      + "。此前内容仅为最后已知回执，未确认新的成功动作。")
+            except OSError:
+                window.destroy()
+                return
             last_render = None
             window.update("回执读取暂不可用：" + type(error).__name__, "实时决策 · 数据暂不可用")
 
+    self_handle = kernel.OpenProcess(0x00101000, False, os.getpid())
+    self_times = [ctypes.c_uint64() for _ in range(4)]
+    try:
+        if not self_handle or not kernel.GetProcessTimes(self_handle, *(ctypes.byref(v) for v in self_times)):
+            raise ctypes.WinError(ctypes.get_last_error())
+    finally:
+        if self_handle:
+            kernel.CloseHandle(self_handle)
     receipt = {"session": str(session), "game_pid": launch["pid"], "overlay_hwnd": hwnd,
                "game_creation_filetime": times[0].value, "overlay_pid": os.getpid(),
+               "overlay_creation_filetime": self_times[0].value, "overlay_executable": str(Path(sys.executable).resolve()),
                "launch_receipt": str(launch_path),
                "game_hwnd": game_hwnd, "game_virtual_desktop": game_desktop,
                "overlay_virtual_desktop": overlay_desktop,
@@ -316,6 +425,8 @@ def main():
                "foreground_before": foreground_before, "foreground_after": user.GetForegroundWindow(),
                "gameplay_input": False, "target_labels": targets,
                "campaign_label": args.campaign_label,
+               "managed_desktop_id": desktop_id, "hidden_desktop_content_enabled": True,
+               "decision_text_file": str(decision_text) if decision_text else None,
                "data_source": "actual requests/responses; no simulated decisions"}
     with (session / f"ROOT-DECISION-OVERLAY-{os.getpid()}-STARTED.json").open("x", encoding="utf-8") as f:
         json.dump(receipt, f, ensure_ascii=False, indent=2)
@@ -324,8 +435,11 @@ def main():
         tick()
         window.run(tick)
     finally:
-        window.close()
-        release_game_handle()
+        try:
+            publish_decision_text("面板 owner 已结束。此前内容仅为最后已知回执，未确认新的成功动作。")
+        finally:
+            window.close()
+            release_game_handle()
         with (session / f"ROOT-DECISION-OVERLAY-{os.getpid()}-CLOSED.json").open("x", encoding="utf-8") as f:
             json.dump({"at_utc": datetime.now(timezone.utc).isoformat(), "game_pid": launch["pid"]}, f)
 

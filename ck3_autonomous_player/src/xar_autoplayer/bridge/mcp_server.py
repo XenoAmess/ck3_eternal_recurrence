@@ -7,7 +7,7 @@ import importlib
 import json
 import os
 from pathlib import Path
-from typing import Annotated, Literal, Mapping
+from typing import Annotated, Callable, Literal, Mapping
 from pydantic import AfterValidator, Field
 
 from .confucian_challenger_graph_v1 import validate_faith_ids
@@ -1620,6 +1620,8 @@ def create_server(
     driver: GameplayBridgeDriver,
     *,
     profile_dir: str | os.PathLike[str] | None = None,
+    before_auto_turn_submit: Callable[[dict[str, object]], dict[str, object] | None]
+    | None = None,
 ):
     """Build the MCP server lazily so baseline vision installs need no SDK."""
     try:
@@ -1902,6 +1904,35 @@ def create_server(
             """Read the native government identity and same-frame adapter readiness."""
             return driver.query_government_runtime_adapter_private_v1(
                 expected_revision=expected_revision,
+            )
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_prewar_force_coalition_coverage_v2(
+        declaration_id: Annotated[str, Field(strict=True, min_length=1)],
+        expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+    ) -> dict[str, object]:
+        """Read a selected coalition using the bridge's actual formal read capability.
+
+        The current declaration selection must already exist. Partial evidence
+        remains partial and does not authorize a declaration of war.
+        """
+        return service.query_prewar_force_coalition_coverage_v2(
+            declaration_id, expected_revision=expected_revision,
+        )
+
+    if getattr(driver, "allow_private_prewar_force_coalition_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_prewar_force_coalition_coverage_v1(
+            declaration_id: Annotated[str, Field(strict=True, min_length=1)],
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Read one partial declaration-bound coalition; this never authorizes DECLARE.
+
+            Current declarations and an independent current war-entry assessment
+            must already exist. The query does not issue prerequisite reads.
+            """
+            return service.query_prewar_force_coalition_coverage_v1(
+                declaration_id, expected_revision=expected_revision,
             )
 
     if getattr(driver, "allow_private_active_scheme_sway_outcome_opinion_query", False) is True:
@@ -2666,7 +2697,10 @@ def create_server(
         """Plan and execute exactly one supported one-life gameplay turn."""
         army_service_timing = start_army_timing("mcp.auto_turn_service")
         try:
-            payload = service.auto_turn()
+            if before_auto_turn_submit is None:
+                payload = service.auto_turn()
+            else:
+                payload = service.auto_turn(before_submit=before_auto_turn_submit)
         except BridgeUnavailableError as error:
             from .domain_construction_private_transport_v1 import construction_transport_diagnostic
 
@@ -4771,6 +4805,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable the private same-frame government and effective-feature read",
     )
     result.add_argument(
+        "--private-prewar-force-coalition-query", action="store_true",
+        help="enable the private partial declaration-bound force and coalition read",
+    )
+    result.add_argument(
         "--private-prisoner-collection-query", action="store_true",
         help="enable the private prisoner collection and native ransom quote read",
     )
@@ -5015,6 +5053,7 @@ def main(argv: list[str] | None = None) -> int:
         )
     if (args.private_active_scheme_sway_query or args.private_realm_law_paused_query
             or args.private_government_runtime_adapter_query
+            or getattr(args, "private_prewar_force_coalition_query", False)
             or args.private_prisoner_collection_query
             or args.private_activity_feast_queries or args.allow_private_activity_feast_normal
             or args.private_war_cash_queries
@@ -5101,6 +5140,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_realm_law_paused_query = True
     if args.private_government_runtime_adapter_query:
         driver.allow_private_government_runtime_adapter_query = True
+    if getattr(args, "private_prewar_force_coalition_query", False) is True:
+        driver.allow_private_prewar_force_coalition_query = True
     if args.private_prisoner_collection_query:
         driver.allow_private_prisoner_collection_query = True
     if args.private_activity_feast_queries:

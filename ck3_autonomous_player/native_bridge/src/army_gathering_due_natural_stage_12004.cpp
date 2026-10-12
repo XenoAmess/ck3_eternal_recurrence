@@ -299,6 +299,13 @@ ArmyGatheringDueNaturalStage12004 InvokeArmyGatheringDueNatural12004(
   // Ordinary play still invokes the original exactly once with opaque RAX.
   const ResearchCapturePermit permit;
   if (!permit.admitted) {
+    // Preserve the literal shared TLS mask provenance without copying a parent
+    // scope, manager snapshot or journal record when research capture is off.
+    const auto primary = reinterpret_cast<std::uintptr_t>(primary_arg);
+    if (b.exact_build_enabled && pc == kArmyGatheringDueNaturalReturnRva12004 && mask &&
+        primary <= (std::numeric_limits<std::uintptr_t>::max)() - 8)
+      out.saved_mask_parent_observation_admitted =
+          ObserveArmyNaturalPhaseSavedMask12004(primary + 8, pc, *mask);
     if (original) {
       out.original_called = true;
       out.raw_return_bits = original(primary_arg, date_arg);

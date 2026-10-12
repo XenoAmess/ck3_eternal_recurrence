@@ -20,6 +20,15 @@
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) || defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+#include "xar_bridge/prewar_force_coalition_request12004.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1)
+#include "xar_bridge/prewar_force_coalition12004_mailbox.hpp"
+#endif
+#if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+#include "xar_bridge/prewar_force_coalition_v2_mailbox.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
 #include "xar_bridge/rite_dynamic_call_journal_12004.hpp"
 #include "xar_bridge/rite_named_fixed_q64_observer_12004.hpp"
@@ -2133,6 +2142,14 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
       descriptor.executable_sha256==xar::ck3_12003::kExecutableSha256) {
     result += ',';
     AppendJsonString(result,xar::ck3_12003::kPlayerControlV1Capability);
+  }
+#endif
+#if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+  // Read support is independent of complete force coverage or DECLARE admission.
+  if (game.enabled() && descriptor.game_version == xar::ck3_12004::kGameVersion &&
+      descriptor.executable_sha256 == xar::ck3_12004::kExecutableSha256) {
+    result += ',';
+    AppendJsonString(result, "game.command.query-prewar-force-coalition-coverage-v2-N");
   }
 #endif
   result += "]}";
@@ -15737,6 +15754,12 @@ void RunConnectedSession(
                     && step != "disable-army-gathering-research-sampling-v1"
                     && step != "query-army-gathering-research-sampling-v1"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1)
+                    && step != "query-prewar-force-coalition-coverage-v1"
+#endif
+#if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+                    && step != "query-prewar-force-coalition-coverage-v2"
+#endif
         ) {
           if (active_command_entry_trace != nullptr)
             active_command_entry_trace->dispatch_route = "outer_unsupported";
@@ -26061,6 +26084,45 @@ void RunConnectedSession(
                 request_id, step, false, "army_gathering_research_sampling_unavailable"));
 #endif
           }
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) || defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+        } else if (step == "query-prewar-force-coalition-coverage-v1" ||
+                   step == "query-prewar-force-coalition-coverage-v2") {
+          xar::ck3_12004::PrewarForceCoalitionRequest12004 request;
+          const auto &descriptor = game.descriptor();
+          if (!game.enabled() || descriptor.game_version != xar::ck3_12004::kGameVersion ||
+              descriptor.executable_sha256 != xar::ck3_12004::kExecutableSha256 ||
+              !xar::ck3_12004::ParsePrewarForceCoalitionRequest12004(
+                  incoming.payload, step, request_id, request) ||
+              request.expected_native_revision != state_revision || state_revision == 0 ||
+              !previous_snapshot.has_value()) {
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, "prewar_force_coalition_request_or_build_invalid"));
+          } else {
+            std::string serialized, failure;
+            bool accepted = false;
+#if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+            if (step == "query-prewar-force-coalition-coverage-v2")
+              accepted = xar::ck3_12004::HandlePrewarForceCoalitionV2_12004(
+                  game, g_main_thread_query_mailbox_v1, *previous_snapshot,
+                  state_revision, request, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1)
+            if (step == "query-prewar-force-coalition-coverage-v1")
+              accepted = xar::ck3_12004::HandlePrewarForceCoalitionPrivate12004(
+                  game, g_main_thread_query_mailbox_v1, *previous_snapshot,
+                  state_revision, request, request_id, serialized, failure);
+#endif
+            if (accepted && serialized.size() > xar::bridge::kMaximumFrameBytes) {
+              accepted = false;
+              failure = "prewar_force_coalition_payload_exceeds_transport_limit actual_bytes=" +
+                  std::to_string(serialized.size()) + " limit_bytes=" +
+                  std::to_string(xar::bridge::kMaximumFrameBytes);
+            }
+            connected = write_frame(pipe, accepted ? serialized : CommandResultFrame(
+                request_id, step, false, failure.empty() ?
+                    "prewar_force_coalition_query_unavailable" : failure));
+          }
+#endif
         } else if (step == "query-army-strengths-v1") {
           const auto profile =
               xar::game::ParseArmyStrengthQueryProfileV1(incoming.payload);

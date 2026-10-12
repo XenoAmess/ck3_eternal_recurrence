@@ -57,6 +57,31 @@
 
 持续验证沿既有合同记录版本、角色/种子、运行窗口、资源与响应预算、连续有效 turn、实际业务结果、checkpoint 和关闭结果。整局交付的主要域闭环、同目标冷恢复无重放及独立种子要求仍未由本次演示满足。先解决当前运行与观测缺口，再按相应范围验收；不预承战争胜利、M6/M7、整局完成或持续稳定。
 
+## 本轮旧存档恢复诊断补录
+
+**总体运行就绪仍未验收；本轮不是 fresh 1066 罗贝尔演示。** 本节核对的是 `R/recovery/runtime01/responses` 的既有原件，`R=D:/codex-ck3-background-spill/g2-remediation-20261013`。九个具名响应先经文件量核对，合计 134,326 B，未复制原件，也未追加 Game、SDK 或测试调用。006/009 的当前角色为 31254，episode 为 `native-31254-412540d0e4eb`、`one_life`，日期为 53145648；这些旧存档状态不转记新开局成绩。
+
+| 原件 | 当次实际观察 | 证据范围 |
+| --- | --- | --- |
+| `004-core-army-query.json` | core 军队查询 3.1898336 s，MCP 3678 B；`ordinary_core_v1` 返回 `partial` | 四个 scope 中三项 available，army 76 为 `native_carmy_not_found`；不是完整军事覆盖 |
+| `006-runtime-metrics.json` | native payload 5,070,392 B，上限 67,108,864 B（64 MiB），sequence 1；core profile、phase `not_requested`、cache scope 4；Driver 188,783 B | 本次指定 profile 的写入成功、缓存范围和状态文件量；不证明完整世界或所有请求都已稳定有界 |
+| `007-plan-turn.json` | plan 0.993728 s，MCP 2412 B，阶段 `active_event_window_query` | 计划读取当前事件；不同 workload，不能与此前 175 s 直接换算受控提速 |
+| `008-invalid-profile.json`、`009-runtime-metrics-after-rejection.json` | 008 实际拒绝 `army_strengths_profile_invalid`，`request_replayed=false`；009 后续 metrics 成功 | 拒绝保留，未重发；到009的局部会话仍可用，不能把008改成业务成功或推定长期无断连 |
+| `010-auto-event-turn.json` | 事件上下文 query 7.7640633 s，MCP 32,966 B，`bookmark.1070` instance 1、三个选项 | 实际查询；effect preview 与 semantic decision 未就绪，不授权最优策略结论 |
+| `011-auto-event-choice.json` | 实际选择 option 3（native index 2）7.5669457 s，MCP 29,988 B；accepted/submitted，`postcondition_verified=true`，旧 instance 1 消失为 null | 已有这一次提交及事件窗消失的读回；registry 的 `semantic_optimal=false`、`campaign_utility_ready=false`、`observable_postcondition=null` 保留，不自动授物质收益或M2整体资格 |
+| `012-auto-next-turn.json` | war 4 termination 只读查询 1.8893467 s，MCP 19,670 B | 读取当前战争退出选项，未提交和约、投降或胜利；不是战争结算 |
+| `014-auto-current-armies.json` | core 查询 3.8335956 s，MCP 4858 B，sequence 2、`partial`；army 76 仍 unavailable | 部分军队状态可读，未知项保留；不是联盟或全战力覆盖 |
+
+006/009、事件选择的相关日期读回及012的查询日期均为53145648。事件后的revision从2到3不能当作日历推进；上述材料没有新的实际日期advance或配对SAVE证明，因此不增加游戏日、saved days、cold或M7信用。011的执行和事件窗后置是新的限定实机材料，当前总体结论仍为未验收。
+
+后续源码与验证状态也分别记录：
+
+- B3仅Bridge构建的compile/link返回0，DLL标识为`029d…f96bab`、source为`f581…`（按Root本轮短标识）；cold-live仍pending，不能把构建产物当作已在当前游戏采用。
+- B2 sampling query003实际返回unsupported；原外层predicate漏检三步。修复`db80d3fb`已推送，原失败保留；修复交付不自动升级采样实机资格。
+- Endpoint两项新增真实pump测试PASS，`1133a56f`已推送。[具名回执](/D:/codex-ck3-background-spill/g2-remediation-20261013/acceptance/lane07/endpoint-01/receipt.json)记录returncode0、source稳定、`game_or_live_sdk_used=false`，范围仅这两项，旧247项未重跑。这是endpoint聚焦验证，不是Game业务或稳定持续验收。
+
+fresh罗贝尔的完整coalition、8 sampler、Desk1 Game与text/record验收仍pending。后续必须继续完整普通规划流程，真实战争进入战争处理；本轮事件与战争只读路径不能替代新开局的完整业务和持续窗口，也不预报战果、M6/M7或整局完成。
+
 本页只纠正能力状态和证据口径。机器使用、游戏占用及实机执行权限仍按最新用户指令与当次 Root 授权处理。
 
 ## 本轮修复与离线验证
@@ -70,3 +95,21 @@
 Root 的 build02 两个实际 owner TU（Bridge、Gathering）编译、链接退出码均为 0，DLL SHA-256 为 `3ed2b139fa334e8d2a50a7cdaae9f6c3048b1cdef32d2993b7dcc172a725ff96`，真实 frame 上限仍为 67,108,864 B。Runtime archive 保留 build01 的已编译适配器，不因新增独立采样状态改变公共 DTO 布局；实际 sourceDependencies 核对五个覆盖 header。此项是构建证据，尚不能证明实机返回体积和规划耗时达标。
 
 精简回执位于当轮外置工作包 `g2-remediation-20261013/acceptance/ACCEPTANCE-PROFILE-SUMMARY.json`、`native-profile/GATHERING-GATE-MANIFEST.json`、`native-profile/build02/ROOT-BUILD-RESULT.json`。所有外置原件按统一存储策略和本轮准入期限复核，路径或哈希不是永久原件可读承诺。完整战前盟友与敌方可动员兵力上界、持续完整 planner、日期推进与战争业务结果仍须独立补齐。
+
+## 新增修复包：构建及定向验证，实机仍待验收
+
+八个额外军队研究采样器现在也默认关闭，原生调用、轻量时钟和正常游戏所需的状态继续保留。新的独立采样状态没有改变旧共享 DTO 或对象布局。这里记录的是源码默认值及限定测试，不声称当前旧诊断进程已经使用新模块，也不把研究采样关闭当作战争操作关闭。
+
+战前 v2 查询绑定当前完整宣战选择、实际主线程票据和前后同帧来源；普通策略的三条宣战入口使用真实可动员下界、完整敌方与参战方覆盖及整数 3/2 风险门槛。未证明互不重叠的已集结、未集结分量取最大值；库存不能直接当作可执行军力。缺源保留 unknown，v2 查询通过本身不授权宣战。目前 diarch、宗教 authority 的实际 getter 资格及完整初始参战覆盖仍有待闭合，不能据此宣称所有宣战路径已具备实机资格。
+
+新录像实现使用独立 OBS 配置、进程代际、端口及容量期限，校验当前游戏与决策文字来源；个人录制不作为接管目标。桌面1固定窗口和新的决策文字源仍需当次实际位置读回、画面及录像验收。
+
+本轮新增的已执行检查：
+
+- 普通宣战策略 41 个单元用例通过，范围是实际 Python 消费者及合成的来源证据。
+- Gathering-off67D 新源码定向检查 6 场景、41 断言通过。
+- Native 请求解析 220 场景、377 断言通过；桌面及进程回执验证器 6 个用例、OBS provider 12 个用例通过。它们使用受控输入，不是桌面实测。
+- build04 最初 26 个 TU 中 24 个编译通过、两个失败；修正两个 CPP 后，仅补编这两项。610 成员 Runtime archive 及 DLL 链接退出码均为 0，保留原 Robert 与实际宗教工厂对象。DLL SHA-256 为 `b03c705bc78a7bfdebe537a65882e9eab414d1d609b211d12b7dd8f084fb075b`，产物 18,165,760 B；本组实际文件 532,110,824 B，在 2 GiB 生产子预算内。它尚未冷载进游戏。
+- SDK v2 transport、来源绑定及真实并发缓存 CAS 的新增 12 个用例通过；Service 新增 8 个用例最终通过。首轮 Service 3 过、5 失败，原因包括 fixture 的实际规划视图和 bridge version 资格，以及 partial 二次规划元数据的错误预期；修正 fixture 后只复验失败项，原件保留。另两个真实 MCP→Service 提交前回调用例通过，覆盖先发布决策和发布异常时零 selected submission。合计 22 个唯一新增用例通过，没有重跑旧矩阵。
+
+外置回执分别位于 `R/acceptance/lane06`、`lane08`、`lane09`、`lane10` 和 `R/native-profile/build04/repair02/ROOT-BUILD-RESULT.json`。新增请求解析 EXE 的 Defender 登记读回为 `admin_required_for_verified_readback`，不是设置成功；测试通过也不能替代管理员实际登记回执。完整新开局、录像和持续游玩仍未完成。

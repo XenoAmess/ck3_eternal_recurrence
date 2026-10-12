@@ -154,6 +154,9 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
     void *primary_manager, std::uintptr_t actual_caller_return_rva) noexcept;
 // Owned records only: does not resolve/read live native objects or invoke the core.
 ArmyRegularCoreJournal12004 ReadArmyRegularCoreJournal12004() noexcept;
+std::optional<ArmyRegularCoreJournal12004> ReadSampledArmyRegularCoreJournal12004() noexcept;
+ArmyObserverResearchSamplingState12004 ReadArmyRegularCoreResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetArmyRegularCoreResearchSampling12004(bool enabled) noexcept;
 void ClearArmyRegularCoreJournal12004() noexcept;
 bool InitializeArmyRegularCoreFixture12004(const ArmyRegularCoreBindings12004 &,
     ArmyRegularCoreOriginal12004) noexcept;

@@ -1,6 +1,15 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) && \
+    XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1
+#include "xar_bridge/prewar_force_coalition12004_mailbox.hpp"
+#endif
+#if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2) && \
+    XAR_ENABLE_PREWAR_FORCE_COALITION_V2
+#include "xar_bridge/prewar_force_coalition_v2_mailbox.hpp"
+#endif
+
 #include <intrin.h>
 
 #include <algorithm>
@@ -1499,8 +1508,16 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_confucian_religious_title12003 &&
        executor != mailbox.permitted_executor_confucian_challenger_graph12003 &&
        executor != mailbox.permitted_executor_ordinary_interaction12003 &&
-       executor != mailbox.permitted_executor_child_education_focus12004 &&
-      executor != mailbox.permitted_executor_sway_outcome_opinion12002 &&
+        executor != mailbox.permitted_executor_child_education_focus12004 &&
+#if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) && \
+    XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1
+       executor != &::xar::ck3_12004::ExecutePrewarForceCoalitionMailbox12004 &&
+#endif
+#if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2) && \
+    XAR_ENABLE_PREWAR_FORCE_COALITION_V2
+       executor != &::xar::ck3_12004::ExecutePrewarForceCoalitionV2Mailbox12004 &&
+#endif
+       executor != mailbox.permitted_executor_sway_outcome_opinion12002 &&
       executor != mailbox.permitted_executor_religion_ai_reform_inputs12002 &&
       executor != mailbox.permitted_executor_religion_draft_doctrine_choices12002 &&
       executor != mailbox.permitted_executor_religion_draft_tenet_choices12002 &&

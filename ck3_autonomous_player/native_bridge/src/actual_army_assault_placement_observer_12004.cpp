@@ -29,11 +29,26 @@ using TableBindings = ck3_12003::CurrentDailyAssaultTableBindings12003;
 struct JournalSlot { std::uint64_t sequence = 0; Event event{}; };
 std::array<JournalSlot, kActualArmyAssaultPlacementJournalCapacity12004> g_slots{};
 std::mutex g_journal_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::uint64_t g_latest_sequence = 0, g_unattributed_failures = 0;
 std::atomic<bool> g_fixture_mode{false}, g_available{false};
 ActualArmyAssaultPlacementBindings12004 g_bindings{};
 std::atomic<ActualArmyAssaultPlacementOriginal12004> g_original{nullptr};
 std::atomic<ActualArmyAssaultPlacementDetourState12004 *> g_active_state{nullptr};
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained = 0, qualified = 0;
+  for (const auto &slot : g_slots) {
+    if (slot.sequence == 0 || slot.sequence != slot.event.sequence) continue;
+    ++retained;
+    if (slot.event.original_called && slot.event.original_returned) ++qualified;
+  }
+  return g_research_sampling.StateLocked(true, retained, qualified);
+}
+void ClearSamplingJournalLocked() {
+  for (auto &slot : g_slots) slot = {};
+  g_latest_sequence = g_unattributed_failures = 0;
+}
 
 template <typename Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -155,8 +170,9 @@ bool InitializeRuntime(const ActualArmyAssaultPlacementBindings12004 &bindings,A
   {const std::lock_guard lock(g_journal_mutex);g_bindings=bindings;g_latest_sequence=0;g_unattributed_failures=0;g_fixture_mode.store(false,std::memory_order_release);for(auto &slot:g_slots)slot={};}
   g_original.store(original,std::memory_order_release);g_available.store(true,std::memory_order_release);return true;
 }
-void Publish(Event &event) {
+void Publish(Event &event, const army_observer_research_detail_12004::Permit &permit) {
   const std::lock_guard lock(g_journal_mutex);
+  if (!permit.CanPublishLocked()) return;
   if(!event.preparation.selected_army_full_id_raw_u32){++g_unattributed_failures;return;}
   event.sequence=++g_latest_sequence;auto &slot=g_slots[(event.sequence-1)%g_slots.size()];slot.event=event;slot.sequence=event.sequence;
 }
@@ -331,23 +347,40 @@ bool InitializeActualArmyAssaultPlacementFixture12004(const ActualArmyAssaultPla
   const bool ready=InitializeRuntime(bindings,original);if(ready)g_fixture_mode.store(true,std::memory_order_release);return ready;
 }
 std::optional<ActualArmyAssaultPlacementObservations12004> ReadActualArmyAssaultPlacementObservations12004(std::uint32_t full_id) noexcept {
+  if(full_id==0xFFFFFFFFU)return std::nullopt;
   if(!g_available.load(std::memory_order_acquire))return std::nullopt;
   const auto *state=g_active_state.load(std::memory_order_acquire);
   const bool guarded=state && g_bindings.enabled && state->installed.load(std::memory_order_acquire)!=0 && state->failure_flags.load(std::memory_order_acquire)==0;
   if(!guarded && !g_fixture_mode.load(std::memory_order_acquire))return std::nullopt;
   try {
     ActualArmyAssaultPlacementObservations12004 out{};out.observer_installed=guarded;out.current_session_guard=guarded;
-    const std::lock_guard lock(g_journal_mutex);out.latest_sequence=g_latest_sequence;
+    const std::lock_guard lock(g_journal_mutex);
+    if(!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)return std::nullopt;
+    out.latest_sequence=g_latest_sequence;
     out.oldest_available_sequence=g_latest_sequence==0 ? 0 : g_latest_sequence<=g_slots.size() ? 1 : g_latest_sequence-g_slots.size()+1;
     out.overwritten_events=g_latest_sequence>g_slots.size() ? g_latest_sequence-g_slots.size() : 0;out.unattributed_capture_failures=g_unattributed_failures;
     for(auto sequence=out.oldest_available_sequence;sequence!=0 && sequence<=g_latest_sequence;++sequence){const auto &slot=g_slots[(sequence-1)%g_slots.size()];if(slot.sequence==sequence && slot.event.preparation.selected_army_full_id_raw_u32==full_id)out.events.push_back(slot.event);}
+    if(out.events.empty())return std::nullopt;
     return out;
   } catch (...) {return std::nullopt;}
+}
+ArmyObserverResearchSamplingState12004 ReadActualArmyAssaultPlacementResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_journal_mutex);return SamplingStateLocked();}
+  catch (...) {return {};}
+}
+ArmyObserverResearchSamplingState12004 SetActualArmyAssaultPlacementResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_journal_mutex);
+    if(!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked))return {};
+    return SamplingStateLocked();
+  } catch (...) {return {};}
 }
 namespace {
 std::uint64_t Observe(std::uintptr_t return_rva,const void *table,void *output,std::uint32_t hash,const std::uint32_t *key) noexcept {
   const auto original=g_original.load(std::memory_order_acquire);if(!original)return 0;
   if(return_rva!=kActualArmyAssaultPlacementDirectReturnRva12004 && return_rva!=kActualArmyAssaultPlacementRecursiveReturnRva12004)return original(table,output,hash,key);
+  const army_observer_research_detail_12004::Permit permit(g_journal_mutex,g_research_sampling);
+  if(!permit.admitted())return original(table,output,hash,key);
   Event event{};
   try {
     event.preparation=CopyActiveActualArmyDailyAssaultPreparation12004();event.entry_event=NextArmyNaturalPhaseEvent12004();
@@ -382,7 +415,7 @@ std::uint64_t Observe(std::uintptr_t return_rva,const void *table,void *output,s
       const auto end=*event.after.physical_table.header.end_slot_raw_i32;
       if(distance%0x40==0 && end>=0 && distance/0x40<static_cast<std::uint32_t>(end))event.returned_physical_slot_i64=static_cast<std::int64_t>(distance/0x40);
     }
-    Publish(event);
+    Publish(event,permit);
   } catch (...) { /* Owned-copy failure preserves every original return bit. */ }
   return returned;
 }

@@ -16,6 +16,7 @@ constexpr std::array<std::uint8_t,19> kDisplaced{
   0x48,0x89,0x5C,0x24,0x18,0x55,0x56,0x57,0x48,0x83,0xEC,0x20,
   0x48,0x8D,0xB9,0x68,0x04,0x00,0x00};
 std::mutex g_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::array<ArmyActualMonthfirstCleanupRecord12004,
            kArmyActualMonthfirstCleanupJournalCapacity12004> g_records{};
 std::uint64_t g_latest = 0, g_unattributed = 0;
@@ -23,6 +24,22 @@ std::atomic<std::uint64_t> g_dropped{0};
 std::atomic<ArmyActualMonthfirstCleanupDetourState12004 *> g_state{nullptr};
 std::atomic<ArmyActualMonthfirstCleanupOriginal12004> g_original{nullptr};
 ArmyActualMonthfirstCleanupBindings12004 g_binding;
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained = 0, qualified = 0;
+  for (const auto &record : g_records) {
+    if (record.journal_ordinal == 0) continue;
+    ++retained;
+    if (record.source_call_admitted && record.original_called &&
+        record.original_returned && record.raw_return_bits) ++qualified;
+  }
+  return g_research_sampling.StateLocked(true, retained, qualified);
+}
+void ClearSamplingJournalLocked() {
+  for (auto &record : g_records) record = {};
+  g_latest = g_unattributed = 0;
+  g_dropped.store(0, std::memory_order_relaxed);
+}
 
 template<class Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -185,9 +202,11 @@ void CheckLineage(ArmyActualMonthfirstCleanupRecord12004 &r) {
   }
   r.same_clock_thread_order=same;
 }
-void Publish(ArmyActualMonthfirstCleanupRecord12004 &r) noexcept {
+void Publish(ArmyActualMonthfirstCleanupRecord12004 &r,
+             const army_observer_research_detail_12004::Permit &permit) noexcept {
   try {
     const std::lock_guard lock(g_mutex);
+    if (!permit.CanPublishLocked()) return;
     if (!r.source_call_admitted) { ++g_unattributed; return; }
     const auto next=g_latest+1;
     r.journal_ordinal=next;
@@ -264,6 +283,26 @@ ArmyActualMonthfirstCleanupRecord12004 InvokeArmyActualMonthfirstCleanup12004(
   ArmyActualMonthfirstCleanupRecord12004 out;
   out.caller_return_rva=caller_return_rva;
   const auto identity=reinterpret_cast<std::uintptr_t>(primary);
+  const army_observer_research_detail_12004::Permit permit(g_mutex,g_research_sampling);
+  if (!permit.admitted()) {
+    // Keep the real lightweight shared parent provenance. This metadata copy
+    // deliberately does not copy the parent's full-ID roster vector.
+    out.phase=CopyActiveArmyNaturalPhaseMetadata12004();
+    out.source_call_admitted=b.enabled && out.phase.observed &&
+        out.phase.phase==ArmyNaturalPhaseKind12004::post_date &&
+        out.phase.actual_entry_rva==kArmyNaturalPostDateRva12004 &&
+        caller_return_rva==kArmyActualMonthfirstCleanupReturnRva12004 && identity!=0 &&
+        out.phase.primary_manager_identity==identity &&
+        out.phase.secondary_manager_identity==identity+8;
+    if (out.source_call_admitted)
+      (void)ObserveArmyNaturalPhaseSavedMask12004(identity+8,caller_return_rva,std::uint8_t{2});
+    if (original) {
+      out.original_called=true;
+      out.raw_return_bits=original(primary,date);
+      out.original_returned=true;
+    } else out.capture_failure_flags|=1U<<3;
+    return out;
+  }
   try {
     out.phase=CopyActiveArmyNaturalPhaseScope12004();
     out.source_call_admitted=b.enabled && out.phase.observed &&
@@ -297,19 +336,18 @@ ArmyActualMonthfirstCleanupRecord12004 InvokeArmyActualMonthfirstCleanup12004(
       if (!out.after.complete) out.capture_failure_flags|=1U<<1;
       CheckLineage(out);
     }
-    Publish(out);
+    Publish(out,permit);
   } catch (...) { out.capture_failure_flags|=1U<<1; }
   return out;
 }
 
-ArmyActualMonthfirstCleanupJournal12004 ReadArmyActualMonthfirstCleanupJournal12004() noexcept {
+namespace {
+ArmyActualMonthfirstCleanupJournal12004 CopyJournalLocked() {
   ArmyActualMonthfirstCleanupJournal12004 out;
   out.dropped_record_copies=g_dropped.load(std::memory_order_relaxed);
   out.owned_copy_complete=out.dropped_record_copies==0;
   const auto *state=g_state.load(std::memory_order_acquire);
   out.observer_installed=state && state->installed.load(std::memory_order_acquire)!=0;
-  try {
-    const std::lock_guard lock(g_mutex);
     out.latest_ordinal=g_latest;
     out.oldest_available_ordinal=g_latest==0 ? 0 : g_latest<=g_records.size() ? 1 : g_latest-g_records.size()+1;
     out.overwritten_records=g_latest>g_records.size() ? g_latest-g_records.size() : 0;
@@ -318,13 +356,50 @@ ArmyActualMonthfirstCleanupJournal12004 ReadArmyActualMonthfirstCleanupJournal12
       const auto &record=g_records[(n-1)%g_records.size()];
       if (record.journal_ordinal==n) out.events.push_back(record);
     }
-  } catch (...) {out.owned_copy_complete=false;}
   return out;
+}
+} // namespace
+ArmyActualMonthfirstCleanupJournal12004 ReadArmyActualMonthfirstCleanupJournal12004() noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if (!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0) {
+      ArmyActualMonthfirstCleanupJournal12004 unavailable{};
+      unavailable.owned_copy_complete=false;
+      const auto *state=g_state.load(std::memory_order_acquire);
+      unavailable.observer_installed=state && state->installed.load(std::memory_order_acquire)!=0;
+      return unavailable;
+    }
+    return CopyJournalLocked();
+  } catch (...) {
+    ArmyActualMonthfirstCleanupJournal12004 unavailable{};
+    unavailable.owned_copy_complete=false;
+    return unavailable;
+  }
+}
+std::optional<ArmyActualMonthfirstCleanupJournal12004> ReadSampledArmyActualMonthfirstCleanupJournal12004() noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if (!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)
+      return std::nullopt;
+    auto out=CopyJournalLocked();
+    if (out.events.empty()) return std::nullopt;
+    return out;
+  } catch (...) {return std::nullopt;}
+}
+ArmyObserverResearchSamplingState12004 ReadArmyActualMonthfirstCleanupResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_mutex);return SamplingStateLocked();}
+  catch (...) {return {};}
+}
+ArmyObserverResearchSamplingState12004 SetArmyActualMonthfirstCleanupResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if (!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked)) return {};
+    return SamplingStateLocked();
+  } catch (...) {return {};}
 }
 void ClearArmyActualMonthfirstCleanupJournalFixture12004() noexcept {
   if (g_state.load(std::memory_order_acquire)) return;
-  try {const std::lock_guard lock(g_mutex);g_latest=0;g_unattributed=0;g_dropped.store(0);for(auto &r:g_records)r={};}
-  catch (...) {}
+  (void)SetArmyActualMonthfirstCleanupResearchSampling12004(false);
 }
 
 bool InstallArmyActualMonthfirstCleanup12004(ArmyActualMonthfirstCleanupDetourState12004 &s,

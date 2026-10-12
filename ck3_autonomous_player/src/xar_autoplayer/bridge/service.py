@@ -1326,7 +1326,65 @@ class GameplayBridgeService:
         finally:
             finish_army_timing(plan_timing, step="plan-turn")
 
-    def _plan_turn_internal(self) -> dict[str, object]:
+    def _finish_prewar_force_coalition_plan_v2(
+        self, planned: dict[str, object], snapshot: dict[str, object], *, allow_query: bool
+    ) -> dict[str, object]:
+        plan = planned.get("plan")
+        required = plan.get("required_prewar_force_coalition_query") if isinstance(plan, dict) else None
+        if not isinstance(required, dict) or not allow_query:
+            return planned
+        declaration_id = required.get("declaration_id")
+        expected_revision = required.get("expected_revision")
+        if (required.get("profile") != "v2" or not isinstance(declaration_id, str)
+                or not declaration_id or type(expected_revision) is not int
+                or expected_revision < 1 or expected_revision != snapshot.get("revision")):
+            raise ValueError("ordinary prewar query intent is malformed or stale")
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if (not isinstance(capabilities, list)
+                or "game.command.query-prewar-force-coalition-coverage-v2-N" not in capabilities):
+            return {**planned, "plan": {**plan, "prewar_force_query": {
+                "status": "unsupported", "declaration_id": declaration_id,
+                "reason": "native_does_not_advertise_formal_prewar_v2_read_support"}}}
+        from .prewar_force_coalition_transport import _frame_binding
+        from .prewar_force_coalition_v2_transport import current_prewar_declaration_source
+        try:
+            binding = _frame_binding(snapshot)
+            _, selected, sequence = current_prewar_declaration_source(
+                self.driver, snapshot, declaration_id)
+        except ValueError as error:
+            return {**planned, "plan": {**plan, "prewar_force_query": {
+                "status": "source_unavailable", "declaration_id": declaration_id,
+                "reason": str(error)}}}
+        key = (tuple(sorted(binding.items())), sequence, declaration_id,
+               selected["target_character_id"], selected["casus_belli_index"],
+               selected["casus_belli_key"], selected["configuration_index"],
+               selected["claimant_character_id"], tuple(selected["target_title_ids"]))
+        previous = getattr(self, "_ordinary_prewar_query_attempt_v2", None)
+        if isinstance(previous, dict) and previous.get("key") == key:
+            return {**planned, "plan": {**plan, "prewar_force_query": {
+                **previous["outcome"], "same_frame_attempt_repeated": False}}}
+        outcome: dict[str, object] = {"status": "attempt_started", "declaration_id": declaration_id}
+        self._ordinary_prewar_query_attempt_v2 = {"key": key, "outcome": outcome}
+        try:
+            result = self.query_prewar_force_coalition_coverage_v2(
+                declaration_id, expected_revision=expected_revision)
+        except Exception as error:
+            outcome.update(status="unavailable", reason=f"{type(error).__name__}: {error}",
+                           request_retried=False)
+            return {**planned, "plan": {**plan, "prewar_force_query": dict(outcome)}}
+        outcome.update(status=result.get("status"), native_request_id=result.get("native_request_id"),
+                       execution_receipt=copy.deepcopy(result.get("execution_receipt")),
+                       request_retried=False)
+        # Query once outside the planning-view lock, then plan from the actual
+        # newly published observation. Partial results never authorize DECLARE.
+        refreshed = self._plan_turn_internal(allow_prewar_force_query=False)
+        refreshed_plan = refreshed.get("plan")
+        if isinstance(refreshed_plan, dict):
+            refreshed = {**refreshed, "plan": {**refreshed_plan,
+                "prewar_force_query": dict(outcome)}}
+        return refreshed
+
+    def _plan_turn_internal(self, *, allow_prewar_force_query: bool = True) -> dict[str, object]:
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
         )
@@ -1364,7 +1422,7 @@ class GameplayBridgeService:
                         "initial_expectation_root_deferred": True,
                     }
                     raise
-                return self.plan_turn()
+                return self._plan_turn_internal(allow_prewar_force_query=allow_prewar_force_query)
             if deferred_release_root and isinstance(plan, dict):
                 planned = {**planned, "plan": {**plan,
                     "prisoner_release_initial_expectation_root_deferred": True}}
@@ -1372,9 +1430,11 @@ class GameplayBridgeService:
                 plan_ordinary_holy_war_defender_observation_v1,
             )
 
-            return plan_ordinary_holy_war_defender_observation_v1(
+            observed = plan_ordinary_holy_war_defender_observation_v1(
                 self, planned=planned, snapshot=snapshot,
             )
+            return self._finish_prewar_force_coalition_plan_v2(
+                observed, snapshot, allow_query=allow_prewar_force_query)
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
         bridge_capabilities = (
@@ -5992,6 +6052,26 @@ class GameplayBridgeService:
                 "selected backend cannot query Gathering research sampling"
             )
         return query(expected_revision=expected_revision)
+
+    def query_prewar_force_coalition_coverage_v1(
+        self, declaration_id: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        query = getattr(self.driver, "query_prewar_force_coalition_coverage_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError(
+                "selected backend cannot query prewar force coalition coverage"
+            )
+        return query(declaration_id, expected_revision=expected_revision)
+
+    def query_prewar_force_coalition_coverage_v2(
+        self, declaration_id: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        query = getattr(self.driver, "query_prewar_force_coalition_coverage_v2", None)
+        if not callable(query):
+            raise UnsupportedStepError(
+                "selected backend cannot query prewar force coalition coverage v2"
+            )
+        return query(declaration_id, expected_revision=expected_revision)
 
     def query_army_strengths(
         self,

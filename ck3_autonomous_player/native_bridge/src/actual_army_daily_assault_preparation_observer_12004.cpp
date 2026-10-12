@@ -32,6 +32,7 @@ namespace detail = ck3_12003::daily_assault_roster_detail;
 struct JournalSlot { std::uint64_t sequence = 0; Event event{}; };
 std::array<JournalSlot, kActualArmyDailyAssaultPreparationJournalCapacity12004> g_slots{};
 std::mutex g_journal_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::uint64_t g_latest_sequence = 0, g_unattributed_failures = 0;
 std::uint64_t g_dropped_owned_copy_events = 0;
 std::atomic<bool> g_fixture_mode{false}, g_available{false};
@@ -42,6 +43,20 @@ thread_local const ActualArmyDailyAssaultPreparationActive12004 *g_active_prepar
 thread_local bool g_capture_budget_active = false;
 thread_local std::size_t g_capture_reads_remaining = 0;
 constexpr std::size_t kMaximumCopiedReferences = 4096;
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained=0,qualified=0;
+  for(const auto &slot:g_slots) {
+    if(!slot.sequence || slot.sequence!=slot.event.sequence)continue;
+    ++retained;
+    if(slot.event.original_called && slot.event.original_returned)++qualified;
+  }
+  return g_research_sampling.StateLocked(true,retained,qualified);
+}
+void ClearSamplingJournalLocked() {
+  for(auto &slot:g_slots)slot={};
+  g_latest_sequence=g_unattributed_failures=g_dropped_owned_copy_events=0;
+}
 
 template <typename Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -178,6 +193,17 @@ void BindOriginalOccurrence(const Bindings &b, ActualArmyDailyAssaultPreparation
   active.requested_army_full_id_u32=roster.ordered_full_ids[index]; active.original_occurrence_bound=true;
 }
 
+void BindOriginalOccurrenceMetadata(const Bindings &b,ActualArmyDailyAssaultPreparationActive12004 &active) {
+  active.iterator_entry_full_id_u32=detail::Read<std::uint32_t>(b,reinterpret_cast<const void *>(active.actual_caller_iterator));
+  if(!active.parent_bound || !active.iterator_entry_full_id_u32)return;
+  const auto occurrence=ReadActiveArmyNaturalPhaseRosterOccurrence12004(
+      active.actual_caller_iterator,active.actual_caller_end,*active.iterator_entry_full_id_u32,
+      active.entry_event,kMaximumCopiedReferences);
+  if(!occurrence)return;
+  active.native_occurrence_index=occurrence->index;active.local_start_index=occurrence->index;
+  active.requested_army_full_id_u32=occurrence->full_id;active.original_occurrence_bound=true;
+}
+
 ActualArmyDailyAssaultPreparationSnapshot12004 Capture(
     const ActualArmyDailyAssaultPreparationActive12004 &active, bool bind_before) {
   struct RestoreBudget { bool active; std::size_t remaining; ~RestoreBudget() { g_capture_budget_active=active; g_capture_reads_remaining=remaining; } } restore{g_capture_budget_active,g_capture_reads_remaining};
@@ -232,8 +258,9 @@ bool InitializeRuntime(const ActualArmyDailyAssaultPreparationBindings12004 &bin
   { const std::lock_guard lock(g_journal_mutex); g_bindings=bindings; g_latest_sequence=0; g_unattributed_failures=0; g_dropped_owned_copy_events=0; g_fixture_mode.store(false,std::memory_order_release); for(auto &slot:g_slots)slot={}; }
   g_original.store(original,std::memory_order_release); g_available.store(true,std::memory_order_release); return true;
 }
-void Publish(Event &event) {
+void Publish(Event &event,const army_observer_research_detail_12004::Permit &permit) {
   const std::lock_guard lock(g_journal_mutex);
+  if(!permit.CanPublishLocked())return;
   if (!event.before.selected_army_full_id_raw_u32) { ++g_unattributed_failures; return; }
   event.sequence=++g_latest_sequence; auto &slot=g_slots[(event.sequence-1)%g_slots.size()]; slot.event=event; slot.sequence=event.sequence;
 }
@@ -429,47 +456,67 @@ ActualArmyDailyAssaultPreparationActive12004 CopyActiveActualArmyDailyAssaultPre
 }
 std::optional<ActualArmyDailyAssaultPreparationObservations12004>
 ReadActualArmyDailyAssaultPreparationObservations12004(std::uint32_t full_id) noexcept {
+  if(full_id==0xFFFFFFFFU)return std::nullopt;
   if (!g_available.load(std::memory_order_acquire)) return std::nullopt;
   const auto *state=g_active_state.load(std::memory_order_acquire);
   const bool guarded=state && g_bindings.enabled && g_bindings.image_base && state->installed.load(std::memory_order_acquire)!=0 && state->failure_flags.load(std::memory_order_acquire)==0;
   if (!guarded && !g_fixture_mode.load(std::memory_order_acquire)) return std::nullopt;
   try {
     ActualArmyDailyAssaultPreparationObservations12004 out{}; out.observer_installed=guarded; out.current_session_guard=guarded;
-    const std::lock_guard lock(g_journal_mutex); out.latest_sequence=g_latest_sequence;
+    const std::lock_guard lock(g_journal_mutex);
+    if(!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)return std::nullopt;
+    out.latest_sequence=g_latest_sequence;
     out.oldest_available_sequence=g_latest_sequence==0 ? 0 : g_latest_sequence<=g_slots.size() ? 1 : g_latest_sequence-g_slots.size()+1;
     out.overwritten_events=g_latest_sequence>g_slots.size() ? g_latest_sequence-g_slots.size() : 0;
     out.unattributed_capture_failures=g_unattributed_failures;
     out.dropped_owned_copy_events=g_dropped_owned_copy_events;
     for(auto sequence=out.oldest_available_sequence;sequence!=0 && sequence<=g_latest_sequence;++sequence) { const auto &slot=g_slots[(sequence-1)%g_slots.size()]; if(slot.sequence==sequence && slot.event.before.selected_army_full_id_raw_u32==full_id)out.events.push_back(slot.event); }
+    if(out.events.empty())return std::nullopt;
     return out;
   } catch (...) { return std::nullopt; }
+}
+ArmyObserverResearchSamplingState12004 ReadActualArmyDailyAssaultPreparationResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_journal_mutex);return SamplingStateLocked();}
+  catch(...) {return {};}
+}
+ArmyObserverResearchSamplingState12004 SetActualArmyDailyAssaultPreparationResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_journal_mutex);
+    if(!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked))return {};
+    return SamplingStateLocked();
+  }catch(...) {return {};}
 }
 namespace {
 std::uint64_t Observe(std::uintptr_t return_rva, const void *manager, const void *army,
                       std::uintptr_t iterator, std::uintptr_t end) noexcept {
   const auto original=g_original.load(std::memory_order_acquire); if(!original)return 0;
   if(return_rva!=kActualArmyDailyAssaultPreparationReturnRva12004)return original(manager,army);
+  const army_observer_research_detail_12004::Permit permit(g_journal_mutex,g_research_sampling);
   Event event{};
   auto &active=event.active;
   const auto *previous=g_active_preparation;
   try {
-    active.observed=true; active.parent=CopyActiveArmyNaturalPhaseScope12004(); active.entry_event=NextArmyNaturalPhaseEvent12004();
+    active.observed=true; active.parent=permit.admitted()?CopyActiveArmyNaturalPhaseScope12004():CopyActiveArmyNaturalPhaseMetadata12004(); active.entry_event=NextArmyNaturalPhaseEvent12004();
     active.incoming_primary_manager=reinterpret_cast<std::uintptr_t>(manager); active.incoming_selected_army=reinterpret_cast<std::uintptr_t>(army);
     active.caller_return_rva=return_rva; active.callsite_rva=return_rva-5; active.actual_caller_iterator=iterator; active.actual_caller_end=end;
     active.parent_bound=active.parent.observed && active.parent.phase==ArmyNaturalPhaseKind12004::pre_date && active.parent.actual_entry_rva==kArmyNaturalPreDateRva12004 &&
       active.parent.primary_manager_identity==active.incoming_primary_manager && active.entry_event.clock_identity && active.parent.entry_event.clock_identity==active.entry_event.clock_identity &&
       active.parent.entry_event.sequence<active.entry_event.sequence && active.parent.entry_event.thread_id && active.entry_event.thread_id && active.parent.entry_event.thread_id==active.entry_event.thread_id;
     if(!active.parent_bound)event.capture_failure_flags|=actual_army_preparation_capture_parent;
-    BindOriginalOccurrence(InputBindings(),active);
+    if(permit.admitted())BindOriginalOccurrence(InputBindings(),active);
+    else BindOriginalOccurrenceMetadata(InputBindings(),active);
     if(!active.original_occurrence_bound)event.capture_failure_flags|=actual_army_preparation_capture_roster;
-    event.before=Capture(active,true); active.selected_army_full_id_raw_u32=event.before.selected_army_full_id_raw_u32;
-    if(!event.before.source_inputs_ready)event.capture_failure_flags|=actual_army_preparation_capture_before;
+    if(permit.admitted()) {
+      event.before=Capture(active,true); active.selected_army_full_id_raw_u32=event.before.selected_army_full_id_raw_u32;
+      if(!event.before.source_inputs_ready)event.capture_failure_flags|=actual_army_preparation_capture_before;
+    } else active.selected_army_full_id_raw_u32=detail::Read<std::uint32_t>(InputBindings(),army,0x10);
   } catch (...) { event.capture_failure_flags|=actual_army_preparation_capture_exception; }
   // No observation fault boundary catches or repeats the genuine native call.
   // The TLS parent covers its actual children, then restores any outer instance.
   g_active_preparation=&active; event.original_called=true;
   const std::uint64_t returned=original(manager,army);
   g_active_preparation=previous; event.original_returned=true; event.original_rax_raw_u64=returned;
+  if(!permit.admitted())return returned;
   try {
     event.returned_event=NextArmyNaturalPhaseEvent12004(); event.after=Capture(active,false);
     if(!event.after.source_inputs_ready)event.capture_failure_flags|=actual_army_preparation_capture_after;
@@ -478,7 +525,7 @@ std::uint64_t Observe(std::uintptr_t return_rva, const void *manager, const void
       if(event.same_selected_army_generation_after==false)event.capture_failure_flags|=actual_army_preparation_capture_identity_changed;
     }
   } catch (...) { event.capture_failure_flags|=actual_army_preparation_capture_exception; }
-  try { Publish(event); }
+  try { Publish(event,permit); }
   catch (...) { const std::lock_guard lock(g_journal_mutex); ++g_dropped_owned_copy_events; }
   return returned;
 }

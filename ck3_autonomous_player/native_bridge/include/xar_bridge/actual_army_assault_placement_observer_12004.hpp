@@ -2,6 +2,7 @@
 
 #include "xar_bridge/actual_army_daily_assault_preparation_observer_12004.hpp"
 #include "xar_bridge/army_assault_group_placement_12004.hpp"
+#include "xar_bridge/army_observer_research_sampling_12004.hpp"
 #include <array>
 #include <atomic>
 #include <cstddef>
@@ -129,6 +130,8 @@ bool InstallActualArmyAssaultPlacementObserver12004(ActualArmyAssaultPlacementDe
     const ActualArmyAssaultPlacementInstallEnvironment12004 &, std::string_view) noexcept;
 std::optional<ActualArmyAssaultPlacementObservations12004>
 ReadActualArmyAssaultPlacementObservations12004(std::uint32_t exact_full_carmy_id) noexcept;
+ArmyObserverResearchSamplingState12004 ReadActualArmyAssaultPlacementResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetActualArmyAssaultPlacementResearchSampling12004(bool enabled) noexcept;
 ActualArmyAssaultPlacementProjection12004 ProjectActualArmyAssaultPlacementObservation12004(
     const ActualArmyAssaultPlacementObservation12004 &,
     const ActualArmyDailyAssaultPreparationObservation12004 &);

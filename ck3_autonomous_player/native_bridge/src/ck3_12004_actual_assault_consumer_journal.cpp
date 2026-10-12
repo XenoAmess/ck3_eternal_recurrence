@@ -17,6 +17,7 @@ constexpr std::array<std::uint8_t, 19> kConsumerPrologue{
 struct JournalSlot { std::uint64_t sequence = 0; Event event; };
 std::array<JournalSlot, kAssaultConsumerJournalEvents12004> g_slots;
 std::mutex g_journal_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::uint64_t g_latest_sequence = 0;
 ActualAssaultConsumerBindings12004 g_bindings;
 std::atomic<bool> g_available{false};
@@ -25,6 +26,20 @@ std::atomic<ActualAssaultConsumerDetourState12004 *> g_active_state{nullptr};
 thread_local ArmyAssaultConsumerParent12004 g_parent;
 thread_local Event *g_event = nullptr;
 thread_local std::size_t g_budget_cursor = 0;
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained=0,qualified=0;
+  for(const auto &slot:g_slots) {
+    if(!slot.sequence || slot.sequence!=slot.event.journal_sequence)continue;
+    ++retained;
+    if(slot.event.original_called && slot.event.original_returned)++qualified;
+  }
+  return g_research_sampling.StateLocked(true,retained,qualified);
+}
+void ClearSamplingJournalLocked() {
+  for(auto &slot:g_slots)slot={};
+  g_latest_sequence=0;
+}
 
 template<class F> bool FaultBoundary(F callback) noexcept {
 #if defined(_MSC_VER)
@@ -225,8 +240,8 @@ bool InitializeRuntime(const ActualAssaultConsumerBindings12004 &bindings,
   { const std::lock_guard lock(g_journal_mutex); g_bindings=bindings; g_latest_sequence=0; for(auto &slot:g_slots) slot={}; }
   g_original.store(original,std::memory_order_release); g_available.store(true,std::memory_order_release); return true;
 }
-void Publish(Event &&event) noexcept {
-  try { const std::lock_guard lock(g_journal_mutex); event.journal_sequence=++g_latest_sequence;
+void Publish(Event &&event,const army_observer_research_detail_12004::Permit &permit) noexcept {
+  try { const std::lock_guard lock(g_journal_mutex); if(!permit.CanPublishLocked())return;event.journal_sequence=++g_latest_sequence;
     auto &slot=g_slots[(event.journal_sequence-1)%g_slots.size()]; slot.sequence=event.journal_sequence; slot.event=std::move(event);
   } catch (...) { }
 }
@@ -440,6 +455,7 @@ std::uintptr_t InvokeActualAssaultConsumerObserver12004(void *manager,
   // Other actual callers are forwarded unchanged, without being relabelled as
   // the closed post-date stage.
   if (caller!=0x2A9A8EA) return original(manager);
+  const army_observer_research_detail_12004::Permit permit(g_journal_mutex,g_research_sampling);
   Event event;
   auto installed=g_active_state.load(std::memory_order_acquire);
   event.current_session_guard=installed && installed->installed.load(std::memory_order_acquire)!=0;
@@ -448,7 +464,8 @@ std::uintptr_t InvokeActualAssaultConsumerObserver12004(void *manager,
   parent.caller_return_rva=caller; parent.manager_identity=reinterpret_cast<std::uintptr_t>(manager);
   parent.entry_event=NextEvent();
   if (g_bindings.read_parent_scope) {
-    auto scope=g_bindings.read_parent_scope();
+    auto scope=!permit.admitted() && g_bindings.read_parent_scope==&CopyActiveArmyNaturalPhaseScope12004
+        ? CopyActiveArmyNaturalPhaseMetadata12004() : g_bindings.read_parent_scope();
     parent.phase_entry_event=scope.entry_event; parent.date_raw=scope.date_raw;
     parent.absolute_day_raw=scope.absolute_day_raw;
     parent.exact_post_date_parent=scope.observed && scope.phase==ArmyNaturalPhaseKind12004::post_date &&
@@ -456,7 +473,7 @@ std::uintptr_t InvokeActualAssaultConsumerObserver12004(void *manager,
       SameThreadClock(scope.entry_event,parent.entry_event) && scope.entry_event.sequence<parent.entry_event.sequence;
   }
   if (!parent.exact_post_date_parent) event.capture_failure_flags|=64;
-  try {
+  if(permit.admitted())try {
     event.entry_table=Table(parent.manager_identity,true,&event);
     event.entry_pending_queue=Vector(parent.manager_identity+0x68);
     event.entry_dependencies_complete=event.entry_table.raw_references_complete &&
@@ -468,12 +485,13 @@ std::uintptr_t InvokeActualAssaultConsumerObserver12004(void *manager,
         army.regiment_roster.references_complete;
   } catch (...) { event.capture_failure_flags|=256; }
   auto previous_parent=g_parent; auto *previous_event=g_event; auto previous_cursor=g_budget_cursor;
-  parent.active=true; g_parent=parent; g_event=&event; g_budget_cursor=0;
+  parent.active=true; g_parent=parent; g_event=permit.admitted()?&event:nullptr; g_budget_cursor=0;
   event.original_called=true;
   // Exactly one natural invocation, outside all observation fault boundaries.
   const auto bits=original(manager);
   event.original_returned=true; event.raw_return_bits=bits;
   g_parent=previous_parent; g_event=previous_event; g_budget_cursor=previous_cursor;
+  if(!permit.admitted())return bits;
   parent.active=false; event.returned_event=NextEvent();
   try {
     event.returned_table=Table(parent.manager_identity,false);
@@ -504,11 +522,12 @@ std::uintptr_t InvokeActualAssaultConsumerObserver12004(void *manager,
   } catch (...) { event.capture_failure_flags|=256; event.returned_dependencies_complete=false; }
   // Entry is a real natural frame. Full B/prior-write binding is independent
   // and remains false until another actual captured family proves it.
-  Publish(std::move(event));
+  Publish(std::move(event),permit);
   return bits;
 }
 std::optional<ArmyActualAssaultConsumerObservationsV1>
 ReadActualAssaultConsumerObservations12004(std::uint32_t owned_army_full_id) noexcept {
+  if(owned_army_full_id==0xFFFFFFFFU)return std::nullopt;
   if (!g_available.load(std::memory_order_acquire)) return {};
   try {
     ArmyActualAssaultConsumerObservationsV1 out;
@@ -516,6 +535,7 @@ ReadActualAssaultConsumerObservations12004(std::uint32_t owned_army_full_id) noe
     out.observer_installed=active && active->installed.load(std::memory_order_acquire)!=0;
     out.current_session_guard=out.observer_installed;
     const std::lock_guard lock(g_journal_mutex);
+    if(!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)return std::nullopt;
     out.latest_journal_sequence=g_latest_sequence;
     out.overwritten_events=g_latest_sequence>g_slots.size()?g_latest_sequence-g_slots.size():0;
     auto first=g_latest_sequence>g_slots.size()?g_latest_sequence-g_slots.size()+1:1;
@@ -527,8 +547,20 @@ ReadActualAssaultConsumerObservations12004(std::uint32_t owned_army_full_id) noe
           std::optional<std::uint32_t>{owned_army_full_id})!=group.armies.ordered_full_ids.end();
       if(member) out.events.push_back(slot.event);
     }
+    if(out.events.empty())return std::nullopt;
     return out;
   } catch (...) { return {}; }
+}
+ArmyObserverResearchSamplingState12004 ReadActualAssaultConsumerResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_journal_mutex);return SamplingStateLocked();}
+  catch(...) {return {};}
+}
+ArmyObserverResearchSamplingState12004 SetActualAssaultConsumerResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_journal_mutex);
+    if(!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked))return {};
+    return SamplingStateLocked();
+  }catch(...) {return {};}
 }
 extern "C" std::uintptr_t __fastcall XarActualAssaultConsumerHook12004(void *manager) noexcept {
 #if defined(_MSC_VER)
@@ -541,4 +573,3 @@ extern "C" std::uintptr_t __fastcall XarActualAssaultConsumerHook12004(void *man
   return InvokeActualAssaultConsumerObserver12004(manager,rva);
 }
 } // namespace xar::ck3_12004
-

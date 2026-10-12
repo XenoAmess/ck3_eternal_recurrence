@@ -1,7 +1,9 @@
 #include "xar_bridge/actual_army_pre_date_prefix_observer_12004.hpp"
+#include <algorithm>
 #include <cstring>
 #include <limits>
 #include <mutex>
+#include <set>
 #include <utility>
 #if defined(_MSC_VER)
 #include <intrin.h>
@@ -30,8 +32,22 @@ std::atomic<ActualArmyPreDatePrefixDetourState12004 *> g_active_state{nullptr};
 std::atomic<bool> g_available{false},g_fixture_mode{false};
 std::array<Event,kActualArmyPreDatePrefixJournalCapacity12004> g_slots{};
 std::mutex g_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::uint64_t g_latest=0;
 std::atomic<std::uint64_t> g_failures{0};
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained=0,qualified=0;
+  for(const auto &event:g_slots) {
+    if(!event.sequence)continue;
+    ++retained;
+    if(event.original_called && event.original_returned)++qualified;
+  }
+  return g_research_sampling.StateLocked(true,retained,qualified);
+}
+void ClearSamplingJournalLocked() {
+  for(auto &event:g_slots)event={};
+  g_latest=0;g_failures.store(0,std::memory_order_relaxed);
+}
 template<class Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
   __try { return callback(); }
@@ -89,13 +105,20 @@ bool InitializeRuntime(const ActualArmyPreDatePrefixBindings12004 &b,ActualArmyP
   if(!b.enabled || !b.image_base || !original)return false;
   g_bindings=b;g_original.store(original,std::memory_order_release);g_available.store(true,std::memory_order_release);return true;
 }
-void Publish(Event &event) noexcept {
-  try {std::lock_guard<std::mutex> lock(g_mutex);event.sequence=++g_latest;g_slots[(event.sequence-1)%g_slots.size()]=event;}
+void Publish(Event &event,const army_observer_research_detail_12004::Permit &permit) noexcept {
+  try {std::lock_guard<std::mutex> lock(g_mutex);if(!permit.CanPublishLocked())return;event.sequence=++g_latest;g_slots[(event.sequence-1)%g_slots.size()]=event;}
   catch(...) {++g_failures;}
 }
 std::uint64_t Observe(std::uintptr_t return_rva,const void *manager,const void *date,std::uint64_t incoming_rax) noexcept {
   const auto original=g_original.load(std::memory_order_acquire);if(!original)return incoming_rax;
   if(return_rva!=kActualArmyPreDatePrefixReturnRva12004)return original(manager,date,incoming_rax);
+  const army_observer_research_detail_12004::Permit permit(g_mutex,g_research_sampling);
+  if(!permit.admitted()) {
+    const auto prefix_date=Read<std::uint64_t>(reinterpret_cast<std::uintptr_t>(date));
+    const auto returned=original(manager,date,incoming_rax);
+    (void)ObserveArmyNaturalPhaseOriginalRoster12004(reinterpret_cast<std::uintptr_t>(manager),return_rva,prefix_date);
+    return returned;
+  }
   Event event{};event.primary_manager_identity=reinterpret_cast<std::uintptr_t>(manager);
   event.date_argument_identity=reinterpret_cast<std::uintptr_t>(date);event.caller_return_rva=return_rva;event.incoming_rax_raw_u64=incoming_rax;
   try {
@@ -125,7 +148,7 @@ std::uint64_t Observe(std::uintptr_t return_rva,const void *manager,const void *
     event.after=Capture(event.primary_manager_identity,event.date_argument_identity,event.parent.game_state_identity);
     if(!event.after.source_c8.count || !event.after.destination_158.count)event.capture_failure_flags|=4U;
     if(!event.original_roster_capture_complete)event.capture_failure_flags|=16U;
-    Publish(event);
+    Publish(event,permit);
   }catch(...){/* Copy failure does not alter original RAX. */}
   return returned;
 }
@@ -304,9 +327,9 @@ bool InstallActualArmyPreDatePrefixObserver12004(
 }
 
 
-std::optional<ActualArmyPreDatePrefixObservations12004> ReadActualArmyPreDatePrefixObservations12004(std::uintptr_t primary) noexcept {
-  try {
-    std::lock_guard<std::mutex> lock(g_mutex);ActualArmyPreDatePrefixObservations12004 out{};
+namespace {
+ActualArmyPreDatePrefixObservations12004 CopyObservationsLocked(std::uintptr_t primary) {
+    ActualArmyPreDatePrefixObservations12004 out{};
     const auto *state=g_active_state.load(std::memory_order_acquire);
     out.observer_installed=g_available.load(std::memory_order_acquire) && (g_fixture_mode.load() || (state && state->installed.load()!=0 && state->failure_flags.load()==0));
     out.current_session_guard=g_bindings.enabled && g_bindings.image_base!=0;
@@ -314,7 +337,57 @@ std::optional<ActualArmyPreDatePrefixObservations12004> ReadActualArmyPreDatePre
     out.overwritten_events=g_latest>g_slots.size()?g_latest-g_slots.size():0;out.unattributed_capture_failures=g_failures.load();
     for(auto n=out.oldest_available_sequence;n && n<=g_latest;++n){const auto &e=g_slots[(n-1)%g_slots.size()];if(e.sequence==n && primary && e.primary_manager_identity==primary)out.events.push_back(e);}
     return out;
+}
+} // namespace
+std::optional<ActualArmyPreDatePrefixObservations12004> ReadActualArmyPreDatePrefixObservations12004(std::uintptr_t primary) noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)return std::nullopt;
+    auto out=CopyObservationsLocked(primary);
+    if(!out.observer_installed || !out.current_session_guard || out.events.empty())return std::nullopt;
+    return out;
   }catch(...){return std::nullopt;}
+}
+std::optional<std::vector<ActualArmyPreDatePrefixObservations12004>> ReadSampledActualArmyPreDatePrefixForArmy12004(std::uint32_t full_id) noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(full_id==0xFFFFFFFFU || !g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)return std::nullopt;
+    std::set<std::uintptr_t> primaries;
+    for(const auto &event:g_slots) {
+      const auto &roster=event.captured_original_roster;
+      if(event.sequence && event.primary_manager_identity && event.original_roster_capture_complete && roster.complete &&
+          roster.capture_rva==kActualArmyPreDatePrefixReturnRva12004 &&
+          std::find(roster.ordered_full_ids.begin(),roster.ordered_full_ids.end(),full_id)!=roster.ordered_full_ids.end())
+        primaries.insert(event.primary_manager_identity);
+    }
+    if(primaries.empty())return std::nullopt;
+    std::vector<ActualArmyPreDatePrefixObservations12004> out;
+    for(const auto primary:primaries) {
+      auto journal=CopyObservationsLocked(primary);
+      if(!journal.observer_installed || !journal.current_session_guard)return std::nullopt;
+      journal.events.erase(std::remove_if(journal.events.begin(),journal.events.end(),[&](const auto &event){
+        const auto &roster=event.captured_original_roster;
+        return !event.original_roster_capture_complete || !roster.complete ||
+            roster.capture_rva!=kActualArmyPreDatePrefixReturnRva12004 ||
+            std::find(roster.ordered_full_ids.begin(),roster.ordered_full_ids.end(),full_id)==roster.ordered_full_ids.end();
+      }),journal.events.end());
+      if(journal.events.empty())continue;
+      out.push_back(std::move(journal));
+    }
+    if(out.empty())return std::nullopt;
+    return out;
+  }catch(...){return std::nullopt;}
+}
+ArmyObserverResearchSamplingState12004 ReadActualArmyPreDatePrefixResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_mutex);return SamplingStateLocked();}
+  catch(...){return {};}
+}
+ArmyObserverResearchSamplingState12004 SetActualArmyPreDatePrefixResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked))return {};
+    return SamplingStateLocked();
+  }catch(...){return {};}
 }
 ActualArmyPreDatePrefixBindings12004 BindActualArmyPreDatePrefixImage12004(std::uintptr_t image,std::string_view sha) noexcept {
   ActualArmyPreDatePrefixBindings12004 out{};out.enabled=image && MatchesStartupExecutableSha(sha);out.image_base=out.enabled?image:0;return out;

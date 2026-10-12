@@ -13,10 +13,23 @@ struct Active {
 };
 thread_local Active g_active;
 std::mutex g_journal_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::vector<ArmyNaturalPhaseRecord12004> g_journal;
 constexpr std::size_t kMaximumJournalRecords = 64;
 ArmyNaturalPhaseJournalStatus12004 g_journal_status;
 std::atomic<std::uint64_t> g_failed_appends{0};
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t qualified = 0;
+  for (const auto &record : g_journal)
+    if (record.scope.observed && record.original_called && record.original_returned) ++qualified;
+  return g_research_sampling.StateLocked(true, g_journal.size(), qualified);
+}
+void ClearSamplingJournalLocked() {
+  g_journal.clear();
+  g_journal_status = {};
+  g_failed_appends.store(0, std::memory_order_relaxed);
+}
 
 template<class T> std::optional<T> Read(const ArmyNaturalPhaseBindings12004 &b,
     std::uintptr_t address) noexcept {
@@ -61,9 +74,11 @@ struct RestoreActive {
   Active previous;
   ~RestoreActive() { g_active = previous; }
 };
-void Journal(const ArmyNaturalPhaseRecord12004 &record) noexcept {
+void Journal(const ArmyNaturalPhaseRecord12004 &record,
+             const army_observer_research_detail_12004::Permit &permit) noexcept {
   try {
     std::lock_guard<std::mutex> lock(g_journal_mutex);
+    if (!permit.CanPublishLocked()) return;
     if (g_journal.size() == kMaximumJournalRecords) {
       g_journal.erase(g_journal.begin()); ++g_journal_status.overwritten_records;
     }
@@ -81,11 +96,64 @@ ArmyNaturalPhaseScope12004 CopyActiveArmyNaturalPhaseScope12004() noexcept {
   catch (...) { return {}; }
 }
 
+ArmyNaturalPhaseScope12004 CopyActiveArmyNaturalPhaseMetadata12004() noexcept {
+  try {
+  ArmyNaturalPhaseScope12004 out{};
+  if (!g_active.scope) return out;
+  const auto &source = *g_active.scope;
+  out.observed = source.observed;
+  out.phase = source.phase;
+  out.actual_entry_rva = source.actual_entry_rva;
+  out.caller_return_rva = source.caller_return_rva;
+  out.primary_manager_identity = source.primary_manager_identity;
+  out.secondary_manager_identity = source.secondary_manager_identity;
+  out.game_state_identity = source.game_state_identity;
+  out.session_identity = source.session_identity;
+  out.entry_event = source.entry_event;
+  out.date_raw = source.date_raw;
+  out.prefix_date_raw = source.prefix_date_raw;
+  out.absolute_day_raw = source.absolute_day_raw;
+  out.entry_c0_raw = source.entry_c0_raw;
+  out.saved_c0_raw = source.saved_c0_raw;
+  out.saved_mask02_admitted = source.saved_mask02_admitted;
+  out.saved_c0_observed_rva = source.saved_c0_observed_rva;
+  out.saved_c0_event = source.saved_c0_event;
+  return out;
+  } catch (...) { return {}; }
+}
+
+std::optional<ArmyNaturalPhaseRosterOccurrence12004> ReadActiveArmyNaturalPhaseRosterOccurrence12004(
+    std::uintptr_t iterator, std::uintptr_t end, std::uint32_t iterator_full_id,
+    const ArmyNaturalPhaseEvent12004 &child, std::size_t maximum_occurrences) noexcept {
+  if (!g_active.scope || !g_active.scope->observed) return std::nullopt;
+  const auto &scope=*g_active.scope;
+  const auto &roster=scope.original_army_roster;
+  if (roster.boundary!=ArmyNaturalRosterBoundary12004::pre_date_prefix_return ||
+      roster.capture_rva!=kArmyNaturalOriginalRosterCaptureRva12004 || !roster.complete ||
+      roster.capture_event.clock_identity!=child.clock_identity ||
+      roster.capture_event.thread_id!=child.thread_id ||
+      roster.capture_event.sequence<=scope.entry_event.sequence ||
+      roster.capture_event.sequence>=child.sequence ||
+      !roster.begin_identity || !roster.end_identity || !roster.count || *roster.count<0 ||
+      roster.ordered_full_ids.size()>maximum_occurrences ||
+      static_cast<std::size_t>(*roster.count)!=roster.ordered_full_ids.size() ||
+      *roster.end_identity<*roster.begin_identity || end!=*roster.end_identity ||
+      iterator<*roster.begin_identity || iterator>=*roster.end_identity ||
+      (iterator-*roster.begin_identity)%4U!=0 ||
+      *roster.end_identity-*roster.begin_identity!=static_cast<std::uintptr_t>(*roster.count)*4U)
+    return std::nullopt;
+  const auto index=(iterator-*roster.begin_identity)/4U;
+  if (index>=roster.ordered_full_ids.size() || iterator_full_id!=roster.ordered_full_ids[index])
+    return std::nullopt;
+  return ArmyNaturalPhaseRosterOccurrence12004{static_cast<std::int32_t>(index),roster.ordered_full_ids[index]};
+}
+
 ArmyNaturalPhaseRecord12004 InvokeArmyNaturalPhaseScope12004(
     const ArmyNaturalPhaseBindings12004 &b, ArmyNaturalPhaseOriginal12004 original,
     void *secondary_manager, ArmyNaturalPhaseKind12004 phase,
     std::uintptr_t caller_return_rva) noexcept {
   ArmyNaturalPhaseRecord12004 out{};
+  const army_observer_research_detail_12004::Permit permit(g_journal_mutex, g_research_sampling);
   auto &scope = out.scope;
   const auto secondary = reinterpret_cast<std::uintptr_t>(secondary_manager);
   // Only the literal closed callback entries grant this scope. A query never does.
@@ -121,7 +189,7 @@ ArmyNaturalPhaseRecord12004 InvokeArmyNaturalPhaseScope12004(
       out.original_returned = true;
     }
   }
-  if (scope.observed && out.original_returned) {
+  if (permit.admitted() && scope.observed && out.original_returned) {
     out.returned_event = Event(b);
     if (scope.game_state_identity) {
       out.returned_date_raw = Read<std::uint64_t>(b, scope.game_state_identity + 8);
@@ -132,7 +200,7 @@ ArmyNaturalPhaseRecord12004 InvokeArmyNaturalPhaseScope12004(
         out.returned_event.clock_identity && out.returned_event.thread_id)
       out.same_clock_thread_order = SameThread(scope.entry_event, out.returned_event) &&
           scope.entry_event.sequence < out.returned_event.sequence;
-    Journal(out);
+    Journal(out,permit);
   }
   return out;
 }
@@ -190,20 +258,34 @@ bool ObserveArmyNaturalPhaseSavedMask12004(std::uintptr_t secondary,
 
 std::vector<ArmyNaturalPhaseRecord12004> ReadArmyNaturalPhaseJournal12004() {
   std::lock_guard<std::mutex> lock(g_journal_mutex);
+  if (!g_research_sampling.ReadableLocked()) return {};
   return g_journal;
 }
-void ClearArmyNaturalPhaseJournal12004() noexcept {
+std::optional<std::vector<ArmyNaturalPhaseRecord12004>> ReadSampledArmyNaturalPhaseJournal12004() {
+  std::lock_guard<std::mutex> lock(g_journal_mutex);
+  if (!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)
+    return std::nullopt;
+  return g_journal;
+}
+ArmyObserverResearchSamplingState12004 ReadArmyNaturalPhaseResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_journal_mutex);return SamplingStateLocked();}
+  catch (...) {return {};}
+}
+ArmyObserverResearchSamplingState12004 SetArmyNaturalPhaseResearchSampling12004(bool enabled) noexcept {
   try {
-    std::lock_guard<std::mutex> lock(g_journal_mutex);
-    g_journal.clear(); ++g_journal_status.clear_operations;
-  }
-  catch (...) {}
+    const std::lock_guard lock(g_journal_mutex);
+    if (!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked)) return {};
+    return SamplingStateLocked();
+  } catch (...) {return {};}
+}
+void ClearArmyNaturalPhaseJournal12004() noexcept {
+  (void)SetArmyNaturalPhaseResearchSampling12004(false);
 }
 ArmyNaturalPhaseJournalStatus12004 ReadArmyNaturalPhaseJournalStatus12004() noexcept {
   try {
     std::lock_guard<std::mutex> lock(g_journal_mutex);
     auto out = g_journal_status;
-    out.read_complete = true;
+    out.read_complete = g_research_sampling.ReadableLocked();
     out.retained_records = g_journal.size();
     out.failed_appends = g_failed_appends.load(std::memory_order_relaxed);
     return out;

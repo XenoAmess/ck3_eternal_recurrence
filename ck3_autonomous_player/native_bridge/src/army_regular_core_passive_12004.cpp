@@ -28,12 +28,27 @@ constexpr std::uintptr_t kCombat = 0x5D1DE70, kCombatFallback = 0x5D1DE18;
 constexpr std::uintptr_t kTitle = 0x5D1DAF8, kTitleFallback = 0x5D1DAE0;
 constexpr std::uintptr_t kWar = 0x5D1DE58, kWarFallback = 0x5D1DE40;
 std::mutex g_mutex;
+army_observer_research_detail_12004::Policy g_research_sampling;
 std::array<ArmyRegularCoreObservation12004, kArmyRegularCoreJournalCapacity12004> g_records;
 std::uint64_t g_latest = 0, g_publication_failures = 0;
 ArmyRegularCoreBindings12004 g_bindings;
 std::atomic<bool> g_initialized{false};
 std::atomic<ArmyRegularCoreOriginal12004> g_original{nullptr};
 std::atomic<ArmyRegularCoreDetourState12004 *> g_state{nullptr};
+
+ArmyObserverResearchSamplingState12004 SamplingStateLocked() noexcept {
+  std::size_t retained=0,qualified=0;
+  for(const auto &event:g_records) {
+    if(!event.journal_sequence)continue;
+    ++retained;
+    if(event.observed && event.original_called && event.original_returned)++qualified;
+  }
+  return g_research_sampling.StateLocked(true,retained,qualified);
+}
+void ClearSamplingJournalLocked() {
+  for(auto &event:g_records)event={};
+  g_latest=g_publication_failures=0;
+}
 
 template<class Function> bool FaultBoundary(Function function) noexcept {
 #if defined(_MSC_VER)
@@ -48,6 +63,11 @@ bool DefaultRead(void *, std::uintptr_t address, void *out, std::size_t size) no
   return FaultBoundary([&]() noexcept { std::memcpy(out, reinterpret_cast<const void *>(address), size); return true; });
 }
 ArmyNaturalPhaseScope12004 DefaultScope(void *) noexcept { return CopyActiveArmyNaturalPhaseScope12004(); }
+ArmyNaturalPhaseScope12004 ScopeForCaptureMode(const ArmyRegularCoreBindings12004 &b,bool capture) noexcept {
+  if(!b.read_scope)return {};
+  if(!capture && b.read_scope==&DefaultScope)return CopyActiveArmyNaturalPhaseMetadata12004();
+  return b.read_scope(b.scope_context);
+}
 
 struct Resolution {
   std::uintptr_t object = 0;
@@ -424,9 +444,10 @@ std::optional<std::uint64_t> CaptureDate(const ArmyRegularCoreBindings12004 &b,
   });
   return ok ? std::optional<std::uint64_t>(date) : std::nullopt;
 }
-void Publish(ArmyRegularCoreObservation12004 &event) noexcept {
+void Publish(ArmyRegularCoreObservation12004 &event,const army_observer_research_detail_12004::Permit &permit) noexcept {
   try {
     const std::lock_guard lock(g_mutex);
+    if(!permit.CanPublishLocked())return;
     const auto next = g_latest + 1;
     event.journal_sequence = next;
     g_records[(next - 1) % g_records.size()] = event;
@@ -478,30 +499,31 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
     const ArmyRegularCoreBindings12004 &b, ArmyRegularCoreOriginal12004 original,
     void *manager, std::uintptr_t caller) noexcept {
   ArmyRegularCoreObservation12004 event;
+  const army_observer_research_detail_12004::Permit permit(g_mutex,g_research_sampling);
   event.manager_identity = reinterpret_cast<std::uintptr_t>(manager); event.caller_return_rva = caller;
   try {
     if (b.enabled && b.next_event && b.read_scope) {
       event.entry_event = b.next_event(b.event_context);
-      auto scope = b.read_scope(b.scope_context);
+      auto scope = ScopeForCaptureMode(b,permit.admitted());
       bool mask_proved = false;
       if (ParentValid(scope, event.entry_event, event.manager_identity, caller)) {
         // Literal source branch proves mask2 at this reached return PC, not the entire saved C0 byte.
         mask_proved = ObserveArmyNaturalPhaseSavedMask12004(scope.secondary_manager_identity, caller, 2);
-        scope = b.read_scope(b.scope_context);
+        scope = ScopeForCaptureMode(b,permit.admitted());
       }
       event.parent_scope = std::move(scope);
       event.entry_date_raw = CaptureDate(b, event.parent_scope);
       event.entry_provenance_complete = ParentValid(event.parent_scope, event.entry_event,
           event.manager_identity, caller) && mask_proved && event.parent_scope.saved_mask02_admitted == true &&
           event.parent_scope.saved_c0_observed_rva == caller && event.entry_date_raw == event.parent_scope.date_raw;
-      if (event.entry_provenance_complete) {
+      if (permit.admitted() && event.entry_provenance_complete) {
         event.observed = true; event.entry = CaptureArmyRegularCoreFrame12004(b, manager);
         if (CaptureDate(b, event.parent_scope) != event.entry_date_raw) {
           event.entry_provenance_complete = false; event.entry.capture_complete = false;
           event.entry.missing_inputs.push_back("entry_date_changed_during_owned_capture");
         }
-      } else event.provenance_failures.push_back("genuine_same_thread_postdate_core_entry_provenance_unavailable");
-    } else event.provenance_failures.push_back("regular_core_scope_or_shared_event_clock_unavailable");
+      } else if(permit.admitted()) event.provenance_failures.push_back("genuine_same_thread_postdate_core_entry_provenance_unavailable");
+    } else if(permit.admitted()) event.provenance_failures.push_back("regular_core_scope_or_shared_event_clock_unavailable");
   } catch (...) {
     event.entry_provenance_complete = false;
   }
@@ -510,6 +532,7 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
   event.original_called = true;
   event.raw_return_bits = original(manager);
   event.original_returned = true;
+  if(!permit.admitted())return event;
   try {
     if (b.next_event && b.read_scope) {
       event.returned_event = b.next_event(b.event_context);
@@ -530,16 +553,15 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
       else event.provenance_failures.push_back("regular_core_return_clock_parent_thread_or_date_changed");
     }
   } catch (...) { event.return_provenance_complete = false; }
-  Publish(event);
+  Publish(event,permit);
   return event;
 }
-ArmyRegularCoreJournal12004 ReadArmyRegularCoreJournal12004() noexcept {
+namespace {
+ArmyRegularCoreJournal12004 CopyJournalLocked() {
   ArmyRegularCoreJournal12004 out;
-  try {
     out.observer_initialized = g_initialized.load(std::memory_order_acquire);
     const auto state = g_state.load(std::memory_order_acquire);
     out.observer_installed = state && state->installed.load(std::memory_order_acquire);
-    const std::lock_guard lock(g_mutex);
     out.latest_journal_sequence = g_latest; out.publication_failures = g_publication_failures;
     out.overwritten_events = g_latest > g_records.size() ? g_latest - g_records.size() : 0;
     const auto first = g_latest > g_records.size() ? g_latest - g_records.size() + 1 : 1;
@@ -547,11 +569,44 @@ ArmyRegularCoreJournal12004 ReadArmyRegularCoreJournal12004() noexcept {
       const auto &event = g_records[(i - 1) % g_records.size()];
       if (event.journal_sequence == i) out.events.push_back(event);
     }
-  } catch (...) { out.events.clear(); out.observer_initialized = false; }
   return out;
 }
+} // namespace
+ArmyRegularCoreJournal12004 ReadArmyRegularCoreJournal12004() noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(!g_research_sampling.ReadableLocked()) {
+      ArmyRegularCoreJournal12004 out{};
+      out.observer_initialized=g_initialized.load(std::memory_order_acquire);
+      const auto *state=g_state.load(std::memory_order_acquire);
+      out.observer_installed=state && state->installed.load(std::memory_order_acquire);
+      return out;
+    }
+    return CopyJournalLocked();
+  } catch(...) {return {};}
+}
+std::optional<ArmyRegularCoreJournal12004> ReadSampledArmyRegularCoreJournal12004() noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(!g_research_sampling.ReadableLocked() || SamplingStateLocked().qualified_records==0)return std::nullopt;
+    auto out=CopyJournalLocked();
+    if(out.events.empty())return std::nullopt;
+    return out;
+  } catch(...) {return std::nullopt;}
+}
+ArmyObserverResearchSamplingState12004 ReadArmyRegularCoreResearchSampling12004() noexcept {
+  try {const std::lock_guard lock(g_mutex);return SamplingStateLocked();}
+  catch(...) {return {};}
+}
+ArmyObserverResearchSamplingState12004 SetArmyRegularCoreResearchSampling12004(bool enabled) noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked))return {};
+    return SamplingStateLocked();
+  } catch(...) {return {};}
+}
 void ClearArmyRegularCoreJournal12004() noexcept {
-  try { const std::lock_guard lock(g_mutex); g_latest = 0; g_publication_failures = 0; for (auto &event : g_records) event = {}; } catch (...) {}
+  (void)SetArmyRegularCoreResearchSampling12004(false);
 }
 bool InitializeArmyRegularCoreFixture12004(const ArmyRegularCoreBindings12004 &b,
                                          ArmyRegularCoreOriginal12004 original) noexcept {

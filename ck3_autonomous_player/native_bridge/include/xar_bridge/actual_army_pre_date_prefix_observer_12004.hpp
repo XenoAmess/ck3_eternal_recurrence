@@ -93,6 +93,9 @@ ActualArmyPreDatePrefixBindings12004 BindActualArmyPreDatePrefixImage12004(std::
 bool InstallActualArmyPreDatePrefixObserver12004(ActualArmyPreDatePrefixDetourState12004 &,
     const ActualArmyPreDatePrefixInstallEnvironment12004 &,std::string_view) noexcept;
 std::optional<ActualArmyPreDatePrefixObservations12004> ReadActualArmyPreDatePrefixObservations12004(std::uintptr_t exact_primary_manager) noexcept;
+std::optional<std::vector<ActualArmyPreDatePrefixObservations12004>> ReadSampledActualArmyPreDatePrefixForArmy12004(std::uint32_t full_id) noexcept;
+ArmyObserverResearchSamplingState12004 ReadActualArmyPreDatePrefixResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetActualArmyPreDatePrefixResearchSampling12004(bool enabled) noexcept;
 extern "C" std::uint64_t __fastcall XarActualArmyPreDatePrefixHook12004(const void *,const void *,std::uint64_t incoming_rax) noexcept;
 bool InitializeActualArmyPreDatePrefixFixture12004(const ActualArmyPreDatePrefixBindings12004 &,ActualArmyPreDatePrefixOriginal12004) noexcept;
 std::uint64_t InvokeActualArmyPreDatePrefixFixture12004(std::uintptr_t caller_return_rva,const void *,const void *,std::uint64_t incoming_rax) noexcept;

@@ -130,6 +130,8 @@ ActualArmyDailyAssaultPreparationActive12004 CopyActiveActualArmyDailyAssaultPre
 // returns owned past observations and never resolves or calls a native callback.
 std::optional<ActualArmyDailyAssaultPreparationObservations12004>
 ReadActualArmyDailyAssaultPreparationObservations12004(std::uint32_t exact_full_carmy_id) noexcept;
+ArmyObserverResearchSamplingState12004 ReadActualArmyDailyAssaultPreparationResearchSampling12004() noexcept;
+ArmyObserverResearchSamplingState12004 SetActualArmyDailyAssaultPreparationResearchSampling12004(bool enabled) noexcept;
 extern "C" std::uint64_t __fastcall XarActualArmyDailyAssaultPreparationHook12004(
     const void *, const void *, std::uintptr_t actual_r15, std::uintptr_t actual_r12) noexcept;
 // Owned fixture uses the same observation path; it does not patch or execute the

@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -28,6 +29,7 @@ ArmyGatheringDueNaturalStage12004 nested_result;
 unsigned assertions = 0, cases = 0, original_calls = 0;
 unsigned reads = 0, copies = 0, masks = 0, events = 0, depth = 0;
 std::uint64_t sequence = 1;
+std::uintptr_t expected_primary = kPrimary;
 bool permit_violation = false, arguments_changed = false;
 bool denied_day_read = false, denied_subject_id = false, busy_sample_was_null = false;
 enum class Action { ordinary, enable_at_original, disable_at_original, nested_disable };
@@ -73,6 +75,7 @@ void SetupInputs() {
   bytes.clear();
   original_calls = reads = copies = masks = events = depth = 0;
   sequence = 1;
+  expected_primary = kPrimary;
   permit_violation = arguments_changed = denied_day_read = denied_subject_id = busy_sample_was_null = false;
   action = Action::ordinary;
   inside_before = inside_disabled = inside_repeat_enable = inside_enable_attempt = after_nested = {};
@@ -100,7 +103,7 @@ void SetupInputs() {
 
 std::uintptr_t __fastcall Original(void *actual_primary, const void *actual_date) {
   ++original_calls; ++depth;
-  if (reinterpret_cast<std::uintptr_t>(actual_primary) != kPrimary ||
+  if (reinterpret_cast<std::uintptr_t>(actual_primary) != expected_primary ||
       reinterpret_cast<std::uintptr_t>(actual_date) != kState + 8)
     arguments_changed = true;
   if (action == Action::enable_at_original) {
@@ -162,11 +165,35 @@ void DefaultOff() {
           "off reader must report unavailable, not a fabricated empty observation");
   const auto result = Invoke();
   ReturnedOnce(result);
-  Require(reads == 0 && copies == 0 && masks == 0 && events == 0 && !result.observed,
-          "default off must skip metadata, memory, event and journal capture");
+  Require(reads == 0 && copies == 0 && masks == 1 && events == 0 && !result.observed &&
+              result.saved_mask_parent_observation_admitted == true,
+          "off retains one qualified SavedMask observation and skips heavy capture");
   const auto after = ReadArmyGatheringResearchSamplingState12004();
-  Require(!after.enabled && after.epoch == initial.epoch && after.retained_records == 0,
+  Require(!after.enabled && after.epoch == initial.epoch && after.retained_records == 0 &&
+              !ReadSampledArmyGatheringDueNaturalForArmy12004(kArmyId),
           "query and off invocation must not enable sampling");
+}
+
+void OffSavedMaskInvalidInputs() {
+  for (unsigned invalid = 0; invalid != 4; ++invalid) {
+    ++cases; SetupInputs();
+    auto b = bindings;
+    auto pc = kArmyGatheringDueNaturalReturnRva12004;
+    std::optional<std::uint8_t> mask = std::uint8_t{0};
+    if (invalid == 0) b = BindArmyGatheringDueNaturalStage12004(kBase, "unsupported", nullptr, Read);
+    if (invalid == 1) ++pc;
+    if (invalid == 2) mask.reset();
+    if (invalid == 3) expected_primary = (std::numeric_limits<std::uintptr_t>::max)() - 7;
+    const auto result = InvokeArmyGatheringDueNatural12004(b, Original,
+        reinterpret_cast<void *>(expected_primary), reinterpret_cast<const void *>(kState + 8), pc, mask);
+    ReturnedOnce(result);
+    Require(masks == 0 && !result.saved_mask_parent_observation_admitted &&
+                reads == 0 && copies == 0 && events == 0 && !result.observed,
+            "invalid off input must not qualify SavedMask or heavy capture");
+    Require(!ReadSampledArmyGatheringDueNaturalForArmy12004(kArmyId) &&
+                ReadArmyGatheringResearchSamplingState12004().retained_records == 0,
+            "invalid off invocation must not manufacture a sampled history");
+  }
 }
 
 void AdmissionIsFixedAtEntry() {
@@ -177,8 +204,9 @@ void AdmissionIsFixedAtEntry() {
   Require(!inside_before.enabled && inside_before.active_captures == 0 &&
               inside_enable_attempt.enabled && !inside_enable_attempt.busy,
           "explicit original callback may enable only the next capture");
-  Require(reads == 0 && copies == 0 && masks == 0 && events == 0 && !result.observed,
-          "enable during an unadmitted original must not admit its return capture");
+  Require(reads == 0 && copies == 0 && masks == 1 && events == 0 && !result.observed &&
+              result.saved_mask_parent_observation_admitted == true,
+          "off-entry enable keeps the light observation without admitting heavy capture");
   const auto after = ReadArmyGatheringResearchSamplingState12004();
   Require(after.enabled && after.retained_records == 0 && after.qualified_records == 0 &&
               !ReadSampledArmyGatheringDueNaturalForArmy12004(kArmyId),
@@ -309,11 +337,11 @@ ArmyNaturalPhaseScope12004 CopyActiveArmyNaturalPhaseScope12004() noexcept {
   return gathering_sampling_fixture::parent;
 }
 bool ObserveArmyNaturalPhaseSavedMask12004(std::uintptr_t secondary,
-    std::uintptr_t pc, std::uint8_t) noexcept {
+    std::uintptr_t pc, std::uint8_t value) noexcept {
   ++gathering_sampling_fixture::masks;
-  gathering_sampling_fixture::CheckPermit();
+  // SavedMask is permitted lightweight provenance even when sampling is off.
   return secondary == gathering_sampling_fixture::kPrimary + 8 &&
-      pc == kArmyGatheringDueNaturalReturnRva12004;
+      pc == kArmyGatheringDueNaturalReturnRva12004 && value == 0;
 }
 ArmyNaturalPhaseEvent12004 NextArmyNaturalPhaseEvent12004(void *) noexcept {
   ++gathering_sampling_fixture::events;
@@ -325,13 +353,20 @@ ArmyNaturalPhaseEvent12004 NextArmyNaturalPhaseEvent12004(void *) noexcept {
 }
 } // namespace xar::ck3_12004
 
-int main() {
+int main(int argc, char **argv) {
   try {
     using namespace gathering_sampling_fixture;
-    DefaultOff(); AdmissionIsFixedAtEntry(); UnqualifiedHistoryRemainsUnknown();
-    QualifiedCaptureAndSubjectUnknowns(); PartialFieldsStayPartial();
-    UnobservedSubjectIdentityRemainsUnknown();
-    DisableAnInflightCapture(false); DisableAnInflightCapture(true);
+    const bool off67d = argc == 2 && std::string_view(argv[1]) == "--gathering-off-67d";
+    Require(argc == 1 || off67d, "unknown focused fixture selection");
+    if (off67d) {
+      DefaultOff(); OffSavedMaskInvalidInputs(); AdmissionIsFixedAtEntry();
+      SetArmyGatheringResearchSampling12004(false);
+    } else {
+      DefaultOff(); AdmissionIsFixedAtEntry(); UnqualifiedHistoryRemainsUnknown();
+      QualifiedCaptureAndSubjectUnknowns(); PartialFieldsStayPartial();
+      UnobservedSubjectIdentityRemainsUnknown();
+      DisableAnInflightCapture(false); DisableAnInflightCapture(true);
+    }
     const auto final = ReadArmyGatheringResearchSamplingState12004();
     Require(!final.enabled && !final.busy && final.clear_completed && final.retained_records == 0,
             "fixture must finish with drained disabled sampling");
