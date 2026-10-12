@@ -108,7 +108,7 @@ class AcceptanceRunnerTests(unittest.TestCase):
 
             def fake_command(argv, output, name):
                 self.assertEqual(Path(argv[0]), Path(sys.executable))
-                self.assertTrue(Path(argv[1]).name in {"test_build_release.py", "test_run_acceptance.py", "test_school_consent.py", "test_content_leadership.py", "test_institution_candidate.py", "gen_content.py", "gen_runtime.py", "validate_static.py", "build_release.py"})
+                self.assertIn(Path(argv[1]).name, {"test_build_release.py", "test_run_acceptance.py", "test_school_consent.py", "test_content_leadership.py", "test_institution_candidate.py", "test_tenet_playstyles.py", "gen_content.py", "gen_runtime.py", "validate_static.py", "build_release.py"})
                 commands.append(name)
                 return {"argv": argv, "returncode": 0}
 
@@ -116,7 +116,8 @@ class AcceptanceRunnerTests(unittest.TestCase):
                  patch.object(runner, "inspect_processes", return_value={"status": "NOT_RUNNING", "pids": []}), \
                  patch.object(subprocess, "run", side_effect=AssertionError("unexpected subprocess")):
                 report = runner.run(args, command_runner=fake_command)
-            self.assertEqual(commands, ["tool-tests", "runner-tests", "school-consent-tests", "content-leadership-tests", "institution-tests", "content-generated-check", "runtime-generated-check", "static", "build-check"])
+            self.assertNotIn("error", report)
+            self.assertEqual(commands, ["tool-tests", "runner-tests", "school-consent-tests", "content-leadership-tests", "institution-tests", "tenet-playstyle-tests", "content-generated-check", "runtime-generated-check", "static", "build-check"])
             self.assertEqual(report["l0"]["status"], "GREEN")
             self.assertEqual(report["l0"]["product_source"], "GREEN")
             self.assertEqual(report["result"], "ENVIRONMENT_RED")
@@ -129,6 +130,30 @@ class AcceptanceRunnerTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "fresh attempt"):
                 runner.run(args)
             self.assertEqual((args.output / "report.json").read_bytes(), before)
+
+    def test_tenet_playstyle_failure_is_tool_red_while_product_checks_remain_green(self):
+        with tempfile.TemporaryDirectory(prefix="lyd-runner-test-") as temp:
+            root = Path(temp)
+            commands = []
+
+            def fake_command(argv, output, name):
+                commands.append(name)
+                return {"argv": argv, "returncode": 1 if name == "tenet-playstyle-tests" else 0}
+
+            with patch.object(runner, "inspect_game", return_value={"status": "EXACT_BUILD", "issues": []}), \
+                 patch.object(runner, "inspect_processes", return_value={"status": "NOT_RUNNING", "pids": []}), \
+                 patch.object(runner, "inspect_mcp", return_value={"issues": []}), \
+                 patch.object(subprocess, "run", side_effect=AssertionError("unexpected subprocess")):
+                report = runner.run(self.args(root), command_runner=fake_command)
+            self.assertNotIn("error", report)
+            self.assertEqual(len(commands), 10)
+            self.assertEqual(commands[5], "tenet-playstyle-tests")
+            self.assertEqual(commands[6:], ["content-generated-check", "runtime-generated-check", "static", "build-check"])
+            self.assertEqual(report["l0"]["tool_contracts"], "RED")
+            self.assertEqual(report["l0"]["product_source"], "GREEN")
+            self.assertEqual(report["result"], "L0_RED")
+            self.assertEqual(report["exit_code"], 1)
+            self.assertEqual(report["live"]["status"], "NOT_RUN")
 
     def test_preflight_only_skips_l0_and_code_failure_has_priority_over_missing_live(self):
         with tempfile.TemporaryDirectory(prefix="lyd-runner-test-") as temp:
