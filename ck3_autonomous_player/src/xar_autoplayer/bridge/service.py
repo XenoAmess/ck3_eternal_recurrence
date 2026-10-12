@@ -1105,6 +1105,10 @@ class GameplayBridgeService:
                     error.read_only_query_retry["second_error"] = (
                         f"{type(retry_error).__name__}: {retry_error}"
                     )
+                    error.add_note(
+                        "campaign_root_fresh_read_v1 " +
+                        json.dumps(error.read_only_query_retry, sort_keys=True)
+                    )
                     raise error from retry_error
             retain(turn_bundle, expected_revision=revision)
             refreshed = getattr(
@@ -2248,6 +2252,10 @@ class GameplayBridgeService:
                         **retry_evidence,
                         "second_error": f"{type(retry_error).__name__}: {retry_error}",
                     }
+                    error.add_note(
+                        "campaign_root_fresh_read_v1 " +
+                        json.dumps(error.read_only_query_retry, sort_keys=True)
+                    )
                     raise error from retry_error
             current_plan = current.get("plan")
             if isinstance(current_plan, dict):
@@ -4093,6 +4101,18 @@ class GameplayBridgeService:
             "fresh_revision": fresh["revision"],
             "fresh_native_revision": fresh["native_revision"],
             "failed_history_index": tail[0].get("index"),
+            "old_frame": {key: starting.get(key) for key in (
+                "snapshot_id", "revision", "native_revision", "date_raw", "paused", "map_ready",
+            )},
+            "fresh_frame": {key: fresh.get(key) for key in (
+                "snapshot_id", "revision", "native_revision", "date_raw", "paused", "map_ready",
+            )},
+            "old_connection": {key: old_diagnostics.get(key) for key in (
+                "bridge_pid", "connection_generation",
+            )},
+            "fresh_connection": {key: fresh_diagnostics.get(key) for key in (
+                "bridge_pid", "connection_generation",
+            )},
             "starting_snapshot": starting,
             "fresh_snapshot": fresh,
         }

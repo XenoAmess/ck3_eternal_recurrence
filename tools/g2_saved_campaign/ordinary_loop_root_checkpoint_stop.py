@@ -104,7 +104,28 @@ class Queue:
                 except json.JSONDecodeError:
                     pass  # The existing executor writes its response before closing it.
                 else:
-                    return body(raw), response_path
+                    try:
+                        return body(raw), response_path
+                    except (RuntimeError, ValueError) as error:
+                        result = raw.get("result")
+                        content = result.get("content") if isinstance(result, dict) else None
+                        text = next((block["text"] for block in content
+                            if isinstance(block, dict) and block.get("type") == "text"
+                            and isinstance(block.get("text"), str)), None
+                        ) if isinstance(content, list) else None
+                        expected_revision = arguments.get("expected_revision")
+                        error.root_response_context = {
+                            "request": str(request_path), "response": str(response_path),
+                            "tool": tool,
+                            "request_expected_revision": expected_revision
+                                if type(expected_revision) is int else None,
+                            "remote_error_excerpt": text[:4096] if text is not None else None,
+                            "remote_error_excerpt_basis": "first_mcp_text_block"
+                                if text is not None else None,
+                            "remote_error_excerpt_truncated": len(text) > 4096
+                                if text is not None else False,
+                        }
+                        raise
             if time.monotonic() >= deadline:
                 raise TimeoutError(f"Original request remains pending; do not resend: {request_path}")
             time.sleep(0.25)
@@ -303,7 +324,10 @@ def run(args) -> int:
             status = "TARGET_DATE_REACHED_ROOT_CHECKPOINT_PENDING"
     except Exception as error:
         status = "ROOT_REVIEW_ORIGINAL_RESPONSE_REQUIRED"
-        queue.thin("error", {"error": repr(error), "pending_requests_not_resent": True})
+        queue.thin("error", {
+            "error": repr(error), "pending_requests_not_resent": True,
+            "original_response_context": getattr(error, "root_response_context", None),
+        })
     finally:
         write(args.output / "LOOP-RESULT.json", {
             "status": status, "started_at_utc": started,
