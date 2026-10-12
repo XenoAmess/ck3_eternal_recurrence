@@ -126,7 +126,27 @@ class VanillaFaithIntegrationTests(unittest.TestCase):
         self.assertTrue(any(e.key == 'any_faith_rite' for e in walk(guard)))
         actor = self.defs['lyd_i3b_actor_trigger']
         self.assertTrue(any(e.key == 'faith' and e.value == 'faith:confucian_faith' for e in walk(actor)))
-        self.assertTrue(any(e.key == 'lyd_i3b_owned_rite_trigger' and e.value == 'yes' for e in walk(actor)))
+        self.assertTrue(direct(actor, 'lyd_i3b_player_actor_trigger', 'yes'))
+        authority = [b for b in blocks(one(actor, 'OR'), 'AND') if direct(b, 'faith', 'faith:confucian_faith')]
+        self.assertEqual(len(authority), 1)
+        self.assertTrue(direct(one(authority[0], 'rite'), 'lyd_i3b_supported_rite_trigger', 'yes'))
+        player = one(self.defs['lyd_i3b_player_actor_trigger'], 'OR')
+        self.assertTrue(direct(player, 'lyd_c3_player_actor_trigger', 'yes'))
+        untouched = [b for b in blocks(player, 'AND') if direct(b, 'faith', 'faith:confucian_faith')]
+        self.assertEqual(len(untouched), 1)
+        for key, value in [('is_ai', 'no'), ('is_alive', 'yes'), ('is_adult', 'yes'),
+                           ('is_landed', 'yes'), ('religion', 'religion:confucianism_religion')]:
+            self.assertEqual(values(untouched[0], key), [value])
+        self.assertTrue(direct(one(untouched[0], 'NOT'), 'has_trait', 'incapable'))
+        self.assertTrue(direct(one(untouched[0], 'rite'), 'lyd_i3b_supported_rite_trigger', 'yes'))
+        self.assertFalse(any(e.key in {'has_character_flag', 'lyd_member_rite_trigger'} for e in walk(untouched[0])))
+        self.assertTrue(direct(actor, 'lyd_i3b_no_other_office_trigger', 'yes'))
+        captured = one(self.defs['lyd_i3b_captured_authority_trigger'], 'OR')
+        mode2 = [b for b in blocks(captured, 'AND') if direct(b, 'var:lyd_i3b_authority_mode', '2')]
+        self.assertEqual(len(mode2), 1)
+        self.assertEqual(values(mode2[0], 'faith'), ['faith:confucian_faith'])
+        self.assertEqual(values(mode2[0], 'rite'), ['var:lyd_i3b_actor_rite'])
+        self.assertTrue(direct(one(mode2[0], 'rite'), 'lyd_i3b_supported_rite_trigger', 'yes'))
         supported = self.defs['lyd_i3b_supported_faith_trigger']
         self.assertTrue(any(e.key == 'this' and e.value == 'faith:confucian_faith' for e in walk(supported)))
         self.assertTrue(any(e.key == 'any_faith_rite' for e in walk(supported)))
