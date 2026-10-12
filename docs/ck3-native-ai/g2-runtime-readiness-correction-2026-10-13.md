@@ -125,3 +125,21 @@ Root 的 build02 两个实际 owner TU（Bridge、Gathering）编译、链接退
 普通 claim/de jure/conquest 的开战脚本含非空公共 helper，原先只认 count0/null row 的资格不能证明这些正常路径完整。正在补当次实际节点、调用方和参战源的只读投影；现有完整盟友和联邦成员 superset 可覆盖已核对的相应脚本子集，但不能据此吞掉其余未知节点。当前新宣战资格与完整重开演示继续标记未验收。
 
 新增回执：`R/native-profile/build05/ROOT-BUILD-RESULT.json`、`R/acceptance/lane08/common-policy-01/receipt.json`；具名来源静态合同及增量分别为 `R/fresh-run-plan/ACTUAL4-TYPED-GETTER-SOURCE-CONTRACT.json` 和 `ACTUAL4-TYPED-GETTER-SOURCE-DELTA01.json`。它们均按原准入期限复核，静态读取和编译不代表实际部署。
+
+## 已宣战窗口与实际请求帧修复
+
+新增固定目标 `war_declared_overview` 的原生查询和关闭。调用前后独立读取原生窗口、GUI owner 和完整 Core frame；只有真实调用后窗口消失或隐藏、原帧不变才标 `closed_verified`。注册表查询返回 null 时还需完整 owner tree 确认零匹配，读取失败、重复或容量不足仍为 unknown。CharacterInteraction ACK 不提供该窗口关闭资格。
+
+Bridge 在回收票据前从真实 mailbox 取得 started/completed sequence 和 execution stamp，形成独立八字段 TOP 回执；SDK 核对该回执、实际 hello generation 及七项当前帧绑定。关闭未知保留原请求，不重送；普通策略在终局和继承处理后优先处理该窗口，随后继续完整普通规划。`already_absent/hidden` 仅是观察，不获得关闭动作信用。
+
+实际审阅发现并修正了外层 unsupported 拦截、单键 parser 与五键完整请求帧不匹配，以及 Service 将真实 `dispatch_invoked` 错读为 `invoked` 的跨层问题。局部静审未覆盖这些路径，不能代替实际消费验收。
+
+build06 最初六个 TU 中五个编译通过，navigation 因新头文件缺少 `game_adapter.hpp` 失败；补上显式依赖后仅补编四个头文件消费者，保留两个成功的节点读取对象。612 成员 archive 和 DLL link 实际退出码均为 0。DLL 为 18,255,872 B，SHA-256 `c78fc247eb1990e1a0c87ea4f6ff2aebf6d4a012661101a3a04fdcf85359cb18`；本组实际文件 998,978,759 B，仍在原 2 GiB 内。该 DLL 尚未冷载到游戏。
+
+新增独立 parser fixture 首先仅包含新头文件，实际编译、链接、运行均退出 0：42 个内部语法场景、54 个完整五键请求场景，共 96 场景、192 断言。它验证真实 wire 语法和头文件闭包，不验证原生窗口、Invoke 或实机关闭。Defender 精确 EXE 登记实际读回仍为 `admin_required_for_verified_readback`，未调用 Add，未声称设置成功。原编译失败和回执保留。
+
+两个新增 Python 测试文件首次实际运行 27 个用例，全部通过，耗时 3.46 s、sourceStable=true。范围包括真实 SDK 返回字段与 Service 关闭信用、终局／弹窗／宣战优先级、未知关闭不重发、CharacterInteraction ACK 不清该窗口、独立 TOP 和完整帧绑定错误拒绝缓存。补强其中两个终局场景，实际经 Service 规划并核零 Native 发送后，仅复验这两个用例，均通过；unique 仍是 27，不计为 29。没有重跑其余 25、旧 22 个用例或旧矩阵。回执为 `R/acceptance/lane11/python01-receipt.json` 和 `terminal-delta02-receipt.json`。这些受控输入没有授予 GUI 实际调用或实机业务资格。
+
+新 private declaration-node 查询只复制非空 CB 数据库槽和有界节点身份，两次完整 witness 比较；不调用 getter 的未知慢路径、选择器、效果或 RNG。完整成功和失败 wire 均限定 8192 B，超限整体拒绝。结构捕获不等于参战来源完整，主攻／主守角色仍未观察，`participant_coverage_complete`、`war_permission` 固定 false；普通非空开战脚本的具体调用、参数、角色变换及事件后代仍待闭合，正式 v2 不放宽。
+
+新增回执：`R/native-profile/build06/ROOT-BUILD-FAILED.json`、`R/native-profile/build06/repair01/ROOT-BUILD-RESULT.json`、`R/acceptance/lane11/native-compile01-receipt.json`、`native-run01-receipt.json`、`PROJECT-EXE-REGISTRATION.json` 和 `R/ROOT-NODE-SOURCE-DELTA-ADMISSION.json`。新开局、当次画面、决策文字、录像和持续日期推进仍未完成，不能将本节改为“全部问题修复”。

@@ -1,6 +1,14 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+#include "xar_bridge/war_declared_overview_v1.hpp"
+#endif
+
+#if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
+#include "xar_bridge/prewar_declaration_node_identity12004_mailbox.hpp"
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) && \
     XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1
 #include "xar_bridge/prewar_force_coalition12004_mailbox.hpp"
@@ -1516,6 +1524,12 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
 #if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2) && \
     XAR_ENABLE_PREWAR_FORCE_COALITION_V2
        executor != &::xar::ck3_12004::ExecutePrewarForceCoalitionV2Mailbox12004 &&
+#endif
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+       executor != &::xar::ck3_11906::ExecuteWarDeclaredOverviewMailboxV1 &&
+#endif
+#if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
+       executor != &::xar::ck3_12004::ExecutePrewarDeclarationNodeIdentityMailbox12004 &&
 #endif
        executor != mailbox.permitted_executor_sway_outcome_opinion12002 &&
       executor != mailbox.permitted_executor_religion_ai_reform_inputs12002 &&

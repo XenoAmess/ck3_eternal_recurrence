@@ -41,6 +41,12 @@ from .army_gathering_research_sampling_contract import (
     QUERY_STEP as QUERY_ARMY_GATHERING_RESEARCH_SAMPLING_STEP,
     normalize_army_gathering_research_sampling_result,
 )
+from .war_declared_overview_contract import (
+    CLOSE_CAPABILITY as CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY,
+    CLOSE_STEP as CLOSE_WAR_DECLARED_OVERVIEW_STEP,
+    QUERY_CAPABILITY as QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY,
+    QUERY_STEP as QUERY_WAR_DECLARED_OVERVIEW_STEP,
+)
 
 from collections.abc import Callable, Mapping
 import copy
@@ -2022,6 +2028,10 @@ class NativeHeadlessGameplayDriver:
         self._war_entry_assessments_query: dict[str, object] | None = None
         self._prewar_force_coalition_v2_query: dict[str, object] | None = None
         self._prewar_force_coalition_v2_attempt = 0
+        self._war_declared_overview_attempt = 0
+        self._war_declared_overview_observation: dict[str, object] | None = None
+        self._war_declared_overview_query_attempt: dict[str, object] | None = None
+        self._war_declared_overview_close_pending: dict[str, object] | None = None
         self._war_entry_assessments_two_read_trace: list[dict[str, object]] = []
         self._campaign_root_context_query: dict[str, object] | None = None
         self._war_termination_options: dict[int, dict[str, object]] = {}
@@ -3292,6 +3302,47 @@ class NativeHeadlessGameplayDriver:
         )
         return {"prewar_force_coalition_coverage_v2_query": query}
 
+    def _war_declared_overview_v1(
+        self, *, operation: str, expected_revision: int, record: bool = True,
+    ) -> dict[str, object]:
+        from .war_declared_overview_transport import execute_war_declared_overview_v1
+        step = QUERY_WAR_DECLARED_OVERVIEW_STEP if operation == "query" else CLOSE_WAR_DECLARED_OVERVIEW_STEP
+        try:
+            result = execute_war_declared_overview_v1(self, operation=operation, expected_revision=expected_revision)
+        except Exception as error:
+            if record:
+                self._record_command(step, ok=False, result=None, error=f"{type(error).__name__}: {error}")
+            raise
+        if record:
+            self._record_command(step, ok=result["accepted"], result=result)
+        return result
+
+    def query_war_declared_overview_v1(self, *, expected_revision: int) -> dict[str, object]:
+        """Read the actual standalone overview, independently of interaction ACKs."""
+        return self._war_declared_overview_v1(operation="query", expected_revision=expected_revision)
+
+    def close_war_declared_overview_v1(self, *, expected_revision: int) -> dict[str, object]:
+        """Submit at most one close until its original response is resolved."""
+        return self._war_declared_overview_v1(operation="close", expected_revision=expected_revision)
+
+    def get_current_war_declared_overview_v1(
+        self, snapshot: Mapping[str, object] | None = None,
+    ) -> dict[str, object] | None:
+        from .war_declared_overview_transport import get_current_war_declared_overview_v1
+        current = self.take_internal_semantic_snapshot() if snapshot is None else snapshot
+        return get_current_war_declared_overview_v1(self, current)
+
+    def get_current_war_declared_overview_v1_query_attempt(
+        self, snapshot: Mapping[str, object] | None = None,
+    ) -> dict[str, object] | None:
+        from .war_declared_overview_transport import get_current_war_declared_overview_v1_query_attempt
+        current = self.take_internal_semantic_snapshot() if snapshot is None else snapshot
+        return get_current_war_declared_overview_v1_query_attempt(self, current)
+
+    def _war_declared_overview_snapshot_fields(self, snapshot: Mapping[str, object]) -> dict[str, object]:
+        from .war_declared_overview_transport import war_declared_overview_snapshot_fields
+        return war_declared_overview_snapshot_fields(self, snapshot)
+
     def query_active_scheme_sway_outcome_opinion_private_v1(
         self, *, expected_revision: int, target_character_id: int,
     ) -> dict[str, object]:
@@ -4513,6 +4564,7 @@ class NativeHeadlessGameplayDriver:
                 **snapshot, "episode_projection": "native_campaign",
                 **self._army_strength_snapshot_fields(army_query),
                 **self._prewar_force_coalition_v2_snapshot_fields(snapshot),
+                **self._war_declared_overview_snapshot_fields(snapshot),
             }
         played_character = snapshot.get("played_character")
         current_character_id = (
@@ -4835,6 +4887,9 @@ class NativeHeadlessGameplayDriver:
             "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
             **self._army_strength_snapshot_fields(army_strength_query),
             **self._prewar_force_coalition_v2_snapshot_fields(
+                {**snapshot, "episode_run_id": episode_run_id},
+            ),
+            **self._war_declared_overview_snapshot_fields(
                 {**snapshot, "episode_run_id": episode_run_id},
             ),
             "combat_simulation_inputs": (
@@ -8792,7 +8847,11 @@ class NativeHeadlessGameplayDriver:
                 if step == QUERY_ARMY_STRENGTHS_STEP else None
             )
             try:
-                persistence_failure = self._record_command(step, ok=True, result=result)
+                persistence_failure = self._record_command(
+                    step, ok=(result.get("accepted") is True if step in {
+                        QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP,
+                    } else True), result=result,
+                )
             finally:
                 finish_army_timing(army_record_timing)
             if (
@@ -8827,6 +8886,11 @@ class NativeHeadlessGameplayDriver:
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if step in {QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP}:
+            return self._war_declared_overview_v1(
+                operation="query" if step == QUERY_WAR_DECLARED_OVERVIEW_STEP else "close",
+                expected_revision=expected_revision, record=False,
+            )
         # The immutable in-process episode binding allows an early deny without
         # taking an extra native frame or altering ordinary revision races.
         if is_date_control_step(step) or is_army_move_control_step(step):
@@ -30239,6 +30303,13 @@ def _action_steps(
     occupation_target_province_ids: object = None,
 ) -> list[str]:
     steps: set[str] = set()
+    if paused is True:
+        for capability, step in (
+            (QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY, QUERY_WAR_DECLARED_OVERVIEW_STEP),
+            (CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY, CLOSE_WAR_DECLARED_OVERVIEW_STEP),
+        ):
+            if capability in capabilities:
+                steps.add(step)
     war_primary_opponent_supported = (
         WAR_PRIMARY_OPPONENT_CAPABILITY in capabilities
     )
@@ -30276,6 +30347,8 @@ def _action_steps(
     expand_arrange_marriage = False
     advertise_raise_troops = False
     for capability in capabilities:
+        if capability in {QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY, CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY}:
+            continue  # Advertised above only for the actual paused scene.
         if capability == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY:
             advertise_council_composition_candidates = True
             continue

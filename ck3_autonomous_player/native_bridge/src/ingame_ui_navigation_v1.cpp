@@ -1,4 +1,5 @@
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/war_declared_overview_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
@@ -1039,6 +1040,343 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   if(!invoked)out.unavailable_reason="native_navigation_fault";
   else out.unavailable_reason.clear();
   return true;
+}
+
+namespace {
+struct WarDeclaredWindowObservationV1 {
+  void *root = nullptr;
+  bool present = false;
+  bool visible = false;
+  std::string source;
+};
+
+std::string WarDeclaredPointerV1(void *pointer) {
+  std::ostringstream out;
+  out << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(pointer);
+  return out.str();
+}
+
+// Unlike the legacy resolver, a normal null return is distinct from an AV.
+// The fixed top-level window lookup uses the existing qualified GUI owner ABI.
+bool CallWarDeclaredFindTopV1(NativeZhongguoFindTopLevelWidgetV1 find,
+    void *owner, const std::string &name, void *&root) noexcept {
+  root = nullptr;
+  if (!find || !owner) return false;
+#if defined(_MSC_VER)
+  __try { root = find(owner, &name); return true; }
+  __except(EXCEPTION_EXECUTE_HANDLER) { root = nullptr; return false; }
+#else
+  return false;
+#endif
+}
+
+// The registered top-level map does not cover every scripted widget. A null
+// result needs a complete bounded search of the same current owner tree before
+// it can mean absence. No tree, budget exhaustion, bad edge or duplicate is
+// unknown. Only raw widget fields are read; no expression is evaluated here.
+bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
+    void *owner, WarDeclaredWindowObservationV1 &out) {
+  void *scene_root = nullptr;
+  if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root) || !scene_root)
+    return false;
+  std::array<void *,kNamedGuiTreeInspectionMaximumWidgetsV1> queue{};
+  queue[0] = scene_root;
+  std::size_t used = 1, edges = 0, matches = 0;
+  for (std::size_t at = 0; at < used; ++at) {
+    auto *node = queue[at];
+    std::string name;
+    void *vtable = nullptr;
+    bool visible = false, enabled = false;
+    if (!ReadGuiWidgetRuntimeV1(access,node,name,vtable,visible,enabled) || !vtable)
+      return false;
+    if (name == kWarDeclaredOverviewWindowNameV1) {
+      if (++matches != 1) return false;
+      out.root = node;
+      out.present = true;
+      out.visible = visible;
+    }
+    void **children = nullptr;
+    std::int32_t count = 0;
+    if (!Value(node,kZhongguoWidgetChildrenOffset,children) ||
+        !Value(node,kZhongguoWidgetChildCountOffset,count) || count < 0 ||
+        static_cast<std::size_t>(count) > queue.size() ||
+        edges + static_cast<std::size_t>(count) > 8192 || (count && !children))
+      return false;
+    edges += static_cast<std::size_t>(count);
+    for (std::int32_t index = 0; index < count; ++index) {
+      void *child = nullptr;
+      const auto address = reinterpret_cast<std::uintptr_t>(children);
+      const auto offset = static_cast<std::size_t>(index) * sizeof(void *);
+      if (address > (std::numeric_limits<std::uintptr_t>::max)()-offset ||
+          !Slot(address+offset,child) || !child || used == queue.size())
+        return false;
+      if (std::find(queue.begin(),queue.begin()+static_cast<std::ptrdiff_t>(used),child) !=
+          queue.begin()+static_cast<std::ptrdiff_t>(used)) return false;
+      queue[used++] = child;
+    }
+  }
+  out.source = "guarded_top_level_and_complete_owner_tree";
+  return true;
+}
+
+bool ReadWarDeclaredWindowV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
+    const IngameUiGuiOwnerBindingV1 &binding,
+    WarDeclaredWindowObservationV1 &out) {
+  out = {};
+  const std::string name(kWarDeclaredOverviewWindowNameV1);
+  if (!CallWarDeclaredFindTopV1(env.find_top_level_widget, binding.owner,
+                              name, out.root)) return false;
+  ZhongguoScoreboardAccessV1 access{};
+  if (!out.root) return FindWarDeclaredInOwnerTreeV1(access,binding.owner,out);
+  std::string actual_name;
+  void *vtable = nullptr;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, out.root, actual_name, vtable,
+                             out.visible, enabled) ||
+      actual_name != name || !vtable) return false;
+  out.present = true;
+  out.source = "guarded_registered_top_level";
+  return true;
+}
+
+bool ReadWarDeclaredSnapshotV1(const WarDeclaredOverviewMailboxContextV1 &q,
+    game::Snapshot &out) noexcept {
+  if (!q.game) return false;
+  const auto &d = q.game->descriptor();
+  return d.game_version == ck3_12004::kGameVersion &&
+      d.executable_sha256 == ck3_12004::kExecutableSha256 &&
+      q.environment.executable_sha256 == ck3_12004::kExecutableSha256 &&
+      game::ReadSnapshot(*q.game, out);
+}
+
+bool ResolveWarDeclaredCloseButtonV1(
+    WarDeclaredOverviewMailboxContextV1 &q, void *expected_root,
+    void *&target, void *&vtable, std::string &name) {
+  ZhongguoScoreboardAccessV1 access{};
+  for (const auto candidate : {std::string_view("dismiss"),
+                               std::string_view("button_close")}) {
+    void *root = nullptr;
+    bool visible = false, enabled = false;
+    std::string actual;
+    target = nullptr;
+    vtable = nullptr;
+    if (ResolveNamedGuiWidgetV1(q.environment, access,
+            kWarDeclaredOverviewWindowNameV1, candidate, root, target) &&
+        root == expected_root && target &&
+        ReadGuiWidgetRuntimeV1(access, target, actual, vtable, visible, enabled) &&
+        actual == candidate && visible && enabled &&
+        InspectFixedGuiWidgetDispatchAdmissionV1(q.dispatch_environment,
+                                                target, vtable)) {
+      name = actual;
+      return true;
+    }
+  }
+  return false;
+}
+} // namespace
+
+std::string_view PrepareWarDeclaredOverviewMailboxV1(
+    const game::GameAdapter &game, const game::Snapshot *previous_snapshot,
+    std::string_view request_id, std::string_view payload, std::string_view step,
+    std::uint64_t state_revision, std::uint64_t connection_generation,
+    std::uintptr_t module_base, MainThreadQueryMailboxV1 &mailbox,
+    WarDeclaredOverviewMailboxContextV1 &query) noexcept {
+  try {
+    query = {};
+    if (step != kWarDeclaredOverviewQueryV1Step &&
+        step != kWarDeclaredOverviewCloseV1Step) return "invalid_war_declared_step";
+    if (request_id.empty() || request_id.size() > 128) return "invalid_war_declared_request_id";
+    std::uint64_t expected_revision = 0;
+    game::Snapshot current{};
+    if (!ParseWarDeclaredRequestV1(payload,request_id,step,expected_revision))
+      return "invalid_war_declared_payload";
+    if (!state_revision || expected_revision != state_revision ||
+        !connection_generation || !previous_snapshot ||
+        !game::ReadSnapshot(game, current) || current != *previous_snapshot)
+      return "state_changed";
+    if (!current.paused || !current.map_ready || !current.has_played_character)
+      return "requires_paused_map_ready_played_actor";
+    const auto &d = game.descriptor();
+    if (d.game_version != ck3_12004::kGameVersion ||
+        d.executable_sha256 != ck3_12004::kExecutableSha256 ||
+        !ck3_12004::BindIngameUiImage12004V1(module_base,d.executable_sha256).enabled)
+      return "war_declared_exact_build_not_available";
+    query.mailbox = &mailbox;
+    query.game = &game;
+    query.expected_snapshot = current;
+    query.operation = step == kWarDeclaredOverviewCloseV1Step
+        ? WarDeclaredOverviewOperationV1::close : WarDeclaredOverviewOperationV1::query;
+    query.request_id = request_id;
+    query.native_revision = state_revision;
+    query.connection_generation = connection_generation;
+    query.environment = BindZhongguoScoreboardNativeEnvironmentV1(
+        module_base, true, GuiAbiRevisionV1::crozier12004, d.executable_sha256);
+    query.dispatch_environment = BindZhongguoScoreboardActionDispatchEnvironmentV1(
+        module_base, true, GuiAbiRevisionV1::crozier12004);
+    return {};
+  } catch (...) { return "war_declared_preparation_failed"; }
+}
+
+bool ExecuteWarDeclaredOverviewMailboxV1(
+    void *opaque_context, const MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *q = static_cast<WarDeclaredOverviewMailboxContextV1 *>(opaque_context);
+  if (!q) return false;
+  auto &out = q->result;
+  try {
+    out = {};
+    out.operation = q->operation;
+    out.request_id = q->request_id;
+    out.ticket_sequence = q->ticket.sequence;
+    out.native_revision = q->native_revision;
+    out.connection_generation = q->connection_generation;
+    out.pump_epoch = stamp.pump_epoch;
+    out.thread_id = stamp.thread_id;
+    if (!q->mailbox || !q->game || q->request_id.empty() || !q->ticket.sequence ||
+        q->mailbox->executor_started_sequence.load(std::memory_order_acquire) != q->ticket.sequence ||
+        q->mailbox->published_sequence.load(std::memory_order_acquire) != q->ticket.sequence ||
+        (q->operation != WarDeclaredOverviewOperationV1::query &&
+         q->operation != WarDeclaredOverviewOperationV1::close) ||
+        q->environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
+        q->environment.offline_fixture_function_overrides ||
+        !q->environment.exact_build_admitted || !Actual4UiBoundV1(q->environment) ||
+        q->dispatch_environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
+        q->dispatch_environment.module_base != q->environment.module_base ||
+        !q->dispatch_environment.exact_build_admitted ||
+        q->dispatch_environment.offline_fixture_function_overrides ||
+        !IsIngameUiPausedOwnerStampV1(*q->mailbox,stamp,GetCurrentThreadId())) {
+      out.unavailable_reason = "war_declared_owner_or_build_unverified";
+      return true;
+    }
+    out.application_owner_thread_verified = true;
+    game::Snapshot before{};
+    IngameUiGuiOwnerBindingV1 owner_before{};
+    WarDeclaredWindowObservationV1 initial{};
+    if (!ReadWarDeclaredSnapshotV1(*q,before) || before != q->expected_snapshot ||
+        !before.paused || !before.map_ready || !before.has_played_character ||
+        before.date_raw != stamp.date_raw ||
+        !ReadIngameUiGuiOwnerBindingV1(q->environment,owner_before)) {
+      out.unavailable_reason = "war_declared_current_scope_unverified";
+      return true;
+    }
+    out.played_character_id = before.played_character_id;
+    out.date_raw = before.date_raw;
+    out.paused = before.paused;
+    if (!ReadWarDeclaredWindowV1(q->environment,owner_before,initial)) {
+      out.unavailable_reason = "war_declared_window_read_failed";
+      return true;
+    }
+    out.root_observed = true;
+    out.window_present = initial.present;
+    out.effective_visible = initial.visible;
+    out.root_observation_source = initial.source;
+    if (q->operation == WarDeclaredOverviewOperationV1::close &&
+        initial.present && initial.visible) {
+      void *target = nullptr, *vtable = nullptr;
+      if (!ResolveWarDeclaredCloseButtonV1(*q,initial.root,target,vtable,out.button_name)) {
+        out.unavailable_reason = "war_declared_fixed_close_button_unavailable";
+        return true;
+      }
+      game::Snapshot immediately_before{};
+      IngameUiGuiOwnerBindingV1 owner_now{};
+      WarDeclaredWindowObservationV1 rechecked{};
+      if (!ReadWarDeclaredSnapshotV1(*q,immediately_before) || immediately_before != before ||
+          !ReadIngameUiGuiOwnerBindingV1(q->environment,owner_now) || owner_now != owner_before ||
+          !ReadWarDeclaredWindowV1(q->environment,owner_now,rechecked) ||
+          rechecked.root != initial.root || !rechecked.visible) {
+        out.unavailable_reason = "war_declared_scope_changed_before_close";
+        return true;
+      }
+      out.dispatch_attempted = true;
+      out.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
+          &q->dispatch_environment,game::ZhongguoScoreboardActionV1::open,
+          out.button_name,out.button_name,WarDeclaredPointerV1(target),WarDeclaredPointerV1(vtable),
+          out.native_handled);
+    }
+    // Actual native UI reads after the invocation; never SDK semantic cache.
+    IngameUiGuiOwnerBindingV1 owner_after{};
+    WarDeclaredWindowObservationV1 after_window{};
+    game::Snapshot after{};
+    if (!ReadIngameUiGuiOwnerBindingV1(q->environment,owner_after) ||
+        owner_after != owner_before ||
+        !ReadWarDeclaredWindowV1(q->environment,owner_after,after_window) ||
+        !ReadWarDeclaredSnapshotV1(*q,after) || after != before) {
+      out.status = out.dispatch_attempted ? "verification_pending" : "unavailable";
+      out.unavailable_reason = "war_declared_post_scope_unverified";
+      return true;
+    }
+    out.post_observed = true;
+    out.post_window_present = after_window.present;
+    out.post_effective_visible = after_window.visible;
+    out.post_observation_source = after_window.source;
+    out.scope_unchanged = true;
+    if (after_window.present && after_window.root != initial.root) {
+      out.status = out.dispatch_attempted ? "verification_pending" : "unavailable";
+      out.unavailable_reason = "war_declared_window_replaced";
+      return true;
+    }
+    if (q->operation == WarDeclaredOverviewOperationV1::query) {
+      if (after_window.present != initial.present || after_window.visible != initial.visible) {
+        out.unavailable_reason = "war_declared_window_changed_during_query";
+        return true;
+      }
+      out.available = out.accepted = true;
+      out.status = !initial.present ? "absent" : initial.visible ? "visible" : "hidden";
+    } else if (!initial.present || !initial.visible) {
+      if (after_window.present != initial.present || after_window.visible != initial.visible) {
+        out.unavailable_reason = "war_declared_window_changed_during_noop";
+        return true;
+      }
+      out.available = true;
+      out.status = !initial.present ? "already_absent" : "already_hidden";
+    } else if (out.dispatch_invoked &&
+               (!after_window.present || !after_window.visible)) {
+      out.available = out.accepted = out.closure_verified = true;
+      out.status = "closed_verified";
+    } else {
+      out.status = "verification_pending";
+      out.unavailable_reason = "war_declared_close_not_post_verified";
+    }
+    return true;
+  } catch (...) {
+    out.available = out.accepted = out.closure_verified = false;
+    out.status = out.dispatch_attempted ? "verification_pending" : "unavailable";
+    out.unavailable_reason = "war_declared_native_observation_failed";
+    return true;
+  }
+}
+
+std::string SerializeWarDeclaredOverviewResultV1(const WarDeclaredOverviewResultV1 &v) {
+  std::ostringstream o;
+  o << std::boolalpha << "{\"schema\":\"ck3-war-declared-overview-v1\",\"operation\":\""
+    << (v.operation==WarDeclaredOverviewOperationV1::query ? "query" : "close")
+    << "\",\"window_name\":\"war_declared_overview\",\"available\":" << v.available
+    << ",\"accepted\":" << v.accepted << ",\"status\":\"" << JsonEscape(v.status)
+    << "\",\"unavailable_reason\":\"" << JsonEscape(v.unavailable_reason)
+    << "\",\"root_observed\":" << v.root_observed << ",\"window_present\":" << v.window_present
+    << ",\"request_id\":\"" << JsonEscape(v.request_id)
+    << "\",\"ticket_sequence\":" << v.ticket_sequence
+    << ",\"root_observation_source\":\"" << JsonEscape(v.root_observation_source)
+    << "\",\"post_observation_source\":\"" << JsonEscape(v.post_observation_source) << "\""
+    << ",\"effective_visible\":" << v.effective_visible << ",\"button_name\":\"" << JsonEscape(v.button_name)
+    << "\",\"dispatch_attempted\":" << v.dispatch_attempted << ",\"dispatch_invoked\":" << v.dispatch_invoked
+    << ",\"native_handled\":" << v.native_handled << ",\"post_observed\":" << v.post_observed
+    << ",\"post_window_present\":" << v.post_window_present
+    << ",\"post_effective_visible\":" << v.post_effective_visible
+    << ",\"scope_unchanged\":" << v.scope_unchanged << ",\"closure_verified\":" << v.closure_verified
+    << ",\"application_owner_thread_verified\":" << v.application_owner_thread_verified
+    << ",\"played_character_id\":" << v.played_character_id << ",\"date_raw\":" << v.date_raw
+    << ",\"paused\":" << v.paused << ",\"native_revision\":" << v.native_revision
+    << ",\"connection_generation\":" << v.connection_generation << ",\"pump_epoch\":" << v.pump_epoch
+    << ",\"thread_id\":" << v.thread_id << ",\"game_version\":\"" << ck3_12004::kGameVersion
+    << "\",\"executable_sha256\":\"" << ck3_12004::kExecutableSha256 << "\"}";
+  return o.str();
+}
+
+std::string WarDeclaredOverviewCommandResultFrameV1(
+    std::string_view request_id,const WarDeclaredOverviewResultV1 &result) {
+  return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"" +
+      JsonEscape(std::string(request_id)) + "\",\"ok\":true,\"result\":" +
+      SerializeWarDeclaredOverviewResultV1(result) + "}";
 }
 
 std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiResultV1 &v,std::uint64_t revision) {

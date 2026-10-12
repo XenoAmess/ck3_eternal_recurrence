@@ -6,6 +6,7 @@ import copy
 import json
 from collections.abc import Callable
 from pathlib import Path
+from threading import Lock
 import uuid
 
 from .army_query_timing import finish_army_timing, start_army_timing
@@ -504,8 +505,17 @@ from .war_contract import (
 )
 from ..strategy import (
     choose_one_life_turn,
+    plan_one_life_window_priority_v1,
     consume_one_life_lifestyle_private_trial,
     read_one_life_strategy,
+)
+from ..ordinary_war_declared_overview_v1 import (
+    CLOSE_WAR_DECLARED_OVERVIEW_V1_STEP,
+    QUERY_WAR_DECLARED_OVERVIEW_V1_STEP,
+    WAR_DECLARED_OVERVIEW_V1_POLICY,
+    WAR_DECLARED_OVERVIEW_V1_PUBLIC_KEYS,
+    war_declared_overview_presence_v1,
+    war_declared_overview_query_frame_v1,
 )
 from ..lifestyle_formal_consumer import (
     PERK_SUBMIT_STEP as PRIVATE_LIFESTYLE_PERK_STEP,
@@ -608,6 +618,8 @@ from ..m5_formal_proposal_collector import (
 class GameplayBridgeService:
     def __init__(self, driver: GameplayBridgeDriver) -> None:
         self.driver = driver
+        self._war_overview_query_lock_v1 = Lock()
+        self._war_overview_query_frame_v1: tuple[object, ...] | None = None
         self._zhongguo_scoreboard_surface_preparer_v1 = None
         self._coat_of_arms_source_uploads_v2 = (
             CoatOfArmsSourceUploadManagerV2()
@@ -801,6 +813,19 @@ class GameplayBridgeService:
         if not callable(query):
             raise UnsupportedStepError("bridge driver does not implement core-frame query")
         return query()
+
+    def query_war_declared_overview_v1(self, *, expected_revision: int) -> dict[str, object]:
+        query = getattr(self.driver, "query_war_declared_overview_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("bridge driver cannot query the war overview")
+        return query(expected_revision=expected_revision)
+
+    def close_war_declared_overview_v1(self, *, expected_revision: int) -> dict[str, object]:
+        close = getattr(self.driver, "close_war_declared_overview_v1", None)
+        if not callable(close):
+            raise UnsupportedStepError("bridge driver cannot close the war overview")
+        # The Driver owns the independent request latch and single dispatch.
+        return close(expected_revision=expected_revision)
 
     def finish_active_scheme_sway_private_v1(
         self, *, expected_revision: int, target_character_id: int,
@@ -1327,7 +1352,8 @@ class GameplayBridgeService:
             finish_army_timing(plan_timing, step="plan-turn")
 
     def _finish_prewar_force_coalition_plan_v2(
-        self, planned: dict[str, object], snapshot: dict[str, object], *, allow_query: bool
+        self, planned: dict[str, object], snapshot: dict[str, object], *, allow_query: bool,
+        allow_war_overview_query: bool = True,
     ) -> dict[str, object]:
         plan = planned.get("plan")
         required = plan.get("required_prewar_force_coalition_query") if isinstance(plan, dict) else None
@@ -1377,14 +1403,50 @@ class GameplayBridgeService:
                        request_retried=False)
         # Query once outside the planning-view lock, then plan from the actual
         # newly published observation. Partial results never authorize DECLARE.
-        refreshed = self._plan_turn_internal(allow_prewar_force_query=False)
+        refreshed = self._plan_turn_internal(
+            allow_prewar_force_query=False,
+            allow_war_overview_query=allow_war_overview_query)
         refreshed_plan = refreshed.get("plan")
         if isinstance(refreshed_plan, dict):
             refreshed = {**refreshed, "plan": {**refreshed_plan,
                 "prewar_force_query": dict(outcome)}}
         return refreshed
 
-    def _plan_turn_internal(self, *, allow_prewar_force_query: bool = True) -> dict[str, object]:
+    def _finish_war_declared_overview_plan_v1(
+        self, planned: dict[str, object], snapshot: dict[str, object], *,
+        allow_query: bool, allow_prewar_force_query: bool,
+    ) -> dict[str, object]:
+        plan = planned.get("plan")
+        if not (isinstance(plan, dict)
+                and plan.get("selected_step") == QUERY_WAR_DECLARED_OVERVIEW_V1_STEP):
+            return planned
+        frame = war_declared_overview_query_frame_v1(snapshot)
+        with self._war_overview_query_lock_v1:
+            already_attempted = self._war_overview_query_frame_v1 == frame
+            if allow_query and not already_attempted:
+                self._war_overview_query_frame_v1 = frame
+        if not allow_query or already_attempted:
+            return {**planned, "plan": {**plan, "selected_step": None,
+                "pending_actions": [], "status": "pending",
+                "reason": "the paused war overview frame was already queried; visibility remains unknown"}}
+        try:
+            self.query_war_declared_overview_v1(expected_revision=snapshot["revision"])
+        except (BridgeUnavailableError, UnsupportedStepError, ValueError) as error:
+            return {**planned, "plan": {**plan, "selected_step": None,
+                "pending_actions": [], "status": "pending",
+                "reason": "the war overview read failed; do not repeat it on this frame",
+                "war_declared_overview_query": {"status": "failed",
+                    "error": f"{type(error).__name__}: {error}", "request_retried": False}}}
+        # No close or world action was submitted by planning. Re-read the actual
+        # resulting public frame; an old plan is never continued after the query.
+        return self._plan_turn_internal(
+            allow_prewar_force_query=allow_prewar_force_query,
+            allow_war_overview_query=False)
+
+    def _plan_turn_internal(
+        self, *, allow_prewar_force_query: bool = True,
+        allow_war_overview_query: bool = True,
+    ) -> dict[str, object]:
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
         )
@@ -1403,6 +1465,17 @@ class GameplayBridgeService:
         snapshot = self._prepare_succession_transition_v1(
             snapshot, available_steps, deferred_release_root=deferred_release_root,
         )
+        # These getters filter already validated Native observations. They do
+        # not turn the semantic cache into a fresh UI read, or rebind world DTOs.
+        snapshot = dict(snapshot)
+        for key, method in (
+            (WAR_DECLARED_OVERVIEW_V1_PUBLIC_KEYS[0], "get_current_war_declared_overview_v1"),
+            (WAR_DECLARED_OVERVIEW_V1_PUBLIC_KEYS[1], "get_current_war_declared_overview_v1_query_attempt"),
+        ):
+            getter = getattr(self.driver, method, None)
+            if callable(getter):
+                snapshot[key] = getter(snapshot)
+        overview_projection = {key: snapshot.get(key) for key in WAR_DECLARED_OVERVIEW_V1_PUBLIC_KEYS}
         def finish_release_root_arbitration(planned: dict[str, object]) -> dict[str, object]:
             plan = planned.get("plan")
             if (deferred_release_root and not (
@@ -1422,10 +1495,18 @@ class GameplayBridgeService:
                         "initial_expectation_root_deferred": True,
                     }
                     raise
-                return self._plan_turn_internal(allow_prewar_force_query=allow_prewar_force_query)
+                return self._plan_turn_internal(
+                    allow_prewar_force_query=allow_prewar_force_query,
+                    allow_war_overview_query=allow_war_overview_query)
             if deferred_release_root and isinstance(plan, dict):
                 planned = {**planned, "plan": {**plan,
                     "prisoner_release_initial_expectation_root_deferred": True}}
+            if isinstance(plan, dict) and plan.get("policy") == WAR_DECLARED_OVERVIEW_V1_POLICY:
+                return self._finish_war_declared_overview_plan_v1(
+                    planned, snapshot, allow_query=allow_war_overview_query,
+                    allow_prewar_force_query=allow_prewar_force_query)
+            if isinstance(plan, dict) and str(plan.get("phase", "")).startswith("terminal_"):
+                return planned
             from ..ordinary_holy_war_defender_observation_v1 import (
                 plan_ordinary_holy_war_defender_observation_v1,
             )
@@ -1434,7 +1515,8 @@ class GameplayBridgeService:
                 self, planned=planned, snapshot=snapshot,
             )
             return self._finish_prewar_force_coalition_plan_v2(
-                observed, snapshot, allow_query=allow_prewar_force_query)
+                observed, snapshot, allow_query=allow_prewar_force_query,
+                allow_war_overview_query=allow_war_overview_query)
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
         bridge_capabilities = (
@@ -1478,6 +1560,7 @@ class GameplayBridgeService:
             planning_snapshot: dict[str, object],
             native_history: list[dict[str, object]],
         ) -> dict[str, object]:
+            planning_snapshot = {**planning_snapshot, **overview_projection}
             raw_history = planning_snapshot.get("history")
             history = (
                 [row for row in raw_history if isinstance(row, dict)]
@@ -1500,7 +1583,10 @@ class GameplayBridgeService:
                 self.driver, "require_initial_lifestyle_focus_before_date_advance",
                 False,
             ) is True
-            plan = (
+            window_priority = plan_one_life_window_priority_v1(
+                history, snapshot=planning_snapshot, action_steps=available_steps,
+                bridge_capabilities=bridge_capabilities)
+            plan = window_priority if window_priority is not None else (
                 {
                     "policy": "initial-lifestyle-focus-first-v1",
                     "phase": "initial_lifestyle_focus_first",
@@ -1555,6 +1641,8 @@ class GameplayBridgeService:
                 plan = {**plan, "activity_feast_lifecycle_observation": feast_lifecycle_observation}
             routable_steps = set(available_steps)
             selected_step = plan.get("selected_step")
+            if plan.get("policy") == WAR_DECLARED_OVERVIEW_V1_POLICY and isinstance(selected_step, str):
+                routable_steps.add(selected_step)
             if (
                 parse_query_battle_terminal_transition_v1_step(
                     selected_step
@@ -1598,6 +1686,7 @@ class GameplayBridgeService:
             ):
                 routable_steps.add(str(selected_step))
             planned = {
+                "_private_window_priority_v1": window_priority is not None,
                 "snapshot_id": planning_snapshot["snapshot_id"],
                 "revision": planning_snapshot["revision"],
                 "plan": _route_plan_to_available_step(
@@ -1720,6 +1809,8 @@ class GameplayBridgeService:
                     else []
                 ),
             )
+        if planned.pop("_private_window_priority_v1", False):
+            return finish_release_root_arbitration(planned)
         if getattr(
             self.driver, "require_initial_lifestyle_focus_before_date_advance",
             False,
@@ -3698,7 +3789,11 @@ class GameplayBridgeService:
         try:
             if selected_step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
                 root_query_start = self.snapshot()
-            if (
+            if selected_step == QUERY_WAR_DECLARED_OVERVIEW_V1_STEP:
+                result = self.query_war_declared_overview_v1(expected_revision=int(planned["revision"]))
+            elif selected_step == CLOSE_WAR_DECLARED_OVERVIEW_V1_STEP:
+                result = self.close_war_declared_overview_v1(expected_revision=int(planned["revision"]))
+            elif (
                 event_option_number is not None
                 and isinstance(planned_event_id, int)
                 and not isinstance(planned_event_id, bool)
@@ -4068,6 +4163,20 @@ class GameplayBridgeService:
                         result.get("event_selection"),
                     )
                 ),
+            }
+        if selected_step == CLOSE_WAR_DECLARED_OVERVIEW_V1_STEP:
+            clear = war_declared_overview_presence_v1(result) in ("absent", "hidden")
+            closed = (result.get("status") == "closed_verified"
+                      and result.get("closure_verified") is True
+                      and result.get("accepted") is True
+                      and result.get("dispatch_attempted") is True
+                      and result.get("dispatch_invoked") is True
+                      and result.get("application_owner_thread_verified") is True and clear)
+            noop = result.get("status") in ("already_absent", "already_hidden") and clear
+            return {
+                "status": "executed" if closed else "observed" if noop else "pending",
+                "selected_step": selected_step, "plan": plan, "result": result,
+                "ui_action_credit": closed,
             }
         outcome = {
             "status": ("pending" if (

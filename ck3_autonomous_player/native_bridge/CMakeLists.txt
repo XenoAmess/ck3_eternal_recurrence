@@ -233,6 +233,18 @@ option(
 )
 
 option(
+  XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+  "Compile exact-build war declaration window query and verified native close"
+  OFF
+)
+
+option(
+  XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
+  "Compile a private bounded read-only declaration node identity query"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1
   "Run one private exact-build paused targeting-faction row probe"
   OFF
@@ -1193,7 +1205,8 @@ list(APPEND XAR_CK3_12002_SOURCES
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_title_properties_leaf.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_title_laws_leaf.cpp")
 if(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1 OR
-   XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+   XAR_ENABLE_PREWAR_FORCE_COALITION_V2 OR
+   XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_force_allies12004.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_force_military12004.cpp"
@@ -1208,6 +1221,11 @@ if(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1 OR
     "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_force_bounds12004.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_force_coalition_v2.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_force_coalition_v2_mailbox.cpp")
+endif()
+if(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_declaration_node_identity12004.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/prewar_declaration_node_identity12004_mailbox.cpp")
 endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
@@ -1483,7 +1501,9 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1
-    XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
+    XAR_ENABLE_PREWAR_FORCE_COALITION_V2
+    XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+    XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)
   if(${private_option})
     target_compile_definitions(xar_ck3_12002_runtime PUBLIC ${private_option}=1)
   endif()

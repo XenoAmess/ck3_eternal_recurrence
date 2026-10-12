@@ -11,6 +11,9 @@ from .ordinary_prewar_force_admission_v2 import (
     PREWAR_FORCE_COALITION_V2_CAPABILITY,
     assess_ordinary_prewar_force_admission_v2,
 )
+from .ordinary_war_declared_overview_v1 import (
+    plan_ordinary_war_declared_overview_v1,
+)
 
 from .current_native_war_end_conditions_v1 import (
     assess_current_native_war_end_conditions_v1,
@@ -7683,6 +7686,26 @@ def _h3937_hold_selected_control(
     )
 
 
+def plan_one_life_window_priority_v1(
+    commands: list[dict[str, object]], *, snapshot: dict[str, object] | None,
+    action_steps: Iterable[str] = (), bridge_capabilities: Iterable[str] = (),
+) -> dict[str, object] | None:
+    """Preserve terminal ownership before choosing an independent UI action."""
+    played = snapshot.get("played_character") if isinstance(snapshot, dict) else None
+    terminal_frame = isinstance(snapshot, dict) and (
+        isinstance(snapshot.get("one_life_terminal_reason"), str)
+        or isinstance(played, dict) and played.get("alive") is False
+    )
+    steps = set(action_steps)
+    terminal_plan = _plan_one_life_terminal_v1(
+        _expanded_command_rows(commands) if terminal_frame else commands,
+        snapshot, steps)
+    if terminal_plan is not None:
+        return terminal_plan
+    return plan_ordinary_war_declared_overview_v1(
+        snapshot, action_steps=steps, bridge_capabilities=bridge_capabilities)
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
@@ -7692,9 +7715,14 @@ def choose_one_life_turn(
     next_run_plan: dict[str, object] | None = None,
     battle_speed_readiness: dict[str, object] | None = None,
 ) -> dict[str, object]:
-    """Choose an exact Raiktor exit first, then the existing bounded turn."""
+    """Preserve lifecycle, dismiss an observed overview, then choose ordinary work."""
     steps = tuple(action_steps or ())
     capabilities = tuple(bridge_capabilities or ())
+    window_priority = plan_one_life_window_priority_v1(
+        commands, snapshot=snapshot, action_steps=steps,
+        bridge_capabilities=capabilities)
+    if window_priority is not None:
+        return window_priority
     formal = plan_raiktor_formal_exit(
         snapshot,
         _expanded_command_rows(commands),
@@ -8201,6 +8229,10 @@ def _choose_one_life_turn_core(
     terminal_plan = _plan_one_life_terminal_v1(rows, snapshot, available_steps)
     if terminal_plan is not None:
         return terminal_plan
+    window_priority = plan_ordinary_war_declared_overview_v1(
+        snapshot, action_steps=available_steps, bridge_capabilities=available_capabilities)
+    if window_priority is not None:
+        return window_priority
     raw_active_event = (
         snapshot.get("active_event", snapshot.get("current_event"))
         if isinstance(snapshot, dict)

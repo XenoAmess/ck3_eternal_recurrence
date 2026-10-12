@@ -29,6 +29,10 @@
 #if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
 #include "xar_bridge/prewar_force_coalition_v2_mailbox.hpp"
 #endif
+#if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
+#include "xar_bridge/prewar_force_coalition_request12004.hpp"
+#include "xar_bridge/prewar_declaration_node_identity12004_mailbox.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
 #include "xar_bridge/rite_dynamic_call_journal_12004.hpp"
 #include "xar_bridge/rite_named_fixed_q64_observer_12004.hpp"
@@ -309,6 +313,9 @@
 #endif
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+#include "xar_bridge/war_declared_overview_v1.hpp"
+#endif
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
 #include "xar_bridge/named_path_583_root_observer_v1.hpp"
 #include "xar_bridge/pdx_paths_583_producer_observer_v1.hpp"
@@ -2150,6 +2157,14 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
       descriptor.executable_sha256 == xar::ck3_12004::kExecutableSha256) {
     result += ',';
     AppendJsonString(result, "game.command.query-prewar-force-coalition-coverage-v2-N");
+  }
+#endif
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kWarDeclaredOverviewQueryV1Capability);
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kWarDeclaredOverviewCloseV1Capability);
   }
 #endif
   result += "]}";
@@ -15760,6 +15775,15 @@ void RunConnectedSession(
 #if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
                     && step != "query-prewar-force-coalition-coverage-v2"
 #endif
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+                    && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                         (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||
+                          step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step))
+#endif
+#if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
+                    && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                         xar::ck3_12004::IsPrewarDeclarationNodeIdentityStep12004(step))
+#endif
         ) {
           if (active_command_entry_trace != nullptr)
             active_command_entry_trace->dispatch_route = "outer_unsupported";
@@ -17787,6 +17811,89 @@ void RunConnectedSession(
                     checkpoint_submission, published_checkpoint_sequence);
               }
             }
+          } else
+#endif
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+          if (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||
+              step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step) {
+            xar::ck3_11906::WarDeclaredOverviewMailboxContextV1 query{};
+            const auto admission_error = xar::ck3_11906::PrepareWarDeclaredOverviewMailboxV1(
+                game, previous_snapshot ? &previous_snapshot.value() : nullptr,
+                request_id, incoming.payload, step, state_revision, connection_generation,
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                g_main_thread_query_mailbox_v1, query);
+            std::string response;
+            if (!admission_error.empty()) {
+              response = CommandResultFrame(request_id, step, false, admission_error);
+            } else {
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteWarDeclaredOverviewMailboxV1, &query, query.ticket);
+              if (submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                // An executing ticket owns this stack context until terminal.
+                // Never retry a close whose execution may already have begun.
+                while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    query.result.request_id == request_id &&
+                    query.result.ticket_sequence == query.ticket.sequence &&
+                    query.result.connection_generation == connection_generation) {
+                  // Completion publishes the actual pump stamp. Capture it
+                  // before reclaim releases the slot; never derive this receipt
+                  // from the command body's self-reported ownership fields.
+                  const auto started_sequence = g_main_thread_query_mailbox_v1.
+                      executor_started_sequence.load(std::memory_order_acquire);
+                  const auto completed_sequence = g_main_thread_query_mailbox_v1.
+                      completed_sequence.load(std::memory_order_acquire);
+                  const auto stamp = g_main_thread_query_mailbox_v1.execution_stamp;
+                  if (started_sequence == query.ticket.sequence &&
+                      completed_sequence == query.ticket.sequence &&
+                      stamp.pump_epoch != 0 && stamp.thread_id != 0 && stamp.paused &&
+                      stamp.pump_epoch == query.result.pump_epoch &&
+                      stamp.thread_id == query.result.thread_id &&
+                      stamp.date_raw == query.result.date_raw) {
+                    response = xar::ck3_11906::WarDeclaredOverviewCommandResultFrameV1(
+                        request_id, query.result);
+                    if (response.empty() || response.back() != '}') {
+                      response.clear();
+                    } else {
+                      response.pop_back();
+                      response += ",\"war_declared_overview_owner_receipt\":{\"request_id\":";
+                      AppendJsonString(response, request_id);
+                      response += ",\"ticket_sequence\":" + Number(query.ticket.sequence) +
+                          ",\"executor_started_sequence\":" + Number(started_sequence) +
+                          ",\"completed_sequence\":" + Number(completed_sequence) +
+                          ",\"pump_epoch\":" + Number(stamp.pump_epoch) +
+                          ",\"thread_id\":" + Number(stamp.thread_id) +
+                          ",\"date_raw\":" + Number(stamp.date_raw) +
+                          ",\"connection_generation\":" + Number(connection_generation) + "}}";
+                    }
+                  }
+                }
+                auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                while (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+                  // Fail closed without destroying a possibly referenced stack
+                  // context. Cancel only this queued ticket; a running executor
+                  // must reach terminal. A corrupted/mismatched slot remains
+                  // held until the managed process is closed, never resubmitted.
+                  response.clear();
+                  (void)xar::ck3_11906::CancelMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket);
+                  (void)xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 100);
+                  Sleep(100);
+                  reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket);
+                }
+              }
+              if (response.empty()) response = CommandResultFrame(
+                  request_id, step, false, "war_declared_owner_submission_or_completion_failed");
+            }
+            connected = write_frame(pipe, response);
           } else
 #endif
           if (step == xar::ck3_11906::kIngameUiNavigationV1Step ||
@@ -26122,6 +26229,41 @@ void RunConnectedSession(
                 request_id, step, false, failure.empty() ?
                     "prewar_force_coalition_query_unavailable" : failure));
           }
+#endif
+#if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
+        } else if (xar::ck3_12004::IsPrewarDeclarationNodeIdentityStep12004(step)) {
+          xar::ck3_12004::PrewarForceCoalitionRequest12004 request;
+          std::string serialized, failure;
+          bool accepted = false;
+          if (game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+              xar::ck3_12004::ParsePrewarForceCoalitionRequest12004(
+                  incoming.payload, step, request_id, request) &&
+              state_revision != 0 && request.expected_native_revision == state_revision &&
+              previous_snapshot.has_value()) {
+            accepted = xar::ck3_12004::HandlePrewarDeclarationNodeIdentity12004(
+                game, g_main_thread_query_mailbox_v1, *previous_snapshot,
+                state_revision, request, request_id, serialized, failure);
+            if (accepted) {
+              // Measure the complete versioned wire projection, including its
+              // outer command envelope, before writing this private 8 KiB result.
+              serialized = xar::game::RenderCrozierBuildIdentity(
+                  std::move(serialized), game.descriptor());
+              if (serialized.size() > xar::ck3_12004::kPrewarDeclarationNodeWireLimit12004) {
+                accepted = false;
+                failure = "prewar_node_identity_complete_wire_exceeds_8192_bytes";
+              }
+            }
+          } else {
+            failure = "prewar_node_identity_request_or_build_invalid";
+          }
+          if (!accepted) serialized = xar::game::RenderCrozierBuildIdentity(
+              CommandResultFrame(request_id, step, false,
+                  failure.empty() ? "prewar_node_identity_query_unavailable" : failure),
+              game.descriptor());
+          // Oversized failure echoes also close the transport. Never truncate
+          // the request ID or emit a fabricated matching acknowledgement.
+          connected = serialized.size() <= xar::ck3_12004::kPrewarDeclarationNodeWireLimit12004 &&
+              xar::bridge::WriteFrame(pipe, serialized);
 #endif
         } else if (step == "query-army-strengths-v1") {
           const auto profile =

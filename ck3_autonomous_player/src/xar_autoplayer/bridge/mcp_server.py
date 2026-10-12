@@ -3543,6 +3543,17 @@ def create_server(
         """Fresh owner-thread full-ID window readback plus bounded target subtree."""
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_war_declared_overview_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Read the fixed standalone overview through the actual Native UI owner."""
+        return service.query_war_declared_overview_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                           idempotentHint=False, openWorldHint=False))
+    def ck3_close_war_declared_overview_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Close the fixed overview once; only a true Native post observation proves closure."""
+        return service.close_war_declared_overview_v1(expected_revision=expected_revision)
+
     @server.tool()
     def ck3_query_current_title_appointment_v1(expected_revision: IngameUiRevisionV1,
             requested_title_id: int | None = None, candidate_offset: int = 0,

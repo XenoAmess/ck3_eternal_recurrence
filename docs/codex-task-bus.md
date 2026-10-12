@@ -45,7 +45,7 @@ py D:\workspace\.codex-task-bus\bin\codex_task_bus.py status --task ck3-xqol-rel
 续租必须调用 `heartbeat --expected-sequence <latest-sequence>`，绑定已核对 source/installed CLI 的同一 SHA；
 缺少精确序号、租约过期或 owner 变化都会拒绝，普通 heartbeat/status 不能复活过期声明。
 
-长准备或受管会话直接复用 [ScreenLeaseKeeper](../promo/ck3_native_war_ai/integration/screen_bus_lease.py)：
+长准备或受管会话直接复用既有 `ScreenLeaseKeeper`（历史源码位置为 `promo/ck3_native_war_ai/integration/screen_bus_lease.py`，当前消费来源见下节）：
 默认 `interval_seconds=180`（允许 30–240 秒），在新鲜 owner 准入后启动，按既有 `renew_once` 完成
 前后 locked list、heartbeat CAS 和新序号读回，保留 append-only journal。它不领取或释放屏幕。
 keeper 活跃期间，同一 task 的 sequence 只能由 keeper 推进；其他线程不得再对该 task heartbeat/status
@@ -67,3 +67,11 @@ keeper 活跃期间，同一 task 的 sequence 只能由 keeper 推进；其他�
 本段核对 CLI SHA `b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee` 与
 keeper SHA `d000883192b63d0aa7f5df7769a7eff0c1ed90450075e88c3d21d10943b46924`；只补文档，
 未执行上述屏幕命令、启动 keeper 或操作游戏。后续部署仍须绑定当次实际 source/installed bytes。
+
+### 2026-10-13 拆库后源码位置纠正
+
+最新正式 `xar-promo` v0.2.1 wheel 不包含项目专用的 `screen_bus_lease.py`，不能把 wheel 安装成功当作该 keeper 已部署。本次先从官方最新 Release 查询精确 wheel URL 与资产 digest，实际下载校验、独立安装、`--version` 和顶层 `--help` 均通过；原准备脚本错误假定 wheel 必含 keeper 的失败回执保留。
+
+当前工作包保留的 SDK91 项目集成单文件为 15,997 B，SHA-256 `4a8233bb640d0eeda67150da818f3898a1c9afb0229d54e4d0d39e7a932f27f0`。它只依赖标准库，可用 `importlib.util.spec_from_file_location` 从实际已核验路径独立加载；不得把旧 `promo` package 加入生产 import path，也不把该文件称为最新 wheel 的组件。该摘要与上节历史 `d000…` 不同，部署时必须核当次真实来源，不能挪用历史 SHA。
+
+实际来源、路径、CLI 两份一致的 SHA 和仅加载未启动的状态，记录在本轮外置 `g2-remediation-20261013/fresh-robert01/promo-runtime/ROOT-PROMO-KEEPER-SOURCE-READY.json`；官方来源观察在 `fresh-run-plan/PROMO-KEEPER-SOURCE-OBSERVATION.json`。这些输入按原工作包期限复核，不是其他机器的固定盘符前提或已部署证明。keeper 不领取或释放屏幕；仍须先取得新鲜唯一 owner，结束后先 stop 并读回最后 sequence，再由 Root 精确 CAS 释放。
