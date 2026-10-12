@@ -9,7 +9,7 @@
   "schema": "ck3-xqol-original-followup-case-v1",
   "case": "meritocratic_appointments",
   "data_directory": "xqol_followup_cases/meritocratic_appointments",
-  "acceptance_scope": "controlled-qualified-merit-positive-v1",
+  "acceptance_scope": "controlled-qualified-merit-direct-parent-positive-v2",
   "post_start": {
     "government_key": "meritocratic_government",
     "primary_title_tier_key": "empire",
@@ -20,7 +20,9 @@
     "ZQAGOV: QUAL PASS merit_native1066_holder",
     "ZQAGOV: QUAL DONE merit_native1066_holder",
     "ZQAGOV: SETUP BEGIN controlled-qualified-merit-positive-v1 amount=2000",
-    "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000"
+    "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000",
+    "ZQAGOV: SETUP BEGIN controlled-qualified-merit-direct-parent-positive-v2 grant=k_goguryeo",
+    "ZQAGOV: SETUP DONE controlled-qualified-merit-direct-parent-positive-v2 grant=k_goguryeo"
   ],
   "forbidden_startup": [
     "ZQAGOV: QUAL FAIL",
@@ -31,7 +33,9 @@
     "ZQAGOV: QUAL PASS merit_native1066_holder",
     "ZQAGOV: QUAL DONE merit_native1066_holder",
     "ZQAGOV: SETUP BEGIN controlled-qualified-merit-positive-v1 amount=2000",
-    "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000"
+    "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000",
+    "ZQAGOV: SETUP BEGIN controlled-qualified-merit-direct-parent-positive-v2 grant=k_goguryeo",
+    "ZQAGOV: SETUP DONE controlled-qualified-merit-direct-parent-positive-v2 grant=k_goguryeo"
   ],
   "forbidden_markers": [
     "ZQAGOV: QUAL FAIL",
@@ -80,8 +84,8 @@
       "sha256": "f9f3ba07d17addd2c4c8fea3fd9676b41493beb832e07349527fdf97656a6f2f"
     },
     "xqol_followup_cases/meritocratic_appointments/fixture/events/zqagov_events.txt": {
-      "bytes": 2394,
-      "sha256": "f3bede99ade8cbb23df525f3c350aa80a7a017cd9babf17cb08996c2c24f6b83"
+      "bytes": 7627,
+      "sha256": "8e564f9e7ff98a0a3501076976685114c093e6fcefc97c0e4b47d8cf562cf17d"
     },
     "xqol_followup_cases/meritocratic_appointments/original-plan.json": {
       "bytes": 989,
@@ -89,13 +93,40 @@
     }
   },
   "fixture_preparation": {
-    "kind": "controlled-qualified-merit-positive-v1",
+    "kind": "controlled-qualified-merit-direct-parent-positive-v2",
     "stock_effect": "change_merit",
     "amount": 2000,
     "target": "title:e_goryeo.holder",
     "applications": 1,
     "stage": "zqagov_merit.1 original successful AI-holder guard after save_scope_as, before set_player_character",
     "required_actual_readback": "Same-run current-rule level >= target floor, then complete engine-generated eligible human + AI pools for both original laws",
-    "credit_scope": "controlled fixture-live only; original zero-preparation R65 remains GAP"
+    "credit_scope": "controlled fixture-live only; original zero-preparation R65 remains GAP",
+    "controlled_title_grant": {
+      "title": "title:k_goguryeo",
+      "holder": "scope:zqagov_target",
+      "stock_effects": [
+        "create_title_and_vassal_change",
+        "change_title_holder",
+        "resolve_title_and_vassal_change"
+      ],
+      "change_type": "created",
+      "add_claim_on_loss": false,
+      "applications": 1,
+      "stage": "After original save_scope_as, before unchanged change_merit=2000; readback in original immediate post-switch event",
+      "preconditions": "Unowned k_goguryeo, direct de-jure e_goryeo; fixed two targets keep their original AI holders, laws and direct liege",
+      "target_laws": {
+        "d_haeju": "meritocratic_appointment_succession_law",
+        "d_bukgye": "meritocratic_military_appointment_succession_law"
+      },
+      "required_actual_readback": [
+        "Same independent human actor and D0, e_goryeo remains primary title",
+        "Each target's immediate de_jure_liege is saved k_goguryeo and its holder is the same actor",
+        "Both original target holders, effective laws, primary titles and direct lieges remain unchanged",
+        "Complete engine-generated human + AI candidate pools for both original laws; setup does not imply eligibility"
+      ],
+      "stock_default_gui_can_create": false,
+      "stock_creation_restriction_source": "game/common/landed_titles/05_goryeo.txt:70-80",
+      "credit_scope": "External controlled grant only, not a default-GUI fix or product PASS; A190/R0082 and all original v1 GAP evidence remain unchanged"
+    }
   }
 }

@@ -10,9 +10,72 @@ zqagov_merit.1 = {
                 current_date = 1066.9.15
                 exists = title:e_goryeo.holder
                 title:e_goryeo.holder = { is_alive = yes is_ai = yes has_title = title:e_goryeo is_independent_ruler = yes has_government = meritocratic_government }
+                # ZQAGOV_MERIT_V2_BEGIN preconditions
+                NOT = { exists = title:k_goguryeo.holder }
+                title:k_goguryeo = { de_jure_liege = title:e_goryeo }
+                title:e_goryeo.holder = { primary_title = title:e_goryeo }
+                title:d_haeju = {
+                    exists = holder
+                    de_jure_liege = title:k_goguryeo
+                    has_title_law = meritocratic_appointment_succession_law
+                    holder = {
+                        is_alive = yes
+                        is_ai = yes
+                        is_independent_ruler = no
+                        liege = title:e_goryeo.holder
+                        primary_title = title:d_haeju
+                    }
+                }
+                title:d_bukgye = {
+                    exists = holder
+                    de_jure_liege = title:k_goguryeo
+                    has_title_law = meritocratic_military_appointment_succession_law
+                    holder = {
+                        is_alive = yes
+                        is_ai = yes
+                        is_independent_ruler = no
+                        liege = title:e_goryeo.holder
+                        primary_title = title:d_bukgye
+                    }
+                }
+                # ZQAGOV_MERIT_V2_END preconditions
             }
             title:e_goryeo.holder = {
                 save_scope_as = zqagov_target
+                # ZQAGOV_MERIT_V2_BEGIN controlled_grant
+                # External fixture only: stock can_create forbids this kingdom
+                # for meritocratic Goryeo. This does not assert pool eligibility.
+                debug_log = "ZQAGOV: SETUP BEGIN controlled-qualified-merit-direct-parent-positive-v2 grant=k_goguryeo"
+                title:k_goguryeo = { save_scope_as = zqagov_v2_parent_title }
+                title:d_haeju = {
+                    save_scope_as = zqagov_v2_civic_title
+                    holder = {
+                        save_scope_as = zqagov_v2_civic_holder_before
+                        liege = { save_scope_as = zqagov_v2_civic_liege_before }
+                    }
+                }
+                title:d_bukgye = {
+                    save_scope_as = zqagov_v2_military_title
+                    holder = {
+                        save_scope_as = zqagov_v2_military_holder_before
+                        liege = { save_scope_as = zqagov_v2_military_liege_before }
+                    }
+                }
+                # Stock 00_title_effects.txt:1-13 primitives, with saved holder
+                # instead of that helper's ROOT (the original lobby character).
+                create_title_and_vassal_change = {
+                    type = created
+                    save_scope_as = zqagov_v2_parent_change
+                    add_claim_on_loss = no
+                }
+                title:k_goguryeo = {
+                    change_title_holder = {
+                        holder = scope:zqagov_target
+                        change = scope:zqagov_v2_parent_change
+                    }
+                }
+                resolve_title_and_vassal_change = scope:zqagov_v2_parent_change
+                # ZQAGOV_MERIT_V2_END controlled_grant
                 debug_log = "ZQAGOV: SETUP BEGIN controlled-qualified-merit-positive-v1 amount=2000"
                 change_merit = 2000
                 debug_log = "ZQAGOV: SETUP DONE controlled-qualified-merit-positive-v1 amount=2000"
@@ -28,6 +91,47 @@ zqagov_merit.2 = {
     type = character_event
     hidden = yes
     immediate = {
+        # ZQAGOV_MERIT_V2_BEGIN post_readback_open
+        if = {
+            limit = {
+                current_date = 1066.9.15
+                this = scope:zqagov_target
+                is_alive = yes
+                is_ai = no
+                is_independent_ruler = yes
+                has_government = meritocratic_government
+                primary_title = title:e_goryeo
+                has_title = title:e_goryeo
+                has_title = title:k_goguryeo
+                title:k_goguryeo = {
+                    holder = scope:zqagov_target
+                    de_jure_liege = title:e_goryeo
+                }
+                title:d_haeju = {
+                    holder = scope:zqagov_v2_civic_holder_before
+                    holder.liege = scope:zqagov_v2_civic_liege_before
+                    holder.liege = scope:zqagov_target
+                    holder.primary_title = title:d_haeju
+                    has_title_law = meritocratic_appointment_succession_law
+                    de_jure_liege = {
+                        this = scope:zqagov_v2_parent_title
+                        holder = scope:zqagov_target
+                    }
+                }
+                title:d_bukgye = {
+                    holder = scope:zqagov_v2_military_holder_before
+                    holder.liege = scope:zqagov_v2_military_liege_before
+                    holder.liege = scope:zqagov_target
+                    holder.primary_title = title:d_bukgye
+                    has_title_law = meritocratic_military_appointment_succession_law
+                    de_jure_liege = {
+                        this = scope:zqagov_v2_parent_title
+                        holder = scope:zqagov_target
+                    }
+                }
+            }
+            debug_log = "ZQAGOV: SETUP DONE controlled-qualified-merit-direct-parent-positive-v2 grant=k_goguryeo"
+        # ZQAGOV_MERIT_V2_END post_readback_open
         if = {
             limit = { current_date = 1066.9.15 is_alive = yes is_ai = no has_title = title:e_goryeo is_independent_ruler = yes has_government = meritocratic_government }
             debug_log = "ZQAGOV: QUAL PASS merit_native1066_holder"
@@ -47,5 +151,9 @@ zqagov_merit.2 = {
             debug_log = "ZQAGOV: QUAL DONE merit_native1066_holder"
         }
         else = { debug_log = "ZQAGOV: QUAL FAIL post_switch_current_player" }
+        # ZQAGOV_MERIT_V2_BEGIN post_readback_close
+        }
+        else = { debug_log = "ZQAGOV: QUAL FAIL controlled_direct_parent_post_grant_v2" }
+        # ZQAGOV_MERIT_V2_END post_readback_close
     }
 }

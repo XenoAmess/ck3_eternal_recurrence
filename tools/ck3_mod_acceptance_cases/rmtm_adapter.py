@@ -6,13 +6,107 @@ from types import SimpleNamespace
 import json
 
 from ._business import (case_config, final_root_evidence, literals, observe,
-                        original_day, pin, require, review, write_once)
+                        original_day, pin, require, review, write_once, check_evidence)
+
+
+PHASE4_OPTION = "phase4_pre_send_gui_qualification"
+PHASE4_QUALIFY = "rmtm-phase4-pre-send-qualification"
+PHASE4_SEND = "rmtm-phase4-original-probe-once"
+PHASE4_QUALIFY_FACTS = [
+    "same_original_saved_A_B_full_character_and_title_ids",
+    "same_d3_actor_full_later_title_and_paused_date",
+    "both_actual_default_flags_complete_unchanged",
+    "both_actual_GetAnswerScore_strictly_negative",
+    "both_complete_actual_GetAnswerReason_captured",
+    "both_offers_Cancelled_without_send",
+    "no_probe_send_no_target_reselection_no_date_advance",
+]
+PHASE4_SEND_FACTS = [
+    "same_qualified_original_A_B_no_reselection",
+    "original_probe_ScriptedGui_clicked_once_after_qualification",
+    "actual_probe_outcome_observed_not_input_ACK",
+    "same_d3_actor_full_later_title_and_paused_date",
+]
+
+
+def phase4_enabled(context):
+    value = context.get("case_inputs", {}).get(PHASE4_OPTION, False)
+    require(type(value) is bool, PHASE4_OPTION + " must be a strict JSON boolean")
+    require(not value or context["case"] == "core", "Pre-send qualification is core-only, not threshold_ui")
+    return value
+
+
+def validate_contract(context):
+    """Pure prepared-input validation; no GUI, query, launch, or PASS credit."""
+    from tools import prepare_reclaim_the_motherland_1_20_fixture as emitter
+    from tools import reclaim_the_motherland_scope_witness as witness
+    enabled = phase4_enabled(context)
+    config = case_config(context)
+    require(config["natural_game_day_limit"] == 14 and config["fixture_recent_independence_override_days"] == 10,
+            "Original timer contract changed")
+    if context["case"] == "core":
+        require((config["original_family_count"], config["unchanged_family_count"],
+                 config["physical_qualified_family_count"]) == (36, 33, 3), "Original36 contract changed")
+    state = Path(context["state_dir"])
+    startup = json.loads((state / "preparation.json").read_text(encoding="utf-8-sig"))
+    preparation = check_evidence(startup["preparation"])
+    profile = json.loads(Path(preparation["path"]).read_text(encoding="utf-8-sig"))
+    provenance = profile["provenance"]
+    require(provenance["kind"] == "case-emitter-and-exact-formal-staging", "Original materialization required")
+    fixture = Path(provenance["fixture"])
+    product = Path(context["case_inputs"]["product_dir"])
+    require(Path(provenance["product"]).resolve() == product.resolve(), "Selected formal product differs")
+    receipt = json.loads(fixture.with_suffix(".prepare.json").read_text(encoding="utf-8-sig"))
+    require(receipt["ui_checkpoints"] is True and receipt["threshold_ui"] is (context["case"] == "threshold_ui"),
+            "Prepared core/UI flags differ")
+    source = Path(context["repo_root"]) / "tools/fixtures/reclaim_the_motherland_acceptance"
+    original = emitter.events(True).encode("utf-8-sig")
+    support = emitter.phase4_support(source) if enabled else {}
+    if enabled:
+        widget = support[emitter.PHASE4_GUI_RELATIVE]
+        require(b"on_start" not in widget and b"trigger_when" not in widget and widget.count(b".Execute(") == 1,
+                "Diagnostic widget must have only one manual onclick action")
+    expected_driver = emitter.phase4_project(original) if enabled else original
+    if enabled:
+        require(receipt.get(PHASE4_OPTION) == emitter.phase4_projection_receipt(source, original, expected_driver, support),
+                "Pre-send projection receipt/inverse differs or claims runtime credit")
+    else:
+        require(PHASE4_OPTION not in receipt, "Prepared flag is enabled but case_inputs is disabled")
+    expected = {"events/rqa120_events.txt": expected_driver, **support}
+    for relative, kind, source_path in (
+        (witness.FIXTURE_RELATIVE, "execute", source / witness.FIXTURE_RELATIVE),
+        (witness.CALLBACK_RELATIVE, "callback", product / witness.CALLBACK_RELATIVE),
+    ):
+        raw = source_path.read_bytes()
+        projected, proof = witness.project(raw, kind)
+        require(witness.restore(projected, kind) == raw, "Original business bytes were not restored")
+        declared = [row for row in receipt["scope_witness_projection"]["projections"] if row["relative"] == relative]
+        require(len(declared) == 1 and all(declared[0].get(key) == value for key, value in proof.items()),
+                "Existing three-dump witness receipt changed")
+        expected[relative] = projected
+    require(receipt["scope_witness_projection"]["scope_dump_count"] == 3,
+            "Only the original three source dumps are allowed")
+    for relative, raw in expected.items():
+        require((fixture / relative).read_bytes() == raw and
+                (state / "profile/mod-content/fixture" / relative).read_bytes() == raw,
+                "Prepared/loaded fixture projection differs: " + relative)
+        require(receipt["prepared_file_sha256"][relative] == witness.byte_pin(raw)["sha256"],
+                "Full prepared inventory omitted or changed a projection")
+    for relative in ("gui/rqa_bridge.gui", "common/scripted_guis/rqa_guis.txt"):
+        require(relative not in receipt["prepared_file_sha256"], "Automatic original bridge must not be loaded")
+    if not enabled:
+        require(not any("rqa120_phase4" in name for name in receipt["prepared_file_sha256"]),
+                "Disabled option must not load diagnostic support files")
+    load = json.loads((state / "profile/dlc_load.json").read_text(encoding="utf-8-sig"))
+    require(load["enabled_mods"] == ["mod/product.mod", "mod/fixture.mod"], "Original formal-then-fixture load order changed")
+    return {"phase4_pre_send_gui_qualification": enabled, "runtime_status": "NOT_RUN", "business_pass": False}
 
 
 def prepare_case(context):
     from tools.ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile
     config = case_config(context)
     require(context["case"] in ("core", "threshold_ui"), "Unknown original RMTM case")
+    qualified_phase4 = phase4_enabled(context)
     days = config["fixture_recent_independence_override_days"]
     require(type(days) is int and 10 <= days <= 30, "Use the existing producer timer admission")
     require(config["natural_game_day_limit"] == 14, "Original fourteen-day cap is required")
@@ -25,12 +119,15 @@ def prepare_case(context):
     ]
     if context["case"] == "threshold_ui":
         arguments.append("--threshold-ui")
+    if qualified_phase4:
+        arguments.append("--phase4-pre-send-gui-qualification")
     emitter = invoke_fixture_prepare(context, repo / "tools/prepare_reclaim_the_motherland_1_20_fixture.py", arguments)
     fixture_receipt = fixture.with_suffix(".prepare.json")
     scope_witness = {"receipt": pin(fixture_receipt), "projection": json.loads(
         fixture_receipt.read_text(encoding="utf-8-sig"))["scope_witness_projection"]}
     prepared = materialize_fixture_profile(context, fixture, context["case_inputs"]["product_dir"],
                                            context["case_inputs"]["plain_configuration"])
+    validate_contract(context)
     return {"startup": {"mode": "fixture", "state_dir": prepared["state_dir"],
                         "fixture_start_policy": prepared["fixture_start_policy"]["path"],
                         "frontend_rules_plan": context["case_inputs"]["frontend_rules_plan"]},
@@ -39,6 +136,68 @@ def prepare_case(context):
                           "scope_witness_projection": scope_witness,
                          "compressed_days": days, "natural_day_cap": 14},
             "business_pass": False}
+
+
+def validate_phase4_review(response, d3):
+    require(response.get("status") == "complete" and isinstance(response.get("facts"), dict) and
+            all(response["facts"].get(key) is True for key in PHASE4_QUALIFY_FACTS),
+            "GAP: original A/B qualification facts missing; never send or reselect")
+    require(isinstance(response.get("evidence"), list) and response["evidence"], "Actual GUI evidence required, not ACK")
+    for row in response["evidence"]:
+        check_evidence(row)
+    record = response.get("phase4_qualification")
+    require(isinstance(record, dict), "GAP: actual default Offer score/identity record missing")
+    require(record.get("actor_character_id") == d3["actor_character_id"] and
+            record.get("later_title_id") == d3["title_id"] and record.get("date_raw") == d3["date_raw"],
+            "GAP: qualification crossed original D3 actor/full Later/date")
+    targets = record.get("targets")
+    require(isinstance(targets, list) and len(targets) == 2, "GAP: both original targets required")
+    ids = []
+    for slot, row in zip(("A", "B"), targets):
+        require(isinstance(row, dict) and row.get("slot") == slot, "GAP: original A/B order differs")
+        for field in ("character_id", "primary_title_id"):
+            require(type(row.get(field)) is int and 0 < row[field] < 0xFFFFFFFF, "GAP: full original target IDs required")
+        require(type(row.get("answer_score")) is int and row["answer_score"] < 0,
+                "GAP: original target default GUI total is unknown/nonnegative; do not send or reselect")
+        require(isinstance(row.get("answer_reason"), str) and row["answer_reason"].strip(),
+                "GAP: complete actual GetAnswerReason text missing")
+        flags = row.get("default_flags")
+        require(isinstance(flags, list) and all(isinstance(flag, dict) and set(flag) == {"name", "selected"} and
+                isinstance(flag["name"], str) and flag["name"] and type(flag["selected"]) is bool for flag in flags),
+                "GAP: actual complete default option flags required (empty only if GUI has none)")
+        require(len({flag["name"] for flag in flags}) == len(flags), "Duplicate default option flag")
+        ids.append(row["character_id"])
+    require(ids[0] != ids[1] and d3["actor_character_id"] not in ids, "GAP: two distinct original recipients required")
+    return record
+
+
+def _phase4_pre_send(context, client, d3):
+    from tools import reclaim_the_motherland_effective_law_contract as law
+    from tools import prepare_reclaim_the_motherland_1_20_fixture as emitter
+    config = case_config(context)
+    literals(client, "rmtm-phase4-pre-send-ready", [emitter.PHASE4_READY], config["forbidden_markers"])
+    response = review(client, PHASE4_QUALIFY, PHASE4_QUALIFY_FACTS, {
+        "d3": d3, "target_binding": "Read the same original saved A/B via the manual widget character links; full character AND primary title IDs must match the actual dialogs.",
+        "response_field": {"phase4_qualification": {"actor_character_id": "actual D3", "later_title_id": "actual D3",
+            "date_raw": "actual D3", "targets": [{"slot": "A or B (in order)", "character_id": "actual full ID",
+            "primary_title_id": "actual full ID", "answer_score": "actual GUI integer <0",
+            "answer_reason": "complete actual GetAnswerReason text", "default_flags": [{"name": "actual flag", "selected": "actual bool"}]}]}},
+        "stop": "Any missing/nonnegative/default-option change/identity mismatch is GAP; Cancel, never send, never pick other targets. No production -50/rank+10 change.",
+    })
+    record = validate_phase4_review(response, d3)
+    frame, _ = observe(client, "rmtm-phase4-qualified-paused")
+    require(list(law.frame(frame)[:4]) == d3["frame"][:4], "Pre-send GUI advanced date or crossed owner/process")
+    review(client, PHASE4_SEND, PHASE4_SEND_FACTS, {
+        "qualified_review": pin(Path(client.output) / (PHASE4_QUALIFY + "-accepted.json")),
+        "original_targets": record["targets"], "manual_button": "rqa120_phase4_original_probe_once",
+        "action": "Click the unchanged original rqa_execute_vassalization_probe_gui once only; no ad-hoc run_interaction or alternate target.",
+        "remaining_gate": "Default GUI totals are qualification only; original D4 actual two-refusal marker is still mandatory.",
+    })
+    frame, _ = observe(client, "rmtm-phase4-probe-paused")
+    require(list(law.frame(frame)[:4]) == d3["frame"][:4], "Original probe crossed D3 owner/date/process")
+    literals(client, "rmtm-phase4-original-probe-paths", ["RQA: TEST PASS phase4_offer_vassalization_paths_valid"], config["forbidden_markers"])
+    return {"qualification": pin(Path(client.output) / (PHASE4_QUALIFY + "-accepted.json")),
+            "probe_once": pin(Path(client.output) / (PHASE4_SEND + "-accepted.json"))}
 
 
 def _law_phase(client, phase):
@@ -104,6 +263,7 @@ def _threshold_ui_case(context, client):
 
 
 def run_case(context, client):
+    validate_contract(context)
     if context["case"] == "threshold_ui":
         return _threshold_ui_case(context, client)
     config = case_config(context)
@@ -113,6 +273,7 @@ def run_case(context, client):
     for day in (1, 2, 3):
         original_day(client, "rmtm-D" + str(day), start, config["natural_game_day_limit"])
     d3, d3_verdict = _law_phase(client, "d3")
+    phase4 = _phase4_pre_send(context, client, d3_verdict) if phase4_enabled(context) else None
     original_day(client, "rmtm-D4", start, config["natural_game_day_limit"])
     literals(client, "rmtm-original-ui-ready", ["RQA120: TEST READY ui_after_chaos"], config["forbidden_markers"])
     review(client, "rmtm-C1-C5", [
@@ -155,6 +316,7 @@ def run_case(context, client):
         "d3": str(d3), "predeath": str(predeath), "postdeath": str(postdeath), "debug_log": pin(debug),
         "initial_date_raw": start, "last_date_raw": postdeath_verdict["date_raw"],
         "business_pass": False, "normal_close_pending": True,
+        **({PHASE4_OPTION: phase4} if phase4 is not None else {}),
     })
     return {"status": "business_phases_observed_normal_close_pending", "business_pass": False,
             "law_phases": [d3_verdict, predeath_verdict, postdeath_verdict], "natural_day_cap": 14}
@@ -163,6 +325,7 @@ def run_case(context, client):
 def verify_case(context):
     from tools import reclaim_the_motherland_effective_law_acceptance as caller
     output = Path(context["output"])
+    validate_contract(context)
     if context["case"] == "threshold_ui":
         data = json.loads((output / "rmtm-threshold-verdict-input.json").read_text(encoding="utf-8-sig"))
         evidence = caller.phase_evidence(Path(data["d3"]))
@@ -184,6 +347,20 @@ def verify_case(context):
     code = caller.final(args, caller.load_helper())
     require(code == 0, "Original33 plus all three actual physical-gated families rejected")
     proofs = final_root_evidence(context, ["rmtm-C1-C5", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-original-final-business"])
+    if phase4_enabled(context):
+        phase4 = data.get(PHASE4_OPTION)
+        require(isinstance(phase4, dict) and set(phase4) == {"qualification", "probe_once"},
+                "Enabled pre-send qualification missing from actual run")
+        extra = final_root_evidence(context, [PHASE4_QUALIFY, PHASE4_SEND])
+        require([phase4["qualification"], phase4["probe_once"]] == extra, "Actual phase4 review pins differ")
+        d3 = caller.load_helper().evaluate_phase(caller.phase_evidence(Path(data["d3"])))
+        validate_phase4_review(json.loads(Path(extra[0]["path"]).read_text(encoding="utf-8-sig")), d3)
+        probe = json.loads(Path(extra[1]["path"]).read_text(encoding="utf-8-sig"))
+        require(all(probe.get("facts", {}).get(key) is True for key in PHASE4_SEND_FACTS),
+                "Actual once-only original GUI probe facts missing")
+        proofs += extra
+    else:
+        require(PHASE4_OPTION not in data, "Run/verify phase4 option differs")
     return {"case_contract_qualified": True, "gui_contract_qualified": True, "business_contract_applicable": True, "marker_and_law_contract_qualified": True, "original_family_count": 36,
             "actual_review_evidence": proofs, "source_pass": False, "business_pass": False,
             "requires_shared_normal_close_and_independent_threshold_UI": True}

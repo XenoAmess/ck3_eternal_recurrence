@@ -1,0 +1,82 @@
+{
+  "schema": "xar-project-storage-retirement-summary-v1",
+  "policy_version": "1.0.0",
+  "recorded_at_utc": "2026-10-12T02:47:46Z",
+  "asset_id": "xqol-merit-a190-generated-shaders",
+  "replica_id": "executor4-xqol-merit-a190-generated-shaders",
+  "owner_task": "ck3-xqol-rmtm-release-20261011-root",
+  "machine_id": "4号执行者",
+  "root_id": "ck3-upgrade-20261010",
+  "relative_path": "qol-merit-bom-current-formal-publicprepare-20261012-01/state/profile/shadercache",
+  "category": "cache",
+  "state": "retired_deleted",
+  "logical_bytes": 151333672,
+  "allocated_bytes_or_null": 159875888,
+  "closed_at_utc_or_null": "2026-10-12T02:40:31.491264+00:00",
+  "last_used_at_utc": "2026-10-12T01:54:06Z",
+  "last_used_at_basis": "Conservative completed scene/resource closure boundary, not scan or file access time.",
+  "expires_at_utc": "2026-10-12T02:39:15.228432+00:00",
+  "expiry_basis": "Purpose retirement completed at this actual summary timestamp after Root explicitly ended the closed scene's shader and future-seed purposes; not a seven-day TTL claim.",
+  "active_references": [],
+  "protected_until_utc_or_null": null,
+  "protection_reason_or_null": null,
+  "availability": "deleted; original shader bytes are no longer readable and exact historical reconstruction is not claimed",
+  "source_pins_or_recipe": {
+    "new_cache_only": "Retained current CK3, formal product and fixture/profile inputs can generate a new cache, not recover the old shader bytes.",
+    "control_root": "a190-cache-retirement-controls-20261012-01",
+    "plan": {
+      "relative_path": "a190-retirement-plan-01.json",
+      "bytes": 10231,
+      "sha256": "ddbc4a6f4e283f4953a59e44ffd775475fb8d8b622375976791aab3bb627bf08"
+    },
+    "actual_summary": {
+      "root_id": "ck3-upgrade-20261010",
+      "relative_path": "a190-cache-retirement-20261012-01/ACTUAL-SUMMARY.json",
+      "bytes": 3518,
+      "sha256": "cc1138bc57401156edc2f46ba8ffe1732567a457550d5f193835a22a3d902a34"
+    },
+    "actual_parent_wait": {
+      "relative_path": "a190-cache-execute-01-process-exit.json",
+      "bytes": 993,
+      "sha256": "c6e06bfffd576466564c4ce4fdeed817c9660e7afc5c15fb106c02a39bc4471d",
+      "returncode": 0
+    },
+    "actual_reservation_close": {
+      "root_id": "storage-coordinator",
+      "relative_path": "post-r76-a190-cache-retirement-01-reservation-237-closed.json",
+      "bytes": 3345,
+      "sha256": "26849cfd33c49da48d70ab56916753511c415106f5afd02a4399931421e1599c",
+      "unspent_reservation_bytes": 0,
+      "children_remaining": 0
+    }
+  },
+  "actual_deleted_files": 3804,
+  "actual_successful_batches": 4,
+  "actual_allocation_released_bytes": 159875888,
+  "actual_seconds": 22.34948639999493,
+  "body_hashes": 0,
+  "directories_retained": true,
+  "free_before_bytes": 29594505216,
+  "free_after_bytes": 29754945536,
+  "volume_delta_is_not_exclusive_reclaim_attribution": true,
+  "preserved": "Native/typed/debug/error/GUI/SAVE/noncache inputs, actual normal OS0, original A190 merit GAP and current Source20 runtime remain unchanged; minimum necessary evidence review is 2026-10-18 without automatic renewal.",
+  "finite_accounting": {
+    "package_full_cap_charge_once_bytes": 16777216,
+    "new_control_full_cap_charge_once_bytes": 131072,
+    "actual_UI262_full_cap_charge_once_bytes": 4194304,
+    "subsequent_scene_must_carry_new_control_pin_once": true,
+    "reclaimed_bytes_not_subtracted_from_conservative_usage": true
+  },
+  "preparation_timing_deviation": {
+    "source_and_plan_frozen_before_deadline": true,
+    "operation_card_written_after_deadline_seconds": 66.032,
+    "late_card_used_as_execution_authority": false,
+    "root_reviewed_original_code_plan_and_budget_directly": true,
+    "late_card_old_package_absent_text_is_not_current_state": true,
+    "deadline_not_extended": true
+  },
+  "historical_business_results_unchanged": true,
+  "business_pass": false,
+  "product_release_pass": false,
+  "record_review_at_utc": "2027-04-10T02:40:31.492606+00:00"
+}

@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import unittest
 
+from test_ck3_mod_acceptance_xqol_merit_direct_parent import restore_pre_v2_merit_event
+
 
 CASES = Path(__file__).resolve().parent / "ck3_mod_acceptance_cases"
 BOM = b"\xef\xbb\xbf"
@@ -48,8 +50,10 @@ class QolFixtureEncoding(unittest.TestCase):
                     key = (case, relative)
                     if key in ORIGINAL:
                         old_bytes, old_sha = ORIGINAL[key]
-                        self.assertEqual(len(raw), old_bytes + len(BOM))
-                        self.assertEqual(hashlib.sha256(raw[len(BOM):]).hexdigest(), old_sha)
+                        inverse = (restore_pre_v2_merit_event(raw)
+                                   if key == ("meritocratic_appointments", "events/zqagov_events.txt") else raw)
+                        self.assertEqual(len(inverse), old_bytes + len(BOM))
+                        self.assertEqual(hashlib.sha256(inverse[len(BOM):]).hexdigest(), old_sha)
                         checked.add(key)
             if case in affected:
                 for relative, expected in contract["support_files"].items():

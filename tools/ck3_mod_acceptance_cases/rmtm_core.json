@@ -223,6 +223,19 @@
   "event_handling": "identify current exact instance and source, select enabled option once, then observe next owner/date/paused/map/event without asserting no next event",
   "no_repeated_D2_chaos_dispatch": true,
   "no_native_player_death_continue_credit": true,
+  "phase4_pre_send_gui_qualification": {
+    "case_input": "phase4_pre_send_gui_qualification",
+    "default": false,
+    "type": "strict JSON boolean",
+    "allowed_case": "core with ui_checkpoints only; threshold_ui rejects true",
+    "projection": "Replace only the unique stage3 original probe send line with READY; exact inverse restores the complete driver bytes",
+    "manual_ui": "Only the original probe ScriptedGui block and an onclick-only widget; no on_start or trigger_when sending",
+    "qualification": "Same original saved A/B full character/title IDs, D3 actor/full Later/date, complete unchanged default flags and GetAnswerReason, actual GetAnswerScore < 0 for both, Cancel both before original probe once",
+    "unknown_nonnegative_or_identity_mismatch": "GAP: stop without send or target reselection",
+    "proof_boundary": "Operator actual GUI evidence, never ACK/READY/projection receipt; original D4 two actual refusals remain mandatory",
+    "changes_production_balance_or_original_36_families": false,
+    "changes_three_scope_dumps_or_14day_10day_or_budgets": false
+  },
   "timer_source_boundary": {
     "op17_actual_override_days": 14,
     "original_tracked_fixture_days": 1,

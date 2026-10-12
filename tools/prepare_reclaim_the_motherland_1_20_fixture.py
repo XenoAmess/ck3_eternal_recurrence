@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import codecs
 import json
 from pathlib import Path
 
@@ -56,6 +57,98 @@ CONTINUE = '''rqa120_continue_decision = {
     ai_potential = { always = no }
 }
 '''
+
+
+PHASE4_OPTION = "phase4_pre_send_gui_qualification"
+PHASE4_READY = "RQA120: TEST READY phase4_pre_send_gui_qualification"
+PHASE4_SEND = b"            rqa_execute_vassalization_probe_effect = yes\n"
+PHASE4_WAIT = ('            debug_log = "' + PHASE4_READY + '"\n').encode("ascii")
+PHASE4_PROBE = "rqa_execute_vassalization_probe_gui"
+PHASE4_GUI_RELATIVE = "gui/rqa120_phase4_manual.gui"
+PHASE4_MANUAL_GUI = '''window = {
+    name = "rqa120_phase4_manual_window"
+    size = { 560 180 }
+    layer = tutorial
+    parentanchor = top
+    position = { 0 80 }
+    visible = "[GetPlayer.IsValid]"
+    vbox = {
+        size = { 100% 100% }
+        visible = "[GetScriptedGui('rqa_execute_vassalization_probe_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        text_multi = { text = "rqa120_phase4_instructions" autoresize = yes }
+        text_multi = { text = "[GetPlayer.MakeScope.Var('rqa_vassalization_target_a').Char.GetShortUIName]" autoresize = yes }
+        text_multi = { text = "[GetPlayer.MakeScope.Var('rqa_vassalization_target_b').Char.GetShortUIName]" autoresize = yes }
+        button_standard = {
+            name = "rqa120_phase4_original_probe_once"
+            size = { 100% 40 }
+            text = "rqa120_phase4_original_probe_once"
+            onclick = "[GetScriptedGui('rqa_execute_vassalization_probe_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        }
+    }
+}
+'''
+
+
+def phase4_enabled(value=False, *, ui_checkpoints=True, threshold_ui=False) -> bool:
+    if type(value) is not bool:
+        raise ValueError("phase4_pre_send_gui_qualification must be a strict JSON boolean")
+    if value and (not ui_checkpoints or threshold_ui):
+        raise ValueError("phase4 pre-send qualification requires core with UI checkpoints")
+    return value
+
+
+def phase4_project(raw: bytes, *, inverse=False) -> bytes:
+    """Exchange only the original stage3 send line; no timer/effect changes."""
+    newline = b"\r\n" if b"\r\n" in raw else b"\n"
+    send, wait = (line.replace(b"\n", newline) for line in (PHASE4_SEND, PHASE4_WAIT))
+    old, new = (wait, send) if inverse else (send, wait)
+    if raw.count(old) != 1 or new in raw:
+        raise ValueError("Exact unique phase4 stage3 projection anchor changed")
+    return raw.replace(old, new, 1)
+
+
+def phase4_support(source: Path) -> dict[str, bytes]:
+    """Load one unchanged original ScriptedGui, never the automatic bridge."""
+    original = (source / "common/scripted_guis/rqa_guis.txt").read_bytes()
+    block = prep.balanced_excerpt(original.decode("utf-8-sig"),
+                                  r"^rqa_execute_vassalization_probe_gui\s*=\s*\{")
+    payload = block.encode("utf-8")
+    if payload not in original:
+        raise ValueError("Original probe GUI excerpt is not byte-exact")
+    support = {
+        "common/scripted_guis/rqa120_phase4_probe_gui.txt": codecs.BOM_UTF8 + payload + b"\n",
+        PHASE4_GUI_RELATIVE: PHASE4_MANUAL_GUI.encode("utf-8-sig"),
+        "gui/scripted_widgets/rqa120_phase4_manual.txt": (
+            PHASE4_GUI_RELATIVE + " = rqa120_phase4_manual_window\n").encode("utf-8-sig"),
+    }
+    for language, instructions, button in (
+        ("english", "Inspect both original targets' default Offer Vassalization scores and complete reasons; Cancel both. Only after the operator qualifies both negative totals, send the original probe once.", "Send ORIGINAL A/B probe once"),
+        ("simp_chinese", "先核原目标A/B的默认提议附庸完整理由及负总分，分别取消。仅在操作者确认两人资格后，单击一次原始探针。", "仅发送一次原始A/B探针"),
+    ):
+        support[f"localization/{language}/rqa120_phase4_l_{language}.yml"] = (
+            f'l_{language}:\n rqa120_phase4_instructions:0 "{instructions}"\n'
+            f' rqa120_phase4_original_probe_once:0 "{button}"\n').encode("utf-8-sig")
+    return support
+
+
+def phase4_projection_receipt(source: Path, raw: bytes, projected: bytes,
+                              support: dict[str, bytes]) -> dict:
+    inverse = phase4_project(projected, inverse=True)
+    if inverse != raw or projected != phase4_project(raw):
+        raise ValueError("Phase4 inverse did not restore the complete original driver")
+    return {
+        "schema": "rmtm-phase4-pre-send-gui-qualification-projection-v1",
+        "enabled": True, "runtime_status": "NOT_RUN", "business_pass": False,
+        "original_driver": witness.byte_pin(raw), "projected_driver": witness.byte_pin(projected),
+        "inverse_driver": witness.byte_pin(inverse), "inverse_byte_exact": True,
+        "original_probe_source": {"path": str((source / "common/scripted_guis/rqa_guis.txt").resolve()),
+                                  "sha256": prep.digest(source / "common/scripted_guis/rqa_guis.txt")},
+        "added_files": {name: witness.byte_pin(value) for name, value in support.items()},
+        "automatic_probe_action": False, "canonical_business_effects_modified": False,
+        "original_d4_two_refusals_still_required": True, "scope_dump_count_unchanged": 3,
+        "target_selection": "same original A/B; unknown/nonnegative/mismatched target stops as GAP; never reselect",
+        "default_flags_semantics": "Actual GUI readback required; no inferred ai_accept syntax or ACK credit",
+    }
 
 
 def event(name: str, body: str) -> str:
@@ -167,7 +260,9 @@ CHECKPOINT
     return "namespace = rqa120\n\n" + event("rqa120.1", initialize) + "\n" + event("rqa120.2", tick)
 
 
-def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None) -> dict:
+def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None, phase4_pre_send_gui_qualification: bool = False) -> dict:
+    qualified_phase4 = phase4_enabled(phase4_pre_send_gui_qualification,
+                                    ui_checkpoints=ui_checkpoints, threshold_ui=threshold_ui)
     if formal_product_dir is None:
         raise ValueError("Scope-witness callback projection requires the selected formal product directory")
     formal_event = formal_product_dir.resolve() / witness.CALLBACK_RELATIVE
@@ -211,7 +306,21 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
     with (output / "common/scripted_effects/rqa120_production_effects.txt").open("a", encoding="utf-8", newline="\n") as stream:
         stream.write("\n" + STOCK_JOIN_HELPER)
     prep.write_script(output, "common/on_action/rqa120_on_actions.txt", START)
-    prep.write_script(output, "events/rqa120_events.txt", events(ui_checkpoints))
+    original_driver = events(ui_checkpoints).encode("utf-8-sig")
+    phase4_receipt = {}
+    if qualified_phase4:
+        projected_driver = phase4_project(original_driver)
+        support = phase4_support(source)
+        phase4_receipt[PHASE4_OPTION] = phase4_projection_receipt(source, original_driver, projected_driver, support)
+        with (output / "events/rqa120_events.txt").open("xb") as stream:
+            stream.write(projected_driver)
+        for relative, raw in support.items():
+            target = output / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open("xb") as stream:
+                stream.write(raw)
+    else:
+        prep.write_script(output, "events/rqa120_events.txt", events(ui_checkpoints))
     if ui_checkpoints:
         prep.write_script(output, "common/decisions/rqa120_decisions.txt", CONTINUE)
         for language, title, confirm, description in (
@@ -274,6 +383,7 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
         "product":"mod_reclaim_the_motherland", "ui_checkpoints":ui_checkpoints, "threshold_ui":threshold_ui,
         "effective_law_contract":effective_law_contract,
         "scope_witness_projection":scope_witness_proof,
+        **phase4_receipt,
         "core_marker_inventory":core_markers if threshold_ui else None,
         "threshold_UI_does_not_credit_core36":threshold_ui,
         "bookmark":"1066-09-15; begin as any human ruler except the Song emperor",
@@ -303,8 +413,9 @@ def main() -> None:
     parser.add_argument("--game-dir", type=Path)
     parser.add_argument("--threshold-ui", action="store_true")
     parser.add_argument("--formal-product-dir", type=Path, required=True)
+    parser.add_argument("--phase4-pre-send-gui-qualification", action="store_true")
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir)
+    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir, args.phase4_pre_send_gui_qualification)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "runtime_status":"NOT_RUN", "ui_checkpoints":args.ui_checkpoints}))
 
 
