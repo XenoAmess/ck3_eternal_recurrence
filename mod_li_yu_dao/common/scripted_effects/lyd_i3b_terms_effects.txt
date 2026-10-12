@@ -38,5 +38,7 @@ lyd_i3b_show_terms_effect = {
         if = { limit = { this = rite:lyd_rite_qianjia } custom_tooltip = lyd_i3b_term_qianjia_tt }
         if = { limit = { this = rite:lyd_rite_changzhou } custom_tooltip = lyd_i3b_term_changzhou_tt }
         if = { limit = { this = rite:lyd_rite_jingshi } custom_tooltip = lyd_i3b_term_jingshi_tt }
+        if = { limit = { this = rite:jingxue } custom_tooltip = lyd_i3b_term_jingxue_tt }
+        if = { limit = { this = rite:daoxue } custom_tooltip = lyd_i3b_term_daoxue_tt }
     }
 }

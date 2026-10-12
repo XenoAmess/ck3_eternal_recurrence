@@ -235,6 +235,7 @@ def l0_commands(source: Path, output: Path, command_runner=capture_command) -> l
         ("school-consent-tests", [sys.executable, str(tools / "test_school_consent.py")]),
         ("content-leadership-tests", [sys.executable, str(tools / "test_content_leadership.py")]),
         ("institution-tests", [sys.executable, str(tools / "test_institution_candidate.py")]),
+        ("tenet-playstyle-tests", [sys.executable, str(tools / "test_tenet_playstyles.py")]),
         ("content-generated-check", [sys.executable, str(tools / "gen_content.py"), "--output", str(source), "--check"]),
         ("runtime-generated-check", [sys.executable, str(tools / "gen_runtime.py"), "--output-dir", str(source), "--check"]),
         ("static", [sys.executable, str(tools / "validate_static.py"), "--source", str(source), "--report", str(output / "static-report.json")]),

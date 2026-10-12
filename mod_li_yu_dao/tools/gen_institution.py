@@ -28,8 +28,11 @@ lyd_i3b_native_admitted_trigger = {
     lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor }
 }
 lyd_i3b_owned_rite_trigger = { @OWNED@ }
+lyd_i3b_supported_rite_trigger = {
+    OR = { lyd_i3b_owned_rite_trigger = yes this = rite:jingxue this = rite:daoxue }
+}
 lyd_i3b_compatible_rite_trigger = {
-    lyd_i3b_owned_rite_trigger = yes
+    lyd_i3b_supported_rite_trigger = yes
     rite_has_doctrine = doctrine_no_head
     rite_has_doctrine = doctrine_theocracy_lay_clergy
     NOR = {
@@ -48,6 +51,20 @@ lyd_i3b_only_owned_rites_faith_trigger = {
     main_rite = { lyd_i3b_owned_rite_trigger = yes }
     NOT = { any_faith_rite = { NOT = { lyd_i3b_owned_rite_trigger = yes } } }
 }
+# Faith ROOT. Vanilla Confucianism keeps its original Faith and main rite.
+# All actual rites, including Jingxue/Daoxue, enter the same consented roster.
+lyd_i3b_supported_faith_trigger = {
+    OR = {
+        lyd_i3b_only_owned_rites_faith_trigger = yes
+        AND = {
+            this = faith:confucian_faith
+            religion = religion:confucianism_religion
+            exists = main_rite
+            main_rite = { lyd_i3b_supported_rite_trigger = yes }
+            NOT = { any_faith_rite = { NOT = { lyd_i3b_supported_rite_trigger = yes } } }
+        }
+    }
+}
 # Character ROOT. No title office or existing challenger can supply a mandate.
 # is_head_of_faith is a native Title trigger, used only inside any_held_title.
 lyd_i3b_no_other_office_trigger = {
@@ -64,7 +81,7 @@ lyd_i3b_no_other_office_trigger = {
 }
 # Faith ROOT. Include native challengers with no LYD metadata.
 lyd_i3b_headless_faith_trigger = {
-    lyd_i3b_only_owned_rites_faith_trigger = yes
+    lyd_i3b_supported_faith_trigger = yes
     has_doctrine = doctrine_no_head
     NOT = { exists = religious_head_title }
     NOT = { exists = religious_head }
@@ -86,10 +103,10 @@ lyd_i3b_actor_trigger = {
     lyd_c3_player_actor_trigger = yes
     lyd_i3b_no_other_office_trigger = yes
     OR = {
-        faith = faith:lyd_common_faith
+        AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
         lyd_i3b_detached_authority_trigger = yes
+        AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
     }
-    rite = faith.main_rite
     highest_held_title_tier >= tier_duchy
     save_temporary_scope_as = lyd_i3b_actor_check
     rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check }
@@ -99,6 +116,12 @@ lyd_i3b_actor_trigger = {
 lyd_i3b_captured_authority_trigger = {
     OR = {
         AND = { var:lyd_i3b_authority_mode = 0 faith = faith:lyd_common_faith }
+        AND = {
+            var:lyd_i3b_authority_mode = 2
+            faith = faith:confucian_faith
+            rite = var:lyd_i3b_actor_rite
+            rite = { lyd_i3b_owned_rite_trigger = yes }
+        }
         AND = {
             var:lyd_i3b_authority_mode = 1
             lyd_i3b_detached_authority_trigger = yes
@@ -116,6 +139,12 @@ lyd_i3b_captured_authority_trigger = {
 lyd_i3b_native_authority_postcondition_trigger = {
     OR = {
         var:lyd_i3b_result_authority_mode = 0
+        AND = {
+            var:lyd_i3b_result_authority_mode = 2
+            faith = faith:confucian_faith
+            rite = var:lyd_i3b_actor_rite
+            faith.main_rite = var:lyd_i3b_main
+        }
         AND = {
             var:lyd_i3b_result_authority_mode = 1
             exists = var:lyd_i3b_result_native_hor
@@ -158,7 +187,7 @@ lyd_i3b_current_trigger = {
     lyd_i3b_captured_authority_trigger = yes
     has_variable = lyd_i3b_active
     faith = var:lyd_i3b_faith
-    rite = var:lyd_i3b_main
+    rite = var:lyd_i3b_actor_rite
     faith.main_rite = var:lyd_i3b_main
     NOT = { has_variable = lyd_c2_active }
     NOT = { has_variable = lyd_c3_active }
@@ -271,6 +300,8 @@ lyd_i3b_quorum_value = { value = var:lyd_i3b_yes multiply = 3 subtract = { value
            '    every_in_list = { variable = lyd_i3b_rites']
     for rite in catalogue.RITES:
         terms.append(f'        if = {{ limit = {{ this = rite:{rite.script_id} }} custom_tooltip = lyd_i3b_term_{rite.slug}_tt }}')
+    for vanilla in ('jingxue','daoxue'):
+        terms.append(f'        if = {{ limit = {{ this = rite:{vanilla} }} custom_tooltip = lyd_i3b_term_{vanilla}_tt }}')
     terms += ['    }','}']
     script('common/scripted_effects/lyd_i3b_terms_effects.txt','\n'.join(terms))
     script('common/scripted_effects/lyd_i3b_setup_effects.txt',r'''
@@ -299,9 +330,13 @@ lyd_i3b_begin_effect = {
         set_variable = { name = lyd_i3b_phase value = 1 }
         set_variable = { name = lyd_i3b_faith value = faith }
         set_variable = { name = lyd_i3b_main value = faith.main_rite }
+        set_variable = { name = lyd_i3b_actor_rite value = rite }
         remove_variable = lyd_i3b_required_native_hor
         if = { limit = { faith = faith:lyd_common_faith }
             set_variable = { name = lyd_i3b_authority_mode value = 0 }
+        }
+        else_if = { limit = { faith = faith:confucian_faith }
+            set_variable = { name = lyd_i3b_authority_mode value = 2 }
         }
         else = {
             set_variable = { name = lyd_i3b_authority_mode value = 1 }
@@ -490,7 +525,7 @@ lyd_i3b_close_effect = {
 }
 ''')
     script('common/scripted_effects/lyd_i3b_commit_effects.txt',r'''
-# Only this effect changes native doctrine; pending proposals never call it.
+# Only this authorized commit calls the factory; pending proposals never do.
 lyd_i3b_capture_authority_receipt_effect = {
     set_variable = { name = lyd_i3b_result_authority_mode value = var:lyd_i3b_authority_mode }
     remove_variable = lyd_i3b_result_native_hor
@@ -512,16 +547,13 @@ lyd_i3b_commit_effect = {
         set_variable = { name = lyd_i3b_result_code value = 0 }
         remove_variable = lyd_i3b_result_head_title
         lyd_i3b_capture_authority_receipt_effect = yes
-        # Every currently captured rite, including dormant templates, is a signed term.
-        var:lyd_i3b_faith = { remove_doctrine = doctrine_no_head add_doctrine = doctrine_temporal_head }
-        every_in_list = { variable = lyd_i3b_rites
-            if = { limit = { rite_has_doctrine = doctrine_no_head } change_rite_doctrine = doctrine_temporal_head }
-        }
+        # The shared factory must observe law95 on the empty, unbound office
+        # before it changes this Faith or any captured rite or grants a holder.
         set_variable = { name = lyd_c3_head_creation_authorized value = 1 }
         lyd_c3_create_owned_temporal_head_effect = yes
         remove_variable = lyd_c3_head_creation_authorized
         if = { limit = {
-            faith = var:lyd_i3b_faith rite = var:lyd_i3b_main faith.main_rite = var:lyd_i3b_main
+            faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main
             faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes }
             lyd_i3b_native_authority_postcondition_trigger = yes
             NOT = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
@@ -535,7 +567,7 @@ lyd_i3b_commit_effect = {
         }
         else = {
             # First failed class, retaining the real partial native state.
-            if = { limit = { NOT = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_main faith.main_rite = var:lyd_i3b_main } }
+            if = { limit = { NOT = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main } }
                 set_variable = { name = lyd_i3b_result_code value = 2 }
             }
             else_if = { limit = { NOT = { faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } } }
@@ -584,7 +616,9 @@ lyd_i3b_show_result_effect = {
         elif suffix=='review':
             shown+=' has_variable = lyd_i3b_active'
         elif suffix=='begin':
-            shown+=' NOT = { has_variable = lyd_i3b_active }'
+            # Eligibility belongs in is_valid; a blocked human school member
+            # can still inspect the real institution terms and prerequisites.
+            shown='is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_owned_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active }'
         description='lyd_i3b_result_review_desc' if suffix=='result_review' else 'lyd_i3b_terms_desc'
         decisions.append(f'''{name} = {{
     picture = {{ reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }}
@@ -659,8 +693,8 @@ lyd_i3b_nominate_interaction = {
         'lyd_i3b_result_review_decision':('查阅上次宗主制度实施回执','Read the Last Headship Attempt Receipt'),
         'lyd_i3b_result_review_desc':('查看本人上次已保存的制度实施结果与失败类别；不会重试实施、收费或改动原生对象。','Read my last saved headship attempt result and failure class, without retrying enactment, charging fees or changing native objects.'),
         'lyd_i3b_nominate_interaction':('提名本派制度议案代表','Nominate a School Representative'),
-        'lyd_i3b_terms_desc':('旧版独立共宗可由合格主礼仪学者发起；独立共同体须由仍在任的实际原生主礼仪领袖本人发起，且全部礼仪属于本模组。现有宗主头衔或争议宗主会阻止本轮。本轮拟由无宗主改为世俗宗主，首任候选人为发起者；仅替换当前共同体及本轮完整礼仪名单的宗主教义，不改信条、主礼仪、政治领属、政体或土地。活跃派须各得三分之二合格学者授权、明确提名的代表签署；所有存活玩家须另行同意。无信众且无伯爵领的休眠模板不作赞成票，但其教义变更仍列入条款。任何新礼仪、名单、人选、宗主教义、教士兼容条件或归属变动均须重议。实施时重核本轮授权，成功须由真实原生后置检查确认。',
-                                'For the legacy standalone Communion an eligible main-rite scholar may initiate; a detached Communion requires its actual current native main-rite head to initiate, and every rite must belong to this mod. Existing head titles or challengers block the round. These terms replace no-head with temporal-head for the current Communion and its complete captured rite list, naming the initiator as the first candidate. Tenets, main rite, political allegiance, governments and land are unchanged. Every active school requires its own two-thirds scholarly mandate and a nominated representative signature; every living human player separately consents. Empty templates count as no affirmative votes, but their doctrine changes remain explicit terms. Any roster, representative, head doctrine, clergy compatibility or affiliation change requires a new round. Enactment rechecks this round’s authorizations; success requires actual native postconditions.'),
+        'lyd_i3b_terms_desc':('原版儒家中的新礼仪玩家可发起建立真实宗主，不必改信或成为经学、道学的派领袖。议案保持原信仰、经学、道学、主礼仪及各派信条，但建立的是整个当前儒家信仰的世俗宗主制度：完整礼仪名单均由无宗主改为世俗宗主，原版经学、道学不豁免。首任候选人为发起者。每个活跃派（包括实际存在的经学、道学）须分别取得三分之二合格学者授权和提名代表签署；所有存活玩家须另行明确同意。休眠礼仪不贡献赞成票，但制度变化列入条款。旧独立共宗仍由主礼仪玩家发起，分离共同体仍须由实际主礼仪领袖发起。现有宗主、争议宗主或其他议案会阻止本轮；名单或资格改变须撤回重议。不得转移旧政治头衔或重写其继承。真实后置检查通过才确认成功。',
+                                'A player of a new rite within vanilla Confucianism may propose a real Head of Faith without converting or becoming the Jingxue/Daoxue rite head. The original Faith, Jingxue, Daoxue, main rite and all tenets remain. This establishes temporal headship for the entire current Faith: every captured rite replaces no head with temporal head, including vanilla rites without an opt-out. The initiator is the first candidate. Each active school, including actual Jingxue and Daoxue, needs its own two-thirds scholarly mandate and nominated representative signature; every living human separately consents. Dormant rites contribute no affirmative votes but their institution changes remain terms. Legacy Communion initiation still requires the main rite; detached communities still require their actual native main-rite head. Existing heads, challengers or competing proposals block the round. Roster or eligibility changes require withdrawal and a new round. Existing political titles and their succession must not be reassigned. Success requires actual postconditions.'),
         'lyd_i3b_nomination_t':('受议推举，尚非宗主','A Nomination, Not a Headship'),
         'lyd_i3b_ballot_t':('本派的制度授权','Our School’s Institutional Mandate'),
         'lyd_i3b_player_t':('我的共同体制度同意','My Consent to the Institution'),
@@ -673,7 +707,7 @@ lyd_i3b_nominate_interaction = {
         'lyd_i3b_cancel':('撤回本轮','Withdraw this round'),
         'lyd_i3b_confirm':('按已重核授权实施','Enact the revalidated terms'),
         'lyd_i3b_pending':('本轮制度实施条件尚未齐备','This round is not ready for enactment'),
-        'lyd_i3b_begin_valid_tt':('此流程仅适用于全部礼仪属于本模组的独立共同体或旧试玩共同体，不接管仍包含原版经学、道学的儒家信仰。须为合格主礼仪玩家；独立共同体还须本人为实际在任主礼仪领袖。全部礼仪须无宗主且教士制度兼容；本人不得持其他宗主或争议头衔，共同体不得已有争议宗主，且无其他议案占用。','This flow applies only to a detached or legacy trial community whose rites all belong to this mod. It does not take over vanilla Confucianism containing Jingxue or Daoxue. Requires an eligible main-rite player; a detached community also requires its actual current native main-rite head. All rites must remain headless with compatible clergy; no other held headship or challenger title, native challenger, or competing proposal is allowed.'),
+        'lyd_i3b_begin_valid_tt':('须为符合教士性别要求、在世成年且有公国以上头衔的新礼仪玩家。原版儒家可直接发起，保留原信仰与主礼仪，并纳入全部实际礼仪（含经学、道学）的独立授权。旧独立共宗须属主礼仪；分离共同体还须本人为实际主礼仪领袖。信仰和全部礼仪须无宗主且教士制度兼容；不得已有宗主、争议宗主、其他职位或待办议案。','Requires a living adult new-rite player with at least a duchy and permitted clergy gender. Vanilla Confucianism may initiate directly, preserving Faith and main rite while including every actual rite, including Jingxue and Daoxue, in independent authorization. Legacy Communion initiators must belong to the main rite; detached communities additionally require the actual native main-rite head. The Faith and all rites must be headless with compatible clergy, with no existing head, challenger, other office or pending proposal.'),
         'lyd_i3b_nominate_valid_tt':('本轮草案与名单须仍有效；本人须为本派合格学者，且本派活跃、尚无已接受提名的代表。','The draft and roster must remain valid; I must be a qualified scholar of an active school without an accepted representative.'),
         'lyd_i3b_seal_valid_tt':('本轮草案与名单须仍有效；每个活跃派都须有已接受提名的合格学者代表与正数学者名额。缺代表须先推举；活跃派若无合格学者，须先实际补足资格，再撤回重议，不能算作休眠或补假票。','The draft and roster must remain valid. Every active school needs an accepted qualified representative and at least one eligible scholar. Nominate missing representatives first. An active school with no eligible scholars must acquire real qualifications, then withdraw and restart; it cannot count as dormant or receive invented votes.'),
         'lyd_i3b_current_valid_tt':('发起者、共同体、主礼仪、完整名单、资格与本轮占用须仍与议案一致；失效后请撤回重议。','The initiator, Communion, main rite, full roster, eligibility and this round’s locks must still match. Withdraw and restart an invalid proposal.'),
@@ -705,11 +739,13 @@ lyd_i3b_nominate_interaction = {
         'lyd_i3b_result_political_failed_tt':('失败类别 5：至少一项捕获的旧政治头衔已不再归原发起者。','Failure class 5: at least one captured pre-existing political title no longer belongs to the initiator.'),
         'lyd_i3b_result_native_hor_failed_tt':('实施后独立共同体的实际主礼仪领袖与本轮授权人不一致；保留真实原生状态，不补写领袖或宣告成功。','The detached Communion’s actual native main-rite head no longer matches this round’s authorized initiator after enactment. The real native state is retained without assigning a replacement or claiming success.'),
         'lyd_i3b_result_unclassified_tt':('失败类别 6：未分类后置失败，须独立读回实际对象后调查。','Failure class 6: unclassified postcondition failure; independently read back the actual objects before investigation.'),
-        'lyd_i3b_doctrine_clause_tt':('本轮教义条款：仅将以下已捕获礼仪的“无宗主”替换为“世俗宗主”；主礼仪与当前共同体同步。首任候选：[lyd_i3b_actor.GetTitledFirstName]。这份名单包括休眠模板，休眠模板不贡献赞成票。',
-                                    'Doctrine terms: replace no head with temporal head only for the following captured rites, including the main rite and its current Communion. First candidate: [lyd_i3b_actor.GetTitledFirstName]. Dormant templates are explicit terms and contribute no affirmative votes.'),
+        'lyd_i3b_doctrine_clause_tt':('制度条款：当前整个信仰及以下完整礼仪名单均由“无宗主”改为“世俗宗主”，原版经学、道学不豁免；不改信条、主礼仪或信众归属。首任候选：[lyd_i3b_actor.GetTitledFirstName]。休眠礼仪同列条款，但不贡献赞成票。',
+                                     'Institution terms: the current Faith and complete following rite list replace no head with temporal head. Vanilla Jingxue/Daoxue do not opt out. Tenets, main rite and followers stay unchanged. First candidate: [lyd_i3b_actor.GetTitledFirstName]. Dormant rites are terms but contribute no affirmative votes.'),
     }
     for rite in catalogue.RITES:
         loc[f'lyd_i3b_term_{rite.slug}_tt']=(f'{rite.name_zh}：无宗主 → 世俗宗主。',f'{rite.name_en}: no head → temporal head.')
+    loc['lyd_i3b_term_jingxue_tt']=('经学（原版）：无宗主 → 世俗宗主；保留原信条。','Jingxue (vanilla): no head → temporal head; original tenets retained.')
+    loc['lyd_i3b_term_daoxue_tt']=('道学（原版）：无宗主 → 世俗宗主；保留原信条。','Daoxue (vanilla): no head → temporal head; original tenets retained.')
     for language,column in (('simp_chinese',0),('english',1)):
         lines=[f'l_{language}:',' # GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.']
         for key,text in loc.items(): lines.append(f' {key}:0 "{text[column]}"')

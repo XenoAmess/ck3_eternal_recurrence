@@ -43,6 +43,7 @@ def fixture(source: Path) -> None:
         write(source / f"localization/{language}/lyd_c2_consent_l_{language}.yml", f'l_{language}:\n', bom=True)
         write(source / f"localization/{language}/lyd_c3_leadership_l_{language}.yml", f'l_{language}:\n', bom=True)
         write(source / f"localization/{language}/lyd_i3b_institution_l_{language}.yml", f'l_{language}:\n', bom=True)
+        write(source / f"localization/{language}/lyd_tenet_playstyle_l_{language}.yml", f'l_{language}:\n', bom=True)
 
 
 class BuildTests(unittest.TestCase):

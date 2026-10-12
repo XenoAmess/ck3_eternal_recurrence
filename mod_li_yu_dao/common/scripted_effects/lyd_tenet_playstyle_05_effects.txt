@@ -1,0 +1,92 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+lyd_play_six_arts_option_2_effect = {
+if = {
+limit = { lyd_play_six_arts_option_2_trigger = yes }
+remove_short_term_gold = 125
+add_martial_lifestyle_xp = 600
+add_character_modifier = { modifier = lyd_play_six_arts_option_2_character days = 1095 }
+add_character_flag = { flag = lyd_play_six_arts_cooldown days = 1095 }
+}
+}
+
+lyd_play_six_arts_option_3_effect = {
+if = {
+limit = { lyd_play_six_arts_option_3_trigger = yes }
+add_prestige = -150
+add_martial_lifestyle_xp = 500
+add_character_modifier = { modifier = lyd_play_six_arts_option_3_character days = 1095 }
+add_character_flag = { flag = lyd_play_six_arts_cooldown days = 1095 }
+}
+}
+
+lyd_play_six_arts_option_4_effect = {
+if = {
+limit = { lyd_play_six_arts_option_4_trigger = yes }
+remove_short_term_gold = 100
+add_learning_lifestyle_xp = 650
+add_character_modifier = { modifier = lyd_play_six_arts_option_4_character days = 1095 }
+add_character_flag = { flag = lyd_play_six_arts_cooldown days = 1095 }
+}
+}
+
+lyd_play_six_arts_option_5_effect = {
+if = {
+limit = { lyd_play_six_arts_option_5_trigger = yes }
+remove_short_term_gold = 125
+add_stewardship_lifestyle_xp = 650
+add_character_modifier = { modifier = lyd_play_six_arts_option_5_character days = 1095 }
+add_character_flag = { flag = lyd_play_six_arts_cooldown days = 1095 }
+}
+}
+
+lyd_play_philological_way_option_0_effect = {
+if = {
+limit = { lyd_play_philological_way_option_0_trigger = yes }
+remove_short_term_gold = 200
+add_learning_lifestyle_xp = 900
+add_stress = 30
+add_character_modifier = { modifier = lyd_play_philological_way_option_0_character days = 1460 }
+add_character_flag = { flag = lyd_play_philological_way_cooldown days = 1825 }
+}
+}
+
+lyd_play_moral_achievement_option_0_effect = {
+if = {
+limit = { lyd_play_moral_achievement_option_0_trigger = yes }
+remove_short_term_gold = 300
+add_stewardship_lifestyle_xp = 650
+add_character_modifier = { modifier = lyd_play_moral_achievement_option_0_character days = 1460 }
+capital_county = {
+change_development_progress = 50
+add_county_modifier = { modifier = lyd_play_moral_achievement_option_0_county days = 1460 }
+}
+add_character_flag = { flag = lyd_play_moral_achievement_cooldown days = 1825 }
+}
+}
+
+lyd_play_restrain_violence_option_0_effect = {
+if = {
+limit = { lyd_play_restrain_violence_option_0_trigger = yes }
+add_prestige = -250
+add_martial_lifestyle_xp = 450
+add_piety = 200
+add_character_modifier = { modifier = lyd_play_restrain_violence_option_0_character days = 730 }
+capital_county = {
+change_county_control = 25
+}
+add_character_flag = { flag = lyd_play_restrain_violence_cooldown days = 1460 }
+}
+}
+
+lyd_play_subtle_intentions_option_0_effect = {
+if = {
+limit = { lyd_play_subtle_intentions_option_0_trigger = yes }
+remove_short_term_gold = 125
+add_dread = -30
+add_legitimacy = 100
+add_stress = -60
+add_character_modifier = { modifier = lyd_play_subtle_intentions_option_0_character days = 1095 }
+add_character_flag = { flag = lyd_play_subtle_intentions_cooldown days = 1095 }
+}
+}
+

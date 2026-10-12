@@ -1,0 +1,342 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+namespace = lyd
+lyd.1000 = {
+type = character_event
+title = lyd_play_reverent_heaven_title
+desc = lyd_play_reverent_heaven_desc
+theme = learning
+trigger = { lyd_play_reverent_heaven_available_trigger = yes }
+option = { name = lyd_play_reverent_heaven_option_0 trigger = { lyd_play_reverent_heaven_option_0_trigger = yes } lyd_play_reverent_heaven_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1001 = {
+type = character_event
+title = lyd_play_sincerity_solitude_title
+desc = lyd_play_sincerity_solitude_desc
+theme = learning
+trigger = { lyd_play_sincerity_solitude_available_trigger = yes }
+option = { name = lyd_play_sincerity_solitude_option_0 trigger = { lyd_play_sincerity_solitude_option_0_trigger = yes } lyd_play_sincerity_solitude_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1002 = {
+type = character_event
+title = lyd_play_ritual_music_title
+desc = lyd_play_ritual_music_desc
+theme = learning
+trigger = { lyd_play_ritual_music_available_trigger = yes }
+option = { name = lyd_play_ritual_music_option_0 trigger = { lyd_play_ritual_music_option_0_trigger = yes } lyd_play_ritual_music_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1003 = {
+type = character_event
+title = lyd_play_ancestral_reverence_title
+desc = lyd_play_ancestral_reverence_desc
+theme = learning
+trigger = { lyd_play_ancestral_reverence_available_trigger = yes }
+option = { name = lyd_play_ancestral_reverence_option_0 trigger = { lyd_play_ancestral_reverence_option_0_trigger = yes } lyd_play_ancestral_reverence_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1004 = {
+type = character_event
+title = lyd_play_names_duties_title
+desc = lyd_play_names_duties_desc
+theme = learning
+trigger = { lyd_play_names_duties_available_trigger = yes }
+option = { name = lyd_play_names_duties_option_0 trigger = { lyd_play_names_duties_option_0_trigger = yes } lyd_play_names_duties_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1005 = {
+type = character_event
+title = lyd_play_humaneness_righteousness_title
+desc = lyd_play_humaneness_righteousness_desc
+theme = learning
+trigger = { lyd_play_humaneness_righteousness_available_trigger = yes }
+option = { name = lyd_play_humaneness_righteousness_option_0 trigger = { lyd_play_humaneness_righteousness_option_0_trigger = yes } lyd_play_humaneness_righteousness_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1006 = {
+type = character_event
+title = lyd_play_righteous_remonstrance_title
+desc = lyd_play_righteous_remonstrance_desc
+theme = learning
+trigger = { lyd_play_righteous_remonstrance_available_trigger = yes }
+option = { name = lyd_play_righteous_remonstrance_option_0 trigger = { lyd_play_righteous_remonstrance_option_0_trigger = yes } lyd_play_righteous_remonstrance_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1007 = {
+type = character_event
+title = lyd_play_sage_transmission_title
+desc = lyd_play_sage_transmission_desc
+theme = learning
+trigger = { lyd_play_sage_transmission_available_trigger = yes }
+option = { name = lyd_play_sage_transmission_option_0 trigger = { lyd_play_sage_transmission_option_0_trigger = yes } lyd_play_sage_transmission_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1008 = {
+type = character_event
+title = lyd_play_extend_sprouts_title
+desc = lyd_play_extend_sprouts_desc
+theme = learning
+trigger = { lyd_play_extend_sprouts_available_trigger = yes }
+option = { name = lyd_play_extend_sprouts_option_0 trigger = { lyd_play_extend_sprouts_option_0_trigger = yes } lyd_play_extend_sprouts_option_0_effect = yes }
+option = { name = lyd_play_extend_sprouts_option_1 trigger = { lyd_play_extend_sprouts_option_1_trigger = yes } lyd_play_extend_sprouts_option_1_effect = yes }
+option = { name = lyd_play_extend_sprouts_option_2 trigger = { lyd_play_extend_sprouts_option_2_trigger = yes } lyd_play_extend_sprouts_option_2_effect = yes }
+option = { name = lyd_play_extend_sprouts_option_3 trigger = { lyd_play_extend_sprouts_option_3_trigger = yes } lyd_play_extend_sprouts_option_3_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1009 = {
+type = character_event
+title = lyd_play_deliberate_cultivation_title
+desc = lyd_play_deliberate_cultivation_desc
+theme = learning
+trigger = { lyd_play_deliberate_cultivation_available_trigger = yes }
+option = { name = lyd_play_deliberate_cultivation_option_0 trigger = { lyd_play_deliberate_cultivation_option_0_trigger = yes } lyd_play_deliberate_cultivation_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1010 = {
+type = character_event
+title = lyd_play_righteous_qi_title
+desc = lyd_play_righteous_qi_desc
+theme = learning
+trigger = { lyd_play_righteous_qi_available_trigger = yes }
+option = { name = lyd_play_righteous_qi_option_0 trigger = { lyd_play_righteous_qi_option_0_trigger = yes } lyd_play_righteous_qi_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1011 = {
+type = character_event
+title = lyd_play_portent_reflection_title
+desc = lyd_play_portent_reflection_desc
+theme = learning
+trigger = { lyd_play_portent_reflection_available_trigger = yes }
+option = { name = lyd_play_portent_reflection_option_0 trigger = { lyd_play_portent_reflection_option_0_trigger = yes } lyd_play_portent_reflection_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1012 = {
+type = character_event
+title = lyd_play_qi_kinship_title
+desc = lyd_play_qi_kinship_desc
+theme = learning
+trigger = { lyd_play_qi_kinship_available_trigger = yes }
+option = { name = lyd_play_qi_kinship_option_0 trigger = { lyd_play_qi_kinship_option_0_trigger = yes } lyd_play_qi_kinship_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1013 = {
+type = character_event
+title = lyd_play_investigate_principle_title
+desc = lyd_play_investigate_principle_desc
+theme = learning
+trigger = { lyd_play_investigate_principle_available_trigger = yes }
+option = { name = lyd_play_investigate_principle_option_0 trigger = { lyd_play_investigate_principle_option_0_trigger = yes } lyd_play_investigate_principle_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1014 = {
+type = character_event
+title = lyd_play_reverent_attention_title
+desc = lyd_play_reverent_attention_desc
+theme = learning
+trigger = { lyd_play_reverent_attention_available_trigger = yes }
+option = { name = lyd_play_reverent_attention_option_0 trigger = { lyd_play_reverent_attention_option_0_trigger = yes } lyd_play_reverent_attention_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1015 = {
+type = character_event
+title = lyd_play_original_heart_title
+desc = lyd_play_original_heart_desc
+theme = learning
+trigger = { lyd_play_original_heart_available_trigger = yes }
+option = { name = lyd_play_original_heart_option_0 trigger = { lyd_play_original_heart_option_0_trigger = yes } lyd_play_original_heart_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1016 = {
+type = character_event
+title = lyd_play_innate_knowing_title
+desc = lyd_play_innate_knowing_desc
+theme = learning
+trigger = { lyd_play_innate_knowing_available_trigger = yes }
+option = { name = lyd_play_innate_knowing_option_0 trigger = { lyd_play_innate_knowing_option_0_trigger = yes } lyd_play_innate_knowing_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1017 = {
+type = character_event
+title = lyd_play_knowing_acting_title
+desc = lyd_play_knowing_acting_desc
+theme = learning
+trigger = { lyd_play_knowing_acting_available_trigger = yes }
+option = { name = lyd_play_knowing_acting_option_0 trigger = { lyd_play_knowing_acting_option_0_trigger = yes } lyd_play_knowing_acting_option_0_effect = yes }
+option = { name = lyd_play_knowing_acting_option_1 trigger = { lyd_play_knowing_acting_option_1_trigger = yes } lyd_play_knowing_acting_option_1_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1018 = {
+type = character_event
+title = lyd_play_textual_ritual_title
+desc = lyd_play_textual_ritual_desc
+theme = learning
+trigger = { lyd_play_textual_ritual_available_trigger = yes }
+option = { name = lyd_play_textual_ritual_option_0 trigger = { lyd_play_textual_ritual_option_0_trigger = yes } lyd_play_textual_ritual_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1019 = {
+type = character_event
+title = lyd_play_classical_synthesis_title
+desc = lyd_play_classical_synthesis_desc
+theme = learning
+trigger = { lyd_play_classical_synthesis_available_trigger = yes }
+option = { name = lyd_play_classical_synthesis_option_0 trigger = { lyd_play_classical_synthesis_option_0_trigger = yes } lyd_play_classical_synthesis_option_0_effect = yes }
+option = { name = lyd_play_classical_synthesis_option_1 trigger = { lyd_play_classical_synthesis_option_1_trigger = yes } lyd_play_classical_synthesis_option_1_effect = yes }
+option = { name = lyd_play_classical_synthesis_option_2 trigger = { lyd_play_classical_synthesis_option_2_trigger = yes } lyd_play_classical_synthesis_option_2_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1020 = {
+type = character_event
+title = lyd_play_annals_judgment_title
+desc = lyd_play_annals_judgment_desc
+theme = learning
+trigger = { lyd_play_annals_judgment_available_trigger = yes }
+option = { name = lyd_play_annals_judgment_option_0 trigger = { lyd_play_annals_judgment_option_0_trigger = yes } lyd_play_annals_judgment_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1021 = {
+type = character_event
+title = lyd_play_constant_heaven_title
+desc = lyd_play_constant_heaven_desc
+theme = learning
+trigger = { lyd_play_constant_heaven_available_trigger = yes }
+option = { name = lyd_play_constant_heaven_option_0 trigger = { lyd_play_constant_heaven_option_0_trigger = yes } lyd_play_constant_heaven_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1022 = {
+type = character_event
+title = lyd_play_restore_nature_title
+desc = lyd_play_restore_nature_desc
+theme = learning
+trigger = { lyd_play_restore_nature_available_trigger = yes }
+option = { name = lyd_play_restore_nature_option_0 trigger = { lyd_play_restore_nature_option_0_trigger = yes } lyd_play_restore_nature_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1023 = {
+type = character_event
+title = lyd_play_ordinary_life_title
+desc = lyd_play_ordinary_life_desc
+theme = learning
+trigger = { lyd_play_ordinary_life_available_trigger = yes }
+option = { name = lyd_play_ordinary_life_option_0 trigger = { lyd_play_ordinary_life_option_0_trigger = yes } lyd_play_ordinary_life_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1024 = {
+type = character_event
+title = lyd_play_six_arts_title
+desc = lyd_play_six_arts_desc
+theme = learning
+trigger = { lyd_play_six_arts_available_trigger = yes }
+option = { name = lyd_play_six_arts_option_0 trigger = { lyd_play_six_arts_option_0_trigger = yes } lyd_play_six_arts_option_0_effect = yes }
+option = { name = lyd_play_six_arts_option_1 trigger = { lyd_play_six_arts_option_1_trigger = yes } lyd_play_six_arts_option_1_effect = yes }
+option = { name = lyd_play_six_arts_option_2 trigger = { lyd_play_six_arts_option_2_trigger = yes } lyd_play_six_arts_option_2_effect = yes }
+option = { name = lyd_play_six_arts_option_3 trigger = { lyd_play_six_arts_option_3_trigger = yes } lyd_play_six_arts_option_3_effect = yes }
+option = { name = lyd_play_six_arts_option_4 trigger = { lyd_play_six_arts_option_4_trigger = yes } lyd_play_six_arts_option_4_effect = yes }
+option = { name = lyd_play_six_arts_option_5 trigger = { lyd_play_six_arts_option_5_trigger = yes } lyd_play_six_arts_option_5_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1025 = {
+type = character_event
+title = lyd_play_philological_way_title
+desc = lyd_play_philological_way_desc
+theme = learning
+trigger = { lyd_play_philological_way_available_trigger = yes }
+option = { name = lyd_play_philological_way_option_0 trigger = { lyd_play_philological_way_option_0_trigger = yes } lyd_play_philological_way_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1026 = {
+type = character_event
+title = lyd_play_moral_achievement_title
+desc = lyd_play_moral_achievement_desc
+theme = learning
+trigger = { lyd_play_moral_achievement_available_trigger = yes }
+option = { name = lyd_play_moral_achievement_option_0 trigger = { lyd_play_moral_achievement_option_0_trigger = yes } lyd_play_moral_achievement_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1027 = {
+type = character_event
+title = lyd_play_restrain_violence_title
+desc = lyd_play_restrain_violence_desc
+theme = learning
+trigger = { lyd_play_restrain_violence_available_trigger = yes }
+option = { name = lyd_play_restrain_violence_option_0 trigger = { lyd_play_restrain_violence_option_0_trigger = yes } lyd_play_restrain_violence_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1028 = {
+type = character_event
+title = lyd_play_subtle_intentions_title
+desc = lyd_play_subtle_intentions_desc
+theme = learning
+trigger = { lyd_play_subtle_intentions_available_trigger = yes }
+option = { name = lyd_play_subtle_intentions_option_0 trigger = { lyd_play_subtle_intentions_option_0_trigger = yes } lyd_play_subtle_intentions_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1029 = {
+type = character_event
+title = lyd_play_responsive_interpretation_title
+desc = lyd_play_responsive_interpretation_desc
+theme = learning
+trigger = { lyd_play_responsive_interpretation_available_trigger = yes }
+option = { name = lyd_play_responsive_interpretation_option_0 trigger = { lyd_play_responsive_interpretation_option_0_trigger = yes } lyd_play_responsive_interpretation_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1030 = {
+type = character_event
+title = lyd_play_images_numbers_title
+desc = lyd_play_images_numbers_desc
+theme = learning
+trigger = { lyd_play_images_numbers_available_trigger = yes }
+option = { name = lyd_play_images_numbers_option_0 trigger = { lyd_play_images_numbers_option_0_trigger = yes } lyd_play_images_numbers_option_0_effect = yes }
+option = { name = lyd_play_images_numbers_option_1 trigger = { lyd_play_images_numbers_option_1_trigger = yes } lyd_play_images_numbers_option_1_effect = yes }
+option = { name = lyd_play_images_numbers_option_2 trigger = { lyd_play_images_numbers_option_2_trigger = yes } lyd_play_images_numbers_option_2_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1031 = {
+type = character_event
+title = lyd_play_profound_interpretation_title
+desc = lyd_play_profound_interpretation_desc
+theme = learning
+trigger = { lyd_play_profound_interpretation_available_trigger = yes }
+option = { name = lyd_play_profound_interpretation_option_0 trigger = { lyd_play_profound_interpretation_option_0_trigger = yes } lyd_play_profound_interpretation_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1032 = {
+type = character_event
+title = lyd_play_knowing_acting_support_title
+desc = lyd_play_knowing_acting_support_desc
+theme = learning
+trigger = { lyd_play_knowing_acting_support_available_trigger = yes }
+option = { name = lyd_play_knowing_acting_support_option_0 trigger = { lyd_play_knowing_acting_support_option_0_trigger = yes } lyd_play_knowing_acting_support_option_0_effect = yes }
+option = { name = lyd_play_knowing_acting_support_option_1 trigger = { lyd_play_knowing_acting_support_option_1_trigger = yes } lyd_play_knowing_acting_support_option_1_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1033 = {
+type = character_event
+title = lyd_play_ongoing_generation_title
+desc = lyd_play_ongoing_generation_desc
+theme = learning
+trigger = { lyd_play_ongoing_generation_available_trigger = yes }
+option = { name = lyd_play_ongoing_generation_option_0 trigger = { lyd_play_ongoing_generation_option_0_trigger = yes } lyd_play_ongoing_generation_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1034 = {
+type = character_event
+title = lyd_play_quiet_self_attainment_title
+desc = lyd_play_quiet_self_attainment_desc
+theme = learning
+trigger = { lyd_play_quiet_self_attainment_available_trigger = yes }
+option = { name = lyd_play_quiet_self_attainment_option_0 trigger = { lyd_play_quiet_self_attainment_option_0_trigger = yes } lyd_play_quiet_self_attainment_option_0_effect = yes }
+option = { name = lyd_play_cancel }
+}
+lyd.1035 = {
+type = character_event
+title = lyd_play_recognition_everywhere_title
+desc = lyd_play_recognition_everywhere_desc
+theme = learning
+trigger = { lyd_play_recognition_everywhere_available_trigger = yes }
+option = { name = lyd_play_recognition_everywhere_option_0 trigger = { lyd_play_recognition_everywhere_option_0_trigger = yes } lyd_play_recognition_everywhere_option_0_effect = yes }
+option = { name = lyd_play_recognition_everywhere_option_1 trigger = { lyd_play_recognition_everywhere_option_1_trigger = yes } lyd_play_recognition_everywhere_option_1_effect = yes }
+option = { name = lyd_play_recognition_everywhere_option_2 trigger = { lyd_play_recognition_everywhere_option_2_trigger = yes } lyd_play_recognition_everywhere_option_2_effect = yes }
+option = { name = lyd_play_cancel }
+}

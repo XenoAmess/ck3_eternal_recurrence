@@ -2,7 +2,8 @@
 # CK3 1.20.0.4; 36 tenets with native character/county/personal modifiers.
 # Faith selection uses Faith scope. Personal selection has Character scope.
 # Faith can_pick has no unguarded is_ai check: its actor can be null.
-# Parameters are capability flags, not proof that practice events are connected.
+# Native parameters use installed consumers; lyd practice flags unlock their own decisions.
+# Native virtue/sin source weights apply; selecting a tenet never grants personality traits.
 # Local divergence scaling is a prototype input; global defines are untouched.
 
 # T01: Revere Heaven and Its Charge
@@ -27,13 +28,24 @@ lyd_tenet_reverent_heaven = {
 	personal_tenet_parameters = {
 		lyd_reverent_heaven_practice
 	}
+	traits = {
+		virtues = {
+			just = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		monthly_piety_gain_mult = 0.05
-		stress_loss_mult = -0.05
+		monthly_piety_gain_mult = 0.20
+		piety_level_impact_mult = 0.25
+		legitimacy_gain_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		monthly_legitimacy_add = 0.05
-		monthly_income_mult = -0.02
+		monthly_legitimacy_add = 0.15
+		diplomacy_per_piety_level = 1
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -55,17 +67,29 @@ lyd_tenet_sincerity_solitude = {
 	}
 	parameters = {
 		lyd_sincerity_solitude_practice
+		meditation_mechanics_active
 	}
 	personal_tenet_parameters = {
 		lyd_sincerity_solitude_practice
+		meditation_mechanics_active
+	}
+	traits = {
+		virtues = {
+			honest = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			deceitful = { weight = 15 scale = 1 }
+		}
 	}
 	character_modifier = {
-		tyranny_gain_mult = -0.05
-		stress_loss_mult = -0.05
+		tyranny_gain_mult = -0.20
+		stress_gain_mult = -0.15
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.08
-		monthly_income_mult = -0.02
+		enemy_scheme_secrecy_add = -15
+		character_spiritual_fulfillment_gain_mult = 0.25
+		intrigue = -1
 	}
 }
 
@@ -91,16 +115,26 @@ lyd_tenet_ritual_music = {
 	personal_tenet_parameters = {
 		lyd_ritual_music_practice
 	}
+	traits = {
+		virtues = {
+			gregarious = { weight = 15 scale = 1 }
+			patient = { weight = 15 scale = 1 }
+		}
+		sins = {
+			impatient = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		monthly_piety_from_buildings_mult = 0.08
-		church_holding_build_gold_cost = 0.05
+		monthly_piety_from_buildings_mult = 0.25
+		courtier_opinion = 10
 	}
 	county_modifier = {
-		county_opinion_add = 2
-		tax_mult = -0.02
+		county_opinion_add = 10
+		development_growth_factor = 0.10
 	}
 	personal_tenet_modifier = {
-		diplomacy_per_piety_level = 1
+		diplomacy = 3
+		monthly_prestige_gain_mult = 0.20
 		monthly_income_mult = -0.03
 	}
 }
@@ -127,16 +161,23 @@ lyd_tenet_ancestral_reverence = {
 	personal_tenet_parameters = {
 		lyd_ancestral_reverence_practice
 	}
-	character_modifier = {
-		monthly_piety_from_buildings_mult = 0.06
-		church_holding_build_gold_cost = 0.04
+	traits = {
+		virtues = {
+			compassionate = { weight = 15 scale = 1 }
+			content = { weight = 15 scale = 1 }
+		}
+		sins = {
+			callous = { weight = 15 scale = 1 }
+		}
 	}
-	county_modifier = {
-		epidemic_resistance = 1
-		tax_mult = -0.01
+	character_modifier = {
+		close_relative_opinion = 10
+		spouse_opinion = 15
+		monthly_piety_from_buildings_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		monthly_legitimacy_add = 0.04
+		dynasty_opinion = 10
+		monthly_dynasty_prestige = 0.20
 		monthly_income_mult = -0.03
 	}
 }
@@ -163,13 +204,24 @@ lyd_tenet_names_duties = {
 	personal_tenet_parameters = {
 		lyd_names_duties_practice
 	}
+	traits = {
+		virtues = {
+			just = { weight = 15 scale = 1 }
+			diligent = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arbitrary = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		legitimacy_gain_mult = 0.05
-		different_faith_opinion = -3
+		legitimacy_gain_mult = 0.20
+		short_reign_duration_mult = -0.25
+		title_creation_cost_mult = -0.25
 	}
 	personal_tenet_modifier = {
-		monthly_legitimacy_add = 0.04
-		enemy_hostile_scheme_success_chance_add = 2
+		monthly_legitimacy_add = 0.15
+		owned_scheme_secrecy_add = 10
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -191,21 +243,32 @@ lyd_tenet_humaneness_righteousness = {
 	}
 	parameters = {
 		lyd_humaneness_righteousness_practice
+		piety_from_gifts_active
 	}
 	personal_tenet_parameters = {
 		lyd_humaneness_righteousness_practice
 	}
+	traits = {
+		virtues = {
+			compassionate = { weight = 15 scale = 1 }
+			generous = { weight = 15 scale = 1 }
+		}
+		sins = {
+			callous = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		tyranny_gain_mult = -0.08
-		church_holding_build_gold_cost = 0.05
+		tyranny_gain_mult = -0.25
+		county_opinion_add = 10
 	}
 	county_modifier = {
-		county_opinion_add = 3
-		tax_mult = -0.03
+		county_opinion_add = 10
+		epidemic_resistance = 10
 	}
 	personal_tenet_modifier = {
 		diplomacy_per_piety_level = 1
-		monthly_income_mult = -0.04
+		monthly_piety_gain_mult = 0.25
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -231,13 +294,23 @@ lyd_tenet_righteous_remonstrance = {
 	personal_tenet_parameters = {
 		lyd_righteous_remonstrance_practice
 	}
+	traits = {
+		virtues = {
+			brave = { weight = 15 scale = 1 }
+			just = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arbitrary = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		tyranny_gain_mult = -0.06
-		different_faith_opinion = -2
+		tyranny_gain_mult = -0.25
+		legitimacy_gain_mult = 0.15
 	}
 	personal_tenet_modifier = {
-		owned_scheme_secrecy_add = 5
-		enemy_scheme_secrecy_add = 3
+		enemy_scheme_secrecy_add = -15
+		diplomacy = 3
+		intrigue = -1
 	}
 }
 
@@ -263,12 +336,22 @@ lyd_tenet_sage_transmission = {
 	personal_tenet_parameters = {
 		lyd_sage_transmission_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			diligent = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		cultural_head_fascination_mult = 0.05
-		monthly_piety_gain_mult = -0.03
+		learning_per_piety_level = 1
+		monthly_learning_lifestyle_xp_gain_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.06
+		monthly_learning_lifestyle_xp_gain_mult = 0.30
+		lifestyle_scholar_xp_gain_mult = 0.25
 		monthly_income_mult = -0.03
 	}
 }
@@ -291,17 +374,32 @@ lyd_tenet_extend_sprouts = {
 	}
 	parameters = {
 		lyd_extend_sprouts_practice
+		piety_from_gifts_active
 	}
 	personal_tenet_parameters = {
 		lyd_extend_sprouts_practice
 	}
+	traits = {
+		virtues = {
+			compassionate = { weight = 15 scale = 1 }
+			trusting = { weight = 15 scale = 1 }
+		}
+		sins = {
+			callous = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		stress_loss_mult = 0.06
-		monthly_piety_from_buildings_mult = -0.04
+		stress_loss_mult = 0.20
+		health = 0.15
+	}
+	county_modifier = {
+		epidemic_resistance = 10
+		county_opinion_add = 5
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.08
-		owned_scheme_secrecy_add = -5
+		character_spiritual_fulfillment_gain_mult = 0.25
+		diplomacy = 2
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -327,13 +425,26 @@ lyd_tenet_deliberate_cultivation = {
 	personal_tenet_parameters = {
 		lyd_deliberate_cultivation_practice
 	}
+	traits = {
+		virtues = {
+			diligent = { weight = 15 scale = 1 }
+			temperate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		piety_level_impact_mult = 0.05
-		stress_loss_mult = -0.08
+		monthly_lifestyle_xp_gain_mult = 0.15
+		learning_scheme_resistance = 10
+	}
+	county_modifier = {
+		monthly_county_control_growth_factor = 0.15
 	}
 	personal_tenet_modifier = {
-		monthly_stewardship_lifestyle_xp_gain_mult = 0.08
-		monthly_income_mult = -0.02
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.30
+		monthly_learning_lifestyle_xp_gain_mult = 0.20
+		stress_gain_mult = 0.05
 	}
 }
 
@@ -359,12 +470,22 @@ lyd_tenet_righteous_qi = {
 	personal_tenet_parameters = {
 		lyd_righteous_qi_practice
 	}
+	traits = {
+		virtues = {
+			brave = { weight = 15 scale = 1 }
+			just = { weight = 15 scale = 1 }
+		}
+		sins = {
+			craven = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		prowess = 1
-		church_holding_build_gold_cost = 0.05
+		prowess = 4
+		accolade_glory_gain_mult = 0.25
 	}
 	personal_tenet_modifier = {
 		martial_per_piety_level = 1
+		knight_limit = 1
 		monthly_income_mult = -0.03
 	}
 }
@@ -391,17 +512,27 @@ lyd_tenet_portent_reflection = {
 	personal_tenet_parameters = {
 		lyd_portent_reflection_practice
 	}
+	traits = {
+		virtues = {
+			humble = { weight = 15 scale = 1 }
+			compassionate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		monthly_piety_gain_mult = 0.06
-		stress_loss_mult = -0.08
+		monthly_piety_gain_mult = 0.20
+		stress_gain_mult = -0.10
 	}
 	county_modifier = {
-		epidemic_resistance = 2
-		development_growth_factor = -0.03
+		epidemic_resistance = 15
+		development_growth_factor = 0.10
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.06
-		monthly_legitimacy_add = -0.03
+		development_growth_factor = 0.15
+		monthly_legitimacy_add = 0.10
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -427,16 +558,25 @@ lyd_tenet_qi_kinship = {
 	personal_tenet_parameters = {
 		lyd_qi_kinship_practice
 	}
+	traits = {
+		virtues = {
+			compassionate = { weight = 15 scale = 1 }
+			generous = { weight = 15 scale = 1 }
+		}
+		sins = {
+			sadistic = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		fertility = 0.03
-		monthly_piety_from_buildings_mult = -0.04
+		fertility = 0.20
+		health = 0.15
 	}
 	county_modifier = {
-		county_opinion_add = 2
-		tax_mult = -0.02
+		epidemic_resistance = 10
 	}
 	personal_tenet_modifier = {
-		fertility = 0.05
+		health = 0.25
+		fertility = 0.15
 		monthly_income_mult = -0.03
 	}
 }
@@ -463,13 +603,23 @@ lyd_tenet_investigate_principle = {
 	personal_tenet_parameters = {
 		lyd_investigate_principle_practice
 	}
+	traits = {
+		virtues = {
+			diligent = { weight = 15 scale = 1 }
+			patient = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		cultural_head_fascination_mult = 0.06
-		monthly_piety_gain_mult = -0.04
+		cultural_head_fascination_mult = 0.25
+		learning_scheme_phase_duration = -15
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.08
-		stress_loss_mult = -0.05
+		monthly_learning_lifestyle_xp_gain_mult = 0.30
+		lifestyle_scholar_xp_gain_mult = 0.30
+		stress_gain_mult = 0.05
 	}
 }
 
@@ -491,17 +641,29 @@ lyd_tenet_reverent_attention = {
 	}
 	parameters = {
 		lyd_reverent_attention_practice
+		meditation_mechanics_active
 	}
 	personal_tenet_parameters = {
 		lyd_reverent_attention_practice
+		meditation_mechanics_active
+	}
+	traits = {
+		virtues = {
+			calm = { weight = 15 scale = 1 }
+			temperate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			wrathful = { weight = 15 scale = 1 }
+		}
 	}
 	character_modifier = {
-		stress_loss_mult = 0.08
-		character_travel_speed_mult = -0.05
+		stress_loss_mult = 0.25
+		stress_gain_mult = -0.15
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.10
-		owned_scheme_secrecy_add = -5
+		character_spiritual_fulfillment_gain_mult = 0.30
+		enemy_hostile_scheme_success_chance_add = -5
+		character_travel_speed_mult = -0.05
 	}
 }
 
@@ -527,13 +689,23 @@ lyd_tenet_original_heart = {
 	personal_tenet_parameters = {
 		lyd_original_heart_practice
 	}
+	traits = {
+		virtues = {
+			honest = { weight = 15 scale = 1 }
+			brave = { weight = 15 scale = 1 }
+		}
+		sins = {
+			deceitful = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		piety_level_impact_mult = 0.08
-		different_faith_opinion = -2
+		piety_level_impact_mult = 0.30
+		legitimacy_gain_mult = 0.15
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.06
-		monthly_income_mult = -0.01
+		character_spiritual_fulfillment_gain_mult = 0.30
+		monthly_legitimacy_add = 0.15
+		intrigue = -1
 	}
 }
 
@@ -559,12 +731,22 @@ lyd_tenet_innate_knowing = {
 	personal_tenet_parameters = {
 		lyd_innate_knowing_practice
 	}
+	traits = {
+		virtues = {
+			just = { weight = 15 scale = 1 }
+			compassionate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arbitrary = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		different_faith_opinion = 3
-		monthly_piety_from_buildings_mult = -0.04
+		different_faith_opinion = 15
+		tyranny_gain_mult = -0.15
 	}
 	personal_tenet_modifier = {
 		diplomacy_per_piety_level = 1
+		monthly_diplomacy_lifestyle_xp_gain_mult = 0.25
 		owned_scheme_secrecy_add = -5
 	}
 }
@@ -591,13 +773,26 @@ lyd_tenet_knowing_acting = {
 	personal_tenet_parameters = {
 		lyd_knowing_acting_practice
 	}
+	traits = {
+		virtues = {
+			diligent = { weight = 15 scale = 1 }
+			honest = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		monthly_piety_gain_mult = 0.04
-		church_holding_build_gold_cost = 0.04
+		stewardship_per_piety_level = 1
+		monthly_county_control_growth_factor = 0.15
+	}
+	county_modifier = {
+		build_speed = -0.15
 	}
 	personal_tenet_modifier = {
-		monthly_stewardship_lifestyle_xp_gain_mult = 0.08
-		stress_loss_mult = -0.04
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.30
+		monthly_legitimacy_add = 0.10
+		stress_gain_mult = 0.05
 	}
 }
 
@@ -619,21 +814,31 @@ lyd_tenet_textual_ritual = {
 	}
 	parameters = {
 		lyd_textual_ritual_practice
+		literalist_debate_enabled
 	}
 	personal_tenet_parameters = {
 		lyd_textual_ritual_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		church_holding_build_gold_cost = -0.05
-		church_holding_build_speed = 0.05
+		church_holding_build_gold_cost = -0.30
+		church_holding_build_speed = -0.30
 	}
 	county_modifier = {
-		build_speed = -0.05
-		development_growth_factor = -0.02
+		build_speed = -0.15
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.05
-		monthly_income_mult = -0.02
+		lifestyle_scholar_xp_gain_mult = 0.30
+		monthly_piety_from_buildings_mult = 0.25
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -655,17 +860,28 @@ lyd_tenet_classical_synthesis = {
 	}
 	parameters = {
 		lyd_classical_synthesis_practice
+		literalist_debate_enabled
 	}
 	personal_tenet_parameters = {
 		lyd_classical_synthesis_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		cultural_head_fascination_mult = 0.07
-		piety_level_impact_mult = -0.04
+		cultural_head_fascination_mult = 0.20
+		monthly_learning_lifestyle_xp_gain_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.07
-		owned_scheme_secrecy_add = -4
+		monthly_lifestyle_xp_gain_mult = 0.20
+		max_learn_language_schemes_add = 1
+		stress_gain_mult = 0.05
 	}
 }
 
@@ -691,13 +907,23 @@ lyd_tenet_annals_judgment = {
 	personal_tenet_parameters = {
 		lyd_annals_judgment_practice
 	}
+	traits = {
+		virtues = {
+			just = { weight = 15 scale = 1 }
+			honest = { weight = 15 scale = 1 }
+		}
+		sins = {
+			deceitful = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		legitimacy_gain_mult = 0.06
-		different_faith_opinion = -3
+		legitimacy_gain_mult = 0.25
+		short_reign_duration_mult = -0.30
 	}
 	personal_tenet_modifier = {
-		monthly_legitimacy_add = 0.06
-		enemy_scheme_secrecy_add = 4
+		monthly_legitimacy_add = 0.20
+		monthly_prestige_gain_mult = 0.20
+		intrigue = -1
 	}
 }
 
@@ -723,17 +949,27 @@ lyd_tenet_constant_heaven = {
 	personal_tenet_parameters = {
 		lyd_constant_heaven_practice
 	}
+	traits = {
+		virtues = {
+			diligent = { weight = 15 scale = 1 }
+			calm = { weight = 15 scale = 1 }
+		}
+		sins = {
+			paranoid = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		stress_loss_mult = 0.04
-		monthly_piety_gain_mult = -0.04
+		build_gold_cost = -0.15
+		stress_gain_mult = -0.15
 	}
 	county_modifier = {
-		epidemic_resistance = 2
-		tax_mult = -0.02
+		epidemic_resistance = 10
+		development_growth_factor = 0.20
 	}
 	personal_tenet_modifier = {
-		monthly_stewardship_lifestyle_xp_gain_mult = 0.06
-		character_spiritual_fulfillment_gain_mult = -0.03
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.25
+		development_growth_factor = 0.15
+		monthly_piety_gain_mult = -0.05
 	}
 }
 
@@ -755,17 +991,29 @@ lyd_tenet_restore_nature = {
 	}
 	parameters = {
 		lyd_restore_nature_practice
+		meditation_mechanics_active
 	}
 	personal_tenet_parameters = {
 		lyd_restore_nature_practice
+		meditation_mechanics_active
+	}
+	traits = {
+		virtues = {
+			calm = { weight = 15 scale = 1 }
+			temperate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			gluttonous = { weight = 15 scale = 1 }
+		}
 	}
 	character_modifier = {
-		stress_loss_mult = 0.10
-		fertility = -0.03
+		stress_loss_mult = 0.30
+		health = 0.15
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.08
-		monthly_income_mult = -0.04
+		character_spiritual_fulfillment_gain_mult = 0.25
+		stress_gain_mult = -0.20
+		monthly_prestige_gain_mult = -0.05
 	}
 }
 
@@ -787,21 +1035,32 @@ lyd_tenet_ordinary_life = {
 	}
 	parameters = {
 		lyd_ordinary_life_practice
+		piety_from_gifts_active
 	}
 	personal_tenet_parameters = {
 		lyd_ordinary_life_practice
 	}
+	traits = {
+		virtues = {
+			compassionate = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		different_faith_opinion = 4
-		piety_level_impact_mult = -0.05
+		county_opinion_add = 15
+		different_faith_opinion = 10
 	}
 	county_modifier = {
-		development_growth_factor = 0.04
-		tax_mult = -0.02
+		development_growth_factor = 0.15
+		county_opinion_add = 10
 	}
 	personal_tenet_modifier = {
-		different_faith_opinion = 5
-		enemy_hostile_scheme_success_chance_add = 2
+		tax_mult = 0.10
+		diplomacy = 3
+		monthly_prestige_gain_mult = -0.05
 	}
 }
 
@@ -827,13 +1086,24 @@ lyd_tenet_six_arts = {
 	personal_tenet_parameters = {
 		lyd_six_arts_practice
 	}
+	traits = {
+		virtues = {
+			brave = { weight = 15 scale = 1 }
+			diligent = { weight = 15 scale = 1 }
+		}
+		sins = {
+			craven = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		prowess = 2
-		church_holding_build_gold_cost = 0.04
+		prowess = 4
+		knight_limit = 2
+		accolade_glory_gain_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		martial_per_piety_level = 1
-		stress_loss_mult = -0.05
+		martial = 3
+		prowess = 4
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -855,17 +1125,29 @@ lyd_tenet_philological_way = {
 	}
 	parameters = {
 		lyd_philological_way_practice
+		literalist_debate_enabled
 	}
 	personal_tenet_parameters = {
 		lyd_philological_way_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			diligent = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		cultural_head_fascination_mult = 0.08
-		monthly_piety_from_buildings_mult = -0.05
+		learning_scheme_phase_duration = -15
+		learning_scheme_resistance = 15
+		cultural_head_fascination_mult = 0.15
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.08
-		monthly_income_mult = -0.04
+		lifestyle_scholar_xp_gain_mult = 0.30
+		max_learn_language_schemes_add = 1
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -891,17 +1173,27 @@ lyd_tenet_moral_achievement = {
 	personal_tenet_parameters = {
 		lyd_moral_achievement_practice
 	}
+	traits = {
+		virtues = {
+			diligent = { weight = 15 scale = 1 }
+			ambitious = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		church_holding_build_speed = -0.06
-		monthly_piety_gain_mult = -0.03
+		build_gold_cost = -0.20
+		stewardship_per_piety_level = 1
 	}
 	county_modifier = {
-		development_growth_factor = 0.04
-		levy_size = -0.03
+		development_growth_factor = 0.15
+		tax_mult = 0.10
 	}
 	personal_tenet_modifier = {
-		monthly_stewardship_lifestyle_xp_gain_mult = 0.08
-		character_spiritual_fulfillment_gain_mult = -0.03
+		domain_limit = 1
+		monthly_income_mult = 0.15
+		monthly_piety_gain_mult = -0.05
 	}
 }
 
@@ -927,17 +1219,27 @@ lyd_tenet_restrain_violence = {
 	personal_tenet_parameters = {
 		lyd_restrain_violence_practice
 	}
+	traits = {
+		virtues = {
+			brave = { weight = 15 scale = 1 }
+			compassionate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			sadistic = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		tyranny_gain_mult = -0.06
-		character_travel_speed_mult = -0.03
+		tyranny_gain_mult = -0.20
+		levy_size = 0.15
 	}
 	county_modifier = {
-		monthly_county_control_growth_factor = 0.04
-		tax_mult = -0.02
+		monthly_county_control_growth_factor = 0.20
+		monthly_county_control_decline_at_war_factor = -0.25
 	}
 	personal_tenet_modifier = {
-		martial_per_piety_level = 1
-		monthly_income_mult = -0.04
+		controlled_province_advantage = 5
+		levy_reinforcement_rate = 0.20
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -963,12 +1265,22 @@ lyd_tenet_subtle_intentions = {
 	personal_tenet_parameters = {
 		lyd_subtle_intentions_practice
 	}
+	traits = {
+		virtues = {
+			honest = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			deceitful = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		tyranny_gain_mult = -0.05
-		piety_level_impact_mult = -0.04
+		tyranny_gain_mult = -0.20
+		stress_loss_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		enemy_hostile_scheme_success_chance_add = -3
+		enemy_hostile_scheme_success_chance_add = -10
+		character_spiritual_fulfillment_gain_mult = 0.25
 		owned_scheme_secrecy_add = -5
 	}
 }
@@ -995,17 +1307,27 @@ lyd_tenet_responsive_interpretation = {
 	personal_tenet_parameters = {
 		lyd_responsive_interpretation_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			diligent = { weight = 15 scale = 1 }
+		}
+		sins = {
+			stubborn = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		cultural_head_fascination_mult = 0.04
-		legitimacy_gain_mult = -0.04
+		cultural_head_fascination_mult = 0.20
+		title_creation_cost_mult = -0.25
 	}
 	county_modifier = {
-		development_growth_factor = 0.05
-		monthly_county_control_growth_factor = -0.02
+		development_growth_factor = 0.20
+		build_speed = -0.10
 	}
 	personal_tenet_modifier = {
-		monthly_stewardship_lifestyle_xp_gain_mult = 0.05
-		enemy_hostile_scheme_success_chance_add = 2
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.25
+		monthly_diplomacy_lifestyle_xp_gain_mult = 0.25
+		monthly_legitimacy_add = -0.03
 	}
 }
 
@@ -1031,13 +1353,23 @@ lyd_tenet_images_numbers = {
 	personal_tenet_parameters = {
 		lyd_images_numbers_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			calm = { weight = 15 scale = 1 }
+		}
+		sins = {
+			impatient = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		piety_level_impact_mult = 0.06
-		church_holding_build_gold_cost = 0.04
+		learning_scheme_resistance = 15
+		character_travel_speed_mult = 0.15
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.07
-		monthly_legitimacy_add = -0.02
+		character_travel_safety = 15
+		monthly_learning_lifestyle_xp_gain_mult = 0.25
+		stress_gain_mult = 0.05
 	}
 }
 
@@ -1063,13 +1395,23 @@ lyd_tenet_profound_interpretation = {
 	personal_tenet_parameters = {
 		lyd_profound_interpretation_practice
 	}
+	traits = {
+		virtues = {
+			patient = { weight = 15 scale = 1 }
+			humble = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		different_faith_opinion = 3
-		monthly_piety_gain_mult = -0.03
+		different_faith_opinion = 15
+		monthly_learning_lifestyle_xp_gain_mult = 0.20
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.05
-		monthly_legitimacy_add = -0.02
+		diplomatic_range_mult = 0.25
+		max_learn_language_schemes_add = 1
+		monthly_piety_gain_mult = -0.05
 	}
 }
 
@@ -1095,17 +1437,27 @@ lyd_tenet_knowing_acting_support = {
 	personal_tenet_parameters = {
 		lyd_knowing_acting_support_practice
 	}
+	traits = {
+		virtues = {
+			diligent = { weight = 15 scale = 1 }
+			patient = { weight = 15 scale = 1 }
+		}
+		sins = {
+			lazy = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		cultural_head_fascination_mult = 0.04
-		stress_loss_mult = -0.04
+		monthly_lifestyle_xp_gain_mult = 0.15
+		cultural_head_fascination_mult = 0.15
 	}
 	county_modifier = {
-		development_growth_factor = 0.03
-		levy_reinforcement_rate = -0.03
+		development_growth_factor = 0.15
+		levy_reinforcement_rate = 0.10
 	}
 	personal_tenet_modifier = {
-		monthly_stewardship_lifestyle_xp_gain_mult = 0.06
-		monthly_income_mult = -0.01
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.25
+		monthly_learning_lifestyle_xp_gain_mult = 0.25
+		stress_gain_mult = 0.05
 	}
 }
 
@@ -1131,17 +1483,27 @@ lyd_tenet_ongoing_generation = {
 	personal_tenet_parameters = {
 		lyd_ongoing_generation_practice
 	}
+	traits = {
+		virtues = {
+			generous = { weight = 15 scale = 1 }
+			compassionate = { weight = 15 scale = 1 }
+		}
+		sins = {
+			callous = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		fertility = 0.04
-		church_holding_build_gold_cost = 0.04
+		fertility = 0.25
+		close_relative_opinion = 10
 	}
 	county_modifier = {
-		epidemic_resistance = 1
-		tax_mult = -0.01
+		epidemic_resistance = 10
+		levy_reinforcement_rate = 0.15
 	}
 	personal_tenet_modifier = {
-		fertility = 0.08
-		monthly_income_mult = -0.02
+		fertility = 0.25
+		monthly_dynasty_prestige = 0.20
+		monthly_income_mult = -0.03
 	}
 }
 
@@ -1163,17 +1525,29 @@ lyd_tenet_quiet_self_attainment = {
 	}
 	parameters = {
 		lyd_quiet_self_attainment_practice
+		meditation_mechanics_active
 	}
 	personal_tenet_parameters = {
 		lyd_quiet_self_attainment_practice
+		meditation_mechanics_active
+	}
+	traits = {
+		virtues = {
+			calm = { weight = 15 scale = 1 }
+			content = { weight = 15 scale = 1 }
+		}
+		sins = {
+			wrathful = { weight = 15 scale = 1 }
+		}
 	}
 	character_modifier = {
-		stress_loss_mult = 0.09
-		character_travel_speed_mult = -0.04
+		stress_gain_mult = -0.20
+		health = 0.20
 	}
 	personal_tenet_modifier = {
-		character_spiritual_fulfillment_gain_mult = 0.10
-		monthly_income_mult = -0.02
+		health = 0.25
+		character_spiritual_fulfillment_gain_mult = 0.30
+		character_travel_speed_mult = -0.05
 	}
 }
 
@@ -1199,12 +1573,22 @@ lyd_tenet_recognition_everywhere = {
 	personal_tenet_parameters = {
 		lyd_recognition_everywhere_practice
 	}
+	traits = {
+		virtues = {
+			gregarious = { weight = 15 scale = 1 }
+			patient = { weight = 15 scale = 1 }
+		}
+		sins = {
+			arrogant = { weight = 15 scale = 1 }
+		}
+	}
 	character_modifier = {
-		character_travel_speed_mult = 0.06
-		monthly_piety_from_buildings_mult = -0.03
+		character_travel_speed_mult = 0.25
+		monthly_learning_lifestyle_xp_gain_mult = 0.15
 	}
 	personal_tenet_modifier = {
-		monthly_lifestyle_xp_gain_mult = 0.06
-		stress_loss_mult = -0.03
+		monthly_lifestyle_xp_gain_mult = 0.20
+		character_travel_safety = 10
+		monthly_income_mult = -0.03
 	}
 }

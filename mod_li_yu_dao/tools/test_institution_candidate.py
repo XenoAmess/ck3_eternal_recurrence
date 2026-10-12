@@ -25,6 +25,36 @@ def authorized():
     return p
 
 class PolicyTests(unittest.TestCase):
+    def test_vanilla_confucianism_keeps_main_and_requires_original_school_mandates(self):
+        w=world();w.faith='confucian_faith';w.main='jingxue'
+        for rite,person in [('jingxue','j'),('daoxue','g')]:
+            w.schools[rite]=School(rite,1,False)
+            w.members[person]=Member(person,rite,True)
+        p=Institution(w,'a',1,1)
+        for rite,person in [('kongmen','a'),('xunzi','d'),('jingxue','j'),('daoxue','g')]:
+            p.nominate(rite,person,p.token())
+        p.seal(p.token())
+        for n in 'abdejg':p.vote(n,True,p.token())
+        for n in 'afjg':p.consent(n,True,p.token())
+        for rite,person in p.nominees.items():p.sign(rite,person,p.token())
+        plan=p.plan(p.token(),True)
+        self.assertEqual(plan['faith'],'confucian_faith')
+        self.assertEqual(plan['main_rite'],'jingxue')
+        self.assertEqual(set(plan['rites']),set(w.schools))
+        for rite in ('jingxue','daoxue'):
+            q=deepcopy(p);q.signatures.remove(rite)
+            with self.assertRaises(Refused):q.plan(q.token(),True)
+        q=deepcopy(p);q.consents.remove('j')
+        with self.assertRaises(Refused):q.plan(q.token(),True)
+        self.assertIsNone(w.head)
+
+    def test_vanilla_route_rejects_foreign_rites_and_main_drift(self):
+        w=world();w.faith='confucian_faith';w.main='jingxue';w.schools['jingxue']=School('jingxue',1,False)
+        p=Institution(w,'a',1,1);w.main='kongmen'
+        with self.assertRaises(Refused):p.verify(p.token())
+        w.schools['foreign']=School('foreign',1,False)
+        with self.assertRaises(Refused):Institution(w,'a',2,2)
+
     def test_headless_scholarly_nominees_need_no_native_rite_head(self):
         p=authorized();self.assertIsNone(p.world.head)
         plan=p.plan(p.token(),native_proof=True)
@@ -113,6 +143,23 @@ class ActualScriptTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.c=Corpus()
 
+    def test_vanilla_authority_captures_actor_rite_separately_from_original_main(self):
+        actor=self.c.triggers['lyd_i3b_actor_trigger']
+        self.assertTrue(contains_direct_fragment(one(actor,'OR'),'AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }'))
+        self.assertFalse(any(e.key=='rite' and e.value=='faith.main_rite' for e in actor.entries))
+        supported=self.c.triggers['lyd_i3b_supported_faith_trigger']
+        self.assertTrue(contains_direct_fragment(one(supported,'OR'),'AND = { this = faith:confucian_faith NOT = { any_faith_rite = { NOT = { lyd_i3b_supported_rite_trigger = yes } } } }'))
+        begin=self.c.effects['lyd_i3b_begin_effect']
+        self.assertTrue(has(begin,'name','lyd_i3b_actor_rite'))
+        self.assertTrue(contains_direct_fragment(one(begin,'if'),'set_variable = { name = lyd_i3b_main value = faith.main_rite }'))
+        current=self.c.triggers['lyd_i3b_current_trigger']
+        self.assertTrue(contains_direct_fragment(current,'rite = var:lyd_i3b_actor_rite faith.main_rite = var:lyd_i3b_main'))
+        self.assertTrue(contains_direct_fragment(one(self.c.triggers['lyd_i3b_captured_authority_trigger'],'OR'),
+            'AND = { var:lyd_i3b_authority_mode = 2 faith = faith:confucian_faith rite = var:lyd_i3b_actor_rite }'))
+        shown=one(self.c.defs['lyd_i3b_begin_decision'],'is_shown')
+        self.assertFalse(has(shown,'lyd_i3b_actor_trigger'))
+        self.assertTrue(has(shown,'lyd_i3b_owned_rite_trigger','yes'))
+
     def test_only_commit_can_change_doctrine_and_requires_all_guards_first(self):
         danger={'remove_doctrine','add_doctrine','change_rite_doctrine'}
         for name,body in self.c.effects.items():
@@ -130,8 +177,11 @@ class ActualScriptTests(unittest.TestCase):
             'lyd_i3b_actor_trigger = yes lyd_i3b_event_context_trigger = yes this = scope:lyd_i3b_actor lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor }'))
         self.assertFalse(any(e.key=='always' for e,_ in walk(runtime)))
         ops=[e.key for e,_ in self.c.operations(body)]
-        self.assertLess(ops.index('change_rite_doctrine'),ops.index('create_dynamic_title'))
-        self.assertFalse(set(ops)&{'set_head_of_rite','set_government_type','set_parent_faith','detach_rite_to_new_faith','destroy_title','set_realm_capital','add_tenet','remove_tenet'})
+        self.assertLess(ops.index('create_dynamic_title'),ops.index('add_title_law'))
+        self.assertLess(ops.index('add_title_law'),ops.index('change_rite_doctrine'))
+        self.assertLess(ops.index('change_rite_doctrine'),ops.index('change_title_holder'))
+        self.assertFalse(set(ops)&{'set_head_of_rite','set_government_type','set_parent_faith','detach_rite_to_new_faith','set_realm_capital','add_tenet','remove_tenet'})
+        self.assertEqual({e.value for e,_ in self.c.operations(body) if e.key=='destroy_title'},{'scope:new_title'})
         # The sole title transfer belongs to the shared factory's newly created office.
         transfers=[a for e,a in self.c.operations(body) if e.key=='change_title_holder']
         self.assertEqual(len(transfers),1);self.assertIn('scope:new_title',transfers[0])
@@ -342,7 +392,7 @@ class ActualScriptTests(unittest.TestCase):
         self.assertEqual(chinese.keys(),english.keys())
         tooltips=self.c.effects['lyd_i3b_show_terms_effect']
         named=[e.value for e,_ in walk(tooltips) if e.key=='this' and isinstance(e.value,str)]
-        self.assertEqual(set(named),{f'rite:{r}' for r in self.c.rites},'Explicit terms omit a catalogue rite')
+        self.assertEqual(set(named),{f'rite:{r}' for r in self.c.rites}|{'rite:jingxue','rite:daoxue'},'Explicit terms omit an original or new rite')
         self.assertTrue(has(tooltips,'variable','lyd_i3b_rites'),'Terms must enumerate the captured list')
         self.assertFalse(any(e.key in {'set_variable','change_variable','add_doctrine','change_rite_doctrine','set_character_rite'} for e,_ in walk(tooltips)))
         for p in SOURCE.rglob('lyd_i3b_*.txt'):

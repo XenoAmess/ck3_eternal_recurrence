@@ -1,0 +1,955 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+lyd_play_reverent_heaven_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_reverent_heaven } }
+    has_personal_tenet = lyd_tenet_reverent_heaven
+}
+}
+lyd_play_reverent_heaven_ready_trigger = {
+lyd_play_reverent_heaven_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_reverent_heaven_cooldown_tt NOT = { has_character_flag = lyd_play_reverent_heaven_cooldown } }
+}
+
+lyd_play_reverent_heaven_option_0_trigger = {
+lyd_play_reverent_heaven_ready_trigger = yes
+piety >= 200
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_reverent_heaven_available_trigger = { lyd_play_reverent_heaven_ready_trigger = yes OR = { lyd_play_reverent_heaven_option_0_trigger = yes } }
+
+lyd_play_sincerity_solitude_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_sincerity_solitude } }
+    has_personal_tenet = lyd_tenet_sincerity_solitude
+}
+}
+lyd_play_sincerity_solitude_ready_trigger = {
+lyd_play_sincerity_solitude_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_sincerity_solitude_cooldown_tt NOT = { has_character_flag = lyd_play_sincerity_solitude_cooldown } }
+}
+
+lyd_play_sincerity_solitude_option_0_trigger = {
+lyd_play_sincerity_solitude_ready_trigger = yes
+prestige >= 150
+}
+
+lyd_play_sincerity_solitude_available_trigger = { lyd_play_sincerity_solitude_ready_trigger = yes OR = { lyd_play_sincerity_solitude_option_0_trigger = yes } }
+
+lyd_play_ritual_music_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_ritual_music } }
+    has_personal_tenet = lyd_tenet_ritual_music
+}
+}
+lyd_play_ritual_music_ready_trigger = {
+lyd_play_ritual_music_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_ritual_music_cooldown_tt NOT = { has_character_flag = lyd_play_ritual_music_cooldown } }
+}
+
+lyd_play_ritual_music_option_0_trigger = {
+lyd_play_ritual_music_ready_trigger = yes
+gold >= 150
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_ritual_music_available_trigger = { lyd_play_ritual_music_ready_trigger = yes OR = { lyd_play_ritual_music_option_0_trigger = yes } }
+
+lyd_play_ancestral_reverence_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_ancestral_reverence } }
+    has_personal_tenet = lyd_tenet_ancestral_reverence
+}
+}
+lyd_play_ancestral_reverence_ready_trigger = {
+lyd_play_ancestral_reverence_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_ancestral_reverence_cooldown_tt NOT = { has_character_flag = lyd_play_ancestral_reverence_cooldown } }
+}
+
+lyd_play_ancestral_reverence_option_0_trigger = {
+lyd_play_ancestral_reverence_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_ancestral_reverence_available_trigger = { lyd_play_ancestral_reverence_ready_trigger = yes OR = { lyd_play_ancestral_reverence_option_0_trigger = yes } }
+
+lyd_play_names_duties_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_names_duties } }
+    has_personal_tenet = lyd_tenet_names_duties
+}
+}
+lyd_play_names_duties_ready_trigger = {
+lyd_play_names_duties_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_names_duties_cooldown_tt NOT = { has_character_flag = lyd_play_names_duties_cooldown } }
+}
+
+lyd_play_names_duties_option_0_trigger = {
+lyd_play_names_duties_ready_trigger = yes
+prestige >= 200
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_names_duties_available_trigger = { lyd_play_names_duties_ready_trigger = yes OR = { lyd_play_names_duties_option_0_trigger = yes } }
+
+lyd_play_humaneness_righteousness_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_humaneness_righteousness } }
+    has_personal_tenet = lyd_tenet_humaneness_righteousness
+}
+}
+lyd_play_humaneness_righteousness_ready_trigger = {
+lyd_play_humaneness_righteousness_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_humaneness_righteousness_cooldown_tt NOT = { has_character_flag = lyd_play_humaneness_righteousness_cooldown } }
+}
+
+lyd_play_humaneness_righteousness_option_0_trigger = {
+lyd_play_humaneness_righteousness_ready_trigger = yes
+gold >= 200
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_humaneness_righteousness_available_trigger = { lyd_play_humaneness_righteousness_ready_trigger = yes OR = { lyd_play_humaneness_righteousness_option_0_trigger = yes } }
+
+lyd_play_righteous_remonstrance_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_righteous_remonstrance } }
+    has_personal_tenet = lyd_tenet_righteous_remonstrance
+}
+}
+lyd_play_righteous_remonstrance_ready_trigger = {
+lyd_play_righteous_remonstrance_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_righteous_remonstrance_cooldown_tt NOT = { has_character_flag = lyd_play_righteous_remonstrance_cooldown } }
+}
+
+lyd_play_righteous_remonstrance_option_0_trigger = {
+lyd_play_righteous_remonstrance_ready_trigger = yes
+prestige >= 300
+}
+
+lyd_play_righteous_remonstrance_available_trigger = { lyd_play_righteous_remonstrance_ready_trigger = yes OR = { lyd_play_righteous_remonstrance_option_0_trigger = yes } }
+
+lyd_play_sage_transmission_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_sage_transmission } }
+    has_personal_tenet = lyd_tenet_sage_transmission
+}
+}
+lyd_play_sage_transmission_ready_trigger = {
+lyd_play_sage_transmission_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_sage_transmission_cooldown_tt NOT = { has_character_flag = lyd_play_sage_transmission_cooldown } }
+}
+
+lyd_play_sage_transmission_option_0_trigger = {
+lyd_play_sage_transmission_ready_trigger = yes
+gold >= 100
+is_landed = yes
+any_courtier = { is_alive = yes is_adult = yes }
+}
+
+lyd_play_sage_transmission_available_trigger = { lyd_play_sage_transmission_ready_trigger = yes OR = { lyd_play_sage_transmission_option_0_trigger = yes } }
+
+lyd_play_extend_sprouts_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_extend_sprouts } }
+    has_personal_tenet = lyd_tenet_extend_sprouts
+}
+}
+lyd_play_extend_sprouts_ready_trigger = {
+lyd_play_extend_sprouts_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_extend_sprouts_cooldown_tt NOT = { has_character_flag = lyd_play_extend_sprouts_cooldown } }
+}
+
+lyd_play_extend_sprouts_option_0_trigger = {
+lyd_play_extend_sprouts_ready_trigger = yes
+gold >= 150
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_extend_sprouts_option_1_trigger = {
+lyd_play_extend_sprouts_ready_trigger = yes
+piety >= 150
+}
+
+lyd_play_extend_sprouts_option_2_trigger = {
+lyd_play_extend_sprouts_ready_trigger = yes
+prestige >= 150
+}
+
+lyd_play_extend_sprouts_option_3_trigger = {
+lyd_play_extend_sprouts_ready_trigger = yes
+gold >= 100
+}
+
+lyd_play_extend_sprouts_available_trigger = { lyd_play_extend_sprouts_ready_trigger = yes OR = { lyd_play_extend_sprouts_option_0_trigger = yes lyd_play_extend_sprouts_option_1_trigger = yes lyd_play_extend_sprouts_option_2_trigger = yes lyd_play_extend_sprouts_option_3_trigger = yes } }
+
+lyd_play_deliberate_cultivation_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_deliberate_cultivation } }
+    has_personal_tenet = lyd_tenet_deliberate_cultivation
+}
+}
+lyd_play_deliberate_cultivation_ready_trigger = {
+lyd_play_deliberate_cultivation_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_deliberate_cultivation_cooldown_tt NOT = { has_character_flag = lyd_play_deliberate_cultivation_cooldown } }
+}
+
+lyd_play_deliberate_cultivation_option_0_trigger = {
+lyd_play_deliberate_cultivation_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_deliberate_cultivation_available_trigger = { lyd_play_deliberate_cultivation_ready_trigger = yes OR = { lyd_play_deliberate_cultivation_option_0_trigger = yes } }
+
+lyd_play_righteous_qi_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_righteous_qi } }
+    has_personal_tenet = lyd_tenet_righteous_qi
+}
+}
+lyd_play_righteous_qi_ready_trigger = {
+lyd_play_righteous_qi_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_righteous_qi_cooldown_tt NOT = { has_character_flag = lyd_play_righteous_qi_cooldown } }
+}
+
+lyd_play_righteous_qi_option_0_trigger = {
+lyd_play_righteous_qi_ready_trigger = yes
+piety >= 250
+is_at_war = yes
+}
+
+lyd_play_righteous_qi_available_trigger = { lyd_play_righteous_qi_ready_trigger = yes OR = { lyd_play_righteous_qi_option_0_trigger = yes } }
+
+lyd_play_portent_reflection_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_portent_reflection } }
+    has_personal_tenet = lyd_tenet_portent_reflection
+}
+}
+lyd_play_portent_reflection_ready_trigger = {
+lyd_play_portent_reflection_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_portent_reflection_cooldown_tt NOT = { has_character_flag = lyd_play_portent_reflection_cooldown } }
+}
+
+lyd_play_portent_reflection_option_0_trigger = {
+lyd_play_portent_reflection_ready_trigger = yes
+gold >= 175
+is_landed = yes
+exists = capital_county
+capital_county = { county_control < 80 }
+}
+
+lyd_play_portent_reflection_available_trigger = { lyd_play_portent_reflection_ready_trigger = yes OR = { lyd_play_portent_reflection_option_0_trigger = yes } }
+
+lyd_play_qi_kinship_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_qi_kinship } }
+    has_personal_tenet = lyd_tenet_qi_kinship
+}
+}
+lyd_play_qi_kinship_ready_trigger = {
+lyd_play_qi_kinship_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_qi_kinship_cooldown_tt NOT = { has_character_flag = lyd_play_qi_kinship_cooldown } }
+}
+
+lyd_play_qi_kinship_option_0_trigger = {
+lyd_play_qi_kinship_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_qi_kinship_available_trigger = { lyd_play_qi_kinship_ready_trigger = yes OR = { lyd_play_qi_kinship_option_0_trigger = yes } }
+
+lyd_play_investigate_principle_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_investigate_principle } }
+    has_personal_tenet = lyd_tenet_investigate_principle
+}
+}
+lyd_play_investigate_principle_ready_trigger = {
+lyd_play_investigate_principle_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_investigate_principle_cooldown_tt NOT = { has_character_flag = lyd_play_investigate_principle_cooldown } }
+}
+
+lyd_play_investigate_principle_option_0_trigger = {
+lyd_play_investigate_principle_ready_trigger = yes
+gold >= 150
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_investigate_principle_available_trigger = { lyd_play_investigate_principle_ready_trigger = yes OR = { lyd_play_investigate_principle_option_0_trigger = yes } }
+
+lyd_play_reverent_attention_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_reverent_attention } }
+    has_personal_tenet = lyd_tenet_reverent_attention
+}
+}
+lyd_play_reverent_attention_ready_trigger = {
+lyd_play_reverent_attention_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_reverent_attention_cooldown_tt NOT = { has_character_flag = lyd_play_reverent_attention_cooldown } }
+}
+
+lyd_play_reverent_attention_option_0_trigger = {
+lyd_play_reverent_attention_ready_trigger = yes
+piety >= 175
+}
+
+lyd_play_reverent_attention_available_trigger = { lyd_play_reverent_attention_ready_trigger = yes OR = { lyd_play_reverent_attention_option_0_trigger = yes } }
+
+lyd_play_original_heart_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_original_heart } }
+    has_personal_tenet = lyd_tenet_original_heart
+}
+}
+lyd_play_original_heart_ready_trigger = {
+lyd_play_original_heart_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_original_heart_cooldown_tt NOT = { has_character_flag = lyd_play_original_heart_cooldown } }
+}
+
+lyd_play_original_heart_option_0_trigger = {
+lyd_play_original_heart_ready_trigger = yes
+gold >= 250
+}
+
+lyd_play_original_heart_available_trigger = { lyd_play_original_heart_ready_trigger = yes OR = { lyd_play_original_heart_option_0_trigger = yes } }
+
+lyd_play_innate_knowing_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_innate_knowing } }
+    has_personal_tenet = lyd_tenet_innate_knowing
+}
+}
+lyd_play_innate_knowing_ready_trigger = {
+lyd_play_innate_knowing_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_innate_knowing_cooldown_tt NOT = { has_character_flag = lyd_play_innate_knowing_cooldown } }
+}
+
+lyd_play_innate_knowing_option_0_trigger = {
+lyd_play_innate_knowing_ready_trigger = yes
+prestige >= 150
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_innate_knowing_available_trigger = { lyd_play_innate_knowing_ready_trigger = yes OR = { lyd_play_innate_knowing_option_0_trigger = yes } }
+
+lyd_play_knowing_acting_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_knowing_acting } }
+    has_personal_tenet = lyd_tenet_knowing_acting
+}
+}
+lyd_play_knowing_acting_ready_trigger = {
+lyd_play_knowing_acting_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_knowing_acting_cooldown_tt NOT = { has_character_flag = lyd_play_knowing_acting_cooldown } }
+}
+
+lyd_play_knowing_acting_option_0_trigger = {
+lyd_play_knowing_acting_ready_trigger = yes
+gold >= 175
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_knowing_acting_option_1_trigger = {
+lyd_play_knowing_acting_ready_trigger = yes
+prestige >= 200
+is_at_war = yes
+}
+
+lyd_play_knowing_acting_available_trigger = { lyd_play_knowing_acting_ready_trigger = yes OR = { lyd_play_knowing_acting_option_0_trigger = yes lyd_play_knowing_acting_option_1_trigger = yes } }
+
+lyd_play_textual_ritual_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_textual_ritual } }
+    has_personal_tenet = lyd_tenet_textual_ritual
+}
+}
+lyd_play_textual_ritual_ready_trigger = {
+lyd_play_textual_ritual_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_textual_ritual_cooldown_tt NOT = { has_character_flag = lyd_play_textual_ritual_cooldown } }
+}
+
+lyd_play_textual_ritual_option_0_trigger = {
+lyd_play_textual_ritual_ready_trigger = yes
+gold >= 100
+piety >= 250
+is_landed = yes
+}
+
+lyd_play_textual_ritual_available_trigger = { lyd_play_textual_ritual_ready_trigger = yes OR = { lyd_play_textual_ritual_option_0_trigger = yes } }
+
+lyd_play_classical_synthesis_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_classical_synthesis } }
+    has_personal_tenet = lyd_tenet_classical_synthesis
+}
+}
+lyd_play_classical_synthesis_ready_trigger = {
+lyd_play_classical_synthesis_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_classical_synthesis_cooldown_tt NOT = { has_character_flag = lyd_play_classical_synthesis_cooldown } }
+}
+
+lyd_play_classical_synthesis_option_0_trigger = {
+lyd_play_classical_synthesis_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_classical_synthesis_option_1_trigger = {
+lyd_play_classical_synthesis_ready_trigger = yes
+prestige >= 150
+}
+
+lyd_play_classical_synthesis_option_2_trigger = {
+lyd_play_classical_synthesis_ready_trigger = yes
+piety >= 175
+}
+
+lyd_play_classical_synthesis_available_trigger = { lyd_play_classical_synthesis_ready_trigger = yes OR = { lyd_play_classical_synthesis_option_0_trigger = yes lyd_play_classical_synthesis_option_1_trigger = yes lyd_play_classical_synthesis_option_2_trigger = yes } }
+
+lyd_play_annals_judgment_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_annals_judgment } }
+    has_personal_tenet = lyd_tenet_annals_judgment
+}
+}
+lyd_play_annals_judgment_ready_trigger = {
+lyd_play_annals_judgment_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_annals_judgment_cooldown_tt NOT = { has_character_flag = lyd_play_annals_judgment_cooldown } }
+}
+
+lyd_play_annals_judgment_option_0_trigger = {
+lyd_play_annals_judgment_ready_trigger = yes
+gold >= 150
+}
+
+lyd_play_annals_judgment_available_trigger = { lyd_play_annals_judgment_ready_trigger = yes OR = { lyd_play_annals_judgment_option_0_trigger = yes } }
+
+lyd_play_constant_heaven_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_constant_heaven } }
+    has_personal_tenet = lyd_tenet_constant_heaven
+}
+}
+lyd_play_constant_heaven_ready_trigger = {
+lyd_play_constant_heaven_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_constant_heaven_cooldown_tt NOT = { has_character_flag = lyd_play_constant_heaven_cooldown } }
+}
+
+lyd_play_constant_heaven_option_0_trigger = {
+lyd_play_constant_heaven_ready_trigger = yes
+gold >= 200
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_constant_heaven_available_trigger = { lyd_play_constant_heaven_ready_trigger = yes OR = { lyd_play_constant_heaven_option_0_trigger = yes } }
+
+lyd_play_restore_nature_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_restore_nature } }
+    has_personal_tenet = lyd_tenet_restore_nature
+}
+}
+lyd_play_restore_nature_ready_trigger = {
+lyd_play_restore_nature_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_restore_nature_cooldown_tt NOT = { has_character_flag = lyd_play_restore_nature_cooldown } }
+}
+
+lyd_play_restore_nature_option_0_trigger = {
+lyd_play_restore_nature_ready_trigger = yes
+gold >= 100
+is_at_war = no
+}
+
+lyd_play_restore_nature_available_trigger = { lyd_play_restore_nature_ready_trigger = yes OR = { lyd_play_restore_nature_option_0_trigger = yes } }
+
+lyd_play_ordinary_life_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_ordinary_life } }
+    has_personal_tenet = lyd_tenet_ordinary_life
+}
+}
+lyd_play_ordinary_life_ready_trigger = {
+lyd_play_ordinary_life_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_ordinary_life_cooldown_tt NOT = { has_character_flag = lyd_play_ordinary_life_cooldown } }
+}
+
+lyd_play_ordinary_life_option_0_trigger = {
+lyd_play_ordinary_life_ready_trigger = yes
+gold >= 125
+prestige >= 100
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_ordinary_life_available_trigger = { lyd_play_ordinary_life_ready_trigger = yes OR = { lyd_play_ordinary_life_option_0_trigger = yes } }
+
+lyd_play_six_arts_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_six_arts } }
+    has_personal_tenet = lyd_tenet_six_arts
+}
+}
+lyd_play_six_arts_ready_trigger = {
+lyd_play_six_arts_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_six_arts_cooldown_tt NOT = { has_character_flag = lyd_play_six_arts_cooldown } }
+}
+
+lyd_play_six_arts_option_0_trigger = {
+lyd_play_six_arts_ready_trigger = yes
+piety >= 125
+}
+
+lyd_play_six_arts_option_1_trigger = {
+lyd_play_six_arts_ready_trigger = yes
+gold >= 100
+}
+
+lyd_play_six_arts_option_2_trigger = {
+lyd_play_six_arts_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_six_arts_option_3_trigger = {
+lyd_play_six_arts_ready_trigger = yes
+prestige >= 150
+}
+
+lyd_play_six_arts_option_4_trigger = {
+lyd_play_six_arts_ready_trigger = yes
+gold >= 100
+}
+
+lyd_play_six_arts_option_5_trigger = {
+lyd_play_six_arts_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_six_arts_available_trigger = { lyd_play_six_arts_ready_trigger = yes OR = { lyd_play_six_arts_option_0_trigger = yes lyd_play_six_arts_option_1_trigger = yes lyd_play_six_arts_option_2_trigger = yes lyd_play_six_arts_option_3_trigger = yes lyd_play_six_arts_option_4_trigger = yes lyd_play_six_arts_option_5_trigger = yes } }
+
+lyd_play_philological_way_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_philological_way } }
+    has_personal_tenet = lyd_tenet_philological_way
+}
+}
+lyd_play_philological_way_ready_trigger = {
+lyd_play_philological_way_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_philological_way_cooldown_tt NOT = { has_character_flag = lyd_play_philological_way_cooldown } }
+}
+
+lyd_play_philological_way_option_0_trigger = {
+lyd_play_philological_way_ready_trigger = yes
+gold >= 200
+}
+
+lyd_play_philological_way_available_trigger = { lyd_play_philological_way_ready_trigger = yes OR = { lyd_play_philological_way_option_0_trigger = yes } }
+
+lyd_play_moral_achievement_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_moral_achievement } }
+    has_personal_tenet = lyd_tenet_moral_achievement
+}
+}
+lyd_play_moral_achievement_ready_trigger = {
+lyd_play_moral_achievement_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_moral_achievement_cooldown_tt NOT = { has_character_flag = lyd_play_moral_achievement_cooldown } }
+}
+
+lyd_play_moral_achievement_option_0_trigger = {
+lyd_play_moral_achievement_ready_trigger = yes
+gold >= 300
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_moral_achievement_available_trigger = { lyd_play_moral_achievement_ready_trigger = yes OR = { lyd_play_moral_achievement_option_0_trigger = yes } }
+
+lyd_play_restrain_violence_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_restrain_violence } }
+    has_personal_tenet = lyd_tenet_restrain_violence
+}
+}
+lyd_play_restrain_violence_ready_trigger = {
+lyd_play_restrain_violence_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_restrain_violence_cooldown_tt NOT = { has_character_flag = lyd_play_restrain_violence_cooldown } }
+}
+
+lyd_play_restrain_violence_option_0_trigger = {
+lyd_play_restrain_violence_ready_trigger = yes
+prestige >= 250
+is_landed = yes
+exists = capital_county
+is_at_war = yes
+}
+
+lyd_play_restrain_violence_available_trigger = { lyd_play_restrain_violence_ready_trigger = yes OR = { lyd_play_restrain_violence_option_0_trigger = yes } }
+
+lyd_play_subtle_intentions_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_subtle_intentions } }
+    has_personal_tenet = lyd_tenet_subtle_intentions
+}
+}
+lyd_play_subtle_intentions_ready_trigger = {
+lyd_play_subtle_intentions_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_subtle_intentions_cooldown_tt NOT = { has_character_flag = lyd_play_subtle_intentions_cooldown } }
+}
+
+lyd_play_subtle_intentions_option_0_trigger = {
+lyd_play_subtle_intentions_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_subtle_intentions_available_trigger = { lyd_play_subtle_intentions_ready_trigger = yes OR = { lyd_play_subtle_intentions_option_0_trigger = yes } }
+
+lyd_play_responsive_interpretation_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_responsive_interpretation } }
+    has_personal_tenet = lyd_tenet_responsive_interpretation
+}
+}
+lyd_play_responsive_interpretation_ready_trigger = {
+lyd_play_responsive_interpretation_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_responsive_interpretation_cooldown_tt NOT = { has_character_flag = lyd_play_responsive_interpretation_cooldown } }
+}
+
+lyd_play_responsive_interpretation_option_0_trigger = {
+lyd_play_responsive_interpretation_ready_trigger = yes
+gold >= 200
+prestige >= 200
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_responsive_interpretation_available_trigger = { lyd_play_responsive_interpretation_ready_trigger = yes OR = { lyd_play_responsive_interpretation_option_0_trigger = yes } }
+
+lyd_play_images_numbers_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_images_numbers } }
+    has_personal_tenet = lyd_tenet_images_numbers
+}
+}
+lyd_play_images_numbers_ready_trigger = {
+lyd_play_images_numbers_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_images_numbers_cooldown_tt NOT = { has_character_flag = lyd_play_images_numbers_cooldown } }
+}
+
+lyd_play_images_numbers_option_0_trigger = {
+lyd_play_images_numbers_ready_trigger = yes
+gold >= 150
+}
+
+lyd_play_images_numbers_option_1_trigger = {
+lyd_play_images_numbers_ready_trigger = yes
+prestige >= 175
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_images_numbers_option_2_trigger = {
+lyd_play_images_numbers_ready_trigger = yes
+piety >= 175
+}
+
+lyd_play_images_numbers_available_trigger = { lyd_play_images_numbers_ready_trigger = yes OR = { lyd_play_images_numbers_option_0_trigger = yes lyd_play_images_numbers_option_1_trigger = yes lyd_play_images_numbers_option_2_trigger = yes } }
+
+lyd_play_profound_interpretation_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_profound_interpretation } }
+    has_personal_tenet = lyd_tenet_profound_interpretation
+}
+}
+lyd_play_profound_interpretation_ready_trigger = {
+lyd_play_profound_interpretation_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_profound_interpretation_cooldown_tt NOT = { has_character_flag = lyd_play_profound_interpretation_cooldown } }
+}
+
+lyd_play_profound_interpretation_option_0_trigger = {
+lyd_play_profound_interpretation_ready_trigger = yes
+gold >= 125
+}
+
+lyd_play_profound_interpretation_available_trigger = { lyd_play_profound_interpretation_ready_trigger = yes OR = { lyd_play_profound_interpretation_option_0_trigger = yes } }
+
+lyd_play_knowing_acting_support_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_knowing_acting_support } }
+    has_personal_tenet = lyd_tenet_knowing_acting_support
+}
+}
+lyd_play_knowing_acting_support_ready_trigger = {
+lyd_play_knowing_acting_support_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_knowing_acting_support_cooldown_tt NOT = { has_character_flag = lyd_play_knowing_acting_support_cooldown } }
+}
+
+lyd_play_knowing_acting_support_option_0_trigger = {
+lyd_play_knowing_acting_support_ready_trigger = yes
+gold >= 100
+custom_description = { text = lyd_play_inquiry_not_done_tt NOT = { has_character_flag = lyd_play_knowing_acting_inquiry_completed } }
+}
+
+lyd_play_knowing_acting_support_option_1_trigger = {
+lyd_play_knowing_acting_support_ready_trigger = yes
+piety >= 200
+custom_description = { text = lyd_play_inquiry_done_tt has_character_flag = lyd_play_knowing_acting_inquiry_completed }
+}
+
+lyd_play_knowing_acting_support_available_trigger = { lyd_play_knowing_acting_support_ready_trigger = yes OR = { lyd_play_knowing_acting_support_option_0_trigger = yes lyd_play_knowing_acting_support_option_1_trigger = yes } }
+
+lyd_play_ongoing_generation_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_ongoing_generation } }
+    has_personal_tenet = lyd_tenet_ongoing_generation
+}
+}
+lyd_play_ongoing_generation_ready_trigger = {
+lyd_play_ongoing_generation_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_ongoing_generation_cooldown_tt NOT = { has_character_flag = lyd_play_ongoing_generation_cooldown } }
+}
+
+lyd_play_ongoing_generation_option_0_trigger = {
+lyd_play_ongoing_generation_ready_trigger = yes
+gold >= 200
+}
+
+lyd_play_ongoing_generation_available_trigger = { lyd_play_ongoing_generation_ready_trigger = yes OR = { lyd_play_ongoing_generation_option_0_trigger = yes } }
+
+lyd_play_quiet_self_attainment_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_quiet_self_attainment } }
+    has_personal_tenet = lyd_tenet_quiet_self_attainment
+}
+}
+lyd_play_quiet_self_attainment_ready_trigger = {
+lyd_play_quiet_self_attainment_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_quiet_self_attainment_cooldown_tt NOT = { has_character_flag = lyd_play_quiet_self_attainment_cooldown } }
+}
+
+lyd_play_quiet_self_attainment_option_0_trigger = {
+lyd_play_quiet_self_attainment_ready_trigger = yes
+prestige >= 150
+}
+
+lyd_play_quiet_self_attainment_available_trigger = { lyd_play_quiet_self_attainment_ready_trigger = yes OR = { lyd_play_quiet_self_attainment_option_0_trigger = yes } }
+
+lyd_play_recognition_everywhere_eligible_trigger = {
+is_ai = no
+is_alive = yes
+OR = {
+    AND = { exists = rite rite = { rite_has_tenet = lyd_tenet_recognition_everywhere } }
+    has_personal_tenet = lyd_tenet_recognition_everywhere
+}
+}
+lyd_play_recognition_everywhere_ready_trigger = {
+lyd_play_recognition_everywhere_eligible_trigger = yes
+is_adult = yes
+is_imprisoned = no
+NOT = { has_trait = incapable }
+custom_description = { text = lyd_play_recognition_everywhere_cooldown_tt NOT = { has_character_flag = lyd_play_recognition_everywhere_cooldown } }
+}
+
+lyd_play_recognition_everywhere_option_0_trigger = {
+lyd_play_recognition_everywhere_ready_trigger = yes
+gold >= 150
+is_landed = yes
+exists = capital_county
+}
+
+lyd_play_recognition_everywhere_option_1_trigger = {
+lyd_play_recognition_everywhere_ready_trigger = yes
+prestige >= 150
+}
+
+lyd_play_recognition_everywhere_option_2_trigger = {
+lyd_play_recognition_everywhere_ready_trigger = yes
+piety >= 200
+is_at_war = yes
+}
+
+lyd_play_recognition_everywhere_available_trigger = { lyd_play_recognition_everywhere_ready_trigger = yes OR = { lyd_play_recognition_everywhere_option_0_trigger = yes lyd_play_recognition_everywhere_option_1_trigger = yes lyd_play_recognition_everywhere_option_2_trigger = yes } }
+

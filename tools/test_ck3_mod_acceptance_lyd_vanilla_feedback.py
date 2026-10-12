@@ -205,10 +205,40 @@ class FeedbackContractTests(unittest.TestCase):
                 'source_tenet_key': 'lyd_tenet_reverent_heaven', 'effective_on_actor': True,
                 'evidence_kind': 'actual_actor_modifier_breakdown'} for k, v in case.MODIFIERS['personal'].items()}}
         self.assertTrue(case.modifier_qualified('personal', row))
-        for value, kind in [('NaN', 'actual_actor_modifier_breakdown'), ('0.05', 'tenet_tooltip_description')]:
+        for value, kind in [('NaN', 'actual_actor_modifier_breakdown'),
+                            ('0.05', 'actual_actor_modifier_breakdown'),
+                            ('0.15', 'tenet_tooltip_description')]:
             changed = copy.deepcopy(row)
             changed['effective_modifier_contributions']['monthly_legitimacy_add'].update(value=value, evidence_kind=kind)
             self.assertFalse(case.modifier_qualified('personal', changed))
+
+    def test_expectations_match_complete_current_T14_core_and_T01_personal_scopes(self):
+        # Read the authored literal data, without importing the mod generator or
+        # deriving expected observations from the acceptance adapter itself.
+        path = REPO / 'mod_li_yu_dao/tools/content_data.py'
+        tree = ast.parse(path.read_text(encoding='utf-8-sig'))
+        table = next(n.value for n in tree.body if isinstance(n, ast.Assign)
+                     and any(isinstance(t, ast.Name) and t.id == 'TENET_EFFECTS' for t in n.targets))
+        effects = {ast.literal_eval(key): value for key, value in zip(table.keys, table.values)}
+        for phase, code, scope_arg, source in (
+            ('school', 'T14', 0, 'lyd_tenet_investigate_principle'),
+            ('personal', 'T01', 1, 'lyd_tenet_reverent_heaven'),
+        ):
+            expected = dict(ast.literal_eval(effects[code].args[scope_arg]))
+            self.assertEqual(case.MODIFIERS[phase], expected)
+            response = {'effective_modifier_contributions': {
+                key: {'value': value, 'source_tenet_key': source, 'effective_on_actor': True,
+                      'evidence_kind': 'actual_actor_modifier_breakdown'}
+                for key, value in expected.items()}}
+            self.assertTrue(case.modifier_qualified(phase, response))
+            for change in ({'effective_on_actor': False}, {'effective_on_actor': 1},
+                           {'source_tenet_key': 'wrong_tenet'}):
+                changed = copy.deepcopy(response)
+                next(iter(changed['effective_modifier_contributions'].values())).update(change)
+                self.assertFalse(case.modifier_qualified(phase, changed))
+            missing = copy.deepcopy(response)
+            missing['effective_modifier_contributions'].pop(next(iter(expected)))
+            self.assertFalse(case.modifier_qualified(phase, missing))
 
     def test_verify_rejects_changed_gui_evidence(self):
         case.run_case(self.context, Client(self.evidence))

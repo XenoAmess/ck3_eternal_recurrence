@@ -44,10 +44,16 @@ class Institution:
     signatures:set[str]=field(default_factory=set)
 
     def __post_init__(self):
-        if self.world.faith!='lyd_common_faith' or self.world.head is not None: raise Refused('Foreign or headed faith')
+        if self.world.faith not in {'lyd_common_faith','confucian_faith'} or self.world.head is not None: raise Refused('Foreign or headed faith')
         actor=self.world.members[self.actor]
-        if not actor.human or actor.rite!=self.world.main: raise Refused('Only a player main-rite initiator')
-        if any(not s.owned or s.doctrine!='none' for s in self.world.schools.values()): raise Refused('Foreign/incompatible rite')
+        vanilla=self.world.faith=='confucian_faith'
+        if not actor.human or not actor.alive or not actor.eligible: raise Refused('Only an eligible living human initiator')
+        if vanilla:
+            if not self.world.schools[actor.rite].owned: raise Refused('Requires a new-school initiator')
+        elif actor.rite!=self.world.main: raise Refused('Only a player main-rite initiator')
+        if self.world.main not in self.world.schools: raise Refused('Missing main rite')
+        if any((not s.owned and not (vanilla and s.id in {'jingxue','daoxue'})) or s.doctrine!='none'
+               for s in self.world.schools.values()): raise Refused('Foreign/incompatible rite')
         self.frozen=snapshot(self.world)
         self.electors={r:{m.id for m in self.world.members.values() if m.rite==r and m.eligible} for r in self.world.schools}
         self.dormant={r for r,s in self.world.schools.items() if s.counties==0 and not any(m.rite==r for m in self.world.members.values())}
@@ -107,6 +113,6 @@ class Institution:
             raise Refused('Incomplete independent mandates/consent/signatures')
         if not native_proof: raise Refused('Native primitive conjunction not admitted')
         # Return a policy-approved plan, NOT a native head or changed World.
-        return {'faith':self.world.faith,'rites':tuple(sorted(self.world.schools)),
+        return {'faith':self.world.faith,'main_rite':self.world.main,'rites':tuple(sorted(self.world.schools)),
                 'old':'doctrine_no_head','new':'doctrine_temporal_head','holder_candidate':self.actor,
                 'political_transfers':(),'government_changes':(),'layer':'ORACLE_ONLY'}

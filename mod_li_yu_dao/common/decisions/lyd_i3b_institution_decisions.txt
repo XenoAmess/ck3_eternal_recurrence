@@ -3,7 +3,7 @@ lyd_i3b_begin_decision = {
     picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
     decision_group_type = religious ai_check_interval = 0
     desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_begin_decision
-    is_shown = { lyd_i3b_actor_trigger = yes NOT = { has_variable = lyd_i3b_active } }
+    is_shown = { is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_owned_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active } }
     is_valid = { custom_description = { text = lyd_i3b_begin_valid_tt subject = root lyd_i3b_can_begin_trigger = yes } }
     effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_begin_trigger = yes } lyd_i3b_begin_effect = yes } } }
     ai_will_do = { base = 0 }

@@ -1,5 +1,6 @@
-﻿# Authored template. Character ROOT; current faith/rite after an authorized detach or council recognition.
-# Native basis: 00_religion_effects.txt:347-380. One owned HoF title; no secular land transfer.
+﻿# Authored template. Character ROOT; one authorized office, no secular transfer.
+# law95 must actually exist before the first holder transaction. This ordering
+# is a source repair candidate, not native proof of political AST preservation.
 lyd_c3_create_owned_temporal_head_effect = {
     if = {
         limit = {
@@ -9,18 +10,27 @@ lyd_c3_create_owned_temporal_head_effect = {
             is_landed = yes
             has_variable = lyd_c3_head_creation_authorized
             religion = religion:confucianism_religion
-            faith = { has_doctrine_parameter = temporal_head_of_faith NOT = { exists = religious_head_title } }
-            rite = faith.main_rite
+            faith = { NOT = { exists = religious_head_title } }
+            trigger_if = { limit = { faith = { has_doctrine = doctrine_no_head } }
+                lyd_i3b_native_admitted_trigger = yes
+            }
+            trigger_else = {
+                faith = { has_doctrine_parameter = temporal_head_of_faith }
+                rite = faith.main_rite
+            }
         }
-        # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
+        # Capture only presence; never replay political laws or heir IDs.
         save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
         if = {
             limit = { has_realm_law = same_faith_succession_law }
             save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 2 }
         }
+        save_scope_value_as = { name = lyd_c3_factory_was_headless value = 0 }
+        if = { limit = { faith = { has_doctrine = doctrine_no_head } }
+            save_scope_value_as = { name = lyd_c3_factory_was_headless value = 1 }
+        }
         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
-        create_title_and_vassal_change = { type = created save_scope_as = lyd_c3_head_change add_claim_on_loss = no }
         scope:new_title = {
             set_variable = { name = lyd_c2_owned_head_title value = 1 }
             set_variable = { name = lyd_c2_owner_faith value = scope:lyd_c3_factory_faith }
@@ -28,29 +38,66 @@ lyd_c3_create_owned_temporal_head_effect = {
             set_no_automatic_claims = yes
             set_definitive_form = yes
             set_always_follows_primary_heir = yes
+            add_title_law = temporal_head_of_faith_succession_law
         }
-        scope:new_title = {
-            change_title_holder = { holder = root change = scope:lyd_c3_head_change }
-        }
-        resolve_title_and_vassal_change = scope:lyd_c3_head_change
-        faith = { set_religious_head_title = scope:new_title }
-        # Preserve a preexisting law; remove only the law newly added by this factory's native path.
-        # Future native maintenance/reload may re-add it: full political AST protection remains mandatory.
-        if = {
-            limit = {
-                trigger_if = {
-                    limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
-                    scope:lyd_c3_factory_had_same_faith_law = 1
-                }
-                trigger_else = { always = no }
-                has_realm_law = same_faith_succession_law
+        if = { limit = { scope:new_title = { has_title_law = temporal_head_of_faith_succession_law } }
+            # Only a fully revalidated I3b round can change a headless Faith.
+            if = { limit = { scope:lyd_c3_factory_was_headless = 1 }
+                faith = { remove_doctrine = doctrine_no_head add_doctrine = doctrine_temporal_head }
+                every_in_list = { variable = lyd_i3b_rites change_rite_doctrine = doctrine_temporal_head }
             }
-            remove_realm_law = same_faith_succession_law
+            faith = { set_religious_head_title = scope:new_title }
+            if = { limit = {
+                faith.religious_head_title = scope:new_title
+                scope:new_title = { has_title_law = temporal_head_of_faith_succession_law }
+                faith = { has_doctrine = doctrine_temporal_head }
+            }
+                create_title_and_vassal_change = { type = created save_scope_as = lyd_c3_head_change add_claim_on_loss = no }
+                scope:new_title = { change_title_holder = { holder = root change = scope:lyd_c3_head_change } }
+                resolve_title_and_vassal_change = scope:lyd_c3_head_change
+                # Preserve a preexisting law; remove only a newly added realm law.
+                # Full political AST/heir/cache protection still needs real B4.
+                if = {
+                    limit = {
+                        trigger_if = {
+                            limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
+                            scope:lyd_c3_factory_had_same_faith_law = 1
+                        }
+                        trigger_else = { always = no }
+                        has_realm_law = same_faith_succession_law
+                    }
+                    remove_realm_law = same_faith_succession_law
+                }
+                scope:new_title = { generate_coa = religious_title }
+                set_variable = { name = lyd_c3_office_faith value = faith }
+                debug_log = "LYD_C3_OWNED_TEMPORAL_HEAD_CREATED"
+            }
+            else = {
+                # No holder transaction began. Restore only this invocation's
+                # new binding and exact no-head -> temporal doctrine changes.
+                if = { limit = { faith.religious_head_title = scope:new_title }
+                    faith = { remove_religious_head_title = yes }
+                }
+                if = { limit = { scope:lyd_c3_factory_was_headless = 1 }
+                    faith = { remove_doctrine = doctrine_temporal_head add_doctrine = doctrine_no_head }
+                    every_in_list = { variable = lyd_i3b_rites change_rite_doctrine = doctrine_no_head }
+                }
+                destroy_title = scope:new_title
+                debug_log = "LYD_C3_HEAD_FACTORY_PREHOLDER_REJECTED"
+                if = { limit = { scope:lyd_c3_factory_was_headless = 1 }
+                    if = { limit = { lyd_i3b_current_trigger = { ACTOR = scope:lyd_i3b_actor } }
+                        debug_log = "LYD_C3_HEAD_FACTORY_HEADLESS_RESTORE_CONFIRMED"
+                    }
+                    else = { debug_log = "LYD_C3_HEAD_FACTORY_HEADLESS_RESTORE_UNCONFIRMED" }
+                }
+            }
         }
-        scope:new_title = { generate_coa = religious_title add_title_law = temporal_head_of_faith_succession_law }
-        set_variable = { name = lyd_c3_office_faith value = faith }
+        else = {
+            # Faith, rites and political holders have not been touched.
+            destroy_title = scope:new_title
+            debug_log = "LYD_C3_HEAD_FACTORY_EMPTY_TITLE_LAW_REJECTED"
+        }
         remove_variable = lyd_c3_head_creation_authorized
-        debug_log = "LYD_C3_OWNED_TEMPORAL_HEAD_CREATED"
     }
     else = { debug_log = "LYD_C3_HEAD_FACTORY_REJECTED" }
 }

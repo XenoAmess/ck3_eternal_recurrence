@@ -5,8 +5,6 @@ law or absent scope are offline guard checks, not fabricated live observations.
 """
 from __future__ import annotations
 from copy import deepcopy
-from dataclasses import replace
-import hashlib
 import json
 import importlib.util
 import unittest
@@ -33,6 +31,19 @@ def single(block, key):
     if len(rows) != 1:
         raise AssertionError((key, len(rows)))
     return rows[0].value
+
+def recursive(block, key):
+    for row in block.entries:
+        if row.key == key:
+            yield row.value
+        if isinstance(row.value, Block):
+            yield from recursive(row.value, key)
+
+def recursive_entries(block):
+    for row in block.entries:
+        yield row
+        if isinstance(row.value,Block):
+            yield from recursive_entries(row.value)
 
 def factory_body(text):
     definition = single(parse_clausewitz(text), 'lyd_c3_create_owned_temporal_head_effect')
@@ -63,7 +74,11 @@ class FactoryLawProtectionTests(unittest.TestCase):
         cls.text = (ROOT / 'common/scripted_effects/lyd_c3_head_factory.txt').read_text(encoding='utf-8-sig')
         cls.body = factory_body(cls.text)
         cls.capture = entries(cls.body, 'if')[0].value
-        cls.cleanup = entries(cls.body, 'if')[1].value
+        cls.prepared = next(v for v in recursive(cls.body,'if')
+                            if entries(single(v,'limit'),'scope:new_title'))
+        cls.enact = next(v for v in recursive(cls.prepared,'if')
+                        if entries(single(v,'limit'),'faith.religious_head_title'))
+        cls.cleanup = next(v for v in recursive(cls.enact,'if') if entries(v,'remove_realm_law'))
         cls.limit = single(cls.cleanup, 'limit')
 
     def test_snapshot_is_reset_before_any_native_creation(self):
@@ -98,14 +113,13 @@ class FactoryLawProtectionTests(unittest.TestCase):
     def test_absent_snapshot_rejects_without_numeric_read(self):
         self.assertFalse(should_cleanup(self.limit, {}, {LAW}))
 
-    def test_cleanup_occurs_after_resolve_before_temporal_title_law(self):
-        body = self.body.entries
-        addition = next(i for i,e in enumerate(body) if e.key == 'scope:new_title' and entries(e.value, 'add_title_law'))
+    def test_cleanup_occurs_after_resolve_without_touching_title_law(self):
+        body = self.enact.entries
         cleanup = next(i for i,e in enumerate(body) if e.value is self.cleanup)
         resolve = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
         self.assertGreater(cleanup, resolve)
-        self.assertLess(cleanup, addition)
-        self.assertLess(addition, next(i for i,e in enumerate(body) if e.key == 'set_variable'))
+        self.assertLess(cleanup, next(i for i,e in enumerate(body) if e.key == 'set_variable'))
+        self.assertFalse(list(recursive(self.cleanup,'add_title_law')))
 
     def test_owner_and_shared_template_ast_match_generated(self):
         for relative in ['tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in',
@@ -141,36 +155,30 @@ class FactoryLawProtectionTests(unittest.TestCase):
         self.assertTrue(all(r['holder_before'] == r['holder_after'] == 31254 and r['before_AST'] != r['after_AST']
                             for r in fixture['political_changed_title_hashes'].values()))
 
-    def test_entire_original_factory_AST_unchanged_after_pruning_new_guard(self):
-        original = deepcopy(self.body)
-        original = replace(original, entries=[e for e in original.entries
-                            if e is not None and e.key != 'save_scope_value_as'
-                            and not (e.key == 'if' and (entries(e.value, 'save_scope_value_as') or entries(e.value, 'remove_realm_law')))])
-        # Only this declared candidate reordering is normalized back before
-        # comparison to the frozen original factory. No effect value may change.
-        body = list(original.entries)
-        faith_heads = [(i, e) for i, e in enumerate(body)
-                       if e.key == 'faith' and entries(e.value, 'set_religious_head_title')]
-        holder_scopes = [(i, e) for i, e in enumerate(body)
-                         if e.key == 'scope:new_title' and entries(e.value, 'change_title_holder')]
-        self.assertEqual(len(faith_heads), 1)
-        self.assertEqual(len(holder_scopes), 1)
-        fi, faith_entry = faith_heads[0]
-        hi, holder_entry = holder_scopes[0]
-        self.assertEqual([e.key for e in holder_entry.value.entries], ['change_title_holder'])
-        ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
-        self.assertEqual(fi, ri + 1)
-        self.assertEqual(body[hi - 1].key, 'scope:new_title')
-        props = body[hi - 1]
-        combined = replace(props, value=replace(props.value,
-                           entries=[*props.value.entries, *holder_entry.value.entries]))
-        body[hi - 1:hi + 1] = [combined]
-        body.remove(faith_entry)
-        ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
-        body.insert(ri + 1, faith_entry)
-        original = replace(original, entries=body)
-        actual = hashlib.sha256(json.dumps(fingerprint(original), ensure_ascii=True, separators=(',',':')).encode()).hexdigest()
-        self.assertEqual(actual, 'd79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213')
+    def test_empty_title_law_failure_never_mutates_faith_rites_or_political_holders(self):
+        before=list(self.body.entries[:next(i for i,e in enumerate(self.body.entries) if e.value is self.prepared)])
+        self.assertFalse(any(e.key in {'remove_doctrine','add_doctrine','change_rite_doctrine','set_religious_head_title','change_title_holder','create_title_and_vassal_change'}
+                             for e in recursive_entries(Block(tuple(before)))))
+        rejected=single(self.body,'else')
+        self.assertEqual(single(rejected,'destroy_title'),'scope:new_title')
+        self.assertEqual([e.key for e in rejected.entries],['destroy_title','debug_log'])
+        rollback=single(self.prepared,'else')
+        self.assertEqual(single(rollback,'destroy_title'),'scope:new_title')
+        self.assertIn('yes',list(recursive(rollback,'remove_religious_head_title')))
+        self.assertEqual(list(recursive(rollback,'remove_doctrine')),['doctrine_temporal_head'])
+        self.assertEqual(list(recursive(rollback,'add_doctrine')),['doctrine_no_head'])
+        self.assertEqual(list(recursive(rollback,'change_rite_doctrine')),['doctrine_no_head'])
+        self.assertFalse(list(recursive(rollback,'change_title_holder')))
+        self.assertFalse(list(recursive(rollback,'resolve_title_and_vassal_change')))
+        restored=next(v for v in recursive(rollback,'if') if entries(single(v,'limit'),'lyd_i3b_current_trigger'))
+        self.assertEqual(single(single(single(restored,'limit'),'lyd_i3b_current_trigger'),'ACTOR'),'scope:lyd_i3b_actor')
+        self.assertEqual(single(restored,'debug_log'),
+                         '"LYD_C3_HEAD_FACTORY_HEADLESS_RESTORE_CONFIRMED"')
+
+    def test_headless_factory_requires_full_current_round_not_just_authorization_flag(self):
+        admission=single(single(self.body,'limit'),'trigger_if')
+        self.assertEqual(single(single(single(admission,'limit'),'faith'),'has_doctrine'),'doctrine_no_head')
+        self.assertEqual(single(admission,'lyd_i3b_native_admitted_trigger'),'yes')
 
     def test_missing_scope_fallback_regression_is_detected(self):
         mutant = deepcopy(self.limit)
@@ -180,32 +188,42 @@ class FactoryLawProtectionTests(unittest.TestCase):
         # the frozen parser's immutable Entry/Block tuples.
         self.assertEqual(self.text.count('trigger_else = { always = no }'), 1)
         unsafe_text = self.text.replace('trigger_else = { always = no }', 'trigger_else = { always = yes }')
-        mutant_cleanup = entries(factory_body(unsafe_text), 'if')[1].value
+        mutant_cleanup = next(v for v in recursive(factory_body(unsafe_text),'if') if entries(v,'remove_realm_law'))
         mutant = single(mutant_cleanup, 'limit')
         self.assertTrue(should_cleanup(mutant, {}, {LAW}))
 
-    def test_declared_holder_resolve_head_ordering_keeps_cleanup_and_law_after_head(self):
-        body = self.body.entries
-        fi = next(i for i,e in enumerate(body)
-                  if e.key == 'faith' and entries(e.value, 'set_religious_head_title'))
-        hi = next(i for i,e in enumerate(body)
-                  if e.key == 'scope:new_title' and entries(e.value, 'change_title_holder'))
-        ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
-        li = next(i for i,e in enumerate(body)
-                  if e.key == 'scope:new_title' and entries(e.value, 'add_title_law'))
-        ci = next(i for i,e in enumerate(body) if e.value is self.cleanup)
-        self.assertLess(hi, ri)
-        self.assertLess(ri, fi)
-        self.assertLess(fi, ci)
-        self.assertLess(ci, li)
-        props = body[hi - 1]
-        self.assertEqual(props.key, 'scope:new_title')
-        self.assertEqual([e.key for e in props.value.entries],
+    def test_actual_law_and_binding_are_required_before_single_holder_transaction(self):
+        body=self.body.entries
+        pi=next(i for i,e in enumerate(body) if e.key=='scope:new_title' and entries(e.value,'add_title_law'))
+        gi=next(i for i,e in enumerate(body) if e.value is self.prepared)
+        self.assertLess(pi,gi)
+        props=body[pi].value
+        self.assertEqual([e.key for e in props.entries],
             ['set_variable','set_variable','set_destroy_if_invalid_heir',
-             'set_no_automatic_claims','set_definitive_form','set_always_follows_primary_heir'])
-        self.assertEqual([single(e.value,'name') for e in props.value.entries if e.key == 'set_variable'],
-                         ['lyd_c2_owned_head_title','lyd_c2_owner_faith'])
-        self.assertEqual(single(body[li].value, 'add_title_law'), 'temporal_head_of_faith_succession_law')
+             'set_no_automatic_claims','set_definitive_form','set_always_follows_primary_heir','add_title_law'])
+        law='temporal_head_of_faith_succession_law'
+        self.assertEqual(single(props,'add_title_law'),law)
+        self.assertEqual(single(single(single(self.prepared,'limit'),'scope:new_title'),'has_title_law'),law)
+        gate=single(self.enact,'limit')
+        self.assertEqual(single(gate,'faith.religious_head_title'),'scope:new_title')
+        self.assertEqual(single(single(gate,'scope:new_title'),'has_title_law'),law)
+        self.assertEqual(single(single(gate,'faith'),'has_doctrine'),'doctrine_temporal_head')
+        pbody=self.prepared.entries
+        fi=next(i for i,e in enumerate(pbody) if e.key=='faith' and entries(e.value,'set_religious_head_title'))
+        self.assertLess(fi,next(i for i,e in enumerate(pbody) if e.value is self.enact))
+        enacted=self.enact.entries
+        keys=[e.key for e in enacted]
+        self.assertLess(keys.index('create_title_and_vassal_change'),keys.index('scope:new_title'))
+        self.assertLess(keys.index('scope:new_title'),keys.index('resolve_title_and_vassal_change'))
+        holders=list(recursive(self.body,'change_title_holder'))
+        self.assertEqual(len(holders),1)
+        self.assertEqual(single(holders[0],'holder'),'root')
+        self.assertEqual(list(recursive(self.body,'resolve_title_and_vassal_change')),['scope:lyd_c3_head_change'])
+        # Reject a concrete missing-law mutant rather than refreshing an old AST hash.
+        unsafe=self.text.replace('has_title_law = '+law,'has_title_law = unrelated_law',1)
+        mutant=factory_body(unsafe)
+        first_gate=next(v for v in recursive(mutant,'if') if entries(single(v,'limit'),'scope:new_title'))
+        self.assertNotEqual(single(single(single(first_gate,'limit'),'scope:new_title'),'has_title_law'),law)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,207 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+lyd_play_reverent_heaven_option_0_character = {
+stewardship = 3
+}
+lyd_play_sincerity_solitude_option_0_character = {
+intrigue = 4
+enemy_hostile_scheme_success_chance_add = -20
+}
+lyd_play_ritual_music_option_0_character = {
+diplomacy = 4
+vassal_opinion = 15
+}
+lyd_play_ritual_music_option_0_county = {
+county_opinion_add = 20
+}
+lyd_play_ancestral_reverence_option_0_character = {
+dynasty_opinion = 25
+fertility = 0.20
+}
+lyd_play_names_duties_option_0_character = {
+domain_limit = 1
+stewardship = 4
+}
+lyd_play_humaneness_righteousness_option_0_county = {
+county_opinion_add = 35
+epidemic_resistance = 20
+}
+lyd_play_righteous_remonstrance_option_0_character = {
+vassal_opinion = 25
+diplomacy = 3
+}
+lyd_play_sage_transmission_option_0_character = {
+learning = 4
+}
+lyd_play_extend_sprouts_option_0_county = {
+county_opinion_add = 30
+}
+lyd_play_extend_sprouts_option_1_character = {
+enemy_hostile_scheme_success_chance_add = -20
+intrigue = 3
+}
+lyd_play_extend_sprouts_option_2_character = {
+vassal_opinion = 20
+}
+lyd_play_extend_sprouts_option_3_character = {
+learning = 4
+}
+lyd_play_deliberate_cultivation_option_0_character = {
+martial = 3
+stewardship = 3
+}
+lyd_play_righteous_qi_option_0_character = {
+prowess = 6
+knight_effectiveness_mult = 0.35
+}
+lyd_play_portent_reflection_option_0_county = {
+development_growth_factor = 0.35
+}
+lyd_play_qi_kinship_option_0_character = {
+health = 1
+dynasty_opinion = 20
+fertility = 0.15
+}
+lyd_play_investigate_principle_option_0_county = {
+development_growth_factor = 0.40
+}
+lyd_play_reverent_attention_option_0_character = {
+learning = 5
+stress_gain_mult = -0.25
+fertility = -0.15
+}
+lyd_play_original_heart_option_0_character = {
+learning = 3
+same_faith_opinion = 20
+}
+lyd_play_innate_knowing_option_0_county = {
+county_opinion_add = 25
+}
+lyd_play_knowing_acting_option_0_county = {
+tax_mult = 0.25
+}
+lyd_play_knowing_acting_option_1_character = {
+prowess = 5
+army_maintenance_mult = -0.25
+}
+lyd_play_textual_ritual_option_0_character = {
+church_holding_build_gold_cost = -0.30
+church_holding_build_speed = -0.35
+}
+lyd_play_classical_synthesis_option_0_character = {
+stewardship = 3
+}
+lyd_play_classical_synthesis_option_1_character = {
+diplomacy = 3
+}
+lyd_play_classical_synthesis_option_2_character = {
+martial = 3
+}
+lyd_play_annals_judgment_option_0_character = {
+learning = 4
+vassal_opinion = -5
+}
+lyd_play_constant_heaven_option_0_county = {
+tax_mult = 0.30
+levy_reinforcement_rate = 0.30
+development_growth_factor = 0.30
+}
+lyd_play_restore_nature_option_0_character = {
+health = 0.75
+stress_gain_mult = -0.30
+}
+lyd_play_ordinary_life_option_0_county = {
+county_opinion_add = 30
+monthly_county_control_growth_factor = 0.50
+}
+lyd_play_six_arts_option_0_character = {
+vassal_opinion = 15
+}
+lyd_play_six_arts_option_1_character = {
+diplomacy = 5
+stress_loss_mult = 0.30
+}
+lyd_play_six_arts_option_2_character = {
+prowess = 6
+}
+lyd_play_six_arts_option_3_character = {
+martial = 5
+knight_effectiveness_mult = 0.20
+}
+lyd_play_six_arts_option_4_character = {
+learning = 4
+}
+lyd_play_six_arts_option_5_character = {
+stewardship = 4
+monthly_income_mult = 0.15
+}
+lyd_play_philological_way_option_0_character = {
+learning = 6
+cultural_head_fascination_mult = 0.25
+}
+lyd_play_moral_achievement_option_0_character = {
+monthly_income_mult = 0.30
+}
+lyd_play_moral_achievement_option_0_county = {
+build_speed = -0.35
+tax_mult = 0.30
+}
+lyd_play_restrain_violence_option_0_character = {
+army_maintenance_mult = -0.30
+martial = 4
+}
+lyd_play_subtle_intentions_option_0_character = {
+enemy_hostile_scheme_success_chance_add = -25
+diplomacy = 3
+}
+lyd_play_responsive_interpretation_option_0_county = {
+build_speed = -0.40
+development_growth_factor = 0.50
+county_opinion_add = -10
+}
+lyd_play_images_numbers_option_0_character = {
+monthly_income_mult = 0.25
+stewardship = 3
+}
+lyd_play_images_numbers_option_1_character = {
+martial = 4
+siege_phase_time = -0.15
+}
+lyd_play_images_numbers_option_1_county = {
+levy_size = 0.25
+}
+lyd_play_images_numbers_option_2_character = {
+learning = 4
+monthly_lifestyle_xp_gain_mult = 0.20
+}
+lyd_play_profound_interpretation_option_0_character = {
+learning = 4
+same_faith_opinion = 25
+monthly_income_mult = -0.10
+}
+lyd_play_knowing_acting_support_option_0_character = {
+learning = 3
+}
+lyd_play_knowing_acting_support_option_1_character = {
+stewardship = 3
+}
+lyd_play_ongoing_generation_option_0_character = {
+health = 0.75
+fertility = 0.35
+dynasty_opinion = 30
+}
+lyd_play_quiet_self_attainment_option_0_character = {
+learning = 6
+diplomacy = -2
+}
+lyd_play_recognition_everywhere_option_0_county = {
+tax_mult = 0.20
+}
+lyd_play_recognition_everywhere_option_1_character = {
+diplomacy = 4
+dynasty_opinion = 20
+}
+lyd_play_recognition_everywhere_option_2_character = {
+martial = 4
+prowess = 4
+knight_effectiveness_mult = 0.25
+}

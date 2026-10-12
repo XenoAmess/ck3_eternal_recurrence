@@ -8,8 +8,11 @@ lyd_i3b_native_admitted_trigger = {
     lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor }
 }
 lyd_i3b_owned_rite_trigger = { OR = { this = rite:lyd_rite_kongmen this = rite:lyd_rite_mengzi this = rite:lyd_rite_xunzi this = rite:lyd_rite_dongzhongshu this = rite:lyd_rite_guwen this = rite:lyd_rite_zhengxuan this = rite:lyd_rite_wangsu this = rite:lyd_rite_wangbi this = rite:lyd_rite_guoxiang this = rite:lyd_rite_jingshu this = rite:lyd_rite_hanyu this = rite:lyd_rite_liao this = rite:lyd_rite_zhoudunyi this = rite:lyd_rite_chengbrothers this = rite:lyd_rite_zhangzai this = rite:lyd_rite_shaoyong this = rite:lyd_rite_wanganshi this = rite:lyd_rite_sushi this = rite:lyd_rite_huxiang this = rite:lyd_rite_zhuxi this = rite:lyd_rite_lujiuyuan this = rite:lyd_rite_yongjia this = rite:lyd_rite_yongkang this = rite:lyd_rite_wucheng this = rite:lyd_rite_chenxianzhang this = rite:lyd_rite_zhanruoshui this = rite:lyd_rite_wangyangming this = rite:lyd_rite_jiangyou this = rite:lyd_rite_taizhou this = rite:lyd_rite_liuzongzhou this = rite:lyd_rite_donglin this = rite:lyd_rite_wangfuzhi this = rite:lyd_rite_yanli this = rite:lyd_rite_qianjia this = rite:lyd_rite_changzhou this = rite:lyd_rite_jingshi } }
+lyd_i3b_supported_rite_trigger = {
+    OR = { lyd_i3b_owned_rite_trigger = yes this = rite:jingxue this = rite:daoxue }
+}
 lyd_i3b_compatible_rite_trigger = {
-    lyd_i3b_owned_rite_trigger = yes
+    lyd_i3b_supported_rite_trigger = yes
     rite_has_doctrine = doctrine_no_head
     rite_has_doctrine = doctrine_theocracy_lay_clergy
     NOR = {
@@ -28,6 +31,20 @@ lyd_i3b_only_owned_rites_faith_trigger = {
     main_rite = { lyd_i3b_owned_rite_trigger = yes }
     NOT = { any_faith_rite = { NOT = { lyd_i3b_owned_rite_trigger = yes } } }
 }
+# Faith ROOT. Vanilla Confucianism keeps its original Faith and main rite.
+# All actual rites, including Jingxue/Daoxue, enter the same consented roster.
+lyd_i3b_supported_faith_trigger = {
+    OR = {
+        lyd_i3b_only_owned_rites_faith_trigger = yes
+        AND = {
+            this = faith:confucian_faith
+            religion = religion:confucianism_religion
+            exists = main_rite
+            main_rite = { lyd_i3b_supported_rite_trigger = yes }
+            NOT = { any_faith_rite = { NOT = { lyd_i3b_supported_rite_trigger = yes } } }
+        }
+    }
+}
 # Character ROOT. No title office or existing challenger can supply a mandate.
 # is_head_of_faith is a native Title trigger, used only inside any_held_title.
 lyd_i3b_no_other_office_trigger = {
@@ -44,7 +61,7 @@ lyd_i3b_no_other_office_trigger = {
 }
 # Faith ROOT. Include native challengers with no LYD metadata.
 lyd_i3b_headless_faith_trigger = {
-    lyd_i3b_only_owned_rites_faith_trigger = yes
+    lyd_i3b_supported_faith_trigger = yes
     has_doctrine = doctrine_no_head
     NOT = { exists = religious_head_title }
     NOT = { exists = religious_head }
@@ -66,10 +83,10 @@ lyd_i3b_actor_trigger = {
     lyd_c3_player_actor_trigger = yes
     lyd_i3b_no_other_office_trigger = yes
     OR = {
-        faith = faith:lyd_common_faith
+        AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
         lyd_i3b_detached_authority_trigger = yes
+        AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
     }
-    rite = faith.main_rite
     highest_held_title_tier >= tier_duchy
     save_temporary_scope_as = lyd_i3b_actor_check
     rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check }
@@ -79,6 +96,12 @@ lyd_i3b_actor_trigger = {
 lyd_i3b_captured_authority_trigger = {
     OR = {
         AND = { var:lyd_i3b_authority_mode = 0 faith = faith:lyd_common_faith }
+        AND = {
+            var:lyd_i3b_authority_mode = 2
+            faith = faith:confucian_faith
+            rite = var:lyd_i3b_actor_rite
+            rite = { lyd_i3b_owned_rite_trigger = yes }
+        }
         AND = {
             var:lyd_i3b_authority_mode = 1
             lyd_i3b_detached_authority_trigger = yes
@@ -96,6 +119,12 @@ lyd_i3b_captured_authority_trigger = {
 lyd_i3b_native_authority_postcondition_trigger = {
     OR = {
         var:lyd_i3b_result_authority_mode = 0
+        AND = {
+            var:lyd_i3b_result_authority_mode = 2
+            faith = faith:confucian_faith
+            rite = var:lyd_i3b_actor_rite
+            faith.main_rite = var:lyd_i3b_main
+        }
         AND = {
             var:lyd_i3b_result_authority_mode = 1
             exists = var:lyd_i3b_result_native_hor
@@ -138,7 +167,7 @@ lyd_i3b_current_trigger = {
     lyd_i3b_captured_authority_trigger = yes
     has_variable = lyd_i3b_active
     faith = var:lyd_i3b_faith
-    rite = var:lyd_i3b_main
+    rite = var:lyd_i3b_actor_rite
     faith.main_rite = var:lyd_i3b_main
     NOT = { has_variable = lyd_c2_active }
     NOT = { has_variable = lyd_c3_active }

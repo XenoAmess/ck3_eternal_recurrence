@@ -1,0 +1,505 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+lyd_play_reverent_heaven_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_reverent_heaven_decision_tooltip
+confirm_text = lyd_play_reverent_heaven_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_reverent_heaven_eligible_trigger = yes }
+is_valid = {
+    lyd_play_reverent_heaven_ready_trigger = yes
+    custom_description = { text = lyd_play_reverent_heaven_available_tt lyd_play_reverent_heaven_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_reverent_heaven_available_trigger = yes } trigger_event = lyd.1000 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_sincerity_solitude_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_sincerity_solitude_decision_tooltip
+confirm_text = lyd_play_sincerity_solitude_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_sincerity_solitude_eligible_trigger = yes }
+is_valid = {
+    lyd_play_sincerity_solitude_ready_trigger = yes
+    custom_description = { text = lyd_play_sincerity_solitude_available_tt lyd_play_sincerity_solitude_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_sincerity_solitude_available_trigger = yes } trigger_event = lyd.1001 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_ritual_music_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_ritual_music_decision_tooltip
+confirm_text = lyd_play_ritual_music_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_ritual_music_eligible_trigger = yes }
+is_valid = {
+    lyd_play_ritual_music_ready_trigger = yes
+    custom_description = { text = lyd_play_ritual_music_available_tt lyd_play_ritual_music_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_ritual_music_available_trigger = yes } trigger_event = lyd.1002 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_ancestral_reverence_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_ancestral_reverence_decision_tooltip
+confirm_text = lyd_play_ancestral_reverence_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_ancestral_reverence_eligible_trigger = yes }
+is_valid = {
+    lyd_play_ancestral_reverence_ready_trigger = yes
+    custom_description = { text = lyd_play_ancestral_reverence_available_tt lyd_play_ancestral_reverence_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_ancestral_reverence_available_trigger = yes } trigger_event = lyd.1003 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_names_duties_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_names_duties_decision_tooltip
+confirm_text = lyd_play_names_duties_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_names_duties_eligible_trigger = yes }
+is_valid = {
+    lyd_play_names_duties_ready_trigger = yes
+    custom_description = { text = lyd_play_names_duties_available_tt lyd_play_names_duties_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_names_duties_available_trigger = yes } trigger_event = lyd.1004 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_humaneness_righteousness_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_humaneness_righteousness_decision_tooltip
+confirm_text = lyd_play_humaneness_righteousness_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_humaneness_righteousness_eligible_trigger = yes }
+is_valid = {
+    lyd_play_humaneness_righteousness_ready_trigger = yes
+    custom_description = { text = lyd_play_humaneness_righteousness_available_tt lyd_play_humaneness_righteousness_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_humaneness_righteousness_available_trigger = yes } trigger_event = lyd.1005 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_righteous_remonstrance_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_righteous_remonstrance_decision_tooltip
+confirm_text = lyd_play_righteous_remonstrance_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_righteous_remonstrance_eligible_trigger = yes }
+is_valid = {
+    lyd_play_righteous_remonstrance_ready_trigger = yes
+    custom_description = { text = lyd_play_righteous_remonstrance_available_tt lyd_play_righteous_remonstrance_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_righteous_remonstrance_available_trigger = yes } trigger_event = lyd.1006 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_sage_transmission_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_sage_transmission_decision_tooltip
+confirm_text = lyd_play_sage_transmission_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_sage_transmission_eligible_trigger = yes }
+is_valid = {
+    lyd_play_sage_transmission_ready_trigger = yes
+    custom_description = { text = lyd_play_sage_transmission_available_tt lyd_play_sage_transmission_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_sage_transmission_available_trigger = yes } trigger_event = lyd.1007 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_extend_sprouts_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_extend_sprouts_decision_tooltip
+confirm_text = lyd_play_extend_sprouts_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_extend_sprouts_eligible_trigger = yes }
+is_valid = {
+    lyd_play_extend_sprouts_ready_trigger = yes
+    custom_description = { text = lyd_play_extend_sprouts_available_tt lyd_play_extend_sprouts_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_extend_sprouts_available_trigger = yes } trigger_event = lyd.1008 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_deliberate_cultivation_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_deliberate_cultivation_decision_tooltip
+confirm_text = lyd_play_deliberate_cultivation_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_deliberate_cultivation_eligible_trigger = yes }
+is_valid = {
+    lyd_play_deliberate_cultivation_ready_trigger = yes
+    custom_description = { text = lyd_play_deliberate_cultivation_available_tt lyd_play_deliberate_cultivation_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_deliberate_cultivation_available_trigger = yes } trigger_event = lyd.1009 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_righteous_qi_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_righteous_qi_decision_tooltip
+confirm_text = lyd_play_righteous_qi_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_righteous_qi_eligible_trigger = yes }
+is_valid = {
+    lyd_play_righteous_qi_ready_trigger = yes
+    custom_description = { text = lyd_play_righteous_qi_available_tt lyd_play_righteous_qi_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_righteous_qi_available_trigger = yes } trigger_event = lyd.1010 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_portent_reflection_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_portent_reflection_decision_tooltip
+confirm_text = lyd_play_portent_reflection_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_portent_reflection_eligible_trigger = yes }
+is_valid = {
+    lyd_play_portent_reflection_ready_trigger = yes
+    custom_description = { text = lyd_play_portent_reflection_available_tt lyd_play_portent_reflection_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_portent_reflection_available_trigger = yes } trigger_event = lyd.1011 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_qi_kinship_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_qi_kinship_decision_tooltip
+confirm_text = lyd_play_qi_kinship_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_qi_kinship_eligible_trigger = yes }
+is_valid = {
+    lyd_play_qi_kinship_ready_trigger = yes
+    custom_description = { text = lyd_play_qi_kinship_available_tt lyd_play_qi_kinship_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_qi_kinship_available_trigger = yes } trigger_event = lyd.1012 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_investigate_principle_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_investigate_principle_decision_tooltip
+confirm_text = lyd_play_investigate_principle_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_investigate_principle_eligible_trigger = yes }
+is_valid = {
+    lyd_play_investigate_principle_ready_trigger = yes
+    custom_description = { text = lyd_play_investigate_principle_available_tt lyd_play_investigate_principle_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_investigate_principle_available_trigger = yes } trigger_event = lyd.1013 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_reverent_attention_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_reverent_attention_decision_tooltip
+confirm_text = lyd_play_reverent_attention_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_reverent_attention_eligible_trigger = yes }
+is_valid = {
+    lyd_play_reverent_attention_ready_trigger = yes
+    custom_description = { text = lyd_play_reverent_attention_available_tt lyd_play_reverent_attention_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_reverent_attention_available_trigger = yes } trigger_event = lyd.1014 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_original_heart_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_original_heart_decision_tooltip
+confirm_text = lyd_play_original_heart_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_original_heart_eligible_trigger = yes }
+is_valid = {
+    lyd_play_original_heart_ready_trigger = yes
+    custom_description = { text = lyd_play_original_heart_available_tt lyd_play_original_heart_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_original_heart_available_trigger = yes } trigger_event = lyd.1015 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_innate_knowing_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_innate_knowing_decision_tooltip
+confirm_text = lyd_play_innate_knowing_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_innate_knowing_eligible_trigger = yes }
+is_valid = {
+    lyd_play_innate_knowing_ready_trigger = yes
+    custom_description = { text = lyd_play_innate_knowing_available_tt lyd_play_innate_knowing_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_innate_knowing_available_trigger = yes } trigger_event = lyd.1016 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_knowing_acting_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_knowing_acting_decision_tooltip
+confirm_text = lyd_play_knowing_acting_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_knowing_acting_eligible_trigger = yes }
+is_valid = {
+    lyd_play_knowing_acting_ready_trigger = yes
+    custom_description = { text = lyd_play_knowing_acting_available_tt lyd_play_knowing_acting_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_knowing_acting_available_trigger = yes } trigger_event = lyd.1017 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_textual_ritual_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_textual_ritual_decision_tooltip
+confirm_text = lyd_play_textual_ritual_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_textual_ritual_eligible_trigger = yes }
+is_valid = {
+    lyd_play_textual_ritual_ready_trigger = yes
+    custom_description = { text = lyd_play_textual_ritual_available_tt lyd_play_textual_ritual_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_textual_ritual_available_trigger = yes } trigger_event = lyd.1018 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_classical_synthesis_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_classical_synthesis_decision_tooltip
+confirm_text = lyd_play_classical_synthesis_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_classical_synthesis_eligible_trigger = yes }
+is_valid = {
+    lyd_play_classical_synthesis_ready_trigger = yes
+    custom_description = { text = lyd_play_classical_synthesis_available_tt lyd_play_classical_synthesis_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_classical_synthesis_available_trigger = yes } trigger_event = lyd.1019 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_annals_judgment_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_annals_judgment_decision_tooltip
+confirm_text = lyd_play_annals_judgment_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_annals_judgment_eligible_trigger = yes }
+is_valid = {
+    lyd_play_annals_judgment_ready_trigger = yes
+    custom_description = { text = lyd_play_annals_judgment_available_tt lyd_play_annals_judgment_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_annals_judgment_available_trigger = yes } trigger_event = lyd.1020 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_constant_heaven_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_constant_heaven_decision_tooltip
+confirm_text = lyd_play_constant_heaven_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_constant_heaven_eligible_trigger = yes }
+is_valid = {
+    lyd_play_constant_heaven_ready_trigger = yes
+    custom_description = { text = lyd_play_constant_heaven_available_tt lyd_play_constant_heaven_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_constant_heaven_available_trigger = yes } trigger_event = lyd.1021 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_restore_nature_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_restore_nature_decision_tooltip
+confirm_text = lyd_play_restore_nature_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_restore_nature_eligible_trigger = yes }
+is_valid = {
+    lyd_play_restore_nature_ready_trigger = yes
+    custom_description = { text = lyd_play_restore_nature_available_tt lyd_play_restore_nature_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_restore_nature_available_trigger = yes } trigger_event = lyd.1022 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_ordinary_life_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_ordinary_life_decision_tooltip
+confirm_text = lyd_play_ordinary_life_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_ordinary_life_eligible_trigger = yes }
+is_valid = {
+    lyd_play_ordinary_life_ready_trigger = yes
+    custom_description = { text = lyd_play_ordinary_life_available_tt lyd_play_ordinary_life_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_ordinary_life_available_trigger = yes } trigger_event = lyd.1023 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_six_arts_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_six_arts_decision_tooltip
+confirm_text = lyd_play_six_arts_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_six_arts_eligible_trigger = yes }
+is_valid = {
+    lyd_play_six_arts_ready_trigger = yes
+    custom_description = { text = lyd_play_six_arts_available_tt lyd_play_six_arts_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_six_arts_available_trigger = yes } trigger_event = lyd.1024 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_philological_way_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_philological_way_decision_tooltip
+confirm_text = lyd_play_philological_way_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_philological_way_eligible_trigger = yes }
+is_valid = {
+    lyd_play_philological_way_ready_trigger = yes
+    custom_description = { text = lyd_play_philological_way_available_tt lyd_play_philological_way_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_philological_way_available_trigger = yes } trigger_event = lyd.1025 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_moral_achievement_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_moral_achievement_decision_tooltip
+confirm_text = lyd_play_moral_achievement_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_moral_achievement_eligible_trigger = yes }
+is_valid = {
+    lyd_play_moral_achievement_ready_trigger = yes
+    custom_description = { text = lyd_play_moral_achievement_available_tt lyd_play_moral_achievement_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_moral_achievement_available_trigger = yes } trigger_event = lyd.1026 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_restrain_violence_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_restrain_violence_decision_tooltip
+confirm_text = lyd_play_restrain_violence_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_restrain_violence_eligible_trigger = yes }
+is_valid = {
+    lyd_play_restrain_violence_ready_trigger = yes
+    custom_description = { text = lyd_play_restrain_violence_available_tt lyd_play_restrain_violence_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_restrain_violence_available_trigger = yes } trigger_event = lyd.1027 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_subtle_intentions_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_subtle_intentions_decision_tooltip
+confirm_text = lyd_play_subtle_intentions_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_subtle_intentions_eligible_trigger = yes }
+is_valid = {
+    lyd_play_subtle_intentions_ready_trigger = yes
+    custom_description = { text = lyd_play_subtle_intentions_available_tt lyd_play_subtle_intentions_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_subtle_intentions_available_trigger = yes } trigger_event = lyd.1028 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_responsive_interpretation_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_responsive_interpretation_decision_tooltip
+confirm_text = lyd_play_responsive_interpretation_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_responsive_interpretation_eligible_trigger = yes }
+is_valid = {
+    lyd_play_responsive_interpretation_ready_trigger = yes
+    custom_description = { text = lyd_play_responsive_interpretation_available_tt lyd_play_responsive_interpretation_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_responsive_interpretation_available_trigger = yes } trigger_event = lyd.1029 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_images_numbers_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_images_numbers_decision_tooltip
+confirm_text = lyd_play_images_numbers_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_images_numbers_eligible_trigger = yes }
+is_valid = {
+    lyd_play_images_numbers_ready_trigger = yes
+    custom_description = { text = lyd_play_images_numbers_available_tt lyd_play_images_numbers_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_images_numbers_available_trigger = yes } trigger_event = lyd.1030 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_profound_interpretation_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_profound_interpretation_decision_tooltip
+confirm_text = lyd_play_profound_interpretation_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_profound_interpretation_eligible_trigger = yes }
+is_valid = {
+    lyd_play_profound_interpretation_ready_trigger = yes
+    custom_description = { text = lyd_play_profound_interpretation_available_tt lyd_play_profound_interpretation_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_profound_interpretation_available_trigger = yes } trigger_event = lyd.1031 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_knowing_acting_support_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_knowing_acting_support_decision_tooltip
+confirm_text = lyd_play_knowing_acting_support_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_knowing_acting_support_eligible_trigger = yes }
+is_valid = {
+    lyd_play_knowing_acting_support_ready_trigger = yes
+    custom_description = { text = lyd_play_knowing_acting_support_available_tt lyd_play_knowing_acting_support_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_knowing_acting_support_available_trigger = yes } trigger_event = lyd.1032 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_ongoing_generation_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_ongoing_generation_decision_tooltip
+confirm_text = lyd_play_ongoing_generation_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_ongoing_generation_eligible_trigger = yes }
+is_valid = {
+    lyd_play_ongoing_generation_ready_trigger = yes
+    custom_description = { text = lyd_play_ongoing_generation_available_tt lyd_play_ongoing_generation_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_ongoing_generation_available_trigger = yes } trigger_event = lyd.1033 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_quiet_self_attainment_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_quiet_self_attainment_decision_tooltip
+confirm_text = lyd_play_quiet_self_attainment_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_quiet_self_attainment_eligible_trigger = yes }
+is_valid = {
+    lyd_play_quiet_self_attainment_ready_trigger = yes
+    custom_description = { text = lyd_play_quiet_self_attainment_available_tt lyd_play_quiet_self_attainment_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_quiet_self_attainment_available_trigger = yes } trigger_event = lyd.1034 } }
+ai_will_do = { base = 0 }
+}
+lyd_play_recognition_everywhere_decision = {
+picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+decision_group_type = religious
+selection_tooltip = lyd_play_recognition_everywhere_decision_tooltip
+confirm_text = lyd_play_recognition_everywhere_decision_confirm
+ai_check_interval = 0
+is_shown = { lyd_play_recognition_everywhere_eligible_trigger = yes }
+is_valid = {
+    lyd_play_recognition_everywhere_ready_trigger = yes
+    custom_description = { text = lyd_play_recognition_everywhere_available_tt lyd_play_recognition_everywhere_available_trigger = yes }
+}
+effect = { if = { limit = { lyd_play_recognition_everywhere_available_trigger = yes } trigger_event = lyd.1035 } }
+ai_will_do = { base = 0 }
+}

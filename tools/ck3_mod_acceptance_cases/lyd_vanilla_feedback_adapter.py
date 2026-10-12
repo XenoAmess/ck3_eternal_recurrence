@@ -41,8 +41,9 @@ PHASES = {
 BASE_FACTS = ['official_GUI_personally_reviewed', 'same_paused_owner_and_actor',
               'faith_identity_preserved', 'original_rites_not_modified']
 MODIFIERS = {
-    'school': {'cultural_head_fascination_mult': '0.06', 'monthly_piety_gain_mult': '-0.04'},
-    'personal': {'monthly_legitimacy_add': '0.05', 'monthly_income_mult': '-0.02'},
+    'school': {'cultural_head_fascination_mult': '0.25', 'learning_scheme_phase_duration': '-15'},
+    'personal': {'monthly_legitimacy_add': '0.15', 'diplomacy_per_piety_level': '1',
+                 'monthly_income_mult': '-0.03'},
 }
 
 

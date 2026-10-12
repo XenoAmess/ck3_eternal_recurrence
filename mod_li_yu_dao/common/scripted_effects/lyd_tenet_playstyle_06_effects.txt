@@ -1,0 +1,93 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+lyd_play_responsive_interpretation_option_0_effect = {
+if = {
+limit = { lyd_play_responsive_interpretation_option_0_trigger = yes }
+remove_short_term_gold = 200
+add_prestige = -200
+add_stewardship_lifestyle_xp = 700
+capital_county = {
+add_county_modifier = { modifier = lyd_play_responsive_interpretation_option_0_county days = 1460 }
+}
+add_character_flag = { flag = lyd_play_responsive_interpretation_cooldown days = 1825 }
+}
+}
+
+lyd_play_images_numbers_option_0_effect = {
+if = {
+limit = { lyd_play_images_numbers_option_0_trigger = yes }
+remove_short_term_gold = 150
+add_stewardship_lifestyle_xp = 500
+add_character_modifier = { modifier = lyd_play_images_numbers_option_0_character days = 1095 }
+add_character_flag = { flag = lyd_play_images_numbers_cooldown days = 1095 }
+}
+}
+
+lyd_play_images_numbers_option_1_effect = {
+if = {
+limit = { lyd_play_images_numbers_option_1_trigger = yes }
+add_prestige = -175
+add_martial_lifestyle_xp = 500
+add_character_modifier = { modifier = lyd_play_images_numbers_option_1_character days = 1095 }
+capital_county = {
+add_county_modifier = { modifier = lyd_play_images_numbers_option_1_county days = 1095 }
+}
+add_character_flag = { flag = lyd_play_images_numbers_cooldown days = 1095 }
+}
+}
+
+lyd_play_images_numbers_option_2_effect = {
+if = {
+limit = { lyd_play_images_numbers_option_2_trigger = yes }
+add_piety = -175
+add_learning_lifestyle_xp = 650
+add_character_modifier = { modifier = lyd_play_images_numbers_option_2_character days = 1095 }
+add_character_flag = { flag = lyd_play_images_numbers_cooldown days = 1095 }
+}
+}
+
+lyd_play_profound_interpretation_option_0_effect = {
+if = {
+limit = { lyd_play_profound_interpretation_option_0_trigger = yes }
+remove_short_term_gold = 125
+add_learning_lifestyle_xp = 650
+add_piety = 300
+add_character_modifier = { modifier = lyd_play_profound_interpretation_option_0_character days = 1095 }
+add_character_flag = { flag = lyd_play_profound_interpretation_cooldown days = 1460 }
+}
+}
+
+lyd_play_knowing_acting_support_option_0_effect = {
+if = {
+limit = { lyd_play_knowing_acting_support_option_0_trigger = yes }
+remove_short_term_gold = 100
+add_learning_lifestyle_xp = 600
+add_character_modifier = { modifier = lyd_play_knowing_acting_support_option_0_character days = 365 }
+add_character_flag = lyd_play_knowing_acting_inquiry_completed
+add_character_flag = { flag = lyd_play_knowing_acting_support_cooldown days = 365 }
+}
+}
+
+lyd_play_knowing_acting_support_option_1_effect = {
+if = {
+limit = { lyd_play_knowing_acting_support_option_1_trigger = yes }
+add_piety = -200
+add_stewardship_lifestyle_xp = 600
+add_gold = 200
+add_prestige = 200
+add_character_modifier = { modifier = lyd_play_knowing_acting_support_option_1_character days = 365 }
+remove_character_flag = lyd_play_knowing_acting_inquiry_completed
+add_character_flag = { flag = lyd_play_knowing_acting_support_cooldown days = 365 }
+}
+}
+
+lyd_play_ongoing_generation_option_0_effect = {
+if = {
+limit = { lyd_play_ongoing_generation_option_0_trigger = yes }
+remove_short_term_gold = 200
+add_piety = 300
+add_stress = -40
+add_character_modifier = { modifier = lyd_play_ongoing_generation_option_0_character days = 1460 }
+add_character_flag = { flag = lyd_play_ongoing_generation_cooldown days = 1825 }
+}
+}
+

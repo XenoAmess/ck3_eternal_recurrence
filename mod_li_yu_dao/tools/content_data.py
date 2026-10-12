@@ -642,7 +642,7 @@ def validate_catalogue() -> None:
 
 
 # Numeric gameplay abstractions, not historical claims. Every key below occurs in
-# installed 1.20.0.4 00_pam_tenets.txt in the SAME native modifier container.
+# installed 1.20.0.4 tenet definitions in the SAME native modifier container.
 # Faith/rite placement is deliberately outside this table's responsibility.
 MODIFIER_SCOPES = ('character_modifier', 'county_modifier', 'personal_tenet_modifier')
 
@@ -653,7 +653,7 @@ class ModifierSpec:
     unit: str
     favorable_sign: int
     maximum_absolute: str
-    stock_scope_lines: tuple[tuple[str, int], ...]
+    stock_scope_sources: tuple[tuple[str, str, int], ...]
 
 @dataclass(frozen=True)
 class NativeModifier:
@@ -665,96 +665,295 @@ class TenetEffects:
     character_modifier: tuple[NativeModifier, ...]
     personal_tenet_modifier: tuple[NativeModifier, ...]
     county_modifier: tuple[NativeModifier, ...] = ()
+    parameters: tuple[str, ...] = ()
+    personal_parameters: tuple[str, ...] = ()
+    virtues: tuple[str, ...] = ()
+    sins: tuple[str, ...] = ()
 
 # Scope evidence is a stock source line, not a substitute for live readback.
+# C/P/Q shorthand records the native container and installed source file explicitly.
+def _spec(zh, en, unit, favorable, cap, *, c=None, p=None, q=None):
+    sources = tuple((scope, source[0], source[1]) for scope, source in (
+        ('character_modifier', c), ('personal_tenet_modifier', p), ('county_modifier', q)
+    ) if source is not None)
+    return ModifierSpec(zh, en, unit, favorable, cap, sources)
+
+
+_PAM = '00_pam_tenets.txt'
+_BASE = '00_tenet_types.txt'
 MODIFIER_SPECS = {
-    'monthly_piety_gain_mult': ModifierSpec('每月虔诚获取', 'Monthly piety gain', 'percent', 1, '0.10', (('character_modifier', 627),)),
-    'monthly_piety_from_buildings_mult': ModifierSpec('建筑提供的每月虔诚', 'Monthly piety from buildings', 'percent', 1, '0.10', (('character_modifier', 628),)),
-    'piety_level_impact_mult': ModifierSpec('奉献等级效果', 'Devotion level impact', 'percent', 1, '0.10', (('character_modifier', 1263),)),
-    'tyranny_gain_mult': ModifierSpec('暴政获取', 'Tyranny gain', 'percent', -1, '0.10', (('character_modifier', 1087),)),
-    'stress_loss_mult': ModifierSpec('压力减轻', 'Stress loss', 'percent', 1, '0.10', (('character_modifier', 2012), ('personal_tenet_modifier', 541))),
-    'church_holding_build_gold_cost': ModifierSpec('神殿建筑建造金币花费', 'Temple building gold cost', 'percent', -1, '0.10', (('character_modifier', 264),)),
-    'church_holding_build_speed': ModifierSpec('神殿建筑建造时间', 'Temple building construction time', 'percent', -1, '0.10', (('character_modifier', 263),)),
-    'cultural_head_fascination_mult': ModifierSpec('文化领袖文化偏好进度', 'Cultural head fascination progress', 'percent', 1, '0.10', (('character_modifier', 1549),)),
-    'legitimacy_gain_mult': ModifierSpec('正统性获取', 'Legitimacy gain', 'percent', 1, '0.10', (('character_modifier', 2319),)),
-    'different_faith_opinion': ModifierSpec('异信仰好感', 'Different-faith opinion', 'points', 1, '5', (('character_modifier', 1654), ('personal_tenet_modifier', 1746))),
-    'character_travel_speed_mult': ModifierSpec('旅行速度', 'Travel speed', 'percent', 1, '0.10', (('character_modifier', 2112),)),
-    'fertility': ModifierSpec('生育能力', 'Fertility', 'percentage_points', 1, '0.10', (('character_modifier', 898), ('personal_tenet_modifier', 902))),
-    'prowess': ModifierSpec('勇武', 'Prowess', 'points', 1, '2', (('character_modifier', 2213),)),
-    'monthly_legitimacy_add': ModifierSpec('正统性', 'Legitimacy', 'monthly_points', 1, '0.06', (('personal_tenet_modifier', 993),)),
-    'monthly_income_mult': ModifierSpec('每月收入', 'Monthly income', 'percent', 1, '0.05', (('personal_tenet_modifier', 539),)),
-    'character_spiritual_fulfillment_gain_mult': ModifierSpec('精神满足获取', 'Spiritual fulfillment gain', 'percent', 1, '0.10', (('personal_tenet_modifier', 2022),)),
-    'diplomacy_per_piety_level': ModifierSpec('外交', 'Diplomacy', 'per_devotion_level', 1, '1', (('personal_tenet_modifier', 1466),)),
-    'martial_per_piety_level': ModifierSpec('军事', 'Martial', 'per_devotion_level', 1, '1', (('personal_tenet_modifier', 1363),)),
-    'monthly_lifestyle_xp_gain_mult': ModifierSpec('每月生活方式经验', 'Monthly lifestyle experience', 'percent', 1, '0.10', (('personal_tenet_modifier', 1555),)),
-    'monthly_stewardship_lifestyle_xp_gain_mult': ModifierSpec('每月管理生活方式经验', 'Monthly stewardship lifestyle experience', 'percent', 1, '0.10', (('personal_tenet_modifier', 538),)),
-    'owned_scheme_secrecy_add': ModifierSpec('自身计谋隐秘', 'Own scheme secrecy', 'points', 1, '5', (('personal_tenet_modifier', 1097),)),
-    'enemy_scheme_secrecy_add': ModifierSpec('敌方计谋隐秘', 'Enemy scheme secrecy', 'points', -1, '4', (('personal_tenet_modifier', 1096),)),
-    'enemy_hostile_scheme_success_chance_add': ModifierSpec('敌方敌对计谋成功率', 'Enemy hostile scheme success chance', 'percentage_point_number', -1, '3', (('personal_tenet_modifier', 1747),)),
-    'county_opinion_add': ModifierSpec('民众好感', 'Popular opinion', 'points', 1, '3', (('county_modifier', 270),)),
-    'tax_mult': ModifierSpec('赋税', 'Taxes', 'percent', 1, '0.03', (('county_modifier', 271),)),
-    'epidemic_resistance': ModifierSpec('瘟疫抗性', 'Plague resistance', 'points', 1, '2', (('county_modifier', 272),)),
-    'development_growth_factor': ModifierSpec('发展度增长', 'Development growth', 'percent', 1, '0.05', (('county_modifier', 355),)),
-    'build_speed': ModifierSpec('建筑建造时间', 'Building construction time', 'percent', -1, '0.05', (('county_modifier', 356),)),
-    'levy_size': ModifierSpec('征召兵规模', 'Levy size', 'percent', 1, '0.03', (('county_modifier', 906),)),
-    'levy_reinforcement_rate': ModifierSpec('征召兵补员速率', 'Levy reinforcement rate', 'percent', 1, '0.03', (('county_modifier', 907),)),
-    'monthly_county_control_growth_factor': ModifierSpec('每月控制力增长', 'Monthly control growth', 'percent', 1, '0.04', (('county_modifier', 1092),)),
+    'monthly_piety_gain_mult': _spec('每月虔诚获取', 'Monthly piety gain', 'percent', 1, '0.30', c=(_PAM, 627), p=(_BASE, 2714)),
+    'monthly_piety_from_buildings_mult': _spec('建筑提供的每月虔诚', 'Monthly piety from buildings', 'percent', 1, '0.30', c=(_PAM, 628), p=(_BASE, 5566)),
+    'piety_level_impact_mult': _spec('奉献等级效果', 'Devotion level impact', 'percent', 1, '0.30', c=(_PAM, 1263), p=(_BASE, 2564)),
+    'tyranny_gain_mult': _spec('暴政获取', 'Tyranny gain', 'percent', -1, '0.25', c=(_PAM, 1087), p=(_BASE, 2160)),
+    'stress_loss_mult': _spec('压力减轻', 'Stress loss', 'percent', 1, '0.30', c=(_PAM, 2012), p=(_PAM, 541)),
+    'stress_gain_mult': _spec('压力获取', 'Stress gain', 'percent', -1, '0.25', c=(_BASE, 4439), p=(_BASE, 2650)),
+    'church_holding_build_gold_cost': _spec('神殿建筑建造金币花费', 'Temple building gold cost', 'percent', -1, '0.33', c=(_PAM, 264)),
+    'church_holding_build_speed': _spec('神殿建筑建造时间', 'Temple building construction time', 'percent', -1, '0.33', c=(_PAM, 263)),
+    'build_gold_cost': _spec('建筑建造金币花费', 'Building gold cost', 'percent', -1, '0.20', c=(_BASE, 5056)),
+    'cultural_head_fascination_mult': _spec('文化领袖文化偏好进度', 'Cultural head fascination progress', 'percent', 1, '0.25', c=(_PAM, 1549)),
+    'legitimacy_gain_mult': _spec('正统性获取', 'Legitimacy gain', 'percent', 1, '0.25', c=(_PAM, 2319)),
+    'short_reign_duration_mult': _spec('短暂统治时长', 'Short reign duration', 'percent', -1, '0.50', c=(_BASE, 782)),
+    'title_creation_cost_mult': _spec('创建头衔花费', 'Title creation cost', 'percent', -1, '0.50', c=(_BASE, 4507)),
+    'different_faith_opinion': _spec('异信仰好感', 'Different-faith opinion', 'points', 1, '15', c=(_PAM, 1654), p=(_PAM, 1746)),
+    'close_relative_opinion': _spec('至亲好感', 'Close relative opinion', 'points', 1, '10', c=(_BASE, 2881)),
+    'spouse_opinion': _spec('配偶好感', 'Spouse opinion', 'points', 1, '15', c=(_BASE, 909)),
+    'courtier_opinion': _spec('廷臣好感', 'Courtier opinion', 'points', 1, '10', c=(_BASE, 3257)),
+    'character_travel_speed_mult': _spec('旅行速度', 'Travel speed', 'percent', 1, '0.25', c=(_PAM, 2112), p=(_BASE, 3448)),
+    'character_travel_safety': _spec('旅行安全', 'Travel safety', 'points', 1, '15', p=(_BASE, 3378)),
+    'fertility': _spec('生育能力', 'Fertility', 'percentage_points', 1, '0.25', c=(_PAM, 898), p=(_PAM, 902)),
+    'health': _spec('健康', 'Health', 'health', 1, '0.25', c=(_PAM, 2212), p=(_BASE, 2651)),
+    'prowess': _spec('勇武', 'Prowess', 'points', 1, '4', c=(_PAM, 2213), p=(_BASE, 4996)),
+    'knight_limit': _spec('骑士上限', 'Knight limit', 'points', 1, '2', c=(_PAM, 1356), p=(_PAM, 1364)),
+    'accolade_glory_gain_mult': _spec('勋衔荣耀获取', 'Accolade glory gain', 'percent', 1, '0.25', c=(_PAM, 1357)),
+    'learning_per_piety_level': _spec('学识', 'Learning', 'per_devotion_level', 1, '1', c=(_BASE, 1059)),
+    'stewardship_per_piety_level': _spec('管理', 'Stewardship', 'per_devotion_level', 1, '1', c=(_PAM, 529)),
+    'learning_scheme_phase_duration': _spec('学识计谋阶段时长', 'Learning scheme phase duration', 'days', -1, '15', c=(_PAM, 1550)),
+    'learning_scheme_resistance': _spec('抵抗学识计谋', 'Learning scheme resistance', 'points', 1, '15', c=(_PAM, 1551)),
+    'monthly_legitimacy_add': _spec('正统性', 'Legitimacy', 'monthly_points', 1, '0.20', p=(_PAM, 993)),
+    'monthly_income_mult': _spec('每月收入', 'Monthly income', 'percent', 1, '0.20', p=(_PAM, 539)),
+    'character_spiritual_fulfillment_gain_mult': _spec('精神满足获取', 'Spiritual fulfillment gain', 'percent', 1, '0.30', p=(_PAM, 2022)),
+    'diplomacy_per_piety_level': _spec('外交', 'Diplomacy', 'per_devotion_level', 1, '1', p=(_PAM, 1466)),
+    'martial_per_piety_level': _spec('军事', 'Martial', 'per_devotion_level', 1, '1', p=(_PAM, 1363)),
+    'martial': _spec('军事', 'Martial', 'points', 1, '3', p=(_BASE, 5132)),
+    'diplomacy': _spec('外交', 'Diplomacy', 'points', 1, '3', p=(_BASE, 5136)),
+    'intrigue': _spec('谋略', 'Intrigue', 'points', 1, '3', p=(_BASE, 2303)),
+    'monthly_lifestyle_xp_gain_mult': _spec('每月生活方式经验', 'Monthly lifestyle experience', 'percent', 1, '0.20', c=(_BASE, 2053), p=(_PAM, 1555)),
+    'monthly_learning_lifestyle_xp_gain_mult': _spec('每月学识生活方式经验', 'Monthly learning lifestyle experience', 'percent', 1, '0.30', c=(_BASE, 234), p=(_BASE, 1874)),
+    'monthly_stewardship_lifestyle_xp_gain_mult': _spec('每月管理生活方式经验', 'Monthly stewardship lifestyle experience', 'percent', 1, '0.30', p=(_PAM, 538)),
+    'monthly_diplomacy_lifestyle_xp_gain_mult': _spec('每月外交生活方式经验', 'Monthly diplomacy lifestyle experience', 'percent', 1, '0.30', p=(_BASE, 1771)),
+    'lifestyle_scholar_xp_gain_mult': _spec('学者特质经验', 'Scholar trait experience', 'percent', 1, '0.30', p=(_BASE, 1924)),
+    'owned_scheme_secrecy_add': _spec('自身计谋隐秘', 'Own scheme secrecy', 'points', 1, '15', p=(_PAM, 1097)),
+    'enemy_scheme_secrecy_add': _spec('敌方计谋隐秘', 'Enemy scheme secrecy', 'points', -1, '15', p=(_PAM, 1096)),
+    'enemy_hostile_scheme_success_chance_add': _spec('敌方敌对计谋成功率', 'Enemy hostile scheme success chance', 'percentage_point_number', -1, '10', p=(_PAM, 1747)),
+    'county_opinion_add': _spec('民众好感', 'Popular opinion', 'points', 1, '15', c=(_BASE, 5057), p=(_BASE, 5565), q=(_PAM, 270)),
+    'tax_mult': _spec('赋税', 'Taxes', 'percent', 1, '0.15', p=(_BASE, 1685), q=(_PAM, 271)),
+    'epidemic_resistance': _spec('瘟疫抗性', 'Plague resistance', 'points', 1, '15', q=(_PAM, 272)),
+    'development_growth_factor': _spec('发展度增长', 'Development growth', 'percent', 1, '0.20', p=(_BASE, 1686), q=(_PAM, 355)),
+    'build_speed': _spec('建筑建造时间', 'Building construction time', 'percent', -1, '0.20', q=(_PAM, 356)),
+    'levy_size': _spec('征召兵规模', 'Levy size', 'percent', 1, '0.15', c=(_BASE, 1465), q=(_PAM, 906)),
+    'levy_reinforcement_rate': _spec('征召兵补员速率', 'Levy reinforcement rate', 'percent', 1, '0.20', p=(_BASE, 5135), q=(_PAM, 907)),
+    'monthly_county_control_growth_factor': _spec('每月控制力增长', 'Monthly control growth', 'percent', 1, '0.20', c=(_BASE, 5055), q=(_PAM, 1092)),
+    'monthly_county_control_decline_at_war_factor': _spec('战争中的每月控制力流失', 'Monthly control loss at war', 'percent', -1, '0.25', q=(_BASE, 642)),
+    'controlled_province_advantage': _spec('己方领土优势', 'Controlled province advantage', 'points', 1, '5', p=(_BASE, 4995)),
+    'diplomatic_range_mult': _spec('外交距离', 'Diplomatic range', 'percent', 1, '0.25', p=(_BASE, 2793)),
+    'max_learn_language_schemes_add': _spec('同时学习语言计谋上限', 'Concurrent learn language schemes', 'points', 1, '1', p=(_BASE, 1774)),
+    'dynasty_opinion': _spec('宗族好感', 'Dynasty opinion', 'points', 1, '10', p=(_BASE, 2057)),
+    'monthly_dynasty_prestige': _spec('每月宗族威望', 'Monthly dynasty prestige', 'monthly_points', 1, '0.20', p=(_BASE, 2885)),
+    'monthly_prestige_gain_mult': _spec('每月威望获取', 'Monthly prestige gain', 'percent', 1, '0.25', p=(_BASE, 3799)),
+    'domain_limit': _spec('直辖领地上限', 'Domain limit', 'points', 1, '1', c=(_BASE, 2665), p=(_BASE, 1278)),
 }
 
-def _tenet_effects(character, personal, county=()):
+def _tenet_effects(character, personal, county=(), *, virtues, sins,
+                   parameters=(), personal_parameters=()):
     return TenetEffects(tuple(NativeModifier(*v) for v in character),
                         tuple(NativeModifier(*v) for v in personal),
-                        tuple(NativeModifier(*v) for v in county))
+                        tuple(NativeModifier(*v) for v in county),
+                        parameters, personal_parameters, virtues, sins)
 
 # C = ordinary character; P = personal selection only; optional county effects.
 # The catalogue preserves all IDs, core-three memberships and authored practices.
 TENET_EFFECTS = {
-    'T01': _tenet_effects((('monthly_piety_gain_mult','0.05'),('stress_loss_mult','-0.05')), (('monthly_legitimacy_add','0.05'),('monthly_income_mult','-0.02'))),
-    'T02': _tenet_effects((('tyranny_gain_mult','-0.05'),('stress_loss_mult','-0.05')), (('character_spiritual_fulfillment_gain_mult','0.08'),('monthly_income_mult','-0.02'))),
-    'T03': _tenet_effects((('monthly_piety_from_buildings_mult','0.08'),('church_holding_build_gold_cost','0.05')), (('diplomacy_per_piety_level','1'),('monthly_income_mult','-0.03')), (('county_opinion_add','2'),('tax_mult','-0.02'))),
-    'T04': _tenet_effects((('monthly_piety_from_buildings_mult','0.06'),('church_holding_build_gold_cost','0.04')), (('monthly_legitimacy_add','0.04'),('monthly_income_mult','-0.03')), (('epidemic_resistance','1'),('tax_mult','-0.01'))),
-    'T05': _tenet_effects((('legitimacy_gain_mult','0.05'),('different_faith_opinion','-3')), (('monthly_legitimacy_add','0.04'),('enemy_hostile_scheme_success_chance_add','2'))),
-    'T06': _tenet_effects((('tyranny_gain_mult','-0.08'),('church_holding_build_gold_cost','0.05')), (('diplomacy_per_piety_level','1'),('monthly_income_mult','-0.04')), (('county_opinion_add','3'),('tax_mult','-0.03'))),
-    'T07': _tenet_effects((('tyranny_gain_mult','-0.06'),('different_faith_opinion','-2')), (('owned_scheme_secrecy_add','5'),('enemy_scheme_secrecy_add','3'))),
-    'T08': _tenet_effects((('cultural_head_fascination_mult','0.05'),('monthly_piety_gain_mult','-0.03')), (('monthly_lifestyle_xp_gain_mult','0.06'),('monthly_income_mult','-0.03'))),
-    'T09': _tenet_effects((('stress_loss_mult','0.06'),('monthly_piety_from_buildings_mult','-0.04')), (('character_spiritual_fulfillment_gain_mult','0.08'),('owned_scheme_secrecy_add','-5'))),
-    'T10': _tenet_effects((('piety_level_impact_mult','0.05'),('stress_loss_mult','-0.08')), (('monthly_stewardship_lifestyle_xp_gain_mult','0.08'),('monthly_income_mult','-0.02'))),
-    'T11': _tenet_effects((('prowess','1'),('church_holding_build_gold_cost','0.05')), (('martial_per_piety_level','1'),('monthly_income_mult','-0.03'))),
-    'T12': _tenet_effects((('monthly_piety_gain_mult','0.06'),('stress_loss_mult','-0.08')), (('character_spiritual_fulfillment_gain_mult','0.06'),('monthly_legitimacy_add','-0.03')), (('epidemic_resistance','2'),('development_growth_factor','-0.03'))),
-    'T13': _tenet_effects((('fertility','0.03'),('monthly_piety_from_buildings_mult','-0.04')), (('fertility','0.05'),('monthly_income_mult','-0.03')), (('county_opinion_add','2'),('tax_mult','-0.02'))),
-    'T14': _tenet_effects((('cultural_head_fascination_mult','0.06'),('monthly_piety_gain_mult','-0.04')), (('monthly_lifestyle_xp_gain_mult','0.08'),('stress_loss_mult','-0.05'))),
-    'T15': _tenet_effects((('stress_loss_mult','0.08'),('character_travel_speed_mult','-0.05')), (('character_spiritual_fulfillment_gain_mult','0.10'),('owned_scheme_secrecy_add','-5'))),
-    'T16': _tenet_effects((('piety_level_impact_mult','0.08'),('different_faith_opinion','-2')), (('character_spiritual_fulfillment_gain_mult','0.06'),('monthly_income_mult','-0.01'))),
-    'T17': _tenet_effects((('different_faith_opinion','3'),('monthly_piety_from_buildings_mult','-0.04')), (('diplomacy_per_piety_level','1'),('owned_scheme_secrecy_add','-5'))),
-    'T18': _tenet_effects((('monthly_piety_gain_mult','0.04'),('church_holding_build_gold_cost','0.04')), (('monthly_stewardship_lifestyle_xp_gain_mult','0.08'),('stress_loss_mult','-0.04'))),
-    'T19': _tenet_effects((('church_holding_build_gold_cost','-0.05'),('church_holding_build_speed','0.05')), (('monthly_lifestyle_xp_gain_mult','0.05'),('monthly_income_mult','-0.02')), (('build_speed','-0.05'),('development_growth_factor','-0.02'))),
-    'T20': _tenet_effects((('cultural_head_fascination_mult','0.07'),('piety_level_impact_mult','-0.04')), (('monthly_lifestyle_xp_gain_mult','0.07'),('owned_scheme_secrecy_add','-4'))),
-    'T21': _tenet_effects((('legitimacy_gain_mult','0.06'),('different_faith_opinion','-3')), (('monthly_legitimacy_add','0.06'),('enemy_scheme_secrecy_add','4'))),
-    'T22': _tenet_effects((('stress_loss_mult','0.04'),('monthly_piety_gain_mult','-0.04')), (('monthly_stewardship_lifestyle_xp_gain_mult','0.06'),('character_spiritual_fulfillment_gain_mult','-0.03')), (('epidemic_resistance','2'),('tax_mult','-0.02'))),
-    'T23': _tenet_effects((('stress_loss_mult','0.10'),('fertility','-0.03')), (('character_spiritual_fulfillment_gain_mult','0.08'),('monthly_income_mult','-0.04'))),
-    'T24': _tenet_effects((('different_faith_opinion','4'),('piety_level_impact_mult','-0.05')), (('different_faith_opinion','5'),('enemy_hostile_scheme_success_chance_add','2')), (('development_growth_factor','0.04'),('tax_mult','-0.02'))),
-    'T25': _tenet_effects((('prowess','2'),('church_holding_build_gold_cost','0.04')), (('martial_per_piety_level','1'),('stress_loss_mult','-0.05'))),
-    'T26': _tenet_effects((('cultural_head_fascination_mult','0.08'),('monthly_piety_from_buildings_mult','-0.05')), (('monthly_lifestyle_xp_gain_mult','0.08'),('monthly_income_mult','-0.04'))),
-    'T27': _tenet_effects((('church_holding_build_speed','-0.06'),('monthly_piety_gain_mult','-0.03')), (('monthly_stewardship_lifestyle_xp_gain_mult','0.08'),('character_spiritual_fulfillment_gain_mult','-0.03')), (('development_growth_factor','0.04'),('levy_size','-0.03'))),
-    'T28': _tenet_effects((('tyranny_gain_mult','-0.06'),('character_travel_speed_mult','-0.03')), (('martial_per_piety_level','1'),('monthly_income_mult','-0.04')), (('monthly_county_control_growth_factor','0.04'),('tax_mult','-0.02'))),
-    'T29': _tenet_effects((('tyranny_gain_mult','-0.05'),('piety_level_impact_mult','-0.04')), (('enemy_hostile_scheme_success_chance_add','-3'),('owned_scheme_secrecy_add','-5'))),
-    'T30': _tenet_effects((('cultural_head_fascination_mult','0.04'),('legitimacy_gain_mult','-0.04')), (('monthly_stewardship_lifestyle_xp_gain_mult','0.05'),('enemy_hostile_scheme_success_chance_add','2')), (('development_growth_factor','0.05'),('monthly_county_control_growth_factor','-0.02'))),
-    'T31': _tenet_effects((('piety_level_impact_mult','0.06'),('church_holding_build_gold_cost','0.04')), (('character_spiritual_fulfillment_gain_mult','0.07'),('monthly_legitimacy_add','-0.02'))),
-    'T32': _tenet_effects((('different_faith_opinion','3'),('monthly_piety_gain_mult','-0.03')), (('monthly_lifestyle_xp_gain_mult','0.05'),('monthly_legitimacy_add','-0.02'))),
-    'T33': _tenet_effects((('cultural_head_fascination_mult','0.04'),('stress_loss_mult','-0.04')), (('monthly_stewardship_lifestyle_xp_gain_mult','0.06'),('monthly_income_mult','-0.01')), (('development_growth_factor','0.03'),('levy_reinforcement_rate','-0.03'))),
-    'T34': _tenet_effects((('fertility','0.04'),('church_holding_build_gold_cost','0.04')), (('fertility','0.08'),('monthly_income_mult','-0.02')), (('epidemic_resistance','1'),('tax_mult','-0.01'))),
-    'T35': _tenet_effects((('stress_loss_mult','0.09'),('character_travel_speed_mult','-0.04')), (('character_spiritual_fulfillment_gain_mult','0.10'),('monthly_income_mult','-0.02'))),
-    'T36': _tenet_effects((('character_travel_speed_mult','0.06'),('monthly_piety_from_buildings_mult','-0.03')), (('monthly_lifestyle_xp_gain_mult','0.06'),('stress_loss_mult','-0.03'))),
+    'T01': _tenet_effects(
+        (('monthly_piety_gain_mult','0.20'),('piety_level_impact_mult','0.25'),('legitimacy_gain_mult','0.20')),
+        (('monthly_legitimacy_add','0.15'),('diplomacy_per_piety_level','1'),('monthly_income_mult','-0.03')),
+        virtues=('just','humble'), sins=('arrogant',)),
+    'T02': _tenet_effects(
+        (('tyranny_gain_mult','-0.20'),('stress_gain_mult','-0.15')),
+        (('enemy_scheme_secrecy_add','-15'),('character_spiritual_fulfillment_gain_mult','0.25'),('intrigue','-1')),
+        virtues=('honest','humble'), sins=('deceitful',),
+        parameters=('meditation_mechanics_active',), personal_parameters=('meditation_mechanics_active',)),
+    'T03': _tenet_effects(
+        (('monthly_piety_from_buildings_mult','0.25'),('courtier_opinion','10')),
+        (('diplomacy','3'),('monthly_prestige_gain_mult','0.20'),('monthly_income_mult','-0.03')),
+        (('county_opinion_add','10'),('development_growth_factor','0.10')),
+        virtues=('gregarious','patient'), sins=('impatient',)),
+    'T04': _tenet_effects(
+        (('close_relative_opinion','10'),('spouse_opinion','15'),('monthly_piety_from_buildings_mult','0.20')),
+        (('dynasty_opinion','10'),('monthly_dynasty_prestige','0.20'),('monthly_income_mult','-0.03')),
+        virtues=('compassionate','content'), sins=('callous',)),
+    'T05': _tenet_effects(
+        (('legitimacy_gain_mult','0.20'),('short_reign_duration_mult','-0.25'),('title_creation_cost_mult','-0.25')),
+        (('monthly_legitimacy_add','0.15'),('owned_scheme_secrecy_add','10'),('monthly_income_mult','-0.03')),
+        virtues=('just','diligent'), sins=('arbitrary',)),
+    'T06': _tenet_effects(
+        (('tyranny_gain_mult','-0.25'),('county_opinion_add','10')),
+        (('diplomacy_per_piety_level','1'),('monthly_piety_gain_mult','0.25'),('monthly_income_mult','-0.03')),
+        (('county_opinion_add','10'),('epidemic_resistance','10')),
+        virtues=('compassionate','generous'), sins=('callous',), parameters=('piety_from_gifts_active',)),
+    'T07': _tenet_effects(
+        (('tyranny_gain_mult','-0.25'),('legitimacy_gain_mult','0.15')),
+        (('enemy_scheme_secrecy_add','-15'),('diplomacy','3'),('intrigue','-1')),
+        virtues=('brave','just'), sins=('arbitrary',)),
+    'T08': _tenet_effects(
+        (('learning_per_piety_level','1'),('monthly_learning_lifestyle_xp_gain_mult','0.20')),
+        (('monthly_learning_lifestyle_xp_gain_mult','0.30'),('lifestyle_scholar_xp_gain_mult','0.25'),('monthly_income_mult','-0.03')),
+        virtues=('patient','diligent'), sins=('lazy',)),
+    'T09': _tenet_effects(
+        (('stress_loss_mult','0.20'),('health','0.15')),
+        (('character_spiritual_fulfillment_gain_mult','0.25'),('diplomacy','2'),('monthly_income_mult','-0.03')),
+        (('epidemic_resistance','10'),('county_opinion_add','5')),
+        virtues=('compassionate','trusting'), sins=('callous',), parameters=('piety_from_gifts_active',)),
+    'T10': _tenet_effects(
+        (('monthly_lifestyle_xp_gain_mult','0.15'),('learning_scheme_resistance','10')),
+        (('monthly_stewardship_lifestyle_xp_gain_mult','0.30'),('monthly_learning_lifestyle_xp_gain_mult','0.20'),('stress_gain_mult','0.05')),
+        (('monthly_county_control_growth_factor','0.15'),),
+        virtues=('diligent','temperate'), sins=('lazy',)),
+    'T11': _tenet_effects(
+        (('prowess','4'),('accolade_glory_gain_mult','0.25')),
+        (('martial_per_piety_level','1'),('knight_limit','1'),('monthly_income_mult','-0.03')),
+        virtues=('brave','just'), sins=('craven',)),
+    'T12': _tenet_effects(
+        (('monthly_piety_gain_mult','0.20'),('stress_gain_mult','-0.10')),
+        (('development_growth_factor','0.15'),('monthly_legitimacy_add','0.10'),('monthly_income_mult','-0.03')),
+        (('epidemic_resistance','15'),('development_growth_factor','0.10')),
+        virtues=('humble','compassionate'), sins=('arrogant',)),
+    'T13': _tenet_effects(
+        (('fertility','0.20'),('health','0.15')),
+        (('health','0.25'),('fertility','0.15'),('monthly_income_mult','-0.03')),
+        (('epidemic_resistance','10'),),
+        virtues=('compassionate','generous'), sins=('sadistic',)),
+    'T14': _tenet_effects(
+        (('cultural_head_fascination_mult','0.25'),('learning_scheme_phase_duration','-15')),
+        (('monthly_learning_lifestyle_xp_gain_mult','0.30'),('lifestyle_scholar_xp_gain_mult','0.30'),('stress_gain_mult','0.05')),
+        virtues=('diligent','patient'), sins=('lazy',)),
+    'T15': _tenet_effects(
+        (('stress_loss_mult','0.25'),('stress_gain_mult','-0.15')),
+        (('character_spiritual_fulfillment_gain_mult','0.30'),('enemy_hostile_scheme_success_chance_add','-5'),('character_travel_speed_mult','-0.05')),
+        virtues=('calm','temperate'), sins=('wrathful',),
+        parameters=('meditation_mechanics_active',), personal_parameters=('meditation_mechanics_active',)),
+    'T16': _tenet_effects(
+        (('piety_level_impact_mult','0.30'),('legitimacy_gain_mult','0.15')),
+        (('character_spiritual_fulfillment_gain_mult','0.30'),('monthly_legitimacy_add','0.15'),('intrigue','-1')),
+        virtues=('honest','brave'), sins=('deceitful',)),
+    'T17': _tenet_effects(
+        (('different_faith_opinion','15'),('tyranny_gain_mult','-0.15')),
+        (('diplomacy_per_piety_level','1'),('monthly_diplomacy_lifestyle_xp_gain_mult','0.25'),('owned_scheme_secrecy_add','-5')),
+        virtues=('just','compassionate'), sins=('arbitrary',)),
+    'T18': _tenet_effects(
+        (('stewardship_per_piety_level','1'),('monthly_county_control_growth_factor','0.15')),
+        (('monthly_stewardship_lifestyle_xp_gain_mult','0.30'),('monthly_legitimacy_add','0.10'),('stress_gain_mult','0.05')),
+        (('build_speed','-0.15'),),
+        virtues=('diligent','honest'), sins=('lazy',)),
+    'T19': _tenet_effects(
+        (('church_holding_build_gold_cost','-0.30'),('church_holding_build_speed','-0.30')),
+        (('lifestyle_scholar_xp_gain_mult','0.30'),('monthly_piety_from_buildings_mult','0.25'),('monthly_income_mult','-0.03')),
+        (('build_speed','-0.15'),),
+        virtues=('patient','humble'), sins=('arrogant',), parameters=('literalist_debate_enabled',)),
+    'T20': _tenet_effects(
+        (('cultural_head_fascination_mult','0.20'),('monthly_learning_lifestyle_xp_gain_mult','0.20')),
+        (('monthly_lifestyle_xp_gain_mult','0.20'),('max_learn_language_schemes_add','1'),('stress_gain_mult','0.05')),
+        virtues=('patient','humble'), sins=('arrogant',), parameters=('literalist_debate_enabled',)),
+    'T21': _tenet_effects(
+        (('legitimacy_gain_mult','0.25'),('short_reign_duration_mult','-0.30')),
+        (('monthly_legitimacy_add','0.20'),('monthly_prestige_gain_mult','0.20'),('intrigue','-1')),
+        virtues=('just','honest'), sins=('deceitful',)),
+    'T22': _tenet_effects(
+        (('build_gold_cost','-0.15'),('stress_gain_mult','-0.15')),
+        (('monthly_stewardship_lifestyle_xp_gain_mult','0.25'),('development_growth_factor','0.15'),('monthly_piety_gain_mult','-0.05')),
+        (('epidemic_resistance','10'),('development_growth_factor','0.20')),
+        virtues=('diligent','calm'), sins=('paranoid',)),
+    'T23': _tenet_effects(
+        (('stress_loss_mult','0.30'),('health','0.15')),
+        (('character_spiritual_fulfillment_gain_mult','0.25'),('stress_gain_mult','-0.20'),('monthly_prestige_gain_mult','-0.05')),
+        virtues=('calm','temperate'), sins=('gluttonous',),
+        parameters=('meditation_mechanics_active',), personal_parameters=('meditation_mechanics_active',)),
+    'T24': _tenet_effects(
+        (('county_opinion_add','15'),('different_faith_opinion','10')),
+        (('tax_mult','0.10'),('diplomacy','3'),('monthly_prestige_gain_mult','-0.05')),
+        (('development_growth_factor','0.15'),('county_opinion_add','10')),
+        virtues=('compassionate','humble'), sins=('arrogant',), parameters=('piety_from_gifts_active',)),
+    'T25': _tenet_effects(
+        (('prowess','4'),('knight_limit','2'),('accolade_glory_gain_mult','0.20')),
+        (('martial','3'),('prowess','4'),('monthly_income_mult','-0.03')),
+        virtues=('brave','diligent'), sins=('craven',)),
+    'T26': _tenet_effects(
+        (('learning_scheme_phase_duration','-15'),('learning_scheme_resistance','15'),('cultural_head_fascination_mult','0.15')),
+        (('lifestyle_scholar_xp_gain_mult','0.30'),('max_learn_language_schemes_add','1'),('monthly_income_mult','-0.03')),
+        virtues=('patient','diligent'), sins=('lazy',), parameters=('literalist_debate_enabled',)),
+    'T27': _tenet_effects(
+        (('build_gold_cost','-0.20'),('stewardship_per_piety_level','1')),
+        (('domain_limit','1'),('monthly_income_mult','0.15'),('monthly_piety_gain_mult','-0.05')),
+        (('development_growth_factor','0.15'),('tax_mult','0.10')),
+        virtues=('diligent','ambitious'), sins=('lazy',)),
+    'T28': _tenet_effects(
+        (('tyranny_gain_mult','-0.20'),('levy_size','0.15')),
+        (('controlled_province_advantage','5'),('levy_reinforcement_rate','0.20'),('monthly_income_mult','-0.03')),
+        (('monthly_county_control_growth_factor','0.20'),('monthly_county_control_decline_at_war_factor','-0.25')),
+        virtues=('brave','compassionate'), sins=('sadistic',)),
+    'T29': _tenet_effects(
+        (('tyranny_gain_mult','-0.20'),('stress_loss_mult','0.20')),
+        (('enemy_hostile_scheme_success_chance_add','-10'),('character_spiritual_fulfillment_gain_mult','0.25'),('owned_scheme_secrecy_add','-5')),
+        virtues=('honest','humble'), sins=('deceitful',)),
+    'T30': _tenet_effects(
+        (('cultural_head_fascination_mult','0.20'),('title_creation_cost_mult','-0.25')),
+        (('monthly_stewardship_lifestyle_xp_gain_mult','0.25'),('monthly_diplomacy_lifestyle_xp_gain_mult','0.25'),('monthly_legitimacy_add','-0.03')),
+        (('development_growth_factor','0.20'),('build_speed','-0.10')),
+        virtues=('patient','diligent'), sins=('stubborn',)),
+    'T31': _tenet_effects(
+        (('learning_scheme_resistance','15'),('character_travel_speed_mult','0.15')),
+        (('character_travel_safety','15'),('monthly_learning_lifestyle_xp_gain_mult','0.25'),('stress_gain_mult','0.05')),
+        virtues=('patient','calm'), sins=('impatient',)),
+    'T32': _tenet_effects(
+        (('different_faith_opinion','15'),('monthly_learning_lifestyle_xp_gain_mult','0.20')),
+        (('diplomatic_range_mult','0.25'),('max_learn_language_schemes_add','1'),('monthly_piety_gain_mult','-0.05')),
+        virtues=('patient','humble'), sins=('arrogant',)),
+    'T33': _tenet_effects(
+        (('monthly_lifestyle_xp_gain_mult','0.15'),('cultural_head_fascination_mult','0.15')),
+        (('monthly_stewardship_lifestyle_xp_gain_mult','0.25'),('monthly_learning_lifestyle_xp_gain_mult','0.25'),('stress_gain_mult','0.05')),
+        (('development_growth_factor','0.15'),('levy_reinforcement_rate','0.10')),
+        virtues=('diligent','patient'), sins=('lazy',)),
+    'T34': _tenet_effects(
+        (('fertility','0.25'),('close_relative_opinion','10')),
+        (('fertility','0.25'),('monthly_dynasty_prestige','0.20'),('monthly_income_mult','-0.03')),
+        (('epidemic_resistance','10'),('levy_reinforcement_rate','0.15')),
+        virtues=('generous','compassionate'), sins=('callous',)),
+    'T35': _tenet_effects(
+        (('stress_gain_mult','-0.20'),('health','0.20')),
+        (('health','0.25'),('character_spiritual_fulfillment_gain_mult','0.30'),('character_travel_speed_mult','-0.05')),
+        virtues=('calm','content'), sins=('wrathful',),
+        parameters=('meditation_mechanics_active',), personal_parameters=('meditation_mechanics_active',)),
+    'T36': _tenet_effects(
+        (('character_travel_speed_mult','0.25'),('monthly_learning_lifestyle_xp_gain_mult','0.15')),
+        (('monthly_lifestyle_xp_gain_mult','0.20'),('character_travel_safety','10'),('monthly_income_mult','-0.03')),
+        virtues=('gregarious','patient'), sins=('arrogant',)),
 }
 
+
+# Only parameters with a verified installed consumer are admitted. The unique
+# lyd_*_practice flags are emitted separately and consumed by our own decisions.
+NATIVE_PARAMETER_SOURCES = {
+    'meditation_mechanics_active': (
+        ('parameters', 'common/decisions/10_religious_decisions.txt', 679),
+        ('personal_parameters', 'common/decisions/10_religious_decisions.txt', 681),
+    ),
+    'piety_from_gifts_active': (
+        ('parameters', 'common/character_interactions/00_gift.txt', 206),
+    ),
+    'literalist_debate_enabled': (
+        ('parameters', 'common/character_interactions/00_religious_interactions.txt', 8445),
+    ),
+}
+# Native personality IDs, not invented traits or automatically granted traits.
+NATIVE_PERSONALITY_TRAITS = frozenset((
+    'just', 'humble', 'arrogant', 'honest', 'deceitful', 'gregarious',
+    'patient', 'impatient', 'compassionate', 'content', 'callous', 'diligent',
+    'arbitrary', 'generous', 'brave', 'lazy', 'trusting', 'temperate',
+    'craven', 'sadistic', 'calm', 'wrathful', 'paranoid', 'gluttonous',
+    'ambitious', 'stubborn',
+))
+VIRTUE_SIN_WEIGHT = 15
+VIRTUE_SIN_SCALE = 1
+
 def validate_tenet_effects(table=None) -> None:
-    """Require distinct real effects and a genuine benefit/cost in every scope."""
+    """Require distinct specialties, supported scopes and a modest package cost."""
     table = TENET_EFFECTS if table is None else table
     if set(table) != {tenet.code for tenet in TENETS}:
         raise ValueError('Tenet effects must cover the exact 36 catalogue IDs')
     signatures = set()
     for code, effects in table.items():
         signature = []
+        package_has_cost = False
         for scope in MODIFIER_SCOPES:
             values = getattr(effects, scope)
             if not values:
@@ -766,7 +965,7 @@ def validate_tenet_effects(table=None) -> None:
             polarities = set()
             for item in values:
                 spec = MODIFIER_SPECS.get(item.key)
-                if spec is None or scope not in dict(spec.stock_scope_lines):
+                if spec is None or scope not in {row[0] for row in spec.stock_scope_sources}:
                     raise ValueError(f'{code}/{scope}: modifier lacks same-scope stock evidence: {item.key}')
                 # Decimal must not admit exponent/script text into generated CK3 syntax.
                 if not isinstance(item.value, str) or not re.fullmatch(r'-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?', item.value):
@@ -777,12 +976,31 @@ def validate_tenet_effects(table=None) -> None:
                     raise ValueError('Invalid modifier number') from error
                 if not value.is_finite() or value == 0 or abs(value) > Decimal(spec.maximum_absolute):
                     raise ValueError(f'{code}/{scope}: zero/nonfinite/out-of-budget modifier')
-                if spec.unit in {'points', 'per_devotion_level', 'percentage_point_number'} and value != value.to_integral_value():
+                if spec.unit in {'points', 'per_devotion_level', 'percentage_point_number', 'days'} and value != value.to_integral_value():
                     raise ValueError(f'{code}/{scope}: whole-point modifier required')
-                polarities.add(1 if value * spec.favorable_sign > 0 else -1)
+                favorable = value * spec.favorable_sign > 0
+                polarities.add(1 if favorable else -1)
+                if not favorable:
+                    package_has_cost = True
+                    if spec.unit in {'percent', 'percentage_points'} and abs(value) > Decimal('0.05'):
+                        raise ValueError(f'{code}/{scope}: percentage tradeoff exceeds five points')
                 signature.append((scope, item.key, value))
-            if polarities != {-1, 1}:
-                raise ValueError(f'{code}/{scope}: require both a benefit and a cost')
+            if 1 not in polarities:
+                raise ValueError(f'{code}/{scope}: require a real benefit')
+        if not package_has_cost:
+            raise ValueError(f'{code}: require a modest package cost')
+        for field in ('parameters', 'personal_parameters'):
+            flags = getattr(effects, field)
+            if len(flags) != len(set(flags)):
+                raise ValueError(f'{code}: duplicate native parameter')
+            for flag in flags:
+                if field not in {row[0] for row in NATIVE_PARAMETER_SOURCES.get(flag, ())}:
+                    raise ValueError(f'{code}: native parameter lacks a matching consumer scope')
+        if len(effects.virtues) != 2 or len(effects.sins) != 1:
+            raise ValueError(f'{code}: require two authored virtues and one sin')
+        traits = effects.virtues + effects.sins
+        if len(set(traits)) != len(traits) or not set(traits) <= NATIVE_PERSONALITY_TRAITS:
+            raise ValueError(f'{code}: invalid or contradictory native virtue/sin')
         signature = tuple(sorted(signature))
         if signature in signatures:
             raise ValueError(f'{code}: identical complete modifier package')

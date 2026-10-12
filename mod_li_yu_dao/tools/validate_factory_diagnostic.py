@@ -24,7 +24,7 @@ def main():
     overlay = Path(args.overlay).resolve()
     output = Path(args.output).resolve()
     sys.path.insert(0, str(source / 'tools'))
-    from extract_auto_upgrade_buildings import Block, parse_clausewitz
+    from extract_auto_upgrade_buildings import Block, Entry, parse_clausewitz
     sys.path.insert(0, str(source / 'mod_li_yu_dao/tools'))
     import validate_static
     checks = []
@@ -62,63 +62,101 @@ def main():
     initial = single(changed, 'if')
     check('original_factory_authorization_AST_exact', node(single(factory, 'limit')) == node(single(initial, 'limit')))
     check('original_commit_preamble_AST_exact', node(Block(tuple(changed.entries[:-2]))) == node(Block(tuple(original_entries[:call_index]))))
-    actual_parts = [entry for entry in initial.entries if entry.key != 'limit'][:-2]
-    for number in (20, 2, 3, 4, 5, 6):
-        helper = single(changed_defs, f'lyd_factory_diag_d{number}_effect')
-        transition = helper.entries[-2:]
-        check(f'D{number}_only_scope_marker_then_event_yield', [entry.key for entry in transition] == ['save_scope_value_as', 'trigger_event'] and single(transition[0].value, 'name') == 'lyd_factory_diag_stage' and single(transition[0].value, 'value') == str(number) and transition[1].value == f'lyd_factory_diag.{number}')
-        actual_parts.extend(helper.entries[:-2])
+    # Independently put the yielded diagnostic branches back into their exact
+    # production nesting. Original failure branches and political guards stay.
+    next_stage = {1:20,20:3,3:2,2:4,4:5,5:6}
+    stage_helpers = {n:single(changed_defs,f'lyd_factory_diag_d{n}_effect') for n in (20,3,2,4,5,6)}
     events = body(overlay / 'events/lyd_factory_operation_diagnostic.txt')
     final_event = single(events, 'lyd_factory_diag.6')
     final_if = single(single(single(final_event, 'option'), 'hidden_effect'), 'if')
-    actual_parts.extend([entry for entry in final_if.entries if entry.key != 'limit'])
-    expected_parts = [entry for entry in factory.entries if entry.key != 'limit'] + original_entries[call_index + 1:]
-    if transaction_only:
-        # Independently remove the declared control differences from the
-        # production AST. Do not normalize any other production operation.
-        expected_control = []
-        for entry in expected_parts:
-            if entry.key == 'scope:new_title':
-                if [child.key for child in entry.value.entries] == ['change_title_holder']:
-                    continue
-                entry = type(entry)(entry.key, entry.operator, Block(tuple(
-                    child for child in entry.value.entries if child.key != 'set_always_follows_primary_heir')))
-            expected_control.append(entry)
-        expected_parts = expected_control
-        markers = [entry for entry in actual_parts if entry.key == 'set_variable'
-                   and single(entry.value, 'name') == 'lyd_factory_diag_empty_transaction_completed']
-        check('empty_transaction_exactly_one_numeric_completion_marker', len(markers) == 1
-              and single(markers[0].value, 'value') == '1')
-        actual_parts = [entry for entry in actual_parts if entry not in markers]
-    reordered_expected = list(expected_parts)
-    container_index = next(i for i, entry in enumerate(reordered_expected) if entry.key == 'create_title_and_vassal_change')
-    container = reordered_expected.pop(container_index)
-    props_index = next(i for i, entry in enumerate(reordered_expected) if entry.key == 'scope:new_title' and any(child.key == 'set_destroy_if_invalid_heir' for child in entry.value.entries))
-    reordered_expected.insert(props_index + 1, container)
-    check('complete_success_operation_only_declared_container_relocation', node(Block(tuple(actual_parts))) == node(Block(tuple(reordered_expected))))
-    restored = list(actual_parts)
-    moved = restored.pop(next(i for i, entry in enumerate(restored) if entry.key == 'create_title_and_vassal_change'))
-    create_index = next(i for i, entry in enumerate(restored) if entry.key == 'create_dynamic_title')
-    restored.insert(create_index + 1, moved)
-    check('complete_success_operation_AST_inverse_exact', node(Block(tuple(restored))) == node(Block(tuple(expected_parts))))
+    final_rows = [row for row in final_if.entries if row.key != 'limit']
+
+    def inline(block, seen=()):
+        rows = []; i = 0
+        while i < len(block.entries):
+            row = block.entries[i]
+            if (row.key == 'save_scope_value_as' and isinstance(row.value,Block)
+                    and single(row.value,'name') == 'lyd_factory_diag_stage'):
+                stage = int(single(row.value,'value'))
+                check(f'D{stage}_only_scope_marker_then_event_yield', i+2 == len(block.entries)
+                      and block.entries[i+1].key == 'trigger_event'
+                      and block.entries[i+1].value == f'lyd_factory_diag.{stage}')
+                if stage in seen:
+                    raise ValueError('Cyclic diagnostic stage')
+                replacement = Block(tuple(final_rows)) if stage == 6 else stage_helpers[next_stage[stage]]
+                rows.extend(inline(replacement,seen+(stage,)).entries)
+                i += 2
+                continue
+            if isinstance(row.value,Block):
+                row = Entry(row.key,row.operator,inline(row.value,seen))
+            rows.append(row); i += 1
+        return Block(tuple(rows))
+
+    create_index = next(i for i,row in enumerate(factory.entries) if row.key == 'create_dynamic_title')
+    prepared = factory.entries[create_index+2].value
+    enact_index = next(i for i,row in enumerate(prepared.entries)
+                       if row.key == 'if' and any(child.key == 'faith.religious_head_title'
+                                                  for child in single(row.value,'limit').entries))
+    enact = prepared.entries[enact_index].value
+    tail = factory.entries[create_index+4:]
+    after = original_entries[call_index+1:]
+    law_success = Block(tuple(prepared.entries[:enact_index]) + (
+        Entry('if','=',Block(enact.entries+tail+tuple(after))),
+        Entry('else','=',Block(prepared.entries[enact_index+1].value.entries+tail+tuple(after)))))
+    outer_success = Block(factory.entries[:create_index+2] + (
+        Entry('if','=',law_success),
+        Entry('else','=',Block(factory.entries[create_index+3].value.entries+tail+tuple(after)))))
     original_factory_definition = single(body(mod / 'common/scripted_effects/lyd_c3_head_factory.txt'), 'lyd_c3_create_owned_temporal_head_effect')
-    expected_reject = list(single(original_factory_definition, 'else').entries) + original_entries[call_index + 1:]
-    check('original_factory_reject_continuation_AST_exact', node(single(changed, 'else')) == node(Block(tuple(expected_reject))))
-    d2 = single(changed_defs, 'lyd_factory_diag_d2_effect')
-    d2_keys = [entry.key for entry in d2.entries]
+    rejected = Block(single(original_factory_definition,'else').entries+tuple(after))
+    expected = Block(tuple(original_entries[:call_index]) + (Entry('if','=',outer_success),Entry('else','=',rejected)))
+
+    def control_projection(block, actual=False):
+        rows = []
+        for row in block.entries:
+            if (transaction_only and actual and row.key == 'set_variable' and isinstance(row.value,Block)
+                    and single(row.value,'name') == 'lyd_factory_diag_empty_transaction_completed'):
+                continue
+            if transaction_only and row.key == 'scope:new_title' and isinstance(row.value,Block):
+                if [item.key for item in row.value.entries] == ['change_title_holder']:
+                    continue
+                row = Entry(row.key,row.operator,Block(tuple(item for item in row.value.entries
+                              if item.key != 'set_always_follows_primary_heir')))
+            if isinstance(row.value,Block):
+                row = Entry(row.key,row.operator,control_projection(row.value,actual))
+            rows.append(row)
+        return Block(tuple(rows))
+
+    def completion_markers(block):
+        return sum((1 if row.key == 'set_variable' and isinstance(row.value,Block)
+                    and single(row.value,'name') == 'lyd_factory_diag_empty_transaction_completed' else 0)
+                   + (completion_markers(row.value) if isinstance(row.value,Block) else 0)
+                   for row in block.entries)
+
+    check('completion_marker_occurs_only_once_in_empty_control',
+          completion_markers(changed_defs) == (1 if transaction_only else 0))
+
+    expanded = inline(changed)
+    check('complete_success_and_failure_operation_AST_inverse_exact',
+          node(control_projection(expanded,True)) == node(control_projection(expected)))
+    check('original_factory_reject_continuation_AST_exact',node(single(changed,'else')) == node(rejected))
+    d2 = stage_helpers[2]
+    d2_keys = [row.key for row in d2.entries]
     check('D2_transaction_atomic_resolve_before_yield', d2_keys.index('create_title_and_vassal_change') < d2_keys.index('resolve_title_and_vassal_change') < d2_keys.index('trigger_event') and d2_keys.count('trigger_event') == 1)
-    d2a = single(changed_defs, 'lyd_factory_diag_d20_effect')
-    d2a_keys = [entry.key for entry in d2a.entries]
-    check('D2a_create_and_configuration_without_pending_transaction', d2a_keys == ['create_dynamic_title', 'scope:new_title', 'save_scope_value_as', 'trigger_event'])
-    property_keys = ['set_variable', 'set_variable', 'set_destroy_if_invalid_heir', 'set_no_automatic_claims', 'set_definitive_form']
+    d2a = stage_helpers[20]
+    check('D2a_create_and_configuration_without_pending_transaction', [row.key for row in d2a.entries] == ['create_dynamic_title','scope:new_title','save_scope_value_as','trigger_event'])
+    property_keys = ['set_variable','set_variable','set_destroy_if_invalid_heir','set_no_automatic_claims','set_definitive_form']
     if not transaction_only:
         property_keys.append('set_always_follows_primary_heir')
-    check('D2a_declared_owner_markers_and_properties', [entry.key for entry in single(d2a, 'scope:new_title').entries] == property_keys)
+    property_keys.append('add_title_law')
+    check('D2a_declared_owner_markers_properties_and_law95', [row.key for row in single(d2a,'scope:new_title').entries] == property_keys
+          and single(single(d2a,'scope:new_title'),'add_title_law') == 'temporal_head_of_faith_succession_law')
     if transaction_only:
-        check('D2b_empty_transaction_marker_after_resolve_before_event', d2_keys == [
-            'create_title_and_vassal_change', 'resolve_title_and_vassal_change', 'set_variable', 'save_scope_value_as', 'trigger_event'])
+        check('D2b_empty_transaction_marker_after_resolve_before_event',d2_keys == ['create_title_and_vassal_change','resolve_title_and_vassal_change','set_variable','save_scope_value_as','trigger_event'])
+        marker=single(d2,'set_variable')
+        check('empty_transaction_exactly_one_numeric_completion_marker',single(marker,'name') == 'lyd_factory_diag_empty_transaction_completed' and single(marker,'value') == '1')
     else:
-        check('D2b_exact_atomic_container_holder_resolve', d2_keys == ['create_title_and_vassal_change', 'scope:new_title', 'resolve_title_and_vassal_change', 'save_scope_value_as', 'trigger_event'] and [entry.key for entry in single(d2, 'scope:new_title').entries] == ['change_title_holder'])
+        check('D2b_exact_atomic_container_holder_resolve',d2_keys == ['create_title_and_vassal_change','scope:new_title','resolve_title_and_vassal_change','save_scope_value_as','trigger_event']
+              and [row.key for row in single(d2,'scope:new_title').entries] == ['change_title_holder'])
     original_triggers = body(mod / 'common/scripted_triggers/lyd_i3b_institution_triggers.txt')
     triggers = body(overlay / 'common/scripted_triggers/lyd_factory_operation_diagnostic.txt')
     continuation = single(triggers, 'lyd_factory_diag_continue_trigger')
@@ -143,7 +181,18 @@ def main():
     d1_if = single(single(single(single(events, 'lyd_factory_diag.1'), 'option'), 'hidden_effect'), 'if')
     d2a_event = single(events, 'lyd_factory_diag.20')
     d2a_if = single(single(single(d2a_event, 'option'), 'hidden_effect'), 'if')
-    check('D1_routes_to_D2a_then_D2a_routes_to_atomic_D2b', single(d1_if, 'lyd_factory_diag_d20_effect') == 'yes' and single(d2a_if, 'lyd_factory_diag_d2_effect') == 'yes')
+    d3_if = single(single(single(single(events,'lyd_factory_diag.3'),'option'),'hidden_effect'),'if')
+    if transaction_only:
+        check('empty_control_D1_D2a_D2b_without_Faith_or_holder_stage',
+              single(d1_if,'lyd_factory_diag_d20_effect') == 'yes'
+              and [row.key for row in d2a_if.entries] == ['limit','lyd_factory_diag_d2_effect']
+              and single(d2a_if,'lyd_factory_diag_d2_effect') == 'yes')
+    else:
+        check('D1_routes_to_D2a_then_preholder_D3_then_atomic_D2b',single(d1_if,'lyd_factory_diag_d20_effect') == 'yes'
+              and single(d2a_if,'lyd_factory_diag_d3_effect') == 'yes' and single(d3_if,'lyd_factory_diag_d2_effect') == 'yes')
+    d3_guard=single(single(events,'lyd_factory_diag.3'),'trigger')
+    check('D3_requires_original_preholder_binding_and_law_guard',all(row in d3_guard.entries for row in single(enact,'limit').entries)
+          and single(d3_guard,'lyd_factory_diag_unheld_title_trigger') == 'yes')
     check('D2a_uses_original_identity_auth_and_true_unheld_title', single(single(d2a_event, 'trigger'), 'lyd_factory_diag_continue_trigger').entries[0].value == '20' and single(single(d2a_event, 'trigger'), 'lyd_factory_diag_unheld_title_trigger') == 'yes' and single(single(single(triggers, 'lyd_factory_diag_unheld_title_trigger'), 'scope:new_title'), 'NOT').entries[0].key == 'exists')
     unheld = single(single(triggers, 'lyd_factory_diag_unheld_title_trigger'), 'scope:new_title')
     check('D2a_unheld_actual_owner_markers_and_holder_absence_exact', single(single(triggers, 'lyd_factory_diag_unheld_title_trigger'), 'exists') == 'scope:new_title' and single(single(unheld, 'NOT'), 'exists') == 'holder' and single(unheld, 'var:lyd_c2_owned_head_title') == '1' and single(unheld, 'var:lyd_c2_owner_faith') == 'scope:lyd_c3_factory_faith')

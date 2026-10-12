@@ -23,6 +23,11 @@ sys.path.append(str(ROOT / "tools"))
 from workshop_compatibility_tags import render_release_file_bytes
 PRODUCT_ID = "mod_li_yu_dao"
 REQUIRED_RUNTIME_FILES = frozenset({
+    'common/decisions/lyd_tenet_playstyle_decisions.txt',
+    'common/modifiers/lyd_tenet_playstyle_modifiers.txt',
+    'events/lyd_tenet_playstyle_events.txt',
+    'localization/english/lyd_tenet_playstyle_l_english.yml',
+    'localization/simp_chinese/lyd_tenet_playstyle_l_simp_chinese.yml',
     'common/character_interactions/lyd_i3b_nomination_interactions.txt',
     'common/decisions/lyd_i3b_institution_decisions.txt',
     'common/script_values/lyd_i3b_institution_values.txt',

@@ -24,9 +24,13 @@ lyd_i3b_begin_effect = {
         set_variable = { name = lyd_i3b_phase value = 1 }
         set_variable = { name = lyd_i3b_faith value = faith }
         set_variable = { name = lyd_i3b_main value = faith.main_rite }
+        set_variable = { name = lyd_i3b_actor_rite value = rite }
         remove_variable = lyd_i3b_required_native_hor
         if = { limit = { faith = faith:lyd_common_faith }
             set_variable = { name = lyd_i3b_authority_mode value = 0 }
+        }
+        else_if = { limit = { faith = faith:confucian_faith }
+            set_variable = { name = lyd_i3b_authority_mode value = 2 }
         }
         else = {
             set_variable = { name = lyd_i3b_authority_mode value = 1 }

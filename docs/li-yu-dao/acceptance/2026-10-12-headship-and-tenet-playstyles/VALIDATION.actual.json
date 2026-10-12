@@ -1,0 +1,635 @@
+{
+  "schema": "lyd-headship-and-tenet-playstyles-source-validation-v1",
+  "at_utc": "2026-10-12T07:40:18.321140+00:00",
+  "candidate_version": "0.1.2 Alpha",
+  "release_status": "UNPUBLISHED",
+  "static_result": "GREEN",
+  "live_result": "NOT_RUN",
+  "political_protection": "LIVE_UNPROVEN",
+  "content": {
+    "tenets": 36,
+    "active_decisions": 36,
+    "active_choices": 52,
+    "runtime_files": 84
+  },
+  "checks": [
+    {
+      "name": "candidate012-final-content-check-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-content-check-001\\RESULT.actual.json",
+        "bytes": 958,
+        "sha256": "3d135303f23a7db0911cdf0058f5d6ed4080b1ce612532f953fb070b4a09667e"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/gen_content.py",
+          "--check"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:39:01.696325+00:00",
+        "finished_at_utc": "2026-10-12T07:39:01.878671+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-content-check-001\\stdout.log",
+          "bytes": 542,
+          "sha256": "21850ac44880309ad79671410131d9e0cfcfad7cdb9e839f53411de2f045d53c"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-content-check-001\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "unittest_count": null
+    },
+    {
+      "name": "candidate012-final-runtime-check-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-runtime-check-001\\RESULT.actual.json",
+        "bytes": 957,
+        "sha256": "3cd0f4769244eecde1f9535894948d09cf77166f2c46a1b804349cbda961784b"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/gen_runtime.py",
+          "--check"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:39:01.689165+00:00",
+        "finished_at_utc": "2026-10-12T07:39:01.988230+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-runtime-check-001\\stdout.log",
+          "bytes": 50,
+          "sha256": "acb08e5fc71ef6894b6e78c9fd013dd7b7825f26a549402bc84aeddad9fbc30c"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-runtime-check-001\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "unittest_count": null
+    },
+    {
+      "name": "candidate012-final-build-check-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-build-check-001\\RESULT.actual.json",
+        "bytes": 956,
+        "sha256": "52878e79dbf674ae679da3633e9569a3637c501b8b60cc9447bc682f6d5f049d"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/build_release.py",
+          "--check"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:39:01.704019+00:00",
+        "finished_at_utc": "2026-10-12T07:39:02.385998+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-build-check-001\\stdout.log",
+          "bytes": 273,
+          "sha256": "a67adca176e2304990a76ef007d102b029e901b2f0637e6f339c5ae46118de80"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\candidate012-final-build-check-001\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "unittest_count": null
+    },
+    {
+      "name": "integrated-static-command-002",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-static-command-002\\RESULT.actual.json",
+        "bytes": 935,
+        "sha256": "2ab1f97716ca1b669154c2ff7aea864b87b6afdce1bef5a71a22e26bb98a9c8f"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/validate_static.py"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:20:53.237629+00:00",
+        "finished_at_utc": "2026-10-12T07:20:53.658959+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-static-command-002\\stdout.log",
+          "bytes": 11108,
+          "sha256": "c37f82a2ec3b3cc89e049dea971588aa801eba4034813fff6e866201876ecfc3"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-static-command-002\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "unittest_count": null
+    },
+    {
+      "name": "integrated-build-tests-command-002",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-build-tests-command-002\\RESULT.actual.json",
+        "bytes": 946,
+        "sha256": "3cacc1c8ed6a06b41818e78934afe248aae77d0e4c05b2ac9e73ffcea771d570"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/test_build_release.py"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:17:45.150592+00:00",
+        "finished_at_utc": "2026-10-12T07:17:48.588709+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-build-tests-command-002\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-build-tests-command-002\\stderr.log",
+          "bytes": 115,
+          "sha256": "45ba5a7c2387128bb42e3cdb4c40cb3a696743be48f75e80a8735c9b407ad4ec"
+        }
+      },
+      "unittest_count": 11
+    },
+    {
+      "name": "isolated-acceptance-runner-test-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\isolated-acceptance-runner-test-001\\RESULT.actual.json",
+        "bytes": 949,
+        "sha256": "6f61f1f89d8c92811d48e6bbe147d40667f9f1e8628b38a20992f2053731b58b"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/test_run_acceptance.py"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:18:05.757736+00:00",
+        "finished_at_utc": "2026-10-12T07:18:06.097389+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\isolated-acceptance-runner-test-001\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\isolated-acceptance-runner-test-001\\stderr.log",
+          "bytes": 109,
+          "sha256": "f8648a510a15d7c052e7cf1ba921ccd533671ca57cd7d21b6cb5e10896ec58db"
+        }
+      },
+      "unittest_count": 6
+    },
+    {
+      "name": "final-isolated-test_vanilla_faith_integration-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_vanilla_faith_integration-001\\RESULT.actual.json",
+        "bytes": 988,
+        "sha256": "b45122b7313334f88e86447e37fd4181b907a4c83dd0dd7592236d46e17e3867"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/test_vanilla_faith_integration.py"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:33:56.800705+00:00",
+        "finished_at_utc": "2026-10-12T07:33:57.973439+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_vanilla_faith_integration-001\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_vanilla_faith_integration-001\\stderr.log",
+          "bytes": 111,
+          "sha256": "5bbd054073b666f15194d50d4d07c8144619680fdb8dab54993738dd4d009fd9"
+        }
+      },
+      "unittest_count": 8
+    },
+    {
+      "name": "final-isolated-test_factory_diagnostic-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_factory_diagnostic-001\\RESULT.actual.json",
+        "bytes": 967,
+        "sha256": "3471d75ea50cddac2d6a80677b3362ad3a424ae6bca95c2493cafed14f507126"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/test_factory_diagnostic.py"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:33:56.810626+00:00",
+        "finished_at_utc": "2026-10-12T07:33:57.354837+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_factory_diagnostic-001\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_factory_diagnostic-001\\stderr.log",
+          "bytes": 111,
+          "sha256": "3b69dfb007958408287c296fa271bd3afeb8aa279097ab22ae8a571c7f296286"
+        }
+      },
+      "unittest_count": 8
+    },
+    {
+      "name": "final-isolated-test_institution_candidate-001",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_institution_candidate-001\\RESULT.actual.json",
+        "bytes": 977,
+        "sha256": "28bbdfa7e6a2c6212981f3e7e864b96c77228fab88b7956229ecdc700819c991"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/test_institution_candidate.py"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:33:56.813858+00:00",
+        "finished_at_utc": "2026-10-12T07:33:57.567542+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_institution_candidate-001\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_institution_candidate-001\\stderr.log",
+          "bytes": 4780,
+          "sha256": "02f713fd620d9648274beb1e3fb7895ca5fc7c2f5d710b0d4b70bdf5e94d9927"
+        }
+      },
+      "unittest_count": 28
+    },
+    {
+      "name": "final-isolated-test_i3b_event_bind_present-002",
+      "receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_i3b_event_bind_present-002\\RESULT.actual.json",
+        "bytes": 1125,
+        "sha256": "f9944ab6d1f3afa2daaa5a89eb15c09f03da6803d7557fa0fbf30311c1ee477d"
+      },
+      "actual": {
+        "schema": "ck3-recorded-actual-command-v1",
+        "argv": [
+          "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+          "--report",
+          "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/i3b-event-bind-final.actual.json"
+        ],
+        "cwd": "C:/workspace/ck3_eternal_recurrence",
+        "started_at_utc": "2026-10-12T07:34:21.893316+00:00",
+        "finished_at_utc": "2026-10-12T07:34:22.135118+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_i3b_event_bind_present-002\\stdout.log",
+          "bytes": 838,
+          "sha256": "b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_i3b_event_bind_present-002\\stderr.log",
+          "bytes": 1049,
+          "sha256": "f03d478008f26d98d9622e02463b9b2ff669deb1fa46089dbf6a724e1a9065b4"
+        }
+      },
+      "unittest_count": 6
+    }
+  ],
+  "lane_indices": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\tenet-strength-source-001\\INDEX.json",
+      "bytes": 4301,
+      "sha256": "989bb8c87d878956a2de3164c3c23de180d2a6fce0ebe2e989e00b5eedf30325"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\tenet-playstyle-source-001\\INDEX.json",
+      "bytes": 10420,
+      "sha256": "65470455537a6610f0f93ce60e8063430e01aac1c5b2549163181d6b7ba06a9c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\tenet-playstyle-source-001\\ENTRYPOINT-FINAL.actual.json",
+      "bytes": 846,
+      "sha256": "1d1d30f8ed50d98938cb1430ee3b8dae9aa568d76b750fa600e8ac4bdca41d48"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\leader-faith-source-001\\INDEX.json",
+      "bytes": 4501,
+      "sha256": "e2a9c476fdc0b6c46295fbfbe736f901c765244174c39a579e0c69f2498c73f7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\leader-followup-validation-001\\INDEX.json",
+      "bytes": 4776,
+      "sha256": "93708ea2d774b96e0167fb86667cb221447e371ee93bfa66d1cb55b99ba7d013"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\tenet-feedback-acceptance-source-001\\INDEX.json",
+      "bytes": 1899,
+      "sha256": "f3ad04b250d0e6012bca99955c9bbcdc9d7d5e156dfc35feb340bdd38f55cb29"
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "mod_li_yu_dao/README.md",
+      "bytes": 5264,
+      "sha256": "616f533db6a4a5afa014b6a975fe1f7e7a43bb353631e40ca766080032a5c184"
+    },
+    {
+      "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 4668,
+      "sha256": "e45dbb75541aa30194e2dd220f8a6888532381286c55bc7194d35dae512eb554"
+    },
+    {
+      "path": "mod_li_yu_dao/common/decisions/lyd_tenet_playstyle_decisions.txt",
+      "bytes": 25638,
+      "sha256": "83237f09678d942d3448d99f47ee3311ff95a04eb7f95be45db65e7c2660c36c"
+    },
+    {
+      "path": "mod_li_yu_dao/common/modifiers/lyd_tenet_playstyle_modifiers.txt",
+      "bytes": 4863,
+      "sha256": "caf0131ddcdea182ac7793d0edf86a7e81b5165e4d685792e5c97451470b5e92"
+    },
+    {
+      "path": "mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 35255,
+      "sha256": "6a120c33ebf27210313fff03fecc7af2ba6cecf68671d5003e3407cb45e2d9c0"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 5722,
+      "sha256": "25f5597ebbe6fbfc99de7b8a38442d9a0da89fb0a3bb7279f09fb198726ece75"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4550,
+      "sha256": "dd327b875eb0c374937461a8d8cde8a384a994911260d9065fa2b51387a68d3c"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6967,
+      "sha256": "fa913461b91dbd8a876dd4fac320c6f3d5a15222afd650b4fc68276e8cad03c7"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 4020,
+      "sha256": "00216b79ad3c3db91d9bc172f29e5a21982abf104ffc6862d3e2edf370562d8c"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_01_effects.txt",
+      "bytes": 3375,
+      "sha256": "8474b07cbd2e242179ad52d3e02f067236d9daeb63e04df969eb25fbf189f6d0"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_02_effects.txt",
+      "bytes": 2973,
+      "sha256": "546137a1f025ab619a383b533ae13a93e0b52a58e7d8fe06d10abf9aa9c57a0a"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_03_effects.txt",
+      "bytes": 3167,
+      "sha256": "00235378ac7645ca77db99313ec80f9d19a92a62cae2e11103002ec0b41d3cd5"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_04_effects.txt",
+      "bytes": 3061,
+      "sha256": "619c7d53279034bf83a1702a6578766c554b92e3db4cffe8ee89e516c268c1c5"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_05_effects.txt",
+      "bytes": 3054,
+      "sha256": "06709a39ac8c0992994abca7f6166397e3ed8c57d74b1215bd742473460f9fe8"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_06_effects.txt",
+      "bytes": 3330,
+      "sha256": "fe8c319fc307b0e5316cf398ec6e1cbcd32e754a75db7f9e8ba9ec17d1217e2c"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_07_effects.txt",
+      "bytes": 1674,
+      "sha256": "7634edf315649c0aa40d39d4bb1be6b0c2260a24379bff4086eee3460e06be29"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 12597,
+      "sha256": "ac31d6bd19b3d897f37a9229027cafe797d4ed43cce970355879da629464c286"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_tenet_playstyle_triggers.txt",
+      "bytes": 32155,
+      "sha256": "1d04804c1d4f77bd1f0abff7ac75d3f6f37adb0ec8a3287396a6fe1d9fc89379"
+    },
+    {
+      "path": "mod_li_yu_dao/descriptor.mod",
+      "bytes": 156,
+      "sha256": "799de1b07c72c05d6bf8a9c69ade0f230db03a7158ac43822b60768ac911cd1d"
+    },
+    {
+      "path": "mod_li_yu_dao/docs/tenet-active-practices.md",
+      "bytes": 6289,
+      "sha256": "3d4671d490e9ae9da47c06d3115dfa35c1d6052f2acefc2a5f7e0b505c148e96"
+    },
+    {
+      "path": "mod_li_yu_dao/events/lyd_tenet_playstyle_events.txt",
+      "bytes": 17222,
+      "sha256": "96ab3da068455ef120dfc5fa41573599c850437bcae23655dd4009299aaf1eb8"
+    },
+    {
+      "path": "mod_li_yu_dao/localization/english/lyd_content_l_english.yml",
+      "bytes": 81701,
+      "sha256": "d41c6704f86b14125e8ecb46f8e60d0453d732f73ba4d0bedab351b14a0ca92a"
+    },
+    {
+      "path": "mod_li_yu_dao/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 11722,
+      "sha256": "34d539fe008e0cd3e5db545580cc031a66f514f8c4e83971061080c1b3f53916"
+    },
+    {
+      "path": "mod_li_yu_dao/localization/english/lyd_tenet_playstyle_l_english.yml",
+      "bytes": 62557,
+      "sha256": "c87219250eae8adf3022589f5528c616371978e725cf30154c6895263eb93c02"
+    },
+    {
+      "path": "mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 66338,
+      "sha256": "b302fbdc1869a1ba929575375d9a5278567c23f165d41dcdc76f379e7e316756"
+    },
+    {
+      "path": "mod_li_yu_dao/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 10305,
+      "sha256": "b455c147a9ff5ed2e6bd765285bfee92240f0d6aa2ccd98d887bb92a83035625"
+    },
+    {
+      "path": "mod_li_yu_dao/localization/simp_chinese/lyd_tenet_playstyle_l_simp_chinese.yml",
+      "bytes": 55732,
+      "sha256": "458c520106d46717db2ae397ab1f3a462e2f0697531c99d4199a1c1944be9762"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/build_factory_diagnostic.py",
+      "bytes": 20755,
+      "sha256": "5f111dc69c6d479dd2a6d50b3a8001e9f55ed16b71306b67a10eeb99423a91e5"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/build_release.py",
+      "bytes": 11136,
+      "sha256": "409f774bb7e8e4a4a1b540445c3e971816a60c7a42ef765a3a624257d000d99a"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/content_data.py",
+      "bytes": 88824,
+      "sha256": "12a05e68b36072f0193e983f5484d2c5004e067da2fa84b071a88cd5d91da53d"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/gen_content.py",
+      "bytes": 11180,
+      "sha256": "e970f0e7d0275e8bcec17650f364cd62aad4f6b9fab6f50a01e8110dc7aef7f9"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/gen_institution.py",
+      "bytes": 54982,
+      "sha256": "02086d69ca2773038c41d1d84dd754cf1f21e16369a5a690961b03378a2dddb3"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/gen_runtime.py",
+      "bytes": 21297,
+      "sha256": "c026bc51435a6b89f78f236d919d3597ac02d6aaffda72435c5aeeb803d5f817"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/gen_tenet_playstyles.py",
+      "bytes": 16727,
+      "sha256": "64c8f794545ef1fdc939f43f9427a9a7674c31c92364ec2f6e5245182c8e0c1e"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/institution_oracle.py",
+      "bytes": 5607,
+      "sha256": "fce4f6bfd5f2488e9164beb3a42082d562fd7ec107ca4686a40a8d6e8e41bc70"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "bytes": 5642,
+      "sha256": "517864436af559bc70d0a991956f32b3b0b9b37386929f2135c87a5fb81ac1c3"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/run_acceptance.py",
+      "bytes": 20206,
+      "sha256": "9fb684976b0aa7f1e36b8dc6a58b50497a95640b178301937b7d0cebb148fbaa"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 5642,
+      "sha256": "517864436af559bc70d0a991956f32b3b0b9b37386929f2135c87a5fb81ac1c3"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/tenet_playstyle_data.py",
+      "bytes": 23171,
+      "sha256": "ef18736170164b8e8e92618ffdcb8e4c01df59ea8b74ce3e226ea10640f580c4"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_build_release.py",
+      "bytes": 21782,
+      "sha256": "8dcccd273aa067b67cb7443918da1fd202e9da3dd8edc21006f3fc7a36b29f9f"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+      "bytes": 12996,
+      "sha256": "f4670811921da2026c7c6c12b0ab5ab63ccbd94b1de134a44b16a15fe838005b"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+      "bytes": 7416,
+      "sha256": "6b680f444aadbe351a3737dcc6c41280940796a5c3c172eff5cec01e7d1d1040"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_institution_candidate.py",
+      "bytes": 30688,
+      "sha256": "866ab1cd02021caebe3c14d7fcf88dd446fa099fc619f83609de7a4b3f99f48e"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_tenet_modifiers.py",
+      "bytes": 9338,
+      "sha256": "09f8609eb0cc3ad425f14356236dd6f2bd40518aca62b08edff87b8890a1d2c5"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_tenet_playstyles.py",
+      "bytes": 11453,
+      "sha256": "f56918eb0e2528b39de3713961465ca4a565c70d4308ddeb1c71555335ff8403"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_vanilla_faith_integration.py",
+      "bytes": 9223,
+      "sha256": "63bf76909021a55b0b9c2e22dc9442e67e6e3de2c49eccdf5967409a568a3139"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/validate_factory_diagnostic.py",
+      "bytes": 16440,
+      "sha256": "514ca9693a542fd4950af3bb7eb51aaaa9647c33efb89d7ed82175d821c6721c"
+    }
+  ],
+  "preserved_failures": {
+    "combined_discovery": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\integrated-product-tests-command-001\\RESULT.actual.json",
+      "bytes": 1009,
+      "sha256": "953b4e61911e439443b943335c3cb86a9e85fcb828a3d8d9ff77820b78797bd6"
+    },
+    "description": "The combined discovery was not GREEN: old contracts/fixtures/diagnostic and module-name collisions. Failed modules were corrected and checked in separate processes.",
+    "i3b_missing_required_report_argument": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam011-menu-storage-admission-20261012-030\\final-isolated-test_i3b_event_bind_present-001\\RESULT.actual.json",
+      "bytes": 979,
+      "sha256": "f17640462829049f9e2a64c5a20c7c2153c2f6aa8cc4ea7eb12a01b652ebc14f"
+    }
+  },
+  "runtime_evidence_not_inferred": true
+}

@@ -25,6 +25,8 @@ from content_data import (
     TENETS,
     MODIFIER_SPECS,
     MODIFIER_SCOPES,
+    VIRTUE_SIN_WEIGHT,
+    VIRTUE_SIN_SCALE,
     validate_catalogue,
 )
 
@@ -67,7 +69,8 @@ def render_tenets() -> str:
         f"# CK3 {GAME_VERSION}; 36 tenets with native character/county/personal modifiers.",
         "# Faith selection uses Faith scope. Personal selection has Character scope.",
         "# Faith can_pick has no unguarded is_ai check: its actor can be null.",
-        "# Parameters are capability flags, not proof that practice events are connected.",
+        "# Native parameters use installed consumers; lyd practice flags unlock their own decisions.",
+        "# Native virtue/sin source weights apply; selecting a tenet never grants personality traits.",
         "# Local divergence scaling is a prototype input; global defines are untouched.",
         "",
     ]
@@ -91,11 +94,20 @@ def render_tenets() -> str:
             "\t}",
             "\tparameters = {",
             f"\t\t{tenet.parameter_id}",
+            *(f"\t\t{flag}" for flag in tenet.effects.parameters),
             "\t}",
             "\tpersonal_tenet_parameters = {",
             f"\t\t{tenet.parameter_id}",
+            *(f"\t\t{flag}" for flag in tenet.effects.personal_parameters),
             "\t}",
         ])
+        lines.append("\ttraits = {")
+        for group in ('virtues', 'sins'):
+            lines.append(f"\t\t{group} = {{")
+            lines.extend(f"\t\t\t{trait} = {{ weight = {VIRTUE_SIN_WEIGHT} scale = {VIRTUE_SIN_SCALE} }}"
+                         for trait in getattr(tenet.effects, group))
+            lines.append("\t\t}")
+        lines.append("\t}")
         for scope in MODIFIER_SCOPES:
             values = getattr(tenet.effects, scope)
             if values:
@@ -128,6 +140,8 @@ def modifier_value_text(item, language: str) -> str:
         'percentage_point_number': '个百分点' if zh else ' percentage points',
         'monthly_points': '点/月' if zh else ' points/month',
         'per_devotion_level': '点/每级奉献' if zh else ' points per devotion level',
+        'health': '点' if zh else ' points',
+        'days': '天' if zh else ' days',
     }
     return (spec.label_zh if zh else spec.label_en) + ' ' + text + units[spec.unit]
 
@@ -170,7 +184,9 @@ def localization_entries(language: str) -> dict[str, str]:
         belief = tenet.belief_zh if zh else tenet.belief_en
         practice = tenet.practice_zh if zh else tenet.practice_en
         put(f"{tenet.script_id}_desc", f"{belief} {practice} {tenet_effects_text(tenet, language)}")
-        put(f"doctrine_parameter_{tenet.parameter_id}", practice)
+        unlock = (f"核心与个人学说均可解锁专属决议：$lyd_play_{tenet.slug}_decision$。" if zh else
+                  f"Core and personal selections both unlock the unique decision: $lyd_play_{tenet.slug}_decision$.")
+        put(f"doctrine_parameter_{tenet.parameter_id}", f"{practice} {unlock}")
 
     for practice in PRACTICES:
         put(f"{practice.script_id}_t", practice.title_zh if zh else practice.title_en)

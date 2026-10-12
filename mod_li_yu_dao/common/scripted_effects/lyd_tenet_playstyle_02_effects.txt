@@ -1,0 +1,90 @@
+﻿# GENERATED FILE: edit tools/tenet_playstyle_data.py and tools/gen_tenet_playstyles.py
+lyd_play_extend_sprouts_option_0_effect = {
+if = {
+limit = { lyd_play_extend_sprouts_option_0_trigger = yes }
+remove_short_term_gold = 150
+add_piety = 350
+capital_county = {
+change_county_control = 25
+add_county_modifier = { modifier = lyd_play_extend_sprouts_option_0_county days = 1095 }
+}
+add_character_flag = { flag = lyd_play_extend_sprouts_cooldown days = 1095 }
+}
+}
+
+lyd_play_extend_sprouts_option_1_effect = {
+if = {
+limit = { lyd_play_extend_sprouts_option_1_trigger = yes }
+add_piety = -150
+add_stress = -75
+add_character_modifier = { modifier = lyd_play_extend_sprouts_option_1_character days = 1095 }
+add_character_flag = { flag = lyd_play_extend_sprouts_cooldown days = 1095 }
+}
+}
+
+lyd_play_extend_sprouts_option_2_effect = {
+if = {
+limit = { lyd_play_extend_sprouts_option_2_trigger = yes }
+add_prestige = -150
+add_diplomacy_lifestyle_xp = 600
+add_character_modifier = { modifier = lyd_play_extend_sprouts_option_2_character days = 1095 }
+add_character_flag = { flag = lyd_play_extend_sprouts_cooldown days = 1095 }
+}
+}
+
+lyd_play_extend_sprouts_option_3_effect = {
+if = {
+limit = { lyd_play_extend_sprouts_option_3_trigger = yes }
+remove_short_term_gold = 100
+add_learning_lifestyle_xp = 650
+add_character_modifier = { modifier = lyd_play_extend_sprouts_option_3_character days = 1095 }
+add_character_flag = { flag = lyd_play_extend_sprouts_cooldown days = 1095 }
+}
+}
+
+lyd_play_deliberate_cultivation_option_0_effect = {
+if = {
+limit = { lyd_play_deliberate_cultivation_option_0_trigger = yes }
+remove_short_term_gold = 125
+add_stress = 35
+add_martial_lifestyle_xp = 400
+add_stewardship_lifestyle_xp = 400
+add_character_modifier = { modifier = lyd_play_deliberate_cultivation_option_0_character days = 1095 }
+add_character_flag = { flag = lyd_play_deliberate_cultivation_cooldown days = 1095 }
+}
+}
+
+lyd_play_righteous_qi_option_0_effect = {
+if = {
+limit = { lyd_play_righteous_qi_option_0_trigger = yes }
+add_piety = -250
+add_martial_lifestyle_xp = 400
+add_character_modifier = { modifier = lyd_play_righteous_qi_option_0_character days = 730 }
+add_character_flag = { flag = lyd_play_righteous_qi_cooldown days = 1460 }
+}
+}
+
+lyd_play_portent_reflection_option_0_effect = {
+if = {
+limit = { lyd_play_portent_reflection_option_0_trigger = yes }
+remove_short_term_gold = 175
+add_legitimacy = 75
+capital_county = {
+change_county_control = 40
+change_development_progress = 50
+add_county_modifier = { modifier = lyd_play_portent_reflection_option_0_county days = 1095 }
+}
+add_character_flag = { flag = lyd_play_portent_reflection_cooldown days = 1460 }
+}
+}
+
+lyd_play_qi_kinship_option_0_effect = {
+if = {
+limit = { lyd_play_qi_kinship_option_0_trigger = yes }
+remove_short_term_gold = 125
+add_stress = -60
+add_character_modifier = { modifier = lyd_play_qi_kinship_option_0_character days = 1095 }
+add_character_flag = { flag = lyd_play_qi_kinship_cooldown days = 1460 }
+}
+}
+

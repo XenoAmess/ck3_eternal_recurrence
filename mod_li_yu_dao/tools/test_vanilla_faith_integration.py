@@ -120,12 +120,23 @@ class VanillaFaithIntegrationTests(unittest.TestCase):
         self.assertTrue(direct(shown, 'faith', 'faith:confucian_faith'))
         self.assertTrue(direct(one(decision, 'effect'), 'lyd_learn_catalogue_tenets_effect', 'yes'))
 
-    def test_i3b_keeps_complete_owned_rites_guard_and_never_admits_vanilla_by_name(self):
+    def test_i3b_admits_vanilla_with_complete_supported_roster_and_independent_mandates(self):
         guard = self.defs['lyd_i3b_only_owned_rites_faith_trigger']
         self.assertTrue(blocks(guard, 'NOT'))
         self.assertTrue(any(e.key == 'any_faith_rite' for e in walk(guard)))
-        for name in ('lyd_i3b_actor_trigger', 'lyd_i3b_can_begin_trigger'):
-            self.assertFalse(any(e.key == 'faith' and e.value == 'faith:confucian_faith' for e in walk(self.defs[name])))
+        actor = self.defs['lyd_i3b_actor_trigger']
+        self.assertTrue(any(e.key == 'faith' and e.value == 'faith:confucian_faith' for e in walk(actor)))
+        self.assertTrue(any(e.key == 'lyd_i3b_owned_rite_trigger' and e.value == 'yes' for e in walk(actor)))
+        supported = self.defs['lyd_i3b_supported_faith_trigger']
+        self.assertTrue(any(e.key == 'this' and e.value == 'faith:confucian_faith' for e in walk(supported)))
+        self.assertTrue(any(e.key == 'any_faith_rite' for e in walk(supported)))
+        self.assertTrue(any(e.key == 'lyd_i3b_supported_rite_trigger' for e in walk(supported)))
+        rites = self.defs['lyd_i3b_supported_rite_trigger']
+        self.assertTrue({'rite:jingxue','rite:daoxue'} <= {e.value for e in walk(rites) if e.key == 'this'})
+        ready = self.defs['lyd_i3b_ready_trigger']
+        self.assertTrue(any(e.key == 'variable' and e.value == 'lyd_i3b_rites' for e in walk(ready)))
+        self.assertTrue(any(e.key == 'var:lyd_i3b_signed' and e.value == '1' for e in walk(ready)))
+        self.assertTrue(any(e.key == 'var:lyd_i3b_player_yes' and e.value == '1' for e in walk(ready)))
 
     def test_real_static_validator_accepts_projection_and_rejects_parallel_rite_parent(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -133,7 +144,7 @@ class VanillaFaithIntegrationTests(unittest.TestCase):
             for rel,payload in self.outputs.items():
                 path = source/rel; path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(payload)
             (source/'descriptor.mod').write_bytes((REPO/'mod_li_yu_dao/descriptor.mod').read_bytes())
-            self.assertEqual(len(collect_runtime_files(source)), 71)
+            self.assertEqual(len(collect_runtime_files(source)), 84)
             result = validate(source)
             self.assertEqual(result['errors'], [])
             path = source/'common/religion/rite_types/lyd_rites.txt'
