@@ -43,7 +43,6 @@ REQUIRED_RUNTIME_FILES = frozenset({
     "common/religion/faith_types/lyd_faiths.txt",
     "common/religion/rite_types/lyd_rites.txt",
     "common/religion/tenet_types/lyd_tenets.txt",
-    "history/faiths/lyd_faith_history.txt",
     "common/decisions/lyd_decisions.txt",
     "common/character_interactions/lyd_interactions.txt",
     "common/decisions/lyd_c2_consent_decisions.txt",
@@ -66,6 +65,9 @@ REQUIRED_RUNTIME_FILES = frozenset({
 })
 # These two deliberately bounded families accommodate the small helper files.
 # collect_runtime_files freezes the actual production paths in every manifest.
+# The development generator retains this comment-only compatibility artifact.
+# It has no valid engine history entries and must not reach formal staging.
+EMPTY_HISTORY_PLACEHOLDER = "history/faiths/lyd_faith_history.txt"
 RUNTIME_FAMILIES = (
     "common/scripted_triggers/lyd_*.txt",
     "common/scripted_effects/lyd_*.txt",
@@ -94,6 +96,11 @@ def collect_runtime_files(source: Path = SOURCE) -> tuple[str, ...]:
         if path.is_symlink():
             raise ValueError(f"symlink outside source-only directories: {relative}")
         if not path.is_file():
+            continue
+        if relative == EMPTY_HISTORY_PLACEHOLDER:
+            text = path.read_text(encoding="utf-8-sig")
+            if any(line.split("#", 1)[0].strip() for line in text.splitlines()):
+                raise ValueError("non-comment legacy faith history cannot be silently excluded")
             continue
         allowed = relative in REQUIRED_RUNTIME_FILES or (len(parts) == 3 and any(fnmatchcase(relative, pattern) for pattern in RUNTIME_FAMILIES))
         if allowed:

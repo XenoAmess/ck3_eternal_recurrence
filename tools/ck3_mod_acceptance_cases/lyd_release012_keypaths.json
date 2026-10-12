@@ -18,15 +18,16 @@
   "phases": [
     {
       "id": "baseline", "required": true, "maximum_option_actions": 0,
-      "requirements": ["selected_actor_personally_confirmed", "original_confucian_faith_and_jingxue_actual", "original_rites_and_main_rite_preserved", "no_head_of_faith_actual", "production84_manifest_and_actual_profile_loaded", "no_new_LYD_engine_parse_scope_or_unknown_key_errors"],
+      "requirements": ["selected_actor_personally_confirmed", "original_confucian_faith_and_jingxue_actual", "original_rites_and_main_rite_preserved", "no_head_of_faith_actual", "production83_manifest_and_actual_profile_loaded", "no_new_LYD_engine_parse_scope_or_unknown_key_errors"],
       "instructions": "Review actual selected actor and fixture self-only boundary; runtime actor ID comes from snapshot, never receipt's historical Robert label. Preserve actual official GUI/load/error evidence. Resolve startup vanilla events using their reviewed source through existing ROOT controls; unknown events remain held. A fixture marker is not business PASS."
     },
     {
       "id": "entry", "required": true, "maximum_option_actions": 1,
       "decision_key": "lyd_enter_decision",
       "allowed_options": {"lyd.1": [0]},
-      "requirements": ["entry_visible_and_enabled_original_confucian", "production_entry_confirmed_once", "only_selected_self_rite_changed_to_kongmen", "faith_and_original_main_rite_preserved", "all36_distinct_tenets_visible_in_original_personal_belief_catalogue"],
-      "instructions": "Read actual selected decision detail; model.available is not IsValid. Confirm production entry once through official GUI. Welcome may be acknowledged by fresh typed native0 mapping. Read actual rite identity and original Personal Beliefs catalogue; learning/permission is not actual selection."
+      "requirements": ["entry_visible_and_enabled_original_confucian", "production_entry_confirmed_once", "only_selected_self_rite_changed_to_kongmen", "faith_and_original_main_rite_preserved"],
+      "optional_observations": ["all36_distinct_tenets_visible_in_original_personal_belief_catalogue"],
+      "instructions": "Read actual selected decision detail; model.available is not IsValid. Confirm production entry once through official GUI. Welcome may be acknowledged by fresh typed native0 mapping. Read actual rite identity. Catalogue coverage is optional, separately recorded true/false/null, and never blocks confirmed enrollment or credits all36 effects. Learning/permission is not actual selection."
     },
     {
       "id": "begin_eligibility", "required": true, "maximum_option_actions": 0,
@@ -51,7 +52,7 @@
       "decision_key": "lyd_play_reverent_heaven_decision",
       "allowed_options": {"lyd.1000": [0, 1]},
       "requirements": ["T01_personal_OR_core_decision_available_actual", "production_paid_option_confirmed_exactly_once", "actual_piety200_cost_legitimacy_prestige_capital_and_modifier_readback", "actual_CD1460_reentry_disabled"],
-      "instructions": "Core lacks T01 while actual personal slot has it: inspect/confirm decision then fresh paid native0 once. Read actual piety -200/legitimacy100 subject to cap/prestige250/capital control25 subject to cap/stewardship modifier1095/CD1460. No wallet assumptions or synthetic grants."
+      "instructions": "Core lacks T01 while actual personal slot has it: inspect/confirm decision then fresh paid native0 once. Read actual piety -200/legitimacy100 subject to cap/prestige250/capital control25 subject to cap/stewardship modifier1095/CD1460. If actual resources or legal slot are insufficient, record partial/skip and continue other cells without spending. No wallet assumptions or synthetic grants."
     },
     {
       "id": "T33", "required": true, "maximum_option_actions": 1,
@@ -64,7 +65,7 @@
       "id": "institution", "required": false, "maximum_option_actions": 32,
       "allowed_options": {"lyd.410": [0, 1], "lyd.411": [0, 1], "lyd.412": [0, 1], "lyd.413": [0, 1, 2], "lyd.430": [0, 1, 2, 3], "lyd.431": [0], "lyd.432": [0]},
       "requirements": ["original_confucian_production_begin_once", "all_actual_non_dormant_rites_and_electors_included", "production_quorum_and_all_human_consent_actual", "actual_serial_nonce_and_all_rite_signatures_current", "factory_confirmed_once_only_after_actual_mandate", "full_saved_political_title_AST_holder_heir_and_realm_laws_unchanged", "saved_owned_ownerfaith_holder_result1_and_recognized_leader_join"],
-      "instructions": "Optional natural full production consent path: begin, nominate through official decision/interaction, preserve NPC60/40 NO, seal, all real ballots/signatures. No vote/NPC/title injection or fixture mandate. Pre-institution fresh SAVE/cache/G2/G3 supplied; ROOT must read its full political baseline. Before native0 factory: status admit_commit with exact three prerequisite facts and actual SAVE/mandate evidence. Then fresh current430 choose_option; after complete adapter obtains new SAVE/cache/G3, verifies distinct native Title holder/faith/law95/fourproperties and ordered cache unchanged. ROOT full saved AST/heir/law/readback remains necessary. Missing consent may be partial/skip; separate actual coldB5 and C3 never inferred."
+      "instructions": "Optional natural full production consent path. If actual learning/elector/mandate eligibility is unavailable, record partial/skip directly without SAVE. Before any production begin or option, explicitly respond enter_institution with actual eligibility evidence; adapter captures the once-only initial SAVE/cache/G2/G3, which ROOT must read as its full political baseline. Then begin, nominate through official decision/interaction, preserve NPC60/40 NO, seal, all real ballots/signatures. No vote/NPC/title injection or fixture mandate. Before native0 factory: read_precommit for fresh signed SAVE, then admit_commit with exact three prerequisite facts and actual SAVE/mandate evidence. Then fresh current430 choose_option; after complete adapter obtains new SAVE/cache/G3, verifies distinct native Title holder/faith/law95/fourproperties and ordered cache unchanged. ROOT full saved AST/heir/law/readback remains necessary. Missing consent may be partial/skip; separate actual coldB5 and C3 never inferred."
     }
   ],
   "uncovered_product_business": ["full36_live_effect_matrix", "T33_natural365_second_stage", "new_HoF_independent_cold_reload", "C3", "whole_I4"],

@@ -1,0 +1,113 @@
+{
+  "schema": "lyd.release012.source-followup.v1",
+  "recorded_at_utc": "2026-10-12T10:36:08.773246+00:00",
+  "base_commit": "74d2246addb9089c73365dcd3433f980cf810456",
+  "changes": [
+    "Exclude comment-only legacy history from formal staging (83 files).",
+    "Show each initiation and self-nomination predicate independently; preserve full production gates.",
+    "Separate optional all36 catalogue coverage from four required enrollment facts.",
+    "Capture institution protection SAVE only after explicit entry; skipped branch makes no SAVE.",
+    "Reserve 600 seconds for close; preserve real resource/learning failures without synthetic grants."
+  ],
+  "actual_commands": [
+    {
+      "name": "vanilla_integration",
+      "tests": 8,
+      "actual_exit_code": 0,
+      "original_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/vanilla-integration-command-001/RESULT.actual.json",
+        "bytes": 964,
+        "sha256": "847f62ac45442253366d3a9afbd627ae0c5f186ce8ec3e5ed64e180f0b788411"
+      }
+    },
+    {
+      "name": "keypath_adapter",
+      "tests": 14,
+      "actual_exit_code": 0,
+      "original_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/keypath-fix-001/focused-command-001/RESULT.actual.json",
+        "bytes": 1000,
+        "sha256": "6dee786343d62fa897595bfc4a714b2851f0ab041625fe37fe3f787db15bf628"
+      }
+    },
+    {
+      "name": "institution_tooltips",
+      "tests": 7,
+      "actual_exit_code": 0,
+      "original_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/leader-ux-001/FOCUSED.RESULT.actual.json",
+        "bytes": 1531,
+        "sha256": "7296d20944f9c68e91f4bb6e058fe52ab2425baab9483093f2fecae0d9917e4a"
+      }
+    },
+    {
+      "name": "static",
+      "tests": null,
+      "actual_exit_code": 0,
+      "original_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/static-command-001/RESULT.actual.json",
+        "bytes": 925,
+        "sha256": "9edd186f0fbbd77dc63f7eb2d1e4b2c1176ad162fb796b8fe0e7f98afcf7f3cd"
+      }
+    },
+    {
+      "name": "generation",
+      "tests": null,
+      "actual_exit_code": 0,
+      "original_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/generation-command-001/RESULT.actual.json",
+        "bytes": 941,
+        "sha256": "1ee024c3d6691a940aa63c29b4f9f3659de7f253861294af37ab12da0ebcca5c"
+      }
+    },
+    {
+      "name": "reproducible_build",
+      "tests": null,
+      "actual_exit_code": 0,
+      "original_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/build-check-command-001/RESULT.actual.json",
+        "bytes": 946,
+        "sha256": "2175fd2634fe8cdd2c8e63cc075fe00e96c5852f0c50118396cf32fd1d7ca8ba"
+      }
+    }
+  ],
+  "build_inventory_tests": {
+    "tests": 13,
+    "actual_exit_code": 0,
+    "argv": [
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "mod_li_yu_dao/tools/test_build_release.py"
+    ],
+    "original_tool_chunk": "91f9e1",
+    "original_file_receipt": null,
+    "note": "Original output is in the tool transcript; not rerun to manufacture a file receipt."
+  },
+  "staging_file_count": 83,
+  "actual_build_check_stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/build-check-command-001/stdout.log",
+    "bytes": 273,
+    "sha256": "324a2da60db29fb907d6668ccbebfe668f43c0f5e5f240cfc2970b8cac0185b2"
+  },
+  "institution_tooltip_counts": {
+    "begin": 25,
+    "nominate_self": 9
+  },
+  "all36_catalogue_state": "nullable_observation_not_enrollment_gate",
+  "historical_R0069_unchanged": true,
+  "old_R29_B3_candidate_reuse": {
+    "status": "BLOCKED_KNOWN_INCOMPATIBLE",
+    "reason": "The old source never captured lyd_i3b_actor_rite; the new current/commit guards require it.",
+    "legal_next_input": "Cancel the old round via production flow, requalify and obtain new real nomination, votes and signatures; never patch the SAVE or ballot variables."
+  },
+  "live_GUI_or_business_qualification": false,
+  "new_release_uploaded": false,
+  "current_public_version": "0.1.1 Alpha internal test",
+  "admission": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-followup-storage-admission-20261012-032/ADMISSION.actual.json",
+    "bytes": 5808,
+    "sha256": "57b7ad10572108f1fa479ae6cc3e5af38a7113645577a3cd4ea023e6a4205b95"
+  }
+}

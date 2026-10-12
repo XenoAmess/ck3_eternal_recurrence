@@ -600,6 +600,50 @@ lyd_i3b_show_result_effect = {
     }
 }
 ''')
+    # Display the existing predicates separately; the complete execution gate
+    # remains below them and is checked again by the decision's effect.
+    begin_requirements = (
+        ('player', 'is_ai = no'),
+        ('alive', 'is_alive = yes'),
+        ('adult', 'is_adult = yes'),
+        ('landed', 'is_landed = yes'),
+        ('capable', 'NOT = { has_trait = incapable }'),
+        ('confucian', 'religion = religion:confucianism_religion'),
+        ('joined', 'has_character_flag = lyd_enabled'),
+        ('new_rite', 'lyd_member_rite_trigger = yes'),
+        ('authority', '''OR = {
+            AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
+            lyd_i3b_detached_authority_trigger = yes
+            AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+        }'''),
+        ('duchy', 'highest_held_title_tier >= tier_duchy'),
+        ('gender', 'save_temporary_scope_as = lyd_i3b_actor_check rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check }'),
+        ('offices', 'NOT = { any_held_title = { OR = { is_head_of_faith = yes pam_title_is_antipope_office_trigger = yes has_variable = lyd_c3_owned_claim_title } } }'),
+        ('challenger', 'pam_is_antipope_trigger = no'),
+        ('sponsor', 'pam_is_antipope_sponsor_trigger = no'),
+        ('claim', 'NOT = { has_variable = lyd_c3_claim_title }'),
+        ('own_round', 'NOT = { has_variable = lyd_i3b_active }'),
+        ('c2_round', 'NOT = { has_variable = lyd_c2_active }'),
+        ('c3_round', 'NOT = { has_variable = lyd_c3_active }'),
+        ('supported_faith', 'faith = { lyd_i3b_supported_faith_trigger = yes }'),
+        ('faith_doctrine', 'faith = { has_doctrine = doctrine_no_head }'),
+        ('head_title', 'faith = { NOT = { exists = religious_head_title } }'),
+        ('head', 'faith = { NOT = { exists = religious_head } }'),
+        ('faith_challengers', 'faith = { NOT = { any_religious_head_challenger = { always = yes } } }'),
+        ('compatible_rites', 'faith = { NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes } } } }'),
+        ('rite_rounds', 'faith = { NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } } }'),
+    )
+    nomination_requirements = (
+        ('current', 'lyd_i3b_current_trigger = { ACTOR = root }'),
+        ('alive', 'is_alive = yes'),
+        ('adult', 'is_adult = yes'),
+        ('free', 'is_imprisoned = no'),
+        ('capable', 'NOT = { has_trait = incapable }'),
+        ('learning', 'learning >= 15'),
+        ('phase', 'var:lyd_i3b_phase = 1'),
+        ('active_rite', 'rite = { var:lyd_i3b_dormant = 0 }'),
+        ('delegate', 'rite = { NOT = { has_variable = lyd_i3b_delegate } }'),
+    )
     decisions=[]
     for suffix,actor,gate,tooltip,effect in (
         ('begin','lyd_i3b_actor_trigger = yes','lyd_i3b_can_begin_trigger = yes','lyd_i3b_begin_valid_tt','lyd_i3b_begin_effect = yes'),
@@ -620,12 +664,21 @@ lyd_i3b_show_result_effect = {
             # can still inspect the real institution terms and prerequisites.
             shown='is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_owned_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active }'
         description='lyd_i3b_result_review_desc' if suffix=='result_review' else 'lyd_i3b_terms_desc'
+        requirements = begin_requirements if suffix == 'begin' else nomination_requirements if suffix == 'nominate_self' else None
+        if requirements is None:
+            validity = f'custom_description = {{ text = {tooltip} subject = root {gate} }}'
+        else:
+            prefix = 'begin' if suffix == 'begin' else 'nominate'
+            validity = '\n        '.join(
+                f'custom_description = {{ text = lyd_i3b_{prefix}_{key}_tt subject = root {condition} }}'
+                for key, condition in requirements
+            ) + f'\n        hidden_trigger = {{ {gate} }}'
         decisions.append(f'''{name} = {{
     picture = {{ reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }}
     decision_group_type = religious ai_check_interval = 0
     desc = {description} selection_tooltip = {description} confirm_text = {name}
     is_shown = {{ {shown} }}
-    is_valid = {{ custom_description = {{ text = {tooltip} subject = root {gate} }} }}
+    is_valid = {{ {validity} }}
     effect = {{ hidden_effect = {{ if = {{ limit = {{ {actor} {gate} }} {effect} }} }} }}
     ai_will_do = {{ base = 0 }}
 }}''')
@@ -708,8 +761,8 @@ lyd_i3b_nominate_interaction = {
         'lyd_i3b_confirm':('按已重核授权实施','Enact the revalidated terms'),
         'lyd_i3b_pending':('本轮制度实施条件尚未齐备','This round is not ready for enactment'),
         'lyd_i3b_begin_valid_tt':('须为符合教士性别要求、在世成年且有公国以上头衔的新礼仪玩家。原版儒家可直接发起，保留原信仰与主礼仪，并纳入全部实际礼仪（含经学、道学）的独立授权。旧独立共宗须属主礼仪；分离共同体还须本人为实际主礼仪领袖。信仰和全部礼仪须无宗主且教士制度兼容；不得已有宗主、争议宗主、其他职位或待办议案。','Requires a living adult new-rite player with at least a duchy and permitted clergy gender. Vanilla Confucianism may initiate directly, preserving Faith and main rite while including every actual rite, including Jingxue and Daoxue, in independent authorization. Legacy Communion initiators must belong to the main rite; detached communities additionally require the actual native main-rite head. The Faith and all rites must be headless with compatible clergy, with no existing head, challenger, other office or pending proposal.'),
-        'lyd_i3b_nominate_valid_tt':('本轮草案与名单须仍有效；本人须为本派合格学者，且本派活跃、尚无已接受提名的代表。','The draft and roster must remain valid; I must be a qualified scholar of an active school without an accepted representative.'),
-        'lyd_i3b_seal_valid_tt':('本轮草案与名单须仍有效；每个活跃派都须有已接受提名的合格学者代表与正数学者名额。缺代表须先推举；活跃派若无合格学者，须先实际补足资格，再撤回重议，不能算作休眠或补假票。','The draft and roster must remain valid. Every active school needs an accepted qualified representative and at least one eligible scholar. Nominate missing representatives first. An active school with no eligible scholars must acquire real qualifications, then withdraw and restart; it cannot count as dormant or receive invented votes.'),
+        'lyd_i3b_nominate_valid_tt':('本人须在世、成年、自由、非无能且实际学识至少15；学识不足仍可发起议案，但不能自提名。先撤回本轮，再合法培养或招揽同信仰、同礼仪的合格学者，实际达标后重议。践礼修身给予学识生活方式经验，不保证直接增加学识属性。','I must be living, adult, free, capable and have actual Learning of at least 15. Lower Learning does not prevent initiation, but prevents self-nomination. Withdraw first, then lawfully develop or recruit an eligible scholar of the same Faith and rite and start a new proposal. Cultivation grants Learning lifestyle experience, not a guaranteed direct Learning increase.'),
+        'lyd_i3b_seal_valid_tt':('本轮草案与名单须仍有效；每个活跃派都须有已接受提名的合格学者代表与正数学者名额。缺代表须先推举。活跃派若无合格学者，请先撤回本轮，再通过正常教育、生活方式或实际可用的招揽、改信与转派途径，准备在世、成年、自由、非无能、同信仰同礼仪且实际学识至少15的人选，随后重新发起；仅招入宫廷或获得生活方式经验不等于达标。有信众但无学者的派不算休眠，不能补假票，各活跃派仍各需三分之二授权及代表签署。','The draft and roster must remain valid. Every active school needs an accepted eligible representative and a positive scholarly electorate. Nominate missing representatives first. If an active school has no eligible scholars, withdraw first. Use normal education, lifestyles or actually available recruitment, conversion and rite-adoption routes to prepare a living, adult, free, capable candidate of the same Faith and rite with actual Learning of at least 15, then initiate again. Court recruitment or lifestyle experience alone does not establish eligibility. A school with followers but no scholars is not dormant; no votes are invented, and each active school still needs its own two-thirds mandate and representative signature.'),
         'lyd_i3b_current_valid_tt':('发起者、共同体、主礼仪、完整名单、资格与本轮占用须仍与议案一致；失效后请撤回重议。','The initiator, Communion, main rite, full roster, eligibility and this round’s locks must still match. Withdraw and restart an invalid proposal.'),
         'lyd_i3b_cancel_valid_tt':('须为仍存活的玩家原发起者，且本人仍有本轮议案；转派、转信或失去发起资格仍可撤回。','Requires the living human initiator’s own active round. Withdrawal remains available after affiliation, faith or initiation eligibility changes.'),
         'lyd_i3b_result_valid_tt':('须为仍存活的玩家，且本人有已保存的制度实施回执。','Requires a living human player with a saved headship attempt receipt.'),
@@ -742,6 +795,42 @@ lyd_i3b_nominate_interaction = {
         'lyd_i3b_doctrine_clause_tt':('制度条款：当前整个信仰及以下完整礼仪名单均由“无宗主”改为“世俗宗主”，原版经学、道学不豁免；不改信条、主礼仪或信众归属。首任候选：[lyd_i3b_actor.GetTitledFirstName]。休眠礼仪同列条款，但不贡献赞成票。',
                                      'Institution terms: the current Faith and complete following rite list replace no head with temporal head. Vanilla Jingxue/Daoxue do not opt out. Tenets, main rite and followers stay unchanged. First candidate: [lyd_i3b_actor.GetTitledFirstName]. Dormant rites are terms but contribute no affirmative votes.'),
     }
+    loc.update({
+        'lyd_i3b_begin_player_tt':('本人为玩家。','I am a human player.'),
+        'lyd_i3b_begin_alive_tt':('本人在世。','I am alive.'),
+        'lyd_i3b_begin_adult_tt':('本人已成年。','I am an adult.'),
+        'lyd_i3b_begin_landed_tt':('本人有领地。','I am landed.'),
+        'lyd_i3b_begin_capable_tt':('本人没有无能特质。','I do not have the Incapable trait.'),
+        'lyd_i3b_begin_confucian_tt':('本人属于儒家宗教。','I belong to the Confucian religion.'),
+        'lyd_i3b_begin_joined_tt':('本人已通过入门启用学派玩法。','I have entered the school system.'),
+        'lyd_i3b_begin_new_rite_tt':('本人当前采用本模组的新礼仪。','I currently follow one of this mod’s new rites.'),
+        'lyd_i3b_begin_authority_tt':('发起路线符合当前信仰：原版儒家新礼仪玩家可直接发起；旧独立共宗须属主礼仪；分离共同体须本人为实际主礼仪领袖。','My initiation route matches my Faith: a new-rite vanilla Confucian player may initiate directly; legacy Communion requires its main rite; a detached Communion requires its actual main-rite head.'),
+        'lyd_i3b_begin_duchy_tt':('本人最高头衔至少为公国。','My highest title is at least a duchy.'),
+        'lyd_i3b_begin_gender_tt':('本人的性别符合当前礼仪的教士要求。','My gender is permitted for clergy by my current rite.'),
+        'lyd_i3b_begin_offices_tt':('本人未持有宗主、争议宗主或本模组争统办公头衔。','I hold no headship, challenger or mod claim-office title.'),
+        'lyd_i3b_begin_challenger_tt':('本人不是现任争议宗主。','I am not a current religious-head challenger.'),
+        'lyd_i3b_begin_sponsor_tt':('本人不是现任争议宗主的赞助者。','I do not sponsor a current religious-head challenger.'),
+        'lyd_i3b_begin_claim_tt':('本人没有尚未处理的争统头衔记录。','I have no outstanding mod claim-title record.'),
+        'lyd_i3b_begin_own_round_tt':('本人没有正在进行的宗主制度议案。','I have no active headship proposal.'),
+        'lyd_i3b_begin_c2_round_tt':('本人没有正在进行的分离共同体议案。','I have no active detached-Communion proposal.'),
+        'lyd_i3b_begin_c3_round_tt':('本人没有正在进行的争统议案。','I have no active challenger proposal.'),
+        'lyd_i3b_begin_supported_faith_tt':('当前信仰及其完整礼仪名单属于支持范围。','My Faith and its complete rite roster are supported.'),
+        'lyd_i3b_begin_faith_doctrine_tt':('当前信仰采用无宗主制度。','My Faith has the No Head doctrine.'),
+        'lyd_i3b_begin_head_title_tt':('当前信仰不存在宗主办公头衔（即使空缺也不允许）。','My Faith has no head-office title, including an unheld one.'),
+        'lyd_i3b_begin_head_tt':('当前信仰不存在宗主。','My Faith has no religious head.'),
+        'lyd_i3b_begin_faith_challengers_tt':('当前信仰不存在争议宗主。','My Faith has no religious-head challengers.'),
+        'lyd_i3b_begin_compatible_rites_tt':('全部实际礼仪均兼容：无宗主、世俗教士，且没有世俗或属灵宗主及属灵任命教士制度。','Every actual rite is compatible: no head and lay clergy, with no temporal or spiritual head or spiritual clergy appointments.'),
+        'lyd_i3b_begin_rite_rounds_tt':('全部实际礼仪均未被其他分离、争统或宗主议案占用。','No actual rite is locked by another detachment, challenger or headship proposal.'),
+        'lyd_i3b_nominate_current_tt':('本轮草案、完整名单与资格仍有效；若已改变，请撤回重议。','This draft, complete roster and eligibility remain valid; withdraw and restart after changes.'),
+        'lyd_i3b_nominate_alive_tt':('本人在世。','I am alive.'),
+        'lyd_i3b_nominate_adult_tt':('本人已成年。','I am an adult.'),
+        'lyd_i3b_nominate_free_tt':('本人未被囚禁。','I am not imprisoned.'),
+        'lyd_i3b_nominate_capable_tt':('本人没有无能特质。','I do not have the Incapable trait.'),
+        'lyd_i3b_nominate_learning_tt':('本人实际学识至少15；不足时不能自提名。先撤回，再合法培养或招揽同信仰同礼仪学者后重议；践礼修身的生活方式经验不保证直接增加学识。','My actual Learning is at least 15. Otherwise I cannot nominate myself: withdraw, lawfully develop or recruit a scholar of the same Faith and rite, then restart. Cultivation lifestyle experience does not guarantee a direct Learning increase.'),
+        'lyd_i3b_nominate_phase_tt':('本轮仍在推举代表阶段，尚未封定。','This round is still in its unsealed nomination phase.'),
+        'lyd_i3b_nominate_active_rite_tt':('本人所属礼仪为本轮活跃派。','My rite is active in this round.'),
+        'lyd_i3b_nominate_delegate_tt':('本派尚无已接受提名的代表。','My school has no accepted representative yet.'),
+    })
     for rite in catalogue.RITES:
         loc[f'lyd_i3b_term_{rite.slug}_tt']=(f'{rite.name_zh}：无宗主 → 世俗宗主。',f'{rite.name_en}: no head → temporal head.')
     loc['lyd_i3b_term_jingxue_tt']=('经学（原版）：无宗主 → 世俗宗主；保留原信条。','Jingxue (vanilla): no head → temporal head; original tenets retained.')

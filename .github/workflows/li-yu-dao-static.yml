@@ -55,6 +55,7 @@ jobs:
           python -B -X utf8 mod_li_yu_dao/tools/test_vanilla_faith_integration.py
           python -B -X utf8 tools/test_ck3_mod_acceptance_lyd_vanilla_feedback.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
+          python -B -X utf8 mod_li_yu_dao/tools/test_institution_tooltips.py
           python -B -X utf8 mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py
           python mod_li_yu_dao/tools/test_institution_detached.py
           python mod_li_yu_dao/tools/test_factory_diagnostic.py

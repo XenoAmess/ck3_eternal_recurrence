@@ -1,0 +1,181 @@
+{
+  "schema": "lyd.release012.actual-live-partial.v1",
+  "recorded_at_utc": "2026-10-12T10:26:03.652112+00:00",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0069",
+  "source_commit": "74d2246addb9089c73365dcd3433f980cf810456",
+  "candidate_version": "0.1.2",
+  "historical_production_file_count": 84,
+  "actual_public_exit_code": 2,
+  "actual_public_started_at_utc": "2026-10-12T09:11:36.121004+00:00",
+  "actual_public_finished_at_utc": "2026-10-12T09:52:20.162972+00:00",
+  "business_pass": false,
+  "whole_product_release_pass": false,
+  "observed": {
+    "selected_actor_id": 31254,
+    "game_pid": 17168,
+    "generation": 1,
+    "paused_date_raw": 53144328,
+    "original_native_faith_key": "confucian_faith",
+    "original_native_faith_id": 31,
+    "original_native_rite_id": 32,
+    "original_native_main_rite_id": 33,
+    "original_GUI_rite": "经学",
+    "original_GUI_head_of_faith": "无",
+    "entry_confirmed_once_via_official_GUI": true,
+    "welcome_event": "lyd.1",
+    "welcome_option_submitted_once_via_typed_MCP": true,
+    "after_entry_GUI_rite": "孔门经礼",
+    "after_entry_GUI_learning": 5,
+    "after_entry_GUI_gold": 248,
+    "after_entry_GUI_piety": 150,
+    "after_entry_native_faith_main_rite_join": null,
+    "all36_catalogue_observed": false,
+    "personal_belief_selected": false,
+    "paid_active_practice_performed": false,
+    "institution_begin_performed": false,
+    "head_of_faith_created": false,
+    "natural_days_advanced": 0,
+    "note": "personal-open-001.png opened the character panel; its name does not prove Personal Beliefs was opened."
+  },
+  "engine_error": {
+    "actual_message": "Faith history file contains no valid entries lyd_faith_history.txt",
+    "at_utc": "2026-10-12T09:15:19.601599+00:00",
+    "cause": "Formal staging included the comment-only development compatibility history placeholder.",
+    "source_fix": "Exclude that exact comment-only placeholder from future formal builds; current inventory becomes 83. Historical R0069 files remain unchanged.",
+    "future_engine_verification": "NOT_RUN"
+  },
+  "closure": {
+    "normal_close_qualified": false,
+    "original_game_retained_handle": {
+      "signaled": false,
+      "exit_code": null,
+      "actual_retained_os0": false,
+      "pid": 17168,
+      "create_time": 1791796311.9042332,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "actual_final_game_exit_code": null,
+    "actual_native_cleanup": null,
+    "original_host_actual_wait_returncode": 0,
+    "original_allocator_actual_wait_exit_code": 0,
+    "keeper_thread_exited": true,
+    "screen_release_sequence": 5106,
+    "screen_release_state": "done",
+    "resources_after_release": [],
+    "final_offline_directly_reviewed_by": "ROOT",
+    "final_offline_image": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-release012-keypaths-storage-admission-20261012-031\\desktop\\final-offline-002.png",
+      "bytes": 617301,
+      "sha256": "0b3b84924b80aa2f677807b7a6ea20b20c5cdecbfa877883b9d1fa364b43105f"
+    },
+    "final_offline_capture_at_utc": "2026-10-12T10:13:42.372124+00:00",
+    "actual_restored_display": [
+      1024,
+      768
+    ],
+    "note": "Resource closure does not turn public exit2 into normal GUI/OS0/native/business PASS."
+  },
+  "storage": {
+    "original_reserved_peak_bytes": 234881024,
+    "live_measurement_plus_reserves_bytes": 321607738,
+    "original_peak_exceeded_by_bytes": 86726714,
+    "original_deadline_utc": "2026-10-12T09:42:20.825987+00:00",
+    "close_only_review003_expired_at_utc": "2026-10-12T10:02:20.825987+00:00",
+    "late_close_review004_explicit": true,
+    "overrun_retroactively_admitted": false,
+    "final_known_logical_bytes": 334425985,
+    "final_debit_with_conservative_reserves_bytes": 355397505,
+    "final_project_carry_bytes": 137625520308,
+    "new_cleanup_credit_bytes": 0
+  },
+  "operational_corrections": [
+    "R0069 used frontend-robert-bootstrap; the six-tool menu-only restriction belonged to R0068 and did not apply here.",
+    "The actual src/xar_autoplayer/bridge/mcp_server.py registers three normal_exit_v1 tools; the fixed host still lacks their managed-profile inventory binding.",
+    "Scan-code-zero Escape produced no visible change. Scan-code-01 Escape closed the character panel; the actual final normal Quit was not verified.",
+    "The former required all36 catalogue observation prevented later keypaths after confirmed enrollment. Future cases separate catalogue coverage from actual enrollment."
+  ],
+  "exact_head_CI": {
+    "commit": "74d2246addb9089c73365dcd3433f980cf810456",
+    "official_runner": {
+      "run_id": 38226730597,
+      "conclusion": "success"
+    },
+    "li_yu_dao": {
+      "run_id": 38226730675,
+      "conclusion": "success"
+    },
+    "linear_history": {
+      "run_id": 38226730648,
+      "conclusion": "success"
+    },
+    "readback_tool_chunk": "4a24ca",
+    "actual_readback_exit_code": 0
+  },
+  "evidence": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/run-command-001/RESULT.actual.json",
+      "bytes": 1659,
+      "sha256": "667fd6b1f2dbafd45d70cee0bb70b980977b00167f25d4e50a930b5a3ccdbab2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/allocate-command-001/RESULT.actual.json",
+      "bytes": 1991,
+      "sha256": "234d01178963dd7a16f64cb05a6a96458da999b2fe7f97e464dcaae00cb14ea2"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0069/host-original-process-exit.json",
+      "bytes": 246,
+      "sha256": "7e6443a5be624df088c1850d8312a774625311b596588af7932e7d12df06098f"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0069/case-output/normal-close-result.json",
+      "bytes": 711,
+      "sha256": "aefcf617270e3ae4c7e0455dc001979a5d09fba5d35c5ef19d7d4c1cc42bbc9a"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0069/case-output/entry-cell-result.json",
+      "bytes": 1591,
+      "sha256": "82ee9113330af073c7219abc661e9f795297439b203883189a20046bbf3e914e"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0069/keeper-stop-proof-001.json",
+      "bytes": 6722,
+      "sha256": "c73596a115f1ebad1840168bee13d4454877a27c0b1531d4298f5d94e5e2aea1"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/keepers/20261012-a32/report.json",
+      "bytes": 448,
+      "sha256": "a1f250d6cbc978a55353f8b7f5f61a1c671cfcc915d9f51c9567cad409ba6ab6"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0069/release-command-001/RESULT.actual.json",
+      "bytes": 1226,
+      "sha256": "f324fb002cf803104350abc2f3bca84b96e5fb146979af8b5e710724808c3548"
+    },
+    {
+      "path": "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0069/release-command-001/stdout.log",
+      "bytes": 1366,
+      "sha256": "2ca1dfc69048b0ec937e4adb842ccdd47770a637aa96a4dc9cb36d099bedfa70"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/desktop/final-offline-002.capture.json",
+      "bytes": 1115,
+      "sha256": "e0984f2ab31dea10cb258c15454ac756995a60b46d63c106d0cdcef4d57908e9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/CLOSE-ONLY-MANUAL-REVIEW-004.actual.json",
+      "bytes": 3296,
+      "sha256": "60c626e0cb5b7a0f83040451913ed836f6c7d55579caee24191f6b62b85f4cf3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/FINAL-MEASUREMENT.actual.json",
+      "bytes": 1266,
+      "sha256": "e4bcf5bbad07663b69c4044723994ccff0924846aaf1fcfa01a16b723c83d0d9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/CLOSED-RESERVATION.actual.json",
+      "bytes": 4054,
+      "sha256": "09109b2be368cd33ee676bdc9dc2ddcd48f71be7a1cde05ac449a2ef015e7aa6"
+    }
+  ]
+}

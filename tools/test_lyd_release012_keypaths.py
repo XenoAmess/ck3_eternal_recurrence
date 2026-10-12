@@ -55,6 +55,7 @@ class Client:
         self.evidence = evidence
         self.responses = list(responses or [])
         self.steps, self.requests = [], []
+        self.reserves = []
 
     def snapshot(self, **kwargs):
         return copy.deepcopy(self.current)
@@ -87,8 +88,9 @@ class Client:
         return [{'id': step['id'], 'ok': True, 'result': result,
                  'after_snapshot': copy.deepcopy(self.current)}]
 
-    def root_checkpoint(self, name, request, reserve=420):
+    def root_checkpoint(self, name, request, reserve=600):
         self.requests.append(copy.deepcopy(request))
+        self.reserves.append(reserve)
         response = self.responses.pop(0)
         return {'run_id': 'SYNTHETIC', 'reviewer': '/root', **response}
 
@@ -198,6 +200,100 @@ class Release012Tests(unittest.TestCase):
         self.assertNotIn(1, T33['allowed_options']['lyd.1032'])
         self.assertFalse(next(p for p in data['phases'] if p['id'] == 'institution')['required'])
         self.assertNotIn('29829', (HERE / 'ck3_mod_acceptance_cases/lyd_release012_keypaths_adapter.py').read_text())
+
+    def configured_context(self, name):
+        config = json.loads((HERE / 'ck3_mod_acceptance_cases/lyd_release012_keypaths.json').read_text())
+        output = self.root / name
+        contract = output / 'state/profile/mod-content/fixture/_case_contract.json'
+        contract.parent.mkdir(parents=True)
+        contract.write_text(json.dumps({'product': 'li-yu-dao', 'case': case.CASE, 'config': config}))
+        return config, {**self.context, 'output': str(output), 'product': 'li-yu-dao',
+                        'case': case.CASE, 'state_dir': str(output / 'state')}
+
+    def test_confirmed_entry_catalogue_false_or_unknown_and_resource_partial_continue(self):
+        key = 'all36_distinct_tenets_visible_in_original_personal_belief_catalogue'
+        for observed_catalogue in (False, None):
+            config, context = self.configured_context('catalogue-' + str(observed_catalogue))
+            entry = next(p for p in config['phases'] if p['id'] == 'entry')
+            self.assertEqual(len(entry['requirements']), 4)
+            self.assertNotIn(key, entry['requirements'])
+            responses = []
+            for phase in config['phases']:
+                facts = {k: True for k in phase['requirements']}
+                if phase['id'] == 'entry' and observed_catalogue is not None:
+                    facts[key] = observed_catalogue
+                status = ('skip' if phase['id'] == 'institution' else 'partial'
+                          if phase['id'] in {'personal_T01', 'T01', 'T33'} else 'complete')
+                responses.append({'status': status, 'facts': facts, 'evidence': [self.ref],
+                                  'reason': 'Actual resource/slot/elector requirement unavailable'})
+            client = Client(responses=responses)
+            with patch.object(case, 'religion', side_effect=[{'faith_id': 107, 'rite_id': 1},
+                    {'faith_id': 107, 'rite_id': 2}]), patch.object(case, 'navigate', return_value={}), \
+                    patch.object(case, 'native_head_bundle') as bundle:
+                result = case.run_case(context, client)
+            cells = {c['phase']: c for c in result['cells']}
+            self.assertEqual(list(cells), [p['id'] for p in config['phases']])
+            self.assertTrue(cells['entry']['qualified'])
+            self.assertIs(cells['entry']['optional_observations'][key], observed_catalogue)
+            self.assertTrue(cells['T03']['qualified'])
+            self.assertFalse(cells['T01']['qualified'])
+            self.assertFalse(result['case_contract_qualified'])
+            self.assertFalse(result['all36_live_effect_credit'])
+            self.assertFalse(result['whole_product_release_pass'])
+            self.assertEqual(client.reserves, [600] * len(config['phases']))
+            bundle.assert_not_called()
+
+    def test_actual_entry_faith_or_rite_failure_still_stops(self):
+        for label, enrolled in [('faith', {'faith_id': 108, 'rite_id': 2}),
+                                ('rite', {'faith_id': 107, 'rite_id': 1})]:
+            config, context = self.configured_context('bad-' + label)
+            responses = [{'status': 'complete', 'facts': {k: True for k in p['requirements']},
+                          'evidence': [self.ref]} for p in config['phases'][:2]]
+            client = Client(responses=responses)
+            with patch.object(case, 'religion', side_effect=[{'faith_id': 107, 'rite_id': 1}, enrolled]), \
+                    patch.object(case, 'navigate', return_value={}), \
+                    patch.object(case, 'native_head_bundle') as bundle:
+                result = case.run_case(context, client)
+            self.assertEqual([c['phase'] for c in result['cells']], ['baseline', 'entry'])
+            self.assertFalse(result['cells'][-1]['qualified'])
+            self.assertFalse(result['case_contract_qualified'])
+            bundle.assert_not_called()
+
+    def test_institution_skip_or_complete_without_enter_never_saves_or_qualifies(self):
+        config = json.loads((HERE / 'ck3_mod_acceptance_cases/lyd_release012_keypaths.json').read_text())
+        phase = next(p for p in config['phases'] if p['id'] == 'institution')
+        for status in ('skip', 'complete'):
+            client = Client(responses=[{'status': status,
+                'facts': {k: True for k in phase['requirements']}, 'evidence': [self.ref]}])
+            with patch.object(case, 'native_head_bundle') as bundle:
+                result = case.review_cell(self.context, client, case.binding(frame()), phase, set())
+            self.assertFalse(result['qualified'])
+            self.assertIsNone(result['actual_initial_political_bundle'])
+            self.assertEqual(client.steps, [])
+            bundle.assert_not_called()
+
+    def test_institution_enter_precedes_actions_and_returns_once_initial_and_signed_bundles(self):
+        config = json.loads((HERE / 'ck3_mod_acceptance_cases/lyd_release012_keypaths.json').read_text())
+        phase = next(p for p in config['phases'] if p['id'] == 'institution')
+        initial = {'cache': [11, 22], 'title': {'legal_head_title_absent': True}, 'save': {'name': 'initial'}}
+        signed = {**initial, 'save': {'name': 'signed'}}
+        statuses = ['choose_option', 'read_precommit', 'admit_commit', 'enter_institution',
+                    'enter_institution', 'read_precommit', 'complete']
+        responses = [{'status': s, 'evidence': [self.ref],
+            'facts': {k: True for k in phase['requirements']}} for s in statuses]
+        client = Client(responses=responses)
+        with patch.object(case, 'native_head_bundle', side_effect=[initial, signed]) as bundle:
+            result = case.review_cell(self.context, client, case.binding(frame()), phase, set())
+        self.assertEqual(bundle.call_count, 2)
+        self.assertTrue(bundle.call_args_list[0].args[-1].endswith('-0004-initial'))
+        self.assertTrue(bundle.call_args_list[1].args[-1].endswith('-0006-signed-precommit'))
+        self.assertEqual(result['actual_initial_political_bundle'], initial)
+        self.assertEqual(result['fresh_signed_precommit_bundle'], signed)
+        self.assertFalse(result['factory_submitted_by_adapter'])
+        self.assertEqual(client.steps, [])
+        self.assertIn('before production actions', client.requests[1]['last_contract_error'])
+        self.assertIn('once-only', client.requests[5]['last_contract_error'])
+        self.assertTrue(all(r == 600 for r in client.reserves))
 
     def test_complete_representatives_never_invent_optional_HoF_cold_or_whole_PASS(self):
         config = json.loads((HERE / 'ck3_mod_acceptance_cases/lyd_release012_keypaths.json').read_text())

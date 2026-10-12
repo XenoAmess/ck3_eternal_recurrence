@@ -144,7 +144,9 @@ class VanillaFaithIntegrationTests(unittest.TestCase):
             for rel,payload in self.outputs.items():
                 path = source/rel; path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(payload)
             (source/'descriptor.mod').write_bytes((REPO/'mod_li_yu_dao/descriptor.mod').read_bytes())
-            self.assertEqual(len(collect_runtime_files(source)), 84)
+            inventory = collect_runtime_files(source)
+            self.assertEqual(len(inventory), 83)
+            self.assertNotIn("history/faiths/lyd_faith_history.txt", inventory)
             result = validate(source)
             self.assertEqual(result['errors'], [])
             path = source/'common/religion/rite_types/lyd_rites.txt'

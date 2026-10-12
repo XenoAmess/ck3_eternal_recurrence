@@ -190,6 +190,7 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
     """Finite ROOT UI/semantic review; unknown Python data stays in original hold."""
     attempts, actions, last_error = 0, 0, None
     commit_event, precommit, factory_submitted, precommit_requested = None, None, False, False
+    initial_requested = before_head is not None
     phase_options = set()
     while True:
         attempts += 1
@@ -208,25 +209,37 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
             'requirements': phase['requirements'], 'instructions': phase['instructions'],
             'actual_start_binding': initial, 'actual_before_binding': binding(frame),
             'actual_typed_event': packet, 'actual_initial_political_bundle': before_head,
+            'initial_political_bundle_requested': initial_requested,
+            'optional_observations': phase.get('optional_observations', []),
             'actual_precommit_bundle': precommit,
             'last_contract_error': last_error, 'submitted_option_actions': actions,
             'responses': ['complete', 'partial', 'skip', 'abort', 'observe', 'choose_option',
-                          'read_precommit', 'admit_commit'],
+                          'read_precommit', 'admit_commit'] +
+                         (['enter_institution'] if phase['id'] == 'institution' else []),
             'choose_option': 'Supply exact current event_definition_key/native_option_index; adapter freshly re-queries and maps visible public number. No guessed tuple or replay.',
             'unavailable_native_fields': 'Wallets, effective modifiers, complete saved political AST/heirs/laws require actual original GUI/new SAVE evidence.',
             'original_hold_deadline_unchanged': True, 'whole_product_pass_inferred': False,
-        }, reserve=420)
+        }, reserve=600)
         require(response.get('run_id') == context['run_id'] and
                 response.get('reviewer') == client.operator_reviewer, 'ROOT response crossed live owner')
         status = response.get('status')
         if status == 'observe':
             continue
-        if status in {'choose_option', 'read_precommit', 'admit_commit'}:
+        if status in {'enter_institution', 'choose_option', 'read_precommit', 'admit_commit'}:
             try:
                 evidence = response.get('evidence', [])
                 require(evidence, 'Action needs actual reviewed original source/UI evidence')
                 for ref in evidence:
                     check_evidence(ref)
+                if status == 'enter_institution':
+                    require(phase['id'] == 'institution' and not initial_requested and
+                            not precommit_requested and not factory_submitted and actions == 0,
+                            'Initial institution bundle is once-only and precedes production actions')
+                    initial_requested = True
+                    before_head = native_head_bundle(client, initial, name + '-initial')
+                    continue
+                require(phase['id'] != 'institution' or before_head is not None,
+                        'Enter institution and review its initial bundle before production actions')
                 if status == 'read_precommit':
                     require(phase['id'] == 'institution' and not precommit_requested and not factory_submitted,
                             'One fresh signed-precommit bundle only; no SAVE replay')
@@ -292,9 +305,15 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
         facts = response.get('facts', {})
         qualified = status == 'complete' and isinstance(facts, dict) and all(
             facts.get(k) is True for k in phase['requirements'])
+        if phase['id'] == 'institution':
+            qualified = qualified and before_head is not None
+        observations = {key: facts.get(key) if type(facts.get(key)) is bool else None
+                        for key in phase.get('optional_observations', [])} if isinstance(facts, dict) else {
+                            key: None for key in phase.get('optional_observations', [])}
         result = {'phase': phase['id'], 'status': status, 'qualified': qualified,
             'before_native_binding': initial, 'after_native_binding': binding(after),
             'review': response, 'submitted_option_actions': actions, 'last_contract_error': last_error,
+            'optional_observations': observations, 'actual_initial_political_bundle': before_head,
             'fresh_signed_precommit_bundle': precommit, 'factory_submitted_by_adapter': factory_submitted}
         return result
 
@@ -314,7 +333,6 @@ def run_case(context, client):
     consumed = set()
     original = religion(client, initial, 'release012-original-religion')
     result['original_religion'] = original
-    before_head = None
     for phase in data['phases']:
         if phase.get('decision_key'):
             try:
@@ -322,9 +340,7 @@ def run_case(context, client):
             except ValueError as error:
                 client.checkpoint('release012-' + phase['id'] + '-navigation-gap', {
                     'error': str(error), 'action_replayed': False, 'business_pass': False})
-        if phase['id'] == 'institution':
-            before_head = native_head_bundle(client, initial, 'release012-pre-institution')
-        cell = review_cell(context, client, initial, phase, consumed, before_head)
+        cell = review_cell(context, client, initial, phase, consumed)
         if phase['id'] == 'entry' and cell['qualified']:
             actual = religion(client, initial, 'release012-enrolled-religion')
             cell['actual_enrolled_religion'] = actual
@@ -335,6 +351,7 @@ def run_case(context, client):
             cell['qualified'] = 'lyd_tenet_reverent_heaven' in keys.get('personal_tenet_keys', [])
             cell['actual_personal_parameters'] = keys
         if phase['id'] == 'institution' and cell['qualified']:
+            before_head = cell['actual_initial_political_bundle']
             after_head = native_head_bundle(client, initial, 'release012-post-institution')
             cell['actual_before_head'], cell['actual_after_head'] = before_head, after_head
             cell['qualified'] = head_qualified(before_head, after_head, initial['actor'], original['faith_id'])

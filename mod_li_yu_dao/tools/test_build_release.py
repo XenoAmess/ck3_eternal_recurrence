@@ -23,7 +23,7 @@ def fixture(source: Path) -> None:
         "common/religion/faith_types/lyd_faiths.txt": "lyd_faith = { faith_details = { religion = confucianism_religion } main_rite = lyd_rite }\n",
         "common/religion/rite_types/lyd_rites.txt": "lyd_rite = { name = lyd_rite desc = lyd_rite_desc faith = lyd_faith tenets = { lyd_tenet lyd_tenet_second lyd_tenet_third } }\n",
         "common/religion/tenet_types/lyd_tenets.txt": "lyd_tenet = { }\nlyd_tenet_second = { }\nlyd_tenet_third = { }\n",
-        "history/faiths/lyd_faith_history.txt": "lyd_faith = { 867.1.1 = { main_rite = lyd_rite } }\n",
+        "history/faiths/lyd_faith_history.txt": "# Legacy compatibility placeholder; no faith history is authored.\n",
         "common/scripted_triggers/lyd_actor_triggers.txt": "lyd_actor = { is_ai = no }\n",
         "common/scripted_effects/lyd_notice_effects.txt": "lyd_notify = { add_stress = -5 remove_short_term_gold = 10 add_gold = 5 trigger_event = lyd.1 }\n",
         "common/decisions/lyd_decisions.txt": 'lyd_open = { picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" } ai_check_interval = 0 is_shown = { lyd_actor = yes } effect = { if = { limit = { lyd_actor = yes } lyd_notify = yes } } }\n',
@@ -47,6 +47,42 @@ def fixture(source: Path) -> None:
 
 
 class BuildTests(unittest.TestCase):
+    def test_comment_only_legacy_history_is_not_runtime(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lyd-empty-history-") as directory:
+            source = Path(directory)
+            fixture(source)
+            legacy = source / "history/faiths/lyd_faith_history.txt"
+            before = legacy.read_bytes()
+            inventory = release.collect_runtime_files(source)
+            self.assertNotIn("history/faiths/lyd_faith_history.txt", inventory)
+            self.assertIn("common/religion/faith_types/lyd_faiths.txt", inventory)
+            self.assertEqual(legacy.read_bytes(), before)
+            legacy.unlink()
+            self.assertEqual(release.collect_runtime_files(source), inventory)
+        actual = release.collect_runtime_files(release.SOURCE)
+        self.assertEqual(len(actual), 83)
+        self.assertNotIn("history/faiths/lyd_faith_history.txt", actual)
+
+    def test_history_exclusion_rejects_real_entries_and_other_paths(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lyd-history-content-") as directory:
+            source = Path(directory)
+            fixture(source)
+            legacy = source / "history/faiths/lyd_faith_history.txt"
+            for payload in (
+                "lyd_common_faith = { }\n",
+                "lyd_common_faith = { 867.1.1 = { created = yes } }\n",
+                "confucian_faith = { 867.1.1 = { main_rite = jingxue } }\n",
+                "unexpected = yes # not a comment-only file\n",
+            ):
+                with self.subTest(payload=payload):
+                    write(legacy, payload, bom=True)
+                    with self.assertRaisesRegex(ValueError, "non-comment legacy faith history"):
+                        release.collect_runtime_files(source)
+            write(legacy, "# Comment-only placeholder\n", bom=True)
+            write(source / "history/faiths/other_history.txt", "# Not the declared placeholder\n", bom=True)
+            with self.assertRaisesRegex(ValueError, "unexpected=.*other_history"):
+                release.collect_runtime_files(source)
+
     def test_parameterized_guard_proves_only_current_actor(self) -> None:
         parse = static.parse_clausewitz
         helper = parse("is_ai = no faith = $TARGET$")

@@ -1,0 +1,135 @@
+{
+  "schema": "lyd-r65-cleanup-ad030-close-ad031-admission-record-v1",
+  "record_date_utc": "2026-10-12",
+  "facts_only": true,
+  "policy_version": "1.0.0",
+  "cleanup": {
+    "target": "C:/workspace/ck3-common-runtime/cases/lyd-vanilla-feedback-20261012-016/state/profile/shadercache",
+    "reason": "Closed R65 unsupported-tool failure cache superseded by qualified R68 using the same exact Native058 runtime; early retirement explicitly reviewed under the common policy.",
+    "actual_batch_file_counts": [1000, 1000, 1000, 740],
+    "actual_batch_logical_bytes": [55295596, 52665320, 22472477, 16508674],
+    "all_four_actual_results_ok": true,
+    "deleted_files": 3740,
+    "logical_deleted_bytes": 146942067,
+    "cache_body_reads_or_hashes": 0,
+    "single_credit_deducted_once_bytes": 146942067,
+    "batch_claims_are_operation_intents_not_additional_storage_credits": true,
+    "old_R62_R63_295768556_credit_repeated_bytes": 0,
+    "old_AD028_197597066_unused_peak_correction_repeated_bytes": 0,
+    "unused_peak_return_is_deletion_credit": false,
+    "physical_space_exclusively_released_bytes": null,
+    "global_free_delta_claimed_as_exclusive_cleanup_credit": false,
+    "physical_peak_or_full_disk_cause": "UNKNOWN",
+    "deleted_old_cache_bodies_now_unreadable": true,
+    "remaining_R65_noncache_profile_files_preserved": true,
+    "R64_old_DLL_profile_cache_preserved": true,
+    "R68_current_profile_cache_preserved": true,
+    "R68_cache_protected_until_utc": "2026-10-19T08:26:41.874962+00:00",
+    "automatic_retention_renewal": false
+  },
+  "AD030_closure": {
+    "status": "CLOSED_NO_FURTHER_WRITES_RESERVED",
+    "actual_metadata_execution_exit": 0,
+    "original_parent_carry_bytes": 137199442081,
+    "ROOT_actual_metadata_measured_bytes": 198748421,
+    "MAIN_Git_bus_conservative_bound_bytes": 16777216,
+    "closing_and_agent_tail_bound_bytes": 2097152,
+    "conservative_new_debit_bytes": 217622789,
+    "unused_peak_returned_bytes": 17258235,
+    "carry_before_R65_cleanup_credit_bytes": 137417064870,
+    "carry_after_close_and_single_credit_bytes": 137270122803,
+    "remaining_reserved_peak_bytes": 0,
+    "measurement_basis": "ROOT executed measure_ad030.py and communicated the actual tool readback. No external measurement command/stdout file exists; this agent did not repeat the inventory.",
+    "all_AD030_measured_roots_stopped_after_close": true
+  },
+  "AD031_admission": {
+    "status": "ALLOC_BUDGET_APPROVED",
+    "actual_metadata_execution_exit": 0,
+    "purpose": "Exactly one 0.1.2 business keypaths cold profile and 84-file candidate staging; one ROOT heavy writer, parallel CI metadata at most 256 KiB.",
+    "planned_case_root": "C:/workspace/ck3-common-runtime/cases/lyd-release012-keypaths-20261012-020",
+    "planned_keeper_root": "C:/workspace/ck3-common-runtime/keepers/20261012-a32",
+    "run_identity_binding": "Actual ROOT allocator output only; this storage record allocates no run.",
+    "current_project_usage_conservative_bytes": 137270122803,
+    "original_cap_bytes": 137438953472,
+    "explicit_finite_ROOT_cap_increment_bytes": 67108864,
+    "effective_project_quota_bytes": 137506062336,
+    "this_write_peak_bytes": 234881024,
+    "project_cap_spare_after_peak_bytes": 1058509,
+    "estimated_peak_components_bytes": {
+      "shadercache": 163577856,
+      "host_compressed_SAVE_GUI": 41943040,
+      "candidate_build_profile_copy": 8388608,
+      "MAIN_Git_bus_agent_metadata": 16777216,
+      "closing_margin": 4194304
+    },
+    "SAVE_contract": "Actual compressed checkpoints only within the 40 MiB host/SAVE/GUI bound. A known checkpoint exceeding that bound requires stopping and warning ROOT before writing. No full uncompressed SAVE export or copy.",
+    "new_native_build_bytes": 0,
+    "new_source_export_bytes": 0,
+    "new_immutable_seed_copy_bytes": 0,
+    "reservation_expires_at_utc": "2026-10-12T09:42:20.825987+00:00",
+    "automatic_renewal": false,
+    "new_business_pass": null,
+    "new_round_completion": null,
+    "storage_admission_is_live_or_business_qualification": false
+  },
+  "refs": {
+    "plan": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/PLAN.actual.json",
+      "bytes": 3570,
+      "sha256": "9108e81a0a326f4e65d15971ddac5ad2a9dd100dcdcc64bc8bffa5478fb12dc7"
+    },
+    "actual_batch_results": [
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/BATCH-000.actual.json",
+        "bytes": 1241,
+        "sha256": "7bdeb42836ff23169cef6227a9a101e1adf07c690376d082a3ea20fe16f87669"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/BATCH-001.actual.json",
+        "bytes": 1245,
+        "sha256": "f7a07dece4122505cb99cacbd2f0151270f69a8391f1dc37ffe925af06a52663"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/BATCH-002.actual.json",
+        "bytes": 1245,
+        "sha256": "0706c06f66da37cb97b06e21e7997ef66a387759a8d4a6b49d19a38869c290ea"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/BATCH-003.actual.json",
+        "bytes": 1244,
+        "sha256": "eaee62bf6092752a294643889ce64a2b1f67c1c6f5f5e034e73edc6d4e615172"
+      }
+    ],
+    "single_cleanup_credit_event": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/CREDIT-EVENT.actual.json",
+      "bytes": 2012,
+      "sha256": "4a9b6a508f1c361d157e836ba3be2415f81c270c4e0e06402ea4dd3097b8e783"
+    },
+    "single_cleanup_credit_claim": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/cache-retire65-001/CREDIT-CLAIM.actual.json",
+      "bytes": 946,
+      "sha256": "98e9435435f39407aba9f4dacbff3f93ab62a89fadb79fd2c6e8d7bf3eda7cd7"
+    },
+    "AD030_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-steam011-menu-storage-admission-20261012-030/CLOSED-RESERVATION.actual.json",
+      "bytes": 10032,
+      "sha256": "f7400abb0c3cb06f4c6cecaa27dadc6226ea254c5d93c6405ce394c77d118a51"
+    },
+    "AD031_admission": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/ADMISSION.actual.json",
+      "bytes": 11108,
+      "sha256": "b03eaf5c8f1b7c4b4d40d19fca8395a4e770d74a0a7e7f61ff1b59731d91898c"
+    },
+    "metadata_execution": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-keypaths-storage-admission-20261012-031/METADATA-EXECUTION.actual.json",
+      "bytes": 1353,
+      "sha256": "294e4fa581b1f2498c142a41c5062110c6cbb5a9675e83a45e0378a21501c92c"
+    },
+    "qualified_R68_cache_and_closure": {
+      "path": "docs/li-yu-dao/acceptance/2026-10-12-headship-and-tenet-playstyles/WORKSHOP-011-CACHE.actual.json",
+      "bytes": 5219,
+      "sha256": "1ab73a114f06bc67728551d2af2c143087ddc8150ebd99affa2fbaf8a5cacb9b"
+    }
+  },
+  "phase_one_status": "NOT_GREEN"
+}

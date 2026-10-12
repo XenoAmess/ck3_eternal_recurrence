@@ -4,7 +4,36 @@ lyd_i3b_begin_decision = {
     decision_group_type = religious ai_check_interval = 0
     desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_begin_decision
     is_shown = { is_ai = no religion = religion:confucianism_religion rite = { lyd_i3b_owned_rite_trigger = yes } NOT = { has_variable = lyd_i3b_active } }
-    is_valid = { custom_description = { text = lyd_i3b_begin_valid_tt subject = root lyd_i3b_can_begin_trigger = yes } }
+    is_valid = { custom_description = { text = lyd_i3b_begin_player_tt subject = root is_ai = no }
+        custom_description = { text = lyd_i3b_begin_alive_tt subject = root is_alive = yes }
+        custom_description = { text = lyd_i3b_begin_adult_tt subject = root is_adult = yes }
+        custom_description = { text = lyd_i3b_begin_landed_tt subject = root is_landed = yes }
+        custom_description = { text = lyd_i3b_begin_capable_tt subject = root NOT = { has_trait = incapable } }
+        custom_description = { text = lyd_i3b_begin_confucian_tt subject = root religion = religion:confucianism_religion }
+        custom_description = { text = lyd_i3b_begin_joined_tt subject = root has_character_flag = lyd_enabled }
+        custom_description = { text = lyd_i3b_begin_new_rite_tt subject = root lyd_member_rite_trigger = yes }
+        custom_description = { text = lyd_i3b_begin_authority_tt subject = root OR = {
+            AND = { faith = faith:lyd_common_faith rite = faith.main_rite }
+            lyd_i3b_detached_authority_trigger = yes
+            AND = { faith = faith:confucian_faith rite = { lyd_i3b_owned_rite_trigger = yes } }
+        } }
+        custom_description = { text = lyd_i3b_begin_duchy_tt subject = root highest_held_title_tier >= tier_duchy }
+        custom_description = { text = lyd_i3b_begin_gender_tt subject = root save_temporary_scope_as = lyd_i3b_actor_check rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check } }
+        custom_description = { text = lyd_i3b_begin_offices_tt subject = root NOT = { any_held_title = { OR = { is_head_of_faith = yes pam_title_is_antipope_office_trigger = yes has_variable = lyd_c3_owned_claim_title } } } }
+        custom_description = { text = lyd_i3b_begin_challenger_tt subject = root pam_is_antipope_trigger = no }
+        custom_description = { text = lyd_i3b_begin_sponsor_tt subject = root pam_is_antipope_sponsor_trigger = no }
+        custom_description = { text = lyd_i3b_begin_claim_tt subject = root NOT = { has_variable = lyd_c3_claim_title } }
+        custom_description = { text = lyd_i3b_begin_own_round_tt subject = root NOT = { has_variable = lyd_i3b_active } }
+        custom_description = { text = lyd_i3b_begin_c2_round_tt subject = root NOT = { has_variable = lyd_c2_active } }
+        custom_description = { text = lyd_i3b_begin_c3_round_tt subject = root NOT = { has_variable = lyd_c3_active } }
+        custom_description = { text = lyd_i3b_begin_supported_faith_tt subject = root faith = { lyd_i3b_supported_faith_trigger = yes } }
+        custom_description = { text = lyd_i3b_begin_faith_doctrine_tt subject = root faith = { has_doctrine = doctrine_no_head } }
+        custom_description = { text = lyd_i3b_begin_head_title_tt subject = root faith = { NOT = { exists = religious_head_title } } }
+        custom_description = { text = lyd_i3b_begin_head_tt subject = root faith = { NOT = { exists = religious_head } } }
+        custom_description = { text = lyd_i3b_begin_faith_challengers_tt subject = root faith = { NOT = { any_religious_head_challenger = { always = yes } } } }
+        custom_description = { text = lyd_i3b_begin_compatible_rites_tt subject = root faith = { NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes } } } } }
+        custom_description = { text = lyd_i3b_begin_rite_rounds_tt subject = root faith = { NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } } } }
+        hidden_trigger = { lyd_i3b_can_begin_trigger = yes } }
     effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_begin_trigger = yes } lyd_i3b_begin_effect = yes } } }
     ai_will_do = { base = 0 }
 }
@@ -13,7 +42,16 @@ lyd_i3b_nominate_self_decision = {
     decision_group_type = religious ai_check_interval = 0
     desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_nominate_self_decision
     is_shown = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 }
-    is_valid = { custom_description = { text = lyd_i3b_nominate_valid_tt subject = root lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } }
+    is_valid = { custom_description = { text = lyd_i3b_nominate_current_tt subject = root lyd_i3b_current_trigger = { ACTOR = root } }
+        custom_description = { text = lyd_i3b_nominate_alive_tt subject = root is_alive = yes }
+        custom_description = { text = lyd_i3b_nominate_adult_tt subject = root is_adult = yes }
+        custom_description = { text = lyd_i3b_nominate_free_tt subject = root is_imprisoned = no }
+        custom_description = { text = lyd_i3b_nominate_capable_tt subject = root NOT = { has_trait = incapable } }
+        custom_description = { text = lyd_i3b_nominate_learning_tt subject = root learning >= 15 }
+        custom_description = { text = lyd_i3b_nominate_phase_tt subject = root var:lyd_i3b_phase = 1 }
+        custom_description = { text = lyd_i3b_nominate_active_rite_tt subject = root rite = { var:lyd_i3b_dormant = 0 } }
+        custom_description = { text = lyd_i3b_nominate_delegate_tt subject = root rite = { NOT = { has_variable = lyd_i3b_delegate } } }
+        hidden_trigger = { lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } }
     effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } lyd_i3b_nominate_self_effect = yes } } }
     ai_will_do = { base = 0 }
 }
