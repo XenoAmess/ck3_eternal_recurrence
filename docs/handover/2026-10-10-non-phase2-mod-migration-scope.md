@@ -93,3 +93,13 @@ Root接管纯资源闭场：run/verify实际2，native报告8063469字节/`cbb86
 ### 2026-10-13 用户新增本机 Steam 联合发布门禁
 
 用户明确要求：体验优化与重整河山两款发布前功能验收全部完成之前，**这台机器禁止 Steam 上线**。本机继续离线开发与实机；不得因为其中一款先通过而提前联网上传、下载或做在线发布准备。先前单款先发布的计划取消。两款实际发布前验收均完成后，才允许同一联网窗口统一提交两产品、公开完整Notes/tags回读及真实下载缓存核对，网络工作完成立即恢复离线；后续缓存实际加载仍先取得当次新鲜离线证据。此门禁只约束本机Steam，不外推为其他机器已获上线授权，也不把代码、CI或局部实证当作两款验收完成。
+
+### 同日两个 shader 回收与 A212 原图时效拒绝
+
+Root亲审新精确作用域和producer后，A210/A211已无恢复或未来seed用途的两个生成shader根按原237流程实际回收：7560文件、315999840分配字节、8批、43.7783秒，admit/execute/close均0，未删目录或任何非cache原件。源10874字节/`72757e467cc077cb0b25482b1f16589f395d8b0f45335d83e19ed8adeb15a88c`；小scope5223字节/`f1a1d49d91fa3d7c52c0e5c456e5385cb6d96a42b69634d36b0396ef2f549f39`；实际237 CLOSED2216字节/`219f6bd5e27858412a0f093759e280a6aab042596cd36598c91b89af2d1972e4`。保守U仅加一次16MiB到49280434208，未抵扣删除量或另收控制费；旧shader原路径不可读，可重编新cache但不保证历史字节恢复。所有事件、原图、typed/native、fixture、save/config与失败闭场证据保留至10月18日复核。
+
+A212/R0100为Root实际reviewer。Root亲审本场两张1920×1080原始挑战图，读回`eb710ea38380`与`6b06fa9f0798`及同图Steam“离线模式”；只证明当次挑战像素响应，不把停滞任务栏时钟称为新鲜。Steam恢复非置顶/最小化且未改模式后才启动。UI实际读到原门槛50%，设置100并执行原提交按钮；通过既有`advance-day {}`逐次24小时自动暂停，十自然日后原队列完成、设置按钮重新可用。没有手动HUD长跑、变量清理、改信代设或原版公式复验。
+
+Root随后准备重开时，action0020的plain映射点击引用原图已超过60秒；canonical mapper以`SourceImageAgeError`在输入前拒绝，未发点击。controller保留错误并结束；只有anchor记录，不给100重开、恢复或地图清理信用。原自动正常Quit实际成功，retained OS0/native0、managed/thread/cleanup=true，业务失败保持。委派`/root/a212_resource_close`仅完成资源闭场；正常路径仅作原消费context路径规范化及verify/stop_keeper/release的精确delegate actor元数据适配，不改原回执、不重跑verify、不放宽身份/占用/退出守卫。run/verify实际2、observer15、keeper/allocator0、CAS10202后，POST8676字节/`caebccc4ef6719deb81f9d0513382a5fe769a74408b641500c790f73b8235aba`，52 CLOSED7816字节/`5baa078174caa9443fdab5f19404fc4a12f215cf7b48170fb6c46294aebc8390`；closure3全true，U49737368488，新增452739976字节，仍非业务通过。
+
+下一轮保持同一四段合同和Source20，按钮优先复用已有的本场亲审模板与实际新捕获像素校验，不能跨run迁用图片或扩大原图时效。当前预算与空间须重新核验，不把正常退出或十天推进算作UI完成。本机两款全部发布前验收前Steam禁止上线的门禁继续生效。
