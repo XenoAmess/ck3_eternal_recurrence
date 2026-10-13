@@ -71,3 +71,13 @@ ad61be99对应官方CI38380556374实际失败于另一既有handover中的禁用
 该回收实际admit/execute/close均0，5批、24.7761秒、无大正文hash；11:21:46Z实际237 CLOSED2231字节/`0130265b9775c1a290a6e8c303f3a54350bd5340771bf786591dbf15d3134968`，实际摘要`a209-closed-output-retirement-20261013-01/ACTUAL-SUMMARY.json`2134字节/`e483873afaea82549f3d04ca6cce7672d8e48a5d6601e7670964039486f4d89c`。全包16MiB仅收费一次，下一保守U48821467008，不抵扣删除量、不重复收control费。11:22Z freshfree29414191104字节；全卷变动不全部归因于本次回收，下一场仍需原锁内实际准入。
 
 d750fa735对应官方CI38387841505已实际completed/success；只绑定该提交。后续剩余功能验收和两产品正式发布、真实缓存加载、永久changelog均仍未完成，不把CI或资源闭场标成发布完成。
+
+### 同日 A210 重整河山 D3 实读与导航边界
+
+A210/R0020沿用同一Source20，实际D1完成原24小时自然区间，Chaos回调一次；当前两事件由原typed入口分别消费，没有重放日控制或D2 dispatch。D3实际`effective_single_heir_qualified=true`，表示`realm_baseline_no_override`：actor34422、Later title18371、日期53144400、engine first heir37989、own law count0/laws[]。原`script_own_single_heir=false`与`holder_realm_single_heir=true`分别保留，不把空own-laws改判成任命法。资格原件`R0020/case-output/rmtm-effective-law-d3-qualification.json`561字节/`936a7a6254cb0a459efd04b14c1ca9ccbfe0fdb1db254490229cee1e316efdf4`，仍为source_pass/business_pass=false；不是核心D8或真实继承通过。
+
+自动到D4的owned-GUI await后，执行者调用已注册`ck3_open_character_window_v1(character_id=34422)`，共同host实际报工具错误并自动退出。选定Source19的`ingame_ui_contract.py:85–88`只给当前1.20.0.4的character/query只读例外，character/open进入`current native UI supports army query and select only`拒绝；`native_driver.py:5650–5651`的opener确实走此路。表面注册不证明当前backend支持。原错误和自动结束事实保留，无法追认已不存在的热修复窗口；没有九卿预算签核、Continue或真实继承动作，没有产品失败的证明。
+
+下一场仅对已实证不支持的角色/头衔/领地/九卿预算导航使用当前原PNG和规范坐标映射，其他已qualified的title-holder/own-laws只读及Decisions open/query/select继续复用。决议Confirm不得误调用仅白绮白名单的`ck3_confirm_ingame_decision_item_v1`（选定driver6624–6627）；RMTM按既有通用outcome合同或亲审当前原图映射点击。此为操作路线纠正，不增native、平台、业务门槛或全矩阵，不重跑已有静态结论；新动态头衔的当场身份与原physical AND仍须真实绑定。
+
+A210 public run/verify实际均2，native实际OS1、tree/job/control清理完成，normal/retained OS资格未取得。observer实际15、keeper/allocator实际0及CAS10080后，真实52 CLOSED8393字节/`c202bd68f21a5ac1335098dd1b9da480011b060d9646a9061a692a399bd5f76e`，POST4851字节/`0f802e6c6445da4b9ca2a4be1fa428c05bd20d99d2d559e71f0cae1190372dda`；closure3全true，保守U49040981656，新增215058200字节，不授normal或业务PASS。关键原件由迁移执行者保护至10月18日复核；当前空间足够候选场，仅在下一次锁内准入确认，不为此再清理同一批文件。
