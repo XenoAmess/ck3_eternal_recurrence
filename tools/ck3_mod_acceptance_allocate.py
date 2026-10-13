@@ -1013,8 +1013,9 @@ def allocate_and_keep(selection,args):
         else:
             report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
         prior_keeper=read_json(args.previous_keeper/'report.json') if not pre_ready else None
-        release=(read_failed_runtime_release(args.previous_release) if failure_path else
-                 read_actual_release(args.previous_release))
+        # The canonical bus event/task reconstruction is valid for a successful
+        # predecessor too; its bytes are verified by read_failed_runtime_release.
+        release=read_failed_runtime_release(args.previous_release)
         if allocated_unused:
             session_closure=previous_allocated_unused_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
