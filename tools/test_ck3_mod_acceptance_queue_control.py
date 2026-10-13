@@ -1,4 +1,4 @@
-"""Four portable producer checks; every live/control/report path is synthetic."""
+"""Portable producer checks; every live/control/report path is synthetic."""
 import hashlib
 import json
 from pathlib import Path
@@ -59,6 +59,21 @@ class QueueFailureSuccessorTests(unittest.TestCase):
         self.assertNotEqual(result.returncode,0)
         self.assertIn(b'only one preserved-failure finish_hold',result.stderr)
         self.assertEqual(list(self.controls.iterdir()),[])
+
+    def test_wrong_arguments_field_is_rejected_without_creating_request(self):
+        plan = {'steps':[{'id':'synthetic-wrong-field','kind':'mcp',
+            'tool':'SYNTHETIC-NO-REAL-TOOL','arguments':{'event_instance_id':2}}]}
+        result,_ = self.submit(plan)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn(b'Plan steps use args, not arguments',result.stderr)
+        self.assertEqual(list(self.controls.iterdir()),[])
+
+    def test_native_args_field_is_preserved_byte_for_byte(self):
+        plan = {'steps':[{'id':'synthetic-correct-field','kind':'mcp',
+            'tool':'SYNTHETIC-NO-REAL-TOOL','args':{'event_instance_id':2},'fresh_revision':True}]}
+        result,raw = self.submit(plan)
+        self.assertEqual(result.returncode,0,result.stderr.decode())
+        self.assertEqual((self.controls/self.name).read_bytes(),raw)
 
     def test_exact_failed_finish_queue_preserves_error_and_grants_no_pass(self):
         self.report['error'] = 'SYNTHETIC ORIGINAL BUSINESS FAILURE'

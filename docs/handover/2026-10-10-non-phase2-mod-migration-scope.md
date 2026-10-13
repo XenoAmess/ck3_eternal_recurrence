@@ -81,3 +81,15 @@ A210/R0020沿用同一Source20，实际D1完成原24小时自然区间，Chaos�
 下一场仅对已实证不支持的角色/头衔/领地/九卿预算导航使用当前原PNG和规范坐标映射，其他已qualified的title-holder/own-laws只读及Decisions open/query/select继续复用。决议Confirm不得误调用仅白绮白名单的`ck3_confirm_ingame_decision_item_v1`（选定driver6624–6627）；RMTM按既有通用outcome合同或亲审当前原图映射点击。此为操作路线纠正，不增native、平台、业务门槛或全矩阵，不重跑已有静态结论；新动态头衔的当场身份与原physical AND仍须真实绑定。
 
 A210 public run/verify实际均2，native实际OS1、tree/job/control清理完成，normal/retained OS资格未取得。observer实际15、keeper/allocator实际0及CAS10080后，真实52 CLOSED8393字节/`c202bd68f21a5ac1335098dd1b9da480011b060d9646a9061a692a399bd5f76e`，POST4851字节/`0f802e6c6445da4b9ca2a4be1fa428c05bd20d99d2d559e71f0cae1190372dda`；closure3全true，保守U49040981656，新增215058200字节，不授normal或业务PASS。关键原件由迁移执行者保护至10月18日复核；当前空间足够候选场，仅在下一次锁内准入确认，不为此再清理同一批文件。
+
+### 同日 A211 调用格式失败及实际资源闭场
+
+A211/R0021使用全新profile和同一Source20，原readiness在273.78秒内进入hold；D1提交行实际完成24小时，日期53144328→53144352、actor34422、after paused=true。执行线程容量错误恢复后，当前事件查询计划误用`arguments`而非宿主实际读取的`args`；所需`event_instance_id`因此未传入，MCP参数校验失败并自动清理退出。错误计划原件253字节/`38f58636990e46be4760489af732ef11cf6272d2121810e24e88ff42245b2574`完整保留。没有事件选项消费、D1重发、角色导航、D1审核签名或核心通过信用，不把测试调用错误归为产品失败。
+
+Root接管纯资源闭场：run/verify实际2，native报告8063469字节/`cbb86f50e5c1d2308952085e9033913981dbadb464adfcf05d6e543481d39507`，CK3原实际OS1、cleanup=true，无normal0。observer实际15、keeper/allocator0及CAS10119后，真实52 CLOSED8394字节/`6731b7c5db5daef52521f23b0651979f51fa27c9a06e1cd8feeeb5db8ef9da37`，POST5139字节/`dbe8cb1048d5e0b8d13a6ef5562b5eb2754b3f238698af2d61149b78856f745a`，closure3全true。保守U49263656992、新增218481032字节；free29053530112字节仍须下一场锁内重新准入，不从失败闭账推定空间或业务PASS。原件保护至10月18日复核，当前只评估两个已闭场的生成shader，不回收关键事件、图像、配置或报告。
+
+`ck3_mod_acceptance_queue_control.py`仅增加入队前拒绝`arguments`及非对象`args`的输入保护；正确计划字节、失败生命周期、一次提交和原host预算不变，不修改冻结Source20或产品业务。对应六项合成调用器检查一次实际0，回执`focused-controls-20261013-08/queue-args-guard-tests-01-process-exit.json`963字节/`786b668c13f87970261e9122a05caaec1aa07caddd0f4ec92b4cff1645b9c7e3`；这不是新增功能实机通过或全套静态重验。两产品仍未正式发布。
+
+### 2026-10-13 用户新增本机 Steam 联合发布门禁
+
+用户明确要求：体验优化与重整河山两款发布前功能验收全部完成之前，**这台机器禁止 Steam 上线**。本机继续离线开发与实机；不得因为其中一款先通过而提前联网上传、下载或做在线发布准备。先前单款先发布的计划取消。两款实际发布前验收均完成后，才允许同一联网窗口统一提交两产品、公开完整Notes/tags回读及真实下载缓存核对，网络工作完成立即恢复离线；后续缓存实际加载仍先取得当次新鲜离线证据。此门禁只约束本机Steam，不外推为其他机器已获上线授权，也不把代码、CI或局部实证当作两款验收完成。

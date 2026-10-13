@@ -45,6 +45,10 @@ def main():
     raw = args.plan.read_bytes()
     plan = json.loads(raw)
     require(isinstance(plan['steps'], list) and plan['steps'], 'A nonempty step list is required')
+    for step in plan['steps']:
+        require(isinstance(step, dict) and 'arguments' not in step,
+                'Plan steps use args, not arguments; rejected before dispatch')
+        require(isinstance(step.get('args', {}), dict), 'Plan args must be an object; rejected before dispatch')
     lifecycle_only = report.get('error') is not None
     require(not lifecycle_only or failure_finish_only(plan['steps']),
             'Failed host admits only one preserved-failure finish_hold lifecycle request')
