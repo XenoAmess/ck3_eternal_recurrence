@@ -946,10 +946,12 @@ class _NativeCommandRejectedError(BridgeUnavailableError):
 
 class _NativeCommandResultTimeoutError(BridgeUnavailableError):
     def __init__(self, step: str, request_id: str) -> None:
+        self.step = step
         self.request_id = request_id
-        super().__init__(
-            f"native command_result timed out for gameplay step {step}"
-        )
+        message = f"native command_result timed out for gameplay step {step}"
+        if step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
+            message += f"; original native_request_id={request_id}; replay_allowed=false"
+        super().__init__(message)
 
 
 class _NativeBridgeAdoptionRefusedError(BridgeUnavailableError):
@@ -2803,6 +2805,9 @@ class NativeHeadlessGameplayDriver:
                 copy.deepcopy({key: value for key, value in pending.items()
                                if key != "result_frame"})
                 if pending is not None else None
+            )
+            result["frontend_start_campaign_root_query"] = copy.deepcopy(
+                getattr(self, "_frontend_start_campaign_root_query", None)
             )
         return result
 
@@ -7987,7 +7992,7 @@ class NativeHeadlessGameplayDriver:
             after_snapshot, deadline=deadline
         )
         campaign_root = self._execute_campaign_root_context_v1_query(
-            expected_revision=None
+            expected_revision=None, deadline=deadline
         )
         try:
             return normalize_frontend_start_selected_bookmark_v1(
@@ -11624,9 +11629,16 @@ class NativeHeadlessGameplayDriver:
         protocol_packet_evidence_path: Path | None = None,
         protocol_result_evidence_path: Path | None = None,
         pause_recovery_source: dict[str, object] | None = None,
+        absolute_deadline: float | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
+        if absolute_deadline is not None and (
+            isinstance(absolute_deadline, bool)
+            or not isinstance(absolute_deadline, (int, float))
+            or not math.isfinite(absolute_deadline)
+        ):
+            raise ValueError("absolute_deadline must be a finite monotonic instant")
         if (getattr(self, "_player_control_authorization_blocked_v1", False)
                 and not internal_semantic_snapshot):
             raise BridgeUnavailableError(
@@ -11750,6 +11762,10 @@ class NativeHeadlessGameplayDriver:
             if step == QUERY_ARMY_STRENGTHS_STEP else None
         )
         try:
+            if absolute_deadline is not None and time.monotonic() >= absolute_deadline:
+                raise BridgeUnavailableError(
+                    f"frontend StartGame deadline expired before native {step} submission"
+                )
             if protocol_packet_evidence_path is None:
                 self.endpoint.send(request)
             else:
@@ -11759,7 +11775,14 @@ class NativeHeadlessGameplayDriver:
                 if timeout_seconds is None
                 else _positive_seconds(timeout_seconds, "timeout_seconds")
             )
-            command_deadline = time.monotonic() + command_timeout_seconds
+            command_deadline = (
+                time.monotonic() + command_timeout_seconds
+                if absolute_deadline is None else absolute_deadline
+            )
+            if absolute_deadline is not None:
+                # The caller owns one map/pump/root budget.  Sending the single
+                # request cannot grant its result a new default 120s window.
+                command_timeout_seconds = max(0.0, command_deadline - time.monotonic())
             frame = self.state.wait_for_command_result(
                 request_id, command_timeout_seconds
             )
@@ -11771,7 +11794,7 @@ class NativeHeadlessGameplayDriver:
                 frame_observer({"request": copy.deepcopy(request),
                                 "command_result": copy.deepcopy(frame)})
         if frame is None:
-            if step == QUERY_DECLARABLE_WARS_STEP:
+            if step in {QUERY_DECLARABLE_WARS_STEP, QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP}:
                 raise _NativeCommandResultTimeoutError(step, request_id)
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
@@ -16256,6 +16279,7 @@ class NativeHeadlessGameplayDriver:
         self,
         *,
         expected_revision: int | None,
+        deadline: float | None = None,
     ) -> dict[str, object]:
         """Read the atomic local-player campaign root while paused."""
         step = QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
@@ -16282,12 +16306,55 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
-        result = self._execute_primitive_step(
-            step,
-            expected_revision=selected_revision,
-            required_capability=QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
-            include_native_command_history=False,
-        )
+        wait_record = None
+        wait_options = {}
+        if deadline is not None:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeUnavailableError(
+                    "frontend StartGame deadline expired before campaign-root submission"
+                )
+            request_id = f"frontend-start-root-{uuid.uuid4().hex}"
+            wait_record = {
+                "native_request_id": request_id,
+                "status": "prepared_not_submitted",
+                "deadline_monotonic": deadline,
+                "initial_remaining_seconds": remaining,
+                "snapshot_id": starting.get("snapshot_id"),
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "original_request_replayed": False,
+            }
+            wait_options = {
+                "absolute_deadline": deadline,
+                "protocol_request_id": request_id,
+            }
+            self._record_frontend_start_root_query_wait(wait_record)
+        try:
+            result = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+                include_native_command_history=False,
+                **wait_options,
+            )
+        except Exception as error:
+            if wait_record is not None:
+                wait_record.update(
+                    status=("native_result_pending_at_deadline"
+                            if isinstance(error, _NativeCommandResultTimeoutError)
+                            else "query_failed"),
+                    error=str(error),
+                )
+                self._record_frontend_start_root_query_wait(wait_record)
+            raise
+        if wait_record is not None:
+            wait_record.update(
+                status="native_result_received",
+                native_result_status=result.get("status"),
+                native_query_sequence=result.get("query_sequence"),
+            )
+            self._record_frontend_start_root_query_wait(wait_record)
         if (
             set(result)
             != {
@@ -16393,6 +16460,10 @@ class NativeHeadlessGameplayDriver:
             if isinstance(played_character, dict)
             else None
         )
+        if deadline is not None and time.monotonic() >= deadline:
+            raise BridgeUnavailableError(
+                "frontend StartGame deadline expired before campaign-root verification completed"
+            )
         with self._driver_state_lock:
             self._campaign_root_context_query = {
                 "campaign_root_context": copy.deepcopy(normalized),
@@ -16414,7 +16485,19 @@ class NativeHeadlessGameplayDriver:
                     ),
                 },
             }
+        if wait_record is not None:
+            wait_record["status"] = "campaign_root_frame_verified"
+            self._record_frontend_start_root_query_wait(wait_record)
         return response
+
+    def _record_frontend_start_root_query_wait(self, record: dict[str, object]) -> None:
+        """Keep the original readonly request identity, including timeout evidence."""
+        with self._driver_state_lock:
+            self._frontend_start_campaign_root_query = copy.deepcopy(record)
+        if self.state_dir is not None:
+            path = (self._native_driver_state_path().parent / "frontend-start-root-queries"
+                    / f"{record['native_request_id']}.json")
+            write_json_atomic(path, record)
 
     def _execute_steward_develop_county_candidates_v1_query(
         self,

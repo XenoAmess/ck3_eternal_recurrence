@@ -107,7 +107,7 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
         driver.take_snapshot = _paused_map
         driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value, *, deadline=None: value
         driver._execute_campaign_root_context_v1_query = (
-            lambda *, expected_revision: _root()
+            lambda *, expected_revision, deadline=None: _root()
         )
         robert_key = "bookmark_rags_to_riches_duke_robert"
         calls: list[str] = []
@@ -218,7 +218,7 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
         driver.take_snapshot = _paused_map
         driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value, *, deadline=None: value
         driver._execute_campaign_root_context_v1_query = (
-            lambda *, expected_revision: _root()
+            lambda *, expected_revision, deadline=None: _root()
         )
 
         def execute(

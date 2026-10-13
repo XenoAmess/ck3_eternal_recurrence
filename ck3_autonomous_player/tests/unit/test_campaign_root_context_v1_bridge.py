@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest.mock import Mock, patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -29,6 +32,7 @@ from xar_autoplayer.bridge.mcp_server import (
 )
 from xar_autoplayer.bridge.native_driver import (
     NativeHeadlessGameplayDriver,
+    _NativeCommandResultTimeoutError,
     _action_steps,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
@@ -996,6 +1000,134 @@ def _answer_with(endpoint: _FakeEndpoint, result_factory) -> None:
         )
 
     endpoint.send_hook = answer
+
+
+class FrontendStartRootDeadlineTests(unittest.TestCase):
+    """The actual root transport consumes the remaining original Start budget."""
+
+    def setUp(self):
+        self.driver, self.endpoint = _native_driver()
+        self.addCleanup(self.driver.close)
+        # The admitted fixture constructor already sent its startup ping.
+        self.endpoint.frames.clear()
+        self.driver.command_timeout_seconds = 120.0
+        self.clock = 100.0
+        self.enterContext(patch(
+            "xar_autoplayer.bridge.native_driver.time.monotonic",
+            side_effect=lambda: self.clock,
+        ))
+
+    def answer_after(self, elapsed):
+        original_wait = self.driver.state.wait_for_command_result
+
+        def wait(request_id, timeout_seconds):
+            self.assertGreaterEqual(timeout_seconds, elapsed)
+            self.clock += elapsed
+            self.endpoint.publish({
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True, "result": _native_result(),
+            })
+            return original_wait(request_id, 0.0)
+
+        self.driver.state.wait_for_command_result = Mock(side_effect=wait)
+
+    def test_result_after_old_120_second_cutoff_uses_one_request_until_frontend_deadline(self):
+        self.answer_after(142.0)
+        result = self.driver._execute_campaign_root_context_v1_query(
+            expected_revision=None, deadline=700.0,
+        )
+        self.assertTrue(result["campaign_root_context_ready"])
+        self.assertEqual(len(self.endpoint.frames), 1)
+        request = self.endpoint.frames[0]
+        self.assertEqual(request["step"], STEP)
+        self.driver.state.wait_for_command_result.assert_called_once_with(
+            request["request_id"], 600.0,
+        )
+        recorded = self.driver.diagnostics()["frontend_start_campaign_root_query"]
+        self.assertEqual(recorded["native_request_id"], request["request_id"])
+        self.assertEqual(recorded["status"], "campaign_root_frame_verified")
+        self.assertEqual(recorded["native_query_sequence"], 9)
+        self.assertFalse(recorded["original_request_replayed"])
+
+    def test_send_time_is_deducted_from_small_original_remainder(self):
+        self.answer_after(5.0)
+        self.endpoint.send_hook = lambda frame: setattr(self, "clock", self.clock + 4.0)
+        self.driver._execute_campaign_root_context_v1_query(expected_revision=None, deadline=110.0)
+        self.assertEqual(len(self.endpoint.frames), 1)
+        self.driver.state.wait_for_command_result.assert_called_once_with(
+            self.endpoint.frames[0]["request_id"], 6.0,
+        )
+        self.assertEqual(self.clock, 109.0)
+
+    def test_no_remaining_frontend_budget_sends_no_root_command(self):
+        self.driver.state.wait_for_command_result = Mock()
+        with self.assertRaisesRegex(BridgeUnavailableError, "deadline expired before campaign-root submission"):
+            self.driver._execute_campaign_root_context_v1_query(expected_revision=None, deadline=100.0)
+        self.assertEqual(self.endpoint.frames, [])
+        self.driver.state.wait_for_command_result.assert_not_called()
+
+    def test_budget_expiring_during_preparation_also_sends_no_root_command(self):
+        record = self.driver._record_frontend_start_root_query_wait
+
+        def record_and_expire(value):
+            record(value)
+            self.clock = 110.0
+
+        self.driver._record_frontend_start_root_query_wait = record_and_expire
+        self.driver.state.wait_for_command_result = Mock()
+        with self.assertRaisesRegex(BridgeUnavailableError, "deadline expired before native"):
+            self.driver._execute_campaign_root_context_v1_query(expected_revision=None, deadline=110.0)
+        self.assertEqual(self.endpoint.frames, [])
+        self.driver.state.wait_for_command_result.assert_not_called()
+
+    def test_timeout_retains_actual_id_and_pending_receipt_without_resubmission(self):
+        def wait(request_id, timeout_seconds):
+            self.clock += timeout_seconds
+            return None
+
+        self.driver.state.wait_for_command_result = Mock(side_effect=wait)
+        with tempfile.TemporaryDirectory() as directory:
+            self.driver.state_dir = Path(directory)
+            with self.assertRaises(_NativeCommandResultTimeoutError) as observed:
+                self.driver._execute_campaign_root_context_v1_query(expected_revision=None, deadline=700.0)
+            self.assertEqual(len(self.endpoint.frames), 1)
+            request_id = self.endpoint.frames[0]["request_id"]
+            self.assertEqual(observed.exception.request_id, request_id)
+            self.assertIn(request_id, str(observed.exception))
+            self.driver.state.wait_for_command_result.assert_called_once_with(request_id, 600.0)
+            recorded = self.driver.diagnostics()["frontend_start_campaign_root_query"]
+            self.assertEqual(recorded["status"], "native_result_pending_at_deadline")
+            receipt = self.driver._native_driver_state_path().parent / "frontend-start-root-queries" / (request_id + ".json")
+            self.assertEqual(json.loads(receipt.read_text(encoding="utf-8")), recorded)
+            self.assertEqual(self.clock, 700.0)
+            self.driver.state_dir = None
+
+    def test_wrong_root_date_still_rejects_received_result(self):
+        original_wait = self.driver.state.wait_for_command_result
+
+        def wait(request_id, timeout_seconds):
+            result = _native_result()
+            result["campaign_root_context"]["date_raw"] += 24
+            self.endpoint.publish({"type": "command_result", "protocol_version": 1,
+                                   "request_id": request_id, "ok": True, "result": result})
+            return original_wait(request_id, 0.0)
+
+        self.driver.state.wait_for_command_result = Mock(side_effect=wait)
+        with self.assertRaisesRegex(BridgeUnavailableError, "malformed frame"):
+            self.driver._execute_campaign_root_context_v1_query(expected_revision=None, deadline=700.0)
+        self.assertEqual(len(self.endpoint.frames), 1)
+        self.assertIsNone(self.driver._campaign_root_context_query)
+        self.assertEqual(self.driver.diagnostics()["frontend_start_campaign_root_query"]["status"],
+                         "native_result_received")
+
+    def test_result_at_deadline_does_not_publish_a_verified_root_cache(self):
+        self.answer_after(600.0)
+        with self.assertRaisesRegex(BridgeUnavailableError, "verification completed"):
+            self.driver._execute_campaign_root_context_v1_query(expected_revision=None, deadline=700.0)
+        self.assertEqual(len(self.endpoint.frames), 1)
+        self.assertIsNone(self.driver._campaign_root_context_query)
+        self.assertEqual(self.driver.diagnostics()["frontend_start_campaign_root_query"]["status"],
+                         "native_result_received")
 
 
 class CampaignRootContextV1NativeDriverTests(unittest.TestCase):

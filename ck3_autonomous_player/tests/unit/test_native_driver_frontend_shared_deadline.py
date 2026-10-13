@@ -170,7 +170,21 @@ class FrontendSharedDeadlineTests(unittest.TestCase):
         self.assertEqual(len(reads), 3)
         self.assertIs(result["postcondition_verified"], True)
         self.assertEqual(result["status"], "verified")
-        self.driver._execute_campaign_root_context_v1_query.assert_called_once_with(expected_revision=None)
+        self.driver._execute_campaign_root_context_v1_query.assert_called_once_with(
+            expected_revision=None, deadline=700.0,
+        )
+        self.assert_single_start()
+
+    def test_root_actor_mismatch_still_rejects_after_the_single_start(self):
+        self.driver.take_snapshot = Mock(side_effect=[paused_map(), paused_map(epoch=101)])
+        root = campaign_root(revision=3)
+        root["player_character_id"] = 1
+        self.driver._execute_campaign_root_context_v1_query.return_value = root
+        with self.assertRaisesRegex(BridgeUnavailableError, "postcondition failed"):
+            self.start()
+        self.driver._execute_campaign_root_context_v1_query.assert_called_once_with(
+            expected_revision=None, deadline=700.0,
+        )
         self.assert_single_start()
 
     def test_expired_explicit_pump_deadline_reads_no_new_frame(self):
