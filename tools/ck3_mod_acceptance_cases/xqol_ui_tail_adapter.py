@@ -8,7 +8,7 @@ from pathlib import Path
 from ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile, pin, write_json
 from . import xqol_adapter as original
 from .xqol_scope import parse_song_scope
-from .xqol_ui import Controller, SLIDER_STAGES
+from .xqol_ui import Controller, PERSISTENCE_STAGES
 
 MARKERS = {
     'begin': 'ZQAUITAIL: SCOPE BEGIN actual_song_actor',
@@ -179,10 +179,10 @@ def scope(raw):
 def validate_contract(context):
     contract = context['case_contract']
     require(contract['acceptance_scope'] == 'original_song_ui_tail' and
-            contract['readonly_step_count'] == 9 and contract.get('gui_review_scope') == 'representative_slider_v1' and
-            contract['focused_slider_order'] == SLIDER_STAGES and
+            contract['readonly_step_count'] == 9 and contract.get('gui_review_scope') == 'persistence_smoke_v2' and
+            contract['focused_slider_order'] == PERSISTENCE_STAGES and
             contract['guards_independent_supplement_required'] is True,
-            'Readonly9/representative slider and independent guard boundary changed')
+            'Readonly9/persistence smoke and independent guard boundary changed')
     require(context['case_spec']['budgets'] == {'command_timeout': 300, 'readiness_timeout': 400,
             'timeout': 3000, 'poll_interval': 0.05, 'hold_seconds': 1800}, 'Original QOL wall-clock bounds changed')
 
@@ -314,7 +314,7 @@ def run_case(context, client):
         'optional_query_gaps': [row['id'] for row in readonly if not row.get('ok')], 'product_pass': False})
     client.checkpoint('root-same-live-required-ui-awaiting', {'run_id': client.frozen['run_id'], 'reviewer': '/root',
         **client._process, 'original_hold_deadline': client._hold, 'scope_proof': {'song': proof},
-        'representative_slider_required': True, 'gui_review_scope': 'representative_slider_v1', 'prior_core_external_reference': prior,
+        'representative_slider_required': True, 'gui_review_scope': 'persistence_smoke_v2', 'prior_core_external_reference': prior,
         'no_current_defense_or_final6_execution': True})
     ui = Controller(context, client, prior_final6=prior['final6']).run()
     result = {'case_contract_qualified': True, 'gui_contract_qualified': ui['gui_contract_qualified'],

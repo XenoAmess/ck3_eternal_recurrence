@@ -146,7 +146,7 @@ class FixedUiTailBinding(unittest.TestCase):
                          {'bytes': 1647, 'sha256': 'd0010b9380ba2d79ffeb002f7585c38de12dff31d9d3e65f89e008a74be2e26e'})
         contract = json.loads(CONTRACT.read_bytes())
         self.assertEqual(contract['readonly_step_count'], 9)
-        self.assertEqual(len(contract['focused_slider_order']), 7)
+        self.assertEqual(contract['focused_slider_order'], ['slider-anchor','save-100','restore-anchor','map-clean'])
         self.assertIs(contract['guards_independent_supplement_required'], True)
         self.assertIs(contract['normal_close_required'], True)
         self.assertIs(contract['business_pass'], False)

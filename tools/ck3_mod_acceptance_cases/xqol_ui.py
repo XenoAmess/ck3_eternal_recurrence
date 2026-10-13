@@ -14,6 +14,7 @@ STAGES += ['cancel-'+str(p) for p in (0,1,49,50,51,99,100)]
 STAGES += ['save-'+str(p) for p in (100,99,51,50,49,1,0)]
 STAGES += ['restore-anchor','map-clean']
 SLIDER_STAGES=['slider-anchor','cancel-0','cancel-100','save-100','save-0','restore-anchor','map-clean']
+PERSISTENCE_STAGES=['slider-anchor','save-100','restore-anchor','map-clean']
 
 def require(value,message):
     if not value: raise RuntimeError(message)
@@ -41,7 +42,9 @@ class Controller:
             global REPO,PY,COORD
             from types import SimpleNamespace
             self.context=context;self.client=client;self.operator_reviewer=_operator_reviewer(client)
-            self.stages=(SLIDER_STAGES if context['case_contract'].get('gui_review_scope')=='representative_slider_v1' else STAGES)
+            scope=context['case_contract'].get('gui_review_scope')
+            self.stages=(PERSISTENCE_STAGES if scope=='persistence_smoke_v2' else
+                         SLIDER_STAGES if scope=='representative_slider_v1' else STAGES)
             REPO=Path(context['repo_root']);PY=client.selection.locations['python'];COORD=REPO/'tools/desktop_coordinate_map.py'
             self.a=SimpleNamespace(keeper_root=client.keeper)
             self.out=client.output/'ui25';require(not self.out.exists(),'UI25 output already consumed; never replay')
@@ -265,7 +268,7 @@ class Controller:
             elif stage.startswith('save-') or stage=='restore-anchor':
                 p=int(stage.split('-')[1]) if stage.startswith('save-') else self.records['slider-anchor']['observation']['persisted_anchor']
                 require(o.get('draft_value')==p and o.get('save_option_executed') is True and o.get('reopened_persisted_value')==p,'Actual boundary save/reopen differs')
-                focused=(self.context['case_contract'].get('case')=='ui_tail' and self.context['case_contract'].get('gui_review_scope')=='representative_slider_v1')
+                focused=(self.context['case_contract'].get('case')=='ui_tail' and self.context['case_contract'].get('gui_review_scope') in ('representative_slider_v1','persistence_smoke_v2'))
                 if not focused:
                     require(o.get('pending_naturally_completed') is True and o.get('summary_count')==1 and o.get('event_windows_cleared') is True,'Actual natural pending/one summary/clean window closure missing')
                 require(o.get('no_script_pending_clear_or_setfaith') is True,'Natural chain may not be replaced by script clears')

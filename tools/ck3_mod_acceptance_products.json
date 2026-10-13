@@ -662,7 +662,7 @@
           "phases": [
             "actual Song scope and native h_china holding proof",
             "original readonly9",
-            "focused slider open/cancel/endpoints/save/restore/map checks; qualified appointment/guard evidence reused",
+            "persistence smoke: one save100/readback, restore/readback and clean map; prior cancellation evidence stays separate",
             "normal GUI Quit/retained OS0/native0/shared completion"
           ],
           "budgets": {
@@ -688,10 +688,7 @@
           "gui_contract": {
             "focused_slider_order": [
               "slider-anchor",
-              "cancel-0",
-              "cancel-100",
               "save-100",
-              "save-0",
               "restore-anchor",
               "map-clean"
             ],

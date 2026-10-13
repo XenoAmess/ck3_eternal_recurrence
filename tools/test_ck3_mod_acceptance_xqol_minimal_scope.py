@@ -102,11 +102,11 @@ def restore_minimal_merit_contract(contract):
 def restore_minimal_ui_adapter(raw):
     source=raw.decode('utf-8-sig')
     replacements=[
-        ('from .xqol_ui import Controller, SLIDER_STAGES','from .xqol_ui import Controller, STAGES'),
-        ("contract['readonly_step_count'] == 9 and contract.get('gui_review_scope') == 'representative_slider_v1' and\n            contract['focused_slider_order'] == SLIDER_STAGES and",
+        ('from .xqol_ui import Controller, PERSISTENCE_STAGES','from .xqol_ui import Controller, STAGES'),
+        ("contract['readonly_step_count'] == 9 and contract.get('gui_review_scope') == 'persistence_smoke_v2' and\n            contract['focused_slider_order'] == PERSISTENCE_STAGES and",
          "contract['readonly_step_count'] == 9 and contract['gui25_order'] == STAGES and"),
-        ('Readonly9/representative slider and independent guard boundary changed','Original readonly9/UI25 and independent guard boundary changed'),
-        ("'representative_slider_required': True, 'gui_review_scope': 'representative_slider_v1', 'prior_core_external_reference': prior,",
+        ('Readonly9/persistence smoke and independent guard boundary changed','Original readonly9/UI25 and independent guard boundary changed'),
+        ("'representative_slider_required': True, 'gui_review_scope': 'persistence_smoke_v2', 'prior_core_external_reference': prior,",
          "'original_gui25_required': True, 'prior_core_external_reference': prior,"),
         ("'original_readonly9': True, 'focused_slider': ui,","'original_readonly9': True, 'gui25': ui,")]
     for new,old in replacements:
@@ -186,13 +186,14 @@ class FocusedMigration(unittest.TestCase):
         self.assertEqual(len(contract['representative_evidence_roles']),3)
 
     def test_ui_representative_boundaries_cancel_save_restore_and_no_replay(self):
-        from ck3_mod_acceptance_cases.xqol_ui import Controller,SLIDER_STAGES,STAGES
+        from ck3_mod_acceptance_cases.xqol_ui import Controller,PERSISTENCE_STAGES,SLIDER_STAGES,STAGES
         from ck3_mod_acceptance_cases.xqol_ui_tail_adapter import validate_contract
         contract=json.loads((CASES/'xqol_ui_tail.json').read_bytes())
         context={'case_contract':contract,'case_spec':{'budgets':{
             'command_timeout':300,'readiness_timeout':400,'timeout':3000,'poll_interval':0.05,'hold_seconds':1800}}}
         validate_contract(context)
-        self.assertEqual(contract['focused_slider_order'],SLIDER_STAGES)
+        self.assertEqual(contract['focused_slider_order'],PERSISTENCE_STAGES)
+        self.assertEqual(PERSISTENCE_STAGES,['slider-anchor','save-100','restore-anchor','map-clean'])
         self.assertEqual(len(SLIDER_STAGES),7);self.assertEqual(len(STAGES),25)
         import inspect
         source=inspect.getsource(Controller.record)
@@ -228,6 +229,29 @@ class FocusedMigration(unittest.TestCase):
                               ('reopened_persisted_value',p+1),('no_script_pending_clear_or_setfaith',False)):
                 with self.subTest(stage=stage,field=field),self.assertRaises(RuntimeError):
                     self._record_slider_save(stage,contract,{**actual,field:bad})
+
+    def test_ui_smoke_keeps_actual_save_and_restore_readback_without_prior_record_injection(self):
+        contract={'case':'ui_tail','gui_review_scope':'persistence_smoke_v2'}
+        for stage,p in (('save-100',100),('restore-anchor',50)):
+            actual={'draft_value':p,'save_option_executed':True,'reopened_persisted_value':p,
+                    'no_script_pending_clear_or_setfaith':True}
+            self._record_slider_save(stage,contract,actual)
+            for field,bad in (('draft_value',p-1),('save_option_executed',False),
+                              ('reopened_persisted_value',p-1),('no_script_pending_clear_or_setfaith',False)):
+                with self.subTest(stage=stage,field=field),self.assertRaises(RuntimeError):
+                    self._record_slider_save(stage,contract,{**actual,field:bad})
+
+    def test_ui_save_endpoints_use_one_unbranched_production_assignment(self):
+        product=CASES.parents[1]/'mod_xenoamess_quality_of_life/events/xqol_events.txt'
+        text=product.read_text(encoding='utf-8-sig').split('xqol.100 = {',1)[1]
+        confirm=text.split('\toption = {',2)[1]
+        self.assertEqual(confirm.count('name = xqol_mass_conversion_threshold\n'),1)
+        self.assertIn('value = var:xqol_mass_conversion_threshold_draft',confirm)
+        self.assertEqual(confirm.count('xqol_bulk_conversion_dispatch_effect = yes'),1)
+        self.assertNotIn('if = {',confirm)
+        cancel=text.split('\toption = {',2)[2]
+        self.assertIn('remove_variable = xqol_mass_conversion_threshold_draft',cancel)
+        self.assertNotIn('set_variable',cancel)
 
     def test_ui_legacy_save_still_requires_exact_natural_chain(self):
         legacy={'case':'defense_and_ui'}
