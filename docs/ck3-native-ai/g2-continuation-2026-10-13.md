@@ -1,6 +1,6 @@
 # G2 接续实施（2026-10-13）
 
-> 最新状态：fresh12主菜单/延迟录制已实际到达，但新signal被输出枚举误判，SDK未启动；Game随后自行exit1，有图形设备失败及原Crash。窄修复已通过生产路径回归，准备fresh13。普通回合、日期推进、目标和胜战仍0，B12完整owner-tree未验收。见[fresh12实绩与修复](g2-fresh12-recorder-signal-and-crash-2026-10-13.md)。下方旧阶段记录保留。
+> 最新状态：fresh13 固定 Robert Start 已 verified，最后独立根查询在共享 deadline 内 verified，录像正常完成；队列随后在镜头请求前异常退出，原始内层原因 UNKNOWN。外置候选已修复失败登记重复调用守卫并保留完整异常，准备 fresh14。普通回合、日期推进、目标和胜战仍0，B12完整owner-tree未验收。见[fresh13实绩与边界](g2-fresh13-start-and-queue-failure-2026-10-13.md)。下方旧阶段记录保留。
 
 接续 [休假交接](../handover/2026-10-13-g2-native-maintainer-vacation-handoff.md)，实施输入为干净的 `6feaef84953fdaf0d26244744a5c4ddbb75286c6`。用户要求的 64 个并行研究任务按 M0–M7、每组协调者兼研究者及七个专项执行；本次复用原任务继续实施，没有将任务数当作能力完成度。
 
