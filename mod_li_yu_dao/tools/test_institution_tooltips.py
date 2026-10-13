@@ -474,34 +474,37 @@ class InstitutionSupportProgressTests(unittest.TestCase):
                 self.assertEqual(pair, expected)
             expected = pair
             self.assertEqual([len([e for e in c.entries if e.key == 'modifier']) for c in pair], [4, 4])
-            self.assertEqual([self.weight(c) for c in pair], [60, 40])
+            self.assertEqual([self.weight(c) for c in pair], [75, 25])
         self.assertEqual(self.chances(412), {})
         self.assertEqual(self.weight(self.chances(413)['lyd_i3b_wait']), 0)
 
     def test_directional_opinion_thresholds_are_exact(self):
         chances = self.chances(411)
-        for opinion, weights in [(-50, (30, 60)), (-49, (60, 40)), (49, (60, 40)), (50, (90, 30))]:
+        for opinion, weights in [(-50, (37.5, 37.5)), (-49, (75, 25)),
+                                 (49, (75, 25)), (50, (112.5, 18.75))]:
             with self.subTest(opinion=opinion):
                 self.assertEqual(tuple(self.weight(chances[k], opinion) for k in ('lyd_i3b_yes', 'lyd_i3b_no')), weights)
 
     def test_learning_is_candidate_learning_with_exact_10_and_20_boundaries(self):
         chances = self.chances(411)
-        for learning, weights in [(9, (48, 44)), (10, (60, 40)), (19, (60, 40)), (20, (75, 36))]:
+        for learning, weights in [(9, (60, 27.5)), (10, (75, 25)),
+                                  (19, (75, 25)), (20, (93.75, 22.5))]:
             with self.subTest(learning=learning):
-                self.assertEqual(tuple(self.weight(chances[k], learning=learning, npc_learning=100)
-                                       for k in ('lyd_i3b_yes', 'lyd_i3b_no')), weights)
+                for key, expected in zip(('lyd_i3b_yes', 'lyd_i3b_no'), weights):
+                    self.assertAlmostEqual(self.weight(chances[key], learning=learning,
+                                                       npc_learning=100), expected)
 
     def test_extreme_support_refusal_and_absent_scope_never_force_an_answer(self):
         yes, no = self.chances(411)['lyd_i3b_yes'], self.chances(411)['lyd_i3b_no']
         for opinion in (-100, -50, -49, 0, 49, 50, 100):
             for learning in (0, 9, 10, 19, 20, 100):
                 y, n = self.weight(yes, opinion, learning), self.weight(no, opinion, learning)
-                self.assertGreaterEqual(y, 24)
-                self.assertLessEqual(y, 112.5)
-                self.assertGreaterEqual(n, 27)
-                self.assertLessEqual(n, 66)
-        self.assertEqual(self.weight(yes, missing_actor=True), 60)
-        self.assertEqual(self.weight(no, missing_actor=True), 40)
+                self.assertGreaterEqual(y, 30)
+                self.assertLessEqual(y, 140.625)
+                self.assertGreaterEqual(n, 16.875)
+                self.assertLessEqual(n, 41.25)
+        self.assertEqual(self.weight(yes, missing_actor=True), 75)
+        self.assertEqual(self.weight(no, missing_actor=True), 25)
 
     def progress(self, state):
         actor, _, _, _, globals_, env = state
@@ -599,7 +602,9 @@ class InstitutionSupportProgressTests(unittest.TestCase):
             entries = []
             for e in body.entries:
                 if e.key == 'ai_chance':
-                    value = Block(tuple(x for x in e.value.entries if x.key != 'modifier'))
+                    value = Block(tuple(Entry(x.key, x.operator,
+                                              {'75': '60', '25': '40'}.get(x.value, x.value))
+                                        for x in e.value.entries if x.key != 'modifier'))
                 else:
                     value = strip_chances(e.value) if isinstance(e.value, Block) else e.value
                 entries.append(Entry(e.key, e.operator, value))
@@ -615,7 +620,7 @@ class InstitutionSupportProgressTests(unittest.TestCase):
                 self.assertEqual(loc.count(f' lyd_i3b_progress_{key}_tt:0 "'), 1)
             self.assertIn("lyd_i3b_progress_rite.MakeScope.Var('lyd_i3b_yes').GetValue|0", loc)
             self.assertIn("lyd_i3b_progress_rite.MakeScope.Var('lyd_i3b_total').GetValue|0", loc)
-            self.assertIn('60/40' if language == 'english' else '60／40', loc)
+            self.assertIn('75/25' if language == 'english' else '75／25', loc)
 
 
 if __name__ == '__main__':
