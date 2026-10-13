@@ -1,0 +1,82 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "case_id": "release012-headship-resume",
+  "acceptance_scope": "original_confucian_headship_from_immutable_R79_preproposal_SAVE",
+  "business_contract_applicable": true,
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": ["LYD_FEEDBACK: TEST FAIL"],
+  "failure_prefixes": ["LYD_FEEDBACK:"],
+  "maximum_natural_days": 0,
+  "expected_actor_character_id": 31254,
+  "storage_admission": null,
+  "phases": [
+    {
+      "id": "baseline",
+      "required": true,
+      "maximum_option_actions": 0,
+      "maximum_review_seconds": 600,
+      "requirements": [
+        "exact_R79_preproposal_SAVE_loaded_with_player31254_and_paused_original_date",
+        "current_formal83_profile_byte_equal_and_no_new_LYD_engine_errors",
+        "original_confucian_Faith31_main_rite33_and_no_head_actual",
+        "white_sand_rite174_current_and_R79_seed_origin_actual"
+      ],
+      "instructions": "Confirm exact immutable R79 save bytes and the actual loaded paused player/date. Read current Faith, rite, main rite, headlessness, GUI and formal product profile; this is a new live observation, not inherited R79 business PASS. Do not submit a decision or event option."
+    },
+    {
+      "id": "preparation",
+      "required": true,
+      "maximum_option_actions": 0,
+      "maximum_review_seconds": 600,
+      "allowed_options": {},
+      "requirements": [
+        "R79_production_entry_white_sand_T35_T08_preproposal_provenance_bound_to_seed",
+        "current_player_learning_at_least15_and_actual_rite174",
+        "faith_and_original_main_rite_preserved",
+        "all_actual_active_rites_have_qualified_nominees",
+        "no_assembly_capture_before_readiness"
+      ],
+      "instructions": "Read fresh complete G2 and original saved qualification provenance before any proposal. The R79 SAVE is before the institution begin; it supplies no accepted representative, vote, signature, seal or mandate. If the current loaded state differs, return partial without SAVE or mutation."
+    },
+    {
+      "id": "institution",
+      "required": true,
+      "maximum_option_actions": 56,
+      "maximum_review_seconds": 2400,
+      "allowed_options": {
+        "lyd.410": [0, 1],
+        "lyd.411": [0, 1],
+        "lyd.412": [0, 1],
+        "lyd.413": [0, 1, 2],
+        "lyd.430": [0, 1, 2, 3],
+        "lyd.431": [0],
+        "lyd.432": [0]
+      },
+      "requirements": [
+        "missing_original_main_rite_representative_seal_disabled_actual",
+        "original_confucian_production_begin_once",
+        "all_actual_non_dormant_rites_and_electors_included",
+        "production_quorum_and_all_human_consent_actual",
+        "actual_serial_nonce_and_all_rite_signatures_current",
+        "factory_confirmed_once_only_after_actual_mandate",
+        "full_saved_political_title_AST_holder_heir_and_realm_laws_unchanged",
+        "saved_owned_ownerfaith_holder_result1_and_recognized_leader_join"
+      ],
+      "instructions": "Before any proposal, retain the no-nomination action history and directly review the original main-rite no-representative progress tooltip plus the disabled exact seal decision. Query G2 for actual membership/learning and G3 for actual head/title; never infer GUI enabled from model available. Then obtain fresh ordinary self/NPC representative acceptance, seal, each active rite's two-thirds real vote, every living human consent and signatures. Before begin, respond enter_institution with actual eligibility and take the once-only political SAVE/cache/G2/G3 baseline. NPC neutral choices use current 75/25 without forced outcomes. No vote, NPC, title or learning injection. Before native0 factory, read_precommit and admit_commit with exact current signed SAVE/mandate; no guessed event option. After implementation, read new SAVE, Title law/properties/owner/holder/Faith, all original political title holders/heirs/laws and ordered cached successors. Any missing step remains partial."
+    }
+  ],
+  "uncovered_product_business": [
+    "full36_live_effect_matrix",
+    "T33_natural365_second_stage",
+    "new_HoF_independent_cold_reload",
+    "C3",
+    "whole_I4"
+  ],
+  "runtime_status": "NOT_RUN"
+}
