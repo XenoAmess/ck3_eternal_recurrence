@@ -67,6 +67,8 @@ class HeadshipResumeContract(unittest.TestCase):
                 self.assertEqual(inventory['enabled_mods'], ['mod/product.mod'])
                 self.assertEqual(len(inventory['product_files']), 3)
                 self.assertNotIn('_case_contract.json', [Path(row['path']).name for row in inventory['product_files']])
+                self.assertIn('mod-content/fixture/_case_contract.json', prepared['files'])
+                self.assertIn('pdx_settings.txt', prepared['files'])
                 self.assertEqual(prepared['startup']['saved_campaign']['sha256'], seed['sha256'])
                 changed_seed = dict(seed, player_id=42)
                 with self.assertRaises(ValueError):

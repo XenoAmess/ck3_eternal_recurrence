@@ -125,6 +125,8 @@ def prepare_case(context):
     write_json(inventory, {'schema': 'ck3-saved-campaign-product-only-profile-v1',
         'profile_path': str(profile), 'enabled_mods': ['mod/product.mod'],
         'product_files': [pin(outer), *[pin(p) for p in sorted(target.rglob('*')) if p.is_file()]]})
+    profile_files = {p.relative_to(profile).as_posix(): pin(p)
+                     for p in sorted(profile.rglob('*')) if p.is_file()}
     preparation = state / 'preparation.json'
     write_json(preparation, {'schema': 'lyd-headship-R79-resume-preparation-v1',
         'prepared_at_utc': datetime.now(timezone.utc).isoformat(),
@@ -132,7 +134,7 @@ def prepare_case(context):
         'seed_source_run': 'bf-202609141645-5434332d4d--li-yu-dao--R0079',
         'formal_release_manifest': manifest_ref,
         'source_save_untouched': True, 'profile_path': str(profile),
-        'profile_file_count': len([p for p in profile.rglob('*') if p.is_file()]),
+        'profile_file_count': len(profile_files),
         'product_file_count': PRODUCT_FILES, 'product_inventory': pin(inventory),
         'assertion_contract': pin(compiled_path), 'runtime_manifest': context['runtime_manifest'],
         'business_pass': False})
@@ -142,6 +144,7 @@ def prepare_case(context):
         'saved_campaign': {**seed, 'save': str(source_save), 'product_inventory': str(inventory)}},
         'initial_plan': pin(initial), 'startup_evidence': pin(preparation),
         'profile_preparation': pin(preparation), 'assertion_contract': pin(compiled_path),
+        'files': profile_files,
         'runtime_status': 'NOT_RUN', 'business_contract_applicable': True,
         'business_pass': False, 'product_release_pass': False}
 
