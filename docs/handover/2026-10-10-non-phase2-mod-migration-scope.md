@@ -23,3 +23,13 @@
 A204随后因执行者在未暂停地图提交query-decision而被接口拒绝，安全清场；不是已证明的产品失败。其public run/verify均2、实际retained OS1/normal=false、allocator0/observer15/keeper0、CAS释放及closure3全true，失败原件保留。资源闭账为本机协调目录`focused-ui-a204-reviewed1gib-20261013-01-reservation-52-closed.json`，8437字节/SHA-256`d4776860aa13f4344a2143ce25b317eaf73e1868e8a53126f35fa4334b1da870`；不把资源CLOSED当成业务PASS。后续先暂停并确认当前snapshot再做决议语义查询。
 
 离线回归`test_ck3_mod_acceptance_xqol_minimal_scope.py`实际8项及`test_ck3_mod_acceptance_xqol_ui_tail_binding.py`实际3项通过；历史inverse/原预算/readonly9/guard独立证据/normal0门槛未降低。这不代替尚待执行的保存读回。重整河山仅保留26步/D8核心继承链及50/51复辟门槛一次，不重跑36项或P4全矩阵。外置失败关键证据由当前迁移执行者保护至2026-10-18复核；当前有效基线、原始错误与生产输入继续保留，不凭失败或目录名自动删除。
+
+### 同日 UI 执行工具故障与最小修复
+
+A205/R0095正常OS0退出，但只记录anchor：public run0/verify2，保存100后的重开、恢复及清场仍为GAP。多次截图往返超过60秒，旧操作只刷新而未点击；不得追认为通过。其52闭账8786字节/SHA-256`36807b0cd662dbe3e1526624e64028b3a0be5ecf2aa254c9c7d0d49eddd59c89`。原观察器在游戏退出之后另因卷可用空间触线退出2，压力RED也保留。
+
+A206/R0096实际target模板像素完全相同，但标题layout最大通道差21、相关度约0.99905，原1级量化阈值拒绝；`click_attempted=false`、`click_completed=false`，不是mod业务失败。旧控制器因此结束场次，原public run/verify均2，normal0退出及closure3独立完成；52闭账7799字节/SHA-256`b7a421e0fa54379437e338146e1ee98c680ed621571ce8e43ce4b26dc7059b16`。
+
+当前控制器仅对明确唯一匹配、完全未输入的像素拒绝保留原结果并复核原PID/焦点/租约/期限后发布新sequence，交还执行者重新观察；不重放旧请求、不自动换锚、不授业务记录。歧义、守卫失败或任何输入尝试仍中断，像素阈值与预算不变。`reviewed_template_source`允许显式使用本场已亲审的旧原图：当前request仍绑定latest await，原模板helper自行采集新像素、匹配并走坐标门禁，不虚称自动截图已有人审。四项业务记录仍须亲审实际关键图。针对本次真实故障的3项离线测试和增量2项测试分别实际通过；这不是尚待补齐的GUI实机PASS。
+
+本次存储回收均有逐文件小清单：`closed-a203-a204-retirement-20261013-01`实际回收3828文件/296768304字节；`closed-a205-evidence-retirement-20261013-01`实际回收3813文件/578270000字节。后者仅16条已结束完整传输重放用途的流、17张非关键中间PNG及A205生成shadercache；完整native报告、typed/业务读回、错误、压力、关键PNG、正常退出图、存档与当前输入保留至10月18日复核。已删原件不可读取，不制造替代原件，不改旧GREEN/RED/GAP。回执位于本机外置`ck3-upgrade-20261010`对应同名目录；实际可用空间独立复测，未按候选容量预先记收益。

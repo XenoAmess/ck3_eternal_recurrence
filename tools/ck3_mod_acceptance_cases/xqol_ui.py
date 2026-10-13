@@ -163,7 +163,9 @@ class Controller:
             if req['action']=='template-click':
                 import ck3_mod_acceptance_gui_template as matcher
                 from ck3_mod_acceptance_template_click import execute
-                execute(source=req['source'],payload={key:req[key] for key in ('target','layout')},
+                template_source=req.get('reviewed_template_source',req['source'])
+                require(Path(template_source['path']).resolve().parent==self.out.resolve(),'Reviewed template must belong to this same live controller')
+                execute(source=template_source,payload={key:req[key] for key in ('target','layout')},
                     output=self.out/(prefix+'-template-click'),desktop=self.gui,guard=self.guard,
                     coords=self.coords,matcher=matcher,expected_hwnd=self.hwnd,pid=self.pid,create_time=self.ctime,
                     reviewer=self.operator_reviewer,run_id=self.frozen['run_id'],original_deadline=self.deadline)
@@ -284,6 +286,35 @@ class Controller:
                 'gui_review_scope':self.context['case_contract'].get('gui_review_scope','original_ui25')}
             write(self.out/'actual-same-live-records.json',result)
             return result
+    def template_preinput_rejection(self,req,prefix,error):
+            output=self.out/(prefix+'-template-click');path=output/'result.json'
+            if not path.is_file():return None
+            result=read(path)
+            target_error='RuntimeError: Current target is absent, ambiguous or exceeds reviewed-pixel quantization tolerance; no input'
+            layout_error='RuntimeError: Current stable layout anchor exceeds quantization tolerance or is ambiguous; no input'
+            actual_error=type(error).__name__+': '+str(error)
+            if not (result.get('status')=='REJECTED_NO_REPLAY' and result.get('no_replay') is True
+                    and all(result.get(key) is False for key in ('click_attempted','click_completed','post_image_captured'))
+                    and result.get('error')==actual_error and actual_error in (target_error,layout_error)
+                    and result.get('run_id')==self.frozen['run_id'] and result.get('reviewed_original')==req.get('reviewed_template_source',req['source'])
+                    and result.get('request_payload')=={key:req[key] for key in ('target','layout')}):return None
+            paths=[output/'target-before.match.json']
+            if actual_error==layout_error:
+                for index in range(len(req['layout'])):
+                    candidate=output/('layout-before-'+str(index)+'.match.json')
+                    if not candidate.is_file():break
+                    paths.append(candidate)
+                if len(paths)<2:return None
+            if not all(p.is_file() and pin(p) in result.get('evidence',[]) for p in paths):return None
+            matches=[read(p) for p in paths]
+            if not all(row.get('matched_uniquely') is True and row.get('pixel_geometry_equal') is True
+                       and row.get('pixel_quantization_tolerance')==1 for row in matches):return None
+            rejected=matches[-1];maximum=rejected.get('pixel_maximum_channel_difference')
+            if not (all(row.get('pixels_within_quantization_tolerance') is True for row in matches[:-1])
+                    and rejected.get('pixels_within_quantization_tolerance') is False
+                    and type(maximum) is int and maximum>1):return None
+            self.guard()  # Same PID/create-time/HWND/focus/keeper/deadline; failure still aborts.
+            return pin(path)
     def run(self):
             try:
                 self.typed('snapshot',{},'initial-current-native-frame');self.publish()
@@ -291,7 +322,13 @@ class Controller:
                     request=self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')
                     if not request.is_file():self.guard();time.sleep(.25);continue
                     req=read(request);self.source_guard(req);action=req.get('action');prefix='action-'+str(self.seq).zfill(4)
-                    if action in ('click','template-click','move','drag','scroll'):self.mouse(req,prefix)
+                    preinput_rejection=None
+                    if action in ('click','template-click','move','drag','scroll'):
+                        try:self.mouse(req,prefix)
+                        except RuntimeError as error:
+                            if action!='template-click':raise
+                            preinput_rejection=self.template_preinput_rejection(req,prefix,error)
+                            if preinput_rejection is None:raise
                     elif action=='typed':
                         self.typed(req['typed_action'],req.get('arguments',{}),prefix)
                         if req['typed_action']!='snapshot':self.typed('snapshot',{},prefix+'-independent-native-after')
@@ -301,7 +338,10 @@ class Controller:
                         self.gaps.append({'stage':self.stages[self.stage],'reason':req['reason'],'request':pin(request),'original_png':self.latest});self.stage+=1
                     elif action=='finish':return self.finish(req.get('reason','Root requested preserved normal closure'))
                     else:raise RuntimeError('Unsupported request action; no speculative input')
-                    write(self.out/(prefix+'.complete.json'),{'request':pin(request),'stage_index':self.stage,'input_ACK_is_not_business_pass':True})
+                    completion={'request':pin(request),'stage_index':self.stage,'input_ACK_is_not_business_pass':True}
+                    if preinput_rejection is not None:
+                        completion.update(template_preinput_rejected=preinput_rejection,no_replay=True,fresh_root_review_required=True)
+                    write(self.out/(prefix+'.complete.json'),completion)
                     self.seq+=1;self.publish()
                 return self.finish('Original normal Quit reserve reached; remaining business stages preserved as GAP')
             except BaseException as error:
