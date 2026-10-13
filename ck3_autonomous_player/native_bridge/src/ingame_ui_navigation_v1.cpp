@@ -1,5 +1,6 @@
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/war_declared_overview_v1.hpp"
+#include "xar_bridge/war_declared_owner_tree_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
@@ -1077,68 +1078,65 @@ bool CallWarDeclaredFindTopV1(NativeZhongguoFindTopLevelWidgetV1 find,
 // unknown. Only raw widget fields are read; no expression is evaluated here.
 bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
     void *owner, WarDeclaredWindowObservationV1 &out) {
-  std::size_t used = 0, edges = 0, matches = 0;
-  const auto fail = [&](std::string_view reason, std::size_t at = 0,
-                        std::int32_t count = 0, std::int32_t index = -1) {
-    out.read_failure.assign(reason);
-    out.read_failure += ";at=" + std::to_string(at) +
-        ";queued=" + std::to_string(used) +
-        ";edges=" + std::to_string(edges) +
-        ";matches=" + std::to_string(matches) +
-        ";count=" + std::to_string(count) +
-        ";child=" + std::to_string(index);
-    return false;
-  };
+  using Failure = detail::WarDeclaredOwnerReadFailureV1;
   void *scene_root = nullptr;
-  if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root))
-    return fail("owner_root_unreadable");
-  if (!scene_root) return fail("owner_root_missing");
-  std::array<void *,kNamedGuiTreeInspectionMaximumWidgetsV1> queue{};
-  queue[0] = scene_root;
-  used = 1;
-  for (std::size_t at = 0; at < used; ++at) {
-    auto *node = queue[at];
+  if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root)) {
+    out.read_failure = "owner_root_unreadable";
+    return false;
+  }
+  if (!scene_root) {
+    out.read_failure = "owner_root_missing";
+    return false;
+  }
+  detail::WarDeclaredOwnerReadCallbacksV1 read{};
+  read.context = &access;
+  read.runtime = [](const void *opaque, std::uintptr_t node,
+                    bool &target, bool &visible) noexcept {
+    const auto &current = *static_cast<const ZhongguoScoreboardAccessV1 *>(opaque);
     std::string name;
     void *vtable = nullptr;
-    bool visible = false, enabled = false;
-    if (!ReadGuiWidgetRuntimeV1(access,node,name,vtable,visible,enabled) || !vtable)
-      return fail("widget_runtime_unreadable", at);
-    if (name == kWarDeclaredOverviewWindowNameV1) {
-      if (++matches != 1) return fail("duplicate_named_window", at);
-      out.root = node;
-      out.present = true;
-      out.visible = visible;
-    }
+    bool enabled = false;
+    if (!ReadGuiWidgetRuntimeV1(current,reinterpret_cast<void *>(node),
+                                name,vtable,visible,enabled) || !vtable)
+      return Failure::widget_runtime_unreadable;
+    target = name == kWarDeclaredOverviewWindowNameV1;
+    return Failure::none;
+  };
+  read.children = [](const void *, std::uintptr_t node,
+                     std::uintptr_t &address, std::int32_t &count) noexcept {
     void **children = nullptr;
-    std::int32_t count = 0;
-    if (!Value(node,kZhongguoWidgetChildrenOffset,children))
-      return fail("child_vector_unreadable", at);
-    if (!Value(node,kZhongguoWidgetChildCountOffset,count))
-      return fail("child_count_unreadable", at);
-    if (count < 0) return fail("negative_child_count", at, count);
-    if (static_cast<std::size_t>(count) > queue.size())
-      return fail("child_count_exceeds_widget_budget", at, count);
-    if (edges + static_cast<std::size_t>(count) > 8192)
-      return fail("edge_budget_exhausted", at, count);
-    if (count && !children) return fail("child_vector_missing", at, count);
-    edges += static_cast<std::size_t>(count);
-    for (std::int32_t index = 0; index < count; ++index) {
-      void *child = nullptr;
-      const auto address = reinterpret_cast<std::uintptr_t>(children);
-      const auto offset = static_cast<std::size_t>(index) * sizeof(void *);
-      if (address > (std::numeric_limits<std::uintptr_t>::max)()-offset)
-        return fail("child_address_overflow", at, count, index);
-      if (!Slot(address+offset,child))
-        return fail("child_slot_unreadable", at, count, index);
-      if (!child) return fail("child_slot_null", at, count, index);
-      if (used == queue.size())
-        return fail("widget_budget_exhausted", at, count, index);
-      if (std::find(queue.begin(),queue.begin()+static_cast<std::ptrdiff_t>(used),child) !=
-          queue.begin()+static_cast<std::ptrdiff_t>(used))
-        return fail("duplicate_child", at, count, index);
-      queue[used++] = child;
-    }
+    if (!Value(reinterpret_cast<void *>(node),kZhongguoWidgetChildrenOffset,children))
+      return Failure::child_vector_unreadable;
+    if (!Value(reinterpret_cast<void *>(node),kZhongguoWidgetChildCountOffset,count))
+      return Failure::child_count_unreadable;
+    address = reinterpret_cast<std::uintptr_t>(children);
+    return Failure::none;
+  };
+  read.child = [](const void *, std::uintptr_t address, std::uint32_t index,
+                 std::uintptr_t &value) noexcept {
+    const auto offset = static_cast<std::size_t>(index) * sizeof(void *);
+    if (address > (std::numeric_limits<std::uintptr_t>::max)()-offset)
+      return Failure::child_address_overflow;
+    void *child = nullptr;
+    if (!Slot(address+offset,child)) return Failure::child_slot_unreadable;
+    value = reinterpret_cast<std::uintptr_t>(child);
+    return Failure::none;
+  };
+  detail::WarDeclaredOwnerReadResultV1 scanned{};
+  if (!detail::ReadWarDeclaredOwnerTreeV1(
+          reinterpret_cast<std::uintptr_t>(scene_root),read,scanned)) {
+    out.read_failure.assign(detail::WarDeclaredOwnerFailureNameV1(scanned.failure));
+    out.read_failure += ";at=" + std::to_string(scanned.at) +
+        ";queued=" + std::to_string(scanned.queued) +
+        ";edges=" + std::to_string(scanned.edges) +
+        ";matches=" + std::to_string(scanned.matches) +
+        ";count=" + std::to_string(scanned.child_count) +
+        ";child=" + std::to_string(scanned.child_index);
+    return false;
   }
+  out.root = reinterpret_cast<void *>(scanned.target);
+  out.present = scanned.target != 0;
+  out.visible = scanned.target_visible;
   out.source = "guarded_top_level_and_complete_owner_tree";
   return true;
 }

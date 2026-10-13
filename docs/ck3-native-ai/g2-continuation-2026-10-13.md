@@ -123,3 +123,25 @@ full_loop7 已启动完整普通规划器。首个 AUTO9 用时4.171270秒，MCP
 Fresh06录像独立核验：577,863,617B、961.866秒、2560×1440/30fps、h264/aac、4,806,188bps，SHA-256 `304845c6b01cb0dac923e5be42edfb014ec6f484f6e2fc9f8386bab852cfa558`。汇总 `R/fresh-robert06/ROOT-FRESH06-ACTUAL-CLOSED-EVIDENCE.json` 保留逐响应耗时/投影大小/文件SHA及原Native失败材料；未将MCP投影大小冒充Native线缆返回量，也未将整个Driver文件大小冒充history大小。
 
 B10于07:15:11Z实际编译/链接成功，`R/native-profile/build10/native.dll` 为18,265,600B，SHA-256 `e1f19fbaeed2ef395a384a45c5657e5a00608534ca1ae23c0ab24dcaa9ba4d66`。受影响c0339原在direct link中，因此只替换一个direct object，保留其成功B6 owner macros/env/include及实际依赖；B9的612个archive成员全部原样保留，未重建archive。诊断源码100,519B/SHA `1bf6f0652b8cce0941b29126a5ae026a1946fb25105ed5bfb26808f05bb65bb1`。仅授COMPILED_LINKED/diagnostic_only；未冷载，未授业务修复。准备脚本缺Counter导入的首次失败在编译前发生并原样保留，生产compile仅执行一次。
+
+## Fresh07：诊断闭合2048节点耗尽；B11窄修复待实机
+
+干净 `cedaece5bd96551ffe11aaa4e06144158c5d12c6`，B10实际冷载到PID255104、creation `20261013072207.758188+000`。独立短录像首帧亲审后，固定route/New Game/Robert Start各执行一次；Start3 verified耗时28.662秒，actor31254、raw日期53144328、episode `native-31254-90748ce85441`。camera4 settled，Root亲审sample003为清晰Trani/Apulia；semantic5及初始SAVE6再次配对通过。
+
+首个普通AUTO9仍blocked，但实际Native原始history now明确：
+
+```text
+war_declared_window_read_failed:widget_budget_exhausted;at=908;queued=2048;edges=2048;matches=1;count=3;child=2
+```
+
+它证明完整owner树的2048节点预算耗尽；虽已遇到一个目标，剩余树未读完，窗口状态仍unknown，不能提前授absent/hidden或忽略重复目标。原始response9、control7、Driver原件与汇总`R/fresh-robert07/ROOT-FRESH07-ACTUAL-CLOSED-EVIDENCE.json`保留。有效普通回合、日期推进、选定战争目标及获胜战争仍均0。
+
+本场原SDK实际queue PID257992/FILETIME134363507241088845 exit1、application PID240740/FILETIME134363507260398493 exit0；错误退出不计正常SDK成功。录像合作停止和等待修复实际通过：COMPLETED、238.566秒、143,371,631B、SHA-256 `2106d2ac5aaf3a5fb275563c4f20498ecdad02e4f8e7a35cef3d34ad57916d1b`，inputs_unbound=true、独立OBS实际正常exit0、无failed。Game一次WM_CLOSE后仍未退出，owned cleanup exit1/tree_gone；keeper无failure、已停止，最后3870，CAS释放3872。录像正常关闭与Game强制清理分别记账。
+
+补充Fresh06瞬态来源：M1 core_resources报告其cmd探针把未转义的`>`解释为重定向，在仓库根产生仅本任务临时文件`601295421440+65536`（2249B），mtime为06:39:58.3983982Z，随后精确删除。其原线程工具回执chunk为6f0504/0f6528/204fac，未有外置回执，creation与精确删除时间未测；这与06:40:24Z keeper失败时间相近，属于有依据的相关性，尚不冒称独立因果证明。
+
+B11修复仅为完整owner遍历设置独立16,384 widgets/65,536 edges上限，通用GUI导出2048上限保持原值。私有生产helper使用有界vector和set，节点查重为O(logN)；全部可达节点和边验证完成后才发布目标。新增12场景调用同一生产helper，包括4097节点早见目标/完整不存在、16384边界、16385耗尽、晚到不可读、重复/环/null/多目标等。Root将原fixture的main作宏别名包装为DLL导出，由Python ctypes实际调用一次：08:05:20Z编译0、12/12 FIRST GREEN，无新EXE。CMake补充独立fixture入口，不需链接完整Native闭包。
+
+B11只重编c0339并重链，实际`R/native-profile/build11/native.dll`为18,269,696B，SHA-256 `d4b4ad1a6f217b4b6333d9a41a5dd8ec4deb2b62be6baecfb762f06831c2e5f4`。首编译因固定旧include链没有新helper而失败，原日志保留；新增只包含此helper的固定overlay后，c0339-repair01编译及link均0。实际依赖逐项与预编译pin核对，B9归档612成员全部保留。这里只授源码/fixture/COMPILED_LINKED，业务修复及大树完整实读待新冷载。
+
+07:45:18Z闭场清点：36,497文件，去重文件逻辑5,278,247,743B/8GiB、Native1,460,612,590B/2GiB、free1,234,304,090,112B。B11重链后Native1,482,212,434B，free1,234,275,143,680B，预留及原期限通过；无删除或期限续展。
