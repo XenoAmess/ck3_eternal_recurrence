@@ -17,7 +17,7 @@
 - 用户要求 64 并发 M0–M7 研究，采用每组协调兼研究者加 7 专项。已多轮复用原线程；**分派 64 路不等于持续有 64 路实际运行**，capacity/stream 错误和部分未交付均已保留。交接时实际代理状态检查没有活跃子线程。
 - Game 与决策窗放桌面1，不切换用户桌面2、不抢 foreground、不控制个人 OBS。唯一主线程操作游戏和屏幕，其余线程只读或在外置目录保存候选。
 - 用户已经明确保证“我保证当前steam是离线”。本轮按用户保证沿用，未切在线；没有取得本轮新鲜 Steam 离线像素，不能写成亲审截图。
-- **禁用 PowerShell**，包括默认 shell。所有命令显式使用 `cmd.exe`，Python 加 `-B -X utf8`。优先外置 `.py`；内联代码用 ASCII hex，中文用 Unicode escape。不要将含 `>` 的 Python 字符串直接交给 cmd；hex 后命令仍受 Windows 约 8191 字符限制。
+- **不得使用本项目禁用的 Windows shell**，包括环境默认 shell。所有命令显式使用 `cmd.exe`，Python 加 `-B -X utf8`。优先外置 `.py`；内联代码用 ASCII hex，中文用 Unicode escape。不要将含 `>` 的 Python 字符串直接交给 cmd；hex 后命令仍受 Windows 约 8191 字符限制。
 - keeper 存活时，冻结 checkout 必须保持 exact HEAD、tracked/untracked 全部 clean。候选保存在外置目录；停止 keeper、CAS 释放后才修改、提交或推送。不能热换 DLL、改冻结 hardlink、写 pycache 或重放未知动作。
 
 完整约束以当前 [AGENTS.md](../../AGENTS.md)、[任务总线](../codex-task-bus.md)、[统一存储策略](../storage-retention-policy.md)及原生专题为准。

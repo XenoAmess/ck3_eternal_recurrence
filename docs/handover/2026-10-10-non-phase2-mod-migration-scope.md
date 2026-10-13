@@ -51,3 +51,15 @@ A208/R0098第一次run因执行者nonce转录错误在启动前拒绝；新鲜�
 原工具自动进入正常Quit，未能保留热修复窗口。其run/verify均2，normal退出及保留句柄OS0实际成立；observer15、keeper/allocator0和CAS10003后实际52 CLOSED为7815字节/SHA-256 `f9323b3f7a9cdd7a51e2ea6be23177016c26160f81f790e4ef37aba36bd8ccc3`，保守U48172919064字节。closure的字符串路径比较也曾误拒绝合法正斜杠context；只在外置closure薄层内存中规范prepared路径，原context与全部pin未改，旧失败保留。
 
 当前仅把已经实机证明可用的无输入focus能力提取为`CaseClient.focus_retained_process`，原Quit wrapper/回执名保留；UI入口在首次snapshot前调用同一能力，保留原PID/ctime/唯一可见HWND/租约/2秒读回守卫及90秒退出预留。不放宽原UI前台条件，不授业务信用，不更换common native/runtime。受此次入口变化影响的5项离线控制器测试实际通过（`focused-controls-20261013-07/ui-entry-focus-tests-01-process-exit.json`957字节/SHA-256 `ebea24979c4eefc10c1af1327d72a778c0dee812e50a8105b8960ca07243d194`）；四项真实GUI仍待新场补验。主线CI的既有文档禁用shell字面引用另已改为不含禁词的历史说明，只对该文档运行原validator实际无违规，不重跑无关业务矩阵。
+
+### 同日 A209 自然死亡中断与单日暂停操作修正
+
+A209/R0099实际入口置前成功：`ui-entry-foreground.json`600字节/SHA-256 `b22d31873ca6daabb7bbe5be0463e9cb2b7e03266ebed8af0473e55d97a9a7b1`，从Steam前台切换到原CK3 PID18348/HWND2360784，没有鼠标或键盘输入。实际执行者`/root/qol_remaining_readiness`亲审并记录anchor50与保存100后重开100；关键原图为`scene-0005.png`2421426字节/`337ebd8e2bc8322d4da0063f85ec573f34b1b27d5b30c3a3be572f2170b6d7a8`、`scene-0016.png`2420942字节/`0743c8c9bbcae11f83d20d7f4f941ab9255af4350f1a0600c9d23542962e6f32`。仅2/4项成立，不注入其他场records或追认产品通过。
+
+恢复50的Save后实际仍paused=true；真正放开时间的是随后人工HUD resume。10:43:39Z至10:44:02Z的原生日期由53145888走到53146872，23秒推进41天。随后赵曙自然死亡，原图日期为1067.2.6；先前口述2.4更正，以原图为准。HUD模板目标不再存在，原像素门禁无输入拒绝；不能把继承窗口当作原地图继续记录恢复/清场。人工正常Quit未在原hold内完成，run/verify均实际2；原normal结果保留retained signaled=false/exit=null/normal-qualified=false，不根据后续进程已消失追认OS0。最终原native报告另真实finished/cleanup，keeper和allocator实际0，CAS10052释放；这些只授资源事实，存储闭账另取实际回执。
+
+只为这个已发生的操作故障，在原UI控制器增加无参数`typed advance-day`，复用已有`CaseClient.advance_day()`真实推进一天、自动暂停并读回完整原生帧；其24–48小时、事件、同actor/pipe/generation及原预算守卫不变。后续自然重新启用改用这一步，不再放开HUD后等待模型往返。未改产品文件、四项范围、native或common runtime。新增3项离线mock测试一次通过，回执`focused-controls-20261013-07/ui-natural-day-tests-01-process-exit.json`957字节/`eee49ebab3079635ec199f57fe7d9bb35b365825cb5003a55da5eb4ef439d6ad`；不将离线修复称为剩余GUI通过。
+
+此前A208闭场输出另已精确回收4324文件/452195120字节：3780份生成shader、540份已结束用途的纯LIST和4条传输流。关键native/typed/error/退出/配置存档保留；544份旧LIST/传输正文不可读取，shader可重新生成但不是历史原件。实际237闭账`post-r76-a208-closed-output-retirement-01-reservation-237-closed.json`2229字节/`b75b53952efbd9e2537d7fa658b114775aee495b5af34c86ad3728d93d3afe5a`；小型实际摘要`a208-closed-output-retirement-20261013-01/ACTUAL-SUMMARY.json`2133字节/`12b58d641a280d8ed95e7d2bebaa1cb00c3ad76747a35397a894b0d07710defa`。不重复抵扣保守U或把候选量当新准入收益。
+
+ad61be99对应官方CI38380556374实际失败于另一既有handover中的禁用shell字面引用，产品离线测试步骤已成功。只修改该历史说明的措辞，原validator对该文件一次实际无违规；不是重新开放禁用shell，也不重跑无关业务。

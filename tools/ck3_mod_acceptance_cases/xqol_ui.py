@@ -108,7 +108,13 @@ class Controller:
             require(p.returncode==0,name+' failed; no replay')
             if name!='request-original-normal-quit':self.guard()
     def typed(self,action,args,prefix):
-            require(action in TOOLS,'Typed action is not an existing QOL capability')
+            require(action in TOOLS or action=='advance-day','Typed action is not an existing QOL capability')
+            if action=='advance-day':
+                require(args=={},'Use the existing one-day natural advance without overrides')
+                row=self.client.advance_day()
+                self.check_frame(row['result']['after'])
+                write(self.out/(prefix+'.actual-result.json'),row)
+                return row['result']
             if action=='appointment-full-pool':
                 from ck3_mod_acceptance_appointment import collection_arguments
                 collection_arguments(args)

@@ -137,4 +137,47 @@ class TemplatePreinputRecoveryTests(unittest.TestCase):
             self.assertEqual(ui.read(c.out/'action-0000.complete.json')['template_preinput_rejected'],ui.pin(output/'result.json'))
 
 
+class ExistingUiNaturalDayTests(unittest.TestCase):
+    def controller(self, directory):
+        c=ui.Controller.__new__(ui.Controller)
+        c.out=Path(directory)
+        c.client=SimpleNamespace(advance_day=mock.Mock())
+        c.check_frame=mock.Mock(side_effect=lambda frame:frame)
+        return c
+
+    def test_natural_day_delegates_once_and_preserves_actual_row(self):
+        with tempfile.TemporaryDirectory() as directory:
+            c=self.controller(directory)
+            row={'result':{'before':{'paused':True,'date_raw':240},
+                           'after':{'paused':True,'date_raw':264},
+                           'requested_days':1,'elapsed_hours':24,
+                           'requested_interval_complete':True,'event_boundary':None}}
+            c.client.advance_day.return_value=row
+            self.assertIs(c.typed('advance-day',{},'day-one'),row['result'])
+            c.client.advance_day.assert_called_once_with()
+            c.check_frame.assert_called_once_with(row['result']['after'])
+            self.assertEqual(ui.read(c.out/'day-one.actual-result.json'),row)
+
+    def test_natural_day_rejects_caller_overrides_before_submission(self):
+        with tempfile.TemporaryDirectory() as directory:
+            c=self.controller(directory)
+            with self.assertRaisesRegex(RuntimeError,'without overrides'):
+                c.typed('advance-day',{'days':30},'bad-day')
+            c.client.advance_day.assert_not_called()
+            c.check_frame.assert_not_called()
+            self.assertFalse((c.out/'bad-day.actual-result.json').exists())
+
+    def test_original_same_live_identity_rejection_still_propagates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            c=self.controller(directory)
+            row={'result':{'after':{'paused':True}}}
+            c.client.advance_day.return_value=row
+            c.check_frame.side_effect=RuntimeError('Same-live actor/pipe/generation changed')
+            with self.assertRaisesRegex(RuntimeError,'actor/pipe/generation changed'):
+                c.typed('advance-day',{},'changed-owner')
+            c.client.advance_day.assert_called_once_with()
+            c.check_frame.assert_called_once_with(row['result']['after'])
+            self.assertFalse((c.out/'changed-owner.actual-result.json').exists())
+
+
 if __name__=='__main__':unittest.main()
