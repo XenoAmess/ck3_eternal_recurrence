@@ -21,7 +21,16 @@
   "guards_independent_supplement_required": true,
   "same_live_ui_scene": true,
   "prior_core_scope": "Existing actual R33 core23/F5/five-day/final6 only. Source case and normal-close remain incomplete.",
-  "new_scene_scope": "Fresh Song readonly9; one save100/readback, restore anchor/readback and clean map only, without script pending clears or setfaith. Already observed cancel0/cancel100 are separate prior evidence, never injected into this scene. Save0 uses the same unbranched production assignment and is not claimed as a new live test. Natural decision re-enable is a reopen prerequisite; no asynchronous callback/count, defense/government/guards replay.",
+  "new_scene_scope": "Fresh Song readonly9; controlled pre-start faith alignment of only AI courtier/vassal-or-below/tributary recipients, leaving the actual Song actor's own faith, titles and government unchanged. One real save100/readback, restore anchor/readback and clean map only. After entering UI, setfaith, script pending clears and candidate-flag overrides remain forbidden. Already observed cancel0/cancel100 are separate prior evidence, never injected into this scene. Save0 uses the same unbranched production assignment and is not claimed as a new live test. Actual production decision re-enable is a reopen prerequisite; no asynchronous callback/count, defense/government/guards replay.",
+  "fixture_preparation": {
+    "id": "song-ui-zero-recipient-faith-seed-v1",
+    "phase": "startup_before_scope_markers_and_ui",
+    "ai_recipient_domains": ["courtier", "vassal_or_below", "tributary"],
+    "recipient_faith": "scope:xqol_startup_actor.faith",
+    "actor_own_faith_unchanged": true,
+    "titles_and_government_unchanged": true,
+    "ui_phase_forbids": ["setfaith", "clear_pending", "candidate_flag_override"]
+  },
   "guard_gap_rule": "Independent guard evidence remains separate; this slider-only cell makes no new guard or government claim.",
   "normal_close_required": true,
   "business_pass": false,

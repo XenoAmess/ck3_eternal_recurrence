@@ -1,4 +1,4 @@
-"""Prepare the original Song UI scene without replaying QOL core matrices."""
+"""Prepare a controlled zero-recipient Song UI scene, not a conversion replay."""
 from __future__ import annotations
 import argparse
 import json
@@ -10,6 +10,16 @@ MARKERS = {
     'pass': 'ZQAUITAIL: SCOPE PASS actual_song_actor',
     'end': 'ZQAUITAIL: SCOPE END actual_song_actor',
     'fail': 'ZQAUITAIL: TEST FAIL actual_song_actor',
+}
+
+FIXTURE_PREPARATION = {
+    'id': 'song-ui-zero-recipient-faith-seed-v1',
+    'phase': 'startup_before_scope_markers_and_ui',
+    'ai_recipient_domains': ['courtier', 'vassal_or_below', 'tributary'],
+    'recipient_faith': 'scope:xqol_startup_actor.faith',
+    'actor_own_faith_unchanged': True,
+    'titles_and_government_unchanged': True,
+    'ui_phase_forbids': ['setfaith', 'clear_pending', 'candidate_flag_override'],
 }
 
 
@@ -35,6 +45,21 @@ zqauitail_start = {
             set_player_character = scope:xqol_startup_actor
             scope:xqol_startup_actor = {
                 set_player_character = scope:xqol_startup_actor
+                # ZQAUITAIL_RECIPIENT_SEED_BEGIN song-ui-zero-recipient-faith-seed-v1
+                # Fixture-only preparation; the actor's own faith is unchanged.
+                every_courtier = {
+                    limit = { is_ai = yes }
+                    set_character_faith = scope:xqol_startup_actor.faith
+                }
+                every_vassal_or_below = {
+                    limit = { is_ai = yes }
+                    set_character_faith = scope:xqol_startup_actor.faith
+                }
+                every_tributary = {
+                    limit = { is_ai = yes }
+                    set_character_faith = scope:xqol_startup_actor.faith
+                }
+                # ZQAUITAIL_RECIPIENT_SEED_END song-ui-zero-recipient-faith-seed-v1
                 debug_log = "ZQAUITAIL: SCOPE BEGIN actual_song_actor"
                 debug_log_scopes = yes
                 if = {
@@ -56,9 +81,19 @@ zqauitail_start = {
 }
 '''
     return {
-        'descriptor.mod': 'name="QOL original Song UI scene"\nversion="1"\ntags={ "Testing" }\n',
+        'descriptor.mod': 'name="QOL controlled zero-recipient Song UI scene"\nversion="2"\ntags={ "Testing" }\n',
         'common/on_action/zqauitail_on_actions.txt': startup,
     }
+
+
+def projection_receipt(engine_identity, payloads):
+    return {'schema': 'ck3-xqol-controlled-zero-recipient-ui-scene-projection-v1',
+            'engine_identity': engine_identity, 'fixture_files': list(payloads),
+            'fixture_preparation': FIXTURE_PREPARATION,
+            'runtime_status': 'NOT_RUN', 'business_pass': False,
+            'does_not_run': ['defense23', 'reverse', 'final6', 'guard_assertions'],
+            'does_not_set': ['government', 'opinion', 'obedience', 'blood_brother',
+                             'production_toggle', 'pending', 'slider', 'candidate_flags']}
 
 
 def main():
@@ -70,12 +105,7 @@ def main():
     payloads = project()
     for relative, text in payloads.items():
         prep.write_script(output, relative, text)
-    receipt = {'schema': 'ck3-xqol-original-ui-scene-projection-v1',
-               'engine_identity': prep.engine_identity(repo), 'fixture_files': list(payloads),
-               'runtime_status': 'NOT_RUN', 'business_pass': False,
-               'does_not_run': ['defense23', 'reverse', 'final6', 'guard_assertions'],
-               'does_not_set': ['government', 'opinion', 'obedience', 'blood_brother',
-                                'production_toggle', 'faith', 'pending', 'slider']}
+    receipt = projection_receipt(prep.engine_identity(repo), payloads)
     (output/'projection-receipt.json').write_text(json.dumps(receipt, indent=2)+'\n', encoding='utf-8')
     print(json.dumps(receipt))
 

@@ -128,6 +128,50 @@ def restore_minimal_ui_contract(contract):
 
 
 class FocusedMigration(unittest.TestCase):
+    def test_ui_zero_recipient_fixture_only_seeds_three_ai_domains(self):
+        import prepare_xqol_ui_fixture as emitter
+        payloads = emitter.project()
+        startup = payloads['common/on_action/zqauitail_on_actions.txt']
+        pattern = (r'(?ms)^                # ZQAUITAIL_RECIPIENT_SEED_BEGIN '
+                   r'song-ui-zero-recipient-faith-seed-v1\n.*?'
+                   r'^                # ZQAUITAIL_RECIPIENT_SEED_END '
+                   r'song-ui-zero-recipient-faith-seed-v1\n')
+        regions = re.findall(pattern, startup)
+        self.assertEqual(len(regions), 1)
+        seed = regions[0]
+        original, count = re.subn(pattern, '', startup)
+        self.assertEqual(count, 1)
+        self.assertEqual((len(original.encode()), hashlib.sha256(original.encode()).hexdigest()),
+                         (1579, '4f6591f18068e9891b0e49ec7ddd791d63b3b64b10fcaa84717f0c139b1b7ca5'))
+        domains = re.findall(r'every_(\w+) = \{', seed)
+        self.assertEqual(domains, ['courtier', 'vassal_or_below', 'tributary'])
+        for domain in domains:
+            self.assertIn('every_'+domain+' = {\n'
+                          '                    limit = { is_ai = yes }\n'
+                          '                    set_character_faith = scope:xqol_startup_actor.faith\n'
+                          '                }', seed)
+        self.assertEqual(startup.count('set_character_faith ='), 3)
+        self.assertNotIn('set_character_faith =', original)
+        for forbidden in ('set_variable', 'remove_variable', 'add_character_flag',
+                          'remove_character_flag', 'xqol_mass_conversion_pending',
+                          'xqol_mass_conversion_threshold', 'xqol_conversion_ruler_candidate',
+                          'xqol_conversion_courtier_candidate'):
+            self.assertNotIn(forbidden, startup)
+        contract = json.loads((CASES/'xqol_ui_tail.json').read_bytes())
+        receipt = emitter.projection_receipt({'test_only': True}, payloads)
+        self.assertEqual(receipt['schema'], 'ck3-xqol-controlled-zero-recipient-ui-scene-projection-v1')
+        self.assertEqual(receipt['fixture_preparation'], contract['fixture_preparation'])
+        self.assertTrue(receipt['fixture_preparation']['actor_own_faith_unchanged'])
+        self.assertNotIn('faith', receipt['does_not_set'])
+        self.assertTrue({'pending', 'slider', 'candidate_flags'} <= set(receipt['does_not_set']))
+        self.assertEqual(contract['post_start'], {'government_key': 'celestial_government',
+                         'primary_title_tier_key': 'hegemony', 'independent': True})
+        self.assertEqual(contract['focused_slider_order'],
+                         ['slider-anchor', 'save-100', 'restore-anchor', 'map-clean'])
+        self.assertEqual(contract['original_budgets'], {'command_timeout': 300,
+                         'readiness_timeout': 400, 'timeout': 3000,
+                         'poll_interval': 0.05, 'hold_seconds': 1800})
+
     def test_pam_only_removed_stock_numeric_scope_preserves_old_fixture_inverse(self):
         sample=(CASES/PAM_PREFIX/'fixture/common/scripted_effects/zqp_pam_sample_effects.txt').read_bytes()
         old=restore_minimal_sample(sample)
