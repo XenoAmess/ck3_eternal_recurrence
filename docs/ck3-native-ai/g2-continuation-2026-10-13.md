@@ -19,6 +19,8 @@
 
 启动前实际进程检查还发现本机 venv `python.exe` 是重定向器。队列自身份按实际 base interpreter 核对；SDK application 直接启动同一 base interpreter，并显式加载固定 venv 依赖（含 `.pth`），要求 MCP 2.0.0。真实短进程检查独立于 Game；不能把 redirector wrapper 的 PID/退出码算作 SDK application。
 
+实际短进程检查进一步发现 base Python 的全局 site 会遮蔽 venv MCP；新 application 使用 `-S`，然后显式 `site.addsitedir`，同时核对 MCP/stdio 模块真实路径。`real-bootstrap01/attempt03` 实际通过：wrapper 独立，queue/application 两个原句柄均 WAIT0/exit0，MCP 2.0.0、stdio、win32api、pythoncom 均来自获准 venv。首轮有限证明和 global-shadow RED 保留；只复验变更场景。赠礼三世界实际夹具验证也已完成：25 checks、零旧矩阵、零 queued actions；修正过的夹具首次 RED 保留。新测试 EXE 的 Defender 实际设置读回仍为 admin-required，不能称排除已生效。
+
 ## 输入、容量与构建
 
 本机外置工作包 `R = D:/codex-ck3-background-spill/g2-remediation-20261013`，本次回执在 `R/resume01`，新开局 attempt 在 `R/fresh-robert02`；旧 `fresh-robert01` 及硬链接冻结输入保持原样。所有任务共用原 8 GiB 组预算；`STORAGE-CONTINUATION-ADMISSION.json` 记录续作实际容量检查，不新增 64 份预算。

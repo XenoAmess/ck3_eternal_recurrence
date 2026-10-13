@@ -187,7 +187,7 @@ class FreshSdkHandshakeTests(unittest.IsolatedAsyncioTestCase):
         async def stdio_client(parameters, *, errlog):
             owner.events.append("stdio_child_created")
             owner.assertEqual(parameters.command, BASE_EXECUTABLE)
-            owner.assertEqual(parameters.args[:3], ["-B", "-X", "utf8"])
+            owner.assertEqual(parameters.args[:4], ["-B", "-S", "-X", "utf8"])
             owner.assertEqual(parameters.env, {"XAR_FRESH_SDK_DEPENDENCY_ROOT": DEPENDENCY_ROOT})
             capture.generation = owner.generation_type.capture(
                 PAIR[1]["pid"], expected_executable=BASE_EXECUTABLE)
@@ -270,6 +270,8 @@ class FreshSdkHandshakeTests(unittest.IsolatedAsyncioTestCase):
         self.assertLess(self.events.index("generations_written"), self.events.index("pin_written"))
         self.assertLess(self.events.index("pin_written"), self.events.index("initialize"))
         self.assertEqual(len(self.generations), 4)
+        self.assertEqual(self.read_json("sdk-session01/ROOT-FRESH-SDK-ARGV.json")["argv"][:5],
+                         [BASE_EXECUTABLE, "-B", "-S", "-X", "utf8"])
         self.assertTrue((self.root / "sdk-session01/ROOT-FRESH-SDK-INITIALIZED.json").is_file())
         self.assertIs(self.read_json("sdk-session01/ROOT-QUEUE-CLOSED.json")[
             "sdk_application_exit_code_observed"], False)

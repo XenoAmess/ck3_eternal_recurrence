@@ -43,6 +43,7 @@ APP_SOURCE = textwrap.dedent('''\
     root = Path(config["artifact_root"])
     dependency_root = Path(os.environ["XAR_FRESH_SDK_DEPENDENCY_ROOT"]).resolve()
     assert str(dependency_root) == config["dependency_root"]
+    assert sys.flags.no_site
     site.addsitedir(str(dependency_root))
     assert version("mcp") == "2.0.0"
     import win32api
@@ -61,7 +62,8 @@ APP_SOURCE = textwrap.dedent('''\
         "dependency_root": str(dependency_root), "mcp_distribution_version": version("mcp"),
         "win32api_source": win32api.__file__, "pythoncom_source": pythoncom.__file__,
         "mcp_source": mcp.__file__, "mcp_stdio_source": stdio.__file__,
-        "dependency_bootstrap": "site.addsitedir", "mcp_imported": "mcp" in sys.modules,
+        "dependency_bootstrap": "-S plus site.addsitedir", "no_site": sys.flags.no_site,
+        "mcp_imported": "mcp" in sys.modules,
         "rpc_submitted": False})
     payload = sys.stdin.buffer.read()
     assert payload == b""
@@ -129,7 +131,7 @@ QUEUE_SOURCE = textwrap.dedent('''\
             with (root / "application-stderr.log").open("x", encoding="utf-8") as errlog:
                 async with retain_mcp_stdio_process(stdio, expected_executable=base) as capture:
                     async with stdio.stdio_client(StdioServerParameters(
-                            command=base, args=["-B", "-X", "utf8", config["app_script"], sys.argv[1]],
+                            command=base, args=["-B", "-S", "-X", "utf8", config["app_script"], sys.argv[1]],
                             cwd=str(root), env={"XAR_FRESH_SDK_DEPENDENCY_ROOT": str(dependency_root)}),
                             errlog=errlog):
                         application = capture.require_generation()
@@ -345,8 +347,11 @@ def main(args):
                     or bootstrap["mcp_distribution_version"] != "2.0.0"
                     or ready["mcp_distribution_version"] != "2.0.0"
                     or ready["mcp_imported"] is not True
+                    or ready["no_site"] != 1
                     or not Path(ready["mcp_source"]).resolve().is_relative_to(dependency_root)
-                    or not Path(ready["mcp_stdio_source"]).resolve().is_relative_to(dependency_root)):
+                    or not Path(ready["mcp_stdio_source"]).resolve().is_relative_to(dependency_root)
+                    or not Path(ready["win32api_source"]).resolve().is_relative_to(dependency_root)
+                    or not Path(ready["pythoncom_source"]).resolve().is_relative_to(dependency_root)):
                 raise AssertionError("direct base child dependency bootstrap differs from the contract")
             ack = read(root / "queue-ack-accepted.json")
             if not (pin["at_utc"] <= ack["at_utc"] and ack["exact_pin_validated"] is True):
