@@ -33,3 +33,9 @@ A206/R0096实际target模板像素完全相同，但标题layout最大通道差2
 当前控制器仅对明确唯一匹配、完全未输入的像素拒绝保留原结果并复核原PID/焦点/租约/期限后发布新sequence，交还执行者重新观察；不重放旧请求、不自动换锚、不授业务记录。歧义、守卫失败或任何输入尝试仍中断，像素阈值与预算不变。`reviewed_template_source`允许显式使用本场已亲审的旧原图：当前request仍绑定latest await，原模板helper自行采集新像素、匹配并走坐标门禁，不虚称自动截图已有人审。四项业务记录仍须亲审实际关键图。针对本次真实故障的3项离线测试和增量2项测试分别实际通过；这不是尚待补齐的GUI实机PASS。
 
 本次存储回收均有逐文件小清单：`closed-a203-a204-retirement-20261013-01`实际回收3828文件/296768304字节；`closed-a205-evidence-retirement-20261013-01`实际回收3813文件/578270000字节。后者仅16条已结束完整传输重放用途的流、17张非关键中间PNG及A205生成shadercache；完整native报告、typed/业务读回、错误、压力、关键PNG、正常退出图、存档与当前输入保留至10月18日复核。已删原件不可读取，不制造替代原件，不改旧GREEN/RED/GAP。回执位于本机外置`ck3-upgrade-20261010`对应同名目录；实际可用空间独立复测，未按候选容量预先记收益。
+
+### 同日 A207 未启动场次的续跑恢复
+
+A207/R0097的两次public run均在nonce有效期检查拒绝，实际没有launch/host/native/case-output；observer随后因原10800秒有限窗口到期退出2。keeper和allocator实际0退出，CAS9978已释放，不能伪造CK3 OS0或正常业务验收。实际52 CLOSED为本机协调目录`focused-ui-a207-reviewed125gib-20261013-01-reservation-52-closed.json`（38413字节，SHA-256 `004769dea1b95aa636c1a9f8fd830b3e07b1f1e75496901c6cc01ee23ed7fb32`）；其三项closure只表示未启动进程不存在、未建native session、现场租约闭合。保守项目占用47854983016字节，未把已释放1.25GiB预留永久计为占用，也未抵扣假想回收量。
+
+原public allocate只认识正常native闭场、特定checkout失败或pre-READY argparse失败，不能消费这个真实READY但未启动的状态。新增独立`previous_allocated_unused_closure`分支，绑定原READY/frozen、两次LAUNCH_FAILED/NOT_ASSESSED、observer2、keeper/allocator0、实际CAS及当前无进程；旧分支不变，不授native/OS0/业务信用，不改runtime。以本场实际原件直接调用生产分支：第一次暴露release路径str/Path错误，修正后第二次实际通过。回执`focused-controls-20261013-07/allocated-unused-actual-fixture-02-process-exit.json`（992字节，SHA-256 `d902fa864fe19ca10d71bae019bb459876e6958b912c453d3382218e69948a37`），stdout4014字节/SHA-256 `68f142c399d19d9f2eb0300612e3d68056f059d359eada91fd9bd074e3162796`。这只是恢复后续分配的资源前提，不是四项GUI实机PASS；原失败与过期窗口均保留。

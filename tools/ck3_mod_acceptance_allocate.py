@@ -99,6 +99,89 @@ def previous_session_closure(previous,freeze,report,report_reference=None):
         'original_cleanup_ok':False,'original_ck3_exit_code':None,'original_job_active_processes_final':None,
         'typed_normal_exit_proven':False,'business_pass':False}}
 
+def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
+    """Reuse a READY allocation refused before launch, without native/OS0 credit."""
+    bundle=read_json(close_path);evidence={}
+    require(bundle.get('schema')=='ck3-public-cell-pre-consumption-close-v1' and
+            bundle.get('status')=='CLOSED_RESOURCE_ONLY' and bundle.get('run_id')==freeze['run_id'] and
+            all(bundle.get(k) is False for k in ('allocation_consumed','native_session_started',
+                'host_started','game_started','normal_close_qualified','business_pass')) and
+            bundle.get('retained_actual_OS0') is None,'Actual unconsumed READY closure required')
+    def original(key,path):
+        ref=bundle[key]
+        require(Path(ref['path']).resolve()==path.resolve(),'Unconsumed original path differs: '+key)
+        check_pin(path,ref);evidence[key]=ref
+        return read_json(path)
+    original('frozen_argv_pin',previous/'frozen-argv.json')
+    ready=original('ready_context_pin',previous/'ready-context.json')
+    original('allocated_context_pin',previous/'allocated-context.json')
+    require(ready.get('run_id')==freeze['run_id'] and
+            Path(ready['run_dir']).resolve()==previous.resolve() and
+            Path(ready['keeper_root']).resolve()==keeper_root.resolve() and
+            ready['frozen_argv']==bundle['frozen_argv_pin'], 'Unconsumed READY identity differs')
+    keeper=original('keeper_report_pin',keeper_root/'report.json')
+    parent=original('keeper_actual_parent_exit_pin',previous/'keeper-actual-parent-exit.json')
+    require(parent.get('run_id')==freeze['run_id'] and parent.get('keeper_actual_exit_code')==0 and
+            parent.get('keeper_report')==keeper and keeper.get('thread_exited') is True and
+            keeper.get('failure') is None,'Actual cooperative keeper wait0 required')
+    scene=keeper_root.parent
+    refs=bundle['original_process_exit_pins']
+    for name,code in (('public-run-01',2),('public-run-02',2),('allocation-observer-01',2),
+                      ('public-allocate-01',0),('screen-release-01',0)):
+        path=scene/(name+'-process-exit.json');ref=refs[name]
+        require(Path(ref['path']).resolve()==path.resolve(),'Unconsumed terminal crossed scene')
+        check_pin(path,ref);wait=read_json(path);operation=wait['operation']
+        check_pin(Path(operation['path']),operation);op=read_json(Path(operation['path']))
+        require(wait.get('schema')=='xar-root-exact-public-command-exit-v1' and
+                wait.get('returncode')==code and bool(wait.get('finished_utc')) and
+                op.get('schema')=='xar-root-exact-public-command-v1',
+                'Unconsumed original terminal differs')
+        for key in ('stdout','stderr'):check_pin(Path(wait[key]['path']),wait[key])
+        argv=op['argv']
+        if name.startswith('public-'):
+            mode='allocate' if name=='public-allocate-01' else 'run'
+            index=next((i for i,arg in enumerate(argv) if Path(arg).name=='ck3_mod_acceptance.py'),-1)
+            require(index>=0 and argv[index+1]==mode and
+                    Path(argv[argv.index('--prepared-case')+1]).resolve()==
+                    Path(bundle['prepared_case_pin']['path']).resolve(),
+                    'Unconsumed public terminal crossed case/mode')
+            if mode=='run':
+                context=read_json(Path(argv[argv.index('--run-context')+1]))
+                result=read_json(Path(wait['stdout']['path']))
+                require(context.get('run_id')==freeze['run_id'] and
+                        Path(context['run_dir']).resolve()==previous.resolve() and
+                        result.get('runtime_status')=='LAUNCH_FAILED' and
+                        result.get('business_acceptance')=='NOT_ASSESSED',
+                        'Unconsumed run must be an actual prelaunch refusal')
+        evidence[name]=ref
+    trigger=original('observer_trigger_pin',scene/'allocation-pressure-trigger-01.json')
+    require(trigger.get('actual_run_id')==freeze['run_id'] and trigger.get('reason')==
+            'FINITE_OBSERVER_WINDOW_EXPIRED_NOT_BUSINESS_TIMEOUT', 'Original observer expiry missing')
+    require(Path(bundle['release_result_pin']['path']).resolve()==
+            Path(refs['screen-release-01']['path']).with_name('screen-release-01.stdout.log').resolve(),
+            'Unconsumed original release path differs')
+    check_pin(Path(bundle['release_result_pin']['path']),bundle['release_result_pin'])
+    require(read_actual_release(Path(bundle['release_result_pin']['path']))==release and
+            closed_lease(keeper,release,freeze['screen_task']), 'Actual unconsumed lease release required')
+    matching=[t for t in bus_packet.get('tasks',[]) if t.get('task_id')==freeze['screen_task']]
+    require(len(matching)==1 and matching[0].get('state') in ('done','waiting') and
+            matching[0].get('resources')==[] and matching[0].get('last_sequence',-1)>=
+            release['task']['last_sequence'], 'Unconsumed predecessor lease still occupied')
+    names=('launch-intent.json','launch.json','host-started.json','host-supervisor.json',
+           'host-original-process-exit.json','native-report.json','case-output')
+    absent={name:not (previous/name).exists() for name in names}
+    absent['state/control']=not (Path(freeze['state_dir'])/'control').exists()
+    absent['run/controls/*']=not (previous/'controls').exists() or not any((previous/'controls').iterdir())
+    require(all(absent.values()),'Unconsumed predecessor has actual launch/native/control evidence')
+    import psutil
+    inventory=runtime_process_inventory(psutil,os.getpid())
+    require(not inventory['blockers'],'Unconsumed CK3/keeper/controller still present')
+    return {'mode':'previous-shared-allocated-unused','actual_process_inventory':inventory,
+            'failure_cleanup':{'close':pin(close_path),'original_evidence':evidence,
+                'absent_launch_native_and_control_evidence':absent,'native_session_started':False,
+                'host_started':False,'original_ck3_exit_code':None,'typed_normal_exit_proven':False,
+                'business_pass':False}}
+
 def previous_never_launched_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Close an allocated checkout failure without inventing a native/OS exit."""
     bundle=read_json(close_path)
@@ -822,10 +905,11 @@ def allocate_and_keep(selection,args):
                 'Previous shared scene belongs to another actual machine/ID state')
         report_reference=None;report_projection=None
         failure_schema=read_json(failure_path).get('schema') if failure_path else None
+        allocated_unused=failure_schema=='ck3-public-cell-pre-consumption-close-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
-        if never_launched or pre_ready or failed_resource:
+        if allocated_unused or never_launched or pre_ready or failed_resource:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
@@ -834,7 +918,10 @@ def allocate_and_keep(selection,args):
         prior_keeper=read_json(args.previous_keeper/'report.json') if not pre_ready else None
         release=(read_failed_runtime_release(args.previous_release) if failure_path else
                  read_actual_release(args.previous_release))
-        if failed_resource:
+        if allocated_unused:
+            session_closure=previous_allocated_unused_closure(previous,freeze,failure_path,
+                            args.previous_keeper,release,bus_packet)
+        elif failed_resource:
             session_closure=previous_failed_resource_closure(previous,freeze,failure_path,
                             args.previous_keeper,args.previous_release,bus_packet)
         elif pre_ready:
