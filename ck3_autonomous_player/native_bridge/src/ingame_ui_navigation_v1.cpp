@@ -1048,6 +1048,7 @@ struct WarDeclaredWindowObservationV1 {
   bool present = false;
   bool visible = false;
   std::string source;
+  std::string read_failure;
 };
 
 std::string WarDeclaredPointerV1(void *pointer) {
@@ -1076,42 +1077,65 @@ bool CallWarDeclaredFindTopV1(NativeZhongguoFindTopLevelWidgetV1 find,
 // unknown. Only raw widget fields are read; no expression is evaluated here.
 bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
     void *owner, WarDeclaredWindowObservationV1 &out) {
-  void *scene_root = nullptr;
-  if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root) || !scene_root)
+  std::size_t used = 0, edges = 0, matches = 0;
+  const auto fail = [&](std::string_view reason, std::size_t at = 0,
+                        std::int32_t count = 0, std::int32_t index = -1) {
+    out.read_failure.assign(reason);
+    out.read_failure += ";at=" + std::to_string(at) +
+        ";queued=" + std::to_string(used) +
+        ";edges=" + std::to_string(edges) +
+        ";matches=" + std::to_string(matches) +
+        ";count=" + std::to_string(count) +
+        ";child=" + std::to_string(index);
     return false;
+  };
+  void *scene_root = nullptr;
+  if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root))
+    return fail("owner_root_unreadable");
+  if (!scene_root) return fail("owner_root_missing");
   std::array<void *,kNamedGuiTreeInspectionMaximumWidgetsV1> queue{};
   queue[0] = scene_root;
-  std::size_t used = 1, edges = 0, matches = 0;
+  used = 1;
   for (std::size_t at = 0; at < used; ++at) {
     auto *node = queue[at];
     std::string name;
     void *vtable = nullptr;
     bool visible = false, enabled = false;
     if (!ReadGuiWidgetRuntimeV1(access,node,name,vtable,visible,enabled) || !vtable)
-      return false;
+      return fail("widget_runtime_unreadable", at);
     if (name == kWarDeclaredOverviewWindowNameV1) {
-      if (++matches != 1) return false;
+      if (++matches != 1) return fail("duplicate_named_window", at);
       out.root = node;
       out.present = true;
       out.visible = visible;
     }
     void **children = nullptr;
     std::int32_t count = 0;
-    if (!Value(node,kZhongguoWidgetChildrenOffset,children) ||
-        !Value(node,kZhongguoWidgetChildCountOffset,count) || count < 0 ||
-        static_cast<std::size_t>(count) > queue.size() ||
-        edges + static_cast<std::size_t>(count) > 8192 || (count && !children))
-      return false;
+    if (!Value(node,kZhongguoWidgetChildrenOffset,children))
+      return fail("child_vector_unreadable", at);
+    if (!Value(node,kZhongguoWidgetChildCountOffset,count))
+      return fail("child_count_unreadable", at);
+    if (count < 0) return fail("negative_child_count", at, count);
+    if (static_cast<std::size_t>(count) > queue.size())
+      return fail("child_count_exceeds_widget_budget", at, count);
+    if (edges + static_cast<std::size_t>(count) > 8192)
+      return fail("edge_budget_exhausted", at, count);
+    if (count && !children) return fail("child_vector_missing", at, count);
     edges += static_cast<std::size_t>(count);
     for (std::int32_t index = 0; index < count; ++index) {
       void *child = nullptr;
       const auto address = reinterpret_cast<std::uintptr_t>(children);
       const auto offset = static_cast<std::size_t>(index) * sizeof(void *);
-      if (address > (std::numeric_limits<std::uintptr_t>::max)()-offset ||
-          !Slot(address+offset,child) || !child || used == queue.size())
-        return false;
+      if (address > (std::numeric_limits<std::uintptr_t>::max)()-offset)
+        return fail("child_address_overflow", at, count, index);
+      if (!Slot(address+offset,child))
+        return fail("child_slot_unreadable", at, count, index);
+      if (!child) return fail("child_slot_null", at, count, index);
+      if (used == queue.size())
+        return fail("widget_budget_exhausted", at, count, index);
       if (std::find(queue.begin(),queue.begin()+static_cast<std::ptrdiff_t>(used),child) !=
-          queue.begin()+static_cast<std::ptrdiff_t>(used)) return false;
+          queue.begin()+static_cast<std::ptrdiff_t>(used))
+        return fail("duplicate_child", at, count, index);
       queue[used++] = child;
     }
   }
@@ -1125,7 +1149,10 @@ bool ReadWarDeclaredWindowV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
   out = {};
   const std::string name(kWarDeclaredOverviewWindowNameV1);
   if (!CallWarDeclaredFindTopV1(env.find_top_level_widget, binding.owner,
-                              name, out.root)) return false;
+                              name, out.root)) {
+    out.read_failure = "registered_top_level_lookup_failed";
+    return false;
+  }
   ZhongguoScoreboardAccessV1 access{};
   if (!out.root) return FindWarDeclaredInOwnerTreeV1(access,binding.owner,out);
   std::string actual_name;
@@ -1133,7 +1160,10 @@ bool ReadWarDeclaredWindowV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
   bool enabled = false;
   if (!ReadGuiWidgetRuntimeV1(access, out.root, actual_name, vtable,
                              out.visible, enabled) ||
-      actual_name != name || !vtable) return false;
+      actual_name != name || !vtable) {
+    out.read_failure = "registered_widget_runtime_name_or_vtable_failed";
+    return false;
+  }
   out.present = true;
   out.source = "guarded_registered_top_level";
   return true;
@@ -1263,6 +1293,8 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
     out.paused = before.paused;
     if (!ReadWarDeclaredWindowV1(q->environment,owner_before,initial)) {
       out.unavailable_reason = "war_declared_window_read_failed";
+      if (!initial.read_failure.empty())
+        out.unavailable_reason += ":" + initial.read_failure;
       return true;
     }
     out.root_observed = true;
@@ -1284,6 +1316,8 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
           !ReadWarDeclaredWindowV1(q->environment,owner_now,rechecked) ||
           rechecked.root != initial.root || !rechecked.visible) {
         out.unavailable_reason = "war_declared_scope_changed_before_close";
+        if (!rechecked.read_failure.empty())
+          out.unavailable_reason += ":" + rechecked.read_failure;
         return true;
       }
       out.dispatch_attempted = true;
@@ -1302,6 +1336,8 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
         !ReadWarDeclaredSnapshotV1(*q,after) || after != before) {
       out.status = out.dispatch_attempted ? "verification_pending" : "unavailable";
       out.unavailable_reason = "war_declared_post_scope_unverified";
+      if (!after_window.read_failure.empty())
+        out.unavailable_reason += ":" + after_window.read_failure;
       return true;
     }
     out.post_observed = true;

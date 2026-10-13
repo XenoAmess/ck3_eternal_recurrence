@@ -101,3 +101,25 @@ SHA-256 a1f05041f9357172a2407b27413da088547e891ea4ddf68adda593646180be8e
 ```
 
 B9闭场Native组1,439,770,291B/2GiB；共享逻辑3,930,495,735B/8GiB。没有覆盖actual4 adapter分支的适用旧fixture，编译不冒充该分支业务测试；B9本段只记COMPILED_LINKED，冷载与新局结果另记。非空开战脚本参战来源仍partial，未借供给附件修复放宽宣战资格。
+
+## Fresh06：镜头与初始 SAVE 通过，首个普通回合发现原生 GUI 读取故障
+
+干净输入 `9d8682f38f84fd33af9e36c354a03e5058d2a5b8` 包含显式换 episode 后重开 LIFE 门禁的窄修复及新增继任者用例。B9 实际冷载到 Game PID209992、creation `20261013062234.926143+000` / FILETIME134363461549261435，新 profile、pipe、state 均未复用旧存档。桌面1放置完成，桌面2和用户前台保持原值；独立录像实际开始、文件增长，Root亲审 `sample-001-scene.png` 主菜单与决策文本后才启动 SDK。Steam 沿用用户离线保证，不声称取得新离线像素。
+
+实际 queue PID168836/FILETIME134363463987337808 与 application PID246088/FILETIME134363464006684583 在 initialize 前由 supervisor 保留句柄并配对。route、New Game、固定 Robert key Start 各执行一次。Start3 于06:27:59.967448Z提交，27.548244秒后返回 accepted/verified/postcondition_verified；原生角色31254、episode `native-31254-28581d9b21a6`、raw日期53144328、暂停且地图就绪。运行时ID不能照搬旧29829；本轮记录实际ID及固定bookmark选择，未另造历史ID映射证明。
+
+camera4 从同帧 CampaignRoot 实际首都2619选择 `b_trani / c_apulia`，原生当前/目标坐标 `[1898,0,2444]`、zoom174/index4、settled/postcondition_verified。Root亲审sample012明确显示特拉尼和阿普利亚半岛，后续sample016仍保持同一地图位置；AUTO9 的原生跟随也返回 already_centered。**本场暂停期间初始定位及后续观测通过；尚无日期推进中热点切换或战时稳定性结论。** 当前profile实读 edge-scroll disabled，manifest及实际启动路径匹配；settings整体哈希已被游戏改变，运行时设置getter未读取。
+
+独立 semantic5 与 camera 的角色/日期/episode 保持一致，完整生命周期字典 ordinary/xar_off/no-pact 匹配环境。SAVE6 实际 saved，68,948,462B，SHA-256 `567106ae5e77037960cca9bdca458114680f3198a9c1984be641baf2a2075869`，history_index3；episode seed 同内容。独立 Driver 回执为 `WRITE_REPLACE_RETURNED_NOT_FSYNC`、replaced、write_replace_returned/save_binding_verified=true。本段授初始 SAVE 配对，不授自然继承、successor SAVE、LIFE receipt checkpoint或冷恢复验收。
+
+full_loop7 已启动完整普通规划器。首个 AUTO9 用时4.171270秒，MCP is_error=false，但业务 status=blocked、phase=war_declared_overview、selected_step=null。当前概览 presence unknown/query_attempt observed；原始AUTO9与control7错误保留，队列暂停而未重送。实际 Driver history index6 的 Native 查询 ticket104/pump94892/thread220836 已证明owner线程，却返回 available=false、root_observed=false、`war_declared_window_read_failed`。此理由合并了多个完整GUI树读取失败分支，不能猜为预算耗尽，更不能将未知改为窗口不存在。**本场有效普通回合0、日期推进0、已选战争目标0、获胜战争0。**
+
+06:40:24Z keeper检测工作树短暂出现变更后停止；后续Git状态干净，具体瞬态原因仍核对。实际SDK queue exit1/application exit0；Game保护清理exit1/tree_gone，不记正常关闭。录像合作停止已由原worker接收，但supervisor在失去lease后提前结束等待，原录像failed理由为Game HWND消失。原cleanup仍证明 inputs_unbound=true、独立OBS主窗口正常exit0且未强杀。overlay已关闭，keeper最后3815，Root于3853完成CAS释放。原失败、cleanup与新修正候选分别保留。
+
+第三轮按8组×8人重新调度既有研究线程，部分协调者/子线程遇到capacity或流错误，按实际状态记账，不声称持续64运行。来源在 `R/resume03/m0` 至 `m7`：新增闭合既有115B `3F90870` CPU搜索叶；TLS epoch复制与收尾仍有两处传递缺口，事后采样不能证明调用前资格。B9供给附件尚未接入普通移动选择；非空宣战来源及目标逐候选资格扫描仍未完成，未放松门禁。M6未到达业务路径。
+
+06:48:44Z闭场重写入前清点：31,148文件，去重文件逻辑4,666,159,135B/原8GiB，Native组1,439,775,780B/2GiB，实际free1,234,942,812,160B，大于预留601,295,421,440B。物理allocation未知，原复核期限不变，无删除。下一诊断仅改受影响Native TU，沿既有自由文本理由记录首失败类别和有限计数，保留2048 widgets/8192 edges及所有资格检查；编译、冷载、具体故障修复另记。
+
+Fresh06录像独立核验：577,863,617B、961.866秒、2560×1440/30fps、h264/aac、4,806,188bps，SHA-256 `304845c6b01cb0dac923e5be42edfb014ec6f484f6e2fc9f8386bab852cfa558`。汇总 `R/fresh-robert06/ROOT-FRESH06-ACTUAL-CLOSED-EVIDENCE.json` 保留逐响应耗时/投影大小/文件SHA及原Native失败材料；未将MCP投影大小冒充Native线缆返回量，也未将整个Driver文件大小冒充history大小。
+
+B10于07:15:11Z实际编译/链接成功，`R/native-profile/build10/native.dll` 为18,265,600B，SHA-256 `e1f19fbaeed2ef395a384a45c5657e5a00608534ca1ae23c0ab24dcaa9ba4d66`。受影响c0339原在direct link中，因此只替换一个direct object，保留其成功B6 owner macros/env/include及实际依赖；B9的612个archive成员全部原样保留，未重建archive。诊断源码100,519B/SHA `1bf6f0652b8cce0941b29126a5ae026a1946fb25105ed5bfb26808f05bb65bb1`。仅授COMPILED_LINKED/diagnostic_only；未冷载，未授业务修复。准备脚本缺Counter导入的首次失败在编译前发生并原样保留，生产compile仅执行一次。
