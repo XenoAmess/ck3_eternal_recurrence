@@ -134,6 +134,7 @@ class BoundedClient:
         self.option_actions = 0
         self.last_readiness = None
         self.readiness_checkpoint_phases = set()
+        self.requested_readiness_phases = set()
 
     def __getattr__(self, name):
         return getattr(self.client, name)
@@ -166,17 +167,20 @@ class BoundedClient:
         require(remaining > QUIT_RESERVE, 'Original normal Quit reserve reached')
         refresh = (request['phase'] in {'baseline', 'preparation'} and
                    (request['phase'] not in self.readiness_checkpoint_phases or
-                    (request['phase'] == 'preparation' and
-                     request['actual_typed_event'] is None)))
+                    request['phase'] in self.requested_readiness_phases))
         if refresh:
             self.read_readiness(name + '-readiness')
             self.readiness_checkpoint_phases.add(request['phase'])
+            self.requested_readiness_phases.discard(request['phase'])
         wait = min(remaining - QUIT_RESERVE, self.phase_deadline - time.time())
         require(wait > 0, 'Fixed phase review deadline reached; normal Quit remains reserved')
         payload = {**request, 'actual_readiness': self.last_readiness,
                    'actual_readiness_fresh_for_this_checkpoint': refresh,
                    'actual_readiness_scope': ('fresh_full_readiness_before_ROOT_response' if refresh else
                                               'retained_full_observation_not_current_frame'),
+                   'ROOT_optional_full_readiness_request': (
+                       {'status': 'observe', 'request_full_readiness': True}
+                       if request['phase'] == 'preparation' else None),
                    'total_submitted_production_options': self.option_actions,
                    'maximum_production_options': OPTION_LIMIT,
                    'effective_storage_deadline_epoch': self.deadline,
@@ -184,7 +188,12 @@ class BoundedClient:
                    'automatic_review_or_facts': False,
                    'ROOT_external_production_option_selection_allowed': False}
         original_reserve = max(float(reserve), self.client.remaining() - wait)
-        return self.client.root_checkpoint(name, payload, reserve=original_reserve)
+        response = self.client.root_checkpoint(name, payload, reserve=original_reserve)
+        if response.get('request_full_readiness') is True:
+            require(request['phase'] == 'preparation' and response.get('status') == 'observe',
+                    'Full readiness request must be an explicit preparation observe')
+            self.requested_readiness_phases.add(request['phase'])
+        return response
 
 
 def prepare_case(context):
