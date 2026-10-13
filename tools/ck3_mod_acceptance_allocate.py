@@ -240,6 +240,102 @@ def previous_never_launched_closure(previous,freeze,close_path,keeper_root,relea
                 'native_session_started':False,'host_started':False,'typed_normal_exit_proven':False,
                 'original_ck3_exit_code':None,'business_pass':False}}
 
+def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
+    """Release a host that exited before game launch; grant no native or normal-exit credit."""
+    bundle=read_json(close_path)
+    require(bundle.get('schema')=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1' and
+            bundle.get('run_id')==freeze['run_id'] and
+            Path(bundle.get('keeper_root','')).resolve()==keeper_root.resolve() and
+            bundle.get('business_pass') is False and bundle.get('normal_close_qualified') is False,
+            'Prelaunch host closure crossed run/keeper or claims business credit')
+    evidence={}
+    def original(key,path):
+        ref=bundle[key]
+        require(Path(ref['path']).resolve()==path.resolve() and
+                type(ref.get('bytes')) is int and 0<ref['bytes']<=1048576,
+                'Prelaunch original path/size differs: '+key)
+        check_pin(path,ref);evidence[key]=ref
+        return read_json(path) if path.suffix=='.json' else path.read_text(errors='replace')
+    ready=original('ready_context',previous/'ready-context.json')
+    require(ready.get('run_id')==freeze['run_id'] and
+            Path(ready.get('run_dir','')).resolve()==previous.resolve() and
+            Path(ready.get('keeper_root','')).resolve()==keeper_root.resolve() and
+            ready.get('frozen_argv')==pin(previous/'frozen-argv.json'),
+            'Prelaunch READY/frozen identity differs')
+    host=original('host_started',previous/'host-started.json')
+    supervisor=original('host_supervisor',previous/'host-supervisor-started.json')
+    exited=original('host_exit',previous/'host-original-process-exit.json')
+    stderr=original('host_stderr',previous/'host-stderr.log')
+    require(host.get('run_id')==freeze['run_id'] and host.get('argv')==freeze['argv'] and
+            host.get('actual_popen_retained') is True and
+            supervisor.get('pid')==host.get('supervisor_pid') and
+            exited.get('run_id')==freeze['run_id'] and exited.get('pid')==host.get('pid') and
+            exited.get('actual_original_popen_wait') is True and
+            type(exited.get('returncode')) is int and exited['returncode']!=0 and
+            exited.get('normal_ck3_exit_inferred') is False and
+            'normal exit requires the actual public prepared profile' in stderr,
+            'Prelaunch original host exit/cause differs')
+    readiness=original('readiness_result',previous/'case-output/readiness-window-result.json')
+    entry=original('entry_run_result',previous/'case-output/entry-run-result.json')
+    require(readiness.get('status')=='READINESS_TIMEOUT' and
+            readiness.get('binding',{}).get('run_id')==freeze['run_id'] and
+            entry.get('run_id')==freeze['run_id'] and
+            entry.get('launcher_exit_code')==0 and
+            entry.get('case_error')=='TimeoutError: Original case readiness budget elapsed' and
+            entry.get('business_acceptance')=='RED_OR_INCOMPLETE',
+            'Original public RED/readiness result differs')
+    def command(key,mode,code):
+        row=bundle[key];path=Path(row['path']).resolve()
+        check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
+        require(value.get('schema')=='ck3-recorded-actual-command-v1' and
+                value.get('exit_code')==code and value.get('finished_at_utc') and
+                isinstance(argv,list) and argv.count('--runtime')==1 and
+                argv[argv.index('--runtime')-1]==mode and argv.count('--prepared-case')==1 and
+                Path(argv[argv.index('--prepared-case')+1]).resolve()==
+                    (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve(),
+                'Prelaunch original public '+mode+' completion differs')
+        if mode=='run':
+            require(argv.count('--run-context')==1 and
+                    Path(argv[argv.index('--run-context')+1]).is_file(),
+                    'Prelaunch reviewed run context missing')
+        else:
+            require(argv.count('--keeper-output')==1 and
+                    Path(argv[argv.index('--keeper-output')+1]).resolve()==keeper_root.resolve(),
+                    'Prelaunch allocator keeper differs')
+        return Path(argv[argv.index('--runtime')+1]).resolve()
+    require(command('public_run','run',2)==command('public_allocate','allocate',0),
+            'Prelaunch public run/allocate runtime differs')
+    keeper=original('keeper_report',keeper_root/'report.json')
+    parent=original('keeper_parent_exit',previous/'keeper-actual-parent-exit.json')
+    require(keeper.get('task_id')==freeze['screen_task'] and
+            keeper.get('thread_exited') is True and keeper.get('failure') is None and
+            keeper.get('game_actions') is False and
+            parent.get('run_id')==freeze['run_id'] and
+            parent.get('keeper_actual_exit_code')==0 and parent.get('keeper_report')==keeper and
+            closed_lease(keeper,release,freeze['screen_task']),
+            'Prelaunch keeper/original screen release differs')
+    tasks=[row for row in bus_packet.get('tasks',[]) if row.get('task_id')==freeze['screen_task']]
+    require(len(tasks)==1 and tasks[0].get('state') in ('done','waiting') and
+            tasks[0].get('resources')==[] and
+            tasks[0].get('last_sequence',-1)>=release['task']['last_sequence'],
+            'Prelaunch current screen owner not released')
+    state=Path(freeze['state_dir']).resolve()
+    absent={'native-report.json':not (previous/'native-report.json').exists(),
+            'launch.json':not (previous/'launch.json').exists(),
+            'state/control':not (state/'control').exists(),
+            'run/controls/*':not any((previous/'controls').iterdir())}
+    require(all(absent.values()),'Prelaunch native/game/control evidence unexpectedly exists')
+    import psutil
+    inventory=runtime_process_inventory(psutil,os.getpid())
+    require(not inventory['blockers'],'Prelaunch CK3/keeper/controller still running')
+    return {'mode':'previous-shared-prelaunch-host-failure',
+        'actual_process_inventory':inventory,
+        'failure_cleanup':{'close':pin(close_path),'original_evidence':evidence,
+            'original_host_exit_code':exited['returncode'],'original_host_wait_proven':True,
+            'native_session_started':False,'original_ck3_exit_code':None,
+            'normal_close_qualified':False,'typed_normal_exit_proven':False,
+            'business_pass':False,'release_pass':False,'absent_game_controls':absent}}
+
 def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Keep historical unknown waits; retain the observed argparse original wait2."""
     bundle=read_json(close_path)
@@ -907,9 +1003,10 @@ def allocate_and_keep(selection,args):
         failure_schema=read_json(failure_path).get('schema') if failure_path else None
         allocated_unused=failure_schema=='ck3-public-cell-pre-consumption-close-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
+        prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
-        if allocated_unused or never_launched or pre_ready or failed_resource:
+        if allocated_unused or never_launched or prelaunch_host or pre_ready or failed_resource:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
@@ -924,6 +1021,9 @@ def allocate_and_keep(selection,args):
         elif failed_resource:
             session_closure=previous_failed_resource_closure(previous,freeze,failure_path,
                             args.previous_keeper,args.previous_release,bus_packet)
+        elif prelaunch_host:
+            session_closure=previous_prelaunch_host_failure_closure(previous,freeze,failure_path,
+                            args.previous_keeper,release,bus_packet)
         elif pre_ready:
             session_closure=previous_pre_ready_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
