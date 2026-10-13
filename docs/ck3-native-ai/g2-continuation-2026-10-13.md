@@ -55,3 +55,8 @@ SHA-256 75fa14e95e0deedb0db7e05b3530e238631d7fb475ecadfb542300bfbb57dc80
 - M7：`R/resume01/m7` 及 `R/fresh-robert02` 中 harness 固定与逐项验证回执。
 
 外置证据到期回收后须明确记录原件不可读，不以同名文件冒充原始证据。
+
+
+### Fresh startup source preflight correction
+
+Fresh02 stopped before Game creation because the sparse checkout omitted the tracked `ck3_workshop_mcp` package required by the production builder. Fresh03 froze its 16 source files from exact HEAD; startup then stopped before Game creation because local `.idea` editor files failed the release source allowlist. The builder now treats `.idea` as an excluded development directory. The actual source check passed and none of the 845 allowlisted release files include IDE files; local files were preserved. Both failed attempts retain their original closure receipts. No gameplay or war result is credited.
