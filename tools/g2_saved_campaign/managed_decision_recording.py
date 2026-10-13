@@ -12,11 +12,20 @@ import sys
 
 
 def validate_admission(args, admission):
-    review = datetime.fromisoformat(admission["review_at_utc"].replace("Z", "+00:00"))
-    deadline = datetime.fromisoformat(args.deadline_utc.replace("Z", "+00:00"))
-    if (admission.get("status") != "ADMITTED" or review.tzinfo is None or deadline.tzinfo is None
-            or deadline > review - timedelta(minutes=15) or datetime.now(timezone.utc) >= deadline):
-        raise ValueError("recording must stop before the unchanged storage review minus 15 minutes")
+    continuous = getattr(args, "continuous", False)
+    if admission.get("status") != "ADMITTED":
+        raise ValueError("recording storage must be ADMITTED")
+    if continuous:
+        if any(getattr(args, key) is not None for key in ("seconds", "max_output_bytes", "deadline_utc")):
+            raise ValueError("continuous recording has no duration, byte cap or deadline")
+        if type(admission.get("disk_reserve_bytes")) is not int or admission["disk_reserve_bytes"] <= 0:
+            raise ValueError("continuous recording requires the actual admitted disk reserve")
+    else:
+        review = datetime.fromisoformat(admission["review_at_utc"].replace("Z", "+00:00"))
+        deadline = datetime.fromisoformat(args.deadline_utc.replace("Z", "+00:00"))
+        if (review.tzinfo is None or deadline.tzinfo is None
+                or deadline > review - timedelta(minutes=15) or datetime.now(timezone.utc) >= deadline):
+            raise ValueError("recording must stop before the unchanged storage review minus 15 minutes")
     roots = [Path(p).resolve() for p in admission["approved_output_roots"]]
     for path in (args.obs_root, args.profile, args.output_root, args.receipt):
         if not any(path.resolve().is_relative_to(root) for root in roots):
@@ -24,9 +33,9 @@ def validate_admission(args, admission):
     signal = getattr(args, "start_signal", None)
     if signal is not None and not signal.resolve().is_relative_to(args.output_root.resolve()):
         raise ValueError("recording start signal escaped the admitted recording root")
-    if type(args.max_output_bytes) is not int or not 192 * 1024**2 <= args.max_output_bytes <= 1024**3:
+    if not continuous and (type(args.max_output_bytes) is not int or not 192 * 1024**2 <= args.max_output_bytes <= 1024**3):
         raise ValueError("Root recording allocation must include stop reserve, 192MiB..1GiB")
-    if type(args.seconds) is not int or not 1 <= args.seconds <= 1200:
+    if not continuous and (type(args.seconds) is not int or not 1 <= args.seconds <= 1200):
         raise ValueError("recording is limited to 20 minutes")
     if type(args.port) is not int or not 1024 <= args.port <= 65535:
         raise ValueError("explicit dedicated local port required")
@@ -39,12 +48,21 @@ def main():
                  "placement-receipt", "overlay-receipt", "ffprobe", "receipt", "storage-admission"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--port", type=int, required=True)
-    parser.add_argument("--deadline-utc", required=True)
-    parser.add_argument("--seconds", type=int, default=1200)
-    parser.add_argument("--max-output-bytes", type=int, default=1024**3)
+    parser.add_argument("--continuous", action="store_true",
+                        help="record until Root STOP, actual disk reserve or a recording failure; no fixed limits")
+    parser.add_argument("--deadline-utc")
+    parser.add_argument("--seconds", type=int)
+    parser.add_argument("--max-output-bytes", type=int)
     parser.add_argument("--start-signal", type=Path,
                         help="bind owned sources now; record once Root creates this new output-root file")
     args = parser.parse_args()
+    if not args.continuous:
+        if args.deadline_utc is None:
+            parser.error("bounded recording requires --deadline-utc")
+        if args.seconds is None:
+            args.seconds = 1200
+        if args.max_output_bytes is None:
+            args.max_output_bytes = 1024**3
     if args.receipt.exists() or not args.receipt.parent.is_dir():
         parser.error("receipt must be new in an admitted existing directory")
     admission = json.loads(args.storage_admission.read_text(encoding="utf-8-sig"))
@@ -54,20 +72,27 @@ def main():
     if args.mode == "prepare":
         capture.prepare_profile(args.obs_root, args.profile, args.output_root,
             port=args.port, control_dependencies=args.control_dependencies,
-            deadline_utc=args.deadline_utc, max_output_bytes=args.max_output_bytes, bitrate_kbps=4800)
+            deadline_utc=args.deadline_utc, max_output_bytes=args.max_output_bytes, bitrate_kbps=4800,
+            continuous=args.continuous, storage_admission=args.storage_admission)
         result = {"state": "PREPARED_NOT_RECORDED", "profile": str(args.profile.resolve()),
-                  "deadline_utc": args.deadline_utc, "storage_review_unchanged": admission["review_at_utc"]}
+                  "deadline_utc": args.deadline_utc, "continuous": args.continuous,
+                  "storage_review_unchanged": admission.get("review_at_utc")}
     else:
         profile = json.loads(args.profile.read_text(encoding="utf-8-sig"))
-        if (profile["port"] != args.port or profile["deadline_utc"] != args.deadline_utc
+        if ((profile.get("continuous") is True) != args.continuous
+                or profile["port"] != args.port or profile["deadline_utc"] != args.deadline_utc
                 or profile["max_output_bytes"] != args.max_output_bytes
                 or Path(profile["control_dependencies"]).resolve() != args.control_dependencies.resolve()
                 or Path(profile["obs_root"]).resolve() != args.obs_root.resolve()):
             raise ValueError("record must use the exact prepared engine/dependencies/port/deadline/allocation")
+        if args.continuous and profile["storage"] != capture._continuous_storage(
+                args.storage_admission, (args.obs_root, args.profile, args.output_root, args.receipt)):
+            raise ValueError("record must use the exact prepared storage admission")
         placement = json.loads(args.placement_receipt.read_text(encoding="utf-8-sig"))
         result = capture.launch_recording(args.profile, args.output_root, placement["pid"], placement["hwnd"],
             args.seconds, launch_receipt=args.launch_receipt, placement_receipt=args.placement_receipt,
-            overlay_receipt=args.overlay_receipt, ffprobe=args.ffprobe, start_signal=args.start_signal)
+            overlay_receipt=args.overlay_receipt, ffprobe=args.ffprobe, start_signal=args.start_signal,
+            continuous=args.continuous)
     with args.receipt.open("x", encoding="utf-8") as stream:
         json.dump(result, stream, ensure_ascii=False, indent=2)
     print(json.dumps(result, ensure_ascii=False))

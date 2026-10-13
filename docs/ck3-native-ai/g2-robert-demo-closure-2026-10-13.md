@@ -1,5 +1,7 @@
 # 罗贝尔三十年演示：现有能力收口
 
+2026-10-14 00:08 CST 最新用户覆盖：不设置游戏会话最大时间，也不设置单段录像最大时间或最大容量，视频写 D 盘。此前 25 分钟／20 分钟／1 GiB 是短测框架设置，不再适用于本演示。后续连续运行以实际三十年目标、Root 显式停止或真实故障为边界；实际磁盘预留和统一存储策略继续执行，不把预计新增峰值伪装成单文件硬上限。新的输出根与新鲜容量准入另行绑定，旧场次时限及失败事实保留。
+
 2026-10-13 15:08 UTC 按用户最新要求调整执行目标。以 1066-09-15 罗贝尔开局的实际战役推进到三十周年，展示真实胜利、领土扩张和发展。旧“最多 30 turns”只是单批调度上限，不能代替三十年实机成绩。
 
 本阶段冻结现有玩法能力，复用完整普通规划器与已审 Native B13，不继续扩展与演示无关的能力。实际战争必须进入现有战争流程。第一场主动战争是优先验收点：若失败，优先查清并修复宣战选择、集结、指挥官、行军、交战、围城或终局中的实际问题，再继续其他施工。失败记录保留，不把 ACK、pending、API 返回或片段录像写成胜战。
@@ -34,3 +36,19 @@ fresh19 录像为 `D:/codex-ck3-background-spill/g2-remediation-20261013/custody
 实际回收摘要 `resume08/m_storage/GC-ACTUAL-FRESH20-CLOSE-20261013.json` 位于上述外置根；冻结计划 SHA-256 `6066a1bc1550fd0a28e165d866f2047ecbb94c4a4634fd486f508741a4e3eccb`，实际回收回执 SHA-256 `ed4cee496cbbdd79e0b646efa12543aad35f292cb3f7a62b9453c323826ddac8`。闭场去重逻辑量 6,642,769,086 bytes，下一场 1,880,000,000 bytes 峰值后余 67,165,506 bytes；物理分配量未知。新重型写入仍须单独原子准入。
 
 三十年演示、实际日期推进、首场主动胜战与扩张发展均未完成；本记录不把收口计划或十二个暂停态周期冒充达标。
+
+## fresh20 / R0014：实际日期推进及剩余调度错误
+
+本场沿原 B13、同一 Game PID273688 完成窗口放置热恢复，没有因放置错误重启。录制器先后误将同名 Steam 网页窗口算作 CK3 选择器冲突、将任意用户前台变化归因为 OBS；两次失败原件保留，随后 Python 修正的独立录像实际启动并合成游戏和决策侧栏。最后原片 `D:/codex-ck3-background-spill/g2-remediation-20261013/custody-recorder01/recordings/f8d7236a-f821-45f0-be13-6ed99c443ec7.mkv` 为 314,667,417 bytes / 523.700s，SHA-256 `a706488c1f486b26c0f462d76665fe1193fe4a90d0d80f0f489a2a6c0077fa25`，已完成、输入解绑、独立 OBS 实际 exit0；原片继续可读。
+
+整合队列记录十六个完整周期，生活方式及议会原 ID applied、两次君权独立 material enacted 均成立。原 AUTO47 `life-advance` 从 raw53144328 推进到53144424，即四天，暂停并出现事件；外置队列仍漏接这个既有复合结果，因此累计第十七周期未取得配对 METRICS，不计作完整周期。四天是实际发生，不是模拟值；latest canonical checkpoint 仍为累计15、raw53144328，不能把四天写成已保存或已恢复的进度。
+
+同会话热分类接口已入本场 queue，离线验证不重发 AUTO。Root 的 clock 分类补丁在原 AUTO47 上及三项负例通过；实际安装前，本场 15:51:54Z 已触发旧准入截止，随后 15:52:30Z 关闭 Game，SDK queue1/application0、Game force1/tree_gone，keeper4063停止、CAS4064释放。安装控制因 EXIT-SDK 在发布前拒绝，零热恢复控制／零动作重放，不能声称本场实机热恢复通过。用户随后明确取消上述人为时间和单段容量上限。
+
+续局只使用本场累计15的实际 checkpoint 与现有 cold-start validator，保留原 pipe／episode 及其恢复边界；停止反复随机新建罗贝尔战役。三十年、主动宣战、胜战、领土扩张与发展成果仍未达标。
+
+## 连续录制实现
+
+`tools/g2_saved_campaign/managed_decision_recording.py --continuous` 使用实际准入的 D 盘根与磁盘预留，不传 `--seconds`、`--max-output-bytes` 或 `--deadline-utc`。profile、job、started/completed 的三限均为 null；空间估计与复核日期不转成停录计时器。唯一 Stop owner 保留，Root STOP、实际磁盘预留或录制故障只结束独立录制，不关闭 CK3。近期增长样本保留120条及汇总，周期PNG改为明确可变的latest文件。
+
+11项定向离线测试通过，包含模拟1300秒及2GiB后继续、Root和磁盘分别单次停止、真实不增长失败、空上限和受影响的bounded启动检查；未重跑旧全矩阵、未生成大测试原片。完整回执为旧外置根 `resume08/m_recording/continuous01/fixture-result.json`。这些测试只证明录制器逻辑；下一场仍需实际文件增长与游戏、决策侧栏像素。

@@ -5,6 +5,7 @@ from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 import hashlib
 import importlib.util
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -28,6 +29,53 @@ with mock.patch.object(subprocess, "Popen", side_effect=AssertionError("import l
      mock.patch.object(ctypes, "WinDLL", create=True, side_effect=AssertionError("import accessed Windows")):
     subject = load("ck3_obs_capture", TOOLS / "ck3_obs_capture.py")
     placement = load("custody_generation", TOOLS / "g2_saved_campaign/managed_desktop1_placement.py")
+
+
+class WindowSelectorAndForegroundTests(unittest.TestCase):
+    def windows(self, second_exe="steamwebhelper.exe"):
+        gui = SimpleNamespace(IsWindowVisible=lambda hwnd: True,
+            GetWindowText=lambda hwnd: "Crusader Kings III", GetClassName=lambda hwnd: "SDL_app",
+            EnumWindows=lambda callback, context: [callback(hwnd, context) for hwnd in (11, 22)])
+        process = SimpleNamespace(GetWindowThreadProcessId=lambda hwnd: (1, {11: 100, 22: 200}[hwnd]))
+        psutil = SimpleNamespace(Process=lambda pid: SimpleNamespace(
+            exe=lambda: "C:/test/" + ("ck3.exe" if pid == 100 else second_exe)))
+        return {"win32gui": gui, "win32process": process, "psutil": psutil}
+
+    def test_same_title_steam_window_does_not_conflict_with_full_obs_selector(self):
+        with mock.patch.dict(sys.modules, self.windows()):
+            self.assertEqual(subject._window_identity(11, 100), "Crusader Kings III:SDL_app:ck3.exe")
+
+    def test_two_actual_games_still_conflict(self):
+        with mock.patch.dict(sys.modules, self.windows("ck3.exe")):
+            with self.assertRaisesRegex(RuntimeError, "not unique"):
+                subject._window_identity(11, 100)
+
+    def test_selector_must_still_bind_the_owned_pid(self):
+        with mock.patch.dict(sys.modules, self.windows()):
+            with self.assertRaisesRegex(RuntimeError, "not unique"):
+                subject._window_identity(11, 999)
+
+    def foreground(self, before, after, pid):
+        modules = {"win32gui": SimpleNamespace(GetForegroundWindow=lambda: after),
+                   "win32process": SimpleNamespace(GetWindowThreadProcessId=lambda hwnd: (1, pid))}
+        with mock.patch.dict(sys.modules, modules):
+            return subject._foreground_observation(before, 300)
+
+    def test_user_foreground_change_is_recorded_without_blame_or_restoration(self):
+        result = self.foreground(11, 22, 200)
+        self.assertTrue(result["foreground_changed"])
+        self.assertFalse(result["foreground_after_is_owned_obs"])
+        self.assertFalse(result["focus_restoration_attempted"])
+
+    def test_owned_obs_taking_foreground_is_still_identified(self):
+        result = self.foreground(11, 22, 300)
+        self.assertTrue(result["foreground_changed"])
+        self.assertTrue(result["foreground_after_is_owned_obs"])
+
+    def test_unchanged_foreground_needs_no_owner_attribution(self):
+        result = self.foreground(11, 11, 200)
+        self.assertFalse(result["foreground_changed"])
+        self.assertIsNone(result["foreground_after_pid"])
 
 
 class CaptureContractTests(unittest.TestCase):
@@ -178,7 +226,7 @@ class CaptureContractTests(unittest.TestCase):
             self.assertEqual(signal.exists(), delayed)
             raise TimeoutError("synthetic StartRecord outcome unknown")
         client.start_record.side_effect = start_once
-        engine = mock.Mock(profile=self.profile, job=job, client=client)
+        engine = mock.Mock(profile=self.profile, job=job, client=client, process=SimpleNamespace(pid=100))
         engine.start.return_value = client
         engine.reconnect.return_value = client
         engine.close.return_value = {"actual_exit_code": 0}
@@ -228,19 +276,25 @@ class CaptureContractTests(unittest.TestCase):
     def test_waiting_deadline_closes_owned_engine_without_starting_output(self):
         self.run_start_fixture(delayed=True, expire_wait=True)
 
-    def run_post_start_fixture(self, *, unexpected_signal=False):
+    def run_post_start_fixture(self, *, unexpected_signal=False, continuous=False, reserve_stop=False):
         """Run the real post-StartRecord loop; mock OBS/OS and its file watcher."""
         self.profile.update(recording_root=str(self.recordings), bitrate_kbps=4800)
+        storage = {"approved_output_roots": [str(self.root)], "disk_reserve_bytes": 1000}
+        if continuous:
+            self.profile.update(continuous=True, deadline_utc=None, max_output_bytes=None, storage=storage)
         self.profile_path.write_text(json.dumps(self.profile), encoding="utf-8")
         signal = self.recordings / "fresh-start.signal"
         foreign = self.recordings / "other-unapproved.signal"
         output = self.recordings / (self.session + ".mkv")
         job = {**self.job, "duration_seconds": 2, "launch": {}, "ffprobe": "synthetic-ffprobe.exe",
                "profile_sha256": subject._sha(self.profile_path), "start_signal": str(signal)}
+        if continuous:
+            job.update(continuous=True, duration_seconds=None, max_output_bytes=None,
+                       deadline_utc=None, storage=storage)
         job_path = self.receipts / "job.json"
         job_path.write_text(json.dumps(job), encoding="utf-8")
         client = self.client()
-        inputs, clock, active = {}, [0.0], [False]
+        inputs, clock, active, started_at = {}, [0.0], [False], [None]
         def create_input(scene, name, kind, settings, enabled):
             inputs[name] = {"inputName": name, "inputKind": kind, "settings": settings}
         client.create_input.side_effect = create_input
@@ -265,9 +319,12 @@ class CaptureContractTests(unittest.TestCase):
             if active[0]:
                 with output.open("ab") as stream:
                     stream.write(b"synthetic growth\n")
+                if continuous and not reserve_stop and clock[0] - started_at[0] >= 1300:
+                    (self.receipts / "STOP-OWNED-RECORDING").touch()
         def start_record():
             self.assertTrue(signal.is_file())
             active[0] = True
+            started_at[0] = clock[0]
             output.write_bytes(b"synthetic video; never decoded\n")
             if unexpected_signal:
                 foreign.write_text("unexpected", encoding="utf-8")
@@ -276,7 +333,7 @@ class CaptureContractTests(unittest.TestCase):
             return SimpleNamespace(output_path=str(output))
         client.start_record.side_effect = start_record
         client.stop_record.side_effect = stop_record
-        engine = mock.Mock(profile=self.profile, job=job, client=client)
+        engine = mock.Mock(profile=self.profile, job=job, client=client, process=SimpleNamespace(pid=100))
         engine.start.return_value = client
         engine.reconnect.return_value = client
         engine.close.return_value = {"actual_exit_code": 0}
@@ -285,17 +342,27 @@ class CaptureContractTests(unittest.TestCase):
                 watch.requested = mock.Mock()
                 watch.requested.is_set.return_value = False
                 watch.error, watch.reason, watch.samples, watch.stop_confirmed = None, None, [], False
+                watch.sample_summary, watch.last_disk_observation = {}, None
             def start(watch):
                 pass
+            def request_stop(watch, reason):
+                watch.reason = watch.reason or reason
+                watch.requested.is_set.return_value = True
             def finish(watch, reason):
-                watch.reason = reason
+                watch.reason = watch.reason or reason
                 result = subject._stop_owned(engine)
                 watch.stop_confirmed = True
                 return result
         game = SimpleNamespace(creation_filetime=123, check=mock.Mock())
-        helpers = (mock.Mock(), lambda launch: nullcontext(game), mock.Mock(), mock.Mock())
+        deadline = mock.Mock(side_effect=AssertionError("continuous job consulted a deadline")) if continuous else mock.Mock()
+        helpers = (mock.Mock(), lambda launch: nullcontext(game), mock.Mock(), deadline)
         gui = SimpleNamespace(GetForegroundWindow=lambda: 777)
-        probe = SimpleNamespace(stdout=json.dumps({"format": {"duration": "1", "bit_rate": "1000000"}, "streams": []}))
+        probe = SimpleNamespace(stdout=json.dumps({"format": {"duration": "1300" if continuous else "1",
+                                                "bit_rate": "1000000"}, "streams": []}))
+        def disk_observation(job):
+            reached = reserve_stop and started_at[0] is not None and clock[0] - started_at[0] >= 1300
+            return {"available_bytes": 999 if reached else 2000, "disk_reserve_bytes": 1000,
+                    "reserve_reached": reached}
         with mock.patch.object(subject, "OwnedEngine", return_value=engine), \
              mock.patch.object(subject, "FileGrowthWatch", FakeWatch), \
              mock.patch.object(subject, "_generation_helpers", return_value=helpers), \
@@ -303,6 +370,7 @@ class CaptureContractTests(unittest.TestCase):
              mock.patch.dict(sys.modules, {"win32gui": gui}), \
              mock.patch.object(subject.time, "sleep", side_effect=sleep), \
              mock.patch.object(subject.time, "monotonic", side_effect=lambda: clock[0]), \
+             mock.patch.object(subject, "_disk_observation", side_effect=disk_observation), \
              mock.patch.object(subject.subprocess, "run", return_value=probe):
             if unexpected_signal:
                 with self.assertRaisesRegex(RuntimeError, "unexpected OBS output filename") as caught:
@@ -315,8 +383,23 @@ class CaptureContractTests(unittest.TestCase):
                 subject.run_worker(job_path)
                 completed = json.loads((self.receipts / "completed.json").read_text(encoding="utf-8"))
                 self.assertEqual(completed["path"], str(output.resolve()))
-                self.assertEqual(len(completed["file_growth_samples"]), 2)
+                self.assertEqual(len(completed["file_growth_samples"]), subject.RECENT_SAMPLE_COUNT if continuous else 2)
                 self.assertFalse((self.receipts / "failed.json").exists())
+                if continuous:
+                    self.assertGreater(completed["file_growth_summary"]["samples_seen"], 1200)
+                    self.assertEqual(completed["stop_reason"], "disk_reserve_reached" if reserve_stop else "owned_shutdown_requested")
+                    self.assertEqual([frame["label"] for frame in completed["frame_receipts"]], ["before-recording"])
+                    self.assertEqual(len(list(self.receipts.glob("recording-latest-*.png"))), 2)
+                    latest = json.loads((self.receipts / "recording-latest.json").read_text(encoding="utf-8"))
+                    self.assertTrue(latest["mutable_latest_frame"])
+                    for key in ("game", "scene"):
+                        frame = latest["frame"][key]
+                        self.assertEqual(subject._sha(frame["path"]), frame["sha256"])
+                    for receipt in ("started.json", "completed.json"):
+                        proof = json.loads((self.receipts / receipt).read_text(encoding="utf-8"))
+                        self.assertTrue(proof["continuous"])
+                        for key in ("duration_seconds", "max_output_bytes", "deadline_utc"):
+                            self.assertIsNone(proof[key])
         self.assertFalse(inputs)
         client.start_record.assert_called_once()
         client.stop_record.assert_called_once()
@@ -327,6 +410,144 @@ class CaptureContractTests(unittest.TestCase):
 
     def test_post_start_file_scan_rejects_other_new_signal_with_exact_path(self):
         self.run_post_start_fixture(unexpected_signal=True)
+
+    def test_continuous_worker_runs_past_1200_seconds_until_root_stop_with_recent_proof(self):
+        self.run_post_start_fixture(continuous=True)
+
+    def test_continuous_worker_stops_for_actual_disk_reserve_without_game_close(self):
+        self.run_post_start_fixture(continuous=True, reserve_stop=True)
+
+    def run_continuous_growth_watch(self, *, disk_stop=False, stalled=False):
+        self.job.update(continuous=True, duration_seconds=None, max_output_bytes=None, deadline_utc=None,
+            storage={"approved_output_roots": [str(self.root)], "disk_reserve_bytes": 1000})
+        engine, _, original = self.engine()
+        peer = self.client()
+        output = self.recordings / (self.session + ".mkv")
+        output.write_bytes(b"synthetic closed output")
+        peer.get_record_status.side_effect = [SimpleNamespace(output_active=True), SimpleNamespace(output_active=False)]
+        peer.stop_record.return_value = SimpleNamespace(output_path=str(output))
+        obs = SimpleNamespace(ReqClient=mock.Mock(return_value=peer))
+        clock = [0.0]
+        class Request:
+            value = False
+            def is_set(request):
+                return request.value
+            def set(request):
+                request.value = True
+            def wait(request, seconds):
+                clock[0] += seconds
+                if not disk_stop and clock[0] >= 1300:
+                    (self.receipts / "STOP-OWNED-RECORDING").touch()
+        watcher = subject.FileGrowthWatch(engine, None, 0)
+        watcher.requested = Request()
+        def disk(job):
+            return {"available_bytes": 999 if disk_stop and clock[0] >= 1300 else 2000,
+                    "disk_reserve_bytes": 1000, "reserve_reached": disk_stop and clock[0] >= 1300}
+        with mock.patch.object(subject.time, "monotonic", side_effect=lambda: clock[0]), \
+             mock.patch.object(subject, "_control", return_value=obs), \
+             mock.patch.object(subject, "_listeners", return_value=[SimpleNamespace(pid=100)]), \
+             mock.patch.object(subject, "_generation_helpers", side_effect=AssertionError("continuous consulted deadline")), \
+             mock.patch.object(subject, "_disk_observation", side_effect=disk), \
+             mock.patch.object(subject, "_job_bytes", side_effect=lambda job: (2 * 1024**3 + (0 if stalled else int(clock[0]) * 1000),
+                                                                            2 * 1024**3 + (0 if stalled else int(clock[0]) * 1000))):
+            watcher.run()
+        self.assertTrue(watcher.stop_confirmed)
+        if stalled:
+            self.assertIn("did not grow for over 30 seconds", watcher.error)
+            self.assertEqual(watcher.reason, "file_or_disk_guard")
+            self.assertLess(clock[0], 100)
+        else:
+            self.assertIsNone(watcher.error)
+            self.assertEqual(watcher.reason, "disk_reserve_reached" if disk_stop else "owned_shutdown_requested")
+            self.assertGreaterEqual(clock[0], 1300)
+            self.assertEqual(len(watcher.samples), subject.RECENT_SAMPLE_COUNT)
+            self.assertGreater(watcher.sample_summary["samples_seen"], 1200)
+        self.assertGreater(watcher.sample_summary["peak_output_logical_bytes"], 1024**3)
+        self.assert_single_stop_rpc(peer)
+        original.stop_record.assert_not_called()
+
+    def test_continuous_independent_watch_has_no_1200_second_or_1gib_cap(self):
+        self.run_continuous_growth_watch()
+
+    def test_continuous_independent_watch_owns_one_stop_at_actual_disk_reserve(self):
+        self.run_continuous_growth_watch(disk_stop=True)
+
+    def test_continuous_recording_fault_still_stops_once_and_preserves_failure(self):
+        self.run_continuous_growth_watch(stalled=True)
+
+    def test_continuous_prepare_and_launch_preserve_null_limits_and_admitted_paths(self):
+        admission = self.root / "admission.json"
+        admission.write_text(json.dumps({"status": "ADMITTED", "approved_output_roots": [str(self.root)],
+            "disk_reserve_bytes": 1000, "review_at_utc": "2000-01-01T00:00:00+00:00"}), encoding="utf-8")
+        profile_path = self.root / "new-profile.json"
+        with mock.patch.object(subject, "_listeners", return_value=[]), \
+             mock.patch.object(subject, "_control", return_value=SimpleNamespace()), \
+             mock.patch.object(subject, "_generation_helpers", side_effect=AssertionError("continuous consulted deadline")), \
+             mock.patch.object(subject.shutil, "disk_usage", return_value=SimpleNamespace(free=2000)):
+            subject.prepare_profile(self.obs_root, profile_path, self.recordings, port=4459,
+                control_dependencies=self.root / "control", deadline_utc=None, max_output_bytes=None,
+                continuous=True, storage_admission=admission)
+        prepared = json.loads(profile_path.read_text(encoding="utf-8"))
+        self.assertTrue(prepared["continuous"])
+        self.assertIsNone(prepared["deadline_utc"])
+        self.assertIsNone(prepared["max_output_bytes"])
+        self.assertEqual(prepared["storage"]["disk_reserve_bytes"], 1000)
+        launch = self.root / "launch.json"
+        launch.write_text(json.dumps({"pid": 100}), encoding="utf-8")
+        ffprobe = self.root / "ffprobe.exe"
+        ffprobe.write_bytes(b"synthetic; never execute")
+        with mock.patch.object(subject.subprocess, "Popen", return_value=SimpleNamespace(pid=77)) as spawn, \
+             mock.patch.object(subject.shutil, "disk_usage", return_value=SimpleNamespace(free=2000)), \
+             mock.patch.object(subject, "_generation_helpers", side_effect=AssertionError("continuous consulted deadline")):
+            result = subject.launch_recording(profile_path, self.recordings, 100, 456, None,
+                launch_receipt=launch, ffprobe=ffprobe, continuous=True)
+        job = json.loads((Path(result["receipt_root"]) / "job.json").read_text(encoding="utf-8"))
+        for key in ("duration_seconds", "max_output_bytes", "deadline_utc"):
+            self.assertIsNone(job[key])
+        self.assertEqual(job["storage"], prepared["storage"])
+        self.assertIn("--continuous", spawn.call_args.args[0])
+        for change in ({"duration_seconds": 5000}, {"max_output_bytes": 10 * 1024**3},
+                       {"deadline_utc": "2099-01-01T00:00:00Z"}, {"receipt_root": str(self.root.parent / "outside")}):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                subject.validate_job({**job, **change})
+
+    def test_continuous_wrapper_uses_admission_reserve_without_turning_review_into_deadline(self):
+        wrapper = load("continuous_recording_wrapper", TOOLS / "g2_saved_campaign/managed_decision_recording.py")
+        args = SimpleNamespace(continuous=True, deadline_utc=None, seconds=None, max_output_bytes=None,
+            obs_root=self.obs_root, profile=self.profile_path, output_root=self.recordings,
+            receipt=self.root / "receipt.json", port=4459, start_signal=None)
+        admission = {"status": "ADMITTED", "approved_output_roots": [str(self.root)],
+                     "disk_reserve_bytes": 1000, "review_at_utc": "2000-01-01T00:00:00Z"}
+        wrapper.validate_admission(args, admission)
+        for key, value in (("deadline_utc", "2099-01-01T00:00:00Z"), ("seconds", 5000), ("max_output_bytes", 10 * 1024**3)):
+            changed = SimpleNamespace(**{**vars(args), key: value})
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                wrapper.validate_admission(changed, admission)
+        with self.assertRaises(ValueError):
+            wrapper.validate_admission(args, {**admission, "disk_reserve_bytes": None})
+
+    def test_continuous_public_cli_does_not_insert_bounded_defaults(self):
+        wrapper = load("continuous_recording_cli", TOOLS / "g2_saved_campaign/managed_decision_recording.py")
+        admission = self.root / "admission.json"
+        admission.write_text(json.dumps({"status": "ADMITTED", "approved_output_roots": [str(self.root)],
+            "disk_reserve_bytes": 1000, "review_at_utc": "2000-01-01T00:00:00Z"}), encoding="utf-8")
+        receipt = self.root / "prepared-receipt.json"
+        values = {"obs-root": self.obs_root, "profile": self.profile_path, "output-root": self.recordings,
+            "control-dependencies": self.root / "control", "launch-receipt": self.root / "launch.json",
+            "placement-receipt": self.root / "placement.json", "overlay-receipt": self.root / "overlay.json",
+            "ffprobe": self.root / "ffprobe.exe", "receipt": receipt, "storage-admission": admission}
+        argv = ["managed_decision_recording.py", "prepare", "--continuous", "--port", "4459"]
+        for name, value in values.items():
+            argv.extend(["--" + name, str(value)])
+        capture = SimpleNamespace(prepare_profile=mock.Mock())
+        with mock.patch.object(sys, "argv", argv), mock.patch.dict(sys.modules, {"ck3_obs_capture": capture}), \
+             mock.patch.object(sys, "stdout", io.StringIO()):
+            wrapper.main()
+        kwargs = capture.prepare_profile.call_args.kwargs
+        self.assertTrue(kwargs["continuous"])
+        self.assertIsNone(kwargs["deadline_utc"])
+        self.assertIsNone(kwargs["max_output_bytes"])
+        self.assertEqual(kwargs["storage_admission"], admission)
 
     def test_launch_rejects_a_stale_start_signal_before_starting_a_worker(self):
         self.profile["recording_root"] = str(self.recordings)

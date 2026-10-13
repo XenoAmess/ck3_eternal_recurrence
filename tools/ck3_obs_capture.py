@@ -1,4 +1,4 @@
-"""Dedicated, bounded OBS Game texture plus independent decision-text source.
+"""Dedicated OBS Game texture plus independent decision-text source.
 
 Only a fresh portable configuration and newly launched engine are accepted.
 No desktop source, input, shared OBS attachment or process termination fallback.
@@ -14,8 +14,10 @@ import hashlib
 import importlib.metadata
 import json
 import logging
+import math
 from pathlib import Path
 import secrets
+import shutil
 import subprocess
 import sys
 import threading
@@ -25,6 +27,7 @@ import uuid
 PROVIDER_VERSION = "2.0.0"
 SCHEMA = "xar.ck3.obs-window-capture.v2"
 ALLOWED_SECONDS = frozenset({15, 30, 45, 60, 90, 120})
+RECENT_SAMPLE_COUNT = 120
 
 
 def _write_new(path, value):
@@ -34,6 +37,60 @@ def _write_new(path, value):
 
 def _read(path):
     return json.loads(Path(path).read_text(encoding="utf-8-sig"))
+
+
+def _replace_json(path, value):
+    """Mutable latest state; old paths are never presented as immutable evidence."""
+    path = Path(path)
+    pending = path.with_suffix(path.suffix + ".tmp")
+    _write_new(pending, value)
+    pending.replace(path)
+
+
+def _validate_storage(storage, paths):
+    roots = storage.get("approved_output_roots") if isinstance(storage, dict) else None
+    if (not isinstance(roots, list) or not roots or any(not isinstance(p, str) or not p for p in roots)
+            or type(storage.get("disk_reserve_bytes")) is not int or storage["disk_reserve_bytes"] <= 0):
+        raise ValueError("continuous recording requires admitted roots and an actual disk reserve")
+    roots = [Path(p).resolve() for p in roots]
+    if any(not any(Path(p).resolve().is_relative_to(root) for root in roots) for p in paths):
+        raise ValueError("continuous recording output escaped its admitted roots")
+
+
+def _continuous_storage(admission_path, paths):
+    if admission_path is None:
+        raise ValueError("continuous recording requires an explicit storage admission")
+    admission_path = Path(admission_path).resolve(strict=True)
+    admission = _read(admission_path)
+    if admission.get("status") != "ADMITTED":
+        raise ValueError("continuous recording storage must be ADMITTED")
+    storage = {"approved_output_roots": admission["approved_output_roots"],
+               "disk_reserve_bytes": admission["disk_reserve_bytes"],
+               "admission_path": str(admission_path), "admission_sha256": _sha(admission_path)}
+    _validate_storage(storage, paths)
+    return storage
+
+
+def _disk_observation(job):
+    path = Path(job["recording_root"]).resolve()
+    # Preparation may precede creation of the new recording directory.
+    probe = path
+    while not probe.exists():
+        if probe.parent == probe:
+            raise FileNotFoundError("recording volume is unavailable: " + str(path))
+        probe = probe.parent
+    free = shutil.disk_usage(probe).free
+    reserve = job["storage"]["disk_reserve_bytes"]
+    return {"at_utc": datetime.now(timezone.utc).isoformat(), "recording_root": str(path),
+            "available_bytes": free, "disk_reserve_bytes": reserve, "reserve_reached": free <= reserve}
+
+
+def _append_sample(samples, summary, sample, continuous):
+    samples.append(sample)
+    summary["samples_seen"] = summary.get("samples_seen", 0) + 1
+    summary["peak_output_logical_bytes"] = max(summary.get("peak_output_logical_bytes", 0), sample["output_logical_bytes"])
+    if continuous and len(samples) > RECENT_SAMPLE_COUNT:
+        del samples[:-RECENT_SAMPLE_COUNT]
 
 
 def _sha(path):
@@ -102,23 +159,32 @@ def validate_profile(profile):
     uuid.UUID(hex=name.removeprefix("ManagedWindowCapture-"))
     if profile["collection_name"] != name:
         raise ValueError("OBS profile and collection must share one owned UUID")
-    if (type(profile["max_output_bytes"]) is not int
+    if profile.get("continuous") is True:
+        if profile.get("max_output_bytes") is not None or profile.get("deadline_utc") is not None:
+            raise ValueError("continuous recording has no byte cap or deadline")
+        _validate_storage(profile.get("storage"), (root, profile["config_root"], profile["recording_root"]))
+    elif (type(profile["max_output_bytes"]) is not int
             or not 192 * 1024**2 <= profile["max_output_bytes"] <= 1024**3):
         raise ValueError("recording allocation must be 192MiB..1GiB, including metadata/stop reserve")
 
 
 def prepare_profile(obs_root: Path, profile_path: Path, recording_root: Path, *,
-                    port: int, control_dependencies: Path, deadline_utc: str,
-                    max_output_bytes: int, bitrate_kbps: int = 4800) -> Path:
-    _, _, _, deadline_check = _generation_helpers()
-    deadline_check(deadline_utc)
+                    port: int, control_dependencies: Path, deadline_utc: str | None,
+                    max_output_bytes: int | None, bitrate_kbps: int = 4800,
+                    continuous: bool = False, storage_admission=None) -> Path:
+    if continuous:
+        if deadline_utc is not None or max_output_bytes is not None:
+            raise ValueError("continuous recording does not accept a deadline or byte cap")
+    else:
+        _, _, _, deadline_check = _generation_helpers()
+        deadline_check(deadline_utc)
     obs_root, profile_path, recording_root = (p.resolve() for p in (obs_root, profile_path, recording_root))
     executable = obs_root / "bin/64bit/obs64.exe"
     if not executable.is_file() or profile_path.exists():
         raise ValueError("explicit OBS executable and new profile receipt required")
     if type(port) is not int or not 1024 <= port <= 65535:
         raise ValueError("explicit dedicated local port required")
-    if type(max_output_bytes) is not int or not 192 * 1024**2 <= max_output_bytes <= 1024**3:
+    if not continuous and (type(max_output_bytes) is not int or not 192 * 1024**2 <= max_output_bytes <= 1024**3):
         raise ValueError("Root recording allocation must include finite metadata/stop reserve")
     if type(bitrate_kbps) is not int or not 0 < bitrate_kbps <= 5000:
         raise ValueError("recording bitrate may not exceed 5Mbps")
@@ -135,7 +201,12 @@ def prepare_profile(obs_root: Path, profile_path: Path, recording_root: Path, *,
         "control_dependencies": str(control_dependencies.resolve()), "recording_root": str(recording_root),
         "deadline_utc": deadline_utc, "max_output_bytes": max_output_bytes,
         "bitrate_kbps": bitrate_kbps, "width": 2560, "height": 1440, "fps": 30}
+    if continuous:
+        profile["continuous"] = True
+        profile["storage"] = _continuous_storage(storage_admission, (obs_root, profile_path, recording_root))
     validate_profile(profile)
+    if continuous and _disk_observation(profile)["reserve_reached"]:
+        raise RuntimeError("actual recording volume has reached its disk reserve")
     _control(profile)  # Existing explicit dependencies only; installs nothing.
     basic = config / "basic/profiles" / name
     basic.mkdir(parents=True)
@@ -168,14 +239,21 @@ def prepare_profile(obs_root: Path, profile_path: Path, recording_root: Path, *,
 
 
 def validate_job(job):
-    if job.get("schema") != SCHEMA or type(job.get("duration_seconds")) is not int or not 1 <= job["duration_seconds"] <= 1200:
+    continuous = job.get("continuous") is True
+    if job.get("schema") != SCHEMA:
+        raise ValueError("unsupported recording job schema")
+    if continuous:
+        if any(job.get(key) is not None for key in ("duration_seconds", "max_output_bytes", "deadline_utc")):
+            raise ValueError("continuous recording has no duration, byte cap or deadline")
+        _validate_storage(job.get("storage"), (job["profile_path"], job["recording_root"], job["receipt_root"]))
+    elif type(job.get("duration_seconds")) is not int or not 1 <= job["duration_seconds"] <= 1200:
         raise ValueError("recording must be finite and at most 20 minutes")
     if any(type(job.get(key)) is not int or job[key] <= 0 for key in ("pid", "hwnd")):
         raise ValueError("exact Game PID/HWND required")
     uuid.UUID(job["session_id"])
     if not Path(job["receipt_root"]).resolve().is_relative_to(Path(job["recording_root"]).resolve()):
         raise ValueError("receipt scope escaped the recording root")
-    if type(job.get("max_output_bytes")) is not int or not 192 * 1024**2 <= job["max_output_bytes"] <= 1024**3:
+    if not continuous and (type(job.get("max_output_bytes")) is not int or not 192 * 1024**2 <= job["max_output_bytes"] <= 1024**3):
         raise ValueError("bounded recording allocation required")
     signal = job.get("start_signal")
     if signal is not None and (not isinstance(signal, str) or not signal
@@ -195,7 +273,7 @@ def validate_job(job):
 
 def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
                      launch_receipt, ffprobe, placement_receipt=None, overlay_receipt=None,
-                     start_signal=None):
+                     start_signal=None, continuous=False):
     """Products may record only Game; fresh-agent calls supply the complete group."""
     if (placement_receipt is None) != (overlay_receipt is None):
         raise ValueError("placement and decision Overlay receipts must be supplied together")
@@ -203,6 +281,8 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
     placement, overlay, text = None, None, None
     with_decision = overlay_receipt is not None
     validate_profile(profile)
+    if continuous != (profile.get("continuous") is True):
+        raise ValueError("recording mode differs from the prepared profile")
     if profile.get("schema") != SCHEMA or profile.get("strict_isolation") is not True:
         raise ValueError("legacy/shared OBS profiles are not admitted")
     if Path(profile["recording_root"]).resolve() != Path(recording_root).resolve():
@@ -237,19 +317,28 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
         "desktop_id": placement["target_desktop_id"] if with_decision else None,
         "overlay": overlay, "decision_text_file": str(text) if text else None, "ffprobe": str(probe),
         "deadline_utc": profile["deadline_utc"], "max_output_bytes": profile["max_output_bytes"]}
+    if continuous:
+        job.update(continuous=True, storage=profile["storage"])
     if start_signal is not None:
         job["start_signal"] = str(start_signal)
     validate_job(job)
-    _, _, _, deadline_check = _generation_helpers()
-    deadline_check(job["deadline_utc"])
-    end = datetime.fromisoformat(job["deadline_utc"].replace("Z", "+00:00"))
-    if (end - datetime.now(timezone.utc)).total_seconds() < seconds + 90:
-        raise ValueError("recording plus cleanup does not fit the original deadline")
+    if continuous:
+        if _disk_observation(job)["reserve_reached"]:
+            raise RuntimeError("actual recording volume has reached its disk reserve")
+    else:
+        _, _, _, deadline_check = _generation_helpers()
+        deadline_check(job["deadline_utc"])
+        end = datetime.fromisoformat(job["deadline_utc"].replace("Z", "+00:00"))
+        if (end - datetime.now(timezone.utc)).total_seconds() < seconds + 90:
+            raise ValueError("recording plus cleanup does not fit the original deadline")
     root.mkdir()
     path = root / "job.json"
     _write_new(path, job)
     with (root / "worker.stdout.txt").open("x", encoding="utf-8") as stdout, (root / "worker.stderr.txt").open("x", encoding="utf-8") as stderr:
-        worker = subprocess.Popen([sys.executable, "-B", str(Path(__file__).resolve()), "--job", str(path)],
+        argv = [sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--job", str(path)]
+        if continuous:
+            argv.append("--continuous")
+        worker = subprocess.Popen(argv,
             stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return {"schema": SCHEMA, "session_id": session, "worker_pid": worker.pid,
@@ -259,15 +348,33 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
 def _window_identity(hwnd, expected_pid):
     import win32gui
     import win32process
+    import psutil
     windows = []
+    owned_class = win32gui.GetClassName(hwnd)
     def collect(candidate, _):
-        if win32gui.IsWindowVisible(candidate) and win32gui.GetWindowText(candidate) == "Crusader Kings III":
-            windows.append((candidate, win32process.GetWindowThreadProcessId(candidate)[1]))
+        if (win32gui.IsWindowVisible(candidate)
+                and win32gui.GetWindowText(candidate) == "Crusader Kings III"
+                and win32gui.GetClassName(candidate) == owned_class):
+            pid = win32process.GetWindowThreadProcessId(candidate)[1]
+            if Path(psutil.Process(pid).exe()).name.casefold() == "ck3.exe":
+                windows.append((candidate, pid))
     win32gui.EnumWindows(collect, None)
     if windows != [(hwnd, expected_pid)]:
         raise RuntimeError("OBS title selector is not unique to the owned Game window")
     escape = lambda value: value.replace("#", "#22").replace(":", "#3A")
     return ":".join(map(escape, ("Crusader Kings III", win32gui.GetClassName(hwnd), "ck3.exe")))
+
+
+def _foreground_observation(before, owned_obs_pid):
+    import win32gui
+    import win32process
+    after = win32gui.GetForegroundWindow()
+    changed = after != before
+    pid = win32process.GetWindowThreadProcessId(after)[1] if changed and after else None
+    return {"foreground_before": before, "foreground_after": after,
+            "foreground_changed": changed, "foreground_after_pid": pid,
+            "owned_obs_pid": owned_obs_pid, "foreground_after_is_owned_obs": pid == owned_obs_pid,
+            "focus_restoration_attempted": False}
 
 
 class OwnedEngine:
@@ -468,6 +575,8 @@ class FileGrowthWatch:
         self.reason, self.output, self.error = None, None, None
         self.stop_confirmed = False
         self.samples, self.peak = [], 0
+        self.sample_summary = {}
+        self.last_disk_observation = None
         self.thread = threading.Thread(target=self.run, name="owned-recording-growth", daemon=True)
 
     def start(self):
@@ -480,7 +589,8 @@ class FileGrowthWatch:
 
     def run(self):
         job = self.engine.job
-        end = self.start_monotonic + max(.25, self.seconds - min(10, self.seconds * .05))
+        continuous = job.get("continuous") is True
+        end = None if continuous else self.start_monotonic + max(.25, self.seconds - min(10, self.seconds * .05))
         previous, changed = 0, time.monotonic()
         try:
             while not self.requested.is_set():
@@ -488,24 +598,31 @@ class FileGrowthWatch:
                     if (Path(job["receipt_root"]) / "STOP-OWNED-RECORDING").is_file():
                         self.request_stop("owned_shutdown_requested")
                         break
-                    _, _, _, deadline_check = _generation_helpers()
-                    deadline_check(job["deadline_utc"])
+                    if continuous:
+                        self.last_disk_observation = _disk_observation(job)
+                        if self.last_disk_observation["reserve_reached"]:
+                            self.request_stop("disk_reserve_reached")
+                            break
+                    else:
+                        _, _, _, deadline_check = _generation_helpers()
+                        deadline_check(job["deadline_utc"])
                     video, total = _job_bytes(job)
                     self.peak = max(self.peak, total)
-                    self.samples.append({"at_utc": datetime.now(timezone.utc).isoformat(),
-                                         "file_bytes": video, "output_logical_bytes": total})
-                    if total >= job["max_output_bytes"] - 96 * 1024**2:
+                    _append_sample(self.samples, self.sample_summary,
+                        {"at_utc": datetime.now(timezone.utc).isoformat(),
+                         "file_bytes": video, "output_logical_bytes": total}, continuous)
+                    if not continuous and total >= job["max_output_bytes"] - 96 * 1024**2:
                         raise RuntimeError("actual output reached the reserved stop margin")
                     if video > previous:
                         previous, changed = video, time.monotonic()
                     elif time.monotonic() - changed > 30:
                         raise RuntimeError("actual video file did not grow for over 30 seconds")
-                    if time.monotonic() >= end:
+                    if end is not None and time.monotonic() >= end:
                         self.request_stop("duration_reached")
                         break
                 except Exception as error:
                     self.error = str(error)
-                    self.request_stop("file_or_deadline_guard")
+                    self.request_stop("file_or_disk_guard" if continuous else "file_or_deadline_guard")
                     break
                 self.requested.wait(.5)
             # Never share a ReqClient socket or change the main engine.client.
@@ -555,6 +672,9 @@ def run_worker(path):
     validate_job(job)
     profile = _read(job["profile_path"])
     validate_profile(profile)
+    continuous = job.get("continuous") is True
+    if continuous != (profile.get("continuous") is True) or (continuous and job["storage"] != profile["storage"]):
+        raise ValueError("recording mode/storage differs from the immutable prepared profile")
     if profile.get("schema") != SCHEMA or profile.get("host") != "127.0.0.1" or _sha(job["profile_path"]) != job["profile_sha256"]:
         raise ValueError("unsupported or altered dedicated OBS profile")
     root = Path(job["receipt_root"])
@@ -573,6 +693,7 @@ def run_worker(path):
     configured = False
     watch = None
     cleanup, frames, samples = {}, [], []
+    sample_summary = {}
     initial_files = {str(p.resolve()) for p in Path(job["recording_root"]).iterdir() if p.is_file()}
     if job.get("start_signal") is not None:
         initial_files.add(str(Path(job["start_signal"]).resolve()))
@@ -582,7 +703,17 @@ def run_worker(path):
             job["overlay"]["overlay_pid"], Path(job["overlay"]["overlay_executable"]),
             creation_filetime=job["overlay"]["overlay_creation_filetime"])) if with_decision else None
         def guard():
-            deadline_check(job["deadline_utc"])
+            if continuous:
+                disk = _disk_observation(job)
+                reason = ("owned_shutdown_requested" if (root / "STOP-OWNED-RECORDING").is_file()
+                          else "disk_reserve_reached" if disk["reserve_reached"] else None)
+                if reason:
+                    if watch:
+                        watch.request_stop(reason)
+                    else:
+                        raise RuntimeError("continuous recording not started: " + reason)
+            else:
+                deadline_check(job["deadline_utc"])
             game.check()
             check_game_window(game, job["hwnd"])
             if with_decision:
@@ -653,7 +784,9 @@ def run_worker(path):
             window = _window_identity(job["hwnd"], job["pid"])
             guard()
             client = engine.start()
-            if win32gui.GetForegroundWindow() != foreground:
+            foreground_observation = _foreground_observation(foreground, engine.process.pid)
+            _write_new(root / "foreground-observation.json", foreground_observation)
+            if foreground_observation["foreground_changed"] and foreground_observation["foreground_after_is_owned_obs"]:
                 raise RuntimeError("OBS startup changed the user foreground; no restoration attempted")
             guard()
             if client.get_record_status().output_active or client.get_input_list().inputs:
@@ -694,12 +827,13 @@ def run_worker(path):
                 source_binding()
                 if engine.client.get_record_status().output_active:
                     raise RuntimeError("owned output became active before recording start signal")
-                if _job_bytes(job)[1] >= job["max_output_bytes"] - 96 * 1024**2:
+                if not continuous and _job_bytes(job)[1] >= job["max_output_bytes"] - 96 * 1024**2:
                     raise RuntimeError("waiting frame receipts reached the reserved stop margin")
             _wait_for_start_signal(job, waiting_check, screenshots, ready_frame)
-            remaining = (datetime.fromisoformat(job["deadline_utc"].replace("Z", "+00:00")) - datetime.now(timezone.utc)).total_seconds()
-            if remaining < job["duration_seconds"] + 90:
-                raise RuntimeError("late OBS setup left insufficient recording/cleanup admission")
+            if not continuous:
+                remaining = (datetime.fromisoformat(job["deadline_utc"].replace("Z", "+00:00")) - datetime.now(timezone.utc)).total_seconds()
+                if remaining < job["duration_seconds"] + 90:
+                    raise RuntimeError("late OBS setup left insufficient recording/cleanup admission")
             if (client.get_profile_parameter("SimpleOutput", "RecQuality").parameter_value != "Stream"
                     or int(client.get_profile_parameter("SimpleOutput", "VBitrate").parameter_value) != profile["bitrate_kbps"]):
                 raise RuntimeError("actual OBS encoder parameters differ from bounded CBR profile")
@@ -720,12 +854,14 @@ def run_worker(path):
                 "source_settings": client.get_input_settings(source).input_settings,
                 "capture_mode": job["capture_mode"], "decision_source": with_decision,
                 "decision_settings": client.get_input_settings(decision).input_settings if with_decision else None,
-                "video": _response_data(video), "runtime_freshness_qualified": False})
-            end = start_monotonic + job["duration_seconds"]
+                "video": _response_data(video), "runtime_freshness_qualified": False,
+                "continuous": continuous, "duration_seconds": job["duration_seconds"],
+                "max_output_bytes": job["max_output_bytes"], "deadline_utc": job["deadline_utc"]})
+            end = None if continuous else start_monotonic + job["duration_seconds"]
             reconnect_at, screenshot_at = time.monotonic() + 20, time.monotonic() + 30
             last_bytes, last_growth, peak = 0, time.monotonic(), 0
-            while time.monotonic() < end:
-                time.sleep(min(1, max(0, end - time.monotonic())))
+            while end is None or time.monotonic() < end:
+                time.sleep(1 if end is None else min(1, max(0, end - time.monotonic())))
                 guard()
                 if time.monotonic() >= reconnect_at:
                     client = engine.reconnect()
@@ -748,20 +884,27 @@ def run_worker(path):
                         [str(p.resolve()) for p in unexpected], ensure_ascii=False))
                 total = current_bytes + sum(p.stat().st_size for p in root.iterdir() if p.is_file())
                 peak = max(peak, total)
-                if total >= job["max_output_bytes"] - 96 * 1024**2:
+                if not continuous and total >= job["max_output_bytes"] - 96 * 1024**2:
                     raise RuntimeError("recording allocation nearing hard byte cap")
                 if current_bytes > last_bytes:
                     last_bytes, last_growth = current_bytes, time.monotonic()
                 elif time.monotonic() - last_growth > 30:
                     raise RuntimeError("actual recording file did not grow for over 30 seconds")
-                samples.append({"elapsed_seconds": job["duration_seconds"] - max(0, end - time.monotonic()),
-                                "file_bytes": current_bytes, "output_logical_bytes": total})
+                _append_sample(samples, sample_summary,
+                    {"elapsed_seconds": time.monotonic() - start_monotonic,
+                     "file_bytes": current_bytes, "output_logical_bytes": total}, continuous)
                 if time.monotonic() >= screenshot_at:
-                    screenshots("sample-" + str(len(frames)).zfill(3))
+                    if continuous:
+                        latest = screenshots("recording-latest", replace_latest=True)
+                        _replace_json(root / "recording-latest.json",
+                                      {"state": "recording", "mutable_latest_frame": True, "frame": latest,
+                                       "file_growth_summary": sample_summary, "recent_file_growth_samples": samples})
+                    else:
+                        screenshots("sample-" + str(len(frames)).zfill(3))
                     screenshot_at = time.monotonic() + 60
             if not watch.requested.is_set():
                 screenshots("before-stop")
-            output = watch.finish("duration_reached")
+            output = watch.finish("worker_finished" if continuous else "duration_reached")
             armed = False
             if output is None:
                 raise RuntimeError("recording absent at final owned stop")
@@ -771,13 +914,17 @@ def run_worker(path):
             observed = json.loads(probe.stdout)
             bitrate = int(observed["format"].get("bit_rate", 0))
             duration = float(observed["format"]["duration"])
-            if (not 0 < bitrate <= 5_000_000 or not 0 < duration <= job["duration_seconds"]
-                    or _job_bytes(job)[1] + 1024**2 >= job["max_output_bytes"]):
+            if (not 0 < bitrate <= 5_000_000 or not math.isfinite(duration) or not duration > 0
+                    or (not continuous and (duration > job["duration_seconds"]
+                        or _job_bytes(job)[1] + 1024**2 >= job["max_output_bytes"]))):
                 raise RuntimeError("closed probe violates bitrate/byte allocation")
             _write_new(root / "closed-file-probe.json", observed)
             _write_new(root / "completed.json", {"state": "completed", "path": str(output),
                 "bytes": output.stat().st_size, "sha256": _sha(output), "peak_logical_bytes": peak,
                 "frame_receipts": frames, "file_growth_samples": samples,
+                "file_growth_summary": sample_summary, "continuous": continuous,
+                "stop_reason": watch.reason, "duration_seconds": job["duration_seconds"],
+                "max_output_bytes": job["max_output_bytes"], "deadline_utc": job["deadline_utc"],
                 "configured_video_CBR_target_bits_per_second": profile["bitrate_kbps"] * 1000,
                 "closed_average_total_bitrate_limit": 5_000_000, "actual_closed_average_bitrate": bitrate,
                 "instantaneous_bitrate_hard_cap_qualified": False,
@@ -786,7 +933,8 @@ def run_worker(path):
         except Exception as error:
             primary = error
             _write_new(root / "failed.json", {"state": "failed", "error": str(error),
-                       "frame_receipts": frames, "file_growth_samples": samples})
+                       "frame_receipts": frames, "file_growth_samples": samples,
+                       "file_growth_summary": sample_summary})
         finally:
             if armed and watch:
                 try:
@@ -820,21 +968,31 @@ def run_worker(path):
                     cleanup["close_error"] = str(error)
             cleanup["unknown_or_global_stop_calls"] = 0
             cleanup["final_output_logical_bytes"] = _job_bytes(job)[1]
-            cleanup["within_byte_allocation"] = cleanup["final_output_logical_bytes"] + 1024**2 < job["max_output_bytes"]
+            cleanup["within_byte_allocation"] = (None if continuous else
+                cleanup["final_output_logical_bytes"] + 1024**2 < job["max_output_bytes"])
+            if continuous:
+                cleanup["continuous"] = True
+                try:
+                    cleanup["disk_at_close"] = _disk_observation(job)
+                except Exception as error:
+                    cleanup["disk_read_error"] = str(error)
             if watch:
                 cleanup["independent_file_growth_samples"] = watch.samples
                 cleanup["watcher_stop_reason"] = watch.reason
+                if continuous:
+                    cleanup["independent_file_growth_summary"] = watch.sample_summary
+                    cleanup["watcher_last_disk_observation"] = watch.last_disk_observation
             _write_new(root / "cleanup.json", cleanup)
             if engine.generation:
                 engine.generation.close()
     if primary:
         raise primary
-    if cleanup.get("stop_error") or cleanup.get("unbind_error") or cleanup.get("close_error") or not cleanup.get("within_byte_allocation") or cleanup.get("engine_close", {}).get("actual_exit_code") != 0:
+    if cleanup.get("stop_error") or cleanup.get("unbind_error") or cleanup.get("close_error") or cleanup.get("disk_read_error") or (not continuous and not cleanup.get("within_byte_allocation")) or cleanup.get("engine_close", {}).get("actual_exit_code") != 0:
         raise RuntimeError("recording complete but dedicated OBS cleanup is not GREEN")
 
 
 def stop_session_recording(receipt_root):
-    raise RuntimeError("v2 bounded worker owns its exact engine stop; inspect generation receipts")
+    raise RuntimeError("v2 worker owns its exact engine stop; inspect generation receipts")
 
 
 def request_engine_close(receipt_root):
@@ -844,4 +1002,8 @@ def request_engine_close(receipt_root):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--job", type=Path, required=True)
-    run_worker(parser.parse_args().job)
+    parser.add_argument("--continuous", action="store_true", help="require an explicit continuous job")
+    args = parser.parse_args()
+    if args.continuous and _read(args.job).get("continuous") is not True:
+        parser.error("--continuous requires a continuous job with null limits")
+    run_worker(args.job)
