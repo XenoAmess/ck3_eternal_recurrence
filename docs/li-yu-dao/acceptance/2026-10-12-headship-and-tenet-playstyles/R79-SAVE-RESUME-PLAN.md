@@ -16,4 +16,6 @@
 
 R86 的 A55 预约也已关闭，最新保守 carry 为 141,025,424,873 B，原上限仍为 141,327,031,211 B。下一次重型写入须从这一闭场事实重新申请有限准入，不沿用 A55 的已消费余额或它的旧 screen 证据。
 
+随后按[精确缓存回收回执](STORAGE-R83-R85-CACHE-RECLAIM.md)清理被 R86 同版缓存替代的 R83/R85 旧副本，最新保守 carry 为 **140,738,655,368 B**。这是新准入的账面起点，不是已批准的写入预约。
+
 静态验证：`py -B -X utf8 -m unittest tools.ck3_mod_acceptance_cases.test_lyd_release012_headship_resume`，2 项通过。测试使用极小虚构存档和正式目录，没有启动 CK3，也不提供业务通过信用。公开 Workshop 仍是 0.1.1 Alpha 内部测试，0.1.2 未发布。

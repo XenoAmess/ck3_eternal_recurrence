@@ -21,3 +21,5 @@ keeper 收到 STOP 并退出0；桌面实际恢复1024×768。`16:49:26Z` 原始
 | `RUN83/case-output/case-error-preserved.json` | `3eab808ed3b9edb8f71a327b615caa327c2f8066f376b16936af8b98919a25d7` |
 | `RUN83/case-output/normal-close-result.json` | `becb83b35fe4a236a9c71229aed3a54fb53edd3717de1814676dc0b112c8b07e` |
 | `A51/CLOSED-RESERVATION.actual.json` | `473845ddf921f906ae6f964f33e0dd846873f5ff3529042a9bbd56f6ca7fd4be` |
+
+2026-10-14 可用性更正：本场隔离 profile 的着色器缓存已按[精确回收回执](STORAGE-R83-R85-CACHE-RECLAIM.md)删除，原缓存文件现不可读。上述业务与正常退出 RED、其余回执和截图未被本次删除改写。
