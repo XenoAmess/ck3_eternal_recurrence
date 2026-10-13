@@ -40,6 +40,54 @@ def _native_scorer_signed32(value: int) -> int:
     return (value + 2**31) % 2**32 - 2**31
 
 
+def _marriage_projection_failure_evidence_v1(driver, error, *, request_id,
+        candidate_character_ids, legality, before, native_frame):
+    """Bounded original-query evidence; never reads history or submits a command."""
+    from datetime import datetime, timezone
+    import json
+    from pathlib import Path
+    state_dir = getattr(driver, "state_dir", None)
+    if not isinstance(state_dir, Path):
+        error.add_note("Marriage projection evidence unavailable: Driver state_dir is absent")
+        return
+    try:
+        played = before.get("played_character")
+        before_frame = {key: before.get(key) for key in ("snapshot_id", "revision", "native_revision",
+            "date_raw", "episode_run_id", "paused", "map_ready")}
+        before_frame["played_character"] = ({key: played.get(key) for key in ("character_id", "alive")}
+                                             if isinstance(played, dict) else None)
+        legal = legality.get("native_legal_candidates")
+        evidence = {
+            "schema": "xar.ck3.marriage-projection-query-failure/v1",
+            "at_utc": datetime.now(timezone.utc).isoformat(), "native_request_id": request_id,
+            "native_step": STEP, "candidate_character_ids": list(candidate_character_ids),
+            "legality": {key: legality.get(key) for key in ("schema", "status", "native_revision",
+                "query_sequence", "root_query_sequence", "observed_first_heir_character_id",
+                "exact_ck3_build", "exe_sha256")},
+            "native_legal_candidate_count": len(legal) if isinstance(legal, list) else None,
+            "before_frame": before_frame,
+            "native_frame": ({key: native_frame.get(key) for key in ("type", "protocol_version", "request_id", "ok")}
+                             if isinstance(native_frame, dict) else None),
+            "raw_error": (str(native_frame.get("error") or "unknown")[:4096]
+                          if isinstance(native_frame, dict) else None),
+            "command_result_received": native_frame is not None,
+            "original_query_replayed": False, "native_query_resubmitted": False,
+        }
+        payload = json.dumps(evidence, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        if len(payload) > 16384:
+            raise ValueError("Marriage projection failure evidence exceeded 16 KiB")
+        directory = state_dir / "marriage-projection-query-failures"
+        directory.mkdir(parents=True, exist_ok=True)
+        path = directory / (request_id + ".json")
+        with path.open("xb") as stream:
+            stream.write(payload)
+            stream.flush()
+        error.add_note("Original marriage projection failure evidence: " + str(path))
+    except Exception as evidence_error:
+        error.add_note("Marriage projection failure evidence write failed: "
+                       + type(evidence_error).__name__ + ": " + str(evidence_error)[:512])
+
+
 def query_first_heir_candidate_alliance_projection_private_v1(
     driver: object, *, legality: dict[str, object],
     candidate_character_ids: list[int], timeout_seconds: float = 360.0,
@@ -113,11 +161,19 @@ def query_first_heir_candidate_alliance_projection_private_v1(
     frame = driver.state.wait_for_command_result(
         request_id, float(timeout_seconds))
     if frame is None:
-        raise BridgeUnavailableError("marriage projection command_result timed out")
+        error = BridgeUnavailableError("marriage projection command_result timed out")
+        _marriage_projection_failure_evidence_v1(driver, error, request_id=request_id,
+            candidate_character_ids=candidate_character_ids, legality=legality,
+            before=before, native_frame=None)
+        raise error
     if frame.get("ok") is not True:
-        raise BridgeUnavailableError(
+        error = BridgeUnavailableError(
             "marriage projection private query RED: " +
             str(frame.get("error") or "unknown"))
+        _marriage_projection_failure_evidence_v1(driver, error, request_id=request_id,
+            candidate_character_ids=candidate_character_ids, legality=legality,
+            before=before, native_frame=frame)
+        raise error
     result = frame.get("result")
     if (
         not isinstance(result, dict) or result.get("step") != STEP

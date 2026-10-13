@@ -20474,7 +20474,8 @@ void RunConnectedSession(
           bool request_valid =
               game.enabled() &&
               (xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_11906::kExecutableSha256 ||
-               xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_12002::kExecutableSha256) &&
+               xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_12002::kExecutableSha256 ||
+               xar::game::IsCk3_12004Descriptor(game.descriptor())) &&
               xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) &&
               xar::bridge::JsonUnsignedField(

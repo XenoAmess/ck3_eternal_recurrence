@@ -37,3 +37,13 @@ owner `/root` 保护本场LIFE材料原响应、回合回执、Driver、canonica
 本场启动前实际删除两份fresh14精确相同方便SAVE及fresh09/10/11三原片，共5件／1,290,973,255逻辑B。旧三原片不可重建、已不可读取；所有旧PNG、原响应、超时/正常退出证据、SDK/source、fresh12 crash和fresh13 UNKNOWN录像保留。fresh11原片也含迟到暂停Robert地图，其原图sample010继续保留，fresh15不解决旧未知请求。精确可用性及用途边界见 `R/resume08/m_storage/GC-ACTUAL-FRESH15-CLOSE-20261013.json`，SHA-256 `d274145ce424d9157fc2294f0f22170628c1ebd03fd60501f0b621237682bd2b`；物理allocation未知。
 
 fresh15原子准入去重6,572,188,684B，新1.88GB峰值后余137,745,908B。B13增量构建及下一场必须重新准入，不增加原8GiB共享预算或2GiB Native子预算。
+
+## 14:20Z 修复与 B13 构建增量
+
+Native request_valid仅增加既有 `IsCk3_12004Descriptor` 精确分支；五ID、同帧、缓存序号和final-legal谓词原样保留。Python transport在原请求RED/timeout时保存≤16KiB的ID、五候选、legality/before帧与原error，证据写失败不遮蔽原异常，不重发query。7项新生产transport focused检查通过；移植入库后仅复验RED/timeout两项，0新增场景、没有重复旧矩阵。12项Native源码抽取fixture仅准备，未执行，不授Native测试GREEN。
+
+B13只重编B7继承的bridge直接对象c0587并链接一次，两者exit0；B9 archive全部612成员和其余319直接对象实际保留，编译headers逐项匹配预冻结依赖。实际输出 `R/native-profile/build13/native.dll` 为18,269,696B，SHA-256 `810986e7ed54f9107ffb23f9cd163bd91636e7310b916d0f26438a9a7759c3fd`；bridge源SHA `3949e52ad1d76ab22c39d9575b92313542ce8a3063c2fe91f247f90ba4c25339`。这是增量混合来源构建，没有全树重编、冷载或婚配通过信用。原子350MB构建准入及实际41,522,622B产物见 `R/resume08/ROOT-B13-STORAGE-RESERVATION.json`、`build13/ROOT-BUILD-RESULT.json`。
+
+后续精确GC实际删除fresh15三份方便SAVE和fresh05/06两个被替代旧原片，共5件／1,499,753,258逻辑B。fresh15 canonical与seed属于不同世代，分别保留；旧两原片不可重建、现已不可读取，全部旧图/timeout/B9失败SDK及闭场原证据保留。fresh05旧inputs_unbound=false仍保留，当前同OBS代际Wait0/exit0另证不改旧解绑事实。实际小摘要 `R/resume08/m_storage/GC-ACTUAL-POST-FRESH15-CLOSE-20261013.json` SHA-256 `13ff3c5f62c16fa759a5d49a819a7639a39a4a978e4ac77ea6a17a78f6479ee6`；不以logical字节冒充物理回收。
+
+下一场用新pipe/state/profile及B13，修正Native diff守卫的实际目录，采用已审治理结果分类候选。完整演示继续待实际普通循环，不把本段源码/构建当游玩成绩。
