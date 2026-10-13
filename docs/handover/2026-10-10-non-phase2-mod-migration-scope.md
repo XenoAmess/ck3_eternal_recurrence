@@ -63,3 +63,11 @@ A209/R0099实际入口置前成功：`ui-entry-foreground.json`600字节/SHA-256
 此前A208闭场输出另已精确回收4324文件/452195120字节：3780份生成shader、540份已结束用途的纯LIST和4条传输流。关键native/typed/error/退出/配置存档保留；544份旧LIST/传输正文不可读取，shader可重新生成但不是历史原件。实际237闭账`post-r76-a208-closed-output-retirement-01-reservation-237-closed.json`2229字节/`b75b53952efbd9e2537d7fa658b114775aee495b5af34c86ad3728d93d3afe5a`；小型实际摘要`a208-closed-output-retirement-20261013-01/ACTUAL-SUMMARY.json`2133字节/`12b58d641a280d8ed95e7d2bebaa1cb00c3ad76747a35397a894b0d07710defa`。不重复抵扣保守U或把候选量当新准入收益。
 
 ad61be99对应官方CI38380556374实际失败于另一既有handover中的禁用shell字面引用，产品离线测试步骤已成功。只修改该历史说明的措辞，原validator对该文件一次实际无违规；不是重新开放禁用shell，也不重跑无关业务。
+
+11:09:30Z，A209真实失败资源闭账完成：52 CLOSED8502字节/SHA-256 `b736ce6f2f141f62c74dbde375f76e1866d7aaeb8f44a93fe3a0385654b290a5`，POST6421字节/`2bb985b0413d575d96c4c6fcf497e8cb17bc1cb123e51f3765af2f519b89c0b4`。三项公共资源closure均true；原native报告实际status GREEN但shutdown OS1，原normal结果仍为unsignaled/OSnull，observer实际2/VOLUME_FREE_SOFTSTOP，分别保留，不互相追认。保守U48804689792字节，新增闭场路径上界610799208字节；没有释放未来业务信用。
+
+随后只回收已明确结束用途的3913个精确文件，714109744字节：3800份生成shader、A199/A200/A202/A209共16条传输流、82份纯LIST、13张非关键导航中间PNG，以及A209生成的`last_save.ck3`和`save games/autosave.ck3`。两存档不属于原37输入且旧角色恢复/seed用途已结束，后继均fresh fixture；不宣称它们同SHA或可重建。113份原始正文/图像/存档已不可恢复；关键成功读回、restore50、死亡、guard/normal/pressure、typed/完整native报告、配置和continue历史原件保留至10月18日复核。没有删除目录或未列入文件。
+
+该回收实际admit/execute/close均0，5批、24.7761秒、无大正文hash；11:21:46Z实际237 CLOSED2231字节/`0130265b9775c1a290a6e8c303f3a54350bd5340771bf786591dbf15d3134968`，实际摘要`a209-closed-output-retirement-20261013-01/ACTUAL-SUMMARY.json`2134字节/`e483873afaea82549f3d04ca6cce7672d8e48a5d6601e7670964039486f4d89c`。全包16MiB仅收费一次，下一保守U48821467008，不抵扣删除量、不重复收control费。11:22Z freshfree29414191104字节；全卷变动不全部归因于本次回收，下一场仍需原锁内实际准入。
+
+d750fa735对应官方CI38387841505已实际completed/success；只绑定该提交。后续剩余功能验收和两产品正式发布、真实缓存加载、永久changelog均仍未完成，不把CI或资源闭场标成发布完成。
