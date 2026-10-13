@@ -177,6 +177,10 @@ def validate_job(job):
         raise ValueError("receipt scope escaped the recording root")
     if type(job.get("max_output_bytes")) is not int or not 192 * 1024**2 <= job["max_output_bytes"] <= 1024**3:
         raise ValueError("bounded recording allocation required")
+    signal = job.get("start_signal")
+    if signal is not None and (not isinstance(signal, str) or not signal
+            or not Path(signal).resolve().is_relative_to(Path(job["recording_root"]).resolve())):
+        raise ValueError("recording start signal must remain in this recording root")
     mode = job.get("capture_mode")
     if mode not in ("game_only", "game_decision"):
         raise ValueError("use the fixed Game-only or Game+decision contract")
@@ -190,7 +194,8 @@ def validate_job(job):
 
 
 def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
-                     launch_receipt, ffprobe, placement_receipt=None, overlay_receipt=None):
+                     launch_receipt, ffprobe, placement_receipt=None, overlay_receipt=None,
+                     start_signal=None):
     """Products may record only Game; fresh-agent calls supply the complete group."""
     if (placement_receipt is None) != (overlay_receipt is None):
         raise ValueError("placement and decision Overlay receipts must be supplied together")
@@ -202,6 +207,10 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
         raise ValueError("legacy/shared OBS profiles are not admitted")
     if Path(profile["recording_root"]).resolve() != Path(recording_root).resolve():
         raise ValueError("profile and recording roots differ")
+    if start_signal is not None:
+        start_signal = Path(start_signal).resolve()
+        if not start_signal.is_relative_to(Path(recording_root).resolve()) or start_signal.exists():
+            raise ValueError("recording start signal must be new in this recording root")
     if type(launch.get("pid")) is not int or launch["pid"] != pid:
         raise ValueError("launch receipt differs from the explicit Game PID")
     if with_decision:
@@ -228,6 +237,8 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
         "desktop_id": placement["target_desktop_id"] if with_decision else None,
         "overlay": overlay, "decision_text_file": str(text) if text else None, "ffprobe": str(probe),
         "deadline_utc": profile["deadline_utc"], "max_output_bytes": profile["max_output_bytes"]}
+    if start_signal is not None:
+        job["start_signal"] = str(start_signal)
     validate_job(job)
     _, _, _, deadline_check = _generation_helpers()
     deadline_check(job["deadline_utc"])
@@ -419,6 +430,36 @@ def _settings_match(actual, expected):
                else actual.get(key) == value for key, value in expected.items())
 
 
+def _wait_for_start_signal(job, check, screenshots, ready_frame):
+    """Keep owned sources reviewable while Root chooses the recording start."""
+    if job.get("start_signal") is None:
+        return
+    root, signal = Path(job["receipt_root"]), Path(job["start_signal"])
+    check()
+    _write_new(root / "record-armed.json", {
+        "state": "awaiting_start_signal", "at_utc": datetime.now(timezone.utc).isoformat(),
+        "start_signal": str(signal), "game_pid": job["pid"], "game_hwnd": job["hwnd"],
+        "ready_frame": ready_frame, "recording_started": False})
+    screenshot_at = time.monotonic() + 15
+    while True:
+        check()
+        if (root / "STOP-OWNED-RECORDING").is_file():
+            raise RuntimeError("owned shutdown requested before recording start")
+        if signal.is_file():
+            _write_new(root / "start-signal-observed.json", {
+                "at_utc": datetime.now(timezone.utc).isoformat(), "path": str(signal)})
+            return
+        if time.monotonic() >= screenshot_at:
+            frame = screenshots("armed-latest", replace_latest=True)
+            latest = root / "armed-latest.json"
+            pending = latest.with_suffix(".json.tmp")
+            _write_new(pending, {"state": "awaiting_start_signal", "mutable_latest_frame": True,
+                                 "frame": frame, "recording_started": False})
+            pending.replace(latest)
+            screenshot_at = time.monotonic() + 15
+        time.sleep(.5)
+
+
 class FileGrowthWatch:
     """Independent file polling and one stop attempt on a separate WS socket."""
     def __init__(self, engine, seconds, start_monotonic):
@@ -558,7 +599,7 @@ def run_worker(path):
                         "进程绑定：PID " + str(job["pid"]) + " · " + job["launch"]["creation_date"]):
                     raise RuntimeError("decision text lost its exact generation binding")
 
-        def screenshots(label):
+        def screenshots(label, *, replace_latest=False):
             guard()
             _output_binding(engine)
             source_binding()
@@ -569,10 +610,17 @@ def run_worker(path):
                 if len(raw) > 8 * 1024**2 or not raw.startswith(b"\x89PNG\r\n\x1a\n"):
                     raise RuntimeError("source PNG is malformed or exceeds its finite budget")
                 dest = root / (label + "-" + key + ".png")
-                with dest.open("xb") as stream:
+                pending = dest.with_suffix(".png.tmp") if replace_latest else dest
+                with pending.open("xb") as stream:
                     stream.write(raw)
+                if replace_latest:
+                    pending.replace(dest)
                 item[key] = {"path": str(dest), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
-            frames.append(item)
+            if replace_latest:
+                item["mutable_latest_frame"] = True
+            else:
+                frames.append(item)
+            return item
 
         def source_binding():
             client = engine.client
@@ -637,7 +685,16 @@ def run_worker(path):
             if (video.base_width, video.base_height, video.output_width, video.output_height, video.fps_numerator, video.fps_denominator) != (2560, 1440, 2560, 1440, 30, 1):
                 raise RuntimeError("OBS video settings differ from the dedicated profile")
             time.sleep(2)
-            screenshots("before-recording")
+            ready_frame = screenshots("before-recording")
+            def waiting_check():
+                guard()
+                _output_binding(engine)
+                source_binding()
+                if engine.client.get_record_status().output_active:
+                    raise RuntimeError("owned output became active before recording start signal")
+                if _job_bytes(job)[1] >= job["max_output_bytes"] - 96 * 1024**2:
+                    raise RuntimeError("waiting frame receipts reached the reserved stop margin")
+            _wait_for_start_signal(job, waiting_check, screenshots, ready_frame)
             remaining = (datetime.fromisoformat(job["deadline_utc"].replace("Z", "+00:00")) - datetime.now(timezone.utc)).total_seconds()
             if remaining < job["duration_seconds"] + 90:
                 raise RuntimeError("late OBS setup left insufficient recording/cleanup admission")

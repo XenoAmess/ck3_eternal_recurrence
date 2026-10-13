@@ -45,3 +45,11 @@ Root在闭场后准备了仅接受当前错误全文的外置观察适配候选�
 沿用统一策略1.0.0、全组8GiB和原16:58:39.018273Z复核期限；没有加领预算或延长期限。启动前在任务总线锁内登记1.28GB峰值，并精确回收fresh06/07/08各last_save／autosave共6份相同副本413,653,532 B。各自canonical checkpoint、seed、Driver、响应和录像保留；原6路径现已删除，不重建同名证据。计划、实际删除和后续保留用途见 `R/resume08/ROOT-PRECISE-RECLAMATION-RECEIPT.json`。
 
 fresh12须冻结修复后的clean HEAD，复用未变B12，先把原生主菜单加载与正式录像起点分开，再尽快完成camera／SAVE／首个普通回合。新的存储准入及完整录制额度在重型写入前另核，不能以本页的候选释放量当作实际已释放或已准入。
+
+### 录制起点控制与第二批实际回收
+
+公共录制器新增可选 `--start-signal`。它先绑定本场Game与decision、写入 `record-armed.json`；等待时每15秒只覆盖两张 `armed-latest` PNG和明确标为mutable的索引。Root必须复制并亲审实际主菜单帧，再写新signal；worker随后只通过原有路径调用一次StartRecord。未传signal的行为不变，原1200秒／1GiB及Game／存储时限不延长。28项离线定向检查通过，含默认、延迟、未知StartRecord超时不重放、等待到期零开始及覆盖帧不进入immutable回执；尚待fresh12实机。回执为 `R/resume08/m_recording/fixture-result.json`。
+
+10:45:05Z第二批回收实际完成：5份已被后继替代的旧Native archive和fresh06／07各1000个shader副本，共2005个精确对象、1,095,563,830 B逻辑量。旧archive全部成员与622份保留OBJ逐项匹配；保留旧配方／OBJ／DLL，但未授容器时间戳字节可完全重现。shader逐文件匹配保留fresh08，游戏build身份相同；后续可变profile只允许独立复制。B12实际链接依赖、B9的612成员archive、319个direct object及canonical源保持可读。
+
+各批在任务总线锁内核进程／用途，再用禁止并发写删的Win32句柄绑定身份和SHA，逐项删除并读回2005路径消失。首次在DELETE句柄期间再次CRT open产生兼容错误，实际删除0，原RED保留；后续从同一句柄读取并成功。实际去重逻辑占用6,614,496,574 B，组余额1,975,438,018 B；physical allocation未测、卷free并发差额不全部归因于GC。这是回收读回，不是fresh12空间预留。精确可用性及原manifest哈希见 `R/resume08/m_storage/GC-ACTUAL-SUMMARY-RETRY04-20261013.json`。原已删路径不再可读，未制造同名替代证据；原期限没有延长。

@@ -21,6 +21,9 @@ def validate_admission(args, admission):
     for path in (args.obs_root, args.profile, args.output_root, args.receipt):
         if not any(path.resolve().is_relative_to(root) for root in roots):
             raise ValueError("OBS/config/recording paths escaped the admitted root")
+    signal = getattr(args, "start_signal", None)
+    if signal is not None and not signal.resolve().is_relative_to(args.output_root.resolve()):
+        raise ValueError("recording start signal escaped the admitted recording root")
     if type(args.max_output_bytes) is not int or not 192 * 1024**2 <= args.max_output_bytes <= 1024**3:
         raise ValueError("Root recording allocation must include stop reserve, 192MiB..1GiB")
     if type(args.seconds) is not int or not 1 <= args.seconds <= 1200:
@@ -39,6 +42,8 @@ def main():
     parser.add_argument("--deadline-utc", required=True)
     parser.add_argument("--seconds", type=int, default=1200)
     parser.add_argument("--max-output-bytes", type=int, default=1024**3)
+    parser.add_argument("--start-signal", type=Path,
+                        help="bind owned sources now; record once Root creates this new output-root file")
     args = parser.parse_args()
     if args.receipt.exists() or not args.receipt.parent.is_dir():
         parser.error("receipt must be new in an admitted existing directory")
@@ -62,7 +67,7 @@ def main():
         placement = json.loads(args.placement_receipt.read_text(encoding="utf-8-sig"))
         result = capture.launch_recording(args.profile, args.output_root, placement["pid"], placement["hwnd"],
             args.seconds, launch_receipt=args.launch_receipt, placement_receipt=args.placement_receipt,
-            overlay_receipt=args.overlay_receipt, ffprobe=args.ffprobe)
+            overlay_receipt=args.overlay_receipt, ffprobe=args.ffprobe, start_signal=args.start_signal)
     with args.receipt.open("x", encoding="utf-8") as stream:
         json.dump(result, stream, ensure_ascii=False, indent=2)
     print(json.dumps(result, ensure_ascii=False))

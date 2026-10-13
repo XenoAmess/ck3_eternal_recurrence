@@ -1,5 +1,7 @@
 """Offline v2 custody contracts; synthetic OS and OBS boundaries only."""
 import ctypes
+import base64
+from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 import hashlib
 import importlib.util
@@ -113,6 +115,129 @@ class CaptureContractTests(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises((ValueError, TypeError)):
                 subject.validate_job({**self.job, **change})
         subject.validate_job(self.job)
+
+    def test_optional_start_signal_stays_in_the_exact_recording_scope(self):
+        subject.validate_job({**self.job, "start_signal": str(self.recordings / "fresh.signal")})
+        for signal in ("", 12, str(self.root / "other.signal")):
+            with self.subTest(signal=signal), self.assertRaises(ValueError):
+                subject.validate_job({**self.job, "start_signal": signal})
+
+    def run_start_fixture(self, *, delayed=False, expire_wait=False):
+        """Exercise the actual worker start/cleanup with entirely synthetic APIs."""
+        self.profile.update(recording_root=str(self.recordings), bitrate_kbps=4800)
+        self.profile_path.write_text(json.dumps(self.profile), encoding="utf-8")
+        job = {**self.job, "launch": {"creation_date": "synthetic-generation"}, "ffprobe": "synthetic-ffprobe.exe",
+               "profile_sha256": subject._sha(self.profile_path)}
+        signal = self.recordings / "fresh-start.signal"
+        if delayed:
+            job["start_signal"] = str(signal)
+            text = self.root / "decision.txt"
+            text.write_text("进程绑定：PID 100 · synthetic-generation", encoding="utf-8")
+            job.update(capture_mode="game_decision", game_creation_filetime=123,
+                desktop_id="synthetic-managed-desktop", decision_text_file=str(text),
+                overlay={"overlay_pid": 101, "overlay_executable": "synthetic-overlay.exe",
+                         "overlay_creation_filetime": 124})
+        job_path = self.receipts / "job.json"
+        job_path.write_text(json.dumps(job), encoding="utf-8")
+        client = self.client()
+        inputs = {}
+        def create_input(scene, name, kind, settings, enabled):
+            inputs[name] = {"inputName": name, "inputKind": kind, "settings": settings}
+        client.create_input.side_effect = create_input
+        client.remove_input.side_effect = lambda name: inputs.pop(name)
+        client.get_input_list.side_effect = lambda: SimpleNamespace(inputs=list(inputs.values()))
+        client.get_input_settings.side_effect = lambda name: SimpleNamespace(input_settings=inputs[name]["settings"])
+        client.get_scene_item_list.side_effect = lambda scene: SimpleNamespace(scene_items=[
+            {"sourceName": name, "sceneItemEnabled": True, "sceneItemIndex": index}
+            for index, name in enumerate(inputs)])
+        transform = {}
+        client.get_scene_item_id.return_value = SimpleNamespace(scene_item_id=1)
+        client.set_scene_item_transform.side_effect = lambda scene, item, value: transform.update(value)
+        client.get_scene_item_transform.side_effect = lambda scene, item: SimpleNamespace(scene_item_transform=transform)
+        client.get_record_status.return_value = SimpleNamespace(output_active=False)
+        client.get_video_settings.return_value = SimpleNamespace(base_width=2560, base_height=1440,
+            output_width=2560, output_height=1440, fps_numerator=30, fps_denominator=1)
+        client.get_profile_parameter.side_effect = lambda category, name: SimpleNamespace(
+            parameter_value={"FilenameFormatting": self.session, "RecQuality": "Stream", "VBitrate": "4800"}[name])
+        fake_clock = [0.0]
+        captures = []
+        def screenshot(name, *args):
+            captures.append((fake_clock[0], name))
+            raw = b"\x89PNG\r\n\x1a\n" + str(fake_clock[0]).encode("ascii")
+            return SimpleNamespace(image_data="data:image/png;base64," + base64.b64encode(raw).decode("ascii"))
+        client.get_source_screenshot.side_effect = screenshot
+        def sleep(seconds):
+            fake_clock[0] += seconds
+            if delayed and not expire_wait and fake_clock[0] >= 34:
+                signal.touch(exist_ok=True)
+        def deadline_check(deadline):
+            if expire_wait and fake_clock[0] >= 40:
+                raise TimeoutError("synthetic unchanged deadline reached")
+        def start_once():
+            self.assertEqual((self.receipts / "start-signal-observed.json").exists(), delayed)
+            self.assertEqual(signal.exists(), delayed)
+            raise TimeoutError("synthetic StartRecord outcome unknown")
+        client.start_record.side_effect = start_once
+        engine = mock.Mock(profile=self.profile, job=job, client=client)
+        engine.start.return_value = client
+        engine.reconnect.return_value = client
+        engine.close.return_value = {"actual_exit_code": 0}
+        game = SimpleNamespace(creation_filetime=123, check=mock.Mock())
+        helpers = (lambda *args, **kwargs: nullcontext(SimpleNamespace(check=mock.Mock())),
+                   lambda launch: nullcontext(game), mock.Mock(), deadline_check)
+        gui = SimpleNamespace(GetForegroundWindow=lambda: 777)
+        desktop = SimpleNamespace(window_virtual_desktop=lambda hwnd: {"desktop_id": "synthetic-managed-desktop"})
+        with mock.patch.object(subject, "OwnedEngine", return_value=engine), \
+             mock.patch.object(subject, "_generation_helpers", return_value=helpers), \
+             mock.patch.object(subject, "_window_identity", return_value="synthetic-owned-window"), \
+             mock.patch.dict(sys.modules, {"win32gui": gui,
+                 "xar_autoplayer.bridge.windows_virtual_desktop": desktop}), \
+             mock.patch.object(subject.time, "sleep", side_effect=sleep), \
+             mock.patch.object(subject.time, "monotonic", side_effect=lambda: fake_clock[0]):
+            expected = "unchanged deadline" if expire_wait else "StartRecord outcome unknown"
+            with self.assertRaisesRegex(TimeoutError, expected):
+                subject.run_worker(job_path)
+        self.assertFalse(inputs)
+        engine.close.assert_called_once()
+        self.assertTrue((self.receipts / "cleanup.json").is_file())
+        self.assertEqual(client.start_record.call_count, 0 if expire_wait else 1)
+        client.stop_record.assert_not_called()
+        self.assertEqual((self.receipts / "record-armed.json").exists(), delayed)
+        if delayed:
+            latest = json.loads((self.receipts / "armed-latest.json").read_text(encoding="utf-8"))
+            self.assertTrue(latest["mutable_latest_frame"])
+            self.assertFalse(latest["recording_started"])
+            self.assertEqual(captures[-1][0], 32.0)
+            self.assertEqual(len(list(self.receipts.glob("armed-latest-*.png"))), 2)
+            self.assertFalse(list(self.receipts.glob("*.tmp")))
+            for key in ("game", "scene"):
+                observed = latest["frame"][key]
+                self.assertEqual(subject._sha(observed["path"]), observed["sha256"])
+            failed = json.loads((self.receipts / "failed.json").read_text(encoding="utf-8"))
+            self.assertEqual([frame["label"] for frame in failed["frame_receipts"]], ["before-recording"])
+            self.assertGreaterEqual(len(captures), 6)
+        else:
+            self.assertEqual(len(captures), 2)
+
+    def test_default_worker_starts_once_and_does_not_replay_unknown_start(self):
+        self.run_start_fixture()
+
+    def test_delayed_worker_keeps_two_latest_frames_then_starts_once(self):
+        self.run_start_fixture(delayed=True)
+
+    def test_waiting_deadline_closes_owned_engine_without_starting_output(self):
+        self.run_start_fixture(delayed=True, expire_wait=True)
+
+    def test_launch_rejects_a_stale_start_signal_before_starting_a_worker(self):
+        self.profile["recording_root"] = str(self.recordings)
+        self.profile_path.write_text(json.dumps(self.profile), encoding="utf-8")
+        launch = self.root / "launch.json"
+        launch.write_text(json.dumps({"pid": self.job["pid"]}), encoding="utf-8")
+        signal = self.recordings / "stale.signal"
+        signal.touch()
+        with self.assertRaisesRegex(ValueError, "signal must be new"):
+            subject.launch_recording(self.profile_path, self.recordings, self.job["pid"], self.job["hwnd"],
+                45, launch_receipt=launch, ffprobe=self.root / "not-accessed.exe", start_signal=signal)
 
     def test_profile_is_local_authenticated_and_cannot_replace_user_config(self):
         profile = self.root / "new-profile.json"
