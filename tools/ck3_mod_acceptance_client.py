@@ -682,16 +682,19 @@ class CaseClient:
                                     stdout=stdout, stderr=stderr)
 
     def focus_retained_process_for_quit(self):
+        return self.focus_retained_process(checkpoint_name='normal-quit-foreground')
+
+    def focus_retained_process(self, *, checkpoint_name, reserve_seconds=0):
         """Focus the sole visible window of the retained process, without input."""
         import psutil, win32gui, win32process
         import desktop_coordinate_map as coords
         from record_native_capability_segment import bring_forward
         require(self._handle is not None and self._process is not None, 'Actual retained process required for Quit focus')
-        require(not (self.output/'normal-quit-foreground.json').exists(), 'Quit focus already consumed; never replay')
+        require(not (self.output/(checkpoint_name+'.json')).exists(), 'Process focus already consumed; never replay')
         pid, creation = self._process['pid'], self._process['create_time']
 
         def guard_owner():
-            require(self.remaining() > 0, 'Original Quit deadline reached; no focus or extension')
+            require(self.remaining() > reserve_seconds, 'Original focus deadline/reserve reached; no extension')
             actual = psutil.Process(pid)
             require(actual.name().lower() == 'ck3.exe' and actual.create_time() == creation and
                     read_json(self.state/'control/ck3.json').get('ck3_pid') == pid,
@@ -729,7 +732,7 @@ class CaseClient:
         receipt = {'pid':pid, 'create_time':creation, 'hwnd':hwnd, 'before':before, 'after':after,
             'success':success, 'activation_error':activation_error, 'original_hold_deadline':self._hold,
             'mouse_or_keyboard_input':False, 'human_review_claimed':False, 'business_pass':False}
-        self.checkpoint('normal-quit-foreground', receipt)
+        self.checkpoint(checkpoint_name, receipt)
         require(success, 'Actual retained CK3 foreground/focus was not observed; no helper dispatch')
         return receipt
 

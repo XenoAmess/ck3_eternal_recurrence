@@ -19,6 +19,7 @@ class TemplatePreinputRecoveryTests(unittest.TestCase):
     def fixture(self,root):
         c=ui.Controller.__new__(ui.Controller)
         c.out=root;c.handle=None;c.seq=0;c.stage=0;c.records={};c.gaps=[]
+        c.client=SimpleNamespace(focus_retained_process=mock.Mock())
         c.stages=['slider-anchor'];c.frozen={'run_id':'synthetic-run'};c.deadline=1000
         c.remaining=mock.Mock(return_value=1000)
         c.typed=mock.Mock();c.publish=mock.Mock();c.source_guard=mock.Mock();c.guard=mock.Mock()
@@ -56,6 +57,7 @@ class TemplatePreinputRecoveryTests(unittest.TestCase):
             c.mouse.assert_called_once();c.guard.assert_called_once_with()
             self.assertEqual(c.publish.call_count,2)
             c.typed.assert_called_once_with('snapshot',{},'initial-current-native-frame')
+            c.client.focus_retained_process.assert_called_once_with(checkpoint_name='ui-entry-foreground',reserve_seconds=90)
             self.assertEqual((output/'result.json').read_bytes(),original)
             complete=ui.read(c.out/'action-0000.complete.json')
             self.assertEqual(complete['template_preinput_rejected'],ui.pin(output/'result.json'))

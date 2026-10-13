@@ -25,7 +25,7 @@ G2 的[宣战资格](../../ck3_autonomous_player/src/xar_autoplayer/ordinary_pre
 
 ## 依赖、许可与交付证据
 
-Windows Ghidra P0 仍为实验性只读边界，要求支持的 Node、本地固定 NTFS、匹配 native addon、Ghidra 12.1.x 和其声明范围的完整 x64 JDK；已验证组合为 12.1.4/JDK21。本机安装成本和 CK3 大二进制冷启动未测，不给数字承诺。上游含 PowerShell 范例，本项目后续包装须用 Python argv/env。[Windows 条件](https://github.com/morluto/rea/blob/bb154d1067b0fc250452b7d468d0b0523031a16f/docs/windows-ghidra-p0.md#L9-L40)
+Windows Ghidra P0 仍为实验性只读边界，要求支持的 Node、本地固定 NTFS、匹配 native addon、Ghidra 12.1.x 和其声明范围的完整 x64 JDK；已验证组合为 12.1.4/JDK21。本机安装成本和 CK3 大二进制冷启动未测，不给数字承诺。上游含本项目禁止的 Windows shell 范例，本项目后续包装须用 Python argv/env。[Windows 条件](https://github.com/morluto/rea/blob/bb154d1067b0fc250452b7d468d0b0523031a16f/docs/windows-ghidra-p0.md#L9-L40)
 
 REA 自有代码为 [MIT](https://github.com/morluto/rea/blob/bb154d1067b0fc250452b7d468d0b0523031a16f/LICENSE)，复制实质代码须保留版权和许可；[第三方 notices](https://github.com/morluto/rea/blob/bb154d1067b0fc250452b7d468d0b0523031a16f/THIRD_PARTY_NOTICES.md)独立适用，REA 不提供 IDA、Hex-Rays 或 Hopper 的商业工具许可。源码存在及注入 provider 的测试不能替代真实 engine 验证。
 

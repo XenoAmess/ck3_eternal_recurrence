@@ -317,6 +317,7 @@ class Controller:
             return pin(path)
     def run(self):
             try:
+                self.client.focus_retained_process(checkpoint_name='ui-entry-foreground',reserve_seconds=90)
                 self.typed('snapshot',{},'initial-current-native-frame');self.publish()
                 while self.remaining()>95:
                     request=self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')

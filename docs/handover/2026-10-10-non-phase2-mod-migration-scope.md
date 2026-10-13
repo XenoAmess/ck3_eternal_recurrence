@@ -39,3 +39,15 @@ A206/R0096实际target模板像素完全相同，但标题layout最大通道差2
 A207/R0097的两次public run均在nonce有效期检查拒绝，实际没有launch/host/native/case-output；observer随后因原10800秒有限窗口到期退出2。keeper和allocator实际0退出，CAS9978已释放，不能伪造CK3 OS0或正常业务验收。实际52 CLOSED为本机协调目录`focused-ui-a207-reviewed125gib-20261013-01-reservation-52-closed.json`（38413字节，SHA-256 `004769dea1b95aa636c1a9f8fd830b3e07b1f1e75496901c6cc01ee23ed7fb32`）；其三项closure只表示未启动进程不存在、未建native session、现场租约闭合。保守项目占用47854983016字节，未把已释放1.25GiB预留永久计为占用，也未抵扣假想回收量。
 
 原public allocate只认识正常native闭场、特定checkout失败或pre-READY argparse失败，不能消费这个真实READY但未启动的状态。新增独立`previous_allocated_unused_closure`分支，绑定原READY/frozen、两次LAUNCH_FAILED/NOT_ASSESSED、observer2、keeper/allocator0、实际CAS及当前无进程；旧分支不变，不授native/OS0/业务信用，不改runtime。以本场实际原件直接调用生产分支：第一次暴露release路径str/Path错误，修正后第二次实际通过。回执`focused-controls-20261013-07/allocated-unused-actual-fixture-02-process-exit.json`（992字节，SHA-256 `d902fa864fe19ca10d71bae019bb459876e6958b912c453d3382218e69948a37`），stdout4014字节/SHA-256 `68f142c399d19d9f2eb0300612e3d68056f059d359eada91fd9bd074e3162796`。这只是恢复后续分配的资源前提，不是四项GUI实机PASS；原失败与过期窗口均保留。
+
+A207还实际回收370份已结束行政快照重放用途的纯LIST stdout，148520960字节；185份非LIST输出、全部argv/result/stderr、nonce原图及READY/observer/closure/CAS保留。旧LIST正文不可恢复，不能以保留摘要冒充全文仍可读。执行和闭账均实际0；外置`a207-administrative-list-retirement-20261013-01/ACTUAL-SUMMARY.json`1359字节/SHA-256 `c5b0679eaf7b396367756fcacb9c6a6f3a9e4b0dd5a884551378370422728146`，237 CLOSED2256字节/SHA-256 `bc399785f3c4f34c20681d88d0e1b5161081311f0d3fd16a2cdb35e993205b4c`。此为明确提前用途退役，不是TTL已到、可重建或同SHA副本论证。
+
+原52空间准入也实际暴露同一未启动前驱的不适配：首次A208准入因假定`original_launch_pin`存在而在写预留前退出1。外置小carrier仅加入真实no-game前驱分支，调用已验证的公共资源函数，作为独立pin写入Root峰值审阅；不制造launch pin、不改旧normal门或配额公式。第二次实际准入0，A208正式52预留73225字节/SHA-256 `4d060b79c1c3c3ad39e259c5e9d817bbb7a4e9e93926b39b13b242b5b6b8390f`，当次free29385191424/required29265756160，保守U47876216680；未从U抵扣删除量。实际GUI验收另记，不将准入算业务PASS。
+
+### 同日 A208 界面入口焦点修复
+
+A208/R0098第一次run因执行者nonce转录错误在启动前拒绝；新鲜离线双nonce由实际执行者`/root/qol_remaining_readiness`亲审，第二次run真正启动CK3 PID17924，通过Song/原readonly9后，在首次UI发布前被`Current CK3 foreground/focus unavailable`拒绝。没有UI输入或四项record；失败瞬间HWND/PID未被原guard记录，明确为UNKNOWN，不借后续截图追认。后续退出置前原回执实际记录before为Steam PID13460、after为同一CK3 PID17924/HWND3016276且focus成功；这支持复用现有置前初始化，不证明失败瞬间全部状态。
+
+原工具自动进入正常Quit，未能保留热修复窗口。其run/verify均2，normal退出及保留句柄OS0实际成立；observer15、keeper/allocator0和CAS10003后实际52 CLOSED为7815字节/SHA-256 `f9323b3f7a9cdd7a51e2ea6be23177016c26160f81f790e4ef37aba36bd8ccc3`，保守U48172919064字节。closure的字符串路径比较也曾误拒绝合法正斜杠context；只在外置closure薄层内存中规范prepared路径，原context与全部pin未改，旧失败保留。
+
+当前仅把已经实机证明可用的无输入focus能力提取为`CaseClient.focus_retained_process`，原Quit wrapper/回执名保留；UI入口在首次snapshot前调用同一能力，保留原PID/ctime/唯一可见HWND/租约/2秒读回守卫及90秒退出预留。不放宽原UI前台条件，不授业务信用，不更换common native/runtime。受此次入口变化影响的5项离线控制器测试实际通过（`focused-controls-20261013-07/ui-entry-focus-tests-01-process-exit.json`957字节/SHA-256 `ebea24979c4eefc10c1af1327d72a778c0dee812e50a8105b8960ca07243d194`）；四项真实GUI仍待新场补验。主线CI的既有文档禁用shell字面引用另已改为不含禁词的历史说明，只对该文档运行原validator实际无违规，不重跑无关业务矩阵。
