@@ -279,6 +279,23 @@ class PreparedProfileTests(unittest.TestCase):
             with self.assertRaises(AgentError):
                 verify_profile(spec, xar_enabled="xar_off")
 
+    def test_new_managed_camera_settings_disable_edge_scroll_and_reject_drift(self) -> None:
+        wanted = "screen_edge_scroll_mode_disabled"
+        text = render_settings()
+        self.assertEqual(settings_contract(text, screen_edge_scroll_mode=wanted)[
+            "screen_edge_scroll_mode"], wanted)
+        for changed in (text.replace(wanted, "screen_edge_scroll_mode_free"),
+                        text.replace('"screen_edge_scroll_mode"', '"missing_setting"')):
+            with self.subTest(changed=changed), self.assertRaises(AgentError):
+                settings_contract(changed, screen_edge_scroll_mode=wanted)
+
+    def test_old_settings_contract_keeps_its_recorded_keys(self) -> None:
+        # Existing profile manifests did not record this setting. A new
+        # managed profile explicitly requires it without rewriting old inputs.
+        old = render_settings().replace('"screen_edge_scroll_mode_disabled"',
+                                        '"screen_edge_scroll_mode_free"')
+        self.assertNotIn("screen_edge_scroll_mode", settings_contract(old))
+
     def test_windowed_profile_pins_mode_resolution_and_rejects_drift(self) -> None:
         self.assertNotIn("windowed_resolution", render_settings())
         display = display_contract("windowed")

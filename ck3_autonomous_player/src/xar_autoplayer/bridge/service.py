@@ -649,7 +649,7 @@ class GameplayBridgeService:
         self._war_hotspot_camera_index_error = None
 
     def _follow_war_hotspot_before_turn(self) -> dict[str, object] | None:
-        from .war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
+        from .war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot, select_war_hotspot
         from .camera_cursor_parking import park_foreground_ck3_cursor
 
         try:
@@ -673,13 +673,58 @@ class GameplayBridgeService:
                     raise ValueError("camera follow cannot derive the declared installation root")
                 self.bind_war_hotspot_camera_index(LandedProvinceIndex.from_game_dir(game_exe.parent.parent))
             snapshot = self.snapshot(include_native_command_history=False)
+            campaign_root_result = None
+            if select_war_hotspot(snapshot, self._war_hotspot_camera_index) is None:
+                from .current_first_heir_relationship_private_transport import (
+                    _same_frame_campaign_root_result,
+                )
+                from ..strategy import _effective_command, _effective_command_result
+
+                def current_root(frame, history):
+                    for row in reversed(history):
+                        if (row.get("ok") is True
+                                and _effective_command(row) == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP):
+                            result = _same_frame_campaign_root_result(
+                                _effective_command_result(row), frame,
+                            )
+                            if result is not None:
+                                return result
+                    return None
+
+                history_view = getattr(self.driver, "_with_internal_planning_view", None)
+                if callable(history_view):
+                    campaign_root_result = history_view(snapshot, current_root)
+                if campaign_root_result is None:
+                    starting = snapshot
+                    campaign_root_result = self.query_campaign_root_context_v1(
+                        expected_revision=int(snapshot["revision"]),
+                    )
+                    snapshot = self.snapshot(include_native_command_history=False)
+                    before_diagnostics = starting.get("diagnostics")
+                    after_diagnostics = snapshot.get("diagnostics")
+                    if (any(snapshot.get(key) != starting.get(key) for key in (
+                            "snapshot_id", "revision", "native_revision", "date_raw",
+                            "episode_run_id", "played_character", "paused", "map_ready"))
+                            or (isinstance(before_diagnostics, dict) and (
+                                not isinstance(after_diagnostics, dict)
+                                or any(after_diagnostics.get(key) != before_diagnostics.get(key)
+                                       for key in ("bridge_pid", "connection_generation"))))
+                            or _same_frame_campaign_root_result(campaign_root_result, snapshot) is None):
+                        raise BridgeUnavailableError("initial camera root crossed its observed frame")
             return follow_war_hotspot(self, snapshot, self._war_hotspot_camera_index,
-                                      park_cursor=park_foreground_ck3_cursor)
+                                      park_cursor=park_foreground_ck3_cursor,
+                                      campaign_root_result=campaign_root_result)
         except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
             reason = f"{type(error).__name__}: {error}"
             if self._war_hotspot_camera_index is None:
                 self._war_hotspot_camera_index_error = reason
-            return {"status": "unavailable", "reason": reason}
+            receipt: dict[str, object] = {"status": "unavailable", "reason": reason}
+            native_frame = getattr(error, "native_command_result_frame", None)
+            native_result = native_frame.get("result") if isinstance(native_frame, dict) else None
+            diagnostic = native_result.get("typed_query_failure_v1") if isinstance(native_result, dict) else None
+            if isinstance(diagnostic, dict):
+                receipt["typed_query_failure_v1"] = copy.deepcopy(diagnostic)
+            return receipt
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
         """Bind the runner-owned real product-checkpoint provider once."""
@@ -3028,6 +3073,22 @@ class GameplayBridgeService:
                 },
             }
 
+        frame = self.snapshot(include_native_command_history=False)
+        gate = getattr(self, "_initial_lifestyle_focus_gate_v1", None)
+        if not isinstance(gate, dict):
+            gate = {"stage": "await_submit", "date_raw": frame.get("date_raw"),
+                    "episode_run_id": frame.get("episode_run_id"), "checkpoint_saved": False}
+            self._initial_lifestyle_focus_gate_v1 = gate
+        if (frame.get("date_raw") != gate["date_raw"]
+                or frame.get("episode_run_id") != gate["episode_run_id"]):
+            return blocked("opening focus date or episode changed before consumption")
+        pending = planned.get("_private_lifestyle_pending_v1")
+        # A submitted intent takes precedence over observing its now-present
+        # focus, including after recreating the ordinary MCP Service.
+        if gate["stage"] == "await_submit" and isinstance(pending, dict) and pending.get("kind") == "focus":
+            gate.update(stage="await_receipt", action_request_id=pending.get("action_request_id"),
+                        target_key=pending.get("target_key"))
+            self.driver.initial_lifestyle_focus_gate_stage = "await_receipt"
         stage = getattr(
             self.driver, "initial_lifestyle_focus_gate_stage", "await_submit"
         )
@@ -3046,6 +3107,16 @@ class GameplayBridgeService:
             consumed = plan.get("lifestyle_receipt_consumed")
             if not isinstance(consumed, dict):
                 return blocked("opening focus receipt has not reached the following turn")
+            if (gate.get("stage") == "await_consumption"
+                    and consumed.get("kind") == "focus"
+                    and consumed.get("action_request_id") == gate.get("action_request_id")
+                    and consumed.get("target_key") == gate.get("target_key")
+                    and consumed.get("postcondition_verified") is True
+                    and gate.get("checkpoint_saved") is True):
+                gate["stage"] = "complete"
+                self.driver.initial_lifestyle_focus_gate_stage = "complete"
+                self.driver.require_initial_lifestyle_focus_before_date_advance = False
+                return self._plan_turn_internal()
             if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
                 return blocked("opening focus consumption query is unavailable")
             return {
@@ -3378,6 +3449,87 @@ class GameplayBridgeService:
             ),
         }
 
+    def _consume_initial_lifestyle_focus_after_turn_v1(
+        self, outcome: dict[str, object], *, planning_frame: dict[str, object],
+    ) -> dict[str, object]:
+        """Advance the opening gate from actual ordinary-turn material results."""
+        gate = getattr(self, "_initial_lifestyle_focus_gate_v1", None)
+        if not isinstance(gate, dict) or gate.get("stage") == "complete" or outcome.get("status") != "executed":
+            return outcome
+        plan, result = outcome.get("plan"), outcome.get("result")
+        if not isinstance(plan, dict) or not isinstance(result, dict):
+            return outcome
+        frame = self.snapshot(include_native_command_history=False)
+        if (frame.get("paused") is not True or frame.get("date_raw") != gate["date_raw"]
+                or frame.get("episode_run_id") != gate["episode_run_id"]):
+            raise BridgeUnavailableError("opening focus result changed its paused date or episode")
+        step = outcome.get("selected_step")
+        existing = plan.get("initial_lifestyle_focus_existing")
+        if gate["stage"] == "await_submit" and isinstance(existing, dict):
+            source, focus, progress = (existing.get("source_frame"), existing.get("current_focus"),
+                                       existing.get("current_lifestyle_progress"))
+            numeric = ("xp_total_raw", "xp_within_level_raw", "xp_per_level", "unspent_perk_points", "used_perk_points")
+            if not (step == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
+                    and isinstance(source, dict)
+                    and source.get("snapshot_id") == planning_frame.get("snapshot_id")
+                    and source.get("revision") == planning_frame.get("revision")
+                    and isinstance(focus, dict) and focus.get("presence") == "present"
+                    and isinstance(focus.get("key"), str) and focus["key"]
+                    and isinstance(progress, dict) and progress.get("presence") == "present"
+                    and progress.get("lifestyle_key") == focus.get("lifestyle_key")
+                    and all(type(progress.get(key)) is int and progress[key] >= 0 for key in numeric)
+                    and progress["xp_per_level"] > 0
+                    and (existing.get("readback_source") == "native_current_state_only"
+                         or type(existing.get("stock_focus_native_legal")) is bool)):
+                raise BridgeUnavailableError("existing opening focus proof is incomplete")
+            gate.update(stage="complete", existing_focus=focus["key"])
+            self.driver.initial_lifestyle_focus_gate_stage = "complete"
+            self.driver.require_initial_lifestyle_focus_before_date_advance = False
+        elif step == PRIVATE_LIFESTYLE_FOCUS_STEP:
+            if not (gate["stage"] == "await_submit" and result.get("status") == "submitted_verification_pending"
+                    and result.get("kind") == "focus"
+                    and result.get("target_key") in {"stewardship_wealth_focus", "martial_authority_focus"}
+                    and isinstance(result.get("action_request_id"), str) and result["action_request_id"]):
+                raise BridgeUnavailableError("opening focus submit lacks its pending typed identity")
+            gate.update(stage="await_receipt", action_request_id=result["action_request_id"],
+                        target_key=result["target_key"])
+            self.driver.initial_lifestyle_focus_gate_stage = "await_receipt"
+        elif step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
+            # The established LIFE wire producer names this field "public"
+            # but fills it with the native revision (transport:853,887).
+            if not (gate["stage"] == "await_receipt" and result.get("status") == "applied"
+                    and result.get("kind") == "focus" and result.get("postcondition_verified") is True
+                    and result.get("action_request_id") == gate.get("action_request_id")
+                    and result.get("target_key") == gate.get("target_key")
+                    and result.get("post_has_current_focus") is True
+                    and result.get("post_current_focus_key") == gate.get("target_key")
+                    and result.get("post_snapshot_id") == frame.get("snapshot_id")
+                    and result.get("post_public_revision") == frame.get("native_revision")
+                    and result.get("episode_run_id") == frame.get("episode_run_id")):
+                raise BridgeUnavailableError("opening focus receipt lacks independent matching material")
+            reader = getattr(self.driver, "query_player_lifestyle_current_state_private_v1", None)
+            current = reader(expected_revision=int(frame["revision"])) if callable(reader) else None
+            life = current.get("snapshot") if isinstance(current, dict) else None
+            source = current.get("source_frame") if isinstance(current, dict) else None
+            focus = life.get("current_focus") if isinstance(life, dict) else None
+            progress = life.get("current_lifestyle_progress") if isinstance(life, dict) else None
+            lifestyle = {"stewardship_wealth_focus": "stewardship_lifestyle", "martial_authority_focus": "martial_lifestyle"}[gate["target_key"]]
+            ending = self.snapshot(include_native_command_history=False)
+            if not (isinstance(current, dict) and current.get("status") == "available"
+                    and isinstance(source, dict)
+                    and all(source.get(k) == frame.get(k) for k in ("snapshot_id", "native_revision", "date_raw"))
+                    and all(ending.get(k) == frame.get(k) for k in ("snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id"))
+                    and isinstance(focus, dict) and focus.get("presence") == "present" and focus.get("key") == gate["target_key"]
+                    and isinstance(progress, dict) and progress.get("presence") == "present" and progress.get("lifestyle_key") == lifestyle
+                    and type(progress.get("xp_total_raw")) is int and progress["xp_total_raw"] >= 0
+                    and type(progress.get("unspent_perk_points")) is int and progress["unspent_perk_points"] >= 0):
+                raise BridgeUnavailableError("opening focus receipt lacks current LIFE2 focus and XP/points")
+            gate.update(stage="await_consumption", checkpoint_saved=False)
+            self.driver.initial_lifestyle_focus_gate_stage = "await_consumption"
+            if not getattr(self, "_initial_lifestyle_focus_external_checkpoint_v1", False):
+                self.save_checkpoint(expected_revision=int(ending["revision"]))
+        return {**outcome, "initial_lifestyle_focus_gate": copy.deepcopy(gate)}
+
     def _plan_private_lifestyle_trial_v1(
         self, planned: dict[str, object], available_steps: set[str]
     ) -> dict[str, object]:
@@ -3704,8 +3856,11 @@ class GameplayBridgeService:
         # Camera placement precedes planning, so its receipt cannot stale an
         # already selected gameplay step. All ordinary execution guards remain.
         self.last_camera_follow = self._follow_war_hotspot_before_turn()
+        planned = self.plan_turn()
         outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
-            self._execute_planned_turn(self.plan_turn(), before_submit=before_submit)))
+            self._execute_planned_turn(planned, before_submit=before_submit)))
+        outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
+            outcome, planning_frame=planned)
         return ({**outcome, "camera_follow": self.last_camera_follow}
                 if self.last_camera_follow is not None else outcome)
 
@@ -4784,6 +4939,23 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "save-checkpoint result lacks checkpoint materialization"
             )
+        gate = getattr(self, "_initial_lifestyle_focus_gate_v1", None)
+        if isinstance(gate, dict) and gate.get("stage") == "await_consumption":
+            checkpoint, material = result["checkpoint"], result.get("materialization")
+            digest = checkpoint.get("sha256")
+            if not (result.get("step") == "save-checkpoint" and result.get("accepted") is True
+                    and isinstance(material, dict) and material.get("available") is True
+                    and checkpoint.get("status") == "saved"
+                    and checkpoint.get("name") == "xar_checkpoint.ck3"
+                    and checkpoint.get("strategy") == "native-autosave-command-v1"
+                    and isinstance(checkpoint.get("path"), str) and checkpoint["path"]
+                    and type(checkpoint.get("size")) is int and checkpoint["size"] > 0
+                    and isinstance(digest, str) and len(digest) == 64
+                    and all(c in "0123456789abcdef" for c in digest)
+                    and checkpoint.get("date_raw") == gate["date_raw"]
+                    and checkpoint.get("episode_run_id") == gate["episode_run_id"]):
+                raise BridgeUnavailableError("opening focus checkpoint is not materially saved in its episode")
+            gate["checkpoint_saved"] = True
         return result
 
     def restore_checkpoint(

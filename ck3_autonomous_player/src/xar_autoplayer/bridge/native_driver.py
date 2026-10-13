@@ -7984,7 +7984,7 @@ class NativeHeadlessGameplayDriver:
                 f"was independently observed; last snapshot error: {last_error}"
             )
         after_snapshot = self._wait_for_frontend_start_post_ready_pump_v1(
-            after_snapshot
+            after_snapshot, deadline=deadline
         )
         campaign_root = self._execute_campaign_root_context_v1_query(
             expected_revision=None
@@ -8007,6 +8007,8 @@ class NativeHeadlessGameplayDriver:
     def _wait_for_frontend_start_post_ready_pump_v1(
         self,
         starting: dict[str, object],
+        *,
+        deadline: float | None = None,
     ) -> dict[str, object]:
         """Wait for one stable paused ApplicationMain pump after StartGame.
 
@@ -8015,6 +8017,9 @@ class NativeHeadlessGameplayDriver:
         query on that frame can therefore time out before execution.  A later
         pump on the same paused date/player binding is submission permission;
         it is not inferred from elapsed wall time.
+
+        StartGame shares its original map-wait deadline with this phase. A
+        caller without an existing deadline gets one bounded helper window.
         """
 
         def pump_epoch(snapshot: dict[str, object]) -> int | None:
@@ -8076,10 +8081,11 @@ class NativeHeadlessGameplayDriver:
             starting.get("snapshot_id"),
             starting.get("native_revision"),
         )
-        deadline = (
-            time.monotonic()
-            + self.frontend_transition_timeout_seconds
-        )
+        if deadline is None:
+            deadline = (
+                time.monotonic()
+                + self.frontend_transition_timeout_seconds
+            )
         last_epoch = baseline_epoch
         last_key = starting_key
         observation_count = 0

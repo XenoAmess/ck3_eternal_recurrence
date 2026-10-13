@@ -315,7 +315,8 @@ public:
     auto preview = ck3_12002::PreviewMoveArmy(
         bindings_.military, WorldAccess(), army, province);
     if (preview.status == PreviewMoveArmyStatus::available &&
-        IsCk3_12003Descriptor(*descriptor_)) {
+        (IsCk3_12003Descriptor(*descriptor_) ||
+         IsCk3_12004Descriptor(*descriptor_))) {
       preview.province_supply = ck3_12002::ReadArmyProvinceSupplyForPreview(
           bindings_.armies, WorldAccess(), preview);
     }

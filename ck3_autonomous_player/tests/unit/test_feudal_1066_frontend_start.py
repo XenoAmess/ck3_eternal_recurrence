@@ -105,7 +105,7 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
         driver._request_sequence = 10
         driver.query_frontend_gui_route_v1 = _before
         driver.take_snapshot = _paused_map
-        driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value: value
+        driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value, *, deadline=None: value
         driver._execute_campaign_root_context_v1_query = (
             lambda *, expected_revision: _root()
         )
@@ -216,7 +216,7 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
         driver.query_frontend_gui_route_v1 = _before
         driver.query_frontend_selected_1066_feudal_candidate_v1 = _candidate
         driver.take_snapshot = _paused_map
-        driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value: value
+        driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value, *, deadline=None: value
         driver._execute_campaign_root_context_v1_query = (
             lambda *, expected_revision: _root()
         )

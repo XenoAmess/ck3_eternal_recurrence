@@ -1239,6 +1239,7 @@ def native_auto_run(
                 "selected succession lifecycle requires a binding-capable driver"
             )
         service = GameplayBridgeService(driver)
+        service._initial_lifestyle_focus_external_checkpoint_v1 = True
         landed_title_dir = spec.game_dir / "game" / "common" / "landed_titles"
         camera_index = (
             LandedProvinceIndex.from_game_dir(spec.game_dir)

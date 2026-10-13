@@ -67,3 +67,37 @@ Fresh02 stopped before Game creation because the sparse checkout omitted the tra
 B8 actually cold-loaded into fresh CK3 PID244488 at03:40:57Z; Game and decision window were assigned to Desktop1 while Desktop2/foreground stayed unchanged. Dedicated OBS actually recorded, grew, and its pre-selection main-menu/decision frames were personally reviewed; an initial black source frame remains preserved. No frontend selection RPC was submitted. The SDK queue/application actual retained handles both exited1: the faction round argument was present but incorrectly used `g2-robert-fresh02-20261013`, violating the R<number> constructor contract. The Game did not exit after normal WM_CLOSE; owned Job cleanup exited1 and proved the tree gone. This is startup failure, not normal closure or gameplay credit.
 
 Two actual recorder defects are fixed in source: overlay identity now queries the actual process image on its FILETIME handle (venv sys.executable can be a different redirector); owned OBS retries only read-only startup profile/collection code207 within the original40-second loop. Other failures still abort, and StartRecord is never retried. The existing recorder custody contracts pass. Fresh05 uses a new state/pipe and explicit R2026101305; B8 is unchanged. Original attempts/receipts/video remain available until the group review deadline.
+
+## Fresh05：实际开局、过早超时及镜头 RED
+
+输入为干净的 `4c90e76b05fc9f5d43d9bc1696fec606afc54729`，B8 不变。实际 Game PID269280、creation FILETIME134363373210468099，03:55:21Z 创建；queue PID250588 与 application PID179832 在任何 RPC 前由 supervisor 保留各自实际代际句柄。原生路线查询、New Game、固定 Robert Start 各提交一次，前两项通过。Start 于04:04:22.217882Z提交，04:06:23.620516Z 返回“已提交，但120秒内没有独立观察到暂停地图”；原始0003错误保留，没有重送开始动作。
+
+Root亲审末帧019确认显示罗贝尔头像、1066年9月15日及暂停HUD。M1在录像中找到最早相同业务画面的sample009（04:09:17.464847Z，Start后295.247秒）。这只是像素观察；没有取得初始semantic、SAVE或普通回合，不能追认原Start响应为verified。**有效普通回合0、日期推进0、已选战争目标0、获胜战争0。**
+
+用户指出镜头落在地图左上阴影，Root确认画面问题。现有热点跟随仅在普通auto回合之前调用，Fresh05因Start超时尚未到达该入口；选择器也没有和平领地fallback。后续修复须以实际当前玩家资本/领地字段选择初始锚点，核对原生camera结果和定位后像素，再进入普通循环，不能以暂停HUD或Invoke ACK证明镜头正确。
+
+独立录像 `R/custody-recorder01/recordings/db363dda-ffc8-402c-888a-13be4debce48.mkv` 实际715,072,156B、1189.966秒、2560×1440/30fps、平均4,807,345bps，SHA-256 `d44288c7f906369cc44fc522c1d56fa7d44785267aba7115ef13a335f589e08d`。原cleanup记录输入移除ACK后立即读取仍附着，未自动关闭OBS；Root随后在同一实际OBS代际PID219540上确认已无输入、output inactive，只对唯一主窗口发送一次WM_CLOSE，实际WAIT0/exit0。原失败未覆盖，另有`ROOT-FRESH05-RECORDER-NORMAL-CLOSE.json`纠正回执。个人OBS PID114680保持同一FILETIME运行，未操作。
+
+到原deadline，queue实际exit1、application exit0；Game在一次WM_CLOSE后未退出，owned Job清理实际exit1/tree_gone。keeper停止、最后序号3641，以CAS释放为3646，未称正常Game闭场。新录像修复使输入移除只提交一次并有界轮询只读完成状态，关闭只命中唯一OBS主窗口；16项定向测试通过，包括4项新增异步移除/主窗口场景。
+
+04:25:48Z闭场及重写入前清点：25,577文件、去重文件逻辑3,399,837,077B/原8GiB，Native组1,237,939,382B/2GiB，D卷实际free1,236,275,294,208B，大于保守预留601,295,421,440B。物理allocation未测，不冒充物理占用；原16:58:39.018273Z复核期限不变，无删除。证据在`R/resume02/ROOT-FRESH05-CLOSE-STORAGE-AUDIT.json`及`R/fresh-robert05`。
+
+64任务第二轮源码研究已交付至`R/resume02/m0`至`m7`，保留各专题来源和未资格边界，不声称闭场时仍有64任务运行。[REA评估](rea-evaluation-2026-10-13.md)是额外明确委派：可用于静态值追踪与证据整理，尚未安装或用于实机，不能替代普通规划器或Native来源资格。
+
+## Fresh06 修复输入，实机结果待追加
+
+Start 的地图等待与后续暂停泵推进改为共享一次 transition 总预算，新的600秒配置不会变成两个600秒窗口；新增4项及仅受影响旧2项定向场景通过。普通Service补齐LIFE开局阶段消费，已有focus和新focus的独立读回都能完成开局阶段，runner仍使用其已有外层checkpoint所有权，避免重复SAVE。
+
+热点选择器增加同帧完整根查询的实际玩家首府/持有county首府fallback，保留战斗、围城、移动及战争目标优先级，并保留合法ArmyID0。安装版本的EXE字面量独立核对确认`screen_edge_scroll_mode_disabled`，没有从本地化key猜拼写；新managed profile生成禁用配置并在manifest中记录语义合同，旧冻结profile不改。新增2项配置/漂移场景通过。**这些源码和配置结果尚不证明镜头实际稳定；进入普通循环前还须Root亲审定位后的录像像素。**
+
+录像新增会话内合作停止文件，仍由原FileGrowthWatch独占一次StopRecord，不发全局stop；新增1项定向场景通过。新外置supervisor在实际SDK退出后，绑定同一Game/session请求录像合作停止，有界等原cleanup再关闭Game；2项代际/零重送离线场景通过。录像时长按实际Game剩余时间预留清理，不延长1500秒Game上限或原组期限。
+
+M5补齐actual4路线成功预览的既有供给附件。B9只重编c0375 adapter TU，实际compile/archive/link返回0；612成员中611个名称和payload精确保留B8，496项实际sourceDependencies匹配固定输入。
+
+```text
+R/native-profile/build09/native.dll
+18260992 B
+SHA-256 a1f05041f9357172a2407b27413da088547e891ea4ddf68adda593646180be8e
+```
+
+B9闭场Native组1,439,770,291B/2GiB；共享逻辑3,930,495,735B/8GiB。没有覆盖actual4 adapter分支的适用旧fixture，编译不冒充该分支业务测试；B9本段只记COMPILED_LINKED，冷载与新局结果另记。非空开战脚本参战来源仍partial，未借供给附件修复放宽宣战资格。

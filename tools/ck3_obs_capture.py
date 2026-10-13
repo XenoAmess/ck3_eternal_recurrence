@@ -338,14 +338,18 @@ class OwnedEngine:
             self.generation.check()
             windows = []
             def collect(hwnd, _):
-                if win32process.GetWindowThreadProcessId(hwnd)[1] == self.process.pid:
+                if (win32process.GetWindowThreadProcessId(hwnd)[1] == self.process.pid
+                        and win32gui.GetWindowText(hwnd).startswith("OBS ")
+                        and win32gui.GetClassName(hwnd).startswith("Qt")):
                     windows.append(hwnd)
             win32gui.EnumWindows(collect, None)
-            for hwnd in windows:
-                self.generation.check()
-                if win32process.GetWindowThreadProcessId(hwnd)[1] != self.process.pid:
-                    raise RuntimeError("OBS close window changed generation")
-                win32gui.PostMessage(hwnd, 0x0010, 0, 0)
+            if len(windows) != 1:
+                raise RuntimeError("owned OBS main window is not unique")
+            hwnd = windows[0]
+            self.generation.check()
+            if win32process.GetWindowThreadProcessId(hwnd)[1] != self.process.pid:
+                raise RuntimeError("OBS close window changed generation")
+            win32gui.PostMessage(hwnd, 0x0010, 0, 0)
             try:
                 actual = self.process.wait(timeout=30)
             except subprocess.TimeoutExpired:
@@ -374,6 +378,29 @@ def _inactive_engine_binding(engine):
             or client.get_scene_collection_list().current_scene_collection_name != engine.profile["collection_name"]
             or client.get_record_status().output_active):
         raise RuntimeError("early cleanup requires the same dedicated inactive engine")
+
+
+def _unbind_owned_inputs(engine, owned_sources, configured):
+    """Remove each owned input once, then observe asynchronous GUI completion."""
+    def remaining():
+        _inactive_engine_binding(engine)
+        if configured:
+            _output_binding(engine)
+        names = {item["inputName"] for item in engine.client.get_input_list().inputs}
+        if names - set(owned_sources):
+            raise RuntimeError("unknown OBS inputs remain attached")
+        return names
+
+    attached = remaining()
+    for name in reversed(owned_sources):
+        if name in attached:
+            engine.check()
+            engine.client.remove_input(name)
+    for _ in range(40):
+        if not remaining():
+            return True
+        time.sleep(.25)
+    raise TimeoutError("owned OBS input removal was submitted but remains unobserved")
 
 
 def _job_bytes(job):
@@ -417,6 +444,9 @@ class FileGrowthWatch:
         try:
             while not self.requested.is_set():
                 try:
+                    if (Path(job["receipt_root"]) / "STOP-OWNED-RECORDING").is_file():
+                        self.request_stop("owned_shutdown_requested")
+                        break
                     _, _, _, deadline_check = _generation_helpers()
                     deadline_check(job["deadline_utc"])
                     video, total = _job_bytes(job)
@@ -719,16 +749,7 @@ def run_worker(path):
                 try:
                     # Discard possibly late responses after a timed-out main RPC.
                     engine.reconnect()
-                    if configured:
-                        _output_binding(engine)
-                    else:
-                        _inactive_engine_binding(engine)
-                    for name in reversed(owned_sources):
-                        if name in {item["inputName"] for item in engine.client.get_input_list().inputs}:
-                            engine.client.remove_input(name)
-                    cleanup["inputs_unbound"] = not engine.client.get_input_list().inputs
-                    if not cleanup["inputs_unbound"]:
-                        raise RuntimeError("owned OBS inputs remain attached")
+                    cleanup["inputs_unbound"] = _unbind_owned_inputs(engine, owned_sources, configured)
                 except Exception as error:
                     cleanup["unbind_error"] = str(error)
                 engine.client.disconnect()

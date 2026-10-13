@@ -425,6 +425,9 @@ def display_contract(display_mode: str) -> dict[str, object]:
     }
 
 
+MANAGED_SCREEN_EDGE_SCROLL_MODE = "screen_edge_scroll_mode_disabled"
+
+
 def render_settings(display_mode: str = "fullscreen") -> str:
     display_contract(display_mode)
     settings = '''"game"={
@@ -439,6 +442,7 @@ def render_settings(display_mode: str = "fullscreen") -> str:
 }
 "System"={
 \t"language"={ version=0 value="l_simp_chinese" }
+\t"screen_edge_scroll_mode"={ version=0 value="screen_edge_scroll_mode_disabled" }
 }
 '''
     if display_mode == "windowed":
@@ -615,7 +619,7 @@ def verify_projection_manifest(
 
 
 def settings_contract(
-    text: str, *, display_mode: str = "fullscreen"
+    text: str, *, display_mode: str = "fullscreen", screen_edge_scroll_mode: str | None = None
 ) -> dict[str, object]:
     display_contract(display_mode)
     expected: dict[str, object] = {
@@ -629,6 +633,10 @@ def settings_contract(
     }
     if display_mode == "windowed":
         expected["windowed_resolution"] = "1280x720"
+    if screen_edge_scroll_mode is not None:
+        if screen_edge_scroll_mode != MANAGED_SCREEN_EDGE_SCROLL_MODE:
+            raise AgentError("managed camera contract requires disabled edge scrolling")
+        expected["screen_edge_scroll_mode"] = screen_edge_scroll_mode
     actual: dict[str, object] = {}
     for key, wanted in expected.items():
         matches = re.findall(
@@ -895,6 +903,7 @@ def _prepare_profile_locked(
             "pdx_settings_contract": settings_contract(
                 settings_path.read_text(encoding="utf-8-sig"),
                 display_mode=display_mode,
+                screen_edge_scroll_mode=MANAGED_SCREEN_EDGE_SCROLL_MODE,
             ),
         },
         "rules": rules,
@@ -1049,6 +1058,7 @@ def verify_profile(
     actual_settings_contract = settings_contract(
         settings_path.read_text(encoding="utf-8-sig"),
         display_mode=display_mode,
+        screen_edge_scroll_mode=load_profile.get("pdx_settings_contract", {}).get("screen_edge_scroll_mode"),
     )
     if actual_settings_contract != load_profile.get("pdx_settings_contract"):
         raise AgentError("pdx_settings semantic contract differs")

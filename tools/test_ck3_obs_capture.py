@@ -239,6 +239,27 @@ class CaptureContractTests(unittest.TestCase):
         original.stop_record.assert_not_called()
         self.assertIs(engine.client, original)
 
+    def test_owned_stop_file_uses_the_existing_single_stop_owner(self):
+        engine, _, original = self.engine()
+        peer = self.client()
+        output = self.recordings / (self.session + ".mkv")
+        output.write_bytes(b"synthetic closed output")
+        peer.get_record_status.side_effect = [SimpleNamespace(output_active=True),
+                                             SimpleNamespace(output_active=False)]
+        peer.stop_record.return_value = SimpleNamespace(output_path=str(output))
+        obs = SimpleNamespace(ReqClient=mock.Mock(return_value=peer))
+        (self.receipts / "STOP-OWNED-RECORDING").write_text("owned shutdown", encoding="utf-8")
+        watcher = subject.FileGrowthWatch(engine, 45, time.monotonic())
+        with mock.patch.object(subject, "_control", return_value=obs), \
+             mock.patch.object(subject, "_listeners", return_value=[SimpleNamespace(pid=100)]):
+            watcher.start()
+            self.assertTrue(watcher.done.wait(2))
+            self.assertEqual(watcher.finish("later_request"), output.resolve())
+        self.assertEqual(watcher.reason, "owned_shutdown_requested")
+        self.assertTrue(watcher.stop_confirmed)
+        self.assert_single_stop_rpc(peer)
+        original.stop_record.assert_not_called()
+
     def test_uncertain_stop_is_not_repeated_or_reported_closed(self):
         engine, _, original = self.engine()
         peer = self.client()
@@ -264,7 +285,8 @@ class CaptureContractTests(unittest.TestCase):
         engine, _, _ = self.engine()
         engine.process.poll.return_value = None
         engine.process.wait.side_effect = subprocess.TimeoutExpired(["synthetic-obs"], 30)
-        gui = SimpleNamespace(PostMessage=mock.Mock())
+        gui = SimpleNamespace(PostMessage=mock.Mock(), GetWindowText=lambda _: "OBS 30.0.2",
+                              GetClassName=lambda _: "Qt5152QWindowIcon")
         gui.EnumWindows = lambda callback, data: callback(77, data)
         process = SimpleNamespace(GetWindowThreadProcessId=mock.Mock(return_value=(1,100)))
         with mock.patch.dict(sys.modules, {"win32gui":gui, "win32process":process}):
@@ -275,6 +297,47 @@ class CaptureContractTests(unittest.TestCase):
         self.assertEqual(result["forced_process_calls"], 0)
         engine.process.kill.assert_not_called()
         engine.process.terminate.assert_not_called()
+
+    def test_main_close_does_not_post_to_auxiliary_windows(self):
+        engine, _, _ = self.engine()
+        engine.process.poll.return_value = None
+        engine.process.wait.return_value = 0
+        gui = SimpleNamespace(PostMessage=mock.Mock(),
+            GetWindowText=lambda hwnd: "OBS 30.0.2" if hwnd == 77 else "Qt auxiliary",
+            GetClassName=lambda _: "Qt5152QWindowIcon")
+        gui.EnumWindows = lambda callback, data: [callback(hwnd, data) for hwnd in (77, 88, 99)]
+        process = SimpleNamespace(GetWindowThreadProcessId=lambda _: (1, 100))
+        with mock.patch.dict(sys.modules, {"win32gui": gui, "win32process": process}):
+            self.assertTrue(engine.close()["normal_exit_proven"])
+        gui.PostMessage.assert_called_once_with(77, 0x0010, 0, 0)
+
+    def test_late_input_removal_is_observed_without_resending(self):
+        engine, _, client = self.engine()
+        client.get_record_status.return_value = SimpleNamespace(output_active=False)
+        attached = SimpleNamespace(inputs=[{"inputName": "owned"}])
+        client.get_input_list.side_effect = [attached, attached, SimpleNamespace(inputs=[])]
+        with mock.patch.object(subject, "_listeners", return_value=[SimpleNamespace(pid=100)]), \
+             mock.patch.object(subject.time, "sleep"):
+            self.assertTrue(subject._unbind_owned_inputs(engine, ["owned"], True))
+        client.remove_input.assert_called_once_with("owned")
+
+    def test_unobserved_removal_is_not_resubmitted(self):
+        engine, _, client = self.engine()
+        client.get_record_status.return_value = SimpleNamespace(output_active=False)
+        client.get_input_list.return_value = SimpleNamespace(inputs=[{"inputName": "owned"}])
+        with mock.patch.object(subject, "_listeners", return_value=[SimpleNamespace(pid=100)]), \
+             mock.patch.object(subject.time, "sleep"), self.assertRaises(TimeoutError):
+            subject._unbind_owned_inputs(engine, ["owned"], True)
+        client.remove_input.assert_called_once_with("owned")
+
+    def test_unknown_input_rejects_removal_before_mutation(self):
+        engine, _, client = self.engine()
+        client.get_record_status.return_value = SimpleNamespace(output_active=False)
+        client.get_input_list.return_value = SimpleNamespace(inputs=[{"inputName": "foreign"}])
+        with mock.patch.object(subject, "_listeners", return_value=[SimpleNamespace(pid=100)]), \
+             self.assertRaisesRegex(RuntimeError, "unknown OBS inputs"):
+            subject._unbind_owned_inputs(engine, ["owned"], True)
+        client.remove_input.assert_not_called()
 
 
 if __name__ == "__main__":

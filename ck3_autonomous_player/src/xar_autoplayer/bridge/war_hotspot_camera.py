@@ -78,9 +78,10 @@ class LandedProvinceIndex:
 
 
 def select_war_hotspot(
-    snapshot: Mapping[str, object], index: LandedProvinceIndex
+    snapshot: Mapping[str, object], index: LandedProvinceIndex,
+    *, campaign_root_result: object = None,
 ) -> dict[str, object] | None:
-    """Prioritize an observed battle, siege, route endpoint, then objective.
+    """Prioritize observed war activity, then the player's observed land anchor.
 
     Sea provinces have no landed-title mapping, so they cannot become targets.
     Ties are stable by war and army ID; the selector uses no invented location.
@@ -89,7 +90,7 @@ def select_war_hotspot(
     wars = snapshot.get("active_wars")
     if not isinstance(wars, list):
         return None
-    candidates: list[tuple[int, int, int, int, str]] = []
+    candidates: list[tuple[int, int, int | None, int, str]] = []
     for war in wars:
         if not isinstance(war, dict):
             continue
@@ -99,7 +100,7 @@ def select_war_hotspot(
             for army in allied:
                 if not isinstance(army, dict):
                     continue
-                army_id = _positive_int(army.get("army_id")) or 2**31 - 1
+                army_id = _army_id(army.get("army_id"))
                 current = _positive_int(army.get("current_province_id"))
                 if army.get("in_combat") is True:
                     _add(candidates, index,
@@ -126,20 +127,25 @@ def select_war_hotspot(
                     continue
                 province = _positive_int(row.get("province_id"))
                 if row.get("active_siege") is not None:
-                    _add(candidates, index, 4, war_id, 0, province, "objective_siege")
-                _add(candidates, index, 7, war_id, 0, province, "war_objective")
+                    _add(candidates, index, 4, war_id, None, province, "objective_siege")
+                _add(candidates, index, 7, war_id, None, province, "war_objective")
         objectives = war.get("war_objective_province_ids")
         if isinstance(objectives, list):
             for province in objectives:
-                _add(candidates, index, 7, war_id, 0, _positive_int(province), "war_objective")
+                _add(candidates, index, 7, war_id, None, _positive_int(province), "war_objective")
     if not candidates:
-        return None
-    priority, war_id, army_id, province, reason = min(candidates)
+        return _player_land_anchor(snapshot, index, campaign_root_result)
+    priority, war_id, army_id, province, reason = min(
+        candidates, key=lambda row: (
+            row[0], row[1], row[2] is None,
+            row[2] if row[2] is not None else 0, row[3], row[4],
+        ),
+    )
     return {
         "reason": reason,
         "priority": priority,
         "war_id": war_id,
-        "army_id": army_id if army_id else None,
+        "army_id": army_id,
         "province_id": province,
         "title_key": index.barony_by_province[province],
         "county_key": index.county_by_province.get(province),
@@ -152,10 +158,13 @@ def follow_war_hotspot(
     index: LandedProvinceIndex,
     *,
     park_cursor: Callable[[], dict[str, object]] | None = None,
+    campaign_root_result: object = None,
 ) -> dict[str, object]:
     """Center on the selected land hotspot and preserve the native receipt."""
 
-    hotspot = select_war_hotspot(snapshot, index)
+    hotspot = select_war_hotspot(
+        snapshot, index, campaign_root_result=campaign_root_result,
+    )
     if hotspot is None:
         return {"status": "no_observable_land_hotspot", "hotspot": None}
     revision = snapshot.get("revision")
@@ -184,12 +193,66 @@ def _positive_int(value: object) -> int | None:
     return value if type(value) is int and value > 0 else None
 
 
+def _army_id(value: object) -> int | None:
+    return value if type(value) is int and value >= 0 else None
+
+
+def _player_land_anchor(
+    snapshot: Mapping[str, object], index: LandedProvinceIndex,
+    campaign_root_result: object,
+) -> dict[str, object] | None:
+    """Use an already observed same-frame root, never invent a title or point."""
+    from .current_first_heir_relationship_private_transport import (
+        _same_frame_campaign_root_result,
+    )
+
+    played = snapshot.get("played_character")
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or not isinstance(played, dict) or played.get("alive") is not True
+            or _positive_int(played.get("character_id")) is None):
+        return None
+    observed = _same_frame_campaign_root_result(campaign_root_result, dict(snapshot))
+    if observed is None:
+        return None
+    root = observed["campaign_root_context"]
+    readiness = root.get("readiness")
+    if not isinstance(readiness, dict):
+        return None
+    capital = _positive_int(root.get("capital_province_id"))
+    reason, priority, held_title_id = "player_capital", 9, None
+    if readiness.get("capital_ready") is not True or capital not in index.barony_by_province:
+        partition = root.get("held_title_partition")
+        if readiness.get("held_title_partition_ready") is not True or not isinstance(partition, list):
+            return None
+        counties = []
+        for row in partition:
+            title = row.get("title") if isinstance(row, dict) else None
+            province = _positive_int(row.get("capital_province_id")) if isinstance(row, dict) else None
+            if (isinstance(title, dict) and title.get("tier_raw") == 2
+                    and title.get("tier_key") == "county"
+                    and _positive_int(title.get("title_id")) is not None
+                    and province in index.barony_by_province):
+                counties.append((title["title_id"], province))
+        if not counties:
+            return None
+        held_title_id, capital = min(counties)
+        reason, priority = "player_held_county_capital", 10
+    return {
+        "reason": reason, "priority": priority, "war_id": None, "army_id": None,
+        "province_id": capital, "title_key": index.barony_by_province[capital],
+        "county_key": index.county_by_province.get(capital),
+        "source": "same_frame_campaign_root_context_v1",
+        "query_sequence": observed["query_sequence"],
+        "held_title_id": held_title_id,
+    }
+
+
 def _add(
-    candidates: list[tuple[int, int, int, int, str]],
+    candidates: list[tuple[int, int, int | None, int, str]],
     index: LandedProvinceIndex,
     priority: int,
     war_id: int,
-    army_id: int,
+    army_id: int | None,
     province: int | None,
     reason: str,
 ) -> None:
