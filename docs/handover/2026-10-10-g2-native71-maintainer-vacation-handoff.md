@@ -1,5 +1,7 @@
 # G2 / Native71 maintainer vacation handoff - 2026-10-10
 
+> 后续接班入口（2026-10-13）：[当前 G2 修复与新开局交接](2026-10-13-g2-native-maintainer-vacation-handoff.md)。用户已要求完整普通规划器、1066 罗贝尔重开、决策悬浮与录像；下面的6066天恢复输入和旧进度口径保留历史身份，不是当前演示任务。当前总体运行就绪仍未验收。
+
 ## 接班摘要
 
 本轮是维护者休假前的温和收尾，不是 G2 complete。Robert 29829 原普通战役已经真实保存到 **6066 天 / H10013 / raw53289912**。Native71 已完成离线构建、5 whole / 5 注册 MCP 资格并封存，**尚未 cold live**；最后实机使用 Native60，现已正常退出。MCP 迁移验收100%，G2 5/8，NW2 2/4；M4 false、M6 partial、M7 incomplete、自然继承0保持原边界。
