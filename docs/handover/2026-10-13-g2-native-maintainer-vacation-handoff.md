@@ -176,7 +176,7 @@ keeper 使用保留的独立 stdlib 源文件 `D:/codex-ck3-background-spill/ck3
 
 ## 接手顺序与完成标准
 
-1. 检查当前 Git/原件可读性、统一存储 admission 与任务总线。保持 `cmd.exe + Python`，不执行 PowerShell。原生研究依照 [native README](../ck3-native-ai/README.md) 的 exact-build 原生树优先流程；不先猜策略再补证据。
+1. 检查当前 Git/原件可读性、统一存储 admission 与任务总线。仅使用 `cmd.exe + Python`。原生研究依照 [native README](../ck3-native-ai/README.md) 的 exact-build 原生树优先流程；不先猜策略再补证据。
 2. 并行拆分普通非空开战脚本来源、SDK进程配对修复、当前窗口/录像现场消费，明确文件所有权与单一屏幕操作者。用户已要求高并发，无需再请求战争或子线程授权；不要派64个线程争抢同一个 Game、screen或构建账。
 3. 在屏幕未占用时提交必要实现/定向验证，fetch+rebase 后普通 push master。准备新干净 source freeze、独立 attempt/pipe/profile/请求目录。保留旧 HEAD/失败回执，不热替换运行中 DLL、不修改 frozen hardlink。
 4. 领取当次屏幕独占与 keeper；从公共环境入口冷启动 B6或实际更新后的合格DLL。核 actual PID+creation、DLL hash、hello exact build/gen/ready；其他 operator 的旧 PID 列表不能作控制绑定。kernel已退出的历史 CK3对象不应被误当运行中的账号/游戏；若公共入口因此拒绝，先修有证据的 inventory 缺陷，不隐藏过滤或杀个人会话。
