@@ -16,3 +16,5 @@
 | `A46/CLOSED-RESERVATION.actual.json` | `bc3b92add72b55cd5528bb6e70b379e4c64750cc95cd2493447d018a99d730f4` |
 
 0.1.2未发布，Steam公开版仍为0.1.1 Alpha内部测试。
+
+2026-10-13 可用性更正：本场隔离 profile 的着色器缓存已按[精确清理回执](STORAGE-R79-R81-CACHE-RECLAIM.md)回收，原缓存文件现不可读；其余运行证据与业务RED结论保留。

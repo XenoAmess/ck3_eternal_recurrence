@@ -27,3 +27,5 @@ ROOT先取得原始制度前存档 `CASE030/state/profile/save games/xar_checkpo
 | `A43/EXPIRED-SETTLEMENT.actual.json` | 2215 | `5b3c3a0bf5acb3c08075639d2b78ea8fed2545206a7f558f86dd1a20c04ef409` |
 
 原始证据按[全机器存储策略](../../../storage-retention-policy.md)分级保留；本页不延长整个场次的原件期限。
+
+2026-10-13 可用性更正：本场隔离 profile 的着色器缓存已按[精确清理回执](STORAGE-R79-R81-CACHE-RECLAIM.md)回收，原缓存文件现不可读；上述69,411,120字节真实资格存档、运行证据及原结论保留。

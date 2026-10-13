@@ -16,3 +16,5 @@
 | `A45/EXPIRED-SETTLEMENT.actual.json` | `8a9906f5bc91ac6f2b3aa146b7f8743a7f78d05e2953b1774001a49536d9806c` |
 
 后继必须在新场首个检查点出现后先立即提交基于已审阅原始 profile 的最小基线答复，把耗时的额外审阅放到后续阶段；无答复的R80不得复用为业务通过。新场须重新取得有限存储准入和新鲜 Steam 离线证据。原件按[全机器存储策略](../../../storage-retention-policy.md)分级保留，本页不延长其期限。
+
+2026-10-13 可用性更正：本场隔离 profile 的着色器缓存已按[精确清理回执](STORAGE-R79-R81-CACHE-RECLAIM.md)回收，原缓存文件现不可读；其余运行证据与业务RED结论保留。
