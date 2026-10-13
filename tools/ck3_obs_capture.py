@@ -574,6 +574,8 @@ def run_worker(path):
     watch = None
     cleanup, frames, samples = {}, [], []
     initial_files = {str(p.resolve()) for p in Path(job["recording_root"]).iterdir() if p.is_file()}
+    if job.get("start_signal") is not None:
+        initial_files.add(str(Path(job["start_signal"]).resolve()))
     with ExitStack() as custody:
         game = custody.enter_context(game_generation(job["launch"]))
         overlay = custody.enter_context(ProcessGeneration(
@@ -742,7 +744,8 @@ def run_worker(path):
                 unexpected = [p for p in Path(job["recording_root"]).iterdir()
                               if p.is_file() and str(p.resolve()) not in initial_files and p.stem != job["session_id"]]
                 if unexpected:
-                    raise RuntimeError("unexpected OBS output filename")
+                    raise RuntimeError("unexpected OBS output filename: " + json.dumps(
+                        [str(p.resolve()) for p in unexpected], ensure_ascii=False))
                 total = current_bytes + sum(p.stat().st_size for p in root.iterdir() if p.is_file())
                 peak = max(peak, total)
                 if total >= job["max_output_bytes"] - 96 * 1024**2:

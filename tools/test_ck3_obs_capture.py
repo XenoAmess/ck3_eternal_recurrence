@@ -228,6 +228,106 @@ class CaptureContractTests(unittest.TestCase):
     def test_waiting_deadline_closes_owned_engine_without_starting_output(self):
         self.run_start_fixture(delayed=True, expire_wait=True)
 
+    def run_post_start_fixture(self, *, unexpected_signal=False):
+        """Run the real post-StartRecord loop; mock OBS/OS and its file watcher."""
+        self.profile.update(recording_root=str(self.recordings), bitrate_kbps=4800)
+        self.profile_path.write_text(json.dumps(self.profile), encoding="utf-8")
+        signal = self.recordings / "fresh-start.signal"
+        foreign = self.recordings / "other-unapproved.signal"
+        output = self.recordings / (self.session + ".mkv")
+        job = {**self.job, "duration_seconds": 2, "launch": {}, "ffprobe": "synthetic-ffprobe.exe",
+               "profile_sha256": subject._sha(self.profile_path), "start_signal": str(signal)}
+        job_path = self.receipts / "job.json"
+        job_path.write_text(json.dumps(job), encoding="utf-8")
+        client = self.client()
+        inputs, clock, active = {}, [0.0], [False]
+        def create_input(scene, name, kind, settings, enabled):
+            inputs[name] = {"inputName": name, "inputKind": kind, "settings": settings}
+        client.create_input.side_effect = create_input
+        client.remove_input.side_effect = lambda name: inputs.pop(name)
+        client.get_input_list.side_effect = lambda: SimpleNamespace(inputs=list(inputs.values()))
+        client.get_input_settings.side_effect = lambda name: SimpleNamespace(input_settings=inputs[name]["settings"])
+        client.get_scene_item_list.side_effect = lambda scene: SimpleNamespace(scene_items=[
+            {"sourceName": name, "sceneItemEnabled": True, "sceneItemIndex": 0} for name in inputs])
+        client.get_record_status.side_effect = lambda: SimpleNamespace(output_active=active[0], output_path="")
+        video = SimpleNamespace(base_width=2560, base_height=1440, output_width=2560,
+            output_height=1440, fps_numerator=30, fps_denominator=1)
+        video.attrs = lambda: ["base_width", "base_height", "output_width", "output_height", "fps_numerator", "fps_denominator"]
+        client.get_video_settings.return_value = video
+        client.get_profile_parameter.side_effect = lambda category, name: SimpleNamespace(
+            parameter_value={"FilenameFormatting": self.session, "RecQuality": "Stream", "VBitrate": "4800"}[name])
+        client.get_source_screenshot.return_value = SimpleNamespace(image_data="data:image/png;base64," +
+            base64.b64encode(b"\x89PNG\r\n\x1a\nsynthetic").decode("ascii"))
+        def sleep(seconds):
+            clock[0] += seconds
+            if (self.receipts / "record-armed.json").exists():
+                signal.touch(exist_ok=True)
+            if active[0]:
+                with output.open("ab") as stream:
+                    stream.write(b"synthetic growth\n")
+        def start_record():
+            self.assertTrue(signal.is_file())
+            active[0] = True
+            output.write_bytes(b"synthetic video; never decoded\n")
+            if unexpected_signal:
+                foreign.write_text("unexpected", encoding="utf-8")
+        def stop_record():
+            active[0] = False
+            return SimpleNamespace(output_path=str(output))
+        client.start_record.side_effect = start_record
+        client.stop_record.side_effect = stop_record
+        engine = mock.Mock(profile=self.profile, job=job, client=client)
+        engine.start.return_value = client
+        engine.reconnect.return_value = client
+        engine.close.return_value = {"actual_exit_code": 0}
+        class FakeWatch:
+            def __init__(watch, *args):
+                watch.requested = mock.Mock()
+                watch.requested.is_set.return_value = False
+                watch.error, watch.reason, watch.samples, watch.stop_confirmed = None, None, [], False
+            def start(watch):
+                pass
+            def finish(watch, reason):
+                watch.reason = reason
+                result = subject._stop_owned(engine)
+                watch.stop_confirmed = True
+                return result
+        game = SimpleNamespace(creation_filetime=123, check=mock.Mock())
+        helpers = (mock.Mock(), lambda launch: nullcontext(game), mock.Mock(), mock.Mock())
+        gui = SimpleNamespace(GetForegroundWindow=lambda: 777)
+        probe = SimpleNamespace(stdout=json.dumps({"format": {"duration": "1", "bit_rate": "1000000"}, "streams": []}))
+        with mock.patch.object(subject, "OwnedEngine", return_value=engine), \
+             mock.patch.object(subject, "FileGrowthWatch", FakeWatch), \
+             mock.patch.object(subject, "_generation_helpers", return_value=helpers), \
+             mock.patch.object(subject, "_window_identity", return_value="synthetic-owned-window"), \
+             mock.patch.dict(sys.modules, {"win32gui": gui}), \
+             mock.patch.object(subject.time, "sleep", side_effect=sleep), \
+             mock.patch.object(subject.time, "monotonic", side_effect=lambda: clock[0]), \
+             mock.patch.object(subject.subprocess, "run", return_value=probe):
+            if unexpected_signal:
+                with self.assertRaisesRegex(RuntimeError, "unexpected OBS output filename") as caught:
+                    subject.run_worker(job_path)
+                failed = json.loads((self.receipts / "failed.json").read_text(encoding="utf-8"))
+                self.assertEqual(failed["error"], str(caught.exception))
+                paths = json.loads(failed["error"].split(": ", 1)[1])
+                self.assertEqual(paths, [str(foreign.resolve())])
+            else:
+                subject.run_worker(job_path)
+                completed = json.loads((self.receipts / "completed.json").read_text(encoding="utf-8"))
+                self.assertEqual(completed["path"], str(output.resolve()))
+                self.assertEqual(len(completed["file_growth_samples"]), 2)
+                self.assertFalse((self.receipts / "failed.json").exists())
+        self.assertFalse(inputs)
+        client.start_record.assert_called_once()
+        client.stop_record.assert_called_once()
+        engine.close.assert_called_once()
+
+    def test_post_start_file_scan_accepts_the_declared_new_signal(self):
+        self.run_post_start_fixture()
+
+    def test_post_start_file_scan_rejects_other_new_signal_with_exact_path(self):
+        self.run_post_start_fixture(unexpected_signal=True)
+
     def test_launch_rejects_a_stale_start_signal_before_starting_a_worker(self):
         self.profile["recording_root"] = str(self.recordings)
         self.profile_path.write_text(json.dumps(self.profile), encoding="utf-8")

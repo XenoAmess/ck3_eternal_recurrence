@@ -1,6 +1,6 @@
 # G2 接续实施（2026-10-13）
 
-> 最新状态：已从第二次交接接续fresh11，实际进入暂停罗贝尔地图，但Start最后root查询120秒超时；录像达到预留停止边界后SDK／Game已关闭并释放屏幕。Python已修复共享总deadline及原root请求ID保留，定向检查通过，待fresh12实机。有效普通回合、日期推进、选定目标和胜战仍均0，B12完整owner-tree尚未验收。见[fresh11实际结果与修复](g2-fresh11-root-timeout-2026-10-13.md)；本页下方“待fresh09”等保留为当时记录。
+> 最新状态：fresh12主菜单/延迟录制已实际到达，但新signal被输出枚举误判，SDK未启动；Game随后自行exit1，有图形设备失败及原Crash。窄修复已通过生产路径回归，准备fresh13。普通回合、日期推进、目标和胜战仍0，B12完整owner-tree未验收。见[fresh12实绩与修复](g2-fresh12-recorder-signal-and-crash-2026-10-13.md)。下方旧阶段记录保留。
 
 接续 [休假交接](../handover/2026-10-13-g2-native-maintainer-vacation-handoff.md)，实施输入为干净的 `6feaef84953fdaf0d26244744a5c4ddbb75286c6`。用户要求的 64 个并行研究任务按 M0–M7、每组协调者兼研究者及七个专项执行；本次复用原任务继续实施，没有将任务数当作能力完成度。
 
