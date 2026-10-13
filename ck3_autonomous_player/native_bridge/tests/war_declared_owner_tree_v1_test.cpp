@@ -76,8 +76,8 @@ bool Unknown(const WarDeclaredOwnerReadResultV1 &out, Failure expected) {
 }
 
 int main() {
-  static_assert(kWarDeclaredOwnerMaximumWidgetsV1 == 16384);
-  static_assert(kWarDeclaredOwnerMaximumEdgesV1 == 65536);
+  static_assert(kWarDeclaredOwnerMaximumWidgetsV1 == 262144);
+  static_assert(kWarDeclaredOwnerMaximumEdgesV1 == 1048576);
   bool ok = true;
   std::size_t scenes = 0;
   {
@@ -99,18 +99,18 @@ int main() {
     ++scenes;
   }
   {
-    auto graph = Wide(16384, true);
+    auto graph = Wide(262144, true);
     WarDeclaredOwnerReadResultV1 out;
     ok &= Check(ReadWarDeclaredOwnerTreeV1(1, graph.Read(), out) && out.complete &&
-                out.visited == 16384 && graph.runtime_reads == 16384,
+                out.visited == 262144 && graph.runtime_reads == 262144,
                 "exact_widget_budget_can_complete");
     ++scenes;
   }
   {
-    auto graph = Wide(16385, true);
+    auto graph = Wide(262145, true);
     WarDeclaredOwnerReadResultV1 out;
     ok &= Check(!ReadWarDeclaredOwnerTreeV1(1, graph.Read(), out) &&
-                Unknown(out, Failure::widget_budget_exhausted) && out.queued == 16384,
+                Unknown(out, Failure::widget_budget_exhausted) && out.queued == 262144,
                 "widget_budget_exhaustion_never_publishes_early_target");
     ++scenes;
   }
@@ -182,6 +182,6 @@ int main() {
   }
   std::cout << "{\"status\":\"" << (ok ? "GREEN" : "RED")
             << "\",\"scenes\":" << scenes
-            << ",\"max_widgets\":16384,\"max_edges\":65536,\"new_fixture\":true}\n";
+            << ",\"max_widgets\":262144,\"max_edges\":1048576,\"new_fixture\":true}\n";
   return ok ? 0 : 1;
 }

@@ -145,3 +145,13 @@ B11修复仅为完整owner遍历设置独立16,384 widgets/65,536 edges上限，
 B11只重编c0339并重链，实际`R/native-profile/build11/native.dll`为18,269,696B，SHA-256 `d4b4ad1a6f217b4b6333d9a41a5dd8ec4deb2b62be6baecfb762f06831c2e5f4`。首编译因固定旧include链没有新helper而失败，原日志保留；新增只包含此helper的固定overlay后，c0339-repair01编译及link均0。实际依赖逐项与预编译pin核对，B9归档612成员全部保留。这里只授源码/fixture/COMPILED_LINKED，业务修复及大树完整实读待新冷载。
 
 07:45:18Z闭场清点：36,497文件，去重文件逻辑5,278,247,743B/8GiB、Native1,460,612,590B/2GiB、free1,234,304,090,112B。B11重链后Native1,482,212,434B，free1,234,275,143,680B，预留及原期限通过；无删除或期限续展。
+
+## Fresh08：完整owner树超过16384节点；B12边界复验
+
+B11在干净`014b6e5632012e9fe4dfc14fc76a6df36ad8ca36`新局冷载，Game PID236588/creation `20261013081431.919983+000`。Root亲审主菜单sample011、定位后sample014，Start3 verified耗时26.316650秒，camera4 centered，初始semantic5/SAVE6配对通过。episode为`native-31254-00b44069f38f`、日期仍53144328。
+
+AUTO9原响应仍blocked，实际Native理由为`war_declared_window_read_failed:widget_budget_exhausted;at=8711;queued=16384;edges=16387;matches=1;count=5;child=1`。这只闭合原2048不足的原因，**B11的16384上限仍不足，未授实机修复成功**。有效普通回合、日期推进、目标及胜战均0；SDK未重送原动作。独立录像COMPLETED，1010.666秒/607,243,400B，SHA-256 `3cd5c4e28b03fe05d42b1305afdc658f96a733b0a89fc46cb4c584b6d202415c`，合作停止后OBS实际exit0。Game仍一次WM_CLOSE后force cleanup；keeper无failure/最后3885、CAS释放3886。
+
+B12仅将私有完整树固定上限扩大到262,144 widgets/1,048,576 edges，通用导出2048保持不变；完全读完才发布目标、所有未知检查继续有效。相同12场景针对新预算边界重新验证通过，明确为已有场景复验、0新增独立场景；Root仍通过DLL导出调用原fixture，未产生EXE。实际B12编译/link各一次返回0，保留归档612成员；DLL为18,269,696B，SHA-256 `28c01334e474a712180c94782d72c0880d7360e49296dbc82e73e23e9416b648`。新header SHA `2fb29e51ff65a298e9c2d8a696fa2c23478b23dfe821ce582a296879a89ee4c5`。实际完整树读取及普通回合仍待fresh09冷载，不以扩大预算直接授成功。
+
+08:36:30Z闭场清点：41,889文件、去重文件逻辑6,389,357,330B/8GiB、free1,233,159,507,968B；B12后Native1,503,007,789B/2GiB。原容量、601,295,421,440B系统/其他任务预留及16:58:39Z期限保持，无删除或续期。原件与逐响应成本在`R/fresh-robert08/ROOT-FRESH08-ACTUAL-CLOSED-EVIDENCE.json`，清点在`R/resume02/ROOT-FRESH08-CLOSE-STORAGE-AUDIT.json`。

@@ -10,8 +10,8 @@
 
 namespace xar::ck3_11906::detail {
 
-inline constexpr std::size_t kWarDeclaredOwnerMaximumWidgetsV1 = 16'384;
-inline constexpr std::size_t kWarDeclaredOwnerMaximumEdgesV1 = 65'536;
+inline constexpr std::size_t kWarDeclaredOwnerMaximumWidgetsV1 = 262'144;
+inline constexpr std::size_t kWarDeclaredOwnerMaximumEdgesV1 = 1'048'576;
 
 enum class WarDeclaredOwnerReadFailureV1 : std::uint8_t {
   none, reader_unavailable, invalid_budget, owner_root_missing,
