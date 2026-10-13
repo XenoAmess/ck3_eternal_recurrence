@@ -11,7 +11,9 @@ from ck3_mod_acceptance_cases import lyd_release012_keypaths_adapter as keypaths
 CASE = 'release012-headship-first'
 RESULT = 'lyd-headship-first-result.json'
 ASSEMBLY = 'ck3_query_confucian_assembly_predicates_v1'
-QUIT_RESERVE = 600
+# Leave time for the operator's normal GUI Quit, host/native cleanup, screen
+# release, display restoration, and finite storage settlement before expiry.
+QUIT_RESERVE = 1800
 OPTION_LIMIT = 64
 
 

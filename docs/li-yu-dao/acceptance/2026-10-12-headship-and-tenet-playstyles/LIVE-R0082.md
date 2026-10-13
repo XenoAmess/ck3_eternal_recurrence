@@ -8,6 +8,8 @@
 
 存储窗口有明确例外：原 A47 768 MiB 授权在 `2026-10-13T13:14:24.035265Z` 到期，CK3 与自动 host/keeper 当时仍在运行；A47 未按时闭账。ROOT 停止手工向旧根写入，`2026-10-13T13:23:27.456986Z` 才建立前瞻性的 A48 128 MiB 收场授权，间隔 **543.421721 秒**。不能排除自动写入者在无有效授权的间隔内继续写旧根；A48 不追认该间隔，也不声称 A47 按时关闭。A48 仅用于正常退出、证据及结算。其五根实际逻辑量连同额外32 MiB保守 allowance 全额计入，结算后的项目 carry 为 **140995068684 B**，低于固定上限 **141327031211 B**，剩余 **331962527 B**；GC信用为0，物理回收量未知。此例外必须在下次实机前修正：收场和存储到期须由同一固定 deadline 控制，并预留足够的 GUI 退出时间。
 
+后继源码将 `release012-headship-first` 的正常退出预留从600秒提高到1800秒；定向 cadence 测试确认业务检查点在新边界拒绝继续。它是下一场的提前收场护栏，不能倒推为 R0082 按时闭账或下一场已正常退出。
+
 外置原件：`A47=C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-headship-nomination-storage-admission-20261013-047`；`A48=C:/workspace/ck3_lyd_runtime_20261004/lyd-release012-headship-normal-close-admission-20261013-048`；`RUN82=C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0082`；`CASE033=C:/workspace/ck3-common-runtime/cases/lyd-release012-keypaths-20261013-033`。这些原始证据按[全机器存储策略](../../../storage-retention-policy.md)到期评估，不因本报告无限续期。
 
 | 关键原件 | SHA-256 |

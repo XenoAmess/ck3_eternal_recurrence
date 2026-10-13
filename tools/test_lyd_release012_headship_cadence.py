@@ -174,11 +174,11 @@ class CadenceTest(unittest.TestCase):
             for _, payload, reserve in requests:
                 self.assertEqual(payload['fixed_phase_deadline_epoch'], phase_deadline)
                 self.assertEqual(payload['effective_storage_deadline_epoch'], deadline)
-                self.assertGreaterEqual(reserve, 600)
+                self.assertGreaterEqual(reserve, case.QUIT_RESERVE)
             clock.now = phase_deadline
             with self.assertRaisesRegex(ValueError, 'Fixed phase review deadline reached'):
                 bounded.root_checkpoint('phase-expired', request)
-            clock.now = deadline - 600
+            clock.now = deadline - case.QUIT_RESERVE
             with self.assertRaisesRegex(ValueError, 'Original normal Quit reserve reached'):
                 bounded.root_checkpoint('quit-reserved', request)
             self.assertEqual(reads.call_count, 2)
