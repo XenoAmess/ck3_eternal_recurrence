@@ -3075,7 +3075,15 @@ class GameplayBridgeService:
 
         frame = self.snapshot(include_native_command_history=False)
         gate = getattr(self, "_initial_lifestyle_focus_gate_v1", None)
-        if not isinstance(gate, dict):
+        rearmed_episode = (
+            isinstance(gate, dict)
+            and gate.get("stage") == "complete"
+            and getattr(self.driver, "require_initial_lifestyle_focus_before_date_advance", False) is True
+            and isinstance(frame.get("episode_run_id"), str)
+            and bool(frame["episode_run_id"])
+            and frame["episode_run_id"] != gate.get("episode_run_id")
+        )
+        if not isinstance(gate, dict) or rearmed_episode:
             gate = {"stage": "await_submit", "date_raw": frame.get("date_raw"),
                     "episode_run_id": frame.get("episode_run_id"), "checkpoint_saved": False}
             self._initial_lifestyle_focus_gate_v1 = gate

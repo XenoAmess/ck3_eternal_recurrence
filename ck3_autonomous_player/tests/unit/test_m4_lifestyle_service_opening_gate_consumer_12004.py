@@ -62,6 +62,8 @@ class _OpeningDriver(_Driver):
             result = deepcopy(_scope_root()[0]["result"])
             result.update(step=step, accepted=True)
             result["campaign_root_context"]["snapshot_revision"] = self.frame["native_revision"]
+            result["campaign_root_context"]["date_raw"] = self.frame["date_raw"]
+            result["campaign_root_context"]["player_character_id"] = self.frame["played_character"]["character_id"]
             self._record_command(step, ok=True, result=result)
             return result
         if step == "save-checkpoint":
@@ -93,6 +95,61 @@ class _OpeningDriver(_Driver):
 
 
 class OpeningLifestyleServiceConsumer12004Test(unittest.TestCase):
+    def test_completed_service_rearms_for_successor_and_requires_fresh_focus_proof(self):
+        driver = _OpeningDriver(existing_focus=True)
+        service = GameplayBridgeService(driver)
+        predecessor = service.auto_turn()
+        self.assertFalse(driver.require_initial_lifestyle_focus_before_date_advance)
+
+        driver.frame = _game_frame(5)
+        driver.frame.update(date_raw=driver.frame["date_raw"] + 120,
+                            episode_run_id="native-29830-successor-fixture",
+                            episode_character_id=29830,
+                            played_character={"character_id": 29830, "alive": True})
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        frame = driver.frame
+        focus = {"presence": "present", "key": "diplomacy_foreign_affairs_focus",
+                 "lifestyle_key": "diplomacy_lifestyle"}
+        progress = deepcopy(predecessor["plan"]["initial_lifestyle_focus_existing"]["current_lifestyle_progress"])
+        progress["lifestyle_key"] = focus["lifestyle_key"]
+        query = {
+            "status": "available", "formal_precondition_status": "ready",
+            "episode_run_id": frame["episode_run_id"],
+            "source_frame": {key: frame[key] for key in
+                             ("snapshot_id", "revision", "native_revision", "date_raw")},
+            "snapshot": {
+                "status": "available", "snapshot_id": frame["snapshot_id"],
+                "public_revision": frame["native_revision"], "native_revision": frame["native_revision"],
+                "proof_epoch": frame["native_revision"], "date_raw": frame["date_raw"],
+                "episode_run_id": frame["episode_run_id"], "player_character_id": 29830,
+                "current_focus": focus, "current_lifestyle_progress": progress,
+                "owned_perk_keys": [], "legal_perk_candidates": {"status": "available", "items": []},
+                "readiness": {key: True for key in ("current_focus_ready", "lifestyle_progress_ready",
+                    "owned_perks_ready", "legal_perk_candidates_ready", "same_frame_ready")},
+            },
+        }
+        query["source_frame"]["player_character_id"] = 29830
+        with patch.object(driver, "query_player_lifestyle_current_state_private_v1",
+                          return_value=query) as fresh_current, \
+                patch.object(driver, "query_player_lifestyle_formal_private_v1", return_value=query), \
+                patch.object(driver, "query_player_lifestyle_martial_authority_private_v1",
+                             return_value={"status": "unavailable"}):
+            opening = service.plan_turn()["plan"]
+            self.assertEqual(opening["selected_step"], ROOT_QUERY)
+            self.assertEqual(opening["initial_lifestyle_focus_existing"]["current_focus"], focus)
+            fresh_current.assert_called_with(expected_revision=5)
+            self.assertTrue(driver.require_initial_lifestyle_focus_before_date_advance)
+            self.assertEqual(service._initial_lifestyle_focus_gate_v1["episode_run_id"], frame["episode_run_id"])
+            self.assertEqual(service._initial_lifestyle_focus_gate_v1["date_raw"], frame["date_raw"])
+            service.auto_turn()
+            self.assertFalse(driver.require_initial_lifestyle_focus_before_date_advance)
+            with patch.object(service_module, "choose_one_life_turn",
+                              wraps=service_module.choose_one_life_turn) as full_planner:
+                service.plan_turn()
+            full_planner.assert_called_once()
+        self.assertEqual(driver.executed, [ROOT_QUERY, ROOT_QUERY])
+
     def test_cold_service_rehydrates_pending_focus_before_existing_focus(self):
         driver = _OpeningDriver(existing_focus=False)
         submitted = GameplayBridgeService(driver).auto_turn()
