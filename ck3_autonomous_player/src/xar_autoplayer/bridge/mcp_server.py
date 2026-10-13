@@ -462,8 +462,14 @@ def load_driver(
     allow_private_death_succession_modal_continue: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
+    allow_private_lifestyle_formal_trial: bool = False,
+    require_initial_lifestyle_focus_before_date_advance: bool = False,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
+    if (require_initial_lifestyle_focus_before_date_advance
+            and not allow_private_lifestyle_formal_trial):
+        raise ValueError("initial lifestyle focus requires the private lifestyle formal trial")
+
     def selected_state_dir() -> Path:
         return Path(state_dir) if state_dir else _default_state_dir()
 
@@ -482,7 +488,7 @@ def load_driver(
             DevelopmentSessionDriver(selected_state_dir()),
         )
     if factory == "native-headless":
-        return NativeHeadlessGameplayDriver(
+        driver = NativeHeadlessGameplayDriver(
             selected_pipe_name(pipe_name),
             state_dir=selected_state_dir(),
             save_dir=selected_save_dir(),
@@ -492,6 +498,7 @@ def load_driver(
                 allow_private_faction_gift_formal_trial
             ),
             private_faction_round_id=private_faction_round_id,
+            allow_private_lifestyle_formal_trial=allow_private_lifestyle_formal_trial,
             allow_private_current_timeline_blocker_query=(
                 allow_private_death_succession_modal_continue
             ),
@@ -499,6 +506,10 @@ def load_driver(
                 allow_private_death_succession_modal_continue
             ),
         )
+        if require_initial_lifestyle_focus_before_date_advance:
+            driver.require_initial_lifestyle_focus_before_date_advance = True
+            driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        return driver
     if succession_lifecycle_binding is not None:
         raise ValueError("explicit succession lifecycle requires native-headless driver")
     if war31_one_shot_surrender_gate is not None:
@@ -2438,6 +2449,15 @@ def create_server(
                 snapshot=snapshot,
                 same_frame_root=same_frame_root,
                 minimum_gold_reserve_raw=minimum_gold_reserve_raw,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_resolved_faction_gift_outcome_v1(
+            request_id: str, expected_revision: int,
+        ) -> dict[str, object]:
+            """Observe current material for an original independently applied gift."""
+            return service.query_resolved_faction_gift_outcome_v1(
+                request_id=request_id, expected_revision=expected_revision,
             )
 
     if getattr(driver, "allow_private_faction_gift_action", False) is True:
@@ -4464,7 +4484,11 @@ def create_server(
         event_instance_id: int | None = None,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
-        """Select a 1-based option on the current CK3 event."""
+        """Select a 1-based native-authored option on the current CK3 event.
+
+        option_number = native_option_index + 1, independent of rendered
+        order. Visible native indices (0, 2) use option numbers (1, 3).
+        """
         return service.select_event_option(
             option_number,
             event_instance_id=event_instance_id,
@@ -4794,6 +4818,16 @@ def parser() -> argparse.ArgumentParser:
         help="enable the existing private construction submit and material receipt Service path",
     )
     result.add_argument(
+        "--allow-private-lifestyle-formal-trial",
+        action="store_true",
+        help="enable the existing private lifestyle focus, perk and receipt Service path",
+    )
+    result.add_argument(
+        "--require-initial-lifestyle-focus-before-date-advance",
+        action="store_true",
+        help="consume the configured initial lifestyle focus before the first date advance",
+    )
+    result.add_argument(
         "--allow-private-family-marriage-formal-trial",
         action="store_true",
         help="enable the existing private first-heir marriage and betrothal Service path",
@@ -5071,6 +5105,8 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_family_obligations_query or args.private_council_query
             or args.allow_private_family_marriage_formal_trial
             or args.allow_private_construction_formal_trial
+            or args.allow_private_lifestyle_formal_trial
+            or args.require_initial_lifestyle_focus_before_date_advance
             or args.private_realm_law_crown_action
             or args.private_active_scheme_sway_action or args.private_council_action
             or args.private_faction_gift_query or args.private_faction_gift_action
@@ -5128,6 +5164,10 @@ def main(argv: list[str] | None = None) -> int:
             args.allow_private_faction_gift_formal_trial
         ),
         private_faction_round_id=args.private_faction_round_id,
+        allow_private_lifestyle_formal_trial=args.allow_private_lifestyle_formal_trial,
+        require_initial_lifestyle_focus_before_date_advance=(
+            args.require_initial_lifestyle_focus_before_date_advance
+        ),
         allow_private_death_succession_modal_continue=(
             args.private_death_succession_modal_continue
         ),

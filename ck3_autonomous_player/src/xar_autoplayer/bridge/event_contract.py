@@ -9,7 +9,11 @@ EVENT_OPTION_STEP_PREFIX = "select-event-option-"
 
 
 def event_option_step(option_number: int) -> str:
-    """Return the semantic step for a 1-based rendered option number."""
+    """Return the semantic step for a 1-based native-authored option number.
+
+    ``option_number = native_option_index + 1``, independent of rendered
+    order. For visible native indices ``(0, 2)``, use numbers ``(1, 3)``.
+    """
     _positive_integer(option_number, "option_number")
     return f"{EVENT_OPTION_STEP_PREFIX}{option_number}"
 

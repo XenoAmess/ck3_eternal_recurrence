@@ -401,13 +401,16 @@ def active_defensive_war_continuation_proposal(
         or planned[0].get("player_is_primary_war_leader") is not True
     ):
         raise ValueError("primary-defender active-war identity is not observed")
-    armies = _positive_ids(observation.get("army_ids"), "continuation.army_ids")
-    allies = _positive_ids(
-        observation.get("ally_character_ids"),
-        "continuation.ally_character_ids",
+    armies = _claimed_ids(
+        observation.get("army_ids"), "army_ids", name="continuation.army_ids",
     )
-    characters = _positive_ids(
-        observation.get("character_ids"), "continuation.character_ids",
+    allies = _claimed_ids(
+        observation.get("ally_character_ids"), "ally_character_ids",
+        name="continuation.ally_character_ids",
+    )
+    characters = _claimed_ids(
+        observation.get("character_ids"), "character_ids",
+        name="continuation.character_ids",
     )
     if not armies:
         raise ValueError("defensive-war continuation lacks an observed army")
@@ -839,11 +842,15 @@ def _nonnegative(value: object, name: str) -> int:
     return value
 
 
-def _claims(value: object, name: str) -> set[int] | set[str]:
+def _claims(
+    value: object, claim_kind: str, *, name: str | None = None,
+) -> set[int] | set[str]:
+    name = claim_kind if name is None else name
     if not isinstance(value, list):
         raise ValueError(f"{name} must be a list")
-    kind = str if name == "commitment_keys" else int
-    if any(type(item) is not kind or (not item if kind is str else item <= 0)
+    kind = str if claim_kind == "commitment_keys" else int
+    minimum_id = 0 if claim_kind == "army_ids" else 1
+    if any(type(item) is not kind or (not item if kind is str else item < minimum_id)
            for item in value):
         raise ValueError(f"{name} contains an invalid resource identity")
     result = set(value)
@@ -852,8 +859,8 @@ def _claims(value: object, name: str) -> set[int] | set[str]:
     return result
 
 
-def _positive_ids(value: object, name: str) -> list[int]:
-    result = _claims(value, name)
+def _claimed_ids(value: object, claim_kind: str, *, name: str) -> list[int]:
+    result = _claims(value, claim_kind, name=name)
     if any(type(item) is not int for item in result):
-        raise ValueError(f"{name} must contain positive integer identities")
+        raise ValueError(f"{name} must contain integer identities")
     return sorted(result)

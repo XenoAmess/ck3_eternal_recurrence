@@ -45,10 +45,10 @@ NORMAN_SICILY1070_12003_RECORDS: Final = {'bookmark.1070': {'contract': {'date_p
                                                     'tooltip. These effects are not '
                                                     'selected-choice material credit.',
                                 'option_semantics': {'0': 'Additional d_benevento/d_spoleto '
-                                                          'claims;3 native armies each250; emperor '
+                                                          'claims;3 native armies each250, each with125levies,50bowmen,50light_horsemen,25conrois; emperor '
                                                           'and pope angry opinion-30',
                                                      '1': 'Additional d_benevento claim;2 native '
-                                                          'armies each250; pope angry opinion-30',
+                                                          'armies each250, each with125levies,50bowmen,50light_horsemen,25armored_horsemen; pope angry opinion-30',
                                                      '2': 'Spawn1 army250 at '
                                                           'capital:125levies,50bowmen,50light_horsemen,25armored_horsemen; '
                                                           'no extra '
@@ -65,9 +65,54 @@ NORMAN_SICILY1070_12003_RECORDS: Final = {'bookmark.1070': {'contract': {'date_p
                                                                                                                 'armored_horsemen': 25},
                                                                                                 'location': 'root.capital_province'}],
                                                                    'common_after_effects': [],
-                                                                   'observable_postcondition': None,
+                                                                   'observable_postcondition': {
+                                                                       'metric': 'player_armies.bookmark1070_spawn',
+                                                                       'expected_relation': 'new_army_source_shape',
+                                                                       'material_change_required_for_evidence': True},
                                                                    'source_anchors': ['events/bookmark_events.txt:1210-1423'],
                                                                    'source_sha256': '5A5CE08980D8C4FDA1DCF40EC26E12D8973C01286F4DA42A6D939776CFD50E03'},
+                                'selected_choice_campaign_utility_profile': {
+                                    'schema': 'xar.ck3.vanilla-event-campaign-utility',
+                                    'schema_version': 1,
+                                    'selected_native_option_index': 2,
+                                    'objective_id': 'obtain_event_army_without_additional_papal_or_imperial_hostility',
+                                    'comparison_kind': 'source_reviewed_ordinal',
+                                    'selected_rank': 1,
+                                    'rank_count': 3,
+                                    'selected_utility': {
+                                        'event_armies': 1,
+                                        'source_defined_soldiers': 250,
+                                        'additional_claims': [],
+                                        'additional_pope_opinion_cost': 0,
+                                        'additional_emperor_opinion_cost': 0,
+                                        'timeline_value': 'continue_actual_campaign',
+                                        'tradeoff': 'Forgo the additional troops and claims offered by the other two routes.'},
+                                    'alternatives': [{
+                                        'native_option_index': 0,
+                                        'authored_ai_base': 100,
+                                        'event_armies': 3,
+                                        'source_defined_soldiers': 750,
+                                        'additional_claims': ['d_benevento', 'd_spoleto'],
+                                        'additional_pope_opinion_cost': -30,
+                                        'additional_emperor_opinion_cost': -30,
+                                        'source_tradeoff': 'More troops and two claims; each army uses25conrois rather than armored_horsemen; incurs both rulers hostility.'}, {
+                                        'native_option_index': 1,
+                                        'authored_ai_base': 100,
+                                        'event_armies': 2,
+                                        'source_defined_soldiers': 500,
+                                        'additional_claims': ['d_benevento'],
+                                        'additional_pope_opinion_cost': -30,
+                                        'additional_emperor_opinion_cost': 0,
+                                        'source_tradeoff': 'More troops and one claim; incurs papal hostility.'}],
+                                    'authored_selected_ai_base': 100,
+                                    'native_preference_observed': False,
+                                    'immediate_pressed_claims_excluded_from_choice_credit': True,
+                                    'cross_event_numeric_score': None,
+                                    'calibration_status': 'not_calibrated',
+                                    'decision_scope': 'bounded_timeline_continuation',
+                                    'source_sha256': {'events/bookmark_events.txt': '5A5CE08980D8C4FDA1DCF40EC26E12D8973C01286F4DA42A6D939776CFD50E03'},
+                                    'readiness': 'static-ready',
+                                    'new_live_evidence': False},
                                 'safe_option_rationale': 'Important multiple-choice event, not an '
                                                          'empty acknowledgement. Source-reviewed '
                                                          'bounded continuation, not an optimal '

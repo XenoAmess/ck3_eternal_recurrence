@@ -555,8 +555,33 @@ class Bookmark1070SelectedScopePolicyTests(unittest.TestCase):
         self.assertEqual(profile["selected_option_effects"][0]["men_at_arms"],
                          {"bowmen": 50, "light_horsemen": 50,
                           "armored_horsemen": 25})
-        self.assertIsNone(profile["observable_postcondition"])
+        self.assertEqual(profile["observable_postcondition"], {
+            "metric": "player_armies.bookmark1070_spawn",
+            "expected_relation": "new_army_source_shape",
+            "material_change_required_for_evidence": True,
+        })
         self.assertEqual(context, before)
+
+    def test_bookmark1070_c_exposes_bounded_source_tradeoffs(self) -> None:
+        result = self.recommend(self.context())
+        self.assertEqual(result["status"], "recommended")
+        self.assertTrue(result["campaign_utility_ready"])
+        self.assertFalse(result["semantic_optimal"])
+        utility = result["campaign_utility_profile"]
+        self.assertEqual(utility["objective_id"],
+                         "obtain_event_army_without_additional_papal_or_imperial_hostility")
+        self.assertEqual(utility["selected_rank"], 1)
+        self.assertEqual(utility["selected_utility"]["source_defined_soldiers"], 250)
+        self.assertEqual([row["source_defined_soldiers"] for row in utility["alternatives"]],
+                         [750, 500])
+        self.assertEqual(utility["alternatives"][0]["additional_emperor_opinion_cost"], -30)
+        self.assertEqual(utility["alternatives"][1]["additional_emperor_opinion_cost"], 0)
+        self.assertIn("25conrois", utility["alternatives"][0]["source_tradeoff"])
+        self.assertEqual([row["authored_ai_base"] for row in utility["alternatives"]],
+                         [100, 100])
+        self.assertEqual(utility["authored_selected_ai_base"], 100)
+        self.assertFalse(utility["native_preference_observed"])
+        self.assertTrue(utility["immediate_pressed_claims_excluded_from_choice_credit"])
 
     def test_bookmark1070_c_has_no_named_scope_dependency(self) -> None:
         context = self.context()

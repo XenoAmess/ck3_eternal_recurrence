@@ -709,7 +709,11 @@ def _bookmark1070_selected_scope_projection(
                 "location": "root.capital_province",
             }]
             and profile.get("common_after_effects") == []
-            and profile.get("observable_postcondition") is None
+            and profile.get("observable_postcondition") == {
+                "metric": "player_armies.bookmark1070_spawn",
+                "expected_relation": "new_army_source_shape",
+                "material_change_required_for_evidence": True,
+            }
         ),
     }
     # The selected authored effect reads root.capital_province, not a named
@@ -1224,6 +1228,7 @@ def recommend_registered_vanilla_event_option_v1(
     snapshot_option_count: object,
     ck3_build: str | None = None,
     played_character: object = None,
+    event_opinion_observations: object = None,
 ) -> dict[str, object]:
     """Return one direct registry choice or a typed non-action result."""
 
@@ -1611,6 +1616,13 @@ def recommend_registered_vanilla_event_option_v1(
     assert selected_native is not None
     assert selected_number is not None
     assert selected_rendered is not None
+    feast_comparison = None
+    if build in {"1.20.0.3", "1.20.0.4"} and event_key == "feast_default.6003":
+        from .feast_brawl_utility_context import compare_feast_brawl_choices_v1
+
+        feast_comparison = compare_feast_brawl_choices_v1(
+            event_context, knowledge, opinion_observations=event_opinion_observations,
+        )
     poet_comparison = None
     if build == "1.20.0.4" and event_key == "trait_specific.9001":
         from .poet_long_term_context import (
@@ -1621,7 +1633,13 @@ def recommend_registered_vanilla_event_option_v1(
         poet_comparison = compare_poet_long_term_choices_v1(
             event_context, knowledge, played_character=played_character,
         )
-    if poet_comparison is not None:
+    if feast_comparison is not None:
+        selected_native = feast_comparison["selected_native_option_index"]
+        selected_number = feast_comparison["selected_option_number"]
+        selected_rendered = feast_comparison["selected_rendered_index"]
+        selected = feast_comparison["selected_option"]
+        choice_effect_profile = feast_comparison["choice_effect_profile"]
+    elif poet_comparison is not None:
         selected_native = poet_comparison["selected_native_option_index"]
         selected_number = poet_comparison["selected_option_number"]
         selected_rendered = poet_comparison["selected_rendered_index"]
@@ -1641,7 +1659,7 @@ def recommend_registered_vanilla_event_option_v1(
         choice_effect_profile = _selected_choice_effect_profile(
             knowledge, selected_native
         )
-    if poet_comparison is None:
+    if poet_comparison is None and feast_comparison is None:
         choice_effect_profile = _current_selected_stress_observable_profile(
             knowledge, selected, selected_native, choice_effect_profile
         )
@@ -1656,11 +1674,15 @@ def recommend_registered_vanilla_event_option_v1(
         option_variant_index=option_variant_index,
         choice_effect_profile=choice_effect_profile,
         campaign_utility_profile=(
-            poet_comparison["campaign_utility_profile"]
+            feast_comparison["campaign_utility_profile"]
+            if feast_comparison is not None
+            else poet_comparison["campaign_utility_profile"]
             if poet_comparison is not None
             else _selected_campaign_utility_profile(knowledge, selected_native)
         ),
     )
+    if feast_comparison is not None:
+        result["feast_brawl_decision_context"] = feast_comparison["decision_context"]
     if poet_comparison is not None:
         result["poet_long_term_decision_context"] = poet_comparison["decision_context"]
     if bookmark1070_scope_projection:

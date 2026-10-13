@@ -182,7 +182,8 @@ def _claim_set(value: object, name: str) -> set[int] | set[str]:
     if not isinstance(value, list):
         raise ValueError(f"{name} must be a list")
     kind = str if name == "commitment_keys" else int
-    if any(type(item) is not kind or (item <= 0 if kind is int else not item) for item in value):
+    minimum_id = 0 if name == "army_ids" else 1
+    if any(type(item) is not kind or (item < minimum_id if kind is int else not item) for item in value):
         raise ValueError(f"{name} has an invalid claim")
     result = set(value)
     if len(result) != len(value):

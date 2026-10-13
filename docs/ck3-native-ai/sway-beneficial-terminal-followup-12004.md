@@ -240,3 +240,27 @@ their own facts before the existing follow-up policy. No native getter, query,
 submission gate, receipt or cause is replaced. This source ledger precedes the
 production hunks; no binary read, test, import, build, game query or new runtime
 qualification was performed for this increment.
+
+## 2026-10-13 ordinary Service observes the retained episode
+
+`ordinary_sway_lifecycle_observation_v1.py` now supplies the existing
+completion → termination → opinion sequence to ordinary `Service.plan_turn`
+as well as the explicit-target runner. It reads the applied ledger's original
+action, living actor, target, full SchemeID and generation under the existing
+individual reader permissions. Finite paused-frame snapshots bracket these
+reads outside the planning-view lock; the full planner then takes its current
+frame and retains its ordinary action priorities. Another actor, terminal
+episode, unready frame or absent original identity supplies no lifecycle read.
+An unavailable read is reported without replaying a submitted action.
+
+Existing Service readers still normalize and stage the observations, and the
+unchanged following-turn consumer owns durable terminal/material consumption.
+This helper adds neither a native API nor a completed/failed/cancelled cause.
+`test_ordinary_sway_lifecycle_observation_v1.py` connects the real Service,
+reader wrappers and ledger consumers with synthetic normalized native inputs.
+The new skip/failure case passed on its first execution; the other case passed
+after correcting its fixture to include the actual receipt's build/hash origin.
+The preserved first failure and corrected single-case result are under
+`D:/codex-ck3-background-spill/g2-remediation-20261013/resume01/m6/ordinary-sway/`.
+The corrected result is `RETRY03-RESULT.json` (`1 passed in 2.06s`). These checks
+establish the Python connection only and supply no live gameplay credit.

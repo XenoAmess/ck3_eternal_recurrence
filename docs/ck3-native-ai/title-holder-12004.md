@@ -31,12 +31,21 @@ flowchart TD
   R --> T[Title generation template tier and holder]
   T --> L[Holder generation and native liege traversal]
   L --> O[Existing TitleHolder V1 result]
-  Q[Root compilation and paused validation pending] -. qualification .-> O
+  Q[Actual .4 paused title-holder qualification not established by this review] -. qualification .-> O
 ```
 
-## Root integration recipe, unapplied
+## Root integration recipe (historical; applied in current source)
 
-Only the two new source files and this topic are authored by this child. Root owns the shared adapter and CMake edits below.
+The original child authored only the two new source files and this topic; Root owned the shared adapter and CMake edits below. The recipe is retained as the original integration instructions. A **2026-10-13 source review** confirms that these integration points are now present:
+
+| Integration point | Current source |
+| --- | --- |
+| Actual .4 factory header and constructor binding | [`ck3_12002_adapter.cpp:14`](../../ck3_autonomous_player/native_bridge/src/ck3_12002_adapter.cpp#L14), [`BindTitleHolderImageV1` at line 119](../../ck3_autonomous_player/native_bridge/src/ck3_12002_adapter.cpp#L119) |
+| Actual .4 descriptor admission, paused snapshot acquisition and shared reader call | [`read_title_holder_v1` at line 496](../../ck3_autonomous_player/native_bridge/src/ck3_12002_adapter.cpp#L496) |
+| Existing requested-title capability in the actual .4 descriptor | [`ck3_12004_adapter.cpp:65`](../../ck3_autonomous_player/native_bridge/src/ck3_12004_adapter.cpp#L65) |
+| Actual .4 factory translation unit in the runtime target | [`adopted_domains_12004.cmake:18`](../../ck3_autonomous_player/native_bridge/cmake/adopted_domains_12004.cmake#L18), included by [`CMakeLists.txt:9465`](../../ck3_autonomous_player/native_bridge/CMakeLists.txt#L9465) |
+
+The current source registers the factory through the adopted-domain CMake leaf, rather than the direct source-list insertion proposed below. This correction establishes source integration only; it adds no build, fixture or runtime qualification.
 
 In `native_bridge/src/ck3_12002_adapter.cpp`, include the new factory header next to the existing title-holder include:
 
@@ -74,4 +83,6 @@ In `native_bridge/CMakeLists.txt`, add the new translation unit next to the exis
 
 ## Qualification boundary
 
-This is source-ready only. This child did not configure, compile, run tests, import production modules, read/hash an executable, inspect a process, invoke SDK/native code, launch CK3 or commit source. Root owns combined integration, source review, native compilation and paused ordinary-Robert validation. Historical fixture/live results do not qualify these actual .4 bindings. The recipe above is unexecuted and does not itself advertise a new qualified capability.
+At the original child delivery, this was source-ready only: the child did not configure, compile, run tests, import production modules, read/hash an executable, inspect a process, invoke SDK/native code, launch CK3 or commit source. Root owned combined integration, native compilation and paused ordinary-Robert validation. Historical fixture/live results do not qualify these actual .4 bindings.
+
+The 2026-10-13 correction confirms the current source integration listed above. It ran no tests, build or game operation and does not establish actual .4 paused title-holder acceptance. The already-present capability advertisement is a source fact; qualification still requires its own exact-build evidence and is not a new prerequisite for the fresh-Robert demonstration.

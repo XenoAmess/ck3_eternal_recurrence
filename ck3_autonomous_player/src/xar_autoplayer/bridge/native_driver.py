@@ -2854,6 +2854,8 @@ class NativeHeadlessGameplayDriver:
             )
         )
         self._observe_arrange_marriage_outcome(snapshot)
+        from .war_declaration_continuity_v1 import observe_declaration_attempt_v1, KEY
+        snapshot[KEY] = observe_declaration_attempt_v1(self, snapshot)
         return snapshot
 
     def _with_internal_planning_view(
@@ -4446,6 +4448,18 @@ class NativeHeadlessGameplayDriver:
 
         return query_faction_gift_cold_recovery_private_v1(
             self, pending=pending, expected_revision=expected_revision,
+        )
+
+    def query_resolved_faction_gift_outcome_v1(
+        self, *, request_id: str, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the original resolved gift's current independent outcome."""
+        from ..faction_gift_outcome_v1 import (
+            query_resolved_faction_gift_outcome_v1,
+        )
+
+        return query_resolved_faction_gift_outcome_v1(
+            self, request_id=request_id, expected_revision=expected_revision,
         )
 
     def retain_succession_expectation_v1(
@@ -12103,6 +12117,28 @@ class NativeHeadlessGameplayDriver:
             if isinstance(starting_diagnostics, dict)
             else None
         )
+        # Only the already observed .1070/.4 frame opts into this material read.
+        # The ordinary event action still runs once when evidence is unavailable.
+        with self._driver_state_lock:
+            bookmark_frame = getattr(self, "_bookmark1070_material_frame", None)
+            self._bookmark1070_material_frame = None
+        bookmark_selected = bool(
+            option_number == 3
+            and isinstance(bookmark_frame, dict)
+            and bookmark_frame.get("event_instance_id") == event_instance_id
+            and bookmark_frame.get("character_id")
+            == self._army_strength_query_actor(starting)
+            and all(bookmark_frame.get(key) == starting.get(key) for key in (
+                "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id",
+            ))
+            and bookmark_frame.get("bridge_pid") == starting_bridge_pid
+            and bookmark_frame.get("connection_generation") == starting_connection_generation
+        )
+        if bookmark_selected:
+            from ..vanilla_events.bookmark1070_material import bookmark1070_army_observation_v1
+        starting_bookmark1070_armies = (
+            bookmark1070_army_observation_v1(starting) if bookmark_selected else None
+        )
         result = self._execute_primitive_step(
             step,
             expected_revision=(
@@ -12137,6 +12173,45 @@ class NativeHeadlessGameplayDriver:
                 "native event selection postcondition is not paused"
             )
         new_event_instance_id = _event_instance_id(changed)
+        bookmark_material_fields: dict[str, object] = {}
+        if bookmark_selected:
+            before_ids = [
+                row["army_id"] for row in (starting_bookmark1070_armies.get("player_armies") or [])
+            ]
+            ending_bookmark1070_armies = bookmark1070_army_observation_v1(
+                changed, before_army_ids=before_ids,
+            )
+            new_ids = {
+                row["army_id"] for row in (ending_bookmark1070_armies.get("player_armies") or [])
+                if row["owner_character_id"] == ending_bookmark1070_armies.get("character_id")
+                and row["army_id"] not in before_ids
+            }
+            if (starting_bookmark1070_armies.get("status") == "available"
+                    and ending_bookmark1070_armies.get("status") == "available"
+                    and len(new_ids) == 1):
+                try:
+                    # Existing typed reader validates complete published scope and
+                    # current/maximum/regiment sums in this unchanged paused frame.
+                    army_query = self._execute_army_strength_query(
+                        starting=changed, selected_revision=int(changed["revision"]),
+                        profile=ORDINARY_CORE_PROFILE,
+                    )
+                    ending_bookmark1070_armies = bookmark1070_army_observation_v1(
+                        changed, army_strengths=army_query.get("army_strengths"),
+                        before_army_ids=before_ids,
+                    )
+                except Exception as error:
+                    # The event was already submitted and independently advanced.
+                    # Observation failure must not request another event selection.
+                    ending_bookmark1070_armies.update(
+                        status="unavailable",
+                        unavailable_reason="bookmark1070_post_army_query_unavailable",
+                        observation_error_type=type(error).__name__,
+                    )
+            bookmark_material_fields = {
+                "starting_bookmark1070_armies": starting_bookmark1070_armies,
+                "ending_bookmark1070_armies": ending_bookmark1070_armies,
+            }
         return {
             **result,
             "progress_status": "postcondition",
@@ -12178,6 +12253,7 @@ class NativeHeadlessGameplayDriver:
                 "ending_played_character_prestige": (
                     _played_character_prestige_observation(changed)
                 ),
+                **bookmark_material_fields,
             },
             "active_event": changed.get("active_event"),
             "paused": True,
@@ -12438,12 +12514,34 @@ class NativeHeadlessGameplayDriver:
                 "native declare-war choice is not in the latest query"
             )
         starting = self.take_snapshot()
-        starting_wars = starting.get("active_wars")
-        starting_count = len(starting_wars) if isinstance(starting_wars, list) else 0
+        from .war_declaration_continuity_v1 import (
+            prepare_declaration_attempt_v1, mark_declaration_response_v1,
+            observe_declaration_attempt_v1,
+        )
+        request_id = "declare-war-" + uuid.uuid4().hex
+        try:
+            prepare_declaration_attempt_v1(self, starting, declaration, request_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
         try:
             result = self._execute_primitive_step(
-                step, expected_revision=expected_revision
+                step, expected_revision=expected_revision,
+                protocol_request_id=request_id,
             )
+        except (PreSubmissionRevisionMismatchError, UnsupportedStepError):
+            mark_declaration_response_v1(self, not_submitted=True)
+            raise
+        except _NativeCommandRejectedError:
+            mark_declaration_response_v1(self, accepted=False)
+            raise
+        except Exception:
+            mark_declaration_response_v1(self)
+            raise
+        else:
+            if result.get("accepted") is not True:
+                mark_declaration_response_v1(self)
+                raise BridgeUnavailableError("original declaration response lacks accepted=true; retain uncertainty")
+            mark_declaration_response_v1(self, accepted=True)
         finally:
             with self._driver_state_lock:
                 self._declarable_wars = []
@@ -12452,20 +12550,20 @@ class NativeHeadlessGameplayDriver:
         changed = self._wait_for_snapshot(
             self.take_snapshot(),
             lambda snapshot: (
-                isinstance(snapshot.get("active_wars"), list)
-                and len(snapshot["active_wars"]) > starting_count
+                (observe_declaration_attempt_v1(self, snapshot) or {}).get("status") == "war_started"
             ),
             timeout_seconds=self.command_timeout_seconds,
         )
         active_wars = changed.get("active_wars")
-        war_started = (
-            isinstance(active_wars, list) and len(active_wars) > starting_count
-        )
+        continuity = observe_declaration_attempt_v1(self, changed)
+        war_started = isinstance(continuity, dict) and continuity.get("status") == "war_started"
         return {
             **result,
             "declaration": declaration,
             "war_action": {
+                **(continuity if isinstance(continuity, dict) else {}),
                 "status": "war_started" if war_started else "declaration_submitted",
+                "native_request_id": request_id,
                 "declaration_id": declaration_id,
                 "target_character_id": declaration["target_character_id"],
                 "casus_belli_key": declaration["casus_belli_key"],
@@ -14405,8 +14503,12 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     f"native enforce-demands-{war_id} did not end the war"
                 )
+            from ..ordinary_war_exit_observation_v1 import compose_ordinary_war_exit_observation_v1
             return {
                 **result,
+                "ordinary_war_exit_observation_v1": compose_ordinary_war_exit_observation_v1(
+                    before_snapshot=starting, post_snapshot=changed, action_result=result,
+                ),
                 "war_action": {
                     "status": "victory_enforced",
                     "war_id": war_id,
@@ -16178,6 +16280,7 @@ class NativeHeadlessGameplayDriver:
             step,
             expected_revision=selected_revision,
             required_capability=QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+            include_native_command_history=False,
         )
         if (
             set(result)
@@ -19914,6 +20017,8 @@ class NativeHeadlessGameplayDriver:
         expected_revision: int | None,
     ) -> dict[str, object]:
         """Copy event identity, options, and lossy indicators while paused."""
+        with self._driver_state_lock:
+            self._bookmark1070_material_frame = None
         if (
             isinstance(event_instance_id, bool)
             or not isinstance(event_instance_id, int)
@@ -20012,6 +20117,22 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native event-window query crossed a snapshot revision"
             )
+        provenance = normalized.get("provenance")
+        if (normalized.get("status") == "available"
+                and normalized.get("event_definition_key") == "bookmark.1070"
+                and isinstance(provenance, dict)
+                and provenance.get("backend_id") == "ck3-1.20.0.4-native-event-window-v1"):
+            diagnostics = starting.get("diagnostics")
+            with self._driver_state_lock:
+                self._bookmark1070_material_frame = {
+                    **{key: starting.get(key) for key in (
+                        "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id",
+                    )},
+                    "event_instance_id": event_instance_id,
+                    "character_id": self._army_strength_query_actor(starting),
+                    "bridge_pid": diagnostics.get("bridge_pid") if isinstance(diagnostics, dict) else None,
+                    "connection_generation": diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None,
+                }
         mirror_keys = (
             "schema",
             "schema_version",
@@ -20981,8 +21102,12 @@ class NativeHeadlessGameplayDriver:
             options = evidence["options"]
             surrender = evidence["surrender"]
             response = surrender["recipient_response"]
+            from ..ordinary_war_exit_observation_v1 import compose_ordinary_war_exit_observation_v1
             return {
                 **result,
+                "ordinary_war_exit_observation_v1": compose_ordinary_war_exit_observation_v1(
+                    before_snapshot=starting, post_snapshot=current, action_result=result,
+                ),
                 "war_termination_result": {
                     "status": (
                         "applied"
@@ -21142,8 +21267,12 @@ class NativeHeadlessGameplayDriver:
         war = evidence["war"]
         white_peace = evidence["white_peace"]
         response = white_peace["recipient_response"]
+        from ..ordinary_war_exit_observation_v1 import compose_ordinary_war_exit_observation_v1
         return {
             **result,
+            "ordinary_war_exit_observation_v1": compose_ordinary_war_exit_observation_v1(
+                before_snapshot=starting, post_snapshot=current, action_result=result,
+            ),
             "war_termination_result": {
                 "status": status,
                 "war_id": war_id,

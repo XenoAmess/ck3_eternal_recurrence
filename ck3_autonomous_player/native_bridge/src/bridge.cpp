@@ -29515,6 +29515,10 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
     }
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    if (!xar::ck3_12002::InstallSwayCompletionExecution12004(
+            base, sha, g_sway_completion_execution_recorder12002,
+            g_sway_completion_execution_install12002))
+      return FALSE;
     xar::ck3_12004::SwayCommonTerminationCallsiteObserver12004Environment
         sway_common_environment{};
     const bool sway_common_environment_ready =
@@ -29536,10 +29540,6 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
                 : (sway_common_environment_ready
                     ? "sway_common_end_callsite_install_failed"
                     : "sway_common_end_source_binding_unavailable"));
-    if (!xar::ck3_12002::InstallSwayCompletionExecution12004(
-            base, sha, g_sway_completion_execution_recorder12002,
-            g_sway_completion_execution_install12002))
-      return FALSE;
     if (!xar::ck3_12002::InstallSwayCompletionTermination12004(
             base, sha, g_sway_completion_termination_recorder12002,
             g_sway_completion_termination_install12002))

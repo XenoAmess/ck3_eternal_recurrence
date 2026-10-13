@@ -141,9 +141,10 @@ def _commitments(
     for key in _CLAIM_FIELDS:
         items = value.get(key)
         kind = str if key == "commitment_keys" else int
+        minimum_id = 0 if key == "army_ids" else 1
         if (
             not isinstance(items, list)
-            or any(type(item) is not kind or (not item if kind is str else item <= 0)
+            or any(type(item) is not kind or (not item if kind is str else item < minimum_id)
                    for item in items)
             or len(items) != len(set(items))
         ):

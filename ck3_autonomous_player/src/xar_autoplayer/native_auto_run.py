@@ -212,6 +212,7 @@ _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 _DE_JURE_NO_SAFE_ROUTE_MIN_DAYS = 180
 _RAIKTOR_TERMINAL_CONTROL_CB = "raiktor_claim_cb"
 _RAIKTOR_TERMINAL_CONTROL_SCORE = -100
+_TERMINAL_SCORE_SURRENDER_SCORE = -100
 _RAIKTOR_LONG_WAR_SURRENDER_MIN_DAYS = 730
 _RAIKTOR_LONG_WAR_SURRENDER_MAX_SCORE = -1
 _OPENING_FOCUS_LIFESTYLE_BY_TARGET = {
@@ -6397,8 +6398,18 @@ def _emergency_surrender_lifecycle_verified(
         and action.get("attacker_war_score") == score
         and action.get("defender_war_score") == -score
     )
+    terminal_score_variant = bool(
+        variant == "terminal_score_defeat"
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score == _TERMINAL_SCORE_SURRENDER_SCORE
+        and action.get("absolute_war_scores_observable") is True
+        and action.get("attacker_war_score") == score
+        and action.get("defender_war_score") == -score
+    )
     if not (
         de_jure_variant or raiktor_variant or raiktor_long_war_variant
+        or terminal_score_variant
     ):
         return False
     if action.get("status") == "applied":
@@ -8450,89 +8461,10 @@ def _observe_private_active_scheme_sway_once(
         expected_revision=before["revision"],
         target_character_id=target_character_id,
     )
-    lifecycle_reads = None
-    lifecycle_permissions = (
-        "allow_private_active_scheme_sway_completion_query",
-        "allow_private_active_scheme_sway_completion_termination_query",
-        "allow_private_active_scheme_sway_outcome_opinion_query",
-    )
-    state_dir = getattr(driver, "state_dir", None)
-    if (isinstance(state_dir, Path)
-            and any(getattr(driver, permission, False) is True
-                    for permission in lifecycle_permissions)):
-        from .sway_formal_consumer import (
-            LEDGER_FILE, _resolved_instance_identity, read_sway_ledger,
-        )
+    from .ordinary_sway_lifecycle_observation_v1 import observe_resolved_sway_lifecycle_v1
 
-        if (state_dir / LEDGER_FILE).is_file():
-            resolved = read_sway_ledger(state_dir)["resolved"]
-            receipt = (resolved.get("native_receipt")
-                       if isinstance(resolved, dict) else None)
-            identity = (_resolved_instance_identity(resolved)
-                        if isinstance(resolved, dict) and receipt is None else receipt)
-            full_id = identity.get("scheme_instance_id") if isinstance(identity, dict) else None
-            generation = (identity.get("scheme_instance_generation")
-                          if isinstance(identity, dict) else None)
-            if (isinstance(resolved, dict)
-                    and resolved.get("status") == "applied"
-                    and resolved.get("postcondition_verified") is True
-                    and resolved.get("actor_character_id") == before.get("played_character_id")
-                    and resolved.get("target_character_id") == target_character_id
-                    and isinstance(identity, dict)
-                    and (receipt is None or (
-                        isinstance(receipt, dict)
-                        and receipt.get("schema") == "active-scheme-sway-formal-private-v1"
-                        and receipt.get("stage") == "applied"
-                        and receipt.get("postcondition_verified") is True))
-                    and isinstance(resolved.get("action_id"), str) and resolved["action_id"]
-                    and identity.get("action_id") == resolved["action_id"]
-                    and all(type(identity.get(key)) is int
-                            and identity[key] == resolved.get(key)
-                            for key in ("actor_character_id", "target_character_id"))
-                    and type(full_id) is int and 0 <= full_id < 0xFFFFFFFF
-                    and type(generation) is int and 0 <= generation <= 255
-                    and generation == full_id >> 24):
-                # Query the original full ID even when its current slot is absent
-                # or reused. Service stages copied end facts before opinion joins.
-                observations = {}
-                if getattr(driver, lifecycle_permissions[0], False) is True:
-                    observations["completion"] = service.query_active_scheme_sway_completion_private_v1(
-                        expected_revision=before["revision"],
-                        target_character_id=target_character_id, scheme_instance_id=full_id,
-                    )
-                if getattr(driver, lifecycle_permissions[1], False) is True:
-                    observations["termination"] = service.query_active_scheme_sway_completion_termination_private_v1(
-                        expected_revision=before["revision"],
-                        target_character_id=target_character_id, scheme_instance_id=full_id,
-                        after_sequence=0,
-                    )
-                if getattr(driver, lifecycle_permissions[2], False) is True:
-                    observations["opinion"] = service.query_active_scheme_sway_outcome_opinion_private_v1(
-                        expected_revision=before["revision"],
-                        target_character_id=target_character_id,
-                    )
-                # These are query stamps, not dates for retained end events.
-                lifecycle_reads = {
-                    "original_action_id": resolved["action_id"],
-                    "actor_character_id": resolved["actor_character_id"],
-                    "target_character_id": target_character_id,
-                    "scheme_instance_id": full_id,
-                    "scheme_instance_generation": generation,
-                    "reads": {
-                        name: {
-                            "requested": True,
-                            "status": observation.get("status"),
-                            "queried_snapshot_id": observation.get("queried_snapshot_id"),
-                            "queried_revision": observation.get("queried_revision"),
-                            "queried_native_revision": observation.get("queried_native_revision"),
-                            "read_date_raw": observation.get("date_raw"),
-                        }
-                        for name, observation in observations.items()
-                    },
-                }
-                for name in ("completion", "termination", "opinion"):
-                    lifecycle_reads["reads"].setdefault(
-                        name, {"requested": False, "status": "not_requested"})
+    lifecycle_reads = observe_resolved_sway_lifecycle_v1(
+        service, snapshot=before, target_character_id=target_character_id)
     after = service.snapshot()
     after_actor = after.get("played_character")
     same_frame = bool(
@@ -9193,6 +9125,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "queried_revision",
         "queried_native_revision",
         "war_termination_query_mismatch",
+        "ordinary_war_exit_observation_v1",
         "battle_terminal_transition",
         "terminal",
         "terminal_kind",

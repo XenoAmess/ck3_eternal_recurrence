@@ -725,6 +725,15 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend cannot read player indulgence terms")
         return read(expected_revision=expected_revision, recipient_character_id=recipient_character_id)
 
+    def query_resolved_faction_gift_outcome_v1(
+        self, *, request_id: str, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read current utility for a retained gift without resubmitting it."""
+        read = getattr(self.driver, "query_resolved_faction_gift_outcome_v1", None)
+        if not callable(read):
+            raise UnsupportedStepError("selected backend cannot read a resolved faction gift outcome")
+        return read(request_id=request_id, expected_revision=expected_revision)
+
     def submit_player_religion_conversion_private_v1(
         self, *, expected_revision: int, target_rite_id: int,
         max_piety_cost_raw: int, action_id: str,
@@ -1347,7 +1356,38 @@ class GameplayBridgeService:
         """Return a detached public plan after its private readers finish."""
         plan_timing = start_army_timing("service.normal_plan_turn")
         try:
-            return copy.deepcopy(self._plan_turn_internal())
+            from ..ordinary_sway_lifecycle_observation_v1 import observe_resolved_sway_lifecycle_v1
+
+            # Reuse the retained original identity outside the planning-view
+            # lock. The full planner then reads the current resulting frame.
+            sway_observation = observe_resolved_sway_lifecycle_v1(self)
+            planned = self._plan_turn_internal()
+            from ..vanilla_events.rite_growth_material import (
+                capture_rite_growth_fulfillment_observation_v1,
+                plan_rite_growth_material_postcondition_v1,
+            )
+            plan = planned.get("plan")
+            decision = plan.get("event_decision") if isinstance(plan, dict) else None
+            if (isinstance(decision, dict) and decision.get("status") == "recommended"
+                    and decision.get("event_definition_key") == "rite_growth.0010"
+                    and decision.get("ck3_build") == "1.20.0.4"
+                    and decision.get("selected_native_option_index") == 0):
+                reader = getattr(self.driver, "take_snapshot_without_native_command_history", None)
+                frame = reader() if callable(reader) else self.snapshot()
+                if (frame.get("snapshot_id") == planned.get("snapshot_id")
+                        and frame.get("revision") == planned.get("revision")):
+                    observation = capture_rite_growth_fulfillment_observation_v1(
+                        self.driver, snapshot=frame)
+                    material = plan_rite_growth_material_postcondition_v1(
+                        decision, frame.get("played_character"), religion_context=observation,
+                        snapshot_id=frame.get("snapshot_id"), revision=frame.get("revision"),
+                        native_revision=frame.get("native_revision"), date_raw=frame.get("date_raw"),
+                    )
+                    planned = {**planned, "plan": {
+                        **plan, "event_material_postcondition": material}}
+            if sway_observation is not None:
+                planned = {**planned, "sway_lifecycle_observation": sway_observation}
+            return copy.deepcopy(planned)
         finally:
             finish_army_timing(plan_timing, step="plan-turn")
 
@@ -1794,6 +1834,21 @@ class GameplayBridgeService:
                     "_private_m5_history_v1",
                 ):
                     private_history_views[key] = planned.pop(key)
+            from ..ordinary_player_risk_context_v1 import (
+                build_ordinary_player_risk_context_v1,
+            )
+            from ..strategy import _effective_command, _effective_command_result
+            from .current_first_heir_relationship_private_transport import (
+                _same_frame_campaign_root_result,
+            )
+
+            risk_root = next((result for row in reversed(history)
+                if row.get("ok") is True
+                and _effective_command(row) == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                if (result := _same_frame_campaign_root_result(
+                    _effective_command_result(row), planning_snapshot)) is not None), None)
+            planned["plan"] = {**planned["plan"], "player_risk_context":
+                build_ordinary_player_risk_context_v1(planning_snapshot, risk_root)}
             return planned
 
         if use_internal_view:
@@ -4154,6 +4209,23 @@ class GameplayBridgeService:
             if isinstance(plan, dict)
             else None
         )
+        from ..vanilla_events.rite_growth_material import (
+            ENDING_FIELD, METRIC, STARTING_FIELD,
+            capture_rite_growth_fulfillment_observation_v1,
+        )
+        if (isinstance(material_expectation, dict)
+                and material_expectation.get("event_definition_key") == "rite_growth.0010"
+                and material_expectation.get("metric") == METRIC):
+            selection = result.get("event_selection")
+            if isinstance(selection, dict) and selection.get("postcondition_verified") is True:
+                reader = getattr(self.driver, "take_snapshot_without_native_command_history", None)
+                frame = reader() if callable(reader) else self.snapshot()
+                after = capture_rite_growth_fulfillment_observation_v1(self.driver, snapshot=frame)
+                result = {**result, "event_selection": {
+                    **selection,
+                    STARTING_FIELD: material_expectation.get("starting_religion_observation"),
+                    ENDING_FIELD: after,
+                }}
         if isinstance(material_expectation, dict):
             result = {
                 **result,

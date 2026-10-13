@@ -1,5 +1,15 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-13：actual4 有界选择与材料比较增量
+
+原 G2-M2 三自然／两种多选的完成合同保留，不重开资格。新 `bookmark.1070.c` utility 明确采用“取得事件军队且不新增教宗／皇帝敌意”的我方目标；A/B/C 的原版 AI base 都是100，不能称 C 为原生偏好或最优。A/B/C 实际生成750/500/250混编兵；A每军最后25人为conrois，B/C为armored_horsemen。开窗 immediate 的六项 pressed claims 不计选项收益；这些选项均未宣战。
+
+`bookmark1070_material.py` 复用既有玩家军队 roster 与 `ordinary_core_v1` regiment 观察，比较唯一新增自有军队及实际250兵、三种MAA50/50/25和125非MAA。非MAA不冒充独立征召兵类型身份，保留 `levy_type_identity_observed=false`；没有首都位置或全军净增量信用。缺观察时材料 unavailable，事件已推进事实仍保留，不重选。Driver外置接线交唯一写入者；Service已有材料评价入口，无需增加全事件查询。
+
+另有三项按需增量：`.1001` standalone adapter 复用既有七scope／割让影响，军事选择仍由普通战争owner决定，缺依据时诚实保持未选；`.6003` helper可用两份现有guest→root意见读重排，并允许各查询独立revision（实见event24、意见read26/27），缺输入明确沿用bounded route；Rite `.0010` fulfillment helper复用actual4宗教查询，合法零与限幅不变分别保留，不预测固定+5。
+
+本包为源码及新增定向离线验证，未取得新开局或新实机信用。新utility1项、army helper6项、faction adapter1项、意见helper4项、Rite helper5项、registry/leaf接线2项最终通过，合计19个唯一新用例；意见helper两次运行仍只计4项。首次utility loader因缺PYTHONPATH的HARNESS RED及其修正保留，原测试体当次未执行。回执在 `D:/codex-ck3-background-spill/g2-remediation-20261013/resume01/m2/`；Driver/Service共享接线和未来自然事件实机分别由其owner记录，不由这些离线结果授予。
+
 ## 2026-10-03：v24/82c 实际消费旅行19，条件清旗保持未知
 
 ROOT正常push Python82c0317448eb8c83c4bf17364a02373b61c0775b后，以v24/newPID38520/严格native-env6c87原输入复用当前19的source-bound route。唯一finiteclosed `robert-travel1000-82c03174-v24-actual-select-01/result.json` current `travel_completion_event.1000`，native5/public2/暂停53222952/root-owner29829、currentexact5scopes和authored2/rendered1/sole0全部readback合法，24项registry checks全true。Loadercalculated4221000/runtime6534及scope nameidentifier变化不改变canonicalkey/typename/currentcontract，numericloaderordinal没有成为固定决策标签。

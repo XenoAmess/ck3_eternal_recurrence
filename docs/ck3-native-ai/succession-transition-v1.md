@@ -512,6 +512,32 @@ flowchart LR
     C -. "not yet observed" .-> P["successor gameplay and normal pair, actual0"]
 ```
 
+## 2026-10-13：异步队列复用现有继承交接
+
+新增 [async adapter](../../tools/g2_saved_campaign/m7_ordinary_successor_async_queue.py)
+包装现有 `m7_ordinary_successor_queue.py`，不修改继承预测、对账器、Driver、
+Service 或 native ABI。调用者提供既有异步 `call(tool, arguments, kind)` 和
+同步或异步 `thin(kind, payload)`；所有回调仍在原事件循环执行，同一 adapter
+串行处理交接。没有新增 SDK、Game、事件循环或第二个队列消费者。
+
+构造 adapter 不执行请求。原 30 回合演示遇到 actor/episode 改变时仍交还 Root；
+只有 owner 显式调用 `adopt_successor` 才采用现有接续路径。原演示的受限
+`generated()` 未获准承载完整继承工具集合，不能直接当作此 adapter 的 transport。
+消费已经完成的 continuation 时，必须提供原响应及独立保留的 terminal before-anchor，
+不重发 Continue。新 transition 在后续 timeline 查询之前通过 owner 的 `thin`
+保存 pending 回执；这只证明回调返回，不新增 fsync 保证，也不复制原始响应文件。
+
+`adopt_successor` 复用原有 fresh successor、timeline/必要 Close 和 SAVE 校验。
+玩家决定未处理时返回延期保存；保存成功后立即返回真实 successor checkpoint 和
+SAVE 响应引用，不自行进入下一回合。取消时等待已发出的原请求返回，再停止后续请求。
+
+仅新增接缝的 FIRST 检查 **9/9 GREEN**（unittest 0.435s，完整 1.683s）：
+原 completed response/逐头衔结果保留、already-clear、unknown 零重送、显式采用后
+SAVE 交回、原队列/事件循环、串行调用和取消收回。
+证据为 [FIRST01 receipt](D:/codex-ck3-background-spill/g2-remediation-20261013/resume01/m3/ASYNC-ADAPTER-FIRST01.json)。
+此包为 **static-ready**；没有新 Game/Steam/窗口操作、自然继承或实际 Close 信用，
+不重开原 M3，也不复验旧矩阵。当前工作包复核期限仍为 2026-10-13T16:58:39Z。
+
 ## Minimum balance inputs qualified and post-ransom h9444 retained：R0047自然继承准备增量（2026-10-06T05:27:55+08:00）
 
 仅消费frozen g78 HEADd22e9a1c source/reference和既有R0047/v73配置，不改代码、不重测/构建/游戏。当前heldstdio argv已选ordinary_campaign_succession/no-pact/private-death-succession-modal，loader已有readonly query＋Close注册，nativev73 private modal构建ON。观察到 `continue_as_heir_after_death:false` 是capabilities/_with_one_life_episode的固定metadata，并非actuallaunchdisable；不能修改字段制造readiness，也无需因该字段重启或换MCP。

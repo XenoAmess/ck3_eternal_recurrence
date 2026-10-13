@@ -7,7 +7,8 @@ from collections.abc import Mapping
 from .driver import BridgeUnavailableError
 from .sway_completion_causal_private_12004 import normalize_sway_end_invocation_12004, normalize_sway_end_relation_12004
 from .g2_private_query_transport import (
-    private_g2_query_metadata_v1, read_private_g2_native_query_v1,
+    private_g2_query_metadata_v1, private_g2_query_snapshot_v1,
+    read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_build
@@ -262,7 +263,8 @@ def query_active_scheme_sway_completion_termination_private_v1(
             or not _integer(scheme_instance_id, 0, 0xFFFFFFFE)
             or not _integer(after_sequence, 0, 0xFFFFFFFFFFFFFFFF)):
         raise ValueError("private sway termination revision/target/full instance/sequence is invalid")
-    actor = driver.take_snapshot().get("played_character")
+    actor = private_g2_query_snapshot_v1(
+        driver, include_native_command_history=False).get("played_character")
     if not isinstance(actor, Mapping) or not _integer(actor.get("character_id"), 1, (1 << 31) - 1):
         raise BridgeUnavailableError("private sway termination lacks the current player identity")
     if actor["character_id"] == target_character_id:
@@ -274,6 +276,7 @@ def query_active_scheme_sway_completion_termination_private_v1(
                         "scheme_instance_id": scheme_instance_id,
                         "after_sequence": after_sequence},
         timeout_seconds=timeout_seconds,
+        include_native_command_history=False,
     )
     try:
         build = require_exact_native_build(result.get("build_version"), result.get("executable_sha256"))

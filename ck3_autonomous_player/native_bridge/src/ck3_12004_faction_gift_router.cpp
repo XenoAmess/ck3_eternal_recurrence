@@ -84,11 +84,13 @@ bool CaptureObservation(void *opaque,
   return captured;
 }
 
-// Preserve the existing targeting-vector / leader-before-member order. A
-// leader repeated in its own member vector is one recipient, not a retry.
+// Default callers preserve targeting-vector / leader-before-member order.
+// Preview can prefer observed stock-danger rows, stably within each group.
+// A leader repeated in its own member vector is one recipient, not a retry.
 template <typename Visitor>
 bool VisitFactionGiftCandidates(const game::CampaignRootContextV1 &root,
-    const game::PlayerFactionAlertsV1 &alerts, Visitor visit) {
+    const game::PlayerFactionAlertsV1 &alerts, Visitor visit,
+    bool prefer_stock_danger = false) {
   if (root.status != game::CampaignRootContextStatusV1::available ||
       !root.readiness.direct_landed_vassals_ready || !root.player_character_id ||
       alerts.status != game::PlayerFactionAlertsStatusV1::available ||
@@ -101,17 +103,22 @@ bool VisitFactionGiftCandidates(const game::CampaignRootContextV1 &root,
         id) != root.direct_landed_vassal_character_ids.end();
   };
   bool visited = false;
-  for (const auto &row : alerts.targeting_factions) {
-    if (row.faction_id <= 0 || row.target_character_id != *root.player_character_id || row.faction_at_war) continue;
-    const auto offer = [&](std::int32_t id) {
-      if (!eligible(id)) return false;
-      visited = true;
-      return visit(static_cast<std::uint32_t>(row.faction_id), static_cast<std::uint32_t>(id));
-    };
-    if (row.leader_character_id && offer(*row.leader_character_id)) return true;
-    for (auto id : row.character_member_ids) {
-      if (row.leader_character_id && id == *row.leader_character_id) continue;
-      if (offer(id)) return true;
+  const int passes = prefer_stock_danger &&
+      alerts.readiness.stock_dangerous_predicate_ready ? 2 : 1;
+  for (int pass = 0; pass < passes; ++pass) {
+    for (const auto &row : alerts.targeting_factions) {
+      if (passes == 2 && row.dangerous_by_stock_rule != (pass == 0)) continue;
+      if (row.faction_id <= 0 || row.target_character_id != *root.player_character_id || row.faction_at_war) continue;
+      const auto offer = [&](std::int32_t id) {
+        if (!eligible(id)) return false;
+        visited = true;
+        return visit(static_cast<std::uint32_t>(row.faction_id), static_cast<std::uint32_t>(id));
+      };
+      if (row.leader_character_id && offer(*row.leader_character_id)) return true;
+      for (auto id : row.character_member_ids) {
+        if (row.leader_character_id && id == *row.leader_character_id) continue;
+        if (offer(id)) return true;
+      }
     }
   }
   return visited;
@@ -390,7 +397,7 @@ bool ExecuteFactionGiftPrivateMailbox12004(void *opaque,
           }
           selected = ObservedGiftCandidateShouldReturn(query.observation);
           return selected;
-        });
+        }, true);
         if (query.failure.empty()) {
           // A known native/recipient denial may continue to another observed
           // member. An incomplete capture above remains the original RED.

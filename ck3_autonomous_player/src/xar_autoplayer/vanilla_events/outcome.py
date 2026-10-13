@@ -122,6 +122,8 @@ def plan_registered_event_material_postcondition_v1(
     *,
     played_character_gold: object = None,
     played_character_prestige: object = None,
+    snapshot: object = None,
+    religion_context: object = None,
     snapshot_id: object,
     revision: object,
     native_revision: object = None,
@@ -131,6 +133,23 @@ def plan_registered_event_material_postcondition_v1(
 
     if not isinstance(decision, Mapping) or decision.get("status") != "recommended":
         return None
+    if (decision.get("event_definition_key") == "bookmark.1070"
+            and decision.get("ck3_build") == "1.20.0.4"
+            and decision.get("selected_native_option_index") == 2):
+        from .bookmark1070_material import (
+            plan_bookmark1070_army_material_postcondition_v1,
+        )
+
+        return plan_bookmark1070_army_material_postcondition_v1(decision, snapshot)
+    if (decision.get("event_definition_key") == "rite_growth.0010"
+            and decision.get("selected_native_option_index") == 0):
+        from .rite_growth_material import plan_rite_growth_material_postcondition_v1
+
+        return plan_rite_growth_material_postcondition_v1(
+            decision, played_character, religion_context=religion_context,
+            snapshot_id=snapshot_id, revision=revision,
+            native_revision=native_revision, date_raw=date_raw,
+        )
     if (decision.get("event_definition_key") == "trait_specific.9001"
             and decision.get("ck3_build") == "1.20.0.4"
             and decision.get("selected_native_option_index") in (0, 1)):
@@ -202,6 +221,19 @@ def evaluate_registered_event_material_postcondition_v1(
     """Evaluate a supported choice without inventing an unavailable delta."""
 
     expected = expectation if isinstance(expectation, Mapping) else {}
+    if (expected.get("event_definition_key") == "bookmark.1070"
+            and expected.get("metric") == "player_armies.bookmark1070_spawn"):
+        from .bookmark1070_material import (
+            evaluate_bookmark1070_army_material_postcondition_v1,
+        )
+
+        return evaluate_bookmark1070_army_material_postcondition_v1(
+            expected, event_selection)
+    if (expected.get("event_definition_key") == "rite_growth.0010"
+            and expected.get("metric") == "player_religion.spiritual_fulfillment_raw"):
+        from .rite_growth_material import evaluate_rite_growth_material_postcondition_v1
+
+        return evaluate_rite_growth_material_postcondition_v1(expected, event_selection)
     if (expected.get("event_definition_key") == "trait_specific.9001"
             and expected.get("expected_relation") == "false_to_true"):
         from ..bridge.player_event_trait_membership_contract import (

@@ -447,6 +447,7 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
         std::int32_t building_type_id;
         std::uintptr_t definition;
         int authored_income_hundredths;
+        bool tier_one_target;
       };
       std::vector<ScanDefinition> positive_definitions;
       std::vector<ScanDefinition> remaining_definitions;
@@ -459,16 +460,23 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
         std::string key;
         if (!ReadBuildingKey(campaign, definition, key)) {
           all_definition_keys_classified = false;
-          remaining_definitions.push_back({building_type_id, definition, 0});
+          remaining_definitions.push_back({building_type_id, definition, 0, false});
           continue;
         }
         const int income = ck3_11906::AuthoredTargetIncomeHundredths12004(key);
         (income > 0 ? positive_definitions : remaining_definitions)
-            .push_back({building_type_id, definition, income});
+            .push_back({building_type_id, definition, income,
+                        ck3_11906::AuthoredIncomeHundredths(key) > 0});
       }
+      // Observe the original nineteen tier-one targets before higher tiers can
+      // exhaust the same bounded budget. Final selection still ranks the actual
+      // observed slot's income delta, and a truncated upgrade scan stays partial.
       std::stable_sort(positive_definitions.begin(),
                        positive_definitions.end(),
                        [](const auto &a, const auto &b) {
+                         if (a.tier_one_target != b.tier_one_target) {
+                           return a.tier_one_target;
+                         }
                          return a.authored_income_hundredths >
                                 b.authored_income_hundredths;
                        });

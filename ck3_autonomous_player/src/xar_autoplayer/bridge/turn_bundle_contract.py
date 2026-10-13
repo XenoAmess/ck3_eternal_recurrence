@@ -424,7 +424,13 @@ def build_turn_bundle_v1(
         council_ready = False
     else:
         raise ValueError("campaign-root council status is malformed")
+    immediate_liege = root.get("immediate_liege_character_id")
+    if immediate_liege is not None:
+        immediate_liege = _positive_int(
+            immediate_liege, "immediate_liege_character_id"
+        )
     realm_state = {
+        "immediate_liege_character_id": immediate_liege,
         "top_liege_character_id": _positive_int(
             root.get("top_liege_character_id"), "top_liege_character_id"
         ),

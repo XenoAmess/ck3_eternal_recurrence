@@ -19,6 +19,9 @@ from .bridge.prisoner_negotiated_preview_contract_12003 import (
 from .bridge.prisoner_release_preview_contract_12003 import (
     normalize_prisoner_release_preview_12003,
 )
+from .bridge.prisoner_release_material_opinion_contract_12004 import (
+    normalize_prisoner_release_material_opinion_12004,
+)
 from .bridge.war_contract import query_war_prisoner_release_pairs_v1_step
 
 
@@ -275,6 +278,20 @@ def submit_release_formal(driver: object, *, plan: Mapping[str, object]) -> dict
                "release_option_mask_bits": choice["release_option_mask_bits"],
                "costs": choice["preview"]["costs"],
                "acceptance": choice["preview"]["acceptance"]}
+    material = choice["collection"].get("prisoner_release_material_opinion")
+    if material is not None:
+        try:
+            pending["pre_release_material_opinion"] = (
+                normalize_prisoner_release_material_opinion_12004(
+                    material, native_revision=native, date_raw=date,
+                    player_character_id=actor,
+                    target_character_id=choice["prisoner_character_id"],
+                )
+            )
+        except ValueError as error:
+            # The optional material query may concern a different retained target.
+            # It supplies no baseline for this release, without changing its terms.
+            pending["pre_release_material_opinion_unavailable_reason"] = str(error)
     write_json_atomic(state_dir / _LEDGER, {"pending": pending, "resolved": prior_ledger["resolved"]})
     try:
         ack = driver.submit_player_prisoner_release_private_v1(

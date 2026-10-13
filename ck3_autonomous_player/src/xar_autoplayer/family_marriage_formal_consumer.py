@@ -22,6 +22,11 @@ from .bridge.marriage_candidate_alliance_private_transport import (
 
 _LEDGER = "first-heir-marriage-formal-v1.json"
 _MAX_BETROTHAL_AGE_GAP_RAW = 2
+_CANDIDATE_RELATION_FIELDS = (
+    "candidate_betrothed_character_id",
+    "candidate_primary_spouse_character_id",
+    "candidate_spouse_character_ids",
+)
 _SELECTED_VALUE_FIELDS = (
     "played_house_id", "played_dynasty_id", "heir_house_id",
     "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
@@ -326,6 +331,8 @@ def _private_five_candidate_diagnostic(
         pairs = row.get("possible_alliance_pairs")
         observed.append({
             **{field: row.get(field) for field in fields},
+            **{field: deepcopy(row.get(field))
+               for field in _CANDIDATE_RELATION_FIELDS},
             "heir_spouse_count": len(spouses) if isinstance(spouses, list) else None,
             "recipient_ai_accept_raw": source.get("recipient_ai_accept_raw") if source else None,
             "recipient_matchmaker_character_id": (
@@ -812,6 +819,8 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
         "candidate_character_id": candidate,
         "recipient_character_id": recipient,
         **{field: selected_row.get(field) for field in _SELECTED_VALUE_FIELDS},
+        **{field: deepcopy(selected_row.get(field))
+           for field in _CANDIDATE_RELATION_FIELDS},
         # These inputs bound a future lineage estimate. No child exists in
         # this read, and neither the marriage nor its alliance is proven here.
         "child_dynasty_prediction_basis_fields": [

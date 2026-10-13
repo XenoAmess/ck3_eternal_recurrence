@@ -1,0 +1,75 @@
+{
+  "schema": "xar.faction-strength-operands-12004-source-contract.v1",
+  "stage": "source-edges-confirmed-callee-bodies-unqualified",
+  "game_version": "1.20.0.4",
+  "steam_build": 25734779,
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "question": "Which native strength operands can the existing faction alert query expose without deriving troop counts from its final power percentage?",
+  "actor": "Current played character and an independently resolved full-generation targeting FactionID",
+  "production_chain": "Existing paused faction-alert mailbox -> current CFaction -> final power 0x2601ED0 -> two native operand calls -> percent-point output",
+  "trigger_timing": "Existing paused application-main faction alert capture; no new observer or hook",
+  "identity_lifecycle": "The existing full-generation faction resolver and complete two-sample frame comparison remain the identity and stability owners",
+  "zero_sample_explanation": "This delta inspects one retained source-migration receipt. It contains no new CK3 sample, operand value, direct callee invocation or command.",
+  "retained_parent_evidence": {
+    "detail_relative_to_faction_migration_packet": "map01/faction_power-DETAIL.json",
+    "detail_sha256": "6980128e70cbfe0147863d93ec2769249660758fc8dd149696ce2ddc1c4a03dd",
+    "parent_rva": "0x2601ED0",
+    "captured_code_bytes": 443,
+    "complete_decode": true,
+    "argument_material": "RCX is the current CFaction receiver; RDX points to the parent's stack-owned int64 output slot at rsp+0x40. Both calls are followed by a load from that slot. The parent ignores the callee return register.",
+    "uniform_rva_shift_used": false
+  },
+  "operands": [
+    {
+      "key": "target_minus_member_strength",
+      "parent_call_offset": 26,
+      "actual_call_rva": "0x2601EEA",
+      "actual_call_bytes": "e891feffff",
+      "actual_target_rva": "0x2601D80",
+      "old_target_rva": "0x2601DA0",
+      "output_load_offset": 31,
+      "output_load_bytes": "488b5c2440",
+      "target_body_expanded_in_receipt": false,
+      "old_abi_reference": "ck3_12002_faction_metrics_abi.json:power_dependencies.target_minus_member_strength",
+      "old_complete_body_bytes": 336,
+      "old_complete_body_sha256": "3975705393F45486E7A8E436D38587354DCD209D9B5189B89A0F6CEA57BDDCEB",
+      "next_source_dependency": "Read actual target 0x2601D80 runtime-function metadata and its complete chained body. The old 336-byte body has seven CHAININFO fragments; neither its extent nor a direct-call return-pointer contract is transferred to .4."
+    },
+    {
+      "key": "member_strength_including_counties",
+      "parent_call_offset": 76,
+      "actual_call_rva": "0x2601F1C",
+      "actual_call_bytes": "e86f010000",
+      "actual_target_rva": "0x2602090",
+      "old_target_rva": "0x26020B0",
+      "argument_receiver_offset": 73,
+      "argument_receiver_bytes": "488bce",
+      "argument_output_offset": 68,
+      "argument_output_bytes": "488d542440",
+      "output_load_offset": 81,
+      "output_load_bytes": "488b4c2440",
+      "target_body_expanded_in_receipt": false,
+      "old_abi_reference": "ck3_12002_faction_metrics_abi.json:power_dependencies.member_strength_including_counties",
+      "old_complete_body_bytes": 232,
+      "old_complete_body_sha256": "8137E2B91B76B5F37EDCD4E1E520B8C5A021532C9F14F43FC01699CB2A40A2E0",
+      "next_source_dependency": "Preferred first operand: read actual target 0x2602090 runtime-function metadata and complete body, then account its county-contribution call edge. The old 232-byte body is comparison input, not an assumed .4 extent."
+    }
+  ],
+  "collector_boundary": {
+    "direct_callee_binding_qualified": false,
+    "optional_collector_fields_added": false,
+    "source_units": "Old source uses Q100000 strength operands, including county contributions; no current .4 operand value or mobilizable-troop interpretation is qualified here.",
+    "existing_final_power_and_stock_response_unchanged": true
+  },
+  "demand_clock_boundary": {
+    "actual4_callable_or_field_qualified": false,
+    "source_dependencies": [
+      "Final native demand eligibility and current demand total",
+      "Actual eligible-since identity/date writer and reader",
+      "Monthly demand update and MAX_DEMAND_DELAY_DAYS composition"
+    ],
+    "existing_months_estimate_is_deadline": false,
+    "new_required_readiness": false,
+    "existing_exact_ultimatum_timing_ready": false
+  }
+}

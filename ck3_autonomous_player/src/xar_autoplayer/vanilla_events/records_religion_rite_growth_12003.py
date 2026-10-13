@@ -110,7 +110,11 @@ RELIGION_RITE_GROWTH_12003_RECORDS: Final = {
                     "actual_value_boundary": "native modifiers and clamping may affect the result; use independent actual pre/post values",
                 }],
                 "common_after_effects": [],
-                "observable_postcondition": None,
+                "observable_postcondition": {
+                    "metric": "player_religion.spiritual_fulfillment_raw",
+                    "expected_relation": "non_decreasing",
+                    "material_change_required_for_evidence": True,
+                },
                 "source_anchors": [f"{_EVENT_PATH}:73-413", f"{_EVENT_PATH}:326-332"],
                 "source_sha256": _SOURCES,
                 "material_evidence_boundary": "existing generic comparator lacks fulfillment; existing player-religion query can independently observe its signed raw value, including valid zero; ACK/source base/old-instance advance are not material",

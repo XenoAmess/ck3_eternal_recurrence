@@ -681,7 +681,7 @@ def _same_frame_campaign_root_context(
     rows: list[dict[str, object]],
     snapshot: dict[str, object] | None,
 ) -> dict[str, object] | None:
-    """Recover a complete campaign-root row bound to this paused frame."""
+    """Recover the required campaign-root components on this paused frame."""
 
     if not isinstance(snapshot, dict):
         return None
@@ -725,7 +725,36 @@ def _same_frame_campaign_root_context(
             and payload.get("date_raw") == date_raw
             and payload.get("player_character_id") == actor_id
             and isinstance(readiness, dict)
-            and readiness.get("ready") is True
+            and (
+                readiness.get("ready") is True
+                or (
+                    # Available roots retain all required components when
+                    # optional rule-token reads fail. Council availability
+                    # remains a separate gate at its existing consumers.
+                    readiness.get("ready") is False
+                    and readiness.get("selected_game_rule_tokens_ready") is False
+                    and all(
+                        readiness.get(key) is True
+                        for key in (
+                            "player_identity_ready",
+                            "player_monthly_gold_income_ready",
+                            "player_health_ready",
+                            "player_domain_ready",
+                            "player_targeting_factions_ready",
+                            "primary_title_ready",
+                            "primary_title_succession_ready",
+                            "held_title_partition_ready",
+                            "capital_ready",
+                            "lieges_ready",
+                            "direct_landed_vassals_ready",
+                            "adjacent_external_province_holders_ready",
+                            "related_character_contexts_ready",
+                            "government_ready",
+                            "same_frame_ready",
+                        )
+                    )
+                )
+            )
         ):
             return payload
     return None
@@ -6799,6 +6828,71 @@ def _de_jure_no_safe_route_exit_plan(
         }
     return None
 
+def _defender_no_safe_route_white_peace_plan(
+    snapshot: dict[str, object],
+    *,
+    war_id: object,
+    commands: list[dict[str, object]],
+    available_steps: set[str],
+    active_war_summary: list[dict[str, object]],
+    route_rejections: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Use the existing defender proposal only after safe continuation failed."""
+    if isinstance(war_id, bool) or not isinstance(war_id, int) or war_id <= 0:
+        return None
+    step = offer_white_peace_step(war_id)
+    if step not in available_steps or _white_peace_submission_cooldown(
+        commands,
+        war_id=war_id,
+        date_raw=snapshot.get("date_raw"),
+        episode_run_id=snapshot.get("episode_run_id"),
+    ) is not None:
+        return None
+    # Reuse exactly the two already published defender readiness variants.
+    # The raw quote is proposal evidence; an absent final answer stays absent.
+    from .bridge.native_driver import (
+        _defender_de_jure_white_peace_readiness,
+        _defender_minor_religious_white_peace_readiness,
+    )
+
+    for readiness in (
+        _defender_de_jure_white_peace_readiness,
+        _defender_minor_religious_white_peace_readiness,
+    ):
+        ready, _, evidence = readiness(snapshot, war_id)
+        if not ready:
+            continue
+        options = evidence["options"]
+        white_peace = evidence["white_peace"]
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_defender_no_safe_route_white_peace",
+            "selected_step": step,
+            "war_id": war_id,
+            "decision": {
+                "policy": "defender-no-safe-route-white-peace-proposal-v1",
+                "selected_outcome": "white_peace",
+                "variant": evidence["variant"],
+                "native_validator_passed": True,
+                "recipient_ai_acceptance_raw": white_peace["ai_acceptance"]["raw"],
+                "recipient_response": copy.deepcopy(white_peace.get("recipient_response")),
+                "casus_belli": copy.deepcopy(options["active_casus_belli_identity"]),
+                "player_side": "defender",
+                "full_campaign_utility_ready": False,
+                "native_ai_equivalent": False,
+                "semantic_optimal": False,
+            },
+            "reason": (
+                "no safe exact objective, regroup, or hold continuation was selected; "
+                "make one existing native-legal positive-quote defender proposal "
+                "without treating the quote or submission as an accepted peace"
+            ),
+            "route_rejections": route_rejections,
+            "active_wars": active_war_summary,
+        }
+    return None
+
+
 def _claim_cb_white_peace_base_ready(
     snapshot: dict[str, object],
     war: dict[str, object],
@@ -8437,6 +8531,9 @@ def _choose_one_life_turn_core(
                     played_character_id=played_character_id,
                     snapshot_option_count=active_event.get("option_count"),
                     played_character=played_character,
+                    event_opinion_observations=snapshot.get(
+                        "event_opinion_observations"
+                    ),
                 )
             )
             if registry_decision.get("status") == "recommended":
@@ -8444,6 +8541,7 @@ def _choose_one_life_turn_core(
                     plan_registered_event_material_postcondition_v1(
                         registry_decision,
                         played_character,
+                        snapshot=snapshot,
                         played_character_gold=(
                             snapshot.get("played_character_gold")
                             if isinstance(snapshot, dict)
@@ -8874,6 +8972,81 @@ def _choose_one_life_turn_core(
             "reason": "the war reached 100% but this backend cannot enforce demands",
             "active_wars": war_summary,
         }
+    # An already qualified terminal defeat must be consumed before another
+    # war's query, negotiated proposal or pending-response date advance.
+    # Stable full WarID ordering also makes multiple terminal candidates
+    # independent of the backend's active-war list order.
+    terminal_wars = sorted(
+        (
+            war for war in active_wars
+            if _native_int(war.get("war_id")) is not None
+            and int(war["war_id"]) > 0
+        ),
+        key=lambda war: int(war["war_id"]),
+    )
+    for war in terminal_wars:
+        war_id = int(war["war_id"])
+        options = next((
+            row for row in current_termination_rows
+            if isinstance(row, dict)
+            and _same_frame_termination_row(snapshot, row, war_id)
+        ), None) if isinstance(current_termination_rows, list) else None
+        if _de_jure_surrender_submission_state(
+            rows,
+            war_id=war_id,
+            date_raw=snapshot.get("date_raw"),
+            episode_run_id=snapshot.get("episode_run_id"),
+        ) is not None:
+            continue
+        cooldown = _white_peace_submission_cooldown(
+            rows,
+            war_id=war_id,
+            date_raw=snapshot.get("date_raw"),
+            episode_run_id=snapshot.get("episode_run_id"),
+        )
+        if isinstance(cooldown, dict) and cooldown.get("status") == "cooldown":
+            continue
+        if (
+            isinstance(snapshot, dict)
+            and _terminal_score_surrender_ready(snapshot, war, options)
+        ):
+            step = surrender_war_step(war_id)
+            if step in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_terminal_score_surrender",
+                    "selected_step": step,
+                    "war_id": war_id,
+                    "decision": {
+                        "policy": "terminal-score-defeat-receipt-v1",
+                        "selected_outcome": "surrender",
+                        "player_relative_war_score": (
+                            war.get("player_relative_war_score")
+                        ),
+                        "native_validator_passed": True,
+                        "recipient_would_accept_now": True,
+                    },
+                    "reason": (
+                        "the exact same-frame native termination row "
+                        "proves a fully lost -100 attacker war and an "
+                        "immediately accepted surrender; submit it before "
+                        "CK3 auto-removes the WarID so defeat has an "
+                        "explicit MCP receipt"
+                    ),
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_terminal_score_surrender_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "war_id": war_id,
+                "reason": (
+                    "the exact native row proves terminal defeat, but the "
+                    "surrender literal is not currently executable"
+                ),
+                "active_wars": war_summary,
+            }
     pending_interaction = (
         snapshot.get("pending_character_interaction")
         if isinstance(snapshot, dict)
@@ -9653,47 +9826,6 @@ def _choose_one_life_turn_core(
                         "active_wars": war_summary,
                     }
                 continue
-            if (
-                isinstance(snapshot, dict)
-                and _terminal_score_surrender_ready(snapshot, war, options)
-            ):
-                step = surrender_war_step(war_id)
-                if step in available_steps:
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": "native_war_terminal_score_surrender",
-                        "selected_step": step,
-                        "war_id": war_id,
-                        "decision": {
-                            "policy": "terminal-score-defeat-receipt-v1",
-                            "selected_outcome": "surrender",
-                            "player_relative_war_score": (
-                                war.get("player_relative_war_score")
-                            ),
-                            "native_validator_passed": True,
-                            "recipient_would_accept_now": True,
-                        },
-                        "reason": (
-                            "the exact same-frame native termination row "
-                            "proves a fully lost -100 attacker war and an "
-                            "immediately accepted surrender; submit it before "
-                            "CK3 auto-removes the WarID so defeat has an "
-                            "explicit MCP receipt"
-                        ),
-                        "active_wars": war_summary,
-                    }
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_terminal_score_surrender_unsupported",
-                    "selected_step": None,
-                    "required_step": step,
-                    "war_id": war_id,
-                    "reason": (
-                        "the exact native row proves terminal defeat, but the "
-                        "surrender literal is not currently executable"
-                    ),
-                    "active_wars": war_summary,
-                }
             if not (
                 isinstance(snapshot, dict)
                 and _claim_cb_white_peace_base_ready(
@@ -12047,6 +12179,17 @@ def _choose_one_life_turn_core(
                     isinstance(preview, dict)
                     and preview.get("status") == "deferred"
                 ):
+                    if preview.get("native_rejection_stage") == "move_mode_unavailable":
+                        # This native gate depends on the destination. Its
+                        # rejection does not rule out the next exact objective.
+                        route_rejections.append(
+                            {
+                                "target_province_id": province_id,
+                                "status": "move_mode_unavailable",
+                                "native_rejection_stage": "move_mode_unavailable",
+                            }
+                        )
+                        continue
                     if stationary_threats:
                         route_rejections.append(
                             {
@@ -12952,6 +13095,20 @@ def _choose_one_life_turn_core(
                             "route_rejections": route_rejections,
                             "active_wars": war_summary,
                         }
+                    defender_proposal = (
+                        _defender_no_safe_route_white_peace_plan(
+                            snapshot,
+                            war_id=tactical_war_id,
+                            commands=rows,
+                            available_steps=available_steps,
+                            active_war_summary=war_summary,
+                            route_rejections=route_rejections,
+                        )
+                        if isinstance(snapshot, dict)
+                        else None
+                    )
+                    if defender_proposal is not None:
+                        return defender_proposal
                     return {
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_no_safe_exact_route",
@@ -13002,6 +13159,20 @@ def _choose_one_life_turn_core(
             )
             if emergency_exit is not None:
                 return emergency_exit
+            defender_proposal = (
+                _defender_no_safe_route_white_peace_plan(
+                    snapshot,
+                    war_id=tactical_war_id,
+                    commands=rows,
+                    available_steps=available_steps,
+                    active_war_summary=war_summary,
+                    route_rejections=[passive_route_audit],
+                )
+                if isinstance(snapshot, dict)
+                else None
+            )
+            if defender_proposal is not None:
+                return defender_proposal
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_no_safe_exact_route",
@@ -14350,6 +14521,45 @@ def _choose_one_life_turn_core(
             "postwar_reentry": postwar_reentry,
         }
 
+    declaration_continuity = (
+        snapshot.get("war_declaration_continuity_v1")
+        if isinstance(snapshot, dict)
+        else None
+    )
+    if (
+        isinstance(declaration_continuity, dict)
+        and declaration_continuity.get("schema") == "war-declaration-continuity-v1"
+        and declaration_continuity.get("status")
+        not in {"war_started", "native_rejected", "not_submitted"}
+    ):
+        # Terminal, event and actual-war defense priorities have already run.
+        # An unresolved native response must retain its original ticket.
+        attempted_index = _latest_prefix_index(
+            rows, "declare-war-", successful_only=False
+        )
+        progressed_index = _latest_life_advance_index(rows)
+        advance = (
+            "life-advance"
+            if declaration_continuity.get("status") == "declaration_submitted"
+            and declaration_continuity.get("native_response") == "accepted"
+            and declaration_continuity.get("in_flight") is False
+            and attempted_index > progressed_index
+            and "life-advance" in available_steps
+            else None
+        )
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_declaration_pending",
+            "status": "pending",
+            "selected_step": advance,
+            "reason": (
+                "retain the original declaration until its native response "
+                "and unique actual war identity resolve; never submit another declaration"
+            ),
+            "war_declaration_continuity_v1": copy.deepcopy(declaration_continuity),
+            "request_retried": False,
+        }
+
     declaration_index = _latest_prefix_index(rows, "declare-war-")
     life_advance_index = _latest_life_advance_index(rows)
     if declaration_index > life_advance_index:
@@ -15263,7 +15473,9 @@ def _unobservable_started_assaults(
         state_by_id = _objective_province_state_by_id(war)
         state = state_by_id.get(province_id)
         if isinstance(state, dict) and province_id in (
-            _player_occupied_objective_ids(snapshot, war, state_by_id)
+            _player_occupied_objective_ids(
+                snapshot, war, state_by_id, commands=commands
+            )
         ):
             # Exact occupation is the completion postcondition for the old
             # siege, even when active_siege has already disappeared.

@@ -11,10 +11,36 @@ from .bridge.player_prisoner_collection_private_transport import _semantic_snaps
 from .bridge.prisoner_retained_target_state_contract_12004 import (
     normalize_prisoner_retained_target_state_12004,
 )
+from .bridge.prisoner_release_material_opinion_contract_12004 import (
+    compare_prisoner_release_material_opinion_12004,
+    normalize_prisoner_release_material_opinion_12004,
+)
 from .prisoner_ransom_formal_consumer import _frame, _fresh_private_pump
 
 
 RECEIPT_STEP = "query-player-prisoner-release-receipt-v1"
+
+
+def _material_comparison(
+    pending: Mapping[str, object], collection: Mapping[str, object], *,
+    actor: int, target: int, native: int, date: int,
+) -> tuple[dict[str, object] | None, str | None]:
+    before = pending.get("pre_release_material_opinion")
+    if not isinstance(before, Mapping):
+        reason = pending.get("pre_release_material_opinion_unavailable_reason")
+        return None, reason if isinstance(reason, str) and reason else "before_material_not_observed"
+    after = collection.get("prisoner_release_material_opinion")
+    if not isinstance(after, Mapping):
+        return None, "after_material_not_observed"
+    try:
+        after = normalize_prisoner_release_material_opinion_12004(
+            after, native_revision=native, date_raw=date,
+            player_character_id=actor, target_character_id=target,
+        )
+        return compare_prisoner_release_material_opinion_12004(before, after), None
+    except ValueError as error:
+        # Material availability is independent of the observed custody outcome.
+        return None, str(error)
 
 
 def read_release_receipt_private(
@@ -57,12 +83,17 @@ def read_release_receipt_private(
     terminal = applied or current["available"] and state in {"held_by_other", "dead"}
     status = ("applied" if applied else "transferred" if state == "held_by_other"
               else "dead" if state == "dead" else "pending")
+    material_comparison, material_reason = _material_comparison(
+        pending, collection, actor=actor, target=target, native=native, date=date,
+    )
     result = {
         "schema": "xar.ck3.prisoner-release-independent-receipt-12004-v1",
         "status": status, "material_result": applied,
         "postcondition_verified": applied,
         "release_causation_observed": False,
         "command_costs_verified": False,
+        "release_material_opinion_comparison": material_comparison,
+        "release_material_opinion_comparison_unavailable_reason": material_reason,
         "player_character_id": actor, "prisoner_character_id": target,
         "post_native_revision": native, "post_date_raw": date,
         "unavailable_reason": current["unavailable_reason"],
