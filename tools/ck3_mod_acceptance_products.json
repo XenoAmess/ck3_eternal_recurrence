@@ -3156,8 +3156,8 @@
           },
           "budgets": {
             "command_timeout": 300,
-            "readiness_timeout": 900,
-            "timeout": 900,
+            "readiness_timeout": 1500,
+            "timeout": 1500,
             "hold_seconds": 6000,
             "poll_interval": 0.5
           },
