@@ -60,3 +60,10 @@ SHA-256 75fa14e95e0deedb0db7e05b3530e238631d7fb475ecadfb542300bfbb57dc80
 ### Fresh startup source preflight correction
 
 Fresh02 stopped before Game creation because the sparse checkout omitted the tracked `ck3_workshop_mcp` package required by the production builder. Fresh03 froze its 16 source files from exact HEAD; startup then stopped before Game creation because local `.idea` editor files failed the release source allowlist. The builder now treats `.idea` as an excluded development directory. The actual source check passed and none of the 100 allowlisted release files include IDE files; local files were preserved. Both failed attempts retain their original closure receipts. No gameplay or war result is credited.
+
+
+### Fresh04 actual runtime and pre-RPC failure
+
+B8 actually cold-loaded into fresh CK3 PID244488 at03:40:57Z; Game and decision window were assigned to Desktop1 while Desktop2/foreground stayed unchanged. Dedicated OBS actually recorded, grew, and its pre-selection main-menu/decision frames were personally reviewed; an initial black source frame remains preserved. No frontend selection RPC was submitted. The SDK queue/application actual retained handles both exited1: the faction round argument was present but incorrectly used `g2-robert-fresh02-20261013`, violating the R<number> constructor contract. The Game did not exit after normal WM_CLOSE; owned Job cleanup exited1 and proved the tree gone. This is startup failure, not normal closure or gameplay credit.
+
+Two actual recorder defects are fixed in source: overlay identity now queries the actual process image on its FILETIME handle (venv sys.executable can be a different redirector); owned OBS retries only read-only startup profile/collection code207 within the original40-second loop. Other failures still abort, and StartRecord is never retried. The existing recorder custody contracts pass. Fresh05 uses a new state/pipe and explicit R2026101305; B8 is unchanged. Original attempts/receipts/video remain available until the group review deadline.

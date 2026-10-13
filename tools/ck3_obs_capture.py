@@ -286,6 +286,7 @@ class OwnedEngine:
 
     def start(self):
         import psutil
+        from obsws_python.error import OBSSDKRequestError
         if _listeners(self.profile["port"]):
             raise RuntimeError("dedicated OBS port became occupied")
         executable = Path(self.profile["executable"]).resolve(strict=True)
@@ -311,7 +312,12 @@ class OwnedEngine:
         for _ in range(40):
             self.generation.check()
             if _listeners(self.profile["port"]):
-                return self.connect()
+                try:
+                    return self.connect()
+                except OBSSDKRequestError as error:
+                    if (type(error.code) is not int or error.code != 207
+                            or error.req_name not in {"GetProfileList", "GetSceneCollectionList"}):
+                        raise
             time.sleep(1)
         raise TimeoutError("owned OBS listener did not become ready")
 

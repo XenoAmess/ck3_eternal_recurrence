@@ -411,12 +411,20 @@ def main():
     try:
         if not self_handle or not kernel.GetProcessTimes(self_handle, *(ctypes.byref(v) for v in self_times)):
             raise ctypes.WinError(ctypes.get_last_error())
+        kernel.QueryFullProcessImageNameW.argtypes = [ctypes.c_void_p, ctypes.c_uint32,
+            ctypes.c_wchar_p, ctypes.POINTER(ctypes.c_uint32)]
+        kernel.QueryFullProcessImageNameW.restype = ctypes.c_int
+        image_length = ctypes.c_uint32(32768)
+        image_path = ctypes.create_unicode_buffer(image_length.value)
+        if not kernel.QueryFullProcessImageNameW(self_handle, 0, image_path, ctypes.byref(image_length)):
+            raise ctypes.WinError(ctypes.get_last_error())
+        overlay_executable = str(Path(image_path.value).resolve())
     finally:
         if self_handle:
             kernel.CloseHandle(self_handle)
     receipt = {"session": str(session), "game_pid": launch["pid"], "overlay_hwnd": hwnd,
                "game_creation_filetime": times[0].value, "overlay_pid": os.getpid(),
-               "overlay_creation_filetime": self_times[0].value, "overlay_executable": str(Path(sys.executable).resolve()),
+               "overlay_creation_filetime": self_times[0].value, "overlay_executable": overlay_executable,
                "launch_receipt": str(launch_path),
                "game_hwnd": game_hwnd, "game_virtual_desktop": game_desktop,
                "overlay_virtual_desktop": overlay_desktop,
