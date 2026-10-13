@@ -63,6 +63,13 @@ def storage_deadline(config):
     return deadline
 
 
+def original_head_absent(title, faith_id):
+    """Require the fresh native title graph for this exact original Faith."""
+    return (title.get('legal_head_title_absent') is True and
+            title.get('head_title_full_id') is None and
+            title.get('faith_full_id') == faith_id)
+
+
 def roster(data, actor, faith):
     """Actual complete G2 pools; a suggested nominee is never an accepted vote."""
     require(data.get('available') is True and data.get('predicates_complete') is True and
@@ -158,9 +165,11 @@ class BoundedClient:
 
     def read_readiness(self, name):
         current = self.base.religion(self, self.initial, name + '-religion')
+        frame, title_row = self.base.call(self, self.initial, name + '-title', self.base.TITLE)
+        title = self.base.formal.observe_query(frame, title_row['result'], 'confucian_religious_title')
         frame, row = self.base.call(self, self.initial, name + '-assembly', ASSEMBLY)
         data = self.base.formal.observe_query(frame, row['result'], 'confucian_assembly_predicates')
-        self.last_readiness = {'religion': current,
+        self.last_readiness = {'religion': current, 'title': title,
             'roster': roster(data, self.initial['actor'], self.original['faith_id'])}
         return self.last_readiness
 
@@ -234,6 +243,9 @@ def run_case(context, client):
             actual = bounded.read_readiness('headship-' + phase['id'] + '-final')
             cell['actual_readiness'] = actual
             cell['qualified'] = cell['qualified'] and faith_preserved(original, actual['religion'])
+            if phase['id'] == 'baseline':
+                cell['qualified'] = cell['qualified'] and original_head_absent(
+                    actual['title'], original['faith_id'])
             if phase['id'] == 'preparation':
                 cell['qualified'] = cell['qualified'] and prepared_ready(original, actual['religion'], actual['roster'])
         if phase['id'] == 'institution' and cell['qualified']:

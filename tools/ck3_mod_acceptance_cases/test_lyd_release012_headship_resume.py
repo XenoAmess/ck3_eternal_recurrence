@@ -16,6 +16,32 @@ import ck3_mod_acceptance_normal_exit_profile as normal_exit
 
 
 class HeadshipResumeContract(unittest.TestCase):
+    def test_current_native_title_is_required_for_original_headless_baseline(self):
+        fresh = resume.fresh
+        calls = []
+        title = {'legal_head_title_absent': True, 'head_title_full_id': None,
+                 'faith_full_id': 31}
+
+        def native_call(_client, _initial, name, tool):
+            calls.append((name, tool))
+            result = title if tool == fresh.keypaths.TITLE else {'predicates_complete': True}
+            return {'snapshot': 'current'}, {'result': result}
+
+        base = SimpleNamespace(
+            religion=lambda _client, _initial, _name: {'faith_id': 31, 'rite_id': 174},
+            call=native_call, TITLE=fresh.keypaths.TITLE,
+            formal=SimpleNamespace(observe_query=lambda _frame, result, _domain: result))
+        bounded = fresh.BoundedClient(SimpleNamespace(remaining=lambda: 10000),
+            9999999999, base, {'actor': 31254}, {'faith_id': 31})
+        with patch.object(fresh, 'roster', return_value={'actor_id': 31254}):
+            readiness = bounded.read_readiness('baseline')
+        self.assertEqual(calls[0], ('baseline-title', fresh.keypaths.TITLE))
+        self.assertEqual(readiness['title'], title)
+        self.assertTrue(fresh.original_head_absent(title, 31))
+        self.assertFalse(fresh.original_head_absent({**title, 'faith_full_id': 32}, 31))
+        self.assertFalse(fresh.original_head_absent({**title, 'head_title_full_id': 42,
+                                                     'legal_head_title_absent': False}, 31))
+
     def test_scoped_native_protocol_does_not_change_first_start(self):
         bound = resume.scoped('load_base')()
         self.assertEqual(bound.CASE, resume.CASE)
