@@ -56,7 +56,7 @@ def seed_identity(seed):
 
 
 def prepare_case(context):
-    from ck3_mod_acceptance_prepare import CONFIG_NAMES, checked_copy, pin, write_json, _outer_from_inner
+    from ck3_mod_acceptance_prepare import CONFIG_NAMES, checked_copy, pin, write_json, _outer_from_inner, _finish
 
     data = context['case_contract']
     require(context['product'] == data['product'] == 'li-yu-dao' and
@@ -127,8 +127,8 @@ def prepare_case(context):
         'product_files': [pin(outer), *[pin(p) for p in sorted(target.rglob('*')) if p.is_file()]]})
     profile_files = {p.relative_to(profile).as_posix(): pin(p)
                      for p in sorted(profile.rglob('*')) if p.is_file()}
-    preparation = state / 'preparation.json'
-    write_json(preparation, {'schema': 'lyd-headship-R79-resume-preparation-v1',
+    resume_receipt = state / 'resume-preparation.json'
+    write_json(resume_receipt, {'schema': 'lyd-headship-R79-resume-preparation-v1',
         'prepared_at_utc': datetime.now(timezone.utc).isoformat(),
         'seed': {key: seed[key] for key in ('save', 'bytes', 'sha256', 'player_id', 'date_raw')},
         'seed_source_run': 'bf-202609141645-5434332d4d--li-yu-dao--R0079',
@@ -138,13 +138,17 @@ def prepare_case(context):
         'product_file_count': PRODUCT_FILES, 'product_inventory': pin(inventory),
         'assertion_contract': pin(compiled_path), 'runtime_manifest': context['runtime_manifest'],
         'business_pass': False})
+    public = _finish(context, profile, {'kind': 'R79-immutable-product-only-resume',
+        'resume_receipt': pin(resume_receipt), 'product_inventory': pin(inventory),
+        'formal_release_manifest': manifest_ref, 'source_save_sha256': SEED_SHA256,
+        'fixture_mounted': False})
     initial = output / 'initial-plan.json'
     write_json(initial, {'steps': []})
     return {'startup': {'mode': 'saved_campaign', 'state_dir': str(state),
         'saved_campaign': {**seed, 'save': str(source_save), 'product_inventory': str(inventory)}},
-        'initial_plan': pin(initial), 'startup_evidence': pin(preparation),
-        'profile_preparation': pin(preparation), 'assertion_contract': pin(compiled_path),
-        'files': profile_files,
+        'initial_plan': pin(initial), 'startup_evidence': pin(state / 'preparation.json'),
+        'profile_preparation': public['preparation'], 'assertion_contract': pin(compiled_path),
+        'files': public['files'],
         'runtime_status': 'NOT_RUN', 'business_contract_applicable': True,
         'business_pass': False, 'product_release_pass': False}
 

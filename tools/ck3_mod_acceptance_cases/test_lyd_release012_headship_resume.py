@@ -4,12 +4,15 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ck3_mod_acceptance_cases import lyd_release012_headship_resume_adapter as resume
 from ck3_mod_acceptance_prepare import CONFIG_NAMES, pin
+import ck3_mod_acceptance_prepare as prepare
+import ck3_mod_acceptance_normal_exit_profile as normal_exit
 
 
 class HeadshipResumeContract(unittest.TestCase):
@@ -61,8 +64,10 @@ class HeadshipResumeContract(unittest.TestCase):
                                 PRODUCT_FILES=2, FORMAL_MANIFEST_SHA256=pin(manifest)['sha256'],
                                 FORMAL_SOURCE_HEAD=source_head), \
                     patch.object(resume.fresh, 'storage_deadline', return_value=9999999999):
-                self.assertEqual(resume.seed_identity(seed), save)
-                prepared = resume.prepare_case(context)
+                with patch.object(prepare, '_engine', return_value=(None, {
+                    'game_version': '1.20.0.4', 'exe_sha256': 'c' * 64})):
+                    self.assertEqual(resume.seed_identity(seed), save)
+                    prepared = resume.prepare_case(context)
                 inventory = json.loads(Path(prepared['startup']['saved_campaign']['product_inventory']).read_text())
                 self.assertEqual(inventory['enabled_mods'], ['mod/product.mod'])
                 self.assertEqual(len(inventory['product_files']), 3)
@@ -70,6 +75,25 @@ class HeadshipResumeContract(unittest.TestCase):
                 self.assertIn('mod-content/fixture/_case_contract.json', prepared['files'])
                 self.assertIn('pdx_settings.txt', prepared['files'])
                 self.assertEqual(prepared['startup']['saved_campaign']['sha256'], seed['sha256'])
+                startup = json.loads(Path(prepared['startup_evidence']['path']).read_text())
+                public = json.loads(Path(prepared['profile_preparation']['path']).read_text())
+                self.assertEqual(startup['schema'], 'ck3-mod-acceptance-profile-startup-evidence-v1')
+                self.assertEqual(public['schema'], 'ck3-mod-acceptance-prepared-fixture-v1')
+                self.assertEqual(startup['preparation'], prepared['profile_preparation'])
+                identity = {'game': {'version': '1.20.0.4', 'exe_sha256': 'c' * 64},
+                    'native': {'dll': {'path_key': 'dll', 'sha256': 'd' * 64},
+                               'injector': {'path_key': 'injector', 'sha256': 'e' * 64}}}
+                paths = {'game_dir': root / 'game', 'dll': root / 'bridge.dll',
+                         'injector': root / 'injector.exe'}
+                args = SimpleNamespace(state_dir=Path(context['state_dir']),
+                    bridge_dll=paths['dll'], bridge_injector=paths['injector'],
+                    game_dir=paths['game_dir'], output=root / 'native-report.json')
+                projection, guard = normal_exit.project_profile(args,
+                    {'game_dir': str(paths['game_dir']),
+                     'paths': {key: str(value) for key, value in paths.items()}},
+                    identity, context['runtime_manifest'], root / 'normal-exit')
+                self.assertEqual(projection['userdir'], str(Path(context['state_dir']) / 'profile'))
+                self.assertEqual(guard['public_preparation'], prepared['profile_preparation'])
                 changed_seed = dict(seed, player_id=42)
                 with self.assertRaises(ValueError):
                     resume.seed_identity(changed_seed)
