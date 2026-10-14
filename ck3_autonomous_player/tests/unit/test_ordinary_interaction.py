@@ -76,6 +76,7 @@ def native_ack(frame=None, recipient=RECIPIENT, *, queue='submitted', dispatch=T
 class MemoryDriver:
     query_character_interaction_ordinary_v1 = NativeHeadlessGameplayDriver.query_character_interaction_ordinary_v1
     initiate_character_interaction_ordinary_v1 = NativeHeadlessGameplayDriver.initiate_character_interaction_ordinary_v1
+    _ordinary_education_request_fields = staticmethod(NativeHeadlessGameplayDriver._ordinary_education_request_fields)
     _execute_primitive_step = NativeHeadlessGameplayDriver._execute_primitive_step
     _verify_idempotent_map_control_postcondition = NativeHeadlessGameplayDriver._verify_idempotent_map_control_postcondition
 

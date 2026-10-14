@@ -974,9 +974,9 @@ def native_server(args: argparse.Namespace) -> None:
     wire = JsonLines(args.native_wire)
 
     class RecordingEndpoint(NativeNamedPipeServer):
-        def send(self, frame: dict[str, object]) -> None:
+        def send(self, frame: dict[str, object], *, packet_evidence_path: Path | None = None) -> None:
             wire.write("python-to-dll", frame)
-            super().send(frame)
+            super().send(frame, packet_evidence_path=packet_evidence_path)
 
     class RecordingDriver(NativeHeadlessGameplayDriver):
         def _with_one_life_episode(self, snapshot: dict[str, object]) -> dict[str, object]:
