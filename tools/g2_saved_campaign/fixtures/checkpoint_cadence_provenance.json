@@ -1,0 +1,217 @@
+{
+  "scope": "Immutable P08 historical 17-cycle/7-day siege trace, compact projections only; no current runtime dependency",
+  "original_full_loop_ast_sha256": "0fd5b8ba3f7ba857ee88471dad80890c690bdcabd975c4d9de4aff1a5389c003",
+  "candidate_full_loop_ast_sha256": "4c7802f3ef16acba6fba88ea323104935f5cf769cbcc03509b690cf47cec2c4d",
+  "source_receipts": [
+    {
+      "kind": "settled_turn",
+      "global_turn": 1674,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001674.json",
+      "sha256": "9d2fa7c6bbf8cec1b9125b09760f92b7be1b948c1b8e912b21fa64c129367d34"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1473,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1473-1-result.json",
+      "sha256": "598316bb86d4122e118f4f7fa8200c9eb0bcb0c0795864842fd419798c22866f"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1675,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001675.json",
+      "sha256": "af76d7fe2e00d9b971ebe225aff923a2fa5b9b2d0385640386fde56ce75faf0f"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1475,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1475-1-result.json",
+      "sha256": "cd6143fc505abf45b31b45bc359112d88bf8bb62ec62375232989611eea29106"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1676,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001676.json",
+      "sha256": "e4f930ebf403e3156d3ad998325644948c9777b5f619245fe7213fd24bf294c3"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1479,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1479-1-result.json",
+      "sha256": "b21c3bc95453025261191c7c0532ab061f0d1ec26690ce6726a369540be3f81d"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1677,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001677.json",
+      "sha256": "f8646cbf12fc87ab204f270a18cfd2eba52e6b57189193cdb4c05461311e6435"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1481,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1481-1-result.json",
+      "sha256": "d0c194723730a0f958e0fe029d1dc7cd54478688b09b98312a4bcc0382c24263"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1678,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001678.json",
+      "sha256": "0a7e8bda9276c59af4d6fcab80747a68846127e8cad6090c1462e618aa7110ff"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1483,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1483-1-result.json",
+      "sha256": "690bcd30bffeea98aad4ddb556effe943749d5e83017c52ba3ee7d002ac1bcb3"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1679,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001679.json",
+      "sha256": "835bec51f3f9120d5e6bde53011f804a7405d713f49b4244ac6c9e0fea3cb045"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1485,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1485-1-result.json",
+      "sha256": "d4d77b41fb3247ba1d236bc59738be15adf133c56a6bc95c14f21333b8966f86"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1680,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001680.json",
+      "sha256": "20ca0b8c0ff76bb30b6da7efb3de4ccbd10d7f8e7a70b0f09a3b63490f29304a"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1487,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1487-1-result.json",
+      "sha256": "8f1696673770f264c10abe519daac4236ea873b7953fb5b73f9211b63d344fdf"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1681,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001681.json",
+      "sha256": "47876a0e08fce276cf4f84c7962431082f37dd1f66e5e6ff56dfb06eff084b3a"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1491,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1491-1-result.json",
+      "sha256": "4246d64149735a604866cefb61e63f82e9223e6dedf147c01dd733574217d005"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1682,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001682.json",
+      "sha256": "0b7476236bf6f7b6663ac3557cafc85ef2a486e56ca84290de2441861f410732"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1493,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1493-1-result.json",
+      "sha256": "0b6bb6a945619f47ceb9737d03509ea9ecf1f39c86b958269edb0ec9967f689f"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1683,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001683.json",
+      "sha256": "67ff09dd8d8bbb934f4ac812ad05757d6a0e32da8751d3a8091c569f1e06fd9b"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1495,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1495-1-result.json",
+      "sha256": "64fe22b837e50fbfcbe686f33e2c4f679661b31e2cead1d6c7d20d2301cccf4b"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1684,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001684.json",
+      "sha256": "9bd5ec4edc8e5e3c4d1a3f4e63df0b5746681d0a353e3db58fefd08d3323f602"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1497,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1497-1-result.json",
+      "sha256": "149597d2c058d9b4c2516ea44e19fa324ccbc09936e38d148dccc92e7513ac4c"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1685,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001685.json",
+      "sha256": "1eb720996e9b7ae1da153504bb14ef48afb79d13f399a14e93e9992f9d5cce86"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1499,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1499-1-result.json",
+      "sha256": "9b6d9a2c5d22c1184ad2ce046e0fb23ac1ebfef96bfbc40e5459b406c5d14784"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1686,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001686.json",
+      "sha256": "1ae6db7ba781c086bf134b664726ae5d685bbada13152074865c721e5ff3e9c5"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1503,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1503-1-result.json",
+      "sha256": "5b08022de7ae91c91479ff3979ae7ae559cb3a7b1a74386f203b460cbd4a2c13"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1687,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001687.json",
+      "sha256": "3953b70e7a96ab97cbfefcf9f82efd4d88ae720a13dbb16ed2d00c3fd85e6c86"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1505,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1505-1-result.json",
+      "sha256": "189fc769884187f4e0cf63fafe86bd07635d735870cb43fa12c9269034d3cf77"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1688,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001688.json",
+      "sha256": "28b93b06a5a2643059b6be90e6e5d2e0712acd936648ba42c989f76dccbbee53"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1507,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1507-1-result.json",
+      "sha256": "26d3b0537f9ad0b6483c8d2dba879b43b7b35b2d2ddbd74ed8559c6906db0218"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1689,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001689.json",
+      "sha256": "3729ebe7f46eb2b8359b56bbc7317884e247cb1702d26a5f662af3a50fabab77"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1509,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1509-1-result.json",
+      "sha256": "b80eda94324af9c0e49858536d60731f60dec15f946a790504556e421b11c7b3"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1690,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001690.json",
+      "sha256": "790439307070aa40989c7862208f4ed20e32de28600077ce63fdcbfd45a5c28a"
+    },
+    {
+      "kind": "AUTO",
+      "sequence": 1511,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-responses\\1511-1-result.json",
+      "sha256": "7b912628e290f4b1e36333f766d0a8184b3a52f8c64bb244e8efc3442ba38faf"
+    },
+    {
+      "kind": "settled_turn",
+      "global_turn": 1691,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001691.json",
+      "sha256": "e409f9e547b56d3af6a72bfad6aba3be2ca527f6d39a64725502e2cb55b3816a"
+    }
+  ]
+}
