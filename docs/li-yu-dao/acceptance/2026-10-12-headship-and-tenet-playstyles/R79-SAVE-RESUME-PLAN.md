@@ -32,4 +32,6 @@ R88 使用 A61、原版资格存档及固定的7200秒制度窗口，基线和�
 
 R89 以 A62 从 R79 原存档重做，基线、准备和白沙接受均可复现；道学31763的原生查询可发送，真正提交因 `RecordingEndpoint.send` 缺少 `packet_evidence_path` 参数而报错，只有一次性 claim/unknown，没有原生包或 NPC 接受。制度 RED，CK3 OS1、正常关闭失败。修复已在 `8ee983df04bc51fabeab534d2059be8deaca678a` 推送，24项普通互动和新增转发回归测试通过；A62 屏幕释放、精确清理、容量闭账完成，保守 carry 为 **140,844,370,155 B**。详见 [R89 记录](LIVE-R0089.md)。下一场必须新配额、新屏幕与新鲜 Steam 离线证据，从 R79 重新运行，验证实际 NPC 后验并继续封定、表决和签署；R89 的查询或修复单测不能抵扣实机。
 
+R90 的新 host 包装器、修复源码快照与 runtime manifest 已在外置 `lyd-release012-r90-host-fix-20261014-001` 创建并逐件哈希固定；公共预检没有 host/index/native pin 错误，未绑定的新存档与运行计划仍使其 BLOCKED。细节见 [R90 宿主绑定准备](R90-HOST-BINDING.md)。这只是下次实机的静态输入，未取得新的容量、屏幕、离线证据，也没有 R90 业务结果。
+
 R90 的前置门禁：A62 的实际共享源码仍是旧 `C:/csr19`，其录制包装器 SHA-256 `206f41a189cad449059fb2802c039d2239e0e567a4ede805ce6c4a4c14befd97`，不含上述修复。先建立新的不可变源码后继，重签精确 source index/manifest 并做公共预检；确认实际 host 绑定已修复包装器 SHA-256 `e9bfb8123ba6d1b1779dc8f79969de21b4ed1928f3f2a963db43b67f07f46d95`，再启动 CK3。禁止原地改写旧冻结树或复用 A62 runtime。新容量和屏幕准入须在此之后另行申请。
