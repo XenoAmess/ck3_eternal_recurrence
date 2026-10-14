@@ -145,7 +145,7 @@ class WindowsPlatform:
             self.lock_handle = None
 
     def scripts(self, paths):
-        # Query only Python command lines, on recovery only; no shell or PowerShell.
+        # Query only Python command lines during recovery; do not invoke a shell.
         import pythoncom
         import win32com.client
         pythoncom.CoInitialize()
