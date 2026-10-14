@@ -259,6 +259,51 @@ class MigrationDelta(unittest.TestCase):
             with self.assertRaises(ValueError): adapter.reused_setup_evidence(context)
             self.assertLess(sum(p.stat().st_size for p in base.iterdir()), 4096)
 
+    def test_date_join_setup_reuse_allows_only_the_exact_host_overlay(self):
+        with tempfile.TemporaryDirectory(prefix="rmtm-date-join-reuse-") as directory:
+            base = Path(directory)
+            host = base / "host.py"
+            host.write_bytes(b"x" * 251389)
+            host_ref = pin(host)
+            old = {"schema": "ck3-mod-acceptance-shared-runtime-v1", "runtime_id": "old",
+                   "host": {"path_key": "host", "bytes": 234852, "sha256": "old-host"},
+                   "game": {"version": "1.20.0.4"}, "native": {"dll": "same"},
+                   "source_index": {"sha256": "same"}, "imports": [{"sha256": "same"}]}
+            overlay = {"source19_host_sha256": "old-host", "tested_main_host_sha256": "tested-main",
+                       "selected_top_level_functions": ["campaign_pause_frame_binding",
+                           "require_campaign_pause_successor", "_campaign_pause_frame_rejection_detail",
+                           "_campaign_pending_running_date"],
+                       "selected_method": "wait_campaign_running_successor", "running_loop_replacements": 1,
+                       "legacy_source_root_and_index_unchanged": True,
+                       "native_dll_and_index_unchanged": True, "previous_failed_scene_not_recredited": True}
+            new = {**copy.deepcopy(old), "runtime_id": "date-join",
+                   "host": {"path_key": "host", "bytes": 251389, "sha256": host_ref["sha256"]},
+                   "host_overlay": overlay}
+            old_path, new_path = base / "old.json", base / "new.json"
+            old_path.write_text(json.dumps(old), encoding="utf-8")
+            new_path.write_text(json.dumps(new), encoding="utf-8")
+            context = {"runtime_manifest": pin(new_path),
+                       "case_inputs": {"runtime_host_overlay": host_ref}}
+            with patch.multiple(adapter,
+                _DATE_JOIN_PARENT_MANIFEST_SHA=pin(old_path)["sha256"],
+                _DATE_JOIN_MANIFEST_SHA=pin(new_path)["sha256"],
+                _DATE_JOIN_PARENT_HOST_SHA="old-host",
+                _DATE_JOIN_TESTED_MAIN_HOST_SHA="tested-main",
+                _DATE_JOIN_FROZEN_HOST_SHA=host_ref["sha256"]):
+                result = adapter.date_join_runtime_setup_equivalence(context, pin(old_path))
+                self.assertTrue(result["same_game_native_package_imports_and_shared_contract"])
+                self.assertFalse(result["historical_business_pass_reclassified"])
+                context["case_inputs"]["runtime_host_overlay"] = {**host_ref, "sha256": "wrong"}
+                with self.assertRaises(ValueError):
+                    adapter.date_join_runtime_setup_equivalence(context, pin(old_path))
+                context["case_inputs"]["runtime_host_overlay"] = host_ref
+                new["native"] = {"dll": "changed"}
+                new_path.write_text(json.dumps(new), encoding="utf-8")
+                context["runtime_manifest"] = pin(new_path)
+                with patch.object(adapter, "_DATE_JOIN_MANIFEST_SHA", context["runtime_manifest"]["sha256"]):
+                    with self.assertRaises(ValueError):
+                        adapter.date_join_runtime_setup_equivalence(context, pin(old_path))
+
     def test_current_route_keeps_days_law_and_succession_without_repeated_setup_gui(self):
         with tempfile.TemporaryDirectory(prefix="rmtm-delta-route-") as directory:
             days, phases, reviews, checkpoints = [], [], [], {}

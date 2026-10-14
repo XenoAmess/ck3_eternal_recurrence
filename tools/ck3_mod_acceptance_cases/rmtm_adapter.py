@@ -28,6 +28,56 @@ PHASE4_SEND_FACTS = [
     "same_d3_actor_full_later_title_and_paused_date",
 ]
 
+_DATE_JOIN_PARENT_MANIFEST_SHA = "1388ac508cc0339d6a00e42a9e9d3507b7f7ec362ecd982b24d90834075778be"
+_DATE_JOIN_MANIFEST_SHA = "a9025dfab2d7e86c29ac06aa5348930f668c876d4f44c5ff479c879147600a58"
+_DATE_JOIN_PARENT_HOST_SHA = "1a685e6e5104c76bca3b2e043d4d532ad78e599ec3d742a3a70157e8205a367d"
+_DATE_JOIN_TESTED_MAIN_HOST_SHA = "e9bfb8123ba6d1b1779dc8f79969de21b4ed1928f3f2a963db43b67f07f46d95"
+_DATE_JOIN_FROZEN_HOST_SHA = "81b8aac481a1faab70c14acd0e25aa9cefa503e694d2facff2c8dcf0a008bb62"
+
+
+def date_join_runtime_setup_equivalence(context, historical_ref):
+    """Admit only the reviewed host seam for old setup subfacts, never old case PASS."""
+    current_ref = context.get("runtime_manifest")
+    require(isinstance(historical_ref, dict) and isinstance(current_ref, dict)
+            and historical_ref.get("sha256") == _DATE_JOIN_PARENT_MANIFEST_SHA
+            and current_ref.get("sha256") == _DATE_JOIN_MANIFEST_SHA,
+            "Historical setup cannot cross an unreviewed shared runtime")
+    check_evidence(historical_ref)
+    check_evidence(current_ref)
+    parent = json.loads(Path(historical_ref["path"]).read_text(encoding="utf-8-sig"))
+    selected = json.loads(Path(current_ref["path"]).read_text(encoding="utf-8-sig"))
+    allowed_delta = {"runtime_id", "status", "host", "host_policy", "source_delta_count",
+                     "pending_source_or_host_selection", "configuration_policy", "source_changes",
+                     "source_ref_policy", "canonical_host_definition_locations"}
+    require(set(selected) == set(parent) | {"host_overlay"}
+            and all(selected[key] == parent[key] for key in parent if key not in allowed_delta),
+            "Date-join overlay changed game, native, Python package, imports, capabilities or another shared contract")
+    overlay = selected["host_overlay"]
+    require(selected.get("schema") == "ck3-mod-acceptance-shared-runtime-v1"
+            and parent.get("host", {}).get("sha256") == _DATE_JOIN_PARENT_HOST_SHA
+            and selected.get("host") == {"path_key": "host", "bytes": 251389,
+                                         "sha256": _DATE_JOIN_FROZEN_HOST_SHA}
+            and isinstance(overlay, dict)
+            and overlay.get("source19_host_sha256") == _DATE_JOIN_PARENT_HOST_SHA
+            and overlay.get("tested_main_host_sha256") == _DATE_JOIN_TESTED_MAIN_HOST_SHA
+            and overlay.get("selected_top_level_functions") == [
+                "campaign_pause_frame_binding", "require_campaign_pause_successor",
+                "_campaign_pause_frame_rejection_detail", "_campaign_pending_running_date"]
+            and overlay.get("selected_method") == "wait_campaign_running_successor"
+            and overlay.get("running_loop_replacements") == 1
+            and overlay.get("legacy_source_root_and_index_unchanged") is True
+            and overlay.get("native_dll_and_index_unchanged") is True
+            and overlay.get("previous_failed_scene_not_recredited") is True,
+            "Date-join host-only projection identity differs")
+    host_ref = context.get("case_inputs", {}).get("runtime_host_overlay")
+    require(isinstance(host_ref, dict) and host_ref.get("bytes") == selected["host"]["bytes"]
+            and host_ref.get("sha256") == selected["host"]["sha256"],
+            "Actual frozen date-join host pin missing")
+    check_evidence(host_ref)
+    return {"historical_runtime_manifest": historical_ref, "current_runtime_manifest": current_ref,
+            "frozen_date_join_host": host_ref, "same_game_native_package_imports_and_shared_contract": True,
+            "historical_business_pass_reclassified": False}
+
 
 def focused_keypaths(context):
     return "case_spec" in context and case_config(context).get("release_scope") == "owned_keypaths"
@@ -47,9 +97,11 @@ def reused_setup_evidence(context):
         check_evidence(ref)
     prepared = json.loads(Path(refs["prepared_case"]["path"]).read_text(encoding="utf-8-sig"))
     source = json.loads(Path(refs["review"]["path"]).read_text(encoding="utf-8-sig"))
-    require(prepared.get("product") == "reclaim-motherland" and prepared.get("case") == "core"
-            and prepared.get("runtime_manifest") == context.get("runtime_manifest"),
-            "Historical setup used a different product/case/shared runtime")
+    require(prepared.get("product") == "reclaim-motherland" and prepared.get("case") == "core",
+            "Historical setup used a different product/case")
+    same_runtime = prepared.get("runtime_manifest") == context.get("runtime_manifest")
+    overlay_equivalence = None if same_runtime else date_join_runtime_setup_equivalence(
+        context, prepared.get("runtime_manifest"))
     current = context["case_inputs"].get("input_provenance", {})
     previous = prepared.get("case_inputs", {}).get("input_provenance", {})
     require(current.get("formal_product_manifest") and
@@ -75,7 +127,8 @@ def reused_setup_evidence(context):
         check_evidence(ref)
     return {"source_prepared_case": refs["prepared_case"], "source_review": refs["review"],
             "source_run_id": source["run_id"], "reused_facts": {name: True for name in requirements},
-            "not_current_run_gui": True, "historical_case_pass_reclassified": False, "business_pass": False}
+            "not_current_run_gui": True, "historical_case_pass_reclassified": False, "business_pass": False,
+            "runtime_overlay_equivalence": overlay_equivalence}
 
 
 def phase4_enabled(context):
