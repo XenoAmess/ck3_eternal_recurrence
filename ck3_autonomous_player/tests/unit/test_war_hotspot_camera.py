@@ -194,3 +194,71 @@ def test_minimized_ck3_skips_pointer_move_but_keeps_native_postcondition(
     assert calls == [("b_test", 4)]
     assert followed["status"] == "centered"
     assert followed["cursor_park"]["status"] == "skipped_minimized"
+
+
+def test_automatic_follow_reuses_only_an_exact_paused_frame() -> None:
+    import copy
+    from types import SimpleNamespace
+    index = LandedProvinceIndex({10: "b_one", 20: "b_two"}, {}, ())
+    snapshot = {"paused": True, "map_ready": True, "snapshot_id": "native:7",
+        "revision": 4, "native_revision": 7, "date_raw": 1000, "episode_run_id": "episode",
+        "played_character": {"character_id": 8, "alive": True},
+        "diagnostics": {"bridge_pid": 99, "connection_generation": 3},
+        "active_wars": [{"war_id": 1, "allied_armies": [
+            {"army_id": 5, "controllable": True, "current_province_id": 10}]}]}
+    calls, parks = [], []
+    def center(title_key, *, expected_revision):
+        calls.append((title_key, expected_revision))
+        return {"status": "already_centered", "title": {"key": title_key},
+                "camera_center": {"postcondition_verified": True}}
+    service = SimpleNamespace(center_map_on_landed_title_v1=center)
+    def park():
+        parks.append(1)
+        return {"status": "skipped_other_virtual_desktop"}
+    first = follow_war_hotspot(service, snapshot, index, park_cursor=park, reuse_same_frame=True)
+    second = follow_war_hotspot(service, copy.deepcopy(snapshot), index, park_cursor=park, reuse_same_frame=True)
+    assert first["status"] == "already_centered"
+    assert second["status"] == "reused_same_frame_anchor"
+    assert second["native_command_submitted"] is False
+    assert second["camera_receipt"] == first["camera_receipt"]
+    assert second["camera_receipt_source"] == "previous_same_frame"
+    assert second["camera_receipt"] is not first["camera_receipt"]
+    assert calls == [("b_one", 4)] and parks == [1]
+    # Explicit presentation requests always issue a new native read.
+    follow_war_hotspot(service, snapshot, index)
+    assert len(calls) == 2
+
+    changes = [
+        {"revision": 5}, {"native_revision": 8}, {"date_raw": 1024},
+        {"snapshot_id": "native:8"}, {"episode_run_id": "next-episode"},
+        {"played_character": {"character_id": 9, "alive": True}},
+        {"diagnostics": {"bridge_pid": 100, "connection_generation": 3}},
+        {"diagnostics": {"bridge_pid": 99, "connection_generation": 4}},
+    ]
+    for change in changes:
+        service._war_hotspot_camera_anchor = None
+        follow_war_hotspot(service, snapshot, index, reuse_same_frame=True)
+        before = len(calls)
+        follow_war_hotspot(service, {**snapshot, **change}, index, reuse_same_frame=True)
+        assert len(calls) == before + 1
+    moved = copy.deepcopy(snapshot)
+    moved["active_wars"][0]["allied_armies"][0]["current_province_id"] = 20
+    follow_war_hotspot(service, moved, index, reuse_same_frame=True)
+    assert calls[-1][0] == "b_two"
+
+
+def test_failed_camera_postcondition_is_never_reused() -> None:
+    from types import SimpleNamespace
+    calls = []
+    def center(*args, **kwargs):
+        calls.append(1)
+        return {"status": "centered", "title": {"key": "b_one"},
+                "camera_center": {"postcondition_verified": False}}
+    service = SimpleNamespace(center_map_on_landed_title_v1=center)
+    snapshot = {"revision": 1, "active_wars": [
+        {"allied_armies": [{"army_id": 1, "controllable": True, "current_province_id": 10}]}]}
+    for _ in range(2):
+        with pytest.raises(ValueError, match="postcondition"):
+            follow_war_hotspot(service, snapshot, LandedProvinceIndex({10: "b_one"}, {}, ()),
+                               reuse_same_frame=True)
+    assert calls == [1, 1]

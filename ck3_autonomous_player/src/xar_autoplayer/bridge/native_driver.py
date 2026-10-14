@@ -5345,8 +5345,15 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """Transfer reader-owned rows into either episode projection."""
         query = query if isinstance(query, dict) else {}
+        original_rows = query.get("army_strengths", [])
+        if not isinstance(original_rows, list) or any(not isinstance(row, dict) for row in original_rows):
+            raise RuntimeError("validated army strength rows malformed")
+        core_keys = ("status", "army_id", "native_carmy_id", "scope_role", "war_ids",
+                     "regiment_count", "current_soldiers", "maximum_soldiers",
+                     "ai_base_power_raw", "ai_base_power_scale", "unavailable_reason")
+        core_rows = [{key: row[key] for key in core_keys if key in row} for row in original_rows]
         return {
-            "army_strengths": query.get("army_strengths", []),
+            "army_strengths": core_rows,
             "army_strengths_status": query.get("status"),
             "army_strengths_query_sequence": query.get("query_sequence"),
             "army_strengths_queried_snapshot_id": query.get("queried_snapshot_id"),
@@ -5424,7 +5431,12 @@ class NativeHeadlessGameplayDriver:
                 return None
             return {
                 "status": cached["status"],
-                "army_strengths": copy.deepcopy(rows),
+                # Only core fields enter snapshots; detach after exact-frame checks.
+                "army_strengths": copy.deepcopy(
+                    self._army_strength_snapshot_fields(
+                        {"army_strengths": rows}
+                    )["army_strengths"]
+                ),
                 "query_sequence": sequence,
                 ARMY_STRENGTHS_PROFILE_KEY: profile,
                 ARMY_OBSERVED_PHASE_COVERAGE_KEY: coverage,
@@ -10871,14 +10883,9 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         try:
-            encoded = bytearray()
-            encoder = json.JSONEncoder(
-                ensure_ascii=False,
-                separators=(",", ":"),
+            serialized = json.dumps(
+                payload, ensure_ascii=False, separators=(",", ":"),
             )
-            for chunk in encoder.iterencode(payload):
-                encoded.extend(chunk.encode("utf-8"))
-            encoded.extend(b"\n")
         finally:
             if persistence_step is not None:
                 finish_army_timing(serialization_timing, step=persistence_step)
@@ -10888,7 +10895,7 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         try:
-            return bytes(encoded)
+            return serialized.encode("utf-8") + b"\n"
         finally:
             if persistence_step is not None:
                 finish_army_timing(encoding_timing, step=persistence_step)
@@ -11806,6 +11813,12 @@ class NativeHeadlessGameplayDriver:
             start_army_timing("driver.native_pipe_send_wait", native_request_id=request_id)
             if step == QUERY_ARMY_STRENGTHS_STEP else None
         )
+        route_preview_pipe_timing = (
+            start_army_timing("driver.route_preview_native_pipe_send_wait",
+                             native_request_id=request_id)
+            if (parse_query_route_contact_horizon_step(step) is not None
+                or parse_preview_move_army_step(step) is not None) else None
+        )
         try:
             if absolute_deadline is not None and time.monotonic() >= absolute_deadline:
                 raise BridgeUnavailableError(
@@ -11833,6 +11846,7 @@ class NativeHeadlessGameplayDriver:
             )
         finally:
             finish_army_timing(army_pipe_timing)
+            finish_army_timing(route_preview_pipe_timing, step=step)
         if frame is not None and required_capability == QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY:
             frame_observer = getattr(self, "route_contact_command_result_observer", None)
             if frame_observer is not None:

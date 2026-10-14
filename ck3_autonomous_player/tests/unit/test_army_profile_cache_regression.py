@@ -114,6 +114,29 @@ def test_real_query_publishes_detached_cache_and_public_copies(scenario):
     assert again["queried_date_raw"] == scenario.before["date_raw"]
 
 
+def test_exact_frame_cache_exposes_detached_core_after_manager_input_projection(scenario):
+    scenario.query()
+    expected_core_rows = copy.deepcopy(scenario.driver.take_snapshot()["army_strengths"])
+    with scenario.driver._driver_state_lock:
+        stored_rows = scenario.driver._army_strength_query["army_strengths"]
+        # A real normalized row has larger manager inputs than this small fixture.
+        # They are retained for managers but must not be cloned into snapshots.
+        stored_rows[1]["manager_inputs"] = {"regiments": [{"soldiers": [3, 4]}]}
+
+    cached = scenario.cached()
+    assert cached is not None
+    assert cached["army_strengths"] == expected_core_rows
+    public = scenario.driver.take_snapshot()
+    assert public["army_strengths"] == expected_core_rows
+
+    cached["army_strengths"][1]["war_ids"].append(999)
+    public["army_strengths"][1]["war_ids"].append(1000)
+    with scenario.driver._driver_state_lock:
+        assert stored_rows[1]["war_ids"] == [45, 46]
+        assert stored_rows[1]["manager_inputs"]["regiments"][0]["soldiers"] == [3, 4]
+    assert scenario.cached()["army_strengths"] == expected_core_rows
+
+
 @pytest.mark.parametrize("field", [
     "snapshot_id", "revision", "native_revision", "date_raw",
     "connection_generation", "episode_run_id",

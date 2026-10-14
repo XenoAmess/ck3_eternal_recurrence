@@ -6,6 +6,7 @@ It never creates a gameplay step or treats camera position as battle evidence.
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from pathlib import Path
 import re
@@ -152,6 +153,23 @@ def select_war_hotspot(
     }
 
 
+def _camera_anchor_key(snapshot: Mapping[str, object], hotspot: Mapping[str, object]) -> tuple | None:
+    played, diagnostics = snapshot.get("played_character"), snapshot.get("diagnostics")
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or not isinstance(played, dict) or played.get("alive") is not True
+            or not isinstance(diagnostics, dict)):
+        return None
+    ids = (snapshot.get("revision"), snapshot.get("native_revision"), snapshot.get("date_raw"),
+           played.get("character_id"), diagnostics.get("bridge_pid"),
+           diagnostics.get("connection_generation"))
+    strings = (snapshot.get("snapshot_id"), snapshot.get("episode_run_id"),
+               hotspot.get("title_key"))
+    if any(type(v) is not int or v < 0 for v in ids) or any(
+            not isinstance(v, str) or not v for v in strings):
+        return None
+    return (*strings, *ids, hotspot.get("province_id"))
+
+
 def follow_war_hotspot(
     service: object,
     snapshot: Mapping[str, object],
@@ -159,14 +177,25 @@ def follow_war_hotspot(
     *,
     park_cursor: Callable[[], dict[str, object]] | None = None,
     campaign_root_result: object = None,
+    reuse_same_frame: bool = False,
 ) -> dict[str, object]:
-    """Center on the selected land hotspot and preserve the native receipt."""
+    """Center once per exact automatic frame; explicit navigation stays immediate."""
 
     hotspot = select_war_hotspot(
         snapshot, index, campaign_root_result=campaign_root_result,
     )
     if hotspot is None:
+        if reuse_same_frame:
+            service._war_hotspot_camera_anchor = None
         return {"status": "no_observable_land_hotspot", "hotspot": None}
+    anchor_key = _camera_anchor_key(snapshot, hotspot) if reuse_same_frame else None
+    previous = getattr(service, "_war_hotspot_camera_anchor", None)
+    if anchor_key is not None and isinstance(previous, dict) and previous.get("key") == anchor_key:
+        return {"status": "reused_same_frame_anchor", "hotspot": hotspot,
+                "native_command_submitted": False,
+                "anchor_source": dict(previous["source"]),
+                "camera_receipt": copy.deepcopy(previous["receipt"]),
+                "camera_receipt_source": "previous_same_frame"}
     revision = snapshot.get("revision")
     if type(revision) is not int or revision < 0:
         raise ValueError("hotspot camera requires a bound snapshot revision")
@@ -185,6 +214,13 @@ def follow_war_hotspot(
         raise ValueError("hotspot camera lacks a verified native postcondition")
     if (result.get("title") or {}).get("key") != hotspot["title_key"]:
         raise ValueError("hotspot camera resolved a different landed title")
+    if anchor_key is not None:
+        service._war_hotspot_camera_anchor = {
+            "key": anchor_key, "receipt": copy.deepcopy(result), "source": {
+            "snapshot_id": snapshot["snapshot_id"], "revision": snapshot["revision"],
+            "native_revision": snapshot["native_revision"], "date_raw": snapshot["date_raw"],
+            "episode_run_id": snapshot["episode_run_id"], "title_key": hotspot["title_key"],
+            "postcondition_verified": True}}
     return {"status": result["status"], "hotspot": hotspot,
             "cursor_park": cursor_park, "camera_receipt": result}
 

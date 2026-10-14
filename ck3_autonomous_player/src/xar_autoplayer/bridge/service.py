@@ -718,7 +718,8 @@ class GameplayBridgeService:
                         raise BridgeUnavailableError("initial camera root crossed its observed frame")
             return follow_war_hotspot(self, snapshot, self._war_hotspot_camera_index,
                                       park_cursor=park_foreground_ck3_cursor,
-                                      campaign_root_result=campaign_root_result)
+                                      campaign_root_result=campaign_root_result,
+                                      reuse_same_frame=True)
         except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
             reason = f"{type(error).__name__}: {error}"
             if self._war_hotspot_camera_index is None:
@@ -3880,7 +3881,11 @@ class GameplayBridgeService:
         """Plan and execute exactly one backend-supported gameplay turn."""
         # Camera placement precedes planning, so its receipt cannot stale an
         # already selected gameplay step. All ordinary execution guards remain.
-        self.last_camera_follow = self._follow_war_hotspot_before_turn()
+        camera_timing = start_army_timing("service.auto_turn_camera")
+        try:
+            self.last_camera_follow = self._follow_war_hotspot_before_turn()
+        finally:
+            finish_army_timing(camera_timing, step="auto-turn-camera")
         planned = self.plan_turn()
         outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
             self._execute_planned_turn(planned, before_submit=before_submit)))
@@ -11932,6 +11937,7 @@ class GameplayBridgeService:
         expected_revision: int,
     ) -> dict[str, object]:
         """Center the native map without exposing the step to the planner."""
+        self._war_hotspot_camera_anchor = None
         key = validate_landed_title_key(title_key)
         if (
             isinstance(expected_revision, bool)
