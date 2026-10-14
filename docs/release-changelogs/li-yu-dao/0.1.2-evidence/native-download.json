@@ -1,0 +1,44 @@
+{
+  "app_id": 1158310,
+  "callback": {
+    "app_id": 1158310,
+    "callback_id": 3406,
+    "item_id": "3817934804",
+    "result": 1
+  },
+  "dll_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
+  "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+  "download_info": {
+    "available": true,
+    "downloaded_bytes": 0,
+    "total_bytes": 0
+  },
+  "elapsed_seconds": 11.412,
+  "expected_cache_absent_before_start": true,
+  "expected_cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3817934804",
+  "fresh_cache_requested": true,
+  "ignored_callbacks": 31,
+  "install_info": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3817934804",
+    "size_on_disk": 860318,
+    "timestamp": 1792001738
+  },
+  "isolated_worker": true,
+  "item_id": "3817934804",
+  "ok": true,
+  "schema": "ck3_workshop_mcp.steam_native.download.v1",
+  "started": true,
+  "state_flags": {
+    "download_pending": false,
+    "downloading": false,
+    "installed": true,
+    "legacy": false,
+    "needs_update": false,
+    "raw": 5,
+    "subscribed": true
+  },
+  "status": "complete",
+  "timeout_seconds": 300.0,
+  "worker_exit_code": 0,
+  "worker_pid": 19908
+}

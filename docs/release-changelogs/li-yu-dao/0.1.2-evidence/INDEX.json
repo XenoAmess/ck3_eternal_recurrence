@@ -1,0 +1,156 @@
+{
+  "schema": "lyd-012-alpha-permanent-release-evidence-v1",
+  "recorded_at_utc": "2026-10-14T19:35:21.023418+00:00",
+  "item_id": "3817934804",
+  "version": "0.1.2 Alpha",
+  "tag": "li-yu-dao-v0.1.2-alpha.1",
+  "content_commit": "1619030d839b721109c21286ab9d7cce01886f38",
+  "previous_version": "0.1.1 Alpha",
+  "previous_tag": "li-yu-dao-v0.1.1-alpha.1",
+  "previous_commit": "119b97d97aa1bd50780f5a02c88aafa8619916be",
+  "upload_complete": true,
+  "anonymous_full_notes_exact": true,
+  "compatible_version_exact": true,
+  "cache_file_count": 83,
+  "cache_bytes": 860318,
+  "cache_actual_download_and_load_pass": true,
+  "actual_game_version": "1.20.1",
+  "actual_original_process_exit_code": 0,
+  "normal_GUI_window_close": true,
+  "steam_offline_directly_reviewed": true,
+  "screen_released": true,
+  "reservation_closed": true,
+  "phase_one_status": "NOT_GREEN",
+  "business_tests_repeated": false,
+  "mapping": {
+    "formal.manifest.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\published-formal.manifest.json",
+        "bytes": 15506,
+        "sha256": "5f7c239e3de7e1fb4cfebac4ca9751539042e319bc92a53af6cda92313600f85"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/formal.manifest.json",
+      "sha256": "5f7c239e3de7e1fb4cfebac4ca9751539042e319bc92a53af6cda92313600f85"
+    },
+    "native-publish-receipt.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\native-publish-receipt.json",
+        "bytes": 664,
+        "sha256": "ae261a9d73773efc8e9ec3fa319ca9002fb448c6a73cf5cc37db2ed7e1f67653"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/native-publish-receipt.json",
+      "sha256": "ae261a9d73773efc8e9ec3fa319ca9002fb448c6a73cf5cc37db2ed7e1f67653"
+    },
+    "public-verification.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\public-notes-followup-001.json",
+        "bytes": 1208,
+        "sha256": "5431cbb04e454e3ca70412f5ba0c6ffcc1d6acf903c4dc49add6450aaaca404c"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/public-verification.json",
+      "sha256": "5431cbb04e454e3ca70412f5ba0c6ffcc1d6acf903c4dc49add6450aaaca404c"
+    },
+    "public-tags.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\public-tags-followup-001.json",
+        "bytes": 721,
+        "sha256": "b14e9180d7a82583674c12ad72a6e35ef510940dd699999b6d40ce049298baa0"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/public-tags.json",
+      "sha256": "b14e9180d7a82583674c12ad72a6e35ef510940dd699999b6d40ce049298baa0"
+    },
+    "public-tags-href-correction.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\PUBLIC-TAGS-HREF-CORRECTION.actual.json",
+        "bytes": 777,
+        "sha256": "910dc27c2ccfc5819c77c87eef2f666db2d849814080fefedceaa51c4c2ccd3c"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/public-tags-href-correction.json",
+      "sha256": "910dc27c2ccfc5819c77c87eef2f666db2d849814080fefedceaa51c4c2ccd3c"
+    },
+    "native-download.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\native-download.actual.json",
+        "bytes": 1331,
+        "sha256": "5da7ed4d0c1cec8961490e96233a0f8687bdc0c2e4529131a04981ed2d707a4d"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/native-download.json",
+      "sha256": "5da7ed4d0c1cec8961490e96233a0f8687bdc0c2e4529131a04981ed2d707a4d"
+    },
+    "cache-acceptance.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\CACHE-ACCEPTANCE.actual.json",
+        "bytes": 2684,
+        "sha256": "ab1dd861052a104bfc4ee2598d6cba915251643fc20e77c459c5edbfdb86b35d"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/cache-acceptance.json",
+      "sha256": "ab1dd861052a104bfc4ee2598d6cba915251643fc20e77c459c5edbfdb86b35d"
+    },
+    "game-exit.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\DIRECT-GAME-EXIT.actual.json",
+        "bytes": 223,
+        "sha256": "8783cb793ed4c1f33b1bd1efaa4d2c7a1fba634dc9500d2a5ae78cc37dcf66bc"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/game-exit.json",
+      "sha256": "8783cb793ed4c1f33b1bd1efaa4d2c7a1fba634dc9500d2a5ae78cc37dcf66bc"
+    },
+    "storage-closure.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\CLOSED-RESERVATION.actual.json",
+        "bytes": 1206,
+        "sha256": "ea537e950eab9e33a9c4a634cad2df4206b8df4a3676dda193b9fbe6fdb5beec"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/storage-closure.json",
+      "sha256": "ea537e950eab9e33a9c4a634cad2df4206b8df4a3676dda193b9fbe6fdb5beec"
+    },
+    "notes-frozen.json": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\NOTES.frozen.json",
+        "bytes": 4297,
+        "sha256": "c7ea3f6fd7bc0ae49c229eed864659b16cf8b565febfe329fbf45c50a581e05d"
+      },
+      "permanent_relative_path": "docs/release-changelogs/li-yu-dao/0.1.2-evidence/notes-frozen.json",
+      "sha256": "c7ea3f6fd7bc0ae49c229eed864659b16cf8b565febfe329fbf45c50a581e05d"
+    }
+  },
+  "additional_original_pins": {
+    "OFFLINE-REVIEW.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\OFFLINE-REVIEW.actual.json",
+      "bytes": 721,
+      "sha256": "5dde084a82cd8479df8679c184cb6d6f0c6dc2dbc88d297e7d13645b88af6e53"
+    },
+    "FINAL-OFFLINE-REVIEW.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\FINAL-OFFLINE-REVIEW.actual.json",
+      "bytes": 655,
+      "sha256": "7daa8b0a548f5cd7294980f1ae01abfcf66f8896a2da40da52db06dc79aaa30c"
+    },
+    "CACHE-SCREEN-RELEASE.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\CACHE-SCREEN-RELEASE.actual.json",
+      "bytes": 1255,
+      "sha256": "d393e26023ca3831c622e746614bca57e3e6c1147479d3e8f4a752a1e43ef648"
+    },
+    "OUTER-DESCRIPTOR.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\OUTER-DESCRIPTOR.actual.json",
+      "bytes": 816,
+      "sha256": "33e9d660b70d8ac4e89d1cbbe737905b68dc553d97133aa960f33179168c4895"
+    },
+    "CAPACITY-COORDINATOR-CLOSED.actual.json": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\CAPACITY-COORDINATOR-CLOSED.actual.json",
+      "bytes": 1258,
+      "sha256": "ac4158040e2c031764ba1c4f51042bd0ab597fa0a3f82cb8ae86b2b0f7bb6e82"
+    }
+  },
+  "engine_log": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261015-020\\state\\profile\\logs\\debug.log",
+    "bytes": 460418,
+    "sha256": "1c5b68f65f7494ed408438bb5086c34d8a4531a466c220b8a7313fcc6276f63c"
+  },
+  "log_excerpt": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-changelogs\\li-yu-dao\\0.1.2-evidence\\cache-load-log-excerpt.txt",
+    "bytes": 224,
+    "sha256": "48f1bdf6627754353dcf97bdba1fae8d55698d788b8239bde39ef8fb7cc9e119"
+  },
+  "raw_evidence_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001",
+  "raw_retention_policy": "docs/storage-retention-policy.json; permanent facts remain in these small records after raw expiry"
+}

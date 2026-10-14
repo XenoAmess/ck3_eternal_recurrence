@@ -1,0 +1,65 @@
+{
+  "schema": "lyd-published-cache-log-load-v1",
+  "at_utc": "2026-10-14T19:33:24.004999+00:00",
+  "product": "li-yu-dao",
+  "item_id": "3817934804",
+  "published_version": "0.1.2 Alpha",
+  "tag": "li-yu-dao-v0.1.2-alpha.1",
+  "files_exact": true,
+  "file_count": 83,
+  "exact_cache": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261015-020\\prepared\\workshop-cache-exact-formal.json",
+    "bytes": 23435,
+    "sha256": "f3d84d3e2e909df5a813fb7c775f462bfce3595691db16572a29cd1d6990979a"
+  },
+  "actual_engine_cache_mount": true,
+  "mounted_log_lines": [
+    {
+      "line": 92,
+      "text": "[03:12:44][D][virtualfilesystem_physfs.cpp:814]: Mounted Data: C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3817934804"
+    }
+  ],
+  "enabled_log_lines": [
+    {
+      "line": 60,
+      "text": "礼与道：儒家礼仪与学统 / Rites and the Way|mod/product.mod|Enabled"
+    }
+  ],
+  "engine_log": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261015-020\\state\\profile\\logs\\debug.log",
+    "bytes": 460418,
+    "sha256": "1c5b68f65f7494ed408438bb5086c34d8a4531a466c220b8a7313fcc6276f63c"
+  },
+  "actual_game_version": "1.20.1",
+  "exe_sha256": "2667e409f586f20d60142873ccb1b4eb345eee54ed996925115a46132260cff7",
+  "steam_build_id": "25870654",
+  "main_menu_screenshot": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\cache-main-menu-004.png",
+    "bytes": 2089330,
+    "sha256": "f0d927732a37e517523417b93c35b58039ec6652dc9ef37aa3379d76f3be9c63"
+  },
+  "actual_launch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\DIRECT-GAME-START.actual.json",
+    "bytes": 1569,
+    "sha256": "213b78e7b634a7a7c58dfa0afe0ce1581bf6afafcc2f38f374635ef2e1cbe305"
+  },
+  "actual_exit": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\DIRECT-GAME-EXIT.actual.json",
+    "bytes": 223,
+    "sha256": "8783cb793ed4c1f33b1bd1efaa4d2c7a1fba634dc9500d2a5ae78cc37dcf66bc"
+  },
+  "normal_window_close_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\game-window-close-001.png.json",
+    "bytes": 1582,
+    "sha256": "b585b14efdb83c256b43745fd7873abcfb64aee02a5cb645d274bd8edaa7269e"
+  },
+  "normal_GUI_window_close": true,
+  "actual_original_popen_wait_zero": true,
+  "no_campaign_started": true,
+  "no_business_tests": true,
+  "native_injection": false,
+  "old_shared_native_run": "BLOCKED_BEFORE_LAUNCH_GAME_HASH_CHANGED",
+  "cache_acceptance_pass": true,
+  "business_pass": false,
+  "phase_one_status": "NOT_GREEN"
+}

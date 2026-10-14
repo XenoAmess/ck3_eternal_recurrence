@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "checks": {
+    "owner": true,
+    "app_id": true,
+    "item": true,
+    "visibility": true,
+    "not_banned": true,
+    "ordered_tags": true,
+    "sidebar": true,
+    "link": true
+  },
+  "tags": [
+    "Religion",
+    "Decisions",
+    "1.20 'Crozier'"
+  ],
+  "sidebar": "1.20 'Crozier'",
+  "href": "https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated§ion=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27",
+  "at_utc": "2026-10-14T18:43:27.080530+00:00",
+  "anonymous": true,
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804&l=english",
+  "html_sha256": "70c3810fe423bd9bf20fcb237e944da5a570c9ccca760bacbafa31df5dc3a608"
+}

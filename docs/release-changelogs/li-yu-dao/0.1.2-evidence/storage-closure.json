@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-14T19:33:25.319224+00:00",
+  "admission": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\ADMISSION.actual.json",
+    "bytes": 2928,
+    "sha256": "1ec72451ddf19cdd7fd57f116e3c0ea51eeb608e45189defdc7289d5dd72b429"
+  },
+  "roots": [
+    {
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001",
+      "files": 376,
+      "logical_bytes": 35514359
+    },
+    {
+      "root": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-workshop-cache-20261015-020",
+      "files": 3753,
+      "logical_bytes": 147315396
+    }
+  ],
+  "gross_logical_bytes": 182829755,
+  "final_conservative_carry_bytes": 141596315029,
+  "effective_project_quota_bytes": 142400773035,
+  "unspent_reserved_peak_bytes": 0,
+  "physical_free_bytes": 601860640768,
+  "original_reservation_closed_before_expiry": true,
+  "business_pass": false,
+  "cache_acceptance_pass": true,
+  "screen_release": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-steam012-alpha-upload-20261015-001\\CACHE-SCREEN-RELEASE.actual.json",
+    "bytes": 1255,
+    "sha256": "d393e26023ca3831c622e746614bca57e3e6c1147479d3e8f4a752a1e43ef648"
+  }
+}
