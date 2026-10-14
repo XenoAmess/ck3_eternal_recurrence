@@ -1,5 +1,36 @@
 # CK3 mod升级提速与公共验收入口（2026-10-08）
 
+## 2026-10-15 重整河山：两场迁移差异门槛
+
+遵照用户反复要求继续缩减，本轮 RMTM 使用 `migration_delta_v1`，不再把 core26 辅助 GUI 全回归作为发布门槛。此变更只适用于新准备/新场，不改判 R17、A210 或 A211 的整场 RED，也不授 core26/full36 通过。生产36文件、现有fixture、原死亡/次日callback/两日D8探针调度、14日上限和原预算均不改。
+
+- 继承场：原 Continue 一次且暂停；执行时独立 engine heir、真实前任死亡、同完整 Later TitleID 的产品 `rmtm.2001` callback 入口/出口、实际新玩家/持有人等于该 heir；保留 d3/predeath/postdeath 物理 AND 与原D8的头衔、个人地、忠臣树、ministry entitlement及原任IDs断言。七项关键正向 families 是新发布门槛；原26项只保留为fixture遥测，任何已记录 FAIL 仍拒绝。新场只等待 Continue/real-succession 两个审阅点，不重复 setup/final 辅助GUI。
+- 独立 threshold 场不变：50%真实生产恢复不可用，51%可用且 stock Claim Mandate不可用，生产确认与实际恢复/对应 Later 销毁一次，再由原fixture verify观察一次；八个源标记、两个真实GUI审阅、正常退出及完整资源闭场仍须完成。不能用一场加载 GREEN 替代两个业务case。
+- R17 C1–C5 的土地/忠臣树、九位原任及预算Cancel、A/B −50/+10显示与取消可复用；A210 D3只授既有物理法律子项。原版完整Offer算式、灵性满足、正统性、随机双拒绝、十日/自然五年等待及九语言实机不新增矩阵。原fixture先切玩家再杀前任，不证明原生玩家死亡/Continue modal；R17缺失的执行时heir和产品callback绝不由旧玩家/stock事件倒推。
+
+新 core `case_inputs` 必须增加以下两项**历史来源** pin；不是把旧图/旧review复制成新场事实：
+
+```json
+"reused_setup_evidence": {
+  "prepared_case": {
+    "path": "C:/workspace/ck3-upgrade-20261010/rmtm-value-fix-fresh-publicprepare-20261012-02/prepare/prepared-case.json",
+    "bytes": 44453,
+    "sha256": "8aacffe1841c25617590296b0a627ae13d527f41195cec9ed0fcc94e37ecbb90"
+  },
+  "review": {
+    "path": "C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--reclaim-the-motherland--R0017/case-output/rmtm-C1-C5-accepted.json",
+    "bytes": 5715,
+    "sha256": "304819da11d2d54e2755899a04957443363654e90f517bbfab81aaf573c7d577"
+  }
+}
+```
+
+公共 adapter 核旧prepared的产品/core、实际相同 runtime_manifest/formal_product_manifest 对象、完整生产bytes/SHA清单、旧签核facts及原图pins。当前 provenance 必须来自真正选定的正式输入，不能为过关复制旧pin冒充新来源；路径/生产/runtime不同或原图不可读即停止复用。历史adapter或整场结果不重新授资格；新结果明确 `not_current_run_gui=true`、`historical_case_pass_reclassified=false`、`legacy_core26_credit=false`，整产品门槛仍需本次两场和正常闭场汇总。
+
+本次三项 `MigrationDelta` 聚合/复用/原路由离线测试实际通过（0.083s）；实际R17只读复用校验通过，同一Source20 manifest、同一formal36 manifest/生产清单，19张原图bytes/SHA均匹配，未启动prepare或游戏。Root本轮实际执行 `tools/.venv/Scripts/python.exe -B -X utf8 tools/validate_reclaim_the_motherland_static.py --release-localization` 返回0：Runtime36/Languages9/Localization keys113/Gameplay scripts16。这些都是静态或旧子项复用，不是新继承/threshold实机PASS。
+
+旧prepared与已分配frozen argv绑定旧adapter/contract/products SHA，不能消费本次更新；不得热改正在占屏的冻结checkout。后继在clean/pushed HEAD、新有限控制池与最新已闭场前驱下，通过原公共prepare四阶段产生独立新state。新input投影同时刷新当前 `input_provenance.source_case_contract` pin，保留原件及旧source-family-count的历史含义；不重跑已经通过的生产/static/whole-build矩阵。新scope测试只验证聚合与复用边界，不授实机PASS。本机两产品源码功能验收完成前 Steam继续离线；发布后缓存只验实际下载exact formal与实际加载，不复测业务。
+
 ## 2026-10-13 用户要求继续缩减测试
 
 本轮只处理体验优化与重整河山，361不在范围。遵照用户再次要求“测试过重，缩减后继续直到测试完”，未改动的原版灵性满足、正统性算式、完整 Offer 公式和随机双拒绝矩阵不作本轮门槛。已适用的同构建、同生产字节实机证据直接复用，不重复证明共享能力。

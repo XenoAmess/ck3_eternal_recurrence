@@ -67,7 +67,9 @@ def phase(phase_name, actor, date, heir=22):
 
 class OwnedKeypaths(unittest.TestCase):
     def config(self):
-        return json.loads(CONFIG.read_text(encoding="utf-8-sig"))
+        value = json.loads(CONFIG.read_text(encoding="utf-8-sig"))
+        value.pop("verification_scope", None)  # Retain the original core26 regression below.
+        return value
 
     def context(self):
         return {"case": "core", "repo_root": str(ROOT), "case_inputs": {},
@@ -136,7 +138,7 @@ class OwnedKeypaths(unittest.TestCase):
             with self.assertRaises(ValueError): adapter.focused_marker_verdict(config, raw, broken, law)
 
     def test_materialized_projection_inventory_inverse_and_load_order_are_still_required(self):
-        with tempfile.TemporaryDirectory(prefix="rmtm-keypaths-tiny-") as directory:
+        with tempfile.TemporaryDirectory(prefix="rmtm-keypaths-tiny-") as directory, patch.object(adapter, "migration_delta", return_value=False):
             base = Path(directory); fixture, state = base / "fixture", base / "state"
             original = emitter.events(True).encode("utf-8-sig")
             driver = emitter.focused_project(original)
@@ -172,7 +174,7 @@ class OwnedKeypaths(unittest.TestCase):
         self.assertFalse(base.exists())
 
     def test_run_keeps_d3_d4_and_succession_but_never_requests_offer_reviews(self):
-        with tempfile.TemporaryDirectory(prefix="rmtm-keypaths-route-") as directory:
+        with tempfile.TemporaryDirectory(prefix="rmtm-keypaths-route-") as directory, patch.object(adapter, "migration_delta", return_value=False):
             seen_days, seen_phases, seen_reviews = [], [], []
             client = SimpleNamespace(output=directory,
                                      log_bytes=lambda: (emitter.FOCUSED_DONE + "\n").encode("ascii")
@@ -189,6 +191,92 @@ class OwnedKeypaths(unittest.TestCase):
             self.assertEqual(seen_reviews, ["rmtm-owned-keypaths-GUI", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-owned-keypaths-final"])
             self.assertLess(sum(path.stat().st_size for path in Path(directory).rglob("*") if path.is_file()), 1024)
         self.assertFalse(Path(directory).exists())
+
+
+class MigrationDelta(unittest.TestCase):
+    def config(self):
+        return json.loads(CONFIG.read_text(encoding="utf-8-sig"))
+
+    def context(self):
+        return {"case": "core", "repo_root": str(ROOT), "run_id": "new-run", "case_inputs": {},
+                "case_spec": {"adapter": {"config": str(CONFIG)}}}
+
+    def test_only_seven_positive_families_but_all_d8_law_and_fail_gates_remain(self):
+        config = self.config()
+        required = config["required_release_families"]
+        self.assertEqual(len(required), 7)
+        self.assertTrue({"phase3_succession_title", "phase3_succession_personal_county", "phase3_succession_loyal_realm",
+                         "phase3_succession_ministry_entitlement", "phase3_succession_exact_ministers",
+                         "phase3_later_dynasty_realm_and_ministry_inherited"}.issubset(required))
+        families = [row for row in config["families"] if row["name"] in required]
+        markers = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in families]
+        raw = ("\n".join(markers + [config["begin"], config["done"]]) + "\n").encode()
+        bundle = {"schema": "rmtm-effective-single-heir-actual-rows-v1",
+                  "phases": [phase("d3", 11, 1000), phase("predeath", 11, 1001), phase("postdeath", 22, 1002)]}
+        verdict = adapter.focused_marker_verdict(config, raw, bundle, law)
+        self.assertEqual(verdict["verification_scope"], "migration_delta_v1")
+        self.assertFalse(verdict["legacy_core26_credit"])
+        self.assertFalse(verdict["business_pass"])
+        for marker in markers:
+            with self.assertRaises(ValueError): adapter.focused_marker_verdict(config, raw.replace(marker.encode(), b"missing"), bundle, law)
+        with self.assertRaises(ValueError): adapter.focused_marker_verdict(config, raw + b"RQA: TEST FAIL original_movement_identity_frozen\n", bundle, law)
+        broken = copy.deepcopy(bundle); broken["phases"][2]["physical_record"]["result"]["title_id"] = 99
+        with self.assertRaises(ValueError): adapter.focused_marker_verdict(config, raw, broken, law)
+
+    def test_historical_setup_requires_original_pins_runtime_production_and_facts(self):
+        with tempfile.TemporaryDirectory(prefix="rmtm-delta-reuse-") as directory:
+            base = Path(directory); image = base / "original.png"; image.write_bytes(b"synthetic GUI fixture")
+            manifest = base / "manifest.json"; manifest.write_text("{}", encoding="utf-8")
+            runtime = pin(manifest)
+            provenance = {"formal_product_manifest": pin(manifest),
+                          "formal_product_expected_files": {"effect.txt": {"bytes": 1, "sha256": "frozen"}}}
+            prepared = base / "prepared.json"
+            prepared.write_text(json.dumps({"product": "reclaim-motherland", "case": "core", "runtime_manifest": runtime,
+                "case_inputs": {"input_provenance": provenance}, "business_acceptance": "NOT_ASSESSED"}), encoding="utf-8")
+            review = base / "review.json"
+            record = {"status": "complete", "reviewer": "old-operator", "run_id": "old-failed-run",
+                      "facts": {name: True for name in self.config()["reused_setup_requirements"]}, "evidence": [pin(image)]}
+            review.write_text(json.dumps(record), encoding="utf-8")
+            context = self.context(); context["runtime_manifest"] = runtime
+            context["case_inputs"] = {"input_provenance": copy.deepcopy(provenance),
+                                     "reused_setup_evidence": {"prepared_case": pin(prepared), "review": pin(review)}}
+            result = adapter.reused_setup_evidence(context)
+            self.assertTrue(result["not_current_run_gui"])
+            self.assertFalse(result["historical_case_pass_reclassified"])
+            self.assertFalse(result["business_pass"])
+            context["runtime_manifest"] = {**runtime, "sha256": "different"}
+            with self.assertRaises(ValueError): adapter.reused_setup_evidence(context)
+            context["runtime_manifest"] = runtime
+            context["case_inputs"]["input_provenance"]["formal_product_expected_files"]["effect.txt"]["bytes"] = 2
+            with self.assertRaises(ValueError): adapter.reused_setup_evidence(context)
+            context["case_inputs"]["input_provenance"] = copy.deepcopy(provenance)
+            context["run_id"] = record["run_id"]
+            with self.assertRaises(ValueError): adapter.reused_setup_evidence(context)
+            context["run_id"] = "new-run"
+            record["facts"][self.config()["reused_setup_requirements"][0]] = False
+            review.write_text(json.dumps(record), encoding="utf-8")
+            context["case_inputs"]["reused_setup_evidence"]["review"] = pin(review)
+            with self.assertRaises(ValueError): adapter.reused_setup_evidence(context)
+            self.assertLess(sum(p.stat().st_size for p in base.iterdir()), 4096)
+
+    def test_current_route_keeps_days_law_and_succession_without_repeated_setup_gui(self):
+        with tempfile.TemporaryDirectory(prefix="rmtm-delta-route-") as directory:
+            days, phases, reviews, checkpoints = [], [], [], {}
+            reuse = {"historical_case_pass_reclassified": False, "not_current_run_gui": True, "business_pass": False}
+            def checkpoint(name, value): checkpoints[name] = value; return value
+            client = SimpleNamespace(output=directory, checkpoint=checkpoint,
+                log_bytes=lambda: (emitter.FOCUSED_DONE + "\n").encode() if "rmtm-D8" in days else b"")
+            with patch.object(adapter, "validate_contract"), patch.object(adapter, "reused_setup_evidence", return_value=reuse), \
+                 patch.object(adapter, "observe", return_value=({"date_raw": 1000}, None)), \
+                 patch.object(adapter, "original_day", side_effect=lambda c, name, *a, **k: days.append(name)), \
+                 patch.object(adapter, "_law_phase", side_effect=lambda c, name: (phases.append(name) or Path("test-" + name), {"date_raw": 1007})), \
+                 patch.object(adapter, "literals"), patch.object(adapter, "review", side_effect=lambda c, name, *a: reviews.append(name)):
+                self.assertFalse(adapter.run_case(self.context(), client)["business_pass"])
+            self.assertEqual(days, ["rmtm-D" + str(day) for day in range(1, 9)])
+            self.assertEqual(phases, ["d3", "predeath", "postdeath"])
+            self.assertEqual(reviews, ["rmtm-Continue-once", "rmtm-real-succession"])
+            self.assertEqual(checkpoints["rmtm-verdict-input"]["verification_scope"], "migration_delta_v1")
+            self.assertEqual(checkpoints["rmtm-verdict-input"]["reused_setup_evidence"], reuse)
 
 
 if __name__ == "__main__":

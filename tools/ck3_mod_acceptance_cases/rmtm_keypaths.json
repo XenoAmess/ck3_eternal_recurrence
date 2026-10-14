@@ -3,7 +3,26 @@
   "product": "reclaim-motherland",
   "case": "core",
   "release_scope": "owned_keypaths",
-  "scope_authority": "2026-10-13 user requests reduced mod-owned keypaths; old RED and legacy full36 results are not reclassified",
+  "verification_scope": "migration_delta_v1",
+  "scope_authority": "2026-10-15 narrowed under owner's repeated scope-reduction request; reuse same-production R17 setup GUI only, never reclassify its failed run or claim core26/full36 PASS",
+  "required_release_families": [
+    "later_dynasty_single_heir_law_and_heir_ready",
+    "phase3_succession_title",
+    "phase3_succession_personal_county",
+    "phase3_succession_loyal_realm",
+    "phase3_succession_ministry_entitlement",
+    "phase3_succession_exact_ministers",
+    "phase3_later_dynasty_realm_and_ministry_inherited"
+  ],
+  "reused_setup_input": "reused_setup_evidence",
+  "reused_setup_requirements": [
+    "later_empty_dejure_personal_land_loyal_subtree",
+    "nine_exact_incumbents_real_budget_cancel",
+    "continue_actual_A_B_names",
+    "offer_A_minus50_rank10_total_no_hegemony_perks_cancel",
+    "offer_B_minus50_rank10_total_no_hegemony_perks_cancel"
+  ],
+  "family_inventory_role": "Unchanged focused fixture telemetry; only required_release_families are positive release gates. Recorded FAIL, physical AND and original D8 assertions remain strict.",
   "families": [
     {
       "kind": "TEST",
@@ -167,9 +186,9 @@
     "legacy full36 completion credit"
   ],
   "owned_gui_requirements": [
-    "Later title empty de jure/personal land/loyal tree",
-    "nine original incumbents and budget view Cancel without execute",
-    "real predecessor death/expected engine heir/same full-title recovery"
+    "Reuse pinned same-runtime/same-production setup GUI, including nine incumbents/budget Cancel and representative Offer display; not current-run GUI or historical case PASS",
+    "Current real Continue once and paused before execute",
+    "Current real predecessor death/independent execute-time engine heir/same full-title original callback and actual new player; original automatic D8 land/tree/ministry assertions"
   ],
   "post_start": {
     "government_key": "celestial_government",

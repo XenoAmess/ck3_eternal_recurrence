@@ -33,6 +33,51 @@ def focused_keypaths(context):
     return "case_spec" in context and case_config(context).get("release_scope") == "owned_keypaths"
 
 
+def migration_delta(context):
+    return context["case"] == "core" and focused_keypaths(context) and case_config(context).get("verification_scope") == "migration_delta_v1"
+
+
+def reused_setup_evidence(context):
+    """Reuse actual setup subfacts only; never replay/reclassify the old run."""
+    config = case_config(context)
+    refs = context.get("case_inputs", {}).get(config["reused_setup_input"])
+    require(isinstance(refs, dict) and set(refs) == {"prepared_case", "review"},
+            "Migration delta needs explicit historical prepared/review pins")
+    for ref in refs.values():
+        check_evidence(ref)
+    prepared = json.loads(Path(refs["prepared_case"]["path"]).read_text(encoding="utf-8-sig"))
+    source = json.loads(Path(refs["review"]["path"]).read_text(encoding="utf-8-sig"))
+    require(prepared.get("product") == "reclaim-motherland" and prepared.get("case") == "core"
+            and prepared.get("runtime_manifest") == context.get("runtime_manifest"),
+            "Historical setup used a different product/case/shared runtime")
+    current = context["case_inputs"].get("input_provenance", {})
+    previous = prepared.get("case_inputs", {}).get("input_provenance", {})
+    require(current.get("formal_product_manifest") and
+            current["formal_product_manifest"] == previous.get("formal_product_manifest"),
+            "Historical setup formal manifest differs")
+    check_evidence(current["formal_product_manifest"])
+    files = current.get("formal_product_expected_files")
+    prior_files = previous.get("formal_product_expected_files")
+    require(isinstance(files, dict) and files and isinstance(prior_files, dict),
+            "Historical setup needs the actual production file inventory")
+    def identities(rows):
+        return {name: (row["bytes"], row["sha256"]) for name, row in rows.items()}
+    require(identities(files) == identities(prior_files), "Historical setup production bytes differ")
+    requirements = config["reused_setup_requirements"]
+    require(source.get("status") == "complete" and isinstance(source.get("reviewer"), str)
+            and source["reviewer"] and isinstance(source.get("run_id"), str) and source["run_id"]
+            and source["run_id"] != context.get("run_id")
+            and all(source.get("facts", {}).get(name) is True for name in requirements),
+            "Actual historical setup subfacts are incomplete or claimed as current-run GUI")
+    require(isinstance(source.get("evidence"), list) and source["evidence"],
+            "Historical setup has no original GUI evidence")
+    for ref in source["evidence"]:
+        check_evidence(ref)
+    return {"source_prepared_case": refs["prepared_case"], "source_review": refs["review"],
+            "source_run_id": source["run_id"], "reused_facts": {name: True for name in requirements},
+            "not_current_run_gui": True, "historical_case_pass_reclassified": False, "business_pass": False}
+
+
 def phase4_enabled(context):
     value = context.get("case_inputs", {}).get(PHASE4_OPTION, False)
     require(type(value) is bool, PHASE4_OPTION + " must be a strict JSON boolean")
@@ -55,6 +100,8 @@ def validate_contract(context, *, require_prepared=False):
     # preparation binds these inputs; never use receipt.exists() to skip a
     # missing/deleted receipt of an otherwise bound prepared case.
     if require_prepared or any(key in inputs for key in ("product_dir", "plain_configuration")):
+        if migration_delta(context):
+            reused_setup_evidence(context)
         return _validate_prepared_materialization(context, enabled)
     return {"phase4_pre_send_gui_qualification": enabled, "runtime_status": "NOT_RUN", "business_pass": False}
 
@@ -132,6 +179,7 @@ def prepare_case(context):
     days = config["fixture_recent_independence_override_days"]
     require(type(days) is int and 10 <= days <= 30, "Use the existing producer timer admission")
     require(config["natural_game_day_limit"] == 14, "Original fourteen-day cap is required")
+    reuse = reused_setup_evidence(context) if migration_delta(context) else None
     repo = Path(context["repo_root"])
     fixture = Path(context["run_dir"]) / "fixture"
     arguments = [
@@ -159,7 +207,7 @@ def prepare_case(context):
             "fixtures": {"emitter": emitter, "profile": prepared,
                           "scope_witness_projection": scope_witness,
                          "compressed_days": days, "natural_day_cap": 14},
-            "business_pass": False}
+            **({"reused_setup_evidence": reuse} if reuse is not None else {}), "business_pass": False}
 
 
 def validate_phase4_review(response, d3):
@@ -291,6 +339,10 @@ def run_case(context, client):
     if context["case"] == "threshold_ui":
         return _threshold_ui_case(context, client)
     config = case_config(context)
+    delta = migration_delta(context)
+    reuse = reused_setup_evidence(context) if delta else None
+    if delta:
+        client.checkpoint("rmtm-reused-migration-setup", reuse)
     require(context["case"] == "core", "Independent threshold adapter remains pending")
     initial, _ = observe(client, "rmtm-D0-qualified")
     start = initial["date_raw"]
@@ -301,12 +353,12 @@ def run_case(context, client):
     phase4 = _phase4_pre_send(context, client, d3_verdict) if phase4_enabled(context) else None
     original_day(client, "rmtm-D4", start, config["natural_game_day_limit"])
     literals(client, "rmtm-original-ui-ready", ["RQA120: TEST READY ui_after_chaos"], config["forbidden_markers"])
-    if focused:
+    if focused and not delta:
         review(client, "rmtm-owned-keypaths-GUI", [
             "later_empty_dejure_personal_land_loyal_subtree", "nine_exact_incumbents_real_budget_cancel",
         ], {"scope": "Owned Later/realm/ministry GUI only; no vanilla Offer reasons, totals or refusal gate",
             "next": "Continue once only after the owned views are captured."})
-    else:
+    elif not focused:
         review(client, "rmtm-C1-C5", [
             "later_empty_dejure_personal_land_loyal_subtree", "nine_exact_incumbents_real_budget_cancel",
             "continue_actual_A_B_names", "offer_A_minus50_rank10_total_no_hegemony_perks_cancel",
@@ -339,12 +391,12 @@ def run_case(context, client):
     debug = Path(client.output) / "rmtm-final-debug.log.raw"
     with debug.open("xb") as stream:
         stream.write(client.log_bytes())
-    if focused:
+    if focused and not delta:
         review(client, "rmtm-owned-keypaths-final", [
             "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
         ], {"independent_threshold_UI_case_still_required": True,
             "excluded_release_scope": "Vanilla Offer formulas, stochastic double refusal, expiry wait and duplicate threshold/restoration tail; old RED remains historical RED."})
-    else:
+    elif not focused:
         review(client, "rmtm-original-final-business", [
             "original_14day_cap", "same_full_title_personal_county_loyal_tree_and_nine_ministers",
             "two_real_offer_paths_and_refusals", "natural_both_title_timer_expiry",
@@ -354,6 +406,7 @@ def run_case(context, client):
         "d3": str(d3), "predeath": str(predeath), "postdeath": str(postdeath), "debug_log": pin(debug),
         "initial_date_raw": start, "last_date_raw": postdeath_verdict["date_raw"],
         "business_pass": False, "normal_close_pending": True,
+        **({"verification_scope": "migration_delta_v1", "reused_setup_evidence": reuse} if delta else {}),
         **({PHASE4_OPTION: phase4} if phase4 is not None else {}),
     })
     return {"status": "business_phases_observed_normal_close_pending", "business_pass": False,
@@ -366,7 +419,13 @@ def focused_marker_verdict(config, raw, bundle, helper):
     lines = raw.decode("utf-8-sig", errors="replace").splitlines()
     require(not any(token in line for token in config["forbidden_markers"] for line in lines),
             "Owned-keypaths actual FAIL gate rejected")
-    expected = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in config["families"]]
+    delta = config.get("verification_scope") == "migration_delta_v1"
+    families = config["families"]
+    if delta:
+        required = config["required_release_families"]
+        families = [row for row in families if row["name"] in required]
+        require(len(families) == len(set(required)) == len(required), "Unknown/repeated migration release family")
+    expected = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in families]
     expected += [config["begin"], config["done"]]
     counts = {literal: sum(literal in line for line in lines) for literal in expected}
     require(all(count == config["required_exact_count"] for count in counts.values()),
@@ -376,6 +435,8 @@ def focused_marker_verdict(config, raw, bundle, helper):
             "Legacy PASS cannot replace physical law qualification")
     return {"release_scope": "owned_keypaths", "marker_and_law_contract_qualified": True,
             "marker_counts": counts, "actual_law_qualification": law,
+            **({"verification_scope": "migration_delta_v1", "legacy_core26_credit": False,
+                "required_release_family_count": len(families)} if delta else {}),
             "legacy_full36_credit": False, "business_pass": False}
 
 
@@ -404,7 +465,14 @@ def verify_case(context):
                   "phases": [caller.phase_evidence(Path(data[name])) for name in ("d3", "predeath", "postdeath")]}
         verdict = focused_marker_verdict(case_config(context), Path(data["debug_log"]["path"]).read_bytes(), bundle, caller.load_helper())
         write_once(output / "rmtm-owned-keypaths-and-effective-law-verdict.json", verdict)
-        names = ["rmtm-owned-keypaths-GUI", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-owned-keypaths-final"]
+        if migration_delta(context):
+            require(data.get("verification_scope") == "migration_delta_v1" and
+                    data.get("reused_setup_evidence") == reused_setup_evidence(context),
+                    "Run/verify migration scope or reused evidence differs")
+            names = ["rmtm-Continue-once", "rmtm-real-succession"]
+        else:
+            require("verification_scope" not in data, "Legacy core cannot consume a migration-delta verdict")
+            names = ["rmtm-owned-keypaths-GUI", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-owned-keypaths-final"]
     else:
         verdict_path = output / "rmtm-original36-and-effective-law-verdict.json"
         args = SimpleNamespace(d3=Path(data["d3"]), predeath=Path(data["predeath"]),
@@ -429,5 +497,7 @@ def verify_case(context):
         require(PHASE4_OPTION not in data, "Run/verify phase4 option differs")
     return {"case_contract_qualified": True, "gui_contract_qualified": True, "business_contract_applicable": True, "marker_and_law_contract_qualified": True,
             **({"release_scope": "owned_keypaths", "legacy_full36_credit": False} if focused else {"original_family_count": 36}),
+            **({"verification_scope": "migration_delta_v1", "legacy_core26_credit": False,
+                "reused_setup_evidence": data["reused_setup_evidence"]} if migration_delta(context) else {}),
             "actual_review_evidence": proofs, "source_pass": False, "business_pass": False,
             "requires_shared_normal_close_and_independent_threshold_UI": True}
