@@ -37,6 +37,8 @@ _FIELDS = _BOOL_FIELDS | {
     "pump_epoch", "thread_id", "game_version", "executable_sha256",
     "request_id", "ticket_sequence", "root_observation_source", "post_observation_source",
 }
+_B15_FIELDS = _FIELDS | {"dismiss_stage", "dismiss_exception_code"}
+_DISMISS_STAGES = {"not_attempted", "preflight_rejected", "callback_entered", "callback_returned", "callback_exception"}
 
 
 def _integer(value: object, name: str, low: int, high: int) -> int:
@@ -64,12 +66,27 @@ def normalize_war_results_window_v1(
     owner_receipt: Mapping[str, object],
 ) -> dict[str, object]:
     """Validate only the actual Native leaf, against independent before sources."""
-    if not isinstance(value, Mapping) or set(value) != _FIELDS:
+    if not isinstance(value, Mapping) or set(value) not in (_FIELDS, _B15_FIELDS):
         raise ValueError("war results Native leaf shape is malformed")
     owner_receipt = normalize_war_results_window_owner_receipt_v1(
         owner_receipt, request_id=owner_receipt.get("request_id") if isinstance(owner_receipt, Mapping) else None,
     )
     row = dict(value)
+    if "dismiss_stage" in row:
+        stage = row["dismiss_stage"]
+        code = _integer(row["dismiss_exception_code"], "dismiss_exception_code", 0, (1 << 32) - 1)
+        if type(stage) is not str or stage not in _DISMISS_STAGES:
+            raise ValueError("war results Dismiss stage is invalid")
+        if stage == "not_attempted":
+            valid = not row["dispatch_attempted"] and not row["dispatch_invoked"] and code == 0
+        elif stage in {"preflight_rejected", "callback_entered"}:
+            valid = row["dispatch_attempted"] and not row["dispatch_invoked"] and code == 0
+        elif stage == "callback_returned":
+            valid = row["dispatch_attempted"] and row["dispatch_invoked"] and row["native_handled"] and code == 0
+        else:
+            valid = row["dispatch_attempted"] and not row["dispatch_invoked"] and code != 0
+        if not valid:
+            raise ValueError("war results Dismiss stage contradicts actual dispatch")
     if (operation not in {"query", "close"} or row["operation"] != operation
             or row["schema"] != SCHEMA or row["window_name"] != "war_results"):
         raise ValueError("war results fixed operation/window differs")

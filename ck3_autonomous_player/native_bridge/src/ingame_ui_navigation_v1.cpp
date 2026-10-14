@@ -1212,6 +1212,64 @@ bool ResolveWarDeclaredCloseButtonV1(
   }
   return false;
 }
+
+bool DispatchWarResultsDismissV1(WarDeclaredOverviewMailboxContextV1 &q,
+    void *expected_root, void *target, void *expected_vtable,
+    WarResultsDismissTraceV1 &trace) noexcept {
+  trace.stage = WarResultsDismissStageV1::preflight_rejected;
+  trace.exception_code = 0;
+  if (!q.war_results || !expected_root || !target || !expected_vtable ||
+      q.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
+      !InspectFixedGuiWidgetDispatchAdmissionV1(q.dispatch_environment,
+                                                  target, expected_vtable)) return false;
+
+  // The second lookup must still identify the original bottom Dismiss widget.
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr, *current_target = nullptr, *current_vtable = nullptr;
+  bool visible = false, enabled = false;
+  std::string actual_name;
+  if (!ResolveNamedGuiWidgetV1(q.environment,access,kWarResultsWindowNameV1,
+                               "close_button",root,current_target) ||
+      root != expected_root || current_target != target ||
+      !ReadGuiWidgetRuntimeV1(access,target,actual_name,current_vtable,
+                              visible,enabled) ||
+      actual_name != "close_button" || current_vtable != expected_vtable ||
+      !visible || !enabled) return false;
+
+  // CK3's button slot 13 selects the primary group when populated, otherwise
+  // the fallback group. The stock GUI Dismiss binding must be unambiguous.
+  std::int32_t primary_count = 0, count = 0;
+  if (!Value(target,kZhongguoPrimaryCallbackGroupOffset +
+                    kZhongguoCallbackGroupCountOffset,primary_count) ||
+      primary_count < 0 || primary_count > kZhongguoMaximumCallbacks) return false;
+  // The actual .4 button dispatcher considers three intermediate groups
+  // before its fallback. A fallback callback is only the first handler if
+  // those groups are empty as well.
+  if (primary_count == 0) {
+    for (const std::size_t offset : {0x2Cu,0x4Cu,0x6Cu}) {
+      std::int32_t intermediate_count = 0;
+      if (!Value(target,kZhongguoPrimaryCallbackGroupOffset + offset,
+                 intermediate_count) || intermediate_count != 0) return false;
+    }
+  }
+  const auto group_offset = primary_count > 0 ?
+      kZhongguoPrimaryCallbackGroupOffset : kZhongguoFallbackCallbackGroupOffset;
+  if (!Value(target,group_offset + kZhongguoCallbackGroupCountOffset,count) ||
+      count != 1 || (primary_count > 0 && primary_count != 1)) return false;
+  void *data = nullptr, *callback = nullptr, *callback_vtable = nullptr;
+  void *slot2 = nullptr;
+  if (!Value(target,group_offset + kZhongguoCallbackGroupDataOffset,data) || !data ||
+      !Value(data,kZhongguoCallbackObjectOffset,callback) || !callback ||
+      !Value(callback,0,callback_vtable) || !callback_vtable ||
+      !Value(callback_vtable,kZhongguoCallbackVtableSlot2Offset,slot2) || !slot2)
+    return false;
+  const auto code = reinterpret_cast<std::uintptr_t>(slot2);
+  const auto base = q.dispatch_environment.module_base;
+  if (!base || code < base ||
+      code - base >= GuiExactImageSizeV1(GuiAbiRevisionV1::crozier12004))
+    return false;
+  return InvokeWarResultsDismissCallbackV1(callback,slot2,target,trace);
+}
 } // namespace
 
 std::string_view PrepareWarDeclaredOverviewMailboxV1(
@@ -1337,10 +1395,16 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
         return true;
       }
       out.dispatch_attempted = true;
-      out.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
-          &q->dispatch_environment,game::ZhongguoScoreboardActionV1::open,
-          out.button_name,out.button_name,WarDeclaredPointerV1(target),WarDeclaredPointerV1(vtable),
-          out.native_handled);
+      if (q->war_results) {
+        out.dispatch_invoked = DispatchWarResultsDismissV1(
+            *q,initial.root,target,vtable,out.dismiss_trace);
+        out.native_handled = out.dispatch_invoked;
+      } else {
+        out.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
+            &q->dispatch_environment,game::ZhongguoScoreboardActionV1::open,
+            out.button_name,out.button_name,WarDeclaredPointerV1(target),WarDeclaredPointerV1(vtable),
+            out.native_handled);
+      }
     }
     // Actual native UI reads after the invocation; never SDK semantic cache.
     IngameUiGuiOwnerBindingV1 owner_after{};
@@ -1424,7 +1488,11 @@ std::string SerializeWarDeclaredOverviewResultV1(const WarDeclaredOverviewResult
     << ",\"paused\":" << v.paused << ",\"native_revision\":" << v.native_revision
     << ",\"connection_generation\":" << v.connection_generation << ",\"pump_epoch\":" << v.pump_epoch
     << ",\"thread_id\":" << v.thread_id << ",\"game_version\":\"" << ck3_12004::kGameVersion
-    << "\",\"executable_sha256\":\"" << ck3_12004::kExecutableSha256 << "\"}";
+    << "\",\"executable_sha256\":\"" << ck3_12004::kExecutableSha256 << "\"";
+  if (v.war_results)
+    o << ",\"dismiss_stage\":\"" << WarResultsDismissStageNameV1(v.dismiss_trace.stage)
+      << "\",\"dismiss_exception_code\":" << v.dismiss_trace.exception_code;
+  o << "}";
   return o.str();
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/war_results_dismiss_adapter_v1.hpp"
 
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
@@ -156,6 +157,7 @@ struct WarDeclaredOverviewResultV1 {
   bool scope_unchanged = false;
   bool closure_verified = false;
   bool application_owner_thread_verified = false;
+  WarResultsDismissTraceV1 dismiss_trace{};
   std::string button_name;
   std::string request_id;
   std::string root_observation_source;
