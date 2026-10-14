@@ -7859,6 +7859,12 @@ def choose_one_life_turn(
         if fallback is not None:
             plan = fallback
 
+    if isinstance(plan.get("unhandled_event_fallback"), dict):
+        from .vanilla_events.event_offline_analysis import annotate_source_reviewed_event_plan_v1
+
+        plan = annotate_source_reviewed_event_plan_v1(
+            plan, pending_interaction_registry_state_dir)
+
     if (plan.get("selected_step") is None
             and isinstance(plan.get("phase"), str) and plan["phase"].startswith("pending_")
             and not isinstance(plan.get("unhandled_interaction_fallback"), dict)):
