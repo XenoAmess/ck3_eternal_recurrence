@@ -1,5 +1,7 @@
 # 重整河山 0.4.0 验收报告
 
+> 2026-10-15：CK3 `1.20.0.4` 的缩减范围验收仍在进行，**尚未通过、尚未发布**。`core` 新场 A222 / R0023 已实际启动，进入“天下大势，合久必分”事件，但容量观察器在业务判定前报 `GUARD_OBSERVABILITY_LOST`（`FileNotFoundError`），因此原 run/observer 均退出 2，verify 为 `BLOCKED / NOT_ASSESSED`。未选择事件选项，也未生成业务通过判定；不能将进入事件视为 `core` 通过。CK3 已正常退出（OS/native 0），屏幕租约释放，场次存储预留实际 `CLOSED`。环境故障须限界修复后重新验收 `core`；`threshold_ui` 尚待执行。Steam 保持离线，两款 mod 的统一上传不得提前开始。外置证据：`C:/workspace/ck3-upgrade-20261010/focused-scenes-20261015-01/core--a222/allocation-pressure-trigger-01.json`（SHA-256 `a9a5afb2c598c8f8a4e645099bb9f99f8d881d48501eaa4a90084630962d86e3`）、同场 `POST-RUN-FAILURE-CLOSE-01.json`（SHA-256 `51fa5b52cba3f798ad2e4e6db8ddef7cbd7c5ed2bb543c25d7ec8c08081cb5be`）；原始现场按通用存储策略限期复核，不因本条引用永久保留。
+
 > 2026-10-05：`0.4.1` / CK3 `1.20.0.3` 是当前维护候选，**NOT_RUN / NOT_PUBLISHED**。本页原 `0.4.0` 实机与公开发布事实永久保留，不外推为新版验收。当前准备与剩余门禁见[新版准备专题](../../docs/reclaim-the-motherland-ck3-1.20.0.3-readiness-2026-10-05.md)。
 
 状态：**COMPLETE。L0、源码树 MCP-first L1、Workshop 发布、公开描述与 Change Notes 精确回读、全新订阅缓存及 fresh-cache L3 均为 GREEN；Steam 已恢复离线模式。**
