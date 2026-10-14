@@ -517,6 +517,11 @@ from ..ordinary_war_declared_overview_v1 import (
     war_declared_overview_presence_v1,
     war_declared_overview_query_frame_v1,
 )
+from ..ordinary_war_results_window_v1 import (
+    CLOSE_WAR_RESULTS_WINDOW_V1_STEP,
+    QUERY_WAR_RESULTS_WINDOW_V1_STEP,
+    war_results_window_presence_v1,
+)
 from ..lifestyle_formal_consumer import (
     PERK_SUBMIT_STEP as PRIVATE_LIFESTYLE_PERK_STEP,
     FOCUS_SUBMIT_STEP as PRIVATE_LIFESTYLE_FOCUS_STEP,
@@ -879,6 +884,18 @@ class GameplayBridgeService:
         if not callable(close):
             raise UnsupportedStepError("bridge driver cannot close the war overview")
         # The Driver owns the independent request latch and single dispatch.
+        return close(expected_revision=expected_revision)
+
+    def query_war_results_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        query = getattr(self.driver, "query_war_results_window_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("bridge driver cannot query the war results window")
+        return query(expected_revision=expected_revision)
+
+    def close_war_results_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        close = getattr(self.driver, "close_war_results_window_v1", None)
+        if not callable(close):
+            raise UnsupportedStepError("bridge driver cannot close the war results window")
         return close(expected_revision=expected_revision)
 
     def finish_active_scheme_sway_private_v1(
@@ -4011,6 +4028,10 @@ class GameplayBridgeService:
                 result = self.query_war_declared_overview_v1(expected_revision=int(planned["revision"]))
             elif selected_step == CLOSE_WAR_DECLARED_OVERVIEW_V1_STEP:
                 result = self.close_war_declared_overview_v1(expected_revision=int(planned["revision"]))
+            elif selected_step == QUERY_WAR_RESULTS_WINDOW_V1_STEP:
+                result = self.query_war_results_window_v1(expected_revision=int(planned["revision"]))
+            elif selected_step == CLOSE_WAR_RESULTS_WINDOW_V1_STEP:
+                result = self.close_war_results_window_v1(expected_revision=int(planned["revision"]))
             elif (
                 event_option_number is not None
                 and isinstance(planned_event_id, int)
@@ -4401,6 +4422,20 @@ class GameplayBridgeService:
             }
         if selected_step == CLOSE_WAR_DECLARED_OVERVIEW_V1_STEP:
             clear = war_declared_overview_presence_v1(result) in ("absent", "hidden")
+            closed = (result.get("status") == "closed_verified"
+                      and result.get("closure_verified") is True
+                      and result.get("accepted") is True
+                      and result.get("dispatch_attempted") is True
+                      and result.get("dispatch_invoked") is True
+                      and result.get("application_owner_thread_verified") is True and clear)
+            noop = result.get("status") in ("already_absent", "already_hidden") and clear
+            return {
+                "status": "executed" if closed else "observed" if noop else "pending",
+                "selected_step": selected_step, "plan": plan, "result": result,
+                "ui_action_credit": closed,
+            }
+        if selected_step == CLOSE_WAR_RESULTS_WINDOW_V1_STEP:
+            clear = war_results_window_presence_v1(result) in ("absent", "hidden")
             closed = (result.get("status") == "closed_verified"
                       and result.get("closure_verified") is True
                       and result.get("accepted") is True

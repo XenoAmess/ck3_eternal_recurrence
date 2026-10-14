@@ -47,6 +47,12 @@ from .war_declared_overview_contract import (
     QUERY_CAPABILITY as QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY,
     QUERY_STEP as QUERY_WAR_DECLARED_OVERVIEW_STEP,
 )
+from .war_results_window_contract import (
+    CLOSE_CAPABILITY as CLOSE_WAR_RESULTS_WINDOW_CAPABILITY,
+    CLOSE_STEP as CLOSE_WAR_RESULTS_WINDOW_STEP,
+    QUERY_CAPABILITY as QUERY_WAR_RESULTS_WINDOW_CAPABILITY,
+    QUERY_STEP as QUERY_WAR_RESULTS_WINDOW_STEP,
+)
 
 from collections.abc import Callable, Mapping
 import copy
@@ -2034,6 +2040,11 @@ class NativeHeadlessGameplayDriver:
         self._war_declared_overview_observation: dict[str, object] | None = None
         self._war_declared_overview_query_attempt: dict[str, object] | None = None
         self._war_declared_overview_close_pending: dict[str, object] | None = None
+        self._war_results_window_attempt = 0
+        self._war_results_window_observation: dict[str, object] | None = None
+        self._war_results_window_query_attempt: dict[str, object] | None = None
+        self._war_results_window_close_pending: dict[str, object] | None = None
+        self._war_results_window_last_clear: dict[str, object] | None = None
         self._war_entry_assessments_two_read_trace: list[dict[str, object]] = []
         self._campaign_root_context_query: dict[str, object] | None = None
         self._war_termination_options: dict[int, dict[str, object]] = {}
@@ -3350,6 +3361,31 @@ class NativeHeadlessGameplayDriver:
         from .war_declared_overview_transport import war_declared_overview_snapshot_fields
         return war_declared_overview_snapshot_fields(self, snapshot)
 
+    def _war_results_window_v1(
+        self, *, operation: str, expected_revision: int, record: bool = True,
+    ) -> dict[str, object]:
+        from .war_results_window_transport import execute_war_results_window_v1
+        step = QUERY_WAR_RESULTS_WINDOW_STEP if operation == "query" else CLOSE_WAR_RESULTS_WINDOW_STEP
+        try:
+            result = execute_war_results_window_v1(self, operation=operation, expected_revision=expected_revision)
+        except Exception as error:
+            if record:
+                self._record_command(step, ok=False, result=None, error=f"{type(error).__name__}: {error}")
+            raise
+        if record:
+            self._record_command(step, ok=result["accepted"], result=result)
+        return result
+
+    def query_war_results_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._war_results_window_v1(operation="query", expected_revision=expected_revision)
+
+    def close_war_results_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._war_results_window_v1(operation="close", expected_revision=expected_revision)
+
+    def _war_results_window_snapshot_fields(self, snapshot: Mapping[str, object]) -> dict[str, object]:
+        from .war_results_window_transport import war_results_window_snapshot_fields
+        return war_results_window_snapshot_fields(self, snapshot)
+
     def query_active_scheme_sway_outcome_opinion_private_v1(
         self, *, expected_revision: int, target_character_id: int,
     ) -> dict[str, object]:
@@ -4584,6 +4620,7 @@ class NativeHeadlessGameplayDriver:
                 **self._army_strength_snapshot_fields(army_query),
                 **self._prewar_force_coalition_v2_snapshot_fields(snapshot),
                 **self._war_declared_overview_snapshot_fields(snapshot),
+                **self._war_results_window_snapshot_fields(snapshot),
             }
         played_character = snapshot.get("played_character")
         current_character_id = (
@@ -4909,6 +4946,9 @@ class NativeHeadlessGameplayDriver:
                 {**snapshot, "episode_run_id": episode_run_id},
             ),
             **self._war_declared_overview_snapshot_fields(
+                {**snapshot, "episode_run_id": episode_run_id},
+            ),
+            **self._war_results_window_snapshot_fields(
                 {**snapshot, "episode_run_id": episode_run_id},
             ),
             "combat_simulation_inputs": (
@@ -8914,6 +8954,11 @@ class NativeHeadlessGameplayDriver:
         if step in {QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP}:
             return self._war_declared_overview_v1(
                 operation="query" if step == QUERY_WAR_DECLARED_OVERVIEW_STEP else "close",
+                expected_revision=expected_revision, record=False,
+            )
+        if step in {QUERY_WAR_RESULTS_WINDOW_STEP, CLOSE_WAR_RESULTS_WINDOW_STEP}:
+            return self._war_results_window_v1(
+                operation="query" if step == QUERY_WAR_RESULTS_WINDOW_STEP else "close",
                 expected_revision=expected_revision, record=False,
             )
         # The immutable in-process episode binding allows an early deny without
@@ -23718,6 +23763,8 @@ class NativeHeadlessGameplayDriver:
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
         horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
+        if QUERY_WAR_RESULTS_WINDOW_CAPABILITY in self.state.capabilities().get("bridge_capabilities", ()):
+            horizon_days = min(horizon_days, 6)
         from ..crown_authority_formal_consumer_v1 import (
             crown_authority_retry_horizon_days_v1,
         )
@@ -30525,6 +30572,8 @@ def _action_steps(
         for capability, step in (
             (QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY, QUERY_WAR_DECLARED_OVERVIEW_STEP),
             (CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY, CLOSE_WAR_DECLARED_OVERVIEW_STEP),
+            (QUERY_WAR_RESULTS_WINDOW_CAPABILITY, QUERY_WAR_RESULTS_WINDOW_STEP),
+            (CLOSE_WAR_RESULTS_WINDOW_CAPABILITY, CLOSE_WAR_RESULTS_WINDOW_STEP),
         ):
             if capability in capabilities:
                 steps.add(step)
@@ -30565,7 +30614,8 @@ def _action_steps(
     expand_arrange_marriage = False
     advertise_raise_troops = False
     for capability in capabilities:
-        if capability in {QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY, CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY}:
+        if capability in {QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY, CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY,
+                          QUERY_WAR_RESULTS_WINDOW_CAPABILITY, CLOSE_WAR_RESULTS_WINDOW_CAPABILITY}:
             continue  # Advertised above only for the actual paused scene.
         if capability == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY:
             advertise_council_composition_candidates = True

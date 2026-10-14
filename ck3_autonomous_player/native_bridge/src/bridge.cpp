@@ -2165,6 +2165,10 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
     AppendJsonString(result, xar::ck3_11906::kWarDeclaredOverviewQueryV1Capability);
     result += ',';
     AppendJsonString(result, xar::ck3_11906::kWarDeclaredOverviewCloseV1Capability);
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kWarResultsQueryV1Capability);
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kWarResultsCloseV1Capability);
   }
 #endif
   result += "]}";
@@ -15777,8 +15781,10 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
                     && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
-                         (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||
-                          step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step))
+                          (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||
+                           step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step ||
+                           step == xar::ck3_11906::kWarResultsQueryV1Step ||
+                           step == xar::ck3_11906::kWarResultsCloseV1Step))
 #endif
 #if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
                     && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
@@ -17815,7 +17821,9 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
           if (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||
-              step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step) {
+              step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step ||
+              step == xar::ck3_11906::kWarResultsQueryV1Step ||
+              step == xar::ck3_11906::kWarResultsCloseV1Step) {
             xar::ck3_11906::WarDeclaredOverviewMailboxContextV1 query{};
             const auto admission_error = xar::ck3_11906::PrepareWarDeclaredOverviewMailboxV1(
                 game, previous_snapshot ? &previous_snapshot.value() : nullptr,
@@ -17861,7 +17869,9 @@ void RunConnectedSession(
                       response.clear();
                     } else {
                       response.pop_back();
-                      response += ",\"war_declared_overview_owner_receipt\":{\"request_id\":";
+                       response += query.war_results
+                           ? ",\"war_results_window_owner_receipt\":{\"request_id\":"
+                           : ",\"war_declared_overview_owner_receipt\":{\"request_id\":";
                       AppendJsonString(response, request_id);
                       response += ",\"ticket_sequence\":" + Number(query.ticket.sequence) +
                           ",\"executor_started_sequence\":" + Number(started_sequence) +

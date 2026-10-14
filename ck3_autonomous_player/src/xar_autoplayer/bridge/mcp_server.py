@@ -3574,6 +3574,17 @@ def create_server(
         """Close the fixed overview once; only a true Native post observation proves closure."""
         return service.close_war_declared_overview_v1(expected_revision=expected_revision)
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_war_results_window_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Read the fixed war results window from the current Native UI owner."""
+        return service.query_war_results_window_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                           idempotentHint=False, openWorldHint=False))
+    def ck3_close_war_results_window_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Dismiss the visible war results window once and verify the Native post-state."""
+        return service.close_war_results_window_v1(expected_revision=expected_revision)
+
     @server.tool()
     def ck3_query_current_title_appointment_v1(expected_revision: IngameUiRevisionV1,
             requested_title_id: int | None = None, candidate_offset: int = 0,

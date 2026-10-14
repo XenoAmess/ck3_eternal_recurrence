@@ -14,6 +14,7 @@ from .ordinary_prewar_force_admission_v2 import (
 from .ordinary_war_declared_overview_v1 import (
     plan_ordinary_war_declared_overview_v1,
 )
+from .ordinary_war_results_window_v1 import plan_ordinary_war_results_window_v1
 
 from .current_native_war_end_conditions_v1 import (
     assess_current_native_war_end_conditions_v1,
@@ -7796,6 +7797,10 @@ def plan_one_life_window_priority_v1(
         snapshot, steps)
     if terminal_plan is not None:
         return terminal_plan
+    results_plan = plan_ordinary_war_results_window_v1(
+        snapshot, action_steps=steps, bridge_capabilities=bridge_capabilities)
+    if results_plan is not None:
+        return results_plan
     return plan_ordinary_war_declared_overview_v1(
         snapshot, action_steps=steps, bridge_capabilities=bridge_capabilities)
 
@@ -8323,6 +8328,10 @@ def _choose_one_life_turn_core(
     terminal_plan = _plan_one_life_terminal_v1(rows, snapshot, available_steps)
     if terminal_plan is not None:
         return terminal_plan
+    results_priority = plan_ordinary_war_results_window_v1(
+        snapshot, action_steps=available_steps, bridge_capabilities=available_capabilities)
+    if results_priority is not None:
+        return results_priority
     window_priority = plan_ordinary_war_declared_overview_v1(
         snapshot, action_steps=available_steps, bridge_capabilities=available_capabilities)
     if window_priority is not None:

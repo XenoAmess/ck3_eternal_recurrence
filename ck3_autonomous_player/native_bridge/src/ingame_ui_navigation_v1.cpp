@@ -1076,8 +1076,13 @@ bool CallWarDeclaredFindTopV1(NativeZhongguoFindTopLevelWidgetV1 find,
 // result needs a complete bounded search of the same current owner tree before
 // it can mean absence. No tree, budget exhaustion, bad edge or duplicate is
 // unknown. Only raw widget fields are read; no expression is evaluated here.
+struct WarWindowReadContextV1 {
+  const ZhongguoScoreboardAccessV1 *access = nullptr;
+  std::string_view target_name;
+};
+
 bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
-    void *owner, WarDeclaredWindowObservationV1 &out) {
+    void *owner, std::string_view target_name, WarDeclaredWindowObservationV1 &out) {
   using Failure = detail::WarDeclaredOwnerReadFailureV1;
   void *scene_root = nullptr;
   if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root)) {
@@ -1089,17 +1094,18 @@ bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
     return false;
   }
   detail::WarDeclaredOwnerReadCallbacksV1 read{};
-  read.context = &access;
+  WarWindowReadContextV1 context{&access,target_name};
+  read.context = &context;
   read.runtime = [](const void *opaque, std::uintptr_t node,
                     bool &target, bool &visible) noexcept {
-    const auto &current = *static_cast<const ZhongguoScoreboardAccessV1 *>(opaque);
+    const auto &context = *static_cast<const WarWindowReadContextV1 *>(opaque);
     std::string name;
     void *vtable = nullptr;
     bool enabled = false;
-    if (!ReadGuiWidgetRuntimeV1(current,reinterpret_cast<void *>(node),
+    if (!context.access || !ReadGuiWidgetRuntimeV1(*context.access,reinterpret_cast<void *>(node),
                                 name,vtable,visible,enabled) || !vtable)
       return Failure::widget_runtime_unreadable;
-    target = name == kWarDeclaredOverviewWindowNameV1;
+    target = name == context.target_name;
     return Failure::none;
   };
   read.children = [](const void *, std::uintptr_t node,
@@ -1143,16 +1149,16 @@ bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
 
 bool ReadWarDeclaredWindowV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
     const IngameUiGuiOwnerBindingV1 &binding,
-    WarDeclaredWindowObservationV1 &out) {
+    std::string_view target_name, WarDeclaredWindowObservationV1 &out) {
   out = {};
-  const std::string name(kWarDeclaredOverviewWindowNameV1);
+  const std::string name(target_name);
   if (!CallWarDeclaredFindTopV1(env.find_top_level_widget, binding.owner,
                               name, out.root)) {
     out.read_failure = "registered_top_level_lookup_failed";
     return false;
   }
   ZhongguoScoreboardAccessV1 access{};
-  if (!out.root) return FindWarDeclaredInOwnerTreeV1(access,binding.owner,out);
+  if (!out.root) return FindWarDeclaredInOwnerTreeV1(access,binding.owner,target_name,out);
   std::string actual_name;
   void *vtable = nullptr;
   bool enabled = false;
@@ -1181,15 +1187,20 @@ bool ResolveWarDeclaredCloseButtonV1(
     WarDeclaredOverviewMailboxContextV1 &q, void *expected_root,
     void *&target, void *&vtable, std::string &name) {
   ZhongguoScoreboardAccessV1 access{};
-  for (const auto candidate : {std::string_view("dismiss"),
-                               std::string_view("button_close")}) {
+  const auto window_name = q.war_results ? kWarResultsWindowNameV1 :
+      kWarDeclaredOverviewWindowNameV1;
+  const std::array<std::string_view,2> candidates = q.war_results
+      ? std::array<std::string_view,2>{"close_button", ""}
+      : std::array<std::string_view,2>{"dismiss", "button_close"};
+  for (const auto candidate : candidates) {
+    if (candidate.empty()) continue;
     void *root = nullptr;
     bool visible = false, enabled = false;
     std::string actual;
     target = nullptr;
     vtable = nullptr;
     if (ResolveNamedGuiWidgetV1(q.environment, access,
-            kWarDeclaredOverviewWindowNameV1, candidate, root, target) &&
+            window_name, candidate, root, target) &&
         root == expected_root && target &&
         ReadGuiWidgetRuntimeV1(access, target, actual, vtable, visible, enabled) &&
         actual == candidate && visible && enabled &&
@@ -1211,8 +1222,10 @@ std::string_view PrepareWarDeclaredOverviewMailboxV1(
     WarDeclaredOverviewMailboxContextV1 &query) noexcept {
   try {
     query = {};
-    if (step != kWarDeclaredOverviewQueryV1Step &&
-        step != kWarDeclaredOverviewCloseV1Step) return "invalid_war_declared_step";
+    const bool war_results = step == kWarResultsQueryV1Step ||
+        step == kWarResultsCloseV1Step;
+    if (!war_results && step != kWarDeclaredOverviewQueryV1Step &&
+        step != kWarDeclaredOverviewCloseV1Step) return "invalid_war_window_step";
     if (request_id.empty() || request_id.size() > 128) return "invalid_war_declared_request_id";
     std::uint64_t expected_revision = 0;
     game::Snapshot current{};
@@ -1232,8 +1245,10 @@ std::string_view PrepareWarDeclaredOverviewMailboxV1(
     query.mailbox = &mailbox;
     query.game = &game;
     query.expected_snapshot = current;
-    query.operation = step == kWarDeclaredOverviewCloseV1Step
+    query.operation = (step == kWarDeclaredOverviewCloseV1Step ||
+                       step == kWarResultsCloseV1Step)
         ? WarDeclaredOverviewOperationV1::close : WarDeclaredOverviewOperationV1::query;
+    query.war_results = war_results;
     query.request_id = request_id;
     query.native_revision = state_revision;
     query.connection_generation = connection_generation;
@@ -1253,6 +1268,7 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
   try {
     out = {};
     out.operation = q->operation;
+    out.war_results = q->war_results;
     out.request_id = q->request_id;
     out.ticket_sequence = q->ticket.sequence;
     out.native_revision = q->native_revision;
@@ -1289,7 +1305,9 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
     out.played_character_id = before.played_character_id;
     out.date_raw = before.date_raw;
     out.paused = before.paused;
-    if (!ReadWarDeclaredWindowV1(q->environment,owner_before,initial)) {
+    const auto window_name = q->war_results ? kWarResultsWindowNameV1 :
+        kWarDeclaredOverviewWindowNameV1;
+    if (!ReadWarDeclaredWindowV1(q->environment,owner_before,window_name,initial)) {
       out.unavailable_reason = "war_declared_window_read_failed";
       if (!initial.read_failure.empty())
         out.unavailable_reason += ":" + initial.read_failure;
@@ -1311,7 +1329,7 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
       WarDeclaredWindowObservationV1 rechecked{};
       if (!ReadWarDeclaredSnapshotV1(*q,immediately_before) || immediately_before != before ||
           !ReadIngameUiGuiOwnerBindingV1(q->environment,owner_now) || owner_now != owner_before ||
-          !ReadWarDeclaredWindowV1(q->environment,owner_now,rechecked) ||
+           !ReadWarDeclaredWindowV1(q->environment,owner_now,window_name,rechecked) ||
           rechecked.root != initial.root || !rechecked.visible) {
         out.unavailable_reason = "war_declared_scope_changed_before_close";
         if (!rechecked.read_failure.empty())
@@ -1330,7 +1348,7 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
     game::Snapshot after{};
     if (!ReadIngameUiGuiOwnerBindingV1(q->environment,owner_after) ||
         owner_after != owner_before ||
-        !ReadWarDeclaredWindowV1(q->environment,owner_after,after_window) ||
+        !ReadWarDeclaredWindowV1(q->environment,owner_after,window_name,after_window) ||
         !ReadWarDeclaredSnapshotV1(*q,after) || after != before) {
       out.status = out.dispatch_attempted ? "verification_pending" : "unavailable";
       out.unavailable_reason = "war_declared_post_scope_unverified";
@@ -1381,9 +1399,13 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
 
 std::string SerializeWarDeclaredOverviewResultV1(const WarDeclaredOverviewResultV1 &v) {
   std::ostringstream o;
-  o << std::boolalpha << "{\"schema\":\"ck3-war-declared-overview-v1\",\"operation\":\""
+  o << std::boolalpha << "{\"schema\":\""
+    << (v.war_results ? "ck3-war-results-window-v1" : "ck3-war-declared-overview-v1")
+    << "\",\"operation\":\""
     << (v.operation==WarDeclaredOverviewOperationV1::query ? "query" : "close")
-    << "\",\"window_name\":\"war_declared_overview\",\"available\":" << v.available
+    << "\",\"window_name\":\""
+    << (v.war_results ? kWarResultsWindowNameV1 : kWarDeclaredOverviewWindowNameV1)
+    << "\",\"available\":" << v.available
     << ",\"accepted\":" << v.accepted << ",\"status\":\"" << JsonEscape(v.status)
     << "\",\"unavailable_reason\":\"" << JsonEscape(v.unavailable_reason)
     << "\",\"root_observed\":" << v.root_observed << ",\"window_present\":" << v.window_present

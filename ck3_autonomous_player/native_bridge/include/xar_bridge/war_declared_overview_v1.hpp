@@ -17,6 +17,15 @@ inline constexpr std::string_view kWarDeclaredOverviewCloseV1Capability =
     "game.command.close-war-declared-overview-v1";
 inline constexpr std::string_view kWarDeclaredOverviewWindowNameV1 =
     "war_declared_overview";
+inline constexpr std::string_view kWarResultsQueryV1Step =
+    "query-war-results-window-v1";
+inline constexpr std::string_view kWarResultsCloseV1Step =
+    "close-war-results-window-v1";
+inline constexpr std::string_view kWarResultsQueryV1Capability =
+    "game.command.query-war-results-window-v1";
+inline constexpr std::string_view kWarResultsCloseV1Capability =
+    "game.command.close-war-results-window-v1";
+inline constexpr std::string_view kWarResultsWindowNameV1 = "war_results";
 
 enum class WarDeclaredOverviewOperationV1 : std::uint8_t { query, close };
 
@@ -62,8 +71,10 @@ inline bool ParseWarDeclaredRequestV1(std::string_view text,
   revision = 0;
   if (text.size() > 4096 || expected_request_id.empty() ||
       expected_request_id.size() > 128 ||
-      (expected_step != kWarDeclaredOverviewQueryV1Step &&
-       expected_step != kWarDeclaredOverviewCloseV1Step)) return false;
+       (expected_step != kWarDeclaredOverviewQueryV1Step &&
+        expected_step != kWarDeclaredOverviewCloseV1Step &&
+        expected_step != kWarResultsQueryV1Step &&
+        expected_step != kWarResultsCloseV1Step)) return false;
   std::size_t at = 0;
   const auto whitespace = [&]() noexcept {
     while (at < text.size() && (text[at]==' ' || text[at]=='\t' ||
@@ -130,6 +141,7 @@ inline bool ParseWarDeclaredRequestV1(std::string_view text,
 // Independent DTO: existing navigation requests, results and enums stay intact.
 struct WarDeclaredOverviewResultV1 {
   WarDeclaredOverviewOperationV1 operation = WarDeclaredOverviewOperationV1::query;
+  bool war_results = false;
   bool available = false;
   bool accepted = false;
   bool root_observed = false;
@@ -170,6 +182,7 @@ struct WarDeclaredOverviewMailboxContextV1 {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardActionDispatchEnvironmentV1 dispatch_environment{};
   WarDeclaredOverviewOperationV1 operation = WarDeclaredOverviewOperationV1::query;
+  bool war_results = false;
   std::string request_id;
   std::uint64_t native_revision = 0;
   std::uint64_t connection_generation = 0;
