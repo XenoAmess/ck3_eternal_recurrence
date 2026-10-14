@@ -8,7 +8,11 @@ R86 的隔离着色器缓存与更新的 R87 缓存逐文件比较相对路径�
 
 A58 原文件合计493,465,416 B，新增压缩包9,433,902 B；加小型执行根与保守余量后，闭场 carry **140,757,657,236 B**。A59 对 R78、R79 九份旧线流和 R78 native 报告同法无损归档：旧文件566,975,917 B，新增压缩包17,644,429 B。**R79 原生报告本身及其源资格存档仍保留为原路径**，供下次准备入口读取。A59 闭场 carry **140,213,568,628 B**，固定配额余量1,113,462,583 B；32/48 MiB 两次新写峰值均分别未超准入。全卷物理 free 的变化包含并发系统活动，不归因于这些清理的精确物理收益。两次清理只是为后续运行腾出容量，未批准 R88、未更新配额复核期限、未授予宗主或信条实机通过。
 
+A60 接续对已闭场 R76 的四份 native/前端线流逐份无损归档：旧文件349,745,301 B，新增压缩包11,153,597 B。R79 原生报告及源资格存档仍未触碰。A60 使用独立48 MiB有限准入，闭场 carry **139,880,219,804 B**，固定配额余量1,446,811,407 B；协调任务已结束。这个余量足以进入下一场更保守的1.25 GiB峰值评估，但仍不是 R88 准入或配额复核期限延期。
+
 外置 A58 根：`C:/workspace/ck3_lyd_runtime_20261004/lyd-r87-successor-reclaim-20261014-058`；A59 根：`C:/workspace/ck3_lyd_runtime_20261004/lyd-r78-r79-stream-reclaim-20261014-059`。原件与压缩包按[全机器存储策略](../../../storage-retention-policy.md)继续分级复核。
+
+A60 根：`C:/workspace/ck3_lyd_runtime_20261004/lyd-r76-stream-reclaim-20261014-060`。
 
 | 回执 | SHA-256 |
 | --- | --- |
@@ -18,3 +22,5 @@ A58 原文件合计493,465,416 B，新增压缩包9,433,902 B；加小型执行�
 | `A58/CLOSED-RESERVATION.actual.json` | `12780d396c1943724ffcfc05ac49b10e441d0dc266dcce1e9f1586849c397f40` |
 | `A59/ARCHIVE.actual.json` | `344c10997c081ba09d641aa6810af7d0b10a42dda0292e2a91d4543b91392812` |
 | `A59/CLOSED-RESERVATION.actual.json` | `954c52557d25ecceb764bc615f3881e2756320b3e6a80f478f28c3033ab8a56c` |
+| `A60/ARCHIVE.actual.json` | `a5ef8f5774b7d551093dac9dc1b0dc3e8f6246c8853687c8640d3ceb1af2f3f2` |
+| `A60/CLOSED-RESERVATION.actual.json` | `d0a4e22dd51d9e4e80a54707aa9427c728d59b73978064ea211d0718b8ceb56c` |
