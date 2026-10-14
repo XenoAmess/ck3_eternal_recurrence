@@ -39,6 +39,21 @@ def _write_new(path, value):
 def _read(path):
     return json.loads(Path(path).read_text(encoding="utf-8-sig"))
 
+def _read_decision_binding(path, expected, *, retry_seconds=2.0):
+    """OBS and the overlay can briefly hold a Windows replace/share lock."""
+    deadline = time.monotonic() + retry_seconds
+    while True:
+        try:
+            raw = Path(path).read_bytes()
+            if len(raw) > 32768 or not raw.decode("utf-8").startswith(expected):
+                raise RuntimeError("decision text lost its exact generation binding")
+            return
+        except PermissionError:
+            if time.monotonic() >= deadline:
+                raise
+            time.sleep(.05)
+
+
 
 def _replace_json(path, value):
     """Mutable latest state; old paths are never presented as immutable evidence."""
@@ -761,10 +776,9 @@ def run_worker(path):
             if watch and watch.error:
                 raise RuntimeError(watch.error)
             if with_decision:
-                text = Path(job["decision_text_file"])
-                if text.stat().st_size > 32768 or not text.read_text(encoding="utf-8").startswith(
-                        "进程绑定：PID " + str(job["pid"]) + " · " + job["launch"]["creation_date"]):
-                    raise RuntimeError("decision text lost its exact generation binding")
+                _read_decision_binding(
+                    job["decision_text_file"],
+                                            "进程绑定：PID " + str(job["pid"]) + " · " + job["launch"]["creation_date"])
 
         def screenshots(label, *, replace_latest=False):
             guard()

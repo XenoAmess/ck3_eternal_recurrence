@@ -31,6 +31,36 @@ with mock.patch.object(subprocess, "Popen", side_effect=AssertionError("import l
     placement = load("custody_generation", TOOLS / "g2_saved_campaign/managed_desktop1_placement.py")
 
 
+
+class DecisionBindingRetryTests(unittest.TestCase):
+    def test_transient_windows_share_lock_retries_and_keeps_binding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            text = Path(directory) / "decision.txt"
+            text.write_text("bound generation", encoding="utf-8")
+            original = Path.read_bytes
+            attempts = 0
+
+            def temporarily_locked(path):
+                nonlocal attempts
+                attempts += 1
+                if attempts <= 2:
+                    raise PermissionError(13, "sharing violation", str(path))
+                return original(path)
+
+            with mock.patch.object(Path, "read_bytes", temporarily_locked),                  mock.patch.object(subject.time, "sleep") as sleep:
+                subject._read_decision_binding(text, "bound generation")
+            self.assertEqual(attempts, 3)
+            self.assertEqual(sleep.call_count, 2)
+
+    def test_wrong_generation_still_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            text = Path(directory) / "decision.txt"
+            text.write_text("other generation", encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "exact generation binding"):
+                subject._read_decision_binding(text, "bound generation")
+
+
+
 class WindowSelectorAndForegroundTests(unittest.TestCase):
     def windows(self, second_exe="steamwebhelper.exe"):
         gui = SimpleNamespace(IsWindowVisible=lambda hwnd: True,
