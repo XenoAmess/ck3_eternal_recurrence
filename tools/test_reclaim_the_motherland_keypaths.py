@@ -97,6 +97,15 @@ class OwnedKeypaths(unittest.TestCase):
         self.assertEqual(threshold["release_scope"], "owned_keypaths")
         self.assertIn("RQAUI: TEST PASS actual_production_restoration_effect_observed", threshold["required_markers"])
 
+    def test_threshold_fixture_preserves_restorer_title_eligibility(self):
+        raw = (SOURCE / "ui/common/scripted_effects/rqaui_effects.txt").read_text(encoding="utf-8-sig")
+        parse_clausewitz(raw)
+        reset, fiftyone = raw.split("rqaui_prepare_fiftyone_effect = {", 1)
+        self.assertIn("NOT = { holder = root.var:rqa_control_ruler }", reset)
+        self.assertIn("NOT = { holder = root }", reset)
+        self.assertGreaterEqual(reset.count("rmtm_holds_restoration_hegemony_trigger = yes"), 2)
+        self.assertGreaterEqual(fiftyone.count("rmtm_holds_restoration_hegemony_trigger = yes"), 2)
+
     def test_five_driver_changes_exact_inverse_bom_and_original_succession_timing(self):
         original = emitter.events(True).encode("utf-8-sig")
         for raw in (original, original.replace(b"\n", b"\r\n")):

@@ -4,7 +4,12 @@ rqaui_prepare_fifty_effect = {
     set_variable = { name = rqa120_stage value = 99 }
 		title:h_china = {
 			every_de_jure_county = {
-				limit = { NOT = { holder = root.var:rqa_control_ruler } }
+				# Keep the restorer's personal land so the restoration hegemony
+				# remains held; otherwise an absent decision proves nothing about 50%.
+				limit = {
+					NOT = { holder = root.var:rqa_control_ruler }
+					NOT = { holder = root }
+				}
 				save_scope_as = rqa_county_to_transfer
 				root = { rqa_transfer_county_to_control_effect = yes }
 			}
@@ -30,6 +35,7 @@ rqaui_prepare_fifty_effect = {
 		}
 		if = {
 			limit = {
+				rmtm_holds_restoration_hegemony_trigger = yes
 				rqa_controls_half_of_china_trigger = yes
 				NOT = { rqa_controls_claim_mandate_share_trigger = yes }
 			}
@@ -37,7 +43,11 @@ rqaui_prepare_fifty_effect = {
 		}
 		else = { debug_log = "RQAUI: TEST FAIL fifty_percent_below_claim_threshold" }
     if = {
-        limit = { rqa_controls_half_of_china_trigger = yes NOT = { rqa_controls_claim_mandate_share_trigger = yes } }
+        limit = {
+            rmtm_holds_restoration_hegemony_trigger = yes
+            rqa_controls_half_of_china_trigger = yes
+            NOT = { rqa_controls_claim_mandate_share_trigger = yes }
+        }
         add_character_flag = rqaui_fifty_ready
         debug_log = "RQAUI: TEST READY actual_restoration_50_ui"
     }
@@ -57,13 +67,19 @@ rqaui_prepare_fiftyone_effect = {
 			}
 		}
 		if = {
-			limit = { rqa_controls_claim_mandate_share_trigger = yes }
+			limit = {
+				rmtm_holds_restoration_hegemony_trigger = yes
+				rqa_controls_claim_mandate_share_trigger = yes
+			}
 			debug_log = "RQAUI: TEST PASS original_fifty_one_percent_threshold_reached"
 			add_character_flag = rqa_waiting_for_restoration
 			debug_log = "RQAUI: TEST PASS restoration_decision_ready"
 		}
 		else = { debug_log = "RQAUI: TEST FAIL original_fifty_one_percent_threshold_reached" }    if = {
-        limit = { rqa_controls_claim_mandate_share_trigger = yes }
+        limit = {
+            rmtm_holds_restoration_hegemony_trigger = yes
+            rqa_controls_claim_mandate_share_trigger = yes
+        }
         add_character_flag = rqaui_fiftyone_ready
         debug_log = "RQAUI: TEST READY actual_restoration_51_ui"
     }
