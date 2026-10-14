@@ -48,7 +48,7 @@
       "id": "institution",
       "required": true,
       "maximum_option_actions": 56,
-      "maximum_review_seconds": 2400,
+      "maximum_review_seconds": 7200,
       "allowed_options": {
         "lyd.410": [0, 1],
         "lyd.411": [0, 1],

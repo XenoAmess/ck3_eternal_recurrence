@@ -3158,7 +3158,7 @@
             "command_timeout": 300,
             "readiness_timeout": 1500,
             "timeout": 1500,
-            "hold_seconds": 6000,
+            "hold_seconds": 12600,
             "poll_interval": 0.5
           },
           "required_mcp_tools": [
