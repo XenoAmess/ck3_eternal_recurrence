@@ -24025,7 +24025,13 @@ class NativeHeadlessGameplayDriver:
             "actions": actions,
             "paused": current.get("paused") is True,
             "active_event": current.get("active_event"),
-            "final_screen": "map_hud" if current.get("paused") is True else None,
+            "pending_character_interaction": current.get("pending_character_interaction"),
+            "final_screen": (
+                "map_hud" if current.get("paused") is True
+                and current.get("active_event") is None
+                and current.get("pending_character_interaction") is None
+                else None
+            ),
             "snapshot_id": current["snapshot_id"],
             "revision": current["revision"],
         }
@@ -24295,8 +24301,30 @@ class NativeHeadlessGameplayDriver:
         if current.get("paused") is True:
             return current
 
+        # The popup can arrive before the second pause rather than during it.
+        # A changed event blocks the generic timeline-owner retry, so take a
+        # second fresh read and bind this one extra idempotent attempt to the
+        # same Game, actor, episode, date and popup under the original deadline.
+        popup_owner_after_first = False
+        if (pause_rejected
+                and (isinstance(current.get("active_event"), dict)
+                     or isinstance(current.get("pending_character_interaction"), dict))):
+            remaining = deadline - time.monotonic()
+            if remaining > 0 and type(current.get("revision")) is int:
+                settled = self._wait_for_life_advance_change(
+                    current["revision"], timeout_seconds=min(remaining, 0.15),
+                )
+                popup_owner_after_first = _same_life_advance_popup_pause_owner(
+                    snapshot, current, settled
+                )
+                if popup_owner_after_first:
+                    if settled.get("paused") is True:
+                        return settled
+                    current = settled
+
         retry_suppressed = None
-        if not _retryable_life_advance_pause_owner(snapshot, current):
+        if not (popup_owner_after_first
+                or _retryable_life_advance_pause_owner(snapshot, current)):
             retry_suppressed = "owner_changed"
         else:
             remaining = deadline - time.monotonic()
@@ -24310,10 +24338,68 @@ class NativeHeadlessGameplayDriver:
                         internal_semantic_snapshot=True,
                     )
                 except (BridgeUnavailableError, UnsupportedStepError) as error:
+                    if (not isinstance(error, _NativeCommandRejectedError)
+                            or error.native_error != "CK3 map state is unavailable"):
+                        raise BridgeUnavailableError(
+                            "native life-advance second pause-map request failed; "
+                            f"pause_attempts={pause_attempt_count}, "
+                            f"pause_ack_statuses={pause_ack_statuses}, "
+                            f"second_error={type(error).__name__}: {error}"
+                        ) from error
+                    # A newly opened native event/interaction may briefly make
+                    # the map control unavailable. Keep the rejected action,
+                    # then permit only one same-owner, same-date, fresh-frame
+                    # pause attempt under this composite's original deadline.
+                    actions.append({"step": "pause-map", "result": {
+                        "step": "pause-map", "accepted": False,
+                        "status": "rejected", "error": error.native_error,
+                    }})
+                    refreshed = self.take_internal_semantic_snapshot()
+                    remaining = deadline - time.monotonic()
+                    if remaining > 0 and type(refreshed.get("revision")) is int:
+                        settled = self._wait_for_life_advance_change(
+                            refreshed["revision"],
+                            timeout_seconds=min(remaining, 0.15),
+                        )
+                        if _same_life_advance_popup_pause_owner(
+                            snapshot, refreshed, settled
+                        ):
+                            if settled.get("paused") is True:
+                                return settled
+                            remaining = deadline - time.monotonic()
+                            if remaining > 0:
+                                try:
+                                    result = self._execute_primitive_step(
+                                        "pause-map", expected_revision=None,
+                                        timeout_seconds=remaining,
+                                        internal_semantic_snapshot=True,
+                                    )
+                                except (BridgeUnavailableError, UnsupportedStepError) as third_error:
+                                    if isinstance(third_error, _NativeCommandRejectedError):
+                                        actions.append({"step": "pause-map", "result": {
+                                            "step": "pause-map", "accepted": False,
+                                            "status": "rejected",
+                                            "error": third_error.native_error,
+                                        }})
+                                    raise BridgeUnavailableError(
+                                        "native life-advance third pause-map request failed "
+                                        "after observed popup owner; "
+                                        f"third_error={type(third_error).__name__}: {third_error}"
+                                    ) from third_error
+                                actions.append({"step": "pause-map", "result": result})
+                                current = self._wait_for_life_advance_snapshot(
+                                    self.take_internal_semantic_snapshot(),
+                                    lambda candidate: candidate.get("paused") is True,
+                                    timeout_seconds=max(0.0, deadline - time.monotonic()),
+                                )
+                                if (current.get("paused") is True
+                                        and _same_life_advance_popup_pause_owner(
+                                            snapshot, settled, current)):
+                                    return current
                     raise BridgeUnavailableError(
                         "native life-advance second pause-map request failed; "
-                        f"pause_attempts={pause_attempt_count}, "
-                        f"pause_ack_statuses={pause_ack_statuses}, "
+                        "popup-bound retry did not verify a paused map; "
+                        f"pause_attempts={len([a for a in actions if a.get('step') == 'pause-map'])}, "
                         f"second_error={type(error).__name__}: {error}"
                     ) from error
                 actions.append({"step": "pause-map", "result": result})
@@ -29337,6 +29423,70 @@ def _retryable_life_advance_pause_owner(
     return _retryable_life_advance_timeline_owner(
         previous, refreshed, expected_paused=False
     )
+
+
+def _same_life_advance_popup_pause_owner(
+    starting: dict[str, object], refreshed: dict[str, object],
+    settled: dict[str, object],
+) -> bool:
+    """Bind the sole extra idempotent pause to a stable native UI blocker."""
+    start_diag = starting.get("diagnostics")
+    fresh_diag = refreshed.get("diagnostics")
+    settled_diag = settled.get("diagnostics")
+    if not all(isinstance(d, dict) for d in (start_diag, fresh_diag, settled_diag)):
+        return False
+    if (type(start_diag.get("bridge_pid")) is not int
+            or start_diag["bridge_pid"] <= 0
+            or type(start_diag.get("connection_generation")) is not int
+            or start_diag["connection_generation"] <= 0):
+        return False
+    popup = refreshed.get("active_event")
+    pending = refreshed.get("pending_character_interaction")
+    event_valid = (isinstance(popup, dict)
+                   and type(popup.get("instance_id")) is int
+                   and popup["instance_id"] > 0
+                   and type(popup.get("option_count")) is int
+                   and popup["option_count"] > 0)
+    interaction_valid = isinstance(pending, dict) and bool(pending)
+    if not (event_valid or interaction_valid):
+        return False
+    if (popup != settled.get("active_event")
+            or pending != settled.get("pending_character_interaction")):
+        return False
+    try:
+        start_date = _date_raw(starting, "life-advance popup starting snapshot")
+        fresh_date = _date_raw(refreshed, "life-advance popup fresh snapshot")
+        settled_date = _date_raw(settled, "life-advance popup settled snapshot")
+    except BridgeUnavailableError:
+        return False
+    if fresh_date < start_date or settled_date != fresh_date:
+        return False
+    actor = starting.get("played_character")
+    if (not isinstance(actor, dict) or actor.get("alive") is not True
+            or type(actor.get("character_id")) is not int
+            or actor["character_id"] <= 0
+            or starting.get("episode_character_id") != actor["character_id"]
+            or not isinstance(starting.get("episode_run_id"), str)
+            or not starting["episode_run_id"]):
+        return False
+    for candidate, diag in ((refreshed, fresh_diag), (settled, settled_diag)):
+        played = candidate.get("played_character")
+        if (candidate.get("map_ready") is not True
+                or candidate.get("paused") not in (False, True)
+                or candidate.get("one_life_terminal_reason") is not None
+                or candidate.get("episode_character_id") != starting.get("episode_character_id")
+                or candidate.get("episode_run_id") != starting.get("episode_run_id")
+                or candidate.get("local_player_id") != starting.get("local_player_id")
+                or not isinstance(played, dict)
+                or played.get("character_id") != actor.get("character_id")
+                or played.get("alive") is not True
+                or diag.get("connection_generation") != start_diag.get("connection_generation")
+                or diag.get("bridge_pid") != start_diag.get("bridge_pid")
+                or type(candidate.get("revision")) is not int
+                or type(candidate.get("native_revision")) is not int):
+            return False
+    return bool(settled["revision"] >= refreshed["revision"]
+                and settled["native_revision"] >= refreshed["native_revision"])
 
 
 def _retryable_life_advance_resume_owner(

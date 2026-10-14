@@ -70,6 +70,8 @@ class LifeAdvancePauseMapUnavailableRetryTests(unittest.TestCase):
         self.pause_count = 0
         self.first_error = "CK3 map state is unavailable"
         self.second_rejected = False
+        self.reject_all_pause = False
+        self.popup_after_rejection: int | None = None
         self.publish_paused_after_second_ack = True
         self._publish(paused=True)
         self.endpoint.send_hook = self._answer
@@ -87,7 +89,12 @@ class LifeAdvancePauseMapUnavailableRetryTests(unittest.TestCase):
                 "phase": "map_hud", "date": "synthetic",
                 "date_raw": self.date_raw, "speed": self.speed,
                 "paused": paused, "map_ready": True, "history": [],
-                "active_event": None, "pending_character_interaction": None,
+                "active_event": ({
+                    "source": "native", "instance_id": 11, "option_count": 1,
+                    "options": [{"index": 0, "option_number": 1, "enabled": True}],
+                } if self.popup_after_rejection is not None
+                and self.pause_count >= self.popup_after_rejection else None),
+                "pending_character_interaction": None,
                 "played_character": {"character_id": 12345, "alive": True},
                 "played_character_gold": None,
                 "played_character_prestige": None,
@@ -136,7 +143,7 @@ class LifeAdvancePauseMapUnavailableRetryTests(unittest.TestCase):
             self._publish(paused=False)
         elif step == "pause-map":
             self.pause_count += 1
-            if self.pause_count == 1 or self.second_rejected:
+            if self.reject_all_pause or self.pause_count <= (2 if self.second_rejected else 1):
                 frame.pop("result")
                 frame.update(ok=False, error=self.first_error)
                 self.endpoint.publish(frame)
@@ -175,6 +182,42 @@ class LifeAdvancePauseMapUnavailableRetryTests(unittest.TestCase):
         with self.assertRaisesRegex(BridgeUnavailableError, "pause_attempts=2.*second_error"):
             self._advance()
         self.assertEqual(self.pause_count, 2)
+
+    def test_popup_after_first_rejection_uses_bound_second_pause(self) -> None:
+        self.driver.command_timeout_seconds = 1.0
+        self.popup_after_rejection = 1
+        result = self._advance()
+        self.assertEqual(self.pause_count, 2)
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["final_screen"], None)
+        self.assertEqual(result["active_event"]["instance_id"], 11)
+        self.assertEqual([
+            action["result"]["accepted"] for action in result["actions"]
+            if action["step"] == "pause-map"
+        ], [False, True])
+
+    def test_popup_after_second_rejection_uses_one_bound_third_pause(self) -> None:
+        self.driver.command_timeout_seconds = 1.0
+        self.second_rejected = True
+        self.popup_after_rejection = 2
+        result = self._advance()
+        self.assertEqual(self.pause_count, 3)
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertTrue(result["paused"])
+        self.assertEqual(result["active_event"]["instance_id"], 11)
+        self.assertEqual([
+            action["result"]["accepted"] for action in result["actions"]
+            if action["step"] == "pause-map"
+        ], [False, False, True])
+
+    def test_popup_third_rejection_still_fails_without_false_paused_credit(self) -> None:
+        self.driver.command_timeout_seconds = 1.0
+        self.popup_after_rejection = 2
+        self.reject_all_pause = True
+        with self.assertRaisesRegex(BridgeUnavailableError, "third pause-map request failed"):
+            self._advance()
+        self.assertEqual(self.pause_count, 3)
+        self.assertFalse(self.driver.take_internal_semantic_snapshot()["paused"])
 
     def test_other_native_rejection_is_not_retried(self) -> None:
         self.first_error = "other native rejection"
