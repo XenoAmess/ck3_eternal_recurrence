@@ -126,8 +126,26 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
             keeper.get('failure') is None,'Actual cooperative keeper wait0 required')
     scene=keeper_root.parent
     refs=bundle['original_process_exit_pins']
-    for name,code in (('public-run-01',2),('public-run-02',2),('allocation-observer-01',2),
-                      ('public-allocate-01',0),('screen-release-01',0)):
+    never_attempted=bundle.get('unused_reason')=='coordinator_interrupted_before_first_launch'
+    release_stem='screen-release-01'
+    if never_attempted:
+        require(bundle.get('observer_status')=='NEVER_STARTED' and bundle.get('observer_exit_code') is None
+                and bundle.get('original_windows_expired') is True
+                and not any(scene.glob('public-run-*-operation.json'))
+                and not any(scene.glob('allocation-observer-*-operation.json')),
+                'Never-attempted allocation has run/observer activity')
+        old_budget=bundle['original_control_window_pin']
+        check_pin(Path(old_budget['path']),old_budget);evidence['original_control_window_pin']=old_budget
+        budget=read_json(Path(old_budget['path']))
+        require(datetime.fromisoformat(bundle['utc'])>datetime.fromisoformat(budget['valid_until_utc']),
+                'Actual interrupted close must follow the expired original window')
+        release_stem=bundle.get('screen_release_stem')
+        require(release_stem in ('screen-release-01','screen-release-02'),'Exact original release stem required')
+        terminals=(('public-allocate-01',0),('stop-keeper-01',0),(release_stem,0))
+    else:
+        terminals=(('public-run-01',2),('public-run-02',2),('allocation-observer-01',2),
+                   ('public-allocate-01',0),('screen-release-01',0))
+    for name,code in terminals:
         path=scene/(name+'-process-exit.json');ref=refs[name]
         require(Path(ref['path']).resolve()==path.resolve(),'Unconsumed terminal crossed scene')
         check_pin(path,ref);wait=read_json(path);operation=wait['operation']
@@ -154,11 +172,12 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
                         result.get('business_acceptance')=='NOT_ASSESSED',
                         'Unconsumed run must be an actual prelaunch refusal')
         evidence[name]=ref
-    trigger=original('observer_trigger_pin',scene/'allocation-pressure-trigger-01.json')
-    require(trigger.get('actual_run_id')==freeze['run_id'] and trigger.get('reason')==
-            'FINITE_OBSERVER_WINDOW_EXPIRED_NOT_BUSINESS_TIMEOUT', 'Original observer expiry missing')
+    if not never_attempted:
+        trigger=original('observer_trigger_pin',scene/'allocation-pressure-trigger-01.json')
+        require(trigger.get('actual_run_id')==freeze['run_id'] and trigger.get('reason')==
+                'FINITE_OBSERVER_WINDOW_EXPIRED_NOT_BUSINESS_TIMEOUT', 'Original observer expiry missing')
     require(Path(bundle['release_result_pin']['path']).resolve()==
-            Path(refs['screen-release-01']['path']).with_name('screen-release-01.stdout.log').resolve(),
+            Path(refs[release_stem]['path']).with_name(release_stem+'.stdout.log').resolve(),
             'Unconsumed original release path differs')
     check_pin(Path(bundle['release_result_pin']['path']),bundle['release_result_pin'])
     require(read_actual_release(Path(bundle['release_result_pin']['path']))==release and
@@ -181,6 +200,35 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
                 'absent_launch_native_and_control_evidence':absent,'native_session_started':False,
                 'host_started':False,'original_ck3_exit_code':None,'typed_normal_exit_proven':False,
                 'business_pass':False}}
+
+
+def wait_for_allocated_keeper(child,live,keeper_root,*,idle_seconds=600):
+    """Stop only an allocation that never started launching within ten minutes.
+
+    An admitted host keeps its existing lifecycle and budgets. The actual Popen
+    wait remains the exit evidence; no CK3/native/normal exit is inferred here.
+    """
+    deadline=time.monotonic()+idle_seconds
+    launch_names=('launch-intent.json','launch.json','host-started.json','host-supervisor.json','native-report.json')
+    while child.poll() is None:
+        if any((live/name).exists() for name in launch_names):
+            return child.wait()
+        if time.monotonic()>=deadline:
+            import psutil
+            if any((p.info.get('name') or '').lower()=='ck3.exe' for p in psutil.process_iter(['name'])):
+                return child.wait()
+            write_json(live/'allocation-unused-idle-timeout.json',{
+                'utc':datetime.now(timezone.utc).isoformat(),'reason':'NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT',
+                'idle_seconds':idle_seconds,'game_started':False,'native_session_started':False,
+                'normal_close_qualified':False,'business_pass':False})
+            stop=keeper_root/('STOP' if (keeper_root/'inputs.json').exists() else 'stop.request')
+            if not stop.exists():
+                with stop.open('x',encoding='utf-8') as stream:
+                    stream.write('Unused allocation idle deadline; no game/native/normal credit.\n')
+                    stream.flush();os.fsync(stream.fileno())
+            return child.wait()
+        time.sleep(.5)
+    return child.wait()
 
 def previous_never_launched_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Close an allocated checkout failure without inventing a native/OS exit."""
@@ -1150,7 +1198,7 @@ def allocate_and_keep(selection,args):
     write_json(ledger/'allocated.json',allocated)
     print(json.dumps(allocated,ensure_ascii=False,indent=2),flush=True)
     # Retain the actual Popen and exit code; process-gone is not OS-exit evidence.
-    code=child.wait();stdout.close();stderr.close()
+    code=wait_for_allocated_keeper(child,live,args.keeper_output);stdout.close();stderr.close()
     closed={'keeper_actual_exit_code':code,'keeper_report':read_json(args.keeper_output/'report.json'),
             'run_id':identity.run_id,'business_pass':False}
     write_json(live/'keeper-actual-parent-exit.json',closed)
