@@ -26,6 +26,7 @@ PROPERTIES = ('destroy_if_invalid_heir', 'no_automatic_claims',
 NAVIGATION_DECISIONS = frozenset((
     'lyd_change_school_decision', 'lyd_play_quiet_self_attainment_decision',
     'lyd_play_sage_transmission_decision'))
+NOMINATION_INTERACTION = 'lyd_i3b_nominate_interaction'
 
 
 def prepare_case(context):
@@ -224,6 +225,23 @@ def head_qualified(before, after, actor, faith):
             title.get('title_laws', {}).get('complete_laws', []) and before['cache'] == after['cache'])
 
 
+def other_rite_nominee(roster, recipient_id):
+    """Bind one requested recipient to a fresh complete original-Faith roster."""
+    require(type(recipient_id) is int and 0 < recipient_id < 2**32 - 1 and
+            roster.get('predicates_complete') is True and
+            type(roster.get('played_rite_id')) is int and
+            type(roster.get('faith_id')) is int, 'Fresh complete Faith roster required')
+    candidates = [rite for rite in roster.get('rites', [])
+                  if rite.get('dormant') is False and rite.get('rite_id') != roster['played_rite_id'] and
+                  isinstance(rite.get('suggested_nominee'), dict) and
+                  rite['suggested_nominee'].get('character_id') == recipient_id and
+                  rite['suggested_nominee'].get('rite_id') == rite.get('rite_id') and
+                  rite['suggested_nominee'].get('faith_id') == roster['faith_id'] and
+                  rite['suggested_nominee'].get('is_ai') is True]
+    require(len(candidates) == 1, 'Recipient is not the fresh qualified other-rite nominee')
+    return candidates[0]['suggested_nominee']
+
+
 def review_cell(context, client, initial, phase, consumed, before_head=None):
     """Finite ROOT UI/semantic review; unknown Python data stays in original hold."""
     attempts, actions, last_error = 0, 0, None
@@ -231,6 +249,8 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
     initial_requested = before_head is not None
     phase_options = set()
     navigation_intents = set()
+    nomination_intents, nominated_recipients = set(), set()
+    last_nomination = None
     navigation_keys = phase.get('navigation_decision_keys', [])
     navigation_limit = phase.get('maximum_navigation_actions', 0)
     navigation_enabled = (phase['id'] == 'preparation' and type(navigation_keys) is list and
@@ -268,9 +288,16 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
                 'submitted_actions': len(navigation_intents), 'last_navigation': last_navigation,
                 'request_fields': ['decision_key', 'navigation_intent_id'],
                 'opens_detail_only_no_Confirm_options_or_qualification': True},
+            'other_rite_nomination': {'interaction_key': NOMINATION_INTERACTION,
+                'submitted_recipient_ids': sorted(nominated_recipients),
+                'last_nomination': last_nomination,
+                'request_fields': ['recipient_id', 'nomination_intent_id'],
+                'only_fresh_suggested_other_rite_AI_nominee': True,
+                'pending_ACK_is_not_acceptance': True},
             'responses': ['complete', 'partial', 'skip', 'abort', 'observe', 'choose_option',
                           'read_precommit', 'admit_commit'] +
                          (['enter_institution'] if phase['id'] == 'institution' else []) +
+                         (['nominate_other_rite'] if phase['id'] == 'institution' else []) +
                          (['navigate_decision'] if navigation_enabled else []),
             'choose_option': 'Supply exact current event_definition_key/native_option_index; adapter freshly re-queries and maps authored native index to public number. No guessed tuple or replay.',
             'unavailable_native_fields': 'Wallets, effective modifiers, complete saved political AST/heirs/laws require actual original GUI/new SAVE evidence.',
@@ -280,6 +307,73 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
                 response.get('reviewer') == client.operator_reviewer, 'ROOT response crossed live owner')
         status = response.get('status')
         if status == 'observe':
+            continue
+        if status == 'nominate_other_rite':
+            try:
+                recipient, intent = response.get('recipient_id'), response.get('nomination_intent_id')
+                require(phase['id'] == 'institution' and before_head is not None and
+                        not factory_submitted and callable(getattr(client, 'read_readiness', None)),
+                        'Nomination requires entered institution and fresh full readiness')
+                require(type(recipient) is int and type(intent) is str and 0 < len(intent) <= 128 and
+                        Path(intent).name == intent and intent not in nomination_intents and
+                        recipient not in nominated_recipients,
+                        'Nomination intent/recipient missing or already consumed; never replay')
+                require(len(nomination_intents) < 8 and
+                        type(navigation_deadline) in (int, float) and
+                        math.isfinite(navigation_deadline) and
+                        navigation_deadline - time.time() >= 300 and client.remaining() > 900,
+                        'Nomination needs original phase and normal-Quit reserve')
+                refs = response.get('evidence')
+                require(type(refs) is list and refs, 'Nomination needs actual ROOT UI/source evidence')
+                for ref in refs:
+                    check_evidence(ref)
+                require(client.snapshot(require_event_free=False).get('active_event') is None,
+                        'Resolve current event before ordinary interaction')
+                readiness = client.read_readiness(name + '-nomination-readiness')
+                nominee = other_rite_nominee(readiness['roster'], recipient)
+                args = {'interaction_key': NOMINATION_INTERACTION, 'recipient_id': recipient}
+                query_frame, query_row = call(client, initial, name + '-nomination-query',
+                    'ck3_query_character_interaction_ordinary_v1', args)
+                query = query_row['result']
+                terms = query.get('character_interaction_ordinary_context') or {}
+                require(query.get('status') == 'available' and
+                        query.get('queried_revision') == query_frame['revision'] and
+                        query.get('queried_native_revision') == query_frame['native_revision'] and
+                        terms.get('interaction_key') == NOMINATION_INTERACTION and
+                        terms.get('recipient_id') == recipient and
+                        terms.get('player_character_id') == initial['actor'] and
+                        terms.get('ready_to_initiate') is True and
+                        terms.get('shown') is True and terms.get('can_send') is True and
+                        terms.get('auto_accept') is True and
+                        terms.get('ordinary_context_supported') is True,
+                        'Actual exact nomination interaction unavailable or not sendable')
+                nomination_intents.add(intent)
+                nominated_recipients.add(recipient)  # consume before once-only public submission
+                intent_path = Path(context['output']) / (name + '-nomination-intent.json')
+                write_once(intent_path, {'run_id': context['run_id'],
+                    'reviewer': client.operator_reviewer, 'phase': phase['id'],
+                    'interaction_key': NOMINATION_INTERACTION, 'recipient_id': recipient,
+                    'nominee': nominee, 'nomination_intent_id': intent,
+                    'original_phase_deadline': navigation_deadline,
+                    'query_frame': binding(query_frame), 'query_status': query['status'],
+                    'evidence': refs, 'NPC_acceptance_or_business_credit': False})
+                _, receipt_row = call(client, initial, name + '-nomination-send',
+                    'ck3_initiate_character_interaction_ordinary_v1', args)
+                receipt = receipt_row['result']
+                ack = receipt.get('character_interaction_ordinary_initiation') or {}
+                receipt_path = Path(context['output']) / (name + '-nomination-receipt.json')
+                write_once(receipt_path, {'run_id': context['run_id'],
+                    'interaction_key': NOMINATION_INTERACTION, 'recipient_id': recipient,
+                    'status': receipt.get('status'), 'queue_result': ack.get('native_queue_result'),
+                    'dispatch_invoked': ack.get('dispatch_invoked'),
+                    'action_request_id': receipt.get('action_request_id'),
+                    'action_claim_path': receipt.get('action_claim_path'),
+                    'business_postcondition_verified': False})
+                last_nomination = {'recipient_id': recipient, 'intent': pin(intent_path),
+                    'receipt': pin(receipt_path), 'NPC_acceptance_verified': False}
+                last_error = None
+            except ValueError as error:
+                last_error = str(error)
             continue
         if status == 'navigate_decision':
             try:
@@ -398,6 +492,7 @@ def review_cell(context, client, initial, phase, consumed, before_head=None):
             'before_native_binding': initial, 'after_native_binding': binding(after),
             'review': response, 'submitted_option_actions': actions, 'last_contract_error': last_error,
             'submitted_navigation_actions': len(navigation_intents), 'last_navigation': last_navigation,
+            'submitted_nomination_actions': len(nomination_intents), 'last_nomination': last_nomination,
             'optional_observations': observations, 'actual_initial_political_bundle': before_head,
             'fresh_signed_precommit_bundle': precommit, 'factory_submitted_by_adapter': factory_submitted}
         return result

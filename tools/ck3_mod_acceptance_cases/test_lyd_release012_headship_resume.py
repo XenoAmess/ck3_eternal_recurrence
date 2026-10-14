@@ -16,6 +16,23 @@ import ck3_mod_acceptance_normal_exit_profile as normal_exit
 
 
 class HeadshipResumeContract(unittest.TestCase):
+    def test_nomination_requires_fresh_other_rite_suggested_ai(self):
+        select = resume.fresh.keypaths.other_rite_nominee
+        roster = {'predicates_complete': True, 'faith_id': 31, 'played_rite_id': 174,
+            'rites': [
+                {'rite_id': 33, 'dormant': False, 'suggested_nominee':
+                    {'character_id': 31763, 'rite_id': 33, 'faith_id': 31, 'is_ai': True}},
+                {'rite_id': 174, 'dormant': False, 'suggested_nominee':
+                    {'character_id': 31254, 'rite_id': 174, 'faith_id': 31, 'is_ai': False}}]}
+        self.assertEqual(select(roster, 31763)['rite_id'], 33)
+        for recipient in (31254, 31764, '31763'):
+            with self.assertRaises(ValueError):
+                select(roster, recipient)
+        with self.assertRaises(ValueError):
+            select({**roster, 'predicates_complete': False}, 31763)
+        with self.assertRaises(ValueError):
+            select({**roster, 'rites': [{**roster['rites'][0], 'dormant': True}]}, 31763)
+
     def test_current_native_title_is_required_for_original_headless_baseline(self):
         fresh = resume.fresh
         calls = []
