@@ -1486,6 +1486,21 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (3, 4, 6),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+        # 1.20.0.4 actual batch0613: no physician, four retained scopes,
+        # and native0/6. Native0 starts the existing delayed search effect;
+        # it does not itself prove hiring, treatment success or recovery.
+        "option_variants": ({
+            "saved_scope_name_sets": (("epidemic", "disease_type", "sick_character", "new_memory"),),
+            "saved_scope_count": 4,
+            "unique_character_scope_excludes": {},
+            "scope_types": {"epidemic": "epidemic", "disease_type": "flag",
+                            "sick_character": "character", "new_memory": "character_memory"},
+            "option_count": 2,
+            "snapshot_option_count": 8,
+            "native_option_indices": (0, 6),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        },),
         "max_occurrences": 1,
     },
     "health.3001": {

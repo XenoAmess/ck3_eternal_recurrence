@@ -1,0 +1,11 @@
+# Recording continuity helpers
+
+This package is ready to copy into tools/g2_saved_campaign. The adapter, framework, automatic admission, launcher and dependency probe are identical to the reviewed external sources. The live adapter SHA is d5fb613ea66ffc0b9ea879ab108bd317aab39bb686e0ffdeb80bcbc5125d72c0.
+
+Run portable offline checks with `python -B -X utf8 tools/g2_saved_campaign/test_recording_recovery_portable.py`. Pillow is required. All paths used by tests are relative to this package or private temporary directories. Four checks cover full continuation, capture-only mixed halt, feeder exclusion/unknown launch persistence, and shared JSON reads with atomic replacement. The fixture contains the actual existing local attach/resume methods; provenance is retained beside it. Tests never start a process, Game, SDK, OBS or window. The full_loop result and launches are simulated.
+
+Use `root_launch_recording_watchdog.py --help` for explicit session, prefix, attached recording request, interpreter, helper, SDK and dependency roots. Dry-run is the default; `--start` is a real hidden watchdog launch. Main interpreter uses the tools venv; `--base-python` supplies the direct overlay interpreter. The inherited environment includes the configured SDK source, helper roots, tools venv pywin32 paths and the recording profile's exact OBS control dependency root. Real imports are checked in both interpreters before launch.
+
+Ordinary mode resumes only an exact RecordingPaused/full_loop/auto_verified halt. `--attach-only` restores capture while preserving a separate business halt. An unknown launch is never repeated. Keep one queue producer during recovery; the adapter waits for the old feeder to exit before local control publication. No Game restart or AUTO replay is implemented. Existing SDK local controls and the automatic segment verification branch are required. `recording_segment_validation.py` is the shared validator implementation for that branch.
+
+Root reported the P08 deployment healthy at 2026-10-14T19:37:49Z: status idle, stage healthy, no watchdog error. This proves healthy observation only. No new recording failure occurred after deployment; the automatic recovery branch has offline integration evidence and is not claimed as a live acceptance. Manual recovery06 remains separate evidence.

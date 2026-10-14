@@ -1,0 +1,10 @@
+{
+  "queue_methods_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\root_p06_sdk_queue.py",
+  "queue_source_sha256": "5b965363aba6bd9de845b53bcd8166dec5cbec0b1084354454b44f851bb871a0",
+  "method_names": [
+    "attach_recording_segment",
+    "resume_recording_pause"
+  ],
+  "fixture_AST_identical_to_original_functions": true,
+  "runtime_calls": 0
+}

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -809,6 +810,25 @@ class _ServiceDriver:
 
 
 class TitleMapNavigationV1ServiceTests(unittest.TestCase):
+    def test_exact_native_service_uses_one_rich_read_and_keeps_verified_receipt(self) -> None:
+        driver, endpoint = _native_driver()
+        _answer_with(endpoint, _raw_result)
+        revision = int(driver.take_snapshot()["revision"])
+        with mock.patch.object(
+            driver,
+            "take_snapshot_without_native_command_history",
+            wraps=driver.take_snapshot_without_native_command_history,
+        ) as reads:
+            result = GameplayBridgeService(driver).center_map_on_landed_title_v1(
+                "c_bianzhou", expected_revision=revision,
+            )
+        self.assertEqual(reads.call_count, 1)
+        self.assertEqual(len(_execute_frames(endpoint)), 1)
+        self.assertEqual(result["status"], "centered")
+        self.assertEqual(result["binding"]["revision"], revision)
+        self.assertEqual(result["binding"]["native_revision"], NATIVE_REVISION)
+        self.assertTrue(result["camera_center"]["postcondition_verified"])
+
     def test_official_facade_and_service_return_exact_public_binding(self) -> None:
         driver = _ServiceDriver()
         result = _ck3_center_map_on_landed_title_v1(

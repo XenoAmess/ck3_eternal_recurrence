@@ -14772,7 +14772,13 @@ class NativeHeadlessGameplayDriver:
                 (row["army_id"], row["scope_role"], tuple(row["war_ids"]))
                 for row in expected_scope
             ),
-            "army_strengths": copy.deepcopy(rows),
+            # Snapshot consumers use only this core projection. Detach it at
+            # publication without copying the complete manager-input graph.
+            "army_strengths": copy.deepcopy(
+                self._army_strength_snapshot_fields(
+                    {"army_strengths": rows}
+                )["army_strengths"]
+            ),
             "query_sequence": query_sequence,
             "cache_binding": cache_binding,
         }

@@ -1632,9 +1632,10 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         )
         self.assertEqual(
             unproven["phase"],
-            "active_event_registry_material_observation_blocked",
+            "active_event_unhandled_first_rendered_unsupported",
         )
         self.assertIsNone(unproven["selected_step"])
+        self.assertEqual(unproven["unhandled_event_fallback"]["selection"]["native_option_index"], 1)
 
         no_stress = copy.deepcopy(snapshot)
         del no_stress["played_character"]["stress_points"]
@@ -1648,7 +1649,7 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         )
         self.assertEqual(
             unavailable["phase"],
-            "active_event_registry_material_observation_blocked",
+            "active_event_unhandled_first_rendered_unsupported",
         )
         self.assertIsNone(unavailable["selected_step"])
 
@@ -1797,9 +1798,11 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            blocked["phase"], "active_event_registry_material_observation_blocked"
+            blocked["phase"], "active_event_unhandled_first_rendered_option"
         )
-        self.assertIsNone(blocked["selected_step"])
+        self.assertEqual(blocked["selected_step"], "select-event-option-1")
+        self.assertEqual(blocked["unhandled_event_fallback"]["original_registry_decision"]["original_phase"],
+                         "active_event_registry_material_observation_blocked")
 
     def test_other_variant_contracts_still_require_explicit_consumer_review(
         self,
@@ -2011,7 +2014,11 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(decision["selected_option_number"], 1)
         self.assertTrue(decision["choice_effect_profile"]["selected_option_effects"])
         self.assertEqual(decision["choice_effect_profile"]["common_after_effects"], [])
-        self.assertIsNone(decision["choice_effect_profile"]["observable_postcondition"])
+        self.assertEqual(decision["choice_effect_profile"]["observable_postcondition"], {
+            "metric": "player_religion.spiritual_fulfillment_raw",
+            "expected_relation": "non_decreasing",
+            "material_change_required_for_evidence": True,
+        })
         self.assertIsNone(plan.get("event_material_postcondition"))
 
         def answer(request):

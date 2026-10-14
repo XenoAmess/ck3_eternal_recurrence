@@ -87,6 +87,7 @@ from .title_holder_contract import (
 
 from collections.abc import Callable, Iterable
 from copy import deepcopy
+import pickle
 from .route_contact_window_contract import parse_advance_route_contact_window_step
 
 from .version_identity import (
@@ -1854,7 +1855,11 @@ def _normalize_manager_input_once(
         return normalizer(value)
     key = (normalizer, id(value))
     if key in cache:
-        return deepcopy(cache[key][1])
+        normalized = cache[key][1]
+        try:
+            return pickle.loads(pickle.dumps(normalized, protocol=pickle.HIGHEST_PROTOCOL))
+        except (pickle.PickleError, TypeError, AttributeError):
+            return deepcopy(normalized)
     normalized = normalizer(value)
     cache[key] = (value, normalized)
     return normalized

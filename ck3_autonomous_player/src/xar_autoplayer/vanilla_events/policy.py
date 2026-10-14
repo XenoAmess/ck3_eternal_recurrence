@@ -984,6 +984,9 @@ _SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
             "unique_character_scope_excludes",
         }
     ),
+    "health.1015": frozenset({
+        "saved_scope_count", "saved_scope_name_sets", "scope_types", "unique_character_scope_excludes",
+    }),
     "health.1010": frozenset(
         {
             "saved_scope_count",
@@ -1017,6 +1020,7 @@ _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
         "epidemic_events.5007",
         "health.1001",
         "health.1010",
+        "health.1015",
         "health.3104",
         "natural_disaster.7031",
         "stress_threshold_special.1001",
@@ -1043,6 +1047,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "feast_main_live_fowl.9002",
         "health.1001",
         "health.1010",
+        "health.1015",
         "health.1101",
         "health.3001",
         "health.3101",
@@ -1229,6 +1234,7 @@ def recommend_registered_vanilla_event_option_v1(
     ck3_build: str | None = None,
     played_character: object = None,
     event_opinion_observations: object = None,
+    event_history: object = None,
 ) -> dict[str, object]:
     """Return one direct registry choice or a typed non-action result."""
 
@@ -1449,6 +1455,32 @@ def recommend_registered_vanilla_event_option_v1(
         # for the captured scheme lineage. The current window identity and
         # exact option/scope projection are still revalidated before selection.
         allowed_extended_fields.add("max_occurrences")
+    occurrence_checks: dict[str, bool] = {}
+    if event_key == "health.1015" and build == "1.20.0.4":
+        source_hashes = analysis.get("source_sha256") if isinstance(analysis, Mapping) else None
+        source_ready = bool(isinstance(source_hashes, Mapping)
+            and source_hashes.get("events/health_events.txt")
+            == "74073E049A416C744B36A2A996FA467610705E38D53C836B050F1AC6F66E1212"
+            and source_hashes.get("common/scripted_effects/20_health_effects.txt")
+            == "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB")
+        from .occurrence import observed_event_occurrences_v1
+
+        occurrences = observed_event_occurrences_v1(
+            event_history, event_key=event_key, played_character_id=character_id,
+            character_id_reader=_typed_character_id,
+        )
+        maximum = _integer(contract.get("max_occurrences"))
+        occurrence_checks = {"health1015_exact_source": source_ready,
+            "occurrence_history_ready": occurrences["status"] == "available",
+            "max_occurrences": (maximum is not None and maximum > 0
+                and occurrences["status"] == "available" and occurrences["count"] < maximum)}
+        if not all(occurrence_checks.values()):
+            result = respond(status="blocked", event_key=event_key,
+                reason="registered_event_source_or_occurrence_bound_unavailable", checks=occurrence_checks)
+            result["event_occurrence_observation"] = occurrences
+            return result
+        allowed_extended_fields.add("max_occurrences")
+
     unsupported = sorted(
         field
         for field in _UNSUPPORTED_FIELDS
@@ -1466,6 +1498,7 @@ def recommend_registered_vanilla_event_option_v1(
         )
 
     checks = {
+        **occurrence_checks,
         "context_schema": event_context.get("schema")
         == "current-event-window-context-v1",
         "context_schema_version": event_context.get("schema_version") == 1,

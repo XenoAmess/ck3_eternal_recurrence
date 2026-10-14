@@ -10,6 +10,7 @@ from threading import Lock
 import uuid
 
 from .army_query_timing import finish_army_timing, start_army_timing
+from .auto_camera_follow import LatestCameraFollowWorker
 from ..replenishment_numeric import project_observed_replenishment_v1
 from ..simulation.battle_current_special_knight_value_12003 import (
     estimate_current_special_knight_initial_stats_12003,
@@ -644,6 +645,134 @@ class GameplayBridgeService:
         self._war_hotspot_camera_index = None
         self._war_hotspot_camera_index_error: str | None = None
         self.last_camera_follow: dict[str, object] | None = None
+        self._auto_camera_worker = LatestCameraFollowWorker(
+            self._select_auto_camera_hotspot,
+            on_complete=self._record_auto_camera_actual,
+        )
+
+    @staticmethod
+    def _observed_planning_source_frame(snapshot: dict[str, object]) -> dict[str, object]:
+        """Project the planner's actual frame without another Native read."""
+        played = snapshot.get("played_character")
+        diagnostics = snapshot.get("diagnostics")
+        actor = played.get("character_id") if isinstance(played, dict) else None
+        generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict) else None
+        )
+        bridge_pid = diagnostics.get("bridge_pid") if isinstance(diagnostics, dict) else None
+        fields = {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+            "date_raw": snapshot.get("date_raw"),
+            "actor_character_id": actor,
+            "episode_run_id": snapshot.get("episode_run_id"),
+            "connection_generation": generation,
+            "bridge_pid": bridge_pid,
+        }
+        complete = (
+            isinstance(fields["snapshot_id"], str) and bool(fields["snapshot_id"])
+            and type(fields["revision"]) is int and fields["revision"] >= 0
+            and type(fields["native_revision"]) is int and fields["native_revision"] > 0
+            and type(fields["date_raw"]) is int
+            and type(fields["actor_character_id"]) is int and fields["actor_character_id"] > 0
+            and isinstance(fields["episode_run_id"], str) and bool(fields["episode_run_id"])
+            and type(fields["connection_generation"]) is int
+            and fields["connection_generation"] >= 0
+        )
+        return {
+            "schema": "xar.ck3.planning-source-frame/v1",
+            "status": "complete" if complete else "partial",
+            **fields,
+        }
+
+    @staticmethod
+    def _auto_camera_hotspot_input(
+        snapshot: dict[str, object], source_frame: dict[str, object],
+    ) -> dict[str, object]:
+        """Copy only already observed war positions; background work never reads Native."""
+        wars = []
+        for war in snapshot.get("active_wars") or []:
+            if not isinstance(war, dict):
+                continue
+            armies = [
+                {key: army.get(key) for key in (
+                    "army_id", "current_province_id", "in_combat", "controllable",
+                    "army_state", "siege_days_left", "retreating",
+                    "move_target_province_id",
+                )}
+                for army in war.get("allied_armies") or []
+                if isinstance(army, dict)
+            ]
+            states = [
+                {key: row.get(key) for key in ("province_id", "active_siege")}
+                for row in war.get("objective_province_states") or []
+                if isinstance(row, dict)
+            ]
+            wars.append({
+                "war_id": war.get("war_id"),
+                "allied_armies": armies,
+                "objective_province_states": states,
+                "war_objective_province_ids": list(
+                    war.get("war_objective_province_ids") or []
+                ),
+            })
+        return {"source_frame": dict(source_frame), "active_wars": wars}
+
+    def _select_auto_camera_hotspot(self, payload: object) -> dict[str, object]:
+        """Record a camera intent only; the shared Native command pipe stays free."""
+        from .war_hotspot_camera import LandedProvinceIndex, select_war_hotspot
+
+        camera_timing = start_army_timing("service.auto_turn_camera")
+        try:
+            if not isinstance(payload, dict):
+                raise ValueError("camera presentation lacks a planner observation")
+            if self._war_hotspot_camera_index is None:
+                if self._war_hotspot_camera_index_error is not None:
+                    return {
+                        "status": "unavailable",
+                        "reason": self._war_hotspot_camera_index_error,
+                        "native_command_submitted": False,
+                    }
+                state_dir = self._strategy_state_dir()
+                if state_dir is None:
+                    raise ValueError("camera presentation lacks the managed installation manifest")
+                manifest = json.loads((Path(state_dir) / "profile" / "xar-autoplayer-environment.json").read_text(encoding="utf-8-sig"))
+                game = manifest.get("game")
+                executable = game.get("executable") if isinstance(game, dict) else None
+                if not isinstance(executable, str) or not executable:
+                    raise ValueError("camera presentation lacks the manifest's exact game executable")
+                game_exe = Path(executable)
+                if game_exe.name.lower() != "ck3.exe" or game_exe.parent.name.lower() != "binaries":
+                    raise ValueError("camera presentation cannot derive the declared installation root")
+                self.bind_war_hotspot_camera_index(
+                    LandedProvinceIndex.from_game_dir(game_exe.parent.parent)
+                )
+            hotspot = select_war_hotspot(
+                {"active_wars": payload.get("active_wars")},
+                self._war_hotspot_camera_index,
+            )
+            return {
+                "status": "selected_deferred_native_camera"
+                if hotspot is not None else "no_observed_war_hotspot",
+                "hotspot": hotspot,
+                "source_frame": payload.get("source_frame"),
+                "native_command_submitted": False,
+                "same_frame_with_gameplay_claim": False,
+            }
+        finally:
+            finish_army_timing(camera_timing, step="auto-turn-camera")
+
+    def _record_auto_camera_actual(self, actual: dict[str, object]) -> None:
+        self.last_camera_follow = actual
+
+    def auto_camera_follow_status(self) -> dict[str, object]:
+        """Read bounded presentation diagnostics; no gameplay/source-frame claim."""
+        return {
+            "latest_actual": self._auto_camera_worker.latest_actual(),
+            "recent_failures": self._auto_camera_worker.recent_failures(),
+        }
 
     def bind_war_hotspot_camera_index(self, index: object) -> None:
         """Use the managed runner's actual installation for presentation only."""
@@ -716,8 +845,20 @@ class GameplayBridgeService:
                                        for key in ("bridge_pid", "connection_generation"))))
                             or _same_frame_campaign_root_result(campaign_root_result, snapshot) is None):
                         raise BridgeUnavailableError("initial camera root crossed its observed frame")
+            diagnostics = snapshot.get("diagnostics")
+            bound_park_cursor = park_foreground_ck3_cursor
+            if isinstance(diagnostics, dict):
+                from .native_driver import NativeHeadlessGameplayDriver
+                bridge_pid = diagnostics.get("bridge_pid")
+                generation = diagnostics.get("connection_generation")
+                if (type(self.driver) is NativeHeadlessGameplayDriver
+                        and diagnostics.get("connected") is True
+                        and type(bridge_pid) is int and bridge_pid > 0
+                        and type(generation) is int and generation > 0):
+                    bound_park_cursor = lambda: park_foreground_ck3_cursor(
+                        expected_game_pid=bridge_pid)
             return follow_war_hotspot(self, snapshot, self._war_hotspot_camera_index,
-                                      park_cursor=park_foreground_ck3_cursor,
+                                      park_cursor=bound_park_cursor,
                                       campaign_root_result=campaign_root_result,
                                       reuse_same_frame=True)
         except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
@@ -1704,6 +1845,7 @@ class GameplayBridgeService:
                     bridge_capabilities=bridge_capabilities,
                     next_run_plan=campaign_goal_plan or cross_run_plan,
                     battle_speed_readiness=battle_speed_readiness,
+                    pending_interaction_registry_state_dir=getattr(self.driver, "state_dir", None),
                 )
             )
             if getattr(
@@ -1788,10 +1930,17 @@ class GameplayBridgeService:
                 in available_steps
             ):
                 routable_steps.add(str(selected_step))
+            planning_source_frame = self._observed_planning_source_frame(
+                planning_snapshot
+            )
             planned = {
                 "_private_window_priority_v1": window_priority is not None,
                 "snapshot_id": planning_snapshot["snapshot_id"],
                 "revision": planning_snapshot["revision"],
+                "planning_source_frame": planning_source_frame,
+                "_auto_camera_hotspot_input": self._auto_camera_hotspot_input(
+                    planning_snapshot, planning_source_frame,
+                ),
                 "plan": _route_plan_to_available_step(
                     plan, routable_steps
                 ),
@@ -3879,20 +4028,32 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
-        # Camera placement precedes planning, so its receipt cannot stale an
-        # already selected gameplay step. All ordinary execution guards remain.
-        camera_timing = start_army_timing("service.auto_turn_camera")
-        try:
-            self.last_camera_follow = self._follow_war_hotspot_before_turn()
-        finally:
-            finish_army_timing(camera_timing, step="auto-turn-camera")
         planned = self.plan_turn()
         outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
             self._execute_planned_turn(planned, before_submit=before_submit)))
         outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
             outcome, planning_frame=planned)
-        return ({**outcome, "camera_follow": self.last_camera_follow}
-                if self.last_camera_follow is not None else outcome)
+        # Presentation is best effort and starts only after the business turn
+        # has completed. Its later receipt never attests this gameplay frame.
+        try:
+            camera_schedule = self._auto_camera_worker.schedule(
+                planned.get("_auto_camera_hotspot_input")
+            )
+        except Exception as error:
+            # The gameplay command has already run. Even a scheduler bug must
+            # leave its real result visible and must never trigger a replay.
+            camera_schedule = {
+                "schema": "xar.ck3.auto-camera-schedule/v1",
+                "status": "unavailable",
+                "reason": f"camera_scheduler:{type(error).__name__}: {error}",
+                "same_frame_with_gameplay_claim": False,
+            }
+            self.last_camera_follow = camera_schedule
+        return {
+            **outcome,
+            "planning_source_frame": planned.get("planning_source_frame"),
+            "camera_follow": camera_schedule,
+        }
 
     @staticmethod
     def _natural_successor_persistence_failed(outcome: dict[str, object]) -> bool:
@@ -3955,6 +4116,43 @@ class GameplayBridgeService:
         return outcome
 
     def _execute_planned_turn(
+        self, planned: dict[str, object], *,
+        before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
+    ) -> dict[str, object]:
+        plan = planned.get("plan")
+        interaction_capture = isinstance(plan, dict) and isinstance(plan.get("unhandled_interaction_fallback"), dict)
+        if not isinstance(plan, dict) or (not interaction_capture and not isinstance(plan.get("unhandled_event_fallback"), dict)):
+            return self._execute_planned_turn_without_unhandled_capture(planned, before_submit=before_submit)
+        if interaction_capture:
+            from ..pending_interaction_fallback import (
+                capture_pending_interaction_before_v1 as capture_unhandled_event_before_v1,
+                capture_pending_interaction_after_v1 as capture_unhandled_event_after_v1,
+            )
+        else:
+            from ..vanilla_events.unhandled_fallback import (
+                capture_unhandled_event_before_v1, capture_unhandled_event_after_v1,
+            )
+
+        ticket = capture_unhandled_event_before_v1(self._strategy_state_dir(), planned)
+        try:
+            outcome = self._execute_planned_turn_without_unhandled_capture(planned, before_submit=before_submit)
+        except Exception as error:
+            try:
+                error.unhandled_event_fallback_evidence = capture_unhandled_event_after_v1(ticket, error=error)
+            except Exception as capture_error:
+                error.unhandled_event_fallback_evidence = {
+                    "before": ticket["before"], "after_capture_error": str(capture_error), "replay_allowed": False,
+                }
+            raise
+        try:
+            evidence = capture_unhandled_event_after_v1(ticket, outcome=outcome)
+        except Exception as capture_error:
+            # The actual response still carries the ACK/postcondition. Never
+            # retry an already submitted option because evidence writing failed.
+            evidence = {"before": ticket["before"], "after_capture_error": str(capture_error), "replay_allowed": False}
+        return {**outcome, "unhandled_event_fallback_evidence": evidence}
+
+    def _execute_planned_turn_without_unhandled_capture(
         self, planned: dict[str, object], *,
         before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
     ) -> dict[str, object]:
@@ -11963,6 +12161,12 @@ class GameplayBridgeService:
                 "capability_not_available: selected backend cannot center "
                 "the map on a landed title"
             )
+        # The exact native driver already validates the paused/map state,
+        # build, actor, frame binding and native postcondition on both sides
+        # of this command. Avoid two redundant rich Service snapshots here.
+        from .native_driver import NativeHeadlessGameplayDriver
+        if type(self.driver) is NativeHeadlessGameplayDriver:
+            return typed_command(key, expected_revision=expected_revision)
         snapshot = self.snapshot(include_native_command_history=False)
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(

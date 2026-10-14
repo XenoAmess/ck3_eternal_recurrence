@@ -7,9 +7,132 @@ import ctypes
 import json
 import os
 import sys
+import time
+import traceback
+import uuid
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
-from decision_overlay_window import NativeOverlay
+
+
+class OverlayEvidence:
+    """Keep one first exception and one closure receipt, without an event log."""
+
+    def __init__(self, session, game_pid):
+        self.session = Path(session)
+        self.game_pid = game_pid
+        self.overlay_pid = os.getpid()
+        self.first_exception = None
+        self.exception_count = 0
+        self.exit_reason = None
+
+    def _write(self, suffix, payload):
+        path = self.session / f"ROOT-DECISION-OVERLAY-{self.overlay_pid}-{suffix}.json"
+        with path.open("x", encoding="utf-8") as stream:
+            json.dump(payload, stream, ensure_ascii=False, indent=2)
+            stream.flush()
+            os.fsync(stream.fileno())
+        return str(path)
+
+    def note_exception(self, error, stage):
+        self.exception_count += 1
+        if self.first_exception is not None:
+            return
+        self.first_exception = {
+            "at_utc": datetime.now(timezone.utc).isoformat(), "stage": stage,
+            "type": type(error).__name__, "message": str(error)[:2048],
+            "errno": getattr(error, "errno", None), "winerror": getattr(error, "winerror", None),
+            "traceback": "".join(traceback.format_exception(error))[-8192:],
+        }
+        payload = {"game_pid": self.game_pid, "overlay_pid": self.overlay_pid,
+                   "first_exception": self.first_exception}
+        try:
+            self._write("FIRST-EXCEPTION", payload)
+        except OSError as capture_error:
+            payload["evidence_write_error"] = str(capture_error)[:2048]
+        print(json.dumps(payload, ensure_ascii=False), file=sys.stderr, flush=True)
+
+    def stop_reason(self, code):
+        if self.exit_reason is None:
+            self.exit_reason = {"code": code, "at_utc": datetime.now(timezone.utc).isoformat()}
+
+    def write_closed(self):
+        self.stop_reason("native_message_loop_returned_without_requested_stop")
+        payload = {"at_utc": datetime.now(timezone.utc).isoformat(),
+                   "game_pid": self.game_pid, "overlay_pid": self.overlay_pid,
+                   "exit_reason": self.exit_reason, "first_exception": self.first_exception,
+                   "exception_count": self.exception_count}
+        try:
+            self._write("CLOSED", payload)
+        except OSError as error:
+            payload["evidence_write_error"] = str(error)[:2048]
+            print(json.dumps(payload, ensure_ascii=False), file=sys.stderr, flush=True)
+
+
+def publish_decision_payload(decision_text, payload, evidence, retry_delays=(.02, .05, .1)):
+    """Defer a locked destination to the next tick; retain the prior text."""
+    if len(payload) > 32768:
+        raise ValueError("decision text exceeded its finite byte limit")
+    temporary = decision_text.with_name(decision_text.name + f".{os.getpid()}.{uuid.uuid4().hex}.pending")
+    try:
+        with temporary.open("xb") as stream:
+            stream.write(payload)
+        for attempt in range(len(retry_delays) + 1):
+            try:
+                os.replace(temporary, decision_text)
+                return True
+            except PermissionError as error:
+                evidence.note_exception(error, "decision_text_atomic_replace")
+                if attempt == len(retry_delays):
+                    return False
+                time.sleep(retry_delays[attempt])
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def show_read_error(window, publish, evidence, error):
+    evidence.note_exception(error, "tick")
+    operations = (
+        ("error_hide", lambda: window.set_content_visible(False)),
+        ("error_publish", lambda: publish("决策数据暂不可用：" + type(error).__name__
+                                         + "。此前内容仅为最后已知回执，未确认新的成功动作。")),
+        ("error_render", lambda: window.update("回执读取暂不可用：" + type(error).__name__,
+                                             "实时决策 · 数据暂不可用")),
+    )
+    for stage, operation in operations:
+        try:
+            operation()
+        except Exception as secondary:
+            evidence.note_exception(secondary, stage)
+
+
+def close_panel(window, publish, evidence, code, message):
+    evidence.stop_reason(code)
+    for stage, operation in (
+        ("stop_publish", lambda: publish(message + "此前内容仅为最后已知回执。")),
+        ("stop_hide", lambda: window.set_content_visible(False)),
+        ("stop_destroy", window.destroy),
+    ):
+        try:
+            operation()
+        except Exception as error:
+            evidence.note_exception(error, stage)
+
+
+def finish_overlay(window, publish, release_game_handle, evidence):
+    evidence.stop_reason("native_message_loop_returned_without_requested_stop")
+    for stage, operation in (
+        ("final_publish", lambda: publish("面板 owner 已结束。此前内容仅为最后已知回执，未确认新的成功动作。")),
+        ("final_window_close", window.close),
+        ("final_game_handle_release", release_game_handle),
+    ):
+        try:
+            operation()
+        except Exception as error:
+            evidence.note_exception(error, stage)
+    evidence.write_closed()
 
 
 def outcome_text(body):
@@ -216,34 +339,24 @@ def main():
         raise RuntimeError("overlay requires one exact owned Game window")
     game_hwnd = game_windows[0]
     game_desktop = window_virtual_desktop(game_hwnd)
-    import uuid
     desktop_id = str(uuid.UUID(args.desktop_id or game_desktop["desktop_id"]))
     if game_desktop["desktop_id"] != desktop_id:
         raise RuntimeError("Game has not reached the managed desktop")
     decision_text = args.decision_text_file.resolve() if args.decision_text_file else None
+    evidence = OverlayEvidence(session, launch["pid"])
     def publish_decision_text(content):
         if not decision_text:
-            return
+            return True
         payload = ("进程绑定：PID " + str(launch["pid"]) + " · " + date
                    + "\n面板含本局最后已知回执；不将历史回执计为本次新动作。\n" + content).encode("utf-8")
-        if len(payload) > 32768:
-            raise ValueError("decision text exceeded its finite byte limit")
-        temporary = decision_text.with_name(decision_text.name + f".{os.getpid()}.{uuid.uuid4().hex}.pending")
-        try:
-            with temporary.open("xb") as stream:
-                stream.write(payload)
-            os.replace(temporary, decision_text)
-        finally:
-            try:
-                temporary.unlink()
-            except FileNotFoundError:
-                pass
+        return publish_decision_payload(decision_text, payload, evidence)
     if decision_text:
         if not decision_text.is_relative_to(session) or decision_text.exists():
             raise ValueError("decision text must be a new file below this session")
         with decision_text.open("x", encoding="utf-8") as stream:
             stream.write("进程绑定：PID " + str(launch["pid"]) + " · " + date
                          + "\n等待本次进程的真实回执；未确认新行动。\n")
+    from decision_overlay_window import NativeOverlay
     window = NativeOverlay()
     atexit.register(window.close)
     hwnd = window.hwnd
@@ -261,30 +374,29 @@ def main():
     last_render = None
     blocker = ""
     camera_text = ""
-    def close_panel(message):
-        try:
-            publish_decision_text(message + "此前内容仅为最后已知回执。")
-        finally:
-            window.set_content_visible(False)
-            window.destroy()
+    def stop_panel(code, message):
+        close_panel(window, publish_decision_text, evidence, code, message)
 
     def tick():
         nonlocal war_decision, current, reason, last_render, blocker, camera_text, game_desktop, overlay_desktop
         process_state = kernel.WaitForSingleObject(handle, 0)
-        if process_state == 0 or (session / "STOP-DECISION-OVERLAY").exists():
-            close_panel("面板已停止：游戏已退出或 owner 已请求停止。")
+        if process_state == 0:
+            stop_panel("game_process_exited", "面板已停止：游戏已退出。")
+            return
+        if (session / "STOP-DECISION-OVERLAY").exists():
+            stop_panel("owner_stop_requested", "面板已停止：owner 已请求停止。")
             return
         if process_state != 258:
-            close_panel("面板已停止：游戏内核状态未知。")
+            stop_panel("game_kernel_state_unknown", "面板已停止：游戏内核状态未知。")
             return
         try:
             if (not win32gui.IsWindow(game_hwnd)
                     or win32process.GetWindowThreadProcessId(game_hwnd)[1] != launch["pid"]):
-                close_panel("面板已停止：原游戏窗口已失效。")
+                stop_panel("game_window_invalid", "面板已停止：原游戏窗口已失效。")
                 return
             observed_game_desktop = window_virtual_desktop(game_hwnd)
             if observed_game_desktop["desktop_id"] != desktop_id:
-                close_panel("面板已停止：游戏离开固定管理桌面。")
+                stop_panel("game_left_managed_desktop", "面板已停止：游戏离开固定管理桌面。")
                 return
             overlay_desktop = window_virtual_desktop(hwnd)
             if overlay_desktop["desktop_id"] != desktop_id:
@@ -393,18 +505,11 @@ def main():
             content += "\n\n数据来自本局实际请求与回执；请求返回不等于战斗获胜。"
             if content != last_render:
                 window.update(content)
-                publish_decision_text(content)
-                last_render = content
+                if publish_decision_text(content):
+                    last_render = content
         except Exception as error:
-            window.set_content_visible(False)
-            try:
-                publish_decision_text("决策数据暂不可用：" + type(error).__name__
-                                      + "。此前内容仅为最后已知回执，未确认新的成功动作。")
-            except OSError:
-                window.destroy()
-                return
+            show_read_error(window, publish_decision_text, evidence, error)
             last_render = None
-            window.update("回执读取暂不可用：" + type(error).__name__, "实时决策 · 数据暂不可用")
 
     self_handle = kernel.OpenProcess(0x00101000, False, os.getpid())
     self_times = [ctypes.c_uint64() for _ in range(4)]
@@ -442,14 +547,12 @@ def main():
     try:
         tick()
         window.run(tick)
+    except BaseException as error:
+        evidence.note_exception(error, "message_loop")
+        evidence.stop_reason("unhandled_message_loop_exception")
+        raise
     finally:
-        try:
-            publish_decision_text("面板 owner 已结束。此前内容仅为最后已知回执，未确认新的成功动作。")
-        finally:
-            window.close()
-            release_game_handle()
-        with (session / f"ROOT-DECISION-OVERLAY-{os.getpid()}-CLOSED.json").open("x", encoding="utf-8") as f:
-            json.dump({"at_utc": datetime.now(timezone.utc).isoformat(), "game_pid": launch["pid"]}, f)
+        finish_overlay(window, publish_decision_text, release_game_handle, evidence)
 
 
 if __name__ == "__main__":

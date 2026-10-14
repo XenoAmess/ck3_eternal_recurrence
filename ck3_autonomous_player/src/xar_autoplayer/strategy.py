@@ -7813,6 +7813,7 @@ def choose_one_life_turn(
     bridge_capabilities: Iterable[str] | None = None,
     next_run_plan: dict[str, object] | None = None,
     battle_speed_readiness: dict[str, object] | None = None,
+    pending_interaction_registry_state_dir=None,
 ) -> dict[str, object]:
     """Preserve lifecycle, dismiss an observed overview, then choose ordinary work."""
     steps = tuple(action_steps or ())
@@ -7838,6 +7839,39 @@ def choose_one_life_turn(
         next_run_plan=next_run_plan,
         battle_speed_readiness=battle_speed_readiness,
     )
+    # The owner's continuation policy applies at the common return boundary,
+    # including earlier dedicated/registry material-observation failures.
+    if (plan.get("selected_step") is None
+            and not isinstance(plan.get("unhandled_event_fallback"), dict)
+            and isinstance(plan.get("phase"), str)
+            and plan["phase"].startswith("active_event")):
+        from .vanilla_events.unhandled_fallback import plan_unhandled_event_fallback_v1
+
+        context = _same_frame_event_window_context(_expanded_command_rows(commands), snapshot)
+        summary = plan.get("active_event")
+        fallback = plan_unhandled_event_fallback_v1(
+            snapshot=snapshot, event_context=context,
+            event_summary=summary if isinstance(summary, dict) else {},
+            registry_decision={"status": "unhandled", "original_phase": plan["phase"],
+                "unavailable_reason": plan.get("reason"), "event_decision": plan.get("event_decision")},
+            action_steps=steps,
+        )
+        if fallback is not None:
+            plan = fallback
+
+    if (plan.get("selected_step") is None
+            and isinstance(plan.get("phase"), str) and plan["phase"].startswith("pending_")
+            and not isinstance(plan.get("unhandled_interaction_fallback"), dict)):
+        from .pending_interaction_fallback import plan_pending_interaction_left_reply_v1
+
+        context = _same_frame_pending_interaction_context(_expanded_command_rows(commands), snapshot)
+        fallback = plan_pending_interaction_left_reply_v1(
+            snapshot=snapshot, context=context, original_plan=plan, action_steps=steps,
+            registry_state_dir=pending_interaction_registry_state_dir,
+        )
+        if fallback is not None:
+            plan = fallback
+
     plan = _primary_defender_siege_forecast_ingress(
         plan,
         commands=_expanded_command_rows(commands),
@@ -8419,6 +8453,15 @@ def _choose_one_life_turn_core(
                 }
             )
             if event_context.get("status") == "unavailable":
+                from .vanilla_events.unhandled_fallback import plan_unhandled_event_fallback_v1
+
+                fallback = plan_unhandled_event_fallback_v1(
+                    snapshot=snapshot, event_context=event_context, event_summary=event_summary,
+                    registry_decision={"status": "unavailable", "unavailable_reason": event_context.get("unavailable_reason")},
+                    action_steps=available_steps,
+                )
+                if fallback is not None:
+                    return fallback
                 event_summary["materialized_options"] = None
                 return {
                     "policy": "one-life-turn-v1",
@@ -8540,6 +8583,7 @@ def _choose_one_life_turn_core(
                     played_character_id=played_character_id,
                     snapshot_option_count=active_event.get("option_count"),
                     played_character=played_character,
+                    event_history=rows,
                     event_opinion_observations=snapshot.get(
                         "event_opinion_observations"
                     ),
@@ -8763,7 +8807,15 @@ def _choose_one_life_turn_core(
                     "active_event": event_summary,
                     "event_decision": registry_decision,
                 }
+            from .vanilla_events.unhandled_fallback import plan_unhandled_event_fallback_v1
+
             if registry_decision.get("status") == "blocked":
+                fallback = plan_unhandled_event_fallback_v1(
+                    snapshot=snapshot, event_context=event_context, event_summary=event_summary,
+                    registry_decision=registry_decision, action_steps=available_steps,
+                )
+                if fallback is not None:
+                    return fallback
                 event_summary["registry_decision"] = registry_decision
                 return {
                     "policy": "one-life-turn-v1",
@@ -8778,6 +8830,13 @@ def _choose_one_life_turn_core(
                     "active_event": event_summary,
                     "event_decision": registry_decision,
                 }
+
+            fallback = plan_unhandled_event_fallback_v1(
+                snapshot=snapshot, event_context=event_context, event_summary=event_summary,
+                registry_decision=registry_decision, action_steps=available_steps,
+            )
+            if fallback is not None:
+                return fallback
 
             if not semantic_ready and len(eligible_options) == 1:
                 option, event_decision = _degraded_event_option_decision(

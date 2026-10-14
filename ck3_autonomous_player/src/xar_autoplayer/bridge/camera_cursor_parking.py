@@ -12,23 +12,44 @@ import ctypes
 from ctypes import wintypes
 import os
 
-from ..environment import ck3_process_inventory
+from ..environment import ck3_process_inventory, _toolhelp_process_identity
 from ..errors import AgentError
 
 
-def _minimized_owned_ck3_window() -> dict[str, object] | None:
+def _owned_ck3_processes(expected_game_pid: int | None) -> list[dict[str, object]]:
+    if expected_game_pid is None:
+        return ck3_process_inventory().get("processes", [])
+    if type(expected_game_pid) is not int or expected_game_pid <= 0:
+        return []
+    identity = _toolhelp_process_identity(expected_game_pid)
+    if (identity is None
+            or type(identity.get("pid")) is not int
+            or identity["pid"] != expected_game_pid
+            or str(identity.get("name", "")).casefold() != "ck3.exe"
+            or os.path.basename(str(identity.get("executable", ""))).casefold() != "ck3.exe"):
+        return []
+    return [identity]
+
+
+def _minimized_owned_ck3_window(
+    *, processes: list[dict[str, object]] | None = None,
+    inventory_out: list[list[dict[str, object]]] | None = None,
+) -> dict[str, object] | None:
     """Find the sole live CK3 PID only when all its visible windows are iconic."""
 
     import win32gui
     import win32process
 
-    try:
-        inventory = ck3_process_inventory().get("processes", [])
-    except AgentError:
+    if processes is None:
+        try:
+            processes = _owned_ck3_processes(None)
+        except AgentError:
+            processes = []
+    if inventory_out is not None:
+        inventory_out.append(processes)
+    if len(processes) != 1:
         return None
-    if len(inventory) != 1:
-        return None
-    process = inventory[0]
+    process = processes[0]
     if str(process.get("name", "")).casefold() != "ck3.exe":
         return None
     pid = int(process["pid"])
@@ -48,17 +69,20 @@ def _minimized_owned_ck3_window() -> dict[str, object] | None:
             "window_count": len(windows)}
 
 
-def _background_owned_ck3_window() -> dict[str, object] | None:
+def _background_owned_ck3_window(
+    *, processes: list[dict[str, object]] | None = None,
+) -> dict[str, object] | None:
     """Skip global pointer input only for a verified hidden virtual desktop."""
     import win32gui
     import win32process
     from .windows_virtual_desktop import window_virtual_desktop
 
     try:
-        inventory = ck3_process_inventory().get("processes", [])
-        if len(inventory) != 1 or str(inventory[0].get("name", "")).casefold() != "ck3.exe":
+        if processes is None:
+            processes = _owned_ck3_processes(None)
+        if len(processes) != 1 or str(processes[0].get("name", "")).casefold() != "ck3.exe":
             return None
-        pid = int(inventory[0]["pid"])
+        pid = int(processes[0]["pid"])
         windows = []
         def collect(hwnd: int, _extra: object) -> bool:
             if (win32gui.IsWindowVisible(hwnd)
@@ -81,7 +105,7 @@ def _background_owned_ck3_window() -> dict[str, object] | None:
         return None
 
 
-def park_foreground_ck3_cursor() -> dict[str, object]:
+def park_foreground_ck3_cursor(*, expected_game_pid: int | None = None) -> dict[str, object]:
     """Move to an interior client point when CK3 owns the foreground window."""
 
     if os.name != "nt":
@@ -95,35 +119,54 @@ def park_foreground_ck3_cursor() -> dict[str, object]:
     user32.GetCursorPos.argtypes = [ctypes.POINTER(wintypes.POINT)]
     user32.SetCursorPos.argtypes = [ctypes.c_int, ctypes.c_int]
     hwnd = user32.GetForegroundWindow()
+    title = None
+    if hwnd:
+        length = user32.GetWindowTextLengthW(hwnd)
+        title_buffer = ctypes.create_unicode_buffer(length + 1)
+        user32.GetWindowTextW(hwnd, title_buffer, length + 1)
+        title = title_buffer.value
+    processes = None
+    if expected_game_pid is not None:
+        try:
+            processes = _owned_ck3_processes(expected_game_pid)
+        except AgentError:
+            processes = []
+        if not processes:
+            return {"status": "bound_game_pid_unconfirmed", "mouse_input": False}
     if not hwnd:
-        minimized = _minimized_owned_ck3_window()
+        inventory_out: list[list[dict[str, object]]] = []
+        minimized = _minimized_owned_ck3_window(
+            processes=processes, inventory_out=inventory_out)
         if minimized is not None:
             return minimized
-        background = _background_owned_ck3_window()
+        background = _background_owned_ck3_window(
+            processes=processes if processes is not None
+            else inventory_out[0] if inventory_out else [])
         if background is not None:
             return background
         return {"status": "no_foreground_window"}
-    length = user32.GetWindowTextLengthW(hwnd)
-    title_buffer = ctypes.create_unicode_buffer(length + 1)
-    user32.GetWindowTextW(hwnd, title_buffer, length + 1)
-    title = title_buffer.value
     if title != "Crusader Kings III":
-        minimized = _minimized_owned_ck3_window()
+        inventory_out: list[list[dict[str, object]]] = []
+        minimized = _minimized_owned_ck3_window(
+            processes=processes, inventory_out=inventory_out)
         if minimized is not None:
             return minimized
-        background = _background_owned_ck3_window()
+        background = _background_owned_ck3_window(
+            processes=processes if processes is not None
+            else inventory_out[0] if inventory_out else [])
         if background is not None:
             return background
         return {"status": "ck3_not_foreground", "foreground_title": title}
     import win32gui
     import win32process
-    try:
-        inventory = ck3_process_inventory().get("processes", [])
-    except AgentError:
-        return {"status": "owned_process_unconfirmed", "mouse_input": False}
-    if (len(inventory) != 1
-            or str(inventory[0].get("name", "")).casefold() != "ck3.exe"
-            or int(inventory[0]["pid"]) != win32process.GetWindowThreadProcessId(hwnd)[1]
+    if processes is None:
+        try:
+            processes = _owned_ck3_processes(None)
+        except AgentError:
+            return {"status": "owned_process_unconfirmed", "mouse_input": False}
+    if (len(processes) != 1
+            or str(processes[0].get("name", "")).casefold() != "ck3.exe"
+            or int(processes[0]["pid"]) != win32process.GetWindowThreadProcessId(hwnd)[1]
             or win32gui.IsIconic(hwnd)):
         return {"status": "owned_window_unconfirmed", "mouse_input": False}
     rect = wintypes.RECT()
