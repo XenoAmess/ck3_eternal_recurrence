@@ -17,6 +17,7 @@ import logging
 import math
 from pathlib import Path
 import secrets
+import stat
 import shutil
 import subprocess
 import sys
@@ -521,12 +522,34 @@ def _unbind_owned_inputs(engine, owned_sources, configured):
     raise TimeoutError("owned OBS input removal was submitted but remains unobserved")
 
 
+MUTABLE_LATEST_RECEIPT_NAMES = frozenset(
+    label + suffix + temporary
+    for label in ("armed-latest", "recording-latest")
+    for suffix in ("-game.png", "-scene.png", ".json")
+    for temporary in ("", ".tmp"))
+
+
+def _receipt_bytes(root):
+    """Atomic latest replacement may remove only these exact receipt names."""
+    total = 0
+    for path in Path(root).iterdir():
+        try:
+            observed = path.stat()
+        except FileNotFoundError:
+            if path.name in MUTABLE_LATEST_RECEIPT_NAMES:
+                continue
+            raise
+        if stat.S_ISREG(observed.st_mode):
+            total += observed.st_size
+    return total
+
+
 def _job_bytes(job):
     output = Path(job["recording_root"])
     root = Path(job["receipt_root"])
     videos = [p for p in output.iterdir() if p.is_file() and p.stem == job["session_id"]]
     video_bytes = sum(p.stat().st_size for p in videos)
-    return video_bytes, video_bytes + sum(p.stat().st_size for p in root.iterdir() if p.is_file())
+    return video_bytes, video_bytes + _receipt_bytes(root)
 
 
 def _settings_match(actual, expected):
@@ -720,7 +743,18 @@ def run_worker(path):
                 overlay.check()
                 if game.creation_filetime != job["game_creation_filetime"]:
                     raise RuntimeError("Game generation differs from actual placement")
-                if window_virtual_desktop(job["hwnd"])["desktop_id"] != job["desktop_id"]:
+                desktop_query_deadline = time.monotonic() + 30.0
+                while True:
+                    try:
+                        actual_desktop = window_virtual_desktop(job["hwnd"])["desktop_id"]
+                        break
+                    except OSError as error:
+                        if "IsWindowOnCurrentVirtualDesktop HRESULT" not in str(error):
+                            raise
+                        if time.monotonic() >= desktop_query_deadline:
+                            raise RuntimeError("Game desktop identity unavailable for 30 seconds") from error
+                        time.sleep(.25)
+                if actual_desktop != job["desktop_id"]:
                     raise RuntimeError("Game left its fixed managed desktop")
             if _window_identity(job["hwnd"], job["pid"]) != window:
                 raise RuntimeError("OBS Game title selector lost uniqueness")
@@ -882,7 +916,7 @@ def run_worker(path):
                 if unexpected:
                     raise RuntimeError("unexpected OBS output filename: " + json.dumps(
                         [str(p.resolve()) for p in unexpected], ensure_ascii=False))
-                total = current_bytes + sum(p.stat().st_size for p in root.iterdir() if p.is_file())
+                total = current_bytes + _receipt_bytes(root)
                 peak = max(peak, total)
                 if not continuous and total >= job["max_output_bytes"] - 96 * 1024**2:
                     raise RuntimeError("recording allocation nearing hard byte cap")
