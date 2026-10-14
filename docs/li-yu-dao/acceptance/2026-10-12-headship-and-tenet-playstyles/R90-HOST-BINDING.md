@@ -7,3 +7,5 @@
 静态检查解析冻结宿主的 AST，读回 `RecordingEndpoint.send` 的 keyword-only `packet_evidence_path`。新包装器的 `--help` 实际退出0，并读取配置及修复宿主；公共 `ck3_mod_acceptance.py preflight` 精确核对新 manifest、host、配置、Source19 两份索引、原生 DLL/注入器和已装 CK3。预检最终状态仍是 `BLOCKED`，仅因本场新保存的存档/准备计划尚未绑定；这不能当作业务验收。包装器源码中的 Windows 路径字面量在 Python 3.13 产生一条 `invalid escape sequence` 警告，实际路径和哈希读回成功；此警告不影响当前静态执行，但后续通用生成器应改用正斜杠路径。
 
 下一步先按通用存储策略建立新的有限容量准入，再创建本场存档副本、profile 与准备计划；实机前另取新鲜 Steam 离线画面并领取屏幕独占。只有原生一次性道学提名实际发送、后验 NPC 接受、封定、两派表决、签署、头衔及正常退出逐项成立，才能计入相应验收。此准备没有启动 CK3、没有 Steam 发布，也没有补授 R89 的 RED 信用。
+
+后续实机状态：上述静态包确实用于 R90；道学普通互动已原生 `submitted`，但 NPC 接受后验尚未取得，制度阶段因错误请求只供准备阶段使用的完整 readiness 而 RED。准确结果及闭场证据见 [R90 记录](LIVE-R0090.md)。本静态准备段保留其当时的 `BLOCKED` 预检事实，不能把当时状态误读为 R90 最终结果。
