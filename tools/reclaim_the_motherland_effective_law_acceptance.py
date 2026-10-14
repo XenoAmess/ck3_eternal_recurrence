@@ -71,7 +71,12 @@ def phase_evidence(path: Path) -> dict:
     value = json.loads(path.read_bytes().decode("utf-8-sig"))
     frozen = value["source_report"]
     raw = Path(frozen["path"]).read_bytes()
-    if pin(Path(frozen["path"]), raw) != frozen:
+    actual = pin(Path(frozen["path"]), raw)
+    # Older captured phase rows use native Windows separators, while this
+    # helper emits POSIX separators. Compare the resolved identity and bytes,
+    # not the spelling of the same absolute path.
+    if (Path(actual["path"]).resolve() != Path(frozen["path"]).resolve() or
+            actual["bytes"] != frozen["bytes"] or actual["sha256"] != frozen["sha256"]):
         raise ValueError("immutable source report changed")
     report = json.loads(raw.decode("utf-8-sig"))
     for kind in ("root", "physical", "script"):
