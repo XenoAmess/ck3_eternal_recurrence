@@ -651,7 +651,8 @@ class ActualAdapter:
             raise ValueError("settle did not finish exactly the retained original AUTO")
         if result.get("same_SDK_continuation_available") is not True:
             active["continuation_terminal"] = True
-        stop = self.n / ("ROOT-CONTINUOUS-FEEDER-STOP-" + self.c.sdk_prefix.upper())
+        stop = (getattr(self.c, "feeder_stop_marker", None)
+                or self.n / ("ROOT-CONTINUOUS-FEEDER-STOP-" + self.c.sdk_prefix.upper()))
         process_path = root / "feeder-process.json"
         if not active.get("continuation_terminal") and not stop.exists():
             process = maybe_json(process_path, 16384)
@@ -691,6 +692,7 @@ def parser():
     p.add_argument("--overlay-source", type=Path, required=True)
     p.add_argument("--provider-source", type=Path, required=True)
     p.add_argument("--feeder-template", type=Path, required=True)
+    p.add_argument("--feeder-stop-marker", type=Path)
     p.add_argument("--automatic-source", type=Path, default=Path(__file__).with_name("automatic_continuity.py"))
     p.add_argument("--state-root", type=Path)
     p.add_argument("--placement-receipt", type=Path)

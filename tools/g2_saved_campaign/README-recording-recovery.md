@@ -1,6 +1,6 @@
 # Recording continuity helpers
 
-This package is ready to copy into tools/g2_saved_campaign. The adapter, framework, automatic admission, launcher and dependency probe are identical to the reviewed external sources. The live adapter SHA is d5fb613ea66ffc0b9ea879ab108bd317aab39bb686e0ffdeb80bcbc5125d72c0.
+The adapter, framework, automatic admission, launcher and dependency probe support explicit same-Game recording recovery. The P11 live external adapter SHA is `15fc8e7e5d566cb30951c20e38ee2d5f6b568e33135ff5f35328ffec980cdda0`; its frozen source stays separate from later repository changes.
 
 Run portable offline checks with `python -B -X utf8 tools/g2_saved_campaign/test_recording_recovery_portable.py`. Pillow is required. All paths used by tests are relative to this package or private temporary directories. Four checks cover full continuation, capture-only mixed halt, feeder exclusion/unknown launch persistence, and shared JSON reads with atomic replacement. The fixture contains the actual existing local attach/resume methods; provenance is retained beside it. Tests never start a process, Game, SDK, OBS or window. The full_loop result and launches are simulated.
 
@@ -8,4 +8,12 @@ Use `root_launch_recording_watchdog.py --help` for explicit session, prefix, att
 
 Ordinary mode resumes only an exact RecordingPaused/full_loop/auto_verified halt. `--attach-only` restores capture while preserving a separate business halt. An unknown launch is never repeated. Keep one queue producer during recovery; the adapter waits for the old feeder to exit before local control publication. No Game restart or AUTO replay is implemented. Existing SDK local controls and the automatic segment verification branch are required. `recording_segment_validation.py` is the shared validator implementation for that branch.
 
+The launcher forwards `--attach-only` to the adapter and records that mode in its plan. `--feeder-stop-marker <path>` binds the actual feeder's explicit stop file, including a file that does not exist yet. Without it, the existing `ROOT-CONTINUOUS-FEEDER-STOP-<PREFIX>` convention remains. An existing stop file prevents launching a replacement feeder after the retained cycle settles.
+
+`decision_observation_feed.py` supplies reusable actual-plan publication and result relay. Configure `publish_before_submit` with this queue's explicit `current_request_path`, `game_launch_receipt`, `response_root` and shared `feed_root`; do not reuse another queue's context. `relay_compact` prefixes shared filenames with the actual source directory, so `p11-responses/0001-1-result.json` becomes `responses/p11-responses-0001-1-result.json`. Existing names are never overwritten. A caller's richer existing display projection can be supplied as `project_plan`. These helpers publish actual observations and do not submit or replay gameplay.
+
+Run the new focused regressions with `python -B -X utf8 -m pytest tools/g2_saved_campaign/test_recording_recovery_options.py tools/g2_saved_campaign/test_decision_observation_feed.py`. Fixtures are synthetic and portable; dependency probes and process launches are mocked in the CLI tests.
+
 Root reported the P08 deployment healthy at 2026-10-14T19:37:49Z: status idle, stage healthy, no watchdog error. This proves healthy observation only. No new recording failure occurred after deployment; the automatic recovery branch has offline integration evidence and is not claimed as a live acceptance. Manual recovery06 remains separate evidence.
+
+P11 subsequently completed actual same-Game SDK binding, explicit pause, an independently paused semantic frame, full-loop continuation and event selection with its postcondition. The P11 watchdog was actually started and observed healthy. The new failure/recovery branch has not been triggered in this run; see [the P11 handoff](../../docs/handover/2026-10-15-p11-recording-continuation.md) for source pins and exact receipts.

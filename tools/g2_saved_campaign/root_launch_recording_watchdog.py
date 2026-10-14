@@ -29,10 +29,12 @@ def main():
     p.add_argument('--adapter',type=Path,default=Path(__file__).with_name('recording_recovery_adapter.py'))
     p.add_argument('--adapter-sha256',required=True)
     p.add_argument('--launch-root',type=Path)
+    p.add_argument('--attach-only',action='store_true')
+    p.add_argument('--feeder-stop-marker',type=Path)
     p.add_argument('--start',action='store_true')
     c=p.parse_args()
     for key,value in vars(c).items():
-        if isinstance(value,Path) and key!='launch_root':setattr(c,key,value.resolve(strict=True))
+        if isinstance(value,Path) and key not in {'launch_root','feeder_stop_marker'}:setattr(c,key,value.resolve(strict=True))
     if not c.sdk_prefix.startswith('p') or not c.sdk_prefix[1:].isdigit():
         raise ValueError('exact configured pNN SDK prefix required')
     if digest(c.adapter)!=c.adapter_sha256:raise ValueError('reviewed adapter SHA differs')
@@ -54,11 +56,13 @@ def main():
           '--sdk-prefix',c.sdk_prefix,'--initial-recording-request',str(c.initial_recording_request),
           '--overlay-source',str(c.overlay_source),'--provider-source',str(c.provider_source),
           '--feeder-template',str(c.feeder_template),'--python',str(c.base_python)]
+    if c.attach_only:argv.append('--attach-only')
+    if c.feeder_stop_marker:argv.extend(['--feeder-stop-marker',str(c.feeder_stop_marker.resolve())])
     root=c.launch_root or Path(__file__).resolve().parent/'launches'/(c.sdk_prefix+'-'+uuid.uuid4().hex)
     root.mkdir(parents=True,exist_ok=False)
     plan={'status':'READY','at_utc':datetime.now(timezone.utc).isoformat(),'argv':argv,
           'creationflags':'CREATE_NO_WINDOW','PYTHONPATH':roots,'OBS_control_dependencies':str(control),
-          'pins':pins,'dependencies':dependencies,'attach_only':False,
+          'pins':pins,'dependencies':dependencies,'attach_only':c.attach_only,
           'stdout':str(root/'watchdog.stdout.log'),'stderr':str(root/'watchdog.stderr.log'),
           'sdk_prefix':c.sdk_prefix,'recording_request_is_explicit_not_ROOT_CURRENT':True}
     atomic(root/'LAUNCH-PLAN.json',plan,new=True)
