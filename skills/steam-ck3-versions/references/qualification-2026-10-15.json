@@ -1,6 +1,13 @@
 {
   "schema": "steam-ck3-versions-qualification-v1",
   "qualification_date": "2026-10-15",
+  "machine_id": "unknown",
+  "machine_identity_annotation": {
+    "annotated_at_utc": "2026-10-15T07:16:15.458411+00:00",
+    "annotator_machine_id": "desktop-3fevhd2-1c74096080",
+    "source_machine_verified": false,
+    "basis": "The historical record does not contain a stable machine ID. Its external paths do not establish machine identity. Original qualification facts and evidence pins are preserved; they cannot establish the state of another execution machine."
+  },
   "status": "WINDOWS_SINGLE_MACHINE_ACTUAL_TABLE_SWITCH_AND_INSTALL_VERIFIED",
   "external_evidence_root": "C:/workspace/ck3-version-switch-20261015",
   "scope": {
