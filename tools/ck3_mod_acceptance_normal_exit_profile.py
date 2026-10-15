@@ -39,12 +39,24 @@ def project_profile(args, runtime, manifest, runtime_manifest, destination):
     if any(actual_preparation[key] != preparation_ref[key] for key in ("bytes", "sha256")):
         raise ValueError("actual public profile preparation bytes changed")
     preparation = json.loads(preparation_path.read_bytes())
-    if (preparation.get("schema") != "ck3-mod-acceptance-prepared-fixture-v1"
+    if (preparation.get("schema") not in {"ck3-mod-acceptance-prepared-fixture-v1",
+                                         "ck3-mod-acceptance-prepared-product-v1"}
             or Path(preparation["state_dir"]).resolve() != state
             or Path(preparation["profile_dir"]).resolve() != state / "profile"
             or preparation["game_version"] != manifest["game"]["version"]
             or preparation["exe_sha256"].lower() != manifest["game"]["exe_sha256"].lower()):
         raise ValueError("public preparation and selected runtime identities differ")
+    if preparation['schema'] == 'ck3-mod-acceptance-prepared-product-v1':
+        rows=preparation.get('files')
+        if (not isinstance(rows,dict) or not rows or preparation.get('fixture_mounted') is not False
+                or startup.get('profile_files') != list(rows)
+                or startup.get('profile_input_sha256') != {name:row['sha256'] for name,row in rows.items()}):
+            raise ValueError('public product preparation and startup file bindings differ')
+        for relative,row in rows.items():
+            path=(state/'profile'/relative).resolve()
+            if (not path.is_relative_to(state/'profile') or Path(row['path']).resolve()!=path
+                    or any(pin(path)[key]!=row[key] for key in ('bytes','sha256'))):
+                raise ValueError('public product preparation file bytes changed: '+relative)
     native = {}
     for name, path in (("dll", args.bridge_dll), ("injector", args.bridge_injector)):
         row = manifest["native"][name]

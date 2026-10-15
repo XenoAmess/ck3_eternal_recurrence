@@ -182,3 +182,32 @@ def materialize_product_profile(context,product_dir,plain_configuration,*,worksh
     rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
     return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,
             'product_file_count':len(products),'runtime_status':'NOT_RUN','fixture_mounted':False}
+
+
+def finish_product_profile(context,profile,*,provenance=None):
+    """Bind an actual product-only profile to the selected engine and startup.
+
+    Call after materialize_product_profile and product-specific byte checks.
+    This emits no fixture policy, save, game process or launch authority.
+    """
+    state=Path(context['state_dir']).resolve();userdir=state/'profile'
+    require(Path(profile['state_dir']).resolve()==state and
+            Path(profile['profile']).resolve()==userdir and profile.get('fixture_mounted') is False,
+            'Product preparation must identify the actual product-only profile')
+    _,identity=_engine(context)
+    rows={p.relative_to(userdir).as_posix():pin(p) for p in sorted(userdir.rglob('*')) if p.is_file()}
+    require(rows and rows==profile['files'],'Materialized product profile files changed before preparation')
+    inventory=profile['product_inventory'];actual_inventory=pin(inventory['path'])
+    require(all(actual_inventory[k]==inventory[k] for k in ('bytes','sha256')),
+            'Product inventory changed before preparation')
+    preparation=Path(context['output'])/'profile-preparation.json'
+    receipt={'schema':'ck3-mod-acceptance-prepared-product-v1','runtime_status':'NOT_RUN',
+             'state_dir':str(state),'profile_dir':str(userdir),**identity,
+             'files':rows,'product_inventory':actual_inventory,'fixture_mounted':False,
+             'provenance':provenance or {},'business_acceptance':'NOT_ASSESSED'}
+    write_json(preparation,receipt)
+    write_json(state/'preparation.json',{'schema':'ck3-mod-acceptance-profile-startup-evidence-v1',
+        'profile_dir':str(userdir),'profile_files':list(rows),
+        'profile_input_sha256':{relative:row['sha256'] for relative,row in rows.items()},
+        'preparation':pin(preparation),'runtime_status':'NOT_RUN'})
+    return {**profile,'preparation':pin(preparation)}
