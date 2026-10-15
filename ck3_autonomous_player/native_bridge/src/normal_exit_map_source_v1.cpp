@@ -1,4 +1,6 @@
 #include "xar_bridge/normal_exit_map_source_v1.hpp"
+#include "xar_bridge/normal_exit_map_inventory_context_v1.hpp"
+#include "xar_bridge/normal_exit_gui_source_contract_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ingame_private_gui_profile_v1.hpp"
 #include <windows.h>
@@ -9,6 +11,7 @@
 
 #include <array>
 #include <charconv>
+#include <climits>
 #include <filesystem>
 #include <fstream>
 #include <map>
@@ -177,6 +180,101 @@ constexpr std::array<StockFile,6> kStock{{
   {"shared/buttons.gui",41901,"88403785a1acdacc628730aaa101a04b2ae6293e74aa706a93e0e1695f3b1a0c"},
   {"shared/sounds.gui",10725,"88352f5f6ec36d9fbd703fc05f510d7ce26f6250531e152eb5f9d9131404b0fc"},
 }};
+
+bool GuiSpace(char c) noexcept {
+  return c==' ' || c=='\t' || c=='\r' || c=='\n' || c=='\v' || c=='\f';
+}
+bool IdentifierCharacter(char c, bool first=false) noexcept {
+  return (c>='a'&&c<='z') || (c>='A'&&c<='Z') || c=='_' ||
+      (!first && c>='0'&&c<='9');
+}
+std::string_view GuiValue(std::string_view token) noexcept {
+  return token.size()>=2 && token.front()=='"' && token.back()=='"'
+      ? token.substr(1,token.size()-2) : token;
+}
+std::string LowerIdentifier(std::string_view token,bool quoted_value=true) {
+  if(quoted_value) token=GuiValue(token);
+  if(token.empty() || !IdentifierCharacter(token.front(),true)) return {};
+  std::string result;
+  for(char c:token) {
+    if(!IdentifierCharacter(c)) return {};
+    result+=c>='A'&&c<='Z'?static_cast<char>(c-'A'+'a'):c;
+  }
+  return result;
+}
+template<std::size_t N>
+bool Contains(const std::array<std::string_view,N> &values,std::string_view value) {
+  for(const auto item:values) if(item==value) return true;
+  return false;
+}
+bool ExitReference(std::string_view value) noexcept {
+  constexpr std::array<std::string_view,3> names{{"PauseMenu","ResignConfirmationWindow","OnPauseMenu"}};
+  for(const auto name:names) {
+    for(std::size_t start=value.find(name); start!=std::string_view::npos; start=value.find(name,start+1)) {
+      if(start && IdentifierCharacter(value[start-1])) continue;
+      auto end=start+name.size();
+      if(name=="OnPauseMenu") {
+        if(end==value.size() || !IdentifierCharacter(value[end])) return true;
+      } else {
+        while(end<value.size() && GuiSpace(value[end])) ++end;
+        if(end<value.size() && value[end]=='.') return true;
+      }
+    }
+  }
+  return false;
+}
+bool UnrelatedGui(const fs::path &path,std::string_view bytes,std::string &reason) {
+  const auto reject=[&](const char *why) { reason=why; return false; };
+  const auto relative=Lower(path.generic_wstring());
+  for(const auto protected_path:kNormalExitProtectedGuiPathsV1)
+    if(relative==Wide(protected_path)) return reject("enabled_mod_gui_exit_dependency_path_collision");
+  // Match the Python source reader: comments, quoted values, braces and bare
+  // tokens. UTF-8 is validated before the ASCII declaration names are read.
+  if(bytes.starts_with("\xef\xbb\xbf")) bytes.remove_prefix(3);
+  if(!bytes.empty() && (bytes.size()>static_cast<std::size_t>(INT_MAX) || bytes.find('\0')!=std::string_view::npos ||
+      MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,bytes.data(),static_cast<int>(bytes.size()),nullptr,0)<=0))
+    return reject("enabled_mod_gui_utf8_invalid");
+  std::vector<std::string_view> tokens;
+  for(std::size_t at=0;at<bytes.size();) {
+    if(GuiSpace(bytes[at])) { ++at; continue; }
+    if(bytes[at]=='#') { const auto end=bytes.find_first_of("\r\n",at); at=end==std::string_view::npos?bytes.size():end; continue; }
+    const auto begin=at;
+    if(bytes[at]=='"') {
+      ++at; bool closed=false;
+      while(at<bytes.size()) {
+        if(bytes[at]=='\\') { if(at+1>=bytes.size()) return reject("enabled_mod_gui_structure_invalid"); at+=2; }
+        else if(bytes[at++]=='"') { closed=true; break; }
+      }
+      if(!closed) return reject("enabled_mod_gui_structure_invalid");
+    } else if(bytes[at]=='{' || bytes[at]=='}' || bytes[at]=='=') ++at;
+    else while(at<bytes.size() && !GuiSpace(bytes[at]) && bytes[at]!='{' && bytes[at]!='}' && bytes[at]!='=' && bytes[at]!='#') ++at;
+    tokens.push_back(bytes.substr(begin,at-begin));
+  }
+  std::vector<std::size_t> stack;
+  for(std::size_t i=0;i<tokens.size();++i) {
+    if(tokens[i]=="{") stack.push_back(i);
+    else if(tokens[i]=="}") {
+      if(stack.empty()) return reject("enabled_mod_gui_structure_invalid");
+      stack.pop_back();
+    } else if(!stack.empty() && LowerIdentifier(tokens[i],false)=="name" && i+2<tokens.size() && tokens[i+1]=="=") {
+      if(Contains(kNormalExitFixedGuiRootsV1,LowerIdentifier(tokens[i+2])))
+        return reject("enabled_mod_gui_exit_root_collision");
+    }
+    if(ExitReference(GuiValue(tokens[i]))) return reject("enabled_mod_gui_exit_callback_reference");
+    const auto declaration=LowerIdentifier(tokens[i],false);
+    if((declaration=="type" || declaration=="template") && i+2<tokens.size()) {
+      const auto name=LowerIdentifier(tokens[i+1]);
+      if(name.empty()) continue;
+      auto start=i+2;
+      while(start<tokens.size() && tokens[start]!="{" && tokens[start]!="}") ++start;
+      if(start==tokens.size() || tokens[start]!="{") return reject("enabled_mod_gui_structure_invalid");
+      if(Contains(kNormalExitProtectedGuiSymbolsV1,name))
+        return reject("enabled_mod_gui_exit_symbol_collision");
+    }
+  }
+  if(!stack.empty()) return reject("enabled_mod_gui_structure_invalid");
+  return true;
+}
 } // namespace
 
 bool ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view> arguments,
@@ -258,26 +356,15 @@ bool NormalExitMapSourceExecutableAdmittedV1(
   return true;
 }
 
-bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
+bool VerifyNormalExitMapInventoryForContextV1(std::string_view expected_sha,
     const game::AdapterDescriptor &descriptor,
+    const fs::path &userdir,const fs::path &image_path,
     bool &stock_verified,std::string &reason) noexcept {
   stock_verified=false;
   try {
     const auto reject=[&](const char *why) { reason=why; return false; };
     if(!Hex(expected_sha)) return reject("source_inventory_reference_missing");
-    int argc=0; auto **argv=CommandLineToArgvW(GetCommandLineW(),&argc);
-    if(!argv) return reject("actual_launch_arguments_unreadable");
-    NormalExitMapLaunchArgumentsV1 launch{};
-    bool args_okay=false;
-    if(argc>=2 && argc<=5) {
-      std::array<std::wstring_view,5> arguments{};
-      for(int i=0;i<argc;++i) arguments[static_cast<std::size_t>(i)]=argv[i];
-      args_okay=ParseNormalExitMapLaunchArgumentsV1(
-          std::span<const std::wstring_view>(arguments.data(),static_cast<std::size_t>(argc)),launch);
-    }
-    LocalFree(argv);
-    const auto &userdir=launch.userdir;
-    if(!args_okay || userdir.empty() || !userdir.is_absolute() || !Plain(userdir)) return reject("actual_launch_userdir_contract_unsupported");
+    if(userdir.empty() || !userdir.is_absolute() || !Plain(userdir)) return reject("actual_launch_userdir_contract_unsupported");
     const auto manifest_path=userdir/L"normal-exit-source-inventory-v1.json";
     std::string bytes,actual_sha;
     if(!ReadFile(manifest_path,bytes,16U*1024U*1024U) || !NormalExitMapSha256V1(bytes,actual_sha) || actual_sha!=expected_sha)
@@ -293,9 +380,7 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
     if(!schema || schema->text!="ck3-normal-exit-source-inventory-v1" || !declared_userdir || !SamePath(Path(*declared_userdir),userdir) ||
         !profile || !Hex(profile->text) || !settings || !dlc || !mods || mods->items.size()>64 || !stock || stock->items.size()!=kStock.size() || !stock_game_root || !executable)
       return reject("source_inventory_binding_invalid");
-    std::array<wchar_t,32768> image{}; const auto length=GetModuleFileNameW(nullptr,image.data(),static_cast<DWORD>(image.size()));
-    if(length==0 || length>=image.size()) return reject("actual_executable_path_unreadable");
-    const fs::path image_path(image.data());
+    if(image_path.empty() || !image_path.is_absolute()) return reject("actual_executable_path_unreadable");
     const auto *declared_image=Field(*executable,"path",Node::string), *image_hash=Field(*executable,"sha256",Node::string);
     if(!declared_image || !image_hash || !SamePath(Path(*declared_image),image_path) ||
         !NormalExitMapSourceExecutableAdmittedV1(descriptor,image_hash->text))
@@ -307,7 +392,7 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
     if(!InventoryParser(dlc_bytes).Parse(actual_dlc)) return reject("actual_dlc_load_invalid");
     const auto *enabled=Field(actual_dlc,"enabled_mods",Node::array);
     if(!enabled || enabled->items.size()!=mods->items.size()) return reject("enabled_mods_inventory_order_changed");
-    std::set<fs::path> roots;
+    std::set<fs::path> roots; bool gui_mod_present=false;
     for(std::size_t i=0;i<mods->items.size();++i) {
       const auto &mod=mods->items[i]; const auto *root=Field(mod,"root",Node::string), *outer=Field(mod,"outer_descriptor",Node::object);
       const auto *inner=Field(mod,"inner_descriptor",Node::object), *files=Field(mod,"files",Node::array);
@@ -326,11 +411,15 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
       for(const auto &file:files->items) {
         const auto *relative=Field(file,"relative_path",Node::string), *size=Field(file,"bytes",Node::number), *hash=Field(file,"sha256",Node::string);
         fs::path path;
-        if(!relative || !size || !hash || !Hex(hash->text) || !Relative(relative->text,path) || !expected_files.insert(path).second ||
-            Lower(path.extension().native())==L".gui") return reject("enabled_mod_gui_or_file_inventory_unsupported");
+        if(!relative || !size || !hash || !Hex(hash->text) || !Relative(relative->text,path) || !expected_files.insert(path).second)
+          return reject("enabled_mod_file_inventory_unsupported");
         std::string file_bytes,file_sha;
         if(!ReadFile(mod_root/path,file_bytes,128U*1024U*1024U) || file_bytes.size()!=size->integer ||
             !NormalExitMapSha256V1(file_bytes,file_sha) || file_sha!=hash->text) return reject("enabled_mod_file_bytes_changed");
+        if(Lower(path.extension().native())==L".gui") {
+          gui_mod_present=true;
+          if(!UnrelatedGui(path,file_bytes,reason)) return false;
+        }
       }
       for(const auto &entry:fs::recursive_directory_iterator(mod_root)) {
         if(!Plain(entry.path())) return reject("enabled_mod_reparse_source_unsupported");
@@ -348,12 +437,51 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
           !SamePath(Path(*path),gui/fs::path(Wide(pin.path)))) return reject("stock_gui_exact_pin_mismatch");
       if(!FileRecord(file,gui/fs::path(Wide(pin.path)))) return reject("stock_gui_actual_bytes_changed");
     }
+    if(gui_mod_present) {
+      const auto *dependencies=Field(inventory,"stock_gui_dependencies",Node::array);
+      if(!dependencies || dependencies->items.size()!=kNormalExitGuiStockDependenciesV1.size())
+        return reject("stock_gui_dependency_inventory_incomplete");
+      for(std::size_t i=0;i<kNormalExitGuiStockDependenciesV1.size();++i) {
+        const auto &pin=kNormalExitGuiStockDependenciesV1[i]; const auto &file=dependencies->items[i];
+        const auto *path=Field(file,"path",Node::string), *size=Field(file,"bytes",Node::number), *hash=Field(file,"sha256",Node::string);
+        const auto expected=game_root/fs::path(Wide(pin.relative_path));
+        if(!path || !size || !hash || size->integer!=pin.bytes || hash->text!=pin.sha256 || !SamePath(Path(*path),expected))
+          return reject("stock_gui_dependency_exact_pin_mismatch");
+        if(!FileRecord(file,expected)) return reject("stock_gui_dependency_actual_bytes_changed");
+      }
+    }
     // Re-read the manifest and launch configuration after the full census.
     std::string final_bytes;
     if(!ReadFile(manifest_path,final_bytes,16U*1024U*1024U) || final_bytes!=bytes ||
         !FileRecord(*settings,userdir/L"pdx_settings.txt") || !FileRecord(*dlc,userdir/L"dlc_load.json"))
       return reject("source_inventory_changed_during_validation");
     stock_verified=true; reason.clear(); return true;
+  } catch(...) { try { reason="source_inventory_validation_exception"; } catch(...) {} return false; }
+}
+
+bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
+    const game::AdapterDescriptor &descriptor,
+    bool &stock_verified,std::string &reason) noexcept {
+  stock_verified=false;
+  try {
+    const auto reject=[&](const char *why) { reason=why; return false; };
+    if(!Hex(expected_sha)) return reject("source_inventory_reference_missing");
+    int argc=0; auto **argv=CommandLineToArgvW(GetCommandLineW(),&argc);
+    if(!argv) return reject("actual_launch_arguments_unreadable");
+    NormalExitMapLaunchArgumentsV1 launch{}; bool args_okay=false;
+    if(argc>=2 && argc<=5) {
+      std::array<std::wstring_view,5> arguments{};
+      for(int i=0;i<argc;++i) arguments[static_cast<std::size_t>(i)]=argv[i];
+      args_okay=ParseNormalExitMapLaunchArgumentsV1(
+          std::span<const std::wstring_view>(arguments.data(),static_cast<std::size_t>(argc)),launch);
+    }
+    LocalFree(argv);
+    if(!args_okay) return reject("actual_launch_userdir_contract_unsupported");
+    std::array<wchar_t,32768> image{};
+    const auto length=GetModuleFileNameW(nullptr,image.data(),static_cast<DWORD>(image.size()));
+    if(length==0 || length>=image.size()) return reject("actual_executable_path_unreadable");
+    return VerifyNormalExitMapInventoryForContextV1(expected_sha,descriptor,launch.userdir,
+        fs::path(image.data()),stock_verified,reason);
   } catch(...) { try { reason="source_inventory_validation_exception"; } catch(...) {} return false; }
 }
 } // namespace xar::ck3_12003

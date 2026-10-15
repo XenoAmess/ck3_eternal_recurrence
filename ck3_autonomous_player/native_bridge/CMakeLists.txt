@@ -9303,6 +9303,23 @@ endif()
 
 include(cmake/current_province_supply_contributors_12003.cmake)
 include(cmake/current_land_resupply_12003.cmake)
+
+# Explicit offline profile/source corpus, invoked with actual pinned inputs by
+# tools/qualify_normal_exit_gui_sources_v1.py; never starts a game process.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_normal_exit_map_source_inventory_v1_test
+    tests/normal_exit_map_source_inventory_v1_test.cpp
+    src/normal_exit_map_source_v1.cpp)
+  target_link_libraries(xar_ck3_normal_exit_map_source_inventory_v1_test PRIVATE bcrypt shell32)
+  target_include_directories(xar_ck3_normal_exit_map_source_inventory_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_normal_exit_map_source_inventory_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_normal_exit_map_source_inventory_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_normal_exit_map_source_inventory_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+endif()
 include(cmake/phase_warmonger_core_12003.cmake)
 include(cmake/person_following_stages_12003.cmake)
 include(cmake/current_land_supply_rate_12003.cmake)

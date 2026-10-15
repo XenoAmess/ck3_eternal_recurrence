@@ -1,0 +1,225 @@
+{
+  "schema": "ck3-normal-exit-gui-source-contract-v1",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stock_gui": [
+    {
+      "relative_path": "gui/hud.gui",
+      "bytes": 227658,
+      "sha256": "77d0beedefe23eee22b24c1c0b160ae5ee8ec938868d3f4b7ae76296347a6ac6"
+    },
+    {
+      "relative_path": "gui/frontend_ingame_menu.gui",
+      "bytes": 10812,
+      "sha256": "8498536c7d565bff610f592d45c79cbb2b0fa47ff184dafe3b324b355e0b0dfb"
+    },
+    {
+      "relative_path": "gui/window_resign_confirmation.gui",
+      "bytes": 3051,
+      "sha256": "9b8ca6d2cc17ecb575c21f5a683719d4ce6472958e3bf311e2419db09c34d1c9"
+    },
+    {
+      "relative_path": "gui/shared/buttons_icons.gui",
+      "bytes": 19034,
+      "sha256": "f5d8e398a396b75f588a3abd9cb07b51639d7201c71fe7a68ec869b40ce215e6"
+    },
+    {
+      "relative_path": "gui/shared/buttons.gui",
+      "bytes": 41901,
+      "sha256": "88403785a1acdacc628730aaa101a04b2ae6293e74aa706a93e0e1695f3b1a0c"
+    },
+    {
+      "relative_path": "gui/shared/sounds.gui",
+      "bytes": 10725,
+      "sha256": "88352f5f6ec36d9fbd703fc05f510d7ce26f6250531e152eb5f9d9131404b0fc"
+    }
+  ],
+  "stock_gui_dependencies": [
+    {
+      "relative_path": "gui/pdx_account/base_types.gui",
+      "bytes": 7690,
+      "sha256": "c48d471e949400685577438be551188ee7cebc3bdb30c390c4a6a2b1ea81feb7"
+    },
+    {
+      "relative_path": "gui/pdx_account/login_window.gui",
+      "bytes": 14431,
+      "sha256": "6a63c1a39dec4d7ea2e3433902b9f9b3cc90011683ab1e0db41b3591e059924a"
+    },
+    {
+      "relative_path": "gui/preload/defaults.gui",
+      "bytes": 7358,
+      "sha256": "7ba220ab2de42d68d1123353d20da55203dacf3e8fa699046cdf274d46296698"
+    },
+    {
+      "relative_path": "gui/preload/fonts.gui",
+      "bytes": 2983,
+      "sha256": "ee18787002a7321d0035e060f6e68d3739975cc602497e54b7695662d10dd532"
+    },
+    {
+      "relative_path": "gui/preload/frontend_loadingscreen.gui",
+      "bytes": 2710,
+      "sha256": "7e9827af56262bdd2bcbb73e146109a9a2723442ecbe35709ac5508be3eac122"
+    },
+    {
+      "relative_path": "gui/preload/labels.gui",
+      "bytes": 3509,
+      "sha256": "8bc62633a6953d1a371e1d35d3b25990d63b577315beef294e8f908a8e4b657b"
+    },
+    {
+      "relative_path": "gui/preload/tooltip.gui",
+      "bytes": 10443,
+      "sha256": "174bbc298ebfe7ad9b71f586c5eef5fc067edfb5514521da6b7156abb835892c"
+    },
+    {
+      "relative_path": "gui/shared/animation.gui",
+      "bytes": 16737,
+      "sha256": "6307c1afd77685c974849a4b51c3bda83b3ad0f98f8ecfeced9c8fc75cda47cc"
+    },
+    {
+      "relative_path": "gui/shared/backgrounds.gui",
+      "bytes": 20012,
+      "sha256": "07fc0d6a4a871a309c65e596fddb0e671c5e17f77a3a5b39c7adc7639aab39c5"
+    },
+    {
+      "relative_path": "gui/shared/colors.gui",
+      "bytes": 2186,
+      "sha256": "bea9b7b1250c8c0c10b375aa8242c5f2bcb9113d25100d10c1759ab95ea883d1"
+    },
+    {
+      "relative_path": "gui/shared/icons.gui",
+      "bytes": 8941,
+      "sha256": "483362ce813160a7720aa67fdbff459f5f2eb1d68346a29f3a3829589f2cfa84"
+    },
+    {
+      "relative_path": "gui/shared/windows.gui",
+      "bytes": 20488,
+      "sha256": "6b5759dd4d06aef88f24b86c1290de38387c3bd99b73dafac67d3e330ac06236"
+    }
+  ],
+  "protected_gui_symbols": [
+    "achievements_disabled_icon",
+    "achievements_enabled_icon",
+    "animation_curve_default",
+    "animation_fadein_quick",
+    "animation_fadeout_quick",
+    "animation_fadeout_standard",
+    "animation_hud_daily_tick",
+    "animation_showhide_quick",
+    "background",
+    "background_area",
+    "background_area_dark",
+    "background_area_with_header",
+    "background_color",
+    "background_full_dim",
+    "background_header",
+    "background_header_pattern",
+    "background_pattern",
+    "button",
+    "button_account",
+    "button_achievements",
+    "button_back",
+    "button_checkbox",
+    "button_checkbox_label",
+    "button_close",
+    "button_copy",
+    "button_dots",
+    "button_encyclopedia_small",
+    "button_frontend",
+    "button_go_to_my_location",
+    "button_group",
+    "button_icon",
+    "button_me",
+    "button_menu",
+    "button_minimize",
+    "button_normal",
+    "button_pause",
+    "button_pin",
+    "button_play",
+    "button_rules",
+    "button_settings",
+    "button_standard",
+    "button_standard_clean",
+    "button_standard_hover",
+    "button_tertiary",
+    "button_unpin",
+    "buttons_window_control",
+    "checkbutton",
+    "clickable_version_number",
+    "color_green",
+    "color_orange",
+    "container",
+    "container_saving_indicator",
+    "defaulttooltipbackground",
+    "defaulttooltiptext",
+    "expand",
+    "flowcontainer",
+    "font_size_big",
+    "font_size_medium",
+    "font_size_small",
+    "font_type_flavor",
+    "font_type_standard",
+    "game_button",
+    "generaltooltipsetup",
+    "hbox",
+    "header_pattern",
+    "header_text",
+    "highlight_icon",
+    "hotkeys_hud",
+    "icon",
+    "icon_circle_green",
+    "icon_flat_standard",
+    "icon_online_offline",
+    "icon_ring",
+    "ironman_disabled_icon",
+    "ironman_save_icon",
+    "mask_rough_edges",
+    "master_button_modify_texture",
+    "progressbar",
+    "progresspie",
+    "sdk_load_indicator",
+    "sdk_login_accountwidget",
+    "spacer",
+    "text_label_center",
+    "text_multi",
+    "text_single",
+    "textbox",
+    "tooltip_above",
+    "tooltip_es",
+    "tooltip_ne",
+    "tooltip_nw",
+    "tooltip_se",
+    "tooltip_ws",
+    "tooltipwithfakeshortcut",
+    "vbox",
+    "warning_icon",
+    "widget",
+    "widget_gamespeed_sounds",
+    "window",
+    "window_background_popup"
+  ],
+  "protected_gui_paths": [
+    "gui/frontend_ingame_menu.gui",
+    "gui/hud.gui",
+    "gui/pdx_account/base_types.gui",
+    "gui/pdx_account/login_window.gui",
+    "gui/preload/defaults.gui",
+    "gui/preload/fonts.gui",
+    "gui/preload/frontend_loadingscreen.gui",
+    "gui/preload/labels.gui",
+    "gui/preload/tooltip.gui",
+    "gui/shared/animation.gui",
+    "gui/shared/backgrounds.gui",
+    "gui/shared/buttons.gui",
+    "gui/shared/buttons_icons.gui",
+    "gui/shared/colors.gui",
+    "gui/shared/icons.gui",
+    "gui/shared/sounds.gui",
+    "gui/shared/windows.gui",
+    "gui/window_resign_confirmation.gui"
+  ],
+  "fixed_gui_roots": [
+    "ingame_pausemenu",
+    "ingame_resign_confirmation",
+    "timeline_widget"
+  ]
+}
