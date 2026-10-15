@@ -1,0 +1,19 @@
+{
+  "kind": "runtime_classifier_scoped_patch",
+  "scope": "N40 AUTO 24 committed-route battle observation; not a general strategy integration",
+  "base_source": "p18-construction-cold-requery/root_cold_result_classifier_final03.py",
+  "base_sha256": "d7d9c55d55ebe9aefc9bafef0650e479461626cb836e8a6fa979bdbb6d938d8d",
+  "target_source": "committed-contact-result-final04/root_cold_result_classifier_final04.py",
+  "target_sha256": "61f44257cb28f5a88ae940e298b58110c141ffb7f5db8ac3a4b66ca0b383457b",
+  "source_line_endings": "CRLF",
+  "patch_file": "n40-classifier-final03-to-final04.patch",
+  "patch_bytes": 5396,
+  "patch_sha256": "173f53cbd62946ae51b109a9dcdf56605aaa5f8ca161b4a71432a0e89035ac66",
+  "patch_line_endings": "LF",
+  "apply": "After checking base SHA-256, copy base bytes to root_cold_result_classifier.py in a scratch directory; there run git -c core.autocrlf=true apply --unidiff-zero with this patch; then require target SHA-256. Do not apply to another classifier base.",
+  "actual_auto_24_sha256": "7476f42521d93cfd7d9985f243237a24f9198d38d6aa27d6ba2fe09783a9d2e1",
+  "same_sdk_install_sequence": 25,
+  "same_sdk_reconsume_sequence": 26,
+  "credit_scope": "battle_observed, not war victory at AUTO 24",
+  "offline_verification": "3 focused tests plus exact queue AST loader against immutable AUTO 24 passed; isolated patch reconstruction matched target SHA-256"
+}

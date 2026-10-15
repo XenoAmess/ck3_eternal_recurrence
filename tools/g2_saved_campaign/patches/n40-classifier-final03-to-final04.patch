@@ -1,0 +1,82 @@
+--- a/root_cold_result_classifier.py
++++ b/root_cold_result_classifier.py
+@@ -983 +983,6 @@
+-    if (old_war.get("war_id") != selected_war.get("war_id")
++    enemy_ids = horizon.get("hostile_army_ids")
++    first_hop = plan.get("first_contact_province_id", target_province)
++    subject_route = horizon.get("subject_route")
++    if (not isinstance(old_war, dict) or not isinstance(new_war, dict)
++            or not isinstance(selected_war, dict)
++            or old_war.get("war_id") != selected_war.get("war_id")
+@@ -985,4 +990,20 @@
+-            or len(old_war.get("player_armies", [])) != 1
+-            or len(old_war.get("enemy_armies", [])) != 1
+-            or len(new_war.get("player_armies", [])) != 1
+-            or len(new_war.get("enemy_armies", [])) != 1):
++            or not isinstance(enemy_ids, list) or not 1 <= len(enemy_ids) <= 2
++            or any(type(army_id) is not int or army_id <= 0 for army_id in enemy_ids)
++            or len(set(enemy_ids)) != len(enemy_ids)
++            or type(first_hop) is not int or first_hop <= 0
++            or not isinstance(subject_route, dict)
++            or subject_route.get("army_id") != subject
++            or not isinstance(subject_route.get("route_province_ids"), list)
++            or not subject_route["route_province_ids"]
++            or subject_route["route_province_ids"][0] != first_hop
++            or not isinstance(subject_route.get("arrival_date_raws"), list)
++            or not subject_route["arrival_date_raws"]
++            or subject_route["arrival_date_raws"][0] != end
++            or not isinstance(old_war.get("player_armies"), list)
++            or len(old_war["player_armies"]) != 1
++            or not isinstance(new_war.get("player_armies"), list)
++            or len(new_war["player_armies"]) != 1
++            or not isinstance(old_war.get("enemy_armies"), list)
++            or len(old_war["enemy_armies"]) != len(enemy_ids)
++            or not isinstance(new_war.get("enemy_armies"), list)
++            or len(new_war["enemy_armies"]) != len(enemy_ids)):
+@@ -990,4 +1011,15 @@
+-    old_player, old_enemy = old_war["player_armies"][0], old_war["enemy_armies"][0]
+-    new_player, new_enemy = new_war["player_armies"][0], new_war["enemy_armies"][0]
+-    enemy_ids = horizon.get("hostile_army_ids")
+-    if (not isinstance(enemy_ids, list) or len(enemy_ids) != 1
++    old_player, new_player = old_war["player_armies"][0], new_war["player_armies"][0]
++    old_enemies, new_enemies = old_war["enemy_armies"], new_war["enemy_armies"]
++    hostile_routes, conflicts = horizon.get("hostile_routes"), horizon.get("conflicts")
++    if (not isinstance(old_player, dict) or not isinstance(new_player, dict)
++            or any(not isinstance(army, dict) for army in old_enemies + new_enemies)
++            or not isinstance(hostile_routes, list) or len(hostile_routes) != len(enemy_ids)
++            or any(not isinstance(route, dict) for route in hostile_routes)
++            or not isinstance(conflicts, list) or len(conflicts) != len(enemy_ids)
++            or any(not isinstance(conflict, dict) for conflict in conflicts)
++            or {army.get("army_id") for army in old_enemies} != set(enemy_ids)
++            or {army.get("army_id") for army in new_enemies} != set(enemy_ids)
++            or {route.get("army_id") for route in hostile_routes} != set(enemy_ids)
++            or {conflict.get("hostile_army_id") for conflict in conflicts} != set(enemy_ids)
++            or subject_route.get("timeline_observable") is not True
++            or subject_route.get("current_province_id") != old_player.get("current_province_id")
+@@ -997,3 +1029 @@
+-            or old_enemy.get("army_id") != enemy_ids[0]
+-            or old_enemy.get("current_province_id") != target_province
+-            or old_enemy.get("in_combat") is not False
++            or old_player.get("route_province_ids") != subject_route["route_province_ids"]
+@@ -1001 +1031 @@
+-            or new_player.get("current_province_id") != target_province
++            or new_player.get("current_province_id") != first_hop
+@@ -1003,3 +1033,15 @@
+-            or new_enemy.get("army_id") != enemy_ids[0]
+-            or new_enemy.get("current_province_id") != target_province
+-            or new_enemy.get("in_combat") is not True
++            or new_player.get("move_target_province_id") != target_province
++            or new_player.get("route_province_ids") != subject_route["route_province_ids"][1:]
++            or any(army.get("current_province_id") != first_hop
++                   or army.get("in_combat") is not False for army in old_enemies)
++            or any(army.get("current_province_id") != first_hop
++                   or army.get("in_combat") is not True for army in new_enemies)
++            or any(route.get("timeline_observable") is not True
++                   or route.get("current_province_id") != first_hop
++                   or route.get("effective_origin_province_id") != first_hop
++                   or route.get("route_province_ids") != []
++                   or route.get("arrival_date_raws") != [] for route in hostile_routes)
++            or any(conflict.get("kind") != "same_province"
++                   or conflict.get("province_id") != first_hop
++                   or conflict.get("overlap_start_date_raw") != end
++                   or conflict.get("overlap_end_date_raw") != end for conflict in conflicts)
