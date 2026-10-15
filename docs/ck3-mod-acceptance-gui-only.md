@@ -62,3 +62,17 @@ run目录的 `STOP`、timeout、源码或租约故障只请求原 PID 可见顶�
 2026-10-15 首次验证：上述8项通过（0.595s）；公共路由2项通过（0.005s），验证默认native路由保持和GUI的RED返回非零；既有公共入口22项通过（0.993s）。这三个定向检查没有运行CK3，GUI实机仍为NOT_RUN。执行命令分别为 `python -B -X utf8 -m unittest test_ck3_mod_acceptance_gui -v`（最初8项）、`python -B -X utf8 -m unittest test_ck3_mod_acceptance_gui.PublicRoutingTests -v` 和 `python -B -X utf8 test_ck3_mod_acceptance.py`，工作目录为 `tools/`。
 
 2026-10-15实际执行配置Python的 `-B -X utf8 -m unittest test_ck3_mod_acceptance_gui -v`（工作目录 `tools`），8项全部通过，unittest耗时0.595秒，进程退出0。该次包含显式旧档复制；STOP测试的窗口请求被mock，只有两个无害Python子进程真实创建和wait。没有游戏或实机业务通过信用。
+
+## 已发布 Workshop 缓存的无 native 路径
+
+GUI-only runtime 的 `workshop_cache` case 继续遵守[两项缓存规则](workshop-cache-acceptance.md)。产品配置保留 canonical `directory/workshop_item_id`，本机 products 文件的 `product_inventory` 指向同一份 `workshop/products.json`；case 只提供既有 GUI 预算，不要求 `required_business_evidence`。它不使用旧版 native，也不要求把新游戏版本的业务能力重新验完。
+
+此 case 的输入沿用原公共 cache 格式：`state_dir` 与 `case_inputs`，后者只有 `cache_path/formal_manifest/native_download_receipt/plain_configuration`。四份普通配置须已为简体中文。可显式增加顶层 `debug_mode=true` 以保存引擎 `debug.log`；不挂 fixture、不载入存档、不复制 shader 输入。实际 SDK 下载由原发布入口完成。
+
+`prepare` 直接复用既有 `workshop_cache_adapter.prepare_case()`，逐文件核对真实下载与正式 tag 清单，只容许原有 descriptor 注入例外；新 profile 仍只有六份普通输入，`mod/product.mod` 直接指向实际 Steam cache，缓存内容不复制到 `mod-content`。准备与后续运行仍通过同一共享 GUI runtime、公用排他租约、新鲜离线审阅和保留的原始 Popen。
+
+`verify` 读取本次实际 userdir 的 `logs/debug.log`，要求精确缓存路径的 `Mounted Data` 与目标 `名称|mod/product.mod|Enabled`，并核对实际启动命令绑定该 profile。日志已能证明加载时，不要求进入地图、创建战役、native 菜单查询或游戏内业务。Root 在实际正常 Quit 后写 `cache-review.json`：`run_id/case="workshop_cache"/reviewer/direct_image_review=true/passed=true/normal_gui_quit=true/normal_quit_evidence`，其中证据为真实截图等精确 pins。它只签收收尾，不要求额外业务事实。
+
+真实缓存与日志加载、正常 Quit、原进程退出0和 keeper/CAS 闭合齐全时，`cache_acceptance_pass/case_acceptance_pass=true`；`business_contract_applicable/gui_business_pass/business_pass/product_release_pass/native_capability_pass` 均保持 false。普通 GUI 业务 case 的准备及签核语义不变。
+
+2026-10-15 使用 `tools/.venv/Scripts/python.exe -B -X utf8 -m unittest test_ck3_mod_acceptance_gui -v`（工作目录 `tools`），14项通过，耗时2.110秒、进程退出0。新增测试覆盖真实缓存路径的直接引用与不复制、SDK callback和文件字节拒绝、加载日志与正常退出、缓存不授业务信用，并补普通 GUI 业务成功语义回归。所有缓存、日志和SDK结果为临时离线夹具；没有启动CK3或授本轮实际缓存通过。

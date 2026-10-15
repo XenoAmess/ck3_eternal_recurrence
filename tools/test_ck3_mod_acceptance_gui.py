@@ -3,6 +3,7 @@ import argparse
 import io
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -147,6 +148,132 @@ class GuiAcceptanceTests(unittest.TestCase):
                   'direct_image_review': True, 'passed': True, 'normal_gui_quit': True, 'facts': {
                       'doctrine_choice': {'passed': True, 'evidence': [gui.pin(self.fallback)]}}}
         self.write(self.root / 'business-review.json', review)
+        with self.assertRaisesRegex(ValueError, 'normal in-game Quit evidence'):
+            gui.dispatch(self.args)
+        review['normal_quit_evidence'] = [gui.pin(self.fallback)]
+        self.write(self.root / 'business-review.json', review)
+        self.write(self.root / 'keeper-report.json', {'thread_exited': True, 'failure': None})
+        self.write(self.root / 'screen-release.json', {'ok': True})
+        result = gui.dispatch(self.args)
+        self.assertTrue(result['case_acceptance_pass'])
+        self.assertTrue(result['gui_business_pass'])
+        self.assertTrue(result['business_pass'])
+
+    def workshop_case(self):
+        item = '3798133925'
+        self.cache = self.root / 'steamapps/workshop/content/1158310' / item
+        shutil.copytree(self.staging, self.cache)
+        manifest = gui.read_json(self.formal)
+        manifest.update(format_version=1, workshop_item_id=item, git_tag='sample-v1', git_sha='a' * 40)
+        self.write(self.formal, manifest)
+        self.download = self.root / 'download.json'
+        self.write(self.download, {'ok': True, 'status': 'complete', 'started': True,
+            'app_id': 1158310, 'item_id': item,
+            'callback': {'app_id': 1158310, 'item_id': item, 'result': 1},
+            'install_info': {'path': str(self.cache)}, 'worker_exit_code': 0,
+            'state_flags': {'installed': True, 'needs_update': False, 'downloading': False, 'download_pending': False}})
+        canonical = self.root / 'canonical-products.json'
+        self.write(canonical, {'schema': 'ck3.workshop-products.v1', 'consumer_app_id': '1158310',
+            'forbidden_upstream_target_ids': [], 'products': [{'key': 'sample', 'directory': 'mod_sample',
+                'workshop_item_id': item, 'forbidden_upstream_ids': []}]})
+        products = gui.read_json(self.products)
+        product = products['products']['sample']
+        product.update(directory='mod_sample', workshop_item_id=item)
+        product['cases'][0]['id'] = 'workshop_cache'
+        del product['cases'][0]['required_business_evidence']
+        products['product_inventory'] = str(canonical)
+        self.write(self.products, products)
+        contract = self.root / 'tools/ck3_mod_acceptance_cases/workshop_cache.json'
+        contract.parent.mkdir(parents=True)
+        shutil.copyfile(Path(gui.__file__).parent / 'ck3_mod_acceptance_cases/workshop_cache.json', contract)
+        self.settings.write_text('"System"={"language"={version=0 value="l_simp_chinese"}}\n', encoding='utf-8')
+        configs = {'pdx_settings.txt': gui.pin(self.settings)}
+        for name in ('tutorial.txt', 'presets.txt', 'player/game_rules/presets.txt'):
+            path = self.root / 'ordinary' / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('ordinary=yes\n', encoding='utf-8')
+            configs[name] = gui.pin(path)
+        self.write(self.inputs, {'state_dir': str(self.root / 'userdirs/cache-state'), 'debug_mode': True,
+            'case_inputs': {'cache_path': str(self.cache), 'formal_manifest': gui.pin(self.formal),
+                            'native_download_receipt': gui.pin(self.download), 'plain_configuration': configs}})
+        self.args.case = 'workshop_cache'
+
+    def completed_cache(self):
+        self.workshop_case()
+        result = self.prepare()
+        profile = Path(result['profile'])
+        self.args.prepared_case = self.args.prepare_output / 'prepared-case.json'
+        context = {'product': 'sample', 'case': 'workshop_cache', 'runtime_manifest': gui.pin(self.manifest),
+                   'run_dir': str(self.root), 'run_id': 'synthetic-cache'}
+        self.args.run_context = self.root / 'context.json'
+        self.write(self.args.run_context, context)
+        self.write(self.root / 'game-started.json', {'pid': 123, 'run_id': 'synthetic-cache',
+            'native_injection': False, 'argv': [str(self.game / 'binaries/ck3.exe'), '-userdir=' + str(profile), '-debug_mode']})
+        self.write(self.root / 'game-exit.json', {'pid': 123, 'process_pass': True,
+                                                'actual_original_popen_wait': True})
+        self.write(self.root / 'keeper-report.json', {'thread_exited': True, 'failure': None})
+        self.write(self.root / 'screen-release.json', {'ok': True})
+        (profile / 'logs').mkdir()
+        (profile / 'logs/debug.log').write_text(
+            '[D] Sample|mod/product.mod|Enabled\n[D] Mounted Data: ' + str(self.cache) + '\n', encoding='utf-8')
+        self.write(self.root / 'cache-review.json', {'run_id': 'synthetic-cache', 'case': 'workshop_cache',
+            'reviewer': 'offline-test', 'direct_image_review': True, 'passed': True, 'normal_gui_quit': True,
+            'normal_quit_evidence': [gui.pin(self.fallback)]})
+        self.args.mode = 'verify'
+        return profile
+
+    def test_cache_prepare_reuses_exact_download_without_copy_or_fixture(self):
+        self.workshop_case()
+        before = gui.inventory(self.cache)
+        result = self.prepare()
+        profile = Path(result['profile'])
+        self.assertEqual(gui.inventory(self.cache), before)
+        self.assertFalse((profile / 'mod-content').exists())
+        self.assertEqual(set(result['profile_files']), {'pdx_settings.txt', 'tutorial.txt', 'presets.txt',
+                         'player/game_rules/presets.txt', 'mod/product.mod', 'dlc_load.json'})
+        self.assertIn('path="' + self.cache.as_posix() + '"', (profile / 'mod/product.mod').read_text(encoding='utf-8'))
+        self.assertFalse(result['business_contract_applicable'])
+        self.assertFalse(result['cache_content_copied'])
+
+    def test_cache_rejects_wrong_download_and_changed_formal_bytes(self):
+        self.workshop_case()
+        download = gui.read_json(self.download)
+        download['callback']['result'] = 2
+        self.write(self.download, download)
+        inputs = gui.read_json(self.inputs)
+        inputs['case_inputs']['native_download_receipt'] = gui.pin(self.download)
+        self.write(self.inputs, inputs)
+        with self.assertRaisesRegex(ValueError, 'SDK success callback missing'):
+            self.prepare()
+        self.assertFalse((self.root / 'userdirs/cache-state').exists())
+        self.args.prepare_output = self.root / 'prepared-two'
+        download['callback']['result'] = 1
+        self.write(self.download, download)
+        inputs['case_inputs']['native_download_receipt'] = gui.pin(self.download)
+        self.write(self.inputs, inputs)
+        (self.cache / 'sample.txt').write_text('changed=yes\n', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'cache content mismatch'):
+            self.prepare()
+
+    def test_cache_mount_log_and_normal_exit_pass_without_business_credit(self):
+        self.completed_cache()
+        result = gui.dispatch(self.args)
+        self.assertTrue(result['case_acceptance_pass'])
+        self.assertTrue(result['cache_acceptance_pass'])
+        self.assertFalse(result['business_pass'])
+        self.assertFalse(result['gui_business_pass'])
+        self.assertFalse(result['native_capability_pass'])
+
+    def test_cache_requires_actual_mount_log_and_normal_quit(self):
+        profile = self.completed_cache()
+        log = profile / 'logs/debug.log'
+        original = log.read_text(encoding='utf-8')
+        log.write_text('Sample|mod/product.mod|Enabled\nMounted Data: wrong-cache\n', encoding='utf-8')
+        self.assertFalse(gui.dispatch(self.args)['cache_acceptance_pass'])
+        log.write_text(original, encoding='utf-8')
+        review = gui.read_json(self.root / 'cache-review.json')
+        review['normal_gui_quit'] = False
+        self.write(self.root / 'cache-review.json', review)
         with self.assertRaisesRegex(ValueError, 'normal in-game Quit evidence'):
             gui.dispatch(self.args)
 

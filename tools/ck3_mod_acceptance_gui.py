@@ -96,10 +96,12 @@ class GuiSelection:
         self.products_path = Path(args.products).resolve()
         products = read_json(self.products_path)
         require(products.get('schema') == 'ck3-mod-acceptance-products-v1', 'Common products schema required')
+        self.products = products
         self.product = products['products'][args.product]
         matches = [x for x in self.product['cases'] if x['id'] == args.case]
         require(len(matches) == 1, 'Exactly one GUI business case required')
         self.case = matches[0]
+        self.workshop_cache = args.case == 'workshop_cache'
         for obj in (self.product, self.case):
             require(not set(obj) & {'host', 'source_root', 'source_index', 'native', 'dll', 'injector',
                                    'engine', 'host_args', 'host_features', 'profile_features', 'execution_mode'},
@@ -162,6 +164,8 @@ def prepare(selection):
     require(args.case_inputs and args.prepare_output, 'prepare requires case-inputs and prepare-output')
     selection.preflight()
     inputs = read_json(args.case_inputs)
+    if selection.workshop_cache:
+        return prepare_workshop_cache(selection, inputs)
     required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
     require(required <= inputs.keys(), 'Missing explicit GUI case inputs')
     staging = Path(inputs['staging']).resolve()
@@ -221,6 +225,100 @@ def prepare(selection):
         result['product_source'] = {'repo': str(product_repo), 'head': module.checkout_head(product_repo)}
     write_new(out / 'prepared-case.json', result)
     return result
+
+
+def workshop_cache_context(selection, output, state, inputs):
+    """Use the existing single cache contract and canonical product registry."""
+    root = selection.paths['repo_root']
+    canonical = selection.products.get('product_inventory', str(root / 'workshop/products.json'))
+    canonical = Path(canonical.replace('{repo_root}', str(root))).resolve()
+    return {'repo_root': str(root), 'output': str(output), 'state_dir': str(state),
+            'product': selection.args.product, 'case': 'workshop_cache',
+            'product_spec': selection.product, 'canonical_products_path': str(canonical),
+            'case_contract': read_json(root / 'tools/ck3_mod_acceptance_cases/workshop_cache.json'),
+            'case_inputs': inputs}
+
+
+def prepare_workshop_cache(selection, inputs):
+    from ck3_mod_acceptance_cases import workshop_cache_adapter as cache
+    require(set(inputs) <= {'state_dir', 'case_inputs', 'debug_mode'} and
+            {'state_dir', 'case_inputs'} <= inputs.keys(), 'Explicit shared cache inputs required')
+    require(type(inputs.get('debug_mode', False)) is bool, 'debug_mode must be an explicit boolean')
+    state = Path(inputs['state_dir']).resolve()
+    out = Path(selection.args.prepare_output).resolve()
+    require(state.is_relative_to(selection.paths['userdir_root']) and not state.exists(),
+            'Unused cache state under the configured userdir root required')
+    require(not out.exists(), 'Use a new prepare output')
+    context = workshop_cache_context(selection, out, state, inputs['case_inputs'])
+    cache.validate_contract(context)
+    configuration = inputs['case_inputs']['plain_configuration']
+    settings = Path(configuration['pdx_settings.txt']['path']).read_text(encoding='utf-8-sig')
+    require(chinese_settings(settings) == settings, 'Cache configuration must already use Simplified Chinese')
+    total = sum(check_pin(row)['bytes'] for row in configuration.values())
+    require(total <= selection.budgets['max_prepare_bytes'], 'Prepared input exceeds allocated byte budget')
+    require(shutil.disk_usage(selection.paths['userdir_root'].parent).free > total,
+            'Insufficient free space for declared preparation')
+    out.mkdir(parents=True)
+    prepared = cache.prepare_case(context)
+    strict = read_json(prepared['exact_cache']['path'])
+    profile = state / 'profile'
+    pins = [pin(selection.args.case_inputs), pin(selection.products_path), pin(selection.runtime_path),
+            pin(selection.paths['repo_root'] / 'tools/ck3_mod_acceptance_cases/workshop_cache.json'),
+            pin(context['canonical_products_path']), *configuration.values(),
+            inputs['case_inputs']['formal_manifest'], inputs['case_inputs']['native_download_receipt'],
+            *strict['files']]
+    result = {'schema': 'ck3-mod-acceptance-gui-prepared-v1',
+              'product': selection.args.product, 'case': selection.args.case,
+              'runtime_manifest': selection.manifest_ref, 'inputs': pins, 'profile': str(profile),
+              'profile_files': prepared['files'], 'case_inputs': inputs, 'cache_preparation': prepared,
+              'prepared_bytes': sum(row['bytes'] for row in prepared['files'].values()),
+              'runtime_status': 'NOT_RUN', 'business_contract_applicable': False,
+              'business_pass': False, 'fixture_mounted': False, 'cache_content_copied': False}
+    write_new(out / 'prepared-case.json', result)
+    return result
+
+
+def workshop_cache_log_load(selection, start):
+    """Actual startup mount/Enabled lines suffice; no native or campaign query."""
+    from ck3_mod_acceptance_cases import workshop_cache_adapter as cache
+    prepared = selection.prepared
+    require(prepared and 'cache_preparation' in prepared, 'Original public cache preparation required')
+    original = prepared['cache_preparation']
+    exact = check_pin(original['exact_cache'])
+    strict = read_json(exact['path'])
+    profile = Path(prepared['profile']).resolve()
+    context = workshop_cache_context(selection, Path(exact['path']).parent, profile.parent,
+                                    prepared['case_inputs']['case_inputs'])
+    cache.validate_contract(context)
+    _, item = cache.canonical_product(context)
+    require(strict['product'] == selection.args.product and strict['item_id'] == item,
+            'Exact cache receipt belongs to another product')
+    outer = profile / 'mod/product.mod'
+    check_pin(prepared['profile_files']['mod/product.mod'])
+    check_pin(prepared['profile_files']['dlc_load.json'])
+    paths = re.findall(r'^path="([^"]+)"$', outer.read_text(encoding='utf-8-sig'), re.MULTILINE)
+    require(len(paths) == 1 and Path(paths[0]).resolve() == Path(strict['cache_path']).resolve() and
+            read_json(profile / 'dlc_load.json')['enabled_mods'] == ['mod/product.mod'],
+            'Actual profile must directly select the verified Steam cache')
+    require(start.get('argv') == [str(selection.exe), '-userdir=' + str(profile)] +
+            (['-debug_mode'] if prepared['case_inputs'].get('debug_mode', False) else []) and
+            start.get('native_injection') is False, 'Actual launch differs from the cache profile')
+    log = profile / 'logs/debug.log'
+    if not log.is_file():
+        return {'loaded': False, 'exact_cache': exact, 'reason': 'Actual startup log not available'}
+    text = log.read_text(encoding='utf-8-sig', errors='replace')
+    name = re.findall(r'^name="([^"]+)"', (Path(strict['cache_path']) / 'descriptor.mod').read_text(
+        encoding='utf-8-sig'), re.MULTILINE)
+    require(len(name) == 1, 'Canonical cache name required')
+    mounted, enabled = [], []
+    for number, line in enumerate(text.splitlines(), 1):
+        if 'Mounted Data: ' in line and Path(line.split('Mounted Data: ', 1)[1].strip()).resolve() == Path(strict['cache_path']).resolve():
+            mounted.append({'line': number, 'text': line})
+        if name[0] + '|mod/product.mod|Enabled' in line:
+            enabled.append({'line': number, 'text': line})
+    return {'loaded': bool(mounted and enabled), 'exact_cache': exact, 'engine_log': pin(log),
+            'mounted_log_lines': mounted, 'enabled_log_lines': enabled, 'cache_path': strict['cache_path'],
+            'file_count': strict['file_count'], 'item_id': item}
 
 
 def ck3_pids():
@@ -425,6 +523,28 @@ def verify(selection):
         keeper = read_json(root / 'keeper-report.json')
         release = read_json(root / 'screen-release.json')
         closure = keeper.get('thread_exited') is True and keeper.get('failure') is None and release.get('ok') is True
+    if selection.workshop_cache:
+        loaded = workshop_cache_log_load(selection, start) if start else {'loaded': False}
+        reviewed = []
+        normal = False
+        review_path = root / 'cache-review.json'
+        if review_path.exists():
+            review = read_json(review_path)
+            require(review.get('run_id') == selection.context['run_id'] and
+                    review.get('case') == 'workshop_cache' and review.get('direct_image_review') is True and
+                    isinstance(review.get('reviewer'), str) and review['reviewer'].strip(),
+                    'Cache close review must bind the actual run/case and reviewer')
+            require(review.get('normal_gui_quit') is True and review.get('normal_quit_evidence'),
+                    'Actual normal in-game Quit evidence required')
+            reviewed.extend(check_pin(row) for row in review['normal_quit_evidence'])
+            normal = review.get('passed') is True
+        passed = bool(process_pass and closure and loaded['loaded'] and normal)
+        return {'status': 'PASS' if passed else 'INCOMPLETE', 'process_pass': bool(process_pass),
+                'closure_pass': closure, 'normal_gui_quit': normal, 'cache_load': loaded,
+                'case_acceptance_pass': passed, 'cache_acceptance_pass': passed,
+                'business_contract_applicable': False, 'gui_business_pass': False,
+                'business_pass': False, 'product_release_pass': False, 'native_capability_pass': False,
+                'evidence': reviewed}
     review_path = root / 'business-review.json'
     business = False
     reviewed = []
@@ -458,7 +578,9 @@ def dispatch(args):
     if args.mode == 'plan':
         return {'execution_mode': 'gui_only', 'runtime_manifest': selection.manifest_ref,
                 'product': args.product, 'case': args.case, 'budgets': selection.budgets,
-                'required_business_evidence': selection.case['required_business_evidence'],
+                'required_business_evidence': ([] if selection.workshop_cache else
+                                               selection.case['required_business_evidence']),
+                'business_contract_applicable': not selection.workshop_cache,
                 'runtime_status': 'NOT_RUN', 'business_pass': False}
     if args.mode == 'preflight':
         return selection.preflight()
