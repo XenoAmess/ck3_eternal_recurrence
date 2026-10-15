@@ -198,7 +198,6 @@ class RouteContactReadonlyUnavailableTests(unittest.TestCase):
             def _consume_initial_lifestyle_focus_after_turn_v1(self, outcome, **kwargs): return outcome
             def _observe_declaration_cooldown_after_turn_v1(self, *args): return None
             def _observe_family_cooldown_after_turn_v1(self, *args): return None
-            def _strategy_state_dir(self): return None  # This route-only fixture owns no strategy state.
 
         service = FakeService()
         result = service.auto_turn()
