@@ -1,0 +1,98 @@
+{
+  "schema": "episode04.current-candidate.clock-compatibility.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:16:35.321015+00:00",
+  "status": "PASS_ONE_NEW_CANDIDATE_FROZEN_SOURCE_COMPATIBILITY_CHECK",
+  "expected_current_source_whole_sha256": "6f2a80f31b2dcb8550250785145a1d8d136083e4862d93e04e8fffe16d99e0e8",
+  "source_bytes": 1538854,
+  "source_commit": "1c3a97a682fd02751d84be68e069dcd58ce55865",
+  "repository_HEAD_observed_only": "1c3a97a682fd02751d84be68e069dcd58ce55865",
+  "source_input_basis": "actual working-tree file bytes, not git HEAD extraction",
+  "source_resolution": {
+    "selection": "archived_whole_file_sha256",
+    "source_commit": null,
+    "source_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "source_sha256": "6f2a80f31b2dcb8550250785145a1d8d136083e4862d93e04e8fffe16d99e0e8",
+    "source_bytes": 1538854,
+    "artifact": {
+      "path": "docs\\ck3-native-ai\\evidence\\episode04-locked-route-clock-source-12004\\sha-6f2a80f31b2dcb85-native-driver.source.zip",
+      "bytes": 211427,
+      "sha256": "0cd89011e0aa6494651be6aee9d08e77ea4de8136e652b467bb6150c1a87b898",
+      "member": "native_driver.py"
+    },
+    "current_repository_source_sha256": "6f2a80f31b2dcb8550250785145a1d8d136083e4862d93e04e8fffe16d99e0e8",
+    "current_repository_source_matches_archive": true,
+    "historical_source_reinterpreted_with_current_code": false
+  },
+  "pure_definition_sha256": {
+    "_noncombat_sentinel_scope_speed_live_ready": "6d009dbc4fc27274cebad48abc75628fa993abb3aca8c3f66b3b1180df6f419f",
+    "_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS": "01c5d37ded92390d3079dff3e5e4a7e4e80ebb3e921f81cf036ed90a3497da2b",
+    "_normalize_tactical_daily_sentinel_status": "84f948719b2a7cbc6e9e6699d5f4c7b0354dc21123469a7b78e9239f569ef5ae",
+    "_validate_tactical_daily_sentinel_arm": "7376548bfaec8caafbe2c1f0b4b087b057574c8ca8d79bb27388714ead80291e",
+    "_validate_tactical_daily_sentinel_stop": "e16b40470dfaedcc4e26df85c3f21077ea2cae6c480a6ea5ea44f6dc939f8104"
+  },
+  "unchanged_consumer": {
+    "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/watched_stop.py",
+    "bytes": 9428,
+    "sha256": "29915ec8dd8596bbb01a84d85f27afc034d4a4513cdbe041fc3df5ba0cbb8b1f"
+  },
+  "actual_day9_receipt": {
+    "path": "normalprepare93-stages/day-53146824.actual.json",
+    "bytes": 7683,
+    "sha256": "c097d6b9b1b73d1221e240907d4dc0d67c9ca5b96ec4fd26ef677ed54f108b98"
+  },
+  "actual_four_input_refs": {
+    "before": {
+      "path": "desktop-3fevhd2-1c74096080--vanilla--R0177/responses/prep-r07s0-day09-film-a01-fresh-before-arm.json",
+      "bytes": 143457,
+      "sha256": "f7c0e06affb029605252eed48627fc8926e358bf297355463396833fc3665763"
+    },
+    "after": {
+      "path": "desktop-3fevhd2-1c74096080--vanilla--R0177/responses/prep-r07s0-day09-film-a01-post-status-fresh.json",
+      "bytes": 139883,
+      "sha256": "3311c76e7a3890421d861d872ecbc88c4f63cf89bab267d04ea4d07f2b016586"
+    },
+    "arm_body": {
+      "path": "desktop-3fevhd2-1c74096080--vanilla--R0177/responses/prep-r07s0-day09-film-a01-arm.json",
+      "bytes": 4729,
+      "sha256": "97f95a78547de7cac763a999859975e4541b79566a0c549eb4dba75bc92b8036"
+    },
+    "status_body": {
+      "path": "desktop-3fevhd2-1c74096080--vanilla--R0177/responses/prep-r07s0-day09-film-a01-status.json",
+      "bytes": 4941,
+      "sha256": "38896747204c3a6fb861910dade9ff074311004f72dc49bd5ee4e23fa195a9dc"
+    }
+  },
+  "clock_result": {
+    "state": "triggered",
+    "generation": 9,
+    "starting_date_raw": 53146824,
+    "actual_ending_date_raw": 53146848,
+    "declared_deadline_date_raw": 53146848,
+    "completed_daily_ticks": 1,
+    "trigger_reasons": [
+      "date_deadline",
+      "route_target_changed",
+      "army_position_changed"
+    ],
+    "one_day_sampling_claim": false,
+    "actual_arrival_requires_independent_card_frames": true
+  },
+  "scope": "Current candidate pure clock compatibility on four existing R0177 day9 inputs. No new a08 live run and no reinterpretation of historical R0177 source.",
+  "historical_R0177_source_remains": {
+    "commit": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "whole_sha256": "25769ea3fe8ab696567c1e889f8a164089fb8afe141eb93a5531af15c5cc721e"
+  },
+  "new_positive_compatibility_runs": 1,
+  "old_matrix_mutants_tests": 0,
+  "new_native_build_SDK_game_desktop_calls": 0,
+  "input_originals_not_duplicated": true,
+  "retention_review_at_utc": "2026-10-16T07:45:01.597Z",
+  "renewed": false,
+  "source_commit_resolved_after_single_compatibility_check": {
+    "commit": "1c3a97a682fd02751d84be68e069dcd58ce55865",
+    "verified_at_utc": "2026-10-15T21:17:17.611701+00:00",
+    "git_object_equals_original_working_bytes": true,
+    "clock_replay_repeated": false
+  }
+}

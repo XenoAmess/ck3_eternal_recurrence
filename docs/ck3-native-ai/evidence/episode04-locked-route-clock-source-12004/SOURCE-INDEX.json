@@ -22,6 +22,21 @@
         "sha256": "b8a7ffa3ff423a18565199d3dcbea48ab959050abab20e479e264c02236fbd2e",
         "member": "native_driver.py"
       }
+    },
+    "6f2a80f31b2dcb8550250785145a1d8d136083e4862d93e04e8fffe16d99e0e8": {
+      "source_commit": "1c3a97a682fd02751d84be68e069dcd58ce55865",
+      "source_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "source_bytes": 1538854,
+      "source_basis": "exact current working-tree bytes, then independently byte-verified against actual committed Git object",
+      "repository_HEAD_observed_only": "1c3a97a682fd02751d84be68e069dcd58ce55865",
+      "frozen_at_utc": "2026-10-15T21:16:35.321015+00:00",
+      "artifact": {
+        "path": "sha-6f2a80f31b2dcb85-native-driver.source.zip",
+        "bytes": 211427,
+        "sha256": "0cd89011e0aa6494651be6aee9d08e77ea4de8136e652b467bb6150c1a87b898",
+        "member": "native_driver.py"
+      },
+      "source_commit_verified_at_utc": "2026-10-15T21:17:17.611701+00:00"
     }
   }
 }
