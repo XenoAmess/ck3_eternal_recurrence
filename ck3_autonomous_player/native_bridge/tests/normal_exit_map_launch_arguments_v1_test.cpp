@@ -76,6 +76,24 @@ int main(int command_argc,char **command_argv) {
       decoded_output.userdir==parsed.userdir && decoded_output.load_save_key==parsed.load_save_key,"windows_actual_r8_parse");
   LocalFree(argv); ++checked;
   constexpr auto exe=L"C:/game/binaries/ck3.exe", dir=L"-userdir=C:/owned-fixture/userdir";
+  const std::array<std::wstring_view,4> continue_launch{{actual_r8[0],L"-gdpr-compliant",dir,L"-continuelastsave"}};
+  NormalExitMapLaunchArgumentsV1 continued{};
+  Require(ParseNormalExitMapLaunchArgumentsV1(continue_launch,continued) &&
+      continued.userdir==std::filesystem::path(L"C:/owned-fixture/userdir") &&
+      continued.load_save_key.empty(),"public_continue_launch_values");
+  ++checked;
+  argv=CommandLineToArgvW(L"\"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe\" -gdpr-compliant -userdir=C:/owned-fixture/userdir -continuelastsave",&argc);
+  Require(argv!=nullptr && argc==static_cast<int>(continue_launch.size()),"continue_windows_argv_count");
+  std::array<std::wstring_view,4> continue_decoded{};
+  for(int i=0;i<argc;++i) {
+    continue_decoded[static_cast<std::size_t>(i)]=argv[i];
+    Require(continue_decoded[static_cast<std::size_t>(i)]==continue_launch[static_cast<std::size_t>(i)],"continue_windows_argv_exact");
+  }
+  NormalExitMapLaunchArgumentsV1 continued_decoded{};
+  Require(ParseNormalExitMapLaunchArgumentsV1(continue_decoded,continued_decoded) &&
+      continued_decoded.userdir==continued.userdir && continued_decoded.load_save_key.empty(),"continue_windows_parse");
+  LocalFree(argv); ++checked;
+  Check({exe,L"-continuelastsave",dir,L"-gdpr-compliant",L"-debug_mode"},true,"continue_reordered_with_debug");
   Check({exe,L"-debug_mode",L"-gdpr-compliant",dir},true,"original_r7_no_loadsave");
   Check({exe,dir},true,"required_userdir_only");
   Check({exe,L"-loadsave=generic_save-01",dir,L"-gdpr-compliant",L"-debug_mode"},true,"generic_reordered_save");
@@ -90,6 +108,11 @@ int main(int command_argc,char **command_argv) {
   Check({exe,dir,L"-debug_mode",L"-debug_mode"},false,"duplicate_debug");
   Check({exe,dir,L"-gdpr-compliant",L"-gdpr-compliant"},false,"duplicate_gdpr");
   Check({exe,dir,L"-loadsave=one",L"-loadsave=two"},false,"duplicate_loadsave");
+  Check({exe,dir,L"-continuelastsave",L"-continuelastsave"},false,"duplicate_continue");
+  Check({exe,dir,L"-loadsave=one",L"-continuelastsave"},false,"explicit_then_continue");
+  Check({exe,dir,L"-continuelastsave",L"-loadsave=one"},false,"continue_then_explicit");
+  Check({exe,dir,L"-continuelastsave=one"},false,"continue_has_no_value");
+  Check({exe,dir,L"-continuelastsave",L"one"},false,"continue_has_no_split_value");
   Check({exe,dir,L"-loadsave="},false,"empty_loadsave");
   const std::wstring too_long=L"-loadsave="+std::wstring(129,L'a');
   Check({exe,dir,too_long},false,"save_key_max129_rejected");
@@ -110,6 +133,6 @@ int main(int command_argc,char **command_argv) {
   Check({exe,dir,L"-skip-save"},false,"unknown_save_policy_flag");
   Check({exe,dir,L"-loadsave=one",L"-debug_mode",L"-gdpr-compliant",L"-unknown"},false,"too_many_arguments");
   std::cout << "{\"status\":\"PASS\",\"cases\":" << checked <<
-      ",\"actual_r8_argv_and_windows_decoder\":true,\"output_unchanged_on_reject\":true,\"executable_identity_cases\":"<<identity_cases<<",\"game_calls\":0}\n";
+      ",\"actual_r8_argv_and_windows_decoder\":true,\"public_continue_argv_and_windows_decoder\":true,\"output_unchanged_on_reject\":true,\"executable_identity_cases\":"<<identity_cases<<",\"game_calls\":0}\n";
   return 0;
 }

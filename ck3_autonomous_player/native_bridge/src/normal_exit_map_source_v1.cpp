@@ -282,7 +282,7 @@ bool ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view> argu
   try {
     if(arguments.size()<2 || arguments.size()>5 || arguments.front().empty()) return false;
     NormalExitMapLaunchArgumentsV1 parsed{};
-    bool userdir=false, debug=false, gdpr=false, loadsave=false;
+    bool userdir=false, debug=false, gdpr=false, loadsave=false, continue_last=false;
     for(std::size_t i=1;i<arguments.size();++i) {
       const auto arg=arguments[i];
       if(arg.starts_with(L"-userdir=")) {
@@ -297,8 +297,11 @@ bool ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view> argu
       } else if(arg==L"-gdpr-compliant") {
         if(gdpr) return false;
         gdpr=true;
+      } else if(arg==L"-continuelastsave") {
+        if(continue_last || loadsave) return false;
+        continue_last=true;
       } else if(arg.starts_with(L"-loadsave=")) {
-        if(loadsave) return false;
+        if(loadsave || continue_last) return false;
         loadsave=true;
         const auto value=arg.substr(10);
         if(value.empty() || value.size()>128) return false;

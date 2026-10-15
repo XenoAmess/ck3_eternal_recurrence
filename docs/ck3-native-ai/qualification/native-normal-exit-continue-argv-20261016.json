@@ -1,0 +1,101 @@
+{
+  "schema": "ck3-normal-exit-continue-argv-qualification-v1",
+  "machine_id": "bf-202609141645-5434332d4d",
+  "observed_at_utc": "2026-10-15T17:31:16.702943+00:00",
+  "status": "OFFLINE_PASS_DEFENDER_REGISTRATION_RED",
+  "scope": "Production launch-argument parser and existing native argument fixture only",
+  "source_base_commit": "9c4bea24ea87dd09dc67c684f4c3a4acb7bef4e0",
+  "target_version": "1.20.0.4",
+  "source_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "actual_fixture": {
+    "status": "PASS",
+    "cases": 40,
+    "actual_r8_argv_and_windows_decoder": true,
+    "public_continue_argv_and_windows_decoder": true,
+    "output_unchanged_on_reject": true,
+    "executable_identity_cases": 7,
+    "game_calls": 0
+  },
+  "actual_command_exits": {
+    "compile-normal_exit_map_source_v1": 0,
+    "compile-normal_exit_map_launch_arguments_v1_test": 0,
+    "link": 0,
+    "native-fixture": 0
+  },
+  "defender": {
+    "status": "settings_failed",
+    "admin_token": true,
+    "error_stage": "Add-invocation",
+    "partial_mutation": false,
+    "registration_succeeded": false,
+    "same_executable_add_retried": false,
+    "offline_fixture_executed_separately_from_setting_credit": true
+  },
+  "evidence": {
+    "build_config": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\BUILD-CONFIG.json",
+      "bytes": 804,
+      "sha256": "4d7624c77a66e29a4592cc81abeb7110d2e68c2649a28afde27b561a56a186f8"
+    },
+    "build_driver": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\build_fixture.py",
+      "bytes": 5657,
+      "sha256": "ebd79a0e674455d4446138d2a2895c8176abbff61235eae1252ade309764feca"
+    },
+    "actual_build_and_fixture": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\build-001\\RESULT.actual.json",
+      "bytes": 12952,
+      "sha256": "e83c1ca133c45b88a9959c49375fd5bf8ca252af059c22e61285d9e18751f675"
+    },
+    "fixture_stdout": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\build-001\\native-fixture.stdout",
+      "bytes": 199,
+      "sha256": "70418a8d13d7102e19e4bc9e966d9d4a476d9e871e04297dc8ad23b1b1d57ae9"
+    },
+    "fixture_stderr": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\build-001\\native-fixture.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fixture_executable": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\build-001\\normal_exit_map_launch_arguments_v1_test.exe",
+      "bytes": 49664,
+      "sha256": "3ec2ff0b2a0cfa77ed966e7c1065507a7d98440a582cdd88bc38e3b6c30b5047"
+    },
+    "defender_red": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-continue-parser-20261016-001\\build-001\\defender-receipt.json",
+      "bytes": 1751,
+      "sha256": "883fea6217803bb582aee1940bd0ecf2d974d0bcf0f96bdc785fb30d3d32ae6b"
+    },
+    "production_source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_source_v1.cpp",
+      "bytes": 27176,
+      "sha256": "5dd1384d018a58c1be01795790422b24c4a990a647a3537f2dfea4e19aeb443c"
+    },
+    "fixture_source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\normal_exit_map_launch_arguments_v1_test.cpp",
+      "bytes": 8769,
+      "sha256": "efaaef3a300a6dfb96c494b8c1d20f480e0185a0479ddc1e2d4c8b5979daaa97"
+    }
+  },
+  "product_trigger": {
+    "repository": "XenoAmess/ck3_mod_more_tenant_slots",
+    "commit": "9fb204154ffbbe40fdac1bdf290ab7764ec21038",
+    "report": "docs/native-main-r22-2026-10-16.md",
+    "actual_native_reason": "actual_launch_userdir_contract_unsupported",
+    "actual_unrecognized_flag": "-continuelastsave",
+    "product_private_inputs_copied": false
+  },
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Win32 command-line parsing and C++ filesystem-source admission contain no CK3 script or finite-runtime semantics."
+  },
+  "headers_or_abi_changed": false,
+  "compiled_translation_units": 2,
+  "production_dll_built": false,
+  "selected_runtime007_changed": false,
+  "game_started": false,
+  "native_quit_live_qualified": false,
+  "business_pass": false,
+  "next_adoption": "Future explicit narrow native successor only; current COLD continues immutable007 supported -loadsave route"
+}
