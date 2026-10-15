@@ -170,6 +170,119 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'native/game/control'):
             self.check()
 
+    def cache_identity_failure(self):
+        state = Path(self.freeze['state_dir'])
+        self.freeze['identity_allocation'] = {'machine_id': 'machine-test'}
+        frozen = self.write(self.run / 'frozen-argv.json', self.freeze)
+        profile = self.write(state.parent / 'prepared/profile-preparation.json', {
+            'schema': 'ck3-mod-acceptance-prepared-workshop-cache-v1',
+            'state_dir': str(state), 'fixture_mounted': False,
+            'campaign_started': False, 'cache_content_copied': False})
+        prepared = self.write(state.parent / 'prepared/prepared-case.json', {
+            'case': 'workshop_cache', 'startup': {'mode': 'workshop_cache'},
+            'preparation': {'profile_preparation': profile}})
+        self.bundle['prepared_case'] = prepared
+        self.bundle['profile_preparation'] = profile
+        self.bundle['ready_context'] = self.write(self.run / 'ready-context.json', {
+            'run_id': self.run.name, 'run_dir': str(self.run), 'keeper_root': str(self.keeper),
+            'frozen_argv': frozen, 'prepared_case': prepared})
+        stderr = self.run / 'host-stderr.log'
+        stderr.write_text('  File "host_entry.py", line 185, in main\n'
+            '    profile = helper.create_profile(args, runtime, manifest)\n'
+            '  File "ck3_mod_acceptance_normal_exit_profile.py", line 87, in create_profile\n'
+            '  File "ck3_mod_acceptance_normal_exit_profile.py", line 48, in project_profile\n'
+            'ValueError: public preparation and selected runtime identities differ\n')
+        self.bundle['host_stderr'] = allocation.pin(stderr)
+        run = json.loads(Path(self.bundle['public_run']['path']).read_bytes())
+        allocate = json.loads(Path(self.bundle['public_allocate']['path']).read_bytes())
+        self.bundle['public_run'] = self.write(self.run / 'public-run-original-command.json', {
+            'argv': run['argv'], 'at_utc': 'original-start', 'machine_id': 'machine-test'})
+        public_exit = {'run_id': self.run.name, 'machine_id': 'machine-test', 'pid': 50,
+            'actual_original_popen_wait': True, 'returncode': 2, 'at_utc': 'original-end',
+            'business_pass_inferred': False}
+        self.bundle['public_run_exit'] = self.write(self.run / 'public-run-original-exit.json', public_exit)
+        start = {'argv': allocate['argv'], 'pid': 51, 'at_utc': 'allocation-start'}
+        self.bundle['public_allocate_start'] = self.write(self.run / 'root-allocation-original-command.json', start)
+        self.bundle['public_allocate'] = self.write(self.run / 'root-allocation-completion.json',
+            {**start, 'returncode': 0, 'completed_at_utc': 'allocation-end'})
+        self.bundle['pre_game_red'] = self.write(self.run / 'root-pre-game-red.json', {
+            'run_id': self.run.name, 'machine_id': 'machine-test', 'host_actual_wait': self.exited,
+            'public_actual_wait': public_exit, 'native_report_exists': False,
+            'actual_ck3_inventory': [], 'game_launch_not_observed': True,
+            'normal_exit_pass': False, 'cache_load_pass': False})
+        self.early_exit_result()
+
+    def test_cache_identity_failure_accepts_actual_split_original_receipts_only(self):
+        self.cache_identity_failure()
+        result = self.check()['failure_cleanup']
+        self.assertEqual(result['original_host_exit_code'], 1)
+        self.assertTrue(result['original_host_wait_proven'])
+        self.assertFalse(result['normal_close_qualified'])
+        self.assertFalse(result['typed_normal_exit_proven'])
+        self.assertFalse(result['business_pass'])
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertIn('public_run_exit', result['original_evidence'])
+        self.assertIn('public_allocate_start', result['original_evidence'])
+
+    def test_cache_identity_failure_requires_original_host_exit_one(self):
+        self.cache_identity_failure()
+        self.exited['returncode'] = 2
+        self.bundle['host_exit'] = self.write(self.run / 'host-original-process-exit.json', self.exited)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'host exit/cause'):
+            self.check()
+
+    def test_cache_identity_message_without_prelaunch_projection_stack_is_rejected(self):
+        self.cache_identity_failure()
+        path = self.run / 'host-stderr.log'
+        path.write_text('ValueError: public preparation and selected runtime identities differ\n')
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.early_exit_result()
+        with self.assertRaisesRegex(ValueError, 'host exit/cause'):
+            self.check()
+
+    def test_cache_identity_failure_requires_actual_retained_public_wait(self):
+        self.cache_identity_failure()
+        path = self.run / 'public-run-original-exit.json'
+        value = json.loads(path.read_bytes())
+        value['actual_original_popen_wait'] = False
+        self.bundle['public_run_exit'] = self.write(path, value)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'retained wait'):
+            self.check()
+
+    def test_cache_identity_failure_cannot_rebind_allocation_parent(self):
+        self.cache_identity_failure()
+        path = self.run / 'root-allocation-completion.json'
+        value = json.loads(path.read_bytes())
+        value['pid'] = 52
+        self.bundle['public_allocate'] = self.write(path, value)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'parent completion'):
+            self.check()
+
+    def test_cache_identity_failure_requires_original_cache_and_empty_observation(self):
+        self.cache_identity_failure()
+        path = self.run / 'root-pre-game-red.json'
+        value = json.loads(path.read_bytes())
+        value['actual_ck3_inventory'] = [{'pid': 123}]
+        self.bundle['pre_game_red'] = self.write(path, value)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'pre-game RED'):
+            self.check()
+        value['actual_ck3_inventory'] = []
+        self.bundle['pre_game_red'] = self.write(path, value)
+        path = Path(self.bundle['prepared_case']['path'])
+        prepared = json.loads(path.read_bytes());prepared['case'] = 'not-cache'
+        self.bundle['prepared_case'] = self.write(path, prepared)
+        ready_path = self.run / 'ready-context.json'
+        ready = json.loads(ready_path.read_bytes());ready['prepared_case'] = self.bundle['prepared_case']
+        self.bundle['ready_context'] = self.write(ready_path, ready)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'original prepared cache'):
+            self.check()
+
+
 
 if __name__ == '__main__':
     unittest.main()

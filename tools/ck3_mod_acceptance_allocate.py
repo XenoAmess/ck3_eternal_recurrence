@@ -314,6 +314,11 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
     supervisor=original('host_supervisor',previous/'host-supervisor-started.json')
     exited=original('host_exit',previous/'host-original-process-exit.json')
     stderr=original('host_stderr',previous/'host-stderr.log')
+    cache_identity_rejected=(stderr.splitlines()[-1:] == [
+        'ValueError: public preparation and selected runtime identities differ'] and
+        'ck3_mod_acceptance_normal_exit_profile.py' in stderr and
+        'in project_profile' in stderr and 'in create_profile' in stderr and
+        'host_entry.py' in stderr and 'profile = helper.create_profile(' in stderr)
     require(host.get('run_id')==freeze['run_id'] and host.get('argv')==freeze['argv'] and
             host.get('actual_popen_retained') is True and
             supervisor.get('pid')==host.get('supervisor_pid') and
@@ -321,10 +326,11 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             exited.get('actual_original_popen_wait') is True and
             type(exited.get('returncode')) is int and exited['returncode']!=0 and
             exited.get('normal_ck3_exit_inferred') is False and
-            any(cause in stderr for cause in (
+            (not cache_identity_rejected or exited['returncode']==1) and
+            (cache_identity_rejected or any(cause in stderr for cause in (
                 'ValueError: normal exit requires the actual public prepared profile',
                 'ValueError: effective host differs from reviewed projection',
-                'ValueError: normal-exit private V1 does not support enabled mod GUI files')),
+                'ValueError: normal-exit private V1 does not support enabled mod GUI files'))),
             'Prelaunch original host exit/cause differs')
     readiness=original('readiness_result',previous/'case-output/readiness-window-result.json')
     entry=original('entry_run_result',previous/'case-output/entry-run-result.json')
@@ -345,12 +351,47 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             entry.get('launcher_exit_code')==0 and
             entry.get('business_acceptance')=='RED_OR_INCOMPLETE',
             'Original public RED/readiness result differs')
+    if cache_identity_rejected:
+        prepared=original('prepared_case',Path(freeze['state_dir']).parent/'prepared/prepared-case.json')
+        require(ready.get('prepared_case')==evidence['prepared_case'] and
+                prepared.get('case')=='workshop_cache' and
+                prepared.get('startup',{}).get('mode')=='workshop_cache',
+                'Cache identity rejection requires its original prepared cache case')
+        profile=original('profile_preparation',Path(freeze['state_dir']).parent/'prepared/profile-preparation.json')
+        require(prepared.get('preparation',{}).get('profile_preparation')==evidence['profile_preparation'] and
+                profile.get('schema')=='ck3-mod-acceptance-prepared-workshop-cache-v1' and
+                'game_version' not in profile and 'exe_sha256' not in profile and
+                Path(profile.get('state_dir','')).resolve()==Path(freeze['state_dir']).resolve() and
+                profile.get('fixture_mounted') is False and profile.get('campaign_started') is False and
+                profile.get('cache_content_copied') is False,
+                'Cache identity rejection requires its exact pre-identity menu preparation')
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
-        require(value.get('schema')=='ck3-recorded-actual-command-v1' and
-                value.get('exit_code')==code and value.get('finished_at_utc') and
-                isinstance(argv,list) and argv.count('--runtime')==1 and
+        if cache_identity_rejected:
+            if mode=='run':
+                require(path==(previous/'public-run-original-command.json').resolve(),
+                        'Cache original public run command path differs')
+                ended=original('public_run_exit',previous/'public-run-original-exit.json')
+                machine=freeze.get('identity_allocation',{}).get('machine_id')
+                require(bool(machine) and value.get('machine_id')==machine and ended.get('machine_id')==machine and
+                        ended.get('run_id')==freeze['run_id'] and ended.get('actual_original_popen_wait') is True and
+                        ended.get('returncode')==code and ended.get('business_pass_inferred') is False and
+                        type(ended.get('pid')) is int and ended.get('at_utc') and value.get('at_utc'),
+                        'Cache original public run retained wait differs')
+            else:
+                require(path==(previous/'root-allocation-completion.json').resolve(),
+                        'Cache original allocation completion path differs')
+                started=original('public_allocate_start',previous/'root-allocation-original-command.json')
+                require(started.get('argv')==argv and started.get('pid')==value.get('pid') and
+                        type(value.get('pid')) is int and value.get('returncode')==code and
+                        started.get('at_utc')==value.get('at_utc') and value.get('completed_at_utc'),
+                        'Cache original allocation parent completion differs')
+        else:
+            require(value.get('schema')=='ck3-recorded-actual-command-v1' and
+                    value.get('exit_code')==code and value.get('finished_at_utc'),
+                    'Prelaunch original public '+mode+' completion differs')
+        require(isinstance(argv,list) and argv.count('--runtime')==1 and
                 argv[argv.index('--runtime')-1]==mode and argv.count('--prepared-case')==1 and
                 Path(argv[argv.index('--prepared-case')+1]).resolve()==
                     (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve(),
@@ -366,6 +407,16 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
         return Path(argv[argv.index('--runtime')+1]).resolve()
     require(command('public_run','run',2)==command('public_allocate','allocate',0),
             'Prelaunch public run/allocate runtime differs')
+    if cache_identity_rejected:
+        observed=original('pre_game_red',previous/'root-pre-game-red.json')
+        require(observed.get('run_id')==freeze['run_id'] and
+                observed.get('machine_id')==freeze['identity_allocation']['machine_id'] and
+                observed.get('host_actual_wait')==exited and
+                observed.get('public_actual_wait')==read_json(Path(evidence['public_run_exit']['path'])) and
+                observed.get('native_report_exists') is False and observed.get('actual_ck3_inventory')==[] and
+                observed.get('game_launch_not_observed') is True and
+                observed.get('normal_exit_pass') is False and observed.get('cache_load_pass') is False,
+                'Cache original pre-game RED observation differs')
     keeper=original('keeper_report',keeper_root/'report.json')
     parent=original('keeper_parent_exit',previous/'keeper-actual-parent-exit.json')
     require(keeper.get('task_id')==freeze['screen_task'] and
