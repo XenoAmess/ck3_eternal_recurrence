@@ -28,6 +28,8 @@ namespace xar::ck3_11906 {
 namespace {
 
 std::atomic<MainThreadQueryMailboxV1 *> g_active_mailbox{nullptr};
+std::atomic<MainThreadQueryExecutorV1> g_idle_presentation_callback{nullptr};
+std::atomic<void *> g_idle_presentation_context{nullptr};
 std::atomic<PeekMessageWFunctionV1> g_original_peek_message{nullptr};
 std::atomic<SdlPollEventFunctionV1> g_original_sdl_poll_event{nullptr};
 
@@ -1274,6 +1276,7 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   // bridge must never FreeLibrary this v1 hook module.
   mailbox.snapshot_observer_callback = nullptr;
   mailbox.snapshot_observer_context = nullptr;
+  ConfigureIdlePresentationV1(nullptr, nullptr);
   mailbox.permitted_executor_player_mercenary_context12003 = nullptr;
   mailbox.permitted_executor_player_mercenary_hire12003 = nullptr;
   mailbox.permitted_executor_player_holy_order_hire12003 = nullptr;
@@ -1798,6 +1801,11 @@ MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
   return MainThreadQueryReclaimResultV1::reclaimed;
 }
 
+void ConfigureIdlePresentationV1(MainThreadQueryExecutorV1 callback, void *context) noexcept {
+  g_idle_presentation_context.store(context, std::memory_order_release);
+  g_idle_presentation_callback.store(callback, std::memory_order_release);
+}
+
 bool ObserveMainThreadPumpAndDrainV1(
     MainThreadQueryMailboxV1 &mailbox, std::uintptr_t return_rva,
     std::uint32_t current_thread_id) noexcept {
@@ -1868,6 +1876,23 @@ bool ObserveMainThreadPumpAndDrainV1(
 #endif
   }
   AdvanceConsecutiveOwnerPumpProof(mailbox, before);
+  // Presentation never submits or reclaims a gameplay ticket, never waits,
+  // and yields immediately if an ordinary command is queued.
+  const auto presentation = g_idle_presentation_callback.load(std::memory_order_acquire);
+  auto *presentation_context = g_idle_presentation_context.load(std::memory_order_acquire);
+  if (presentation != nullptr && presentation_context != nullptr &&
+      mailbox.state.load(std::memory_order_acquire) ==
+          MainThreadQueryMailboxStateV1::idle) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      (void)presentation(presentation_context, before);
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      // Presentation faults do not alter gameplay mailbox failure flags.
+    }
+#endif
+  }
   const auto queued_executor = mailbox.executor.load(std::memory_order_acquire);
   const bool frontend_request_queued_hint =
       mailbox.state.load(std::memory_order_acquire) ==

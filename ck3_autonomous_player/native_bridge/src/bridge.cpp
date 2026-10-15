@@ -195,6 +195,7 @@
 #include "xar_bridge/ck3_12002_world.hpp"
 #include "xar_bridge/ck3_12002_title_map.hpp"
 #include "xar_bridge/ck3_12004_title_map.hpp"
+#include "xar_bridge/camera_presentation_v1.hpp"
 #include "xar_bridge/ck3_12004_pending_context.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
 #include "xar_bridge/ck3_12004_event_window_context.hpp"
@@ -12435,6 +12436,12 @@ public:
     environment.permitted_executor_confucian_challenger_graph12003 =
         &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;
 #endif
+    if (observer_ != nullptr && camera_presentation_.Initialize(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+            game_->descriptor().executable_sha256, observer_)) {
+      xar::ck3_11906::ConfigureIdlePresentationV1(
+          &xar::presentation::CameraPresentationRuntimeV1::Pump, &camera_presentation_);
+    }
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -12487,6 +12494,7 @@ public:
 
   const xar::game::GameAdapter *game_ = nullptr;
   xar::ck3_12002::WorkerAdapter *observer_ = nullptr;
+  xar::presentation::CameraPresentationRuntimeV1 camera_presentation_;
   bool attempted_ = false;
   bool installed_ = false;
   bool marriage_route_configured_ = false;

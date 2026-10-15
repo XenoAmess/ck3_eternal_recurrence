@@ -772,3 +772,8 @@ extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(
 extern "C" int __cdecl XarMainThreadSdlPollEventHookV1(void *event) noexcept;
 
 } // namespace xar::ck3_11906
+
+namespace xar::ck3_11906 {
+// Optional presentation callback; no change to the frozen mailbox ABI/layout.
+void ConfigureIdlePresentationV1(MainThreadQueryExecutorV1 callback, void *context) noexcept;
+}

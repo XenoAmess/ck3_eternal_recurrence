@@ -94,7 +94,11 @@ def test_auto_turn_business_first_and_source_binding() -> None:
         assert release.wait(2)
         return service.GameplayBridgeService._select_auto_camera_hotspot(obj, payload)
 
-    obj = object.__new__(service.GameplayBridgeService)
+    obj = service.GameplayBridgeService(object())
+    obj._publish_camera_presentation_v1 = lambda intent, payload: {
+        "status": "queued_native_presentation", "mode": intent["mode"],
+        "native_command_pipe_used": False,
+    }
     obj._war_hotspot_camera_index = LandedProvinceIndex(
         {2640: "b_enna"}, {2640: "c_enna"}, (),
     )
@@ -117,6 +121,7 @@ def test_auto_turn_business_first_and_source_binding() -> None:
         "_auto_camera_hotspot_input":
             service.GameplayBridgeService._auto_camera_hotspot_input(
                 {
+                    "map_ready": True,
                     "active_wars": [{
                         "war_id": 16777224,
                         "allied_armies": [{

@@ -148,4 +148,10 @@ game::ReadPlayerFactionAlertsResultV1 ReadPlayerFactionAlertsV1(
 std::string SerializePlayerFactionAlertsV1(
     const game::PlayerFactionAlertsV1 &snapshot);
 
+// Read-only actor+vassal actual county enumeration shared with presentation.
+bool ReadSubrealmCountyIdsV1(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t actor_id,
+    std::vector<std::int32_t> &output) noexcept;
+
 } // namespace xar::ck3_12002

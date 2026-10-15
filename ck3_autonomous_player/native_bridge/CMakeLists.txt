@@ -1681,6 +1681,7 @@ add_library(xar_ck3_bridge SHARED
     src/appointment_character_level12004.cpp
   src/title_map_navigation_v1_camera.cpp
   src/title_map_navigation_v1_mailbox.cpp
+  src/camera_presentation_v1.cpp
   src/title_map_navigation_v1_serializer.cpp
   src/war_entry_assessments_v1.cpp
   src/war_entry_assessments_v1_serializer.cpp
@@ -9848,3 +9849,5 @@ include(cmake/faction_danger_priority_12004.cmake)
 include(cmake/war_declared_owner_tree_v1.cmake)
 
 include(cmake/root_adjacency_12004.cmake)
+
+include(cmake/realm_camera_presentation_v1.cmake)

@@ -2661,7 +2661,48 @@ bool TestConfucianPrivateMailboxRegistration(const char* bridge_path) {
 
 } // namespace
 
+bool TestIdlePresentationYieldsToGameplay() {
+  using namespace xar::ck3_11906;
+  const auto owner = GetCurrentThreadId();
+  FakeRuntime runtime(owner, 53144328);
+  void *iat = reinterpret_cast<void *>(&FakePeekMessage);
+  auto env = runtime.Environment(0x140000000ULL, &iat, &FakePeekMessage);
+  MainThreadQueryMailboxV1 mailbox{};
+  std::uint32_t presentations = 0;
+  env.permitted_executor = &Execute;
+  ConfigureIdlePresentationV1(+[](void *context, const MainThreadExecutionStampV1 &) noexcept {
+    ++*static_cast<std::uint32_t *>(context); return true;
+  }, &presentations);
+  if (!InstallMainThreadQueryMailboxV1(mailbox, env)) return false;
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner);
+  if (presentations != 2) return false;
+  ExecutorContext gameplay{}; MainThreadQueryTicketV1 ticket{};
+  if (TrySubmitMainThreadQueryV1(mailbox, &Execute, &gameplay, ticket) !=
+      MainThreadQuerySubmitResultV1::submitted) return false;
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner);
+  if (presentations != 2 || gameplay.calls != 1 ||
+      ReclaimMainThreadQueryV1(mailbox, ticket) != MainThreadQueryReclaimResultV1::reclaimed)
+    return false;
+  runtime.SetPaused(0);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner);
+  if (presentations != 3) return false;
+  runtime.SetTlsMarker(0);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner);
+  if (presentations != 3) return false;
+  if (UninstallMainThreadQueryMailboxV1(mailbox, 10) != MainThreadQueryUninstallResultV1::uninstalled)
+    return false;
+  // A second install without configuring presentation must not call the old context.
+  runtime.SetTlsMarker(1);
+  if (!InstallMainThreadQueryMailboxV1(mailbox, env)) return false;
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner);
+  if (presentations != 3) return false;
+  return UninstallMainThreadQueryMailboxV1(mailbox, 10) == MainThreadQueryUninstallResultV1::uninstalled;
+}
+
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--idle-presentation-only")
+    return TestIdlePresentationYieldsToGameplay() ? 0 : 3;
   if (argc == 3 && std::string_view(argv[1]) == "--confucian-registration-only") {
     return TestConfucianPrivateMailboxRegistration(argv[2]) ? 0 : 1;
   }

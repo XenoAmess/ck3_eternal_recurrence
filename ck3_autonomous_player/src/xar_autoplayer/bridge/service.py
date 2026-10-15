@@ -653,6 +653,11 @@ class GameplayBridgeService:
         self._war_hotspot_camera_index = None
         self._war_hotspot_camera_index_error: str | None = None
         self.last_camera_follow: dict[str, object] | None = None
+        from .realm_overview_camera import PeaceRealmCameraPolicy
+        self._peace_realm_camera_policy = PeaceRealmCameraPolicy()
+        self._camera_presentation_client = None
+        self._camera_presentation_retry_after_raw = None
+        self._camera_presentation_requested_sequence = None
         self._auto_camera_worker = LatestCameraFollowWorker(
             self._select_auto_camera_hotspot,
             on_complete=self._record_auto_camera_actual,
@@ -726,10 +731,30 @@ class GameplayBridgeService:
                     war.get("war_objective_province_ids") or []
                 ),
             })
-        return {"source_frame": dict(source_frame), "active_wars": wars}
+        diagnostics = snapshot.get("diagnostics") or {}
+        hello = diagnostics.get("hello") or {}
+        hint = snapshot.get("top_exclusive_modal_choice_hint")
+        return {
+            "source_frame": dict(source_frame), "active_wars": wars,
+            "map_ready": snapshot.get("map_ready"),
+            "has_active_event": snapshot.get("active_event") is not None,
+            "has_pending_interaction": snapshot.get("pending_character_interaction") is not None,
+            "mandatory_choice": isinstance(hint, dict) and hint.get("status") == "present",
+            "has_player_armies": any(
+                isinstance(army, dict) and (
+                    army.get("in_combat") is True or army.get("retreating") is True
+                    or type(army.get("move_target_province_id")) is int
+                       and army["move_target_province_id"] > 0
+                    or army.get("army_state") in {"moving", "siege", "sieging", "gathering"})
+                for army in snapshot.get("player_armies") or []),
+            "source_build": {
+                "game_version": hello.get("expected_ck3_version", hello.get("game_version")),
+                "executable_sha256": hello.get("expected_ck3_sha256", hello.get("executable_sha256")),
+            },
+        }
 
     def _select_auto_camera_hotspot(self, payload: object) -> dict[str, object]:
-        """Record a camera intent only; the shared Native command pipe stays free."""
+        """Publish latest presentation intent through its independent mailbox."""
         from .war_hotspot_camera import LandedProvinceIndex, select_war_hotspot
 
         camera_timing = start_army_timing("service.auto_turn_camera")
@@ -761,19 +786,72 @@ class GameplayBridgeService:
                 {"active_wars": payload.get("active_wars")},
                 self._war_hotspot_camera_index,
             )
-            return {
-                "status": "selected_deferred_native_camera"
-                if hotspot is not None else "no_observed_war_hotspot",
-                "hotspot": hotspot,
-                "source_frame": payload.get("source_frame"),
-                "native_command_submitted": False,
-                "same_frame_with_gameplay_claim": False,
-            }
+            intent = self._peace_realm_camera_policy.observe(payload, hotspot)
+            receipt = {"status": intent["reason"], "intent": intent, "hotspot": hotspot,
+                       "display_mode": self._peace_realm_camera_policy.mode,
+                       "source_frame": payload.get("source_frame"),
+                       "native_command_submitted": False,
+                       "same_frame_with_gameplay_claim": False}
+            client = self._camera_presentation_client
+            if client is not None:
+                actual = client.latest()
+                receipt["native_actual"] = actual if isinstance(actual, dict) and (
+                    actual.get("request_sequence") == self._camera_presentation_requested_sequence) else None
+            frame = payload.get("source_frame") or {}
+            date = frame.get("date_raw")
+            retry = self._camera_presentation_retry_after_raw
+            if intent["mode"] != "hold" and not (
+                    type(date) is int and type(retry) is int and date < retry):
+                try:
+                    receipt.update(self._publish_camera_presentation_v1(intent, payload))
+                    receipt["native_actual"] = None
+                except (OSError, ValueError, TypeError, KeyError) as error:
+                    self._peace_realm_camera_policy.retry_after_failure()
+                    if type(date) is int:
+                        self._camera_presentation_retry_after_raw = date + 30 * 24
+                    receipt.update(status="unavailable", reason=f"{type(error).__name__}: {error}")
+            return receipt
         finally:
             finish_army_timing(camera_timing, step="auto-turn-camera")
 
     def _record_auto_camera_actual(self, actual: dict[str, object]) -> None:
         self.last_camera_follow = actual
+
+    def _publish_camera_presentation_v1(self, intent, payload):
+        from .realm_overview_camera import NativeCameraPresentationClient
+        frame = payload["source_frame"]
+        pid = frame["bridge_pid"]
+        client = self._camera_presentation_client
+        if client is None or client.pid != pid:
+            if client is not None:
+                client.close()
+            client = NativeCameraPresentationClient(pid)
+            self._camera_presentation_client = client
+        result = client.submit(intent, frame, payload["source_build"])
+        self._camera_presentation_requested_sequence = result.get("request_sequence")
+        return result
+
+    def center_map_on_player_realm_v1(self, *, expected_revision: int,
+                                     query_only: bool = False) -> dict[str, object]:
+        """Queue actual realm enumeration/centering; poll status without blocking."""
+        snapshot = self.snapshot(include_native_command_history=False)
+        if snapshot.get("revision") != expected_revision:
+            raise BridgeUnavailableError("realm camera revision mismatch")
+        frame = self._observed_planning_source_frame(snapshot)
+        if frame.get("status") != "complete":
+            raise BridgeUnavailableError("realm camera has no complete source frame")
+        payload = self._auto_camera_hotspot_input(snapshot, frame)
+        return self._publish_camera_presentation_v1(
+            {"mode": "query" if query_only else "realm", "reason": "explicit_realm_camera"}, payload)
+
+    def realm_camera_status_v1(self) -> dict[str, object]:
+        client = self._camera_presentation_client
+        actual = client.latest() if client is not None else None
+        return {"status": "available" if client is not None else "not_requested",
+                "requested_sequence": self._camera_presentation_requested_sequence,
+                "native_actual": actual if isinstance(actual, dict) and (
+                    actual.get("request_sequence") == self._camera_presentation_requested_sequence) else None,
+                "same_frame_with_gameplay_claim": False}
 
     def auto_camera_follow_status(self) -> dict[str, object]:
         """Read bounded presentation diagnostics; no gameplay/source-frame claim."""

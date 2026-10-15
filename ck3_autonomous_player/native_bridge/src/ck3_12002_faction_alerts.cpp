@@ -1001,4 +1001,14 @@ std::string SerializePlayerFactionAlertsV1(const game::PlayerFactionAlertsV1 &sn
       kPlayerFactionAlertsV1ExecutableSha256, kPlayerFactionAlertsV1BackendId);
 }
 
+bool ReadSubrealmCountyIdsV1(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t actor_id,
+    std::vector<std::int32_t> &output) noexcept {
+  output.clear();
+  if (!environment.exact_build_admitted || actor_id <= 0) return false;
+  try { return ReadSubrealmCountyIds(environment, access, actor_id, output); }
+  catch (...) { output.clear(); return false; }
+}
+
 } // namespace xar::ck3_12002

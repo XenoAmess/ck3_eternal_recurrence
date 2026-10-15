@@ -94,6 +94,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
 #endif
 #endif
       "game.command.center-map-on-landed-title-v1",
+      "game.presentation.realm-camera-mailbox.v1",
       ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
       "game.command.select-event-option-N",
       "game.command.accept-pending-character-interaction",

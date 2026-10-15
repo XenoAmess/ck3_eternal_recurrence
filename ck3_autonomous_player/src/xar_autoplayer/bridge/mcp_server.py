@@ -3627,6 +3627,21 @@ def create_server(
         )
 
     @server.tool()
+    def ck3_center_map_on_player_realm_v1(expected_revision: int) -> dict[str, object]:
+        """Queue Desktop 1 actual actor+vassal realm overview asynchronously. Poll ck3_realm_camera_status_v1 for native bounds and settled camera; queued ACK is not visual coverage proof."""
+        return service.center_map_on_player_realm_v1(expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_query_player_realm_map_bounds_v1(expected_revision: int) -> dict[str, object]:
+        """Queue read-only actual realm county bounds through the independent presentation mailbox; poll status for the result."""
+        return service.center_map_on_player_realm_v1(expected_revision=expected_revision, query_only=True)
+
+    @server.tool()
+    def ck3_realm_camera_status_v1() -> dict[str, object]:
+        """Read the latest asynchronous native realm/hotspot camera receipt without using the gameplay command pipe."""
+        return service.realm_camera_status_v1()
+
+    @server.tool()
     def ck3_set_played_character_v1(
         character_id: int,
         expected_revision: int,

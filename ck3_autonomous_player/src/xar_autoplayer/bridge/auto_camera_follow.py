@@ -37,11 +37,22 @@ class LatestCameraFollowWorker:
     def _reference(actual: dict[str, object] | None) -> dict[str, object] | None:
         if actual is None:
             return None
+        receipt = actual.get("receipt")
+        summary = None
+        if isinstance(receipt, dict):
+            summary = {key: receipt.get(key) for key in (
+                "status", "mode", "display_mode", "reason", "hotspot") if key in receipt}
+            native = receipt.get("native_actual")
+            if isinstance(native, dict):
+                summary["native_actual"] = {key: native.get(key) for key in (
+                    "status", "request_sequence", "county_count", "zoom_index", "bounds",
+                    "camera_postcondition_verified", "coverage_verified", "native_elapsed_us")}
         return {
             "request_id": actual["request_id"],
             "status": actual["status"],
             "work_status": actual.get("work_status"),
             "reason": actual.get("reason"),
+            "receipt": summary,
         }
 
     def schedule(self, payload: object = None) -> dict[str, object]:
@@ -53,9 +64,11 @@ class LatestCameraFollowWorker:
             self._sequence += 1
             request_id = f"auto-camera-{self._identity}-{self._sequence}"
             superseded = self._pending.get("request_id") if self._pending else None
+            eligible_at = (self._pending["eligible_at"] if self._pending else
+                           time.monotonic() + self._quiet_seconds)
             self._pending = {
                 "request_id": request_id,
-                "eligible_at": time.monotonic() + self._quiet_seconds,
+                "eligible_at": eligible_at,
                 "payload": payload,
             }
             if self._thread is None:

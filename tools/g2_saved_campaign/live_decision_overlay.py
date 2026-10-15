@@ -146,6 +146,32 @@ def outcome_text(body):
             "blocked": "受阻", "rejected": "已拒绝"}.get(status, status or "已返回")
 
 
+def camera_presentation_text(camera):
+    """Render asynchronous receipts without confusing queued ACK with success."""
+    if not isinstance(camera, dict):
+        return ""
+    previous = camera.get("latest_actual")
+    if isinstance(previous, dict) and isinstance(previous.get("receipt"), dict):
+        camera = previous["receipt"]
+    mode = camera.get("display_mode", camera.get("mode"))
+    if mode not in {"realm", "hotspot"}:
+        return "" if camera.get("status") == "scheduled" else "镜头跟随：" + outcome_text(camera)
+    text = "全境镜头" if mode == "realm" else "战争热点镜头"
+    actual = camera.get("native_actual")
+    if isinstance(actual, dict):
+        if actual.get("camera_postcondition_verified") is True:
+            text += "：原生位置已稳定"
+        elif actual.get("status") == "submitted":
+            text += "：已提交，等待稳定"
+        else:
+            text += "：" + str(actual.get("status", "等待回执"))
+        if mode == "realm" and actual.get("county_count"):
+            text += f" · {actual['county_count']} 县（含封臣领地）"
+    else:
+        text += "：等待原生回执"
+    return text
+
+
 def decode(row):
     if not isinstance(row, dict):
         raise ValueError("Response is not a JSON object")
@@ -421,18 +447,16 @@ def main():
                 step = body.get("selected_step") or body.get("step") or plan.get("selected_step")
                 tool = row.get("request", {}).get("tool") or row.get("tool", "")
                 camera = body.get("camera_follow")
+                previous_camera_text = camera_text
                 if isinstance(camera, dict):
-                    camera_text = "镜头跟随：" + outcome_text(camera)
-                    hotspot = camera.get("hotspot")
-                    if isinstance(hotspot, dict):
-                        camera_text += " · " + str(hotspot.get("title_key", hotspot.get("province_id", "")))
-                    if camera.get("status") == "unavailable":
-                        camera_text += "（本轮未确认）"
+                    camera_text = camera_presentation_text(camera) or camera_text
                 stamp = row.get("ended_at_utc", "")
                 try:
                     clock = datetime.fromisoformat(stamp).astimezone().strftime("%H:%M:%S") if stamp else "时间未记录"
                 except (TypeError, ValueError):
                     clock = "时间格式无效"
+                if camera_text and camera_text != previous_camera_text:
+                    records.append(f"{clock} 镜头切换 · {camera_text}")
                 if result.get("is_error", result.get("isError")) or row.get("client_error"):
                     message = " ".join(c.get("text", "") for c in result.get("content", []) if c.get("type") == "text")
                     if "army-strength result exceeds" in message:

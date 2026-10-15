@@ -42,6 +42,18 @@ class FakeWindow:
         self.closed = True
 
 
+def test_realm_camera_receipts_distinguish_queued_and_settled():
+    queued = {"status": "scheduled", "latest_actual": {"receipt": {
+        "display_mode": "realm", "native_actual": {"status": "submitted", "county_count": 12}}}}
+    assert "全境镜头" in overlay.camera_presentation_text(queued)
+    assert "等待稳定" in overlay.camera_presentation_text(queued)
+    assert "已稳定" not in overlay.camera_presentation_text(queued)
+    queued["latest_actual"]["receipt"]["native_actual"].update(
+        status="settled", camera_postcondition_verified=True)
+    assert "原生位置已稳定" in overlay.camera_presentation_text(queued)
+    assert "12 县" in overlay.camera_presentation_text(queued)
+
+
 def test_transient_share_lock_retries_atomically_and_retains_first_exception(tmp_path, monkeypatch):
     target = tmp_path / "decision.txt"
     target.write_bytes(b"old verified text")
