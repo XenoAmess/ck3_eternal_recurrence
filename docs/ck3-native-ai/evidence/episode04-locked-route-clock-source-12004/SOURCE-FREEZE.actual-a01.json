@@ -1,0 +1,37 @@
+{
+  "schema": "episode04.locked-route.clock-source-freeze.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T19:24:14.286513+00:00",
+  "source": "local git show exact dcda blob; existing archive source indexes; two positive offline replays only",
+  "current_repository_head": "a2211557096083c4a493563836e3fba2c91e5d5f",
+  "frozen_source_commit": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "frozen_whole_file_sha256": "48fee62f0bc2f6c0c43bc8b4156faea86060c78e4189d71709f5555d0847707f",
+  "frozen_source_bytes": 1527840,
+  "current_repository_source_sha256": "25769ea3fe8ab696567c1e889f8a164089fb8afe141eb93a5531af15c5cc721e",
+  "current_repository_source_matches_archive": false,
+  "artifact": {
+    "path": "docs\\ck3-native-ai\\evidence\\episode04-locked-route-clock-source-12004\\dcda-native-driver.source.zip",
+    "bytes": 209212,
+    "sha256": "7c3bb386fb8a6a09488c77d99fd1f2e9174d8a6b4b81ee527a8907273c8a081c",
+    "member": "native_driver.py"
+  },
+  "positive_replays": {
+    "R12": {
+      "status": "PASS",
+      "clock_generations": 31,
+      "actual_natural_days": 32,
+      "report_sha256": "af2066f162d3500a0bdb678fbc85d72bd66aeda8c80b44498178bf140e2e25d9"
+    },
+    "R13": {
+      "status": "PASS",
+      "clock_generations": 9,
+      "actual_natural_days": 13,
+      "report_sha256": "b9ee3135c1d2ce58f1ac6c48bda6630aefa7a7f88264528a042aa1451945e31e"
+    }
+  },
+  "old_archives_indexes_statuses_changed": false,
+  "mutants_or_old_matrices_rerun": 0,
+  "current_source_used_to_reinterpret_old_clocks": false,
+  "protected_until_utc": "2026-10-16T07:45:01.597Z",
+  "renewed": false
+}

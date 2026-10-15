@@ -210,7 +210,7 @@ def replay(index, archive, repo, *, check_rejections=False):
             "clock_generations": len(clocks), "actual_total_natural_days": natural_days, "clock_checks": checked,
             "one_day_sampling_claim": False, "readonly_recoveries": recovery_rows,
             "original_case_action_counts": {"initial_Move": move_count, "Halt": halt_count, "Arm": arm_count, "Resume": resume_count},
-            "production_clock_definitions": definition_pins, "rejection_checks": rejection_checks,
+            "production_clock_definitions": definition_pins, "production_clock_source": clock.source_resolution, "rejection_checks": rejection_checks,
             "archive_members_integrity_checked": len(reader.entries), "replayed_member_count": len(reader.read_pins),
             "historical_absolute_paths_followed": 0, "unarchived_queries_replayed": 0, "archive_extraction_performed": False,
             "source_claims_only": {"game_tree_gone": closed.get("game_tree_gone"), "process_exit_code": closed.get("actual_final_process_exit_code")},

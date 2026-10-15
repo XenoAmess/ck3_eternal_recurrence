@@ -1,0 +1,16 @@
+{
+  "schema": "episode04.locked-route.frozen-production-source.v1",
+  "sources": {
+    "48fee62f0bc2f6c0c43bc8b4156faea86060c78e4189d71709f5555d0847707f": {
+      "source_commit": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+      "source_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "source_bytes": 1527840,
+      "artifact": {
+        "path": "dcda-native-driver.source.zip",
+        "bytes": 209212,
+        "sha256": "7c3bb386fb8a6a09488c77d99fd1f2e9174d8a6b4b81ee527a8907273c8a081c",
+        "member": "native_driver.py"
+      }
+    }
+  }
+}

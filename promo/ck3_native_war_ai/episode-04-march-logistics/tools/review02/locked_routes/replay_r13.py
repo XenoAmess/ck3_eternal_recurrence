@@ -132,7 +132,7 @@ def replay_r13(index, archive, repo, *, reader_type, verifier_loader, check_reje
             "clock_generations": len(clocks), "actual_total_natural_days": (expected-frames["new_move_post"]["date"])//24,
             "clock_checks": checked, "one_day_sampling_claim": False,
             "original_case_action_counts": {"initial_Move": 1, "alternate_Move": 1, "Arm": arm_count, "Resume": resume_count},
-            "production_clock_definitions": definition_pins, "rejection_checks": rejected,
+            "production_clock_definitions": definition_pins, "production_clock_source": clock.source_resolution, "rejection_checks": rejected,
             "archive_members_integrity_checked": len(reader.entries), "replayed_member_count": len(reader.read_pins),
             "R09_responses_archived_or_replayed": 0, "CLOSED_archived": False, "runtime_close_qualified": False,
             "media": media, "continuous_clean_review": False, "human_video_approval": False,

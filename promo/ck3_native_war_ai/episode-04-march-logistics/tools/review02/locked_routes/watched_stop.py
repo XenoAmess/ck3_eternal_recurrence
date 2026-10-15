@@ -8,8 +8,11 @@ from __future__ import annotations
 import ast
 import copy
 import hashlib
+import io
+import json
 from pathlib import Path
 from types import SimpleNamespace
+import zipfile
 
 
 class StopEvidenceError(ValueError):
@@ -46,6 +49,48 @@ def same_stopped_army(original, fresh, army_id):
     require(all(rows[0][0].get(k) == rows[1][0].get(k) for k in fields), "stopped Army changed")
 
 
+def _production_source(path: Path, expected_sha256: str):
+    """Select historical bytes by the archive's whole-file SHA, never by date."""
+    current = path.read_bytes()
+    current_sha = hashlib.sha256(current).hexdigest()
+    relative = Path("docs/ck3-native-ai/evidence/episode04-locked-route-clock-source-12004/SOURCE-INDEX.json")
+    for root in Path(__file__).resolve().parents:
+        manifest_path = root/relative
+        if not manifest_path.is_file():
+            continue
+        manifest_raw = manifest_path.read_bytes()
+        require(len(manifest_raw) <= 16384, "frozen production source index exceeds bound")
+        manifest = json.loads(manifest_raw)
+        require(manifest.get("schema") == "episode04.locked-route.frozen-production-source.v1", "frozen production source index schema differs")
+        entry = manifest.get("sources", {}).get(expected_sha256)
+        if entry is None:
+            break
+        ref = entry["artifact"]
+        require(Path(ref["path"]).name == ref["path"] and ref["member"] == "native_driver.py", "frozen source must be the named local artifact")
+        artifact_path = manifest_path.parent/ref["path"]
+        require(artifact_path.stat().st_size == ref["bytes"] and ref["bytes"] <= 1024*1024, "frozen source archive size differs")
+        artifact = artifact_path.read_bytes()
+        require(hashlib.sha256(artifact).hexdigest() == ref["sha256"], "frozen source archive SHA differs")
+        with zipfile.ZipFile(io.BytesIO(artifact)) as archive:
+            require(archive.namelist() == [ref["member"]], "frozen source archive membership differs")
+            info = archive.getinfo(ref["member"])
+            require(info.file_size == entry["source_bytes"] and info.file_size <= 4*1024*1024, "frozen production source size differs")
+            raw = archive.read(ref["member"])
+        require(hashlib.sha256(raw).hexdigest() == expected_sha256, "frozen production source pin changed")
+        return raw, str(relative.parent/ref["path"])+"!"+ref["member"], {
+            "selection": "archived_whole_file_sha256", "source_commit": entry["source_commit"],
+            "source_path": entry["source_path"], "source_sha256": expected_sha256,
+            "source_bytes": len(raw), "artifact": {"path": str(relative.parent/ref["path"]), **{key:ref[key] for key in ("bytes","sha256","member")}},
+            "current_repository_source_sha256": current_sha,
+            "current_repository_source_matches_archive": current_sha == expected_sha256,
+            "historical_source_reinterpreted_with_current_code": False,
+        }
+    require(current_sha == expected_sha256, "production clock source pin changed and no exact frozen source is available")
+    return current, str(path), {"selection": "current_exact_whole_file_sha256", "source_commit": None,
+        "source_sha256": expected_sha256, "current_repository_source_sha256": current_sha,
+        "current_repository_source_matches_archive": True, "historical_source_reinterpreted_with_current_code": False}
+
+
 def production_clock(path: Path, expected_sha256: str):
     """Use exact existing production definitions in a bounded, speed-3 namespace.
 
@@ -53,10 +98,9 @@ def production_clock(path: Path, expected_sha256: str):
     The Driver's exception class is mapped to this tool's ValueError subclass;
     no accepted result changes. Readiness at speeds4/5 is outside this adapter.
     """
-    raw = path.read_bytes()
-    require(hashlib.sha256(raw).hexdigest() == expected_sha256, "production clock source pin changed")
+    raw, source_label, resolution = _production_source(path, expected_sha256)
     source = raw.decode("utf-8-sig")
-    tree = ast.parse(source, filename=str(path))
+    tree = ast.parse(source, filename=source_label)
     names = {"_normalize_tactical_daily_sentinel_status", "_validate_tactical_daily_sentinel_arm",
              "_validate_tactical_daily_sentinel_stop", "_noncombat_sentinel_scope_speed_live_ready"}
     selected = []
@@ -69,10 +113,10 @@ def production_clock(path: Path, expected_sha256: str):
             selected.append(node); found.add("_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS")
     require(found == names | {"_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS"}, "production pure clock definitions missing")
     namespace = {"copy": copy, "BridgeUnavailableError": StopEvidenceError, "_BATTLE_SPEED_READINESS": {}}
-    exec(compile(ast.Module(body=selected, type_ignores=[]), str(path), "exec"), namespace)
+    exec(compile(ast.Module(body=selected, type_ignores=[]), source_label, "exec"), namespace)
     pins = {getattr(node, "name", "_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS"):
             hashlib.sha256(ast.get_source_segment(source, node).encode()).hexdigest() for node in selected}
-    return SimpleNamespace(**{name: namespace[name] for name in names}), pins
+    return SimpleNamespace(**{name: namespace[name] for name in names}, source_resolution=resolution), pins
 
 
 def check_clock(native, *, before, after, arm_body, status_body, watch_army_id, speed=3):

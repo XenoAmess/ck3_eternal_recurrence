@@ -1,0 +1,3 @@
+# One exact historical Python source artifact; no directory-wide text override.
+dcda-native-driver.source.zip -text
+SOURCE-INDEX.json -text
