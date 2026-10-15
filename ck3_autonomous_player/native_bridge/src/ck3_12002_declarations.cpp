@@ -170,9 +170,14 @@ auto ProfilePath() noexcept {
 #if defined(_WIN32)
 #if defined(_MSC_VER)
   // This owning-thread query reads the launch environment without mutating it.
-#pragma warning(suppress : 4996)
+#pragma warning(push)
+#pragma warning(disable : 4996)
 #endif
-  return _wgetenv(L"XAR_CK3_DECLARATIONS_PROFILE_JSONL");
+  const auto path = _wgetenv(L"XAR_CK3_DECLARATIONS_PROFILE_JSONL");
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+  return path;
 #else
   return std::getenv("XAR_CK3_DECLARATIONS_PROFILE_JSONL");
 #endif

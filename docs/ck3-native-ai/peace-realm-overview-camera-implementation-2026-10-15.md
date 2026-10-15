@@ -45,6 +45,8 @@ Python worker 保留首个待处理请求的 eligible_at，后续意图只替换
 
 另已实际生成可部署候选：`realm-camera-native-candidate01/native.dll`，18,101,248 bytes，SHA-256 `5f391893f4f017057399dce8654a5f7d9815eed1d6f3cfb853fadec5f7bb9cb0`。该候选以正在实机使用的 B17 原始 bridge、final03 mailbox 及 native89 job 392/479 原始源码为基线，只应用本包镜头补丁；五个 TU 重编后替换两个旧 direct OBJ、增加三个 direct OBJ，复用其余不可变 OBJ 与原 runtime archive。完整源码差异、实际 include pins、编译命令/结果、所有 retained link inputs 的 SHA 和 link response 在候选目录。当前 master bridge 中另有约 299 行其他研究/军力查询改动，未把这些无关变化夹带入 B17 候选。五项 DLL exports 与 B17 一致，新镜头/县集/idle 注册符号已链接，旧被替换的 archive member 未被重新拉入；旧 B17 DLL 仍为原 SHA。候选没有部署、加载或操作游戏。
 
+为与 root 的性能分析合并冷载，后继 `realm-camera-native-candidate02/native.dll` 在上述候选上只替换 B17 的宣战枚举 TU，加入已合回 master `bb6b0312` 的 opt-in 按 CB 聚合计时。实际验证该 profiler 的父源码与 B17 所用 B16 c0389 源码字节相同；其余镜头候选 OBJ/库均复用原件。候选 02 为 18,104,832 bytes，SHA-256 `b15fda9a68067eec82b11b37197430f3d6240bc301f1502348a8205092ef9912`，候选 01 未覆盖。首次实际 MSVC `/WX` 捕获 `_wgetenv` C4996：原 `suppress` 与调用之间有预处理 `#endif`。仅以函数内 `warning(push/disable 4996/pop)` 包住环境读取，保留全局 `/WX`，修复后同一生产 recipe 编译并链接通过。原失败日志/回执保留于候选 02；没有新增 EXE。采样默认关闭，下一次游戏启动前设置 `XAR_CK3_DECLARATIONS_PROFILE_JSONL` 为 D 盘现存输出目录下的 JSONL 路径才会写入。
+
 三个 focused native CTest 通过：
 
 1. 真实封臣县枚举，直属县/封臣县、重复县、非县头衔过滤、full-generation 不符拒绝。
