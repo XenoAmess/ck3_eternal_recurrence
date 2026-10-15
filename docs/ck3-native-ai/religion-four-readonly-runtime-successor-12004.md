@@ -33,8 +33,8 @@ The preserved Native058 DLL is `C:/cbr3/xar_ck3_bridge.dll`, SHA-256
 Its actual native source is **C:/csr12**, while **C:/csr19** is the later frozen
 Python/host source. Neither is modified.
 
-The new shared mapping is
-`C:/workspace/ck3-common-runtime/20261015-native-religion-001/runtime.local.json`.
+The current shared mapping is
+`C:/workspace/ck3-common-runtime/20261015-native-religion-002/runtime.local.json`.
 There is no discovered automatic global/current pointer: callers select this
 single common manifest through their machine mapping. This does not deploy it
 to another machine. The historical R90 mapping remains readable.
@@ -75,6 +75,31 @@ R90 effective host's endpoint fixes are retained. Its successor normal-exit
 profile uses the new native paths and pins, and records the actual selected
 shared manifest; an outer mapping change alone would have left the old native
 guard binding in place.
+
+### Actual R0015 host projection failure and successor002
+
+The first public run failed before CK3 launch: `host_entry.py` rejected the
+effective host SHA. The freezer had calculated SHA from LF text, then Windows
+`write_text` serialized 4,276 CRLF line endings. The actual CRLF SHA was
+`c2012bc0db52c3621260780b54aaeb48e865ae4fe9fea8d49083afc0fbb82373`;
+normalizing those exact bytes to LF reproduced the expected
+`6137707f808181c9d9fb82dafb0d22438dc8d646bbf52a1b120a54e057eb146c`.
+This is a confirmed freezer defect, not a native/provider or business failure.
+
+Successor002 writes explicit UTF-8 LF bytes and recomputes the config/host/import/
+manifest pins. It preserves successor001, its failed run and all original pins;
+the source root, native DLL and seven-packet offline qualifications are reused.
+Its `HOST-PROJECTION-CHECK.actual.json` invokes the actual new wrapper `main`
+through `checked → decode → edits → effective SHA → compile`, then stops at
+the exec boundary before executing the host or touching CK3. All active pins
+pass. This test closes the missed projection check; it does not grant live
+qualification.
+
+The reusable [`ck3_host_projection.py`](../../tools/ck3_host_projection.py)
+freezes explicit LF bytes and verifies the same wrapper semantics. Its regression
+reproduces the real CRLF failure and round-trips a Unicode host with an overlay
+edit through source compilation/execution. Future host freezers should use it;
+the standalone runtime wrapper retains its original checked implementation.
 
 ## Evidence and boundary
 
