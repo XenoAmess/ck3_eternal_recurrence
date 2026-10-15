@@ -1,0 +1,271 @@
+{
+  "derived_from": "N40 P02 immutable AUTO11",
+  "source_receipt_sha256": "89f06870d3fd57f8098a8bb11e4d92f619e89f2cdd2e4c4993d6719c3a8a9732",
+  "body": {
+    "status": "executed",
+    "selected_step": "private-query-player-construction-receipt-v1",
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:3",
+      "revision": 2,
+      "native_revision": 3,
+      "date_raw": 53233368,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68",
+      "connection_generation": 2,
+      "bridge_pid": 226540
+    },
+    "plan": {
+      "phase": "construction_cold_applied_requery",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "construction_pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "pre_native_revision": 1231,
+        "pre_date_raw": 53227536,
+        "pre_proof_epoch": 341388,
+        "source_bridge_pid": 270044,
+        "source_bridge_creation_date": "20261015102214.187404+480",
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2,
+          "stock_gold_cost_raw": 9000000,
+          "gold_before_raw": 29378829,
+          "building_key": "hunting_grounds_01",
+          "authored_monthly_income_hundredths": 25,
+          "authored_monthly_income_delta_hundredths": 25,
+          "old_authored_monthly_income_hundredths": 0,
+          "old_building_key": null,
+          "slot_was_empty": true
+        },
+        "native_ack": {
+          "schema_version": 1,
+          "advertised": false,
+          "status": "pending_receipt",
+          "candidate_failure": "none",
+          "native_failure": "none",
+          "stock_candidate_ready": true,
+          "production_native_path": true,
+          "applied": false,
+          "proof_epoch": 341388,
+          "actor_character_id": 31254,
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2,
+          "gold_before_raw": 29378829,
+          "stock_gold_cost_raw": 9000000,
+          "gold_after_reserve_raw": 20378829,
+          "receiver_command_sequence": 1,
+          "validator_calls": 1,
+          "materialize_calls": 1,
+          "receiver_calls": 1
+        },
+        "status": "applied",
+        "postcondition_verified": true,
+        "post_bridge_pid": 270044,
+        "post_bridge_creation_date": "20261015102214.187404+480",
+        "post_native_revision": 1594,
+        "post_public_revision": 1595,
+        "post_date_raw": 53233296,
+        "post_proof_epoch": 542622,
+        "completion_last_check_date_raw": 53233296
+      }
+    },
+    "result": {
+      "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+      "episode_run_id": "native-31254-96253c58fd68",
+      "actor_character_id": 31254,
+      "pre_native_revision": 1231,
+      "pre_date_raw": 53227536,
+      "pre_proof_epoch": 341388,
+      "source_bridge_pid": 270044,
+      "source_bridge_creation_date": "20261015102214.187404+480",
+      "candidate": {
+        "barony_title_id": 2195,
+        "province_id": 2644,
+        "building_type_id": 580,
+        "slot_index": 2,
+        "stock_gold_cost_raw": 9000000,
+        "gold_before_raw": 29378829,
+        "building_key": "hunting_grounds_01",
+        "authored_monthly_income_hundredths": 25,
+        "authored_monthly_income_delta_hundredths": 25,
+        "old_authored_monthly_income_hundredths": 0,
+        "old_building_key": null,
+        "slot_was_empty": true
+      },
+      "native_ack": {
+        "schema_version": 1,
+        "advertised": false,
+        "status": "pending_receipt",
+        "candidate_failure": "none",
+        "native_failure": "none",
+        "stock_candidate_ready": true,
+        "production_native_path": true,
+        "applied": false,
+        "proof_epoch": 341388,
+        "actor_character_id": 31254,
+        "barony_title_id": 2195,
+        "province_id": 2644,
+        "building_type_id": 580,
+        "slot_index": 2,
+        "gold_before_raw": 29378829,
+        "stock_gold_cost_raw": 9000000,
+        "gold_after_reserve_raw": 20378829,
+        "receiver_command_sequence": 1,
+        "validator_calls": 1,
+        "materialize_calls": 1,
+        "receiver_calls": 1
+      },
+      "status": "applied",
+      "postcondition_verified": true,
+      "completion_status": "in_progress",
+      "post_snapshot_id": "native:3",
+      "post_public_revision": 2,
+      "post_native_revision": 3,
+      "post_date_raw": 53233368,
+      "post_proof_epoch": 103171,
+      "post_bridge_pid": 226540,
+      "post_bridge_creation_date": "20261015043736.520398+000",
+      "completion_last_check_date_raw": 53233296,
+      "completion_observed_date_raw": null,
+      "construction_progress_observation": {
+        "status": "observed",
+        "snapshot_id": "native:3",
+        "native_revision": 3,
+        "date_raw": 53233368,
+        "native_remaining_work_raw": 46000027,
+        "native_progress_divisor_raw": 0
+      },
+      "construction_province_income_observation": {
+        "status": "observed",
+        "barony_title_id": 2195,
+        "province_id": 2644,
+        "snapshot_id": "native:3",
+        "native_revision": 3,
+        "date_raw": 53233368,
+        "native_province_monthly_income_raw": 5115
+      },
+      "construction_selected_intent": {
+        "schema": "xar.ck3.construction_selected_intent_continuity_v1",
+        "source_role": "prior_action_receipt_query",
+        "selected_step": "private-query-player-construction-receipt-v1",
+        "deferred_selected_step": "query-war-termination-options-16777326",
+        "original_action": {
+          "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+          "episode_run_id": "native-31254-96253c58fd68",
+          "actor_character_id": 31254,
+          "candidate": {
+            "barony_title_id": 2195,
+            "province_id": 2644,
+            "building_type_id": 580,
+            "slot_index": 2
+          }
+        },
+        "observed_action": {
+          "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+          "episode_run_id": "native-31254-96253c58fd68",
+          "actor_character_id": 31254,
+          "candidate": {
+            "barony_title_id": 2195,
+            "province_id": 2644,
+            "building_type_id": 580,
+            "slot_index": 2
+          }
+        },
+        "action_identity_matches": true,
+        "actor_identity_matches": true,
+        "candidate_identity_matches": true,
+        "selected_query_performed_new_submission": false,
+        "producer_status": "applied",
+        "producer_postcondition_verified": true,
+        "producer_requested_postcondition_verified": null,
+        "producer_material_postcondition_verified": null,
+        "requested_construction_verified": true,
+        "material_construction_verified": true,
+        "restoration_verified": null,
+        "observed_material_candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "intent_outcome": "requested_construction_observed"
+      },
+      "start_receipt": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "source_bridge_pid": 270044,
+        "post_bridge_pid": 270044,
+        "postcondition_verified": true
+      }
+    }
+  },
+  "state": {
+    "council_pending": null,
+    "construction_actions": {
+      "construction-submit-411dad9f924845e79a26029025a89354": {
+        "binding": {
+          "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+          "episode_run_id": "native-31254-96253c58fd68",
+          "actor_character_id": 31254,
+          "pre_native_revision": 1231,
+          "pre_date_raw": 53227536,
+          "pre_proof_epoch": 341388,
+          "source_bridge_pid": 270044,
+          "source_bridge_creation_date": "20261015102214.187404+480",
+          "candidate": {
+            "barony_title_id": 2195,
+            "province_id": 2644,
+            "building_type_id": 580,
+            "slot_index": 2,
+            "stock_gold_cost_raw": 9000000,
+            "gold_before_raw": 29378829,
+            "building_key": "hunting_grounds_01",
+            "authored_monthly_income_hundredths": 25,
+            "authored_monthly_income_delta_hundredths": 25,
+            "old_authored_monthly_income_hundredths": 0,
+            "old_building_key": null,
+            "slot_was_empty": true
+          },
+          "native_ack": {
+            "schema_version": 1,
+            "advertised": false,
+            "status": "pending_receipt",
+            "candidate_failure": "none",
+            "native_failure": "none",
+            "stock_candidate_ready": true,
+            "production_native_path": true,
+            "applied": false,
+            "proof_epoch": 341388,
+            "actor_character_id": 31254,
+            "barony_title_id": 2195,
+            "province_id": 2644,
+            "building_type_id": 580,
+            "slot_index": 2,
+            "gold_before_raw": 29378829,
+            "stock_gold_cost_raw": 9000000,
+            "gold_after_reserve_raw": 20378829,
+            "receiver_command_sequence": 1,
+            "validator_calls": 1,
+            "materialize_calls": 1,
+            "receiver_calls": 1
+          }
+        },
+        "pending": false,
+        "completion_verified": false,
+        "last_native_revision": 1594,
+        "last_date_raw": 53233296
+      }
+    }
+  },
+  "initial_frame": {
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-96253c58fd68"
+  },
+  "game_pid": 226540
+}
