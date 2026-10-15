@@ -1,7 +1,10 @@
 """A query round earns cooldown credit only after later verified non-declaration."""
 
 from copy import deepcopy
+import json
 from types import SimpleNamespace
+
+import pytest
 
 from xar_autoplayer.bridge import declaration_opportunity_cooldown_v1 as cooldown
 from xar_autoplayer.bridge.service import GameplayBridgeService
@@ -47,9 +50,56 @@ def test_two_separate_completed_no_war_rounds_trigger_exact_month(tmp_path):
     assert cooldown.view(tmp_path, snapshot(), frame(1_168))["status"] == "inactive"
     result = completed_round(tmp_path, 2, 1_168, 1_336)
     assert result["status"] == "active"
+    assert result["consecutive_no_war_rounds"] == 2
     assert result["cooldown_until_date_raw"] == 1_336 + 30 * 24
     assert cooldown.view(tmp_path, snapshot(), frame(2_055))["status"] == "active"
     assert cooldown.view(tmp_path, snapshot(), frame(2_056))["status"] == "inactive"
+
+
+def test_one_completed_round_after_expiry_renews_month_until_real_war(tmp_path):
+    completed_round(tmp_path, 1, 1_000, 1_024)
+    first_cooldown = completed_round(tmp_path, 2, 1_024, 1_048)
+    until = first_cooldown["cooldown_until_date_raw"]
+    expired = cooldown.view(tmp_path, snapshot(), frame(until))
+    assert expired["status"] == "inactive"
+    assert expired["consecutive_no_war_rounds"] == 2
+    renewed = completed_round(tmp_path, 3, until, until + 24)
+    assert renewed["status"] == "active"
+    assert renewed["consecutive_no_war_rounds"] == 2
+    assert renewed["cooldown_until_date_raw"] == until + 24 + 30 * 24
+    actual = {"schema": "war-declaration-continuity-v1", "status": "war_started",
+              "native_response": "accepted", "postcondition_verified": True,
+              "war_id": 9}
+    reset = cooldown.observe_after_turn(
+        tmp_path, frame(until + 24, 20), {},
+        snapshot(wars=[{"war_id": 9, "player_side": "attacker"}], continuity=actual),
+        frame(until + 24, 21))
+    assert reset["consecutive_no_war_rounds"] == 0
+    assert reset["cooldown_until_date_raw"] is None
+    # A later peaceful campaign again needs its initial two completed rounds.
+    assert completed_round(tmp_path, 4, until + 24, until + 48)[
+        "consecutive_no_war_rounds"] == 1
+    assert cooldown.view(tmp_path, snapshot(), frame(until + 48))["status"] == "inactive"
+
+
+@pytest.mark.parametrize("streak,until,date,expected", [
+    (0, None, 1_000, 0), (1, None, 1_000, 1), (2, None, 1_000, 2),
+    (0, 1_720, 1_000, 2), (0, 1_720, 1_720, 2),
+    (1, 1_720, 1_720, 2), (2, 1_720, 1_720, 2),
+])
+def test_existing_v1_state_keeps_streak_across_deadline(tmp_path, streak, until, date, expected):
+    state = cooldown._new(frame())
+    state.update(consecutive_no_war_rounds=streak, cooldown_until_date_raw=until)
+    (tmp_path / cooldown.FILENAME).write_text(json.dumps(state), encoding="utf-8")
+    loaded = cooldown.view(tmp_path, snapshot(), frame(date))
+    assert loaded["consecutive_no_war_rounds"] == expected
+    assert loaded["cooldown_until_date_raw"] == until
+    if until is not None and date >= until:
+        renewed = completed_round(tmp_path, 3, date, date + 24)
+        assert renewed["status"] == "active"
+        assert renewed["cooldown_until_date_raw"] == date + 24 + 30 * 24
+        persisted = json.loads((tmp_path / cooldown.FILENAME).read_text(encoding="utf-8"))
+        assert persisted["consecutive_no_war_rounds"] == 2
 
 
 def test_query_return_or_duplicate_collect_never_closes_a_round(tmp_path):

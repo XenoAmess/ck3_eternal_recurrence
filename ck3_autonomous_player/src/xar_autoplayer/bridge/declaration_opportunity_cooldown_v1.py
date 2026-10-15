@@ -57,7 +57,7 @@ def _load(state_dir, frame: dict) -> dict:
     if not isinstance(state, dict) or state.get("schema") != SCHEMA:
         raise ValueError("declaration cooldown state has an unknown schema")
     if (type(state.get("consecutive_no_war_rounds")) is not int
-            or state["consecutive_no_war_rounds"] not in (0, 1)
+            or state["consecutive_no_war_rounds"] not in (0, 1, 2)
             or state.get("cooldown_until_date_raw") is not None
             and type(state["cooldown_until_date_raw"]) is not int
             or state.get("pending_query") is not None
@@ -68,6 +68,10 @@ def _load(state_dir, frame: dict) -> dict:
         raise ValueError("declaration cooldown frame is unbound")
     if (state.get("actor_character_id"), state.get("episode_run_id")) != owner[:2]:
         return _new(frame)
+    if state["cooldown_until_date_raw"] is not None:
+        # Earlier v1 writers reset the streak when setting this deadline.
+        # Its presence proves the threshold was reached, even after expiry.
+        state["consecutive_no_war_rounds"] = 2
     return state
 
 
@@ -213,9 +217,8 @@ def observe_after_turn(
         return view(state_dir, post_snapshot, post_frame)
     state["last_closed_query_sequence"] = pending["query_sequence"]
     state["pending_query"] = None
-    state["consecutive_no_war_rounds"] += 1
+    state["consecutive_no_war_rounds"] = min(2, state["consecutive_no_war_rounds"] + 1)
     if state["consecutive_no_war_rounds"] == 2:
-        state["consecutive_no_war_rounds"] = 0
         state["cooldown_until_date_raw"] = post_frame["date_raw"] + COOLDOWN_RAW_DAYS
     _save(state_dir, state)
     return view(state_dir, post_snapshot, post_frame)
