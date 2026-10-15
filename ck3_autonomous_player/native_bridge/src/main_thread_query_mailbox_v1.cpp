@@ -648,7 +648,11 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_religion_conversion_inputs12002 == nullptr &&
        environment.permitted_executor_epidemic_treatment12002 == nullptr &&
        environment.permitted_executor_epidemic_recovery12002 == nullptr &&
-       environment.permitted_executor_feast_stage2_confirm12002 == nullptr) {
+       environment.permitted_executor_feast_stage2_confirm12002 == nullptr
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+       && environment.permitted_executor_mandatory_choice12004 == nullptr
+#endif
+       ) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -1071,6 +1075,10 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_feast_stage2_confirm12002;
   mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
   mailbox.snapshot_observer_context = environment.snapshot_observer_context;
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  mailbox.permitted_executor_mandatory_choice12004 =
+      environment.permitted_executor_mandatory_choice12004;
+#endif
   mailbox.executor.store(nullptr, std::memory_order_release);
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -1420,7 +1428,11 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_religion_conversion_inputs12002 != nullptr ||
          mailbox.permitted_executor_epidemic_treatment12002 != nullptr ||
          mailbox.permitted_executor_epidemic_recovery12002 != nullptr ||
-        mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr) &&
+        mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+        || mailbox.permitted_executor_mandatory_choice12004 != nullptr
+#endif
+        ) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -1516,6 +1528,9 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_confucian_religious_title12003 &&
        executor != mailbox.permitted_executor_confucian_challenger_graph12003 &&
        executor != mailbox.permitted_executor_ordinary_interaction12003 &&
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+       executor != mailbox.permitted_executor_mandatory_choice12004 &&
+#endif
         executor != mailbox.permitted_executor_child_education_focus12004 &&
 #if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) && \
     XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1
@@ -1859,6 +1874,15 @@ bool ObserveMainThreadPumpAndDrainV1(
           MainThreadQueryMailboxStateV1::queued &&
       queued_executor != nullptr &&
       queued_executor == mailbox.permitted_frontend_executor;
+  const bool modal_choice_request_queued_hint =
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+      mailbox.state.load(std::memory_order_acquire) ==
+          MainThreadQueryMailboxStateV1::queued &&
+      queued_executor != nullptr &&
+      queued_executor == mailbox.permitted_executor_mandatory_choice12004;
+#else
+      false;
+#endif
   const bool gameplay_pause_observed =
       before.paused && before.jomini_state != 0 && before.game_state != 0;
   if (!gameplay_pause_observed) {
@@ -1868,7 +1892,7 @@ bool ObserveMainThreadPumpAndDrainV1(
     // deciding whether the fixed frontend executor may drain.
     mailbox.owner_thread_id.store(before.thread_id,
                                   std::memory_order_release);
-    if (!frontend_request_queued_hint) {
+    if (!frontend_request_queued_hint && !modal_choice_request_queued_hint) {
       mailbox.drain_guard.clear(std::memory_order_release);
       return false;
     }
@@ -1920,7 +1944,14 @@ bool ObserveMainThreadPumpAndDrainV1(
   // a different ticket before this pump acquires executing ownership.
   const bool frontend_request_claimed =
       executor == mailbox.permitted_frontend_executor;
-  if (!gameplay_pause_observed && !frontend_request_claimed) {
+  const bool modal_choice_request_claimed =
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+      executor == mailbox.permitted_executor_mandatory_choice12004;
+#else
+      false;
+#endif
+  if (!gameplay_pause_observed && !frontend_request_claimed &&
+      !modal_choice_request_claimed) {
     mailbox.completed_sequence.store(sequence, std::memory_order_release);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);

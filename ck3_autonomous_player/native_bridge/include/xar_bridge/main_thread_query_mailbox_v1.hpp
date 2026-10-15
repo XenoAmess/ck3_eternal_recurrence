@@ -424,6 +424,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // including unpaused pumps. Context remains alive until uninstall succeeds.
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
   void *snapshot_observer_context = nullptr;
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  MainThreadQueryExecutorV1 permitted_executor_mandatory_choice12004 = nullptr;
+#endif
 };
 
 // Existing executor SEH diagnostics, relative to the loaded game or bridge
@@ -681,6 +684,10 @@ struct MainThreadQueryMailboxV1 {
   void *executor_context = nullptr;
   bool executor_succeeded = false;
   MainThreadExecutionStampV1 execution_stamp{};
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  // Tail-only addition preserves every retained mailbox field offset.
+  MainThreadQueryExecutorV1 permitted_executor_mandatory_choice12004 = nullptr;
+#endif
 };
 
 bool InstallMainThreadQueryMailboxV1(

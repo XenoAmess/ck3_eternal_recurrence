@@ -3,6 +3,10 @@
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+#include "xar_bridge/native_mandatory_choice_transport_v1.hpp"
+#include "xar_bridge/native_modal_choice_hint_policy_v1.hpp"
+#endif
 #include "xar_bridge/phase_event_calendar_observation_v1_serializer.hpp"
 #include "xar_bridge/phase_event_role_compatibility_v1_serializer.hpp"
 #include "xar_bridge/phase_event_commander_trigger_conditions_v1_serializer.hpp"
@@ -570,6 +574,75 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+// The GUI is sampled only by the verified application-owner pump. The pipe
+// worker consumes this bounded cache and never walks a GUI object.
+struct ModalChoiceOwnerHintCacheV1 {
+  xar::ck3_11906::MainThreadQueryExecutorV1 prior_observer = nullptr;
+  void *prior_context = nullptr;
+  xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 environment{};
+  std::atomic<std::uint64_t> sequence{0};
+  std::atomic<std::uint64_t> observed_ms{0};
+  std::atomic<std::uintptr_t> receiver{0};
+  std::atomic<std::int32_t> date_raw{0};
+  std::atomic<int> status{static_cast<int>(
+      xar::mandatory_choice_v1::ModalHintStatus::unknown)};
+};
+static ModalChoiceOwnerHintCacheV1 g_modal_choice_owner_hint;
+
+bool ObserveModalChoiceOwnerHintV1(
+    void *opaque, const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *cache = static_cast<ModalChoiceOwnerHintCacheV1 *>(opaque);
+  if (!cache) return false;
+  const bool prior_ok = !cache->prior_observer ||
+      cache->prior_observer(cache->prior_context,stamp);
+  xar::mandatory_choice_v1::ModalHint hint{};
+  if (xar::mandatory_choice_v1::OwnerModalHintObservationAllowedV1(
+          stamp,GetCurrentThreadId())) {
+    hint = xar::mandatory_choice_v1::ReadTopExclusiveModalHint12004V1(
+        cache->environment,0);
+  }
+  cache->sequence.fetch_add(1,std::memory_order_acq_rel);
+  cache->receiver.store(hint.receiver,std::memory_order_relaxed);
+  cache->date_raw.store(stamp.date_raw,std::memory_order_relaxed);
+  cache->status.store(static_cast<int>(hint.status),std::memory_order_relaxed);
+  cache->observed_ms.store(GetTickCount64(),std::memory_order_relaxed);
+  cache->sequence.fetch_add(1,std::memory_order_release);
+  return prior_ok;
+}
+
+xar::mandatory_choice_v1::ModalHint ReadCachedModalChoiceHintV1(
+    std::int32_t expected_date_raw) noexcept {
+  xar::mandatory_choice_v1::ModalHint hint{};
+  auto &cache = g_modal_choice_owner_hint;
+  for (int retry=0; retry<3; ++retry) {
+    const auto before = cache.sequence.load(std::memory_order_acquire);
+    if (before & 1) continue;
+    const auto receiver = cache.receiver.load(std::memory_order_relaxed);
+    const auto date = cache.date_raw.load(std::memory_order_relaxed);
+    const auto status = cache.status.load(std::memory_order_relaxed);
+    const auto observed_ms = cache.observed_ms.load(std::memory_order_relaxed);
+    const auto after = cache.sequence.load(std::memory_order_acquire);
+    const auto now = GetTickCount64();
+    if (before != after || !observed_ms || now < observed_ms ||
+        now - observed_ms > 2000 || date != expected_date_raw) continue;
+    if (status < static_cast<int>(xar::mandatory_choice_v1::ModalHintStatus::unknown) ||
+        status > static_cast<int>(xar::mandatory_choice_v1::ModalHintStatus::present))
+      break;
+    hint.status = static_cast<xar::mandatory_choice_v1::ModalHintStatus>(status);
+    hint.receiver = hint.status == xar::mandatory_choice_v1::ModalHintStatus::present
+        ? receiver : 0;
+    return hint;
+  }
+  return hint;
+}
+
+// Only the pipe worker publishes semantic frames. A changed owner-observed
+// receiver publishes even if the coarse Game Snapshot is byte-identical.
+thread_local std::optional<std::pair<xar::mandatory_choice_v1::ModalHintStatus,
+                                     std::uintptr_t>>
+    g_previous_modal_choice_hint;
+#endif
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
 // Retained across connection/revision changes; claimed native stages never reset.
 static xar::ck3_12003::NormalExitMapSessionV1 g_normal_exit_map_session_v1{};
@@ -2169,6 +2242,12 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
     AppendJsonString(result, xar::ck3_11906::kWarResultsQueryV1Capability);
     result += ',';
     AppendJsonString(result, xar::ck3_11906::kWarResultsCloseV1Capability);
+  }
+#endif
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {
+    result += ',';
+    AppendJsonString(result,xar::mandatory_choice_v1::kCapability);
   }
 #endif
   result += "]}";
@@ -5654,7 +5733,8 @@ std::string HeldTitlePartitionFailureDiagnosticFrame12002(
 
 std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
                                std::uint64_t revision,
-                               const CheckpointSubmission &checkpoint) {
+                               const CheckpointSubmission &checkpoint,
+                               std::string_view modal_choice_hint_json = {}) {
   std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
                        "\"snapshot_id\":\"native:";
   result += Number(revision);
@@ -5819,6 +5899,10 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += "\",\"date_raw\":";
     result += SignedNumber(checkpoint.date_raw);
     result += ",\"status\":\"submitted\"}";
+  }
+  if (!modal_choice_hint_json.empty()) {
+    result += ",\"top_exclusive_modal_choice_hint\":";
+    result += modal_choice_hint_json;
   }
   result += ",\"history\":[]}}";
   return result;
@@ -11731,6 +11815,10 @@ public:
     auto environment = xar::ck3_12002::BindThreadRuntimeImage(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         xar::game::ReviewedCrozierAbiSha256(game_->descriptor()), executors);
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+    // The retained binder predates the tail slot; initialize it explicitly.
+    environment.permitted_executor_mandatory_choice12004 = nullptr;
+#endif
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     if (xar::game::IsCk3_12003Descriptor(game_->descriptor())) {
       environment.permitted_frontend_executor =
@@ -12116,6 +12204,21 @@ public:
           &xar::ck3_12002::ObserveAdapterSnapshot12002;
       environment.snapshot_observer_context = observer_;
     }
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+    environment.permitted_executor_mandatory_choice12004 =
+        &xar::mandatory_choice_v1::ExecuteMailbox;
+    g_modal_choice_owner_hint.prior_observer =
+        environment.snapshot_observer_callback;
+    g_modal_choice_owner_hint.prior_context =
+        environment.snapshot_observer_context;
+    g_modal_choice_owner_hint.environment =
+        xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),true,
+            xar::ck3_11906::GuiAbiRevisionV1::crozier12004,
+            game_->descriptor().executable_sha256);
+    environment.snapshot_observer_callback = &ObserveModalChoiceOwnerHintV1;
+    environment.snapshot_observer_context = &g_modal_choice_owner_hint;
+#endif
     environment.permitted_executor_quinary =
         &ExecuteTypedQuery12002<QueryKind12002::war_entry>;
     environment.permitted_executor_senary =
@@ -12321,13 +12424,54 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
   if (mailbox_lifetime != nullptr) {
     mailbox_lifetime->MaybeInstall(snapshot);
   }
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  const auto modal_hint =
+      xar::mandatory_choice_v1::SemanticModalHintPublicationAllowedV1(
+          snapshot.map_ready,
+          xar::game::IsCk3_12004Descriptor(bindings.descriptor()))
+      ? ReadCachedModalChoiceHintV1(snapshot.date_raw)
+      : xar::mandatory_choice_v1::ModalHint{};
+  const auto modal_identity =
+      std::pair{modal_hint.status,modal_hint.receiver};
+  const bool modal_hint_changed = !g_previous_modal_choice_hint ||
+      *g_previous_modal_choice_hint != modal_identity;
+#endif
   if (previous.has_value() && previous.value() == snapshot &&
-      published_checkpoint_sequence == checkpoint.sequence) {
+      published_checkpoint_sequence == checkpoint.sequence
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+      && !modal_hint_changed
+#endif
+      ) {
     record("deduplicated", revision, 0);
     return true;
   }
   ++revision;
-  const auto frame = StateSnapshotFrame(snapshot, revision, checkpoint);
+  std::string modal_hint_json;
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  modal_hint_json = "{\"status\":";
+  AppendJsonString(modal_hint_json,
+      modal_hint.status == xar::mandatory_choice_v1::ModalHintStatus::present
+          ? "present"
+          : modal_hint.status == xar::mandatory_choice_v1::ModalHintStatus::absent
+              ? "absent" : "unknown");
+  modal_hint_json += ",\"source\":";
+  AppendJsonString(modal_hint_json,
+      modal_hint.status == xar::mandatory_choice_v1::ModalHintStatus::unknown
+          ? "owner_pump_cache_unavailable_or_expired"
+          : "application_main_pump_observed_modal_receiver");
+  modal_hint_json += ",\"owner_verified\":";
+  modal_hint_json += modal_hint.status == xar::mandatory_choice_v1::ModalHintStatus::unknown
+      ? "false" : "true";
+  modal_hint_json += ",\"opaque_root_id\":";
+  if (modal_hint.receiver)
+    AppendJsonString(modal_hint_json,
+        xar::mandatory_choice_v1::NativeReceiverIdentityV1(modal_hint.receiver));
+  else modal_hint_json += "null";
+  modal_hint_json += ",\"max_observation_age_ms\":2000}";
+  g_previous_modal_choice_hint = modal_identity;
+#endif
+  const auto frame = StateSnapshotFrame(
+      snapshot, revision, checkpoint, modal_hint_json);
   previous = snapshot;
   published_checkpoint_sequence = checkpoint.sequence;
   const bool written = xar::bridge::WriteFrame(pipe, frame);
@@ -12439,6 +12583,9 @@ HANDLE ConnectToHost() noexcept {
 }
 
 struct WorkerState {
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  xar::mandatory_choice_v1::Session mandatory_choice_session{};
+#endif
   xar::bridge::ArmyStrengthResultWriteDiagnosticV1 army_result_write{};
   CommandEntryTracesV1 command_entry_traces{};
   xar::ck3_12002::NonwarPrivateState12002 nonwar_private12002{};
@@ -14595,6 +14742,10 @@ void RunConnectedSession(
     return;
   }
   ++state.connection_generation;
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  state.mandatory_choice_session.Reset(state.connection_generation);
+  g_previous_modal_choice_hint.reset();
+#endif
   state.checkpoint_submission.save_name =
       game.descriptor().checkpoint_save_name;
   if (!write_frame(
@@ -17816,6 +17967,88 @@ void RunConnectedSession(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
               }
+            }
+          } else
+#endif
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+          if (step == xar::mandatory_choice_v1::kQueryStep ||
+              step == xar::mandatory_choice_v1::kSelectStep) {
+            xar::mandatory_choice_v1::MailboxContext query{};
+            const auto admission = xar::mandatory_choice_v1::PrepareMailbox(
+                game,previous_snapshot ? &previous_snapshot.value() : nullptr,
+                request_id,step,incoming.payload,state_revision,
+                connection_generation,
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                g_main_thread_query_mailbox_v1,
+                state.mandatory_choice_session,query);
+            std::string response;
+            if (!admission.empty()) {
+              response = CommandResultFrame(request_id,step,false,admission);
+            } else {
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::mandatory_choice_v1::ExecuteMailbox,&query,query.ticket);
+              if (submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                   timeout_executor_already_running)
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    query.completed && query.request_id == request_id &&
+                    query.connection_generation == connection_generation &&
+                    query.ticket.sequence != 0) {
+                  const auto started = g_main_thread_query_mailbox_v1.
+                      executor_started_sequence.load(std::memory_order_acquire);
+                  const auto completed = g_main_thread_query_mailbox_v1.
+                      completed_sequence.load(std::memory_order_acquire);
+                  const auto stamp = g_main_thread_query_mailbox_v1.execution_stamp;
+                  if (started == query.ticket.sequence &&
+                      completed == query.ticket.sequence &&
+                      stamp.pump_epoch != 0 && stamp.thread_id != 0 &&
+                      stamp == query.execution_stamp) {
+                    response = xar::mandatory_choice_v1::CommandResultFrame(query);
+                    if (!response.empty() && response.back() == '}') {
+                      response.pop_back();
+                      response += ",\"mandatory_choice_owner_receipt\":{\"request_id\":";
+                      AppendJsonString(response,request_id);
+                      response += ",\"ticket_sequence\":"+Number(query.ticket.sequence)+
+                          ",\"executor_started_sequence\":"+Number(started)+
+                          ",\"completed_sequence\":"+Number(completed)+
+                          ",\"pump_epoch\":"+Number(stamp.pump_epoch)+
+                          ",\"thread_id\":"+Number(stamp.thread_id)+
+                          ",\"date_raw\":"+SignedNumber(stamp.date_raw)+
+                          ",\"connection_generation\":"+
+                          Number(connection_generation)+"}}";
+                    }
+                  }
+                }
+                auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1,query.ticket);
+                while (reclaimed != xar::ck3_11906::
+                                       MainThreadQueryReclaimResultV1::reclaimed) {
+                  response.clear();
+                  (void)xar::ck3_11906::CancelMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,query.ticket);
+                  (void)xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,query.ticket,100);
+                  Sleep(100);
+                  reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,query.ticket);
+                }
+              }
+              if (response.empty()) response = CommandResultFrame(
+                  request_id,step,false,
+                  "mandatory_choice_owner_submission_or_completion_failed");
+            }
+            connected = write_frame(pipe,response);
+            if (connected && step == xar::mandatory_choice_v1::kSelectStep &&
+                query.select_result.dispatch_attempted) {
+              previous_snapshot.reset();
+              connected = PublishSnapshot(pipe,game,previous_snapshot,
+                  state_revision,checkpoint_submission,
+                  published_checkpoint_sequence);
             }
           } else
 #endif

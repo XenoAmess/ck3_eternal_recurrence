@@ -239,6 +239,12 @@ option(
 )
 
 option(
+  XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1
+  "Compile the exact-build top exclusive modal typed query/select route"
+  OFF
+)
+
+option(
   XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
   "Compile a private bounded read-only declaration node identity query"
   OFF
@@ -1503,6 +1509,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1
     XAR_ENABLE_PREWAR_FORCE_COALITION_V2
     XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+    XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1
     XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)
   if(${private_option})
     target_compile_definitions(xar_ck3_12002_runtime PUBLIC ${private_option}=1)
@@ -1732,6 +1739,37 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_result_case_snapshot_v1_mailbox.cpp
   src/zhongguo_result_case_snapshot_v1_serializer.cpp
 )
+if(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+  target_include_directories(xar_ck3_bridge PRIVATE include/xar_bridge)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/native_mandatory_choice_gate_v1.cpp
+    src/native_modal_choice_collector_v1.cpp
+    src/native_mandatory_choice_controller_v1.cpp
+    src/native_mandatory_choice_nonce_win_v1.cpp
+    src/ck3_12004_modal_choice_port_v1.cpp
+    src/native_mandatory_choice_transport_v1.cpp)
+  if(BUILD_TESTING AND WIN32)
+    foreach(choice_test IN ITEMS
+        native_mandatory_choice_gate_v1
+        native_modal_choice_collector_v1
+        native_mandatory_choice_controller_v1)
+      add_executable(xar_ck3_${choice_test}_test
+        tests/${choice_test}_test.cpp
+        src/native_mandatory_choice_gate_v1.cpp
+        src/native_modal_choice_collector_v1.cpp
+        src/native_mandatory_choice_controller_v1.cpp)
+      target_include_directories(xar_ck3_${choice_test}_test PRIVATE
+        include include/xar_bridge)
+      target_compile_features(xar_ck3_${choice_test}_test PRIVATE cxx_std_20)
+      target_compile_definitions(xar_ck3_${choice_test}_test PRIVATE NOMINMAX)
+      if(MSVC)
+        target_compile_options(xar_ck3_${choice_test}_test PRIVATE /UNDEBUG)
+      endif()
+      add_test(NAME xar_ck3_${choice_test}_test
+        COMMAND xar_ck3_${choice_test}_test)
+    endforeach()
+  endif()
+endif()
 target_include_directories(xar_ck3_bridge PRIVATE research src)
 if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   if(NOT XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
