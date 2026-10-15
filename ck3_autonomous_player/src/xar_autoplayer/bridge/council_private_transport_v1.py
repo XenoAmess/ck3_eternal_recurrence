@@ -76,7 +76,36 @@ def normalize_council_private_query_result_v1(
                if isinstance(gates, Mapping)
                else value.get("council_composition_candidates"))
     if not isinstance(payload, dict):
-        raise ValueError("private council result lacks a candidate payload")
+        # The native final-gates serializer intentionally omits candidate
+        # payloads when no final gate row is available.  This is a completed
+        # read, never an assignment or evidence of a legal candidate.
+        reason = gates.get("unavailable_reason") if isinstance(gates, Mapping) else None
+        no_final_rows = (
+            query_step == PRIVATE_GATES_STEP
+            and value.get("status") in {"available", "unavailable"}
+            and value.get("private") is True
+            and value.get("advertised") is False
+            and type(value.get("native_helper_invocations_delta")) is int
+            and value["native_helper_invocations_delta"] == 0
+            and isinstance(gates, Mapping)
+            and gates.get("schema") == "xar.ck3.private.council-final-gates/v1"
+            and gates.get("status") == "unavailable"
+            and type(gates.get("candidate_count")) is int
+            and gates["candidate_count"] == 0
+            and gates.get("rows") == []
+            and isinstance(reason, str) and 0 < len(reason) <= 128
+            and "council_composition_candidates" not in gates
+            and "council_composition_candidates" not in value
+        )
+        if not no_final_rows:
+            raise ValueError("private council result lacks a candidate payload")
+        require_exact_native_build(expected_game_version, expected_executable_sha256)
+        return {
+            **value, "step": query_step, "native_step": semantic_step,
+            "private_build": True, "advertised": False, "read_only": True,
+            "native_envelope_status": value["status"], "status": "unavailable",
+            "unavailable_reason": reason,
+        }
     exact = payload.get("exact_build")
     if not isinstance(exact, Mapping):
         raise ValueError("private council candidates lack exact-build metadata")
