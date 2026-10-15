@@ -350,6 +350,18 @@ Change Notes；成功更新 Workshop 主描述同样不会连带修改既有 Cha
 
 本次事故的永久事实与哈希见 [Auto Upgrade Buildings 2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
 
+### 7.2 匿名回读限流：保全分项结果与完整正文（2026-10-16）
+
+公开描述与 Change Notes 分别判定：API 描述逐字匹配时可保留该项 PASS，但 Notes 遇到 HTTP429、页面不可访问或仅有摘录时，完整正文仍未验证，不能由上传 ACK、仓库文字或描述 PASS 推导 release complete。匿名 HTTP 不依赖 Steam 客户端在线，不为等待公开页而延长发布在线窗口。
+
+遇到429，保留该次时间、状态、响应头、原始响应 body 和实际 Retry-After；不保存凭证或 Set-Cookie。没有 Retry-After 就明确记为缺失，不推测服务端恢复时间或 quota 来源。gzip 原字节与无损解压 HTML 分开保存；严格解码完整正文，不能用带替换字符的预览授予精确匹配。按合理间隔再作单次只读请求，每次新建回执，保留旧失败；不能为回读失败重复 Submit。
+
+正当的匿名页面请求可使用同一目标官方 `https://steamcommunity.com/sharedfiles/filedetails/changelog/<item-id>?l=english&p=1`，发送普通 HTML Accept、Accept-Language 和 Accept-Encoding 请求头，不使用 cookie、owner 接口、凭证或轮换代理。只有取得完整原 HTML 后，才复用 `tools/verify_workshop_publication.py` 的解码与换行归一化，核唯一 entry 的整篇字符、行数及 SHA；解析页摘录或缓存来源不明的文本不替代该证据。
+
+实际资格：More Tenets Slots(XA) v11（machine_id: `bf-202609141645-5434332d4d`） 的一次上传后，描述/元数据/保留媒体先独立通过，Notes 多次429且无 Retry-After，另一网页工具也未提供正文。保持现有网络配置、请求间隔超过五分钟后，带上述普通请求头的精确官方英文分页 URL 在 `2026-10-15T18:53:08Z` 返回200；完整60727字节 HTML 交由现有比较函数处理，唯一 entry `1792089226` 的2321字符、21行 Notes 与冻结文本完全相同，没有再次上传。HTML SHA-256 为 `b50fd34c4c49613444189f73b106fb95d3169fb765f962e88a3bbbdaebc7fe51`。这不是 A/B：分页参数、请求头和经过时间同时不同，不能归因于某个单一 header，也不把五分钟当作通用解除限流保证。
+
+来源：[官方公开条目](https://steamcommunity.com/sharedfiles/filedetails/changelog/3182367229?l=english&p=1)、[独立产品 v11 具体发布报告](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/docs/workshop/publication-v11.md)、[提交前文本冻结](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/d1c9deee5c0214f9418c8df821a8ac9f3f97d334/docs/workshop/publication-text-freeze-v11.json)。实际 HTTP 原件、产品正文与媒体仍归该独立产品；框架只收录通用方法与本次公开回读资格，不由此授予其他产品、缓存加载或业务通过。
+
 ## 8. 自动化边界与最小测试路线
 
 可自动化：staging 构建与哈希、descriptor 检查、Launcher local-mod 精确匹配、IPC 请求、进度/错误采集、公开元数据回读、订阅缓存哈希复核和离线恢复。
