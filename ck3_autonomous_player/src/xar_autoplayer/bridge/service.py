@@ -1787,6 +1787,16 @@ class GameplayBridgeService:
         self, *, allow_prewar_force_query: bool = True,
         allow_war_overview_query: bool = True,
     ) -> dict[str, object]:
+        from .readonly_planning_retry_v1 import retry_readonly_planning_once_v1
+        return retry_readonly_planning_once_v1(
+            lambda: self._plan_turn_internal_without_readonly_retry_v1(
+                allow_prewar_force_query=allow_prewar_force_query,
+                allow_war_overview_query=allow_war_overview_query))
+
+    def _plan_turn_internal_without_readonly_retry_v1(
+        self, *, allow_prewar_force_query: bool = True,
+        allow_war_overview_query: bool = True,
+    ) -> dict[str, object]:
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
         )

@@ -25,3 +25,11 @@ P06 AUTO155返回真实paused、请求8日而实际10日，外置分类器原有
 P04已完成批次77/140/261/316的4类事件与1类交互已通过通用原版分析器查当前exact1.20.0.4源码、核原始before/after SHA、保存条件/作用域/选项及副作用来源，并发布到当前state的通用event-source-registry/interaction-source-registry：courtier_guest_management.0102、conqueror.1200、marriage_effect.2001、stress_threshold.1011、negotiate_alliance_interaction。报告在 `root-p04-offline-source-review01`，未解析项为0；源码知识不证明实际数值副作用，也不冒充最佳策略。
 
 独立 `offline_vanilla_event_worker.py` 已持续处理完成批次并异步发布新知识，输出 `automatic-event-source-analysis01`。旧batch里的pending字段作为历史保留，以后继分析报告闭环；同来源/选项结构的新实例由通用source-rebind校验决定是否已知，其他机器未复制/重建知识时不能外推为已部署。
+
+## P07 只读规划竞争的自动恢复
+
+P06原188为继承人查询的暂停地图前置条件竞争；原435为`query-campaign-root-context-v1`读取期间实际战争数从1变2，原生返回具备完整request/result绑定的`state_changed` preflight。两者均未提交业务动作。P07同一Game内恢复后，普通规划已读取两场防御战；当前累计7619游戏日，约20.86年，30年尚未完成。
+
+公共`readonly_planning_retry_v1.py`只对上述两类有证据的只读前置失败重新获取快照并规划一次；嵌套规划共享一次预算。动作拒绝、其他查询、缺失诊断、超时和其他异常继续返回原错误。它不重跑`auto_turn`或执行计划。实际service wrapper与正负例验证为3项测试、7项subtest通过；P07外置完整绑定与恢复组合证据分别在`ROOT-P07-READONLY-RETRY-VERIFICATION.json`及`ROOT-P07-TYPED-RECOVERY-COMPOSITION.json`。
+
+P06完整批次6推进64日/50.175秒（0.784秒/日），批次67推进91日/55.397秒（0.609秒/日）。纯推进的70个完整窗口中位0.320秒/日，最快9日/2.024秒；原生snapshot每250ms发布一次，因此`.251秒`等待不能证明后台FPS限制。当前设置为fullscreen、VSync开启、framecap=monitor、adaptive_framerate关闭。只读报告在`D:/qperf15_artifacts/background-fps-readonly-review.json`，没有修改游戏设置或桌面；完整批次平均0.5秒/日目标仍未达成。
