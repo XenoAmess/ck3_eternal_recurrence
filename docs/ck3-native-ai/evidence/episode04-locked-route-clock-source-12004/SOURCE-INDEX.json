@@ -11,6 +11,17 @@
         "sha256": "7c3bb386fb8a6a09488c77d99fd1f2e9174d8a6b4b81ee527a8907273c8a081c",
         "member": "native_driver.py"
       }
+    },
+    "25769ea3fe8ab696567c1e889f8a164089fb8afe141eb93a5531af15c5cc721e": {
+      "source_commit": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+      "source_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "source_bytes": 1538624,
+      "artifact": {
+        "path": "d932-native-driver.source.zip",
+        "bytes": 211356,
+        "sha256": "b8a7ffa3ff423a18565199d3dcbea48ab959050abab20e479e264c02236fbd2e",
+        "member": "native_driver.py"
+      }
     }
   }
 }

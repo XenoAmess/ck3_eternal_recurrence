@@ -222,3 +222,14 @@ docs/ck3-native-ai/evidence/episode04-split-source-12004/*.instructions.json -te
 docs/ck3-native-ai/evidence/episode04-split-source-12004/source-index.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/plans/episode04-military-reinforcement-toggle-12004.json -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/validation/strategy-a-route-inputs.actual.json -text whitespace=cr-at-eol
+
+# Exact R0177 current-literal records; preserve only these named JSON artifacts.
+docs/ck3-native-ai/acceptance/2026-10-16-episode04-r0177-a07-current-literals/CURRENT.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-episode04-r0177-a07-current-literals/CONTEXT.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-episode04-r0177-a07-current-literals/INDEX.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-episode04-r0177-a07-current-literals/POSTMOVE93.actual-a01.json -text whitespace=cr-at-eol
+
+# Exact bounded R0177 coastal source receipts and canonical indices.
+docs/ck3-native-ai/acceptance/2026-10-16-r0177-coastal-normalprep/r0177-coastal-small-originals.zip -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0177-coastal-normalprep/SUMMARY.actual-a01.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0177-coastal-code-index.actual-a01.json -text whitespace=cr-at-eol

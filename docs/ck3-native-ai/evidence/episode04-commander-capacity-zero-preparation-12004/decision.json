@@ -1,0 +1,152 @@
+{
+  "schema": "xar.e04.r05.capacity-to-zero.preparation-decision.v1",
+  "machine_id_of_this_preparation": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-15T21:04:50.433056+00:00",
+  "policy_identity": "all actor/Army/candidate/session IDs resolved dynamically; IDs in inputs.json are scene-bound observations only",
+  "kind": "read-only decision knowledge; not an executable command schedule",
+  "existing_entrypoints": {
+    "agent": "xar_autoplayer.strategy.plan_r05_zero_stock_preparation",
+    "implementation": "xar_autoplayer.bridge.army_zero_stock_clock_12004.plan_zero_stock_preparation_12004",
+    "target_rate": "xar_autoplayer.bridge.army_target_land_supply_projection_12004.project_conditional_target_land_rate_12004",
+    "candidate_leaf_normalizer": "xar_autoplayer.bridge.army_commander_conditional_capacity.normalize_candidate_conditional_supply_capacity_v1",
+    "raw_parser": "xar_autoplayer.bridge.army_commander_conditional_capacity.parse_conditional_capacity_raw64"
+  },
+  "preference": [
+    "compare already observed lower-stock normal army before adding assignment steps",
+    "otherwise choose actual eligible candidate with lower positive conditional capacity",
+    "compare full new-current target negative-rate inputs and successful-update counts; not capacity alone"
+  ],
+  "steps": [
+    {
+      "stage": "bind_current",
+      "requires": [
+        "fresh paused session/actor/PID/create_time/generation/episode/date",
+        "public and native Army identity and current owner/control",
+        "current stock/capacity/current assigned commander"
+      ]
+    },
+    {
+      "stage": "read_candidates_if_needed",
+      "tool": "ck3_query_army_commander_candidates_v1",
+      "requires": [
+        "same candidate available",
+        "final_eligibility_observable true",
+        "can_assign true",
+        "conditional leaf available and same candidate source ID",
+        "strict exact4 provenance and exact raw formula"
+      ],
+      "unknowns_not_filled": [
+        "future assignment keeps candidate current aggregate",
+        "candidate M1A9 from capacity467/468"
+      ]
+    },
+    {
+      "stage": "normal_assignment_once_if_needed",
+      "tool": "ck3_assign_army_commander_v1",
+      "requires": [
+        "fresh action UI revision",
+        "actual candidate FullID and selected public Army"
+      ],
+      "ACK_is_effect": false,
+      "unknown_result_action": "read current state before any repeat"
+    },
+    {
+      "stage": "independent_readback",
+      "requires": [
+        "actual assigned commander matches",
+        "same Army owner and both IDs",
+        "new actual capacity and stock",
+        "new current commander M1A9"
+      ],
+      "prediction_mismatch": "preserve both and replan; never substitute conditional capacity for actual cap"
+    },
+    {
+      "stage": "target_and_arrival",
+      "requires": [
+        "fresh full target operands and own eligible union",
+        "same current assigned commander",
+        "normal reachable audited route",
+        "arrival actual rate/stock/commander readback"
+      ],
+      "oldframe_join": "refuse"
+    },
+    {
+      "stage": "natural_progress",
+      "requires": [
+        "actual admitted updater opportunities",
+        "exact-day progress and separate journal fences",
+        "per-day retained events and source attribution"
+      ],
+      "calendar_conversion_from_display_monthly_rate": false
+    },
+    {
+      "stage": "R05_zero_positive",
+      "requires": [
+        "actual writer-entry stock0",
+        "same natural parent callback",
+        "source-qualified supply preferred or residual",
+        "complete unique physical slots before/after",
+        "actual physical debit >0"
+      ],
+      "excluded_substitutes": [
+        "net soldiers",
+        "requested debit",
+        "stock cap trim",
+        "siege/raid/county debit",
+        "conditional risk or budget"
+      ]
+    }
+  ],
+  "stock_update_source": {
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "admission_and_updater_rva": "0x24E4CF0",
+    "stock_add_pc": "0x24E4E6F",
+    "floor_cap_span": "0x24E4E8B..0x24E4EB6",
+    "capacity_getter_rva": "0x2C53BF0",
+    "order": "admit -> signed64 rate ADD -> actual current capacity getter -> negative floor0 / otherwise signed minimum(capacity)",
+    "assignment_immediately_trims_stock_proved": false
+  },
+  "illustrations_only_fixed_nonoverflow_admitted_updates": [
+    {
+      "start_stock": 300,
+      "actual_capacity": 100,
+      "fixed_rate": -5,
+      "after_first": 100,
+      "first_below10_update_number": 20,
+      "first_zero_update_number": 21
+    },
+    {
+      "start_stock": 300,
+      "actual_capacity": 100,
+      "fixed_rate": -2,
+      "after_first": 100,
+      "first_below10_update_number": 47,
+      "first_zero_update_number": 51
+    },
+    {
+      "start_stock": 100,
+      "actual_capacity": 100,
+      "fixed_rate": -5,
+      "after_first": 95,
+      "first_below10_update_number": 19,
+      "first_zero_update_number": 20
+    },
+    {
+      "start_stock": 100,
+      "actual_capacity": 100,
+      "fixed_rate": -2,
+      "after_first": 98,
+      "first_below10_update_number": 46,
+      "first_zero_update_number": 50
+    }
+  ],
+  "unqualified_at_preparation": [
+    "specific R0177 eligible low-cap candidate",
+    "a08 native conditional leaf live",
+    "normal assignment result",
+    "new current M1A9/rate after assignment",
+    "actual zero stock",
+    "actual zero-stock supply physical debit"
+  ]
+}

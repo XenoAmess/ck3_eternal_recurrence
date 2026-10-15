@@ -440,6 +440,14 @@ if(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1 AND
   message(FATAL_ERROR "Map normal exit requires existing exact-build frontend owner admission")
 endif()
 
+option(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1
+  "Admit exact .4 fixed stock HUD Military button through the original GUI callback" OFF)
+if(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1 AND
+   (NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR
+    NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
+  message(FATAL_ERROR "Military opener requires existing frontend main-thread admission")
+endif()
+
 option(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
   "Admit exact .3 fixed HUD Decisions button through the original GUI callback" OFF)
 if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1 AND
@@ -1605,6 +1613,7 @@ add_library(xar_ck3_bridge SHARED
   src/frontend_bookmark_model_probe_v1.cpp
   src/frontend_gui_route_v1.cpp
   src/ingame_decisions_opener_v1.cpp
+  src/ingame_military_opener_12004.cpp
   src/normal_exit_map_v1.cpp
   src/normal_exit_map_request_v1.cpp
   src/normal_exit_map_source_v1.cpp
@@ -2289,6 +2298,10 @@ foreach(decision_private_flag IN ITEMS
       APPEND PROPERTY COMPILE_DEFINITIONS ${decision_private_flag}=1)
   endif()
 endforeach()
+if(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1)
+  set_property(SOURCE src/bridge.cpp src/ck3_12004_adapter.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1=1)
+endif()
 if(XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1=1)
 endif()

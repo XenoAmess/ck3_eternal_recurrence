@@ -286,14 +286,26 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
   output.candidate_collection_complete = true;
   output.candidate_source_count = native.value.count;
   output.candidates.reserve(static_cast<std::size_t>(native.value.count));
+  const std::optional<std::int64_t> capacity_full =
+      bindings.conditional_supply_capacity_observer_enabled &&
+              bindings.conditional_supply_capacity_loaded_full != nullptr
+          ? std::optional<std::int64_t>(Load<std::int64_t>(
+                bindings.conditional_supply_capacity_loaded_full, 0))
+          : std::nullopt;
   bool partial = output.current_commander_status == "unavailable";
   for (std::int32_t index = 0; index < native.value.count; ++index) {
     CommanderCandidateSnapshot row{};
+    if (bindings.conditional_supply_capacity_observer_enabled) {
+      row.conditional_supply_capacity_v1.emplace();
+      row.conditional_supply_capacity_v1->loaded_full_raw = capacity_full;
+    }
     void *candidate = native.value.data[index];
     if (candidate == nullptr) {
       row.unavailable_reason = "candidate_pointer_unavailable";
     } else {
       row.character_id = Load<std::int32_t>(candidate, 0x18);
+      if (row.conditional_supply_capacity_v1 && row.character_id >= 0)
+        row.conditional_supply_capacity_v1->source_character_id = row.character_id;
       if (ResolveCharacter(bindings.character_storage_slot, row.character_id) !=
               candidate || Load<void *>(candidate, 0x1D0) != nullptr) {
         row.unavailable_reason = "candidate_identity_unavailable";
@@ -309,15 +321,22 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
         row.quality_observable = true;
         // Same effective enum consumed by native siege-phase length and
         // the mask-4 candidate scorer. Generic quality stays independent.
+        void *aggregator = nullptr;
         if (bindings.get_character_modifier_aggregator != nullptr &&
             bindings.read_character_modifier != nullptr) {
-          void *aggregator = bindings.get_character_modifier_aggregator(candidate);
+          aggregator = bindings.get_character_modifier_aggregator(candidate);
           if (aggregator != nullptr &&
               bindings.read_character_modifier(static_cast<std::byte *>(aggregator) + 0x68,
                   &row.siege_phase_time_modifier_raw, kSiegePhaseTimeModifierIndex) ==
                   &row.siege_phase_time_modifier_raw) {
             row.siege_phase_time_modifier_observable = true;
           }
+        }
+        if (row.conditional_supply_capacity_v1) {
+          row.conditional_supply_capacity_v1 =
+              ck3_12004::ReadCommanderConditionalSupplyCapacity12004(
+                  row.character_id, aggregator, capacity_full,
+                  bindings.read_character_modifier);
         }
         row.available = true;
         row.unavailable_reason = {};
@@ -328,11 +347,22 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
           row.quality_observable = false;
           row.siege_phase_time_modifier_observable = false;
           row.unavailable_reason = "candidate_generation_changed";
+          if (row.conditional_supply_capacity_v1)
+            ck3_12004::InvalidateCommanderConditionalCapacity12004(
+                *row.conditional_supply_capacity_v1, "candidate_generation_changed");
         }
       }
     }
     partial = partial || !row.available;
     output.candidates.push_back(row);
+  }
+  if (capacity_full &&
+      Load<std::int64_t>(bindings.conditional_supply_capacity_loaded_full, 0) !=
+          *capacity_full) {
+    for (auto &row : output.candidates)
+      if (row.conditional_supply_capacity_v1)
+        ck3_12004::InvalidateCommanderConditionalCapacity12004(
+            *row.conditional_supply_capacity_v1, "loaded_full_changed");
   }
   if (!ArmyIdentityUnchanged(bindings, unit, army, output) ||
       ResolveCharacter(bindings.character_storage_slot,
@@ -349,6 +379,10 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
       output.current_native_ai_base_quality->unavailable_reason =
           "army_identity_changed";
     }
+    for (auto &row : output.candidates)
+      if (row.conditional_supply_capacity_v1)
+        ck3_12004::InvalidateCommanderConditionalCapacity12004(
+            *row.conditional_supply_capacity_v1, "army_identity_changed");
     output.unavailable_reason = "army_identity_changed";
     return CommanderCandidatesReadResult::unavailable;
   }

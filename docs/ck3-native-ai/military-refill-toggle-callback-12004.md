@@ -50,3 +50,27 @@ JSON 的 `callback_binding_source_12004` 固定 EXE SHA、ButtonBase/组分派�
 ## 存储与交付边界
 
 a08所有新文件限1MiB，计入Root active32MiB池及既有metadata17MiB子额，原截止 `2026-10-16T07:45:01.597Z` 不延长。闭场实际占用、容量、机器与patch/source SHA见 `DELIVERY.actual.json`；本轮仅外置写入。资料在截止前作为下一callback研究关键输入保护，届时由统一 [存储策略](../storage-retention-policy.md)复核继续用途，不能无限续存或把其他机器状态外推到本机。
+
+
+## 2026-10-16 R0177：实际共用slot2的下一真实跳转
+
+machine_id: `desktop-3fevhd2-1c74096080`。Root现场响应 `R0177/responses/013-a07-military-tree-before-open.json` 实际时间 `2026-10-15T20:04:08.912599Z`，832958B，SHA-256 `fe643e91cd66cf723ffad34dca66812231ff2b34bc08d9ea8fc31b042a6cac23`。完整树506行、military root存在且hidden；两原版source祖先下的外层group实际路径 `0/0/0/2/3/0/0/0`、`0/0/0/3/5/0/0/0`，都具有fallback callback slot2 `3AA30E0`。这是共用wrapper，不能命名为MilitaryView业务callback。内层checkbox的另一个slot2不作为业务callback入口。
+
+原版 `gui/shared/buttons.gui` SHA-256 `88403785a1acdacc628730aaa101a04b2ae6293e74aa706a93e0e1695f3b1a0c` 第1313行证明 `button_checkbox_label` 是button_group，内含flowcontainer、button_checkbox和text_single。onclick在外层group，checked在内层checkbutton。常规group来源为 `tab_your_armies/footer`，另一个在provincial armies的footer；此来源匹配不替代具体表达式/receiver证明。
+
+外置研究根 `C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09`。actual3AA30E0元数据查询用108B发现不被pdata覆盖，RED回执保留。随后新的有限prefix计划通过check/render，从该actual入口逐字节解码，首unconditional jmp立即止；实际只读18B，不猜fullbody/邻域，不重读3AA0D20或3A9FA30。原字节为 `488BC1488D5110488B89F000000048FF6008`，SHA-256 `7a37683abfa5cb9317164e719bc14ba7cc067f79fee8e086267a11d8b18f3563`：
+
+```asm
+3AA30E0 mov rax, rcx
+3AA30E3 lea rdx, [rcx+10]
+3AA30E7 mov rcx, [rcx+F0]
+3AA30EE jmp qword ptr [rax+8]
+```
+
+因此下一实际控制流目标在callback_object `+8`；callee的RCX来自对象`+F0`，RDX为对象`+10`参数块地址。receiver类型和参数块内部语义仍未知。不能继续猜callee RVA，也不能把此18B source prefix冒称有pdata/fullbody完整资格。
+
+最小只读生产候选继续使用同一个military census。实际遍历前核对loaded18B source pin；仅当callback_slot2等于3AA30E0时读取对象`+8/+F0`，重读对象/vtable/entry/receiver保持一致。输出 `indirect_target_3aa30e0.native_target_8_rva` 与 `receiver_f0_present`，不输出heap指针、不读取未知参数块。DTO/serializer/strictconsumer已接通；source metadata另含固定thunk RVA及18B SHA。旧a07 source profile仍可读，但不能声称有新字段；新profile要求该thunk的每个row带完整新叶，其他handler禁止借其布局。loaded pin、读取/范围/稳定性失败拒绝观察。
+
+新候选不增加工具、顶层query或action。两修改原生TU `/Zs` 实际退出0，10项新增严格消费者测试通过，并交叉核对actual18B等于native pin和消费者SHA；相对patch `git apply --check` 通过。这是SOURCE_ONLY，不代表新叶已在游戏运行。下一Root获准构建/现场读回 `native_target_8_rva` 后才对那个实际目标继续有限pdata/body研究；隐藏tree无需先打开窗口即可提供该source入口。Root016 Knights打开尝试因当前`.4` UI只支持army query/select而失败，不允许重放或放宽旧版RVA gate。
+
+独立开关后验继续使用实际available Regi来源叶的完整身份。a09另有纯 `military_refill_switch_transition_12004.py` 候选和8个新测试，核same full persistent/sourceCharacter、来源引用/分支不变、after desired；模块不授dispatch、callback语义、动作或actualADD资格。当前游戏没有执行任何补员toggle。a09所有新输出限2MiB、计active32MiB池，原截止 `2026-10-16T07:45:01.597Z` 不延长。

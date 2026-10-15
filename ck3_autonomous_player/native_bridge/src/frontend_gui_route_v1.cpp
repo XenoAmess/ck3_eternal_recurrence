@@ -858,6 +858,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
         stamp, query->environment, query->dispatch_environment);
   }
 #endif
+  if (query->operation == FrontendGuiRouteOperationV1::open_ingame_military) {
+    return ExecuteIngameMilitaryOpen12004(query->ingame_military, *query->mailbox, stamp,
+        query->environment, query->dispatch_environment);
+  }
   if (query->operation == FrontendGuiRouteOperationV1::open_ingame_decisions) {
     return ExecuteIngameDecisionsOpenV1(query->ingame_decisions, *query->mailbox, stamp,
         query->environment, query->dispatch_environment);

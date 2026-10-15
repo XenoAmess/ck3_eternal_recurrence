@@ -210,3 +210,12 @@ R0175独立正常Move后首段进度96666/100000，大于实际锁定线50000；
 便携原件、严格离线重放与共享专题分别落在 `docs/ck3-native-ai/acceptance/2026-10-16-episode04-r12-r0175/`、`2026-10-16-episode04-r13-r0176/` 和对应 `episode04-r12-locked-halt-r0175-12004.md`、`episode04-r13-locked-reroute-r0176-12004.md`、`episode04-r09-selected93-micro-actual-12004.md`。智能体消费者在 `ck3_autonomous_player/src/xar_autoplayer/bridge/`；视频/Root分阶段组合在本期 `tools/review02/`；不会把外置本机launcher当作通用运行库。source-a03新增13段草稿及9张SVG演示卡，新旧草稿合计37/69，仅为草稿覆盖。
 
 并发完成补员权限与军务callback只读接线、围城/劫掠residual预算、零库存触发窗口、县入境loaded floor读口、四项现金缓存actual writer消费者、特殊兵资格，以及A/B/C分阶段组合。源码和cold资格均独立于下一a07完整构建/新实机；维护费writer、实际补员ADD、R03/R04/R05正因果、费用两fresh-arms与正式ABC仍继续执行，不把计划、ACK或测试数量算作完成。
+
+## 2026-10-16 本机R0177闭场、R03原件与story-a05草稿
+
+本段所有现场、素材和稿件事实均属 machine_id: `desktop-3fevhd2-1c74096080`，按Root本次实际回执滚动追加。
+
+- R0177已有Root实际CLOSED回执：3219 B，SHA-256 `9a2f12db0d934f8cb01236c7ca8e88a1515b18ef552677ccc13df70841bc9797`。coastal原片45秒/1350帧，完整解码PASS；`clean=false`、`human=false`，不授连续clean或人工签核。
+- R03原件在raw53147472、同一callback188中，7条preferred writer实际扣兵11（1+1+3+1+2+1+2），siege11/raid0，原件正消费通过。正式整卡审结仍待Root；本次汇报暂保留整卡5/14＝35.7%、核心业务3/11，不先增加分子。
+- [story-a05完整草稿](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/README.md)为69/69＝100%，8351字；`TTS/provider=0`。这是草稿接受率，不等于最终冻结、声音、新成片或人审完成。
+- 共享源码解释见[拆合军库存权重/取整顺序](../ck3-native-ai/episode04-split-merge-stock-weight-order-12004.md)、[统帅容量与零准备量](../ck3-native-ai/episode04-commander-capacity-zero-preparation-12004.md)。新增source的最终提交、a08 DLL、构建及新冷验结果由实际回执另记，本段不预填未来SHA、CI通过或实机资格。

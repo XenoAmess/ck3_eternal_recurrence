@@ -1,0 +1,333 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T21:07:02.720412+00:00",
+    "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "observed_checkout_head_at_build": "983e807075e89852fe6dbc55b82a83e22c86626b",
+    "source_read_mode": "git show of exact frozen d932 objects; new sealed merge dependency separate",
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256_from_existing_source": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "original69_model": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-BC-a06/narration/six-chapter-final-BC-Chinese-a06.md",
+      "bytes": 23969,
+      "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+    },
+    "frozen_predecessor_maps": [
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/claim-shot-agent-map.json",
+        "bytes": 71886,
+        "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+      },
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/claim-shot-agent-map.json",
+        "bytes": 53716,
+        "sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6"
+      },
+      {
+        "artifact_root_relative_path": "story-a04-mechanisms-next/attempt-a02/candidate/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/claim-shot-agent-map.json",
+        "repo_destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/claim-shot-agent-map.json",
+        "bytes": 58341,
+        "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d"
+      }
+    ],
+    "prior_distinct_draft_count": 53,
+    "new_distinct_draft_count": 16,
+    "combined_distinct_draft_count": 69,
+    "coverage_scope": "paragraph text drafts only; does not grant research/card/film/audio/final completion",
+    "editorial_target_minutes": [
+      30,
+      35
+    ],
+    "measured_audio_duration_seconds": null,
+    "predecessor_spoken_characters": 6265,
+    "combined_spoken_characters": 8351,
+    "research_credit_added": 0,
+    "global_research_counter_recomputed": false,
+    "new_live_actions": 0,
+    "new_raw_reads": 0,
+    "new_clean_spans": 0,
+    "tts_provider_invoked": false,
+    "full69_script_frozen": false,
+    "winner": null
+  },
+  "sources": [
+    {
+      "key": "DIRECTOR",
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+      "bytes": 32375,
+      "sha256": "a9401afed86631656ea12811a4773781af22e010e66ccd8aa3d88eae6ce03cb6",
+      "entry_line_numbers": [
+        3,
+        9,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        49,
+        59,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        213,
+        215,
+        219
+      ]
+    },
+    {
+      "key": "IDENTITY",
+      "repo_path": "docs/handover/2026-10-15-war-episode04-machine-resume.md",
+      "bytes": 35135,
+      "sha256": "3832391e0a2ff53f25b9caef083bc4a881d7af5673f64654a2a0ee37064306bf",
+      "entry_line_numbers": [
+        64,
+        66,
+        68
+      ]
+    },
+    {
+      "key": "REFILL",
+      "repo_path": "docs/ck3-native-ai/episode04-special-troop-refill-eligibility-12004.md",
+      "bytes": 10289,
+      "sha256": "5e59acf4e7ef6e12b0379ff170f62b8f893e6cbccfd20e0069a7d11baf9966cc",
+      "entry_line_numbers": [
+        11,
+        13,
+        15,
+        16,
+        64
+      ]
+    },
+    {
+      "key": "SUPPLY",
+      "repo_path": "docs/ck3-native-ai/army-current-callback-supply-risk-12004.md",
+      "bytes": 15044,
+      "sha256": "be04be0fda1bc0107bbf3eda794aa325e10364c5aebf05fbcb6a21d45cc12cd2",
+      "entry_line_numbers": [
+        22,
+        23,
+        24,
+        25,
+        69,
+        71,
+        136,
+        148
+      ]
+    },
+    {
+      "key": "QUANTITIES",
+      "repo_path": "docs/ck3-native-ai/episode04-special-troops-split-merge-12004.md",
+      "bytes": 14837,
+      "sha256": "805e5766547743ba6b46344508483a8fb6f6a72afa36e5420ea66183a059838c",
+      "entry_line_numbers": [
+        9,
+        13,
+        32,
+        33,
+        34,
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    {
+      "key": "SPLIT-SOURCE",
+      "repo_path": "docs/ck3-native-ai/episode04-split-half-source-12004.md",
+      "bytes": 9691,
+      "sha256": "92fceeb76c5faeca418b3754b8fc75fcd5b235d828c3e2e8a9bd113d82d72420",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "R09",
+      "repo_path": "docs/ck3-native-ai/episode04-r09-selected93-micro-actual-12004.md",
+      "bytes": 4009,
+      "sha256": "0dbcb0b1d9e92ec71cbaed7cac0e0d5447747f0f991ce10bcbeee095017aa28e",
+      "entry_line_numbers": [
+        9,
+        10,
+        11,
+        13,
+        15,
+        25,
+        27
+      ]
+    },
+    {
+      "key": "PERIODIC",
+      "repo_path": "docs/ck3-native-ai/episode04-siege-loss-12004.md",
+      "bytes": 11792,
+      "sha256": "5e153e3574750a216c837236a97b54ead41e5e1afefaeaf69016fd29a5ca6461",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "COUNTY",
+      "repo_path": "docs/ck3-native-ai/episode04-county-entry-loss-12004.md",
+      "bytes": 11317,
+      "sha256": "dad244a483d6e5f1d4e9017a2bdf2f271a9bf93ff4c6661cef550aac6db4d0a3",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "ZERO",
+      "repo_path": "docs/ck3-native-ai/episode04-zero-supply-loss-source-12004.md",
+      "bytes": 10968,
+      "sha256": "703adc112acf057e0cfdbdade844f9f52efa868a5f32a8129206783a44deff3a",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "R12",
+      "repo_path": "docs/ck3-native-ai/episode04-r12-locked-halt-r0175-12004.md",
+      "bytes": 3578,
+      "sha256": "3e2100afcf3a0611bc783647d86181787cb964cd98e01d30061eaa801e784e01",
+      "entry_line_numbers": [
+        3,
+        5,
+        7
+      ]
+    },
+    {
+      "key": "R13",
+      "repo_path": "docs/ck3-native-ai/episode04-r13-locked-reroute-r0176-12004.md",
+      "bytes": 2289,
+      "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b",
+      "entry_line_numbers": [
+        3,
+        5,
+        9
+      ]
+    },
+    {
+      "key": "LOCK-SOURCE",
+      "repo_path": "docs/ck3-native-ai/episode04-locked-halt-reroute-12004.md",
+      "bytes": 6306,
+      "sha256": "5bfd2cb65c027622c26d2ba217c691c28e311c663f371db306ab6a4d48a2e92f",
+      "entry_line_numbers": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "key": "PAYMENT",
+      "repo_path": "docs/ck3-native-ai/episode04-r0173-boarding-halt-12004.md",
+      "bytes": 4722,
+      "sha256": "376753404be14d6370acd26c43b2b8f3c8cebb83e7ff65360b3a5596006b1745",
+      "entry_line_numbers": [
+        8,
+        9,
+        10,
+        13,
+        47,
+        49,
+        50
+      ]
+    },
+    {
+      "key": "MONEY",
+      "repo_path": "docs/ck3-native-ai/war-payment-maintenance-cache-source-12004.md",
+      "bytes": 19986,
+      "sha256": "81f1ed3a7a6c580f5ec30db7135f1c9a04af89f5f97bc3cb9379de9abdb7b410",
+      "entry_line_numbers": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        24,
+        145
+      ]
+    },
+    {
+      "key": "COMPARISON",
+      "repo_path": "docs/ck3-native-ai/episode04-comparison-contract-12004.md",
+      "bytes": 7416,
+      "sha256": "5b2903732a9ca0d213b2bf514d6b735cd3568a5343a116094bcd2f7a1f6219e4",
+      "entry_line_numbers": [
+        31
+      ]
+    },
+    {
+      "key": "MERGE-SOURCE",
+      "repo_path": "docs/ck3-native-ai/episode04-split-merge-stock-weight-order-12004.md",
+      "bytes": 9362,
+      "sha256": "01b2391dda49de5b78e05953d023a1cc1bc7b9567365886fcee9a88201db591d",
+      "entry_line_numbers": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        20,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        31,
+        33,
+        35,
+        37,
+        51
+      ],
+      "integration_dependency": {
+        "artifact_root_relative_receipt": "r09-transfer-formulas-a04/ROOT-DELIVERY.actual-a04.json",
+        "bytes": 3589,
+        "sha256": "ebe273b595b20b2c308bf687d1120306df84f2e766d75f6977262ff1242cb0d8",
+        "source_index_repo_path": "docs/ck3-native-ai/evidence/episode04-split-merge-stock-weight-order-12004/source-index.json",
+        "source_index_sha256": "2198798ea0484bfee6815a4dc08b8ef6349c026aaeeb29582f157d8ebf517557",
+        "source_only_not_live": true
+      },
+      "source_only_not_live": true
+    }
+  ],
+  "merge_source_dependency": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-10-15T21:07:02.324806+00:00",
+    "repo_destination": "docs/ck3-native-ai/episode04-split-merge-stock-weight-order-12004.md",
+    "sha256": "01b2391dda49de5b78e05953d023a1cc1bc7b9567365886fcee9a88201db591d",
+    "line_numbers": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      20,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      31,
+      33,
+      35,
+      37,
+      51
+    ],
+    "integration_dependency": {
+      "artifact_root_relative_receipt": "r09-transfer-formulas-a04/ROOT-DELIVERY.actual-a04.json",
+      "bytes": 3589,
+      "sha256": "ebe273b595b20b2c308bf687d1120306df84f2e766d75f6977262ff1242cb0d8",
+      "source_index_repo_path": "docs/ck3-native-ai/evidence/episode04-split-merge-stock-weight-order-12004/source-index.json",
+      "source_index_sha256": "2198798ea0484bfee6815a4dc08b8ef6349c026aaeeb29582f157d8ebf517557",
+      "source_only_not_live": true
+    }
+  },
+  "case_boundary": "R0173, R0175 and R0176 actual receipts are separate live sessions; this authoring packet adds no new actual",
+  "shot_reference_policy": "Use predecessor source/card/shot indexes; no raw opened or decoded; all named spans remain candidate only"
+}

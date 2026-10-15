@@ -1,0 +1,108 @@
+{
+  "schema": "xar.e04.strategy-a-decision-outcomes.offline-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:03:26.490742+00:00",
+  "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+  "candidate_files": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a_route_inputs.py",
+      "bytes": 11527,
+      "sha256": "ed1d0d902cf3ba11636d12db8257aa6675c49646e834c9c10caadbe19757dfba"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_a_decision_outcomes.py",
+      "bytes": 5437,
+      "sha256": "947a66d123a27b6526b76315f503f32da1bead74d6ca48a283b7979e48fa57b9"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-strategy-a-route-inputs-12004.md",
+      "bytes": 11257,
+      "sha256": "09cf96d9da8cd42cf5cfbbc6b916bad13594eb996039ccaa47eed63d3347f2ec"
+    }
+  ],
+  "unchanged_dependencies": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a.py",
+      "bytes": 13203,
+      "sha256": "b91bf5a6ecd18b642ddda2a03ffc441b7ca29305c4bcc1a6a7648e648769302d"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py",
+      "bytes": 25507,
+      "sha256": "807c9b88cf28012c50c4807cf5e14c668c3d6c64d13a908fae947595eff475a1"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json",
+      "bytes": 21442,
+      "sha256": "8a7b582667495392710be26890bd883f8f153807d310086cef8396207ed3a9e6"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_a_route_inputs.py",
+      "bytes": 10755,
+      "sha256": "52a30335df6f0d81c791939093473c02997a7f97fc4aeeaa3a1005058eaa7f1c"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_r10_compare.py",
+      "bytes": 17422,
+      "sha256": "a0359d99ee04bc3aa3a8ce00b4c9b12ddf42169e853ce42ce47b009f96f06e7c"
+    }
+  ],
+  "source_lines": {
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a_route_inputs.py": {
+      "_latest": 14,
+      "_signed": 19,
+      "_province_row": 25,
+      "_supply": 46,
+      "_current_rate": 72,
+      "_outcomes": 88,
+      "next_decision": 122
+    },
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_a_decision_outcomes.py": {
+      "OutcomeInputs": 11
+    }
+  },
+  "checks": {
+    "AST_compile": "PASS",
+    "new_semantic_examples": 6,
+    "result": "PASS",
+    "command": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -B run_new_checks.py",
+    "exit_code": 0,
+    "seconds": 7.362,
+    "source_output_chunk": "3f86ec",
+    "old_tests_or_recovery_rerun": false
+  },
+  "environment": {
+    "shell": "cmd.exe",
+    "login": false,
+    "python_executable": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "initial_default_python_attempt": {
+      "tests_executed": 0,
+      "result": "ModuleNotFoundError: jsonschema; switched to existing verified tools/.venv; no installation"
+    }
+  },
+  "Root_S0_metadata_only_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\normalprepare93-stages\\newstationary-commonS0.actual.json",
+    "bytes": 7236,
+    "sha256": "90a78e0d242fd4bb9b7cee366c8576659d049851c43f2cd0474781c832d35590"
+  },
+  "Root_accepted_scene_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\continuation-a07\\ROOT-SCENE-CAPACITY-ACCEPTED.actual-a01.json",
+    "bytes": 7043,
+    "sha256": "f6ee1f3ccb610d6a8c8298892bb29472eb3541d5b8a28b4ef18a5ddfa7b4c06c"
+  },
+  "known_actual_values_are_source_R0177_only": true,
+  "new_A_T0_goal_or_independent_freshload": null,
+  "live_gameplay_days": 0,
+  "SDK_game_desktop_build_or_media_calls": 0,
+  "save_body_reads_or_hashes": 0,
+  "compare_fees_policy_changed": false,
+  "maintenance_attribution": "unclosed",
+  "scope": "existing A next_decision account/arrival/world observations only; no new top-level API, framework or strategy algorithm",
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "JSON/native exported observation consumption only"
+  },
+  "research_card_closed": false,
+  "full_ABC_eligibility_assessed": false
+}

@@ -73,3 +73,14 @@ R0174 now has a separate45-second Halt raw:56479663B, SHA `6d28162df56f95b7ea85c
 The actual final R0174 control checkpoint is date53145552, Army18 at2624/regular/complete_empty. This differs from R0173's sea1036 checkpoint used in the candidate sequence above. The next operator must select and bind an explicit normal checkpoint, obtain a fresh actual position/route and legal preview, then use this existing verifier. Candidate1036/8653/1034/1033 hops are not a promise for a different starting location. Obtain a new initial normal Move for each independent locked case, actual progress strictly greater than same-frame loaded cutoff, one action, independent later route consequence and actual endpoint. No one may promote the current unlockedHalt or45s raw to lockedHalt/reroute acceptance.
 
 Source1463/a05 did not include the new supply-parent-join patch applied after closure. Next nativea06 build/qualification and its exact new PID/episode must be recorded independently. The0/11 new clean packages and3/14 research counters remain unchanged at this cutpoint. All external child packages stay under the existing512MiB shared reservation and original2026-10-16T07:45:01.597Z review deadline; no automatic renewal is implied.
+
+## 2026-10-16 本机R0177闭场、R03原件与story-a05草稿
+
+本段所有现场、素材和稿件事实均属 machine_id: `desktop-3fevhd2-1c74096080`，按Root本次实际回执滚动追加。 原R0173/R0174/R0175/R0176的证据和runtime身份继续按原档读取，不能复用为新场身份。
+
+- R0177已有Root实际CLOSED回执：3219 B，SHA-256 `9a2f12db0d934f8cb01236c7ca8e88a1515b18ef552677ccc13df70841bc9797`。coastal原片45秒/1350帧，完整解码PASS；`clean=false`、`human=false`，不授连续clean或人工签核。
+- R03原件在raw53147472、同一callback188中，7条preferred writer实际扣兵11（1+1+3+1+2+1+2），siege11/raid0，原件正消费通过。正式整卡审结仍待Root；本次汇报暂保留整卡5/14＝35.7%、核心业务3/11，不先增加分子。
+- [story-a05完整草稿](../../../review02/story-a05/README.md)为69/69＝100%，8351字；`TTS/provider=0`。这是草稿接受率，不等于最终冻结、声音、新成片或人审完成。
+- 共享源码解释见[拆合军库存权重/取整顺序](../../../../../../docs/ck3-native-ai/episode04-split-merge-stock-weight-order-12004.md)、[统帅容量与零准备量](../../../../../../docs/ck3-native-ai/episode04-commander-capacity-zero-preparation-12004.md)。新增source的最终提交、a08 DLL、构建及新冷验结果由实际回执另记，本段不预填未来SHA、CI通过或实机资格。
+
+当前交接与后续来源以[本机交接入口](../../../../../../docs/handover/2026-10-15-war-episode04-machine-resume.md)为统一转链。

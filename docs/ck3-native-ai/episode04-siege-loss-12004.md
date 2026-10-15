@@ -1,5 +1,7 @@
 # 围城真实物理扣兵：1.20.0.4 的接受边界与实际拒收
 
+> 2026-10-16 更新：R0177 已观察到同一自然 callback 的7笔 siege-only preferred 物理正扣兵，合计11人；范围、原件与整卡资格见文末。以下2026-10-15拒收保留原历史。
+
 2026-10-15。源码阅读点为 `1463bd9b4b89612d283dd45ac4ec9efbf22f048d`；复用的游戏身份是
 CK3 **1.20.0.4 / Steam25734779**，EXE SHA-256
 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。
@@ -135,3 +137,90 @@ fact = evaluate_army_physical_loss_evidence_12004(
 
 R03的可执行出口已明确：使用现有full-history查询和已安装writer拿实际正事件即可验physical primitive；
 围城解释按同一稳定窗口明确标注来源＋上下文推断。旧.3净−31/−67、预算与离线GREEN均不抵扣新的.4现场和动态镜头。
+
+## 2026-10-16 R0177：已发生的 siege-only preferred 正扣兵
+
+本节是新实机结果；前文2026-10-15的原始缺口和拒收按历史保留。执行机器
+`machine_id=desktop-3fevhd2-1c74096080`，Root采样时间为2026-10-15 21:00 UTC前后。
+游戏为同一actual 1.20.0.4/Steam25734779及本页EXE SHA；runtime source为
+`d9322bcfb3e17a3fe78607cea777bbfaf7be0a11`，native a07构建source为
+`b00013c8eb6cca20bfb8c4680a92845d997a4b96`。Root的production qualification实际记录
+二者native_bridge diff-empty、两个parent宏启用及生产链接，不把当前文档HEAD冒充采样源码。
+本场是历史Robert1128、runtime31254的正常存档续行，PID7240/create134365679117288462、
+generation1、episode `native-31254-00b796ef873c`，public/native Army均为完整ID18。
+
+[便携小证据](evidence/episode04-r0177-20261016/r03-preferred-siege-positive.actual.json)
+保留前后独立暂停帧、实际消费者结果、一笔完整native writer及其callback，以及全部原件路径/大小/SHA。
+Root保留046/047完整Driver原件；本消费者各读一次并核Root给定SHA，没有复制约9.7MB原件。
+046为query9/native114/public115/date53147448；047为query10/native117/public118/date53147472。
+正常single-Army ordinary profile实际仍包含两个actual journals；`army_observed_phase_coverage=not_requested`
+属于另一条省略的phase列表，不能据此否认已安装且available的callback/writer family，也不必每天导出全历史。
+
+新日期前fences是callback186、writer6742。现有
+`evaluate_periodic_loss_cause_evidence_12004`与`evaluate_siege_parent_loss_evidence_12004`
+直接消费新完整原件，实际选择同一callback188/token188/thread24140/depth1下的七笔：
+
+| writer sequence | 完整ArRg ID | unique物理槽实际减员 |
+| --- | --- | --- |
+| 6896 | 51 | 1 |
+| 6897 | 52 | 1 |
+| 6898 | 53 | 3 |
+| 6910 | 66 | 1 |
+| 6912 | 80 | 2 |
+| 6913 | 81 | 1 |
+| 6915 | 93 | 2 |
+
+七笔均为自然writer return `24E377C`，parent callback entry `24E3410`、callback return
+`2A9AB4B`；不可把callback caller和writer caller混为同一个栈层。实际原预算leaf完整、flags0，
+原siege11、combined11、derived raid0、独立original supply0。每笔执行时stock均为30000000/100000；
+同token、thread/depth、双FullID、passedDate与physical完整性均由已有strict consumer验过。
+这是原预算与实际写回共同限定的`siege`单原因，不再仅靠当前siege/raid上下文推断。
+
+便携第一笔6896的DATA数1、capture数1、alias index0/persistent17292/ordinal0映射unique slot0，
+current200→199、max200→200、state0→0、same-instance=true、capturecomplete=true、flags0。
+合计11是**这七笔已资格独立writer的物理减员之和**。当前Army1195→1184只作旁证；
+消费者仍返回`complete_interval_loss_total_ready=false`、`per_cause_physical_debit_split_observed=false`。
+writer全局环已有历史overwrite，不能把保留事件之和变成完整区间流水，也不授未观察的raid或residual正例。
+
+### 本次准入逐项与严格计数
+
+| 现有R03出口条件 | 本次实际值与资格 |
+| --- | --- |
+| 新自然writer、完整同实例unique physical正差 | **true**；七笔，合计11；完整第一笔随小证据保存。 |
+| 新callback及invocation-time Army归属 | **true**；token188、相同thread/depth、双FullID18、实际passedDate均匹配。 |
+| 实际围城association | **true，端点**；war4/goal2635/siege12、besieging Army18，省份2635、route空、状态sieging。 |
+| 本笔raid贡献为0 | **true**；同一callback原预算leaf的derived raid0。未以当前位置代替原预算。 |
+| 本笔库存充足、供给扣兵预算0 | **true**；writer-entry stock300，独立original supply0，callback stock300→300。 |
+| 无战斗/强攻 | **true，独立暂停端点**；noncombat、非retreat；siege assault=false/casualties0。连续区间所有可能事件未另作全流水证明。 |
+| 完整稳定roster | **端点可核；连续不变unknown**；实际完整21个ArRg IDs及省份siege occurrence保留。physical same-instance不等于整段无重组。 |
+| 无补员等其他区间变化、完整整军因果总额 | **unknown/未授**；单笔扣兵无需靠区间净差排除它们，完整区间总额仍false。 |
+| raid/residual真实正例 | **false，未取得**；本次不是这些分支的正例，不虚构不存在的额外必做卡条款。 |
+| 连续clean、人工1×、合格动态素材包 | **false/未授**；Root已正常闭场，围城正例发生在coastal录制结束之后。 |
+
+目前canonical没有找到独立R03整卡定义，不能自行把单笔正例等同全卡，也不另造“必须所有raid/residual分支实测”的条款。
+本包明确给予**实际围城preferred单笔因果正例**，R03整卡保守保留partial，研究总计仍
+R00/R02/R11/R12/R13 **5/14＝35.7%**，R03–R13业务实验 **3/11＝27.3%**；
+本包整卡、clean、人工1×和新版合格动态包新增信用均为0。后续若明确整卡标准，可按上表重审，不能反向抹掉已观察的七笔正扣兵。
+
+影片可据数据卡说：“这次正常围城的一次周期回调里，七笔实体写回合计扣了11人；该次围城预算11、劫掠预算0。”
+不能称已拍到连续扣兵画面、整军完整损失流水或劫掠正例。智能体可把七笔sequence绑定本journal lifetime记为已发生的围城损失；
+不能从getter预算、Army净差、旧sequence或缺parent事件授予同样原因。
+
+### 日期与+188勘误
+
+旧外置a11曾同时列出`+188`距30日；该数是观察值，**不构成“满30日才可成功供给”的准入条件**。
+`+188`是成功供给更新时间，updater不检查它的间隔；宽限门读取的是`+190` gathering完成锚点，
+有符号年龄截断向零后必须严格大于loaded grace，本例125>30。仍须满足Unit170、combat、gathering、Army5C等门；
+本tick较早gathering完成也可能改写190。准确来源见[零库存clock专题13–32行](episode04-zero-stock-clock-and-capture-12004.md)。
+
+也不能一般地把stored D加1：`nextRaw=signed32(uint32(raw)+24)`，
+`nextD=trunc0(signed32(uint32(nextRaw)-43800000)/24)`，`phase=uint32(nextD)%30`。
+本例源日期/D对实际为53147448/D389477/phase17→53147472/D389478/phase18，
+真实bucket18中Army18恰一次。此前预测是附条件机会；本次新callback188才证明该机会确实执行。
+Root单日sentinel回执记录exact1 tick、ending53147472；最后正常save
+SHA `f3a23761175102ddfac1d778e32d7d258cf9075023f2713d7dac2cdcfa4636e0`、72944811B，随后normal exit0。
+本包只读小save回执，不读或hash存档；CLOSED原件明确continuous clean/human signoff=false。
+
+外置attempt `C:/ck3-e04-resume-20261015-a01/r03-actual-next-bucket-a12/` 不超过128KiB，
+仅现有两个消费者摄取新实际输入与相对补丁check，无SDK/桌面/游戏/构建、无重复旧fixture、无主树写入。
+小证据保留首个完整writer/callback及其余已资格fact，不冒充完整原始journal；完整原件继续由Root按统一存储政策保护。

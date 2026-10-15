@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<title>先看单位，再比较数字</title>
+<desc>Source/actual explanation; not gameplay capture or signoff.</desc>
+<rect width="2560" height="1440" fill="#211813"/>
+<rect x="90" y="275" width="2380" height="680" rx="12" fill="#35291F"/>
+<text x="90" y="85" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">D13 / MARCH LOGISTICS</text>
+<text x="90" y="178" font-size="69" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">先看单位，再比较数字</text>
+<text x="90" y="240" font-size="34" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#BBA98D">SOURCE / 假设示例明确标注</text>
+<text x="120" y="330" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">当前人数 / 满员人数</text>
+<text x="1050" y="330" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">人；缓存行完整核对，实体DATA另核</text>
+<text x="120" y="435" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">补给库存 / 军队容量</text>
+<text x="1050" y="435" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">物资单位；不是士兵，也不是百分比</text>
+<text x="120" y="540" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">当地用量 / 当地上限</text>
+<text x="1050" y="540" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">兵员用量与支持人数同口径比较</text>
+<text x="120" y="645" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">补给月变化</text>
+<text x="1050" y="645" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">当前条件的变化量；不是已实现增加</text>
+<text x="120" y="750" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">当前损耗比例 / 整数预算</text>
+<text x="1050" y="750" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">比例与预算分开；不直接充作已扣兵</text>
+<text x="120" y="855" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">假设：补给100 / 容量300</text>
+<text x="1050" y="855" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">仅说明单位；不是Robert/.4本场读数</text>
+<text x="90" y="1030" font-size="25" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#BBA98D">SOURCE current supply/capacity / current callback / ArRg cache vs physical DATA</text>
+<text x="90" y="1075" font-size="25" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#BBA98D">库存、容量、当地上限和兵员数分别读；原版术语动态镜头仍需独立绑定</text>
+</svg>

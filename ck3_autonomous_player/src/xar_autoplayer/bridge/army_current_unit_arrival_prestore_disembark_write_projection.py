@@ -15,6 +15,7 @@ def project_current_unit_arrival_prestore_disembark_write_v1(
     same_query_strength: dict[str, object], *,
     arrival_transition: dict[str, object],
     army_context: dict[str, object] | None,
+    movement_prefix: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Reuse the identical Source31 result; do not invoke departure/arrival.
 
@@ -84,6 +85,13 @@ def project_current_unit_arrival_prestore_disembark_write_v1(
 
     call, write, value, reason = evaluate()
     context = army_context or {}
+    from .army_county_entry_route_risk_projection import project_county_entry_route_risk_v1
+    county_risk = project_county_entry_route_risk_v1(
+        same_query_strength, arrival_transition=arrival_transition,
+        army_context=army_context, movement_prefix=movement_prefix,
+        prestore_call_selected=call, prestore_unavailable_reason=reason,
+        movement_inputs=movement,
+    )
     return {
         "schema_version": 1,
         "source": "source_conditional_unit_arrival_prestore_disembark_write_12004",
@@ -121,4 +129,5 @@ def project_current_unit_arrival_prestore_disembark_write_v1(
         "repeated_callback_effects_reconstructed": False,
         "battle_contact_supply_day_effects_reconstructed": False,
         "native_action_executed": False,
+        "county_entry_risk_v1": county_risk,
     }

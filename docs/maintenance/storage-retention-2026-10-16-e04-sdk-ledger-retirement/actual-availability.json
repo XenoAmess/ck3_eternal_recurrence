@@ -1,0 +1,101 @@
+{
+  "schema": "xar.e04.replayable-sdk-ledger-availability-actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T20:43:24.059465+00:00",
+  "predelete_availability": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-retirement-a01\\AVAILABILITY.PREDELETE.actual.json",
+    "bytes": 3137,
+    "sha256": "35a558430235ece4adfc883a81bb9789c3c6b8dca2f4a4b783fc027cb31e8a74"
+  },
+  "replayproof": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\RESULT.actual.json",
+    "bytes": 5526,
+    "sha256": "89bd1c8b90c69dcfe09793c14dd4a8d21f6005de4d09409b17b5c3549c4f987a"
+  },
+  "records": [
+    {
+      "old_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\mcp-calls.jsonl",
+      "original_SHA256": "dfec706ad1de991df135822de8bee893db230200c9bc984ca5fc2bf319814df6",
+      "bytes": 1469580989,
+      "availability": "deleted_unavailable",
+      "actual_delete_result": {
+        "index": 0,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\mcp-calls.jsonl",
+        "expected_bytes": 1469580989,
+        "original_SHA256_reused": "dfec706ad1de991df135822de8bee893db230200c9bc984ca5fc2bf319814df6",
+        "status": "deleted_old_path_unavailable",
+        "actual": {
+          "id": [
+            3061637496,
+            281474978732376
+          ],
+          "b": 1469580989,
+          "ft": 134356069262366227,
+          "links": 1,
+          "allocation": 1469583360
+        },
+        "same_handle_disposition_succeeded": true,
+        "old_path_absence_confirmed": true,
+        "at_utc": "2026-10-15T20:43:22.836038+00:00"
+      },
+      "replay_index": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\native-live-main-case-a02.replay-index.jsonl.gz",
+        "bytes": 31281,
+        "sha256": "337b3ba858a1143146efc3188086e1864a92cedd71e7910a6f64d9b76c338224"
+      },
+      "retained_response_root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses",
+      "all586_response_inputs_preserved_and_held": true,
+      "regeneration_contract": {
+        "ordered_index": "Gzip JSONL in lineorder",
+        "row_source": "root/response_relative_path, after verifying exact responseSHA andidentity",
+        "serializer": "(json.dumps(json.loads(response_bytes), ensure_ascii=False) + \"\\n\").encode(\"utf-8\")",
+        "must_verify_aggregate_SHA_and_bytes_before_use": true,
+        "future_rebuilt_file_is_derived_and_must_not_impersonate_original_physical_evidence": true
+      },
+      "regeneration_must_use_new_derived_output_path": true,
+      "recreated_bytes_must_not_impersonate_original_physical_evidence": true
+    },
+    {
+      "old_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\mcp-calls.jsonl",
+      "original_SHA256": "6b5657c768061df2e85dc58c6b79e84a4017bde7f4a2f17780037f3a1f1bb2e6",
+      "bytes": 1067834668,
+      "availability": "deleted_unavailable",
+      "actual_delete_result": {
+        "index": 1,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\mcp-calls.jsonl",
+        "expected_bytes": 1067834668,
+        "original_SHA256_reused": "6b5657c768061df2e85dc58c6b79e84a4017bde7f4a2f17780037f3a1f1bb2e6",
+        "status": "deleted_old_path_unavailable",
+        "actual": {
+          "id": [
+            3061637496,
+            281474978761502
+          ],
+          "b": 1067834668,
+          "ft": 134356174381096005,
+          "links": 1,
+          "allocation": 1067835392
+        },
+        "same_handle_disposition_succeeded": true,
+        "old_path_absence_confirmed": true,
+        "at_utc": "2026-10-15T20:43:23.937923+00:00"
+      },
+      "replay_index": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\native-live-positive-r0164-a01.replay-index.jsonl.gz",
+        "bytes": 20030,
+        "sha256": "6bc663909e2442f7492fcabada61c6983b1ca2cff7498ecb28a71e6780acd954"
+      },
+      "retained_response_root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses",
+      "all586_response_inputs_preserved_and_held": true,
+      "regeneration_contract": {
+        "ordered_index": "Gzip JSONL in lineorder",
+        "row_source": "root/response_relative_path, after verifying exact responseSHA andidentity",
+        "serializer": "(json.dumps(json.loads(response_bytes), ensure_ascii=False) + \"\\n\").encode(\"utf-8\")",
+        "must_verify_aggregate_SHA_and_bytes_before_use": true,
+        "future_rebuilt_file_is_derived_and_must_not_impersonate_original_physical_evidence": true
+      },
+      "regeneration_must_use_new_derived_output_path": true,
+      "recreated_bytes_must_not_impersonate_original_physical_evidence": true
+    }
+  ]
+}

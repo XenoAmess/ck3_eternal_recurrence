@@ -1516,3 +1516,44 @@ proposals still require explicit selected-option readback. The failure occurs
 before the native proposal binder is called. This correction is source and
 build evidence until a distinct paired action, later result, next turn and
 cold recovery complete.
+
+
+## 2026-10-16：R0177 ordinary 协商联盟左侧拒绝与当前来源入库
+
+machine_id: `desktop-3fevhd2-1c74096080`；本次离线核对 `2026-10-15T20:19:06.592853+00:00`。此项是 **pending interaction**，不是event ID。
+复用既有 `pending_interaction_source_registry.py` / `interaction_offline_analysis.py` 的source-facts schema，
+当前定义档案见[共享来源记录](evidence/interaction-source-registry/negotiate_alliance_interaction-1.20.0.4.json)。
+其fingerprint为 `c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c`，按exact build/key hash/source/GUI绑定，不新建事件系统或默认政策。
+
+当前 prepared.json 指向的 `common/character_interactions/00_alliance.txt` SHA
+`11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4`，definition在1019–1764行；与本节旧1.19专用规则的919ED408…整文件来源不同。
+旧 `negotiate-alliance-inbound-accept-v1` 规则及其窄门保持原样，不能用旧source SHA宣称当前效果已读。
+Root本次决策记录明确采用ordinary左侧reject且无覆盖专用规则；本包不从后帧资料重判原时点专用门是否满足。
+
+原版 `gui/interaction_notification_window.gui:58–76`，SHA
+`a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0`，普通hbox左先reject、右accept，自动通知另有acknowledge。
+实际026原生上下文：`negotiate_alliance_interaction`，hash2566946210，instance134217876，
+sender36445→Robert31254，date53146680，native11/public12，normal recipient通道、auto_accept=false，
+age0/expiry60，reject合法；两个send option均未选。numeric flag identifiers仅保留原值，不跨会话硬映射。
+
+当前 `on_decline`：对`scope:puppet_or_actor`触发 `char_interaction.0236`，给其添加针对recipient的
+`refused_alliance_opinion`，并调用`add_clan_unity_interaction_effect`、VALUE=`minor_unity_loss`。
+这是真实非空拒绝后果，**不是“关闭通知无副作用”**。helper条件与实际数值未独立读回，不授opinion/unity变化信用。
+`on_accept`保留触发0235、shy stress/fulfillment、可选hook/influence消耗、按亲属/婚姻关系的条件联盟创建
+及minor unity gain完整原文；其中random_spouse/random_close_family_member用于符合条件的亲属链，不假定本次分支被执行。
+拒绝不是接受后建立联盟；本包没有新联盟关系实测，也不新增call-to-war或婚姻战略能力。
+
+实际027只提交一次 `ck3_reply_pending_character_interaction(accept=false, instance134217876, revision12)`。
+`body.accepted=false`在这个接口表示传入的**accept方向参数为false**，不是动作被拒；
+tool没有is_error，status=`submitted`，`interaction_result.status=rejected`，旧instance匹配，remaining=null。
+实际028独立snapshot native12/public13再次读到pending=null，同玩家/日期且paused；
+所以分别保留 **提交/回复结果** 和 **独立原窗口消失**，不以一个ACK字段替代业务后置，也不重放动作。
+
+原始smallJSON与SHA完整列在外置
+`C:/ck3-e04-resume-20261015-a01/notification-alliance-r0177-a01/ORIGINAL-PROOF.actual.json`。
+来源是R0177 `responses/026-pending-notification-context.json`、`027-alliance-left-reply-once.json`、
+`028-after-alliance-left-reply.json`，决策原件在scene资产根的`alliance-notification-decision.actual-a01.json`。
+已用现成production source-registry reader对实际026在外置candidate-state离线验证：**offline-source-reviewed / PASS**。
+当前active state的registry原先absent，本包不改活跃state；可由Root沿现有P08入口发布该candidate，不能声称已热发布。
+当前来源知识已永久候选入库，不是未分析待办。新SDK/game/main/native操作均0；
+外置≤256KiB，计原active32MiB，复核截止仍2026-10-16T07:45:01.597Z，不延期。

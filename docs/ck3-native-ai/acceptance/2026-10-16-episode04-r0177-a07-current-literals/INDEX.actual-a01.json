@@ -1,0 +1,75 @@
+{
+  "schema": "episode04.r0177.a07.current-literal-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T20:13:44.247748+00:00",
+  "runtime": {
+    "pid": 7240,
+    "process_create_time_100ns": 134365679117288462,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-00b796ef873c",
+    "actor_character_id": 31254,
+    "date_raw": 53146632,
+    "source_commit_supplied_by_Root": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "native_build_supplied_by_Root": "nativeb000/a07"
+  },
+  "artifacts": {
+    "CURRENT.actual-a01.json": {
+      "bytes": 214670,
+      "sha256": "a13d858d529b591d19db182b1573212bab74935c1f85039aa78591011301f4c2"
+    },
+    "CONTEXT.actual-a01.json": {
+      "bytes": 64049,
+      "sha256": "ba556ebde9639f7cc7c0b936928d312b440f47862156daab0950b42e93d80860"
+    }
+  },
+  "counts": {
+    "county_current_inputs": 4,
+    "county_loaded_floors": 4,
+    "refill_administrative_switch": 231,
+    "paused_current_raw_cash_context": 0,
+    "military_callback_source": 1,
+    "military_widget_callback_slots": 506
+  },
+  "switch_occurrence_status": {
+    "not_applicable": 154,
+    "available": 77
+  },
+  "available_switch_unique_persistent_full_ids": [
+    17292,
+    17293,
+    16793864,
+    16793866,
+    16793865,
+    16793868,
+    16793869,
+    16793870,
+    16793872,
+    16793873,
+    16793874
+  ],
+  "available_switch_unique_resolved_character_full_ids": [
+    31254
+  ],
+  "gui_binding_group_counts": {
+    "not_button_base": 377,
+    "fallback": 129
+  },
+  "gui_callback_slot2_rva_occurrence_counts": {
+    "61485280": 36,
+    "10273024": 2
+  },
+  "cash_raw_context_status": "absent from exact 012 and 023 response bodies; missing is not zero or producer-disabled diagnosis",
+  "source_availability": "Only compact literal values and metadata are archived here. Full response/Driver originals remain on source machine under original retention; this is not full raw replay.",
+  "qualification": {
+    "current_literals_only": true,
+    "causal_business_PASS": false,
+    "callback_action_qualified": false,
+    "current_raw_cash_leaf_observed": false,
+    "actual_ADD_or_county_loss_or_stock_change": false,
+    "closed_receipt_observed": false
+  },
+  "retention": {
+    "review_at_utc": "2026-10-16T07:45:01.597Z",
+    "renewed": false
+  }
+}

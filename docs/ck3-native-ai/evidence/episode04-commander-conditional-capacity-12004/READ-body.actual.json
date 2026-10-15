@@ -1,0 +1,52 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "utc": "2026-10-15T20:28:55.375057+00:00",
+  "mode": "body",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:/ck3-e04-resume-20261015-a01/commander-capacity-candidate-a01/read_capacity_bounded.py",
+    "body"
+  ],
+  "reader_sha256": "85d9e25fd74c5eeb6a70c4ac6655ece5086caf8da9095f89d72921266e8fcc8d",
+  "plan_sha256": "72ac18a576ccf340a84b2206507566358047f0be1f951bb1479813b43eb12fdc",
+  "identity_receipt": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "metadata_before": {
+    "size": 101040248,
+    "mtime_ns": 1792052259095683000,
+    "ctime_ns": 1792052258999738000,
+    "device": 13886423844274364792,
+    "file_id": 19140298416377657
+  },
+  "metadata_after": {
+    "size": 101040248,
+    "mtime_ns": 1792052259095683000,
+    "ctime_ns": 1792052258999738000,
+    "device": 13886423844274364792,
+    "file_id": 19140298416377657
+  },
+  "unchanged": true,
+  "reads": [
+    {
+      "rva": "0x2c53bf0",
+      "bytes": 1545,
+      "kind": "code",
+      "file_offset": 46477296,
+      "sha256": "b204d281bd06699cbd6863383696d131ff798c91168d79c7467e8879386c3873"
+    }
+  ],
+  "captures": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\commander-capacity-candidate-a01\\2C53BF0.actual.json",
+      "bytes": 1545,
+      "sha256": "b204d281bd06699cbd6863383696d131ff798c91168d79c7467e8879386c3873"
+    }
+  ],
+  "error": null,
+  "new_code_bytes": 1545,
+  "new_metadata_bytes": 0,
+  "cumulative_new_code_bytes": 1545,
+  "cumulative_new_metadata_bytes": 16,
+  "no_full_EXE_hash_scan_execution_game_SDK_desktop_main_writes": true
+}

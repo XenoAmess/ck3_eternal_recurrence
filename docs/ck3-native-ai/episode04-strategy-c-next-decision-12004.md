@@ -51,3 +51,31 @@
 ```
 
 存储沿用统一策略1.0.0及协调者`continuation-a05/CAPACITY-ACCEPTED.actual-a01.json`。原C外置lane与本增量合计仍≤8MiB，已计入原512MiB池；准入/配额复核2026-10-16T07:45:01.597Z，不延长、不新预留，不清理其他工作包。
+
+## coastal e6ee S0：停靠选择与到站再查询
+
+2026-10-15离线增量基线`d9322bcfb3e17a3fe78607cea777bbfaf7be0a11`；执行机器`machine_id=desktop-3fevhd2-1c74096080`。本节只绑定下面两份小型实际记录。采集时间与离线读回时间分列于外置`high-parallel-C-coastal-choice-a04/S0-INTAKE.actual.json`，记录缺失的后续输入，不授予新实机信用。
+
+| 实际来源 | 字节 / SHA-256 | 可证明范围 |
+| --- | --- | --- |
+| `live12004-logistics-source-a01/normalprepare93-stages/newstationary-commonS0.actual.json`，原记录`2026-10-15T20:25:31.384013Z` | 7236 / `90a78e0d242fd4bb9b7cee366c8576659d049851c43f2cd0474781c832d35590` | 正常checkpoint元数据：e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67、71631396字节、date53146848；Root完整Army摘要93→CArmy85、250/250、stock100、4regiment/4DATA、whole_DATA_ready=true |
+| `live12004-logistics-source-a01/desktop-3fevhd2-1c74096080--vanilla--R0177/responses/035-coastal-commonS0-endpoint.json`，原envelope`2026-10-15T20:26:14.497489Z` | 139796 / `16c056bc00074e010f286f4207a8daaa1d292e0940683e11d1d377a32aa18794` | native:33/public revision34/native revision33，actor31254、Army93在Province2624、regular/controllable、无战斗撤退、complete_empty；原snapshot soldiers=null，不能用此字段伪称已读physical250 |
+
+正常存档本体和7865022字节完整Driver原件本轮没有打开、重复hash或复制。250/250及DATA覆盖仅标为小型Root摘要的事实；正式开臂仍须现有paired reader读取当臂新鲜完整Driver。`move_target_observable=false/target=null`保留空route的原生语义。当前war objective2635不是默认共同goal。
+
+**当前不能选定最短可区分C的实际停靠点。** 这两份来源没有Army93从2624至共同goal的direct preview，也没有该时刻的via preview与目标供给输入。不能借旧Army18的sea18、1036、30日或3金，也不能把较早Army93在2619的currentrate+20接到后置2624的S0。stock100本身不证明何处可以恢复补给。缺口交给Root的a08 fresh-load查询：先明确共同goal，读取同S0当前Army93全DATA/typed commander，再用现有`preview-move-army-93-to-P`逐个查询调用方明确候选。没有候选结果时只列缺失调用，不虚构候选ID、route、ETA或费用。
+
+`compare_via_first_leg(plan, observation, via_province_id, direct_preview, via_preview)`是新增的只读consumer入口，直接消费已有完整观察和Driver原生preview body。它复用同帧身份及完整DATA门，不注册新接口、不改变冻结plan。输出可供智能体解释候选，也可直接用于视频的当前可知决策卡：
+
+| 同帧实际preview关系 | 可说什么 | 仍不能说什么 |
+| --- | --- | --- |
+| via首段恰为direct到via的完整前缀 | `intermediate_stop_on_direct_prefix`：沿直达路径增加一次明确停靠 | 不能把停靠本身称为几何绕路，或声称补给改善 |
+| 当前via首段与direct不符 | `current_first_leg_diverges`：首段实际分岔 | 不知道到站后via→goal的路径、总耗时或补给收益 |
+| via preview在停靠前先经过goal | `goal_passed_before_via`：冻结前暴露实验设计冲突 | 不自动换目标或把经过goal记为正常到站 |
+| 任何preview缺失、过期或Army/CArmy/owner不符 | 列明缺失只读调用或`hold_unknown`及原因 | 不拼接旧Army18或其他帧的目标/供给片段 |
+
+preview hop数不是距离或行军日，不能按最少hop宣称“最短”。实际分段Move继续由既有`phased_relay.py`逐次提交；每次保留pending并最多执行一次，独立path-after和bounded daily实际到站区间合格后才进入下一段。前段已锁定时保持既有front/suffix规则，不借本函数直接改道。
+
+目标字段保留已有`province_supply.target`及`captured_target_land_supply_inputs_v1`的实际内容与false/null含义。目标usage仍是当前捕获输入，不加上本军250人为制造抵达后usage；当前province component、resupply eligibility也不等于未来月度rate或stock。输出`future_usage_after_arrival/future_monthly_supply_rate/future_stock=null`、`positive_supply_recovery_guaranteed=false`。到站后必须重新读取暂停的当前Army/CArmy、全部physical/DATA、typed commander、实际stock/cap/rate，再读取实际via→冻结下一目标的新preview及当前target contributors/resupply输入；此前`onward_route/onward_target_inputs=null`。前路保持conditional而不无限挂空：输出给出具体缺失查询和到站重查清单，由Root在下一已授权runtime阶段执行。
+
+本增量只新增`test_strategy_c_route_choice.py`的5个synthetic案例（缺实际pair、直达前缀停靠、分岔且false resupply保留、旧Army/帧/目标身份拼接、goal先于via）；不执行既有10个next-decision或13个C guard测试。旧`(75,77]`、三臂共同日期和D90边界保持原合同。本lane封存≤256KiB，计入既有active32MiB/metadata17池，沿用`continuation-r13-a06/CAPACITY-ACCEPTED.actual-a01.json`与2026-10-16T07:45:01.597Z截止，不续期。

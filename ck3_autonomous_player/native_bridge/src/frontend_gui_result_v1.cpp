@@ -1,6 +1,7 @@
 #include "xar_bridge/frontend_gui_result_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
+#include "xar_bridge/ck3_12004_gui_callback_thunk.hpp"
 
 namespace xar::ck3_11906 {
 namespace {
@@ -74,7 +75,13 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
   if (inspection.standard_click_bindings_12004) {
     result += ",\"callback_binding_source_12004\":{\"executable_sha256\":";
     AppendJsonString(result, ck3_12004::kExecutableSha256);
-    result += ",\"button_base_slot13_rva\":61476128,\"group_dispatch_rva\":61471280,\"input_modifier\":0}";
+    result += ",\"button_base_slot13_rva\":61476128,\"group_dispatch_rva\":61471280,\"input_modifier\":0";
+    if (inspection.callback_thunk_3aa30e0_pin_verified) {
+      result += ",\"indirect_target_thunk_rva\":" + Number(ck3_12004::kGuiCallbackThunkRva12004V1) +
+          ",\"indirect_target_thunk_bytes_sha256\":";
+      AppendJsonString(result, ck3_12004::kGuiCallbackThunkBytesSha25612004V1);
+    }
+    result += '}';
   }
   result += ",\"widgets\":[";
   for (std::size_t index = 0; index < inspection.widget_count; ++index) {
@@ -114,9 +121,22 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
             callback.callback_slot2_rva == 0 ||
             callback.callback_slot2_rva >= ck3_12004::kGuiImageSize12004V1)
           return GenericGuiCommandResultFrameV1(request_id, step, false, "callback target outside exact image");
+        const bool expected_indirect = inspection.callback_thunk_3aa30e0_pin_verified &&
+            callback.callback_slot2_rva == ck3_12004::kGuiCallbackThunkRva12004V1;
+        if (callback.indirect_target_3aa30e0 != expected_indirect ||
+            (expected_indirect && (callback.native_target_8_rva == 0 ||
+              callback.native_target_8_rva >= ck3_12004::kGuiImageSize12004V1)))
+          return GenericGuiCommandResultFrameV1(request_id, step, false, "indirect callback source pin or target is inconsistent");
         result += "{\"index\":" + Number(callback.index) +
             ",\"callback_vtable_rva\":" + Number(callback.callback_vtable_rva) +
-            ",\"callback_slot2_rva\":" + Number(callback.callback_slot2_rva) + '}';
+            ",\"callback_slot2_rva\":" + Number(callback.callback_slot2_rva);
+        if (expected_indirect) {
+          result += ",\"indirect_target_3aa30e0\":{\"native_target_8_rva\":" + Number(callback.native_target_8_rva) +
+              ",\"receiver_f0_present\":";
+          result += callback.receiver_f0_present ? "true" : "false";
+          result += '}';
+        }
+        result += '}';
       }
       result += "]}";
     }

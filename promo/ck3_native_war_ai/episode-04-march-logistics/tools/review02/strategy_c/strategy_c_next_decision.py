@@ -292,3 +292,91 @@ def next_decision(plan, state, observation, preview=None):
                    'army_id': call['army_id'], 'target_province_id': call['target_province_id'],
                    'expected_revision': call['expected_revision']}})
     return out
+
+
+def _captured_target_now(observation, preview, target):
+    """Retain already normalized current .4 target operands, never landfall."""
+    supplied = (preview.get('route_preview') or {}).get('province_supply')
+    if supplied is None:
+        return {'target_inputs': None, 'reason': 'native_target_province_supply_absent'}
+    unit = observation['endpoint']['units'][0]
+    binding = observation['binding']
+    owner = observation['endpoint']['player_character_id']
+    row = supplied.get('target') if isinstance(supplied, dict) else None
+    c.need(isinstance(row, dict) and row.get('role') == 'target' and row.get('province_id') == target,
+           'captured target Province/role differs')
+    c.need(supplied.get('army_id') == unit['army_id']
+           and supplied.get('native_carmy_id') == binding['native_carmy_id']
+           and supplied.get('owner_character_id') == owner,
+           'captured target context belongs to another Army/CArmy/owner')
+    family = row.get('captured_target_land_supply_inputs_v1')
+    if family is not None:
+        c.need(isinstance(family, dict)
+               and family.get('source') == 'native_captured_target_land_supply_inputs'
+               and family.get('input_basis') == 'captured_owner_and_target_province'
+               and type(family.get('scale')) is int and family['scale'] == 100000,
+               'captured target input source/basis/scale differs')
+        for key, expected in [('subject_army_id', unit['army_id']),
+                              ('subject_carmy_id', binding['native_carmy_id']),
+                              ('owner_character_id', owner), ('province_id', target)]:
+            c.need(family.get(key) is None or (type(family[key]) is int and family[key] == expected),
+                   'captured target numerical subject differs: ' + key)
+    return {'target_inputs': deepcopy(row), 'reason': deepcopy(row.get('unavailable_reason')),
+            'input_basis': 'current_captured_target_only', 'future_usage_after_arrival': None,
+            'future_monthly_supply_rate': None, 'future_stock': None,
+            'positive_supply_recovery_guaranteed': False}
+
+
+def compare_via_first_leg(plan, observation, via_province_id, direct_preview=None, via_preview=None):
+    """Explain whether a fresh via leg differs from the current direct preview.
+
+    This neither selects a shortest route nor changes a frozen C policy. A stop
+    on the direct prefix is distinguished from a native first-leg divergence.
+    The onward leg must be queried only after an actual stationary via arrival.
+    """
+    out = _base('needs_current_previews', 'no current direct/via route pair has been supplied', observation)
+    out.update(route_relation=None, missing_read_only_calls=[], frozen_policy_changed=False,
+               first_leg_geometric_difference=None, shortest_total_route_established=False,
+               total_travel_days=None, onward_route=None, onward_target_inputs=None,
+               onward_preview_required_after_actual_via_arrival=True)
+    try:
+        _, unit, _, coverage = _whole_data(plan, observation)
+        goal = plan.get('goal_province_id')
+        c.need(type(goal) is int and goal > 0, 'freeze an explicit common goal; war objective is not an implicit goal')
+        c.need(type(via_province_id) is int and via_province_id > 0
+               and via_province_id not in (unit['current_province_id'], goal),
+               'declare a distinct via candidate from current actual scope; never borrow an old Army target')
+        out['coverage'] = coverage
+        for value, target in ((direct_preview, goal), (via_preview, via_province_id)):
+            if value is None:
+                out['missing_read_only_calls'].append(_preview_call(observation, target))
+        if out['missing_read_only_calls']:
+            return out
+        direct = _fresh_route(observation, goal, direct_preview)
+        via = _fresh_route(observation, via_province_id, via_preview)
+        out.update(direct_preview_route=direct, via_first_leg_preview_route=via,
+                   direct_target_now=_captured_target_now(observation, direct_preview, goal),
+                   via_target_now=_captured_target_now(observation, via_preview, via_province_id))
+        if via_province_id in direct and via == direct[:direct.index(via_province_id)+1]:
+            relation = 'intermediate_stop_on_direct_prefix'
+            out.update(first_leg_geometric_difference=False,
+                       reason='via is an explicit stop on the same current direct prefix; detour not established')
+        elif goal in via[:-1]:
+            relation = 'goal_passed_before_via'
+            out.update(first_leg_geometric_difference=True,
+                       reason='via preview passes the common goal before its stop; retain this design conflict before freeze')
+        else:
+            relation = 'current_first_leg_diverges'
+            out.update(first_leg_geometric_difference=True,
+                       reason='fresh current first leg differs; onward reachability/time/supply remain conditional')
+        out.update(status='current_route_pair_observed', route_relation=relation,
+                   preview_hop_counts={'direct':len(direct),'via_first_leg':len(via)},
+                   hop_counts_are_travel_time_or_distance=False,
+                   requery_after_arrival=['fresh paused current Army/CArmy and complete whole DATA',
+                       'same-frame typed commander and actual current stock/cap/rate',
+                       'fresh native preview from actual via to frozen next target',
+                       'retain current target contributor/resupply inputs; do not add Army soldiers to target usage'])
+        return out
+    except (ValueError, KeyError, TypeError) as error:
+        out.update(status='hold_unknown', reason=str(error))
+        return out

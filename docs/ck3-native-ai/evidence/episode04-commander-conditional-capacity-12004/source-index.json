@@ -1,0 +1,77 @@
+{
+  "schema": "xar.ck3.commander-conditional-capacity-source-index.12004.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "utc": "2026-10-15T20:40:57.546741+00:00",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "function": {
+    "begin_rva": "0x2C53BF0",
+    "end_exclusive_rva": "0x2C541F9",
+    "bytes": 1545,
+    "sha256": "b204d281bd06699cbd6863383696d131ff798c91168d79c7467e8879386c3873",
+    "pdata_row_rva": "0x5F84538",
+    "pdata_row_hex": "f03bc502f941c502585c2b05",
+    "unwind_rva": "0x52B5C58",
+    "unwind_header_hex": "11240b00",
+    "unwind_flags": 2,
+    "chaininfo": null,
+    "archive": "capacity.source.json"
+  },
+  "new_EXE_read_bytes": {
+    "code": 1545,
+    "metadata": 16
+  },
+  "source_proved": [
+    "actual null-details capacity ABI(out,CArmy,detail)",
+    "candidate Character aggregator 28C3AC0 and inline modifier keys467/468",
+    "loaded FULL image RVA5C68C70",
+    "signed64 wrap and exact native fixed-multiply fast/slow branches",
+    "no capacity clamp in this getter"
+  ],
+  "not_proved": [
+    "future assignment keeps the current candidate aggregate",
+    "conditional capacity is already applied",
+    "current actual game candidate raw operands or applied stock"
+  ],
+  "portable_records": [
+    {
+      "path": "capacity.source.json",
+      "bytes": 57468,
+      "sha256": "cfaa5b700d4b194275f998febe798980d406daa234c24b4bbe203fdb2936f092"
+    },
+    {
+      "path": "READ-metadata.actual.json",
+      "bytes": 4626,
+      "sha256": "7f9e7fb6674047be6c48d67908f19e9158ed7d7e03962210f773e3c44f72f483"
+    },
+    {
+      "path": "READ-body.actual.json",
+      "bytes": 1819,
+      "sha256": "bce6f4e06c3031cbd1f27f0f4c76f880647d26cb4d6f2d2b1e472167c11a227a"
+    },
+    {
+      "path": "source-plan-a01.json",
+      "bytes": 3276,
+      "sha256": "c6e1a2cd592afa64c6a8627c7747ae97cf8b3095a4d124b7fa377923b486b460"
+    },
+    {
+      "path": "source-plan-body-a02.json",
+      "bytes": 6332,
+      "sha256": "72ac18a576ccf340a84b2206507566358047f0be1f951bb1479813b43eb12fdc"
+    },
+    {
+      "path": "PLAN-CHECK-metadata.actual.json",
+      "bytes": 1024,
+      "sha256": "5b8e7c13ec71c5aeba0de922715da6be4a005240887b5cb610d351b8a70feaab"
+    },
+    {
+      "path": "PLAN-CHECK-body.actual.json",
+      "bytes": 1024,
+      "sha256": "ae37698204bd25204358929c55eb534b5271980d0146505b4b0b98e2d2f28df6"
+    }
+  ],
+  "external_origin": "C:\\ck3-e04-resume-20261015-a01\\commander-capacity-candidate-a01",
+  "external_asset_review_at_utc": "2026-10-16T07:45:01.597Z",
+  "no_automatic_extension": true
+}

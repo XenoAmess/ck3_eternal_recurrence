@@ -7,6 +7,7 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ingame_decisions_opener_v1.hpp"
+#include "xar_bridge/ingame_military_opener_12004.hpp"
 #include "xar_bridge/normal_exit_map_v1.hpp"
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
 #include "xar_bridge/player_control_identity_source_v1.hpp"
@@ -254,6 +255,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   player_control_readonly = 39, // Fixed source-bound partial query; mutations unavailable.
   grant_title_picker = 40,
   lobby_back = 41,
+  open_ingame_military = 42,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -300,6 +302,7 @@ struct FrontendGuiRouteMailboxContextV1 {
   IngameUiRequestV1 ingame_request{};
   IngameUiResultV1 ingame_result{};
   IngameDecisionsOpenContextV1 ingame_decisions{};
+  IngameMilitaryOpenContext12004 ingame_military{};
   IngameDecisionItemContextV1 ingame_decision_item{};
   IngameDecisionItemActionContextV1 ingame_decision_action{};
   WhitePlayerBusinessVariablesContextV1 white_player_business_variables{};

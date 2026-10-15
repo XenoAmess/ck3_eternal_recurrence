@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T20:04:18.803707+00:00",
+  "cards": [
+    {
+      "card_id": "D10",
+      "svg": "D10.svg",
+      "paragraph_ids": [
+        "C02-05",
+        "C02-06",
+        "C02-07",
+        "C02-08",
+        "C02-09"
+      ],
+      "bytes": 3468,
+      "sha256": "78b37886a1463f5379c3d04788c648c2fb185173ea18891df62da59a903908ce",
+      "bitmap_generated": false,
+      "human_signoff": false
+    },
+    {
+      "card_id": "D11",
+      "svg": "D11.svg",
+      "paragraph_ids": [
+        "C03-08",
+        "C04-01",
+        "C04-02",
+        "C04-03",
+        "C04-04",
+        "C04-05",
+        "C04-06",
+        "C04-07",
+        "C04-08"
+      ],
+      "bytes": 3749,
+      "sha256": "d608419fe705d1e630ab4efaa1fd49dc90fee704df6fd513434e550b06a249b8",
+      "bitmap_generated": false,
+      "human_signoff": false
+    },
+    {
+      "card_id": "D12",
+      "svg": "D12.svg",
+      "paragraph_ids": [
+        "C02-06",
+        "C06-05"
+      ],
+      "bytes": 3666,
+      "sha256": "afb0d3ea1613fc59365fb6cd7a616afaf9fc747fcb131c1b29a340e62cf3446b",
+      "bitmap_generated": false,
+      "human_signoff": false
+    }
+  ],
+  "subtitle_reserved_y": [
+    1120,
+    1440
+  ],
+  "source_map": "../claim-shot-agent-map.json",
+  "source_index": "../source-index.json"
+}

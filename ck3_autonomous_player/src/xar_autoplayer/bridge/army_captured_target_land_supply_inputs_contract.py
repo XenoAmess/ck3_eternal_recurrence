@@ -21,7 +21,7 @@ def normalize_captured_target_land_supply_inputs_v1(
 ) -> dict[str, object] | None:
     if value is None:
         return None
-    if not isinstance(value, dict) or set(value) != _KEYS:
+    if not isinstance(value, dict) or set(value) not in (_KEYS, _KEYS | {"loss_adjustment_operands_v1"}):
         raise ValueError("captured target land supply input schema is malformed")
     if (value["source"] != "native_captured_target_land_supply_inputs"
             or value["input_basis"] != "captured_owner_and_target_province"
@@ -71,7 +71,10 @@ def normalize_captured_target_land_supply_inputs_v1(
     if component_ready or resupply_ready:
         if any(value[key] is None for key in _I32):
             raise ValueError("ready captured target branch requires actual subject/owner/Province IDs")
-    return dict(value)
+    result=dict(value)
+    if "loss_adjustment_operands_v1" in value:
+        result["loss_adjustment_operands_v1"]=normalize_target_loss_operands_v1(value["loss_adjustment_operands_v1"])
+    return result
 
 
 def normalize_target_land_supply_in_route_preview(
@@ -103,3 +106,36 @@ def normalize_target_land_supply_in_route_preview(
             **target, "captured_target_land_supply_inputs_v1": family,
         }},
     }
+
+
+def normalize_target_loss_operands_v1(value):
+    if value is None:return None
+    i32=("commander_raw_full_id","commander_resolved_full_id")
+    i64=("commander_modifier_1a9_raw","loaded_excess_slope_raw","loaded_min_loss_raw",
+         "loaded_max_loss_raw","loaded_divisor_floor_raw")
+    keys={"source","scale","status","observation_ready","unavailable_reason",
+          "commander_used_native_fallback",*i32,*i64}
+    if not isinstance(value,dict) or set(value)!=keys:
+        raise ValueError("target loss operand schema is malformed")
+    if value["source"]!="native_captured_target_loss_operands" or type(value["scale"]) is not int or value["scale"]!=100000:
+        raise ValueError("target loss operand source/scale is malformed")
+    for fields,bits in ((i32,32),(i64,64)):
+        for field in fields:
+            x=value[field]
+            if x is not None and (type(x) is not int or not -(1<<(bits-1))<=x<(1<<(bits-1))):
+                raise ValueError("target loss operand integer width is malformed")
+    ready=value["observation_ready"]
+    fallback=value["commander_used_native_fallback"]
+    if type(ready) is not bool or (fallback is not None and type(fallback) is not bool):
+        raise ValueError("target loss operand readiness/fallback is malformed")
+    reason=value["unavailable_reason"]
+    if ready:
+        if value["status"]!="available" or reason is not None or fallback is None or any(value[k] is None for k in (*i32,*i64)):
+            raise ValueError("ready target loss operands incomplete")
+    elif value["status"]!="unavailable" or not isinstance(reason,str) or not reason:
+        raise ValueError("unavailable target loss operands require reason")
+    if value["commander_modifier_1a9_raw"] is not None and (fallback is None or any(value[k] is None for k in i32)):
+        raise ValueError("observed target modifier requires resolved commander witness")
+    if fallback is False and value["commander_resolved_full_id"] is not None and value["commander_raw_full_id"]!=value["commander_resolved_full_id"]:
+        raise ValueError("target commander raw/resolved FullID differs without fallback")
+    return dict(value)

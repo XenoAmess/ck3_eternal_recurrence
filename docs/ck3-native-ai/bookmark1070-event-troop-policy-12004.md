@@ -1,5 +1,7 @@
 # bookmark.1070 A：事件兵生成字段与当前补员边界（1.20.0.4）
 
+> 2026-10-16 来源增量：当前EXE内置文档确认uses_supply默认yes，且已闭合spawn创建raw138=1→当前CanReplenish直接false的producer链。详见[原生默认专题](bookmark1070-spawn-defaults-native-12004.md)。下文保留2026-10-15 19:09当时的未知边界；constructor初始化byte4F1的具体store与类别正式enum名仍未捕获。
+
 machine_id: `desktop-3fevhd2-1c74096080`；来源复核时间 `2026-10-15T19:09:32.222160+00:00`。
 本增量只研究已发生的 A 选项兵员机制，不改变事件选择策略，不重复旧 registry/replay。
 游戏路径取 R0173 prepared.json；EXE/build 身份仅复用该机器回执，未重新读取 EXE。
@@ -66,3 +68,50 @@ Root报告的单向split/merge250物理兵守恒，说明当前路径没有凭�
 
 本包不读取EXE、不调用SDK/游戏/桌面/Steam、不构建native、不写主树。
 外置≤256KiB，计Root原active32/metadata17预算；原截止/复核 `2026-10-16T07:45:01.597Z` 不延长。
+
+
+## 2026-10-16：uses_supply真正constructor默认写入已闭合
+
+machine_id: `desktop-3fevhd2-1c74096080`；本次观察 `2026-10-15T21:02:52.946091+00:00`；主树来源 `d9322bcfb3e17a3fe78607cea777bbfaf7be0a11`。
+exact **1.20.0.4 / Steam25734779**，冻结EXE SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`复用，未重hash/运行EXE。
+本增量保留旧a03与联盟知识封包，不重做三个spawn枚举/策略测试。
+
+当前真实factory/constructor入口 **2CCF3E0..2CCF52D，333B**，SHA
+`9f5f4d1889b83b9c0829b21d03a59a208063e150b83ff5a4ba83f371c9562263`。它从Root获准的当前编译窗口 `[2CCC000,2CD0000)` 一次16KiB定位中取得；
+只保留实际命中的窄函数，不保存完整窗口。不是旧RVA平移，也未扫描全部.text。
+`2CCF3F5`分配size4F8，`2CCF40F` RIP-LEA计算实际vptr **4839B88**，
+`2CCF416`写新对象vptr。已有actual COL4EB9540→TD5A71D20的类型名为
+**`.?AVCSpawnArmyEffect@@`**，因此这是真正的该类型创建入口。
+
+关键指令是 **2CCF4FD**：
+
+```text
+66 C7 87 F0 04 00 00 01 01
+mov word ptr [rdi + 0x4F0], 0x0101
+```
+
+小端序明确写入 **effect4F0=1、effect4F1=1**。此前R14已置0，
+`2CCF506`另写4F2=0。该默认store之后没有callee或4F0/4F1覆盖，
+`2CCF517 mov RAX,RDI`、`RET2CCF52C`返回同一新对象。
+所以旧的“uses_supply默认yes只有内置文档、尚未取得constructor store”缺口现已由实际指令关闭。
+
+与已封来源联接：actual intern **32C7=uses_supply**；parser2CCCFA0在32C7分支把
+**effect+4F1**交给bool解析器（2CCD0E1/0EF）。省略该属性时保留此构造默认；显式输入可经该分支替换。
+两条实际spawn创建路径分别在2CCDB54/5C和2CCE501/508，把4F1复制为persistent **byte141**；
+actual供给eligible叶2A956B0对ArRgkind1经首DATA完整generation解析，**2A95703读141!=0**。
+这闭合 `constructor默认1 → parser属性绑定 → spawn字段复制 → 当前供给资格消费者`。
+没有从字面文档或当前兵量反推默认写入，也没有授当前补给扣减/伤亡已发生信用。
+
+补员属于另一个来源轴：两条spawn路径硬置 **R8D=1**进入2A96C00，
+**2A96C28**将该创建分类存persistent **DWORD138**；现有当前permission在
+262C6F2/6FF对138==1直接false。**138是创建分类raw值，141是uses_supply字段，不能互相改名。**
+当前结论是“spawn创建的该raw类别被当前CanReplenish拒绝，且uses_supply默认true”；
+不是虚构一个`can_reinforce=no`布尔默认，也不是保证所有writer之后或所有特殊兵永久不补员。
+raw138正式enum名称、其他类别及未来状态改变保持未命名；无新SDK/游戏/录制/业务验收信用。
+
+初始窄读已排除：typed deleting destructor2CCE540→2CCE580；相邻2CCCEF0是另一0x118对象析构，
+2CCE710是assign-commander执行。它们不能冒充constructor；真实匹配来自窗口内唯一vptr命中2CCF40F，
+并从实际.pdata entry重解码确认指令边界。
+完整指令、raw hex、typed provenance、旧链的精确原件SHA及排除项见
+[portable窄来源证明](evidence/bookmark1070-constructor-default-12004/source-proof.json)。
+外置≤256KiB，原active池与2026-10-16T07:45:01.597Z复核不延；无主树写入、整EXE dump/fullbuild。

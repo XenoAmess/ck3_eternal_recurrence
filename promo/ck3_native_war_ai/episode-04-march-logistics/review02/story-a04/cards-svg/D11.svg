@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<title>锁定后：首段保留，后程可改</title>
+<desc>Source/actual demonstration card, not gameplay footage or human signoff.</desc>
+<rect width="2560" height="1440" fill="#211813"/>
+<rect x="90" y="290" width="1160" height="300" rx="12" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<rect x="1310" y="290" width="1160" height="300" rx="12" fill="#35291F" stroke="#ABB582" stroke-width="2"/>
+<rect x="90" y="640" width="1160" height="290" rx="12" fill="#35291F" stroke="#9AAEAB" stroke-width="2"/>
+<rect x="1310" y="640" width="1160" height="290" rx="12" fill="#35291F" stroke="#CA7962" stroke-width="2"/>
+<text x="90" y="85" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CBA56A">D11  /  MARCH LOGISTICS</text>
+<text x="90" y="178" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" fill="#F0E5CF">锁定后：首段保留，后程可改</text>
+<text x="90" y="240" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" fill="#BBA98D">R0175 + R0176 ACTUAL</text>
+<text x="120" y="350" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CBA56A">R0175 / Halt 一次</text>
+<text x="120" y="415" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">原 [1036, 8653, 1034, 1033]</text>
+<text x="120" y="478" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">后 [1036]；首段进度保留</text>
+<text x="120" y="541" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">2日后到1036；次日仍空路线</text>
+<text x="1340" y="350" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#ABB582">R0176 / alternate Move 一次</text>
+<text x="1340" y="415" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">原 [8653, 1034, 1033] → [8653, 8645]</text>
+<text x="1340" y="478" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">先到原front8653，再到替代8645</text>
+<text x="1340" y="541" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">替代终点：45秒raw片外独立读回</text>
+<text x="120" y="700" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#9AAEAB">实际锁定输入 / Q100000</text>
+<text x="120" y="765" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">96666 &gt; 50000；95108 &gt; 50000</text>
+<text x="120" y="828" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">比较符源码为 &gt;；等号未在两场实测</text>
+<text x="1340" y="700" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CA7962">不同起算日，不同范围</text>
+<text x="1340" y="765" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">baseline → 替代终点 13自然日</text>
+<text x="1340" y="828" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">改令 → 同一替代终点 8自然日</text>
+<text x="90" y="1015" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" fill="#BBA98D">ACTUAL source dcda / R0175、R0176为独立正常会话；原生结果与候选视频分开</text>
+<text x="90" y="1063" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" fill="#BBA98D">首段进度 ≠ 整条完成比例；首段时量 ≠ 整条ETA；不授ABC胜负或clean镜头</text>
+</svg>

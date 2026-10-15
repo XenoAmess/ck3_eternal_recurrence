@@ -1,0 +1,98 @@
+{
+  "schema": "xar.e04.B.coastal-s0-input-notes.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "readiness": "HOLD_FORMAL_B_UNBOUND",
+  "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+  "S0": {
+    "date_raw": 53146848,
+    "normal_save_sha256": "e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67",
+    "normal_save_bytes": 71631396,
+    "historical_run": "desktop-3fevhd2-1c74096080--vanilla--R0177",
+    "actual_player_character_id": 31254,
+    "public_cunit_id": 93,
+    "native_carmy_id": 85,
+    "province_id": 2624,
+    "cache_current_maximum": [
+      250,
+      250
+    ],
+    "ArRg_count": 4,
+    "DATA_count_total": 4,
+    "stock_raw": 10000000,
+    "scale": 100000,
+    "wallet_raw": 25455910,
+    "war_ids": [
+      4
+    ],
+    "runtime_rebinding_required_after_coldload": true
+  },
+  "Root_owner_input_needs_freshload_typed_readback": {
+    "capacity_raw": 10000000,
+    "monthly_supply_getter_raw": 2000000,
+    "assigned_commander_id": 34232,
+    "these_fields_not_in_035_strength_array": true
+  },
+  "candidate_only": {
+    "split_step_template": "split-army-half-{fresh_public_CUnit_FullID}",
+    "CanExecute_observed": null,
+    "native_validator_authoritative": true,
+    "main_rest_site_candidate": 2624,
+    "child_rest_site_candidate": 2619,
+    "child_site_basis": "same R0177 normal preparation origin, not reverse preview or rest qualification",
+    "rest_site_actual_growth_qualified": [
+      false,
+      false
+    ],
+    "reverse_route_preview_observed": null,
+    "split_child_identity": null,
+    "split_sizes": null,
+    "merge_site_candidate": 2624,
+    "goal_province_id": null,
+    "formal_plan_frozen_here": false
+  },
+  "existing_stop_branches": {
+    "threshold": "actual stock>=frozen minimum AND actual max-current<=frozen maximum deficit",
+    "saturated_current_case": "if minimum<=10000000 and maximum_deficit>=0 still true on actual arrival, same-day rest-enter/rest-exit is allowed",
+    "minimum_above_actual_capacity": "not recovered while capacity remains below the minimum; preserve maximum_rest_days exit",
+    "maximum_stay": "actual elapsed reaches frozen maximum_rest_days; exit with recovery_threshold_observed=false if threshold not met",
+    "missing_supply_or_DATA": "HOLD existing typed query fields; never fill zero or infer growth from monthly getter",
+    "absolute_deadline_raw_if_this_S0_is_frozen": 53149008,
+    "extra_1_1_or_commander_change_is_physical_refill": false
+  },
+  "missing_formal_inputs": [
+    "actual same-S0 independent cold runtime/loaded-save/cohort/DATA/features readbacks",
+    "two site-specific actual stock-growth qualification references",
+    "fresh route previews and native split outcome/child full identity",
+    "frozen minimum_stock_raw/maximum_deficit/maximum_rest_days",
+    "frozen goal/report-days/merge direction/commander/post-arrival policy",
+    "actual R07/R08-qualified applied payment coverage if compare_fees remains true"
+  ],
+  "current_selector_scope": "current_replenishment_army_selector_v1 only breaks actual-strength ties by current conditional prepared148 refill opportunity; it does not choose rest provinces",
+  "ordinary_planner_B_boundary": {
+    "quiet_pursuit_selector_call_requires_no_unsafe_or_threatened_stationary_armies": true,
+    "separated_split_pair_without_safe_intent": "native_war_merge_rendezvous_blocked / safe-exact-rendezvous",
+    "colocated_split_pair": "native_war_merge_recovery may immediately select merge",
+    "existing_B_stages_must_own_experiment_commands": true,
+    "ordinary_auto_turn_autonomous_full_B_qualified": false,
+    "code_change_required_for_this_owned_experiment": false
+  },
+  "new_code_required": false,
+  "tests_run_this_increment": 0,
+  "live_execution_performed": false,
+  "research_card_closed": false,
+  "physical_refill": null,
+  "winner": null,
+  "source_receipts": {
+    "S0_small_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\normalprepare93-stages\\newstationary-commonS0.actual.json",
+      "bytes": 7236,
+      "sha256": "90a78e0d242fd4bb9b7cee366c8576659d049851c43f2cd0474781c832d35590"
+    },
+    "S0_snapshot": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\desktop-3fevhd2-1c74096080--vanilla--R0177\\responses\\035-coastal-commonS0-endpoint.json",
+      "bytes": 139796,
+      "sha256": "16c056bc00074e010f286f4207a8daaa1d292e0940683e11d1d377a32aa18794"
+    }
+  },
+  "source_locators_are_machine_bound_not_R10_relative_pins": true
+}

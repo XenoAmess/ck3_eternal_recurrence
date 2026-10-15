@@ -12,7 +12,7 @@ consume_writer_actual.py 补上真实 probe 的离线读取入口。它只读原
   --output <NEW_WRITERS_PROJECTION.json>
 ~~~
 
-这是 argv 展示；参数用数组传递或合成一条实际命令，不使用 PowerShell 续行。输出拒绝覆盖。Root 在 probe 确实结束后运行，原 JSONL 与输入字节保持不变。
+这是 argv 展示；参数用数组传递或合成一条实际命令。输出拒绝覆盖。Root 在 probe 确实结束后运行，原 JSONL 与输入字节保持不变。
 
 读取器复用同目录 cold consumer 的 OFFSETS/require/integer，以及现有 validate_current_raw_context_v1、payment.normalize_journal 和 exact .4 identity。cold consumer 的旧矩阵不会被调用。Root admission 的 actor/session/window/epoch、当前 raw 叶、原 source packet SHA 与 actual start 逐项绑定；离线异机读取用证据原 machine_id，不把读取机器当原采样机器。现金缓存只作 admission 输入，不变成 wallet callback。
 

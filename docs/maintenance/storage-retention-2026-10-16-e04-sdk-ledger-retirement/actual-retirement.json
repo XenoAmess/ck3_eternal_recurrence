@@ -1,0 +1,78 @@
+{
+  "schema": "xar.e04.old-two-sdk-ledger-retirement-result.v1",
+  "status": "ACTUAL_COMPLETED",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T20:43:24.078299+00:00",
+  "intent": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-retirement-a01\\INTENT.actual.json",
+    "bytes": 3475,
+    "sha256": "3db989faeda549507920bde2d4963db0c2301087b6a97baf91c58a7cdffc468b"
+  },
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\two-old-sdk-ledgers-precise-retirement-review-a01.json",
+    "bytes": 14056,
+    "sha256": "d42db5f6efe9539c8076f1e1d149069c6cad95dbedf0380da49263444fda5869"
+  },
+  "source_exact_fullreplay_proof": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\RESULT.actual.json",
+    "bytes": 5526,
+    "sha256": "89bd1c8b90c69dcfe09793c14dd4a8d21f6005de4d09409b17b5c3549c4f987a"
+  },
+  "actual_availability": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-retirement-a01\\AVAILABILITY.actual.json",
+    "bytes": 4917,
+    "sha256": "465fdeb683f1969baba0581a62f52d5b458e6307e842f764a0f6b928a9fe88e6"
+  },
+  "dependency_handle_checks": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-retirement-a01\\DEPENDENCY-HANDLE-CHECKS.actual.jsonl.gz",
+    "bytes": 18098,
+    "sha256": "d95fb8f4e0423a3996275b383fe0d5488073167811458432baee3a74b99c4986"
+  },
+  "attempted_count": 2,
+  "deleted_count": 2,
+  "deleted_logical_bytes": 2537415657,
+  "deleted_singlelink_allocation_bytes": 2537418752,
+  "failed_or_skipped_count": 0,
+  "failed_or_skipped": [],
+  "all_protected_metadata_unchanged": true,
+  "protected_response_count": 586,
+  "protected_file_count": 602,
+  "before_volumes": {
+    "C": {
+      "total": 511133945856,
+      "used": 485593927680,
+      "free": 25540018176
+    },
+    "D": {
+      "total": 500090007552,
+      "used": 477412806656,
+      "free": 22677200896
+    }
+  },
+  "after_volumes": {
+    "C": {
+      "total": 511133945856,
+      "used": 483056689152,
+      "free": 28077256704
+    },
+    "D": {
+      "total": 500090007552,
+      "used": 477412806656,
+      "free": 22677200896
+    }
+  },
+  "free_delta_not_exclusive_attribution": {
+    "C": 2537238528,
+    "D": 0
+  },
+  "attribution_boundary": "C/Dfree includescurrentR0177 andOSactivity. Only confirmedactualsamehandledeletions count as reclamation; no game/pagefile shrink inferred.",
+  "old_original_paths_truthfully_unavailable_after_success": true,
+  "no_same_name_replacement_created": true,
+  "directories_deleted": 0,
+  "large_file_body_hashes_this_execution": 0,
+  "SDK_desktop_game_main_source_registry_Steam_pagefile_mutations": 0,
+  "quota_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+  "deadline_extensions": 0,
+  "post_R0177_admission_created": false,
+  "duration_seconds": 4.9252838001120836
+}

@@ -92,27 +92,61 @@ def project_full_land_supply_rate_v1(
     for field, row_field in (("subject_army_id", "army_id"), ("subject_carmy_id", "native_carmy_id")):
         if inputs[field] != province[field] or inputs[field] != same_query_strength.get(row_field):
             raise ValueError(f"same-query land rate {field} context differs")
-    limit = province["native_supply_limit_soldiers"]
-    p = inputs["province_component_raw"]
-    loss, g = 0, 0
-    if selected_refill_usage_soldiers > limit:
-        candidate = _native_fixed_mul((selected_refill_usage_soldiers - limit) * Q,
-                                      inputs["loaded_excess_slope_raw"])
-        loss = (inputs["loaded_min_loss_raw"] if candidate < inputs["loaded_min_loss_raw"]
-                else min(candidate, inputs["loaded_max_loss_raw"]))
-    elif gain["native_resupply_eligible"]:
-        g = gain["loaded_gain_raw"]
-    local = _wrap64(p - loss)
-    adjusted, divisor, path = local, None, "not_negative"
-    if local < 0:
-        divisor = max(inputs["loaded_divisor_floor_raw"],
-                      _wrap64(Q + inputs["commander_modifier_1a9_raw"]))
-        divided, path = _native_fixed_div(local, divisor)
-        adjusted = max(divided, _wrap64(-inputs["loaded_max_loss_raw"]))
-    result.update(status="available", full_land_rate_ready=True,
-                  native_limit_soldiers=limit, conditional_full_land_rate_raw=_wrap64(g + adjusted),
-                  province_component_raw=p, excess_loss_raw=loss, gain_component_raw=g,
-                  local_component_before_adjustment_raw=local,
+    result.update(_project_land_rate_operands_v1(
+        usage=selected_refill_usage_soldiers,
+        limit=province["native_supply_limit_soldiers"],
+        p=inputs["province_component_raw"],
+        resupply=gain["native_resupply_eligible"], gain=gain["loaded_gain_raw"],
+        operands=inputs))
+    return result
+
+
+def _project_land_rate_operands_v1(*, usage, limit, p, resupply, gain, operands):
+    """Shared native 24E5BB4..5E4D kernel; require only reached operands.
+
+    Foreign 24E5B04..5BAA promotes each native flags2 count to QWORD
+    before adding to scaled base usage. Caller supplies this explicit usage.
+    Native fixed mul/div, signed wrap, clamp order and divisor0 are preserved.
+    """
+    result = dict(full_land_rate_ready=False, status="unavailable",
+                  native_limit_soldiers=limit, conditional_full_land_rate_raw=None,
+                  missing_inputs=[], scale=Q)
+    missing=result["missing_inputs"]
+    for name,value in (("usage",usage),("limit",limit),("province_component_raw",p)):
+        if type(value) is not int or not -(1<<63)<=value<(1<<63):missing.append(name)
+    if not missing and usage<=limit and type(resupply) is not bool:missing.append("native_resupply_eligible")
+    if missing:return result
+    def need(key):
+        value=operands.get(key)
+        if type(value) is not int or not -(1<<63)<=value<(1<<63):
+            missing.append(key);return None
+        return value
+    loss,g=0,0
+    if usage>limit:
+        slope=need("loaded_excess_slope_raw")
+        minimum=need("loaded_min_loss_raw")
+        maximum=need("loaded_max_loss_raw")
+        if missing:return result
+        candidate=_native_fixed_mul(_wrap64((usage-limit)*Q),slope)
+        loss=minimum if candidate<minimum else min(candidate,maximum)
+    elif resupply:
+        if type(gain) is not int or not -(1<<63)<=gain<(1<<63):
+            missing.append("loaded_gain_raw");return result
+        g=gain
+    local=_wrap64(p-loss)
+    result.update(province_component_raw=p,excess_loss_raw=loss,gain_component_raw=g,
+                  local_component_before_adjustment_raw=local)
+    adjusted,divisor,path=local,None,"not_negative"
+    if local<0:
+        floor=need("loaded_divisor_floor_raw")
+        modifier=need("commander_modifier_1a9_raw")
+        maximum=need("loaded_max_loss_raw")
+        if missing:return result
+        divisor=max(floor,_wrap64(Q+modifier))
+        divided,path=_native_fixed_div(local,divisor)
+        adjusted=max(divided,_wrap64(-maximum))
+    result.update(status="available",full_land_rate_ready=True,
+                  conditional_full_land_rate_raw=_wrap64(g+adjusted),
                   local_component_after_adjustment_raw=adjusted,
-                  commander_divisor_raw=divisor, division_path=path)
+                  commander_divisor_raw=divisor,division_path=path)
     return result

@@ -88,3 +88,7 @@ ordinary、非负、无溢出、所有选中writer准入且DATA正确时，整�
 智能体可直接使用：当前原生stock/capacity/rate、loaded表/实际suppression与合格人数、当前context的既有conditional risk；实际历史用完整keyed物理扣兵和本source component分类分别对账。source允许把stock0视作低库存风险，而不是“已经没有补给可扣所以安全”。未来rate、更新机会、写入结果、完整战争局面与缺失历史仍不由静态公式补齐。库存0前后兵数未变，可以记录净变化0；只有完整actual决策/写入证据才授具体零budget或零physical debit。
 
 本包静态source闭合及9个新纯算术案例不授production-live R05。新增SDK/游戏/桌面/EXE执行/完整构建/旧fixture replay均0；主树无写。小slice和可重建分析按统一策略48小时复核，小型结论180日复核，8MiB lane沿Root512MiB共享预留，截止2026-10-16T07:45:01.597Z未延长。
+
+## 正常准备入口：候选容量与更低起始库存
+
+[候选容量到零库存的决策卡与最少步骤](episode04-commander-capacity-zero-preparation-12004.md)复用现有 R05 agent 入口，比较已100库存军队与正常换将后的实际容量/负率。它分别保留候选条件量、正常动作ACK、独立当前统帅/容量读回和自然updater结果；不以cap裁剪当耗给或兵员损失，也不承诺固定日数归零。R0177小型来源仅作机器/场次绑定输入，a08候选新叶尚未实机观察。

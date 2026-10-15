@@ -171,6 +171,7 @@ void PopulateArmySupportBindings12004(
   rate.character_fallback_slot = monthly.character_fallback_slot;
   rate.get_character_modifier_aggregator = monthly.get_character_modifier_aggregator;
   rate.read_character_modifier = monthly.read_character_modifier;
+  rate.capture_target_loss_operands = true;
   rate.loaded_excess_slope_raw = ImageAddress12004<const std::int64_t *>(image_base, 0x5C69A38);
   rate.loaded_min_loss_raw = ImageAddress12004<const std::int64_t *>(image_base, 0x5C69A30);
   rate.loaded_max_loss_raw = ImageAddress12004<const std::int64_t *>(image_base, 0x5C69A40);
@@ -238,6 +239,10 @@ ck3_12003::CommanderBindings BindCommanderImage12004(
   result.get_current_total_skill = ImageAddress12004<decltype(result.get_current_total_skill)>(image_base, 0x28B1690);
   result.current_total_martial_observer_enabled = true;
   result.current_native_ai_base_quality_observer_enabled = true;
+  result.conditional_supply_capacity_loaded_full =
+      ImageAddress12004<const std::int64_t *>(
+          image_base, kCommanderCapacityLoadedFullRva12004);
+  result.conditional_supply_capacity_observer_enabled = true;
   result.enabled = true;
   return result;
 }

@@ -29,3 +29,80 @@ decision = next_decision(state, evidence, fresh_preview_pin)
 源码基线 `dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb`。依据是 `ck3_12002_adapter.cpp:313` 的 `.4` preview复用、`ck3_12002_military.cpp:353` 的合法性/完整路径、`native_driver.py:14400` 的同帧绑定、`army_strength_v1_serializer.hpp:1297` 的当前月贡献/attrition数值及 `:1602` 的 province_supply 真实 wire。省级usage含义沿用[既有专题](province-supply-limit-native-usage-preview-12003.md)；其 `.3` 实例只保留原版本资格，不能授新 `.4` T0。县损耗及 residual 的实际归因仍见[独立R04专题](episode04-county-entry-loss-12004.md)，本模块不重做其 source 分支或乘法。
 
 本包只执行 Python 离线反例，未读取 EXE、save/raw 或调用 SDK/game/desktop。`machine_id: desktop-3fevhd2-1c74096080`；准确时间、候选字节和命令见[回执](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/validation/strategy-a-route-inputs.actual.json)。`open_kaishek: not-applicable`，只消费导出JSON，无 CK3 script/IR 语义。测试 PASS 不授实际新 T0、完整路径损耗、维护费/补员资格、游戏日、研究卡或影片完成信用。
+
+
+## 当前钱包、首次抵达和其他军队：同一决策入口的最小补齐
+
+`next_decision` 继续使用原签名、已准入的 state 和精确 endpoint pins，另把已有
+证据里的 `account_observation`、`arrival_observation` 交给调用方，不增加公共
+schema、付费探针或 runner。当前供给量仍在 `observed_current.stock_raw`，其
+容量、当前月贡献、当前 attrition 也保持原值和原单位。月贡献不能乘旅行天数
+外推库存，库存恢复不能冒充补员。
+
+`account_observation` 的 T0/current player wallet 来自两个实际 endpoint 的
+`played_character_gold.raw`；其差只叫 `unattributed_wallet_net_raw`。例如期间
+进账12、实付3，钱包净增9；9既不是免费，也不能改名为费用−9。尚未归因的
+登船、维护、其他收入与费用各为null。金额0只可能来自该字段自己的合格实付
+证据，不能由当前月维护显示、generic wallet callerPC、空支付记录或钱包净差
+推出。已有 source-qualified boarding writer→gateway→transition→natural-return
+链可以支撑该窗口实付（`war_payment_observations_v1.expected_debits`），但它
+仍需匹配本臂自己的同账户/区间及selected Army；旧R0173三金币不进入新A账。
+费用比较是否预注册由 `fee_comparison_requested` 保留；本适配器不授R07/R08
+资格、不改变计划，也不会因费用unknown取消当前合法Move。
+
+`arrival_observation.first_arrival_actual` 保留第一次到场的完整实际库存/队列/
+钱包/日期；`current_actual` 是本次最新endpoint，允许在预注册后续政策下不同。
+它们不能互相覆盖。首次抵达区间沿现有逐日scan，预注册报告日只返回本臂已有
+endpoint；共同日期表仍null，D90必须真实到90日且预注册。到场时不自动续跑。
+例如第2日到场库存10、第3日库存20，抵达列仍是10，不能用第3日替换或把两者
+当共同日期比较。独立post阶段复读同日实际到场仍由既有stages/reader核验。
+
+`other_observed_player_armies` 仅保留同一snapshot里其他玩家军队的位置、状态
+和combat/retreat标记。94/95在别处参战不是selected93合法行军的自动硬拒绝；
+它们的经济影响也未因此被排除。`economic_isolation_from_other_armies_proved`
+固定false，所有相关成本保持unknown；要解释同一角色的钱包/维护，必须独立
+取得能分离selected93与其他军队的应用账、收入和其他支出。世界事件、接敌与
+本臂测量资格沿原合同分别记录，不能为了宣称经济纯净冻结全世界。
+
+### R0177准备S0到正式A的最短路径
+
+本次离线读取的来源机器为 `desktop-3fevhd2-1c74096080`，source
+`d9322bcfb3e17a3fe78607cea777bbfaf7be0a11`。Root的正常准备保存回执记录
+checkpoint `e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67`、
+71,631,396 bytes、raw53146848，Army93在2624驻定，CArmy85，250/250、4团/
+4 DATA、stock100（raw10000000）。Root提供的统帅34232仍须在正式endpoint
+绑定自己的同帧source；这些是源会话事实，不能预填未来freshload数字。此处
+没有读取、复制或重新hash存档，也不把准备行军当正式A或R10完成。
+
+最小缺口和顺序如下；B/C可以独立准备，不阻止先取得A自身正式输入：
+
+1. 将受保护正常S0的完整保存回执、origin/build/source/DLL pin和实际baseline
+   endpoint接入已有PLAN。目标目前未冻结；从共同策略目标取得具名Province，
+   同帧普通snapshot→单Army `ordinary_core_v1` complete Driver reference→
+   commander/loaded features bound source→native direct preview。先冻结goal、
+   arrival states、原始全cohort、报告日、事件/墙钟/90日及到场后政策。已有
+   `PLAN.template.UNBOUND.json` 的null不能由旧London或旧角色数字代填。
+2. A独立正常freshload这个精确SHA；取得自己的machine/PID/create-time/gen/
+   episode/actor与T0完整观测及fresh preview，调用已有`strategy_a.admit`。
+   当前保护S0是准备输入，不是这次独立冷载本身。B/C正式比较也要各自freshload
+   同一SHA并核baseline；不能沿用R0177行军前2619帧作新T0。
+3. 通过既有Root relay分阶段执行一次typed Move，独立post观察实际queued route；
+   后续每个实际自然日提供exact clock+同帧完整endpoint给`strategy_a.update`，
+   首次抵达立即保存actual，再独立同日post。当前R10 reader/stages固定speed5
+   date-only/a-0；R0177准备helper的speed3 watched日志不能直接贴入该clock schema。
+   复用现有R10阶段，不重造runner、不把准备day计入正式D1。
+4. 用本入口读取当前stock/压力、账户净差、首次到场post和世界上下文。若预注册
+   `compare_fees=true`，完整费用表还缺本臂合格R07/R08与应用账/钱包对账；保持
+   unknown，不事后关掉费用列。各臂抵达表和共同自然日报告分别交给比较器。
+
+这次增量只增加离线决策消费与合成反例，不授新实机、通用完整路线费用、影片
+或正式R10信用；原07:45Z有限Root运行截止没有成为永久公共ready条件。
+
+上述S0元数据的原观察时间为2026-10-15T20:25:31.384013Z，证据是Root现有
+`normalprepare93-stages/newstationary-commonS0.actual.json`，本次只读该小回执。
+它引用的selected93完整结果为7,865,022 bytes；四军全history的30MB结果不能
+直接送入本比较器的单文件16MiB上限。完整scope不是全世界scope，正式A沿用
+单Army `ordinary_core_v1` 与其完整Driver原件，不拿MCP摘要凑全体DATA。
+实际日数/目标未定时不承诺90日会装进512MiB；现有A阶段每日前后各取一次
+endpoint，Root须按实际单军query大小和最快正式到场pilot核峰值，保留容量
+守卫的真实STOP。准备行军到场不替代正式时长、全90日容量或墙钟资格。

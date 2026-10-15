@@ -70,12 +70,14 @@ def roster(frame):
         result[identity]=row
     return result
 def same_frame(first,second):need(frame_key(first)==frame_key(second),'paused frame drifted; do not submit')
-def admission(context,proof,*,run_id,source=SOURCE):
+def admission(context,proof,*,run_id,source=SOURCE,sequence=176):
     identity=context.get('identity',{})
     need(context.get('machine_id')==MACHINE and identity.get('machine_id')==MACHINE,'machine binding differs')
-    need(context.get('source_head')==source and proof.get('source_head')==source,'normal a06/dcda source differs')
-    need(identity.get('run_id')==run_id and identity.get('sequence')==176 and identity.get('mod_key')=='vanilla'
-         and run_id==MACHINE+'--vanilla--R0176','only actual new R0176 allocation admitted')
+    need(re.fullmatch('[0-9a-f]{40}',source) is not None
+         and context.get('source_head')==source and proof.get('source_head')==source,'reviewed normal source differs')
+    need(type(sequence) is int and sequence>=176 and identity.get('run_id')==run_id
+         and identity.get('sequence')==sequence and identity.get('mod_key')=='vanilla'
+         and run_id==MACHINE+'--vanilla--R'+str(sequence).zfill(4),'actual explicitly allocated run differs')
     need(proof.get('machine_id')==MACHINE and proof.get('run_id')==run_id,'runtime proof belongs to another run')
     intent=proof.get('stable_character_intent',{})
     need(intent.get('historical_id')==1128 and intent.get('bookmark_character_name_key')=='bookmark_rags_to_riches_duke_robert',
@@ -179,7 +181,7 @@ def resume_baseline_strengths(path,*,run,frame,capabilities,binding):
       'same_fresh_paused_frame_verified':True,'old_request_scope_equals_fresh_roster':True}
 
 def selected_available_cohorts(armies,frame,selected_id):
-    need(selected_id==93,'Root R0176 qualification scope is the actual selected93 cohort')
+    need(type(selected_id) is int and 0<=selected_id<2**31,'selected public FullID required')
     rows=roster(frame);available=[];excluded=[]
     for army in armies:
         identity=army['army_id']
@@ -193,19 +195,70 @@ def selected_available_cohorts(armies,frame,selected_id):
           'native_query_row_projection':{key:army.get(key) for key in ('army_id','native_carmy_id','status','unavailable_reason','regiment_count','current_soldiers','maximum_soldiers')},
           'complete_native_query_row_preserved_in_pinned_strength_raw':True,
           'strengths_qualified':False,'troop_values_filled_with_zero':False,'unit_type_name':None})
-    need(selected_id in {army['army_id'] for army in available},'selected93 unavailable; cannot proceed')
+    need(selected_id in {army['army_id'] for army in available},'selected Army unavailable; cannot proceed')
     return available,excluded
+
+def merge_ids(source,sibling,destination):
+    need(destination in ('source','sibling'),'explicit merge direction required')
+    need(type(source) is int and type(sibling) is int and source!=sibling,'distinct actual pair required')
+    return [source,sibling] if destination=='source' else [sibling,source]
+
+def compare_merge_supply(before,after,ids):
+    """Observed D/S operands; caller separately binds frames and complete DATA."""
+    old={a['army_id']:a for a in before['query']['army_strengths']}
+    new={a['army_id']:a for a in after['query']['army_strengths']}
+    d,s=ids;destination,source,post=old[d],old[s],new[d]
+    required=('current_supply_raw','current_supply_scale','current_supply_capacity_raw','current_supply_capacity_scale')
+    missing=[str(a['army_id'])+':'+key for a in (destination,source,post) for key in required if type(a.get(key)) is not int]
+    missing += ['destination_native_weight'] if type(destination.get('merge_supply_destination_weight_raw')) is not int else []
+    if missing:return {'status':'HOLD_NATIVE_SUPPLY_OR_WEIGHT_UNAVAILABLE','missing':missing,'upper_clamp_observed':False}
+    need(all(a['current_supply_scale']==a['current_supply_capacity_scale']==100000 for a in (destination,source,post))
+         and destination.get('merge_supply_destination_weight_scale')==100000,'native Q100000 scale differs')
+    need(all(a['current_supply_raw']>=0 and a['current_supply_capacity_raw']>=0 for a in (destination,source,post)),
+         'negative current stock/capacity is outside this positive branch')
+    wd=destination['merge_supply_destination_weight_raw'];ws=source['current_soldiers']*100000
+    need(type(source['current_soldiers']) is int and min(wd,ws)>=0,'native weights unavailable or negative')
+    if wd+ws==0:return {'status':'HOLD_ZERO_NATIVE_WEIGHT_BRANCH','upper_clamp_observed':False}
+    # Actual .4 2C55FD7..2C55FEF switches division algorithms above this
+    # numerator range; 2C5607F..2C56093 similarly guards multiplication.
+    # The unrestricted Python rational formula is not that fallback evaluator.
+    div_max=0x53E2D6238DA3;mul_max=0xB504F333
+    if any(weight>div_max or weight>0 and army['current_supply_raw']>mul_max
+           for weight,army in zip((wd,ws),(destination,source))):
+        return {'status':'HOLD_NATIVE_FIXED_FALLBACK_BRANCH','upper_clamp_observed':False,
+          'native_fast_div_numerator_max':div_max,'native_fast_mul_operand_max':mul_max,
+          'native_fallback_modelled':False,'full_card_closed':False}
+    shares=[w*100000//(wd+ws) for w in (wd,ws)]
+    contributions=[share*a['current_supply_raw']//100000 for share,a in zip(shares,(destination,source))]
+    preclamp=sum(contributions);capacity=post['current_supply_capacity_raw'];expected=max(0,min(capacity,preclamp))
+    matches=post['current_supply_raw']==expected
+    return {'status':'NATIVE_WEIGHTED_SUPPLY_MATCH' if matches else 'NATIVE_WEIGHTED_SUPPLY_MISMATCH',
+      'destination_army_id':d,'source_army_id':s,'weights_raw':[wd,ws],
+      'source_weight_basis':'native current_soldiers getter checked against complete ArRg sum; not source destination-role weight',
+      'stocks_raw':[destination['current_supply_raw'],source['current_supply_raw']],
+      'shares_raw':shares,'contributions_raw':contributions,'preclamp_raw':preclamp,
+      'post_actual_capacity_raw':capacity,'expected_stock_raw':expected,'actual_stock_raw':post['current_supply_raw'],
+      'weighted_supply_match':matches,'upper_clamp_observed':matches and preclamp>capacity,
+      'distinct_pre_stock_observed':destination['current_supply_raw']!=source['current_supply_raw'],
+      'capacity_predicted_from_quality':False,'source_PC_execution_observed':False,'full_card_closed':False}
 
 class Relay:
     def __init__(self,args,*,transport=None,process_probe=process_time):
         self.a=args;self.repo=args.repo.resolve();self.process_probe=process_probe
+        self.source=getattr(args,'source_head',SOURCE);self.sequence=getattr(args,'run_sequence',176)
+        if self.sequence==176:need(self.source==SOURCE and args.army_id==93,'historical R0176 scope remains exact')
         need(pin(Path(__file__))['sha256']==args.self_sha256,'reviewed stage helper SHA differs')
         for path,expected in ((args.context,args.context_sha256),(args.runtime_proof,args.runtime_proof_sha256),
                               (args.request_helper,args.request_helper_sha256)):
             need(pin(path)['sha256']==expected,'actual Root input SHA differs: '+str(path))
         head=subprocess.check_output(['git','-C',str(self.repo),'rev-parse','HEAD'],text=True).strip()
-        need(head==SOURCE,'frozen checkout changed')
-        pins=load(Path(__file__).with_name('MODULES.pins.json'))
+        need(head==self.source,'reviewed actual checkout changed')
+        pins_path=getattr(args,'module_pins',None) or Path(__file__).with_name('MODULES.pins.json')
+        if getattr(args,'module_pins',None):
+            need(pin(pins_path)['sha256']==getattr(args,'module_pins_sha256',None),'reviewed producer pins SHA differs')
+        pins=load(pins_path)
+        expected_pin_keys=set(load(Path(__file__).with_name('MODULES.pins.json'))['repository_files'])
+        need(set(pins.get('repository_files',{}))==expected_pin_keys,'reviewed producer file set changed')
         for rel,expected in pins['repository_files'].items():
             need(pin(self.repo/rel)['sha256']==expected,'production consumer/source changed: '+rel)
         self.sidecar=Path(__file__).with_name('army_split_transfer_assertions_12004.py')
@@ -216,23 +269,25 @@ class Relay:
         self.observation=observation;self.normalize=normalize_regiment_replenishment_records_v1
         self.consumer=module(self.sidecar,'r09_pinned_freshsplit')
         self.c=load(args.context);proof=load(args.runtime_proof)
-        self.binding=admission(self.c,proof,run_id=args.run_id)
+        self.binding=admission(self.c,proof,run_id=args.run_id,source=self.source,sequence=self.sequence)
         self.assets=args.context.resolve().parent;self.run=self.assets/args.run_id
         need(self.run.is_dir(),'Root existing run missing')
         self.case=self.assets/'r09-split-merge-relay-a01'/args.case_id
         need(re.fullmatch('[A-Za-z][A-Za-z0-9_-]{0,47}',args.case_id) is not None
              and re.fullmatch('[A-Za-z][A-Za-z0-9_-]{0,47}',args.attempt) is not None,'safe case/attempt required')
         self.attempt=self.case/args.attempt;self.attempt.mkdir(parents=True,exist_ok=False)
-        self.meta={'machine_id':MACHINE,'observed_at_utc':utc(),'source_head':SOURCE,'run_id':args.run_id,
+        self.meta={'machine_id':MACHINE,'observed_at_utc':utc(),'source_head':self.source,'run_id':args.run_id,
           'context':pin(args.context),'runtime_proof':pin(args.runtime_proof),'helper':pin(Path(__file__)),
           'request_helper':pin(args.request_helper),'consumer':pin(self.sidecar),'binding':self.binding,
           'deadline_utc':DEADLINE,'case_id':args.case_id,'stage':args.stage,'SDK_connection_created':False,
-          'capture_started':False,'time_advanced':False,'unknown_action_retried':False}
+          'capture_started':False,'time_advanced':False,'unknown_action_retried':False,
+          'merge_destination':getattr(args,'merge_destination','source'),
+          'explicit_merge_source_army_id':getattr(args,'merge_source_army_id',None),'module_pins':pin(pins_path)}
         capacity_path=Path(self.c['capacity_admission']);capacity=load(capacity_path)
         shared_limit=capacity.get('shared_child_limit_bytes')
         if 'original_shared_child_total_limit_bytes' in capacity:
             need('shared_child_limit_bytes' not in capacity
-                 and capacity.get('source_head')==SOURCE
+                 and capacity.get('source_head')==self.source
                  and capacity.get('Root_sole_game_SDK_recorder_owner') is True
                  and capacity.get('new_scene_count')==1 and capacity.get('deadline_extensions')==0
                  and Path(capacity.get('new_assets_root','')).resolve()==self.assets.resolve(),
@@ -246,7 +301,7 @@ class Relay:
         fixed=self.case/'binding.actual.json'
         if fixed.exists():
             prior=load(fixed)
-            for key in ('source_head','run_id','context','runtime_proof','helper','request_helper','consumer','binding','deadline_utc','capacity_admission'):
+            for key in ('source_head','run_id','context','runtime_proof','helper','request_helper','consumer','binding','deadline_utc','capacity_admission','merge_destination','explicit_merge_source_army_id','module_pins'):
                 need(prior[key]==self.meta[key],'case changed pinned identity/source/deadline: '+key)
         else:write_new(fixed,self.meta)
         self.serial=0;self.pending=False
@@ -335,12 +390,14 @@ class Relay:
         # Full native roster retained; large unrelated query leaves stay in pinned raw result.
         qp={k:q[k] for k in ('accepted','queried_snapshot_id','queried_revision','queried_native_revision')}
         qp['army_strengths']=[{k:army[k] for k in ('army_id','native_carmy_id','status','regiment_count',
-          'current_soldiers','maximum_soldiers','regiment_strengths','regiment_replenishment_records_v1','unavailable_reason') if k in army} for army in armies]
+          'current_soldiers','maximum_soldiers','regiment_strengths','regiment_replenishment_records_v1','unavailable_reason',
+          'current_supply_raw','current_supply_scale','current_supply_capacity_raw','current_supply_capacity_scale',
+          'merge_supply_destination_weight_raw','merge_supply_destination_weight_scale') if k in army} for army in armies]
         frame={k:s[k] for k in ('snapshot_id','revision','native_revision','date_raw','episode_run_id',
                  'paused','map_ready','played_character','player_armies')}
         frame['diagnostics']={k:s['diagnostics'][k] for k in ('bridge_pid','connection_generation','connected','hello')}
         return {'frame':frame,'excluded_unavailable_cohorts':excluded,
-          'qualified_scope':'selected93 plus actual sibling; unchanged other available cohorts',
+          'qualified_scope':'selected available pair; unchanged other available cohorts; explicit unavailable row excluded',
           'all_roster_strengths_qualified':False,'R09_full_card_closed':False,
           'query':qp,'commanders':commanders,'capabilities':cap['body'],
           'refs':{'snapshot':sref,'capabilities':cref,'strength_response':qref,'strength_raw':actual,
@@ -363,12 +420,14 @@ class Relay:
         packet=self.packet('baseline');need(self.a.army_id in roster(packet['frame']),'Root selected source absent')
         return self.save_packet('baseline',packet,source_army_id=self.a.army_id,live_split_merge_qualification=False,R09_full_card_closed=False)
     def submit_once(self,kind):
-        before=self.saved('baseline' if kind=='split' else 'post-split')
-        if kind=='merge':need(before['split_assertion']['accepted'] is True,'fresh split assertions not accepted')
+        phase='baseline' if kind=='split' else 'pre-merge' if (self.case/'pre-merge.actual.json').exists() else 'post-split'
+        before=self.saved(phase)
+        if kind=='merge' and phase=='post-split':need(before['split_assertion']['accepted'] is True,'fresh split assertions not accepted')
         source=before['source_army_id'];ids=[source]
         if kind=='split':step='split-army-half-'+str(source)
         else:
-            ids.append(before['split_assertion']['identity']['sibling_army_id'])
+            ids=(before['merge_army_ids'] if phase=='pre-merge' else merge_ids(source,
+                 before['split_assertion']['identity']['sibling_army_id'],getattr(self.a,'merge_destination','source')))
             step='merge-armies-'+str(ids[0])+'-with-'+str(ids[1])
         current,sref=self.snapshot(kind+'-current');same_frame(before['packet']['frame'],current)
         caps,cref=self.request(kind+'-current-capabilities','ck3_get_capabilities',{})
@@ -376,7 +435,7 @@ class Relay:
         name=kind+'-once';identifier=self.a.attempt+'-'+str(self.serial+1).zfill(3)+'-'+name
         arguments={'step':step,'expected_revision':current['revision']}
         claim={**self.meta,'kind':kind,'step':step,'arguments':arguments,'source_army_id':source,
-          'army_ids':ids,'before_phase':'baseline' if kind=='split' else 'post-split',
+          'army_ids':ids,'before_phase':phase,
           'request_id':identifier,'request_path':str(self.run/'requests'/(identifier+'.json')),
           'response_path':str(self.run/'responses'/(identifier+'.json')),'gate':gate,
           'pre_submit_snapshot':sref,'pre_submit_capabilities':cref,'outcome':'unknown_until_original_read',
@@ -423,12 +482,18 @@ class Relay:
           pre_strengths=before['packet']['query'],post_strengths=after['query'],pre_commander=before['packet']['commanders'][str(source)],
           post_commanders={int(k):v for k,v in after['commanders'].items()})
         unchanged=self.unchanged_others(before['packet'],after,[source])
+        old={v['army_id']:v for v in before['packet']['query']['army_strengths']}
+        new={v['army_id']:v for v in after['query']['army_strengths']}
+        supply_fields=('current_supply_raw','current_supply_scale','current_supply_capacity_raw','current_supply_capacity_scale')
+        split_supply={'before':{k:old[source].get(k) for k in supply_fields},
+          'after':{str(i):{k:new[i].get(k) for k in supply_fields} for i in (source,result['identity']['sibling_army_id'])},
+          'capacity_inferred_from_clone':False,'upper_clamp_observed':False}
         ref=self.save_packet('post-split',after,source_army_id=source,split_assertion=result,original_action=original,
-          observation=observed,unrelated_cohorts=unchanged,dynamic_video_qualification=False,recording_started_by_this_helper=False,R09_full_card_closed=False)
+          split_supply_observed=split_supply,observation=observed,unrelated_cohorts=unchanged,dynamic_video_qualification=False,recording_started_by_this_helper=False,R09_full_card_closed=False)
         need(result['accepted'],'complete split postcondition refused; keep actual packet and do not retry')
         return ref
     def post_merge(self):
-        claim,original=self.original('merge');before=self.saved('post-split');after=self.packet('post-merge')
+        claim,original=self.original('merge');before=self.saved(claim.get('before_phase','post-split'));after=self.packet('post-merge')
         observed=self.save_packet('post-merge-observation',after,original_action=original,
           qualification='Independent packet only; assertions have not run')
         first,last=before['packet']['frame'],after['frame'];self.observation._fresh_pair(first,last)
@@ -450,26 +515,69 @@ class Relay:
         data.update(actual_commanders_before=commanders_before,actual_commander_after=commander_after,
           exact_source_removal_observed=True,current_commander_distinct_from_Character_and_Knight=True,
           current_commander_only_change_not_REQUIRED=True,dynamic_video_qualification=False)
-        ref=self.save_packet('post-merge',after,source_army_id=ids[0],merge_cohort=compare,merge_DATA_roles=data,
+        supply=compare_merge_supply(before['packet'],after,ids)
+        ref=self.save_packet('post-merge',after,source_army_id=ids[0],merge_cohort=compare,merge_DATA_roles=data,merge_supply=supply,
           observation=observed,unrelated_cohorts=unchanged,original_action=original,R09_full_card_closed=False,
           video_claim='Use only actual listed DATA/role/commander differences. Producer cause remains source evidence; no dynamic shot credit.',
           agent_conclusion='MERGE_DATA_CONSERVED_WITH_SEPARATE_ROLE_CHANGES' if data['accepted'] else 'MERGE_DATA_POSTCONDITION_REFUSED')
         need(data['accepted'],'complete merge DATA postcondition refused; preserve actual differences, no retry')
         return ref
 
+    def pre_merge(self):
+        need(not (self.case/'merge.once.claim.json').exists(),'merge claim already exists; inspect original')
+        if getattr(self.a,'merge_source_army_id',None) is not None:
+            need(not (self.case/'split.once.claim.json').exists(),'explicit existing pair cannot replace a split pair')
+            ids=merge_ids(self.a.army_id,self.a.merge_source_army_id,getattr(self.a,'merge_destination','source'))
+        else:
+            split=self.saved('post-split');need(split['split_assertion']['accepted'],'split not qualified')
+            ids=merge_ids(split['source_army_id'],split['split_assertion']['identity']['sibling_army_id'],getattr(self.a,'merge_destination','source'))
+        after=self.packet('pre-merge')
+        observed=self.save_packet('pre-merge-observation',after,source_army_id=self.a.army_id,merge_army_ids=ids,
+          qualification='Independent packet only; premerge gates have not run',R09_full_card_closed=False)
+        rows={v['army_id']:v for v in after['query']['army_strengths']}
+        need(all(rows.get(i,{}).get('status')=='available' for i in ids),'actual merge pair unavailable')
+        if getattr(self.a,'merge_source_army_id',None) is None:
+            first=split['packet']['frame'];last=after['frame']
+            if frame_key(first)!=frame_key(last):self.observation._fresh_pair(first,last)
+            need(set(roster(first))==set(roster(last)),'premerge changed split roster')
+            pre={v['army_id']:v for v in split['packet']['query']['army_strengths']}
+            need(all(pre[i]['native_carmy_id']==rows[i]['native_carmy_id'] for i in ids),'premerge pair generation changed')
+            old=self.consumer._observe([a for a in pre.values() if a['status']=='available'])
+            new=self.consumer._observe([a for a in rows.values() if a['status']=='available'])
+            need(old[1:]==new[1:],'premerge physical DATA/occurrence changed after split')
+        step='merge-armies-'+str(ids[0])+'-with-'+str(ids[1])
+        action_gate(after['frame'],after['capabilities'],step,'merge',ids,self.binding['actor'])
+        return self.save_packet('pre-merge',after,source_army_id=self.a.army_id,merge_army_ids=ids,observation=observed,
+          qualification='Fresh complete pair before one merge; no cap guarantee',R09_full_card_closed=False)
+
+    def supply_clamp(self):
+        claim,original=self.original('merge');before=self.saved(claim.get('before_phase','post-split'))
+        after=self.saved('post-merge')
+        need(after['merge_DATA_roles']['accepted'] is True and after['merge_DATA_roles']['exact_source_removal_observed'] is True,
+             'complete same-date independent merge DATA postcondition has not passed')
+        value=compare_merge_supply(before['packet'],after['packet'],claim['army_ids'])
+        return write_new(self.attempt/'SUPPLY-CLAMP.actual.json',{**self.meta,'result':value,'original_action':original,
+          'new_native_requests':0,'R09_full_card_closed':False,'dynamic_video_qualification':False})
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('stage',choices=('baseline','split-once','post-split','merge-once','post-merge'))
+    p.add_argument('stage',choices=('baseline','split-once','post-split','pre-merge','merge-once','post-merge','supply-clamp'))
     for name in ('repo','context','runtime-proof','request-helper'):p.add_argument('--'+name,type=Path,required=True)
     for name in ('self-sha256','context-sha256','runtime-proof-sha256','request-helper-sha256','run-id','case-id','attempt'):
         p.add_argument('--'+name,required=True)
     p.add_argument('--resume-baseline-strength-response',type=Path,help='Baseline-only exact original39MB strengths response; fresh same-frame/caps/scope required, no new strengths query')
     p.add_argument('--army-id',type=int,required=True)
+    p.add_argument('--source-head',default=SOURCE,help='Exact actual normal build/context/proof Git source; no inferred upgrade')
+    p.add_argument('--run-sequence',type=int,default=176,help='Exact independently allocated actual run sequence')
+    p.add_argument('--module-pins',type=Path);p.add_argument('--module-pins-sha256')
+    p.add_argument('--merge-destination',choices=('source','sibling'),default='source')
+    p.add_argument('--merge-source-army-id',type=int,help='pre-merge only: explicit existing pair for distinct-stock/cap observation, no split')
     args=p.parse_args();live=None
     try:
         live=Relay(args)
         stages={'baseline':live.baseline,'split-once':lambda:live.submit_once('split'),'post-split':live.post_split,
-                'merge-once':lambda:live.submit_once('merge'),'post-merge':live.post_merge}
+                'pre-merge':live.pre_merge,'merge-once':lambda:live.submit_once('merge'),'post-merge':live.post_merge,
+                'supply-clamp':live.supply_clamp}
         result=stages[args.stage]();receipt=write_new(live.attempt/'RESULT.actual.json',{**live.meta,'result':result})
         print(json.dumps(receipt));return 0
     except BaseException as error:

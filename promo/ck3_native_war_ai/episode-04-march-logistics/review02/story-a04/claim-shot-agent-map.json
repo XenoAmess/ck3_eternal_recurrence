@@ -1,0 +1,1175 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T20:04:18.803707+00:00",
+    "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "live_runtime_source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256_from_existing_sources": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "original69_model": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-BC-a06/narration/six-chapter-final-BC-Chinese-a06.md",
+      "bytes": 23969,
+      "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+    },
+    "frozen_predecessor_maps": [
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/claim-shot-agent-map.json",
+        "bytes": 71886,
+        "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+      },
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/claim-shot-agent-map.json",
+        "bytes": 53716,
+        "sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6"
+      }
+    ],
+    "prior_draft_count": 37,
+    "new_draft_count": 16,
+    "combined_distinct_draft_count": 53,
+    "draft_count_denominator": 69,
+    "remaining_ids_after_this_delta": [
+      "C01-03",
+      "C01-04",
+      "C01-05",
+      "C01-06",
+      "C01-08",
+      "C02-01",
+      "C02-02",
+      "C02-04",
+      "C02-11",
+      "C02-12",
+      "C03-01",
+      "C04-09",
+      "C05-11",
+      "C05-12",
+      "C06-03",
+      "C06-04"
+    ],
+    "editorial_target_minutes": [
+      30,
+      35
+    ],
+    "measured_new_audio_duration_seconds": null,
+    "research_credit_added_by_this_writing_lane": 0,
+    "global_research_counter_recomputed": false,
+    "new_live_actions": 0,
+    "new_raw_hash_reads": 0,
+    "new_clean_spans": 0,
+    "tts_generated": false,
+    "bitmap_generated": false,
+    "full69_script_frozen": false,
+    "winner": null,
+    "R03_R04_R05_R06_R07_R10_live_results_added": false
+  },
+  "paragraphs": [
+    {
+      "paragraph_id": "C02-05",
+      "topic": "补给库存与兵员恢复走两条线",
+      "original_claim_text": "恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。军队当时还在行军，不能说已经抵达终点休整。当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。",
+      "current_speakable_conclusion": "恢复补给，要看军队携带的物资；恢复兵员，要看实体兵团的人数。游戏分别处理这两件事。补给增加，不会自动把缺额变成士兵；兵员能否补充，也不能只问库存是不是满的。对一支准备继续赶路的军队，先读库存，再展开实际兵团，分别确认当前人数、满员数和补员条件。",
+      "spoken_text": "恢复补给，要看军队携带的物资；恢复兵员，要看实体兵团的人数。游戏分别处理这两件事。补给增加，不会自动把缺额变成士兵；兵员能否补充，也不能只问库存是不是满的。对一支准备继续赶路的军队，先读库存，再展开实际兵团，分别确认当前人数、满员数和补员条件。",
+      "source_refs": [
+        "REFILL",
+        "REFILL-APPLICATION"
+      ],
+      "source_ids": [
+        "262C6E0",
+        "262CAB0",
+        "2A98B88"
+      ],
+      "evidence_level": "SOURCE",
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D10"
+      ],
+      "shot_direction": "D10先并排显示“携带物资”与“实体兵员”，再展开补员链；不要把箭头画成库存增加直接通往人数增加。",
+      "missing_filming": [
+        "同一 .4 军队库存恢复与真实兵员增加的两个独立正例仍缺；本段可先用机制卡录音，不套旧 .3 的291→300/9→10画面。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "恢复补给，要看军队携带的物资；恢复兵员，要看实体兵团的人数。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        },
+        {
+          "sentence": "游戏分别处理这两件事。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        },
+        {
+          "sentence": "补给增加，不会自动把缺额变成士兵；兵员能否补充，也不能只问库存是不是满的。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        },
+        {
+          "sentence": "对一支准备继续赶路的军队，先读库存，再展开实际兵团，分别确认当前人数、满员数和补员条件。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-06",
+      "topic": "四条实际记录的当前补员资格",
+      "original_claim_text": "补给回满时，完整十四个兵团的人数都没有变化。整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。补员条件允许，也不等于这个窗口已经补上了那一个。真正增加多少，要看实际人数。",
+      "current_speakable_conclusion": "这次选中的小军，四条实体兵员记录合计二百五十人，都是满员。暂停查询里，四条记录的当前补员许可都为否，已经保存的准备比例也都是零。源码中，这四条共有的类型标记会先挡住当前补员许可，早于后面的开关和资源判断。这说明的是这些记录眼下的资格，不能只看“特殊兵”这个名称，就概括所有来源的军队。",
+      "spoken_text": "这次选中的小军，四条实体兵员记录合计二百五十人，都是满员。暂停查询里，四条记录的当前补员许可都为否，已经保存的准备比例也都是零。源码中，这四条共有的类型标记会先挡住当前补员许可，早于后面的开关和资源判断。这说明的是这些记录眼下的资格，不能只看“特殊兵”这个名称，就概括所有来源的军队。",
+      "source_refs": [
+        "REFILL",
+        "REFILL-ACTUAL"
+      ],
+      "source_ids": [
+        "262C6E0",
+        "262C6F2/262C6FF",
+        "R0176:selected93:native44:revision45"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D10",
+        "D12"
+      ],
+      "shot_direction": "D12标出R0176同日selected93的4条unique physical DATA、250/250；转D10的“当前许可：否；已存准备：0”。屏显本帧/本四条，不能写全游戏特殊兵。",
+      "missing_filming": [
+        "四条记录与补员面板的原尺寸实际截图/动态展开缺；当前只有真实查询及可审数据卡。无缺员正例或实际ADD资格。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这次选中的小军，四条实体兵员记录合计二百五十人，都是满员。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-ACTUAL"
+          ]
+        },
+        {
+          "sentence": "暂停查询里，四条记录的当前补员许可都为否，已经保存的准备比例也都是零。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-ACTUAL"
+          ]
+        },
+        {
+          "sentence": "源码中，这四条共有的类型标记会先挡住当前补员许可，早于后面的开关和资源判断。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-ACTUAL"
+          ]
+        },
+        {
+          "sentence": "这说明的是这些记录眼下的资格，不能只看“特殊兵”这个名称，就概括所有来源的军队。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-ACTUAL"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-07",
+      "topic": "把准备与执行分开读",
+      "original_claim_text": "第二轮重新载入存档，独立观察到原始第二十到二十一日。那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。这时补给两端都是三百，军队仍在去终点的路上。这才是实际兵员补齐。",
+      "current_speakable_conclusion": "补员还有先后顺序。普通准备阶段，会根据固定物理槽的条件，把本轮准备比例保存下来；某些类型先检查当前许可，有些定义分支会绕过这一关。真正计算补员请求时，游戏读取已经保存的比例，再检查各个物理槽的当前条件。因此，当前计算出的比例、已经保存的比例和最后新增人数，是三个需要分别读取的数。",
+      "spoken_text": "补员还有先后顺序。普通准备阶段，会根据固定物理槽的条件，把本轮准备比例保存下来；某些类型先检查当前许可，有些定义分支会绕过这一关。真正计算补员请求时，游戏读取已经保存的比例，再检查各个物理槽的当前条件。因此，当前计算出的比例、已经保存的比例和最后新增人数，是三个需要分别读取的数。",
+      "source_refs": [
+        "REFILL"
+      ],
+      "source_ids": [
+        "262C680",
+        "262C6E0",
+        "262CAB0",
+        "2A98B44",
+        "262C9B0",
+        "2657EF0"
+      ],
+      "evidence_level": "SOURCE",
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D10"
+      ],
+      "shot_direction": "D10按“当前输入→普通准备→已保存比例→物理槽请求→实际人数”依次亮起；当前fresh置于准备上游，不直接连到实际ADD。",
+      "missing_filming": [
+        "自然准备刷新、随后请求和实际ADD的同一条正例尚缺；图示不填任何虚构新增人数。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "补员还有先后顺序。",
+          "source_refs": [
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "普通准备阶段，会根据固定物理槽的条件，把本轮准备比例保存下来；某些类型先检查当前许可，有些定义分支会绕过这一关。",
+          "source_refs": [
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "真正计算补员请求时，游戏读取已经保存的比例，再检查各个物理槽的当前条件。",
+          "source_refs": [
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "因此，当前计算出的比例、已经保存的比例和最后新增人数，是三个需要分别读取的数。",
+          "source_refs": [
+            "REFILL"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-08",
+      "topic": "缓存时序影响判断",
+      "original_claim_text": "所以画面要分别标清两次运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐；不能把两次重新载入剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵。",
+      "current_speakable_conclusion": "也正因为有这段时序，眼前许可为否，不能自动抹掉此前已经保存的正准备比例。请求阶段会读取旧比例，再按当时的物理槽条件继续判断；它不会重新调用那一项整团许可。反过来，眼前算出正比例，也不保证下一刻就有士兵增加：请求还可能被拒绝，或者整数结果仍为零。核对补员，要一直看到实体人数写回。",
+      "spoken_text": "也正因为有这段时序，眼前许可为否，不能自动抹掉此前已经保存的正准备比例。请求阶段会读取旧比例，再按当时的物理槽条件继续判断；它不会重新调用那一项整团许可。反过来，眼前算出正比例，也不保证下一刻就有士兵增加：请求还可能被拒绝，或者整数结果仍为零。核对补员，要一直看到实体人数写回。",
+      "source_refs": [
+        "REFILL",
+        "REFILL-APPLICATION"
+      ],
+      "source_ids": [
+        "262CAB0",
+        "2A98B44",
+        "262C9B0",
+        "2657EF0",
+        "2A98B88"
+      ],
+      "evidence_level": "SOURCE",
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D10"
+      ],
+      "shot_direction": "D10用虚线标“此前保存的正比例：时序可能”，与R0176实际四条零比例分开。请求和ADD之间保留独立一步。",
+      "missing_filming": [
+        "正缓存/当前许可false/实际正ADD组合未实测；不得将本段机制可能性标成R0176已发生。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "也正因为有这段时序，眼前许可为否，不能自动抹掉此前已经保存的正准备比例。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        },
+        {
+          "sentence": "请求阶段会读取旧比例，再按当时的物理槽条件继续判断；它不会重新调用那一项整团许可。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        },
+        {
+          "sentence": "反过来，眼前算出正比例，也不保证下一刻就有士兵增加：请求还可能被拒绝，或者整数结果仍为零。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        },
+        {
+          "sentence": "核对补员，要一直看到实体人数写回。",
+          "source_refs": [
+            "REFILL",
+            "REFILL-APPLICATION"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-09",
+      "topic": "补员开关跟随真正来源角色",
+      "original_claim_text": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。",
+      "current_speakable_conclusion": "军事页的每月补员开关，也要放回具体来源。在需要这项检查的兵士定义分支，游戏追到兵员真正的来源角色，读取那个人的军事补员开关，并继续检查资源和位置条件。来源如果是封臣，就不能拿玩家自己的勾选代替。另一些定义分支不会走同一项开关；操作以前，先确认正在观察的是谁提供的兵。",
+      "spoken_text": "军事页的每月补员开关，也要放回具体来源。在需要这项检查的兵士定义分支，游戏追到兵员真正的来源角色，读取那个人的军事补员开关，并继续检查资源和位置条件。来源如果是封臣，就不能拿玩家自己的勾选代替。另一些定义分支不会走同一项开关；操作以前，先确认正在观察的是谁提供的兵。",
+      "source_refs": [
+        "REFILL"
+      ],
+      "source_ids": [
+        "262C6E0",
+        "262C743",
+        "262C989",
+        "2657EF0"
+      ],
+      "evidence_level": "SOURCE",
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D10"
+      ],
+      "shot_direction": "D10旁注“来源角色→该角色开关”，另列“并非每个定义分支都查此开关”。未来实拍需同一来源角色、切换前后独立读取。",
+      "missing_filming": [
+        ".4来源角色开关的实际UI与正常切换前后窗口缺；不沿用旧单帧作为本次切换结果，不填费用。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "军事页的每月补员开关，也要放回具体来源。",
+          "source_refs": [
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "在需要这项检查的兵士定义分支，游戏追到兵员真正的来源角色，读取那个人的军事补员开关，并继续检查资源和位置条件。",
+          "source_refs": [
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "来源如果是封臣，就不能拿玩家自己的勾选代替。",
+          "source_refs": [
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "另一些定义分支不会走同一项开关；操作以前，先确认正在观察的是谁提供的兵。",
+          "source_refs": [
+            "REFILL"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-08",
+      "topic": "下一步条件读取实际首段",
+      "original_claim_text": "判定还要看实际储存的下一步路线。这次最终目的地虽在更远处，当前判断取的是正在走的第一步，结果不通过。下令前没有储存路线时，这项条件是未知，不能写成不通过。下令后的结果，也只说明当前暂停点，不保证以后每一步都一样。",
+      "current_speakable_conclusion": "地点条件也有范围。判断下一步的补员位置条件时，要取军队实际储存路线里的第一站，而不是地图上更远的最终目的地。游戏会核对这一步的省份，以及军队所有者到当地持有者的原生条件；不能把它简写成一般通行权。没有完整路线时，保留未知。即使这一步通过，也只是替换了位置这一项，后面的准备比例和其他条件还要另看。",
+      "spoken_text": "地点条件也有范围。判断下一步的补员位置条件时，要取军队实际储存路线里的第一站，而不是地图上更远的最终目的地。游戏会核对这一步的省份，以及军队所有者到当地持有者的原生条件；不能把它简写成一般通行权。没有完整路线时，保留未知。即使这一步通过，也只是替换了位置这一项，后面的准备比例和其他条件还要另看。",
+      "source_refs": [
+        "NEXT-POSITION",
+        "REFILL"
+      ],
+      "source_ids": [
+        "24ACAA0",
+        "247D010",
+        "2C097F0",
+        "next_route_position_scoped_ordered_refill_v1"
+      ],
+      "evidence_level": "SOURCE",
+      "agent_consumer_api_keys": [
+        "next_route_replenishment_position_inputs_v1 / next_route_position_scoped_ordered_refill_v1"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "D11只高亮实际stored route[0]，远端终点淡化；字幕“位置条件替换；其他输入保持当前”。不在R0176路线旁填未经取得的true/false。",
+      "missing_filming": [
+        "当前 .4 实际第一站predicate与对应normalizer完整消费镜头缺；不将R13移动路线验收转授补员位置正例。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "地点条件也有范围。",
+          "source_refs": [
+            "NEXT-POSITION",
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "判断下一步的补员位置条件时，要取军队实际储存路线里的第一站，而不是地图上更远的最终目的地。",
+          "source_refs": [
+            "NEXT-POSITION",
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "游戏会核对这一步的省份，以及军队所有者到当地持有者的原生条件；不能把它简写成一般通行权。",
+          "source_refs": [
+            "NEXT-POSITION",
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "没有完整路线时，保留未知。",
+          "source_refs": [
+            "NEXT-POSITION",
+            "REFILL"
+          ]
+        },
+        {
+          "sentence": "即使这一步通过，也只是替换了位置这一项，后面的准备比例和其他条件还要另看。",
+          "source_refs": [
+            "NEXT-POSITION",
+            "REFILL"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-01",
+      "topic": "路线的三个时间节点",
+      "original_claim_text": "路线先决定去哪里，再影响什么时候能到。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。真正到场还要看实际位置、状态和剩余路线。看到一个日期，不能直接当成已经抵达。",
+      "current_speakable_conclusion": "路线先看三个时间点：下令前的预期抵达、走起来后的当前估计，以及军队真正到达。预览告诉我们这次计划怎样走；下令后，再读实际存下来的路线。到了观察终点，还要确认当前地点和剩余路线。我们这轮改道的终点，就是靠后来的独立状态确认，而不是因为预览线已经画到那里，就宣布抵达。",
+      "spoken_text": "路线先看三个时间点：下令前的预期抵达、走起来后的当前估计，以及军队真正到达。预览告诉我们这次计划怎样走；下令后，再读实际存下来的路线。到了观察终点，还要确认当前地点和剩余路线。我们这轮改道的终点，就是靠后来的独立状态确认，而不是因为预览线已经画到那里，就宣布抵达。",
+      "source_refs": [
+        "R13",
+        "LOCK-SOURCE"
+      ],
+      "source_ids": [
+        "R0176:R13",
+        "NativePreviewMoveArmy",
+        "locked_routes.verify.r13"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [
+        "R13-TAIL",
+        "R13-FIRST"
+      ],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "先用R0176候选0–4秒原路线，4–10秒后缀变化；终点用明确标“后续独立读取”的D11结果层，不接成45秒片内连续到达。",
+      "missing_filming": [
+        "R0176实际替代终点在45秒raw之外；无此终点原片镜头。整条UI预计日期同帧高清对读待拍。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "路线先看三个时间点：下令前的预期抵达、走起来后的当前估计，以及军队真正到达。",
+          "source_refs": [
+            "R13",
+            "LOCK-SOURCE"
+          ]
+        },
+        {
+          "sentence": "预览告诉我们这次计划怎样走；下令后，再读实际存下来的路线。",
+          "source_refs": [
+            "R13",
+            "LOCK-SOURCE"
+          ]
+        },
+        {
+          "sentence": "到了观察终点，还要确认当前地点和剩余路线。",
+          "source_refs": [
+            "R13",
+            "LOCK-SOURCE"
+          ]
+        },
+        {
+          "sentence": "我们这轮改道的终点，就是靠后来的独立状态确认，而不是因为预览线已经画到那里，就宣布抵达。",
+          "source_refs": [
+            "R13",
+            "LOCK-SOURCE"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-02",
+      "topic": "整条路线与首段时量",
+      "original_claim_text": "一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。这是整条路线的当前界面估计。与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。",
+      "current_speakable_conclusion": "军队窗口的整条抵达估计，与当前第一段还要走多久，描述的是不同范围。陆地移动速度、海上移动速度，也各有自己的读数，不能直接当作整条路线剩余天数。并排比较时，先标清是速度、首段时量，还是终点日期。没有取得同一暂停点的完整读数，就不拿旧日期相减，补出一段看似精确的后程。",
+      "spoken_text": "军队窗口的整条抵达估计，与当前第一段还要走多久，描述的是不同范围。陆地移动速度、海上移动速度，也各有自己的读数，不能直接当作整条路线剩余天数。并排比较时，先标清是速度、首段时量，还是终点日期。没有取得同一暂停点的完整读数，就不拿旧日期相减，补出一段看似精确的后程。",
+      "source_refs": [
+        "LOCK-SOURCE",
+        "MOVEMENT-SCOPE",
+        "R13"
+      ],
+      "source_ids": [
+        "AttachCommittedRouteTimelineToArmyRows",
+        "24AA920",
+        "24AABE0",
+        "24AB5A0"
+      ],
+      "evidence_level": "SOURCE",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "D11用“当前第一段”和“最终目的地”两个括号标范围。整条ETA保留MISSING占位，不填旧43天/30天，不把movement getter数值贴成天数。",
+      "missing_filming": [
+        ".4同paused frame的整条UI ETA、完整首段时量和可读屏幕尚缺。正文可先讲范围，数值槽不入录音。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "军队窗口的整条抵达估计，与当前第一段还要走多久，描述的是不同范围。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "MOVEMENT-SCOPE",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "陆地移动速度、海上移动速度，也各有自己的读数，不能直接当作整条路线剩余天数。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "MOVEMENT-SCOPE",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "并排比较时，先标清是速度、首段时量，还是终点日期。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "MOVEMENT-SCOPE",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "没有取得同一暂停点的完整读数，就不拿旧日期相减，补出一段看似精确的后程。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "MOVEMENT-SCOPE",
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-03",
+      "topic": "同一终点也要对齐起算日",
+      "original_claim_text": "四十三天与三十天描述的行程范围不同。不能拿首段三十天，说整支军队三十天就到利雪；也不能只因为两个数不同，就判定界面或读取出错。把整条估计与当前首段分开保留，真实抵达再核对。两数相减也不会自动得到精确的后续路程时长。",
+      "current_speakable_conclusion": "实际用了几天，同样先说从哪一天开始算。这轮改道，从独立载入后的行军起点到替代终点，总共十三个自然日；从重新下达替代路线到那个终点，是八个自然日。两项都是真实后果，起算点却不同。它们不能互相顶替，也不能直接拿去给整军直走、分兵休整和绕路三种方案排名；三方案仍要各自从共同起点完成。",
+      "spoken_text": "实际用了几天，同样先说从哪一天开始算。这轮改道，从独立载入后的行军起点到替代终点，总共十三个自然日；从重新下达替代路线到那个终点，是八个自然日。两项都是真实后果，起算点却不同。它们不能互相顶替，也不能直接拿去给整军直走、分兵休整和绕路三种方案排名；三方案仍要各自从共同起点完成。",
+      "source_refs": [
+        "R13"
+      ],
+      "source_ids": [
+        "R0176:R13:baseline_to_alternate_13days",
+        "R0176:R13:reroute_to_alternate_8days"
+      ],
+      "evidence_level": "ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "D11结果层双时间轴：baseline→alternate13日；alternate Move→alternate8日。明确独立R13，不放进未重拍ABC胜负表。",
+      "missing_filming": [
+        "缺同场替代终点动态镜头；当前用原始自然clock与独立终点读回的数据图示。A/B/C实际三案仍pending。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "实际用了几天，同样先说从哪一天开始算。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "这轮改道，从独立载入后的行军起点到替代终点，总共十三个自然日；从重新下达替代路线到那个终点，是八个自然日。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "两项都是真实后果，起算点却不同。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "它们不能互相顶替，也不能直接拿去给整军直走、分兵休整和绕路三种方案排名；三方案仍要各自从共同起点完成。",
+          "source_refs": [
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-04",
+      "topic": "同日改令不等于已经走完",
+      "original_claim_text": "这些查询和下令前后仍是同一个游戏日期，军队没有因为我们读到四十三天或三十天，就移动到目的地。行军之后要重新看当前估计，不能拿旧提示减去经过天数，冒充一次新的计算。",
+      "current_speakable_conclusion": "这轮改道的前后，游戏日期相同，军队也还在原位置；改变的是已经储存的路线后半段。它没有因为命令被接受，就立刻走到新地点。之后我们继续推进自然时间，分别看到原首段终点和替代终点。把同日下令后的状态，与后来真正走到的位置分开，才不会把一条确认消息剪成一次已经完成的行军。",
+      "spoken_text": "这轮改道的前后，游戏日期相同，军队也还在原位置；改变的是已经储存的路线后半段。它没有因为命令被接受，就立刻走到新地点。之后我们继续推进自然时间，分别看到原首段终点和替代终点。把同日下令后的状态，与后来真正走到的位置分开，才不会把一条确认消息剪成一次已经完成的行军。",
+      "source_refs": [
+        "R13"
+      ],
+      "source_ids": [
+        "R0176:R13:date53146440",
+        "locked_routes.verify.same_paused_applied",
+        "locked_routes.verify.r13"
+      ],
+      "evidence_level": "ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [
+        "R13-TAIL",
+        "R13-FIRST"
+      ],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "R0176候选4–10秒展示船位未变、尾段改线；10–20秒展示继续走原首段。旁边标“同日改令”与“随后自然推进”，不把响应墙钟直接当encoded PTS。",
+      "missing_filming": [
+        "候选区间连续clean与人工1×签核待做；替代终点无片内镜头。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这轮改道的前后，游戏日期相同，军队也还在原位置；改变的是已经储存的路线后半段。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "它没有因为命令被接受，就立刻走到新地点。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "之后我们继续推进自然时间，分别看到原首段终点和替代终点。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "把同日下令后的状态，与后来真正走到的位置分开，才不会把一条确认消息剪成一次已经完成的行军。",
+          "source_refs": [
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-05",
+      "topic": "锁定进度只描述当前路段",
+      "original_claim_text": "另一轮的一月二十五日，画面出现“移动锁定”。同一暂停点，当前路段约走了百分之六十一点九；独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。",
+      "current_speakable_conclusion": "再看移动锁定。停止测试前，当前首段进度约百分之九十六点七，当次实际读到的锁定阈值是百分之五十。这个比例描述正在走的第一段，不是整趟旅程已经完成了九成多；后面仍存着另外三段。锁定以后还剩哪些选择，要继续看停止或改道后的真实路线，不能只凭一个百分比推断军队会停在哪里。",
+      "spoken_text": "再看移动锁定。停止测试前，当前首段进度约百分之九十六点七，当次实际读到的锁定阈值是百分之五十。这个比例描述正在走的第一段，不是整趟旅程已经完成了九成多；后面仍存着另外三段。锁定以后还剩哪些选择，要继续看停止或改道后的真实路线，不能只凭一个百分比推断军队会停在哪里。",
+      "source_refs": [
+        "R12",
+        "LOCK-SOURCE"
+      ],
+      "source_ids": [
+        "24AB2D0",
+        "loaded_cutoff:5C699E8",
+        "R0175:progress96666:cutoff50000"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [
+        "R12-PRE"
+      ],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "R0175候选0–4秒配D11精确数字96666/100000、50000/100000；数字明确来自同暂停原生读取，视频画面没有直接显示这两个数。首段进度条不覆盖整条长路线。",
+      "missing_filming": [
+        "progress/cutoff同屏实际原生UI展示缺；数据叠层仅是来源标注，不伪造原版tooltip。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "再看移动锁定。",
+          "source_refs": [
+            "R12",
+            "LOCK-SOURCE"
+          ]
+        },
+        {
+          "sentence": "停止测试前，当前首段进度约百分之九十六点七，当次实际读到的锁定阈值是百分之五十。",
+          "source_refs": [
+            "R12",
+            "LOCK-SOURCE"
+          ]
+        },
+        {
+          "sentence": "这个比例描述正在走的第一段，不是整趟旅程已经完成了九成多；后面仍存着另外三段。",
+          "source_refs": [
+            "R12",
+            "LOCK-SOURCE"
+          ]
+        },
+        {
+          "sentence": "锁定以后还剩哪些选择，要继续看停止或改道后的真实路线，不能只凭一个百分比推断军队会停在哪里。",
+          "source_refs": [
+            "R12",
+            "LOCK-SOURCE"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-06",
+      "topic": "阈值规则与实测边界",
+      "original_claim_text": "原生概念用一半进度说明锁定。这个超过一半的实际样本，可以证明当时已经锁定，却不能替代正好百分之五十的边界实验。画面没有单独告诉我们取消移动的精确边界，所以先讲当时锁定，刚好一半仍留给实际测试。",
+      "current_speakable_conclusion": "这两次锁定测试，都选择了进度严格超过当次阈值的时刻。现在能确认的是：超过以后，停止和改道各自实际留下了什么。当前路线实现按“严格大于”选取已经承诺的首段，正好相等落在另一侧；这是代码规则。正好一半那一帧的停止与改道，并没有在这两场里实测，不能把超过阈值的结果写成等号边界也已经验证。",
+      "spoken_text": "这两次锁定测试，都选择了进度严格超过当次阈值的时刻。现在能确认的是：超过以后，停止和改道各自实际留下了什么。当前路线实现按“严格大于”选取已经承诺的首段，正好相等落在另一侧；这是代码规则。正好一半那一帧的停止与改道，并没有在这两场里实测，不能把超过阈值的结果写成等号边界也已经验证。",
+      "source_refs": [
+        "LOCK-SOURCE",
+        "R12",
+        "R13"
+      ],
+      "source_ids": [
+        "ResolveMilitaryMoveOrigin",
+        "R0175:96666>50000",
+        "R0176:95108>50000"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [
+        "R12-PRE",
+        "R13-PRE"
+      ],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "D11分列“源码比较：>”和“两场实际值：96666、95108；阈值50000”。等号位置只用空心标记“未实测”，无新增实验承诺。",
+      "missing_filming": [
+        "正好阈值的实际边界样本缺；它不阻碍讲述已发生的严格大于样本。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这两次锁定测试，都选择了进度严格超过当次阈值的时刻。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "现在能确认的是：超过以后，停止和改道各自实际留下了什么。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "当前路线实现按“严格大于”选取已经承诺的首段，正好相等落在另一侧；这是代码规则。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "正好一半那一帧的停止与改道，并没有在这两场里实测，不能把超过阈值的结果写成等号边界也已经验证。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-07",
+      "topic": "锁定后停止的实际终点",
+      "original_claim_text": "锁定之后按“停止移动”，要看当前路段和后续路线的区别。条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；只剩一段等情况还可能拒绝。按钮提交成功，不等于已经原地停止。",
+      "current_speakable_conclusion": "这次锁定后，我们只下达一次停止。后来独立读取，四段路线只剩原来的第一站，已经走过的首段进度保留。军队没有原地停下；两天后，它实际到了原首段终点，路线变空，下一天仍留在那里。这个结果把停止的作用说清了：撤掉后续行程，同时把已经承诺的这一段走完。目标字段当时没有读到，结果就用实际位置和路线说明。",
+      "spoken_text": "这次锁定后，我们只下达一次停止。后来独立读取，四段路线只剩原来的第一站，已经走过的首段进度保留。军队没有原地停下；两天后，它实际到了原首段终点，路线变空，下一天仍留在那里。这个结果把停止的作用说清了：撤掉后续行程，同时把已经承诺的这一段走完。目标字段当时没有读到，结果就用实际位置和路线说明。",
+      "source_refs": [
+        "R12"
+      ],
+      "source_ids": [
+        "R0175:R12:route[1036,8653,1034,1033]->[1036]",
+        "locked_routes.verify.r12"
+      ],
+      "evidence_level": "ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [
+        "R12-TAIL",
+        "R12-FIRST"
+      ],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "R0175候选4–24秒尾段缩短并前进，24–43.5秒原front船模；面板状态称“登船”，不能称“待命”。次日静止用独立读回卡，不能声称在该raw里。",
+      "missing_filming": [
+        "4–43.5秒连续clean待Root审；24秒后有右下家族关系通知。精确native事件帧未与PTS校准；目标字段unknown。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这次锁定后，我们只下达一次停止。",
+          "source_refs": [
+            "R12"
+          ]
+        },
+        {
+          "sentence": "后来独立读取，四段路线只剩原来的第一站，已经走过的首段进度保留。",
+          "source_refs": [
+            "R12"
+          ]
+        },
+        {
+          "sentence": "军队没有原地停下；两天后，它实际到了原首段终点，路线变空，下一天仍留在那里。",
+          "source_refs": [
+            "R12"
+          ]
+        },
+        {
+          "sentence": "这个结果把停止的作用说清了：撤掉后续行程，同时把已经承诺的这一段走完。",
+          "source_refs": [
+            "R12"
+          ]
+        },
+        {
+          "sentence": "目标字段当时没有读到，结果就用实际位置和路线说明。",
+          "source_refs": [
+            "R12"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-08",
+      "topic": "锁定后改道保留首段替换后缀",
+      "original_claim_text": "正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。一个下令确认消息，不能替代这一串真实状态。",
+      "current_speakable_conclusion": "改道则是另一场独立正常行军。原路线还有三站，我们选择了不同的终点。重新下令以后，当前位置和首段进度没有变，原来的第一站仍然保留，后面的路线换成了通向新终点的一段。随后实际观察到军队先走到原第一站，再到替代终点，最后路线为空。锁定限制了眼前这一段，并没有把所有后续选择都固定下来。",
+      "spoken_text": "改道则是另一场独立正常行军。原路线还有三站，我们选择了不同的终点。重新下令以后，当前位置和首段进度没有变，原来的第一站仍然保留，后面的路线换成了通向新终点的一段。随后实际观察到军队先走到原第一站，再到替代终点，最后路线为空。锁定限制了眼前这一段，并没有把所有后续选择都固定下来。",
+      "source_refs": [
+        "R13"
+      ],
+      "source_ids": [
+        "R0176:R13:route[8653,1034,1033]->[8653,8645]",
+        "locked_routes.verify.r13"
+      ],
+      "evidence_level": "ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13"
+      ],
+      "actual_shot_ids": [
+        "R13-TAIL",
+        "R13-FIRST"
+      ],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "R0176候选0–4→4–10→10–20秒展示原尾段/改线/先走原front。D11原生结果图补“先8653，后8645，最终[]”，最后一项必须标片外后续读取。",
+      "missing_filming": [
+        "替代终点到达在45秒raw外，不给到达镜头信用；全候选连续clean和human签核仍pending。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "改道则是另一场独立正常行军。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "原路线还有三站，我们选择了不同的终点。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "重新下令以后，当前位置和首段进度没有变，原来的第一站仍然保留，后面的路线换成了通向新终点的一段。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "随后实际观察到军队先走到原第一站，再到替代终点，最后路线为空。",
+          "source_refs": [
+            "R13"
+          ]
+        },
+        {
+          "sentence": "锁定限制了眼前这一段，并没有把所有后续选择都固定下来。",
+          "source_refs": [
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C06-05",
+      "topic": "人数变化先分实体与角色记录",
+      "original_claim_text": "人数变化以后，检查完整兵团的身份与前后整数。净少或净增多少先说明，原因再按证据判断。补员许可、准备比例和损失预算都不代替实际变化；登陆后条件改变，后续观察重新设基线，不沿用海上的旧条件。",
+      "current_speakable_conclusion": "分合军以后，先核对实体兵员，再看角色和统帅。这次选中小军拆出新队、再合回原队，四条实体兵员始终合计二百五十人；与此同时，另一军里一条显示一比一的空兵员角色记录消失，同一个角色成为新队、再成为合军后原队的统帅。那一比一的显示变化不能记成补了一名或少了一名实体士兵。实体人数、角色关联和当前统帅，要分别核对。",
+      "spoken_text": "分合军以后，先核对实体兵员，再看角色和统帅。这次选中小军拆出新队、再合回原队，四条实体兵员始终合计二百五十人；与此同时，另一军里一条显示一比一的空兵员角色记录消失，同一个角色成为新队、再成为合军后原队的统帅。那一比一的显示变化不能记成补了一名或少了一名实体士兵。实体人数、角色关联和当前统帅，要分别核对。",
+      "source_refs": [
+        "R09-MICRO"
+      ],
+      "source_ids": [
+        "R0176:selected93->fresh162->93",
+        "ArRg59:Character34232",
+        "qualify_r0176_selected93_micro_12004"
+      ],
+      "evidence_level": "ACTUAL",
+      "agent_consumer_api_keys": [
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D12"
+      ],
+      "shot_direction": "D12三列93→162→93，实体总量始终250/250，单独下轨画Army18角色59/34232→新162统帅34232→93统帅34232。保留strict原失败及唯一例外来源；不可画实体+1/-1。",
+      "missing_filming": [
+        "完整30–60秒拆/合/存续身份/统帅/队列/库存动态镜头缺；独立反向merge及完整stock/cap/weights也缺，R09全卡仍false。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "分合军以后，先核对实体兵员，再看角色和统帅。",
+          "source_refs": [
+            "R09-MICRO"
+          ]
+        },
+        {
+          "sentence": "这次选中小军拆出新队、再合回原队，四条实体兵员始终合计二百五十人；与此同时，另一军里一条显示一比一的空兵员角色记录消失，同一个角色成为新队、再成为合军后原队的统帅。",
+          "source_refs": [
+            "R09-MICRO"
+          ]
+        },
+        {
+          "sentence": "那一比一的显示变化不能记成补了一名或少了一名实体士兵。",
+          "source_refs": [
+            "R09-MICRO"
+          ]
+        },
+        {
+          "sentence": "实体人数、角色关联和当前统帅，要分别核对。",
+          "source_refs": [
+            "R09-MICRO"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C06-09",
+      "topic": "换机器复用判断方法",
+      "original_claim_text": "这些检查已经整理成知识专题，原生数据读取的方法也可以复用。换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。缺少的信息就保持未知，不靠猜补齐。离线文件检查，也不能当作新的游戏结果。",
+      "current_speakable_conclusion": "这套读法也可以带到另一台机器。可复用的是机制、读取方法和核对顺序：先确认当前游戏版本，再把人物、军队、日期和同一次暂停状态对齐。实际走过哪条路、少了多少人、是否真的付款，仍由新会话自己的记录回答。保留下来的原件能重算旧结论；它们不会替另一台机器生成一次新的行军结果。",
+      "spoken_text": "这套读法也可以带到另一台机器。可复用的是机制、读取方法和核对顺序：先确认当前游戏版本，再把人物、军队、日期和同一次暂停状态对齐。实际走过哪条路、少了多少人、是否真的付款，仍由新会话自己的记录回答。保留下来的原件能重算旧结论；它们不会替另一台机器生成一次新的行军结果。",
+      "source_refs": [
+        "R12",
+        "R13",
+        "R0176-CLOSE",
+        "R09-MICRO"
+      ],
+      "source_ids": [
+        "locked_routes.replay",
+        "qualify_r0176_selected93_micro_12004"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked / r12 / r13",
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004",
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [],
+      "shot_direction": "从本批机制卡过渡到路线与实体兵员结果对照；角标给仓库知识专题与纯离线reader相对路径。只展示输入→核对→结果，不把本机PID或部署状态写成跨机可继承。",
+      "missing_filming": [
+        "新机器实际状态由其会话另取；本段无需再造游戏动作，未给全片human approval。"
+      ],
+      "edit_action": "补原剩余段；保留原编号、原六章和30–35分钟编辑目标；不覆盖a02/a03",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这套读法也可以带到另一台机器。",
+          "source_refs": [
+            "R12",
+            "R13",
+            "R0176-CLOSE",
+            "R09-MICRO"
+          ]
+        },
+        {
+          "sentence": "可复用的是机制、读取方法和核对顺序：先确认当前游戏版本，再把人物、军队、日期和同一次暂停状态对齐。",
+          "source_refs": [
+            "R12",
+            "R13",
+            "R0176-CLOSE",
+            "R09-MICRO"
+          ]
+        },
+        {
+          "sentence": "实际走过哪条路、少了多少人、是否真的付款，仍由新会话自己的记录回答。",
+          "source_refs": [
+            "R12",
+            "R13",
+            "R0176-CLOSE",
+            "R09-MICRO"
+          ]
+        },
+        {
+          "sentence": "保留下来的原件能重算旧结论；它们不会替另一台机器生成一次新的行军结果。",
+          "source_refs": [
+            "R12",
+            "R13",
+            "R0176-CLOSE",
+            "R09-MICRO"
+          ]
+        }
+      ]
+    }
+  ],
+  "shot_candidates": {
+    "R12-PRE": {
+      "receipt": "R12-MEDIA",
+      "candidate_seconds": [
+        0,
+        4
+      ],
+      "use": "原长路线、首段仍行军；progress/cutoff来自原生，不在视频直接可见",
+      "status": "candidate_only",
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "reviewed_by_this_lane": false
+    },
+    "R12-TAIL": {
+      "receipt": "R12-MEDIA",
+      "candidate_seconds": [
+        4,
+        24
+      ],
+      "use": "尾段缩短、继续首段；native事件到PTS未知",
+      "status": "candidate_only",
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "reviewed_by_this_lane": false
+    },
+    "R12-FIRST": {
+      "receipt": "R12-MEDIA",
+      "candidate_seconds": [
+        24,
+        43.5
+      ],
+      "use": "原front船模/登船状态；右下普通通知，待连续审阅",
+      "status": "candidate_only",
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "reviewed_by_this_lane": false
+    },
+    "R13-PRE": {
+      "receipt": "R13-MEDIA",
+      "candidate_seconds": [
+        0,
+        4
+      ],
+      "use": "原位与原路线；远端一部分出视口",
+      "status": "candidate_only",
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "reviewed_by_this_lane": false
+    },
+    "R13-TAIL": {
+      "receipt": "R13-MEDIA",
+      "candidate_seconds": [
+        4,
+        10
+      ],
+      "use": "船位不变、路线后缀改变",
+      "status": "candidate_only",
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "reviewed_by_this_lane": false
+    },
+    "R13-FIRST": {
+      "receipt": "R13-MEDIA",
+      "candidate_seconds": [
+        10,
+        20
+      ],
+      "use": "仍先行原首段；不能代替片外alternate到达",
+      "status": "candidate_only",
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "reviewed_by_this_lane": false
+    }
+  }
+}

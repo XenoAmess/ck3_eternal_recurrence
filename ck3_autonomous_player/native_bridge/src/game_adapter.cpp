@@ -1,3 +1,4 @@
+#include "xar_bridge/ingame_military_opener_12004.hpp"
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
@@ -494,6 +495,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (step == ck3_12003::kGrantTitlePickerSendV1Step) {
     capability = ck3_12003::kGrantTitlePickerSendV1Capability;
 #endif
+  } else if (step == ck3_11906::kIngameMilitaryOpen12004Step) {
+    capability = ck3_11906::kIngameMilitaryOpen12004Capability;
   } else if (step == ck3_11906::kIngameDecisionsOpenV1Step) {
     capability = ck3_11906::kIngameDecisionsOpenV1Capability;
   } else if (step == ck3_11906::kIngameDecisionItemQueryV1Step) {

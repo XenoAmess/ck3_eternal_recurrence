@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12003_commander_target_roll_dto.hpp"
 #include "xar_bridge/ck3_12003_current_commander_martial_dto.hpp"
 #include "xar_bridge/ck3_12004_current_commander_base_quality.hpp"
+#include "xar_bridge/ck3_12004_commander_conditional_supply_capacity.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
@@ -37,6 +38,9 @@ struct CommanderCandidateSnapshot {
   std::string_view unavailable_reason = "candidate_not_read";
   // Present only when the same native query requested a target Province.
   std::optional<CommanderCandidateTargetRollBoundsSnapshot> target_roll_bounds;
+  // Absent for legacy .3 and old fixtures. Does not imply an assignment.
+  std::optional<ck3_12004::CommanderConditionalSupplyCapacity12004>
+      conditional_supply_capacity_v1;
 };
 
 // Native movement-weight rates, signed Q100000. A returned raw zero is observed;
@@ -111,6 +115,8 @@ struct CommanderBindings {
   std::int32_t (*get_current_total_skill)(void *, std::int32_t) = nullptr;
   // Exact .4 enables the independently assigned current-role observer.
   bool current_native_ai_base_quality_observer_enabled = false;
+  bool conditional_supply_capacity_observer_enabled = false;
+  const std::int64_t *conditional_supply_capacity_loaded_full = nullptr;
 };
 
 CommanderBindings BindCommanderImage(

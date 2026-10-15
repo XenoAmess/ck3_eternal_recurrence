@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<title>补员：许可、准备、实际人数</title>
+<desc>Source/actual demonstration card, not gameplay footage or human signoff.</desc>
+<rect width="2560" height="1440" fill="#211813"/>
+<rect x="90" y="290" width="1160" height="290" rx="12" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<rect x="1310" y="290" width="1160" height="290" rx="12" fill="#35291F" stroke="#9AAEAB" stroke-width="2"/>
+<rect x="90" y="630" width="1160" height="300" rx="12" fill="#35291F" stroke="#ABB582" stroke-width="2"/>
+<rect x="1310" y="630" width="1160" height="300" rx="12" fill="#35291F" stroke="#CA7962" stroke-width="2"/>
+<text x="90" y="85" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CBA56A">D10  /  MARCH LOGISTICS</text>
+<text x="90" y="178" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" fill="#F0E5CF">补员：许可、准备、实际人数</text>
+<text x="90" y="240" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" fill="#BBA98D">SOURCE + ACTUAL LIMITED</text>
+<text x="120" y="350" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CBA56A">当前输入与普通准备</text>
+<text x="120" y="415" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">当前许可 / 当前 fresh 比例</text>
+<text x="120" y="478" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">依分支准备 → 保存 prepared 比例</text>
+<text x="1340" y="350" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#9AAEAB">随后请求与实际写回</text>
+<text x="1340" y="415" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">读取已保存比例 + 各物理槽当前条件</text>
+<text x="1340" y="478" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">请求可能拒绝或整数为0 → 独立核实际ADD</text>
+<text x="120" y="690" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#ABB582">R0176 / selected93 / 同帧实际</text>
+<text x="120" y="755" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">4条 unique physical DATA；250/250</text>
+<text x="120" y="818" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">当前两许可均 false；已存 prepared 均 0</text>
+<text x="1340" y="690" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CA7962">缓存时序：源码允许的可能</text>
+<text x="1340" y="755" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">当前许可 false 不等于旧正缓存已清零</text>
+<text x="1340" y="818" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">这不是本次实际补兵结果</text>
+<text x="90" y="1015" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" fill="#BBA98D">SOURCE 262C6E0 / 262C680 / 262CAB0 / 262C9B0 / 2657EF0 / 2A98B88</text>
+<text x="90" y="1063" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" fill="#BBA98D">当前 fresh、已存 prepared、实际新增人数分别读；角色1/1不计入实体兵员</text>
+</svg>

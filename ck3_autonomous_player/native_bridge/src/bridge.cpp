@@ -18746,6 +18746,57 @@ void RunConnectedSession(
               connected = write_frame(pipe, response);
             }
 #endif
+#if defined(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1)
+          } else if (step == xar::ck3_11906::kIngameMilitaryOpen12004Step) {
+            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;
+            xar::game::Snapshot current{};
+            if (!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
+                expected_revision==0 || expected_revision!=state_revision ||
+                expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
+                !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
+                !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
+                current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
+                (!IsLydPrivateBuild(game.descriptor()) || game.descriptor().game_version!=xar::ck3_12004::kGameVersion || game.descriptor().executable_sha256!=xar::ck3_12004::kExecutableSha256)) {
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_episode_binding_changed"));
+            } else {
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox=&g_main_thread_query_mailbox_v1;
+              query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::open_ingame_military;
+              query.ingame_military.game=&game;query.ingame_military.expected_snapshot=current;
+              query.ingame_military.native_revision=state_revision;query.ingame_military.connection_generation=connection_generation;
+              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
+              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                // Keep the original stack context until this one ticket finishes. Never resubmit.
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+                  xar::game::Snapshot completion{};
+                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision) {
+                    query.ingame_military.result.frame_verified=false;
+                    query.ingame_military.result.postcondition_verified=false;
+                    query.ingame_military.result.status="unavailable";
+                    query.ingame_military.result.unavailable_reason="pipe_completion_binding_changed";
+                  }
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                  response+=request_id;response+="\",\"ok\":true,\"result\":";
+                  response+=xar::ck3_11906::SerializeIngameMilitaryOpen12004(query.ingame_military.result);response+='}';
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty())response=CommandResultFrame(request_id,step,false,"military_owner_submission_or_completion_failed_no_retry");
+              connected=write_frame(pipe,response);
+            }
+#endif
 #if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
           } else if (step == xar::ck3_11906::kIngameDecisionsOpenV1Step) {
             std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;

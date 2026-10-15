@@ -1,0 +1,68 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "commander-candidate-capacity-actual4",
+  "question": "Which exact loaded operands and fixed modifier ordinals does actual .4 capacity2C53BF0 consume with null details, and can candidate current modifiers reconstruct conditional capacity without changing Army commander?",
+  "purpose": "own-policy",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "exact4 selected playerCArmy/currentcandidate Character, read-only existingquery",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "one paused observedquery;role andsnapshot identity not transferable acrossloads",
+    "producer_trigger": "paused-query",
+    "producer": "native loadedFULL andcharacter modifier aggregate source,producer lifecycle outside thisfinitebody unknown",
+    "caller": "existing ArmyBindings.get_army_supply_capacity actual2C53BF0,output-first ABI and null detail",
+    "consumer": "existing commander candidate query optional read-only leaf;no assignment orNativeCapacity call withfakeArmy",
+    "cache_lifetime": "capture samequery operands;futureassign/cache refresh notpredicted",
+    "expected_signal": "complete pdata/CHAININFO capacitybody and exactnull-details getter ordinals/fixed integer arithmetic",
+    "zero_sample_meaning": "no getter in one admitted span isonly thatspan exclusion;missingoperand staysunknown,neverzero",
+    "stop_condition": "only actual2C53BF0 logical1545B and directlyreached necessary namedgetter source,aggregate newbody+metadata<=65536B;metadata8KiB;noglobal scans/hash/EXEexecution",
+    "runtime_window_ref": "not-applicable-offline-read;Rootauthorized commander-capacity-candidate-a01"
+  },
+  "evidence": [
+    {
+      "id": "capacity-ledger",
+      "layer": "exact-build",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_4_army_support.json",
+      "sha256": "c709cc69668f2c23c0a935b86d76920d93116da86c3dda4c88de0a6600a6f76c",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "actualsupport_2C53C10->2C53BF0 independent full1545 logical/codebytes equality;not formula semantics"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "label": "Research entry"
+    },
+    {
+      "id": "result",
+      "label": "Unresolved result"
+    }
+  ],
+  "edges": [
+    {
+      "id": "decision",
+      "from": "entry",
+      "to": "result",
+      "label": "Exact null-details operand/formula closure pending finitebody",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Read actual2C53BF0 and validate eachbranch before projecting candidate cap"
+    }
+  ],
+  "cases": [],
+  "finite_source_read": {
+    "stage": "metadata-a01",
+    "mode": "metadata",
+    "entry_rva": "0x2c53bf0",
+    "known_logical_code_bytes": 1545,
+    "maximum_new_metadata_bytes": 8192,
+    "maximum_total_new_EXE_bytes": 65536
+  },
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-15T20:27:19.893190+00:00"
+}

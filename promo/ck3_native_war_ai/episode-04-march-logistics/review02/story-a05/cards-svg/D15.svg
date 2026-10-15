@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<title>合军：角色权重与实际库存分开核</title>
+<desc>Source/actual explanation; not gameplay capture or signoff.</desc>
+<rect width="2560" height="1440" fill="#211813"/>
+<rect x="90" y="275" width="2380" height="680" rx="12" fill="#35291F"/>
+<text x="90" y="85" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">D15 / MARCH LOGISTICS</text>
+<text x="90" y="178" font-size="69" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">合军：角色权重与实际库存分开核</text>
+<text x="90" y="240" font-size="34" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#BBA98D">SOURCE / 实际完整stock-cap-weights pair尚缺</text>
+<text x="120" y="330" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">角色权重 wD / wS</text>
+<text x="1050" y="330" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">读取native D权重；S用其当时native current</text>
+<text x="120" y="435" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">份额各自取整</text>
+<text x="1050" y="435" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">share_i = trunc0(w_i × 100000 / W)</text>
+<text x="120" y="540" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">库存项各自取整</text>
+<text x="1050" y="540" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">term_i = trunc0(share_i × 原stock_i / 100000)</text>
+<text x="120" y="645" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">相加后按实际合后容量截断</text>
+<text x="1050" y="645" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">先选将/刷新再读cap；大值保护分支HOLD</text>
+<text x="120" y="750" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">R0176 selected93已确认范围</text>
+<text x="1050" y="750" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">实体250守恒；不是stock/cap/weights实测</text>
+<text x="120" y="855" font-size="38" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#CBA56A">仍需实际同边界数值</text>
+<text x="1050" y="855" font-size="43" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#F0E5CF">两侧与合后stock/cap/weights完整pair</text>
+<text x="90" y="1030" font-size="25" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#BBA98D">SOURCE actual .4 2C55180：两stage trunc0 → sum → postcap clamp；仅已核正权重fast域</text>
+<text x="90" y="1075" font-size="25" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#BBA98D">不移用旧 .3 B数值，不授R09全卡、补给合并实测或ABC胜负</text>
+</svg>

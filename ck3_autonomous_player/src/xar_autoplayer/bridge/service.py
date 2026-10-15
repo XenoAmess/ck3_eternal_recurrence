@@ -5578,6 +5578,7 @@ class GameplayBridgeService:
                 **wrapper,
                 "projection": project_current_unit_arrival_prestore_disembark_write_v1(
                     row, arrival_transition=arrival, army_context=context,
+                    movement_prefix=prefix,
                 ),
             })
         return {

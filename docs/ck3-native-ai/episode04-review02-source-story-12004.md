@@ -50,3 +50,14 @@ R0173未锁Halt原生后态已闭，操作晚于360秒原片结束，Halt没有�
 
 导演案用P0-SPLIT等主题编号；原Review02实验卡R08是维护费、R09是特殊1/1/统帅拆合。本页同时纳入这两个主题，不静默更改卡号、旧账或分母。
 代码和共享专题落入仓库后，其他机器可按相对路径读取、重算已归档小证据；本机绝对来源路径只追溯来源，不是运行依赖。各机器的新实机仍独立绑定版本/build、普通来源、machine/PID/create-time/generation/episode与实际结果。
+
+## 2026-10-16 本机R0177闭场、R03原件与story-a05草稿
+
+本段所有现场、素材和稿件事实均属 machine_id: `desktop-3fevhd2-1c74096080`，按Root本次实际回执滚动追加。
+
+- R0177已有Root实际CLOSED回执：3219 B，SHA-256 `9a2f12db0d934f8cb01236c7ca8e88a1515b18ef552677ccc13df70841bc9797`。coastal原片45秒/1350帧，完整解码PASS；`clean=false`、`human=false`，不授连续clean或人工签核。
+- R03原件在raw53147472、同一callback188中，7条preferred writer实际扣兵11（1+1+3+1+2+1+2），siege11/raid0，原件正消费通过。正式整卡审结仍待Root；本次汇报暂保留整卡5/14＝35.7%、核心业务3/11，不先增加分子。
+- [story-a05完整草稿](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/README.md)为69/69＝100%，8351字；`TTS/provider=0`。这是草稿接受率，不等于最终冻结、声音、新成片或人审完成。
+- 共享源码解释见[拆合军库存权重/取整顺序](episode04-split-merge-stock-weight-order-12004.md)、[统帅容量与零准备量](episode04-commander-capacity-zero-preparation-12004.md)。新增source的最终提交、a08 DLL、构建及新冷验结果由实际回执另记，本段不预填未来SHA、CI通过或实机资格。
+
+当前交接与后续来源以[本机交接入口](../handover/2026-10-15-war-episode04-machine-resume.md)为统一转链。

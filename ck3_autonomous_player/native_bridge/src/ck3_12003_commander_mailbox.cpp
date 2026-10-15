@@ -241,6 +241,11 @@ std::string SerializeArmyCommanderCandidates(
              ? std::to_string(candidate.siege_phase_time_modifier_raw) : "null") +
         ",\"unavailable_reason\":" +
         NullableReason(candidate.unavailable_reason);
+    if (candidate.conditional_supply_capacity_v1) {
+      out += ",\"conditional_supply_capacity_v1\":" +
+          ck3_12004::SerializeCommanderConditionalSupplyCapacity12004(
+              *candidate.conditional_supply_capacity_v1);
+    }
     if (candidate.target_roll_bounds) {
       out += ",\"target_roll_bounds\":" +
           SerializeCommanderCandidateTargetRollBounds(*candidate.target_roll_bounds);

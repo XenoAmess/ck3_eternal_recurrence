@@ -21771,3 +21771,15 @@ def record_one_life_episode(
     result["path"] = str(path)
     result["recorded_episode"] = episode
     return result
+
+
+def plan_r05_zero_stock_preparation(
+    *, army_query, sites, snapshot=None, commands=(), active_wars=None,
+    commander_queries=(), available_steps=(), army_ids=(18, 93),
+):
+    """Explicit R05 readonly decision entry using existing production inputs."""
+    from .bridge.army_zero_stock_clock_12004 import plan_zero_stock_preparation_12004
+    return plan_zero_stock_preparation_12004(
+        army_query=army_query, sites=sites, snapshot=snapshot, commands=commands,
+        active_wars=active_wars, commander_queries=commander_queries,
+        available_steps=available_steps, army_ids=army_ids)

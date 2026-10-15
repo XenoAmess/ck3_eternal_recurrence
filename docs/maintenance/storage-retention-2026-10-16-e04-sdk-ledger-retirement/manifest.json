@@ -1,0 +1,78 @@
+{
+  "schema": "xar.e04.retired-sdk-ledgers.canonical.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "retired_at_utc": "2026-10-15T20:43:24.078299+00:00",
+  "deleted_count": 2,
+  "deleted_logical_bytes": 2537415657,
+  "old_original_paths_available": false,
+  "assets": [
+    {
+      "file": "actual-retirement.json",
+      "bytes": 2898,
+      "sha256": "d7a2a9d4d9095d7848f241499f32f05dac3aea0d0c7d9611ce00e1de85d485e3",
+      "provenance": "Exact unchanged original sealed bytes"
+    },
+    {
+      "file": "actual-availability.json",
+      "bytes": 4917,
+      "sha256": "465fdeb683f1969baba0581a62f52d5b458e6307e842f764a0f6b928a9fe88e6",
+      "provenance": "Exact unchanged original sealed bytes"
+    },
+    {
+      "file": "retirement-intent.json",
+      "bytes": 3475,
+      "sha256": "3db989faeda549507920bde2d4963db0c2301087b6a97baf91c58a7cdffc468b",
+      "provenance": "Exact unchanged original sealed bytes"
+    },
+    {
+      "file": "exact-replay-proof.json",
+      "bytes": 5526,
+      "sha256": "89bd1c8b90c69dcfe09793c14dd4a8d21f6005de4d09409b17b5c3549c4f987a",
+      "provenance": "Exact unchanged original sealed bytes"
+    },
+    {
+      "file": "r0162-order.jsonl.gz",
+      "bytes": 31281,
+      "sha256": "337b3ba858a1143146efc3188086e1864a92cedd71e7910a6f64d9b76c338224",
+      "provenance": "Exact unchanged original sealed bytes"
+    },
+    {
+      "file": "r0164-order.jsonl.gz",
+      "bytes": 20030,
+      "sha256": "6bc663909e2442f7492fcabada61c6983b1ca2cff7498ecb28a71e6780acd954",
+      "provenance": "Exact unchanged original sealed bytes"
+    },
+    {
+      "file": "rebuild_sdk_ledger.py",
+      "bytes": 4286,
+      "sha256": "1f1c65b38f9bc83779076eb79d97a1ef1bc23f4b354c73020e8274a515444a0b",
+      "provenance": "Portable guarded new-derived reconstruction helper; no large reconstruction executed during packaging"
+    }
+  ],
+  "runs": {
+    "r0162": {
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\mcp-calls.jsonl",
+      "original_bytes": 1469580989,
+      "original_sha256": "dfec706ad1de991df135822de8bee893db230200c9bc984ca5fc2bf319814df6",
+      "line_count": 360,
+      "ordered_index": "r0162-order.jsonl.gz",
+      "retained_response_root_on_execution_machine": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses",
+      "availability": "deleted_unavailable",
+      "rebuild_requires_original_response_bytes_with_matching_index_SHA": true,
+      "rebuild_output_must_be_new_derived": true
+    },
+    "r0164": {
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\mcp-calls.jsonl",
+      "original_bytes": 1067834668,
+      "original_sha256": "6b5657c768061df2e85dc58c6b79e84a4017bde7f4a2f17780037f3a1f1bb2e6",
+      "line_count": 226,
+      "ordered_index": "r0164-order.jsonl.gz",
+      "retained_response_root_on_execution_machine": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses",
+      "availability": "deleted_unavailable",
+      "rebuild_requires_original_response_bytes_with_matching_index_SHA": true,
+      "rebuild_output_must_be_new_derived": true
+    }
+  },
+  "original_external_paths_are_machine_provenance_not_portable_required_locations": true,
+  "review_at_utc": "2026-10-16T07:45:01.597000+00:00"
+}

@@ -2,6 +2,7 @@
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
+#include "xar_bridge/ck3_12004_gui_callback_thunk.hpp"
 
 #include <windows.h>
 
@@ -1697,9 +1698,24 @@ static bool InspectStandardClickBinding12004(
         callback == nullptr || !ReadValue(access, callback, 0, callback_vtable) ||
         !in_image(callback_vtable, 3U * sizeof(void *)) ||
         !ReadValue(access, callback_vtable, 0x10U, slot2) || !in_image(slot2, 1)) return false;
-    out.callbacks.push_back({static_cast<std::uint32_t>(index),
+    NamedGuiStandardClickCallback12004V1 target{static_cast<std::uint32_t>(index),
         reinterpret_cast<std::uintptr_t>(callback_vtable) - module_base,
-        reinterpret_cast<std::uintptr_t>(slot2) - module_base});
+        reinterpret_cast<std::uintptr_t>(slot2) - module_base};
+    if (target.callback_slot2_rva == ck3_12004::kGuiCallbackThunkRva12004V1) {
+      void *entry = nullptr, *receiver = nullptr;
+      if (!ReadValue(access, callback, 0x08U, entry) || !in_image(entry, 1) ||
+          !ReadValue(access, callback, 0xF0U, receiver)) return false;
+      // Readback stability only. The receiver's type/method is still unknown.
+      void *same_object = nullptr, *same_vtable = nullptr, *same_entry = nullptr, *same_receiver = nullptr;
+      if (!ReadValue(access, data, static_cast<std::size_t>(index) * 0x48U + 0x40U, same_object) ||
+          same_object != callback || !ReadValue(access, callback, 0, same_vtable) || same_vtable != callback_vtable ||
+          !ReadValue(access, callback, 0x08U, same_entry) || same_entry != entry ||
+          !ReadValue(access, callback, 0xF0U, same_receiver) || same_receiver != receiver) return false;
+      target.indirect_target_3aa30e0 = true;
+      target.native_target_8_rva = reinterpret_cast<std::uintptr_t>(entry) - module_base;
+      target.receiver_f0_present = receiver != nullptr;
+    }
+    out.callbacks.push_back(target);
   }
   return true;
 }
@@ -1716,6 +1732,13 @@ bool InspectNamedGuiSubtreeV1(
   output.root_available = true;
   output.scope_root_name.assign(scope_root_name);
   output.standard_click_bindings_12004 = inspect_standard_click_bindings_12004;
+  if (inspect_standard_click_bindings_12004) {
+    std::array<unsigned char, 18> actual{};
+    if (module_base > (std::numeric_limits<std::uintptr_t>::max)() - ck3_12004::kGuiImageSize12004V1 ||
+        !ReadBytes(access, reinterpret_cast<const void *>(module_base + ck3_12004::kGuiCallbackThunkRva12004V1),
+                   actual.data(), actual.size()) || actual != ck3_12004::kGuiCallbackThunkBytes12004V1) return false;
+    output.callback_thunk_3aa30e0_pin_verified = true;
+  }
 
   struct Pending {
     void *widget = nullptr;

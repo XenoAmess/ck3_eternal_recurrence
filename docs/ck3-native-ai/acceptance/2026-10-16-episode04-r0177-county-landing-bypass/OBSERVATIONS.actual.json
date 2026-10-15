@@ -1,0 +1,296 @@
+{
+  "schema": "xar.e04.r0177.county-landing-bypass.canonical.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:06:46.542524+00:00",
+  "runtime_identity": {
+    "run": "R0177",
+    "pid": 7240,
+    "process_creation_filetime": 134365679117288462,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-00b796ef873c",
+    "actor_character_id": 31254,
+    "proof": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 6123,
+      "sha256": "48d5773f8bd621c86a38e3f636d1a9c6182aedba4e4fdb9dedff58b2692b3b52",
+      "already_verified_by_prior_actual_consumer": true
+    }
+  },
+  "executable_binding": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "identity_reused_no_new_executable_reads": true
+  },
+  "preland043": {
+    "baseline_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-route-decision-a07\\PRELAND043-BASELINE.actual.json",
+      "bytes": 4907,
+      "sha256": "1cbb7f3333dbed8792c9085a34c24ed6d999562994063c5366313dd7728bead2"
+    },
+    "source_envelope": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\desktop-3fevhd2-1c74096080--vanilla--R0177\\responses\\043-war18-day10-preland-core.json",
+      "bytes": 5174,
+      "sha256": "575ac548d181b601131785e1d08d4eb0fb6c4a191af09482f373b54f69b65bd3"
+    },
+    "provided_full_result_reference": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\state-a01\\native-session\\army-query-history-results\\army-query-1fd039c8de9a4619ae560aa09531dd43.json",
+      "bytes": 8633859,
+      "sha256": "4788c1f7f1665f894c2e7870837ef4cefd78e9739924457f8377bdacecec127b",
+      "kind": "complete-driver-army-query-result-json-v1",
+      "wire_bytes_preserved": false
+    },
+    "full_result_kind": "complete Driver result; not original pipe bytes",
+    "capturer_sha256_not_rehashed": true,
+    "original_read_count_by_prior_authorized_extraction": 1,
+    "frame": {
+      "queried_snapshot_id": "native:65",
+      "queried_revision": 66,
+      "queried_native_revision": 65,
+      "queried_connection_generation": 1,
+      "queried_episode_run_id": "native-31254-00b796ef873c",
+      "queried_date_raw": 53147088
+    },
+    "army_id": 18,
+    "native_carmy_id": 18,
+    "current_soldiers": 1195,
+    "county_entry_inputs_v1": {
+      "status": "available",
+      "source": "native_current_county_entry_inputs",
+      "unavailable_reason": null,
+      "whole_soldiers": 1195,
+      "current_loss_budget": 100,
+      "effective_fraction_raw": 5000,
+      "minimum_multiplier_raw": 100000,
+      "loaded_minimum_soldiers": 100,
+      "fraction_scale": 100000,
+      "soldier_scale": 1,
+      "condition": {
+        "status": "available",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": null,
+        "actor_character_id": 31254,
+        "source_province_id": 1032,
+        "target_province_id": 2635,
+        "mode": 1,
+        "passes": false
+      },
+      "multiplier_floor_inputs_v1": {
+        "status": "available",
+        "source": "native_current_county_multiplier_floor_inputs",
+        "unavailable_reason": null,
+        "base_floor_raw": 10000,
+        "army_1d4_nonzero_floor_raw": 0,
+        "army_1d4_raw": 0,
+        "fraction_scale": 100000
+      }
+    },
+    "movement_inputs": {
+      "current_province_type_tag_u32": 1349676918,
+      "first_route_target_province_type_tag_u32": 1349676918,
+      "unit_kind_18_raw_i32": 0,
+      "current_province_definition_byte_1b_u8": 0,
+      "first_route_target_province_definition_byte_1b_u8": 1,
+      "first_route_edge_remaining_duration": {
+        "raw": 358096,
+        "scale": 100000
+      },
+      "committed_route_timeline": {
+        "status": "available",
+        "source": "native_committed_route",
+        "native_duration_scale": 100000,
+        "committed_route_province_ids": [
+          2635
+        ],
+        "native_route_prefix_remaining_days_q100000": [
+          358096
+        ],
+        "native_full_route_remaining_days_q100000": 358096,
+        "projected_route_arrival_date_raws": [
+          53147184
+        ],
+        "unavailable_reason": null
+      }
+    },
+    "observed_unit_170_raw": 0,
+    "existing_movement_prefix_sliver": {
+      "movement_prefix_input_ready": true,
+      "unavailable_reason": null,
+      "conditional_unit_170_raw_after_next_new_date_entry_prefix": 0,
+      "subject_army_id_u32": 18,
+      "subject_carmy_id_u32": 18,
+      "scheduled_by_observed_stored_ids": true
+    },
+    "loss_application_inputs_v1": {
+      "status": "available",
+      "unavailable_reason": null,
+      "raid_association_id": -1,
+      "siege_active": false,
+      "raid_active": false,
+      "siege_rate_raw": 1000,
+      "raid_rate_raw": 1000,
+      "whole_soldiers": 1195,
+      "definition_le_zero_soldiers": 1195,
+      "supply_eligible_soldiers": 1195,
+      "definition_le_zero_supply_eligible_soldiers": 1195,
+      "current_supply_loss_budget": 0,
+      "siege_loss_budget": 0,
+      "raid_loss_budget": 0,
+      "fraction_scale": 100000,
+      "soldier_scale": 1
+    },
+    "actual_loss_writer_observations_summary": {
+      "status": "available",
+      "observer_installed": true,
+      "latest_sequence": 3377,
+      "oldest_available_sequence": 2866,
+      "overwritten_events": 2865,
+      "unattributed_capture_failures": 0,
+      "event_count": 0
+    },
+    "production_strict_consumers_passed_in_prior_receipt": true
+  },
+  "postlanding_small_envelopes": [
+    {
+      "source_envelope": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\desktop-3fevhd2-1c74096080--vanilla--R0177\\responses\\044-war18-day14-preland-core.json",
+        "bytes": 5187,
+        "sha256": "81020e76d41fddeb90ecc7b48f87bb7520a68e598f5d6be4749bc06637ae1cdc"
+      },
+      "observed_at_utc": "2026-10-15T20:47:55.423562+00:00",
+      "request_id": "044-war18-day14-preland-core",
+      "request_profile": "ordinary_core_v1",
+      "body_accepted": true,
+      "query_sequence": 7,
+      "source": {
+        "revision": 79,
+        "native_revision": 78
+      },
+      "army_summary": {
+        "status": "available",
+        "army_id": 18,
+        "native_carmy_id": 18,
+        "regiment_count": 21,
+        "current_soldiers": 1195,
+        "maximum_soldiers": 1195,
+        "ai_base_power_raw": 3830000000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 30000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "summary_contains_position_or_date": false,
+      "provided_full_result_reference": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\state-a01\\native-session\\army-query-history-results\\army-query-65b6a85c49554860afdd5e8828f00a9d.json",
+        "bytes": 9031245,
+        "sha256": "0a2e7bc41d763a40b9927e5d043573c513d7c397795f33bd4ea78d846167a910",
+        "kind": "complete-driver-army-query-result-json-v1",
+        "wire_bytes_preserved": false
+      },
+      "full_result_read_or_rehashed_by_this_followup": false
+    },
+    {
+      "source_envelope": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\desktop-3fevhd2-1c74096080--vanilla--R0177\\responses\\045-war18-first-siege-day-core.json",
+        "bytes": 5193,
+        "sha256": "e036e8d2e09274fda2d4f6cd8eaf667dd58d30399dc027eafe90441b5744010a"
+      },
+      "observed_at_utc": "2026-10-15T20:50:51.654265+00:00",
+      "request_id": "045-war18-first-siege-day-core",
+      "request_profile": "ordinary_core_v1",
+      "body_accepted": true,
+      "query_sequence": 8,
+      "source": {
+        "revision": 82,
+        "native_revision": 81
+      },
+      "army_summary": {
+        "status": "available",
+        "army_id": 18,
+        "native_carmy_id": 18,
+        "regiment_count": 21,
+        "current_soldiers": 1195,
+        "maximum_soldiers": 1195,
+        "ai_base_power_raw": 3830000000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 30000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "summary_contains_position_or_date": false,
+      "provided_full_result_reference": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\state-a01\\native-session\\army-query-history-results\\army-query-5050919997c946bc85445f5a84bc8990.json",
+        "bytes": 9164263,
+        "sha256": "07254b531103c33ff4a20163c07b9f8bd58a3c011a8fffbd4ce6434e0a390467",
+        "kind": "complete-driver-army-query-result-json-v1",
+        "wire_bytes_preserved": false
+      },
+      "full_result_read_or_rehashed_by_this_followup": false
+    }
+  ],
+  "root_reported_arrival": {
+    "provenance_kind": "parent_live_owner_message_not_independently_projected_from_large_result",
+    "source_message_received_at_or_before_utc": "2026-10-15T21:06:46.542524+00:00",
+    "reported_by": "/root",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "army_id": 18,
+    "current_province_id": 2635,
+    "date_raw": 53147184,
+    "source_request_id": "044-war18-day14-preland-core",
+    "warning": "The 044 filename says preland; that name is not evidence of the actual position.",
+    "independently_verified_by_this_lane": false
+  },
+  "source_interpretation": {
+    "actual_old_definition_1b_u8": 0,
+    "actual_target_definition_1b_u8": 1,
+    "actual_native_county_condition": false,
+    "conditional_positive_county_budget_for_observed_first_edge": false,
+    "native_current_budget_soldiers": 100,
+    "preferred_budget_if_admitted_soldiers": 100,
+    "residual_budget_if_admitted_soldiers": 0,
+    "preferred_and_residual_are_conditional_budgets_not_actual_debits": true,
+    "county_callback_at_invocation_observed": false,
+    "actual_county_physical_debit_soldiers": null,
+    "whole_county_loss_soldiers": null,
+    "route_overall_safe": null,
+    "county_positive_accepted": false,
+    "army_net_change_used_for_loss_attribution": false,
+    "subsequent_R03_siege_event_reclassified_as_county": false
+  },
+  "next_scene_minimum": {
+    "selected_target_province_id": null,
+    "candidate_with_native_legal_route_and_true_county_condition_available": false,
+    "first_action": "Obtain a fresh legal native land-route preview; after one authorized route commit, inspect the actual stored first edge while paused before advancing it.",
+    "required_same_frame_observations": [
+      "runtime/actor/episode identity and snapshot/revision/native-revision agreement",
+      "actual distinct typed current Province and stored first target; Unit kind0",
+      "actual current and first-target definition1B bytes both nonzero",
+      "existing movement prefix supplies conditional post-entry Unit170; special flag0",
+      "available native county condition true for the exact actor/source/target/mode",
+      "county current B>0, actual loaded floor child or its explicit unavailable reason",
+      "loss_application_inputs same whole-soldier basis and preferred count",
+      "actual writer installed and baseline latest_sequence/unattributed failures"
+    ],
+    "prefer_primary_only_when": "same-query S_pref>=B, giving conditional R0",
+    "after_single_edge": "Pause and obtain one ordinary_core_v1 query for the same Army; existing writer source and raw physical-slot consumer decide each retained event.",
+    "positive_county_primary_return_rva": "0x24E25EE",
+    "positive_county_residual_source": "inner0x2A958E8 plus complete county_entry parent outer0x24E2630 flags0 and matching native identities",
+    "no_positive_event_means": "No accepted retained county-positive event; actual whole-county total remains unknown."
+  },
+  "read_and_write_scope": {
+    "this_followup_large_result_reads": 0,
+    "this_followup_large_result_hashes": 0,
+    "new_binary_reads": 0,
+    "new_queries_or_actions": 0,
+    "SDK_game_desktop_contacts": 0,
+    "native_builds_or_EXE_execution": 0,
+    "main_tree_writes": 0,
+    "changed_behavior_tests_run": 0,
+    "old_tests_rerun": 0,
+    "reason_no_tests": "Documentation and literal source projection only; existing consumers/code unchanged."
+  }
+}

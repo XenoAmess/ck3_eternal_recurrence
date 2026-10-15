@@ -1,0 +1,115 @@
+{
+  "schema": "xar.e04.old-sdk-large-ledger-exact-replay-proof.v1",
+  "status": "ALL_TWO_EXACT_LEDGER_BYTES_REPLAYABLE",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T20:36:06.577924+00:00",
+  "results": [
+    {
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02",
+      "original_log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\mcp-calls.jsonl",
+      "original_before": {
+        "id": [
+          3061637496,
+          281474978732376
+        ],
+        "b": 1469580989,
+        "ft": 134356069262366227,
+        "links": 1,
+        "allocation": 1469583360
+      },
+      "original_after": {
+        "id": [
+          3061637496,
+          281474978732376
+        ],
+        "b": 1469580989,
+        "ft": 134356069262366227,
+        "links": 1,
+        "allocation": 1469583360
+      },
+      "original_sha256": "dfec706ad1de991df135822de8bee893db230200c9bc984ca5fc2bf319814df6",
+      "rebuilt_sha256": "dfec706ad1de991df135822de8bee893db230200c9bc984ca5fc2bf319814df6",
+      "all_original_lines_byte_identical_to_rebuilt": true,
+      "line_count": 360,
+      "replay_index": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\native-live-main-case-a02.replay-index.jsonl.gz",
+        "bytes": 31281,
+        "sha256": "337b3ba858a1143146efc3188086e1864a92cedd71e7910a6f64d9b76c338224"
+      },
+      "retained_response_count": 360,
+      "response_payloads_retained_unchanged": true,
+      "small_closed_session_result": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\session-result.json",
+        "bytes": 12435,
+        "sha256": "70e491405b1a44b60fbe3ee095355ae88320850c4b8ce51d156c82d07d6ce011"
+      },
+      "old_shutdown_exit_code_preserved": 1,
+      "old_shutdown_job_final": 0,
+      "normal_exit_claimed": false,
+      "raw_save_body_reads": 0
+    },
+    {
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01",
+      "original_log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\mcp-calls.jsonl",
+      "original_before": {
+        "id": [
+          3061637496,
+          281474978761502
+        ],
+        "b": 1067834668,
+        "ft": 134356174381096005,
+        "links": 1,
+        "allocation": 1067835392
+      },
+      "original_after": {
+        "id": [
+          3061637496,
+          281474978761502
+        ],
+        "b": 1067834668,
+        "ft": 134356174381096005,
+        "links": 1,
+        "allocation": 1067835392
+      },
+      "original_sha256": "6b5657c768061df2e85dc58c6b79e84a4017bde7f4a2f17780037f3a1f1bb2e6",
+      "rebuilt_sha256": "6b5657c768061df2e85dc58c6b79e84a4017bde7f4a2f17780037f3a1f1bb2e6",
+      "all_original_lines_byte_identical_to_rebuilt": true,
+      "line_count": 226,
+      "replay_index": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\native-live-positive-r0164-a01.replay-index.jsonl.gz",
+        "bytes": 20030,
+        "sha256": "6bc663909e2442f7492fcabada61c6983b1ca2cff7498ecb28a71e6780acd954"
+      },
+      "retained_response_count": 226,
+      "response_payloads_retained_unchanged": true,
+      "small_closed_session_result": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\session-result.json",
+        "bytes": 12549,
+        "sha256": "2a59db8484f8761e695ebea90d2cb614f7de18fd68e5775e0614114b4f333399"
+      },
+      "old_shutdown_exit_code_preserved": 1,
+      "old_shutdown_job_final": 0,
+      "normal_exit_claimed": false,
+      "raw_save_body_reads": 0
+    }
+  ],
+  "errors": [],
+  "complete_candidate_count": 2,
+  "complete_candidate_logical_bytes": 2537415657,
+  "complete_candidate_allocation_bytes": 2537418752,
+  "body_bytes_read_and_hashed_only_two_old_logs_and_their_exact_retained_responses": 5843239636,
+  "deletions": 0,
+  "scope": "Only2 exact oldSDKlogs and their360+226 exact responsefiles; preserve all response/request/session/bootstrap/native/raw originals. No wholeC/Dscan and no currentR0177/R175/R176 input read ormutation.",
+  "retirement_basis": "Do not claim180day record TTLexpired. Consolidate the fullyclosed executionrecord to a small complete order+timestamp+identity/SHA index while its repeated responsepayload remains. Original log bytes can be regenerated exactly using retained responses and declared serializer; this is reversible-derived-duplicate early retirement under superseded_or_rebuildable_may_expire_early, subject to Root current-use review.",
+  "regeneration_contract": {
+    "ordered_index": "Gzip JSONL in lineorder",
+    "row_source": "root/response_relative_path, after verifying exact responseSHA andidentity",
+    "serializer": "(json.dumps(json.loads(response_bytes), ensure_ascii=False) + \"\\n\").encode(\"utf-8\")",
+    "must_verify_aggregate_SHA_and_bytes_before_use": true,
+    "future_rebuilt_file_is_derived_and_must_not_impersonate_original_physical_evidence": true
+  },
+  "Root_execution_still_requires": "Root reviews precise2logs/purpose/currentconsumers. Beforedelete preserve replayindices+proof and all586responsefiles, source session/bootstrap/indices; recheck log ID,size,mtime,links1,noreparse andexclusiveDELETE samehandle. Keep originalavailability truthful; do not deletefolders or sourcefiles.",
+  "review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+  "deadline_extensions": 0,
+  "seconds": 97.96922249998897
+}

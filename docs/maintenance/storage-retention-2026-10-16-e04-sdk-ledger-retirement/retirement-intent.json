@@ -1,0 +1,82 @@
+{
+  "schema": "xar.e04.old-two-sdk-ledger-retirement-intent.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T20:43:21.285163+00:00",
+  "Root_explicit_authorization": "Root reviewed full5526B replayproof and14056B twofile review, accepted storagepolicy.md:33 rebuildable/duplicatepayload earlyretirement and authorized only exact two named mcp-calls.jsonl files. User projectcleanup authority already applies.",
+  "review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\two-old-sdk-ledgers-precise-retirement-review-a01.json",
+    "bytes": 14056,
+    "sha256": "d42db5f6efe9539c8076f1e1d149069c6cad95dbedf0380da49263444fda5869"
+  },
+  "replayproof": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\RESULT.actual.json",
+    "bytes": 5526,
+    "sha256": "89bd1c8b90c69dcfe09793c14dd4a8d21f6005de4d09409b17b5c3549c4f987a"
+  },
+  "exact_two_candidate_initial_checks": [
+    {
+      "index": 0,
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\mcp-calls.jsonl",
+      "before": {
+        "id": [
+          3061637496,
+          281474978732376
+        ],
+        "b": 1469580989,
+        "ft": 134356069262366227,
+        "links": 1,
+        "allocation": 1469583360
+      },
+      "original_sha256_reused": "dfec706ad1de991df135822de8bee893db230200c9bc984ca5fc2bf319814df6",
+      "exclusive_DELETE_READ_ATTRIBUTES_ready": true
+    },
+    {
+      "index": 1,
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\mcp-calls.jsonl",
+      "before": {
+        "id": [
+          3061637496,
+          281474978761502
+        ],
+        "b": 1067834668,
+        "ft": 134356174381096005,
+        "links": 1,
+        "allocation": 1067835392
+      },
+      "original_sha256_reused": "6b5657c768061df2e85dc58c6b79e84a4017bde7f4a2f17780037f3a1f1bb2e6",
+      "exclusive_DELETE_READ_ATTRIBUTES_ready": true
+    }
+  ],
+  "oldroot_active_references": [],
+  "protected_response_count": 586,
+  "preserved_replayindices": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\native-live-main-case-a02.replay-index.jsonl.gz",
+      "bytes": 31281,
+      "sha256": "337b3ba858a1143146efc3188086e1864a92cedd71e7910a6f64d9b76c338224"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\old-r016x-ledger-replay-proof-a01\\native-live-positive-r0164-a01.replay-index.jsonl.gz",
+      "bytes": 20030,
+      "sha256": "6bc663909e2442f7492fcabada61c6983b1ca2cff7498ecb28a71e6780acd954"
+    }
+  ],
+  "protected_file_count": 602,
+  "response_and_index_handle_policy": "GENERIC_READ|READ_ATTRIBUTES, shareREAD only: deny writes/deletes until allactualchecks complete. No new largebodyhash.",
+  "source_native_raw_seed_preservation": "All response/request/closure/bootstrap/native/source/raw/save remain. CurrentR0177/commonS0/R175/R176 are outside the only2 deletetargets and untouched.",
+  "before_volumes": {
+    "C": {
+      "total": 511133945856,
+      "used": 485593927680,
+      "free": 25540018176
+    },
+    "D": {
+      "total": 500090007552,
+      "used": 477412806656,
+      "free": 22677200896
+    }
+  },
+  "current_runtime_boundary": "R0177 may remain running; no SDK/desktop/gameoperation and no globalCK3empty gate. Only oldtwo root references checked.",
+  "quota_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+  "deadline_extensions": 0
+}

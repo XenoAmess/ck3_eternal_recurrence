@@ -51,6 +51,23 @@ inline void AppendArmyCapturedTargetLandSupplyInputsV1(
   optional_string("resupply_unavailable_reason", inputs.resupply_unavailable_reason);
   optional_bool("native_resupply_eligible", inputs.native_resupply_eligible);
   optional_number("loaded_gain_raw", inputs.loaded_gain_raw);
+  if (inputs.loss_adjustment_operands_v1) {
+    const auto &x = *inputs.loss_adjustment_operands_v1;
+    output += ",\"loss_adjustment_operands_v1\":{\"source\":\"native_captured_target_loss_operands\",\"scale\":100000,\"status\":";
+    append_json_string(output,x.status);
+    output += ",\"observation_ready\":";
+    output += x.observation_ready ? "true" : "false";
+    optional_string("unavailable_reason",x.unavailable_reason);
+    optional_number("commander_raw_full_id",x.commander_raw_full_id);
+    optional_number("commander_resolved_full_id",x.commander_resolved_full_id);
+    optional_bool("commander_used_native_fallback",x.commander_used_native_fallback);
+    optional_number("commander_modifier_1a9_raw",x.commander_modifier_1a9_raw);
+    optional_number("loaded_excess_slope_raw",x.loaded_excess_slope_raw);
+    optional_number("loaded_min_loss_raw",x.loaded_min_loss_raw);
+    optional_number("loaded_max_loss_raw",x.loaded_max_loss_raw);
+    optional_number("loaded_divisor_floor_raw",x.loaded_divisor_floor_raw);
+    output += '}';
+  }
   output += '}';
 }
 

@@ -1,0 +1,232 @@
+{
+  "schema": "episode04.r0177.coastal-normalprep.canonical.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:09:48.514890+00:00",
+  "source_original_archive": {
+    "path": "r0177-coastal-small-originals.zip",
+    "bytes": 38902,
+    "sha256": "7b8f5258eb428c53f593d1f94ace647a2153c61b872c4727c5ea2a518f604620",
+    "members": [
+      {
+        "scene_relative_path": "CLOSED.actual-a01.json",
+        "archive_member": "CLOSED.actual-a01.json",
+        "bytes": 3219,
+        "sha256": "9a2f12db0d934f8cb01236c7ca8e88a1515b18ef552677ccc13df70841bc9797"
+      },
+      {
+        "scene_relative_path": "coastal-recording-closure.actual-a01.json",
+        "archive_member": "coastal-recording-closure.actual-a01.json",
+        "bytes": 1158,
+        "sha256": "428f039f53a3e06177f1dbe8d5010aff22c6114385108c4e89abd66beddef7cc"
+      },
+      {
+        "scene_relative_path": "commonS0-preserved.actual-a01.json",
+        "archive_member": "commonS0-preserved.actual-a01.json",
+        "bytes": 2055,
+        "sha256": "979a75391335239ee810b7fa597effa2c3bc38f86922b791eb3127457ac9a6fd"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/ACTUAL-METADATA.json",
+        "archive_member": "media-coastal-arrival-a01/ACTUAL-METADATA.json",
+        "bytes": 3530,
+        "sha256": "b9408d6bac0d669c3d203c4ad6576c8800a586bfc6cd192c20264643bd44d8aa"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/CUT-CANDIDATES.actual-a01.md",
+        "archive_member": "media-coastal-arrival-a01/CUT-CANDIDATES.actual-a01.md",
+        "bytes": 1727,
+        "sha256": "4cd06786d60aebed201369ea00d4f78adfc2510cbfbc6b4bd83a48ac3ed2aa7e"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/PLAN-AND-INPUTS.json",
+        "archive_member": "media-coastal-arrival-a01/PLAN-AND-INPUTS.json",
+        "bytes": 5323,
+        "sha256": "6e57777845dc5afd1ff442ca8f3960a2fcd69dbf842d786dd3969d0e60bd9fb6"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/PORTABLE-CODE-INDEX.actual-a01.json",
+        "archive_member": "media-coastal-arrival-a01/PORTABLE-CODE-INDEX.actual-a01.json",
+        "bytes": 4253,
+        "sha256": "46c8e05d6112256a2eabb3856ae066b98e87dbe36f293a95f649caa0caa74cb1"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/ROOT-CUT-DELIVERY.actual-a01.json",
+        "archive_member": "media-coastal-arrival-a01/ROOT-CUT-DELIVERY.actual-a01.json",
+        "bytes": 4091,
+        "sha256": "82cd0a63763310226da676249586c442e38cb4dd5f37318ea900d1f9bbd84ba4"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/cut-candidates.actual-a01.json",
+        "archive_member": "media-coastal-arrival-a01/cut-candidates.actual-a01.json",
+        "bytes": 12162,
+        "sha256": "c4d3ae13783cf931ec6b88099e28ea4de74174bcd41e8130cbde8eb4dff2ba27"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/native-arrival-excerpts.actual-a01.json",
+        "archive_member": "media-coastal-arrival-a01/native-arrival-excerpts.actual-a01.json",
+        "bytes": 9048,
+        "sha256": "099a7ffd986d8de34d58be82d79448adfae7447173edb22bb9471af913670fc7"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/portable-source/actual-finished-binding-a01.json",
+        "archive_member": "media-coastal-arrival-a01/portable-source/actual-finished-binding-a01.json",
+        "bytes": 2150,
+        "sha256": "90d5e34e67d750cc609bae386ba84d7aa45aec40f0b35cbe697d823e3b0228ae"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/portable-source/audit_r0177_finished_raw_a01.py",
+        "archive_member": "media-coastal-arrival-a01/portable-source/audit_r0177_finished_raw_a01.py",
+        "bytes": 18065,
+        "sha256": "18f56127fedd9d77795cb2ac6849a4fad3f66ffaa38d9f774013aa45507bf52e"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/portable-source/seal_r0177_candidates_a01.py",
+        "archive_member": "media-coastal-arrival-a01/portable-source/seal_r0177_candidates_a01.py",
+        "bytes": 16682,
+        "sha256": "04f56f13199952e109f68b4feccc054fdaa6a57079deeeae61fd2f969ef9df1a"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/report.json",
+        "archive_member": "media-coastal-arrival-a01/report.json",
+        "bytes": 7198,
+        "sha256": "04a635f4752511b35c065aa180f03d456fedd396ce23ce9ee01f009e3cc53d0c"
+      },
+      {
+        "scene_relative_path": "media-coastal-arrival-a01/strict-whole-decode-and-samples/result.json",
+        "archive_member": "media-coastal-arrival-a01/strict-whole-decode-and-samples/result.json",
+        "bytes": 1150,
+        "sha256": "f88cfecb509b9a1f723e13b9c18bb22e7952b0c5d9fbff2723223d250ac05a6b"
+      },
+      {
+        "scene_relative_path": "normalprepare93-stages/newstationary-commonS0.actual.json",
+        "archive_member": "normalprepare93-stages/newstationary-commonS0.actual.json",
+        "bytes": 7236,
+        "sha256": "90a78e0d242fd4bb9b7cee366c8576659d049851c43f2cd0474781c832d35590"
+      },
+      {
+        "scene_relative_path": "runtime-actor-identity.actual-a01.json",
+        "archive_member": "runtime-actor-identity.actual-a01.json",
+        "bytes": 6123,
+        "sha256": "48d5773f8bd621c86a38e3f636d1a9c6182aedba4e4fdb9dedff58b2692b3b52"
+      }
+    ]
+  },
+  "runtime": {
+    "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "native_build_source_head": "b00013c8eb6cca20bfb8c4680a92845d997a4b96",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0177",
+    "pid": 7240,
+    "process_creation_filetime_100ns": 134365679117288462,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-00b796ef873c",
+    "actor_character_id": 31254
+  },
+  "machine_identity_addendum": {
+    "originals_with_explicit_machine_id": [
+      "CLOSED.actual-a01.json",
+      "commonS0-preserved.actual-a01.json",
+      "normalprepare93-stages/newstationary-commonS0.actual.json",
+      "runtime-actor-identity.actual-a01.json"
+    ],
+    "media_originals_missing_machine_id_preserved_unchanged": true,
+    "verified_binding_basis": [
+      "report.actual_run_id equals CLOSED.run_id and runtime proof.run_id",
+      "portable code index PID/create/generation/episode/actor equal exact runtime proof",
+      "ROOT-CUT pins code index and report bytes"
+    ],
+    "source_machine_for_this_bound_media_attempt": "desktop-3fevhd2-1c74096080",
+    "new_machine_facts_inferred_from_paths": false
+  },
+  "coastal_S0": {
+    "date_raw": 53146848,
+    "selected_army_id": 93,
+    "native_carmy_id": 85,
+    "selected_province_id": 2624,
+    "army_literal": {
+      "army_id": 93,
+      "owner_character_id": 31254,
+      "soldiers": null,
+      "current_province_id": 2624,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    "current_soldiers": 250,
+    "current_supply_raw": 10000000,
+    "source_checkpoint_sha256": "e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67",
+    "preserved_checkpoint": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\state-a01\\profile\\save games\\xar_e04_r07_common_s0_20261016.ck3",
+      "bytes": 71631396,
+      "sha256": "e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67"
+    },
+    "other_owned_armies_94_95_in_combat_at_save": true,
+    "two_fresh_arms_completed": 0,
+    "R07_treatment_started": false,
+    "R07_PASS": false
+  },
+  "media": {
+    "raw_identity_reused": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\raw-coastal-arrival-a01\\raw.mkv",
+      "bytes": 59607616,
+      "sha256": "88f37c5911ffa25491122c2f11dd04b3c17aeecdc0ff6f72605df77e3530231d"
+    },
+    "raw_read_or_hashed_by_this_package": false,
+    "duration_seconds": "45.000000",
+    "decoded_frames": 1350,
+    "width": 2560,
+    "height": 1440,
+    "fps": "30/1",
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_streams": 0,
+    "existing_strict_whole_decode_count": 1,
+    "new_decode_probe_or_seek_count": 0,
+    "arrival_state_change_bracket_seconds": "(4,10]",
+    "exact_first_state_change_PTS": null,
+    "cut_candidates_only": true,
+    "continuous_clean_review": false,
+    "human_1x_review": false,
+    "human_signoff": false
+  },
+  "closure": {
+    "receipt_at_utc": "2026-10-15T21:02:43.641386+00:00",
+    "normal_exit_code": 0,
+    "game_recorder_SDK_keeper_closed": true,
+    "source_freeze_released": true,
+    "display_restore_receipt_ref": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\display-restore.actual-a01.json",
+      "bytes": 687,
+      "sha256": "2735520a04e266a23919b02be124dabc3a589ab293821ca2a6699971a36a487b"
+    },
+    "screen_release_receipt_ref": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\screen-release.actual-a01.json",
+      "bytes": 2593,
+      "sha256": "d2f49721f378034da978e2b069c04fc9b2f12147b228c3c0ef9fa136f37e6575"
+    },
+    "continuous_clean_and_human_signoff": false
+  },
+  "score_unchanged_by_this_package": {
+    "whole_cards": 5,
+    "whole_card_denominator": 14,
+    "whole_card_percent_rounded": 35.7,
+    "R07_fresh_arms_completed": 0,
+    "R03_actual_handled_by_other_owner": true
+  },
+  "storage": {
+    "archive_is_small_receipts_and_source_only": true,
+    "save_video_DLL_samples_not_copied": true,
+    "protected_until_utc": "2026-10-16T07:45:01.597Z",
+    "renewed": false
+  }
+}

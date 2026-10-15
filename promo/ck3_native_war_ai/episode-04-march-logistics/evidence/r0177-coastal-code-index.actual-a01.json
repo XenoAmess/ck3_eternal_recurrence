@@ -1,0 +1,45 @@
+{
+  "schema": "episode04.r0177.coastal-code-canonical-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:09:48.514890+00:00",
+  "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+  "archive_repo_path": "docs/ck3-native-ai/acceptance/2026-10-16-r0177-coastal-normalprep/r0177-coastal-small-originals.zip",
+  "archive_pin": {
+    "bytes": 38902,
+    "sha256": "7b8f5258eb428c53f593d1f94ace647a2153c61b872c4727c5ea2a518f604620"
+  },
+  "exact_scene_source_files": [
+    {
+      "archive_member": "media-coastal-arrival-a01/portable-source/audit_r0177_finished_raw_a01.py",
+      "bytes": 18065,
+      "sha256": "18f56127fedd9d77795cb2ac6849a4fad3f66ffaa38d9f774013aa45507bf52e"
+    },
+    {
+      "archive_member": "media-coastal-arrival-a01/portable-source/actual-finished-binding-a01.json",
+      "bytes": 2150,
+      "sha256": "90d5e34e67d750cc609bae386ba84d7aa45aec40f0b35cbe697d823e3b0228ae"
+    },
+    {
+      "archive_member": "media-coastal-arrival-a01/portable-source/seal_r0177_candidates_a01.py",
+      "bytes": 16682,
+      "sha256": "04f56f13199952e109f68b4feccc054fdaa6a57079deeeae61fd2f969ef9df1a"
+    }
+  ],
+  "source_reuse_contract": [
+    "knowledge and code reusable on another machine; raw video must be supplied separately if needed",
+    "scene-specific verifier declares exact original absolute paths, verified Python and existing FFmpeg locations; adapt these explicitly in a new source/run, never reinterpret old evidence",
+    "source SHA/runtime/scene/raw identity and fixed original deadline are this actual attempt only; no future runtime or game version acceptance inferred",
+    "portable-source files are copies of exact code/input for inspection and reuse, not permission to rerun this completed scan",
+    "no SDK/desktop/game/recorder/network required for bounded JSON evidence consumption"
+  ],
+  "historical_source_files_not_executed_by_this_package": true,
+  "current_reusable_project_entries": [
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/r07_v2_contract.py",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/watched_stop.py",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/inspection/extract_a07_current_literals.py",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/inspection/extract_a07_army_route_context.py"
+  ],
+  "frozen_clock_source_index_repo_path": "docs/ck3-native-ai/evidence/episode04-locked-route-clock-source-12004/SOURCE-INDEX.json",
+  "raw_video_and_protected_S0_are_machine_bound_inputs_not_in_archive": true,
+  "human_approval": false
+}

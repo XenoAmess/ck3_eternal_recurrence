@@ -84,6 +84,41 @@ def _current_rate(query, army_id):
     return out
 
 
+
+def _outcomes(state, actual, evidence, summary):
+    """Use observed account/arrival values without attributing a military cost."""
+    cold, _ = a._whole(state['cold_start'], state['plan'], evidence,
+                       state['runtime'], state['army_id'])
+    start = _signed(cold['treasury_raw'], 'T0 player wallet', 64)
+    current = _signed(actual['treasury_raw'], 'current player wallet', 64)
+    return {
+        'account_observation': {
+            'player_character_id': actual['player_character_id'],
+            't0_date_raw': cold['date_raw'], 'observed_date_raw': actual['date_raw'],
+            't0_wallet_raw': start, 'current_wallet_raw': current,
+            'unattributed_wallet_net_raw': current-start, 'scale': 100000,
+            'wallet_net_is_selected_army_cost': False,
+            'selected_army_boarding_paid_raw': None,
+            'selected_army_maintenance_paid_raw': None,
+            'other_cash_income_raw': None, 'other_cash_expense_raw': None,
+            'fee_comparison_requested': state['plan']['compare_fees'],
+            'fee_qualification': 'not_assessed_by_A_decision',
+            'economic_isolation_from_other_armies_proved': False,
+        },
+        'arrival_observation': {
+            'current_meets_frozen_arrival': c.arrived(actual, state['plan']),
+            'first_arrival_day': summary['first_arrival_day'],
+            'first_arrival_interval_days': deepcopy(summary['arrival_interval_days']),
+            'first_arrival_actual': deepcopy(summary['arrival_actual']),
+            'current_actual': deepcopy(actual),
+            'registered_report_day_endpoints': deepcopy(summary['report_date_endpoints']),
+            'joint_common_date_rows': None, 'D90_endpoint': deepcopy(summary['D90_endpoint']),
+            'post_arrival_continuation_registered': state['plan']['follow_after_arrival_to_day90'],
+            'automatic_post_arrival_advance_proposed': False,
+        },
+    }
+
+
 def next_decision(state, evidence, fresh_preview=None):
     """Annotate existing A decision; return existing read-only/Move call shapes.
 
@@ -112,7 +147,9 @@ def next_decision(state, evidence, fresh_preview=None):
               'unavailable_reason': 'fresh_preview_not_supplied'}
     fresh_route = None
     terminal = state['first_arrival_day'] is not None or len(state['days']) == 90
-    ordinary_status = a.report(state)['action_status']
+    summary = a.report(state)
+    ordinary_status = summary['action_status']
+    outcomes = _outcomes(state, actual, evidence, summary)
     if fresh_preview is not None:
         # _preview joins every queried_* field, actual origin, date and legal route.
         fresh_route = a._preview(fresh_preview, ep, plan, evidence, runtime)
@@ -129,7 +166,12 @@ def next_decision(state, evidence, fresh_preview=None):
             call = {'tool': 'ck3_execute_step', 'arguments': {
                 'step': f'preview-move-army-{state["army_id"]}-to-{plan["goal_province_id"]}',
                 'expected_revision': snap['revision']}}
-    return {'proposed_call': call,
+    return {**outcomes, 'proposed_call': call,
+            'other_observed_player_armies': [
+                {key: deepcopy(row.get(key)) for key in
+                 ('army_id', 'owner_character_id', 'current_province_id', 'army_state',
+                  'in_combat', 'retreating')}
+                for row in snap.get('player_armies', []) if row.get('army_id') != state['army_id']],
             'policy': 'terminal' if terminal else 'preserve_frozen_whole_direct',
             'ordinary_policy_action_status': ordinary_status,
             'current_aggregate_pressure_suggests_review': pressure,

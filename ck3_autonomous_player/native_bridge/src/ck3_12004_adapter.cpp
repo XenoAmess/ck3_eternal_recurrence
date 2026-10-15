@@ -1,3 +1,4 @@
+#include "xar_bridge/ingame_military_opener_12004.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
@@ -81,6 +82,9 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
       ck3_12003::kOrdinaryInteractionQueryV1Capability,
       ck3_12003::kOrdinaryInteractionInitiateV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1)
+      ck3_11906::kIngameMilitaryOpen12004Capability,
 #endif
 #if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
       ck3_11906::kIngameDecisionsOpenV1Capability,

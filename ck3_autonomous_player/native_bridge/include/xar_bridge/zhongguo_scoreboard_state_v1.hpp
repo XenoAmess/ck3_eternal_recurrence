@@ -296,6 +296,9 @@ struct NamedGuiStandardClickCallback12004V1 {
   std::uint32_t index = 0;
   std::uint64_t callback_vtable_rva = 0;
   std::uint64_t callback_slot2_rva = 0;
+  bool indirect_target_3aa30e0 = false;
+  std::uint64_t native_target_8_rva = 0;
+  bool receiver_f0_present = false;
 };
 
 struct NamedGuiStandardClickBinding12004V1 {
@@ -321,6 +324,7 @@ struct NamedGuiTreeInspectionV1 {
   bool truncated = false;
   std::size_t widget_count = 0;
   bool standard_click_bindings_12004 = false;
+  bool callback_thunk_3aa30e0_pin_verified = false;
   // Allocate rows only within the owning-thread traversal try/catch;
   // the mailbox carries the bounded vector handle, not thousands of rows.
   std::vector<NamedGuiWidgetInspectionV1> widgets;

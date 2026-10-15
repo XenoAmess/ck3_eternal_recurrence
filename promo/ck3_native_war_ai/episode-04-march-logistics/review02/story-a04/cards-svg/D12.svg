@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<title>实体250守恒，角色与统帅另读</title>
+<desc>Source/actual demonstration card, not gameplay footage or human signoff.</desc>
+<rect width="2560" height="1440" fill="#211813"/>
+<rect x="90" y="300" width="740" height="370" rx="12" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<rect x="910" y="300" width="740" height="370" rx="12" fill="#35291F" stroke="#9AAEAB" stroke-width="2"/>
+<rect x="1730" y="300" width="740" height="370" rx="12" fill="#35291F" stroke="#ABB582" stroke-width="2"/>
+<rect x="90" y="730" width="2380" height="200" rx="12" fill="#35291F" stroke="#CA7962" stroke-width="2"/>
+<text x="90" y="85" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CBA56A">D12  /  MARCH LOGISTICS</text>
+<text x="90" y="178" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" fill="#F0E5CF">实体250守恒，角色与统帅另读</text>
+<text x="90" y="240" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" fill="#BBA98D">R0176 SELECTED93 ACTUAL</text>
+<text x="120" y="360" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CBA56A">拆前 / CUnit93</text>
+<text x="120" y="425" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">实体 DATA：250 / 250</text>
+<text x="120" y="488" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">四条 physical ArRg673–676</text>
+<text x="120" y="551" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">当前统帅 absent</text>
+<text x="940" y="360" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#9AAEAB">拆后 / fresh162</text>
+<text x="940" y="425" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">选中cohort实体合计250</text>
+<text x="940" y="488" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">新队162独立发现</text>
+<text x="940" y="551" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">统帅 Character34232</text>
+<text x="1760" y="360" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#ABB582">合后 / 93存续</text>
+<text x="1760" y="425" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">原四条实体仍250 / 250</text>
+<text x="1760" y="488" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">162独立消失；93存续</text>
+<text x="1760" y="551" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">统帅 Character34232</text>
+<text x="120" y="790" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" fill="#CA7962">另一路角色关联</text>
+<text x="120" y="855" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" fill="#F0E5CF">Army18空DATA/cache1/1 ArRg59消失 → 同一角色34232成为新162及合后93的统帅</text>
+<text x="90" y="1015" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" fill="#BBA98D">三阶段同date53146632；只授具名selected93微例，原strict失败保留，R09全卡仍未闭</text>
+<text x="90" y="1063" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" fill="#BBA98D">1/1变化不记作实体补员、死亡、Character出生或Knight资格；库存/容量/权重未在此卡证明</text>
+</svg>

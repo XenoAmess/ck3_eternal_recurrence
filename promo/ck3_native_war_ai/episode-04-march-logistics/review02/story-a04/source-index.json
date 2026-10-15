@@ -1,0 +1,257 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T20:04:18.803707+00:00",
+    "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "live_runtime_source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256_from_existing_sources": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "original69_model": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-BC-a06/narration/six-chapter-final-BC-Chinese-a06.md",
+      "bytes": 23969,
+      "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+    },
+    "frozen_predecessor_maps": [
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/claim-shot-agent-map.json",
+        "bytes": 71886,
+        "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+      },
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/claim-shot-agent-map.json",
+        "bytes": 53716,
+        "sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6"
+      }
+    ],
+    "prior_draft_count": 37,
+    "new_draft_count": 16,
+    "combined_distinct_draft_count": 53,
+    "draft_count_denominator": 69,
+    "remaining_ids_after_this_delta": [
+      "C01-03",
+      "C01-04",
+      "C01-05",
+      "C01-06",
+      "C01-08",
+      "C02-01",
+      "C02-02",
+      "C02-04",
+      "C02-11",
+      "C02-12",
+      "C03-01",
+      "C04-09",
+      "C05-11",
+      "C05-12",
+      "C06-03",
+      "C06-04"
+    ],
+    "editorial_target_minutes": [
+      30,
+      35
+    ],
+    "measured_new_audio_duration_seconds": null,
+    "research_credit_added_by_this_writing_lane": 0,
+    "global_research_counter_recomputed": false,
+    "new_live_actions": 0,
+    "new_raw_hash_reads": 0,
+    "new_clean_spans": 0,
+    "tts_generated": false,
+    "bitmap_generated": false,
+    "full69_script_frozen": false,
+    "winner": null,
+    "R03_R04_R05_R06_R07_R10_live_results_added": false
+  },
+  "sources": [
+    {
+      "key": "REFILL",
+      "repo_path": "docs/ck3-native-ai/episode04-special-troop-refill-eligibility-12004.md",
+      "bytes": 10289,
+      "sha256": "5e59acf4e7ef6e12b0379ff170f62b8f893e6cbccfd20e0069a7d11baf9966cc",
+      "entry_line_numbers": [
+        9,
+        16,
+        34,
+        45,
+        49,
+        64
+      ]
+    },
+    {
+      "key": "REFILL-APPLICATION",
+      "repo_path": "docs/ck3-native-ai/episode04-refill-application-12004.md",
+      "bytes": 13024,
+      "sha256": "0264c919f725b59e22e2447b493fd7750a2c94a1dd971a90e0517375e88bff4a",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "NEXT-POSITION",
+      "repo_path": "docs/ck3-native-ai/army-next-route-replenishment-position-condition-12004.md",
+      "bytes": 8963,
+      "sha256": "2f3283a7cf3806de5b91223d3d4f8922a230c1cc686e8ecd39757d722647bc13",
+      "entry_line_numbers": [
+        5,
+        7,
+        9,
+        29,
+        33
+      ]
+    },
+    {
+      "key": "LOCK-SOURCE",
+      "repo_path": "docs/ck3-native-ai/episode04-locked-halt-reroute-12004.md",
+      "bytes": 6306,
+      "sha256": "5bfd2cb65c027622c26d2ba217c691c28e311c663f371db306ab6a4d48a2e92f",
+      "entry_line_numbers": [
+        15,
+        16,
+        17,
+        38
+      ]
+    },
+    {
+      "key": "MOVEMENT-SCOPE",
+      "repo_path": "docs/ck3-native-ai/commander-movement-metadata-migration-12004.md",
+      "bytes": 10839,
+      "sha256": "d4fd5013bdb1aaff8405a8ab0232b64210f5cc90407019d15fcee355ba091d1c",
+      "entry_line_numbers": [
+        25,
+        29
+      ]
+    },
+    {
+      "key": "R12",
+      "repo_path": "docs/ck3-native-ai/episode04-r12-locked-halt-r0175-12004.md",
+      "bytes": 3578,
+      "sha256": "3e2100afcf3a0611bc783647d86181787cb964cd98e01d30061eaa801e784e01",
+      "entry_line_numbers": [
+        3,
+        5,
+        7,
+        11,
+        13,
+        17
+      ]
+    },
+    {
+      "key": "R13",
+      "repo_path": "docs/ck3-native-ai/episode04-r13-locked-reroute-r0176-12004.md",
+      "bytes": 2289,
+      "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b",
+      "entry_line_numbers": [
+        3,
+        5,
+        7,
+        9
+      ]
+    },
+    {
+      "key": "R09-MICRO",
+      "repo_path": "docs/ck3-native-ai/episode04-r09-selected93-micro-actual-12004.md",
+      "bytes": 4009,
+      "sha256": "0dbcb0b1d9e92ec71cbaed7cac0e0d5447747f0f991ce10bcbeee095017aa28e",
+      "entry_line_numbers": [
+        3,
+        9,
+        10,
+        11,
+        13,
+        15,
+        25,
+        27
+      ]
+    },
+    {
+      "key": "R0176-CLOSE",
+      "repo_path": "docs/ck3-native-ai/episode04-r0176-close-and-selected93-portable-12004.md",
+      "bytes": 1764,
+      "sha256": "8c36abb790df4608fffe5be1d5baf89111e4b842483d6d89111be1939f1918ba",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "REFILL-ACTUAL",
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/actual-consumer-result.json",
+      "bytes": 5785,
+      "sha256": "d9c9584caf5370627386035c598f61ba0a5b714885d7afad19cbb64df5e3cf47",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "REFILL-SOURCE-INDEX",
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/source-index.json",
+      "bytes": 7511,
+      "sha256": "cc9e8470cea17d84261e1a02797f82a55dc2699494022c1ec6a6695b7bb35772",
+      "entry_line_numbers": []
+    },
+    {
+      "key": "REFILL-API",
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_persistent_refill_eligibility_12004.py",
+      "bytes": 9767,
+      "sha256": "57d66760cfda7115895b561950788f8f441543d495eaafd63b1f5b955516e2f5",
+      "entry_line_numbers": [
+        38
+      ]
+    },
+    {
+      "key": "MICRO-API",
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_r09_selected93_actual_12004.py",
+      "bytes": 8734,
+      "sha256": "21e81834304f2b68f18e47a7ab87d4840c371f3104bc50266f018a7b94f676f5",
+      "entry_line_numbers": [
+        19
+      ]
+    },
+    {
+      "key": "LOCK-API",
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/verify.py",
+      "bytes": 17958,
+      "sha256": "597a05e1c10d2cb1d4a23942451af1175bd75868114832a6431e7beaaf32490f",
+      "entry_line_numbers": [
+        18,
+        58,
+        98,
+        107
+      ]
+    },
+    {
+      "key": "LOCK-REPLAY",
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/replay.py",
+      "bytes": 17000,
+      "sha256": "b6bd01aa48bfee47f9d0fb7634221317edc85bb1a4231db9f4f89fba387c39c8",
+      "entry_line_numbers": []
+    }
+  ],
+  "existing_external_media_receipts": [
+    {
+      "key": "R12-MEDIA",
+      "artifact_root_relative_path": "live12004-locked-route-a01/media-locked-route-a01/ROOT-CUT-DELIVERY-a02.json",
+      "bytes": 4013,
+      "sha256": "7d7aee86839f0b3da5647155bd02dde5f544c3421471a0617dc8010553c66e8b",
+      "copied_into_repo": false
+    },
+    {
+      "key": "R13-MEDIA",
+      "artifact_root_relative_path": "live12004-r13-normal-a01/media-locked-reroute-a01/ROOT-CUT-DELIVERY.actual-a01.json",
+      "bytes": 4301,
+      "sha256": "e403ae2fa2fe1a26d9568b8dea5a220ac8a36531075d46991c97e0b20322eb89",
+      "copied_into_repo": false
+    },
+    {
+      "key": "R12-CUTS",
+      "artifact_root_relative_path": "live12004-locked-route-a01/media-locked-route-a01/CUT-CANDIDATES.md",
+      "bytes": 1624,
+      "sha256": "f70b30ba9925c218aff5185c4a9baef89a690965cfe036f6a2b7f012e0891a73",
+      "copied_into_repo": false
+    },
+    {
+      "key": "R13-CUTS",
+      "artifact_root_relative_path": "live12004-r13-normal-a01/media-locked-reroute-a01/CUT-CANDIDATES.actual-a01.md",
+      "bytes": 1685,
+      "sha256": "dbb4a394077f9838802daa407ee0cbe18b14d3c5aaa4f296dc4c03ff65562a65",
+      "copied_into_repo": false
+    }
+  ],
+  "raw_identity_policy": "raw bytes/SHA reused from exact existing receipts; this lane did not open or hash raw",
+  "historical_document_policy": "LOCK-SOURCE mechanism rows only; its old pending status is superseded by R12/R13 topics; no old global percentage copied",
+  "runtime_boundary": "R0175 and R0176 are separate normal live sessions on runtime source dcda; current source head is only the offline authoring checkout",
+  "temporal_alignment_note": "R13 topic and media receipt use different event timing references; no wallclock value is treated as encoded PTS; alternate endpoint outside45s in both sources"
+}

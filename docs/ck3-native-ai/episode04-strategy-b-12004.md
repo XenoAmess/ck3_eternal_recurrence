@@ -68,3 +68,64 @@ flowchart TD
 旧 [B gate-stop 原小记录](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/B-closed-terminal-values.json)属于 1.20.0.3 的历史实测，`machine_id: unknown`，所属机器未核实；不能据历史路径追认当前机器。其 +38 日合军实际执行，新增第 28 个 1/1 兵团及统帅 27357→33388 导致当时冻结门槛停止；原预算还剩 52 日，London endpoint 为 null。它不是 90 日截尾，不是新版 B 结果。其精确 producer 与当前 .4 的 R09 验收由独立专题承担，不能由历史样本直接外推。
 
 测试只在临时目录构造带 synthetic 标识的 native 形状 JSON，覆盖正常状态链、新增 1/1 / DATA / 统帅保留、冷 T0 偏移、影子 / alias 拒收、ACK无后态、未知动作不重发、实际阈值与最长驻留、移动缺口、反向合军及源军仍在。测试不读取大存档、EXE/DLL、原片或桌面，不把合成数据当正常存档。
+
+## 2026-10-16：R0177 coastal S0 的可行动 B 分支
+
+本增量只增加机器决策输入与资格边界，不改已封存next adapter / staged relay，不重跑或新增它们的测试信用。源基线`d9322bcfb3e17a3fe78607cea777bbfaf7be0a11`。本次离线核对机器`machine_id=desktop-3fevhd2-1c74096080`（`tools/ck3_live_run_id.py machine`），观察时间自`2026-10-15T20:57:35Z`起；没有游戏、SDK、桌面、EXE、存档或原片读取。
+
+R0177实际S0来源是`live12004-logistics-source-a01/normalprepare93-stages/newstationary-commonS0.actual.json`（Root receipt时间`2026-10-15T20:25:31.384013Z`），不是旧episode seed、初始53146632或之后推进的帧。正常checkpoint为**71,631,396 B / SHA `e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67`**，S0 raw**53146848**，普通vanilla生命周期；本包只读小回执，没有重哈希save。该机器的当次PID7240/create-time134365679117288462/generation1/episode`native-31254-00b796ef873c`只绑定历史R0177，后续独立freshload须重新绑定，不能复用这些运行时身份。
+
+| S0已取得 | 证据与限度 |
+|---|---|
+| 当前玩家31254；Army public93 → native CArmy85 | 小回执与035原snapshot。typed动作使用public93，不能把85当public ID。后续coldload重新实读映射。 |
+| 2624、regular、可控、无combat/retreat、complete empty route/target null | 035暂停endpoint实际`native:33 / public34 / native33 / raw53146848`。地图soldiers为null，不能据它填0。 |
+| 缓存250/250、4 ArRg、总4 DATA、whole_DATA_ready=true、stock100 | 小回执的完整query摘要，原Driver pin为7,865,022 B / SHA`4441f765d196a6bfdc8868f23e10f5e92efae0e2d7739d8ddd1a1be6af3f1a49`；本包未重复解析它。总4 DATA不证明每团恰好1条，更不证明物理兵数250。 |
+| cap100、月getter+20、实际统帅34232 | Root本轮输入摘要。后续freshload仍需同帧typed strengths / assigned commander原包绑定；035的当前strength数组为空，不能拿它补这些字段。 |
+| 钱包raw25455910 / scale100000，War4 | 035原snapshot。钱包不是独立军费账，只有一个窗口值不能推费用。 |
+| 2619是该次正常准备的origin，2624是实际到达站 | 小回执binding保存了origin2619、initial date53146632和target2624。只证明当次准备路线已实现，不授反向当前preview或2619休整资格。 |
+
+可复用的小型输入账本见[coastal S0 decision inputs](evidence/episode04-B-coastal-s0-12004/decision-inputs.r0177.json)。其`readiness=HOLD_FORMAL_B_UNBOUND`是本切点，不是原生split禁令。
+
+### 现实候选与合法性
+
+首个不猜地图的两站候选为：**main保留2624，实际child把2619作为返程preview候选**；会合点可先评估已实际驻定的2624，最后目标仍须与A/C预先共同冻结。2619与2624均来自本场原生证据；本包没有把地图邻接、返程陆路、补给友好或最终goal猜成已知。若fresh native preview表明反向需登船、绕路、接敌或不可行，就保留实际结果，并从现有campaign root / war occupation等真实候选集合筛下一站，不能伪造固定邻接表。
+
+S0四个ArRg使“原生半拆”成为现实可检验候选，但**4团/250人本身不是CanExecute=true**。继续使用当前fresh capability中精确的`split-army-half-<publicFullID>`与实际`.4` `SubmitSplitArmyHalf→validate_split296CF40`；原生validator在提交前裁定，拒绝不绕过、不重发。兵团整体搬移，不预设125/125或2团/2团；旧`.3`分组/权重树仅作来源知识，当前`.4`实际两军及ordered DATA后态才授本次分区事实。新child ID、双方统帅、cap、current/max均重新读取。
+
+两站正式准入仍按原合同：each site须有自己的实际stock增长资格证据、冻结最低stock/最大缺额/最长驻留、实际route与风险输入。**当前2624只有正月getter且库存已满，不等于已观察stock增长；2619目前更没有该项驻点证据。** 因此不能把上述候选直接填为两站GREEN，也不能给它预造正式B结果。普通agent可以消费已知状态做合法OODA；视频controlled B仍保持该具体门槛，不把它升级成普通军队行动的永久等待条件。
+
+### 满库存的停止条件，不制造“恢复”
+
+当前输入100/100、250/250意味着没有已知缺口需要补满。已有代码已经支持以下分支，无需新功能或重复测试：
+
+1. 若冻结`minimum_stock_raw<=10000000`且`maximum_deficit>=0`，在实际到站时仍满足这些数值，**该帧即可threshold退出，休整0自然日合法**。先记录actual rest-enter，再记录同日rest-exit；不能为获得好看镜头强等一次+20或增加未冻结的最低等待天数。
+2. 若以后自然移动确实消耗stock，才以该军实际到站stock/cap和缺额重新判断；不把当前+20、origin holder、目标usage或split前capacity当未来保证。实际增长须同Army/完整generation、同驻地与上下文跨真实结算前后读数证明。
+3. 若冻结最低stock高于该军**当帧实际cap**，在cap不变的那些帧不能将条件写成已恢复。仍保留原最大驻留；到时退出原因`maximum_rest_days`、`recovery_threshold_observed=false`。不能事后降低门槛、换将抬cap或让一臂额外等待来修公平。
+4. child的capacity可能因实际统帅上下文不同而变化，不能从main cap100复制；split复制库存、选将和容量clamp的具体结果逐军读。库存100/cap300若真实出现，与100/cap100是不同缺口，绝不把百分比或两军库存求和作为整军恢复。
+
+如果本S0按冻结条件导出零等待或最长驻留仍未恢复，这就是本次B策略结果。若影片还需要“分兵后实际正恢复”的机制镜头，应另取经过正常准备的有缺口输入并明确来源，不能故意删兵、改档、浪费补给后把它剪成同S0。也不能为拍恢复把另一S0的A/C当同起点对照。
+
+### 现有selector与最小下一读
+
+`current_replenishment_army_selector_v1.select_current_replenishment_army_v1`先按实际兵力选择；仅对同兵力、不同驻地、完整同帧prepared148 ordered inputs比较**当前条件性refill机会**，缺输入保持既有稳定选择。它不是休整地点搜索器，也不把+20当恢复、把250缓存当物理兵槽或给下一月补兵保证。不要为本小案例再建一个site-score平台。
+
+035的`player_armies[].soldiers`实际为null；不能只把该地图行传给selector后，声称它按250兵或prepared refill作过比较。当前250来自独立完整query摘要；使用已有projection/selector时仍需其真实同帧strength输入和各自readiness，不能手填地图null或把稳定ID fallback称为补员优化。
+
+实际生产调用还有明确边界：d932 `strategy.py:10265`仅在没有unsafe或threatened stationary军队时，为quiet-pursuit调用上述selector。其`_split_merge_recovery`在两军分开且无已证明安全会合意图时返回`native_war_merge_rendezvous_blocked / safe-exact-rendezvous`（10997起）；刚拆完仍同省时可能直接选择`native_war_merge_recovery`重并（11017起）。因此本正式实验由已有B stages独占其命令与会合意图，不能同时交普通auto-turn另发恢复命令，也不能宣称普通planner已自主实现完整split-rest-route。把B意图正式接入普通planner是独立后续能力边界，不是本回放重写已封composer或全局策略的理由。
+
+当前已有接口足够继续，真实缺字段时再补同一口：
+
+- 独立cold S0：snapshot、完整`ck3_query_army_strengths([fresh source ID], expected_revision, profile=ordinary_core_v1)`及typed current commander；完整四个ArRg的current/max、type、ordered all-DATA和Character role按原ID保存。
+- 两军实际分开后：各军同帧`current_land_resupply_v1.native_resupply_eligible`、`current_land_supply_rate_inputs_v1`、`current_province_supply_contributors_v1`的native usage/limit、当前stock/cap/月getter，以及自身actual owner/province/commander。usage不能用我方两军人数和代替。getter+20只筛候选，真正恢复仍看库存更新。
+- 去2619的route合法性、成本和ETA沿现有native preview / stored route / actual到站链；`current_first_route_target_supply_contributors_v1`只观察当时目标上下文，不授抵达后usage或整程安全。原生owner/holder resupply admission与统帅是两个不同输入。
+- 保持absolute deadline=`53146848+90*24=53149008`；重新运行脚本不重置。首次到场区间、D90、competition/measurement stop继续由共同比较器决定。
+
+### 与A/C费用可比的最少证据
+
+至少冻结共同e6ee **正常存档SHA**、三次独立cold runtime、实际同actor/date/war、钱包、主军完整cohort/DATA、stock/cap、将领与loaded features；源/DLL/build相同。Root接下来的freshload实读是新的准入，R0177准备期或后续推进天数不能代填。
+
+三臂共同goal、report days、D_end、post-arrival policy及`compare_fees`在结果前冻结。A整军直达、B上述两站/休整/会合、C真实waypoint；B不承诺比A/C更省或更多兵。
+
+费用列需要同账户、各臂真实窗口内board/maintenance **实际应用账**、其他收入/支出和钱包对账，并沿R07/R08既有qualification。250/250及拆军后总数相同不证明维护相同：role、物理DATA、MAA/levy定义、取整、登船与实际日数分别保留。preview金额、月率、零条未覆盖ledger或钱包净差不能补actual费用。无登船付款也须在合格覆盖下观察，不能因候选看似陆路填0。
+
+各臂到场表比较的是各自不同暴露时长的真实代价；同日表只在三臂同报告日都有读数时作横向对照。完整expenses/NET已含军费不能再扣一次。某项仍unknown就保留null及资格hold，不看完结果后关闭费用列、不改S0或B退出策略。本增量没有发现需要改composer/selector的功能缺口；这轮不新增测试、构建、live或旧测试重复信用。

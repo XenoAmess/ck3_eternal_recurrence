@@ -12,6 +12,10 @@ from .army_commander_target_rolls import (
     normalize_candidate_target_roll_bounds,
 )
 from .army_commander_current_martial import normalize_current_commander_total_martial
+from .army_commander_conditional_capacity import (
+    CONDITIONAL_SUPPLY_CAPACITY_V1_KEY,
+    normalize_candidate_conditional_supply_capacity_v1,
+)
 from .army_commander_current_base_quality import (
     normalize_current_commander_native_ai_base_quality,
 )
@@ -200,6 +204,14 @@ def normalize_army_commander_candidates_v1(
             copied_row["target_roll_bounds"] = normalize_candidate_target_roll_bounds(
                 row["target_roll_bounds"],
                 expected_target_province_id=expected_target_province_id,
+            )
+        if CONDITIONAL_SUPPLY_CAPACITY_V1_KEY in row:
+            copied_row[CONDITIONAL_SUPPLY_CAPACITY_V1_KEY] = (
+                normalize_candidate_conditional_supply_capacity_v1(
+                    row[CONDITIONAL_SUPPLY_CAPACITY_V1_KEY],
+                    expected_character_id=row.get("character_id"),
+                    expected_candidates_schema=value.get("schema"),
+                )
             )
         copied_candidates.append(copied_row)
     _reason(value.get("unavailable_reason"), "unavailable_reason")

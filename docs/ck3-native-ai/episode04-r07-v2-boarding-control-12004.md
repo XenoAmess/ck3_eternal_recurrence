@@ -67,3 +67,8 @@ py promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/r07_v2_cont
 `binding`显式提供producer machine_id、PID/create_filetime/generation、episode、actor_id、unit_id、date_raw、segment_id、window_id、payment_epoch及本段previous_latest_sequence；没有本机/盘符默认值。复制到其他机器离线验证不要求其拥有producer机器身份。
 
 下一节点：Root可先审设计与筛军argv，预计5–10分钟完成两候选的只读筛选；每个32日arm按既有exactday历史速度约6–12分钟纯推进，事件/正常启动/换段/转换镜头另留5–10分钟。两arm约25–45分钟是工程估计，尚非承诺或已完成事实。先止线是source筛选失败、实际边非30日、32日未入水、任一lost window/丢样/超容量/事件缺少原生通道。固定quota复核截止仍 `2026-10-16T07:45:01.597000+00:00`，不续期。
+
+
+## 2026-10-16 R0177：海岸 normal preparation 与闭场索引
+
+机器 `desktop-3fevhd2-1c74096080`：本场闭场回执记录于2026-10-15T21:02:43.641386Z，normal exit0、SDK/录制/keeper退场。海岸93已正常到2624，250/250，common S0 已保存并保全；45秒原片一次严格全解码通过，cut候选变化仅在(4,10]秒。完整小原件/保护副本/可复用代码见 [R0177专用专题](episode04-r0177-coastal-normalprep-12004.md)。本段不授R07两fresh-arm信用（完成0）、不增加整卡5/14＝35.7%；continuous clean/human1×/signoff均false。R03实际包单独结算，原source与本机状态不外推。

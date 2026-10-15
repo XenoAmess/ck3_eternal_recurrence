@@ -1,0 +1,1616 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T21:07:02.720412+00:00",
+    "source_head": "d9322bcfb3e17a3fe78607cea777bbfaf7be0a11",
+    "observed_checkout_head_at_build": "983e807075e89852fe6dbc55b82a83e22c86626b",
+    "source_read_mode": "git show of exact frozen d932 objects; new sealed merge dependency separate",
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256_from_existing_source": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "original69_model": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-BC-a06/narration/six-chapter-final-BC-Chinese-a06.md",
+      "bytes": 23969,
+      "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+    },
+    "frozen_predecessor_maps": [
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/claim-shot-agent-map.json",
+        "bytes": 71886,
+        "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+      },
+      {
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/claim-shot-agent-map.json",
+        "bytes": 53716,
+        "sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6"
+      },
+      {
+        "artifact_root_relative_path": "story-a04-mechanisms-next/attempt-a02/candidate/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/claim-shot-agent-map.json",
+        "repo_destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/claim-shot-agent-map.json",
+        "bytes": 58341,
+        "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d"
+      }
+    ],
+    "prior_distinct_draft_count": 53,
+    "new_distinct_draft_count": 16,
+    "combined_distinct_draft_count": 69,
+    "coverage_scope": "paragraph text drafts only; does not grant research/card/film/audio/final completion",
+    "editorial_target_minutes": [
+      30,
+      35
+    ],
+    "measured_audio_duration_seconds": null,
+    "predecessor_spoken_characters": 6265,
+    "combined_spoken_characters": 8351,
+    "research_credit_added": 0,
+    "global_research_counter_recomputed": false,
+    "new_live_actions": 0,
+    "new_raw_reads": 0,
+    "new_clean_spans": 0,
+    "tts_provider_invoked": false,
+    "full69_script_frozen": false,
+    "winner": null
+  },
+  "paragraphs": [
+    {
+      "paragraph_id": "C01-03",
+      "topic": "罗贝尔新案与独立运行",
+      "original_claim_text": "本期跟着威廉的军队，使用一点二零点零点三原版。不同回放会分别标清起点和日期。另一个人物的历史人数，不放到威廉的画面上；重新载入存档后的独立观察，也不剪成一次没有中断的现场。",
+      "current_speakable_conclusion": "本期改用阿普利亚的罗贝尔，游戏版本为一点二零点零点四。新的普通战役给我们同一个人物来源，再用独立正常载入观察不同操作。画面会标清是哪一场、哪一天。前后两次载入可以比较各自结果，但不会剪成一段没有中断的现场；旧版本威廉案例的具体人数，也不叠到罗贝尔的军队上。",
+      "spoken_text": "本期改用阿普利亚的罗贝尔，游戏版本为一点二零点零点四。新的普通战役给我们同一个人物来源，再用独立正常载入观察不同操作。画面会标清是哪一场、哪一天。前后两次载入可以比较各自结果，但不会剪成一段没有中断的现场；旧版本威廉案例的具体人数，也不叠到罗贝尔的军队上。",
+      "source_refs": [
+        "IDENTITY",
+        "DIRECTOR",
+        "R12",
+        "R13"
+      ],
+      "source_ids": [
+        "bookmark_rags_to_riches_duke_robert",
+        "history1128/d_apulia",
+        "R0175/R0176"
+      ],
+      "evidence_level": "ACTUAL",
+      "director_mapping": {
+        "chapter_id": "E4-01",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 19,
+            "text": "| E4-01 同一支军队，为什么抵达时不同？ | 00:00–02:00 | 2分钟 | 出发人数相同，还要比较哪些结果？ | 三个独立回放的出发帧和实际抵达帧，逐项亮出日期、人数与补给。 |"
+          },
+          {
+            "line": 30,
+            "text": "优先筛选第3期威廉1066纯原版存档，以保持系列的角色与地图连续性；先检查它能否自然呈现补给压力、合法分兵和两条可用路线。若条件不足，选择另一份原版战争存档，并在开场说明换案原因。**主案尚未选定**，不得把下文参考设计写成已发生的结果。"
+          },
+          {
+            "line": 32,
+            "text": "Robert的原生研究为字段和机制提供依据，但与威廉不是同一人物、军队或战争。Robert的数值不能叠到威廉录像上。研究存档可以独立回放；原普通游玩战役及其历史、真实存档不得为本期对照实验回退或覆盖。"
+          },
+          {
+            "line": 81,
+            "text": "- 人物介绍优先用书签页的合适角色视角或清晰人物页，沿用用户对第3期的要求。加载存档页面用于内部操作，不能充当正式人物介绍。"
+          },
+          {
+            "line": 82,
+            "text": "- 每句机制主张绑定版本、主体、时间、原始报告和实际画面；三个独立回放标注A/B/C，不剪成一条连续实况。加速行军等待时标注倍率，关键按钮与结算边界保留原速。"
+          }
+        ],
+        "single_variable_experiments": [],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.r12",
+        "locked_routes.verify.r13"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [],
+      "shot_direction": "开场使用清晰角色页或原版书签介绍罗贝尔；以后在R0175/R0176片段角标run与日期。加载界面不充人物介绍，旧William素材仅明确历史标签时使用。",
+      "missing_filming": [
+        "本次.4罗贝尔正式人物页/书签clean介绍镜头尚缺；来源身份已有正常开局链，不以旧画像冒充新帧。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "本期改用阿普利亚的罗贝尔，游戏版本为一点二零点零点四。",
+          "source_refs": [
+            "IDENTITY",
+            "DIRECTOR",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "新的普通战役给我们同一个人物来源，再用独立正常载入观察不同操作。",
+          "source_refs": [
+            "IDENTITY",
+            "DIRECTOR",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "画面会标清是哪一场、哪一天。",
+          "source_refs": [
+            "IDENTITY",
+            "DIRECTOR",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "前后两次载入可以比较各自结果，但不会剪成一段没有中断的现场；旧版本威廉案例的具体人数，也不叠到罗贝尔的军队上。",
+          "source_refs": [
+            "IDENTITY",
+            "DIRECTOR",
+            "R12",
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C01-04",
+      "topic": "先提出三个观察区别",
+      "original_claim_text": "先看三个已经观察到的区别。有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。人数、库存、容量和组织变化，需要分开读。",
+      "current_speakable_conclusion": "先抓住三组容易混淆的数。补给库存是物资，实体兵员是人数；一条显示一比一的角色记录，也不自动等于补进了一名士兵。另一组是移动锁定：按停止以后，军队可能还要走完眼前这一段。它们都会影响我们对“恢复了”“少人了”“停下了”的判断。接下来分别看实际记录，再解释这些变化。",
+      "spoken_text": "先抓住三组容易混淆的数。补给库存是物资，实体兵员是人数；一条显示一比一的角色记录，也不自动等于补进了一名士兵。另一组是移动锁定：按停止以后，军队可能还要走完眼前这一段。它们都会影响我们对“恢复了”“少人了”“停下了”的判断。接下来分别看实际记录，再解释这些变化。",
+      "source_refs": [
+        "REFILL",
+        "R09",
+        "R12"
+      ],
+      "source_ids": [
+        "R0176:selected93->fresh162->93",
+        "R0175:R12",
+        "262C6E0",
+        "2A98B88"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "director_mapping": {
+        "chapter_id": "E4-01",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 9,
+            "text": "本期回答：**怎样把足够的兵，在合适的时间、以能打仗的状态送到战场？** 观众看完应能读懂军队与当地补给信息，区别补给恢复与兵员补充，识别人数减少的来源，并理解分兵、休整、会合和改道的实际代价。"
+          },
+          {
+            "line": 19,
+            "text": "| E4-01 同一支军队，为什么抵达时不同？ | 00:00–02:00 | 2分钟 | 出发人数相同，还要比较哪些结果？ | 三个独立回放的出发帧和实际抵达帧，逐项亮出日期、人数与补给。 |"
+          },
+          {
+            "line": 43,
+            "text": "| P0-REFILL 补给与补员 | 同时记录补给和逐团人数，必要时使用独立补员案例 | 展示两种状态变化的区别；当前首记录补员查询覆盖有限，不能聚合成未验证的全军净月补兵公式。 |"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-REFILL",
+          "P0-SPLIT",
+          "P0-MOVE"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004",
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004",
+        "locked_routes.verify.r12"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D10",
+        "D11",
+        "D12"
+      ],
+      "shot_direction": "D10物资/兵员两轨→D12实体250与角色1/1→R0175候选4–24秒首段继续。每例角标独立来源，不作三案胜负开场。",
+      "missing_filming": [
+        "D10/11/12为已生成native SVG，当前无最终视觉签核；R0175连续clean待审；不暗示.4真实补兵正例已取得。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "先抓住三组容易混淆的数。",
+          "source_refs": [
+            "REFILL",
+            "R09",
+            "R12"
+          ]
+        },
+        {
+          "sentence": "补给库存是物资，实体兵员是人数；一条显示一比一的角色记录，也不自动等于补进了一名士兵。",
+          "source_refs": [
+            "REFILL",
+            "R09",
+            "R12"
+          ]
+        },
+        {
+          "sentence": "另一组是移动锁定：按停止以后，军队可能还要走完眼前这一段。",
+          "source_refs": [
+            "REFILL",
+            "R09",
+            "R12"
+          ]
+        },
+        {
+          "sentence": "它们都会影响我们对“恢复了”“少人了”“停下了”的判断。",
+          "source_refs": [
+            "REFILL",
+            "R09",
+            "R12"
+          ]
+        },
+        {
+          "sentence": "接下来分别看实际记录，再解释这些变化。",
+          "source_refs": [
+            "REFILL",
+            "R09",
+            "R12"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C01-05",
+      "topic": "人数减少先界定变化窗口",
+      "original_claim_text": "人数减少也有不同窗口。一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。另一轮回放，又看到整军在两天内净少六十七人。这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。",
+      "current_speakable_conclusion": "兵员减少也有不同入口。围城和劫掠的周期处理、进入新县时的移动损耗，各自有条件和计算顺序；不能把每次少人都叫饥饿。与此同时，补员、分合军或其他事件也会改变看到的总数。要解释一段行军，先逐团核对前后整数，再看那段时间真正发生了哪一类结算。两端的净变化，先按净变化报告。",
+      "spoken_text": "兵员减少也有不同入口。围城和劫掠的周期处理、进入新县时的移动损耗，各自有条件和计算顺序；不能把每次少人都叫饥饿。与此同时，补员、分合军或其他事件也会改变看到的总数。要解释一段行军，先逐团核对前后整数，再看那段时间真正发生了哪一类结算。两端的净变化，先按净变化报告。",
+      "source_refs": [
+        "PERIODIC",
+        "COUNTY",
+        "ZERO",
+        "R09"
+      ],
+      "source_ids": [
+        "24E3410",
+        "24E23E0",
+        "2634190",
+        "2A98B88",
+        "R0176:selected93"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-01",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 9,
+            "text": "本期回答：**怎样把足够的兵，在合适的时间、以能打仗的状态送到战场？** 观众看完应能读懂军队与当地补给信息，区别补给恢复与兵员补充，识别人数减少的来源，并理解分兵、休整、会合和改道的实际代价。"
+          },
+          {
+            "line": 19,
+            "text": "| E4-01 同一支军队，为什么抵达时不同？ | 00:00–02:00 | 2分钟 | 出发人数相同，还要比较哪些结果？ | 三个独立回放的出发帧和实际抵达帧，逐项亮出日期、人数与补给。 |"
+          },
+          {
+            "line": 40,
+            "text": "| P0-LOSS 损耗与兵数 | 逐团记录兵数；筛选无战斗、无参军/离军的观察窗口 | 损耗条件、原生结算输入与人数写回；补员、集结、分合军和其他事件单列。净少人数不能直接称为损耗死亡。 |"
+          },
+          {
+            "line": 45,
+            "text": "P0-LOSS需取得原生执行链或能排除混杂因素的定向对照后，才能解释确切损失。完成一个可复核工作包即更新来源和结论、提交推送；只有新证据改变结论时才重跑已通过的验证。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-LOSS"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D03",
+        "D04",
+        "D06"
+      ],
+      "shot_direction": "预览a03已有预算/县残差/物理兵员三种图卡；暂不插旧.3减31/127/67数字。新的actual执行正例取得后，才替换为本案同窗口动态镜头。",
+      "missing_filming": [
+        "R03/R04/R05在.4新正因果与相应动态扣兵镜头未齐；本段只介绍source分支，不授整卡结项。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "兵员减少也有不同入口。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "围城和劫掠的周期处理、进入新县时的移动损耗，各自有条件和计算顺序；不能把每次少人都叫饥饿。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "与此同时，补员、分合军或其他事件也会改变看到的总数。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "要解释一段行军，先逐团核对前后整数，再看那段时间真正发生了哪一类结算。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "两端的净变化，先按净变化报告。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "R09"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C01-06",
+      "topic": "时间读数先标范围",
+      "original_claim_text": "路线也有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。比较以前，先确认这个时间描述的是哪一段。",
+      "current_speakable_conclusion": "行军还有几种时间。地图预览给计划，军队窗口给当前估计，当前首段有自己的进度和剩余时量；军队真正到达，又是后来的结果。整条路线与第一段的数字不同，不一定互相矛盾。我们会把它们各自描述的范围标出来，再用实际位置和剩余路线核对到达，让一个日期不再承担几种不同意思。",
+      "spoken_text": "行军还有几种时间。地图预览给计划，军队窗口给当前估计，当前首段有自己的进度和剩余时量；军队真正到达，又是后来的结果。整条路线与第一段的数字不同，不一定互相矛盾。我们会把它们各自描述的范围标出来，再用实际位置和剩余路线核对到达，让一个日期不再承担几种不同意思。",
+      "source_refs": [
+        "LOCK-SOURCE",
+        "R12",
+        "R13"
+      ],
+      "source_ids": [
+        "AttachCommittedRouteTimelineToArmyRows",
+        "R0175:R12",
+        "R0176:R13"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "director_mapping": {
+        "chapter_id": "E4-01",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 19,
+            "text": "| E4-01 同一支军队，为什么抵达时不同？ | 00:00–02:00 | 2分钟 | 出发人数相同，还要比较哪些结果？ | 三个独立回放的出发帧和实际抵达帧，逐项亮出日期、人数与补给。 |"
+          },
+          {
+            "line": 22,
+            "text": "| E4-04 路线与到达时间 | 15:00–21:00 | 6分钟 | 抵达日期怎样读？改道、停止移动何时生效？为什么有时不能立即取消当前路段？ | 实际右键下令、路线提示、进度变化、停止与改道按钮，以及抵达后的省份和状态。 |"
+          },
+          {
+            "line": 42,
+            "text": "| P0-MOVE 路线与取消 | 同一出发档分别在当前路段可取消与已锁定时操作 | 完整路线、游戏日期、进度、原生ETA、点击前后路径与目标；区分下令、预计到达与实际到达。 |"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-MOVE"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked",
+        "locked_routes.verify.r12",
+        "locked_routes.verify.r13"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D11"
+      ],
+      "shot_direction": "D11先亮整条路线括号、再亮第一段；接R0176候选0–4/4–10/10–20秒。整条ETA与首段时量未取齐时不填旧43/30天。",
+      "missing_filming": [
+        ".4同paused frame整条UI ETA+首段时量原图缺；不把现有首段结果当整条抵达估计验证。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "行军还有几种时间。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "地图预览给计划，军队窗口给当前估计，当前首段有自己的进度和剩余时量；军队真正到达，又是后来的结果。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "整条路线与第一段的数字不同，不一定互相矛盾。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "我们会把它们各自描述的范围标出来，再用实际位置和剩余路线核对到达，让一个日期不再承担几种不同意思。",
+          "source_refs": [
+            "LOCK-SOURCE",
+            "R12",
+            "R13"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C01-08",
+      "topic": "进入供给章节的读数顺序",
+      "original_claim_text": "按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的一组数开始：军队现在带着多少补给，能够带多少，以及当地能支持多少士兵。",
+      "current_speakable_conclusion": "出发前，先知道军队现在有什么；途中，再看地点和路线改变了哪些条件；接战前，确认真正到了多少人。我们从补给开始。先把军队带着多少物资、最多能带多少，与当地能支持多少兵分开。看清这些量，再讨论在哪里停留、何时继续走，以及分兵是不是减轻了当地压力。",
+      "spoken_text": "出发前，先知道军队现在有什么；途中，再看地点和路线改变了哪些条件；接战前，确认真正到了多少人。我们从补给开始。先把军队带着多少物资、最多能带多少，与当地能支持多少兵分开。看清这些量，再讨论在哪里停留、何时继续走，以及分兵是不是减轻了当地压力。",
+      "source_refs": [
+        "DIRECTOR",
+        "SUPPLY",
+        "QUANTITIES"
+      ],
+      "source_ids": [
+        "current_supply_raw",
+        "current_supply_capacity_raw",
+        "current_supply_change_monthly_raw"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-01",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 9,
+            "text": "本期回答：**怎样把足够的兵，在合适的时间、以能打仗的状态送到战场？** 观众看完应能读懂军队与当地补给信息，区别补给恢复与兵员补充，识别人数减少的来源，并理解分兵、休整、会合和改道的实际代价。"
+          },
+          {
+            "line": 19,
+            "text": "| E4-01 同一支军队，为什么抵达时不同？ | 00:00–02:00 | 2分钟 | 出发人数相同，还要比较哪些结果？ | 三个独立回放的出发帧和实际抵达帧，逐项亮出日期、人数与补给。 |"
+          },
+          {
+            "line": 20,
+            "text": "| E4-02 看懂补给 | 02:00–08:00 | 6分钟 | 携带补给、补给容量、当地补给上限和月变化分别表示什么？恢复补给为什么不等于补兵？ | 军队面板、省份提示和概念提示的真实展开；先解释当前值，再展示变化。 |"
+          },
+          {
+            "line": 24,
+            "text": "| E4-06 出发、途中、接战前各看什么？ | 29:00–32:00 | 3分钟 | 玩家怎样把这些信息用于下一次行军？ | 回到原生面板完成一遍检查，再呈现简洁操作清单。 |"
+          },
+          {
+            "line": 79,
+            "text": "- 先提出玩家问题，再读界面，再跟随变化，最后解释数字。每张计算卡只推进一个概念；单位、当前值与变化率分开。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-TERM"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "army_split_merge_observation_12004.compare_split_merge_cohorts",
+        "current_callback_supply_risk_v1 / army_update_clock_v1"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D13"
+      ],
+      "shot_direction": "D13只依次亮库存/容量/当地用量与上限，接第二章原生面板；不要长期把整屏分成两个静态区。",
+      "missing_filming": [
+        "当前.4术语提示与动态展开clean包待完成；D13是解释单位的静态卡，不替代这些镜头。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "出发前，先知道军队现在有什么；途中，再看地点和路线改变了哪些条件；接战前，确认真正到了多少人。",
+          "source_refs": [
+            "DIRECTOR",
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        },
+        {
+          "sentence": "我们从补给开始。",
+          "source_refs": [
+            "DIRECTOR",
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        },
+        {
+          "sentence": "先把军队带着多少物资、最多能带多少，与当地能支持多少兵分开。",
+          "source_refs": [
+            "DIRECTOR",
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        },
+        {
+          "sentence": "看清这些量，再讨论在哪里停留、何时继续走，以及分兵是不是减轻了当地压力。",
+          "source_refs": [
+            "DIRECTOR",
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-01",
+      "topic": "当前人数与满员人数",
+      "original_claim_text": "先看军队面板里的总人数和满员数。总人数是现在有多少士兵，满员数是这支军队当前能有多少人。缺的是哪几个兵团，可以继续展开看。人数缺额和补给库存不是同一个问题。",
+      "current_speakable_conclusion": "先读军队面板的当前人数和满员人数，再展开到每个兵团。缺额在哪里，要看同一兵团身份的当前值与上限。需要解释实体补兵时，还要继续核对实际兵员记录；面板里已确认的空兵员角色记录要单列。这既避免把不同军队的数拼在一起，也避免把角色的一比一显示误记成新增实体士兵。",
+      "spoken_text": "先读军队面板的当前人数和满员人数，再展开到每个兵团。缺额在哪里，要看同一兵团身份的当前值与上限。需要解释实体补兵时，还要继续核对实际兵员记录；面板里已确认的空兵员角色记录要单列。这既避免把不同军队的数拼在一起，也避免把角色的一比一显示误记成新增实体士兵。",
+      "source_refs": [
+        "QUANTITIES",
+        "R09"
+      ],
+      "source_ids": [
+        "current_soldiers/maximum_soldiers",
+        "R0176:selected93",
+        "ArRg59:Character34232"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "director_mapping": {
+        "chapter_id": "E4-02",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 20,
+            "text": "| E4-02 看懂补给 | 02:00–08:00 | 6分钟 | 携带补给、补给容量、当地补给上限和月变化分别表示什么？恢复补给为什么不等于补兵？ | 军队面板、省份提示和概念提示的真实展开；先解释当前值，再展示变化。 |"
+          },
+          {
+            "line": 38,
+            "text": "| P0-TERM 术语与单位 | 固定当前游戏版本及简体中文；逐个打开原生提示 | localization key、中文原文、GUI入口与截图；当前量、容量、当地上限、月变化和损耗率各自的单位。文案工作称呼在此后统一。 |"
+          },
+          {
+            "line": 40,
+            "text": "| P0-LOSS 损耗与兵数 | 逐团记录兵数；筛选无战斗、无参军/离军的观察窗口 | 损耗条件、原生结算输入与人数写回；补员、集结、分合军和其他事件单列。净少人数不能直接称为损耗死亡。 |"
+          },
+          {
+            "line": 43,
+            "text": "| P0-REFILL 补给与补员 | 同时记录补给和逐团人数，必要时使用独立补员案例 | 展示两种状态变化的区别；当前首记录补员查询覆盖有限，不能聚合成未验证的全军净月补兵公式。 |"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-TERM",
+          "P0-REFILL"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "army_split_merge_observation_12004.compare_split_merge_cohorts",
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D12",
+        "D13"
+      ],
+      "shot_direction": "D13人数/满员行→D12四条physical合计250/250。画面保留完整Army与ArRg身份；不把cache总量改名physical总量。",
+      "missing_filming": [
+        ".4军队面板与逐团完整展开的clean同帧镜头缺；真实小投影可用于数据卡，不能伪装游戏截图。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "先读军队面板的当前人数和满员人数，再展开到每个兵团。",
+          "source_refs": [
+            "QUANTITIES",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "缺额在哪里，要看同一兵团身份的当前值与上限。",
+          "source_refs": [
+            "QUANTITIES",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "需要解释实体补兵时，还要继续核对实际兵员记录；面板里已确认的空兵员角色记录要单列。",
+          "source_refs": [
+            "QUANTITIES",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "这既避免把不同军队的数拼在一起，也避免把角色的一比一显示误记成新增实体士兵。",
+          "source_refs": [
+            "QUANTITIES",
+            "R09"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-02",
+      "topic": "补给使用绝对单位",
+      "original_claim_text": "原版把军队携带的食物、装备等物资叫作补给。补给库存、补给容量和兵员人数，需要分别读。看到一百一十六、容量三百，前一个数是当前显示的补给，后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。",
+      "current_speakable_conclusion": "军队携带的补给，与补给容量使用同一种物资单位。举一个假设例子：当前补给一百、容量三百，表示现在带着一百单位，容量是三百；前面的数不是一百名士兵，也不是百分之一百。当地补给上限则要和当地兵员用量比较。先把单位摆正，才知道该比较哪两列。",
+      "spoken_text": "军队携带的补给，与补给容量使用同一种物资单位。举一个假设例子：当前补给一百、容量三百，表示现在带着一百单位，容量是三百；前面的数不是一百名士兵，也不是百分之一百。当地补给上限则要和当地兵员用量比较。先把单位摆正，才知道该比较哪两列。",
+      "source_refs": [
+        "SUPPLY",
+        "QUANTITIES"
+      ],
+      "source_ids": [
+        "current_supply_raw",
+        "current_supply_capacity_raw",
+        "scale100000"
+      ],
+      "evidence_level": "SOURCE_WITH_EXPLICIT_HYPOTHETICAL",
+      "director_mapping": {
+        "chapter_id": "E4-02",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 20,
+            "text": "| E4-02 看懂补给 | 02:00–08:00 | 6分钟 | 携带补给、补给容量、当地补给上限和月变化分别表示什么？恢复补给为什么不等于补兵？ | 军队面板、省份提示和概念提示的真实展开；先解释当前值，再展示变化。 |"
+          },
+          {
+            "line": 38,
+            "text": "| P0-TERM 术语与单位 | 固定当前游戏版本及简体中文；逐个打开原生提示 | localization key、中文原文、GUI入口与截图；当前量、容量、当地上限、月变化和损耗率各自的单位。文案工作称呼在此后统一。 |"
+          },
+          {
+            "line": 67,
+            "text": "| 当前补给、容量、月变化和损耗率 | [补给与损耗专题](../../../docs/ck3-native-ai/army-current-supply-capacity-attrition-12003.md)：v43同暂停帧已实读，不只是schema占位 | 实际结算日期、跨边界更新和人数因果；正式画面尚未绑定。 |"
+          },
+          {
+            "line": 73,
+            "text": "v43历史帧中补给100、容量300、当前月贡献+20、当前损耗率0是**该帧**的实际值，说明容量不能固定为100。它不证明之后补给一定增加、不证明此前人数变化原因，也不是本期主案的示例数值。"
+          },
+          {
+            "line": 79,
+            "text": "- 先提出玩家问题，再读界面，再跟随变化，最后解释数字。每张计算卡只推进一个概念；单位、当前值与变化率分开。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-TERM"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "army_split_merge_observation_12004.compare_split_merge_cohorts",
+        "current_callback_supply_risk_v1 / army_update_clock_v1"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D13"
+      ],
+      "shot_direction": "D13示例100/300明确标“假设示例；不是本场读数”，兵员单位与物资单位分列。不要沿用旧v43/R0168数字当Robert/.4当前读数。",
+      "missing_filming": [
+        "本案原版补给概念与容量提示的同帧高清clean展开缺；卡上假设数字不获actual信用。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "军队携带的补给，与补给容量使用同一种物资单位。",
+          "source_refs": [
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        },
+        {
+          "sentence": "举一个假设例子：当前补给一百、容量三百，表示现在带着一百单位，容量是三百；前面的数不是一百名士兵，也不是百分之一百。",
+          "source_refs": [
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        },
+        {
+          "sentence": "当地补给上限则要和当地兵员用量比较。",
+          "source_refs": [
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        },
+        {
+          "sentence": "先把单位摆正，才知道该比较哪两列。",
+          "source_refs": [
+            "SUPPLY",
+            "QUANTITIES"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-04",
+      "topic": "当前月变化与实际库存",
+      "original_claim_text": "补给每月的正负号描述当前条件下的变化率。军队换了地点，或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。",
+      "current_speakable_conclusion": "补给月变化的正负号，描述当前条件下的变化方向。军队换地点、用量或统帅条件变化，这个数也可能变化。实际允许更新时，游戏把当时的变化量加到库存，再按零和当前容量截断；不是我们看一眼月变化，就已经加了一次，更不是每天自动除以三十。最后增加多少，仍要重新读实际库存。",
+      "spoken_text": "补给月变化的正负号，描述当前条件下的变化方向。军队换地点、用量或统帅条件变化，这个数也可能变化。实际允许更新时，游戏把当时的变化量加到库存，再按零和当前容量截断；不是我们看一眼月变化，就已经加了一次，更不是每天自动除以三十。最后增加多少，仍要重新读实际库存。",
+      "source_refs": [
+        "SUPPLY"
+      ],
+      "source_ids": [
+        "24E4CF0",
+        "24E5180",
+        "2C53BF0"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-02",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 20,
+            "text": "| E4-02 看懂补给 | 02:00–08:00 | 6分钟 | 携带补给、补给容量、当地补给上限和月变化分别表示什么？恢复补给为什么不等于补兵？ | 军队面板、省份提示和概念提示的真实展开；先解释当前值，再展示变化。 |"
+          },
+          {
+            "line": 39,
+            "text": "| P0-SUPPLY 补给结算 | 固定军队、将领与驻地，记录真正触发变化的日期；另案改变地区或人数 | 同Army身份的结算前后补给、容量、月变化原始值和原生提示；确认实际检查节奏与容量截断，不假定每月第一日扣算。 |"
+          },
+          {
+            "line": 73,
+            "text": "v43历史帧中补给100、容量300、当前月贡献+20、当前损耗率0是**该帧**的实际值，说明容量不能固定为100。它不证明之后补给一定增加、不证明此前人数变化原因，也不是本期主案的示例数值。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-SUPPLY"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "current_callback_supply_risk_v1 / army_update_clock_v1"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D01",
+        "D13"
+      ],
+      "shot_direction": "沿用a03的D01单次admission/ADD/clamp卡；D13月变化一行标当前条件。日期→是否允许更新→实际stock三列，未执行一列保持空。",
+      "missing_filming": [
+        ".4低库存正补给结算前后与capacity clamp实拍缺；不拿current rate或clock成功算实际恢复。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "补给月变化的正负号，描述当前条件下的变化方向。",
+          "source_refs": [
+            "SUPPLY"
+          ]
+        },
+        {
+          "sentence": "军队换地点、用量或统帅条件变化，这个数也可能变化。",
+          "source_refs": [
+            "SUPPLY"
+          ]
+        },
+        {
+          "sentence": "实际允许更新时，游戏把当时的变化量加到库存，再按零和当前容量截断；不是我们看一眼月变化，就已经加了一次，更不是每天自动除以三十。",
+          "source_refs": [
+            "SUPPLY"
+          ]
+        },
+        {
+          "sentence": "最后增加多少，仍要重新读实际库存。",
+          "source_refs": [
+            "SUPPLY"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-11",
+      "topic": "合军后重读库存容量与身份",
+      "original_claim_text": "再看一月二十日同地合军的独立样本。合前两队的补给约八十三和二百九十一点二三；合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。实际补给约一百一十六点五二，容量三百。库存和容量都没有简单相加。",
+      "current_speakable_conclusion": "拆军和合军，对补给不是同一种处理。拆出的新军先复制来源库存，不按人数除半；两军容量却要各自看当前统帅和条件。合军先保存两侧原库存和各自角色权重，选将、调整编成以后，再读取合后容量。这次小军实体兵员二百五十人守恒，不代表库存也按同一种方式守恒。合后库存、容量和统帅，都要分别读回。",
+      "spoken_text": "拆军和合军，对补给不是同一种处理。拆出的新军先复制来源库存，不按人数除半；两军容量却要各自看当前统帅和条件。合军先保存两侧原库存和各自角色权重，选将、调整编成以后，再读取合后容量。这次小军实体兵员二百五十人守恒，不代表库存也按同一种方式守恒。合后库存、容量和统帅，都要分别读回。",
+      "source_refs": [
+        "MERGE-SOURCE",
+        "R09"
+      ],
+      "source_ids": [
+        "296B936/296B93D",
+        "2C55413/2C5583E",
+        "2C55FBE",
+        "R0176:selected93"
+      ],
+      "evidence_level": "SOURCE+ACTUAL_LIMITED",
+      "director_mapping": {
+        "chapter_id": "E4-02",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 20,
+            "text": "| E4-02 看懂补给 | 02:00–08:00 | 6分钟 | 携带补给、补给容量、当地补给上限和月变化分别表示什么？恢复补给为什么不等于补兵？ | 军队面板、省份提示和概念提示的真实展开；先解释当前值，再展示变化。 |"
+          },
+          {
+            "line": 41,
+            "text": "| P0-SPLIT 分兵和合军 | 固定总兵团与起始日期，记录操作前后各军队及兵团身份 | 两侧补给/容量/人数、地区上限、各军到达及实际合军后值；研究补给是否及怎样合并，观察后才确定公式。 |"
+          },
+          {
+            "line": 70,
+            "text": "| 分兵、合军及当地补给负担 | 既有军队操作与补给入口可复用；[移动准备度](../../../docs/ck3-native-ai/war-movement-1.20.0.3-readiness-2026-10-03.md)保留作用域 | 补给合并规则、原生当地上限及实际消耗口径、前后身份和连续画面。 |"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-SPLIT"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D12",
+        "D15"
+      ],
+      "shot_direction": "D15依次出现split原样stock复制→merge捕获两侧原stock/role weights→选将/刷新→actual postcap。R0176只标实体250守恒，不填缺失stock/cap/weights。",
+      "missing_filming": [
+        ".4库存加权source已闭，实际两侧/合后stock-cap-roleweights pair、原baseline反向merge和动态镜头仍缺；不授R09全卡。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "拆军和合军，对补给不是同一种处理。",
+          "source_refs": [
+            "MERGE-SOURCE",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "拆出的新军先复制来源库存，不按人数除半；两军容量却要各自看当前统帅和条件。",
+          "source_refs": [
+            "MERGE-SOURCE",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "合军先保存两侧原库存和各自角色权重，选将、调整编成以后，再读取合后容量。",
+          "source_refs": [
+            "MERGE-SOURCE",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "这次小军实体兵员二百五十人守恒，不代表库存也按同一种方式守恒。",
+          "source_refs": [
+            "MERGE-SOURCE",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "合后库存、容量和统帅，都要分别读回。",
+          "source_refs": [
+            "MERGE-SOURCE",
+            "R09"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C02-12",
+      "topic": "合军加权的输入与取整",
+      "original_claim_text": "这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；游戏的取整也影响原始结果。完整数字复核严格吻合合后库存。它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。那一种情况需要另一个实际样本。",
+      "current_speakable_conclusion": "在已核的普通正权重路径里，合军先分别算两军的权重份额，各自取整；再各自乘原来的库存，再取整，最后相加。两个份额合计可能略低于百分之一百，游戏不会把余数补回去。合计库存还要按零和合后实际容量截断，所以不能化成一次普通平均。大值另有保护分支，不能套这条简式。真正合后库存，再用实际读数核对。",
+      "spoken_text": "在已核的普通正权重路径里，合军先分别算两军的权重份额，各自取整；再各自乘原来的库存，再取整，最后相加。两个份额合计可能略低于百分之一百，游戏不会把余数补回去。合计库存还要按零和合后实际容量截断，所以不能化成一次普通平均。大值另有保护分支，不能套这条简式。真正合后库存，再用实际读数核对。",
+      "source_refs": [
+        "MERGE-SOURCE"
+      ],
+      "source_ids": [
+        "2C55FE0/2C55FE9",
+        "2C56099..2C560AE",
+        "2C55F7D",
+        "2C55FBE",
+        "2C560B6/2C560B9",
+        "2C560BD"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-02",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 20,
+            "text": "| E4-02 看懂补给 | 02:00–08:00 | 6分钟 | 携带补给、补给容量、当地补给上限和月变化分别表示什么？恢复补给为什么不等于补兵？ | 军队面板、省份提示和概念提示的真实展开；先解释当前值，再展示变化。 |"
+          },
+          {
+            "line": 41,
+            "text": "| P0-SPLIT 分兵和合军 | 固定总兵团与起始日期，记录操作前后各军队及兵团身份 | 两侧补给/容量/人数、地区上限、各军到达及实际合军后值；研究补给是否及怎样合并，观察后才确定公式。 |"
+          },
+          {
+            "line": 70,
+            "text": "| 分兵、合军及当地补给负担 | 既有军队操作与补给入口可复用；[移动准备度](../../../docs/ck3-native-ai/war-movement-1.20.0.3-readiness-2026-10-03.md)保留作用域 | 补给合并规则、原生当地上限及实际消耗口径、前后身份和连续画面。 |"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-SPLIT"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D15"
+      ],
+      "shot_direction": "D15依次亮shareD/shareS各自trunc0→termD/termS各自trunc0→sum→actual postcap clamp；旁注仅正权重fast域，overflow fallback HOLD；无虚构实测库存数字。",
+      "missing_filming": [
+        "新.4实际完整库存/权重/容量pair与真正upperclamp动态镜头缺；静态source公式不授实际应用或R09结项。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "在已核的普通正权重路径里，合军先分别算两军的权重份额，各自取整；再各自乘原来的库存，再取整，最后相加。",
+          "source_refs": [
+            "MERGE-SOURCE"
+          ]
+        },
+        {
+          "sentence": "两个份额合计可能略低于百分之一百，游戏不会把余数补回去。",
+          "source_refs": [
+            "MERGE-SOURCE"
+          ]
+        },
+        {
+          "sentence": "合计库存还要按零和合后实际容量截断，所以不能化成一次普通平均。",
+          "source_refs": [
+            "MERGE-SOURCE"
+          ]
+        },
+        {
+          "sentence": "大值另有保护分支，不能套这条简式。",
+          "source_refs": [
+            "MERGE-SOURCE"
+          ]
+        },
+        {
+          "sentence": "真正合后库存，再用实际读数核对。",
+          "source_refs": [
+            "MERGE-SOURCE"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-01",
+      "topic": "当前损耗与已发生人数变化",
+      "original_claim_text": "补给和人数会变，还要问变化发生在哪个窗口。军队面板的“每月损耗”给出当前比例和人数，是眼前条件下的计算提示。要讲已经少了多少兵，就需要完整兵团的前后人数，并检查有没有补员、战斗、分合军或其他事件。",
+      "current_speakable_conclusion": "看人数为什么下降，先把眼前的提示与已经发生的变化分开。当前损耗比例，说明现在相关条件怎样计算；整数预算，说明一次处理准备怎样分配。真正少了多少，要看到实体兵员前后写回，并核对同窗补员、战斗、分合军和其他事件。这样，预算不会重复算成损失，净少人数也不会被直接叫成死亡人数。",
+      "spoken_text": "看人数为什么下降，先把眼前的提示与已经发生的变化分开。当前损耗比例，说明现在相关条件怎样计算；整数预算，说明一次处理准备怎样分配。真正少了多少，要看到实体兵员前后写回，并核对同窗补员、战斗、分合军和其他事件。这样，预算不会重复算成损失，净少人数也不会被直接叫成死亡人数。",
+      "source_refs": [
+        "PERIODIC",
+        "COUNTY",
+        "ZERO",
+        "REFILL",
+        "R09"
+      ],
+      "source_ids": [
+        "24E3410",
+        "2634190",
+        "2A98B88"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-03",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 21,
+            "text": "| E4-03 人数为什么下降 | 08:00–15:00 | 7分钟 | 补给状态、行军和围攻损耗怎样影响军队？怎样排除其他兵数变化？ | 跨实际结算边界的连续录像；分开显示当前损耗率、逐团人数、补员及参战变化。 |"
+          },
+          {
+            "line": 40,
+            "text": "| P0-LOSS 损耗与兵数 | 逐团记录兵数；筛选无战斗、无参军/离军的观察窗口 | 损耗条件、原生结算输入与人数写回；补员、集结、分合军和其他事件单列。净少人数不能直接称为损耗死亡。 |"
+          },
+          {
+            "line": 45,
+            "text": "P0-LOSS需取得原生执行链或能排除混杂因素的定向对照后，才能解释确切损失。完成一个可复核工作包即更新来源和结论、提交推送；只有新证据改变结论时才重跑已通过的验证。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-LOSS"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "army_persistent_refill_eligibility_12004.classify_army_persistent_refill_eligibility_12004",
+        "episode04_r09_selected93_actual_12004.qualify_r0176_selected93_micro_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D03",
+        "D04",
+        "D06"
+      ],
+      "shot_direction": "第二章面板→D03/04/06，三行依次为“当前比例/预算/实际physical”。positive未取得前，不画physical已减少动画。",
+      "missing_filming": [
+        "R03/R04/R05新实机执行正例缺；本段的机制解释不授其整卡或因果数字。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "看人数为什么下降，先把眼前的提示与已经发生的变化分开。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "REFILL",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "当前损耗比例，说明现在相关条件怎样计算；整数预算，说明一次处理准备怎样分配。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "REFILL",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "真正少了多少，要看到实体兵员前后写回，并核对同窗补员、战斗、分合军和其他事件。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "REFILL",
+            "R09"
+          ]
+        },
+        {
+          "sentence": "这样，预算不会重复算成损失，净少人数也不会被直接叫成死亡人数。",
+          "source_refs": [
+            "PERIODIC",
+            "COUNTY",
+            "ZERO",
+            "REFILL",
+            "R09"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C04-09",
+      "topic": "路线报价与真正登船支付",
+      "original_claim_text": "下令前的警告也有自己的范围。“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。规划提示、动作后的状态和实际结算要分别记。",
+      "current_speakable_conclusion": "路线提示“会支付登船费”，是下令前的警告；实际扣款要另看。这次军队进入海区后，独立现金查询和原生支付链对上了一笔三金币扣款，属于这个账户的这一次登船。它不自动成为所有军队的固定费率。县域损失预算也一样：提示的是特定条件下的计算，不能说每经过一个省就必定少同样多的兵。",
+      "spoken_text": "路线提示“会支付登船费”，是下令前的警告；实际扣款要另看。这次军队进入海区后，独立现金查询和原生支付链对上了一笔三金币扣款，属于这个账户的这一次登船。它不自动成为所有军队的固定费率。县域损失预算也一样：提示的是特定条件下的计算，不能说每经过一个省就必定少同样多的兵。",
+      "source_refs": [
+        "PAYMENT",
+        "COUNTY",
+        "COMPARISON"
+      ],
+      "source_ids": [
+        "R0173:personalSUB300000/Q100000",
+        "writer16/gateway17/transition18",
+        "24E6650"
+      ],
+      "evidence_level": "ACTUAL+SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-04",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 22,
+            "text": "| E4-04 路线与到达时间 | 15:00–21:00 | 6分钟 | 抵达日期怎样读？改道、停止移动何时生效？为什么有时不能立即取消当前路段？ | 实际右键下令、路线提示、进度变化、停止与改道按钮，以及抵达后的省份和状态。 |"
+          },
+          {
+            "line": 42,
+            "text": "| P0-MOVE 路线与取消 | 同一出发档分别在当前路段可取消与已锁定时操作 | 完整路线、游戏日期、进度、原生ETA、点击前后路径与目标；区分下令、预计到达与实际到达。 |"
+          },
+          {
+            "line": 59,
+            "text": "费用优先记录原生军队维护与实际登船等支出，以及每次操作的支付事件。余额差另列收入和其他事件；无法拆出的费用只标为该回放净现金变化。结果允许某方案没有优势，让实测决定推荐条件。"
+          },
+          {
+            "line": 82,
+            "text": "- 每句机制主张绑定版本、主体、时间、原始报告和实际画面；三个独立回放标注A/B/C，不剪成一条连续实况。加速行军等待时标注倍率，关键按钮与结算边界保留原速。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-MOVE",
+          "P0-LOSS"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "tools/review02/comparison/r10_compare.py",
+        "war_payment_observations_v1.normalize_journal"
+      ],
+      "actual_shot_ids": [
+        "R0173-BOARDING-CANDIDATES"
+      ],
+      "demonstration_card_ids": [
+        "D14"
+      ],
+      "shot_direction": "R0173已有码147.5–153.5/153.5–161.6/168.9–174.9秒候选仅待clean；数据卡列账户余额254.48407→251.48407、扣3。不得把支付原生时点假定为任一编码帧。",
+      "missing_filming": [
+        "R07同T0<=7日且避经济结算的无登船对照仍缺；支付正例不授整卡。登船转换精确帧、clean span与human审片待做。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "路线提示“会支付登船费”，是下令前的警告；实际扣款要另看。",
+          "source_refs": [
+            "PAYMENT",
+            "COUNTY",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "这次军队进入海区后，独立现金查询和原生支付链对上了一笔三金币扣款，属于这个账户的这一次登船。",
+          "source_refs": [
+            "PAYMENT",
+            "COUNTY",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "它不自动成为所有军队的固定费率。",
+          "source_refs": [
+            "PAYMENT",
+            "COUNTY",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "县域损失预算也一样：提示的是特定条件下的计算，不能说每经过一个省就必定少同样多的兵。",
+          "source_refs": [
+            "PAYMENT",
+            "COUNTY",
+            "COMPARISON"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-11",
+      "topic": "财务读数按当前月份条件解释",
+      "original_claim_text": "费用先另读一份一月十一日的暂停样本：角色个人月总收入约四点六九金币，完整月支出约四点三九，当前净收入约正零点三零。这不是后面所有旅途日期的固定常数；军队和收支条件变了，需要重新读。",
+      "current_speakable_conclusion": "费用先分当前月读数和旅途累计。当前月收入减去完整月支出，得到当前净收入；这些数描述眼前的收支条件，不能固定铺到整趟旅程。军队集结状态、来源和其他收支变了，就要重读。比较不同路线花了多少时，累计实际支付另记，期间收入和其他事件也按同一个日期范围保留。",
+      "spoken_text": "费用先分当前月读数和旅途累计。当前月收入减去完整月支出，得到当前净收入；这些数描述眼前的收支条件，不能固定铺到整趟旅程。军队集结状态、来源和其他收支变了，就要重读。比较不同路线花了多少时，累计实际支付另记，期间收入和其他事件也按同一个日期范围保留。",
+      "source_refs": [
+        "MONEY",
+        "COMPARISON"
+      ],
+      "source_ids": [
+        "2BCA940",
+        "2BCB160",
+        "NET=gross-expenses"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-05",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 23,
+            "text": "| E4-05 三种方案对照 | 21:00–29:00 | 8分钟 | 整军直走、分兵休整后会合、换路线的时间、兵力和费用怎样比较？ | 三个独立回放按相同游戏日期或相同事件对齐；动态地图为主，结果表逐项出现。 |"
+          },
+          {
+            "line": 49,
+            "text": "所有方案从同一冻结存档独立开始，绑定游戏build、EXE、存档SHA、日期、人物、ArmyID、兵团编成、将领、战争、敌军状态及加载内容。使用相同起点和目的地；控制玩家可控制的起始条件，完整记录各回放的随机事件和敌军行为差异。"
+          },
+          {
+            "line": 59,
+            "text": "费用优先记录原生军队维护与实际登船等支出，以及每次操作的支付事件。余额差另列收入和其他事件；无法拆出的费用只标为该回放净现金变化。结果允许某方案没有优势，让实测决定推荐条件。"
+          }
+        ],
+        "single_variable_experiments": [],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "ck3_query_war_cash_current_resources_private_v1 / player_monthly_net_income / current_maintenance / all_raised_maintenance",
+        "tools/review02/comparison/r10_compare.py"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D14"
+      ],
+      "shot_direction": "D14“当前月率”与“区间实际支付”分栏；新版无完整同窗raw数值时不贴旧4.69/4.39/0.30。累计表保留income/otherexpense与同账户区间。",
+      "missing_filming": [
+        ".4当前gross/full expense/NET原版UI同帧clean镜头及完整旅途实际账缺；不把generic ADD282364命名军事维护。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "费用先分当前月读数和旅途累计。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "当前月收入减去完整月支出，得到当前净收入；这些数描述眼前的收支条件，不能固定铺到整趟旅程。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "军队集结状态、来源和其他收支变了，就要重读。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "比较不同路线花了多少时，累计实际支付另记，期间收入和其他事件也按同一个日期范围保留。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-12",
+      "topic": "军事费率不重复计入净额",
+      "original_claim_text": "同一个样本，当前军事维护约三点八九金币每月，已经含在完整支出里；全部集结情形的当前替代维护约四点八七。两者分别比较，不相加，也不从净收入里再扣一次军费。全部集结值没有被证明是未来费用上限。",
+      "current_speakable_conclusion": "当前军事维护月费率，与“全部集结”情景的替代月费率，是两种情况的读数，不是两笔应该相加的支出。完整月支出已经按包含军费的口径读取，所以使用净收入时，不能再把同一军费扣一次。月费率仍只是当前费率；要说旅途已经付了多少维护费，还需要实际支付来源、金额和日期对上，不能只拿钱包差来代替。",
+      "spoken_text": "当前军事维护月费率，与“全部集结”情景的替代月费率，是两种情况的读数，不是两笔应该相加的支出。完整月支出已经按包含军费的口径读取，所以使用净收入时，不能再把同一军费扣一次。月费率仍只是当前费率；要说旅途已经付了多少维护费，还需要实际支付来源、金额和日期对上，不能只拿钱包差来代替。",
+      "source_refs": [
+        "MONEY",
+        "COMPARISON",
+        "PAYMENT"
+      ],
+      "source_ids": [
+        "2C13F60",
+        "2C152B0",
+        "2BCB160:exclude_military=false",
+        "maintenance_attribution=unclosed"
+      ],
+      "evidence_level": "SOURCE",
+      "director_mapping": {
+        "chapter_id": "E4-05",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 23,
+            "text": "| E4-05 三种方案对照 | 21:00–29:00 | 8分钟 | 整军直走、分兵休整后会合、换路线的时间、兵力和费用怎样比较？ | 三个独立回放按相同游戏日期或相同事件对齐；动态地图为主，结果表逐项出现。 |"
+          },
+          {
+            "line": 59,
+            "text": "费用优先记录原生军队维护与实际登船等支出，以及每次操作的支付事件。余额差另列收入和其他事件；无法拆出的费用只标为该回放净现金变化。结果允许某方案没有优势，让实测决定推荐条件。"
+          }
+        ],
+        "single_variable_experiments": [],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "ck3_query_war_cash_current_resources_private_v1 / player_monthly_net_income / current_maintenance / all_raised_maintenance",
+        "tools/review02/comparison/r10_compare.py",
+        "war_payment_observations_v1.normalize_journal"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D14"
+      ],
+      "shot_direction": "D14当前率/全部集结替代率用互斥分叉，不画相加；gross−fullexpenses=NET，禁止再减一次军事月率。实际maintenance栏目保留unknown。",
+      "missing_filming": [
+        "已付军事维护费归因与cadence仍未闭；当前getter/新generic raw匹配均不填该栏。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "当前军事维护月费率，与“全部集结”情景的替代月费率，是两种情况的读数，不是两笔应该相加的支出。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON",
+            "PAYMENT"
+          ]
+        },
+        {
+          "sentence": "完整月支出已经按包含军费的口径读取，所以使用净收入时，不能再把同一军费扣一次。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON",
+            "PAYMENT"
+          ]
+        },
+        {
+          "sentence": "月费率仍只是当前费率；要说旅途已经付了多少维护费，还需要实际支付来源、金额和日期对上，不能只拿钱包差来代替。",
+          "source_refs": [
+            "MONEY",
+            "COMPARISON",
+            "PAYMENT"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C06-03",
+      "topic": "出发前把路线与警告连起来",
+      "original_claim_text": "接着看第一段路线、最终目的地和当前整条抵达估计。首段如果有独立时量，就分开保留。费用和损失警告属于当前规划提示，实际行军后还要回看位置、状态和结算；下令成功不代表整条计划完成。",
+      "current_speakable_conclusion": "出发前，再把第一站、最终目的地和当前抵达估计放在一起看。路线合法，只说明这次可以这样走；沿途能否休整、可能支付什么，还要核对各自条件。把当前库存、缺员、下一步地点和警告保存下来，途中才有可以回看的基线。下令以后再确认实际路线，真正到场时再把现实与原计划对上。",
+      "spoken_text": "出发前，再把第一站、最终目的地和当前抵达估计放在一起看。路线合法，只说明这次可以这样走；沿途能否休整、可能支付什么，还要核对各自条件。把当前库存、缺员、下一步地点和警告保存下来，途中才有可以回看的基线。下令以后再确认实际路线，真正到场时再把现实与原计划对上。",
+      "source_refs": [
+        "DIRECTOR",
+        "LOCK-SOURCE",
+        "R13",
+        "COMPARISON"
+      ],
+      "source_ids": [
+        "NativePreviewMoveArmy",
+        "AttachCommittedRouteTimelineToArmyRows",
+        "R0176:R13"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "director_mapping": {
+        "chapter_id": "E4-06",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 24,
+            "text": "| E4-06 出发、途中、接战前各看什么？ | 29:00–32:00 | 3分钟 | 玩家怎样把这些信息用于下一次行军？ | 回到原生面板完成一遍检查，再呈现简洁操作清单。 |"
+          },
+          {
+            "line": 42,
+            "text": "| P0-MOVE 路线与取消 | 同一出发档分别在当前路段可取消与已锁定时操作 | 完整路线、游戏日期、进度、原生ETA、点击前后路径与目标；区分下令、预计到达与实际到达。 |"
+          },
+          {
+            "line": 49,
+            "text": "所有方案从同一冻结存档独立开始，绑定游戏build、EXE、存档SHA、日期、人物、ArmyID、兵团编成、将领、战争、敌军状态及加载内容。使用相同起点和目的地；控制玩家可控制的起始条件，完整记录各回放的随机事件和敌军行为差异。"
+          },
+          {
+            "line": 57,
+            "text": "休整条件、替代路线和每个回放的停止条件在实验前冻结。若遇到战斗、战争结束、人物更换或其他重大变化，单独记录并决定该回放能回答的范围。决策方案同时改变多项条件，不能仅凭最终人数差断言唯一机制；机制解释由前面的单变量实验支撑。"
+          },
+          {
+            "line": 59,
+            "text": "费用优先记录原生军队维护与实际登船等支出，以及每次操作的支付事件。余额差另列收入和其他事件；无法拆出的费用只标为该回放净现金变化。结果允许某方案没有优势，让实测决定推荐条件。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-MOVE"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "locked_routes.verify.frame / admit_locked",
+        "locked_routes.verify.r13",
+        "tools/review02/comparison/r10_compare.py"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D11",
+        "D13",
+        "D14"
+      ],
+      "shot_direction": "回原生军队面板按路线/人数库存/警告顺序查看；可用R0176候选0–10秒并标独立会话。用D11/13/14做短过渡，不用长静帧填满预算。",
+      "missing_filming": [
+        "正式出发前一遍完整clean操作镜头缺；合法preview不授最优路线、未来休整或三方案胜负。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "出发前，再把第一站、最终目的地和当前抵达估计放在一起看。",
+          "source_refs": [
+            "DIRECTOR",
+            "LOCK-SOURCE",
+            "R13",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "路线合法，只说明这次可以这样走；沿途能否休整、可能支付什么，还要核对各自条件。",
+          "source_refs": [
+            "DIRECTOR",
+            "LOCK-SOURCE",
+            "R13",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "把当前库存、缺员、下一步地点和警告保存下来，途中才有可以回看的基线。",
+          "source_refs": [
+            "DIRECTOR",
+            "LOCK-SOURCE",
+            "R13",
+            "COMPARISON"
+          ]
+        },
+        {
+          "sentence": "下令以后再确认实际路线，真正到场时再把现实与原计划对上。",
+          "source_refs": [
+            "DIRECTOR",
+            "LOCK-SOURCE",
+            "R13",
+            "COMPARISON"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C06-04",
+      "topic": "途中无变化也需读上下文",
+      "original_claim_text": "途中，月变化由正变负、出现移动锁定、剩余路线改变，都需要重读当前状态。库存没变，也不自动说明没有更新：可能还没轮到、条件未通过、当前贡献为零，或增加后碰到容量。前后的日期和库存一起看，才能逐步分开这些解释。",
+      "current_speakable_conclusion": "途中看到月变化由正转负、移动锁定或路线改变，就重读当前状态。库存暂时没变，也可能有几种解释：还没到允许更新的机会，条件被拒绝，当前贡献为零，或者增加后碰到了容量。它们不能只靠一个不变的数分开。把前后日期、地点、库存和更新条件一起保留，再继续观察真正发生的变化。",
+      "spoken_text": "途中看到月变化由正转负、移动锁定或路线改变，就重读当前状态。库存暂时没变，也可能有几种解释：还没到允许更新的机会，条件被拒绝，当前贡献为零，或者增加后碰到了容量。它们不能只靠一个不变的数分开。把前后日期、地点、库存和更新条件一起保留，再继续观察真正发生的变化。",
+      "source_refs": [
+        "SUPPLY",
+        "R12",
+        "R13"
+      ],
+      "source_ids": [
+        "24E4CF0",
+        "army_update_clock_v1",
+        "2C53BF0",
+        "R0175:R12",
+        "R0176:R13"
+      ],
+      "evidence_level": "SOURCE+ACTUAL",
+      "director_mapping": {
+        "chapter_id": "E4-06",
+        "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+        "exact_lines": [
+          {
+            "line": 24,
+            "text": "| E4-06 出发、途中、接战前各看什么？ | 29:00–32:00 | 3分钟 | 玩家怎样把这些信息用于下一次行军？ | 回到原生面板完成一遍检查，再呈现简洁操作清单。 |"
+          },
+          {
+            "line": 39,
+            "text": "| P0-SUPPLY 补给结算 | 固定军队、将领与驻地，记录真正触发变化的日期；另案改变地区或人数 | 同Army身份的结算前后补给、容量、月变化原始值和原生提示；确认实际检查节奏与容量截断，不假定每月第一日扣算。 |"
+          },
+          {
+            "line": 42,
+            "text": "| P0-MOVE 路线与取消 | 同一出发档分别在当前路段可取消与已锁定时操作 | 完整路线、游戏日期、进度、原生ETA、点击前后路径与目标；区分下令、预计到达与实际到达。 |"
+          },
+          {
+            "line": 79,
+            "text": "- 先提出玩家问题，再读界面，再跟随变化，最后解释数字。每张计算卡只推进一个概念；单位、当前值与变化率分开。"
+          }
+        ],
+        "single_variable_experiments": [
+          "P0-SUPPLY",
+          "P0-MOVE"
+        ],
+        "editorial_target_minutes": [
+          30,
+          35
+        ]
+      },
+      "agent_consumer_api_keys": [
+        "current_callback_supply_risk_v1 / army_update_clock_v1",
+        "locked_routes.verify.r12",
+        "locked_routes.verify.r13"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D01",
+        "D11",
+        "D13"
+      ],
+      "shot_direction": "库存读数与date/location/admission三项并排；R12/R13实际路线变化只能说明移动后果，不借它们补库存更新原因。",
+      "missing_filming": [
+        ".4低库存真实恢复与各种无变化情形的独立动态例仍缺；仅保留已闭source可能，不授实际SUPPLY卡结项。"
+      ],
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "途中看到月变化由正转负、移动锁定或路线改变，就重读当前状态。",
+          "source_refs": [
+            "SUPPLY",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "库存暂时没变，也可能有几种解释：还没到允许更新的机会，条件被拒绝，当前贡献为零，或者增加后碰到了容量。",
+          "source_refs": [
+            "SUPPLY",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "它们不能只靠一个不变的数分开。",
+          "source_refs": [
+            "SUPPLY",
+            "R12",
+            "R13"
+          ]
+        },
+        {
+          "sentence": "把前后日期、地点、库存和更新条件一起保留，再继续观察真正发生的变化。",
+          "source_refs": [
+            "SUPPLY",
+            "R12",
+            "R13"
+          ]
+        }
+      ]
+    }
+  ]
+}

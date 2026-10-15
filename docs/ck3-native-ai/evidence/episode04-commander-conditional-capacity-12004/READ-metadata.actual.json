@@ -1,0 +1,197 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "utc": "2026-10-15T20:28:42.147657+00:00",
+  "mode": "metadata",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:/ck3-e04-resume-20261015-a01/commander-capacity-candidate-a01/read_capacity_bounded.py",
+    "metadata"
+  ],
+  "reader_sha256": "85d9e25fd74c5eeb6a70c4ac6655ece5086caf8da9095f89d72921266e8fcc8d",
+  "plan_sha256": "c6e1a2cd592afa64c6a8627c7747ae97cf8b3095a4d124b7fa377923b486b460",
+  "identity_receipt": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "metadata_before": {
+    "size": 101040248,
+    "mtime_ns": 1792052259095683000,
+    "ctime_ns": 1792052258999738000,
+    "device": 13886423844274364792,
+    "file_id": 19140298416377657
+  },
+  "metadata_after": {
+    "size": 101040248,
+    "mtime_ns": 1792052259095683000,
+    "ctime_ns": 1792052258999738000,
+    "device": 13886423844274364792,
+    "file_id": 19140298416377657
+  },
+  "unchanged": true,
+  "reads": [
+    {
+      "rva": "0x5f84538",
+      "bytes": 12,
+      "kind": "metadata",
+      "file_offset": 98679096,
+      "sha256": "bb03c6acafdcc7d1e103d7e82332d77d7409c20a83c3253e5dc08a80814cab84",
+      "raw_hex": "f03bc502f941c502585c2b05"
+    },
+    {
+      "rva": "0x52b5c58",
+      "bytes": 4,
+      "kind": "metadata",
+      "file_offset": 86723160,
+      "sha256": "d1766e35ef57439473cd730e66c6b9112b73498d621c5d0472aed9c9e0f2ea6a",
+      "raw_hex": "11240b00"
+    }
+  ],
+  "captures": [
+    {
+      "target": "0x2c53bf0",
+      "begin": "0x2c53bf0",
+      "end_exclusive": "0x2c541f9",
+      "body_bytes": 1545,
+      "pdata_index": 153370,
+      "unwind_rva": "0x52b5c58",
+      "unwind_header_hex": "11240b00",
+      "unwind_flags": 2,
+      "chain": null,
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 168048,
+          "row": [
+            51454240,
+            51462080,
+            86891492
+          ]
+        },
+        {
+          "index": 160409,
+          "row": [
+            48748352,
+            48748748,
+            85056684
+          ]
+        },
+        {
+          "index": 156590,
+          "row": [
+            47510624,
+            47510730,
+            85781136
+          ]
+        },
+        {
+          "index": 154680,
+          "row": [
+            46940976,
+            46941078,
+            85064996
+          ]
+        },
+        {
+          "index": 153725,
+          "row": [
+            46625858,
+            46626183,
+            86737284
+          ]
+        },
+        {
+          "index": 153248,
+          "row": [
+            46415744,
+            46416015,
+            85060536
+          ]
+        },
+        {
+          "index": 153486,
+          "row": [
+            46518112,
+            46518205,
+            86730292
+          ]
+        },
+        {
+          "index": 153367,
+          "row": [
+            46479506,
+            46479753,
+            86727752
+          ]
+        },
+        {
+          "index": 153426,
+          "row": [
+            46500789,
+            46500808,
+            86729204
+          ]
+        },
+        {
+          "index": 153396,
+          "row": [
+            46492240,
+            46492516,
+            86728504
+          ]
+        },
+        {
+          "index": 153381,
+          "row": [
+            46490064,
+            46490413,
+            86728264
+          ]
+        },
+        {
+          "index": 153374,
+          "row": [
+            46482896,
+            46485409,
+            86727924
+          ]
+        },
+        {
+          "index": 153370,
+          "row": [
+            46480368,
+            46481913,
+            86727768
+          ]
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "new_code_bytes": 0,
+  "new_metadata_bytes": 16,
+  "cumulative_new_code_bytes": 0,
+  "cumulative_new_metadata_bytes": 16,
+  "no_full_EXE_hash_scan_execution_game_SDK_desktop_main_writes": true
+}

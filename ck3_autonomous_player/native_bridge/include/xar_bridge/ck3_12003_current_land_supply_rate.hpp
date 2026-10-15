@@ -5,6 +5,7 @@
 namespace xar::ck3_12003 {
 struct CurrentLandSupplyRateBindings12003 {
   bool enabled = false;
+  bool capture_target_loss_operands = false; // qualified actual .4 only
   bool (*province_component_condition)(void *) = nullptr;
   ck3_12002::ReadAdvantageModifierValue read_province_component = nullptr;
   void **character_storage_slot = nullptr;
