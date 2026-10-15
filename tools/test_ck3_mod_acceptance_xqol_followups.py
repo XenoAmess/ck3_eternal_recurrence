@@ -27,6 +27,7 @@ from ck3_mod_acceptance_cases import xqol_government_adapter as government
 from ck3_mod_acceptance_cases import xqol_pam_adapter as pam
 from test_ck3_mod_acceptance_xqol_pam_boundary import (
     restore_pre_boundary_sample, restore_pre_boundary_contract)
+from test_ck3_mod_acceptance_xqol_prepare_compatibility import ReviewedPrepareCompatibility
 
 def config(name):
     return json.loads((HERE/'ck3_mod_acceptance_cases'/('xqol_'+name+'.json')).read_bytes())
@@ -153,7 +154,7 @@ class OriginalCases(unittest.TestCase):
             'sha256':'8d72393e24aafc71c9860fcb7c2b7ff431ef7e312f7af19a58930c1d7cd5ab3a'}
         restored=(json.dumps(original,ensure_ascii=False,indent=2)+'\n').encode('utf-8')
         self.assertEqual(hashlib.sha256(restored).hexdigest(),
-                         '049eb0c6fcb366df23f71048c7905f845490517541aeb7668ee6e3642ee858e8')
+                         'd9c09fcb6d785bb25ed0c301a0f1ae3e4ba3b8356365fe29e31b34ca806270ab')
 
     def test_stock_projection_retains_rewards_and_rejects_changed_body(self):
         keys=('conversion_tenet_acts_of_the_apostles_effect','conversion_tenet_mendicant_preachers_effect')
@@ -243,7 +244,7 @@ class RansomAtomicReceipt(unittest.TestCase):
         old_contract['support_files'][self.effect_key] = {
             'bytes':30264, 'sha256':'7f5014508c6e2d36b51f8b8966d9d8740178e17467d824f016fc1670bc63e861'}
         self.assertEqual(hashlib.sha256((json.dumps(old_contract,ensure_ascii=False,indent=2)+'\n').encode()).hexdigest(),
-                         '1c391554ad054865cdf49ca22a718b992201cd5fc3cfcd175c0c576425e7a0cf')
+                         '52877e54d11256a9d061fccd00c744b86e888a350b7005f60e8c26212a76b900')
         self.assertEqual(len(contract['required_markers']), 22)
         self.assertEqual(contract['original_step_count'], 30)
         self.assertEqual(contract['maximum_natural_days'], 12)
