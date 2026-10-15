@@ -3924,7 +3924,8 @@ class NativeHeadlessGameplayDriver:
         )
 
     def query_war_cash_current_resources_private_v1(
-        self, *, expected_revision: int,
+        self, *, expected_revision: int, payment_sampling: str | None = None,
+        payment_window_contract: str | None = None,
     ) -> dict[str, object]:
         """Read actual treasury and actor-global military expenses once."""
         from .war_cash_private_transport_v1 import query_war_cash_current_resources_private_v1
@@ -3932,6 +3933,7 @@ class NativeHeadlessGameplayDriver:
         return query_war_cash_current_resources_private_v1(
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
+            payment_sampling=payment_sampling, payment_window_contract=payment_window_contract,
         )
 
     def query_construction_cash_outcome_private_v1(
@@ -13401,6 +13403,20 @@ class NativeHeadlessGameplayDriver:
         finally:
             finish_army_timing(timing)
         return result
+
+    def set_army_observer_research_sampling_v1(
+        self, enabled: bool, *, observer_family: str, expected_revision: int,
+    ) -> dict[str, object]:
+        from .army_observer_research_sampling_control import set_control
+        return set_control(self, enabled, observer_family=observer_family,
+                           expected_revision=expected_revision)
+
+    def query_army_observer_research_sampling_v1(
+        self, *, observer_family: str, expected_revision: int,
+    ) -> dict[str, object]:
+        from .army_observer_research_sampling_control import query_control
+        return query_control(self, observer_family=observer_family,
+                             expected_revision=expected_revision)
 
     def set_army_gathering_research_sampling_v1(
         self, enabled: bool, *, expected_revision: int,

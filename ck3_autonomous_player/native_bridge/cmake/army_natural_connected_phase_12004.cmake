@@ -138,3 +138,19 @@ if(BUILD_TESTING AND WIN32)
   endif()
   # Sole argv: --army-natural-connected-phase.
 endif()
+
+
+# Disabled unless an explicitly controlled no-load recording build requests it.
+option(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004
+  "Install exact 1.20.0.4 passive boarding payment observers" OFF)
+if(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+  if(NOT XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+    message(FATAL_ERROR "Payment observation requires installed natural Army phase parents")
+  endif()
+  target_sources(xar_ck3_bridge PRIVATE
+    src/war_payment_passive_12004.cpp
+    src/war_payment_runtime_12004.cpp
+    src/war_payment_json_12004.cpp
+    src/war_payment_window_12004.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004=1)
+endif()

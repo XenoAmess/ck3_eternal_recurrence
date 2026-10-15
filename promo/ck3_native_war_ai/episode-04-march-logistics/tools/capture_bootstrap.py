@@ -17,6 +17,9 @@ import sys
 import threading
 import uuid
 
+from capture_runtime_evidence import (ROBERT_INTENT, army_history_evidence,
+    validate_army_history_limit, validate_prepared_robert_intent, validate_runtime_actor_context)
+
 ROOT = Path(__file__).resolve().parents[4]
 sys.path[:0] = [str(ROOT), str(ROOT / "ck3_autonomous_player/src"), str(ROOT / "tools"),
                 str(ROOT / "promo/ck3_native_war_ai/integration")]
@@ -135,39 +138,21 @@ def installed_target_observation(game_dir: Path, target: dict) -> dict:
 
 
 def require_capture_context(prepared: dict, snapshot: dict, diagnostics: dict,
-                            arguments: dict) -> dict | None:
+                            arguments: dict, *, runtime_actor_receipt: dict | None = None) -> dict | None:
     if arguments.get("operation") != "start":
         return None
-    expected_actor = prepared.get("expected_character_id")
-    if expected_actor is not None:
-        require(type(expected_actor) is int and expected_actor > 0,
-                "invalid expected capture actor")
-        require((snapshot.get("played_character") or {}).get("character_id") ==
-                expected_actor, "capture actor differs from prepared intent")
     target = prepared_game_target(prepared)
     if target["version"] == "1.20.0.3":
+        expected_actor = prepared.get("expected_character_id")
+        if expected_actor is not None:
+            require(type(expected_actor) is int and expected_actor > 0, "invalid expected capture actor")
+            require((snapshot.get("played_character") or {}).get("character_id") == expected_actor,
+                    "capture actor differs from prepared intent")
         return None
-    require(expected_actor == 29829, "exact .4 Episode04 capture requires Robert actor 29829")
-    hello = diagnostics.get("hello") or {}
-    frame_diagnostics = snapshot.get("diagnostics") or {}
-    require(diagnostics.get("connected") is True and
-            hello.get("ck3_build_match") is True and
-            hello.get("game_adapter_status") == "ready" and
-            hello.get("game_adapter_id") == "ck3-1.20.0.4-msvc-x64" and
-            hello.get("expected_ck3_version") == target["version"] and
-            str(hello.get("expected_ck3_sha256", "")).lower() == target["exe_sha256"],
-            "capture native adapter does not match the prepared exact build")
-    pid, generation = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation")
-    require(type(pid) is int and pid > 0 and type(generation) is int and generation > 0,
-            "capture native PID/generation unavailable")
-    require(hello.get("pid") == pid == arguments.get("target_pid") and
-            frame_diagnostics.get("bridge_pid") == pid and
-            frame_diagnostics.get("connection_generation") == generation,
-            "capture frame/native process binding changed")
-    return {"machine_id": current_machine_id(), "target_build": target, "bridge_pid": pid,
-            "connection_generation": generation, "expected_character_id": expected_actor,
-            "snapshot_id": snapshot.get("snapshot_id"),
-            "native_revision": snapshot.get("native_revision")}
+    require(runtime_actor_receipt is not None,
+            "exact .4 capture needs a Root-reviewed per-runtime Robert identity receipt")
+    return validate_runtime_actor_context(runtime_actor_receipt, prepared, snapshot, diagnostics,
+                                          arguments, current_machine_id())
 
 
 def load_prepared(path: Path) -> dict:
@@ -180,8 +165,7 @@ def load_prepared(path: Path) -> dict:
     require_prepared_machine(body, target)
     require(body["game"]["sha256"] == target["exe_sha256"], "CK3 executable identity changed")
     if target["version"] == "1.20.0.4":
-        require(type(body.get("expected_character_id")) is int and body["expected_character_id"] == 29829,
-                "exact .4 Episode04 preparation requires Robert actor 29829")
+        validate_prepared_robert_intent(body)
         # Return a current readback beside the unchanged on-disk prepared input.
         body["runtime_installation_validation"] = installed_target_observation(
             Path(body["game_dir"]), target)
@@ -254,8 +238,9 @@ def prepare(args: argparse.Namespace) -> dict:
     require(args.expected_character_id is None or
             (type(args.expected_character_id) is int and args.expected_character_id > 0),
             "expected-character-id must be a positive full Character ID")
-    require(target["version"] != "1.20.0.4" or args.expected_character_id == 29829,
-            "exact .4 Episode04 preparation requires --expected-character-id 29829")
+    require(target["version"] != "1.20.0.4" or args.expected_character_id is None or
+            args.checkpoint_save is not None,
+            "fresh .4 Robert preparation binds source intent; runtime ID is read after normal Start")
     checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt,
         args.checkpoint_build_receipt, target, args.expected_character_id)
     assets_root = args.assets_root.resolve()
@@ -310,7 +295,11 @@ def prepare(args: argparse.Namespace) -> dict:
     if target["version"] == "1.20.0.4":
         body["target_build"] = target
         body["installed_build_observation"] = installed
-    if args.expected_character_id is not None:
+    if target["version"] == "1.20.0.4":
+        body["character_intent"] = dict(ROBERT_INTENT)
+        if checkpoint:
+            body["expected_character_id"] = checkpoint["actor_id"]
+    elif args.expected_character_id is not None:
         body["expected_character_id"] = args.expected_character_id
     body["machine_id"] = current_machine_id()
     body["source_repo"] = str(ROOT)
@@ -354,6 +343,23 @@ def runtime_identity() -> dict:
     }
 
 
+def reserve_runtime_actor_identity_receipt(path: Path | None) -> dict | None:
+    """Freeze only an intended absolute location, before any new runtime exists."""
+    if path is None:
+        return None
+    require(path.is_absolute(), "runtime actor identity receipt reservation must be an absolute path")
+    return {"path": str(path), "status": "unverified-until-recording-start"}
+
+
+def capture_runtime_actor_identity_receipt(reservation: dict | None, operation: str | None,
+                                           target: dict) -> dict | None:
+    """Pin Root's actual new proof only when a .4 recording really starts."""
+    if operation != "start" or target["version"] != "1.20.0.4":
+        return None
+    require(reservation is not None, "exact .4 recording start requires its reserved identity receipt path")
+    return identity(Path(reservation["path"]))
+
+
 def run_owned(args: argparse.Namespace) -> int:
     from xar_autoplayer.environment import make_spec
     from xar_autoplayer.native_session import native_session
@@ -363,9 +369,19 @@ def run_owned(args: argparse.Namespace) -> int:
     from screen_bus_lease import ScreenLeaseKeeper
     from mcp import Client
     body = load_prepared(args.prepared)
+    history_limit = validate_army_history_limit(args.army_history_sidecar_limit_bytes)
+    runtime_actor_receipt_reservation = reserve_runtime_actor_identity_receipt(
+        args.runtime_actor_identity_receipt)
     offline_receipt(args.steam_offline_receipt)
     require_screen_process_provider()
     args.run_dir.mkdir(parents=True, exist_ok=False)
+    history_policy_path = args.run_dir / "army-history-sidecar-policy.json"
+    write_new(history_policy_path, {"machine_id": current_machine_id(), "at_utc": now(),
+        "limit_bytes": history_limit, "ordinary_default_bytes": 0,
+        "storage_kind": "complete Driver Army result, not original pipe bytes",
+        "existing_files_charged": True, "retention_policy_changed": False,
+        "runtime_actor_identity_receipt_reservation": runtime_actor_receipt_reservation})
+    history_policy_pin = identity(history_policy_path)
     requests = args.run_dir / "requests"
     responses = args.run_dir / "responses"
     requests.mkdir()
@@ -385,7 +401,8 @@ def run_owned(args: argparse.Namespace) -> int:
 
     async def sdk_loop() -> None:
         driver = NativeHeadlessGameplayDriver(body["pipe_name"], state_dir=body["state_dir"],
-            save_dir=Path(body["profile_dir"]) / "save games", succession_lifecycle_binding=body["succession_lifecycle"])
+            save_dir=Path(body["profile_dir"]) / "save games", succession_lifecycle_binding=body["succession_lifecycle"],
+            army_query_history_sidecar_limit_bytes=history_limit)
         driver.allow_private_war_cash_query = args.private_war_cash_queries is True
         with closing(driver):
             async with Client(create_server(driver, profile_dir=body["profile_dir"])) as client:
@@ -396,6 +413,7 @@ def run_owned(args: argparse.Namespace) -> int:
                     "machine_id": current_machine_id(), "pipe_name": body["pipe_name"],
                     "runtime_identity": runtime_identity(),
                     "private_war_cash_queries": driver.allow_private_war_cash_query,
+                    "army_history_sidecar_policy": history_policy_pin,
                     "native_flag_required": "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=ON",
                     "scope": "SDK initialized and pipe created; no game readiness claim"})
                 sdk_ready.set()
@@ -420,8 +438,12 @@ def run_owned(args: argparse.Namespace) -> int:
                                 snapshot_result = await client.call_tool("ck3_take_snapshot", {})
                                 require(not snapshot_result.is_error, "Recorder actual snapshot failed")
                                 capture_snapshot = tool_body(snapshot_result)
+                                runtime_actor_receipt = capture_runtime_actor_identity_receipt(
+                                    runtime_actor_receipt_reservation, request["arguments"].get("operation"),
+                                    prepared_game_target(body))
                                 binding = require_capture_context(body, capture_snapshot,
-                                    driver.diagnostics(), request["arguments"])
+                                    driver.diagnostics(), request["arguments"],
+                                    runtime_actor_receipt=runtime_actor_receipt)
                                 row.update({"is_error": False, "body": recorder.handle(request["arguments"], capture_snapshot)})
                                 if binding is not None:
                                     row["native_build_binding"] = binding
@@ -429,10 +451,15 @@ def run_owned(args: argparse.Namespace) -> int:
                                 row.update({"is_error": False, "body": root_raw_transport_snapshot(
                                     driver, request["arguments"])})
                             else:
+                                with driver._driver_state_lock:
+                                    history_index_before = len(driver._command_history)
                                 result = await client.call_tool(request["tool"], request["arguments"])
                                 row.update({"is_error": bool(result.is_error), "body": tool_body(result),
                                     "sdk_result": result.model_dump(mode="json"),
                                     "content": [item.model_dump(mode="json") for item in result.content]})
+                                evidence = army_history_evidence(driver, request, current_machine_id(), history_index_before)
+                                if evidence is not None:
+                                    row["army_history_evidence"] = evidence
                         except Exception as error:
                             row.update({"is_error": True, "error": repr(error)})
                         write_new(answer, row)
@@ -501,7 +528,7 @@ def parser() -> argparse.ArgumentParser:
     prep.add_argument("--expected-game-version", choices=tuple(REVIEWED_GAME_TARGETS),
                       default="1.20.0.3", help="Explicit exact game target; legacy default remains .3")
     prep.add_argument("--expected-character-id", type=int,
-                      help="Expected full played Character ID at capture start; required for .4")
+                      help="Legacy .3 or actual checkpoint actor; fresh .4 binds Robert source intent instead")
     prep.add_argument("--checkpoint-save", type=Path)
     prep.add_argument("--checkpoint-receipt", type=Path)
     prep.add_argument("--checkpoint-build-receipt", type=Path)
@@ -516,6 +543,10 @@ def parser() -> argparse.ArgumentParser:
     owned.add_argument("--screen-cli-sha256", required=True)
     owned.add_argument("--timeout", type=float, default=21600)
     owned.add_argument("--default-desktop", action="store_true")
+    owned.add_argument("--runtime-actor-identity-receipt", type=Path,
+                       help="Reserved absolute path for Root's new runtime proof; pin/validate only at recording start")
+    owned.add_argument("--army-history-sidecar-limit-bytes", type=int, default=0,
+                       help="Explicit finite complete-Driver-result budget, 0..536870912; ordinary default 0")
     owned.add_argument("--private-war-cash-queries", action="store_true", help="Register the existing native cash query tools; requires matching WAR_CASH macro in actual DLL")
     request = sub.add_parser("request", help="write one immutable root tool request; does not connect to CK3")
     request.add_argument("--run-dir", required=True, type=Path)

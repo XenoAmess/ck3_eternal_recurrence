@@ -7,7 +7,7 @@ from copy import deepcopy
 
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import (
-    private_g2_query_metadata_v1, read_private_g2_native_query_v1,
+    private_g2_query_metadata_v1, private_g2_query_snapshot_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity
 from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
@@ -155,16 +155,25 @@ def normalize_war_cash_termination_send_costs_v1(
 
 
 def query_war_cash_current_resources_private_v1(driver: object, *, expected_revision: int,
-                                               timeout_seconds: float = 30.0) -> dict[str, object]:
+                                               timeout_seconds: float = 30.0,
+                                               payment_sampling: str | None = None,
+                                               payment_window_contract: str | None = None) -> dict[str, object]:
+    from .war_payment_observations_v1 import normalize_payment_extras, payment_request_fields
+    request_fields = payment_request_fields(payment_sampling, payment_window_contract)
+    if request_fields is not None:
+        source = private_g2_query_snapshot_v1(driver, include_native_command_history=False)
+        if private_native_build_identity(source) != CK3_12004:
+            raise BridgeUnavailableError("payment observer control requires exact CK3 1.20.0.4")
     snapshot, result = read_private_g2_native_query_v1(
         driver, permission="allow_private_war_cash_query", step=CURRENT_STEP,
         expected_revision=expected_revision, timeout_seconds=timeout_seconds,
-        include_native_command_history=False)
+        include_native_command_history=False, request_fields=request_fields)
     try:
         value = normalize_war_cash_current_resources_v1(result.get("war_cash_current_resources"), snapshot=snapshot)
+        extras = normalize_payment_extras(result, snapshot=snapshot, payment_sampling=payment_sampling)
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
-    return {**value, **private_g2_query_metadata_v1(snapshot)}
+    return {**value, **private_g2_query_metadata_v1(snapshot), **extras}
 
 
 def query_war_cash_termination_send_costs_private_v1(

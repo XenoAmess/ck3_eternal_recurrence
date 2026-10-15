@@ -1999,12 +1999,22 @@ def create_server(
             )
 
     if getattr(driver, "allow_private_war_cash_query", False) is True:
-        @server.tool(annotations=read_only_tool)
+        @server.tool()
         def ck3_query_war_cash_current_resources_private_v1(
             expected_revision: int,
+            payment_sampling: Literal["enable", "disable", "query"] | None = None,
+            payment_window_contract: Literal["same_owned_process_no_load_v1"] | None = None,
         ) -> dict[str, object]:
-            """Read treasury, monthly flow and native military expense vectors."""
-            return driver.query_war_cash_current_resources_private_v1(expected_revision=expected_revision)
+            """Read cash and raw payment evidence; optional explicit observer gate control.
+
+            Enable requires a paused same-process window without save/load, and
+            natural-phase sampling already enabled. No gameplay payment is sent.
+            """
+            if payment_sampling is None and payment_window_contract is None:
+                return driver.query_war_cash_current_resources_private_v1(expected_revision=expected_revision)
+            return driver.query_war_cash_current_resources_private_v1(
+                expected_revision=expected_revision, payment_sampling=payment_sampling,
+                payment_window_contract=payment_window_contract)
 
         @server.tool(annotations=read_only_tool)
         def ck3_query_construction_cash_outcome_private_v1(
@@ -3057,6 +3067,9 @@ def create_server(
         CallToolResult, dict[str, object]
     ]
     server.tool()(ck3_query_army_strengths)
+
+    from .army_observer_research_sampling_control import register_tools as register_army_observer_sampling_tools
+    register_army_observer_sampling_tools(server, driver, read_only_tool)
 
     @server.tool()
     def ck3_set_army_gathering_research_sampling_v1(

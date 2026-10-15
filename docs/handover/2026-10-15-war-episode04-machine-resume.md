@@ -97,3 +97,11 @@ Root在同一PID实际采用Python身份guard与有限侧存配置，未因纯Py
 ### 完整侧存引用的可复用修正
 
 `ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_history_reference.py` 只按当前成功summary中的精确引用读取，核对文件字节数、SHA、query sequence、snapshot和revision；不以目录最新文件替代，不读取失败partial。2026-10-15T10:13Z在上述机器实际运行可移植聚焦回归：真实有限预算writer先成功再产生partial，失败summary在打开文件前被拒绝，早先成功结果仍可读取，**1 passed**。这是本轮误读partial的修复，不补发任何历史采样资格。
+
+## 2026-10-15T10:18Z 观察器与拍摄入口整合
+
+机器 `desktop-3fevhd2-1c74096080` 上，Root整合了显式family采样控制、[实际付款调用链与被动观察器](../ck3-native-ai/war-payment-passive-12004.md)、完整Driver结果回执、Robert稳定来源意图及录制start时才pin新runtime proof的入口。侧存默认仍0，可显式选择最大512MiB；这不是给旧run扩容，也不是容量准入或已完成24日归因。
+
+10:18:55Z实际主树聚焦验证 **5 passed**：proof后发布、512MiB边界、真实Driver/MCP的family控制接线、compiled-payment样本consumer与默认现金查询兼容。旧现金测试另8项通过；Root新写的元数据断言曾误访问空annotations，修正后只重跑该失败case。原有202＋68 native fixture不重复执行，完整生产DLL编译、冷载与真实付款仍待完成。工作根下 `integrated-payment-capture-check-a01/RESULT.actual.json` 和stdio保留此次验证。
+
+容量源审查另发现 `regular_core` 仍先采全局persistent对象且有4096物理对象上限，本场manager已见17880对象，可能在轮到Army记录前耗尽；不能把开关成功或增加侧存预算说成补员cause ledger合格。下一实机可先只开natural获取付款，regular-core采集范围的修复并行外置研究，不阻止拍摄已可观察的机制。

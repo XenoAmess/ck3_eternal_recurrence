@@ -139,8 +139,10 @@ class WarCashMcpWireTests(unittest.IsolatedAsyncioTestCase):
         driver = WarCashNativeWireDriver(wire("current-resources-normal"))
         async with Client(create_server(driver)) as client:
             tools = {tool.name: tool for tool in (await client.list_tools()).tools}
-            for name in ("ck3_query_war_cash_current_resources_private_v1", "ck3_query_war_cash_termination_send_costs_private_v1"):
-                self.assertTrue(tools[name].annotations.read_only_hint)
+            # Current resources can explicitly change the research sampling
+            # gate; its default None request still sends the ordinary wire.
+            self.assertIsNone(tools["ck3_query_war_cash_current_resources_private_v1"].annotations)
+            self.assertTrue(tools["ck3_query_war_cash_termination_send_costs_private_v1"].annotations.read_only_hint)
             current = await client.call_tool("ck3_query_war_cash_current_resources_private_v1", {"expected_revision": 72})
             self.assertFalse(current.is_error)
             self.assertEqual(current.structured_content["military_expenses"], driver.value["military_expenses"])

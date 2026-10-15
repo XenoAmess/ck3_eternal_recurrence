@@ -81,6 +81,10 @@
 #include "xar_bridge/army_actual_monthfirst_cleanup_12004.hpp"
 #endif
 #include "xar_bridge/ck3_12004_tactical_daily_sentinel.hpp"
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+#include "xar_bridge/war_payment_window_12004.hpp"
+#endif
+#include "xar_bridge/army_observer_research_control_12004.hpp"
 #if defined(XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004)
 #include "xar_bridge/entry_preceding_capture_12004.hpp"
 #include "xar_bridge/entry_final_side_capture_12004.hpp"
@@ -911,6 +915,20 @@ static xar::ck3_12004::ArmyActualMonthfirstCleanupDetourState12004 g_army_actual
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
 #endif
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+static xar::ck3_12004::WarPaymentJournal12004 g_war_payment_journal_12004{};
+static xar::ck3_12004::WarPaymentDetourState12004 g_war_payment_detours_12004{};
+static xar::ck3_12004::WarPaymentWindow12004 g_war_payment_window_12004{};
+static std::atomic<std::uint64_t> g_war_payment_connection_12004{0};
+static xar::ck3_12004::WarPaymentCurrentFrame12004 PaymentFrame12004(
+    const xar::game::Snapshot &s,std::uint64_t generation,std::uint64_t revision) noexcept {
+  return {generation,revision,static_cast<std::uint32_t>(s.date_raw),
+    s.has_played_character?static_cast<std::uint32_t>(s.played_character_id):0,
+    s.paused,s.map_ready,s.played_character_alive};
+}
+#endif
+
 static xar::ck3_11906::TacticalDailySentinelDetourStateV1
     g_tactical_daily_sentinel_v1{};
 static xar::bridge::StartupParticle2NullGuardV1State
@@ -9404,6 +9422,59 @@ std::string DefenderDeJureExitTermsResultFrameV1(
   return result;
 }
 
+
+// Explicit research retention controls. Installation never enables sampling.
+xar::ck3_12004::ArmyResearchFamilyStates12004 ArmyObserverResearchControl12004(
+    std::string_view family, std::string_view mode) {
+  using namespace xar::ck3_12004;
+  ArmyResearchFamilyStates12004 out{};
+  const auto selected=[&](std::size_t index) {
+    return family=="all" || family==kArmyResearchFamilies12004[index];
+  };
+  const auto apply=[&](std::size_t index,bool installed,auto read,auto set) {
+    out[index].installed=installed;
+    if(installed && selected(index) && mode!="query") (void)set(mode=="enable");
+    // Always read back separately; the setter return is not a completion claim.
+    out[index].sampling=read();
+  };
+#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+  apply(0,g_army_natural_phase_observer_12004.installed,
+    &ReadArmyNaturalPhaseResearchSampling12004,&SetArmyNaturalPhaseResearchSampling12004);
+  apply(2,g_actual_army_daily_assault_preparation_12004.installed.load(),
+    &ReadActualArmyDailyAssaultPreparationResearchSampling12004,&SetActualArmyDailyAssaultPreparationResearchSampling12004);
+  apply(4,g_actual_assault_consumer_12004.installed.load(),
+    &ReadActualAssaultConsumerResearchSampling12004,&SetActualAssaultConsumerResearchSampling12004);
+  apply(7,g_army_actual_monthfirst_cleanup_12004.installed.load(),
+    &ReadArmyActualMonthfirstCleanupResearchSampling12004,&SetArmyActualMonthfirstCleanupResearchSampling12004);
+#endif
+#if defined(XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004)
+  apply(1,g_army_regular_core_passive_12004.installed.load(),
+    &ReadArmyRegularCoreResearchSampling12004,&SetArmyRegularCoreResearchSampling12004);
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004)
+  apply(3,g_actual_army_assault_placement_12004.installed.load(),
+    &ReadActualArmyAssaultPlacementResearchSampling12004,&SetActualArmyAssaultPlacementResearchSampling12004);
+#endif
+#if defined(XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004)
+  apply(5,g_army_assault_group_release_12004.installed.load(),
+    &ReadArmyAssaultGroupReleaseResearchSampling12004,&SetArmyAssaultGroupReleaseResearchSampling12004);
+#endif
+#if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
+  out[6].installed=g_army_gathering_due_natural_12004.installed;
+  if(out[6].installed && selected(6) && mode!="query")
+    (void)SetArmyGatheringResearchSampling12004(mode=="enable");
+  const auto g=ReadArmyGatheringResearchSamplingState12004();
+  out[6].sampling={g.available,g.enabled,g.busy,g.clear_completed,g.epoch,
+                  g.active_captures,g.retained_records,g.qualified_records};
+#endif
+#if defined(XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004)
+  apply(8,g_actual_army_pre_date_prefix_12004.installed.load(),
+    &ReadActualArmyPreDatePrefixResearchSampling12004,&SetActualArmyPreDatePrefixResearchSampling12004);
+#endif
+  (void)apply;
+  return out;
+}
+
 #if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
 std::string ArmyGatheringResearchSamplingResultFrame12004(
     std::string_view request_id, std::string_view step,
@@ -12418,6 +12489,10 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
   if (observed_snapshot != nullptr) {
     snapshot = *observed_snapshot;
   } else if (!xar::game::ReadSnapshot(bindings, snapshot)) {
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+    xar::ck3_12004::InvalidateWarPaymentWindow12004(g_war_payment_window_12004,"snapshot_read_failed");
+#endif
     record("read_failed", revision, 0);
     return true;
   }
@@ -12435,6 +12510,12 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
       std::pair{modal_hint.status,modal_hint.receiver};
   const bool modal_hint_changed = !g_previous_modal_choice_hint ||
       *g_previous_modal_choice_hint != modal_identity;
+#endif
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+  if(xar::game::IsCk3_12004Descriptor(bindings.descriptor()))
+    xar::ck3_12004::ObserveWarPaymentWindowFrame12004(g_war_payment_window_12004,
+      PaymentFrame12004(snapshot,g_war_payment_connection_12004.load(std::memory_order_acquire),revision));
 #endif
   if (previous.has_value() && previous.value() == snapshot &&
       published_checkpoint_sequence == checkpoint.sequence
@@ -14080,6 +14161,22 @@ std::string RunWarCashCurrentResourcesQuery12003(
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   query.envelope.typed_context = &query;
   const bool actual4 = xar::game::IsCk3_12004Descriptor(game.descriptor());
+
+  std::string payment_sampling,payment_contract,payment_machine;
+  const bool payment_control_requested=payload.find("\"war_payment_sampling\"")!=std::string_view::npos;
+  if(payment_control_requested &&
+     (!actual4 || !xar::bridge::JsonStringField(payload,"war_payment_sampling",payment_sampling,16) ||
+      (payment_sampling!="enable"&&payment_sampling!="disable"&&payment_sampling!="query") ||
+      !xar::bridge::JsonStringField(payload,"war_payment_machine_id",payment_machine,128))) {
+    return CommandResultFrame(request_id,step,false,"war_payment_control_invalid");
+  }
+  if(payment_sampling=="enable" &&
+     !xar::bridge::JsonStringField(payload,"war_payment_window_contract",payment_contract,64))
+    return CommandResultFrame(request_id,step,false,"war_payment_explicit_window_contract_required");
+#if !defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+  if(payment_control_requested)
+    return CommandResultFrame(request_id,step,false,"war_payment_observer_not_compiled");
+#endif
   if ((!xar::game::IsCk3_12003Descriptor(game.descriptor()) && !actual4) ||
       step != xar::ck3_12003::war_cash_current::kCurrentStepV1 ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
@@ -14128,13 +14225,35 @@ std::string RunWarCashCurrentResourcesQuery12003(
     return CommandResultFrame(request_id, step, false,
         "application-main war-cash-current-resources query failed or its snapshot changed");
   }
-  const auto result = actual4
+  auto result = actual4
       ? xar::ck3_12004::SerializeWarCashCurrentResourcesV1(
             query.observation, snapshot, query.envelope.expected_snapshot_revision,
             query.envelope.frame_stable)
       : xar::ck3_12003::war_cash_current::SerializeCurrentResourcesV1(
             query.observation, snapshot, query.envelope.expected_snapshot_revision,
             query.envelope.frame_stable);
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+  if(actual4) {
+    const auto current=PaymentFrame12004(snapshot,state.connection_generation,state.state_revision);
+    xar::ck3_12004::ObserveWarPaymentWindowFrame12004(g_war_payment_window_12004,current);
+    const auto control=xar::ck3_12004::ControlWarPaymentWindow12004(g_war_payment_window_12004,
+      payment_control_requested?payment_sampling:"query",payment_contract,payment_machine,current);
+    const auto envelope=xar::ck3_12004::ReadWarPaymentWindowEnvelope12004(
+      g_war_payment_window_12004,g_war_payment_detours_12004);
+    if(payment_control_requested||envelope.controlled_window_admitted) {
+      const auto journal=g_war_payment_journal_12004.Copy();
+      const auto natural=xar::ck3_12004::ReadArmyNaturalPhaseJournal12004();
+      const auto natural_status=xar::ck3_12004::ReadArmyNaturalPhaseJournalStatus12004();
+      result=xar::ck3_12004::AppendWarPaymentJournal12004(std::move(result),journal,envelope,natural,natural_status);
+      if(payment_control_requested) {
+        result.pop_back();result+=",\"war_payment_control_v1\":";
+        result+=xar::ck3_12004::SerializeWarPaymentWindowControl12004(control);result+='}';
+      }
+    }
+  }
+#endif
+
   std::string response =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(response, request_id);
@@ -14745,6 +14864,17 @@ void RunConnectedSession(
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
   state.mandatory_choice_session.Reset(state.connection_generation);
   g_previous_modal_choice_hint.reset();
+#endif
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+  xar::ck3_12004::InvalidateWarPaymentWindow12004(g_war_payment_window_12004,"connection_generation_changed");
+  g_war_payment_connection_12004.store(state.connection_generation,std::memory_order_release);
+  struct PaymentConnectionLifetime12004 {
+    ~PaymentConnectionLifetime12004() {
+      xar::ck3_12004::InvalidateWarPaymentWindow12004(g_war_payment_window_12004,"connection_closed");
+      g_war_payment_connection_12004.store(0,std::memory_order_release);
+    }
+  } payment_connection_lifetime;
 #endif
   state.checkpoint_submission.save_name =
       game.descriptor().checkpoint_save_name;
@@ -15919,6 +16049,9 @@ void RunConnectedSession(
                          step, actor_character_id, war_id, public_army_id);
                     }()
 #endif
+                    && step != "enable-army-observer-research-sampling-v1"
+                    && step != "disable-army-observer-research-sampling-v1"
+                    && step != "query-army-observer-research-sampling-v1"
 #if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
                     && step != "enable-army-gathering-research-sampling-v1"
                     && step != "disable-army-gathering-research-sampling-v1"
@@ -26405,6 +26538,38 @@ void RunConnectedSession(
               }
             }
           }
+        } else if (step == "enable-army-observer-research-sampling-v1" ||
+                   step == "disable-army-observer-research-sampling-v1" ||
+                   step == "query-army-observer-research-sampling-v1") {
+          std::uint64_t expected_revision=0;
+          std::string family;
+          xar::game::Snapshot fresh{};
+          if(!game.enabled() || !xar::game::IsCk3_12004Descriptor(game.descriptor()) ||
+             !xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
+             !xar::bridge::JsonStringField(incoming.payload,"observer_family",family,64) ||
+             !xar::ck3_12004::IsArmyResearchFamily12004(family) ||
+             expected_revision==0 || expected_revision!=state_revision ||
+             !previous_snapshot || !previous_snapshot->paused ||
+             !previous_snapshot->map_ready || !previous_snapshot->has_played_character ||
+             !previous_snapshot->played_character_alive ||
+             previous_snapshot->played_character_id<=0 ||
+             !xar::game::ReadSnapshot(game,fresh) || fresh!=*previous_snapshot) {
+            connected=write_frame(pipe,CommandResultFrame(request_id,step,false,
+                "army_observer_research_sampling_frame_invalid"));
+          } else {
+            const std::string_view mode=step=="query-army-observer-research-sampling-v1"?
+                "query":step=="enable-army-observer-research-sampling-v1"?"enable":"disable";
+            const auto rows=ArmyObserverResearchControl12004(family,mode);
+            const bool accepted=xar::ck3_12004::ArmyResearchSamplingAccepted12004(family,mode,rows);
+            std::string response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+            AppendJsonString(response,request_id);
+            response+=",\"ok\":true,\"result\":{\"step\":";AppendJsonString(response,step);
+            response+=",\"accepted\":";response+=accepted?"true":"false";
+            response+=",\"status\":";AppendJsonString(response,accepted?"completed":"incomplete");
+            response+=",\"army_observer_research_sampling_v1\":";
+            response+=xar::ck3_12004::SerializeArmyResearchSampling12004(family,rows);
+            response+="}}";connected=write_frame(pipe,response);
+          }
         } else if (step == "enable-army-gathering-research-sampling-v1" ||
                    step == "disable-army-gathering-research-sampling-v1" ||
                    step == "query-army-gathering-research-sampling-v1") {
@@ -29551,6 +29716,28 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (!xar::ck3_12004::InstallArmyNaturalPhaseObserver12004(natural_33_environment, g_army_natural_phase_observer_12004))
       return FALSE;
 #endif
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+    xar::ck3_12004::ConfigureWarPaymentWindow12004(g_war_payment_window_12004,
+        base,&ReadMarriageCurrentProcessMemory,nullptr,g_war_payment_journal_12004);
+    xar::ck3_12004::WarPaymentInstallEnvironment12004 payment_environment{};
+    payment_environment.primary_thread_suspended_proven=true;
+    payment_environment.module_base=base;payment_environment.executable_sha256=sha;
+    auto &payment_bindings=payment_environment.bindings;
+    payment_bindings.read=&ReadMarriageCurrentProcessMemory;
+    payment_bindings.next_event=&xar::ck3_12004::NextArmyNaturalPhaseEvent12004;
+    payment_bindings.session=&xar::ck3_12004::ReadWarPaymentWindowSession12004;
+    payment_bindings.session_context=&g_war_payment_window_12004;
+    payment_bindings.natural_metadata=+[](void *) noexcept {
+      return xar::ck3_12004::CopyActiveArmyNaturalPhaseMetadata12004();
+    };
+    payment_bindings.journal=&g_war_payment_journal_12004;
+    payment_bindings.retain_actor=&xar::ck3_12004::RetainWarPaymentWindowActor12004;
+    payment_bindings.retain_actor_context=&g_war_payment_window_12004;
+    if(!xar::ck3_12004::InstallWarPaymentPassive12004(
+        g_war_payment_detours_12004,payment_environment))return FALSE;
+#endif
+
 #if defined(XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004)
     xar::ck3_12004::ActualArmyPreDatePrefixInstallEnvironment12004 natural_44_environment{};
     natural_44_environment.primary_thread_suspended_proven = true;
