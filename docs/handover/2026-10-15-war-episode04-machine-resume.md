@@ -105,3 +105,37 @@ Root在同一PID实际采用Python身份guard与有限侧存配置，未因纯Py
 10:18:55Z实际主树聚焦验证 **5 passed**：proof后发布、512MiB边界、真实Driver/MCP的family控制接线、compiled-payment样本consumer与默认现金查询兼容。旧现金测试另8项通过；Root新写的元数据断言曾误访问空annotations，修正后只重跑该失败case。原有202＋68 native fixture不重复执行，完整生产DLL编译、冷载与真实付款仍待完成。工作根下 `integrated-payment-capture-check-a01/RESULT.actual.json` 和stdio保留此次验证。
 
 容量源审查另发现 `regular_core` 仍先采全局persistent对象且有4096物理对象上限，本场manager已见17880对象，可能在轮到Army记录前耗尽；不能把开关成功或增加侧存预算说成补员cause ledger合格。下一实机可先只开natural获取付款，regular-core采集范围的修复并行外置研究，不阻止拍摄已可观察的机制。
+
+## 2026-10-15T11:21Z R0172 实际付款窗口试拍与正常关闭
+
+本节所有现场事实的 `machine_id` 均为 **`desktop-3fevhd2-1c74096080`**，实际工作目录为 `C:/ck3-e04-resume-20261015-a01/live12004-payment-a01/`。本次源码与生产 DLL 冻结于 `5bb336b6677923453988c50dfbbda2c334c049c8`；11:19Z 现场关闭后才更新主树，不能把后续提交追认为本场运行源码。总回执 `CLOSED.actual-a01.json` 为17,566B，SHA-256 `41d3a2348a0287ac8595ba4b89c9a9e15d95849da75ccb7941fa921218d6d960`。
+
+### 新生产构建与身份
+
+- 本机 `.4 / build25734779 / EXE 98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518` 已实际安装，Steam保持离线。10:32Z另取窗口位移与新像素并直接审阅离线画面，未以停滞的任务栏时钟代替新鲜度；证据为工作根 `steam-offline-payment-fresh-a04/` 及 `steam-offline-payment-reviewed-a04.json`。
+- `native12004-payment-20261015-a03` Release/jobs16实际编译返回0，DLL SHA为 `a9a1323a4ece7121cf7470ef7b741ab6fb1f7dfc6a10fe358e937375e16147ae`，injector为 `07703493c942aba326c4d9820cc755d7c1f768566d811a8ae052c4835b15f894`，host为 `0260fed6f852f3f9e62a2b8a7cbf9b28cdb3c7c98e3e7ab1bddf62bf6fee9491`。实际构建、定义核验和SYSTEM精确EXE排除读回在工作根 `native-payment-build-completion-a03.json`、`native-payment-build-qualification.actual-a02.json` 与构建目录 `defender-exe-exclusions/20261015T103430Z-fb93e35e/receipt.json`；没有请求新UAC。
+- R0172为正常R0171存档续行，**不是重新创造初始T0**。实际PID20560、创建FILETIME134365345411777295、connection generation1、episode `native-31254-0057f5024437`、actor31254。`runtime-actor-identity.actual-a01.json` 为6008B，SHA `89e0cedc3695cf783647850feb8ee1cc3f8199d6dafe4a3ece6f2e498b266aef`；稳定Robert来源不授其他加载的runtime编号资格。
+
+### 实际推进及止线
+
+从raw53144616推进到53145048，共 **18个连续精确自然日**，逐日sentinel均+24、零overshoot并暂停。第18日时钟原回执与11:17Z独立快照仍为同一暂停端点；**只有前17日通过完整Driver结果校验**，没有完成原定24日计划。MoveArmy18→海区1033只提交一次，实际路线经2624、1036、8653、1034；终态Army18仍在2624、1196/1196、补给300/300，尚不能授登船或扣费结论。
+
+第18日完整侧存实际为16,902,837B，超过本案单包16MiB止线，脚本在打开和解析该文件之前拒绝继续。精确引用为 `state-a01/native-session/army-query-history-results/army-query-80879aa62a3d416ab94f8ff4a0d0db1a.json`，SHA `fa2b533e961cd931e39041573c2ee9abc735989b7b37a8abf4ecf0b8c4d68834`，不是partial，也不是原始pipe字节。全部Driver侧存实际247,354,345B，仍低于512MiB总额度；**总额度未超不能取消单包止线**。下一轮先约束导出主体与历史范围，不直接扩大上限。
+
+逐日证据在 `clock-raw-daily24-continuation-a03/day-01.actual.json` 至day-03，以及 `clock-raw-daily24-continuation-a04/day-04.actual.json` 至day-17；第18日原时钟为本run `responses/clockraw24a04-d18-06-clock-status.json`，终态为 `responses/024-final-paused-snapshot.json`。旧attempt的revision竞态和响应文件尚在写入时的JSON读取失败均保留；恢复只读同一结果或当前状态，未重发Arm/Resume。外置读取器现等待同一响应文件写完，未改正在运行的DLL。
+
+### 付款观察器失效边界与修复候选
+
+本场只显式启用natural_phase，其余8个研究族保持关闭；付款窗口起初独立读回已admitted，随后第1日即返回 **`snapshot_read_failed`**、窗口关闭、采样epoch2且journal清空。此后不自动重开。空records **不能证明没有付款**，本场qualified boarding debit、loss/refill cause ledger仍未通过，maintenance仍unclosed。
+
+离线源码已定位：`bridge.cpp`把完整语义快照暂不可读直接视为付款窗口身份失效，调用Invalidate并清空journal；具体首次失败的缓存分支未保留，不能追认是哪一个。候选改为仅在已admitted窗口下读取当前exact `.4` adapter的fresh core identity，再走原owner/map/alive/connection/date/natural守卫；失败仍关闭，不借旧snapshot、不发布partial、不增加revision，也不自动打开窗口。外置三文件patch只通过 `git apply --check`，**未整合、未编译、未运行**；还需真实 `.4` adapter解包smoke及窄连接回归，然后新生产DLL和合法新现场。候选索引为工作根 `capability-lane/payment-window-snapshot-diagnostic-a01/ROOT-DELIVERY.actual-a01.json`，SHA `2378272008c7f6d44a8c54700cde2fcde9d6b238cf01a771bb05920703591bfb`。
+
+另一条离线来源研究已闭合exact `.4` physical refill writer：core RVA`2A98AC0`，请求计算`262C9B0`；实际ADD为`2A98B88`的`add dword ptr [rax-0xC],edx`，目标为Regiment+`1C+physical_ordinal*24`，与槽内qindex不同。后续`2A98BEF`另有清零；Army刷新`24E8100`→缓存`2633320`，`26338A0/26338A3`写ArRg当前/最大缓存。整个callback净差不能替代某条ADD的执行账。来源包为工作根 `capability-lane/regular-core-writers-source-a01/ROOT-DELIVERY.actual.json`，SHA `78c24703ddff7155b333ff8db107d9a5727697024469ee2694fca59095b549d5`；只授静态来源定位，尚无新的指令执行探针或实机补员归因。其他机器复用上述知识时必须先匹配EXE tuple。
+
+### 原片、保存、退出与保留期限
+
+唯一原片 `raw-payment-window-a01/raw.mkv` 为 **2,658,761,575B**，SHA `ffa85d42cbcede70a7ddf19a4c02d0e9051df0953c19c16068016ef45a89b9b3`；实际ffprobe为 **900秒、2560×1440、30fps、单H.264流、无音轨**。FFmpeg返回0且Job进程0；这是15分钟原始录像，不是15分钟合格镜头，尚无连续clean认证、全片1×人工观看或signoff。`media-probe.actual-a01.json`沿用已保全的原片SHA，未重哈希整片。
+
+11:17Z正常存档 `state-a01/profile/save games/xar_checkpoint.ck3` 保存成功，68,450,356B，SHA `be327216d366627c46effe1f976f1f479899276a02c88e2511591d6cf732e881`，raw53145048；immutable seed仍为原始53144616。该新checkpoint尚未冷载验收。11:19:14Z保留的原进程HANDLE signaled/exit0，随后session退出且Job在任何termination前已为0、tree_gone、SDK/keeper已停；11:19:49Z显示恢复1024×768，11:20:25Z任务总线CAS5353→5354释放完成。证据为 `stock-normal-exit-a01/observer-result.actual.json`、本run `bootstrap-result.json`、`display-restore.actual-a01.json`、`screen-release.actual-a01.json`，不外推为typed native normal-exit能力合格。
+
+11:21Z收口容量实际C空闲33,267,949,568B、D空闲22,745,317,376B。当前checkpoint、原片与故障关键证据保护至 **2026-10-16T07:45:01.597Z复核**，用途为Review02接续及观察器修复，不无限续存。下一次开机前仍须新鲜本机离线证据、容量准入及新PID身份；新片费用、损耗/补员、Halt/改道及同T0 A/B/C等研究缺口未被这些原片抵扣。
