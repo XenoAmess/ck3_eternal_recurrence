@@ -4,17 +4,23 @@
 - 迁移至 CK3 1.20.0.4；仍需《溥天之下》。新开单人存档为推荐使用方式。
 - 跟进新版【提议附庸】的接受度公式。普通统治者继续采用新版原版公式；后朝在品级差大于一级时保留固定 +10，取消现任中华霸权专属优惠，并恢复高阶诸侯的原版拒绝项。
 - 【新近自立】仍为 -50，持续 1825 日，绑定实际脱离诸侯的主头衔与确切后朝头衔；双方换君不能绕过，到期后恢复正常外交。
+- 修复九种本地化中【新近脱离旧朝】接受度理由的有符号 VALUE 数值显示，正确显示 -50；处罚机制和 1825 日期限不变。
 - 跟进新版三省六部预算标记，让最近失去天命的后朝继续符合预算资格；保留天朝政体要求、唯一官署资格和原版任免规则。
 - 同步新版群雄割据的重组与改国号顺序；继续保留旧天子的个人领地，以及留朝忠臣的主头衔、国号和下级封臣树。
 - 同步新版【宣称天命】条件；后朝持有者仍不能宣称天命。【宣称复辟】继续引用原版 51% 门槛并执行原版天命效果，最后销毁自己的后朝头衔。
+- 修复后朝设为主头衔后的继承法补齐，缺失时幂等恢复单继承人合同；其他个人头衔仍按原规则继承。
 - 延续后朝单继承人、同一头衔跨代恢复及既有后朝的幂等迁移。旧割据存档不补造历史释放名单；本次更新不保证跨游戏大版本存档兼容。
 - 九种本地化和 89 个标准朝号保留。其他 mod 覆写相同裂解、天命、三省六部或附庸定义时仍可能产生加载顺序冲突。
+- 本轮在 CK3 1.20.0.4 简体中文实机检查后朝继承、忠臣封臣树、官署、50%／51% 决议门槛及实际复辟；未重跑历史完整回归矩阵。
 
 - Updates the mod for CK3 1.20.0.4; All Under Heaven is still required. New single-player games are recommended.
 - Adopts the new vanilla Offer Vassalization formula for ordinary rulers. A Later Dynasty keeps a fixed +10 when the rank gap exceeds one tier, receives no reigning Chinese Hegemony privileges, and retains vanilla high-tier refusal reasons.
 - Recently Independent remains -50 for 1,825 days, bound to the released lord's primary title and the exact Later title. Ruler changes cannot bypass it; normal diplomacy returns after expiry.
+- Fixes the signed VALUE placeholders in the newly independent acceptance reason across all nine localization files, displaying -50 correctly; the penalty mechanism and 1,825-day duration are unchanged.
 - Follows the new ministry-budget flag while retaining celestial-government requirements, the latest Later Dynasty's exclusive ministry entitlement, and vanilla appointment rules.
 - Follows the new Chaos reorganization and realm-name order while preserving the former emperor's personal land and loyalists' titles, names, and subordinate realms.
 - Refreshes Claim the Mandate's vanilla conditions while keeping Later rulers locked out. Proclaim the Restoration still uses the vanilla 51% threshold and Mandate effects, then removes the ruler's Later titles.
+- Restores the Later title's single-heir law if it is missing after the final primary-title transition; other personal titles keep their normal succession rules.
 - Retains single-heir succession, same-title recovery and idempotent migration for existing marked Later titles. Historic release lists are not invented for old Chaos saves; cross-major-version save compatibility is not guaranteed.
 - Retains nine localization languages and 89 standard dynasty names. Mods overriding the same Chaos, Mandate, ministry or vassalization definitions may still conflict by load order.
+- This update was checked in Chinese on CK3 1.20.0.4 for Later-Dynasty succession, loyalist realms, ministries, the 50%/51% decision boundary and an actual restoration. The full historical regression matrix was not repeated.

@@ -4,15 +4,15 @@
 [b]把重复而确定的操作交给决议：自动防御召援、批量改信、牵制索款、赎囚与附条件释放，同时保留一期的行政继任和禁转封优化。[/b]
 [b]Turn repetitive, deterministic chores into decisions: defensive calls, realm conversions, hook payments, ransoms and conditional releases, alongside the original appointment and vassal-transfer improvements.[/b]
 
-Draft 1.1.1 · Target CK3 1.20.0.4 · New live acceptance pending
-草稿 1.1.1 · 目标 CK3 1.20.0.4 · 新版实机验收待完成
+1.1.1 · CK3 1.20.0.4 compatibility maintenance
+1.1.1 · CK3 1.20.0.4 兼容维护
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/3ecba400af0b4c985059459eb3215d169c6b3a53/mod_xenoamess_quality_of_life/thumbnail.png[/img]
 
-[h1]1.20 维护候选 / 1.20 Maintenance Candidate[/h1]
+[h1]1.20 兼容维护 / 1.20 Compatibility Update[/h1]
 
-相对 1.1.0，本候选重投影新版任命文件，保留原版计分、等级与冷却；适配行政机制、改信及条件释放的接受度和原生礼仪上下文；修正 recipient 报价与足额钱包判断，并采用新版普通赎金值。生产业务 ID、三独立开关和九语文案保持，发行文件由 24 增为 27。
-Relative to 1.1.0, this candidate refreshes appointment projections while retaining current vanilla scoring, tiers and cooldowns; updates administrative, conversion and conditional-release contexts; corrects recipient/full-wallet quote checks; and adopts the current ordinary ransom value. Existing business IDs, three independent toggles and nine localization texts remain. The release inventory grows from 24 to 27 files.
+相对 1.1.0，本次更新重投影新版任命文件，保留原版计分、等级与冷却；适配行政机制、改信及条件释放的接受度和原生礼仪上下文；修正 recipient 报价与足额钱包判断，并采用新版普通赎金值。生产业务 ID、三独立开关和九语文案保持，发行文件由 24 增为 27。
+Relative to 1.1.0, this update refreshes appointment projections while retaining current vanilla scoring, tiers and cooldowns; updates administrative, conversion and conditional-release contexts; corrects recipient/full-wallet quote checks; and adopts the current ordinary ransom value. Existing business IDs, three independent toggles and nine localization texts remain. The release inventory grows from 24 to 27 files.
 
 [h1]三个独立开关 / Three Independent Toggles[/h1]
 
@@ -48,8 +48,8 @@ These decisions only process AI targets that pass the matching vanilla interacti
 
 [h1]兼容性 / Compatibility[/h1]
 
-历史 1.1.0 在 CK3 1.19.0.6 验收；后续 1.20.0.2 的天朝、行政及付款范围有独立有界实证。本候选目标为 1.20.0.4，新实机场景、正式兼容声明与发布均待完成。新准备的付款夹具不代称所有任命、滑条、宗教门禁、防御及 GUI 已通过。推荐单人存档；本候选未新增必须执行的迁移程序，更新前保留备份。
-The historical 1.1.0 release was tested on CK3 1.19.0.6. Later Celestial, Administrative and payment scenes have bounded 1.20.0.2 evidence. This candidate targets 1.20.0.4; its new live scene, formal declaration and publication remain pending. The prepared payment fixture does not certify every appointment, slider, religious gate, defense path or GUI. Single-player is recommended. No mandatory migration procedure is added by this candidate; preserve a backup before updating.
+面向 CK3 1.20.0.4，采用缩减范围的迁移关键路径测试及既有有界实证。滑条已记录保存 100 后关闭重开读回；恢复原值后重开、取消、0 值及提示边界未补测。贤能任命仅验证两类法系加载与候选池，未补验实际任命和继任。未进行完整 UI 或全功能矩阵复验。推荐单人存档；没有新增必须执行的迁移程序，更新前保留备份。
+For CK3 1.20.0.4, validation covers migration key paths and existing bounded evidence. The slider has recorded saving 100 and reading it back after reopening; reopen after restoring the original value, cancellation, zero and tooltip edges were not rerun. Meritocratic appointments cover loading both law types and their candidate pools; actual appointment and succession were not revalidated. Full UI and feature-matrix retesting was not performed. Single-player is recommended. No mandatory save migration is added; back up before updating.
 
 自动继任功能会按相同相对路径覆盖原版的三份 appointment 文件，因此与改写下列文件的其他 mod 不兼容：
 Automatic appointments replace these three vanilla files at the same relative paths and are therefore incompatible with other mods that replace them:

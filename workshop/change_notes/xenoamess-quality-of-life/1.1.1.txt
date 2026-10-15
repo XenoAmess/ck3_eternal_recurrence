@@ -14,6 +14,8 @@ XenoAmess的体验优化 1.1.1 — CK3 1.20.0.4 兼容维护
 
 兼容与存档：本次更新没有新增必须执行的存档迁移步骤，更新前保留备份。自动继任仍覆盖 common/succession_appointment 的三份 governor 文件，与同路径覆盖 mod 不兼容。现有款牵制索款仍要求目标金钱大于 1，现有款赎囚仍要求愿意付款者至少 1 金钱；所有目标仍须满足原版战争、宗教、囚禁、关系与冷却条件。
 
+验收范围：本次采用 CK3 1.20.0.4 的迁移关键路径测试及既有有界实证。滑条已记录保存 100 后关闭重开读回；恢复原值后重开、取消、0 值及提示边界未补测。贤能任命仅验证两类法系加载与候选池，未补验实际任命和继任。未进行完整 UI 或全功能矩阵复验。
+
 XenoAmess Quality of Life 1.1.1 — CK3 1.20.0.4 compatibility maintenance
 Changes relative to the previous public version, 1.1.0.
 
@@ -29,3 +31,5 @@ Changes:
 • Splits handwritten effects by purpose and adds a separate quote-value file, taking the release inventory from 24 to 27 files. Existing effect IDs, three default-off toggles, bulk-action entries and all nine localization texts are retained.
 
 Compatibility and saves: this update adds no mandatory migration procedure; preserve a backup before updating. Automatic appointments still replace the three governor files under common/succession_appointment and conflict with other replacements at those paths. Partial hook payment still requires more than one gold; partial ransom requires a willing payer with at least one gold. Vanilla war, faith, imprisonment, relationship and cooldown eligibility still applies.
+
+Validation scope: this release uses CK3 1.20.0.4 migration key paths and existing bounded evidence. The slider has recorded saving 100 and reading it back after reopening; reopen after restoring the original value, cancellation, zero and tooltip edges were not rerun. Meritocratic appointments cover loading both law types and their candidate pools; actual appointment and succession were not revalidated. Full UI and feature-matrix retesting was not performed.
