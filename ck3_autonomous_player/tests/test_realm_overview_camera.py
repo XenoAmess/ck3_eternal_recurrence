@@ -117,8 +117,10 @@ def test_wire_layout_and_latest_only_publication_without_driver(monkeypatch):
     client, shared = client_fixture()
     source = {"game_version": "1.20.0.4", "executable_sha256": EXACT_SHA}
     first = client.submit({"mode": "realm", "reason": "peace"}, payload()["source_frame"], source)
+    assert abs(shared.request.padding - .32) < 1e-6
     second = client.submit({"mode": "hotspot", "title_key": "b_bari"},
                            payload(1)["source_frame"], source)
+    assert abs(shared.request.padding - .15) < 1e-6
     assert first["request_sequence"] == 2 and second["request_sequence"] == 4
     assert shared.request.mode == 2 and shared.request.title_key == b"b_bari"
     assert shared.request.hwnd == 4242 and shared.request.expires_uptime_ms == 19000

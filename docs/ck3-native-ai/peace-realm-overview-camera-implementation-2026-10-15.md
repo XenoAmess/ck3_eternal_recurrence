@@ -7,7 +7,7 @@
 - 连续 30 个游戏日没有战争热点、强制选择、事件、待处理交互或活动军队需求，自动请求全境镜头。30 日是游戏日期差（每游戏日 24 raw units），不是墙钟等待；同日重复回合不累计。和平期静止的军队不阻止展示。
 - 全境来自当前角色和封臣契约递归枚举到的实际县头衔；县 ID 去重后，各县原生地图边界取并集。飞地、跨海的领地均进入包围盒，不用主头衔法理范围代替。继承换角、连接 generation/episode 变化、日期回退都会重置安静期。
 - 战斗、围城、行军等已有热点立即优先；事件和强制选择取消待展示的全境意图。新热点换县才重新定位，和平全境每 30 游戏日刷新实际县集和边界；当前没有可复用的领土变化 revision，所以不声称和平领土改变已实现逐帧即时刷新。
-- 镜头目标按实际 CK3 客户区尺寸、横纵比例与 15% 留白扩展范围，再选该 exact build 的原生 title-map zoom bucket。原生 camera canonicalizer 验证目标坐标，直接更新既有 target/zoom 字段，正常 native camera update 负责插值。回执明确区分排队、已提交、已稳定、取消、过期/换角、被热点抢占、不可用和目标被改变。
+- 镜头目标按实际 CK3 客户区尺寸、横纵比例与留白扩展范围，再选该 exact build 的原生 title-map zoom bucket。N42 的 SDK P03 将全境模式留白从 15% 调为 32%，热点模式仍为 15%，详见下节增补。原生 camera canonicalizer 验证目标坐标，直接更新既有 target/zoom 字段，正常 native camera update 负责插值。回执明确区分排队、已提交、已稳定、取消、过期/换角、被热点抢占、不可用和目标被改变。
 - 悬浮窗消费异步镜头摘要，展示全境/战争热点、原生回执、县数，并将模式或回执变化加入滚动记录。排队 ACK 与旧请求的 settled 回执不能变成本次成功。
 
 ## 独立通道与性能边界
@@ -38,6 +38,14 @@ Python worker 保留首个待处理请求的 eligible_at，后续意图只替换
 - 当前缩放依据是 **native bucket + viewport padding 的估算**。尚无已验收的 native world-to-screen/projection 查询，因此 `coverage_verified` 恒为 false。`settled` 只证明新目标与当前相机状态读回一致；不能证明全部县像素都在可见地图区域，也不能声称最大缩放装不下时已可靠返回 `cannot_fit`。
 - 强制普通事件/交互在原生执行前复核；通用 modal 的新鲜提示由已有 planner frame 驱动取消。尚未实机证明所有模态变体出现到展示取消的延迟。地图边界 canonicalizer 改变 X/Z 的情况返回 unavailable，不假称全境成功。
 - 不改变宣战、战争胜负、建设或事件选择策略，不生成 gameplay credit。
+
+## N42 SDK P03 全境留白增补
+
+N42 已由主任务冷载 candidate03。录制场景中的右侧决策文本从画布 X=1770 起，宽 760 px；2560 px 画布上，原来的 15% 名义留白不能避开该区域。原生模型目前不读取悬浮窗/OBS 的遮挡矩形，也不改变全境中心，因此不能以镜头稳定代替全境可见。
+
+本次只将 Python 请求中 `mode=realm` 的 padding 从 `.15` 调为 `.32`，热点、只读查询和取消仍为 `.15`。原生现有协议支持此值，无需重编 Native 或重启 Game；只纳入新的 SDK P03，已跑过的 P01/P02 和 Native 原件不修改。该调整增加原生 zoom bucket 的估算范围；仍须和平窗口的桌面 1/录制场景实际图像验证，`coverage_verified` 继续为 false，不声称 32% 已构成像素级避让保证。
+
+同一 Game 串行更换 SDK 不会重置共享 request_sequence：新客户端打开已有 mapping，从其当前序号加二再发布。Native runtime 在 WorkerMain 的连接循环外存活；SDK reconnect 不会重新初始化 mapping。应保持一个活跃展示 writer，避免两个 SDK 同时覆盖共享请求。SDK 本地和平累计计时会随 Service 重建开始新的一轮。
 
 ## 离线验证与后续实机门槛
 

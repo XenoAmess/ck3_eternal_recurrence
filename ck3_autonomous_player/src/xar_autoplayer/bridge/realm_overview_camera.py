@@ -183,7 +183,7 @@ class NativeCameraPresentationClient:
             request = _Request(mode=modes[intent["mode"]], actor=frame["actor_character_id"],
                                date_raw=frame["date_raw"],
                                expires_uptime_ms=self._kernel.GetTickCount64() + 10000,
-                               hwnd=self._hwnd, padding=.15)
+                               hwnd=self._hwnd, padding=.32 if intent["mode"] == "realm" else .15)
             key = str(intent.get("title_key", "")).encode("ascii")
             if len(key) >= 128:
                 raise ValueError("hotspot title key exceeds presentation channel limit")
