@@ -1,0 +1,4 @@
+# Exact later-close artifacts only.
+r0176-closed-append-originals.zip -text
+ARCHIVE-INDEX.json -text
+REPLAY.actual-a01.json -text

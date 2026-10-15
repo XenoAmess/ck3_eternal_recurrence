@@ -1,0 +1,133 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T17:12:05.758377+00:00",
+  "gui": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_military.gui",
+    "bytes": 111608,
+    "sha256": "4f5523d249c2e0a4d3c328d789ca375f154c2e102544782480936b4206c57eac"
+  },
+  "manifest": {
+    "path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "bytes": 4285,
+    "sha256": "c147ebb9c686a5dc00c21790b52299cbc3516fb121caa7d4386fc0c844a9e3f0"
+  },
+  "reuse_EXE_identity": "C:/ck3-e04-resume-20261015-a01/frozen-game-12004/IDENTITY.actual.json",
+  "selected_gui_source": [
+    {
+      "begin_line": 480,
+      "end_line": 500,
+      "lines": [
+        "\t\t\t\t\tusing = Background_Area",
+        "\t\t\t\t}",
+        "",
+        "\t\t\t\thbox = {",
+        "\t\t\t\t\tlayoutpolicy_horizontal = expanding",
+        "\t\t\t\t\tvisible = \"[Not( GetPlayer.GetGovernment.HasRule( 'conditional_maa_refill' ))]\"",
+        "",
+        "\t\t\t\t\tbutton_checkbox_label = {",
+        "\t\t\t\t\t\tonclick = \"[MilitaryView.OnMilitaryReinforcementClick]\"",
+        "\t\t\t\t\t\ttooltip = \"[MilitaryView.GetMilitaryReinforcementCostTooltip]\"",
+        "",
+        "\t\t\t\t\t\tblockoverride \"checkbox\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\tchecked = \"[MilitaryView.IsMilitaryReinforcementsEnabled]\"",
+        "\t\t\t\t\t\t}",
+        "",
+        "\t\t\t\t\t\tblockoverride \"text\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\ttext = \"MONTHLY_REINFORCEMENT_COST_LABEL\"",
+        "\t\t\t\t\t\t\tmax_width = 300",
+        "\t\t\t\t\t\t}"
+      ]
+    },
+    {
+      "begin_line": 485,
+      "end_line": 505,
+      "lines": [
+        "\t\t\t\t\tvisible = \"[Not( GetPlayer.GetGovernment.HasRule( 'conditional_maa_refill' ))]\"",
+        "",
+        "\t\t\t\t\tbutton_checkbox_label = {",
+        "\t\t\t\t\t\tonclick = \"[MilitaryView.OnMilitaryReinforcementClick]\"",
+        "\t\t\t\t\t\ttooltip = \"[MilitaryView.GetMilitaryReinforcementCostTooltip]\"",
+        "",
+        "\t\t\t\t\t\tblockoverride \"checkbox\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\tchecked = \"[MilitaryView.IsMilitaryReinforcementsEnabled]\"",
+        "\t\t\t\t\t\t}",
+        "",
+        "\t\t\t\t\t\tblockoverride \"text\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\ttext = \"MONTHLY_REINFORCEMENT_COST_LABEL\"",
+        "\t\t\t\t\t\t\tmax_width = 300",
+        "\t\t\t\t\t\t}",
+        "\t\t\t\t\t}",
+        "",
+        "\t\t\t\t\texpand = {}",
+        "\t\t\t\t}",
+        ""
+      ]
+    },
+    {
+      "begin_line": 890,
+      "end_line": 910,
+      "lines": [
+        "\t\t\t\t\tusing = Background_Area",
+        "\t\t\t\t}",
+        "",
+        "\t\t\t\thbox = {",
+        "\t\t\t\t\tlayoutpolicy_horizontal = expanding",
+        "\t\t\t\t\tvisible = \"[Not(GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' ))]\"",
+        "",
+        "\t\t\t\t\tbutton_checkbox_label = {",
+        "\t\t\t\t\t\tonclick = \"[MilitaryView.OnMilitaryReinforcementClick]\"",
+        "\t\t\t\t\t\ttooltip = \"[MilitaryView.GetMilitaryReinforcementCostTooltip]\"",
+        "",
+        "\t\t\t\t\t\tblockoverride \"checkbox\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\tchecked = \"[MilitaryView.IsMilitaryReinforcementsEnabled]\"",
+        "\t\t\t\t\t\t}",
+        "",
+        "\t\t\t\t\t\tblockoverride \"text\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\ttext = \"MONTHLY_REINFORCEMENT_COST_LABEL\"",
+        "\t\t\t\t\t\t}",
+        "\t\t\t\t\t}"
+      ]
+    },
+    {
+      "begin_line": 895,
+      "end_line": 915,
+      "lines": [
+        "\t\t\t\t\tvisible = \"[Not(GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' ))]\"",
+        "",
+        "\t\t\t\t\tbutton_checkbox_label = {",
+        "\t\t\t\t\t\tonclick = \"[MilitaryView.OnMilitaryReinforcementClick]\"",
+        "\t\t\t\t\t\ttooltip = \"[MilitaryView.GetMilitaryReinforcementCostTooltip]\"",
+        "",
+        "\t\t\t\t\t\tblockoverride \"checkbox\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\tchecked = \"[MilitaryView.IsMilitaryReinforcementsEnabled]\"",
+        "\t\t\t\t\t\t}",
+        "",
+        "\t\t\t\t\t\tblockoverride \"text\"",
+        "\t\t\t\t\t\t{",
+        "\t\t\t\t\t\t\ttext = \"MONTHLY_REINFORCEMENT_COST_LABEL\"",
+        "\t\t\t\t\t\t}",
+        "\t\t\t\t\t}",
+        "",
+        "\t\t\t\t\texpand = {}",
+        "\t\t\t\t}",
+        "",
+        "\t\t\t\thbox = {"
+      ]
+    }
+  ],
+  "MCP_action_executed": false,
+  "desktop_or_game_process_contacted": false,
+  "external_source_review_due_utc": "2026-10-16T07:45:01.597Z",
+  "app_manifest_binding": {
+    "appid": "1158310",
+    "buildid": "25734779",
+    "installdir": "Crusader Kings III"
+  }
+}

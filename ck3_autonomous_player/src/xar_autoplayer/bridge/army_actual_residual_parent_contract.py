@@ -1,5 +1,6 @@
 """Typed source at a natural residual writer; no loss or whole-army inference."""
 from __future__ import annotations
+from .army_actual_residual_siege_budget_contract import normalize_residual_siege_budget_v1
 
 _KEYS={
  'parent_kind','invocation_token','native_thread_id','nesting_depth','parent_invocation_token',
@@ -15,7 +16,7 @@ def _integer(v,label,bits=32,unsigned=False,optional=False):
     return v
 
 def normalize_actual_residual_parent_v1(value:object,name='residual_parent_context_v1')->dict:
-    if not isinstance(value,dict) or set(value)!=_KEYS:raise ValueError(name+' schema mismatch')
+    if not isinstance(value,dict) or set(value)-{'siege_budget_at_allocator_v1'}!=_KEYS:raise ValueError(name+' schema mismatch')
     out=dict(value)
     for key in ('invocation_token','parent_invocation_token','allocator_caller_return_rva'):
         out[key]=_integer(value[key],name+'.'+key,64,True,key!='invocation_token')
@@ -46,4 +47,10 @@ def normalize_actual_residual_parent_v1(value:object,name='residual_parent_conte
             if pc is None or not 0x24E3410<pc<0x24E3A3C or out['enclosing_parent_kind']!=1:
                 raise ValueError(name+' periodic call mismatch')
         else:raise ValueError(name+' unknown cannot be complete')
+    if 'siege_budget_at_allocator_v1' in value:
+        if (out['request_source']!='periodic_callback' or
+                out['allocator_caller_return_rva']!=0x24E37B3 or out['flags_raw']!=0):
+            raise ValueError(name+' siege budget outside actual combined residual call')
+        out['siege_budget_at_allocator_v1']=normalize_residual_siege_budget_v1(
+            value['siege_budget_at_allocator_v1'],name+'.siege_budget_at_allocator_v1')
     return out

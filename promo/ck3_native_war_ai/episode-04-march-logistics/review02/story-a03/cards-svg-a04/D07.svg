@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>平分迁移整条兵团记录</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D07&quot;, &quot;paragraph_ids&quot;: [&quot;C05-06&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;296C2F0&quot;, &quot;296B240&quot;, &quot;296B6C0&quot;], &quot;title&quot;: &quot;平分迁移整条兵团记录&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="690" lengthAdjust="spacingAndGlyphs">平分迁移整条兵团记录</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D07</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="830" lengthAdjust="spacingAndGlyphs">原生规则图解  ·  原生规则图解；字母块仅表示完整记录</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="756" lengthAdjust="spacingAndGlyphs">普通路径不把每个持久兵槽切半</text>
+<rect x="112" y="425" width="838" height="355" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<rect x="1220" y="425" width="1228" height="355" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="145" y="491" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="342" lengthAdjust="spacingAndGlyphs">拆分前：完整记录块</text>
+<text x="1250" y="491" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="380" lengthAdjust="spacingAndGlyphs">拆分后：迁移整条记录</text>
+<rect x="145" y="565" width="220" height="120" fill="#D9C39B" stroke="#CBA56A" stroke-width="2"/>
+<text x="197" y="630" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#3E2C20" textLength="116" lengthAdjust="spacingAndGlyphs">记录 A</text>
+<rect x="395" y="565" width="220" height="120" fill="#D9C39B" stroke="#CBA56A" stroke-width="2"/>
+<text x="448.5" y="630" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#3E2C20" textLength="113" lengthAdjust="spacingAndGlyphs">记录 B</text>
+<rect x="645" y="565" width="220" height="120" fill="#D9C39B" stroke="#CBA56A" stroke-width="2"/>
+<text x="698.5" y="630" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#3E2C20" textLength="113" lengthAdjust="spacingAndGlyphs">记录 C</text>
+<rect x="1250" y="550" width="240" height="120" fill="#D9C39B" stroke="#CBA56A" stroke-width="2"/>
+<text x="1312" y="613" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#3E2C20" textLength="116" lengthAdjust="spacingAndGlyphs">记录 A</text>
+<rect x="1530" y="550" width="240" height="120" fill="#D9C39B" stroke="#CBA56A" stroke-width="2"/>
+<text x="1593.5" y="613" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#3E2C20" textLength="113" lengthAdjust="spacingAndGlyphs">记录 B</text>
+<rect x="1920" y="550" width="240" height="120" fill="#D9C39B" stroke="#CBA56A" stroke-width="2"/>
+<text x="1983.5" y="613" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#3E2C20" textLength="113" lengthAdjust="spacingAndGlyphs">记录 C</text>
+<text x="1260" y="736" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#BBA98D" textLength="68" lengthAdjust="spacingAndGlyphs">原军</text>
+<text x="1940" y="736" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#BBA98D" textLength="68" lengthAdjust="spacingAndGlyphs">新军</text>
+<polyline points="975,620 1195,620" fill="none" stroke="#CBA56A" stroke-width="5"/>
+<polygon points="1195,620 1179.034,628.312 1179.034,611.688" fill="#CBA56A"/>
+<text x="135" y="883" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="700" fill="#CBA56A" textLength="1137" lengthAdjust="spacingAndGlyphs">新Army的stock字段复制原值；后续容量与实际库存独立读取。</text>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="685" lengthAdjust="spacingAndGlyphs">段号：C05-06   ·   source：296C2F0 / 296B240 / 296B6C0</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="669.938" lengthAdjust="spacingAndGlyphs">两边UI人数不保证严格各半，实际DATA与统帅仍须读回。</text>
+</svg>

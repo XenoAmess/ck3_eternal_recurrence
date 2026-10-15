@@ -81,3 +81,8 @@ canonical R0173 archive的真实 `day21-final.json`（149329B，SHA `94bf905d0b4
 ## 2026-10-15 后续source候选：精确residual父调用
 
 [县residual parent scope](army-county-residual-parent-scope-12004.md) 已完成新的有限353B源读取与defaultOFF候选，选用非零continuation2A957E8，和R05共用typed TLS token。它可把自然allocator的真实直属county return24E2630与周期callback receiver分开，仍沿用现有writer物理账本。三个最终TU syntax与七项Python synthetic-wire消费已通过；native fixture执行、生产compile/link与实机parent source仍NOT_RUN。当前a05及本专题上文的实际归因边界保持不变，不能因源码候选把旧residual回执改判成county。
+
+
+## 后续：residual触发与零样本边界
+
+[actual4完整分支与现场recipe](episode04-county-entry-residual-branches-12004.md)说明B/S_pref预选、修正多层取整、flags0单pass及当前detour不可见的零/无writer负例。该source增量不改strict DTO/consumer，不授新的实机扣兵或完整county/periodic总额。

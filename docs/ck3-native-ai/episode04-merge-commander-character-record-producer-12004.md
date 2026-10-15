@@ -1,5 +1,7 @@
 # Episode 04：actual .4 合军、旧统帅与角色 ArRg 出生路径
 
+2026-10-16 更新：actual `.4` 的 `2633ED0` 已补闭完整243B，split secondary executor `296C2F0` 已取得完整2819B普通体。完整分片、空 DATA 构造器、portable source replay 与现场断言见 [actual .4 拆半源码专题](episode04-split-half-source-12004.md)。下文保留 a02 当时的采集与流程边界；“未读/partial”描述的是该轮历史状态。
+
 本页补充 [特殊兵、拆分合并合同](episode04-special-troops-split-merge-12004.md)。状态是 **exact .4 静态源码与离线候选接口**；没有新增实机样本，不把该分支解释成每次合军必然发生，也不追认历史 B 的角色身份。
 
 本次来源机器 `machine_id: desktop-3fevhd2-1c74096080`。观察日期 2026-10-15 UTC，精确起止时间在下述逐次 READ 回执。代码基线 `1463bd9b4b89612d283dd45ac4ec9efbf22f048d`；CK3 1.20.0.4 / Steam build 25734779，EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。复用 Root 对 `frozen-game-12004/IDENTITY.actual.json` 的整文件校验；各次有限读取前后核对 size/mtime/ctime/device/file ID，没有再次整哈希或扫描 EXE。

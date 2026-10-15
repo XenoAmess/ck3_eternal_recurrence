@@ -1,5 +1,6 @@
 #include "xar_bridge/frontend_gui_result_v1.hpp"
 #include "xar_bridge/protocol.hpp"
+#include "xar_bridge/ck3_12004_generic_gui.hpp"
 
 namespace xar::ck3_11906 {
 namespace {
@@ -70,6 +71,11 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
   result += inspection.truncated ? "true" : "false";
   result += ",\"widget_count\":";
   result += Number(inspection.widget_count);
+  if (inspection.standard_click_bindings_12004) {
+    result += ",\"callback_binding_source_12004\":{\"executable_sha256\":";
+    AppendJsonString(result, ck3_12004::kExecutableSha256);
+    result += ",\"button_base_slot13_rva\":61476128,\"group_dispatch_rva\":61471280,\"input_modifier\":0}";
+  }
   result += ",\"widgets\":[";
   for (std::size_t index = 0; index < inspection.widget_count; ++index) {
     if (index != 0) result += ',';
@@ -88,6 +94,32 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
     result += widget.effective_visible ? "true" : "false";
     result += ",\"enabled\":";
     result += widget.enabled ? "true" : "false";
+    if (inspection.standard_click_bindings_12004) {
+      const auto &binding = widget.standard_click_binding_12004;
+      if (binding.callbacks.size() > 256 ||
+          (!binding.button_base_slot13 && (!binding.callbacks.empty() || binding.primary_group)) ||
+          (binding.primary_group && binding.callbacks.empty()))
+        return GenericGuiCommandResultFrameV1(request_id, step, false, "invalid standard click callback binding");
+      result += ",\"standard_click_binding_12004\":{\"button_base_slot13\":";
+      result += binding.button_base_slot13 ? "true" : "false";
+      result += ",\"group\":";
+      AppendJsonString(result, !binding.button_base_slot13 ? "not_button_base" :
+                       binding.primary_group ? "primary" : "fallback");
+      result += ",\"callbacks\":[";
+      for (std::size_t callback_index = 0; callback_index < binding.callbacks.size(); ++callback_index) {
+        if (callback_index != 0) result += ',';
+        const auto &callback = binding.callbacks[callback_index];
+        if (callback.index != callback_index || callback.callback_vtable_rva == 0 ||
+            callback.callback_vtable_rva > ck3_12004::kGuiImageSize12004V1 - 24U ||
+            callback.callback_slot2_rva == 0 ||
+            callback.callback_slot2_rva >= ck3_12004::kGuiImageSize12004V1)
+          return GenericGuiCommandResultFrameV1(request_id, step, false, "callback target outside exact image");
+        result += "{\"index\":" + Number(callback.index) +
+            ",\"callback_vtable_rva\":" + Number(callback.callback_vtable_rva) +
+            ",\"callback_slot2_rva\":" + Number(callback.callback_slot2_rva) + '}';
+      }
+      result += "]}";
+    }
     result += '}';
     if (!xar::ck3_11906::NamedGuiTreeInspectionFrameBytesFitV1(result.size() + 3U))
       return GenericGuiCommandResultFrameV1(request_id, step, false, "native GUI tree exceeds bounded response byte budget");

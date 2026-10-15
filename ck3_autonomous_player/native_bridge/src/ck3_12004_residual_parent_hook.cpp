@@ -30,11 +30,12 @@ bool ExactZeroBypass(const void *at) noexcept {
 extern "C" std::uintptr_t __fastcall XarActualResidualNonzeroHook12004(
     void *array,std::int32_t budget,std::uint8_t flags) noexcept {
   const auto pc=reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  const auto *natural_return_slot=_AddressOfReturnAddress();
   std::optional<std::uint64_t> caller;
   if(g_image_base&&pc>=g_image_base)caller=pc-g_image_base;
   return InvokeActualResidualNonzeroParent12004(
       {nullptr,&GuardedRead},g_original.load(std::memory_order_acquire),
-      array,budget,flags,caller,GetCurrentThreadId());
+      array,budget,flags,caller,GetCurrentThreadId(),natural_return_slot);
 }
 bool InstallActualResidualParentHook12004(std::uintptr_t base,
     std::string_view sha,bool suspended) noexcept {

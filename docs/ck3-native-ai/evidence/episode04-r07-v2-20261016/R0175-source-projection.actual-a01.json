@@ -1,0 +1,124 @@
+{
+  "existing_source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\state-a01\\native-session\\army-query-history-results\\army-query-ca47f2751ba24f2782f2ecf81d00379f.json",
+  "bytes": 4738729,
+  "hash_not_recomputed": true,
+  "source": {
+    "query_sequence": 2,
+    "queried_date_raw": 53145552,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "native-31254-13a1253fe701"
+  },
+  "army": {
+    "army_id": 18,
+    "native_carmy_id": 18,
+    "current_soldiers": 1196,
+    "maximum_soldiers": 1196,
+    "current_movement_progress": {
+      "status": "available",
+      "source": "native_current_route_edge",
+      "unit_state_raw": 7,
+      "accumulated_movement_weight_raw": 0,
+      "cached_edge_speed_raw": 0,
+      "current_edge_movement_rate_raw": 100000,
+      "native_army_movement_admission": true,
+      "first_route_edge_weight_cost_raw": 3000000,
+      "first_edge_arrival_provider_byte_e_u8": 0,
+      "first_route_target_province_type_tag_u32": 1349676918,
+      "current_province_type_tag_u32": 1349676918,
+      "unit_kind_18_raw_i32": 0,
+      "current_province_definition_byte_1b_u8": 1,
+      "first_route_target_province_definition_byte_1b_u8": 0,
+      "loaded_disembark_penalty_days_rule_i32": 30,
+      "normalized_edge_progress": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "loaded_movement_lock_cutoff": {
+        "raw": 50000,
+        "scale": 100000
+      },
+      "first_route_edge_remaining_duration": {
+        "raw": 3000000,
+        "scale": 100000
+      },
+      "unavailable_reason": null,
+      "committed_route_timeline": {
+        "status": "available",
+        "source": "native_committed_route",
+        "native_duration_scale": 100000,
+        "committed_route_province_ids": [
+          1036,
+          8653,
+          1034,
+          1033
+        ],
+        "native_route_prefix_remaining_days_q100000": [
+          3000000,
+          3525714,
+          4359999,
+          4954284
+        ],
+        "native_full_route_remaining_days_q100000": 4954284,
+        "projected_route_arrival_date_raws": [
+          53146272,
+          53146392,
+          53146608,
+          53146752
+        ],
+        "unavailable_reason": null
+      }
+    }
+  },
+  "related_keys": [
+    "army_update_clock_v1",
+    "current_unit_new_date_schedule_inputs_v1",
+    "current_unit_new_date_callback_entry_inputs_v1",
+    "current_candidate_detachment_mapper_inputs_v1",
+    "current_disembark_penalty_v1",
+    "current_pre_date_character_prefix_inputs_v1",
+    "current_pre_date_dated_append_inputs_v1",
+    "current_pre_date_pending_update_inputs_v1",
+    "current_movement_progress"
+  ],
+  "actual_installed_static_defines": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "lines": [
+        {
+          "line": 613,
+          "text": "\tDISEMBARK_PENALTY_DAYS = 30\t\t\t\t\t\t# How long does an army have a penalty after disembarking?"
+        },
+        {
+          "line": 701,
+          "text": "\tEMBARK_GOLD_COST_PER_HUNDRED = 1\t\t# Embark cost for every hundred units"
+        },
+        {
+          "line": 702,
+          "text": "\tGOLD_COST_MAINTENANCE_MULT = 0.25\t\t# Increase in the gold maintenance for armies that are embarked"
+        },
+        {
+          "line": 703,
+          "text": "\tATTRITION_AFTER_DAYS = 30\t\t\t\t# After embarking the army can expend this time without getting attrition"
+        },
+        {
+          "line": 1189,
+          "text": "\tEMBARK_COST = 30\t\t\t\t\t\t\t\t# This value will be set as pathfinding cost if it goes from land to sea"
+        },
+        {
+          "line": 1190,
+          "text": "\tDISEMBARK_COST = 10\t\t\t\t\t\t\t\t# This value will be set as pathfinding cost if it goes from sea to land"
+        },
+        {
+          "line": 1677,
+          "text": "\tTRAVEL_EMBARK_COST = 15 # The cost in days added to traveling from a land province to a water province"
+        },
+        {
+          "line": 1678,
+          "text": "\tTRAVEL_DISEMBARK_COST = 5 # The cost in days added to traveling from a water province to a land province"
+        }
+      ]
+    }
+  ]
+}

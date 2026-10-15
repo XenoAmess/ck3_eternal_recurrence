@@ -7,6 +7,8 @@ No later query value supplies a historical field.
 """
 from __future__ import annotations
 
+from .army_refill_permission_switch_12004 import normalize_refill_permission_switch_12004
+
 from .army_scoped_ordered_refill_contract import (
     _RAW, _CONTEXT, _MAGIC, _BOOL, _int, _reason,
 )
@@ -53,7 +55,7 @@ def _physical(value: dict, identity: int | None, path: str) -> None:
              path, "physical copy exceeds the seven native slots")
     fields = set(_RAW + _CONTEXT + _MAGIC + _BOOL) | {"context_unavailable_reason"}
     for index, chunk in enumerate(value["chunks"]):
-        _require(type(chunk) is dict and set(chunk) == fields,
+        _require(type(chunk) is dict and set(chunk) in (fields, fields | {'refill_permission_switch_v1'}),
                  path, "physical chunk shape differs from the literal serializer")
         for field in _RAW:
             _int(chunk[field], nullable=False)
@@ -65,6 +67,9 @@ def _physical(value: dict, identity: int | None, path: str) -> None:
             _require(chunk[field] is None or type(chunk[field]) is bool,
                      path, "native predicate must retain bool or null")
         _reason(chunk["context_unavailable_reason"])
+        if "refill_permission_switch_v1" in chunk:
+            normalize_refill_permission_switch_12004(
+                chunk["refill_permission_switch_v1"], owner_full_id=chunk["owner_resolved_full_id"])
         _require(chunk["physical_index"] == index, path, "physical slot order changed")
         for field in ("exclusion_byte_14_raw", "army_byte_1d4_raw", "army_byte_1ec_raw"):
             _require(chunk[field] is None or 0 <= chunk[field] <= 255,

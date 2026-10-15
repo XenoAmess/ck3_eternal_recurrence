@@ -204,3 +204,16 @@ R0174运行source1463/a05，PID17468/create134365505726865638/gen1/episode`nativ
 E4-03采用[实际物理损耗](../../../docs/ck3-native-ai/episode04-siege-loss-12004.md)、[县进入](../../../docs/ck3-native-ai/episode04-county-entry-loss-12004.md)、[低库存](../../../docs/ck3-native-ai/episode04-starvation-loss-12004.md)、[实际补员](../../../docs/ck3-native-ai/episode04-refill-application-12004.md)共同来源，机制与新实机正例分开；E4-05采用[A](../../../docs/ck3-native-ai/episode04-strategy-a-12004.md)/[B](../../../docs/ck3-native-ai/episode04-strategy-b-12004.md)/[C](../../../docs/ck3-native-ai/episode04-strategy-c-12004.md)只读决策consumer和[比较合同](../../../docs/ck3-native-ai/episode04-comparison-contract-12004.md)，新版三臂未复拍，禁止胜负和费用排名。新a05四raw算式500974−0−(218610+0)=282364与钱包吻合只授原始输入，军事维护仍unclosed。
 
 [24段中文草稿/claim-shot-agent映射](review02/story-a02/README.md)是新稿覆盖24/69，不代表最终69段全文或声音完成。本轮追加最新实证，保留该草稿封存时的镜头状态。下一夜间接续窗口优先nativea06及锁定Halt/重定向；核心研究暂估10月17–19日，新Review暂估10月18–21日，均以实际来源/正常场景和后续检查为条件，不是保证。原Review01 28:55.80的制作、机器审计和交付事实保持；所有自动检查与clean/人工完整审阅分别结算。
+
+
+## 2026-10-16 R0175/R0176：锁定行为实证与共用代码入库
+
+本节机器 `desktop-3fevhd2-1c74096080`；观察截止2026-10-15 19:01:28 UTC（10月16日03:01 CST）。两场实际运行source `dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb`、a06 DLL `b7b8cf33742ab60f9b5db439b30b7f83b075d8640bfce2e249c472383d0969d7`、游戏1.20.0.4/build25734779；下一a07源码整合不回填旧场。
+
+R0175独立正常Move后首段进度96666/100000，大于实际锁定线50000；一次Halt将尾段截为原front1036，仍实际走完首段，随后次日保持空路线静止。31代时钟共32自然日。R0176从正常驻定seed新Move，五个自然日后进度95108、剩余25714，原路线 `[8653,1034,1033]`；一次typed改道独立读回 `[8653,8645]`，实际先到8653，再到8645，九代时钟共13自然日。两场均normal exit0、SDK/录制/keeper退场和屏幕CAS释放，原始错误及只读恢复均保留。
+
+研究整卡现为 **R00/R02/R11/R12/R13，5/14＝35.7%**；R03–R13业务实验 **3/11＝27.3%**。各45秒原片均严格全解码通过；R13实际最终抵达回包在录制起点后65.61秒，整体后验完成69.53秒，均在片外。连续clean、人工1×和新版合格动态包仍不增加信用（0/11）。R09暂停态selected93实际拆合保留250/250物理DATA；原Army18空DATA/cache1/1的角色ArRg59被移除，其Char34232成为新军162的实际统帅，合军后成为93统帅；这不是一名物理士兵死亡。原strict unrelated freeze失败保留，R09整卡仍未关闭。
+
+便携原件、严格离线重放与共享专题分别落在 `docs/ck3-native-ai/acceptance/2026-10-16-episode04-r12-r0175/`、`2026-10-16-episode04-r13-r0176/` 和对应 `episode04-r12-locked-halt-r0175-12004.md`、`episode04-r13-locked-reroute-r0176-12004.md`、`episode04-r09-selected93-micro-actual-12004.md`。智能体消费者在 `ck3_autonomous_player/src/xar_autoplayer/bridge/`；视频/Root分阶段组合在本期 `tools/review02/`；不会把外置本机launcher当作通用运行库。source-a03新增13段草稿及9张SVG演示卡，新旧草稿合计37/69，仅为草稿覆盖。
+
+并发完成补员权限与军务callback只读接线、围城/劫掠residual预算、零库存触发窗口、县入境loaded floor读口、四项现金缓存actual writer消费者、特殊兵资格，以及A/B/C分阶段组合。源码和cold资格均独立于下一a07完整构建/新实机；维护费writer、实际补员ADD、R03/R04/R05正因果、费用两fresh-arms与正式ABC仍继续执行，不把计划、ACK或测试数量算作完成。

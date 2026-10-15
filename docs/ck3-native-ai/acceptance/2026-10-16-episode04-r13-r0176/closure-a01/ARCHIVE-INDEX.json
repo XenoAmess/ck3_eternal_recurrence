@@ -1,0 +1,45 @@
+{
+  "schema": "episode04.r0176.r13.closed-append-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "archive": {
+    "path": "r0176-closed-append-originals.zip",
+    "bytes": 8572,
+    "sha256": "5bab7c2624851716eefc1034397316e4590a9f19aa57c3f77840aa33167821a2"
+  },
+  "files": [
+    {
+      "path": "CLOSED.actual-a01.json",
+      "bytes": 2429,
+      "sha256": "67ed6baf3f370fa7480981489c0d541b84e1ed7f1e957a3f086c0d469b6bef05"
+    },
+    {
+      "path": "desktop-3fevhd2-1c74096080--vanilla--R0176/bootstrap-result.json",
+      "bytes": 14278,
+      "sha256": "b37ca790527ab7a639e9e9e5213dc1182d9470a535d4950ac8e1d8bc6dd1f43d"
+    },
+    {
+      "path": "desktop-3fevhd2-1c74096080--vanilla--R0176/responses/022b-terminal-normal-checkpoint.json",
+      "bytes": 20139,
+      "sha256": "2402e49d649a09dc3ed1c053d3e03f78e73b8cdd9b039561b19f4a3749720ad8"
+    },
+    {
+      "path": "display-restore.actual-a01.json",
+      "bytes": 687,
+      "sha256": "ffc664792e55293d48fdad96df09ecad4dd5b0e9cd728bb07dd690a3fa8d83ee"
+    },
+    {
+      "path": "screen-release.actual-a01.json",
+      "bytes": 2680,
+      "sha256": "219353bc87db35f926b562cafc4f0835376146f59738513cbe8b5792377a521c"
+    }
+  ],
+  "prior_R13_qualification": {
+    "path": "../QUALIFICATION.actual-a01.json",
+    "bytes": 2865,
+    "sha256": "df9a2e333eb8f6ca537e0c064232c981b8d31cddeb1c420b4a70fa929d895866"
+  },
+  "later_append_only": true,
+  "prior_R13_ZIP_modified": false,
+  "protected_until_utc": "2026-10-16T07:45:01.597Z",
+  "renewed": false
+}

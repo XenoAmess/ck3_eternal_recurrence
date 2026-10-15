@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.r07-boarding-two-arm-design.v2",
+  "original_R07_v1_qualified": false,
+  "future_actual_status": "pending",
+  "timing": {"nominal_embark_days": 30, "margin_days": 2, "max_natural_days_per_arm": 32, "exact_day_hours": 24},
+  "source_contract": {
+    "game_version": "1.20.0.4", "steam_build": 25734779,
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "native_build_binding": "same_actual_source_and_dll_for_both_arms",
+    "source_head": null, "bridge_dll_sha256": null,
+    "observed_route_source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb"
+  },
+  "common_stationary_S0": {
+    "save_origin": "normal_checkpoint",
+    "save_sha256": "0abc39664ad69759bb882f1ec275dd43f848d06b3fc2dbba5f83b2c8961a8c0e",
+    "save_bytes": 69732402, "date_raw": 53145552,
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0175",
+    "source_receipt": "007-normal-identity-save.json",
+    "source_receipt_sha256": "d82314012a6ff12d3cbc12ffa0f063bcfad45ef75724d245987370e3c06772ac",
+    "independent_loaded_stationary_readback": "required_in_each_arm",
+    "selected_army_id": null, "selected_native_carmy_id": null,
+    "future_actor_proof": null
+  },
+  "arms": {"control": "fresh_normal_load_stationary_no_Move", "treatment": "fresh_normal_load_one_new_normal_Move"},
+  "army_screening": {
+    "candidate_public_army_ids": [93, 94, 95],
+    "selection_status": "pending_actual_whole_DATA_and_native_legal",
+    "observed_snapshot_province_id": 2619,
+    "event_troop_strength_is_not_assumed": true,
+    "actual_sea_target_id": null, "actual_loaded_edge_duration": null,
+    "actual_native_army_kind": null, "actual_soldiers": null
+  },
+  "journals": {
+    "natural_hard_stop": 56, "payment_hard_stop": 384,
+    "renewal_review_at_natural": 48, "renewal_review_at_payment": 320,
+    "renewal_is_explicit_paused_archive_disable_clear_enable": true,
+    "cross_segment_sequence_join": false
+  },
+  "claims": {"boarding_basis": "source_qualified_positive_SUB_callbacks", "net_gold_difference_is_boarding_cost": false, "maintenance_attribution": "unclosed"},
+  "runtime_admission": {"status": "pending_actual_after_normal_start", "control": null, "treatment": null},
+  "storage": {"new_design_package_max_bytes": 1048576, "slot": "original_R07_4MiB_within_active32_pool", "quota_review_at_utc": "2026-10-16T07:45:01.597000+00:00", "future_run_storage_admission": "required_before_heavy_writes"}
+}

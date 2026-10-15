@@ -11,6 +11,20 @@
 namespace xar::ck3_12003::war_cash_current {
 namespace {
 
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+bool CurrentRawMemory(void *,std::uintptr_t address,void *out,std::size_t bytes) noexcept {
+#if defined(_MSC_VER)
+  __try {
+#endif
+    if(!address||!out||!bytes)return false;
+    std::memcpy(out,reinterpret_cast<const void *>(address),bytes);
+    return true;
+#if defined(_MSC_VER)
+  } __except(EXCEPTION_EXECUTE_HANDLER) {return false;}
+#endif
+}
+#endif
+
 bool ActorMatches(const void *actor, std::int32_t id) noexcept {
 #if defined(_MSC_VER)
   __try {
@@ -131,6 +145,7 @@ bool AllRaised(AllRaisedMaintenance function, void *actor,
 }
 
 bool FailActor(ActorResources &output, std::string_view reason) {
+  output.current_raw_context.reset();
   output.current_treasury_raw.reset();
   output.monthly_gross_income_raw.reset();
   output.monthly_total_expenses_raw.reset();
@@ -218,6 +233,23 @@ bool ReadActor(const Bindings &bindings, void *actor,
     if (!ActorMatches(actor, actor_id))
       return FailActor(output, "war_cash_current_actor_changed_during_read");
 
+    // Read after the existing getters, on this same owning paused mailbox.
+    // The raw helper does not invoke a native getter or create a callback record.
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+    if(bindings.current_raw_context_enabled) {
+      CurrentRawContext raw{};
+      raw.character=reinterpret_cast<std::uintptr_t>(actor);
+      raw.character_full_id=static_cast<std::uint32_t>(actor_id);
+      raw.values=ck3_12004::ReadWarPaymentGenericValues12004(
+        bindings.current_raw_context_read?bindings.current_raw_context_read:&CurrentRawMemory,
+        bindings.current_raw_context_read_context,raw.character);
+      if(!ActorMatches(actor,actor_id))
+        return FailActor(output,"war_cash_current_actor_changed_during_raw_context_read");
+      raw.actor_identity_stable=true;
+      output.current_raw_context=raw;
+    }
+#endif
+
     if (output.current_treasury_raw.has_value() &&
         output.monthly_net_income_raw.has_value() &&
         current.available && all.available) {
@@ -228,6 +260,7 @@ bool ReadActor(const Bindings &bindings, void *actor,
     return true;
   } catch (...) {
     // Field availability stays false/null after an actual failed read/copy.
+    output.current_raw_context.reset();
     output.current_treasury_raw.reset();
     output.monthly_gross_income_raw.reset();
     output.monthly_total_expenses_raw.reset();

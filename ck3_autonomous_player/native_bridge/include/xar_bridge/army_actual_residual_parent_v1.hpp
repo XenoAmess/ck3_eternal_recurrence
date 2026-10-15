@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/army_actual_residual_siege_budget_v1.hpp"
 #include <charconv>
 #include <cstdint>
 #include <optional>
@@ -20,6 +21,7 @@ struct ArmyActualResidualParentV1 {
   bool receiver_identity_matches=false,array_header_matches=false;
   bool writer_full_id_in_actual_array=false,source_complete=false;
   std::uint32_t capture_failure_flags=0;
+  std::optional<ArmyActualResidualSiegeBudgetV1> siege_budget_at_allocator_v1;
 };
 inline void AppendArmyActualResidualParentV1(std::string &out,
     const ArmyActualResidualParentV1 &v) {
@@ -48,6 +50,11 @@ inline void AppendArmyActualResidualParentV1(std::string &out,
   out+=",\"array_header_matches\":";boolean(v.array_header_matches);
   out+=",\"writer_full_id_in_actual_array\":";boolean(v.writer_full_id_in_actual_array);
   out+=",\"source_complete\":";boolean(v.source_complete);
-  out+=",\"capture_failure_flags\":";number(v.capture_failure_flags);out+='}';
+  out+=",\"capture_failure_flags\":";number(v.capture_failure_flags);
+  if(v.siege_budget_at_allocator_v1){
+    out+=",\"siege_budget_at_allocator_v1\":";
+    AppendArmyActualResidualSiegeBudgetV1(out,*v.siege_budget_at_allocator_v1);
+  }
+  out+='}';
 }
 }

@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.24)
+project(refill_switch_fixture LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
+add_executable(refill_switch_fixture switch_fixture.cpp ../../src/ck3_12003_scoped_ordered_refill_core.cpp)
+target_include_directories(refill_switch_fixture PRIVATE ../../include)
+target_compile_definitions(refill_switch_fixture PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
+target_compile_options(refill_switch_fixture PRIVATE /EHsc /W4)
+target_link_options(refill_switch_fixture PRIVATE /INCREMENTAL:NO)

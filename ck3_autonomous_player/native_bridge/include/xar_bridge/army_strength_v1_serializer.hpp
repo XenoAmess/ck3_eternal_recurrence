@@ -1539,7 +1539,20 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     append_number("mode", inputs.mode, inputs.condition_available);
     result += ",\"passes\":";
     result += inputs.condition_available ? (inputs.condition_passes ? "true" : "false") : "null";
-    result += "}}";
+    result += '}';
+    if (inputs.multiplier_floor_inputs_v1) {
+      const auto &floors = *inputs.multiplier_floor_inputs_v1;
+      result += ",\"multiplier_floor_inputs_v1\":{\"status\":\"";
+      result += floors.available ? "available" : "unavailable";
+      result += "\",\"source\":\"native_current_county_multiplier_floor_inputs\",\"unavailable_reason\":";
+      if (floors.available) result += "null";
+      else append_json_string(result, floors.unavailable_reason);
+      append_number("base_floor_raw", floors.base_floor_raw, floors.available);
+      append_number("army_1d4_nonzero_floor_raw", floors.army_1d4_nonzero_floor_raw, floors.available);
+      append_number("army_1d4_raw", floors.army_1d4_raw, floors.available);
+      result += ",\"fraction_scale\":100000}";
+    }
+    result += '}';
   }
   if (strength.army_update_clock_v1.has_value()) {
     const auto &clock = *strength.army_update_clock_v1;

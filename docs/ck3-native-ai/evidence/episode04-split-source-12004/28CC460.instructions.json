@@ -1,0 +1,1637 @@
+{
+  "function_rva": "0x28cc460",
+  "instructions": [
+    {
+      "rva": "0x28cc460",
+      "bytes": "4156",
+      "mnemonic": "push",
+      "operands": "r14"
+    },
+    {
+      "rva": "0x28cc462",
+      "bytes": "4883ec30",
+      "mnemonic": "sub",
+      "operands": "rsp, 0x30"
+    },
+    {
+      "rva": "0x28cc466",
+      "bytes": "488b01",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rcx]"
+    },
+    {
+      "rva": "0x28cc469",
+      "bytes": "4c8bf1",
+      "mnemonic": "mov",
+      "operands": "r14, rcx"
+    },
+    {
+      "rva": "0x28cc46c",
+      "bytes": "488b90b8010000",
+      "mnemonic": "mov",
+      "operands": "rdx, qword ptr [rax + 0x1b8]"
+    },
+    {
+      "rva": "0x28cc473",
+      "bytes": "4885d2",
+      "mnemonic": "test",
+      "operands": "rdx, rdx"
+    },
+    {
+      "rva": "0x28cc476",
+      "bytes": "0f84dc000000",
+      "mnemonic": "je",
+      "operands": "0x28cc558"
+    },
+    {
+      "rva": "0x28cc47c",
+      "bytes": "80ba0801000000",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [rdx + 0x108], 0"
+    },
+    {
+      "rva": "0x28cc483",
+      "bytes": "0f8417010000",
+      "mnemonic": "je",
+      "operands": "0x28cc5a0"
+    },
+    {
+      "rva": "0x28cc489",
+      "bytes": "448b82fc000000",
+      "mnemonic": "mov",
+      "operands": "r8d, dword ptr [rdx + 0xfc]"
+    },
+    {
+      "rva": "0x28cc490",
+      "bytes": "4183f8ff",
+      "mnemonic": "cmp",
+      "operands": "r8d, -1"
+    },
+    {
+      "rva": "0x28cc494",
+      "bytes": "0f8406010000",
+      "mnemonic": "je",
+      "operands": "0x28cc5a0"
+    },
+    {
+      "rva": "0x28cc49a",
+      "bytes": "488b15a7194503",
+      "mnemonic": "mov",
+      "operands": "rdx, qword ptr [rip + 0x34519a7]"
+    },
+    {
+      "rva": "0x28cc4a1",
+      "bytes": "48895c2448",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rsp + 0x48], rbx"
+    },
+    {
+      "rva": "0x28cc4a6",
+      "bytes": "48897c2420",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rsp + 0x20], rdi"
+    },
+    {
+      "rva": "0x28cc4ab",
+      "bytes": "4885d2",
+      "mnemonic": "test",
+      "operands": "rdx, rdx"
+    },
+    {
+      "rva": "0x28cc4ae",
+      "bytes": "7426",
+      "mnemonic": "je",
+      "operands": "0x28cc4d6"
+    },
+    {
+      "rva": "0x28cc4b0",
+      "bytes": "418bc0",
+      "mnemonic": "mov",
+      "operands": "eax, r8d"
+    },
+    {
+      "rva": "0x28cc4b3",
+      "bytes": "25ffffff00",
+      "mnemonic": "and",
+      "operands": "eax, 0xffffff"
+    },
+    {
+      "rva": "0x28cc4b8",
+      "bytes": "3b422c",
+      "mnemonic": "cmp",
+      "operands": "eax, dword ptr [rdx + 0x2c]"
+    },
+    {
+      "rva": "0x28cc4bb",
+      "bytes": "7319",
+      "mnemonic": "jae",
+      "operands": "0x28cc4d6"
+    },
+    {
+      "rva": "0x28cc4bd",
+      "bytes": "8bc8",
+      "mnemonic": "mov",
+      "operands": "ecx, eax"
+    },
+    {
+      "rva": "0x28cc4bf",
+      "bytes": "488b4220",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rdx + 0x20]"
+    },
+    {
+      "rva": "0x28cc4c3",
+      "bytes": "4803c9",
+      "mnemonic": "add",
+      "operands": "rcx, rcx"
+    },
+    {
+      "rva": "0x28cc4c6",
+      "bytes": "488b44c808",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rax + rcx*8 + 8]"
+    },
+    {
+      "rva": "0x28cc4cb",
+      "bytes": "4885c0",
+      "mnemonic": "test",
+      "operands": "rax, rax"
+    },
+    {
+      "rva": "0x28cc4ce",
+      "bytes": "7406",
+      "mnemonic": "je",
+      "operands": "0x28cc4d6"
+    },
+    {
+      "rva": "0x28cc4d0",
+      "bytes": "44394010",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rax + 0x10], r8d"
+    },
+    {
+      "rva": "0x28cc4d4",
+      "bytes": "7407",
+      "mnemonic": "je",
+      "operands": "0x28cc4dd"
+    },
+    {
+      "rva": "0x28cc4d6",
+      "bytes": "488b0573194503",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rip + 0x3451973]"
+    },
+    {
+      "rva": "0x28cc4dd",
+      "bytes": "488b5850",
+      "mnemonic": "mov",
+      "operands": "rbx, qword ptr [rax + 0x50]"
+    },
+    {
+      "rva": "0x28cc4e1",
+      "bytes": "4863405c",
+      "mnemonic": "movsxd",
+      "operands": "rax, dword ptr [rax + 0x5c]"
+    },
+    {
+      "rva": "0x28cc4e5",
+      "bytes": "488d3cc3",
+      "mnemonic": "lea",
+      "operands": "rdi, [rbx + rax*8]"
+    },
+    {
+      "rva": "0x28cc4e9",
+      "bytes": "483bdf",
+      "mnemonic": "cmp",
+      "operands": "rbx, rdi"
+    },
+    {
+      "rva": "0x28cc4ec",
+      "bytes": "7460",
+      "mnemonic": "je",
+      "operands": "0x28cc54e"
+    },
+    {
+      "rva": "0x28cc4ee",
+      "bytes": "48896c2450",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rsp + 0x50], rbp"
+    },
+    {
+      "rva": "0x28cc4f3",
+      "bytes": "33ed",
+      "mnemonic": "xor",
+      "operands": "ebp, ebp"
+    },
+    {
+      "rva": "0x28cc4f5",
+      "bytes": "4889742428",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rsp + 0x28], rsi"
+    },
+    {
+      "rva": "0x28cc4fa",
+      "bytes": "660f1f440000",
+      "mnemonic": "nop",
+      "operands": "word ptr [rax + rax]"
+    },
+    {
+      "rva": "0x28cc500",
+      "bytes": "498b06",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [r14]"
+    },
+    {
+      "rva": "0x28cc503",
+      "bytes": "4c8d442440",
+      "mnemonic": "lea",
+      "operands": "r8, [rsp + 0x40]"
+    },
+    {
+      "rva": "0x28cc508",
+      "bytes": "488b33",
+      "mnemonic": "mov",
+      "operands": "rsi, qword ptr [rbx]"
+    },
+    {
+      "rva": "0x28cc50b",
+      "bytes": "8b4818",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [rax + 0x18]"
+    },
+    {
+      "rva": "0x28cc50e",
+      "bytes": "4863462c",
+      "mnemonic": "movsxd",
+      "operands": "rax, dword ptr [rsi + 0x2c]"
+    },
+    {
+      "rva": "0x28cc512",
+      "bytes": "894c2440",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsp + 0x40], ecx"
+    },
+    {
+      "rva": "0x28cc516",
+      "bytes": "488b4e20",
+      "mnemonic": "mov",
+      "operands": "rcx, qword ptr [rsi + 0x20]"
+    },
+    {
+      "rva": "0x28cc51a",
+      "bytes": "488d1481",
+      "mnemonic": "lea",
+      "operands": "rdx, [rcx + rax*4]"
+    },
+    {
+      "rva": "0x28cc51e",
+      "bytes": "e80d3ffbfd",
+      "mnemonic": "call",
+      "operands": "0x880430"
+    },
+    {
+      "rva": "0x28cc523",
+      "bytes": "4863562c",
+      "mnemonic": "movsxd",
+      "operands": "rdx, dword ptr [rsi + 0x2c]"
+    },
+    {
+      "rva": "0x28cc527",
+      "bytes": "488b4e20",
+      "mnemonic": "mov",
+      "operands": "rcx, qword ptr [rsi + 0x20]"
+    },
+    {
+      "rva": "0x28cc52b",
+      "bytes": "4c8d0491",
+      "mnemonic": "lea",
+      "operands": "r8, [rcx + rdx*4]"
+    },
+    {
+      "rva": "0x28cc52f",
+      "bytes": "493bc0",
+      "mnemonic": "cmp",
+      "operands": "rax, r8"
+    },
+    {
+      "rva": "0x28cc532",
+      "bytes": "480f44c5",
+      "mnemonic": "cmove",
+      "operands": "rax, rbp"
+    },
+    {
+      "rva": "0x28cc536",
+      "bytes": "4885c0",
+      "mnemonic": "test",
+      "operands": "rax, rax"
+    },
+    {
+      "rva": "0x28cc539",
+      "bytes": "7524",
+      "mnemonic": "jne",
+      "operands": "0x28cc55f"
+    },
+    {
+      "rva": "0x28cc53b",
+      "bytes": "4883c308",
+      "mnemonic": "add",
+      "operands": "rbx, 8"
+    },
+    {
+      "rva": "0x28cc53f",
+      "bytes": "483bdf",
+      "mnemonic": "cmp",
+      "operands": "rbx, rdi"
+    },
+    {
+      "rva": "0x28cc542",
+      "bytes": "75bc",
+      "mnemonic": "jne",
+      "operands": "0x28cc500"
+    },
+    {
+      "rva": "0x28cc544",
+      "bytes": "488b742428",
+      "mnemonic": "mov",
+      "operands": "rsi, qword ptr [rsp + 0x28]"
+    },
+    {
+      "rva": "0x28cc549",
+      "bytes": "488b6c2450",
+      "mnemonic": "mov",
+      "operands": "rbp, qword ptr [rsp + 0x50]"
+    },
+    {
+      "rva": "0x28cc54e",
+      "bytes": "488b5c2448",
+      "mnemonic": "mov",
+      "operands": "rbx, qword ptr [rsp + 0x48]"
+    },
+    {
+      "rva": "0x28cc553",
+      "bytes": "488b7c2420",
+      "mnemonic": "mov",
+      "operands": "rdi, qword ptr [rsp + 0x20]"
+    },
+    {
+      "rva": "0x28cc558",
+      "bytes": "4883c430",
+      "mnemonic": "add",
+      "operands": "rsp, 0x30"
+    },
+    {
+      "rva": "0x28cc55c",
+      "bytes": "415e",
+      "mnemonic": "pop",
+      "operands": "r14"
+    },
+    {
+      "rva": "0x28cc55e",
+      "bytes": "c3",
+      "mnemonic": "ret",
+      "operands": ""
+    },
+    {
+      "rva": "0x28cc55f",
+      "bytes": "498b06",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [r14]"
+    },
+    {
+      "rva": "0x28cc562",
+      "bytes": "488d4e20",
+      "mnemonic": "lea",
+      "operands": "rcx, [rsi + 0x20]"
+    },
+    {
+      "rva": "0x28cc566",
+      "bytes": "8b5018",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rax + 0x18]"
+    },
+    {
+      "rva": "0x28cc569",
+      "bytes": "89542440",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsp + 0x40], edx"
+    },
+    {
+      "rva": "0x28cc56d",
+      "bytes": "488d542440",
+      "mnemonic": "lea",
+      "operands": "rdx, [rsp + 0x40]"
+    },
+    {
+      "rva": "0x28cc572",
+      "bytes": "e8594024fe",
+      "mnemonic": "call",
+      "operands": "0xb105d0"
+    },
+    {
+      "rva": "0x28cc577",
+      "bytes": "498b06",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [r14]"
+    },
+    {
+      "rva": "0x28cc57a",
+      "bytes": "488b88b8010000",
+      "mnemonic": "mov",
+      "operands": "rcx, qword ptr [rax + 0x1b8]"
+    },
+    {
+      "rva": "0x28cc581",
+      "bytes": "4885c9",
+      "mnemonic": "test",
+      "operands": "rcx, rcx"
+    },
+    {
+      "rva": "0x28cc584",
+      "bytes": "74be",
+      "mnemonic": "je",
+      "operands": "0x28cc544"
+    },
+    {
+      "rva": "0x28cc586",
+      "bytes": "4088a908010000",
+      "mnemonic": "mov",
+      "operands": "byte ptr [rcx + 0x108], bpl"
+    },
+    {
+      "rva": "0x28cc58d",
+      "bytes": "488b80b8010000",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rax + 0x1b8]"
+    },
+    {
+      "rva": "0x28cc594",
+      "bytes": "c780fc000000ffffffff",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rax + 0xfc], 0xffffffff"
+    },
+    {
+      "rva": "0x28cc59e",
+      "bytes": "eba4",
+      "mnemonic": "jmp",
+      "operands": "0x28cc544"
+    },
+    {
+      "rva": "0x28cc5a0",
+      "bytes": "8b92f8000000",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rdx + 0xf8]"
+    },
+    {
+      "rva": "0x28cc5a6",
+      "bytes": "83faff",
+      "mnemonic": "cmp",
+      "operands": "edx, -1"
+    },
+    {
+      "rva": "0x28cc5a9",
+      "bytes": "74ad",
+      "mnemonic": "je",
+      "operands": "0x28cc558"
+    },
+    {
+      "rva": "0x28cc5ab",
+      "bytes": "488b059ec63903",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rip + 0x339c69e]"
+    },
+    {
+      "rva": "0x28cc5b2",
+      "bytes": "488b88a0000000",
+      "mnemonic": "mov",
+      "operands": "rcx, qword ptr [rax + 0xa0]"
+    },
+    {
+      "rva": "0x28cc5b9",
+      "bytes": "4881c140a50200",
+      "mnemonic": "add",
+      "operands": "rcx, 0x2a540"
+    },
+    {
+      "rva": "0x28cc5c0",
+      "bytes": "4883c430",
+      "mnemonic": "add",
+      "operands": "rsp, 0x30"
+    },
+    {
+      "rva": "0x28cc5c4",
+      "bytes": "415e",
+      "mnemonic": "pop",
+      "operands": "r14"
+    },
+    {
+      "rva": "0x28cc5c6",
+      "bytes": "e9b5ab1c00",
+      "mnemonic": "jmp",
+      "operands": "0x2a97180"
+    }
+  ],
+  "ordinary_terminal": {
+    "rva": "0x28cc5c6",
+    "bytes": "e9b5ab1c00",
+    "mnemonic": "jmp",
+    "operands": "0x2a97180"
+  },
+  "extents": [
+    {
+      "target_rva": "0x28cc460",
+      "begin_rva": "0x28cc460",
+      "end_rva_exclusive": "0x28cc4a1",
+      "body_bytes": 65,
+      "pdata_index": 140158,
+      "unwind_rva": "0x51edf94",
+      "unwind_header_hex": "01060200",
+      "unwind_flags": 0,
+      "chain": null,
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        },
+        {
+          "index": 140155,
+          "row": [
+            42778705,
+            42778713,
+            86508980
+          ]
+        },
+        {
+          "index": 140159,
+          "row": [
+            42779809,
+            42779886,
+            86508996
+          ]
+        },
+        {
+          "index": 140157,
+          "row": [
+            42778960,
+            42779736,
+            84980664
+          ]
+        },
+        {
+          "index": 140158,
+          "row": [
+            42779744,
+            42779809,
+            85909396
+          ]
+        }
+      ]
+    },
+    {
+      "target_rva": "0x28cc4a1",
+      "begin_rva": "0x28cc4a1",
+      "end_rva_exclusive": "0x28cc4ee",
+      "body_bytes": 77,
+      "pdata_index": 140159,
+      "unwind_rva": "0x52805c4",
+      "unwind_header_hex": "210a0400",
+      "unwind_flags": 4,
+      "chain": [
+        42779744,
+        42779809,
+        85909396
+      ],
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        },
+        {
+          "index": 140155,
+          "row": [
+            42778705,
+            42778713,
+            86508980
+          ]
+        },
+        {
+          "index": 140159,
+          "row": [
+            42779809,
+            42779886,
+            86508996
+          ]
+        }
+      ]
+    },
+    {
+      "target_rva": "0x28cc4ee",
+      "begin_rva": "0x28cc4ee",
+      "end_rva_exclusive": "0x28cc54e",
+      "body_bytes": 96,
+      "pdata_index": 140160,
+      "unwind_rva": "0x52805dc",
+      "unwind_header_hex": "210c0400",
+      "unwind_flags": 4,
+      "chain": [
+        42779809,
+        42779886,
+        86508996
+      ],
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        },
+        {
+          "index": 140155,
+          "row": [
+            42778705,
+            42778713,
+            86508980
+          ]
+        },
+        {
+          "index": 140159,
+          "row": [
+            42779809,
+            42779886,
+            86508996
+          ]
+        },
+        {
+          "index": 140161,
+          "row": [
+            42779982,
+            42779992,
+            86509044
+          ]
+        },
+        {
+          "index": 140160,
+          "row": [
+            42779886,
+            42779982,
+            86509020
+          ]
+        }
+      ]
+    },
+    {
+      "target_rva": "0x28cc54e",
+      "begin_rva": "0x28cc54e",
+      "end_rva_exclusive": "0x28cc558",
+      "body_bytes": 10,
+      "pdata_index": 140161,
+      "unwind_rva": "0x52805f4",
+      "unwind_header_hex": "21000000",
+      "unwind_flags": 4,
+      "chain": [
+        42779809,
+        42779886,
+        86508996
+      ],
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        },
+        {
+          "index": 140155,
+          "row": [
+            42778705,
+            42778713,
+            86508980
+          ]
+        },
+        {
+          "index": 140159,
+          "row": [
+            42779809,
+            42779886,
+            86508996
+          ]
+        },
+        {
+          "index": 140161,
+          "row": [
+            42779982,
+            42779992,
+            86509044
+          ]
+        }
+      ]
+    },
+    {
+      "target_rva": "0x28cc558",
+      "begin_rva": "0x28cc558",
+      "end_rva_exclusive": "0x28cc55f",
+      "body_bytes": 7,
+      "pdata_index": 140162,
+      "unwind_rva": "0x5280604",
+      "unwind_header_hex": "21000000",
+      "unwind_flags": 4,
+      "chain": [
+        42779744,
+        42779809,
+        85909396
+      ],
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        },
+        {
+          "index": 140155,
+          "row": [
+            42778705,
+            42778713,
+            86508980
+          ]
+        },
+        {
+          "index": 140159,
+          "row": [
+            42779809,
+            42779886,
+            86508996
+          ]
+        },
+        {
+          "index": 140161,
+          "row": [
+            42779982,
+            42779992,
+            86509044
+          ]
+        },
+        {
+          "index": 140162,
+          "row": [
+            42779992,
+            42779999,
+            86509060
+          ]
+        }
+      ]
+    },
+    {
+      "target_rva": "0x28cc55f",
+      "begin_rva": "0x28cc55f",
+      "end_rva_exclusive": "0x28cc5a0",
+      "body_bytes": 65,
+      "pdata_index": 140163,
+      "unwind_rva": "0x5280614",
+      "unwind_header_hex": "21000800",
+      "unwind_flags": 4,
+      "chain": [
+        42779744,
+        42779809,
+        85909396
+      ],
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        }
+      ]
+    },
+    {
+      "target_rva": "0x28cc5a0",
+      "begin_rva": "0x28cc5a0",
+      "end_rva_exclusive": "0x28cc5cb",
+      "body_bytes": 43,
+      "pdata_index": 140164,
+      "unwind_rva": "0x5280604",
+      "unwind_header_hex": "21000000",
+      "unwind_flags": 4,
+      "chain": [
+        42779744,
+        42779809,
+        85909396
+      ],
+      "trace": [
+        {
+          "index": 122217,
+          "row": [
+            37121504,
+            37121637,
+            85122504
+          ]
+        },
+        {
+          "index": 183326,
+          "row": [
+            56393648,
+            56393763,
+            84974928
+          ]
+        },
+        {
+          "index": 152771,
+          "row": [
+            46241792,
+            46242311,
+            85052828
+          ]
+        },
+        {
+          "index": 137494,
+          "row": [
+            41941728,
+            41941733,
+            86464212
+          ]
+        },
+        {
+          "index": 145132,
+          "row": [
+            44227792,
+            44227815,
+            85287208
+          ]
+        },
+        {
+          "index": 141313,
+          "row": [
+            43143392,
+            43144289,
+            86528260
+          ]
+        },
+        {
+          "index": 139403,
+          "row": [
+            42563552,
+            42563715,
+            86493020
+          ]
+        },
+        {
+          "index": 140358,
+          "row": [
+            42800256,
+            42800354,
+            84987596
+          ]
+        },
+        {
+          "index": 139880,
+          "row": [
+            42710208,
+            42710230,
+            84973024
+          ]
+        },
+        {
+          "index": 140119,
+          "row": [
+            42772020,
+            42772025,
+            86508436
+          ]
+        },
+        {
+          "index": 140238,
+          "row": [
+            42791568,
+            42791624,
+            85054684
+          ]
+        },
+        {
+          "index": 140178,
+          "row": [
+            42781920,
+            42782622,
+            86509268
+          ]
+        },
+        {
+          "index": 140148,
+          "row": [
+            42777776,
+            42777900,
+            84973076
+          ]
+        },
+        {
+          "index": 140163,
+          "row": [
+            42779999,
+            42780064,
+            86509076
+          ]
+        },
+        {
+          "index": 140170,
+          "row": [
+            42780496,
+            42780668,
+            85064472
+          ]
+        },
+        {
+          "index": 140166,
+          "row": [
+            42780158,
+            42780209,
+            86509108
+          ]
+        },
+        {
+          "index": 140164,
+          "row": [
+            42780064,
+            42780107,
+            86509060
+          ]
+        }
+      ]
+    }
+  ],
+  "capture_origins": [
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:11:29.508619+00:00",
+      "acquisition_record_sha256": "f55122eaab4cd6f03406983c14026afdd37d3e7da5f070508972d8eec73d3dd5"
+    },
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:12:15.364832+00:00",
+      "acquisition_record_sha256": "6d9f626edfcad5695aa496dcdbf8fe88e50287f95e94298454c9a367ad4d1435"
+    },
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:12:59.145080+00:00",
+      "acquisition_record_sha256": "1a88022dac39496a047a6c7d971ae87b8f59cd649bb90ba25185bc5a9beda333"
+    },
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:12:59.149121+00:00",
+      "acquisition_record_sha256": "6463808a8b5ecec0cda7ff02c623f249c54a6aad1c37aa7919c94df49f0257c6"
+    },
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:12:15.368780+00:00",
+      "acquisition_record_sha256": "7fb69e73ab6731450ec3eb100dce815193d5bc289da5a2dcf678f14a23669622"
+    },
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:13:31.273628+00:00",
+      "acquisition_record_sha256": "083a81ae0f7a53f9573b6b386a2c920742037f6960f6569166ef9b62bfc1bcfa"
+    },
+    {
+      "capture_machine_id": "desktop-3fevhd2-1c74096080",
+      "capture_time_utc": "2026-10-15T17:12:15.372613+00:00",
+      "acquisition_record_sha256": "a3204387665eb96b7e0797fe8d61a1e72251c8d4c199c26f2885e53e41461ed6"
+    }
+  ]
+}

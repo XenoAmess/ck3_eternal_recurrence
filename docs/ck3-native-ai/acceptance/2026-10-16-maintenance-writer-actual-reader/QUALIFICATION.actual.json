@@ -1,0 +1,55 @@
+{
+  "schema": "xar.maintenance.writer_pc.actual-reader-qualification.v1",
+  "status": "PASS",
+  "started_utc": "2026-10-15T18:46:50.409026+00:00",
+  "ended_utc": "2026-10-15T18:46:53.484713+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-O",
+    "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\candidate\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_writer_actual.py",
+    "--main-repo",
+    "D:/workspace/ck3_eternal_recurrence",
+    "--sealed-root",
+    "C:/ck3-war-episode04-research-20261004-a01/maintenance-writer-cold-a01",
+    "--cash-candidate-root",
+    "C:/ck3-war-episode04-research-20261004-a01/maintenance-writer-cold-a01/consumer-lane-a01/cash-current-candidate-a01",
+    "--output-root",
+    "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\focused-a02"
+  ],
+  "returncode": 0,
+  "reader_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\candidate\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\consume_writer_actual.py",
+    "bytes": 19263,
+    "sha256": "b9d696c0c1a84dd019b78ea736a0af274e5a2524d97823b22f79aeffc47988ed"
+  },
+  "test_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\candidate\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_writer_actual.py",
+    "bytes": 11715,
+    "sha256": "76e6b9cbc5ca5eefbecce9d33836b463ca7d643f2742dbb3c915c48c04f70abd"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\qualification-a02\\stdout.txt",
+    "bytes": 1263,
+    "sha256": "c14497363825c04ad235b908e1b9a21613e7b918b63b8262e797b7d6a50c8835"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\qualification-a02\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-writer-actual-reader-a02\\focused-a02\\RESULT.actual.json",
+    "bytes": 910,
+    "sha256": "5bddab6162fd9c9b2f7f481df5844614540db86edf059cb8851cac09ffe457f0"
+  },
+  "unique_new_behavior_cases": 4,
+  "cold_matrix_rerun": false,
+  "actual_CK3_writer_evidence": false,
+  "SDK_game_desktop_actions": 0,
+  "project_EXE_execution": 0,
+  "main_tree_writes": 0,
+  "known_producer": false,
+  "maintenance_attribution": "unclosed",
+  "note": "Final focused run after making test harness source paths relocatable; initial focused-a01 remains unchanged."
+}

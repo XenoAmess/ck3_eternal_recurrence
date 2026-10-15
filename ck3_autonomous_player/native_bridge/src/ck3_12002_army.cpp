@@ -780,7 +780,7 @@ game::ArmyFirstRemovalCleanupInputsV1 FirstRemovalCleanupInputs(
   return result;
 }
 
-game::ArmyCountyEntryInputsV1 CountyEntryInputs(
+game::ArmyCountyEntryInputsV1 CountyEntryBudgetAndConditionInputs(
     const ArmyBindings &bindings, void *army, void *unit,
     std::int32_t whole_soldiers) {
   game::ArmyCountyEntryInputsV1 result{};
@@ -849,6 +849,22 @@ game::ArmyCountyEntryInputsV1 CountyEntryInputs(
   result.source_province_id = Load<std::int32_t>(source, 0x10);
   result.target_province_id = route.route_province_ids.front();
   result.mode = mode;
+  return result;
+}
+
+game::ArmyCountyEntryInputsV1 CountyEntryInputs(
+    const ArmyBindings &bindings, void *army, void *unit,
+    std::int32_t whole_soldiers, std::int32_t army_id, std::int32_t unit_id) {
+  const auto &floors = bindings.county_entry_multiplier_floor_bindings;
+  if (!floors.enabled)
+    return CountyEntryBudgetAndConditionInputs(bindings, army, unit, whole_soldiers);
+  const auto before = ck3_12004::SampleCountyEntryMultiplierFloors12004(
+      floors, army, unit, army_id, unit_id);
+  auto result = CountyEntryBudgetAndConditionInputs(bindings, army, unit, whole_soldiers);
+  const auto after = ck3_12004::SampleCountyEntryMultiplierFloors12004(
+      floors, army, unit, army_id, unit_id);
+  result.multiplier_floor_inputs_v1 =
+      ck3_12004::FinishCountyEntryMultiplierFloors12004(before, after);
   return result;
 }
 
@@ -1139,7 +1155,7 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");
-      result.county_entry_inputs_v1 = CountyEntryInputs(bindings, army, unit, native_current);
+      result.county_entry_inputs_v1 = CountyEntryInputs(bindings, army, unit, native_current, internal_id, scope.army_id);
     }
     if (bindings.persistent_regiment_storage_slot != nullptr &&
         bindings.can_regiment_replenish != nullptr &&

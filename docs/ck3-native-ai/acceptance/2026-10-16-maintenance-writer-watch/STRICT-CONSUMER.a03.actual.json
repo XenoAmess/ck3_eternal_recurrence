@@ -1,0 +1,196 @@
+{
+  "schema": "xar.maintenance.writer_pc.cold.strict-consumer.v1",
+  "status": "PASS",
+  "observed_utc": "2026-10-15T17:19:06.359859+00:00",
+  "python_optimization": 1,
+  "actual_owned_cases": [
+    {
+      "mode": "four-writes",
+      "result": {
+        "raw_slot_hits": 4,
+        "recorded_data_events": 4,
+        "unique_offsets": [
+          40,
+          48,
+          704,
+          712
+        ],
+        "same_value_write_count": 0,
+        "writer_threads": [
+          7360
+        ],
+        "maintenance_attribution": "unclosed",
+        "known_producer": false
+      },
+      "raw_sha256": "499460fe43604d5fcc963840746146a14c82cd3d7693a5fa81cc7cf5974ab714"
+    },
+    {
+      "mode": "same-value",
+      "result": {
+        "raw_slot_hits": 4,
+        "recorded_data_events": 4,
+        "unique_offsets": [
+          40,
+          48,
+          704,
+          712
+        ],
+        "same_value_write_count": 4,
+        "writer_threads": [
+          14964
+        ],
+        "maintenance_attribution": "unclosed",
+        "known_producer": false
+      },
+      "raw_sha256": "f32219219534a1bec5e0082327e97ea1eb41126111c714ba30f8362054476111"
+    },
+    {
+      "mode": "new-worker",
+      "result": {
+        "raw_slot_hits": 4,
+        "recorded_data_events": 4,
+        "unique_offsets": [
+          40,
+          48,
+          704,
+          712
+        ],
+        "same_value_write_count": 0,
+        "writer_threads": [
+          18292
+        ],
+        "maintenance_attribution": "unclosed",
+        "known_producer": false
+      },
+      "raw_sha256": "a91d612ffa1798039aca929db0bcd171f9b76dfd58451feb9900e61c52771a3b"
+    },
+    {
+      "mode": "timeout",
+      "result": {
+        "raw_slot_hits": 0,
+        "recorded_data_events": 0,
+        "unique_offsets": [],
+        "same_value_write_count": 0,
+        "writer_threads": [],
+        "maintenance_attribution": "unclosed",
+        "known_producer": false
+      },
+      "raw_sha256": "9265af133c8b0a4f72c242abb31a6402a17f0aa949f1cd4274dcae5e147d9ccb"
+    },
+    {
+      "mode": "changed-context",
+      "result": {
+        "raw_slot_hits": 0,
+        "recorded_data_events": 0,
+        "unique_offsets": [],
+        "same_value_write_count": 0,
+        "writer_threads": [],
+        "maintenance_attribution": "unclosed",
+        "known_producer": false
+      },
+      "raw_sha256": "8573298eb8b73d5a0dcad868b569b059a5af8f751466e2d22e332e5fd9a28877"
+    }
+  ],
+  "malformed_counterexamples": [
+    {
+      "name": "postRIP_as_instruction_start",
+      "rejected": true
+    },
+    {
+      "name": "wrong_write_length",
+      "rejected": true
+    },
+    {
+      "name": "wrong_offset",
+      "rejected": true
+    },
+    {
+      "name": "unaligned_address",
+      "rejected": true
+    },
+    {
+      "name": "object_fullID_mismatch",
+      "rejected": true
+    },
+    {
+      "name": "fake_known_producer",
+      "rejected": true
+    },
+    {
+      "name": "synthetic_as_CK3",
+      "rejected": true
+    },
+    {
+      "name": "military_closed",
+      "rejected": true
+    },
+    {
+      "name": "restore_flag_without_readback",
+      "rejected": true
+    },
+    {
+      "name": "restored_wrong_DR7",
+      "rejected": true
+    },
+    {
+      "name": "detach_failed",
+      "rejected": true
+    },
+    {
+      "name": "pending_event_left",
+      "rejected": true
+    },
+    {
+      "name": "thread_admission_failed",
+      "rejected": true
+    },
+    {
+      "name": "falsely_global_complete",
+      "rejected": true
+    },
+    {
+      "name": "atomic_before_fabricated",
+      "rejected": true
+    },
+    {
+      "name": "DR6_did_not_hit",
+      "rejected": true
+    },
+    {
+      "name": "slotcount_as_eventordinal",
+      "rejected": true
+    },
+    {
+      "name": "float_as_address",
+      "rejected": true
+    },
+    {
+      "name": "float_as_offset",
+      "rejected": true
+    },
+    {
+      "name": "float_as_fullid",
+      "rejected": true
+    },
+    {
+      "name": "wrong_postRIP_rva",
+      "rejected": true
+    },
+    {
+      "name": "bool_as_address",
+      "rejected": true
+    },
+    {
+      "name": "raw_registers_missing",
+      "rejected": true
+    },
+    {
+      "name": "drop_live_restore",
+      "rejected": true
+    }
+  ],
+  "negative_case_count": 24,
+  "no_runtime_actions": true,
+  "known_producer": false,
+  "maintenance_attribution": "unclosed"
+}

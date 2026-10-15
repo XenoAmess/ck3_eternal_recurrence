@@ -206,3 +206,19 @@ docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/callee28A6F50.
 docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm -text whitespace=-blank-at-eol,cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/scheduler.complete.asm -text whitespace=-blank-at-eol,cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/upstream-job.complete.asm -text whitespace=-blank-at-eol,cr-at-eol
+
+# Exact a07 candidate evidence/source pins; preserve only these named artifacts.
+docs/ck3-native-ai/acceptance/2026-10-16-episode04-character-role-read/QUALIFICATION.actual-a02.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-episode04-character-role-read/packet-minimum.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/ADMISSION-FAIL-CLOSED.a01.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/BUILD-DONE.a07.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/SOURCE-FREEZE.a08.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/STRICT-CONSUMER.a03.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/TARGETED-QUALIFICATION.final-a01.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/writer-cold-originals.zip -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-refill-switch-gui-12004.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-split-source-12004/*.hex -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-split-source-12004/*.instructions.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-split-source-12004/source-index.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/plans/episode04-military-reinforcement-toggle-12004.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/validation/strategy-a-route-inputs.actual.json -text whitespace=cr-at-eol

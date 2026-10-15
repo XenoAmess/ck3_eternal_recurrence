@@ -1,0 +1,36 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T17:31:02.112183+00:00",
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\source-a08\\CMakeLists.txt",
+      "bytes": 566,
+      "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\source-a08\\cold_observer.cpp",
+      "bytes": 23688,
+      "sha256": "24b9d584ee451ef822c6386484efcda2578072cb5569ce1740b910e3bbadd0ee"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\source-a08\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\source-a08\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+    }
+  ],
+  "changes": [
+    "Preflight rejects any occupied debug state before DebugActiveProcess to preserve unowned original DR",
+    "Same compiled BeginThreadOwnership has explicit stale-generation regression unit; both EXIT_THREAD paths clear saved map",
+    "Recheck Character/living/secondary after initial four reads and at each stopped thread before ArmThread",
+    "Runtime adapter explicitly imports/calls new raw validator; missing new code fails closed",
+    "Runtime adapter requires current-host labelled gate bound to exact original SYSTEM receipt/manifest SHA"
+  ],
+  "prior_raw_vector_normalization_failure_preserved": true,
+  "no_new_CK3_game_SDK_main_actions": true,
+  "prior_full_8plus24_not_repeated": true
+}

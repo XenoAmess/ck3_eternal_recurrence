@@ -7,6 +7,7 @@
 #endif
 #include "xar_bridge/army_regular_core_passive_12004.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12004_regiment_refill_switch_readonly.hpp"
 #include "xar_bridge/army_position_same_war_side_12004.hpp"
 #include "xar_bridge/army_position_2c09280_12004.hpp"
 #include "xar_bridge/army_position_2c09410_12004.hpp"
@@ -281,6 +282,10 @@ class Reader {
     auto owner = Resolve(kPersistent, kPersistentFallback, chunk.owner_persistent_regiment_id);
     const auto missing = [&](const char *why) { if (chunk.context_unavailable_reason.empty()) chunk.context_unavailable_reason = why; };
     chunk.owner_resolved_full_id = owner.full_id;
+    chunk.refill_permission_switch_v1=ReadRegimentRefillPermissionSwitch12004(
+      {b.image_base,this,[](void *context,std::uintptr_t address,void *out,std::size_t size) noexcept {
+        return static_cast<Reader *>(context)->Read(address,out,size);
+      }},owner.object,owner.full_id.value_or(-1));
     chunk.owner_guard_138_raw = Field<std::int32_t>(owner.object, 0x138);
     auto definition = Field<std::uintptr_t>(owner.object, 0x118);
     if (definition && *definition) chunk.owner_definition_magic_38_raw = Field<std::uint32_t>(*definition, 0x38);

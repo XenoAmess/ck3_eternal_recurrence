@@ -43,11 +43,13 @@ struct Payload {
   std::optional<std::uint64_t> caller_return_rva;
   const NativeInvocationFrame12004 *enclosing=nullptr;
   Header entry_array;Identity entry_army;
+  std::optional<game::ArmyActualResidualSiegeBudgetV1> siege_budget_at_allocator_v1;
   bool entry_array_valid=false,entry_army_valid=false;
   game::ArmyResidualRequestSource12004 source=game::ArmyResidualRequestSource12004::unknown;
 };
 inline Payload Make(const ResidualParentReader12004 &reader,const void *array,
-    std::int32_t budget,std::uint8_t flags,std::optional<std::uint64_t> caller) noexcept {
+    std::int32_t budget,std::uint8_t flags,std::optional<std::uint64_t> caller,
+    const void *natural_return_slot) noexcept {
   Payload p{};p.reader=reader;p.actual_array=array;p.budget=budget;p.flags=flags;
   p.caller_return_rva=caller;p.enclosing=CurrentNativeInvocationContext12004();
   const auto address=reinterpret_cast<std::uintptr_t>(array);
@@ -62,6 +64,21 @@ inline Payload Make(const ResidualParentReader12004 &reader,const void *array,
       p.source=game::ArmyResidualRequestSource12004::periodic_callback;p.source_carmy=s.receiver;
     }
   }
+  // 24E37AE calls from the unchanged 24E3410 frame. The continuation hook
+  // follows only TEST/JE (no stack mutation), so caller RSP is return_slot+8.
+  // Capture before the allocator executes; never use this helper's own stack.
+  if(p.source==game::ArmyResidualRequestSource12004::periodic_callback&&
+      caller==0x24E37B3&&flags==0){
+    auto &v=p.siege_budget_at_allocator_v1.emplace();
+    if(!natural_return_slot)v.capture_failure_flags|=1U;
+    else {
+      std::int32_t value=0;
+      if(reader.At(natural_return_slot,0x88,value))v.original_siege_budget_soldiers=value;
+      else v.capture_failure_flags|=2U;
+      if(reader.At(natural_return_slot,0x90,value))v.combined_siege_raid_budget_soldiers=value;
+      else v.capture_failure_flags|=4U;
+    }
+  }
   p.entry_array_valid=Array(reader,array,p.entry_array);
   if(p.source_carmy)p.entry_army_valid=Army(reader,p.source_carmy,p.entry_army);
   return p;
@@ -71,8 +88,8 @@ class ResidualParentScope12004 final {
 public:
   ResidualParentScope12004(const ResidualParentReader12004 &reader,const void *array,
       std::int32_t budget,std::uint8_t flags,std::optional<std::uint64_t> caller,
-      std::uint32_t thread) noexcept
-      :payload_(residual_parent_detail_12004::Make(reader,array,budget,flags,caller)),
+      std::uint32_t thread,const void *natural_return_slot=nullptr) noexcept
+      :payload_(residual_parent_detail_12004::Make(reader,array,budget,flags,caller,natural_return_slot)),
        scope_(NativeInvocationParentKind12004::residual_allocator,thread,&payload_){}
   ResidualParentScope12004(const ResidualParentScope12004 &)=delete;
   ResidualParentScope12004 &operator=(const ResidualParentScope12004 &)=delete;
@@ -93,6 +110,7 @@ CaptureResidualParentWriterContext12004(std::uint32_t thread,std::int32_t writer
   result.nesting_depth=frame->nesting_depth;result.parent_invocation_token=frame->parent_invocation_token;
   result.allocator_caller_return_rva=p.caller_return_rva;
   result.requested_budget=p.budget;result.flags_raw=p.flags;result.request_source=p.source;
+  result.siege_budget_at_allocator_v1=p.siege_budget_at_allocator_v1;
   if(p.enclosing)result.enclosing_parent_kind=static_cast<std::uint32_t>(p.enclosing->parent_kind);
   if(thread!=frame->native_thread_id||!thread){result.capture_failure_flags|=1U;return result;}
   if(writer_return!=0x2A958E8){result.capture_failure_flags|=2U;return result;}

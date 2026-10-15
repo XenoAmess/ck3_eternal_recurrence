@@ -1,0 +1,35 @@
+{
+  "status": "PASS_4_FOCUSED_SYNTHETIC_READER_CASES",
+  "recorded_utc": "2026-10-15T18:46:53.436639+00:00",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "optimization": 1,
+  "cases": [
+    {
+      "case": "four_fields_timeout",
+      "pass_": true,
+      "fixture_game_credit": false
+    },
+    {
+      "case": "clean_zero_timeout",
+      "pass_": true,
+      "fixture_game_credit": false
+    },
+    {
+      "case": "unknown_read_missing_restore",
+      "pass_": true,
+      "fixture_game_credit": false
+    },
+    {
+      "case": "cold_fixture_no_game_credit",
+      "pass_": true,
+      "fixture_game_credit": false
+    }
+  ],
+  "actual_game_evidence": false,
+  "SDK_game_desktop_actions": 0,
+  "EXE_executions": 0,
+  "reused_existing_normalizers": true,
+  "cold_matrix_rerun": false,
+  "known_producer": false,
+  "maintenance_attribution": "unclosed"
+}

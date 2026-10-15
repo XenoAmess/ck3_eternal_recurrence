@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/war_payment_generic_context_12004.hpp"
 
 #include <array>
 #include <cstddef>
@@ -44,6 +45,17 @@ struct Bindings {
   MonthlyTotalExpenses monthly_total_expenses = nullptr;
   CurrentMaintenance current_maintenance = nullptr;
   AllRaisedMaintenance all_raised_maintenance = nullptr;
+  // Exact .4 only; append after the existing fixture/binding prefix.
+  bool current_raw_context_enabled = false;
+  ck3_12004::WarPaymentRawRead12004 current_raw_context_read = nullptr;
+  void *current_raw_context_read_context = nullptr;
+};
+
+struct CurrentRawContext {
+  std::uintptr_t character = 0;
+  std::uint32_t character_full_id = 0;
+  bool actor_identity_stable = false;
+  ck3_12004::WarPaymentGenericValues12004 values;
 };
 
 struct MilitaryResources {
@@ -68,6 +80,8 @@ struct ActorResources {
   std::string total_expenses_unavailable_reason = "not_sampled";
   std::string income_unavailable_reason = "not_sampled";
   std::string unavailable_reason = "not_sampled";
+  // Fresh paused-query read, never a synthesized wallet observation.
+  std::optional<CurrentRawContext> current_raw_context;
 };
 
 // Exact .3 identity; the production path binds these actual native getters.

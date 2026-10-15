@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>1/1，还可能是角色记录</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D09&quot;, &quot;paragraph_ids&quot;: [&quot;C06-06&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;28CC150&quot;, &quot;2632CB0&quot;, &quot;2633ED0&quot;, &quot;24DF9F0&quot;], &quot;title&quot;: &quot;1/1，还可能是角色记录&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="740" lengthAdjust="spacingAndGlyphs">1/1，还可能是角色记录</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D09</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="864" lengthAdjust="spacingAndGlyphs">原生规则图解  ·  已闭合的条件路径；不是每次合军必发生</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="918" lengthAdjust="spacingAndGlyphs">角色、统帅、骑士、物理兵员分开读取</text>
+<rect x="112" y="420" width="2336" height="135" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="145" y="490" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="1231.891" lengthAdjust="spacingAndGlyphs">处理旧角色 → 构造空DATA记录 → 关联角色 → 刷新1/1缓存</text>
+<rect x="112" y="625" width="563" height="260" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="134" y="694" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="180" lengthAdjust="spacingAndGlyphs">角色记录</text>
+<text x="134" y="791" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="267" lengthAdjust="spacingAndGlyphs">角色叶 + 完整ID</text>
+<text x="134" y="840" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="294.875" lengthAdjust="spacingAndGlyphs">DATA与predicate</text>
+<rect x="703" y="625" width="563" height="260" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="725" y="694" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="180" lengthAdjust="spacingAndGlyphs">现任统帅</text>
+<text x="725" y="791" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="338.969" lengthAdjust="spacingAndGlyphs">独立typed readback</text>
+<text x="725" y="840" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="220" lengthAdjust="spacingAndGlyphs">不由F8猜任命</text>
+<rect x="1294" y="625" width="563" height="260" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="1316" y="694" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="180" lengthAdjust="spacingAndGlyphs">骑士成员</text>
+<text x="1316" y="791" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="343.984" lengthAdjust="spacingAndGlyphs">完整combat Knights</text>
+<text x="1316" y="840" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="289" lengthAdjust="spacingAndGlyphs">另核membership</text>
+<rect x="1885" y="625" width="563" height="260" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="1907" y="694" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="180" lengthAdjust="spacingAndGlyphs">物理兵员</text>
+<text x="1907" y="791" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="241.891" lengthAdjust="spacingAndGlyphs">实际DATA兵槽</text>
+<text x="1907" y="840" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="237" lengthAdjust="spacingAndGlyphs">不能由1/1代填</text>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="820.984" lengthAdjust="spacingAndGlyphs">段号：C06-06   ·   source：28CC150 / 2632CB0 / 2633ED0 / 24DF9F0</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="765.875" lengthAdjust="spacingAndGlyphs">构造时空DATA不代表所有角色记录永远无DATA；不授实际新生。</text>
+</svg>

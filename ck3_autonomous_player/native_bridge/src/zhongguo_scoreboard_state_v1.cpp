@@ -1,6 +1,7 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12004_generic_gui.hpp"
 
 #include <windows.h>
 
@@ -1659,16 +1660,62 @@ bool InspectNamedGuiTreeV1(
                                   global_root, "_root_", output);
 }
 
+// Source: actual .4 3AA0D20 -> 3A9FA30. Read-only standard (mode 0)
+// group selection; never invoke a callback or publish a heap pointer.
+static bool InspectStandardClickBinding12004(
+    const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
+    void *widget, void *vtable, NamedGuiStandardClickBinding12004V1 &out) {
+  out = {};
+  const auto in_image = [module_base](const void *pointer, std::size_t bytes) {
+    const auto address = reinterpret_cast<std::uintptr_t>(pointer);
+    return address >= module_base && bytes <= ck3_12004::kGuiImageSize12004V1 &&
+        address - module_base <= ck3_12004::kGuiImageSize12004V1 - bytes;
+  };
+  void *slot13 = nullptr;
+  if (!in_image(vtable, 14U * sizeof(void *)) ||
+      !ReadValue(access, vtable, 13U * sizeof(void *), slot13)) return false;
+  if (reinterpret_cast<std::uintptr_t>(slot13) !=
+      module_base + ck3_12004::kGuiButtonBaseSlot13Rva12004V1) return true;
+  out.button_base_slot13 = true;
+  std::int32_t count = 0;
+  if (!ReadValue(access, widget, 0x3F8U + 0x0CU, count) ||
+      count < 0 || count > 256) return false;
+  out.primary_group = count != 0;
+  const std::size_t group = out.primary_group ? 0x3F8U : 0x338U;
+  if (!out.primary_group &&
+      (!ReadValue(access, widget, group + 0x0CU, count) ||
+       count < 0 || count > 256)) return false;
+  if (count == 0) return true;
+  void *data = nullptr;
+  if (!ReadValue(access, widget, group, data) || data == nullptr) return false;
+  out.callbacks.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *callback = nullptr;
+    void *callback_vtable = nullptr;
+    void *slot2 = nullptr;
+    if (!ReadValue(access, data, static_cast<std::size_t>(index) * 0x48U + 0x40U, callback) ||
+        callback == nullptr || !ReadValue(access, callback, 0, callback_vtable) ||
+        !in_image(callback_vtable, 3U * sizeof(void *)) ||
+        !ReadValue(access, callback_vtable, 0x10U, slot2) || !in_image(slot2, 1)) return false;
+    out.callbacks.push_back({static_cast<std::uint32_t>(index),
+        reinterpret_cast<std::uintptr_t>(callback_vtable) - module_base,
+        reinterpret_cast<std::uintptr_t>(slot2) - module_base});
+  }
+  return true;
+}
+
 bool InspectNamedGuiSubtreeV1(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
     void *root, std::string_view scope_root_name,
-    NamedGuiTreeInspectionV1 &output) noexcept {
+    NamedGuiTreeInspectionV1 &output,
+    bool inspect_standard_click_bindings_12004) noexcept {
   output = {};
   if (root == nullptr || scope_root_name.empty() || module_base == 0) {
     return false;
   }
   output.root_available = true;
   output.scope_root_name.assign(scope_root_name);
+  output.standard_click_bindings_12004 = inspect_standard_click_bindings_12004;
 
   struct Pending {
     void *widget = nullptr;
@@ -1719,6 +1766,9 @@ bool InspectNamedGuiSubtreeV1(
                            : 0;
       row.effective_visible = visible;
       row.enabled = enabled;
+      if (inspect_standard_click_bindings_12004 &&
+          !InspectStandardClickBinding12004(access, module_base, current.widget,
+              vtable, row.standard_click_binding_12004)) return false;
       if (current.depth >= kMaximumWidgetDepth) {
         output.truncated = true;
         continue;

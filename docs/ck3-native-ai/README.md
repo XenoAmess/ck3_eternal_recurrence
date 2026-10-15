@@ -2,7 +2,7 @@
 
 ## 2026-10-16：战争四期 Review02 的共享机制、实证与消费入口
 
-本条是机器 `desktop-3fevhd2-1c74096080` 的战争四期最新记录；下文旧日期的G2、其他机器和旧版本记录保留各自当时范围。R0174已正常闭场，21个精确驻定对照日及新45秒Halt原片已取得，原R07整卡条件仍未全部闭合。研究整卡 **3/14＝21.4%**，新版合格动态包 **0/11**；详见[R0174实证与便携重算](episode04-r0174-common-t0-control-12004.md)、[10月16日日报](../autonomous-agent-progress/daily/2026-10-16.md)和[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。
+本条是机器 `desktop-3fevhd2-1c74096080` 的战争四期最新记录，实际切点为2026-10-16 03:01 CST（2026-10-15 19:01 UTC）；下文旧日期的G2、其他机器和旧版本记录保留各自当时范围。R0175锁定Halt与R0176锁定改道均已正常闭场，独立原生后果及各45秒原片已经取得。研究整卡 **5/14＝35.7%**（R00/R02/R11/R12/R13），业务实验 **3/11＝27.3%**；新版合格动态包仍 **0/11**，连续clean和人工1×不能由全解码或单帧代替。详见[R12实证与便携重算](episode04-r12-locked-halt-r0175-12004.md)、[R13实证与便携重算](episode04-r13-locked-reroute-r0176-12004.md)、[10月16日日报](../autonomous-agent-progress/daily/2026-10-16.md)和[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。
 
 | 主题 | 共享知识与代码入口 | 当前范围 |
 | --- | --- | --- |
@@ -11,12 +11,14 @@
 | 严格低库存 | [R05饥饿](episode04-starvation-loss-12004.md)、[callback→writer关联](army-actual-supply-parent-join-observation-12004.md) | loaded阈值/库存更新次序和实际物理损失独立；新join离线资格不追认R0174/a05。 |
 | 补员与目标物理范围 | [R06实际ADD合同](episode04-refill-application-12004.md)、[subject capture](army-regular-core-subject-capture-12004.md) | 原始物理窗口净差不冒充单条ADD；合法开关动作/独立状态及真实应用仍待补。 |
 | 分合军与1/1 | [P0-SPLIT / R09特殊记录](episode04-special-troops-split-merge-12004.md) | 当前ArRg缓存、DATA、Character谓词、实际统帅和出生来源分层，原cohort与新增行保留。 |
-| 路线与Halt | [锁定Halt/改道](episode04-locked-halt-reroute-12004.md)、[执行手册/只读verifier](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/README.md) | R0173未锁Halt为既有实证；R0174新未锁镜头待clean，R12/R13仍无实际通过。 |
+| 路线与Halt | [锁定Halt/改道](episode04-locked-halt-reroute-12004.md)、[R12](episode04-r12-locked-halt-r0175-12004.md)、[R13](episode04-r13-locked-reroute-r0176-12004.md)、[执行手册/只读verifier](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/README.md) | R12实际到原首段终点并次日静止；R13实际保留首段、改尾段及抵达替代终点。R13最终抵达在45秒片外，不能嫁接为片内镜头。 |
 | 登船和现金 | [R0173三金币实付](episode04-r0173-boarding-halt-12004.md)、[R0174驻定对照](episode04-r0174-common-t0-control-12004.md)、[付款源链](war-payment-passive-12004.md) | R0173 whole-callback扣款正例保留；R0174 pair PASS不授原七日卡闭合或零总费用。 |
 | 维护与raw context | [generic输入](war-payment-generic-context-12004.md)、[getter/四项raw消费合同](war-payment-maintenance-cache-source-12004.md)、[R0174实际输入和闭包调用链](war-payment-r0174-actual-parent-source-12004.md) | 新a05读到四项raw及算式匹配；完整父链未找到四项直接写入，不把term或钱包净差命名为已付军事维护。 |
 | 角色兵团与补员观测施工 | [合军中旧统帅记录创建](episode04-merge-commander-character-record-producer-12004.md)、[ADD冷夹具](episode04-refill-hardware-add-cold-qualification-12004.md) | 角色字段已接现有strengths读口；硬件ADD观察器仅冷夹具通过，两者均待新DLL/现场独立验收。 |
 | A/B/C决策 | [共同T0](episode04-common-t0-control-12004.md)、[比较合同](episode04-comparison-contract-12004.md)、[A](episode04-strategy-a-12004.md)、[B](episode04-strategy-b-12004.md)、[C](episode04-strategy-c-12004.md) | 普通同档/逐日整数/抵达表与同日表/因果费用分层；新版三臂未复拍，无winner。 |
-| 视频与agent对照 | [Review02来源—故事专题](episode04-review02-source-story-12004.md)、[24段草稿与claim/shot/API](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/README.md) | 草稿是24/69段覆盖；全69段冻结稿、声音与新版成片未由此完成。R0174更新追加到新记录，不覆盖story-a02历史原片事实。 |
+| 视频与agent对照 | [Review02来源—故事专题](episode04-review02-source-story-12004.md)、[24段草稿](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/README.md)、[新增13段与9张演示卡](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/README.md) | 新旧草稿覆盖37/69段，仅为草稿；全69段冻结稿、声音与新版成片未由此完成。各次冻结来源和原片边界保持。 |
+
+本轮可直接供其他机器的智能体开发复用：[围城/劫掠residual原因集合](army-periodic-residual-cause-12004.md)、[零库存最小自然窗口](episode04-zero-stock-clock-and-capture-12004.md)、[特殊兵补员资格](episode04-special-troop-refill-eligibility-12004.md)、[R09实际角色调任微实验](episode04-r09-selected93-micro-actual-12004.md)、[军务补员回调观测](military-refill-toggle-callback-12004.md)、[县入境倍率](episode04-county-entry-multiplier-12004.md)及相应文内代码入口。只读候选、实际写入、机器部署和正式策略就绪分别记录；新增native观测口尚待下一a07实机，不能把源码/冷夹具外推为部署完成。
 
 上述新代码/专题已整理入本次工作树，提交、推送和官方CI由Root本轮整合另行记录；索引不把这些发布步骤、离线通过、原片解码或AI抽帧写成人工1×签核。
 

@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_war_cash_current_serializer.hpp"
+#include <limits>
 
 namespace xar::ck3_12003::war_cash_current {
 namespace {
@@ -28,6 +29,49 @@ std::string Reason(std::string_view value) {
 std::string Fixed(const std::optional<std::int64_t> &value) {
   return value ? "{\"raw\":" + std::to_string(*value) +
                      ",\"scale\":100000}" : "null";
+}
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+template<class T> std::string RawOptional(const std::optional<T> &value) {
+  return value ? std::to_string(*value) : "null";
+}
+std::string RawValues(const ck3_12004::WarPaymentGenericValues12004 &v) {
+  return "{\"context_identity_before\":"+RawOptional(v.context_identity_before)+
+      ",\"context_identity_after\":"+RawOptional(v.context_identity_after)+
+      ",\"value_2c0\":"+RawOptional(v.value_2c0)+",\"value_2c8\":"+RawOptional(v.value_2c8)+
+      ",\"value_28\":"+RawOptional(v.value_28)+",\"value_30\":"+RawOptional(v.value_30)+
+      ",\"capture_complete\":"+Bool(v.capture_complete)+",\"context_stable\":"+Bool(v.context_stable)+
+      ",\"failed_reads\":"+std::to_string(v.failed_reads)+'}';
+}
+#endif
+std::string CurrentRawContextLeaf(const ActorResources &resources,
+    const game::Snapshot &snapshot,std::uint64_t revision,bool same_frame_ready) {
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+  if(!resources.current_raw_context)return {};
+  const auto &raw=*resources.current_raw_context;
+  const auto &v=raw.values;
+  const bool frame=same_frame_ready&&snapshot.paused&&snapshot.map_ready&&
+      snapshot.has_played_character&&snapshot.played_character_alive&&raw.actor_identity_stable&&
+      raw.character&&snapshot.played_character_id>0&&
+      raw.character_full_id==static_cast<std::uint32_t>(snapshot.played_character_id);
+  const bool aligned=v.context_identity_before&&*v.context_identity_before&&
+      !(*v.context_identity_before%8)&&
+      *v.context_identity_before<=(std::numeric_limits<std::uintptr_t>::max)()-0x2CF;
+  const bool admitted=frame&&v.capture_complete&&aligned;
+  const std::string reason=!frame?"war_cash_current_raw_context_frame_unqualified":
+      !v.capture_complete?"war_cash_current_raw_context_incomplete":
+      !aligned?"war_cash_current_raw_context_unaligned_or_overflow":"";
+  return ",\"current_raw_context_v1\":{\"schema_version\":1,"
+      "\"observation_kind\":\"paused_current_raw_context\","
+      "\"attribution_scope\":\"current_raw_context_only\",\"maintenance_attribution\":\"unclosed\","
+      "\"character\":"+std::to_string(raw.character)+",\"character_full_id\":"+std::to_string(raw.character_full_id)+
+      ",\"snapshot_revision\":"+std::to_string(revision)+",\"date_raw\":"+std::to_string(snapshot.date_raw)+
+      ",\"actor_identity_stable\":"+Bool(raw.actor_identity_stable)+",\"same_frame_ready\":"+Bool(same_frame_ready)+
+      ",\"values\":"+RawValues(v)+",\"admission_ready\":"+Bool(admitted)+",\"unavailable_reason\":"+Reason(reason)+'}';
+#else
+  (void)resources;(void)snapshot;(void)revision;(void)same_frame_ready;
+  return {};
+#endif
 }
 
 std::string WarIds(const game::Snapshot &snapshot) {
@@ -105,6 +149,7 @@ std::string SerializeCurrentResourcesV1(
       ",\"snapshot_revision\":" + std::to_string(revision) +
       ",\"date_raw\":" + std::to_string(snapshot.date_raw) +
       ",\"active_war_ids\":" + war_ids + ",\"player_army_ids\":" + ArmyIds(snapshot) +
+      CurrentRawContextLeaf(resources,snapshot,revision,same_frame_ready)+
       ",\"current_treasury\":" + Fixed(resources.current_treasury_raw) +
       ",\"player_monthly_gross_income\":" + Fixed(resources.monthly_gross_income_raw) +
       ",\"player_monthly_total_expenses\":" + Fixed(resources.monthly_total_expenses_raw) +

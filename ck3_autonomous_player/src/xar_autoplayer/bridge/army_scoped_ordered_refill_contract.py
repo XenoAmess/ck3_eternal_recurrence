@@ -1,5 +1,7 @@
-"""Actual scoped manager order and complete physical inputs, exact .3 only."""
+"""Scoped physical inputs; optional .4 source-selected reinforcement switch."""
 from __future__ import annotations
+
+from .army_refill_permission_switch_12004 import normalize_refill_permission_switch_12004
 
 _RAW = ('physical_index', 'current_soldiers', 'maximum_soldiers',
         'owner_persistent_regiment_id', 'q_ordinal_raw', 'army_regiment_id_raw',
@@ -91,7 +93,8 @@ def normalize_scoped_ordered_refill_inputs_v1(value: object) -> dict | None:
             raise ValueError('ordered refill physical chunks are malformed')
         normalized = {**persistent, 'chunks': []}
         for index, chunk in enumerate(persistent['chunks']):
-            if not isinstance(chunk, dict) or set(chunk) != set(_RAW + _CONTEXT + _MAGIC + _BOOL) | {'context_unavailable_reason'}:
+            expected_chunk = set(_RAW + _CONTEXT + _MAGIC + _BOOL) | {'context_unavailable_reason'}
+            if not isinstance(chunk, dict) or set(chunk) not in (expected_chunk, expected_chunk | {'refill_permission_switch_v1'}):
                 raise ValueError('ordered refill chunk schema is malformed')
             for field in _RAW:
                 _int(chunk[field], nullable=False)
@@ -108,7 +111,11 @@ def normalize_scoped_ordered_refill_inputs_v1(value: object) -> dict | None:
             for field in ('exclusion_byte_14_raw', 'army_byte_1d4_raw', 'army_byte_1ec_raw'):
                 if chunk[field] is not None and not 0 <= chunk[field] <= 255:
                     raise ValueError('ordered refill byte operand is malformed')
-            normalized['chunks'].append(dict(chunk))
+            normalized_chunk = dict(chunk)
+            if 'refill_permission_switch_v1' in chunk:
+                normalized_chunk['refill_permission_switch_v1'] = normalize_refill_permission_switch_12004(
+                    chunk['refill_permission_switch_v1'], owner_full_id=chunk['owner_resolved_full_id'])
+            normalized['chunks'].append(normalized_chunk)
         if value['status'] == 'available' and (
                 len(normalized['chunks']) != 7 or persistent['prepared_fraction_raw'] is None
                 or persistent['unavailable_reason'] is not None):

@@ -508,13 +508,20 @@ extern "C" void __fastcall XarActualLossWriterHook12004V1(
   if (caller >= g_bindings.image_base && g_bindings.image_base != 0) {
     caller_return_rva = caller - g_bindings.image_base;
   }
+  // Capture the REAL natural hook incoming return slot before entering the
+  // shared typed producer. Its own helper return frame is a different stack.
+  const void *natural_writer_return_address_slot = nullptr;
+#if defined(_MSC_VER) && XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004
+  natural_writer_return_address_slot = _AddressOfReturnAddress();
+#endif
   InvokeActualLossWriterJournalWithCaller12004V1(regiment, request_raw,
-                                               caller_return_rva);
+      caller_return_rva, natural_writer_return_address_slot);
 }
 
 void InvokeActualLossWriterJournalWithCaller12004V1(
     void *regiment, std::int64_t request_raw,
-    std::optional<std::uint64_t> caller_return_rva) noexcept {
+    std::optional<std::uint64_t> caller_return_rva,
+    const void *natural_writer_return_address_slot) noexcept {
   const auto original = g_original.load(std::memory_order_acquire);
   if (original == nullptr) return;
   Event event{};
@@ -536,6 +543,11 @@ void InvokeActualLossWriterJournalWithCaller12004V1(
     event.supply_parent_context_v1 = CaptureResidualEnclosingSupplyWriterContext12004(
         static_cast<std::uint32_t>(GetCurrentThreadId()), event.caller_return_rva, supply_read_at);
 #endif
+  if (event.supply_parent_context_v1)
+    event.siege_budget_at_writer_v1 = CaptureSiegeBudgetAtNaturalWriter12004(
+        event.caller_return_rva, natural_writer_return_address_slot, supply_read_at);
+#else
+  (void)natural_writer_return_address_slot;
 #endif
   RegimentValues before{};
   const bool before_read = ReadRegiment(regiment, before);

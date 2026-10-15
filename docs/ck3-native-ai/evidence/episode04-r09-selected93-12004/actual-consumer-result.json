@@ -1,0 +1,46 @@
+{
+  "projection_bytes": 197778,
+  "projection_sha256": "94210aa4ce755efc53bd2de86193426a7b31115f44d9934a8ec8324bfb8f1256",
+  "semantic_result": {
+    "accepted": true,
+    "read_only": true,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_army_id": 93,
+    "fresh_sibling_army_id": 162,
+    "fresh_sibling_native_carmy_id": 155,
+    "physical_current_max_before_split_after_split_after_merge": [
+      [
+        250,
+        250
+      ],
+      [
+        250,
+        250
+      ],
+      [
+        250,
+        250
+      ]
+    ],
+    "all_available_physical_DATA_and_occurrences_conserved": true,
+    "strict_unrelated_freeze_pass": false,
+    "preserved_strict_failure_required": true,
+    "exact_empty_role_removed": {
+      "army_id": 18,
+      "army_regiment_id": 59,
+      "character_id": 34232
+    },
+    "actual_merge_survivor_commander_id": 34232,
+    "new_empty_Character_1_1_at_merge": [],
+    "all_roster_strengths_qualified": false,
+    "excluded_unavailable_army_ids": [
+      16777321
+    ],
+    "actual_source_PC_execution_observed": false,
+    "birth_producer_observed": false,
+    "actual_physical_refill": null,
+    "native_Knight_membership": null,
+    "dynamic_video_qualification": false,
+    "R09_full_card_closed": false
+  }
+}

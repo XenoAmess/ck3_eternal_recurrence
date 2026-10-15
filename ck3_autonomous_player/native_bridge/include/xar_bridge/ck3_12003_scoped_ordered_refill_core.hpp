@@ -8,6 +8,8 @@ namespace xar::ck3_12002 { struct ArmyBindings; }
 namespace xar::ck3_12003 {
 struct ScopedOrderedRefillBindings12003 {
   bool enabled = false;
+  // Set only by the independently exact-.4-bound support profile. Legacy .3 omits this leaf.
+  std::uintptr_t refill_switch_image_base_12004 = 0;
   void **persistent_fallback_slot = nullptr, **army_fallback_slot = nullptr;
   void **character_storage_slot = nullptr, **character_fallback_slot = nullptr;
   void **unit_position_province_fallback_slot = nullptr;

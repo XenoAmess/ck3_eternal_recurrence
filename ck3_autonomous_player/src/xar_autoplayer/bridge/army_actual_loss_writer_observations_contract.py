@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from .army_actual_supply_parent_join_contract import normalize_supply_parent_writer_context_v1
 from .army_actual_residual_parent_contract import normalize_actual_residual_parent_v1
+from .army_actual_siege_budget_at_writer_contract import normalize_siege_budget_at_writer_v1
 
 
 _FAMILY_KEYS = {
@@ -85,6 +86,8 @@ def normalize_actual_loss_writer_observations_v1(
         event_keys = _EVENT_KEYS | ({"supply_parent_context_v1"} if isinstance(raw_event, dict) and "supply_parent_context_v1" in raw_event else set())
         if isinstance(raw_event, dict) and "residual_parent_context_v1" in raw_event:
             event_keys |= {"residual_parent_context_v1"}
+        if isinstance(raw_event, dict) and "siege_budget_at_writer_v1" in raw_event:
+            event_keys |= {"siege_budget_at_writer_v1"}
         event = _object(raw_event, event_keys, name)
         row: dict[str, object] = {}
         for key in ("sequence", "capture_failure_flags", "captured_data_record_count",
@@ -150,6 +153,10 @@ def normalize_actual_loss_writer_observations_v1(
             if context["source_complete"] and row["caller_return_rva"] != 0x2A958E8:
                 raise ValueError(name + " residual context requires actual allocator writer return")
             row["residual_parent_context_v1"] = context
+        if "siege_budget_at_writer_v1" in event:
+            if row["caller_return_rva"] != 0x24E377C or row["caller_kind"] != "siege_or_raid_preferred":
+                raise ValueError(name + " siege stack budget requires exact combined writer caller")
+            row["siege_budget_at_writer_v1"] = normalize_siege_budget_at_writer_v1(event["siege_budget_at_writer_v1"])
         normalized.append(row)
     result["events"] = normalized
     return result

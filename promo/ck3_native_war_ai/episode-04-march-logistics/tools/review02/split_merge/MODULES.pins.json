@@ -1,0 +1,18 @@
+{
+  "schema": "xar.episode04.r09-root-relay-code-pins.v1",
+  "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "repository_files": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_split_merge_observation_12004.py": "660574d319d12faa9cc8b206880597354e4c57993f2d9a1ab256a24dd161a4f5",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_replenishment_records_contract.py": "45e7f6a8390eeceb4d2ccf7a1d17994f6f9f0db4f62b24d8362653f098c63fac",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_regiment_character_role_12004.py": "def19cef18fc65643e1c38b5a86dabeae2d7096f342eacf1bab2fead678e3657",
+    "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp": "aa0a402202075454a2b8c71528d182e19275c9fb204ed0aba3533ab42fbf9fae",
+    "ck3_autonomous_player/native_bridge/src/ck3_12004_adapter.cpp": "2fd6947d5e1646ac0956d035a2f337a12509646656cbc5c86899f14a4dd874eb",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": "d12922ce4fdd78804d08982d35d84892393267ecc92b334268c2f8222ba9b65a",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py": "7c515903a541c3172c9f978d237e6a31b227c07cba3c3fe679632486ee349154",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "48fee62f0bc2f6c0c43bc8b4156faea86060c78e4189d71709f5555d0847707f",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": "e5d689b36bd68ca1f3458171f208155770fcab6291d7970d89f4cc4d6eafde0f",
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp": "81e8c94339d78ec0fe17b355e01874dbdc561b05fda15ed0d57af970b1a9521e"
+  },
+  "split_consumer_sha256": "7005539716e559f3bcad8a38d620e0a46528179c2f7101b6d42288b7935421b6",
+  "split_consumer_source": "sealed source-a04 overlay, literal copy; no new source qualification"
+}

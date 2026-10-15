@@ -1,0 +1,217 @@
+{
+  "schema": "episode04.r0176.r13.offline-replay.v1",
+  "status": "PASS",
+  "scope": "R13 supplied native observations only; runtime close and R09 excluded",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T18:44:30.077024+00:00",
+  "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0176",
+  "binding": {
+    "pid": 4992,
+    "process_create_time_100ns": 134365619855039955,
+    "generation": 1,
+    "actor": 31254,
+    "episode": "native-31254-ab05e6628183",
+    "army_id": 18,
+    "native_carmy_id": 18
+  },
+  "business": {
+    "case": "R13",
+    "status": "ACTUAL-CONSEQUENCE-PASS",
+    "locked": {
+      "front": 8653,
+      "tail": 1033,
+      "progress_raw": 95108,
+      "cutoff_raw": 50000,
+      "first_edge_remaining_q100000": 25714,
+      "consequence_day_limit": 3
+    },
+    "actual_new_route": [
+      8653,
+      8645
+    ],
+    "old_tail_avoided": 1033,
+    "first_arrival_province": 8653,
+    "actual_alternate_destination": 8645,
+    "elapsed_actual_days": 8
+  },
+  "critical_complete_queries": 6,
+  "archived_request_response_pairs": 110,
+  "clock_generations": 9,
+  "actual_total_natural_days": 13,
+  "clock_checks": [
+    {
+      "state": "triggered",
+      "generation": 1,
+      "starting_date_raw": 53146320,
+      "actual_ending_date_raw": 53146344,
+      "declared_deadline_date_raw": 53146344,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 2,
+      "starting_date_raw": 53146344,
+      "actual_ending_date_raw": 53146368,
+      "declared_deadline_date_raw": 53146368,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 3,
+      "starting_date_raw": 53146368,
+      "actual_ending_date_raw": 53146392,
+      "declared_deadline_date_raw": 53146392,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 4,
+      "starting_date_raw": 53146392,
+      "actual_ending_date_raw": 53146416,
+      "declared_deadline_date_raw": 53146416,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 5,
+      "starting_date_raw": 53146416,
+      "actual_ending_date_raw": 53146440,
+      "declared_deadline_date_raw": 53146440,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 6,
+      "starting_date_raw": 53146440,
+      "actual_ending_date_raw": 53146464,
+      "declared_deadline_date_raw": 53146512,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "route_target_changed",
+        "army_position_changed"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 7,
+      "starting_date_raw": 53146464,
+      "actual_ending_date_raw": 53146536,
+      "declared_deadline_date_raw": 53146536,
+      "completed_daily_ticks": 3,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 8,
+      "starting_date_raw": 53146536,
+      "actual_ending_date_raw": 53146608,
+      "declared_deadline_date_raw": 53146608,
+      "completed_daily_ticks": 3,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    },
+    {
+      "state": "triggered",
+      "generation": 9,
+      "starting_date_raw": 53146608,
+      "actual_ending_date_raw": 53146632,
+      "declared_deadline_date_raw": 53146680,
+      "completed_daily_ticks": 1,
+      "trigger_reasons": [
+        "route_target_changed",
+        "army_position_changed"
+      ],
+      "one_day_sampling_claim": false,
+      "actual_arrival_requires_independent_card_frames": true
+    }
+  ],
+  "one_day_sampling_claim": false,
+  "original_case_action_counts": {
+    "initial_Move": 1,
+    "alternate_Move": 1,
+    "Arm": 9,
+    "Resume": 9
+  },
+  "production_clock_definitions": {
+    "_noncombat_sentinel_scope_speed_live_ready": "6d009dbc4fc27274cebad48abc75628fa993abb3aca8c3f66b3b1180df6f419f",
+    "_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS": "01c5d37ded92390d3079dff3e5e4a7e4e80ebb3e921f81cf036ed90a3497da2b",
+    "_normalize_tactical_daily_sentinel_status": "84f948719b2a7cbc6e9e6699d5f4c7b0354dc21123469a7b78e9239f569ef5ae",
+    "_validate_tactical_daily_sentinel_arm": "7376548bfaec8caafbe2c1f0b4b087b057574c8ca8d79bb27388714ead80291e",
+    "_validate_tactical_daily_sentinel_stop": "e16b40470dfaedcc4e26df85c3f21077ea2cae6c480a6ea5ea44f6dc939f8104"
+  },
+  "rejection_checks": [
+    {
+      "case": "alternate equals old tail",
+      "rejected": true
+    },
+    {
+      "case": "fresh preview does not preserve locked first edge",
+      "rejected": true
+    },
+    {
+      "case": "independent original-front arrival changed",
+      "rejected": true
+    },
+    {
+      "case": "actual stop generation changed",
+      "rejected": true
+    }
+  ],
+  "archive_members_integrity_checked": 277,
+  "replayed_member_count": 186,
+  "R09_responses_archived_or_replayed": 0,
+  "CLOSED_archived": false,
+  "runtime_close_qualified": false,
+  "media": {
+    "raw_identity_source": "recording-reroute-pipeline-closure.actual-a01.json only",
+    "raw_seconds": 45,
+    "actual_alt_arrival_seconds_from_record_start": 69.53,
+    "actual_alt_arrival_within_clip": false,
+    "endpoint_shot_credit": false,
+    "media_body_read": false,
+    "continuous_clean": false,
+    "human_approval": false
+  },
+  "continuous_clean_review": false,
+  "human_video_approval": false,
+  "historical_absolute_paths_followed": 0,
+  "archive_extraction_performed": false,
+  "new_live_evidence": false,
+  "game_actions_sent": 0,
+  "video_save_DLL_EXE_bodies_read": 0
+}

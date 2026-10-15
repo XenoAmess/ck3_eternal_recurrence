@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>零库存，没有另加一档</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D02&quot;, &quot;paragraph_ids&quot;: [&quot;C03-11&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;24E4F80&quot;], &quot;title&quot;: &quot;零库存，没有另加一档&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="690" lengthAdjust="spacingAndGlyphs">零库存，没有另加一档</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D02</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="558" lengthAdjust="spacingAndGlyphs">假设算例  ·  假设当次加载原版阈值表</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="873" lengthAdjust="spacingAndGlyphs">零与9.99999同档，正好10在上一档</text>
+<rect x="112" y="425" width="740" height="415" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="142" y="483" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="700" fill="#CBA56A" textLength="292" lengthAdjust="spacingAndGlyphs">库存 → 向零取整数</text>
+<text x="142" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#CBA56A" textLength="42" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="142" y="714" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="194" lengthAdjust="spacingAndGlyphs">integer 0</text>
+<text x="142" y="775" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="269.984" lengthAdjust="spacingAndGlyphs">该表base 5%</text>
+<rect x="910" y="425" width="740" height="415" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="940" y="483" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="700" fill="#CBA56A" textLength="292" lengthAdjust="spacingAndGlyphs">库存 → 向零取整数</text>
+<text x="940" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#CBA56A" textLength="271" lengthAdjust="spacingAndGlyphs">9.99999</text>
+<text x="940" y="714" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="194" lengthAdjust="spacingAndGlyphs">integer 9</text>
+<text x="940" y="775" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="269.984" lengthAdjust="spacingAndGlyphs">该表base 5%</text>
+<rect x="1708" y="425" width="740" height="415" fill="#35291F" stroke="#9AAEAB" stroke-width="2"/>
+<text x="1738" y="483" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="700" fill="#9AAEAB" textLength="292" lengthAdjust="spacingAndGlyphs">库存 → 向零取整数</text>
+<text x="1738" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#9AAEAB" textLength="313" lengthAdjust="spacingAndGlyphs">10.00000</text>
+<text x="1738" y="714" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="220" lengthAdjust="spacingAndGlyphs">integer 10</text>
+<text x="1738" y="775" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="229.984" lengthAdjust="spacingAndGlyphs">该表base 0</text>
+<text x="130" y="891" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#BBA98D" textLength="809" lengthAdjust="spacingAndGlyphs">加载表（假设）：levels [60,10,0]  /  base [0,0,5000]</text>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="418" lengthAdjust="spacingAndGlyphs">段号：C03-11   ·   source：24E4F80</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="552" lengthAdjust="spacingAndGlyphs">base分量仍要经过将领、舰队与合格人数条件。</text>
+</svg>

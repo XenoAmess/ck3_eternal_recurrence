@@ -1,0 +1,507 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T17:32:17.932961+00:00",
+    "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+    "game_version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "source_id_contract": "Use the exact uppercase function-family ID already used in the source packets, plus exact build/EXE and raw SHA where published. strategy_a_route_inputs.next_decision is an existing Python entry. IDs identify source, not observation/permission/result.",
+  "source_ids": {
+    "24E3410": {
+      "id": "24E3410",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SIEGE",
+        "ZERO"
+      ],
+      "meaning": "先更新stock并取得supply预算；在首个soldier write前保存原siege/raid预算，四轮有序执行",
+      "code_sha256": "1af0e85d3602f8c884bbba0b4e76b4ffb2617b3bf1a75891c46e6ff052cb44eb",
+      "consumer_API": "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24E4CF0": {
+      "id": "24E4CF0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "ZERO"
+      ],
+      "meaning": "成功rate ADD/floor/cap可以stock0→0且返回true",
+      "code_sha256": "df812653118b1fa4d9bbad1ed97897bfdca9385b39022c486d060b9326c4cd12",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24E4F80": {
+      "id": "24E4F80",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "ZERO"
+      ],
+      "meaning": "加载state表，stock/Q向零截断；零库存没有独立附加档",
+      "code_sha256": "44a71efdd926155f4796227888833f609ce8f06aefc8fe5208bb3169888d59ea",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24E32C0": {
+      "id": "24E32C0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "ZERO"
+      ],
+      "meaning": "按有效供给分量和合格人数计算整军整数预算",
+      "code_sha256": "6f79a8262f81d806e0b1cdcbb7055b22e0d1931ef1f23f42a0f286f36d8c9eb3",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "2634190": {
+      "id": "2634190",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "ZERO"
+      ],
+      "meaning": "请求到unique physical DATA写回及refresh之间保留各整数层",
+      "code_sha256": "4b3ab1c0b6b1bf1c4ec8a001002e5dbed2589dd3db8fb81480516b25c7ce605a",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "2657E80": {
+      "id": "2657E80",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "ZERO"
+      ],
+      "meaning": "写physical chunk signed32 current，不保存被截掉的小数兵carry",
+      "code_sha256": "203ed10d63d0138c0b8c13de17c6dea6ece5ee2dd79dd94610c37adeaca3414a",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24E6650": {
+      "id": "24E6650",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "COUNTY"
+      ],
+      "meaning": "县whole比例项/minimum项分别取整后max/min",
+      "code_sha256": "49a855ce6dd1a8c1327e53dff9ea9e33acd0f961a56d9e58239db6effb94de75",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24E6570": {
+      "id": "24E6570",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "COUNTY"
+      ],
+      "meaning": "base×multiplier先形成已取整有效比例",
+      "code_sha256": "868ecb89a4b703f8c2c8138cf99cb2cc8a74b106f1f58eef8c1bea93588db697",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24DD9A0": {
+      "id": "24DD9A0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "COUNTY"
+      ],
+      "meaning": "乘数及条件lower bounds；业务修正名保留unknown",
+      "code_sha256": "7165062b717c8b288ec192f120de63f61ce0529c71a284b55aa24b810a87affb",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "2A95720": {
+      "id": "2A95720",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "COUNTY"
+      ],
+      "meaning": "原始occurrence有序筛选人数，flags各有资格",
+      "code_sha256": "41a9ed726a77ad4e72fa486b16b6dda4a941d1c94dc6d0972e6d10b94dec8ea5",
+      "consumer_API": null,
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24E23E0": {
+      "id": "24E23E0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "COUNTY"
+      ],
+      "meaning": "县首选前冻结R=B-min(B,S_pref)，R>0才启动residual",
+      "code_sha256": null,
+      "consumer_API": "army_county_entry_loss_evidence_12004.classify_retained_loss_writer_window_v1",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "2A957E0": {
+      "id": "2A957E0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "COUNTY",
+        "ZERO"
+      ],
+      "meaning": "以请求q消耗有序预算；q0仍可调用writer，县flags0不再fallback",
+      "code_sha256": null,
+      "consumer_API": "army_periodic_loss_component_12004.classify_actual_loss_component_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "2633ED0": {
+      "id": "2633ED0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT",
+        "ROLE"
+      ],
+      "meaning": "关联Character与F8及位置tail；本体无DATA store",
+      "code_sha256": "ad30927f927882f8236f17cdf40fc6626474fd113e269de3288bca7c679a970c",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "296C2F0": {
+      "id": "296C2F0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT"
+      ],
+      "meaning": "actual split普通体搬whole ArRg，非持久chunk等分",
+      "code_sha256": "9840d7ae500832535245a826d2de40f25f9fc790d4a3b706be36cd6f7bdb5ae5",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "296B240": {
+      "id": "296B240",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT"
+      ],
+      "meaning": "分类/排序权重各异，角色权重不等于UI1/1",
+      "code_sha256": "d62cf72233d6e4043eea44778bacd2cfca13f2d0269b7b69839c98ca8cded2f8",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "296B6C0": {
+      "id": "296B6C0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT"
+      ],
+      "meaning": "新Army建立时复制stock180，不按人数除二",
+      "code_sha256": "2de23ee1a822a539e0ca62c694b3c6d68e68448c3b7de53d193fc519f1a8a556",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "2632CB0": {
+      "id": "2632CB0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT",
+        "ROLE"
+      ],
+      "meaning": "空DATA/零缓存的ArRg构造；不是物理补兵",
+      "code_sha256": "5b3c9bab259ff92a4a0ed552f43660bcf675ad30597a39b2ef91e9966883729c",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "24DF9F0": {
+      "id": "24DF9F0",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT",
+        "ROLE"
+      ],
+      "meaning": "处理旧Character后写实际Commander，角色记录与现任统帅分开",
+      "code_sha256": "7209ed9b6aa32974bc9f2065748c6749ced0ca63de504abf0a780572f03b6f04",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "28CC150": {
+      "id": "28CC150",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "SPLIT",
+        "ROLE"
+      ],
+      "meaning": "清旧统帅的有条件角色记录创建路径",
+      "code_sha256": "9788e5b09c6ad793007bb1c07355086a404aa44a88b4320d6c5b2ff6d964ef57",
+      "consumer_API": "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    },
+    "strategy_a_route_inputs.next_decision": {
+      "id": "strategy_a_route_inputs.next_decision",
+      "game_version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "documents": [
+        "PRESSURE"
+      ],
+      "meaning": "current native aggregate usage/limit与目标当前值分列，分兵不把同省其他贡献者抹去",
+      "code_sha256": "0814fee7754c73523312a5652013b305614fae4e3a36e1c63a0efcf0c307df30",
+      "consumer_API": "strategy_a_route_inputs.next_decision",
+      "live_positive_evidence": false,
+      "agent_use": "source explanation/typed observation interpretation; no action authorization, prediction guarantee or causal result synthesized"
+    }
+  },
+  "documents": {
+    "SIEGE": {
+      "repo_path": "docs/ck3-native-ai/army-siege-budget-writer-stack-12004.md",
+      "source_provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-siege-source-a03\\candidate\\docs\\ck3-native-ai\\army-siege-budget-writer-stack-12004.md",
+      "bytes": 7207,
+      "sha256": "c08fa86b7b395c80e9816aef8a9fcfb6ef38bdfd0fc4a55fea40f1d5621257ec",
+      "line_anchors": [
+        {
+          "line": 1,
+          "heading": "# 1.20.0.4：真实围城 writer 的原预算栈捕获"
+        },
+        {
+          "line": 8,
+          "heading": "## 新闭合的最小来源"
+        },
+        {
+          "line": 39,
+          "heading": "## 默认关闭的12B增量"
+        },
+        {
+          "line": 63,
+          "heading": "## 视频claim与智能体共同准入"
+        },
+        {
+          "line": 79,
+          "heading": "## 实际验证及复核期限"
+        }
+      ],
+      "level": "exact_actual4_static_source_or_readonly_derived_input_contract_not_live_positive"
+    },
+    "COUNTY": {
+      "repo_path": "docs/ck3-native-ai/episode04-county-entry-residual-branches-12004.md",
+      "source_provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-county-a04\\candidate\\docs\\ck3-native-ai\\episode04-county-entry-residual-branches-12004.md",
+      "bytes": 12296,
+      "sha256": "f4b2a6557e9707dc012fe270e6e4fc9390916ed3c7ddd32e2c69547761e37f33",
+      "line_anchors": [
+        {
+          "line": 1,
+          "heading": "# 四期 R04：县 residual 触发、修正取整与零样本边界（1.20.0.4）"
+        },
+        {
+          "line": 13,
+          "heading": "## 本次来源"
+        },
+        {
+          "line": 45,
+          "heading": "## 什么时候县 callback 才启动 residual"
+        },
+        {
+          "line": 71,
+          "heading": "## 县修正参与哪些原生值，在哪些地方取整"
+        },
+        {
+          "line": 112,
+          "heading": "## 完整353B allocator 的分支"
+        },
+        {
+          "line": 138,
+          "heading": "## 当前 detour 看不到哪些负例"
+        },
+        {
+          "line": 157,
+          "heading": "## 给现场、视频和 agent 的最小 recipe"
+        }
+      ],
+      "level": "exact_actual4_static_source_or_readonly_derived_input_contract_not_live_positive"
+    },
+    "ZERO": {
+      "repo_path": "docs/ck3-native-ai/episode04-zero-supply-loss-source-12004.md",
+      "source_provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-starvation-zero-a04\\candidate\\docs\\ck3-native-ai\\episode04-zero-supply-loss-source-12004.md",
+      "bytes": 10968,
+      "sha256": "703adc112acf057e0cfdbdade844f9f52efa868a5f32a8129206783a44deff3a",
+      "line_anchors": [
+        {
+          "line": 1,
+          "heading": "# 第4期R05：零库存仍可发生供给扣兵（1.20.0.4）"
+        },
+        {
+          "line": 7,
+          "heading": "## 0的真正执行路径"
+        },
+        {
+          "line": 45,
+          "heading": "## 真正的整数截断点"
+        },
+        {
+          "line": 58,
+          "heading": "## 同一次混合callback的四个来源"
+        },
+        {
+          "line": 76,
+          "heading": "## 最小采样增量与阴性证据边界"
+        },
+        {
+          "line": 84,
+          "heading": "## 视频与智能体可用范围"
+        }
+      ],
+      "level": "exact_actual4_static_source_or_readonly_derived_input_contract_not_live_positive"
+    },
+    "SPLIT": {
+      "repo_path": "docs/ck3-native-ai/episode04-split-half-source-12004.md",
+      "source_provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-a04\\patch-root\\docs\\ck3-native-ai\\episode04-split-half-source-12004.md",
+      "bytes": 9691,
+      "sha256": "92fceeb76c5faeca418b3754b8fc75fcd5b235d828c3e2e8a9bd113d82d72420",
+      "line_anchors": [
+        {
+          "line": 1,
+          "heading": "# Episode 04：actual .4 拆半、角色记录与物理 DATA 后置"
+        },
+        {
+          "line": 7,
+          "heading": "## 本轮闭合的源码"
+        },
+        {
+          "line": 42,
+          "heading": "## 视频 claim 与智能体结论"
+        },
+        {
+          "line": 53,
+          "heading": "## 可直接消费的现场断言"
+        },
+        {
+          "line": 69,
+          "heading": "## 跨机器离线复放"
+        }
+      ],
+      "level": "exact_actual4_static_source_or_readonly_derived_input_contract_not_live_positive"
+    },
+    "ROLE": {
+      "repo_path": "docs/ck3-native-ai/episode04-merge-commander-character-record-producer-12004.md",
+      "source_provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-a04\\patch-root\\docs\\ck3-native-ai\\episode04-merge-commander-character-record-producer-12004.md",
+      "bytes": 9957,
+      "sha256": "f8403a6f5500f62b98a292a0772b16de5e46e7421432fc3a8a1da4a3977bd028",
+      "line_anchors": [
+        {
+          "line": 1,
+          "heading": "# Episode 04：actual .4 合军、旧统帅与角色 ArRg 出生路径"
+        },
+        {
+          "line": 9,
+          "heading": "## 实际调用链"
+        },
+        {
+          "line": 42,
+          "heading": "## 可以闭合的字段与条件"
+        },
+        {
+          "line": 60,
+          "heading": "## 可复用的只读接口已经接线"
+        },
+        {
+          "line": 77,
+          "heading": "## 校验与边界"
+        },
+        {
+          "line": 83,
+          "heading": "## 原件、有限读取与纠错"
+        }
+      ],
+      "level": "exact_actual4_static_source_or_readonly_derived_input_contract_not_live_positive"
+    },
+    "PRESSURE": {
+      "repo_path": "docs/ck3-native-ai/episode04-strategy-a-route-inputs-12004.md",
+      "source_provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01\\route-inputs-a02\\docs\\ck3-native-ai\\episode04-strategy-a-route-inputs-12004.md",
+      "bytes": 5274,
+      "sha256": "9ce238975c7023dc6ef1aa21b1126230dd7655b4d632643634c55bc021b5f6a9",
+      "line_anchors": [
+        {
+          "line": 1,
+          "heading": "# R10 A：将路线与补给压力接入实际决策"
+        }
+      ],
+      "level": "exact_actual4_static_source_or_readonly_derived_input_contract_not_live_positive"
+    }
+  },
+  "delivery_receipts": {
+    "SIEGE": {
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-siege-source-a03\\ROOT-DELIVERY.actual.json",
+      "bytes": 6755,
+      "sha256": "d8cb801ddc649a400c5c53db473662881f4188530fa28529067fdb5973d3a495"
+    },
+    "COUNTY": {
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-county-a04\\ROOT-DELIVERY.actual-a02.json",
+      "bytes": 1593,
+      "sha256": "9cab4d135fd676f25d10b0ecbbea8caaf0724bf6b5c19037365a21366f9365f1"
+    },
+    "ZERO": {
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-starvation-zero-a04\\DELIVERY.json",
+      "bytes": 8724,
+      "sha256": "4706fe9182c2a89162b756e5d3a7414b4b16fadae4192227f3b85fddf8c06291"
+    },
+    "SPLIT": {
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-a04\\ROOT-DELIVERY.source-a04.json",
+      "bytes": 17682,
+      "sha256": "05997fbe101e6d44e9f6de121bc8e44c673a5e407187b1c7f8a81f6484874fb3"
+    },
+    "PRESSURE": {
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01\\route-inputs-a02\\ROOT-DELIVERY.actual.json",
+      "bytes": 3752,
+      "sha256": "bdf1a2581b64b3a096a77a6f6e749925502c672e747972ea9a77da156129f95b"
+    }
+  },
+  "split_portable_index": {
+    "repo_path": "docs/ck3-native-ai/evidence/episode04-split-source-12004/source-index.json",
+    "bytes": 10770,
+    "sha256": "83fcf06bfa2dbfa14fef973d704f6ee66df7c37cbdbc28ae87579297fa802c7f"
+  },
+  "portability": "Only relative repo targets are operational inputs; source_provenance_path values are historic labels, not imports or required local paths."
+}

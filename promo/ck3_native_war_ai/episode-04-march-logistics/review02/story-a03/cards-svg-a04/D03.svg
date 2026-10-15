@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>先分别取整，再合计预算</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D03&quot;, &quot;paragraph_ids&quot;: [&quot;C03-02&quot;, &quot;C03-03&quot;, &quot;C03-04&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;24E3410&quot;, &quot;24E32C0&quot;], &quot;title&quot;: &quot;先分别取整，再合计预算&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="759" lengthAdjust="spacingAndGlyphs">先分别取整，再合计预算</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D03</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="806" lengthAdjust="spacingAndGlyphs">假设算例  ·  假设人数199，供给5%，围城1%，劫掠0</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="859" lengthAdjust="spacingAndGlyphs">9 + 1 = 10；先合成6%却会得到11</text>
+<rect x="112" y="425" width="1120" height="430" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="145" y="491" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="342" lengthAdjust="spacingAndGlyphs">分别算两个整数预算</text>
+<text x="145" y="584" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="55" font-weight="700" fill="#F0E5CF" textLength="382" lengthAdjust="spacingAndGlyphs">199 × 5% → 9</text>
+<text x="145" y="658" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="55" font-weight="700" fill="#F0E5CF" textLength="382" lengthAdjust="spacingAndGlyphs">199 × 1% → 1</text>
+<text x="145" y="784" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#ABB582" textLength="352" lengthAdjust="spacingAndGlyphs">9 + 1 = 10</text>
+<rect x="1328" y="425" width="1120" height="430" fill="#35291F" stroke="#CA7962" stroke-width="2"/>
+<text x="1360" y="491" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CA7962" textLength="418" lengthAdjust="spacingAndGlyphs">先合百分比，算法已不同</text>
+<text x="1360" y="607" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#F0E5CF" textLength="323" lengthAdjust="spacingAndGlyphs">199 × 6%</text>
+<text x="1360" y="784" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#CA7962" textLength="172" lengthAdjust="spacingAndGlyphs">→ 11</text>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="777" lengthAdjust="spacingAndGlyphs">段号：C03-02 / C03-03 / C03-04   ·   source：24E3410 / 24E32C0</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="650" lengthAdjust="spacingAndGlyphs">预算不等于实际死亡数；后续分配沿变化后的人数执行。</text>
+</svg>

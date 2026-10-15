@@ -9,6 +9,9 @@ BindWarCashCurrentImage(std::uintptr_t image_base,
   Bindings output{};
   if (image_base == 0 || executable_sha256 != kExecutableSha256) return output;
   output.enabled = true;
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+  output.current_raw_context_enabled = true;
+#endif
   output.monthly_income = reinterpret_cast<MonthlyIncome>(
       image_base + kWarCashMonthlyIncomeRva);
   output.expense_context_character = reinterpret_cast<ExpenseContextCharacter>(

@@ -1,0 +1,81 @@
+{
+  "schema": "episode04.r0176.r13.actual-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-15T18:46:05.253409+00:00",
+  "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0176",
+  "binding": {
+    "pid": 4992,
+    "process_create_time_100ns": 134365619855039955,
+    "generation": 1,
+    "actor": 31254,
+    "episode": "native-31254-ab05e6628183",
+    "army_id": 18,
+    "native_carmy_id": 18
+  },
+  "case": "R13",
+  "original_final_report": {
+    "path": "locked-routes-helper-a02/locked-r13-a01/r13-final-report-a01/RESULT.actual.json",
+    "bytes": 8307,
+    "sha256": "d46f5d69ef14be263e9e87c53c91403bd103aa9514ba26f57257ee65d902fd1c"
+  },
+  "business": {
+    "case": "R13",
+    "status": "ACTUAL-CONSEQUENCE-PASS",
+    "locked": {
+      "front": 8653,
+      "tail": 1033,
+      "progress_raw": 95108,
+      "cutoff_raw": 50000,
+      "first_edge_remaining_q100000": 25714,
+      "consequence_day_limit": 3
+    },
+    "actual_new_route": [
+      8653,
+      8645
+    ],
+    "old_tail_avoided": 1033,
+    "first_arrival_province": 8653,
+    "actual_alternate_destination": 8645,
+    "elapsed_actual_days": 8
+  },
+  "clock_generations": 9,
+  "actual_total_natural_days": 13,
+  "original_typed_Move_counts": {
+    "initial": 1,
+    "alternate": 1
+  },
+  "critical_complete_queries": 6,
+  "offline_replay": {
+    "path": "REPLAY.actual-a01.json",
+    "sha256": "d0108405a5aacd325ead3b0b03d37e21c44af1556f13e8effd291d59139ad440",
+    "new_live_evidence": false
+  },
+  "archive": {
+    "path": "r0176-r13-originals.zip",
+    "bytes": 2954865,
+    "sha256": "f9a181f739f47a90dcd6856226b7dff91221f712d1b63333fabc2b65118e2996"
+  },
+  "media": {
+    "raw_identity_source": "recording-reroute-pipeline-closure.actual-a01.json only",
+    "raw_seconds": 45,
+    "actual_alt_arrival_seconds_from_record_start": 69.53,
+    "actual_alt_arrival_within_clip": false,
+    "endpoint_shot_credit": false,
+    "media_body_read": false,
+    "continuous_clean": false,
+    "human_approval": false
+  },
+  "media_timing_source": "Root supplied69.53s actual alternate-arrival observation; raw45s identity from exact recorder closure JSON; no video body/timing probe performed here",
+  "R09_response_scope": "excluded; Root continued separately after R13",
+  "CLOSED_scope": "not yet supplied or archived; future separate append required",
+  "runtime_close_qualified": false,
+  "continuous_clean_review": false,
+  "human_video_approval": false,
+  "source_reuse": "R0175 ArchiveReader/shared entry/watched_stop, existing production verify.r13 and four pure production clock definitions",
+  "old_R0175_tests_rerun": 0,
+  "SDK_game_desktop_build_EXE_operations": 0,
+  "protected_until_utc": "2026-10-16T07:45:01.597Z",
+  "review_at_utc": "2026-10-16T07:45:01.597Z",
+  "renewed": false
+}

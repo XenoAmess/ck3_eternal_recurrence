@@ -103,9 +103,15 @@ bool ResolveRoute(const FrontendGuiRouteMailboxContextV1 &query,
 bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   const auto root_name = GuiWindowTreeRootForV1(query.gui_window_tree_scope);
   if (root_name.empty()) return false;
+  const bool military = query.gui_window_tree_scope == GuiWindowTreeScopeV1::military;
+  if (military && (!query.environment.exact_build_admitted ||
+      query.environment.offline_fixture_function_overrides ||
+      query.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
+      query.environment.executable_sha256 != ck3_12004::kExecutableSha256)) return false;
   auto &out = query.result.tree_inspection;
   out = {};
   out.scope_root_name.assign(root_name);
+  out.standard_click_bindings_12004 = military;
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr;
   void *widget = nullptr;
@@ -115,7 +121,7 @@ bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (root == nullptr) return widget == nullptr;
   if (widget != root) return false;
   return InspectNamedGuiSubtreeV1(access, query.environment.module_base,
-                                  root, root_name, out);
+                                  root, root_name, out, military);
 }
 
 bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {

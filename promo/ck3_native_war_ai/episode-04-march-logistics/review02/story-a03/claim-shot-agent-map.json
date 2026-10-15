@@ -1,0 +1,1211 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T17:32:17.932961+00:00",
+    "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256_from_existing_source": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "scope": "13 previously uncovered original paragraph IDs; source-delta only; original69/chapter model retained",
+    "frozen_story_a02_edited": false,
+    "original69_model": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-BC-a06/narration/six-chapter-final-BC-Chinese-a06.md",
+      "bytes": 23969,
+      "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+    },
+    "frozen_a02_map": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/claim-shot-agent-map.json",
+      "bytes": 71886,
+      "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+    },
+    "research_credit_added": 0,
+    "strict_research_numerator": 3,
+    "strict_research_denominator": 14,
+    "new_live_positive": false,
+    "new_clean_spans": 0,
+    "full69_script_frozen": false,
+    "tts_generated": false,
+    "media_generated": false,
+    "winner": null
+  },
+  "paragraphs": [
+    {
+      "paragraph_id": "C03-02",
+      "topic": "独立预算的顺序",
+      "original_claim_text": "比如一月十一日的暂停样本，当前围城损失预算是五十六。它能说明眼前相关条件怎么算，不是一条刚刚扣了五十六人的记录。预算与真正发生的减少分开，才不会把一个提示数重复记入结果。",
+      "current_speakable_conclusion": "先看游戏怎样准备损失。供给、围城和劫掠各有自己的预算；围城与劫掠先各自取成整数，再合起来分配。这些预算在第一次兵员写入以前形成，后面的分配却沿着已经变化的人数继续进行。把几个显示比例直接相加，再乘同一个总人数，会漏掉中间的取整和先后顺序。",
+      "spoken_text": "先看游戏怎样准备损失。供给、围城和劫掠各有自己的预算；围城与劫掠先各自取成整数，再合起来分配。这些预算在第一次兵员写入以前形成，后面的分配却沿着已经变化的人数继续进行。把几个显示比例直接相加，再乘同一个总人数，会漏掉中间的取整和先后顺序。",
+      "source_refs": [
+        "SIEGE",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E3410"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D03"
+      ],
+      "missing_filming": [
+        "需要Robert/.4自然callback与完整writer事件；当前只提供已闭source规则和假设演示，不使用旧减31/67作为新正例"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "先看游戏怎样准备损失。",
+          "source_ids": [
+            "24E3410"
+          ]
+        },
+        {
+          "sentence": "供给、围城和劫掠各有自己的预算；围城与劫掠先各自取成整数，再合起来分配。",
+          "source_ids": [
+            "24E3410"
+          ]
+        },
+        {
+          "sentence": "这些预算在第一次兵员写入以前形成，后面的分配却沿着已经变化的人数继续进行。",
+          "source_ids": [
+            "24E3410"
+          ]
+        },
+        {
+          "sentence": "把几个显示比例直接相加，再乘同一个总人数，会漏掉中间的取整和先后顺序。",
+          "source_ids": [
+            "24E3410"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-03",
+      "topic": "怎样把一笔扣兵限定为围城",
+      "original_claim_text": "较早的一次围城观察，分队从三千一百二十人变成三千零八十九，净少三十一。同期补给从约八十三降到七十四点二三，两端都高于五十。可以讲围城背景下的周期变化和实际兵员减少，不能把这段说成饥饿。",
+      "current_speakable_conclusion": "围城和劫掠会进入同一个合并阶段。要把其中一笔具体扣兵归到围城，就要对上那次真正使用的围城预算为正、劫掠预算为零，再看这一笔物理兵员前后究竟减少多少。预算说明这次怎样安排损失，兵员写回说明这次实际少了多少；这一笔的结果也不直接代表整段旅途。",
+      "spoken_text": "围城和劫掠会进入同一个合并阶段。要把其中一笔具体扣兵归到围城，就要对上那次真正使用的围城预算为正、劫掠预算为零，再看这一笔物理兵员前后究竟减少多少。预算说明这次怎样安排损失，兵员写回说明这次实际少了多少；这一笔的结果也不直接代表整段旅途。",
+      "source_refs": [
+        "SIEGE",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E3410",
+        "2634190"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D03"
+      ],
+      "missing_filming": [
+        "未来预算leaf的coherent生产构建/自然记录、positive physical及同场时码；当前a06不能冒充已读a07栈预算"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "围城和劫掠会进入同一个合并阶段。",
+          "source_ids": [
+            "24E3410",
+            "2634190"
+          ]
+        },
+        {
+          "sentence": "要把其中一笔具体扣兵归到围城，就要对上那次真正使用的围城预算为正、劫掠预算为零，再看这一笔物理兵员前后究竟减少多少。",
+          "source_ids": [
+            "24E3410",
+            "2634190"
+          ]
+        },
+        {
+          "sentence": "预算说明这次怎样安排损失，兵员写回说明这次实际少了多少；这一笔的结果也不直接代表整段旅途。",
+          "source_ids": [
+            "24E3410",
+            "2634190"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-04",
+      "topic": "两个比例分开取整",
+      "original_claim_text": "这支分队的六个兵团也完整核对过，身份和满员数没变，人数变化能逐团对上。规则先算整军预算，再按符合条件的兵团顺序分配整数。这一例恰好也能与各团比例取整吻合，但不能推广成所有兵团永远各自独立乘百分比。",
+      "current_speakable_conclusion": "用一组假设数字看差别：一百九十九名合格兵员，供给比例百分之五，整数预算是九；围城比例百分之一，整数预算是一。两项分别计算，合计是十。要是先合成百分之六，再乘一百九十九，就会算成十一。这张卡解释的是取整顺序，随后分到各兵团，还要继续按当时的人数处理。",
+      "spoken_text": "用一组假设数字看差别：一百九十九名合格兵员，供给比例百分之五，整数预算是九；围城比例百分之一，整数预算是一。两项分别计算，合计是十。要是先合成百分之六，再乘一百九十九，就会算成十一。这张卡解释的是取整顺序，随后分到各兵团，还要继续按当时的人数处理。",
+      "source_refs": [
+        "COUNTY",
+        "SIEGE",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E3410",
+        "24E32C0",
+        "2A957E0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004",
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D03"
+      ],
+      "missing_filming": [
+        "解释卡尚未制作；画面必须持续标“假设整数例”，不能套为当前Robert预算或实际死亡数"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "用一组假设数字看差别：一百九十九名合格兵员，供给比例百分之五，整数预算是九；围城比例百分之一，整数预算是一。",
+          "source_ids": [
+            "24E3410",
+            "24E32C0",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "两项分别计算，合计是十。",
+          "source_ids": [
+            "24E3410",
+            "24E32C0",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "要是先合成百分之六，再乘一百九十九，就会算成十一。",
+          "source_ids": [
+            "24E3410",
+            "24E32C0",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "这张卡解释的是取整顺序，随后分到各兵团，还要继续按当时的人数处理。",
+          "source_ids": [
+            "24E3410",
+            "24E32C0",
+            "2A957E0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-05",
+      "topic": "县残差在首选前冻结",
+      "original_claim_text": "同一次运行，主军还有另一个窗口：从原始第六到第九日，它跨到新县，人数从二千五百四十变成二千四百一十三，净少一百二十七。这个窗口补给库存没有变化。已查明的县界移动损耗有独立入口，与这组前后观察吻合。",
+      "current_speakable_conclusion": "进入县域的这条路径，先算整军预算，再看首选兵团一共能承担多少，提前把两者的差额存下来。首选人数已经覆盖预算，后面就不启动县剩余分配。只有预先存下的差额大于零，才进入第二部分。所以找县损耗时，不能总等着一个未必会出现的剩余阶段。",
+      "spoken_text": "进入县域的这条路径，先算整军预算，再看首选兵团一共能承担多少，提前把两者的差额存下来。首选人数已经覆盖预算，后面就不启动县剩余分配。只有预先存下的差额大于零，才进入第二部分。所以找县损耗时，不能总等着一个未必会出现的剩余阶段。",
+      "source_refs": [
+        "COUNTY",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E23E0",
+        "2A95720",
+        "2A957E0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_county_entry_loss_evidence_12004.classify_retained_loss_writer_window_v1",
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D04"
+      ],
+      "missing_filming": [
+        "真实当前county B/S_pref与准入条件；county-primary或residual实际正writer；缺事件不拍成县损失0"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "进入县域的这条路径，先算整军预算，再看首选兵团一共能承担多少，提前把两者的差额存下来。",
+          "source_ids": [
+            "24E23E0",
+            "2A95720",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "首选人数已经覆盖预算，后面就不启动县剩余分配。",
+          "source_ids": [
+            "24E23E0",
+            "2A95720",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "只有预先存下的差额大于零，才进入第二部分。",
+          "source_ids": [
+            "24E23E0",
+            "2A95720",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "所以找县损耗时，不能总等着一个未必会出现的剩余阶段。",
+          "source_ids": [
+            "24E23E0",
+            "2A95720",
+            "2A957E0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-06",
+      "topic": "首选实际未扣足不改残差",
+      "original_claim_text": "这项解释仍有边界。当次所有判定条件没有独立读全，中间未见的事件也没有一并排除。净少一百二十七，不是死亡一百二十七的统计。口播采用兵员损失或人数净减少，具体原因按这一个窗口的证据解释。",
+      "current_speakable_conclusion": "这个差额在首选扣兵之前就已经固定。后面逐团消耗的是分配出去的整数请求；即使某次写入被跳过，或者实际变化与请求不同，也不会把这部分自动退回，再重算县的剩余预算。读结果时，把预算、请求和实际物理减少分别保留，才能解释为什么几个数不一定相等。",
+      "spoken_text": "这个差额在首选扣兵之前就已经固定。后面逐团消耗的是分配出去的整数请求；即使某次写入被跳过，或者实际变化与请求不同，也不会把这部分自动退回，再重算县的剩余预算。读结果时，把预算、请求和实际物理减少分别保留，才能解释为什么几个数不一定相等。",
+      "source_refs": [
+        "COUNTY",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E23E0",
+        "2A957E0",
+        "2634190"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_county_entry_loss_evidence_12004.classify_retained_loss_writer_window_v1",
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D04"
+      ],
+      "missing_filming": [
+        "预算/请求/physical三列真实事件；假设skip只作源码分支卡，不宣称本期曾发生该skip"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这个差额在首选扣兵之前就已经固定。",
+          "source_ids": [
+            "24E23E0",
+            "2A957E0",
+            "2634190"
+          ]
+        },
+        {
+          "sentence": "后面逐团消耗的是分配出去的整数请求；即使某次写入被跳过，或者实际变化与请求不同，也不会把这部分自动退回，再重算县的剩余预算。",
+          "source_ids": [
+            "24E23E0",
+            "2A957E0",
+            "2634190"
+          ]
+        },
+        {
+          "sentence": "读结果时，把预算、请求和实际物理减少分别保留，才能解释为什么几个数不一定相等。",
+          "source_ids": [
+            "24E23E0",
+            "2A957E0",
+            "2634190"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-07",
+      "topic": "县预算多层取整",
+      "original_claim_text": "一月二十日的新暂停样本，读到了更完整的当前县域条件。下令前后整军仍是六千七百四十六，满员六千七百四十七，全部二十七团没有变化。当前有效比例约百分之三点五，预算二百三十六；预算仍然不是已经扣掉的人数。",
+      "current_speakable_conclusion": "县损耗的修正也分几层。再看一组假设输入：全军三千零一人，基础比例百分之五，修正倍率零点三三三三九。先得到有效比例百分之一点六六六，再算人数，是四十九；对应的最小值修正后是三十三，这组输入最后取四十九。把修正和人数合到最后才取整，就会多算成五十。",
+      "spoken_text": "县损耗的修正也分几层。再看一组假设输入：全军三千零一人，基础比例百分之五，修正倍率零点三三三三九。先得到有效比例百分之一点六六六，再算人数，是四十九；对应的最小值修正后是三十三，这组输入最后取四十九。把修正和人数合到最后才取整，就会多算成五十。",
+      "source_refs": [
+        "COUNTY"
+      ],
+      "source_ids": [
+        "24E6650",
+        "24E6570",
+        "24DD9A0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D05"
+      ],
+      "missing_filming": [
+        "当前loaded base/minimum/multiplier未实读不填本场数字；卡标“假设输入、普通非负无溢出域”"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "县损耗的修正也分几层。",
+          "source_ids": [
+            "24E6650",
+            "24E6570",
+            "24DD9A0"
+          ]
+        },
+        {
+          "sentence": "再看一组假设输入：全军三千零一人，基础比例百分之五，修正倍率零点三三三三九。",
+          "source_ids": [
+            "24E6650",
+            "24E6570",
+            "24DD9A0"
+          ]
+        },
+        {
+          "sentence": "先得到有效比例百分之一点六六六，再算人数，是四十九；对应的最小值修正后是三十三，这组输入最后取四十九。",
+          "source_ids": [
+            "24E6650",
+            "24E6570",
+            "24DD9A0"
+          ]
+        },
+        {
+          "sentence": "把修正和人数合到最后才取整，就会多算成五十。",
+          "source_ids": [
+            "24E6650",
+            "24E6570",
+            "24DD9A0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-09",
+      "topic": "请求到物理槽仍有整数层",
+      "original_claim_text": "这轮行军随后观察到两日内的真实减少：整军从六千七百四十六变成六千六百七十九，净少六十七。完整二十七个兵团的身份和满员数都相同，其中十六团人数下降，合计六十七。这是实际人数变化，已经超出了仅仅读提示框的范围。",
+      "current_speakable_conclusion": "整军预算取成整数以后，还要按顺序分给兵团，再写进实际兵槽。每一步都有自己的分母、上限和取整，兵团请求也不直接等于最终物理减少。同一个兵槽被多条数据引用时，核算那次实际写回只计一份；这里被截掉的小数，也没有在这条写回里留下小数兵员余量。",
+      "spoken_text": "整军预算取成整数以后，还要按顺序分给兵团，再写进实际兵槽。每一步都有自己的分母、上限和取整，兵团请求也不直接等于最终物理减少。同一个兵槽被多条数据引用时，核算那次实际写回只计一份；这里被截掉的小数，也没有在这条写回里留下小数兵员余量。",
+      "source_refs": [
+        "COUNTY",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E32C0",
+        "2A957E0",
+        "2634190",
+        "2657E80"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D06"
+      ],
+      "missing_filming": [
+        "完整unique physical before/after；DATA alias到槽的实际覆盖；无真实人数时只画source数据流"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "整军预算取成整数以后，还要按顺序分给兵团，再写进实际兵槽。",
+          "source_ids": [
+            "24E32C0",
+            "2A957E0",
+            "2634190",
+            "2657E80"
+          ]
+        },
+        {
+          "sentence": "每一步都有自己的分母、上限和取整，兵团请求也不直接等于最终物理减少。",
+          "source_ids": [
+            "24E32C0",
+            "2A957E0",
+            "2634190",
+            "2657E80"
+          ]
+        },
+        {
+          "sentence": "同一个兵槽被多条数据引用时，核算那次实际写回只计一份；这里被截掉的小数，也没有在这条写回里留下小数兵员余量。",
+          "source_ids": [
+            "24E32C0",
+            "2A957E0",
+            "2634190",
+            "2657E80"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-10",
+      "topic": "库存0→0也能成功更新",
+      "original_claim_text": "同期补给从约一百一十六点五二降到一百一十点三八，净少约六点一四。前一个观察点的当前月变化约负八点七七，后一个约负六点一四。后者与库存差吻合，但它是后来那个地点的当前计算，不能倒过来当成前面更新时已经确认使用的数值。",
+      "current_speakable_conclusion": "补给已经耗尽，面板前后都显示零，也不能据此说这次没有更新。源码里的成功路径仍会把本次变化加进去，负结果再压回零，并继续往下计算供给损失。也就是说，库存从零到零，可以同时发生一次成功更新；有没有扣兵，要接着看后面的预算和实际写回。",
+      "spoken_text": "补给已经耗尽，面板前后都显示零，也不能据此说这次没有更新。源码里的成功路径仍会把本次变化加进去，负结果再压回零，并继续往下计算供给损失。也就是说，库存从零到零，可以同时发生一次成功更新；有没有扣兵，要接着看后面的预算和实际写回。",
+      "source_refs": [
+        "SIEGE",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E4CF0",
+        "24E3410",
+        "24E32C0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D01"
+      ],
+      "missing_filming": [
+        "自然stock0-at-writer与完整positive supply physical事件；0→0端点本身不能填actual loss值"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "补给已经耗尽，面板前后都显示零，也不能据此说这次没有更新。",
+          "source_ids": [
+            "24E4CF0",
+            "24E3410",
+            "24E32C0"
+          ]
+        },
+        {
+          "sentence": "源码里的成功路径仍会把本次变化加进去，负结果再压回零，并继续往下计算供给损失。",
+          "source_ids": [
+            "24E4CF0",
+            "24E3410",
+            "24E32C0"
+          ]
+        },
+        {
+          "sentence": "也就是说，库存从零到零，可以同时发生一次成功更新；有没有扣兵，要接着看后面的预算和实际写回。",
+          "source_ids": [
+            "24E4CF0",
+            "24E3410",
+            "24E32C0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-11",
+      "topic": "库存零没有额外档也不停止扣兵",
+      "original_claim_text": "这个两日窗口跨过了该军的周期更新机会，之前的围攻预算和有条件的逐团分配都吻合实际变化。但没有逐团确认当时所有条件，也没有证明未观察的间隔绝无补员。两端库存远高于饥饿边界，第一步条件仍不通过，所以不能把这段说成县界已经扣了二百三十六，或已经证明饥饿。",
+      "current_speakable_conclusion": "零库存也没有在这条普通供给链里另加一档。假设当次加载的是六十、十、零这组原版阈值，零与九点九九九九九进入同一档，正好十进入上一档。将领修正、舰队抑制和合格人数还会影响最终预算，所以不能把零库存理解成安全，也不能一看到零就固定写成每团扣百分之五。",
+      "spoken_text": "零库存也没有在这条普通供给链里另加一档。假设当次加载的是六十、十、零这组原版阈值，零与九点九九九九九进入同一档，正好十进入上一档。将领修正、舰队抑制和合格人数还会影响最终预算，所以不能把零库存理解成安全，也不能一看到零就固定写成每团扣百分之五。",
+      "source_refs": [
+        "SIEGE",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E4F80",
+        "24E32C0",
+        "24E3410"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D02"
+      ],
+      "missing_filming": [
+        "实际runtime levels/fractions/将领/fleet/grace；正常低库存动态和source-qualified供给扣兵；不补exact10实机测试"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "零库存也没有在这条普通供给链里另加一档。",
+          "source_ids": [
+            "24E4F80",
+            "24E32C0",
+            "24E3410"
+          ]
+        },
+        {
+          "sentence": "假设当次加载的是六十、十、零这组原版阈值，零与九点九九九九九进入同一档，正好十进入上一档。",
+          "source_ids": [
+            "24E4F80",
+            "24E32C0",
+            "24E3410"
+          ]
+        },
+        {
+          "sentence": "将领修正、舰队抑制和合格人数还会影响最终预算，所以不能把零库存理解成安全，也不能一看到零就固定写成每团扣百分之五。",
+          "source_ids": [
+            "24E4F80",
+            "24E32C0",
+            "24E3410"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C03-12",
+      "topic": "小军整数门槛与零事件边界",
+      "original_claim_text": "要完成饥饿专题，仍需在威廉这一案里看见补给跨过相关边界、状态发生变化，再读到对应的整数兵员减少；同窗补员、战斗和事件也要核对。当前预算、围城窗口和移动窗口各有价值，不能彼此代替。缺的那一步保留，不从高补给减员样本里制造饥饿结果。",
+      "current_speakable_conclusion": "小军队还会遇到整个人数的取整。假设有效分量是百分之五，十九名合格兵员算出的整军预算是零，二十名才是一个；这一步没有每次至少扣一人的规则。但这只解释供给预算：围城、县进入和其他人数变化要分别看，日志里没读到一笔事件，也不能直接填成整个窗口零损失。",
+      "spoken_text": "小军队还会遇到整个人数的取整。假设有效分量是百分之五，十九名合格兵员算出的整军预算是零，二十名才是一个；这一步没有每次至少扣一人的规则。但这只解释供给预算：围城、县进入和其他人数变化要分别看，日志里没读到一笔事件，也不能直接填成整个窗口零损失。",
+      "source_refs": [
+        "COUNTY",
+        "SIEGE",
+        "ZERO"
+      ],
+      "source_ids": [
+        "24E32C0",
+        "24E3410",
+        "2A957E0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004 / army_siege_parent_loss_evidence_12004",
+        "army_periodic_loss_component_12004.classify_actual_loss_component_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D06"
+      ],
+      "missing_filming": [
+        "真实执行AL/预算决策或完整physical零事件各自保留；没有writer时原因仍unknown"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "小军队还会遇到整个人数的取整。",
+          "source_ids": [
+            "24E32C0",
+            "24E3410",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "假设有效分量是百分之五，十九名合格兵员算出的整军预算是零，二十名才是一个；这一步没有每次至少扣一人的规则。",
+          "source_ids": [
+            "24E32C0",
+            "24E3410",
+            "2A957E0"
+          ]
+        },
+        {
+          "sentence": "但这只解释供给预算：围城、县进入和其他人数变化要分别看，日志里没读到一笔事件，也不能直接填成整个窗口零损失。",
+          "source_ids": [
+            "24E32C0",
+            "24E3410",
+            "2A957E0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-06",
+      "topic": "拆半搬整条兵团与库存字段",
+      "original_claim_text": "原版有“平分”“分出新军队”“整编”“合并军队”这些入口。平分把现有军队分成规模大致相等的两支，整编调整两支军队中的编制。会合只是走到同地，点合并之后才真正成为一支。名称、下令与实际组织变化分别核对。",
+      "current_speakable_conclusion": "平分的源码会先建新军队，再按不同类别的权重，把整条军队兵团记录搬过去。它没有在这条普通路径里，把每个持久兵槽直接切成两半，因此两边界面人数不保证严格各半。新军建立时还会复制原来的补给库存字段；是否碰到新容量，要继续按独立的补给更新和实际后态看。",
+      "spoken_text": "平分的源码会先建新军队，再按不同类别的权重，把整条军队兵团记录搬过去。它没有在这条普通路径里，把每个持久兵槽直接切成两半，因此两边界面人数不保证严格各半。新军建立时还会复制原来的补给库存字段；是否碰到新容量，要继续按独立的补给更新和实际后态看。",
+      "source_refs": [
+        "SPLIT"
+      ],
+      "source_ids": [
+        "296C2F0",
+        "296B240",
+        "296B6C0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D07"
+      ],
+      "missing_filming": [
+        "一次合法split前后完整fresh两军/全部DATA/实际commander/stock-cap；不可用旧.3样本代实际.4拆军"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "平分的源码会先建新军队，再按不同类别的权重，把整条军队兵团记录搬过去。",
+          "source_ids": [
+            "296C2F0",
+            "296B240",
+            "296B6C0"
+          ]
+        },
+        {
+          "sentence": "它没有在这条普通路径里，把每个持久兵槽直接切成两半，因此两边界面人数不保证严格各半。",
+          "source_ids": [
+            "296C2F0",
+            "296B240",
+            "296B6C0"
+          ]
+        },
+        {
+          "sentence": "新军建立时还会复制原来的补给库存字段；是否碰到新容量，要继续按独立的补给更新和实际后态看。",
+          "source_ids": [
+            "296C2F0",
+            "296B240",
+            "296B6C0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-07",
+      "topic": "拆小军与同省聚合压力",
+      "original_claim_text": "三月五日的同一暂停点，实际平分后，原主军是三千三百三十七人、满员三千三百七十一；新分队三千三百四十二、满员三千三百七十六。合计仍六千六百七十九，满员六千七百四十七；完整二十七个兵团各归其位，没有因为平分丢失。",
+      "current_speakable_conclusion": "把一百人拆成两支五十人，并不会让同一个地方只承担五十人的压力。用一个假设场景：当地聚合用量六千，上限四千，其中选中的军队只有一百人。两队还在同省，而且贡献兵团和资格都没变，用量仍是六千。分兵能否改善补给，要看实际占用怎样改变，以及各队真正去了哪里。",
+      "spoken_text": "把一百人拆成两支五十人，并不会让同一个地方只承担五十人的压力。用一个假设场景：当地聚合用量六千，上限四千，其中选中的军队只有一百人。两队还在同省，而且贡献兵团和资格都没变，用量仍是六千。分兵能否改善补给，要看实际占用怎样改变，以及各队真正去了哪里。",
+      "source_refs": [
+        "PRESSURE",
+        "SPLIT"
+      ],
+      "source_ids": [
+        "strategy_a_route_inputs.next_decision",
+        "296C2F0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "strategy_a_route_inputs.next_decision",
+        "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D08"
+      ],
+      "missing_filming": [
+        "同帧native current usage/limit与所有贡献者，真实split后同省/离省对照；target当前usage不当未来入军后占用"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "把一百人拆成两支五十人，并不会让同一个地方只承担五十人的压力。",
+          "source_ids": [
+            "strategy_a_route_inputs.next_decision",
+            "296C2F0"
+          ]
+        },
+        {
+          "sentence": "用一个假设场景：当地聚合用量六千，上限四千，其中选中的军队只有一百人。",
+          "source_ids": [
+            "strategy_a_route_inputs.next_decision",
+            "296C2F0"
+          ]
+        },
+        {
+          "sentence": "两队还在同省，而且贡献兵团和资格都没变，用量仍是六千。",
+          "source_ids": [
+            "strategy_a_route_inputs.next_decision",
+            "296C2F0"
+          ]
+        },
+        {
+          "sentence": "分兵能否改善补给，要看实际占用怎样改变，以及各队真正去了哪里。",
+          "source_ids": [
+            "strategy_a_route_inputs.next_decision",
+            "296C2F0"
+          ]
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C06-06",
+      "topic": "新增1/1可能是角色记录",
+      "original_claim_text": "分兵或合军后，重新读原军与新队。兵团归属是否完整，当前与满员人数是否守恒，库存和容量分别变成什么。新队库存暂时高于容量，就按实际值保存。统帅没读到时保持未知，不从容量或头像猜一个人。",
+      "current_speakable_conclusion": "合军后多出一条一人满员一人的记录，还有一种角色来源。已查明的条件分支，会在处理旧统帅时创建新的军队兵团记录，关联这个角色，再刷新角色缓存。构造时的数据列表是空的；后来出现一比一，也不能直接当作普通兵槽补了一个人。它是否对应这次新增行、是不是现任统帅或骑士，都要分别读取。",
+      "spoken_text": "合军后多出一条一人满员一人的记录，还有一种角色来源。已查明的条件分支，会在处理旧统帅时创建新的军队兵团记录，关联这个角色，再刷新角色缓存。构造时的数据列表是空的；后来出现一比一，也不能直接当作普通兵槽补了一个人。它是否对应这次新增行、是不是现任统帅或骑士，都要分别读取。",
+      "source_refs": [
+        "ROLE",
+        "SPLIT"
+      ],
+      "source_ids": [
+        "28CC150",
+        "2632CB0",
+        "2633ED0",
+        "24DF9F0"
+      ],
+      "evidence_level": "actual4_static_source_explanation_with_explicit_hypothetical_examples_not_live_positive",
+      "agent_consumer_api_keys": [
+        "army_split_transfer_assertions_12004.assert_fresh_split_transfer_12004 / army_regiment_character_role_12004"
+      ],
+      "actual_shot_ids": [],
+      "demonstration_card_ids": [
+        "D09"
+      ],
+      "missing_filming": [
+        "同场native_character_role/fullID/count0/predicate/backlink与实际commander及完整Knights DTO；当下读取不授历史birth producer observed"
+      ],
+      "edit_action": "替换原未覆盖段的旧William数字/过程报告；段号和原六章保持",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "合军后多出一条一人满员一人的记录，还有一种角色来源。",
+          "source_ids": [
+            "28CC150",
+            "2632CB0",
+            "2633ED0",
+            "24DF9F0"
+          ]
+        },
+        {
+          "sentence": "已查明的条件分支，会在处理旧统帅时创建新的军队兵团记录，关联这个角色，再刷新角色缓存。",
+          "source_ids": [
+            "28CC150",
+            "2632CB0",
+            "2633ED0",
+            "24DF9F0"
+          ]
+        },
+        {
+          "sentence": "构造时的数据列表是空的；后来出现一比一，也不能直接当作普通兵槽补了一个人。",
+          "source_ids": [
+            "28CC150",
+            "2632CB0",
+            "2633ED0",
+            "24DF9F0"
+          ]
+        },
+        {
+          "sentence": "它是否对应这次新增行、是不是现任统帅或骑士，都要分别读取。",
+          "source_ids": [
+            "28CC150",
+            "2632CB0",
+            "2633ED0",
+            "24DF9F0"
+          ]
+        }
+      ]
+    }
+  ],
+  "demonstration_cards": [
+    {
+      "id": "D01",
+      "title": "0→0仍可能走完更新",
+      "paragraph_ids": [
+        "C03-10"
+      ],
+      "source_ids": [
+        "24E4CF0",
+        "24E3410"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "只画源码分支，不假造某日真实AL=true",
+        "没有拿stock delta0代actual soldier delta"
+      ],
+      "on_screen_steps": [
+        "库存0，变化率为负（假设）",
+        "执行本次ADD→结果负数→floor0",
+        "成功返回→计算更新后供给预算→可能进入writer"
+      ],
+      "arithmetic_example": {
+        "stock_before": 0,
+        "rate_raw": -100000,
+        "stock_after_floor": 0,
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "Robert自然stock0→0与same-parent supply writer positive physical"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D02",
+      "title": "0与9.99999同一档，10在边界另一侧",
+      "paragraph_ids": [
+        "C03-11"
+      ],
+      "source_ids": [
+        "24E4F80"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "单位为绝对库存，非库存/cap百分比",
+        "5%只为该表base，不是每团最终扣率"
+      ],
+      "on_screen_steps": [
+        "loaded levels [60,10,0] / base [0,0,5000]（假设当次已加载该表）",
+        "0→integer0 / 9.99999→integer9：同state2",
+        "10→integer10：state1；将领/fleet等仍另算"
+      ],
+      "arithmetic_example": {
+        "scale": 100000,
+        "raw_values": [
+          0,
+          999999,
+          1000000
+        ],
+        "integers": [
+          0,
+          9,
+          10
+        ],
+        "base_fractions_raw": [
+          5000,
+          5000,
+          0
+        ],
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "实际loaded表及自然严格低阈值positive"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D03",
+      "title": "分开预算：9+1与一次6%的11不同",
+      "paragraph_ids": [
+        "C03-02",
+        "C03-03",
+        "C03-04"
+      ],
+      "source_ids": [
+        "24E3410",
+        "24E32C0"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "普通非负无溢出输入",
+        "预算不是physical debit",
+        "不把合计10画成Robert已死10人"
+      ],
+      "on_screen_steps": [
+        "假设共同原始人数199、供给5%、围城1%、raid0",
+        "供给预算9；围城预算1；两个整数合计10",
+        "若错误地先合6%：11；真实后续分配还按变化后的current执行",
+        "围城单笔归因需该笔真实siege>0/raid=0、parent与positive physical，不用本卡代填"
+      ],
+      "arithmetic_example": {
+        "whole": 199,
+        "supply_fraction_raw": 5000,
+        "siege_fraction_raw": 1000,
+        "scale": 100000,
+        "separate": [
+          9,
+          1
+        ],
+        "separate_sum": 10,
+        "incorrect_combined": 11,
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "新预算leaf的真实新生产/自然记录与独立physical"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D04",
+      "title": "县剩余预算先冻结，不按首选实扣退款",
+      "paragraph_ids": [
+        "C03-05",
+        "C03-06"
+      ],
+      "source_ids": [
+        "24E23E0",
+        "2A957E0"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "普通非负安全整数域",
+        "例中实际writer debit不推导、不填0",
+        "缺residual事件不是观察到zero-budget调用"
+      ],
+      "on_screen_steps": [
+        "例A：B100 / S_pref120 → P100 / R0，县不调用residual",
+        "例B：B100 / S_pref40 → P40 / R60，先存60再执行首选",
+        "首选逐次减请求q；实际debit单列未知，R不会按实际写回重新算"
+      ],
+      "arithmetic_example": {
+        "examples": [
+          {
+            "B": 100,
+            "S_pref": 120,
+            "P": 100,
+            "R": 0
+          },
+          {
+            "B": 100,
+            "S_pref": 40,
+            "P": 40,
+            "R": 60
+          }
+        ],
+        "observed_debit": null,
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "实际current B/S_pref和county源parent/physical"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D05",
+      "title": "修正先取整，49不能扁平算成50",
+      "paragraph_ids": [
+        "C03-07"
+      ],
+      "source_ids": [
+        "24E6650",
+        "24E6570",
+        "24DD9A0"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "普通非负无溢出；极端机器宽度分支保留原专题",
+        "未读本场loaded值，不填Robert当前预算"
+      ],
+      "on_screen_steps": [
+        "W3001 / C5000 / M=M2=33339 / N100 / Q100000（假设）",
+        "F=1666；比例人数49；minimum33；B=min(3001,max(49,33))=49",
+        "把C×M×W推迟到末尾才除Q²得到50，顺序不同"
+      ],
+      "arithmetic_example": {
+        "W": 3001,
+        "C": 5000,
+        "M": 33339,
+        "M2": 33339,
+        "N": 100,
+        "Q": 100000,
+        "F": 1666,
+        "proportional": 49,
+        "minimum": 33,
+        "budget": 49,
+        "incorrect_flattened": 50,
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "当前真实county输入与真正writer"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D06",
+      "title": "整数预算、兵团请求、物理写回分层",
+      "paragraph_ids": [
+        "C03-09",
+        "C03-12"
+      ],
+      "source_ids": [
+        "24E32C0",
+        "2A957E0",
+        "2634190",
+        "2657E80"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "不从两个端点推每个中间写入",
+        "请求0仍可能有writer；无事件不是完整零loss"
+      ],
+      "on_screen_steps": [
+        "假设F5%：E19→预算0；E20→预算1",
+        "整军预算→有序ArRg请求→unique physical DATA写回→cache refresh",
+        "DATA别名只计一物理槽；每次实际零/正/负变化独立保存"
+      ],
+      "arithmetic_example": {
+        "eligible": [
+          19,
+          20
+        ],
+        "fraction_raw": 5000,
+        "scale": 100000,
+        "budgets": [
+          0,
+          1
+        ],
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "完整actual AL/预算/physical窗口，实际current+max与alias覆盖"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D07",
+      "title": "拆半搬whole ArRg，库存字段独立复制",
+      "paragraph_ids": [
+        "C05-06"
+      ],
+      "source_ids": [
+        "296C2F0",
+        "296B240",
+        "296B6C0"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": false,
+      "hypothetical_premises": [
+        "图中不填虚构当前Army ID/人数",
+        "未展开callee不绘成全部物理无副作用",
+        "不宣称UI总数严格半或每次实际DATA必守恒"
+      ],
+      "on_screen_steps": [
+        "图示以完整ArRg ID为整块，按原生分类权重迁移，不画每个chunk切半",
+        "新Army初始化复制stock180，不按所分人数除二",
+        "独立后态重读两军人数/DATA/commander/stock/cap"
+      ],
+      "arithmetic_example": null,
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "正常split微实验与全部DATA/actual commander/供给后态"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D08",
+      "title": "分两军仍要看聚合用量",
+      "paragraph_ids": [
+        "C05-07"
+      ],
+      "source_ids": [
+        "strategy_a_route_inputs.next_decision",
+        "296C2F0"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": true,
+      "hypothetical_premises": [
+        "全部贡献者和资格固定只是算例条件，真实split可能改变相关上下文",
+        "目标当前usage不包含未来入军，不承诺未来underlimit"
+      ],
+      "on_screen_steps": [
+        "假设选中Army100；全省current usage6000 / limit4000",
+        "分成50+50仍同省，其他贡献者/身份/资格不变",
+        "同一合格兵团贡献仍为100，总6000；离省/改资格后重新读native用量"
+      ],
+      "arithmetic_example": {
+        "selected_before": 100,
+        "selected_after": [
+          50,
+          50
+        ],
+        "other_usage": 5900,
+        "usage_before": 6000,
+        "usage_after_under_fixed_contributors": 6000,
+        "limit": 4000,
+        "actual_game_values": null
+      },
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "当前同帧usage/limit→真实split后聚合用量→真实离省重读"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制 / 假设算例",
+      "human_or_clean_approval": false
+    },
+    {
+      "id": "D09",
+      "title": "角色记录、现任统帅、骑士、物理兵员四列",
+      "paragraph_ids": [
+        "C06-06"
+      ],
+      "source_ids": [
+        "28CC150",
+        "2632CB0",
+        "2633ED0",
+        "24DF9F0"
+      ],
+      "kind": "source_explanation_card_design_not_generated_media",
+      "source_mechanism_closed": true,
+      "synthetic_example": false,
+      "hypothetical_premises": [
+        "不是每次merge必创建",
+        "构造时空DATA不外推所有角色记录永远无DATA",
+        "当帧角色身份不授历史出生被观察"
+      ],
+      "on_screen_steps": [
+        "条件source：清旧统帅→分配ArRg→构造DATA空/缓存0→关联旧Character",
+        "角色refresh可形成缓存1/1；实际DATA仍独立取证",
+        "分别列：角色叶/actual commander/完整combat Knights/physical DATA；不可互填"
+      ],
+      "arithmetic_example": null,
+      "actual_footage": null,
+      "missing_dynamic_evidence": [
+        "新同场extra fullID、native_character_role/count0/backlink、统帅与Knights独立查询"
+      ],
+      "live_positive_claim_allowed": false,
+      "visual_label": "源码机制",
+      "human_or_clean_approval": false
+    }
+  ]
+}

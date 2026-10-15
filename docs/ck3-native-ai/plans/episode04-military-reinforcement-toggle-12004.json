@@ -1,0 +1,162 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "topic": "e04-actual4-military-view-reinforcement-toggle",
+  "question": "Resolve exactly the two stock MilitaryView named methods into current .4 registration descriptors and bodies before reusing any UI semantic action/readback.",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T17:16:00.785710+00:00",
+  "evidence": [
+    {
+      "id": "identity",
+      "layer": "exact-build",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+      "sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Previously verified immutable .4 EXE identity; no hash repeated."
+    },
+    {
+      "id": "stock_gui",
+      "layer": "source-contract",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_military.gui",
+      "sha256": "4f5523d249c2e0a4d3c328d789ca375f154c2e102544782480936b4206c57eac",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Both exact stock checkbox callback/getter names, source visibility guards; not actual callback addresses."
+    },
+    {
+      "id": "gui_semantics",
+      "layer": "source-contract",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "sha256": "3a030262a2f3abeef957e98bd74999ed2e303370e31ee29865924f955d9cb1ee",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Current fixed semantic enum has no military reinforcement action or window kind."
+    },
+    {
+      "id": "permission",
+      "layer": "source-contract",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-refill-permission-switch-12004.json",
+      "sha256": "7c769a5504819e0d65798f9226d38a71aa4c1d5d8472a3d45af82054127ad1a0",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Held complete 262C6E0 source proves independently selected Character military+4A9 nonzero; no UI callback equivalence yet."
+    }
+  ],
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Exact stock MilitaryView receiver of the two GUI named methods only; no player substitution for Regi source.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Source-only; later GUI owner and native revision must be fresh and explicit.",
+    "producer_trigger": "not-applicable",
+    "producer": "Stock window_military.gui named OnMilitaryReinforcementClick and IsMilitaryReinforcementsEnabled registration.",
+    "caller": "Two source checkbox_label definitions at lines488/898 and checked blocks493/903.",
+    "consumer": "Future fixed semantic main-thread mailbox action plus independent source-owner switch query/readback; no direct byte writes.",
+    "cache_lifetime": "Only current exact4 named-registration provenance may admit body RVAs; old3 RTTI data is not accepted.",
+    "expected_signal": "Actual registration names bind typed .4 callback/getter bodies and receiver; permission switch link established from those bodies.",
+    "zero_sample_meaning": "No .4 descriptor locator held means no body admitted, no action implementation or readback qualification.",
+    "stop_condition": "First obtain exact named-registration descriptor provenance. No EXE scan, guessed address, migration delta or callee expansion. Once RVAs are evidenced, read at most2 bodies total<=7168B and metadata<=1024B; stop on overbudget/chains.",
+    "runtime_window_ref": null
+  },
+  "nodes": [
+    {
+      "id": "stock",
+      "label": "Actual stock two checkbox definitions"
+    },
+    {
+      "id": "names",
+      "label": "OnMilitaryReinforcementClick / IsMilitaryReinforcementsEnabled"
+    },
+    {
+      "id": "descriptor",
+      "label": "Exact .4 typed named-registration descriptors (NOTHELD)"
+    },
+    {
+      "id": "bodies",
+      "label": "Two admitted .4 bodies <=7KiB (none admitted)"
+    },
+    {
+      "id": "state",
+      "label": "Independent source Character military+4A9 witness"
+    }
+  ],
+  "edges": [
+    {
+      "id": "gui_names",
+      "from": "stock",
+      "to": "names",
+      "label": "Literal stock callback/getter names",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock_gui"
+      ]
+    },
+    {
+      "id": "named_locator",
+      "from": "names",
+      "to": "descriptor",
+      "label": "Find retained exact4 descriptor provenance, never string scan",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Current local known profiles contain only .3 RTTI, not .4 registration RVAs. Obtain a named .4 descriptor receipt before any new EXE read."
+    },
+    {
+      "id": "descriptor_bodies",
+      "from": "descriptor",
+      "to": "bodies",
+      "label": "Metadata-check finite exact bodies",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which exact callback/getter RVAs and unwind extents does the .4 descriptor bind?"
+    },
+    {
+      "id": "getter_link",
+      "from": "bodies",
+      "to": "state",
+      "label": "Prove receiver source and switch/command behavior",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does actual getter read the same field and does click submit a normal command or another controller path?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "source-registration",
+      "question": "Exact .4 name/receiver/RVA mapping",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "same-owner-readback",
+      "question": "Later action ACK versus same GUI owner and independently selected source Character state",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "target_exe_path": "C:/ck3-e04-resume-20261015-a01/frozen-game-12004/ck3.exe",
+  "actual_full_exe_hash_reused_not_recomputed": true,
+  "source_budget": {
+    "metadata_bytes": 1024,
+    "function_bytes": 7168,
+    "max_distinct_functions": 2,
+    "max_reads": 64,
+    "max_target_io_seconds": 20,
+    "packet_bytes": 262144
+  },
+  "metadata_targets": [],
+  "admitted_bodies": [],
+  "named_registration_targets": [
+    "MilitaryView.OnMilitaryReinforcementClick",
+    "MilitaryView.IsMilitaryReinforcementsEnabled"
+  ],
+  "body_admission_status": "blocked-until-exact4-named-registration-RVA-provenance; plan check is not body admission",
+  "planned_semantic_admission": [
+    "Use existing main-thread mailbox owner/TLS/paused/revision gates.",
+    "Source-bound fixed operation only; no caller pointer/RVA/widget path.",
+    "Verify typed actual MilitaryView receiver/full Character owner and current visibility/enabled guards.",
+    "Invoke source click exactly once; do not retry ACK/unknown result.",
+    "Fresh getter and refill_permission_switch_v1 readback, matching full owner when source is controlled by this view.",
+    "A nonplayer Regi source is not toggled through a different player MilitaryView owner."
+  ]
+}

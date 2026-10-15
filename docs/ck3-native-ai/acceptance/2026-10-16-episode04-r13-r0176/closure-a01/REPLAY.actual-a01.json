@@ -1,0 +1,28 @@
+{
+  "schema": "episode04.r0176.closed-append-replay.v1",
+  "status": "PASS",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T19:07:52.682106+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0176",
+  "original_R13_preclose_status_preserved": true,
+  "later_actual_closed_at_utc": "2026-10-15T19:01:28.222035+00:00",
+  "normal_exit_code": 0,
+  "SDK_and_keeper_exited": true,
+  "screen_release_expected_sequence": 5483,
+  "screen_release_completed_sequence": 5484,
+  "display_restored": [
+    1024,
+    768
+  ],
+  "terminal_save_receipt": {
+    "sha256": "31c57bc0032f0af4dcb90b4f00567cd68638e71856bbd570ee847aa644c26378",
+    "bytes": 71305933,
+    "date_raw": 53146632
+  },
+  "save_body_read_or_rehashed": false,
+  "continuous_clean_review": false,
+  "human_approval": false,
+  "R09_full_card_closed": false,
+  "new_live_evidence_by_replay": false,
+  "game_actions_sent": 0
+}

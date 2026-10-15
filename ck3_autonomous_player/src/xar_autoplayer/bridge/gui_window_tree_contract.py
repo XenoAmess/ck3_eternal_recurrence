@@ -7,6 +7,7 @@ GUI_WINDOW_TREE_CAPABILITY = "game.command.inspect-gui-window-tree-v1"
 GUI_WINDOW_TREE_ROOTS = {
     "ingame_topbar": "ingame_topbar",
     "decisions": "decisions_view",
+    "military": "military_view",
     "decision_detail": "decisiondetail_view",
     "courtier": "xar_courtier_creator_window",
     "vivhite_courtier": "ervc_courtier_creator_window",
@@ -32,6 +33,13 @@ def normalize_gui_window_tree_v1(raw: object, window_kind: str) -> dict[str, obj
     projected = normalize_frontend_gui_tree_inspection_v1({
         **raw, "step": "inspect-frontend-gui-tree-v1", "scope_root_name": "_root_",
     })
+    if window_kind == "military":
+        from .gui_callback_binding_12004_contract import normalize_callback_binding_rows_12004
+        projected = normalize_callback_binding_rows_12004(raw, projected)
+    elif "callback_binding_source_12004" in raw or any(
+        "standard_click_binding_12004" in row for row in raw.get("widgets", []) if isinstance(row, dict)
+    ):
+        raise ValueError("callback binding is only admitted for the exact .4 military census")
     return {
         **projected, "schema": "ck3-native-gui-window-tree-inspection-v1",
         "step": GUI_WINDOW_TREE_STEP, "window_kind": window_kind,

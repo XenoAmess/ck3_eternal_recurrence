@@ -291,6 +291,19 @@ constexpr bool NamedGuiTreeInspectionFrameBytesFitV1(std::size_t bytes) noexcept
 }
 
 
+// Observed binding only: this does not identify a MilitaryView method name.
+struct NamedGuiStandardClickCallback12004V1 {
+  std::uint32_t index = 0;
+  std::uint64_t callback_vtable_rva = 0;
+  std::uint64_t callback_slot2_rva = 0;
+};
+
+struct NamedGuiStandardClickBinding12004V1 {
+  bool button_base_slot13 = false;
+  bool primary_group = false;
+  std::vector<NamedGuiStandardClickCallback12004V1> callbacks;
+};
+
 struct NamedGuiWidgetInspectionV1 {
   std::string runtime_name;
   std::string child_path;
@@ -299,6 +312,7 @@ struct NamedGuiWidgetInspectionV1 {
   std::uint64_t vtable_rva = 0;
   bool effective_visible = false;
   bool enabled = false;
+  NamedGuiStandardClickBinding12004V1 standard_click_binding_12004{};
 };
 
 struct NamedGuiTreeInspectionV1 {
@@ -306,6 +320,7 @@ struct NamedGuiTreeInspectionV1 {
   bool root_available = false;
   bool truncated = false;
   std::size_t widget_count = 0;
+  bool standard_click_bindings_12004 = false;
   // Allocate rows only within the owning-thread traversal try/catch;
   // the mailbox carries the bounded vector handle, not thousands of rows.
   std::vector<NamedGuiWidgetInspectionV1> widgets;
@@ -401,7 +416,8 @@ bool InspectNamedGuiTreeV1(
 bool InspectNamedGuiSubtreeV1(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
     void *root, std::string_view scope_root_name,
-    NamedGuiTreeInspectionV1 &output) noexcept;
+    NamedGuiTreeInspectionV1 &output,
+    bool inspect_standard_click_bindings_12004 = false) noexcept;
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted,

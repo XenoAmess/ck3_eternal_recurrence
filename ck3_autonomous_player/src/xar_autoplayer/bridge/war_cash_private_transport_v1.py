@@ -128,6 +128,9 @@ def normalize_war_cash_current_resources_v1(value: object, *, snapshot: Mapping[
         elif vector is not None or row.get("gold_raw") is not None or not isinstance(row.get("unavailable_reason"), str):
             raise ValueError("war cash unavailable expenses were replaced by a cost")
     _monthly_flow(current)
+    if "current_raw_context_v1" in current:
+        from .war_cash_current_raw_context_v1 import validate_current_raw_context_v1
+        validate_current_raw_context_v1(current, snapshot=snapshot)
     return deepcopy(current)
 
 

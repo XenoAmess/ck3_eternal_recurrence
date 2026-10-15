@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>拆成两军，仍要看聚合用量</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D08&quot;, &quot;paragraph_ids&quot;: [&quot;C05-07&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;strategy_a_route_inputs.next_decision&quot;, &quot;296C2F0&quot;], &quot;title&quot;: &quot;拆成两军，仍要看聚合用量&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="828" lengthAdjust="spacingAndGlyphs">拆成两军，仍要看聚合用量</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D08</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="796" lengthAdjust="spacingAndGlyphs">假设算例  ·  假设两军同省、贡献资格及其他军队不变</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="976" lengthAdjust="spacingAndGlyphs">100变成50 + 50，省内用量仍可为6000</text>
+<text x="130" y="470" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="42" font-weight="700" fill="#F0E5CF" textLength="560" lengthAdjust="spacingAndGlyphs">拆分前：选中100，其他5900</text>
+<rect x="135" y="520" width="2100" height="60" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<rect x="135" y="520" width="1400" height="60" fill="#CBA56A" stroke="none" stroke-width="2"/>
+<rect x="1535" y="520" width="700" height="60" fill="#CA7962" stroke="none" stroke-width="2"/>
+<polyline points="1535,503 1535,599" fill="none" stroke="#F0E5CF" stroke-width="3"/>
+<text x="1365" y="624" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="30" font-weight="400" fill="#BBA98D" textLength="132" lengthAdjust="spacingAndGlyphs">上限4000</text>
+<text x="2258" y="556" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="112" lengthAdjust="spacingAndGlyphs">6000</text>
+<text x="130" y="700" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="42" font-weight="700" fill="#F0E5CF" textLength="560" lengthAdjust="spacingAndGlyphs">拆分后：50 + 50，其他5900</text>
+<rect x="135" y="750" width="2100" height="60" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<rect x="135" y="750" width="1400" height="60" fill="#CBA56A" stroke="none" stroke-width="2"/>
+<rect x="1535" y="750" width="700" height="60" fill="#CA7962" stroke="none" stroke-width="2"/>
+<polyline points="1535,733 1535,829" fill="none" stroke="#F0E5CF" stroke-width="3"/>
+<text x="1365" y="854" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="30" font-weight="400" fill="#BBA98D" textLength="132" lengthAdjust="spacingAndGlyphs">上限4000</text>
+<text x="2258" y="786" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="112" lengthAdjust="spacingAndGlyphs">6000</text>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="896" lengthAdjust="spacingAndGlyphs">段号：C05-07   ·   source：strategy_a_route_inputs.next_decision / 296C2F0</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="598" lengthAdjust="spacingAndGlyphs">分兵是否改善压力，要看实际占用与各队真正去向。</text>
+</svg>

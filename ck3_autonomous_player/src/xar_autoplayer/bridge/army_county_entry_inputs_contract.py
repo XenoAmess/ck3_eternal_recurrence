@@ -31,14 +31,32 @@ def _status(value: dict[str, object], fields: tuple[str, ...], name: str) -> boo
     return True
 
 
+def _multiplier_floors(value: object, name: str) -> dict[str, object]:
+    fields = ("base_floor_raw", "army_1d4_nonzero_floor_raw", "army_1d4_raw")
+    if not isinstance(value, dict) or set(value) != {
+        "status", "source", "unavailable_reason", "fraction_scale", *fields,
+    } or value["source"] != "native_current_county_multiplier_floor_inputs":
+        raise ValueError(f"native {name} schema is malformed")
+    if type(value["fraction_scale"]) is not int or value["fraction_scale"] != 100_000:
+        raise ValueError(f"native {name}.fraction_scale must be 100000")
+    if _status(value, fields, name):
+        _integer(value["base_floor_raw"], f"{name}.base_floor_raw", 64)
+        _integer(value["army_1d4_nonzero_floor_raw"], f"{name}.army_1d4_nonzero_floor_raw", 64)
+        flag = value["army_1d4_raw"]
+        if type(flag) is not int or not 0 <= flag <= 255:
+            raise ValueError(f"native {name}.army_1d4_raw must be unsigned int8")
+    return dict(value)
+
+
 def normalize_army_county_entry_inputs_v1(
     value: object, *, current_soldiers: int, name: str = "county_entry_inputs_v1"
 ) -> dict[str, object]:
     """Validate native current outputs and independently unavailable route condition."""
-    if not isinstance(value, dict) or set(value) != {
+    required = {
         "status", "source", "unavailable_reason", "fraction_scale", "soldier_scale",
         "condition", *_BUDGET_FIELDS,
-    }:
+    }
+    if not isinstance(value, dict) or not required <= set(value) or set(value) - required - {"multiplier_floor_inputs_v1"}:
         raise ValueError(f"native {name} schema is malformed")
     if value["source"] != "native_current_county_entry_inputs":
         raise ValueError(f"native {name}.source is malformed")
@@ -70,4 +88,11 @@ def normalize_army_county_entry_inputs_v1(
         if condition["mode"] not in {0, 1} or type(condition["passes"]) is not bool:
             raise ValueError(f"native {name}.condition requires native mode0/1 and an observed boolean")
     result["condition"] = dict(condition)
+    if "multiplier_floor_inputs_v1" in value:
+        result["multiplier_floor_inputs_v1"] = _multiplier_floors(
+            value["multiplier_floor_inputs_v1"], f"{name}.multiplier_floor_inputs_v1")
+        floors = result["multiplier_floor_inputs_v1"]
+        if floors["status"] == "available" and condition_available:
+            if condition["mode"] != (1 if floors["army_1d4_raw"] == 0 else 0):
+                raise ValueError(f"native {name} mode and raw Army1D4 disagree")
     return result

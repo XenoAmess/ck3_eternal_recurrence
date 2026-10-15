@@ -1,0 +1,114 @@
+{
+  "schema": "episode04.r12.r0175.actual-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T18:18:26.869836+00:00",
+  "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0175",
+  "binding": {
+    "pid": 16512,
+    "process_create_time_100ns": 134365577928096099,
+    "generation": 1,
+    "actor": 31254,
+    "episode": "native-31254-13a1253fe701",
+    "army_id": 18,
+    "native_carmy_id": 18
+  },
+  "original_observation_closed_at_utc": "2026-10-15T18:07:27.175576+00:00",
+  "original_evidence": [
+    {
+      "path": "CLOSED.actual-a01.json",
+      "bytes": 4656,
+      "sha256": "4f2b83db58fcff208885771b643720cc11e24e35e624fcdfe7197c346cd9465c"
+    },
+    {
+      "path": "locked-routes-helper-a02/locked-r12-a01/r12-final-report-a01/RESULT.actual.json",
+      "bytes": 17213,
+      "sha256": "e16ecd40fc36a25230cb4d301d5dd3c0e63534d07ad23e4c556e4fa8daf49171"
+    },
+    {
+      "path": "media-locked-route-a01/ROOT-CUT-DELIVERY-a02.json",
+      "bytes": 4013,
+      "sha256": "7d7aee86839f0b3da5647155bd02dde5f544c3421471a0617dc8010553c66e8b"
+    }
+  ],
+  "archive": {
+    "path": "r0175-originals.zip",
+    "bytes": 6291660,
+    "sha256": "7ba2d15674c084a81f529f818289f28a83956b3dc3627d38b9a431650517d5cd"
+  },
+  "business": {
+    "case": "R12",
+    "status": "ACTUAL-CONSEQUENCE-PASS",
+    "locked": {
+      "front": 1036,
+      "tail": 1033,
+      "progress_raw": 96666,
+      "cutoff_raw": 50000,
+      "first_edge_remaining_q100000": 100000,
+      "consequence_day_limit": 3
+    },
+    "arrival_province": 1036,
+    "elapsed_actual_days": 2,
+    "raw_target_observable": false
+  },
+  "nextday_stationary": true,
+  "clock_generations": 31,
+  "actual_total_natural_days": 32,
+  "offline_replay": {
+    "path": "REPLAY.actual-a01.json",
+    "bytes": 15204,
+    "sha256": "edc7e8c41def8a0a6b96764c0019dbcee4eeb192220592791b89eabdf5f23751",
+    "new_live_evidence": false
+  },
+  "portable_scope": {
+    "critical_complete_queries": 6,
+    "request_response_pairs": 417,
+    "archive_members": 981,
+    "all_actual_clock_records": 31,
+    "all_original_snapshots_Arm_Resume_status_failures_and_readonly_recovery": true,
+    "other33_complete_queries_archived": false,
+    "historical_absolute_paths_followed": 0
+  },
+  "source_and_replay_reuse": "existing locked_routes verify.frame/r12; exact four production clock definitions plus literal reason table; no Windows Driver import or SDK",
+  "progress": {
+    "core_completed": 4,
+    "core_total": 14,
+    "core_percent": 28.571428571428573,
+    "business_completed": 2,
+    "business_total": 11,
+    "business_percent": 18.181818181818183
+  },
+  "qualification_exclusions": [
+    "R13 reroute",
+    "split/merge and refill",
+    "military-maintenance attribution",
+    "actual zero-stock starvation",
+    "unarchived other33 query replay",
+    "cross-machine installation/deployment/runtime",
+    "continuous clean video",
+    "final human approval"
+  ],
+  "media": {
+    "identity_source": "original CLOSED and ROOT-CUT-DELIVERY-a02 only",
+    "raw_video_body_read": false,
+    "raw_video_rehashed": false,
+    "sample_images_copied": false,
+    "continuous_clean_review": false,
+    "human_video_approval": false
+  },
+  "source_reusable_helpers": {
+    "files": [
+      "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/replay.py",
+      "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/watched_stop.py"
+    ],
+    "existing_runtime_callers_rewired": false,
+    "game_commands_sent": 0
+  },
+  "storage": {
+    "lane_limit_bytes": 12582912,
+    "charged_existing_active32MiB_metadata17MiB": true,
+    "protected_until_utc": "2026-10-16T07:45:01.597Z",
+    "review_at_utc": "2026-10-16T07:45:01.597Z",
+    "deadline_extended": false
+  }
+}

@@ -35,34 +35,6 @@ template<class T> std::optional<T> Read(const WarPaymentBindings12004 &b,
   }
   return out;
 }
-// Pure raw reads for one exact source caller; never invoke a game getter.
-template<class T> std::optional<T> GenericRead(const WarPaymentBindings12004 &b,
-    WarPaymentGenericValues12004 &v,std::uintptr_t address,std::size_t offset) noexcept {
-  T out{};
-  if(!address||offset>(std::numeric_limits<std::uintptr_t>::max)()-address||
-     !b.read||!b.read(b.read_context,address+offset,&out,sizeof out)) {
-    ++v.failed_reads;return std::nullopt;
-  }
-  return out;
-}
-WarPaymentGenericValues12004 GenericValues(const WarPaymentBindings12004 &b,
-    std::uintptr_t character) noexcept {
-  WarPaymentGenericValues12004 v{};
-  v.context_identity_before=GenericRead<std::uintptr_t>(b,v,character,0x1C0);
-  if(v.context_identity_before&&*v.context_identity_before) {
-    const auto context=*v.context_identity_before;
-    v.value_2c0=GenericRead<std::int64_t>(b,v,context,0x2C0);
-    v.value_2c8=GenericRead<std::int64_t>(b,v,context,0x2C8);
-    v.value_28=GenericRead<std::int64_t>(b,v,context,0x28);
-    v.value_30=GenericRead<std::int64_t>(b,v,context,0x30);
-  }
-  v.context_identity_after=GenericRead<std::uintptr_t>(b,v,character,0x1C0);
-  v.context_stable=v.context_identity_before&&*v.context_identity_before&&
-    v.context_identity_after&&v.context_identity_before==v.context_identity_after;
-  v.capture_complete=!v.failed_reads&&v.context_stable&&v.value_2c0&&
-    v.value_2c8&&v.value_28&&v.value_30;
-  return v;
-}
 WarPaymentGenericParentTrace12004 GenericParent(const WarPaymentBindings12004 &b) noexcept {
   WarPaymentGenericParentTrace12004 p{};
   p.module_base=b.generic_module_base;p.module_image_size=b.generic_module_image_size;
@@ -186,7 +158,7 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
   if(b.generic_context_capture_enabled&&r.kind==WarPaymentKind12004::personal_add&&
       r.caller_return_rva==kWarPaymentGenericReturn12004) {
     auto &g=r.generic_wallet_context.emplace();
-    g.before=GenericValues(b,r.before.character);g.parent_trace=GenericParent(b);
+    g.before=ReadWarPaymentGenericValues12004(b.read,b.read_context,r.before.character);g.parent_trace=GenericParent(b);
     if(g.before.capture_complete) {
       const auto bits=static_cast<std::uint64_t>(*g.before.value_2c0)-
         static_cast<std::uint64_t>(*g.before.value_2c8)-
@@ -204,7 +176,7 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
   r.after = Capture(b,r);
   if(r.generic_wallet_context) {
     auto &g=*r.generic_wallet_context;
-    g.after=GenericValues(b,r.after.character);
+    g.after=ReadWarPaymentGenericValues12004(b.read,b.read_context,r.after.character);
     g.context_values_stable=SameGenericValues(g.before,g.after);
   }
   r.session_return = b.session(b.session_context);

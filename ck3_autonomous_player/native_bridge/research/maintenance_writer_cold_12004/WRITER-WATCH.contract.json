@@ -1,0 +1,53 @@
+{
+  "schema": "xar.maintenance.writer_pc.future-contract.v1",
+  "default_enabled": false,
+  "required_cash_patch_sha256": "f19482b3e38f15bc927c696efcddad27e010bfee1659606dbae438d932b03622",
+  "source_main_base": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "exact_game": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "Character_base": {
+    "full_id_offset": 24,
+    "magic_offset": 28,
+    "magic": 1130914162,
+    "death_pointer_offset": 464,
+    "secondary_pointer_offset": 448
+  },
+  "raw_field_offsets": [
+    704,
+    712,
+    40,
+    48
+  ],
+  "DR_configuration": {
+    "count": 4,
+    "access": "write",
+    "length": 8,
+    "alignment": 8,
+    "owned_dr7_mask": "0x99990055"
+  },
+  "before_value_basis": "last observed sample; never atomic preinstruction",
+  "RIP_after": "Actual native postinstructionPC; writer_instruction_start staysnull",
+  "source_read_contract": {
+    "metadata_lookup": "Only actual same-image RIP_after-1 to find containing.pdata; this is not instruction_start",
+    "metadata_bytes_max": 512,
+    "code_bytes_max": 8192,
+    "reads_max": 48,
+    "instruction_proof": "Decode from actual function/root entry and identify exact instruction ending atRIP_after; prove store operands/access range from raw registers where possible, otherwise keep unknown. Never scan neighbors/globalxref or guess instruction length."
+  },
+  "event_time_scope": "Admission query date/revision is bound in start; actual writer game date remainsnull unless another independently qualified source supplies it.",
+  "admission_rules": [
+    "Fresh current_raw_context_v1 via exact new validator plus paired snapshot and original same-frame payment journal",
+    "Independent Root PID/create/gen/window/epoch/actor/revision/date/episode/machine expected values",
+    "Explicit runtime enable; exactSYSTEM files receipt plus samehost labelled execution gate",
+    "Native verifies actual process creation/image-name/module size/known16Bparent source anchor and Character/context stable before attach, after baseline four reads and at each stopped thread before arm",
+    "Preflight refuses any occupied DR/TF before DebugActiveProcess; each observed CREATE_THREAD is armed/readback before continue",
+    "No arbitrary targetcode/data write, no gameplay action, no detour, no emulated store or RIP rewinding"
+  ],
+  "runtime_mode_executed": false,
+  "known_game_producer": false,
+  "military_attribution": "unclosed",
+  "old_context_addresses_never_reused": true
+}

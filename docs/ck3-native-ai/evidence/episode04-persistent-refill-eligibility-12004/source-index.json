@@ -1,0 +1,237 @@
+{
+  "schema": "xar.episode04.persistent-refill-eligibility-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T18:57:16.941967+00:00",
+  "version": "1.20.0.4",
+  "steam_build": 25734779,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_code_bytes": 1454,
+  "new_metadata_bytes": 248,
+  "source_only": true,
+  "external_callees_expanded": false,
+  "functions": [
+    {
+      "id": "permission262C6E0",
+      "begin_rva": "262C6E0",
+      "end_rva_exclusive": "0x262c9a5",
+      "bytes": 709,
+      "sha256": "0ac1719185a4e74d65d58c9246493aaa27d9929301a4751d36bf0bf639a4ae72",
+      "hex_file": "permission262C6E0.hex",
+      "instructions_file": "permission262C6E0.instructions.json",
+      "instructions_sha256": "efed11d51ab75dc19dd8a59846e621114871222fa35a33892b153563a0de96dd",
+      "fragments": [
+        {
+          "target_rva": "262C6E0",
+          "begin_rva": "262C6E0",
+          "end_rva_exclusive": "262C9A5",
+          "size": 709,
+          "pdata_index": 132720,
+          "unwind_rva": "5125BA4",
+          "unwind_version": 1,
+          "unwind_flags": 0,
+          "unwind_code_bytes": 16,
+          "chained_runtime_function": null
+        }
+      ]
+    },
+    {
+      "id": "chunk2657EF0",
+      "begin_rva": "0x2657ef0",
+      "end_rva_exclusive": "0x2658030",
+      "bytes": 320,
+      "sha256": "b3a395591951e838217d9f7fad5aec803f2684b9d2f86ce6074e6af069628e3c",
+      "hex_file": "chunk2657EF0.hex",
+      "instructions_file": "chunk2657EF0.instructions.json",
+      "instructions_sha256": "3fdf0e6ee68b05f0a180fb544a7a7337f108141b3b37ffa30a1e15bb844427ec",
+      "fragments": [
+        {
+          "target": "0x2657ef0",
+          "begin": "0x2657ef0",
+          "end_exclusive": "0x2658030",
+          "body_bytes": 320,
+          "pdata_index": 133270,
+          "unwind_rva": "0x5109614",
+          "unwind_header_hex": "01040100",
+          "unwind_flags": 0,
+          "chain": null
+        }
+      ]
+    },
+    {
+      "id": "fraction262CAB0",
+      "begin_rva": "0x262cab0",
+      "end_rva_exclusive": "0x262cf1e",
+      "bytes": 1134,
+      "sha256": "3d7d4ac7c0d1b5d1c5929a53372dd9384031ec99dfd01027064c55d027cfd725",
+      "hex_file": "fraction262CAB0.hex",
+      "instructions_file": "fraction262CAB0.instructions.json",
+      "instructions_sha256": "2699559c1c7f7886782f1744a40f3e22a66fed0eaed1a14dbcf0f23219e180c1",
+      "fragments": [
+        {
+          "target": "0x262cab0",
+          "begin": "0x262cab0",
+          "end_exclusive": "0x262cb35",
+          "body_bytes": 133,
+          "pdata_index": 132724,
+          "unwind_rva": "0x5146f94",
+          "unwind_header_hex": "01090400",
+          "unwind_flags": 0,
+          "chain": null
+        },
+        {
+          "target": "0x262cb35",
+          "begin": "0x262cb35",
+          "end_exclusive": "0x262cb76",
+          "body_bytes": 65,
+          "pdata_index": 132725,
+          "unwind_rva": "0x5261828",
+          "unwind_header_hex": "21050200",
+          "unwind_flags": 4,
+          "chain": [
+            40028848,
+            40028981,
+            85225364
+          ]
+        },
+        {
+          "target": "0x262cb76",
+          "begin": "0x262cb76",
+          "end_exclusive": "0x262cb7d",
+          "body_bytes": 7,
+          "pdata_index": 132726,
+          "unwind_rva": "0x526183c",
+          "unwind_header_hex": "21050400",
+          "unwind_flags": 4,
+          "chain": [
+            40028848,
+            40028981,
+            85225364
+          ]
+        },
+        {
+          "target": "0x262cb7d",
+          "begin": "0x262cb7d",
+          "end_exclusive": "0x262cbb2",
+          "body_bytes": 53,
+          "pdata_index": 132727,
+          "unwind_rva": "0x5261854",
+          "unwind_header_hex": "21050200",
+          "unwind_flags": 4,
+          "chain": [
+            40029046,
+            40029053,
+            86382652
+          ]
+        },
+        {
+          "target": "0x262cbb2",
+          "begin": "0x262cbb2",
+          "end_exclusive": "0x262cd65",
+          "body_bytes": 435,
+          "pdata_index": 132728,
+          "unwind_rva": "0x5261868",
+          "unwind_header_hex": "210f0400",
+          "unwind_flags": 4,
+          "chain": [
+            40029053,
+            40029106,
+            86382676
+          ]
+        },
+        {
+          "target": "0x262cd65",
+          "begin": "0x262cd65",
+          "end_exclusive": "0x262ce83",
+          "body_bytes": 286,
+          "pdata_index": 132729,
+          "unwind_rva": "0x5261880",
+          "unwind_header_hex": "21000000",
+          "unwind_flags": 4,
+          "chain": [
+            40029053,
+            40029106,
+            86382676
+          ]
+        },
+        {
+          "target": "0x262ce83",
+          "begin": "0x262ce83",
+          "end_exclusive": "0x262cf1e",
+          "body_bytes": 155,
+          "pdata_index": 132730,
+          "unwind_rva": "0x5261890",
+          "unwind_header_hex": "21000000",
+          "unwind_flags": 4,
+          "chain": [
+            40029046,
+            40029053,
+            86382652
+          ]
+        }
+      ]
+    },
+    {
+      "id": "request262C9B0",
+      "begin_rva": "262C9B0",
+      "end_rva_exclusive": "0x262caa5",
+      "bytes": 245,
+      "sha256": "e673e9d722ae706c075b998f78c04fe8f6a3b75787ecf9c4aa00517482e6eeaf",
+      "hex_file": "request262C9B0.hex",
+      "instructions_file": "request262C9B0.instructions.json",
+      "instructions_sha256": "903d19730e81291de1283d5ffb968e6186bc0af746378a706d868615ce968b7d",
+      "fragments": [
+        {
+          "target_rva": "262C9B0",
+          "begin_rva": "262C9B0",
+          "end_rva_exclusive": "262C9F3",
+          "size": 67,
+          "pdata_index": 132721,
+          "unwind_rva": "52617E8",
+          "unwind_version": 1,
+          "unwind_flags": 0,
+          "unwind_code_bytes": 20,
+          "chained_runtime_function": null
+        },
+        {
+          "target_rva": "262C9F3",
+          "begin_rva": "262C9F3",
+          "end_rva_exclusive": "262CA8A",
+          "size": 151,
+          "pdata_index": 132722,
+          "unwind_rva": "5261800",
+          "unwind_version": 1,
+          "unwind_flags": 4,
+          "unwind_code_bytes": 8,
+          "chained_runtime_function": [
+            40028592,
+            40028659,
+            86382568
+          ]
+        },
+        {
+          "target_rva": "262CA8A",
+          "begin_rva": "262CA8A",
+          "end_rva_exclusive": "262CAA5",
+          "size": 27,
+          "pdata_index": 132723,
+          "unwind_rva": "5261818",
+          "unwind_version": 1,
+          "unwind_flags": 4,
+          "unwind_code_bytes": 0,
+          "chained_runtime_function": [
+            40028592,
+            40028659,
+            86382568
+          ]
+        }
+      ]
+    }
+  ],
+  "cached_core_call_file": "cached-core-call.instructions.json",
+  "cached_core_call_sha256": "a3ff2f49f57174a67670cec62610f703ad26cb787e52a35bc32c0858b5ee115c",
+  "classification_writer_138_enum_and_actual4_spawn_constructor": "NOTHELD; no old1.19 address translation",
+  "process_corrections": [
+    "First logical-fragment checker demanded direct CHAININFO root and stopped before next body. Corrected to verify actual transitive chain to entry; preserved READ-fraction-complete error.",
+    "Local inspect.py initially shadowed stdlib inspect in argparse; renamed inspect_source_receipt.py before subsequent reads; no extra EXE bytes read by that failed invocation."
+  ]
+}

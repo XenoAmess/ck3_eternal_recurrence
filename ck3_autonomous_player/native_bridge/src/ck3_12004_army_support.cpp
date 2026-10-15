@@ -110,6 +110,13 @@ void PopulateArmySupportBindings12004(
   bindings.get_county_entry_multiplier = ImageAddress12004<decltype(bindings.get_county_entry_multiplier)>(image_base, 0x24DD9A0);
   bindings.county_entry_condition = ImageAddress12004<decltype(bindings.county_entry_condition)>(image_base, 0x24E2230);
   bindings.county_entry_inputs_enabled = true;
+  // Actual24DD9A0's two signed Q64 loaded lower bounds. File zero-fill does
+  // not establish their runtime values; copy the loaded image operands.
+  bindings.county_entry_multiplier_floor_bindings.base_floor_raw =
+      ImageAddress12004<const std::int64_t *>(image_base, 0x5C68F68);
+  bindings.county_entry_multiplier_floor_bindings.army_1d4_nonzero_floor_raw =
+      ImageAddress12004<const std::int64_t *>(image_base, 0x5C69118);
+  bindings.county_entry_multiplier_floor_bindings.enabled = true;
   bindings.timing_bindings.loaded_grace_days = ImageAddress12004<const std::int32_t *>(image_base, 0x5C69AA0);
   bindings.timing_bindings.enabled = true;
 
@@ -188,6 +195,7 @@ void PopulateArmySupportBindings12004(
   scoped.is_army_in_combat = ImageAddress12004<decltype(scoped.is_army_in_combat)>(image_base, 0x24E8340);
   scoped.is_unit_position_eligible = ImageAddress12004<decltype(scoped.is_unit_position_eligible)>(image_base, 0x24ACAA0);
   scoped.read_province_holder = ImageAddress12004<decltype(scoped.read_province_holder)>(image_base, 0x247D010);
+  scoped.refill_switch_image_base_12004 = image_base;
   scoped.enabled = true;
   bindings.ordered_besieging_refill_bindings.arrg_fallback_slot = ImageAddress12004<void **>(image_base, 0x5D1F338);
   bindings.ordered_besieging_refill_bindings.enabled = true;

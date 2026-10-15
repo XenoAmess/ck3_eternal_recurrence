@@ -117,6 +117,7 @@ extern "C" void __fastcall XarActualLossWriterHook12004V1(
 // and performs the same physical capture/original/publication as the hook.
 void InvokeActualLossWriterJournalWithCaller12004V1(
     void *regiment, std::int64_t request_raw,
-    std::optional<std::uint64_t> caller_return_rva) noexcept;
+    std::optional<std::uint64_t> caller_return_rva,
+    const void *natural_writer_return_address_slot = nullptr) noexcept;
 
 } // namespace xar::ck3_12004

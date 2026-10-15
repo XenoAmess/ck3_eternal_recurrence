@@ -1,0 +1,14 @@
+[
+  {
+    "rva": "2A98B44",
+    "bytes": "488b9648010000",
+    "mnemonic": "mov",
+    "operands": "rdx, qword ptr [rsi + 0x148]"
+  },
+  {
+    "rva": "2A98B53",
+    "bytes": "e8583eb9ff",
+    "mnemonic": "call",
+    "operands": "0x262c9b0"
+  }
+]

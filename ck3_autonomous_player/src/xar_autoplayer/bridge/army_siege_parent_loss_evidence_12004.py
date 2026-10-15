@@ -26,6 +26,7 @@ def evaluate_siege_parent_loss_evidence_12004(
         'basis': 'same_actual_daily_callback_and_complete_positive_physical_writer',
         'status': 'unavailable', 'same_callback_combined_stage_positive_observed': False,
         'combined_stage_positive_events': [], 'excluded_positive_events': [],
+        'siege_only_positive_writer_events': [],
         'journal_join_coverage': joined, 'missing_inputs': [],
         'siege_only_causal_attribution_ready': False,
         'residual_cause_attribution_ready': False,
@@ -78,6 +79,19 @@ def evaluate_siege_parent_loss_evidence_12004(
                  'stock_at_writer_entry_raw': other['stock_at_writer_entry_raw'],
                  'physical_debit_soldiers': other['physical_debit_soldiers']} for other in siblings],
         })
+    originals = {event['sequence']: event for event in army['actual_loss_writer_observations_v1']['events']}
+    for event in result['combined_stage_positive_events']:
+        leaf = originals[event['sequence']].get('siege_budget_at_writer_v1')
+        event['source_siege_only_budget_bound'] = False
+        event['original_supply_budget_soldiers'] = leaf.get('original_supply_budget_soldiers') if leaf else None
+        if (leaf and leaf['siege_raid_capture_complete']
+                and leaf['capture_failure_flags'] & 13 == 0
+                and leaf['original_siege_budget_soldiers'] > 0
+                and leaf['derived_original_raid_budget_soldiers'] == 0):
+            event['source_siege_only_budget_bound'] = True
+            event['siege_budget_at_writer_v1'] = leaf
+            result['siege_only_positive_writer_events'].append(dict(event))
+    result['siege_only_causal_attribution_ready'] = bool(result['siege_only_positive_writer_events'])
     result['same_callback_combined_stage_positive_observed'] = bool(result['combined_stage_positive_events'])
     result['status'] = ('same_callback_combined_stage_positive_observed'
                         if result['combined_stage_positive_events'] else 'no_qualified_combined_stage_event')

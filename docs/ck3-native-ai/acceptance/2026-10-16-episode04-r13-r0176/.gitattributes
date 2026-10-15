@@ -1,0 +1,5 @@
+# Exact immutable R13 acceptance artifacts only.
+r0176-r13-originals.zip -text
+ARCHIVE-INDEX.json -text
+REPLAY.actual-a01.json -text
+QUALIFICATION.actual-a01.json -text

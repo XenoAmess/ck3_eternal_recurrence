@@ -3893,7 +3893,7 @@ def create_server(
 
     @server.tool()
     def ck3_inspect_gui_window_tree_v1(
-        window_kind: Literal["ingame_topbar", "decisions", "decision_detail", "courtier", "vivhite_courtier", "death_succession", "death_destiny"],
+        window_kind: Literal["ingame_topbar", "decisions", "decision_detail", "courtier", "vivhite_courtier", "death_succession", "death_destiny", "military"],
     ) -> dict[str, object]:
         """Read one bounded native window tree; no text, selection, hover or input."""
         return service.inspect_gui_window_tree_v1(window_kind)

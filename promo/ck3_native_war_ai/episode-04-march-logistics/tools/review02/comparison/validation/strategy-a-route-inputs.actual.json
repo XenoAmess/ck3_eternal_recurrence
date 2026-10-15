@@ -1,0 +1,92 @@
+{
+  "schema": "xar.e04.strategy-a-route-inputs.offline-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T17:17:47.493076+00:00",
+  "source_head": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "dependencies": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py",
+      "bytes": 25507,
+      "sha256": "807c9b88cf28012c50c4807cf5e14c668c3d6c64d13a908fae947595eff475a1"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a.py",
+      "bytes": 13203,
+      "sha256": "b91bf5a6ecd18b642ddda2a03ffc441b7ca29305c4bcc1a6a7648e648769302d"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json",
+      "bytes": 21442,
+      "sha256": "8a7b582667495392710be26890bd883f8f153807d310086cef8396207ed3a9e6"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a_route_inputs.py",
+      "bytes": 9156,
+      "sha256": "0814fee7754c73523312a5652013b305614fae4e3a36e1c63a0efcf0c307df30"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_a_route_inputs.py",
+      "bytes": 10755,
+      "sha256": "52a30335df6f0d81c791939093473c02997a7f97fc4aeeaa3a1005058eaa7f1c"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-strategy-a-route-inputs-12004.md",
+      "bytes": 5274,
+      "sha256": "9ce238975c7023dc6ef1aa21b1126230dd7655b4d632643634c55bc021b5f6a9"
+    }
+  ],
+  "source_lines": {
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a_route_inputs.py": {
+      "_latest": 14,
+      "_signed": 19,
+      "_province_row": 25,
+      "_supply": 46,
+      "_current_rate": 72,
+      "next_decision": 87
+    },
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_a_route_inputs.py": {}
+  },
+  "shell": "cmd.exe",
+  "login": false,
+  "python_version": "3.14.7",
+  "test_groups": [
+    {
+      "command": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -B -m unittest discover -s promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison -p test_strategy_a_route_inputs.py",
+      "cwd": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01\\route-inputs-a02",
+      "count": 12,
+      "seconds": 12.759,
+      "exit_code": 0,
+      "source_output_chunk": "99fbd6"
+    },
+    {
+      "command": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -B -m unittest test_strategy_a_route_inputs.InputsTests.test_world_contact_yields_to_ordinary_policy_without_new_Move",
+      "cwd": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01\\route-inputs-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison",
+      "count": 1,
+      "seconds": 1.011,
+      "exit_code": 0,
+      "source_output_chunk": "81fff1"
+    }
+  ],
+  "unique_test_count": 13,
+  "synthetic_only": true,
+  "real_native_wire_field_sources_reviewed": [
+    "army_strength_v1_serializer.hpp:1297",
+    "army_strength_v1_serializer.hpp:1602",
+    "ck3_12002_adapter.cpp:313",
+    "native_driver.py:14400"
+  ],
+  "current_actual_T0": null,
+  "current_actual_goal": null,
+  "current_actual_army": null,
+  "new_gameplay_days": 0,
+  "game_sdk_desktop_access": false,
+  "EXE_build_or_read": false,
+  "live_execution_performed": false,
+  "research_card_closed": false,
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Existing JSON/frame inputs only, no CK3 script/IR execution."
+  }
+}

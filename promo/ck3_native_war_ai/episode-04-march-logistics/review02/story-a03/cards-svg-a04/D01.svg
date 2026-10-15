@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>补给0→0，仍可能继续损耗</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D01&quot;, &quot;paragraph_ids&quot;: [&quot;C03-10&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;24E4CF0&quot;, &quot;24E3410&quot;], &quot;title&quot;: &quot;补给0→0，仍可能继续损耗&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="845" lengthAdjust="spacingAndGlyphs">补给0→0，仍可能继续损耗</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D01</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="728" lengthAdjust="spacingAndGlyphs">假设算例  ·  假设：原生准入通过，本次变化为负</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="756" lengthAdjust="spacingAndGlyphs">库存相同，不等于本次没有更新</text>
+<rect x="112" y="425" width="704" height="415" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="142" y="483" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="700" fill="#CBA56A" textLength="188" lengthAdjust="spacingAndGlyphs">01 入口库存</text>
+<text x="142" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#CBA56A" textLength="42" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="142" y="714" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="360" lengthAdjust="spacingAndGlyphs">本次更新已经准入</text>
+<rect x="928" y="425" width="704" height="415" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="958" y="483" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="700" fill="#CBA56A" textLength="248" lengthAdjust="spacingAndGlyphs">02 ADD后floor</text>
+<text x="958" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#CBA56A" textLength="488" lengthAdjust="spacingAndGlyphs">0 + 负变化 → 0</text>
+<text x="958" y="714" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="296" lengthAdjust="spacingAndGlyphs">负结果被压回0</text>
+<rect x="1744" y="425" width="704" height="415" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="1774" y="483" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="700" fill="#CBA56A" textLength="188" lengthAdjust="spacingAndGlyphs">03 继续执行</text>
+<text x="1774" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="68" font-weight="700" fill="#CBA56A" textLength="272" lengthAdjust="spacingAndGlyphs">整数预算</text>
+<text x="1774" y="714" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="400" fill="#F0E5CF" textLength="450" lengthAdjust="spacingAndGlyphs">成功返回，仍可能扣兵</text>
+<polyline points="828,630 916,630" fill="none" stroke="#CBA56A" stroke-width="5"/>
+<polygon points="916,630 900.034,638.312 900.034,621.688" fill="#CBA56A"/>
+<polyline points="1644,630 1732,630" fill="none" stroke="#CBA56A" stroke-width="5"/>
+<polygon points="1732,630 1716.034,638.312 1716.034,621.688" fill="#CBA56A"/>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="549" lengthAdjust="spacingAndGlyphs">段号：C03-10   ·   source：24E4CF0 / 24E3410</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="624" lengthAdjust="spacingAndGlyphs">成功更新后继续算供给预算；实际损失另看兵员写回。</text>
+</svg>

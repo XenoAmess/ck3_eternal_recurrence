@@ -18,9 +18,10 @@ using ActualResidualNonzeroOriginal12004=std::uintptr_t(__fastcall*)(void*,std::
 inline std::uintptr_t InvokeActualResidualNonzeroParent12004(
     const ResidualParentReader12004 &reader,ActualResidualNonzeroOriginal12004 original,
     void *array,std::int32_t budget,std::uint8_t flags,
-    std::optional<std::uint64_t> actual_caller_return_rva,std::uint32_t thread) noexcept {
+    std::optional<std::uint64_t> actual_caller_return_rva,std::uint32_t thread,
+    const void *natural_return_slot=nullptr) noexcept {
   if(!original)return 0;
-  ResidualParentScope12004 scope(reader,array,budget,flags,actual_caller_return_rva,thread);
+  ResidualParentScope12004 scope(reader,array,budget,flags,actual_caller_return_rva,thread,natural_return_slot);
   return original(array,budget,flags); // exactly one native continuation
 }
 // Install only from the existing exact4 suspended-primary PrepareStartup path.

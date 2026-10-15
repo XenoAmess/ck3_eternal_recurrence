@@ -171,3 +171,6 @@ fixture factory 只构造新输入，没有重跑旧测试或新增实机信用�
 `CONNECTED-OUTPUT.actual.json`，机器同上。父容量准入是共享512MiB池内8MiB上限；
 本包实际小于0.3MiB，按通用策略在 `2026-10-16T07:45:01.597Z` 复核，不自动续期。
 Root 在运行现场退出并解除 clean-checkout 冻结后合入候选；本包未写主树、提交或推送。
+
+
+Future a07 已接成来源绑定的生产查询/DTO/序列化和严格消费者候选，含原生十二例离线验证；见[补员开关观察叶子](episode04-refill-permission-switch-observation-12004.md)。尚未部署，不增加本场 toggle/action/actual ADD 业务资格。

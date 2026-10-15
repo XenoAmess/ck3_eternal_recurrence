@@ -1,0 +1,88 @@
+{
+  "schema": "xar.maintenance.writer_pc.actual-reader-originals.v1",
+  "recorded_utc": "2026-10-15T18:48:16.481780+00:00",
+  "scope": "Four new offline synthetic-contract reader behaviors, not actual game evidence",
+  "archive": {
+    "path": "synthetic-reader-originals.zip",
+    "bytes": 22362,
+    "sha256": "e93457cc575a44a84839d18caaadfd6688c2080286a11d20fe9363e5a128032f"
+  },
+  "members": [
+    {
+      "member": "focused-a02/clean_zero_timeout/PROJECTION.synthetic-contract.json",
+      "bytes": 4123,
+      "sha256": "8eeb59a8253268fbc242b60547f1806e077a4dfcccda5a028c7032109cfcc502"
+    },
+    {
+      "member": "focused-a02/clean_zero_timeout/writer.synthetic-contract.ndjson",
+      "bytes": 1765,
+      "sha256": "ced74b57c60d71563e619b14698c79059135824947e7e2f8b8a5c12b226b43be"
+    },
+    {
+      "member": "focused-a02/cold_fixture_no_game_credit/writer.synthetic-contract.ndjson",
+      "bytes": 1765,
+      "sha256": "3e5432cc5161717f4b4d5e43b0089ee3abc0fdfd0b197af908e7b55527b91a0a"
+    },
+    {
+      "member": "focused-a02/four_fields_timeout/PROJECTION.synthetic-contract.json",
+      "bytes": 8415,
+      "sha256": "aad53d977197eecb12725e7472a0d7cc8231b4064afead67027f040b828cefc9"
+    },
+    {
+      "member": "focused-a02/four_fields_timeout/writer.synthetic-contract.ndjson",
+      "bytes": 4617,
+      "sha256": "05bdd319eeb2a4249ae0b35cddc7b26d08379c16f60910f146853c409df20da1"
+    },
+    {
+      "member": "focused-a02/RESULT.actual.json",
+      "bytes": 910,
+      "sha256": "5bddab6162fd9c9b2f7f481df5844614540db86edf059cb8851cac09ffe457f0"
+    },
+    {
+      "member": "focused-a02/strict-source-assembly/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_cold.py",
+      "bytes": 11790,
+      "sha256": "cf11f90702a3a1a2e5752b4b73bdf5ab3a151d7e49f02c612104c8fa248c25e3"
+    },
+    {
+      "member": "focused-a02/synthetic-inputs/ADMISSION.synthetic-contract.json",
+      "bytes": 1677,
+      "sha256": "c9be0453d4f17a9d5ba427f09ced68a9ad13a6c8eef7f7fb284e50508d31a442"
+    },
+    {
+      "member": "focused-a02/synthetic-inputs/before.json",
+      "bytes": 1384,
+      "sha256": "85ca72edce0076cceee7b2e9b344106694895f18091979f8c5420208ed929304"
+    },
+    {
+      "member": "focused-a02/synthetic-inputs/cash.json",
+      "bytes": 44440,
+      "sha256": "79d865096fd5773ea041a40eec0e0979c9a9b7cec3288ba1a1e8ae3287038e72"
+    },
+    {
+      "member": "focused-a02/unknown_read_missing_restore/PROJECTION.synthetic-contract.json",
+      "bytes": 5353,
+      "sha256": "fb5e2a1f31bf5b30902ea4a8dd1d0c1484794b31805c9980b40e4f63413426d2"
+    },
+    {
+      "member": "focused-a02/unknown_read_missing_restore/writer.synthetic-contract.ndjson",
+      "bytes": 2381,
+      "sha256": "ffda65ccfa65745a62a5e93e2be6fa81e4422726c445d0cde1659690eb140281"
+    },
+    {
+      "member": "qualification-a02/QUALIFICATION.actual.json",
+      "bytes": 2683,
+      "sha256": "e0d7de726d0abd5ecbb05400a5cfb480a9d35b27c7a8aa16c9fe06aa31f70668"
+    },
+    {
+      "member": "qualification-a02/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "qualification-a02/stdout.txt",
+      "bytes": 1263,
+      "sha256": "c14497363825c04ad235b908e1b9a21613e7b918b63b8262e797b7d6a50c8835"
+    }
+  ],
+  "actual_CK3_evidence": false
+}

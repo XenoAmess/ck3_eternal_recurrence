@@ -183,12 +183,13 @@ inline constexpr std::string_view kGuiWindowTreeInspectionV1Step =
 enum class GuiWindowTreeScopeV1 : std::uint32_t {
   unavailable = 0, decisions = 1, decision_detail = 2,
   courtier = 3, vivhite_courtier = 4, ingame_topbar = 5,
-  death_succession = 6, death_destiny = 7,
+  death_succession = 6, death_destiny = 7, military = 8,
 };
 inline GuiWindowTreeScopeV1 GuiWindowTreeScopeForV1(
     std::string_view kind) noexcept {
   if (kind == "ingame_topbar") return GuiWindowTreeScopeV1::ingame_topbar;
   if (kind == "decisions") return GuiWindowTreeScopeV1::decisions;
+  if (kind == "military") return GuiWindowTreeScopeV1::military;
   if (kind == "decision_detail") return GuiWindowTreeScopeV1::decision_detail;
   if (kind == "courtier") return GuiWindowTreeScopeV1::courtier;
   if (kind == "vivhite_courtier") return GuiWindowTreeScopeV1::vivhite_courtier;
@@ -201,6 +202,7 @@ inline std::string_view GuiWindowTreeRootForV1(
   switch (scope) {
   case GuiWindowTreeScopeV1::ingame_topbar: return "ingame_topbar";
   case GuiWindowTreeScopeV1::decisions: return "decisions_view";
+  case GuiWindowTreeScopeV1::military: return "military_view";
   case GuiWindowTreeScopeV1::decision_detail: return "decisiondetail_view";
   case GuiWindowTreeScopeV1::courtier: return "xar_courtier_creator_window";
   case GuiWindowTreeScopeV1::vivhite_courtier: return "ervc_courtier_creator_window";

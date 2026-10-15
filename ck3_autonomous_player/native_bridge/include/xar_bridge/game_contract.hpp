@@ -576,6 +576,17 @@ struct ArmyCurrentHelperPointStoreInputsV1 {
                          const ArmyCurrentHelperPointStoreInputsV1 &) = default;
 };
 
+// Exact .4 loaded multiplier operands; independent of native budget readiness.
+struct ArmyCountyEntryMultiplierFloorInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int64_t base_floor_raw = 0;
+  std::int64_t army_1d4_nonzero_floor_raw = 0;
+  std::uint8_t army_1d4_raw = 0;
+  friend bool operator==(const ArmyCountyEntryMultiplierFloorInputsV1 &,
+                         const ArmyCountyEntryMultiplierFloorInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -595,6 +606,7 @@ struct ArmyCountyEntryInputsV1 {
   std::int32_t target_province_id = -1;
   std::int32_t mode = 0;
   bool condition_passes = false;
+  std::optional<ArmyCountyEntryMultiplierFloorInputsV1> multiplier_floor_inputs_v1;
 
   friend bool operator==(const ArmyCountyEntryInputsV1 &,
                          const ArmyCountyEntryInputsV1 &) = default;

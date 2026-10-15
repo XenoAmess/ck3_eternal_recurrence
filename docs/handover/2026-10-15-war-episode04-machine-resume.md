@@ -197,3 +197,16 @@ R0174实际PID17468、创建FILETIME134365505726865638、generation1、episode`n
 | 新版render / 审计 / 人工完整签核 / 指定交付 | 0/4，0% | 不用Review01代填新版里程碑 |
 
 本轮跨日接续窗口优先构建/资格native a06并取得R12锁定Halt、R13锁定重定向各自真实后果；原源与当前a05不热冒充a06。核心研究目标暂估北京时间 **10月17–19日**，新Review目标窗口 **10月18–21日**，均为调度估计，依赖自然低库存、实际补员/维护来源及串行ABC，不能保证按时发生。新现场只按[锁定路线手册](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/README.md)重绑当前版本/机器/PID/实际route/cutoff；研究、镜头、稿声和成片各自结算。共享512MiB子包池和原复核截止 **2026-10-16T07:45:01.597Z**保持，不自动续期。
+
+
+## 2026-10-16 R0175/R0176：锁定行为实证与共用代码入库
+
+本节机器 `desktop-3fevhd2-1c74096080`；观察截止2026-10-15 19:01:28 UTC（10月16日03:01 CST）。两场实际运行source `dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb`、a06 DLL `b7b8cf33742ab60f9b5db439b30b7f83b075d8640bfce2e249c472383d0969d7`、游戏1.20.0.4/build25734779；下一a07源码整合不回填旧场。
+
+R0175独立正常Move后首段进度96666/100000，大于实际锁定线50000；一次Halt将尾段截为原front1036，仍实际走完首段，随后次日保持空路线静止。31代时钟共32自然日。R0176从正常驻定seed新Move，五个自然日后进度95108、剩余25714，原路线 `[8653,1034,1033]`；一次typed改道独立读回 `[8653,8645]`，实际先到8653，再到8645，九代时钟共13自然日。两场均normal exit0、SDK/录制/keeper退场和屏幕CAS释放，原始错误及只读恢复均保留。
+
+研究整卡现为 **R00/R02/R11/R12/R13，5/14＝35.7%**；R03–R13业务实验 **3/11＝27.3%**。各45秒原片均严格全解码通过；R13实际最终抵达回包在录制起点后65.61秒，整体后验完成69.53秒，均在片外。连续clean、人工1×和新版合格动态包仍不增加信用（0/11）。R09暂停态selected93实际拆合保留250/250物理DATA；原Army18空DATA/cache1/1的角色ArRg59被移除，其Char34232成为新军162的实际统帅，合军后成为93统帅；这不是一名物理士兵死亡。原strict unrelated freeze失败保留，R09整卡仍未关闭。
+
+便携原件、严格离线重放与共享专题分别落在 `docs/ck3-native-ai/acceptance/2026-10-16-episode04-r12-r0175/`、`2026-10-16-episode04-r13-r0176/` 和对应 `episode04-r12-locked-halt-r0175-12004.md`、`episode04-r13-locked-reroute-r0176-12004.md`、`episode04-r09-selected93-micro-actual-12004.md`。智能体消费者在 `ck3_autonomous_player/src/xar_autoplayer/bridge/`；视频/Root分阶段组合在本期 `tools/review02/`；不会把外置本机launcher当作通用运行库。source-a03新增13段草稿及9张SVG演示卡，新旧草稿合计37/69，仅为草稿覆盖。
+
+并发完成补员权限与军务callback只读接线、围城/劫掠residual预算、零库存触发窗口、县入境loaded floor读口、四项现金缓存actual writer消费者、特殊兵资格，以及A/B/C分阶段组合。源码和cold资格均独立于下一a07完整构建/新实机；维护费writer、实际补员ADD、R03/R04/R05正因果、费用两fresh-arms与正式ABC仍继续执行，不把计划、ACK或测试数量算作完成。

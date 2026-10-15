@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>县剩余预算，先保存再分配</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D04&quot;, &quot;paragraph_ids&quot;: [&quot;C03-05&quot;, &quot;C03-06&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;24E23E0&quot;, &quot;2A957E0&quot;], &quot;title&quot;: &quot;县剩余预算，先保存再分配&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="828" lengthAdjust="spacingAndGlyphs">县剩余预算，先保存再分配</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D04</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="694" lengthAdjust="spacingAndGlyphs">假设算例  ·  假设普通非负、无溢出的预算输入</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="524" lengthAdjust="spacingAndGlyphs">R在首选写入前已固定</text>
+<rect x="112" y="425" width="2336" height="195" fill="#35291F" stroke="#9AAEAB" stroke-width="2"/>
+<text x="140" y="477" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="157" lengthAdjust="spacingAndGlyphs">整军预算 B</text>
+<text x="140" y="568" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#9AAEAB" textLength="114" lengthAdjust="spacingAndGlyphs">100</text>
+<text x="550" y="477" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="155" lengthAdjust="spacingAndGlyphs">首选人数 S</text>
+<text x="550" y="568" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#9AAEAB" textLength="114" lengthAdjust="spacingAndGlyphs">120</text>
+<text x="960" y="477" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="93" lengthAdjust="spacingAndGlyphs">首选 P</text>
+<text x="960" y="568" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#9AAEAB" textLength="114" lengthAdjust="spacingAndGlyphs">100</text>
+<text x="1370" y="477" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="94" lengthAdjust="spacingAndGlyphs">剩余 R</text>
+<text x="1370" y="568" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#9AAEAB" textLength="38" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="1820" y="498" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#9AAEAB" textLength="526" lengthAdjust="spacingAndGlyphs">例A：R=0，不启动县剩余分配</text>
+<rect x="112" y="650" width="2336" height="195" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="140" y="702" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="157" lengthAdjust="spacingAndGlyphs">整军预算 B</text>
+<text x="140" y="793" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#CBA56A" textLength="114" lengthAdjust="spacingAndGlyphs">100</text>
+<text x="550" y="702" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="155" lengthAdjust="spacingAndGlyphs">首选人数 S</text>
+<text x="550" y="793" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">40</text>
+<text x="960" y="702" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="93" lengthAdjust="spacingAndGlyphs">首选 P</text>
+<text x="960" y="793" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">40</text>
+<text x="1370" y="702" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" fill="#BBA98D" textLength="94" lengthAdjust="spacingAndGlyphs">剩余 R</text>
+<text x="1370" y="793" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="62" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">60</text>
+<text x="1820" y="723" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="546" lengthAdjust="spacingAndGlyphs">例B：先存R=60，再做首选写入</text>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="664" lengthAdjust="spacingAndGlyphs">段号：C03-05 / C03-06   ·   source：24E23E0 / 2A957E0</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="580" lengthAdjust="spacingAndGlyphs">首选按请求q消耗预算，实际扣得不同也不重算R。</text>
+</svg>

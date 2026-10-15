@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
+#include "xar_bridge/army_refill_permission_switch_v1_serializer.hpp"
 #include <string_view>
 
 namespace xar::game {
@@ -45,7 +46,12 @@ inline void AppendArmyOrderedRefillPersistentV1(
     XAR_ORDERED_NUMBER(unit_position_owner_resolved_full_id); XAR_ORDERED_NUMBER(unit_position_holder_resolved_full_id);
 #undef XAR_ORDERED_NUMBER
     boolean("native_army_in_combat", chunk.native_army_in_combat);
-    boolean("native_unit_position_eligible", chunk.native_unit_position_eligible); out += '}';
+    boolean("native_unit_position_eligible", chunk.native_unit_position_eligible);
+    if(chunk.refill_permission_switch_v1) {
+      out += ",\"refill_permission_switch_v1\":";
+      AppendArmyRefillPermissionSwitchV1(out,*chunk.refill_permission_switch_v1,number,text);
+    }
+    out += '}';
   }
   out += "]}";
 }

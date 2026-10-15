@@ -1,0 +1,190 @@
+{
+  "generation": "source-cards-a04",
+  "source_delta_map_sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6",
+  "source_delta_index_sha256": "796e24a8684068b93943d1085b32f6b246b863c11dc5f842c072b99f3a3084b2",
+  "generator_repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/source_cards/render_source_cards.py",
+  "source_and_hypothetical_assets_only": true,
+  "clean_or_signoff": false,
+  "cards": [
+    {
+      "card_id": "D01",
+      "title": "补给0→0，仍可能继续损耗",
+      "paragraph_ids": [
+        "C03-10"
+      ],
+      "source_ids": [
+        "24E4CF0",
+        "24E3410"
+      ],
+      "svg": {
+        "path": "D01.svg",
+        "bytes": 4834,
+        "sha256": "74f2c88869cab197a768dcd9c901f2a3b5ebfe0416af55abf09cf2af6c67a0dc"
+      },
+      "min_font_size": 25,
+      "text_box_count": 15,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D02",
+      "title": "零库存，没有另加一档",
+      "paragraph_ids": [
+        "C03-11"
+      ],
+      "source_ids": [
+        "24E4F80"
+      ],
+      "svg": {
+        "path": "D02.svg",
+        "bytes": 5273,
+        "sha256": "058c080469cf246b567573f293d030354c401988d89761e7d7260e0904fc36b8"
+      },
+      "min_font_size": 25,
+      "text_box_count": 19,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D03",
+      "title": "先分别取整，再合计预算",
+      "paragraph_ids": [
+        "C03-02",
+        "C03-03",
+        "C03-04"
+      ],
+      "source_ids": [
+        "24E3410",
+        "24E32C0"
+      ],
+      "svg": {
+        "path": "D03.svg",
+        "bytes": 4060,
+        "sha256": "026405da6718bdbec16ca9c766679c82a0c89ea4d5a5f81e690c2992130e3987"
+      },
+      "min_font_size": 25,
+      "text_box_count": 13,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D04",
+      "title": "县剩余预算，先保存再分配",
+      "paragraph_ids": [
+        "C03-05",
+        "C03-06"
+      ],
+      "source_ids": [
+        "24E23E0",
+        "2A957E0"
+      ],
+      "svg": {
+        "path": "D04.svg",
+        "bytes": 6136,
+        "sha256": "98e22a90f56c3dd806f44b964d6040cae2f53fb34ad78d1bc49e88281f470eb5"
+      },
+      "min_font_size": 25,
+      "text_box_count": 24,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D05",
+      "title": "多层取整：49与50的差别",
+      "paragraph_ids": [
+        "C03-07"
+      ],
+      "source_ids": [
+        "24E6650",
+        "24E6570",
+        "24DD9A0"
+      ],
+      "svg": {
+        "path": "D05.svg",
+        "bytes": 5502,
+        "sha256": "248d26ad17ff4ee925936289a46985fa95d16dcfa2e08b6cf3ca5b4b31361b3a"
+      },
+      "min_font_size": 25,
+      "text_box_count": 18,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D06",
+      "title": "预算、请求、写回，逐层分开",
+      "paragraph_ids": [
+        "C03-09",
+        "C03-12"
+      ],
+      "source_ids": [
+        "24E32C0",
+        "2A957E0",
+        "2634190",
+        "2657E80"
+      ],
+      "svg": {
+        "path": "D06.svg",
+        "bytes": 4924,
+        "sha256": "bfc0259d822a64e42be4f3633ed31d6e7153a120fad3df30399c4b4c3afff6dc"
+      },
+      "min_font_size": 25,
+      "text_box_count": 14,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D07",
+      "title": "平分迁移整条兵团记录",
+      "paragraph_ids": [
+        "C05-06"
+      ],
+      "source_ids": [
+        "296C2F0",
+        "296B240",
+        "296B6C0"
+      ],
+      "svg": {
+        "path": "D07.svg",
+        "bytes": 5629,
+        "sha256": "6ce883c072eda19c17f7e7025d1de68c599e5949e03cf7e9a991ca5a9661679c"
+      },
+      "min_font_size": 25,
+      "text_box_count": 17,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D08",
+      "title": "拆成两军，仍要看聚合用量",
+      "paragraph_ids": [
+        "C05-07"
+      ],
+      "source_ids": [
+        "strategy_a_route_inputs.next_decision",
+        "296C2F0"
+      ],
+      "svg": {
+        "path": "D08.svg",
+        "bytes": 4418,
+        "sha256": "12c6b801a4668cbc80617ed4802a223f023110b0a06ac6fbc16bccbe91ad4bc6"
+      },
+      "min_font_size": 25,
+      "text_box_count": 12,
+      "all_text_ink_inside_assigned_bounds": true
+    },
+    {
+      "card_id": "D09",
+      "title": "1/1，还可能是角色记录",
+      "paragraph_ids": [
+        "C06-06"
+      ],
+      "source_ids": [
+        "28CC150",
+        "2632CB0",
+        "2633ED0",
+        "24DF9F0"
+      ],
+      "svg": {
+        "path": "D09.svg",
+        "bytes": 5686,
+        "sha256": "294d24ff57706a298b23c8f0cedcefdf19bc811b33b2d33b250bdc1192f10696"
+      },
+      "min_font_size": 25,
+      "text_box_count": 19,
+      "all_text_ink_inside_assigned_bounds": true
+    }
+  ]
+}

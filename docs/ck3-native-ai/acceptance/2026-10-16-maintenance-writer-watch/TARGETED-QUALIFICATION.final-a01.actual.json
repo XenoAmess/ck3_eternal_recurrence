@@ -1,0 +1,95 @@
+{
+  "schema": "xar.maintenance.writer_pc.actual-targeted-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_utc": "2026-10-15T17:34:54.646961+00:00",
+  "status": "PASS_WITH_EXPLICIT_OCCUPIED_RAW_VECTOR_LIMIT",
+  "source": "source-a08",
+  "build": "build-a07",
+  "correct_Character_ABI": {
+    "id_offset": 24,
+    "magic_offset": 28,
+    "death_offset": 464,
+    "actual_positive": {
+      "path": "runs-a06-final-narrow\\correct-character-base-abi\\RESULT.actual.json",
+      "bytes": 2934,
+      "sha256": "4c97ba16d88918449ad72af238fc814dfe32a83cbb4b03be7067c09b4313fccb"
+    },
+    "raw_strict_result": {
+      "raw_slot_hits": 4,
+      "recorded_data_events": 4,
+      "unique_offsets": [
+        40,
+        48,
+        704,
+        712
+      ],
+      "same_value_write_count": 0,
+      "writer_threads": [
+        616
+      ],
+      "maintenance_attribution": "unclosed",
+      "known_producer": false
+    },
+    "original_owned_DR_all6_exact": true
+  },
+  "compiled_generation_ownership_unit": {
+    "path": "runs-a06-final-narrow\\OWNERSHIP-UNIT.actual.json",
+    "bytes": 496,
+    "sha256": "8765d08af8bab9eb83273564f2fd089196f8c8d9dbbb20bb9883ebd88a1a4732"
+  },
+  "occupied_before_attach": {
+    "qualification": "ACTUAL_RESERVED_SLOT_REFUSED_BEFORE_ATTACH_WITHOUT_SETCONTEXT",
+    "failure_receipt_preserved": {
+      "path": "runs-a06-final-narrow\\stale-tid-occupied\\FAILURE.actual.json",
+      "bytes": 129,
+      "sha256": "fea0fac4ea315ffc0e4214ec1304773f769ad98acd89720a69d1df4f93ef836f"
+    },
+    "before": [
+      {
+        "thread_id": 17348,
+        "ok": true,
+        "debug": [
+          305418240,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    ],
+    "after": [
+      {
+        "thread_id": 17348,
+        "ok": true,
+        "debug": [
+          305418240,
+          0,
+          0,
+          0,
+          4294905840,
+          1025
+        ]
+      }
+    ],
+    "raw_all6_equal": false,
+    "slot_addresses_equal": true,
+    "observed_Dr6_xor": 4294905840,
+    "observed_Dr7_xor": 1024,
+    "scope": "Preflight only Suspend/GetContext/Resume, with no DebugActiveProcess, ArmThread or SetThreadContext. Original6 comparison failure is retained. Only addresses and enable/control bits excluding observed0x400 difference are equal; do not claim full raw preservation for this occupied case.",
+    "platform_normalization_is_inference": true,
+    "primary_API_reference": "https://learn.microsoft.com/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadcontext"
+  },
+  "historical_regressions": {
+    "source": "source-a05/build-a04",
+    "suite": "runs-a03/COLD-SUITE.actual.json",
+    "cases": 8,
+    "strict_consumer": "STRICT-CONSUMER.a03.actual.json",
+    "malformed_negative_cases": 24,
+    "not_rerun_after_review_fixes": true
+  },
+  "new_CK3_game_SDK_main_actions": 0,
+  "actual_OS_TID_reuse_claimed": false,
+  "maintenance_attribution": "unclosed",
+  "known_producer": false
+}

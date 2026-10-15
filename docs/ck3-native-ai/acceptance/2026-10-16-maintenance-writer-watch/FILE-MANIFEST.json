@@ -1,0 +1,107 @@
+{
+  "schema": "xar.maintenance.writer_pc.repo-files.v1",
+  "files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_fixture.py",
+      "bytes": 1710,
+      "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/CMakeLists.txt",
+      "bytes": 566,
+      "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/cold_observer.cpp",
+      "bytes": 23688,
+      "sha256": "24b9d584ee451ef822c6386484efcda2578072cb5569ce1740b910e3bbadd0ee"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_cold.py",
+      "bytes": 11790,
+      "sha256": "cf11f90702a3a1a2e5752b4b73bdf5ab3a151d7e49f02c612104c8fa248c25e3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/prepare_writer_admission.py",
+      "bytes": 13811,
+      "sha256": "3f3478da1562da09299ae10edf93674acba95a3540aa6c10257ee8842d410e00"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/README.md",
+      "bytes": 225,
+      "sha256": "f258f38a524dfb77650eb76df144f223a24ab3cff4933e3bcde59c7b81f621e8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/run_cold_fixture.py",
+      "bytes": 18315,
+      "sha256": "d55853f9302b118b047c738b419025922959436b1c7768ecb0fabc625cd5a761"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/run_targeted_review_fixes.py",
+      "bytes": 28643,
+      "sha256": "81b192520784fec02fec9aa6386093d1485b28d7f1d03b5bef3e658a703f6490"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/WRITER-WATCH.contract.json",
+      "bytes": 2578,
+      "sha256": "5b10baaf8f828f1b6a07e4cb8aedf362d3b6860db8533a7e2d92108d4f088a7f"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/ADMISSION-FAIL-CLOSED.a01.actual.json",
+      "bytes": 4486,
+      "sha256": "195f77ebb0d354b4561d8b63b62f81db569c2e363f1639c01aeb18d0e2aa62f6"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/ARCHIVE-INDEX.json",
+      "bytes": 34838,
+      "sha256": "6fa55924ef738a1e41216196e18d70a7f9c6d319548d99d96d284d7cd62f266c"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/BUILD-DONE.a07.actual.json",
+      "bytes": 2294,
+      "sha256": "0ba6af5a46e17e6c305a143a923ceebd16d3eb0af564ee891548ac50fb302d11"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/SOURCE-FREEZE.a08.actual.json",
+      "bytes": 1830,
+      "sha256": "25f59aa5120c71c478c6d8cdcc5b9f0a4abc018eba60ee0426ad52d12604015b"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/STRICT-CONSUMER.a03.actual.json",
+      "bytes": 4552,
+      "sha256": "909a90ca0a7e88be89139183fbe823ffcadf9d503457bc3baa983b42c2973269"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/TARGETED-QUALIFICATION.final-a01.actual.json",
+      "bytes": 3086,
+      "sha256": "049b6c2445666f63bda13533029deba1902021afd16c4601e5d18a901b437433"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/verify_repository.py",
+      "bytes": 3042,
+      "sha256": "6726b601f4d81ed9d16b01ee431d5932a631d4cd66466493d1abdfaa1f724d93"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-maintenance-writer-watch/writer-cold-originals.zip",
+      "bytes": 101996,
+      "sha256": "db7afa604e4983ae8a96de1921fb102914f1cb9e0a326a7089b638d6de5d1dbb"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-four-term-writer-watch-12004.md",
+      "bytes": 6711,
+      "sha256": "b5850f21c0e8a75d1024dee433815a58fccc5717b90b6de8ff129660b25818c3"
+    }
+  ],
+  "base_commit": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "required_cash_patch_sha256": "f19482b3e38f15bc927c696efcddad27e010bfee1659606dbae438d932b03622"
+}

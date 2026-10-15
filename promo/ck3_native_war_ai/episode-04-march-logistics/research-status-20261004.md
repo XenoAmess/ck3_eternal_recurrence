@@ -250,3 +250,16 @@ day4实际pausedraw53147256/public14/native13，HUDJan15，正文Jan20为ETA剩5
 本地B筛选失败是有用负例：+9实际日/raw53147592/public27/native26，Main0在1506为3371/3371、stock116.51751/cap300、month−4.38596；child33554436实际到1508/regular1/空路为3375/3376、同stock/cap100、month−8.77192、当前attrition0。27actualFullIDs disjointunion及current/max完整保持，总6746/6747；37DATA完整并不表示所有record字段未变。attrition0或抵达本身不证明正补给休整；到达将领/冬季/holder/友好因果未赋，ABC0/3保持。
 
 raw5187713679B/SHA d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab、3599.966s/107999帧媒体PASS与Dfull keeper OSError28失败分别归档；bootstrap实读SDKthreadexited、cleanup_proven=true/GameJob0。未响应的return-route probe不填route/ETA。本包只复制小JSON/知识/复核code，零raw读取重hash、SDK、桌面、媒体或游戏；clean spans、完整人类1×、signoff与影片/交付仍未完成。
+
+
+## 2026-10-16 R0175/R0176：锁定行为实证与共用代码入库
+
+本节机器 `desktop-3fevhd2-1c74096080`；观察截止2026-10-15 19:01:28 UTC（10月16日03:01 CST）。两场实际运行source `dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb`、a06 DLL `b7b8cf33742ab60f9b5db439b30b7f83b075d8640bfce2e249c472383d0969d7`、游戏1.20.0.4/build25734779；下一a07源码整合不回填旧场。
+
+R0175独立正常Move后首段进度96666/100000，大于实际锁定线50000；一次Halt将尾段截为原front1036，仍实际走完首段，随后次日保持空路线静止。31代时钟共32自然日。R0176从正常驻定seed新Move，五个自然日后进度95108、剩余25714，原路线 `[8653,1034,1033]`；一次typed改道独立读回 `[8653,8645]`，实际先到8653，再到8645，九代时钟共13自然日。两场均normal exit0、SDK/录制/keeper退场和屏幕CAS释放，原始错误及只读恢复均保留。
+
+研究整卡现为 **R00/R02/R11/R12/R13，5/14＝35.7%**；R03–R13业务实验 **3/11＝27.3%**。各45秒原片均严格全解码通过；R13实际最终抵达回包在录制起点后65.61秒，整体后验完成69.53秒，均在片外。连续clean、人工1×和新版合格动态包仍不增加信用（0/11）。R09暂停态selected93实际拆合保留250/250物理DATA；原Army18空DATA/cache1/1的角色ArRg59被移除，其Char34232成为新军162的实际统帅，合军后成为93统帅；这不是一名物理士兵死亡。原strict unrelated freeze失败保留，R09整卡仍未关闭。
+
+便携原件、严格离线重放与共享专题分别落在 `docs/ck3-native-ai/acceptance/2026-10-16-episode04-r12-r0175/`、`2026-10-16-episode04-r13-r0176/` 和对应 `episode04-r12-locked-halt-r0175-12004.md`、`episode04-r13-locked-reroute-r0176-12004.md`、`episode04-r09-selected93-micro-actual-12004.md`。智能体消费者在 `ck3_autonomous_player/src/xar_autoplayer/bridge/`；视频/Root分阶段组合在本期 `tools/review02/`；不会把外置本机launcher当作通用运行库。source-a03新增13段草稿及9张SVG演示卡，新旧草稿合计37/69，仅为草稿覆盖。
+
+并发完成补员权限与军务callback只读接线、围城/劫掠residual预算、零库存触发窗口、县入境loaded floor读口、四项现金缓存actual writer消费者、特殊兵资格，以及A/B/C分阶段组合。源码和cold资格均独立于下一a07完整构建/新实机；维护费writer、实际补员ADD、R03/R04/R05正因果、费用两fresh-arms与正式ABC仍继续执行，不把计划、ACK或测试数量算作完成。

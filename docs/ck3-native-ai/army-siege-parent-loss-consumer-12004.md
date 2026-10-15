@@ -79,3 +79,8 @@ fixture observer未安装且caller不在game RVA，真实结果必须拒绝R03�
 
 本包依赖先合入[物理扣兵共同消费者](episode04-siege-loss-12004.md)及[parent join候选](army-actual-supply-parent-join-observation-12004.md)。
 主树保持冻结；外置包≤8MiB，共用Root已接受512MiB池，复核截止`2026-10-16T07:45:01.597Z`，没有延期。
+
+
+## 2026-10-16：原预算栈leaf使单笔siege-only原因可准入
+
+上述旧wire的原因unknown保持原历史边界。下一正常构建默认OFF的可选`siege_budget_at_writer_v1`从真实writer incoming return slot复制原siege/combined及独立supply预算；来源、偏移与actual1999B新源字节见[原预算栈专题](army-siege-budget-writer-stack-12004.md)。同callback/direct preferred/positive physical均合格后，原siege>0且derived raid=0才进入`siege_only_positive_writer_events`；旧wire、partial和mixed raid仍不授此原因。该变化只授单笔writer的来源原因，完整区间与residual仍不ready；当前a06/R0175未据此取得新live资格。

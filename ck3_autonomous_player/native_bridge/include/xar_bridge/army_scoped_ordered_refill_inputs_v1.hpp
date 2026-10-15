@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/army_refill_permission_switch_v1.hpp"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -11,6 +12,7 @@ struct ArmyOrderedRefillChunkV1 {
   std::int32_t owner_persistent_regiment_id = -1, q_ordinal_raw = -1;
   std::int32_t army_regiment_id_raw = -1, exclusion_byte_14_raw = 0, state_raw = 0;
   std::string context_unavailable_reason;
+  std::optional<ArmyRefillPermissionSwitchV1> refill_permission_switch_v1;
   std::optional<std::int32_t> owner_resolved_full_id, owner_guard_138_raw;
   std::optional<std::uint32_t> owner_definition_magic_38_raw;
   std::optional<std::int32_t> origin_province_id, origin_province_788_raw;

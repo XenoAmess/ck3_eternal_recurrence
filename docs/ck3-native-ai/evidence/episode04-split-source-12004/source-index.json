@@ -1,0 +1,334 @@
+{
+  "schema": "xar.episode04.actual4.split-source.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-15T17:21:00.727950+00:00",
+  "source_base_commit": "dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb",
+  "game_version": "1.20.0.4",
+  "steam_build": 25734779,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "path_contract": "All replay input paths are relative to this index; origin machine/time does not qualify another machine runtime.",
+  "families": [
+    {
+      "id": "2633ED0",
+      "begin_rva": "0x2633ed0",
+      "end_rva_exclusive": "0x2633fc3",
+      "bytes": 243,
+      "raw_hex_path": "2633ED0.hex",
+      "raw_sha256": "ad30927f927882f8236f17cdf40fc6626474fd113e269de3288bca7c679a970c",
+      "instructions_path": "2633ED0.instructions.json",
+      "instructions_sha256": "f84218f584ad2476df783b369dd1bb5cef189e725ed8f72f247b18da40d7ac05",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "296C2F0",
+      "begin_rva": "0x296c2f0",
+      "end_rva_exclusive": "0x296cdf3",
+      "bytes": 2819,
+      "raw_hex_path": "296C2F0.hex",
+      "raw_sha256": "9840d7ae500832535245a826d2de40f25f9fc790d4a3b706be36cd6f7bdb5ae5",
+      "instructions_path": "296C2F0.instructions.json",
+      "instructions_sha256": "614e0148a28cb89e4d74141d55c980018dc982398af52fda1736645be6453dc8",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "296B240",
+      "begin_rva": "0x296b240",
+      "end_rva_exclusive": "0x296b6b7",
+      "bytes": 1143,
+      "raw_hex_path": "296B240.hex",
+      "raw_sha256": "d62cf72233d6e4043eea44778bacd2cfca13f2d0269b7b69839c98ca8cded2f8",
+      "instructions_path": "296B240.instructions.json",
+      "instructions_sha256": "6542d652f9af533bcfea2f61f588133a804443a437e90faee619ecfb9268cc65",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "296B6C0",
+      "begin_rva": "0x296b6c0",
+      "end_rva_exclusive": "0x296b990",
+      "bytes": 720,
+      "raw_hex_path": "296B6C0.hex",
+      "raw_sha256": "2de23ee1a822a539e0ca62c694b3c6d68e68448c3b7de53d193fc519f1a8a556",
+      "instructions_path": "296B6C0.instructions.json",
+      "instructions_sha256": "efbce760249648382b5406ed0acbd40907f30960265f437365f42cb57eed8065",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "2A96E80",
+      "begin_rva": "0x2a96e80",
+      "end_rva_exclusive": "0x2a97174",
+      "bytes": 756,
+      "raw_hex_path": "2A96E80.hex",
+      "raw_sha256": "f1891fb9f7d34bae09a0071192e9e0db963104af036dc80ffc32be355af392e7",
+      "instructions_path": "2A96E80.instructions.json",
+      "instructions_sha256": "efc4bfdea0bb9a53724e23f795776dbfd93e0be25a788a581270283f9759e65a",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "24E0D10",
+      "begin_rva": "0x24e0d10",
+      "end_rva_exclusive": "0x24e0e89",
+      "bytes": 377,
+      "raw_hex_path": "24E0D10.hex",
+      "raw_sha256": "c0f28acacc92ea0318ba79a4980b745d09a754e612ca5555b7ad84679cfcb27a",
+      "instructions_path": "24E0D10.instructions.json",
+      "instructions_sha256": "c708db45149c968b3784fb7a6210c33a818efa28ae07be68017ba7b48fa61e36",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "28CC460",
+      "begin_rva": "0x28cc460",
+      "end_rva_exclusive": "0x28cc5cb",
+      "bytes": 363,
+      "raw_hex_path": "28CC460.hex",
+      "raw_sha256": "e593c50bf2b93b5b5cd820603ae8453cd0fdb9553636de82a80c1ae41fa20465",
+      "instructions_path": "28CC460.instructions.json",
+      "instructions_sha256": "29eaf470ba5ab9a1dec51724c1cb96af90d57d1711674dfa95b4114913bc5feb",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "2632CB0",
+      "begin_rva": "0x2632cb0",
+      "end_rva_exclusive": "0x2632d81",
+      "bytes": 209,
+      "raw_hex_path": "2632CB0.hex",
+      "raw_sha256": "5b3c9bab259ff92a4a0ed552f43660bcf675ad30597a39b2ef91e9966883729c",
+      "instructions_path": "2632CB0.instructions.json",
+      "instructions_sha256": "9e90173a7e43bc6351e3083a828ff66ac8d146657991796950e094594209da7a",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "2A96D40",
+      "begin_rva": "0x2a96d40",
+      "end_rva_exclusive": "0x2a96e80",
+      "bytes": 320,
+      "raw_hex_path": "2A96D40.hex",
+      "raw_sha256": "5b0b2ca0c1e8479ae26ded7b979019abe4acc93a40bca2917f2ef5b6ff7b1a56",
+      "instructions_path": "2A96D40.instructions.json",
+      "instructions_sha256": "f435104c39b6947baa9b823f59d0924bb7fddff7bf6f309616508f6db0c1dc22",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "24DF9F0",
+      "begin_rva": "0x24df9f0",
+      "end_rva_exclusive": "0x24dfb50",
+      "bytes": 352,
+      "raw_hex_path": "24DF9F0.hex",
+      "raw_sha256": "7209ed9b6aa32974bc9f2065748c6749ced0ca63de504abf0a780572f03b6f04",
+      "instructions_path": "24DF9F0.instructions.json",
+      "instructions_sha256": "bb8104766df6a778afa9320f555b785866244b1b055863f741e6ce24c689537e",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "28CC150",
+      "begin_rva": "0x28cc150",
+      "end_rva_exclusive": "0x28cc458",
+      "bytes": 776,
+      "raw_hex_path": "28CC150.hex",
+      "raw_sha256": "9788e5b09c6ad793007bb1c07355086a404aa44a88b4320d6c5b2ff6d964ef57",
+      "instructions_path": "28CC150.instructions.json",
+      "instructions_sha256": "80ff84726d83b29f735835d8d80715e49b3ad6d4302faedfefd062c70d72323e",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "24E0C50",
+      "begin_rva": "0x24e0c50",
+      "end_rva_exclusive": "0x24e0d0f",
+      "bytes": 191,
+      "raw_hex_path": "24E0C50.hex",
+      "raw_sha256": "4d2045d8b16f2fd4dd21775a55b75b387f1d1a04bee1a96d1c819655068327df",
+      "instructions_path": "24E0C50.instructions.json",
+      "instructions_sha256": "08b4e91ca0c8a6ac5612e21fa9fa57cc3b5f091f1317104713dcc1658213c455",
+      "ordinary_body_closed": true
+    },
+    {
+      "id": "28B2710",
+      "begin_rva": "0x28b2710",
+      "end_rva_exclusive": "0x28b2800",
+      "bytes": 240,
+      "raw_hex_path": "28B2710.hex",
+      "raw_sha256": "4ae3d999d8ad9ebf7dd272bf033f69f9de8cc14f0717a0513b674ef398bf8fd3",
+      "instructions_path": "28B2710.instructions.json",
+      "instructions_sha256": "dcbd9fd57d5a299e84dbcea5184849cb5a06324d2c73dd275adfa85e85588161",
+      "ordinary_body_closed": true
+    }
+  ],
+  "instruction_contracts": [
+    {
+      "id": "character_link",
+      "family": "2633ED0",
+      "rva": "0x2633ed6",
+      "bytes": "898148010000",
+      "meaning": "ArRg148=Character18"
+    },
+    {
+      "id": "character_backlink",
+      "family": "2633ED0",
+      "rva": "0x2633eeb",
+      "bytes": "8981f8000000",
+      "meaning": "extensionF8=ArRg10"
+    },
+    {
+      "id": "character_location_tail",
+      "family": "2633ED0",
+      "rva": "0x2633fbe",
+      "bytes": "e94de72700",
+      "meaning": "tail28B2710; no added DATA store"
+    },
+    {
+      "id": "split_new_army",
+      "family": "296C2F0",
+      "rva": "0x296c364",
+      "bytes": "e857f3ffff",
+      "meaning": "actual CALL296B6C0"
+    },
+    {
+      "id": "split_classify",
+      "family": "296C2F0",
+      "rva": "0x296c6aa",
+      "bytes": "e891ebffff",
+      "meaning": "actual CALL296B240"
+    },
+    {
+      "id": "split_detach_1",
+      "family": "296C2F0",
+      "rva": "0x296c927",
+      "bytes": "e8e443b7ff",
+      "meaning": "actual CALL24E0D10"
+    },
+    {
+      "id": "split_attach_1",
+      "family": "296C2F0",
+      "rva": "0x296c936",
+      "bytes": "e81543b7ff",
+      "meaning": "actual CALL24E0C50"
+    },
+    {
+      "id": "split_detach_2",
+      "family": "296C2F0",
+      "rva": "0x296cad2",
+      "bytes": "e83942b7ff",
+      "meaning": "actual CALL24E0D10"
+    },
+    {
+      "id": "split_attach_2",
+      "family": "296C2F0",
+      "rva": "0x296cae5",
+      "bytes": "e86641b7ff",
+      "meaning": "actual CALL24E0C50"
+    },
+    {
+      "id": "split_detach_3",
+      "family": "296C2F0",
+      "rva": "0x296cc5f",
+      "bytes": "e8ac40b7ff",
+      "meaning": "actual CALL24E0D10"
+    },
+    {
+      "id": "split_attach_3",
+      "family": "296C2F0",
+      "rva": "0x296cc72",
+      "bytes": "e8d93fb7ff",
+      "meaning": "actual CALL24E0C50"
+    },
+    {
+      "id": "split_commander_cleanup",
+      "family": "296C2F0",
+      "rva": "0x296cd0a",
+      "bytes": "e851f7f5ff",
+      "meaning": "actual CALL28CC460"
+    },
+    {
+      "id": "split_commander_assignment",
+      "family": "296C2F0",
+      "rva": "0x296cd14",
+      "bytes": "e8d72cb7ff",
+      "meaning": "actual CALL24DF9F0"
+    },
+    {
+      "id": "detach_count",
+      "family": "24E0D10",
+      "rva": "0x24e0d81",
+      "bytes": "ff4e44",
+      "meaning": "decrement CArmy44"
+    },
+    {
+      "id": "detach_army_backlink",
+      "family": "24E0D10",
+      "rva": "0x24e0dca",
+      "bytes": "c78040010000ffffffff",
+      "meaning": "ArRg140=-1"
+    },
+    {
+      "id": "attach_army_backlink",
+      "family": "24E0C50",
+      "rva": "0x24e0cf4",
+      "bytes": "898740010000",
+      "meaning": "ArRg140=CArmy10"
+    },
+    {
+      "id": "new_army_unit",
+      "family": "2A96E80",
+      "rva": "0x2a970dd",
+      "bytes": "899724010000",
+      "meaning": "CArmy124=CUnit10"
+    },
+    {
+      "id": "new_unit_army",
+      "family": "2A96E80",
+      "rva": "0x2a97117",
+      "bytes": "898178010000",
+      "meaning": "CUnit178=CArmy10"
+    },
+    {
+      "id": "ctor_zero_register",
+      "family": "2632CB0",
+      "rva": "0x2632cde",
+      "bytes": "33d2",
+      "meaning": "EDX=0"
+    },
+    {
+      "id": "ctor_DATA_pointer",
+      "family": "2632CB0",
+      "rva": "0x2632ce0",
+      "bytes": "48895120",
+      "meaning": "DATA pointer20=0"
+    },
+    {
+      "id": "ctor_DATA_capacity_count",
+      "family": "2632CB0",
+      "rva": "0x2632ce4",
+      "bytes": "48895128",
+      "meaning": "QWORD28 zero clears capacity28 and count2C"
+    },
+    {
+      "id": "ctor_cached_pair",
+      "family": "2632CB0",
+      "rva": "0x2632cf3",
+      "bytes": "48895138",
+      "meaning": "cached current38/maximum3C begin at0"
+    },
+    {
+      "id": "ctor_unlinked_character",
+      "family": "2632CB0",
+      "rva": "0x2632d6d",
+      "bytes": "c78148010000ffffffff",
+      "meaning": "Character148=-1"
+    }
+  ],
+  "runtime_business_credit": null,
+  "scope": "ordinary control-flow bodies; indirect allocators, registry resource callbacks and unrelated callees not expanded",
+  "unexpanded_actual_targets": [
+    "2A97180 Character-related ArRg disposal tail",
+    "24DE6D0 CArmy constructor",
+    "2AD6790 CUnit factory",
+    "B02D10 generic ID-vector append",
+    "28B2710 direct regional helper callees"
+  ],
+  "source_acquisition_summary": {
+    "a04_new_source_bytes": 6502,
+    "a04_new_metadata_bytes": 472,
+    "reused_prefix_bytes": 128,
+    "no_EXE_game_SDK_desktop_execution": true,
+    "no_whole_EXE_hash": true
+  }
+}

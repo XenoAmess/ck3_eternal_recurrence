@@ -1,6 +1,10 @@
 #include "xar_bridge/ck3_12003_scoped_ordered_refill_core.hpp"
 #include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12004_regiment_refill_switch_readonly.hpp"
+#if defined(_MSC_VER)
+#include <windows.h>
+#endif
 #include <algorithm>
 #include <cstring>
 #include <utility>
@@ -20,6 +24,15 @@ void *Resolve(void **slot, std::int32_t id, std::size_t id_offset = 0x10) noexce
   return object && Load<std::int32_t>(object, id_offset) == id ? object : nullptr;
 }
 void *Fallback(void **slot) noexcept { return slot ? *slot : nullptr; }
+bool ReadRefillSourceBytes(void *,std::uintptr_t address,void *out,std::size_t size) noexcept {
+  if(!address)return false;
+#if defined(_MSC_VER)
+  __try {std::memcpy(out,reinterpret_cast<const void *>(address),size);return true;}
+  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+#else
+  std::memcpy(out,reinterpret_cast<const void *>(address),size);return true;
+#endif
+}
 bool List(const void *manager, std::size_t offset, const void *&ids, std::int32_t &count) noexcept {
   ids = Load<const void *>(manager, offset);
   const auto capacity = Load<std::int32_t>(manager, offset + 8);
@@ -42,6 +55,10 @@ game::ArmyOrderedRefillChunkV1 Chunk(const ck3_12002::ArmyBindings &b, const voi
   if (!owner) owner = Fallback(n.persistent_fallback_slot);
   if (owner) {
     r.owner_resolved_full_id = Load<std::int32_t>(owner, 0x10);
+    if(n.refill_switch_image_base_12004)
+      r.refill_permission_switch_v1=ck3_12004::ReadRegimentRefillPermissionSwitch12004(
+        {n.refill_switch_image_base_12004,nullptr,&ReadRefillSourceBytes},
+        reinterpret_cast<std::uintptr_t>(owner),*r.owner_resolved_full_id);
     r.owner_guard_138_raw = Load<std::int32_t>(owner, 0x138);
     void *definition = Load<void *>(owner, 0x118);
     if (definition) r.owner_definition_magic_38_raw = Load<std::uint32_t>(definition, 0x38);

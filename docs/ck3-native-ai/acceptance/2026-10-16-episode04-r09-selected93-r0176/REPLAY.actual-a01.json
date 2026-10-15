@@ -1,0 +1,77 @@
+{
+  "schema": "episode04.r0176.selected93.portable-replay.v1",
+  "status": "PASS",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T19:12:38.261905+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0176",
+  "raw_archive_integrity_members": 90,
+  "full_raw3_archived": true,
+  "full_raw3_integrity_verified": true,
+  "semantic_scope": "owner frozen literal selected93/role projection only; no fullraw-to-projection reconstruction",
+  "owner_reader": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_r09_selected93_actual_12004.py",
+    "bytes": 8734,
+    "sha256": "21e81834304f2b68f18e47a7ab87d4840c371f3104bc50266f018a7b94f676f5",
+    "CRLF_present": false
+  },
+  "owner_projection": {
+    "path": "docs/ck3-native-ai/evidence/episode04-r09-selected93-12004/actual-literal-projection.json",
+    "bytes": 197778,
+    "sha256": "94210aa4ce755efc53bd2de86193426a7b31115f44d9934a8ec8324bfb8f1256",
+    "CRLF_present": false
+  },
+  "owner_result": {
+    "accepted": true,
+    "read_only": true,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_army_id": 93,
+    "fresh_sibling_army_id": 162,
+    "fresh_sibling_native_carmy_id": 155,
+    "physical_current_max_before_split_after_split_after_merge": [
+      [
+        250,
+        250
+      ],
+      [
+        250,
+        250
+      ],
+      [
+        250,
+        250
+      ]
+    ],
+    "all_available_physical_DATA_and_occurrences_conserved": true,
+    "strict_unrelated_freeze_pass": false,
+    "preserved_strict_failure_required": true,
+    "exact_empty_role_removed": {
+      "army_id": 18,
+      "army_regiment_id": 59,
+      "character_id": 34232
+    },
+    "actual_merge_survivor_commander_id": 34232,
+    "new_empty_Character_1_1_at_merge": [],
+    "all_roster_strengths_qualified": false,
+    "excluded_unavailable_army_ids": [
+      16777321
+    ],
+    "actual_source_PC_execution_observed": false,
+    "birth_producer_observed": false,
+    "actual_physical_refill": null,
+    "native_Knight_membership": null,
+    "dynamic_video_qualification": false,
+    "R09_full_card_closed": false
+  },
+  "all_roster_strengths_qualified": false,
+  "R09_full_card_closed": false,
+  "original_legacy_strict_failure_preserved": true,
+  "new_source_or_role_analysis_performed": false,
+  "historical_absolute_paths_followed": 0,
+  "native_build_or_EXE_operations": 0,
+  "SDK_game_desktop_calls": 0,
+  "video_save_DLL_body_reads_or_hashes": 0,
+  "dynamic_video_qualification": false,
+  "continuous_clean": false,
+  "human_approval": false,
+  "new_live_evidence_by_replay": false
+}

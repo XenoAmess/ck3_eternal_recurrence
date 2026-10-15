@@ -1,4 +1,6 @@
 #pragma once
+
+#include "xar_bridge/ck3_12004_county_entry_multiplier_floor_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 
 #include "xar_bridge/game_contract.hpp"
@@ -237,6 +239,7 @@ struct ArmyBindings {
   std::string_view regiment_character_role_executable_sha256{};
   void **regiment_character_role_storage_slot = nullptr;
   void **regiment_character_role_fallback_slot = nullptr;
+  ck3_12004::CountyEntryMultiplierFloorBindings12004 county_entry_multiplier_floor_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

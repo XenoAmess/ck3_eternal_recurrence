@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit the project source-card generator and regenerate. -->
+<title>预算、请求、写回，逐层分开</title>
+<desc>源码机制解释卡；假设数字不代表实机结果。</desc>
+<metadata>{&quot;actual_game_values&quot;: null, &quot;actual_shot&quot;: null, &quot;card_id&quot;: &quot;D06&quot;, &quot;paragraph_ids&quot;: [&quot;C03-09&quot;, &quot;C03-12&quot;], &quot;proof_layer&quot;: &quot;source-explanation / explicit hypothetical example&quot;, &quot;source_ids&quot;: [&quot;24E32C0&quot;, &quot;2A957E0&quot;, &quot;2634190&quot;, &quot;2657E80&quot;], &quot;title&quot;: &quot;预算、请求、写回，逐层分开&quot;}</metadata>
+<rect x="0" y="0" width="2560" height="1440" fill="#211813" stroke="none" stroke-width="2"/>
+<rect x="50" y="42" width="2460" height="1074" fill="#211813" stroke="#CBA56A" stroke-width="3"/>
+<polyline points="78,120 2482,120" fill="none" stroke="#61503C" stroke-width="2"/>
+<text x="112" y="216" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="69" font-weight="700" fill="#F0E5CF" textLength="897" lengthAdjust="spacingAndGlyphs">预算、请求、写回，逐层分开</text>
+<text x="2244.5" y="197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" fill="#CBA56A" textLength="76" lengthAdjust="spacingAndGlyphs">D06</text>
+<text x="120" y="277" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" fill="#CBA56A" textLength="506" lengthAdjust="spacingAndGlyphs">假设算例  ·  假设有效供给分量5%</text>
+<text x="120" y="374" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="54" font-weight="700" fill="#F0E5CF" textLength="576" lengthAdjust="spacingAndGlyphs">19名算0；20名才算出1</text>
+<rect x="112" y="420" width="1120" height="145" fill="#35291F" stroke="#9AAEAB" stroke-width="2"/>
+<rect x="1328" y="420" width="1120" height="145" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="145" y="502" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="55" font-weight="700" fill="#9AAEAB" textLength="458" lengthAdjust="spacingAndGlyphs">19 × 5% → 预算0</text>
+<text x="1360" y="502" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="55" font-weight="700" fill="#CBA56A" textLength="458" lengthAdjust="spacingAndGlyphs">20 × 5% → 预算1</text>
+<rect x="112" y="640" width="704" height="220" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="136" y="710" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="270" lengthAdjust="spacingAndGlyphs">整军整数预算</text>
+<text x="136" y="799" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="288" lengthAdjust="spacingAndGlyphs">先按合格人数计算</text>
+<rect x="928" y="640" width="704" height="220" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="952" y="710" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="270" lengthAdjust="spacingAndGlyphs">兵团整数请求</text>
+<text x="952" y="799" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="288" lengthAdjust="spacingAndGlyphs">按顺序、分母分配</text>
+<rect x="1744" y="640" width="704" height="220" fill="#35291F" stroke="#CBA56A" stroke-width="2"/>
+<text x="1768" y="710" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="45" font-weight="700" fill="#CBA56A" textLength="270" lengthAdjust="spacingAndGlyphs">实际兵槽写回</text>
+<text x="1768" y="799" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="36" font-weight="400" fill="#F0E5CF" textLength="279" lengthAdjust="spacingAndGlyphs">cap / 取整 / 后态</text>
+<polyline points="828,745 916,745" fill="none" stroke="#CBA56A" stroke-width="5"/>
+<polygon points="916,745 900.034,753.312 900.034,736.688" fill="#CBA56A"/>
+<polyline points="1644,745 1732,745" fill="none" stroke="#CBA56A" stroke-width="5"/>
+<polygon points="1732,745 1716.034,753.312 1716.034,736.688" fill="#CBA56A"/>
+<text x="114" y="997" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="400" fill="#CBA56A" textLength="926" lengthAdjust="spacingAndGlyphs">段号：C03-09 / C03-12   ·   source：24E32C0 / 2A957E0 / 2634190 / 2657E80</text>
+<text x="114" y="1049" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="400" fill="#BBA98D" textLength="598" lengthAdjust="spacingAndGlyphs">没有事件不代表整窗零损失；物理别名只核算一次。</text>
+</svg>

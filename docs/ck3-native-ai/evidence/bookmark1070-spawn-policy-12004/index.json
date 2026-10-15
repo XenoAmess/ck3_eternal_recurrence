@@ -1,0 +1,180 @@
+{
+  "schema": "xar.ck3.bookmark1070-authored-spawn-policy.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T19:09:32.222160+00:00",
+  "ck3_build": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "source_identity": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\bookmark_events.txt",
+    "bytes": 50531,
+    "sha256": "5a5ce08980d8c4fda1dcf40ec26e12d8973c01286f4da42a6d939776cfd50e03"
+  },
+  "build_evidence": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\prepared-a01\\prepared.json",
+    "bytes": 11569,
+    "sha256": "262215d018fb0b2fa2e103c694cfc35bb1c5be509027078ce82330a6cc119c7a"
+  },
+  "game_executable_read": false,
+  "definition": "bookmark.1070",
+  "option": "bookmark.1070.a",
+  "authored_native_option_index": 0,
+  "real_spawn_locations": [
+    {
+      "ordinal": 1,
+      "lines": [
+        1259,
+        1275
+      ],
+      "sha256_utf8_without_bom": "28491d6115d43591de0a1570bdd0075d917902afe66ea39b20d749c818c0298f"
+    },
+    {
+      "ordinal": 2,
+      "lines": [
+        1277,
+        1293
+      ],
+      "sha256_utf8_without_bom": "28491d6115d43591de0a1570bdd0075d917902afe66ea39b20d749c818c0298f"
+    },
+    {
+      "ordinal": 3,
+      "lines": [
+        1295,
+        1311
+      ],
+      "sha256_utf8_without_bom": "28491d6115d43591de0a1570bdd0075d917902afe66ea39b20d749c818c0298f"
+    }
+  ],
+  "all_three_bodies_equal_after_whitespace_normalization": true,
+  "real_spawn_count": 3,
+  "source_defined_each_total": 250,
+  "source_defined_group_total": 750,
+  "fields": {
+    "levies": {
+      "explicit": 125
+    },
+    "men_at_arms": {
+      "explicit": [
+        {
+          "type": "bowmen",
+          "men": 50
+        },
+        {
+          "type": "light_horsemen",
+          "men": 50
+        },
+        {
+          "type": "conrois",
+          "men": 25
+        }
+      ]
+    },
+    "location": {
+      "explicit": "root.capital_province",
+      "interpretation": "Spawn-time province; not current army location or persistent regiment home provenance."
+    },
+    "name": {
+      "explicit": "norman_highwaymen"
+    },
+    "can_reinforce": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4",
+      "runtime_mapping": "not_closed"
+    },
+    "uses_supply": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4",
+      "runtime_mapping": "not_closed"
+    },
+    "inheritable": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4",
+      "runtime_mapping": "not_closed"
+    },
+    "commander": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4",
+      "runtime_mapping": "not_closed"
+    },
+    "origin": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4",
+      "runtime_mapping": "not_closed"
+    },
+    "army": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4"
+    },
+    "war": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4"
+    },
+    "war_keep_on_attacker_victory": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4"
+    },
+    "maintenance_multiplier": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4"
+    },
+    "maintenance_scaling_factor": {
+      "explicit": null,
+      "default": "unknown_exact_1_20_0_4"
+    }
+  },
+  "tooltip_only_spawn": {
+    "lines": [
+      1251,
+      1257
+    ],
+    "levies": 750,
+    "actual_execution_credit": false
+  },
+  "scripted_default_documentation": {
+    "status": "NOTHELD_EXACT_BUILD",
+    "bounded_search": "Current prepared installation game/documentation absent; existing specific event/war docs do not bind omitted defaults; finite named repository search ended without current .4 default documentation. Historical web examples were discovery only and are not used as source evidence.",
+    "not_replaced_by": "Missing script fields, old build docs, current native guard value, or observed nonreplenishment"
+  },
+  "runtime_provenance": {
+    "run": "R0176",
+    "reported_origin": "R0174 day15 actual A; Root observation, not new inspection of R0174 action receipt",
+    "current_armies": [
+      93,
+      94,
+      95
+    ],
+    "group_binding": "Root identifies this as the selected A event army cohort; current 3x250 shape agrees with authored A. No per-spawn execution node capture in this package.",
+    "ordinal_binding": "unknown: cannot bind Army93/94/95 individually to identical authored spawn ordinal1/2/3 by numeric order",
+    "current_refill_evidence": [
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-refill-a02\\ACTUAL-QUERY-PROJECTION.json",
+        "bytes": 19425,
+        "sha256": "0c6e277b34e32621ed2d9882a2f5805075609385d9634b42ba2b780da8de1019"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-refill-a02\\ACTUAL-CONSUMER-RESULT.json",
+        "bytes": 5785,
+        "sha256": "d9c9584caf5370627386035c598f61ba0a5b714885d7afad19cbb64df5e3cf47"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\r09-split-merge-relay-a01\\r09-selected93-a01\\baseline.actual.json",
+        "bytes": 151259,
+        "sha256": "8eb6d0c2f7d788b213ec556ace4cb4a87bcfdcc3eeab429df51b631af8f091c9"
+      }
+    ],
+    "observed_native_facts": "Army93 four physical DATA rows: guard138=1, native CanReplenish=false, chunk CanReplenish=false, observed prepared148=0; see named projection.",
+    "unclosed_mapping": "No producer writer/enum naming closure; guard138=1 is not renamed can_reinforce=no, uses_supply, special troop flag or another script flag. prepared148 is a later observation, not producer intent.",
+    "split_merge_boundary": "Root reports one-way split/merge preserved physical250; moving/splitting the same soldiers does not itself demonstrate changing refill eligibility."
+  },
+  "reused_registry": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_norman_sicily1070_12003.py",
+    "bytes": 10622,
+    "sha256": "2cee3c9bb6c9a427f2cc7653e8998893091804e032f29f853014eef91208397c"
+  },
+  "previous_review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\event-1070-offline-a01\\CLOSURE.actual-a01.json",
+    "bytes": 6796,
+    "sha256": "c94cd83e0a8313ce36cb32d47b170ba80efbc345559c106a9d25923fa1cf3c07"
+  },
+  "scope": "Source fields/default evidence and linkage only; no event policy changes or replay of old event-strategy tests.",
+  "deadline_utc": "2026-10-16T07:45:01.597Z"
+}
