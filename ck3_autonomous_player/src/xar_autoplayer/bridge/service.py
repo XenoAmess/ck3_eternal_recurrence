@@ -2056,7 +2056,13 @@ class GameplayBridgeService:
                     else None
                 ),
             }
-            if use_internal_view:
+            if window_priority is not None:
+                # The window-priority branch returns before these domain
+                # consumers run. Do not detach their unused snapshots/history.
+                for key in tuple(planned):
+                    if key.startswith("_private_") and key != "_private_window_priority_v1":
+                        planned.pop(key)
+            elif use_internal_view:
                 # These consumers only read the captured row/result mappings.
                 # Keep their full history outside the helper's deepcopy of
                 # the selected plan. Public results are detached after all
