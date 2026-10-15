@@ -436,7 +436,8 @@ bindings4::TenetSourcesBindings Sources(DraftBacking &d) {
 
 int main(int argc, char **argv) {
   try {
-    Assert(argc == 2, "output directory argument");
+    Assert(argc == 2 || (argc == 3 && std::string_view(argv[2]) == "--expanded-slots"),
+        "output directory and optional expanded-slot scenario");
     const std::filesystem::path directory(argv[1]);
     std::filesystem::create_directories(directory);
     DraftBacking memory;
@@ -447,6 +448,57 @@ int main(int argc, char **argv) {
     Assert(adapter && adapter->enabled(), "actual .4 core adapter is enabled");
     game::Snapshot frame{};
     Assert(game::ReadCk3_12002TimelineCoreSnapshot(*adapter, frame), "actual .4 current owner core frame");
+    if (argc == 3) {
+      // A real mod with 100 tenets exposed the need to qualify collection scale.
+      // These remain synthetic native records; no product key/source is copied.
+      Bytes<0x48 * 128> selected{}, popup{};
+      Bytes<0x70 * 100> tenet_slots{};
+      for (std::size_t index = 0; index < 128; ++index) {
+        Put(selected, index * 0x48 + 0x28, memory.base.doctrine_a.data());
+        Put(popup, index * 0x48 + 0x28, memory.base.doctrine_a.data());
+      }
+      for (std::size_t index = 0; index < 100; ++index) {
+        Put(tenet_slots, index * 0x70 + 0x20, static_cast<std::uint32_t>(index));
+        Put(tenet_slots, index * 0x70 + 0x28,
+            index == 0 ? memory.base.tenet_a.data() : memory.native_default.data());
+      }
+      DraftBacking::RawArray(memory.base.window, 0x790, selected.data(), 128);
+      DraftBacking::RawArray(memory.base.window, 0x8A8, popup.data(), 128);
+      DraftBacking::RawArray(memory.base.window, 0x778, tenet_slots.data(), 100);
+      old::PlayerReligionDraftDoctrineChoicesMailboxContext12002 full_query{};
+      full_query.bindings = Choices(memory);
+      WholeWire(memory.base, *adapter, frame, full_query,
+          &old::RunPlayerReligionDraftDoctrineChoicesMailbox12002, directory,
+          "expanded-doctrine-choices.json", "ck3_12004_current_draft_full_doctrine_choices_v1");
+      Assert(full_query.observation.available && full_query.observation.slots.size() == 128 &&
+          full_query.observation.slots.back().slot_index == 127 &&
+          full_query.observation.slots.back().selected_doctrine_key == "doctrine_a",
+          "all 128 doctrine slots and their native last ordinal survive");
+      old::PlayerReligionDraftGroupsMailboxContext12002 group_query{};
+      group_query.bindings = Choices(memory);
+      WholeWire(memory.base, *adapter, frame, group_query,
+          &old::RunPlayerReligionDraftGroupsMailbox12002, directory,
+          "expanded-groups.json", "ck3_12004_current_draft_group_model_v1");
+      Assert(group_query.observation.available &&
+          group_query.observation.selected_slots.size() == 128 &&
+          group_query.observation.selected_slots.back().selected_array_index == 127 &&
+          group_query.observation.current_doctrine_cache_count == 128,
+          "128 selected groups and 128 materialized popup rows remain complete");
+      old::PlayerReligionDraftTenetChoicesMailboxContext12002 tenet_query{};
+      tenet_query.bindings = Sources(memory);
+      WholeWire(memory.base, *adapter, frame, tenet_query,
+          &old::RunPlayerReligionDraftTenetChoicesMailbox12002, directory,
+          "expanded-tenet-choices.json", "ck3_12004_current_draft_tenet_sources_v1");
+      Assert(tenet_query.observation.available && tenet_query.observation.slots.size() == 100 &&
+          tenet_query.observation.slots.front().slot_index == 0 &&
+          tenet_query.observation.slots.front().selected_tenet_key == "tenet_a" &&
+          tenet_query.observation.slots.back().slot_index == 99 &&
+          tenet_query.observation.slots.back().selected_tenet_key.empty(),
+          "all 100 tenet slots retain ordered indexes and default placeholders");
+      std::cout << "PASS expanded_doctrine_slots=128 expanded_popup_rows=128 expanded_tenet_slots=100"
+          << " actual_whole_mailbox=true original_cases_run=0 live=false\n";
+      return 0;
+    }
     const auto bound_choices = bindings4::BindCurrentDraftChoices12004(Fixture::image_base, actual::kExecutableSha256);
     const auto bound_sources = bindings4::BindCurrentDraftTenetSources12004(Fixture::image_base, actual::kExecutableSha256);
     const auto bound_terms = bindings4::BindDraftCreationTermsImage12004(Fixture::image_base, actual::kExecutableSha256);
