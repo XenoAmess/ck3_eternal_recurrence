@@ -13,7 +13,7 @@ authors = [{ name = "XenoAmess" }]
 dependencies = ["comtypes>=1.4,<2; sys_platform == 'win32'"]
 
 [project.optional-dependencies]
-mcp = ["mcp==2.0.0"]
+mcp = ["mcp==2.2.0"]
 test = []
 
 [project.scripts]
