@@ -1,4 +1,4 @@
-"""Prepare a vanilla .3 profile; explicitly run the existing native supervisor.
+"""Prepare a vanilla exact-build profile; explicitly run the existing native supervisor.
 
 Preparation never creates a driver, pipe, SDK session, process or desktop input.
 The root operator owns every live request; this entry supplies no autoplay policy.
@@ -18,10 +18,18 @@ import threading
 import uuid
 
 ROOT = Path(__file__).resolve().parents[4]
-sys.path[:0] = [str(ROOT / "ck3_autonomous_player/src"), str(ROOT / "tools"),
+sys.path[:0] = [str(ROOT), str(ROOT / "ck3_autonomous_player/src"), str(ROOT / "tools"),
                 str(ROOT / "promo/ck3_native_war_ai/integration")]
+from tools.ck3_live_run_id import current_machine_id
+
 EXE_SHA = "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
 SCHEMA = "xar.war-episode04.bootstrap.v1"
+REVIEWED_GAME_TARGETS = {
+    "1.20.0.3": {"version": "1.20.0.3", "steam_build": 25652598,
+                 "exe_sha256": EXE_SHA},
+    "1.20.0.4": {"version": "1.20.0.4", "steam_build": 25734779,
+                 "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"},
+}
 
 
 def now() -> str:
@@ -67,13 +75,116 @@ def tool_body(result: object) -> object:
     return None
 
 
+
+def game_target(version: str) -> dict:
+    require(version in REVIEWED_GAME_TARGETS, "unreviewed Episode04 game target")
+    return dict(REVIEWED_GAME_TARGETS[version])
+
+
+def prepared_game_target(body: dict) -> dict:
+    # Old .3 prepared bytes remain valid without introducing new fields into them.
+    declared = body.get("target_build")
+    if declared is None:
+        return game_target("1.20.0.3")
+    require(type(declared) is dict, "malformed target build")
+    expected = game_target(declared.get("version"))
+    require(declared == expected, "prepared target version/build/hash changed")
+    return expected
+
+
+def require_prepared_machine(body: dict, target: dict) -> None:
+    # Missing historical .3 identity remains unknown; never infer or rewrite it.
+    if target["version"] == "1.20.0.4":
+        require(body.get("machine_id") == current_machine_id(),
+                "exact .4 preparation belongs to another or unknown machine")
+
+
+def steam_version_core():
+    # Pure standard-library core; no GUI/registry/discovery operation on import.
+    from importlib.util import module_from_spec, spec_from_file_location
+    path = ROOT / "skills/steam-ck3-versions/scripts/steam_versions_core.py"
+    spec = spec_from_file_location("xar_e04_steam_versions_core", path)
+    require(spec is not None and spec.loader is not None, "Steam version core missing")
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def validate_installed_observation(observation: dict, game_dir: Path,
+                                   target: dict) -> dict:
+    core = steam_version_core()
+    require(Path(observation["game_dir"]).resolve() == game_dir.resolve(),
+            "Steam manifest belongs to another game directory")
+    # Runtime intent pins version/build/hash. Branch is preserved as observed;
+    # the Steam operation separately proves the user's selected branch.
+    problems = core.completion_problems(observation, observation["branch"],
+        expected_version=target["version"], expected_build=target["steam_build"])
+    require(not problems, "Steam target not completely installed: " + ",".join(problems))
+    require(Path(observation["executable"]["path"]).resolve() ==
+            (game_dir / "binaries/ck3.exe").resolve(), "Steam executable path differs")
+    return observation
+
+
+def installed_target_observation(game_dir: Path, target: dict) -> dict:
+    core = steam_version_core()
+    manifest = game_dir.resolve().parents[1] / "appmanifest_1158310.acf"
+    # Existing identity() already hashes the actual EXE once. This reads only
+    # manifest/launcher bytes and executable metadata, never hashes it again.
+    observed = core.observe_installation({"manifest_path": str(manifest)}, hash_exe=False)
+    return validate_installed_observation(observed, game_dir, target)
+
+
+def require_capture_context(prepared: dict, snapshot: dict, diagnostics: dict,
+                            arguments: dict) -> dict | None:
+    if arguments.get("operation") != "start":
+        return None
+    expected_actor = prepared.get("expected_character_id")
+    if expected_actor is not None:
+        require(type(expected_actor) is int and expected_actor > 0,
+                "invalid expected capture actor")
+        require((snapshot.get("played_character") or {}).get("character_id") ==
+                expected_actor, "capture actor differs from prepared intent")
+    target = prepared_game_target(prepared)
+    if target["version"] == "1.20.0.3":
+        return None
+    require(expected_actor == 29829, "exact .4 Episode04 capture requires Robert actor 29829")
+    hello = diagnostics.get("hello") or {}
+    frame_diagnostics = snapshot.get("diagnostics") or {}
+    require(diagnostics.get("connected") is True and
+            hello.get("ck3_build_match") is True and
+            hello.get("game_adapter_status") == "ready" and
+            hello.get("game_adapter_id") == "ck3-1.20.0.4-msvc-x64" and
+            hello.get("expected_ck3_version") == target["version"] and
+            str(hello.get("expected_ck3_sha256", "")).lower() == target["exe_sha256"],
+            "capture native adapter does not match the prepared exact build")
+    pid, generation = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation")
+    require(type(pid) is int and pid > 0 and type(generation) is int and generation > 0,
+            "capture native PID/generation unavailable")
+    require(hello.get("pid") == pid == arguments.get("target_pid") and
+            frame_diagnostics.get("bridge_pid") == pid and
+            frame_diagnostics.get("connection_generation") == generation,
+            "capture frame/native process binding changed")
+    return {"machine_id": current_machine_id(), "target_build": target, "bridge_pid": pid,
+            "connection_generation": generation, "expected_character_id": expected_actor,
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "native_revision": snapshot.get("native_revision")}
+
+
 def load_prepared(path: Path) -> dict:
     body = json.loads(path.read_text(encoding="utf-8"))
     require(body.get("schema") == SCHEMA and body.get("launch_attempted") is False,
             "not a prepared episode03 bootstrap manifest")
     for key in ("game", "bridge_dll", "bridge_injector", "bridge_host"):
         require(identity(Path(body[key]["path"])) == body[key], f"{key} bytes changed")
-    require(body["game"]["sha256"] == EXE_SHA, "CK3 .3 executable identity changed")
+    target = prepared_game_target(body)
+    require_prepared_machine(body, target)
+    require(body["game"]["sha256"] == target["exe_sha256"], "CK3 executable identity changed")
+    if target["version"] == "1.20.0.4":
+        require(type(body.get("expected_character_id")) is int and body["expected_character_id"] == 29829,
+                "exact .4 Episode04 preparation requires Robert actor 29829")
+        # Return a current readback beside the unchanged on-disk prepared input.
+        body["runtime_installation_validation"] = installed_target_observation(
+            Path(body["game_dir"]), target)
     for row in body["profile_files"]:
         require(identity(Path(row["path"])) == row, "prepared profile bytes changed")
     require(json.loads(Path(body["profile_dir"], "dlc_load.json").read_text(encoding="utf-8"))
@@ -86,7 +197,8 @@ def load_prepared(path: Path) -> dict:
     return body
 
 
-def checkpoint_source(save, receipt_path, build_path):
+def checkpoint_source(save, receipt_path, build_path, target=None, expected_actor=None):
+    target = target or game_target("1.20.0.3")
     require((save is None) == (receipt_path is None) == (build_path is None), "Checkpoint save, actual MCP receipt and original prepared build receipt required together")
     if save is None:
         return None
@@ -108,10 +220,14 @@ def checkpoint_source(save, receipt_path, build_path):
     lifecycle = saved.get("succession_lifecycle") or {}
     require(lifecycle.get("lifecycle") == "ordinary_campaign_succession" and lifecycle.get("xar_enabled") == "xar_off" and lifecycle.get("pact_contract") == "absent_by_fresh_campaign_xar_off_contract" and lifecycle.get("source") == "pure-vanilla-enabled-mods-empty", "Checkpoint must belong to pure vanilla ordinary campaign")
     build = json.loads(build_path.read_text(encoding="utf-8-sig"))
-    require((build.get("game") or {}).get("sha256", "").lower() == EXE_SHA, "Source checkpoint build is not exact .3")
+    require((build.get("game") or {}).get("sha256", "").lower() == target["exe_sha256"],
+            "Source checkpoint build differs from the selected exact target")
+    if target["version"] == "1.20.0.4":
+        require(prepared_game_target(build) == target, "Source .4 checkpoint lacks its exact build contract")
     require(Path(saved["path"]).parent.resolve() == (Path(build["profile_dir"]) / "save games").resolve(), "Saved packet not from build receipt profile")
     actor, date = saved.get("episode_character_id"), saved.get("date_raw")
     require(type(actor) is int and actor > 0 and type(date) is int and date > 0, "Saved actor/date absent")
+    require(expected_actor is None or actor == expected_actor, "Checkpoint actor differs from capture intent")
     return {"save": actual, "receipt": identity(receipt_path), "build_receipt": identity(build_path), "actor_id": actor, "date_raw": date, "source_lifecycle": lifecycle, "load_save_name": "episode04_frozen_start", "driver_history_copied": False}
 
 
@@ -134,8 +250,14 @@ def prepare(args: argparse.Namespace) -> dict:
         ORDINARY_CAMPAIGN_SUCCESSION, SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
         normalize_succession_lifecycle_binding_v1,
     )
+    target = game_target(args.expected_game_version)
+    require(args.expected_character_id is None or
+            (type(args.expected_character_id) is int and args.expected_character_id > 0),
+            "expected-character-id must be a positive full Character ID")
+    require(target["version"] != "1.20.0.4" or args.expected_character_id == 29829,
+            "exact .4 Episode04 preparation requires --expected-character-id 29829")
     checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt,
-                                   args.checkpoint_build_receipt)
+        args.checkpoint_build_receipt, target, args.expected_character_id)
     assets_root = args.assets_root.resolve()
     require(args.state_dir.resolve().is_relative_to(assets_root) and args.output_dir.resolve().is_relative_to(assets_root), "Fresh state and preparation output must remain inside explicit external assets root")
     require(not assets_root.is_relative_to(ROOT.resolve()), "Large process assets must stay outside source repository")
@@ -143,9 +265,11 @@ def prepare(args: argparse.Namespace) -> dict:
     ensure_state_path_safe(spec.state_dir)
     require(not spec.state_dir.exists(), "state directory already exists; use a new attempt")
     game = identity(spec.game_exe)
-    require(game["sha256"] == EXE_SHA, "installed executable is not the reviewed CK3 .3 build")
+    require(game["sha256"] == target["exe_sha256"], "installed executable is not the selected reviewed build")
     launcher = launcher_identity(spec.game_dir)
-    require(launcher["raw_version"] == "1.20.0.3", "launcher is not CK3 1.20.0.3")
+    require(launcher["raw_version"] == target["version"], "launcher differs from the selected game version")
+    installed = (installed_target_observation(spec.game_dir, target)
+                 if target["version"] == "1.20.0.4" else None)
     artifacts = {key: identity(getattr(args, key)) for key in
                  ("bridge_dll", "bridge_injector", "bridge_host")}
     expected_names = {"bridge_dll": "xar_ck3_bridge.dll", "bridge_injector":
@@ -164,7 +288,8 @@ def prepare(args: argparse.Namespace) -> dict:
         'last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n', encoding="utf-8")
     files = [identity(spec.profile_dir / p) for p in
              ("dlc_load.json", "pdx_settings.txt", "player/game_rules/presets.txt", "tutorial.txt")]
-    environment = {"schema": "xar.war-episode04.vanilla-environment.v1", "game": game,
+    environment = {"schema": "xar.war-episode04.vanilla-environment.v1",
+                   "machine_id": current_machine_id(), "observed_at": now(), "game": game,
                    "launcher": launcher, "enabled_mods": [], "profile_files": files,
                    "source": "pure-vanilla-enabled-mods-empty", "live_verified": False}
     environment_sha = hashlib.sha256(json.dumps(environment, sort_keys=True).encode("utf-8")).hexdigest()
@@ -182,6 +307,12 @@ def prepare(args: argparse.Namespace) -> dict:
              "environment_sha256": environment_sha, "selection": "root selects a normal bookmark character after actual frontend ready; selection evidence belongs to run",
             "bridge_host_role": "artifact identity only; production supervisor uses DLL and injector",
             "recording_started": False}
+    if target["version"] == "1.20.0.4":
+        body["target_build"] = target
+        body["installed_build_observation"] = installed
+    if args.expected_character_id is not None:
+        body["expected_character_id"] = args.expected_character_id
+    body["machine_id"] = current_machine_id()
     body["source_repo"] = str(ROOT)
     body["assets_root"] = str(assets_root)
     body["checkpoint"] = copy_checkpoint(checkpoint, spec.profile_dir, args.output_dir) if checkpoint else None
@@ -259,8 +390,10 @@ def run_owned(args: argparse.Namespace) -> int:
         with closing(driver):
             async with Client(create_server(driver, profile_dir=body["profile_dir"])) as client:
                 tools = await client.list_tools()
-                write_new(args.run_dir / "sdk-tools.json", tools.model_dump(mode="json"))
-                write_new(args.run_dir / "sdk-ready.json", {"at": now(), "pipe_name": body["pipe_name"],
+                write_new(args.run_dir / "sdk-tools.json",
+                    {**tools.model_dump(mode="json"), "machine_id": current_machine_id(), "at": now()})
+                write_new(args.run_dir / "sdk-ready.json", {"at": now(),
+                    "machine_id": current_machine_id(), "pipe_name": body["pipe_name"],
                     "runtime_identity": runtime_identity(),
                     "private_war_cash_queries": driver.allow_private_war_cash_query,
                     "native_flag_required": "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=ON",
@@ -274,7 +407,8 @@ def run_owned(args: argparse.Namespace) -> int:
                             continue
                         keeper.require_live()
                         request = json.loads(path.read_text(encoding="utf-8"))
-                        row = {"at": now(), "request": request, "request_identity": identity(path)}
+                        row = {"at": now(), "machine_id": current_machine_id(),
+                               "request": request, "request_identity": identity(path)}
                         try:
                             require(set(request) == {"request_id", "tool", "arguments"}, "request fields changed")
                             require(request["request_id"] == path.stem, "request_id does not match immutable file")
@@ -285,7 +419,12 @@ def run_owned(args: argparse.Namespace) -> int:
                             elif request["tool"] == "gameplay_recorder":
                                 snapshot_result = await client.call_tool("ck3_take_snapshot", {})
                                 require(not snapshot_result.is_error, "Recorder actual snapshot failed")
-                                row.update({"is_error": False, "body": recorder.handle(request["arguments"], tool_body(snapshot_result))})
+                                capture_snapshot = tool_body(snapshot_result)
+                                binding = require_capture_context(body, capture_snapshot,
+                                    driver.diagnostics(), request["arguments"])
+                                row.update({"is_error": False, "body": recorder.handle(request["arguments"], capture_snapshot)})
+                                if binding is not None:
+                                    row["native_build_binding"] = binding
                             elif request["tool"] == "raw_transport_snapshot":
                                 row.update({"is_error": False, "body": root_raw_transport_snapshot(
                                     driver, request["arguments"])})
@@ -339,8 +478,11 @@ def run_owned(args: argparse.Namespace) -> int:
             supervisor_error = supervisor_error or ("Recorder cleanup: " + repr(error))
         finally:
             keeper.stop()
+        session_result["machine_id"] = current_machine_id()
+        session_result["observed_at"] = now()
         write_new(args.run_dir / "session-result.json", session_result)
-        write_new(args.run_dir / "bootstrap-result.json", {"at": now(), "session": session_result,
+        write_new(args.run_dir / "bootstrap-result.json", {"at": now(),
+            "machine_id": current_machine_id(), "session": session_result,
             "sdk_error": worker["error"], "sdk_thread_exited": not thread.is_alive(),
             "supervisor_error": supervisor_error, "screen_lease": keeper.report(),
             "recorder": recorder.report(), "recording_started_automatically": False, "human_video_approval": False})
@@ -356,6 +498,10 @@ def parser() -> argparse.ArgumentParser:
         prep.add_argument("--" + key, required=True, type=Path)
     prep.add_argument("--assets-root", type=Path, required=True)
     prep.add_argument("--pipe-name", required=True)
+    prep.add_argument("--expected-game-version", choices=tuple(REVIEWED_GAME_TARGETS),
+                      default="1.20.0.3", help="Explicit exact game target; legacy default remains .3")
+    prep.add_argument("--expected-character-id", type=int,
+                      help="Expected full played Character ID at capture start; required for .4")
     prep.add_argument("--checkpoint-save", type=Path)
     prep.add_argument("--checkpoint-receipt", type=Path)
     prep.add_argument("--checkpoint-build-receipt", type=Path)
@@ -386,7 +532,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "check":
         body = load_prepared(args.prepared)
-        print(json.dumps({"inputs_match": True, "live_verified": False, "game": body["game"]}))
+        print(json.dumps({"machine_id": current_machine_id(),
+            "prepared_machine_id": body.get("machine_id", "unknown"),
+            "inputs_match": True, "live_verified": False, "game": body["game"]}))
         return 0
     if args.command == "request":
         request_id = args.request_id or uuid.uuid4().hex
@@ -399,7 +547,8 @@ def main(argv: list[str] | None = None) -> int:
         require(not target.exists(), "request already exists")
         write_new(temporary, {"request_id": request_id, "tool": args.tool, "arguments": arguments})
         temporary.rename(target)
-        print(json.dumps({"request": str(target), "response": str(args.run_dir / "responses" / target.name)}))
+        print(json.dumps({"machine_id": current_machine_id(), "at": now(),
+            "request": str(target), "response": str(args.run_dir / "responses" / target.name)}))
         return 0
     if args.default_desktop:
         from default_desktop_process import execute_on_default_desktop
@@ -409,7 +558,8 @@ def main(argv: list[str] | None = None) -> int:
         pid, code = execute_on_default_desktop([sys.executable, "-X", "utf8", str(Path(__file__).resolve()), *original],
             ROOT, args.run_dir.parent / (args.run_dir.name + ".relay.stdout.txt"),
             args.run_dir.parent / (args.run_dir.name + ".relay.stderr.txt"))
-        print(json.dumps({"default_desktop_child_pid": pid, "exit_code": code}))
+        print(json.dumps({"machine_id": current_machine_id(), "at": now(),
+            "default_desktop_child_pid": pid, "exit_code": code}))
         return code
     return run_owned(args)
 
