@@ -1,6 +1,7 @@
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/war_declared_overview_v1.hpp"
 #include "xar_bridge/war_declared_owner_tree_v1.hpp"
+#include "xar_bridge/war_declared_owner_memory_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
@@ -1081,11 +1082,25 @@ struct WarWindowReadContextV1 {
   std::string_view target_name;
 };
 
+detail::WarDeclaredOwnerTreeCacheV1 &WarWindowOwnerCacheForV1(
+    const WarDeclaredOverviewMailboxContextV1 &query,
+    const IngameUiGuiOwnerBindingV1 &binding, std::int64_t actor) {
+  // Only the already admitted application-owner thread can reach this call.
+  // The two fixed window names do not share topology cache state. Reconnection,
+  // module/owner replacement and actor replacement invalidate before any use.
+  thread_local std::array<detail::WarDeclaredOwnerTreeScopeCacheV1, 2> caches{};
+  auto &cache = caches[query.war_results ? 1 : 0];
+  const auto owner = reinterpret_cast<std::uintptr_t>(binding.owner);
+  return cache.bind(query.environment.module_base, owner, query.connection_generation, actor);
+}
+
 bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
-    void *owner, std::string_view target_name, WarDeclaredWindowObservationV1 &out) {
+    void *owner, std::string_view target_name, WarDeclaredWindowObservationV1 &out,
+    detail::WarDeclaredOwnerTreeCacheV1 &cache) {
   using Failure = detail::WarDeclaredOwnerReadFailureV1;
   void *scene_root = nullptr;
-  if (!Value(owner,kZhongguoGuiOwnerRootWidgetOffset,scene_root)) {
+  if (!detail::ReadWarDeclaredOwnerValueV1(reinterpret_cast<std::uintptr_t>(owner),
+          kZhongguoGuiOwnerRootWidgetOffset,scene_root)) {
     out.read_failure = "owner_root_unreadable";
     return false;
   }
@@ -1111,9 +1126,9 @@ bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
   read.children = [](const void *, std::uintptr_t node,
                      std::uintptr_t &address, std::int32_t &count) noexcept {
     void **children = nullptr;
-    if (!Value(reinterpret_cast<void *>(node),kZhongguoWidgetChildrenOffset,children))
+    if (!detail::ReadWarDeclaredOwnerValueV1(node,kZhongguoWidgetChildrenOffset,children))
       return Failure::child_vector_unreadable;
-    if (!Value(reinterpret_cast<void *>(node),kZhongguoWidgetChildCountOffset,count))
+    if (!detail::ReadWarDeclaredOwnerValueV1(node,kZhongguoWidgetChildCountOffset,count))
       return Failure::child_count_unreadable;
     address = reinterpret_cast<std::uintptr_t>(children);
     return Failure::none;
@@ -1124,13 +1139,14 @@ bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
     if (address > (std::numeric_limits<std::uintptr_t>::max)()-offset)
       return Failure::child_address_overflow;
     void *child = nullptr;
-    if (!Slot(address+offset,child)) return Failure::child_slot_unreadable;
+    if (!detail::ReadWarDeclaredOwnerValueV1(address,offset,child))
+      return Failure::child_slot_unreadable;
     value = reinterpret_cast<std::uintptr_t>(child);
     return Failure::none;
   };
   detail::WarDeclaredOwnerReadResultV1 scanned{};
-  if (!detail::ReadWarDeclaredOwnerTreeV1(
-          reinterpret_cast<std::uintptr_t>(scene_root),read,scanned)) {
+  if (!detail::ReadWarDeclaredOwnerTreeCachedV1(
+          reinterpret_cast<std::uintptr_t>(scene_root),read,cache,scanned)) {
     out.read_failure.assign(detail::WarDeclaredOwnerFailureNameV1(scanned.failure));
     out.read_failure += ";at=" + std::to_string(scanned.at) +
         ";queued=" + std::to_string(scanned.queued) +
@@ -1149,7 +1165,8 @@ bool FindWarDeclaredInOwnerTreeV1(const ZhongguoScoreboardAccessV1 &access,
 
 bool ReadWarDeclaredWindowV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
     const IngameUiGuiOwnerBindingV1 &binding,
-    std::string_view target_name, WarDeclaredWindowObservationV1 &out) {
+    std::string_view target_name, WarDeclaredWindowObservationV1 &out,
+    detail::WarDeclaredOwnerTreeCacheV1 &cache) {
   out = {};
   const std::string name(target_name);
   if (!CallWarDeclaredFindTopV1(env.find_top_level_widget, binding.owner,
@@ -1158,7 +1175,7 @@ bool ReadWarDeclaredWindowV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
     return false;
   }
   ZhongguoScoreboardAccessV1 access{};
-  if (!out.root) return FindWarDeclaredInOwnerTreeV1(access,binding.owner,target_name,out);
+  if (!out.root) return FindWarDeclaredInOwnerTreeV1(access,binding.owner,target_name,out,cache);
   std::string actual_name;
   void *vtable = nullptr;
   bool enabled = false;
@@ -1365,7 +1382,8 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
     out.paused = before.paused;
     const auto window_name = q->war_results ? kWarResultsWindowNameV1 :
         kWarDeclaredOverviewWindowNameV1;
-    if (!ReadWarDeclaredWindowV1(q->environment,owner_before,window_name,initial)) {
+    auto &owner_cache = WarWindowOwnerCacheForV1(*q,owner_before,before.played_character_id);
+    if (!ReadWarDeclaredWindowV1(q->environment,owner_before,window_name,initial,owner_cache)) {
       out.unavailable_reason = "war_declared_window_read_failed";
       if (!initial.read_failure.empty())
         out.unavailable_reason += ":" + initial.read_failure;
@@ -1387,7 +1405,7 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
       WarDeclaredWindowObservationV1 rechecked{};
       if (!ReadWarDeclaredSnapshotV1(*q,immediately_before) || immediately_before != before ||
           !ReadIngameUiGuiOwnerBindingV1(q->environment,owner_now) || owner_now != owner_before ||
-           !ReadWarDeclaredWindowV1(q->environment,owner_now,window_name,rechecked) ||
+           !ReadWarDeclaredWindowV1(q->environment,owner_now,window_name,rechecked,owner_cache) ||
           rechecked.root != initial.root || !rechecked.visible) {
         out.unavailable_reason = "war_declared_scope_changed_before_close";
         if (!rechecked.read_failure.empty())
@@ -1412,7 +1430,7 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
     game::Snapshot after{};
     if (!ReadIngameUiGuiOwnerBindingV1(q->environment,owner_after) ||
         owner_after != owner_before ||
-        !ReadWarDeclaredWindowV1(q->environment,owner_after,window_name,after_window) ||
+        !ReadWarDeclaredWindowV1(q->environment,owner_after,window_name,after_window,owner_cache) ||
         !ReadWarDeclaredSnapshotV1(*q,after) || after != before) {
       out.status = out.dispatch_attempted ? "verification_pending" : "unavailable";
       out.unavailable_reason = "war_declared_post_scope_unverified";

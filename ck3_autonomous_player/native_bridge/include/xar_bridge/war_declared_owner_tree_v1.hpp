@@ -151,4 +151,165 @@ inline bool ReadWarDeclaredOwnerTreeV1(
   }
 }
 
+// A cache contains topology, never cached visibility/name/type or a trusted
+// target pointer. A warm pass rereads every node and every edge from the current
+// owner root. Equal edges inherit the original complete walk's uniqueness, so
+// the per-node std::set allocation is unnecessary. A changed edge rebuilds the
+// complete walk; an unreadable edge/runtime remains unknown without retry.
+struct WarDeclaredOwnerCachedNodeV1 {
+  std::uintptr_t node = 0, children = 0;
+  std::uint32_t child_count = 0, first_child = 0;
+};
+
+struct WarDeclaredOwnerTreeCacheV1 {
+  bool complete = false;
+  std::vector<WarDeclaredOwnerCachedNodeV1> nodes;
+  void invalidate() noexcept { complete = false; }
+};
+
+struct WarDeclaredOwnerTreeScopeCacheV1 {
+  std::uintptr_t module = 0, owner = 0;
+  std::uint64_t generation = 0;
+  std::int64_t actor = -1;
+  WarDeclaredOwnerTreeCacheV1 tree;
+  WarDeclaredOwnerTreeCacheV1 &bind(std::uintptr_t next_module, std::uintptr_t next_owner,
+                                   std::uint64_t next_generation, std::int64_t next_actor) noexcept {
+    if (module != next_module || owner != next_owner || generation != next_generation || actor != next_actor) {
+      tree.invalidate();
+      tree.nodes.clear();
+      module = next_module;
+      owner = next_owner;
+      generation = next_generation;
+      actor = next_actor;
+    }
+    return tree;
+  }
+};
+
+inline bool ReadWarDeclaredOwnerTreeCachedV1(
+    std::uintptr_t root, const WarDeclaredOwnerReadCallbacksV1 &read,
+    WarDeclaredOwnerTreeCacheV1 &cache, WarDeclaredOwnerReadResultV1 &out,
+    WarDeclaredOwnerReadBudgetV1 budget = {}) noexcept {
+  using F = WarDeclaredOwnerReadFailureV1;
+  out = {};
+  const auto fail = [&](F why) noexcept {
+    cache.invalidate();
+    out.failure = why;
+    out.complete = false;
+    out.target = 0;
+    out.target_visible = false;
+    return false;
+  };
+  if (!read.runtime || !read.children || !read.child)
+    return fail(F::reader_unavailable);
+  if (!budget.widgets || budget.widgets > kWarDeclaredOwnerMaximumWidgetsV1 ||
+      !budget.edges || budget.edges > kWarDeclaredOwnerMaximumEdgesV1)
+    return fail(F::invalid_budget);
+  if (!root) return fail(F::owner_root_missing);
+
+  if (cache.complete && !cache.nodes.empty() && cache.nodes.front().node == root &&
+      cache.nodes.size() <= budget.widgets) {
+    bool topology_matches = true;
+    std::uintptr_t found = 0;
+    bool found_visible = false;
+    out.queued = cache.nodes.size();
+    for (std::size_t at = 0; at < cache.nodes.size(); ++at) {
+      out.at = at;
+      out.child_index = -1;
+      const auto &node = cache.nodes[at];
+      bool target = false, visible = false;
+      auto failure = read.runtime(read.context, node.node, target, visible);
+      if (failure != F::none) return fail(failure);
+      ++out.visited;
+      if (target) {
+        if (++out.matches != 1) return fail(F::duplicate_named_window);
+        found = node.node;
+        found_visible = visible;
+      }
+      std::uintptr_t children = 0;
+      failure = read.children(read.context, node.node, children, out.child_count);
+      if (failure != F::none) return fail(failure);
+      if (out.child_count < 0) return fail(F::negative_child_count);
+      const auto count = static_cast<std::size_t>(out.child_count);
+      if (count > budget.widgets) return fail(F::child_count_exceeds_widget_budget);
+      if (count > budget.edges - out.edges) return fail(F::edge_budget_exhausted);
+      if (count && !children) return fail(F::child_vector_missing);
+      if (children != node.children || count != node.child_count ||
+          node.first_child != out.edges + 1 ||
+          node.first_child > cache.nodes.size() ||
+          count > cache.nodes.size() - node.first_child ||
+          (count && node.first_child <= at)) {
+        topology_matches = false;
+        break;
+      }
+      out.edges += count;
+      for (std::int32_t index = 0; index < out.child_count; ++index) {
+        out.child_index = index;
+        std::uintptr_t child = 0;
+        failure = read.child(read.context, children, static_cast<std::uint32_t>(index), child);
+        if (failure != F::none) return fail(failure);
+        if (!child) return fail(F::child_slot_null);
+        if (child != cache.nodes[node.first_child + static_cast<std::size_t>(index)].node) {
+          topology_matches = false;
+          break;
+        }
+      }
+      if (!topology_matches) break;
+    }
+    if (topology_matches && out.edges + 1 == cache.nodes.size()) {
+      out.complete = true;
+      out.target = found;
+      out.target_visible = found_visible;
+      return true;
+    }
+  }
+
+  // A miss can mean a legitimate rebuild of the GUI. Capture the BFS topology
+  // during the original complete traversal, without an extra memory read.
+  cache.invalidate();
+  cache.nodes.clear();
+  struct Capture {
+    const WarDeclaredOwnerReadCallbacksV1 *read;
+    WarDeclaredOwnerTreeCacheV1 *cache;
+    std::size_t maximum, queued = 1;
+  } capture{&read, &cache, budget.widgets};
+  WarDeclaredOwnerReadCallbacksV1 recording{};
+  recording.context = &capture;
+  recording.runtime = [](const void *opaque, std::uintptr_t node,
+                         bool &target, bool &visible) noexcept {
+    const auto &c = *static_cast<const Capture *>(opaque);
+    return c.read->runtime(c.read->context, node, target, visible);
+  };
+  recording.children = [](const void *opaque, std::uintptr_t node,
+                          std::uintptr_t &address, std::int32_t &count) noexcept {
+    auto &c = *const_cast<Capture *>(static_cast<const Capture *>(opaque));
+    auto failure = c.read->children(c.read->context, node, address, count);
+    if (failure != F::none) return failure;
+    // The original walker diagnoses invalid counts/budgets. Do not allocate or
+    // derive an index from those values before it can reject them.
+    if (count < 0 || static_cast<std::size_t>(count) > c.maximum || c.queued > c.maximum)
+      return F::none;
+    try {
+      auto &nodes = c.cache->nodes;
+      if (nodes.size() == nodes.capacity()) {
+        const auto next = nodes.capacity() ? nodes.capacity() * 2 : std::size_t{256};
+        nodes.reserve(next < c.maximum ? next : c.maximum);
+      }
+      nodes.push_back({node, address, static_cast<std::uint32_t>(count),
+                       static_cast<std::uint32_t>(c.queued)});
+      c.queued += static_cast<std::size_t>(count);
+      return F::none;
+    } catch (...) { return F::storage_or_callback_failure; }
+  };
+  recording.child = [](const void *opaque, std::uintptr_t address,
+                       std::uint32_t index, std::uintptr_t &value) noexcept {
+    const auto &c = *static_cast<const Capture *>(opaque);
+    return c.read->child(c.read->context, address, index, value);
+  };
+  if (!ReadWarDeclaredOwnerTreeV1(root, recording, out, budget)) return false;
+  cache.complete = cache.nodes.size() == out.visited && capture.queued == out.queued;
+  if (!cache.complete) return fail(F::storage_or_callback_failure);
+  return true;
+}
+
 } // namespace xar::ck3_11906::detail

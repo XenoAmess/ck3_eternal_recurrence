@@ -81,6 +81,7 @@ from .readonly_war_entry_rejection import (
     suppressed_war_entry_read_steps_v1,
 )
 from . import declaration_opportunity_cooldown_v1 as declaration_cooldown
+from . import family_opportunity_cooldown_v1 as family_cooldown
 from ..vanilla_events.outcome import (
     evaluate_registered_event_material_postcondition_v1,
 )
@@ -564,6 +565,7 @@ from ..family_marriage_formal_consumer import (
     RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
     ALLIANCE_RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_ALLIANCE_RESULT_STEP,
     plan_family_marriage_private,
+    read_family_marriage_ledger,
     submit_family_marriage_private,
     query_family_marriage_result_private,
     query_family_marriage_alliance_result_private,
@@ -2659,6 +2661,23 @@ class GameplayBridgeService:
         campaign_root_result: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Use the fixed existing pair before the ordinary unpartnered route."""
+        ordinary_review = self._ordinary_family_cooldown_eligible_v1(
+            snapshot, prewar_arbitration=prewar_arbitration,
+            wartime_arbitration=wartime_arbitration)
+        def mark_ordinary_review(current: dict[str, object]) -> dict[str, object]:
+            current_plan = current.get("plan")
+            if (ordinary_review and isinstance(current_plan, dict)
+                    and current_plan.get("selected_step") == "life-advance"
+                    and isinstance(current_plan.get("current_betrothal_relationship"), dict)):
+                return {**current, "plan": {**current_plan,
+                    "_family_cooldown_ordinary_review_v1": True}}
+            return current
+        skipped = self._skip_private_family_opportunity_during_cooldown_v1(
+            planned, snapshot, prewar_arbitration=prewar_arbitration,
+            wartime_arbitration=wartime_arbitration,
+        )
+        if skipped is not None:
+            return skipped
         education_relationship = None
         if getattr(
             self.driver, "allow_private_current_first_heir_betrothal_fulfillment", False
@@ -2744,15 +2763,67 @@ class GameplayBridgeService:
                 education_relationship = current_plan.get("current_betrothal_relationship")
             if (isinstance(current_plan, dict)
                     and current_plan.get("current_betrothal_fulfillment") is True):
-                return self._plan_private_family_education_v1(
-                    current, snapshot, relationship=education_relationship)
+                return mark_ordinary_review(self._plan_private_family_education_v1(
+                    current, snapshot, relationship=education_relationship))
         family = plan_family_marriage_private(
             self.driver, planned, snapshot,
             prewar_arbitration=prewar_arbitration,
             **({"wartime_arbitration": True} if wartime_arbitration else {}),
         )
-        return self._plan_private_family_education_v1(
-            family, snapshot, relationship=education_relationship)
+        return mark_ordinary_review(self._plan_private_family_education_v1(
+            family, snapshot, relationship=education_relationship))
+
+    @staticmethod
+    def _ordinary_family_cooldown_eligible_v1(
+        snapshot: dict[str, object], *,
+        prewar_arbitration: bool, wartime_arbitration: bool,
+    ) -> bool:
+        lifecycle = snapshot.get("succession_lifecycle")
+        return (not prewar_arbitration and not wartime_arbitration
+                and snapshot.get("paused") is True
+                and snapshot.get("map_ready") is True
+                and snapshot.get("active_wars") == []
+                and snapshot.get("active_event") is None
+                and snapshot.get("pending_character_interaction") is None
+                and snapshot.get("one_life_terminal_reason") is None
+                and isinstance(lifecycle, dict)
+                and lifecycle.get("lifecycle") == "ordinary_campaign_succession")
+
+    def _skip_private_family_opportunity_during_cooldown_v1(
+        self, planned: dict[str, object], snapshot: dict[str, object], *,
+        prewar_arbitration: bool, wartime_arbitration: bool,
+    ) -> dict[str, object] | None:
+        """Skip only the low-priority read, after checking pending work."""
+        plan = planned.get("plan")
+        if (not self._ordinary_family_cooldown_eligible_v1(
+                    snapshot, prewar_arbitration=prewar_arbitration,
+                    wartime_arbitration=wartime_arbitration)
+                or not isinstance(plan, dict)
+                or plan.get("selected_step") != "life-advance"
+                or any(key in plan for key in (
+                    "current_betrothal_relationship", "current_betrothal_pending",
+                    "family_marriage_pending", "family_child_education_focus"))):
+            return None
+        state_dir = self._strategy_state_dir()
+        frame = self._observed_planning_source_frame(snapshot)
+        if state_dir is None or frame.get("status") != "complete":
+            return None
+        try:
+            receipt = family_cooldown.view(state_dir, frame)
+            if receipt.get("status") != "active":
+                return None
+            ledger = read_family_marriage_ledger(state_dir)
+            if ledger.get("pending") is not None or ledger.get("resolved") is not None:
+                return None
+            history_view = getattr(self.driver, "_with_internal_planning_view", None)
+            if not callable(history_view) or history_view(
+                    snapshot, self._unresolved_family_child_focus_v1)["pending"] is not None:
+                return None
+            return {**planned, "plan": {**plan,
+                "family_opportunity_cooldown_v1": receipt}}
+        except (OSError, ValueError, TypeError, KeyError):
+            # A cooldown read failure never suppresses the normal family planner.
+            return None
 
     def _plan_private_family_education_v1(
         self, planned: dict[str, object], snapshot: dict[str, object], *,
@@ -2920,6 +2991,43 @@ class GameplayBridgeService:
             "family_education_request_preference": preference,
         }}
 
+    @staticmethod
+    def _unresolved_family_child_focus_v1(frame, history):
+        from ..strategy import _effective_command, _effective_command_result
+
+        submit_step = "private-select-child-education-focus-v1"
+        receipt_step = "private-query-child-education-focus-receipt-v1"
+        closed = set()
+        controller = frame["played_character"]["character_id"] & 0xFFFFFFFF
+        for row in reversed(history):
+            step = _effective_command(row)
+            if step not in (submit_step, receipt_step):
+                continue
+            result = _effective_command_result(row)
+            if not isinstance(result, dict):
+                continue
+            if step == receipt_step:
+                submission = result.get("submission")
+                if (isinstance(submission, dict) and result.get("status") == "observed_applied"
+                        and result.get("observed_applied") is True):
+                    closed.add(submission["action_request_id"])
+                continue
+            action_id = result.get("action_request_id")
+            if action_id in closed:
+                continue
+            if result.get("status") == "rejected_before_submit":
+                closed.add(action_id)
+                continue
+            if result.get("status") not in (
+                "action_state_unknown", "submit_unknown", "submitted_verification_pending",
+            ):
+                continue
+            source = result["pre_frame"]
+            if (source["episode_run_id"] == frame["episode_run_id"]
+                    and source["controller_full_id"] == controller):
+                return {"pending": copy.deepcopy(result)}
+        return {"pending": None}
+
     def _plan_private_family_child_focus_v1(
         self, planned: dict[str, object], snapshot: dict[str, object],
         needs: dict[str, object],
@@ -2934,44 +3042,7 @@ class GameplayBridgeService:
         if (not all(callable(method) for method in methods) or not callable(history_view)
                 or getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is not True):
             return planned
-        from ..strategy import _effective_command, _effective_command_result
-
-        submit_step = "private-select-child-education-focus-v1"
-        receipt_step = "private-query-child-education-focus-receipt-v1"
-
-        def unresolved(frame, history):
-            closed = set()
-            controller = frame["played_character"]["character_id"] & 0xFFFFFFFF
-            for row in reversed(history):
-                step = _effective_command(row)
-                if step not in (submit_step, receipt_step):
-                    continue
-                result = _effective_command_result(row)
-                if not isinstance(result, dict):
-                    continue
-                if step == receipt_step:
-                    submission = result.get("submission")
-                    if (isinstance(submission, dict) and result.get("status") == "observed_applied"
-                            and result.get("observed_applied") is True):
-                        closed.add(submission["action_request_id"])
-                    continue
-                action_id = result.get("action_request_id")
-                if action_id in closed:
-                    continue
-                if result.get("status") == "rejected_before_submit":
-                    closed.add(action_id)
-                    continue
-                if result.get("status") not in (
-                    "action_state_unknown", "submit_unknown", "submitted_verification_pending",
-                ):
-                    continue
-                source = result["pre_frame"]
-                if (source["episode_run_id"] == frame["episode_run_id"]
-                        and source["controller_full_id"] == controller):
-                    return {"pending": copy.deepcopy(result)}
-            return {"pending": None}
-
-        pending = history_view(snapshot, unresolved)["pending"]
+        pending = history_view(snapshot, self._unresolved_family_child_focus_v1)["pending"]
         observations = []
         state = {"policy": "source_informed_childhood_focus_preference_12004.v1",
                  "observations": observations, "pending": pending, "receipt": None}
@@ -4060,6 +4131,8 @@ class GameplayBridgeService:
             outcome, planning_frame=planned)
         cooldown_receipt = self._observe_declaration_cooldown_after_turn_v1(
             planned, outcome)
+        family_cooldown_receipt = self._observe_family_cooldown_after_turn_v1(
+            planned, outcome)
         # Presentation is best effort and starts only after the business turn
         # has completed. Its later receipt never attests this gameplay frame.
         try:
@@ -4080,8 +4153,31 @@ class GameplayBridgeService:
             **outcome,
             "planning_source_frame": planned.get("planning_source_frame"),
             "declaration_opportunity_cooldown_v1": cooldown_receipt,
+            "family_opportunity_cooldown_v1": family_cooldown_receipt,
             "camera_follow": camera_schedule,
         }
+
+    def _observe_family_cooldown_after_turn_v1(
+        self, planned: dict[str, object], outcome: dict[str, object],
+    ) -> dict[str, object] | None:
+        plan = planned.get("plan")
+        frame = planned.get("planning_source_frame")
+        state_dir = self._strategy_state_dir()
+        if (state_dir is None or not isinstance(plan, dict)
+                or not isinstance(frame, dict) or frame.get("status") != "complete"):
+            return None
+        prior = plan.get("family_opportunity_cooldown_v1")
+        if outcome.get("selected_step") not in (
+                "life-advance", PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
+                "private-query-child-education-focus-receipt-v1"):
+            return prior if isinstance(prior, dict) else None
+        try:
+            return family_cooldown.observe_after_turn(
+                state_dir, frame, plan, outcome)
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            # The gameplay turn has completed; never replay it for a pacing receipt.
+            return {"schema": family_cooldown.SCHEMA, "status": "unavailable",
+                    "reason": f"{type(error).__name__}: {error}"}
 
     def _observe_declaration_cooldown_after_turn_v1(
         self, planned: dict[str, object], outcome: dict[str, object],
@@ -4966,7 +5062,7 @@ class GameplayBridgeService:
         ):
             raise ValueError("event_instance_id must be a positive full int32")
 
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         active_event = normalize_active_event(
             snapshot.get("active_event", snapshot.get("current_event")),
             default_source=str(snapshot.get("source") or "bridge"),

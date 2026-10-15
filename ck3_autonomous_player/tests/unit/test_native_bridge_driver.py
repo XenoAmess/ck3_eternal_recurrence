@@ -1864,6 +1864,47 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _life_advance_progressed(routed_war_day_one, routed_war)
         )
 
+    def test_war_results_capability_eight_day_cap_preserves_war_bounds(
+        self,
+    ) -> None:
+        capability = (native_driver_module.QUERY_WAR_RESULTS_WINDOW_CAPABILITY,)
+        peace, peace_steps = self._run_life_advance_speed_fixture(
+            active_wars=[],
+            player_armies=[],
+            extra_capabilities=capability,
+            expected_speed=5,
+            horizon_days=8,
+        )
+        self.assertEqual(peace["requested_horizon_days"], 8)
+        self.assertEqual(
+            peace_steps, ["set-speed-5", "resume-map", "pause-map"]
+        )
+
+        war, _ = self._run_life_advance_speed_fixture(
+            active_wars=[_war()],
+            player_armies=[],
+            extra_capabilities=capability,
+            expected_speed=5,
+            horizon_days=7,
+        )
+        self.assertEqual(war["requested_horizon_days"], 7)
+
+        routed = _army(
+            101,
+            province_id=2598,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        route, _ = self._run_life_advance_speed_fixture(
+            active_wars=[_war(allied_armies=[routed])],
+            player_armies=[routed],
+            extra_capabilities=capability,
+            expected_speed=1,
+            horizon_days=1,
+        )
+        self.assertEqual(route["requested_horizon_days"], 1)
+
     def test_peacetime_life_advance_accepts_native_auto_pause_without_pause_map(
         self,
     ) -> None:

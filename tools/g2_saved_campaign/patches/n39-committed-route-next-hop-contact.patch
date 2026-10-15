@@ -1,0 +1,70 @@
+--- a/strategy.py
++++ b/strategy.py
+@@ -8375 +8375 @@
+-    """Advance an already committed one-hop route only to its imminent contact.
++    """Advance an already committed route only to its imminent first-hop contact.
+@@ -8384,0 +8385,3 @@
++    route = army.get("route_province_ids")
++    first_hop = route[0] if isinstance(route, list) and route else None
++    arrivals = subject.get("arrival_date_raws") if isinstance(subject, dict) else None
+@@ -8398 +8401,3 @@
+-        or army.get("route_province_ids") != [target_province_id]
++        or not isinstance(route, list)
++        or not route
++        or route[-1] != target_province_id
+@@ -8406 +8411 @@
+-        or len(hostile_army_ids) != 1
++        or not 1 <= len(hostile_army_ids) <= 2
+@@ -8412,0 +8418,5 @@
++        or contact_horizon.get("subject_army_id") != army_id
++        or contact_horizon.get("target_province_id") != target_province_id
++        or contact_horizon.get("hostile_army_ids") != list(hostile_army_ids)
++        or contact_horizon.get("date_raw") != date_raw
++        or contact_horizon.get("snapshot_revision") != snapshot.get("native_revision")
+@@ -8419,2 +8429,5 @@
+-        or subject.get("route_province_ids") != [target_province_id]
+-        or subject.get("arrival_date_raws") != [date_raw + 24]
++        or subject.get("route_province_ids") != route
++        or not isinstance(arrivals, list)
++        or len(arrivals) != len(route)
++        or arrivals[0] != date_raw + 24
++        or (len(route) > 1 and subject.get("effective_origin_province_id") != first_hop)
+@@ -8422,4 +8435,11 @@
+-        or len(hostiles) != 1
+-        or hostiles[0].get("army_id") != hostile_army_ids[0]
+-        or hostiles[0].get("current_province_id") != target_province_id
+-        or hostiles[0].get("route_province_ids") != []
++        or len(hostiles) != len(hostile_army_ids)
++        or any(
++            not isinstance(hostile, dict)
++            or hostile.get("timeline_observable") is not True
++            or hostile.get("army_id") != hostile_id
++            or hostile.get("current_province_id") != first_hop
++            or hostile.get("effective_origin_province_id") != first_hop
++            or hostile.get("route_province_ids") != []
++            or hostile.get("arrival_date_raws") != []
++            for hostile, hostile_id in zip(hostiles, hostile_army_ids)
++        )
+@@ -8427,5 +8447,10 @@
+-        or len(conflicts) != 1
+-        or conflicts[0].get("kind") != "same_province"
+-        or conflicts[0].get("hostile_army_id") != hostile_army_ids[0]
+-        or conflicts[0].get("province_id") != target_province_id
+-        or conflicts[0].get("overlap_start_date_raw") != date_raw + 24
++        or len(conflicts) != len(hostile_army_ids)
++        or {
++            conflict.get("hostile_army_id")
++            for conflict in conflicts
++            if isinstance(conflict, dict)
++            and conflict.get("kind") == "same_province"
++            and conflict.get("province_id") == first_hop
++            and conflict.get("overlap_start_date_raw") == date_raw + 24
++            and conflict.get("overlap_end_date_raw") == date_raw + 24
++        } != set(hostile_army_ids)
+@@ -8452,2 +8477,2 @@
+-            "the one-hop move is already committed and its fresh exact horizon "
+-            "places one stationary enemy at tomorrow's arrival; both observed "
++            "the move is already committed and its fresh exact horizon places "
++            "the complete stationary enemy roster at tomorrow's first hop; both observed "
+@@ -8462,0 +8488 @@
++        "first_contact_province_id": first_hop,

@@ -74,6 +74,9 @@ import uuid
 
 from ..environment import write_bytes_atomic, write_json_atomic
 from .army_query_timing import finish_army_timing, start_army_timing
+from .driver_state_history_json import (
+    DriverStateHistoryJsonCache, driver_state_json_parts,
+)
 from ..siege_subject_contribution_v1 import observe_siege_subject_contribution
 from .driver import (
     BridgeUnavailableError,
@@ -1997,6 +2000,7 @@ class NativeHeadlessGameplayDriver:
         self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
         self._command_history: list[dict[str, object]] = []
+        self._driver_state_history_json = DriverStateHistoryJsonCache()
         self._rollback_war_failures: list[dict[str, object]] = []
         self._rollback_war_failures_migration_required = False
         self._managed_restore_transaction: dict[str, object] | None = None
@@ -10590,6 +10594,8 @@ class NativeHeadlessGameplayDriver:
                     ),
                     "source": "native_relationship_snapshot",
                 }
+                # This is the one supported in-place edit of an old row.
+                self._driver_state_history_json.invalidate()
                 changed = True
                 break
         if changed:
@@ -10883,8 +10889,8 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         try:
-            serialized = json.dumps(
-                payload, ensure_ascii=False, separators=(",", ":"),
+            serialized_parts = driver_state_json_parts(
+                payload, self._driver_state_history_json,
             )
         finally:
             if persistence_step is not None:
@@ -10895,7 +10901,8 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         try:
-            return serialized.encode("utf-8") + b"\n"
+            # Materialize one immutable snapshot before releasing the state lock.
+            return b"".join(serialized_parts) + b"\n"
         finally:
             if persistence_step is not None:
                 finish_army_timing(encoding_timing, step=persistence_step)
@@ -12157,7 +12164,7 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """Submit one event option and require the old full instance to move."""
 
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("map_ready") is not True:
             raise BridgeUnavailableError(
                 "native event selection requires a map-ready snapshot"
@@ -12229,14 +12236,15 @@ class NativeHeadlessGameplayDriver:
         )
         result = self._execute_primitive_step(
             step,
+            include_native_command_history=False,
             expected_revision=(
                 expected_revision
                 if expected_revision is not None
                 else int(starting["revision"])
             ),
         )
-        changed = self._wait_for_snapshot(
-            self.take_snapshot(),
+        changed = self._wait_for_life_advance_snapshot(
+            self.take_internal_semantic_snapshot(),
             lambda snapshot: _event_instance_id(snapshot)
             != event_instance_id,
             timeout_seconds=self.command_timeout_seconds,
@@ -23788,7 +23796,10 @@ class NativeHeadlessGameplayDriver:
         starting_date_raw = _date_raw(starting, "starting snapshot")
         horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
         if QUERY_WAR_RESULTS_WINDOW_CAPABILITY in self.state.capabilities().get("bridge_capabilities", ()):
-            horizon_days = min(horizon_days, 6)
+            # The six-day result-query lease may expire during this slice.
+            # Eight requested days leave room for observed pause lag under
+            # the ten-day best-effort result-window target.
+            horizon_days = min(horizon_days, 8)
         from ..crown_authority_formal_consumer_v1 import (
             crown_authority_retry_horizon_days_v1,
         )

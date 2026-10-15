@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstring>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -46,6 +47,8 @@ struct World {
   void *state_ptr = state.data(), *jomini_ptr = jomini.data(), *storage_ptr = storage.data();
   DeclarationsBindings bindings;
   bool validate = true, reject = false, zero_configurations = false, malformed = false;
+  bool extra_target = false, extra_type = false, available = true;
+  std::vector<std::pair<std::int32_t, std::int32_t>> evaluation_order;
   int evaluations = 0, config_destroys = 0, context_destroys = 0, queues = 0;
   std::uint32_t sent_flags = 0;
   std::vector<std::int32_t> sent_titles;
@@ -59,7 +62,11 @@ void *CbDatabase() { return world->cb_database.data(); }
 void *InteractionDatabase() { return world->interaction_database.data(); }
 bool Evaluate(void *type, void *actor, void *target, void *scratch, bool blocked,
               bool unknown, void *context) {
-  assert(type == world->type.data() && actor == world->actor.data() && target == world->target.data());
+  assert((type == world->type.data() || (world->extra_type && type == world->disabled_type.data())) &&
+         actor == world->actor.data() &&
+         (target == world->target.data() || (world->extra_target && target == world->dead.data())));
+  world->evaluation_order.push_back({Get<std::int32_t>(target, 0x18),
+                                    type == world->type.data() ? 0 : 2});
   assert(!blocked && !unknown && !context && scratch == world->scratch.data());
   ++world->evaluations;
   Put(scratch, 0, world->configurations.data());
@@ -70,7 +77,7 @@ bool Evaluate(void *type, void *actor, void *target, void *scratch, bool blocked
   Array(world->configurations.data() + 0x98 + 8, nullptr, 0);
   Array(world->configurations.data() + 0x98 * 2 + 8, world->third_titles.data(), 1);
   if (world->malformed) Put(world->configurations.data() + 8, 12, std::int32_t{3});
-  return true;
+  return world->available;
 }
 void DestroyConfiguration(void *) { ++world->config_destroys; }
 void *Construct(void *context, void *interaction, std::int32_t actor_id,
@@ -185,6 +192,49 @@ void Initialize(World &w) {
   b.send_primary_vtable = reinterpret_cast<std::uintptr_t>(w.command_vtable.data());
   b.send_secondary_vtable = 0x448BCB0;
 }
+void QueryLocalReuseFixture() {
+  World w; Initialize(w);
+  w.extra_target = true;
+  Put(w.dead.data(), 0x1D0, static_cast<void *>(nullptr));
+  std::array<void *, 3> types{w.type.data(), nullptr, w.disabled_type.data()};
+  Put(w.cb_database.data(), 0x50, types.data());
+  Put(w.cb_database.data(), 0x5C, std::int32_t{3});
+  // Preexisting scratch must be destroyed once before the first evaluation.
+  Put(w.scratch.data(), 0, w.configurations.data());
+  Put(w.scratch.data(), 8, std::int32_t{3});
+  Put(w.scratch.data(), 12, std::int32_t{1});
+  std::vector<xar::game::DeclarableWarSnapshot> rows;
+  assert(ReadDeclarableWars(w.bindings, rows) && rows.size() == 4);
+  assert(w.config_destroys == 7 && w.evaluations == 2);
+  assert(rows[0].target_character_id == World::target_id &&
+         rows[1].configuration_index == 2 &&
+         rows[2].target_character_id == 0x03000003);
+  // A later query must reread enabled definitions, retaining ordinal2.
+  w.extra_type = true;
+  std::memcpy(w.disabled_type.data(), w.type.data(), w.type.size());
+  Put(w.disabled_type.data(), 0x40, w.disabled_rule.data());
+  w.disabled_rule[0x1F9] = std::byte{};
+  w.evaluation_order.clear();
+  assert(ReadDeclarableWars(w.bindings, rows) && rows.size() == 8);
+  const std::vector<std::pair<std::int32_t, std::int32_t>> expected{
+      {World::target_id, 0}, {World::target_id, 2},
+      {0x03000003, 0}, {0x03000003, 2}};
+  assert(w.evaluation_order == expected && rows[2].casus_belli_index == 2);
+  // False evaluator output still owns configurations and must be cleaned.
+  w.available = false;
+  const int destroyed = w.config_destroys;
+  assert(ReadDeclarableWars(w.bindings, rows) && rows.empty());
+  assert(w.config_destroys == destroyed + 12);
+  w.available = true; w.malformed = true;
+  assert(!ReadDeclarableWars(w.bindings, rows) && rows.empty());
+  assert(Get<std::int32_t>(w.scratch.data(), 12) == 0);
+  w.malformed = false;
+  Put(w.scratch.data(), 8, std::int32_t{0});
+  Put(w.scratch.data(), 12, std::int32_t{1});
+  const int evaluated = w.evaluations;
+  assert(!ReadDeclarableWars(w.bindings, rows) && rows.empty() &&
+         w.evaluations == evaluated);
+}
 } // namespace
 
 int main() {
@@ -231,5 +281,6 @@ int main() {
   const auto bound = BindDeclarationsImage(0x140000000, kExecutableSha256);
   assert(bound.enabled && reinterpret_cast<std::uintptr_t>(bound.configuration_scratch) == 0x1454E14B8);
   assert(!BindDeclarationsImage(0x140000000, "old").enabled && !BindDeclarationsImage(0, kExecutableSha256).enabled);
+  QueryLocalReuseFixture();
   std::cout << "PASS 1.20.0.2 declarations enumeration, stale choice, validation and native clone ownership fixtures\n";
 }

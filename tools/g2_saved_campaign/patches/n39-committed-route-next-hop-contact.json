@@ -1,0 +1,16 @@
+{
+  "kind": "frozen_runtime_patch",
+  "scope": "N39 strategy source to N40 continuation candidate only; not integrated into this worktree's general strategy API",
+  "source": "continuation39 N39 sdk-p01 strategy.py",
+  "base_sha256": "012fd0414cadc091742a37f7daffa6350cad8a662a792114bb8b64ee85009d54",
+  "target_sha256": "a07769563ad4f53e125bbded93dd8c325bd1306a3cf6d98b0ac3f52421834af0",
+  "patch_file": "n39-committed-route-next-hop-contact.patch",
+  "worktree_strategy_head_sha256": "5825bc7dfb9e71a6424540eda889cf69eb02bb0f9f61404e660ed44b2d1d22dc",
+  "validation": "three focused N39-derived helper tests passed offline; no live battle or victory verified",
+  "repository_patch_bytes": 3588,
+  "repository_patch_sha256": "d8b924cd15f5e09b11b47575a815b982a8b9e07ce5755ab4ae4b68bfadbda432",
+  "repository_patch_apply": "verify base_sha256 first, then git apply --unidiff-zero",
+  "external_original_patch_bytes": 6209,
+  "external_original_patch_sha256": "f4b7cd415864954731fa6494d2093bd5c8b978f024f8fa20a92e8074d8d32b8c",
+  "external_original_patch_source": "committed-contact-n39-next-hop01/N39-TO-NEXT-HOP.patch"
+}

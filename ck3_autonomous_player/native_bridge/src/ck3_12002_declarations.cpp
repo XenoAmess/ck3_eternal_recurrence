@@ -133,6 +133,30 @@ bool Target(const DeclarationsBindings &b, void *types, std::int32_t count,
   return true;
 }
 
+// Definition records are immutable while this paused main-thread query runs.
+// Keep their original database ordinals and target-major evaluator order.
+struct EnabledCb { void *type; std::int32_t ordinal; };
+
+bool CachedTarget(const DeclarationsBindings &b,
+                  const std::vector<EnabledCb> &enabled,
+                  void *actor, void *target, std::int32_t target_id,
+                  std::vector<game::DeclarableWarSnapshot> &out,
+                  bool &scratch_is_clear) noexcept {
+  for (const auto &cb : enabled) {
+    // The preceding evaluation already validated and cleared this scratch.
+    // There is no native call between that clear and the next evaluation.
+    if (!scratch_is_clear && !Clear(b)) return false;
+    const bool available = b.evaluate_cb(cb.type, actor, target,
+                                        b.configuration_scratch,
+                                        false, false, nullptr);
+    const bool materialized =
+        !available || Choices(b, cb.type, target_id, cb.ordinal, out);
+    scratch_is_clear = Clear(b);
+    if (!materialized || !scratch_is_clear) return false;
+  }
+  return true;
+}
+
 struct alignas(8) ContextStorage { std::array<std::byte, kDeclarationsContextSize> bytes{}; };
 struct alignas(8) SendStorage { std::array<std::byte, kDeclarationsSendSize> bytes{}; };
 static_assert(sizeof(ContextStorage) == 0x338);
@@ -206,12 +230,23 @@ bool ReadDeclarableWars(const DeclarationsBindings &b,
   std::int32_t count{};
   if (!Database(b, types, count)) return false;
   std::vector<game::DeclarableWarSnapshot> result;
+  std::vector<EnabledCb> enabled;
+  bool definitions_read = false, scratch_is_clear = false;
   for (std::int32_t i = 0; i < cap; ++i) {
     void *target = Load<void *>(slots, i * 0x10ULL + 8);
     if (!target || target == actor || Load<void *>(target, kCharacterDeathDataOffset)) continue;
     const auto id = Load<std::int32_t>(target, 0x18);
     if ((static_cast<std::uint32_t>(id) & 0xFFFFFFU) != static_cast<std::uint32_t>(i)) continue;
-    if (!Target(b, types, count, actor, target, id, result)) return false;
+    if (!definitions_read) {
+      enabled.reserve(static_cast<std::size_t>(count));
+      for (std::int32_t cb = 0; cb < count; ++cb) {
+        void *type = Load<void *>(types, cb * sizeof(void *));
+        if (EnabledType(type)) enabled.push_back({type, cb});
+      }
+      definitions_read = true;
+    }
+    if (!CachedTarget(b, enabled, actor, target, id, result, scratch_is_clear))
+      return false;
   }
   out = std::move(result);
   return true;

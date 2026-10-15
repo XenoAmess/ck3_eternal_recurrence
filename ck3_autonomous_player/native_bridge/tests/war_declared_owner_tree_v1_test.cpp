@@ -132,6 +132,147 @@ int main() {
     ++scenes;
   }
   {
+    auto graph = Wide(4097, true);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) && cache.complete,
+                "cached_cold_complete_read");
+    graph.runtime_reads = graph.header_reads = graph.child_reads = 0;
+    graph.nodes[0].visible = false;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                out.complete && out.target == 1 && !out.target_visible &&
+                graph.runtime_reads == 4097 && graph.header_reads == 4097 && graph.child_reads == 4096,
+                "warm_hidden_rechecks_every_node_edge_and_fresh_visibility");
+    graph.nodes[0].visible = true;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) && out.target_visible,
+                "cached_hidden_is_not_permanent_hidden");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, false);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) && !out.target,
+                "cached_complete_absence");
+    graph.nodes.back().target = graph.nodes.back().visible = true;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) && out.target == 4 && out.target_visible,
+                "new_named_window_in_unchanged_topology_is_observed");
+    graph.nodes[1].target = true;
+    ok &= Check(!ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                Unknown(out, Failure::duplicate_named_window) && !cache.complete,
+                "warm_duplicate_name_never_uses_old_absence");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, false);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    graph.nodes[0].children.pop_back();
+    graph.nodes[1].children.push_back(4);
+    graph.nodes[3].target = true;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                cache.complete && out.visited == 4 && out.target == 4,
+                "changed_header_rebuilds_complete_current_topology");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, false);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    graph.nodes[0].children[2] = 2;
+    ok &= Check(!ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                Unknown(out, Failure::duplicate_child) && !cache.complete,
+                "changed_slot_rebuild_preserves_duplicate_child_failure");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, true);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    graph.nodes.back().readable = false;
+    graph.runtime_reads = 0;
+    ok &= Check(!ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                Unknown(out, Failure::widget_runtime_unreadable) && graph.runtime_reads == 4 && !cache.complete,
+                "warm_late_runtime_fault_is_unknown_not_retried");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, true);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    graph.nodes[0].slot_readable = false;
+    graph.child_reads = 0;
+    ok &= Check(!ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                Unknown(out, Failure::child_slot_unreadable) && graph.child_reads == 1,
+                "warm_unreadable_slot_never_dereferences_cached_child");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, true);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    ok &= Check(!ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out, {2, 8}) &&
+                Unknown(out, Failure::child_count_exceeds_widget_budget),
+                "reduced_fixture_budget_cannot_reuse_larger_complete_cache");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, false);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    graph.nodes[1].target = true;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(2, graph.Read(), cache, out) &&
+                out.visited == 1 && out.target == 2 && cache.nodes.size() == 1,
+                "owner_root_replacement_invalidates_before_old_node_use");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(4, false);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out);
+    cache.nodes[0].first_child = 2;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                out.complete && out.visited == 4 && cache.nodes[0].first_child == 1,
+                "invalid_cached_bfs_index_rebuilds_instead_of_trusting_unreachable_nodes");
+    ++scenes;
+  }
+  for (int changed = 0; changed != 4; ++changed) {
+    auto graph = Wide(4, true);
+    WarDeclaredOwnerTreeScopeCacheV1 scoped;
+    auto &first = scoped.bind(100, 200, 3, 4);
+    WarDeclaredOwnerReadResultV1 out;
+    ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), first, out);
+    ok &= Check(scoped.bind(100, 200, 3, 4).complete,
+                "same_scope_preserves_topology_but_still_requires_fresh_validation");
+    auto &next = scoped.bind(changed == 0 ? 101 : 100, changed == 1 ? 201 : 200,
+                             changed == 2 ? 5 : 3, changed == 3 ? 6 : 4);
+    ok &= Check(!next.complete && next.nodes.empty(),
+                "module_owner_generation_actor_change_clears_cache");
+    ++scenes;
+  }
+  {
+    auto graph = Wide(kWarDeclaredOwnerMaximumWidgetsV1, true);
+    WarDeclaredOwnerTreeCacheV1 cache;
+    WarDeclaredOwnerReadResultV1 out;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                cache.nodes.size() == kWarDeclaredOwnerMaximumWidgetsV1 &&
+                cache.nodes.capacity() <= kWarDeclaredOwnerMaximumWidgetsV1,
+                "cached_exact_budget_has_bounded_storage");
+    graph.runtime_reads = graph.header_reads = graph.child_reads = 0;
+    ok &= Check(ReadWarDeclaredOwnerTreeCachedV1(1, graph.Read(), cache, out) &&
+                graph.runtime_reads == kWarDeclaredOwnerMaximumWidgetsV1 &&
+                graph.child_reads + 1 == kWarDeclaredOwnerMaximumWidgetsV1,
+                "warm_maximum_tree_still_validates_all_nodes_and_edges");
+    ++scenes;
+  }
+  {
     Graph graph(1);
     graph.nodes[0].children.push_back(1);
     WarDeclaredOwnerReadResultV1 out;
