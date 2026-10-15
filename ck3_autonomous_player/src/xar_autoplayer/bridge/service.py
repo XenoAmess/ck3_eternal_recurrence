@@ -75,6 +75,11 @@ from .driver import (
     StepPostconditionError,
     UnsupportedStepError,
 )
+from .readonly_war_entry_rejection import (
+    observe_readonly_war_entry_rejection_v1,
+    returned_readonly_war_entry_typed_rejection_v1,
+    suppressed_war_entry_read_steps_v1,
+)
 from ..vanilla_events.outcome import (
     evaluate_registered_event_material_postcondition_v1,
 )
@@ -1763,6 +1768,8 @@ class GameplayBridgeService:
                 allow_war_overview_query=allow_war_overview_query)
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
+        available_steps.difference_update(suppressed_war_entry_read_steps_v1(
+            snapshot, getattr(self, "_readonly_war_entry_failures", [])))
         bridge_capabilities = (
             capabilities.get("bridge_capabilities")
             if isinstance(capabilities.get("bridge_capabilities"), list)
@@ -4028,6 +4035,11 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
+        retained_war_entry_read = getattr(self, "_readonly_war_entry_rejection_refresh", None)
+        if retained_war_entry_read is not None:
+            refreshed = observe_readonly_war_entry_rejection_v1(self, retained_war_entry_read)
+            if self._readonly_war_entry_rejection_refresh is not None:
+                return refreshed
         planned = self.plan_turn()
         outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
             self._execute_planned_turn(planned, before_submit=before_submit)))
@@ -4560,6 +4572,10 @@ class GameplayBridgeService:
             # previous durable checkpoint.
             error.selected_step = selected_step
             error.plan = copy.deepcopy(plan)
+            war_entry_rejection = returned_readonly_war_entry_typed_rejection_v1(
+                error, selected_step, planned)
+            if war_entry_rejection is not None:
+                return observe_readonly_war_entry_rejection_v1(self, war_entry_rejection)
             if (
                 not isinstance(error, BridgeUnavailableError)
                 or selected_step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
@@ -16537,7 +16553,7 @@ class GameplayBridgeService:
         # entering any driver/pipe path. The first production contract is
         # one-target end to end.
         targets = normalize_war_entry_target_ids(target_character_ids)
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(
                 "war-entry assessment queries require a paused CK3 snapshot"
@@ -16609,7 +16625,7 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 f"native war-entry assessment result is malformed: {error}"
             ) from error
-        current = self.snapshot()
+        current = self.snapshot(include_native_command_history=False)
         if not (
             current.get("paused") is True
             and current.get("snapshot_id") == snapshot.get("snapshot_id")

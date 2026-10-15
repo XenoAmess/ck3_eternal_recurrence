@@ -14737,14 +14737,22 @@ def _choose_one_life_turn_core(
             }
         )
         if missing_claim_targets:
+            # A terminal native read failure may temporarily suppress one
+            # target. Compare other observed targets without treating missing
+            # power as permission to declare war.
+            assessment_target = next(
+                (target for target in missing_claim_targets
+                 if query_war_entry_assessments_step([target]) in available_steps),
+                missing_claim_targets[0],
+            )
             assessment_step = query_war_entry_assessments_step(
-                [missing_claim_targets[0]]
+                [assessment_target]
             )
             if assessment_step in available_steps:
                 declaration = next(
                     row
                     for row in bounded_claims
-                    if row["target_character_id"] == missing_claim_targets[0]
+                    if row["target_character_id"] == assessment_target
                 )
                 return {
                     "policy": "one-life-turn-v1",

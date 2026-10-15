@@ -128,7 +128,7 @@ class DeclarableQueryCollectionTests(unittest.TestCase):
                 key = path[-1]
                 old = target[key]
                 target[key] = not old if isinstance(old, bool) else old + 1 if isinstance(old, int) else str(old) + "-changed"
-                with patch.object(driver, "take_snapshot", return_value=changed):
+                with patch.object(driver, "take_snapshot_without_native_command_history", return_value=changed):
                     result = driver.collect_declarable_wars_result_v1(request_id, expected_revision=changed["revision"])
                 self.assertEqual(result["status"], "stale")
                 self.assertFalse(result["cache_restored"])

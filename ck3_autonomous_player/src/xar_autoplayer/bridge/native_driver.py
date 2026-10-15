@@ -12467,7 +12467,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native declarable-war result lacks query_sequence"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if (
             current.get("paused") is not True
             or self._declaration_result_binding(current) != binding
@@ -12496,7 +12496,7 @@ class NativeHeadlessGameplayDriver:
         if not isinstance(request_id, str) or not request_id:
             raise ValueError("request_id must be a non-empty string")
         _validate_revision(expected_revision, "expected_revision")
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if current.get("revision") != expected_revision:
             raise BridgeUnavailableError("declarable result collection revision mismatch")
         current_binding = self._declaration_result_binding(current)
@@ -12554,7 +12554,7 @@ class NativeHeadlessGameplayDriver:
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
         if step == QUERY_DECLARABLE_WARS_STEP:
-            starting = self.take_snapshot()
+            starting = self.take_snapshot_without_native_command_history()
             with self._driver_state_lock:
                 pending = getattr(self, "_pending_declaration_query", None)
                 if pending is not None:
@@ -12568,6 +12568,7 @@ class NativeHeadlessGameplayDriver:
                 result = self._execute_primitive_step(
                     step, expected_revision=expected_revision,
                     timeout_seconds=timeout,
+                    include_native_command_history=False,
                 )
             except _NativeCommandResultTimeoutError as error:
                 pending = {
@@ -15255,7 +15256,7 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 f"malformed war-entry assessment step {step}"
             )
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native war-entry assessment query requires a paused snapshot"
@@ -15293,6 +15294,7 @@ class NativeHeadlessGameplayDriver:
             # assessment on one paused frame. Its host budget must outlast the
             # native mailbox's 30-second initial wait without widening actions.
             timeout_seconds=self.war_entry_assessments_timeout_seconds,
+            include_native_command_history=False,
         )
         if (
             set(result)
@@ -15331,7 +15333,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native war-entry assessment query lacks query_sequence"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError(
                 "native war-entry assessment query crossed a snapshot revision"
