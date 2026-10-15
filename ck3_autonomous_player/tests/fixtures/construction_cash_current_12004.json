@@ -1,0 +1,138 @@
+{
+  "provenance": {
+    "source": "P04 immutable AUTO707 construction_cash_outcome.current_cash_scenarios.source_cash_resources",
+    "response_sha256": "74bf07f2152a218fdb8d35847f62f899b257a03d2e282e6522ad203873b0a0b2",
+    "fixture_kind": "actual retained cash DTO; transport is simulated in tests"
+  },
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:736",
+    "revision": 634,
+    "native_revision": 736,
+    "date_raw": 53250240,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-96253c58fd68",
+    "connection_generation": 4,
+    "bridge_pid": 226540
+  },
+  "packet": {
+    "schema": "xar.ck3.war-cash-current-resources.v1",
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "status": "available",
+    "read_only": true,
+    "advertised": false,
+    "formal_action_ready": false,
+    "played_character_id": 31254,
+    "snapshot_revision": 736,
+    "date_raw": 53250240,
+    "active_war_ids": [],
+    "player_army_ids": [],
+    "current_treasury": {
+      "raw": 26621418,
+      "scale": 100000
+    },
+    "player_monthly_gross_income": {
+      "raw": 993374,
+      "scale": 100000
+    },
+    "player_monthly_total_expenses": {
+      "raw": 23600,
+      "scale": 100000
+    },
+    "player_monthly_net_income": {
+      "raw": 969774,
+      "scale": 100000
+    },
+    "monthly_income_semantics": {
+      "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+      "time_basis": "month",
+      "source_scope": "played_character_personal_gold",
+      "income_source": "native_character_monthly_gold_income",
+      "expense_source": "native_character_monthly_total_gold_expenses",
+      "military_expenses_included": true
+    },
+    "monthly_gross_income_unavailable_reason": null,
+    "monthly_total_expenses_unavailable_reason": null,
+    "current_treasury_unavailable_reason": null,
+    "monthly_net_income_unavailable_reason": null,
+    "military_expenses": {
+      "current": {
+        "status": "available",
+        "resource_kind": "actor_military_current_maintenance",
+        "resource_id": "31254",
+        "owner_character_id": 31254,
+        "war_ids": [],
+        "time_basis": "month",
+        "raw_scale": 100000,
+        "source_scope": "actor_owned_military_once_across_all_wars",
+        "source": "native_character_current_military_expenses",
+        "resource_raw_native": [
+          11100,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gold_raw": 11100,
+        "treasury_raw": 0,
+        "future_war_cost_upper_ready": false,
+        "unavailable_reason": null
+      },
+      "all_raised": {
+        "status": "available",
+        "resource_kind": "actor_military_all_raised_maintenance",
+        "resource_id": "31254",
+        "owner_character_id": 31254,
+        "war_ids": [],
+        "time_basis": "month",
+        "raw_scale": 100000,
+        "source_scope": "actor_owned_military_once_across_all_wars",
+        "source": "native_character_all_raised_military_expenses",
+        "resource_raw_native": [
+          410100,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gold_raw": 410100,
+        "treasury_raw": 0,
+        "future_war_cost_upper_ready": false,
+        "unavailable_reason": null
+      }
+    },
+    "readiness": {
+      "current_treasury_ready": true,
+      "monthly_gross_income_ready": true,
+      "monthly_total_expenses_ready": true,
+      "monthly_net_income_ready": true,
+      "current_military_expenses_ready": true,
+      "all_raised_military_expenses_ready": true,
+      "same_frame_ready": true
+    },
+    "unobserved_future_inputs": [
+      "pending_war_cash_raw",
+      "future_war_cost_upper_raw",
+      "future_risk_budget_raw",
+      "policy_minimum_gold_reserve_raw",
+      "horizon_days",
+      "future_bound_assumptions"
+    ],
+    "unavailable_reason": null,
+    "queried_snapshot_id": "native:736",
+    "queried_revision": 634,
+    "queried_native_revision": 736
+  }
+}

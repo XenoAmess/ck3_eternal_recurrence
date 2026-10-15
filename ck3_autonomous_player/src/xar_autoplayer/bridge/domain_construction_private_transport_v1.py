@@ -449,7 +449,7 @@ def query_construction_wartime_observation_private(
     The distinct result is never a construction submit query. Native budget
     and authored income are observations; future war cash remains unknown.
     """
-    snapshot = driver.take_snapshot()
+    snapshot = _query_context_snapshot(driver)
     wars = snapshot.get("active_wars")
     if not isinstance(wars, list) or not wars:
         raise BridgeUnavailableError("wartime construction observation needs active war")

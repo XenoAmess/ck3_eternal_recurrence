@@ -158,7 +158,8 @@ def query_war_cash_current_resources_private_v1(driver: object, *, expected_revi
                                                timeout_seconds: float = 30.0) -> dict[str, object]:
     snapshot, result = read_private_g2_native_query_v1(
         driver, permission="allow_private_war_cash_query", step=CURRENT_STEP,
-        expected_revision=expected_revision, timeout_seconds=timeout_seconds)
+        expected_revision=expected_revision, timeout_seconds=timeout_seconds,
+        include_native_command_history=False)
     try:
         value = normalize_war_cash_current_resources_v1(result.get("war_cash_current_resources"), snapshot=snapshot)
     except ValueError as error:
