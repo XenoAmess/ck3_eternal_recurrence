@@ -4077,9 +4077,9 @@ class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
         snapshots = [0]
         original_snapshot = driver.take_snapshot
 
-        def counted_snapshot():
+        def counted_snapshot(**kwargs):
             snapshots[0] += 1
-            return original_snapshot()
+            return original_snapshot(**kwargs)
 
         def synthetic_wait(provider, baseline, date, *, timeout_seconds):
             def sleep(_seconds):

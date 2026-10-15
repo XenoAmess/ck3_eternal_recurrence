@@ -15621,7 +15621,7 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 f"malformed battle-control snapshot v1 step {step}"
             )
-        starting = self.take_snapshot()
+        starting = self.take_snapshot(include_native_command_history=False)
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native battle-control snapshot requires a paused snapshot"
@@ -15663,7 +15663,7 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     f"battle-control application-main pump readiness: {error}"
                 ) from error
-            refreshed = self.take_snapshot()
+            refreshed = self.take_snapshot(include_native_command_history=False)
             refreshed_subject = _army_by_id(
                 refreshed, subject_public_cunit_id
             )
@@ -15698,6 +15698,7 @@ class NativeHeadlessGameplayDriver:
                     required_capability=(
                         QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
                     ),
+                    include_native_command_history=False,
                 )
                 break
             except _NativeCommandRejectedError as error:
@@ -15705,7 +15706,7 @@ class NativeHeadlessGameplayDriver:
                     _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR
                 ):
                     raise
-                retry_snapshot = self.take_snapshot()
+                retry_snapshot = self.take_snapshot(include_native_command_history=False)
                 retry_subject = _army_by_id(
                     retry_snapshot, subject_public_cunit_id
                 )
@@ -15791,7 +15792,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native battle-control query returned a malformed frame: {error}"
             ) from error
-        current = self.take_snapshot()
+        current = self.take_snapshot(include_native_command_history=False)
         if not (
             _same_paused_native_frame(starting, current)
             and starting.get("revision") == current.get("revision")
