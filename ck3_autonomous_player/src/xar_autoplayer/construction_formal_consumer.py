@@ -1,4 +1,4 @@
-"""One controlled feudal construction action and its durable confirmation.
+"""One controlled native construction action and its durable confirmation.
 
 This is not a public capability.  A lost native reply is an unresolved action,
 not permission to build again after a cold start.
@@ -21,7 +21,10 @@ from .construction_economic_outcome_v1 import (
 from .construction_selected_intent_continuity_v1 import (
     project_construction_consumed_intent_v1,
 )
-from .lifestyle_formal_consumer import ROOT_QUERY_STEP, _same_frame_feudal_scope
+from .lifestyle_formal_consumer import ROOT_QUERY_STEP
+from .construction_scene_scope_v1 import (
+    same_frame_construction_scope_v1, clan_construction_cash_frame_reason_v1,
+)
 
 
 SUBMIT_STEP = "private-submit-player-construction-v1"
@@ -63,7 +66,7 @@ def observe_construction_cash_before_quote(
 
 def project_construction_quote_current_cash(
     query: Mapping[str, object], observation: Mapping[str, object] | None,
-    *, wartime: bool = False,
+    *, wartime: bool = False, require_same_frame: bool = False,
 ) -> tuple[dict[str, object], str | None]:
     """Project only this new quote using the one pre-quote cash packet."""
     quoted = dict(query)
@@ -78,7 +81,7 @@ def project_construction_quote_current_cash(
             or treasury.get("raw") != candidate.get("gold_before_raw")):
         return quoted, "current cash and native construction quote are not jointly observed"
     source = quoted.get("source_frame")
-    if wartime and not (isinstance(source, Mapping)
+    if (wartime or require_same_frame) and not (isinstance(source, Mapping)
             and packet.get("played_character_id") == source.get("actor_character_id")
             and packet.get("snapshot_revision") == source.get("native_revision")
             and packet.get("date_raw") == source.get("date_raw")):
@@ -483,7 +486,7 @@ def plan_construction_private(
     # admits a new expenditure; an active war itself is not a spending ban.
     if not new_action_admitted:
         return {**planned, "plan": plan}
-    scope = _same_frame_feudal_scope(snapshot, history, require_peace=False)
+    scope = same_frame_construction_scope_v1(snapshot, history)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:
             if prewar:
@@ -503,11 +506,32 @@ def plan_construction_private(
             return prewar_unchanged(f"scope_{scope['status']}")
         return planned
     from .bridge.domain_construction_private_transport_v1 import query_construction_private
+    from .bridge.driver import BridgeUnavailableError
+
+    clan = scope.get("government_key") == "clan_government"
+    if clan and private_native_build_identity(snapshot).game_version != "1.20.0.4":
+        return planned
+
+    def clan_deferred(reason: str, *, query: object = None) -> dict[str, object]:
+        fields = {**plan, "phase": "construction_clan_observation_deferred",
+                  "reason": reason, "construction_scope": scope}
+        if query is not None:
+            fields["construction_private_query"] = query
+        return {**planned, "plan": fields}
 
     observed = current_cash()
+    if clan:
+        cash_reason = clan_construction_cash_frame_reason_v1(snapshot, observed)
+        if cash_reason is not None:
+            return clan_deferred(cash_reason)
     if observed is not None:
         plan = {**plan, "construction_cash_outcome": observed}
-    query = query_construction_private(driver, expected_revision=int(planned["revision"]))
+    try:
+        query = query_construction_private(driver, expected_revision=int(planned["revision"]))
+    except (BridgeUnavailableError, ValueError) as error:
+        if not clan:
+            raise
+        return clan_deferred(str(error))
     if query.get("status") == "no_legal_budgeted_building":
         if prewar:
             return prewar_unchanged("no_positive_budgeted_building", query=query)
@@ -520,6 +544,8 @@ def plan_construction_private(
                                    query=query)
         return {**planned, "plan": {**plan, "construction_private_query": query}}
     if query.get("status") != "selected":
+        if clan:
+            return clan_deferred("native Clan construction source unavailable", query=query)
         if prewar:
             return prewar_unchanged("construction_source_red", query=query)
         return {**planned, "plan": {**plan, "selected_step": None,
@@ -527,9 +553,14 @@ def plan_construction_private(
             "reason": "private construction source unavailable; preserve RED"}}
     wartime = isinstance(wars, list) and bool(wars)
     if observed is not None or wartime:
-        query, cash_reason = project_construction_quote_current_cash(
-            query, observed, wartime=wartime,
-        )
+        try:
+            query, cash_reason = project_construction_quote_current_cash(
+                query, observed, wartime=wartime, require_same_frame=clan,
+            )
+        except ValueError as error:
+            if not clan:
+                raise
+            return clan_deferred(str(error), query=query)
         if "construction_monthly_budget" in query:
             plan = {**plan, "construction_monthly_budget": query["construction_monthly_budget"]}
         if cash_reason is not None:

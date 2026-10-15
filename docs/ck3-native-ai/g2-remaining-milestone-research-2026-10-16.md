@@ -35,7 +35,7 @@
 
 [新罗贝尔继承后意图观测](g2-successor-goal-observation-2026-10-16.md)复用两份闭场小回执，确认31254→40526的同一 dynasty_continuity goal已进入真实 successor SAVE，并在另一实际 Game PID 语义帧保留。随后已闭场 P06普通plan的 campaign_goal_plan_used又确认同一goal/campaign/current/progress四项全等，实际普通planner消费已补齐。完整物理 cold anchor 对比字段仍单列，不能据不同 PID、同日期自动补齐。
 
-政府身份 observer 的 core_supported 是身份/core verdict。普通 planner 已通过 CampaignRoot 消费当前政府 key/flags，但建设、LIFE、三类主动宣战入口仍明确限 feudal。普通路径没有调用旧内部 nonwar Government context leaf，不应为补 metadata 恢复旧公共受限模式或增加重查询。
+政府身份 observer 的 core_supported 是身份/core verdict。原始00a70009普通 planner 已通过 CampaignRoot 消费当前政府 key/flags，当时建设、LIFE、三类主动宣战入口均明确限 feudal；本日后续只拆建设的 Clan 窄分支，LIFE/战争不扩。普通路径没有调用旧内部 nonwar Government context leaf，不应为补 metadata 恢复旧公共受限模式或增加重查询。
 
 一次合成的生产 scope 验证4/4：feudal admitted，clan/tribal/administrative outside_scene。建设 outside_scene 会保留原计划继续推进；这没有证明当前封建局有政府适配停机故障。
 
@@ -43,10 +43,18 @@
 
 外置 m7-government/FINDINGS.md SHA-256 0bb109fda10617ba0ca41c73b9799a02c61ff64e81a6578fa7fcfaabd8ebbf69；SCOPE-PROBE-RESULT.json SHA-256 230b22d561307271ba9ee0b83012e691464c3303fd37544a99ad3490120f21eb。4-case仅证明合成生产 scope 分支，未增加政府资格或M7完成。
 
+## 03:22 CST 后续静态/离线增量
+
+[Sway ordinary scheduler](sway-ordinary-target-scheduler-12004.md)已核对当前 .4 两份完整 stock 文本与旧 .3 SHA完全相同，关闭该特定版本文本差异缺口；两块分别通过既有 open_kaishek parser/CST。新纯 helper 使用当前同帧 direct-vassal 原生顺序轮换，复用原 once-only consumer，pending/applied只读观察按月，两次真实无操作冷却30日。10项初始合成、terminal1与full32-ID1增量分别通过，未重复旧测试。普通 Service hook仍未应用，native最高 sender score并未宣称复现；新真实 Start、终态、有益材料与following仍缺，M6不变。
+
+[Clan construction scene](m7-clan-construction-scene-12004.md)公共源码仅拆建设资格，复用当前 played actor自身地产、native final CanConstruct/gold-only quote和同帧cash-v2 NET预算；Clan可选观测缺失保留原推进。原封建 helper逐字委托、pending/material/cold逻辑保留；Tribal/LIFE/战争不扩。新增Clan stock块实际parser通过，一次原外置10项合成与一次新增可移植投影compound分别通过；全部0实机动作。公共代码存在不授Clan业务/政府资格，真实quote→动作→独立material→following/cold仍缺。
+
+原G2仍6/8；M7后继普通goal消费已有真实材料，但完整physical cold-anchor字段与广ruler/seed/government资格未补齐。连续30年计数由主流程独立重起，研究不增加任何天数、录像或战争成绩。
+
 ## 出处与边界
 
 本机外置研究根为 D:/codex-ck3-demos/2026-10-14-robert-30year/g2-m-gap-research-20261016，各包有 source pins、研究图、精简结果和存储分类。共同存储策略1.0.0；只生成小型记录，无重型写入、游戏复制或旧现场清理。
 
-本轮 Python/JSON与原生 copied-callback接线没有 open_kaishek parser/IR/finite-runtime可覆盖的语义，已记录 not-applicable 和 checkout1643d03d；不为形式重跑不相关矩阵。exact CK3 为1.20.0.4，绑定复用既有 EXE SHA-256 98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518。
+首轮 Python/JSON与原生 copied-callback接线没有 open_kaishek 可覆盖的语义，已记录 not-applicable；后续新增 stock 输入已各自实际 parser/CST 预验，仍不冒充 .4 native AI/政府语义验收。checkout1643d03d 与既有 jar 身份分别登记；不为形式重跑不相关矩阵。exact CK3 为1.20.0.4，绑定复用既有 EXE SHA-256 98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518。
 
 三个并行包的 research、fixture、既有实机证据分别记账；没有新游戏日、稳定窗口天数或整项完成信用。
