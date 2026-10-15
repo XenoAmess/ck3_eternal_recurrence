@@ -9846,3 +9846,5 @@ include(cmake/council_task_owner_monthly_piety_12004.cmake)
 include(cmake/native71_continuation_12004.cmake)
 include(cmake/faction_danger_priority_12004.cmake)
 include(cmake/war_declared_owner_tree_v1.cmake)
+
+include(cmake/root_adjacency_12004.cmake)

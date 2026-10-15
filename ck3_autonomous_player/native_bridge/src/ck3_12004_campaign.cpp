@@ -2204,130 +2204,145 @@ struct ProvinceObservationV1 {
 };
 bool ReadAdjacentExternalProvinceHolders(
     const CampaignRootNativeEnvironmentV1 &environment,
-    const CampaignRootAccessV1 &access, ObservationV1 &output) noexcept {
+    const CampaignRootAccessV1 &access, ObservationV1 &output,
+    HeldTitlePartitionFailure12002 *failure_diagnostic = nullptr) noexcept {
+  // This diagnostic reuses only the carrier's general guard/index/holder
+  // fields. The bridge publishes it as a separate adjacency family; no title
+  // fields, pointers or readiness claims are borrowed from another partition.
+  const auto fail = [failure_diagnostic](std::string_view guard) noexcept {
+    if (failure_diagnostic != nullptr) failure_diagnostic->guard = guard;
+    return false;
+  };
+  if (failure_diagnostic != nullptr) {
+    failure_diagnostic->guard = {};
+    failure_diagnostic->resolver_guard = {};
+    failure_diagnostic->index = -1;
+    failure_diagnostic->holder_id = -1;
+  }
   void *province_array = nullptr;
   std::int32_t province_count = 0;
   void *character_fallback = nullptr;
   if (!ReadValue(access, output.game_data, kGameDataProvinceArrayOffset,
-                 province_array) ||
-      !ReadValue(access, output.game_data, kGameDataProvinceCountOffset,
-                 province_count) ||
-      !ReadSlot(access, environment.character_fallback_slot,
-                character_fallback) ||
-      province_array == nullptr || province_count <= 0 ||
-      province_count > kMaximumProvinces) {
-    return false;
-  }
+                 province_array)) return fail("adjacent_province_array_read");
+  if (!ReadValue(access, output.game_data, kGameDataProvinceCountOffset,
+                 province_count)) return fail("adjacent_province_count_read");
+  if (!ReadSlot(access, environment.character_fallback_slot,
+                character_fallback)) return fail("adjacent_character_fallback_read");
+  if (province_array == nullptr) return fail("adjacent_province_array_null");
+  if (province_count <= 0 || province_count > kMaximumProvinces)
+    return fail("adjacent_province_count_bounds");
 
   std::vector<ProvinceObservationV1> provinces;
   try {
     provinces.resize(static_cast<std::size_t>(province_count));
   } catch (...) {
-    return false;
+    return fail("adjacent_province_vector_allocation");
   }
   for (std::int32_t index = 0; index < province_count; ++index) {
+    if (failure_diagnostic != nullptr) {
+      failure_diagnostic->index = index;
+      failure_diagnostic->holder_id = -1;
+      failure_diagnostic->resolver_guard = {};
+    }
     void *province = nullptr;
     if (!ReadValue(access, province_array,
                    static_cast<std::size_t>(index) * sizeof(void *),
-                   province)) {
-      return false;
-    }
-    if (province == nullptr) {
-      continue;
-    }
+                   province)) return fail("adjacent_province_slot_read");
+    if (province == nullptr) continue;
     std::int32_t observed_province_id = -1;
     std::int32_t holder_character_id = -1;
     if (!ReadValue(access, province, kProvinceIdentityOffset,
-                   observed_province_id) ||
-        observed_province_id != index ||
-        !InvokeProvinceHolderCharacterId(
+                   observed_province_id)) return fail("adjacent_province_identity_read");
+    if (observed_province_id != index) return fail("adjacent_province_identity_mismatch");
+    if (!InvokeProvinceHolderCharacterId(
             environment.province_holder_character_id, province,
-            holder_character_id)) {
-      return false;
-    }
+            holder_character_id)) return fail("adjacent_province_holder_resolver");
+    if (failure_diagnostic != nullptr) failure_diagnostic->holder_id = holder_character_id;
     auto &observed = provinces[static_cast<std::size_t>(index)];
     observed.province = province;
-    if (holder_character_id == -1) {
-      continue;
-    }
-    if (holder_character_id <= 0) {
-      return false;
-    }
-    void *holder =
-        ResolveComponent(access, environment.character_storage_slot,
-                         environment.character_fallback_slot,
-                         holder_character_id, kCharacterIdentityOffset);
+    if (holder_character_id == -1) continue;
+    if (holder_character_id <= 0) return fail("adjacent_holder_id_invalid");
+    void *holder = ResolveComponent(
+        access, environment.character_storage_slot,
+        environment.character_fallback_slot, holder_character_id,
+        kCharacterIdentityOffset,
+        failure_diagnostic == nullptr ? nullptr : &failure_diagnostic->resolver_guard);
+    if (holder == nullptr) return fail("adjacent_holder_component_unavailable");
     void *death = nullptr;
-    if (holder == nullptr ||
-        !ReadValue(access, holder, kCharacterDeathMarkerOffset, death) ||
-        death != nullptr ||
-        !CharacterBelongsToPlayerSubrealm(
+    if (!ReadValue(access, holder, kCharacterDeathMarkerOffset, death))
+      return fail("adjacent_holder_death_marker_read");
+    // The published ABI is the sorted set of generation-valid living holders.
+    // A positively observed dead holder belongs to neither set. Preserve its
+    // province entry so adjacency to unheld/dead land remains distinguishable
+    // from a missing province. Never substitute a guessed successor or neighbor.
+    if (death != nullptr) continue;
+    if (!CharacterBelongsToPlayerSubrealm(
             environment, access, holder, character_fallback,
-            output.player_character, observed.belongs_to_player_subrealm)) {
-      return false;
-    }
+            output.player_character, observed.belongs_to_player_subrealm))
+      return fail("adjacent_holder_subrealm_chain_unavailable");
     observed.holder_character_id = holder_character_id;
   }
 
   output.adjacent_external_province_holder_character_ids.clear();
   for (const auto &origin : provinces) {
     if (origin.province == nullptr || origin.holder_character_id <= 0 ||
-        !origin.belongs_to_player_subrealm) {
-      continue;
+        !origin.belongs_to_player_subrealm) continue;
+    if (failure_diagnostic != nullptr) {
+      failure_diagnostic->index = static_cast<std::int32_t>(&origin - provinces.data());
+      failure_diagnostic->holder_id = origin.holder_character_id;
+      failure_diagnostic->resolver_guard = {};
     }
     void *map_node = nullptr;
     void *adjacency_rows = nullptr;
     std::int32_t adjacency_count = 0;
-    if (!ReadValue(access, origin.province, kProvinceMapNodeOffset, map_node) ||
-        map_node == nullptr ||
-        !ReadValue(access, map_node, kMapNodeAdjacencyDataOffset,
-                   adjacency_rows) ||
-        !ReadValue(access, map_node, kMapNodeAdjacencyCountOffset,
-                   adjacency_count) ||
-        adjacency_count < 0 || adjacency_count > kMaximumAdjacencyRows ||
-        (adjacency_count > 0 && adjacency_rows == nullptr)) {
-      return false;
-    }
+    if (!ReadValue(access, origin.province, kProvinceMapNodeOffset, map_node))
+      return fail("adjacent_origin_map_node_read");
+    if (map_node == nullptr) return fail("adjacent_origin_map_node_null");
+    if (!ReadValue(access, map_node, kMapNodeAdjacencyDataOffset, adjacency_rows))
+      return fail("adjacent_origin_rows_read");
+    if (!ReadValue(access, map_node, kMapNodeAdjacencyCountOffset, adjacency_count))
+      return fail("adjacent_origin_count_read");
+    if (adjacency_count < 0 || adjacency_count > kMaximumAdjacencyRows)
+      return fail("adjacent_origin_count_bounds");
+    if (adjacency_count > 0 && adjacency_rows == nullptr)
+      return fail("adjacent_origin_rows_null");
     for (std::int32_t row_index = 0; row_index < adjacency_count; ++row_index) {
-      const auto row_offset =
-          static_cast<std::size_t>(row_index) * kAdjacencyRowStride;
+      const auto row_offset = static_cast<std::size_t>(row_index) * kAdjacencyRowStride;
       std::int32_t raw_kind = -1;
       std::int32_t target_province_id = -1;
+      if (!ReadValue(access, adjacency_rows, row_offset + kAdjacencyRowKindOffset, raw_kind))
+        return fail("adjacent_row_kind_read");
       if (!ReadValue(access, adjacency_rows,
-                     row_offset + kAdjacencyRowKindOffset, raw_kind) ||
-          !ReadValue(access, adjacency_rows,
-                     row_offset + kAdjacencyRowTargetProvinceIdOffset,
-                     target_province_id) ||
-          raw_kind < 0 || raw_kind > 3 || target_province_id <= 0 ||
-          target_province_id >= province_count) {
-        return false;
-      }
-      const auto &target =
-          provinces[static_cast<std::size_t>(target_province_id)];
-      if (target.province == nullptr) {
-        return false;
-      }
-      if (target.holder_character_id <= 0 ||
-          target.belongs_to_player_subrealm) {
-        continue;
-      }
+                     row_offset + kAdjacencyRowTargetProvinceIdOffset, target_province_id))
+        return fail("adjacent_row_target_read");
+      if (raw_kind < 0 || raw_kind > 3) return fail("adjacent_row_kind_bounds");
+      if (target_province_id <= 0 || target_province_id >= province_count)
+        return fail("adjacent_row_target_bounds");
+      const auto &target = provinces[static_cast<std::size_t>(target_province_id)];
+      if (target.province == nullptr) return fail("adjacent_target_province_missing");
+      if (target.holder_character_id <= 0 || target.belongs_to_player_subrealm) continue;
       try {
-        output.adjacent_external_province_holder_character_ids.push_back(
-            target.holder_character_id);
+        output.adjacent_external_province_holder_character_ids.push_back(target.holder_character_id);
       } catch (...) {
-        return false;
+        return fail("adjacent_result_vector_allocation");
       }
     }
   }
   std::sort(output.adjacent_external_province_holder_character_ids.begin(),
             output.adjacent_external_province_holder_character_ids.end());
   output.adjacent_external_province_holder_character_ids.erase(
-      std::unique(
-          output.adjacent_external_province_holder_character_ids.begin(),
-          output.adjacent_external_province_holder_character_ids.end()),
+      std::unique(output.adjacent_external_province_holder_character_ids.begin(),
+                  output.adjacent_external_province_holder_character_ids.end()),
       output.adjacent_external_province_holder_character_ids.end());
+  if (failure_diagnostic != nullptr) {
+    failure_diagnostic->guard = {};
+    failure_diagnostic->resolver_guard = {};
+    failure_diagnostic->index = -1;
+    failure_diagnostic->holder_id = -1;
+  }
   return true;
 }
+
 
 bool ReadRelatedCharacterContext(
     const CampaignRootNativeEnvironmentV1 &environment,
@@ -2591,7 +2606,7 @@ bool ReadRealmProjection(
       failure = "direct_landed_vassals_unavailable";
       return false;
     }
-    if (!ReadAdjacentExternalProvinceHolders(environment, access, observed)) {
+    if (!ReadAdjacentExternalProvinceHolders(environment, access, observed, failure_diagnostic)) {
       failure = "adjacent_external_province_holders_unavailable";
       return false;
     }

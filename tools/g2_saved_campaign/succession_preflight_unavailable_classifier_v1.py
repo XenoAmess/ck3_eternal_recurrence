@@ -1,0 +1,48 @@
+"""Pure zero-credit classifier for source-bound unavailable succession root reads."""
+
+def classify_succession_preflight_unavailable_v1(body, *, initial_frame=None, game_pid=None):
+    if body.get('status') != 'readonly_unavailable':
+        return None
+    result, plan, frame = body.get('result'), body.get('plan'), body.get('planning_source_frame')
+    if (body.get('selected_step') is not None or not isinstance(plan, dict)
+            or plan.get('selected_step') is not None
+            or plan.get('phase') != 'succession_preflight_root_unavailable'
+            or plan.get('read_only') is not True or plan.get('replan_required') is not True
+            or not isinstance(result, dict)
+            or result.get('schema') != 'xar.succession-preflight-unavailable.v1'
+            or result.get('status') != 'unavailable'
+            or any(result.get(k) is not v for k, v in (
+                ('available', False), ('read_only', True), ('business_submission', False),
+                ('accepted', False), ('replan_required', True), ('replay_allowed', False),
+                ('succession_expectation_retained', False)))
+            or not isinstance(frame, dict) or frame.get('status') != 'complete'
+            or result.get('binding') != frame or not isinstance(initial_frame, dict)):
+        raise ValueError('readonly succession preflight outcome is malformed')
+    reason, source = result.get('unavailable_reason'), result.get('source')
+    if (not isinstance(reason, str) or not reason or len(reason) > 4096
+            or plan.get('reason') != reason or not isinstance(source, dict)
+            or source.get('capability') != 'game.command.query-campaign-root-context-v1'
+            or type(source.get('query_sequence')) is not int
+            or not 1 <= source['query_sequence'] <= 2**64 - 1):
+        raise ValueError('readonly succession preflight provenance differs')
+    for k in ('snapshot_id', 'revision'):
+        if body.get(k) != frame.get(k):
+            raise ValueError('readonly succession preflight public frame differs')
+    for k in ('actor_character_id', 'episode_run_id'):
+        if frame.get(k) != initial_frame.get(k):
+            raise ValueError('readonly succession preflight current identity/date differs')
+    if (type(frame.get('date_raw')) is not int or type(initial_frame.get('date_raw')) is not int
+            or frame['date_raw'] < initial_frame['date_raw']):
+        raise ValueError('readonly succession preflight date regressed from bootstrap')
+    if game_pid is not None and frame.get('bridge_pid') != game_pid:
+        raise ValueError('readonly succession preflight Game differs')
+    observation = {'kind': 'succession_preflight_readonly_unavailable', 'selected_step': None,
+                   'unavailable_reason': reason, 'query_sequence': source['query_sequence'],
+                   'accepted': False, 'business_submission': False, 'replan_required': True}
+    for k in ('primitive_verified', 'primitive_business_success', 'date_advanced',
+              'lifestyle_material_verified', 'lifestyle_applied', 'council_material_verified',
+              'construction_material_verified', 'construction_start_verified',
+              'construction_completion_verified', 'crown_material_verified',
+              'crown_receipt_nonmaterial', 'existing_typed_material_verified'):
+        observation[k] = False
+    return observation

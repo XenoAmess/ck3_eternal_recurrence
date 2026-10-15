@@ -5669,6 +5669,32 @@ std::string CampaignRootStateChangedDiagnosticFrame12004(
   return result + "}";
 }
 
+// Readonly adjacency diagnostics never change the Root result or readiness.
+std::string AdjacentProvinceHoldersFailureDiagnosticFrame12004(
+    std::string_view request_id, std::uint64_t revision,
+    std::uint64_t query_sequence, std::uint64_t connection_generation,
+    const xar::game::Snapshot &expected,
+    const xar::ck3_12002::HeldTitlePartitionFailure12002 &detail) {
+  std::string result = "{\"type\":\"snapshot_publish_diagnostic\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"phase\":\"end\",\"status\":\"campaign-root-adjacent-external-province-holders-unavailable\",\"payload_bytes\":0,\"diagnostic_kind\":\"campaign-root-adjacent-external-province-holders-failure-v1\",\"revision\":";
+  result += Number(revision);
+  result += ",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"pid\":" + Number(GetCurrentProcessId());
+  result += ",\"connection_generation\":" + Number(connection_generation);
+  result += ",\"date_raw\":" + SignedNumber(expected.date_raw);
+  result += ",\"expected_actor_id\":" + SignedNumber(expected.played_character_id);
+  result += ",\"observed_actor_id\":" + SignedNumber(detail.actor_id);
+  result += ",\"sample\":" + Number(detail.sample);
+  result += ",\"guard\":";
+  AppendJsonString(result, detail.guard);
+  result += ",\"resolver_guard\":";
+  AppendJsonString(result, detail.resolver_guard);
+  result += ",\"province_index\":" + SignedNumber(detail.index);
+  result += ",\"holder_character_id\":" + SignedNumber(detail.holder_id);
+  return result + "}";
+}
+
 // Reuse the already accepted independent diagnostic transport. The exact
 // seven-key campaign command result and root DTO are deliberately untouched.
 std::string HeldTitlePartitionFailureDiagnosticFrame12002(
@@ -13718,6 +13744,13 @@ std::string RunTypedQuery12002(
         query.campaign.unavailable_reason == "held_title_partition_unavailable" &&
         !query.held_partition_failure.guard.empty()) {
       *readonly_diagnostic = HeldTitlePartitionFailureDiagnosticFrame12002(
+          request_id, state.state_revision, state.campaign_root_context_query_sequence,
+          state.connection_generation, query.envelope.expected_snapshot,
+          query.held_partition_failure);
+    } else if (readonly_diagnostic != nullptr &&
+        query.campaign.unavailable_reason == "adjacent_external_province_holders_unavailable" &&
+        !query.held_partition_failure.guard.empty()) {
+      *readonly_diagnostic = AdjacentProvinceHoldersFailureDiagnosticFrame12004(
           request_id, state.state_revision, state.campaign_root_context_query_sequence,
           state.connection_generation, query.envelope.expected_snapshot,
           query.held_partition_failure);

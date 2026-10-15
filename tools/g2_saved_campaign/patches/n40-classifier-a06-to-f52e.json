@@ -1,0 +1,9 @@
+{
+  "base_sha256": "a06eb996e631365a95a1f35593e616c0ace330bcb7ec9301d85f67387727b5c4",
+  "candidate_sha256": "f52e4f08263d8f3a031ba6b2ece55fa105cfd945bde640b5b4944bc9041afc3e",
+  "scope": "Only typed readonly_unavailable succession preflight; every earlier class function AST preserved.",
+  "bootstrap_date_rule": "current exact-bound receipt date may advance; actor/episode/PID remain exact.",
+  "no_Game_calls": true,
+  "offline_tests": 9,
+  "patch_application_option": "--unidiff-zero"
+}

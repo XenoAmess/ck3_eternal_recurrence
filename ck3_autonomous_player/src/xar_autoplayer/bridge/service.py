@@ -1400,6 +1400,16 @@ class GameplayBridgeService:
                         json.dumps(error.read_only_query_retry, sort_keys=True)
                     )
                     raise error from retry_error
+            if turn_bundle.get("status") == "unavailable":
+                # The accepted root read is an observation, never an estate
+                # that can be frozen or permission to execute another action.
+                from .succession_preflight_unavailable_v1 import observe_unavailable_preflight_v1
+                reader = getattr(self.driver, "take_internal_semantic_snapshot", None)
+                current = reader() if callable(reader) else self.snapshot(
+                    include_native_command_history=False)
+                observation = observe_unavailable_preflight_v1(
+                    turn_bundle, current, self._observed_planning_source_frame(current))
+                return {**current, "_succession_preflight_unavailable_v1": observation}
             retain(turn_bundle, expected_revision=revision)
             refreshed = getattr(
                 self.driver, "take_internal_semantic_snapshot", None
@@ -1717,6 +1727,14 @@ class GameplayBridgeService:
         snapshot = self._prepare_succession_transition_v1(
             snapshot, available_steps, deferred_release_root=deferred_release_root,
         )
+        unavailable = snapshot.get("_succession_preflight_unavailable_v1")
+        if isinstance(unavailable, dict):
+            return {"snapshot_id": snapshot["snapshot_id"], "revision": snapshot["revision"],
+                    "planning_source_frame": unavailable["binding"],
+                    "_succession_preflight_unavailable_v1": unavailable,
+                    "plan": {"phase": "succession_preflight_root_unavailable",
+                             "selected_step": None, "reason": unavailable["unavailable_reason"],
+                             "read_only": True, "replan_required": True}}
         # These getters filter already validated Native observations. They do
         # not turn the semantic cache into a fresh UI read, or rebind world DTOs.
         snapshot = dict(snapshot)
@@ -4161,6 +4179,13 @@ class GameplayBridgeService:
             if self._readonly_war_entry_rejection_refresh is not None:
                 return refreshed
         planned = self.plan_turn()
+        unavailable = planned.get("_succession_preflight_unavailable_v1")
+        if isinstance(unavailable, dict):
+            # No execute hook, world command, date advance or old plan replay.
+            return {"status": "readonly_unavailable", "selected_step": None,
+                    "snapshot_id": planned["snapshot_id"], "revision": planned["revision"],
+                    "planning_source_frame": planned["planning_source_frame"],
+                    "plan": planned["plan"], "result": unavailable}
         outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
             self._execute_planned_turn(planned, before_submit=before_submit)))
         outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
