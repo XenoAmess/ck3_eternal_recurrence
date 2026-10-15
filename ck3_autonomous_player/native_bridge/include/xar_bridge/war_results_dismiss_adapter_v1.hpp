@@ -5,8 +5,9 @@
 
 namespace xar::ck3_11906 {
 
-// Only the fixed WarResultsWindow.Dismiss button uses this adapter. The caller
-// has already admitted its current owner, exact build, widget and callback.
+// Only fixed WarResultsWindow.Dismiss and WarDeclaredOverviewWindow.Close
+// buttons use this adapter. The caller has already admitted the current owner,
+// exact build, fixed window/button, and its single bound callback.
 enum class WarResultsDismissStageV1 : std::uint8_t {
   not_attempted, preflight_rejected, callback_entered, callback_returned,
   callback_exception,

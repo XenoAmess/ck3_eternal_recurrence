@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <string_view>
 
@@ -442,6 +443,18 @@ int main() {
   native_environment.button_base_slot13 =
       reinterpret_cast<void *>(&Slot13Marker);
   bool native_handled = true;
+  // The old war-declared Close path formatted raw native addresses with
+  // std::hex, unlike this transport's uppercase-only pointer contract.
+  // Reproduce its deterministic rejection before any GUI dispatch occurs.
+  std::ostringstream old_war_pointer;
+  old_war_pointer << "0x" << std::hex << std::uintptr_t{0xABCDEF};
+  ok &= Expect(old_war_pointer.str() == "0xabcdef" &&
+      !xar::ck3_11906::DispatchZhongguoScoreboardActionNativeV1(
+          &native_environment, xar::game::ZhongguoScoreboardActionV1::open,
+          "dismiss", "dismiss", old_war_pointer.str(),
+          PointerValue(reinterpret_cast<std::uintptr_t>(native.target_vtable.data())),
+          native_handled) && !native_handled && native.calls == 0,
+      "old war-declared lowercase pointer must fail before invoking a callback");
   const auto native_invoked =
       xar::ck3_11906::DispatchZhongguoScoreboardActionNativeV1(
           &native_environment,

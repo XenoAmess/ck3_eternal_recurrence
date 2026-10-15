@@ -1053,12 +1053,6 @@ struct WarDeclaredWindowObservationV1 {
   std::string read_failure;
 };
 
-std::string WarDeclaredPointerV1(void *pointer) {
-  std::ostringstream out;
-  out << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(pointer);
-  return out.str();
-}
-
 // Unlike the legacy resolver, a normal null return is distinct from an AV.
 // The fixed top-level window lookup uses the existing qualified GUI owner ABI.
 bool CallWarDeclaredFindTopV1(NativeZhongguoFindTopLevelWidgetV1 find,
@@ -1230,31 +1224,38 @@ bool ResolveWarDeclaredCloseButtonV1(
   return false;
 }
 
-bool DispatchWarResultsDismissV1(WarDeclaredOverviewMailboxContextV1 &q,
+bool DispatchFixedWarWindowCloseV1(WarDeclaredOverviewMailboxContextV1 &q,
     void *expected_root, void *target, void *expected_vtable,
+    std::string_view expected_name,
     WarResultsDismissTraceV1 &trace) noexcept {
   trace.stage = WarResultsDismissStageV1::preflight_rejected;
   trace.exception_code = 0;
-  if (!q.war_results || !expected_root || !target || !expected_vtable ||
+  const auto window_name = q.war_results ? kWarResultsWindowNameV1 :
+      kWarDeclaredOverviewWindowNameV1;
+  const bool fixed_name = q.war_results ? expected_name == "close_button" :
+      (expected_name == "dismiss" || expected_name == "button_close");
+  if (!fixed_name || !expected_root || !target || !expected_vtable ||
       q.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
       !InspectFixedGuiWidgetDispatchAdmissionV1(q.dispatch_environment,
                                                   target, expected_vtable)) return false;
 
-  // The second lookup must still identify the original bottom Dismiss widget.
+  // Recheck the same fixed stock button: WarResultsWindow.Dismiss or
+  // WarDeclaredOverviewWindow.Close. Keep native pointers throughout; the old
+  // overview formatter emitted lowercase hex rejected by the action parser.
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr, *current_target = nullptr, *current_vtable = nullptr;
   bool visible = false, enabled = false;
   std::string actual_name;
-  if (!ResolveNamedGuiWidgetV1(q.environment,access,kWarResultsWindowNameV1,
-                               "close_button",root,current_target) ||
+  if (!ResolveNamedGuiWidgetV1(q.environment,access,window_name,
+                               expected_name,root,current_target) ||
       root != expected_root || current_target != target ||
       !ReadGuiWidgetRuntimeV1(access,target,actual_name,current_vtable,
                               visible,enabled) ||
-      actual_name != "close_button" || current_vtable != expected_vtable ||
+      actual_name != expected_name || current_vtable != expected_vtable ||
       !visible || !enabled) return false;
 
   // CK3's button slot 13 selects the primary group when populated, otherwise
-  // the fallback group. The stock GUI Dismiss binding must be unambiguous.
+  // the fallback group. The stock GUI close binding must be unambiguous.
   std::int32_t primary_count = 0, count = 0;
   if (!Value(target,kZhongguoPrimaryCallbackGroupOffset +
                     kZhongguoCallbackGroupCountOffset,primary_count) ||
@@ -1413,16 +1414,9 @@ bool ExecuteWarDeclaredOverviewMailboxV1(
         return true;
       }
       out.dispatch_attempted = true;
-      if (q->war_results) {
-        out.dispatch_invoked = DispatchWarResultsDismissV1(
-            *q,initial.root,target,vtable,out.dismiss_trace);
-        out.native_handled = out.dispatch_invoked;
-      } else {
-        out.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
-            &q->dispatch_environment,game::ZhongguoScoreboardActionV1::open,
-            out.button_name,out.button_name,WarDeclaredPointerV1(target),WarDeclaredPointerV1(vtable),
-            out.native_handled);
-      }
+      out.dispatch_invoked = DispatchFixedWarWindowCloseV1(
+          *q,initial.root,target,vtable,out.button_name,out.dismiss_trace);
+      out.native_handled = out.dispatch_invoked;
     }
     // Actual native UI reads after the invocation; never SDK semantic cache.
     IngameUiGuiOwnerBindingV1 owner_after{};
@@ -1510,6 +1504,9 @@ std::string SerializeWarDeclaredOverviewResultV1(const WarDeclaredOverviewResult
   if (v.war_results)
     o << ",\"dismiss_stage\":\"" << WarResultsDismissStageNameV1(v.dismiss_trace.stage)
       << "\",\"dismiss_exception_code\":" << v.dismiss_trace.exception_code;
+  else
+    o << ",\"close_stage\":\"" << WarResultsDismissStageNameV1(v.dismiss_trace.stage)
+      << "\",\"close_exception_code\":" << v.dismiss_trace.exception_code;
   o << "}";
   return o.str();
 }

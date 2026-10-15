@@ -37,6 +37,8 @@ _FIELDS = _BOOL_FIELDS | {
     "pump_epoch", "thread_id", "game_version", "executable_sha256",
     "request_id", "ticket_sequence", "root_observation_source", "post_observation_source",
 }
+_CLOSE_TRACE_FIELDS = _FIELDS | {"close_stage", "close_exception_code"}
+_CLOSE_STAGES = {"not_attempted", "preflight_rejected", "callback_entered", "callback_returned", "callback_exception"}
 
 
 def _integer(value: object, name: str, low: int, high: int) -> int:
@@ -64,7 +66,7 @@ def normalize_war_declared_overview_v1(
     owner_receipt: Mapping[str, object],
 ) -> dict[str, object]:
     """Validate only the actual Native leaf, against independent before sources."""
-    if not isinstance(value, Mapping) or set(value) != _FIELDS:
+    if not isinstance(value, Mapping) or set(value) not in (_FIELDS, _CLOSE_TRACE_FIELDS):
         raise ValueError("war overview Native leaf shape is malformed")
     owner_receipt = normalize_war_declared_overview_owner_receipt_v1(
         owner_receipt, request_id=owner_receipt.get("request_id") if isinstance(owner_receipt, Mapping) else None,
@@ -78,6 +80,21 @@ def normalize_war_declared_overview_v1(
     for key in _BOOL_FIELDS:
         if type(row[key]) is not bool:
             raise ValueError(f"war overview {key} must be an actual boolean")
+    if "close_stage" in row:
+        stage = row["close_stage"]
+        code = _integer(row["close_exception_code"], "close_exception_code", 0, (1 << 32) - 1)
+        if type(stage) is not str or stage not in _CLOSE_STAGES:
+            raise ValueError("war overview Close stage is invalid")
+        if stage == "not_attempted":
+            valid = not row["dispatch_attempted"] and not row["dispatch_invoked"] and code == 0
+        elif stage in {"preflight_rejected", "callback_entered"}:
+            valid = row["dispatch_attempted"] and not row["dispatch_invoked"] and code == 0
+        elif stage == "callback_returned":
+            valid = row["dispatch_attempted"] and row["dispatch_invoked"] and row["native_handled"] and code == 0
+        else:
+            valid = row["dispatch_attempted"] and not row["dispatch_invoked"] and code != 0
+        if not valid:
+            raise ValueError("war overview Close stage contradicts actual dispatch")
     for key in ("status", "unavailable_reason", "button_name", "request_id", "root_observation_source", "post_observation_source"):
         if type(row[key]) is not str:
             raise ValueError(f"war overview {key} must be native text")
