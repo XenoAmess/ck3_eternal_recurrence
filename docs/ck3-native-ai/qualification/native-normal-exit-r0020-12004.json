@@ -1,0 +1,100 @@
+{
+  "schema": "ck3-native-exit-live-qualification-summary-v1",
+  "machine_id": "bf-202609141645-5434332d4d",
+  "observed_at_utc": "2026-10-15T11:15:34.098908+00:00",
+  "run_id": "bf-202609141645-5434332d4d--more-tenets-slots--R0020",
+  "status": "LIVE_QUALIFIED_RECORDED_PROFILE_ONLY",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "language": "simp_chinese",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "runtime_mapping_sha256": "44857c7feba738b5959ffe3e838bbe907a21adad60cb5cfaf0b7f79ad5feb006",
+  "manifest_sha256": "7afbf96d4ec226063b20520b0a60cbc922ffc11eb11b77fe4718d2fef5289ff3",
+  "immutable_ready_sha256": "3e2883c5cd2711994c53f6d17f0e65e171c3c63e5e0292907b20d519a8d73c86",
+  "production_dll_sha256": "bfdfb1fe7f02321e7f7d1117e13953131d93c8f1eab6716b9572838e6f3eb612",
+  "frozen_framework_commit": "82e71018739ba112660d1784867ce5948521fb34",
+  "source_inventory_sha256": "eef3902681166c1fdbf88cf943c48ad50f96bdf8d67122131a09fd980b503d68",
+  "process_identity": {
+    "game_pid": 15228,
+    "played_character_id": 33339,
+    "connection_generation": 1,
+    "process_creation_filetime_100ns": 134365280174723258
+  },
+  "scope": {
+    "product": "more-tenets-slots",
+    "formal_product_files": 48,
+    "gui_mod_files": 2,
+    "case": "native-legacy-v10-edit",
+    "source_save_class": "prepublication_v10_candidate",
+    "normal_exit_query_and_request_provider": "live_qualified_for_recorded_profile",
+    "source_and_loaded_gui_binding_verified": true,
+    "exit_autosave_true_to_false_verified": true,
+    "official_native_callback_and_later_same_process_os0_verified": true,
+    "ck3_observe_normal_exit_v1_live_qualified": false,
+    "already_false_idempotent_action_live_exercised": false,
+    "autosave_artifact_integrity_verified": false,
+    "all_mods_qualified": false,
+    "business_credit_granted_by_this_supplement": false,
+    "fresh_campaign_credit": false,
+    "cold_load_credit": false,
+    "published_v10_save_compatibility_credit": false,
+    "workshop_release_credit": false
+  },
+  "source_flags": {
+    "exact_build_verified": true,
+    "owner_verified": true,
+    "process_identity_verified": true,
+    "source_abi_pins_verified": true,
+    "stock_files_verified": true,
+    "loaded_source_binding_verified": true,
+    "frame_verified": true
+  },
+  "actual_mcp_requests": {
+    "ck3_query_normal_exit_context_v1": 6,
+    "ck3_request_normal_exit_v1": 4
+  },
+  "actual_action_submission_counts": {
+    "prepare_confirmation": 1,
+    "continue_preparation": 1,
+    "disable_exit_autosave": 1,
+    "confirm_desktop": 1
+  },
+  "action_statuses": {
+    "prepare_confirmation": "dispatch_unknown_claimed",
+    "continue_preparation": "dispatch_unknown_claimed",
+    "disable_exit_autosave": "autosave_disabled",
+    "confirm_desktop": "dispatch_unknown_claimed"
+  },
+  "immediate_exit_reply": {
+    "process_exit_observed": false,
+    "typed_normal_exit_observed": false,
+    "wait_state": "timeout",
+    "exit_code": 259,
+    "autosave_verified": false
+  },
+  "independent_terminal_proof": {
+    "managed_session_exit_reason": "process_exit",
+    "managed_process_exit_code": 0,
+    "managed_finished_at": "2026-10-15T10:49:55.298474+00:00",
+    "managed_cleanup_proven": true,
+    "tree_gone": true,
+    "host_original_wait": 0,
+    "public_original_wait": 0,
+    "keeper_actual_wait": 0,
+    "resource_release_sequence": 6110,
+    "resource_release_at_utc": "2026-10-15T10:58:04.915976+00:00",
+    "normal_close_qualified": true
+  },
+  "external_supplement": {
+    "relative_to_machine_common_runtime_root": "20261015-native-religion-007/LIVE-QUALIFICATION-R0020.actual.json",
+    "bytes": 17080,
+    "sha256": "879c3a9fe2ca5f36e1cfc208ad41d03c763be30fd811cffc4fd4c2946cd5c657"
+  },
+  "product_report": {
+    "repository": "XenoAmess/ck3_mod_more_tenant_slots",
+    "path": "docs/native-legacy-r20-2026-10-15.md",
+    "url": "https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/native-legacy-r20-2026-10-15.md"
+  },
+  "old_artifacts_changed": false,
+  "new_game_actions_or_retests_performed": false
+}
