@@ -1,0 +1,106 @@
+{
+  "schema": "xar.episode04.r0173-portable-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-15T13:21:47.228975+00:00",
+  "observed_source_head": "8dd6d84a60aa246f527a72173117e42a6c107dc2",
+  "packaging_head": "e97673186312c78c721ce1af8147beab7f8ab758",
+  "scope": "Exact original completed text receipts. No raw video, save, game binary, current-machine acceptance or human signoff.",
+  "files": {
+    "cash21.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-boarding-days17to21-a01-d21-10-cash-query-0.json",
+      "bytes": 544972,
+      "sha256": "81823f31eb3733f63269ccfd0dc9c08685acbb69e679ba9fb498638ce4402a85"
+    },
+    "cash21-before.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-boarding-days17to21-a01-d21-10-cash-before-0.json",
+      "bytes": 149341,
+      "sha256": "9eb0d533170a2d19583bac8c3e24775a7c2d24e189685d058b218cce1bfc6125"
+    },
+    "day21-final.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-boarding-days17to21-a01-d21-12-final.json",
+      "bytes": 149329,
+      "sha256": "94bf905d0b4b03f6d56b0d074403c71ec33ea0a4a98d572cc95fc53e13a743a5"
+    },
+    "day21-summary.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\bounded-days-runner-a01\\day-21.complete.json",
+      "bytes": 7148,
+      "sha256": "74a59e14712048d95e8aa1c8eb5b8a2895209144c802ea02cc58cd54e4b7043b"
+    },
+    "halt-before.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\032-before-halt-once.json",
+      "bytes": 149247,
+      "sha256": "468b0fd0fa761640479b857ad868fdaa63529da9d290ac34ff4eef5f18cefbad"
+    },
+    "halt-request.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\033-halt-once.json",
+      "bytes": 2254,
+      "sha256": "670d749fd0676cbce22d2b2c65ebfe22574fada740297a03428637a3892e81c6"
+    },
+    "halt-after-asynchronous.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\036-halt-later-independent.json",
+      "bytes": 148736,
+      "sha256": "cd49c0f3b759dafe9cff85052c7c736eb4f2389a1720b8f46c4f52445b15cc67"
+    },
+    "day22-final.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-halt-followup-day22-a01-d22-12-final.json",
+      "bytes": 148813,
+      "sha256": "f31d04dcfd36f54025e23cb5be0a5be6cac6dbe392986c76b76b46cf831fcb28"
+    },
+    "day22-summary.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\bounded-days-runner-a01\\day-22.complete.json",
+      "bytes": 7352,
+      "sha256": "c3af3d8c4e57b5cad82837995a6d07e28b1a871e17dbba6cc9224fea6b4616a6"
+    },
+    "halt-next-day.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\halt-next-day.actual-a01.json",
+      "bytes": 1903,
+      "sha256": "94dfdd4ae5aabe00fe6d1ebb0f91c92ec3856f74a7bcf5c0a5c36b3e6a8999e1"
+    },
+    "identity.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 5642,
+      "sha256": "0090200a0c2dd8d3ff68084f2e96065ffb371f514ecc12eae9a71831295ccad6"
+    },
+    "build-qualification.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\production-build-qualification.actual-a01.json",
+      "bytes": 3155,
+      "sha256": "e4d3ee33301d1449d63ae8e79be71ba92d1b3a41becc4e9aad793c2abb4a7f6e"
+    },
+    "recorder-result.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\raw-boarding-halt-a01\\result.json",
+      "bytes": 818,
+      "sha256": "689de12b8fd28d81557973d3d5aad5de1839d98bd9399fc622b067f25f620856"
+    },
+    "media-audit.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\media-audit-a01\\report.json",
+      "bytes": 4935,
+      "sha256": "efad387df74d72a7b37d175293af46a03ab31ea9d0cd08297b4d6b550544afb2"
+    },
+    "bootstrap-result.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\bootstrap-result.json",
+      "bytes": 14366,
+      "sha256": "4c3d0f223f2c3bd9acf103e9bdf20b25d61e91a3bda56772f316503d2604aad3"
+    },
+    "display-restore.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\display-restore.actual-a01.json",
+      "bytes": 687,
+      "sha256": "4363a3a48c8a5c20ab5439642fcff59ce0164791f9acab9905322b8bf740a0e4"
+    },
+    "screen-release.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\screen-release.actual-a01.json",
+      "bytes": 2407,
+      "sha256": "f126d21efeb0eec7975fe7f75cfacee792420ea6164b6e836254b3400c1ebc13"
+    },
+    "payment-strict-delivery.json": {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\r0173-day21-payment-strict-reader-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 2511,
+      "sha256": "aea018e113693639a2d8accc77a5441ce5b6176b9c148c2a54959d83768d8bdd"
+    }
+  },
+  "archive": {
+    "path": "original-receipts.zip",
+    "bytes": 145050,
+    "sha256": "7fdaefbd4757d63e35e1d6869e00adecd6b314d9b5b3ae954a380f1bfdef7b76"
+  },
+  "uncompressed_bytes": 1343616
+}

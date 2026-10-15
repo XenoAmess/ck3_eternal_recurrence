@@ -42,11 +42,13 @@ class Clock:
 
 
 class Kernel:
-    def __init__(self, signaled_from_call, exit_code):
+    def __init__(self, signaled_from_call, exit_code, exit_sequence=None):
         self.signaled_from_call = signaled_from_call
         self.exit_code = exit_code
         self.wait_calls = 0
         self.exit_reads = 0
+        self.exit_sequence = exit_sequence
+        self.exit_observations = []
 
     def WaitForSingleObject(self, handle, timeout):
         if (handle, timeout) != (123, 0):
@@ -58,8 +60,11 @@ class Kernel:
         if handle != 123:
             raise AssertionError('Wrong retained handle')
         self.exit_reads += 1
-        pointer._obj.value = self.exit_code
-        return 1
+        available, code = (self.exit_sequence[self.exit_reads - 1]
+                           if self.exit_sequence is not None else (1, self.exit_code))
+        self.exit_observations.append((handle, self.wait_calls, available, code))
+        pointer._obj.value = code
+        return available
 
 
 class MissingResponse:
@@ -114,9 +119,9 @@ class FakeClient:
 
 
 class ManualQuitRetainedExit(unittest.TestCase):
-    def exercise(self, signaled_from_call, exit_code):
+    def exercise(self, signaled_from_call, exit_code, exit_sequence=None):
         clock = Clock()
-        kernel = Kernel(signaled_from_call, exit_code)
+        kernel = Kernel(signaled_from_call, exit_code, exit_sequence)
         client = FakeClient(clock, kernel)
         with contextlib.redirect_stdout(io.StringIO()):
             result = normal_close_method(clock)(client, 'failed')
@@ -132,7 +137,10 @@ class ManualQuitRetainedExit(unittest.TestCase):
     def test_signaled_handle_breaks_manual_wait_and_reads_actual_nonzero_exit(self):
         clock, kernel, result = self.exercise(2, 1)
         self.assertEqual(clock.sleeps, 0)
-        self.assertEqual(kernel.exit_reads, 1)
+        # First read ends manual waiting; the later read independently
+        # populates actual-retained-handle-os-exit on the same handle.
+        self.assertEqual(kernel.exit_observations,
+                         [(123, 2, 1, 1), (123, 4, 1, 1)])
         self.assertTrue(result['retained_handle']['signaled'])
         self.assertEqual(result['retained_handle']['exit_code'], 1)
         self.assertFalse(result['retained_handle']['actual_retained_os0'])
@@ -140,9 +148,19 @@ class ManualQuitRetainedExit(unittest.TestCase):
     def test_live_handle_keeps_polling_then_real_os0_does_not_forge_gui_or_normal_pass(self):
         clock, kernel, result = self.exercise(3, 0)
         self.assertEqual(clock.sleeps, 1)
-        self.assertEqual(kernel.exit_reads, 1)
+        self.assertEqual(kernel.exit_observations,
+                         [(123, 3, 1, 0), (123, 5, 1, 0)])
         self.assertTrue(result['retained_handle']['actual_retained_os0'])
         self.assertFalse(result['normal_close_qualified'])
+
+    def test_final_retained_read_failure_does_not_reuse_manual_wait_os0(self):
+        clock, kernel, result = self.exercise(2, 0, [(1, 0), (0, 0)])
+        self.assertEqual(clock.sleeps, 0)
+        self.assertEqual(kernel.exit_observations,
+                         [(123, 2, 1, 0), (123, 4, 0, 0)])
+        self.assertTrue(result['retained_handle']['signaled'])
+        self.assertIsNone(result['retained_handle']['exit_code'])
+        self.assertFalse(result['retained_handle']['actual_retained_os0'])
 
     def test_original_deadline_stops_running_handle_without_manufacturing_exit(self):
         clock, kernel, result = self.exercise(100, 1)

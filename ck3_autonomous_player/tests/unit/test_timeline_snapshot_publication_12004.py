@@ -44,13 +44,31 @@ class TimelineSnapshotPublication12004Tests(unittest.TestCase):
                                      use_observation)
 
     def test_null_observation_uses_existing_complete_snapshot_reader(self):
-        self.assertIn(
-            "if (observed_snapshot != nullptr) {\n"
-            "    snapshot = *observed_snapshot;\n"
-            "  } else if (!xar::game::ReadSnapshot(bindings, snapshot)) {\n"
-            '    record("read_failed", revision, 0);\n'
-            "    return true;\n"
-            "  }", BRIDGE)
+        route = re.search(
+            r"if \(observed_snapshot != nullptr\) \{\s*"
+            r"snapshot = \*observed_snapshot;\s*"
+            r"\} else if \(!xar::game::ReadSnapshot\(bindings, snapshot\)\) \{"
+            r"(?P<failure>.*?)\n  \}\n  if \(mailbox_lifetime != nullptr\)",
+            BRIDGE, re.DOTALL)
+        self.assertIsNotNone(route)
+        failure = re.sub(r"//[^\n]*", "", route.group("failure"))
+        # A failed full read may refresh payment identity from a fresh narrow
+        # reader. It must still return before complete-frame publication.
+        self.assertRegex(failure, r"#if defined\(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004\)")
+        self.assertRegex(
+            failure,
+            r"PaymentIdentityCoreContext12004 identity_context\{\s*&bindings,\s*"
+            r"g_war_payment_connection_12004\.load\(std::memory_order_acquire\),revision\};")
+        self.assertRegex(
+            failure,
+            r"RefreshWarPaymentIdentityAfterSnapshotUnavailable12004\(\s*"
+            r"g_war_payment_window_12004,&ReadPaymentIdentityCoreFrame12004,&identity_context\);")
+        self.assertRegex(
+            failure,
+            r'#endif\s*record\("read_failed", revision, 0\);\s*return true;\s*\Z')
+        self.assertNotRegex(
+            failure,
+            r"ObserveWarPaymentWindowFrame12004|PaymentFrame12004|mailbox_lifetime|snapshot\s*=")
 
     def test_core_only_stress_stays_rejected_and_complete_frame_is_accepted(self):
         endpoint = FakeEndpoint()
