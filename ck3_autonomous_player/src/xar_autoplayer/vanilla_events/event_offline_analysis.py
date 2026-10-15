@@ -234,28 +234,147 @@ def _stamp(path):
     return stat.st_size, stat.st_mtime_ns
 
 
+_SOURCE_REBIND_IDENTITY_KEYS = (
+    "ck3_build", "required_ck3_exe_sha256", "native_backend_id",
+    "event_definition_key", "native_option_count",
+)
+
+
+def _source_rebind_root_shape(capture, facts, current):
+    """Admit only a fresh, bound character-event root and source option shape.
+
+    Old source facts do not contain an earlier root-scope snapshot. The event
+    script's declared type is therefore the independent shape authority.
+    Other event types remain unknown until they get their own exact binding.
+    """
+    context = capture.get("window_context")
+    frame = capture.get("binding")
+    if not isinstance(context, dict) or not isinstance(frame, dict):
+        raise ValueError("fresh event/frame binding unavailable")
+    instance = context.get("current_event_instance_id")
+    if (type(instance) is not int or instance <= 0
+            or capture.get("current_event_instance_id") != instance
+            or type(context.get("snapshot_revision")) is not int
+            or context.get("snapshot_revision") != frame.get("native_revision")
+            or type(context.get("date_raw")) is not int
+            or context.get("date_raw") != frame.get("date_raw")):
+        raise ValueError("fresh event instance or semantic frame differs")
+    readiness = context.get("readiness")
+    if (context.get("status") != "available" or not isinstance(readiness, dict)
+            or any(readiness.get(key) is not True for key in (
+                "event_definition_identity_ready", "root_scope_ready",
+                "saved_scopes_ready", "option_presentation_ready"))):
+        raise ValueError("fresh event context is not fully bound")
+    definition = facts.get("definition")
+    if not isinstance(definition, str) or _scalars(definition, "type") != ["character_event"]:
+        raise ValueError("source-declared character-event root unavailable")
+    root = context.get("root_scope")
+    identity = root.get("typed_identity") if isinstance(root, dict) else None
+    actor = frame.get("actor_character_id")
+    if (not isinstance(root, dict) or root.get("status") != "available"
+            or type(root.get("raw_type_index")) is not int
+            or root.get("raw_type_index") != 4 or root.get("type_key") != "character"
+            or type(root.get("subtype")) is not int or root.get("subtype") != 0
+            or not isinstance(identity, dict)
+            or identity.get("status") != "available" or identity.get("kind") != "character"
+            or type(actor) is not int or actor <= 0 or identity.get("character_id") != actor):
+        raise ValueError("fresh native root scope shape or actor differs")
+    source_options = facts.get("options")
+    native_options = context.get("options")
+    if (not isinstance(source_options, list)
+            or len(source_options) != current["native_option_count"]
+            or not isinstance(native_options, list) or not native_options
+            or [row.get("native_option_index") for row in source_options]
+               != list(range(current["native_option_count"]))):
+        raise ValueError("source/native option catalogue shape differs")
+    indexes = [row.get("native_option_index") for row in native_options
+               if isinstance(row, dict)]
+    if (len(indexes) != len(native_options) or len(set(indexes)) != len(indexes)
+            or any(type(index) is not int or not 0 <= index < len(source_options)
+                   for index in indexes)):
+        raise ValueError("fresh native option indexes are not unique source indexes")
+    shown = [row for row in native_options if row.get("shown") is True]
+    if (not shown or any(type(row.get("rendered_index")) is not int
+                         or row["rendered_index"] < 0 for row in shown)
+            or len({row["rendered_index"] for row in shown}) != len(shown)):
+        raise ValueError("fresh shown option order is unavailable")
+    enabled_shown = [row for row in shown if row.get("enabled") is True]
+    first = min(enabled_shown or shown, key=lambda row: row["rendered_index"])
+    selection = capture.get("selection")
+    if (not isinstance(selection, dict)
+            or selection.get("native_option_index") != first["native_option_index"]
+            or selection.get("rendered_index") != first["rendered_index"]
+            or selection.get("option_number") != first["native_option_index"] + 1
+            or selection.get("enabled") is not first.get("enabled")):
+        raise ValueError("first shown enabled option is not the bound native option")
+    return {"source_event_type": "character_event", "raw_type_index": 4,
+            "type_key": "character", "subtype": 0,
+            "typed_identity_kind": "character", "actor_character_id": actor}
+
+
 def load_source_reviewed_event_v1(state_dir, capture):
     try:
         current = _native_binding(capture)
     except (ValueError, TypeError, KeyError) as error:
         return None, {"status": "unknown", "reason": str(error)}
     rejected = []
+    source_rebind_entries = []
+    exact_entry_seen = False
     for path in sorted((Path(state_dir) / "evidence/event-source-registry").glob("*.json")):
         try:
             entry, raw = read_json(path, 64 * 1024)
             binding = entry.get("binding", {})
             if binding.get("event_definition_key") != current["event_definition_key"]:
                 continue
-            if (entry.get("schema") != SCHEMA or entry.get("fingerprint") != path.stem
-                    or any(binding.get(k) != v for k, v in current.items())):
-                raise ValueError("current event/source option/build identity differs")
+            exact = all(binding.get(k) == v for k, v in current.items())
+            exact_entry_seen |= exact
+            if (entry.get("schema") != SCHEMA or entry.get("fingerprint") != path.stem):
+                raise ValueError("event source registry schema/fingerprint differs")
+            if exact:
+                known = _validated(raw, _stamp(entry["source_path"]), _stamp(entry["source_facts"]["path"]))
+                return known, {"status": "offline-source-reviewed", "binding_mode": "exact",
+                               "fingerprint": path.stem, "entry_path": str(path), "entry_sha256": _sha(raw),
+                               "material_effects_verified": False, "registry_contract_accepted": False}
+            if any(binding.get(k) != current[k] for k in _SOURCE_REBIND_IDENTITY_KEYS):
+                # A valid old entry from another build/option shape is not a
+                # source-rebind candidate for this native observation.
+                continue
             known = _validated(raw, _stamp(entry["source_path"]), _stamp(entry["source_facts"]["path"]))
-            return known, {"status": "offline-source-reviewed", "fingerprint": path.stem,
-                           "entry_path": str(path), "entry_sha256": _sha(raw),
-                           "material_effects_verified": False, "registry_contract_accepted": False}
+            source_rebind_entries.append((path, raw, known))
         except (OSError, ValueError, KeyError, TypeError) as error:
             if len(rejected) < 8:
                 rejected.append({"entry": path.name, "reason": str(error)})
+    if exact_entry_seen:
+        return None, {"status": "unknown", "reason": "exact event binding failed validation",
+                      "rejected_entries": rejected}
+    if source_rebind_entries and not rejected:
+        source_pairs = {(entry["binding"]["source_sha256"],
+                         entry["binding"]["option_catalogue_sha256"])
+                        for _, _, entry in source_rebind_entries}
+        if len(source_pairs) == 1:
+            path, raw, known = source_rebind_entries[0]
+            try:
+                facts, _ = read_json(known["source_facts"]["path"])
+                shape = _source_rebind_root_shape(capture, facts, current)
+                old_binding = known["binding"]
+                fresh_binding = {**current,
+                                 "source_sha256": old_binding["source_sha256"],
+                                 "option_catalogue_sha256": old_binding["option_catalogue_sha256"]}
+                return known, {"status": "offline-source-reviewed",
+                    "binding_mode": "source_rebound", "fingerprint": path.stem,
+                    "entry_path": str(path), "entry_sha256": _sha(raw),
+                    "fresh_binding": fresh_binding,
+                    "fresh_binding_fingerprint": _fingerprint(fresh_binding),
+                    "adapted_from": {"fingerprint": path.stem,
+                                     "calculated_event_id": old_binding["calculated_event_id"],
+                                     "entry_sha256": _sha(raw)},
+                    "equivalent_source_fingerprints": [p.stem for p, _, _ in source_rebind_entries],
+                    "root_scope_shape": shape,
+                    "material_effects_verified": False, "registry_contract_accepted": False}
+            except (OSError, ValueError, KeyError, TypeError) as error:
+                rejected.append({"entry": path.name, "reason": str(error)})
+        else:
+            rejected.append({"reason": "conflicting source or option catalogue bindings"})
     return None, {"status": "unknown", "rejected_entries": rejected}
 
 
@@ -277,12 +396,12 @@ def annotate_source_reviewed_event_plan_v1(plan, state_dir):
                                        classification=known["classification"])
         result["phase"] = result["phase"].replace("active_event_unhandled_", "active_event_source_reviewed_")
         if result.get("selected_step") is None:
-            result["reason"] = ("Source-reviewed event: its first rendered option is disabled; do not substitute another option."
+            result["reason"] = ("Source-reviewed event: no shown native option is enabled."
                 if capture["selection"]["enabled"] is not True
-                else "Source-reviewed event: its first rendered option lacks an advertised native selection step.")
+                else "Source-reviewed event: its first shown enabled option lacks an advertised native selection step.")
     if known is not None and result.get("selected_step") is not None:
         result["phase"] = "active_event_source_reviewed_first_rendered_option"
-        result["reason"] = "Source-reviewed event: choose its current first rendered option under the owner's policy; material effects remain unverified."
+        result["reason"] = "Source-reviewed event: choose its current first shown enabled option under the owner's policy; material effects remain unverified."
     return result
 
 

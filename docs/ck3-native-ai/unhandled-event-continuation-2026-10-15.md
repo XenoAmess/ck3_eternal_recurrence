@@ -1,14 +1,14 @@
 # 未覆盖事件与弹窗：采集、MCP 续行、轮后离线补齐
 
-2026-10-15 用户明确要求所有未覆盖事件先留证、当场选界面第一项继续，一轮后再离线分析、批量补齐；当前疾病事件由执行者自主决定。选择必须通过 MCP，不使用 OCR 或鼠标。该顺序覆盖旧的逐事件补 registry 后才恢复游戏要求。
+2026-10-15 用户明确要求所有未覆盖事件先留证、当场选择展示顺序中第一个已启用项继续，一轮后再离线分析、批量补齐；当前疾病事件由执行者自主决定。选择必须通过 MCP，不使用 OCR 或鼠标。该顺序覆盖旧的逐事件补 registry 后才恢复游戏要求。
 
 ## 普通运行路径
 
-`choose_one_life_turn` 先保留已有可执行专用策略；未覆盖/合同无法消费的事件使用当前帧 `query-current-event-window-context-v1` 的真实显示选项。显示首项由最小 `rendered_index` 确定，再映射其 `native_option_index + 1` 为 `select-event-option-N`，不能假定 native0 就是显示首项。
+`choose_one_life_turn` 先保留已有可执行专用策略；未覆盖/合同无法消费的事件使用当前帧 `query-current-event-window-context-v1` 的真实显示选项。按最小 `rendered_index` 查找已启用的展示项，再映射其 `native_option_index + 1` 为 `select-event-option-N`；不能假定 native0 就是显示首项，也不能把已禁用的展示首项作为动作提交。
 
 `GameplayBridgeService._execute_planned_turn` 在调用既有 MCP/native 选择路径前，向本次 managed state 的 `evidence/unhandled-events/<incident-id>.before.json` 写入事件 definition ID、实例、玩家/episode、日期、公共/原生版本、root/saved scopes、选项和原处理缺口。提交后写同名 `.after.json`，分别保留 ACK 和 NativeDriver 的 `event_selection` 实际后验；ACK 本身不等于选项已生效。异常保存原结果未知状态，不重放动作。普通 plan/auto 都消费同一策略，不增加单机或特定事件白名单。
 
-公共 core 返回边界统一承接 `active_event*` 且未产出动作的早退，覆盖缺 registry、extended consumer、专用策略缺变体及 material observation 阻点。已产出有效动作的专用策略继续使用。若首项确实禁用、没有真实显示选项或来源已过帧，只记录实际诊断；不能伪造点击成功，也不能把另一项冒充第一项。
+公共 core 返回边界统一承接 `active_event*` 且未产出动作的早退，覆盖缺 registry、extended consumer、专用策略缺变体及 material observation 阻点。已产出有效动作的专用策略继续使用。若所有展示项禁用、没有真实显示选项或来源已过帧，只记录实际诊断；不能伪造点击成功。
 
 本场独立 feeder 在每个成功完整批次后，把该批新增 before/after 原件路径、SHA、事件 ID、实例及选择整理为 `continuation37/p04-offline-batches/<control>.json`。汇总完成即继续下一批；离线分析线程按这份清单查原版定义、补共享 registry/policy。分析不占用游戏现场，不把“已调用找医生”记成“已雇医生”或“疾病痊愈”。
 

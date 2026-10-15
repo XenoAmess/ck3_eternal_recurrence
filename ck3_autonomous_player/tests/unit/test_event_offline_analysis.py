@@ -19,7 +19,13 @@ def reviewed_case(tmp_path, monkeypatch):
     context = {"schema": "current-event-window-context-v1", "schema_version": 1,
         "status": "available", "event_definition_key": "synthetic.1", "calculated_event_id": 10001,
         "runtime_stats_ordinal": 9, "current_event_instance_id": 17, "snapshot_revision": 7,
-        "date_raw": 1000, "root_scope": {}, "saved_scopes": [], "readiness": {},
+        "date_raw": 1000,
+        "root_scope": {"status": "available", "raw_type_index": 4, "type_key": "character",
+            "subtype": 0, "typed_identity": {"status": "available", "kind": "character",
+                "character_id": 101}},
+        "saved_scopes": [], "readiness": {"event_definition_identity_ready": True,
+            "root_scope_ready": True, "saved_scopes_ready": True,
+            "option_presentation_ready": True},
         "provenance": {"backend_id": "ck3-1.20.0.4-native-event-window-v1", "fixture": "SYNTHETIC"},
         "options": [{"rendered_index": 0, "native_option_index": 1, "shown": True, "enabled": True,
                      "resolved_name": "Synthetic first displayed"},
@@ -87,7 +93,7 @@ def test_first_unknown_then_same_process_ordinary_boundary_is_known(reviewed_cas
     assert facts["options"][1]["direct_effect_statements"][0]["effect"] == "scripted_treatment_effect"
 
 
-@pytest.mark.parametrize("mutation", ["build", "calculated", "count", "option", "source", "facts"])
+@pytest.mark.parametrize("mutation", ["build", "count", "option", "source", "facts"])
 def test_changed_source_event_option_or_build_never_becomes_known(reviewed_case, mutation):
     case = reviewed_case
     report = publish(case)
@@ -95,8 +101,6 @@ def test_changed_source_event_option_or_build_never_becomes_known(reviewed_case,
     assert offline.load_source_reviewed_event_v1(case["state"], capture)[0] is not None
     if mutation == "build":
         capture["window_context"]["provenance"]["backend_id"] = "ck3-1.20.0.3-native-event-window-v1"
-    elif mutation == "calculated":
-        capture["window_context"]["calculated_event_id"] += 1
     elif mutation == "count":
         capture["snapshot_option_count"] += 1
     elif mutation == "option":
@@ -106,6 +110,71 @@ def test_changed_source_event_option_or_build_never_becomes_known(reviewed_case,
     else:
         Path(report["entries"][0]["canonical_source_facts"]["path"]).write_bytes(b'{}')
     known, audit = offline.load_source_reviewed_event_v1(case["state"], capture)
+    assert known is None and audit["status"] == "unknown"
+
+
+def test_changed_calculated_id_rebinds_only_same_source_and_fresh_root(reviewed_case):
+    case = reviewed_case
+    report = publish(case)
+    capture = copy.deepcopy(case["plan"]["unhandled_event_fallback"])
+    capture["window_context"]["calculated_event_id"] += 1
+    known, audit = offline.load_source_reviewed_event_v1(case["state"], capture)
+    assert known is not None and audit["binding_mode"] == "source_rebound"
+    assert audit["fresh_binding"]["calculated_event_id"] == 10002
+    assert audit["adapted_from"]["calculated_event_id"] == 10001
+    assert known["binding"]["calculated_event_id"] == 10001
+    assert Path(report["entries"][0]["published"]["path"]).exists()
+
+
+@pytest.mark.parametrize("mutation", ["root", "catalogue"])
+def test_changed_root_or_source_catalogue_refuses_rebinding(reviewed_case, mutation):
+    case = reviewed_case
+    report = publish(case)
+    capture = copy.deepcopy(case["plan"]["unhandled_event_fallback"])
+    capture["window_context"]["calculated_event_id"] += 1
+    if mutation == "root":
+        capture["window_context"]["root_scope"]["typed_identity"]["character_id"] = 999
+    else:
+        entry = Path(report["entries"][0]["published"]["path"])
+        data = json.loads(entry.read_text(encoding="utf-8"))
+        data["binding"]["option_catalogue_sha256"] = "0" * 64
+        entry.write_text(json.dumps(data), encoding="utf-8")
+    known, audit = offline.load_source_reviewed_event_v1(case["state"], capture)
+    assert known is None and audit["status"] == "unknown"
+
+
+def test_source_rebound_retains_nonzero_native_option_at_first_rendered(reviewed_case):
+    case = reviewed_case
+    publish(case)
+    plan = copy.deepcopy(case["plan"])
+    assert plan["unhandled_event_fallback"]["selection"]["rendered_index"] == 0
+    assert plan["unhandled_event_fallback"]["selection"]["native_option_index"] == 1
+    plan["unhandled_event_fallback"]["window_context"]["calculated_event_id"] += 1
+    rebound = offline.annotate_source_reviewed_event_plan_v1(plan, case["state"])
+    assert rebound["selected_step"] == "select-event-option-2"
+    assert rebound["unhandled_event_fallback"]["source_knowledge"]["binding_mode"] == "source_rebound"
+    assert rebound["event_decision"]["material_effects_verified"] is False
+
+
+def test_source_rebound_skips_disabled_shown_option_but_refuses_stale_choice(reviewed_case):
+    case = reviewed_case
+    publish(case)
+    context = copy.deepcopy(case["context"])
+    context["calculated_event_id"] += 1
+    context["options"][0]["enabled"] = False
+    plan = plan_unhandled_event_fallback_v1(snapshot=case["snapshot"], event_context=context,
+        event_summary=case["snapshot"]["active_event"],
+        registry_decision={"status": "blocked", "unavailable_reason": "SYNTHETIC"},
+        action_steps=case["actions"])
+    rebound = offline.annotate_source_reviewed_event_plan_v1(plan, case["state"])
+    assert rebound["selected_step"] == "select-event-option-1"
+    assert rebound["unhandled_event_fallback"]["selection"]["rendered_index"] == 1
+    assert rebound["unhandled_event_fallback"]["selection"]["native_option_index"] == 0
+    assert rebound["unhandled_event_fallback"]["source_knowledge"]["binding_mode"] == "source_rebound"
+    stale = copy.deepcopy(plan["unhandled_event_fallback"])
+    stale["selection"].update(rendered_index=0, native_option_index=1,
+        option_number=2, enabled=False, selected_step="select-event-option-2")
+    known, audit = offline.load_source_reviewed_event_v1(case["state"], stale)
     assert known is None and audit["status"] == "unknown"
 
 
@@ -131,7 +200,7 @@ def test_unparseable_or_unbound_event_retains_unknown_and_no_registry_entry(revi
     assert not list((case["state"] / "evidence/event-source-registry").glob("*.json"))
 
 
-def test_source_known_disabled_first_never_chooses_second(reviewed_case):
+def test_source_known_disabled_first_chooses_first_enabled_shown(reviewed_case):
     case = reviewed_case
     publish(case)
     context = copy.deepcopy(case["context"])
@@ -139,9 +208,10 @@ def test_source_known_disabled_first_never_chooses_second(reviewed_case):
     disabled = plan_unhandled_event_fallback_v1(snapshot=case["snapshot"], event_context=context,
         event_summary=case["snapshot"]["active_event"], registry_decision={"status": "unavailable"}, action_steps=case["actions"])
     result = offline.annotate_source_reviewed_event_plan_v1(disabled, case["state"])
-    assert result["selected_step"] is None and result["event_decision"]["registry_known"] is True
-    assert result["phase"] == "active_event_source_reviewed_first_rendered_disabled"
-    assert "Source-reviewed" in result["reason"] and "disabled" in result["reason"]
+    assert result["selected_step"] == "select-event-option-1"
+    assert result["event_decision"]["registry_known"] is True
+    assert result["phase"] == "active_event_source_reviewed_first_rendered_option"
+    assert "Source-reviewed" in result["reason"] and "enabled" in result["reason"]
 
 
 def test_different_batch_output_reuses_immutable_canonical_facts(reviewed_case, tmp_path):
