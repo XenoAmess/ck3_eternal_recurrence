@@ -7,6 +7,32 @@ Keep this helper's AST equal to that embedded function before each runtime pin.
 CONSTRUCTION_RECEIPT = "private-query-player-construction-receipt-v1"
 
 
+def classify_dmtf_creation_instant_v1(value):
+    """Return an aware UTC instant for a complete WMI DMTF CreationDate."""
+    import re
+    from datetime import datetime, timedelta, timezone
+
+    if not isinstance(value, str):
+        return None
+    match = re.fullmatch(
+        r"([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})"
+        r"\.([0-9]{6})([+-])([0-9]{3})", value)
+    if match is None:
+        return None
+    year, month, day, hour, minute, second, micros = map(int, match.groups()[:7])
+    offset_minutes = int(match.group(9))
+    if offset_minutes > 14 * 60:
+        return None
+    if match.group(8) == "-":
+        offset_minutes = -offset_minutes
+    try:
+        local = datetime(year, month, day, hour, minute, second, micros,
+                         tzinfo=timezone(timedelta(minutes=offset_minutes)))
+    except ValueError:
+        return None
+    return local.astimezone(timezone.utc)
+
+
 def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=None, game_pid=None):
     """Track a prior construction across cold and monthly readonly readbacks."""
     if not isinstance(body, dict):
@@ -60,9 +86,14 @@ def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=Non
             "prior tracked applied action unavailable")
     bound_keys = ("action_request_id", "episode_run_id", "actor_character_id",
                   "pre_native_revision", "pre_date_raw", "pre_proof_epoch",
-                  "source_bridge_pid", "source_bridge_creation_date", "candidate", "native_ack")
+                  "source_bridge_pid", "candidate", "native_ack")
     require(all(inner.get(key) == binding.get(key) and pending.get(key) == binding.get(key)
                 for key in bound_keys)
+            and classify_dmtf_creation_instant_v1(binding.get("source_bridge_creation_date")) is not None
+            and classify_dmtf_creation_instant_v1(inner.get("source_bridge_creation_date"))
+                == classify_dmtf_creation_instant_v1(binding.get("source_bridge_creation_date"))
+            and classify_dmtf_creation_instant_v1(pending.get("source_bridge_creation_date"))
+                == classify_dmtf_creation_instant_v1(binding.get("source_bridge_creation_date"))
             and binding.get("episode_run_id") == source["episode_run_id"]
             and binding.get("actor_character_id") == source["actor_character_id"]
             and type(binding.get("source_bridge_pid")) is int
@@ -77,36 +108,58 @@ def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=Non
             and all(type(candidate.get(key)) is int and candidate[key] > 0 for key in tuple_keys[:3])
             and type(candidate.get("slot_index")) is int and candidate["slot_index"] >= 0,
             "original construction tuple unavailable")
-    import re
-    stamp = r"[0-9]{14}\.[0-9]{6}[+-][0-9]{3}"
     current_stamp = inner.get("post_bridge_creation_date")
-    require(isinstance(binding.get("source_bridge_creation_date"), str)
-            and re.fullmatch(stamp, binding["source_bridge_creation_date"]) is not None
-            and isinstance(current_stamp, str) and re.fullmatch(stamp, current_stamp) is not None
+    current_birth = classify_dmtf_creation_instant_v1(current_stamp)
+    require(current_birth is not None
             and inner.get("post_bridge_pid") == game_pid,
             "current Game process proof unavailable")
     if cold:
         previous_pid = tracker.get("bridge_pid") if isinstance(tracker, dict) else binding["source_bridge_pid"]
         previous_stamp = tracker.get("bridge_creation_date") if isinstance(tracker, dict) else binding["source_bridge_creation_date"]
+        previous_birth = classify_dmtf_creation_instant_v1(previous_stamp)
         previous_native = tracker.get("last_native_revision") if isinstance(tracker, dict) else known.get("last_native_revision")
         previous_date = tracker.get("last_date_raw") if isinstance(tracker, dict) else known.get("last_date_raw")
-        require(previous_pid != game_pid and current_stamp != previous_stamp
+        require(previous_pid != game_pid and previous_birth is not None
+                and current_birth != previous_birth
                 and pending.get("post_bridge_pid") == previous_pid
-                and pending.get("post_bridge_creation_date") == previous_stamp
+                and classify_dmtf_creation_instant_v1(pending.get("post_bridge_creation_date")) == previous_birth
                 and pending.get("post_native_revision") == previous_native
                 and pending.get("post_date_raw") == previous_date,
                 "cold restore is not tied to the prior verified readback")
     else:
+        prior_connection = tracker.get("last_connection_generation") if isinstance(tracker, dict) else None
+        public_revision_continues = (isinstance(tracker, dict)
+                                     and type(tracker.get("last_public_revision")) is int
+                                     and source["revision"] >= tracker["last_public_revision"])
+        # The public revision belongs to the SDK process and may restart on a
+        # same-Game SDK rotation. Native revision, date, and proof epoch remain
+        # monotonic; a reset additionally needs a newer connection generation.
+        # Older tracker records did not store that generation; their first
+        # reset relies on the same Game birth plus strict native/date/proof
+        # freshness, then persists the observed generation below.
+        reset_on_new_connection = (
+            isinstance(tracker, dict)
+            and type(tracker.get("last_native_revision")) is int
+            and source["native_revision"] > tracker["last_native_revision"]
+            and type(tracker.get("last_date_raw")) is int
+            and source["date_raw"] > tracker["last_date_raw"]
+            and type(inner.get("post_proof_epoch")) is int
+            and type(tracker.get("last_proof_epoch")) is int
+            and inner["post_proof_epoch"] > tracker["last_proof_epoch"]
+            and ((type(prior_connection) is int
+                  and source["connection_generation"] > prior_connection)
+                 or prior_connection is None)
+        )
         require(isinstance(tracker, dict) and tracker.get("bridge_pid") == game_pid
-                and tracker.get("bridge_creation_date") == current_stamp
+                and classify_dmtf_creation_instant_v1(tracker.get("bridge_creation_date")) == current_birth
                 and pending.get("post_bridge_pid") == game_pid
-                and pending.get("post_bridge_creation_date") == current_stamp
+                and classify_dmtf_creation_instant_v1(pending.get("post_bridge_creation_date")) == current_birth
                 and pending.get("post_native_revision") == tracker.get("last_native_revision")
                 and pending.get("post_public_revision") == tracker.get("last_public_revision")
                 and pending.get("post_date_raw") == tracker.get("last_date_raw")
                 and pending.get("post_proof_epoch") == tracker.get("last_proof_epoch")
                 and source["native_revision"] >= tracker["last_native_revision"]
-                and source["revision"] >= tracker["last_public_revision"]
+                and (public_revision_continues or reset_on_new_connection)
                 and source["date_raw"] >= tracker["last_date_raw"],
                 "monthly readback did not continue the current Game generation")
         if phase == "construction_completion_watch":
@@ -184,6 +237,7 @@ def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=Non
     new_known = new_state["construction_actions"][request_id]
     new_known["cold_readback_generation_v1"] = {
         "bridge_pid": game_pid, "bridge_creation_date": current_stamp,
+        "last_connection_generation": source["connection_generation"],
         "last_native_revision": source["native_revision"],
         "last_public_revision": source["revision"],
         "last_date_raw": source["date_raw"],
