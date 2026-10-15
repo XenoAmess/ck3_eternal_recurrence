@@ -1,0 +1,22 @@
+--- a/root_cold_result_classifier.py
++++ b/root_cold_result_classifier.py
+@@ -1086 +1086 @@
+-    """Observe a completed owner read; close-handler entry and outcome remain unknown."""
++    """Observe a completed owner read without crediting an unverified close."""
+@@ -1110 +1109,0 @@
+-            or result.get("dispatch_invoked") is not False or result.get("native_handled") is not False
+@@ -1119,0 +1119,8 @@
++    callback_returned = (result.get("dispatch_invoked") is True
++                         and result.get("native_handled") is True
++                         and result.get("dismiss_stage") == "callback_returned"
++                         and result.get("dismiss_exception_code") == 0)
++    callback_not_entered = (result.get("dispatch_invoked") is False
++                            and result.get("native_handled") is False)
++    if not (callback_returned or callback_not_entered):
++        raise ValueError("pending war-results close native callback status differs")
+@@ -1150,2 +1157,3 @@
+-            "dispatch_attempted": True, "native_reported_dispatch_invoked": False, "native_reported_handled": False,
+-            "submission_outcome_unknown": True, "native_callback_entry_unknown": True,
++            "dispatch_attempted": True, "native_reported_dispatch_invoked": result["dispatch_invoked"],
++            "native_reported_handled": result["native_handled"],
++            "submission_outcome_unknown": True, "native_callback_entry_unknown": not callback_returned,

@@ -1,0 +1,22 @@
+{
+  "base_sha256": "61f44257cb28f5a88ae940e298b58110c141ffb7f5db8ac3a4b66ca0b383457b",
+  "candidate_sha256": "934ef54fb2ae97501f563329f6db2af82b0fe99a441ad858e14f3ab59fe41327",
+  "patch_sha256": "858a1cef9eb4daa85ba92b75559027418c7fa0bc57f7dad439db1df26053f614",
+  "requires_exact_base": true,
+  "rebuild_verified": true,
+  "target_line_endings": "LF",
+  "apply_argv": [
+    "git",
+    "-c",
+    "core.autocrlf=true",
+    "apply",
+    "--unidiff-zero",
+    "n40-classifier-final04-to-final05.patch"
+  ],
+  "required_after_apply": "Normalize output UTF-8 line endings to LF, then verify candidate SHA-256. The original base is CRLF; FINAL05 is LF.",
+  "original_auto_sequence": 47,
+  "original_response_sha256": "9d7e80345418f940458537d0b62418b1fa031ab541f67246d19da905150d26b7",
+  "focused_tests_passed": 15,
+  "new_close_retry_authorized": false,
+  "close_credit": false
+}
