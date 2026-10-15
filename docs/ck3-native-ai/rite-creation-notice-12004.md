@@ -75,9 +75,13 @@ Two focused compound cases passed on the same machine at
 `artifacts/enrichment-20261015/faith-creation1021-001/`:
 
 - `test_faith_creation1021_12004.py.actual.json`, SHA256
-  `efa53bb35d81eaf632bf158e97d80e5fcc440c8024b919b8b06d59b5157798fd`;
+  `874d8a0a0d40c3fa66c5f25c25192a169a9246e779322becad01012fefe72a1d`;
 - `test_vanilla_event_migration_12004.py.actual.json`, SHA256
-  `657d2a2f4f87cde521da5da613d9d6c50a81c9755b9f9e6a0eee45b5c54c6a3e`.
+  `c489871c0ddbd022b7beaaa39655bcbaf3ad1de72b8f2b34d8a04db7a09b0a15`.
+
+These pins use committed LF bytes. Git's normal checkout projection changed the
+original generated CRLF byte pins (`efa53bb3...` / `657d2a2f...`) without changing
+the JSON content, commands or test output; no tests were rerun for that projection.
 
 The current .4 source index has 194 rows; all 193 inherited rows and their .3
 dataset remain unchanged. Public knowledge and source queries now find `.1021`.
