@@ -74,3 +74,48 @@ machine_id: `desktop-3fevhd2-1c74096080`。Root现场响应 `R0177/responses/013
 新候选不增加工具、顶层query或action。两修改原生TU `/Zs` 实际退出0，10项新增严格消费者测试通过，并交叉核对actual18B等于native pin和消费者SHA；相对patch `git apply --check` 通过。这是SOURCE_ONLY，不代表新叶已在游戏运行。下一Root获准构建/现场读回 `native_target_8_rva` 后才对那个实际目标继续有限pdata/body研究；隐藏tree无需先打开窗口即可提供该source入口。Root016 Knights打开尝试因当前`.4` UI只支持army query/select而失败，不允许重放或放宽旧版RVA gate。
 
 独立开关后验继续使用实际available Regi来源叶的完整身份。a09另有纯 `military_refill_switch_transition_12004.py` 候选和8个新测试，核same full persistent/sourceCharacter、来源引用/分支不变、after desired；模块不授dispatch、callback语义、动作或actualADD资格。当前游戏没有执行任何补员toggle。a09所有新输出限2MiB、计active32MiB池，原截止 `2026-10-16T07:45:01.597Z` 不延长。
+
+
+## R0178 actual +8 后的表达式调用边（2026-10-16）
+
+机器 `desktop-3fevhd2-1c74096080`；Root 的 R0178/a08 实际只读时间
+`2026-10-15T21:40:02.225461Z`，native/runtime source 均为
+`b42afbbd85df3802b1fa6222f7aac403c2adf735`。原军务 opener 已由 Root 独立
+after-read 证实 `military_view` effective_visible；本研究未提交点击。
+
+两处来源结构对应的补员外层 group 实际 `+8` 都为 **`3A9F960`**，
+并非业务 setter。有限计划先 check/render，再查实际 pdata 并取得完整
+`3A9F960`194B → `3AC38C0`927B → `3E4C090`406B。
+加上此前18B入口，a09累计函数1545B、metadata492B，未扫描字符串/邻域，
+没有展开类型、容器或分配 helper。字节、SHA、实际 extent、Root原件 pin 见
+[精确来源记录](evidence/military-refill-expression-call-chain-12004.json)。
+
+`3AA30E0` 先把 callback+10 传作参数块。`3A9F960` 包装 callback+F0 的 typed
+上下文后，真实调用 `3AC38C0`；后者从该参数块准备变量/参数再调用 `3E4C090`。
+因此字段偏移以 **block=callback+10** 计：
+
+| 该次 evaluator 实际读取 | 来源语义 |
+|---|---|
+| block+18 / signed count+24 | 24B receiver-chain；每项 typeID+0、kind+4、函数+8、userdata+10 |
+| block+30 / +34 / +38 / +40 | 最终 typeID、kind、函数、userdata；只在 kind3或4 时调用最终函数 |
+| block+48 / +4C | 期待 receiver typeID 和 raw flag；flag参与最终 null receiver 分支 |
+
+所以 **实际下一业务函数指针位于 callback+48（block+38）**；receiver-chain
+函数也必须保持逐项顺序，不能跳过链而假定 callback+F0 就是 Character。
+这些函数尚未由当前 a08 publisher 发布，不能从 generic +8 命名
+`MilitaryView.OnMilitaryReinforcementClick`，也未证明哪一 store 写4A9。
+
+后续候选复用同一个 `inspect-gui-window-tree-v1(window_kind="military")`：
+仅在 slot2=3AA30E0 且 +8=3A9F960、三段实际代码字节 pin 均通过时，增加
+`indirect_target_3aa30e0.expression_3a9f960` 只读 scalar 子叶。
+最多16条 receiver-chain，函数只输出模块RVA，userdata只输出present；全字段和
+chain pointer重复读回、再复核 callback对象/vtable/+8/+F0稳定性。旧 V1/V2
+source profile可继续消费，新 profile要求准确子叶，缺失/越界保留 unavailable。
+这不是任意指针读取或执行入口；method/action available仍false。
+
+下一步必须由新匹配 native+Python 查询取得这些实际 chain/final RVA，再沿该
+真实来源边作有限源码验证。开关动作仍需 source-qualified固定控件、owner-thread
+单次派发和来源 Character+4A9 的独立新查询；不直接改字节，不影响R07两臂原开关。
+
+此后续 source-only 候选的8项新增严格消费检查、两个修改TU的 `/Zs` 均通过；
+没有重跑旧测试，没有新EXE或实机动作，尚需未来成对native/Python build后的实际只读回执。

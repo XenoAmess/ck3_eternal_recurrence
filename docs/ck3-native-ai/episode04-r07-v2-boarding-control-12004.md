@@ -72,3 +72,8 @@ py promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/r07_v2_cont
 ## 2026-10-16 R0177：海岸 normal preparation 与闭场索引
 
 机器 `desktop-3fevhd2-1c74096080`：本场闭场回执记录于2026-10-15T21:02:43.641386Z，normal exit0、SDK/录制/keeper退场。海岸93已正常到2624，250/250，common S0 已保存并保全；45秒原片一次严格全解码通过，cut候选变化仅在(4,10]秒。完整小原件/保护副本/可复用代码见 [R0177专用专题](episode04-r0177-coastal-normalprep-12004.md)。本段不授R07两fresh-arm信用（完成0）、不增加整卡5/14＝35.7%；continuous clean/human1×/signoff均false。R03实际包单独结算，原source与本机状态不外推。
+
+
+## R0178：ETA归零与实际入水的边界
+
+机器 desktop-3fevhd2-1c74096080：day30 weight等于cost且provider0，remaining0但仍moving@2624。actual4 arrival使用严格JG，不能用ETA/100%进度替代到达。后续day31独立读到1036/embarked，属无capture研究endpoint；旧45秒不授登船镜头。原件pins、sentinel post-original顺序和agent/拍摄判读见 [专用专题](episode04-r178-zero-remaining-not-arrival-12004.md)。本补注不重判R07两arm或formal付款资格。

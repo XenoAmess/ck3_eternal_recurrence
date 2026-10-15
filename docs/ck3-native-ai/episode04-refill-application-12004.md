@@ -174,3 +174,7 @@ Root 在运行现场退出并解除 clean-checkout 冻结后合入候选；本�
 
 
 Future a07 已接成来源绑定的生产查询/DTO/序列化和严格消费者候选，含原生十二例离线验证；见[补员开关观察叶子](episode04-refill-permission-switch-observation-12004.md)。尚未部署，不增加本场 toggle/action/actual ADD 业务资格。
+
+## R06下一次应测谁
+
+[采样目标选择与零值原因](episode04-refill-sampling-target-selection-12004.md)复用现有persistent资格分类与完整顺序投影：优先重新查询有缺员的普通18，不以满员special93期待正ADD；每个新场次动态核身份与物理缺额。已有开关ON、当前Can、prepared148、最终q、自然ADD和Army净变化分别保存，0不能自动诊断OFF。可机读selection仍为WAIT_FRESH_A08_INPUTS，不借旧snapshot授予下一场资格。

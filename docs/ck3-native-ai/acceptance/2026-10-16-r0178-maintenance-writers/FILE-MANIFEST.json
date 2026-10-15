@@ -1,0 +1,30 @@
+{
+  "schema": "xar.r0178-portable-source-files.v1",
+  "files": [
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0178-maintenance-writers/ARCHIVE-INDEX.json",
+      "bytes": 5910,
+      "sha256": "d9a02b9e2f2eba7f631ec54520cd863944b7dad3e8887a1edd804e07f155743b"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0178-maintenance-writers/FACTS.actual.json",
+      "bytes": 2083,
+      "sha256": "73fd1919d810c719103dd882d3c4601d9c945b892b4865c5df5558bc105bcfee"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0178-maintenance-writers/originals.zip",
+      "bytes": 55361,
+      "sha256": "5a25da3600aa5e1d42990a6f6650656364fb93f86cfec64e9e04fabcc6cbe165"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0178-maintenance-writers/verify_repository.py",
+      "bytes": 4233,
+      "sha256": "0eb84f1178ad2311237412ec10195202d8642e77886dfde405e4c7d8832f69ee"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-r0178-writer-source-12004.md",
+      "bytes": 7886,
+      "sha256": "47d4bd9dd0ab908b84256bf105564f65bbdb800dba2e70225bfe876ce0cbc50f"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
 #include "xar_bridge/ck3_12004_gui_callback_thunk.hpp"
+#include "xar_bridge/ck3_12004_gui_expression_descriptor.hpp"
 
 namespace xar::ck3_11906 {
 namespace {
@@ -81,6 +82,13 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
           ",\"indirect_target_thunk_bytes_sha256\":";
       AppendJsonString(result, ck3_12004::kGuiCallbackThunkBytesSha25612004V1);
     }
+    if (inspection.expression_layout_3a9f960_pin_verified) {
+      result += ",\"expression_target_bridge_rva\":" + Number(ck3_12004::kGuiExpression3A9F960Rva12004V1) +
+          ",\"expression_builder_rva\":" + Number(ck3_12004::kGuiExpression3AC38C0Rva12004V1) +
+          ",\"expression_eval_rva\":" + Number(ck3_12004::kGuiExpression3E4C090Rva12004V1) +
+          ",\"expression_layout_bytes_sha256\":";
+      AppendJsonString(result, ck3_12004::kGuiExpressionLayoutBytesSha25612004V1);
+    }
     result += '}';
   }
   result += ",\"widgets\":[";
@@ -127,6 +135,16 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
             (expected_indirect && (callback.native_target_8_rva == 0 ||
               callback.native_target_8_rva >= ck3_12004::kGuiImageSize12004V1)))
           return GenericGuiCommandResultFrameV1(request_id, step, false, "indirect callback source pin or target is inconsistent");
+        const bool expected_expression = expected_indirect && inspection.expression_layout_3a9f960_pin_verified &&
+            callback.native_target_8_rva == ck3_12004::kGuiExpression3A9F960Rva12004V1;
+        const auto &expression = callback.expression_3a9f960;
+        if (callback.expression_descriptor_3a9f960 != expected_expression ||
+            (expected_expression && (expression.chain_count_24_raw != expression.chain_calls.size() ||
+              expression.chain_count_24_raw > ck3_12004::kGuiExpressionMaximumChain12004V1 ||
+              ((expression.final_kind_34_raw == 3 || expression.final_kind_34_raw == 4) ?
+                (expression.final_target_38_rva == 0 || expression.final_target_38_rva >= ck3_12004::kGuiImageSize12004V1) :
+                expression.final_target_38_rva != 0))))
+          return GenericGuiCommandResultFrameV1(request_id, step, false, "invalid expression descriptor source or bounds");
         result += "{\"index\":" + Number(callback.index) +
             ",\"callback_vtable_rva\":" + Number(callback.callback_vtable_rva) +
             ",\"callback_slot2_rva\":" + Number(callback.callback_slot2_rva);
@@ -134,6 +152,27 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
           result += ",\"indirect_target_3aa30e0\":{\"native_target_8_rva\":" + Number(callback.native_target_8_rva) +
               ",\"receiver_f0_present\":";
           result += callback.receiver_f0_present ? "true" : "false";
+          if (expected_expression) {
+            result += ",\"expression_3a9f960\":{\"chain_count_24_raw\":" + Number(expression.chain_count_24_raw) +
+                ",\"final_type_id_30\":" + Number(expression.final_type_id_30) +
+                ",\"final_kind_34_raw\":" + Number(expression.final_kind_34_raw) +
+                ",\"final_target_38_rva\":" + Number(expression.final_target_38_rva) +
+                ",\"final_user_data_40_present\":";
+            result += expression.final_user_data_40_present ? "true" : "false";
+            result += ",\"receiver_type_id_48\":" + Number(expression.receiver_type_id_48) +
+                ",\"receiver_flag_4c_raw\":" + Number(expression.receiver_flag_4c_raw) + ",\"chain_calls\":[";
+            for (std::size_t n = 0; n < expression.chain_calls.size(); ++n) {
+              const auto &item = expression.chain_calls[n];
+              if (item.index != n || item.native_target_8_rva == 0 || item.native_target_8_rva >= ck3_12004::kGuiImageSize12004V1)
+                return GenericGuiCommandResultFrameV1(request_id, step, false, "invalid expression receiver-chain target");
+              if (n != 0) result += ',';
+              result += "{\"index\":" + Number(item.index) + ",\"type_id_0\":" + Number(item.type_id_0) +
+                  ",\"kind_4_raw\":" + Number(item.kind_4_raw) + ",\"native_target_8_rva\":" + Number(item.native_target_8_rva) +
+                  ",\"user_data_10_present\":";
+              result += item.user_data_10_present ? "true" : "false"; result += '}';
+            }
+            result += "]}";
+          }
           result += '}';
         }
         result += '}';

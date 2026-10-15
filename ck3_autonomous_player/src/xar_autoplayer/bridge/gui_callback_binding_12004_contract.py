@@ -12,14 +12,45 @@ SOURCE_INDIRECT_12004 = {
     "indirect_target_thunk_rva": 0x3AA30E0,
     "indirect_target_thunk_bytes_sha256": "7a37683abfa5cb9317164e719bc14ba7cc067f79fee8e086267a11d8b18f3563",
 }
+SOURCE_EXPRESSION_12004 = {
+    **SOURCE_INDIRECT_12004,
+    "expression_target_bridge_rva": 0x3A9F960,
+    "expression_builder_rva": 0x3AC38C0,
+    "expression_eval_rva": 0x3E4C090,
+    "expression_layout_bytes_sha256": "7412efd136e722993b71a8810f5d585347cde53104ba0a107551eb324ff18963",
+}
 IMAGE_BYTES_12004 = 0x61C5000
 
 def _integer(value: object, low: int, high: int) -> bool:
     return type(value) is int and low <= value <= high
 
+def _expression_descriptor(raw: object) -> dict:
+    fields = {"chain_count_24_raw", "final_type_id_30", "final_kind_34_raw", "final_target_38_rva",
+              "final_user_data_40_present", "receiver_type_id_48", "receiver_flag_4c_raw", "chain_calls"}
+    if not isinstance(raw, dict) or set(raw) != fields or not all(
+        _integer(raw[k], 0, 0xFFFFFFFF) for k in ("final_type_id_30", "final_kind_34_raw", "receiver_type_id_48")
+    ) or not _integer(raw["receiver_flag_4c_raw"], 0, 255) or type(raw["final_user_data_40_present"]) is not bool:
+        raise ValueError("expression descriptor has invalid raw fields")
+    chain = raw["chain_calls"]
+    if not isinstance(chain, list) or not _integer(raw["chain_count_24_raw"], 0, 16) or len(chain) != raw["chain_count_24_raw"]:
+        raise ValueError("expression receiver-chain is incomplete or exceeds source bounds")
+    callable_kind = raw["final_kind_34_raw"] in {3, 4}
+    if not _integer(raw["final_target_38_rva"], 1 if callable_kind else 0, IMAGE_BYTES_12004 - 1 if callable_kind else 0):
+        raise ValueError("expression final target conflicts with the source callable kind")
+    clean = []
+    for index, row in enumerate(chain):
+        if not isinstance(row, dict) or set(row) != {"index", "type_id_0", "kind_4_raw", "native_target_8_rva", "user_data_10_present"} or (
+            not _integer(row["index"], index, index) or not _integer(row["type_id_0"], 0, 0xFFFFFFFF) or
+            not _integer(row["kind_4_raw"], 0, 0xFFFFFFFF) or not _integer(row["native_target_8_rva"], 1, IMAGE_BYTES_12004 - 1) or
+            type(row["user_data_10_present"]) is not bool
+        ):
+            raise ValueError("expression receiver-chain target or ordinal is invalid")
+        clean.append(dict(row))
+    return {**raw, "chain_calls": clean}
+
 def normalize_callback_binding_rows_12004(raw: dict, projected: dict) -> dict:
     source = raw.get("callback_binding_source_12004")
-    profile = SOURCE_INDIRECT_12004 if isinstance(source, dict) and set(source) == set(SOURCE_INDIRECT_12004) else SOURCE_12004
+    profile = next((p for p in (SOURCE_EXPRESSION_12004, SOURCE_INDIRECT_12004, SOURCE_12004) if isinstance(source, dict) and set(source) == set(p)), SOURCE_12004)
     if not isinstance(source, dict) or set(source) != set(profile) or any(
         type(source[key]) is not type(value) or source[key] != value
         for key, value in profile.items()
@@ -45,7 +76,7 @@ def normalize_callback_binding_rows_12004(raw: dict, projected: dict) -> dict:
             raise ValueError("standard click group does not match observed source selection")
         targets = []
         for index, target in enumerate(callbacks):
-            indirect = profile is SOURCE_INDIRECT_12004 and isinstance(target, dict) and target.get("callback_slot2_rva") == 0x3AA30E0
+            indirect = profile is not SOURCE_12004 and isinstance(target, dict) and target.get("callback_slot2_rva") == 0x3AA30E0
             expected_keys = {"index", "callback_vtable_rva", "callback_slot2_rva"} | ({"indirect_target_3aa30e0"} if indirect else set())
             if not isinstance(target, dict) or set(target) != expected_keys or (
                 type(target["index"]) is not int or target["index"] != index or
@@ -56,12 +87,16 @@ def normalize_callback_binding_rows_12004(raw: dict, projected: dict) -> dict:
             clean_target = dict(target)
             if indirect:
                 payload = target["indirect_target_3aa30e0"]
-                if not isinstance(payload, dict) or set(payload) != {"native_target_8_rva", "receiver_f0_present"} or (
+                expression = profile is SOURCE_EXPRESSION_12004 and isinstance(payload, dict) and payload.get("native_target_8_rva") == 0x3A9F960
+                payload_fields = {"native_target_8_rva", "receiver_f0_present"} | ({"expression_3a9f960"} if expression else set())
+                if not isinstance(payload, dict) or set(payload) != payload_fields or (
                     not _integer(payload["native_target_8_rva"], 1, IMAGE_BYTES_12004 - 1) or
                     type(payload["receiver_f0_present"]) is not bool
                 ):
                     raise ValueError("indirect callback target does not match the source-backed thunk")
                 clean_target["indirect_target_3aa30e0"] = dict(payload)
+                if expression:
+                    clean_target["indirect_target_3aa30e0"]["expression_3a9f960"] = _expression_descriptor(payload["expression_3a9f960"])
             targets.append(clean_target)
         rows.append({**clean, "standard_click_binding_12004": {
             "button_base_slot13": button, "group": group, "callbacks": targets,

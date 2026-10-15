@@ -1,0 +1,75 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "compiled_source": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+  "observed_writer_ready_utc": "2026-10-15T22:05:25.014368+00:00",
+  "reader_terminal_utc": "2026-10-15T22:05:58.361094+00:00",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "EXE_SHA": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "window": {
+    "pid": 24740,
+    "created": 134365733009843924,
+    "generation": 1,
+    "actor": 31254,
+    "window": 1,
+    "epoch": 1,
+    "episode": "native-31254-0665741d68fc",
+    "before_date": 53146896,
+    "after_date": 53146920
+  },
+  "observed_physical_writes": 2,
+  "same_value_writes": 2,
+  "observed_offsets": [
+    "0x2C0",
+    "0x2C8"
+  ],
+  "post_PC_rvas": [
+    "0x28A645B",
+    "0x28A6466"
+  ],
+  "source_store_rvas": [
+    "0x28A6454",
+    "0x28A645F"
+  ],
+  "source_assignments": [
+    "*(context+0x2C0)=*(context+0x18)",
+    "*(context+0x2C8)=*(context+0x20)"
+  ],
+  "context_source": "*(entryRCX+0x1C0)",
+  "function": {
+    "begin": "0x28A63E0",
+    "end_exclusive": "0x28A6697",
+    "bytes": 695,
+    "sha256": "ffebf7d960edb76b71d2456b7f8722cc09092952b41c565f648410b42a47dede",
+    "instructions": 147,
+    "metadata_bytes": 220,
+    "reads": 20
+  },
+  "narrow_scope": {
+    "code_bytes": 59,
+    "metadata_bytes": 0,
+    "reads": 1
+  },
+  "restored_live_threads": 109,
+  "retired_threads": [
+    10908
+  ],
+  "actual_reader_returncode": 0,
+  "native_returncode": 1,
+  "finite_reason": "timeout",
+  "cleanup_proved": true,
+  "trap_actual_game_date": null,
+  "trigger_phase": "unknown",
+  "known_business_producer": false,
+  "maintenance_attribution": "unclosed",
+  "unknown": [
+    "context18/20 upstream writers and semantic names",
+    "28/30 writers",
+    "writer caller and cadence",
+    "applied military component and physical payer transaction"
+  ],
+  "source_receipt_member": "function/READ-RECEIPT.actual.json",
+  "raw_member": "window/writer.raw.ndjson",
+  "raw_projection_member": "window/WRITERS.actual.json",
+  "new_game_admission_from_this_archive": false
+}

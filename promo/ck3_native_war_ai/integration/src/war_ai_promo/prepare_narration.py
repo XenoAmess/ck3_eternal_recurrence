@@ -31,9 +31,9 @@ async def edge_cue(row, output, voice, rate):
         write_new(output.with_suffix(".boundaries.json"), boundaries)
 
 
-async def edge_batch(rows, output, voice, rate):
+async def edge_batch(rows, output, voice, rate, workers=3):
     """Retain failed takes and retry only their cue; keep the provider load small."""
-    semaphore = asyncio.Semaphore(3)
+    semaphore = asyncio.Semaphore(workers)
     completed = 0
 
     async def prepare(row):
@@ -74,13 +74,16 @@ def main():
     parser.add_argument("--index-python", type=Path)
     parser.add_argument("--index-runner", type=Path)
     parser.add_argument("--device", choices=["cuda", "cpu"], default="cuda")
+    parser.add_argument("--narration-only", action="store_true", help="Prepare Chinese speech while new English subtitles remain pending")
+    parser.add_argument("--workers", type=int, choices=range(1, 9), default=3)
     args = parser.parse_args()
     script = load(args.script)
     shots = {row["id"]: row for row in load(args.timeline)["shots"]}
     rows = [dict(row) for row in script["cues"] if not args.chapter or row["chapter_id"] in args.chapter]
     if not rows or len({row["id"] for row in rows}) != len(rows):
         raise ValueError("Expected nonempty unique narration cues")
-    if any(row["shot_id"] not in shots or not row["zh"].strip() or not row["en"].strip() for row in rows):
+    if any(row["shot_id"] not in shots or not row["zh"].strip()
+           or (not args.narration_only and not (row.get("en") or "").strip()) for row in rows):
         raise ValueError("Unknown shot or missing bilingual narration")
     if args.provider == "index" and any(value is None or not value.is_file() for value in [args.reference, args.index_python, args.index_runner]):
         raise ValueError("IndexTTS needs the installed interpreter, batch runner and an explicit reference")
@@ -91,11 +94,12 @@ def main():
                "script": binding(args.script), "timeline": binding(args.timeline), "chapter_selection": args.chapter,
                "reference": binding(args.reference) if args.reference else None,
                "voice": args.voice if args.provider == "edge" else "explicit-reference",
-               "rate": args.rate if args.provider == "edge" else None}
+               "rate": args.rate if args.provider == "edge" else None,
+               "workers": args.workers, "English_deferred": args.narration_only}
     write_new(args.output / "request.json", request)
     suffix = ".mp3" if args.provider == "edge" else ".wav"
     if args.provider == "edge":
-        asyncio.run(edge_batch(rows, args.output, args.voice, args.rate))
+        asyncio.run(edge_batch(rows, args.output, args.voice, args.rate, args.workers))
     else:
         batch = [{"id": row["id"], "text": row["zh"],
                   "output": str((args.output / (row["id"] + suffix)).resolve())} for row in rows]
@@ -121,7 +125,8 @@ def main():
     write_new(args.output / "production-inputs.json", {"format_version": 1,
               "media_scope": "teaching-graphics-radio-cut", "provider": args.provider, "cues": rows,
               "actual_duration_seconds": sum(row["duration_seconds"] for row in rows),
-              "caption_timing": "Chinese provider sentence boundaries when available; English proportional sentence timing",
+              "caption_timing": ("Chinese provider boundaries; English deferred" if args.narration_only else "Chinese provider sentence boundaries when available; English proportional sentence timing"),
+              "English_subtitles_pending": args.narration_only,
               "human_signoff": "not-provided", "music": "not-yet-added"})
     print(f"Prepared {len(rows)} cues, {sum(row['duration_seconds'] for row in rows):.2f} seconds", flush=True)
 

@@ -1,0 +1,266 @@
+{
+  "status": "FULL_SOLE_UNCHAINED_FUNCTION_CAPTURED",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T23:15:40.534874+00:00",
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-second-vector2C142B0-source-a07\\plan-a01.json",
+    "bytes": 4559,
+    "sha256": "e0df655e71c92cf7dace39e9c4f2233ed596f1eefd46f46af5fdf25412e2d107"
+  },
+  "plan_check": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-second-vector2C142B0-source-a07\\PLAN-CHECK.actual.json",
+    "bytes": 1064,
+    "sha256": "88f7956fddbd639a3c5f5bf9148cfa9a0baac14f9e8c7b3d50bac87318cb1011"
+  },
+  "identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+    "bytes": 732,
+    "sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9"
+  },
+  "layout": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\parent28F7939-source-a01\\inputs\\pe-layout-reused.json",
+    "bytes": 60633,
+    "sha256": "9f0f3da5fcaf809b8fad13c4310d6abdf3c5a06d98aad113e907ee64c15e7bb4"
+  },
+  "upstream_caller": {
+    "id": "caller",
+    "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a02\\current_military.asm",
+    "layer": "source-contract",
+    "sha256": "295567d6ead8e4c6aa05fc5d384d7994f9f14fa0be819a3baa95403cc40291ce",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "supports": "Actualheldcurrentgetter2C14238 directCALL2C142B0; ABIout80,Character,optionalbreakdown"
+  },
+  "qualified_EXE_SHA_reused_not_rehashed": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\ck3.exe",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052259095683000,
+    "ctime_ns": 1792052258999738000,
+    "device": 13886423844274364792,
+    "inode": 19140298416377657
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052259095683000,
+    "ctime_ns": 1792052258999738000,
+    "device": 13886423844274364792,
+    "inode": 19140298416377657
+  },
+  "tool_argv": [
+    "C:\\ck3-e04-resume-20261015-a01\\r08-second-vector2C142B0-source-a07\\read_actual_second_vector.py"
+  ],
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "capstone_version": "5.0.7",
+  "function": {
+    "begin_rva": 46219952,
+    "end_exclusive": 46222703,
+    "bytes": 2751,
+    "pdata_index": 152704,
+    "unwind_rva": 86711672,
+    "unwind_header_hex": "112a0a00",
+    "unwind_version": 1,
+    "flags": 2,
+    "chained_runtime_function": null,
+    "sha256": "6b3b7a7a3228442366a29e2c15676e55b7364bd29268d3ec721a25a5a5608628",
+    "instruction_count": 650
+  },
+  "read_ledger": [
+    {
+      "rva": 99782892,
+      "file_offset": 98305260,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "e06d3602656e3602c8dd1205",
+      "sha256": "a326993409867d135e499fce3828e1515d5d316d1b897b77bcbf3e5f1148b830"
+    },
+    {
+      "rva": 100516200,
+      "file_offset": 99038568,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "b07f5c0323805c03509d1005",
+      "sha256": "6dec625c4df1e2596ff5cb8574509927ff5acd825d271f98d988be2465343421"
+    },
+    {
+      "rva": 100149552,
+      "file_offset": 98671920,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "109ac102f19ac10278f41005",
+      "sha256": "e9b81a517db2902c91f109fe2e819e6c8cfb431a4d100edb97dd71fb0256fbd0"
+    },
+    {
+      "rva": 99966228,
+      "file_offset": 98488596,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "f0fa7f0204fb7f02e8951005",
+      "sha256": "f07fc2254cb59b7acaf6d245efc871f66b3b6c7ccbc01180a5bcc451c855e1a1"
+    },
+    {
+      "rva": 100057896,
+      "file_offset": 98580264,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "14dea2023fdea202a8602905",
+      "sha256": "e065faeb057155e7b7a73cf08cb5122bfeb754a6b7f5c87754b24e52aa8e4256"
+    },
+    {
+      "rva": 100103724,
+      "file_offset": 98626092,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "f31db102411eb102d84c2a05",
+      "sha256": "c316f9e86e7cfd4a2e096ae9c8f1c3f83f2e55b08b3d5ef41ebf372bd7003f7c"
+    },
+    {
+      "rva": 100126644,
+      "file_offset": 98649012,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "f049b702614ab702b8b31005",
+      "sha256": "aeb42339ceda3fcf6b5cd55e01496b1a03efd0d2123ab3fb2f904aeef36fd6c2"
+    },
+    {
+      "rva": 100138104,
+      "file_offset": 98660472,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "3109bc02010abc02b4c92a05",
+      "sha256": "ccc2924a87f99535a35a4e3ffed345b10848feaa8488efe12df6d8a68e139271"
+    },
+    {
+      "rva": 100143828,
+      "file_offset": 98666196,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "7021bf02a821bf02dcd41105",
+      "sha256": "75e783c7255b60182859abedf009862d908c654b6d1a26d79471264c08518ec4"
+    },
+    {
+      "rva": 100146696,
+      "file_offset": 98669064,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "a041c0029f43c002e40d2b05",
+      "sha256": "4ea97e6616bdb66de88486e0e8f5ef3e05f95e96b89b4cf4f091da689898414e"
+    },
+    {
+      "rva": 100148124,
+      "file_offset": 98670492,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "90c3c00204ccc002a4142b05",
+      "sha256": "d0f349460aa9e1a3fe7577b69874862bf1c182259985e724a8f3a4b21bd538a6"
+    },
+    {
+      "rva": 100148844,
+      "file_offset": 98671212,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "b060c1025c63c10270291305",
+      "sha256": "beb4fef411853a1cdca1ea7e7b68585eea339075b656c32a1fe772aad97da531"
+    },
+    {
+      "rva": 100148484,
+      "file_offset": 98670852,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "2019c1026619c102281a2b05",
+      "sha256": "af8214334e9c5d7df2a5c1a4d188e66b4069053466cb817b4fe3989a6b713e00"
+    },
+    {
+      "rva": 100148664,
+      "file_offset": 98671032,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "5035c102eb35c102509d1005",
+      "sha256": "41974a69f90d842df0f390822a96381e0bee78804a52575195705d2989cd5288"
+    },
+    {
+      "rva": 100148760,
+      "file_offset": 98671128,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "e04fc102d650c102b8eb1105",
+      "sha256": "433f5d5a8644d921e77a5e85f207690ee21745f3103475d69195a18a47e40622"
+    },
+    {
+      "rva": 100148712,
+      "file_offset": 98671080,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "d03cc102533fc102f81c2b05",
+      "sha256": "aac0ac13f43bfa1fad9576868787ec694ae30c75723b0d6ce6d37076c34ed45e"
+    },
+    {
+      "rva": 100148736,
+      "file_offset": 98671104,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "b042c1026f4dc102781d2b05",
+      "sha256": "1e60660918917eacf40290e47377364f67213b2901bc554ed6ac6732cdc360e2"
+    },
+    {
+      "rva": 100148748,
+      "file_offset": 98671116,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "704dc102d54fc102aca71005",
+      "sha256": "789385d7899277b175605a560accbad6702700fa9916d432db08b0e88eed00d3"
+    },
+    {
+      "rva": 100148724,
+      "file_offset": 98671092,
+      "bytes": 12,
+      "kind": "metadata",
+      "why": "Exact2C142B0.pdata binarysearch/uniquenessonly",
+      "hex": "603fc102ae42c102281d2b05",
+      "sha256": "f99f9030d754a318659e83a6f355c03c92d37d39488e8d72a79bebc4df5777ee"
+    },
+    {
+      "rva": 86711672,
+      "file_offset": 86707064,
+      "bytes": 4,
+      "kind": "metadata",
+      "why": "Onlyactualtargetunwindversion/flags/count",
+      "hex": "112a0a00",
+      "sha256": "3758aa0f1d0e53741bec4e1cdf1a8c4bf10723df0cebc3647319fcdfa2fb18df"
+    },
+    {
+      "rva": 46219952,
+      "file_offset": 46216880,
+      "bytes": 2751,
+      "kind": "code",
+      "why": "Entiresoledeclared2C142B0.pdataextent;nocaller/callee/neighborcode",
+      "hex": null,
+      "sha256": "6b3b7a7a3228442366a29e2c15676e55b7364bd29268d3ec721a25a5a5608628"
+    }
+  ],
+  "new_EXE_code_bytes": 2751,
+  "new_EXE_metadata_bytes": 232,
+  "new_EXE_read_calls": 21,
+  "whole_EXE_hashes": 0,
+  "global_scans": 0,
+  "callee_reads": 0,
+  "SDK_game_desktop_main_build_actions": 0,
+  "maintenance_attribution": "unclosed"
+}

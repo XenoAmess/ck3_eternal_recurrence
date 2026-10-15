@@ -1,0 +1,177 @@
+{
+  "schema": "actual4-gui-expression-call-chain-source-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-15T21:47:06.117984+00:00",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "live_selection": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-15T21:41:27.025419+00:00",
+    "actual_response_at": "2026-10-15T21:40:02.225461+00:00",
+    "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-treatment-a08-a01\\r07-v2-preflight\\military-after.actual-a01.json",
+    "source_sha256": "d1b7089d31eac37720518cf92346ba919c125e7bcb62d4e99b13ee4ab6d0ae4d",
+    "raw_original_pin": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-treatment-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0178\\responses\\a08-preflight-military-after.json",
+      "bytes": 1088033,
+      "sha256": "5ea718696816bdcd827af8404fef2b30d74168ba436ad8e573c96c9e655ed3bd"
+    },
+    "runtime_source_head": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+    "native_build_source_head": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+    "callback_source": {
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "button_base_slot13_rva": 61476128,
+      "group_dispatch_rva": 61471280,
+      "input_modifier": 0,
+      "indirect_target_thunk_rva": 61485280,
+      "indirect_target_thunk_bytes_sha256": "7a37683abfa5cb9317164e719bc14ba7cc067f79fee8e086267a11d8b18f3563"
+    },
+    "groups": [
+      {
+        "child_path": "0/0/0/2/3/0/0/0",
+        "runtime_name": "",
+        "effective_visible": true,
+        "standard_click_binding_12004": {
+          "button_base_slot13": true,
+          "group": "fallback",
+          "callbacks": [
+            {
+              "index": 0,
+              "callback_vtable_rva": 76963224,
+              "callback_slot2_rva": 61485280,
+              "indirect_target_3aa30e0": {
+                "native_target_8_rva": 61471072,
+                "receiver_f0_present": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "child_path": "0/0/0/3/5/0/0/0",
+        "runtime_name": "",
+        "effective_visible": false,
+        "standard_click_binding_12004": {
+          "button_base_slot13": true,
+          "group": "fallback",
+          "callbacks": [
+            {
+              "index": 0,
+              "callback_vtable_rva": 76963224,
+              "callback_slot2_rva": 61485280,
+              "indirect_target_3aa30e0": {
+                "native_target_8_rva": 61471072,
+                "receiver_f0_present": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "actual_target_rvas": [
+      "3A9F960"
+    ],
+    "source_name_binding": "Two literal stock reinforcement outer-group ancestries; callback native method identity remains unknown",
+    "action_requested_here": false,
+    "game_runtime_contacted_here": false
+  },
+  "functions": [
+    {
+      "rva": "3A9F960",
+      "bytes": 194,
+      "sha256": "2ac9787fb430b14f906245240bda94ee1173f5c33ff0577875b7350e57d4290e",
+      "hex": "48895c2408574883ec50488bfa488bd9e82bd6ddfc48894424200f57c00f114424280f11442438e864fc03fd488b4c2420483bc87510488b01488d542428ff5030488918eb40e8f5d5ddfc488b4c2420483bc87422488b01488d542428ff5018e8dbd5ddfc48894424200f57c00f114424280f1144243848895c2428e80ffc03fd48894424204c8bc7488d542420488bcbe8ca3e020090e8a4d5ddfc488b4c2420483bc87411488b01488d542428ff5018e88ad5ddfc90488b5c24604883c4505fc3",
+      "extent": {
+        "target_rva": "3A9F960",
+        "begin_rva": "3A9F960",
+        "end_rva_exclusive": "3A9FA22",
+        "size": 194,
+        "pdata_index": 199030,
+        "unwind_rva": "539DFF0",
+        "unwind_version": 1,
+        "unwind_flags": 2,
+        "unwind_code_bytes": 8,
+        "chained_runtime_function": null
+      }
+    },
+    {
+      "rva": "3AC38C0",
+      "bytes": 927,
+      "sha256": "52fe68663033e21e395845c1f0f4dddb94cb79b4f0a6ee99dde22d9a7c6d9506",
+      "hex": "48895c2408488974241048897c2418554154415541564157488dac24c0feffff4881ec400200004d8bf84c8be24c8bf14c8ba9e00000004d85ed0f843c0300004180bd15010000000f842e030000488d4dd0e8190f000090418bb78c0000004103770c486345dc3bf07e4a8bd6488d4dd0e8daa55bfe8bfe486345dc2bf8488d0c80488b45d0488d1cc885ff7e436690e84b96dbfc4889030f57c00f1143080f1143184883c328ffcf85ff7fe3488bd3488bcbeb17488d0c804c8b45d0498d14c84863c6488d0c80498d0cc8e8df525afe8975dc418bb7a400000033ff48897c242048897c2428488d4424384889442430488d05c03eea004889442438488d053c2fa301488945c0488b05b93eea0033d2448d4708488d4c2438ffd048897c242048897c2428488b4424384c8d442428488d542420488d4c2438ff5020908b5c242c3bf30f8eaa0000003b7424287e6b488b4c2430488b018bd648c1e204448d4708ff5008488bf88b5c242c85db7e28488b4c2420488bd00f1f8400000000000f10010f1102488d5210ffcb488d491085db7fec8b5c242c488b4c2430488b0141b808000000488b542420ff501048897c2420895c242c897424288bfe2bfb4863db48c1e3044883c30885ff7e2448035c242048c743f800000000e82092dbfc8b08890bc6430401488d5b10ffcf85ff7fe133ff8974242c8bdf85f60f8e8b00000049bb67666666666666660f1f40004c63cb498b87980000004e8d04c849c1e1044c034c24204d8b95900000004963859c000000488d148048c1e2044903d2498bca4c3bd27416418b000f1f44000039414874624883c150483bca75f2baffffffff4863c2488d0c8048c1e1044903ca498bd1e8c7e0ffff84c07453ffc33bde49bb67666666666666667c83488d542420498bcee8960300004d8bcc4c8d45d0488d542420498bcfe82285380084c075304532ffeb2e492bca498bc348f7e948c1fa05488bc248c1e83f4803d0eb93488d542420498bcee8530300004532ffeb0341b701488b5424204885d2741e897c242c488b4c2430488b0141b808000000ff501048897c2420897c2428488b7dd04885ff74608b75dc85f67e3e0f1f004c8b37e8b893dbfc4c3bf07420498b06488d5708498bceff5018e8a193dbfc4889070f57c00f1147080f114718ffce4883c72885f67fc9488b7dd0c745dc00000000488b4de04c8b0941b808000000488bd741ff5110410fb6c7eb0232c04c8d9c2440020000498b5b30498b7338498b7b40498be3415f415e415d415c5dc3",
+      "extent": {
+        "target_rva": "3AC38C0",
+        "begin_rva": "3AC38C0",
+        "end_rva_exclusive": "3AC3C5F",
+        "size": 927,
+        "pdata_index": 199572,
+        "unwind_rva": "53A3C20",
+        "unwind_version": 1,
+        "unwind_flags": 2,
+        "unwind_code_bytes": 28,
+        "chained_runtime_function": null
+      }
+    },
+    {
+      "rva": "3E4C090",
+      "bytes": 406,
+      "sha256": "f166a756656cb0276c7c89dd74107c716d264c31f891d16cfed3b247d19ca292",
+      "hex": "48895c240848896c241048897424185741544155415641574883ec504d8be94d8be0488bda488bf1e8030ca3fc4d8bc4488bd3488bcee885fbffff84c00f84330100004c638ebc00000033ed488b86b00000000fb6564c4a634c88fc83f9ff741e3b4b0c7d19488bc148c1e00448030384d2410f95c6488b184883c008eb0e84d2488bdd410f95c6e8a30ba3fc8b38e89c0ba3fc8b4e483b0874113bcf0f85d30000004885db0f84ca000000448b7e248bfd4c89642420896c242848896c24304585ff7e626666660f1f8400000000004863c7488d1440488b46184c8d04d08b04d0488d54242089442428498b401048894424304183780402498b4008750a488bcbffd041b601eb0f4584f6488bcd480f44cbffd04532f6488bd84885c07456ffc7413bff7ca98b463089442440488b464048894424488b46344c8964243883f8047513488b46384c8d442438498bd5488bcbffd0eb2183f803751a488b46384c8d4424384584f6498bd5480f44eb488bcdffd0eb0232c04c8d5c2450498b5b30498b6b38498b7340498be3415f415e415d415c5fc3",
+      "extent": {
+        "target_rva": "3E4C090",
+        "begin_rva": "3E4C090",
+        "end_rva_exclusive": "3E4C226",
+        "size": 406,
+        "pdata_index": 212457,
+        "unwind_rva": "5126EDC",
+        "unwind_version": 1,
+        "unwind_flags": 0,
+        "unwind_code_bytes": 24,
+        "chained_runtime_function": null
+      }
+    }
+  ],
+  "layout_source_concatenation_order": [
+    "3A9F960",
+    "3AC38C0",
+    "3E4C090"
+  ],
+  "layout_bytes_sha256": "7412efd136e722993b71a8810f5d585347cde53104ba0a107551eb324ff18963",
+  "cumulative_source_bytes": {
+    "metadata": 492,
+    "function": 1545
+  },
+  "new_game_calls": false,
+  "method_name_available": false,
+  "switch_writer_proven": false,
+  "actual_ADD_observed": false,
+  "r0178_runtime_context_provenance": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-15T21:49:43.569320+00:00",
+    "actual_response_at": "2026-10-15T21:40:02.225461+00:00",
+    "raw_original_verified": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-treatment-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0178\\responses\\a08-preflight-military-after.json",
+      "bytes": 1088033,
+      "sha256": "5ea718696816bdcd827af8404fef2b30d74168ba436ad8e573c96c9e655ed3bd"
+    },
+    "raw_original_machine_id": "desktop-3fevhd2-1c74096080",
+    "raw_original_at": "2026-10-15T21:40:01.917803+00:00",
+    "raw_request_identity_literal": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-treatment-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0178\\requests\\a08-preflight-military-after.json",
+      "bytes": 152,
+      "sha256": "8159eb9bbacfe408f3ff551bb80386dd9e59ecc1f89742bd1d3ec6317f8c4dd0"
+    },
+    "raw_original_context_literals": [],
+    "runtime_source_head": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+    "native_build_source_head": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+    "root_report": {
+      "source": "Root collaboration message to refill research, received before actual source plan a04; no direct process read here",
+      "pid": 24740,
+      "connection_generation": 1,
+      "actor_full_id": 31254,
+      "date_raw": 53146848
+    },
+    "process_create_time_directly_observed_here": null,
+    "native_epoch_directly_observed_here": null,
+    "context_scope": "Source-only: Root report and readonly receipt pin retained distinctly; no action/current runtime lifetime qualification.",
+    "game_sdk_runtime_desktop_contacted_here": false
+  }
+}

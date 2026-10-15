@@ -1,0 +1,452 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:23:00.553051+00:00",
+  "source_head": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+  "version": "1.20.0.4",
+  "steam_build": 25734779,
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "held_source": {
+    "relative_to_shared_root": "high-parallel-county-a04/DENOMINATOR-2A95720.closed.actual.json",
+    "bytes": 13491,
+    "sha256": "8cac4c8ab290691177ab608c42614c7497130fa62846f6256abd02d57e2fdbe7",
+    "source_observed_at_utc": "2026-10-15T17:15:44.821131+00:00"
+  },
+  "begin_rva": "0x2a95720",
+  "end_rva_exclusive": "0x2a957db",
+  "bytes": 187,
+  "sha256": "41a9ed726a77ad4e72fa486b16b6dda4a941d1c94dc6d0972e6d10b94dec8ea5",
+  "raw_hex": "40534883ec204c8b0133db4863410c440fb6ca4d8d14804d3bc20f84930000004889742430488b35ec9b280348897c2438488b3de89b28034885ff7426418b088bc125ffffff003b472c73174c8b5f204803c04d8b5cc3084d85db740641394b1074034c8bde41817b1467527241753041837b10ff742941f6c101740d498b431883b8a0020000007f1641f6c102740c498bcbe8f8feffff84c0740441035b384983c0044d3bc2758f488b7c2438488b7424308bc34883c4205bc3",
+  "instructions": [
+    [
+      "2A95720",
+      "4053",
+      "push",
+      "rbx"
+    ],
+    [
+      "2A95722",
+      "4883ec20",
+      "sub",
+      "rsp, 0x20"
+    ],
+    [
+      "2A95726",
+      "4c8b01",
+      "mov",
+      "r8, qword ptr [rcx]"
+    ],
+    [
+      "2A95729",
+      "33db",
+      "xor",
+      "ebx, ebx"
+    ],
+    [
+      "2A9572B",
+      "4863410c",
+      "movsxd",
+      "rax, dword ptr [rcx + 0xc]"
+    ],
+    [
+      "2A9572F",
+      "440fb6ca",
+      "movzx",
+      "r9d, dl"
+    ],
+    [
+      "2A95733",
+      "4d8d1480",
+      "lea",
+      "r10, [r8 + rax*4]"
+    ],
+    [
+      "2A95737",
+      "4d3bc2",
+      "cmp",
+      "r8, r10"
+    ],
+    [
+      "2A9573A",
+      "0f8493000000",
+      "je",
+      "0x2a957d3"
+    ],
+    [
+      "2A95740",
+      "4889742430",
+      "mov",
+      "qword ptr [rsp + 0x30], rsi"
+    ],
+    [
+      "2A95745",
+      "488b35ec9b2803",
+      "mov",
+      "rsi, qword ptr [rip + 0x3289bec]"
+    ],
+    [
+      "2A9574C",
+      "48897c2438",
+      "mov",
+      "qword ptr [rsp + 0x38], rdi"
+    ],
+    [
+      "2A95751",
+      "488b3de89b2803",
+      "mov",
+      "rdi, qword ptr [rip + 0x3289be8]"
+    ],
+    [
+      "2A95758",
+      "4885ff",
+      "test",
+      "rdi, rdi"
+    ],
+    [
+      "2A9575B",
+      "7426",
+      "je",
+      "0x2a95783"
+    ],
+    [
+      "2A9575D",
+      "418b08",
+      "mov",
+      "ecx, dword ptr [r8]"
+    ],
+    [
+      "2A95760",
+      "8bc1",
+      "mov",
+      "eax, ecx"
+    ],
+    [
+      "2A95762",
+      "25ffffff00",
+      "and",
+      "eax, 0xffffff"
+    ],
+    [
+      "2A95767",
+      "3b472c",
+      "cmp",
+      "eax, dword ptr [rdi + 0x2c]"
+    ],
+    [
+      "2A9576A",
+      "7317",
+      "jae",
+      "0x2a95783"
+    ],
+    [
+      "2A9576C",
+      "4c8b5f20",
+      "mov",
+      "r11, qword ptr [rdi + 0x20]"
+    ],
+    [
+      "2A95770",
+      "4803c0",
+      "add",
+      "rax, rax"
+    ],
+    [
+      "2A95773",
+      "4d8b5cc308",
+      "mov",
+      "r11, qword ptr [r11 + rax*8 + 8]"
+    ],
+    [
+      "2A95778",
+      "4d85db",
+      "test",
+      "r11, r11"
+    ],
+    [
+      "2A9577B",
+      "7406",
+      "je",
+      "0x2a95783"
+    ],
+    [
+      "2A9577D",
+      "41394b10",
+      "cmp",
+      "dword ptr [r11 + 0x10], ecx"
+    ],
+    [
+      "2A95781",
+      "7403",
+      "je",
+      "0x2a95786"
+    ],
+    [
+      "2A95783",
+      "4c8bde",
+      "mov",
+      "r11, rsi"
+    ],
+    [
+      "2A95786",
+      "41817b1467527241",
+      "cmp",
+      "dword ptr [r11 + 0x14], 0x41725267"
+    ],
+    [
+      "2A9578E",
+      "7530",
+      "jne",
+      "0x2a957c0"
+    ],
+    [
+      "2A95790",
+      "41837b10ff",
+      "cmp",
+      "dword ptr [r11 + 0x10], -1"
+    ],
+    [
+      "2A95795",
+      "7429",
+      "je",
+      "0x2a957c0"
+    ],
+    [
+      "2A95797",
+      "41f6c101",
+      "test",
+      "r9b, 1"
+    ],
+    [
+      "2A9579B",
+      "740d",
+      "je",
+      "0x2a957aa"
+    ],
+    [
+      "2A9579D",
+      "498b4318",
+      "mov",
+      "rax, qword ptr [r11 + 0x18]"
+    ],
+    [
+      "2A957A1",
+      "83b8a002000000",
+      "cmp",
+      "dword ptr [rax + 0x2a0], 0"
+    ],
+    [
+      "2A957A8",
+      "7f16",
+      "jg",
+      "0x2a957c0"
+    ],
+    [
+      "2A957AA",
+      "41f6c102",
+      "test",
+      "r9b, 2"
+    ],
+    [
+      "2A957AE",
+      "740c",
+      "je",
+      "0x2a957bc"
+    ],
+    [
+      "2A957B0",
+      "498bcb",
+      "mov",
+      "rcx, r11"
+    ],
+    [
+      "2A957B3",
+      "e8f8feffff",
+      "call",
+      "0x2a956b0"
+    ],
+    [
+      "2A957B8",
+      "84c0",
+      "test",
+      "al, al"
+    ],
+    [
+      "2A957BA",
+      "7404",
+      "je",
+      "0x2a957c0"
+    ],
+    [
+      "2A957BC",
+      "41035b38",
+      "add",
+      "ebx, dword ptr [r11 + 0x38]"
+    ],
+    [
+      "2A957C0",
+      "4983c004",
+      "add",
+      "r8, 4"
+    ],
+    [
+      "2A957C4",
+      "4d3bc2",
+      "cmp",
+      "r8, r10"
+    ],
+    [
+      "2A957C7",
+      "758f",
+      "jne",
+      "0x2a95758"
+    ],
+    [
+      "2A957C9",
+      "488b7c2438",
+      "mov",
+      "rdi, qword ptr [rsp + 0x38]"
+    ],
+    [
+      "2A957CE",
+      "488b742430",
+      "mov",
+      "rsi, qword ptr [rsp + 0x30]"
+    ],
+    [
+      "2A957D3",
+      "8bc3",
+      "mov",
+      "eax, ebx"
+    ],
+    [
+      "2A957D5",
+      "4883c420",
+      "add",
+      "rsp, 0x20"
+    ],
+    [
+      "2A957D9",
+      "5b",
+      "pop",
+      "rbx"
+    ],
+    [
+      "2A957DA",
+      "c3",
+      "ret",
+      ""
+    ]
+  ],
+  "metadata_fragments": [
+    {
+      "begin_rva": "0x2a95720",
+      "end_rva_exclusive": "0x2a95740",
+      "bytes": 32,
+      "source": "original held prefix"
+    },
+    {
+      "begin": 44652352,
+      "end": 44652499,
+      "pdata_index": 146640,
+      "unwind": 86625036,
+      "unwind_flags": 4,
+      "chain_parent": [
+        44652320,
+        44652352,
+        84973024
+      ]
+    },
+    {
+      "begin": 44652499,
+      "end": 44652507,
+      "pdata_index": 146641,
+      "unwind": 86625060,
+      "unwind_flags": 4,
+      "chain_parent": [
+        44652320,
+        44652352,
+        84973024
+      ]
+    }
+  ],
+  "caller": {
+    "source_index_relative_path": "docs/ck3-native-ai/evidence/episode04-split-merge-stock-weight-order-12004/source-index.json",
+    "bytes": 41954,
+    "sha256": "2198798ea0484bfee6815a4dc08b8ef6349c026aaeeb29582f157d8ebf517557",
+    "full_merge_body_sha256": "22a2db721f438d5f42b402f3d891734b98db41a8f1d8b47a1fd67ea8a967d168",
+    "instructions": [
+      [
+        "0x2c5576f",
+        "498d4d38",
+        "lea",
+        "rcx, [r13 + 0x38]"
+      ],
+      [
+        "0x2c55773",
+        "33d2",
+        "xor",
+        "edx, edx"
+      ],
+      [
+        "0x2c55775",
+        "e8a6ffe3ff",
+        "call",
+        "0x2a95720"
+      ],
+      [
+        "0x2c5577a",
+        "4863c8",
+        "movsxd",
+        "rcx, eax"
+      ],
+      [
+        "0x2c5577d",
+        "4869d9a0860100",
+        "imul",
+        "rbx, rcx, 0x186a0"
+      ],
+      [
+        "0x2c55784",
+        "4803fb",
+        "add",
+        "rdi, rbx"
+      ],
+      [
+        "0x2c55787",
+        "4889bda0000000",
+        "mov",
+        "qword ptr [rbp + 0xa0], rdi"
+      ]
+    ]
+  },
+  "production_consumer_pins": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12004_army_support.cpp": {
+      "bytes": 19695,
+      "sha256": "7a2a91eec461b2bbf9967a6116d03c40ba6e4d16fa2f1cb85ba20fc048755ba2"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp": {
+      "bytes": 85245,
+      "sha256": "5ff156ca2609a761c2ff38f22389e83bad24ff1a55b6e98f3bd6bdd99d593753"
+    },
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/split_merge/root_relay.py": {
+      "bytes": 46965,
+      "sha256": "87fc598ef5543c9deff73f18c4cb6c0afadb0f472ca775cfb153165893dd403f"
+    }
+  },
+  "flags0_reachable_path": {
+    "definition_2a0_filter_reached": false,
+    "supply_loss_eligible_2A956B0_called": false,
+    "persistent138_or141_read": false,
+    "replenishment_permission_called": false,
+    "DATA_records_traversed": false,
+    "cached_current_offset": "ArRg+0x38",
+    "counts_valid_ArRg_vector_occurrences_without_deduplication": true
+  },
+  "scope": {
+    "new_EXE_reads_or_hashes": 0,
+    "runtime_queries_or_actions": 0,
+    "old_tests_rerun": 0,
+    "callee_2A956B0_body_needed_for_flags0": false,
+    "D_weight_predicate_internals_closed_by_this_file": false,
+    "new_live_weight_or_refill_credit": false
+  }
+}

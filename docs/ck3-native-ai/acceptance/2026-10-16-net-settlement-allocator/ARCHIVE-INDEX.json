@@ -1,0 +1,92 @@
+{
+  "schema": "xar.net-settlement-allocator-originals.v1",
+  "archive": {
+    "path": "originals.zip",
+    "bytes": 34327,
+    "sha256": "508159880ce98a824b48cf984a6e8d71e9ba42ac66fa484e17d3d4308d5b8980"
+  },
+  "members": [
+    {
+      "member": "allocator/EXECUTION-DONE.actual.json",
+      "bytes": 570,
+      "sha256": "26de1853cd5ae79496f110c11def66f850b71df320b742e678625cf0b1974cfd"
+    },
+    {
+      "member": "allocator/PLAN-CHECK.actual.json",
+      "bytes": 465,
+      "sha256": "5c9d3a170bc04b0abce3d58174eb45b82c01455857e563bc5501c796d32e7b42"
+    },
+    {
+      "member": "allocator/READ-RECEIPT.actual.json",
+      "bytes": 8911,
+      "sha256": "bf7c08f23feb2cac1723e16030f87828c29f337c6adfc2c48f4a3738b6c75aa6"
+    },
+    {
+      "member": "allocator/SOURCE-CONTRACT.actual.json",
+      "bytes": 3244,
+      "sha256": "238caa10d5b61e3a69fa089637d6c4b0325c7b3583347d900d26137e506af4d5"
+    },
+    {
+      "member": "allocator/actual-function.asm",
+      "bytes": 8157,
+      "sha256": "718321bb1791b4a474c0ed1c6ee22079b2896e0d167220cb37902ae4f4144e05"
+    },
+    {
+      "member": "allocator/actual-function.bin",
+      "bytes": 435,
+      "sha256": "207a688234652f7f48cde77604ce85381bc310787c9a3a37c6e4c7be65698a6b"
+    },
+    {
+      "member": "allocator/plan-a01.json",
+      "bytes": 4335,
+      "sha256": "16cb73da756d908d425ffa77455de9121e485ed23edbfc6bec35f8c62f546bc2"
+    },
+    {
+      "member": "allocator/plan-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "allocator/plan-check.stdout",
+      "bytes": 1095,
+      "sha256": "d9f50664aae83ecc237b723b254d1baae780df58b7488234852b95785104fe19"
+    },
+    {
+      "member": "allocator/read_actual_callee.py",
+      "bytes": 5548,
+      "sha256": "400b94fd91e1d20f8783a152df78a86688e5d3ee728d21eafc585de312a4d96a"
+    },
+    {
+      "member": "caller574/COMPLETE-574B.actual.asm",
+      "bytes": 9102,
+      "sha256": "55a27f9d54562c31a8690ef99cab18cc8fe10eb5c1bcbeb9c3aca32b5cd70607"
+    },
+    {
+      "member": "caller574/SOURCE-CONTRACT.actual.json",
+      "bytes": 10616,
+      "sha256": "31f8c9e1f35fa82bcbd1fe6a81be05d934a9de9ca1a900a8ce566a319600b79b"
+    },
+    {
+      "member": "engineering/DESIGN-DELIVERY.actual.json",
+      "bytes": 1065,
+      "sha256": "6f9784dda2de3c94b915b492e1c6e9642b35a992795e022d07a82ab2a5a485ad"
+    },
+    {
+      "member": "engineering/ENGINEERING-DECISION.md",
+      "bytes": 8232,
+      "sha256": "f7e62dbe4ccafeba2eab39d7837a43c389e81e03c96e2948f3875dfd6139a148"
+    },
+    {
+      "member": "identity/frozen.actual.json",
+      "bytes": 732,
+      "sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9"
+    },
+    {
+      "member": "identity/pe-layout-reused.json",
+      "bytes": 60633,
+      "sha256": "9f0f3da5fcaf809b8fad13c4310d6abdf3c5a06d98aad113e907ee64c15e7bb4"
+    }
+  ],
+  "source_executor_argv_are_historical_not_portable": true,
+  "no_EXE_DLL_game_media_or_new_live_sample": true
+}

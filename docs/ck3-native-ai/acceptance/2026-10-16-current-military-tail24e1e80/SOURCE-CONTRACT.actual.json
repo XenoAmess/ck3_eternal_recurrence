@@ -1,0 +1,299 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T23:41:35.042039+00:00",
+  "exact_EXE_SHA": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "function": {
+    "begin": "0x24E1E80",
+    "end_exclusive": "0x24E215C",
+    "bytes": 732,
+    "sha256": "32d27096049217575f2d92104d74cb42198bd53f8cbda90a053703e8810f4a05",
+    "instructions": 211,
+    "unchained": true,
+    "branch_count": 17,
+    "unique_branch_targets": [
+      38674134,
+      38674160,
+      38674190,
+      38674341,
+      38674344,
+      38674405,
+      38674486,
+      38674536,
+      38674617,
+      38674669,
+      38674751
+    ]
+  },
+  "entry_arguments": {
+    "RCX": "out80B",
+    "RDX": "originalCharacter",
+    "R8": "opaque optional thirdargument"
+  },
+  "known_caller": {
+    "call": "0x28C451A",
+    "entry": "0x28C43A0",
+    "arguments": [
+      "out80B",
+      "originalCharacter",
+      0
+    ]
+  },
+  "direct_calls": [
+    {
+      "at": "0x24E1EA5",
+      "callee": "0x28C3AC0",
+      "arguments": [
+        "RCX=originalCharacter"
+      ],
+      "returned_object": "RDI",
+      "body_read": false
+    },
+    {
+      "at": "0x24E1ED1",
+      "callee": "0x242C370",
+      "arguments": [
+        "RCX=entryR8",
+        "RDX=returnedObject",
+        "R8d=0xAE",
+        "R9d=100000",
+        "stack_arg5=0"
+      ],
+      "condition": "entryR8!=0; skipped by known caller",
+      "body_read": false
+    }
+  ],
+  "lookup": {
+    "object_source": "Return of unexpanded28C3AC0",
+    "keys": "*(object+68),u16",
+    "count": "i32(object+74)",
+    "values": "*(object+D0),qword array",
+    "key_hex": "0xAE",
+    "missing_value": 0,
+    "key_business_name": null
+  },
+  "fixedpoint": {
+    "scale": 100000,
+    "description": "P(x,y) is the literal source low64/signed-multiply-high implementation, not a new getter.",
+    "normal": "trunc_toward_zero(x*y/100000)",
+    "fast_bound": 3037000499,
+    "large": "hi=max_signed(x,y);lo=min_signed(x,y);P=wrap64(D(hi)*lo+D(wrap64((hi-D(hi)*100000)*lo)));D is source signed-magic quotient100000",
+    "modifier_stage": "normal range keeps rawmodifier; large path computes P(rawmodifier,100000)",
+    "factor": "max_signed(0,wrap64(modifier_stage+100000)); CMOVS on ADD result",
+    "upper_clamp": null
+  },
+  "explicit_output_stores": [
+    {
+      "offset": 0,
+      "slot": 0,
+      "at": [
+        "0x24E2036"
+      ]
+    },
+    {
+      "offset": 48,
+      "slot": 6,
+      "at": [
+        "0x24E20B9"
+      ]
+    },
+    {
+      "offset": 56,
+      "slot": 7,
+      "at": [
+        "0x24E20E7",
+        "0x24E213B"
+      ]
+    }
+  ],
+  "output_operation": "Each selected oldslot replaced by P(oldslot,factor); other seven outslots have no explicit body store",
+  "all_branches": [
+    {
+      "at_rva": 38674110,
+      "mnemonic": "je",
+      "bytes_hex": "7416",
+      "target_rva": 38674134,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674112,
+      "semantic_group": "thirdargument_null_skip_optional_call"
+    },
+    {
+      "at_rva": 38674152,
+      "mnemonic": "jle",
+      "bytes_hex": "7e24",
+      "target_rva": 38674190,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674154,
+      "semantic_group": "nonpositive_keycount_skip_search"
+    },
+    {
+      "at_rva": 38674188,
+      "mnemonic": "jne",
+      "bytes_hex": "75e2",
+      "target_rva": 38674160,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674190,
+      "semantic_group": "binarysearch_repeat"
+    },
+    {
+      "at_rva": 38674219,
+      "mnemonic": "je",
+      "bytes_hex": "7478",
+      "target_rva": 38674341,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674221,
+      "semantic_group": "selected_position_end_missing"
+    },
+    {
+      "at_rva": 38674225,
+      "mnemonic": "jb",
+      "bytes_hex": "7272",
+      "target_rva": 38674341,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674227,
+      "semantic_group": "selected_key_greater_missing"
+    },
+    {
+      "at_rva": 38674236,
+      "mnemonic": "js",
+      "bytes_hex": "7867",
+      "target_rva": 38674341,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674238,
+      "semantic_group": "negative_index_missing"
+    },
+    {
+      "at_rva": 38674259,
+      "mnemonic": "jbe",
+      "bytes_hex": "7653",
+      "target_rva": 38674344,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674261,
+      "semantic_group": "modifier_fast_identity_path"
+    },
+    {
+      "at_rva": 38674339,
+      "mnemonic": "jmp",
+      "bytes_hex": "eb03",
+      "target_rva": 38674344,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": null,
+      "semantic_group": "modifier_largepath_join"
+    },
+    {
+      "at_rva": 38674369,
+      "mnemonic": "ja",
+      "bytes_hex": "7722",
+      "target_rva": 38674405,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674371,
+      "semantic_group": "slot0_value_largepath"
+    },
+    {
+      "at_rva": 38674374,
+      "mnemonic": "ja",
+      "bytes_hex": "771d",
+      "target_rva": 38674405,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674376,
+      "semantic_group": "slot0_factor_largepath"
+    },
+    {
+      "at_rva": 38674403,
+      "mnemonic": "jmp",
+      "bytes_hex": "eb51",
+      "target_rva": 38674486,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": null,
+      "semantic_group": "slot0_fastpath_store_join"
+    },
+    {
+      "at_rva": 38674500,
+      "mnemonic": "ja",
+      "bytes_hex": "7722",
+      "target_rva": 38674536,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674502,
+      "semantic_group": "slot6_value_largepath"
+    },
+    {
+      "at_rva": 38674505,
+      "mnemonic": "ja",
+      "bytes_hex": "771d",
+      "target_rva": 38674536,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674507,
+      "semantic_group": "slot6_factor_largepath"
+    },
+    {
+      "at_rva": 38674534,
+      "mnemonic": "jmp",
+      "bytes_hex": "eb51",
+      "target_rva": 38674617,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": null,
+      "semantic_group": "slot6_fastpath_store_join"
+    },
+    {
+      "at_rva": 38674632,
+      "mnemonic": "ja",
+      "bytes_hex": "7723",
+      "target_rva": 38674669,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674634,
+      "semantic_group": "slot7_value_largepath"
+    },
+    {
+      "at_rva": 38674637,
+      "mnemonic": "ja",
+      "bytes_hex": "771e",
+      "target_rva": 38674669,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": 38674639,
+      "semantic_group": "slot7_factor_largepath"
+    },
+    {
+      "at_rva": 38674667,
+      "mnemonic": "jmp",
+      "bytes_hex": "eb52",
+      "target_rva": 38674751,
+      "internal": true,
+      "target_instruction_boundary": true,
+      "fallthrough_rva": null,
+      "semantic_group": "slot7_fastpath_epilog_join"
+    }
+  ],
+  "branchless_decisions": [
+    "CMOVB in key search",
+    "CMOVL/G quotient-remainder large multiplier path",
+    "CMOVS factor nonnegative lower clamp"
+  ],
+  "direct_Character_1C0_dereference": false,
+  "direct_secondary_terms_28_30_2c0_2c8_edge": false,
+  "direct_known_wallet_ADD_SUB_call": false,
+  "out30_is_secondary_context30": false,
+  "actual_new_live_sample": false,
+  "actual_military_applied_component": null,
+  "maintenance_attribution": "unclosed",
+  "next_scope_candidate": "28C3AC0(Character) only after separate Root scope; no automatic read",
+  "read_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-vector-tail24E1E80-source-a03\\READ-RECEIPT.actual.json",
+    "bytes": 14276,
+    "sha256": "cda36e893f63e111e22523674f719c8b56d935ed39577416a83bfdd90ce0ff26"
+  }
+}

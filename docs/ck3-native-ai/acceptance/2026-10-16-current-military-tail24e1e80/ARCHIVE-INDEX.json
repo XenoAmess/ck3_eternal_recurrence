@@ -1,0 +1,96 @@
+{
+  "archive": {
+    "path": "originals.zip",
+    "bytes": 34464,
+    "sha256": "8f78241ef95cbb742b60d737cd127dd01f3aea0d56f3c90a6fba9f07845887a8"
+  },
+  "members": [
+    {
+      "member": "caller402/READ-RECEIPT.actual.json",
+      "bytes": 8938,
+      "sha256": "b381a4a8751afea9dd79dea417123c3ae05cd0e428eeb1e6d1337df2155fe0fa"
+    },
+    {
+      "member": "caller402/SOURCE-CONTRACT.actual.json",
+      "bytes": 2633,
+      "sha256": "9eb269a5923258ae47dc2e72fbf24253eb6a463ffe7855f381ee8066b672140f"
+    },
+    {
+      "member": "caller402/actual-function.asm",
+      "bytes": 7436,
+      "sha256": "882573f245b81a0cd23064482a3b38d541c990eea29d674b8c10ff8bd55c9c9c"
+    },
+    {
+      "member": "caller402/actual-function.bin",
+      "bytes": 402,
+      "sha256": "47a076981a8f92c4ae53c2da28c81b44a8ed90ffca55b593dfa17108c97a9a81"
+    },
+    {
+      "member": "identity/frozen.actual.json",
+      "bytes": 732,
+      "sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9"
+    },
+    {
+      "member": "identity/pe-layout-reused.json",
+      "bytes": 60633,
+      "sha256": "9f0f3da5fcaf809b8fad13c4310d6abdf3c5a06d98aad113e907ee64c15e7bb4"
+    },
+    {
+      "member": "tail/EXECUTION-DONE.actual.json",
+      "bytes": 658,
+      "sha256": "f0a6fe3785c2ea5eb42c58acbde4ba4239c2df7f3f084a41fc06dbcdb4bbe4fc"
+    },
+    {
+      "member": "tail/PLAN-CHECK.actual.json",
+      "bytes": 459,
+      "sha256": "b8093226d19e6b4660d9470bc0e32865e7dd0666aef7323564b6329ac6071ee1"
+    },
+    {
+      "member": "tail/READ-RECEIPT.actual.json",
+      "bytes": 14276,
+      "sha256": "cda36e893f63e111e22523674f719c8b56d935ed39577416a83bfdd90ce0ff26"
+    },
+    {
+      "member": "tail/SOURCE-CONTRACT.actual.json",
+      "bytes": 8200,
+      "sha256": "c9b0b2577f595d0ad0e8c8a4f3613b8c1857f6afc271937d228e87d1c5463ce9"
+    },
+    {
+      "member": "tail/actual-function.asm",
+      "bytes": 6962,
+      "sha256": "894c55182c097f97a33db73bbb0a4eae09772345d71ae9a382284c81498f693d"
+    },
+    {
+      "member": "tail/actual-function.bin",
+      "bytes": 732,
+      "sha256": "32d27096049217575f2d92104d74cb42198bd53f8cbda90a053703e8810f4a05"
+    },
+    {
+      "member": "tail/plan-a01.json",
+      "bytes": 4535,
+      "sha256": "193638c8097301daa68e98775eb66b143ed6568f4f34707905a964eaf6620b93"
+    },
+    {
+      "member": "tail/plan-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "tail/plan-check.stdout",
+      "bytes": 1095,
+      "sha256": "493f36ce801afe0b124219426e58e83943ca3065f6eea551fb52e14101d21643"
+    },
+    {
+      "member": "tail/prepare_plan.py",
+      "bytes": 4770,
+      "sha256": "801f8f24e4797fc4cc11c41a7a375b756fdb1fd761ae2fc074c88e8488be3ee9"
+    },
+    {
+      "member": "tail/read_actual_tail.py",
+      "bytes": 6339,
+      "sha256": "c55867dc721264ae334d64e318a6c03e4c54394640429ac56c74aa31edf6e239"
+    }
+  ],
+  "historical_executor_paths_not_newhost_commands": true,
+  "no_EXE_DLL_media_or_live_sample": true
+}

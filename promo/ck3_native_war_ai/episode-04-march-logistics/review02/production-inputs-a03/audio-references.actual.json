@@ -1,0 +1,91 @@
+{
+  "schema": "episode04.narration.machine-scoped-audio-references.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_result_at_utc": "2026-10-15T22:27:27.958360+00:00",
+  "state": "CN_AUDIO_MEASURED_69_TWO_PARENT_RUNS",
+  "actual_cue_count": 69,
+  "actual_speech_seconds": 1901.616,
+  "actual_timeline_seconds": 1946.8666666666666,
+  "actual_timeline_frames": 58406,
+  "pilot_reused": true,
+  "audio_pool_actual_bytes": 23698879,
+  "metadata_references": [
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-tts-rest68-a03/RESULT.actual.json",
+      "bytes": 1567,
+      "sha256": "a893dce82f485afc920900d188b1cbf584e10e5a0200149fd93406529dc573c3"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-tts-pilot-a02/RESULT.actual.json",
+      "bytes": 689,
+      "sha256": "8f2aea93d533ebe694fd87c27cdb85800bdabaeb5d7b40f7f1050ae4ae11311c"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-audio-pilot-edge731-a02/production-inputs.json",
+      "bytes": 2232,
+      "sha256": "fb6e672bcd1ab4ffb42c02e23a45b0b413971d0f4892dbf0488c14b84ae14fe5"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-audio-rest68-edge731-a03/production-inputs.json",
+      "bytes": 156872,
+      "sha256": "7b2856e774fadb18fd2aa5494f5edd9736fac7b362b0bbe97ba7fd82ae4341df"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-audio-rest68-edge731-a03/production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-audio-rest68-edge731-a03/narration69.timeline.actual.json",
+      "bytes": 41942,
+      "sha256": "14b41b9aa02f8f969d4e21449840a5b6d03c2c96283595f52b312958616dc8c0"
+    }
+  ],
+  "failed_attempt_references": [
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-tts-execution-a01/RESULT.actual.json",
+      "bytes": 756,
+      "sha256": "af6ee6aecde61df9f6f4e227a68c6b90352b20d791dfbec2fd4922391b736d7d"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-tts-execution-a01/tts.stderr.log",
+      "bytes": 4832,
+      "sha256": "4bb3e0c0bd5e16ba626158a9889950ac1f46acdebb209a7c19ca9b76e95824b8"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "external_root_id": "ck3-e04-resume-20261015-a01",
+      "run_relative_path": "review02-tts-rest68-a03/PRE-PROVIDER-GITHUB-LIMIT.reported-a01.json",
+      "bytes": 829,
+      "sha256": "f70212315b9d958159b9afe853659b54b4e42df75e1dd70813d437b1b7815a7c"
+    }
+  ],
+  "resolution_rules": [
+    "Machine-scoped run_relative_path is provenance, not a path to silently open on another machine.",
+    "Knowledge/config/Chinese/English/composer may be used after exact archive verification without audio availability.",
+    "Actual audio remains in the original two runs. A different machine must receive an explicitly authorized audio bundle and verify every MP3 bytes+SHA against the mergedproduction record before binding.",
+    "Do not synthesize fake audio bindings, reuse a samebasename localMP3, auto-download unavailable evidence, or call metadataSHA verification an audio probe.",
+    "A copied/reencoded/replaced audio file needs its own actual byte binding; old actual receipts cannot be relabelled as local execution.",
+    "Do not rerun providers to fill missing media as part of read-only archive materialization."
+  ],
+  "audio_payload_in_repository": false,
+  "video_render_complete": false,
+  "human_signoff": false,
+  "research_card_credit_added": 0
+}

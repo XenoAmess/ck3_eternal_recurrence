@@ -157,3 +157,7 @@ before_formula_matches_amount = (before_computed_add_raw == record.amount_raw)
 | `portable-source-a01/pytest-a01.receipt.actual.json`：140 passed = 9 legacy + 16 native + 110 negative + 5 unknown；SHA `116a1a86b80a3e6060ab501f6bb3186339b72b5c4586c09bbdeff379fee33de9` | 已有标准 production import、显式候选 overlay 的 narrow pytest，Python `-B -O`；机器 `desktop-3fevhd2-1c74096080`，执行区间 2026-10-15 13:58:03–09 UTC；没有 live-game cadence/维护费验收效力 |
 
 新章节审阅机器为 `desktop-3fevhd2-1c74096080`，身份在 2026-10-15 14:49:47 UTC 的本轮只读检查中经 `tools/ck3_live_run_id.py machine` 新鲜读回；来源为实际 consumer、上述合同和既有回执。机器状态与历史验收不得外推到其他 machine_id；可复用的是合同、代码和有明确范围的合成回归结论。
+
+## 2026-10-16：R0178 两个 raw store 来源增量
+
+[R0178 真实 writer 与完整函数](war-payment-r0178-writer-source-12004.md)已补齐 `+18→+2C0`、`+20→+2C8` 的两个真实物理写入与完整695B赋值函数；历史本轮未知回执保持原样。入口 `R9=*(entryRCX+1C0)` 后、任何 callee 前无条件复制两项。它们的上游业务含义、另外两字段、caller/date cadence 与已付军事费仍未知，`maintenance_attribution=unclosed`。Agent 可保留两个 raw store 已知，不得将生产输出 `known_producer=false` 升成军事归因；精确原件和普通clone复放见新专题。

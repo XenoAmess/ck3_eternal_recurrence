@@ -1,0 +1,59 @@
+{
+  "format_version": 1,
+  "kind": "episode04_review02_exact_bilingual_inputs",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_frozen_at_utc": "2026-10-15T21:39:29.441358+00:00",
+  "archive": {
+    "path": "review02-bilingual-inputs-a03.zip",
+    "bytes": 89567,
+    "sha256": "d205b30c7e951666c19c2a76ab472986787fb1f4e6de515f48c6ec935641c9e9"
+  },
+  "members": [
+    {
+      "path": "project/promo-project.json",
+      "bytes": 86060,
+      "sha256": "6cdc1e349826d607a9c2fe1fa17e3b50d770a3a246bd207ea323002487d48140"
+    },
+    {
+      "path": "inputs/narration.cues.bilingual.json",
+      "bytes": 61341,
+      "sha256": "8d7de9e7c01e691dd2ac72af335ba35717f2c3a6238a0fe6045ddc4f7b6bfc16"
+    },
+    {
+      "path": "inputs/english.cues.json",
+      "bytes": 39742,
+      "sha256": "401734ae8f00c890ebec49504bb50b8a551b85fa17f525fddf54aad6b8b682ff"
+    },
+    {
+      "path": "inputs/shots.timeline.json",
+      "bytes": 5424,
+      "sha256": "abfe4e9b6b89149c49c9c5eaffb6769ede9277d845d8caaaf7d7d9efd69e54b9"
+    },
+    {
+      "path": "inputs/cue-source-shot-index.original.json",
+      "bytes": 51366,
+      "sha256": "ddb241fa0773743d9012731e99e0ccb69924fba95d06cab292abd769e8b0e016"
+    },
+    {
+      "path": "producer/episode04_review02.py",
+      "bytes": 6547,
+      "sha256": "6de4269d38f9d4a676a2a9d30a39ec59e3eb52da8a5d6fec0d24d5be880c9d15"
+    },
+    {
+      "path": "inputs/translation-fidelity-review.json",
+      "bytes": 20027,
+      "sha256": "3d363cbd494f7cc78372019e58e1f67d72df26f2a969f0d73b6187b8d5ed6d66"
+    }
+  ],
+  "total_uncompressed_bytes": 270507,
+  "cue_count": 69,
+  "voice": {
+    "provider": "edge",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "workers": 4,
+    "new_voice_approval": null
+  },
+  "actual_audio_in_archive": false,
+  "human_signoff": false
+}

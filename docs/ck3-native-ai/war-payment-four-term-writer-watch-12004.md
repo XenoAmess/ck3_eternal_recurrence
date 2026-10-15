@@ -1,5 +1,7 @@
 # CK3 1.20.0.4：四个 raw term 的 writer-PC 观察候选
 
+2026-10-16 增量：[R0178 真实 writer 与完整函数](war-payment-r0178-writer-source-12004.md)已实际执行一次 CK3 window，取得两个 source-qualified raw store 与清理终态。下文冷夹具/future 段保留其原阶段边界；这次 actual 不回填旧case，军事已付维护费仍unclosed。
+
 已完成真实冷夹具和未来默认关闭的观察器源码，尚未 attach CK3；没有已知军事 producer，也没有已付维护费归因。目标是取得新鲜 secondary context 四字段写后PC，再作有限 source 研究。现有 [R0174父链](war-payment-r0174-actual-parent-source-12004.md) 未直接生产四term，不再靠数值命名。
 
 源码位于 [独立research目录](../../ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/CMakeLists.txt)，只增加research源码/工具，不改主CMake或生产默认行为。基于dcda，明确依赖cash当前raw leaf patch SHA `f19482b3e38f15bc927c696efcddad27e010bfee1659606dbae438d932b03622`；该leaf共用原generic默认OFF编译flag，没有新getter/query/detour。运行入场要显式导入新的leaf validator，缺代码即拒绝，不能靠旧normalizer放行。

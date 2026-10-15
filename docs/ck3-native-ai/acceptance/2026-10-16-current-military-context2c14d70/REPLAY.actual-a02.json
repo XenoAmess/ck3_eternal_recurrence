@@ -1,0 +1,16 @@
+{
+  "result": "SAVED_SOURCE_BYTES_AND_BRANCH_STRUCTURE_VERIFIED",
+  "archive_sha256": "3c1ddd79e8150895569d4749f7f1fb044173f421ab1754190797395ccc89df36",
+  "source_bytes": 613,
+  "instructions": 155,
+  "branches": 13,
+  "call_instructions": 5,
+  "checked_members": 11,
+  "semantic_correctness_automatically_proven": false,
+  "new_EXE_reads": 0,
+  "new_runtime_actions": 0,
+  "maintenance_attribution": "unclosed",
+  "limits": "Hashes/coverage/branchtargets verified; manualsemanticcontract isnot provedbythisverifier. Originalabsolutepathsarehistoricalonly.",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T23:42:10.616810+00:00"
+}

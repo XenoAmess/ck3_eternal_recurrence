@@ -1,0 +1,78 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T23:10:31.849851+00:00",
+  "exact_game_SHA": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "function": {
+    "begin": "0x28A6B50",
+    "end_exclusive": "0x28A6D03",
+    "bytes": 435,
+    "instructions": 116,
+    "sha256": "207a688234652f7f48cde77604ce85381bc310787c9a3a37c6e4c7be65698a6b",
+    "unchained": true,
+    "calls": 0,
+    "external_jumps": 0
+  },
+  "ABI": {
+    "rcx": "output qword pointer",
+    "rdx": "signed64 x",
+    "r8": "signed64 y",
+    "r9": "signed64 T",
+    "RAX_return": "same output pointer after storing result"
+  },
+  "known_source_calls": [
+    {
+      "at": "0x28A6DCA",
+      "returned": "0x28A6DCF",
+      "x": "wrap_i64(-NET)",
+      "y": "raw context+28",
+      "T": "wrap_i64(c+d)",
+      "output_used_by_SUB_return": "0x28A6E05"
+    },
+    {
+      "at": "0x28A6E8E",
+      "returned": "0x28A6E93",
+      "x": "wrap_i64(-NET)",
+      "y": "raw context+30",
+      "T": "wrap_i64(c+d)",
+      "output_used_by_SUB_return": "0x28A6EC2"
+    }
+  ],
+  "call_branch": "NET<=0 and T!=0; output zero skips wallet SUB",
+  "normal_safe_formula": [
+    "q=trunc_toward_zero(x*y/100000)",
+    "result=trunc_toward_zero(q*100000/T)"
+  ],
+  "machine_rules": [
+    "All source add/sub/imul/lea results retain low64 bits unless the explicit signed128 multiply-high form is used.",
+    "D(z) is the literal source signed multiply-high by0x29F16B11C6D1E109, arithmetic shift14 and sign correction (quotient by100000).",
+    "If u64(x+3037000499)<=6074000998 and likewise y, q=D(wrap64(x*y)). Otherwise hi=max_signed(x,y),lo=min_signed(x,y), q=wrap64(D(hi)*lo + D(wrap64((hi-D(hi)*100000)*lo))).",
+    "If T==0 output is4294967295 (MOV EAX,FFFFFFFF zeroextends), not signed minus1. The known574B caller excludesT0.",
+    "If u64(q+92233720368547)<=184467440737094, result=idiv(wrap64(q*100000),T).quotient.",
+    "Otherwise machine_abs(T)=wrap64((T xor signmask)-signmask). If signed machine_abs(T)>=10000000000, result=idiv(q,D(T)).quotient.",
+    "Otherwise p=wrap64(D(q)*100000);r=wrap64(q-p);(u,v)=idiv(p,T);result=wrap64(idiv(wrap64(r*100000),T).quotient + idiv(wrap64(v*100000),T).quotient + u*100000).",
+    "No result clamp, saturation or unconditional positivity is encoded. Formula not collapsed to x*y/T for all inputs."
+  ],
+  "conditional_bounds": "Only under normal nonnegative safe domain0<=x<=T,y>=0,T>0 does source formula imply0<=result<=y; caller does not enforce all these conditions.",
+  "fixed_rounding_counterexample": {
+    "kind": "source-math illustration,not native or game test",
+    "x": 1,
+    "c": 50000,
+    "d": 50000,
+    "T": 100000,
+    "result_c": 0,
+    "result_d": 0,
+    "sum": 0,
+    "deficit": 1
+  },
+  "source_entry_prefix16": "48895c240848897c2410488bd94d8bd0",
+  "military_getter_called": false,
+  "component_c_semantics": null,
+  "component_d_semantics": null,
+  "live_allocator_callback_observed": false,
+  "maintenance_attribution": "unclosed",
+  "receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-allocator28A6B50-source-a01\\READ-RECEIPT.actual.json",
+    "bytes": 8911,
+    "sha256": "bf7c08f23feb2cac1723e16030f87828c29f337c6adfc2c48f4a3738b6c75aa6"
+  }
+}

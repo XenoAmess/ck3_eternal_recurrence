@@ -291,6 +291,23 @@ constexpr bool NamedGuiTreeInspectionFrameBytesFitV1(std::size_t bytes) noexcept
 }
 
 
+// Source layout only. No method name, receiver identity, or execution credit.
+struct NamedGuiExpressionChainCall12004V1 {
+  std::uint32_t index = 0, type_id_0 = 0, kind_4_raw = 0;
+  std::uint64_t native_target_8_rva = 0;
+  bool user_data_10_present = false;
+  bool operator==(const NamedGuiExpressionChainCall12004V1 &) const = default;
+};
+struct NamedGuiExpressionDescriptor12004V1 {
+  std::uint32_t chain_count_24_raw = 0, final_type_id_30 = 0, final_kind_34_raw = 0;
+  std::uint64_t final_target_38_rva = 0;
+  bool final_user_data_40_present = false;
+  std::uint32_t receiver_type_id_48 = 0;
+  std::uint8_t receiver_flag_4c_raw = 0;
+  std::vector<NamedGuiExpressionChainCall12004V1> chain_calls;
+  bool operator==(const NamedGuiExpressionDescriptor12004V1 &) const = default;
+};
+
 // Observed binding only: this does not identify a MilitaryView method name.
 struct NamedGuiStandardClickCallback12004V1 {
   std::uint32_t index = 0;
@@ -299,6 +316,8 @@ struct NamedGuiStandardClickCallback12004V1 {
   bool indirect_target_3aa30e0 = false;
   std::uint64_t native_target_8_rva = 0;
   bool receiver_f0_present = false;
+  bool expression_descriptor_3a9f960 = false;
+  NamedGuiExpressionDescriptor12004V1 expression_3a9f960{};
 };
 
 struct NamedGuiStandardClickBinding12004V1 {
@@ -325,6 +344,7 @@ struct NamedGuiTreeInspectionV1 {
   std::size_t widget_count = 0;
   bool standard_click_bindings_12004 = false;
   bool callback_thunk_3aa30e0_pin_verified = false;
+  bool expression_layout_3a9f960_pin_verified = false;
   // Allocate rows only within the owning-thread traversal try/catch;
   // the mailbox carries the bounded vector handle, not thousands of rows.
   std::vector<NamedGuiWidgetInspectionV1> widgets;

@@ -1,0 +1,66 @@
+{
+  "schema": "episode04.narration.runtime-pin.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_launch_at_utc": "2026-10-15T22:26:33.159736+00:00",
+  "python_version": "3.14.7",
+  "installed_distribution_versions": {
+    "edge-tts": "7.3.1",
+    "aiohttp": "3.14.3",
+    "certifi": "2026.7.22",
+    "tabulate": "0.10.0",
+    "typing_extensions": "4.16.0",
+    "xar-promo-toolchain": "0.2.1"
+  },
+  "edge_wheel": {
+    "filename": "edge_tts-7.3.1-py3-none-any.whl",
+    "published_sha256": "2a3c79d6235a7a736d681233823ce5492e829b43eb47beae49aa181237a8f9a4",
+    "primary_source": "https://pypi.org/project/edge-tts/7.3.1/",
+    "digest_origin": "officialPyPI as recorded by source research; this intake did not download/hash original wheel"
+  },
+  "actual_installed_edge_source_pins": [
+    {
+      "bytes": 24038,
+      "sha256": "2944b7de57a49a6dc828186a8465e03fd0936102da2e717b9dce45c40c993bb9",
+      "distribution_relative_path": "edge_tts/communicate.py"
+    },
+    {
+      "bytes": 18490,
+      "sha256": "b29c37e2a0c11284adb2a1ffc04f0f231e1ba2d921494a912797218b05d64c4a",
+      "distribution_relative_path": "edge_tts/drm.py"
+    },
+    {
+      "bytes": 1777,
+      "sha256": "6c987fafa0a10aad81d8d5fc3447a14f2bca2eb86b4f97296c384253d3906c94",
+      "distribution_relative_path": "edge_tts/constants.py"
+    },
+    {
+      "bytes": 6110,
+      "sha256": "af602dc774c69a77d3994135f7a687c1c281df5b6eea34d696c785981e77e005",
+      "distribution_relative_path": "edge_tts-7.3.1.dist-info/METADATA"
+    },
+    {
+      "bytes": 3333,
+      "sha256": "2be36fd73ccffad942a1c2673029632a19c06aa06e921ab6613b2eca8947e2b7",
+      "distribution_relative_path": "edge_tts-7.3.1.dist-info/RECORD"
+    }
+  ],
+  "xar_toolchain": {
+    "actual_version": "0.2.1",
+    "actual_wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "actual_wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "fresh_latest_method": [
+      "gh",
+      "api",
+      "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+    ],
+    "future_runs": "Query latest formal release again;0.2.1 is this frozen run, not permanent latest"
+  },
+  "voice": {
+    "provider": "edge",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "workers": 4,
+    "new_voice_approval": null
+  },
+  "new_process_required_after_dependency_upgrade": true
+}

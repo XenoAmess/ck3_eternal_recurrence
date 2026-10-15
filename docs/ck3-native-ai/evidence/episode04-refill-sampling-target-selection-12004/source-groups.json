@@ -1,0 +1,367 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "utc": "2026-10-15T21:22:03.244560+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r0177-current-inputs-compact-a01\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-16-episode04-r0177-a07-current-literals\\CURRENT.actual-a01.json",
+    "bytes": 214670,
+    "sha256": "a13d858d529b591d19db182b1573212bab74935c1f85039aa78591011301f4c2"
+  },
+  "scope": "existing initial010 current switch literals; no Can/chunk/fraction/current/max full input replay",
+  "armies": [
+    {
+      "army_id": 18,
+      "native_carmy_id": 18,
+      "persistent_rows": [
+        {
+          "persistent_full_id": 906,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 910,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 17292,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 17293,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 912,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 914,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 928,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 930,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 1766,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 1768,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 896,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 882,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 902,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 904,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 886,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 888,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 10446,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 948,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 890,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 950,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 892,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        }
+      ]
+    },
+    {
+      "army_id": 93,
+      "native_carmy_id": 85,
+      "persistent_rows": [
+        {
+          "persistent_full_id": 16793864,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793866,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793865,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793863,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        }
+      ]
+    },
+    {
+      "army_id": 94,
+      "native_carmy_id": 86,
+      "persistent_rows": [
+        {
+          "persistent_full_id": 16793867,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793868,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793869,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793870,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        }
+      ]
+    },
+    {
+      "army_id": 95,
+      "native_carmy_id": 87,
+      "persistent_rows": [
+        {
+          "persistent_full_id": 16793871,
+          "definition_magic_38_raw": 1316318316,
+          "status": "not_applicable",
+          "source_branch": "non_special_definition_bypass",
+          "resolved_character_full_id": null,
+          "raw_byte_4a9": null,
+          "enabled": null,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793872,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793873,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        },
+        {
+          "persistent_full_id": 16793874,
+          "definition_magic_38_raw": 1195663951,
+          "status": "available",
+          "source_branch": "direct_character",
+          "resolved_character_full_id": 31254,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "identity_consistent": true
+        }
+      ]
+    }
+  ],
+  "aliases_not_recounted": "one row per Army/persistent FullID; original chunk occurrences remain in CURRENT; this count is not physical ADD count"
+}

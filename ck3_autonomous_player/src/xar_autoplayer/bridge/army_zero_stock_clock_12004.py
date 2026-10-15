@@ -51,7 +51,7 @@ def project_zero_stock_next_callback_candidate_12004(row: dict) -> dict:
              and type(row.get("army_id")) is int)
     candidate = _all_known((typed, zero, count > 0 if count is not None else None,
                             admitted, coherent))
-    return dict(
+    result = dict(
         source="existing_next_pair_bucket_and_updater_gate_join_12004",
         conditional_zero_entry_capture_candidate=candidate,
         observed_current_stock_is_exact_zero=zero,
@@ -71,6 +71,89 @@ def project_zero_stock_next_callback_candidate_12004(row: dict) -> dict:
         full_daily_supply_transition_ready=False,
         full_monthly_ready=False,
     )
+    result["conditional_next_zero_supply_budget_v1"] = _next_zero_supply_budget(row,result)
+    return result
+
+
+def _next_zero_supply_budget(row, clock_candidate):
+    """Reuse native budget kernel for one next successful post-stock0 scope.
+
+    No future admission is invented, and no synthetic post-state is presented
+    as a native row. Current Province-specific fraction modifier is separate
+    from the land-rate M1A9. Positive budget is only a capture candidate.
+    """
+    from .army_monthly_loss_budget_projection import _derive_supply_component, _i64
+    from .army_monthly_loss_budget_inputs_contract import normalize_monthly_loss_budget_inputs_v1
+    result=dict(source="conditional_next_post_updater_zero_supply_budget_12004",
+        conditional_post_supply_raw=None,post_supply_ready=False,
+        supply_budget_soldiers=None,supply_budget_ready=False,
+        conditional_positive_budget_capture_candidate=None,
+        first_reaches_zero_in_this_conditional_callback=None,
+        next_date_raw_i32=clock_candidate["next_date_raw_i32"],
+        next_selected_phase_i32=clock_candidate["next_selected_phase_i32"],
+        original_pointer_positions=clock_candidate["conditional_original_pointer_positions"],
+        candidate_first_original_pointer_position=(clock_candidate["conditional_original_pointer_positions"][0]
+            if clock_candidate["conditional_original_pointer_positions"] else None),
+        missing_inputs=[],actual_future_callback_observed=False,physical_loss_observed=False,
+        physical_writer_execution_ready=False,
+        condition="one actual source-derived next pointer occurrence; captured current receiver/rate/cap/Province-specific loss operands/eligible count unchanged after earlier stages",
+        acceptance="same actual callback token and writer-time stock0 plus complete unique physical debit>0; budget alone never passes")
+    admission=clock_candidate["next_admission"]
+    count=clock_candidate["conditional_callback_opportunity_count"]
+    if admission["admitted"] is False or count==0:
+        result["conditional_positive_budget_capture_candidate"]=False
+        return result
+    if admission["admitted"] is not True:
+        result["missing_inputs"].append("source_next_updater_admission")
+    for key in ("current_supply_raw","current_supply_capacity_raw","current_supply_change_monthly_raw"):
+        x=row.get(key)
+        if type(x) is not int or not -(1<<63)<=x<(1<<63):result["missing_inputs"].append(key)
+    if result["missing_inputs"]:return result
+    stock,cap,rate=(row[k] for k in ("current_supply_raw","current_supply_capacity_raw","current_supply_change_monthly_raw"))
+    if stock<0 or cap<0:
+        result["missing_inputs"].append("ordinary_nonnegative_stock_capacity");return result
+    changed=_i64(stock+rate)
+    post=0 if changed<0 else min(changed,cap)
+    result.update(conditional_post_supply_raw=post,post_supply_ready=True,
+                  native_ADD_overflow_wrapped=(changed!=stock+rate),
+                  first_reaches_zero_in_this_conditional_callback=stock>0 and post==0)
+    if post!=0:
+        result["conditional_positive_budget_capture_candidate"]=False;return result
+    raw=row.get("monthly_loss_budget_inputs_v1")
+    # Gate-only compact slivers are explicitly not a complete table/modifier
+    # family. They cannot supply missing runtime defaults or a native0 M.
+    if not isinstance(raw,dict) or not {"status","ready","scale","loaded_supply_state_levels","loaded_supply_state_fractions_raw"}<=set(raw):
+        result["missing_inputs"].append("complete_current_monthly_loss_budget_inputs_v1");return result
+    inputs=normalize_monthly_loss_budget_inputs_v1(raw)
+    result["current_supply_fraction_modifier_id"]=inputs["commander_supply_modifier_id"]
+    result["current_supply_fraction_modifier_raw"]=inputs["commander_supply_modifier_raw"]
+    suppressed=inputs["native_fleet_supply_loss_suppressed"]
+    if suppressed is True:
+        result.update(supply_budget_soldiers=0,supply_budget_ready=True,
+                      conditional_positive_budget_capture_candidate=False);return result
+    if suppressed is not False:
+        result["missing_inputs"].append("native_fleet_supply_loss_suppressed");return result
+    losses=row.get("loss_application_inputs_v1")
+    losses=losses if isinstance(losses,Mapping) else {}
+    derived=dict(conditional_post_supply_raw=0,missing_inputs=[])
+    _derive_supply_component(derived,inputs,losses)
+    if (derived.get("supply_base_fraction_raw") not in (None,0) and inputs["commander_valid"] is True
+            and type(inputs["commander_supply_modifier_id"]) is not int):
+        result["missing_inputs"].append("current_Province_definition_supply_modifier_id");return result
+    for key in ("supply_state_index","supply_base_fraction_raw","supply_effective_fraction_raw",
+                "supply_budget_soldiers","supply_budget_ready"):
+        if key in derived:result[key]=derived[key]
+    result["missing_inputs"].extend(derived["missing_inputs"])
+    budget=result["supply_budget_soldiers"]
+    result["conditional_positive_budget_capture_candidate"]=_all_known((
+        clock_candidate["same_row_clock_seed_matches"],
+        count>0 if count is not None else None,admission["admitted"],
+        budget>0 if result["supply_budget_ready"] else None))
+    if result["conditional_positive_budget_capture_candidate"] is None:
+        if clock_candidate["same_row_clock_seed_matches"] is not True:
+            result["missing_inputs"].append("same_row_source_next_clock_seed")
+        if count is None:result["missing_inputs"].append("source_next_selected_bucket_actual_positions")
+    return result
 
 
 def select_actual_zero_stock_supply_preferred_12004(
@@ -123,6 +206,7 @@ def successful_supply_occurrences_to_zero_12004(stock_raw, capacity_raw, monthly
     One opportunity means one SUCCESSFUL original bucket pointer callback.
     ADD precedes capacity clamp, so reducing cap does not clamp before ADD.
     First reaching zero may already yield physical loss in that invocation.
+    Already-zero/rate0 and actual cap0 are zero-retaining cases as well.
     """
     values = dict(current_supply_raw=stock_raw, current_supply_capacity_raw=capacity_raw,
                   current_supply_change_monthly_raw=monthly_raw)
@@ -134,11 +218,17 @@ def successful_supply_occurrences_to_zero_12004(stock_raw, capacity_raw, monthly
         return dict(ready=False, required_fields=["nonnegative_actual_stock_and_capacity"],
                     successful_bucket_occurrences=None)
     if monthly_raw >= 0:
-        return dict(ready=False, required_fields=["current_signed_monthly_raw_below_zero"],
-                    successful_bucket_occurrences=None)
-    after_one = min(capacity_raw, max(0, stock_raw + monthly_raw))
-    count = (0 if stock_raw == 0 else 1 if after_one == 0 else
-             1 + (after_one + (-monthly_raw) - 1) // (-monthly_raw))
+        # Successful updater still executes at stock0/rate0. Actual cap0 also
+        # makes every successful post-stock0; neither needs a negative rate.
+        if capacity_raw != 0 and not (stock_raw == 0 and monthly_raw == 0):
+            return dict(ready=False, required_fields=["negative_rate_or_actual_zero_retaining_stock_capacity"],
+                        successful_bucket_occurrences=None)
+        after_one=0
+        count=0 if stock_raw==0 else 1
+    else:
+        after_one = min(capacity_raw, max(0, stock_raw + monthly_raw))
+        count = (0 if stock_raw == 0 else 1 if after_one == 0 else
+                 1 + (after_one + (-monthly_raw) - 1) // (-monthly_raw))
     return dict(ready=True, required_fields=[], successful_bucket_occurrences=count,
                 first_successful_post_stock_raw=after_one,
                 first_zero_same_invocation_can_apply_supply_loss=True,
@@ -292,18 +382,18 @@ def plan_zero_stock_preparation_12004(
                         row,preview,same_frame_inputs=lease_ready)
                     if target_projection["full_land_rate_ready"]:
                         rate=target_projection["conditional_full_land_rate_raw"]
-                        if rate>=0:rejected.append("conditional_target_monthly_not_negative")
                     else:
                         missing.extend(target_projection["missing_inputs"])
                         missing.append("actual_target_arrival_ArmyStrength.current_supply_change_monthly_raw")
                 else:missing.append("conditional_target_rate_requires_fresh_preview")
-            elif type(rate) is int and rate >= 0:
-                rejected.append("observed_current_monthly_not_negative")
             if eligible_count is not None and eligible_count <= 0:
                 rejected.append("observed_no_positive_supply_eligible_current")
             arithmetic = successful_supply_occurrences_to_zero_12004(
                 row.get("current_supply_raw"), row.get("current_supply_capacity_raw"), rate)
             missing.extend(arithmetic["required_fields"])
+            if type(rate) is int and rate>=0 and not arithmetic["ready"]:
+                rejected.append("observed_current_monthly_not_negative" if here else
+                                "conditional_target_monthly_not_negative")
             if type(origin) is int and here and not contributor:
                 missing.append("same_current_Province_native_supply_qualification")
             clock = None
@@ -355,7 +445,7 @@ def plan_zero_stock_preparation_12004(
         required_step = None if step else (required_steps[0] if required_steps else "query-army-strengths-v1")
     return dict(policy="one-life-turn-v1", phase="native_war_r05_zero_stock_preparation",
                 selected_step=step, required_step=required_step,
-                reason="use observed current or source-bound conditional target negative rate, actual supply eligibility and existing route audit; recapture after arrival",
+                reason="use observed current or conditional target negative or zero-retaining stock/capacity, actual supply eligibility and route audit; positive budget and physical debit remain independent",
                 r05_zero_stock_preparation_v1=dict(candidates=candidates, selected=selected,
                     ranking="fewest_successful_original_bucket_occurrences_then_native_route_hops",
                     shortest_actual_calendar_preparation_ready=False,

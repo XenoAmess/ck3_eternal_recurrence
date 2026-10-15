@@ -1,0 +1,154 @@
+{
+  "schema": "xar.e04.r06.observation-target-selection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-15T21:25:13.677269+00:00",
+  "status": "WAIT_FRESH_A08_INPUTS",
+  "execution_kind": "read-only source/knowledge selection; no new planner framework or game query",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "actual_ADD_observed": false,
+  "actual_a08_inputs_observed": false,
+  "eligible_for_positive_ADD_capture": null,
+  "preferred_fresh_query_army_ids": [
+    18
+  ],
+  "scene_bound_IDs_must_be_resolved_in_new_runtime": true,
+  "ranked_candidates": [
+    {
+      "army_id": 18,
+      "native_carmy_id_at_initial010": 18,
+      "selection": "QUERY_FIRST",
+      "reason": "Root confirms ordinary1195 with deficit; re-evaluate physical actual deficit and complete ordered q in fresh a08 frame",
+      "source_of_1195_deficit": "Root explicit current task statement; not reconstructed from switch-only compact corpus",
+      "positive_q": null,
+      "physical_capture_eligible": null
+    },
+    {
+      "army_id": 93,
+      "native_carmy_id_at_initial010": 85,
+      "selection": "NOT_FIRST_POSITIVE_ADD_TARGET",
+      "reason": "new S0 ordinary campaign special cohort250/250; no demonstrated positive physical refill request",
+      "permanent_cannot_refill": false,
+      "switch_off_inferred": false,
+      "current_target_q": null,
+      "allowed_use": "full-current/permission/control observation; reconsider only after actual physical deficit and complete positive q"
+    }
+  ],
+  "existing_calls": [
+    {
+      "module": "xar_autoplayer.bridge.army_persistent_refill_eligibility_12004",
+      "function": "classify_army_persistent_refill_eligibility_12004",
+      "args": "fresh_frame, complete_same_query_packet, army_id=actual_public_id"
+    },
+    {
+      "module": "xar_autoplayer.bridge.army_scoped_ordered_refill_projection",
+      "function": "project_scoped_observed_prepared_ordered_refill",
+      "args": "same complete selected Army row"
+    }
+  ],
+  "candidate_positive_condition": [
+    "current complete same-frame identity/owner/cohort",
+    "at least one actual physical effective deficit >0",
+    "observed stored prepared148 >0",
+    "independent chunk predicate and all ordered context known",
+    "ordered_core_ready true",
+    "positive final shared q-buffer request to chosen physical slot after native q-index overwrites",
+    "conditional only until natural instruction or qualified passive observation"
+  ],
+  "not_required_or_not_equivalent": [
+    "do not AND current persistent CanReplenish with independent chunk bool",
+    "do not replace observed prepared148 by fresh fraction",
+    "positive currentCan or current switch does not guarantee q>0",
+    "full fresh permission may differ from cached-core request",
+    "uses_supply141 is not persistent CanReplenish138",
+    "normal tactical selector least-refill ranking is not this research target priority"
+  ],
+  "why_zero_is_not_switch_off": [
+    "physical/effective maximum reached",
+    "raw138 or independent Army/position/Unit/chunk gates",
+    "preparation not executed or prepared148 is zero",
+    "integer truncation or q-index overwrite",
+    "resource branch rejection unresolved without actual source operands",
+    "q0 still allowed when request ALtrue",
+    "pair-clear or other changes can erase net gain"
+  ],
+  "next_missing_current_inputs": [
+    "fresh paused session snapshot/revision/nativeRevision/date/episode/generation and actual owner/public/native IDs",
+    "allDATA records and complete seven physical slots with aliases/emptyCharacter roles",
+    "native persistent and independent chunk bools",
+    "containing138/definition with fixed physical chunk0 permission",
+    "observed prepared148 and fresh fraction",
+    "persistent manager occurrence order and actual q-index mapping",
+    "actual position/Army/Unit/cleanup context",
+    "complete ordered projection result and missing_inputs",
+    "for toggle attribution: actual sourceCharacter4A9 before/after and natural preparation cache outcome",
+    "for resource cause: matching actual source branch operands; unknown names stay unknown",
+    "for application: installed+enabled observer readback, natural parent/thread/slot and independent fences/writes"
+  ],
+  "counting_contract": {
+    "physical_deficit_and_delta_key": "persistent FullID + physical index; alias equality required",
+    "DATA_occurrences": "preserved as references; not extra physical current",
+    "manager_repeated_persistent_occurrences": "preserved as repeated actual execution, never globally deduplicated",
+    "q_index": "separate from physical index and DATA ordinal",
+    "empty_Character_1of1": "not a physical refill slot"
+  },
+  "existing_source_pins": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_persistent_refill_eligibility_12004.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_persistent_refill_eligibility_12004.py",
+      "bytes": 9767,
+      "sha256": "57d66760cfda7115895b561950788f8f441543d495eaafd63b1f5b955516e2f5"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_scoped_ordered_refill_projection.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_scoped_ordered_refill_projection.py",
+      "bytes": 13235,
+      "sha256": "ba0aaaca4d77aa3de9869d9924602ca59c0260333967b8ba4fdaf5ac04cd6d9f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/replenishment_numeric.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\replenishment_numeric.py",
+      "bytes": 9939,
+      "sha256": "3178c058eb2c9df02643f8050a337869f4fd8b12658b3db85904fdb47b3ad2f9"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/current_replenishment_army_selector_v1.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\current_replenishment_army_selector_v1.py",
+      "bytes": 5260,
+      "sha256": "9713f00d6754416685afa42fff7e7b0f09d7fece39473e41ff8d5fb206b30ca8"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/episode04-special-troop-refill-eligibility-12004.md",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-special-troop-refill-eligibility-12004.md",
+      "bytes": 10289,
+      "sha256": "5e59acf4e7ef6e12b0379ff170f62b8f893e6cbccfd20e0069a7d11baf9966cc"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/episode04-refill-application-12004.md",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-refill-application-12004.md",
+      "bytes": 13024,
+      "sha256": "0264c919f725b59e22e2447b493fd7750a2c94a1dd971a90e0517375e88bff4a"
+    }
+  ],
+  "held_current_switch_summary": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r0177-current-inputs-compact-a01\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-16-episode04-r0177-a07-current-literals\\CURRENT.actual-a01.json",
+      "bytes": 214670,
+      "sha256": "a13d858d529b591d19db182b1573212bab74935c1f85039aa78591011301f4c2"
+    },
+    "date_raw": 53146632,
+    "source_groups": "source-groups.json",
+    "current_literal_only": true,
+    "not_a_fresh_eligibility_packet": true
+  },
+  "research_baseline": {
+    "public93_native85": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-source-a01/normalprepare93-stages/newstationary-commonS0.actual.json",
+    "date_raw": 53146848,
+    "stock_raw": 10000000,
+    "current_soldiers": 250,
+    "maximum_soldiers": 250,
+    "normal_checkpoint_sha256_from_existing_receipt": "e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67",
+    "no_save_read_or_hash_here": true
+  },
+  "qualification": "source and existing literal reuse only; actual candidate admission and q remain unknown"
+}

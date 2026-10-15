@@ -1,0 +1,297 @@
+{
+  "schema": "xar.ck3.episode04.refill-after-reorganization-source-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T21:24:49.067438+00:00",
+  "source_head": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+  "version": "1.20.0.4",
+  "steam_build": 25734779,
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "scope": "Knowledge synthesis from named held portable sources; selected instructions are not a new complete-body capture.",
+  "new_EXE_bytes": 0,
+  "new_metadata_bytes": 0,
+  "new_runtime_queries_or_actions": 0,
+  "source_pins": [
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-split-source-12004/source-index.json",
+      "bytes": 10770,
+      "sha256": "83fcf06bfa2dbfa14fef973d704f6ee66df7c37cbdbc28ae87579297fa802c7f"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-split-merge-stock-weight-order-12004/source-index.json",
+      "bytes": 41954,
+      "sha256": "2198798ea0484bfee6815a4dc08b8ef6349c026aaeeb29582f157d8ebf517557"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/source-index.json",
+      "bytes": 7511,
+      "sha256": "cc9e8470cea17d84261e1a02797f82a55dc2699494022c1ec6a6695b7bb35772"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/permission262C6E0.instructions.json",
+      "bytes": 20731,
+      "sha256": "efed11d51ab75dc19dd8a59846e621114871222fa35a33892b153563a0de96dd"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/cached-core-call.instructions.json",
+      "bytes": 245,
+      "sha256": "a3ff2f49f57174a67670cec62610f703ad26cb787e52a35bc32c0858b5ee115c"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-split-source-12004/24DF9F0.instructions.json",
+      "bytes": 12616,
+      "sha256": "bb8104766df6a778afa9320f555b785866244b1b055863f741e6ce24c689537e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/bookmark1070-constructor-default-12004/source-proof.json",
+      "bytes": 21596,
+      "sha256": "288db2d3dc092576b763bfc85d9b7db5ea4f4524d9502e3106a5068afff4c872"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/actual-consumer-result.json",
+      "bytes": 5785,
+      "sha256": "d9c9584caf5370627386035c598f61ba0a5b714885d7afad19cbb64df5e3cf47"
+    }
+  ],
+  "raw138_gate": {
+    "persistent_object": "CRegiment, distinct from ArRg",
+    "selected_instructions": [
+      {
+        "rva": "262C6F2",
+        "bytes": "83b93801000001",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [rcx + 0x138], 1"
+      },
+      {
+        "rva": "262C6FF",
+        "bytes": "0f848b020000",
+        "mnemonic": "je",
+        "operands": "0x262c990"
+      },
+      {
+        "rva": "262C990",
+        "bytes": "32c0",
+        "mnemonic": "xor",
+        "operands": "al, al"
+      }
+    ],
+    "conclusion": "For the currently resolved same persistent object, raw138==1 returnsfalse before Army/sourceCharacter/switch branches."
+  },
+  "split_attach_detach_and_role_contracts": [
+    {
+      "id": "split_detach_1",
+      "family": "296C2F0",
+      "rva": "0x296c927",
+      "bytes": "e8e443b7ff",
+      "meaning": "actual CALL24E0D10"
+    },
+    {
+      "id": "split_attach_1",
+      "family": "296C2F0",
+      "rva": "0x296c936",
+      "bytes": "e81543b7ff",
+      "meaning": "actual CALL24E0C50"
+    },
+    {
+      "id": "split_detach_2",
+      "family": "296C2F0",
+      "rva": "0x296cad2",
+      "bytes": "e83942b7ff",
+      "meaning": "actual CALL24E0D10"
+    },
+    {
+      "id": "split_attach_2",
+      "family": "296C2F0",
+      "rva": "0x296cae5",
+      "bytes": "e86641b7ff",
+      "meaning": "actual CALL24E0C50"
+    },
+    {
+      "id": "split_detach_3",
+      "family": "296C2F0",
+      "rva": "0x296cc5f",
+      "bytes": "e8ac40b7ff",
+      "meaning": "actual CALL24E0D10"
+    },
+    {
+      "id": "split_attach_3",
+      "family": "296C2F0",
+      "rva": "0x296cc72",
+      "bytes": "e8d93fb7ff",
+      "meaning": "actual CALL24E0C50"
+    },
+    {
+      "id": "split_commander_cleanup",
+      "family": "296C2F0",
+      "rva": "0x296cd0a",
+      "bytes": "e851f7f5ff",
+      "meaning": "actual CALL28CC460"
+    },
+    {
+      "id": "split_commander_assignment",
+      "family": "296C2F0",
+      "rva": "0x296cd14",
+      "bytes": "e8d72cb7ff",
+      "meaning": "actual CALL24DF9F0"
+    },
+    {
+      "id": "detach_army_backlink",
+      "family": "24E0D10",
+      "rva": "0x24e0dca",
+      "bytes": "c78040010000ffffffff",
+      "meaning": "ArRg140=-1"
+    },
+    {
+      "id": "attach_army_backlink",
+      "family": "24E0C50",
+      "rva": "0x24e0cf4",
+      "bytes": "898740010000",
+      "meaning": "ArRg140=CArmy10"
+    },
+    {
+      "id": "ctor_DATA_pointer",
+      "family": "2632CB0",
+      "rva": "0x2632ce0",
+      "bytes": "48895120",
+      "meaning": "DATA pointer20=0"
+    },
+    {
+      "id": "ctor_DATA_capacity_count",
+      "family": "2632CB0",
+      "rva": "0x2632ce4",
+      "bytes": "48895128",
+      "meaning": "QWORD28 zero clears capacity28 and count2C"
+    },
+    {
+      "id": "ctor_cached_pair",
+      "family": "2632CB0",
+      "rva": "0x2632cf3",
+      "bytes": "48895138",
+      "meaning": "cached current38/maximum3C begin at0"
+    }
+  ],
+  "merge_selected_calls": [
+    {
+      "rva": "0x2c55a3e",
+      "bytes": "e8ad9f88ff",
+      "mnemonic": "call",
+      "operands": "0x24df9f0"
+    },
+    {
+      "rva": "0x2c55aa8",
+      "bytes": "e863b288ff",
+      "mnemonic": "call",
+      "operands": "0x24e0d10"
+    },
+    {
+      "rva": "0x2c55ab2",
+      "bytes": "e899b188ff",
+      "mnemonic": "call",
+      "operands": "0x24e0c50"
+    },
+    {
+      "rva": "0x2c55e74",
+      "bytes": "e8779b88ff",
+      "mnemonic": "call",
+      "operands": "0x24df9f0"
+    },
+    {
+      "rva": "0x2c55e7f",
+      "bytes": "e86c9b88ff",
+      "mnemonic": "call",
+      "operands": "0x24df9f0"
+    },
+    {
+      "rva": "0x2c55e93",
+      "bytes": "e8682289ff",
+      "mnemonic": "call",
+      "operands": "0x24e8100"
+    }
+  ],
+  "commander_selected_instructions": [
+    {
+      "rva": "0x24dfa6c",
+      "bytes": "e8dfc63e00",
+      "mnemonic": "call",
+      "operands": "0x28cc150"
+    },
+    {
+      "rva": "0x24dfaac",
+      "bytes": "899e20010000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsi + 0x120], ebx"
+    }
+  ],
+  "cached_core_call_source": {
+    "relative_index": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/cached-core-call.instructions.json",
+    "sha256": "a3ff2f49f57174a67670cec62610f703ad26cb787e52a35bc32c0858b5ee115c",
+    "scope": "Existing core loads observed prepared148 and calls request; no current persistent permission recheck."
+  },
+  "spawn_creation_provenance": {
+    "source_index": "docs/ck3-native-ai/evidence/bookmark1070-constructor-default-12004/source-proof.json",
+    "conclusions_reused": {
+      "spawn_refill_classification": "Both existing spawn paths pass constant1 to persistent-create; it storesraw138, current CanReplenish returnsfalse forraw138==1",
+      "raw138_formal_enum_name": null,
+      "raw138_is_can_reinforce_boolean": false,
+      "permanent_no_refill_claim": false
+    },
+    "separate_supply_field": "effect4F1 -> persistent141; not a refillclassification override"
+  },
+  "agent_predicate": {
+    "input_binding": [
+      "exact4 source pin",
+      "same fresh paused snapshot/frame/revisions/date",
+      "same persistent full generation ID",
+      "physical chunk index and complete DATA occurrence/backlink",
+      "containing fixedchunk0 family or explicit unknown"
+    ],
+    "current_raw138_1": "native persistent permission must befalse; true is a rejected contradictory packet",
+    "normal_preparation": "If normal preparation executes on this unchanged persistent, it writes148=0.",
+    "regrouping_or_commander_change": "Not a categoryconversion remedy; obtain fresh per-persistent observation after the actual action.",
+    "toggle_enabled": "Cannot override early raw1381 gate. Actual source Character matters in later branches.",
+    "stored_core_exception": "Positive observedprepared148 plus chunktrue can still allow a stored request despite current persistentfalse; integerq/actualADD stay separate.",
+    "empty_DATA_Character": "No physical persistent subject; keep cached1/1 separate.",
+    "new_or_replaced_full_ID": "Reclassify; never inherit prior raw138 or no-refill status."
+  },
+  "identity_transfer_conclusion": {
+    "ordinary_transfer_branch": "Moves original full ArRgID through detach/attach and changesArRg140; no categorywriter demonstrated on this path.",
+    "not_proven": [
+      "No writer exists anywhere",
+      "persistent138 is immutable",
+      "all descendants inherit class1",
+      "all callback/resource/role disposal callees lack physical effects",
+      "all event or special troops are class1",
+      "R0176 after split/merge raw138 was reread",
+      "no ADD occurred at any previous or future time"
+    ]
+  },
+  "unexpanded_actual_boundaries": [
+    {
+      "target": "2A97180",
+      "edge": "28CC460 Character-related disposal tail",
+      "unknown": "Disposal/replacement effects not expanded; not permission conversion evidence."
+    },
+    {
+      "target": "24E8100 ->2633320",
+      "edge": "merge2C55E93; split296CC85/296CC94",
+      "held_scope": "Existing refresh source distinguishes caches/invalidDATA removal from physicalADD.",
+      "unknown": "No all-callback/all-writer immutability proof; removed/replaced records require new observation."
+    },
+    {
+      "target": "militarycallback business writer",
+      "edge": "MilitaryView actual callback route tracked separately",
+      "unknown": "No new toggle action/writer qualification granted here; raw138gate proof does not depend on it."
+    }
+  ],
+  "next_entry_if_category_conversion_is_observed": {
+    "trigger": "A real changed fullID/category or replacementDATA in the same lineage.",
+    "required_evidence": "Preserve before/after fullID/raw138/DATA; use actual action callsite/native writer provenance to choose one next bounded callee.",
+    "no_speculative_entry": "No held direct ordinary split/merge/commander call edge to a raw138 reclassification writer; no extra textscan justified."
+  },
+  "current_R0176_reference": {
+    "source": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/actual-consumer-result.json",
+    "only_credit": "Existing Army93 frame four uniquephysicalDATA with raw1381/nativepersistentfalse/chunkfalse/observedprepared0.",
+    "post_split_merge_classification_observed_here": false
+  },
+  "permanent_no_refill_claim": false,
+  "cross_machine": "Source knowledge is reusable; installation/runtime/currenteligibility facts qualify only their recorded machine and frame."
+}

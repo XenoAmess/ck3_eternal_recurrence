@@ -1,0 +1,194 @@
+{
+  "schema": "xar.e04.r08.existing-getter-settlement-inventory.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T23:11:19.750922+00:00",
+  "base_commit": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_war_cash_claim_terms.hpp",
+      "bytes": 2207,
+      "sha256": "647da1cb955c36a152da96e2297d0f470a3259d8dadbd5fd027985aad2ceff9a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_war_cash_claim_terms.cpp",
+      "bytes": 2421,
+      "sha256": "97e338be9d7e657f1cca4a7e2d9f2417d783b1dc15be91200a994ade404ef249"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_war_cash_current_reader.hpp",
+      "bytes": 4570,
+      "sha256": "655a22a9c7707cb50634abf9a4bb4c9b9ddd17ba502918c81bfa3ef71e316a69"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_reader.cpp",
+      "bytes": 10061,
+      "sha256": "1126fb936eeb9b5beb67e5935452af17983121562011c2c90ddb9f4c9aaf921b"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-generic-context-12004.md",
+      "bytes": 3681,
+      "sha256": "05c0bd3bfbf72d39a017fb1da0d5a2cb5fa3813cbaa9b3daaa0c73f7858e5523"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-maintenance-cache-source-12004.md",
+      "bytes": 19986,
+      "sha256": "81f1ed3a7a6c580f5ec30db7135f1c9a04af89f5f97bc3cb9379de9abdb7b410"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-r0174-actual-parent-source-12004.md",
+      "bytes": 9921,
+      "sha256": "ea1abf4a0ab59145e8489890946199ad7da776e70c2e3c4dd8ef37d4cdb25d19"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-15-war-payment-generic-context/POINTER-GETTER-AUDIT.actual.json",
+      "bytes": 5896,
+      "sha256": "92a55606413de05e1bcacb4c1c71bcbe0428db2c109befd3e4d720918d89f783"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-15-maintenance-cache-source/SOURCE-RELATION.actual.json",
+      "bytes": 5067,
+      "sha256": "9d8a9dc6c6025dc21ed38705d4e1862c0cb2aa9c3a3958e5c55d5762c86d55ce"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-15-maintenance-cache-source/NEXT-SOURCE-INTAKE.contract.json",
+      "bytes": 3362,
+      "sha256": "e2bbcb84878baa80057b7c734cb65f93ce4903be0c722f0cdf8363e237530d1f"
+    }
+  ],
+  "public_getter_read_routes": [
+    {
+      "public_field": "player_monthly_gross_income",
+      "exact4_getter": "2BCA940",
+      "ABI": "out64,Character,secondary_income_out64,optional_breakdown",
+      "reader": "MonthlyFlow calls native monthly_income; retainsgross andsecondary"
+    },
+    {
+      "public_field": "player_monthly_total_expenses",
+      "exact4_getter": "2BCB160",
+      "ABI": "out64,Character,ExpenseContextCharacter,secondary_income,false,optional_breakdown",
+      "reader": "MonthlyFlow passes actual28BFD80 return andsecondary income;exclude_militaryfalse"
+    },
+    {
+      "public_field": "player_monthly_net_income",
+      "exact4_getter": null,
+      "reader": "Checked signed64 software gross-expenses; no separate nativeNET getter"
+    },
+    {
+      "public_field": "military_expenses.current",
+      "exact4_getter": "2C13F60",
+      "ABI": "out80,Character,nullptr",
+      "reader": "Current() calls current_maintenance; verifiesreturnedcallerout; ten signed64 slots"
+    },
+    {
+      "public_field": "military_expenses.all_raised",
+      "exact4_getter": "2C152B0",
+      "ABI": "out80,Character",
+      "reader": "AllRaised() callsall_raised_maintenance; verifiesreturnedcallerout; ten signed64slots"
+    }
+  ],
+  "binding_admission": "Actual4 BindWarCashCurrentImage checksactual4exactSHA andsuppliesexplicit .4 pointers; sharedreader .3 BindImage isnotcalled as .4binder. No arithmeticRVAshift used.",
+  "rate_scope": {
+    "unit": "signed64 /100000,monthlygoldslot0;treasuryslot6 separate",
+    "current_allraised": "Alternativeactor-globalrateoutputs; neitherispaidledger nor additivecomponent"
+  },
+  "settlement": {
+    "entry": "28A6D10",
+    "extent_bytes": 574,
+    "source_sha256": "f2e377a5e4948042852a95bd5b4e0fe3d38159defb8eb5f823ec0fabb33fe348",
+    "context": "dereferenceCharacter+1C0,notinline",
+    "terms": {
+      "a": "context+2C0",
+      "b": "context+2C8",
+      "c": "context+28",
+      "d": "context+30"
+    },
+    "positive_path": "wrap_i64(a-b-(c+d))positive ->CALL285EE40 at28A6D77,return28A6D7C",
+    "direct_calls_to_five_public_getters": false
+  },
+  "newer_source_owner_facts": {
+    "source_owner": "/root/review01_formal_completion; factsnotrelabelled asnewsourceacquisitionbythislane",
+    "actual28A63E0": "695B28A63E0..28A6697; 28A6450/54copycontext18->2C0;28A645B/5Fcopy20->2C8 beforefirstcall; nomilitarysemanticlabel",
+    "copy_source": "C:/ck3-e04-resume-20261015-a01/maintenance-writer-r0178-function-source-a01/actual-function.asm",
+    "actual28A6B50": "435B28A6B50..28A6D03;purefixedpointallocator,noCALL; negativeNETpaths useweights c,d overc+d;no producer ormilitary meaning",
+    "allocation_source_receipt": "C:/ck3-e04-resume-20261015-a01/maintenance-applied-allocator28A6B50-source-a01/READ-RECEIPT.actual.json",
+    "allocation_source_receipt_sha256_supplied": "bf7c08f23feb2cac1723e16030f87828c29f337c6adfc2c48f4a3738b6c75aa6"
+  },
+  "actual_parent_order": "Held28F7840 calls28A6D10at28F7934; currentmaintenance2C13F60 branch isafter settlement. Itcannotretroactivelyidentifyc/dinputforthatADD.",
+  "proven_edges": [
+    "exact4binder->publicgetteraddresses",
+    "sharedreader->callerownedoutvalues",
+    "grossandfullExpense->checkedNET",
+    "settlementfourloads->positivepersonalADD",
+    "newactualwritercontext18/20->a/b copy,perindependentsourceowner"
+  ],
+  "unproved_edges": [
+    "currentmilitaryrate->context28or30",
+    "anypublicgetterout->anysettlementtermstore",
+    "c/dproducerandinvalidations",
+    "military-onlyappliedcomponent->specificpayerwalletstore",
+    "ExpenseContextCharacter28BFD80return->dereferencedmilitarycontextCharacter1C0"
+  ],
+  "answer": {
+    "c_or_d_identified_as_actual_military_applied_input": false,
+    "maintenance_attribution": "unclosed"
+  },
+  "held_current_military_body": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a02\\current_military.asm",
+    "bytes": 14306,
+    "asm_sha256": "295567d6ead8e4c6aa05fc5d384d7994f9f14fa0be819a3baa95403cc40291ce",
+    "source_owner": "/root/review01_formal_completion",
+    "body_begin_rva": "2C13F60",
+    "body_end_rva_exclusive": "2C142AE",
+    "body_bytes": 846,
+    "held_bin_sha256_supplied_by_owner": "20f7733ca5f0c06b12c85d7844fb2225cd95aeb9bc700b0b3d329bcd82ab555d",
+    "new_binary_read": false,
+    "selected_instructions": [
+      "02C13F83  49 8b f8                         mov rdi, r8",
+      "02C13F86  4c 8b f2                         mov r14, rdx",
+      "02C13F89  48 8b d9                         mov rbx, rcx",
+      "02C13FA2  4d 85 c0                         test r8, r8",
+      "02C13FA5  0f 84 24 02 00 00                je 0x142c141cf",
+      "02C141CF  48 8d 54 24 70                   lea rdx, [rsp + 0x70]",
+      "02C141D4  49 8b ce                         mov rcx, r14",
+      "02C141D7  e8 c4 01 cb ff                   call 0x1428c43a0",
+      "02C141DC  48 8b d0                         mov rdx, rax",
+      "02C141DF  48 8b 08                         mov rcx, qword ptr [rax]",
+      "02C141E2  48 01 0b                         add qword ptr [rbx], rcx",
+      "02C1422D  4c 8b c7                         mov r8, rdi",
+      "02C14230  49 8b d6                         mov rdx, r14",
+      "02C14233  48 8d 4c 24 70                   lea rcx, [rsp + 0x70]",
+      "02C14238  e8 73 00 00 00                   call 0x142c142b0",
+      "02C1423D  48 8b d0                         mov rdx, rax",
+      "02C14240  48 8b 08                         mov rcx, qword ptr [rax]",
+      "02C14243  48 01 0b                         add qword ptr [rbx], rcx",
+      "02C1428E  48 8b c3                         mov rax, rbx"
+    ],
+    "public_null_breakdown_route": "Thirdargnull->2C13FA5jump2C141CF; call28C43A0at2C141D7(Character,localout80); addreturnedtenvector; unconditionalcall2C142B0at2C14238(out80,Character,null); addsecondtenvector; returncalleroutat2C1428E.",
+    "four_raw_relation": "NoCharacter1C0/fourrawloadstoreinheldgetterbody; actualvectorproducerinternalsnotexpanded."
+  },
+  "smallest_next_named_source": {
+    "entry": "28C43A0",
+    "identity": "First actualvectorproducer inexisting2C13F60 nullbreakdownqueryroute",
+    "actual_callsite": "2C141D7:e8c401cbff ->28C43A0; ABI RCX=Character,RDX=localout80; RAXreturnedvector",
+    "goal": "Obtainnamedalreadyheld28C43A0body/metadatafromsourceowner; establishtypedCharacter/contextload/store/selection. Readermappingalonecannotproveproducerorappliedmilitarymeaning.",
+    "second_required_component": "2C142B0 actualcallsite2C14238:e873000000; calleroutalsoincludesthisvector; nosemanticsassumed.",
+    "historical_map_note": "OldrecordedFAMILYMAPpathwasabsentbutformalprovidedcurrentheldfullgetterasm; noEXEnewreadneeded.",
+    "held_direct_producer_for_c_or_d": null,
+    "stop_rule": "Onlyactualtypedcalleeedges28C43A0/2C142B0; noexistingprovenwriterforc/d. Ifnomatchingheldcallee,requestnamedsourceintake; do notscanimage.",
+    "not_next": [
+      "allraisedalternativegetter",
+      "28A6B50pureallocator",
+      "newnativehook",
+      "28A63E0postcopyunrelatedcalleeswithoutc/dwriterproof"
+    ],
+    "held_callee_status": "Formalcompletion confirmed neither28C43A0nor2C142B0 fullbodyheld inits namedsourceinventory. Futureboundednewsource scope requiresRootauthorization; thislaneperformsnone."
+  },
+  "source_search_limit": "Canonical relateddocs/specificcpp/hpp plusowner-suppliedheld846Basm only. InitialdocsJSONsearch stopped atlarge singlerowoutput; no rawledger reopened.",
+  "new_EXE_bytes": 0,
+  "new_SDK_game_desktop_build_main_writes": 0,
+  "runtime_credit_added": 0,
+  "cross_machine": "Reusablecode/sourceknowledgeonly; allmachine/runtimefactsretainoriginmachine/frame."
+}

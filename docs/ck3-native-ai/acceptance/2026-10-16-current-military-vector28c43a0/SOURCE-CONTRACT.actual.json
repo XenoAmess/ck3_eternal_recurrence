@@ -1,0 +1,83 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T23:18:53.037790+00:00",
+  "exact_game_SHA": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "function": {
+    "begin": "0x28C43A0",
+    "end_exclusive": "0x28C4532",
+    "bytes": 402,
+    "instructions": 95,
+    "sha256": "47a076981a8f92c4ae53c2da28c81b44a8ed90ffca55b593dfa17108c97a9a81",
+    "unchained": true
+  },
+  "source_caller": {
+    "at": "0x2C141D7",
+    "target": "0x28C43A0",
+    "entryRCX": "Character",
+    "entryRDX": "80B output",
+    "route": "Existing currentmaintenance getter public thirdargument null"
+  },
+  "source_steps": [
+    {
+      "at": "0x28C43B5..28C43C7",
+      "action": "Zero80B output"
+    },
+    {
+      "at": "0x28C43CB..28C43E7",
+      "action": "Load *(Character+1C0); context+278 is inline ID descriptor, null uses static fallback"
+    },
+    {
+      "at": "0x28C43E7..28C43EE",
+      "action": "Descriptor [0] pointer and signed32[+0C] count identify4B IDs"
+    },
+    {
+      "at": "0x28C4410..28C4441",
+      "action": "RegistryA:24bit index capacity/entry/FullID+10 check, fallbackA"
+    },
+    {
+      "at": "0x28C4444",
+      "action": "Only objectA dword+18==0 contributes"
+    },
+    {
+      "at": "0x28C444E..28C4483",
+      "action": "Read objectA+178 FullID and resolve via registryB, otherwise fallbackB"
+    },
+    {
+      "at": "0x28C4490..28C44F9",
+      "action": "Ten qwords objectB+130..178 added slotwise to output80B"
+    },
+    {
+      "at": "0x28C451A",
+      "action": "Direct CALL24E1E80(output,originalCharacter,0); not read"
+    },
+    {
+      "at": "0x28C451F..28C4531",
+      "action": "Return original output pointer"
+    }
+  ],
+  "registryA_class_name": null,
+  "registryB_class_name": null,
+  "context278_descriptor_role": "Source-defined ID list, not wallet extension278 tracker",
+  "arithmetic": "Native64bit ADD, no source clamp claim",
+  "direct_secondary_context28_30_read_or_store": false,
+  "rawterm_alias_proved": false,
+  "unexpanded_tail": {
+    "call": "0x28C451A",
+    "callee": "0x24E1E80",
+    "arguments": [
+      "output80B",
+      "originalCharacter",
+      0
+    ],
+    "source_read": false
+  },
+  "other_vector_owner": "/root/e04_event_1070_followup owns2C142B0; this lane did not read it",
+  "actual_new_live_sample": false,
+  "actual_paid_wallet_chain": false,
+  "maintenance_attribution": "unclosed",
+  "read_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-current-vector28C43A0-source-a02\\READ-RECEIPT.actual.json",
+    "bytes": 8938,
+    "sha256": "b381a4a8751afea9dd79dea417123c3ae05cd0e428eeb1e6d1337df2155fe0fa"
+  }
+}

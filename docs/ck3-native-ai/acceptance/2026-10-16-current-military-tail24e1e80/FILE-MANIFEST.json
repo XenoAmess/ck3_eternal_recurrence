@@ -1,0 +1,30 @@
+{
+  "schema": "xar.current-vector-tail-files.v1",
+  "files": [
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/ARCHIVE-INDEX.json",
+      "bytes": 3055,
+      "sha256": "2ab8866685d0abbf44628b4d2c2b61b1f180aff6f5e74bc6dab5846e594e802b"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/originals.zip",
+      "bytes": 34464,
+      "sha256": "8f78241ef95cbb742b60d737cd127dd01f3aea0d56f3c90a6fba9f07845887a8"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/SOURCE-CONTRACT.actual.json",
+      "bytes": 8200,
+      "sha256": "c9b0b2577f595d0ad0e8c8a4f3613b8c1857f6afc271937d228e87d1c5463ce9"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/verify_repository.py",
+      "bytes": 3826,
+      "sha256": "9c5edfd75b8d445a7c57dfc4cbd32b473bf9144dd6f0c2924e268b647cb57b90"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-cash-current-military-vector-tail-12004.md",
+      "bytes": 5675,
+      "sha256": "38bc48f2045f194cfe1fead376d61a4a482de0bdadd04402ec3e0243e2e18873"
+    }
+  ]
+}

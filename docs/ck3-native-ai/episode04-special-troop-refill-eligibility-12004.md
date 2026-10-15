@@ -2,7 +2,7 @@
 
 机器 `desktop-3fevhd2-1c74096080`，本轮源码取证始于2026-10-15 UTC18:42前后，具体时间见外置 `READ-*.actual.json`；实际观察时刻、机器与 SHA 同时保留。目标为 **1.20.0.4 / Steam25734779**，复用 Root 冻结 EXE SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`，未重新整文件 hash。主树 dcda 冻结。本包没有 SDK、游戏、桌面操作、构建或 EXE 执行；只读获准的1454B源码和248B元数据。
 
-本题应按**实际 persistent Regiment 的补员分支**判断。特殊兵、活动/事件兵、MAA 定义、ArRg 的1/1 Character 记录不是同一个分类轴。当前 `.4` 已闭合 `persistent+138==1` 直接拒绝的原生规则；该枚举的正式名称与其创建 writer、actual4 `spawn_army` constructor 本机仍 NOTHELD。不能用旧1.19 spawn RVA 平移，也不能把“画面叫特殊兵”直接填成这个 raw 值。
+本题应按**实际 persistent Regiment 的补员分支**判断。特殊兵、活动/事件兵、MAA 定义、ArRg 的1/1 Character 记录不是同一个分类轴。当前 `.4` 已闭合 `persistent+138==1` 直接拒绝的原生规则。下述18:57来源包当时尚未取得创建 writer；2026-10-16的[spawn原生来源](bookmark1070-spawn-defaults-native-12004.md)现已闭合两条spawn创建路径硬传1并写persistent138，[constructor增量](bookmark1070-event-troop-policy-12004.md#2026-10-16uses_supply真正constructor默认写入已闭合)另闭供给默认值。raw138正式枚举名仍未知；创建时写1不证明此域永久不变。不能用旧1.19 spawn RVA 平移，也不能把“画面叫特殊兵”直接填成这个 raw 值。
 
 ## 已闭合的实际调用链
 
@@ -69,4 +69,32 @@ flowchart TD
 
 新7个 `-O`聚焦测试覆盖真实旧baseline字段消费、permission false与已缓存正F分离、非GDbo bypass不AND、missing family unknown、empty Character1/1、物理别名、stale/partial/duplicate/guard冲突拒收。修改输入的案例明确为synthetic，不是新的游戏事实。
 
-外置根 `high-parallel-special-refill-a02`上限1MiB，计原共享512MiB/active32/metadata17池，原 `2026-10-16T07:45:01.597Z`截止不延长。Root实际 relay补缺的a02/a03、split角色59→34232后验属于另一已授权包，不混作本源包的新实机采集。正式枚举writer/actual4 spawn constructor仍是有限具名 NOTHELD 缺口，本包不为此扩大EXE读取。
+外置根 `high-parallel-special-refill-a02`上限1MiB，计原共享512MiB/active32/metadata17池，原 `2026-10-16T07:45:01.597Z`截止不延长。Root实际 relay补缺的a02/a03、split角色59→34232后验属于另一已授权包，不混作本源包的新实机采集。此处记录18:57包当时的来源边界；创建writer与constructor的后来闭合见本页首段补注。正式枚举名和类别全生命周期不变性继续未知。
+
+
+## 2026-10-16：分合军、换统帅与补员开关的决策边界
+
+本增量复用已保留的 exact `.4` 源码，没有新读EXE、游戏查询、动作或构建。
+阅读机器 `machine_id: desktop-3fevhd2-1c74096080`，观察时间见
+[小来源与决策索引](evidence/episode04-refill-after-reorganization-12004/source-decision-index.json)，
+代码基线 `b42afbbd85df3802b1fa6222f7aac403c2adf735`。原采集机器/时间保留在各引用source index。
+
+对**仍解析为同一persistent FullID且当前raw138仍为1**的兵团，普通split/merge、换统帅和打开补员开关都不能作为解除这一门槛的办法。`262C6F2 →262C6FF →262C990`在解析所属Army、补员来源Character及军事开关之前直接返回false；在该输入下，normal preparation若实际执行就写prepared148=0。这里的结论是当前原生资格和条件准备结果，不是“此兵团永远不可能有任何物理ADD”。
+
+| 操作/输入 | 已持有的实际来源 | agent可用结论 |
+| --- | --- | --- |
+| 普通拆半 | `296C927/936`、`296CAD2/AE5`、`296CC5F/C72`三组detach/attach | 搬移原完整ArRg ID。随后应重新联接真实DATA/persistent FullID，不能按新的ArmyID把它改判为可补员。 |
+| 普通合军 | `2C55AA8→24E0D10`、`2C55AB2→24E0C50` | 同样迁移整条ArRg。detach在`24E0DCA`清ArRg140；attach在`24E0CF4`写新CArmy10。ArRg140是归属backlink，不能当成另一个对象persistent138的分类writer。 |
+| 换统帅/分合军的统帅处理 | `24DFA6C→28CC150`在`24DFAAC`写CArmy120前运行；角色工厂`2A96D40→2632CB0` | 可能新增空DATA角色ArRg或清理旧关联，缓存1/1另列。它没有提供“重建原物理persistent并改成可补员类别”的来源证明。 |
+| 真正补员来源Character的开关已开 | `262C7E2/7F2`是早期raw138门之后的分支 | 开关是后续条件，不能覆盖raw1381。不是所有兵团都读取玩家开关，guard0非GDbo分支还会绕过该开关。 |
+| 补给/容量/合军权重变化 | supply字节persistent141与refill分类persistent138分开；merge stock/权重来源另见[专题](episode04-split-merge-stock-weight-order-12004.md) | 能用补给、进入合军权重或换帅后容量改变，均不能证明CanReplenish改变；不要拿这些量替代原生许可。 |
+
+已持有的[完整split普通体与迁移叶](episode04-split-half-source-12004.md)、[merge/角色生产链](episode04-merge-commander-character-record-producer-12004.md)没有给出普通迁移分支上的persistent138重分类writer。它们也没有授予“所有下级永不改物理记录”的全局证明：`28CC460→2A97180`处置尾部、容器/资源callback未全部展开；已有refresh链`24E8100→2633320`会刷新缓存，也可能移除无效DATA。因此本知识采用**逐个实际FullID、当前分类值**，不为补齐“永久”结论扫描未知函数。
+
+R06/R09使用同一个现有[eligibility消费者](../../ck3_autonomous_player/src/xar_autoplayer/bridge/army_persistent_refill_eligibility_12004.py)：先绑定同帧、完整DATA和真正fixedchunk0 family，再保留native persistent bool、独立chunk bool、observed prepared148及fresh。raw1381与native true冲突应拒收；缺少family是unknown。重组后重新读取，不能沿用动作前的分类。R0176 baseline只证明当帧Army93的四条物理DATA均为raw1381、两bool false、cached148=0；[实际split/merge](episode04-r09-selected93-micro-actual-12004.md)证明其物理DATA/身份守恒，没有顺带证明操作后raw138已再次读取。
+
+还必须保留缓存时序例外：regular core `2A98B44/53`使用已存prepared148，request不再次调用persistent permission。当前persistent false但实际cached148>0、独立chunk true时，不能据当前false排除stored-core请求；q可能为0，实际ADD继续按[R06来源合同](episode04-refill-application-12004.md)单独验收。cached148=0只排除该读取时刻以该F进入的请求，不证明过去或未来整个窗口没有ADD。
+
+不能外推的“永久”结论包括：全部事件兵/特殊兵都是raw1；raw1枚举正式名就是can_reinforce布尔；所有后代/替换记录继承原资格；同ArRg的DATA指针/成员终生不变；别的build或机器具有相同现场结果。新persistent FullID、generation、DATA引用或raw138变化都重新判定。若真的观察到分类转换，最小下一入口是该实际动作的writer/callsite及同对象前后态；当前没有一条已持普通分合军/换帅direct call指向raw138转换writer，不猜一个新RVA。
+
+本增量仅追加既有知识路径，不改事件策略、动作或消费者。外置lane≤128KiB计Root active32MiB，原复核截止`2026-10-16T07:45:01.597Z`不延长；到期按通用存储策略复核。

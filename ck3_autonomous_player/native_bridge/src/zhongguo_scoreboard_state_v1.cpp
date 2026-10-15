@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
 #include "xar_bridge/ck3_12004_gui_callback_thunk.hpp"
+#include "xar_bridge/ck3_12004_gui_expression_descriptor.hpp"
 
 #include <windows.h>
 
@@ -1661,6 +1662,56 @@ bool InspectNamedGuiTreeV1(
                                   global_root, "_root_", output);
 }
 
+// Exact source: 3AA30E0 supplies callback+10 to3A9F960;3E4C090 consumes
+// chain[24B] at block+18/count+24 and final kind+34/function+38.
+// Read scalars twice on the owning GUI thread. Never evaluate the descriptor.
+static bool ReadGuiExpressionDescriptor12004(
+    const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
+    void *callback, NamedGuiExpressionDescriptor12004V1 &output) {
+  const auto target_rva = [module_base](const void *pointer, std::uint64_t &rva) {
+    const auto value = reinterpret_cast<std::uintptr_t>(pointer);
+    if (value <= module_base || value - module_base >= ck3_12004::kGuiImageSize12004V1) return false;
+    rva = value - module_base; return true;
+  };
+  const auto read = [&](NamedGuiExpressionDescriptor12004V1 &value, void *&chain) {
+    std::int32_t count = 0; void *user_data = nullptr;
+    // All offsets below include the source-proven callback+10 block offset.
+    if (!ReadValue(access, callback, 0x28U, chain) ||
+        !ReadValue(access, callback, 0x34U, count) || count < 0 ||
+        count > static_cast<std::int32_t>(ck3_12004::kGuiExpressionMaximumChain12004V1) ||
+        (count != 0 && chain == nullptr) ||
+        !ReadValue(access, callback, 0x40U, value.final_type_id_30) ||
+        !ReadValue(access, callback, 0x44U, value.final_kind_34_raw) ||
+        !ReadValue(access, callback, 0x50U, user_data) ||
+        !ReadValue(access, callback, 0x58U, value.receiver_type_id_48) ||
+        !ReadValue(access, callback, 0x5CU, value.receiver_flag_4c_raw)) return false;
+    value.chain_count_24_raw = static_cast<std::uint32_t>(count);
+    value.final_user_data_40_present = user_data != nullptr;
+    if (value.final_kind_34_raw == 3 || value.final_kind_34_raw == 4) {
+      void *function = nullptr;
+      if (!ReadValue(access, callback, 0x48U, function) ||
+          !target_rva(function, value.final_target_38_rva)) return false;
+    }
+    value.chain_calls.reserve(value.chain_count_24_raw);
+    for (std::uint32_t i = 0; i < value.chain_count_24_raw; ++i) {
+      NamedGuiExpressionChainCall12004V1 item{}; item.index = i;
+      const auto offset = static_cast<std::size_t>(i) * 0x18U;
+      void *function = nullptr, *data = nullptr;
+      if (!ReadValue(access, chain, offset, item.type_id_0) ||
+          !ReadValue(access, chain, offset + 4U, item.kind_4_raw) ||
+          !ReadValue(access, chain, offset + 8U, function) ||
+          !target_rva(function, item.native_target_8_rva) ||
+          !ReadValue(access, chain, offset + 0x10U, data)) return false;
+      item.user_data_10_present = data != nullptr; value.chain_calls.push_back(item);
+    }
+    return true;
+  };
+  NamedGuiExpressionDescriptor12004V1 first{}, second{}; void *first_chain = nullptr, *second_chain = nullptr;
+  if (!read(first, first_chain) || !read(second, second_chain) ||
+      first_chain != second_chain || first != second) return false;
+  output = std::move(first); return true;
+}
+
 // Source: actual .4 3AA0D20 -> 3A9FA30. Read-only standard (mode 0)
 // group selection; never invoke a callback or publish a heap pointer.
 static bool InspectStandardClickBinding12004(
@@ -1705,6 +1756,10 @@ static bool InspectStandardClickBinding12004(
       void *entry = nullptr, *receiver = nullptr;
       if (!ReadValue(access, callback, 0x08U, entry) || !in_image(entry, 1) ||
           !ReadValue(access, callback, 0xF0U, receiver)) return false;
+      if (reinterpret_cast<std::uintptr_t>(entry) == module_base + ck3_12004::kGuiExpression3A9F960Rva12004V1) {
+        if (!ReadGuiExpressionDescriptor12004(access, module_base, callback, target.expression_3a9f960)) return false;
+        target.expression_descriptor_3a9f960 = true;
+      }
       // Readback stability only. The receiver's type/method is still unknown.
       void *same_object = nullptr, *same_vtable = nullptr, *same_entry = nullptr, *same_receiver = nullptr;
       if (!ReadValue(access, data, static_cast<std::size_t>(index) * 0x48U + 0x40U, same_object) ||
@@ -1738,6 +1793,14 @@ bool InspectNamedGuiSubtreeV1(
         !ReadBytes(access, reinterpret_cast<const void *>(module_base + ck3_12004::kGuiCallbackThunkRva12004V1),
                    actual.data(), actual.size()) || actual != ck3_12004::kGuiCallbackThunkBytes12004V1) return false;
     output.callback_thunk_3aa30e0_pin_verified = true;
+    const auto verify_expression_code = [&]<std::size_t N>(std::uintptr_t rva, const std::array<unsigned char, N> &expected) {
+      std::array<unsigned char, N> bytes{};
+      return ReadBytes(access, reinterpret_cast<const void *>(module_base + rva), bytes.data(), bytes.size()) && bytes == expected;
+    };
+    if (!verify_expression_code(ck3_12004::kGuiExpression3A9F960Rva12004V1, ck3_12004::kGuiExpression3A9F960Bytes12004V1) ||
+        !verify_expression_code(ck3_12004::kGuiExpression3AC38C0Rva12004V1, ck3_12004::kGuiExpression3AC38C0Bytes12004V1) ||
+        !verify_expression_code(ck3_12004::kGuiExpression3E4C090Rva12004V1, ck3_12004::kGuiExpression3E4C090Bytes12004V1)) return false;
+    output.expression_layout_3a9f960_pin_verified = true;
   }
 
   struct Pending {

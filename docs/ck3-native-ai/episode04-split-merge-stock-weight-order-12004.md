@@ -15,6 +15,8 @@
 
 “eligible权重”在这里是merge角色getter的真实数值，不是Province用量的 `native_supply_loss_eligible`，也不是补员permission。两个D getter的内部完整predicate列表不在本增量重闭，因此不能由类别、headcount或Character predicate手工重建D。生产 `ck3_12002_army.cpp` 的provider还核两返回指针、非负及D不超过该军native current×100000；这些只读观测映射由 `ck3_12004_army_support.cpp` 精确绑定24E0140/24E0280。物理DATA去重合计、ArRg缓存合计、D weight、S weight四者应分别保存。
 
+后续[actual flags0完整路径](episode04-merge-source-weight-flags0-12004.md)补闭S端：2A95720在flags0绕过definition筛选与supply-loss-eligible调用，直接逐有效ArRg累加缓存38。因此空DATA/cache1/1角色在S权重贡献1，不可补员special也不因permission false被排除；这不授D getter同样语义，也不授实体补员。
+
 merge普通体先收D、后收S的weight、stock和有条件的commander候选。`2C55A3E→24DF9F0(S,-1)`清S统帅，再以`2C55AA8→24E0D10`、`2C55AB2→24E0C50`迁移原完整ArRg。候选选择后，`2C55E74`可先清选中角色原军的统帅，`2C55E7F→24DF9F0(D,selected)`写D统帅，`2C55E93→24E8100(D)`刷新，然后才进入库存计算。D与S候选准入分支不同；仅“先D后S”的收集顺序不证明所有排序分支同分必选D，质量高也不等于cap高。此处不重授排序helper内部tie语义，现场仍要独立读实际统帅。
 
 令SCALE=100000，wD是上表D返回和，wS是该次S native current×SCALE，W=wD+wS。当前两个正权重的普通fast路径为：

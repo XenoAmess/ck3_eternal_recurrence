@@ -1,0 +1,30 @@
+{
+  "schema": "xar.net-settlement-source-files.v1",
+  "files": [
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-net-settlement-allocator/ARCHIVE-INDEX.json",
+      "bytes": 3035,
+      "sha256": "b48a2ccba8194c25ca0c1174f213d08c32b6a568110d56069d7e102e60fe29ac"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-net-settlement-allocator/originals.zip",
+      "bytes": 34327,
+      "sha256": "508159880ce98a824b48cf984a6e8d71e9ba42ac66fa484e17d3d4308d5b8980"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-net-settlement-allocator/SOURCE-CONTRACT.actual.json",
+      "bytes": 3244,
+      "sha256": "238caa10d5b61e3a69fa089637d6c4b0325c7b3583347d900d26137e506af4d5"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-net-settlement-allocator/verify_repository.py",
+      "bytes": 3216,
+      "sha256": "6b1e8f7d8559edfceead13036f6d2ea0e094bbcd8f8fc3244b9fdbdce6674f65"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-net-settlement-allocation-12004.md",
+      "bytes": 9542,
+      "sha256": "665f9c83c814129b269e99bb42b068b5b09e5557f45d3d8791b7fbbef1eefd1d"
+    }
+  ]
+}

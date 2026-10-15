@@ -1,0 +1,275 @@
+{
+  "schema": "xar.e04.r07-interrupted-pair-canonical.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "utc": "2026-10-15T23:41:48.747613+00:00",
+  "status": "COMPETING_COMBAT_INTERRUPTED_CONTROL",
+  "archive": {
+    "bytes": 43110,
+    "sha256": "628ccc8cd6b69d91e5129b1582a9613561e6cbd9d82ac9ae836deddee3d67513"
+  },
+  "members": [
+    {
+      "name": "closure/R178-CLOSED.json",
+      "bytes": 3941,
+      "sha256": "238cd773bc390c206f5d94607ff252924492d4b35ff15838df45eb2a846fd1e8"
+    },
+    {
+      "name": "closure/R179-CLOSED.json",
+      "bytes": 4361,
+      "sha256": "f56b771404763810ac8de4b0bc090d029b558c92c8ac6e5bce4f26ae26a5dbde"
+    },
+    {
+      "name": "closure/control-archive.json",
+      "bytes": 3433,
+      "sha256": "e40ab9089e7710f411eaa4faf620e9ce2518f87153c9609081c3813b71323f6f"
+    },
+    {
+      "name": "closure/control-bootstrap.json",
+      "bytes": 14330,
+      "sha256": "4e9a9f8ea141e72ad6f1e0c723b0f313fbef632911d98b37ee50fcd223d1257f"
+    },
+    {
+      "name": "closure/control-display.json",
+      "bytes": 687,
+      "sha256": "c4cfc0c0dde4633bd0e174acea431df82d796cf76d2bab109cd577ad1e4b358a"
+    },
+    {
+      "name": "closure/control-identity.json",
+      "bytes": 7256,
+      "sha256": "f3d8080d6b590953befd49cb21701dfe0ef162d901e4a9453d7a847b6c250cf0"
+    },
+    {
+      "name": "closure/control-normal-save.json",
+      "bytes": 1412,
+      "sha256": "91a02155b30205b849a060386cc25c760eff5281ffb2f2f712ca2a4d281243e9"
+    },
+    {
+      "name": "closure/control-sampling-off.json",
+      "bytes": 1707,
+      "sha256": "e2f91d3c89cadec912ebee8544dfc451c087fc5e6c72644957748a618caef33a"
+    },
+    {
+      "name": "closure/control-screen-release.json",
+      "bytes": 2548,
+      "sha256": "0bfb56487ecaeddccbdeebe5d2e9734be5ccc9ff7ba0f517bda83c143c77ba29"
+    },
+    {
+      "name": "closure/treatment-bootstrap.json",
+      "bytes": 14469,
+      "sha256": "814c9694afc9b4e093733161ca68613405ca354bc099d4f4ce39324aacd3678f"
+    },
+    {
+      "name": "control/daily30.json",
+      "bytes": 5721,
+      "sha256": "03abc37d5b6d66ea7eadfd95ec0b5776d544715203842ccba24253c60ec69b08"
+    },
+    {
+      "name": "control/interruption.json",
+      "bytes": 3224,
+      "sha256": "fac304597c4fdd79e2c357a6872b48b5fd950311f5cae5ffc00dd1a0a5946b25"
+    },
+    {
+      "name": "control/outcome-interrupted.json",
+      "bytes": 3971,
+      "sha256": "6fe182904a2d9e253b29e7c28216fa6908367e01dbc9d1365295b7342364fa84"
+    },
+    {
+      "name": "control/partial-windows.json",
+      "bytes": 4153,
+      "sha256": "4a6cda9ba6b412eee7fc9b79432804fbce1a7922e8339588e0ec36fb4b2aa6a5"
+    },
+    {
+      "name": "history/failed-startup-observation-005e.json",
+      "bytes": 1528,
+      "sha256": "bff368e1911d9cdf8e4ee10584471280e488f8bc759c9a52c6166d9bb44dd3c7"
+    },
+    {
+      "name": "history/failed-startup-request-005e.json",
+      "bytes": 159,
+      "sha256": "9e9b0dd04ea7e7893f03975ff8d6015742455c1d2f79428b3cab6748a4ac8f2a"
+    },
+    {
+      "name": "history/original-scout-internal-output.json",
+      "bytes": 12429,
+      "sha256": "14eefb4189d4b53d9b3d340b5df4fb4b5afea5817daa22274dfaa86793b00d3a"
+    },
+    {
+      "name": "history/scout-outer-output-recovery.json",
+      "bytes": 500,
+      "sha256": "7fa693fedb50c8faee39f7975241335e40bb8ac8acad27a6826c0cc6738e894f"
+    },
+    {
+      "name": "treatment/causal-data.json",
+      "bytes": 30345,
+      "sha256": "2ac8035e6a929e3fe163489677acc5d5e4623831a9e1b70cf83e7d532bba6e4a"
+    },
+    {
+      "name": "treatment/daily32.json",
+      "bytes": 7423,
+      "sha256": "496780071aafe6820379443638816ba6780693f6e994ccca03e6b155db305d5b"
+    },
+    {
+      "name": "treatment/stage-boundaries.json",
+      "bytes": 16319,
+      "sha256": "f13c5d79f80d911916f769ad156cd268004b8b638bf5445a77ad84c34f38d1e6"
+    },
+    {
+      "name": "treatment/windows-consumer.json",
+      "bytes": 54173,
+      "sha256": "cfae7d7514ad44edaac8436a9170c27bbf28c8591714754a4e98af6845b86873"
+    }
+  ],
+  "original_metadata_sources": [
+    {
+      "member": "treatment/daily32.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r07-pair-audit-candidate-a01\\R178-ALL32-COMPACT.actual-a02.json",
+      "bytes": 7423,
+      "sha256": "496780071aafe6820379443638816ba6780693f6e994ccca03e6b155db305d5b"
+    },
+    {
+      "member": "treatment/windows-consumer.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r178-treatment-audit-a01\\WINDOWS.actual-a01.json",
+      "bytes": 54173,
+      "sha256": "cfae7d7514ad44edaac8436a9170c27bbf28c8591714754a4e98af6845b86873"
+    },
+    {
+      "member": "treatment/causal-data.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r178-treatment-audit-a01\\CAUSAL-DATA.actual-a01.json",
+      "bytes": 30345,
+      "sha256": "2ac8035e6a929e3fe163489677acc5d5e4623831a9e1b70cf83e7d532bba6e4a"
+    },
+    {
+      "member": "treatment/stage-boundaries.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r178-treatment-audit-a01\\STAGE-BOUNDARIES.actual-a01.json",
+      "bytes": 16319,
+      "sha256": "f13c5d79f80d911916f769ad156cd268004b8b638bf5445a77ad84c34f38d1e6"
+    },
+    {
+      "member": "control/daily30.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r07-pair-audit-candidate-a01\\R179-PARTIAL30-COMPACT.actual-a01.json",
+      "bytes": 5721,
+      "sha256": "03abc37d5b6d66ea7eadfd95ec0b5776d544715203842ccba24253c60ec69b08"
+    },
+    {
+      "member": "control/partial-windows.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r07-pair-audit-candidate-a01\\R179-PARTIAL30-WINDOWS.actual-a01.json",
+      "bytes": 4153,
+      "sha256": "4a6cda9ba6b412eee7fc9b79432804fbce1a7922e8339588e0ec36fb4b2aa6a5"
+    },
+    {
+      "member": "control/outcome-interrupted.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r07-pair-audit-candidate-a01\\PAIR-OUTCOME-INTERRUPTED.actual-a02.json",
+      "bytes": 3971,
+      "sha256": "6fe182904a2d9e253b29e7c28216fa6908367e01dbc9d1365295b7342364fa84"
+    },
+    {
+      "member": "closure/R178-CLOSED.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-treatment-a08-a01\\CLOSED.actual-a01.json",
+      "bytes": 3941,
+      "sha256": "238cd773bc390c206f5d94607ff252924492d4b35ff15838df45eb2a846fd1e8"
+    },
+    {
+      "member": "closure/R179-CLOSED.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\CLOSED.actual-a01.json",
+      "bytes": 4361,
+      "sha256": "f56b771404763810ac8de4b0bc090d029b558c92c8ac6e5bce4f26ae26a5dbde"
+    },
+    {
+      "member": "closure/control-archive.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\interrupted-closure-a01\\ARCHIVE.actual.json",
+      "bytes": 3433,
+      "sha256": "e40ab9089e7710f411eaa4faf620e9ce2518f87153c9609081c3813b71323f6f"
+    },
+    {
+      "member": "closure/control-sampling-off.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\interrupted-closure-a01\\SAMPLING-OFF.actual.json",
+      "bytes": 1707,
+      "sha256": "e2f91d3c89cadec912ebee8544dfc451c087fc5e6c72644957748a618caef33a"
+    },
+    {
+      "member": "closure/control-normal-save.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\interrupted-closure-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 1412,
+      "sha256": "91a02155b30205b849a060386cc25c760eff5281ffb2f2f712ca2a4d281243e9"
+    },
+    {
+      "member": "control/interruption.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\combat-interruption.actual-a01.json",
+      "bytes": 3224,
+      "sha256": "fac304597c4fdd79e2c357a6872b48b5fd950311f5cae5ffc00dd1a0a5946b25"
+    },
+    {
+      "member": "history/scout-outer-output-recovery.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\r07-cli-stages\\scout-outer-output-recovery.actual-a01.json",
+      "bytes": 500,
+      "sha256": "7fa693fedb50c8faee39f7975241335e40bb8ac8acad27a6826c0cc6738e894f"
+    },
+    {
+      "member": "closure/control-bootstrap.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0179\\bootstrap-result.json",
+      "bytes": 14330,
+      "sha256": "4e9a9f8ea141e72ad6f1e0c723b0f313fbef632911d98b37ee50fcd223d1257f"
+    },
+    {
+      "member": "closure/control-identity.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 7256,
+      "sha256": "f3d8080d6b590953befd49cb21701dfe0ef162d901e4a9453d7a847b6c250cf0"
+    },
+    {
+      "member": "closure/control-display.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\display-restore.actual-a01.json",
+      "bytes": 687,
+      "sha256": "c4cfc0c0dde4633bd0e174acea431df82d796cf76d2bab109cd577ad1e4b358a"
+    },
+    {
+      "member": "closure/control-screen-release.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\screen-release.actual-a01.json",
+      "bytes": 2548,
+      "sha256": "0bfb56487ecaeddccbdeebe5d2e9734be5ccc9ff7ba0f517bda83c143c77ba29"
+    },
+    {
+      "member": "closure/treatment-bootstrap.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-treatment-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0178\\bootstrap-result.json",
+      "bytes": 14469,
+      "sha256": "814c9694afc9b4e093733161ca68613405ca354bc099d4f4ce39324aacd3678f"
+    },
+    {
+      "member": "history/failed-startup-observation-005e.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0179\\responses\\005e-root-new-campaign-observation.json",
+      "bytes": 1528,
+      "sha256": "bff368e1911d9cdf8e4ee10584471280e488f8bc759c9a52c6166d9bb44dd3c7"
+    },
+    {
+      "member": "history/failed-startup-request-005e.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\desktop-3fevhd2-1c74096080--vanilla--R0179\\requests\\005e-root-new-campaign-observation.json",
+      "bytes": 159,
+      "sha256": "9e9b0dd04ea7e7893f03975ff8d6015742455c1d2f79428b3cab6748a4ac8f2a"
+    },
+    {
+      "member": "history/original-scout-internal-output.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\live12004-r07-control-a08-a01\\r07-v2-stages\\segment-01.scout-army-93.actual.json",
+      "bytes": 12429,
+      "sha256": "14eefb4189d4b53d9b3d340b5df4fb4b5afea5817daa22274dfaa86793b00d3a"
+    }
+  ],
+  "verifier": {
+    "bytes": 10800,
+    "sha256": "94d43e68662537501c22573c01941712e1cfea1b9fc6d0e1a4e2ae29a093bab0"
+  },
+  "document": {
+    "relative_from_evidence": "../../episode04-r07-interrupted-pair-12004.md",
+    "bytes": 6204,
+    "sha256": "2696365e84e992152483ee97edc5cfa4aeabfb41b45c327a0ebb5673ebd0aacf"
+  },
+  "full_v2_qualified": false,
+  "original_v1_qualified": false,
+  "accepted_cards_delta": 0,
+  "accepted_6_of_14_baseline_unchanged": true,
+  "large_raw_replay_included": false,
+  "failed_startup_and_CLI_recovery_preserved": true,
+  "SDK_requests_reissued_for_scout_recovery": false,
+  "source_base": "b42afbbd85df3802b1fa6222f7aac403c2adf735",
+  "both_actual_normal_CLOSED": true,
+  "retention_review_at_utc": "2026-10-16T07:45:01.597Z"
+}

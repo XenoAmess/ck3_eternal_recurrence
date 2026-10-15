@@ -36,3 +36,7 @@ consume_writer_actual.py 补上真实 probe 的离线读取入口。它只读原
 ~~~
 
 本机封存测试时主树仍冻结，显式使用 --sealed-root 与 --cash-candidate-root 指向已封候选，只覆盖测试进程中的可选 leaf import；实际 argv 与来源 SHA 原样在资格回执中。没有改主树、没有构建/运行项目 EXE，也没有重跑原 cold 矩阵。
+
+## 2026-10-16：实际 R0178 消费
+
+[R0178 真实 writer 与完整函数](war-payment-r0178-writer-source-12004.md)中 Root 已实际运行一次 CK3 模式 finite writer watch；原始实际 reader 返回0，2条同值物理写，restore/detach成立。native timeout返回1保留，不冒充全窗口完整；四暂停态净差为0没有抹掉真实同值写。source-only 新解码另行闭合两个 store 起点，原 raw 的 instruction_start仍null。原件归档及可移机 stdlib verifier见新专题，费用归因仍unclosed。

@@ -1,0 +1,111 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "R08-actual4-second-current-military-vector2C142B0",
+  "question": "Which exact sources/branches populate secondcurrentvector; any provenread/write relation with settlementcontext28/30?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4 / Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T23:14:57.501679+00:00",
+  "identity_receipt": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+  "layout_receipt": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\parent28F7939-source-a01\\inputs\\pe-layout-reused.json",
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Exact4staticsecondcurrentvector; no currentplayer memory",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Immutable source exact4 only; no runtime eligibility",
+    "producer_trigger": "not-applicable",
+    "producer": "Unknown secondvector2C142B0; firstvector28C43A0 ownedbyformalagent andexcluded",
+    "caller": "Actualheld2C14238CALL2C142B0(out80,Character,optionalbreakdown); publicquerybreakdownnull",
+    "consumer": "Currentgetteraddsreturnedtenresourcevector into calleroutput; settlementfourrawrelationunknown",
+    "cache_lifetime": "Unknown untilsource; no cacheepoch orcalendar claim",
+    "expected_signal": "Oneuniquefullunchainedfunction withcontinuousdecode, typedregisterlineage, allbranches andexactexternalcallee boundaries",
+    "zero_sample_meaning": "Staticfunctioncapture hasno livepaymentsample; noabsenceorpaidclaim",
+    "stop_condition": "Onlytarget2C142B0pdata binarysearch;metadata<=512B/read<=48; requireentrybeginexact2C142B0,uniqueunchainedextent<=8192B beforebody. No callee/read28C43A0/xref/newpointer/wholehash/gameSDKdesktopmainbuild.",
+    "runtime_window_ref": null
+  },
+  "read_budget": {
+    "code_bytes_max": 8192,
+    "metadata_bytes_max": 512,
+    "reads_max": 48,
+    "unique_function_count_max": 1,
+    "callee_or_xref_reads": 0,
+    "whole_EXE_hashes": 0,
+    "new_lane_total_bytes_max": 131072
+  },
+  "evidence": [
+    {
+      "id": "identity",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+      "layer": "exact-build",
+      "sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Rootfrozen actual4inputSHA; no rehash"
+    },
+    {
+      "id": "layout",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\parent28F7939-source-a01\\inputs\\pe-layout-reused.json",
+      "layer": "exact-build",
+      "sha256": "9f0f3da5fcaf809b8fad13c4310d6abdf3c5a06d98aad113e907ee64c15e7bb4",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Existingsectionmapping andexceptiondirectoryonly"
+    },
+    {
+      "id": "caller",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a02\\current_military.asm",
+      "layer": "source-contract",
+      "sha256": "295567d6ead8e4c6aa05fc5d384d7994f9f14fa0be819a3baa95403cc40291ce",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actualheldcurrentgetter2C14238 directCALL2C142B0; ABIout80,Character,optionalbreakdown"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "caller",
+      "label": "Heldcurrentgetteractual2C14238"
+    },
+    {
+      "id": "second",
+      "label": "Secondcurrentvector2C142B0"
+    },
+    {
+      "id": "terms",
+      "label": "Settlementc/dsourceunknown"
+    }
+  ],
+  "edges": [
+    {
+      "id": "call",
+      "from": "caller",
+      "to": "second",
+      "label": "ActualrelativeCALLandcallerABI",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "relation",
+      "from": "second",
+      "to": "terms",
+      "label": "Typedrawfieldproducer/readrelation",
+      "status": "unknown",
+      "evidence": [
+        "caller"
+      ],
+      "open_question": "Doesactualsecondcomponentread/writeCharacter1C0+28/30; no militarypaidsemanticinference?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "component-source",
+      "question": "Allconditionalvectorsources andopenexternalcallees?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

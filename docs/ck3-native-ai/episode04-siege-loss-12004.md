@@ -224,3 +224,30 @@ SHA `f3a23761175102ddfac1d778e32d7d258cf9075023f2713d7dac2cdcfa4636e0`、7294481
 外置attempt `C:/ck3-e04-resume-20261015-a01/r03-actual-next-bucket-a12/` 不超过128KiB，
 仅现有两个消费者摄取新实际输入与相对补丁check，无SDK/桌面/游戏/构建、无重复旧fixture、无主树写入。
 小证据保留首个完整writer/callback及其余已资格fact，不冒充完整原始journal；完整原件继续由Root按统一存储政策保护。
+
+## 2026-10-16 原卡复核：R03研究核心已闭，镜头M仍缺
+
+原卡现已找到：`story-lane/review02-rewrite-map-a01/sources/EXPERIMENT-CARDS.original.md:67–75`，
+精确SHA及逐条true/source-supported表见[原卡资格回执](evidence/episode04-r0177-20261016/r03-original-card-core-qualification.actual.json)。
+原卡要求围城稳定窗中的新自然callback/完整physical正减，并明确residual不硬分、refill单列；
+没有要求额外获得raid/residual正例。M是独立镜头合同；缺M不阻研究核心，和既有R12/R13计数口径一致。
+因此上一节a12在未拿到原卡时的partial/5/14只是历史暂计，由本节更新。
+
+为补旧小提取未保存的启动F DATA覆盖，Root明确授权仅对046原Driver再读一次；
+本次读取原因和源pin已留痕，未重读047、未调用SDK、未新采游戏。结果为21/21完整ArRg覆盖21条DATA，
+每行available/ready、native count与records全覆盖、所有记录值和ArRg backlink完整，missing/extra/issues均空；
+10条合法空DATA且writer_skipped=true，不是partial。`read_complete`是按这些native事实派生的核验结果，
+没有冒充一个原wire键；persistent/chunk/ArRg逻辑别名与actual writer的真实unique physical槽也分列。
+
+PRE/POST明确`raid_active=false`，实际callback/writer stock300、original supply0/siege11/raid0；
+两个独立snapshot的occupation可读且未占领、siege12/Army18/2635，与Army query的siege_active一致。
+两个F均sieging3、route空、非combat/retreat/assault，完整21个ArRg IDs相同；
+本窗只自然Arm/Resume一天，同callback/双FullID/physical same-instance支持原卡的稳定窗，未新增“全世界连续无变化”门槛。
+成功写188=passedDate结合updater准入源支持该callback无gather，不以Army22字节冒充成功。
+本场从正常Move到此次结算共26日，当前因果窗exact1tick，均在35日上限内；
+独立refill和整段净差不用于替代七笔物理扣兵，也未被本卡宣称为不存在。
+
+**按已找到的原标准，R03研究核心通过：6/14＝42.9%，R03–R13业务实验4/11＝36.4%。**
+可说结论仍限于本次七笔围城preferred实际减员11。R03镜头M、连续clean、人工1×及合格动态包仍未通过，
+新增素材信用0；未补raid/residual实机正例、完整区间总账或补员ADD资格。
+执行机器仍`desktop-3fevhd2-1c74096080`；源运行与normal save/CLOSED身份沿a12保留，不将本次离线文档HEAD当采样源码。

@@ -63,3 +63,7 @@ normalizer. The native wire is synthetic, including its absolute pointer values;
 it does not establish actual OS unwind through a CK3 detour or live-game inputs.
 All unavailable/changed fields remain raw unknown; the extension cannot promote
 maintenance attribution or change existing boarding qualification.
+
+## 2026-10-16：负 NET 分配函数已闭合，军事归因继续未知
+
+[经济 NET 与28A6B50专题](war-payment-net-settlement-allocation-12004.md)补齐574B负支两次directCALL的435B纯整数分配函数。它没有军事getter或类别来源，正常域有内外两次截断，不能全域化简为deficit*component/total，也不能强制两笔SUB之和等于-NET。现有kind2 generic足够支持符合资格的一笔实际正NET钱包对账partial；完整同次settlement entry/return和军事applied component仍未实现/未闭合，不因source新解码提升militaryclaim。
