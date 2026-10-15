@@ -31,6 +31,13 @@ WarPaymentWindowControl12004 ControlWarPaymentWindow12004(WarPaymentWindow12004 
 void ObserveWarPaymentWindowFrame12004(WarPaymentWindow12004 &,
   const WarPaymentCurrentFrame12004 &) noexcept;
 void InvalidateWarPaymentWindow12004(WarPaymentWindow12004 &,std::string_view reason) noexcept;
+// A full worker snapshot may be unavailable while its owner cache is being
+// refreshed. This callback reads only a new exact-build identity/clock prefix;
+// it must never return a previous full snapshot or publish a partial one.
+using WarPaymentIdentityFrameReader12004 = bool (*)(void *,WarPaymentCurrentFrame12004 &) noexcept;
+bool RefreshWarPaymentIdentityAfterSnapshotUnavailable12004(WarPaymentWindow12004 &,
+  WarPaymentIdentityFrameReader12004,void *) noexcept;
+
 WarPaymentSession12004 ReadWarPaymentWindowSession12004(void *) noexcept;
 bool RetainWarPaymentWindowActor12004(void *,WarPaymentKind12004,
   std::uintptr_t receiver,std::uintptr_t second_pointer) noexcept;

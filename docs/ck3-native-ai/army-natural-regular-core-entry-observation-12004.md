@@ -72,3 +72,59 @@ state and roster, keeps missing entry148 partial, checks date/caller/parent
 boundaries and original/RAX behavior, tests owned journal retention, and tests
 cold exact-anchor publication/restoration. Actual compile/run evidence is pending
 central 10's unique receipt; authored fixtures are not claimed as GREEN.
+
+## 2026-10-15 physical refill source and bounded export
+
+Source acquisition on machine `desktop-3fevhd2-1c74096080` used the same exact
+1.20.0.4 executable pin above. The frozen source package is
+`C:/ck3-e04-resume-20261015-a01/capability-lane/regular-core-writers-source-a01/`;
+its `ROOT-DELIVERY.actual.json` SHA-256 is
+`78c24703ddff7155b333ff8db107d9a5727697024469ee2694fca59095b549d5`.
+It retains finite source bytes, disassembly and unwind extents, rather than
+inferring a 1.20.0.4 address shift from 1.20.0.3.
+
+The regular core is `2A98AC0`. Its persistent roster at primary manager `30/3C`
+is an ordered occurrence list. The request helper `262C9B0` takes a Regiment,
+its signed prepared `148` value and the q vector; its return is eligibility,
+not a physical soldier ADD. The physical writer is at `2A98B88`, bytes
+`01 50 F4`: `add dword ptr [rax-0xC],edx`. At that instruction RSI is the
+Regiment and RAX is `Regiment+28+physical_ordinal*24`; the current-soldier
+target is therefore `Regiment+1C+physical_ordinal*24`. The q index read from
+the chunk is distinct from that physical ordinal. Preserve signed raw DWORD
+arithmetic and actual alias/order effects; a current query cannot recreate the
+historical q-vector entry.
+
+There is also a later conditional pair clear at `2A98BEF`,
+`mov qword ptr [rax-0x10],r14`, with R14 zero. Consequently a whole-callback
+net difference does not identify the amount of an individual ADD. The Army
+refresh is `24E8100`; it calls `2633320`, whose `26338A0/26338A3` stores update
+ArRg current/maximum caches. Those cache writes are not physical refill.
+The independent eligibility predicate at `2657EF0` remains outside this finite
+source acquisition and must not be described as completely reconstructed.
+
+```mermaid
+flowchart LR
+  N[Actual natural post-date parent] --> C[Regular core 2A98AC0]
+  C --> Q[Request helper 262C9B0]
+  Q -. branch detail not opened .-> U[Eligibility predicate 2657EF0]
+  Q --> A[Physical ADD 2A98B88]
+  A --> Z[Conditional later pair clear 2A98BEF]
+  C --> R[Army refresh 24E8100]
+  R --> K[ArRg cache aggregation 2633320]
+```
+
+This closes source locations only. R0171/R0172 did not qualify physical refill
+execution, and the proposed instruction probe has not been implemented. The
+existing regular-core capture still visits global persistent objects with a
+4096-object bound; R0172's manager contained 17880 objects. More disk or fewer
+exported Army rows cannot turn that incomplete producer into complete input.
+
+The separate scoped-export fix selects requested Army rows before wire
+serialization, retains every selected field and reports the original published
+scope status. It reduces the exact R0172 terminal Driver result from
+16,902,837 to 3,467,172 bytes without changing Army18 fields. It does not trim
+that Army's manager roster, DATA, seven physical chunks or unknown/false flags,
+and it does not consume or clear a journal. Its offline qualification is in
+`C:/ck3-e04-resume-20261015-a01/strength-scope-bloat-a01/ROOT-DELIVERY.actual.json`,
+SHA `7b282d4118b6760b4b4df6b956cae59a1fa08e6511c0f2792d11436c1300235c`.
+Fresh live size, retention and cause qualification remain independent gates.

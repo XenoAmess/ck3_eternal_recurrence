@@ -610,7 +610,10 @@ class Reader {
  public:
   explicit Reader(std::string_view json) : json_(json) {}
 
-  ArmyStrengthQueryProfileV1 Read() {
+  ArmyStrengthQueryProfileV1 Read(
+      std::optional<std::vector<std::int32_t>> *requested_army_ids = nullptr) {
+    if (requested_army_ids) requested_army_ids->reset();
+    std::optional<std::vector<std::int32_t>> scope;
     auto profile = ArmyStrengthQueryProfileV1::legacy_full;
     bool found = false;
     Space();
@@ -633,6 +636,10 @@ class Reader {
             profile = ArmyStrengthQueryProfileV1::observed_history_full;
           else
             return ArmyStrengthQueryProfileV1::invalid;
+        } else if (key == "army_ids") {
+          if (scope.has_value()) return ArmyStrengthQueryProfileV1::invalid;
+          scope.emplace();
+          if (!ArmyIds(*scope)) return ArmyStrengthQueryProfileV1::invalid;
         } else if (!Value(0)) {
           return ArmyStrengthQueryProfileV1::invalid;
         }
@@ -643,7 +650,9 @@ class Reader {
       }
     }
     Space();
-    return offset_ == json_.size() ? profile : ArmyStrengthQueryProfileV1::invalid;
+    if (offset_ != json_.size()) return ArmyStrengthQueryProfileV1::invalid;
+    if (requested_army_ids) *requested_army_ids = std::move(scope);
+    return profile;
   }
 
  private:
@@ -705,6 +714,28 @@ class Reader {
     if (json_.substr(offset_, value.size()) != value) return false;
     offset_ += value.size();
     return true;
+  }
+  bool ArmyIds(std::vector<std::int32_t> &ids) {
+    if (!Take('[')) return false;
+    Space();
+    if (Take(']')) return false;
+    for (;;) {
+      if (ids.size() == 64U || offset_ == json_.size() || !Digit(json_[offset_])) return false;
+      const auto start = offset_;
+      std::uint64_t value = 0;
+      do {
+        value = value * 10U + static_cast<unsigned>(json_[offset_++] - '0');
+        if (value > 0x7fffffffULL) return false;
+      } while (offset_ < json_.size() && Digit(json_[offset_]));
+      if (offset_ - start > 1U && json_[start] == '0') return false;
+      const auto id = static_cast<std::int32_t>(value);
+      if (std::find(ids.begin(), ids.end(), id) != ids.end()) return false;
+      ids.push_back(id);
+      Space();
+      if (Take(']')) return true;
+      if (!Take(',')) return false;
+      Space();
+    }
   }
   bool Number() {
     Take('-');
@@ -1400,6 +1431,8 @@ inline void AppendArmyStrengthV1WithManagerInputsMode(
     };
     result += ",\"normalized_edge_progress\":";
     append_fixed(movement.normalized_edge_progress_raw);
+    result += ",\"loaded_movement_lock_cutoff\":";
+    append_fixed(movement.loaded_movement_lock_cutoff_raw);
     result += ",\"first_route_edge_remaining_duration\":";
     append_fixed(movement.first_route_edge_remaining_duration_raw);
     result += ",\"unavailable_reason\":";

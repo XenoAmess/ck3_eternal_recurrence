@@ -91,6 +91,20 @@ void ObserveWarPaymentWindowFrame12004(WarPaymentWindow12004 &w,const WarPayment
     if(CheckLocked(w))w.session.snapshot_revision=f.snapshot_revision;
   }catch(...) {InvalidateWarPaymentWindow12004(w,"frame_observation_exception");}
 }
+bool RefreshWarPaymentIdentityAfterSnapshotUnavailable12004(WarPaymentWindow12004 &w,
+  WarPaymentIdentityFrameReader12004 read_frame,void *context) noexcept {
+  // This existing check independently validates natural sampling, actual
+  // GameState identity and non-rollback clocks. Inactive windows stay inactive.
+  if(!ReadWarPaymentWindowSession12004(&w).same_owned_process_no_load_window)return false;
+  WarPaymentCurrentFrame12004 identity{};
+  if(!read_frame||!read_frame(context,identity)) {
+    InvalidateWarPaymentWindow12004(w,"identity_core_read_failed");return false;
+  }
+  // Keep owner/map/alive/connection/date checks in the same production path as
+  // successful full publications. Pause/resume itself is not identity change.
+  ObserveWarPaymentWindowFrame12004(w,identity);
+  return ReadWarPaymentWindowSession12004(&w).same_owned_process_no_load_window;
+}
 void InvalidateWarPaymentWindow12004(WarPaymentWindow12004 &w,std::string_view reason) noexcept {
   try {const std::lock_guard lock(w.mutex);StopLocked(w,reason);}catch(...){}
 }

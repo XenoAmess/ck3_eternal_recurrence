@@ -266,6 +266,8 @@ struct ArmyMovementProgressSnapshot {
   std::optional<std::int64_t> accumulated_movement_weight_raw;
   std::optional<std::int64_t> cached_edge_speed_raw;
   std::optional<std::int64_t> normalized_edge_progress_raw;
+  // Loaded signed Q100000 operand, independent of route ETA or inferred lock.
+  std::optional<std::int64_t> loaded_movement_lock_cutoff_raw;
   std::optional<std::int64_t> first_route_edge_remaining_duration_raw;
   std::string unavailable_reason;
   std::optional<ArmyCommittedRouteTimelineSnapshot> committed_route_timeline;

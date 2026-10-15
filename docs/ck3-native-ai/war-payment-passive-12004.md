@@ -73,6 +73,22 @@ A已知EXE读8013B/71reads（headers608、pdata660、code6745）；一次早期�
 
 实现位于 `ck3_autonomous_player/native_bridge/` 的 `war_payment_{passive,runtime,window}_12004.hpp` 与对应src；CMake `XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004` 默认OFF，要求自然阶段编译开关同时开启。生产DLL全量构建、冷载、真实登船付款和维持费归因仍待完成。
 
+## 2026-10-15 窗口缓存故障与下一版修复
+
+机器 `desktop-3fevhd2-1c74096080` 的R0172生产DLL确已部署，付款窗口初次独立查询admitted，但第一真实自然日后因 `snapshot_read_failed` 关闭并清空journal。完整工作经过见[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。该失败不授零扣费、登船或维护归因资格。
+
+源码修复区分完整worker快照缓存暂不可用与当前身份失效：只有已admitted的窗口，在full读取失败时读取exact `.4` 适配器的新鲜core身份，再复用原owner/map/alive/connection/date/natural守卫。它不复用旧snapshot、不发布partial、不推进公共revision，也不自动打开或恢复窗口；真正core读取失败仍关闭。`RefreshWarPaymentIdentityAfterSnapshotUnavailable12004` 是该窄路径，不改变任何付款或原函数调用。
+
+实际离线资格为65项Window/Journal回归及13项真实WorkerAdapter/NativeAdapter12002/`.4` descriptor连接检查，均失败0。后者明确使用真实core/unwrap/Bridge callback投影，159个未执行宽依赖alias若误调用即abort；它不是完整CK3进程验收。初始smoke因未用console binder的fixture构造路径abort，诊断后使用真实三参构造的空ConsoleFixtureBindings；首次stdout/stderr被诊断轮覆盖、原件已不可读，RESULT与后续完整诊断/成功回执仍保留，不能宣称原始日志齐全。
+
+资格包为 `C:/ck3-war-episode04-research-20261004-a01/payment-window-unavailable-qualification-20261015-a01/ROOT-DELIVERY.actual.json`，6300B，SHA `895e1882a26a3515268817703ad93725df28be3805fdf6ed87c67cf6a4bbb659`。可移植窄回归源码与canonical machine-ID runner位于 `native_bridge/tests/war_payment_snapshot_unavailable/`。这些检查不追认R0172，仍须新生产DLL、正常冷载与真实跨日/登船证据。
+
+## 2026-10-15 applied子余额叶函数来源
+
+同一机器本轮有限来源读取确认gateway personal SUB后的tail-call `19EB5C0`：`19EB5C0..19EB65A` 为155B可达leaf，保留160B含5B INT3；无callee和日期逻辑。它以resource0/3选择tracker的`+160/+1A0`子余额池，优先扣component所选槽，不足时按槽3→0扣，最后槽3可为负数。gateway中的literal3因此只能解释为子余额扣减偏好，**不能把它命名为军事维护费component**。
+
+新读取共160B code和216B metadata；首案因无`.pdata` entry停下后，另立明确leaf-gap有限方案才读取。实际来源、方案与失败在 `C:/ck3-e04-resume-20261015-a01/maintenance-applied-source-20261015-a01/ROOT-DELIVERY.actual.json`，2917B，SHA `dc4c80ab035706b79ad7d2899c808b6b04d6c4de0ad685ed11d0bed312c8d016`。军事费用的实际生产caller、applied military分量及结算节奏仍未闭合；下一步使用修复后新现场首条非登船ADD/SUB真实caller-return PC定位，不能再把相邻函数、费用率或回调净差当已支付军费。
+
 SDK复用现金查询，`payment_sampling=None` 不增加请求字段；显式 `enable` 要求 `payment_window_contract="same_owned_process_no_load_v1"` 并绑定本机机器ID、实际PID/creation time、connection generation及当前player。此合同不制造loaded-game epoch；停用自然采样、读失败、断线、回档或owner变化使window失效，须重新明确启用。付款证据保留原始entry/return、账户余额、正额、真实leaf write及自然父链，不以钱包净差推实际军事费用。
 
 可移植回归使用保存的9个compiled serializer案例（第10个只是同一journal包装的重复），夹具中的机器ID明确仅作来源标签，测试替换机器provider避免向其他机器外推本机事实。

@@ -139,3 +139,24 @@ Root在同一PID实际采用Python身份guard与有限侧存配置，未因纯Py
 11:17Z正常存档 `state-a01/profile/save games/xar_checkpoint.ck3` 保存成功，68,450,356B，SHA `be327216d366627c46effe1f976f1f479899276a02c88e2511591d6cf732e881`，raw53145048；immutable seed仍为原始53144616。该新checkpoint尚未冷载验收。11:19:14Z保留的原进程HANDLE signaled/exit0，随后session退出且Job在任何termination前已为0、tree_gone、SDK/keeper已停；11:19:49Z显示恢复1024×768，11:20:25Z任务总线CAS5353→5354释放完成。证据为 `stock-normal-exit-a01/observer-result.actual.json`、本run `bootstrap-result.json`、`display-restore.actual-a01.json`、`screen-release.actual-a01.json`，不外推为typed native normal-exit能力合格。
 
 11:21Z收口容量实际C空闲33,267,949,568B、D空闲22,745,317,376B。当前checkpoint、原片与故障关键证据保护至 **2026-10-16T07:45:01.597Z复核**，用途为Review02接续及观察器修复，不无限续存。下一次开机前仍须新鲜本机离线证据、容量准入及新PID身份；新片费用、损耗/补员、Halt/改道及同T0 A/B/C等研究缺口未被这些原片抵扣。
+
+## 2026-10-15T11:59Z 继续任务与明确进度口径
+
+本轮机器仍为 `desktop-3fevhd2-1c74096080`。用户要求继续研究与拍摄，并汇报百分比；从本节起使用明确的**新版Review02整卡验收**分母，不把静态来源、fixture、原片时长或改稿映射折算为已完成主张，也不重写旧估算。
+
+| 范围 | 截至本切点实际完成 | 剩余 |
+|---|---:|---|
+| 已有Review01制作、机器审计、客户端交付 | 3/3，100% | 人工完整1×及signoff单列未完成 |
+| Review02研究卡R00–R13 | 2/14，14.3% | R00本机准入、R02精确日能力已闭；R01新比较T0及R03–R13业务整卡未闭 |
+| R03–R13核心机制/对照完整闭环 | 0/11 | 围城、县界、低库存饥饿、physical补员、登船付款、维护、特殊分合军、ABC、三类路线操作 |
+| 新版合格动态证据包 | 0/11 | 两段共23:02.866原片保留，不代表clean跨度 |
+| Review02最终69段稿及声音 | 各0/69 | 已完成的是69/69离线改稿映射 |
+| 新版render/审计/人工完整签核/指定交付 | 0/4 | 尚未开始，不用Review01冒充新版完成 |
+
+逐卡评估与行号来源在工作根 `progress-evidence-a01/ASSESSMENT.actual-a01.json`。这组比例是整卡接受率，不是代码工作量比例或对历史知识归零。排期估计为：北京时间10月15日21:30前完成付款窗口/导出范围的最小修复资格并争取恢复补拍；核心研究暂估2–4天，同新T0的A/B/C必须串行，证据冻结后改稿/声音/重剪/审计另1–2天，目标交付窗口10月18–21日。维护结算来源及自然场景尚未知，时点是调度目标，出现真实新证据后更新，不承诺未知事件按期发生。
+
+本轮并行包已取得65+13项付款窗口修复资格，以及scoped导出150项Python、4630项native断言和两个改动TU语法资格。Root实际应用后主树新增组合检查24项PASS，继承XQOL兼容修复相关29项PASS；生产DLL和新现场尚未执行，源码/fixture不授付款业务通过。下一现场优先沿R0172已有route自然续行，实际接近海上转换才开360秒短录像，成功登船后在ring余量内做一次合法Halt探索；另一次改道必须保留自己的完整后果窗口。
+
+12:02Z追加：现有RouteBindings的实际signed64/Q100000移动锁定cutoff已通过四文件最小增量发布到 `current_movement_progress.loaded_movement_lock_cutoff`，不添加推断locked。读取独立于ETA成功与否，disabled/非暂停/clock不符保持null，旧shape仍可消费。真实Attach+serializer有11场景32断言、实际movement block consumer有60检查；Root主树的cutoff/scoped/cache组合实际 **74 passed**。这仍不是本机cutoff数值实读或Halt结果；下一现场才观测。外置资格为 `strength-scope-bloat-a01/halt-cutoff-a01/ROOT-DELIVERY-PYTEST.actual.json` 及其精确source/compiled wire pins，未把故意重复war_ids的fixture整行归一化失败改成通过。
+
+容量统一ACCEPT在 `continuation-a02/CAPACITY-ACCEPTED.actual-a01.json`，1546B，SHA `29d8ca27f4f70814640dd240577f22f7c481c617f2007a479cd3a5e87e134283`：现项目C保守上界161126913919B、本轮合计新增峰6375342080B、160GiB例外原截止不变，全部子lane共用512MiB，Root唯一重型写入协调者；不得每lane重新消费同一份free。新raw1.5GiB、Driver128MiB/单包16MiB、natural56/payment384先止线。全部下一场计划结果仍为pending，计划校验不代替屏幕租约、新鲜离线、实际新PID与运行证明。

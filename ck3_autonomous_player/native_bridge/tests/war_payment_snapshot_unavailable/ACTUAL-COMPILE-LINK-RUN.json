@@ -1,0 +1,201 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T11:49:23.080637+00:00",
+  "actual_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\RESULT.actual.json",
+    "bytes": 20097,
+    "sha256": "27cb24c8b94fb4d4ae3827a3973d4c3efee47ff1a2de0969b5ef6f09732ccf01"
+  },
+  "actual_compile_commands": [
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/DXAR_PAYMENT_WINDOW_FIXTURE=1",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\include",
+        "/c",
+        "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\src\\war_payment_passive_12004.cpp",
+        "/FoC:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_passive_12004.obj"
+      ],
+      "return_code": 0,
+      "object": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_passive_12004.obj",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\src\\war_payment_passive_12004.cpp",
+        "bytes": 12624,
+        "sha256": "00b3f44f4a4df77d01e6aa5d5b8d70d0a96b3592571d8079d7651b9c52203059"
+      },
+      "log": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_passive_12004.compile.log",
+        "bytes": 31,
+        "sha256": "21735abab18720fd4f1b19efc0223e1b338006734776719da6bcad0116c5261d"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/DXAR_PAYMENT_WINDOW_FIXTURE=1",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\include",
+        "/c",
+        "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\src\\war_payment_window_12004.cpp",
+        "/FoC:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_window_12004.obj"
+      ],
+      "return_code": 0,
+      "object": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_window_12004.obj",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\src\\war_payment_window_12004.cpp",
+        "bytes": 10357,
+        "sha256": "66d311b72913e55eb37c0b6d76a8b04515001a6d273f372d79a296ed19e9a639"
+      },
+      "log": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_window_12004.compile.log",
+        "bytes": 30,
+        "sha256": "7d54e6c598146bd3a88f9a6f98e6e3981673b893e0ab21dd0f608d682c00c8c8"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/DXAR_PAYMENT_WINDOW_FIXTURE=1",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\include",
+        "/wd4505",
+        "/c",
+        "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\fixture\\payment_snapshot_unavailable_focus.cpp",
+        "/FoC:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\payment_snapshot_unavailable_focus.obj"
+      ],
+      "return_code": 0,
+      "object": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\payment_snapshot_unavailable_focus.obj",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\fixture\\payment_snapshot_unavailable_focus.cpp",
+        "bytes": 20538,
+        "sha256": "d920f2afc9cd790e4b69271ff0a12e7dbe3708e41981a045cf9e7f6bdfe508f3"
+      },
+      "log": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\payment_snapshot_unavailable_focus.compile.log",
+        "bytes": 40,
+        "sha256": "9632920839a4d59c088b6db5dd1a82fdad825c40cb1c2e3e4ccc52b057451c5c"
+      }
+    }
+  ],
+  "actual_link": {
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+      "/nologo",
+      "/INCREMENTAL:NO",
+      "/OPT:REF",
+      "/OPT:ICF",
+      "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_passive_12004.obj",
+      "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\war_payment_window_12004.obj",
+      "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\payment_snapshot_unavailable_focus.obj",
+      "/OUT:C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\payment-window-unavailable-focus.exe",
+      "kernel32.lib",
+      "user32.lib"
+    ],
+    "returncode": 0,
+    "log": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "actual_run": {
+    "argv": [
+      "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\payment-window-unavailable-focus.exe",
+      "--machine-id",
+      "desktop-3fevhd2-1c74096080"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\run.stdout.jsonl",
+      "bytes": 10346,
+      "sha256": "705a895bab1c44d62815b84510777a805cfabe8c56b414d7434ea330e2296f59"
+    },
+    "stderr": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\run.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "exact_trackable_files": [
+    {
+      "tested_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\fixture\\payment_snapshot_unavailable_focus.cpp",
+        "bytes": 20538,
+        "sha256": "d920f2afc9cd790e4b69271ff0a12e7dbe3708e41981a045cf9e7f6bdfe508f3"
+      },
+      "trackable_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\trackable\\war_payment_snapshot_unavailable\\payment_snapshot_unavailable_focus.cpp",
+        "bytes": 20538,
+        "sha256": "d920f2afc9cd790e4b69271ff0a12e7dbe3708e41981a045cf9e7f6bdfe508f3"
+      }
+    },
+    {
+      "tested_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\fixture\\payment_runtime_cases.inc",
+        "bytes": 20894,
+        "sha256": "c11404c0eeb99a7426b24b3dd3d7c00d2eec47c2addd9d974daa7b6a72d21ce2"
+      },
+      "trackable_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\trackable\\war_payment_snapshot_unavailable\\payment_runtime_cases.inc",
+        "bytes": 20894,
+        "sha256": "c11404c0eeb99a7426b24b3dd3d7c00d2eec47c2addd9d974daa7b6a72d21ce2"
+      }
+    },
+    {
+      "tested_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\fixture\\payment_window_cases.inc",
+        "bytes": 9829,
+        "sha256": "03dcc4a0f4f458a95700ddbc4464f7bf0865df7867407f29703f6a344778392b"
+      },
+      "trackable_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\trackable\\war_payment_snapshot_unavailable\\payment_window_cases.inc",
+        "bytes": 9829,
+        "sha256": "03dcc4a0f4f458a95700ddbc4464f7bf0865df7867407f29703f6a344778392b"
+      }
+    },
+    {
+      "tested_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\window-build-a02\\source-freeze\\fixture\\payment_snapshot_unavailable_cases-a02.inc",
+        "bytes": 6993,
+        "sha256": "98e48b6ecf09a12f243a190fe92dffd1b6f7c4bf3d5ff4b83c92aea1f08a8f1b"
+      },
+      "trackable_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\payment-window-unavailable-qualification-20261015-a01\\trackable\\war_payment_snapshot_unavailable\\payment_snapshot_unavailable_cases-a02.inc",
+        "bytes": 6993,
+        "sha256": "98e48b6ecf09a12f243a190fe92dffd1b6f7c4bf3d5ff4b83c92aea1f08a8f1b"
+      }
+    }
+  ],
+  "note": "These are actual already-run source bytes. No old202 matrix rerun. Command absolute paths are this-machine evidence, not a cross-machine path assumption."
+}

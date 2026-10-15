@@ -154,3 +154,23 @@ if(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
     src/war_payment_window_12004.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004=1)
 endif()
+
+# Explicit offline regression; not part of the default CTest inventory.
+if(BUILD_TESTING AND MSVC AND WIN32)
+  set(_payment_focus_dir "${CMAKE_CURRENT_SOURCE_DIR}/tests/war_payment_snapshot_unavailable")
+  add_executable(xar_test_war_payment_snapshot_unavailable EXCLUDE_FROM_ALL
+    "${_payment_focus_dir}/payment_snapshot_unavailable_focus.cpp"
+    src/war_payment_passive_12004.cpp src/war_payment_window_12004.cpp)
+  target_include_directories(xar_test_war_payment_snapshot_unavailable PRIVATE include)
+  target_compile_features(xar_test_war_payment_snapshot_unavailable PRIVATE cxx_std_20)
+  target_compile_definitions(xar_test_war_payment_snapshot_unavailable PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN XAR_PAYMENT_WINDOW_FIXTURE=1)
+  target_compile_options(xar_test_war_payment_snapshot_unavailable PRIVATE
+    /O2 /EHsc /W4 /WX /Gy /utf-8)
+  set_source_files_properties("${_payment_focus_dir}/payment_snapshot_unavailable_focus.cpp"
+    PROPERTIES COMPILE_OPTIONS /wd4505)
+  set_property(TARGET xar_test_war_payment_snapshot_unavailable PROPERTY
+    MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
+  target_link_options(xar_test_war_payment_snapshot_unavailable PRIVATE /OPT:REF /OPT:ICF)
+  target_link_libraries(xar_test_war_payment_snapshot_unavailable PRIVATE kernel32 user32)
+endif()

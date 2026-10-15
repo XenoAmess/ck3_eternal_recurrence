@@ -7031,8 +7031,14 @@ class GameplayBridgeService:
             else int(snapshot["revision"])
         )
         typed_query = getattr(self.driver, "query_army_strengths", None)
+        scoped_query = getattr(self.driver, "query_scoped_army_strengths", None)
+        use_scoped = (callable(scoped_query) and "game.command.query-army-strengths-scoped-v1"
+                      in self.capabilities().get("bridge_capabilities", []))
+        queried_scope = [next(row for row in scope if row["army_id"] == army_id)
+                         for army_id in requested_ids] if use_scoped else scope
         if callable(typed_query):
-            result = typed_query(profile=profile, expected_revision=selected_revision)
+            result = (scoped_query(requested_ids, profile=profile, expected_revision=selected_revision)
+                      if use_scoped else typed_query(profile=profile, expected_revision=selected_revision))
             try:
                 validate_army_strengths_profile_coverage(result, expected_profile=profile)
             except ValueError as error:
@@ -7050,17 +7056,19 @@ class GameplayBridgeService:
             )
         try:
             rows = normalize_army_strengths(
-                result.get("army_strengths"), expected_scope=scope
+                result.get("army_strengths"), expected_scope=queried_scope
             )
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native army-strength result is malformed: {error}"
             ) from error
-        scope_status = army_strength_query_status(rows)
-        if result.get("status") != scope_status:
+        queried_status = army_strength_query_status(rows)
+        if result.get("status") != queried_status:
             raise BridgeUnavailableError(
                 "native army-strength status disagrees with its full scope"
             )
+        scope_status = (result["army_strengths_query_scope"]["published_scope_status"]
+                        if use_scoped else queried_status)
         by_id = {int(row["army_id"]): row for row in rows}
         selected_rows = [by_id[army_id] for army_id in requested_ids]
         first_target_army_contexts = {}

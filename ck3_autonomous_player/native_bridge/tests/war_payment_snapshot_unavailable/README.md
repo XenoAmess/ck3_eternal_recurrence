@@ -1,0 +1,9 @@
+# Snapshot-unavailable window regression
+
+These four C++ source/include files are byte-identical to the actual 65-check a02 PASS. The machine ID comes from `--machine-id`; the small Python runner reuses `tools.ck3_live_run_id.current_machine_id()` and checks every native output row. Production code is the existing passive source plus the three-file window fix; no game/SDK/desktop or runtime EXE input is needed.
+
+The old fixture's World/WindowMemory helpers and unexecuted runtime cases remain as exact source inputs. `/Gy` with `/OPT:REF` is required to remove their uncalled sections, including old ABI-probe references. Only the test TU suppresses C4505 for those uncalled static helpers. The production TUs retain `/W4 /WX`. The main executes only SnapshotUnavailableCases12004; it does not run the old202 checks.
+
+`ACTUAL-COMPILE-LINK-RUN.json` records real CL/link/run argv and pins. They contain current-machine absolute paths as evidence. The repository declares the explicit EXCLUDE_FROM_ALL target `xar_test_war_payment_snapshot_unavailable` when BUILD_TESTING is enabled under Windows/MSVC. Build that target with the existing native MSVC wrapper and its declared project-EXE build hook, then invoke this folder's `run_focus.py --repo <repository-root> --exe <built-test-exe>` using the verified Python interpreter. This target is intentionally not registered in the default CTest inventory, because that inventory must not run an executable excluded from the default build. Other machines must use their own paths/normal build admission. Do not copy local EXE or treat local Defender registration as remote registration.
+
+The fixture character IDs and native memories are synthetic test inputs. The output machine identity is actual. Passing these checks is offline Window/Journal behavior qualification, not payment proof from CK3.

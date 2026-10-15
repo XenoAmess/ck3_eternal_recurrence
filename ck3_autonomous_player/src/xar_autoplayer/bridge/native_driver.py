@@ -700,6 +700,7 @@ from .war_contract import (
     parse_halt_army_step,
     normalize_active_wars,
     normalize_army_strengths,
+    normalize_army_strength_request_ids,
     normalize_province_local_siege_result,
     normalize_route_contact_horizon,
     normalize_outbound_war_white_peace_status,
@@ -13365,9 +13366,20 @@ class NativeHeadlessGameplayDriver:
                              ok=True, result=result)
         return result
 
+    def query_scoped_army_strengths(
+        self, army_ids: list[int], *, profile: str = ORDINARY_CORE_PROFILE,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Export only the explicit published Army subset; no fallback to full."""
+        ids = normalize_army_strength_request_ids(army_ids)
+        if "game.command.query-army-strengths-scoped-v1" not in self.capabilities().get("bridge_capabilities", []):
+            raise UnsupportedStepError("native scoped army-strength export is unavailable")
+        return self.query_army_strengths(profile=profile, expected_revision=expected_revision, army_ids=ids)
+
     def query_army_strengths(
         self, *, profile: str = ORDINARY_CORE_PROFILE,
         expected_revision: int | None = None,
+        army_ids: list[int] | None = None,
     ) -> dict[str, object]:
         """Read an explicit Army profile without advancing the game.
 
@@ -13385,7 +13397,7 @@ class NativeHeadlessGameplayDriver:
             )
             result = self._execute_army_strength_query(
                 starting=starting, selected_revision=selected_revision,
-                profile=profile,
+                profile=profile, requested_ids=army_ids,
             )
         except Exception as error:
             timing = start_army_timing("driver.record_command")
@@ -14708,8 +14720,9 @@ class NativeHeadlessGameplayDriver:
         starting: dict[str, object],
         selected_revision: int,
         profile: str = ORDINARY_CORE_PROFILE,
+        requested_ids: list[int] | None = None,
     ) -> dict[str, object]:
-        """Read a profile of the complete published Army scope in one frame."""
+        """Read one exact published scope, retaining every field of selected rows."""
         profile = require_army_strengths_profile(profile)
         # A failed refresh must not leave an older query advertised as its result.
         with self._driver_state_lock:
@@ -14720,7 +14733,14 @@ class NativeHeadlessGameplayDriver:
                 "native army-strength query requires a paused, map-ready living actor"
             )
         try:
-            expected_scope = army_strength_scope(starting)
+            published_scope = army_strength_scope(starting)
+            expected_scope = published_scope
+            if requested_ids is not None:
+                requested_ids = normalize_army_strength_request_ids(requested_ids)
+                by_id = {row["army_id"]: row for row in published_scope}
+                if any(army_id not in by_id for army_id in requested_ids):
+                    raise ValueError("requested Army ID is outside the published scope")
+                expected_scope = [by_id[army_id] for army_id in requested_ids]
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native army-strength scope is malformed: {error}"
@@ -14734,10 +14754,11 @@ class NativeHeadlessGameplayDriver:
             # The native semantic reader can wait 30s for its owning thread.
             # Leave time for that terminal result to reach this caller.
             timeout_seconds=max(self.command_timeout_seconds, 35.0),
-            request_fields={ARMY_STRENGTHS_PROFILE_KEY: profile},
+            request_fields={ARMY_STRENGTHS_PROFILE_KEY: profile,
+                            **({"army_ids": requested_ids} if requested_ids is not None else {})},
         )
         if (
-            set(result) - {ARMY_MANAGER_INPUTS_SHARED_KEY}
+            set(result) - {ARMY_MANAGER_INPUTS_SHARED_KEY, *( ["army_strengths_query_scope"] if requested_ids is not None else [])}
             != {
                 "step",
                 "accepted",
@@ -14755,6 +14776,15 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native army-strength query returned a malformed status"
             )
+        if requested_ids is not None:
+            scope_echo = result.get("army_strengths_query_scope")
+            if (not isinstance(scope_echo, dict) or set(scope_echo) != {"army_ids", "published_scope_status"}
+                    or type(scope_echo["army_ids"]) is not list
+                    or any(type(army_id) is not int for army_id in scope_echo["army_ids"])
+                    or scope_echo["army_ids"] != requested_ids
+                    or type(scope_echo["published_scope_status"]) is not str
+                    or scope_echo["published_scope_status"] not in {"available", "partial"}):
+                raise BridgeUnavailableError("native army-strength query scope echo is malformed")
         army_normalize_timing = start_army_timing("driver.army_normalize")
         try:
             # Expand the lossless wire view before the existing independent
@@ -14800,7 +14830,7 @@ class NativeHeadlessGameplayDriver:
                 "native army-strength query crossed a snapshot revision"
             )
         try:
-            if army_strength_scope(current) != expected_scope:
+            if army_strength_scope(current) != published_scope:
                 raise BridgeUnavailableError(
                     "native army-strength scope changed during the query"
                 )
@@ -14846,7 +14876,8 @@ class NativeHeadlessGameplayDriver:
             "cache_binding": cache_binding,
         }
         with self._driver_state_lock:
-            self._army_strength_query = cache_entry
+            # A subset never impersonates the complete-scope snapshot cache.
+            self._army_strength_query = cache_entry if requested_ids is None else None
         return {
             **result,
             "status": status,

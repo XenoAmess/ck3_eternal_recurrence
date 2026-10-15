@@ -1966,9 +1966,18 @@ bool ReadCommittedRouteTimeline(
 void AttachCommittedRouteTimelineToArmyRows(
     const RouteBindings &bindings, const game::Snapshot &paused_scope,
     std::vector<game::ArmyStrengthSnapshot> &rows) noexcept {
+  // Clear stale caller-owned values even when this attachment is unavailable.
+  for (auto &row : rows)
+    if (row.current_movement_progress)
+      row.current_movement_progress->loaded_movement_lock_cutoff_raw.reset();
   if (!bindings.enabled) return;
+  std::optional<std::int64_t> loaded_cutoff;
+  if (paused_scope.paused && ClockMatches(bindings, paused_scope) &&
+      bindings.movement_locked_threshold != nullptr)
+    loaded_cutoff = LoadAt<std::int64_t>(bindings.movement_locked_threshold, 0);
   for (auto &row : rows) {
     if (!row.available || !row.current_movement_progress.has_value()) continue;
+    row.current_movement_progress->loaded_movement_lock_cutoff_raw = loaded_cutoff;
     auto &timeline = row.current_movement_progress->committed_route_timeline.emplace();
     if (!ReadCommittedRouteTimeline(
             bindings, paused_scope, row.army_id,

@@ -113,6 +113,7 @@
 #include "xar_bridge/player_claims_v1_serializer.hpp"
 #include "xar_bridge/title_own_laws_v1_serializer.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
+#include "xar_bridge/army_strength_query_scope_v1.hpp"
 #include "xar_bridge/army_strengths_manager_shared_wire_v1.hpp"
 #include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 #include "xar_bridge/contextual_advantage_v1.hpp"
@@ -926,6 +927,21 @@ static xar::ck3_12004::WarPaymentCurrentFrame12004 PaymentFrame12004(
   return {generation,revision,static_cast<std::uint32_t>(s.date_raw),
     s.has_played_character?static_cast<std::uint32_t>(s.played_character_id):0,
     s.paused,s.map_ready,s.played_character_alive};
+}
+struct PaymentIdentityCoreContext12004 {
+  const xar::game::GameAdapter *game=nullptr;
+  std::uint64_t generation=0,revision=0;
+};
+static bool ReadPaymentIdentityCoreFrame12004(void *opaque,
+    xar::ck3_12004::WarPaymentCurrentFrame12004 &output) noexcept {
+  output={};
+  if(!opaque)return false;
+  const auto &context=*static_cast<PaymentIdentityCoreContext12004 *>(opaque);
+  xar::game::Snapshot identity{};
+  if(!context.game||!xar::game::IsCk3_12004Descriptor(context.game->descriptor())||
+     !xar::game::ReadCk3_12002TimelineCoreSnapshot(*context.game,identity))return false;
+  output=PaymentFrame12004(identity,context.generation,context.revision);
+  return true;
 }
 #endif
 
@@ -9541,7 +9557,9 @@ std::string ArmyStrengthsResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     xar::game::ReadArmyStrengthsResult query_result,
     const std::vector<xar::game::ArmyStrengthSnapshot> &strengths,
-    xar::game::ArmyStrengthQueryProfileV1 profile) {
+    xar::game::ArmyStrengthQueryProfileV1 profile,
+    const std::optional<std::vector<std::int32_t>> &requested_army_ids = std::nullopt,
+    xar::game::ReadArmyStrengthsResult published_status = xar::game::ReadArmyStrengthsResult::unavailable) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -9561,6 +9579,13 @@ std::string ArmyStrengthsResultFrame(
     AppendJsonString(result, xar::game::ArmyStrengthQueryProfileNameV1(profile));
     result += ",\"army_observed_phase_coverage\":";
     AppendJsonString(result, include_observed_phase_history ? "exported_retained" : "not_requested");
+  }
+  if (requested_army_ids) {
+    result += ",\"army_strengths_query_scope\":{\"army_ids\":";
+    AppendInt32Array(result, *requested_army_ids);
+    result += ",\"published_scope_status\":\"";
+    result += published_status == xar::game::ReadArmyStrengthsResult::available ? "available" : "partial";
+    result += "\"}";
   }
   xar::game::AppendArmyStrengthsQueryMembersV1(
       result, std::span<const xar::game::ArmyStrengthSnapshot>(strengths),
@@ -12517,7 +12542,13 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
   } else if (!xar::game::ReadSnapshot(bindings, snapshot)) {
 
 #if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
-    xar::ck3_12004::InvalidateWarPaymentWindow12004(g_war_payment_window_12004,"snapshot_read_failed");
+    // Cached full snapshots can be temporarily unavailable at date/pause
+    // transitions. Recheck fresh narrow identity instead of clearing retained
+    // payment evidence merely because the full publication is unavailable.
+    PaymentIdentityCoreContext12004 identity_context{&bindings,
+      g_war_payment_connection_12004.load(std::memory_order_acquire),revision};
+    (void)xar::ck3_12004::RefreshWarPaymentIdentityAfterSnapshotUnavailable12004(
+      g_war_payment_window_12004,&ReadPaymentIdentityCoreFrame12004,&identity_context);
 #endif
     record("read_failed", revision, 0);
     return true;
@@ -26708,8 +26739,8 @@ void RunConnectedSession(
               xar::bridge::WriteFrame(pipe, serialized);
 #endif
         } else if (step == "query-army-strengths-v1") {
-          const auto profile =
-              xar::game::ParseArmyStrengthQueryProfileV1(incoming.payload);
+          std::optional<std::vector<std::int32_t>> requested_army_ids;
+          const auto profile = xar::game::army_strength_profile_json_v1::Reader(incoming.payload).Read(&requested_army_ids);
           if (profile == xar::game::ArmyStrengthQueryProfileV1::invalid) {
             connected = write_frame(pipe, CommandResultFrame(
                 request_id, step, false, "army_strengths_profile_invalid"));
@@ -26719,16 +26750,23 @@ void RunConnectedSession(
           } else {
             xar::ck3_12002::g_army_strength_query_diagnostic_v1.Reset();
             std::vector<xar::game::ArmyStrengthSnapshot> strengths;
-            const auto query_result =
-                xar::game::ReadArmyStrengths(game, strengths);
+            auto query_result = xar::game::ReadArmyStrengths(game, strengths);
+            const auto published_status = query_result;
             std::string army_result_frame;
             if (query_result ==
                     xar::game::ReadArmyStrengthsResult::available ||
                 query_result ==
                     xar::game::ReadArmyStrengthsResult::partial) {
-              ++army_strength_query_sequence;
-              army_result_frame = ArmyStrengthsResultFrame(
-                  request_id, army_strength_query_sequence, query_result, strengths, profile);
+              if (requested_army_ids && !xar::game::SelectArmyStrengthQueryRowsV1(
+                      *requested_army_ids, strengths, query_result)) {
+                army_result_frame = CommandResultFrame(request_id, step, false,
+                    "army_strengths_requested_ids_outside_published_scope");
+              } else {
+                ++army_strength_query_sequence;
+                army_result_frame = ArmyStrengthsResultFrame(
+                    request_id, army_strength_query_sequence, query_result, strengths, profile,
+                    requested_army_ids, published_status);
+              }
             } else {
               std::string error =
                   "CK3 army-strength query is unavailable";

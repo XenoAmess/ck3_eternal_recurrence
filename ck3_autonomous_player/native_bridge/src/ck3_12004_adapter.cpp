@@ -62,6 +62,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.war-objective-siege-progress", "game.state.war-objective-assault",
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
+      "game.command.query-army-strengths-scoped-v1",
       "game.command.query-title-holder-v1-N",
       kPlayerClaimsV1Capability,
       kTitleOwnLawsV1Capability,

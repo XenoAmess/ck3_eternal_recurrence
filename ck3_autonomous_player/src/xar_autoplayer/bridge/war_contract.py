@@ -2334,7 +2334,7 @@ def _normalize_current_movement_progress(
         "first_route_edge_remaining_duration", "unavailable_reason",
     }
     if (not isinstance(value, dict) or not required <= value.keys()
-            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission", "first_route_edge_weight_cost_raw", "first_edge_arrival_provider_byte_e_u8", "first_route_target_province_type_tag_u32", "current_province_type_tag_u32", "unit_kind_18_raw_i32", "current_province_definition_byte_1b_u8", "first_route_target_province_definition_byte_1b_u8", "loaded_disembark_penalty_days_rule_i32"}):
+            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission", "first_route_edge_weight_cost_raw", "first_edge_arrival_provider_byte_e_u8", "first_route_target_province_type_tag_u32", "current_province_type_tag_u32", "unit_kind_18_raw_i32", "current_province_definition_byte_1b_u8", "first_route_target_province_definition_byte_1b_u8", "loaded_disembark_penalty_days_rule_i32", "loaded_movement_lock_cutoff"}):
         raise ValueError(f"native {name} schema is malformed")
     if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -2388,6 +2388,13 @@ def _normalize_current_movement_progress(
         amount = value[field]
         normalized[field] = (
             None if amount is None else _signed_fixed_point(amount, f"{name}.{field}")
+        )
+    if "loaded_movement_lock_cutoff" in value:
+        cutoff = value["loaded_movement_lock_cutoff"]
+        if cutoff is not None and (not isinstance(cutoff, dict) or type(cutoff.get("scale")) is not int):
+            raise ValueError(f"native {name}.loaded_movement_lock_cutoff scale must be an integer")
+        normalized["loaded_movement_lock_cutoff"] = (
+            None if cutoff is None else _signed_fixed_point(cutoff, f"{name}.loaded_movement_lock_cutoff")
         )
     if "committed_route_timeline" in value:
         normalized["committed_route_timeline"] = _normalize_committed_route_timeline(
