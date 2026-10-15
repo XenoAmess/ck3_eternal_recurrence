@@ -35,3 +35,10 @@ P06原188为继承人查询的暂停地图前置条件竞争；原435为`query-c
 P06完整批次6推进64日/50.175秒（0.784秒/日），批次67推进91日/55.397秒（0.609秒/日）。纯推进的70个完整窗口中位0.320秒/日，最快9日/2.024秒；原生snapshot每250ms发布一次，因此`.251秒`等待不能证明后台FPS限制。当前设置为fullscreen、VSync开启、framecap=monitor、adaptive_framerate关闭。只读报告在`D:/qperf15_artifacts/background-fps-readonly-review.json`，没有修改游戏设置或桌面；完整批次平均0.5秒/日目标仍未达成。
 
 `driver.life_advance_wait_public_change`计时现附加已有快照的before/after日期、native revision与public revision六个整数或null字段，不增加等待或查询，用于区分实际游戏钟推进与snapshot发布等待。定向验证41 passed、1 skipped，覆盖计时开关、读回不可用、原返回对象及原异常保持；源码回执`D:/qperf15_artifacts/public-change-clock-source-ready.json`。针对P07冻结输入另备最小SHA绑定补丁，待下一必要冷载部署；源码通过不等于已有实机计时数据。
+
+
+## N42 的查询执行前失败恢复（2026-10-16）
+
+P05 AUTO68 在 campaign-root 只读规划阶段返回 typed_query_failure_v1：stage=wait、query_type=campaign、wait_result=executor_failed、wait_completed=false、executor_enter=false、exception code0，原生 request/result ID 与 expected revision 一致。这一分支未进入执行器，未提交业务；外置调度器已通过新鲜语义读回实际恢复同 Game249712、actor40526，原 AUTO68 不重放，业务 credit 为0。原件在 D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p05-responses/0068-1-result.json 和 0069-1-result.json。
+
+公共 readonly_planning_retry_v1 现把该精确分支纳入已有一次重规划预算，保留继承人和 state_changed 分支；5 项聚焦测试通过，含实际 AUTO68 形状与12种错误字段反例。P05 Service 已接公共 wrapper，只需下一 SDK 冻结替换 helper 单叶，不需改 Service 或原生 DLL。本记录不把源码通过记作该新公共分支已热部署。当前外置恢复继续自动工作。

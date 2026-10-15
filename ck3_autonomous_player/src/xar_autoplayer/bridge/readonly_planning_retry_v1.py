@@ -1,16 +1,64 @@
 """One fresh planning retry for proven read-only frame precondition races."""
 from contextvars import ContextVar
+import json
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 
 _RETRY_BUDGET = ContextVar("readonly_planning_retry_budget_v1", default=None)
 _HEIR_PRECONDITION = "current heir relationship needs a paused living-player map frame"
+_CAMPAIGN_ROOT_TYPED_ERROR = "application-main typed query failed or its snapshot changed"
+
+
+def _campaign_root_executor_not_entered(error):
+    """A failed read whose application-main executor never entered Game code."""
+    request = error.native_request_frame
+    result = error.native_command_result_frame
+    request_id = error.native_request_id
+    if (not isinstance(request, dict) or not isinstance(result, dict)
+            or not isinstance(request_id, str) or not request_id
+            or request.get("type") != "execute_step" or request.get("protocol_version") != 1
+            or request.get("request_id") != request_id
+            or request.get("step") != "query-campaign-root-context-v1"
+            or type(request.get("expected_revision")) is not int
+            or request["expected_revision"] <= 0
+            or result.get("type") != "command_result" or result.get("protocol_version") != 1
+            or result.get("request_id") != request_id or result.get("ok") is not False
+            or result.get("error") != _CAMPAIGN_ROOT_TYPED_ERROR
+            or result.get("result") is not None
+            or error.native_raw_return_receipt is not None):
+        return None
+    failure = result.get("typed_query_failure_v1")
+    required = {"executor_enter", "executor_exception", "executor_finish",
+                "executor_typed_result", "final_equal", "final_read", "frame_stable",
+                "query_type", "stage", "typed_result", "wait_completed", "wait_result"}
+    if (not isinstance(failure, dict) or set(failure) != required
+            or failure.get("query_type") != "campaign"
+            or failure.get("stage") != "wait"
+            or failure.get("wait_result") != "executor_failed"
+            or failure.get("wait_completed") is not False
+            or failure.get("executor_enter") is not False
+            or failure.get("executor_exception") != {"code": 0, "image": "none", "rva": None}
+            or any(failure.get(key) is not None for key in
+                   ("executor_finish", "executor_typed_result", "final_equal",
+                    "final_read", "frame_stable", "typed_result"))):
+        return None
+    diagnostic = json.dumps(failure, sort_keys=True, separators=(",", ":"))
+    if error.native_error != _CAMPAIGN_ROOT_TYPED_ERROR + "; typed_query_failure_v1=" + diagnostic:
+        return None
+    return {"class": "campaign_root_executor_not_entered", "business_submission": False,
+            "native_request_id": request_id,
+            "source_native_revision": request["expected_revision"],
+            "typed_query_failure_v1": failure}
 
 
 def classify_readonly_planning_error_v1(error):
     if str(error) == _HEIR_PRECONDITION:
         return {"class": "heir_readonly_frame_precondition", "business_submission": False}
     from .native_driver import _NativeCommandRejectedError
+    if isinstance(error, _NativeCommandRejectedError):
+        not_entered = _campaign_root_executor_not_entered(error)
+        if not_entered is not None:
+            return not_entered
     if not isinstance(error, _NativeCommandRejectedError) or error.native_error != "state_changed":
         return None
     request = error.native_request_frame
