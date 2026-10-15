@@ -6,6 +6,8 @@ mailbox operation; it neither queues another query nor advances the game.
 
 from __future__ import annotations
 
+import copy
+from pathlib import Path
 import time
 from typing import Mapping
 import uuid
@@ -31,6 +33,7 @@ from .driver import (
     StepPostconditionError,
 )
 from .version_identity import CK3_12002, require_exact_native_build
+from ..environment import write_json_atomic
 
 
 PRIVATE_QUERY_STEP = "private-query-council-composition-candidates-v1"
@@ -76,35 +79,54 @@ def normalize_council_private_query_result_v1(
                if isinstance(gates, Mapping)
                else value.get("council_composition_candidates"))
     if not isinstance(payload, dict):
-        # The native final-gates serializer intentionally omits candidate
-        # payloads when no final gate row is available.  This is a completed
-        # read, never an assignment or evidence of a legal candidate.
-        reason = gates.get("unavailable_reason") if isinstance(gates, Mapping) else None
-        no_final_rows = (
-            query_step == PRIVATE_GATES_STEP
-            and value.get("status") in {"available", "unavailable"}
-            and value.get("private") is True
-            and value.get("advertised") is False
-            and type(value.get("native_helper_invocations_delta")) is int
-            and value["native_helper_invocations_delta"] == 0
-            and isinstance(gates, Mapping)
-            and gates.get("schema") == "xar.ck3.private.council-final-gates/v1"
-            and gates.get("status") == "unavailable"
-            and type(gates.get("candidate_count")) is int
-            and gates["candidate_count"] == 0
-            and gates.get("rows") == []
-            and isinstance(reason, str) and 0 < len(reason) <= 128
-            and "council_composition_candidates" not in gates
-            and "council_composition_candidates" not in value
+        # A terminal read with no candidate payload cannot authorize an
+        # assignment.  Keep this result explicitly unavailable and preserve
+        # the exact native envelope separately at the transport boundary.
+        # Query helper counts, echoed read requests, and gate-row summaries
+        # cannot authorize an assignment without the actual candidate payload.
+        # Only a completed query envelope and explicit mutation evidence
+        # decide this branch; the raw envelope is retained separately.
+        action_fields = (
+            "council_assign_councillor_ack", "council_assign_councillor_receipt",
+            "action_request_id",
         )
-        if not no_final_rows:
+        action_statuses = (
+            "pending", "native_helper_invoked_verification_pending",
+            "rejected_before_submit", "applied", "postcondition_failed",
+        )
+        no_candidate = (
+            value.get("status") not in action_statuses
+            and value.get("council_composition_candidates") is None
+            and (not isinstance(gates, Mapping)
+                 or gates.get("council_composition_candidates") is None)
+            and not any(key in value for key in action_fields)
+            and (not isinstance(gates, Mapping)
+                 or not any(key in gates for key in action_fields))
+            and not any(value.get(key) is True for key in (
+                "business_action_submitted", "native_action_submitted",
+                "assignment_submitted", "materialized",
+            ))
+            and (value.get("owner_character_id") is None
+                 or value["owner_character_id"] == expected_request["owner_character_id"])
+            and (value.get("date_raw") is None
+                 or value["date_raw"] == expected_request["date_raw"])
+            and (value.get("native_revision") is None
+                 or value["native_revision"] == expected_request["native_revision"])
+        )
+        if not no_candidate:
             raise ValueError("private council result lacks a candidate payload")
         require_exact_native_build(expected_game_version, expected_executable_sha256)
         return {
-            **value, "step": query_step, "native_step": semantic_step,
+            "schema": value["schema"], "step": query_step,
+            "native_step": semantic_step,
             "private_build": True, "advertised": False, "read_only": True,
-            "native_envelope_status": value["status"], "status": "unavailable",
-            "unavailable_reason": reason,
+            "accepted": True, "backend_id": "native-headless",
+            "query_sequence": value["query_sequence"],
+            "snapshot_revision": value["snapshot_revision"],
+            "native_envelope_status": value.get("status"),
+            "status": "unavailable",
+            "unavailable_reason": "missing_candidate_payload",
+            "council_missing_payload_readonly": True,
         }
     exact = payload.get("exact_build")
     if not isinstance(exact, Mapping):
@@ -179,6 +201,13 @@ def _binding(snapshot: Mapping[str, object]) -> tuple[object, ...]:
     )
 
 
+def _read_identity(snapshot: Mapping[str, object]) -> tuple[object, ...]:
+    diagnostics = snapshot.get("diagnostics")
+    diagnostics = diagnostics if isinstance(diagnostics, Mapping) else {}
+    return (*_binding(snapshot), snapshot.get("episode_run_id"),
+            diagnostics.get("connection_generation"), diagnostics.get("bridge_pid"))
+
+
 def _take_snapshot(driver: object) -> Mapping[str, object]:
     take_snapshot = (getattr(driver, "take_internal_semantic_snapshot", None)
                      or getattr(driver, "take_snapshot"))
@@ -192,6 +221,7 @@ class _CouncilReadStaleFrameError(BridgeUnavailableError):
 def _read_operation(
     driver: object, step: str, fields: Mapping[str, object],
     *, timeout_seconds: float | None = None, action_request_id: str | None = None,
+    read_capture: dict[str, object] | None = None,
 ) -> dict[str, object]:
     timeout = (getattr(driver, "command_timeout_seconds", 30.0)
                if timeout_seconds is None else timeout_seconds)
@@ -210,6 +240,11 @@ def _read_operation(
             "request_id": request_id, "step": current_step, **current_fields,
         })
         frame = driver.state.wait_for_command_result(request_id, remaining)
+        if read_capture is not None:
+            read_capture.setdefault("steps", []).append({
+                "step": current_step, "request_id": request_id,
+            })
+            read_capture["last_command_result"] = copy.deepcopy(frame)
         if (
             current_step in {PRIVATE_QUERY_STEP, PRIVATE_GATES_STEP}
             and isinstance(frame, Mapping) and frame.get("type") == "command_result"
@@ -263,6 +298,40 @@ def _source_frame(snapshot: Mapping[str, object]) -> dict[str, object]:
     }
 
 
+def _persist_missing_candidate_read(
+    driver: object, *, capture: Mapping[str, object],
+    query_step: str, before: Mapping[str, object], after: Mapping[str, object],
+    request: Mapping[str, object], normalization_error: str | None = None,
+) -> Path:
+    """Store the actual terminal read before returning a nonmaterial result."""
+    state_dir = getattr(driver, "state_dir", None)
+    if state_dir is None:
+        raise BridgeUnavailableError("private council read evidence requires managed state_dir")
+    steps = capture.get("steps")
+    if not (isinstance(steps, list) and steps
+            and all(isinstance(item, dict)
+                    and item.get("step") in {query_step, PRIVATE_STATUS_STEP}
+                    and isinstance(item.get("request_id"), str)
+                    for item in steps)
+            and isinstance(capture.get("last_command_result"), Mapping)):
+        raise BridgeUnavailableError("private council terminal read lacks captured command_result")
+    path = (Path(state_dir) / "evidence" / "council-missing-candidate-v1"
+            / ("council-read-" + uuid.uuid4().hex + ".json"))
+    write_json_atomic(path, {
+        "schema": "xar.ck3.council-missing-candidate-read/v1",
+        "query_step": query_step, "transport_steps": steps,
+        "last_command_result": capture["last_command_result"],
+        "request": dict(request), "source_frame": _source_frame(before),
+        "post_frame": _source_frame(after),
+        "same_semantic_frame": _read_identity(before) == _read_identity(after),
+        "source_bridge_pid": (before.get("diagnostics") or {}).get("bridge_pid"),
+        "post_bridge_pid": (after.get("diagnostics") or {}).get("bridge_pid"),
+        "business_action_submitted": False,
+        "normalization_error": normalization_error,
+    })
+    return path
+
+
 def query_council_private_v1(
     driver: object, *, expected_revision: int | None = None,
     position_key: str = STEWARD_POSITION_KEY,
@@ -299,13 +368,14 @@ def query_council_private_v1(
             position_key=position_key, allow_chancellor_read_only=True,
             allow_spymaster_read_only=True, query_step=query_step,
         )
+        read_capture: dict[str, object] = {}
         try:
             result = _read_operation(
                 driver, query_step, {
                     "expected_revision": native_revision,
                     "position_key": request["position_key"],
                 },
-                timeout_seconds=attempt_timeout,
+                timeout_seconds=attempt_timeout, read_capture=read_capture,
             )
             break
         except _CouncilReadStaleFrameError as error:
@@ -325,8 +395,22 @@ def query_council_private_v1(
             expected_executable_sha256=expected_executable_sha256,
         )
     except ValueError as error:
+        # The old transport discarded the only copy of a malformed native
+        # read.  Preserve the exact terminal envelope before rejecting it.
+        _persist_missing_candidate_read(
+            driver, capture=read_capture, query_step=query_step,
+            before=before, after=_take_snapshot(driver), request=request,
+            normalization_error=str(error),
+        )
         raise BridgeUnavailableError(f"private council query result is malformed: {error}") from error
-    if _binding(_take_snapshot(driver)) != _binding(before):
+    after = _take_snapshot(driver)
+    if projected.get("council_missing_payload_readonly") is True:
+        evidence_path = _persist_missing_candidate_read(
+            driver, capture=read_capture, query_step=query_step,
+            before=before, after=after, request=request,
+        )
+        projected["missing_payload_evidence_path"] = str(evidence_path)
+    if _read_identity(after) != _read_identity(before):
         raise BridgeUnavailableError("private council query crossed its paused frame")
     return {
         **projected,

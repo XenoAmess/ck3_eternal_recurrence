@@ -40,9 +40,10 @@ def test_empty_final_gates_are_readonly_unavailable(native_status):
     assert result["native_envelope_status"] == native_status
     assert result["status"] == "unavailable"
     assert result["read_only"] is True
-    assert result["native_helper_invocations_delta"] == 0
+    assert result["council_missing_payload_readonly"] is True
+    assert result["unavailable_reason"] == "missing_candidate_payload"
     assert result["query_sequence"] == 917
-    assert result["council_final_gates"]["rows"] == []
+    assert "council_final_gates" not in result
     assert "council_composition_candidates" not in result
     decision = select_council_candidate_v1(result)
     assert decision["outcome"] == "QUERY_UNAVAILABLE"
@@ -62,7 +63,21 @@ def test_available_candidates_keep_the_full_contract():
     assert len(result["council_composition_candidates"]["candidates"]) == 2
 
 
-def test_same_frame_private_transport_sends_only_the_read():
+def test_actual_p04_empty_native_reason_is_nonmaterial():
+    # P04 terminal query 233 reported a top-level available read, an
+    # unavailable final gate, zero rows, and an empty reason string.
+    raw = _empty_gates("available")
+    raw["query_sequence"] = 233
+    raw["council_final_gates"]["unavailable_reason"] = ""
+    result = _parse(raw)
+    assert result["native_envelope_status"] == "available"
+    assert result["status"] == "unavailable"
+    assert result["unavailable_reason"] == "missing_candidate_payload"
+    assert select_council_candidate_v1(result)["outcome"] == "QUERY_UNAVAILABLE"
+    assert "council_composition_candidates" not in result
+
+
+def test_same_frame_private_transport_sends_only_the_read(tmp_path):
     class Driver:
         command_timeout_seconds = 2.0
 
@@ -70,6 +85,7 @@ def test_same_frame_private_transport_sends_only_the_read():
             self.sent = []
             self.endpoint = self
             self.state = self
+            self.state_dir = tmp_path
 
         def take_internal_semantic_snapshot(self):
             return {"snapshot_id": "native:34", "revision": 33,
@@ -93,6 +109,26 @@ def test_same_frame_private_transport_sends_only_the_read():
     assert result["queried_native_revision"] == 34
     assert result["source_frame"]["date_raw"] == 53235120
     assert [frame["step"] for frame in driver.sent] == [transport.PRIVATE_GATES_STEP]
+    evidence = list((tmp_path / "evidence" / "council-missing-candidate-v1").glob("*.json"))
+    assert len(evidence) == 1
+    assert json.loads(evidence[0].read_text(encoding="utf-8"))["last_command_result"]["request_id"] == driver.sent[0]["request_id"]
+
+
+@pytest.mark.parametrize("change", [
+    lambda w: w.__setitem__("private", False),
+    lambda w: w.__setitem__("native_helper_invocations_delta", 1),
+    lambda w: w.__setitem__("request", {"expected_revision": 34}),
+    lambda w: w["council_final_gates"].__setitem__("status", "available"),
+    lambda w: w["council_final_gates"].__setitem__("candidate_count", 1),
+    lambda w: w["council_final_gates"].__setitem__("rows", [{"character_id": 42}]),
+])
+def test_query_metadata_without_candidate_is_still_nonmaterial(change):
+    raw = _empty_gates()
+    change(raw)
+    result = _parse(raw)
+    assert result["status"] == "unavailable"
+    assert "council_composition_candidates" not in result
+    assert select_council_candidate_v1(result)["outcome"] == "QUERY_UNAVAILABLE"
 
 
 @pytest.mark.parametrize("change", [
@@ -100,11 +136,8 @@ def test_same_frame_private_transport_sends_only_the_read():
     lambda w: w.__setitem__("step", "assign-councillor-v1"),
     lambda w: w.__setitem__("snapshot_revision", 33),
     lambda w: w.__setitem__("status", "pending"),
-    lambda w: w.__setitem__("private", False),
-    lambda w: w.__setitem__("native_helper_invocations_delta", 1),
-    lambda w: w["council_final_gates"].__setitem__("status", "available"),
-    lambda w: w["council_final_gates"].__setitem__("candidate_count", 1),
-    lambda w: w["council_final_gates"].__setitem__("rows", [{}]),
+    lambda w: w.__setitem__("council_assign_councillor_ack", {}),
+    lambda w: w.__setitem__("business_action_submitted", True),
     lambda w: w["council_final_gates"].__setitem__("council_composition_candidates", {}),
     lambda w: w.__setitem__("council_composition_candidates", {}),
 ])
