@@ -285,15 +285,27 @@ def plan_construction_private(
                 "construction_pending_action": dict(pending),
                 "reason": "query independent paused construction state before another action"}}
         if prewar:
+            can_advance_to_receipt = (
+                "life-advance" in available_steps
+                and snapshot.get("paused") is True
+                and snapshot.get("map_ready") is True
+                and snapshot.get("active_wars") == []
+                and snapshot.get("active_event") is None
+                and snapshot.get("pending_character_interaction") is None
+            )
             return {**planned, "plan": {**plan,
-                "selected_step": None,
+                "phase": ("construction_pending_wait_frame" if can_advance_to_receipt
+                          else plan.get("phase")),
+                "selected_step": "life-advance" if can_advance_to_receipt else None,
                 "construction_pending_action": dict(pending),
                 "construction_prewar_arbitration": {
                     "status": "pending_action_needs_later_receipt",
                     "original_selected_step": original_step,
                     "war_future_gold_cost_raw": None,
                     "additional_shared_gold_commitment_raw": None},
-                "reason": "construction action state unknown; do not spend competing resources"}}
+                "reason": ("advance to an independent construction receipt frame"
+                           if can_advance_to_receipt else
+                           "construction action state unknown; do not spend competing resources")}}
         return {**planned, "plan": {**plan,
             "construction_pending_action": dict(pending),
             "reason": "advance to independent native frame; never resubmit pending construction"}}

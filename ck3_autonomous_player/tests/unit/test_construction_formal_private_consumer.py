@@ -806,15 +806,27 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                         "revision": 3}
             with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
                 waiting = plan_construction_private(
-                    driver, baseline, frame(), root(), set(),
+                    driver, baseline, frame(), root(), {"life-advance"},
                     prewar_arbitration=True)
-                self.assertIsNone(waiting["plan"]["selected_step"])
+                self.assertEqual(waiting["plan"]["selected_step"], "life-advance")
+                self.assertEqual(waiting["plan"]["phase"],
+                                 "construction_pending_wait_frame")
                 self.assertEqual(waiting["plan"]["construction_prewar_arbitration"]["status"],
                                  "pending_action_needs_later_receipt")
                 later = plan_construction_private(
                     driver, baseline, frame(4), root(4), set(),
                     prewar_arbitration=True)
                 self.assertEqual(later["plan"]["selected_step"], RECEIPT_STEP)
+                unavailable = plan_construction_private(
+                    driver, baseline, frame(), root(), set(),
+                    prewar_arbitration=True)
+                self.assertIsNone(unavailable["plan"]["selected_step"])
+                war_frame = frame()
+                war_frame["active_wars"] = [{"war_id": 1}]
+                wartime = plan_construction_private(
+                    driver, baseline, war_frame, root(), {"life-advance"},
+                    prewar_arbitration=True)
+                self.assertIsNone(wartime["plan"]["selected_step"])
             self.assertFalse(driver.requests)
 
     def test_r753_truncated_scan_keeps_six_native_legal_cost_samples(self):
