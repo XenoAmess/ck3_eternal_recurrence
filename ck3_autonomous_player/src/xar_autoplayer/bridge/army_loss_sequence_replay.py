@@ -66,7 +66,13 @@ Writer skip, chunk aliases and refresh gains cannot replace those updates.
         if result["missing_inputs"]:
             return result
 
-    state = deepcopy(dict(army))
+    # Only these two input families receive conditional writes below. Preserve
+    # aliases between their records while leaving unrelated manager graphs out
+    # of the owned working copy.
+    state = dict(army)
+    state.update(deepcopy({key: army[key] for key in (
+        "regiment_strengths", "regiment_replenishment_records_v1",
+    ) if key in army}))
     working_rows = state["regiment_strengths"]
     data_rows = state.get("regiment_replenishment_records_v1", [])
     physical_complete = all(any(

@@ -1770,7 +1770,7 @@ def normalize_army_strengths(
     """Normalize one exact-build, row-atomic army strength result."""
     if not isinstance(value, list):
         raise ValueError("native army_strengths must be an array")
-    manager_inputs_cache: dict[tuple[object, int], tuple[object, object]] = {}
+    manager_inputs_cache: dict[tuple[object, int], tuple[object, object, bytes | None]] = {}
     rows = [
         _normalize_army_strength_row(
             raw_row, name=f"army_strengths[{index}]",
@@ -1842,7 +1842,7 @@ def _normalize_native_army_resolution_v1(
 def _normalize_manager_input_once(
     value: object,
     normalizer: Callable[[object], object],
-    cache: dict[tuple[object, int], tuple[object, object]] | None,
+    cache: dict[tuple[object, int], tuple[object, object, bytes | None]] | None,
 ) -> object:
     """Validate a shared manager object once, retaining independent row copies.
 
@@ -1855,19 +1855,22 @@ def _normalize_manager_input_once(
         return normalizer(value)
     key = (normalizer, id(value))
     if key in cache:
-        normalized = cache[key][1]
+        _, normalized, serialized = cache[key]
         try:
-            return pickle.loads(pickle.dumps(normalized, protocol=pickle.HIGHEST_PROTOCOL))
+            if serialized is None:
+                serialized = pickle.dumps(normalized, protocol=pickle.HIGHEST_PROTOCOL)
+                cache[key] = (value, normalized, serialized)
+            return pickle.loads(serialized)
         except (pickle.PickleError, TypeError, AttributeError):
             return deepcopy(normalized)
     normalized = normalizer(value)
-    cache[key] = (value, normalized)
+    cache[key] = (value, normalized, None)
     return normalized
 
 
 def _normalize_army_strength_row(
     value: object, *, name: str,
-    manager_inputs_cache: dict[tuple[object, int], tuple[object, object]] | None = None,
+    manager_inputs_cache: dict[tuple[object, int], tuple[object, object, bytes | None]] | None = None,
 ) -> dict[str, object]:
     if (not isinstance(value, dict)
             or not _ARMY_STRENGTH_ROW_KEYS <= value.keys()
@@ -2078,19 +2081,22 @@ def _normalize_army_strength_row(
         result["current_character_detachment_inputs_v1"] = normalize_current_character_detachment_inputs_v1(
             value["current_character_detachment_inputs_v1"])
     if "current_army_condition30_inputs_v1" in value:
-        result["current_army_condition30_inputs_v1"] = normalize_current_army_condition30_inputs_v1(
-            value["current_army_condition30_inputs_v1"])
+        result["current_army_condition30_inputs_v1"] = _normalize_manager_input_once(
+            value["current_army_condition30_inputs_v1"],
+            normalize_current_army_condition30_inputs_v1, manager_inputs_cache)
     if "current_disembark_penalty_v1" in value:
         if status != "available":
             raise ValueError(f"native unavailable {name} cannot publish current_disembark_penalty_v1")
         result["current_disembark_penalty_v1"] = normalize_current_disembark_penalty_v1(
             value["current_disembark_penalty_v1"])
     if "current_army_flag20_inputs_v1" in value:
-        result["current_army_flag20_inputs_v1"] = normalize_current_army_flag20_inputs_v1(
-            value["current_army_flag20_inputs_v1"])
+        result["current_army_flag20_inputs_v1"] = _normalize_manager_input_once(
+            value["current_army_flag20_inputs_v1"],
+            normalize_current_army_flag20_inputs_v1, manager_inputs_cache)
     if "current_army_flag21_inputs_v1" in value:
-        result["current_army_flag21_inputs_v1"] = normalize_current_army_flag21_inputs_v1(
-            value["current_army_flag21_inputs_v1"])
+        result["current_army_flag21_inputs_v1"] = _normalize_manager_input_once(
+            value["current_army_flag21_inputs_v1"],
+            normalize_current_army_flag21_inputs_v1, manager_inputs_cache)
     if "current_selected_title_holder_owner_relation_v1" in value:
         result["current_selected_title_holder_owner_relation_v1"] = _normalize_manager_input_once(
             value["current_selected_title_holder_owner_relation_v1"],
@@ -2108,8 +2114,9 @@ def _normalize_army_strength_row(
             value["current_post_admission_refresh_inputs_v1"],
             normalize_current_post_admission_refresh_inputs_v1, manager_inputs_cache)
     if "current_pre_date_character_prefix_inputs_v1" in value:
-        result["current_pre_date_character_prefix_inputs_v1"] = normalize_current_pre_date_character_prefix_inputs_v1(
-            value["current_pre_date_character_prefix_inputs_v1"])
+        result["current_pre_date_character_prefix_inputs_v1"] = _normalize_manager_input_once(
+            value["current_pre_date_character_prefix_inputs_v1"],
+            normalize_current_pre_date_character_prefix_inputs_v1, manager_inputs_cache)
     if "current_pre_date_dated_append_inputs_v1" in value:
         result["current_pre_date_dated_append_inputs_v1"] = normalize_current_pre_date_dated_append_inputs_v1(
             value["current_pre_date_dated_append_inputs_v1"])

@@ -65,8 +65,10 @@ def project_current_callback_soldier_effects_v1(
         result.update(status="partial", missing_inputs=["loss_application_inputs_v1"])
         return result
 
-    copied = deepcopy(dict(army))
-    copied["loss_application_inputs_v1"] = dict(copied["loss_application_inputs_v1"])
+    # The loss replay owns its mutable regiment/DATA state. This wrapper only
+    # replaces one budget; unrelated complete manager inputs stay read-only.
+    copied = dict(army)
+    copied["loss_application_inputs_v1"] = dict(operands)
     copied["loss_application_inputs_v1"]["current_supply_loss_budget"] = budget
     sequence = project_conditional_army_loss_sequence(copied)
     # The reused kernels retain their own historical source labels. This

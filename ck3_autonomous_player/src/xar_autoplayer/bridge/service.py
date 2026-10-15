@@ -5523,10 +5523,18 @@ class GameplayBridgeService:
         if step == QUERY_ARMY_STRENGTHS_STEP and isinstance(result.get("army_strengths"), list):
             army_projection_timing = start_army_timing("service.army_projections")
             try:
+                # The exact native driver validates these fresh rows before
+                # returning them. Other backends retain Service validation.
+                from .native_driver import NativeHeadlessGameplayDriver
+                projection_rows = (
+                    result["army_strengths"]
+                    if type(self.driver) is NativeHeadlessGameplayDriver
+                    else normalize_army_strengths(result["army_strengths"])
+                )
                 return {
                     **result,
                     **self._native71_army_projection_rows(
-                        result, normalize_army_strengths(result["army_strengths"]),
+                        result, projection_rows,
                         snapshot=army_snapshot),
                     **self._current_callback_supply_projection_rows(result["army_strengths"]),
                     "current_unit_new_date_entry_normalization_v1":
