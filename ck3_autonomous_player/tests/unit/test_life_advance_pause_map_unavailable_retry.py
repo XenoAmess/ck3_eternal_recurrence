@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import sys
+import threading
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
@@ -209,6 +210,35 @@ class LifeAdvancePauseMapUnavailableRetryTests(unittest.TestCase):
             action["result"]["accepted"] for action in result["actions"]
             if action["step"] == "pause-map"
         ], [False, False, True])
+
+    def test_popup_published_after_second_rejection_waits_for_native_transition(self) -> None:
+        self.driver.command_timeout_seconds = 1.0
+        self.second_rejected = True
+        original_answer = self.endpoint.send_hook
+        timers = []
+
+        def delayed_popup(request):
+            original_answer(request)
+            if request.get("step") == "pause-map" and self.pause_count == 2:
+                def publish_popup():
+                    self.popup_after_rejection = 2
+                    self.revision += 1
+                    self._publish(paused=False)
+                timer = threading.Timer(0.25, publish_popup)
+                timers.append(timer)
+                timer.start()
+
+        self.endpoint.send_hook = delayed_popup
+        try:
+            result = self._advance()
+            self.assertEqual(self.pause_count, 3)
+            self.assertTrue(result["paused"])
+            self.assertEqual(result["active_event"]["instance_id"], 11)
+            self.assertEqual(result["elapsed_days"], 1)
+        finally:
+            for timer in timers:
+                timer.cancel()
+                timer.join()
 
     def test_popup_third_rejection_still_fails_without_false_paused_credit(self) -> None:
         self.driver.command_timeout_seconds = 1.0

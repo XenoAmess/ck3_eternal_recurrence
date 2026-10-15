@@ -24419,6 +24419,7 @@ class NativeHeadlessGameplayDriver:
         # bypasses that redundant pre-submit comparison.  Direct primitives
         # and every other action keep their existing revision contract.
         pause_rejected = False
+        pause_source_native_revision = current.get("native_revision")
         try:
             result = self._execute_primitive_step(
                 "pause-map",
@@ -24445,7 +24446,10 @@ class NativeHeadlessGameplayDriver:
         current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
             lambda candidate: candidate.get("paused") is True
-            or (pause_rejected and candidate.get("map_ready") is True),
+            or (pause_rejected and candidate.get("map_ready") is True
+                and type(pause_source_native_revision) is int
+                and type(candidate.get("native_revision")) is int
+                and candidate["native_revision"] > pause_source_native_revision),
             timeout_seconds=min(
                 remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS
             ),
@@ -24507,6 +24511,20 @@ class NativeHeadlessGameplayDriver:
                         "status": "rejected", "error": error.native_error,
                     }})
                     refreshed = self.take_internal_semantic_snapshot()
+                    # The cached map frame can precede the UI transition that
+                    # rejected the pause. Wait for the blocker to be published
+                    # before binding the final idempotent pause; a cached
+                    # map_ready flag alone does not establish that transition.
+                    remaining = deadline - time.monotonic()
+                    if remaining > 0:
+                        refreshed = self._wait_for_life_advance_snapshot(
+                            refreshed,
+                            lambda candidate: candidate.get("paused") is True
+                            or (candidate.get("map_ready") is True
+                                and (isinstance(candidate.get("active_event"), dict)
+                                     or isinstance(candidate.get("pending_character_interaction"), dict))),
+                            timeout_seconds=min(remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS),
+                        )
                     remaining = deadline - time.monotonic()
                     if remaining > 0 and type(refreshed.get("revision")) is int:
                         settled = self._wait_for_life_advance_change(
