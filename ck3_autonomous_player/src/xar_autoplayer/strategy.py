@@ -20163,32 +20163,89 @@ def _current_frame_route_contact_query_failure(
     snapshot: dict[str, object],
     query_step: str,
 ) -> dict[str, object] | None:
-    """Return a surviving failed/unusable query without creating a loop."""
+    """Keep current/unknown failures distinct from expired readonly rejections."""
     for row in reversed(_history_after_latest_restore(commands)):
         command = _effective_command(row)
         if command == query_step:
+            # NativeDriver's legacy failed history retains only error text, not
+            # its request lease. This exact readonly precondition rejection is
+            # not a permanent availability failure. Service's publication
+            # refresh barrier forbids dispatch on its rejected frame.
+            if (row.get("ok") is False
+                    and parse_query_route_contact_horizon_step(command) is not None
+                    and row.get("error") == "_NativeCommandRejectedError: native gameplay step failed: state_changed"):
+                return None
             result = _effective_command_result(row)
+            diagnostics = snapshot.get("diagnostics")
+            generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+            lease = {
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": snapshot.get("revision"),
+                "queried_native_revision": snapshot.get("native_revision"),
+                "queried_connection_generation": generation,
+                "queried_episode_run_id": snapshot.get("episode_run_id"),
+            }
+            horizon = result.get("route_contact_horizon") if isinstance(result, dict) else None
+            if isinstance(result, dict) and (
+                any(key in result and result[key] != value for key, value in lease.items())
+                or (isinstance(horizon, dict) and any(
+                    key in horizon and horizon[key] != value for key, value in (
+                        ("date_raw", snapshot.get("date_raw")),
+                        ("snapshot_revision", snapshot.get("native_revision")),
+                    )
+                ))
+            ):
+                return None
+            played = snapshot.get("played_character")
+            actor_id = played.get("character_id") if isinstance(played, dict) else None
+            evidence = result.get("readonly_unavailable_evidence") if isinstance(result, dict) else None
+            readback = evidence.get("same_frame_readback") if isinstance(evidence, dict) else None
+            bridge_pid = diagnostics.get("bridge_pid") if isinstance(diagnostics, dict) else None
+            exact_unavailable = bool(
+                isinstance(result, dict)
+                and row.get("ok") is False
+                and result.get("schema") == "xar.route-contact-readonly-unavailable.v1"
+                and result.get("step") == query_step
+                and result.get("status") == "unavailable"
+                and result.get("accepted") is False
+                and result.get("route_contact_horizon") is None
+                and result.get("unavailable_reason")
+                == "native_complete_contact_route_unavailable"
+                and all(key in result and result[key] == value for key, value in lease.items())
+                and type(result.get("queried_date_raw")) is int
+                and result["queried_date_raw"] == snapshot.get("date_raw")
+                and type(result.get("queried_actor_character_id")) is int
+                and result["queried_actor_character_id"] == actor_id
+                and type(actor_id) is int
+                and type(result.get("queried_bridge_pid")) is int
+                and result["queried_bridge_pid"] == bridge_pid
+                and type(bridge_pid) is int
+                and isinstance(readback, dict)
+                and isinstance(readback.get("starting_frame"), dict)
+                and readback["starting_frame"] == readback.get("ending_frame")
+            )
             exact_frame = bool(
                 isinstance(result, dict)
-                and result.get("queried_snapshot_id")
-                == snapshot.get("snapshot_id")
-                and result.get("queried_revision")
-                == snapshot.get("revision")
-                and result.get("queried_native_revision")
-                == snapshot.get("native_revision")
+                and all(key in result and result[key] == value for key, value in lease.items())
+                and type(result.get("queried_revision")) is int
+                and type(result.get("queried_native_revision")) is int
+                and type(result.get("queried_connection_generation")) is int
+                and isinstance(generation, int) and not isinstance(generation, bool)
+                and isinstance(snapshot.get("episode_run_id"), str) and snapshot["episode_run_id"]
+                and (
+                    (isinstance(horizon, dict)
+                     and horizon.get("date_raw") == snapshot.get("date_raw")
+                     and horizon.get("snapshot_revision") == snapshot.get("native_revision"))
+                    or exact_unavailable
+                )
             )
-            if row.get("ok") is False or exact_frame:
-                return {
-                    "history_index": row.get("index"),
-                    "ok": row.get("ok"),
-                    "error": row.get("error"),
-                    "status": (
-                        result.get("status")
-                        if isinstance(result, dict)
-                        else None
-                    ),
-                }
-            return None
+            return {
+                "history_index": row.get("index"),
+                "ok": row.get("ok"),
+                "error": row.get("error"),
+                "scope_status": "current_frame" if exact_frame else "unknown_frame",
+                "status": result.get("status") if isinstance(result, dict) else None,
+            }
         if (
             is_life_advance_step(command)
             or parse_move_army_step(command) is not None

@@ -97,6 +97,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           "%RUNNER_TEMP%\native-decision-completion-ci\xar_ck3_ingame_decision_outcome_contract_v1_test.exe"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test terminal readonly route unavailable and exact strategy lease without CK3
+        run: python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_*route*unavailable*.py"
       - name: Test strict army route read-status contract
         run: |
           python -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py

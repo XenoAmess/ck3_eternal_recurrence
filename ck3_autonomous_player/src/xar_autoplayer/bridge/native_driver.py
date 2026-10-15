@@ -954,6 +954,76 @@ class _NativeCommandRejectedError(BridgeUnavailableError):
         super().__init__(message)
 
 
+def _route_contact_terminal_unavailable_evidence_v1(error, step, native_revision):
+    """Only a completed, exception-free readonly typed-route refusal is data."""
+    if not isinstance(error, _NativeCommandRejectedError):
+        return None
+    if parse_query_route_contact_horizon_step(step) is None:
+        return None
+    request = error.native_request_frame
+    response = error.native_command_result_frame
+    if not isinstance(request, dict) or not isinstance(response, dict):
+        return None
+    request_id = request.get("request_id")
+    if (request.get("type") != "execute_step" or request.get("protocol_version") != 1
+            or not isinstance(request_id, str) or not request_id
+            or request_id != error.native_request_id
+            or request.get("step") != step
+            or type(request.get("expected_revision")) is not int
+            or request["expected_revision"] != native_revision
+            or type(native_revision) is not int or native_revision <= 0
+            or response.get("type") != "command_result" or response.get("protocol_version") != 1
+            or response.get("request_id") != request_id or response.get("ok") is not False
+            or response.get("error") != "CK3 could not build a complete contact route"):
+        return None
+    failure = response.get("typed_query_failure_v1")
+    if not isinstance(failure, dict):
+        return None
+    expected = {"query_type": "route", "stage": "typed_result",
+                "wait_completed": True, "wait_result": "completed",
+                "executor_enter": True, "executor_finish": True,
+                "executor_typed_result": False, "typed_result": False,
+                "frame_stable": True, "final_read": None, "final_equal": None}
+    if any(key not in failure or type(failure[key]) is not type(value)
+           or failure[key] != value for key, value in expected.items()):
+        return None
+    exception = failure.get("executor_exception")
+    if (not isinstance(exception, dict) or type(exception.get("code")) is not int
+            or exception["code"] != 0 or exception.get("image") != "none"
+            or exception.get("rva") is not None):
+        return None
+    exact_error = (response["error"] + "; typed_query_failure_v1="
+                   + json.dumps(failure, sort_keys=True, separators=(",", ":")))
+    if error.native_error != exact_error:
+        return None
+    return {"schema": "xar.native-readonly-terminal-rejection.v1",
+            "native_request_id": request_id,
+            "native_request": copy.deepcopy(request),
+            "native_command_result": copy.deepcopy(response)}
+
+
+def _route_contact_unavailable_source_frame_v1(snapshot):
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    if (not isinstance(played, dict) or played.get("alive") is not True
+            or not isinstance(diagnostics, dict)
+            or snapshot.get("paused") is not True or snapshot.get("map_ready") is not True):
+        return None
+    fields = {key: snapshot.get(key) for key in (
+        "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id", "paused", "map_ready")}
+    fields.update(actor_character_id=played.get("character_id"),
+                  connection_generation=diagnostics.get("connection_generation"),
+                  bridge_pid=diagnostics.get("bridge_pid"))
+    if (not isinstance(fields["snapshot_id"], str) or not fields["snapshot_id"]
+            or not isinstance(fields["episode_run_id"], str) or not fields["episode_run_id"]
+            or type(fields["revision"]) is not int or fields["revision"] < 0
+            or type(fields["date_raw"]) is not int
+            or any(type(fields[key]) is not int or fields[key] <= 0 for key in (
+                "native_revision", "actor_character_id", "connection_generation", "bridge_pid"))):
+        return None
+    return fields
+
+
 class _NativeCommandResultTimeoutError(BridgeUnavailableError):
     def __init__(self, step: str, request_id: str) -> None:
         self.step = step
@@ -8967,9 +9037,11 @@ class NativeHeadlessGameplayDriver:
             )
             try:
                 persistence_failure = self._record_command(
-                    step, ok=(result.get("accepted") is True if step in {
+                    step, ok=(result.get("accepted") is True if (step in {
                         QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP,
-                    } else True), result=result,
+                    } or (parse_query_route_contact_horizon_step(step) is not None
+                          and result.get("schema") == "xar.route-contact-readonly-unavailable.v1"
+                          and result.get("status") == "unavailable")) else True), result=result,
                 )
             finally:
                 finish_army_timing(army_record_timing)
@@ -14295,12 +14367,42 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native route-contact horizon lacks a native revision"
                 )
-            result = self._execute_primitive_step(
-                step,
-                expected_revision=selected_revision,
-                required_capability=QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
-                internal_semantic_snapshot=True,
-            )
+            try:
+                result = self._execute_primitive_step(
+                    step,
+                    expected_revision=selected_revision,
+                    required_capability=QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
+                    internal_semantic_snapshot=True,
+                )
+            except _NativeCommandRejectedError as error:
+                evidence = _route_contact_terminal_unavailable_evidence_v1(
+                    error, step, native_revision)
+                if evidence is None:
+                    raise
+                # Observe the existing semantic publication, never resend the
+                # native query or submit any movement/date/business command.
+                current = self.take_internal_semantic_snapshot()
+                before_frame = _route_contact_unavailable_source_frame_v1(starting)
+                after_frame = _route_contact_unavailable_source_frame_v1(current)
+                if (before_frame is None or before_frame != after_frame
+                        or _route_contact_hostile_ids(current) != hostile_army_ids):
+                    raise BridgeUnavailableError(
+                        "native unavailable route query crossed its exact paused owner/frame") from error
+                evidence["same_frame_readback"] = {
+                    "starting_frame": before_frame, "ending_frame": after_frame}
+                return {
+                    "schema": "xar.route-contact-readonly-unavailable.v1",
+                    "step": step, "accepted": False, "available": False,
+                    "status": "unavailable", "read_only": True,
+                    "business_submission": False, "replay_allowed": False,
+                    "replan_required": True, "route_contact_horizon": None,
+                    "unavailable_reason": "native_complete_contact_route_unavailable",
+                    "backend_id": "native-headless", "snapshot_revision": native_revision,
+                    "readonly_unavailable_evidence": evidence,
+                    **{"queried_" + key: before_frame[key] for key in (
+                        "snapshot_id", "revision", "native_revision", "connection_generation",
+                        "episode_run_id", "date_raw", "actor_character_id", "bridge_pid")},
+                }
             raw_observer = getattr(self, "route_contact_raw_result_observer", None)
             if raw_observer is not None:
                 raw_observer(copy.deepcopy(result))
