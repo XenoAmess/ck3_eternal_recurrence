@@ -84,6 +84,10 @@ DeclarationsBindings BindDeclarationsImage(std::uintptr_t image_base,
 game::ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
     const DeclarationsBindings &, std::int32_t target_character_id,
     std::vector<game::DeclarableWarSnapshot> &output) noexcept;
+// Optional offline profiling: set XAR_CK3_DECLARATIONS_PROFILE_JSONL to an
+// existing output directory's JSONL filename before launching CK3.
+// Full enumeration semantics are unchanged; an unset/empty value disables
+// timing, counter updates and file output. Failure to write is diagnostic only.
 bool ReadDeclarableWars(const DeclarationsBindings &,
                        std::vector<game::DeclarableWarSnapshot> &) noexcept;
 game::DeclareWarResult SubmitDeclareWar(

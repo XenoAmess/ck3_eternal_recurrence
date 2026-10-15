@@ -2,7 +2,11 @@
 
 #include <array>
 #include <cassert>
+#include <chrono>
+#include <cstdlib>
 #include <cstring>
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -235,9 +239,71 @@ void QueryLocalReuseFixture() {
   assert(!ReadDeclarableWars(w.bindings, rows) && rows.empty() &&
          w.evaluations == evaluated);
 }
+
+void SetProfilePath(const std::string &path) {
+#if defined(_MSC_VER)
+  assert(_putenv_s("XAR_CK3_DECLARATIONS_PROFILE_JSONL", path.c_str()) == 0);
+#else
+  if (path.empty()) assert(unsetenv("XAR_CK3_DECLARATIONS_PROFILE_JSONL") == 0);
+  else assert(setenv("XAR_CK3_DECLARATIONS_PROFILE_JSONL", path.c_str(), 1) == 0);
+#endif
+}
+
+void QueryProfileFixture(const char *requested_path) {
+  const auto ticks = std::chrono::steady_clock::now().time_since_epoch().count();
+  const auto path = requested_path ? std::filesystem::path(requested_path)
+      : std::filesystem::temp_directory_path() /
+          ("xar-declarable-profile-" + std::to_string(ticks) + ".jsonl");
+  // Only the uniquely created fixture file is owned by this test.
+  assert(!std::filesystem::exists(path));
+  World w; Initialize(w);
+  w.extra_target = w.extra_type = true;
+  Put(w.dead.data(), 0x1D0, static_cast<void *>(nullptr));
+  std::array<void *, 3> types{w.type.data(), nullptr, w.disabled_type.data()};
+  Put(w.cb_database.data(), 0x50, types.data());
+  Put(w.cb_database.data(), 0x5C, std::int32_t{3});
+  std::memcpy(w.disabled_type.data(), w.type.data(), w.type.size());
+  Put(w.disabled_type.data(), 0x40, w.disabled_rule.data());
+  w.disabled_rule[0x1F9] = std::byte{};
+  const char heap_key[] = "cb_quoted_\"_\\_\n_key";
+  Put(w.disabled_type.data(), 0x18, static_cast<const char *>(heap_key));
+  Put(w.disabled_type.data(), 0x28, sizeof(heap_key) - 1);
+  Put(w.disabled_type.data(), 0x30, sizeof(heap_key) - 1);
+  std::vector<xar::game::DeclarableWarSnapshot> baseline, profiled;
+  SetProfilePath("");
+  assert(ReadDeclarableWars(w.bindings, baseline));
+  const auto baseline_order = w.evaluation_order;
+  const auto baseline_evaluations = w.evaluations;
+  const auto baseline_destroys = w.config_destroys;
+  w.evaluation_order.clear();
+  SetProfilePath(path.string());
+  assert(ReadDeclarableWars(w.bindings, profiled) && profiled == baseline);
+  assert(w.evaluation_order == baseline_order);
+  assert(w.evaluations == 2 * baseline_evaluations &&
+         w.config_destroys == 2 * baseline_destroys);
+  w.available = false;
+  assert(ReadDeclarableWars(w.bindings, profiled) && profiled.empty());
+  w.available = true; w.malformed = true;
+  assert(!ReadDeclarableWars(w.bindings, profiled) && profiled.empty());
+  assert(Get<std::int32_t>(w.scratch.data(), 12) == 0);
+  w.malformed = false;
+  // A diagnostic sink failure cannot remove a declaration or stop gameplay.
+  SetProfilePath((path / "missing-parent" / "ignored.jsonl").string());
+  assert(ReadDeclarableWars(w.bindings, profiled) && profiled == baseline);
+  SetProfilePath("");
+  std::ifstream stream(path, std::ios::binary);
+  std::string line;
+  int lines = 0;
+  while (std::getline(stream, line)) {
+    assert(line.find("\"schema\":\"ck3-declarable-query-profile-v1\"") != std::string::npos);
+    ++lines;
+  }
+  assert(lines == 3);
+  if (!requested_path) std::filesystem::remove(path);
+}
 } // namespace
 
-int main() {
+int main(int argc, char **argv) {
   using namespace xar::ck3_12002;
   using xar::game::ReadDeclarableWarsResult;
   using xar::game::DeclareWarResult;
@@ -282,5 +348,6 @@ int main() {
   assert(bound.enabled && reinterpret_cast<std::uintptr_t>(bound.configuration_scratch) == 0x1454E14B8);
   assert(!BindDeclarationsImage(0x140000000, "old").enabled && !BindDeclarationsImage(0, kExecutableSha256).enabled);
   QueryLocalReuseFixture();
+  QueryProfileFixture(argc > 1 ? argv[1] : nullptr);
   std::cout << "PASS 1.20.0.2 declarations enumeration, stale choice, validation and native clone ownership fixtures\n";
 }

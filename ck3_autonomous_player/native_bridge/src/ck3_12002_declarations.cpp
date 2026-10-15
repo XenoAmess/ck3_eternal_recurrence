@@ -6,7 +6,11 @@
 #endif
 
 #include <array>
+#include <chrono>
+#include <cstdlib>
 #include <cstring>
+#include <filesystem>
+#include <fstream>
 #include <utility>
 
 namespace xar::ck3_12002 {
@@ -135,23 +139,122 @@ bool Target(const DeclarationsBindings &b, void *types, std::int32_t count,
 
 // Definition records are immutable while this paused main-thread query runs.
 // Keep their original database ordinals and target-major evaluator order.
-struct EnabledCb { void *type; std::int32_t ordinal; };
+struct EnabledCb {
+  void *type;
+  std::int32_t ordinal;
+  std::uint64_t evaluations = 0, available = 0, rows = 0;
+  std::uint64_t evaluate_ns = 0, materialize_and_clear_ns = 0;
+};
+
+using ProfileClock = std::chrono::steady_clock;
+std::uint64_t ElapsedNs(ProfileClock::time_point start) noexcept {
+  return static_cast<std::uint64_t>(std::chrono::duration_cast<
+      std::chrono::nanoseconds>(ProfileClock::now() - start).count());
+}
+
+void JsonString(std::ostream &stream, std::string_view value) {
+  constexpr char hex[] = "0123456789abcdef";
+  stream << '"';
+  for (const unsigned char c : value) {
+    if (c == '"' || c == '\\') stream << '\\' << static_cast<char>(c);
+    else if (c < 0x20) stream << "\\u00" << hex[c >> 4] << hex[c & 15];
+    else stream << static_cast<char>(c);
+  }
+  stream << '"';
+}
+
+// One opt-in record per complete query, never per target/evaluation. Logging
+// failure cannot change a native query's result. The default path has no clock
+// reads, file writes or per-CB counter updates. All CBs and target order remain.
+auto ProfilePath() noexcept {
+#if defined(_WIN32)
+#if defined(_MSC_VER)
+  // This owning-thread query reads the launch environment without mutating it.
+#pragma warning(suppress : 4996)
+#endif
+  return _wgetenv(L"XAR_CK3_DECLARATIONS_PROFILE_JSONL");
+#else
+  return std::getenv("XAR_CK3_DECLARATIONS_PROFILE_JSONL");
+#endif
+}
+struct QueryProfile {
+  decltype(ProfilePath()) path = ProfilePath();
+  const CoreSnapshotPrefix &frame;
+  const std::vector<EnabledCb> &enabled;
+  ProfileClock::time_point start{};
+  std::uint64_t targets = 0, result_rows = 0;
+  bool success = false;
+  bool active() const noexcept { return path && *path; }
+  QueryProfile(const CoreSnapshotPrefix &current,
+               const std::vector<EnabledCb> &definitions) noexcept
+      : frame(current), enabled(definitions) {
+    if (active()) start = ProfileClock::now();
+  }
+  ~QueryProfile() noexcept {
+    if (!active()) return;
+    const auto total_ns = ElapsedNs(start);
+    try {
+      std::ofstream stream(std::filesystem::path(path),
+                           std::ios::binary | std::ios::app);
+      if (!stream) return;
+      const auto unix_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::system_clock::now().time_since_epoch()).count();
+      stream << "{\"schema\":\"ck3-declarable-query-profile-v1\","
+             << "\"recorded_unix_ns\":" << unix_ns
+             << ",\"actor_character_id\":" << frame.played_character_id
+             << ",\"date_raw\":" << frame.clock.date_raw
+             << ",\"success\":" << (success ? "true" : "false")
+             << ",\"total_ns\":" << total_ns
+             << ",\"targets\":" << targets
+             << ",\"result_rows\":" << result_rows
+             << ",\"enabled_cb_count\":" << enabled.size() << ",\"casus_belli\":[";
+      bool first = true;
+      for (const auto &cb : enabled) {
+        if (!first) stream << ',';
+        first = false;
+        std::string key;
+        const bool key_read = TypeKey(cb.type, key);
+        stream << "{\"ordinal\":" << cb.ordinal << ",\"key\":";
+        if (key_read) JsonString(stream, key);
+        else stream << "null";
+        stream << ",\"evaluations\":" << cb.evaluations
+               << ",\"available\":" << cb.available
+               << ",\"rows\":" << cb.rows
+               << ",\"evaluate_ns\":" << cb.evaluate_ns
+               << ",\"materialize_and_clear_ns\":" << cb.materialize_and_clear_ns << '}';
+      }
+      stream << "]}\n";
+    } catch (...) { /* Diagnostic output is independent of gameplay. */ }
+  }
+};
 
 bool CachedTarget(const DeclarationsBindings &b,
-                  const std::vector<EnabledCb> &enabled,
+                  std::vector<EnabledCb> &enabled,
                   void *actor, void *target, std::int32_t target_id,
                   std::vector<game::DeclarableWarSnapshot> &out,
-                  bool &scratch_is_clear) noexcept {
-  for (const auto &cb : enabled) {
+                  bool &scratch_is_clear, bool profile) noexcept {
+  for (auto &cb : enabled) {
     // The preceding evaluation already validated and cleared this scratch.
     // There is no native call between that clear and the next evaluation.
     if (!scratch_is_clear && !Clear(b)) return false;
+    const auto evaluation_start = profile ? ProfileClock::now() : ProfileClock::time_point{};
     const bool available = b.evaluate_cb(cb.type, actor, target,
                                         b.configuration_scratch,
                                         false, false, nullptr);
+    if (profile) {
+      cb.evaluate_ns += ElapsedNs(evaluation_start);
+      ++cb.evaluations;
+      if (available) ++cb.available;
+    }
+    const auto materialize_start = profile ? ProfileClock::now() : ProfileClock::time_point{};
+    const auto previous_rows = out.size();
     const bool materialized =
         !available || Choices(b, cb.type, target_id, cb.ordinal, out);
     scratch_is_clear = Clear(b);
+    if (profile) {
+      cb.materialize_and_clear_ns += ElapsedNs(materialize_start);
+      cb.rows += out.size() - previous_rows;
+    }
     if (!materialized || !scratch_is_clear) return false;
   }
   return true;
@@ -231,6 +334,7 @@ bool ReadDeclarableWars(const DeclarationsBindings &b,
   if (!Database(b, types, count)) return false;
   std::vector<game::DeclarableWarSnapshot> result;
   std::vector<EnabledCb> enabled;
+  QueryProfile profile(current, enabled);
   bool definitions_read = false, scratch_is_clear = false;
   for (std::int32_t i = 0; i < cap; ++i) {
     void *target = Load<void *>(slots, i * 0x10ULL + 8);
@@ -245,9 +349,13 @@ bool ReadDeclarableWars(const DeclarationsBindings &b,
       }
       definitions_read = true;
     }
-    if (!CachedTarget(b, enabled, actor, target, id, result, scratch_is_clear))
+    if (profile.active()) ++profile.targets;
+    if (!CachedTarget(b, enabled, actor, target, id, result, scratch_is_clear,
+                      profile.active()))
       return false;
   }
+  profile.result_rows = result.size();
+  profile.success = true;
   out = std::move(result);
   return true;
 }
