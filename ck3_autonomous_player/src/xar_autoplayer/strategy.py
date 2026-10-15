@@ -16756,19 +16756,20 @@ def _same_frame_army_strength_balance(
         and not isinstance(war_id, bool)
         and war_id > 0
         and snapshot.get("paused") is True
-        and snapshot.get("army_strengths_status") == "available"
+        and snapshot.get("army_strengths_status") in {"available", "partial"}
         and isinstance(snapshot.get("army_strengths"), list)
     ):
         return None
+    # A partial global query can be complete for this particular war.  The
+    # native cache validates exact-frame scope membership for every row.
     rows = [
         row
         for row in snapshot["army_strengths"]
         if isinstance(row, dict)
-        and row.get("status") == "available"
         and isinstance(row.get("war_ids"), list)
         and war_id in row["war_ids"]
     ]
-    if not rows:
+    if not rows or any(row.get("status") != "available" for row in rows):
         return None
     if any(not is_public_cunit_id(row.get("army_id")) for row in rows):
         return None
