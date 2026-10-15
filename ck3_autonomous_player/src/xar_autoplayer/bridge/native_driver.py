@@ -23999,6 +23999,9 @@ class NativeHeadlessGameplayDriver:
         primitive_steps = set(
             _string_list(self.state.capabilities().get("action_steps"))
         )
+        bridge_capabilities = set(
+            _string_list(self.state.capabilities().get("bridge_capabilities"))
+        )
         timeline_speed, timeline_policy = _life_advance_timeline_policy(
             starting,
             horizon_days=horizon_days,
@@ -24007,6 +24010,15 @@ class NativeHeadlessGameplayDriver:
             exact_one_day_preferred_speed=exact_one_day_preferred_speed,
             available_action_steps=primitive_steps,
         )
+        if _noncombat_generic_exact_day_speed_five_ready(
+            starting, exact_one_day=exact_one_day, result_step=result_step,
+            bridge_capabilities=bridge_capabilities,
+            available_action_steps=primitive_steps,
+        ):
+            # Only the generic one-day watch changes wall-clock speed.  Its
+            # native daily hook, +24 deadline, modal and pause postconditions
+            # remain exactly the same as at speed one.
+            timeline_speed, timeline_policy = 5, "exact_one_day_noncombat_native_speed_5"
         if timeline_policy == "player_siege":
             # Reuse the exact-day end condition for the observed stationary
             # siege; other one-day policies keep their existing contracts.
@@ -24021,9 +24033,6 @@ class NativeHeadlessGameplayDriver:
         actions: list[dict[str, object]] = []
 
         sentinel_receipt: dict[str, object] | None = None
-        bridge_capabilities = set(
-            _string_list(self.state.capabilities().get("bridge_capabilities"))
-        )
         if (exact_one_day and _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
                 <= bridge_capabilities):
             current, sentinel_receipt = self._advance_exact_day_with_sentinel(
@@ -29115,6 +29124,39 @@ def _life_advance_timeline_policy(
     if _remote_enemy_routes_speed_three_ready(snapshot, enemy_routes):
         return 3, "remote_enemy_route"
     return 1, "enemy_route_imminent_or_unknown"
+
+
+def _noncombat_generic_exact_day_speed_five_ready(
+    snapshot: dict[str, object], *, exact_one_day: bool, result_step: str,
+    bridge_capabilities: set[str], available_action_steps: set[str],
+) -> bool:
+    """Admit fast wall-clock rate only for a native-stopped generic watch day."""
+    if (exact_one_day is not True or result_step != "life-advance-one-day"
+            or not _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES <= bridge_capabilities
+            or "set-speed-5" not in available_action_steps
+            or snapshot.get("paused") is not True
+            or snapshot.get("map_ready") is not True
+            or snapshot.get("active_event") is not None
+            or snapshot.get("pending_character_interaction") is not None
+            or snapshot.get("war_objective_assault_supported") is not True):
+        return False
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    if isinstance(hint, dict) and hint.get("status") == "present":
+        return False
+    armies = snapshot.get("player_armies")
+    wars = snapshot.get("active_wars")
+    if (not isinstance(armies, list) or not isinstance(wars, list)
+            or any(not isinstance(war, dict) for war in wars)
+            or _player_assault_in_progress(snapshot)):
+        return False
+    for army in armies:
+        if (not isinstance(army, dict)
+                or army.get("controllable") is not True
+                or army.get("in_combat") is not False
+                or army.get("retreating") is not False
+                or _army_in_combat_or_retreat(army)):
+            return False
+    return True
 
 
 def _exact_route_contact_timeline_policy(
