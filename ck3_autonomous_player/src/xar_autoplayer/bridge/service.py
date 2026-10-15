@@ -80,6 +80,7 @@ from .readonly_war_entry_rejection import (
     returned_readonly_war_entry_typed_rejection_v1,
     suppressed_war_entry_read_steps_v1,
 )
+from . import declaration_opportunity_cooldown_v1 as declaration_cooldown
 from ..vanilla_events.outcome import (
     evaluate_registered_event_material_postcondition_v1,
 )
@@ -1725,6 +1726,11 @@ class GameplayBridgeService:
             if callable(getter):
                 snapshot[key] = getter(snapshot)
         overview_projection = {key: snapshot.get(key) for key in WAR_DECLARED_OVERVIEW_V1_PUBLIC_KEYS}
+        cooldown_state_dir = self._strategy_state_dir()
+        cooldown_frame = self._observed_planning_source_frame(snapshot)
+        if cooldown_state_dir is not None and cooldown_frame.get("status") == "complete":
+            snapshot["declaration_opportunity_cooldown_v1"] = declaration_cooldown.view(
+                cooldown_state_dir, snapshot, cooldown_frame)
         def finish_release_root_arbitration(planned: dict[str, object]) -> dict[str, object]:
             plan = planned.get("plan")
             if (deferred_release_root and not (
@@ -1763,6 +1769,11 @@ class GameplayBridgeService:
             observed = plan_ordinary_holy_war_defender_observation_v1(
                 self, planned=planned, snapshot=snapshot,
             )
+            if (isinstance(snapshot.get("declaration_opportunity_cooldown_v1"), dict)
+                    and snapshot["declaration_opportunity_cooldown_v1"].get("status") == "active"
+                    and isinstance(snapshot.get("active_wars"), list)
+                    and not snapshot["active_wars"]):
+                return observed
             return self._finish_prewar_force_coalition_plan_v2(
                 observed, snapshot, allow_query=allow_prewar_force_query,
                 allow_war_overview_query=allow_war_overview_query)
@@ -1945,6 +1956,8 @@ class GameplayBridgeService:
                 "snapshot_id": planning_snapshot["snapshot_id"],
                 "revision": planning_snapshot["revision"],
                 "planning_source_frame": planning_source_frame,
+                "_declaration_opportunity_cooldown_v1": planning_snapshot.get(
+                    "declaration_opportunity_cooldown_v1"),
                 "_auto_camera_hotspot_input": self._auto_camera_hotspot_input(
                     planning_snapshot, planning_source_frame,
                 ),
@@ -4045,6 +4058,8 @@ class GameplayBridgeService:
             self._execute_planned_turn(planned, before_submit=before_submit)))
         outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
             outcome, planning_frame=planned)
+        cooldown_receipt = self._observe_declaration_cooldown_after_turn_v1(
+            planned, outcome)
         # Presentation is best effort and starts only after the business turn
         # has completed. Its later receipt never attests this gameplay frame.
         try:
@@ -4064,8 +4079,36 @@ class GameplayBridgeService:
         return {
             **outcome,
             "planning_source_frame": planned.get("planning_source_frame"),
+            "declaration_opportunity_cooldown_v1": cooldown_receipt,
             "camera_follow": camera_schedule,
         }
+
+    def _observe_declaration_cooldown_after_turn_v1(
+        self, planned: dict[str, object], outcome: dict[str, object],
+    ) -> dict[str, object] | None:
+        state_dir = self._strategy_state_dir()
+        frame = planned.get("planning_source_frame")
+        if (state_dir is None or not isinstance(frame, dict)
+                or frame.get("status") != "complete"):
+            return None
+        selected = outcome.get("selected_step")
+        result = outcome.get("result")
+        try:
+            if selected == QUERY_DECLARABLE_WARS_STEP:
+                return declaration_cooldown.observe_completed_query(state_dir, frame, result)
+            prior = planned.get("_declaration_opportunity_cooldown_v1")
+            if (isinstance(selected, str) and selected.startswith("declare-war-")
+                    or selected == "life-advance" and isinstance(prior, dict)
+                    and prior.get("pending_query_sequence") is not None):
+                post = self.snapshot(include_native_command_history=False)
+                return declaration_cooldown.observe_after_turn(
+                    state_dir, frame, outcome, post,
+                    self._observed_planning_source_frame(post))
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            # Gameplay already completed. Keep its actual receipt, never replay.
+            return {"schema": declaration_cooldown.SCHEMA, "status": "unavailable",
+                    "reason": f"{type(error).__name__}: {error}"}
+        return prior if isinstance(prior, dict) else None
 
     @staticmethod
     def _natural_successor_persistence_failed(outcome: dict[str, object]) -> bool:
@@ -5709,6 +5752,11 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "native declaration query lacks declarable_wars"
             )
+        state_dir = self._strategy_state_dir()
+        source_frame = self._observed_planning_source_frame(snapshot)
+        if state_dir is not None and source_frame.get("status") == "complete":
+            declaration_cooldown.observe_completed_query(
+                state_dir, source_frame, result)
         return result
 
     def query_player_ordinary_holy_war_declaration_context_private_v1(
@@ -5733,7 +5781,16 @@ class GameplayBridgeService:
             raise UnsupportedStepError(
                 "selected backend cannot collect pending declarable-war results"
             )
-        return collect(request_id, expected_revision=expected_revision)
+        result = collect(request_id, expected_revision=expected_revision)
+        if (isinstance(result, dict) and result.get("status") == "available"
+                and self._strategy_state_dir() is not None):
+            snapshot = self.snapshot(include_native_command_history=False)
+            source_frame = self._observed_planning_source_frame(snapshot)
+            if source_frame.get("status") == "complete":
+                published = result.get("declaration_result")
+                declaration_cooldown.observe_completed_query(
+                    self._strategy_state_dir(), source_frame, published)
+        return result
 
     def declare_war(
         self,

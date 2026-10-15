@@ -14652,6 +14652,33 @@ def _choose_one_life_turn_core(
             "reason": "the native declaration was submitted but this backend cannot advance the map",
         }
 
+    declaration_cooldown = (
+        snapshot.get("declaration_opportunity_cooldown_v1")
+        if isinstance(snapshot, dict) else None
+    )
+    if (isinstance(declaration_cooldown, dict)
+            and declaration_cooldown.get("status") == "active"
+            and isinstance(snapshot.get("active_wars"), list)
+            and not snapshot["active_wars"]):
+        # Current wars, defense, events and declaration continuity were handled
+        # above.  Suppress only the next active offensive opportunity round.
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_discovery_cooldown",
+                "selected_step": "life-advance",
+                "reason": "two completed declaration queries caused no actual declaration; wait one game month",
+                "declaration_opportunity_cooldown_v1": copy.deepcopy(declaration_cooldown),
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_discovery_cooldown_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "reason": "declaration opportunity cooldown is active but date advance is unavailable",
+            "declaration_opportunity_cooldown_v1": copy.deepcopy(declaration_cooldown),
+        }
+
     war_entry_assessment_rows = _same_frame_war_entry_assessments(
         rows, snapshot if isinstance(snapshot, dict) else None
     )
