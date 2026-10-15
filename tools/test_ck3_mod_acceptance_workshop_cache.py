@@ -14,6 +14,7 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = Path(os.environ.get('CK3_CACHE_TEST_REFERENCE_ROOT', ROOT)).resolve()
@@ -77,6 +78,7 @@ class WorkshopCacheTests(unittest.TestCase):
             'canonical_products_path': str(REFERENCE / 'workshop/products.json'),
             'case_contract': adapter.read_json(ROOT / 'tools/ck3_mod_acceptance_cases/workshop_cache.json'),
             'shared_game': {'version': '1.20.0.4', 'exe_sha256': '9' * 64},
+            '_selected_engine': (None, {'game_version': '1.20.0.4', 'exe_sha256': '9' * 64}),
             'case_inputs': {'cache_path': str(self.cache), 'formal_manifest': adapter.pin(self.manifest_path),
                 'native_download_receipt': adapter.pin(self.download_path), 'plain_configuration': configs}}
 
@@ -87,6 +89,84 @@ class WorkshopCacheTests(unittest.TestCase):
     def prepared(self):
         with mock.patch('subprocess.run', side_effect=AssertionError('Preparation must never launch')):
             return adapter.prepare_case(self.context)
+
+    def projection_context(self):
+        import build_normal_exit_source_inventory_v1 as builder
+        game = self.root / 'game-install'
+        executable = game / 'binaries/ck3.exe'
+        executable.parent.mkdir(parents=True)
+        executable.write_bytes(b'synthetic cache projection executable')
+        identity = {'game_version': '1.20.0.4', 'exe_sha256': adapter.pin(executable)['sha256']}
+        self.context['_selected_engine'] = (None, identity)
+        for relative in builder.STOCK_GUI_PATHS:
+            path = game / 'game' / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'# synthetic stock GUI')
+        result = self.prepared()
+        args = SimpleNamespace(state_dir=Path(self.context['state_dir']), game_dir=game,
+            bridge_dll=self.root / 'retained.dll', bridge_injector=self.root / 'retained.exe',
+            output=self.root / 'run/native-report.json', frontend_mod_load_observation=True,
+            saved_campaign_save=None)
+        runtime = {'game_dir': str(game), 'paths': {'dll': str(args.bridge_dll),
+                                                  'injector': str(args.bridge_injector)}}
+        manifest = {'game': {'version': identity['game_version'], 'exe_sha256': identity['exe_sha256']},
+            'native': {'dll': {'path_key': 'dll', 'sha256': '1' * 64},
+                       'injector': {'path_key': 'injector', 'sha256': '2' * 64}}}
+        return result, args, runtime, manifest, builder
+
+    def test_cache_prepare_reaches_real_normal_exit_inventory_without_fixture(self):
+        import ck3_mod_acceptance_normal_exit_profile as projection
+        result, args, runtime, manifest, builder = self.projection_context()
+        receipt = adapter.read_json(result['profile_preparation']['path'])
+        self.assertEqual(receipt['game_version'], manifest['game']['version'])
+        self.assertEqual(receipt['exe_sha256'], manifest['game']['exe_sha256'])
+        profile = projection.create_profile(args, runtime, manifest, adapter.pin(self.manifest_path),
+                                            args.state_dir / 'normal-exit-binding', builder)
+        binding = adapter.read_json(args.state_dir / 'normal-exit-binding/RESULT.actual.json')
+        self.assertTrue(binding['verification']['static_sources_verified'])
+        self.assertEqual(binding['verification']['enabled_mod_count'], 1)
+        self.assertFalse(binding['game_started'])
+        self.assertFalse(binding['normal_exit_qualified'])
+        self.assertFalse((args.state_dir / 'profile/mod-content').exists())
+        self.assertEqual(adapter.pin(self.cache / 'descriptor.mod')['sha256'],
+                         self.manifest['files'][1]['sha256'] if self.manifest['files'][1]['path'] == 'descriptor.mod'
+                         else self.manifest['files'][0]['sha256'])
+
+    def test_cache_projection_rejects_campaign_route_missing_identity_and_changed_input(self):
+        import ck3_mod_acceptance_normal_exit_profile as projection
+        result, args, runtime, manifest, _ = self.projection_context()
+        def project():
+            return projection.project_profile(args, runtime, manifest,
+                adapter.pin(self.manifest_path), args.state_dir / 'never-created')
+        args.frontend_mod_load_observation = False
+        with self.assertRaisesRegex(ValueError, 'menu startup'):
+            project()
+        args.frontend_mod_load_observation = True
+        args.saved_campaign_save = self.root / 'forbidden.ck3'
+        with self.assertRaisesRegex(ValueError, 'menu startup'):
+            project()
+        args.saved_campaign_save = None
+        preparation_path = Path(result['profile_preparation']['path'])
+        preparation = adapter.read_json(preparation_path)
+        startup_path = args.state_dir / 'preparation.json'
+        startup = adapter.read_json(startup_path)
+        for replacement in (None, 'wrong-build'):
+            bad = copy.deepcopy(preparation)
+            if replacement is None:
+                bad.pop('game_version'); bad.pop('exe_sha256')
+            else:
+                bad['game_version'] = replacement
+            self.write(preparation_path, bad)
+            bound = {**startup, 'preparation': adapter.pin(preparation_path)}
+            self.write(startup_path, bound)
+            with self.assertRaisesRegex(ValueError, 'identities differ'):
+                project()
+        self.write(preparation_path, preparation)
+        self.write(startup_path, {**startup, 'preparation': adapter.pin(preparation_path)})
+        (args.state_dir / 'profile/pdx_settings.txt').write_bytes(b'changed ordinary input')
+        with self.assertRaisesRegex(ValueError, 'file bytes changed'):
+            project()
+        self.assertFalse((args.state_dir / 'never-created').exists())
 
     def test_current_builder_manifest_version_two_retains_exact_inventory(self):
         self.manifest['format_version'] = 2

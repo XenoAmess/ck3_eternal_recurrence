@@ -40,13 +40,23 @@ def project_profile(args, runtime, manifest, runtime_manifest, destination):
         raise ValueError("actual public profile preparation bytes changed")
     preparation = json.loads(preparation_path.read_bytes())
     if (preparation.get("schema") not in {"ck3-mod-acceptance-prepared-fixture-v1",
-                                         "ck3-mod-acceptance-prepared-product-v1"}
+                                         "ck3-mod-acceptance-prepared-product-v1",
+                                         "ck3-mod-acceptance-prepared-workshop-cache-v1"}
             or Path(preparation["state_dir"]).resolve() != state
             or Path(preparation["profile_dir"]).resolve() != state / "profile"
-            or preparation["game_version"] != manifest["game"]["version"]
-            or preparation["exe_sha256"].lower() != manifest["game"]["exe_sha256"].lower()):
+            or preparation.get("game_version") != manifest["game"]["version"]
+            or str(preparation.get("exe_sha256", "")).lower() != manifest["game"]["exe_sha256"].lower()):
         raise ValueError("public preparation and selected runtime identities differ")
-    if preparation['schema'] == 'ck3-mod-acceptance-prepared-product-v1':
+    cache = preparation['schema'] == 'ck3-mod-acceptance-prepared-workshop-cache-v1'
+    if cache:
+        from ck3_mod_acceptance_prepare import CONFIG_NAMES
+        if (getattr(args, 'frontend_mod_load_observation', False) is not True or
+                getattr(args, 'saved_campaign_save', None) is not None or
+                set(preparation.get('files', {})) != set(CONFIG_NAMES) | {'mod/product.mod', 'dlc_load.json'} or
+                preparation.get('campaign_started') is not False or
+                preparation.get('cache_content_copied') is not False):
+            raise ValueError('Workshop cache preparation requires its product-only menu startup')
+    if preparation['schema'] == 'ck3-mod-acceptance-prepared-product-v1' or cache:
         rows=preparation.get('files')
         if (not isinstance(rows,dict) or not rows or preparation.get('fixture_mounted') is not False
                 or startup.get('profile_files') != list(rows)

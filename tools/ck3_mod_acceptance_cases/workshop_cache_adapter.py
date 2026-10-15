@@ -12,7 +12,7 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 
-from ck3_mod_acceptance_prepare import CONFIG_NAMES, materialize_product_profile
+from ck3_mod_acceptance_prepare import CONFIG_NAMES, _engine, materialize_product_profile
 from ck3_mod_acceptance_prepare import pin, require, write_json
 
 
@@ -137,8 +137,9 @@ def prepare_case(context):
         'formal_manifest': manifest_pin, 'native_download_receipt': download_pin,
         'formal_git_tag': manifest['git_tag'], 'formal_git_sha': manifest['git_sha'],
         'descriptor': descriptor_state, 'file_count': len(records), 'files': cache_files})
+    _, engine_identity = _engine(context)
     preparation = output / 'profile-preparation.json'
-    write_json(preparation, {'schema': 'ck3-mod-acceptance-prepared-workshop-cache-v1',
+    write_json(preparation, {'schema': 'ck3-mod-acceptance-prepared-workshop-cache-v1', **engine_identity,
         'runtime_status': 'NOT_RUN', 'state_dir': profile['state_dir'], 'profile_dir': profile['profile'],
         'files': profile['files'], 'cache_path': str(cache), 'workshop_item_id': item,
         'exact_cache': pin(strict), 'product_inventory': profile['product_inventory'],
