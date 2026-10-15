@@ -1,0 +1,182 @@
+{
+  "schema": "ck3-workshop-cache-menu-live-qualification-v1",
+  "machine_id": "bf-202609141645-5434332d4d",
+  "observed_at_utc": "2026-10-15T19:49:21.831661+00:00",
+  "run_id": "bf-202609141645-5434332d4d--more-tenets-slots--R0025",
+  "status": "QUALIFIED_CACHE_MENU_AND_ORIGINAL_NORMAL_ZERO",
+  "framework_head_at_run": "38a0616157aba4ffdfa3975409bd959c449b6f34",
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "runtime_id": "common-native-religion-cache-menu-profile-20261016-008",
+  "workshop_item_id": "3182367229",
+  "formal_product_file_count": 48,
+  "ck3_pid": 16724,
+  "native_session_started_at": "2026-10-15T19:24:59.391083+00:00",
+  "native_session_finished_at": "2026-10-15T19:37:47.920579+00:00",
+  "evidence": {
+    "runtime": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261015-native-religion-008\\runtime.local.json",
+      "bytes": 4018,
+      "sha256": "ce9ea8418b8c2a258570caa5c574ced985aca30da3f6142d6ea2dca563f9bc9e"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261015-native-religion-008\\manifest.json",
+      "bytes": 178918,
+      "sha256": "469c039cde12f1e882a3cbbd47ae379ac8f1006eed4bc91ded6c10bca63807c1"
+    },
+    "original_static_ready": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261015-native-religion-008\\READY.actual.json",
+      "bytes": 6414,
+      "sha256": "caa510d8c5e0cbe7d6cbb8ea98cc9aee3afe6d3c800d603baf823373f1f3b97f"
+    },
+    "source_freeze": {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261015-native-religion-008\\SOURCE-FREEZE.actual.json",
+      "bytes": 3038,
+      "sha256": "256a5e7253df030509b3ad7c228840e0e4c31573f82d7552ac0dccd5b35deff0"
+    },
+    "production_dll": {
+      "path": "C:\\workspace\\ck3-common-runtime\\normal-exit-gui-source-20261015-001\\build-001\\xar_ck3_bridge.dll",
+      "bytes": 13235200,
+      "sha256": "bfdfb1fe7f02321e7f7d1117e13953131d93c8f1eab6716b9572838e6f3eb612"
+    },
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\frozen-argv.json",
+      "bytes": 33800,
+      "sha256": "51a96496aedb7f520e4b5c8d05208465b833817169a1a3008c3e3d6a052e9042"
+    },
+    "cache_facts": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\case-output\\workshop-cache-case-result.json",
+      "bytes": 92672,
+      "sha256": "96ed43ea143a9612713b17ba7d0a8c57e4eb1072b7ad5cef121f0fb88ccdfc72"
+    },
+    "public_verify": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\public-verify-001.stdout.json",
+      "bytes": 106726,
+      "sha256": "f6f0279b4298fdcb80d8564a8a0d50bc9a72e979a542cbc5982c31869a427356"
+    },
+    "public_verify_wait": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\public-verify-001.actual-exit.json",
+      "bytes": 924,
+      "sha256": "40b801ad47b1c3325a79b2b584d80a9799b5d2d118cf501bdf7c773f4cc2919a"
+    },
+    "public_run_wait": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\public-run-original-exit.json",
+      "bytes": 282,
+      "sha256": "649dea5bebe36f86192448831bafdec9b240582882cdb3630024e48e99b692f5"
+    },
+    "host_wait": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\host-original-process-exit.json",
+      "bytes": 255,
+      "sha256": "03d6b267e0b3bcd82eda9165ac7f741e9fd61b5cb72ca34cda06ab6c27cb3fbe"
+    },
+    "allocator_completion": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\root-allocation-completion.json",
+      "bytes": 1483,
+      "sha256": "050c3e2af72e65e587f1c11f148653de18d36b9de7b189a3f3024cde7f6d5587"
+    },
+    "keeper_parent_wait": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\keeper-actual-parent-exit.json",
+      "bytes": 609,
+      "sha256": "9b73deb1185348eb8f5c6c6efe25694900e344b9ee28bceb45cee0ca9ff16714"
+    },
+    "native_report": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\native-report.json",
+      "bytes": 1251849,
+      "sha256": "e8168803b13467e87751223b13d0c5954fbc0529cce66a0adabdfdc62e741c5e"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\case-output\\normal-close-result.json",
+      "bytes": 10306,
+      "sha256": "3ffce052efd6124cf858053c8359ef2a0ec4f236809cd7d5115ccb3dd0003e86"
+    },
+    "retained_handle_os_exit": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "a26b925aadeabbd1309ccec611dc1383b2b5e3fe3a897b51f164cabcb199c777"
+    },
+    "root_quit_review": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\case-output\\normal-quit-root-result.json",
+      "bytes": 2645,
+      "sha256": "d7c9f80a7d9f0e9a04a6b0ec8d7b2568aa783e465176a16bcb1e5dd5a0571642"
+    },
+    "root_final_offline_review": {
+      "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--more-tenets-slots--R0025\\root-final-offline-review.json",
+      "bytes": 1296,
+      "sha256": "3d76b2ebd56c718cb31c00064729b1725b25e916e608fd7949596af865446060"
+    },
+    "screen_release": {
+      "path": "C:\\workspace\\ck3_mod_more_tenant_slots\\artifacts\\bugfix-20261015\\native-cache-r25-resource-release.json",
+      "bytes": 1489,
+      "sha256": "e0afe34ae9cc070c4b949943f543c696f7e480f81943af467a84157a64d76fd4"
+    },
+    "exact_cache": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\mts-workshop11-002\\prepared\\workshop-cache-exact-formal.json",
+      "bytes": 14215,
+      "sha256": "6114d9e5400d04f25cb374cd4f5c9c4124c610a89e6a8bfb22fb2e73009cbc8d"
+    }
+  },
+  "final_offline_image": {
+    "path": "C:\\workspace\\ck3_mod_more_tenant_slots\\artifacts\\bugfix-20261015\\r0025-final-offline-01\\steam-moved.png",
+    "bytes": 1212726,
+    "sha256": "942c28522d002b173e34b6e1bb4f36c7d4599b9016eb81ba62fbad7d45de1f73"
+  },
+  "formal_manifest": {
+    "path": "C:\\workspace\\ck3_mod_more_tenant_slots\\artifacts\\bugfix-20261015\\workshop-v11-actual-001\\formal-build-001\\more_tenets_slots_xa_dev.manifest.json",
+    "bytes": 9159,
+    "sha256": "2d9c319293b2bce98c2cc041c759b0d6400aa22ce1d9216ba620b8f194823172"
+  },
+  "native_download_receipt": {
+    "path": "C:\\workspace\\ck3_mod_more_tenant_slots\\artifacts\\bugfix-20261015\\workshop-v11-actual-001\\native-download-001.stdout.json",
+    "bytes": 2767,
+    "sha256": "2b9151e8fcd846c8c0a055e6d5681feb5f96cced3280f90519d12b965afe8b5d"
+  },
+  "qualification": {
+    "exact_formal_cache": true,
+    "combined_managed_profile_and_stable_main_menu": true,
+    "independent_engine_vfs_path_readback": "UNKNOWN",
+    "independent_engine_vfs_mount_proven": false,
+    "campaign_started": false,
+    "adapter_native_actions_submitted": 0,
+    "root_official_menu_quit_actions": 1,
+    "titlebar_fallback_dispatched": false,
+    "root_direct_original_review": true,
+    "actual_retained_os_exit_code": 0,
+    "native_exit_reason": "process_exit",
+    "native_exit_code": 0,
+    "native_tree_gone": true,
+    "native_job_active_processes_final": 0,
+    "native_cleanup_proven": true,
+    "managed_thread_finished": true,
+    "original_host_exit_code": 0,
+    "original_public_run_exit_code": 0,
+    "original_allocator_exit_code": 0,
+    "original_keeper_exit_code": 0,
+    "public_verify_exit_code": 0,
+    "case_acceptance_pass": true,
+    "screen_release_sequence": 6365,
+    "resources": [],
+    "final_steam_offline_confirmed": true
+  },
+  "scope": {
+    "cache_menu_live_qualified": true,
+    "normal_gui_quit_live_qualified": true,
+    "religion_tools_requalified": false,
+    "map_normal_exit_tools_requalified": false,
+    "all_native_capabilities_requalified": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "native_dll_rebuilt": false,
+    "original_runtime_and_ready_modified": false
+  },
+  "retained_known_engine_error": {
+    "log": {
+      "path": "C:\\workspace\\ck3-common-runtime\\cases\\mts-workshop11-002\\state\\profile\\logs\\error.log",
+      "bytes": 178,
+      "sha256": "753e9e4e757e9fbab55ba15de820b82d78b5d2a0e51878cb41494594751c93c1"
+    },
+    "records": 1,
+    "fingerprint": "[jomini_onaction.cpp:<n>]: more than one effect in common/on_action/zz_mts_selector_on_action.txt (on_rite_updated)",
+    "classification": "Product script diagnostic retained; cache boundary pass does not imply error-free product"
+  },
+  "source_product_report": "https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v11.md"
+}
