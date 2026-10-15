@@ -109,6 +109,24 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'host exit/cause'):
             self.check()
 
+    def test_projection_hash_failure_keeps_resource_only_credit(self):
+        path = self.run / 'host-stderr.log'
+        path.write_text('ValueError: effective host differs from reviewed projection\n')
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.save()
+        value = self.check()['failure_cleanup']
+        self.assertFalse(value['normal_close_qualified'])
+        self.assertFalse(value['business_pass'])
+        self.assertIsNone(value['original_ck3_exit_code'])
+
+    def test_unrecognized_host_failure_is_rejected(self):
+        path = self.run / 'host-stderr.log'
+        path.write_text('ValueError: arbitrary failure after starting game\n')
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'host exit/cause'):
+            self.check()
+
     def test_native_report_presence_rejects_prelaunch_claim(self):
         (self.run / 'native-report.json').write_text('{}')
         with self.assertRaisesRegex(ValueError, 'native/game/control'):

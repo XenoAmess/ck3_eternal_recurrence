@@ -321,7 +321,9 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             exited.get('actual_original_popen_wait') is True and
             type(exited.get('returncode')) is int and exited['returncode']!=0 and
             exited.get('normal_ck3_exit_inferred') is False and
-            'normal exit requires the actual public prepared profile' in stderr,
+            any(cause in stderr for cause in (
+                'ValueError: normal exit requires the actual public prepared profile',
+                'ValueError: effective host differs from reviewed projection')),
             'Prelaunch original host exit/cause differs')
     readiness=original('readiness_result',previous/'case-output/readiness-window-result.json')
     entry=original('entry_run_result',previous/'case-output/entry-run-result.json')

@@ -90,6 +90,27 @@ class SharedEntryTests(unittest.TestCase):
             self.assertEqual(result['business_acceptance'],'NOT_ASSESSED')
             self.assertFalse(result['tool_status']['ck3_take_snapshot']['actual_live_qualified'])
 
+    def test_external_catalog_reuses_pinned_shared_cache_case(self):
+        central = self.locations['repo'] / 'tools/ck3_mod_acceptance_products.json'
+        central.parent.mkdir()
+        shared = copy.deepcopy(self.case)
+        shared['id'] = 'workshop_cache'
+        self.write(central, {'schema': entry.PRODUCTS_SCHEMA, 'workshop_cache_case': shared})
+        selected = entry.Selection(self.runtime_path, self.products_path, 'xqol', 'workshop_cache')
+        self.assertEqual(selected.case, shared)
+        self.assertIn((central, entry.pin(central)), selected.required_pins)
+        central.write_text('{}', encoding='utf-8')
+        self.assertTrue(any('Pinned input changed' in reason for reason in selected.preflight()['blockers']))
+
+    def test_explicit_catalog_cache_case_does_not_require_fallback(self):
+        shared = copy.deepcopy(self.case)
+        shared['id'] = 'workshop_cache'
+        self.products['workshop_cache_case'] = shared
+        self.write(self.products_path, self.products)
+        selected = entry.Selection(self.runtime_path, self.products_path, 'xqol', 'workshop_cache')
+        self.assertEqual(selected.case, shared)
+        self.assertIsNone(selected.shared_case_catalog)
+
     def test_product_cannot_override_runtime(self):
         original = copy.deepcopy(self.products)
         for location in ('product', 'case'):

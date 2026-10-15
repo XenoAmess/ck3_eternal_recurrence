@@ -113,8 +113,17 @@ class Selection:
         profile_enabled(self.manifest)
         self.product_key = product_key
         self.product = self.products["products"][product_key]
-        cases = ([self.products["workshop_cache_case"]] if case_id == "workshop_cache"
-                 else [case for case in self.product["cases"] if case["id"] == case_id])
+        self.shared_case_catalog = None
+        if case_id == "workshop_cache":
+            catalog = self.products
+            if "workshop_cache_case" not in catalog:
+                self.shared_case_catalog = self.locations["repo_root"] / "tools/ck3_mod_acceptance_products.json"
+                catalog = read_json(self.shared_case_catalog)
+                if catalog.get("schema") != PRODUCTS_SCHEMA:
+                    raise ValueError("Unsupported shared cache case catalog schema")
+            cases = [catalog["workshop_cache_case"]]
+        else:
+            cases = [case for case in self.product["cases"] if case["id"] == case_id]
         if len(cases) != 1:
             raise ValueError("Exactly one product case required")
         self.case = json.loads(json.dumps(cases[0]))
@@ -177,6 +186,8 @@ class Selection:
                 raise ValueError("Machine Python environment differs from the one shared manifest")
             self.runtime_environment = shared_environment
         self.required_pins: list[tuple[Path, dict]] = [(self.manifest_path, manifest_ref)]
+        if self.shared_case_catalog:
+            self.required_pins.append((self.shared_case_catalog, pin(self.shared_case_catalog)))
         self.normal_quit_automation = None
         if "normal_quit_automation" in self.runtime:
             automation = self.runtime["normal_quit_automation"]
