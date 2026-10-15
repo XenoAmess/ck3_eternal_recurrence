@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from .normal_exit_gui_sources_v1 import exit_gui_dependency_contract, verify_unrelated_gui
 
 INVENTORY_BASENAME = 'normal-exit-source-inventory-v1.json'
 SCHEMA = 'ck3-normal-exit-source-inventory-v1'
@@ -85,11 +86,13 @@ def _descriptor(content: bytes, *, outer: bool, root: Path) -> None:
         raise ValueError('inner descriptor unexpectedly chooses a mount path')
 
 
-def _reject_related_override(relative: str, content: bytes) -> None:
-    # This private V1 has an explicitly limited zero-GUI-mod scope. Unrelated
-    # mod GUI compatibility requires a later source-bound implementation.
+def _reject_related_override(relative: str, content: bytes, gui_contract=None) -> None:
     if relative.casefold().endswith('.gui'):
-        raise ValueError('normal-exit private V1 does not support enabled mod GUI files')
+        if relative.casefold() in {path.casefold() for path in STOCK_GUI_PATHS}:
+            raise ValueError('Mod GUI overrides a protected normal-exit source path: ' + relative)
+        if gui_contract is None:
+            raise ValueError('Normal-exit GUI mod requires a stock dependency source inventory')
+        verify_unrelated_gui(relative, content, gui_contract)
 
 
 def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
@@ -102,10 +105,12 @@ def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
     digest = _digest(reference['sha256'])
     if sha256(content) != digest:
         raise ValueError('source inventory bytes changed')
-    inventory = _keys(json.loads(content), {
+    decoded = json.loads(content)
+    dependency_field = {'stock_gui_dependencies'} if isinstance(decoded, dict) and 'stock_gui_dependencies' in decoded else set()
+    inventory = _keys(decoded, {
         'schema', 'userdir', 'profile_binding_sha256', 'settings_file', 'dlc_load',
         'stock_game_root', 'source_executable', 'stock_gui', 'enabled_mods',
-    }, 'source inventory')
+    } | dependency_field, 'source inventory')
     if inventory['schema'] != SCHEMA or _path(inventory['userdir']) != userdir:
         raise ValueError('source inventory belongs to a different managed userdir')
     projection = canonical_profile_projection(profile)
@@ -134,7 +139,19 @@ def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
         actual, _ = _file(row)
         if actual != game_root / relative:
             raise ValueError('protected stock GUI order/path mismatch')
+    gui_contract = None
+    if dependency_field:
+        gui_contract = exit_gui_dependency_contract(game_root, STOCK_GUI_PATHS)
+        dependencies = inventory['stock_gui_dependencies']
+        expected = [game_root / relative for relative in gui_contract['dependencies']]
+        if type(dependencies) is not list or len(dependencies) != len(expected):
+            raise ValueError('Normal-exit stock GUI dependency inventory is incomplete')
+        for target, row in zip(expected, dependencies):
+            actual, _ = _file(row)
+            if actual != target:
+                raise ValueError('Normal-exit stock GUI dependency order/path differs')
     mods = inventory['enabled_mods']
+    gui_file_count = 0
     if type(mods) is not list or len(mods) != len(enabled):
         raise ValueError('actual enabled mod inventory is incomplete')
     for registration, mod in zip(enabled, mods):
@@ -163,7 +180,8 @@ def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
             if not source.is_relative_to(mod_root):
                 raise ValueError('enabled mod source escapes actual root')
             _, source_bytes = _file({'path': str(source), 'bytes': row['bytes'], 'sha256': row['sha256']})
-            _reject_related_override(relative, source_bytes)
+            _reject_related_override(relative, source_bytes, gui_contract)
+            gui_file_count += int(relative.casefold().endswith('.gui'))
         actual = {str(item.relative_to(mod_root)).replace('\\', '/').casefold()
                   for item in mod_root.rglob('*') if item.is_file()}
         if actual != set(listed):
@@ -173,4 +191,7 @@ def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
             'profile_projection_bytes': projection.decode('utf-8'),
             'userdir': str(userdir), 'settings_path': str(settings_path),
             'enabled_mod_count': len(mods), 'stock_gui_count': len(STOCK_GUI_PATHS),
+            'gui_mod_file_count': gui_file_count,
+            'stock_gui_dependency_count': len(gui_contract['dependencies']) if gui_contract else 0,
+            'protected_gui_symbol_count': len(gui_contract['symbols']) if gui_contract else 0,
             'static_sources_verified': True}

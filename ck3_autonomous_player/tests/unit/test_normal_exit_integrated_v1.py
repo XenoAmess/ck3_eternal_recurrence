@@ -395,14 +395,15 @@ class InventoryTests(unittest.TestCase):
                 elif mode=='changed': (mod / 'content.txt').write_bytes(b'changed')
                 else: (Path(profile['userdir']) / 'pdx_settings.txt').write_bytes(b'changed')
                 with self.assertRaises(ValueError): verify_source_inventory_v1(reference, profile)
-    def test_strict_zero_gui_scope_rejects_even_inventoried_gui(self):
+    def test_protected_exit_gui_path_override_is_rejected_even_when_inventoried(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as temporary:
             profile, reference, inventory, mod, _ = self.fixture(Path(temporary))
-            data = b'types={type unrelated=window{}}'; (mod / 'unrelated.gui').write_bytes(data)
-            inventory['enabled_mods'][0]['files'].append({'relative_path':'unrelated.gui','bytes':len(data),
+            (mod / 'gui').mkdir()
+            data = b'window={name="timeline_widget"}'; (mod / 'gui/hud.gui').write_bytes(data)
+            inventory['enabled_mods'][0]['files'].append({'relative_path':'gui/hud.gui','bytes':len(data),
                                                         'sha256':hashlib.sha256(data).hexdigest()})
             path = Path(reference['path']); path.write_text(json.dumps(inventory)); reference['sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
-            with self.assertRaisesRegex(ValueError, 'does not support enabled mod GUI'): verify_source_inventory_v1(reference, profile)
+            with self.assertRaisesRegex(ValueError, 'protected normal-exit source path'): verify_source_inventory_v1(reference, profile)
 
 
 if __name__ == '__main__': unittest.main()

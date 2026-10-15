@@ -18,6 +18,7 @@ from xar_autoplayer.bridge.normal_exit_source_inventory_v1 import (
     INVENTORY_BASENAME, SCHEMA, STOCK_GUI_PATHS, canonical_profile_projection,
     verify_source_inventory_v1,
 )
+from xar_autoplayer.bridge.normal_exit_gui_sources_v1 import exit_gui_dependency_contract
 
 
 def file_record(path: Path) -> dict:
@@ -61,6 +62,10 @@ def build_inventory(profile: dict, game_root: Path) -> tuple[dict, bytes]:
                  'source_executable': {'path': source['path'], 'sha256': source['sha256']},
                  'stock_gui': [file_record(game_root / relative) for relative in STOCK_GUI_PATHS],
                  'enabled_mods': mods}
+    if any(row['relative_path'].casefold().endswith('.gui') for mod in mods for row in mod['files']):
+        contract = exit_gui_dependency_contract(game_root, STOCK_GUI_PATHS)
+        inventory['stock_gui_dependencies'] = [file_record(game_root / relative)
+                                               for relative in contract['dependencies']]
     return inventory, projection
 
 
