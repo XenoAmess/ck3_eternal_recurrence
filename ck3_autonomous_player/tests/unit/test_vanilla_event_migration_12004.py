@@ -197,11 +197,11 @@ class VanillaEventMigration12004Tests(unittest.TestCase):
         source3 = load_vanilla_event_source_index(build="1.20.0.3")
         source4 = load_vanilla_event_source_index(build=BUILD)
         self.assertEqual((source4["ck3_build"], source4["ck3_exe_sha256"]), (BUILD, EXE_SHA256))
-        self.assertEqual(len(source4["events"]), len(source3["events"]) + 1)
+        self.assertEqual(len(source4["events"]), len(source3["events"]) + 2)
         self.assertEqual({key: row for key, row in source4["events"].items()
-                          if key != "faith_creation.1021"}, source3["events"])
+                          if key not in ("faith_creation.1021", "head_of_faith.0100")}, source3["events"])
         self.assertEqual(source4["source_additions_1_20_0_4"]["event_keys"],
-                         ["faith_creation.1021"])
+                         ["faith_creation.1021", "head_of_faith.0100"])
         self.assertEqual(source3["dataset_sha256"], PREVIOUS_DATASET_SHA256)
         reuse = source4["source_reuse_1_20_0_4"]
         self.assertEqual(reuse["previous_build"], "1.20.0.3")

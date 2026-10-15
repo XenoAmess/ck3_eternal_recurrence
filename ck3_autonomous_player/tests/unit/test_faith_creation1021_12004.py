@@ -17,6 +17,7 @@ from xar_autoplayer.vanilla_events import (  # noqa: E402
 from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
     _option_projection_checks,
     _scope_projection_checks,
+    _resolve_scope_variant_contract,
     recommend_registered_vanilla_event_option_v1,
 )
 from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
@@ -81,6 +82,21 @@ class FaithCreation1021KnowledgeTests(unittest.TestCase):
         disabled["options"][0]["enabled"] = False
         self.assertFalse(all(_option_projection_checks(disabled, contract, 4)[0].values()))
 
+        capital = copy.deepcopy(context)
+        capital["saved_scopes"].append({"name": "converted_ruler_capital", "scope": _scope("landed_title")})
+        resolved, variant_index, error = _resolve_scope_variant_contract(capital, contract)
+        self.assertEqual(variant_index, 0)
+        self.assertIsNone(error)
+        self.assertTrue(all(_scope_projection_checks(capital, resolved, PLAYER).values()))
+        self.assertTrue(all(_option_projection_checks(capital, resolved, 4)[0].values()))
+        wrong_capital = copy.deepcopy(capital)
+        wrong_capital["saved_scopes"][-1]["scope"] = _scope("faith")
+        self.assertFalse(all(_scope_projection_checks(wrong_capital, resolved, PLAYER).values()))
+        unknown_extra = copy.deepcopy(capital)
+        unknown_extra["saved_scopes"][-1]["name"] = "unreviewed_extra"
+        unmatched, _, _ = _resolve_scope_variant_contract(unknown_extra, contract)
+        self.assertFalse(all(_scope_projection_checks(unknown_extra, unmatched, PLAYER).values()))
+
         # Knowledge registration does not widen the generic relational-scope
         # policy allowmap or establish a blanket first-shown recommendation.
         decision = recommend_registered_vanilla_event_option_v1(
@@ -104,8 +120,9 @@ class FaithCreation1021KnowledgeTests(unittest.TestCase):
         self.assertTrue(source["caller_candidates_are_lexical_only"])
         previous = load_vanilla_event_source_index(build="1.20.0.3")
         current = load_vanilla_event_source_index(build="1.20.0.4")
-        self.assertEqual({key: value for key, value in current["events"].items() if key != KEY}, previous["events"])
-        self.assertEqual(len(current["events"]), len(previous["events"]) + 1)
+        self.assertEqual({key: value for key, value in current["events"].items()
+                          if key not in (KEY, "head_of_faith.0100")}, previous["events"])
+        self.assertEqual(len(current["events"]), len(previous["events"]) + 2)
         self.assertEqual(current["dataset_sha256"], compute_source_index_dataset_sha256(current))
         self.assertEqual(previous["dataset_sha256"], "698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880")
         for build in ("1.19.0.6", "1.20.0.2", "1.20.0.3"):

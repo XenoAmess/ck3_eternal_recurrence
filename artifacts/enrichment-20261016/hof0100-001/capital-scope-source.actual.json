@@ -1,0 +1,10 @@
+{
+  "machine_id": "bf-202609141645-5434332d4d",
+  "at_utc": "2026-10-15T17:26:41.509020+00:00",
+  "relative_path": "game/events/religion_events/faith_conversion_events.txt",
+  "bytes": 13638,
+  "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+  "cached_depot_sha1": "5cde76bd821c61ab2390331075432b03d044c6a1",
+  "matches": true,
+  "native_or_runtime_changes": false
+}

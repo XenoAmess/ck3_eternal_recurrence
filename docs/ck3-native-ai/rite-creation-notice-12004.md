@@ -8,7 +8,7 @@ index row for CK3 1.20.0.4 / Steam 25734779 / EXE SHA256
 It preserves earlier-build queries and adds no native provider, runtime rebuild,
 campaign utility, general religion agent, or blanket first-shown-option policy.
 
-The bounded contract covers the observed founder presentation: root and founder
+The baseline bounded contract covers the observed founder presentation: root and founder
 are the player, seven saved scopes include `differing_tenet`, four authored
 options yield shown native indices 0/1, and the selected source-reviewed choice
 is native 0. Observer options are source documentation, without live or action
@@ -83,7 +83,7 @@ These pins use committed LF bytes. Git's normal checkout projection changed the
 original generated CRLF byte pins (`efa53bb3...` / `657d2a2f...`) without changing
 the JSON content, commands or test output; no tests were rerun for that projection.
 
-The current .4 source index has 194 rows; all 193 inherited rows and their .3
+The first qualification's .4 source index had 194 rows; all 193 inherited rows and their .3
 dataset remain unchanged. Public knowledge and source queries now find `.1021`.
 The generic selection policy still returns
 `registered_contract_requires_extended_consumer` with
@@ -91,3 +91,20 @@ The generic selection policy still returns
 expanded. This preserves the distinction between readable source-bound knowledge
 and an enabled generic actor. `git diff --check` passed. No game operation or
 native/runtime rebuild is part of this package.
+
+## R22 eight-scope observation
+
+The R22 founder announcement adds `converted_ruler_capital`, a landed-title
+scope, to the original seven names. The first contract did not cover that exact
+shape. A named eight-scope variant now preserves the original base contract,
+founder/player relationship, native[0,1] and authored4 requirements. Wrong types,
+unknown extra names and observer presentation are not admitted. Generic policy
+remains blocked; no new automatic strategy is enabled.
+
+The source save is `faith_conversion_events.txt:15–17`, SHA256
+`690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0`;
+the original on-action lists `.0001` before `.1020`. Exact R22 context and
+selection pins are recorded as observation references, while the original title
+ID is not a contract constant and `differing_tenet` identity remains opaque.
+Effects/options are unchanged and reuse the analysis above. The R22 evidence and
+qualification are in [the HoF follow-up note](head-of-faith-notice-12004.md).

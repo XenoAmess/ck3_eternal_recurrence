@@ -1,0 +1,24 @@
+{
+  "machine_id": "bf-202609141645-5434332d4d",
+  "at_utc": "2026-10-15T17:25:04.504257+00:00",
+  "command": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "ck3_autonomous_player/tests/unit",
+    "-p",
+    "test_head_of_faith0100_12004.py",
+    "-v"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "returncode": 0,
+  "elapsed_seconds": 0.5980719000799581,
+  "stdout": "",
+  "stderr": "test_public_exact_record_guards_sources_and_old_builds (test_head_of_faith0100_12004.HeadOfFaithKnowledgeTests.test_public_exact_record_guards_sources_and_old_builds) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.172s\n\nOK\n",
+  "open_kaishek": "not-applicable: source metadata and existing Python projection guards; no CK3 evaluator or runtime scenario",
+  "native_build": false,
+  "runtime007_modified": false
+}

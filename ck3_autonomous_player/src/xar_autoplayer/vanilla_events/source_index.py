@@ -245,16 +245,23 @@ def load_vanilla_event_source_index(
         from .records_faith_creation1021_12004 import (
             EVENT_KEY, FAITH_CREATION1021_12004_SOURCE,
         )
+        from .records_head_of_faith0100_12004 import (
+            EVENT_KEY as HOF_EVENT_KEY, HEAD_OF_FAITH0100_12004_SOURCE,
+        )
 
         document = validate_vanilla_event_source_index(document)
         document.update(ck3_build=build,
             ck3_exe_sha256=SUPPORTED_CK3_EXE_SHA256[build],
             source_reuse_1_20_0_4=source_reuse_metadata())
         events = document["events"]
-        if EVENT_KEY in events:
+        additions = {
+            EVENT_KEY: FAITH_CREATION1021_12004_SOURCE,
+            HOF_EVENT_KEY: HEAD_OF_FAITH0100_12004_SOURCE,
+        }
+        if set(additions) & set(events):
             raise VanillaEventSourceIndexError("current source addition duplicates inherited event")
         document["events"] = dict(sorted({
-            **events, EVENT_KEY: deepcopy(FAITH_CREATION1021_12004_SOURCE),
+            **events, **deepcopy(additions),
         }.items()))
         rows = list(document["events"].values())
         candidates = [candidate for row in rows for candidate in row["caller_candidates"]]
@@ -271,7 +278,7 @@ def load_vanilla_event_source_index(
             "caller_candidate_file_count": len({row["relative_path"] for row in candidates}),
         }
         document["source_additions_1_20_0_4"] = {
-            "event_keys": [EVENT_KEY],
+            "event_keys": sorted(additions),
             "method": "bounded exact-build source review; inherited rows unchanged",
         }
         document["dataset_sha256"] = compute_source_index_dataset_sha256(document)
