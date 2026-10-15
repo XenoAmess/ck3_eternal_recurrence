@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
+import tempfile
 import unittest
 
 from xar_autoplayer.bridge.event_window_context_contract import (
@@ -807,11 +809,10 @@ class EventWindowContractTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(
-            plan["phase"], "active_event_forced_presentation_choice"
-        )
+        self.assertEqual(plan["phase"], "active_event_unhandled_first_rendered_option")
         self.assertEqual(plan["selected_step"], "select-event-option-4")
-        self.assertIn("not a semantic optimum", plan["reason"])
+        self.assertFalse(plan["unhandled_event_fallback"]["semantic_optimal"])
+        self.assertTrue(plan["unhandled_event_fallback"]["offline_followup_required"])
         self.assertEqual(
             plan["active_event"]["selected_rendered_index"], 0
         )
@@ -949,11 +950,9 @@ class EventWindowContractTests(unittest.TestCase):
                         "select-event-option-8",
                     },
                 )
-                self.assertEqual(
-                    plan["phase"],
-                    "active_event_registry_material_observation_blocked",
-                )
+                self.assertEqual(plan["phase"], "active_event_unhandled_first_rendered_unsupported")
                 self.assertIsNone(plan["selected_step"])
+                self.assertFalse(plan["unhandled_event_fallback"]["semantic_optimal"])
 
     def test_planner_uses_r840_prison_release_registry_acknowledgement(
         self,
@@ -1187,13 +1186,9 @@ class EventWindowContractTests(unittest.TestCase):
             snapshot=_snapshot(),
             action_steps={QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP},
         )
-        self.assertEqual(
-            plan["phase"], "active_event_semantic_evidence_required"
-        )
+        self.assertEqual(plan["phase"], "active_event_unhandled_first_rendered_disabled")
         self.assertIsNone(plan["selected_step"])
-        self.assertEqual(
-            plan["active_event"]["enabled_materialized_option_count"], 0
-        )
+        self.assertFalse(plan["unhandled_event_fallback"]["selection"]["enabled"])
 
     def test_planner_blocks_multiple_options_without_semantic_policy(
         self,
@@ -1237,15 +1232,11 @@ class EventWindowContractTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(
-            plan["phase"], "active_event_semantic_evidence_required"
-        )
-        self.assertIsNone(plan["selected_step"])
-        self.assertNotIn("event_decision", plan)
-        self.assertIn("multiple materialized event options", plan["reason"])
-        self.assertEqual(
-            plan["active_event"]["enabled_materialized_option_count"], 3
-        )
+        self.assertEqual(plan["phase"], "active_event_unhandled_first_rendered_option")
+        self.assertEqual(plan["selected_step"], "select-event-option-2")
+        self.assertEqual(plan["unhandled_event_fallback"]["selection"]["rendered_index"], 0)
+        self.assertFalse(plan["unhandled_event_fallback"]["semantic_optimal"])
+        self.assertTrue(plan["unhandled_event_fallback"]["offline_followup_required"])
 
     def test_same_frame_unavailable_does_not_repeat_query(self) -> None:
         plan = choose_one_life_turn(
@@ -1381,9 +1372,14 @@ class EventWindowContractTests(unittest.TestCase):
             ),
         )
 
-        service = GameplayBridgeService(driver)
-        query = service.auto_turn()
-        result = service.auto_turn()
+        with tempfile.TemporaryDirectory() as directory:
+            driver.state_dir = Path(directory)
+            service = GameplayBridgeService(driver)
+            query = service.auto_turn()
+            result = service.auto_turn()
+            evidence = result["unhandled_event_fallback_evidence"]
+            self.assertTrue(Path(evidence["before"]["path"]).is_file())
+            self.assertTrue(Path(evidence["after"]["path"]).is_file())
 
         self.assertEqual(
             query["selected_step"], QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
@@ -1532,8 +1528,10 @@ class RobertRaiktorTypedConsumerTests(unittest.TestCase):
                 "select-event-option-3",
             },
         )
-        self.assertEqual(plan["phase"], "active_event_raiktor_contract_blocked")
-        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["phase"], "active_event_unhandled_first_rendered_option")
+        self.assertEqual(plan["selected_step"], "select-event-option-1")
+        self.assertFalse(plan["unhandled_event_fallback"]["semantic_optimal"])
+        self.assertTrue(plan["unhandled_event_fallback"]["offline_followup_required"])
 
 
 if __name__ == "__main__":

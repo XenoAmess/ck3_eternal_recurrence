@@ -37,6 +37,33 @@ def _independent_top_modal_over_event(dto: dict, hint: dict, event: dict) -> boo
     )
 
 
+def _same_typed_event_root_after_unavailable(
+    dto: dict, hint: dict, event: dict, context: dict | None,
+) -> bool:
+    """Use Native buttons only after this very event's typed read failed.
+
+    A saved-scope failure gives no enabled option catalogue, but the separate
+    exact Native top-root query can. A materialized typed event retains its
+    existing selector.
+    """
+    relation = dto.get("typed_window_relation")
+    instance_id = event.get("instance_id")
+    return (
+        isinstance(context, dict) and context.get("status") == "unavailable"
+        and context.get("current_event_instance_id") == instance_id
+        and type(instance_id) is int and instance_id > 0
+        and isinstance(relation, dict)
+        and relation.get("status") == "same_typed_root"
+        and relation.get("owner_verified") is True
+        and relation.get("source") == EVENT_ROOT_RELATION_SOURCE
+        and relation.get("typed_domain") == "event"
+        and relation.get("typed_window_instance_id") == instance_id
+        and relation.get("top_opaque_root_id") == hint.get("opaque_root_id")
+        and relation.get("top_opaque_root_id") == dto.get("window_instance_id")
+        and relation.get("typed_opaque_root_id") == relation.get("top_opaque_root_id")
+    )
+
+
 def _frame(snapshot: dict) -> dict | None:
     played = snapshot.get("played_character")
     diagnostics = snapshot.get("diagnostics")
@@ -178,8 +205,17 @@ def plan_native_mandatory_choice_v1(
                 "selected_step": None,
                 "reason": "Typed query lacks exact source frame, window instance or query ID",
                 "query_observation": copy.deepcopy(result)}
-    if isinstance(event, dict) and not _independent_top_modal_over_event(dto, hint, event):
-        return None
+    typed_event_fallback = False
+    typed_event_context = None
+    if isinstance(event, dict):
+        independent = _independent_top_modal_over_event(dto, hint, event)
+        from .strategy import _same_frame_event_window_context
+
+        typed_event_context = _same_frame_event_window_context(commands, snapshot)
+        typed_event_fallback = _same_typed_event_root_after_unavailable(
+            dto, hint, event, typed_event_context)
+        if not independent and not typed_event_fallback:
+            return None
     previous = _latest_select(commands, frame)
     if isinstance(previous, dict) and previous.get("status") == "pending":
         previous_plan = previous.get("plan")
@@ -223,7 +259,10 @@ def plan_native_mandatory_choice_v1(
                              "native_index": decision.get("native_index"),
                              "bounds": copy.deepcopy(choice.get("bounds"))},
                "known_ui_recovery_source": copy.deepcopy(known_ui),
-               "semantic_optimal": False, "material_effects_verified": False}
+               "semantic_optimal": False, "material_effects_verified": False,
+               "typed_event_unavailable_same_root_fallback": typed_event_fallback,
+               "typed_event_unavailable_context": (
+                   copy.deepcopy(typed_event_context) if typed_event_fallback else None)}
     return {"policy": "native-mandatory-choice-v1",
             "phase": ("known_observed_ui_recovery_first_enabled" if known_ui
                       else "unknown_mandatory_choice_first_enabled"),

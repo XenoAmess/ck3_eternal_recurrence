@@ -39,7 +39,13 @@ coexist, a same-frame Native query may establish whether the top modal is an
 independent GUI root. Generic selection is allowed only for the exact .4
 event-controller/GUI-owner-tree relation, with the event instance and top
 receiver both bound; a same-root or unknown relation yields to the typed
-event adapter. Pending interactions still yield to their typed adapter because
+event adapter while its current-event context is available. A same-root
+fallback is permitted only after this exact event's same-frame typed query
+returns `unavailable`, and Native independently proves the top root, event
+instance, full choice catalogue, token and owner frame. It captures the
+unavailable typed context before selection. A stale typed result, an available
+typed event or an unrelated top root cannot use this fallback. Pending
+interactions still yield to their typed adapter because
 no equivalent GUI-root relation has been qualified. For an unknown generic window, the
 separate pure selector chooses the enabled option with the least top then
 least left Native bounds. A sole enabled choice can be chosen without bounds;
@@ -88,6 +94,19 @@ path, but the Root queue must still account for a `pause-map` failure after
 life advance before this can resolve a blocked modal end to end. Until that
 queue path is verified, a failed pause remains an error, not a successful
 choice. The hint alone is never a selection capability.
+
+For the specific `.4` `event_saved_scope_invalid` read failure, Native may
+retain a twice-read event definition key, calculated ID and runtime ordinal as
+an `unavailable` diagnostic. The SDK accepts that identity only with the
+failure reason and `event_definition_identity_ready=true`; root/saved scopes,
+option catalogue and every other readiness bit must remain absent or false.
+This diagnostic does not authorize a typed event selection. The P09 event 53
+recovery has an independently verified old-instance-gone receipt and a pinned
+Steam source, but its original typed query lacked calculated ID and Native
+option catalogue. It is preserved as observed UI recovery evidence, not
+published into the native-bound source-known registry. A later instance still
+uses fresh exact Native catalogue and token; the partial diagnostic can then
+support separate offline source analysis without inventing effects.
 
 The source package needs Native query/select mailbox routing, actual capability
 advertisement, a fresh owner-pump snapshot hint, and a typed Driver token

@@ -460,6 +460,30 @@ def normalize_current_event_window_context_v1(
             nonempty=True,
         )
         if (
+            frame["unavailable_reason"] == "event_saved_scope_invalid"
+            and readiness["event_definition_identity_ready"] is True
+        ):
+            # The exact .4 reader can retain only a twice-read definition
+            # identity before saved-scope materialization fails.  It remains
+            # an unavailable, non-actionable card: no GUI choices or scopes.
+            _stable_key(
+                frame["event_definition_key"],
+                "current_event_window_context.event_definition_key",
+            )
+            _int(frame["calculated_event_id"],
+                 "current_event_window_context.calculated_event_id",
+                 -(2**31), 2**31 - 1)
+            _int(frame["runtime_stats_ordinal"],
+                 "current_event_window_context.runtime_stats_ordinal",
+                 -(2**31), 2**31 - 1)
+            if (match_count != 0 or frame["root_scope"] is not None
+                    or frame["saved_scopes"] is not None
+                    or frame["options"] is not None
+                    or any(value for key, value in readiness.items()
+                           if key != "event_definition_identity_ready")):
+                raise ValueError("partial event identity gained actionable data")
+            return copy.deepcopy(frame)
+        if (
             frame["event_definition_key"] is not None
             or frame["calculated_event_id"] is not None
             or frame["runtime_stats_ordinal"] is not None
