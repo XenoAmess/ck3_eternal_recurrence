@@ -1,0 +1,8 @@
+{
+  "schema": "xar.sdk.pure-classifier-patch/v1",
+  "input_sha256": "8876b6666b07923ad655f73e6b5141b4cd81d74c77bffbea4d069b43630befd0",
+  "output_sha256": "f23d42c5863e1176753d424d61672155681ab91470abd85b1a7baf7d95fae3d6",
+  "effect": "Remove arbitrary horizon-plus-one rejection for observed non-tactical pause retry; exact-one-day checks and paired after metrics retained.",
+  "verification": "N41 ROOT-P06-LATE-PAUSE-CLASSIFIER-VERIFIED.json: actual original response155 plus four negative cases; install156/reconsume157 zero MCP calls.",
+  "original_action_replayed": false
+}

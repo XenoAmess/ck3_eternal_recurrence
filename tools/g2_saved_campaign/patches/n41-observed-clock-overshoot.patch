@@ -1,0 +1,10 @@
+--- a/root_result_classifier.py
++++ b/root_result_classifier.py
+@@ -516,7 +516,6 @@
+             or int(inner["snapshot_id"][len("native:"):]) <= binding.get("native_revision", 0)
+             or type(elapsed) is not int or type(horizon) is not int
+             or elapsed <= 0 or not 1 <= horizon <= 30
+-            or elapsed > horizon + 1
+             or not isinstance(actions, list) or len(actions) not in (3, 4, 5)
+             or any(not isinstance(action, dict) or not isinstance(action.get("result"), dict)
+                    for action in actions)):
