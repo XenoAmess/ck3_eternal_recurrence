@@ -1869,7 +1869,6 @@ class GameplayBridgeService:
             known_choice_backend_sha256 = None
             hint = planning_snapshot.get("top_exclusive_modal_choice_hint")
             if isinstance(hint, dict) and hint.get("status") == "present":
-                state_dir = self._strategy_state_dir()
                 if state_dir is not None:
                     from ..mandatory_choice_offline_analysis_v1 import bound_backend_sha256
                     known_choice_backend_sha256 = bound_backend_sha256(
