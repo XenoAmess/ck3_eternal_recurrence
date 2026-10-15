@@ -177,6 +177,7 @@ class RouteContactReadonlyUnavailableTests(unittest.TestCase):
             _execute_planned_turn = GameplayBridgeService._execute_planned_turn
             _execute_planned_turn_without_unhandled_capture = GameplayBridgeService._execute_planned_turn_without_unhandled_capture
             auto_turn = GameplayBridgeService.auto_turn
+            _observe_wartime_family_cadence_after_turn_v1 = GameplayBridgeService._observe_wartime_family_cadence_after_turn_v1
 
             def __init__(self):
                 self.driver = FakeDriver()
@@ -192,11 +193,13 @@ class RouteContactReadonlyUnavailableTests(unittest.TestCase):
             def _consume_initial_lifestyle_focus_after_turn_v1(self, outcome, **kwargs): return outcome
             def _observe_declaration_cooldown_after_turn_v1(self, *args): return None
             def _observe_family_cooldown_after_turn_v1(self, *args): return None
+            def _strategy_state_dir(self): return None  # This route-only fixture owns no strategy state.
 
         service = FakeService()
         result = service.auto_turn()
         self.assertEqual(result['status'], 'executed')  # Handler completed; no gameplay credit.
         self.assertEqual(result['result'], EXPECTED)
+        self.assertIsNone(result['family_wartime_opportunity_cooldown_v1'])
         self.assertEqual(result['selected_step'], STEP)
         self.assertEqual(result['planning_source_frame'], FIXTURE['body']['planning_source_frame'])
         self.assertEqual((len(service.driver.commands), service.driver.reads), (1, 1))
