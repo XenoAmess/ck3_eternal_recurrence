@@ -18,6 +18,7 @@ from .providers import (
     SteamworksReadOnlyProvider,
 )
 from .wal import OperationStore
+from .timeouts import DEFAULT_WORKSHOP_TIMEOUT_SECONDS
 
 
 def default_state_directory() -> Path:
@@ -254,7 +255,7 @@ def create_server(
 
         @server.tool(annotations=external_reversible)
         def workshop_native_download(dll_path: str, item_id: str, app_id: int = 1158310,
-                                     timeout_seconds: float = 300, expected_cache_path: str | None = None) -> dict[str, Any]:
+                                     timeout_seconds: float = DEFAULT_WORKSHOP_TIMEOUT_SECONDS, expected_cache_path: str | None = None) -> dict[str, Any]:
             """Download one exact item in an isolated callback worker; no subscription or cache deletion."""
             from .steam_download import download
             return download(dll_path, item_id, app_id, timeout_seconds, expected_cache_path)

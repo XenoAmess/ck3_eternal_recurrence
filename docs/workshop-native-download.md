@@ -16,7 +16,7 @@ other targets and failure paths retain their existing static-test boundary.
   "dll_path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/steam_api64.dll",
   "item_id": "3182367229",
   "app_id": 1158310,
-  "timeout_seconds": 300,
+  "timeout_seconds": 1800,
   "expected_cache_path": "C:/SteamLibrary/steamapps/workshop/content/1158310/3182367229"
 }
 ```
@@ -24,7 +24,7 @@ other targets and failure paths retain their existing static-test boundary.
 `dll_path` and the optional cache path are supplied by the operator. `item_id`
 is a nonzero uint64 decimal string, `app_id` a nonzero uint32, and timeout must
 be finite, greater than zero and at most 3600 seconds. The cache path must be
-absolute and end with the exact item ID. Defaults are AppID 1158310 and 300
+absolute and end with the exact item ID. Defaults are AppID 1158310 and 1800
 seconds; omitting the cache path permits ordinary download without a freshness
 claim. No product item ID is hardcoded in the implementation.
 
@@ -33,7 +33,7 @@ installed package or configured PYTHONPATH, and invoke with the selected Python:
 
 ```text
 <python> -m ck3_workshop_mcp.call_tool --provider steam-native --tool workshop_native_download --arguments-file <download-arguments.json>
-<python> -m ck3_workshop_mcp.steam_native download --dll <steam_api64.dll> --item-id 3182367229 --app-id 1158310 --timeout-seconds 300 --expected-cache-path <exact-cache-directory>
+<python> -m ck3_workshop_mcp.steam_native download --dll <steam_api64.dll> --item-id 3182367229 --app-id 1158310 --timeout-seconds 1800 --expected-cache-path <exact-cache-directory>
 ```
 
 The standalone CLI exits 0 only for business success and otherwise exits 2.
@@ -159,3 +159,5 @@ SHA-256 `ae469ee6cfa4529bd6dabc46462ced4e1681b479a0be4c51a2e559117b2c264a`.
 The [existing offline recovery guide](ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md)
 records the actual combined recovery path; the download MCP has no mode-control
 capability.
+
+Current shared defaults and per-operation boundaries are documented in [Workshop operation timeouts](workshop-operation-timeouts.md).

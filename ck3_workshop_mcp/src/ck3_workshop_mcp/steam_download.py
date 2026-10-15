@@ -17,6 +17,7 @@ import time
 from pathlib import Path
 from typing import Any, Sequence
 
+from .timeouts import DEFAULT_WORKSHOP_TIMEOUT_SECONDS
 from .steam_native import DEFAULT_APP_ID, ERESULT_OK, SteamNativeError, _bind, _open_client, symbols
 
 
@@ -208,7 +209,7 @@ def _worker(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 def download(dll_path: str | Path, item_id: str, app_id: int = DEFAULT_APP_ID,
-             timeout_seconds: float = 300, expected_cache_path: str | Path | None = None) -> dict[str, Any]:
+             timeout_seconds: float = DEFAULT_WORKSHOP_TIMEOUT_SECONDS, expected_cache_path: str | Path | None = None) -> dict[str, Any]:
     """Spawn a fresh callback owner. This function never loads Steam in the caller."""
     arguments = _arguments(dll_path, item_id, app_id, timeout_seconds, expected_cache_path)
     command = [sys.executable, "-m", "ck3_workshop_mcp.steam_download", "--worker",
@@ -240,7 +241,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--dll", required=True)
     parser.add_argument("--item-id", required=True)
     parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID)
-    parser.add_argument("--timeout-seconds", type=float, default=300)
+    parser.add_argument("--timeout-seconds", type=float, default=DEFAULT_WORKSHOP_TIMEOUT_SECONDS)
     parser.add_argument("--expected-cache-path")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)

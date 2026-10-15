@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Any, Iterator, Mapping, Sequence
 
 from .compatibility_tags import compatibility_tags_for_staging
+from .timeouts import DEFAULT_WORKSHOP_TIMEOUT_SECONDS
 
 
 DEFAULT_APP_ID = 1_158_310
@@ -560,7 +561,7 @@ class _NativeClient:
         result_type: type[ctypes.Structure],
         callback_id: int,
         *,
-        timeout_seconds: float = 180.0,
+        timeout_seconds: float = DEFAULT_WORKSHOP_TIMEOUT_SECONDS,
     ) -> ctypes.Structure:
         if call_handle == INVALID_API_CALL:
             raise SteamNativeError(
@@ -1495,7 +1496,7 @@ def _parser() -> argparse.ArgumentParser:
     download_parser.add_argument("--dll", required=True)
     download_parser.add_argument("--item-id", required=True)
     download_parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID)
-    download_parser.add_argument("--timeout-seconds", type=float, default=300)
+    download_parser.add_argument("--timeout-seconds", type=float, default=DEFAULT_WORKSHOP_TIMEOUT_SECONDS)
     download_parser.add_argument("--expected-cache-path")
 
     publish_parser = subparsers.add_parser(

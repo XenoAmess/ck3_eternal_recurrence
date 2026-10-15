@@ -12,6 +12,10 @@ import re
 import sys
 from urllib import parse, request
 
+# Share the package default when this repository tool is run directly.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'ck3_workshop_mcp' / 'src'))
+from ck3_workshop_mcp.timeouts import DEFAULT_WORKSHOP_TIMEOUT_SECONDS
+
 
 ITEM_API = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
 CHANGELOG_URL = "https://steamcommunity.com/sharedfiles/filedetails/changelog/{item_id}"
@@ -119,7 +123,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--description", type=Path, required=True)
     parser.add_argument("--change-notes", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--timeout", type=float, default=30.0)
+    parser.add_argument("--timeout", type=float, default=DEFAULT_WORKSHOP_TIMEOUT_SECONDS)
     args = parser.parse_args(argv)
     try:
         if ITEM_ID.fullmatch(args.item_id) is None:
