@@ -73,6 +73,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test CoA runtime-registry claim boundary
         run: python tools/test_audit_coa_runtime_registry_boundary.py
+      - name: Test Steam CK3 version skill without Steam or desktop access
+        run: python -B -X utf8 tools/test_steam_ck3_versions.py
       - name: Test native research planning and evidence rendering
         run: python tools/test_native_research_plan.py
       - name: Test protected project EXE broker source without privileged actions

@@ -348,7 +348,7 @@ class Focused(unittest.TestCase):
 
     def test_public_cli_exit_code_requires_strict_qualified_verdict(self):
         # Invoke the real main parser and its verdict gate, never a copied
-        # predicate. Selection is the only seam mocked: no file or runtime I/O.
+        # predicate. Mock native route metadata and Selection: no file or runtime I/O.
         for mode,answer,expected in [
             *[('verify',{'case_acceptance_pass':value},2) for value in (False,None,1)],
             ('verify',{'case_acceptance_pass':True},0),
@@ -363,7 +363,10 @@ class Focused(unittest.TestCase):
             with self.subTest(mode=mode,answer=answer):
                 selection=SimpleNamespace(verify=lambda:copy.deepcopy(answer),run=lambda:copy.deepcopy(answer))
                 output=io.StringIO()
-                with patch.object(entry,'Selection',return_value=selection) as constructor,contextlib.redirect_stdout(output):
+                with (patch.object(entry,'read_json',side_effect=[
+                        {'manifest':{'path':'synthetic-manifest.json'}}, {'execution_mode':'native'}]),
+                      patch.object(entry,'Selection',return_value=selection) as constructor,
+                      contextlib.redirect_stdout(output)):
                     status=entry.main([mode,'--runtime','synthetic-runtime.json','--products','synthetic-products.json',
                                        '--product','synthetic','--case','synthetic-case'])
                 self.assertEqual(status,expected)

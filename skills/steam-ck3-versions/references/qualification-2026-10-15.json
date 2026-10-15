@@ -1,0 +1,135 @@
+{
+  "schema": "steam-ck3-versions-qualification-v1",
+  "qualification_date": "2026-10-15",
+  "status": "WINDOWS_SINGLE_MACHINE_ACTUAL_TABLE_SWITCH_AND_INSTALL_VERIFIED",
+  "external_evidence_root": "C:/workspace/ck3-version-switch-20261015",
+  "scope": {
+    "platform": "Windows",
+    "actual_machines": 1,
+    "cross_machine_live_validation": false,
+    "actual_ui_layout": "Steam CK3 Game Versions & Betas table",
+    "old_dropdown": "offline simulated coverage only",
+    "absent_target_and_interrupted_download": "offline simulated coverage; not claimed as new live downloads"
+  },
+  "actual_operation": {
+    "command": "switch",
+    "started_at_utc": "2026-10-15T05:05:17.310777+00:00",
+    "completed_at_utc": "2026-10-15T05:06:14.221669+00:00",
+    "elapsed_seconds": 56.911,
+    "catalog_rows": 61,
+    "selected_before": "默认公开版本",
+    "requested_target": "1.20.0.4",
+    "actual_branch_label": "1.20.0",
+    "advertised_version": "1.20.0.4",
+    "selected_after": "1.20.0",
+    "installed_raw_version": "1.20.0.4",
+    "installed_build_id": 25734779,
+    "installed_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "installed_state_flags": 4,
+    "target_build_id_after": 0,
+    "pending_download_and_stage_bytes": 0,
+    "status": "installed_verified",
+    "exact_expected_version_and_build_explicitly_supplied": true,
+    "catalog_availability": "client_account_view_server_freshness_unverified; operator supplied fresh reviewed online evidence",
+    "completion_basis": "Actual selected row, manifest branch/build, installed launcher rawVersion and EXE identity; not UI action ACK alone",
+    "game_launched": false,
+    "native_bridge_injected": false,
+    "manifest_or_client_config_written_by_tool": false
+  },
+  "actual_ui_actions": {
+    "tab": "UIA Select ACK left General content unchanged; one screenshot-coordinate-mapped click opened actual Betas content",
+    "version_row": "UIA iface_invoke.Invoke on target RadioButton, then actual selected-label readback",
+    "version_row_coordinate_fallback": false,
+    "mapping_receipts": [
+      "switch-01/mapped-001/mapper-result.json",
+      "switch-01/mapped-001/after.png.json"
+    ],
+    "note": "Actual successful version-row ACK is Invoke, not Select. Historical screenshot dimensions/coordinates are evidence only, never portable defaults."
+  },
+  "successful_evidence_pins": {
+    "switch-01/result.json": {
+      "bytes": 22008,
+      "sha256": "6dd491c19ef0dce7918c4ac21d80d23de2e5c06be7197a3e6a13ba4fd16f21e4"
+    },
+    "switch-01/events.jsonl": {
+      "bytes": 38090,
+      "sha256": "7a2cf77cd1b321b70b962f6421f9fc6635d9d1e3207a7a249ce5d00520f5c70e"
+    },
+    "actual-beta-uia-01.json": {
+      "bytes": 128079,
+      "sha256": "dac9a02a49d6c00022dd220cd3b47b7786c744718bcfeed9c64cb1f334979d2f"
+    },
+    "switch-01/mapped-001/mapper-result.json": {
+      "bytes": 1940,
+      "sha256": "21ce6a1c1ed382492d1366e9d260f50747925737de2ef99dbef96fe025616f16"
+    },
+    "switch-01/mapped-001/after.png.json": {
+      "bytes": 1324,
+      "sha256": "e0445f7953f00c8d275e3b678bc86cb1c5a7cf2e2778358904829bd41cc3a5b9"
+    },
+    "root-offline-review-01.json": {
+      "bytes": 591,
+      "sha256": "cb7c827dd88a9490ea982bcb473419d153af67adeac2e064ae5dbe1ccffe27c2"
+    },
+    "screen-release-01.json": {
+      "bytes": 1227,
+      "sha256": "399519ad2789c6507eb7513c7fab3a2317b247792592272f8de028011dab2ce2"
+    },
+    "keeper-parent-exit-01.json": {
+      "bytes": 268,
+      "sha256": "80202f2a7a360b21a2e85714e9bd382c778349e8fb5c0600fc42d7281316af4d"
+    },
+    "restored-offline-fresh-01/steam-frame-freshness.json": {
+      "bytes": 1151,
+      "sha256": "51090f3f4ed1de16ed965e1ca9ae956ccf22acfadf4f93b2e4d21bea6928f6b5"
+    }
+  },
+  "closure": {
+    "steam_offline_confirmed": true,
+    "direct_visual_reviewer": "Root",
+    "reviewed_at_utc": "2026-10-15T05:14:33Z",
+    "offline_evidence": "root-offline-review-01.json",
+    "screen_task": "ck3-version-switch-20261015-01",
+    "screen_task_state": "done",
+    "resources": [],
+    "keeper_parent_exit_code": 0,
+    "parent_exit_source": "Original functions.write_stdin completion, recorded by Root",
+    "game_not_started": true
+  },
+  "capacity_incident": {
+    "declared_estimate_mib": 512,
+    "additional_steam_workshop_download_display_approx": "3.76 GB",
+    "triggered_after_target_installation": true,
+    "within_original_estimate": false,
+    "completed_before_steam_offline_restore": true,
+    "precise_accounting": "Separate storage task owns the exact closure; no in-budget claim or invented exact allocation is made here"
+  },
+  "offline_tests": {
+    "root_actual_result": {
+      "passed": 23,
+      "elapsed_seconds": 0.044,
+      "exit_code": 0,
+      "provenance": "Actual test result supplied by Root; no live Steam qualification inferred from it"
+    },
+    "independent_forward_report": {
+      "path": "C:/workspace/ck3-publication-20261015/steam-version-skill-01/independent-forward-yim8by6_/affected-retest-results.json",
+      "sha256": "05e2843e9486387c9605196b96074fbc29407f39701086a3dcf178bdd3a7165c",
+      "scope": "Affected-case retests with byte-identical raw UI/manifest inputs; simulated only. Exact 1.20.0.4 target rejects installed 1.20.1."
+    }
+  },
+  "failed_history": {
+    "retained": [
+      "list-offline-01",
+      "list-offline-02",
+      "list-offline-03"
+    ],
+    "original_failures_not_rewritten": true,
+    "tab_navigation_ack_not_treated_as_success": true
+  },
+  "limitations": [
+    "One Windows machine and one actual requested target; not multi-machine, Linux/macOS or all historical branches proven.",
+    "The 61 rows are this account's observed client table, not a permanent availability catalog.",
+    "Old exact-build native bindings are not automatically qualified by changing the installed game.",
+    "Only JSON summaries and pins enter Git; raw UI captures and screenshots remain external under the storage-retention policy."
+  ]
+}
