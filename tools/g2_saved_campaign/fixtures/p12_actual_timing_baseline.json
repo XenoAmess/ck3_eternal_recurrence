@@ -1,0 +1,337 @@
+{
+  "status": "ACTUAL_COMPLETED_P12_BASELINE",
+  "all_completed": {
+    "sequences": [
+      4,
+      137
+    ],
+    "UTC": [
+      "2026-10-15T01:21:26.855319+00:00",
+      "2026-10-15T01:30:58.455293+00:00"
+    ],
+    "date_raw": [
+      53195616,
+      53197128
+    ],
+    "days": 63.0,
+    "wall_seconds": 571.599974,
+    "wall_s_per_day": 9.07301546031746,
+    "RPC_s": 524.202780001564,
+    "gap_s": 47.39719399843602,
+    "gap_median_s": 0.022917,
+    "gap_max_s": 41.516983,
+    "groups": {
+      "query-war-results-window-v1": {
+        "n": 10,
+        "total_s": 38.43939660000615,
+        "median_s": 3.779701599967666
+      },
+      "root_current_runtime_metrics": {
+        "n": 61,
+        "total_s": 0.5668979012407362,
+        "median_s": 0.00944629986770451
+      },
+      "query-campaign-root-context-v1": {
+        "n": 1,
+        "total_s": 18.04883690015413,
+        "median_s": 18.04883690015413
+      },
+      "query-declarable-wars": {
+        "n": 9,
+        "total_s": 139.30025750002824,
+        "median_s": 14.39167629997246
+      },
+      "query-war-entry-assessments-v1-1-33026": {
+        "n": 9,
+        "total_s": 60.921137099387124,
+        "median_s": 6.745709399925545
+      },
+      "query-war-entry-assessments-v1-1-30380": {
+        "n": 8,
+        "total_s": 42.830112899886444,
+        "median_s": 5.313525449950248
+      },
+      "query-player-faction-alerts-v1": {
+        "n": 9,
+        "total_s": 63.530145100317895,
+        "median_s": 7.007635300047696
+      },
+      "life-advance": {
+        "n": 9,
+        "total_s": 93.65492100035772,
+        "median_s": 7.36433650017716
+      },
+      "ck3_take_semantic_snapshot_private_v1": {
+        "n": 5,
+        "total_s": 0.03418650012463331,
+        "median_s": 0.0068756998516619205
+      },
+      "ck3_save_checkpoint": {
+        "n": 5,
+        "total_s": 27.140961800236255,
+        "median_s": 5.462710899999365
+      },
+      "query-war-entry-assessments-v1-1-31299": {
+        "n": 1,
+        "total_s": 6.597107199952006,
+        "median_s": 6.597107199952006
+      },
+      "query-war-entry-assessments-v1-1-31413": {
+        "n": 1,
+        "total_s": 7.112798499874771,
+        "median_s": 7.112798499874771
+      },
+      "query-war-entry-assessments-v1-1-32563": {
+        "n": 1,
+        "total_s": 6.6452097001019865,
+        "median_s": 6.6452097001019865
+      },
+      "query-war-entry-assessments-v1-1-32692": {
+        "n": 1,
+        "total_s": 7.035533499903977,
+        "median_s": 7.035533499903977
+      },
+      "query-war-entry-assessments-v1-1-32867": {
+        "n": 1,
+        "total_s": 7.0037426999770105,
+        "median_s": 7.0037426999770105
+      },
+      "query-war-entry-assessments-v1-1-65025": {
+        "n": 1,
+        "total_s": 5.34153510001488,
+        "median_s": 5.34153510001488
+      }
+    },
+    "advances": [
+      {
+        "sequence": 17,
+        "start": 53195616,
+        "end": 53195784,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 31,
+        "start": 53195784,
+        "end": 53195952,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 43,
+        "start": 53195952,
+        "end": 53196120,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 57,
+        "start": 53196120,
+        "end": 53196288,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 69,
+        "start": 53196288,
+        "end": 53196456,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 84,
+        "start": 53196456,
+        "end": 53196624,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 96,
+        "start": 53196624,
+        "end": 53196792,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 110,
+        "start": 53196792,
+        "end": 53196960,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 132,
+        "start": 53196960,
+        "end": 53197128,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      }
+    ]
+  },
+  "after_initial_opportunity_sweep": {
+    "sequences": [
+      18,
+      137
+    ],
+    "UTC": [
+      "2026-10-15T01:23:08.741532+00:00",
+      "2026-10-15T01:30:58.455293+00:00"
+    ],
+    "date_raw": [
+      53195784,
+      53197128
+    ],
+    "days": 56.0,
+    "wall_seconds": 469.713761,
+    "wall_s_per_day": 8.387745732142857,
+    "RPC_s": 464.01462200144306,
+    "gap_s": 5.6991389985569185,
+    "gap_median_s": 0.0236705,
+    "gap_max_s": 1.593856,
+    "groups": {
+      "root_current_runtime_metrics": {
+        "n": 55,
+        "total_s": 0.5107214013114572,
+        "median_s": 0.009400800103321671
+      },
+      "ck3_take_semantic_snapshot_private_v1": {
+        "n": 5,
+        "total_s": 0.03418650012463331,
+        "median_s": 0.0068756998516619205
+      },
+      "ck3_save_checkpoint": {
+        "n": 5,
+        "total_s": 27.140961800236255,
+        "median_s": 5.462710899999365
+      },
+      "query-war-results-window-v1": {
+        "n": 9,
+        "total_s": 34.427156399935484,
+        "median_s": 3.764903699979186
+      },
+      "query-declarable-wars": {
+        "n": 8,
+        "total_s": 126.62020380003378,
+        "median_s": 14.520260149962269
+      },
+      "query-war-entry-assessments-v1-1-33026": {
+        "n": 8,
+        "total_s": 54.357595099601895,
+        "median_s": 6.812411799910478
+      },
+      "query-war-entry-assessments-v1-1-30380": {
+        "n": 7,
+        "total_s": 37.55524339992553,
+        "median_s": 5.314818299841136
+      },
+      "query-player-faction-alerts-v1": {
+        "n": 8,
+        "total_s": 56.81523190019652,
+        "median_s": 7.03479090007022
+      },
+      "life-advance": {
+        "n": 8,
+        "total_s": 86.81739500025287,
+        "median_s": 7.585814500111155
+      },
+      "query-war-entry-assessments-v1-1-31299": {
+        "n": 1,
+        "total_s": 6.597107199952006,
+        "median_s": 6.597107199952006
+      },
+      "query-war-entry-assessments-v1-1-31413": {
+        "n": 1,
+        "total_s": 7.112798499874771,
+        "median_s": 7.112798499874771
+      },
+      "query-war-entry-assessments-v1-1-32563": {
+        "n": 1,
+        "total_s": 6.6452097001019865,
+        "median_s": 6.6452097001019865
+      },
+      "query-war-entry-assessments-v1-1-32692": {
+        "n": 1,
+        "total_s": 7.035533499903977,
+        "median_s": 7.035533499903977
+      },
+      "query-war-entry-assessments-v1-1-32867": {
+        "n": 1,
+        "total_s": 7.0037426999770105,
+        "median_s": 7.0037426999770105
+      },
+      "query-war-entry-assessments-v1-1-65025": {
+        "n": 1,
+        "total_s": 5.34153510001488,
+        "median_s": 5.34153510001488
+      }
+    },
+    "advances": [
+      {
+        "sequence": 31,
+        "start": 53195784,
+        "end": 53195952,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 43,
+        "start": 53195952,
+        "end": 53196120,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 57,
+        "start": 53196120,
+        "end": 53196288,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 69,
+        "start": 53196288,
+        "end": 53196456,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 84,
+        "start": 53196456,
+        "end": 53196624,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 96,
+        "start": 53196624,
+        "end": 53196792,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 110,
+        "start": 53196792,
+        "end": 53196960,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      },
+      {
+        "sequence": 132,
+        "start": 53196960,
+        "end": 53197128,
+        "days": 7,
+        "phase": "native_war_entry_forecast_required"
+      }
+    ]
+  },
+  "source_pins": {
+    "root_p12_sdk_queue.py": "3cf69857efa9e6ef911d9e9375093c6d795389e45ca3fd697329a74b2a6a14c1",
+    "root_p12_checkpoint_cadence.py": "d0137da2ca039836f63a612630cdfed341861bd302468477b48d34371eeb8d79"
+  },
+  "limitations": [
+    "Includes actual RPC and inter-RPC elapsed time; no CPU-only attribution.",
+    "Short peace/opportunity-query sample; not a30year throughput promise.",
+    "Not comparable to P11 solely as causal effect: P12 request dirs start small and phases differ.",
+    "No live Driver read or runtime calls."
+  ]
+}

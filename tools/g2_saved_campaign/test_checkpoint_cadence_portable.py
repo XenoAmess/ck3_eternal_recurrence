@@ -81,7 +81,7 @@ def main():
         await oq.full_loop(None,{'arguments':{'max_turns':len(events)}},Path('offline-control-old'))
         await nq.full_loop(None,{'arguments':{'max_turns':len(events)}},Path('offline-control-new'))
         assert oq.saves==[1675,1680,1685,1690],oq.saves
-        assert nq.saves==[1680,1690],nq.saves
+        assert nq.saves==[1682,1690],nq.saves
         assert oq.index==nq.index==17
         assert oq.full_loop_state['before']==nq.full_loop_state['before']==events[-1]['after']
         deferred=[row for _,row in new_writes if row.get('status')=='stable_player_siege_checkpoint_deferred_to_cycle_10']
@@ -114,7 +114,14 @@ def main():
         state={'completed_cycles':5,'terminal':None,'checkpoint_dirty_since_save':False}
         assert new.checkpoint_after_settled_cycle(state,q,q['before'])
         state['completed_cycles']=10
-        again=pending(events[0]);assert new.checkpoint_after_settled_cycle(state,again,again['before'])
+        again=pending(events[0]);assert not new.checkpoint_after_settled_cycle(state,again,again['before'])
+        assert state['checkpoint_due_after_readonly_chain'] is True
+        state['completed_cycles']=11
+        assert new.checkpoint_after_settled_cycle(state,q,q['before'])
+        state['checkpoint_dirty_since_save']=False
+        state['completed_cycles']=12
+        assert not new.checkpoint_after_settled_cycle(state,again,again['before'])
+        assert state['checkpoint_due_after_readonly_chain'] is False
     state={'completed_cycles':10,'terminal':'actor_handoff','checkpoint_dirty_since_save':True}
     assert not new.checkpoint_after_settled_cycle(state,p,event['after'])
     provenance=json.loads((F/'checkpoint_cadence_provenance.json').read_text(encoding='utf-8'))
@@ -123,10 +130,19 @@ def main():
         cls=next(c for c in tree.body if isinstance(c,ast.ClassDef) and c.name==name)
         fn=next(n for n in cls.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='full_loop')
         assert hashlib.sha256(ast.dump(fn).encode()).hexdigest()==provenance[key]
-    checks.append({'name':'nonroutine/material/pending retain5; deferred dirty and terminal preserved; fixture coroutine AST matches actual source excerpt','status':'GREEN'})
+    checks.append({'name':'nonroutine/material/pending keep five-cycle due; readonly carry, dirty and terminal preserved; fixture coroutine AST matches actual source excerpt','status':'GREEN'})
+    prewar=json.loads((F/'checkpoint_carry_prewar_trace.json').read_text(encoding='utf-8'))
+    state={'completed_cycles':prewar['boundary']['global_turn'],'terminal':None,'checkpoint_dirty_since_save':True}
+    for key in ('boundary','next_readonly'):
+        event=prewar[key];state['completed_cycles']=event['global_turn']
+        assert not new.checkpoint_after_settled_cycle(state,event,event['after'])
+        assert state['checkpoint_due_after_readonly_chain'] is True
+    event=prewar['advance'];state['completed_cycles']=event['global_turn']
+    assert new.checkpoint_after_settled_cycle(state,event,event['after'])
+    checks.append({'name':'actual prewar readonly %5 due carries from turn2950 through2951 to next seven-day advance2961','status':'GREEN'})
     report={'status':'GREEN','offline_only':True,'checks':checks,'source_sha256':hashlib.sha256((O/'root_checkpoint_cadence.py').read_bytes()).hexdigest(),
             'limits':['Fake transport/persistence/frame only; no Game/MCP/OBS/window/process calls.',
-                      'Scheduler requests routine SAVE every10 settled cycles; existing player-decision deferral can postpone actual SAVE.',
+                      'Routine SAVE becomes due every10 settled cycles; readonly-chain and player-decision deferral can postpone actual SAVE.',
                       'No gameplay evidence cache, strategy change, or native guard change.']}
     print(json.dumps(report))
 

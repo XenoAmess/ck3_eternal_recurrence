@@ -129,8 +129,15 @@ def checkpoint_after_settled_cycle(state, pending, after):
     routine = policy['routine_only'] and bool(last) and all(
         last.get(k) == after.get(k) for k in ('date_raw', 'actor_character_id', 'episode_run_id'))
     interval = 10 if routine else 5
-    due = bool(dirty and not state['terminal'] and state['completed_cycles'] % interval == 0)
+    boundary_due = dirty and state['completed_cycles'] % interval == 0
+    carried_due = was_dirty and state.get('checkpoint_due_after_readonly_chain', False)
+    due_pending = bool(boundary_due or carried_due)
+    state['checkpoint_due_after_readonly_chain'] = due_pending
+    readonly_chain = (checkpoint_step_is_readonly(pending.get('selected_step'))
+                      and not checkpoint_cycle_may_change_game(pending, after))
+    due = bool(due_pending and not state['terminal'] and not readonly_chain)
     reason = ('scheduled_dirty_checkpoint' if due else
+              'dirty_checkpoint_due_deferred_readonly_chain' if due_pending and readonly_chain else
               'unchanged_readonly_evidence_chain' if not dirty else
               'stable_player_siege_checkpoint_deferred_to_cycle_10' if routine else
               'ordinary_checkpoint_not_due')

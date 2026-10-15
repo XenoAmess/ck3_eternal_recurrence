@@ -1,0 +1,121 @@
+{
+  "boundary": {
+    "global_turn": 2950,
+    "before": {
+      "snapshot_id": "native:1288",
+      "revision": 1203,
+      "native_revision": 1288,
+      "date_raw": 53194104,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68"
+    },
+    "auto_sequence": 2732,
+    "stage": "auto_verified",
+    "observation": {
+      "schema": "g2.queue.ordinary-result-credit/v1",
+      "selected_step": "query-war-entry-assessments-v1-1-30380",
+      "service_status": "executed",
+      "result_status": "available",
+      "submitted_pending": false,
+      "lifestyle_material_verified": false,
+      "existing_focus_verified": false,
+      "primitive_accepted": true,
+      "business_success_inferred": false,
+      "replay_allowed": false,
+      "category": "primitive_accepted"
+    },
+    "phase": "native_war_entry_assessment_alternative",
+    "selected_step": "query-war-entry-assessments-v1-1-30380",
+    "checkpoint_context": null,
+    "after": {
+      "snapshot_id": "native:1288",
+      "revision": 1203,
+      "native_revision": 1288,
+      "date_raw": 53194104,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68"
+    },
+    "date_delta_raw": 0,
+    "business_success_inferred": false
+  },
+  "next_readonly": {
+    "global_turn": 2951,
+    "before": {
+      "snapshot_id": "native:1288",
+      "revision": 1203,
+      "native_revision": 1288,
+      "date_raw": 53194104,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68"
+    },
+    "auto_sequence": 2736,
+    "stage": "auto_verified",
+    "observation": {
+      "schema": "g2.queue.ordinary-result-credit/v1",
+      "selected_step": "query-declarable-wars",
+      "service_status": "executed",
+      "result_status": "available",
+      "submitted_pending": false,
+      "lifestyle_material_verified": false,
+      "existing_focus_verified": false,
+      "primitive_accepted": true,
+      "business_success_inferred": false,
+      "replay_allowed": false,
+      "category": "primitive_accepted"
+    },
+    "phase": "native_war_discovery",
+    "selected_step": "query-declarable-wars",
+    "checkpoint_context": null,
+    "after": {
+      "snapshot_id": "native:1289",
+      "revision": 1204,
+      "native_revision": 1289,
+      "date_raw": 53194104,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68"
+    },
+    "date_delta_raw": 0,
+    "business_success_inferred": false
+  },
+  "advance": {
+    "global_turn": 2961,
+    "before": {
+      "snapshot_id": "native:1289",
+      "revision": 1204,
+      "native_revision": 1289,
+      "date_raw": 53194104,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68"
+    },
+    "auto_sequence": 2756,
+    "stage": "auto_verified",
+    "observation": {
+      "schema": "g2.queue.ordinary-result-credit/v1",
+      "selected_step": "life-advance",
+      "service_status": "executed",
+      "result_status": "postcondition",
+      "category": "existing_clock_advance_observed",
+      "typed_nonmaterial_observation": true,
+      "submitted_pending": false,
+      "primitive_accepted": false,
+      "actual_date_delta_raw": 168,
+      "actual_elapsed_days": 7,
+      "paired_after_metrics_still_required": true,
+      "business_success_inferred": false,
+      "replay_allowed": false
+    },
+    "phase": "native_war_entry_forecast_required",
+    "selected_step": "life-advance",
+    "checkpoint_context": null,
+    "after": {
+      "snapshot_id": "native:1298",
+      "revision": 1213,
+      "native_revision": 1298,
+      "date_raw": 53194272,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-96253c58fd68"
+    },
+    "date_delta_raw": 168,
+    "business_success_inferred": false
+  }
+}

@@ -19,10 +19,19 @@ Clean readonly chains still skip redundant SAVE. Dirty clears only after an
 actual successful SAVE. Unknown legacy dirty progress keeps the five-cycle
 interval.
 
-For the ten-cycle case, the scheduler can leave at most nine settled cycles
-unsaved instead of four, excluding existing player-decision deferral. This is
-not a universal limit in game days. The recorded sample corresponds roughly
-to four rather than two siege days of progress.
+At each five- or ten-cycle boundary, dirty progress marks a checkpoint due.
+A pure readonly query with no date, actor, material or submission change carries
+that due flag through the query chain. The next mutation or date advance
+requests SAVE immediately, without waiting for another modulo boundary.
+Player-decision deferral retains dirty and due; an actual successful SAVE clears
+the active due state at the next helper call. Explicit planner SAVE actions
+remain on their existing path.
+
+The due interval is ten for routine siege and five otherwise. A readonly chain
+can extend the cycle count without adding unsaved game progress. The next
+existing date advance can add unsaved progress before SAVE: the retained peace
+sample advances seven days, so this is not a guaranteed six-day or universal
+game-day bound.
 
 ## Integration
 
@@ -34,7 +43,7 @@ The original-response reconsume path projects the same retained body without
 replaying the action.
 
 At skipped five-cycle boundaries, inspect `checkpoint_last_decision`.
-Use a distinct stable-siege deferral receipt/count when dirty progress exists;
+Use a distinct due-readonly-chain or stable-siege deferral receipt/count when dirty progress exists;
 do not label that receipt as an unchanged readonly frame. Existing actual
 SAVE/terminal guards and `finish_cumulative_checkpoint` remain unchanged.
 The bounded session-specific integration diff remains external at
@@ -49,10 +58,13 @@ Run with a standard Python interpreter from any checkout:
 python -B -X utf8 tools/g2_saved_campaign/test_checkpoint_cadence_portable.py
 ```
 
-The four focused groups load exact coroutine excerpts from the existing
+The five focused groups load exact coroutine excerpts from the existing
 `FreshQueue.full_loop`, using fake transport, frame and persistence. A compact
 historical 17-cycle/7-day trace produces four SAVE calls with the old helper
 and two with the candidate, with identical AUTO count and ending date.
+The readonly turn1680 carries due until the following actual siege advance1682.
+A separate original prewar trace carries turn2950 through readonly2951 and
+saves after the existing seven-day advance2961.
 The fixture provenance records original source/response hashes; no current
 session, Game, MCP, OBS, desktop or process is accessed.
 

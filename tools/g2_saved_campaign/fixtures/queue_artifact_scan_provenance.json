@@ -1,0 +1,16 @@
+{
+  "source_methods": [
+    {
+      "artifact_method_role": "Before",
+      "source_sha256": "205be84eb6dc147c44edae13819ffe9eb86f376e154529fd181172cab614be37",
+      "method_ast_sha256": "e4b40733f1203f92b34ba15c29fc064f6b08e8dc7c92e198f9db6a586f9e0f67"
+    },
+    {
+      "artifact_method_role": "P12",
+      "source_sha256": "3cf69857efa9e6ef911d9e9375093c6d795389e45ca3fd697329a74b2a6a14c1",
+      "method_ast_sha256": "02c10bddce7170da572bfe963157a90df08c669e40ba2f5f7615bfde2f4cc1db"
+    }
+  ],
+  "benchmark_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\p11-fullcycle-perf01\\artifact-scan-benchmark.json",
+  "benchmark_sha256": "e857c1f7ddce6ff8b4db0680bfe2a2b7a71a5c632c51ffad3eec76b1e9f8ad68"
+}

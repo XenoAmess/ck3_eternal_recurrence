@@ -213,5 +213,27 @@
       "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation37\\p08-queue\\CUMULATIVE-TURN-001691.json",
       "sha256": "e409f9e547b56d3af6a72bfad6aba3be2ca527f6d39a64725502e2cb55b3816a"
     }
-  ]
+  ],
+  "carry_prewar_source_receipts": [
+    {
+      "global_turn": 2950,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation38-cold-prep\\p11-queue\\CUMULATIVE-TURN-002950.json",
+      "sha256": "a2e48abb4633a9f1a420e5e55a62cf149e03376d616cd842ec17bdfa813e015c"
+    },
+    {
+      "global_turn": 2951,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation38-cold-prep\\p11-queue\\CUMULATIVE-TURN-002951.json",
+      "sha256": "62f4e8a9760e756d93d1d229e684abf6a8e86e92351ef50b095090fa3f40e466"
+    },
+    {
+      "global_turn": 2961,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation38-cold-prep\\p11-queue\\CUMULATIVE-TURN-002961.json",
+      "sha256": "e663e4b5332103da182d349de7c911eaa688c80c34697065f0352d143c8ac23f"
+    }
+  ],
+  "P12_frozen_source": {
+    "queue_sha256": "3cf69857efa9e6ef911d9e9375093c6d795389e45ca3fd697329a74b2a6a14c1",
+    "carry_helper_sha256": "d0137da2ca039836f63a612630cdfed341861bd302468477b48d34371eeb8d79",
+    "candidate_full_loop_ast_matches_P12": true
+  }
 }
