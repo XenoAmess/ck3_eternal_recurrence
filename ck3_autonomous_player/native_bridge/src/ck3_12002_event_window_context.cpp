@@ -1064,6 +1064,27 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     std::string_view scope_failure_reason{};
     if (!ReadEventScopeInventory(bindings, identity_before.active_event,
                                  scope_before, scope_failure_reason)) {
+      // A bad saved-scope token prevents all semantic/action binding, but the
+      // active event definition came from an independent native object. Read
+      // that identity and the whole observation prefix again before exposing
+      // its stable source key as an unavailable-frame diagnostic.
+      if (scope_failure_reason == "event_saved_scope_invalid" &&
+          bindings.read_observation_prefix != nullptr) {
+        EventDefinitionIdentityObservationV1 identity_after{};
+        game::Snapshot after{};
+        if (ReadEventDefinitionIdentity(bindings, expected_event_instance_id,
+                                        identity_after) &&
+            identity_after == identity_before &&
+            ReadObservationPrefix(bindings, after) && after == before) {
+          SetUnavailable(output, scope_failure_reason);
+          output.event_definition_key =
+              std::move(identity_before.event_definition_key);
+          output.calculated_event_id = identity_before.calculated_event_id;
+          output.runtime_stats_ordinal = identity_before.runtime_stats_ordinal;
+          output.event_definition_identity_ready = true;
+          return game::ReadEventWindowContextResultV1::unavailable;
+        }
+      }
       SetUnavailable(output, scope_failure_reason);
       return game::ReadEventWindowContextResultV1::unavailable;
     }

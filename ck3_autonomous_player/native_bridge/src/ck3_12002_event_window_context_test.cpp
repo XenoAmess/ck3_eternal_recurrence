@@ -206,6 +206,23 @@ void *GetCurrentEvent(void *) {
   }
   return g_active_event;
 }
+bool ReadCrozierObservationPrefixFixture(
+    const xar::ck3_12002::EventWindowBindings &bindings,
+    xar::game::Snapshot &output) noexcept {
+  xar::ck3_12002::CoreSnapshotPrefix core{};
+  if (!xar::ck3_12002::ReadCoreSnapshot(bindings.events.core, core) ||
+      !xar::ck3_12002::ReadEventsSnapshot(bindings.events, output))
+    return false;
+  output.date_raw = core.clock.date_raw;
+  output.paused = core.clock.paused;
+  output.speed = core.clock.speed;
+  output.map_ready = core.map_ready;
+  output.player_id = core.local_player_id;
+  output.has_played_character = core.has_played_character;
+  output.played_character_id = core.played_character_id;
+  output.played_character_alive = core.played_character_alive;
+  return true;
+}
 
 struct Fixture {
   std::array<std::byte, 0xB0> game_state{};
@@ -882,7 +899,54 @@ bool TestNullSavedCharacterScope() {
     fixture.InitializeOption(0, 3, true, true);
     if (!read() || !output.options[0].enabled || !output.options[0].shown) return false;
     fixture.bindings.allow_null_saved_character_scope = false;
-    if (read() || output.unavailable_reason != "event_saved_scope_invalid") return false;
+    // Historical bindings retain their original all-null unavailable frame.
+    if (read() || output.unavailable_reason != "event_saved_scope_invalid" ||
+        output.event_definition_identity_ready ||
+        !output.event_definition_key.empty() ||
+        output.calculated_event_id.has_value()) return false;
+    const auto legacy_unavailable_wire =
+        ck3_12002::SerializeEventWindowContextV1(output, true);
+    if (legacy_unavailable_wire.find("\"event_definition_key\":null") ==
+            std::string::npos ||
+        legacy_unavailable_wire.find("\"options\":null") ==
+            std::string::npos) return false;
+    // This callback slot exists only on the exact .4 binding. Its fixture
+    // preserves the same authoritative snapshot reads for the partial path.
+    fixture.bindings.read_observation_prefix =
+        &ReadCrozierObservationPrefixFixture;
+    if (read() || output.unavailable_reason != "event_saved_scope_invalid" ||
+        output.status != game::EventWindowContextStatusV1::unavailable ||
+        !output.event_definition_identity_ready ||
+        output.event_definition_key != "xar_test.0001" ||
+        output.calculated_event_id != kCalculatedEventId ||
+        output.runtime_stats_ordinal != kRuntimeStatsOrdinal ||
+        output.root_scope_ready || output.saved_scopes_ready ||
+        output.option_presentation_ready || !output.options.empty() ||
+        output.root_scope.has_value() || !output.saved_scopes.empty())
+      return false;
+    const auto partial_wire =
+        ck3_12002::SerializeEventWindowContextV1(output, true);
+    if (partial_wire.find("\"event_definition_key\":\"xar_test.0001\"") ==
+            std::string::npos ||
+        partial_wire.find("\"calculated_event_id\":") == std::string::npos ||
+        partial_wire.find("\"options\":null") == std::string::npos ||
+        partial_wire.find("\"event_definition_identity_ready\":true") ==
+            std::string::npos) return false;
+    auto forged_partial = output;
+    forged_partial.option_presentation_ready = true;
+    if (!ck3_12002::SerializeEventWindowContextV1(forged_partial, true).empty())
+      return false;
+    forged_partial = output;
+    forged_partial.unavailable_reason = "event_root_scope_invalid";
+    if (!ck3_12002::SerializeEventWindowContextV1(forged_partial, true).empty())
+      return false;
+    g_event_identity_drift = EventIdentityDrift::active_event_pointer;
+    if (read() || output.unavailable_reason != "event_saved_scope_invalid" ||
+        output.event_definition_identity_ready ||
+        !output.event_definition_key.empty() ||
+        output.calculated_event_id.has_value() ||
+        output.runtime_stats_ordinal.has_value()) return false;
+    g_event_identity_drift = EventIdentityDrift::none;
     fixture.bindings.allow_null_saved_character_scope = true;
     Store<std::uint64_t>(fixture.active_event.data(), 0x08, null_payload);
     if (read() || output.unavailable_reason != "event_root_scope_invalid") return false;
@@ -1036,6 +1100,9 @@ bool TestNumericSavedScope() {
 }
 } // namespace
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--partial-identity") {
+    return TestNullSavedCharacterScope() ? 0 : 1;
+  }
   if (argc == 2 && std::string_view(argv[1]) == "--numeric-value-scope") {
     return TestNumericSavedScope() ? 0 : 1;
   }

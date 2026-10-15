@@ -307,6 +307,10 @@ std::string SerializeEventWindowContextV1(
   }
   const bool available =
       context.status == game::EventWindowContextStatusV1::available;
+  const bool partial_definition_identity =
+      !available &&
+      context.unavailable_reason == "event_saved_scope_invalid" &&
+      context.event_definition_identity_ready;
   if ((available && (!context.unavailable_reason.empty() ||
                      context.window_match_count != 1 ||
                      !context.event_definition_identity_ready ||
@@ -326,10 +330,17 @@ std::string SerializeEventWindowContextV1(
                      context.effect_preview_ready ||
                      context.semantic_decision_ready)) ||
       (!available && (context.unavailable_reason.empty() ||
-                      context.event_definition_identity_ready ||
-                      !context.event_definition_key.empty() ||
-                      context.calculated_event_id.has_value() ||
-                      context.runtime_stats_ordinal.has_value() ||
+                      (partial_definition_identity
+                           ? (context.window_match_count != 0 ||
+                              context.event_definition_key.empty() ||
+                              context.event_definition_key.size() >
+                                  kMaximumEventDefinitionKeyBytes ||
+                              !context.calculated_event_id.has_value() ||
+                              !context.runtime_stats_ordinal.has_value())
+                           : (context.event_definition_identity_ready ||
+                              !context.event_definition_key.empty() ||
+                              context.calculated_event_id.has_value() ||
+                              context.runtime_stats_ordinal.has_value())) ||
                       context.root_scope.has_value() ||
                       !context.saved_scopes.empty() ||
                       !context.options.empty() ||
@@ -429,10 +440,19 @@ std::string SerializeEventWindowContextV1(
     output.push_back(']');
   } else {
     AppendString(output, context.unavailable_reason);
-    output += ",\"event_definition_key\":null,"
-              "\"calculated_event_id\":null,"
-              "\"runtime_stats_ordinal\":null,\"root_scope\":null,"
-              "\"saved_scopes\":null,\"options\":null";
+    output += ",\"event_definition_key\":";
+    if (partial_definition_identity) {
+      AppendString(output, context.event_definition_key);
+      output += ",\"calculated_event_id\":" +
+                Number(*context.calculated_event_id);
+      output += ",\"runtime_stats_ordinal\":" +
+                Number(*context.runtime_stats_ordinal);
+    } else {
+      output += "null,\"calculated_event_id\":null,"
+                "\"runtime_stats_ordinal\":null";
+    }
+    output += ",\"root_scope\":null,\"saved_scopes\":null,"
+              "\"options\":null";
   }
   output +=
       ",\"readiness\":{\"event_definition_identity_ready\":";
