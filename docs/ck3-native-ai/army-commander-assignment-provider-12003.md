@@ -85,3 +85,10 @@ movement-weight实读land4.95→5.25、naval26.25→33.75（Q100000 raw495000→
 只将“观察→真实合法最高选择→typed assign→独立readback”这一单军任务记为production-live loop；战争／战斗／route／完整军团分配不由此完成，包内新增游戏日0。
 证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/commander-observer/actual-r28-current-army-01/R28-FINITE-COMMANDER-LOOP.json`；三raw各读一次，随后只用派生缓存，两条reason lane并行，没有新增SDK／测试／窗口／Git。
 native source edbe025c（g59）与Python source b5add463（g60）分开绑定，DLL SHA6e08a432bea5b6fc7f6cdd23bee99008a2212bb3a5793e6abebc2c8d82321135；ROOT后续正常gather日与本冻结包分账。
+
+
+## 2026-10-16 N42 的 1.20.0.4 回执消费修复
+
+N42 的 P03 AUTO29 在实际任命后被 Python normalizer 拒绝：原生 schema 是 ck3_12004_army_commander_assignment_v1，旧接口只接受 .3 名称。闭场后只读一次 Driver 提取的原件见 D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/ROOT-P03-CLOSED-COMMANDER-ASSIGNMENT-EVIDENCE.json。原结果为 accepted/submitted、command_submitted=true，public army318767248、native CArmy285212887、owner40526、requested commander34232、native revision3、date_raw53327184；这证明已提交，不证明已任命，不得重放 AUTO29。
+
+修复只将已知 .4 schema 加入 .3 同合同的允许值，身份、日期、修订、原生合法性和独立读回要求均保留。14 项定向测试通过；ROOT-P03-COMMANDER-SCHEMA-RAW-REPLAY.json 用原始 DTO 复现旧解析失败，并验证新解析通过且 verification_pending 仍为 true。P04 需同一 Game 新鲜语义帧及原生 commander candidates 读回确认实际 current_commander 后继续；此处不授予最终任命或战斗结果信用。原 P03 SDK queue/application 实际退出1/0，Game249712 与 D 盘含决策窗录像保留，无需原生重编或游戏重启。

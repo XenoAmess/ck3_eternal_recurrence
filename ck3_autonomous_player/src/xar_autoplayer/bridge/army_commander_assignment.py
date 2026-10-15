@@ -10,6 +10,10 @@ ASSIGN_ARMY_COMMANDER_V1_CAPABILITY = (
 )
 ASSIGN_ARMY_COMMANDER_V1_STEP_PREFIX = "assign-army-commander-v1-army-"
 ARMY_COMMANDER_ASSIGNMENT_V1_SCHEMA = "ck3_12003_army_commander_assignment_v1"
+ARMY_COMMANDER_ASSIGNMENT_V1_SCHEMAS = (
+    ARMY_COMMANDER_ASSIGNMENT_V1_SCHEMA,
+    "ck3_12004_army_commander_assignment_v1",
+)
 
 
 def assign_army_commander_v1_step(army_id: int, commander_character_id: int) -> str:
@@ -49,7 +53,7 @@ def normalize_army_commander_assignment_v1(
         raise ValueError("native commander assignment envelope disagrees with its source frame")
     value = result.get("army_commander_assignment")
     if not isinstance(value, dict) or (
-        value.get("schema") != ARMY_COMMANDER_ASSIGNMENT_V1_SCHEMA
+        value.get("schema") not in ARMY_COMMANDER_ASSIGNMENT_V1_SCHEMAS
         or value.get("status") not in {"unavailable", "rejected", "submitted", "already_assigned"}
         or value.get("army_id") != expected_army_id
         or value.get("requested_commander_character_id") != expected_commander_character_id
