@@ -213,6 +213,48 @@ class CaseClient:
                 'Original held session is no longer active')
         return report
 
+    def host_exit_before_report(self):
+        """Recognize the allocated host's original wait; never infer CK3 exit."""
+        exit_path = self.live / 'host-original-process-exit.json'
+        if not exit_path.exists():
+            return None
+        if self.report_path.exists():
+            return None
+
+        def original(path):
+            raw = path.read_bytes()
+            value = json.loads(raw)
+            return value, {'path': str(path.resolve()), 'bytes': len(raw),
+                           'sha256': hashlib.sha256(raw).hexdigest()}
+
+        try:
+            exited, exit_pin = original(exit_path)
+            started, started_pin = original(self.live / 'host-started.json')
+        except (FileNotFoundError, json.JSONDecodeError):
+            # The retained supervisor creates these receipts once and flushes
+            # them. A reader can see its incomplete write before the next tick.
+            return None
+        run_id = self.frozen['run_id']
+        require(self.live.name == run_id and started.get('run_id') == exited.get('run_id') == run_id and
+                started.get('argv') == self.frozen['argv'] and
+                started.get('actual_popen_retained') is True and
+                type(started.get('pid')) is int and started['pid'] > 0 and
+                type(exited.get('pid')) is int and exited['pid'] == started['pid'] and
+                exited.get('actual_original_popen_wait') is True and
+                type(exited.get('returncode')) is int,
+                'Original pre-report host exit differs from allocated run/PID/argv/retained wait')
+        stderr = self.live / 'host-stderr.log'
+        stderr_pin, tail = None, ''
+        if stderr.is_file():
+            raw = stderr.read_bytes()
+            stderr_pin = {'path': str(stderr.resolve()), 'bytes': len(raw),
+                          'sha256': hashlib.sha256(raw).hexdigest()}
+            tail = raw[-8192:].decode('utf-8', errors='replace')
+        return {'host_started': started_pin, 'host_exit': exit_pin, 'host_stderr': stderr_pin,
+                'host_returncode': exited['returncode'], 'stderr_tail': tail,
+                'native_report_observed': False, 'normal_close_qualified': False,
+                'native_exit_zero_proven': False, 'business_pass': False}
+
     def wait_hold(self):
         preparation = (self.selection.prepared or {}).get('preparation', {})
         budget = 'timeout' if preparation.get('initial_plan_original_business') is True else 'readiness_timeout'
@@ -233,6 +275,7 @@ class CaseClient:
             'deadline_at_utc_estimated': datetime.fromtimestamp(started_utc.timestamp() + seconds, timezone.utc).isoformat(),
             'utc_deadline_is_estimate': True, 'new_wait_or_replay': False, 'business_pass': False})
         report = None
+        host_exit = None
 
         def record(status, observed, error=None):
             value = report if isinstance(report, dict) else {}
@@ -248,6 +291,7 @@ class CaseClient:
                 'restore_status': restore.get('status'), 'restore_finished_at': restore.get('finished_at'),
                 'hold_until_utc_estimated': value.get('hold_until_utc_estimated'),
                 'error': type(error).__name__ + ': ' + str(error) if error is not None else None,
+                'host_exit_before_report': host_exit,
                 'new_wait_or_replay': False, 'business_pass': False})
 
         try:
@@ -255,6 +299,11 @@ class CaseClient:
                 try:
                     report = self.read_report(allow_error=True)
                 except FileNotFoundError:
+                    host_exit = self.host_exit_before_report()
+                    if host_exit is not None:
+                        raise ValueError('Original shared host exited before report '
+                            '(exit ' + str(host_exit['host_returncode']) + '): ' +
+                            (host_exit['stderr_tail'].strip() or 'No stderr diagnostic was recorded'))
                     time.sleep(.1); continue
                 # A failed original startup can already own a real held process.
                 # Retain it before the unchanged business-error gate rejects entry.
@@ -272,7 +321,8 @@ class CaseClient:
                 time.sleep(.1)
             raise TimeoutError('Original case readiness budget elapsed')
         except BaseException as error:
-            record('READINESS_TIMEOUT' if isinstance(error, TimeoutError) else 'READINESS_ERROR',
+            record('READINESS_HOST_EXIT_BEFORE_REPORT' if host_exit is not None else
+                   'READINESS_TIMEOUT' if isinstance(error, TimeoutError) else 'READINESS_ERROR',
                    time.monotonic(), error)
             raise
 
