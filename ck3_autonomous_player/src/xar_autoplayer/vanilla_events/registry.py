@@ -330,6 +330,18 @@ def query_vanilla_event_knowledge_v1(
             unavailable_reason="invalid_event_definition_key",
         )
     if ck3_build == "1.20.0.4":
+        from .records_faith_creation1021_12004 import (
+            EVENT_KEY, FAITH_CREATION1021_12004_RECORD,
+        )
+
+        if event_definition_key == EVENT_KEY:
+            record = FAITH_CREATION1021_12004_RECORD
+            return _knowledge_response(
+                status="available", event_definition_key=event_definition_key,
+                ck3_build=ck3_build, contract=record["contract"],
+                analysis=record["analysis"], observations=record["observations"],
+                unavailable_reason=None,
+            )
         from .migration_1_20_0_4 import migrate_event_knowledge
 
         migrated = migrate_event_knowledge(event_definition_key,

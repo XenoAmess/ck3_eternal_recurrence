@@ -242,11 +242,38 @@ def load_vanilla_event_source_index(
         ) from exc
     if path is None and build == "1.20.0.4":
         from .migration_1_20_0_4 import source_reuse_metadata
+        from .records_faith_creation1021_12004 import (
+            EVENT_KEY, FAITH_CREATION1021_12004_SOURCE,
+        )
 
         document = validate_vanilla_event_source_index(document)
         document.update(ck3_build=build,
             ck3_exe_sha256=SUPPORTED_CK3_EXE_SHA256[build],
             source_reuse_1_20_0_4=source_reuse_metadata())
+        events = document["events"]
+        if EVENT_KEY in events:
+            raise VanillaEventSourceIndexError("current source addition duplicates inherited event")
+        document["events"] = dict(sorted({
+            **events, EVENT_KEY: deepcopy(FAITH_CREATION1021_12004_SOURCE),
+        }.items()))
+        rows = list(document["events"].values())
+        candidates = [candidate for row in rows for candidate in row["caller_candidates"]]
+        document["audit"] = {
+            "registered_event_count": len(rows),
+            "unique_definition_count": len(rows),
+            "definition_file_count": len({row["definition"]["relative_path"] for row in rows}),
+            "missing_definition_count": 0,
+            "ambiguous_definition_count": 0,
+            "namespace_mismatch_count": 0,
+            "caller_candidate_reference_count": len(candidates),
+            "external_caller_event_count": sum(row["caller_candidate_resolution"] == "external-definition-file" for row in rows),
+            "same_file_only_caller_event_count": sum(row["caller_candidate_resolution"] == "same-definition-file-only" for row in rows),
+            "caller_candidate_file_count": len({row["relative_path"] for row in candidates}),
+        }
+        document["source_additions_1_20_0_4"] = {
+            "event_keys": [EVENT_KEY],
+            "method": "bounded exact-build source review; inherited rows unchanged",
+        }
         document["dataset_sha256"] = compute_source_index_dataset_sha256(document)
     return validate_vanilla_event_source_index(document)
 
