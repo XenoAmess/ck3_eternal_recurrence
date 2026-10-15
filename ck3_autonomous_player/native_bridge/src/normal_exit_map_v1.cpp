@@ -2,6 +2,7 @@
 #include "xar_bridge/normal_exit_map_source_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ingame_private_gui_profile_v1.hpp"
+#include "xar_bridge/ck3_12004_ingame_ui.hpp"
 #include <windows.h>
 
 #include <array>
@@ -19,9 +20,88 @@ constexpr std::array<Target,3> kTargets{{
 }};
 struct Census {
   void *context=nullptr, *owner=nullptr;
+  void *resign_window=nullptr;
+  NormalExitAutosaveV1 autosave{};
   std::array<void *,3> roots{},targets{},vtables{};
   std::array<NormalExitMapTargetV1,3> observations{};
 };
+
+template<class T> bool AutosaveValue(const void *object,std::size_t offset,T &value) noexcept {
+  SIZE_T got=0;
+  return object && ReadProcessMemory(GetCurrentProcess(),
+      static_cast<const unsigned char *>(object)+offset,&value,sizeof(value),&got) && got==sizeof(value);
+}
+bool AutosaveCodePins(std::uintptr_t base) noexcept {
+  constexpr std::array<unsigned char,8> getter{0x0f,0xb6,0x81,0xc8,0,0,0,0xc3};
+  constexpr std::array<unsigned char,8> show{0x0f,0xb6,0x81,0xc9,0,0,0,0xc3};
+  constexpr std::array<unsigned char,22> toggle{0x40,0x53,0x48,0x83,0xec,0x20,
+      0x80,0xb9,0xc8,0,0,0,0,0x48,0x8b,0xd9,0x0f,0x94,0xc0,0x88,0x81,0xc8};
+  std::array<unsigned char,8> first{},second{};
+  std::array<unsigned char,22> third{};
+  return AutosaveValue(reinterpret_cast<void *>(base),0x12f70e0,first) && first==getter &&
+      AutosaveValue(reinterpret_cast<void *>(base),0x12f7100,second) && second==show &&
+      AutosaveValue(reinterpret_cast<void *>(base),0x12f76b0,third) && third==toggle;
+}
+bool AutosaveCast(std::uintptr_t base,void *idler,void *&result) noexcept {
+  using Cast=void * (__fastcall *)(void *,long,const void *,const void *,int);
+#if defined(_MSC_VER)
+  __try {
+#endif
+    result=reinterpret_cast<Cast>(base+ck3_12004::kUiRuntimeDynamicCastRva12004V1)(idler,0,
+        reinterpret_cast<void *>(base+ck3_12004::kUiIdlerBaseTypeDescriptor12004V1),
+        reinterpret_cast<void *>(base+ck3_12004::kUiIngameIdlerTypeDescriptor12004V1),0);
+    return result!=nullptr;
+#if defined(_MSC_VER)
+  } __except(EXCEPTION_EXECUTE_HANDLER) { result=nullptr;return false; }
+#endif
+}
+bool ToggleAutosave(std::uintptr_t base,void *window) noexcept {
+  using Toggle=void (__fastcall *)(void *);
+#if defined(_MSC_VER)
+  __try {
+#endif
+    reinterpret_cast<Toggle>(base+0x12f76b0)(window);return true;
+#if defined(_MSC_VER)
+  } __except(EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+}
+bool ReadAutosave(const ZhongguoScoreboardNativeEnvironmentV1 &env,Census &census) {
+  if(env.gui_abi_revision!=GuiAbiRevisionV1::crozier12004 || !census.observations[2].root_visible)
+    return false;
+  const auto base=env.module_base;
+  void *global=nullptr,*idler=nullptr,*cast=nullptr,*handler=nullptr,*vt=nullptr;
+  void *window=nullptr,*back_handler=nullptr,*root=nullptr;
+  unsigned char save=0,show=0;
+  if(!AutosaveCodePins(base) ||
+      !AutosaveValue(reinterpret_cast<void *>(base),ck3_12004::kUiIdlerRootSlotRva12004V1,global) ||
+      !AutosaveValue(global,0x10,idler) || !AutosaveCast(base,idler,cast) ||
+      !AutosaveValue(cast,0x88,handler) || !AutosaveValue(handler,0,vt) ||
+      reinterpret_cast<std::uintptr_t>(vt)!=base+ck3_12004::kUiHandlerPrimaryVtable12004V1 ||
+      !AutosaveValue(handler,0x1f8,window) || !AutosaveValue(window,0,vt) ||
+      reinterpret_cast<std::uintptr_t>(vt)!=base+0x4545ab8 ||
+      !AutosaveValue(window,0xa0,back_handler) || back_handler!=handler ||
+      !AutosaveValue(window,0x60,root) || root!=census.roots[2] ||
+      !AutosaveValue(window,0xc8,save) || save>1 || !AutosaveValue(window,0xc9,show) || show>1)
+    return false;
+  ZhongguoScoreboardAccessV1 access{};
+  NamedGuiTreeInspectionV1 tree{};
+  if(!InspectNamedGuiSubtreeV1(access,base,root,"ingame_resign_confirmation",tree) ||
+      !tree.root_available || tree.truncated) return false;
+  const NamedGuiWidgetInspectionV1 *control=nullptr;
+  for(const auto &row:tree.widgets) if(row.runtime_name=="save_checkbox") {
+    if(control) return false;
+    control=&row;
+  }
+  if(!control) return false;
+  census.resign_window=window;
+  census.autosave.state_available=true;
+  census.autosave.control_visible=show!=0 && control->effective_visible;
+  // Stock source binds this visible row to IsShowSave && !IsIronmanEnabled;
+  // its only checkbox has enabled=!IsIronmanEnabled. Ironman is never toggled.
+  census.autosave.control_enabled=census.autosave.control_visible && control->enabled;
+  census.autosave.should_save=save!=0;
+  return true;
+}
 bool Pins(const ZhongguoScoreboardNativeEnvironmentV1 &env,
     const ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch) noexcept {
   if(!env.exact_build_admitted || !dispatch.exact_build_admitted ||
@@ -98,12 +178,14 @@ bool ReadCensus(const ZhongguoScoreboardNativeEnvironmentV1 &env,
   census={}; ZhongguoScoreboardAccessV1 access{};
   if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,census.context,census.owner)) return false;
   for(std::size_t i=0;i<kTargets.size();++i) if(!Inspect(i,env,dispatch,census)) return false;
+  ReadAutosave(env,census); // Optional for old .3/hidden-confirmation contexts.
   void *context=nullptr,*owner=nullptr;
   return ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner) && context==census.context && owner==census.owner;
 }
 bool Same(const Census &first,const Census &second) noexcept {
   return first.context==second.context && first.owner==second.owner && first.roots==second.roots &&
-      first.targets==second.targets && first.vtables==second.vtables && first.observations==second.observations;
+      first.targets==second.targets && first.vtables==second.vtables && first.observations==second.observations &&
+      first.resign_window==second.resign_window && first.autosave==second.autosave;
 }
 bool Current(NormalExitMapContextV1 &ctx,const MainThreadQueryMailboxV1 &mailbox,
     const MainThreadExecutionStampV1 &stamp,const ZhongguoScoreboardNativeEnvironmentV1 &env,
@@ -121,6 +203,12 @@ bool Signature(NormalExitMapContextV1 &ctx,const MainThreadExecutionStampV1 &sta
   add(ctx.request.expected_game_pid); add(ctx.request.expected_process_creation_filetime_100ns);
   add(ctx.request.expected_player_character_id); add(stamp.thread_id); add(stamp.pump_epoch);
   add(ctx.expected_snapshot.date_raw); add(reinterpret_cast<std::uintptr_t>(census.context)); add(reinterpret_cast<std::uintptr_t>(census.owner));
+  add(reinterpret_cast<std::uintptr_t>(census.resign_window));
+  add(census.autosave.state_available);add(census.autosave.control_visible);
+  add(census.autosave.control_enabled);add(census.autosave.should_save);
+  session.queried_autosave_claimed=session.autosave_disable_claimed.load(std::memory_order_acquire);
+  add(session.queried_autosave_claimed);
+  session.queried_autosave=census.autosave;session.queried_resign_window=census.resign_window;
   for(std::size_t i=0;i<kTargets.size();++i) {
     add(reinterpret_cast<std::uintptr_t>(census.roots[i])); add(reinterpret_cast<std::uintptr_t>(census.targets[i]));
     add(reinterpret_cast<std::uintptr_t>(census.vtables[i])); add(census.observations[i].dispatch_admitted);
@@ -142,6 +230,8 @@ bool BoundQuery(const NormalExitMapContextV1 &ctx,const Census &census) noexcept
       s.queried_inventory_sha256==ctx.request.source_inventory_sha256 && s.queried_snapshot==ctx.expected_snapshot &&
       s.queried_gui_context==census.context && s.queried_gui_owner==census.owner &&
       s.queried_roots==census.roots && s.queried_targets==census.targets && s.queried_vtables==census.vtables &&
+      s.queried_resign_window==census.resign_window && s.queried_autosave==census.autosave &&
+      s.queried_autosave_claimed==s.autosave_disable_claimed.load(std::memory_order_acquire) &&
       s.queried_observations==census.observations && NormalExitMapStageConsumptionMatchesQueryV1(s);
 }
 bool DispatchStage(std::size_t index,NormalExitMapContextV1 &ctx,const MainThreadQueryMailboxV1 &mailbox,
@@ -213,6 +303,8 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
     if(!ReadCensus(env,dispatch,initial) || !Current(ctx,mailbox,stamp,env,dispatch,verified) || !Same(initial,verified))
       return reject("fresh_fixed_targets_census_changed");
     out.targets=initial.observations; out.confirmation_visible=initial.observations[2].root_visible;
+    out.exit_autosave=initial.autosave;
+    out.exit_autosave.disable_claimed=session.autosave_disable_claimed.load(std::memory_order_acquire);
     out.stage_consumed=ReadNormalExitMapStageConsumptionV1(session);
     if(ctx.request.action==NormalExitMapActionV1::query_context) {
       session.signature.clear();
@@ -225,6 +317,27 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
     // A mutation consumes this query authorization before any native action.
     // A later read-only query can issue a fresh signature but never resets CAS.
     session.signature.clear();
+    if(ctx.request.action==NormalExitMapActionV1::disable_exit_autosave) {
+      if(!initial.observations[2].dispatch_admitted || !initial.resign_window)
+        return reject("official_autosave_confirmation_unavailable");
+      const auto read=[&](NormalExitAutosaveV1 &state) {
+        Census fresh{};
+        if(!Current(ctx,mailbox,stamp,env,dispatch,fresh) ||
+            fresh.context!=initial.context || fresh.owner!=initial.owner ||
+            fresh.resign_window!=initial.resign_window || fresh.roots[2]!=initial.roots[2]) return false;
+        state=fresh.autosave;return true;
+      };
+      const bool disabled=DisableNormalExitAutosaveV1(session.autosave_disable_claimed,
+          initial.autosave,read,[&] { return ToggleAutosave(env.module_base,initial.resign_window); },out.exit_autosave);
+      if(disabled) {
+        out.status=NormalExitMapStatusV1::autosave_disabled;
+        out.reason="official_exit_autosave_false_freshly_observed";
+      } else if(out.exit_autosave.disable_claimed) {
+        out.status=NormalExitMapStatusV1::dispatch_unknown_claimed;
+        out.reason="exit_autosave_toggle_claimed_result_unknown_no_retry";
+      } else out.reason="exit_autosave_state_changed_or_control_unavailable";
+      return true;
+    }
     if(ctx.request.action==NormalExitMapActionV1::confirm_desktop) {
       if(!initial.observations[2].dispatch_admitted) return reject("fresh_official_desktop_confirmation_not_admitted");
       Census after{}; DispatchStage(2,ctx,mailbox,stamp,env,dispatch,initial,after); return true;
@@ -258,7 +371,7 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
     // SameExecutionBoundary rule unchanged, including synchronous teardown drift.
     return true;
   } catch(...) {
-    bool claimed=false; for(const auto &d:out.dispatches) claimed=claimed||d.claim_latched;
+    bool claimed=out.exit_autosave.disable_claimed; for(const auto &d:out.dispatches) claimed=claimed||d.claim_latched;
     out.status=claimed?NormalExitMapStatusV1::dispatch_unknown_claimed:NormalExitMapStatusV1::unavailable;
     out.orderly_exit_verified=false; out.autosave_verified=false;
     try { out.reason="normal_exit_map_provider_exception"; } catch(...) {}

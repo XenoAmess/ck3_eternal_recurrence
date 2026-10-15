@@ -16,7 +16,7 @@ except ImportError:
 
 NORMAL_EXIT_MAP_CAPABILITY = 'normal-exit-map-v1'
 NORMAL_EXIT_MAP_STEP = 'normal-exit-map-v1'
-MAP_EXIT_ACTIONS = ('prepare_confirmation', 'continue_preparation', 'confirm_desktop')
+MAP_EXIT_ACTIONS = ('prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop')
 SIGNATURE_PATTERN = r'^[0-9a-f]{64}$'
 QUERY_INPUT_SCHEMA = {
     'type': 'object', 'properties': {'expected_revision': {'type': 'integer', 'minimum': 1}},
@@ -66,7 +66,7 @@ def normalize_request_arguments(arguments: dict) -> dict:
         raise ValueError('closed request input requires action, expected_revision and expected_exit_context_signature')
     action = arguments['action']
     if type(action) is not str or action not in MAP_EXIT_ACTIONS:
-        raise ValueError('only map prepare_confirmation, continue_preparation and confirm_desktop are supported')
+        raise ValueError('only fixed map normal-exit actions are supported')
     return {'action': action,
             'expected_revision': positive_integer(arguments['expected_revision'], 'expected_revision'),
             'expected_exit_context_signature': exit_signature(arguments['expected_exit_context_signature'])}
@@ -178,12 +178,12 @@ def continue_preparation_context_ready_v1(native: object) -> bool:
 
 
 def normalize_native_exit_observation(raw: object, binding: ExitWireBinding, action: str) -> dict:
-    if type(raw) is not dict or set(raw) != NATIVE_OBSERVATION_KEYS:
+    if type(raw) is not dict or set(raw) not in (NATIVE_OBSERVATION_KEYS, NATIVE_OBSERVATION_KEYS | {'exit_autosave'}):
         raise ValueError('normal-exit native observation has unrecognized or missing fields')
     if (raw['schema'] != 'ck3-normal-exit-map-v1' or raw['step'] != NORMAL_EXIT_MAP_STEP
             or raw['action'] != action or raw['status'] not in {
                 'unavailable', 'context_observed', 'confirmation_observed',
-                'dispatch_pending', 'dispatch_unknown_claimed'}):
+                'dispatch_pending', 'dispatch_unknown_claimed', 'autosave_disabled'}):
         raise ValueError('normal-exit native observation identity/status mismatch')
     for key, expected in {
         'native_revision': binding.expected_revision,
@@ -202,6 +202,25 @@ def normalize_native_exit_observation(raw: object, binding: ExitWireBinding, act
             raise ValueError(f'normal-exit native {key} is not a boolean observation')
     if raw['orderly_exit_verified'] or raw['autosave_verified']:
         raise ValueError('native ACK cannot establish orderly process exit or save integrity')
+    autosave = raw.get('exit_autosave')
+    if 'exit_autosave' in raw:
+        keys = {'state_available', 'control_visible', 'control_enabled', 'should_save',
+                'disable_claimed', 'dispatch_invoked', 'postcondition_observed'}
+        if type(autosave) is not dict or set(autosave) != keys or any(type(v) is not bool for v in autosave.values()):
+            raise ValueError('normal-exit autosave requires closed actual boolean observations')
+        if action == 'query_context' and (autosave['dispatch_invoked'] or autosave['postcondition_observed']):
+            raise ValueError('normal-exit autosave query cannot toggle or prove a mutation')
+    if action == 'disable_exit_autosave':
+        if autosave is None:
+            raise ValueError('normal-exit autosave disable requires an enabled native provider')
+        if type(raw['dispatches']) is not list or any(type(d) is not dict or
+                d.get('claim_latched') or d.get('dispatch_invoked') for d in raw['dispatches']):
+            raise ValueError('normal-exit autosave disable cannot dispatch an exit stage')
+    if raw['status'] == 'autosave_disabled' and (action != 'disable_exit_autosave' or
+            not raw['confirmation_visible'] or autosave is None or
+            any(autosave[k] is not True for k in ('state_available', 'control_visible', 'control_enabled', 'postcondition_observed')) or
+            autosave['should_save'] is not False):
+        raise ValueError('normal-exit autosave false was not freshly observed')
     if type(raw['reason']) is not str:
         raise ValueError('normal-exit native reason is missing')
     if raw['status'] != 'unavailable':
@@ -313,7 +332,7 @@ def normalize_public_exit_result(result: object, *, action: str,
                 or type(result.get('typed_normal_exit_observed')) is not bool
                 or type(result.get('process_exit_observed')) is not bool):
             raise ValueError('normal-exit backend request is not a typed consumed-phase result')
-        if action in {'prepare_confirmation', 'continue_preparation'} and (result['typed_normal_exit_observed'] or result['process_exit_observed']):
+        if action in {'prepare_confirmation', 'continue_preparation', 'disable_exit_autosave'} and (result['typed_normal_exit_observed'] or result['process_exit_observed']):
             raise ValueError('normal-exit preparation cannot establish a process exit')
         if action == 'confirm_desktop' and result.get('snapshot_after_required') is not False:
             raise ValueError('terminal normal-exit backend must preserve handle facts without a final live snapshot')

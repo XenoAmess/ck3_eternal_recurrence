@@ -6,6 +6,7 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
+#include "xar_bridge/normal_exit_autosave_v1.hpp"
 
 #include <array>
 #include <atomic>
@@ -25,10 +26,12 @@ inline constexpr bool kNormalExitMapV1CompiledEnabled = false;
 enum class NormalExitMapActionV1 : std::uint32_t {
   query_context = 0, prepare_confirmation = 1, confirm_desktop = 2,
   continue_preparation = 3,
+  disable_exit_autosave = 4,
 };
 enum class NormalExitMapStatusV1 : std::uint32_t {
   unavailable = 0, context_observed = 1, confirmation_observed = 2,
   dispatch_pending = 3, dispatch_unknown_claimed = 4,
+  autosave_disabled = 5,
 };
 
 // This is the complete, closed production wire request; native addresses,
@@ -74,6 +77,7 @@ struct NormalExitMapObservationV1 {
   bool frame_verified = false, context_signature_verified = false;
   bool confirmation_visible = false;
   bool orderly_exit_verified = false, autosave_verified = false;
+  NormalExitAutosaveV1 exit_autosave{};
   // Actual lifetime CAS state: menu opener, confirmation opener, desktop confirmation.
   // This is independent of this command's dispatches and never inferred from ACK.
   std::array<bool, 3> stage_consumed{};
@@ -91,6 +95,10 @@ struct NormalExitMapSessionV1 {
   std::uint32_t process_pid = 0;
   std::uint64_t process_creation_filetime_100ns = 0, query_epoch = 0;
   std::array<std::atomic<bool>, 3> claimed{};
+  std::atomic<bool> autosave_disable_claimed{false};
+  NormalExitAutosaveV1 queried_autosave{};
+  bool queried_autosave_claimed = false;
+  void *queried_resign_window = nullptr;
   std::string signature;
   std::string queried_inventory_sha256;
   game::Snapshot queried_snapshot{};

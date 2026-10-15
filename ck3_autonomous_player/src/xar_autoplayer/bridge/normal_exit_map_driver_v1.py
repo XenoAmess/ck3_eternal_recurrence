@@ -152,6 +152,11 @@ def request_normal_exit_v1(driver, action: str, *, expected_revision: int,
         raise BridgeUnavailableError('normal-exit continuation requires fresh stage 0 consumed, stage 1 available and no confirmation')
     if action == 'confirm_desktop' and not context['native']['confirmation_visible']:
         raise BridgeUnavailableError('desktop confirmation requires a fresh actual official modal query')
+    if action == 'disable_exit_autosave':
+        state = context['native'].get('exit_autosave', {})
+        if (not context['native']['confirmation_visible'] or
+                any(state.get(key) is not True for key in ('state_available', 'control_visible', 'control_enabled'))):
+            raise BridgeUnavailableError('exit autosave disable requires the actual visible enabled stock save checkbox')
     directory = driver._native_driver_state_path().parent / 'normal-exit-map-requests'
     directory.mkdir(parents=True, exist_ok=True)
     identity = {'game_pid': wire.expected_game_pid,
@@ -213,6 +218,7 @@ def request_normal_exit_v1(driver, action: str, *, expected_revision: int,
                   'status': native['status'] if native else 'dispatch_unknown_claimed',
                   'native_observation': native, 'claim_consumed': True, 'retry_authorized': False,
                   'confirmation_observed': native is not None and native['status'] == 'confirmation_observed',
+                  'exit_autosave_disabled_observed': native is not None and native['status'] == 'autosave_disabled',
                   'process_exit_observed': False, 'typed_normal_exit_observed': False,
                   'orderly_exit_verified': False, 'autosave_verified': False, 'reason': error_text}
     result.update({'public_revision': expected_revision, 'request_id': request_id,

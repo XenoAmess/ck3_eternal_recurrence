@@ -4184,16 +4184,16 @@ def create_server(
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_normal_exit_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
-        """Observe the actual map exit context and backend signature; no dispatch."""
+        """Observe stock map exit context, supported autosave state and signature; no dispatch."""
         return service.query_normal_exit_context_v1(expected_revision=expected_revision)
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
     def ck3_request_normal_exit_v1(
-        action: Literal["prepare_confirmation", "continue_preparation", "confirm_desktop"],
+        action: Literal["prepare_confirmation", "continue_preparation", "disable_exit_autosave", "confirm_desktop"],
         expected_revision: NormalExitRevisionV1,
         expected_exit_context_signature: NormalExitSignatureV1,
     ) -> dict[str, object]:
-        """Claim one stock map exit phase; confirmation preserves native save policy."""
+        """Claim a stock exit phase or set exit autosave=false; native readback is required."""
         return service.request_normal_exit_v1(action, expected_revision=expected_revision,
             expected_exit_context_signature=expected_exit_context_signature)
 

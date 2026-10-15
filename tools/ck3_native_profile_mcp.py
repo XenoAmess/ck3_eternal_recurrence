@@ -1147,9 +1147,10 @@ def create_server(service: NativeProfileService, *, player_control_tools: bool =
         return service.query_normal_exit_context(expected_revision)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
     def ck3_request_normal_exit_v1(
-        action: Literal["prepare_confirmation", "continue_preparation", "confirm_desktop"], expected_revision: NormalExitRevisionV1,
+        action: Literal["prepare_confirmation", "continue_preparation", "disable_exit_autosave", "confirm_desktop"], expected_revision: NormalExitRevisionV1,
         expected_exit_context_signature: NormalExitSignatureV1,
     ) -> dict[str, object]:
+        """Claim a stock exit phase or set exit autosave=false with native readback."""
         return service.request_normal_exit(action, expected_revision, expected_exit_context_signature)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
     def ck3_query_profile_current_actor_stress_adjustment_v1(

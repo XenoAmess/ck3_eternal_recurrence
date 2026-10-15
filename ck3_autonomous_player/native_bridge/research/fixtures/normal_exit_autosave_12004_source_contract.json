@@ -1,0 +1,54 @@
+{
+  "schema": "ck3-normal-exit-autosave-source-contract-v1",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stock_gui": {
+    "relative_path": "gui/window_resign_confirmation.gui",
+    "sha256": "9b8ca6d2cc17ecb575c21f5a683719d4ce6472958e3bf311e2419db09c34d1c9"
+  },
+  "registered_bindings": {
+    "ShouldSave": {
+      "name_rva": 72636608,
+      "registration_rva": 1802361,
+      "callback_rva": 19888336,
+      "native_rva": 19886304,
+      "native_prefix_hex": "0fb681c8000000c3"
+    },
+    "ToggleShouldSave": {
+      "name_rva": 72636584,
+      "registration_rva": 1802739,
+      "callback_rva": 19888400,
+      "native_rva": 19887792,
+      "native_prefix_hex": "40534883ec2080b9c800000000488bd90f94c08881c8"
+    },
+    "IsShowSave": {
+      "name_rva": 72636624,
+      "registration_rva": 1803449,
+      "callback_rva": 19888496,
+      "native_rva": 19886336,
+      "native_prefix_hex": "0fb681c9000000c3"
+    }
+  },
+  "resign_window": {
+    "constructor_witness_rva": 11461897,
+    "handler_member_offset": 504,
+    "primary_vtable_rva": 72637112,
+    "primary_col_rva": 78874232,
+    "type_descriptor_rva": 91670008,
+    "decorated_type_name": ".?AVCResignConfirmationWindow@@",
+    "gui_root_offset": 96,
+    "handler_back_pointer_offset": 160,
+    "should_save_offset": 200,
+    "show_save_offset": 201
+  },
+  "fixed_semantics": {
+    "root": "ingame_resign_confirmation",
+    "save_control": "save_checkbox",
+    "action": "disable_exit_autosave",
+    "desired_should_save": false,
+    "ironman_supported": false,
+    "already_false_calls_toggle": false,
+    "lifetime_disable_claim": true
+  },
+  "live_qualified": false
+}

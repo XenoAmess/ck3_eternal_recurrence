@@ -269,7 +269,7 @@ class ContinuePreparationTests(unittest.TestCase):
 class ContinueEncoderAndSchemaTests(unittest.TestCase):
     def test_same_closed_request_schema_and_actual_encoder_thirteen_fields(self):
         self.assertEqual(MAP_EXIT_ACTIONS,
-                         ('prepare_confirmation', 'continue_preparation', 'confirm_desktop'))
+                         ('prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop'))
         self.assertEqual(REQUEST_INPUT_SCHEMA['properties']['action']['enum'], list(MAP_EXIT_ACTIONS))
         self.assertFalse(REQUEST_INPUT_SCHEMA['additionalProperties'])
         arguments = {'request_id': 'continue-request', 'action': 'continue_preparation',

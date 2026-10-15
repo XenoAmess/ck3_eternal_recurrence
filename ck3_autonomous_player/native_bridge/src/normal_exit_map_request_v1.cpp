@@ -90,6 +90,7 @@ std::string_view StatusName(NormalExitMapStatusV1 status) noexcept {
   case NormalExitMapStatusV1::confirmation_observed: return "confirmation_observed";
   case NormalExitMapStatusV1::dispatch_pending: return "dispatch_pending";
   case NormalExitMapStatusV1::dispatch_unknown_claimed: return "dispatch_unknown_claimed";
+  case NormalExitMapStatusV1::autosave_disabled: return "autosave_disabled";
   default: return "unavailable";
   }
 }
@@ -101,6 +102,7 @@ std::string_view NormalExitMapActionNameV1(NormalExitMapActionV1 action) noexcep
   case NormalExitMapActionV1::prepare_confirmation: return "prepare_confirmation";
   case NormalExitMapActionV1::confirm_desktop: return "confirm_desktop";
   case NormalExitMapActionV1::continue_preparation: return "continue_preparation";
+  case NormalExitMapActionV1::disable_exit_autosave: return "disable_exit_autosave";
   default: return {};
   }
 }
@@ -156,6 +158,7 @@ bool ParseNormalExitMapRequestV1(std::string_view json,
     else if (action == "prepare_confirmation") request.action = NormalExitMapActionV1::prepare_confirmation;
     else if (action == "confirm_desktop") request.action = NormalExitMapActionV1::confirm_desktop;
     else if (action == "continue_preparation") request.action = NormalExitMapActionV1::continue_preparation;
+    else if (action == "disable_exit_autosave") request.action = NormalExitMapActionV1::disable_exit_autosave;
     else return reject("unsupported_exit_action_frontend_unavailable");
     if (request.action == NormalExitMapActionV1::query_context) {
       if (fields.size() != 12 || fields.contains("expected_exit_context_signature"))
@@ -215,6 +218,15 @@ std::string SerializeNormalExitMapObservationV1(const NormalExitMapObservationV1
   flag("stock_files_verified",v.stock_files_verified); flag("loaded_source_binding_verified",v.loaded_source_binding_verified);
   flag("frame_verified",v.frame_verified); flag("context_signature_verified",v.context_signature_verified);
   flag("confirmation_visible",v.confirmation_visible);
+  json += ",\"exit_autosave\":{\"state_available\":";
+  json += v.exit_autosave.state_available ? "true" : "false";
+  flag("control_visible", v.exit_autosave.control_visible);
+  flag("control_enabled", v.exit_autosave.control_enabled);
+  flag("should_save", v.exit_autosave.should_save);
+  flag("disable_claimed", v.exit_autosave.disable_claimed);
+  flag("dispatch_invoked", v.exit_autosave.dispatch_invoked);
+  flag("postcondition_observed", v.exit_autosave.postcondition_observed);
+  json += '}';
   // These facts are outside this provider's proof domain, even for a malformed
   // internal observation. Never serialize caller/fixture values as exit/save proof.
   flag("orderly_exit_verified",false); flag("autosave_verified",false);
