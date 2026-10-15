@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 from pathlib import Path
 import sys
 import threading
@@ -94,9 +95,9 @@ def test_semantic_wait_observes_later_event_revision_without_history():
         take_internal_semantic_snapshot=lambda: calls.append(('semantic',)) or next(frames),
         take_snapshot=lambda: pytest.fail('full history snapshot used'),
     )
-    fake._wait_for_life_advance_change = lambda revision, *, timeout_seconds: (
+    fake._wait_for_life_advance_change = lambda revision, *, timeout_seconds, before_snapshot=None: (
         NativeHeadlessGameplayDriver._wait_for_life_advance_change(
-            fake, revision, timeout_seconds=timeout_seconds))
+            fake, revision, timeout_seconds=timeout_seconds, before_snapshot=before_snapshot))
     changed = NativeHeadlessGameplayDriver._wait_for_life_advance_snapshot(
         fake, _frame(10, 5),
         lambda frame: frame['active_event'] is None,
@@ -105,6 +106,72 @@ def test_semantic_wait_observes_later_event_revision_without_history():
     assert changed['revision'] == 12
     assert [row[0] for row in calls] == ['wait', 'semantic', 'wait', 'semantic']
     assert [row[1] for row in calls if row[0] == 'wait'] == [10, 11]
+
+
+@pytest.mark.parametrize('enabled,snapshot_supported,wait_raises', [
+    (True, True, False), (False, True, False),
+    (True, False, False), (True, True, True),
+])
+def test_public_change_timing_reuses_clock_frames_without_extra_reads(
+    tmp_path, monkeypatch, enabled, snapshot_supported, wait_raises,
+):
+    path = tmp_path / 'clock-timing.jsonl'
+    if enabled:
+        monkeypatch.setenv('XAR_CK3_ARMY_TIMING_JSONL', str(path))
+    else:
+        monkeypatch.delenv('XAR_CK3_ARMY_TIMING_JSONL', raising=False)
+    calls = []
+    before = {**_frame(10, 5), 'native_revision': 100,
+              'unrelated_body': object()}
+    after = {**_frame(12, 5), 'native_revision': 145,
+             'date_raw': before['date_raw'] + 3 * 24,
+             'unrelated_body': object()}
+    original_before = dict(before)
+    failure = RuntimeError('synthetic public wait failure')
+
+    def wait(revision, timeout):
+        calls.append(('wait', revision, timeout))
+        if wait_raises:
+            raise failure
+
+    fake = SimpleNamespace(
+        state=SimpleNamespace(
+            capabilities=lambda: {'snapshot': snapshot_supported},
+            wait_for_public_change=wait,
+        ),
+        take_internal_semantic_snapshot=lambda: calls.append(('semantic',)) or after,
+        take_snapshot=lambda: pytest.fail('extra/full snapshot read'),
+    )
+    if wait_raises:
+        with pytest.raises(RuntimeError) as raised:
+            NativeHeadlessGameplayDriver._wait_for_life_advance_change(
+                fake, 10, timeout_seconds=0.01, before_snapshot=before)
+        assert raised.value is failure
+    else:
+        changed = NativeHeadlessGameplayDriver._wait_for_life_advance_change(
+            fake, 10, timeout_seconds=0.01, before_snapshot=before)
+        assert changed is after
+    assert before == original_before
+    assert calls == ([('wait', 10, 0.01)] if wait_raises else
+                     ([('wait', 10, 0.01), ('semantic',)] if snapshot_supported
+                      else [('semantic',)]))
+    if not enabled:
+        assert not path.exists()
+        return
+    records = [json.loads(line) for line in path.read_text().splitlines()]
+    assert len(records) == 1
+    record = records[0]
+    assert record['stage'] == 'driver.life_advance_public_change_wait'
+    assert record['step'] == 'life-advance'
+    assert {key: value for key, value in record.items()
+            if key.startswith(('before_', 'after_'))} == {
+        'before_date_raw': before['date_raw'],
+        'before_native_revision': 100, 'before_public_revision': 10,
+        'after_date_raw': None if wait_raises else after['date_raw'],
+        'after_native_revision': None if wait_raises else 145,
+        'after_public_revision': None if wait_raises else 12,
+    }
+    assert 'unrelated_body' not in path.read_text()
 
 
 def test_service_selects_same_event_and_revision_with_lean_snapshot():

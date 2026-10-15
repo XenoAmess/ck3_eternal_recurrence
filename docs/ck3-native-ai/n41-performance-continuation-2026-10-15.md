@@ -33,3 +33,5 @@ P06原188为继承人查询的暂停地图前置条件竞争；原435为`query-c
 公共`readonly_planning_retry_v1.py`只对上述两类有证据的只读前置失败重新获取快照并规划一次；嵌套规划共享一次预算。动作拒绝、其他查询、缺失诊断、超时和其他异常继续返回原错误。它不重跑`auto_turn`或执行计划。实际service wrapper与正负例验证为3项测试、7项subtest通过；P07外置完整绑定与恢复组合证据分别在`ROOT-P07-READONLY-RETRY-VERIFICATION.json`及`ROOT-P07-TYPED-RECOVERY-COMPOSITION.json`。
 
 P06完整批次6推进64日/50.175秒（0.784秒/日），批次67推进91日/55.397秒（0.609秒/日）。纯推进的70个完整窗口中位0.320秒/日，最快9日/2.024秒；原生snapshot每250ms发布一次，因此`.251秒`等待不能证明后台FPS限制。当前设置为fullscreen、VSync开启、framecap=monitor、adaptive_framerate关闭。只读报告在`D:/qperf15_artifacts/background-fps-readonly-review.json`，没有修改游戏设置或桌面；完整批次平均0.5秒/日目标仍未达成。
+
+`driver.life_advance_wait_public_change`计时现附加已有快照的before/after日期、native revision与public revision六个整数或null字段，不增加等待或查询，用于区分实际游戏钟推进与snapshot发布等待。定向验证41 passed、1 skipped，覆盖计时开关、读回不可用、原返回对象及原异常保持；源码回执`D:/qperf15_artifacts/public-change-clock-source-ready.json`。针对P07冻结输入另备最小SHA绑定补丁，待下一必要冷载部署；源码通过不等于已有实机计时数据。

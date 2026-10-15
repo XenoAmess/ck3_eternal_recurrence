@@ -23960,6 +23960,7 @@ class NativeHeadlessGameplayDriver:
                 current = self._wait_for_life_advance_change(
                     int(current["revision"]),
                     timeout_seconds=remaining,
+                    before_snapshot=current,
                 )
                 native_pause_observed = current.get("paused") is True
                 semantic_progress_observed = _life_advance_progressed(
@@ -24471,6 +24472,7 @@ class NativeHeadlessGameplayDriver:
             if remaining > 0 and type(current.get("revision")) is int:
                 settled = self._wait_for_life_advance_change(
                     current["revision"], timeout_seconds=min(remaining, 0.15),
+                    before_snapshot=current,
                 )
                 popup_owner_after_first = _same_life_advance_popup_pause_owner(
                     snapshot, current, settled
@@ -24532,6 +24534,7 @@ class NativeHeadlessGameplayDriver:
                         settled = self._wait_for_life_advance_change(
                             refreshed["revision"],
                             timeout_seconds=min(remaining, 0.15),
+                            before_snapshot=refreshed,
                         )
                         if _same_life_advance_popup_pause_owner(
                             snapshot, refreshed, settled
@@ -24637,20 +24640,30 @@ class NativeHeadlessGameplayDriver:
             if remaining <= 0:
                 return current
             current = self._wait_for_life_advance_change(
-                int(current["revision"]), timeout_seconds=remaining
+                int(current["revision"]), timeout_seconds=remaining,
+                before_snapshot=current,
             )
         return current
 
     def _wait_for_life_advance_change(
-        self, after_revision: int, *, timeout_seconds: float
+        self, after_revision: int, *, timeout_seconds: float,
+        before_snapshot: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Private lean counterpart of wait_for_change for a timeline slice."""
-        _validate_revision(after_revision, "after_revision")
-        timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
-        if not self.state.capabilities()["snapshot"]:
-            return self.take_internal_semantic_snapshot()
-        self.state.wait_for_public_change(after_revision, timeout)
-        return self.take_internal_semantic_snapshot()
+        timing = start_army_timing("driver.life_advance_public_change_wait")
+        changed = None
+        try:
+            _validate_revision(after_revision, "after_revision")
+            timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
+            if self.state.capabilities()["snapshot"]:
+                self.state.wait_for_public_change(after_revision, timeout)
+            changed = self.take_internal_semantic_snapshot()
+            return changed
+        finally:
+            finish_army_timing(
+                timing, step="life-advance", before_snapshot=before_snapshot,
+                after_snapshot=changed,
+            )
 
     def _wait_for_snapshot(
         self,

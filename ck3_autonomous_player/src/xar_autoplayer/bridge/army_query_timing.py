@@ -23,6 +23,8 @@ def start_army_timing(stage: str, *, native_request_id: str | None = None) -> Ar
 def finish_army_timing(
     timing: ArmyTiming | None, *, step: str = "query-army-strengths-v1",
     date_raw: int | None = None,
+    before_snapshot: dict[str, object] | None = None,
+    after_snapshot: dict[str, object] | None = None,
 ) -> None:
     if timing is None:
         return
@@ -39,6 +41,15 @@ def finish_army_timing(
         }
         if date_raw is not None:
             row["date_raw"] = date_raw
+        if before_snapshot is not None or after_snapshot is not None:
+            # Only existing scalar clock/revision fields belong in this trace.
+            # Do not copy snapshot bodies, normalize values or query the game.
+            for prefix, snapshot in (("before", before_snapshot), ("after", after_snapshot)):
+                for source, label in (("date_raw", "date_raw"),
+                                      ("native_revision", "native_revision"),
+                                      ("revision", "public_revision")):
+                    value = snapshot.get(source) if isinstance(snapshot, dict) else None
+                    row[f"{prefix}_{label}"] = value if type(value) is int else None
         encoded = json.dumps(row, separators=(",", ":")) + "\n"
         with _WRITE_LOCK, Path(path).open("a", encoding="utf-8") as stream:
             stream.write(encoded)

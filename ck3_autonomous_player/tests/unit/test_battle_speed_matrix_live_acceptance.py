@@ -97,7 +97,7 @@ class _FakeTimelineDriver:
         return copy.deepcopy(self.snapshot)
 
     def _wait_for_life_advance_change(
-        self, after_revision: int, *, timeout_seconds: float
+        self, after_revision: int, *, timeout_seconds: float, before_snapshot=None,
     ) -> dict[str, object]:
         assert after_revision == self.snapshot["revision"]
         assert timeout_seconds > 0
@@ -130,10 +130,10 @@ class _FakeTerminalDriver(_FakeTimelineDriver):
         self.advanced_days = 0
 
     def _wait_for_life_advance_change(
-        self, after_revision: int, *, timeout_seconds: float
+        self, after_revision: int, *, timeout_seconds: float, before_snapshot=None,
     ) -> dict[str, object]:
         changed = super()._wait_for_life_advance_change(
-            after_revision, timeout_seconds=timeout_seconds
+            after_revision, timeout_seconds=timeout_seconds, before_snapshot=before_snapshot,
         )
         self.advanced_days += 1
         if (

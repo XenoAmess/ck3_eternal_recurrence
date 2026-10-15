@@ -226,7 +226,7 @@ class CrownCalendarRetryRegisteredPlanTest(unittest.IsolatedAsyncioTestCase):
                 actions.append({"step": "resume-map", "fixture_external_primitive": True})
                 return self.take_snapshot()
 
-            def _wait_for_life_advance_change(self, revision, *, timeout_seconds):
+            def _wait_for_life_advance_change(self, revision, *, timeout_seconds, before_snapshot=None):
                 test_case.assertEqual(revision, self.frame["revision"])
                 day = len(self.timeline_days) + 1
                 # A missing production horizon/progress connection fails here;
