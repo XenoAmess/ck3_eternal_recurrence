@@ -2062,6 +2062,14 @@ class GameplayBridgeService:
                 for key in tuple(planned):
                     if key.startswith("_private_") and key != "_private_window_priority_v1":
                         planned.pop(key)
+            elif opening_focus_first:
+                # Only the LIFE consumer runs before this early return.
+                # Preserve its exact scope/pending/war-frame inputs.
+                keep = {"_private_window_priority_v1", "_private_lifestyle_scope_v1",
+                        "_private_lifestyle_pending_v1", "_private_lifestyle_war_frame_v1"}
+                for key in tuple(planned):
+                    if key.startswith("_private_") and key not in keep:
+                        planned.pop(key)
             elif use_internal_view:
                 # These consumers only read the captured row/result mappings.
                 # Keep their full history outside the helper's deepcopy of
@@ -3405,7 +3413,7 @@ class GameplayBridgeService:
         revision = planned.get("revision")
         if isinstance(revision, bool) or not isinstance(revision, int):
             return blocked("opening focus has no paused public revision")
-        before = self.snapshot()
+        before = self.snapshot(include_native_command_history=False)
         if not (
             before.get("paused") is True
             and before.get("snapshot_id") == planned.get("snapshot_id")
@@ -3424,7 +3432,7 @@ class GameplayBridgeService:
         )
         if callable(current_reader):
             current = current_reader(expected_revision=revision)
-            current_after = self.snapshot()
+            current_after = self.snapshot(include_native_command_history=False)
             readback_diagnostic["current_state"] = summarize_readback(current)
             readback_diagnostic["after_current_state"] = {
                 key: current_after.get(key) for key in binding
@@ -3546,7 +3554,7 @@ class GameplayBridgeService:
             return blocked("opening LIFE2 or stock final-legal query is missing")
         formal = formal_reader(expected_revision=revision)
         stock = stock_reader(expected_revision=revision)
-        after = self.snapshot()
+        after = self.snapshot(include_native_command_history=False)
         readback_diagnostic["formal"] = summarize_readback(formal)
         readback_diagnostic["stock"] = summarize_readback(stock)
         readback_diagnostic["after_formal_stock"] = {

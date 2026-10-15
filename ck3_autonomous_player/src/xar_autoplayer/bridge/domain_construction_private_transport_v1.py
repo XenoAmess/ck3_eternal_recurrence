@@ -19,6 +19,7 @@ from ..construction_formal_consumer import (
 )
 from ..environment import sha256_file, write_json_atomic
 from ..runtime import _process_identity
+from .construction_process_identity_v1 import read_construction_process_identity_v1
 from .driver import BridgeUnavailableError, StepPostconditionError
 from .construction_economic_value_v1 import (
     authored_existing_monthly_income_hundredths,
@@ -69,7 +70,8 @@ def _province_income_observation(
 
 def _identity(driver: object) -> tuple[int, str]:
     pid = getattr(driver, "_session_bridge_pid", None)
-    identity = _process_identity(pid) if _positive(pid) else None
+    identity = (read_construction_process_identity_v1(driver, pid, _process_identity)
+                if _positive(pid) else None)
     creation = identity.get("creation_date") if isinstance(identity, Mapping) else None
     if not isinstance(creation, str) or not creation:
         raise BridgeUnavailableError("construction trial lacks a live exact process identity")
