@@ -14536,6 +14536,38 @@ class NativeHeadlessGameplayDriver:
                 if error.native_error not in _ARMY_MOVE_DEFERRED_ERRORS:
                     raise
                 current = self.take_internal_semantic_snapshot()
+                current_army = _army_by_id(current, army_id)
+                starting_actor = starting.get("played_character")
+                current_actor = current.get("played_character")
+                starting_diagnostics = starting.get("diagnostics")
+                current_diagnostics = current.get("diagnostics")
+                if (
+                    not _same_paused_native_frame(starting, current)
+                    or current.get("revision") != starting.get("revision")
+                    or current.get("date_raw") != previewed_date_raw
+                    or not isinstance(starting_actor, dict)
+                    or not isinstance(current_actor, dict)
+                    or type(starting_actor.get("character_id")) is not int
+                    or starting_actor["character_id"] <= 0
+                    or starting_actor.get("character_id") != current_actor.get("character_id")
+                    or not isinstance(starting_diagnostics, dict)
+                    or not isinstance(current_diagnostics, dict)
+                    or type(starting_diagnostics.get("bridge_pid")) is not int
+                    or starting_diagnostics["bridge_pid"] <= 0
+                    or starting_diagnostics.get("bridge_pid") != current_diagnostics.get("bridge_pid")
+                    or not isinstance(starting.get("episode_run_id"), str)
+                    or not starting["episode_run_id"]
+                    or not isinstance(current_army, dict)
+                    or current_army.get("controllable") is not True
+                    or any(current_army.get(field) != starting_army.get(field) for field in (
+                        "current_province_id", "army_state", "army_state_code",
+                        "move_target_province_id", "route_province_ids",
+                        "in_combat", "retreating",
+                    ))
+                ):
+                    raise BridgeUnavailableError(
+                        "native deferred move preview crossed the paused army frame"
+                    )
                 return {
                     "step": step,
                     "accepted": False,
@@ -14559,6 +14591,13 @@ class NativeHeadlessGameplayDriver:
                     "player_armies": current.get("player_armies", []),
                     "snapshot_id": current["snapshot_id"],
                     "revision": current["revision"],
+                    "queried_snapshot_id": starting.get("snapshot_id"),
+                    "queried_revision": starting.get("revision"),
+                    "queried_native_revision": starting.get("native_revision"),
+                    "queried_connection_generation": starting_diagnostics.get(
+                        "connection_generation"
+                    ),
+                    "queried_episode_run_id": starting.get("episode_run_id"),
                 }
             route_preview = result.get("route_preview")
             route_province_ids = (

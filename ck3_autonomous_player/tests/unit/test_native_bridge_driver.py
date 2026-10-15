@@ -10758,6 +10758,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     )
                 ],
                 player_armies=[player],
+                played_character={"character_id": 707, "alive": True},
             )
         )
 
@@ -10791,6 +10792,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(
             result["route_preview"]["previewed_date_raw"], 53_171_400
         )
+        current = driver.take_internal_semantic_snapshot()
+        self.assertEqual(result["queried_snapshot_id"], current["snapshot_id"])
+        self.assertEqual(result["queried_revision"], current["revision"])
+        self.assertEqual(result["queried_native_revision"], current["native_revision"])
+        self.assertEqual(
+            result["queried_connection_generation"],
+            current["diagnostics"]["connection_generation"],
+        )
+        self.assertEqual(result["queried_episode_run_id"], current["episode_run_id"])
 
     def test_native_move_with_routes_waits_for_auditable_route(self) -> None:
         endpoint = FakeEndpoint()

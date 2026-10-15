@@ -10393,6 +10393,7 @@ def _choose_one_life_turn_core(
                     isinstance(enemy, dict)
                     and _army_tactical_state(enemy) == "sieging"
                     and enemy.get("retreating") is not True
+                    and _defender_siege_is_relief_relevant(snapshot, war, enemy)
                     for enemy in war["enemy_armies"]
                 )
                 for war in active_wars
@@ -12376,12 +12377,19 @@ def _choose_one_life_turn_core(
                             }
                         )
                         continue
-                    if "life-advance" in available_steps:
+                    deferred_advance_step = (
+                        "life-advance-one-day"
+                        if "life-advance-one-day" in available_steps
+                        else "life-advance"
+                        if "life-advance" in available_steps
+                        else None
+                    )
+                    if deferred_advance_step is not None:
                         return {
                             "policy": "one-life-turn-v1",
                             "phase": "native_war_route_preview_deferred",
-                            "selected_step": "life-advance",
-                            "reason": "the army was not route-preview-ready at this date and origin; advance once before retrying",
+                            "selected_step": deferred_advance_step,
+                            "reason": "the same-frame army state rejected a read-only route preview; advance only the existing bounded date step before replanning",
                             "route_preview": preview,
                             "route_rejections": route_rejections,
                             "active_wars": war_summary,
@@ -18495,6 +18503,30 @@ def _qualified_siege_forecast_move(
     }
 
 
+def _defender_siege_is_relief_relevant(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    enemy: dict[str, object],
+) -> bool:
+    """Require a native tie to the defended objective or player realm."""
+    province_id = _native_int(enemy.get("current_province_id"))
+    if province_id is None or province_id <= 0:
+        return False
+    if province_id in war_objective_province_ids([war]):
+        return True
+    subrealm = enemy.get("siege_province_in_player_subrealm")
+    if subrealm is True:
+        return True
+    if subrealm is False:
+        return False
+    played = snapshot.get("played_character")
+    actor_id = _native_int(played.get("character_id")) if isinstance(played, dict) else None
+    return bool(
+        actor_id is not None and actor_id > 0
+        and _native_int(enemy.get("siege_province_holder_character_id")) == actor_id
+    )
+
+
 def _primary_defender_siege_relief_assessment(
     snapshot: dict[str, object],
     *,
@@ -18534,6 +18566,7 @@ def _primary_defender_siege_relief_assessment(
                 isinstance(enemy, dict)
                 and _army_tactical_state(enemy) == "sieging"
                 and enemy.get("retreating") is not True
+                and _defender_siege_is_relief_relevant(snapshot, war, enemy)
             ):
                 siege_rows.append((war, enemy))
     if not siege_rows:

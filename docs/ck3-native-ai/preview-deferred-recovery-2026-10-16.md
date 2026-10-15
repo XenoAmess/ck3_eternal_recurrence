@@ -1,0 +1,11 @@
+# 同帧军队预览延迟后的单日恢复（2026-10-16）
+
+P09 在游戏日 `53329464` 对军队 `268435792` 连续 30 次请求同一个 `preview-move-army-268435792-to-2635`。原生每次返回 `army_not_move_ready`，而旧 SDK 回执缺少规划器要求的五个同帧租约字段，因而反复重查只读预览，整批游戏日零进展。原件为 `continuation42-cold-prep/p09-responses/0216-1-result.json`（SHA-256 `974ec9478de807563735dd892aa589d7b4a187a6d161f474a6c5895c4beb84dc`）和 `0282-1-result.json`（`d5554ec9b1a1f1863fc440af8537278152fa01684775037f6438b2c9a20e2c34`）。
+
+Native Driver 现在只在原生明确拒绝军队移动、回读仍是同一暂停地图／角色／进程／episode／revision／日期／军队状态时，给延迟回执附上 `queried_snapshot_id`、`queried_revision`、`queried_native_revision`、`queried_connection_generation` 和 `queried_episode_run_id`。任一条件变化直接拒绝该回执。策略只复用匹配当前快照的延迟回执，优先选择现有的 `life-advance-one-day` 后重新规划；延迟回执始终没有可用路线或进攻资格。围城解围候选同时要求该敌军正围攻本战争目标、原生确认我方次级领土，或原生直接 holder 等于当前角色且没有相反的次级领土读数。P09 在 470 的围城 holder 与次级领土读数均为 `null`，不能据此把我军从 1032 拉往远处。
+
+P10 同一 Game 的闭环原件位于 `continuation42-cold-prep/p10-responses/`：`0016-1-result.json`（SHA-256 `1f184a192d3b11ffd004ecb8e0b267317092d0b3071838230afaf56498c21d21`）返回五个与规划帧一致的租约及 `army_not_move_ready`；`0018-1-result.json`（`085e664cc5ccb644a47027fc857501c12db29c562355ebe5095cfa85cd18e6cc`）随即选 `life-advance-one-day`，原生完成 1 个日 tick，raw 日期 `53329464→53329488`；`0019-1-result.json` 的新语义帧（`f241284d24b6bdaf1b536d133df4c43f90d35117ef09c4c96e30f093db77cb2f`）独立读到 `53329488`。小型汇总回执 `preview-deferred-recovery-candidate01/P10-ACTUAL-DEFERRED-RECOVERY-VERIFIED.json` SHA-256 `37d97c3d11e9307ecf434664d5da097f81e2152a64db976fd595f8268c71a9ef`。这证明本次同 Game 单日恢复和日期进展，不证明战争结果、ghost CArmy 根因或未来所有延迟情形。
+
+公共源改动限于 `ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py` 和 `strategy.py` 的三个小段。三项定向测试验证原生拒绝回执的租约、策略同日单日恢复／过期日重查、以及围城目标／持有者资格，结果 3 GREEN。P10 实机的 SDK 版本基于 P09 runtime；公共工作树保留自身其它差异，不以整份运行时源覆盖。
+
+P10 `0001` 语义帧（SHA-256 `bbd8a0b8e8b1aab044914ea4784993f597f55d4c13589d9f48f22f2bda9db488`）中，两个我方军队都在 1032，公开兵数均未知；`0014` Army 查询（`c649944759336cfdfe7e93954e3d05be07ecfa0323e121aecb1a93623cfb7565`）对 `318767248` 返回 `native_carmy_id=285212887/current_soldiers=427`，对 `268435792` 返回 `native_carmy_not_found`。纯策略回放显示当时没有 1032 的原生静止威胁，现有 replenishment selector 因两者公开兵数都未知而按较小 ID 选后者。这个选择次序解释了为何连续预览同一军队；`CArmy` 暂不可读本身不能证明它没有战斗风险，也不能授权把另一支军队直接投入战斗。后续可研究让同帧 Army 查询的可用性参与安静状态下的候选排序，但真正移动仍须逐军原生预览、接敌与战斗守卫。

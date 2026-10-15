@@ -1562,6 +1562,7 @@ def _native_war_plan(
     war_duration_days: int = 203,
     army_strengths: list[dict[str, object]] | None = None,
     army_strengths_status: str | None = None,
+    episode_run_id: str | None = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -1586,7 +1587,7 @@ def _native_war_plan(
             ),
             "native_revision": 90,
             "diagnostics": {"connection_generation": 1},
-            "episode_run_id": None,
+            "episode_run_id": episode_run_id,
             "played_character": {"character_id": 707, "alive": True},
             "war_objective_occupation_supported": occupation_supported,
             "war_objective_fort_level_supported": fort_level_supported,
@@ -7420,6 +7421,11 @@ class GameplayBridgeTests(unittest.TestCase):
             "result": {
                 "accepted": False,
                 "status": "deferred",
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "queried_episode_run_id": "fixture-war-707",
                 "route_preview": {
                     "status": "deferred",
                     "reason": "army_not_move_ready",
@@ -7438,12 +7444,13 @@ class GameplayBridgeTests(unittest.TestCase):
             date_raw=24_000,
             history=[deferred],
             objective=2585,
-            steps=("preview-move-army-11-to-2585", "life-advance"),
+            steps=("preview-move-army-11-to-2585", "life-advance-one-day", "life-advance"),
+            episode_run_id="fixture-war-707",
         )
         self.assertEqual(
             same_date["phase"], "native_war_route_preview_deferred"
         )
-        self.assertEqual(same_date["selected_step"], "life-advance")
+        self.assertEqual(same_date["selected_step"], "life-advance-one-day")
 
         next_date = _native_war_plan(
             player=regular,
@@ -7452,7 +7459,8 @@ class GameplayBridgeTests(unittest.TestCase):
             date_raw=24_024,
             history=[deferred],
             objective=2585,
-            steps=("preview-move-army-11-to-2585", "life-advance"),
+            steps=("preview-move-army-11-to-2585", "life-advance-one-day", "life-advance"),
+            episode_run_id="fixture-war-707",
         )
         self.assertEqual(
             next_date["selected_step"],
