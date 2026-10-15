@@ -23,8 +23,8 @@ from xar_autoplayer.simulation.combat_input import freeze_combat_simulation_inpu
 from ck3_autonomous_player.tests.unit.test_gameplay_bridge import (
     _army,
     _army_strength,
-    _preview_row,
-    _route_contact_row,
+    _preview_row as _unbound_preview_row,
+    _route_contact_row as _unbound_route_contact_row,
     _snapshot,
     _war,
 )
@@ -36,6 +36,26 @@ R0265_REPORT = (
     / "coordination" / "war-requests" / "evidence"
     / "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928.r0265-formal-report.json"
 )
+
+
+_TEST_EPISODE = "canary-episode-90"
+
+
+def _preview_row(*args, **kwargs):
+    row = _unbound_preview_row(*args, **kwargs)
+    row["result"].update({
+        "queried_snapshot_id": "session:90",
+        "queried_revision": 90,
+        "queried_native_revision": 90,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": _TEST_EPISODE,
+    })
+    return row
+
+
+def _route_contact_row(*args, **kwargs):
+    kwargs.setdefault("episode_run_id", _TEST_EPISODE)
+    return _unbound_route_contact_row(*args, **kwargs)
 
 
 class ProvisionalDefenseCanaryTests(unittest.TestCase):
@@ -184,6 +204,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
     def _r0321_two_defender_inputs(self):
         frame, rows = self._r0271_replay_inputs()
         frame["episode_run_id"] = "native-29829-r0321-test"
+        rows[0]["result"]["queried_episode_run_id"] = frame["episode_run_id"]
         frame["played_character_id"] = 29829
         frame["played_character_gold"] = {"raw": 100_000_000, "scale": 100_000}
         second = frame["active_wars"][0]["enemy_armies"][1]
@@ -204,6 +225,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             4, army_id=83886367, origin=2610, target=first_hop,
             date_raw=frame["date_raw"], route=[first_hop],
         ))
+        rows[-1]["result"]["queried_episode_run_id"] = frame["episode_run_id"]
         rows.append(_route_contact_row(
             5, army_id=83886367, origin=2610, target=first_hop,
             date_raw=frame["date_raw"], route=[first_hop],
@@ -626,7 +648,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             "active_event": None, "pending_character_interaction": None,
             "native_revision": 90, "date_raw": date_raw,
             "diagnostics": {"connection_generation": 1},
-            "episode_run_id": None, "active_wars": [war],
+            "episode_run_id": _TEST_EPISODE, "active_wars": [war],
             "player_armies": [player], "army_strengths_status": "available",
             "army_strengths": [
                 _army_strength(11, "player", [95], current=2_327,
@@ -648,7 +670,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             "queried_revision": 90,
             "queried_native_revision": 90,
             "queried_connection_generation": 1,
-            "episode_run_id": None,
+            "episode_run_id": _TEST_EPISODE,
             "options": {
                 "victory": {"available": False, "terms_observable": True},
                 "white_peace": {"available": False, "terms_observable": True},

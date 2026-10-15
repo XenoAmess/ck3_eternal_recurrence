@@ -10363,6 +10363,59 @@ def _choose_one_life_turn_core(
             if isinstance(snapshot, dict)
             else None
         )
+        # A sole already-committed, auditable moving army can first read the
+        # existing full-hostile one-day contact proof.  This strict subset of
+        # the committed-route branch below never needs strength to establish
+        # contact-free time; contact or missing proof falls through unchanged.
+        moving_contact_first = None
+        if (
+            strength_balance is None
+            and strength_query_status is None
+            and route_contact_scope_supported
+            and army_routes_supported
+            and isinstance(snapshot, dict)
+            and snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and battle_control_status == "not_in_combat"
+            and len(controlled_armies) == 1
+            and pursuit_army is controlled_armies[0]
+            and _army_tactical_state(pursuit_army) == "moving"
+            and not threatened_stationary_armies
+            and all(
+                _public_cunit_int(enemy.get("army_id")) is not None
+                for enemy in route_threat_enemies
+            )
+            and not any(
+                war.get("player_side") == "defender"
+                and war.get("player_is_primary_war_leader") is True
+                and isinstance(war.get("enemy_armies"), list)
+                and any(
+                    isinstance(enemy, dict)
+                    and _army_tactical_state(enemy) == "sieging"
+                    and enemy.get("retreating") is not True
+                    for enemy in war["enemy_armies"]
+                )
+                for war in active_wars
+                if isinstance(war, dict)
+            )
+            and not _review_all_player_assaults(
+                snapshot,
+                active_wars=active_wars,
+                enemies=route_threat_enemies,
+                commands=rows,
+            )
+        ):
+            moving_contact_first = _sole_committed_moving_contact_first(
+                rows,
+                snapshot,
+                army=pursuit_army,
+                route_audits=global_route_audits,
+                hostile_army_ids=route_threat_enemy_ids,
+                available_steps=available_steps,
+                war_summary=war_summary,
+            )
+        if moving_contact_first is not None:
+            return moving_contact_first
         if (
             isinstance(tactical_war_id, int)
             and (
@@ -11036,6 +11089,7 @@ def _choose_one_life_turn_core(
                     origin_province_id=merged_origin,
                     target_province_id=merged_target,
                     date_raw=_native_int(snapshot.get("date_raw")),
+                    snapshot=snapshot,
                 )
                 preview_step = preview_move_army_step(
                     merged_army_id, merged_target
@@ -12262,6 +12316,7 @@ def _choose_one_life_turn_core(
                         if isinstance(snapshot, dict)
                         else None
                     ),
+                    snapshot=snapshot,
                 )
                 if (
                     isinstance(preview, dict)
@@ -12973,6 +13028,7 @@ def _choose_one_life_turn_core(
                             origin_province_id=current_province_id,
                             target_province_id=capital_province_id,
                             date_raw=_native_int(snapshot.get("date_raw")),
+                            snapshot=snapshot,
                         )
                         preview_step = preview_move_army_step(
                             army_id, capital_province_id
@@ -16934,6 +16990,7 @@ def _general_battle_forecast_ingress(
     preview = _fresh_move_route_preview(
         commands, army_id=army_id, origin_province_id=origin,
         target_province_id=target, date_raw=_native_int(snapshot.get("date_raw")),
+        snapshot=snapshot,
     )
     if preview is None:
         return bounded(
@@ -17004,6 +17061,7 @@ def _general_battle_forecast_ingress(
         first_preview = _fresh_move_route_preview(
             commands, army_id=army_id, origin_province_id=origin,
             target_province_id=first_hop, date_raw=_native_int(snapshot.get("date_raw")),
+            snapshot=snapshot,
         )
         if first_preview is None:
             return bounded(
@@ -17499,6 +17557,7 @@ def _primary_defender_siege_forecast_ingress(
         origin_province_id=origin,
         target_province_id=target,
         date_raw=_native_int(snapshot.get("date_raw")),
+        snapshot=snapshot,
     )
     if preview is None:
         if preview_step not in action_steps:
@@ -17599,7 +17658,12 @@ def _primary_defender_siege_forecast_ingress(
         war, balance, contact, army_id=army_id, target_province_id=target
     )
     if partition["status"] != "available":
-        if partition.get("reason") == "offsite_hostile_may_join_by_target_entry":
+        if partition.get("reason") in {
+            "offsite_hostile_may_join_by_target_entry",
+            "strength_or_contact_roster_mismatch",
+        }:
+            # An incomplete encounter partition cannot authorize battle.
+            # A separately proved contact-free first hop can still be scouted.
             # The current target defenders are not a valid future battle
             # roster.  R0271 can still scout one non-contact waypoint, then
             # re-read every hostile and the siege on the next paused day.
@@ -17628,6 +17692,7 @@ def _primary_defender_siege_forecast_ingress(
                 commands, army_id=army_id, origin_province_id=origin,
                 target_province_id=first_hop,
                 date_raw=_native_int(snapshot.get("date_raw")),
+                snapshot=snapshot,
             )
             if short_preview is None:
                 if short_preview_step not in action_steps:
@@ -17833,6 +17898,7 @@ def _primary_defender_siege_forecast_ingress(
             short_preview = _fresh_move_route_preview(
                 commands, army_id=army_id, origin_province_id=origin,
                 target_province_id=first_hop, date_raw=date_raw,
+                snapshot=snapshot,
             )
             if short_preview is None:
                 if short_preview_step not in action_steps:
@@ -18051,6 +18117,7 @@ def _primary_defender_siege_forecast_ingress(
                 short_preview = _fresh_move_route_preview(
                     commands, army_id=army_id, origin_province_id=origin,
                     target_province_id=first_hop, date_raw=date_raw,
+                    snapshot=snapshot,
                 )
                 short_preview_step = preview_move_army_step(army_id, first_hop)
                 if short_preview is None and (
@@ -19891,6 +19958,7 @@ def _fresh_move_route_preview(
     origin_province_id: int,
     target_province_id: int,
     date_raw: int | None,
+    snapshot: dict[str, object] | None = None,
 ) -> dict[str, object] | None:
     if date_raw is None:
         return None
@@ -19903,6 +19971,19 @@ def _fresh_move_route_preview(
         if row.get("ok") is not True:
             continue
         result = _effective_command_result(row)
+        if snapshot is not None:
+            diagnostics = snapshot.get("diagnostics")
+            generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+            if (not isinstance(result, dict) or not isinstance(generation, int) or isinstance(generation, bool)
+                    or not isinstance(snapshot.get("episode_run_id"), str) or not snapshot["episode_run_id"]
+                    or any(result.get(wire) != expected for wire, expected in (
+                        ("queried_snapshot_id", snapshot.get("snapshot_id")),
+                        ("queried_revision", snapshot.get("revision")),
+                        ("queried_native_revision", snapshot.get("native_revision")),
+                        ("queried_connection_generation", generation),
+                        ("queried_episode_run_id", snapshot["episode_run_id"]),
+                    ))):
+                continue
         preview = result.get("route_preview") if isinstance(result, dict) else None
         if (
             not isinstance(preview, dict)
@@ -19923,6 +20004,90 @@ def _fresh_move_route_preview(
             continue
         return {**preview, "route_province_ids": list(route)}
     return None
+
+
+def _sole_committed_moving_contact_first(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army: dict[str, object],
+    route_audits: list[dict[str, object]],
+    hostile_army_ids: tuple[int, ...],
+    available_steps: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Use only the existing exact route proof for a sole moving army.
+
+    The caller excludes other controlled armies, battle, relief, and assault.
+    A negative/unknown proof leaves the original full-strength path intact.
+    """
+    army_id = _public_cunit_int(army.get("army_id"))
+    origin = _native_int(army.get("current_province_id"))
+    target = _native_int(army.get("move_target_province_id"))
+    route = army.get("route_province_ids")
+    if (
+        army_id is None
+        or origin is None
+        or target is None
+        or target == origin
+        or not isinstance(route, list)
+        or not route
+        or not hostile_army_ids
+    ):
+        return None
+    audit = next(
+        (
+            row for row in route_audits
+            if row.get("army_id") == army_id
+            and row.get("target_province_id") == target
+            and row.get("status") in {"safe", "unsafe"}
+        ),
+        None,
+    )
+    if audit is None:
+        return None
+    query_step = query_route_contact_horizon_step(
+        army_id, target, hostile_army_ids,
+    )
+    proof = _fresh_route_contact_horizon(
+        commands, snapshot,
+        army_id=army_id,
+        origin_province_id=origin,
+        target_province_id=target,
+        hostile_army_ids=hostile_army_ids,
+        route_province_ids=route,
+    )
+    if proof is None:
+        if (
+            query_step in available_steps
+            and _current_frame_route_contact_query_failure(
+                commands, snapshot, query_step,
+            ) is None
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_moving_contact_before_strength_query",
+                "selected_step": query_step,
+                "reason": "read the existing same-frame complete hostile one-day contact proof before the costly full army-strength scope; no time or route action is dispatched",
+                "route_audit": audit,
+                "active_wars": war_summary,
+            }
+        return None
+    if proof.get("one_day_contact_free") is not True:
+        return None
+    advance_step = advance_route_contact_horizon_step(
+        army_id, target, hostile_army_ids,
+    )
+    if advance_step not in available_steps:
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_moving_contact_before_strength_progress",
+        "selected_step": advance_step,
+        "reason": "the exact same-frame full-hostile native timeline proves the sole committed moving army contact-free for one day; replan after the bounded advance",
+        "route_audit": {**audit, "contact_horizon": proof},
+        "active_wars": war_summary,
+    }
 
 
 def _fresh_route_contact_horizon(

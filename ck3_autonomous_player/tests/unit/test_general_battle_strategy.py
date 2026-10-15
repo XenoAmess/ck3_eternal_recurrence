@@ -477,8 +477,9 @@ def test_r0284_frozen_native_rows_reach_only_route_start():
         action_steps={preview_step, contact_step, move_step},
         bridge_capabilities={"game.command.query-combat-simulation-inputs-v3-N"},
     )
-    _CHECK.assertEqual(stale_plan["phase"], "native_war_general_battle_contact_query")
-    _CHECK.assertEqual(stale_plan["selected_step"], contact_step)
+    # The old route preview is stale too: reacquire it before contact proof.
+    _CHECK.assertEqual(stale_plan["phase"], "native_war_general_battle_route_query")
+    _CHECK.assertEqual(stale_plan["selected_step"], preview_step)
     changed_roster = copy.deepcopy(frame)
     changed_roster["active_wars"][0]["enemy_armies"].append({
         "army_id": enemy_id + 1,
