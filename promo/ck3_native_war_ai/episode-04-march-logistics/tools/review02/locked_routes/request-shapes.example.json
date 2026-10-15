@@ -1,0 +1,71 @@
+{
+  "machine_id": "FILL-ACTUAL-SOURCE-MACHINE-ID",
+  "status": "NOT-READY placeholders; existing tool names only",
+  "requests": [
+    {
+      "purpose": "fresh actual snapshot",
+      "tool": "ck3_take_snapshot",
+      "arguments": {}
+    },
+    {
+      "purpose": "selected movement input query",
+      "tool": "ck3_query_army_strengths",
+      "arguments": {
+        "army_ids": [
+          18
+        ],
+        "expected_revision": null,
+        "profile": "ordinary_core_v1"
+      }
+    },
+    {
+      "purpose": "new normal route or R13 alternate preview",
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "preview-move-army-18-to-ACTUAL_TARGET",
+        "expected_revision": null
+      }
+    },
+    {
+      "purpose": "existing typed initial Move or R13 reroute; once",
+      "tool": "ck3_move_army",
+      "arguments": {
+        "army_id": 18,
+        "target_province_id": null,
+        "expected_revision": null
+      }
+    },
+    {
+      "purpose": "R12 only, once",
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "halt-army-18",
+        "expected_revision": null
+      }
+    },
+    {
+      "purpose": "one natural day, replace actual integer values before use",
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "research-arm-tactical-daily-sentinel-v1-D-to-DPLUS24-speed-5-mode-terminal-a-1-18",
+        "expected_revision": null
+      }
+    },
+    {
+      "purpose": "resume once after admitted sentinel arm",
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "resume",
+        "expected_revision": null
+      }
+    },
+    {
+      "purpose": "read actual daily stop",
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "research-query-tactical-daily-sentinel-v1",
+        "expected_revision": null
+      }
+    }
+  ]
+}

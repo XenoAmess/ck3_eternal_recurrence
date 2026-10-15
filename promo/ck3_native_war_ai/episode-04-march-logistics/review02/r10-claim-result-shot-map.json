@@ -1,0 +1,119 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T13:42:54.675095+00:00",
+  "experiment": "R10",
+  "affected_original_paragraph_ids": [
+    "C01-01",
+    "C01-02",
+    "C01-07",
+    "C02-03",
+    "C02-10",
+    "C04-10",
+    "C04-11",
+    "C05-01",
+    "C05-02",
+    "C05-03",
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-09",
+    "C05-10",
+    "C05-13",
+    "C05-14",
+    "C05-15",
+    "C05-16",
+    "C06-01",
+    "C06-02",
+    "C06-07",
+    "C06-08",
+    "C06-10"
+  ],
+  "future_evidence_slots": [
+    {
+      "id": "E-R10-ABC",
+      "actual_value": null,
+      "status": "pending"
+    },
+    {
+      "id": "E-R10-COST",
+      "actual_value": null,
+      "status": "pending"
+    }
+  ],
+  "outputs_to_claims": [
+    {
+      "output": "comparison_rows[].arrival_interval_days",
+      "paragraph_ids": [
+        "C01-01",
+        "C01-02",
+        "C05-03",
+        "C05-05",
+        "C05-15"
+      ],
+      "spoken_slot": "本次A/B/C分别在第(下界,上界]日抵达；90日未到只在确达共同截止时说预算截尾。",
+      "actual_spoken_text": null
+    },
+    {
+      "output": "comparison_rows[].original_cohort_current/all_strategy_current/per_army_supply",
+      "paragraph_ids": [
+        "C02-03",
+        "C05-08",
+        "C05-09",
+        "C05-10",
+        "C05-14"
+      ],
+      "spoken_slot": "原始队列与全部策略军队分列；B合法新增1/1和将领结果保留；各军库存/容量不能简单相加或平均。",
+      "actual_spoken_text": null
+    },
+    {
+      "output": "common_date_rows[].date_raw",
+      "paragraph_ids": [
+        "C05-13",
+        "C05-15",
+        "C06-07"
+      ],
+      "spoken_slot": "这里比较同一第N自然日，不把不同抵达日的人数/钱当同日效果。没有三臂共同样本就不生成此比较句。",
+      "actual_spoken_text": null
+    },
+    {
+      "output": "comparison_rows[].actual_fees + wallet_net_raw",
+      "paragraph_ids": [
+        "C01-07",
+        "C04-11",
+        "C05-13",
+        "C05-16",
+        "C06-08"
+      ],
+      "spoken_slot": "本臂到达前真实boarding/maintenance支出与钱包净差分列；未合格费用输出null，不写费用排名。",
+      "actual_spoken_text": null
+    },
+    {
+      "output": "world_events_retained + winner=null",
+      "paragraph_ids": [
+        "C05-15",
+        "C05-16",
+        "C06-10"
+      ],
+      "spoken_slot": "给本次路线/敌情/驻点的条件性权衡，不自动宣布通用赢家。",
+      "actual_spoken_text": null
+    }
+  ],
+  "media_requirements": [
+    "每臂有真实出发/策略操作/等待变化/抵达短连续clean段并实际时码绑定。",
+    "A/B/C回放标签与加速倍率明确，不能用相关地图静帧支持未发生过程。",
+    "旧B失败和C15偏差进历史附录；现成Review01成片交付事实保持。"
+  ],
+  "tts_or_render_generated": false,
+  "new_R10_results": 0,
+  "historical_external_mapping_sha256": "1179e8417c640e9f0addbed86e8cdb544b0a7a283904ae7dd322a6042b5b8559",
+  "source_review01_narration": {
+    "path": "../production/final-BC-a06/narration/six-chapter-final-BC-Chinese-a06.md",
+    "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+  },
+  "source_review01_claim_ledger": {
+    "path": "../production/final-BC-a06/narration/claim-ledger-final-BC-a06.json",
+    "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+  },
+  "comparison_contract": "../../../../docs/ck3-native-ai/episode04-comparison-contract-12004.md",
+  "runtime_results_added_by_this_mapping": 0
+}

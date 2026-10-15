@@ -1,0 +1,80 @@
+{
+  "label": null,
+  "runtime": {
+    "machine_id": null,
+    "started_at_utc": null,
+    "pid": null,
+    "process_create_time_100ns": null,
+    "connection_generation": null,
+    "episode": null,
+    "player_character_id": null,
+    "source_head": null,
+    "native_dll_sha256": null,
+    "source_proof": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "loaded_save_sha256": null,
+  "cold_start": {
+    "day": 0,
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "army_result": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strategy_army_ids": [],
+    "commander": {
+      "source": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      },
+      "pointer": null
+    },
+    "loaded_features": {
+      "source": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      },
+      "pointer": null
+    }
+  },
+  "days": [],
+  "observations": [],
+  "execution": {
+    "prespecified_policy_followed": false,
+    "B_merge_destination_policy": null,
+    "B_commander_policy": null,
+    "B_rest_exit_records": [],
+    "C_waypoint_observed_days": [],
+    "evidence": []
+  },
+  "disposition": {
+    "kind": null,
+    "day": null,
+    "last_not_arrived_day": null,
+    "reason": null,
+    "evidence": []
+  },
+  "ledger": {
+    "loss_refill_qualified": false,
+    "payment_qualified": false,
+    "loss_physical_debits": null,
+    "refill_physical_adds": null,
+    "boarding_gold_raw": null,
+    "maintenance_gold_raw": null,
+    "other_cash_income_raw": null,
+    "other_cash_expense_raw": null,
+    "through_day": null,
+    "evidence": []
+  },
+  "deviations": []
+}

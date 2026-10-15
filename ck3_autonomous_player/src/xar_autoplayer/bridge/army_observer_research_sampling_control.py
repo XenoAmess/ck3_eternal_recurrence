@@ -39,7 +39,7 @@ def selected_families(observer_family: object) -> tuple[str, ...]:
 
 
 def normalize_result(payload: object, *, expected_step: str,
-                     observer_family: str) -> dict[str, object]:
+                      observer_family: str, allow_scoped_enable_refusal: bool = False) -> dict[str, object]:
     """Check the actual native control receipt without manufacturing a sample."""
     selected = selected_families(observer_family)
     require(type(expected_step) is str and expected_step in _STEPS, "unknown Army observer sampling step")
@@ -82,14 +82,32 @@ def normalize_result(payload: object, *, expected_step: str,
             all_satisfied = all_satisfied and available and not row["capture_enabled"] and not row["busy"] and row["clear_completed"]
         # A legal query is accepted even if a selected observer is unavailable.
         output[family] = dict(row)
-    require(payload["accepted"] is bool(all_satisfied), "aggregate Army observer accepted contradicts actual states")
-    require(payload["status"] == ("completed" if all_satisfied else "incomplete"),
+    refused_scope = (allow_scoped_enable_refusal is True and expected_step == ENABLE_STEP and
+                     observer_family == "regular_core" and payload["accepted"] is False)
+    require(payload["accepted"] is bool(all_satisfied) or refused_scope,
+            "aggregate Army observer accepted contradicts actual states")
+    require(payload["status"] == ("completed" if payload["accepted"] else "incomplete"),
             "aggregate Army observer status contradicts accepted")
     return {**payload, STATE_KEY: output}
 
 
+def normalize_regular_core_subject_ids(value: object, *, step: str,
+                                       observer_family: str) -> list[int] | None:
+    if value is None:
+        return None
+    require(step == ENABLE_STEP and observer_family == "regular_core",
+            "regular_core_full_carmy_ids requires enabling only regular_core")
+    require(type(value) is list and 1 <= len(value) <= 64,
+            "regular_core_full_carmy_ids must contain 1..64 full CArmy IDs")
+    require(all(type(item) is int and -(2**31) <= item <= 2**31 - 1 and item != -1
+                for item in value), "regular_core_full_carmy_ids must be signed32 IDs excluding -1")
+    require(len(set(value)) == len(value), "regular_core_full_carmy_ids must be unique")
+    return list(value)
+
+
 def execute_control(driver, *, step: str, observer_family: str,
-                    expected_revision: int) -> dict[str, object]:
+                    expected_revision: int,
+                    regular_core_full_carmy_ids: list[int] | None = None) -> dict[str, object]:
     """Use the existing exact4 primitive; outer owner still grants runtime scope."""
     from xar_autoplayer.bridge.driver import BridgeUnavailableError
     from xar_autoplayer.bridge.native_driver import (
@@ -99,6 +117,11 @@ def execute_control(driver, *, step: str, observer_family: str,
 
     selected_families(observer_family)
     require(type(step) is str and step in _STEPS, "unknown Army observer sampling step")
+    scope = normalize_regular_core_subject_ids(regular_core_full_carmy_ids,
+                                             step=step, observer_family=observer_family)
+    request_fields: dict[str, object] = {"observer_family": observer_family}
+    if scope is not None:
+        request_fields["regular_core_full_carmy_ids"] = scope
     require(type(expected_revision) is int and expected_revision > 0, "positive public sampling revision required")
     starting = driver.take_internal_semantic_snapshot()
     actor = starting.get("played_character") or {}
@@ -123,11 +146,12 @@ def execute_control(driver, *, step: str, observer_family: str,
         raw = driver._execute_primitive_step(
             step, expected_revision=expected_revision,
             required_capability=ARMY_CAPABILITY,
-            request_fields={"observer_family": observer_family},
+            request_fields=request_fields,
             include_native_command_history=False, internal_semantic_snapshot=True,
         )
         try:
-            result = normalize_result(raw, expected_step=step, observer_family=observer_family)
+            result = normalize_result(raw, expected_step=step, observer_family=observer_family,
+                                      allow_scoped_enable_refusal=scope is not None)
         except ValueError as error:
             raise BridgeUnavailableError("Malformed Army observer sampling receipt: " + str(error)) from error
         current = driver.take_internal_semantic_snapshot()
@@ -163,10 +187,12 @@ def execute_control(driver, *, step: str, observer_family: str,
     return result
 
 
-def set_control(driver, enabled: bool, *, observer_family: str, expected_revision: int):
+def set_control(driver, enabled: bool, *, observer_family: str, expected_revision: int,
+                regular_core_full_carmy_ids: list[int] | None = None):
     require(type(enabled) is bool, "Army observer enabled must be explicit boolean")
     return execute_control(driver, step=ENABLE_STEP if enabled else DISABLE_STEP,
-                           observer_family=observer_family, expected_revision=expected_revision)
+                           observer_family=observer_family, expected_revision=expected_revision,
+                           regular_core_full_carmy_ids=regular_core_full_carmy_ids)
 
 
 def query_control(driver, *, observer_family: str, expected_revision: int):
@@ -180,11 +206,15 @@ def register_tools(server, driver, read_only_tool) -> None:
     from pydantic import Field
     from xar_autoplayer.bridge.driver import UnsupportedStepError
 
-    def ck3_set_army_observer_research_sampling_v1(enabled, observer_family, expected_revision):
+    def ck3_set_army_observer_research_sampling_v1(enabled, observer_family, expected_revision,
+                                                 regular_core_full_carmy_ids=None):
         method = getattr(driver, "set_army_observer_research_sampling_v1", None)
         if not callable(method):
             raise UnsupportedStepError("Backend has no Army observer sampling controls")
-        return method(enabled, observer_family=observer_family, expected_revision=expected_revision)
+        kwargs = dict(observer_family=observer_family, expected_revision=expected_revision)
+        if regular_core_full_carmy_ids is not None:
+            kwargs["regular_core_full_carmy_ids"] = regular_core_full_carmy_ids
+        return method(enabled, **kwargs)
 
     def ck3_query_army_observer_research_sampling_v1(observer_family, expected_revision):
         method = getattr(driver, "query_army_observer_research_sampling_v1", None)
@@ -193,9 +223,12 @@ def register_tools(server, driver, read_only_tool) -> None:
         return method(observer_family=observer_family, expected_revision=expected_revision)
 
     revision = Annotated[int, Field(strict=True, gt=0)]
+    full_carmy_id = Annotated[int, Field(strict=True, ge=-(2**31), le=2**31 - 1)]
+    subject_ids = Annotated[list[full_carmy_id], Field(strict=True, min_length=1, max_length=64)]
     ck3_set_army_observer_research_sampling_v1.__annotations__ = {
         "enabled": Annotated[bool, Field(strict=True)], "observer_family": ObserverFamily,
-        "expected_revision": revision, "return": dict[str, object],
+        "expected_revision": revision, "regular_core_full_carmy_ids": subject_ids | None,
+        "return": dict[str, object],
     }
     ck3_query_army_observer_research_sampling_v1.__annotations__ = {
         "observer_family": ObserverFamily, "expected_revision": revision, "return": dict[str, object],

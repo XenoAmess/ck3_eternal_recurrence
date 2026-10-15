@@ -64,6 +64,37 @@ struct ArmyRegularCoreArmy12004 {
   std::vector<ArmyRegularCoreArRg12004> arrg_occurrences;
   std::string unavailable_reason;
 };
+inline constexpr std::size_t kMaximumArmyRegularCoreSubjects12004 = 64;
+// Explicit research scope is pinned before enable. It never changes the default
+// full-manager collector and is never inferred from a later query.
+struct ArmyRegularCoreSubjectScope12004 {
+  std::uint64_t scope_epoch = 0;
+  std::uintptr_t game_state_identity = 0;
+  std::int32_t owner_character_id = -1;
+  std::vector<std::int32_t> full_carmy_ids;
+  std::vector<std::int32_t> allowed_public_unit_ids;
+};
+struct ArmyRegularCoreSubjectIdentity12004 {
+  std::int32_t full_carmy_id = -1;
+  std::optional<std::int32_t> resolved_full_carmy_id;
+  std::optional<std::uint32_t> carmy_magic_14_raw;
+  std::optional<std::int32_t> public_unit_id;
+  std::optional<std::int32_t> unit_resolved_full_id;
+  std::optional<std::uint32_t> unit_magic_14_raw;
+  std::optional<std::int32_t> unit_owner_character_id;
+  std::optional<std::int32_t> unit_full_carmy_id;
+};
+struct ArmyRegularCoreSubjectCoverage12004 {
+  std::uint64_t scope_epoch = 0;
+  std::uintptr_t bound_game_state_identity = 0;
+  std::int32_t bound_owner_character_id = -1;
+  std::vector<std::int32_t> requested_full_carmy_ids;
+  bool manager_occurrences_complete = false;
+  // Raw seven-slot/DATA closure only. Never full-manager cause completeness.
+  bool physical_closure_complete = false;
+  std::vector<ArmyRegularCoreSubjectIdentity12004> subject_identity_witnesses;
+  std::vector<std::string> missing_inputs;
+};
 struct ArmyRegularCoreFrame12004 {
   // Complete ordered materialization. Optional branch context can remain unknown
   // and the existing conditional projector must check whichever branch it uses.
@@ -75,6 +106,7 @@ struct ArmyRegularCoreFrame12004 {
   std::vector<ArmyRegularCoreOccurrence12004> army_refresh_occurrences;
   std::vector<ArmyRegularCoreArmy12004> army_objects;
   std::vector<std::string> missing_inputs;
+  std::optional<ArmyRegularCoreSubjectCoverage12004> subject_coverage_v1;
 };
 struct ArmyRegularCoreObservation12004 {
   // journal_sequence is retention order only; never a natural clock timestamp.
@@ -141,6 +173,7 @@ struct ArmyRegularCoreBindings12004 {
   std::size_t maximum_physical_objects = 4096;
   std::size_t maximum_total_data_records = 65536;
   std::size_t maximum_read_bytes = 4 * 1024 * 1024;
+  std::optional<ArmyRegularCoreSubjectScope12004> subject_scope;
 };
 
 ArmyRegularCoreBindings12004 BindArmyRegularCoreImage12004(
@@ -157,6 +190,12 @@ ArmyRegularCoreJournal12004 ReadArmyRegularCoreJournal12004() noexcept;
 std::optional<ArmyRegularCoreJournal12004> ReadSampledArmyRegularCoreJournal12004() noexcept;
 ArmyObserverResearchSamplingState12004 ReadArmyRegularCoreResearchSampling12004() noexcept;
 ArmyObserverResearchSamplingState12004 SetArmyRegularCoreResearchSampling12004(bool enabled) noexcept;
+// Explicit opt-in is allowed only while disabled and quiescent. IDs and public
+// player membership are verified with the same guarded reader before enable.
+bool SetArmyRegularCoreScopedResearchSampling12004(
+    const std::vector<std::int32_t> &requested_full_carmy_ids,
+    std::int32_t expected_owner_character_id,
+    const std::vector<std::int32_t> &fresh_controllable_public_unit_ids) noexcept;
 void ClearArmyRegularCoreJournal12004() noexcept;
 bool InitializeArmyRegularCoreFixture12004(const ArmyRegularCoreBindings12004 &,
     ArmyRegularCoreOriginal12004) noexcept;

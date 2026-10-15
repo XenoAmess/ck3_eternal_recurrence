@@ -105,6 +105,34 @@ bool NaturalMatches(const WarPaymentRecord12004 &r,const ArmyNaturalPhaseRecord1
   return current.same_owned_process_no_load_window&&current.game_state_identity_witness==p.game_state&&
     !p.session_identity&&!q.session_identity&&!s.session_identity;
 }
+std::string GenericValuesJson(const WarPaymentGenericValues12004 &v) {
+  Object o;
+  o.Opt("context_identity_before",v.context_identity_before);o.Opt("context_identity_after",v.context_identity_after);
+  o.Opt("value_2c0",v.value_2c0);o.Opt("value_2c8",v.value_2c8);o.Opt("value_28",v.value_28);o.Opt("value_30",v.value_30);
+  o.Bool("capture_complete",v.capture_complete);o.Bool("context_stable",v.context_stable);o.Num("failed_reads",v.failed_reads);return o.Done();
+}
+std::string GenericParentJson(const WarPaymentGenericParentTrace12004 &p) {
+  Object o;o.Num("module_base",p.module_base);o.Num("module_image_size",p.module_image_size);
+  o.Num("reported_frame_count",p.reported_frame_count);o.Bool("capture_succeeded",p.capture_succeeded);
+  o.Bool("truncated",p.truncated);o.Num("caller_match_count",p.caller_match_count);
+  std::string frames="[";
+  if(p.capture_succeeded)for(std::size_t i=0;i<p.reported_frame_count;++i) {if(i)frames+=',';frames+=std::to_string(p.frames_absolute[i]);}
+  frames+=']';o.Raw("frames_absolute",std::move(frames));
+  o.Opt("parent_return_absolute",p.parent_return_absolute);o.Opt("parent_return_rva",p.parent_return_rva);
+  o.Bool("parent_in_same_image",p.parent_in_same_image);return o.Done();
+}
+std::string GenericContextJson(const WarPaymentGenericContext12004 &g) {
+  Object o;o.Num("schema_version",1);o.Num("source_entry_rva",kWarPaymentGenericSource12004);
+  o.Num("source_wallet_return_rva",kWarPaymentGenericReturn12004);
+  o.Str("attribution_scope","raw_source_context_and_unwind_parent_only");o.Str("maintenance_attribution","unclosed");
+  o.Raw("before",GenericValuesJson(g.before));o.Raw("after",GenericValuesJson(g.after));
+  o.Raw("parent_trace",GenericParentJson(g.parent_trace));
+  o.Opt("before_computed_add_raw",g.before_computed_add_raw);
+  if(g.before_formula_matches_amount)o.Bool("before_formula_matches_amount",*g.before_formula_matches_amount);
+  else o.Raw("before_formula_matches_amount","null");
+  o.Bool("context_values_stable",g.context_values_stable);return o.Done();
+}
+
 std::string RecordJson(const WarPaymentRecord12004 &r) {
   Object o;
 #define NUM(name) o.Num(#name,r.name)
@@ -118,6 +146,7 @@ std::string RecordJson(const WarPaymentRecord12004 &r) {
   BOOL(original_called);BOOL(original_returned);NUM(raw_return_bits);BOOL(clock_thread_order_matches);BOOL(session_matches);BOOL(natural_parent_matches);BOOL(same_character_after);BOOL(same_wrapper_after);BOOL(personal_wrapper_matches_character);BOOL(source_boarding_call_chain_matches);BOOL(tls_depth_exceeded);
 #undef NUM
 #undef BOOL
+  if(r.generic_wallet_context)o.Raw("generic_wallet_context_v1",GenericContextJson(*r.generic_wallet_context));
   return o.Done();
 }
 } // namespace

@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.portable-generic-context-source-inspection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T13:59:16.500575+00:00",
+  "machine_identity_evidence": "fresh tools.ck3_live_run_id.current_machine_id() without override",
+  "assertion_ast_nodes": [],
+  "absolute_machine_path_or_host_literals": [],
+  "standard_production_consumer_import": true,
+  "exact_original_case_id_reuse": {
+    "negative": true,
+    "unknown": true,
+    "legacy": true,
+    "native": true
+  },
+  "counts": {
+    "negative": 110,
+    "unknown": 5,
+    "legacy": 9,
+    "native": 16
+  },
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\ck3_autonomous_player\\tests\\unit\\test_war_payment_generic_context.py",
+    "size_bytes": 12145,
+    "sha256": "194b8c98176b6af075c334d9d53b102e289bda1a5aebc90585fcf3bbb7ae38d6"
+  },
+  "reference": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\consumer-full-check-a01.actual.json",
+    "size_bytes": 9569,
+    "sha256": "0a567cab7f59999d02e81bf5bf31ff45fb9199e33aae27857c42cf57ddcb7f39"
+  },
+  "actual_pytest_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-a01.receipt.actual.json",
+    "size_bytes": 23315,
+    "sha256": "116a1a86b80a3e6060ab501f6bb3186339b72b5c4586c09bbdeff379fee33de9"
+  },
+  "inspector": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\inspect_portable_source_a01.py",
+    "size_bytes": 4015,
+    "sha256": "22502f5742b1c4d5949273949aca0d6a8e8d0ff6c21bf4650617c325e723ab6f"
+  },
+  "status": "PASS"
+}

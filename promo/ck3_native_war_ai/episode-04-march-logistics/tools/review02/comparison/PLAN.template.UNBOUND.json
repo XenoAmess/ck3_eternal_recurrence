@@ -1,0 +1,151 @@
+{
+  "schema": "xar.e04.r10.plan.v1",
+  "status": "draft",
+  "frozen_at_utc": null,
+  "plan_id": "Review02-R10-ABC-UNBOUND",
+  "build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_head": null,
+    "native_dll_sha256": null
+  },
+  "normal_save": {
+    "kind": "normal-native-checkpoint",
+    "bytes": null,
+    "sha256": null,
+    "save_receipt": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "normal_origin_proof": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "t0_raw": null,
+  "max_natural_days": 90,
+  "raw_per_day": 24,
+  "goal_province_id": null,
+  "arrival_states": [],
+  "original_regiment_ids": [],
+  "baseline": {
+    "day": 0,
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "army_result": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strategy_army_ids": [],
+    "commander": {
+      "source": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      },
+      "pointer": null
+    },
+    "loaded_features": {
+      "source": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      },
+      "pointer": null
+    }
+  },
+  "strategies": {
+    "A": {
+      "mode": "whole-direct",
+      "route_preview": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      }
+    },
+    "B": {
+      "mode": "split-rest-merge",
+      "rest_province_ids": [
+        null,
+        null
+      ],
+      "site_actual_stock_increase_evidence": [
+        {
+          "path": null,
+          "bytes": null,
+          "sha256": null
+        },
+        {
+          "path": null,
+          "bytes": null,
+          "sha256": null
+        }
+      ],
+      "minimum_stock_raw": null,
+      "maximum_deficit": null,
+      "maximum_rest_days": null,
+      "merge_province_id": null,
+      "merge_destination_policy": null,
+      "commander_policy": null,
+      "r09_result": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      }
+    },
+    "C": {
+      "mode": "whole-via",
+      "waypoint_province_ids": [],
+      "route_preview": {
+        "path": null,
+        "bytes": null,
+        "sha256": null
+      }
+    }
+  },
+  "report_days": [
+    7,
+    14,
+    21,
+    28
+  ],
+  "compare_fees": true,
+  "follow_after_arrival_to_day90": false,
+  "post_arrival_policy": null,
+  "event_policy": null,
+  "wall_budget_seconds_per_arm": null,
+  "prerequisites": {
+    "exact_clock": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "loss_refill_subject_qualification": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "B_microexperiment": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "boarding_payment": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "maintenance_settlement": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  }
+}

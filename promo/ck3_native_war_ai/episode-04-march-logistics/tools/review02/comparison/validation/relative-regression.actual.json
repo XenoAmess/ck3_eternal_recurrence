@@ -1,0 +1,75 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_utc": "2026-10-15T14:14:30.740382+00:00",
+  "read_source_head": "b9aba7df1e80c49b7d667bd13f6148f3a84676d4",
+  "scope": "Only new add-only comparison files in an external exact-layout tree, using the explicitly selected main-worktree tools/.venv interpreter. No main-tree write or game/SDK/media/EXE access.",
+  "python_version": "Python 3.14.7",
+  "dependency": "jsonschema4.25.1 (existing verified local environment)",
+  "relative_test_command": [
+    "<verified-python>",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison",
+    "-p",
+    "test_r10_compare.py"
+  ],
+  "normal_cases_passed": 28,
+  "optimized_cases_passed": 28,
+  "legacy_rejections": [
+    {
+      "label": "B",
+      "source_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/B-closed-terminal-values.json",
+      "source_bytes": 1522,
+      "source_sha256": "12bd6783667388f574cfc08a69ac4e39b4522ca9e4b44a2a5a77451ef2b02bcb",
+      "actual_exit_code": 2,
+      "actual_result": {
+        "accepted_as_R10_result": false,
+        "arm": "B",
+        "observed_days": 38,
+        "remaining_days": 52,
+        "reasons": [
+          "old_12003_scope",
+          "strategy_gate_stopped_not_arrived",
+          "not_a_90_day_deadline_censor",
+          "cohort_or_commander_gate_failed"
+        ],
+        "source_disposition": "STOPPED_GATE_INCOMPLETE",
+        "London_endpoint_metrics": null,
+        "winner": null,
+        "checked_at_utc": "2026-10-15T14:14:29.547637+00:00"
+      }
+    },
+    {
+      "label": "C",
+      "source_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0176-c-descriptive-march/normalized_C_result.json",
+      "source_bytes": 7599,
+      "source_sha256": "69cc82ed5371d11d73af1b1308f40fad516bcb15ad227ff72018951d9b9b9873",
+      "actual_exit_code": 2,
+      "actual_result": {
+        "accepted_as_R10_result": false,
+        "arm": "C",
+        "actual_observation_preserved": [
+          75.0,
+          77.0
+        ],
+        "reasons": [
+          "old_12003_scope",
+          "controlled_comparison_NOT_GRANTED",
+          "retained_sampling_deviations",
+          "arrival_interval_wider_than_one_day"
+        ],
+        "sampling_deviation_count": 15,
+        "source_eligibility": "NOT_GRANTED",
+        "winner": null,
+        "checked_at_utc": "2026-10-15T14:14:30.030133+00:00"
+      }
+    }
+  ],
+  "UNBOUND_template_rejected": true,
+  "synthetic_test_inputs_only": true,
+  "new_R10_real_results": 0,
+  "clean_footage_or_human_review_granted": false
+}

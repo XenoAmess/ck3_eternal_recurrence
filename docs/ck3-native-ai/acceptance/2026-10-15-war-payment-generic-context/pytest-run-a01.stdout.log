@@ -1,0 +1,10 @@
+........................................................................ [ 51%]
+....................................................................     [100%]
+============================== warnings summary ===============================
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Lib\site-packages\_pytest\config\__init__.py:1346
+  D:\workspace\ck3_eternal_recurrence\tools\.venv\Lib\site-packages\_pytest\config\__init__.py:1346: PytestConfigWarning: ASSERTIONS ARE NOT EXECUTED and FAILING TESTS WILL PASS.  Are you using python -O?
+    self._warn_about_missing_assertion(mode)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+140 passed, 1 warning in 0.33s
+{"status": "PASS", "collected": 140, "passed": 140, "groups": {"legacy": 9, "native": 16, "negative": 110, "unknown": 5}, "receipt": {"path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-a01.receipt.actual.json", "size_bytes": 23315, "sha256": "116a1a86b80a3e6060ab501f6bb3186339b72b5c4586c09bbdeff379fee33de9"}}

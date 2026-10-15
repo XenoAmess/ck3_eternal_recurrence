@@ -174,3 +174,13 @@ if(BUILD_TESTING AND MSVC AND WIN32)
   target_link_options(xar_test_war_payment_snapshot_unavailable PRIVATE /OPT:REF /OPT:ICF)
   target_link_libraries(xar_test_war_payment_snapshot_unavailable PRIVATE kernel32 user32)
 endif()
+
+# Raw four-input capture for one source-proved ADD caller; no military inference.
+option(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004
+  "Capture exact-caller raw wallet context and bounded OS parent frames" OFF)
+if(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+  if(NOT XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+    message(FATAL_ERROR "Generic wallet context requires the existing passive payment observer")
+  endif()
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1)
+endif()

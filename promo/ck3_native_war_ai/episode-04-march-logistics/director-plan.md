@@ -177,3 +177,18 @@ Root本轮仅直接审了八张编码单帧，另十六张未授内容，媒体�
 ## 2026-10-06 实际 Review01 制作收口追加
 
 最终六章Review01实际输出28:55.80，69段中文与326组双语字幕；新整片机器审计PASS，Root实际看过18张最终编码单帧。A抵达观测(49,51]，B第38日冻结条件变化而停止，C抵达观测(75,77]且15次采样偏差保留；本片没有ABC因果赢家。真实低库存饥饿扣兵、补员/付款流水、精确50%锁定和AI最终选点评分仍是研究缺口。正式审阅包为pending-human-review，人工1×完整观看与签核尚未完成。OneDrive结果及最终知识/代码相对包入口见[最新实际交接](../../../docs/handover/2026-10-06-war-episode04-review01-delivery.md)；旧attempt、RED和当时NULL不回改。
+# 2026-10-15 研究与智能体共用来源更新
+
+本追加来源机器为 `desktop-3fevhd2-1c74096080`。原计划历史内容保留，以下链接用于后续视频与智能体开发共同取证：
+
+- [R0173登船3金币实付、未锁Halt及便携原件](../../../docs/ck3-native-ai/episode04-r0173-boarding-halt-12004.md)：研究整卡3/14，R07无登船对照仍缺，Halt未入原片。
+- [regular-core目标物理采集合同](../../../docs/ck3-native-ai/army-regular-core-subject-capture-12004.md)：新限定范围代码及离线资格，不将raw净变化冒充实际ADD或原因。
+- [付款raw context采集](../../../docs/ck3-native-ai/war-payment-generic-context-12004.md)：默认关闭，仅已证ADD caller的四项raw输入与有限父调用见证；维护费仍未归因。
+
+影片从这些权威专题及原件引用结论，不从外置临时目录、工程测试数或构建ACK推导业务通过。
+后续近海对照、锁定Halt/改道与A/B/C比较使用各自独立契约；未取得的数值不写成0或既定赢家。
+
+
+## 2026-10-15 Review02 锁定停止与改道复用入口
+
+E4-04的R12锁定Halt与R13锁定改道使用[仓库内执行/拍摄手册和只读验收器](tools/review02/locked_routes/README.md)，机理、智能体纯guard及实际业务边界见[共享专题](../../../docs/ck3-native-ai/episode04-locked-halt-reroute-12004.md)。新卡仍须独立正常Move、同帧实际progress大于loaded cutoff、独立后态与真实终点；R11未锁定历史负控、命令ACK和离线fixture都不授新卡完成。未来case显式绑定源机器与路径，不依赖作者C盘目录。

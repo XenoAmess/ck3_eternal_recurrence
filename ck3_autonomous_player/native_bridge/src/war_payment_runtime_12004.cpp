@@ -48,6 +48,30 @@ bool PinDefault(void *) noexcept {
   return GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
       reinterpret_cast<LPCWSTR>(&WarPaymentEntryThunkAddress12004),&module)!=FALSE;
 }
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+std::uint32_t GenericStackDefault(void *,std::uintptr_t *out,std::size_t capacity) noexcept {
+  if(!out||!capacity||capacity>kWarPaymentGenericStackCapacity12004)return 0;
+#if defined(_MSC_VER)
+  __try {
+    return static_cast<std::uint32_t>(RtlCaptureStackBackTrace(0,
+      static_cast<DWORD>(capacity),reinterpret_cast<void **>(out),nullptr));
+  } __except(EXCEPTION_EXECUTE_HANDLER) {return 0;}
+#else
+  return 0;
+#endif
+}
+std::uint32_t GenericImageSize(const WarPaymentInstallEnvironment12004 &e) noexcept {
+  std::uint32_t pe=0,size=0;
+  if(!e.bindings.read||!e.module_base||
+     e.module_base>(std::numeric_limits<std::uintptr_t>::max)()-0x3C||
+     !e.bindings.read(e.bindings.read_context,e.module_base+0x3C,&pe,sizeof pe)||
+     pe>0x100000||e.module_base>(std::numeric_limits<std::uintptr_t>::max)()-pe-0x50||
+     !e.bindings.read(e.bindings.read_context,e.module_base+pe+0x50,&size,sizeof size)||
+     size<=kWarPaymentGenericReturn12004)return 0;
+  return size;
+}
+#endif
+
 void Jump(std::uint8_t *bytes,std::uintptr_t target) noexcept {
   bytes[0]=0xFF;bytes[1]=0x25;std::memset(bytes+2,0,4);std::memcpy(bytes+6,&target,sizeof target);
 }
@@ -159,6 +183,16 @@ bool InstallWarPaymentPassive12004(WarPaymentDetourState12004 &state,const WarPa
          (input.fixture_targets&&!input.target_overrides[i])) {state.failure_flags.fetch_or(kBinding);return false;}
     }
     state.environment=input;auto &e=state.environment;
+#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
+    e.bindings.generic_context_capture_enabled=true;
+    e.bindings.generic_module_base=e.module_base;
+    e.bindings.generic_module_image_size=GenericImageSize(e);
+    e.bindings.capture_stack_frames=e.bindings.capture_stack_frames?e.bindings.capture_stack_frames:&GenericStackDefault;
+#else
+    e.bindings.generic_context_capture_enabled=false;
+    e.bindings.generic_module_base=0;e.bindings.generic_module_image_size=0;
+    e.bindings.capture_stack_frames=nullptr;e.bindings.capture_stack_context=nullptr;
+#endif
     e.write=e.write?e.write:&WriteDefault;e.allocate=e.allocate?e.allocate:&AllocateDefault;
     e.free=e.free?e.free:&FreeDefault;e.protect=e.protect?e.protect:&ProtectDefault;
     e.flush=e.flush?e.flush:&FlushDefault;e.pin_module=e.pin_module?e.pin_module:&PinDefault;

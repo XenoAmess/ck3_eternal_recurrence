@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_natural_phase_scope_12004.hpp"
+#include "xar_bridge/war_payment_generic_context_12004.hpp"
 #include <array>
 #include <mutex>
 #include <optional>
@@ -67,6 +68,8 @@ struct WarPaymentRecord12004 {
   bool personal_wrapper_matches_character = false;
   bool source_boarding_call_chain_matches = false;
   bool tls_depth_exceeded = false;
+  // Optional exact-caller raw inputs/parent frames; never military attribution.
+  std::optional<WarPaymentGenericContext12004> generic_wallet_context;
 };
 struct WarPaymentJournalSnapshot12004 {
   bool read_complete = false;
@@ -100,6 +103,12 @@ struct WarPaymentBindings12004 {
   // an explicitly incomplete record. This never skips or retries the original.
   bool (*retain_actor)(void *,WarPaymentKind12004,std::uintptr_t,std::uintptr_t) noexcept = nullptr;
   void *retain_actor_context = nullptr;
+  // Runtime forces this false unless the separate default-OFF build flag is ON.
+  bool generic_context_capture_enabled = false;
+  std::uintptr_t generic_module_base = 0;
+  std::uint32_t generic_module_image_size = 0;
+  WarPaymentStackFrames12004 capture_stack_frames = nullptr;
+  void *capture_stack_context = nullptr;
 };
 #if defined(_MSC_VER)
 #define XAR_PAYMENT_ABI12004 __fastcall

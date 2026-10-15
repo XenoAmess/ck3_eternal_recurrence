@@ -85,6 +85,7 @@
 #include "xar_bridge/war_payment_window_12004.hpp"
 #endif
 #include "xar_bridge/army_observer_research_control_12004.hpp"
+#include "xar_bridge/army_regular_core_scope_request_12004.hpp"
 #if defined(XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004)
 #include "xar_bridge/entry_preceding_capture_12004.hpp"
 #include "xar_bridge/entry_final_side_capture_12004.hpp"
@@ -15433,6 +15434,14 @@ void RunConnectedSession(
           early_step_dispatched = true;
         }
         trace_command_entry("step_parse_returned");
+        std::optional<std::vector<std::int32_t>> regular_core_full_carmy_ids;
+        if (!early_step_dispatched &&
+            !xar::ck3_12004::ParseRegularCoreScopeRequest12004(
+                incoming.payload, step, regular_core_full_carmy_ids)) {
+          connected = write_frame(pipe, CommandResultFrame(request_id, step, false,
+              "army_regular_core_scope_request_invalid"));
+          early_step_dispatched = true;
+        }
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
         if (!early_step_dispatched && state.experimental_combat_phase_trace &&
             state.experimental_combat_phase_trace->stage ==
@@ -26631,8 +26640,27 @@ void RunConnectedSession(
           } else {
             const std::string_view mode=step=="query-army-observer-research-sampling-v1"?
                 "query":step=="enable-army-observer-research-sampling-v1"?"enable":"disable";
-            const auto rows=ArmyObserverResearchControl12004(family,mode);
-            const bool accepted=xar::ck3_12004::ArmyResearchSamplingAccepted12004(family,mode,rows);
+            bool scoped_bound=true;
+            if(regular_core_full_carmy_ids) {
+              scoped_bound=false;
+#if defined(XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004)
+              if(g_army_regular_core_passive_12004.installed.load()) {
+                std::vector<std::int32_t> controllable_public_unit_ids;
+                for(const auto &army:fresh.player_armies)
+                  if(army.controllable && army.owner_character_id==fresh.played_character_id)
+                    controllable_public_unit_ids.push_back(army.army_id);
+                scoped_bound=xar::ck3_12004::SetArmyRegularCoreScopedResearchSampling12004(
+                    *regular_core_full_carmy_ids,fresh.played_character_id,
+                    controllable_public_unit_ids);
+              }
+#endif
+            }
+            // An explicit scope never falls through to any ordinary setter,
+            // including on refusal. Readback is separate from the bind ACK.
+            const auto rows=ArmyObserverResearchControl12004(
+                family,regular_core_full_carmy_ids?"query":mode);
+            const bool accepted=scoped_bound &&
+                xar::ck3_12004::ArmyResearchSamplingAccepted12004(family,mode,rows);
             std::string response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
             AppendJsonString(response,request_id);
             response+=",\"ok\":true,\"result\":{\"step\":";AppendJsonString(response,step);

@@ -1,0 +1,243 @@
+{
+  "schema": "xar.generic-context.actual-msvc-provenance.v1",
+  "scope": "Historical actual argv retained exactly; absolute paths are original provenance, not runner inputs",
+  "actual_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\RESULT.actual.json",
+    "bytes": 17106,
+    "sha256": "af1dc6e352be91f79aab24f60cb341b8d950aeebb5f89ba4caff47ed0d852992"
+  },
+  "actual_utc": "2026-10-15T13:43:06.860537+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "original_fixture": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\generic_context_fixture.cpp",
+    "bytes": 10197,
+    "sha256": "60848f93098b26194432e9df8e623dfdc8b6606f71d02f12f8ca9f0f83cdc1e7"
+  },
+  "portable_fixture": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\ck3_autonomous_player\\native_bridge\\tests\\war_payment_generic_context\\generic_context_fixture.cpp",
+    "bytes": 10197,
+    "sha256": "60848f93098b26194432e9df8e623dfdc8b6606f71d02f12f8ca9f0f83cdc1e7"
+  },
+  "fixture_exact_compiled_bytes_equal": true,
+  "commands": [
+    {
+      "label": "war_payment_passive_12004",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\include",
+        "/c",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\war_payment_passive_12004.cpp",
+        "/FoC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_passive_12004.obj"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_passive_12004.stdout.bin",
+        "bytes": 31,
+        "sha256": "21735abab18720fd4f1b19efc0223e1b338006734776719da6bcad0116c5261d"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_passive_12004.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "war_payment_json_12004",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\include",
+        "/c",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\war_payment_json_12004.cpp",
+        "/FoC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_json_12004.obj"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_json_12004.stdout.bin",
+        "bytes": 28,
+        "sha256": "fb194d26a03a3a09f841382ee3b7969a7a9b227642e1c56b28ffb6dd68a785f6"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_json_12004.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "generic_context_fixture",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\include",
+        "/c",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\generic_context_fixture.cpp",
+        "/FoC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\generic_context_fixture.obj"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\generic_context_fixture.stdout.bin",
+        "bytes": 29,
+        "sha256": "4c1826b9914b8a58ec543a70f6275fa2ffb0e9c9b5d39a5a29acbbd46cf46692"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\generic_context_fixture.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "runtime-default-off-Zs",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\include",
+        "/Zs",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\war_payment_runtime_12004.cpp"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\runtime-default-off-Zs.stdout.bin",
+        "bytes": 31,
+        "sha256": "b333d021ab2c0ec127b8ecec54d3df49517cb12715247e2209e04102f57bc84f"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\runtime-default-off-Zs.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "runtime-enabled-Zs",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "/Gy",
+        "/utf-8",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/IC:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\include",
+        "/DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1",
+        "/Zs",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\source-freeze\\war_payment_runtime_12004.cpp"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\runtime-enabled-Zs.stdout.bin",
+        "bytes": 31,
+        "sha256": "b333d021ab2c0ec127b8ecec54d3df49517cb12715247e2209e04102f57bc84f"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\runtime-enabled-Zs.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "link-fixture",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+        "/nologo",
+        "/INCREMENTAL:NO",
+        "/OPT:REF",
+        "/OPT:ICF",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_passive_12004.obj",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\war_payment_json_12004.obj",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\generic_context_fixture.obj",
+        "/OUT:C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\generic_context_fixture.exe",
+        "kernel32.lib",
+        "user32.lib"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\link-fixture.stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\link-fixture.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "execute-fixture",
+      "argv": [
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\generic_context_fixture.exe",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\serialized-generic-context-wire.actual.json"
+      ],
+      "return_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\execute-fixture.stdout.bin",
+        "bytes": 60,
+        "sha256": "cb01e53d05913e06d40478651d4879165c2591e75239941011a839c7911b3599"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\execute-fixture.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "fixture_summary": {
+    "summary": true,
+    "checks": 136,
+    "failures": 0,
+    "case_count": 16
+  },
+  "defender_exclusions": {
+    "status": "verified",
+    "manifest": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\defender-exe-exclusions\\20261015T134245Z-0c8b8cc6\\manifest.json",
+    "receipt": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-generic-context-candidate-a04\\defender-exe-exclusions\\20261015T134245Z-0c8b8cc6\\receipt.json",
+    "receipt_sha256": "ce537ea1a84f7121d0d6c2083daf77111321844e610411d1efd3456a4953a741",
+    "error": null
+  },
+  "game_contact": false,
+  "full_bridge_build": false
+}

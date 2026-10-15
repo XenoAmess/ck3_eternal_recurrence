@@ -25,13 +25,16 @@ def integer(value, bits=64, signed=False):
 
 
 def fields(value, *, unsigned='', u32='', u8='', signed='', i32='', boolean='',
-           optional_u64='', optional_u32='', optional_u8='', nested='', strings=''):
+           optional_u64='', optional_u32='', optional_u8='', optional_signed='',
+           optional_boolean='', nested='', strings=''):
     groups = [(unsigned, lambda x:integer(x)), (u32, lambda x:integer(x,32)),
               (u8, lambda x:integer(x,8)), (signed, lambda x:integer(x,64,True)),
               (i32, lambda x:integer(x,32,True)), (boolean, lambda x:type(x) is bool),
               (optional_u64, lambda x:x is None or integer(x)),
               (optional_u32, lambda x:x is None or integer(x,32)),
               (optional_u8, lambda x:x is None or integer(x,8)),
+              (optional_signed, lambda x:x is None or integer(x,64,True)),
+              (optional_boolean, lambda x:x is None or type(x) is bool),
               (strings, lambda x:type(x) is str)]
     keys = set(nested.split())
     for names, _ in groups:
@@ -66,12 +69,90 @@ def natural(value):
     event(value['entry_event'])
 
 
+GENERIC_CONTEXT_KEY = 'generic_wallet_context_v1'
+GENERIC_CONTEXT_ENTRY_RVA = 0x28a6d10
+GENERIC_CONTEXT_WALLET_RETURN_RVA = 0x28a6d7c
+GENERIC_CONTEXT_VALUES = ('value_2c0', 'value_2c8', 'value_28', 'value_30')
+
+
+def generic_context_snapshot(value):
+    fields(value, optional_u64='context_identity_before context_identity_after',
+           optional_signed='value_2c0 value_2c8 value_28 value_30',
+           boolean='capture_complete context_stable', u32='failed_reads')
+    input_identity, returned_identity = value['context_identity_before'], value['context_identity_after']
+    stable = bool(input_identity and returned_identity and input_identity == returned_identity)
+    need(value['context_stable'] == stable, 'generic context identity stability is inconsistent')
+    if not input_identity:
+        need(all(value[key] is None for key in GENERIC_CONTEXT_VALUES),
+             'generic context has values without an input context identity')
+    complete = stable and value['failed_reads'] == 0 and all(value[key] is not None for key in GENERIC_CONTEXT_VALUES)
+    need(value['capture_complete'] == complete, 'generic context completeness is inconsistent')
+
+
+def generic_context_trace(value):
+    fields(value, unsigned='module_base',
+           u32='module_image_size reported_frame_count caller_match_count',
+           boolean='capture_succeeded truncated parent_in_same_image',
+           optional_u64='parent_return_absolute parent_return_rva', nested='frames_absolute')
+    frames = value['frames_absolute']
+    need(isinstance(frames, list) and len(frames) <= 32 and all(integer(frame) and frame != 0 for frame in frames),
+         'generic context parent frames are malformed')
+    captured = 1 <= value['reported_frame_count'] <= 32
+    need(value['capture_succeeded'] == captured
+         and (len(frames) == value['reported_frame_count'] if captured else not frames),
+         'generic context parent capture count is inconsistent')
+    need(value['truncated'] == (captured and value['reported_frame_count'] == 32),
+         'generic context parent truncation is inconsistent')
+    base = value['module_base']
+    known_caller = base + GENERIC_CONTEXT_WALLET_RETURN_RVA if base and base <= U64-GENERIC_CONTEXT_WALLET_RETURN_RVA else None
+    matches = [index for index, frame in enumerate(frames) if known_caller is not None and frame == known_caller]
+    need(value['caller_match_count'] == len(matches), 'generic context parent caller count is inconsistent')
+    parent = frames[matches[0]+1] if len(matches) == 1 and matches[0]+1 < len(frames) else None
+    need(value['parent_return_absolute'] == parent, 'generic context parent address is inconsistent')
+    same_image = (parent is not None and bool(base) and value['module_image_size'] > GENERIC_CONTEXT_WALLET_RETURN_RVA
+                  and parent >= base and parent-base < value['module_image_size'])
+    need(value['parent_in_same_image'] == same_image
+         and value['parent_return_rva'] == (parent-base if same_image else None),
+         'generic context parent image provenance is inconsistent')
+
+
+def generic_wallet_context(value, payment_record):
+    """Retain raw source values and an unwind parent without attributing a cost."""
+    fields(value, u32='schema_version', unsigned='source_entry_rva source_wallet_return_rva',
+           strings='attribution_scope maintenance_attribution',
+           optional_signed='before_computed_add_raw', optional_boolean='before_formula_matches_amount',
+           boolean='context_values_stable', nested='before after parent_trace')
+    need(value['schema_version'] == 1 and value['source_entry_rva'] == GENERIC_CONTEXT_ENTRY_RVA
+         and value['source_wallet_return_rva'] == GENERIC_CONTEXT_WALLET_RETURN_RVA
+         and value['attribution_scope'] == 'raw_source_context_and_unwind_parent_only'
+         and value['maintenance_attribution'] == 'unclosed', 'generic context source or attribution scope is malformed')
+    need(payment_record['kind'] == 2 and payment_record['caller_return_rva'] == GENERIC_CONTEXT_WALLET_RETURN_RVA,
+         'generic context belongs to a different wallet call')
+    for key in ('before', 'after'):
+        generic_context_snapshot(value[key])
+    generic_context_trace(value['parent_trace'])
+    first, last = value['before'], value['after']
+    computed = None
+    if first['capture_complete']:
+        raw = first['value_2c0']-first['value_2c8']-(first['value_28']+first['value_30'])
+        computed = (raw+(1 << 63)) % (1 << 64)-(1 << 63)
+    need(value['before_computed_add_raw'] == computed
+         and value['before_formula_matches_amount'] == (computed == payment_record['amount_raw'] if computed is not None else None),
+         'generic context source arithmetic is inconsistent')
+    stable = (first['capture_complete'] and last['capture_complete']
+              and first['context_identity_before'] == last['context_identity_before']
+              and all(first[key] == last[key] for key in GENERIC_CONTEXT_VALUES))
+    need(value['context_values_stable'] == stable, 'generic context values stability is inconsistent')
+
+
 def record(value):
+    has_generic_context = isinstance(value, dict) and GENERIC_CONTEXT_KEY in value
     fields(value, unsigned='journal_sequence receiver second_pointer caller_return_rva parent_transition_army parent_gateway_character parent_transition_caller parent_gateway_caller raw_return_bits',
            u8='kind', signed='amount_raw parent_gateway_amount',
            i32='resource_kind_raw component_raw parent_gateway_resource parent_gateway_component',
            boolean='original_called original_returned clock_thread_order_matches session_matches natural_parent_matches same_character_after same_wrapper_after personal_wrapper_matches_character source_boarding_call_chain_matches tls_depth_exceeded',
-           nested='entry_event returned_event parent_transition_entry parent_gateway_entry natural_parent_metadata natural_return_metadata session_entry session_return before after')
+           nested='entry_event returned_event parent_transition_entry parent_gateway_entry natural_parent_metadata natural_return_metadata session_entry session_return before after'
+                  + (' '+GENERIC_CONTEXT_KEY if has_generic_context else ''))
     need(value['kind'] in range(5), 'record kind is malformed')
     for key in ('entry_event','returned_event','parent_transition_entry','parent_gateway_entry'):
         event(value[key])
@@ -81,6 +162,8 @@ def record(value):
         session(value[key])
     for key in ('before','after'):
         frame(value[key])
+    if has_generic_context:
+        generic_wallet_context(value[GENERIC_CONTEXT_KEY], value)
 
 
 def valid_event(e):

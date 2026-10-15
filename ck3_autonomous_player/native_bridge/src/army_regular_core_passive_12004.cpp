@@ -32,6 +32,7 @@ army_observer_research_detail_12004::Policy g_research_sampling;
 std::array<ArmyRegularCoreObservation12004, kArmyRegularCoreJournalCapacity12004> g_records;
 std::uint64_t g_latest = 0, g_publication_failures = 0;
 ArmyRegularCoreBindings12004 g_bindings;
+std::optional<ArmyRegularCoreSubjectScope12004> g_subject_scope;
 std::atomic<bool> g_initialized{false};
 std::atomic<ArmyRegularCoreOriginal12004> g_original{nullptr};
 std::atomic<ArmyRegularCoreDetourState12004 *> g_state{nullptr};
@@ -326,7 +327,7 @@ class Reader {
       if (manager_receiver && !found->prepared_fraction_raw) Missing("entry_manager_receiver_prepared148_unreadable");
       return found->chunks.size() == 7 && found->resolved_full_id.has_value();
     }
-    if (!object || f.persistent_objects.size() + f.army_objects.size() >= b.maximum_physical_objects) {
+    if (!object || f.persistent_objects.size() + f.army_objects.size() + pending_army_objects >= b.maximum_physical_objects) {
       Missing("entry_physical_object_materialization_bound"); return false;
     }
     ArmyRegularCorePersistent12004 p; p.physical_token = object;
@@ -416,13 +417,136 @@ class Reader {
     std::vector<std::optional<std::int32_t>> ids;
     if (!Roster(object, 0x38, a.native_arrg_occurrence_count, ids, "entry_complete_Army_ArRg_roster_unavailable"))
       a.unavailable_reason = "entry_complete_Army_ArRg_roster_unavailable";
+    if(b.subject_scope)++pending_army_objects;
     for (std::size_t i = 0; i < ids.size(); ++i) a.arrg_occurrences.push_back(ArRg(static_cast<std::int32_t>(i), ids[i]));
+    if(b.subject_scope)--pending_army_objects;
     if (!a.resolved_full_id) Missing("entry_Army_resolved_identity_unreadable");
     f.army_objects.push_back(std::move(a));
   }
+  ArmyRegularCoreSubjectIdentity12004 SubjectIdentity(std::int32_t id) {
+    ArmyRegularCoreSubjectIdentity12004 w; w.full_carmy_id=id;
+    const auto army=Resolve(kArmy,kArmyFallback,id);
+    // A fallback is legitimate native dispatch evidence but cannot bind a new
+    // selected Army identity. Preserve the observed fields and reject below.
+    w.resolved_full_carmy_id=army.full_id;
+    w.carmy_magic_14_raw=Field<std::uint32_t>(army.object,0x14);
+    w.public_unit_id=Field<std::int32_t>(army.object,0x124);
+    if(w.public_unit_id && *w.public_unit_id!=-1) {
+      const auto unit=Resolve(kUnit,kUnitFallback,*w.public_unit_id);
+      w.unit_resolved_full_id=unit.full_id;
+      w.unit_magic_14_raw=Field<std::uint32_t>(unit.object,0x14);
+      w.unit_owner_character_id=Field<std::int32_t>(unit.object,0x174);
+      w.unit_full_carmy_id=Field<std::int32_t>(unit.object,0x178);
+      if(unit.fallback!=false || unit.full_id!=w.public_unit_id)w.unit_resolved_full_id.reset();
+    }
+    if(army.fallback!=false || army.full_id!=id) w.resolved_full_carmy_id.reset();
+    return w;
+  }
+  static bool IdentityReady(const ArmyRegularCoreSubjectIdentity12004 &w,
+                            const ArmyRegularCoreSubjectScope12004 &scope) {
+    return w.full_carmy_id!=-1 && w.resolved_full_carmy_id==w.full_carmy_id &&
+        w.carmy_magic_14_raw==0x41726D79U && w.public_unit_id && *w.public_unit_id!=-1 &&
+        w.unit_resolved_full_id==w.public_unit_id && w.unit_magic_14_raw==0x556E6974U &&
+        w.unit_owner_character_id==scope.owner_character_id &&
+        w.unit_full_carmy_id==w.full_carmy_id &&
+        std::count(scope.allowed_public_unit_ids.begin(),scope.allowed_public_unit_ids.end(),*w.public_unit_id)==1;
+  }
+  void ScopedCapture(const ArmyRegularCoreSubjectScope12004 &scope,
+                     const std::vector<std::optional<std::int32_t>> &persist,
+                     const std::vector<std::optional<std::int32_t>> &armies) {
+    f.subject_coverage_v1.emplace(); auto &v=*f.subject_coverage_v1;
+    v.scope_epoch=scope.scope_epoch;v.bound_game_state_identity=scope.game_state_identity;
+    v.bound_owner_character_id=scope.owner_character_id;v.requested_full_carmy_ids=scope.full_carmy_ids;
+    const auto missing=[&](const char *reason) {
+      if(std::find(v.missing_inputs.begin(),v.missing_inputs.end(),reason)==v.missing_inputs.end())v.missing_inputs.emplace_back(reason);
+    };
+    bool state_ok=false;const auto state=Slot(kGameStateSlotRva,state_ok);
+    if(!scope.scope_epoch || !scope.game_state_identity || scope.owner_character_id==-1 ||
+       scope.full_carmy_ids.empty() || !state_ok || state!=scope.game_state_identity)
+      missing("subject_scope_binding_or_game_state_changed");
+    for(std::size_t i=0;i<scope.full_carmy_ids.size();++i)
+      if(scope.full_carmy_ids[i]==-1 || std::find(scope.full_carmy_ids.begin(),scope.full_carmy_ids.begin()+static_cast<std::ptrdiff_t>(i),scope.full_carmy_ids[i])!=scope.full_carmy_ids.begin()+static_cast<std::ptrdiff_t>(i))
+        missing("subject_scope_ids_invalid_or_duplicate");
+    // Keep every source occurrence and its original ordinal, including aliases
+    // and fallback dispatch. Only expensive physical materialization is scoped.
+    for(std::size_t i=0;i<persist.size();++i)
+      f.persistent_occurrences.push_back(Occurrence(static_cast<std::int32_t>(i),persist[i],kPersistent,kPersistentFallback));
+    for(std::size_t i=0;i<armies.size();++i)
+      f.army_refresh_occurrences.push_back(Occurrence(static_cast<std::int32_t>(i),armies[i],kArmy,kArmyFallback));
+    const auto complete_occurrences=[](const auto &rows,const auto &count) {
+      return count && *count>=0 && rows.size()==static_cast<std::size_t>(*count) &&
+          std::all_of(rows.begin(),rows.end(),[](const auto &x){return x.raw_full_id && x.resolved_full_id &&
+            x.used_fallback.has_value() && x.physical_token && x.unavailable_reason.empty();});
+    };
+    v.manager_occurrences_complete=complete_occurrences(f.persistent_occurrences,f.native_persistent_occurrence_count) &&
+        complete_occurrences(f.army_refresh_occurrences,f.native_army_refresh_occurrence_count);
+    if(!v.manager_occurrences_complete)missing("subject_manager_occurrences_unresolved_or_incomplete");
+    std::vector<std::uintptr_t> selected;
+    for(const auto id:scope.full_carmy_ids) {
+      auto witness=SubjectIdentity(id);
+      const bool valid=IdentityReady(witness,scope);
+      v.subject_identity_witnesses.push_back(std::move(witness));
+      if(!valid){missing("subject_full_generation_public_owner_identity_invalid");continue;}
+      const auto found=std::find_if(f.army_refresh_occurrences.begin(),f.army_refresh_occurrences.end(),
+          [&](const auto &x){return x.raw_full_id==id && x.resolved_full_id==id && x.used_fallback==false && x.physical_token;});
+      if(found==f.army_refresh_occurrences.end()){missing("subject_not_in_original_manager_Army_roster");continue;}
+      selected.push_back(found->physical_token);
+    }
+    // Discovery may follow Army DATA first; emitted materialization is restored
+    // to original manager first-observation order below. Ownership never filters
+    // physical Regi receivers or their seven slots.
+    for(const auto &row:f.army_refresh_occurrences)
+      if(std::find(selected.begin(),selected.end(),row.physical_token)!=selected.end())ArmyObject(row.physical_token);
+    const auto rank=[&](std::uintptr_t token) {
+      const auto found=std::find_if(f.persistent_occurrences.begin(),f.persistent_occurrences.end(),
+          [&](const auto &x){return x.physical_token==token;});
+      return static_cast<std::size_t>(found-f.persistent_occurrences.begin());
+    };
+    std::stable_sort(f.persistent_objects.begin(),f.persistent_objects.end(),
+        [&](const auto &a,const auto &other){return rank(a.physical_token)<rank(other.physical_token);});
+    for(const auto token:selected) {
+      const auto a=std::find_if(f.army_objects.begin(),f.army_objects.end(),[&](const auto &x){return x.physical_token==token;});
+      if(a==f.army_objects.end() || !a->resolved_full_id || !a->unavailable_reason.empty() ||
+         !a->native_arrg_occurrence_count || *a->native_arrg_occurrence_count<0 ||
+         a->arrg_occurrences.size()!=static_cast<std::size_t>(*a->native_arrg_occurrence_count)) {
+        missing("subject_Army_ArRg_roster_incomplete");continue;
+      }
+      for(const auto &arrg:a->arrg_occurrences) {
+        if(arrg.occurrence.used_fallback!=false || arrg.occurrence.raw_full_id!=arrg.occurrence.resolved_full_id)
+          missing("subject_ArRg_fallback_or_generation_not_exact");
+        if(!arrg.native_refresh_admitted || !arrg.records_complete || !arrg.unavailable_reason.empty())
+          missing("subject_ArRg_DATA_closure_incomplete");
+        if(arrg.native_refresh_admitted==true && arrg.native_loss_writer_skipped!=false)
+          missing("subject_character_override_has_no_physical_DATA_closure");
+        for(const auto &record:arrg.records) {
+          const auto p=std::find_if(f.persistent_objects.begin(),f.persistent_objects.end(),
+              [&](const auto &x){return x.physical_token==record.persistent_physical_token;});
+          if(!record.native_record_admitted || p==f.persistent_objects.end() || !p->resolved_full_id ||
+             *p->resolved_full_id==-1 || p->chunks.size()!=7 || !p->unavailable_reason.empty())
+            missing("subject_physical_seven_slot_or_DATA_association_incomplete");
+          if(p!=f.persistent_objects.end() && p->resolved_full_id!=record.persistent_regiment_id)
+            missing("subject_DATA_fallback_or_generation_not_exact");
+        }
+      }
+    }
+    for(const auto &before:v.subject_identity_witnesses) {
+      const auto after=SubjectIdentity(before.full_carmy_id);
+      if(!IdentityReady(after,scope) || before.resolved_full_carmy_id!=after.resolved_full_carmy_id ||
+         before.carmy_magic_14_raw!=after.carmy_magic_14_raw || before.public_unit_id!=after.public_unit_id ||
+         before.unit_resolved_full_id!=after.unit_resolved_full_id || before.unit_magic_14_raw!=after.unit_magic_14_raw ||
+         before.unit_owner_character_id!=after.unit_owner_character_id || before.unit_full_carmy_id!=after.unit_full_carmy_id)
+        missing("subject_identity_changed_during_owned_capture");
+    }
+    bool final_state_ok=false;
+    if(Slot(kGameStateSlotRva,final_state_ok)!=scope.game_state_identity || !final_state_ok)
+      missing("subject_game_state_changed_during_owned_capture");
+    v.physical_closure_complete=v.manager_occurrences_complete && v.missing_inputs.empty();
+    Missing("scoped_capture_omits_unselected_physical_context");
+    f.capture_complete=false;
+  }
   const ArmyRegularCoreBindings12004 &b;
   ArmyRegularCoreFrame12004 &f;
-  std::size_t used = 0, total_data = 0;
+  std::size_t used = 0, total_data = 0, pending_army_objects = 0;
 };
 
 bool SameEvent(const ArmyNaturalPhaseEvent12004 &a, const ArmyNaturalPhaseEvent12004 &b) noexcept {
@@ -478,6 +602,7 @@ ArmyRegularCoreFrame12004 CaptureArmyRegularCoreFrame12004(
     std::vector<std::optional<std::int32_t>> persist, armies;
     r.Roster(object, 0x30, f.native_persistent_occurrence_count, persist, "complete_original_manager_persistent_roster_unavailable");
     r.Roster(object, 0x50, f.native_army_refresh_occurrence_count, armies, "complete_original_manager_Army_roster_unavailable");
+    if(b.subject_scope) {r.ScopedCapture(*b.subject_scope,persist,armies);return f;}
     for (std::size_t i = 0; i < persist.size(); ++i) {
       auto row = r.Occurrence(static_cast<std::int32_t>(i), persist[i], kPersistent, kPersistentFallback);
       if (row.physical_token) r.Persistent(row.physical_token, true);
@@ -501,7 +626,11 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
   ArmyRegularCoreObservation12004 event;
   const army_observer_research_detail_12004::Permit permit(g_mutex,g_research_sampling);
   event.manager_identity = reinterpret_cast<std::uintptr_t>(manager); event.caller_return_rva = caller;
+  ArmyRegularCoreBindings12004 capture_bindings;
   try {
+    capture_bindings=b;
+    if(permit.admitted()) {const std::lock_guard lock(g_mutex);if(g_subject_scope)capture_bindings.subject_scope=g_subject_scope;}
+
     if (b.enabled && b.next_event && b.read_scope) {
       event.entry_event = b.next_event(b.event_context);
       auto scope = ScopeForCaptureMode(b,permit.admitted());
@@ -517,7 +646,7 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
           event.manager_identity, caller) && mask_proved && event.parent_scope.saved_mask02_admitted == true &&
           event.parent_scope.saved_c0_observed_rva == caller && event.entry_date_raw == event.parent_scope.date_raw;
       if (permit.admitted() && event.entry_provenance_complete) {
-        event.observed = true; event.entry = CaptureArmyRegularCoreFrame12004(b, manager);
+        event.observed = true; event.entry = CaptureArmyRegularCoreFrame12004(capture_bindings, manager);
         if (CaptureDate(b, event.parent_scope) != event.entry_date_raw) {
           event.entry_provenance_complete = false; event.entry.capture_complete = false;
           event.entry.missing_inputs.push_back("entry_date_changed_during_owned_capture");
@@ -544,7 +673,7 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
           SameEvent(event.entry_event, event.returned_event) && event.entry_event.sequence < event.returned_event.sequence &&
           event.returned_date_raw == event.entry_date_raw;
       if (event.return_provenance_complete) {
-        event.returned = CaptureArmyRegularCoreFrame12004(b, manager);
+        event.returned = CaptureArmyRegularCoreFrame12004(capture_bindings, manager);
         if (CaptureDate(b, after_scope) != event.returned_date_raw) {
           event.return_provenance_complete = false; event.returned.capture_complete = false;
           event.returned.missing_inputs.push_back("return_date_changed_during_owned_capture");
@@ -601,9 +730,34 @@ ArmyObserverResearchSamplingState12004 ReadArmyRegularCoreResearchSampling12004(
 ArmyObserverResearchSamplingState12004 SetArmyRegularCoreResearchSampling12004(bool enabled) noexcept {
   try {
     const std::lock_guard lock(g_mutex);
+    if(enabled && !g_research_sampling.enabled && g_research_sampling.active==0)g_subject_scope.reset();
     if(!g_research_sampling.SetLocked(enabled,ClearSamplingJournalLocked))return {};
+    if(!enabled && g_research_sampling.active==0)g_subject_scope.reset();
     return SamplingStateLocked();
   } catch(...) {return {};}
+}
+bool SetArmyRegularCoreScopedResearchSampling12004(
+    const std::vector<std::int32_t> &ids,std::int32_t owner,
+    const std::vector<std::int32_t> &allowed_public_ids) noexcept {
+  try {
+    const std::lock_guard lock(g_mutex);
+    if(g_research_sampling.enabled || g_research_sampling.active || !g_initialized.load() ||
+       !g_bindings.enabled || ids.empty() || ids.size()>kMaximumArmyRegularCoreSubjects12004 || owner<=0)return false;
+    for(std::size_t i=0;i<ids.size();++i)
+      if(ids[i]==-1 || std::find(ids.begin(),ids.begin()+static_cast<std::ptrdiff_t>(i),ids[i])!=ids.begin()+static_cast<std::ptrdiff_t>(i))return false;
+    ArmyRegularCoreFrame12004 scratch;Reader reader(g_bindings,scratch);
+    ArmyRegularCoreSubjectScope12004 scope;scope.owner_character_id=owner;
+    scope.full_carmy_ids=ids;scope.allowed_public_unit_ids=allowed_public_ids;
+    bool ok=false;scope.game_state_identity=reader.Slot(kGameStateSlotRva,ok);
+    if(!ok || !scope.game_state_identity || g_research_sampling.epoch==(std::numeric_limits<std::uint64_t>::max)())return false;
+    for(const auto id:ids)if(!Reader::IdentityReady(reader.SubjectIdentity(id),scope))return false;
+    scope.scope_epoch=g_research_sampling.epoch+1;
+    // Prepare the allocation before changing retention state. Publication uses
+    // the same mutex/epoch policy; an in-flight capture cannot change scope.
+    g_subject_scope=std::move(scope);
+    if(!g_research_sampling.SetLocked(true,ClearSamplingJournalLocked)){g_subject_scope.reset();return false;}
+    return g_research_sampling.enabled;
+  } catch(...) {return false;}
 }
 void ClearArmyRegularCoreJournal12004() noexcept {
   (void)SetArmyRegularCoreResearchSampling12004(false);

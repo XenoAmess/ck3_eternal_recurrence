@@ -19,9 +19,13 @@ def _typed(value, kind, name):
         return
     if kind in _SHAPES:
         fields = _SHAPES[kind]
-        if type(value) is not dict or set(value) != set(fields):
+        optional_subject = kind == 'CoreFrame' and type(value) is dict and 'subject_coverage_v1' in value
+        expected_fields = set(fields) | ({'subject_coverage_v1'} if optional_subject else set())
+        if type(value) is not dict or set(value) != expected_fields:
             raise ValueError(f'{name} exact owned shape is malformed')
         for key, child in fields.items(): _typed(value[key], child, f'{name}.{key}')
+        if optional_subject:
+            _typed(value['subject_coverage_v1'], 'CoreSubjectCoverage', name + '.subject_coverage_v1')
         return
     if kind.startswith('roster:'):
         _roster_typed(value, kind[7:], name); return
@@ -76,6 +80,8 @@ _shape('CoreData', 'record_index=i32 persistent_regiment_id=i32? chunk_index=i32
 _shape('CoreArRg', 'occurrence=CoreOccurrence resolved_magic_14_raw=u32? native_refresh_admitted=bool? native_loss_writer_skipped=bool? native_record_count=i32? records_complete=bool unavailable_reason=str records=CoreData[]')
 _shape('CoreArmy', 'physical_token=u64 resolved_full_id=i32? native_arrg_occurrence_count=i32? unavailable_reason=str arrg_occurrences=CoreArRg[]')
 _shape('CoreFrame', 'native_persistent_occurrence_count=i32? native_army_refresh_occurrence_count=i32? capture_complete=bool persistent_occurrences=CoreOccurrence[] army_refresh_occurrences=CoreOccurrence[] persistent_objects=CorePersistent[] army_objects=CoreArmy[] missing_inputs=str[]')
+_shape('CoreSubjectIdentity', 'full_carmy_id=i32 resolved_full_carmy_id=i32? carmy_magic_14_raw=u32? public_unit_id=i32? unit_resolved_full_id=i32? unit_magic_14_raw=u32? unit_owner_character_id=i32? unit_full_carmy_id=i32?')
+_shape('CoreSubjectCoverage', 'schema_version=u32 mode=str scope_epoch=u64 bound_game_state_identity=u64 bound_owner_character_id=i32 requested_full_carmy_ids=i32[] manager_occurrences_complete=bool physical_closure_complete=bool subject_identity_witnesses=CoreSubjectIdentity[] missing_inputs=str[]')
 _shape('CoreEvent', 'journal_sequence=u64 manager_identity=u64 caller_return_rva=u64 raw_return_bits=u64 entry_date_raw=u64? returned_date_raw=u64? observed=bool original_called=bool original_returned=bool entry_provenance_complete=bool return_provenance_complete=bool parent_scope=Scope entry_event=Token returned_event=Token entry=CoreFrame returned=CoreFrame provenance_failures=str[]')
 _shape('Core', 'schema_version=u32 source=str membership_basis=str observer_initialized=bool observer_installed=bool latest_journal_sequence=u64 overwritten_events=u64 publication_failures=u64 events=CoreEvent[]')
 _shape('ConsumerVector', 'data_identity=u64? capacity_raw_i32=i32? count_raw_i32=i32? allocator_identity=u64? references_complete=bool ordered_full_ids_u32=u32?[]')

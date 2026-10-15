@@ -13418,10 +13418,12 @@ class NativeHeadlessGameplayDriver:
 
     def set_army_observer_research_sampling_v1(
         self, enabled: bool, *, observer_family: str, expected_revision: int,
+        regular_core_full_carmy_ids: list[int] | None = None,
     ) -> dict[str, object]:
         from .army_observer_research_sampling_control import set_control
         return set_control(self, enabled, observer_family=observer_family,
-                           expected_revision=expected_revision)
+                           expected_revision=expected_revision,
+                           regular_core_full_carmy_ids=regular_core_full_carmy_ids)
 
     def query_army_observer_research_sampling_v1(
         self, *, observer_family: str, expected_revision: int,

@@ -1,0 +1,521 @@
+{
+  "case": "controlled_window_personal",
+  "value": {
+    "schema_version": 1,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "game_version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "installed": true,
+    "install_failure_flags": 0,
+    "controlled_window_admitted": true,
+    "session_basis": "same_owned_process_no_load_window",
+    "balance_boundary": "whole_original_callback_entry_return",
+    "maintenance_attribution": "unclosed",
+    "current_session": {
+      "pid": 24172,
+      "process_create_time_100ns": 134365304719038413,
+      "connection_generation": 7,
+      "loaded_game_epoch": null,
+      "controlled_window_id": 891,
+      "same_owned_process_no_load_window": true,
+      "game_state_identity_witness": 394693822690,
+      "player_character_full_id": 2120565537,
+      "snapshot_revision": 4,
+      "native_date_raw": 123456,
+      "absolute_day_raw": 5144
+    },
+    "sampling": {
+      "available": true,
+      "capture_enabled": true,
+      "busy": false,
+      "clear_completed": false,
+      "epoch": 1,
+      "active_captures": 0,
+      "retained_records": 3,
+      "qualified_records": 0
+    },
+    "read_complete": true,
+    "latest_sequence": 3,
+    "oldest_sequence": 1,
+    "overwritten": 0,
+    "publication_failures": 0,
+    "natural_journal_status": {
+      "read_complete": true,
+      "retained_records": 1,
+      "overwritten_records": 0,
+      "failed_appends": 0
+    },
+    "records": [
+      {
+        "journal_sequence": 1,
+        "kind": 3,
+        "receiver": 394693823960,
+        "second_pointer": 394693822688,
+        "caller_return_rva": 42703282,
+        "amount_raw": 500000,
+        "resource_kind_raw": -1,
+        "component_raw": -1,
+        "entry_event": {
+          "clock_identity": 394693822688,
+          "sequence": 4,
+          "thread_id": 21624
+        },
+        "returned_event": {
+          "clock_identity": 394693822688,
+          "sequence": 5,
+          "thread_id": 21624
+        },
+        "parent_transition_entry": {
+          "clock_identity": 394693822688,
+          "sequence": 2,
+          "thread_id": 21624
+        },
+        "parent_gateway_entry": {
+          "clock_identity": 394693822688,
+          "sequence": 3,
+          "thread_id": 21624
+        },
+        "parent_transition_army": 394693825760,
+        "parent_gateway_character": 394693822688,
+        "parent_transition_caller": 44673221,
+        "parent_gateway_caller": 38702912,
+        "parent_gateway_resource": 0,
+        "parent_gateway_component": 3,
+        "parent_gateway_amount": 500000,
+        "natural_parent_metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "natural_return_metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "session_entry": {
+          "pid": 24172,
+          "process_create_time_100ns": 134365304719038413,
+          "connection_generation": 7,
+          "loaded_game_epoch": null,
+          "controlled_window_id": 891,
+          "same_owned_process_no_load_window": true,
+          "game_state_identity_witness": 394693822690,
+          "player_character_full_id": 2120565537,
+          "snapshot_revision": 4,
+          "native_date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "session_return": {
+          "pid": 24172,
+          "process_create_time_100ns": 134365304719038413,
+          "connection_generation": 7,
+          "loaded_game_epoch": null,
+          "controlled_window_id": 891,
+          "same_owned_process_no_load_window": true,
+          "game_state_identity_witness": 394693822690,
+          "player_character_full_id": 2120565537,
+          "snapshot_revision": 4,
+          "native_date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "before": {
+          "character": 394693822688,
+          "wrapper": 394693823960,
+          "character_id": 2120565537,
+          "character_magic": 1130914162,
+          "character_extension": 394693823712,
+          "personal_gold_bits": 90000000,
+          "wrapper_balance_bits": 90000000,
+          "land_id": null,
+          "land_magic": null,
+          "army_id": null,
+          "army_magic": null,
+          "requested_unit_id": null,
+          "province_magic": null,
+          "province_id": null,
+          "army_1d4": null,
+          "capture_complete": true,
+          "failed_reads": 0
+        },
+        "after": {
+          "character": 394693822688,
+          "wrapper": 394693823960,
+          "character_id": 2120565537,
+          "character_magic": 1130914162,
+          "character_extension": 394693823712,
+          "personal_gold_bits": 89500000,
+          "wrapper_balance_bits": 89500000,
+          "land_id": null,
+          "land_magic": null,
+          "army_id": null,
+          "army_magic": null,
+          "requested_unit_id": null,
+          "province_magic": null,
+          "province_id": null,
+          "army_1d4": null,
+          "capture_complete": true,
+          "failed_reads": 0
+        },
+        "original_called": true,
+        "original_returned": true,
+        "raw_return_bits": 12379813774916666145,
+        "clock_thread_order_matches": true,
+        "session_matches": true,
+        "natural_parent_matches": true,
+        "same_character_after": true,
+        "same_wrapper_after": true,
+        "personal_wrapper_matches_character": true,
+        "source_boarding_call_chain_matches": true,
+        "tls_depth_exceeded": false
+      },
+      {
+        "journal_sequence": 2,
+        "kind": 1,
+        "receiver": 394693822688,
+        "second_pointer": 0,
+        "caller_return_rva": 38702912,
+        "amount_raw": 500000,
+        "resource_kind_raw": 0,
+        "component_raw": 3,
+        "entry_event": {
+          "clock_identity": 394693822688,
+          "sequence": 3,
+          "thread_id": 21624
+        },
+        "returned_event": {
+          "clock_identity": 394693822688,
+          "sequence": 6,
+          "thread_id": 21624
+        },
+        "parent_transition_entry": {
+          "clock_identity": 394693822688,
+          "sequence": 2,
+          "thread_id": 21624
+        },
+        "parent_gateway_entry": {
+          "clock_identity": 0,
+          "sequence": 0,
+          "thread_id": null
+        },
+        "parent_transition_army": 394693825760,
+        "parent_gateway_character": 0,
+        "parent_transition_caller": 44673221,
+        "parent_gateway_caller": 0,
+        "parent_gateway_resource": -1,
+        "parent_gateway_component": -1,
+        "parent_gateway_amount": 0,
+        "natural_parent_metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "natural_return_metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "session_entry": {
+          "pid": 24172,
+          "process_create_time_100ns": 134365304719038413,
+          "connection_generation": 7,
+          "loaded_game_epoch": null,
+          "controlled_window_id": 891,
+          "same_owned_process_no_load_window": true,
+          "game_state_identity_witness": 394693822690,
+          "player_character_full_id": 2120565537,
+          "snapshot_revision": 4,
+          "native_date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "session_return": {
+          "pid": 24172,
+          "process_create_time_100ns": 134365304719038413,
+          "connection_generation": 7,
+          "loaded_game_epoch": null,
+          "controlled_window_id": 891,
+          "same_owned_process_no_load_window": true,
+          "game_state_identity_witness": 394693822690,
+          "player_character_full_id": 2120565537,
+          "snapshot_revision": 4,
+          "native_date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "before": {
+          "character": 394693822688,
+          "wrapper": 0,
+          "character_id": 2120565537,
+          "character_magic": 1130914162,
+          "character_extension": 394693823712,
+          "personal_gold_bits": 90000000,
+          "wrapper_balance_bits": null,
+          "land_id": null,
+          "land_magic": null,
+          "army_id": null,
+          "army_magic": null,
+          "requested_unit_id": null,
+          "province_magic": null,
+          "province_id": null,
+          "army_1d4": null,
+          "capture_complete": true,
+          "failed_reads": 0
+        },
+        "after": {
+          "character": 394693822688,
+          "wrapper": 0,
+          "character_id": 2120565537,
+          "character_magic": 1130914162,
+          "character_extension": 394693823712,
+          "personal_gold_bits": 89500000,
+          "wrapper_balance_bits": null,
+          "land_id": null,
+          "land_magic": null,
+          "army_id": null,
+          "army_magic": null,
+          "requested_unit_id": null,
+          "province_magic": null,
+          "province_id": null,
+          "army_1d4": null,
+          "capture_complete": true,
+          "failed_reads": 0
+        },
+        "original_called": true,
+        "original_returned": true,
+        "raw_return_bits": 16045693109377778465,
+        "clock_thread_order_matches": true,
+        "session_matches": true,
+        "natural_parent_matches": true,
+        "same_character_after": true,
+        "same_wrapper_after": false,
+        "personal_wrapper_matches_character": false,
+        "source_boarding_call_chain_matches": false,
+        "tls_depth_exceeded": false
+      },
+      {
+        "journal_sequence": 3,
+        "kind": 0,
+        "receiver": 394693825760,
+        "second_pointer": 394693826336,
+        "caller_return_rva": 44673221,
+        "amount_raw": 0,
+        "resource_kind_raw": -1,
+        "component_raw": -1,
+        "entry_event": {
+          "clock_identity": 394693822688,
+          "sequence": 2,
+          "thread_id": 21624
+        },
+        "returned_event": {
+          "clock_identity": 394693822688,
+          "sequence": 7,
+          "thread_id": 21624
+        },
+        "parent_transition_entry": {
+          "clock_identity": 0,
+          "sequence": 0,
+          "thread_id": null
+        },
+        "parent_gateway_entry": {
+          "clock_identity": 0,
+          "sequence": 0,
+          "thread_id": null
+        },
+        "parent_transition_army": 0,
+        "parent_gateway_character": 0,
+        "parent_transition_caller": 0,
+        "parent_gateway_caller": 0,
+        "parent_gateway_resource": -1,
+        "parent_gateway_component": -1,
+        "parent_gateway_amount": 0,
+        "natural_parent_metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "natural_return_metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "session_entry": {
+          "pid": 24172,
+          "process_create_time_100ns": 134365304719038413,
+          "connection_generation": 7,
+          "loaded_game_epoch": null,
+          "controlled_window_id": 891,
+          "same_owned_process_no_load_window": true,
+          "game_state_identity_witness": 394693822690,
+          "player_character_full_id": 2120565537,
+          "snapshot_revision": 4,
+          "native_date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "session_return": {
+          "pid": 24172,
+          "process_create_time_100ns": 134365304719038413,
+          "connection_generation": 7,
+          "loaded_game_epoch": null,
+          "controlled_window_id": 891,
+          "same_owned_process_no_load_window": true,
+          "game_state_identity_witness": 394693822690,
+          "player_character_full_id": 2120565537,
+          "snapshot_revision": 4,
+          "native_date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "before": {
+          "character": 0,
+          "wrapper": 0,
+          "character_id": null,
+          "character_magic": null,
+          "character_extension": null,
+          "personal_gold_bits": null,
+          "wrapper_balance_bits": null,
+          "land_id": null,
+          "land_magic": null,
+          "army_id": 6636321,
+          "army_magic": 1098018169,
+          "requested_unit_id": 2852201285,
+          "province_magic": 1349676918,
+          "province_id": 40,
+          "army_1d4": 0,
+          "capture_complete": true,
+          "failed_reads": 0
+        },
+        "after": {
+          "character": 0,
+          "wrapper": 0,
+          "character_id": null,
+          "character_magic": null,
+          "character_extension": null,
+          "personal_gold_bits": null,
+          "wrapper_balance_bits": null,
+          "land_id": null,
+          "land_magic": null,
+          "army_id": 6636321,
+          "army_magic": 1098018169,
+          "requested_unit_id": 2852201285,
+          "province_magic": 1349676918,
+          "province_id": 40,
+          "army_1d4": 0,
+          "capture_complete": true,
+          "failed_reads": 0
+        },
+        "original_called": true,
+        "original_returned": true,
+        "raw_return_bits": 18364758544493064721,
+        "clock_thread_order_matches": true,
+        "session_matches": true,
+        "natural_parent_matches": true,
+        "same_character_after": false,
+        "same_wrapper_after": false,
+        "personal_wrapper_matches_character": false,
+        "source_boarding_call_chain_matches": false,
+        "tls_depth_exceeded": false
+      }
+    ],
+    "natural_parent_returns": [
+      {
+        "metadata": {
+          "observed": true,
+          "phase": 2,
+          "actual_entry_rva": 44672368,
+          "primary_manager": 394693822689,
+          "game_state": 394693822690,
+          "session_identity": null,
+          "entry_event": {
+            "clock_identity": 394693822688,
+            "sequence": 1,
+            "thread_id": 21624
+          },
+          "date_raw": 123456,
+          "absolute_day_raw": 5144
+        },
+        "original_called": true,
+        "original_returned": true,
+        "raw_return_bits": 0,
+        "returned_event": {
+          "clock_identity": 394693822688,
+          "sequence": 8,
+          "thread_id": 21624
+        },
+        "returned_date_raw": 123456,
+        "returned_absolute_day_raw": 5144
+      }
+    ],
+    "qualified_boarding_debits": [
+      {
+        "writer_sequence": 1,
+        "transition_sequence": 3,
+        "gateway_sequence": 2,
+        "account_kind": 0,
+        "payer_character_id": 2120565537,
+        "land_id": null,
+        "requested_amount_raw": 500000,
+        "entry_balance_bits": 90000000,
+        "returned_balance_bits": 89500000,
+        "returned_balance_matches_requested_sub": true
+      }
+    ]
+  }
+}

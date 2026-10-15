@@ -253,6 +253,9 @@ def validate_core_12004(value: dict, *, expected_carmy_id: int) -> None:
                 _require(event["entry_provenance_complete"] and event["original_returned"],
                          path, "returned copy lacks its independently observed original return")
             _frame(frame, path + "." + label)
+            if 'subject_coverage_v1' in frame:
+                from .army_subject_physical_coverage_12004 import validate_subject_physical_frame_12004
+                validate_subject_physical_frame_12004(frame, expected_carmy_id=expected)
         _require(any(row["resolved_full_id"] is not None
                      and row["resolved_full_id"] & 0xFFFFFFFF == expected
                      for row in event["entry"]["army_refresh_occurrences"]),

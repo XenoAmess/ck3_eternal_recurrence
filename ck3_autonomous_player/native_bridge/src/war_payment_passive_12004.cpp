@@ -1,5 +1,6 @@
 #include "xar_bridge/war_payment_passive_12004.hpp"
 #include <algorithm>
+#include <bit>
 #include <limits>
 
 namespace xar::ck3_12004 {
@@ -34,6 +35,67 @@ template<class T> std::optional<T> Read(const WarPaymentBindings12004 &b,
   }
   return out;
 }
+// Pure raw reads for one exact source caller; never invoke a game getter.
+template<class T> std::optional<T> GenericRead(const WarPaymentBindings12004 &b,
+    WarPaymentGenericValues12004 &v,std::uintptr_t address,std::size_t offset) noexcept {
+  T out{};
+  if(!address||offset>(std::numeric_limits<std::uintptr_t>::max)()-address||
+     !b.read||!b.read(b.read_context,address+offset,&out,sizeof out)) {
+    ++v.failed_reads;return std::nullopt;
+  }
+  return out;
+}
+WarPaymentGenericValues12004 GenericValues(const WarPaymentBindings12004 &b,
+    std::uintptr_t character) noexcept {
+  WarPaymentGenericValues12004 v{};
+  v.context_identity_before=GenericRead<std::uintptr_t>(b,v,character,0x1C0);
+  if(v.context_identity_before&&*v.context_identity_before) {
+    const auto context=*v.context_identity_before;
+    v.value_2c0=GenericRead<std::int64_t>(b,v,context,0x2C0);
+    v.value_2c8=GenericRead<std::int64_t>(b,v,context,0x2C8);
+    v.value_28=GenericRead<std::int64_t>(b,v,context,0x28);
+    v.value_30=GenericRead<std::int64_t>(b,v,context,0x30);
+  }
+  v.context_identity_after=GenericRead<std::uintptr_t>(b,v,character,0x1C0);
+  v.context_stable=v.context_identity_before&&*v.context_identity_before&&
+    v.context_identity_after&&v.context_identity_before==v.context_identity_after;
+  v.capture_complete=!v.failed_reads&&v.context_stable&&v.value_2c0&&
+    v.value_2c8&&v.value_28&&v.value_30;
+  return v;
+}
+WarPaymentGenericParentTrace12004 GenericParent(const WarPaymentBindings12004 &b) noexcept {
+  WarPaymentGenericParentTrace12004 p{};
+  p.module_base=b.generic_module_base;p.module_image_size=b.generic_module_image_size;
+  if(!b.capture_stack_frames)return p;
+  p.reported_frame_count=b.capture_stack_frames(b.capture_stack_context,
+    p.frames_absolute.data(),p.frames_absolute.size());
+  p.capture_succeeded=p.reported_frame_count>0&&p.reported_frame_count<=p.frames_absolute.size();
+  p.truncated=p.capture_succeeded&&p.reported_frame_count==p.frames_absolute.size();
+  if(!p.capture_succeeded)return p;
+  if(!p.module_base||kWarPaymentGenericReturn12004>(std::numeric_limits<std::uintptr_t>::max)()-p.module_base)return p;
+  const auto known=p.module_base+kWarPaymentGenericReturn12004;
+  std::size_t match=0;
+  for(std::size_t i=0;i<p.reported_frame_count;++i)if(p.frames_absolute[i]==known) {
+    ++p.caller_match_count;match=i;
+  }
+  if(p.caller_match_count!=1||match+1>=p.reported_frame_count)return p;
+  p.parent_return_absolute=p.frames_absolute[match+1];
+  if(p.module_image_size>kWarPaymentGenericReturn12004&&
+     *p.parent_return_absolute>=p.module_base&&
+     *p.parent_return_absolute-p.module_base<p.module_image_size) {
+    p.parent_in_same_image=true;
+    p.parent_return_rva=*p.parent_return_absolute-p.module_base;
+  }
+  return p;
+}
+bool SameGenericValues(const WarPaymentGenericValues12004 &a,
+    const WarPaymentGenericValues12004 &b) noexcept {
+  return a.capture_complete&&b.capture_complete&&
+    a.context_identity_before==b.context_identity_before&&
+    a.value_2c0==b.value_2c0&&a.value_2c8==b.value_2c8&&
+    a.value_28==b.value_28&&a.value_30==b.value_30;
+}
+
 WarPaymentFrame12004 Capture(const WarPaymentBindings12004 &b, const WarPaymentRecord12004 &r) noexcept {
   WarPaymentFrame12004 f{};
   if (r.kind == WarPaymentKind12004::transition) {
@@ -121,6 +183,18 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
   r.session_entry = b.session(b.session_context);
   r.natural_parent_metadata = Natural(b);
   r.before = Capture(b,r);
+  if(b.generic_context_capture_enabled&&r.kind==WarPaymentKind12004::personal_add&&
+      r.caller_return_rva==kWarPaymentGenericReturn12004) {
+    auto &g=r.generic_wallet_context.emplace();
+    g.before=GenericValues(b,r.before.character);g.parent_trace=GenericParent(b);
+    if(g.before.capture_complete) {
+      const auto bits=static_cast<std::uint64_t>(*g.before.value_2c0)-
+        static_cast<std::uint64_t>(*g.before.value_2c8)-
+        (static_cast<std::uint64_t>(*g.before.value_28)+static_cast<std::uint64_t>(*g.before.value_30));
+      g.before_computed_add_raw=std::bit_cast<std::int64_t>(bits);
+      g.before_formula_matches_amount=*g.before_computed_add_raw==r.amount_raw;
+    }
+  }
   {
     Scope scope(r);
     r.original_called = true;
@@ -128,6 +202,11 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
     r.original_returned = true;
   }
   r.after = Capture(b,r);
+  if(r.generic_wallet_context) {
+    auto &g=*r.generic_wallet_context;
+    g.after=GenericValues(b,r.after.character);
+    g.context_values_stable=SameGenericValues(g.before,g.after);
+  }
   r.session_return = b.session(b.session_context);
   r.natural_return_metadata = Natural(b);
   r.returned_event = b.next_event(b.event_context);

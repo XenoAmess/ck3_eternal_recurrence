@@ -1,0 +1,327 @@
+{
+  "schema": "xar.e04.common-t0.receipt-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T13:32:30.832533+00:00",
+  "new_game_sdk_desktop_calls": 0,
+  "save_video_content_read_or_hashed": false,
+  "fresh_campaign_origin": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0171",
+    "PID": 13664,
+    "episode": "native-31254-2b025c67832d",
+    "initial_date_raw": 53144328,
+    "normal_robert_key": "bookmark_rags_to_riches_duke_robert",
+    "history_id": 1128,
+    "runtime_actor": 31254,
+    "new_empty_profile_proved_by_prepared_checkpoint_null": true,
+    "identity_receipt": "C:\\ck3-e04-resume-20261015-a01\\robert-runtime-identity-a01\\actor-identity.actual-a02.json",
+    "original_Start_postquery_failure_preserved": "007 returned timeout after normal Start; independent paused/campaign/save chain identifies Robert; no secondStart assumed."
+  },
+  "T0": {
+    "save": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\state-a01\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 68451543,
+      "sha256": "9ab3b0d05bdc1a0c4ef2d81a9dc27cec3f66e9af2871b5cac11776ddc6ddb784",
+      "date_raw": 53145048,
+      "character_id": 31254,
+      "source_run_id": "native-31254-3072c36153e4",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    },
+    "save_actual_stat": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\state-a01\\profile\\save games\\xar_episode_seed.ck3",
+      "bytes": 68451543,
+      "mtime_ns": 1792067270588213500,
+      "content_hash_not_recomputed": true
+    },
+    "save_receipt": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\007-normal-identity-save.json",
+    "save_build_receipt": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\prepared-a01\\prepared.json",
+    "date_raw": 53145048,
+    "actor": 31254,
+    "U": 18,
+    "current_province": 2624,
+    "target": 1033,
+    "route": [
+      1036,
+      8653,
+      1034,
+      1033
+    ],
+    "route_read_status": "complete_nonempty",
+    "route_source_count": 4,
+    "progress": {
+      "raw": 31717,
+      "scale": 100000
+    },
+    "cutoff": {
+      "raw": 50000,
+      "scale": 100000
+    },
+    "troops": {
+      "current": 1196,
+      "maximum": 1196
+    },
+    "supply_raw": 30000000,
+    "treasury": {
+      "raw": 25166043,
+      "scale": 100000
+    },
+    "active_wars": [
+      {
+        "war_id": 4,
+        "player_side": "attacker",
+        "primary_opponent_character_id": 34960,
+        "player_is_primary_war_leader": true,
+        "enemy_primary_default_raise_province_id": 2635,
+        "targeted_title_ids": [
+          2191
+        ],
+        "war_objective_province_ids": [
+          2635
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2635,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 6,
+            "garrison_size": 304,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null,
+            "current_besieging_army_selection": {
+              "native_carmy_id": null,
+              "public_unit_id": null,
+              "controllable": false
+            }
+          }
+        ],
+        "player_relative_war_score": 0,
+        "allied_armies": [
+          {
+            "army_id": 18,
+            "owner_character_id": 31254,
+            "soldiers": null,
+            "current_province_id": 2624,
+            "move_target_province_id": 1033,
+            "move_target_observable": true,
+            "controllable": true,
+            "source": "native",
+            "route_province_ids": [
+              1036,
+              8653,
+              1034,
+              1033
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 4,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "enemy_armies": [
+          {
+            "army_id": 16777222,
+            "owner_character_id": 34960,
+            "soldiers": null,
+            "current_province_id": 2634,
+            "move_target_province_id": 2633,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              2633
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 1,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 16777228,
+            "owner_character_id": 36045,
+            "soldiers": null,
+            "current_province_id": 4552,
+            "move_target_province_id": 2633,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              8655,
+              8656,
+              8653,
+              2633
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 4,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 22,
+            "owner_character_id": 34241,
+            "soldiers": null,
+            "current_province_id": 4582,
+            "move_target_province_id": 2633,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              8647,
+              1033,
+              1032,
+              2633
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 4,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 32,
+            "owner_character_id": 33732,
+            "soldiers": null,
+            "current_province_id": 4585,
+            "move_target_province_id": 2619,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              8647,
+              1033,
+              1032,
+              8645,
+              2612,
+              2616,
+              2617,
+              2618,
+              2619
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 9,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "source": "native"
+      }
+    ],
+    "paused_snapshot": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\008-after-identity-save-snapshot.json",
+    "cash_response": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\014-payment-independent.json",
+    "ordinary_response": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-pilot-a01-d01-02-pre-army-query-0.json",
+    "ordinary_reference_from_existing_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\state-a01\\native-session\\army-query-history-results\\army-query-de25f98192be48bf9567e7b942abfeea.json",
+      "bytes": 3381416,
+      "sha256": "87a63822eb023dc7e4c5291a1fd88b2da0200df5f577fc9cf315c5cf5c775353",
+      "kind": "complete-driver-army-query-result-json-v1",
+      "wire_bytes_preserved": false
+    },
+    "commander_direct_read": null,
+    "ABC_legal_goal_freeze": null,
+    "not_claimed": "No new direct commander/ABCgoal proof; current normal wartime frozen state is distinct from full R01/R10 decision T0 acceptance."
+  },
+  "serialization_distinction": {
+    "loaded_input_in_R0173": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-payment-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 68450356,
+      "sha256": "be327216d366627c46effe1f976f1f479899276a02c88e2511591d6cf732e881"
+    },
+    "normal_saved_common_T0": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\state-a01\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 68451543,
+      "sha256": "9ab3b0d05bdc1a0c4ef2d81a9dc27cec3f66e9af2871b5cac11776ddc6ddb784",
+      "date_raw": 53145048,
+      "character_id": 31254,
+      "source_run_id": "native-31254-3072c36153e4",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    },
+    "facts": "R0173 loaded earlier R0172 checkpoint then normally saved T0 in007 and continued without reloading the new seed. Do not call9ab3 the loaded-input SHA of historicalR0173."
+  },
+  "existing_treatment": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0173",
+    "PID": 14544,
+    "create_filetime": 134365403777766761,
+    "generation": 1,
+    "episode": "native-31254-3072c36153e4",
+    "admission": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\payment-window-admission.actual-a02.json",
+    "T0_saved_then_continued": true,
+    "common_T0_seed_loaded_as_input": false,
+    "positive_day": 21,
+    "date_raw": 53145552,
+    "source_callback_amount_raw": 300000,
+    "scale": 100000,
+    "positive_summary": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\bounded-days-runner-a01\\day-21.complete.json",
+    "positive_cash_response": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-boarding-days17to21-a01-d21-10-cash-query-0.json",
+    "initial_journal_epoch_local_only": 1
+  },
+  "pair_design": {
+    "shortest_addition": "One new control PID from exact immutable9ab3 seed, independent T0 reads, one Halt if actually still belowcutoff, then21 exactdays stationary. Reuse historical treatment as saved-T0 continuation, label scope as21day matched-seed continuation.",
+    "strict_two_new_arm_variant": "Two new Root-controlled PIDs from identical9ab3 seed; control Halt vs treatment continue committed route. Both fresh actual binding/readbacks required. Existing R0173 remains positive precedent, not a replay outcome.",
+    "cross_window_sequences_comparable": false,
+    "window_identity": "machine/run/PID/create_time/generation/controlled_window_id; numeric epoch1 in both is not one epoch.",
+    "original_R07_contract_still_unmet": [
+      "Historical treatment took21days, exceeds7day originalcard",
+      "Historical window crosses economic/monthboundary",
+      "T0 already had committed movingroute, not stationaryT0 thennewMove"
+    ],
+    "original_R01_gap": "Fresh1066 origin isR0171, not R0172/173load. Commander/ABCgoal/commondecisionT0 explicit readback remains separate; do not silently substitute this movingT0."
+  },
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\007-normal-identity-save.json",
+      "bytes": 20240,
+      "sha_not_recomputed": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\008-after-identity-save-snapshot.json",
+      "bytes": 116244,
+      "sha_not_recomputed": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\r173-pilot-a01-d01-02-pre-army-query-0.json",
+      "bytes": 5303,
+      "sha_not_recomputed": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0173\\responses\\014-payment-independent.json",
+      "bytes": 23533,
+      "sha_not_recomputed": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\bounded-days-runner-a01\\day-21.complete.json",
+      "bytes": 7148,
+      "sha_not_recomputed": true
+    }
+  ],
+  "all_new_control_and_replay_cases": "pending"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "xar.e04.common-t0-repo-source-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "b9aba7df1e80c49b7d667bd13f6148f3a84676d4",
+  "historical_source_head": "8dd6d84a60aa246f527a72173117e42a6c107dc2",
+  "historical_bridge_dll_sha256": "5d9a4029797a5dc404f084279159f152e306413c7a8e62e2f2453a0334cc0c73",
+  "exact_freeze_projection": {
+    "path": "docs/ck3-native-ai/evidence/episode04-common-t0-control-12004/common-t0-r0173.receipt-freeze.actual-a01.json",
+    "bytes": 13645,
+    "sha256": "615a19280d3e68c3b8be27d1ba3a3f54af69ae379a3b57b5b0a9e763214e14ae"
+  },
+  "original_projection_path": "C:\\ck3-e04-resume-20261015-a01\\common-t0-control-a01\\COMMON-T0.freeze.actual-a01.json",
+  "saved_T0_receipt_sha256": "a1cacfd64cc9ff5a9227b6cb35aca1ac8874666bd520a5bed0add5975bb9cd2c",
+  "save_raw_exe_content_read_or_hashed": false,
+  "runtime_actions": 0,
+  "new_control_treatment_observations": "pending",
+  "original_R07_full_qualified": false,
+  "frozen_python_test_inputs": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "sha256": "b38976864a4d7c1ebf78128b3e9bbf7939a72c16762b290ebf3fda19c7afe21d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py",
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/nonwar_private_build.py",
+      "sha256": "fe1a53ca0f01e60ae37231e3b1a566442454f3bb77afd33b616849b25f6d53e9"
+    }
+  ],
+  "fresh_campaign_origin_identity_receipt_sha256": "2d6d3396cd316167a53fc3170276ecefb8d273970e794b1805d8d8166296aa23"
+}

@@ -1,0 +1,897 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:xar:e04:r10:v1",
+  "$defs": {
+    "pin": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16777216
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "bound": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/pin"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(/.*)?$"
+        }
+      },
+      "required": [
+        "source",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "endpoint": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 90
+        },
+        "snapshot": {
+          "$ref": "#/$defs/pin"
+        },
+        "army_result": {
+          "$ref": "#/$defs/pin"
+        },
+        "strategy_army_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "commander": {
+          "$ref": "#/$defs/bound"
+        },
+        "loaded_features": {
+          "$ref": "#/$defs/bound"
+        }
+      },
+      "required": [
+        "day",
+        "snapshot",
+        "army_result",
+        "strategy_army_ids",
+        "commander",
+        "loaded_features"
+      ],
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "machine_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "started_at_utc": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pid": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "process_create_time_100ns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "connection_generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "episode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "player_character_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_head": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "native_dll_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_proof": {
+          "$ref": "#/$defs/pin"
+        }
+      },
+      "required": [
+        "machine_id",
+        "started_at_utc",
+        "pid",
+        "process_create_time_100ns",
+        "connection_generation",
+        "episode",
+        "player_character_id",
+        "source_head",
+        "native_dll_sha256",
+        "source_proof"
+      ],
+      "additionalProperties": false
+    },
+    "clock_day": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90
+        },
+        "clock_source": {
+          "$ref": "#/$defs/pin"
+        },
+        "paused_snapshot": {
+          "$ref": "#/$defs/pin"
+        },
+        "strategy_army_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "day",
+        "clock_source",
+        "paused_snapshot",
+        "strategy_army_ids"
+      ],
+      "additionalProperties": false
+    },
+    "ledger": {
+      "type": "object",
+      "properties": {
+        "loss_refill_qualified": {
+          "type": "boolean"
+        },
+        "payment_qualified": {
+          "type": "boolean"
+        },
+        "loss_physical_debits": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refill_physical_adds": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "boarding_gold_raw": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "maintenance_gold_raw": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_cash_income_raw": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_cash_expense_raw": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "through_day": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 90
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "loss_refill_qualified",
+        "payment_qualified",
+        "loss_physical_debits",
+        "refill_physical_adds",
+        "boarding_gold_raw",
+        "maintenance_gold_raw",
+        "other_cash_income_raw",
+        "other_cash_expense_raw",
+        "through_day",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "prespecified_policy_followed": {
+          "type": "boolean"
+        },
+        "B_merge_destination_policy": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "B_commander_policy": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "B_rest_exit_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "province_id": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unit_id": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "start_day": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end_day": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reason": {
+                "enum": [
+                  "threshold",
+                  "maximum_rest_days"
+                ]
+              },
+              "endpoint_day": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "province_id",
+              "unit_id",
+              "start_day",
+              "end_day",
+              "reason",
+              "endpoint_day"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "C_waypoint_observed_days": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "province_id": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "day": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "province_id",
+              "day"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pin"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "prespecified_policy_followed",
+        "B_merge_destination_policy",
+        "B_commander_policy",
+        "B_rest_exit_records",
+        "C_waypoint_observed_days",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "arm": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "runtime": {
+          "$ref": "#/$defs/runtime"
+        },
+        "loaded_save_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cold_start": {
+          "$ref": "#/$defs/endpoint"
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/clock_day"
+          },
+          "minItems": 0
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/endpoint"
+          },
+          "minItems": 1
+        },
+        "execution": {
+          "$ref": "#/$defs/execution"
+        },
+        "disposition": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "arrived",
+                "budget-censored",
+                "measurement-stop",
+                "strategy-stop",
+                "competing-event"
+              ]
+            },
+            "day": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 90
+            },
+            "last_not_arrived_day": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/pin"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "kind",
+            "day",
+            "last_not_arrived_day",
+            "reason",
+            "evidence"
+          ],
+          "additionalProperties": false
+        },
+        "ledger": {
+          "$ref": "#/$defs/ledger"
+        },
+        "deviations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "measurement",
+                  "world-event"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "$ref": "#/$defs/pin"
+              }
+            },
+            "required": [
+              "kind",
+              "description",
+              "evidence"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "label",
+        "runtime",
+        "loaded_save_sha256",
+        "cold_start",
+        "days",
+        "observations",
+        "execution",
+        "disposition",
+        "ledger",
+        "deviations"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "xar.e04.r10.plan.v1"
+        },
+        "status": {
+          "const": "frozen"
+        },
+        "frozen_at_utc": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "build": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "1.20.0.4"
+            },
+            "steam_build": {
+              "const": 25734779
+            },
+            "exe_sha256": {
+              "const": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+            },
+            "source_head": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "native_dll_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "version",
+            "steam_build",
+            "exe_sha256",
+            "source_head",
+            "native_dll_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "normal_save": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "normal-native-checkpoint"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "save_receipt": {
+              "$ref": "#/$defs/pin"
+            },
+            "normal_origin_proof": {
+              "$ref": "#/$defs/pin"
+            }
+          },
+          "required": [
+            "kind",
+            "bytes",
+            "sha256",
+            "save_receipt",
+            "normal_origin_proof"
+          ],
+          "additionalProperties": false
+        },
+        "t0_raw": {
+          "type": "integer"
+        },
+        "max_natural_days": {
+          "const": 90
+        },
+        "raw_per_day": {
+          "const": 24
+        },
+        "goal_province_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "arrival_states": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "original_regiment_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "baseline": {
+          "$ref": "#/$defs/endpoint"
+        },
+        "strategies": {
+          "type": "object",
+          "properties": {
+            "A": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "whole-direct"
+                },
+                "route_preview": {
+                  "$ref": "#/$defs/pin"
+                }
+              },
+              "required": [
+                "mode",
+                "route_preview"
+              ],
+              "additionalProperties": false
+            },
+            "B": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "split-rest-merge"
+                },
+                "rest_province_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "uniqueItems": true
+                },
+                "site_actual_stock_increase_evidence": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/pin"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minimum_stock_raw": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "maximum_deficit": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "maximum_rest_days": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 90
+                },
+                "merge_province_id": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "merge_destination_policy": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commander_policy": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "r09_result": {
+                  "$ref": "#/$defs/pin"
+                }
+              },
+              "required": [
+                "mode",
+                "rest_province_ids",
+                "site_actual_stock_increase_evidence",
+                "minimum_stock_raw",
+                "maximum_deficit",
+                "maximum_rest_days",
+                "merge_province_id",
+                "merge_destination_policy",
+                "commander_policy",
+                "r09_result"
+              ],
+              "additionalProperties": false
+            },
+            "C": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "whole-via"
+                },
+                "waypoint_province_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "route_preview": {
+                  "$ref": "#/$defs/pin"
+                }
+              },
+              "required": [
+                "mode",
+                "waypoint_province_ids",
+                "route_preview"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "A",
+            "B",
+            "C"
+          ],
+          "additionalProperties": false
+        },
+        "report_days": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 90
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "compare_fees": {
+          "type": "boolean"
+        },
+        "follow_after_arrival_to_day90": {
+          "type": "boolean"
+        },
+        "post_arrival_policy": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "wall_budget_seconds_per_arm": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "prerequisites": {
+          "type": "object",
+          "properties": {
+            "exact_clock": {
+              "$ref": "#/$defs/pin"
+            },
+            "loss_refill_subject_qualification": {
+              "$ref": "#/$defs/pin"
+            },
+            "B_microexperiment": {
+              "$ref": "#/$defs/pin"
+            },
+            "boarding_payment": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/pin"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "maintenance_settlement": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/pin"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "exact_clock",
+            "loss_refill_subject_qualification",
+            "B_microexperiment",
+            "boarding_payment",
+            "maintenance_settlement"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema",
+        "status",
+        "frozen_at_utc",
+        "plan_id",
+        "build",
+        "normal_save",
+        "t0_raw",
+        "max_natural_days",
+        "raw_per_day",
+        "goal_province_id",
+        "arrival_states",
+        "original_regiment_ids",
+        "baseline",
+        "strategies",
+        "report_days",
+        "compare_fees",
+        "follow_after_arrival_to_day90",
+        "post_arrival_policy",
+        "event_policy",
+        "wall_budget_seconds_per_arm",
+        "prerequisites"
+      ],
+      "additionalProperties": false
+    },
+    "results": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "xar.e04.r10.results.v1"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "arms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/arm"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "schema",
+        "plan_sha256",
+        "arms"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/plan"
+    },
+    {
+      "$ref": "#/$defs/results"
+    }
+  ]
+}

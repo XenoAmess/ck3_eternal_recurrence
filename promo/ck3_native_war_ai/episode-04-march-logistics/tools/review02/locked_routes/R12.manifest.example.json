@@ -1,0 +1,113 @@
+{
+  "machine_id": "FILL-ACTUAL-SOURCE-MACHINE-ID",
+  "template_status": "NOT-READY: fill only actual pinned case evidence; no live credit",
+  "case": "R12",
+  "case_id": null,
+  "binding": {
+    "pid": null,
+    "process_create_time_100ns": null,
+    "generation": null,
+    "actor": null,
+    "episode": null,
+    "army_id": 18,
+    "native_carmy_id": null
+  },
+  "owned_evidence_roots": [
+    "case-evidence"
+  ],
+  "initial_move_count": 1,
+  "action_count": 1,
+  "maximum_natural_days": 30,
+  "session_receipt": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "baseline": {
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strength": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "new_move_post": {
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strength": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "locked": {
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strength": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "post": {
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strength": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "arrival": {
+    "snapshot": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "strength": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "initial_target": null,
+  "initial_preview": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "initial_move_request": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "initial_move_response": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "action_request": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "action_response": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "daily_clock_results": []
+}

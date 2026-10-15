@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.same-t0-pair-input.v2",
+  "machine_id": null,
+  "mode": "saved_t0_continuation_control",
+  "common_t0_freeze": {
+    "path": "docs/ck3-native-ai/evidence/episode04-common-t0-control-12004/common-t0-r0173.receipt-freeze.actual-a01.json",
+    "bytes": 13645,
+    "sha256": "615a19280d3e68c3b8be27d1ba3a3f54af69ae379a3b57b5b0a9e763214e14ae"
+  },
+  "control": {
+    "assets_root": null,
+    "run_dir": null,
+    "run_id": null,
+    "pid": null,
+    "create_filetime": null,
+    "generation": null,
+    "episode": null,
+    "prepared": null,
+    "identity_receipt": null,
+    "admission": null,
+    "request_helper": null,
+    "driver_state_path": null,
+    "t0_snapshot": null,
+    "t0_ordinary_response": null,
+    "baseline_cash_before_snapshot": null,
+    "baseline_cash": null,
+    "halt_response": null,
+    "after_halt_snapshot": null,
+    "daily_summaries": [],
+    "day_source_overrides": {},
+    "status": "pending actual normal prepare/load/T0/Halt proof"
+  },
+  "treatment": null,
+  "notes": [
+    "No actual PID/window fabricated; values filled after normalprepare and load.",
+    "For recovery days, day_source_overrides.N explicitly supplies original arm_response, successful readonly clock_response and final_snapshot from ownrun; no action replay.",
+    "mode two_new_loaded_arms requires independent treatment section of same schema without Halt fields, fresh same-seed reads and21actual days.",
+    "All file references are archive-relative. Original absolute paths inside source receipts require an explicit archive_prefix_map mapping source prefix to relative archive directory.",
+    "Fill source_head and bridge_dll_sha256 from the actual approved new build; historical8dd/5d9a are not automatic future build authorization. Both new arms use the same declared source contract.",
+    "The frozen T0 projection may be copied into the archive at its declared path. Its historical source paths are labels; save/raw content is never opened by this checker."
+  ],
+  "archive_prefix_map": {},
+  "source_contract": {
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_head": null,
+    "bridge_dll_sha256": null
+  }
+}

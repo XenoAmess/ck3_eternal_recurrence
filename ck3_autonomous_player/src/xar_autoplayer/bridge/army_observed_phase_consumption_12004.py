@@ -62,13 +62,18 @@ def project_army_observed_phases_12004(row, *, exact_source):
         for event in core['events']:
             mapped=map_actual_regular_core_entry_12004(event)
             projected=project_army_ordered_monthly_core_12004(mapped['entry']) if mapped['entry'] is not None else None
-            result['ordered_regular_core'].append({'journal_sequence':event['journal_sequence'],
+            consumed={'journal_sequence':event['journal_sequence'],
                 'entry_event':deepcopy(event['entry_event']),'returned_event':deepcopy(event['returned_event']),
                 'owned_original_return_observed':event['original_called'] and event['original_returned'],
                 'entry_capture_complete':event['entry']['capture_complete'],
                 'returned_capture_complete':event['returned']['capture_complete'],
                 'conditional_entry_projection':projected,'missing_inputs':mapped['missing'],
-                'returned_frame_used_to_fill_entry':False})
+                'returned_frame_used_to_fill_entry':False}
+            if any('subject_coverage_v1' in event[name] for name in ('entry','returned')):
+                from .army_subject_physical_coverage_12004 import project_subject_raw_physical_delta_12004
+                consumed['subject_raw_physical_delta_v1']=project_subject_raw_physical_delta_12004(
+                    event,expected_carmy_id=row['native_carmy_id'] & 0xFFFFFFFF)
+            result['ordered_regular_core'].append(consumed)
     preparation=_family(row,PREP)
     if preparation:
         for event in preparation['events']:

@@ -1,0 +1,37 @@
+{
+  "schema": "xar.portable-generic-context.native-plan-check.v1",
+  "observed_utc": "2026-10-15T13:57:55.077520+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\ck3_autonomous_player\\native_bridge\\tests\\war_payment_generic_context\\run_focused.py",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence",
+    "--source-overlay",
+    "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\candidate",
+    "--build-dir",
+    "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-native-plan-a01\\NOT-CREATED-build",
+    "--plan-only"
+  ],
+  "return_code": 0,
+  "syntax_compile_pass": true,
+  "plan_only_no_build_dir": true,
+  "no_native_rebuild": true,
+  "source_bytes": 9167,
+  "source_sha256": "ac792e42cb6a7d37732a8b66dd3662a6d072d9f4907c9dd7f1759d06ad661e39",
+  "stdout_sha256": "75fca3c981ee83706463e8e5f3b79b6a9aee980c70907a53887ee54bbe580813",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_has_machine_path_bindings": false,
+  "plan": {
+    "mode": "PLAN_ONLY_NO_BUILD",
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "build_dir": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-native-plan-a01\\NOT-CREATED-build",
+    "sources": [
+      "ck3_autonomous_player\\native_bridge\\src\\war_payment_passive_12004.cpp",
+      "ck3_autonomous_player\\native_bridge\\src\\war_payment_json_12004.cpp",
+      "ck3_autonomous_player\\native_bridge\\src\\war_payment_runtime_12004.cpp"
+    ],
+    "fixture": "ck3_autonomous_player/native_bridge/tests/war_payment_generic_context/generic_context_fixture.cpp",
+    "scope": "3 compile TUs + runtime OFF/ON syntax + exact-registered synthetic EXE; no game or full bridge"
+  }
+}

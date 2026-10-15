@@ -36,6 +36,20 @@ template<class N, class S> void CoreFrame(std::string &out, const ck3_12004::Arm
   w.Key("persistent_objects"); Array(out,v.persistent_objects,[&](const auto &x){out += '{'; Writer<N,S>d{out,number,string};d.Integer("physical_token",x.physical_token);d.Integer("resolved_full_id",x.resolved_full_id);d.Text("unavailable_reason",x.unavailable_reason);d.Key("physical_values"); ArmyOrderedRefillPersistentV1 p;p.persistent_regiment_id=x.resolved_full_id.value_or(-1);p.prepared_fraction_raw=x.prepared_fraction_raw;p.unavailable_reason=x.unavailable_reason;p.chunks=x.chunks;AppendArmyOrderedRefillPersistentV1(out,p,number,string);out += '}';});
   w.Key("army_objects"); Array(out,v.army_objects,[&](const auto &x){out += '{'; Writer<N,S>d{out,number,string};d.Integer("physical_token",x.physical_token);d.Integer("resolved_full_id",x.resolved_full_id);d.Integer("native_arrg_occurrence_count",x.native_arrg_occurrence_count);d.Text("unavailable_reason",x.unavailable_reason);d.Key("arrg_occurrences");Array(out,x.arrg_occurrences,[&](const auto &a){out += '{';Writer<N,S>r{out,number,string};r.Key("occurrence");CoreOccurrence(out,a.occurrence,number,string);r.Integer("resolved_magic_14_raw",a.resolved_magic_14_raw);r.Boolean("native_refresh_admitted",a.native_refresh_admitted);r.Boolean("native_loss_writer_skipped",a.native_loss_writer_skipped);r.Integer("native_record_count",a.native_record_count);r.Boolean("records_complete",a.records_complete);r.Text("unavailable_reason",a.unavailable_reason);r.Key("records");Array(out,a.records,[&](const auto &q){out += '{';Writer<N,S>z{out,number,string};z.Integer("record_index",q.record_index);z.Integer("persistent_regiment_id",q.persistent_regiment_id);z.Integer("chunk_index",q.chunk_index);z.Integer("persistent_physical_token",q.persistent_physical_token);z.Integer("state_raw",q.state_raw);z.Boolean("native_record_admitted",q.native_record_admitted);z.Text("unavailable_reason",q.unavailable_reason);out += '}';});out += '}';});out += '}';});
   w.Key("missing_inputs"); Array(out,v.missing_inputs,[&](const auto &x){string(out,x);});
+  if(v.subject_coverage_v1) {
+    const auto &coverage=*v.subject_coverage_v1;w.Key("subject_coverage_v1");out+='{';Writer<N,S> q{out,number,string};
+    q.Integer("schema_version",1);q.Text("mode",std::string("explicit_full_carmy_physical_closure"));
+    q.Integer("scope_epoch",coverage.scope_epoch);q.Integer("bound_game_state_identity",coverage.bound_game_state_identity);
+    q.Integer("bound_owner_character_id",coverage.bound_owner_character_id);
+    q.Key("requested_full_carmy_ids");Array(out,coverage.requested_full_carmy_ids,[&](const auto &x){out+=number(x);});
+    q.Boolean("manager_occurrences_complete",coverage.manager_occurrences_complete);q.Boolean("physical_closure_complete",coverage.physical_closure_complete);
+    q.Key("subject_identity_witnesses");Array(out,coverage.subject_identity_witnesses,[&](const auto &x){out+='{';Writer<N,S> z{out,number,string};
+      z.Integer("full_carmy_id",x.full_carmy_id);z.Integer("resolved_full_carmy_id",x.resolved_full_carmy_id);
+      z.Integer("carmy_magic_14_raw",x.carmy_magic_14_raw);z.Integer("public_unit_id",x.public_unit_id);
+      z.Integer("unit_resolved_full_id",x.unit_resolved_full_id);z.Integer("unit_magic_14_raw",x.unit_magic_14_raw);
+      z.Integer("unit_owner_character_id",x.unit_owner_character_id);z.Integer("unit_full_carmy_id",x.unit_full_carmy_id);out+='}';});
+    q.Key("missing_inputs");Array(out,coverage.missing_inputs,[&](const auto &x){string(out,x);});out+='}';
+  }
   out += '}';
 }
 template<class N, class S> void CoreEvent(std::string &out, const ck3_12004::ArmyRegularCoreObservation12004 &v, N number, S string) {

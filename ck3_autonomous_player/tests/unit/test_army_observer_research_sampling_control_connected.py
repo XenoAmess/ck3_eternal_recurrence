@@ -163,3 +163,99 @@ def test_connected_control_contract_focus(tmp_path):
                 control.normalize_result(bad,expected_step=control.QUERY_STEP,observer_family="regular_core")
     finally:
         army.driver.close()
+
+
+def test_connected_regular_core_subject_scope_opt_in(tmp_path):
+    army = make_scenario(tmp_path / "scoped-driver", projection="native_campaign")
+    requests, replies = [], []
+    try:
+        army.endpoint.publish({**_hello("game.state.snapshot", control.ARMY_CAPABILITY),
+            "expected_ck3_version": CK3_12004.game_version,
+            "expected_ck3_sha256": CK3_12004.executable_sha256})
+        army.endpoint.publish(_snapshot(40, played_character={"character_id":707,"alive":True},
+                                       player_armies=[_army(82)]))
+        before = army.driver.take_internal_semantic_snapshot()
+        revision = before["revision"]
+
+        def answer(frame):
+            need(frame.get("type") == "execute_step" and frame.get("step") in {
+                control.ENABLE_STEP, control.DISABLE_STEP, control.QUERY_STEP,
+            }, "unexpected connected primitive")
+            requests.append(copy.deepcopy(frame))
+            need(bool(replies), "scope control retried or sent implicitly")
+            army.endpoint.publish(dict(type="command_result", protocol_version=1,
+                request_id=frame["request_id"], ok=True, result=replies.pop(0)))
+
+        army.endpoint.send_hook = answer
+        driver = army.driver
+        server = create_server(driver)
+        setter = "ck3_set_army_observer_research_sampling_v1"
+        query = "ck3_query_army_observer_research_sampling_v1"
+        ids = [-2147483648, -2, 0, 2147483647]
+        replies.append(packet(control.ENABLE_STEP, {"regular_core":row("enabled")}, True))
+        result = asyncio.run(server.call_tool(setter, dict(enabled=True,
+            observer_family="regular_core", expected_revision=revision, regular_core_full_carmy_ids=ids)))
+        need(result.is_error is False and result.structured_content["accepted"] is True,
+             "registered MCP scope did not use actual Driver")
+        need(requests[-1]["regular_core_full_carmy_ids"] == ids and
+             requests[-1]["expected_revision"] == before["native_revision"],
+             "full signed CArmy IDs or actual native revision lost before primitive")
+        need(set(result.structured_content[control.STATE_KEY]["regular_core"]) == control._ROW_KEYS,
+             "scope request changed sampling wire shape")
+
+        # Native refuses changing an already enabled observer. Its old enabled
+        # state must be visible together with accepted=false, without retry.
+        sent = len(requests)
+        replies.append(packet(control.ENABLE_STEP, {"regular_core":row("enabled")}, False))
+        refused = driver.set_army_observer_research_sampling_v1(True,
+            observer_family="regular_core", expected_revision=revision, regular_core_full_carmy_ids=[12])
+        need(refused["accepted"] is False and refused["status"] == "incomplete" and
+             refused[control.STATE_KEY]["regular_core"]["capture_enabled"] is True,
+             "honest scoped refusal was lost or manufactured completion")
+        need(len(requests) == sent + 1 and driver._command_history[-1]["ok"] is False,
+             "scoped refusal retried or altered command outcome")
+
+        # None/omission and a read-only query retain the exact old request.
+        for explicit_none in (False, True):
+            replies.append(packet(control.ENABLE_STEP, {"regular_core":row("enabled")}, True))
+            kwargs = dict(observer_family="regular_core", expected_revision=revision)
+            if explicit_none:
+                kwargs["regular_core_full_carmy_ids"] = None
+            driver.set_army_observer_research_sampling_v1(True, **kwargs)
+            need("regular_core_full_carmy_ids" not in requests[-1], "None changed legacy wire request")
+        replies.append(packet(control.QUERY_STEP, {"regular_core":row("enabled")}, True))
+        asyncio.run(server.call_tool(query, dict(observer_family="regular_core", expected_revision=revision)))
+        need("regular_core_full_carmy_ids" not in requests[-1], "read-only query acquired a capture scope")
+
+        sent = len(requests)
+        for value in ([], [12,12], [-1], [True], [1.5], [2147483648], [-2147483649], list(range(65)), (12,)):
+            with pytest.raises(ValueError):
+                driver.set_army_observer_research_sampling_v1(True, observer_family="regular_core",
+                    expected_revision=revision, regular_core_full_carmy_ids=value)
+        for enabled, family in ((False,"regular_core"),(True,"all"),(True,"gathering")):
+            with pytest.raises(ValueError):
+                driver.set_army_observer_research_sampling_v1(enabled, observer_family=family,
+                    expected_revision=revision, regular_core_full_carmy_ids=[12])
+        with pytest.raises(ValueError):
+            control.execute_control(driver, step=control.QUERY_STEP, observer_family="regular_core",
+                expected_revision=revision, regular_core_full_carmy_ids=[12])
+        with pytest.raises(ToolError):
+            asyncio.run(server.call_tool(setter, dict(enabled=True,observer_family="regular_core",
+                expected_revision=revision,regular_core_full_carmy_ids=[True])))
+        need(len(requests) == sent, "invalid scope dispatched a primitive")
+
+        # Scoped refusal cannot authorize a successful enable with disabled
+        # state, and the legacy/global contract keeps rejecting false success.
+        bad = {**packet(control.ENABLE_STEP,{"regular_core":row("disabled")},True),"backend_id":"native-headless"}
+        with pytest.raises(ValueError):
+            control.normalize_result(bad,expected_step=control.ENABLE_STEP,
+                observer_family="regular_core",allow_scoped_enable_refusal=True)
+        refused_wire = {**packet(control.ENABLE_STEP,{"regular_core":row("enabled")},False),"backend_id":"native-headless"}
+        with pytest.raises(ValueError):
+            control.normalize_result(refused_wire,expected_step=control.ENABLE_STEP,observer_family="regular_core")
+        with pytest.raises(ValueError):
+            control.normalize_result({**refused_wire,"step":control.QUERY_STEP},expected_step=control.QUERY_STEP,
+                observer_family="regular_core",allow_scoped_enable_refusal=True)
+        need(replies == [], "scope replies not consumed exactly once")
+    finally:
+        army.driver.close()

@@ -1,0 +1,160 @@
+{
+  "schema": "xar.e04.generic-context.saved-source-pointer-getter-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_utc": "2026-10-15T13:59:17.404314+00:00",
+  "exact_game": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "saved_source_contract": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\SOURCE-CONTRACT.actual.json",
+    "bytes": 10616,
+    "sha256": "31f8c9e1f35fa82bcbd1fe6a81be05d934a9de9ca1a900a8ce566a319600b79b"
+  },
+  "saved_asm": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\COMPLETE-574B.actual.asm",
+    "bytes": 9102,
+    "sha256": "55a27f9d54562c31a8690ef99cab18cc8fe10eb5c1bcbeb9c3aca32b5cd70607"
+  },
+  "complete_source_bytes": 574,
+  "complete_source_sha256": "f2e377a5e4948042852a95bd5b4e0fe3d38159defb8eb5f823ec0fabb33fe348",
+  "proof_instructions": [
+    {
+      "rva": "0x28a6d16",
+      "bytes_hex": "488b81c0010000",
+      "assembly": "mov rax,qword ptr[rcx+0x1C0]",
+      "meaning": "Load the pointer stored in Character+0x1C0"
+    },
+    {
+      "rva": "0x28a6d1d",
+      "bytes_hex": "4c8bf9",
+      "assembly": "mov r15,rcx",
+      "meaning": "Preserve the original Character pointer"
+    },
+    {
+      "rva": "0x28a6d20",
+      "bytes_hex": "4885c0",
+      "assembly": "test rax,rax",
+      "meaning": "Test loaded pointer, not the field address"
+    },
+    {
+      "rva": "0x28a6d23",
+      "bytes_hex": "0f841e020000",
+      "assembly": "je 0x28A6F47",
+      "meaning": "Null pointer exits without four-value dereference"
+    },
+    {
+      "rva": "0x28a6d29",
+      "bytes_hex": "4c8b4028",
+      "assembly": "mov r8,qword ptr[rax+0x28]",
+      "meaning": "Read c from loaded context pointer"
+    },
+    {
+      "rva": "0x28a6d32",
+      "bytes_hex": "488b98c0020000",
+      "assembly": "mov rbx,qword ptr[rax+0x2C0]",
+      "meaning": "Read a from the same loaded context"
+    },
+    {
+      "rva": "0x28a6d39",
+      "bytes_hex": "482b98c8020000",
+      "assembly": "sub rbx,qword ptr[rax+0x2C8]",
+      "meaning": "Read b and form a-b"
+    },
+    {
+      "rva": "0x28a6d45",
+      "bytes_hex": "488b7030",
+      "assembly": "mov rsi,qword ptr[rax+0x30]",
+      "meaning": "Read d from the same loaded context"
+    },
+    {
+      "rva": "0x28a6d4e",
+      "bytes_hex": "498d3c30",
+      "assembly": "lea rdi,[r8+rsi]",
+      "meaning": "Arithmetic c+d; this LEA is not context construction"
+    },
+    {
+      "rva": "0x28a6d52",
+      "bytes_hex": "482bdf",
+      "assembly": "sub rbx,rdi",
+      "meaning": "Form wrap_i64(a-b-(c+d))"
+    },
+    {
+      "rva": "0x28a6d71",
+      "bytes_hex": "4d8bc7",
+      "assembly": "mov r8,r15",
+      "meaning": "Forward the original Character as ADD third argument"
+    },
+    {
+      "rva": "0x28a6d77",
+      "bytes_hex": "e8c480fbff",
+      "assembly": "call 0x285EE40",
+      "meaning": "Known wallet ADD; return PC0x28A6D7C"
+    }
+  ],
+  "conclusion": "context = *(Character + 0x1C0), not Character + 0x1C0 inline object",
+  "new_executable_bytes_read": 0,
+  "new_executable_hashes": 0,
+  "game_or_sdk_contact": false,
+  "existing_binding_sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_war_cash_claim_terms.hpp",
+      "bytes": 2207,
+      "sha256": "647da1cb955c36a152da96e2297d0f470a3259d8dadbd5fd027985aad2ceff9a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_war_cash_claim_terms.cpp",
+      "bytes": 2311,
+      "sha256": "fed95c2adc0dd0af04d859d5cb322e5b3de6fbe87e54d1652af82f3c2b288ac7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_reader.hpp",
+      "bytes": 3956,
+      "sha256": "36ae77f56c3425bf0925d9f088c6b223aa025e3d99509f00979e948df95e0d5f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_reader.cpp",
+      "bytes": 8704,
+      "sha256": "47d9802384694277dd2169ac3a76e80644047b1e42355dc14d792f5b87b85040"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\ck3-1.20.0.4-battle-war-domain-migration.md",
+      "bytes": 10393,
+      "sha256": "3f28e6bd9cf4bf44ae3d73994fed04205e15dfc1a680785e95429539465fe9f2"
+    }
+  ],
+  "exact4_getters": [
+    {
+      "role": "monthly_gross_income",
+      "rva": "0x2BCA940"
+    },
+    {
+      "role": "expense_context_character",
+      "rva": "0x28BFD80"
+    },
+    {
+      "role": "monthly_total_expenses",
+      "rva": "0x2BCB160"
+    },
+    {
+      "role": "current_military_monthly_rate",
+      "rva": "0x2C13F60"
+    },
+    {
+      "role": "all_raised_alternative_military_monthly_rate",
+      "rva": "0x2C152B0"
+    }
+  ],
+  "source_matching": {
+    "shared_reader_reads_four_raw_context_offsets": false,
+    "settlement_function_calls_these_getters": false,
+    "no_transitive_callee_claim": true,
+    "semantic_mapping_of_2c0_2c8_28_30": null,
+    "producers_and_freshness": null,
+    "historical_source_map_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\battle-pursuit\\migration-steam25734779\\python-binding\\cash-terms-native\\first01\\FAMILY-MAP.json",
+    "historical_source_map_currently_exists": false
+  },
+  "maintenance_attribution": "unclosed",
+  "next_evidence": "Actual exact-caller raw four values and uniquely identified unwind parent before any further finite source read"
+}

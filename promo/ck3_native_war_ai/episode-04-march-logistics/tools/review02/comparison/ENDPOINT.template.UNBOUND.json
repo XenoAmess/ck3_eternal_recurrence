@@ -1,0 +1,30 @@
+{
+  "day": 0,
+  "snapshot": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "army_result": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "strategy_army_ids": [],
+  "commander": {
+    "source": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "pointer": null
+  },
+  "loaded_features": {
+    "source": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "pointer": null
+  }
+}

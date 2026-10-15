@@ -1,0 +1,111 @@
+{
+  "schema": "xar.e04.portable-generic-context-pytest-execution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T13:58:03.388204+00:00",
+  "completed_at_utc": "2026-10-15T13:58:09.830334+00:00",
+  "project_venv_interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "version_probe": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-O",
+      "-m",
+      "pytest",
+      "--version"
+    ],
+    "cwd": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01",
+    "observed_at_utc": "2026-10-15T13:58:03.388204+00:00",
+    "completed_at_utc": "2026-10-15T13:58:04.416139+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-version-a01.stdout.log",
+      "size_bytes": 14,
+      "sha256": "e736fb72d5c1af14c1550d6863d1e7ddae5491537766a381a3258c10cc5db9d5"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-version-a01.stderr.log",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "test_run": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-O",
+      "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\run_portable_pytest_a01.py",
+      "--child",
+      "--python",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "--repo",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "--candidate-consumer",
+      "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+      "--wire",
+      "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\native12004-generic-context-candidate-a04-wire.actual.json"
+    ],
+    "cwd": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01",
+    "observed_at_utc": "2026-10-15T13:58:04.433111+00:00",
+    "completed_at_utc": "2026-10-15T13:58:09.809053+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-run-a01.stdout.log",
+      "size_bytes": 1075,
+      "sha256": "38da51e16f9c0db5578fc0a5db3f083402dadb8059857ed2bbca624e7c4bf252"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-run-a01.stderr.log",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "environment_overrides": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "candidate_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\ck3_autonomous_player\\tests\\unit\\test_war_payment_generic_context.py",
+      "size_bytes": 12145,
+      "sha256": "194b8c98176b6af075c334d9d53b102e289bda1a5aebc90585fcf3bbb7ae38d6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\ck3_autonomous_player\\tests\\unit\\fixtures\\war_payment_generic_context_12004_a04.json",
+      "size_bytes": 80291,
+      "sha256": "27214c3ccdf6aba2b9510f65fd50e29ff03539a80aecddd8ea42e051c75320d3"
+    }
+  ],
+  "validation_only_existing_fixture_copy": {
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\fixtures\\war_payment_compiled_12004_a06.json",
+      "size_bytes": 99336,
+      "sha256": "af7a7d9d90072a457d2ffe180b9f3eb0e96fe5c5ecd46176c268bbde871f5c7d"
+    },
+    "copy": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\ck3_autonomous_player\\tests\\unit\\fixtures\\war_payment_compiled_12004_a06.json",
+      "size_bytes": 99336,
+      "sha256": "af7a7d9d90072a457d2ffe180b9f3eb0e96fe5c5ecd46176c268bbde871f5c7d"
+    }
+  },
+  "source_wire": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\native12004-generic-context-candidate-a04-wire.actual.json",
+    "size_bytes": 80291,
+    "sha256": "27214c3ccdf6aba2b9510f65fd50e29ff03539a80aecddd8ea42e051c75320d3"
+  },
+  "imported_consumer": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+    "size_bytes": 25102,
+    "sha256": "b5b3d65abc26d5b42cacff197294f94d1f9157890f5838e810772f805360eb25"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\run_portable_pytest_a01.py",
+    "size_bytes": 9742,
+    "sha256": "5fe819c1a7f62937973769f3951c00bf4897361bf7efc675420ad754fb2da590"
+  },
+  "receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-generic-context-candidate-a01\\portable-source-a01\\pytest-a01.receipt.actual.json",
+    "size_bytes": 23315,
+    "sha256": "116a1a86b80a3e6060ab501f6bb3186339b72b5c4586c09bbdeff379fee33de9"
+  },
+  "status": "PASS"
+}
