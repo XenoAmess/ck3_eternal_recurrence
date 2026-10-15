@@ -26,3 +26,9 @@ SAVE13 为 h1142、126616629 bytes，checkpoint SHA-256 `7cfca088d84d7d49354eebd
 后续离线消费正常完成的 successor plan 与 Root 已有 cold custody 小回执；不新增 MCP 查询或重启。广泛 rulers/seeds/governments 继续未完成。新的连续30年无停机修复目标由主 continuity ledger 计数，本包增加0天。
 
 复用工具：[extract_g2_goal_continuity.py](../../tools/extract_g2_goal_continuity.py)。一次实际摘录和3个必要 projection cases 已通过；旧4项 goal 矩阵未重跑。`open_kaishek` 为 not-applicable：这里只投影 JSON/Python semantic fields，无 Paradox parser/IR/finite-runtime 语义；参考 checkout `1643d03d3a8d2ae1547e352d724e2b1a721c98ba`。精确游戏版本1.20.0.4，EXE SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`。
+
+## 02:31 CST：复用已完成普通 plan 的补充
+
+初次两回执摘录未观察 normal-plan 消费。随后消费已有闭场 N42 P06 p06-responses/0003-1-result.json（实际 ck3_plan_turn，69481 bytes，SHA-256 93e6b02ee1e51f53d62356b3ed8d68d6bf51135acf6655845363f44caf26e74f），其 plan.campaign_goal_plan_used 明确含同一 goal/campaign/current40526/progress1，四项与 SAVE13/SEM1全等，focus=marriage，并保留当前角色家庭及继承优先项。
+
+[补充摘录](g2-successor-normal-plan-observation-2026-10-16.json)使用原离线工具的既有投影函数；没有新MCP调用、Driver读取或游戏推进，也未重复首投影/旧测试。现可直接确认后继普通 planner 消费同一意图；完整物理cold anchor与广身份资格仍单列，M7不授完成，稳定窗口新增0天。初次JSON保留原not_observed，不回填为当时已观察。

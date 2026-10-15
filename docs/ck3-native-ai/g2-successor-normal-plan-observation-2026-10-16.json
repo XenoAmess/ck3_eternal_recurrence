@@ -1,0 +1,67 @@
+{
+  "schema": "g2-successor-normal-plan-goal-observation-v1",
+  "at_utc": "2026-10-15T18:31:00.891479+00:00",
+  "evidence_layer": "offline projection of an existing completed ordinary ck3_plan_turn receipt",
+  "runtime_operations": 0,
+  "request": {
+    "sequence": 3,
+    "tool": "ck3_plan_turn",
+    "arguments": {},
+    "source": "Root P06 same-Game actual paused qualification"
+  },
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p06-responses\\0003-1-result.json",
+    "bytes": 69481,
+    "sha256": "93e6b02ee1e51f53d62356b3ed8d68d6bf51135acf6655845363f44caf26e74f"
+  },
+  "normal_plan_goal_used": {
+    "json_path": "$.result.structured_content.plan.campaign_goal_plan_used",
+    "value": {
+      "policy": "ordinary-campaign-goal-v1",
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-96253c58fd68",
+      "current_character_id": 40526,
+      "progress": {
+        "reconciled_successions": 1,
+        "last_succession": {
+          "predecessor_character_id": 31254,
+          "actual_successor_character_id": 40526,
+          "matched_inherited_title_ids": [
+            2191,
+            2204,
+            2230,
+            2231
+          ],
+          "expected_other_heir_title_ids": [
+            2262
+          ],
+          "expected_without_heir_title_ids": []
+        }
+      },
+      "focus": "marriage",
+      "priorities": [
+        {
+          "priority": 100,
+          "action": "seek_current_ruler_marriage_and_family_continuity",
+          "reason": "retain the campaign's family intent with fresh ruler candidates"
+        },
+        {
+          "priority": 60,
+          "action": "review_current_ruler_succession_and_partition",
+          "reason": "reuse the current native heir and estate observations"
+        }
+      ]
+    }
+  },
+  "same_saved_successor_goal_checks": {
+    "goal_key": true,
+    "campaign_id": true,
+    "current_character_id": true,
+    "progress": true
+  },
+  "original_projection_sha256": "b9650bbc5d84ea9294599cf2ea3027f4e290cf280b68399cfedf67ba02f5ed38",
+  "physical_cold_anchor_claimed": false,
+  "gameplay_completion_claimed": false,
+  "m7_complete_claimed": false,
+  "stability_game_days_added": 0
+}

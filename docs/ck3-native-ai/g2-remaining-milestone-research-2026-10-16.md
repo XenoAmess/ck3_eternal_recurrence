@@ -33,7 +33,7 @@
 
 ## M7：已保留真实 successor goal，政府玩法仍需分项施工
 
-[新罗贝尔继承后意图观测](g2-successor-goal-observation-2026-10-16.md)复用两份闭场小回执，确认31254→40526的同一 dynasty_continuity goal已进入真实 successor SAVE，并在另一实际 Game PID 语义帧保留。normal plan 实际消费和完整物理 cold anchor 对比字段仍单列，不能据不同 PID、同日期自动补齐。
+[新罗贝尔继承后意图观测](g2-successor-goal-observation-2026-10-16.md)复用两份闭场小回执，确认31254→40526的同一 dynasty_continuity goal已进入真实 successor SAVE，并在另一实际 Game PID 语义帧保留。随后已闭场 P06普通plan的 campaign_goal_plan_used又确认同一goal/campaign/current/progress四项全等，实际普通planner消费已补齐。完整物理 cold anchor 对比字段仍单列，不能据不同 PID、同日期自动补齐。
 
 政府身份 observer 的 core_supported 是身份/core verdict。普通 planner 已通过 CampaignRoot 消费当前政府 key/flags，但建设、LIFE、三类主动宣战入口仍明确限 feudal。普通路径没有调用旧内部 nonwar Government context leaf，不应为补 metadata 恢复旧公共受限模式或增加重查询。
 
