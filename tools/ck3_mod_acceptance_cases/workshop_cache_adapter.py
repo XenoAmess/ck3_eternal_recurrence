@@ -79,7 +79,8 @@ def validate_download(value, item, cache):
 
 
 def validate_manifest(manifest, item):
-    require(manifest.get('format_version') == 1 and str(manifest.get('workshop_item_id')) == item,
+    require(type(manifest.get('format_version')) is int and manifest['format_version'] in (1, 2)
+            and str(manifest.get('workshop_item_id')) == item,
             'Exact formal manifest must identify canonical item')
     require(isinstance(manifest.get('git_tag'), str) and manifest['git_tag'] and
             re.fullmatch(r'[0-9a-fA-F]{40}', str(manifest.get('git_sha'))), 'Tagged formal release identity required')

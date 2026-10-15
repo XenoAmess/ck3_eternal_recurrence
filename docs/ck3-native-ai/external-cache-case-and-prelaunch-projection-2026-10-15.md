@@ -40,3 +40,9 @@ also cover the GUI-inventory error, bound early exit and receipt substitution.
 The original tests include changed
 fallback catalog rejection, existing explicit case compatibility, recognized
 projection failure, unknown failure rejection and native-report exclusion.
+
+The current shared release builder emits manifest format 2 with the same exact
+file inventory fields. Cache admission now accepts formats 1 and 2 while retaining
+tagged identity, canonical item, safe unique paths, file sizes and SHA checks.
+Boolean, string and unknown versions remain rejected. All 11 cache seam tests
+passed, including format-2 preparation and rejection of changed cached bytes.

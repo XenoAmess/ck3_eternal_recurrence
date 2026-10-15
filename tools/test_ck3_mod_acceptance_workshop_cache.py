@@ -88,6 +88,23 @@ class WorkshopCacheTests(unittest.TestCase):
         with mock.patch('subprocess.run', side_effect=AssertionError('Preparation must never launch')):
             return adapter.prepare_case(self.context)
 
+    def test_current_builder_manifest_version_two_retains_exact_inventory(self):
+        self.manifest['format_version'] = 2
+        self.write(self.manifest_path, self.manifest)
+        self.context['case_inputs']['formal_manifest'] = adapter.pin(self.manifest_path)
+        result = self.prepared()
+        self.assertIsNotNone(result)
+        (self.cache / 'descriptor.mod').write_bytes(b'changed')
+        with self.assertRaises(ValueError):
+            self.prepared()
+
+    def test_unsupported_manifest_version_is_rejected(self):
+        for version in (True, 0, 3, '2'):
+            with self.subTest(version=version):
+                self.manifest['format_version'] = version
+                with self.assertRaisesRegex(ValueError, 'formal manifest'):
+                    adapter.validate_manifest(self.manifest, self.item)
+
     def report(self):
         profile = Path(self.context['state_dir']) / 'profile'
         startup_path = Path(self.context['state_dir']) / 'preparation.json'
