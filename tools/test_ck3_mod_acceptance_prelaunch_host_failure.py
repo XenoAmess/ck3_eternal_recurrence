@@ -127,6 +127,44 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'host exit/cause'):
             self.check()
 
+    def test_gui_inventory_rejection_keeps_prelaunch_failure_credit(self):
+        path = self.run / 'host-stderr.log'
+        path.write_text('ValueError: normal-exit private V1 does not support enabled mod GUI files\n')
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.save()
+        value = self.check()['failure_cleanup']
+        self.assertFalse(value['normal_close_qualified'])
+        self.assertFalse(value['business_pass'])
+
+    def early_exit_result(self):
+        self.bundle['readiness_result'] = self.write(self.run / 'case-output/readiness-window-result.json', {
+            'status': 'READINESS_HOST_EXIT_BEFORE_REPORT', 'binding': {'run_id': self.run.name},
+            'host_exit_before_report': {**{key: self.bundle[key] for key in
+                ('host_started', 'host_exit', 'host_stderr')}, 'host_returncode': 1,
+                'native_report_observed': False, 'normal_close_qualified': False,
+                'native_exit_zero_proven': False, 'business_pass': False}})
+        self.bundle['entry_run_result'] = self.write(self.run / 'case-output/entry-run-result.json', {
+            'run_id': self.run.name, 'launcher_exit_code': 0,
+            'case_error': 'ValueError: Original shared host exited before report: retained exit 1',
+            'business_acceptance': 'RED_OR_INCOMPLETE'})
+        self.save()
+
+    def test_bound_early_host_exit_does_not_require_readiness_timeout(self):
+        self.early_exit_result()
+        value = self.check()['failure_cleanup']
+        self.assertFalse(value['normal_close_qualified'])
+        self.assertFalse(value['business_pass'])
+
+    def test_early_host_exit_cannot_rebind_original_receipt(self):
+        self.early_exit_result()
+        path = self.run / 'case-output/readiness-window-result.json'
+        value = json.loads(path.read_text(encoding='utf-8'))
+        value['host_exit_before_report']['host_exit']['sha256'] = '0' * 64
+        self.bundle['readiness_result'] = self.write(path, value)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'RED/readiness result'):
+            self.check()
+
     def test_native_report_presence_rejects_prelaunch_claim(self):
         (self.run / 'native-report.json').write_text('{}')
         with self.assertRaisesRegex(ValueError, 'native/game/control'):

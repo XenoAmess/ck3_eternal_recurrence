@@ -323,15 +323,26 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             exited.get('normal_ck3_exit_inferred') is False and
             any(cause in stderr for cause in (
                 'ValueError: normal exit requires the actual public prepared profile',
-                'ValueError: effective host differs from reviewed projection')),
+                'ValueError: effective host differs from reviewed projection',
+                'ValueError: normal-exit private V1 does not support enabled mod GUI files')),
             'Prelaunch original host exit/cause differs')
     readiness=original('readiness_result',previous/'case-output/readiness-window-result.json')
     entry=original('entry_run_result',previous/'case-output/entry-run-result.json')
-    require(readiness.get('status')=='READINESS_TIMEOUT' and
+    early=readiness.get('host_exit_before_report',{})
+    timeout=(readiness.get('status')=='READINESS_TIMEOUT' and
+             entry.get('case_error')=='TimeoutError: Original case readiness budget elapsed')
+    failed_before_report=(readiness.get('status')=='READINESS_HOST_EXIT_BEFORE_REPORT' and
+        early.get('host_started')==evidence['host_started'] and
+        early.get('host_exit')==evidence['host_exit'] and
+        early.get('host_stderr')==evidence['host_stderr'] and
+        early.get('host_returncode')==exited['returncode'] and
+        all(early.get(key) is False for key in ('native_report_observed',
+            'normal_close_qualified','native_exit_zero_proven','business_pass')) and
+        str(entry.get('case_error','')).startswith('ValueError: Original shared host exited before report'))
+    require((timeout or failed_before_report) and
             readiness.get('binding',{}).get('run_id')==freeze['run_id'] and
             entry.get('run_id')==freeze['run_id'] and
             entry.get('launcher_exit_code')==0 and
-            entry.get('case_error')=='TimeoutError: Original case readiness budget elapsed' and
             entry.get('business_acceptance')=='RED_OR_INCOMPLETE',
             'Original public RED/readiness result differs')
     def command(key,mode,code):

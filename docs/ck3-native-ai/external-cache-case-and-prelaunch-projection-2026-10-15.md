@@ -10,6 +10,17 @@ input. An explicitly supplied case retains its previous behavior. This avoids
 copying the shared cache contract into each mod. Cache loading remains separate
 from source business acceptance.
 
+R0016 subsequently reached normal-exit source inventory admission, which rejected
+enabled mod GUI files before game launch. That exact validation error is also
+recognized by the resource-only closure. A separate native inventory work package
+handles safe GUI-mod support; this closure does not bypass inventory validation.
+
+If readiness reports an original host exit before its first native report, closure
+can use that failure immediately instead of requiring a full readiness timeout.
+The early result must bind the same original host start/exit/stderr pins and exit
+code, with native report, native0, normal exit and business credit all false. The
+existing known-cause, public RED, keeper, process and absence requirements remain.
+
 The original R0015 shared host exited 1 before launching CK3 because its effective
 Python projection failed its SHA check. The prelaunch resource closure now admits
 this exact recorded validation error alongside the existing prepared-profile
@@ -23,7 +34,9 @@ framework; product code, selected baseline and concrete business results remain
 in the independent mod. The runtime projection newline repair is a separate
 framework package. No source or live acceptance is inferred from these checks.
 
-Validation: 29 offline tests in `test_ck3_mod_acceptance` and
-`test_ck3_mod_acceptance_prelaunch_host_failure` passed. They include changed
+Validation: the initial 29 offline tests in `test_ck3_mod_acceptance` and
+`test_ck3_mod_acceptance_prelaunch_host_failure` passed. Follow-up closure tests
+also cover the GUI-inventory error, bound early exit and receipt substitution.
+The original tests include changed
 fallback catalog rejection, existing explicit case compatibility, recognized
 projection failure, unknown failure rejection and native-report exclusion.
