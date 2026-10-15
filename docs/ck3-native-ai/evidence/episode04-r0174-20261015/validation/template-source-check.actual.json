@@ -1,0 +1,17 @@
+{
+  "source_head": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+  "test": "actual checked-in template to canonical LF source bytes and savedT0 content",
+  "before_fix_exit": 1,
+  "after_fix_exit": 0,
+  "test_count": 1,
+  "old_archive_CRLF_preserved": true,
+  "main_tree_writes": 0,
+  "test_code_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/tests/test_common_t0_checked_in_freeze.py",
+  "freeze_bytes": 13320,
+  "freeze_sha256": "1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c",
+  "SDK_calls": 0,
+  "old_template": {
+    "bytes": 13645,
+    "sha256": "615a19280d3e68c3b8be27d1ba3a3f54af69ae379a3b57b5b0a9e763214e14ae"
+  }
+}

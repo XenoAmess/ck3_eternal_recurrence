@@ -1,0 +1,21 @@
+{
+  "schema": "xar.e04.maintenance-cache.plan-check-attempts.v1",
+  "recorded_utc": "2026-10-15T14:53:02.902876+00:00",
+  "original_tool_call_results_recorded_without_reexecution": true,
+  "attempts": [
+    {
+      "mode": "check --for-observation",
+      "return_code": 2,
+      "output_file_created": false,
+      "stderr": "ERROR: offline-only plan does not define a live observation window; the real producer trigger must be located before live sampling",
+      "source_tool_chunk_id": "dcea22"
+    },
+    {
+      "mode": "check",
+      "return_code": 0,
+      "output": "PLAN-A01-OFFLINE-CHECK.actual.json",
+      "source_tool_chunk_id": "235721"
+    }
+  ],
+  "interpretation": "Offline source plan is valid; no live observation window/trigger has been admitted"
+}

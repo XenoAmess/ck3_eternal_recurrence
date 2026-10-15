@@ -1,0 +1,118 @@
+{
+  "schema": "xar.e04.r0174.minimum-repository-files.v1",
+  "files": [
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/CALLEE-28A6F50-FINAL-SOURCE-CONTRACT.actual.json",
+      "bytes": 5938,
+      "sha256": "fa9b57d1b97d78f607b58c44c30726f7d2910c8a52bb7bac469fcbc5b367744a"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/CALLEE-28A6F50-SOURCE-HEX.actual.json",
+      "bytes": 479,
+      "sha256": "c3ce87dfbb2bf5735454a1d48b6e3fe5de5426849bd31719b28a7fa8e892dc80"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/CALLEE-ORIGINAL-ARCHIVE-INDEX.json",
+      "bytes": 7714,
+      "sha256": "444a8aec5d1b696422ce65ab574c61d9ad0c1a4b5d231a8657fd613a01005ff7"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/callee28A6F50.complete.asm",
+      "bytes": 1792,
+      "sha256": "a8b40eaac7c90c89ea211f40e7482e75f781ca4758747dbaa1cd86b15cbd3aef"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/callee28A6F50.original.zip",
+      "bytes": 60658,
+      "sha256": "4ef8955cd72506c95d63c89229ebf31df17feadd15669037d436240c2ea4cb5e"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day17/GENERIC-RAW-WITNESSES.actual.json",
+      "bytes": 7019,
+      "sha256": "016ef47e0b4b0351e1c8ca59f438c0f68fac87a0de6fd65d2c720a938da10c37"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day17/STRICT-CONSUMER.actual.json",
+      "bytes": 3832,
+      "sha256": "857034093c4a2cd5d581c1f9cb6869d7dad309847f59e1da145931ebdba4b592"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day21/GENERIC-RAW-WITNESSES.actual.json",
+      "bytes": 7019,
+      "sha256": "016ef47e0b4b0351e1c8ca59f438c0f68fac87a0de6fd65d2c720a938da10c37"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day21/STRICT-CONSUMER.actual.json",
+      "bytes": 3832,
+      "sha256": "69ba19812890cbba876e462be05651415b7bba9566f8d79c14c6f205175c17f8"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/FACTS.actual.json",
+      "bytes": 2688,
+      "sha256": "ac6138248d36cadbc3afd12cc00ba9125602c88bf39df7d1af6cd69e4a29bd87"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/INDEPENDENT-PARENT-STACK.actual.json",
+      "bytes": 6436,
+      "sha256": "dd4936cc00bfe5258833b6e026bb5989624e826b2d945cf1b9db683db6461023"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/NEXT-PRODUCER-OBSERVATION.contract.json",
+      "bytes": 2762,
+      "sha256": "a84da295b72d697f0810f346f8f644cc109f986240ac9066be430c2bc3361bc2"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/PARENT-HOOK-SOURCE-ANCHOR.contract-a01.json",
+      "bytes": 3047,
+      "sha256": "291fb0c13237a6545459db9be5a0eeb376f0f2e04eb806ad0bf1def28a83bea1"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+      "bytes": 15822,
+      "sha256": "36eecdf78b4e958833f90ee903e1cd2cb607e0a1d5e8ea1adb0fc3e1d14f040f"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/RAW-ARCHIVE-MEMBERS.json",
+      "bytes": 1582,
+      "sha256": "8d36c89700ffa267ae2b9d6d3275fadf05ec2255db4199a27176925c5dfb14f7"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/scheduler.complete.asm",
+      "bytes": 7663,
+      "sha256": "8c8ac4d221abe022eaae29d91d2d6bdbdf1e964e655059773feb29058d61af4f"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/SOURCE-ATTEMPTS-ARCHIVE-INDEX.json",
+      "bytes": 15106,
+      "sha256": "b345f417def46b47eba33765fa14ade98ad17d3e50a32ecab8ba4a9b23f01383"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/source-attempts.original.zip",
+      "bytes": 134213,
+      "sha256": "cb4d4c561a14c1d04d19e7a733861bf86ecf64b5e5cffe3781b32dd61db21992"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/SOURCE-SPANS.actual.json",
+      "bytes": 27108,
+      "sha256": "7edca9f87e438aaefa9ffc468fe68b0911e37d9f4171f19b94645f69a2ff89c3"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/upstream-job.complete.asm",
+      "bytes": 4119,
+      "sha256": "1fe3b696b32325091ab09fa309d8b992917d55f227cf5e95082427e11b1cb2ff"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/verify_replay.py",
+      "bytes": 10563,
+      "sha256": "ecf1910edf8901f6fe88e39cff966cb31869065994b26fa8e304a79f7e108345"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-r0174-actual-parent-source-12004.md",
+      "bytes": 9921,
+      "sha256": "ea1abf4a0ab59145e8489890946199ad7da776e70c2e3c4dd8ef37d4cdb25d19"
+    }
+  ],
+  "required_existing_repository_archive": "docs/ck3-native-ai/evidence/episode04-r0174-20261015/r0174-original-json.zip",
+  "ordinary_clone_command": "python -B -O docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/verify_replay.py",
+  "new_runtime_actions": 0
+}

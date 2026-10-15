@@ -1,0 +1,77 @@
+{
+  "schema": "xar.e04.r0174.actual-maintenance-source-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_utc": "2026-10-15T16:23:31.064886+00:00",
+  "source_main_commit": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+  "root_reported_DLL_sha256": "7929217c07ff4405445611558040cc282df98dcebc79d16f5a1b4e6bdc049b1b",
+  "DLL_rehashed": false,
+  "actual_independent_expectation": {
+    "pid": 17468,
+    "process_create_time_100ns": 134365505726865638,
+    "connection_generation": 1,
+    "player_character_full_id": 31254,
+    "controlled_window_id": 1,
+    "payment_epoch": 1,
+    "episode_run_id": "native-31254-0d067159706e"
+  },
+  "unique_record_count": 1,
+  "unique_record": {
+    "journal_sequence": 12,
+    "kind": 2,
+    "caller_return_rva": 42626428,
+    "amount_raw": 282364,
+    "context_identity": 2867562606880,
+    "value_2c0": 500974,
+    "value_2c8": 0,
+    "value_28": 218610,
+    "value_30": 0,
+    "personal_gold_before": 25166043,
+    "personal_gold_after": 25448407,
+    "raw_date_low32": 53145456
+  },
+  "new_EXE_scope_totals": [
+    {
+      "scope": "parent28F7939-source-a01",
+      "code": 1118,
+      "metadata": 356,
+      "read_calls": 39
+    },
+    {
+      "scope": "grandparent3978BF8-source-a01",
+      "code": 178,
+      "metadata": 260,
+      "read_calls": 26
+    },
+    {
+      "scope": "scheduler290DD46-source-a01",
+      "code": 501,
+      "metadata": 268,
+      "read_calls": 27
+    },
+    {
+      "scope": "upstream3F90A72-source-a01",
+      "code": 253,
+      "metadata": 248,
+      "read_calls": 25
+    }
+  ],
+  "whole_EXE_hashes": 0,
+  "game_or_SDK_or_desktop_actions": 0,
+  "main_tree_writes": 0,
+  "maintenance_attribution": "unclosed",
+  "field_producers": {
+    "2c0": null,
+    "2c8": null,
+    "28": null,
+    "30": null
+  },
+  "military_applied_component": null,
+  "date_cadence": null,
+  "source_boundary": "Direct source only; transitive callees and runtime vtable slot at3F90A6F not expanded or independently captured.",
+  "original_receipt_label_limitations": [
+    "grandparent source-read-a04 stale reason mentions39798E0 although actual span3978C00..3978C53; source addresses and bytes are authoritative",
+    "Initial scope-reader reason strings retain generic ADD/3978BF8 labels; actual plans, PC values, source ranges and raw SHA pins are authoritative",
+    "Original day17/day21 consumer receipts say window_epoch_independently_supplied_by_Root=false; appended verifier explicitly checks later Root expectedwindow1/epoch1 without rewriting them",
+    "scheduler source-read-a03 initial16B ended in partial instruction and rc1; later exact continuations preserve/count all reads and close29B leaf plus3INT3"
+  ]
+}

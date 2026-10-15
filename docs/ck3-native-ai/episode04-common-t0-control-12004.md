@@ -1,6 +1,6 @@
 # 战争四期：共同T0、自然登船对照与跨机器复用（1.20.0.4）
 
-本方法供战争四期视频和自动游玩智能体共同使用。当前**已观察到自然登船付款的正例，但同T0驻地对照尚未执行**。代码或离线测试通过不抵扣实机资格。操作工具见[review02工具](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/README.md)；[精确小投影](evidence/episode04-common-t0-control-12004/common-t0-r0173.receipt-freeze.actual-a01.json)保留原机器、场次和来源字段。大存档、EXE、原片未复制或重哈希。
+本方法供战争四期视频和自动游玩智能体共同使用。当前自然登船正例与21日保存T0驻地对照均有实证；[R0174对照及便携复验](episode04-r0174-common-t0-control-12004.md)已通过现有pair checker。原R07七日/避开结算/静止T0后新Move合同仍未闭合。代码或离线测试通过不抵扣实机资格。操作工具见[review02工具](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/README.md)；[精确小投影](evidence/episode04-common-t0-control-12004/common-t0-r0173.receipt-freeze.actual-a01.json)保留原机器、场次和来源字段。大存档、EXE、原片未复制或重哈希。
 
 ## 原卡与实际边界
 
@@ -31,4 +31,6 @@
 
 智能体可复用校验器的来源/身份/引用完整性规则和字段语义；不能根据机器名、历史runtime ID、旧route进度或某日NET直接决策扣费。先获取当前独立帧，按实际cutoff/route决定合法后续动作。维护费用需另闭源码调用链与自然实证，现有generic钱包事件仅留原始诊断。此代码只做离线验收，不发MCP、启动游戏或授现场资格。
 
-所有保留输入按[通用存储策略](../storage-retention-policy.md)复核，活跃共同seed保护至本次对照闭环或2026-10-22复核（不自动续期）。小型知识/manifest/回执按record期限复核；不因历史或失败就永久保护全部raw。源文件缺失时报告不可读，不制造同名替代证据。
+所有保留输入按[通用存储策略](../storage-retention-policy.md)复核，本轮活跃共同seed、临时展开与操作额度沿实际准入截止2026-10-16T07:45:01.597000+00:00复核（不自动续期；先前10月22日为错误，不构成延长授权）。小型知识/manifest/回执按record期限复核；不因历史或失败就永久保护全部raw。源文件缺失时报告不可读，不制造同名替代证据。
+
+2026-10-15模板勘误：checked-in freeze按Git eol=lf为13320B/SHA1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c，template改钉此精确字节；外置CRLF原件13645B/SHA615a...保留为独立历史来源。新增单项unittest核真实文件bytes/SHA和保存T0内容，属于现有验证，不增加现场门禁。

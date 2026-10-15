@@ -1,0 +1,37 @@
+{
+  "schema": "xar.e04.r0174.raw-archive-member-reuse.v1",
+  "archive": "docs/ck3-native-ai/evidence/episode04-r0174-20261015/r0174-original-json.zip",
+  "archive_bytes": 5051824,
+  "archive_sha256": "719cfb636504b52de2f1be5d8a43c939e588fad952d0f8dba2484fd6df84026d",
+  "members": [
+    {
+      "day": 17,
+      "role": "cash",
+      "member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-10-cash-query-0.json",
+      "bytes": 400470,
+      "sha256": "386ec37bd07a1eba885c0ea8301f3e697be4626b057f0e87186b2821c5400618"
+    },
+    {
+      "day": 17,
+      "role": "before",
+      "member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-10-cash-before-0.json",
+      "bytes": 143559,
+      "sha256": "80de0c77b8e5888c2e96c659a7e0f49f7df84701e9092438e543a074ef2cd3b3"
+    },
+    {
+      "day": 21,
+      "role": "cash",
+      "member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-10-cash-query-0.json",
+      "bytes": 490574,
+      "sha256": "316765b24ae91673ad918816c92055ef6aec1b53fbc92de802cb23c49ce46322"
+    },
+    {
+      "day": 21,
+      "role": "before",
+      "member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-10-cash-before-0.json",
+      "bytes": 143327,
+      "sha256": "0095d95bc4a66c9a61af2ce509964bb7e6e1d323809e515ed56380fa194c5bfa"
+    }
+  ],
+  "duplicate_raw_packet_copies": 0
+}

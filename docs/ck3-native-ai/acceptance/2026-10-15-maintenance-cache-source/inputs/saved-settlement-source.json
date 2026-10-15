@@ -1,0 +1,305 @@
+{
+  "schema": "xar.e04.actual-generic-ADD28A6D10-static-source-contract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-15T13:21:16.152194+00:00",
+  "exact_build": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "proof_layer": "actual-saved-callback-plus-exact-build-manually-reviewed-source",
+  "complete_source": {
+    "begin_rva": "0x28A6D10",
+    "end_rva_exclusive": "0x28A6F4E",
+    "bytes": 574,
+    "sha256": "f2e377a5e4948042852a95bd5b4e0fe3d38159defb8eb5f823ec0fabb33fe348",
+    "raw_hex": "41574883ec40488b81c00100004c8bf94885c00f841e0200004c8b402848895c2458488b98c0020000482b98c80200004889742438488b703048897c2430498d3c30482bdf4885db7e4a488b89b00100004885c90f84ce0100004881c1f80000004d8bc7488bd3e8c480fbff498b87b0010000488b887802000048837920000f84a30100004c8bc333d2e8e14014ffe9940100004885ff0f848b01000048896c2460488d4c245048f7db4c89642428488bd34c897424204c8bcfe881fdffff498b8fb00100004533e4488b28458d7424034885c90f84960000004885ed0f848d0000004881c1f80000004d8bc7488bd5e8cb80fbff498b87b0010000488b8878020000488b49204885c974644885ed785f4881c1600100007456488b4108483bc57c09482bc548894108eb444c896108458bc6498bd6482be80f1f8000000000488b04d1483bc57d1b482be84c8924d141ffc84883ea0179e74885ed7e1248296918eb0c4963c048292cc10f1f4400004c8bcf488d4c24504c8bc6488bd3e8bdfcffff498b8fb0010000488b6c2460488b184885c90f84830000004885db747e4881c1f80000004d8bc7488bd3e80e80fbff498b87b0010000488b8878020000488b49204885c974554885db78504881c1600100007447488b5118483bd37c09482bd348895118eb354c896118498bc6482bda488b14c1483bd37d1b482bda4c8924c141ffce4883e80179e74885db7e0d48295918eb074963c648291cc14c8b6424284c8b742420488b742438488b5c2458488b7c24304883c440415fc3",
+    "contiguous_captured_fragments": [
+      {
+        "begin_rva": "0x28A6D10",
+        "end_rva_exclusive": "0x28A6D2D",
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\source-read-a02\\primary.bin",
+          "bytes": 29,
+          "sha256": "5d7f810d3ee2818da8a9e37df4813f2630f49e413c9fac1eb6f2f4545509f6d9"
+        }
+      },
+      {
+        "begin_rva": "0x28A6D2D",
+        "end_rva_exclusive": "0x28A6DAD",
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\source-read-a01\\actual-caller.bin",
+          "bytes": 128,
+          "sha256": "6758cbbc855d3dce9d92ce57c4fbb9137c2e1df88a50d8cd7d8b78dcdba04c4e"
+        }
+      },
+      {
+        "begin_rva": "0x28A6DAD",
+        "end_rva_exclusive": "0x28A6EAB",
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\source-read-a02\\negative_fallthrough.bin",
+          "bytes": 254,
+          "sha256": "4a410a4d108638822bb2415c9fec811dff3f239e6d372319c6492957afa4bfc3"
+        }
+      },
+      {
+        "begin_rva": "0x28A6EAB",
+        "end_rva_exclusive": "0x28A6F38",
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\source-read-a03\\negative_tail.bin",
+          "bytes": 141,
+          "sha256": "91067d04c827c987932e546ebb440682f679c8b4b8f3628d4e748fa4d56b1aa8"
+        }
+      },
+      {
+        "begin_rva": "0x28A6F38",
+        "end_rva_exclusive": "0x28A6F47",
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\source-read-a02\\shared_exit.bin",
+          "bytes": 15,
+          "sha256": "51887ea2d9f2741560d869bc14b77db31b2b1933091fffb184f8df507a974526"
+        }
+      },
+      {
+        "begin_rva": "0x28A6F47",
+        "end_rva_exclusive": "0x28A6F4E",
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\source-read-a03\\final_epilogue.bin",
+          "bytes": 7,
+          "sha256": "c157dda774e1ee4f50a6757798605cd96e10e22c946f3a687b449cf556873a36"
+        }
+      }
+    ],
+    "all_intraprocedural_branch_targets_captured": true,
+    "callee_side_effects_fully_closed": false,
+    "calls": [
+      {
+        "at_rva": "0x28A6D77",
+        "target_rva": "0x285EE40",
+        "kind": "call"
+      },
+      {
+        "at_rva": "0x28A6D9A",
+        "target_rva": "0x19EAE80",
+        "kind": "call"
+      },
+      {
+        "at_rva": "0x28A6DCA",
+        "target_rva": "0x28A6B50",
+        "kind": "call"
+      },
+      {
+        "at_rva": "0x28A6E00",
+        "target_rva": "0x285EED0",
+        "kind": "call"
+      },
+      {
+        "at_rva": "0x28A6E8E",
+        "target_rva": "0x28A6B50",
+        "kind": "call"
+      },
+      {
+        "at_rva": "0x28A6EBD",
+        "target_rva": "0x285EED0",
+        "kind": "call"
+      }
+    ],
+    "branches": [
+      {
+        "at_rva": "0x28A6D23",
+        "target_rva": "0x28A6F47",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6D58",
+        "target_rva": "0x28A6DA4",
+        "kind": "jle"
+      },
+      {
+        "at_rva": "0x28A6D64",
+        "target_rva": "0x28A6F38",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6D8F",
+        "target_rva": "0x28A6F38",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6D9F",
+        "target_rva": "0x28A6F38",
+        "kind": "jmp"
+      },
+      {
+        "at_rva": "0x28A6DA7",
+        "target_rva": "0x28A6F38",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6DE4",
+        "target_rva": "0x28A6E80",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6DED",
+        "target_rva": "0x28A6E80",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6E1A",
+        "target_rva": "0x28A6E80",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6E1F",
+        "target_rva": "0x28A6E80",
+        "kind": "js"
+      },
+      {
+        "at_rva": "0x28A6E28",
+        "target_rva": "0x28A6E80",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6E31",
+        "target_rva": "0x28A6E3C",
+        "kind": "jl"
+      },
+      {
+        "at_rva": "0x28A6E3A",
+        "target_rva": "0x28A6E80",
+        "kind": "jmp"
+      },
+      {
+        "at_rva": "0x28A6E57",
+        "target_rva": "0x28A6E74",
+        "kind": "jge"
+      },
+      {
+        "at_rva": "0x28A6E67",
+        "target_rva": "0x28A6E50",
+        "kind": "jns"
+      },
+      {
+        "at_rva": "0x28A6E6C",
+        "target_rva": "0x28A6E80",
+        "kind": "jle"
+      },
+      {
+        "at_rva": "0x28A6E72",
+        "target_rva": "0x28A6E80",
+        "kind": "jmp"
+      },
+      {
+        "at_rva": "0x28A6EA5",
+        "target_rva": "0x28A6F2E",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6EAE",
+        "target_rva": "0x28A6F2E",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6ED7",
+        "target_rva": "0x28A6F2E",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6EDC",
+        "target_rva": "0x28A6F2E",
+        "kind": "js"
+      },
+      {
+        "at_rva": "0x28A6EE5",
+        "target_rva": "0x28A6F2E",
+        "kind": "je"
+      },
+      {
+        "at_rva": "0x28A6EEE",
+        "target_rva": "0x28A6EF9",
+        "kind": "jl"
+      },
+      {
+        "at_rva": "0x28A6EF7",
+        "target_rva": "0x28A6F2E",
+        "kind": "jmp"
+      },
+      {
+        "at_rva": "0x28A6F0A",
+        "target_rva": "0x28A6F27",
+        "kind": "jge"
+      },
+      {
+        "at_rva": "0x28A6F1A",
+        "target_rva": "0x28A6F03",
+        "kind": "jns"
+      },
+      {
+        "at_rva": "0x28A6F1F",
+        "target_rva": "0x28A6F2E",
+        "kind": "jle"
+      },
+      {
+        "at_rva": "0x28A6F25",
+        "target_rva": "0x28A6F2E",
+        "kind": "jmp"
+      }
+    ]
+  },
+  "actual_record": {
+    "journal_sequence": 12,
+    "kind": 2,
+    "actual_caller_return_rva": "0x28A6D7C",
+    "matched_actual_instruction": "0x28A6D77 call0x285EE40",
+    "payer_character_id": 31254,
+    "amount_raw": 282364,
+    "scale": 100000,
+    "entry_balance_bits": 25166043,
+    "returned_balance_bits": 25448407,
+    "absolute_day_raw": 389394,
+    "native_revision_at_callback": 41,
+    "actual_entry_event": {
+      "clock_identity": 140715344903464,
+      "sequence": 48288719,
+      "thread_id": 6868
+    },
+    "actual_returned_event": {
+      "clock_identity": 140715344903464,
+      "sequence": 48288720,
+      "thread_id": 6868
+    },
+    "whole_callback_balance_reconciles": true,
+    "instruction_local_store_observed": false
+  },
+  "source_dataflow": {
+    "actual_Character_register": "RCX at0x28A6D10, preserved asR15",
+    "raw_context": "RAX=*(Character+0x1C0); null returns through0x28A6F47",
+    "a_raw": "signed64[context+0x2C0]",
+    "b_raw": "signed64[context+0x2C8]",
+    "c_raw": "signed64[context+0x28]",
+    "d_raw": "signed64[context+0x30]",
+    "sum_cd": "wrap_i64(c_raw+d_raw)",
+    "actual_positive_ADD_operand": "wrap_i64(wrap_i64(a_raw-b_raw)-wrap_i64(c_raw+d_raw))",
+    "positive_guard": "signed result>0",
+    "positive_wallet": "wrapper=*(Character+0x1B0)+0xF8; call285EE40(wrapper,result,actualCharacter); actualADD285EE67 stores wrapper+8",
+    "positive_funding_accounting": "call19EAE80(tracker=Character.extension+278,resource0,positive_result), body not read",
+    "nonpositive_path": "If sum_cd!=0, calls source-reached helper28A6B50 twice with different weights and can call personal SUB at28A6E00 and28A6EBD, returns28A6E05/28A6EC2. Helper not read and no military component semantic label assigned.",
+    "calendar_logic_in_this_function": false,
+    "military_getter_calls_in_this_function": false,
+    "raw_context_field_semantic_labels": null
+  },
+  "what_is_closed": [
+    "Actual generic positive ADD natural callback for actual payer31254 and same personal account",
+    "Exact actual caller entry/instruction and complete intra-function control-flow",
+    "Signed64 raw input offsets and arithmetic supplied to wallet ADD"
+  ],
+  "still_unknown": [
+    "Actual writers/production trigger/freshness of Character+1C0 raw2C0/2C8/28/30 fields",
+    "Which raw terms contain military applied expense or whether additional offsets cover other economic flows",
+    "Exact caller/date scheduler invoking28A6D10 and calendar cadence",
+    "Military-only payment amount distinct from this net positive ADD",
+    "28A6B50 helper source semantics for negative/debit branches",
+    "Instruction-local ADD/SUB execution witness"
+  ]
+}

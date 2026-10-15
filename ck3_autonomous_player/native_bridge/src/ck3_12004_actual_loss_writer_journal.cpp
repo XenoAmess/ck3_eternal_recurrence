@@ -1,5 +1,9 @@
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12004_supply_parent_join_context.hpp"
+#if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+#include "xar_bridge/ck3_12004_residual_parent_context.hpp"
+#endif
 
 #include <algorithm>
 #include <cstring>
@@ -495,20 +499,44 @@ ReadActualLossWriterObservations12004(
 
 extern "C" void __fastcall XarActualLossWriterHook12004V1(
     void *regiment, std::int64_t request_raw) noexcept {
-  const auto original = g_original.load(std::memory_order_acquire);
-  if (original == nullptr) return;
-  Event event{};
-  event.request_raw = request_raw;
 #if defined(_MSC_VER)
   const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
 #else
   const auto caller = reinterpret_cast<std::uintptr_t>(__builtin_return_address(0));
 #endif
+  std::optional<std::uint64_t> caller_return_rva;
   if (caller >= g_bindings.image_base && g_bindings.image_base != 0) {
-    event.caller_return_rva = caller - g_bindings.image_base;
-    event.caller = ClassifyActualLossWriterCallerV1(*event.caller_return_rva);
+    caller_return_rva = caller - g_bindings.image_base;
   }
+  InvokeActualLossWriterJournalWithCaller12004V1(regiment, request_raw,
+                                               caller_return_rva);
+}
+
+void InvokeActualLossWriterJournalWithCaller12004V1(
+    void *regiment, std::int64_t request_raw,
+    std::optional<std::uint64_t> caller_return_rva) noexcept {
+  const auto original = g_original.load(std::memory_order_acquire);
+  if (original == nullptr) return;
+  Event event{};
+  event.request_raw = request_raw;
+  event.caller_return_rva = caller_return_rva;
+  if (caller_return_rva)
+    event.caller = ClassifyActualLossWriterCallerV1(*caller_return_rva);
   CaptureClock(event);
+#if XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004
+  const auto supply_read_at = [](const void *receiver, std::size_t offset,
+                                void *output, std::size_t size) noexcept {
+    return receiver != nullptr && ReadMemory(
+        static_cast<const std::byte *>(receiver) + offset, output, size);
+  };
+  event.supply_parent_context_v1 = CaptureSupplyParentWriterContext12004(
+      static_cast<std::uint32_t>(GetCurrentThreadId()), supply_read_at);
+#if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+  if (!event.supply_parent_context_v1)
+    event.supply_parent_context_v1 = CaptureResidualEnclosingSupplyWriterContext12004(
+        static_cast<std::uint32_t>(GetCurrentThreadId()), event.caller_return_rva, supply_read_at);
+#endif
+#endif
   RegimentValues before{};
   const bool before_read = ReadRegiment(regiment, before);
   PhysicalContext physical{};
@@ -518,6 +546,10 @@ extern "C" void __fastcall XarActualLossWriterHook12004V1(
     event.before_maximum_soldiers = before.maximum;
     CapturePhysicalBefore(regiment, event, physical);
   } else event.capture_failure_flags |= game::army_actual_loss_capture_before;
+#if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+  if (before_read) event.residual_parent_context_v1 = CaptureResidualParentWriterContext12004(
+      static_cast<std::uint32_t>(GetCurrentThreadId()), before.id, event.caller_return_rva);
+#endif
 
   // The natural native invocation is forwarded exactly once, outside capture
   // fault boundaries. This observer never invokes the writer from a query.

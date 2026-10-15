@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .army_actual_supply_parent_join_contract import normalize_supply_parent_invocation_v1
+
 
 _FAMILY_KEYS = {
     "status", "source", "identity_basis", "observer_installed",
@@ -81,7 +83,8 @@ def normalize_actual_supply_callback_observations_v1(
     normalized = []
     for index, raw_event in enumerate(events):
         name = f"actual_supply_callback_observations_v1.events[{index}]"
-        event = _object(raw_event, _EVENT_KEYS, name)
+        event_keys = _EVENT_KEYS | ({"supply_parent_invocation_v1"} if isinstance(raw_event, dict) and "supply_parent_invocation_v1" in raw_event else set())
+        event = _object(raw_event, event_keys, name)
         row: dict[str, object] = {
             "sequence": _integer(event["sequence"], name + ".sequence", bits=64, unsigned=True),
             "army_id": _integer(event["army_id"], name + ".army_id"),
@@ -100,6 +103,8 @@ def normalize_actual_supply_callback_observations_v1(
         if (row["army_id"] != current_army_id
                 or row["native_carmy_id"] != current_native_carmy_id):
             raise ValueError(f"native {name} does not match both current full Army identities")
+        if "supply_parent_invocation_v1" in event:
+            row["supply_parent_invocation_v1"] = normalize_supply_parent_invocation_v1(event["supply_parent_invocation_v1"], name + ".supply_parent_invocation_v1")
         normalized.append(row)
     result["events"] = normalized
     return result

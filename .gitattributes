@@ -184,3 +184,25 @@ docs/li-yu-dao/acceptance/2026-10-11-i4-r60-case11/raw/** -text
 docs/li-yu-dao/acceptance/2026-10-11-common-source18/raw/** -text
 docs/li-yu-dao/acceptance/2026-10-11-i4-r61-case12/raw/** -text
 docs/li-yu-dao/acceptance/2026-10-11-i4-r61-case12/raw/ff55-ci-FAILED-STEP35-002.job-log-suffix.actual.txt whitespace=-blank-at-eol,cr-at-eol
+
+# Preserve this E04 source/fixture/evidence packet at its published exact bytes.
+ck3_autonomous_player/native_bridge/include/xar_bridge/army_regiment_character_role_12004.hpp -text whitespace=cr-at-eol
+ck3_autonomous_player/native_bridge/include/xar_bridge/army_regiment_character_role_v1.hpp -text whitespace=cr-at-eol
+ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_supply_parent_join_context.hpp -text whitespace=cr-at-eol
+ck3_autonomous_player/native_bridge/src/ck3_12004_supply_parent_join_whole_test.cpp -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-refill-permission-switch-12004.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/validation/strategy-a.actual.json -text whitespace=cr-at-eol
+
+# Exact original R0174 source evidence; only these reviewed CRLF paths.
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/callee28A6F50.original.zip -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day17/GENERIC-RAW-WITNESSES.actual.json -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day17/STRICT-CONSUMER.actual.json -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day21/GENERIC-RAW-WITNESSES.actual.json -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/day21/STRICT-CONSUMER.actual.json -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/PARENT-HOOK-SOURCE-ANCHOR.contract-a01.json -text whitespace=-blank-at-eol,cr-at-eol
+
+# Original disassembly keeps source formatter spacing and exact hashes.
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/callee28A6F50.complete.asm -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/scheduler.complete.asm -text whitespace=-blank-at-eol,cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/upstream-job.complete.asm -text whitespace=-blank-at-eol,cr-at-eol

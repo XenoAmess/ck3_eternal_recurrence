@@ -1,0 +1,246 @@
+{
+  "schema": "xar.e04.r0174.independent-parent-stack.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T16:07:41.877096+00:00",
+  "identity_evidence": "fresh tools/ck3_live_run_id.py machine at 2026-10-15 16:04:16 UTC; no override",
+  "input_source_machine_id": "unknown",
+  "input_identity_limit": "Frozen inputs omit machine_id; use owning R0174 receipts, never infer from path/pid.",
+  "inputs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\day17-a01\\consumer-a01\\GENERIC-RAW-WITNESSES.actual.json",
+      "bytes": 7019,
+      "sha256": "016ef47e0b4b0351e1c8ca59f438c0f68fac87a0de6fd65d2c720a938da10c37"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\day21-a01\\consumer-a01\\GENERIC-RAW-WITNESSES.actual.json",
+      "bytes": 7019,
+      "sha256": "016ef47e0b4b0351e1c8ca59f438c0f68fac87a0de6fd65d2c720a938da10c37"
+    }
+  ],
+  "strict_deep_equal": true,
+  "raw_files_byte_equal": true,
+  "unique_seq12_records": 1,
+  "duplicate_copies": 1,
+  "canonical_witness_sha256": "654e99e1b5bfbba770b1c312144726256b418c2cbbf62381af39d93084460b90",
+  "dedup_limit": "Day21 repeats the historical record, not a second callback or cadence sample.",
+  "session": {
+    "pid": 17468,
+    "process_create_time_100ns": 134365505726865638,
+    "connection_generation": 1,
+    "loaded_game_epoch": null,
+    "controlled_window_id": 1,
+    "same_owned_process_no_load_window": true,
+    "game_state_identity_witness": 2866611225280,
+    "player_character_full_id": 31254,
+    "snapshot_revision": 49,
+    "native_date_raw": 300063320342982512,
+    "absolute_day_raw": 389394
+  },
+  "entry_event": {
+    "clock_identity": 140715344921080,
+    "sequence": 47976876,
+    "thread_id": 16496
+  },
+  "returned_event": {
+    "clock_identity": 140715344921080,
+    "sequence": 47976877,
+    "thread_id": 16496
+  },
+  "module_base": 140702304501760,
+  "module_size": 102518784,
+  "frames": [
+    {
+      "index": 0,
+      "absolute": 140715236490519,
+      "absolute_hex": "0x7ffad1af7d17",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    },
+    {
+      "index": 1,
+      "absolute": 140715236485538,
+      "absolute_hex": "0x7ffad1af69a2",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    },
+    {
+      "index": 2,
+      "absolute": 140715236479251,
+      "absolute_hex": "0x7ffad1af5113",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    },
+    {
+      "index": 3,
+      "absolute": 140715236488755,
+      "absolute_hex": "0x7ffad1af7633",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    },
+    {
+      "index": 4,
+      "absolute": 140715236493716,
+      "absolute_hex": "0x7ffad1af8994",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    },
+    {
+      "index": 5,
+      "absolute": 140702347128188,
+      "absolute_hex": "0x7ff7d16b6d7c",
+      "same_exe": true,
+      "rva": 42626428,
+      "rva_hex": "0x28a6d7c"
+    },
+    {
+      "index": 6,
+      "absolute": 140702347458873,
+      "absolute_hex": "0x7ff7d1707939",
+      "same_exe": true,
+      "rva": 42957113,
+      "rva_hex": "0x28f7939"
+    },
+    {
+      "index": 7,
+      "absolute": 140702364765176,
+      "absolute_hex": "0x7ff7d2788bf8",
+      "same_exe": true,
+      "rva": 60263416,
+      "rva_hex": "0x3978bf8"
+    },
+    {
+      "index": 8,
+      "absolute": 140702364765260,
+      "absolute_hex": "0x7ff7d2788c4c",
+      "same_exe": true,
+      "rva": 60263500,
+      "rva_hex": "0x3978c4c"
+    },
+    {
+      "index": 9,
+      "absolute": 140702347550022,
+      "absolute_hex": "0x7ff7d171dd46",
+      "same_exe": true,
+      "rva": 43048262,
+      "rva_hex": "0x290dd46"
+    },
+    {
+      "index": 10,
+      "absolute": 140702371154546,
+      "absolute_hex": "0x7ff7d2da0a72",
+      "same_exe": true,
+      "rva": 66652786,
+      "rva_hex": "0x3f90a72"
+    },
+    {
+      "index": 11,
+      "absolute": 140702371160527,
+      "absolute_hex": "0x7ff7d2da21cf",
+      "same_exe": true,
+      "rva": 66658767,
+      "rva_hex": "0x3f921cf"
+    },
+    {
+      "index": 12,
+      "absolute": 140702371154762,
+      "absolute_hex": "0x7ff7d2da0b4a",
+      "same_exe": true,
+      "rva": 66653002,
+      "rva_hex": "0x3f90b4a"
+    },
+    {
+      "index": 13,
+      "absolute": 140702371335937,
+      "absolute_hex": "0x7ff7d2dccf01",
+      "same_exe": true,
+      "rva": 66834177,
+      "rva_hex": "0x3fbcf01"
+    },
+    {
+      "index": 14,
+      "absolute": 140702371336410,
+      "absolute_hex": "0x7ff7d2dcd0da",
+      "same_exe": true,
+      "rva": 66834650,
+      "rva_hex": "0x3fbd0da"
+    },
+    {
+      "index": 15,
+      "absolute": 140702373990288,
+      "absolute_hex": "0x7ff7d3054f90",
+      "same_exe": true,
+      "rva": 69488528,
+      "rva_hex": "0x4244f90"
+    },
+    {
+      "index": 16,
+      "absolute": 140718715925380,
+      "absolute_hex": "0x7ffba1137384",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    },
+    {
+      "index": 17,
+      "absolute": 140718722763921,
+      "absolute_hex": "0x7ffba17bcc91",
+      "same_exe": false,
+      "rva": null,
+      "rva_hex": null
+    }
+  ],
+  "same_exe_rvas": [
+    "0x28a6d7c",
+    "0x28f7939",
+    "0x3978bf8",
+    "0x3978c4c",
+    "0x290dd46",
+    "0x3f90a72",
+    "0x3f921cf",
+    "0x3f90b4a",
+    "0x3fbcf01",
+    "0x3fbd0da",
+    "0x4244f90"
+  ],
+  "unwind_chain": [
+    "0x28a6d7c",
+    "0x28f7939",
+    "0x3978bf8"
+  ],
+  "next_metadata_pc_rva": 60263415,
+  "next_metadata_pc_hex": "0x3978bf7",
+  "direct_call_edges_proved": false,
+  "function_source_read": false,
+  "fixture_parent_assumed": false,
+  "raw_inputs": [
+    500974,
+    0,
+    218610,
+    0
+  ],
+  "computed_wrap_i64": 282364,
+  "amount_raw": 282364,
+  "whole_callback_ADD_delta": 282364,
+  "context_before_after_equal": true,
+  "maintenance_attribution": "unclosed",
+  "date_cadence_proved": false,
+  "military_component_semantics_proved": false,
+  "limits": [
+    "18 bounded frames do not prove complete stack; outside EXE modules remain unknown.",
+    "Unwind returns are source candidates, not verified direct call edges.",
+    "No producer, time basis or term semantic names inferred.",
+    "No current live process/snapshot revalidation."
+  ],
+  "tests": 0,
+  "raw_source_reads": 0,
+  "SDK_contacts": 0,
+  "game_contacts": 0,
+  "EXE_reads": 0,
+  "repository_writes": 0,
+  "status": "PASS"
+}

@@ -1,3 +1,41 @@
+option(XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004
+  "Observe thread-scoped natural supply callback/writer identity and writer-entry stock" OFF)
+if(XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004)
+  target_compile_definitions(xar_ck3_12002_runtime PRIVATE
+    XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1)
+endif()
+
+# This small producer compiles the same two wrapper TUs with the join enabled.
+# It does not link/launch the bridge DLL or invoke the native game EXE.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_supply_parent_join_whole_test EXCLUDE_FROM_ALL
+    src/ck3_12004_supply_parent_join_whole_test.cpp
+    src/ck3_12004_actual_supply_callback_journal.cpp
+    src/ck3_12004_actual_loss_writer_journal.cpp)
+  target_include_directories(xar_ck3_12004_supply_parent_join_whole_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_supply_parent_join_whole_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_supply_parent_join_whole_test PRIVATE
+    XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1 NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_supply_parent_join_whole_test PRIVATE
+      /W4 /WX /permissive- /EHsc /utf-8 /UNDEBUG)
+  endif()
+  set(XAR_SUPPLY_PARENT_JOIN_WIRE_12004
+    "${CMAKE_CURRENT_BINARY_DIR}/supply-parent-join-whole-12004.json")
+  add_test(NAME xar_ck3_12004_supply_parent_join_whole_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_supply_parent_join_whole_test>
+      "${XAR_SUPPLY_PARENT_JOIN_WIRE_12004}")
+  set_tests_properties(xar_ck3_12004_supply_parent_join_whole_test PROPERTIES
+    FIXTURES_SETUP supply_parent_join_whole_12004)
+  find_package(Python3 COMPONENTS Interpreter REQUIRED)
+  add_test(NAME xar_ck3_12004_supply_parent_join_preserved_wire_consumer
+    COMMAND "${Python3_EXECUTABLE}" -B -O
+      "${CMAKE_CURRENT_SOURCE_DIR}/../tests/unit/test_actual_supply_parent_join_12004.py"
+      --native-wire "${XAR_SUPPLY_PARENT_JOIN_WIRE_12004}")
+  set_tests_properties(xar_ck3_12004_supply_parent_join_preserved_wire_consumer PROPERTIES
+    FIXTURES_REQUIRED supply_parent_join_whole_12004)
+endif()
+
 # The natural callback journal is installed by the same exact-build startup and
 # consumed by the existing whole ArmyStrength serializer.
 target_sources(xar_ck3_12002_runtime PRIVATE

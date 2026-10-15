@@ -112,4 +112,11 @@ ReadActualLossWriterObservations12004(
 extern "C" void __fastcall XarActualLossWriterHook12004V1(
     void *regiment, std::int64_t request_raw) noexcept;
 
+// The natural hook captures its own return PC, then uses this single producer.
+// Typed local fixtures pass explicitly synthetic RVAs; this is no wire setter
+// and performs the same physical capture/original/publication as the hook.
+void InvokeActualLossWriterJournalWithCaller12004V1(
+    void *regiment, std::int64_t request_raw,
+    std::optional<std::uint64_t> caller_return_rva) noexcept;
+
 } // namespace xar::ck3_12004

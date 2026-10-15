@@ -1,0 +1,184 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-12004-maintenance-existing-getters-to-context-cache",
+  "question": "Do retained exact .4 financial getter sources prove a producer edge into *(Character+1C0) raw2C0/2C8/28/30 used by actual wallet ADD28A6D7C?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4 / Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T14:57:35.634609+00:00",
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Dynamic actual caller Character and actual personal/Land wallet receiver; played actor, commander and expense context are not payer aliases without source.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Exact EXE build and retained source only; future account records require the same owned PID/creation/generation/no-load window and full Character/Land IDs.",
+    "producer_trigger": "not-applicable",
+    "producer": "Retained exact .4 getter binder/reader and saved settlement function; no fresh runtime observation",
+    "caller": "Actual saved seq12 ADD return28A6D7C, whose full574B parent function is already captured",
+    "consumer": "Source comparison plus agent-facing raw validity/refusal rules; no automatic attribution",
+    "cache_lifetime": "Unknown: four raw cache terms have no producer/freshness proof; snapshot pointer/value stability cannot establish refresh cadence",
+    "expected_signal": "Explicit exact-build raw load/store/cache producer edge with address/bytes and compatible context identity; numerical equality is insufficient",
+    "zero_sample_meaning": "No new live sample; unavailable sources/fields or missing record never prove zero paid maintenance",
+    "stop_condition": "No EXE or process reads. Read only copied listed text leaves; any additional exact named retained map/asm intake requires append-only plan amendment with bounded byte list. No neighbor/xref/image scan, game, SDK, build, main tree writes.",
+    "runtime_window_ref": null
+  },
+  "read_budget": {
+    "new_EXE_code_bytes_max": 0,
+    "new_EXE_metadata_bytes_max": 0,
+    "new_EXE_read_calls_max": 0,
+    "whole_EXE_hashes_or_global_scans": 0,
+    "source_file_bytes_max": 1048576,
+    "copied_metadata_bytes_max": 2097152,
+    "report_bytes_max": 1048576,
+    "new_lane_total_bytes_max": 8388608,
+    "new_runtime_actions_max": 0,
+    "getter_reimplementation": false,
+    "already_retained_source_only": true
+  },
+  "evidence": [
+    {
+      "id": "exact4-binder-hpp",
+      "layer": "exact-build",
+      "path": "inputs/exact4-binder-hpp.hpp",
+      "sha256": "647da1cb955c36a152da96e2297d0f470a3259d8dadbd5fd027985aad2ceff9a",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Exact .4 cash getter RVAs; software ABI reuse is distinct from settlement cache semantics"
+    },
+    {
+      "id": "exact4-binder-cpp",
+      "layer": "source-contract",
+      "path": "inputs/exact4-binder-cpp.cpp",
+      "sha256": "fed95c2adc0dd0af04d859d5cb322e5b3de6fbe87e54d1652af82f3c2b288ac7",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual .4 EXE SHA gated binder constructs existing getters, no raw context naming"
+    },
+    {
+      "id": "current-reader-hpp",
+      "layer": "source-contract",
+      "path": "inputs/current-reader-hpp.hpp",
+      "sha256": "36ae77f56c3425bf0925d9f088c6b223aa025e3d99509f00979e948df95e0d5f",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Software function types, output/resource vector and alternative totals"
+    },
+    {
+      "id": "current-reader-cpp",
+      "layer": "source-contract",
+      "path": "inputs/current-reader-cpp.cpp",
+      "sha256": "47d9802384694277dd2169ac3a76e80644047b1e42355dc14d792f5b87b85040",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Existing reader invokes getters and checked NET subtraction; does not load the four raw cache terms"
+    },
+    {
+      "id": "saved-settlement-source",
+      "layer": "source-contract",
+      "path": "inputs/saved-settlement-source.json",
+      "sha256": "31f8c9e1f35fa82bcbd1fe6a81be05d934a9de9ca1a900a8ce566a319600b79b",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Saved full574B exact .4 source, pointer dereference and raw four-term wallet ADD formula; no producer/getter names"
+    },
+    {
+      "id": "saved-settlement-asm",
+      "layer": "source-contract",
+      "path": "inputs/saved-settlement-asm.asm",
+      "sha256": "55a27f9d54562c31a8690ef99cab18cc8fe10eb5c1bcbeb9c3aca32b5cd70607",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Already retained .4 instructions only; no new binary read"
+    },
+    {
+      "id": "exact4-migration-doc",
+      "layer": "source-contract",
+      "path": "inputs/exact4-migration-doc.md",
+      "sha256": "3f28e6bd9cf4bf44ae3d73994fed04205e15dfc1a680785e95429539465fe9f2",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Records exact .4 mapped getter families and historical finite evidence locator"
+    },
+    {
+      "id": "named-cache-route-metadata",
+      "layer": "source-contract",
+      "path": "inputs/named-cache-routes.json",
+      "sha256": "5b1b3096e1a865e42057090a6b12d79c00761e8f2e962add92f1f12737f87c27",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Four explicitly named historical source-directory prefixes absent on source machine; not a global source absence claim or getter semantic edge"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "getters",
+      "label": "Exact4 current gross,total,military and alternative monthly getters"
+    },
+    {
+      "id": "cache",
+      "label": "Secondary context raw2C0/2C8/28/30; names/producers unknown"
+    },
+    {
+      "id": "settlement",
+      "label": "Saved28A6D10 raw arithmetic and actual personal ADD28A6D7C"
+    },
+    {
+      "id": "military",
+      "label": "Military-only applied payment and date cadence"
+    }
+  ],
+  "edges": [
+    {
+      "id": "getters-to-cache",
+      "from": "getters",
+      "to": "cache",
+      "label": "Getter/cache producer relation unresolved",
+      "status": "unknown",
+      "evidence": [
+        "exact4-binder-hpp",
+        "current-reader-cpp"
+      ],
+      "open_question": "Need retained exact source proving a store/producer relation, not names/offset coincidences"
+    },
+    {
+      "id": "cache-to-settlement",
+      "from": "cache",
+      "to": "settlement",
+      "label": "Exact four-input load and wrap arithmetic",
+      "status": "static-confirmed",
+      "evidence": [
+        "saved-settlement-source",
+        "saved-settlement-asm"
+      ]
+    },
+    {
+      "id": "military-attribution",
+      "from": "military",
+      "to": "settlement",
+      "label": "Military-only paid portion and cadence unclosed",
+      "status": "unknown",
+      "evidence": [
+        "saved-settlement-source"
+      ],
+      "open_question": "Need actual applied component producer and upstream scheduling source"
+    }
+  ],
+  "cases": [
+    {
+      "id": "explicit-cache-producer",
+      "question": "Is there any explicit exact4 getter->raw cache store source?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "negative-naming-control",
+      "question": "Prevent scalar/vector/expense-context pointer or historical-version conflation",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Finite PE instruction/source ABI research only; no Paradox script semantics or runtime are being evaluated."
+  },
+  "prior_plan": {
+    "path": "plan-a01.json",
+    "sha256": "f7cfc59c8a5aa8cbd1f7eb1bb2d39a54f0ddabb932980d1a6260df5d53796af8"
+  },
+  "amendment_reason": "Consume one owner-supplied immutable named metadata routing receipt only. It reports four historical prefixes absent; it is not a getter source or whole-machine absence proof. No additional native or runtime read authorized."
+}

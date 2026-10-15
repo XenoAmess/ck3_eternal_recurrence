@@ -15,6 +15,7 @@
 #endif
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/army_regiment_character_role_v1_serializer.hpp"
 #include "xar_bridge/army_current_first_route_target_supply_contributors_v1_serializer.hpp"
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
 #include "xar_bridge/army_current_helper_domain_inputs_v1_serializer.hpp"
@@ -86,6 +87,10 @@ inline void AppendArmyRegimentReplenishmentRecordsSnapshotV1(
   result += ",\"loss_writer_admission_unavailable_reason\":";
   if (regiment.loss_writer_admission_unavailable_reason.empty()) result += "null";
   else append_json_string(result,regiment.loss_writer_admission_unavailable_reason);
+  if (regiment.native_character_role_v1) {
+    result += ",\"native_character_role_v1\":";
+    AppendArmyRegimentCharacterRoleV1(result, *regiment.native_character_role_v1, number, append_json_string);
+  }
   result += ",\"records\":[";
   bool first_record=true;
   for (const auto &record : regiment.records) {

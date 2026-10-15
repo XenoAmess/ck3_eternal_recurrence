@@ -1,5 +1,25 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-16：战争四期 Review02 的共享机制、实证与消费入口
+
+本条是机器 `desktop-3fevhd2-1c74096080` 的战争四期最新记录；下文旧日期的G2、其他机器和旧版本记录保留各自当时范围。R0174已正常闭场，21个精确驻定对照日及新45秒Halt原片已取得，原R07整卡条件仍未全部闭合。研究整卡 **3/14＝21.4%**，新版合格动态包 **0/11**；详见[R0174实证与便携重算](episode04-r0174-common-t0-control-12004.md)、[10月16日日报](../autonomous-agent-progress/daily/2026-10-16.md)和[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。
+
+| 主题 | 共享知识与代码入口 | 当前范围 |
+| --- | --- | --- |
+| 围城与实际扣兵 | [R03实际物理扣兵](episode04-siege-loss-12004.md)、[自然parent消费](army-siege-parent-loss-consumer-12004.md) | 预算、writer请求、物理debit与Army净差分列；离线consumer/fixture不授新围城正例。 |
+| 县进入与周期阶段 | [R04县进入](episode04-county-entry-loss-12004.md) | actual4 direct caller可分，residual外层原因缺失时unknown，不把跨县净减少全部归因。 |
+| 严格低库存 | [R05饥饿](episode04-starvation-loss-12004.md)、[callback→writer关联](army-actual-supply-parent-join-observation-12004.md) | loaded阈值/库存更新次序和实际物理损失独立；新join离线资格不追认R0174/a05。 |
+| 补员与目标物理范围 | [R06实际ADD合同](episode04-refill-application-12004.md)、[subject capture](army-regular-core-subject-capture-12004.md) | 原始物理窗口净差不冒充单条ADD；合法开关动作/独立状态及真实应用仍待补。 |
+| 分合军与1/1 | [P0-SPLIT / R09特殊记录](episode04-special-troops-split-merge-12004.md) | 当前ArRg缓存、DATA、Character谓词、实际统帅和出生来源分层，原cohort与新增行保留。 |
+| 路线与Halt | [锁定Halt/改道](episode04-locked-halt-reroute-12004.md)、[执行手册/只读verifier](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/README.md) | R0173未锁Halt为既有实证；R0174新未锁镜头待clean，R12/R13仍无实际通过。 |
+| 登船和现金 | [R0173三金币实付](episode04-r0173-boarding-halt-12004.md)、[R0174驻定对照](episode04-r0174-common-t0-control-12004.md)、[付款源链](war-payment-passive-12004.md) | R0173 whole-callback扣款正例保留；R0174 pair PASS不授原七日卡闭合或零总费用。 |
+| 维护与raw context | [generic输入](war-payment-generic-context-12004.md)、[getter/四项raw消费合同](war-payment-maintenance-cache-source-12004.md)、[R0174实际输入和闭包调用链](war-payment-r0174-actual-parent-source-12004.md) | 新a05读到四项raw及算式匹配；完整父链未找到四项直接写入，不把term或钱包净差命名为已付军事维护。 |
+| 角色兵团与补员观测施工 | [合军中旧统帅记录创建](episode04-merge-commander-character-record-producer-12004.md)、[ADD冷夹具](episode04-refill-hardware-add-cold-qualification-12004.md) | 角色字段已接现有strengths读口；硬件ADD观察器仅冷夹具通过，两者均待新DLL/现场独立验收。 |
+| A/B/C决策 | [共同T0](episode04-common-t0-control-12004.md)、[比较合同](episode04-comparison-contract-12004.md)、[A](episode04-strategy-a-12004.md)、[B](episode04-strategy-b-12004.md)、[C](episode04-strategy-c-12004.md) | 普通同档/逐日整数/抵达表与同日表/因果费用分层；新版三臂未复拍，无winner。 |
+| 视频与agent对照 | [Review02来源—故事专题](episode04-review02-source-story-12004.md)、[24段草稿与claim/shot/API](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/README.md) | 草稿是24/69段覆盖；全69段冻结稿、声音与新版成片未由此完成。R0174更新追加到新记录，不覆盖story-a02历史原片事实。 |
+
+上述新代码/专题已整理入本次工作树，提交、推送和官方CI由Root本轮整合另行记录；索引不把这些发布步骤、离线通过、原片解码或AI抽帧写成人工1×签核。
+
 ## 2026-10-11: Background-only G2 continuation
 
 The owner now reserves local CK3 for personal play. Automation stopped with

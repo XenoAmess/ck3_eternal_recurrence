@@ -1,0 +1,9 @@
+{
+  "begin_rva": 42626896,
+  "end_rva_exclusive": 42627006,
+  "bytes": 110,
+  "sha256": "fe5e5a6d6bdbb708c2e6b3c6ac9ac9ffad47bc564bfc27a64bb7f2dcdf381e94",
+  "raw_hex": "40574883ec20488b81b8010000488bf94885c0745348895c2430488b5850488b004803d8743d488b89b00100004885c974314881c1f80000004c8bc7488bd3e8ac7efbff488b87b0010000488b88780200004883792000740a4c8bc333d2e8cd3e14ff488b5c24304883c4205fc3",
+  "new_runtime_invocation_observed": false,
+  "maintenance_attribution": "unclosed"
+}

@@ -9851,3 +9851,5 @@ include(cmake/war_declared_owner_tree_v1.cmake)
 include(cmake/root_adjacency_12004.cmake)
 
 include(cmake/realm_camera_presentation_v1.cmake)
+
+include(cmake/army_regiment_character_role_12004.cmake)

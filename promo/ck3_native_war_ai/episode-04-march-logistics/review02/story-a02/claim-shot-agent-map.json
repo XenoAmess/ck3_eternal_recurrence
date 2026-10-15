@@ -1,0 +1,1502 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T15:31:16.206453+00:00",
+    "source_head": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+    "scope": "24 selected paragraph recording draft; not all69 final script",
+    "normal_game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "EXE_sha256_from_Root_existing_provenance": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "EXE_or_raw_media_rehashed_by_this_task": false,
+    "numbering_and_credit": {
+      "director": "P0-SUPPLY/P0-LOSS/P0-SPLIT/P0-MOVE/P0-REFILL；导演案没有R08整卡编号",
+      "review02_experiment_cards": "R08=真维护费结算；R09=新增1/1和统帅变化/拆合微实验",
+      "new_deliveries": "high-parallel-special 标R09，纳入本轮“拆合special”主题；不把它记成R08实机完成",
+      "strict_research_cards_closed": [
+        "R00",
+        "R02",
+        "R11"
+      ],
+      "numerator": 3,
+      "denominator": 14,
+      "strict_percent": 21.4,
+      "new_credit_from_this_story_package": 0
+    },
+    "actual_R10_arms_completed": 0,
+    "winner": null,
+    "tts_generated": false,
+    "media_encoded": false,
+    "human_signoff_created": false,
+    "main_tree_writes": 0
+  },
+  "shots": {
+    "S173-PRE": {
+      "source_run": "R0173",
+      "kind": "actual_raw_candidate",
+      "span_id": "r173_boarding_before",
+      "begin_seconds": 147.5,
+      "end_seconds": 153.5,
+      "frames": 180,
+      "duration_seconds": 6.0,
+      "status": "CANDIDATE_PENDING_ROOT_ENDPOINT_AND_CONTINUOUS_SPAN_REVIEW",
+      "continuous_clean_review": false,
+      "clean_certified": false,
+      "human_signoff": false
+    },
+    "S173-SEA": {
+      "source_run": "R0173",
+      "kind": "actual_raw_candidate",
+      "span_id": "r173_boarding_transition",
+      "begin_seconds": 153.5,
+      "end_seconds": 161.6,
+      "frames": 243,
+      "duration_seconds": 8.1,
+      "status": "CANDIDATE_PENDING_ROOT_ENDPOINT_AND_CONTINUOUS_SPAN_REVIEW",
+      "continuous_clean_review": false,
+      "clean_certified": false,
+      "human_signoff": false
+    },
+    "S173-POST": {
+      "source_run": "R0173",
+      "kind": "actual_raw_candidate",
+      "span_id": "r173_boarding_after",
+      "begin_seconds": 168.9,
+      "end_seconds": 174.9,
+      "frames": 180,
+      "duration_seconds": 6.0,
+      "status": "CANDIDATE_PENDING_ROOT_ENDPOINT_AND_CONTINUOUS_SPAN_REVIEW",
+      "continuous_clean_review": false,
+      "clean_certified": false,
+      "human_signoff": false
+    },
+    "S173-HALT": {
+      "source_run": "R0173",
+      "kind": "native_outcome_only",
+      "raw_timecode": null,
+      "clean_certified": false,
+      "actual_outcome": "一次未锁Halt、独立空route/null target、次日同1036已证；操作在原片结束后，不能充当已有镜头"
+    },
+    "S174": {
+      "source_run": "R0174",
+      "kind": "parent_reported_loaded_only",
+      "raw_timecode": null,
+      "clean_certified": false,
+      "status": "pending_no_actual_shot_credit",
+      "source": "Root task update 2026-10-15: actual loaded15:17:28Z PID17468/gen1/native-31254-0d067159706e/date53145048; no filmed Halt/day/recording in that supplied cutpoint"
+    },
+    "OLD-REVIEW01": {
+      "kind": "delivered_historical_film",
+      "version": "1.20.0.3",
+      "use": "可复用包装/历史术语；逐个原span需按原账核查，不贴Robert/.4数字",
+      "new_clean_shot_credit": false
+    },
+    "SOURCE-CARD": {
+      "kind": "proposed_explanatory_graphic",
+      "exists": false,
+      "clean_certified": false,
+      "use": "只标源码机制/条件算例；不能代替实机操作或自然扣兵画面"
+    },
+    "ABC-NEW": {
+      "kind": "not_captured",
+      "A": null,
+      "B": null,
+      "C": null,
+      "clean_certified": false
+    }
+  },
+  "paragraphs": [
+    {
+      "paragraph_id": "C01-01",
+      "topic": "观众问题与结果维度",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "大军出发时的人数，只是这段行程的起点。到接战以前，还要经过补给变化、兵员变化和路线选择。我们要看的，是它什么时候真正到场，原来的兵还剩多少，带着多少补给，以及途中实际付了什么钱。",
+      "spoken_text": "大军出发时的人数，只是这段行程的起点。到接战以前，还要经过补给变化、兵员变化和路线选择。我们要看的，是它什么时候真正到场，原来的兵还剩多少，带着多少补给，以及途中实际付了什么钱。",
+      "source_refs": [
+        "DIRECTOR",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "Robert/.4清楚的出发面板、真实到场面板；新A/B/C结果不得由旧片代填"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "大军出发时的人数，只是这段行程的起点。",
+          "source_refs": [
+            "DIRECTOR",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "到接战以前，还要经过补给变化、兵员变化和路线选择。",
+          "source_refs": [
+            "DIRECTOR",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "我们要看的，是它什么时候真正到场，原来的兵还剩多少，带着多少补给，以及途中实际付了什么钱。",
+          "source_refs": [
+            "DIRECTOR",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "大军出发的时候，最容易记住的是那个很大的总人数。但到接战以前，还有一整段路。军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。",
+      "mechanism_or_actual_scope": {
+        "DIRECTOR": "checked_in_at_frozen_head",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C01-02",
+      "topic": "版本与证据层",
+      "evidence_level": "source_mechanism_and_actual_case",
+      "current_speakable_conclusion": "这一轮跟着一点二零点零点四里的罗贝尔。先把军队面板的当前读数读清，再沿着真实行军看变化。规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次实际发生了什么；两层接起来，才能解释抵达时的状态。",
+      "spoken_text": "这一轮跟着一点二零点零点四里的罗贝尔。先把军队面板的当前读数读清，再沿着真实行军看变化。规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次实际发生了什么；两层接起来，才能解释抵达时的状态。",
+      "source_refs": [
+        "DIRECTOR",
+        "R0173"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "S173-PRE",
+        "S173-POST"
+      ],
+      "missing_filming": [
+        "普通人物页/书签介绍；独立回放标签；本段候选需连续审片后选用"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这一轮跟着一点二零点零点四里的罗贝尔。",
+          "source_refs": [
+            "DIRECTOR",
+            "R0173"
+          ]
+        },
+        {
+          "sentence": "先把军队面板的当前读数读清，再沿着真实行军看变化。",
+          "source_refs": [
+            "DIRECTOR",
+            "R0173"
+          ]
+        },
+        {
+          "sentence": "规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次实际发生了什么；两层接起来，才能解释抵达时的状态。",
+          "source_refs": [
+            "DIRECTOR",
+            "R0173"
+          ]
+        }
+      ],
+      "original_claim_text": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。先读原版界面，再跟着真实变化看结果。下令成功、预计抵达和真正到场，要分别确认。",
+      "mechanism_or_actual_scope": {
+        "DIRECTOR": "checked_in_at_frozen_head",
+        "R0173": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C01-07",
+      "topic": "三策略定义",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "整军直走，争取少做中途安排；分兵休整，要付出分开驻留和重新会合的时间；换路线，则要走完预先选好的中转路径。比较这三种安排时，要从同一个普通存档出发，前往同一个目的地，分别记录各自真实到场的结果，再看同一天各队分别在哪里。",
+      "spoken_text": "整军直走，争取少做中途安排；分兵休整，要付出分开驻留和重新会合的时间；换路线，则要走完预先选好的中转路径。比较这三种安排时，要从同一个普通存档出发，前往同一个目的地，分别记录各自真实到场的结果，再看同一天各队分别在哪里。",
+      "source_refs": [
+        "DIRECTOR",
+        "COMPARE",
+        "A",
+        "B",
+        "C"
+      ],
+      "agent_consumer_api_keys": [
+        "strategy_a",
+        "strategy_b",
+        "strategy_c",
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "同新T0三臂开场与动态路线；此处是比较设计，尚无新版三结果"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "整军直走，争取少做中途安排；分兵休整，要付出分开驻留和重新会合的时间；换路线，则要走完预先选好的中转路径。",
+          "source_refs": [
+            "DIRECTOR",
+            "COMPARE",
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "sentence": "比较这三种安排时，要从同一个普通存档出发，前往同一个目的地，分别记录各自真实到场的结果，再看同一天各队分别在哪里。",
+          "source_refs": [
+            "DIRECTOR",
+            "COMPARE",
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "original_claim_text": "最后要比较三个安排：整军直走、分兵休整后会合、换路线。它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。一个地点不适合休整，不等于整个分兵方案已经输了；结果到齐以前，不提前选赢家。",
+      "mechanism_or_actual_scope": {
+        "DIRECTOR": "checked_in_at_frozen_head",
+        "COMPARE": "checked_in_at_frozen_head",
+        "A": "external_delivered_candidate_not_deployed",
+        "B": "external_delivered_candidate_not_deployed",
+        "C": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C02-03",
+      "topic": "当地压力与携带库存",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "军队携带的补给、能够携带的容量，以及当地能支持多少士兵，各有自己的单位。分兵以后，两队仍在同一个地方，就还要看当地实际用量；不能只盯着较小的那队，便认定压力已经消失。离开原地后，也要重新读新地点的条件。",
+      "spoken_text": "军队携带的补给、能够携带的容量，以及当地能支持多少士兵，各有自己的单位。分兵以后，两队仍在同一个地方，就还要看当地实际用量；不能只盯着较小的那队，便认定压力已经消失。离开原地后，也要重新读新地点的条件。",
+      "source_refs": [
+        "DIRECTOR",
+        "SPECIAL"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "special"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "同帧库存/cap/省用量与上限原生提示；真实分兵后同地及异地对照"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "军队携带的补给、能够携带的容量，以及当地能支持多少士兵，各有自己的单位。",
+          "source_refs": [
+            "DIRECTOR",
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "分兵以后，两队仍在同一个地方，就还要看当地实际用量；不能只盯着较小的那队，便认定压力已经消失。",
+          "source_refs": [
+            "DIRECTOR",
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "离开原地后，也要重新读新地点的条件。",
+          "source_refs": [
+            "DIRECTOR",
+            "SPECIAL"
+          ]
+        }
+      ],
+      "original_claim_text": "当地补给上限说的是这个地方能支持多少名士兵。军队的三百补给容量，不能直接和当地几千人的上限比较。要比较当地用量和当地上限。两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。",
+      "mechanism_or_actual_scope": {
+        "DIRECTOR": "checked_in_at_frozen_head",
+        "SPECIAL": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C02-10",
+      "topic": "休整地点和补兵分离",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "选休整地点时，先看这里的补给月变化，再等一次真正的库存更新。月变化为正，是当前条件下的读数；库存实际增加，才说明这次确实恢复了物资。兵员补充还要另看：补给回满、补员准备值刷新，都不能直接当作多了几名士兵。",
+      "spoken_text": "选休整地点时，先看这里的补给月变化，再等一次真正的库存更新。月变化为正，是当前条件下的读数；库存实际增加，才说明这次确实恢复了物资。兵员补充还要另看：补给回满、补员准备值刷新，都不能直接当作多了几名士兵。",
+      "source_refs": [
+        "B",
+        "REFILL",
+        "DIRECTOR"
+      ],
+      "agent_consumer_api_keys": [
+        "strategy_b",
+        "refill"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "两处Robert/.4驻点的真实stock增长；独立完整缺员团与自然补员窗口"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "选休整地点时，先看这里的补给月变化，再等一次真正的库存更新。",
+          "source_refs": [
+            "B",
+            "REFILL",
+            "DIRECTOR"
+          ]
+        },
+        {
+          "sentence": "月变化为正，是当前条件下的读数；库存实际增加，才说明这次确实恢复了物资。",
+          "source_refs": [
+            "B",
+            "REFILL",
+            "DIRECTOR"
+          ]
+        },
+        {
+          "sentence": "兵员补充还要另看：补给回满、补员准备值刷新，都不能直接当作多了几名士兵。",
+          "source_refs": [
+            "B",
+            "REFILL",
+            "DIRECTOR"
+          ]
+        }
+      ],
+      "original_claim_text": "休整地点还要实际验证。一月二十九日的另一次观察，两支军队分别停在两个候选地点，当前补给月变化却约为负四点三九和负八点七七。这两个地点不符合当次寻找正补给的要求，不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。",
+      "mechanism_or_actual_scope": {
+        "B": "external_delivered_candidate_not_deployed",
+        "REFILL": "external_delivered_candidate_not_deployed",
+        "DIRECTOR": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C04-10",
+      "topic": "登船实付正例",
+      "evidence_level": "actual_R0173_qualified_whole_callback_boarding_debit",
+      "current_speakable_conclusion": "这次罗贝尔的军队进入海区，实际状态变成已登船。沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。这给出了本例登船的实际支付；以后别的军队和路线，仍要看当次费用，不能一律套三金币。",
+      "spoken_text": "这次罗贝尔的军队进入海区，实际状态变成已登船。沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。这给出了本例登船的实际支付；以后别的军队和路线，仍要看当次费用，不能一律套三金币。",
+      "source_refs": [
+        "R0173",
+        "PAYMENT"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "payment"
+      ],
+      "actual_shot_ids": [
+        "S173-PRE",
+        "S173-SEA",
+        "S173-POST"
+      ],
+      "missing_filming": [
+        "审阅候选连续20.1秒并绑定剪辑；三金币需原生证据卡，顶栏像素不授归因"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "这次罗贝尔的军队进入海区，实际状态变成已登船。",
+          "source_refs": [
+            "R0173",
+            "PAYMENT"
+          ]
+        },
+        {
+          "sentence": "沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。",
+          "source_refs": [
+            "R0173",
+            "PAYMENT"
+          ]
+        },
+        {
+          "sentence": "这给出了本例登船的实际支付；以后别的军队和路线，仍要看当次费用，不能一律套三金币。",
+          "source_refs": [
+            "R0173",
+            "PAYMENT"
+          ]
+        }
+      ],
+      "original_claim_text": "这轮行军后来还核到了登船和登陆窗口。相对一月二十日起点，第三十到三十二日进入海段、变成已登船；第四十二到四十四日抵达陆地，路线走完、回到普通状态。两窗完整二十七团都仍是六千六百七十九，库存也没变。这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。",
+      "mechanism_or_actual_scope": {
+        "R0173": "checked_in_at_frozen_head",
+        "PAYMENT": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C04-11",
+      "topic": "路线警告和真实扣兵",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "路线警告适合帮助出发前做选择。要解释走完以后少了多少兵，还要区分县进入扣兵和周期损耗：源码里它们有不同的直接调用入口，也有共用的剩余分配路径。只有共用路径的记录时，原因继续保留未知，不能看到刚跨县就把整段减少全算成跨县损耗。",
+      "spoken_text": "路线警告适合帮助出发前做选择。要解释走完以后少了多少兵，还要区分县进入扣兵和周期损耗：源码里它们有不同的直接调用入口，也有共用的剩余分配路径。只有共用路径的记录时，原因继续保留未知，不能看到刚跨县就把整段减少全算成跨县损耗。",
+      "source_refs": [
+        "COUNTY",
+        "LOSS",
+        "DIRECTOR"
+      ],
+      "agent_consumer_api_keys": [
+        "county",
+        "loss"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "真实路线警告→县边界→新county-primary物理扣兵事件；独立排除同窗重组/战斗"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "路线警告适合帮助出发前做选择。",
+          "source_refs": [
+            "COUNTY",
+            "LOSS",
+            "DIRECTOR"
+          ]
+        },
+        {
+          "sentence": "要解释走完以后少了多少兵，还要区分县进入扣兵和周期损耗：源码里它们有不同的直接调用入口，也有共用的剩余分配路径。",
+          "source_refs": [
+            "COUNTY",
+            "LOSS",
+            "DIRECTOR"
+          ]
+        },
+        {
+          "sentence": "只有共用路径的记录时，原因继续保留未知，不能看到刚跨县就把整段减少全算成跨县损耗。",
+          "source_refs": [
+            "COUNTY",
+            "LOSS",
+            "DIRECTOR"
+          ]
+        }
+      ],
+      "original_claim_text": "接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。",
+      "mechanism_or_actual_scope": {
+        "COUNTY": "external_delivered_candidate_not_deployed",
+        "LOSS": "external_delivered_candidate_not_deployed",
+        "DIRECTOR": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C05-01",
+      "topic": "比较问题",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "把三个方案放到一起，先问四件事：多久到，原始兵团剩多少人，每支军队还有多少补给，实际支付多少。抵达时的状态回答这条路线把军队送成了什么样；同一天的状态回答同样过了这些天，各种安排走到了哪一步。",
+      "spoken_text": "把三个方案放到一起，先问四件事：多久到，原始兵团剩多少人，每支军队还有多少补给，实际支付多少。抵达时的状态回答这条路线把军队送成了什么样；同一天的状态回答同样过了这些天，各种安排走到了哪一步。",
+      "source_refs": [
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "新版三臂各自到场动态和共同日期观察"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "把三个方案放到一起，先问四件事：多久到，原始兵团剩多少人，每支军队还有多少补给，实际支付多少。",
+          "source_refs": [
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "抵达时的状态回答这条路线把军队送成了什么样；同一天的状态回答同样过了这些天，各种安排走到了哪一步。",
+          "source_refs": [
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "现在把这些读数放进选择里。整军直走、分兵休整会合、换路线，都回答同一组问题：什么时候真正到，剩多少兵，库存与缺员有没有恢复，途中实际付了什么钱。比较前，先确保每次从同一个已经验收的起点出发。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C05-02",
+      "topic": "普通同T0与整数队列",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "三次回放都要重新载入同一份普通起点，核对人物、日期、统帅、原始兵团、库存和钱包。新分出来的军队，用本次实际出现的身份识别。这样，后来多出一条记录、换了统帅，或者少了某个原始兵团，都能在结果里保留下来。",
+      "spoken_text": "三次回放都要重新载入同一份普通起点，核对人物、日期、统帅、原始兵团、库存和钱包。新分出来的军队，用本次实际出现的身份识别。这样，后来多出一条记录、换了统帅，或者少了某个原始兵团，都能在结果里保留下来。",
+      "source_refs": [
+        "COMPARE",
+        "SPECIAL",
+        "A",
+        "B"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "special",
+        "strategy_a",
+        "strategy_b"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "普通T0三次独立冷载来源；各臂同帧全DATA/实际统帅"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "三次回放都要重新载入同一份普通起点，核对人物、日期、统帅、原始兵团、库存和钱包。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "A",
+            "B"
+          ]
+        },
+        {
+          "sentence": "新分出来的军队，用本次实际出现的身份识别。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "A",
+            "B"
+          ]
+        },
+        {
+          "sentence": "这样，后来多出一条记录、换了统帅，或者少了某个原始兵团，都能在结果里保留下来。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "A",
+            "B"
+          ]
+        }
+      ],
+      "original_claim_text": "起点要保留完整兵团、当前人数和满员数、库存、容量、位置、路线与统帅。仅有一个存档文件，还不能宣布对照成立；可用休整地点和合法替代路线也要先验证。三次回放各自保留操作、日期和结果，才知道在比较哪一种安排。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head",
+        "SPECIAL": "external_delivered_candidate_not_deployed",
+        "A": "external_delivered_candidate_not_deployed",
+        "B": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C05-03",
+      "topic": "A整军直达",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "方案A保持整军，按这次实际预览的直达路线前进。命令之后先确认路线真的生效，再逐日看它的位置。真正到达，要同时看到军队已经在目标地点，状态合适，剩余路线走完；预计日期和下令确认，都不能代替这一刻。",
+      "spoken_text": "方案A保持整军，按这次实际预览的直达路线前进。命令之后先确认路线真的生效，再逐日看它的位置。真正到达，要同时看到军队已经在目标地点，状态合适，剩余路线走完；预计日期和下令确认，都不能代替这一刻。",
+      "source_refs": [
+        "A",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "strategy_a",
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "A合法preview→一次Move→真实路线后态→每日行军与首次到场"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "方案A保持整军，按这次实际预览的直达路线前进。",
+          "source_refs": [
+            "A",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "命令之后先确认路线真的生效，再逐日看它的位置。",
+          "source_refs": [
+            "A",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "真正到达，要同时看到军队已经在目标地点，状态合适，剩余路线走完；预计日期和下令确认，都不能代替这一刻。",
+          "source_refs": [
+            "A",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "先看方案A，整支军队沿选定路线直走，目标是伦敦。从共同起点算起，第五十一个游戏日，我们第一次观察到它已经抵达。前一个观察点是第四十九日，军队还在路上。所以，到达发生在这两次观察之间；第五十一日是首次看到结果的日期，精确到达时刻仍未知。",
+      "mechanism_or_actual_scope": {
+        "A": "external_delivered_candidate_not_deployed",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C05-04",
+      "topic": "B分兵休整会合",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "方案B先分兵，到两处验证过的驻点休整，再会合。每队从真正停驻那天开始计时；达到预定库存和缺员条件，或者用完预定驻留时间，就按原计划离开。恢复得不够，也是这次方案的结果，不能为了挑到好数字而重新开始。",
+      "spoken_text": "方案B先分兵，到两处验证过的驻点休整，再会合。每队从真正停驻那天开始计时；达到预定库存和缺员条件，或者用完预定驻留时间，就按原计划离开。恢复得不够，也是这次方案的结果，不能为了挑到好数字而重新开始。",
+      "source_refs": [
+        "B",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "strategy_b",
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "两个真实正增长驻点；split→驻留→阈值或最长驻留→会合动态"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "方案B先分兵，到两处验证过的驻点休整，再会合。",
+          "source_refs": [
+            "B",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "每队从真正停驻那天开始计时；达到预定库存和缺员条件，或者用完预定驻留时间，就按原计划离开。",
+          "source_refs": [
+            "B",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "恢复得不够，也是这次方案的结果，不能为了挑到好数字而重新开始。",
+          "source_refs": [
+            "B",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+      "mechanism_or_actual_scope": {
+        "B": "external_delivered_candidate_not_deployed",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C05-05",
+      "topic": "C整军经中转",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "方案C保持整军，依次经过事先选好的合法中转点，再去同一个终点。它是换路线，补给和人数沿途照实记录。每一段都等实际到达再转向下一点，不能用镜头已经移到那里，代替军队已经走到那里。",
+      "spoken_text": "方案C保持整军，依次经过事先选好的合法中转点，再去同一个终点。它是换路线，补给和人数沿途照实记录。每一段都等实际到达再转向下一点，不能用镜头已经移到那里，代替军队已经走到那里。",
+      "source_refs": [
+        "C",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "strategy_c",
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "C逐段实际preview/Move后态→中转真正到达→共同终点"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "方案C保持整军，依次经过事先选好的合法中转点，再去同一个终点。",
+          "source_refs": [
+            "C",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "它是换路线，补给和人数沿途照实记录。",
+          "source_refs": [
+            "C",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "每一段都等实际到达再转向下一点，不能用镜头已经移到那里，代替军队已经走到那里。",
+          "source_refs": [
+            "C",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。",
+      "mechanism_or_actual_scope": {
+        "C": "external_delivered_candidate_not_deployed",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C05-08",
+      "topic": "分军库存与容量",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "分兵以后，把每队的库存和容量分别列出来。库存是各队实际带着多少，容量是这支军队当前能带多少。比较时保留每支军队的真实值，不把两队库存相加，或者求个平均，就写成一支并不存在的整军补给。",
+      "spoken_text": "分兵以后，把每队的库存和容量分别列出来。库存是各队实际带着多少，容量是这支军队当前能带多少。比较时保留每支军队的真实值，不把两队库存相加，或者求个平均，就写成一支并不存在的整军补给。",
+      "source_refs": [
+        "COMPARE",
+        "SPECIAL",
+        "B"
+      ],
+      "agent_consumer_api_keys": [
+        "special",
+        "strategy_b",
+        "comparison"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        ".4真实分兵前后完整军队面板；库存/cap不预填旧.3复制公式"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "分兵以后，把每队的库存和容量分别列出来。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "B"
+          ]
+        },
+        {
+          "sentence": "库存是各队实际带着多少，容量是这支军队当前能带多少。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "B"
+          ]
+        },
+        {
+          "sentence": "比较时保留每支军队的真实值，不把两队库存相加，或者求个平均，就写成一支并不存在的整军补给。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "B"
+          ]
+        }
+      ],
+      "original_claim_text": "前面的平分样本里，两队都继承约一百一十点三八补给，主军容量三百，新分队容量一百。现在看这次B回放：起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，两军人数与完整兵团的前后读数都没变。虽然当前月变化仍是正二十，这次库存变化却是向下回到容量；它不是补兵，也不是低库存补给增加。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head",
+        "SPECIAL": "external_delivered_candidate_not_deployed",
+        "B": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C05-09",
+      "topic": "统帅与特殊记录",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "合军后重新看统帅，也重新展开完整兵团。一条一人满员一人的记录，首先只是这条记录的实际人数。它可能没有普通兵槽数据；只凭这个数字，还不能叫它骑士，也不能说这是刚补进来的一个普通士兵。具体类别要跟它自己的原生身份对应。",
+      "spoken_text": "合军后重新看统帅，也重新展开完整兵团。一条一人满员一人的记录，首先只是这条记录的实际人数。它可能没有普通兵槽数据；只凭这个数字，还不能叫它骑士，也不能说这是刚补进来的一个普通士兵。具体类别要跟它自己的原生身份对应。",
+      "source_refs": [
+        "SPECIAL"
+      ],
+      "agent_consumer_api_keys": [
+        "special",
+        "strategy_b"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "新正常.4 split/merge前后typed commander/全部ArRg/DATA；出生来源仍unknown"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "合军后重新看统帅，也重新展开完整兵团。",
+          "source_refs": [
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "一条一人满员一人的记录，首先只是这条记录的实际人数。",
+          "source_refs": [
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "它可能没有普通兵槽数据；只凭这个数字，还不能叫它骑士，也不能说这是刚补进来的一个普通士兵。",
+          "source_refs": [
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "具体类别要跟它自己的原生身份对应。",
+          "source_refs": [
+            "SPECIAL"
+          ]
+        }
+      ],
+      "original_claim_text": "平分没有自动重开这轮补给宽限。新分队继承了原军队的这段计时，哪一天库存真正变化，还需要继续观察。容量不同，也不能代替统帅身份读取。后来在两个驻点读到的统帅，只证明当时那一帧，不保证后面一直没变。",
+      "mechanism_or_actual_scope": {
+        "SPECIAL": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C05-10",
+      "topic": "合军后保留实际效果",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "会合是两队到了同一地点，合并以后才成为一支。合后要再读库存、容量、实际统帅和全部兵团。原始兵团与后来新增的记录分开统计；如果合法合军改变了这些条件，就把变化作为这次安排的实际后果，不能删掉新增记录，或事后换将，把结果修成预想的样子。",
+      "spoken_text": "会合是两队到了同一地点，合并以后才成为一支。合后要再读库存、容量、实际统帅和全部兵团。原始兵团与后来新增的记录分开统计；如果合法合军改变了这些条件，就把变化作为这次安排的实际后果，不能删掉新增记录，或事后换将，把结果修成预想的样子。",
+      "source_refs": [
+        "SPECIAL",
+        "B",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "special",
+        "strategy_b",
+        "comparison"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "同地会合→一次merge→D存续/S缺席→全队列/实际统帅/stock/cap读回"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "会合是两队到了同一地点，合并以后才成为一支。",
+          "source_refs": [
+            "SPECIAL",
+            "B",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "合后要再读库存、容量、实际统帅和全部兵团。",
+          "source_refs": [
+            "SPECIAL",
+            "B",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "原始兵团与后来新增的记录分开统计；如果合法合军改变了这些条件，就把变化作为这次安排的实际后果，不能删掉新增记录，或事后换将，把结果修成预想的样子。",
+          "source_refs": [
+            "SPECIAL",
+            "B",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+      "mechanism_or_actual_scope": {
+        "SPECIAL": "external_delivered_candidate_not_deployed",
+        "B": "external_delivered_candidate_not_deployed",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C05-13",
+      "topic": "费用账",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "费用单独记账。登船支付、军事维护、期间收入和其他支出，放进相同账户、相同日期范围里核对。钱包的净变化混合了这些来源；即使余额增加，也可能已经付过军费。完整支出里包含的军费，也不再额外扣第二次。",
+      "spoken_text": "费用单独记账。登船支付、军事维护、期间收入和其他支出，放进相同账户、相同日期范围里核对。钱包的净变化混合了这些来源；即使余额增加，也可能已经付过军费。完整支出里包含的军费，也不再额外扣第二次。",
+      "source_refs": [
+        "COMPARE",
+        "GENERIC",
+        "PAYMENT",
+        "CARDS"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "payment"
+      ],
+      "actual_shot_ids": [
+        "S173-POST"
+      ],
+      "missing_filming": [
+        "真实维护费applied component与同一次wallet write；当前没有费用排名资格"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "费用单独记账。",
+          "source_refs": [
+            "COMPARE",
+            "GENERIC",
+            "PAYMENT",
+            "CARDS"
+          ]
+        },
+        {
+          "sentence": "登船支付、军事维护、期间收入和其他支出，放进相同账户、相同日期范围里核对。",
+          "source_refs": [
+            "COMPARE",
+            "GENERIC",
+            "PAYMENT",
+            "CARDS"
+          ]
+        },
+        {
+          "sentence": "钱包的净变化混合了这些来源；即使余额增加，也可能已经付过军费。",
+          "source_refs": [
+            "COMPARE",
+            "GENERIC",
+            "PAYMENT",
+            "CARDS"
+          ]
+        },
+        {
+          "sentence": "完整支出里包含的军费，也不再额外扣第二次。",
+          "source_refs": [
+            "COMPARE",
+            "GENERIC",
+            "PAYMENT",
+            "CARDS"
+          ]
+        }
+      ],
+      "original_claim_text": "累计费用要逐笔记实际发生的维护、登船支付、期间收入和其他支付，并使用一致日期范围对账。钱包变少多少，是混合这些来源的净现金变化；地图上“会支付登船费”只是当时提示。没读到实际付款，就留空，不能把余额差改名为纯行军费。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head",
+        "GENERIC": "checked_in_at_frozen_head",
+        "PAYMENT": "checked_in_at_frozen_head",
+        "CARDS": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C05-14",
+      "topic": "原队列与全部军队",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "兵力表分成两列：一列只追踪起点那批兵团，另一列保留这个方案实际拥有的全部相关军队。新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。人数、身份和组织变化一起看，才知道兵究竟去了哪里。",
+      "spoken_text": "兵力表分成两列：一列只追踪起点那批兵团，另一列保留这个方案实际拥有的全部相关军队。新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。人数、身份和组织变化一起看，才知道兵究竟去了哪里。",
+      "source_refs": [
+        "COMPARE",
+        "SPECIAL",
+        "B"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "special",
+        "strategy_b"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "全cohort与all-strategy原生整数到结果表；真实split/merge边界读回"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "兵力表分成两列：一列只追踪起点那批兵团，另一列保留这个方案实际拥有的全部相关军队。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "B"
+          ]
+        },
+        {
+          "sentence": "新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "B"
+          ]
+        },
+        {
+          "sentence": "人数、身份和组织变化一起看，才知道兵究竟去了哪里。",
+          "source_refs": [
+            "COMPARE",
+            "SPECIAL",
+            "B"
+          ]
+        }
+      ],
+      "original_claim_text": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head",
+        "SPECIAL": "external_delivered_candidate_not_deployed",
+        "B": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C05-15",
+      "topic": "到达表与同日表",
+      "evidence_level": "prespecified_comparison_design",
+      "current_speakable_conclusion": "抵达表先列各方案自己的到场时间和到场状态；同日表再列第七、第十四、第二十一和第二十八天的实际读数。两种表分开看。走得更久的一队，多出来的恢复机会和费用也属于行程的一部分，不能拿不同日期的人数，直接称为同一天的补员优势。",
+      "spoken_text": "抵达表先列各方案自己的到场时间和到场状态；同日表再列第七、第十四、第二十一和第二十八天的实际读数。两种表分开看。走得更久的一队，多出来的恢复机会和费用也属于行程的一部分，不能拿不同日期的人数，直接称为同一天的补员优势。",
+      "source_refs": [
+        "COMPARE",
+        "A",
+        "B",
+        "C"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "strategy_a",
+        "strategy_b",
+        "strategy_c"
+      ],
+      "actual_shot_ids": [
+        "ABC-NEW"
+      ],
+      "missing_filming": [
+        "三臂共同日期实际观察；各自≤1日首次抵达区间；没有数据不生成排名"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "抵达表先列各方案自己的到场时间和到场状态；同日表再列第七、第十四、第二十一和第二十八天的实际读数。",
+          "source_refs": [
+            "COMPARE",
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "sentence": "两种表分开看。",
+          "source_refs": [
+            "COMPARE",
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "sentence": "走得更久的一队，多出来的恢复机会和费用也属于行程的一部分，不能拿不同日期的人数，直接称为同一天的补员优势。",
+          "source_refs": [
+            "COMPARE",
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "original_claim_text": "这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。完整二十七个兵团都还在，满员数仍是六千七百四十七。补给从约一百一十点三八变为一百零六点一四。净增十人只说旅途两端的差，不表示途中没有死伤，也不表示已经逐次读到了补员结算。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head",
+        "A": "external_delivered_candidate_not_deployed",
+        "B": "external_delivered_candidate_not_deployed",
+        "C": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C05-16",
+      "topic": "不伪造胜负",
+      "evidence_level": "historical_actual03_boundaries_plus_future_design",
+      "current_speakable_conclusion": "旧回放没有给出严格的三方案胜负：B在第三十八天因冻结条件未通过而停止，仍有五十二天预算；C保留十五次两日采样偏差，抵达只能落在第七十五到七十七天之间。这些历史记录继续保留。新版比较等三条独立回放完成后，再按实际路线、驻点和敌情讨论取舍。",
+      "spoken_text": "旧回放没有给出严格的三方案胜负：B在第三十八天因冻结条件未通过而停止，仍有五十二天预算；C保留十五次两日采样偏差，抵达只能落在第七十五到七十七天之间。这些历史记录继续保留。新版比较等三条独立回放完成后，再按实际路线、驻点和敌情讨论取舍。",
+      "source_refs": [
+        "COMPARE",
+        "B",
+        "C",
+        "SPECIAL"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "strategy_b",
+        "strategy_c",
+        "special"
+      ],
+      "actual_shot_ids": [
+        "OLD-REVIEW01"
+      ],
+      "missing_filming": [
+        "旧失败只作短附录；新版三臂全未复拍，不能给胜负/更省钱结论"
+      ],
+      "edit_action": "压缩旧失败占篇；保留真实拒收原因，不作本期三结果主体",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "旧回放没有给出严格的三方案胜负：B在第三十八天因冻结条件未通过而停止，仍有五十二天预算；C保留十五次两日采样偏差，抵达只能落在第七十五到七十七天之间。",
+          "source_refs": [
+            "COMPARE",
+            "B",
+            "C",
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "这些历史记录继续保留。",
+          "source_refs": [
+            "COMPARE",
+            "B",
+            "C",
+            "SPECIAL"
+          ]
+        },
+        {
+          "sentence": "新版比较等三条独立回放完成后，再按实际路线、驻点和敌情讨论取舍。",
+          "source_refs": [
+            "COMPARE",
+            "B",
+            "C",
+            "SPECIAL"
+          ]
+        }
+      ],
+      "original_claim_text": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。",
+      "mechanism_or_actual_scope": {
+        "COMPARE": "checked_in_at_frozen_head",
+        "B": "external_delivered_candidate_not_deployed",
+        "C": "external_delivered_candidate_not_deployed",
+        "SPECIAL": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C06-01",
+      "topic": "围城和整数扣兵",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "回到人数变化，先分别看预算、实际扣兵和整军净变化。围城与劫掠在源码里共享一个损失阶段；要解释某次围城损失，还要核对当时确在围城、没有劫掠等条件。分配也有顺序和整数尾差，不能把显示百分比各乘每个兵团，再当作实际扣兵流水。",
+      "spoken_text": "回到人数变化，先分别看预算、实际扣兵和整军净变化。围城与劫掠在源码里共享一个损失阶段；要解释某次围城损失，还要核对当时确在围城、没有劫掠等条件。分配也有顺序和整数尾差，不能把显示百分比各乘每个兵团，再当作实际扣兵流水。",
+      "source_refs": [
+        "LOSS",
+        "CURRENT_EFFECTS"
+      ],
+      "agent_consumer_api_keys": [
+        "loss"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "充足库存/raidfalse围城自然正writer事件与完整逐团动态；条件算例必须标源码算例"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "回到人数变化，先分别看预算、实际扣兵和整军净变化。",
+          "source_refs": [
+            "LOSS",
+            "CURRENT_EFFECTS"
+          ]
+        },
+        {
+          "sentence": "围城与劫掠在源码里共享一个损失阶段；要解释某次围城损失，还要核对当时确在围城、没有劫掠等条件。",
+          "source_refs": [
+            "LOSS",
+            "CURRENT_EFFECTS"
+          ]
+        },
+        {
+          "sentence": "分配也有顺序和整数尾差，不能把显示百分比各乘每个兵团，再当作实际扣兵流水。",
+          "source_refs": [
+            "LOSS",
+            "CURRENT_EFFECTS"
+          ]
+        }
+      ],
+      "original_claim_text": "带回一次普通行军，可以按出发前、途中、接战前三个时点检查。每次先确认哪支军队、哪个日期、哪个地点，再看数字。不同日期和地点可以比较，但不要拼成一个看似同时存在的军队状态。",
+      "mechanism_or_actual_scope": {
+        "LOSS": "external_delivered_candidate_not_deployed",
+        "CURRENT_EFFECTS": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C06-02",
+      "topic": "低补给的阈值和实际应用",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "低补给还要看当次加载的阈值表。按原版十的那条边界，九点九九九九九已经低于十，正好十仍在另一侧。游戏先更新库存，再计算这次供给损失；舰队、宽限和兵团条件也会影响结果。所以库存低，和这次确实扣了多少兵，仍要分别确认。",
+      "spoken_text": "低补给还要看当次加载的阈值表。按原版十的那条边界，九点九九九九九已经低于十，正好十仍在另一侧。游戏先更新库存，再计算这次供给损失；舰队、宽限和兵团条件也会影响结果。所以库存低，和这次确实扣了多少兵，仍要分别确认。",
+      "source_refs": [
+        "STARVATION",
+        "PARENTJOIN",
+        "LOSS"
+      ],
+      "agent_consumer_api_keys": [
+        "starvation",
+        "loss"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "正常军队自然跨严格S<10→实际提示→供给preferred正physical debit；a05/R0174无parent-join，不造已捕获关联"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "低补给还要看当次加载的阈值表。",
+          "source_refs": [
+            "STARVATION",
+            "PARENTJOIN",
+            "LOSS"
+          ]
+        },
+        {
+          "sentence": "按原版十的那条边界，九点九九九九九已经低于十，正好十仍在另一侧。",
+          "source_refs": [
+            "STARVATION",
+            "PARENTJOIN",
+            "LOSS"
+          ]
+        },
+        {
+          "sentence": "游戏先更新库存，再计算这次供给损失；舰队、宽限和兵团条件也会影响结果。",
+          "source_refs": [
+            "STARVATION",
+            "PARENTJOIN",
+            "LOSS"
+          ]
+        },
+        {
+          "sentence": "所以库存低，和这次确实扣了多少兵，仍要分别确认。",
+          "source_refs": [
+            "STARVATION",
+            "PARENTJOIN",
+            "LOSS"
+          ]
+        }
+      ],
+      "original_claim_text": "出发前，先看当前和满员人数，缺的是哪些兵团。再读补给库存与军队容量、当地用量与补给上限。库存够不够、当地能不能支持当前用量，是不同的问题。军队人数没变，地点条件也仍可能改变。",
+      "mechanism_or_actual_scope": {
+        "STARVATION": "external_delivered_candidate_not_deployed",
+        "PARENTJOIN": "external_delivered_candidate_not_deployed",
+        "LOSS": "external_delivered_candidate_not_deployed"
+      }
+    },
+    {
+      "paragraph_id": "C06-07",
+      "topic": "实际补员和到场后重读",
+      "evidence_level": "source_mechanism",
+      "current_speakable_conclusion": "兵员恢复也按这个顺序看。补员准备值、许可和计算出的请求，说明条件走到了哪一步；真正新增多少，要看兵槽实际写入。一次更新的前后净变化里，还可能夹着清零和缓存刷新。到场以后，再按新地点读库存、缺员和当前条件，别沿用海上或出发时的旧判断。",
+      "spoken_text": "兵员恢复也按这个顺序看。补员准备值、许可和计算出的请求，说明条件走到了哪一步；真正新增多少，要看兵槽实际写入。一次更新的前后净变化里，还可能夹着清零和缓存刷新。到场以后，再按新地点读库存、缺员和当前条件，别沿用海上或出发时的旧判断。",
+      "source_refs": [
+        "REFILL",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "refill",
+        "comparison"
+      ],
+      "actual_shot_ids": [],
+      "missing_filming": [
+        "真实physical ADD指令producer与后态；合法toggle/独立state及同机会对照；目前不能填已补N人"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "兵员恢复也按这个顺序看。",
+          "source_refs": [
+            "REFILL",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "补员准备值、许可和计算出的请求，说明条件走到了哪一步；真正新增多少，要看兵槽实际写入。",
+          "source_refs": [
+            "REFILL",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "一次更新的前后净变化里，还可能夹着清零和缓存刷新。",
+          "source_refs": [
+            "REFILL",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "到场以后，再按新地点读库存、缺员和当前条件，别沿用海上或出发时的旧判断。",
+          "source_refs": [
+            "REFILL",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "接战前，确认实际到了哪里，还有哪些队伍在路上，可用人数和库存是多少。当前零损耗只说眼前条件，不保证以后安全；当前正补给也不保证以后一直恢复。然后把到场的真实状态交给战斗判断，让出发计划与现实接起来。",
+      "mechanism_or_actual_scope": {
+        "REFILL": "external_delivered_candidate_not_deployed",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C06-08",
+      "topic": "付款当前闭合范围",
+      "evidence_level": "actual_R0173_boarding_plus_maintenance_unknown",
+      "current_speakable_conclusion": "支付再核一次：本例已经对上三金币登船扣款。军事维护的当前月率、总支出和钱包净变化，各自可以帮助读账；要说实际付了多少军事维护，还要把对应费用分量和那次真正结算接上。缺这笔明细时，费用列保留未知，也不解释成免费。",
+      "spoken_text": "支付再核一次：本例已经对上三金币登船扣款。军事维护的当前月率、总支出和钱包净变化，各自可以帮助读账；要说实际付了多少军事维护，还要把对应费用分量和那次真正结算接上。缺这笔明细时，费用列保留未知，也不解释成免费。",
+      "source_refs": [
+        "R0173",
+        "GENERIC",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison",
+        "payment"
+      ],
+      "actual_shot_ids": [
+        "S173-POST"
+      ],
+      "missing_filming": [
+        "R08实际维护cadence/军事分量/wallet write；3金币证据卡与海上候选需连续审阅"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "支付再核一次：本例已经对上三金币登船扣款。",
+          "source_refs": [
+            "R0173",
+            "GENERIC",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "军事维护的当前月率、总支出和钱包净变化，各自可以帮助读账；要说实际付了多少军事维护，还要把对应费用分量和那次真正结算接上。",
+          "source_refs": [
+            "R0173",
+            "GENERIC",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "缺这笔明细时，费用列保留未知，也不解释成免费。",
+          "source_refs": [
+            "R0173",
+            "GENERIC",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "费用也回看一次。当次收入、完整支出和已经发生的支付，放在各自正确范围里；净收入已经扣过的军费，不再重扣。实际登船支付还没读到，就继续未知。完整账比一个钱包差值更能说明路线到底花了什么。",
+      "mechanism_or_actual_scope": {
+        "R0173": "checked_in_at_frozen_head",
+        "GENERIC": "checked_in_at_frozen_head",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    },
+    {
+      "paragraph_id": "C06-10",
+      "topic": "玩家行动收束与Halt真实范围",
+      "evidence_level": "actual_R0173_unlocked_Halt_and_player_checklist",
+      "current_speakable_conclusion": "出发前读人数、库存和路线，途中追踪实际变化，接战前确认真正到场的状态。罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。把每个动作接到自己的后态，再按这次可见条件选择下一步，行军计划才跟得上军队真正走过的路。",
+      "spoken_text": "出发前读人数、库存和路线，途中追踪实际变化，接战前确认真正到场的状态。罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。把每个动作接到自己的后态，再按这次可见条件选择下一步，行军计划才跟得上军队真正走过的路。",
+      "source_refs": [
+        "DIRECTOR",
+        "R0173",
+        "COMPARE"
+      ],
+      "agent_consumer_api_keys": [
+        "comparison"
+      ],
+      "actual_shot_ids": [
+        "S173-HALT",
+        "S174"
+      ],
+      "missing_filming": [
+        "R0173 Halt未入原片；R0174待实际录制/独立结果及clean审核，不能用登船raw顶替"
+      ],
+      "edit_action": "重写旧William/.3结果，不移植数字",
+      "ready_to_record_as_bounded_draft": true,
+      "full69_script_frozen": false,
+      "tts_generated": false,
+      "R10_actual_result": false,
+      "sentence_sources": [
+        {
+          "sentence": "出发前读人数、库存和路线，途中追踪实际变化，接战前确认真正到场的状态。",
+          "source_refs": [
+            "DIRECTOR",
+            "R0173",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。",
+          "source_refs": [
+            "DIRECTOR",
+            "R0173",
+            "COMPARE"
+          ]
+        },
+        {
+          "sentence": "把每个动作接到自己的后态，再按这次可见条件选择下一步，行军计划才跟得上军队真正走过的路。",
+          "source_refs": [
+            "DIRECTOR",
+            "R0173",
+            "COMPARE"
+          ]
+        }
+      ],
+      "original_claim_text": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+      "mechanism_or_actual_scope": {
+        "DIRECTOR": "checked_in_at_frozen_head",
+        "R0173": "checked_in_at_frozen_head",
+        "COMPARE": "checked_in_at_frozen_head"
+      }
+    }
+  ],
+  "shooting_priority": [
+    "R0174未锁Halt连贯动作与次日后态（仅Root现场取得后补）",
+    "R03围城自然正physical writer+上下文",
+    "R04 county-primary真实跨界+physical事件",
+    "R05正常低阈值场/新join部署后真实供给physical事件",
+    "R06 actual ADD producer与合法toggle对照",
+    "R09同日split/merge+实际统帅/新增record",
+    "冻结新普通T0后A/B/C三臂与两张结果表"
+  ],
+  "current_media_credit": "R0173 three spans20.1s candidate only; zero new clean signoff claimed; Halt absent in that raw; R0174pending"
+}

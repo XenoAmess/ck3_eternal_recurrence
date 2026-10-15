@@ -1,0 +1,227 @@
+{
+  "schema": "xar.episode04-refill-permission-source-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T14:58:34.366325+00:00",
+  "exact_build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "source_head": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+  "logical_function": {
+    "begin_rva": "262C6E0",
+    "end_rva_exclusive": "262C9A5",
+    "bytes": 709,
+    "sha256": "0ac1719185a4e74d65d58c9246493aaa27d9929301a4751d36bf0bf639a4ae72",
+    "pdata_index": 132720,
+    "unwind_rva": "5125BA4",
+    "unwind_flags": 0,
+    "decoded_bytes": 709
+  },
+  "actual_new_read_cost": {
+    "metadata_bytes": 128,
+    "function_bytes": 709,
+    "read_calls": 12,
+    "logical_functions": 1,
+    "whole_exe_hash_recomputed": false,
+    "external_callee_bodies_read": 0
+  },
+  "source_semantics": "Complete permission body; raw helper return and bit/resource operands remain unexpanded. This is source closure only, never toggle action, current switch or actual refill.",
+  "reviewed_branch_instructions": [
+    {
+      "rva": "262C6F2",
+      "bytes": "83b93801000001",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rcx + 0x138], 1"
+    },
+    {
+      "rva": "262C6FF",
+      "bytes": "0f848b020000",
+      "mnemonic": "je",
+      "operands": "0x262c990"
+    },
+    {
+      "rva": "262C70A",
+      "bytes": "817814796d7241",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rax + 0x14], 0x41726d79"
+    },
+    {
+      "rva": "262C713",
+      "bytes": "837810ff",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rax + 0x10], -1"
+    },
+    {
+      "rva": "262C719",
+      "bytes": "80b8d401000000",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [rax + 0x1d4], 0"
+    },
+    {
+      "rva": "262C726",
+      "bytes": "80b8ec01000000",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [rax + 0x1ec], 0"
+    },
+    {
+      "rva": "262C73A",
+      "bytes": "8178384f624447",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rax + 0x38], 0x4744624f"
+    },
+    {
+      "rva": "262C741",
+      "bytes": "7407",
+      "mnemonic": "je",
+      "operands": "0x262c74a"
+    },
+    {
+      "rva": "262C743",
+      "bytes": "b001",
+      "mnemonic": "mov",
+      "operands": "al, 1"
+    },
+    {
+      "rva": "262C74A",
+      "bytes": "8b9730010000",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rdi + 0x130]"
+    },
+    {
+      "rva": "262C755",
+      "bytes": "83bf2c010000ff",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rdi + 0x12c], -1"
+    },
+    {
+      "rva": "262C794",
+      "bytes": "8b9028010000",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rax + 0x128]"
+    },
+    {
+      "rva": "262C79C",
+      "bytes": "8b972c010000",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rdi + 0x12c]"
+    },
+    {
+      "rva": "262C7A7",
+      "bytes": "baffffffff",
+      "mnemonic": "mov",
+      "operands": "edx, 0xffffffff"
+    },
+    {
+      "rva": "262C7D6",
+      "bytes": "395318",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [rbx + 0x18], edx"
+    },
+    {
+      "rva": "262C7E2",
+      "bytes": "488b83c0010000",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rbx + 0x1c0]"
+    },
+    {
+      "rva": "262C7E9",
+      "bytes": "4885c0",
+      "mnemonic": "test",
+      "operands": "rax, rax"
+    },
+    {
+      "rva": "262C7F2",
+      "bytes": "80b8a904000000",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [rax + 0x4a9], 0"
+    },
+    {
+      "rva": "262C7F9",
+      "bytes": "0f8491010000",
+      "mnemonic": "je",
+      "operands": "0x262c990"
+    },
+    {
+      "rva": "262C986",
+      "bytes": "498bce",
+      "mnemonic": "mov",
+      "operands": "rcx, r14"
+    },
+    {
+      "rva": "262C989",
+      "bytes": "e862b50200",
+      "mnemonic": "call",
+      "operands": "0x2657ef0"
+    },
+    {
+      "rva": "262C990",
+      "bytes": "32c0",
+      "mnemonic": "xor",
+      "operands": "al, al"
+    }
+  ],
+  "external_source_packet": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source",
+    "availability_at_seal": "readable",
+    "review_due_utc": "2026-10-16T07:45:01.597Z",
+    "pins": [
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\262C6E0.actual.json",
+        "bytes": 36597,
+        "sha256": "362034e028396f319251cd2f6c74f3e5113801c345d9d0492006d00ad3b34f5f"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\262C6E0.bin",
+        "bytes": 709,
+        "sha256": "0ac1719185a4e74d65d58c9246493aaa27d9929301a4751d36bf0bf639a4ae72"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\262C6E0.asm",
+        "bytes": 12331,
+        "sha256": "83d513354e556fc576c4cf19593b16952b3a7ee866ca76b7a3272319cbc14cf9"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\source-plan-initial.json",
+        "bytes": 4813,
+        "sha256": "dceebf4b9942fab54132618fdb49f853891e12cca1f6d479e8ca9aa86e36e44d"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\PLAN-CHECK-initial.actual.json",
+        "bytes": 1064,
+        "sha256": "77990d74d8382cf7405a5686dd1fdedb716a8c9ffe93ed29619e506407d6df87"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\source-plan-body.json",
+        "bytes": 5366,
+        "sha256": "514cd73b48e67a239a913c1e6901f6bfe638d878239cbcdefb5c72f519a835e7"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\PLAN-CHECK-body.actual.json",
+        "bytes": 1064,
+        "sha256": "585241ffa255625398ebf3f0a6df97001547b976d6cd18a3451939bed886227f"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\ADMISSION.actual.json",
+        "bytes": 1337,
+        "sha256": "60c259549541a3741879f3998cbfa81f6fc9699df5903e7acf121dde2bcbab22"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\READ-metadata-initial.actual.json",
+        "bytes": 4956,
+        "sha256": "6ada3df4aa0bc9334cdfcc1626cbf265d81c8d529d4922531e700b22626e5999"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\READ-body.actual.json",
+        "bytes": 3888,
+        "sha256": "81acaad8f1b2e4ce005421d9d6ed89ad7d8efe39beb94afa65249834e2a7a0ad"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\toggle-source\\SOURCE-READ-STATE.actual.json",
+        "bytes": 10676,
+        "sha256": "38ff56f476883739810611a64e25d3e96356a50d9b6ed7b57b7abc2461b29a9b"
+      }
+    ]
+  }
+}

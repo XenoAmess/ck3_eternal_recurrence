@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.r0174.next-producer-observation-contract.v1",
+  "status": "PROPOSAL_NOT_IMPLEMENTED_NOT_SAMPLED",
+  "default_enabled": false,
+  "required_new_cold_owned_window": true,
+  "reuse_existing_generic_observer": true,
+  "exact_source_entry_rva": 42956864,
+  "entry_inputs": {
+    "RCX": "scheduler task+0x70 inline job context",
+    "RDX": "actual Character from task+0x68 array descriptor[index]",
+    "R8D": "actual index"
+  },
+  "entry_context": "Read pointer *(RDX+0x1C0), not inline RDX+1C0. Gate to fresh admitted PID/create/gen/window/epoch + full Character ID.",
+  "bounded_snapshot_fields": [
+    "actual Character pointer/full ID/extension",
+    "original RCX job context; RDX Character; R8d index",
+    "context pointer identity before and after reads",
+    "four signed64 at context+2C0/2C8/28/30",
+    "raw native [RSP] return and same-image qualification",
+    "entry/return clock/thread/session; original exactly once"
+  ],
+  "interpretation": "Entry/exit snapshots localize change boundaries but cannot identify a writer or name a military term. No unseen original call or transitive side effect is assumed.",
+  "minimal_exact_writer_proposal": {
+    "status": "future_design_requires_new_qualification",
+    "kind": "four hardware data-write observations at fresh same-owned Character secondary context offsets",
+    "offsets": [
+      704,
+      712,
+      40,
+      48
+    ],
+    "length": 8,
+    "requirements": [
+      "Use fresh actual pointer from gated source hook; never reuse this session absolute address on restart",
+      "Reject or retire watches on context identity/epoch/window/process changes",
+      "Record exact writer thread, raw post-instruction PC and context registers, old/new value, session/date/clock/ordinal and lost-event status",
+      "Only if all four DR slots are available; preserve existing debug state and all trap/original control flow, never steal debugger/hardware probes",
+      "Producer may run on a different thread; a watch on callback thread16496 alone cannot claim full coverage",
+      "Use finite natural refresh window and release all watches at close; new source reads start only from actual writer PC, with bounded metadata/body plan",
+      "Do not infer military semantics, cadence, or no-producer from absent events; code and cold fixture/ABI qualification still required"
+    ]
+  },
+  "next_source_read_acceptance": [
+    "New genuine same-image writer PC and source-bound context/offset is a new finite entry",
+    "The four raw terms need explicit producer and invalidation contract before semantic naming",
+    "Military paid component additionally requires actual source component and payer wallet store chain; currentMaintenance2C13F60 rate alone is insufficient"
+  ]
+}

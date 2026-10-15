@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 
 #include "xar_bridge/game_contract.hpp"
@@ -233,6 +233,10 @@ struct ArmyBindings {
   bool current_unit_arrival_prestore_inputs_enabled = false;
   const std::int32_t *loaded_disembark_penalty_days_rule = nullptr;
   ck3_12004::NextRouteReplenishmentPositionBindings12004 next_route_replenishment_position_bindings{};
+  // Exact .4 only; software readback of ArRg148 and Character1B8 F4/F8.
+  std::string_view regiment_character_role_executable_sha256{};
+  void **regiment_character_role_storage_slot = nullptr;
+  void **regiment_character_role_fallback_slot = nullptr;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

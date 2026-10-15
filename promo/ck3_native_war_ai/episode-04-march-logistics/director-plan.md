@@ -192,3 +192,15 @@ Root本轮仅直接审了八张编码单帧，另十六张未授内容，媒体�
 ## 2026-10-15 Review02 锁定停止与改道复用入口
 
 E4-04的R12锁定Halt与R13锁定改道使用[仓库内执行/拍摄手册和只读验收器](tools/review02/locked_routes/README.md)，机理、智能体纯guard及实际业务边界见[共享专题](../../../docs/ck3-native-ai/episode04-locked-halt-reroute-12004.md)。新卡仍须独立正常Move、同帧实际progress大于loaded cutoff、独立后态与真实终点；R11未锁定历史负控、命令ACK和离线fixture都不授新卡完成。未来case显式绑定源机器与路径，不依赖作者C盘目录。
+
+## 2026-10-16 最新拍摄与研究切点：R0174已闭场
+
+本节在原计划和冻结story-a02之后追加，不回写旧raw来源。来源机器`desktop-3fevhd2-1c74096080`；[R0174实证/便携重算](../../../docs/ck3-native-ai/episode04-r0174-common-t0-control-12004.md)、[10月16日日报](../../../docs/autonomous-agent-progress/daily/2026-10-16.md)及[本机交接](../../../docs/handover/2026-10-15-war-episode04-machine-resume.md)为最新入口。
+
+R0174运行source1463/a05，PID17468/create134365505726865638/gen1/episode`native-31254-0d067159706e`。实际共同保存seed9ab3载入后，Army18在2624驻定21个连续exact日，raw53145048→53145552，每日+24/1tick/overshoot0，完整空route、1196/1196。pair检查PASS仅授该驻定对照与历史R0173保存T0续行的有限配对；历史treatment并未重新load9ab3，不是两臂新冷载。原R07七日/避经济结算/静止T0后新Move仍缺，研究仍R00/R02/R11 **3/14＝21.4%**。
+
+本次新拍未锁Halt raw45秒、1,350帧、1440p30无音轨，56,479,663B，SHA`6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12`；全片strict decode通过。原片0–4秒移动转待命、4–20秒待命为候选，左上tooltip遮挡及连续clean/人工1×待审，新合格动态包仍 **0/11**。旧R0173的6分钟raw确无Halt，不能改称其已入镜；新R0174镜头另标run和真实时码。
+
+E4-03采用[实际物理损耗](../../../docs/ck3-native-ai/episode04-siege-loss-12004.md)、[县进入](../../../docs/ck3-native-ai/episode04-county-entry-loss-12004.md)、[低库存](../../../docs/ck3-native-ai/episode04-starvation-loss-12004.md)、[实际补员](../../../docs/ck3-native-ai/episode04-refill-application-12004.md)共同来源，机制与新实机正例分开；E4-05采用[A](../../../docs/ck3-native-ai/episode04-strategy-a-12004.md)/[B](../../../docs/ck3-native-ai/episode04-strategy-b-12004.md)/[C](../../../docs/ck3-native-ai/episode04-strategy-c-12004.md)只读决策consumer和[比较合同](../../../docs/ck3-native-ai/episode04-comparison-contract-12004.md)，新版三臂未复拍，禁止胜负和费用排名。新a05四raw算式500974−0−(218610+0)=282364与钱包吻合只授原始输入，军事维护仍unclosed。
+
+[24段中文草稿/claim-shot-agent映射](review02/story-a02/README.md)是新稿覆盖24/69，不代表最终69段全文或声音完成。本轮追加最新实证，保留该草稿封存时的镜头状态。下一夜间接续窗口优先nativea06及锁定Halt/重定向；核心研究暂估10月17–19日，新Review暂估10月18–21日，均以实际来源/正常场景和后续检查为条件，不是保证。原Review01 28:55.80的制作、机器审计和交付事实保持；所有自动检查与clean/人工完整审阅分别结算。

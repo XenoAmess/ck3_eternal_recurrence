@@ -1,5 +1,6 @@
 """Complete stored persistent-regiment DATA observations; no future fill forecast."""
 from __future__ import annotations
+from .army_regiment_character_role_12004 import normalize_regiment_character_role_v1
 
 _ROW={"army_regiment_id","source","status","ready","native_data_record_count","unavailable_reason","records"}
 _I32=("record_index","persistent_regiment_id","chunk_index","current_soldiers","maximum_soldiers","effective_current_soldiers","state_raw")
@@ -22,7 +23,7 @@ def normalize_regiment_replenishment_records_v1(value: object) -> list[dict[str,
         raise ValueError("native full DATA must be an array")
     result=[]
     for row in value:
-        if not isinstance(row,dict) or set(row) not in (_ROW,_ROW|_ADMISSION) or row["source"] != "native_all_data_records":
+        if not isinstance(row,dict) or set(row) not in (_ROW,_ROW|_ADMISSION,_ROW|{"native_character_role_v1"},_ROW|_ADMISSION|{"native_character_role_v1"}) or row["source"] != "native_all_data_records":
             raise ValueError("native full DATA regiment schema is malformed")
         integer(row["army_regiment_id"],32,"army_regiment_id",False)
         status=row["status"]
@@ -47,6 +48,9 @@ def normalize_regiment_replenishment_records_v1(value: object) -> list[dict[str,
             raise ValueError("native loss writer admission reason is malformed")
         if skipped is not None and admission_reason is not None:
             raise ValueError("native loss writer admission available value has a reason")
+        normalized_role = (normalize_regiment_character_role_v1(
+            row["native_character_role_v1"], army_regiment_id=row["army_regiment_id"],
+            loss_writer_skipped=skipped) if "native_character_role_v1" in row else None)
         for index,record in enumerate(records):
             if not isinstance(record,dict) or set(record) not in (_RECORD,_RECORD|_ASSOCIATION) or record["status"] not in {"available","unavailable"}:
                 raise ValueError("native full DATA record schema is malformed")
@@ -71,7 +75,8 @@ def normalize_regiment_replenishment_records_v1(value: object) -> list[dict[str,
                 raise ValueError("native unavailable full DATA record requires its reason")
         if status=="available" and any(record["status"]!="available" for record in records):
             raise ValueError("native complete full DATA contains an unavailable record")
-        result.append({**row,"native_loss_writer_skipped":skipped,
+        result.append({**row,
+                       **({"native_character_role_v1":normalized_role} if "native_character_role_v1" in row else {}),"native_loss_writer_skipped":skipped,
                        "loss_writer_admission_unavailable_reason":admission_reason,
                        "records":[{**record,"chunk_army_regiment_id":record.get("chunk_army_regiment_id")} for record in records]})
     return result

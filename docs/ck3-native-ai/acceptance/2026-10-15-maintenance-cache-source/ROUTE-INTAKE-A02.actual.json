@@ -1,0 +1,10 @@
+{
+  "schema": "xar.e04.named-getter-route-intake.v1",
+  "observed_utc": "2026-10-15T14:57:35.634609+00:00",
+  "source_path": "C:\\ck3-e04-resume-20261015-a01\\source-routing-a01\\NAMED-CACHE-PROBES.actual-a01.json",
+  "copy_relative": "inputs/named-cache-routes.json",
+  "bytes": 1108,
+  "sha256": "5b1b3096e1a865e42057090a6b12d79c00761e8f2e962add92f1f12737f87c27",
+  "producer_edge_added": false,
+  "new_EXE_bytes": 0
+}

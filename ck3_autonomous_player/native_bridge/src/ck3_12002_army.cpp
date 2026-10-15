@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
 #include "xar_bridge/ck3_12004_current_first_route_target_supply_contributors.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
@@ -1155,7 +1155,8 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
             Replenishment(bindings, Resolve(bindings.regiment_storage_slot, id), id));
         result.regiment_replenishment_records_v1->push_back(
             ck3_12003::ReadArmyRegimentReplenishmentRecordsV1(
-                bindings, Resolve(bindings.regiment_storage_slot, id), id));
+                bindings, Resolve(bindings.regiment_storage_slot, id), id,
+                Load<std::int32_t>(army, 0x10)));
       }
       result.fixed_chunk0_preparation_inputs_v1 =
           ck3_12003::ReadFixedChunk0PreparationInputsV1(bindings, result);

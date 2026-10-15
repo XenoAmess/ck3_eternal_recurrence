@@ -1,0 +1,217 @@
+[
+  {
+    "raw_record": {
+      "journal_sequence": 12,
+      "kind": 2,
+      "receiver": 2867656770920,
+      "second_pointer": 2867616282944,
+      "caller_return_rva": 42626428,
+      "amount_raw": 282364,
+      "resource_kind_raw": -1,
+      "component_raw": -1,
+      "entry_event": {
+        "clock_identity": 140715344921080,
+        "sequence": 47976876,
+        "thread_id": 16496
+      },
+      "returned_event": {
+        "clock_identity": 140715344921080,
+        "sequence": 47976877,
+        "thread_id": 16496
+      },
+      "parent_transition_entry": {
+        "clock_identity": 0,
+        "sequence": 0,
+        "thread_id": null
+      },
+      "parent_gateway_entry": {
+        "clock_identity": 0,
+        "sequence": 0,
+        "thread_id": null
+      },
+      "parent_transition_army": 0,
+      "parent_gateway_character": 0,
+      "parent_transition_caller": 0,
+      "parent_gateway_caller": 0,
+      "parent_gateway_resource": -1,
+      "parent_gateway_component": -1,
+      "parent_gateway_amount": 0,
+      "natural_parent_metadata": {
+        "observed": false,
+        "phase": 0,
+        "actual_entry_rva": 0,
+        "primary_manager": 0,
+        "game_state": 0,
+        "session_identity": null,
+        "entry_event": {
+          "clock_identity": 0,
+          "sequence": 0,
+          "thread_id": null
+        },
+        "date_raw": null,
+        "absolute_day_raw": null
+      },
+      "natural_return_metadata": {
+        "observed": false,
+        "phase": 0,
+        "actual_entry_rva": 0,
+        "primary_manager": 0,
+        "game_state": 0,
+        "session_identity": null,
+        "entry_event": {
+          "clock_identity": 0,
+          "sequence": 0,
+          "thread_id": null
+        },
+        "date_raw": null,
+        "absolute_day_raw": null
+      },
+      "session_entry": {
+        "pid": 17468,
+        "process_create_time_100ns": 134365505726865638,
+        "connection_generation": 1,
+        "loaded_game_epoch": null,
+        "controlled_window_id": 1,
+        "same_owned_process_no_load_window": true,
+        "game_state_identity_witness": 2866611225280,
+        "player_character_full_id": 31254,
+        "snapshot_revision": 49,
+        "native_date_raw": 300063320342982512,
+        "absolute_day_raw": 389394
+      },
+      "session_return": {
+        "pid": 17468,
+        "process_create_time_100ns": 134365505726865638,
+        "connection_generation": 1,
+        "loaded_game_epoch": null,
+        "controlled_window_id": 1,
+        "same_owned_process_no_load_window": true,
+        "game_state_identity_witness": 2866611225280,
+        "player_character_full_id": 31254,
+        "snapshot_revision": 49,
+        "native_date_raw": 300063320342982512,
+        "absolute_day_raw": 389394
+      },
+      "before": {
+        "character": 2867616282944,
+        "wrapper": 2867656770920,
+        "character_id": 31254,
+        "character_magic": 1130914162,
+        "character_extension": 2867656770672,
+        "personal_gold_bits": 25166043,
+        "wrapper_balance_bits": 25166043,
+        "land_id": null,
+        "land_magic": null,
+        "army_id": null,
+        "army_magic": null,
+        "requested_unit_id": null,
+        "province_magic": null,
+        "province_id": null,
+        "army_1d4": null,
+        "capture_complete": true,
+        "failed_reads": 0
+      },
+      "after": {
+        "character": 2867616282944,
+        "wrapper": 2867656770920,
+        "character_id": 31254,
+        "character_magic": 1130914162,
+        "character_extension": 2867656770672,
+        "personal_gold_bits": 25448407,
+        "wrapper_balance_bits": 25448407,
+        "land_id": null,
+        "land_magic": null,
+        "army_id": null,
+        "army_magic": null,
+        "requested_unit_id": null,
+        "province_magic": null,
+        "province_id": null,
+        "army_1d4": null,
+        "capture_complete": true,
+        "failed_reads": 0
+      },
+      "original_called": true,
+      "original_returned": true,
+      "raw_return_bits": 4294967295,
+      "clock_thread_order_matches": true,
+      "session_matches": true,
+      "natural_parent_matches": false,
+      "same_character_after": true,
+      "same_wrapper_after": true,
+      "personal_wrapper_matches_character": true,
+      "source_boarding_call_chain_matches": false,
+      "tls_depth_exceeded": false,
+      "generic_wallet_context_v1": {
+        "schema_version": 1,
+        "source_entry_rva": 42626320,
+        "source_wallet_return_rva": 42626428,
+        "attribution_scope": "raw_source_context_and_unwind_parent_only",
+        "maintenance_attribution": "unclosed",
+        "before": {
+          "context_identity_before": 2867562606880,
+          "context_identity_after": 2867562606880,
+          "value_2c0": 500974,
+          "value_2c8": 0,
+          "value_28": 218610,
+          "value_30": 0,
+          "capture_complete": true,
+          "context_stable": true,
+          "failed_reads": 0
+        },
+        "after": {
+          "context_identity_before": 2867562606880,
+          "context_identity_after": 2867562606880,
+          "value_2c0": 500974,
+          "value_2c8": 0,
+          "value_28": 218610,
+          "value_30": 0,
+          "capture_complete": true,
+          "context_stable": true,
+          "failed_reads": 0
+        },
+        "parent_trace": {
+          "module_base": 140702304501760,
+          "module_image_size": 102518784,
+          "reported_frame_count": 18,
+          "capture_succeeded": true,
+          "truncated": false,
+          "caller_match_count": 1,
+          "frames_absolute": [
+            140715236490519,
+            140715236485538,
+            140715236479251,
+            140715236488755,
+            140715236493716,
+            140702347128188,
+            140702347458873,
+            140702364765176,
+            140702364765260,
+            140702347550022,
+            140702371154546,
+            140702371160527,
+            140702371154762,
+            140702371335937,
+            140702371336410,
+            140702373990288,
+            140718715925380,
+            140718722763921
+          ],
+          "parent_return_absolute": 140702347458873,
+          "parent_return_rva": 42957113,
+          "parent_in_same_image": true
+        },
+        "before_computed_add_raw": 282364,
+        "before_formula_matches_amount": true,
+        "context_values_stable": true
+      }
+    },
+    "context_present": true,
+    "own_current_personal_account_callback": true,
+    "whole_callback_ADD_balance_reconciles": true,
+    "finite_parent_source_candidate": {
+      "parent_return_rva": 42957113,
+      "metadata_lookup_pc_rva": 42957112,
+      "scope": "actual unique following OS frame; confirm reached upstream call instructions before interpreting producer"
+    }
+  }
+]

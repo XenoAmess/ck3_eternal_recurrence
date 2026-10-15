@@ -1,0 +1,61 @@
+{
+  "schema": "xar.e04.strategy-a.offline-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T14:59:37.396268+00:00",
+  "observation_source": "Completed exec output chunk 6597f0; source AST and exact candidate bytes",
+  "source_head_read": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+  "interpreter": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+  "python_version_actual": "3.14.7",
+  "actual_cwd": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01",
+  "shell": "cmd.exe",
+  "login": false,
+  "command": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -B -m unittest discover -s promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison -p test_strategy_a.py",
+  "tests": {
+    "synthetic_only": true,
+    "count": 19,
+    "duration_seconds": 27.57,
+    "exit_code": 0,
+    "result": "OK"
+  },
+  "candidate_files": [
+    {
+      "path": "docs/ck3-native-ai/episode04-strategy-a-12004.md",
+      "bytes": 9426,
+      "sha256": "b375edae9647b0f3957f03a61de7315eefeee2f35f301e5c0b255a5d049e6ea9"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a.py",
+      "bytes": 13203,
+      "sha256": "b91bf5a6ecd18b642ddda2a03ffc441b7ca29305c4bcc1a6a7648e648769302d"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_a.py",
+      "bytes": 13221,
+      "sha256": "314a6711e60754e268eac312543ea8b442ae1a878d5297c22143aa67da12e52b"
+    }
+  ],
+  "source_lines": {
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a.py": {
+      "admit": 80,
+      "observe_move": 147,
+      "update": 166,
+      "report": 197
+    },
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py": {
+      "endpoint": 96,
+      "clock_days": 156
+    }
+  },
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Consumes exported JSON/receipt shapes; no CK3 script/parser/IR semantic execution."
+  },
+  "actual_T0": null,
+  "actual_goal_province_id": null,
+  "actual_army_id": null,
+  "new_gameplay_days": 0,
+  "main_tree_written": false,
+  "game_sdk_desktop_access": false,
+  "live_execution_performed": false,
+  "research_card_closed": false
+}

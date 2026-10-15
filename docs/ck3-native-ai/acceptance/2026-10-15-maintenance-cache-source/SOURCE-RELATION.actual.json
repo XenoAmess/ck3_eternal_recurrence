@@ -1,0 +1,118 @@
+{
+  "schema": "xar.e04.maintenance-cache.existing-source-relations.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_utc": "2026-10-15T14:53:02.901679+00:00",
+  "exact_build": {
+    "version": "1.20.0.4 / Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "plan_sha256": "f7cfc59c8a5aa8cbd1f7eb1bb2d39a54f0ddabb932980d1a6260df5d53796af8",
+  "offline_plan_check_sha256": "dc01b243ae7e5bb002edcb78a3fa34fe70b35d51a60040c43981c97a7c4b0b4e",
+  "existing_exact4_bindings": [
+    {
+      "binding_field": "monthly_income",
+      "rva": "0x2bca940",
+      "type_alias": "MonthlyIncome",
+      "scope": "existing paused current-resource getter binding, not settlement raw field semantics"
+    },
+    {
+      "binding_field": "expense_context_character",
+      "rva": "0x28bfd80",
+      "type_alias": "ExpenseContextCharacter",
+      "scope": "existing paused current-resource getter binding, not settlement raw field semantics"
+    },
+    {
+      "binding_field": "monthly_total_expenses",
+      "rva": "0x2bcb160",
+      "type_alias": "MonthlyTotalExpenses",
+      "scope": "existing paused current-resource getter binding, not settlement raw field semantics"
+    },
+    {
+      "binding_field": "current_maintenance",
+      "rva": "0x2c13f60",
+      "type_alias": "CurrentMaintenance",
+      "scope": "existing paused current-resource getter binding, not settlement raw field semantics"
+    },
+    {
+      "binding_field": "all_raised_maintenance",
+      "rva": "0x2c152b0",
+      "type_alias": "AllRaisedMaintenance",
+      "scope": "existing paused current-resource getter binding, not settlement raw field semantics"
+    }
+  ],
+  "raw_context_relations": [
+    {
+      "raw_context_offset": "0x2C0",
+      "raw_type": "signed_i64",
+      "actual_source_load": true,
+      "getter_semantic_name": null,
+      "producer_store_rva": null,
+      "refresh_trigger": null,
+      "applied_military_component": null,
+      "evidence_limit": "saved source proves read/use only; existing reader/binder proves no field-to-getter assignment"
+    },
+    {
+      "raw_context_offset": "0x2C8",
+      "raw_type": "signed_i64",
+      "actual_source_load": true,
+      "getter_semantic_name": null,
+      "producer_store_rva": null,
+      "refresh_trigger": null,
+      "applied_military_component": null,
+      "evidence_limit": "saved source proves read/use only; existing reader/binder proves no field-to-getter assignment"
+    },
+    {
+      "raw_context_offset": "0x28",
+      "raw_type": "signed_i64",
+      "actual_source_load": true,
+      "getter_semantic_name": null,
+      "producer_store_rva": null,
+      "refresh_trigger": null,
+      "applied_military_component": null,
+      "evidence_limit": "saved source proves read/use only; existing reader/binder proves no field-to-getter assignment"
+    },
+    {
+      "raw_context_offset": "0x30",
+      "raw_type": "signed_i64",
+      "actual_source_load": true,
+      "getter_semantic_name": null,
+      "producer_store_rva": null,
+      "refresh_trigger": null,
+      "applied_military_component": null,
+      "evidence_limit": "saved source proves read/use only; existing reader/binder proves no field-to-getter assignment"
+    }
+  ],
+  "proved_source_edges": [
+    "exact4 binder selects five existing getter ABI pointers",
+    "existing reader obtains gross and full expenses, computes checked NET",
+    "current/all_raised are independent ten-resource outputs",
+    "saved settlement loads secondary context pointer then four signed64 terms",
+    "four-term wrapping arithmetic supplies positive ADD285EE40"
+  ],
+  "unproved_edges": [
+    "getter result -> any of four raw context terms",
+    "producer -> raw context store",
+    "military-only applied component -> wallet amount",
+    "upstream caller -> calendar cadence",
+    "ExpenseContextCharacter -> secondary raw context pointer",
+    "secondary raw context is a cache with an observed refresh epoch"
+  ],
+  "counterexample_controls": [
+    "positive ADD can contain multiple opposing terms; sign does not isolate military paid expense",
+    "same value or a-b equality does not identify cache producer or lifetime",
+    "ten-slot rate vectors are different outputs from four raw scalar terms; shape alone proves neither an alias nor its absence",
+    "current and all-raised are alternatives, not additive paid components",
+    "expense-context getter ABI returns Character; no source equates it with the raw secondary context",
+    "old1.19/1.20.0.3 GUI/cache RVAs cannot name exact4 fields without mapped source"
+  ],
+  "direct_settlement_named_getter_calls": false,
+  "transitive_callees_fully_closed": false,
+  "new_executable_bytes_read": 0,
+  "new_executable_hashes": 0,
+  "new_native_builds": 0,
+  "game_contact": false,
+  "sdk_contact": false,
+  "main_tree_writes": 0,
+  "maintenance_attribution": "unclosed",
+  "actual_military_paid_component_source_closed": false
+}

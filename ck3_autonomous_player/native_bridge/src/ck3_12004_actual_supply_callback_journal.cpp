@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12004_supply_parent_join_context.hpp"
 
 #include <cstring>
 #include <mutex>
@@ -347,6 +348,15 @@ extern "C" void __fastcall XarActualSupplyCallbackHook12004V1(
   const bool before_values_complete = CaptureValues(army, event.before);
   if (!before_identity_complete || !before_values_complete)
     event.capture_failure_flags |= actual_supply_callback_capture_before;
+
+#if XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004
+  // The scope retains only the actual typed callback RCX receiver. Stock is
+  // deliberately not cached here: the writer reads receiver+180 at its entry.
+  SupplyParentJoinScope12004 parent_scope(army, before.army_id,
+      before.native_carmy_id, event.passed_date_raw64, event.caller_return_rva,
+      static_cast<std::uint32_t>(GetCurrentThreadId()), before_identity_complete);
+  event.supply_parent_invocation_v1 = parent_scope.invocation();
+#endif
 
   // Forward this actual native invocation exactly once, outside capture fault
   // boundaries. Queries never invoke this callback or the supply updater.

@@ -36,3 +36,32 @@ if(BUILD_TESTING AND WIN32)
   set_tests_properties(xar_ck3_12004_actual_loss_writer_registered_mcp PROPERTIES
     FIXTURES_REQUIRED actual_loss_writer_whole_12004)
 endif()
+
+# One source-exact nonzero allocator scope, separate from the default writer.
+option(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004
+  "Observe actual4 residual request source inside the existing loss journal" OFF)
+if(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_residual_parent_hook.cpp)
+  target_compile_definitions(xar_ck3_12002_runtime PRIVATE XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1)
+endif()
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_residual_parent_context_test EXCLUDE_FROM_ALL
+    src/ck3_12004_residual_parent_context_test.cpp)
+  target_link_libraries(xar_ck3_12004_residual_parent_context_test PRIVATE xar_ck3_12002_runtime)
+  target_include_directories(xar_ck3_12004_residual_parent_context_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_residual_parent_context_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_residual_parent_context_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+    target_compile_definitions(xar_ck3_12004_residual_parent_context_test PRIVATE XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1)
+  endif()
+  if(XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004)
+    target_compile_definitions(xar_ck3_12004_residual_parent_context_test PRIVATE XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1)
+  endif()
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_residual_parent_context_test PRIVATE /W4 /WX /permissive- /EHsc /utf-8 /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_12004_residual_parent_context_test
+    COMMAND xar_ck3_12004_residual_parent_context_test
+      "${CMAKE_CURRENT_BINARY_DIR}/wire/residual-parent-12004/NATIVE-WIRE.json")
+endif()

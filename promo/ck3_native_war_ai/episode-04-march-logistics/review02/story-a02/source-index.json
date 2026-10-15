@@ -1,0 +1,883 @@
+{
+  "metadata": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "created_utc": "2026-10-15T15:31:16.206453+00:00",
+    "source_head": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+    "scope": "24 selected paragraph recording draft; not all69 final script",
+    "normal_game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "EXE_sha256_from_Root_existing_provenance": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "EXE_or_raw_media_rehashed_by_this_task": false,
+    "numbering_and_credit": {
+      "director": "P0-SUPPLY/P0-LOSS/P0-SPLIT/P0-MOVE/P0-REFILL；导演案没有R08整卡编号",
+      "review02_experiment_cards": "R08=真维护费结算；R09=新增1/1和统帅变化/拆合微实验",
+      "new_deliveries": "high-parallel-special 标R09，纳入本轮“拆合special”主题；不把它记成R08实机完成",
+      "strict_research_cards_closed": [
+        "R00",
+        "R02",
+        "R11"
+      ],
+      "numerator": 3,
+      "denominator": 14,
+      "strict_percent": 21.4,
+      "new_credit_from_this_story_package": 0
+    },
+    "actual_R10_arms_completed": 0,
+    "winner": null,
+    "tts_generated": false,
+    "media_encoded": false,
+    "human_signoff_created": false,
+    "main_tree_writes": 0
+  },
+  "documents": {
+    "DIRECTOR": {
+      "source_document": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\director-plan.md",
+      "bytes": 26995,
+      "sha256": "e36dc3c48330100012682b36e37636b7d7e995b65258e8a0e7dc311b01d5afe5",
+      "line_anchors": [
+        {
+          "line": 9,
+          "text": "本期回答：**怎样把足够的兵，在合适的时间、以能打仗的状态送到战场？** 观众看完应能读懂军队与当地补给信息，区别补给恢复与兵员补充，识别人数减少的来源，并理解分兵、休整、会合和改道的实际代价。"
+        },
+        {
+          "line": 47,
+          "text": "### 再做三种完整方案"
+        },
+        {
+          "line": 75,
+          "text": "## 镜头与文本要求"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    },
+    "CARDS": {
+      "source_document": null,
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab",
+      "line_anchors": [
+        {
+          "line": 67,
+          "text": "## R03 充足补给围城的真实兵员损失"
+        },
+        {
+          "line": 77,
+          "text": "## R04 县界移动损耗与周期损耗分开"
+        },
+        {
+          "line": 85,
+          "text": "## R05 真S<10饥饿正例"
+        },
+        {
+          "line": 93,
+          "text": "## R06 缺员补员：自然入口、实际physical ADD与开关"
+        },
+        {
+          "line": 103,
+          "text": "## R07 真登船付款（当前明确缺能力，先补源）"
+        },
+        {
+          "line": 111,
+          "text": "## R08 真维护费结算（同样等待付款执行链）"
+        },
+        {
+          "line": 119,
+          "text": "## R09 B微实验：新增1/1和统帅变化"
+        },
+        {
+          "line": 129,
+          "text": "## R10 同新T0、同空间终点、90实际日ABC"
+        },
+        {
+          "line": 145,
+          "text": "## R11 未锁定Halt"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed"
+    },
+    "LOSS": {
+      "source_document": "docs/ck3-native-ai/episode04-siege-loss-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-siege-a01\\patch\\docs\\ck3-native-ai\\episode04-siege-loss-12004.md",
+      "bytes": 11792,
+      "sha256": "5e153e3574750a216c837236a97b54ead41e5e1afefaeaf69016fd29a5ca6461",
+      "line_anchors": [
+        {
+          "line": 8,
+          "text": "可立即复用的结论是：**完整、同实例的自然 writer 事件可以证明一次实际物理扣兵；围城预算、Army 净减少和 regular-core 七槽净变化均不能代替它。**"
+        },
+        {
+          "line": 70,
+          "text": "## 数字和原因的四个独立条件"
+        },
+        {
+          "line": 87,
+          "text": "## 可执行的共同消费者"
+        },
+        {
+          "line": 112,
+          "text": "## 2026-10-15 实际小样本拒收与新增测试"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-siege-a01\\ROOT-DELIVERY.actual.json",
+        "bytes": 2364,
+        "sha256": "6c3c2df35e3b26c805c4a716b08fc0ab01e4ffd481a1828f77aa472784bc9b0a"
+      }
+    },
+    "COUNTY": {
+      "source_document": "docs/ck3-native-ai/episode04-county-entry-loss-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-county-a01\\episode04-county-entry-loss-12004.md",
+      "bytes": 10324,
+      "sha256": "87332a136e7d2814e23132983a03a6246576c4dc5e156b2b203375bce3b508d3",
+      "line_anchors": [
+        {
+          "line": 3,
+          "text": "县进入的首选扣兵有独立、可识别的实际 caller：`24E25E9 ->2634190`，返回点 `24E25EE`。它和周期供给首选 `24E35FF`、周期围城/劫掠首选 `24E377C` 可按**逐次 writer 来源**分开。县剩余预算也进入通用 `2A957E0`，其 writer 返回点同为 `2A958E8`；现有 journal 没有外层原因，因此不能把 residual 全算成周期或县损耗。日期相同、进入新县、预算相符、军队净少人均不能补上这个缺口。"
+        },
+        {
+          "line": 60,
+          "text": "## journal消费和最小可复用代码"
+        },
+        {
+          "line": 72,
+          "text": "## 已保存样本与实际离线验证"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-county-a01\\ROOT-DELIVERY.actual.json",
+        "bytes": 2204,
+        "sha256": "d6ad34e3e81054d5404668f41d0c56f0974c9d96980806a9dd0785de3c6e368d"
+      }
+    },
+    "STARVATION": {
+      "source_document": "docs/ck3-native-ai/episode04-starvation-loss-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-starvation-a01\\candidate\\docs\\ck3-native-ai\\episode04-starvation-loss-12004.md",
+      "bytes": 8031,
+      "sha256": "c6fd009e2960e51970a5a6129d019af55ba38220491ef5cbba3d0481640afdba",
+      "line_anchors": [
+        {
+          "line": 7,
+          "text": "## 阈值与单位"
+        },
+        {
+          "line": 24,
+          "text": "## 哪个阶段读取库存，哪个阶段实际扣兵"
+        },
+        {
+          "line": 56,
+          "text": "## 现有日志的可验范围与缺口"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-starvation-a01\\DELIVERY.json",
+        "bytes": 2142,
+        "sha256": "1eea0aa4aca67ae5134a631a0191939b95efd29b518175cf7f34f35e7c5a6dc1"
+      }
+    },
+    "PARENTJOIN": {
+      "source_document": "docs/ck3-native-ai/army-actual-supply-parent-join-observation-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-starvation-a01\\parent-join-a01\\candidate\\docs\\ck3-native-ai\\army-actual-supply-parent-join-observation-12004.md",
+      "bytes": 8387,
+      "sha256": "0e44571e7a0041550f37b9bd309a643e3fd1ff82038b4c99d24df0479047f0d8",
+      "line_anchors": [
+        {
+          "line": 1,
+          "text": "# 自然供给callback与writer的parent关联：1.20.0.4候选"
+        },
+        {
+          "line": 7,
+          "text": "## 原调用与receiver来源先核验"
+        },
+        {
+          "line": 13,
+          "text": "## 最小观测实现"
+        },
+        {
+          "line": 45,
+          "text": "## 消费与拒绝反例"
+        },
+        {
+          "line": 55,
+          "text": "## 新窄fixture与实际验证"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-starvation-a01\\parent-join-a01\\DELIVERY.json",
+        "bytes": 16857,
+        "sha256": "e4e1e6bd74f7aead854648c0ba052009e1797be3777618de7fa2ba17ea70ffbb"
+      }
+    },
+    "REFILL": {
+      "source_document": "docs/ck3-native-ai/episode04-refill-application-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\files\\docs\\ck3-native-ai\\episode04-refill-application-12004.md",
+      "bytes": 12740,
+      "sha256": "a797b43b56201c35708ad6bd93b638d1b2d8ffe1b3019aff3b1ef338efef26b3",
+      "line_anchors": [
+        {
+          "line": 11,
+          "text": "## 四种证据分别回答什么"
+        },
+        {
+          "line": 25,
+          "text": "## 已闭合的 .4 指令与整数顺序"
+        },
+        {
+          "line": 66,
+          "text": "## 每月补员开关位于准备路径"
+        },
+        {
+          "line": 152,
+          "text": "## 可复用消费出口与反例"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-refill-a01\\QUALIFICATION.actual.json",
+        "bytes": 4750,
+        "sha256": "989e695f97f41de8427e7533c9a62c72190907a82f1fe9274613b2a99e0cb166"
+      }
+    },
+    "SPECIAL": {
+      "source_document": "docs/ck3-native-ai/episode04-special-troops-split-merge-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-a01\\patch-root\\docs\\ck3-native-ai\\episode04-special-troops-split-merge-12004.md",
+      "bytes": 14837,
+      "sha256": "805e5766547743ba6b46344508483a8fb6f6a72afa36e5420ea66183a059838c",
+      "line_anchors": [
+        {
+          "line": 7,
+          "text": "## 可说的结论"
+        },
+        {
+          "line": 28,
+          "text": "## 三层数量和特殊标志"
+        },
+        {
+          "line": 50,
+          "text": "## split新 Army ID 的 fresh 确认"
+        },
+        {
+          "line": 87,
+          "text": "## 真实旧B拒收样例与代码"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-special-a01\\ROOT-DELIVERY.actual-a01.json",
+        "bytes": 2130,
+        "sha256": "7330a120f9d63b4670dcee073ef3f34ffeaa6222548dc40b97d3bcda50a0c5c9"
+      }
+    },
+    "A": {
+      "source_document": "docs/ck3-native-ai/episode04-strategy-a-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01\\docs\\ck3-native-ai\\episode04-strategy-a-12004.md",
+      "bytes": 9426,
+      "sha256": "b375edae9647b0f3957f03a61de7315eefeee2f35f301e5c0b255a5d049e6ea9",
+      "line_anchors": [
+        {
+          "line": 7,
+          "text": "## 可直接调用的四步"
+        },
+        {
+          "line": 36,
+          "text": "## 当前缺值与最小现有查询顺序"
+        },
+        {
+          "line": 52,
+          "text": "## 源码依据与验证边界"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-a-a01\\ROOT-DELIVERY.actual.json",
+        "bytes": 2858,
+        "sha256": "f3169872a1340d4ed9214c15ac4110d39626a527b7a393c369fe822179cc2ba1"
+      }
+    },
+    "B": {
+      "source_document": "docs/ck3-native-ai/episode04-strategy-b-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-b-a01\\patch-root\\docs\\ck3-native-ai\\episode04-strategy-b-12004.md",
+      "bytes": 8653,
+      "sha256": "a9486c58cd85dd9111e63437ffb23334d9c2face8e910725e40c6597ad3a6f6c",
+      "line_anchors": [
+        {
+          "line": 7,
+          "text": "## 冻结输入与角色"
+        },
+        {
+          "line": 15,
+          "text": "## 合法状态机"
+        },
+        {
+          "line": 42,
+          "text": "## 事件账本与使用"
+        },
+        {
+          "line": 66,
+          "text": "## 历史边界"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-b-a01\\VALIDATION.actual-a01.json",
+        "bytes": 2065,
+        "sha256": "57a921cb7b776af1986074565ec45f1700156d2f6aa79ff2f716628697dfdbbf"
+      }
+    },
+    "C": {
+      "source_document": "docs/ck3-native-ai/episode04-strategy-c-12004.md",
+      "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-c-a01\\tree\\docs\\ck3-native-ai\\episode04-strategy-c-12004.md",
+      "bytes": 10694,
+      "sha256": "1eb848adc5f7d445da63769061ed70f91f78642b6acf911e88656604eee4f435",
+      "line_anchors": [
+        {
+          "line": 7,
+          "text": "## 旧 C 的采样偏差与可保留结论"
+        },
+        {
+          "line": 19,
+          "text": "## 准入与目标来源"
+        },
+        {
+          "line": 42,
+          "text": "## 每日后态与沿途结果"
+        },
+        {
+          "line": 64,
+          "text": "## 到达表与同日表的边界"
+        }
+      ],
+      "status": "external_delivered_candidate_not_deployed",
+      "delivery_receipt": {
+        "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\high-parallel-strategy-c-a01\\DELIVERY.actual.json",
+        "bytes": 6373,
+        "sha256": "97dba7f54fd3716fdbe6296bcc180b53e314bc9d7b221afd0fb6b4d9eaf9b7df"
+      }
+    },
+    "COMPARE": {
+      "source_document": "docs/ck3-native-ai/episode04-comparison-contract-12004.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-comparison-contract-12004.md",
+      "bytes": 7416,
+      "sha256": "5b2903732a9ca0d213b2bf514d6b735cd3568a5343a116094bcd2f7a1f6219e4",
+      "line_anchors": [
+        {
+          "line": 5,
+          "text": "## 普通存档与最小策略"
+        },
+        {
+          "line": 17,
+          "text": "## 自然日、首次抵达与两种表"
+        },
+        {
+          "line": 29,
+          "text": "## 因果费用与unknown模型"
+        },
+        {
+          "line": 37,
+          "text": "## 记录检查与实证边界"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    },
+    "R0173": {
+      "source_document": "docs/ck3-native-ai/episode04-r0173-boarding-halt-12004.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r0173-boarding-halt-12004.md",
+      "bytes": 4722,
+      "sha256": "376753404be14d6370acd26c43b2b8f3c8cebb83e7ff65360b3a5596006b1745",
+      "line_anchors": [
+        {
+          "line": 6,
+          "text": "## 已取得的结果"
+        },
+        {
+          "line": 15,
+          "text": "## 可在其他机器读取、重算的原件"
+        },
+        {
+          "line": 32,
+          "text": "## 运行与镜头边界"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    },
+    "PAYMENT": {
+      "source_document": "docs/ck3-native-ai/war-payment-passive-12004.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\war-payment-passive-12004.md",
+      "bytes": 11271,
+      "sha256": "93e462f3157ab8fd1e195a692817da705f9b4fc07947da49092fe13fd7459cff",
+      "line_anchors": [
+        {
+          "line": 30,
+          "text": "费用计算器ABI是 `out_amount* = 24E86D0(CArmy*, out_amount*, optional_context*)`，实际consumer传null context，跳过presentation构建。先从Army124→完整Unit→Unit174→完整Character解析上下文；modifier key0x11B加100000，与loadedfloor比较取大。依次遍历每个有效ArRg occurrence，把current38按signed32 wrap累加，保留原始重复，不按physicalalias去重。源定义的数值图可写为："
+        },
+        {
+          "line": 47,
+          "text": "真正应用调用为 `24E8F3B ->28B9950(Character*, selector, amount, 3)`，return24E8F40。selector取 `2BAFEF0(Character)?3:0`：实际55B函数仅在28C2DF0返回对象+40的bit32置位且2BAFD80 true时返回1；未给该原始条件杜撰政府名称。"
+        },
+        {
+          "line": 92,
+          "text": "SDK复用现金查询，`payment_sampling=None` 不增加请求字段；显式 `enable` 要求 `payment_window_contract=\"same_owned_process_no_load_v1\"` 并绑定本机机器ID、实际PID/creation time、connection generation及当前player。此合同不制造loaded-game epoch；停用自然采样、读失败、断线、回档或owner变化使window失效，须重新明确启用。付款证据保留原始entry/return、账户余额、正额、真实leaf write及自然父链，不以钱包净差推实际军事费用。"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    },
+    "GENERIC": {
+      "source_document": "docs/ck3-native-ai/war-payment-generic-context-12004.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\war-payment-generic-context-12004.md",
+      "bytes": 3681,
+      "sha256": "05c0bd3bfbf72d39a017fb1da0d5a2cb5fa3813cbaa9b3daaa0c73f7858e5523",
+      "line_anchors": [
+        {
+          "line": 1,
+          "text": "# CK3 1.20.0.4 generic ADD raw context"
+        },
+        {
+          "line": 8,
+          "text": "## Pointer source proof"
+        },
+        {
+          "line": 35,
+          "text": "## Existing getter comparison and open meaning"
+        },
+        {
+          "line": 51,
+          "text": "## Focused reusable regression"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    },
+    "WRITER": {
+      "source_document": "docs/ck3-native-ai/army-actual-loss-writer-observation-12004.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\army-actual-loss-writer-observation-12004.md",
+      "bytes": 11873,
+      "sha256": "1c970c53cb05c8509f71ea01bb22019a23acc0b4867fcbe8f3fbbb02f197f0b3",
+      "line_anchors": [
+        {
+          "line": 1,
+          "text": "# Actual army loss-writer observations, CK3 1.20.0.4"
+        },
+        {
+          "line": 5,
+          "text": "## Native tree before implementation"
+        },
+        {
+          "line": 32,
+          "text": "## Smallest useful observation"
+        },
+        {
+          "line": 40,
+          "text": "## Source and acceptance boundary"
+        },
+        {
+          "line": 46,
+          "text": "## Implemented source candidate; qualification not run"
+        },
+        {
+          "line": 56,
+          "text": "## Native55 first qualification, 2026-10-09"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    },
+    "CURRENT_EFFECTS": {
+      "source_document": "docs/ck3-native-ai/army-current-callback-soldier-effects-12004.md",
+      "provenance_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\army-current-callback-soldier-effects-12004.md",
+      "bytes": 8943,
+      "sha256": "7c92d3bb33676317f9721fa328e8f6eb032ca2f45d6af07b213d39a83e31f56f",
+      "line_anchors": [
+        {
+          "line": 1,
+          "text": "# Current supply callback soldier effects — CK3 1.20.0.4"
+        },
+        {
+          "line": 8,
+          "text": "## Frozen source and finite read receipt"
+        },
+        {
+          "line": 39,
+          "text": "## Actual native tree and order"
+        },
+        {
+          "line": 94,
+          "text": "## Same-query consumer seam"
+        },
+        {
+          "line": 113,
+          "text": "## Authored FIRST and readiness"
+        },
+        {
+          "line": 137,
+          "text": "## Root registered-Service qualification — October 9"
+        }
+      ],
+      "status": "checked_in_at_frozen_head"
+    }
+  },
+  "api_catalog": {
+    "payment": {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "bytes": 25102,
+      "sha256": "b5b3d65abc26d5b42cacff197294f94d1f9157890f5838e810772f805360eb25",
+      "definitions": [
+        {
+          "name": "need",
+          "line": 16
+        },
+        {
+          "name": "integer",
+          "line": 21
+        },
+        {
+          "name": "fields",
+          "line": 27
+        },
+        {
+          "name": "event",
+          "line": 48
+        },
+        {
+          "name": "session",
+          "line": 52
+        },
+        {
+          "name": "frame",
+          "line": 58
+        },
+        {
+          "name": "natural",
+          "line": 65
+        },
+        {
+          "name": "generic_context_snapshot",
+          "line": 78
+        },
+        {
+          "name": "generic_context_trace",
+          "line": 92
+        },
+        {
+          "name": "generic_wallet_context",
+          "line": 119
+        },
+        {
+          "name": "record",
+          "line": 148
+        },
+        {
+          "name": "valid_event",
+          "line": 169
+        },
+        {
+          "name": "same_event",
+          "line": 173
+        },
+        {
+          "name": "before",
+          "line": 177
+        },
+        {
+          "name": "same_session",
+          "line": 182
+        },
+        {
+          "name": "complete",
+          "line": 194
+        },
+        {
+          "name": "same_character",
+          "line": 203
+        },
+        {
+          "name": "natural_matches",
+          "line": 211
+        },
+        {
+          "name": "expected_debits",
+          "line": 230
+        },
+        {
+          "name": "normalize_journal",
+          "line": 294
+        },
+        {
+          "name": "payment_request_fields",
+          "line": 350
+        },
+        {
+          "name": "normalize_payment_extras",
+          "line": 363
+        }
+      ],
+      "availability": "checked_in_readonly_consumer",
+      "calls_game_or_sdk": false
+    },
+    "loss": {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_physical_loss_evidence_12004.py",
+      "bytes": 6895,
+      "sha256": "b7b7cdf56b564d6a840878cf8d5aa1c4550f5fa03eab44d6a12c88a0829fd119",
+      "definitions": [
+        {
+          "name": "evaluate_army_physical_loss_evidence_12004",
+          "line": 21
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "county": {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_entry_loss_evidence_12004.py",
+      "bytes": 5319,
+      "sha256": "16a7223a8b5ba5c1e48e069d3745c35dcf5b4cb3b530fe80265ee7a39dd3fd59",
+      "definitions": [
+        {
+          "name": "classify_retained_loss_writer_window_v1",
+          "line": 32
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "starvation": {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_starvation_loss_12004.py",
+      "bytes": 12265,
+      "sha256": "d7dfd110c3022ad0325f0316a61fb3f3943c1c4dcf39946bae62f0d3fbd24a0f",
+      "definitions": [
+        {
+          "name": "stock_state_12004",
+          "line": 23
+        },
+        {
+          "name": "assess_episode04_starvation_loss_12004",
+          "line": 91
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "refill": {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_refill_application_qualification_12004.py",
+      "bytes": 5401,
+      "sha256": "1c5b5ab35fe60cea445978e33a653fb263ad3d1d67664f2a2f38c55ff3067460",
+      "definitions": [
+        {
+          "name": "qualify_regular_refill_application_12004",
+          "line": 12
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "special": {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_split_merge_observation_12004.py",
+      "bytes": 13491,
+      "sha256": "660574d319d12faa9cc8b206880597354e4c57993f2d9a1ab256a24dd161a4f5",
+      "definitions": [
+        {
+          "name": "classify_regiment_observation",
+          "line": 21
+        },
+        {
+          "name": "identify_split_sibling",
+          "line": 99
+        },
+        {
+          "name": "compare_split_merge_cohorts",
+          "line": 188
+        },
+        {
+          "name": "read_bound_current_commander",
+          "line": 220
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "strategy_a": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a.py",
+      "bytes": 13203,
+      "sha256": "b91bf5a6ecd18b642ddda2a03ffc441b7ca29305c4bcc1a6a7648e648769302d",
+      "definitions": [
+        {
+          "name": "admit",
+          "line": 80
+        },
+        {
+          "name": "observe_move",
+          "line": 147
+        },
+        {
+          "name": "update",
+          "line": 166
+        },
+        {
+          "name": "report",
+          "line": 197
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "strategy_b": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b.py",
+      "bytes": 24158,
+      "sha256": "b86d792667e7a466ef79c5a3b792c3cc506d895ab2a6f4c0d09c2fdb772a13dd",
+      "definitions": [
+        {
+          "name": "need",
+          "line": 17
+        },
+        {
+          "name": "input_bytes",
+          "line": 22
+        },
+        {
+          "name": "recipe",
+          "line": 28
+        },
+        {
+          "name": "observe",
+          "line": 59
+        },
+        {
+          "name": "audit",
+          "line": 181
+        },
+        {
+          "name": "main",
+          "line": 362
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "strategy_c": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/strategy_c.py",
+      "bytes": 18460,
+      "sha256": "b3db4261b5e909c9cba32991875ce8b73244a368382a7b957a6c1f21b54c8bdf",
+      "definitions": [
+        {
+          "name": "read_observation",
+          "line": 14
+        },
+        {
+          "name": "need",
+          "line": 45
+        },
+        {
+          "name": "integer",
+          "line": 50
+        },
+        {
+          "name": "targets",
+          "line": 54
+        },
+        {
+          "name": "start",
+          "line": 131
+        },
+        {
+          "name": "propose_move",
+          "line": 194
+        },
+        {
+          "name": "observe",
+          "line": 238
+        },
+        {
+          "name": "stop",
+          "line": 297
+        },
+        {
+          "name": "outcome",
+          "line": 305
+        }
+      ],
+      "availability": "external_candidate_requires_Root_integration",
+      "calls_game_or_sdk": false
+    },
+    "comparison": {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py",
+      "bytes": 25507,
+      "sha256": "807c9b88cf28012c50c4807cf5e14c668c3d6c64d13a908fae947595eff475a1",
+      "definitions": [
+        {
+          "name": "need",
+          "line": 19
+        },
+        {
+          "name": "integer",
+          "line": 22
+        },
+        {
+          "name": "parse",
+          "line": 24
+        },
+        {
+          "name": "digest",
+          "line": 32
+        },
+        {
+          "name": "canonical",
+          "line": 34
+        },
+        {
+          "name": "schema_check",
+          "line": 36
+        },
+        {
+          "name": "Evidence",
+          "line": 46
+        },
+        {
+          "name": "body",
+          "line": 79
+        },
+        {
+          "name": "frame",
+          "line": 84
+        },
+        {
+          "name": "endpoint",
+          "line": 96
+        },
+        {
+          "name": "check_plan",
+          "line": 140
+        },
+        {
+          "name": "arrived",
+          "line": 153
+        },
+        {
+          "name": "clock_days",
+          "line": 156
+        },
+        {
+          "name": "legacy_rejection",
+          "line": 188
+        },
+        {
+          "name": "compare",
+          "line": 195
+        },
+        {
+          "name": "main",
+          "line": 274
+        }
+      ],
+      "availability": "checked_in_readonly_consumer",
+      "calls_game_or_sdk": false
+    }
+  },
+  "media_candidate_source": {
+    "provenance_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\media-audit-a01\\cut-candidates-a01\\cut-candidates.json",
+    "bytes": 14910,
+    "sha256": "a001f16c6c9e34970d6343bbe16ffc645d69a869a442408d75f459b84dcee68a",
+    "raw_SHA_reused_from_existing_receipt": "de5599ae3d5fc3bad714317b7723fc17fcbc49793d47f96d7307bbbbcfbd922b"
+  },
+  "portability": "repo-relative documents/APIs are final intended entry points; provenance_path values only identify source receipts and are never runtime imports or required cross-machine paths"
+}

@@ -1,0 +1,2355 @@
+{
+  "schema": "xar.e04.r0174-portable-pair-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_source_head": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+  "archive": {
+    "path": "r0174-original-json.zip",
+    "bytes": 5051824,
+    "sha256": "719cfb636504b52de2f1be5d8a43c939e588fad952d0f8dba2484fd6df84026d"
+  },
+  "portable_manifest": {
+    "path": "pair.manifest.portable.json",
+    "bytes": 7520,
+    "sha256": "a922de44ff8e25e6197759bc1dd255a7bdf288684d8c13888e4df43d70641f47"
+  },
+  "uncompressed_bytes": 108459029,
+  "member_count": 231,
+  "files": [
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\archive-contract\\common-t0-r0173.receipt-freeze.actual-a01.json",
+      "archive_member": "data/live12004-t0-control-a01/archive-contract/common-t0-r0173.receipt-freeze.actual-a01.json",
+      "bytes": 13320,
+      "groups": [
+        "pair-frozen-T0"
+      ],
+      "sha256": "1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-01.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-01.complete.json",
+      "bytes": 8894,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "294aac8cba9b77cca5ce61436500ad2b479c6bd115e7638aa628b45acf56edd8",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-02.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-02.complete.json",
+      "bytes": 7247,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "634acc8ebb85b134481b42c932e7588253d92b8c470958507c50f3baa43a6dc3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-03.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-03.complete.json",
+      "bytes": 6534,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "d76dd220ee188f11289489585733049d8afd9bf9f35dcc911b538e7a1c863d18",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-04.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-04.complete.json",
+      "bytes": 6703,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "4e03245c63d9a0160feecfe8d8fc37df5a797f6905d26e900533af193e7ff585",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-05.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-05.complete.json",
+      "bytes": 6536,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "67274501a1cfb23586419736bd749c0248daae8c8fbdb2803b171237b0b8ea07",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-06.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-06.complete.json",
+      "bytes": 6536,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "38ae29e769805e2c7e41c5e1290ae404de41b9deb0140c0fcbb6344c0f2cce2f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-07.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-07.complete.json",
+      "bytes": 6536,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "d076921ad4979a9c946ce55e246ae369790170c206d75b6921265b2165097c9b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-08.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-08.complete.json",
+      "bytes": 6536,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "052139c2a09fe2325628cd7e1918c0fdd1bcdefb53518abc00c0a631637be095",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-09.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-09.complete.json",
+      "bytes": 6536,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "08bd0c2d7ccf06139b28ffb7ef47bae85483244577bf8a5a936a287809903afc",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-10.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-10.complete.json",
+      "bytes": 6538,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "a54abc6def4a79057f3f7178012e006b3c0dc4072af066b5349cfe8d740841e2",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-11.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-11.complete.json",
+      "bytes": 5656,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "9405dd930c5200b05eff6d583c3ec416c354d1de4f3238a34b5fd5025a5298b8",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-12.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-12.complete.json",
+      "bytes": 7421,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "cc69ec61b0d100bc9e1766ab3851b0899c79c36bdc003d4633945337763f8a3b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-13.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-13.complete.json",
+      "bytes": 6538,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "d1335cf82b84ad38e15aef520767d44cb5006426c0acb78605d3d604ac7a95e2",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-14.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-14.complete.json",
+      "bytes": 6538,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "4409fd5680ecbd627d7c7eca820fae4fa29213f741d98a32760bbae9ec8bde24",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-15.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-15.complete.json",
+      "bytes": 5658,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "0ebec77d4e24079ebce0abe427dd6921a5c71cbb5a5c3753c3e42bc473b80eb4",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-16.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-16.complete.json",
+      "bytes": 7255,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "5e6ac542e574274cf6e210ee1e0a283f4dc4fcf9540c87fa7ac738ed0caa636d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-17.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-17.complete.json",
+      "bytes": 6541,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "97222c97243c134dac0afcfe04644f99a910936dbce35210f39fdc14f77b55cc",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-18.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-18.complete.json",
+      "bytes": 6541,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "00177efa108bc385b02c77d6a3545af5bb739a405692fc1e25829040a7788c0a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-19.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-19.complete.json",
+      "bytes": 6541,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "ac857d87ed89d36bbd00e9ab559010a125ebc021101fb04f41c16226ed182b52",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-20.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-20.complete.json",
+      "bytes": 6710,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "393bb7b5ec2ae7ffda1d03bff6c7dc2297daf901208868e586d719dd3504c932",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-21.complete.json",
+      "archive_member": "data/live12004-t0-control-a01/bounded-days-runner-a01/day-21.complete.json",
+      "bytes": 6541,
+      "groups": [
+        "canonical-daily-summary"
+      ],
+      "sha256": "48ac82133b1ceb788265e47a375855088b3015e1491177af959776262f062d2d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\common-t0-control.complete.actual-a02.json",
+      "archive_member": "data/live12004-t0-control-a01/common-t0-control.complete.actual-a02.json",
+      "bytes": 7292,
+      "groups": [
+        "source-manifest"
+      ],
+      "sha256": "db7bdd1488ebdc9636ca6ed9d6aaa4b70213bc38e0d1f86ae5ae1d794672f06e",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\bootstrap-result.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/bootstrap-result.json",
+      "bytes": 14278,
+      "groups": [
+        "closed-scene"
+      ],
+      "sha256": "11fa7d6898bbc7d94e483593789262c82125ff5910b17b39331972188c72dcbb",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\010-t0-baseline-a02-01-baseline-snapshot.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/010-t0-baseline-a02-01-baseline-snapshot.json",
+      "bytes": 116464,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "550b9b475b0805346cfdc38ec42fd3684635a6cc83de4df590dd7ac2e8f22cc1",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\010-t0-baseline-a02-02-baseline-ordinary.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/010-t0-baseline-a02-02-baseline-ordinary.json",
+      "bytes": 5301,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "ad4972b1ad1640a90718b80211ce1f942de5a716aaa8c2039ccd17d340d5a5c5",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\011-t0-admission-a01-09-payment-independent-before.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/011-t0-admission-a01-09-payment-independent-before.json",
+      "bytes": 117308,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "960ea516244e80ccb8974ef7468b0604a69c814e52c4294b0e3546a1c133dc74",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\011-t0-admission-a01-09-payment-independent.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/011-t0-admission-a01-09-payment-independent.json",
+      "bytes": 23569,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "0f3099dd77ba21e80a2470b4c2c17328c885a872d776a13539c2357cf89a7b93",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-11-halt-once.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/030-t0-halt-a01-11-halt-once.json",
+      "bytes": 2279,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "46e2828395ba23e2be8470a175865ef1edb829ecbeffd9a007f6c4d28344102b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\031-halt-readonly-a01-halt-readonly-01.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/031-halt-readonly-a01-halt-readonly-01.json",
+      "bytes": 116624,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "9445be18495f4267f23fa9d6114f304063009d18d21cad0a58cd67bce9557e8b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\037-interaction-native-context.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/037-interaction-native-context.json",
+      "bytes": 74102,
+      "groups": [
+        "modal-context-action-post"
+      ],
+      "sha256": "1b009fcce6099bf5ad70d039737229eb6d999035c1e2a8466967fc09bd432ba9",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\039-reject-pending-interaction-once.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/039-reject-pending-interaction-once.json",
+      "bytes": 3141,
+      "groups": [
+        "modal-context-action-post"
+      ],
+      "sha256": "16678f85725bea0efff99bf402c0fb475d6f24bcc65302d953925d5fca4400df",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\040-after-interaction-reject.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/040-after-interaction-reject.json",
+      "bytes": 123416,
+      "groups": [
+        "modal-context-action-post"
+      ],
+      "sha256": "1f41183b8d1ac06bb7919f7ce40d7d0677ae21dcc65aacaa60ac066f86daccf1",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\042-bookmark-event-context.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/042-bookmark-event-context.json",
+      "bytes": 65621,
+      "groups": [
+        "modal-context-action-post"
+      ],
+      "sha256": "97278ca3ced9a16e57394561a6d45356dbd5f6f1161f4db00025b98a9713ed9f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\044-select-first-event-option.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/044-select-first-event-option.json",
+      "bytes": 13507,
+      "groups": [
+        "modal-context-action-post"
+      ],
+      "sha256": "9ecac9f6b51d36d1729eea61a503569aedd4e5383d32bf79ec4cf5e638dad51f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\045-after-first-event-option.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/045-after-first-event-option.json",
+      "bytes": 143316,
+      "groups": [
+        "modal-context-action-post"
+      ],
+      "sha256": "7c28080210d5663dadefddb26a2ab3ab905accee8746d555eecbef709946665f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-05-arm.json",
+      "bytes": 4711,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "4827e1df7d5fb8a05c1583e890a35bbf48a08b79612b69ef3e13207634915d80",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-07-resume.json",
+      "bytes": 1605,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "6fd51d6532138cec3b2405ffe60005b93f07c44a06044d00e5f10a118496e14b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-09-clock-query-0.json",
+      "bytes": 4666,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "d8bee8873aa1654b63a5dbe780e841a05fddc0b663206a4057e247cf627474a5",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-10-cash-before-0.json",
+      "bytes": 117713,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "eecc1f3ccac04029dbec5ad7c030f5e3952807ad481f0e3b5334c8afb8915543",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-10-cash-query-0.json",
+      "bytes": 30847,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "a18c345107990f1fec9fabd3c7e06d4cb32b31628569a3c4c4aa6d984d690da0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-11-army-before-0.json",
+      "bytes": 117713,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "ca276c014576b8b6a9801f1e7dbe886315fcb12986de78b82e0664a1ff8935af",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-11-army-query-0.json",
+      "bytes": 5302,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "2bcb31fcb8b6e92b94372193238bcbbd9f5fb7e19d43df6b3e364b903cd85d5a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-d01-a01-d01-12-final.json",
+      "bytes": 117701,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "ca2d7980c5bfc2967dfe062d8d00d547fe4ecc75ff74863000b8de518a1c3dce",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-05-arm.json",
+      "bytes": 4725,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "f9fbd07888b6a0d1656e76f9c611ee918271a327764f5f350d1786204b814e33",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-07-resume.json",
+      "bytes": 1619,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "a8ffb339a2b60fedf8a35c6f4afa012cb51afded018356c2bb5e559a747881c0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "65d6be0c71fa20d6d0269366b33d6e165988ee641bfc410f478c58c23562bd25",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-10-cash-before-0.json",
+      "bytes": 117731,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "52990ecb416ba3188c1fe4b543d8020c2376607013c001e4b18e4a3653e1f9cb",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-10-cash-query-0.json",
+      "bytes": 78758,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "0c3944053d4350110f64eb9fd3490ff0dfa5285fd29c15a66f985ca3c03e3a69",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-11-army-before-0.json",
+      "bytes": 117731,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "9cbbbb7c509c1e764309eef22721a9bc63e206c59e0af54e4663c65ac1820f7c",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-11-army-query-0.json",
+      "bytes": 5329,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "d2a12be4319fdf4a4a859d7116612860f9437678159affbdb0c9297f4acc6959",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d02-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d02-12-final.json",
+      "bytes": 117719,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "97dbf119cf53c422dd711c5e2cb7a77af0d210bd2504930b08604e8ecdc3bdac",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "138d75889c31dc635b14ccd9cabf00519784b98b5132b00198a6b3e43237b3f0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "0375a2f31f60e31b86b10ea613b5cf48f2b33ba3c34ce7f56ac73de8905ad2b1",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "5f2c97e58bebe726bdfdfd29171662d13077952e7d39ead0d15616ea195fa01d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-10-cash-before-0.json",
+      "bytes": 117611,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "29d7521f3314990981418d2e6a17dd8ec1038b5b3b02745b3901307bffda6f1d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-10-cash-query-0.json",
+      "bytes": 126650,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "7c7b8a6bc2054c8efb79cfec72671fc85499eccccf87ed8f44c2b3ba1f1bf11e",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-11-army-before-0.json",
+      "bytes": 117631,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "422cfcaadb68a4ce8519f1634f8c58e1dbe1c0fe77b714ad1e6972a2dfe367ad",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-11-army-query-0.json",
+      "bytes": 5334,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "67973f3552ac8380c81ef02094cf4426f038a9dec9da68183f1b64c4e3d74a83",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d03-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d03-12-final.json",
+      "bytes": 117599,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "0681dfca97dc4597d215a73b36a173a866968af5be48caaf7d8b350afd1a2d94",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "fe03ade36bcb5c7e2a0eb43a23e46db8ff4d63158f70eeb88e9d3f1d5692ed07",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "624ede8dd1670096998ef97c4782939a822ec71d8c709b7e4224a05da3ed8a28",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "cd74eac24235c8795d8ff00cba535af11d9fe47675b8d1cdc23bba303562d2e8",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-10-cash-before-0.json",
+      "bytes": 117615,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "aa44ed57170d5a6493a5fa023b81e1fb69cf8a4718ee83dd8480891edd6a8d14",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-10-cash-query-0.json",
+      "bytes": 133910,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "baf52e0e6173ffdd36dcc70957a93d019f05960204322e8eaa347cbbd6b7a9a0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-11-army-before-0.json",
+      "bytes": 117615,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "64ce6ec889c52e70c281ad8701cca94fe4ea7afea0f255043b4f1bf40309842a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-11-army-query-0.json",
+      "bytes": 5334,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "a25d2081944fc4ff4951494c1ce84422d4d9864f464f8807eaeccdb174ce6b84",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d04-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d04-12-final.json",
+      "bytes": 117603,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "2c22816c8b8a381db00827f5f67c9100d18a3a5a28158de6f3f31b007afcd914",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "3fd86c829fa7e30bcdecd966db81de93dedd6777c52a32b1483838341d735684",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "64047f5901edbaba2ff51105d500b7097981d66ede86de731e4088556e2dc2fa",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "0f0af7519d724eeb7b4b2ab4619531551c91ed0243f1201170f0560bfa903e58",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-10-cash-before-0.json",
+      "bytes": 117619,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "90b2ba3e8c565b8030ea2222803dfae2a8fa443a6eb0872576351b7b19268ef6",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-10-cash-query-0.json",
+      "bytes": 141174,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "9f1d9cba1924d2f125cf161a40d318133f3b254e334dd50bb897fa7861f7150b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-11-army-before-0.json",
+      "bytes": 117619,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "03839625ca3352bbc781457053c99bb5d3fbdfa8c5d410d68da9cafdccb877aa",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-11-army-query-0.json",
+      "bytes": 5334,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "35ed63cd7d92527aedcbf90bc98707d803af4ec613b0e0c9e2d31bb40863bf67",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d05-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d05-12-final.json",
+      "bytes": 117607,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "a9255914a4ef20a6ddb8e7ba648a8e092f854614289c32935c36ba1389b37c8f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "48bba072dd64b27806a3d12901f5b485a5ec0684508c00015a9a65c44ddaa4d5",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "ab3670b0a2f1dfa7be517e02934d2214850acbc3ca0779a212f3625163f50eec",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "4715311e714ea0ca9bdb3f3cd2ad06292b7f18c3c075dfaf52b1b7d5d7fb0694",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-10-cash-before-0.json",
+      "bytes": 117619,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "86fdc619061c05071f99db1bf88338d85e47ea88d17ee3c3f94ce8e0d3f84029",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-10-cash-query-0.json",
+      "bytes": 148434,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "32db508fd039ed5f9210c52204954551da8bf19039e9436f3bfbd4f3739b1568",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-11-army-before-0.json",
+      "bytes": 117619,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "ac6456cc76391bac78783314c0e01b82e14d536ae88a35d693b0b51ddb8ed5bc",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-11-army-query-0.json",
+      "bytes": 5334,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "044849a536bfd60ed44c97fbd3d54be8a1e1df97530ed952f696a17746972974",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d06-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d06-12-final.json",
+      "bytes": 117607,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "1ff8baf1dd83a5725b4f2cc39d417852f4ed668cc6a6d1804770390d0dca5842",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "4983837c90bbe9d058d4daa058b853348952e47cc993e5f4087ed016ddb782fc",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "71b962d6c0a41b51e8fd9e8c35c509f59c8ecb207aaa06f7c5b88804dc78a1b6",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "c5ea83549148aaa7236146fc5bdd1755929565b57d404f838fecb9592a353ee5",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-10-cash-before-0.json",
+      "bytes": 117619,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "f77f7be8c32fad8f441171df4c221fa81e6c985ee5515c12d3481bb0af509668",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-10-cash-query-0.json",
+      "bytes": 176018,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "2f1ce342fa798de41b2575154dd9c52556b567ec6e3d59166f3571e628d3bdb9",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-11-army-before-0.json",
+      "bytes": 117619,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "bce36af107ac41d4426ce1152326a454bb4115f38234960ac33644106156c8df",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "67c510b49be115f622de93bfccd3af9ded8f44983dff84277d07c8cfc02e3a4b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d07-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d07-12-final.json",
+      "bytes": 117611,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "bdb75583f8433a1b4df22b2951ced20630abfc163b09c839175853d8af64bfbb",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "39f3d318d6c236db347a01e512913edea760615dc7ce4ab8a30f44c0df5e0b6d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "9dc49e3491de7ae2c764e47f4398e06e0382e9b6dd93caa4a4391725921c4b8d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "65c7fcc927e44ac2a92dd49f8fc4e6736c2f64293a349b3b00e70f828b838995",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-10-cash-before-0.json",
+      "bytes": 117623,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "d32634acaa516e02222113c9eaa858602cf7e96d6a178e7c29e7729d1eff6f14",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-10-cash-query-0.json",
+      "bytes": 183278,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "1a89c850fd7ad6c388cc944229ff12aed5e9180540e55ce56876b68cbc526941",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-11-army-before-0.json",
+      "bytes": 117623,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "5b40fb5d4baf782ca3c072d687a9a7d6555de7fbb8674e3190638d74288a58ad",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "dd751f228af5173eaccae7fac6f570974e1352e549135085df99537afc6cbe58",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d08-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d08-12-final.json",
+      "bytes": 117611,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "29bddec53daa93bf5fdff0a0d747ee3a5c2e127bf98f97bfdf0ad4b0269acc7a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-05-arm.json",
+      "bytes": 4726,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "4478324ebf6ff92186c00ec6fc02c8dd549c12a80f7e4a97533576efab781fda",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "e11c77064203bd5d82319ddd1183fea4a9493fc9444bb6ae2850ba26b8a7c5d1",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-09-clock-query-0.json",
+      "bytes": 4681,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "7fee63b919ac9b567d7477c0f85427fe8f8df6cabada39c6c7c10e27e49814fe",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-10-cash-before-0.json",
+      "bytes": 120555,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "3ecbd81e7c02dbe0589e6795c2fbe0bf9e3f6e26da643a894461b1e7a580cdb8",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-10-cash-query-0.json",
+      "bytes": 210962,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "575b2425a09960c995d692208f30342f2aa46d7da52eec6ffdf29d606c9913f0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-11-army-before-0.json",
+      "bytes": 120555,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "0463a3fcdaa9e695c1284a0a7575f9d5eff938c9407e193b74f8f0ce34c2bba6",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "8976b39ee966347dbdb5dee4be2f1b0a1df41e181a8516d460348badf2201e95",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d09-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d09-12-final.json",
+      "bytes": 120543,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "bc37d759c03fb70e8241d44422e5304a7e303319b0afa1ff889e75a369284125",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "6f6d8d65b61d87d647a42639b50548f4f66fd2e4808ec33bb97f35f4c645bfb2",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "c3656f86587bcd9da74a705eb240a09c858a94a90b921f1da6db5ab8845505e5",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "f40c79726c5b859a00b93d3916f8a14bd5bbbb715ab41893f01efb92f5d7a77a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-10-cash-before-0.json",
+      "bytes": 123495,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "d80a12dd4e1e2c7ad6400d9bfa800cbec31e3f4f941766c51779e2f04d0b1bd0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-10-cash-query-0.json",
+      "bytes": 258930,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "90d03622b00804c35b0c0610e911f2d12e182803bde1e0316d2a9c337ef5d3ed",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-11-army-before-0.json",
+      "bytes": 123495,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "d0f52e2be2250dbdf57c6b081bb925fe530102573530b1424f840fcb58bc33be",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "9c859714ecdfd499b5ad2ec4ed0ef812f3e8186a25bbfb3fab3ad73d480fa5ce",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d10-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d10-12-final.json",
+      "bytes": 123483,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "448ffe2be45ac6a5d1a73b7e8b91ce00c771f192a4383c63119dee2758ea5da6",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d11-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d11-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "803c5873f8458aef346147c2d36133ef642fbf20bffdd5cfa41ba0a5d294988d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days02to21-a01-d11-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d11-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "842e59dff063e76c65cd77250cde631ada325bdb871ea7397a43153a7215c2ca",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "301512ede3eceb7f5d44c0ef93b2d003e255ac86268a16109ec0ab32b2535943",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "9af57909ef413e0874ed4301c944b46cb05ad6fa9bb031a3f0f67cbfed1d4137",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "6cd39692eb0fc820e77d0282d506b27643f85de2839edb7b3c270d6d18c7c53d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-10-cash-before-0.json",
+      "bytes": 123495,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "263b51520ae93a3435a4ef32d758b95d6286fd9dc5ecdfc6a98df19edb118801",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-10-cash-query-0.json",
+      "bytes": 273450,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "2dc3f01dfd07e07e10946ae9b1296635cbe5ad7c8305470af562b6acbe31db3b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-11-army-before-0.json",
+      "bytes": 123499,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "5298f06f9c080faa37758d7cd3e238640a5a61ad36d5629124130f006fe889b6",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "80d0265f051a81a76d8e43b257a4f1af7b9d5df9fa40920f6ad354f65aec2c96",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d12-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d12-12-final.json",
+      "bytes": 123483,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "356d587cc5c09feb92c7b7274a1841cc08124e7d7802068e838c37aff365d1d4",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "ba2f0b5cb1b3fc20c19e90ff11ef27236bea3ac2e27aaa1149fa97a89b5f8abe",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "dbe032eababdacfe4ac887c03f3fe39bcd3b52f26ab47ea8e2feeede1df49dac",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "51174d4710db54fd8da04dc882c6bcbe36684f269fdfb5a397dd1ef3874b702d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-10-cash-before-0.json",
+      "bytes": 123511,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "7a9cb2738a29917d849b42b623d387f2e549ce62c857952628a81aa17de7a1aa",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-10-cash-query-0.json",
+      "bytes": 280710,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "4d31c49ac50cb30488db1c5c4f3e64da52d694d9bcd6482369ffea4c9f60142b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-11-army-before-0.json",
+      "bytes": 123495,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "c1a2664d51f82111aff51704c142833002e683c64e2fa2007ba75166129bb873",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "fdb63c94714bf6fc0fec12d92a939081e31225d56a9d764f449ae567149c918c",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d13-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d13-12-final.json",
+      "bytes": 123483,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "f6955f9d304f97de75c51cf910a78128210204c0d222d529b85432a4c8bc148a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "3e177587c6b2b43379b8697b05410f8d7a05f91468e890b0be97ca34a4698c21",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "f82483784c11730ffeb0980f0fbeed9054bf1953d0bd02978a54108367084b28",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "60005b03ebd94e75cf5405bc1669f97a6db960bebfeba529e9841eae55b0b520",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-10-cash-before-0.json",
+      "bytes": 126347,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "688aae12aa813fe7a4add55e93fd0b4c0a65984d5a74fee63f9ee52d3cc6e2b3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-10-cash-query-0.json",
+      "bytes": 308290,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "a661568b68dd31cceb908fe4eb72a42238e23aea213438bce2752db1a81ae14e",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-11-army-before-0.json",
+      "bytes": 126347,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "5da897cbf14d35b4ac70354cd4d882aed86d9c860834e4ab0320b223f4b52e6d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "62ffcf3f99001177e88bfad3ccf63db5c73a1207d784152743254babb08607d7",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d14-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d14-12-final.json",
+      "bytes": 126335,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "6842a19ab90104ca6c8ce84a2e3445ed24178461893c25bd92e0da66521ee7ea",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d15-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d15-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "3a1f0bbb29ab051a2f312c0c8b2f8510d6560d60dd0e5e5547436e48d76efb0e",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days12to21-a01-d15-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d15-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "e0ffeb5e29852a32ff11a8562aec47ea2d1155771cfeb8181032ff3b7dff31e3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "66d203a9dd9369c4fd9c96793c7da18a62b3561677eb41a2fcba8fa11ccbadd5",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "74b211affab4f9e3f0984ef6222dc25c903e7997fe8560c06f6122803d422599",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "317d7b32a29397663cac355352e61b70512292495ad89f229e88d73f9e37c85f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-10-cash-before-0.json",
+      "bytes": 143479,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "c89c8cad6ef3cde4fcd5b0a1c05375d2a99b6914dd0fe13ae88b2c776c24eb9f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-10-cash-query-0.json",
+      "bytes": 363658,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "d3beb75a60a9c6b2a95aafe0ce4d88deb1a7811ed9c6b9413578ba9ddedb43ce",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-11-army-before-0.json",
+      "bytes": 143479,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "b401a6a695512a9b06c7ba041c6dd58b19c49dc18fdb2f67b8d05ccc91206797",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "f60eff07da936b1a336d19d763e42330d9ce20adb05882c2ada34469028b42bd",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d16-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d16-12-final.json",
+      "bytes": 143467,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "5ab225819db43debc8ee7366fd64015ca22667bbacc75597f0e6dcff42c9d6d0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "e9b47f048ea6a4b095f863ed436df3adff546b68edfce72e28ceda1c1128946e",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "d218df246c59f4baff85a72687df9b7de40a028d0cb41c0c10a0b9e155f80c3a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "9e6d477b010477b1f94567ef720d9f85842d43f384ba28eeb254ea6a64b4bbbc",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-10-cash-before-0.json",
+      "bytes": 143559,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "80de0c77b8e5888c2e96c659a7e0f49f7df84701e9092438e543a074ef2cd3b3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-10-cash-query-0.json",
+      "bytes": 400470,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "386ec37bd07a1eba885c0ea8301f3e697be4626b057f0e87186b2821c5400618",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-11-army-before-0.json",
+      "bytes": 143559,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "d991065227bda67b7b5cc3c728a82b7139b71c5c0030a04471931aa36f9ed20f",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "fe2addeac7e7d3b8df1688b1c4f7545e52fa6c1930e8dadd21ece868c8371228",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d17-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d17-12-final.json",
+      "bytes": 143547,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "547fd4eeaac751ee430d41b7f9647a4a685c8808f561f8ceb992c6983457cf04",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "523e5ebfeaa9e8419db1383b3ed20accd0ea2a55ec635d9c03e0ecde0b47241b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "821c1e77f6e9159908ec6ebaf4484a003ef14c2e57485c3cfa36170420a001a0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "2d9a70020f68c59cdc7bbfd8a67c3885d722b32633bfa00907b04ec7b128a9fa",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-10-cash-before-0.json",
+      "bytes": 143559,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "3e469cda8f1acee452a0c366deee200217b57f1d79c6258eb7a2b76ad99935b0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-10-cash-query-0.json",
+      "bytes": 448426,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "28884f24b38f2bed9e31551f8cc7fc2283ea38d005c59d05a4d916a0272bdaf4",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-11-army-before-0.json",
+      "bytes": 143563,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "e235af0d7f6d31c3152bf744da6676595b6e9d69885a5b2c61d04397b7959735",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "ee26ef9de875f7d5ee9e0cf7d1eac87497756ba7147f9c11d2598f78e747c388",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d18-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d18-12-final.json",
+      "bytes": 143547,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "0a972afe921df08037d98f0329e4576b903add0358c7f3add229db2c65035f01",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "392b86f7ef94b77d1b8e2d93b6635361a07e449185e41fe35894deb7b2998fff",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "a74bdab2e33862b148a4cc5e0a7435cdc79bcd1d8f0b795d2666a7bb0be40cde",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "e9f693944284a71d4a471f91ab140fc40b1e61cb838397c20786a531dba42542",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-10-cash-before-0.json",
+      "bytes": 143495,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "d61ad74b721f740b64cd1b62ecee2c2381e06cc4e75c818543ba9efbd3fc3fee",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-10-cash-query-0.json",
+      "bytes": 476054,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "eeb7789c42843b26816bb0104b140ff39fa98ca6cad11dda1781fbd0198d217d",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-11-army-before-0.json",
+      "bytes": 143483,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "6fec77b91c8363a815bf33b4c9031220fd60024f347c0c440ff6450742107a96",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-11-army-query-0.json",
+      "bytes": 5339,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "9e42be70f73cf828edc49c4e81c2c693000e5b1136e177048285ecb77bc17cf3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d19-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d19-12-final.json",
+      "bytes": 143467,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "6898d6b0d9cbe347058eb5523786ab08166bcef9a9a4b76349d2886b3e8dcdda",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "aa90afe39f3631eca6c57afb7e62df225d162b7c689977c76b3e4d8b7a0f1465",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "8fdf8c5705e903195ac413846373a96a5bc0eb86e5a70df6dfd4275f244c7290",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "24dc30cbcb83942e5c31a426d35b7fab28d56cbfce083b5e2012d73ff51a64de",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-10-cash-before-0.json",
+      "bytes": 143399,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "a4bf4e61e8eacd16cecc34fee0d6f3b1bf757b0cde2206c08cf57ce894014468",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-10-cash-query-0.json",
+      "bytes": 483314,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "e616dc8dd61a0537a6342f22b99e3da4ff068953b9be8962a8377bae02b9160a",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-11-army-before-0.json",
+      "bytes": 143403,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "3630d58bce344a107dce7cdd9576710bf746ce05bb3daf68f6d1ef15f5dc0482",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-11-army-query-0.json",
+      "bytes": 5340,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "f0e103b3e0b29992e04c8aa36487f8785c22da2e2351e17395cc95b10472e23e",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d20-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d20-12-final.json",
+      "bytes": 143391,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "589b08913d91852452c76981431eb44bacbce941154570b62c03d72073b943d0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-05-arm.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-05-arm.json",
+      "bytes": 4730,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "972e0fee93a8c7ea08e22aedc164767837f621d025afdcd97c579271d2bc3093",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-07-resume.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-07-resume.json",
+      "bytes": 1620,
+      "groups": [
+        "original-resume"
+      ],
+      "sha256": "07d16ff4373688baa9f19882cc927b9b279651a4b385b79eeefa41a4ef58a165",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-09-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-09-clock-query-0.json",
+      "bytes": 4685,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "cc452dd9da6d39d944c67f4a78f139cabca8a45aa1b4350fa4ca135723886cd4",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-10-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-10-cash-before-0.json",
+      "bytes": 143327,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "0095d95bc4a66c9a61af2ce509964bb7e6e1d323809e515ed56380fa194c5bfa",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-10-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-10-cash-query-0.json",
+      "bytes": 490574,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "316765b24ae91673ad918816c92055ef6aec1b53fbc92de802cb23c49ce46322",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-11-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-11-army-before-0.json",
+      "bytes": 143331,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "23985685565c1c2d7c63ccd6e4d6914bea891d8c079105d3d10ba9993a8a604c",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-11-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-11-army-query-0.json",
+      "bytes": 5340,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "be9b500c8270a38c69dc979806933419f008eb3d45b8ba8d21a53e0eeaef7dd8",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-days16to21-a01-d21-12-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days16to21-a01-d21-12-final.json",
+      "bytes": 143315,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "6ae3e13fae586e1a31c8bc6e4e071c341ae7c2f7d8ef43c6619f2db3b4382b12",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day11-readback-a01-d11-02-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-02-clock-query-0.json",
+      "bytes": 4677,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "79e07db966ee9350608f46e7c16ae4b3ebddf58d1c0dc44bcc573dd86ddb70f3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day11-readback-a01-d11-03-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-03-cash-before-0.json",
+      "bytes": 123499,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "9b2bd5d4f2c63e87fa8a8d1980311b175177768056f690cb3f3eacbabea76ac0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day11-readback-a01-d11-03-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-03-cash-query-0.json",
+      "bytes": 266182,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "da3461a402181286665cc82d752a76c7726685690c3d1d895d18e51f38c84a9b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day11-readback-a01-d11-04-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-04-army-before-0.json",
+      "bytes": 123499,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "2b0d34ef656ecd0b1e7b9f6609ae5df35c21628e473ca02c87f82d5b8a749960",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day11-readback-a01-d11-04-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-04-army-query-0.json",
+      "bytes": 5327,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "a9aefab1f1b065b3ce80a9bc30700d2c80cebb3016c97cfc89d333059e5af038",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day11-readback-a01-d11-05-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-05-final.json",
+      "bytes": 123483,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "fc9920671f62a929e2f34f19a2d1b5572e60ff80cee45517aa9724dcbccee87c",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day15-readback-a01-d15-02-clock-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-02-clock-query-0.json",
+      "bytes": 4677,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "c81fd70d29761d54adc8ce2a91d87ce36d201062efe6280e8ca794c7c7defb54",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day15-readback-a01-d15-03-cash-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-03-cash-before-0.json",
+      "bytes": 143399,
+      "groups": [
+        "pair-daily-cash-before"
+      ],
+      "sha256": "d96eabee4f98c0b633a1e12f3b8f2ad68e007402970cb00d4aa6cfb047607fd0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day15-readback-a01-d15-03-cash-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-03-cash-query-0.json",
+      "bytes": 356390,
+      "groups": [
+        "pair-daily-cash"
+      ],
+      "sha256": "d2e6c9587db2d366b2fb5a270a8b760bbbfa73deabf6121950076ff7309dd1d0",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day15-readback-a01-d15-04-army-before-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-04-army-before-0.json",
+      "bytes": 143399,
+      "groups": [
+        "daily-ordinary-before"
+      ],
+      "sha256": "dd1688f1d1d1970a454942c4847ae7c9da44ba19923dfeadeb262a5629559fd3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day15-readback-a01-d15-04-army-query-0.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-04-army-query-0.json",
+      "bytes": 5327,
+      "groups": [
+        "daily-ordinary-compact"
+      ],
+      "sha256": "c0a6fe4019818dbc75a5663208aec58bed0807d63ac01a383521773ae4660fc7",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-day15-readback-a01-d15-05-final.json",
+      "archive_member": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-05-final.json",
+      "bytes": 143383,
+      "groups": [
+        "pair-daily-clock-final"
+      ],
+      "sha256": "c3d09b714389e72768dcc003fef9011b5494dbea7789f0345c2dabc35eb9f197",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\display-restore.actual-a01.json",
+      "archive_member": "data/live12004-t0-control-a01/display-restore.actual-a01.json",
+      "bytes": 687,
+      "groups": [
+        "closed-scene"
+      ],
+      "sha256": "c109935b869fcfc331865fd684c3184f557014ba9de647d198d0fe9feef0ffb3",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\payment-window-admission.actual-a01.json",
+      "archive_member": "data/live12004-t0-control-a01/payment-window-admission.actual-a01.json",
+      "bytes": 5777,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "00895fb0c21ecb455fd9bc853af5aff94d05ab1e786f7de35c0cb8619b7fda94",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\prepared-a01\\prepared.json",
+      "archive_member": "data/live12004-t0-control-a01/prepared-a01/prepared.json",
+      "bytes": 11554,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "f4b08d4caf47349ee2f4eb6bddaa7677fe94f43055d15a5d0f13e39832ffbdf9",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\runtime-actor-identity.actual-a01.json",
+      "archive_member": "data/live12004-t0-control-a01/runtime-actor-identity.actual-a01.json",
+      "bytes": 5629,
+      "groups": [
+        "pair-baseline"
+      ],
+      "sha256": "aac8943c2be8c0040ecf6a7f9e756b2dfe809a04928510a6ced5e6f5f8967a05",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\screen-release.actual-a01.json",
+      "archive_member": "data/live12004-t0-control-a01/screen-release.actual-a01.json",
+      "bytes": 2461,
+      "groups": [
+        "closed-scene"
+      ],
+      "sha256": "bcc423c799dd6f62cc291ce38c54f75dcb4e7c3176698a0acafcc30f82146b3c",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-162e2fabaaea4fecbdbb6bd3c8ce8821.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-162e2fabaaea4fecbdbb6bd3c8ce8821.json",
+      "bytes": 4079485,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "ea22a38dd90a66c3d140a9feb3baeba7c1444ead5696b70afe629520faa7e621",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-18f6abd03c0d4c4ca2bef2ee0e74e1fd.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-18f6abd03c0d4c4ca2bef2ee0e74e1fd.json",
+      "bytes": 3960432,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "315132a810b247563d69941a4dbc4afefe4872e70845379589ab476b41fa9356",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-1f8c320fbba747639a9880b004f276b8.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-1f8c320fbba747639a9880b004f276b8.json",
+      "bytes": 4254068,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "15922d3ca05b71b29b74e15533f96d1d2f9e760f6cc0b2bf69f5ab25df84ada9",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-219c1efee6084f8b8b3d8e0a7eae0aed.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-219c1efee6084f8b8b3d8e0a7eae0aed.json",
+      "bytes": 4553680,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "1893a4d55bd5f7eb10f9d99aeff523160f4c764db9a8dcff71e1f7a0d662b80a",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-3b4eb439dfe64649971f714b94152659.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-3b4eb439dfe64649971f714b94152659.json",
+      "bytes": 4722900,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "9dbaa865750afffe1eee1d8fe705383cb76b87e19e0559b64c9139a68c379135",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-50c37f0c584c4cb695f712cfd2c66c89.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-50c37f0c584c4cb695f712cfd2c66c89.json",
+      "bytes": 4703439,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "d600d059e4dffe569b5c5289391a4e8e2f875dba89870bb4791a315312370bf8",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-731aee6cb9b04fc4b883a5011abbca83.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-731aee6cb9b04fc4b883a5011abbca83.json",
+      "bytes": 4798102,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "e5c9dfbf5d017f70d5acb4f0fcdf52acaaa31fa236920ebe386dd931f7ba3b2a",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-81fc61863f4a4d3aa47a148481c37d08.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-81fc61863f4a4d3aa47a148481c37d08.json",
+      "bytes": 4326439,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "410fa9fa6c955c0df345885f20f63bddca28119c35676fe6a5a937688d1a4529",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-8aa6b64168494520b7f459362ab2ba79.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-8aa6b64168494520b7f459362ab2ba79.json",
+      "bytes": 4028087,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "11bd494b7657e81ca83742b8b2210bc59115b18abf3c56907f4992d2bf09a466",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-96431a7636ea41bd94707368ce69e2d8.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-96431a7636ea41bd94707368ce69e2d8.json",
+      "bytes": 4726719,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "4a0468f24099cf13ec2d18865897017bf0d68bd697c633497478fd620738192b",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-9ba9096e951b4d1fb79c8188bd7a88c2.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-9ba9096e951b4d1fb79c8188bd7a88c2.json",
+      "bytes": 4135204,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "083f384ee89431273446ef128c5dbf4a978d17d0a95691377b77c843ec13dbd6",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-9dbfbaf413b9440792fb2f5eafe6ed46.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-9dbfbaf413b9440792fb2f5eafe6ed46.json",
+      "bytes": 4405235,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "1882531c78644b5540bedd604c8401060fdc7d4ae1325224496a9d23ce3d0d81",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-b537d3271a18496abc3bd323505229e8.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-b537d3271a18496abc3bd323505229e8.json",
+      "bytes": 4753878,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "1800557bb9394d7f97fad87470899cf27d38de994ad5bc47c0868349cfb0290a",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-bf9cc74e1033488f8cd158a7aa510f60.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-bf9cc74e1033488f8cd158a7aa510f60.json",
+      "bytes": 4698892,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "db3bc7b510b3aa3b70dba1c1beeb67e9a77ac19895aa55a81e4cc896ac9c792b",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-cf0a535747884470a39d9f7ec36b3a72.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-cf0a535747884470a39d9f7ec36b3a72.json",
+      "bytes": 3381416,
+      "groups": [
+        "baseline-full-sidecar"
+      ],
+      "sha256": "aa539012928defe99fe05c4822417f06d49b6c2d6b0dff318ad85c2209a1937b",
+      "extract_for_pair_replay": true
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-d761afeec51d4318aa69878a47c715b0.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-d761afeec51d4318aa69878a47c715b0.json",
+      "bytes": 3677280,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "d210b4e024b8cb0836218733c103e1be10843c1e706fd6be0249b87ef7c43b4d",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-dd61037b6357456d918d605b0309fcf9.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-dd61037b6357456d918d605b0309fcf9.json",
+      "bytes": 3626086,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "fe597a3619d9926ec71ea9fcaaed99cca98799c286bff84f36f4774f85fba6cd",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-e2baf143aa0340cca8e8d706624199c0.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-e2baf143aa0340cca8e8d706624199c0.json",
+      "bytes": 4457584,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "7e0e14b8934d25be922bc2c8c6fd7083e30d504afb652e50ca7f554145bbc94d",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-e2e8ea60631342ba8d072f854039425c.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-e2e8ea60631342ba8d072f854039425c.json",
+      "bytes": 3499286,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "1f9f2b9bf0df4bd2d93048d64d418c07b262d609863b37ed3d1d5231ec8ca813",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-e7a900e596a849ed9c9f67ab8fcef0f0.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-e7a900e596a849ed9c9f67ab8fcef0f0.json",
+      "bytes": 4171428,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "f4e9b458d29d8e9f9bb2d5217dd0633b521aaa91ada1b0993c926f52701e65ab",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-ea925b1d838b4414a79eb31b64e85f06.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-ea925b1d838b4414a79eb31b64e85f06.json",
+      "bytes": 3671544,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "bfb108a2e9fc9249f367ff02e01c94f55978048758209fe0cfcecf4e92e88d62",
+      "extract_for_pair_replay": false
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-feb287fba98d4a6188ad8a89ea596aba.json",
+      "archive_member": "data/live12004-t0-control-a01/state-a01/native-session/army-query-history-results/army-query-feb287fba98d4a6188ad8a89ea596aba.json",
+      "bytes": 4783023,
+      "groups": [
+        "daily-full-sidecar"
+      ],
+      "sha256": "b1f1502844bd8d50e87eb195c026ab72fac49879120140fbe9524c068e6ffff1",
+      "extract_for_pair_replay": false
+    }
+  ],
+  "pair_extract_bytes": 18426238,
+  "shared_R0173": {
+    "manifest_repo_path": "docs/ck3-native-ai/evidence/episode04-r0173-20261015/manifest.json",
+    "manifest_bytes": 5870,
+    "manifest_sha256": "f68e2099f22993ed562207bc766062c4257d4966f0b7151981e9ca00a22b4621",
+    "archive_repo_path": "docs/ck3-native-ai/evidence/episode04-r0173-20261015/original-receipts.zip",
+    "archive_bytes": 145050,
+    "archive_sha256": "7fdaefbd4757d63e35e1d6869e00adecd6b314d9b5b3ae954a380f1bfdef7b76",
+    "uncompressed_bytes": 1343616,
+    "member_count": 18,
+    "new_copy_created": false
+  },
+  "scope": "21-day savedT0 stationary control paired with already archived historical savedT0 continuation positive; not original7day R07",
+  "original_R07_full_qualified": false,
+  "maintenance_attribution": "unclosed",
+  "zero_total_expenses_proved": false,
+  "raw_video_save_EXE_DLL_included": false,
+  "source_receipt_bytes_rewritten": false,
+  "quota_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+  "zip_budget_bytes": 16777216,
+  "uncompressed_budget_bytes": 134217728,
+  "notes": [
+    "Daily full sidecars are preserved and byte-verified, but current pair checker only consumes baseline full sidecar; replay extracts all other members and streams verifies daily sidecars without writing84MiB.",
+    "profile/save/binary/driver-state/request-helper paths inside prepared and metadata are provenance labels, not required payloads for offline checker.",
+    "Replay uses repository code and Python dependencies. No CK3/SDK/Steam/current-machine acceptance or original C/D data roots required."
+  ]
+}

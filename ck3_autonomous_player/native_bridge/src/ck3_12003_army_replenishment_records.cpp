@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 
 #include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/army_regiment_character_role_12004.hpp"
 
 #include <cstddef>
 #include <cstring>
@@ -20,6 +21,38 @@ constexpr std::int32_t kMaximumCapacity = 1'000'000;
 constexpr std::int32_t kMaximumRecords = 65'536;
 constexpr std::uint32_t kArmyRegimentMagic = 0x41725267U;
 constexpr std::uint32_t kPersistentRegimentMagic = 0x52656769U;
+
+bool ReadCharacterRoleMemory(void *, std::uintptr_t address, void *out,
+                             std::size_t bytes) noexcept {
+  if (!address || !out) return false;
+  std::memcpy(out, reinterpret_cast<const void *>(address), bytes);
+  return true;
+}
+
+bool ResolveCharacterRole(void *context, std::int32_t id,
+    ck3_12004::regiment_character_role::CharacterResolution &out) noexcept {
+  const auto &b = *static_cast<const ck3_12002::ArmyBindings *>(context);
+  if (!b.regiment_character_role_storage_slot ||
+      !b.regiment_character_role_fallback_slot) return false;
+  const auto *storage = *b.regiment_character_role_storage_slot;
+  if (storage) {
+    const auto capacity = Load<std::int32_t>(storage, 0x2C);
+    const auto *objects = Load<const void *>(storage, 0x20);
+    const auto index = static_cast<std::uint32_t>(id) & 0xFFFFFFU;
+    if (capacity < 0 || capacity > kMaximumCapacity || (capacity && !objects))
+      return false;
+    if (index < static_cast<std::uint32_t>(capacity)) {
+      auto *object = Load<void *>(objects, static_cast<std::size_t>(index) * 0x10 + 8);
+      if (object && Load<std::int32_t>(object, 0x18) == id) {
+        out.object = reinterpret_cast<std::uintptr_t>(object);
+        return true;
+      }
+    }
+  }
+  out.object = reinterpret_cast<std::uintptr_t>(*b.regiment_character_role_fallback_slot);
+  out.used_fallback = true;
+  return out.object != 0;
+}
 
 void *ResolvePersistent(const ck3_12002::ArmyBindings &bindings,
                         std::int32_t id) noexcept {
@@ -100,7 +133,7 @@ game::ArmyRegimentReplenishmentRecordV1 ReadRecord(
 game::ArmyRegimentReplenishmentRecordsSnapshotV1
 ReadArmyRegimentReplenishmentRecordsV1(
     const ck3_12002::ArmyBindings &bindings, const void *resolved_army_regiment,
-    std::int32_t army_regiment_id) noexcept {
+    std::int32_t army_regiment_id, std::int32_t native_carmy_id) noexcept {
   game::ArmyRegimentReplenishmentRecordsSnapshotV1 result{};
   result.army_regiment_id = army_regiment_id;
   if (!bindings.enabled ||
@@ -116,6 +149,15 @@ ReadArmyRegimentReplenishmentRecordsV1(
       Load<std::int32_t>(resolved_army_regiment, 0x10) != army_regiment_id) {
     result.unavailable_reason = "army_regiment_identity_invalid";
     return result;
+  }
+  if (native_carmy_id != -1 && !bindings.regiment_character_role_executable_sha256.empty()) {
+    const ck3_12004::regiment_character_role::Access access{
+        const_cast<ck3_12002::ArmyBindings *>(&bindings),
+        ReadCharacterRoleMemory, ResolveCharacterRole};
+    result.native_character_role_v1 = ck3_12004::regiment_character_role::Read(
+        access, bindings.regiment_character_role_executable_sha256,
+        reinterpret_cast<std::uintptr_t>(resolved_army_regiment),
+        army_regiment_id, native_carmy_id);
   }
   if (bindings.is_army_regiment_loss_writer_skipped != nullptr) {
     result.native_loss_writer_skipped =

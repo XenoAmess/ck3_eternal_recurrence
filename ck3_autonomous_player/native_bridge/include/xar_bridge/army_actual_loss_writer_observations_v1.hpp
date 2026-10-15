@@ -1,4 +1,7 @@
 #pragma once
+#include "xar_bridge/army_actual_residual_parent_v1.hpp"
+
+#include "xar_bridge/army_actual_supply_parent_join_v1.hpp"
 
 #include <array>
 #include <charconv>
@@ -69,6 +72,8 @@ struct ArmyActualLossWriterDataAliasV1 {
 
 struct ArmyActualLossWriterObservationV1 {
   std::uint64_t sequence = 0;
+  std::optional<ArmyActualSupplyParentWriterContextV1> supply_parent_context_v1;
+  std::optional<ArmyActualResidualParentV1> residual_parent_context_v1;
   std::int32_t army_regiment_id = -1;
   std::int64_t request_raw = 0;
   std::optional<std::uint64_t> caller_return_rva;
@@ -152,6 +157,14 @@ inline void AppendArmyActualLossWriterObservationsV1(
     first = false;
     output += "{\"sequence\":";
     Number(output, event.sequence);
+    if (event.residual_parent_context_v1) {
+      output += ",\"residual_parent_context_v1\":";
+      AppendArmyActualResidualParentV1(output, *event.residual_parent_context_v1);
+    }
+    if (event.supply_parent_context_v1) {
+      output += ",\"supply_parent_context_v1\":";
+      AppendArmyActualSupplyParentWriterContextV1(output, *event.supply_parent_context_v1);
+    }
     output += ",\"army_regiment_id\":";
     Number(output, event.army_regiment_id);
     output += ",\"request_raw\":";

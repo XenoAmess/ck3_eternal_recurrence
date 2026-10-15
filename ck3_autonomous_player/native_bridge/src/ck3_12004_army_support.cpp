@@ -102,6 +102,9 @@ void PopulateArmySupportBindings12004(
   // 5C68B64 does not match that native RIP operand and is not propagated.
   bindings.county_entry_minimum_soldiers = ImageAddress12004<const std::int32_t *>(image_base, 0x5C68C64);
   bindings.county_entry_character_storage_slot = ImageAddress12004<void **>(image_base, kCharacterStorageSlotRva);
+  bindings.regiment_character_role_executable_sha256 = kExecutableSha256;
+  bindings.regiment_character_role_storage_slot = bindings.county_entry_character_storage_slot;
+  bindings.regiment_character_role_fallback_slot = bindings.province_supply_character_fallback_slot;
   bindings.get_county_entry_loss_budget = ImageAddress12004<decltype(bindings.get_county_entry_loss_budget)>(image_base, 0x24E6650);
   bindings.get_county_entry_loss_fraction = ImageAddress12004<decltype(bindings.get_county_entry_loss_fraction)>(image_base, 0x24E6570);
   bindings.get_county_entry_multiplier = ImageAddress12004<decltype(bindings.get_county_entry_multiplier)>(image_base, 0x24DD9A0);

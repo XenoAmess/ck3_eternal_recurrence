@@ -1,0 +1,78 @@
+{
+  "schema": "xar.e04.maintenance-cache-producer-consumer-notes.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T14:49:47Z",
+  "completed_at_utc": "2026-10-15T14:54:34Z",
+  "machine_identity_evidence": "fresh python -B tools/ck3_live_run_id.py machine; no override",
+  "scope": "read_only_source_contract_and_prior_synthetic_regression_analysis_document_candidate",
+  "document": {
+    "path": "C:/ck3-e04-resume-20261015-a01/maintenance-cache-producer-source-a01/consumer-notes-a01.md",
+    "size_bytes": 14677,
+    "sha256": "9bd730b286ee61c1014ee22548d261bbd0c60214661538a75e1920160eec35d2"
+  },
+  "production_consumer_readback": {
+    "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+    "sha256": "b5b3d65abc26d5b42cacff197294f94d1f9157890f5838e810772f805360eb25",
+    "evidence": "read actual source; certutil -hashfile SHA256 returned rc0"
+  },
+  "contracts": [
+    {
+      "path": "../maintenance-generic-context-candidate-a01/WIRE-CONTRACT.actual.json",
+      "sha256": "f902e28a8b2c27ea3bd147a0578b01bb6229261f20681c1a4f7f609e467bcc61"
+    },
+    {
+      "path": "../maintenance-generic-context-candidate-a01/WIRE-CONTRACT-ADDENDUM-a02.json",
+      "sha256": "a4c73d788ae3669701417a69a56c0e1a23b6a40d59455e1388ee9bfc02f83e0f"
+    }
+  ],
+  "current_source_relations": {
+    "path": "SOURCE-RELATION.actual.json",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-15T14:53:02.901679+00:00",
+    "size_bytes": 5067,
+    "sha256": "9d8a9dc6c6025dc21ed38705d4e1862c0cb2aa9c3a3958e5c55d5762c86d55ce",
+    "new_producer_edge": false,
+    "cache_role_and_refresh_proved": false,
+    "four_term_semantic_names": [null, null, null, null],
+    "old_seq12_four_inputs_observed": false,
+    "future_a05_credit": false
+  },
+  "reused_evidence": [
+    {
+      "path": "../maintenance-generic-context-candidate-a01/consumer-full-check-a01.actual.json",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-15T13:43:50.130619+00:00",
+      "sha256": "0a567cab7f59999d02e81bf5bf31ff45fb9199e33aae27857c42cf57ddcb7f39",
+      "native_cases": 16,
+      "negative_cases": 110,
+      "valid_unknown_cases": 5,
+      "legacy_cases": 9,
+      "scope": "synthetic_compiled_native_wire_not_live_game"
+    },
+    {
+      "path": "../maintenance-generic-context-candidate-a01/portable-source-a01/pytest-a01.receipt.actual.json",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "execution_window_utc": "2026-10-15T13:58:03Z/2026-10-15T13:58:09Z",
+      "sha256": "116a1a86b80a3e6060ab501f6bb3186339b72b5c4586c09bbdeff379fee33de9",
+      "passed_count": 140,
+      "scope": "prior_narrow_optimized_pytest_explicit_candidate_overlay"
+    }
+  ],
+  "boundaries": [
+    "available_signed_zero_is_distinct_from_null_unknown",
+    "context_pointer_stability_is_distinct_from_complete_context_and_callback_frames",
+    "formula_match_mismatch_unknown_never_close_business_attribution",
+    "bounded_OS_unwind_parent_is_distinct_from_proved_direct_caller_and_complete_stack",
+    "generic_schema_acceptance_does_not_apply_boarding_qualification_or_prove_own_account",
+    "journal_read_completeness_and_date_binding_do_not_prove_payment_coverage_or_cadence",
+    "finite_source_inputs_need_producer_cache_reset_and_business_semantics_followup"
+  ],
+  "maintenance_attribution": "unclosed",
+  "new_test_runs": 0,
+  "game_runs": 0,
+  "executable_file_reads": 0,
+  "repository_writes": 0,
+  "prior_sealed_evidence_writes": 0,
+  "lane_output_budget_bytes": 262144,
+  "status": "DOCUMENT_CANDIDATE_COMPLETE"
+}

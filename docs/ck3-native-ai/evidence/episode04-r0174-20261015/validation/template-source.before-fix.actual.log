@@ -1,0 +1,22 @@
+test_template_pins_actual_checked_in_source_projection (test_common_t0_checked_in_freeze.CheckedInCommonT0Freeze.test_template_pins_actual_checked_in_source_projection) ... FAIL
+
+======================================================================
+FAIL: test_template_pins_actual_checked_in_source_projection (test_common_t0_checked_in_freeze.CheckedInCommonT0Freeze.test_template_pins_actual_checked_in_source_projection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261015-a01\r0174-repo-delivery-a01\candidate\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\tests\test_common_t0_checked_in_freeze.py", line 16, in test_template_pins_actual_checked_in_source_projection
+    self.assertEqual((pin['bytes'],pin['sha256']),(len(raw),hashlib.sha256(raw).hexdigest()))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (13645, '615a19280d3e68c3b8be27d1ba3a3f54af69ae379a3b57b5b0a9e763214e14ae') != (13320, '1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c')
+
+First differing element 0:
+13645
+13320
+
+- (13645, '615a19280d3e68c3b8be27d1ba3a3f54af69ae379a3b57b5b0a9e763214e14ae')
++ (13320, '1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c')
+
+----------------------------------------------------------------------
+Ran 1 test in 0.020s
+
+FAILED (failures=1)

@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T14:50:47.345019+00:00",
+  "inputs": [
+    {
+      "source_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_war_cash_claim_terms.hpp",
+      "relative_copy": "inputs/exact4-binder-hpp.hpp",
+      "bytes": 2207,
+      "sha256": "647da1cb955c36a152da96e2297d0f470a3259d8dadbd5fd027985aad2ceff9a"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_war_cash_claim_terms.cpp",
+      "relative_copy": "inputs/exact4-binder-cpp.cpp",
+      "bytes": 2311,
+      "sha256": "fed95c2adc0dd0af04d859d5cb322e5b3de6fbe87e54d1652af82f3c2b288ac7"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_reader.hpp",
+      "relative_copy": "inputs/current-reader-hpp.hpp",
+      "bytes": 3956,
+      "sha256": "36ae77f56c3425bf0925d9f088c6b223aa025e3d99509f00979e948df95e0d5f"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_reader.cpp",
+      "relative_copy": "inputs/current-reader-cpp.cpp",
+      "bytes": 8704,
+      "sha256": "47d9802384694277dd2169ac3a76e80644047b1e42355dc14d792f5b87b85040"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\SOURCE-CONTRACT.actual.json",
+      "relative_copy": "inputs/saved-settlement-source.json",
+      "bytes": 10616,
+      "sha256": "31f8c9e1f35fa82bcbd1fe6a81be05d934a9de9ca1a900a8ce566a319600b79b"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-applied-source-20261015-a01\\generic-caller28A6D7C-source-a01\\COMPLETE-574B.actual.asm",
+      "relative_copy": "inputs/saved-settlement-asm.asm",
+      "bytes": 9102,
+      "sha256": "55a27f9d54562c31a8690ef99cab18cc8fe10eb5c1bcbeb9c3aca32b5cd70607"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\ck3-1.20.0.4-battle-war-domain-migration.md",
+      "relative_copy": "inputs/exact4-migration-doc.md",
+      "bytes": 10393,
+      "sha256": "3f28e6bd9cf4bf44ae3d73994fed04205e15dfc1a680785e95429539465fe9f2"
+    }
+  ],
+  "total_copied_bytes": 47289,
+  "new_executable_bytes": 0
+}

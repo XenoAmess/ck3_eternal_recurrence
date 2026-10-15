@@ -1,0 +1,93 @@
+{
+  "schema": "xar.e04.same-t0-pair-input.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "mode": "saved_t0_continuation_control",
+  "common_t0_freeze": {
+    "path": "data/live12004-t0-control-a01/archive-contract/common-t0-r0173.receipt-freeze.actual-a01.json",
+    "bytes": 13320,
+    "sha256": "1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c"
+  },
+  "control": {
+    "assets_root": "data/live12004-t0-control-a01",
+    "run_dir": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0174",
+    "pid": 17468,
+    "create_filetime": 134365505726865638,
+    "generation": 1,
+    "episode": "native-31254-0d067159706e",
+    "prepared": "data/live12004-t0-control-a01/prepared-a01/prepared.json",
+    "identity_receipt": "data/live12004-t0-control-a01/runtime-actor-identity.actual-a01.json",
+    "admission": "data/live12004-t0-control-a01/payment-window-admission.actual-a01.json",
+    "request_helper": "data/t0_requests_a05.py",
+    "driver_state_path": "data/live12004-t0-control-a01/state-a01/native-session/driver-state.json",
+    "t0_snapshot": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/010-t0-baseline-a02-01-baseline-snapshot.json",
+    "t0_ordinary_response": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/010-t0-baseline-a02-02-baseline-ordinary.json",
+    "baseline_cash_before_snapshot": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/011-t0-admission-a01-09-payment-independent-before.json",
+    "baseline_cash": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/011-t0-admission-a01-09-payment-independent.json",
+    "halt_response": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/030-t0-halt-a01-11-halt-once.json",
+    "after_halt_snapshot": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/031-halt-readonly-a01-halt-readonly-01.json",
+    "daily_summaries": [
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-01.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-02.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-03.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-04.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-05.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-06.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-07.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-08.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-09.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-10.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-11.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-12.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-13.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-14.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-15.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-16.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-17.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-18.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-19.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-20.complete.json",
+      "data/live12004-t0-control-a01/bounded-days-runner-a01/day-21.complete.json"
+    ],
+    "day_source_overrides": {
+      "11": {
+        "arm_response": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days02to21-a01-d11-05-arm.json",
+        "clock_response": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-02-clock-query-0.json",
+        "final_snapshot": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day11-readback-a01-d11-05-final.json"
+      },
+      "15": {
+        "arm_response": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-control-days12to21-a01-d15-05-arm.json",
+        "clock_response": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-02-clock-query-0.json",
+        "final_snapshot": "data/live12004-t0-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0174/responses/r174-day15-readback-a01-d15-05-final.json"
+      }
+    },
+    "status": "21 actual canonical exact days complete; pending independent pair checker result"
+  },
+  "treatment": null,
+  "notes": [
+    "No actual PID/window fabricated; values filled after normalprepare and load.",
+    "For recovery days, day_source_overrides.N explicitly supplies original arm_response, successful readonly clock_response and final_snapshot from ownrun; no action replay.",
+    "mode two_new_loaded_arms requires independent treatment section of same schema without Halt fields, fresh same-seed reads and21actual days.",
+    "All file references are archive-relative. Original absolute paths inside source receipts require an explicit archive_prefix_map mapping source prefix to relative archive directory.",
+    "Fill source_head and bridge_dll_sha256 from the actual approved new build; historical8dd/5d9a are not automatic future build authorization. Both new arms use the same declared source contract.",
+    "The frozen T0 projection may be copied into the archive at its declared path. Its historical source paths are labels; save/raw content is never opened by this checker.",
+    "Complete manifest only; original actual-a01 manifest and all original responses preserved.",
+    "day11 original Arm/Resume executed once; marriage notification rejected per original policy; later read-only recovery sources explicitly override Arm/status/final mapping.",
+    "day15 original Arm/Resume executed once; bookmark.1070 first displayed option A matches historical treatment; later read-only recovery sources explicit.",
+    "R0174 stationary21-day control is saved-T0 continuation comparison with historicalR0173. Not originalR07 <=7day, not same source observer build, not two freshloaded arms.",
+    "Raw45s completion is independently owned byRoot; this script does not open/hash/video-verify it or count it as seven-day R07.",
+    "No window sequences compared across arms. No generic wallet/NET promoted to maintenance.",
+    "Portable derived manifest only. Original response/summary/prepared/freeze bytes remain exact ZIP members; original absolute source labels map to archive data and are never accessed directly."
+  ],
+  "archive_prefix_map": {
+    "C:\\ck3-e04-resume-20261015-a01": "data"
+  },
+  "source_contract": {
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_head": "1463bd9b4b89612d283dd45ac4ec9efbf22f048d",
+    "bridge_dll_sha256": "7929217c07ff4405445611558040cc282df98dcebc79d16f5a1b4e6bdc049b1b"
+  },
+  "quota_review_at_utc": "2026-10-16T07:45:01.597000+00:00"
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.parent-hook-source-anchor-proposal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_utc": "2026-10-15T16:24:41.602902+00:00",
+  "status": "SOURCE_ANCHOR_ONLY_NO_IMPLEMENTATION_OR_ABI_QUALIFICATION",
+  "exact_game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_EXE_reads": 0,
+  "new_runtime_actions": 0,
+  "default_enabled": false,
+  "entry_rva": 42956864,
+  "prefix_bytes": 16,
+  "prefix_hex": "488bc453554881ec980000004c8970e0",
+  "prefix_sha256": "d44f03f2855791f5fb4ee339dc21b28917e981d419df5cb4f1ecb89ba20aa517",
+  "whole_instructions": [
+    "mov rax,rsp",
+    "push rbx",
+    "push rbp",
+    "sub rsp,0x98",
+    "mov [rax-0x20],r14"
+  ],
+  "prefix_contains_RIP_relative_instructions": false,
+  "entry_register_contract": {
+    "RCX": "task+0x70 inline context (not dereferenced task+0x70)",
+    "RDX": "Character pointer selected from descriptor at task+0x68, indexR8d",
+    "R8D": "raw selected index"
+  },
+  "actual_saved_native_return_expectation": {
+    "return_rva": 60263416,
+    "source": "3978BF3 CALL39798E0; generic leaf JMPclosure[8]=290FD20; specific closure290FD38 JMP28F7840. Both are tail jumps, so not additional frames.",
+    "binding": "Expected only this observed invocation chain; do not reject/rename other raw callers as false events without separate diagnostics."
+  },
+  "existing_callback_link": {
+    "parent_internal_settlement_call_rva": 42957108,
+    "parent_internal_settlement_return_rva": 42957113,
+    "settlement_entry_rva": 42626320,
+    "wallet_return_rva": 42626428
+  },
+  "minimal_candidate_changes": [
+    "Keep a new compile flag defaultOFF and separate enable command; no current game patch or runtime swap",
+    "At parent entry capture the three original arguments and raw [RSP] before any wrapper call; bind Character from RDX, not RCX",
+    "Add a parent-local monotonic/TLS nesting token and entry clock/session; source settlement callback may link only if contained on same thread/session and matching Character",
+    "Reuse current raw context reader only as *(Character+1C0) then the four fixed raw fields, with pointer identity before/after, null/failed/stable flags",
+    "Call original exactly once preserving all incoming arguments and ABI return bits; capture return-side identity/value/clock, with exception-safe nesting retirement",
+    "Raw parent entry/exit inputs can localize changes but are not a field writer and never provide military semantics",
+    "Before cold use, qualify the16B source anchor, trampoline/body ABI and nested/unmatched/wrongCharacter/staleEpoch/defaultOFF negative fixtures; no deployed or tested claim in this source-only note"
+  ],
+  "unresolved": "If entry values already equal settlement values, producer predates this parent or is unchanged in that invocation. Obtain genuine scoped writer PC rather than scan parents/neighbors.",
+  "military_attribution": "unclosed"
+}

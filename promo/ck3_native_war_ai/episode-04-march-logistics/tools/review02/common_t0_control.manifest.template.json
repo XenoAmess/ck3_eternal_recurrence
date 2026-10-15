@@ -4,8 +4,8 @@
   "mode": "saved_t0_continuation_control",
   "common_t0_freeze": {
     "path": "docs/ck3-native-ai/evidence/episode04-common-t0-control-12004/common-t0-r0173.receipt-freeze.actual-a01.json",
-    "bytes": 13645,
-    "sha256": "615a19280d3e68c3b8be27d1ba3a3f54af69ae379a3b57b5b0a9e763214e14ae"
+    "bytes": 13320,
+    "sha256": "1d3593d906b8117934a8bb5cae6a1d3c6c280272c87476867f63e5e816362a5c"
   },
   "control": {
     "assets_root": null,

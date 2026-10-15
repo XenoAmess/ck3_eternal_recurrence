@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/army_actual_supply_parent_join_v1.hpp"
+
 #include <charconv>
 #include <cstddef>
 #include <cstdint>
@@ -19,6 +21,7 @@ struct ArmyActualSupplyCallbackValuesV1 {
 
 struct ArmyActualSupplyCallbackObservationV1 {
   std::uint64_t sequence = 0;
+  std::optional<ArmyActualSupplyParentInvocationV1> supply_parent_invocation_v1;
   std::int32_t army_id = -1;
   std::int32_t native_carmy_id = -1;
   std::optional<std::uint64_t> passed_date_raw64;
@@ -90,6 +93,10 @@ inline void AppendArmyActualSupplyCallbackObservationsV1(
     first = false;
     output += "{\"sequence\":";
     Number(output, event.sequence);
+    if (event.supply_parent_invocation_v1) {
+      output += ",\"supply_parent_invocation_v1\":";
+      AppendArmyActualSupplyParentInvocationV1(output, *event.supply_parent_invocation_v1);
+    }
     output += ",\"army_id\":";
     Number(output, event.army_id);
     output += ",\"native_carmy_id\":";

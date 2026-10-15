@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xar_bridge/army_regiment_character_role_v1.hpp"
 #include <cstdint>
 #include <optional>
 #include <string_view>
@@ -63,6 +64,8 @@ struct ArmyRegimentReplenishmentRecordsSnapshotV1 {
   std::string_view loss_writer_admission_unavailable_reason{};
   std::string_view unavailable_reason{};
   std::vector<ArmyRegimentReplenishmentRecordV1> records;
+  // Exact .4, same owning-thread strengths sample; absent on legacy packets.
+  std::optional<ArmyRegimentCharacterRoleV1> native_character_role_v1;
   friend bool operator==(const ArmyRegimentReplenishmentRecordsSnapshotV1 &,
                          const ArmyRegimentReplenishmentRecordsSnapshotV1 &) = default;
 };
@@ -77,6 +80,6 @@ namespace xar::ck3_12003 {
 game::ArmyRegimentReplenishmentRecordsSnapshotV1
 ReadArmyRegimentReplenishmentRecordsV1(
     const ck3_12002::ArmyBindings &bindings, const void *resolved_army_regiment,
-    std::int32_t army_regiment_id) noexcept;
+    std::int32_t army_regiment_id, std::int32_t native_carmy_id = -1) noexcept;
 
 } // namespace xar::ck3_12003

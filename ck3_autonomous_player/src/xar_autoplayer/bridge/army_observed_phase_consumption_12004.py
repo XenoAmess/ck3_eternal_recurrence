@@ -73,6 +73,10 @@ def project_army_observed_phases_12004(row, *, exact_source):
                 from .army_subject_physical_coverage_12004 import project_subject_raw_physical_delta_12004
                 consumed['subject_raw_physical_delta_v1']=project_subject_raw_physical_delta_12004(
                     event,expected_carmy_id=row['native_carmy_id'] & 0xFFFFFFFF)
+            from .army_refill_application_qualification_12004 import qualify_regular_refill_application_12004
+            consumed['refill_application_qualification_v1'] = qualify_regular_refill_application_12004(
+                consumed, exact_source=exact_source,
+                observer_installed=core['observer_installed'])
             result['ordered_regular_core'].append(consumed)
     preparation=_family(row,PREP)
     if preparation:

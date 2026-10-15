@@ -166,3 +166,34 @@ Root在同一PID实际采用Python身份guard与有限侧存配置，未因纯Py
 12:02Z追加：现有RouteBindings的实际signed64/Q100000移动锁定cutoff已通过四文件最小增量发布到 `current_movement_progress.loaded_movement_lock_cutoff`，不添加推断locked。读取独立于ETA成功与否，disabled/非暂停/clock不符保持null，旧shape仍可消费。真实Attach+serializer有11场景32断言、实际movement block consumer有60检查；Root主树的cutoff/scoped/cache组合实际 **74 passed**。这仍不是本机cutoff数值实读或Halt结果；下一现场才观测。外置资格为 `strength-scope-bloat-a01/halt-cutoff-a01/ROOT-DELIVERY-PYTEST.actual.json` 及其精确source/compiled wire pins，未把故意重复war_ids的fixture整行归一化失败改成通过。
 
 容量统一ACCEPT在 `continuation-a02/CAPACITY-ACCEPTED.actual-a01.json`，1546B，SHA `29d8ca27f4f70814640dd240577f22f7c481c617f2007a479cd3a5e87e134283`：现项目C保守上界161126913919B、本轮合计新增峰6375342080B、160GiB例外原截止不变，全部子lane共用512MiB，Root唯一重型写入协调者；不得每lane重新消费同一份free。新raw1.5GiB、Driver128MiB/单包16MiB、natural56/payment384先止线。全部下一场计划结果仍为pending，计划校验不代替屏幕租约、新鲜离线、实际新PID与运行证明。
+
+## 2026-10-16 滚动补录：R0174闭场、驻定对照与新Halt原片
+
+本节补记10月15日UTC的实际现场（北京时间10月15日晚）及跨日知识整合。来源机器为 **`desktop-3fevhd2-1c74096080`**；运行源码仍为`1463bd9b4b89612d283dd45ac4ec9efbf22f048d`，a05 DLL SHA为`7929217c07ff4405445611558040cc282df98dcebc79d16f5a1b4e6bdc049b1b`。闭场之后Root才向工作树apply后继专题/consumer/关联候选，不追认为R0174已部署能力；未来a06另做生产构建和新现场资格。
+
+### 已完成的窄事实
+
+R0174实际PID17468、创建FILETIME134365505726865638、generation1、episode`native-31254-0d067159706e`、Robert31254、Army18。实际载入共同冻结seed SHA `9ab3b0d05bdc1a0c4ef2d81a9dc27cec3f66e9af2871b5cac11776ddc6ddb784`。T0 raw53145048至第21日53145552，每日exact+24、1tick、overshoot0且暂停；Army18始终在2624、完整空route，完整compact兵力1196/1196。第11日按原政策拒绝marriage通知，第15日bookmark.1070选择首个显示选项A，与历史处理一致；恢复只重读原Arm对应的status/final，不重发Arm/Resume。
+
+完整`--phase pair`检查在`2026-10-15T15:55:02Z`实际PASS。它支持“共同保存T0的21日驻定回放对照，与历史R0173保存T0后续行作有限比较”；历史treatment当时**没有重新load9ab3**，不是两臂新冷载、同observer build、同一epoch或通用随机世界完全等同的证明。各臂sequence只在自身窗口使用，不跨窗口比较序号。控制臂合格登船回调0，不证明零总支出或免费登船。原R07仍缺七日以内窗口、避经济结算及静止T0后新Move，R01完整新比较T0/统帅/ABC目标冻结仍缺。来源为`t0-control-pair-closeout-a01/pair-check.actual-a01.json`（2337B，SHA `cf63da7e5858b4cd35b64784e36e57bad3bbd3c3b18cc1f9e20665abc9753fa1`）；[R0174专题和便携原件](../ck3-native-ai/episode04-r0174-common-t0-control-12004.md)供其他机器相对路径重算，不要求原机C盘路径。
+
+新Halt原片真实 **45秒、1,350帧、2560×1440/30fps、无音轨**，56,479,663B，SHA `6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12`。一次完整strict decode及probe通过，未重哈希/重编码原片。候选0–4秒展示移动转待命，4–20秒展示待命后态；左上沿海tooltip遮挡持续存在，连续clean和人工1×/signoff均pending。SDK墙钟与encoded PTS未校准，精确Halt编码帧未知，不能按名义墙钟指定事件帧。**R0173旧6分钟raw没有Halt**仍为正确历史；本次是R0174另一次新录像，不改story-a02封存字节。
+
+### 新raw财务观测与未闭归因
+
+新a05现场generic seq12已真实读到四项raw`500974,0,218610,0`，按原生有符号算式得到282364，whole-callback个人账户余额变化一致；day17/day21严格消费均PASS且指向同一保留事件，不重复计两笔。其OS unwound parent指向已闭合的`28F7840`函数内返回点，完整parent本体没有直接四项store；更上一层有限来源仍在追。这里的seq12属于R0174新记录，**不能倒填R0173旧seq12**。四term的producer/刷新节奏/时间单位/军事applied component仍未闭，`maintenance_attribution=unclosed`；算式匹配、parent或净钱包增加都不证明已付维护费。共享规则见[维护raw消费合同](../ck3-native-ai/war-payment-maintenance-cache-source-12004.md)。
+
+### 保存、正常退出与后续门槛
+
+终态date53145552普通checkpoint保存成功，69,730,879B，SHA `8cc8b11cf00561513625b6ef28c8e22d9104f6173b684b233c9687edeb67bb88`。Root已完成stock正常退出、实际exit0、SDK/keeper及Game/recorder树回收、显示恢复，15:59:10Z屏幕CAS **5419→5420**释放。最初一次WM_CLOSE短等回执仍是pending，不将它改成独立退出证明；实际正常闭场来源由R0174便携bundle保全。
+
+| 范围 | 当前实际完成 | 本次增量的边界 |
+| --- | ---: | --- |
+| 已有Review01制作、机器审计、客户端交付 | 3/3，100% | 原28:55.80交付保持；人工1×/signoff仍单列pending |
+| Review02研究整卡R00–R13 | 3/14，21.4% | R00/R02/R11已闭；本次pair和新raw不增加整卡分子 |
+| 新版合格动态证据包 | 0/11，0% | 已新增45秒Halt原片和20秒候选，clean尚未授予 |
+| 新中文替换草稿覆盖 | 24/69，34.8% | story-a02为有界草稿，不等于69段全文冻结 |
+| Review02最终冻结稿 / 声音 | 各0/69，0% | 24段草稿、源码映射不抵扣最终稿和音频 |
+| 新版render / 审计 / 人工完整签核 / 指定交付 | 0/4，0% | 不用Review01代填新版里程碑 |
+
+本轮跨日接续窗口优先构建/资格native a06并取得R12锁定Halt、R13锁定重定向各自真实后果；原源与当前a05不热冒充a06。核心研究目标暂估北京时间 **10月17–19日**，新Review目标窗口 **10月18–21日**，均为调度估计，依赖自然低库存、实际补员/维护来源及串行ABC，不能保证按时发生。新现场只按[锁定路线手册](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/locked_routes/README.md)重绑当前版本/机器/PID/实际route/cutoff；研究、镜头、稿声和成片各自结算。共享512MiB子包池和原复核截止 **2026-10-16T07:45:01.597Z**保持，不自动续期。

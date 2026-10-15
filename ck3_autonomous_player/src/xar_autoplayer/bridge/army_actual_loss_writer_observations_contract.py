@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from .army_actual_supply_parent_join_contract import normalize_supply_parent_writer_context_v1
+from .army_actual_residual_parent_contract import normalize_actual_residual_parent_v1
+
 
 _FAMILY_KEYS = {
     "status", "source", "membership_basis", "observer_installed",
@@ -79,7 +82,10 @@ def normalize_actual_loss_writer_observations_v1(
     normalized = []
     for index, raw_event in enumerate(events):
         name = f"actual_loss_writer_observations_v1.events[{index}]"
-        event = _object(raw_event, _EVENT_KEYS, name)
+        event_keys = _EVENT_KEYS | ({"supply_parent_context_v1"} if isinstance(raw_event, dict) and "supply_parent_context_v1" in raw_event else set())
+        if isinstance(raw_event, dict) and "residual_parent_context_v1" in raw_event:
+            event_keys |= {"residual_parent_context_v1"}
+        event = _object(raw_event, event_keys, name)
         row: dict[str, object] = {}
         for key in ("sequence", "capture_failure_flags", "captured_data_record_count",
                     "physical_slot_count"):
@@ -137,6 +143,13 @@ def normalize_actual_loss_writer_observations_v1(
             raise ValueError(f"native {name} physical observation availability is malformed")
         if row["physical_debit_observed"] and not row["physical_capture_complete"]:
             raise ValueError(f"native {name} cannot publish a complete physical debit from partial reads")
+        if "supply_parent_context_v1" in event:
+            row["supply_parent_context_v1"] = normalize_supply_parent_writer_context_v1(event["supply_parent_context_v1"], name + ".supply_parent_context_v1")
+        if "residual_parent_context_v1" in event:
+            context = normalize_actual_residual_parent_v1(event["residual_parent_context_v1"], name + ".residual_parent_context_v1")
+            if context["source_complete"] and row["caller_return_rva"] != 0x2A958E8:
+                raise ValueError(name + " residual context requires actual allocator writer return")
+            row["residual_parent_context_v1"] = context
         normalized.append(row)
     result["events"] = normalized
     return result

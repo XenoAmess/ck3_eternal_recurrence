@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.maintenance-cache.next-finite-source-intake.v1",
+  "state": "DECLARED_NEXT_INPUT_ONLY_NOT_EXECUTED",
+  "exact_game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "current_plan_new_EXE_read_budget": 0,
+  "current_plan_new_runtime_actions": 0,
+  "allowed_existing_text_leaf_max_bytes_each": 1048576,
+  "maximum_total_additional_text_intake_bytes": 2097152,
+  "required_before_intake": [
+    "Exact existing source/map path supplied by a source owner or linked by an already admitted manifest",
+    "Append-only plan amendment naming each intended leaf and exact maximum bytes",
+    "Actual source pin, exact game SHA and function entry/extent; old/new uniform shifts are insufficient",
+    "Read only named retained source leaves; do not rerun historic verifiers that hash or scan the whole EXE"
+  ],
+  "known_exact4_getter_entries": [
+    {"rva": "0x2BCA940", "binding": "monthly_income"},
+    {"rva": "0x28BFD80", "binding": "expense_context_character"},
+    {"rva": "0x2BCB160", "binding": "monthly_total_expenses"},
+    {"rva": "0x2C13F60", "binding": "current_maintenance"},
+    {"rva": "0x2C152B0", "binding": "all_raised_maintenance"}
+  ],
+  "source_edge_acceptance": [
+    "Prove actual Character and dereferenced secondary-context pointer register lineage",
+    "Prove an actual raw load/store at context+2C0/2C8/28/30 with exact instruction bytes/address",
+    "For a named getter relation, follow its caller-owned output/result into that exact store or equivalent explicit producer edge",
+    "Retain null/early-exit, identity, resource-slot and signed-width branches",
+    "A getter name or load from the same field may identify a reader but not a producer or refresh lifetime",
+    "A rate field remains a rate even if its number equals a wallet callback amount",
+    "For military-only applied attribution, prove selection/composition and true payer/account/store chain, not just gross/net or before-after equality",
+    "For cadence, prove the actual upstream scheduler/date predicate and distinguish attempted trigger from a qualified real payment"
+  ],
+  "future_actual_parent_packet_minimum": [
+    "Original immutable completed cash response path and byte/SHA binding",
+    "Independent paired expected public/native revision and raw date",
+    "Exact machine/PID/process-create/connection-generation/player/window/epoch",
+    "Original record kind/caller_return_rva/amount_raw/receiver/second_pointer",
+    "All session, clock, thread, TLS, parent metadata and original-once fields",
+    "Four raw values and both pointer snapshots before/after, completeness/failure flags",
+    "OS reported frame count, absolute frames and exact unique known caller match, parent absolute/RVA and actual module range"
+  ],
+  "forbidden_inference": [
+    "Name any raw term from numeric similarity or scalar/vector shape alone",
+    "Treat stable pointers/values as a proved cache refresh or calendar epoch",
+    "Use old1.19 or1.20.0.3 instructions as exact4 stores without explicit actual mapping",
+    "Read an EXE neighbor or global xref because a real parent frame is unavailable",
+    "Promote raw context completeness or callback arithmetic equality to maintenance_attribution closed"
+  ],
+  "maintenance_attribution": "unclosed"
+}

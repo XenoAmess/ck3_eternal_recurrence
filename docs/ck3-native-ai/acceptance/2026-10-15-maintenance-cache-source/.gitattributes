@@ -1,0 +1,20 @@
+# Exact reviewed originals only; future unrelated files retain normal text policy.
+INPUT-INTAKE.actual.json -text whitespace=cr-at-eol
+NEXT-SOURCE-INTAKE.contract.json -text whitespace=cr-at-eol
+PLAN-A01-OFFLINE-CHECK.actual.json -text whitespace=cr-at-eol
+PLAN-A02-OFFLINE-CHECK.actual.json -text whitespace=cr-at-eol
+PLAN-CHECK-ATTEMPTS.actual.json -text whitespace=cr-at-eol
+ROUTE-INTAKE-A02.actual.json -text whitespace=cr-at-eol
+SOURCE-RELATION.actual.json -text whitespace=cr-at-eol
+consumer-notes-a01.md -text whitespace=cr-at-eol
+consumer-notes-a01.receipt.actual.json -text whitespace=cr-at-eol
+inputs/current-reader-cpp.cpp -text whitespace=cr-at-eol
+inputs/current-reader-hpp.hpp -text whitespace=cr-at-eol
+inputs/exact4-binder-cpp.cpp -text whitespace=cr-at-eol
+inputs/exact4-binder-hpp.hpp -text whitespace=cr-at-eol
+inputs/exact4-migration-doc.md -text whitespace=cr-at-eol
+inputs/named-cache-routes.json -text whitespace=cr-at-eol
+inputs/saved-settlement-asm.asm -text whitespace=-blank-at-eol,cr-at-eol
+inputs/saved-settlement-source.json -text whitespace=cr-at-eol
+plan-a01.json -text whitespace=cr-at-eol
+plan-a02.json -text whitespace=cr-at-eol

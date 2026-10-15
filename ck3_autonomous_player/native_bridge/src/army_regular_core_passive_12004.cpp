@@ -1,3 +1,10 @@
+#ifndef XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004
+#define XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004 0
+#endif
+#if XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004
+// Shared allocator/TLS stack is supplied by the starvation/county integration.
+#include "xar_bridge/ck3_12004_native_invocation_context.hpp"
+#endif
 #include "xar_bridge/army_regular_core_passive_12004.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/army_position_same_war_side_12004.hpp"
@@ -659,7 +666,18 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
   if (!original) return event;
   // Exactly once, outside observer read/capture fault boundaries. Save the full opaque native RAX bits immediately.
   event.original_called = true;
+#if XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004
+  {
+    // This payload lives only for the actual synchronous original call. An
+    // external debugger cannot call TLS or infer this token from QPC/return PC.
+    NativeInvocationScope12004 core_instruction_parent(
+        NativeInvocationParentKind12004::regular_refill_core,
+        GetCurrentThreadId(), &event);
+    event.raw_return_bits = original(manager);
+  }
+#else
   event.raw_return_bits = original(manager);
+#endif
   event.original_returned = true;
   if(!permit.admitted())return event;
   try {

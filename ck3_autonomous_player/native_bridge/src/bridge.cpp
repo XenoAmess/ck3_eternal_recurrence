@@ -169,6 +169,9 @@
 #include "xar_bridge/battle_control_owned_entry_preceding_12004.hpp"
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
+#if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+#include "xar_bridge/ck3_12004_residual_parent_hook.hpp"
+#endif
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
 #include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
@@ -29938,6 +29941,10 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (!xar::ck3_12004::InstallActualSupplyCallbackJournal12004(
             g_actual_supply_callback_journal_12004_v1, supply_environment, sha))
       return FALSE;
+#if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
+    if (!xar::ck3_12004::InstallActualResidualParentHook12004(base, sha, true))
+      return FALSE;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
     xar::ck3_12004::ActualArmyLateEventJournalInstallEnvironmentV1
         army_late_event_environment{};

@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "utc": "2026-10-15T14:55:17.711093+00:00",
+  "mode": "exact_named_path_metadata_probes_no_recursive_scan_no_exe",
+  "prefixes": [
+    {
+      "prefix": "C:\\ck3_mod_rewrite_process_assets",
+      "directory_present": false,
+      "routes": []
+    },
+    {
+      "prefix": "D:\\ck3_mod_rewrite_process_assets",
+      "directory_present": false,
+      "routes": []
+    },
+    {
+      "prefix": "C:\\codex-ck3-background\\packets",
+      "directory_present": false,
+      "routes": []
+    },
+    {
+      "prefix": "D:\\codex-ck3-background\\packets",
+      "directory_present": false,
+      "routes": []
+    }
+  ],
+  "known_Z_unavailable_not_reprobed": true,
+  "research_workflow": "docs/ck3-native-ai/research-tooling-workflow.md",
+  "capacity_admission": "C:/ck3-e04-resume-20261015-a01/continuation-a05/CAPACITY-ACCEPTED.actual-a01.json",
+  "capacity_deadline_utc": "2026-10-16T07:45:01.597Z",
+  "lane_budget_bytes": 8388608,
+  "lane_inside_shared_pool_bytes": 536870912,
+  "no_main_tree_writes_including_untracked": true
+}

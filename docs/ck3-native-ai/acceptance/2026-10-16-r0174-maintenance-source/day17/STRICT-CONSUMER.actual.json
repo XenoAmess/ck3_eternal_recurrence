@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.r0174.generic-context.strict-consumer.v1",
+  "observed_utc": "2026-10-15T15:53:53.799490+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_main_commit_expected": "1463 (Root frozen source label)",
+  "root_reported_DLL_sha256": "7929217c07ff4405445611558040cc282df98dcebc79d16f5a1b4e6bdc049b1b",
+  "DLL_hash_recomputed": false,
+  "new_runtime_actions": 0,
+  "new_executable_reads": 0,
+  "maintenance_attribution": "unclosed",
+  "military_paid_attribution_closed": false,
+  "status": "PASS",
+  "snapshot_binding": {
+    "revision": 53,
+    "native_revision": 52,
+    "snapshot_id": "native:52",
+    "date_raw": 53145456,
+    "episode_run_id": "native-31254-0d067159706e"
+  },
+  "current_session": {
+    "pid": 17468,
+    "process_create_time_100ns": 134365505726865638,
+    "connection_generation": 1,
+    "loaded_game_epoch": null,
+    "controlled_window_id": 1,
+    "same_owned_process_no_load_window": true,
+    "game_state_identity_witness": 2866611225280,
+    "player_character_full_id": 31254,
+    "snapshot_revision": 52,
+    "native_date_raw": 300063320342982512,
+    "absolute_day_raw": 389394
+  },
+  "observed_window_id": 1,
+  "observed_payment_epoch": 1,
+  "independent_PID_create_generation_expectation": {
+    "pid": 17468,
+    "process_create_time_100ns": 134365505726865638,
+    "connection_generation": 1
+  },
+  "window_epoch_independently_supplied_by_Root": false,
+  "sampling": {
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 1,
+    "active_captures": 0,
+    "retained_records": 12,
+    "qualified_records": 0
+  },
+  "natural_journal_status": {
+    "read_complete": true,
+    "retained_records": 34,
+    "overwritten_records": 0,
+    "failed_appends": 0
+  },
+  "loss_free": true,
+  "journal": {
+    "oldest_sequence": 1,
+    "latest_sequence": 12,
+    "retained": 12,
+    "kinds": {
+      "0": 11,
+      "2": 1
+    },
+    "qualified_boarding_debits": 0
+  },
+  "generic_account_callback_count": 1,
+  "generic_context_count": 1,
+  "same_image_parent_count": 1,
+  "witness": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\day17-a01\\consumer-a01\\GENERIC-RAW-WITNESSES.actual.json",
+    "bytes": 7019,
+    "sha256": "016ef47e0b4b0351e1c8ca59f438c0f68fac87a0de6fd65d2c720a938da10c37"
+  },
+  "zero_maintenance_proved": false,
+  "zero_ADD_for_game_proved": false,
+  "verdict": "actual_generic_context_retained",
+  "inputs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\day17-a01\\cash.original.json",
+      "bytes": 400470,
+      "sha256": "386ec37bd07a1eba885c0ea8301f3e697be4626b057f0e87186b2821c5400618"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\day17-a01\\before.original.json",
+      "bytes": 143559,
+      "sha256": "80de0c77b8e5888c2e96c659a7e0f49f7df84701e9092438e543a074ef2cd3b3"
+    }
+  ],
+  "consumer_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+    "bytes": 25102,
+    "sha256": "b5b3d65abc26d5b42cacff197294f94d1f9157890f5838e810772f805360eb25"
+  },
+  "reader_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\maintenance-parent-r0174-a01\\consume_day17_a01.py",
+    "bytes": 9347,
+    "sha256": "445a1ece79c4b44db4a7159839f9b5a6377079669efb597ff424b3332362cbdb"
+  },
+  "python_runtime": {
+    "executable": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "optimization": 1
+  },
+  "completed_utc": "2026-10-15T15:53:53.850505+00:00"
+}

@@ -1,0 +1,196 @@
+{
+  "schema": "xar.e04.callee28A6F50.complete-static-source-contract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T16:22:06.217678+00:00",
+  "source_identity": {
+    "path": "inputs/frozen-identity.json",
+    "bytes": 732,
+    "sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9"
+  },
+  "EXE_sha256_reused_not_rehashed": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "parent_source": {
+    "path": "inputs/parent-direct-call.asm",
+    "bytes": 3075,
+    "sha256": "5e816610cd023f0413e8acac9d65430868bbf499934d66d2e9269b848168c6f6"
+  },
+  "parent_call_rva": 42957786,
+  "entry_argument": "RCX=RBP=Character if parent path executes; inherited from complete parent source",
+  "function": {
+    "begin_rva": 42626896,
+    "end_exclusive_rva": 42627006,
+    "complete_bytes": 110,
+    "sha256": "fe5e5a6d6bdbb708c2e6b3c6ac9ac9ffad47bc564bfc27a64bb7f2dcdf381e94",
+    "pieces": [
+      {
+        "begin_rva": 42626896,
+        "end_rva": 42626917,
+        "source": {
+          "path": "source-read-a01/actual-callee.bin",
+          "bytes": 21,
+          "sha256": "c4d133258c5d8a0830c3d7af6a5e2a43f36697803603a2ec356354070d33bb87"
+        },
+        "sha256": "c4d133258c5d8a0830c3d7af6a5e2a43f36697803603a2ec356354070d33bb87"
+      },
+      {
+        "begin_rva": 42626917,
+        "end_rva": 42627000,
+        "source": {
+          "path": "source-read-a02/piece-028A6F65.bin",
+          "bytes": 83,
+          "sha256": "8019ccee790a446bdf96dbec4a75ced004a5c66c960abcb443b341529bb8d199"
+        },
+        "sha256": "8019ccee790a446bdf96dbec4a75ced004a5c66c960abcb443b341529bb8d199"
+      },
+      {
+        "begin_rva": 42627000,
+        "end_rva": 42627006,
+        "source": {
+          "path": "source-read-a02/piece-028A6FB8.bin",
+          "bytes": 6,
+          "sha256": "4eeabf8bcdc796d3a19ec782d70470e18a3a52ddfa5cfed7abe03e359a03625d"
+        },
+        "sha256": "4eeabf8bcdc796d3a19ec782d70470e18a3a52ddfa5cfed7abe03e359a03625d"
+      }
+    ],
+    "all_conditional_branches_locally_closed": true,
+    "branches": [
+      {
+        "at_rva": 42626915,
+        "target_rva": 42627000,
+        "instruction": "je 0x1428a6fb8"
+      },
+      {
+        "at_rva": 42626932,
+        "target_rva": 42626995,
+        "instruction": "je 0x1428a6fb3"
+      },
+      {
+        "at_rva": 42626944,
+        "target_rva": 42626995,
+        "instruction": "je 0x1428a6fb3"
+      },
+      {
+        "at_rva": 42626983,
+        "target_rva": 42626995,
+        "instruction": "je 0x1428a6fb3"
+      }
+    ],
+    "calls": [
+      {
+        "at_rva": 42626959,
+        "target_rva": 42331712,
+        "return_rva": 42626964,
+        "instruction": "call 0x14285ee40"
+      },
+      {
+        "at_rva": 42626990,
+        "target_rva": 27176576,
+        "return_rva": 42626995,
+        "instruction": "call 0x1419eae80"
+      }
+    ]
+  },
+  "concrete_flow": {
+    "first_object_slot": "Character+0x1B8",
+    "first_object_read_offsets": [
+      "0x50",
+      "0x0"
+    ],
+    "sum": "wrapping64(first+50 + first+0); zero/nonzero guard only",
+    "wallet_call": {
+      "at_rva": 42626959,
+      "target_rva": 42331712,
+      "return_rva": 42626964,
+      "rcx": "*(Character+1B0)+F8",
+      "rdx": "sum bits",
+      "r8": "Character"
+    },
+    "uninspected_call": {
+      "at_rva": 42626990,
+      "target_rva": 27176576,
+      "rcx": "*(*(Character+1B0)+278)",
+      "rdx": 0,
+      "r8": "sum bits",
+      "guard": "[RCX+20]!=0",
+      "semantic_type": null
+    }
+  },
+  "direct_store_result": {
+    "explicit_nonstack_store_count": 0,
+    "explicit_memory_writes": [
+      {
+        "at_rva": 42626917,
+        "instruction": "mov qword ptr [rsp + 0x30], rbx",
+        "operand_index": 0,
+        "base": "rsp",
+        "disp": 48,
+        "access": 2,
+        "size": 8
+      }
+    ],
+    "secondary_context_1c0_loaded": false,
+    "four_terms_direct_store_proved": false,
+    "four_term_semantic_names": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "excluded_wrong_base_offsets": [
+      {
+        "at_rva": 42626917,
+        "instruction": "mov qword ptr [rsp + 0x30], rbx",
+        "operand_index": 0,
+        "base": "rsp",
+        "disp": 48,
+        "access": 2,
+        "size": 8
+      },
+      {
+        "at_rva": 42626995,
+        "instruction": "mov rbx, qword ptr [rsp + 0x30]",
+        "operand_index": 1,
+        "base": "rsp",
+        "disp": 48,
+        "access": 1,
+        "size": 8
+      }
+    ],
+    "limit": "No explicit direct term producer in this complete function. Unknown external call effects and possible pointer aliasing are not disproved."
+  },
+  "distinct_live_seq12": {
+    "other_wallet_return_rva": 42626428,
+    "this_wallet_return_rva": 42626964,
+    "seq12_amount_or_four_inputs_reused_here": false,
+    "new_runtime_invocation_observed": false,
+    "limit": "R0174 seq12 four inputs500974,0,218610,0 and282364 belong only to caller28A6D7C; this body has no new runtime inputs or result."
+  },
+  "reads": {
+    "new_EXE_code_bytes": 110,
+    "new_EXE_metadata_bytes": 264,
+    "new_EXE_read_calls": 27,
+    "full_EXE_hashes": 0,
+    "global_scans": 0,
+    "new_transitive_callee_reads": 0,
+    "new_EXE_reads_during_seal": 0
+  },
+  "prior_read_receipts": [
+    {
+      "path": "source-read-a01/READ-RECEIPT.actual.json",
+      "bytes": 8710,
+      "sha256": "57666bbeaf87d86a9e045a7027f176fea695c97606af8f5e716e601d587af2be"
+    },
+    {
+      "path": "source-read-a02/READ-RECEIPT.actual.json",
+      "bytes": 7971,
+      "sha256": "853009a153e56db4ab222764f3f775fd27d64aa4c885be62abf8a4e69fbcf858"
+    }
+  ],
+  "maintenance_attribution": "unclosed",
+  "cache_refresh_proved": false,
+  "cache_role_proved": false,
+  "military_component_proved": false,
+  "date_cadence_proved": false,
+  "game_SDK_desktop_compile_main_tree_operations": 0,
+  "status": "COMPLETE_LOCAL_FUNCTION_NO_DIRECT_FOUR_TERM_PRODUCER"
+}
