@@ -82,6 +82,7 @@ from .readonly_war_entry_rejection import (
 )
 from . import declaration_opportunity_cooldown_v1 as declaration_cooldown
 from . import family_opportunity_cooldown_v1 as family_cooldown
+from . import family_wartime_opportunity_cadence_v1 as wartime_family_cadence
 from ..vanilla_events.outcome import (
     evaluate_registered_event_material_postcondition_v1,
 )
@@ -3271,6 +3272,11 @@ class GameplayBridgeService:
                 or type(frame[2]) is not int
                 or frame == self._last_war_family_observation):
             return planned
+        skipped = self._skip_private_family_wartime_during_cooldown_v1(
+            planned, snapshot)
+        if skipped is not None:
+            self._last_war_family_observation = frame
+            return skipped
         result = self._plan_private_family_opportunity_v1(
             planned, snapshot, wartime_arbitration=True,
         )
@@ -3279,8 +3285,110 @@ class GameplayBridgeService:
                 and result_plan.get("selected_step") == selected
                 and "family_marriage_pending" not in result_plan
                 and "current_betrothal_pending" not in result_plan):
+            result = {**result, "plan": {**result_plan,
+                "_family_wartime_review_v1": {
+                    "status": "reviewed", "date_raw": snapshot["date_raw"],
+                    "native_revision": snapshot["native_revision"],
+                    "actor_character_id": snapshot["played_character"]["character_id"],
+                    "episode_run_id": snapshot["episode_run_id"],
+                    "heir_character_id": (
+                        result_plan.get("family_marriage_current_relationship") or {}
+                    ).get("heir_character_id"),
+                    "player_spouse_signature": wartime_family_cadence.player_spouse_signature(snapshot),
+                    "expected_successor_character_id":
+                        wartime_family_cadence.expected_successor(snapshot),
+                }}}
             self._last_war_family_observation = frame
         return result
+
+    def _skip_private_family_wartime_during_cooldown_v1(
+        self, planned: dict[str, object], snapshot: dict[str, object],
+    ) -> dict[str, object] | None:
+        """Skip only a proved empty family read, retaining all war actions."""
+        plan = planned.get("plan")
+        lifecycle = snapshot.get("succession_lifecycle")
+        if (not isinstance(plan, dict)
+                or plan.get("selected_step") not in ("life-advance", "query-army-strengths-v1")
+                and not (isinstance(plan.get("selected_step"), str)
+                         and plan["selected_step"].startswith("query-war-termination-options-"))
+                or snapshot.get("paused") is not True
+                or snapshot.get("map_ready") is not True
+                or not isinstance(snapshot.get("active_wars"), list)
+                or not snapshot["active_wars"]
+                or snapshot.get("active_event") is not None
+                or snapshot.get("pending_character_interaction") is not None
+                or snapshot.get("one_life_terminal_reason") is not None
+                or not isinstance(lifecycle, dict)
+                or lifecycle.get("lifecycle") != "ordinary_campaign_succession"
+                or any(key in plan for key in (
+                    "family_marriage_pending", "current_betrothal_pending",
+                    "family_child_education_focus"))):
+            return None
+        state_dir = self._strategy_state_dir()
+        frame = self._observed_planning_source_frame(snapshot)
+        if state_dir is None or frame.get("status") != "complete":
+            return None
+        try:
+            receipt = wartime_family_cadence.view(state_dir, frame)
+            if receipt["status"] != "active":
+                return None
+            ledger = read_family_marriage_ledger(state_dir)
+            resolved = ledger.get("resolved")
+            # Keep old marriage evidence, but match only this first heir's
+            # resolution to the current empty-opportunity cooldown.
+            prior_resolution = (
+                isinstance(resolved, dict)
+                and resolved.get("status") in
+                    ("marriage", "betrothal", "refused", "invalidated")
+                and (resolved.get("episode_run_id") != frame["episode_run_id"]
+                     or (type(resolved.get("heir_character_id")) is int
+                         and resolved["heir_character_id"] > 0
+                         and resolved["heir_character_id"] != receipt["heir_character_id"]))
+            )
+            if (ledger.get("pending") is not None
+                    or resolved is not None and not prior_resolution):
+                return None
+            history_view = getattr(self.driver, "_with_internal_planning_view", None)
+            if not callable(history_view) or history_view(
+                    snapshot, self._unresolved_family_child_focus_v1)["pending"] is not None:
+                return None
+            player_spouse = wartime_family_cadence.player_spouse_signature(snapshot)
+            successor = wartime_family_cadence.expected_successor(snapshot)
+            if (player_spouse is None or successor is None
+                    or player_spouse != receipt["player_spouse_signature"]
+                    or successor != receipt["expected_successor_character_id"]):
+                wartime_family_cadence.clear(state_dir, frame)
+                return None
+            if getattr(self.driver,
+                       "allow_private_current_first_heir_relationship_query", False) is not True:
+                return None
+            from .current_first_heir_relationship_private_transport import (
+                query_current_first_heir_relationship_private_v1,
+            )
+            # The light existing typed read checks the current heir and all
+            # spouse/betrothal fields without the ordinary material sidecar.
+            relation = query_current_first_heir_relationship_private_v1(
+                self.driver, expected_native_revision=snapshot["native_revision"])
+            read = getattr(self.driver, "take_internal_semantic_snapshot", None)
+            if (not callable(read)
+                    or self._observed_planning_source_frame(read()) != frame):
+                return None
+            if (relation.get("status") != "available"
+                    or relation.get("read_only") is not True
+                    or relation.get("bilateral_verified") is not True
+                    or relation.get("native_revision") != snapshot["native_revision"]):
+                return None
+            if (relation.get("heir_character_id") != receipt["heir_character_id"]
+                    or relation.get("betrothed_character_id") is not None
+                    or relation.get("primary_spouse_character_id") is not None
+                    or relation.get("spouse_character_ids") != []):
+                wartime_family_cadence.clear(state_dir, frame)
+                return None
+            return {**planned, "plan": {**plan,
+                "family_wartime_opportunity_cooldown_v1": receipt}}
+        except (OSError, ValueError, TypeError, KeyError, BridgeUnavailableError,
+                UnsupportedStepError):
+            return None
 
     def _observe_opening_lifestyle_perks_v1(
         self, *, before: dict[str, object], focus: dict[str, object],
@@ -4281,6 +4389,8 @@ class GameplayBridgeService:
             planned, outcome)
         family_cooldown_receipt = self._observe_family_cooldown_after_turn_v1(
             planned, outcome)
+        wartime_family_receipt = self._observe_wartime_family_cadence_after_turn_v1(
+            planned, outcome)
         # Presentation is best effort and starts only after the business turn
         # has completed. Its later receipt never attests this gameplay frame.
         try:
@@ -4302,6 +4412,7 @@ class GameplayBridgeService:
             "planning_source_frame": planned.get("planning_source_frame"),
             "declaration_opportunity_cooldown_v1": cooldown_receipt,
             "family_opportunity_cooldown_v1": family_cooldown_receipt,
+            "family_wartime_opportunity_cooldown_v1": wartime_family_receipt,
             "camera_follow": camera_schedule,
         }
 
@@ -4326,6 +4437,22 @@ class GameplayBridgeService:
             # The gameplay turn has completed; never replay it for a pacing receipt.
             return {"schema": family_cooldown.SCHEMA, "status": "unavailable",
                     "reason": f"{type(error).__name__}: {error}"}
+
+    def _observe_wartime_family_cadence_after_turn_v1(
+        self, planned: dict[str, object], outcome: dict[str, object],
+    ) -> dict[str, object] | None:
+        plan = planned.get("plan")
+        frame = planned.get("planning_source_frame")
+        state_dir = self._strategy_state_dir()
+        if (state_dir is None or not isinstance(plan, dict)
+                or not isinstance(frame, dict) or frame.get("status") != "complete"):
+            return None
+        try:
+            return wartime_family_cadence.observe_after_turn(
+                state_dir, frame, plan, outcome)
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            return {"schema": wartime_family_cadence.SCHEMA,
+                    "status": "unavailable", "reason": f"{type(error).__name__}: {error}"}
 
     def _observe_declaration_cooldown_after_turn_v1(
         self, planned: dict[str, object], outcome: dict[str, object],
