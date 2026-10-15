@@ -1847,9 +1847,23 @@ class GameplayBridgeService:
                 self.driver, "require_initial_lifestyle_focus_before_date_advance",
                 False,
             ) is True
+            known_choice_review_root = None
+            known_choice_backend_sha256 = None
+            hint = planning_snapshot.get("top_exclusive_modal_choice_hint")
+            if isinstance(hint, dict) and hint.get("status") == "present":
+                state_dir = self._strategy_state_dir()
+                if state_dir is not None:
+                    from ..mandatory_choice_offline_analysis_v1 import bound_backend_sha256
+                    known_choice_backend_sha256 = bound_backend_sha256(
+                        Path(state_dir), planning_snapshot)
+                    known_choice_review_root = (
+                        Path(state_dir) / "evidence" /
+                        "unknown-mandatory-choice-reviews")
             window_priority = plan_one_life_window_priority_v1(
                 history, snapshot=planning_snapshot, action_steps=available_steps,
-                bridge_capabilities=bridge_capabilities)
+                bridge_capabilities=bridge_capabilities,
+                known_mandatory_choice_review_root=known_choice_review_root,
+                known_mandatory_choice_backend_sha256=known_choice_backend_sha256)
             plan = window_priority if window_priority is not None else (
                 {
                     "policy": "initial-lifestyle-focus-first-v1",
@@ -1866,6 +1880,8 @@ class GameplayBridgeService:
                     next_run_plan=campaign_goal_plan or cross_run_plan,
                     battle_speed_readiness=battle_speed_readiness,
                     pending_interaction_registry_state_dir=getattr(self.driver, "state_dir", None),
+                    known_mandatory_choice_review_root=known_choice_review_root,
+                    known_mandatory_choice_backend_sha256=known_choice_backend_sha256,
                 )
             )
             if getattr(
@@ -1906,6 +1922,8 @@ class GameplayBridgeService:
                 plan = {**plan, "activity_feast_lifecycle_observation": feast_lifecycle_observation}
             routable_steps = set(available_steps)
             selected_step = plan.get("selected_step")
+            routable_steps = _mandatory_choice_typed_routable_steps(
+                routable_steps, selected_step, self.driver, bridge_capabilities)
             if plan.get("policy") == WAR_DECLARED_OVERVIEW_V1_POLICY and isinstance(selected_step, str):
                 routable_steps.add(selected_step)
             if (
@@ -4055,6 +4073,10 @@ class GameplayBridgeService:
                 **consumed, "lifestyle_deferred_war_red": deferred_war_red,
             }
         routable = set(available_steps)
+        if consumed.get("selected_step") == "select-mandatory-choice-v1":
+            routable = _mandatory_choice_typed_routable_steps(
+                routable, consumed["selected_step"], self.driver,
+                self.capabilities().get("bridge_capabilities", ()))
         if callable(
             getattr(self.driver, "submit_player_lifestyle_perk_private_v1", None)
         ):
@@ -4285,6 +4307,30 @@ class GameplayBridgeService:
         before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
     ) -> dict[str, object]:
         plan = planned.get("plan")
+        generic_capture = isinstance(plan, dict) and isinstance(
+            plan.get("unknown_mandatory_choice_v1"), dict)
+        if generic_capture:
+            from ..mandatory_choice_evidence_v1 import capture_after, capture_before
+
+            ticket = capture_before(self._strategy_state_dir(), planned)
+            try:
+                outcome = self._execute_planned_turn_without_unhandled_capture(
+                    planned, before_submit=before_submit)
+            except Exception as error:
+                try:
+                    error.unknown_mandatory_choice_evidence = capture_after(ticket, error=error)
+                except Exception as capture_error:
+                    error.unknown_mandatory_choice_evidence = {
+                        "before": ticket["before"], "after_capture_error": str(capture_error),
+                        "replay_allowed": False}
+                raise
+            try:
+                evidence = capture_after(ticket, outcome=outcome)
+            except Exception as capture_error:
+                evidence = {"before": ticket["before"],
+                            "after_capture_error": str(capture_error),
+                            "replay_allowed": False}
+            return {**outcome, "unknown_mandatory_choice_evidence": evidence}
         interaction_capture = isinstance(plan, dict) and isinstance(plan.get("unhandled_interaction_fallback"), dict)
         if not isinstance(plan, dict) or (not interaction_capture and not isinstance(plan.get("unhandled_event_fallback"), dict)):
             return self._execute_planned_turn_without_unhandled_capture(planned, before_submit=before_submit)
@@ -4409,6 +4455,20 @@ class GameplayBridgeService:
                 result = self.select_event_option(
                     event_option_number,
                     event_instance_id=planned_event_id,
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == "select-mandatory-choice-v1":
+                capture = plan.get("unknown_mandatory_choice_v1")
+                selection = capture.get("selection") if isinstance(capture, dict) else None
+                executor = getattr(self.driver, "select_mandatory_choice_v1", None)
+                if not isinstance(selection, dict) or not callable(executor):
+                    raise UnsupportedStepError(
+                        "Native mandatory choice lacks its exact token executor")
+                result = executor(
+                    query_id=selection["query_id"],
+                    action_token=selection["action_token"],
+                    frame_binding=capture["frame_binding"],
+                    window_instance_id=selection["window_instance_id"],
                     expected_revision=int(planned["revision"]),
                 )
             elif selected_step == "private-assign-councillor-v1":
@@ -4819,6 +4879,34 @@ class GameplayBridgeService:
                 "status": "executed" if closed else "observed" if noop else "pending",
                 "selected_step": selected_step, "plan": plan, "result": result,
                 "ui_action_credit": closed,
+            }
+        if selected_step == "select-mandatory-choice-v1":
+            # Native callback ACK does not establish that the old modal
+            # instance disappeared.  Its one-time token must never become
+            # ordinary executed/business credit while verification is pending.
+            post = result.get("mandatory_choice_postcondition") if isinstance(result, dict) else None
+            capture = plan.get("unknown_mandatory_choice_v1") if isinstance(plan, dict) else None
+            choice = capture.get("selection") if isinstance(capture, dict) else None
+            window = capture.get("native_window") if isinstance(capture, dict) else None
+            verified = bool(
+                isinstance(result, dict)
+                and result.get("accepted") is True
+                and isinstance(post, dict)
+                and post.get("verified") is True
+                and isinstance(choice, dict)
+                and isinstance(window, dict)
+                and post.get("old_window_id") == window.get("window_id")
+                and post.get("old_instance") == window.get("window_instance_id")
+                and post.get("selected_choice_id") == choice.get("choice_id")
+                and post.get("old_window_no_longer_blocking") is True
+            )
+            return {
+                "status": "observed" if verified else "pending",
+                "selected_step": selected_step,
+                "plan": plan,
+                "result": result,
+                "ui_action_credit": verified,
+                "material_effects_verified": False,
             }
         outcome = {
             "status": ("pending" if (
@@ -16987,6 +17075,22 @@ def _coat_of_arms_source_probe_binding(
     )
 
 
+def _mandatory_choice_typed_routable_steps(
+    available_steps: set[str], selected_step: object, driver: object,
+    bridge_capabilities: object,
+) -> set[str]:
+    """Route the token-only method without advertising a public no-arg step."""
+    routable = set(available_steps)
+    if (
+        selected_step == "select-mandatory-choice-v1"
+        and isinstance(bridge_capabilities, (set, list, tuple))
+        and "game.state.native-mandatory-choice-window-v1" in bridge_capabilities
+        and callable(getattr(driver, "select_mandatory_choice_v1", None))
+    ):
+        routable.add(selected_step)
+    return routable
+
+
 def _route_plan_to_available_step(
     plan: dict[str, object], available_steps: set[str]
 ) -> dict[str, object]:
@@ -17009,7 +17113,8 @@ def _route_plan_to_available_step(
     )
     if (
         selected
-        in {"death-terminal", "strategy-review", "resolve-current-event"}
+        in {"death-terminal", "strategy-review", "resolve-current-event",
+            "select-mandatory-choice-v1"}
         or selected.startswith(fail_closed_prefixes)
     ):
         return {

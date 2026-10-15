@@ -7784,6 +7784,8 @@ def _h3937_hold_selected_control(
 def plan_one_life_window_priority_v1(
     commands: list[dict[str, object]], *, snapshot: dict[str, object] | None,
     action_steps: Iterable[str] = (), bridge_capabilities: Iterable[str] = (),
+    known_mandatory_choice_review_root=None,
+    known_mandatory_choice_backend_sha256=None,
 ) -> dict[str, object] | None:
     """Preserve terminal ownership before choosing an independent UI action."""
     played = snapshot.get("played_character") if isinstance(snapshot, dict) else None
@@ -7801,8 +7803,16 @@ def plan_one_life_window_priority_v1(
         snapshot, action_steps=steps, bridge_capabilities=bridge_capabilities)
     if results_plan is not None:
         return results_plan
-    return plan_ordinary_war_declared_overview_v1(
+    declared_plan = plan_ordinary_war_declared_overview_v1(
         snapshot, action_steps=steps, bridge_capabilities=bridge_capabilities)
+    if declared_plan is not None:
+        return declared_plan
+    from .mandatory_choice_planning_v1 import plan_native_mandatory_choice_v1
+    return plan_native_mandatory_choice_v1(
+        commands, snapshot=snapshot, action_steps=steps,
+        bridge_capabilities=bridge_capabilities,
+        known_review_root=known_mandatory_choice_review_root,
+        backend_sha256=known_mandatory_choice_backend_sha256)
 
 
 def choose_one_life_turn(
@@ -7814,13 +7824,17 @@ def choose_one_life_turn(
     next_run_plan: dict[str, object] | None = None,
     battle_speed_readiness: dict[str, object] | None = None,
     pending_interaction_registry_state_dir=None,
+    known_mandatory_choice_review_root=None,
+    known_mandatory_choice_backend_sha256=None,
 ) -> dict[str, object]:
     """Preserve lifecycle, dismiss an observed overview, then choose ordinary work."""
     steps = tuple(action_steps or ())
     capabilities = tuple(bridge_capabilities or ())
     window_priority = plan_one_life_window_priority_v1(
         commands, snapshot=snapshot, action_steps=steps,
-        bridge_capabilities=capabilities)
+        bridge_capabilities=capabilities,
+        known_mandatory_choice_review_root=known_mandatory_choice_review_root,
+        known_mandatory_choice_backend_sha256=known_mandatory_choice_backend_sha256)
     if window_priority is not None:
         return window_priority
     formal = plan_raiktor_formal_exit(

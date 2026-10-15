@@ -1,0 +1,31 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "offline-native-wire-fixture-2",
+  "ok": true,
+  "result": {
+    "step": "select-mandatory-choice-v1",
+    "accepted": true,
+    "status": "verification_pending",
+    "owner_verified": true,
+    "queried_snapshot_id": "fixture-snapshot-1",
+    "queried_revision": 617,
+    "queried_native_revision": 617,
+    "unavailable_reason": "",
+    "selected_choice_id": "1:option_one",
+    "dispatch_attempted": true,
+    "dispatch_invoked": true,
+    "native_handled": true,
+    "verification_pending": true,
+    "dispatch_stage": "callback_returned",
+    "dispatch_exception_code": 0,
+    "mandatory_choice_postcondition": {
+      "verified": true,
+      "old_window_id": "unknown_modal",
+      "old_instance": "0xabcd",
+      "selected_choice_id": "1:option_one",
+      "old_window_no_longer_blocking": true,
+      "source": "fresh_native_modal_receiver_vector_no_old_widget_dereference"
+    }
+  }
+}

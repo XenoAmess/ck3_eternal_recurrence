@@ -1306,6 +1306,16 @@ class NativeProtocolState:
         hello = dict(self._hello) if self._hello else None
         heartbeat = dict(self._last_heartbeat) if self._last_heartbeat else None
         pong = dict(self._last_pong) if self._last_pong else None
+        raw_state = (
+            self._raw_state_snapshot.get("state")
+            if isinstance(self._raw_state_snapshot, dict)
+            else None
+        )
+        raw_modal_hint = (
+            raw_state.get("top_exclusive_modal_choice_hint")
+            if isinstance(raw_state, dict)
+            else None
+        )
         private_observers: dict[str, object] = {}
         if isinstance(heartbeat, dict):
             preview_observer = heartbeat.get(
@@ -1352,6 +1362,13 @@ class NativeProtocolState:
             "private_observers": private_observers,
             "last_pong": pong,
             "last_error": dict(self._last_error) if self._last_error else None,
+            # A publisher's pump/thread freshness belongs to diagnostics, not
+            # the semantic revision used to bind actions to a game frame.
+            "top_exclusive_modal_choice_hint_observation": (
+                copy.deepcopy(raw_modal_hint)
+                if isinstance(raw_modal_hint, dict)
+                else None
+            ),
             "semantic_state_available": self._semantic_snapshot is not None,
             "rejected_state_snapshot_count": (
                 self._rejected_state_snapshot_count
@@ -3385,6 +3402,24 @@ class NativeHeadlessGameplayDriver:
 
     def close_war_results_window_v1(self, *, expected_revision: int) -> dict[str, object]:
         return self._war_results_window_v1(operation="close", expected_revision=expected_revision)
+
+    def query_mandatory_choice_v1(
+        self, *, expected_revision: int, frame_binding: dict | None = None,
+        record: bool = True,
+    ) -> dict[str, object]:
+        from .mandatory_choice_transport_v1 import query_native
+        return query_native(self, expected_revision=expected_revision,
+                            frame_binding=frame_binding, record=record)
+
+    def select_mandatory_choice_v1(
+        self, *, query_id: str, action_token: str, frame_binding: dict,
+        window_instance_id: str | int, expected_revision: int,
+    ) -> dict[str, object]:
+        from .mandatory_choice_transport_v1 import select_native
+        return select_native(self, query_id=query_id, action_token=action_token,
+                             frame_binding=frame_binding,
+                             window_instance_id=window_instance_id,
+                             expected_revision=expected_revision)
 
     def _war_results_window_snapshot_fields(self, snapshot: Mapping[str, object]) -> dict[str, object]:
         from .war_results_window_transport import war_results_window_snapshot_fields
@@ -8977,6 +9012,9 @@ class NativeHeadlessGameplayDriver:
                 operation="query" if step == QUERY_WAR_RESULTS_WINDOW_STEP else "close",
                 expected_revision=expected_revision, record=False,
             )
+        if step == "query-mandatory-choice-v1":
+            return self.query_mandatory_choice_v1(
+                expected_revision=expected_revision, record=False)
         # The immutable in-process episode binding allows an early deny without
         # taking an extra native frame or altering ordinary revision races.
         if is_date_control_step(step) or is_army_move_control_step(step):
@@ -23903,6 +23941,18 @@ class NativeHeadlessGameplayDriver:
         else:
             progress_status = "postcondition"
 
+        modal_interrupt_hint = _life_advance_new_modal_hint(current, starting)
+        if (modal_interrupt_hint is not None
+                and current.get("paused") is True
+                and (sentinel_receipt is None
+                     or sentinel_receipt.get("modal_interrupted") is True)
+                and _date_raw(current, "modal interrupt ending snapshot")
+                    < starting_date_raw + horizon_days * 24):
+            # A top-level exclusive modal appeared during this bounded clock
+            # slice.  Record the actual date and UI source; the next ordinary
+            # planner turn will perform its own fresh typed catalogue query.
+            progress_status = "modal_interrupted"
+
         ordinary_events: list[dict[str, object]] = []
         event_resolution = "none"
         active_event = current.get("active_event")
@@ -24051,6 +24101,8 @@ class NativeHeadlessGameplayDriver:
             "snapshot_id": current["snapshot_id"],
             "revision": current["revision"],
         }
+        if progress_status == "modal_interrupted":
+            result["top_exclusive_modal_choice_hint"] = modal_interrupt_hint
         if materialization_result is not None:
             result["battle_identity_materialization"] = (
                 materialization_result
@@ -24109,14 +24161,49 @@ class NativeHeadlessGameplayDriver:
                     current, actions, native_stop_target_date_raw=target_date_raw
                 )
                 current = self._wait_for_life_advance_snapshot(
-                    current, lambda snapshot: snapshot.get("paused") is True,
+                    current, lambda snapshot: snapshot.get("paused") is True
+                    or _life_advance_new_modal_hint(snapshot, starting) is not None,
                     timeout_seconds=self.life_advance_timeout_seconds,
                 )
             finally:
                 finish_army_timing(clock_wait_timing, step="life-advance",
                     date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
+            if (_life_advance_new_modal_hint(current, starting) is not None
+                    and current.get("paused") is not True):
+                current = self._pause_life_advance(current, actions)
             if current.get("paused") is not True:
                 raise BridgeUnavailableError("exact-day native clock did not stop the map")
+            modal = _life_advance_new_modal_hint(current, starting)
+            if (modal is not None and _date_raw(current, "exact-day modal interrupt")
+                    < target_date_raw):
+                # Cancel the still armed exact-day sentinel before returning a
+                # zero-day UI interruption.  A missing cancel ACK remains an
+                # error, never a completed day or an authorized token replay.
+                cancel_step = (
+                    f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}"
+                    f"{arm_status['generation']}"
+                )
+                cancel_result = self._execute_primitive_step(
+                    cancel_step, expected_revision=None,
+                    required_capability=_TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY,
+                    internal_semantic_snapshot=True,
+                )
+                actions.append({"step": cancel_step, "result": cancel_result})
+                if (cancel_result.get("step") != cancel_step
+                        or cancel_result.get("accepted") is not True
+                        or cancel_result.get("status") != "canceled"):
+                    raise BridgeUnavailableError(
+                        "exact-day modal interrupt sentinel cancel unverified")
+                fresh = self.take_internal_semantic_snapshot()
+                refreshed = _life_advance_new_modal_hint(fresh, starting)
+                if (fresh.get("paused") is not True or refreshed != modal
+                        or _date_raw(fresh, "modal interrupt after cancel")
+                        != _date_raw(current, "modal interrupt before cancel")):
+                    raise BridgeUnavailableError(
+                        "exact-day modal interrupt owner changed after cancel")
+                return fresh, {"armed": arm_status,
+                               "modal_interrupted": True,
+                               "canceled": cancel_result}
             status_result = self._execute_primitive_step(
                 _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
                 expected_revision=None,
@@ -24197,12 +24284,14 @@ class NativeHeadlessGameplayDriver:
         remaining = max(0.0, deadline - time.monotonic())
         def running_or_native_stop(candidate: dict[str, object]) -> bool:
             date_raw = candidate.get("date_raw")
-            return candidate.get("paused") is False or bool(
+            return (candidate.get("paused") is False
+                    or _life_advance_new_modal_hint(candidate, snapshot) is not None
+                    or bool(
                 native_stop_target_date_raw is not None
                 and candidate.get("paused") is True
                 and type(date_raw) is int
                 and _date_raw(snapshot, "resume starting snapshot") < date_raw
-            )
+            ))
 
         current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
@@ -24841,6 +24930,38 @@ class ConfiguredHybridFallbackDriver:
             HybridGameplayDriver(data_mod, visual),
         )
 
+    def query_mandatory_choice_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .mandatory_choice_transport_v1 import frame_from_snapshot, require_binding
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        frame = frame_from_snapshot(starting)
+        if frame["revision"] != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "hybrid mandatory choice query public revision changed")
+        result = self.native.query_mandatory_choice_v1(
+            expected_revision=frame["native_revision"], frame_binding=frame)
+        ending = self.take_snapshot()
+        require_binding(frame_from_snapshot(ending), frame)
+        return result
+
+    def select_mandatory_choice_v1(
+        self, *, query_id: str, action_token: str, frame_binding: dict,
+        window_instance_id: str | int, expected_revision: int,
+    ) -> dict[str, object]:
+        from .mandatory_choice_transport_v1 import frame_from_snapshot, require_binding
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        frame = frame_from_snapshot(starting)
+        if frame["revision"] != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "hybrid mandatory choice select public revision changed")
+        require_binding(frame, frame_binding)
+        return self.native.select_mandatory_choice_v1(
+            query_id=query_id, action_token=action_token,
+            frame_binding=frame_binding,
+            window_instance_id=window_instance_id,
+            expected_revision=frame["native_revision"])
+
     def capabilities(self) -> dict[str, object]:
         base = self._delegate.capabilities()
         native_capabilities = self.native.capabilities()
@@ -24850,6 +24971,9 @@ class ConfiguredHybridFallbackDriver:
             action_steps.discard(_RESTORE_CHECKPOINT_STEP)
         if _START_NEXT_EPISODE_STEP not in native_steps:
             action_steps.discard(_START_NEXT_EPISODE_STEP)
+        for pure_native_step in ("query-mandatory-choice-v1", "select-mandatory-choice-v1"):
+            if pure_native_step not in native_steps:
+                action_steps.discard(pure_native_step)
         action_steps = {
             step
             for step in action_steps
@@ -24868,6 +24992,7 @@ class ConfiguredHybridFallbackDriver:
             _string_list(base.get("bridge_capabilities"))
         )
         for pure_native_capability in (
+            "game.state.native-mandatory-choice-window-v1",
             QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY,
             QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
@@ -25513,6 +25638,8 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if step == "query-mandatory-choice-v1":
+            return self.query_mandatory_choice_v1(expected_revision=expected_revision)
         if isinstance(step, str) and step.startswith(QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX):
             raise UnsupportedStepError("title own-laws query supports native-headless only; hybrid fallback is unavailable")
         commander_assignment = parse_assign_army_commander_v1_step(step)
@@ -26892,8 +27019,19 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
     player_armies = player_armies_from_state(
         active_wars, state.get("player_armies")
     )
+    semantic_state = dict(state)
+    modal_hint = state.get("top_exclusive_modal_choice_hint")
+    if isinstance(modal_hint, dict):
+        # The root/status can change while date and native revision stay fixed.
+        # Preserve that identity in the semantic fingerprint, while excluding
+        # observation-only counters that may change on every GUI pump.
+        semantic_state["top_exclusive_modal_choice_hint"] = {
+            key: copy.deepcopy(value)
+            for key, value in modal_hint.items()
+            if key not in {"pump_epoch", "thread_id"}
+        }
     return {
-        **state,
+        **semantic_state,
         "format_version": 1,
         "snapshot_id": snapshot_id,
         "revision": revision,
@@ -28286,6 +28424,8 @@ def _life_advance_progressed(
     *,
     horizon_days_override: int | None = None,
 ) -> bool:
+    if _life_advance_new_modal_hint(snapshot, starting_snapshot) is not None:
+        return True
     active_event = snapshot.get("active_event")
     if isinstance(active_event, dict):
         return True
@@ -28318,6 +28458,46 @@ def _life_advance_progressed(
         else _life_advance_horizon_days(starting_snapshot)
     )
     return current_date_raw >= starting_date_raw + horizon_days * 24
+
+
+def _life_advance_new_modal_hint(
+    snapshot: dict[str, object], starting_snapshot: dict[str, object],
+) -> dict[str, object] | None:
+    """Identify a newly observed, owner-bound blocker without selecting it."""
+    if (not isinstance(snapshot, dict) or not isinstance(starting_snapshot, dict)
+            or isinstance(snapshot.get("active_event"), dict)
+            or isinstance(snapshot.get("pending_character_interaction"), dict)):
+        return None
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    old = starting_snapshot.get("top_exclusive_modal_choice_hint")
+    if (not isinstance(hint, dict) or hint.get("status") != "present"
+            or hint.get("source") != "application_main_pump_observed_modal_receiver"
+            or hint.get("owner_verified") is not True
+            or hint.get("max_observation_age_ms") != 2000
+            or not isinstance(hint.get("opaque_root_id"), str)
+            or not hint["opaque_root_id"]
+            or isinstance(old, dict) and old.get("status") == "present"
+               and old.get("opaque_root_id") == hint["opaque_root_id"]):
+        return None
+    played, first_played = (snapshot.get("played_character"),
+                            starting_snapshot.get("played_character"))
+    diagnostics, first_diagnostics = (snapshot.get("diagnostics"),
+                                      starting_snapshot.get("diagnostics"))
+    if (not isinstance(played, dict) or not isinstance(first_played, dict)
+            or played.get("character_id") != first_played.get("character_id")
+            or not isinstance(diagnostics, dict)
+            or not isinstance(first_diagnostics, dict)
+            or any(diagnostics.get(key) != first_diagnostics.get(key)
+                   for key in ("bridge_pid", "connection_generation"))
+            or snapshot.get("episode_run_id") != starting_snapshot.get("episode_run_id")
+            or type(snapshot.get("revision")) is not int
+            or type(starting_snapshot.get("revision")) is not int
+            or snapshot["revision"] <= starting_snapshot["revision"]
+            or type(snapshot.get("date_raw")) is not int
+            or type(starting_snapshot.get("date_raw")) is not int
+            or snapshot["date_raw"] < starting_snapshot["date_raw"]):
+        return None
+    return copy.deepcopy(hint)
 
 
 def _native_history_after_latest_restore(
@@ -30800,6 +30980,11 @@ def _action_steps(
     expand_arrange_marriage = False
     advertise_raise_troops = False
     for capability in capabilities:
+        if capability == "game.state.native-mandatory-choice-window-v1":
+            # Only the read is parameterless. Token dispatch is an internal
+            # typed method and must not appear as a public MCP action step.
+            steps.add("query-mandatory-choice-v1")
+            continue
         if capability in {QUERY_WAR_DECLARED_OVERVIEW_CAPABILITY, CLOSE_WAR_DECLARED_OVERVIEW_CAPABILITY,
                           QUERY_WAR_RESULTS_WINDOW_CAPABILITY, CLOSE_WAR_RESULTS_WINDOW_CAPABILITY}:
             continue  # Advertised above only for the actual paused scene.

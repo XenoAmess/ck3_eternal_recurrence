@@ -1,0 +1,87 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "offline-native-wire-fixture-event-overlay",
+  "ok": true,
+  "result": {
+    "step": "query-mandatory-choice-v1",
+    "accepted": true,
+    "status": "available",
+    "owner_verified": true,
+    "queried_snapshot_id": "fixture-snapshot-1",
+    "queried_revision": 617,
+    "queried_native_revision": 617,
+    "unavailable_reason": "",
+    "mandatory_choice": {
+      "schema": "xar.native-mandatory-choice-window/v1",
+      "query_id": "123456789abcdef0123456789abcdef0",
+      "frame_binding": {
+        "game_pid": 12345,
+        "connection_generation": 13,
+        "revision": 617,
+        "native_revision": 617,
+        "date_raw": 53169792,
+        "actor_character_id": 1128,
+        "episode_run_id": "native-1128-offline",
+        "snapshot_id": "fixture-snapshot-1"
+      },
+      "window_id": "independent_overlay",
+      "window_instance_id": "0xabcd",
+      "window_type": "exclusive_modal_receiver",
+      "source_identity": {
+        "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "backend_sha256": null,
+        "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+        "root_runtime_name": "independent_overlay",
+        "root_type": "exclusive_modal_receiver",
+        "root_vtable_module_rva": 1193046,
+        "choice_catalogue": [
+          {
+            "role": "modal_button_candidate",
+            "runtime_name": "answer",
+            "widget_vtable_module_rva": 74565,
+            "callback_identities": [
+              {
+                "vtable_module_rva": 144470,
+                "function_module_rva": 214375
+              }
+            ]
+          }
+        ]
+      },
+      "typed_window_relation": {
+        "status": "independent_top_modal",
+        "owner_verified": true,
+        "source": "exact_12004_event_controller_gui_root_and_owner_tree",
+        "top_opaque_root_id": "0xabcd",
+        "typed_domain": "event",
+        "typed_window_instance_id": 42,
+        "typed_opaque_root_id": "0xd00d"
+      },
+      "blocking_proof": {
+        "kind": "exclusive_modal_blocks_input",
+        "verified": true,
+        "source": "exact_stock_top_modal_receiver_input_capture",
+        "receiver_identity": "0xabcd"
+      },
+      "choices_complete": true,
+      "choices": [
+        {
+          "choice_id": "1:answer",
+          "label": "answer",
+          "label_source": "native_runtime_name",
+          "visible": true,
+          "enabled": true,
+          "is_choice": true,
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "bounds": {
+            "left": 10.0,
+            "top": 20.0,
+            "width": 100.0,
+            "height": 40.0
+          }
+        }
+      ]
+    }
+  }
+}
