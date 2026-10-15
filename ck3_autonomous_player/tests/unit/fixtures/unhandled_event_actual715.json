@@ -1,0 +1,405 @@
+{
+  "fixture_kind": "actual_native_event_projection_derived_from_completed_AUTO715",
+  "source_response_sha256": "7df4f3dcd6d9bd48347546f6c97ca3c7610822ca86e8c418391f8c1412758710",
+  "source_response": "continuation40-cold-prep/p06-responses/0715-1-result.json",
+  "snapshot": {
+    "snapshot_id": "native:1893",
+    "revision": 775,
+    "native_revision": 1893,
+    "date_raw": 53276880,
+    "episode_run_id": "native-31254-96253c58fd68",
+    "connection_generation": 6,
+    "bridge_pid": 226540,
+    "paused": true,
+    "map_ready": true,
+    "actor_character_id": 31254,
+    "active_event": {
+      "instance_id": 42,
+      "option_count": 4
+    },
+    "played_character": {
+      "character_id": 31254,
+      "alive": true
+    }
+  },
+  "event_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "unavailable_reason": null,
+    "window_match_count": 1,
+    "event_definition_key": "pam_secular_faith_events.0058",
+    "calculated_event_id": 2950058,
+    "runtime_stats_ordinal": 4134,
+    "current_event_instance_id": 42,
+    "snapshot_revision": 1893,
+    "date_raw": 53276880,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "chaplain",
+        "name_identifier": 13776,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 32236
+          }
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": false,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "冷静点，老鼠吃了饼，仅此而已。",
+        "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你\u0015bold 没\u0015!有\u0015E; \u0015TOOLTIP:GAME_CONCEPT,trait 特质\u0015!\u0015!：\u0015L; \u0015TOOLTIP:GAME_TRAIT,lifestyle_scholar,31254 \u0015L; 宗教学者\u0015!\u0015!\u0015!\u0015!\u0015!",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "trait",
+              "operation": "add",
+              "trait": {
+                "status": "available",
+                "native_id": 303,
+                "key": "lifestyle_scholar"
+              }
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": false,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "你竟让\u0015EMP 老鼠\u0015!在神面前偷吃？！滚出我的宫廷！",
+        "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,learning 学识\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,learning_i \u0016skill_learning_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "购买一个锁更好的圣体盒。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "increase",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": true
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 3,
+        "native_option_index": 3,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "所以，这老鼠要下地狱了？哈！",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "event_summary": {
+    "instance_id": 42,
+    "option_count": 4,
+    "selected_option_number": 1,
+    "selected_option_index": null,
+    "window_context_status": "available",
+    "window_match_count": 1,
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "materialized_options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": false,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "冷静点，老鼠吃了饼，仅此而已。",
+        "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你\u0015bold 没\u0015!有\u0015E; \u0015TOOLTIP:GAME_CONCEPT,trait 特质\u0015!\u0015!：\u0015L; \u0015TOOLTIP:GAME_TRAIT,lifestyle_scholar,31254 \u0015L; 宗教学者\u0015!\u0015!\u0015!\u0015!\u0015!",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "trait",
+              "operation": "add",
+              "trait": {
+                "status": "available",
+                "native_id": 303,
+                "key": "lifestyle_scholar"
+              }
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": false,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "你竟让\u0015EMP 老鼠\u0015!在神面前偷吃？！滚出我的宫廷！",
+        "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,learning 学识\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,learning_i \u0016skill_learning_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "购买一个锁更好的圣体盒。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "increase",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": true
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 3,
+        "native_option_index": 3,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "所以，这老鼠要下地狱了？哈！",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "materialized_option_count": 4,
+    "enabled_materialized_option_count": 2,
+    "semantic_decision_ready": false,
+    "selected_native_option_index": 0,
+    "selected_rendered_index": 0,
+    "semantic_optimal": false,
+    "source_registry_known": false,
+    "source_knowledge_status": "unknown"
+  },
+  "registry_decision": {
+    "schema": "xar.ck3.vanilla-event-registry-choice",
+    "schema_version": 1,
+    "status": "not_registered",
+    "policy": "exact-build-vanilla-event-registry-direct-projection-v1",
+    "source": "shared_vanilla_event_registry",
+    "ck3_build": "1.20.0.4",
+    "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "event_definition_key": "pam_secular_faith_events.0058",
+    "recommendation_scope": "bounded_timeline_continuation",
+    "native_ai_equivalent": false,
+    "semantic_optimal": false,
+    "semantic_decision_ready": false,
+    "selected_option_number": null,
+    "selected_native_option_index": null,
+    "selected_rendered_index": null,
+    "matched_option_variant_index": null,
+    "option_projection_source": null,
+    "choice_effect_profile": null,
+    "campaign_utility_ready": false,
+    "campaign_utility_profile": null,
+    "checks": {},
+    "failed_checks": [],
+    "unavailable_reason": "event_definition_key_not_registered"
+  },
+  "expected_native_index": 2,
+  "expected_public_option_number": 3
+}

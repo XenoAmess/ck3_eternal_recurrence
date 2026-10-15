@@ -22,7 +22,7 @@ def plan_unhandled_event_fallback_v1(
     """Keep source evidence, then choose the first shown rendered option.
 
     This is the owner's continuation policy, not a semantic optimum or a
-    registry-contract acceptance. A disabled first item remains a diagnosis.
+    registry-contract acceptance. Disabled rows are skipped; all-disabled stays a diagnosis.
     """
     if not isinstance(snapshot, dict) or not isinstance(event_context, dict):
         return None
@@ -35,7 +35,8 @@ def plan_unhandled_event_fallback_v1(
         return None
     if len({row["rendered_index"] for row in shown}) != len(shown):
         return None
-    first = min(shown, key=lambda row: row["rendered_index"])
+    enabled_shown = [row for row in shown if row.get("enabled") is True]
+    first = min(enabled_shown or shown, key=lambda row: row["rendered_index"])
     native = first.get("native_option_index")
     active = snapshot.get("active_event", snapshot.get("current_event"))
     if not isinstance(active, dict):
@@ -77,7 +78,9 @@ def plan_unhandled_event_fallback_v1(
         "selection": {"rendered_index": first["rendered_index"],
                       "native_option_index": native, "option_number": native + 1,
                       "resolved_name": first.get("resolved_name"), "enabled": first.get("enabled"),
-                      "selected_step": selected},
+                      "selected_step": selected,
+                      "selection_order": "native_rendered_index_after_shown_enabled_filter",
+                      "excluded_disabled_rendered_indices": [row["rendered_index"] for row in shown if row.get("enabled") is not True]},
         "semantic_optimal": False,
         "native_ai_equivalent": False,
         "offline_followup_required": True,
@@ -93,8 +96,8 @@ def plan_unhandled_event_fallback_v1(
                   else "active_event_unhandled_first_rendered_disabled" if not enabled
                   else "active_event_unhandled_first_rendered_unsupported"),
         "selected_step": selected if enabled and advertised else None,
-        "reason": ("Uncovered event: capture the current card, select its first rendered option under the owner's continuation instruction, then review offline."
-                   if enabled and advertised else "The first rendered event option is disabled."
+        "reason": ("Uncovered event: capture the current card, select its first enabled rendered option under the owner's continuation instruction, then review offline."
+                   if enabled and advertised else "No shown native event option is enabled."
                    if not enabled else "The first rendered option has no advertised native selection step."),
         "active_event": summary,
         "event_decision": {"status": "user_authorized_fallback", "event_definition_key": capture["event_definition_key"],
