@@ -7720,7 +7720,7 @@ class GameplayBridgeService:
         expected_revision: int,
     ) -> dict[str, object]:
         """Read exact-build targeting-faction and county alert components."""
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(
                 "player faction alert queries require a paused CK3 snapshot"
@@ -7845,7 +7845,7 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "player faction alert result mirrors disagree with its frame"
             )
-        current = self.snapshot()
+        current = self.snapshot(include_native_command_history=False)
         if not (
             current.get("paused") is True
             and current.get("revision") == revision
@@ -14288,7 +14288,7 @@ class GameplayBridgeService:
             or not 1 <= event_instance_id <= 2**31 - 1
         ):
             raise ValueError("event_instance_id must be a positive full int32")
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         revision = snapshot.get("revision")
         native_revision = snapshot.get("native_revision")
         date_raw = snapshot.get("date_raw")
@@ -14421,7 +14421,7 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "event-window result mirrors disagree with its snapshot"
             )
-        current = self.snapshot()
+        current = self.snapshot(include_native_command_history=False)
         current_event = current.get("active_event")
         if not (
             current.get("paused") is True

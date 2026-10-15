@@ -12,9 +12,9 @@ import threading
 import unittest
 from unittest.mock import Mock
 
-REPO = Path('Z:/ck3_mod_rewrite')
-sys.path.insert(0, str(REPO / 'ck3_autonomous_player/src'))
-sys.path.insert(0, str(REPO / 'ck3_autonomous_player/tests/unit'))
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT_ROOT / 'src'))
+sys.path.insert(0, str(PROJECT_ROOT / 'tests/unit'))
 
 from test_event_window_context_v1_bridge import _frame
 from test_bookmark1070_material import army_strength, decision, snapshot
@@ -70,6 +70,8 @@ def harness(*, event_key='bookmark.1070', new_shape='one', read_error=False,
     driver.command_timeout_seconds = 0.05
     driver.take_snapshot = Mock(side_effect=lambda *args, **kwargs:
                                 deepcopy(state['current']))
+    driver.take_snapshot_without_native_command_history = Mock(
+        side_effect=lambda: deepcopy(state['current']))
     frame = current_frame(before, event_key)
 
     def primitive(step, **kwargs):
@@ -92,6 +94,7 @@ def harness(*, event_key='bookmark.1070', new_shape='one', read_error=False,
     # Real query invokes real exact-build normalization and sets the private pin.
     queried = driver.query_current_event_window_context_v1(
         19, expected_revision=before['revision'])
+    assert driver.take_snapshot_without_native_command_history.call_count == 2
     return driver, before, after, queried
 
 

@@ -44,6 +44,7 @@ class Driver:
 
     def __init__(self) -> None:
         self.sent: list[dict[str, object]] = []
+        self.snapshot_history_flags: list[bool] = []
         self.reply = value()
         self.after = snapshot()
         self.endpoint = self
@@ -64,8 +65,17 @@ class Driver:
             },
         }
 
-    def take_snapshot(self) -> dict[str, object]:
-        return deepcopy(snapshot() if not self.sent else self.after)
+    def take_snapshot(
+        self, *, include_native_command_history: bool = True,
+    ) -> dict[str, object]:
+        self.snapshot_history_flags.append(include_native_command_history)
+        result = deepcopy(snapshot() if not self.sent else self.after)
+        if not include_native_command_history:
+            result["native_command_history"] = []
+            result["native_command_history_export"] = {
+                "mode": "omitted", "total_count": 1000, "included_count": 0,
+            }
+        return result
 
 
 class ActivityPlannerDiagPrivateTransportTest(unittest.TestCase):
@@ -78,6 +88,8 @@ class ActivityPlannerDiagPrivateTransportTest(unittest.TestCase):
         self.assertEqual(len(driver.sent), 1)
         self.assertEqual(driver.sent[0]["step"], STEP)
         self.assertEqual(driver.sent[0]["expected_revision"], 4)
+        self.assertEqual(driver.snapshot_history_flags, [False, False])
+        self.assertNotIn("native_command_history", result)
 
     def test_planner_absent_is_valid_observation(self) -> None:
         driver = Driver()
@@ -87,16 +99,19 @@ class ActivityPlannerDiagPrivateTransportTest(unittest.TestCase):
                              "host_view_activity_key": None})
         result = query_activity_planner_diag_private_v1(driver, expected_revision=5)
         self.assertEqual(result["planner_status"], "planner_absent")
+        self.assertEqual(driver.snapshot_history_flags, [False, False])
 
     def test_rejects_invented_cost_and_crossed_frame(self) -> None:
         driver = Driver()
         driver.reply["configured_cost_state"] = "known"
         with self.assertRaises(BridgeUnavailableError):
             query_activity_planner_diag_private_v1(driver, expected_revision=5)
+        self.assertEqual(driver.snapshot_history_flags, [False])
         driver = Driver()
         driver.after["date_raw"] += 1
         with self.assertRaises(BridgeUnavailableError):
             query_activity_planner_diag_private_v1(driver, expected_revision=5)
+        self.assertEqual(driver.snapshot_history_flags, [False, False])
 
     def test_default_off_rejects_before_wire(self) -> None:
         driver = Driver()
@@ -104,6 +119,7 @@ class ActivityPlannerDiagPrivateTransportTest(unittest.TestCase):
         with self.assertRaises(UnsupportedStepError):
             query_activity_planner_diag_private_v1(driver, expected_revision=5)
         self.assertEqual(driver.sent, [])
+        self.assertEqual(driver.snapshot_history_flags, [])
 
 
 if __name__ == "__main__":

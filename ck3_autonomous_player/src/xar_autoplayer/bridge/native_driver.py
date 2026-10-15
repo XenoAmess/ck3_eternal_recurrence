@@ -10051,7 +10051,7 @@ class NativeHeadlessGameplayDriver:
                 raise UnsupportedStepError(
                     "native DLL cannot query the current event window"
                 )
-            active_event = self.take_snapshot().get("active_event")
+            active_event = self.take_snapshot_without_native_command_history().get("active_event")
             event_id = (
                 active_event.get("instance_id")
                 if isinstance(active_event, dict)
@@ -17045,7 +17045,7 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """Read the exact-build player-faction alert contract."""
         step = QUERY_PLAYER_FACTION_ALERTS_V1_STEP
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native player faction alert query requires a paused snapshot"
@@ -17069,6 +17069,7 @@ class NativeHeadlessGameplayDriver:
             step,
             expected_revision=selected_revision,
             required_capability=QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY,
+            include_native_command_history=False,
         )
         expected_keys = {
             "step",
@@ -17128,7 +17129,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native player faction alert envelope disagrees with its frame"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not (
             _same_paused_native_frame(starting, current)
             and starting.get("revision") == current.get("revision")
@@ -20182,7 +20183,7 @@ class NativeHeadlessGameplayDriver:
         ):
             raise ValueError("event_instance_id must be a positive full int32")
         step = QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native event-window query requires a paused snapshot"
@@ -20217,6 +20218,7 @@ class NativeHeadlessGameplayDriver:
                 QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
             ),
             request_fields={"event_instance_id": event_instance_id},
+            include_native_command_history=False,
         )
         if (
             set(result)
@@ -20261,7 +20263,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native event-window envelope status disagrees with frame"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         current_event = current.get("active_event")
         if not (
             _same_paused_native_frame(starting, current)

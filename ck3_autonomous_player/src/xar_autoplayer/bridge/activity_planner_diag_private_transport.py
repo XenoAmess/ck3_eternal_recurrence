@@ -62,7 +62,7 @@ def query_activity_planner_diag_private_v1(
         raise ValueError("expected_revision must be positive")
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
-    before = driver.take_snapshot()
+    before = driver.take_snapshot(include_native_command_history=False)
     provenance = private_native_provenance(before)
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
@@ -106,7 +106,7 @@ def query_activity_planner_diag_private_v1(
                                   date_raw=before["date_raw"],
                                   actor_id=actor["character_id"])):
         raise BridgeUnavailableError("private activity planner native payload malformed")
-    after = driver.take_snapshot()
+    after = driver.take_snapshot(include_native_command_history=False)
     if (after.get("paused") is not True or after.get("map_ready") is not True
             or after.get("date_raw") != before["date_raw"]
             or after.get("played_character") != actor):

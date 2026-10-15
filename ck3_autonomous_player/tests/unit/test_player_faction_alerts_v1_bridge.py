@@ -399,6 +399,9 @@ class _NativeDriverHarness(NativeHeadlessGameplayDriver):
         self.frame = frame
 
     def take_snapshot(self) -> dict[str, object]:
+        raise AssertionError("pure faction query must use a history-free snapshot")
+
+    def take_snapshot_without_native_command_history(self) -> dict[str, object]:
         return {
             "snapshot_id": "native-faction-alert-fixture:41",
             "revision": PUBLIC_REVISION,
@@ -416,11 +419,13 @@ class _NativeDriverHarness(NativeHeadlessGameplayDriver):
         *,
         expected_revision: int,
         required_capability: str,
+        include_native_command_history: bool = True,
     ) -> dict[str, object]:
         if (
             step != STEP
             or expected_revision != PUBLIC_REVISION
             or required_capability != QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY
+            or include_native_command_history is not False
         ):
             raise AssertionError("native dispatch changed the frozen query")
         envelope = _driver_result(self.frame)
