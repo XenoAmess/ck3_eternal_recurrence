@@ -181,12 +181,17 @@ class RouteContactReadonlyUnavailableTests(unittest.TestCase):
 
             def __init__(self):
                 self.driver = FakeDriver()
+                self.strategy_state_reads = 0
                 self.driver._execute_step_unrecorded = lambda command, **kwargs: run_route(self.driver, command, copy.deepcopy(STARTING), kwargs['expected_revision'])
                 self.driver.execute_step = lambda command, **kwargs: native.NativeHeadlessGameplayDriver.execute_step(self.driver, command, **kwargs)
                 self._auto_camera_worker = SimpleNamespace(schedule=lambda intent: {'status': 'scheduled'})
 
             def plan_turn(self):
                 return {'snapshot_id': TINY['snapshot_id'], 'revision': TINY['revision'], 'planning_source_frame': copy.deepcopy(FIXTURE['body']['planning_source_frame']), 'plan': copy.deepcopy(FIXTURE['body']['plan'])}
+
+            def _strategy_state_dir(self):
+                self.strategy_state_reads += 1
+                return None
 
             def _consume_feast_after_turn(self, outcome): return outcome
             def _consume_sway_after_turn(self, outcome): return outcome
@@ -204,6 +209,8 @@ class RouteContactReadonlyUnavailableTests(unittest.TestCase):
         self.assertEqual(result['planning_source_frame'], FIXTURE['body']['planning_source_frame'])
         self.assertEqual((len(service.driver.commands), service.driver.reads), (1, 1))
         self.assertFalse(service.driver.records[0][1]['ok'])
+        self.assertEqual(service.strategy_state_reads, 1)  # Real hook takes its stateless branch.
+        self.assertIsNone(result['family_wartime_opportunity_cooldown_v1'])
 
 
 if __name__ == '__main__':
