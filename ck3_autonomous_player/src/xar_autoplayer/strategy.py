@@ -18123,7 +18123,7 @@ def _primary_defender_siege_forecast_ingress(
                 if short_preview is None and (
                     short_preview_step in action_steps
                     and not _r0321_query_attempted_this_date(
-                        commands, short_preview_step
+                        commands, short_preview_step, snapshot
                     )
                 ):
                     return {
@@ -18158,7 +18158,7 @@ def _primary_defender_siege_forecast_ingress(
                 if short_contact is None and (
                     short_contact_step in action_steps
                     and not _r0321_query_attempted_this_date(
-                        commands, short_contact_step
+                        commands, short_contact_step, snapshot
                     )
                 ):
                     return {
@@ -18231,14 +18231,18 @@ def _r0321_one_day_contact_free(contact: dict[str, object], date_raw: int) -> bo
 
 
 def _r0321_query_attempted_this_date(
-    commands: list[dict[str, object]], step: str
+    commands: list[dict[str, object]], step: str,
+    snapshot: dict[str, object],
 ) -> bool:
-    """Stop a failed read-only query from looping in the same date epoch."""
+    """Stop repeated current-frame reads, retaining failed-query anti-looping."""
     last_advance = _latest_life_advance_index(commands)
     return any(
         _effective_command(row) == step
         and (index := _native_int(row.get("index"))) is not None
         and index > last_advance
+        and (row.get("ok") is not True or _same_frame_readonly_result_lease(
+            _effective_command_result(row), snapshot,
+        ))
         for row in _history_after_latest_restore(commands)
     )
 
@@ -19971,19 +19975,8 @@ def _fresh_move_route_preview(
         if row.get("ok") is not True:
             continue
         result = _effective_command_result(row)
-        if snapshot is not None:
-            diagnostics = snapshot.get("diagnostics")
-            generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
-            if (not isinstance(result, dict) or not isinstance(generation, int) or isinstance(generation, bool)
-                    or not isinstance(snapshot.get("episode_run_id"), str) or not snapshot["episode_run_id"]
-                    or any(result.get(wire) != expected for wire, expected in (
-                        ("queried_snapshot_id", snapshot.get("snapshot_id")),
-                        ("queried_revision", snapshot.get("revision")),
-                        ("queried_native_revision", snapshot.get("native_revision")),
-                        ("queried_connection_generation", generation),
-                        ("queried_episode_run_id", snapshot["episode_run_id"]),
-                    ))):
-                continue
+        if snapshot is not None and not _same_frame_readonly_result_lease(result, snapshot):
+            continue
         preview = result.get("route_preview") if isinstance(result, dict) else None
         if (
             not isinstance(preview, dict)
@@ -20004,6 +19997,25 @@ def _fresh_move_route_preview(
             continue
         return {**preview, "route_province_ids": list(route)}
     return None
+
+
+def _same_frame_readonly_result_lease(
+    result: dict[str, object] | None,
+    snapshot: dict[str, object],
+) -> bool:
+    diagnostics = snapshot.get("diagnostics")
+    generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+    episode = snapshot.get("episode_run_id")
+    if (not isinstance(result, dict) or not isinstance(generation, int)
+            or isinstance(generation, bool) or not isinstance(episode, str) or not episode):
+        return False
+    return all(result.get(wire) == expected for wire, expected in (
+        ("queried_snapshot_id", snapshot.get("snapshot_id")),
+        ("queried_revision", snapshot.get("revision")),
+        ("queried_native_revision", snapshot.get("native_revision")),
+        ("queried_connection_generation", generation),
+        ("queried_episode_run_id", episode),
+    ))
 
 
 def _sole_committed_moving_contact_first(

@@ -83,6 +83,25 @@ def test_same_date_old_connection_preview_is_rejected():
     assert read(old)["route_province_ids"] == [1032, 470]
 
 
+def test_old_successful_first_hop_read_does_not_suppress_new_frame_query():
+    step = strategy.preview_move_army_step(ARMY, 1032)
+    current = {"snapshot_id": "native:144", "revision": 2,
+               "native_revision": 144, "episode_run_id": "native-40526-episode",
+               "diagnostics": {"connection_generation": 8}}
+    old_result = {"queried_snapshot_id": "native:143", "queried_revision": 2,
+                  "queried_native_revision": 143, "queried_connection_generation": 7,
+                  "queried_episode_run_id": current["episode_run_id"]}
+    old_row = {"index": 1, "command": step, "ok": True, "result": old_result}
+    assert not strategy._r0321_query_attempted_this_date([old_row], step, current)
+    fresh_result = {**old_result, "queried_snapshot_id": "native:144",
+                    "queried_native_revision": 144,
+                    "queried_connection_generation": 8}
+    fresh_row = {"index": 2, "command": step, "ok": True, "result": fresh_result}
+    assert strategy._r0321_query_attempted_this_date([old_row, fresh_row], step, current)
+    failed_row = {"index": 3, "command": step, "ok": False}
+    assert strategy._r0321_query_attempted_this_date([old_row, failed_row], step, current)
+
+
 def test_unknown_siege_partition_can_only_request_first_hop_preview():
     relief = {"status": "forecast_required", "war_id": 150995049,
               "army_id": ARMY, "target_province_id": 470,
