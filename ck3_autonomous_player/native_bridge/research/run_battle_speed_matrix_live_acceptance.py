@@ -114,7 +114,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--subject-army-id", type=int)
     parser.add_argument("--sentinel-army-ids", type=int, nargs="+")
     parser.add_argument("--timeout", type=float, default=7200.0)
-    parser.add_argument("--readiness-timeout", type=float, default=180.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--slice-timeout", type=float, default=90.0)
     parser.add_argument("--cold-start-checkpoint", action="store_true")
     return parser

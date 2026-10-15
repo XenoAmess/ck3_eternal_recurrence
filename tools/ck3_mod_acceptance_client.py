@@ -260,7 +260,8 @@ class CaseClient:
         budget = 'timeout' if preparation.get('initial_plan_original_business') is True else 'readiness_timeout'
         started = time.monotonic()
         started_utc = datetime.now(timezone.utc)
-        seconds = self.selection.case['budgets'][budget]
+        seconds = getattr(self.selection, 'effective_budgets', self.selection.case['budgets'])[budget]
+        policy = getattr(self.selection, 'readiness_policy', None) if budget == 'readiness_timeout' else None
         limit = started + seconds
         self._readiness_limit = limit
         binding = {'run_id': self.frozen['run_id'], 'screen_task': self.frozen['screen_task'],
@@ -270,6 +271,7 @@ class CaseClient:
         write_once(self.output / 'readiness-window.json', {
             'schema': 'ck3-mod-acceptance-readiness-window-v1', 'binding': binding,
             'budget_name': budget, 'budget_seconds': seconds,
+            'requested_budget_seconds': self.selection.case['budgets'][budget], 'readiness_policy': policy,
             'started_at_utc': started_utc.isoformat(), 'started_monotonic': started,
             'deadline_monotonic': limit,
             'deadline_at_utc_estimated': datetime.fromtimestamp(started_utc.timestamp() + seconds, timezone.utc).isoformat(),

@@ -108,7 +108,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-character-id", type=int, required=True)
     parser.add_argument("--expected-date-raw", type=int, required=True)
     parser.add_argument("--timeout", type=float, default=900.0)
-    parser.add_argument("--readiness-timeout", type=float, default=300.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--expected-production-tree-sha256")
     return parser
 

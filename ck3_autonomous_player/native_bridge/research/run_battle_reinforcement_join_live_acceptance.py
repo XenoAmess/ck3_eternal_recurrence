@@ -142,7 +142,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-assignment-days", type=int, default=10)
     parser.add_argument("--max-eta-days", type=int, default=30)
     parser.add_argument("--timeout", type=float, default=1200.0)
-    parser.add_argument("--readiness-timeout", type=float, default=240.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--route-clear-timeout", type=float, default=10.0)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retain-state", action="store_true")

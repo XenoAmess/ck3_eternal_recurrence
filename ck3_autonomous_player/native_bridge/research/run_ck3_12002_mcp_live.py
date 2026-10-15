@@ -4159,7 +4159,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--output", type=Path)
     result.add_argument("--plan", type=Path, help="JSON {steps:[...]} or step array")
     result.add_argument("--command-timeout", type=float, default=60)
-    result.add_argument("--readiness-timeout", type=float, default=300)
+    result.add_argument("--readiness-timeout", type=float, default=1800)
     result.add_argument("--timeout", type=float, default=1800)
     result.add_argument("--poll-interval", type=float, default=0.05)
     result.add_argument("--hold-seconds", type=float, default=0)

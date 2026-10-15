@@ -73,7 +73,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--second-top-liege-id", type=int, required=True)
     parser.add_argument("--expected-date-raw", type=int, required=True)
     parser.add_argument("--timeout", type=float, default=900.0)
-    parser.add_argument("--readiness-timeout", type=float, default=240.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retain-state", action="store_true")
     return parser

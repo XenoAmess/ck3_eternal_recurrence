@@ -11,6 +11,7 @@ import hashlib
 import importlib
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -22,6 +23,7 @@ RUNTIME_SCHEMA = "ck3-mod-acceptance-runtime-v1"
 MANIFEST_SCHEMA = "ck3-mod-acceptance-shared-runtime-v1"
 PRODUCTS_SCHEMA = "ck3-mod-acceptance-products-v1"
 CONTEXT_SCHEMA = "ck3-mod-acceptance-run-context-v1"
+MINIMUM_READINESS_SECONDS = 1800
 BUDGET_FLAGS = {
     "command_timeout": "--command-timeout", "readiness_timeout": "--readiness-timeout",
     "timeout": "--timeout", "poll_interval": "--poll-interval", "hold_seconds": "--hold-seconds",
@@ -160,6 +162,8 @@ class Selection:
             if type(value) not in (int,float) or value<0 or value==0 and key!='hold_seconds':
                 raise ValueError('Invalid explicit shared case budget: '+key)
             self.case['budgets'][key]=value
+        if self.prepared and 'readiness_policy' in self.prepared and self.prepared['readiness_policy'] != self.readiness_policy:
+            raise ValueError('Prepared readiness policy differs from the selected original budget/current user policy')
         run_id = self.context.get("run_id", "<allocated-run-id>")
         if self.context and (not isinstance(run_id, str) or not run_id or Path(run_id).name != run_id):
             raise ValueError("Actual allocated run_id required")
@@ -216,6 +220,28 @@ class Selection:
         else:
             self.adapter_path = self.adapter_config = None
         self.argv = self.build_argv()
+
+    @property
+    def readiness_policy(self) -> dict:
+        """Keep original product contracts while applying the future startup floor."""
+        requested = self.case["budgets"]["readiness_timeout"]
+        if requested is not None and (type(requested) not in (int, float) or
+                                      not math.isfinite(requested) or requested <= 0):
+            raise ValueError("Invalid original case budget: readiness_timeout")
+        effective = max(requested, MINIMUM_READINESS_SECONDS) if requested is not None else None
+        return {"schema": "ck3-mod-acceptance-readiness-policy-v1",
+                "policy_id": "future-readiness-minimum-2026-10-15",
+                "source": "explicit-user-instruction-2026-10-15",
+                "minimum_seconds": MINIMUM_READINESS_SECONDS,
+                "requested_seconds": requested, "effective_seconds": effective,
+                "floor_applied": requested is not None and requested < MINIMUM_READINESS_SECONDS,
+                "historical_receipts_reclassified": False}
+
+    @property
+    def effective_budgets(self) -> dict:
+        budgets = dict(self.case["budgets"])
+        budgets["readiness_timeout"] = self.readiness_policy["effective_seconds"]
+        return budgets
 
     def manifest_path_key(self, row: dict) -> Path:
         key = row["path_key"]
@@ -278,7 +304,7 @@ class Selection:
             argv += ["--saved-campaign-inject-after-load"]
         if features.get("saved_campaign_debug_mode") and startup["mode"] == "saved_campaign":
             argv += ["--saved-campaign-debug-mode"]
-        budgets = self.case["budgets"]
+        budgets = self.effective_budgets
         for key, flag in BUDGET_FLAGS.items():
             value = budgets[key]
             if value is None:
@@ -334,6 +360,7 @@ class Selection:
                 "opt_in_read_only_mcp_tools": self.opt_in_read_only_mcp_tools,
                 "runtime_environment": self.runtime_environment,
                 "phases": self.case.get("phases", []), "budgets": self.case["budgets"],
+                "effective_budgets": self.effective_budgets, "readiness_policy": self.readiness_policy,
                 "fixture_prepare": self.case.get("fixture_prepare"),
                 "adapter": self.case.get('adapter'),
                 "normal_close": self.case.get("normal_close"), "gui_contract": self.case.get("gui_contract"),
@@ -501,7 +528,7 @@ class Selection:
             'shared_game':self.manifest['game'],'case_contract':read_json(self.adapter_config),
             'product_spec':self.product,'canonical_products_path':str(self.case_path(self.products['product_inventory'])),
             'case_inputs':case_inputs,'saved_campaign':self.prepared.get('startup',{}).get('saved_campaign',{}) if self.prepared else self.context.get('saved_campaign',{}),
-            'runtime_manifest':pin(self.manifest_path)}
+            'runtime_manifest':pin(self.manifest_path),'readiness_policy':self.readiness_policy}
 
     def prepare(self, inputs_path, output):
         if self.context:
@@ -542,11 +569,13 @@ class Selection:
             'runtime_manifest':pin(self.manifest_path),'case_inputs':context['case_inputs'],
             'startup':result['startup'],'initial_plan':result.get('initial_plan',self.case['initial_plan']),
             'adapter':pin(self.adapter_path),'contract':pin(self.adapter_config),'preparation':result,
+            'effective_budgets':self.effective_budgets,'readiness_policy':self.readiness_policy,
             'runtime_status':'NOT_RUN','business_acceptance':'NOT_ASSESSED'}
         if graphics is not None:
             prepared['graphics_cache']=graphics
         path=output/'prepared-case.json';write_json(path,prepared)
-        return {'status':'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN','prepared_case':pin(path),'preparation':result}
+        return {'status':'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN','prepared_case':pin(path),'preparation':result,
+                'effective_budgets':self.effective_budgets,'readiness_policy':self.readiness_policy}
 
     def verify(self):
         if not self.context:raise ValueError('Verify requires one actual allocated run context')

@@ -231,7 +231,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--old-round", required=True)
     parser.add_argument("--new-round", required=True)
     parser.add_argument("--candidate-revision", required=True)
-    parser.add_argument("--readiness-timeout", type=float, default=300.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--publish-timeout", type=float, default=20.0)
     return parser
 

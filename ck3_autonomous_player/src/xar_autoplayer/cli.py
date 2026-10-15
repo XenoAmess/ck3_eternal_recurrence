@@ -332,7 +332,7 @@ def parser() -> argparse.ArgumentParser:
     native_auto_run_parser.add_argument(
         "--readiness-timeout",
         type=float,
-        default=300,
+        default=1800,
         help="maximum seconds to wait for a stable paused native map",
     )
     native_auto_run_parser.add_argument(
@@ -579,7 +579,7 @@ def parser() -> argparse.ArgumentParser:
     )
     construction_source_parser.add_argument("--timeout", type=float, default=390)
     construction_source_parser.add_argument(
-        "--readiness-timeout", type=float, default=300,
+        "--readiness-timeout", type=float, default=1800,
     )
     construction_source_parser.add_argument(
         "--cold-start-checkpoint", action="store_true",
@@ -607,7 +607,7 @@ def parser() -> argparse.ArgumentParser:
     timeline_query_parser.add_argument(
         "--readiness-timeout",
         type=float,
-        default=300,
+        default=1800,
         help="maximum seconds to wait for a stable paused native map",
     )
     timeline_query_parser.add_argument(
@@ -632,7 +632,7 @@ def parser() -> argparse.ArgumentParser:
     )
     family_alliance_query_parser.add_argument("--timeout", type=float, default=390)
     family_alliance_query_parser.add_argument(
-        "--readiness-timeout", type=float, default=300)
+        "--readiness-timeout", type=float, default=1800)
     family_alliance_query_parser.add_argument(
         "--cold-start-checkpoint", action="store_true")
     family_alliance_query_parser.add_argument(
@@ -653,7 +653,7 @@ def parser() -> argparse.ArgumentParser:
     outbound_white_peace_query_parser.add_argument("--war-id", type=int, required=True)
     outbound_white_peace_query_parser.add_argument("--timeout", type=float, default=390)
     outbound_white_peace_query_parser.add_argument(
-        "--readiness-timeout", type=float, default=300
+        "--readiness-timeout", type=float, default=1800
     )
     outbound_white_peace_query_parser.add_argument(
         "--cold-start-checkpoint",
@@ -676,7 +676,7 @@ def parser() -> argparse.ArgumentParser:
     timeline_action_parser.add_argument(
         "--readiness-timeout",
         type=float,
-        default=300,
+        default=1800,
         help="maximum seconds to wait for the paused R777 source frame",
     )
     timeline_action_parser.add_argument(
@@ -717,7 +717,7 @@ def parser() -> argparse.ArgumentParser:
     one_generation_parser.add_argument(
         "--readiness-timeout",
         type=float,
-        default=300,
+        default=1800,
         help="maximum seconds to wait for a stable paused native map",
     )
     one_generation_parser.add_argument(
@@ -777,7 +777,7 @@ def parser() -> argparse.ArgumentParser:
     next_episode_parser.add_argument(
         "--readiness-timeout",
         type=float,
-        default=300,
+        default=1800,
         help="maximum seconds to wait for a stable paused native map",
     )
     next_episode_parser.add_argument(

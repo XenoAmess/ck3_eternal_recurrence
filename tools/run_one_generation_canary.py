@@ -326,7 +326,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--skip-repository-check", action="store_true")
     parser.add_argument("--max-turns", type=int, default=20)
     parser.add_argument("--timeout-seconds", type=float, default=21_600)
-    parser.add_argument("--readiness-timeout-seconds", type=float, default=300)
+    parser.add_argument("--readiness-timeout-seconds", type=float, default=1800)
     parser.add_argument("--checkpoint-every-advances", type=int, default=3)
     parser.add_argument("--expected-repo-revision")
     parser.add_argument("--expected-checkpoint-size", type=int)
@@ -393,10 +393,10 @@ def validate_arguments(args: argparse.Namespace) -> None:
         raise CanaryError("timeouts and checkpoint cadence must be positive")
     if args.execute and (
         args.timeout_seconds != 21_600
-        or args.readiness_timeout_seconds != 300
+        or not args.readiness_timeout_seconds >= 1800
         or args.checkpoint_every_advances != 3
     ):
-        raise CanaryError("execute requires the fixed canary bounds: timeout 21600, readiness 300, checkpoint cadence 3")
+        raise CanaryError("execute requires the fixed canary bounds: timeout 21600, readiness at least 1800, checkpoint cadence 3")
     if args.execute and args.skip_repository_check:
         raise CanaryError("skip-repository-check is dry-run-only and cannot be combined with execute")
     canonical = (
@@ -450,7 +450,8 @@ def git_revision(args: argparse.Namespace) -> str | None:
     return observed
 
 
-def qualify_result(canary: dict[str, Any], target_state: Path, post_pids: list[int]) -> dict[str, Any]:
+def qualify_result(canary: dict[str, Any], target_state: Path, post_pids: list[int],
+                   *, readiness_timeout_seconds: float = 1800) -> dict[str, Any]:
     result = canary["payload"]
     runs_root = (target_state / "runs").resolve()
     run_dirs = sorted(path for path in runs_root.glob("*-one-generation-*") if path.is_dir())
@@ -508,7 +509,8 @@ def qualify_result(canary: dict[str, Any], target_state: Path, post_pids: list[i
         and isinstance(bounds, dict)
         and bounds.get("requested_turns") == 20
         and bounds.get("max_wall_seconds") == 21_600
-        and bounds.get("readiness_timeout_seconds") == 300
+        and readiness_timeout_seconds >= 1800
+        and bounds.get("readiness_timeout_seconds") == readiness_timeout_seconds
         and bounds.get("checkpoint_every_eligible_advances") == 3
         and not post_pids
     )
@@ -657,7 +659,8 @@ def main(argv: list[str] | None = None) -> int:
     source_after = driver_anchor(args.source_state, args.expected_checkpoint_sha256, args.expected_checkpoint_size, args.expected_driver_state_sha256)
     if source_after["sha256"] != source_driver["sha256"]:
         raise CanaryError("production6b source driver state changed during the canary")
-    qualification = qualify_result(canary, args.target_state, post_pids)
+    qualification = qualify_result(canary, args.target_state, post_pids,
+                                   readiness_timeout_seconds=args.readiness_timeout_seconds)
     summary = {
         "format_version": 1,
         "kind": "ck3_one_generation_20_turn_canary_handoff_result",

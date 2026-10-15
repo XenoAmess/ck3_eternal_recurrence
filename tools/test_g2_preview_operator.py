@@ -2337,6 +2337,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     "run", "--manifest", str(manifest_path),
                     "--output", str(root / "attempt-m5"),
                     "--private-m5-joint-collector",
+                    "--readiness-timeout", "2400",
                 ])
                 m5_result = g2_preview_operator.command_run(m5_args)
                 outcomes["preflight"] = 1
@@ -2364,6 +2365,8 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertIn("--ordinary-campaign-no-pact", calls[0])
             self.assertIn("--succession-lifecycle", calls[1])
             self.assertIn("ordinary_campaign_succession", calls[1])
+            self.assertEqual(calls[1][calls[1].index("--readiness-timeout") + 1], "1800")
+            self.assertEqual(calls[7][calls[7].index("--readiness-timeout") + 1], "2400")
             self.assertIn("--ordinary-campaign-no-pact", calls[1])
             self.assertNotIn("--allow-private-lifestyle-formal-trial", calls[1])
             self.assertIn("--allow-private-lifestyle-formal-trial", calls[3])
@@ -2992,6 +2995,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 (output / "operator-receipt.json").read_text(encoding="utf-8")
             )
             self.assertEqual(receipt["status"], "GREEN_READ_ONLY")
+            self.assertEqual(receipt["readiness_timeout_seconds"], 1800)
             self.assertTrue(receipt["checkpoint_unchanged"])
             self.assertFalse(receipt["driver_state_unchanged"])
             self.assertTrue(

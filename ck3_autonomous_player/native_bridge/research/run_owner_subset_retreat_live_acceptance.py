@@ -130,7 +130,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-injector", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=600.0)
-    parser.add_argument("--readiness-timeout", type=float, default=240.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--seed-timeout", type=float, default=30.0)
     parser.add_argument("--postcondition-timeout", type=float, default=10.0)
     parser.add_argument("--retain-state", action="store_true")

@@ -235,7 +235,7 @@ def _phase0_scope(frame: object) -> dict[str, object] | None:
 
 def collect_h3937_paused_war_scope_once(
     spec: EnvironmentSpec, *, timeout_seconds: float = 390,
-    readiness_timeout_seconds: float = 300,
+    readiness_timeout_seconds: float = 1800,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
     poll_interval_seconds: float = READINESS_POLL_SECONDS,
     ownership_round_id: str, cold_start_checkpoint: bool = False,

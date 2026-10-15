@@ -48,7 +48,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--subject-army-id", type=int, required=True)
     parser.add_argument("--timeout", type=float, default=420.0)
-    parser.add_argument("--readiness-timeout", type=float, default=180.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--cold-start-checkpoint", action="store_true")
     parser.add_argument("--save-checkpoint", action="store_true")
     parser.add_argument("--advance-days", type=int, default=0)

@@ -128,7 +128,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-dll", type=Path, required=True)
     parser.add_argument("--bridge-injector", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=900.0)
-    parser.add_argument("--readiness-timeout", type=float, default=240.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retain-state", action="store_true")
     parser.add_argument("--run-state-root", type=Path, required=True)

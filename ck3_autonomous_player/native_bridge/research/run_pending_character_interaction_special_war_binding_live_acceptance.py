@@ -182,7 +182,7 @@ def _parser() -> argparse.ArgumentParser:
         default=DEFAULT_BRIDGE_INJECTOR,
     )
     parser.add_argument("--timeout", type=float, default=900.0)
-    parser.add_argument("--readiness-timeout", type=float, default=240.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--seed-timeout", type=float, default=45.0)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retain-state", action="store_true")

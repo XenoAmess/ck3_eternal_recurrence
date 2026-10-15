@@ -108,8 +108,10 @@ class ReadinessHandoff(TestCase):
                 self.assertEqual(result['business_acceptance'], 'RED_OR_INCOMPLETE')
                 window = json.loads(captured_receipts['readiness-window.json'])
                 ready = json.loads(captured_receipts['readiness-window-result.json'])
-                self.assertEqual((window['budget_seconds'], window['deadline_monotonic']), (400, 500.0))
-                self.assertEqual(client._readiness_limit, 500.0)
+                self.assertEqual((window['requested_budget_seconds'], window['budget_seconds'],
+                                  window['deadline_monotonic']), (400, 1800, 1900.0))
+                self.assertEqual(window['readiness_policy']['source'], 'explicit-user-instruction-2026-10-15')
+                self.assertEqual(client._readiness_limit, 1900.0)
                 self.assertEqual(ready['status'], 'READINESS_HOLD_OBSERVED')
                 self.assertTrue(ready['within_original_deadline'])
                 self.assertFalse(ready['business_pass'])

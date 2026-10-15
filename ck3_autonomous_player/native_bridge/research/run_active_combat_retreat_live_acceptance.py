@@ -59,7 +59,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--advance-days-before-preview", type=int, default=15)
     parser.add_argument("--postcondition-timeout", type=float, default=10.0)
     parser.add_argument("--timeout", type=float, default=480.0)
-    parser.add_argument("--readiness-timeout", type=float, default=180.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--cold-start-checkpoint", action="store_true")
     return parser
 

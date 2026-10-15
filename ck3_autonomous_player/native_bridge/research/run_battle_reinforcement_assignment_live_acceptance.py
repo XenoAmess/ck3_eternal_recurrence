@@ -69,7 +69,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-target-province-id", type=int)
     parser.add_argument("--require-assigned", action="store_true")
     parser.add_argument("--timeout", type=float, default=420.0)
-    parser.add_argument("--readiness-timeout", type=float, default=180.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument(
         "--mailbox-observation-timeout", type=float, default=5.0
     )

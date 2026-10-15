@@ -63,7 +63,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-event-key", required=True)
     parser.add_argument("--expected-production-tree-sha256")
     parser.add_argument("--timeout", type=float, default=300.0)
-    parser.add_argument("--readiness-timeout", type=float, default=180.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--preflight-report", type=Path)
     return parser

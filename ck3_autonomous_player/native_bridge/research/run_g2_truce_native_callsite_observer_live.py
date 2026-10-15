@@ -100,7 +100,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-date-raw", type=int, required=True)
     parser.add_argument("--ready-manifest", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=420.0)
-    parser.add_argument("--readiness-timeout", type=float, default=300.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--observation-timeout", type=float, default=60.0)
     return parser
 

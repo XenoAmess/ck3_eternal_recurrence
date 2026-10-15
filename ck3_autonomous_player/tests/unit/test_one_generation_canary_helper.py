@@ -123,6 +123,7 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             self.assertEqual(plan["strict_canary_contract"]["max_turns"], 20)
             argv = plan["commands"]["native_one_generation"]
             self.assertEqual(argv[argv.index("--timeout") + 1], "21600")
+            self.assertEqual(argv[argv.index("--readiness-timeout") + 1], "1800")
             self.assertIn(
                 "bounded_incomplete",
                 plan["strict_canary_contract"]["alive_at_bound"],
@@ -333,6 +334,16 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
         )
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("fixed canary bounds", result.stderr)
+
+    def test_execute_requires_at_least_1800_readiness_and_preserves_larger_request(self) -> None:
+        for seconds, expected_error in ((400, "fixed canary bounds"),
+                                        (1800, "canonical production6b"),
+                                        (2400, "canonical production6b")):
+            with self.subTest(seconds=seconds):
+                args = CANARY.resolve_arguments(["--repo-root", str(REPO_ROOT), "--execute",
+                    "--readiness-timeout-seconds", str(seconds), "--expected-checkpoint-size", "1"])
+                with self.assertRaisesRegex(CANARY.CanaryError, expected_error):
+                    CANARY.validate_arguments(args)
 
     @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_claim_white_peace_execute_rejects_noncanonical_identity(self) -> None:

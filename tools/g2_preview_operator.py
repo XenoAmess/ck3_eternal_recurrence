@@ -2499,9 +2499,9 @@ def command_run(args: argparse.Namespace) -> int:
     if args.private_child_matrilineal_first_heir_companion and turns != 1:
         raise ValueError("first-heir companion needs one child pending read turn")
     timeout = args.timeout if args.timeout is not None else int(manifest.get("timeout_seconds", 390))
-    readiness_timeout = args.readiness_timeout if args.readiness_timeout is not None else int(
-        manifest.get("readiness_timeout_seconds", 300)
-    )
+    readiness_timeout = max(1800, args.readiness_timeout if args.readiness_timeout is not None else int(
+        manifest.get("readiness_timeout_seconds", 1800)
+    ))
     formal_report = output / "formal-report.txt"
     formal_stderr = output / "formal-stderr.txt"
     stop_path = manifest_path(manifest["state_dir"], "state_dir") / "native-auto-run.stop"
@@ -2733,10 +2733,10 @@ def command_query_current_timeline_blocker_context_v1(
     timeout = args.timeout if args.timeout is not None else int(
         manifest.get("timeout_seconds", 390)
     )
-    readiness_timeout = (
+    readiness_timeout = max(1800,
         args.readiness_timeout
         if args.readiness_timeout is not None
-        else int(manifest.get("readiness_timeout_seconds", 300))
+        else int(manifest.get("readiness_timeout_seconds", 1800))
     )
     query_stdout = output / "query-report.json"
     query_stderr = output / "query-stderr.txt"
@@ -2896,8 +2896,8 @@ def command_query_first_heir_marriage_alliance_result_v1(
         return preflight_exit
     timeout = args.timeout if args.timeout is not None else int(
         manifest.get("timeout_seconds", 390))
-    readiness_timeout = args.readiness_timeout if args.readiness_timeout is not None else int(
-        manifest.get("readiness_timeout_seconds", 300))
+    readiness_timeout = max(1800, args.readiness_timeout if args.readiness_timeout is not None else int(
+        manifest.get("readiness_timeout_seconds", 1800)))
     query_stdout = output / "query-report.json"
     query_stderr = output / "query-stderr.txt"
     query_exit = run_logged(family_alliance_result_query_command(
@@ -3053,10 +3053,10 @@ def command_continue_death_succession_modal_v1(
     timeout = args.timeout if args.timeout is not None else int(
         manifest.get("timeout_seconds", 390)
     )
-    readiness_timeout = (
+    readiness_timeout = max(1800,
         args.readiness_timeout
         if args.readiness_timeout is not None
-        else int(manifest.get("readiness_timeout_seconds", 300))
+        else int(manifest.get("readiness_timeout_seconds", 1800))
     )
     action_stdout = output / "action-report.json"
     action_stderr = output / "action-stderr.txt"

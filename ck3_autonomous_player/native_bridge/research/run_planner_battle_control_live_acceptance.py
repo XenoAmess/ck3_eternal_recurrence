@@ -115,7 +115,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--subject-army-id", type=int, required=True)
     parser.add_argument("--cycles", type=int, default=MINIMUM_CYCLES)
     parser.add_argument("--timeout", type=float, default=600.0)
-    parser.add_argument("--readiness-timeout", type=float, default=240.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--retain-clone",

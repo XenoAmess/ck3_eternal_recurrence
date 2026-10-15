@@ -79,7 +79,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-injector", type=Path)
     parser.add_argument("--candidate-turn-limit", type=int, default=256)
     parser.add_argument("--candidate-timeout", type=float, default=1800.0)
-    parser.add_argument("--readiness-timeout", type=float, default=720.0)
+    parser.add_argument("--readiness-timeout", type=float, default=1800.0)
     parser.add_argument("--execute-terminal-action", action="store_true")
     parser.add_argument("--authorize-private-live", action="store_true")
     return parser

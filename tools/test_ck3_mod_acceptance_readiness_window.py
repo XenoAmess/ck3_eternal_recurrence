@@ -36,6 +36,9 @@ class ReadinessBoundary(TestCase):
         c.context = {'frozen_argv': {'path': 'actual-frozen-argv', 'bytes': 17, 'sha256': 'd' * 64}}
         c.selection = SimpleNamespace(prepared={'preparation': {}},
             case={'budgets': {'readiness_timeout': 900, 'timeout': 8400}},
+            effective_budgets={'readiness_timeout': 1800, 'timeout': 8400},
+            readiness_policy={'requested_seconds': 900, 'effective_seconds': 1800,
+                              'source': 'explicit-user-instruction-2026-10-15'},
             runtime={'manifest': {'path': 'actual-runtime-manifest', 'bytes': 23, 'sha256': 'e' * 64}})
         self.calls = []
         c.retain_held_process = lambda report: self.calls.append('retain-held')
@@ -53,11 +56,13 @@ class ReadinessBoundary(TestCase):
         return json.loads((self.output / name).read_bytes())
 
     def test_ready_before_unchanged_deadline_records_exact_binding(self):
-        self.client.guard = lambda: setattr(self.clock, 'now', 999.999)
+        self.client.guard = lambda: setattr(self.clock, 'now', 1899.999)
         self.assertIs(self.client.wait_hold(), self.report)
         window = self.read('readiness-window.json')
         end = self.read('readiness-window-result.json')
-        self.assertEqual((window['started_monotonic'], window['budget_seconds'], window['deadline_monotonic']), (100.0, 900, 1000.0))
+        self.assertEqual((window['started_monotonic'], window['budget_seconds'], window['deadline_monotonic']), (100.0, 1800, 1900.0))
+        self.assertEqual(window['requested_budget_seconds'], 900)
+        self.assertEqual(window['readiness_policy'], self.client.selection.readiness_policy)
         self.assertEqual(window['budget_name'], 'readiness_timeout')
         self.assertEqual(window['binding']['frozen_argv'], self.client.context['frozen_argv'])
         self.assertEqual(window['binding']['runtime_manifest'], self.client.selection.runtime['manifest'])
@@ -69,21 +74,21 @@ class ReadinessBoundary(TestCase):
         self.assertEqual(self.clock.sleeps, [])
 
     def test_equal_deadline_never_returns_hold_success(self):
-        self.client.guard = lambda: setattr(self.clock, 'now', 1000.0)
+        self.client.guard = lambda: setattr(self.clock, 'now', 1900.0)
         with self.assertRaisesRegex(TimeoutError, 'Original case readiness budget elapsed'):
             self.client.wait_hold()
         end = self.read('readiness-window-result.json')
         self.assertEqual(end['status'], 'READINESS_TIMEOUT')
         self.assertIs(end['within_original_deadline'], False)
-        self.assertEqual(end['elapsed_seconds'], 900.0)
+        self.assertEqual(end['elapsed_seconds'], 1800.0)
         self.assertEqual(self.clock.sleeps, [])
 
     def test_slow_guard_past_deadline_is_not_reclassified_ready(self):
-        self.client.guard = lambda: setattr(self.clock, 'now', 1000.25)
+        self.client.guard = lambda: setattr(self.clock, 'now', 1900.25)
         with self.assertRaises(TimeoutError):
             self.client.wait_hold()
         end = self.read('readiness-window-result.json')
-        self.assertEqual(end['elapsed_seconds'], 900.25)
+        self.assertEqual(end['elapsed_seconds'], 1800.25)
         self.assertEqual(end['status'], 'READINESS_TIMEOUT')
         self.assertFalse(end['new_wait_or_replay'])
         self.assertEqual(self.calls, ['retain-held', 'retain-process'])
@@ -102,14 +107,14 @@ class ReadinessBoundary(TestCase):
 
     def test_missing_report_consumes_only_original_window(self):
         def missing(**kwargs):
-            self.clock.now = 1000.0
+            self.clock.now = 1900.0
             raise FileNotFoundError('not-yet-written')
         self.client.read_report = missing
         with self.assertRaises(TimeoutError):
             self.client.wait_hold()
         self.assertEqual(self.clock.sleeps, [.1])
         self.assertEqual(self.read('readiness-window-result.json')['status'], 'READINESS_TIMEOUT')
-        self.assertEqual(self.client._readiness_limit, 1000.0)
+        self.assertEqual(self.client._readiness_limit, 1900.0)
 
     def test_existing_initial_business_budget_choice_preserved(self):
         self.client.selection.prepared = {'preparation': {'initial_plan_original_business': True}}
