@@ -1,0 +1,129 @@
+{
+  "evidence_layer": "offline projection of caller-supplied completed MCP receipts",
+  "runtime_operations": 0,
+  "save": {
+    "step": "save-checkpoint",
+    "status": "submitted",
+    "checkpoint": {
+      "status": "saved",
+      "date_raw": 53327184,
+      "size": 126616629,
+      "sha256": "7cfca088d84d7d49354eebd5dc9557e50e6dd4cee17d6afdcbf60770074c3ea5",
+      "history_index": 1142,
+      "episode_character_id": 40526,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "prepared-environment-manifest",
+        "environment_sha256": "104e2140b6e72a24713f317c341d1495cc6fe67849cb08eb06da5100aaa464b0"
+      }
+    },
+    "driver_replace_scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+    "save_binding_verified": true,
+    "bridge_pid": 255216,
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-96253c58fd68",
+      "origin_character_id": 31254,
+      "current_character_id": 40526,
+      "progress": {
+        "reconciled_successions": 1,
+        "last_succession": {
+          "predecessor_character_id": 31254,
+          "actual_successor_character_id": 40526,
+          "matched_inherited_title_ids": [
+            2191,
+            2204,
+            2230,
+            2231
+          ],
+          "expected_other_heir_title_ids": [
+            2262
+          ],
+          "expected_without_heir_title_ids": []
+        }
+      }
+    }
+  },
+  "semantic": {
+    "frame": {
+      "snapshot_id": "native:3",
+      "revision": 2,
+      "native_revision": 3,
+      "date_raw": 53327184,
+      "paused": true,
+      "map_ready": true,
+      "episode_character_id": 40526,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "episode_identity_pending": false,
+      "one_life_terminal_reason": null,
+      "played_character_id": 40526,
+      "played_character_alive": true,
+      "bridge_pid": 249712
+    },
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-96253c58fd68",
+      "origin_character_id": 31254,
+      "current_character_id": 40526,
+      "progress": {
+        "reconciled_successions": 1,
+        "last_succession": {
+          "predecessor_character_id": 31254,
+          "actual_successor_character_id": 40526,
+          "matched_inherited_title_ids": [
+            2191,
+            2204,
+            2230,
+            2231
+          ],
+          "expected_other_heir_title_ids": [
+            2262
+          ],
+          "expected_without_heir_title_ids": []
+        }
+      }
+    },
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": "xar_off",
+      "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+      "source": "prepared-environment-manifest",
+      "environment_sha256": "66b7020582e3a060ec15421408cb49d986a63f176a167ab063777465a6fe81b4"
+    }
+  },
+  "comparison": {
+    "goal_equal": true,
+    "goal_status": "observed_equal",
+    "different_game_pid_observed": true,
+    "same_saved_date": true,
+    "same_successor_episode": true,
+    "physical_cold_checkpoint_anchor": "not established by these two receipts alone"
+  },
+  "normal_plan_consumption": {
+    "status": "not_observed",
+    "occurrences": []
+  },
+  "m7_complete_claimed": false,
+  "stability_window_credit": "not calculated; owned by the main continuity ledger",
+  "source_pins": {
+    "save": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation41-cold-prep\\p07-responses\\0013-1-result.json",
+      "bytes": 9682,
+      "sha256": "b48af6d2febc1e6bcc5286aea3f733c57288ad9837e6b06429084239febf70ea"
+    },
+    "semantic": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p03-responses\\0001-1-result.json",
+      "bytes": 26119,
+      "sha256": "dc3d97bf43ffd1f562e1a9ff4479e22a2c8c43f30161a57e13833afe1f225eec"
+    },
+    "plan": null
+  },
+  "additional_custody_receipt_pins": []
+}
