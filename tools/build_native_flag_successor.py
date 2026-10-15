@@ -20,6 +20,10 @@ import sys
 import time
 
 from run_native_msvc import child_environment, initialize_msvc, visual_studio_installation
+from register_project_exe_exclusions import collect_command_manifest, opted_in, register_manifest
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def windows_args(command: str) -> list[str]:
@@ -195,12 +199,27 @@ def run(config: dict) -> dict:
             executable = output / "fixtures" / (Path(relative).stem + ".exe")
             fixture_response = executable.with_suffix(".rsp")
             fixture_response.write_text(subprocess.list2cmdline([
-                record["object"]["path"],
                 *(str(path) for path in objects[bridge_target] if config.get("fixture_whole_bridge") is True),
                 *(str(baseline / path) for path in config.get("fixture_link_objects", [])),
                 *map(str, libraries)]), encoding="utf-8")
             record["link"] = command([str(compiler_dir / "link.exe"), "/nologo", "/MACHINE:X64", "/OPT:REF",
-                "/OUT:" + str(executable), "@" + str(fixture_response)], Path(relative).stem + "-link")
+                "/OUT:" + str(executable), record["object"]["path"],
+                "@" + str(fixture_response)], Path(relative).stem + "-link")
+            if opted_in(ROOT):
+                exclusion_manifest = collect_command_manifest(
+                    ROOT, source, output, record["link"]["argv"], [executable],
+                    config.get("defender_external_candidate"), source_commands=[
+                        {"argv": record["argv"], "return_code": record["exit_code"]}])
+                manifest_path = executable.with_suffix(".defender-manifest.json")
+                manifest_path.write_text(json.dumps(exclusion_manifest, indent=2) + "\n", encoding="utf-8")
+                receipt_path = executable.with_suffix(".defender-receipt.json")
+                exclusions = register_manifest(exclusion_manifest, receipt_path,
+                                               manifest_bytes=manifest_path.read_bytes())
+                record["defender_exclusions"] = {"status": exclusions["status"], "receipt": pin(receipt_path)}
+                if exclusions["status"] == "settings_failed":
+                    raise RuntimeError("Fixture built; exact EXE Defender registration failed: " + str(receipt_path))
+            else:
+                record["defender_exclusions"] = {"status": "disabled", "reason": "Local Git opt-in absent/false or CI environment"}
             record["run"] = command([str(executable), str(output / "wire")], Path(relative).stem + "-run")
             report["fixtures"].append(record)
             save()

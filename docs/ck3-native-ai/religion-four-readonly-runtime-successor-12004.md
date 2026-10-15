@@ -57,6 +57,10 @@ then creates a new archive and DLL from changed and borrowed original objects.
 `fixture_whole_bridge: true` uses the established whole-Bridge fixture closure.
 This tool handles this project's existing MSVC/Ninja bridge layout; it does
 not infer a new source migration or qualify live native getters.
+Fixture EXEs use the existing successful-command Defender manifest/receipt
+helper before execution when the machine's existing Git opt-in is enabled.
+The original local build has that opt-in disabled; no new exclusion setting
+or verified registration is inferred from successful fixture execution.
 
 The first runtime-only fixture link produced a real unresolved
 `GameAdapter::supports_snapshot` error. Adding only GameAdapter's object exposed
@@ -83,6 +87,9 @@ MCP/Driver/protocol. The public acceptance finite opt-in regression is run
 directly from `tools/test_ck3_mod_acceptance.py`.
 
 No CK3, Steam, desktop, screenshot or screen lease is used by this package.
+`open_kaishek` prevalidation is not applicable to these C++ pointer-layout and
+owner-mailbox fixtures: they execute no CK3 script semantics. The product's
+script prevalidation and live acceptance remain separate.
 Compile/link and synthetic native/MCP qualification do not grant live or
 product-business PASS. Existing generic in-game navigation covers Character,
 Army, Combat and Knights, and does not currently expose Rite draft opening or
