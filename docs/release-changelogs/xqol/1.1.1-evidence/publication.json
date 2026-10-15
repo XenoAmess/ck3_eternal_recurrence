@@ -1,0 +1,176 @@
+{
+  "schema": "ck3-release-publication-evidence-v1",
+  "release_date_local": "2026-10-15",
+  "timezone": "Asia/Shanghai",
+  "status": "WORKSHOP_PUBLISHED_PUBLIC_READBACK_AND_CACHE_COMPLETE",
+  "external_artifact_root": "C:/workspace/ck3-publication-20261015",
+  "release_commit": "76fe84e4831814dac74a92fa654a59b9ad6a14cd",
+  "preparation_master_and_tag_pushed": true,
+  "final_documentation_commit": "The actual containing master commit; no self-referential SHA asserted.",
+  "published_supported_version": "1.20.0.4",
+  "source_business_game_version": "1.20.0.4",
+  "owner": "76561198273714027",
+  "creator_app_id": 1158310,
+  "consumer_app_id": 1158310,
+  "visibility": 0,
+  "public_tags_in_order": [
+    "Gameplay",
+    "1.20 'Crozier'"
+  ],
+  "public_text_normalization": "HTML-decoded full text; CRLF and CR converted to LF; no trimming; final LF retained",
+  "compatibility_sidebar": {
+    "value": "1.20 'Crozier'",
+    "exact": true,
+    "requiredtags_href": "https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27"
+  },
+  "cache_game": {
+    "version": "1.20.1",
+    "steam_build_id": "25870654",
+    "exe_sha256": "2667e409f586f20d60142873ccb1b4eb345eee54ed996925115a46132260cff7",
+    "execution_mode": "gui_only",
+    "native": null,
+    "runtime_manifest": {
+      "external_path": "gui-runtime-01/shared-gui-runtime-01.json",
+      "sha256": "a7cf072476aefac60a36476bb556b41622ac319a3550fe6a41fc32a95000ddd9"
+    },
+    "new_source_business_qualification": false
+  },
+  "offline": {
+    "restored": true,
+    "fresh_frame_before_final_cache": {
+      "external_path": "rmtm/cache-scene-01/steam-offline-fresh-01/steam-frame-freshness.json",
+      "sha256": "352fab8d9c8d755bc2c789c69c37c0d03c066839b5ff9938596a7a5ca73ef576"
+    },
+    "direct_root_review": {
+      "external_path": "rmtm/cache-scene-01/root-steam-review-01.json",
+      "sha256": "ce4e8f5541c324333bde29ca0d84578d117ba3d3b21faaa81ad90b0d9451c42d"
+    },
+    "reviewed_moved_frame": {
+      "external_path": "rmtm/cache-scene-01/steam-offline-fresh-01/steam-moved.png",
+      "sha256": "94eacea2caf7c0835a3523951729ced27afdc2b2fb0ea8d9fac629dc3ed6ecd6"
+    }
+  },
+  "retention": "External originals are subject to the repository storage-retention policy; this tracked summary does not promise permanent retention of all raw materials.",
+  "product": "mod_xenoamess_quality_of_life",
+  "workshop_item_id": "3798133925",
+  "version": "1.1.1",
+  "release_tag": "xqol-v1.1.1",
+  "previous_public": {
+    "version": "1.1.0",
+    "tag": "xqol-v1.1.0",
+    "commit": "a608d7d2082dfbb7206046eb0303f493433811db"
+  },
+  "source_acceptance": {
+    "status": "TEST_CLOSED_BY_SCOPE",
+    "repository_path": "mod_xenoamess_quality_of_life/docs/acceptance-plan.md",
+    "sha256": "755065e7090fc2ddc9176bd6d1df69027e73d472a3136cd2896af3e0c136cfb5",
+    "full_feature_matrix": "NOT_CLAIMED",
+    "limits": [
+      "Seven existing business evidence items retain only their original qualification.",
+      "A209/R0099 Save100/reopen100 uses retained historical review; original PNG is no longer readable.",
+      "Restore/reopen, cancel, zero and tooltip edges were not rerun.",
+      "Meritocratic coverage is law loading/candidate pools, not newly qualified actual appointment or succession.",
+      "Historical REDs remain unchanged."
+    ]
+  },
+  "formal_build": {
+    "files": 27,
+    "content_external_path": "qol/formal/mod_xenoamess_quality_of_life",
+    "manifest": {
+      "external_path": "qol/formal/mod_xenoamess_quality_of_life-v1.1.1.manifest.json",
+      "sha256": "1bb33d6e7163e74cf245a4b08ac0c723e86c3b7f5a5c49afe615f2530bffdc20"
+    },
+    "zip": {
+      "external_path": "qol/formal/mod_xenoamess_quality_of_life-v1.1.1.zip",
+      "sha256": "9f340fc49d586c639a1ce78e8fae612f76891ca68a65fa1fd2a074b7e7faaa53"
+    },
+    "inner_descriptor_remote_file_id": false
+  },
+  "native_update": {
+    "operation_id": "xenoamess-quality-of-life-12004-1.1.1-20261015-01",
+    "submitted_at_utc": "2026-10-15T03:30:36.207454+00:00",
+    "steam_result": 1,
+    "legal_agreement_required": false,
+    "workshop_legal_agreement_accepted": false,
+    "receipt": {
+      "external_path": "qol/native-publish-receipt.json",
+      "sha256": "a53e368e5592bd11bc879c85201b2cba6a6484e4e2d4a0bf3e3112a45622e868"
+    }
+  },
+  "public_readback": {
+    "exact": true,
+    "title": "XenoAmess的体验优化",
+    "verification": {
+      "external_path": "qol/public-after-01/verification.json",
+      "sha256": "41730067476d791805003a3674d0dbf0b559fed17d74e8d73942d20d7fe3fc96"
+    },
+    "sidebar": {
+      "external_path": "qol/public-after-01/compatible-version-sidebar-correction-01.json",
+      "sha256": "f23fe03082940fda55b7c631ab8bdd6b867ffbd41b9e114a2fff7d66739ac2b3"
+    },
+    "description": {
+      "repository_path": "workshop/xenoamess_quality_of_life_description.bbcode",
+      "bytes": 6607,
+      "sha256": "492c65e6da429a13207a796f24279842f5774f64c098c5869b94d2dec3ae8dd0"
+    },
+    "change_notes": {
+      "repository_path": "workshop/change_notes/xenoamess-quality-of-life/1.1.1.txt",
+      "entry_id": "1792035034",
+      "bytes": 5447,
+      "characters": 3949,
+      "lines": 35,
+      "has_final_lf": true,
+      "sha256": "a35298aed866816c264c6fcea67285b89f3975488ac736056c0addb1609d25a3",
+      "decoded_public_body_equal_frozen_source_bytes": true
+    }
+  },
+  "cache": {
+    "run_id": "4-8e1c2f1861--xenoamess-quality-of-life--R0108",
+    "actual_cache_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3798133925",
+    "files_exact": 27,
+    "native_download": {
+      "external_path": "qol/native-calls/download-01/stdout.json",
+      "sha256": "0df261f8cf1f37407dbf0bb9db006d18699d2b30618498da8f74d9f81b3216a1",
+      "result": 1,
+      "installed_state_raw": 4
+    },
+    "exact_formal_comparison": {
+      "external_path": "qol/cache-scene-01/prepare/workshop-cache-exact-formal.json",
+      "sha256": "132a326d47ea396a526fd129ae0d4f1599181c0497abd672286757cef13cf440"
+    },
+    "public_verify": {
+      "external_path": "qol/cache-scene-01/public-verify-01/stdout.json",
+      "sha256": "6b0dcc58077481259bdfd7db9d71b120a09ca9314a1f02f64001bf00267fc1d3",
+      "cache_acceptance_pass": true,
+      "business_contract_applicable": false,
+      "business_pass": false,
+      "native_capability_pass": false,
+      "process_pass": true,
+      "closure_pass": true,
+      "normal_gui_quit": true
+    },
+    "engine_log": {
+      "external_path": "qol/cache-state/profile/logs/debug.log",
+      "sha256": "da026283781037f4bbe611039e7dd89f259a2834defa4ebece10aaf4d2d36ca3",
+      "mounted_line": 88,
+      "enabled_line": 56
+    },
+    "original_popen_wait": {
+      "external_path": "qol/cache-scene-01/4-8e1c2f1861--xenoamess-quality-of-life--R0108/game-exit.json",
+      "sha256": "9d017c89c215d9cb2127dc1251525e52c9de8fd2a6e760026889ca5112f96726",
+      "os_exit_code": 0
+    },
+    "custody_closed": {
+      "external_path": "qol/cache-scene-01/4-8e1c2f1861--xenoamess-quality-of-life--R0108/screen-release.json",
+      "sha256": "c62bf8fe9d32b9a69d99d788b1f8ed98baa67569d0a8a57b9d1e23099939cc66",
+      "state": "done",
+      "resources": []
+    },
+    "post_quit_desktop": {
+      "external_path": "qol/cache-scene-01/normal-quit-readback-01.png",
+      "sha256": "178451292b6072dc4c9fc6477b969e193f25ad45e4ff39ca841049e69eea7ab4"
+    },
+    "fixture_mounted": false,
+    "business_retested": false
+  }
+}

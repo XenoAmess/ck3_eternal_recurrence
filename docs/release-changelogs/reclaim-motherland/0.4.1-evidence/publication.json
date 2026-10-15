@@ -1,0 +1,190 @@
+{
+  "schema": "ck3-release-publication-evidence-v1",
+  "release_date_local": "2026-10-15",
+  "timezone": "Asia/Shanghai",
+  "status": "WORKSHOP_PUBLISHED_PUBLIC_READBACK_AND_CACHE_COMPLETE",
+  "external_artifact_root": "C:/workspace/ck3-publication-20261015",
+  "release_commit": "76fe84e4831814dac74a92fa654a59b9ad6a14cd",
+  "preparation_master_and_tag_pushed": true,
+  "final_documentation_commit": "The actual containing master commit; no self-referential SHA asserted.",
+  "published_supported_version": "1.20.0.4",
+  "source_business_game_version": "1.20.0.4",
+  "owner": "76561198273714027",
+  "creator_app_id": 1158310,
+  "consumer_app_id": 1158310,
+  "visibility": 0,
+  "public_tags_in_order": [
+    "Gameplay",
+    "1.20 'Crozier'"
+  ],
+  "public_text_normalization": "HTML-decoded full text; CRLF and CR converted to LF; no trimming; final LF retained",
+  "compatibility_sidebar": {
+    "value": "1.20 'Crozier'",
+    "exact": true,
+    "requiredtags_href": "https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27"
+  },
+  "cache_game": {
+    "version": "1.20.1",
+    "steam_build_id": "25870654",
+    "exe_sha256": "2667e409f586f20d60142873ccb1b4eb345eee54ed996925115a46132260cff7",
+    "execution_mode": "gui_only",
+    "native": null,
+    "runtime_manifest": {
+      "external_path": "gui-runtime-01/shared-gui-runtime-01.json",
+      "sha256": "a7cf072476aefac60a36476bb556b41622ac319a3550fe6a41fc32a95000ddd9"
+    },
+    "new_source_business_qualification": false
+  },
+  "offline": {
+    "restored": true,
+    "fresh_frame_before_final_cache": {
+      "external_path": "rmtm/cache-scene-01/steam-offline-fresh-01/steam-frame-freshness.json",
+      "sha256": "352fab8d9c8d755bc2c789c69c37c0d03c066839b5ff9938596a7a5ca73ef576"
+    },
+    "direct_root_review": {
+      "external_path": "rmtm/cache-scene-01/root-steam-review-01.json",
+      "sha256": "ce4e8f5541c324333bde29ca0d84578d117ba3d3b21faaa81ad90b0d9451c42d"
+    },
+    "reviewed_moved_frame": {
+      "external_path": "rmtm/cache-scene-01/steam-offline-fresh-01/steam-moved.png",
+      "sha256": "94eacea2caf7c0835a3523951729ced27afdc2b2fb0ea8d9fac629dc3ed6ecd6"
+    }
+  },
+  "retention": "External originals are subject to the repository storage-retention policy; this tracked summary does not promise permanent retention of all raw materials.",
+  "product": "mod_reclaim_the_motherland",
+  "workshop_item_id": "3798404599",
+  "version": "0.4.1",
+  "release_tag": "reclaim-motherland-v0.4.1",
+  "previous_public": {
+    "version": "0.4.0",
+    "tag": "reclaim-motherland-v0.4.0",
+    "commit": "23078f51d1b294b9db5dfc0a195051a48e3563a4"
+  },
+  "source_acceptance": {
+    "status": "SCOPED_CORE_AND_THRESHOLD_CASES_PASSED",
+    "repository_path": "mod_reclaim_the_motherland/docs/acceptance-report.md",
+    "sha256": "9f6cb2440e0e719e8e0582ef62b7046b749f1fac738b9ce3559c708c2c32ed1f",
+    "cases": [
+      {
+        "case": "core",
+        "attempt": "A225",
+        "run_id": "4-8e1c2f1861--reclaim-the-motherland--R0026",
+        "case_acceptance_pass": true
+      },
+      {
+        "case": "threshold_ui",
+        "attempt": "A227",
+        "run_id": "4-8e1c2f1861--reclaim-the-motherland--R0028",
+        "case_acceptance_pass": true
+      }
+    ],
+    "full_legacy_36_matrix": "NOT_RERUN_NO_CREDIT",
+    "source_verifier_business_pass": false,
+    "limits": [
+      "No new full vanilla Offer arithmetic, natural-five-year expiry or multilingual live matrix.",
+      "Historical REDs and callback diagnostic remain unchanged.",
+      "Cache loading on 1.20.1 does not add gameplay qualification."
+    ]
+  },
+  "formal_build": {
+    "files": 36,
+    "content_external_path": "rmtm/formal/mod_reclaim_the_motherland",
+    "manifest": {
+      "external_path": "rmtm/formal/mod_reclaim_the_motherland-v0.4.1.manifest.json",
+      "sha256": "d6dde1c3ac4a8049c7ce7179fa33807e9eee08809b9247419f6a0123cd43e151"
+    },
+    "zip": {
+      "external_path": "rmtm/formal/mod_reclaim_the_motherland-v0.4.1.zip",
+      "sha256": "a53c5ba91dbe10b89f6eb527053eea47bb6a6f1d9c36bfbf2272ebaa257e0888"
+    },
+    "inner_descriptor_remote_file_id": false
+  },
+  "native_update": {
+    "operation_id": "reclaim-the-motherland-12004-0.4.1-20261015-01",
+    "submitted_at_utc": "2026-10-15T03:33:34.066753+00:00",
+    "steam_result": 1,
+    "legal_agreement_required": false,
+    "workshop_legal_agreement_accepted": false,
+    "receipt": {
+      "external_path": "rmtm/native-publish-receipt.json",
+      "sha256": "3f96473eb4fbbae0562785f396e63968580809394b87ee87140dd47b98dc6bac"
+    }
+  },
+  "public_readback": {
+    "exact": true,
+    "title": "Reclaim the Motherland — 重整河山",
+    "verification": {
+      "external_path": "rmtm/public-after-02/verification.json",
+      "sha256": "df7c3682eccbfd9be2ed285e79967c6987f20036fd513baa7b5b4ff0c6d80d2c"
+    },
+    "sidebar": {
+      "external_path": "rmtm/public-after-02/compatible-version-sidebar.json",
+      "sha256": "39eece05b75222d12d5e8709f67f3bcb6ef2c0bc038eb03f90a316f4295c8047"
+    },
+    "description": {
+      "repository_path": "workshop/reclaim_the_motherland_description.bbcode",
+      "bytes": 7249,
+      "sha256": "ae625b7caf641af6a8a429fbf918315d5c6e37c7ca9572859961197a00b1e349"
+    },
+    "change_notes": {
+      "repository_path": "workshop/change_notes/reclaim-the-motherland/0.4.1.txt",
+      "entry_id": "1792035212",
+      "bytes": 4063,
+      "characters": 2895,
+      "lines": 26,
+      "has_final_lf": true,
+      "sha256": "18f8c86833fdfeed53fea39fe606366b1043b1ae5f0ffd7b4f734cda13763b23",
+      "decoded_public_body_equal_frozen_source_bytes": true
+    },
+    "earlier_http_429_preserved": "rmtm/public-after-01"
+  },
+  "cache": {
+    "run_id": "4-8e1c2f1861--reclaim-the-motherland--R0029",
+    "actual_cache_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3798404599",
+    "files_exact": 36,
+    "native_download": {
+      "external_path": "rmtm/native-calls/download-01/stdout.json",
+      "sha256": "8a669977b78f70aa985ba28eb5abaa6bb97f4ffb7639530052c3fa153aff0f9a",
+      "result": 1,
+      "installed_state_raw": 4
+    },
+    "exact_formal_comparison": {
+      "external_path": "rmtm/cache-scene-01/prepare/workshop-cache-exact-formal.json",
+      "sha256": "48dad12763f6cc0f345a2285cdb000aa787bdb8fb37f0d702186cd72aedb18d4"
+    },
+    "public_verify": {
+      "external_path": "rmtm/cache-scene-01/public-verify-01/stdout.json",
+      "sha256": "d5bfbf677afde6630721ee5675d9de7cfe2399e9bb41a4fef1ab4e5bbfc1d43b",
+      "cache_acceptance_pass": true,
+      "business_contract_applicable": false,
+      "business_pass": false,
+      "native_capability_pass": false,
+      "process_pass": true,
+      "closure_pass": true,
+      "normal_gui_quit": true
+    },
+    "engine_log": {
+      "external_path": "rmtm/cache-state/profile/logs/debug.log",
+      "sha256": "2f91c089e18165f3a21d4972bf6fe542d673b435da6baf96d258c0462782bda3",
+      "mounted_line": 88,
+      "enabled_line": 56
+    },
+    "original_popen_wait": {
+      "external_path": "rmtm/cache-scene-01/4-8e1c2f1861--reclaim-the-motherland--R0029/game-exit.json",
+      "sha256": "cd4c43f13b5bdb995f9052246a4bcca00a146c57c6f914212e1752218554fb75",
+      "os_exit_code": 0
+    },
+    "custody_closed": {
+      "external_path": "rmtm/cache-scene-01/4-8e1c2f1861--reclaim-the-motherland--R0029/screen-release.json",
+      "sha256": "4c4828d61a00aaf9a3e3e8fdd30f600881baa0e6a6d504c634b73d76328cb7f2",
+      "state": "done",
+      "resources": []
+    },
+    "post_quit_desktop": {
+      "external_path": "rmtm/cache-scene-01/normal-quit-readback-01.png",
+      "sha256": "5f315202000616f517f5a97e35f52331ece89037a2d1faebb43116c317b3b3ee"
+    },
+    "fixture_mounted": false,
+    "business_retested": false
+  }
+}
