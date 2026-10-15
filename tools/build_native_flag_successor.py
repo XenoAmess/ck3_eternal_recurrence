@@ -45,6 +45,56 @@ def pin(path: Path) -> dict:
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
+def inherit_successor(config: dict, baseline: Path, source: Path, groups: dict) -> dict:
+    """Borrow a linked predecessor's exact objects without changing its evidence.
+
+    A fixture failure does not invalidate an independently successful archive and
+    DLL link. Its original status is retained; this is never live qualification.
+    """
+    location = config.get("baseline_successor_report")
+    if location is None:
+        return {"flags": [], "objects": {}, "report": None}
+    report_path = Path(location).resolve()
+    prior = json.loads(report_path.read_text(encoding="utf-8"))
+    if (prior.get("schema") != "ck3-native-flag-successor-v1"
+            or Path(prior["baseline_build_dir"]).resolve() != baseline
+            or Path(prior["source_dir"]).resolve() != source
+            or prior.get("archive", {}).get("exit_code") != 0
+            or prior.get("link", {}).get("exit_code") != 0):
+        raise ValueError("Predecessor must use the same baseline/source and have a successful archive/DLL link")
+    flags = prior.get("flags", [])
+    if not flags or any(not re.fullmatch(r"[A-Z][A-Z0-9_]+", flag) for flag in flags):
+        raise ValueError("Predecessor has no explicit Boolean native definitions")
+    for key in ("baseline_dll", "baseline_archive"):
+        expected = prior[key]
+        if pin(Path(expected["path"])) != expected:
+            raise ValueError("Predecessor baseline input changed: " + key)
+    objects = {}
+    for record in prior.get("compiled", []):
+        target, name = record["target"], record["original_output"]
+        if target not in groups or record.get("exit_code") != 0:
+            raise ValueError("Predecessor contains an unsuccessful/unknown production object")
+        for key in ("source", "object"):
+            expected = record[key]
+            if pin(Path(expected["path"])) != expected:
+                raise ValueError("Predecessor pinned input changed: " + key)
+        if name in objects:
+            raise ValueError("Duplicate predecessor object: " + name)
+        objects[name] = Path(record["object"]["path"])
+        row = next((row for row in groups[target] if row["output"] == name), None)
+        if row is None:
+            row = {"file": record["source"]["path"], "output": name}
+            groups[target].append(row)
+        elif Path(row["file"]).resolve() != Path(record["source"]["path"]).resolve():
+            raise ValueError("Predecessor object/source identity crossed")
+        row["inherited_argv"] = record["argv"]
+    if not objects:
+        raise ValueError("Predecessor has no reusable production objects")
+    return {"flags": flags, "objects": objects,
+            "report": {**pin(report_path), "original_status": prior.get("status"),
+                       "archive_exit_code": 0, "link_exit_code": 0}}
+
+
 def run(config: dict) -> dict:
     baseline = Path(config["baseline_build_dir"]).resolve()
     source = Path(config["source_dir"]).resolve()
@@ -74,6 +124,10 @@ def run(config: dict) -> dict:
         if not groups[target] or any(not (baseline / row["output"]).is_file()
                                      for row in groups[target]):
             raise ValueError(f"Baseline lacks the complete production objects: {target}")
+    inherited = inherit_successor(config, baseline, source, groups)
+    if set(flags).intersection(inherited["flags"]):
+        raise ValueError("Requested flags are already enabled in the predecessor")
+    all_flags = tuple(dict.fromkeys([*inherited["flags"], *flags]))
     includes = re.compile(r'^\s*#\s*include\s*"([^"\n]+)"', re.MULTILINE)
     memo: dict[Path, set[Path]] = {}
     texts: dict[Path, str] = {}
@@ -120,7 +174,8 @@ def run(config: dict) -> dict:
         row["template_file"] = template["file"]
         changed.append((runtime_target, row))
     report = {"schema": "ck3-native-flag-successor-v1", "baseline_build_dir": str(baseline),
-              "source_dir": str(source), "output_dir": str(output), "flags": list(flags),
+              "source_dir": str(source), "output_dir": str(output), "flags": list(all_flags),
+              "new_flags": list(flags), "predecessor": inherited["report"],
               "baseline_dll": pin(baseline / f"{bridge_target}.dll"),
               "baseline_archive": pin(baseline / f"{runtime_target}.lib"),
               "compiled": [], "fixtures": [], "local_ck3_contacted": False,
@@ -144,7 +199,9 @@ def run(config: dict) -> dict:
 
     def compile_row(pair):
         target, row = pair
-        argv = windows_args(row["command"])
+        argv = list(row["inherited_argv"]) if "inherited_argv" in row else windows_args(row["command"])
+        # Both are MSVC equivalents; the exact-EXE provenance contract uses /c.
+        argv = ["/c" if value == "-c" else value for value in argv]
         original = row.get("template_file", row["file"])
         destination = output / row["output"]
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -155,7 +212,8 @@ def run(config: dict) -> dict:
                 argv[index] = "/Fd" + str(destination.parent) + "\\"
             elif value.replace("\\", "/").lower() == original.replace("\\", "/").lower():
                 argv[index] = row["file"]
-        argv.extend("-D" + flag + "=1" for flag in flags)
+        argv.extend("-D" + flag + "=1" for flag in all_flags
+                    if not any(value in ("-D" + flag + "=1", "/D" + flag + "=1") for value in argv))
         record = command(argv, target + "-" + Path(row["file"]).stem)
         return {"target": target, "source": pin(Path(row["file"])),
                 "object": pin(destination), "original_output": row["output"], **record}
@@ -170,7 +228,8 @@ def run(config: dict) -> dict:
                     for record in report["compiled"]}
         objects = {}
         for target, rows in groups.items():
-            objects[target] = [replaced.get(row["output"], baseline / row["output"]) for row in rows]
+            objects[target] = [replaced.get(row["output"], inherited["objects"].get(
+                row["output"], baseline / row["output"])) for row in rows]
         for target, row in changed:
             if not any(existing["output"] == row["output"] for existing in groups[target]):
                 objects[target].append(replaced[row["output"]])

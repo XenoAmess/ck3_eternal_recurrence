@@ -380,7 +380,9 @@ struct Pump {
     mailbox.executor_submission_enabled = true;
     mailbox.permitted_executor_religion_reform12002 = &old::ExecutePlayerReligionReformMailbox12002;
     mailbox.permitted_executor_religion_doctrines12002 = &old::ExecutePlayerReligionDoctrinesMailbox12002;
+#ifndef XAR_CURRENT_RELIGION_ACCEPTANCE_FIXTURE_ONLY
     mailbox.permitted_executor_religion_doctrine_knowledge12002 = &old::ExecutePlayerReligionDoctrineKnowledgeMailbox12002;
+#endif
     mailbox.permitted_executor_religion_tenets12002 = &old::ExecutePlayerReligionTenetsMailbox12002;
     mailbox.iat_hook_installed = true;
     mailbox.state = api::MainThreadQueryMailboxStateV1::idle;
@@ -484,6 +486,7 @@ void TenetRows(const doctrine::TenetRowsContext &value) {
 }
 } // namespace
 
+#ifndef XAR_CURRENT_RELIGION_ACCEPTANCE_FIXTURE_ONLY
 int main(int argc, char **argv) {
   try {
     Assert(argc == 2, "one output directory argument");
@@ -622,3 +625,4 @@ int main(int argc, char **argv) {
     return 1;
   }
 }
+#endif
