@@ -623,17 +623,17 @@ def main(argv: list[str] | None = None) -> int:
                         help='Explicit failed report-writer resource closure; never normal exit or business credit')
     parser.add_argument('--latest-screen-release',type=Path)
     parser.add_argument('--first-machine-bootstrap',type=Path)
+    parser.add_argument('--gui-review', type=Path,
+                        help='Direct review of the fresh Steam offline frame for the shared GUI-only runtime')
     args = parser.parse_args(argv)
     try:
-        selection = Selection(args.runtime, args.products, args.product, args.case, args.run_context,args.prepared_case)
-        if args.mode=='prepare':
-            if not args.case_inputs or not args.prepare_output:raise ValueError('prepare requires --case-inputs and --prepare-output')
-            result=selection.prepare(args.case_inputs,args.prepare_output)
-        elif args.mode=='allocate':
-            from ck3_mod_acceptance_allocate import allocate_and_keep
-            result=allocate_and_keep(selection,args)
-        elif args.mode=='verify':result=selection.verify()
-        else:result=selection.describe() if args.mode=='plan' else selection.preflight() if args.mode=='preflight' else selection.run()
+        runtime = read_json(args.runtime)
+        shared_manifest = read_json(path_at(runtime['manifest']['path'], args.runtime.resolve().parent))
+        if shared_manifest.get('execution_mode') == 'gui_only':
+            from ck3_mod_acceptance_gui import dispatch
+            result = dispatch(args)
+        else:
+            result = native_dispatch(args)
     except (OSError, KeyError, ValueError, TypeError) as error:
         print(json.dumps({"status": "BLOCKED", "error": str(error), "runtime_status": "NOT_RUN",
                           "business_acceptance": "NOT_ASSESSED"}, ensure_ascii=False, indent=2))
@@ -643,10 +643,23 @@ def main(argv: list[str] | None = None) -> int:
     incomplete_close = (args.mode == 'run' and 'normal_close' in result and
                         (not isinstance(result['normal_close'], dict) or
                          result['normal_close'].get('normal_close_qualified') is not True))
-    return 2 if (result.get("blockers") or result.get("launcher_exit_code", 0) or
+    return 2 if (result.get('status') in {'RED', 'BLOCKED'} or
+                 result.get("blockers") or result.get("launcher_exit_code", 0) or
                  result.get('case_error') or result.get('normal_close_error') or
                  incomplete_verify or incomplete_close) else 0
 
+
+def native_dispatch(args) -> dict:
+    selection = Selection(args.runtime, args.products, args.product, args.case, args.run_context,args.prepared_case)
+    if args.mode=='prepare':
+        if not args.case_inputs or not args.prepare_output:raise ValueError('prepare requires --case-inputs and --prepare-output')
+        result=selection.prepare(args.case_inputs,args.prepare_output)
+    elif args.mode=='allocate':
+        from ck3_mod_acceptance_allocate import allocate_and_keep
+        result=allocate_and_keep(selection,args)
+    elif args.mode=='verify':result=selection.verify()
+    else:result=selection.describe() if args.mode=='plan' else selection.preflight() if args.mode=='preflight' else selection.run()
+    return result
 
 if __name__ == "__main__":
     raise SystemExit(main())
