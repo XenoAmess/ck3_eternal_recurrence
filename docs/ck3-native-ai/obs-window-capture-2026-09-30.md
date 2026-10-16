@@ -8,6 +8,53 @@ The v1 capture profile is 1920×1080, 60/1 fps, NVENC H.264 HQ, MKV, no cursor a
 
 `stop_session_recording` stops only a matching opaque filename/session and validates the output scope. `request_engine_close` applies only to the engine PID recorded by the provider and recognized OBS main/duplicate-instance dialog windows, after the recording worker has finished. Read the next status/window inventory to confirm closure. Failed attempts remain intact. `recovered-stop.json` does not turn an earlier failure into an approved take.
 
+## Delayed startup and owned close (2026-10-16)
+
+Machine `xenoamess-full-tower-eb9d2c1186`. In the Native20 cold attempt, the
+dedicated OBS PID206588 reached its listener after approximately 41.5 seconds
+as reported by the on-site investigation. `OwnedEngine.start` previously
+waited only 40 one-second polls and reported a timeout just before readiness.
+The original failed attempt remains failed; it is not a successful take.
+
+The permanent v2 provider now allows 120 startup polls and returns immediately
+when the existing connection/profile checks succeed. Occupied ports, changed
+executables and changed process generations still reject. This changes the
+startup wait only: it adds no game-session, video-duration or video-capacity
+limit, and does not relaunch or attach to an unrelated OBS instance.
+
+Normal close now selects the unique owned-PID `OBS ` / Qt window with
+`GetParent(hwnd)==0`, then rechecks that parent and PID before `WM_CLOSE`.
+Owned hidden Qt child dialogs cannot make the root main window ambiguous;
+multiple root candidates still reject. No foreground switch or forced-process
+fallback is introduced, and an exit timeout remains unverified.
+
+Root independently closed the late-started PID206588 normally with kernel exit
+code0, no forced calls and foreground HWND1121666 unchanged. The close intent
+records the method as excluding hidden children by parent; it does not contain
+a separately recorded `GetParent` value or the exact selector source. The
+parent-zero condition is Root's on-site execution account plus the permanent
+implementation and offline regression checks, not a field invented in the
+old receipt. External evidence root:
+`continuation42-cold-prep/native20-cold-generation02/`.
+
+- Original attempt: `recordings/e1a5e0fb-cfc1-4610-8ba4-5d0fb0385914/`.
+- `ROOT-LATE-OBS-206588-NORMAL-CLOSE-INTENT.json`, SHA-256
+  `dd00325053c61b1a9aa9256bd26c53cf3e1521d7f2ee41786c8a16ea5f2e9c55`.
+- `ROOT-LATE-OBS-206588-NORMAL-CLOSED.json`, SHA-256
+  `17691e57563fae631ed4e0e6a1d659fd79b6a445e26693a8eda4b26c62900a67`.
+- `ROOT-RECORDING-STARTUP120-RECOVERY-PREPARED.json`, SHA-256
+  `4501c0faf635504fff867c6b94b804eef587a1814bdf7e4def910d5a24e52df26`.
+
+The production startup method with a fake clock reproduces the old 40-second
+timeout and succeeds at the first 42-second poll for a 41.5-second listener.
+Six startup checks plus the existing provider/close suite pass **48 tests and
+21 subtests**, including never-ready timeout, fast startup, custody rejection,
+same-title Qt children, duplicate roots and a parent change before close.
+Tests create no processes or sockets. This public integration does not modify
+the current recording provider, certify the new take, or replace Root's actual
+recording/overlay readback. Earlier v1 evidence below retains its original
+scope and limits.
+
 ## Native evidence
 
 On 2026-09-30, caller run `promo-jichou-20260930-r5` used CK3 1.19.0.6 / Steam build 23530548 / EXE SHA-256 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`, RTX 3060 Laptop GPU, driver 31.0.15.4665. OBS's log confirmed D3D11 shared-texture game capture and NVENC H.264. The separate FFmpeg 9.0.2 NVENC encoder requires a newer driver API on this machine; that failure does not mean OBS NVENC is unavailable.

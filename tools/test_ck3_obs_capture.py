@@ -761,7 +761,8 @@ class CaptureContractTests(unittest.TestCase):
         engine, _, _ = self.engine()
         engine.process.poll.return_value = None
         engine.process.wait.side_effect = subprocess.TimeoutExpired(["synthetic-obs"], 30)
-        gui = SimpleNamespace(PostMessage=mock.Mock(), GetWindowText=lambda _: "OBS 30.0.2",
+        gui = SimpleNamespace(PostMessage=mock.Mock(), GetParent=lambda _: 0,
+                              GetWindowText=lambda _: "OBS 30.0.2",
                               GetClassName=lambda _: "Qt5152QWindowIcon")
         gui.EnumWindows = lambda callback, data: callback(77, data)
         process = SimpleNamespace(GetWindowThreadProcessId=mock.Mock(return_value=(1,100)))
@@ -779,13 +780,39 @@ class CaptureContractTests(unittest.TestCase):
         engine.process.poll.return_value = None
         engine.process.wait.return_value = 0
         gui = SimpleNamespace(PostMessage=mock.Mock(),
-            GetWindowText=lambda hwnd: "OBS 30.0.2" if hwnd == 77 else "Qt auxiliary",
+            GetParent=lambda hwnd: 0 if hwnd == 77 else 77,
+            GetWindowText=lambda hwnd: "OBS 30.0.2",
             GetClassName=lambda _: "Qt5152QWindowIcon")
         gui.EnumWindows = lambda callback, data: [callback(hwnd, data) for hwnd in (77, 88, 99)]
         process = SimpleNamespace(GetWindowThreadProcessId=lambda _: (1, 100))
         with mock.patch.dict(sys.modules, {"win32gui": gui, "win32process": process}):
             self.assertTrue(engine.close()["normal_exit_proven"])
         gui.PostMessage.assert_called_once_with(77, 0x0010, 0, 0)
+
+    def test_two_owned_obs_root_windows_still_reject_close(self):
+        engine, _, _ = self.engine()
+        engine.process.poll.return_value = None
+        gui = SimpleNamespace(PostMessage=mock.Mock(), GetParent=lambda _: 0,
+            GetWindowText=lambda _: "OBS 30.0.2", GetClassName=lambda _: "Qt5152QWindowIcon")
+        gui.EnumWindows = lambda callback, data: [callback(hwnd, data) for hwnd in (77, 88)]
+        process = SimpleNamespace(GetWindowThreadProcessId=lambda _: (1, 100))
+        with mock.patch.dict(sys.modules, {"win32gui": gui, "win32process": process}), \
+                self.assertRaisesRegex(RuntimeError, "not unique"):
+            engine.close()
+        gui.PostMessage.assert_not_called()
+        engine.process.wait.assert_not_called()
+
+    def test_obs_root_parent_change_rejects_close_without_post(self):
+        engine, _, _ = self.engine()
+        engine.process.poll.return_value = None
+        gui = SimpleNamespace(PostMessage=mock.Mock(), GetParent=mock.Mock(side_effect=[0, 88]),
+            GetWindowText=lambda _: "OBS 30.0.2", GetClassName=lambda _: "Qt5152QWindowIcon")
+        gui.EnumWindows = lambda callback, data: callback(77, data)
+        process = SimpleNamespace(GetWindowThreadProcessId=lambda _: (1, 100))
+        with mock.patch.dict(sys.modules, {"win32gui": gui, "win32process": process}), \
+                self.assertRaisesRegex(RuntimeError, "changed generation"):
+            engine.close()
+        gui.PostMessage.assert_not_called()
 
     def test_late_input_removal_is_observed_without_resending(self):
         engine, _, client = self.engine()

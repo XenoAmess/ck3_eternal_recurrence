@@ -443,7 +443,7 @@ class OwnedEngine:
             "port": self.profile["port"], "argv": argv})
         if psutil.Process(self.process.pid).cmdline() != argv:
             raise RuntimeError("OBS command line differs from its isolated argv")
-        for _ in range(40):
+        for _ in range(120):
             self.generation.check()
             if _listeners(self.profile["port"]):
                 try:
@@ -473,6 +473,7 @@ class OwnedEngine:
             windows = []
             def collect(hwnd, _):
                 if (win32process.GetWindowThreadProcessId(hwnd)[1] == self.process.pid
+                        and win32gui.GetParent(hwnd) == 0
                         and win32gui.GetWindowText(hwnd).startswith("OBS ")
                         and win32gui.GetClassName(hwnd).startswith("Qt")):
                     windows.append(hwnd)
@@ -481,7 +482,8 @@ class OwnedEngine:
                 raise RuntimeError("owned OBS main window is not unique")
             hwnd = windows[0]
             self.generation.check()
-            if win32process.GetWindowThreadProcessId(hwnd)[1] != self.process.pid:
+            if (win32process.GetWindowThreadProcessId(hwnd)[1] != self.process.pid
+                    or win32gui.GetParent(hwnd) != 0):
                 raise RuntimeError("OBS close window changed generation")
             win32gui.PostMessage(hwnd, 0x0010, 0, 0)
             try:
