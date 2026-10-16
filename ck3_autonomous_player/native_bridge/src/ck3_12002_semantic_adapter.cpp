@@ -467,11 +467,16 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     case SemanticOperation::declarations_for_target: request.result = static_cast<std::int32_t>(native.read_declarable_wars_for_target(request.id, request.declarations)); break;
     case SemanticOperation::marriage_choices: request.result = static_cast<std::int32_t>(native.read_arrange_marriage_choices(request.marriage_choices, request.marriage_diagnostics)); break;
     case SemanticOperation::family_candidates: request.result = static_cast<std::int32_t>(native.read_arrange_marriage_family_candidates_v1(request.id, request.family_candidates, request.marriage_diagnostics)); break;
-    case SemanticOperation::strengths:
+    case SemanticOperation::strengths: {
       diagnostic->native.store("dispatch");
+      const auto owner_query_start = std::chrono::steady_clock::now();
       request.result = static_cast<std::int32_t>(native.read_army_strengths(request.strengths));
+      diagnostic->owner_query_elapsed_ns.store(
+          std::chrono::duration_cast<std::chrono::nanoseconds>(
+              std::chrono::steady_clock::now() - owner_query_start).count());
       diagnostic->native_returned.store(1);
       break;
+    }
     case SemanticOperation::combat_v2: request.result = static_cast<std::int32_t>(native.read_combat_simulation_inputs(request.combat_request, request.combat_v2)); break;
     case SemanticOperation::combat_v3: request.result = static_cast<std::int32_t>(native.read_combat_simulation_inputs_v3(request.combat_request, request.combat_v3)); break;
     case SemanticOperation::player_claims: request.result = static_cast<std::int32_t>(

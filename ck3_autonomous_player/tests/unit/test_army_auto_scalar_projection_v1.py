@@ -80,3 +80,61 @@ def test_malformed_auto_scalar_rejects_without_publishing_or_business_action(tmp
         assert [frame["step"] for frame in scenario.endpoint.frames if frame.get("type") == "execute_step"] == ["query-army-strengths-v1"]
     finally:
         scenario.driver.close()
+
+
+def test_native_timing_is_observational_and_preserves_auto_scope(tmp_path):
+    scenario = make_scenario(tmp_path / "state")
+    original_publish = scenario.endpoint.publish
+    timing = {
+        "read_total_ns": 900_000, "owner_query_ns": 700_000,
+        "baseline_read_ns": 400_000, "rich_attach_ns": 200_000,
+        "serialize_ns": 80_000,
+    }
+
+    def timed(frame):
+        if frame.get("type") == "command_result":
+            frame = deepcopy(frame)
+            frame["result"]["army_native_timing_v1"] = timing
+        original_publish(frame)
+
+    scenario.endpoint.publish = timed
+    service = GameplayBridgeService(scenario.driver)
+    try:
+        outcome = service._execute_planned_turn_without_unhandled_capture(_planned(scenario.before))
+        assert outcome["status"] == "executed"
+        assert outcome["result"]["army_native_timing_v1"] == timing
+        assert outcome["result"]["queried_native_revision"] == scenario.before["native_revision"]
+        assert scenario.driver.take_snapshot()["army_strengths"]
+    finally:
+        scenario.driver.close()
+
+
+@pytest.mark.parametrize("changed", [
+    {"owner_query_ns": 900_001},
+    {"rich_attach_ns": 700_001},
+    {"serialize_ns": -1},
+])
+def test_invalid_native_timing_cannot_publish_army_cache(tmp_path, changed):
+    scenario = make_scenario(tmp_path / "state")
+    original_publish = scenario.endpoint.publish
+
+    def timed(frame):
+        if frame.get("type") == "command_result":
+            frame = deepcopy(frame)
+            frame["result"]["army_native_timing_v1"] = {
+                "read_total_ns": 900_000, "owner_query_ns": 700_000,
+                "baseline_read_ns": 400_000, "rich_attach_ns": 200_000,
+                "serialize_ns": 80_000, **changed,
+            }
+        original_publish(frame)
+
+    scenario.endpoint.publish = timed
+    try:
+        with pytest.raises(BridgeUnavailableError, match="timing diagnostic"):
+            scenario.driver.query_army_strengths(
+                expected_revision=scenario.before["revision"], _auto_core_only=True,
+            )
+        assert scenario.driver._army_strength_query is None
+        assert scenario.driver._command_history[-1]["ok"] is False
+    finally:
+        scenario.driver.close()

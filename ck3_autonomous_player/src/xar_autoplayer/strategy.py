@@ -11627,7 +11627,7 @@ def _choose_one_life_turn_core(
             pending_halt = _pending_unsafe_route_halt(
                 rows, snapshot, army_id=army_id,
             )
-            if pending_halt is not None:
+            if pending_halt is not None and not pending_halt.get("suffix_cancellation_observed"):
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "native_war_unsafe_route_halt_pending",
@@ -11724,7 +11724,7 @@ def _choose_one_life_turn_core(
                             unavailable_watch = _embarked_route_timeline_unavailable_watch_plan(
                                 rows, snapshot, pursuit_army, query_step=horizon_step,
                                 available_steps=available_steps, war_summary=war_summary,
-                            )
+                            ) if pending_halt is None else None
                             if unavailable_watch is not None:
                                 return unavailable_watch
                             return {
@@ -11999,7 +11999,7 @@ def _choose_one_life_turn_core(
                         army_id=army_id,
                         available_steps=available_steps,
                         war_summary=war_summary,
-                    )
+                    ) if pending_halt is None else None
                     if halt_plan is not None:
                         return halt_plan
             elif (
@@ -12988,6 +12988,8 @@ def _choose_one_life_turn_core(
                             else None
                         ),
                         current_province_id=current_province_id,
+                        subject_army_id=army_id,
+                        active_route_unsafe=active_route_unsafe,
                         route_rejections=route_rejections,
                         strength_balance=(
                             strength_balance
@@ -16054,6 +16056,8 @@ def _outnumbered_attacker_regroup_input_ready(
     controlled_armies: list[dict[str, object]],
     tactical_war: dict[str, object] | None,
     current_province_id: int | None,
+    subject_army_id: int | None = None,
+    active_route_unsafe: bool = False,
     route_rejections: list[dict[str, object]],
     strength_balance: dict[str, object] | None,
 ) -> bool:
@@ -16068,14 +16072,12 @@ def _outnumbered_attacker_regroup_input_ready(
         and tactical_war is active_wars[0]
         and isinstance(tactical_war, dict)
         and tactical_war.get("player_side") == "attacker"
-        and tactical_war.get("player_is_primary_war_leader") is True
+        and type(tactical_war.get("player_is_primary_war_leader")) is bool
         and isinstance(tactical_war.get("player_relative_war_score"), int)
         and -100 < int(tactical_war["player_relative_war_score"]) < 100
         and isinstance(current_province_id, int)
         and controlled_armies
         and len(controlled_armies) <= 64
-        and isinstance(strength_balance, dict)
-        and strength_balance.get("hostile_operational_overmatch") is True
         and route_rejections
         and any(
             rejection.get("status") in {"unsafe", "blocked"}
@@ -16089,12 +16091,31 @@ def _outnumbered_attacker_regroup_input_ready(
         for army in controlled_armies
         if _native_int(army.get("current_province_id"))
         == current_province_id
-        and _army_tactical_state(army) in {"regular", "moving", "sieging"}
+        and (subject_army_id is None or _public_cunit_int(army.get("army_id")) == subject_army_id)
+        and _army_tactical_state(army) in {"regular", "moving", "sieging", "embarked"}
         and army.get("in_combat") is not True
         and army.get("retreating") is not True
     ]
+    player = snapshot.get("played_character")
+    embarked_unsafe_subject = bool(
+        len(regroup_subjects) == 1 and active_route_unsafe
+        and subject_army_id is not None and isinstance(player, dict)
+        and player.get("alive") is True
+        and regroup_subjects[0].get("owner_character_id") == player.get("character_id")
+        and regroup_subjects[0].get("controllable") is True
+        and _army_tactical_state(regroup_subjects[0]) == "embarked"
+        and regroup_subjects[0].get("route_read_status") == "complete_nonempty"
+        and isinstance(regroup_subjects[0].get("route_province_ids"), list)
+        and bool(regroup_subjects[0]["route_province_ids"])
+        and regroup_subjects[0]["route_province_ids"][-1]
+        == regroup_subjects[0].get("move_target_province_id")
+    )
     return bool(
         len(regroup_subjects) == 1
+        and (embarked_unsafe_subject or (
+            isinstance(strength_balance, dict)
+            and strength_balance.get("hostile_operational_overmatch") is True
+        ))
         and _public_cunit_int(regroup_subjects[0].get("army_id")) is not None
         and all(
             _public_cunit_int(army.get("army_id")) is not None
@@ -20845,9 +20866,46 @@ def _pending_unsafe_route_halt(
             and action.get("submitted_date_raw") == date_raw
             and action.get("postcondition_verified") is False
         ):
+            army = next((army for army in snapshot.get("player_armies", [])
+                         if isinstance(army, dict) and army.get("army_id") == army_id), None)
+            original_route = action.get("original_route_province_ids")
+            diagnostics = snapshot.get("diagnostics")
+            player = snapshot.get("played_character")
+            # An independently published suffix cancellation is useful even
+            # though the current edge can remain locked. It proves neither
+            # immediate stopping nor contact-free time advancement.
+            suffix_observed = bool(
+                isinstance(army, dict) and isinstance(player, dict)
+                and snapshot.get("paused") is True and snapshot.get("map_ready") is True
+                and army.get("controllable") is True
+                and army.get("owner_character_id") == action.get("owner_character_id")
+                == player.get("character_id")
+                and army.get("current_province_id") == action.get("original_current_province_id")
+                and army.get("in_combat") is False and army.get("retreating") is False
+                and _army_tactical_state(army) in {"moving", "embarked"}
+                and army.get("route_read_status") == "complete_nonempty"
+                and isinstance(original_route, list) and len(original_route) > 1
+                and all(type(province) is int and province > 0 for province in original_route)
+                and original_route[-1] == action.get("original_move_target_province_id")
+                and original_route[0] != original_route[-1]
+                and army.get("route_province_ids") == original_route[:1]
+                and army.get("move_target_province_id") == original_route[0]
+                and type(action.get("submitted_native_revision")) is int
+                and type(snapshot.get("native_revision")) is int
+                and snapshot["native_revision"] > action["submitted_native_revision"]
+                and isinstance(diagnostics, dict)
+                and type(action.get("submitted_connection_generation")) is int
+                and action["submitted_connection_generation"] == diagnostics.get("connection_generation")
+                and isinstance(action.get("submitted_episode_run_id"), str)
+                and bool(action["submitted_episode_run_id"])
+                and action["submitted_episode_run_id"] == snapshot.get("episode_run_id")
+            )
             return {"step": step, "army_id": army_id,
                     "submitted_date_raw": date_raw,
                     "history_index": row.get("index"),
+                    "suffix_cancellation_observed": suffix_observed,
+                    "current_edge_retained": suffix_observed,
+                    "contact_free_proven": False,
                     "postcondition_verified": False}
         return None
     return None
@@ -20937,7 +20995,7 @@ def _unsafe_committed_route_halt_plan(
         and _public_cunit_int(army.get("army_id")) == army_id
         and army.get("in_combat") is False
         and army.get("retreating") is False
-        and _army_tactical_state(army) == "moving"
+        and _army_tactical_state(army) in {"moving", "embarked"}
         and army.get("route_read_status") == "complete_nonempty"
         and isinstance(route, list) and bool(route)
         and target is not None

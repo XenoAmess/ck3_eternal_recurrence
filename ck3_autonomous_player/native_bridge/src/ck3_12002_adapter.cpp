@@ -16,6 +16,7 @@
 #include "xar_bridge/ck3_12002_actor_resources.hpp"
 
 #include <array>
+#include <chrono>
 #include <utility>
 
 namespace xar::game {
@@ -401,9 +402,14 @@ public:
       return ReadArmyStrengthsResult::unavailable;
     }
     diagnostic.reader.store("baseline");
+    const auto baseline_start = std::chrono::steady_clock::now();
     const auto result = ck3_12002::ReadArmyStrengths(bindings_.armies, scope, output);
+    diagnostic.baseline_read_elapsed_ns.store(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now() - baseline_start).count());
     diagnostic.baseline_result.store(static_cast<std::int64_t>(result));
     diagnostic.scope_rows.store(static_cast<std::int64_t>(output.size()));
+    const auto rich_attach_start = std::chrono::steady_clock::now();
     if (result == ReadArmyStrengthsResult::available ||
         result == ReadArmyStrengthsResult::partial)
       ck3_12002::AttachCommittedRouteTimelineToArmyRows(
@@ -436,6 +442,9 @@ public:
         result == ReadArmyStrengthsResult::partial)
       AttachPlayerOwnedRegimentsToArmyRowsV1(
           bindings_.core, bindings_.owned_regiments, scope, output);
+    diagnostic.rich_attach_elapsed_ns.store(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now() - rich_attach_start).count());
     diagnostic.reader.store(result == ReadArmyStrengthsResult::unavailable
         ? "baseline_unavailable" : "returned");
     return result;

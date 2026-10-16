@@ -17,6 +17,9 @@ struct ArmyStrengthQueryDiagnosticV1 {
   std::atomic<std::int64_t> submit{-1}, wait{-1}, reclaim{-1};
   std::atomic<std::int64_t> enter_result{-1}, entered{-1};
   std::atomic<std::int64_t> native_snapshot{-1}, native_returned{-1};
+  std::atomic<std::int64_t> owner_query_elapsed_ns{-1};
+  std::atomic<std::int64_t> baseline_read_elapsed_ns{-1};
+  std::atomic<std::int64_t> rich_attach_elapsed_ns{-1};
   std::atomic<std::int64_t> finish_result{-1}, frame_stable{-1}, run_success{-1};
 
   void Reset() noexcept {
@@ -26,6 +29,9 @@ struct ArmyStrengthQueryDiagnosticV1 {
     submit.store(-1); wait.store(-1); reclaim.store(-1);
     enter_result.store(-1); entered.store(-1);
     native_snapshot.store(-1); native_returned.store(-1);
+    owner_query_elapsed_ns.store(-1);
+    baseline_read_elapsed_ns.store(-1);
+    rich_attach_elapsed_ns.store(-1);
     finish_result.store(-1); frame_stable.store(-1); run_success.store(-1);
   }
 

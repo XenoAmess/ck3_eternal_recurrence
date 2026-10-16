@@ -100,3 +100,13 @@ flowchart TD
 [MANIFEST](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/cb-discovery-vanilla-12004-research02/MANIFEST.json)
 （SHA-256 `f3425979ba091b6a7b7b3b0224934ab45c5045b8c333dca8f172ffb471d3e5b8`）。
 这是来源机器的限期研究资产，继续保留与可用性按清单及统一存储策略复核；不是其他机器的安装或实机证明。
+
+### 2026-10-16 研究03：human 排除与真正的 target writer 边界
+
+当前 EXE `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518` 的静态窗口补齐了 context 构造／刷新链：`1A2FA50/1A2FAF0` 先调用 `2BAA6F0`；命中当前玩家对象向量（`+22358/+22364`）后在 `1A2FA6A/1A2FB12` 提前返回，未进入 context 构造。未命中才沿 actor extension `+1B0 → +278` 进入 `1ACBB70/1ACBF00`。前者分配 context 并加入 manager，后者分配／替换 strategy，均有实际写入。默认构造 `19E8B00` 清空 strategy `+A8/+B4`，这是空存储初始化，**不是目标 population writer**。
+
+已跟到 manager `1A2F110 → 1A22D10 → 1A32930 → 1A30E00 → 1A335E0 → 1A34EE0 → 1A36890 → 19E7CE0`，但非默认 `+A8/+B4` population writer、具体每日触发、失效／生命周期与 human 缓存仍未知。`19EC550` 写的是 `+128`，`19EC5E0` 只是读取 `+A8`，不能把它们误报成目标写入器。常规构造／刷新跳过 human，也不证明 human 永远不会保留旧 AI context。缺失、null 或空的 human AI 缓存必须解释为 **unavailable**，不能解释为玩家合法宣战目录为空；不得调用有写入的 manager 来填充玩家缓存，也没有证明 AI Top5 与 full 玩家目录等价。
+
+最小 shadow 施工点是 [ReadDeclarableWars](../../ck3_autonomous_player/native_bridge/src/ck3_12002_declarations.cpp) 既有目标枚举 `344–360`（研究输入源 SHA-256 `c93e3b1f919625d0e6da9e4a36c6fe12b17358752a9950d391baeac28e43261f`）。未来可在**同一暂停 mailbox 帧**只读复制已存在 context 的完整 `+A8` ID 集合，明确 human/AI、可用性、数量和帧；getter/raw layout 尚需精确 ABI 审核，不能构造／刷新 context。复用既有 `false,false` full pass，顺手记录合格输出是否落在短名单之外，**不再运行第二遍 N×C**；完整原输出及 target-major、CB ordinal、configuration、claimant、有序 title 和行序均保留。缺缓存、坏 ID、漂移或截断只能使实验过滤失效；单帧零漏项不能升级成全局完整性证明。新的族级裁剪也仍须必要条件及完整索引证明，未知／modded CB 保留宽回退。
+
+来源为 [研究03原文](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/cb-discovery-vanilla-12004-research03/CURRENT-CHAIN.md)，SHA-256 `8e9ad8163f2cb9e848fad90e5ce6e42dbccbaad46c08a20d3e8e05ea5e7d08a3`；[MANIFEST](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/cb-discovery-vanilla-12004-research03/MANIFEST.json)，SHA-256 `bfcb80f1f11ae70df857029adca5f07a1dd721efd4fa9708dca19fcf9085004f`。17 个小原始窗口共8,674B；结构校验不等于语义或实机验收。研究本身没有运行调用、构建、provider 或提速成绩；新增工程实现另行验收。派生报告48小时复核，关键窗口／pin 保护至2026-10-23复核，不自动续存。

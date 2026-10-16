@@ -84,3 +84,13 @@ Root另行安排现成MCP freshSEM→唯一新只读route查询→freshSEM恢复
 便携夹具增加实际AUTO14错误相等性与SEM1身份投影，公共完整普通planner反例证明下一步是新query；
 原记录不变。相关验证现为**21 tests、36 subtests通过**，共享测试／夹具64,996B，仍在64KiB额度内。
 此源码收口不授予实机恢复、游戏日或连续窗口信用。
+
+### P21 AUTO377：海上已有路线与真正不可安全推进的分支
+
+实际 AUTO347 已取得 native3640/date53411184 的完整13敌军 **available** horizon：我方620757086在海省940，embarked，路线 `[5967,5966,5969]`；次日与536871097在5967相交，`one_day_contact_free=false`。AUTO377随后没有提交业务动作，SEM378仍同帧暂停。这里不能套用前面的 unknown ETA 单日退路。committed timeline 的 effective origin 本身不是锁定数值证明；改目标预览也保留5967，结合原生 resolver 是锁首段线索，当前 raw progress/cutoff 仍缺失。
+
+策略漏掉了两类普通退路：Halt 仅接受 moving，排除了 embarked；capital regroup 又要求主战方、全军 aggregate overmatch，且同一海省上的历史 ghost 军导致 subject 歧义。修复允许本人可控、非战斗／撤退、完整路线的 embarked 军使用已有原生 Halt；允许当前 unsafe embarked subject 按 army ID 进入本国首都**只读候选评估**，不依赖缺失 ghost 的 aggregate。实际 Move 仍走原版 preview、完整敌军 horizon 和原生命令验证，主动接战1.5准入不变；它不承诺改线能避开已锁定登陆。
+
+Driver 的 Halt ACK 增加真实提交前 route/current/target/owner/native revision/connection/episode，仍为 `postcondition_verified=false`。独立同 epoch 更高 native 帧若恰好只剩原 `[front]`，只确认后缀取消、首段保留，不能写成停军完成或 contact-free。普通策略随后重新查询风险，不重发同一 Halt；旧 ACK、旧帧或其他 epoch 仍保持 pending。已有[当前版本锁定 Halt 证据](episode04-r12-locked-halt-r0175-12004.md)证明只留首段后仍可能自然登陆，不可据 ACK 消除这项危险。
+
+便携 gzip 夹具保留实际347／377／378来源 SHA 与全部军队、战争、基础战力名册，原生 Halt ACK 和独立 post-read **明确为 synthetic**。原 HEAD 普通 planner 回放与377一致；候选选择已有 Halt。8 项聚焦测试通过，覆盖提交前 tuple、异步原路线保留、独立 suffix 读回、跨 epoch 反例、非主战／ghost 候选以及普通下一步只读查询。这是源码候选验收，本记录不授予现场 Halt、避免登陆、胜利、推进天数或连续30年信用。

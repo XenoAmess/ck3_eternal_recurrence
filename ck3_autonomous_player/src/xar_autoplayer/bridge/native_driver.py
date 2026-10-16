@@ -14757,6 +14757,16 @@ class NativeHeadlessGameplayDriver:
                     "status": "halt_submitted",
                     "army_id": halt_id,
                     "submitted_date_raw": _date_raw(starting, "halt starting snapshot"),
+                    "submitted_native_revision": starting.get("native_revision"),
+                    "submitted_connection_generation": (
+                        starting.get("diagnostics", {}).get("connection_generation")
+                        if isinstance(starting.get("diagnostics"), dict) else None
+                    ),
+                    "submitted_episode_run_id": starting.get("episode_run_id"),
+                    "owner_character_id": army.get("owner_character_id"),
+                    "original_current_province_id": army.get("current_province_id"),
+                    "original_move_target_province_id": army.get("move_target_province_id"),
+                    "original_route_province_ids": list(army.get("route_province_ids") or []),
                     "postcondition_verified": False,
                 },
             }
@@ -14976,7 +14986,7 @@ class NativeHeadlessGameplayDriver:
                             **({"army_ids": requested_ids} if requested_ids is not None else {})},
         )
         if (
-            set(result) - {ARMY_MANAGER_INPUTS_SHARED_KEY, *( ["army_strengths_query_scope"] if requested_ids is not None else [])}
+            set(result) - {ARMY_MANAGER_INPUTS_SHARED_KEY, "army_native_timing_v1", *( ["army_strengths_query_scope"] if requested_ids is not None else [])}
             != {
                 "step",
                 "accepted",
@@ -15003,6 +15013,17 @@ class NativeHeadlessGameplayDriver:
                     or type(scope_echo["published_scope_status"]) is not str
                     or scope_echo["published_scope_status"] not in {"available", "partial"}):
                 raise BridgeUnavailableError("native army-strength query scope echo is malformed")
+        native_timing = result.get("army_native_timing_v1")
+        if native_timing is not None:
+            required = {"read_total_ns", "owner_query_ns", "baseline_read_ns",
+                        "rich_attach_ns", "serialize_ns"}
+            if (not isinstance(native_timing, dict) or set(native_timing) != required
+                    or any(type(native_timing[key]) is not int or native_timing[key] < 0
+                           for key in required)
+                    or any(native_timing[key] > native_timing["owner_query_ns"]
+                           for key in ("baseline_read_ns", "rich_attach_ns"))
+                    or native_timing["owner_query_ns"] > native_timing["read_total_ns"]):
+                raise BridgeUnavailableError("native army timing diagnostic is malformed")
         army_normalize_timing = start_army_timing("driver.army_normalize")
         try:
             # Expand the lossless wire view before validation. Explicit queries
